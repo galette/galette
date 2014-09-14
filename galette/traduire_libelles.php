@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2013 The Galette Team
+ * Copyright © 2004-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    Laurent Pelecq <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2004-2013 The Galette Team
+ * @copyright 2004-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,6 +37,8 @@
  */
 
 use Analog\Analog as Analog;
+use Galette\Core\L10n;
+use Zend\Db\Sql\Expression;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -102,34 +104,29 @@ $tpl->assign('all_forms', $all_forms);
 
 $nb_fields = 0;
 try {
-    $select = new Zend_Db_Select($zdb->db);
-    $select->from(
-        PREFIX_DB . Galette\Core\L10n::TABLE,
-        array('nb' => 'COUNT(text_orig)')
+    $select = $zdb->select(L10n::TABLE);
+    $select->columns(
+        array('nb' => new Expression('COUNT(text_orig)'))
     );
-    $nb_fields = $select->query()->fetch()->nb;
+    $results = $zdb->execute($select);
+    $result = $results->current();
+    $nb_fields = $result->nb;
 } catch (Exception $e) {
-    /** TODO */
     Analog::log(
         'An error occured counting l10n entries | ' .
         $e->getMessage(),
         Analog::WARNING
     );
-    Analog::log(
-        'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-        Analog::ERROR
-    );
 }
 
 if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
     try {
-        $select = new Zend_Db_Select($zdb->db);
-        $select->distinct()->from(
-            PREFIX_DB . Galette\Core\L10n::TABLE,
-            'text_orig'
+        $select = $zdb->select(L10n::TABLE);
+        $select->quantifier('DISTINCT')->columns(
+            array('text_orig')
         )->order('text_orig');
 
-        $all_texts = $select->query()->fetchAll();
+        $all_texts = $zdb->execute($select);
 
         $orig = array();
         foreach ( $all_texts as $idx => $row ) {
@@ -166,15 +163,10 @@ if ( is_numeric($nb_fields) && $nb_fields > 0 ) {
         $tpl->assign('orig', $orig);
         $tpl->assign('trans', $trans);
     } catch (Exception $e) {
-        /** TODO */
         Analog::log(
             'An error occured retrieving l10n entries | ' .
             $e->getMessage(),
             Analog::WARNING
-        );
-        Analog::log(
-            'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-            Analog::ERROR
         );
     }
 }

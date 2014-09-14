@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2013 The Galette Team
+ * Copyright © 2007-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2013 The Galette Team
+ * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 
 /**
  * Entitled handling. Manage:
@@ -49,7 +50,7 @@ use Analog\Analog as Analog;
  * @name      Entitled
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2013 The Galette Team
+ * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-27
@@ -112,12 +113,12 @@ abstract class Entitled
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . $this->_table)
-                ->where($this->_fpk . ' = ?', $id);
+            $select = $zdb->select($this->_table);
+            $select->where($this->_fpk . ' = ' . $id);
 
-            $result = $select->query();
-            $this->_loadFromRS($result->fetch());
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            $this->_loadFromRS($result);
 
             return true;
         } catch (\Exception $e) {
@@ -125,10 +126,6 @@ abstract class Entitled
                 'Cannot load ' . $this->getType()  . ' from id `' . $id . '` | ' .
                 $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -164,26 +161,44 @@ abstract class Entitled
 
         try {
             //first, we drop all values
-            $zdb->db->delete(PREFIX_DB . $this->_table);
+            $delete = $zdb->delete($this->_table);
+            $zdb->execute($delete);
 
-            $stmt = $zdb->db->prepare(
-                'INSERT INTO ' . PREFIX_DB . $this->_table .
-                ' (' . implode(',', $class::$fields) . ') ' .
-                'VALUES(:id, :libelle, :third)'
-            );
+            $values = array();
+            $i = 0;
+            foreach ( $class::$fields as $f ) {
+                $v = null;
+                if ( $i === 0 ) {
+                    $v = ':id';
+                } else if ( $v === 1 ) {
+                    $v = ':libelle';
+                } else if ( $i === 2 ) {
+                    $v = ':third';
+                }
+                $values[$f] = $v;
+                $i++;
+            }
 
+            $insert = $zdb->insert($this->_table);
+            $insert->values($values);
+            $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
+
+            $fnames = array_keys($values);
             foreach ( $class::$defaults as $d ) {
-                $stmt->bindParam(':id', $d['id']);
-                $stmt->bindParam(':libelle', $d['libelle']);
-
                 $val = null;
                 if ( isset($d['priority']) ) {
                     $val = $d['priority'];
                 } else {
                     $val = $d['extension'];
                 }
-                $stmt->bindParam(':third', $val, \PDO::PARAM_INT);
-                $stmt->execute();
+
+                $stmt->execute(
+                    array(
+                        $fnames[0]  => $d['id'],
+                        $fnames[1]  => $d['libelle'],
+                        $fnames[2]  => $val
+                    )
+                );
             }
 
             Analog::log(
@@ -216,7 +231,7 @@ abstract class Entitled
         $list = array();
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $select = $zdb->select($this->_table);
             $fields = array($this->_fpk, $this->_flabel);
             if ( $this->order_field !== false
                 && $this->order_field !== $this->_fpk
@@ -224,27 +239,28 @@ abstract class Entitled
             ) {
                 $fields[] = $this->order_field;
             }
-            $select->distinct()->from(
-                PREFIX_DB . $this->_table,
-                $fields
-            );
+            $select->quantifier('DISTINCT');
+            $select->columns($fields);
+
             if ( $this->order_field !== false ) {
                 $select->order($this->order_field, $this->_fpk);
             }
             if ( $extent !== null ) {
                 if ( $extent === true ) {
-                    $select->where($this->_fthird . ' = ?', $extent);
+                    $select->where(array($this->_fthird => new Expression('true')));
                 } else if ( $extent === false ) {
-                    if ( TYPE_DB === 'sqlite' ) {
-                        $select->where($this->_fthird . ' = 0');
+                    if ( TYPE_DB === 'sqlite' ) {               
+                        //TODO: is that still required with ZF2? 
+                        $select->where(array($this->_fthird => 0));
                     } else {
-                        $select->where($this->_fthird . ' = false');
+                        $select->where(array($this->_fthird => new Expression('false')));
                     }
                 }
             }
 
-            $result = $select->query()->fetchAll();
-            foreach ( $result as $r ) {
+            $results = $zdb->execute($select);
+
+            foreach ( $results as $r ) {
                 $fpk = $this->_fpk;
                 $flabel = $this->_flabel;
                 $list[$r->$fpk] = _T($r->$flabel);
@@ -255,34 +271,29 @@ abstract class Entitled
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            Analog::log(
-                'Query was: ' . $select->__toString(),
-                Analog::DEBUG
-            );
             return false;
         }
     }
 
     /**
-    * Complete list
-    *
-    * @return array of all objects if succeed, false otherwise
-    */
+     * Complete list
+     *
+     * @return array of all objects if succeed, false otherwise
+     */
     public function getCompleteList()
     {
         global $zdb;
         $list = array();
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . $this->_table);
+            $select = $zdb->select($this->_table);
             if ( $this->order_field !== false ) {
                 $select->order(array($this->order_field, $this->_fpk));
             }
 
-            $res = $select->query()->fetchAll();
+            $results = $zdb->execute($select);
 
-            if ( count($res) == 0 ) {
+            if ( $results->count() == 0 ) {
                 Analog::log(
                     'No entries (' . $this->getType()  . ') defined in database.',
                     Analog::INFO
@@ -292,7 +303,7 @@ abstract class Entitled
                 $flabel = $this->_flabel;
                 $fprio = $this->_fthird;
 
-                foreach ( $res as $r ) {
+                foreach ( $results as $r ) {
                     $list[$r->$pk] = array(
                         'name'  => _T($r->$flabel),
                         'extra' => $r->$fprio
@@ -306,21 +317,17 @@ abstract class Entitled
                 ') | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
-            );
             return false;
         }
     }
 
     /**
-    * Get a entry
-    *
-    * @param integer $id Entry ID
-    *
-    * @return mixed|false Row if succeed ; false: no such id
-    */
+     * Get a entry
+     *
+     * @param integer $id Entry ID
+     *
+     * @return mixed|false Row if succeed ; false: no such id
+     */
     public function get($id)
     {
 
@@ -332,11 +339,11 @@ abstract class Entitled
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(array(PREFIX_DB . $this->_table));
+            $select = $zdb->select($this->_table);
             $select->where($this->_fpk . '=' . $id);
 
-            $result = $select->query()->fetch();
+            $results = $zdb->execute($select);
+            $result = $results->current();
 
             if ( !$result ) {
                 $this->_errors[] = _T("- Label does not exist");
@@ -349,23 +356,19 @@ abstract class Entitled
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
-            );
             return false;
         }
     }
 
     /**
-      * Get a label
-      *
-      * @param integer $id         Id
-      * @param boolean $translated Do we want translated or original label?
-      *                            Defaults to true.
-      *
-      * @return string
-      */
+     * Get a label
+     *
+     * @param integer $id         Id
+     * @param boolean $translated Do we want translated or original label?
+     *                            Defaults to true.
+     *
+     * @return string
+     */
     public function getLabel($id, $translated = true)
     {
         $res = $this->get($id);
@@ -389,10 +392,18 @@ abstract class Entitled
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . $this->_table, $this->_fpk)
-                ->where($this->_flabel . ' = ?', $label);
-            return $result = $select->query()->fetchColumn();
+            $pk = $this->_fpk;
+            $select = $zdb->select($this->_table);
+            $select->columns(array($pk))
+                ->where(array($this->_flabel => $label));
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            if ( $result ) {
+                return $result->$pk;
+            } else {
+                return false;
+            }
         } catch (\Exception $e) {
             Analog::log(
                 'Unable to retrieve ' . $this->getType()  . ' from label `' .
@@ -417,7 +428,7 @@ abstract class Entitled
         global $zdb;
 
         // Avoid duplicates.
-        $ret = $this->getidByLabel($label);
+        $ret = $this->getIdByLabel($label);
 
         if ( $ret !== false ) {
             Analog::log(
@@ -433,21 +444,28 @@ abstract class Entitled
                 $this->_fthird  => $extra
             );
 
-            $ret = $zdb->db->insert(
-                PREFIX_DB . $this->_table,
-                $values
-            );
+            $insert = $zdb->insert($this->_table);
+            $insert->values($values);
 
-            if ( $ret >  0) {
+            $ret = $zdb->execute($insert);
+
+            if ( $ret->count() >  0) {
                 Analog::log(
                     'New ' . $this->getType() .' `' . $label .
                     '` added successfully.',
                     Analog::INFO
                 );
-                return $zdb->db->lastInsertId(
-                    PREFIX_DB . $this->_table,
-                    'id'
-                );
+
+                if ( $zdb->isPostgres() ) {
+                    return $zdb->driver->getLastGeneratedValue(
+                        PREFIX_DB . $this->_table . '_id_seq'
+                    );
+                } else {
+                    return $zdb->driver->getLastGeneratedValue();
+                }
+
+
+                return $zdb->driver->getLastGeneratedValue();
             } else {
                 throw new \Exception('New ' . $this->getType() .' not added.');
             }
@@ -499,11 +517,11 @@ abstract class Entitled
                 $field => $value
             );
 
-            $zdb->db->update(
-                PREFIX_DB . $this->_table,
-                $values,
-                $this->_fpk . ' = ' . $id
-            );
+            $update = $zdb->update($this->_table);
+            $update->set($values);
+            $update->where($this->_fpk . ' = ' . $id);
+
+            $zdb->execute($update);
 
             Analog::log(
                 $this->getType() . ' ' . $id . ' updated successfully.',
@@ -544,10 +562,11 @@ abstract class Entitled
         }
 
         try {
-            $zdb->db->delete(
-                PREFIX_DB . $this->_table,
-                $this->_fpk . ' = ' . $id
-            );
+            $delete = $zdb->delete($this->_table);
+            $delete->where($this->_fpk . ' = ' . $id);
+
+            $zdb->execute($delete);
+
             Analog::log(
                 $this->getType() . ' ' . $id . ' deleted successfully.',
                 Analog::INFO
@@ -576,10 +595,13 @@ abstract class Entitled
 
         // Check if it's used.
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . $this->_used)
-                ->where($this->_fpk . ' = ?', $id);
-            if ( $select->query()->fetch() !== false ) {
+            $select = $zdb->select($this->_used);
+            $select->where($this->_fpk . ' = ' . $id);
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+
+            if ( $result !== false ) {
                 return true;
             } else {
                 return false;

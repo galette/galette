@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012-2013 The Galette Team
+ * Copyright © 2012-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2013 The Galette Team
+ * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -48,7 +48,7 @@ use Galette\Entity\DynamicFields as DynamicFields;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2013 The Galette Team
+ * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -97,12 +97,11 @@ abstract class DynamicFieldType
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . self::TABLE
-            )->where('field_id = ?', $this->id);
-            $sql = $select->__toString();
-            $result = $select->query()->fetch();
+            $select = $zdb->select(self::TABLE);
+            $select->where('field_id = ' . $this->id);
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
 
             if ($result !== false) {
                 $this->name = $result->field_name;
@@ -136,14 +135,17 @@ abstract class DynamicFieldType
         global $zdb;
 
         try {
-            $val_select = new \Zend_Db_Select($zdb->db);
+            $val_select = $zdb->select(
+                DynamicFields::getFixedValuesTableName($this->id)
+            );
 
-            $val_select->from(
-                DynamicFields::getFixedValuesTableName($this->id),
-                'val'
+            $val_select->columns(
+                array(
+                    'val'
+                )
             )->order('id');
 
-            $results = $val_select->query()->fetchAll();
+            $results = $zdb->execute($val_select);
             $this->values = array();
             if ( $results ) {
                 foreach ( $results as $val ) {
@@ -154,10 +156,6 @@ abstract class DynamicFieldType
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $val_select->__toString() . ' ' . $e->__toString(),
-                Analog::INFO
             );
         }
     }

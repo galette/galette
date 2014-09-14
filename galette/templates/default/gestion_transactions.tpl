@@ -1,4 +1,12 @@
         <form action="gestion_transactions.php" method="get" id="filtre">
+        <div id="listfilter">
+            <label for="start_date_filter">{_T string="Show transactions since"}</label>&nbsp;
+            <input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$transactions->start_date_filter}"/>
+            <label for="end_date_filter">{_T string="until"}</label>&nbsp;
+            <input type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$transactions->end_date_filter}"/>
+            <input type="submit" class="inline" value="{_T string="Filter"}"/>
+            <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
+        </div>
         <table class="infoline">
             <tr>
                 <td class="left nowrap">
@@ -149,6 +157,15 @@
                 $('#show_legend').click(function(){
                     $('#legende').dialog('open');
                     return false;
+                });
+
+                $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
+                $('#start_date_filter, #end_date_filter').datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    showOn: 'button',
+                    buttonImage: '{$template_subdir}images/calendar.png',
+                    buttonImageOnly: true
                 });
             });
         </script>

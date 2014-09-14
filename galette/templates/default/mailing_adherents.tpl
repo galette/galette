@@ -95,14 +95,14 @@
             {if $mailing->html}
                     {$mailing->message}
             {else}
-                        <pre>{$mailing->message}</pre>
+                        <pre>{$mailing->wrapped_message}</pre>
             {/if}
                     </p>
                 </div>
                 <div>
                     <p>
                         <input type="submit" name="mailing_reset" class="button" id="btnback" value="{_T string="Modifiy mailing"}"/>
-                        <input type="submit" name="mailing_confirm" value="{_T string="Send"}"{if $GALETTE_MODE eq 'DEMO'} class="disabled" disabled="disabled"{/if}/>
+                        <input type="submit" name="mailing_confirm" id="btnsend" value="{_T string="Send"}"{if $GALETTE_MODE eq 'DEMO'} class="disabled" disabled="disabled"{/if}/>
                         <input type="submit" id="btncancel" name="mailing_cancel" value="{_T string="Cancel mailing"}"/>
                         <input type="hidden" name="mailing_objet" value="{$mailing->subject}"/>
                         <input type="hidden" name="mailing_corps" value="{$mailing->message|escape}"/>

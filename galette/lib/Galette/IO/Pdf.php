@@ -10,7 +10,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2013 The Galette Team
+ * Copyright © 2007-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -32,7 +32,7 @@
  *
  * @author    John Perr <johnperr@abul.org>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2013 The Galette Team
+ * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -63,7 +63,7 @@ require_once GALETTE_TCPDF_PATH . '/tcpdf.php';
  * @abstract  Class for expanding TCPDF.
  * @author    John Perr <johnperr@abul.org>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2013 The Galette Team
+ * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-21
@@ -124,29 +124,28 @@ class Pdf extends \TCPDF
     }
 
     /**
-    * Destructeur de la classe PDF
-    *
-    */
+     * Destructor
+     */
     public function __destruct()
     {
         parent::__destruct();
     }
 
     /**
-    * This method is automatically called in case of fatal error;
-    * it simply outputs the message and halts the execution.
-    * An inherited class may override it to customize the error
-    * handling but should always halt the script, or the resulting
-    * document would probably be invalid.
-    * 2004-06-11 :: Nicola Asuni : changed bold tag with strong
-    * 2007-07-21 :: John Perr : changed function to return error to session
-    *
-    * @param string $msg The error message
-    *
-    * @return void
-    * @access public
-    * @since 1.0
-    */
+     * This method is automatically called in case of fatal error;
+     * it simply outputs the message and halts the execution.
+     * An inherited class may override it to customize the error
+     * handling but should always halt the script, or the resulting
+     * document would probably be invalid.
+     * 2004-06-11 :: Nicola Asuni : changed bold tag with strong
+     * 2007-07-21 :: John Perr : changed function to return error to session
+     *
+     * @param string $msg The error message
+     *
+     * @return void
+     * @access public
+     * @since 1.0
+     */
     public function Error($msg)
     {
         global $session;
@@ -162,15 +161,13 @@ class Pdf extends \TCPDF
     }
 
     /**
-    * Fonction de conversion d'une couleur au format HTML
-    * #RRVVBB en un tableau de 3 valeurs comprises dans
-    * l'interval [0;255]
-    *
-    * @param string $hex6 chaine de 7 caratères #RRVVBB
-    *
-    * @return tableau de 3 valeur R, G et B comprises entre 0 et 255
-    * @access public
-    */
+     * Converts color from HTML format #RRVVBB
+     * to RGB 3 colors array.
+     *
+     *  @param string $hex6 7 chars string #RRVVBB
+     *
+     * @return array
+     */
     public function colorHex2Dec($hex6)
     {
         $dec = array(
@@ -183,14 +180,14 @@ class Pdf extends \TCPDF
 
     /** FIXME: is this function used somewhere? */
     /**
-    * Extract info from a GIF file
-    * (In fact: converts gif image to png and feeds it to _parsepng)
-    *
-    * @param string $file path to the gif file
-    *
-    * @return void
-    * @access protected
-    */
+     * Extract info from a GIF file
+     * (In fact: converts gif image to png and feeds it to _parsepng)
+     *
+     * @param string $file path to the gif file
+     *
+     * @return void
+     * @access protected
+     */
     protected function parsegif($file)
     {
         $a=GetImageSize($file);

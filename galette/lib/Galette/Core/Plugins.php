@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2013 The Galette Team
+ * Copyright © 2009-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -47,7 +47,7 @@ use Galette\Common\ClassLoader;
  * @name      Plugins
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7 - 2009-03-09
@@ -523,9 +523,27 @@ class Plugins
     }
 
     /**
+     * For each module, return the adh_batch_action.tpl full path, if present.
+     *
+     * @return array of adherents batch actions to include on members list
+     * all modules
+     */
+    public function getTplAdhBatchActions()
+    {
+        $_actions = array();
+        foreach ( $this->modules as $key=>$module ) {
+            $actions_path = $this->getTemplatesPath($key) . '/adh_batch_action.tpl';
+            if ( file_exists($actions_path) ) {
+                $_actions[] = $actions_path;
+            }
+        }
+        return $_actions;
+    }
+
+    /**
      * For each module, return the adh_fiche_action.tpl full path, if present.
      *
-     * @return array of adherent actions to include on membre detailled view for
+     * @return array of adherent actions to include on member detailled view for
      * all modules
      */
     public function getTplAdhDetailledActions()
@@ -585,7 +603,7 @@ class Plugins
     public function needsDatabase($id)
     {
         if ( isset($this->modules[$id]) ) {
-            $d = $this->modules[$id]['root'] . '/sql/';
+            $d = $this->modules[$id]['root'] . '/scripts/';
             if ( file_exists($d) ) {
                 return true;
             } else {

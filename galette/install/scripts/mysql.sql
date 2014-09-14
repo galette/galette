@@ -79,7 +79,7 @@ CREATE TABLE galette_transactions (
 DROP TABLE IF EXISTS galette_statuts;
 CREATE TABLE galette_statuts (
   id_statut int(10) unsigned NOT NULL auto_increment,
-  libelle_statut varchar(20) NOT NULL default '',
+  libelle_statut varchar(100) NOT NULL default '',
   priorite_statut tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (id_statut)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -95,7 +95,7 @@ CREATE TABLE galette_titles (
 DROP TABLE IF EXISTS galette_types_cotisation;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis int(10) unsigned NOT NULL auto_increment,
-  libelle_type_cotis varchar(30) NOT NULL default '',
+  libelle_type_cotis varchar(100) NOT NULL default '',
   cotis_extension tinyint(1) NOT NULL default 0,
   PRIMARY KEY  (id_type_cotis)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -113,7 +113,7 @@ DROP TABLE IF EXISTS galette_logs;
 CREATE TABLE galette_logs (
   id_log int(10) unsigned NOT NULL auto_increment,
   date_log datetime NOT NULL,
-  ip_log varchar(30) NOT NULL default '',
+  ip_log varchar(46) NOT NULL default '',
   adh_log varchar(41) NOT NULL default '',
   text_log text,
   action_log text,
@@ -164,11 +164,11 @@ CREATE TABLE galette_pictures (
 -- Table for dynamic translation of strings;
 DROP TABLE IF EXISTS galette_l10n;
 CREATE TABLE galette_l10n (
-    text_orig varchar(40) NOT NULL,
+    text_orig varchar(100) NOT NULL,
     text_locale varchar(15) NOT NULL,
     text_nref int(10) NOT NULL default '1',
     text_trans varchar(100) NOT NULL default '',
-    PRIMARY KEY (text_orig(30), text_locale(5))
+    PRIMARY KEY (text_orig, text_locale)
 ) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- new table for temporary passwords  2006-02-18;
@@ -305,6 +305,6 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-INSERT INTO galette_database(version) VALUES(0.704);
+INSERT INTO galette_database(version) VALUES(0.800);
 
 SET FOREIGN_KEY_CHECKS=1;

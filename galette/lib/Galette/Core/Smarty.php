@@ -6,7 +6,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012-2013 The Galette Team
+ * Copyright © 2012-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -27,7 +27,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2013 The Galette Team
+ * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -43,7 +43,7 @@ namespace Galette\Core;
  * @name      Smarty
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2013 The Galette Team
+ * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://www.smarty.net/docs/en/installing.smarty.extended.tpl
  * @since     Available since 0.7.1dev - 2012-05-05
@@ -88,6 +88,7 @@ class Smarty extends \SmartyBC
         $this->assign('tpl', $this);
         $this->assign('headers', $plugins->getTplHeaders());
         $this->assign('plugin_actions', $plugins->getTplAdhActions());
+        $this->assign('plugin_batch_actions', $plugins->getTplAdhBatchActions());
         $this->assign('plugin_detailled_actions', $plugins->getTplAdhDetailledActions());
         $this->assign('jquery_dir', GALETTE_BASE_PATH . 'includes/jquery/');
         $this->assign('jquery_version', JQUERY_VERSION);
@@ -98,8 +99,6 @@ class Smarty extends \SmartyBC
         $this->assign('scripts_dir', GALETTE_BASE_PATH . 'includes/');
         $this->assign('PAGENAME', basename($_SERVER['SCRIPT_NAME']));
         $this->assign('galette_base_path', GALETTE_BASE_PATH);
-        /** FIXME: on certains pages PHP notice that GALETTE_VERSION does not exists
-        although it appears correctly*/
         $this->assign('GALETTE_VERSION', GALETTE_VERSION);
         $this->assign('GALETTE_MODE', GALETTE_MODE);
         /** galette_lang should be removed and languages used instead */

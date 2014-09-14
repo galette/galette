@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013 The Galette Team
+ * Copyright © 2013-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,9 @@
 
 namespace Galette\Entity;
 
+use Galette\Core;
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 
 /**
  * PDF Model
@@ -46,7 +48,7 @@ use Analog\Analog as Analog;
  * @name      PdfModel
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-19
@@ -106,7 +108,8 @@ abstract class PdfModel
             'asso_name'         => '/{ASSO_NAME}/',
             'asso_slogan'       => '/{ASSO_SLOGAN}/',
             'asso_address'      => '/{ASSO_ADDRESS}/',
-            'asso_website'      => '/{ASSO_WEBSITE}/'
+            'asso_website'      => '/{ASSO_WEBSITE}/',
+            'asso_logo'         => '/{ASSO_LOGO}/'
         );
 
         $address = $preferences->getPostalAdress();
@@ -117,11 +120,19 @@ abstract class PdfModel
                 $preferences->pref_website . '</a>';
         }
 
+        $logo = new Core\Logo();
+        $logo_elt = '<img' .
+            ' src="'    . $logo->getPath()          . '"' .
+            ' width="'  . $logo->getOptimalWidth()  . '"' .
+            ' height="' . $logo->getOptimalHeight() . '"' .
+            '/>';
+
         $this->_replaces = array(
             'asso_name'         => $preferences->pref_nom,
             'asso_slogan'       => $preferences->pref_slogan,
             'asso_address'      => $address,
-            'asso_website'      => $website
+            'asso_website'      => $website,
+            'asso_logo'         => $logo_elt
         );
     }
 
@@ -136,16 +147,16 @@ abstract class PdfModel
     protected function load($id, $preferences)
     {
         try {
-            $select = new \Zend_Db_Select($this->_zdb->db);
-            $select->limit(1)->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . ' = ?', $id);
+            $select = $this->_zdb->select(self::TABLE);
+            $select->limit(1)
+                ->where(self::PK . ' = ' . $id);
 
-            $res = $select->query()->fetchAll();
-            $this->loadFromRs($res[0], $preferences);
+            $results = $this->_zdb->execute($select);
+            $this->loadFromRs($results->current(), $preferences);
         } catch ( \Exception $e ) {
             Analog::log(
                 'An error occured loading model #' . $id . "Message:\n" .
-                $e->getMessage() . "\nQuery was:\n" . $select->__toString(),
+                $e->getMessage(),
                 Analog::ERROR
             );
         }
@@ -214,12 +225,12 @@ abstract class PdfModel
     {
         $title = $this->_title;
         if ( trim($title === '') ) {
-            $title = new \Zend_Db_Expr('NULL');
+            $title = new Expression('NULL');
         }
 
         $subtitle = $this->_subtitle;
         if ( trim($subtitle === '') ) {
-            $subtitle = new \Zend_Db_Expr('NULL');
+            $subtitle = new Expression('NULL');
         }
 
         $data = array(
@@ -234,18 +245,17 @@ abstract class PdfModel
 
         try {
             if ( $this->_id !== null ) {
-                $up = $this->_zdb->db->update(
-                    PREFIX_DB . self::TABLE,
-                    $data,
+                $update = $this->_zdb->update(self::TABLE);
+                $update->set($data)->where(
                     self::PK . '=' . $this->_id
                 );
+                $this->_zdb->execute($update);
             } else {
                 $data['model_name'] = $this->_name;
-                $add = $this->_zdb->db->insert(
-                    PREFIX_DB . self::TABLE,
-                    $data
-                );
-                if ( !$add > 0 ) {
+                $insert = $this->_zdb->insert(self::TABLE);
+                $insert->values($data);
+                $add = $this->_zdb->execute($insert);
+                if ( !$add->count() > 0 ) {
                     Analog::log('Not stored!', Analog::ERROR);
                     return false;
                 }

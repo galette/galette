@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013 The Galette Team
+ * Copyright © 2013-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,7 +46,7 @@ use \atoum;
  * @name      Db
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2013-02-05
@@ -90,31 +90,24 @@ class Db extends atoum
         $db = new \Galette\Core\Db($dsn);
 
         $is_pg = $db->isPostgres();
-        $zdb = $db->db;
         $type = $db->type_db;
 
         switch (TYPE_DB) {
         case 'pgsql':
             $this->boolean($is_pg)
                 ->isTrue();
-            $this->object($zdb)
-                ->IsInstanceOf('Zend_Db_Adapter_Pdo_Pgsql');
             $this->string($type)
                 ->isIdenticalTo(\Galette\Core\Db::PGSQL);
             break;
         case \Galette\Core\Db::MYSQL:
             $this->boolean($is_pg)
                 ->isFalse();
-            $this->object($zdb)
-                ->IsInstanceOf('Zend_Db_Adapter_Pdo_Mysql');
             $this->string($type)
                 ->isIdenticalTo(\Galette\Core\Db::MYSQL);
             break;
         case \galette\Core\Db::SQLITE:
             $this->boolean($is_pg)
                 ->isFalse();
-            $this->object($zdb)
-                ->IsInstanceOf('Zend_Db_Adapter_Pdo_Sqlite');
             $this->string($type)
                 ->isIdenticalTo(\Galette\Core\Db::SQLITE);
             break;
@@ -230,31 +223,60 @@ class Db extends atoum
      */
     public function testGetters()
     {
-        $db = $this->_db->db;
-
         switch(TYPE_DB) {
         case 'pgsql':
-            $this->object($db)
-                ->IsInstanceOf('Zend_Db_Adapter_Pdo_Pgsql');
             $type = $this->_db->type_db;
             $this->string($type)
                 ->isIdenticalTo('pgsql');
             break;
         case 'mysql':
-            $this->object($db)
-                ->IsInstanceOf('Zend_Db_Adapter_Pdo_Mysql');
             $type = $this->_db->type_db;
             $this->string($type)
                 ->isIdenticalTo('mysql');
             break;
         case 'sqlite':
-            $this->object($db)
-                ->IsInstanceOf('Zend_Db_Adapter_Pdo_Sqlite');
             $type = $this->_db->type_db;
             $this->string($type)
                 ->isIdenticalTo('sqlite');
             break;
         }
+
+        $db = $this->_db->db;
+        $this->object($db)->IsInstanceOf('Zend\Db\Adapter\Adapter');
+
+        $sql = $this->_db->sql;
+        $this->object($sql)->IsInstanceOf('Zend\Db\Sql\Sql');
+
+        $connection = $this->_db->connection;
+        $this->object($connection)
+            ->IsInstanceOf('Zend\Db\Adapter\Driver\Pdo\Connection');
+
+        $driver = $this->_db->driver;
+        $this->object($driver)
+            ->IsInstanceOf('Zend\Db\Adapter\Driver\Pdo\Pdo');
+    }
+
+    /**
+     * Test select
+     *
+     * @return void
+     */
+    public function testSelect()
+    {
+        $select = $this->_db->select('preferences', 'p');
+        $select->where(array('p.nom_pref' => 'pref_nom'));
+        $results = $this->_db->execute($select);
+        $query = $this->_db->query_string;
+
+        $expected = 'SELECT "p".* FROM "galette_preferences" AS "p" ' .
+            'WHERE "p"."nom_pref" = \'pref_nom\'';
+
+        if ( TYPE_DB === 'mysql' ) {
+            $expected = 'SELECT `p`.* FROM `galette_preferences` AS `p` ' .
+                'WHERE `p`.`nom_pref` = \'pref_nom\'';
+        }
+
+        $this->string($query)->isIdenticalTo($expected);
     }
 
     /**
@@ -264,9 +286,37 @@ class Db extends atoum
      */
     public function testDbVersion()
     {
-        $res = $this->_db->checkDbVersion();
+        $db_version = $this->_db->getDbVersion();
+        $this->variable($db_version)->isIdenticalTo(GALETTE_DB_VERSION);
 
+        $res = $this->_db->checkDbVersion();
         $this->boolean($res)->isTrue();
+    }
+
+    /**
+     * Test get columns method
+     *
+     * @return void
+     */
+    public function testGetColumns()
+    {
+        $cols = $this->_db->getColumns('preferences');
+
+        $this->array($cols)->hasSize(3);
+
+        $columns = array();
+        foreach ( $cols as $c ) {
+            $columns[] = $c->getName();
+        }
+
+        $this->array($columns)
+            ->containsValues(
+                array(
+                    'id_pref',
+                    'nom_pref',
+                    'val_pref'
+                )
+            );
     }
 
     /**
@@ -319,56 +369,6 @@ class Db extends atoum
         $this->array($tables)
             ->hasSize(24)
             ->isIdenticalTo($expected);
-    }
-
-    /**
-     * Tests plugins load
-     *
-     * @return void
-     */
-    public function testGetUpgradeScripts()
-    {
-        $update_scripts = \Galette\Core\Db::getUpdateScripts(
-            GALETTE_BASE_PATH . '/install',
-            'pgsql',
-            '0.6'
-        );
-
-        $knowns = array(
-            '0.60' => 'upgrade-to-0.60-pgsql.sql',
-            '0.61' => 'upgrade-to-0.61-pgsql.sql',
-            '0.62' => 'upgrade-to-0.62-pgsql.sql',
-            '0.63' => 'upgrade-to-0.63-pgsql.sql',
-            '0.70' => 'upgrade-to-0.70-pgsql.sql',
-            '0.71' => 'upgrade-to-0.71-pgsql.sql',
-            '0.74' => 'upgrade-to-0.74-pgsql.sql',
-            '0.75' => 'upgrade-to-0.75-pgsql.sql',
-            '0.76' => 'upgrade-to-0.76-pgsql.sql'
-        );
-
-        //as of 0.7.6, we got 9 update scripts total
-        $this->array($update_scripts)
-            ->hasSize(9)
-            ->isIdenticalTo($knowns);
-
-        $update_scripts = \Galette\Core\Db::getUpdateScripts(
-            GALETTE_BASE_PATH . '/install',
-            'pgsql',
-            '0.7'
-        );
-
-        //if we're from 0.7.0, there are only 5 update scripts left
-        $this->array($update_scripts)
-            ->hasSize(5);
-
-        $update_scripts = \Galette\Core\Db::getUpdateScripts(
-            GALETTE_BASE_PATH . '/install'
-        );
-
-        //without specifying database nor version, we got 9 update scripts total
-        $this->array(array_values($update_scripts))
-            ->hasSize(9)
-            ->isEqualTo(array_keys($knowns));
     }
 
     /**

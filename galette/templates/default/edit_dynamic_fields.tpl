@@ -3,7 +3,7 @@
     <legend class="ui-state-active ui-corner-top">{_T string="Additionnal fields:"}</legend>
     <div>
 {foreach from=$dynamic_fields item=field}
-{if $field.field_perm ne 1 || $login->isAdmin() || $login->isStaff()}
+{if $field.field_perm eq 0 || $login->isAdmin() || $login->isStaff() && $field.field_perm eq 2}
     {if $field.field_type eq 0}
         <div class="separator">{$field.field_name|escape}</div>
     {else}
@@ -62,6 +62,18 @@
             {if $data.dyn[$field.field_id][$smarty.section.fieldLoop.index] eq 1} checked="checked"{/if}
                 {if isset($disabled.dyn[$field.field_id])} {$disabled.dyn[$field.field_id]}{/if}
                 {if $field.field_required eq 1} required{/if}
+            />
+        {elseif $field.field_type eq 6}
+            {_T string="new"}: <input type="file" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}_new"
+                {if isset($disabled.dyn[$field.field_id])} {$disabled.dyn[$field.field_id]}{/if}
+                {if $field.field_required eq 1} required{/if}
+            />
+            {_T string="current"}: <input type="text" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}_current" disabled
+                value="{if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}{/if}"
+            />
+            {_T string="delete"}: <input type="checkbox" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}_delete"
+                {if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index]) && !$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}disabled{/if}
+                onclick="this.form.info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}_new.disabled = this.checked;"
             />
         {/if}
     {/section}

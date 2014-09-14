@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013 The Galette Team
+ * Copyright © 2013-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -81,14 +81,14 @@ if ( $login->isAdmin() || $login->isStaff() ) {
             || (is_array($export_fields) && in_array($k, $export_fields))
         ) {
             if ( $visibles[$k] == FieldsConfig::VISIBLE ) {
-                $fields[] = 'a.' . $k;
+                $fields[] = $k;
                 $labels[] = $f['label'];
             } else if ( ($login->isAdmin()
                 || $login->isStaff()
                 || $login->isSuperAdmin())
                 && $visibles[$k] == FieldsConfig::ADMIN
             ) {
-                $fields[] = 'a.' . $k;
+                $fields[] = $k;
                 $labels[] = $f['label'];
             }
         }

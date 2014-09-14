@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013 The Galette Team
+ * Copyright © 2013-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,7 +46,7 @@ use Analog\Analog as Analog;
  * @name      Title
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-04
@@ -90,18 +90,19 @@ class Title
     {
         global $zdb;
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->limit(1)->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . ' = ?', $id);
+            $select = $zdb->select(self::TABLE);
+            $select->limit(1)->where(self::PK . ' = ' . $id);
 
-            $res = $select->query()->fetchAll();
+            $results = $zdb->execute($select);
+            $res = $results->current();
+
             $this->_id = $id;
-            $this->_short = $res[0]->short_label;
-            $this->_long = $res[0]->long_label;
+            $this->_short = $res->short_label;
+            $this->_long = $res->long_label;
         } catch ( \Exception $e ) {
             Analog::log(
                 'An error occured loading title #' . $id . "Message:\n" .
-                $e->getMessage() . "\nQuery was:\n" . $select->__toString(),
+                $e->getMessage(),
                 Analog::ERROR
             );
         }
@@ -142,17 +143,16 @@ class Title
         );
         try {
             if ( $this->_id !== null && $this->_id > 0 ) {
-                $zdb->db->update(
-                    PREFIX_DB . self::TABLE,
-                    $data,
+                $update = $zdb->update(self::TABLE);
+                $update->set($data)->where(
                     self::PK . '=' . $this->_id
                 );
+                $zdb->execute($update);
             } else {
-                $add = $zdb->db->insert(
-                    PREFIX_DB . self::TABLE,
-                    $data
-                );
-                if ( !$add > 0 ) {
+                $insert = $zdb->insert(self::TABLE);
+                $insert->values($data);
+                $add = $zdb->execute($insert);
+                if ( !$add->count() > 0 ) {
                     Analog::log('Not stored!', Analog::ERROR);
                     return false;
                 }
@@ -183,10 +183,11 @@ class Title
         }
 
         try {
-            $zdb->db->delete(
-                PREFIX_DB . self::TABLE,
+            $delete = $zdb->delete(self::TABLE);
+            $delete->where(
                 self::PK . ' = ' . $id
             );
+            $zdb->execute($delete);
             Analog::log(
                 'Title #' . $id . ' (' . $this->_short
                 . ') deleted successfully.',

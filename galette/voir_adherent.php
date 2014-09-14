@@ -11,7 +11,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2003-2013 The Galette Team
+ * Copyright © 2003-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -33,7 +33,7 @@
  *
  * @author    Frédéric Jacquot <unknown@unknwown.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2003-2013 The Galette Team
+ * @copyright 2003-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -129,19 +129,19 @@ if ( isset($session['filters']['members']) ) {
 if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
     $m = new Members();
     $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
-    //print_r($ids);
+    $ids = $ids->toArray();
     foreach ( $ids as $k=>$m ) {
-        if ( $m->id_adh == $member->id ) {
+        if ( $m['id_adh'] == $member->id ) {
             $navigate = array(
-                'cur'  => $m->id_adh,
+                'cur'  => $m['id_adh'],
                 'count' => count($ids),
                 'pos' => $k+1
             );
             if ( $k > 0 ) {
-                $navigate['prev'] = $ids[$k-1]->id_adh;
+                $navigate['prev'] = $ids[$k-1]['id_adh'];
             }
             if ( $k < count($ids)-1 ) {
-                $navigate['next'] = $ids[$k+1]->id_adh;
+                $navigate['next'] = $ids[$k+1]['id_adh'];
             }
             break;
         }

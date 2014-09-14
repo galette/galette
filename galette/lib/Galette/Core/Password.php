@@ -8,7 +8,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2003-2013 The Galette Team
+ * Copyright © 2003-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -31,7 +31,7 @@
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2003-2013 The Galette Team
+ * @copyright 2003-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -41,6 +41,7 @@
 namespace Galette\Core;
 
 use Analog\Analog as Analog;
+use Zend\Db\Adapter\Exception as AdapterException;
 use Galette\Entity\Adherent;
 
 /**
@@ -52,7 +53,7 @@ use Galette\Entity\Adherent;
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-06-16
@@ -119,13 +120,10 @@ class Password
         global $zdb;
 
         try {
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::TABLE,
-                $zdb->db->quoteInto(
-                    self::PK . ' = ?',
-                    $id_adh
-                )
-            );
+            $delete = $zdb->delete(self::TABLE);
+            $delete->where(self::PK . ' = ' . $id_adh);
+
+            $del = $zdb->execute($delete);
             if ( $del ) {
                 Analog::log(
                     'Temporary passwords for `' . $id_adh . '` has been removed.',
@@ -133,7 +131,6 @@ class Password
                 );
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'An error has occured removing old tmppasswords ' .
                 $e->getMessage(),
@@ -168,7 +165,10 @@ class Password
                 'date_crea_tmp_passwd' => date('Y-m-d H:i:s')
             );
 
-            $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
+            $insert = $zdb->insert(self::TABLE);
+            $insert->values($values);
+
+            $add = $zdb->execute($insert);
             if ( $add ) {
                 Analog::log(
                     'New passwords temporary set for `' . $id_adh . '`.',
@@ -180,7 +180,7 @@ class Password
             } else {
                 return false;
             }
-        } catch (\Zend_Db_Adapter_Exception $e) {
+        } catch (AdapterException $e) {
             Analog::log(
                 'Unable to add add new password entry into database.' .
                 $e->getMessage(),
@@ -210,13 +210,12 @@ class Password
         $date->sub(new \DateInterval('PT24H'));
 
         try {
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::TABLE,
-                $zdb->db->quoteInto(
-                    'date_crea_tmp_passwd < ?',
-                    $date->format('Y-m-d H:i:s')
-                )
+            $delete = $zdb->delete(self::TABLE);
+            $delete->where->lessThan(
+                'date_crea_tmp_passwd',
+                $date->format('Y-m-d H:i:s')
             );
+            $del = $zdb->execute($delete);
             if ( $del ) {
                 Analog::log(
                     'Old Temporary passwords has been deleted.',
@@ -224,7 +223,6 @@ class Password
                 );
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'An error occured deleting expired temporary passwords. ' .
                 $e->getMessage(),
@@ -246,14 +244,17 @@ class Password
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . self::TABLE,
-                self::PK
-            )->where('tmp_passwd = ?', $hash);
-            return $select->query()->fetchColumn();
+            $select = $zdb->select(self::TABLE);
+            $select->columns(
+                array(self::PK)
+            )->where(array('tmp_passwd' => $hash));
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+
+            $pk = self::PK;
+            return $result->$pk;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'An error occured getting requested hash. ' . $e->getMessage(),
                 Analog::WARNING
@@ -274,13 +275,12 @@ class Password
         global $zdb;
 
         try {
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::TABLE,
-                $zdb->db->quoteInto(
-                    'tmp_passwd = ?',
-                    $hash
-                )
+            $delete = $zdb->delete(self::TABLE);
+            $delete->where(
+                array('tmp_passwd' => $hash)
             );
+
+            $del = $zdb->execute($delete);
             if ( $del ) {
                 Analog::log(
                     'Used hash has been successfully remove',
@@ -289,7 +289,6 @@ class Password
                 return true;
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'An error ocured attempting to delete used hash' .
                 $e->getMessage(),

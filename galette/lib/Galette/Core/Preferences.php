@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2013 The Galette Team
+ * Copyright © 2007-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2013 The Galette Team
+ * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -47,7 +47,7 @@ use Galette\Entity\Adherent as Adherent;
  * @name      Preferences
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2013 The Galette Team
+ * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-14
@@ -149,7 +149,8 @@ class Preferences
         'pref_linkedin' => '',
         'pref_mail_sign' => "{NAME}\r\n\r\n{WEBSITE}\r\n{GOOGLEPLUS}\r\n{FACEBOOK}\r\n{TWITTER}\r\n{LINKEDIN}\r\n{VIADEO}",
         /* New contribution script */
-        'pref_new_contrib_script' => ''
+        'pref_new_contrib_script' => '',
+        'pref_bool_wrap_mails' => true
     );
 
     /**
@@ -194,17 +195,21 @@ class Preferences
             }
         }
         if ( $proceed !== false ) {
-            $sql = 'INSERT INTO ' . PREFIX_DB . self::TABLE .
-                ' (nom_pref, val_pref) VALUES(:nom_pref, :val_pref)';
-
             try {
-                $stmt = $this->_zdb->db->prepare($sql);
+                $insert = $this->_zdb->insert(self::TABLE);
+                $insert->values(
+                    array(
+                        'nom_pref'  => ':nom_pref',
+                        'val_pref'  => ':val_pref'
+                    )
+                );
+                $stmt = $this->_zdb->sql->prepareStatementForSqlObject($insert);
 
                 foreach ( $params as $p ) {
                     $stmt->execute(
                         array(
-                            ':nom_pref' => $p['nom_pref'],
-                            ':val_pref' => $p['val_pref']
+                            'nom_pref' => $p['nom_pref'],
+                            'val_pref' => $p['val_pref']
                         )
                     );
                 }
@@ -233,7 +238,7 @@ class Preferences
         $this->_prefs = array();
 
         try {
-            $result = $this->_zdb->selectAll(PREFIX_DB . self::TABLE);
+            $result = $this->_zdb->selectAll(self::TABLE);
             foreach ( $result as $pref ) {
                 $this->_prefs[$pref->nom_pref] = $pref->val_pref;
             }
@@ -261,7 +266,8 @@ class Preferences
     {
         try {
             //first, we drop all values
-            $this->_zdb->db->delete(PREFIX_DB . self::TABLE);
+            $delete = $this->_zdb->delete(self::TABLE);
+            $this->_zdb->execute($delete);
 
             //we then replace default values with the ones user has selected
             $values = self::$_defaults;
@@ -270,15 +276,22 @@ class Preferences
             $values['pref_admin_pass'] = $adm_pass;
             $values['pref_card_year'] = date('Y');
 
-            $stmt = $this->_zdb->db->prepare(
-                'INSERT INTO ' . PREFIX_DB . self::TABLE .
-                ' (nom_pref, val_pref) VALUES(:nom_pref, :val_pref)'
+            $insert = $this->_zdb->insert(self::TABLE);
+            $insert->values(
+                array(
+                    'nom_pref'  => ':nom_pref',
+                    'val_pref'  => ':val_pref'
+                )
             );
+            $stmt = $this->_zdb->sql->prepareStatementForSqlObject($insert);
 
             foreach ( $values as $k=>$v ) {
-                $stmt->bindParam(':nom_pref', $k);
-                $stmt->bindParam(':val_pref', $v);
-                $stmt->execute();
+                $stmt->execute(
+                    array(
+                        'nom_pref' => $k,
+                        'val_pref' => $v
+                    )
+                );
             }
 
             Analog::log(
@@ -313,33 +326,44 @@ class Preferences
     public function store()
     {
         try {
-            $stmt = $this->_zdb->db->prepare(
-                'UPDATE ' . PREFIX_DB . self::TABLE . ' SET ' .
-                $this->_zdb->db->quoteIdentifier('val_pref') . ' =  :value' .
-                ' WHERE ' . $this->_zdb->db->quoteIdentifier('nom_pref') . ' = :name'
-            );
+            $this->_zdb->connection->beginTransaction();
+            $update = $this->_zdb->update(self::TABLE);
+            $update->set(
+                array(
+                    'val_pref'  => ':val_pref'
+                )
+            )->where->equalTo('nom_pref', ':nom_pref');
+
+            $stmt = $this->_zdb->sql->prepareStatementForSqlObject($update);
 
             foreach ( self::$_defaults as $k=>$v ) {
                 Analog::log('Storing ' . $k, Analog::DEBUG);
-                $stmt->bindValue(':value', $this->_prefs[$k], \PDO::PARAM_STR);
-                $stmt->bindValue(':name', $k, \PDO::PARAM_STR);
 
-                $stmt->execute();
+                /** Why where parameter is named where1 ?? */
+                $stmt->execute(
+                    array(
+                        'val_pref'  => $this->_prefs[$k],
+                        'where1'    => $k
+                    )
+                );
             }
+            $this->_zdb->connection->commit();
             Analog::log(
                 'Preferences were successfully stored into database.',
                 Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
-            /** TODO */
+            $this->_zdb->connection->rollBack();
+
+            $messages = array();
+            do {
+                $messages[] = $e->getMessage();
+            } while ($e = $e->getPrevious());
+
             Analog::log(
-                'Unable to store preferences | ' . $e->getMessage(),
+                'Unable to store preferences | ' . print_r($messages, true),
                 Analog::WARNING
-            );
-            Analog::log(
-                $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }

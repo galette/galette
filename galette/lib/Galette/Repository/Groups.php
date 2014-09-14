@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2013 The Galette Team
+ * Copyright © 2011-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2013 The Galette Team
+ * @copyright 2011-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,6 +38,7 @@
 namespace Galette\Repository;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 use Galette\Entity\Group as Group;
 use Galette\Entity\Adherent as Adherent;
 
@@ -48,7 +49,7 @@ use Galette\Entity\Adherent as Adherent;
  * @name      Groups
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2013 The Galette Team
+ * @copyright 2011-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-10-25
@@ -68,22 +69,18 @@ class Groups
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $select = $zdb->select(Group::TABLE);
             if ( $as_groups === false ) {
-                $select->from(
-                    PREFIX_DB . Group::TABLE,
+                $select->columns(
                     array(Group::PK, 'group_name')
-                );
-            } else {
-                 $select->from(
-                    PREFIX_DB . Group::TABLE
                 );
             }
             $groups = array();
-            $q = $select->__toString();
             $gpk = Group::PK;
-            $res = $select->query()->fetchAll();
-            foreach ( $res as $row ) {
+
+            $results = $zdb->execute($select);
+
+            foreach ( $results as $row ) {
                 if ( $as_groups === false ) {
                     $groups[$row->$gpk] = $row->group_name;
                 } else {
@@ -96,11 +93,6 @@ class Groups
                 'Cannot list groups (simple) | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
-                Analog::ERROR
-            );
-
         }
     }
 
@@ -109,19 +101,18 @@ class Groups
      *
      * @param boolean $full Return full list or root only
      *
-     * @return Zend_Db_RowSet
+     * @return Group[]
      */
     public function getList($full = true)
     {
         global $zdb, $login;
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                array('a' => PREFIX_DB . Group::TABLE)
-            )->joinLeft(
+            $select = $zdb->select(Group::TABLE, 'a');
+            $select->join(
                 array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
                 'a.' . Group::PK . '=b.' . Group::PK,
-                array('members' => new \Zend_Db_Expr('count(b.' . Group::PK . ')'))
+                array('members' => new Expression('count(b.' . Group::PK . ')')),
+                $select::JOIN_LEFT
             );
 
             if ( !$login->isAdmin() && !$login->isStaff() && $full === true ) {
@@ -129,7 +120,7 @@ class Groups
                     array('c' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
                     'a.' . Group::PK . '=c.' . Group::PK,
                     array()
-                )->where('c.' . Adherent::PK . ' = ?', $login->id);
+                )->where('c.' . Adherent::PK . ' = ' . $login->id);
             }
 
             if ( $full !== true ) {
@@ -143,8 +134,10 @@ class Groups
                 ->order('a.group_name ASC');
 
             $groups = array();
-            $res = $select->query()->fetchAll();
-            foreach ( $res as $row ) {
+
+            $results = $zdb->execute($select);
+
+            foreach ( $results as $row ) {
                 $groups[] = new Group($row);
             }
             return $groups;
@@ -152,10 +145,6 @@ class Groups
             Analog::log(
                 'Cannot list groups | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
-                Analog::ERROR
             );
         }
     }
@@ -189,25 +178,20 @@ class Groups
             $join_table = ($managed) ?
                 Group::GROUPSMANAGERS_TABLE :
                 Group::GROUPSUSERS_TABLE;
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                array(
-                    'a' => PREFIX_DB . Group::TABLE
-                )
-            )->join(
+
+            $select = $zdb->select(Group::TABLE, 'a');
+            $select->join(
                 array(
                     'b' => PREFIX_DB . $join_table
                 ),
                 'a.' . Group::PK . '=b.' . Group::PK,
                 array()
-            )->where('b.' . Adherent::PK . ' = ?', $id);
-            $result = $select->query()->fetchAll();
-            Analog::log(
-                'Exectued query: ' . $select->__toString(),
-                Analog::DEBUG
-            );
+            )->where(array('b.' . Adherent::PK => $id));
+
+            $results = $zdb->execute($select);
+
             $groups = array();
-            foreach ( $result as $r ) {
+            foreach ( $results as $r ) {
                 if ( $as_group === true ) {
                     $groups[] = new Group($r);
                 } else {
@@ -221,10 +205,6 @@ class Groups
                 'Cannot load member groups for id `' . $id . '` | ' .
                 $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -248,7 +228,7 @@ class Groups
         global $zdb;
         try {
             if ( $transaction === false) {
-                $zdb->db->beginTransaction();
+                $zdb->connection->beginTransaction();
             }
 
             $table = null;
@@ -259,10 +239,11 @@ class Groups
             }
 
             //first, remove current groups members
-            $del = $zdb->db->delete(
-                PREFIX_DB . $table,
+            $delete = $zdb->delete($table);
+            $delete->where(
                 Adherent::PK . ' = ' . $adh->id
             );
+            $zdb->execute($delete);
 
             $msg = null;
             if ( $manager === true ) {
@@ -277,18 +258,26 @@ class Groups
 
             //we proceed, if groups has been specified
             if ( is_array($groups) ) {
-                $stmt = $zdb->db->prepare(
-                    'INSERT INTO ' . PREFIX_DB . $table .
-                    ' (' . $zdb->db->quoteIdentifier(Group::PK) . ', ' .
-                    $zdb->db->quoteIdentifier(Adherent::PK) . ')' .
-                    ' VALUES(:id, ' . $adh->id . ')'
+                $insert = $zdb->insert($table);
+                $insert->values(
+                    array(
+                        Group::PK       => ':group',
+                        Adherent::PK    => ':adh'
+                    )
                 );
+                $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
                 foreach ( $groups as $group ) {
                     list($gid, $gname) = explode('|', $group);
-                    $stmt->bindValue(':id', $gid, \PDO::PARAM_INT);
 
-                    if ( $stmt->execute() ) {
+                    $result = $stmt->execute(
+                        array(
+                            Group::PK       => $gid,
+                            Adherent::PK    => $adh->id
+                        )
+                    );
+
+                    if ( $result ) {
                         $msg = 'Member `' . $adh->sname . '` attached to group `' .
                             $gname . '` (' . $gid . ')';
                         if ( $manager === true ) {
@@ -315,20 +304,23 @@ class Groups
             }
             if ( $transaction === false) {
                 //commit all changes
-                $zdb->db->commit();
+                $zdb->connection->commit();
             }
             return true;
         } catch (\Exception $e) {
             if ( $transaction === false) {
-                $zdb->db->rollBack();
+                $zdb->connection->rollBack();
             }
             $msg = 'Unable to add member `' . $adh->sname . '` (' . $adh->id .
                 ') to specified groups ' . print_r($groups, true);
             if ( $manager === true ) {
                 $msg .= ' as a manager';
             }
+            do {
+                $messages[] = $e->getMessage();
+            } while ($e = $e->getPrevious());
             Analog::log(
-                $msg . ' |' . $e->getMessage(),
+                $msg . ' |' . implode("\n", $messages),
                 Analog::ERROR
             );
             return false;
@@ -347,16 +339,18 @@ class Groups
         global $zdb;
         try {
             //first, remove current groups members
-            $del = $zdb->db->delete(
-                PREFIX_DB . Group::GROUPSUSERS_TABLE,
+            $del_qry = $zdb->delete(Group::GROUPSUSERS_TABLE);
+            $del_qry->where(
                 Adherent::PK . ' = ' . $id
             );
+            $zdb->execute($del_qry);
 
             //first, remove current groups members
-            $del = $zdb->db->delete(
-                PREFIX_DB . Group::GROUPSMANAGERS_TABLE,
+            $del_qry = $zdb->delete(Group::GROUPSMANAGERS_TABLE);
+            $del_qry->where(
                 Adherent::PK . ' = ' . $id
             );
+            $zdb->execute($del_qry);
         } catch ( \Exception $e) {
             Analog::log(
                 'Unable to remove member #' . $id . ' from his groups: ' .
@@ -379,21 +373,16 @@ class Groups
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . Group::TABLE,
+            $select = $zdb->select(Group::TABLE);
+            $select->columns(
                 array('group_name')
-            )->where('group_name = ?', $name);
-            $res = $select->query()->fetchAll();
-            return !(count($res) > 0);
+            )->where(array('group_name' => $name));
+            $results = $zdb->execute($select);
+            return !($results->count() > 0);
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot list groups (simple) | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
-                Analog::ERROR
             );
         }
     }

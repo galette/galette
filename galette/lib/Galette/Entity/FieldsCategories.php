@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2013 The Galette Team
+ * Copyright © 2009-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,7 +46,7 @@ use Analog\Analog as Analog;
  * @name      FieldsCategories
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-28
@@ -85,36 +85,30 @@ class FieldsCategories
     );
 
     /**
-    * Default constructor
-    */
+     * Default constructor
+     */
     function __construct()
     {
     }
 
     /**
-    * Get list of categories
-    *
-    * @return array
-    */
+     * Get list of categories
+     *
+     * @return array
+     */
     public static function getList()
     {
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . self::TABLE)
-                ->order('position');
-            return $select->query()->fetchAll();
+            $select = $zdb->select(self::TABLE);
+            $select->order('position');
+            return $zdb->execute($select);
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 '[' . get_class($this) . '] Cannot get fields categories list | ' .
                 $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -131,20 +125,29 @@ class FieldsCategories
     {
         try {
             //first, we drop all values
-            $zdb->db->delete(PREFIX_DB . self::TABLE);
+            $delete = $zdb->delete(self::TABLE);
+            $zdb->execute($delete);
 
-            $stmt = $zdb->db->prepare(
-                'INSERT INTO ' . PREFIX_DB . self::TABLE .
-                ' (' . self::PK . ', table_name, category, position) ' .
-                'VALUES(:id, :table_name, :category, :position)'
+            $insert = $zdb->insert(self::TABLE);
+            $insert->values(
+                array(
+                    self::PK        => ':id',
+                    'table_name'    => ':table_name',
+                    'category'      => ':category',
+                    'position'      => ':position'
+                )
             );
+            $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
             foreach ( self::$_defaults as $d ) {
-                $stmt->bindParam(':id', $d['id']);
-                $stmt->bindParam(':table_name', $d['table_name']);
-                $stmt->bindParam(':category', $d['category']);
-                $stmt->bindParam(':position', $d['position']);
-                $stmt->execute();
+                $stmt->execute(
+                    array(
+                        self::PK        => $d['id'],
+                        'table_name'    => $d['table_name'],
+                        'category'      => $d['category'],
+                        'position'      => $d['position']
+                    )
+                );
             }
 
             Analog::log(
@@ -161,12 +164,4 @@ class FieldsCategories
             return $e;
         }
     }
-
-    /**
-    * GETTERS
-    */
-
-    /**
-    * SETTERS
-    */
 }

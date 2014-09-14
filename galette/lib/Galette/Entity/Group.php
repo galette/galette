@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012-2013 The Galette Team
+ * Copyright © 2012-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2013 The Galette Team
+ * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 
 /**
  * Group entity
@@ -46,7 +47,7 @@ use Analog\Analog as Analog;
  * @name      Group
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2013 The Galette Team
+ * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2012-01-17
@@ -70,6 +71,7 @@ class Group
     private $_groups;
     private $_creation_date;
     private $_count_members;
+    private $_empty;
 
     /**
      * Default constructor
@@ -90,24 +92,24 @@ class Group
     }
 
     /**
-    * Loads a group from its id
-    *
-    * @param int $id the identifiant for the group to load
-    *
-    * @return bool true if query succeed, false otherwise
-    */
+     * Loads a group from its id
+     *
+     * @param int $id the identifiant for the group to load
+     *
+     * @return bool true if query succeed, false otherwise
+     */
     public function load($id)
     {
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $select = $zdb->select(self::TABLE);
+            $select->where(array(self::PK => $id));
 
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . '=?', $id);
-            $result = $select->query()->fetchObject();
-            if ( $result ) {
-                $this->_loadFromRS($result);
+            $results = $zdb->execute($select);
+
+            if ( $results->count() > 0 ) {
+                $this->_loadFromRS($results->current());
                 return true;
             } else {
                 return false;
@@ -116,10 +118,6 @@ class Group
             Analog::log(
                 'Cannot load group form id `' . $id . '` | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -165,8 +163,6 @@ class Group
 
         if ( $this->_id ) {
             try {
-                $select = new \Zend_Db_Select($zdb->db);
-
                 $from = null;
                 switch ( $type ) {
                 case self::MEMBER_TYPE:
@@ -177,12 +173,12 @@ class Group
                     break;
                 }
 
-                $select->from(
-                    PREFIX_DB . $from,
+                $select = $zdb->select($from);
+                $select->columns(
                     array(Adherent::PK)
-                )->where(self::PK . ' = ?', $this->_id);
+                )->where(self::PK . ' = ' . $this->_id);
 
-                $res = $select->query()->fetchAll();
+                $results = $zdb->execute($select);
                 $members = array();
                 $adhpk = Adherent::PK;
 
@@ -192,7 +188,7 @@ class Group
                     'dues'      => false
                 );
 
-                foreach ( $res as $m ) {
+                foreach ( $results as $m ) {
                     $members[] = new Adherent((int)$m->$adhpk, $deps);
                 }
 
@@ -205,10 +201,6 @@ class Group
                 Analog::log(
                     'Cannot get group persons | ' . $e->getMessage(),
                     Analog::WARNING
-                );
-                Analog::log(
-                    'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                    Analog::ERROR
                 );
             }
         }
@@ -224,27 +216,23 @@ class Group
         global $zdb, $login;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-
-            $select->from(
-                array('a' => PREFIX_DB . self::TABLE)
-            );
+            $select = $zdb->select(self::TABLE, 'a');
 
             if ( !$login->isAdmin() && !$login->isStaff() ) {
                 $select->join(
                     array('b' => PREFIX_DB . self::GROUPSMANAGERS_TABLE),
                     'a.' . self::PK . '=b.' . self::PK,
                     array()
-                )->where('b.' . Adherent::PK . ' = ?', $login->id);
+                )->where('b.' . Adherent::PK . ' = ' . $login->id);
             }
 
-            $select->where('parent_group = ?', $this->_id)
+            $select->where('parent_group = ' . $this->_id)
                 ->order('group_name ASC');
 
-            $res = $select->query()->fetchAll();
+            $results = $zdb->execute($select);
             $groups = array();
             $grppk = self::PK;
-            foreach ( $res as $m ) {
+            foreach ( $results as $m ) {
                 $groups[] = new Group((int)$m->$grppk);
             }
             $this->_groups = $groups;
@@ -253,10 +241,6 @@ class Group
                 'Cannot get subgroup for group ' . $this->_group_name .
                 ' (' . $this->_id . ')| ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
         }
     }
@@ -273,41 +257,72 @@ class Group
         global $zdb;
 
         try {
-            $zdb->db->beginTransaction();
+            $zdb->connection->beginTransaction();
 
             if ( $cascade === true ) {
-                //delete members
-                $del = $zdb->db->delete(
-                    PREFIX_DB . self::GROUPSUSERS_TABLE,
-                    self::PK . ' = ' . $id
+                Analog::log(
+                    'Cascading remove ' . $this->_group_name .
+                    '. Members and managers will be detached.',
+                    Analog::INFO
                 );
 
-                //delete_managers
-                $del = $zdb->db->delete(
-                    PREFIX_DB . self::GROUPSMANAGERS_TABLE,
-                    self::PK . ' = ' . $id
+                //delete members
+                $delete = $zdb->delete(self::GROUPSUSERS_TABLE);
+                $delete->where(
+                    self::PK . ' = ' . $this->_id
                 );
+                $zdb->execute($delete);
+
+                //delete_managers
+                $delete = $zdb->delete(self::GROUPSMANAGERS_TABLE);
+                $delete->where(
+                    self::PK . ' = ' . $this->_id
+                );
+                $zdb->execute($delete);
             }
 
             //delete group itself
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::TABLE,
+            $delete = $zdb->delete(self::TABLE);
+            $delete->where(
                 self::PK . ' = ' . $this->_id
             );
+            $zdb->execute($delete);
 
             //commit all changes
-            $zdb->db->commit();
+            $zdb->connection->commit();
 
             return true;
         } catch (\Exception $e) {
-            $zdb->db->rollBack();
-            Analog::log(
-                'Unable to delete group ' . $this->_group_name .
-                ' (' . $this->_id  . ') |' . $e->getMessage(),
-                Analog::ERROR
-            );
+            $zdb->connection->rollBack();
+            if ($e->getCode() == 23000) {
+                Analog::log(
+                    str_replace(
+                        '%group',
+                        $this->_group_name,
+                        'Group "%group" still have members!'
+                    ),
+                    Analog::WARNING
+                );
+                $this->_empty = false;
+            } else {
+                Analog::log(
+                    'Unable to delete group ' . $this->_group_name .
+                    ' (' . $this->_id  . ') |' . $e->getMessage(),
+                    Analog::ERROR
+                );
+            }
             return false;
         }
+    }
+
+    /**
+     * Is group empty? (after first deletion try)
+     *
+     * @return boolean
+     */
+    public function isEmpty()
+    {
+        return $this->_empty;
     }
 
     /**
@@ -320,14 +335,18 @@ class Group
         global $zdb, $hist;
 
         try {
-            $edit = $zdb->db->update(
-                PREFIX_DB . self::TABLE,
-                array('parent_group' => new \Zend_Db_Expr('NULL')),
-                self::PK . '=' . $this->_id
+            $update = $zdb->update(self::TABLE);
+            $update->set(
+                array('parent_group' => new Expression('NULL'))
+            )->where(
+                self::PK . ' = ' . $this->_id
             );
+
+            $edit = $zdb->execute($update);
+
             //edit == 0 does not mean there were an error, but that there
             //were nothing to change
-            if ( $edit > 0 ) {
+            if ( $edit->count() > 0 ) {
                 $this->_parent_group = null;
                 $hist->add(
                     _T("Group has been detached from its parent"),
@@ -372,12 +391,19 @@ class Group
                 unset($values[self::PK]);
                 $this->_creation_date = date("Y-m-d H:i:s");
                 $values['creation_date'] = $this->_creation_date;
-                $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
-                if ( $add > 0) {
-                    $this->_id = $zdb->db->lastInsertId(
-                        PREFIX_DB . self::TABLE,
-                        'id'
-                    );
+
+                $insert = $zdb->insert(self::TABLE);
+                $insert->values($values);
+                $add = $zdb->execute($insert);;
+                if ( $add->count() > 0) {
+                    if ( $zdb->isPostgres() ) {
+                        $this->_id = $zdb->driver->getLastGeneratedValue(
+                            PREFIX_DB . 'groups_id_seq'
+                        );
+                    } else {
+                        $this->_id = $zdb->driver->getLastGeneratedValue();
+                    }
+
                     // logging
                     $hist->add(
                         _T("Group added"),
@@ -392,14 +418,16 @@ class Group
                 }
             } else {
                 //we're editing an existing group
-                $edit = $zdb->db->update(
-                    PREFIX_DB . self::TABLE,
-                    $values,
-                    self::PK . '=' . $this->_id
-                );
+                $update = $zdb->update(self::TABLE);
+                $update
+                    ->set($values)
+                    ->where(self::PK . '=' . $this->_id);
+
+                $edit = $zdb->execute($update);
+
                 //edit == 0 does not mean there were an error, but that there
                 //were nothing to change
-                if ( $edit > 0 ) {
+                if ( $edit->count() > 0 ) {
                     $hist->add(
                         _T("Group updated"),
                         strtoupper($this->_group_name)
@@ -409,7 +437,6 @@ class Group
             }
             /** FIXME: also store members and managers? */
         } catch (\Exception $e) {
-            /** FIXME */
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
@@ -612,31 +639,41 @@ class Group
         global $zdb;
 
         try {
-            $zdb->db->beginTransaction();
+            $zdb->connection->beginTransaction();
 
             //first, remove current groups members
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::GROUPSUSERS_TABLE,
+            $delete = $zdb->delete(self::GROUPSUSERS_TABLE);
+            $delete->where(
                 self::PK . ' = ' . $this->_id
             );
+            $zdb->execute($delete);
+
             Analog::log(
                 'Group members has been removed for `' . $this->_group_name .
-                ', we can now store new ones.',
+                '`, we can now store new ones.',
                 Analog::INFO
             );
 
-            $stmt = $zdb->db->prepare(
-                'INSERT INTO ' . PREFIX_DB . self::GROUPSUSERS_TABLE .
-                ' (' . $zdb->db->quoteIdentifier(self::PK) . ', ' .
-                $zdb->db->quoteIdentifier(Adherent::PK) . ')' .
-                ' VALUES(' . $this->_id . ', :adh)'
+            $insert = $zdb->insert(self::GROUPSUSERS_TABLE);
+            $insert->values(
+                array(
+                    self::PK        => ':group',
+                    Adherent::PK    => ':adh'
+                )
             );
+
+            $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
             if ( is_array($members) ) {
                 foreach ( $members as $m ) {
-                    $stmt->bindValue(':adh', $m->id, \PDO::PARAM_INT);
+                    $result = $stmt->execute(
+                        array(
+                            self::PK        => $this->_id,
+                            Adherent::PK    => $m->id
+                        )
+                    );
 
-                    if ( $stmt->execute() ) {
+                    if ( $result ) {
                         Analog::log(
                             'Member `' . $m->sname . '` attached to group `' .
                             $this->_group_name . '`.',
@@ -657,7 +694,7 @@ class Group
                 }
             }
             //commit all changes
-            $zdb->db->commit();
+            $zdb->connection->commit();
 
             Analog::log(
                 'Group members updated successfully.',
@@ -666,10 +703,14 @@ class Group
 
             return true;
         } catch (\Exception $e) {
-            $zdb->db->rollBack();
+            $zdb->connection->rollBack();
+            $messages = array();
+            do {
+                $messages[] = $e->getMessage();
+            } while ($e = $e->getPrevious());
             Analog::log(
                 'Unable to attach members to group `' . $this->_group_name .
-                '` (' . $this->_id . ')|' . $e->getMessage(),
+                '` (' . $this->_id . ')|' . implode("\n", $messages),
                 Analog::ERROR
             );
             return false;
@@ -688,31 +729,42 @@ class Group
         global $zdb;
 
         try {
-            $zdb->db->beginTransaction();
+            $zdb->connection->beginTransaction();
 
             //first, remove current groups managers
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::GROUPSMANAGERS_TABLE,
+            $delete = $zdb->delete(self::GROUPSMANAGERS_TABLE);
+            $delete->where(
                 self::PK . ' = ' . $this->_id
             );
+            $zdb->execute($delete);
+
             Analog::log(
                 'Group managers has been removed for `' . $this->_group_name .
-                ', we can now store new ones.',
+                '`, we can now store new ones.',
                 Analog::INFO
             );
 
-            $stmt = $zdb->db->prepare(
-                'INSERT INTO ' . PREFIX_DB . self::GROUPSMANAGERS_TABLE .
-                ' (' . $zdb->db->quoteIdentifier(self::PK) . ', ' .
-                $zdb->db->quoteIdentifier(Adherent::PK) . ')' .
-                ' VALUES(' . $this->_id . ', :adh)'
+            $insert = $zdb->insert(self::GROUPSMANAGERS_TABLE);
+            $insert->values(
+                array(
+                    self::PK        => ':group',
+                    Adherent::PK    => ':adh'
+                )
             );
+
+            $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
             if ( is_array($members) ) {
                 foreach ( $members as $m ) {
-                    $stmt->bindValue(':adh', $m->id, \PDO::PARAM_INT);
 
-                    if ( $stmt->execute() ) {
+                    $result = $stmt->execute(
+                        array(
+                            Group::PK       => $this->_id,
+                            Adherent::PK    => $m->id
+                        )
+                    );
+
+                    if ( $result ) {
                         Analog::log(
                             'Manager `' . $m->sname . '` attached to group `' .
                             $this->_group_name . '`.',
@@ -733,7 +785,7 @@ class Group
                 }
             }
             //commit all changes
-            $zdb->db->commit();
+            $zdb->connection->commit();
 
             Analog::log(
                 'Groups managers updated successfully.',
@@ -742,10 +794,14 @@ class Group
 
             return true;
         } catch (\Exception $e) {
-            $zdb->db->rollBack();
+            $zdb->connection->rollBack();
+            $messages = array();
+            do {
+                $messages[] = $e->getMessage();
+            } while ($e = $e->getPrevious());
             Analog::log(
                 'Unable to attach managers to group `' . $this->_group_name .
-                '` (' . $this->_id . ')|' . $e->getMessage(),
+                '` (' . $this->_id . ')|' . implode("\n", $messages),
                 Analog::ERROR
             );
             return false;

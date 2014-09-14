@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2005-2013 The Galette Team
+ * Copyright © 2005-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    Stéphane Salès <ssales@tuxz.org>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2005-2013 The Galette Team
+ * @copyright 2005-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -43,7 +43,6 @@ $hash = '';
 $password_updated = false;
 $password = new Galette\Core\Password();
 
-//TODO need to sanityze superglobals, see sanityze_superglobals_arrays
 // get hash id, $_GET if passed by url, $_POST if passed by this form
 if ( isset($_GET['hash']) && !empty($_GET['hash']) ) {
     $hash = $_GET['hash'];

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2013 The Galette Team
+ * Copyright © 2004-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -30,7 +30,7 @@
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2004-2013 The Galette Team
+ * @copyright 2004-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -78,11 +78,20 @@ $has_register = false;
 
 $fields = Adherent::getDbFields();
 
-// checking posted values for 'regular' fields
 if ( isset($_POST["nom_adh"]) ) {
-    $adherent['dyn'] = $dyn_fields->extractPosted($_POST, $disabled);
+    // dynamic fields
+    $adherent['dyn'] = $dyn_fields->extractPosted($_POST, $_FILES, $disabled, $member->id);
+    $dyn_fields_errors = $dyn_fields->get_errors();
+    if ( $count($dyn_fields_errors) > 0 ) {
+        $error_detected = array_merge($error_detected, $dyn_fields_errors);
+    }
+    // regular fields
     $valid = $member->check($_POST, $required, $disabled);
-    if ( $valid === true ) {
+    if ( $valid !== true ) {
+        $error_detected = array_merge($error_detected, $valid);
+    }
+
+    if ( count($error_detected ) == 0) {
         //all goes well, we can proceed
         $store = $member->store();
         if ( $store === true ) {
@@ -202,9 +211,6 @@ if ( isset($_POST["nom_adh"]) ) {
             //something went wrong :'(
             $error_detected[] = _T("An error occured while storing the member.");
         }
-    } else {
-        //hum... there are errors :'(
-        $error_detected = $valid;
     }
 } elseif ( isset($_POST["update_lang"]) && $_POST["update_lang"] == 1 ) {
     while ( list($key, $properties) = each($fields) ) {

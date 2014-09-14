@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2013 The Galette Team
+ * Copyright © 2009-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -47,7 +47,7 @@ use Analog\Analog as Analog;
  * @name      Logo
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-09-13
@@ -61,20 +61,20 @@ class Logo extends Picture
     protected $custom = true;
 
     /**
-    * Default constructor.
-    */
+     * Default constructor.
+     */
     public function __construct()
     {
         parent::__construct($this->id);
     }
 
     /**
-    * Gets the default picture to show, anyways
-    *
-    * @see Picture::getDefaultPicture()
-    *
-    * @return void
-    */
+     * Gets the default picture to show, anyways
+     *
+     * @see Picture::getDefaultPicture()
+     *
+     * @return void
+     */
     protected function getDefaultPicture()
     {
         $this->file_path = _CURRENT_TEMPLATE_PATH . 'images/galette.png';
@@ -84,33 +84,32 @@ class Logo extends Picture
     }
 
     /**
-    * Returns the relevant query to check if picture exists in database.
-    *
-    * @see picture::getCheckFileQuery()
-    *
-    * @return string SELECT query
-    */
+     * Returns the relevant query to check if picture exists in database.
+     *
+     * @see picture::getCheckFileQuery()
+     *
+     * @return string SELECT query
+     */
     protected function getCheckFileQuery()
     {
         global $zdb;
 
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->from(
-            array(PREFIX_DB . self::TABLE),
+        $select = $zdb->select(self::TABLE);
+        $select->columns(
             array(
                 'picture',
                 'format'
             )
         );
-        $select->where(self::PK . ' = ?', $this->db_id);
+        $select->where(self::PK . ' = ' . $this->db_id);
         return $select;
     }
 
     /**
-    * Returns custom state
-    *
-    * @return boolean
-    */
+     * Returns custom state
+     *
+     * @return boolean
+     */
     public function isCustom()
     {
         return $this->custom;

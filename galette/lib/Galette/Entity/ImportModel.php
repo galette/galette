@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013 The Galette Team
+ * Copyright © 2013-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Adapter\Adapter;
 
 /**
  * Import model entity
@@ -46,7 +47,7 @@ use Analog\Analog as Analog;
  * @name      ImportModel
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.6dev - 2013-09-26
@@ -70,11 +71,12 @@ class ImportModel
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $select = $zdb->select(self::TABLE);
+            $select->limit(1);
 
-            $select->from(PREFIX_DB . self::TABLE)
-                ->limit(1);
-            $result = $select->query()->fetchObject();
+            $results = $zdb->execute($select);
+            $result = $results->current();
+
             if ( $result ) {
                 $this->_loadFromRS($result);
                 return true;
@@ -84,7 +86,7 @@ class ImportModel
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot load import model | ' . $e->getMessage() .
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
+                "\n" .  $e->__toString(),
                 Analog::ERROR
             );
             return false;
@@ -115,10 +117,19 @@ class ImportModel
     public function remove($zdb)
     {
         try {
-            $result = $zdb->db->query('TRUNCATE TABLE ' . PREFIX_DB . self::TABLE);
+            $result = $zdb->db->query(
+                'TRUNCATE TABLE ' . PREFIX_DB . self::TABLE,
+                Adapter::QUERY_MODE_EXECUTE
+            );
+
+            if ( $result ) {
+                $this->_id = null;
+                $this->_fields = null;
+                $this->_creation_date = null;
+            }
+
             return $result;
         } catch (\Exception $e) {
-            $zdb->db->rollBack();
             Analog::log(
                 'Unable to remove import model ' . $e->getMessage(),
                 Analog::ERROR
@@ -147,8 +158,12 @@ class ImportModel
                 unset($values[self::PK]);
                 $this->_creation_date = date("Y-m-d H:i:s");
                 $values['model_creation_date'] = $this->_creation_date;
-                $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
-                if ( $add > 0) {
+
+                $insert = $zdb->insert(self::TABLE);
+                $insert->values($values);
+                $results = $zdb->execute($insert);
+
+                if ( $results->count() > 0) {
                     return true;
                 } else {
                     throw new \Exception(
@@ -157,11 +172,10 @@ class ImportModel
                 }
             } else {
                 //we're editing an existing model
-                $edit = $zdb->db->update(
-                    PREFIX_DB . self::TABLE,
-                    $values,
-                    self::PK . '=' . $this->_id
-                );
+                $update = $zdb->update(self::TABLE);
+                $update->set($values);
+                $update->where(self::PK . '=' . $this->_id);
+                $zdb->execute($update);
                 return true;
             }
         } catch ( \Exception $e ) {

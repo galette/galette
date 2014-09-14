@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2013 The Galette Team
+ * Copyright © 2009-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -39,6 +39,7 @@ namespace Galette\Repository;
 
 use Galette\Entity\Title as Title;
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 
 /**
  * Titles repository management
@@ -47,7 +48,7 @@ use Analog\Analog as Analog;
  * @name      Titles
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-04
@@ -84,13 +85,13 @@ class Titles
      */
     public static function getList($zdb)
     {
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->from(PREFIX_DB . self::TABLE)
-            ->order(self::PK);
-        $res = $select->query()->fetchAll();
+        $select = $zdb->select(self::TABLE);
+        $select->order(self::PK);
+
+        $results = $zdb->execute($select);
 
         $pols = array();
-        foreach ( $res as $r ) {
+        foreach ( $results as $r ) {
             $pk = self::PK;
             $pols[$r->$pk] = new Title($r);
         }
@@ -109,13 +110,18 @@ class Titles
     {
         try {
             //first, we drop all values
-            $zdb->db->delete(PREFIX_DB . self::TABLE);
+            $delete = $zdb->delete(self::TABLE);
+            $zdb->execute($delete);
 
-            $stmt = $zdb->db->prepare(
-                'INSERT INTO ' . PREFIX_DB . self::TABLE .
-                ' (id_title, short_label, long_label) ' .
-                'VALUES(:id, :short, :long)'
+            $insert = $zdb->insert(self::TABLE);
+            $insert->values(
+                array(
+                    'id_title'      => ':id',
+                    'short_label'   => ':short',
+                    'long_label'    => ':long'
+                )
             );
+            $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
             foreach ( self::$_defaults as $d ) {
                 $short = _T($d['short_label']);
@@ -123,12 +129,15 @@ class Titles
                 if ( $d['long_label'] !== null ) {
                     $long = _T($d['long_label']);
                 } else {
-                    $long = new \Zend_Db_Expr('NULL');
+                    $long = 'NULL';
                 }
-                $stmt->bindParam(':id', $d['id_title']);
-                $stmt->bindParam(':short', $short);
-                $stmt->bindParam(':long', $long);
-                $stmt->execute();
+                $stmt->execute(
+                    array(
+                        'id_title'      => $d['id_title'],
+                        'short_label'   => $short,
+                        'long_label'    => $long
+                    )
+                );
             }
 
             Analog::log(
@@ -156,11 +165,13 @@ class Titles
     {
         global $zdb;
 
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->limit(1)->from(PREFIX_DB . self::TABLE)
-            ->where(self::PK . ' = ?', $title);
+        $select = $zdb->select(self::TABLE);
+        $select->limit(1)
+            ->where(array(self::PK => $title));
 
-        $res = $select->query()->fetchColumn(1);
+        $results = $zdb->execute($select);
+        $result = $results->current();
+        $res = $result->short_label;
         return _T($res);
     }
 }

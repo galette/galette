@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2013 The Galette Team
+ * Copyright © 2004-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    Frédéric Jacquot <unknown@unknwown.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2004-2013 The Galette Team
+ * @copyright 2004-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -74,7 +74,8 @@ $type_selected = $id_cotis != null || get_form_value('type_selected', 0);
 // flagging required fields for first step only
 $required = array(
     'id_type_cotis'     => 1,
-    'id_adh'            => 1
+    'id_adh'            => 1,
+    'date_enreg'        => 1
 );
 
 $cotis_extension = 0; // TODO: remove and remplace with $contrib->isCotis()
@@ -126,10 +127,24 @@ if ( $type_selected && !($id_adh || $id_cotis) ) {
 // Validation
 $contribution['dyn'] = array();
 if ( isset($_POST['valid']) ) {
-    $contribution['dyn'] = $dyn_fields->extractPosted($_POST, array());
-
+    // dynamic fields
+    $contribution['dyn'] = $dyn_fields->extractPosted(
+        $_POST,
+        $_FILES,
+        array(),
+        $id_adh
+    );
+    $dyn_fields_errors = $dyn_fields->getErrors();
+    if ( count($dyn_fields_errors) > 0 ) {
+        $error_detected = array_merge($error_detected, $dyn_fields_errors);
+    }
+    // regular fields
     $valid = $contrib->check($_POST, $required, $disabled);
-    if ( $valid === true ) {
+    if ( $valid !== true ) {
+        $error_detected = array_merge($error_detected, $valid);
+    }
+
+    if ( count($error_detected) == 0 ) {
         //all goes well, we can proceed
         if ( $contrib->isCotis() ) {
             // Check that membership fees does not overlap
@@ -220,9 +235,6 @@ if ( isset($_POST['valid']) ) {
                 $error_detected[] = _T("An error occured while storing the contribution.");
             }
         }
-    } else {
-        //hum... there are errors :'(
-        $error_detected = $valid;
     }
 
     if ( count($error_detected) == 0 ) {
@@ -256,7 +268,11 @@ if ( isset($_POST['valid']) ) {
                 && $_POST['mail_confirm'] == '1'
             ) {
                 if ( GaletteMail::isValidEmail($adh->email) ) {
-                    $mtxt = $texts->getTexts('contrib', $adh->language);
+                    $text = 'contrib';
+                    if ( !$contrib->isCotis() ) {
+                        $text = 'donation';
+                    }
+                    $mtxt = $texts->getTexts($text, $adh->language);
 
                     $mail = new GaletteMail();
                     $mail->setSubject($texts->getSubject());
@@ -300,7 +316,11 @@ if ( isset($_POST['valid']) ) {
             // Sent email to admin if pref checked
             if ( $new && $preferences->pref_bool_mailadh ) {
                 // Get email text in database
-                $mtxt = $texts->getTexts('newcont', $preferences->pref_lang);
+                $text = 'newcont';
+                if ( !$contrib->isCotis() ) {
+                    $text = 'newdonation';
+                }
+                $mtxt = $texts->getTexts($text, $preferences->pref_lang);
 
                 $mail = new GaletteMail();
                 $mail->setSubject($texts->getSubject());

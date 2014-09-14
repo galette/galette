@@ -6,7 +6,7 @@
 - generates message.po with the same symtax as regular xgettext
 - translatable string sort may differ from regular xgettext
 
-Copyright © 2005-2013 The Galette Team
+Copyright © 2005-2014 The Galette Team
 
 This file is part of Galette (http://galette.tuxfamily.org).
 

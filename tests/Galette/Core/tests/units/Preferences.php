@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013 The Galette Team
+ * Copyright © 2013-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,7 +46,7 @@ use \atoum;
  * @name      Preferences
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     2013-01-13
@@ -188,20 +188,21 @@ class Preferences extends atoum
      */
     public function testUpdate()
     {
-        $del = $this->_zdb->db->delete(
-            PREFIX_DB . \Galette\Core\Preferences::TABLE,
-            $this->_zdb->db->quoteInto(
-                \Galette\Core\Preferences::PK . ' = ?',
-                'pref_facebook'
+        $delete = $this->_zdb->delete(\Galette\Core\Preferences::TABLE);
+        $delete->where(
+            array(
+                \Galette\Core\Preferences::PK => 'pref_facebook'
             )
         );
-        $del = $this->_zdb->db->delete(
-            PREFIX_DB . \Galette\Core\Preferences::TABLE,
-            $this->_zdb->db->quoteInto(
-                \Galette\Core\Preferences::PK . ' = ?',
-                'pref_viadeo'
+        $this->_zdb->execute($delete);
+
+        $delete = $this->_zdb->delete(\Galette\Core\Preferences::TABLE);
+        $delete->where(
+            array(
+                \Galette\Core\Preferences::PK => 'pref_viadeo'
             )
         );
+        $this->_zdb->execute($delete);
 
         $this->_preferences->load();
         $fb = $this->_preferences->pref_facebook;
@@ -216,5 +217,61 @@ class Preferences extends atoum
 
         $this->variable($fb)->isIdenticalTo('');
         $this->variable($viadeo)->isIdenticalTo('');
+    }
+
+    /**
+     * Test public pages visibility
+     *
+     * @return void
+     */
+    public function testPublicPagesVisibility()
+    {
+        $this->_preferences->load();
+
+        $visibility = $this->_preferences->pref_publicpages_visibility;
+        $this->variable($visibility)->isEqualTo(
+            \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED
+        );
+
+        $anon_login = new \Galette\Core\Login();
+
+        $admin_login = new \mock\Galette\Core\Login();
+        $this->calling($admin_login)->isAdmin = true;
+
+        $user_login = new \mock\Galette\Core\Login();
+        $this->calling($user_login)->isUp2Date = true;
+
+        $visible = $this->_preferences->showPublicPages($anon_login);
+        $this->boolean($visible)->isFalse();
+
+        $visible = $this->_preferences->showPublicPages($admin_login);
+        $this->boolean($visible)->isTrue();
+
+        $visible = $this->_preferences->showPublicPages($user_login);
+        $this->boolean($visible)->isTrue();
+
+        $this->_preferences->pref_publicpages_visibility
+            = \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC;
+
+        $visible = $this->_preferences->showPublicPages($anon_login);
+        $this->boolean($visible)->isTrue();
+
+        $visible = $this->_preferences->showPublicPages($admin_login);
+        $this->boolean($visible)->isTrue();
+
+        $visible = $this->_preferences->showPublicPages($user_login);
+        $this->boolean($visible)->isTrue();
+
+        $this->_preferences->pref_publicpages_visibility
+            = \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE;
+
+        $visible = $this->_preferences->showPublicPages($anon_login);
+        $this->boolean($visible)->isFalse();
+
+        $visible = $this->_preferences->showPublicPages($admin_login);
+        $this->boolean($visible)->isTrue();
+
+        $visible = $this->_preferences->showPublicPages($user_login);
+        $this->boolean($visible)->isFalse();
     }
 }

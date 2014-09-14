@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010-2013 The Galette Team
+ * Copyright © 2010-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2013 The Galette Team
+ * @copyright 2010-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,6 +38,7 @@
 namespace Galette\Repository;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 use Galette\Core\Pagination as Pagination;
 use Galette\Entity\Contribution as Contribution;
 use Galette\Entity\Adherent as Adherent;
@@ -52,7 +53,7 @@ use Galette\Entity\ContributionsTypes as ContributionsTypes;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -60,9 +61,6 @@ class Contributions extends Pagination
 {
     const TABLE = Contribution::TABLE;
     const PK = Contribution::PK;
-
-    const FILTER_DATE_BEGIN = 0;
-    const FILTER_DATE_END = 1;
 
     const ORDERBY_DATE = 0;
     const ORDERBY_BEGIN_DATE = 1;
@@ -73,7 +71,12 @@ class Contributions extends Pagination
     const ORDERBY_DURATION = 6;
     const ORDERBY_PAYMENT_TYPE = 7;
 
+    const DATE_BEGIN = 0;
+    const DATE_END = 1;
+    const DATE_RECORD = 2;
+
     private $_count = null;
+    private $_date_field = null;
     private $_start_date_filter = null;
     private $_end_date_filter = null;
     private $_payment_type_filter = null;
@@ -85,18 +88,19 @@ class Contributions extends Pagination
     private $_sum;
 
     /**
-    * Default constructor
-    */
+     * Default constructor
+     */
     public function __construct()
     {
         parent::__construct();
+        $this->_date_field = self::DATE_BEGIN;
     }
 
     /**
-    * Returns the field we want to default set order to
-    *
-    * @return string field name
-    */
+     * Returns the field we want to default set order to
+     *
+     * @return string field name
+     */
     protected function getDefaultOrder()
     {
         return 'date_debut_cotis';
@@ -113,10 +117,10 @@ class Contributions extends Pagination
     }
 
     /**
-    * Returns the field we want to default set order to (public method)
-    *
-    * @return string field name
-    */
+     * Returns the field we want to default set order to (public method)
+     *
+     * @return string field name
+     */
     public static function defaultOrder()
     {
         return self::getDefaultOrder();
@@ -136,17 +140,17 @@ class Contributions extends Pagination
     }
 
     /**
-    * Get contributions list
-    *
-    * @param bool    $as_contrib return the results as an array of
-    *                               Contribution object.
-    * @param array   $fields     field(s) name(s) to get. Should be a string or
-    *                               an array. If null, all fields will be
-    *                               returned
-    * @param boolean $count      true if we want to count members
-    *
-    * @return Contribution[]|ResultSet
-    */
+     * Get contributions list
+     *
+     * @param bool    $as_contrib return the results as an array of
+     *                               Contribution object.
+     * @param array   $fields     field(s) name(s) to get. Should be a string or
+     *                               an array. If null, all fields will be
+     *                               returned
+     * @param boolean $count      true if we want to count members
+     *
+     * @return Contribution[]|ResultSet
+     */
     public function getContributionsList(
         $as_contrib=false, $fields=null, $count=true
     ) {
@@ -160,38 +164,33 @@ class Contributions extends Pagination
             $this->setLimits($select);
 
             $contributions = array();
+            $results = $zdb->execute($select);
             if ( $as_contrib ) {
-                $res = $select->query()->fetchAll();
-                foreach ( $res as $row ) {
+                foreach ( $results as $row ) {
                     $contributions[] = new Contribution($row);
                 }
             } else {
-                $contributions = $select->query()->fetchAll();
+                $contributions = $results;
             }
             return $contributions;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot list contributions | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
     }
 
     /**
-    * Builds the SELECT statement
-    *
-    * @param array $fields fields list to retrieve
-    * @param bool  $count  true if we want to count members
-                            (not applicable from static calls), defaults to false
-    *
-    * @return string SELECT statement
-    */
+     * Builds the SELECT statement
+     *
+     * @param array $fields fields list to retrieve
+     * @param bool  $count  true if we want to count members
+     *                      (not applicable from static calls), defaults to false
+     *
+     * @return string SELECT statement
+     */
     private function _buildSelect($fields, $count = false)
     {
         global $zdb;
@@ -201,15 +200,12 @@ class Contributions extends Pagination
                             ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
                             : implode(', ', $fields)) : (array)'*';
 
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                array('a' => PREFIX_DB . self::TABLE),
-                $fieldsList
-            );
+            $select = $zdb->select(self::TABLE, 'a');
+            $select->columns($fieldsList);
 
             $select->join(
-                array('p' => PREFIX_DB . Adherent::TABLE, Adherent::PK),
-                'a.' . Adherent::PK . '=' . 'p.' . Adherent::PK
+                array('p' => PREFIX_DB . Adherent::TABLE),
+                'a.' . Adherent::PK . '= p.' . Adherent::PK
             );
 
             $this->_buildWhereClause($select);
@@ -223,37 +219,38 @@ class Contributions extends Pagination
 
             return $select;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot build SELECT clause for contributions | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
     }
 
     /**
-    * Count contributions from the query
-    *
-    * @param Zend_Db_Select $select Original select
-    *
-    * @return void
-    */
+     * Count contributions from the query
+     *
+     * @param Select $select Original select
+     *
+     * @return void
+     */
     private function _proceedCount($select)
     {
         global $zdb;
 
         try {
             $countSelect = clone $select;
-            $countSelect->reset(\Zend_Db_Select::COLUMNS);
-            $countSelect->reset(\Zend_Db_Select::ORDER);
-            $countSelect->columns('count(' . self::PK . ') AS ' . self::PK);
+            $countSelect->reset($countSelect::COLUMNS);
+            $countSelect->reset($countSelect::JOINS);
+            $countSelect->reset($countSelect::ORDER);
+            $countSelect->columns(
+                array(
+                    self::PK => new Expression('COUNT(' . self::PK . ')')
+                )
+            );
 
-            $result = $countSelect->query()->fetch();
+            $results = $zdb->execute($countSelect);
+            $result = $results->current();
 
             $k = self::PK;
             $this->_count = $result->$k;
@@ -262,87 +259,86 @@ class Contributions extends Pagination
                 $this->countPages();
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot count contributions | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
     }
 
     /**
-    * Calculate sum of all selected contributions
-    *
-    * @param Zend_Db_Select $select Original select
-    *
-    * @return void
-    */
+     * Calculate sum of all selected contributions
+     *
+     * @param Select $select Original select
+     *
+     * @return void
+     */
     private function _calculateSum($select)
     {
         global $zdb;
 
         try {
             $sumSelect = clone $select;
-            $sumSelect->reset(\Zend_Db_Select::COLUMNS);
-            $sumSelect->reset(\Zend_Db_Select::ORDER);
-            $sumSelect->columns('SUM(montant_cotis) AS contribsum');
+            $sumSelect->reset($sumSelect::COLUMNS);
+            $sumSelect->reset($sumSelect::JOINS);
+            $sumSelect->reset($sumSelect::ORDER);
+            $sumSelect->columns(
+                array(
+                    'contribsum' => new Expression('SUM(montant_cotis)')
+                )
+            );
 
-            $result = $sumSelect->query()->fetch();
+            $results = $zdb->execute($sumSelect);
+            $result = $results->current();
 
             $this->_sum = round($result->contribsum, 2);
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot calculate contributions sum | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $sumSelect->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
     }
 
     /**
-    * Builds the order clause
-    *
-    * @return string SQL ORDER clause
-    */
+     * Builds the order clause
+     *
+     * @return string SQL ORDER clause
+     */
     private function _buildOrderClause()
     {
         $order = array();
 
         switch ( $this->orderby ) {
         case self::ORDERBY_DATE:
-            $order[] = 'date_enreg' . ' ' . $this->ordered;
+            $order[] = 'date_enreg ' . $this->ordered;
             break;
         case self::ORDERBY_BEGIN_DATE:
-            $order[] = 'date_debut_cotis' . ' ' . $this->ordered;
+            $order[] = 'date_debut_cotis ' . $this->ordered;
             break;
         case self::ORDERBY_END_DATE:
-            $order[] = 'date_fin_cotis' . ' ' . $this->ordered;
+            $order[] = 'date_fin_cotis ' . $this->ordered;
             break;
         case self::ORDERBY_MEMBER:
-            $order[] = 'nom_adh' . ' ' . $this->ordered;
-            $order[] = 'prenom_adh' . ' ' . $this->ordered;
+            $order[] = 'nom_adh ' . $this->ordered;
+            $order[] = 'prenom_adh ' . $this->ordered;
             break;
         case self::ORDERBY_TYPE:
             $order[] = ContributionsTypes::PK;
             break;
         case self::ORDERBY_AMOUNT:
-            $order[] = 'montant_cotis' . ' ' . $this->ordered;
+            $order[] = 'montant_cotis ' . $this->ordered;
             break;
         /*
         Hum... I really do not know how to sort a query with a value that
         is calculated code side :/
         case self::ORDERBY_DURATION:
             break;*/
+        case self::ORDERBY_PAYMENT_TYPE:
+            $order[] = 'type_paiement_cotis ' . $this->ordered;
+            break;
         default:
             $order[] = $this->orderby . ' ' . $this->ordered;
             break;
@@ -354,7 +350,7 @@ class Contributions extends Pagination
     /**
      * Builds where clause, for filtering on simple list mode
      *
-     * @param Zend_Db_Select $select Original select
+     * @param Select $select Original select
      *
      * @return string SQL WHERE clause
      */
@@ -362,24 +358,48 @@ class Contributions extends Pagination
     {
         global $zdb, $login;
 
+        $field = 'date_debut_cotis';
+
+        switch ( $this->_date_field ) {
+        case self::DATE_RECORD:
+            $field = 'date_enreg';
+            break;
+        case self::DATE_END:
+            $field = 'date_fin_cotis';
+            break;
+        case self::DATE_BEGIN:
+        default:
+            $field = 'date_debut_cotis';
+            break;
+        }
+
         try {
             if ( $this->_start_date_filter != null ) {
                 $d = new \DateTime($this->_start_date_filter);
-                $select->where('date_debut_cotis >= ?', $d->format('Y-m-d'));
+                $select->where->greaterThanOrEqualTo(
+                    $field,
+                    $d->format('Y-m-d')
+                );
             }
 
             if ( $this->_end_date_filter != null ) {
                 $d = new \DateTime($this->_end_date_filter);
-                $select->where('date_debut_cotis <= ?', $d->format('Y-m-d'));
+                $select->where->lessThanOrEqualTo(
+                    $field,
+                    $d->format('Y-m-d')
+                );
             }
 
             if ( $this->_payment_type_filter != null ) {
-                $select->where('type_paiement_cotis = ?', $this->_payment_type_filter);
+                $select->where->equalTo(
+                    'type_paiement_cotis',
+                    $this->_payment_type_filter
+                );
             }
 
             if ( $this->_from_transaction !== false ) {
-                $select->where(
-                    Transaction::PK . ' = ?',
+                $select->where->equalTo(
+                    Transaction::PK,
                     $this->_from_transaction
                 );
             }
@@ -390,24 +410,23 @@ class Contributions extends Pagination
                     ' OR montant_cotis IS NULL)'
                 );
             }
-            $sql = $select->__toString();
 
             if ( !$login->isAdmin() && !$login->isStaff() ) {
                 //non staff members can only view their own contributions
-                $select->where('p.' . Adherent::PK . ' = ?', $login->id);
+                $select->where(
+                    array(
+                        'a.' . Adherent::PK => $login->id
+                    )
+                );
             } else if ( $this->_filtre_cotis_adh != null ) {
-                $select->where('p.' . Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
+                $select->where(
+                    'a.' . Adherent::PK . ' = ' . $this->_filtre_cotis_adh
+                );
             }
             if ( $this->_filtre_transactions === true ) {
-                $select->where('a.trans_id ?', new \Zend_Db_Expr('IS NULL'));
+                $select->where('a.trans_id IS NULL');
             }
-            $qry = $select->__toString();
-            Analog::log(
-                "Query was:\n" . $qry,
-                Analog::DEBUG
-            );
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
@@ -416,23 +435,24 @@ class Contributions extends Pagination
     }
 
     /**
-    * Get count for current query
-    *
-    * @return int
-    */
+     * Get count for current query
+     *
+     * @return int
+     */
     public function getCount()
     {
         return $this->_count;
     }
 
     /**
-    * Reinit default parameters
-    *
-    * @return void
-    */
+     * Reinit default parameters
+     *
+     * @return void
+     */
     public function reinit()
     {
         parent::reinit();
+        $this->_date_field = self::DATE_BEGIN;
         $this->_start_date_filter = null;
         $this->_end_date_filter = null;
         $this->_payment_type_filter = null;
@@ -468,12 +488,11 @@ class Contributions extends Pagination
             $res = true;
             try {
                 if ( $transaction ) {
-                    $zdb->db->beginTransaction();
+                    $zdb->connection->beginTransaction();
                 }
-                $select = new \Zend_Db_Select($zdb->db);
-                $select->from(PREFIX_DB . self::TABLE)
-                    ->where(self::PK . ' IN (?)', $list);
-                $contributions = $select->query()->fetchAll();
+                $select = $zdb->select(self::TABLE);
+                $select->where->in(self::PK, $list);
+                $contributions = $zdb->execute($select);
                 foreach ( $contributions as $contribution ) {
                     $c = new Contribution($contribution);
                     $res = $c->remove(false);
@@ -482,7 +501,7 @@ class Contributions extends Pagination
                     }
                 }
                 if ( $transaction ) {
-                    $zdb->db->commit();
+                    $zdb->connection->commit();
                 }
                 $hist->add(
                     str_replace(
@@ -492,9 +511,8 @@ class Contributions extends Pagination
                     )
                 );
             } catch (\Exception $e) {
-                /** FIXME */
                 if ( $transaction ) {
-                    $zdb->db->rollBack();
+                    $zdb->connection->rollBack();
                 }
                 Analog::log(
                     'An error occured trying to remove contributions | ' .
@@ -515,12 +533,12 @@ class Contributions extends Pagination
     }
 
     /**
-    * Global getter method
-    *
-    * @param string $name name of the property we want to retrive
-    *
-    * @return object the called property
-    */
+     * Global getter method
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return object the called property
+     */
     public function __get($name)
     {
 
@@ -534,6 +552,7 @@ class Contributions extends Pagination
         } else {
             $return_ok = array(
                 'filtre_cotis_adh',
+                'date_field',
                 'start_date_filter',
                 'end_date_filter',
                 'payment_type_filter',
@@ -567,13 +586,13 @@ class Contributions extends Pagination
     }
 
     /**
-    * Global setter method
-    *
-    * @param string $name  name of the property we want to assign a value to
-    * @param object $value a relevant value for the property
-    *
-    * @return void
-    */
+     * Global setter method
+     *
+     * @param string $name  name of the property we want to assign a value to
+     * @param object $value a relevant value for the property
+     *
+     * @return void
+     */
     public function __set($name, $value)
     {
         if ( in_array($name, $this->pagination_fields) ) {

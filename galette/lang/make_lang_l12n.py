@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
-Copyright © 2004-2013 The Galette Team
+Copyright © 2004-2014 The Galette Team
 
 This file is part of Galette (http://galette.tuxfamily.org).
 

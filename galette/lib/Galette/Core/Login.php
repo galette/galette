@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2013 The Galette Team
+ * Copyright © 2007-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2013 The Galette Team
+ * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,6 +37,7 @@
 
 namespace Galette\Core;
 
+use Zend\Db\Adapter\Exception as AdapterException;
 use Galette\Repository\Groups as Groups;
 use Galette\Repository\Members as Members;
 use Galette\Entity\Adherent as Adherent;
@@ -50,7 +51,7 @@ use Analog\Analog as Analog;
  * @name      Login
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2013 The Galette Team
+ * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-06
@@ -61,21 +62,20 @@ class Login extends Authentication
     const PK = 'login_adh';
 
     /**
-    * Logs in user.
-    *
-    * @param string $user  user's login
-    * @param string $passe user's password
-    *
-    * @return boolean
-    */
+     * Logs in user.
+     *
+     * @param string $user  user's login
+     * @param string $passe user's password
+     *
+     * @return boolean
+     */
     public function logIn($user, $passe)
     {
         global $zdb, $i18n, $session;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                array('a' => PREFIX_DB . self::TABLE),
+            $select = $zdb->select(self::TABLE, 'a');
+            $select->columns(
                 array(
                     'id_adh',
                     'bool_admin_adh',
@@ -92,20 +92,17 @@ class Login extends Authentication
                 'a.' . Status::PK . '=b.' . Status::PK,
                 array('priorite_statut')
             );
-            $select->where(self::PK . ' = ?', $user);
-            Analog::log(
-                'Login query: ' . $select->__toString(),
-                Analog::DEBUG
-            );
-            $row = $zdb->db->fetchRow($select);
+            $select->where(array(self::PK => $user));
 
-            if ( $row === false ) {
+            $results = $zdb->execute($select);
+            if ( $results->count() == 0 ) {
                 Analog::log(
                     'No entry found for login `' . $user . '`',
                     Analog::WARNING
                 );
                 return false;
             } else {
+                $row = $results->current();
                 //check if pawwsord matches
                 $pw_checked = password_verify($passe, $row->mdp_adh);
                 if ( !$pw_checked ) {
@@ -165,7 +162,7 @@ class Login extends Authentication
                 }
                 return true;
             }
-        } catch (\Zend_Db_Adapter_Exception $e) {
+        } catch (AdapterException $e) {
             Analog::log(
                 'An error occured: ' . $e->getChainedException()->getMessage(),
                 Analog::WARNING
@@ -183,24 +180,23 @@ class Login extends Authentication
     }
 
     /**
-    * Does this login already exists ?
-    * These function should be used for setting admin login into Preferences
-    *
-    * @param string $user the username
-    *
-    * @return true if the username already exists, false otherwise
-    */
+     * Does this login already exists ?
+     * These function should be used for setting admin login into Preferences
+     *
+     * @param string $user the username
+     *
+     * @return true if the username already exists, false otherwise
+     */
     public function loginExists($user)
     {
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . ' = ?', $user);
-            $result = $select->query()->fetchAll();
+            $select = $zdb->select(self::TABLE);
+            $select->where(array(self::PK => $user));
+            $results = $zdb->execute($select);
 
-            if ( count($result) > 0 ) {
+            if ( $results->count() > 0 ) {
                 /* We got results, user already exists */
                 return true;
             } else {
@@ -211,10 +207,6 @@ class Login extends Authentication
             Analog::log(
                 'Cannot check if login exists | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             /* If an error occurs, we consider that username already exists */
             return true;

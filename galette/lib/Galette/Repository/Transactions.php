@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2013 The Galette Team
+ * Copyright © 2011-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2013 The Galette Team
+ * @copyright 2011-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,6 +38,7 @@
 namespace Galette\Repository;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 use Galette\Core\Pagination as Pagination;
 use Galette\Entity\Transaction as Transaction;
 use Galette\Entity\Adherent as Adherent;
@@ -50,7 +51,7 @@ use Galette\Entity\Adherent as Adherent;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2013 The Galette Team
+ * @copyright 2011-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -64,31 +65,33 @@ class Transactions extends Pagination
     const ORDERBY_AMOUNT = 2;
 
     private $_count = null;
+    private $_start_date_filter = null;
+    private $_end_date_filter = null;
     private $_filtre_cotis_adh = null;
 
     /**
-    * Default constructor
-    */
+     * Default constructor
+     */
     public function __construct()
     {
         parent::__construct();
     }
 
     /**
-    * Returns the field we want to default set order to
-    *
-    * @return string field name
-    */
+     * Returns the field we want to default set order to
+     *
+     * @return string field name
+     */
     protected function getDefaultOrder()
     {
         return self::ORDERBY_DATE;
     }
 
     /**
-    * Returns the field we want to default set order to (public method)
-    *
-    * @return string field name
-    */
+     * Returns the field we want to default set order to (public method)
+     *
+     * @return string field name
+     */
     public static function defaultOrder()
     {
         return self::getDefaultOrder();
@@ -105,16 +108,16 @@ class Transactions extends Pagination
     }
 
     /**
-    * Get transactions list
-    *
-    * @param bool    $as_trans return the results as an array of
-    *                          Transaction object.
-    * @param array   $fields   field(s) name(s) to get. Should be a string or
-    *                          an array. If null, all fields will be returned
-    * @param boolean $count    true if we want to count members
-    *
-    * @return Transaction[]|ResultSet
-    */
+     * Get transactions list
+     *
+     * @param bool    $as_trans return the results as an array of
+     *                          Transaction object.
+     * @param array   $fields   field(s) name(s) to get. Should be a string or
+     *                          an array. If null, all fields will be returned
+     * @param boolean $count    true if we want to count members
+     *
+     * @return Transaction[]|ResultSet
+     */
     public function getTransactionsList(
         $as_trans=false, $fields=null, $count=true
     ) {
@@ -128,38 +131,33 @@ class Transactions extends Pagination
             $this->setLimits($select);
 
             $transactions = array();
+            $results = $zdb->execute($select);
             if ( $as_trans ) {
-                $res = $select->query()->fetchAll();
-                foreach ( $res as $row ) {
+                foreach ( $results as $row ) {
                     $transactions[] = new Transaction($row);
                 }
             } else {
-                $transactions = $select->query()->fetchAll();
+                $transactions = $results;
             }
             return $transactions;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot list transactions | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
     }
 
     /**
-    * Builds the SELECT statement
-    *
-    * @param array $fields fields list to retrieve
-    * @param bool  $count  true if we want to count members
-                            (not applicable from static calls), defaults to false
-    *
-    * @return string SELECT statement
-    */
+     * Builds the SELECT statement
+     *
+     * @param array $fields fields list to retrieve
+     * @param bool  $count  true if we want to count members
+     *                      (not applicable from static calls), defaults to false
+     *
+     * @return string SELECT statement
+     */
     private function _buildSelect($fields, $count = false)
     {
         global $zdb;
@@ -169,21 +167,19 @@ class Transactions extends Pagination
                             ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
                             : implode(', ', $fields)) : (array)'*';
 
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                array('t' => PREFIX_DB . 'transactions'),
+            $select = $zdb->select(self::TABLE, 't');
+            $select->columns(
                 array(
-                    't.trans_date',
-                    't.trans_id',
-                    't.trans_desc',
-                    't.id_adh',
-                    't.trans_amount',
-                    'a.nom_adh',
-                    'a.prenom_adh'
+                    'trans_date',
+                    'trans_id',
+                    'trans_desc',
+                    'id_adh',
+                    'trans_amount'
                 )
             )->join(
-                array('a' => PREFIX_DB . Adherent::TABLE, Adherent::PK),
-                't.' . Adherent::PK . '=' . 'a.' . Adherent::PK
+                array('a' => PREFIX_DB . Adherent::TABLE),
+                't.' . Adherent::PK . '=' . 'a.' . Adherent::PK,
+                array('nom_adh', 'prenom_adh')
             );
 
             $this->_buildWhereClause($select);
@@ -195,37 +191,38 @@ class Transactions extends Pagination
 
             return $select;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot build SELECT clause for transactions | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
     }
 
     /**
-    * Count transactions from the query
-    *
-    * @param Zend_Db_Select $select Original select
-    *
-    * @return void
-    */
+     * Count transactions from the query
+     *
+     * @param Select $select Original select
+     *
+     * @return void
+     */
     private function _proceedCount($select)
     {
         global $zdb;
 
         try {
             $countSelect = clone $select;
-            $countSelect->reset(\Zend_Db_Select::COLUMNS);
-            $countSelect->reset(\Zend_Db_Select::ORDER);
-            $countSelect->columns('count(' . self::PK . ') AS ' . self::PK);
-            $str = $select->__toString();
-            $result = $countSelect->query()->fetch();
+            $countSelect->reset($countSelect::COLUMNS);
+            $countSelect->reset($countSelect::ORDER);
+            $countSelect->reset($countSelect::JOINS);
+            $countSelect->columns(
+                array(
+                    self::PK => new Expression('COUNT(' . self::PK . ')')
+                )
+            );
+
+            $results = $zdb->execute($countSelect);
+            $result = $results->current();
 
             $k = self::PK;
             $this->_count = $result->$k;
@@ -234,24 +231,19 @@ class Transactions extends Pagination
                 $this->countPages();
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot count transactions | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $countSelect->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
     }
 
     /**
-    * Builds the order clause
-    *
-    * @return string SQL ORDER clause
-    */
+     * Builds the order clause
+     *
+     * @return string SQL ORDER clause
+     */
     private function _buildOrderClause()
     {
         $order = array();
@@ -278,7 +270,7 @@ class Transactions extends Pagination
     /**
      * Builds where clause, for filtering on simple list mode
      *
-     * @param Zend_Db_Select $select Original select
+     * @param Select $select Original select
      *
      * @return string SQL WHERE clause
      */
@@ -287,40 +279,31 @@ class Transactions extends Pagination
         global $zdb, $login;
 
         try {
-            /*if ( $this->_start_date_filter != null ) {*/
-                /** TODO: initial date format should be i18n
-                $d = \DateTime::createFromFormat(
-                    _T("d/m/Y"),
-                    $this->_start_date_filter
-                );*/
-                /*$d = \DateTime::createFromFormat(
-                    'd/m/Y',
-                    $this->_start_date_filter
+            if ( $this->_start_date_filter != null ) {
+                $d = new \DateTime($this->_start_date_filter);
+                $select->where->greaterThanOrEqualTo(
+                    'trans_date',
+                    $d->format('Y-m-d')
                 );
-                $select->where('date_debut_cotis >= ?', $d->format('Y-m-d'));
             }
 
-            if ( $this->_end_date_filter != null ) {*/
-                /** TODO: initial date format should be i18n
-                $d = \DateTime::createFromFormat(
-                    _T("d/m/Y"),
-                    $this->_end_date_filter
-                );*/
-                /*$d = \DateTime::createFromFormat(
-                    'd/m/Y',
-                    $this->_end_date_filter
+            if ( $this->_end_date_filter != null ) {
+                $d = new \DateTime($this->_end_date_filter);
+                $select->where->lessThanOrEqualTo(
+                    'trans_date',
+                    $d->format('Y-m-d')
                 );
-                $select->where('date_fin_cotis <= ?', $d->format('Y-m-d'));
-            }*/
+            }
 
             if ( !$login->isAdmin() && !$login->isStaff() ) {
                 //non staff members can only view their own transactions
-                $select->where('t.' . Adherent::PK . ' = ?', $login->id);
+                $select->where('t.' . Adherent::PK . ' = ' . $login->id);
             } else if ( $this->_filtre_cotis_adh != null ) {
-                $select->where('t.' . Adherent::PK . ' = ?', $this->_filtre_cotis_adh);
+                $select->where(
+                    't.' . Adherent::PK . ' = ' . $this->_filtre_cotis_adh
+                );
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
@@ -329,25 +312,25 @@ class Transactions extends Pagination
     }
 
     /**
-    * Get count for current query
-    *
-    * @return int
-    */
+     * Get count for current query
+     *
+     * @return int
+     */
     public function getCount()
     {
         return $this->_count;
     }
 
     /**
-    * Reinit default parameters
-    *
-    * @return void
-    */
+     * Reinit default parameters
+     *
+     * @return void
+     */
     public function reinit()
     {
         parent::reinit();
-        /*$this->_start_date_filter = null;
-        $this->_end_date_filter = null;*/
+        $this->_start_date_filter = null;
+        $this->_end_date_filter = null;
     }
 
     /**
@@ -372,25 +355,25 @@ class Transactions extends Pagination
         if ( is_array($list) ) {
             $res = true;
             try {
-                $zdb->db->beginTransaction();
-                $select = new \Zend_Db_Select($zdb->db);
-                $select->from(PREFIX_DB . self::TABLE)
-                    ->where(self::PK . ' IN (?)', $list);
-                $transactions = $select->query()->fetchAll();
-                foreach ( $transactions as $transaction ) {
+                $zdb->connection->beginTransaction();
+
+                $select = $zdb->select(self::TABLE);
+                $select->where->in(self::PK, $list);
+
+                $results = $zdb->execute($select);
+                foreach ( $results as $transaction ) {
                     $c = new Transaction($transaction);
                     $res = $c->remove(false);
                     if ( $res === false ) {
                         throw new \Exception;
                     }
                 }
-                $zdb->db->commit();
+                $zdb->connection->commit();
                 $hist->add(
                     "Transactions deleted (" . print_r($list, true) . ')'
                 );
             } catch (\Exception $e) {
-                /** FIXME */
-                $zdb->db->rollBack();
+                $zdb->connection->rollBack();
                 Analog::log(
                     'An error occured trying to remove transactions | ' .
                     $e->getMessage(),
@@ -401,7 +384,8 @@ class Transactions extends Pagination
         } else {
             //not numeric and not an array: incorrect.
             Analog::log(
-                'Asking to remove transaction, but without providing an array or a single numeric value.',
+                'Asking to remove transaction, but without providing ' .
+                'an array or a single numeric value.',
                 Analog::WARNING
             );
             return false;
@@ -409,12 +393,12 @@ class Transactions extends Pagination
     }
 
     /**
-    * Global getter method
-    *
-    * @param string $name name of the property we want to retrive
-    *
-    * @return object the called property
-    */
+     * Global getter method
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return object the called property
+     */
     public function __get($name)
     {
 
@@ -444,13 +428,13 @@ class Transactions extends Pagination
     }
 
     /**
-    * Global setter method
-    *
-    * @param string $name  name of the property we want to assign a value to
-    * @param object $value a relevant value for the property
-    *
-    * @return void
-    */
+     * Global setter method
+     *
+     * @param string $name  name of the property we want to assign a value to
+     * @param object $value a relevant value for the property
+     *
+     * @return void
+     */
     public function __set($name, $value)
     {
         if ( in_array($name, $this->pagination_fields) ) {
@@ -477,6 +461,84 @@ class Transactions extends Pagination
                     );
                     if ( in_array($value, $allowed_orders) ) {
                         $this->orderby = $value;
+                    }
+                    break;
+                case 'start_date_filter':
+                case 'end_date_filter':
+                    try {
+                        if ( $value !== '' ) {
+                            $y = \DateTime::createFromFormat(_T("Y"), $value);
+                            if ( $y !== false ) {
+                                $month = 1;
+                                $day = 1;
+                                if ( $name === 'end_date_filter' ) {
+                                    $month = 12;
+                                    $day = 31;
+                                }
+                                $y->setDate(
+                                    $y->format('Y'),
+                                    $month,
+                                    $day
+                                );
+                                $this->$rname = $y->format('Y-m-d');
+                            }
+
+                            $ym = \DateTime::createFromFormat(_T("Y-m"), $value);
+                            if ( $y === false && $ym  !== false ) {
+                                $day = 1;
+                                if ( $name === 'end_date_filter' ) {
+                                    $day = $ym->format('t');
+                                }
+                                $ym->setDate(
+                                    $ym->format('Y'),
+                                    $ym->format('m'),
+                                    $day
+                                );
+                                $this->$rname = $ym->format('Y-m-d');
+                            }
+
+                            $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
+                            if ( $y === false && $ym  === false && $d !== false ) {
+                                $this->$rname = $d->format('Y-m-d');
+                            }
+
+                            if ( $y === false && $ym === false && $d === false ) {
+                                $formats = array(
+                                    _T("Y"),
+                                    _T("Y-m"),
+                                    _T("Y-m-d"),
+                                );
+
+                                $field = null;
+                                if ($name === 'start_date_filter' ) {
+                                    $field = _T("start date filter");
+                                }
+                                if ($name === 'end_date_filter' ) {
+                                    $field = _T("end date filter");
+                                }
+
+                                throw new \Exception(
+                                    str_replace(
+                                        array('%field', '%format'),
+                                        array(
+                                            $field,
+                                            implode(', ', $formats)
+                                        ),
+                                        _T("Unknown date format for %field.<br/>Know formats are: %formats")
+                                    )
+                                );
+                            }
+                        } else {
+                            $this->$rname = null;
+                        }
+                    } catch (\Exception $e) {
+                        Analog::log(
+                            'Wrong date format. field: ' . $key .
+                            ', value: ' . $value . ', expected fmt: ' .
+                            _T("Y-m-d") . ' | ' . $e->getMessage(),
+                            Analog::INFO
+                        );
+                        throw $e;
                     }
                     break;
                 default:

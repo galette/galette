@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2013 The Galette Team
+ * Copyright © 2009-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,6 +38,9 @@
 namespace Galette\Core;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Adapter\Exception as AdapterException;
 
 /**
  * History management
@@ -46,7 +49,7 @@ use Analog\Analog as Analog;
  * @name      History
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-09
@@ -76,8 +79,8 @@ class History extends Pagination
     );
 
     /**
-    * Default constructor
-    */
+     * Default constructor
+     */
     public function __construct()
     {
         parent::__construct();
@@ -85,24 +88,24 @@ class History extends Pagination
     }
 
     /**
-    * Returns the field we want to default set order to
-    *
-    * @return string field name
-    */
+     * Returns the field we want to default set order to
+     *
+     * @return string field name
+     */
     protected function getDefaultOrder()
     {
         return 'date_log';
     }
 
     /**
-    * Add a new entry
-    *
-    * @param string $action   the action to log
-    * @param string $argument the argument
-    * @param string $query    the query (if relevant)
-    *
-    * @return bool true if entry was successfully added, false otherwise
-    */
+     * Add a new entry
+     *
+     * @param string $action   the action to log
+     * @param string $argument the argument
+     * @param string $query    the query (if relevant)
+     *
+     * @return bool true if entry was successfully added, false otherwise
+     */
     public function add($action, $argument = '', $query = '')
     {
         global $zdb, $login;
@@ -124,8 +127,10 @@ class History extends Pagination
                 'sql_log'    => $query
             );
 
-            $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
-        } catch (\Zend_Db_Adapter_Exception $e) {
+            $insert = $zdb->insert($this->getTableName());
+            $insert->values($values);
+            $zdb->execute($insert);
+        } catch (AdapterException $e) {
             Analog::log(
                 'Unable to initialize add log entry into database.' .
                 $e->getMessage(),
@@ -144,16 +149,19 @@ class History extends Pagination
     }
 
     /**
-    * Delete all entries
-    *
-    * @return integer : number of entries deleted
-    */
+     * Delete all entries
+     *
+     * @return boolean
+     */
     public function clean()
     {
         global $zdb;
 
         try {
-            $result = $zdb->db->query('TRUNCATE TABLE ' . $this->getTableName());
+            $result = $zdb->db->query(
+                'TRUNCATE TABLE ' . $this->getTableName(true),
+                Adapter::QUERY_MODE_EXECUTE
+            );
 
             if ( !$result ) {
                 Analog::log(
@@ -166,19 +174,19 @@ class History extends Pagination
             $this->add('Logs flushed');
             return true;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Unable to flush logs. | ' . $e->getMessage(),
                 Analog::WARNING
             );
+            return false;
         }
     }
 
     /**
-    * Get the entire history list
-    *
-    * @return array
-    */
+     * Get the entire history list
+     *
+     * @return array
+     */
     public function getHistory()
     {
         global $zdb;
@@ -196,64 +204,56 @@ class History extends Pagination
         }
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from($this->getTableName())
-                ->order($this->orderby . ' ' . $this->ordered);
+            $select = $zdb->select($this->getTableName());
+            $select->order($this->orderby . ' ' . $this->ordered);
             //add limits to retrieve only relavant rows
             $this->setLimits($select);
-            return $select->query(\Zend_Db::FETCH_ASSOC)->fetchAll();
+            $results = $zdb->execute($select);
+            return $results;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Unable to get history. | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
     }
 
     /**
-    * Count history entries
-    *
-    * @return int
-    */
+     * Count history entries
+     *
+     * @return int
+     */
     protected function getCount()
     {
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                $this->getTableName(),
-                'COUNT(' . $this->getPk() . ') as counter'
+            $select = $zdb->select($this->getTableName());
+            $select->columns(
+                array(
+                    'counter' => new Expression('COUNT(' . $this->getPk() . ')')
+                )
             );
-            $qry = $select->__toString();
-            return $select->query()->fetchObject()->counter;
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            return $result->counter;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Unable to get history count. | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
     }
 
     /**
-    * Global getter method
-    *
-    * @param string $name name of the property we want to retrive
-    *
-    * @return false|object the called property
-    */
+     * Global getter method
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return false|object the called property
+     */
     public function __get($name)
     {
 
@@ -298,13 +298,13 @@ class History extends Pagination
     }
 
     /**
-    * Global setter method
-    *
-    * @param string $name  name of the property we want to assign a value to
-    * @param object $value a relevant value for the property
-    *
-    * @return void
-    */
+     * Global setter method
+     *
+     * @param string $name  name of the property we want to assign a value to
+     * @param object $value a relevant value for the property
+     *
+     * @return void
+     */
     public function __set($name, $value)
     {
         if ( in_array($name, $this->pagination_fields) ) {
@@ -340,11 +340,17 @@ class History extends Pagination
     /**
      * Get table's name
      *
+     * @param boolean $prefixed Whether table name should be prefixed
+     *
      * @return string
      */
-    protected function getTableName()
+    protected function getTableName($prefixed = false)
     {
-        return PREFIX_DB . self::TABLE;
+        if ( $prefixed === true ) {
+            return PREFIX_DB . self::TABLE;
+        } else {
+            return self::TABLE;
+        }
     }
 
     /**

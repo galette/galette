@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2006-2013 The Galette Team
+ * Copyright © 2006-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -30,7 +30,7 @@
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
  * @author    Georges Khaznadar (i18n using gettext) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2006-2013 The Galette Team
+ * @copyright 2006-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -44,19 +44,26 @@ if (!defined('GALETTE_ROOT')) {
 if ( !defined('GALETTE_TPL_SUBDIR') ) {
     define('GALETTE_TPL_SUBDIR', 'templates/' . $preferences->pref_theme . '/');
 }
-$tpl = new Galette\Core\Smarty($plugins, $i18n, $preferences, $logo, $login, $session);
+$tpl = new Galette\Core\Smarty(
+    $plugins,
+    $i18n,
+    $preferences,
+    $logo,
+    $login,
+    $session
+);
 $tpl->muteExpectedErrors();
 
 $tpl->registerClass('GaletteMail', '\Galette\Core\GaletteMail');
 
 /**
-* Return member name. Smarty cannot directly use static functions
-*
-* @param array $params Parameters
-*
-* @return Adherent::getSName
-* @see Adherent::getSName
-*/
+ * Return member name. Smarty cannot directly use static functions
+ *
+ * @param array $params Parameters
+ *
+ * @return Adherent::getSName
+ * @see Adherent::getSName
+ */
 function getMemberName($params)
 {
     extract($params);

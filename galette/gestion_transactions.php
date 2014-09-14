@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2013 The Galette Team
+ * Copyright © 2004-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    Frédéric Jacquot <unknown@unknwown.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2004-2013 The Galette Team
+ * @copyright 2004-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -70,6 +70,24 @@ if ( isset($_GET['tri']) ) {
     $trans->orderby = $_GET['tri'];
 }
 
+if ( isset($_GET['clear_filter']) ) {
+    $trans->reinit();
+} else {
+    if ( isset($_GET['end_date_filter']) || isset($_GET['start_date_filter']) ) {
+        try {
+            if ( isset($_GET['start_date_filter']) ) {
+                $field = _T("start date filter");
+                $trans->start_date_filter = $_GET['start_date_filter'];
+            }
+            if ( isset($_GET['end_date_filter']) ) {
+                $field = _T("end date filter");
+                $trans->end_date_filter = $_GET['end_date_filter'];
+            }
+        } catch (Exception $e) {
+            $error_detected[] = $e->getMessage();
+        }
+    }
+}
 if ( ($login->isAdmin() || $login->isStaff()) && isset($_GET['id_adh']) && $_GET['id_adh'] != '' ) {
     if ( $_GET['id_adh'] == 'all' ) {
         $trans->filtre_cotis_adh = null;
@@ -93,6 +111,7 @@ $trans->setSmartyPagination($tpl);
 
 $tpl->assign('page_title', _T("Transactions managment"));
 $tpl->assign('require_dialog', true);
+$tpl->assign('require_calendar', true);
 $tpl->assign('list_trans', $list_trans);
 $tpl->assign('transactions', $trans);
 $tpl->assign('nb_transactions', $trans->getCount());

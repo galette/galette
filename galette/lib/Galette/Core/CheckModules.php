@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2013 The Galette Team
+ * Copyright © 2007-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2013 The Galette Team
+ * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -44,7 +44,7 @@ namespace Galette\Core;
  * @name      CheckModules
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2013 The Galette Team
+ * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.1dev - 2012-03-12
@@ -161,34 +161,36 @@ class CheckModules
      */
     public function toHtml()
     {
-        $html = '';
-        if ( count($this->_missing) > 0 ) {
-            $html .= '<h3 >' . _T("Missing required modules")  . '</h3>';
-            $html .= '<ul class="list">';
-            foreach ( $this->_missing as $m ) {
-                $html .= '<li class="install-bad">' . $m  . '</li>';
-            }
-            $html .= '</ul>';
+        $html = null;
+        $img_dir = null;
+        if ( defined('GALETTE_THEME_DIR') ) {
+            $img_dir = GALETTE_THEME_DIR . 'images/';
+        } else {
+            $img_dir = GALETTE_TPL_SUBDIR . 'images/';
         }
 
-        $html .= '<h3>' . _T("Active used modules")  . '</h3>';
-        if ( count($this->_good) === 0 ) {
-            $html .= "<p>" .  _T("Any required module loaded yet!") . "</p>";
-        } else {
-            $html .= '<ul class="list">';
-            foreach ( $this->_good as $m ) {
-                $html .= '<li class="install-ok">' . $m  . '</li>';
+        if ( count($this->_missing) > 0 ) {
+            foreach ( $this->_missing as $m ) {
+                $html .= '<li><span>' . $m  . '</span><span><img src="' .
+                    $img_dir  . 'icon-invalid.png" alt="' .
+                    _T("Ko") . '"/></span></li>';
             }
-            $html .= '</ul>';
+        }
+
+        if ( count($this->_good) > 0 ) {
+            foreach ( $this->_good as $m ) {
+                $html .= '<li><span>' . $m  . '</span><span><img src="' .
+                    $img_dir  . 'icon-valid.png" alt="' .
+                    _T("Ok") . '"/></span></li>';
+            }
         }
 
         if ( count($this->_should) > 0 ) {
-            $html .= '<h3 >' . _T("Modules that may be required")  . '</h3>';
-            $html .= '<ul class="list">';
             foreach ( $this->_should as $m ) {
-                $html .= '<li class="install-may">' . $m  . '</li>';
+                $html .= '<li><span>' . $m  . '</span><span><img src="' .
+                    $img_dir  . 'icon-warning.png" alt=""' .
+                    '/></span></li>';
             }
-            $html .= '</ul>';
         }
 
         return $html;

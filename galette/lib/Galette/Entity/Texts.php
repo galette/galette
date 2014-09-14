@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2013 The Galette Team
+ * Copyright © 2007-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    John Perr <johnperr@abul.org>
  * @author    Johan Cwiklinski <joahn@x-tnd.be>
- * @copyright 2007-2013 The Galette Team
+ * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -39,6 +39,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 
 /**
  * Texts class for galette
@@ -48,7 +49,7 @@ use Analog\Analog as Analog;
  * @package   Galette
  * @author    John Perr <johnperr@abul.org>
  * @author    Johan Cwiklinski <joahn@x-tnd.be>
- * @copyright 2007-2013 The Galette Team
+ * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Avaialble since 0.7dev - 2007-07-16
@@ -140,13 +141,13 @@ class Texts
     }
 
     /**
-    * Get specific text
-    *
-    * @param string $ref  Reference of text to get
-    * @param string $lang Language texts to get
-    *
-    * @return array of all text fields for one language.
-    */
+     * Get specific text
+     *
+     * @param string $ref  Reference of text to get
+     * @param string $lang Language texts to get
+     *
+     * @return array of all text fields for one language.
+     */
     public function getTexts($ref,$lang)
     {
         global $zdb, $i18n;
@@ -171,11 +172,15 @@ class Texts
         }
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where('tref = ?', $ref)
-                ->where('tlang = ?', $lang);
-            $result = $select->query()->fetch();
+            $select = $zdb->select(self::TABLE);
+            $select->where(
+                array(
+                    'tref' => $ref,
+                    'tlang' => $lang
+                )
+            );
+            $results = $zdb->execute($select);
+            $result = $results->current();
             if ( $result ) {
                 $this->_all_texts = $result;
             } else {
@@ -199,7 +204,9 @@ class Texts
                     );
 
                     try {
-                        $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
+                        $insert = $zdb->insert(self::TABLE);
+                        $insert->values($values);
+                        $zdb->execute($insert);
                         return $this->getTexts($ref, $lang);
                     } catch( \Exception $e ) {
                         Analog::log(
@@ -218,15 +225,10 @@ class Texts
             }
             return $this->_all_texts;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot get text `' . $ref . '` for lang `' . $lang . '` | ' .
                 $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -249,24 +251,22 @@ class Texts
         //set texts
 
         try {
-            /** FIXME: quote? */
             $values = array(
                 'tsubject' => $subject,
                 'tbody'    => $body,
             );
 
-            $where = array();
-            $where[] = $zdb->db->quoteInto('tref = ?', $ref);
-            $where[] = $zdb->db->quoteInto('tlang = ?', $lang);
-
-            $edit = $zdb->db->update(
-                PREFIX_DB . self::TABLE,
-                $values,
-                $where
+            $update = $zdb->update(self::TABLE);
+            $update->set($values)->where(
+                array(
+                    'tref'  => $ref,
+                    'tlang' => $lang
+                )
             );
+            $zdb->execute($update);
+
             return true;
         } catch (\Exception $e) {
-            /** FIXME */
             Analog::log(
                 'An error has occured while storing mail text. | ' .
                 $e->getMessage(),
@@ -277,34 +277,28 @@ class Texts
     }
 
     /**
-    * Ref List
-    *
-    * @param string $lang Requested language
-    *
-    * @return array: list of references used for texts
-    */
+     * Ref List
+     *
+     * @param string $lang Requested language
+     *
+     * @return array: list of references used for texts
+     */
     public function getRefs($lang)
     {
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . self::TABLE,
+            $select = $zdb->select(self::TABLE);
+            $select->columns(
                 array('tref', 'tcomment')
-            )->where('tlang = ?', $lang);
+            )->where(array('tlang' => $lang));
 
-            return $select->query(\Zend_Db::FETCH_ASSOC)->fetchAll();
+            return $zdb->execute($select);
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot get refs for lang `' . $lang . '` | ' .
                 $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -320,17 +314,22 @@ class Texts
     public static function getDbFields()
     {
         global $zdb;
-        return array_keys($zdb->db->describeTable(PREFIX_DB . self::TABLE));
+        $columns = $zdb->getColumns(self::TABLE);
+        $fields = array();
+        foreach ( $columns as $col ) {
+            $fields[] = $col->getName();
+        }
+        return $fields;
     }
 
     /**
-    * Initialize texts at install time
-    *
-    * @param boolean $check_first Check first if it seem initialized
-    *
-    * @return boolean|Exception false if no need to initialize, true if data
-    *                           has been initialized, Exception if error
-    */
+     * Initialize texts at install time
+     *
+     * @param boolean $check_first Check first if it seem initialized
+     *
+     * @return boolean|Exception false if no need to initialize, true if data
+     *                           has been initialized, Exception if error
+     */
     public function installInit($check_first = true)
     {
         global $zdb;
@@ -340,12 +339,16 @@ class Texts
             //been initialized
             $proceed = false;
             if ( $check_first === true ) {
-                $select = new \Zend_Db_Select($zdb->db);
-                $select->from(
-                    PREFIX_DB . self::TABLE,
-                    'COUNT(' . self::PK . ') as counter'
+                $select = $zdb->select(self::TABLE);
+                $select->columns(
+                    array(
+                        'counter' => new Expression('COUNT(' . self::PK . ')')
+                    )
                 );
-                $count = $select->query()->fetchObject()->counter;
+
+                $results = $zdb->execute($select);
+                $result = $results->current();
+                $count = $result->counter;
                 if ( $count == 0 ) {
                     //if we got no values in texts table, let's proceed
                     $proceed = true;
@@ -361,23 +364,10 @@ class Texts
 
             if ( $proceed === true ) {
                 //first, we drop all values
-                $zdb->db->delete(PREFIX_DB . self::TABLE);
+                $delete = $zdb->delete(self::TABLE);
+                $zdb->execute($delete);
 
-                $stmt = $zdb->db->prepare(
-                    'INSERT INTO ' . PREFIX_DB . self::TABLE .
-                    ' (tid, tref, tsubject, tbody, tlang, tcomment) ' .
-                    'VALUES(:tid, :tref, :tsubject, :tbody, :tlang, :tcomment )'
-                );
-
-                foreach ( $this->_defaults as $d ) {
-                    $stmt->bindParam(':tid', $d['tid']);
-                    $stmt->bindParam(':tref', $d['tref']);
-                    $stmt->bindParam(':tsubject', $d['tsubject']);
-                    $stmt->bindParam(':tbody', $d['tbody']);
-                    $stmt->bindParam(':tlang', $d['tlang']);
-                    $stmt->bindParam(':tcomment', $d['tcomment']);
-                    $stmt->execute();
-                }
+                $this->_insert($zdb, $this->_defaults);
 
                 Analog::log(
                     'Default texts were successfully stored into database.',
@@ -404,11 +394,8 @@ class Texts
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . self::TABLE
-            );
-            $list = $select->query()->fetchAll();
+            $select = $zdb->select(self::TABLE);
+            $list = $zdb->execute($select);
 
             $missing = array();
             foreach ( $this->_defaults as $default ) {
@@ -429,21 +416,7 @@ class Texts
             }
 
             if ( count($missing) >0 ) {
-                $stmt = $zdb->db->prepare(
-                    'INSERT INTO ' . PREFIX_DB . self::TABLE .
-                    ' (tid, tref, tsubject, tbody, tlang, tcomment) ' .
-                    'VALUES(:tid, :tref, :tsubject, :tbody, :tlang, :tcomment )'
-                );
-
-                foreach ( $missing as $d ) {
-                    $stmt->bindParam(':tid', $d['tid']);
-                    $stmt->bindParam(':tref', $d['tref']);
-                    $stmt->bindParam(':tsubject', $d['tsubject']);
-                    $stmt->bindParam(':tbody', $d['tbody']);
-                    $stmt->bindParam(':tlang', $d['tlang']);
-                    $stmt->bindParam(':tcomment', $d['tcomment']);
-                    $stmt->execute();
-                }
+                $this->_insert($zdb, $missing);
 
                 Analog::log(
                     'Missing texts were successfully stored into database.',
@@ -486,5 +459,33 @@ class Texts
             $this->_replaces,
             $this->_all_texts->tbody
         );
+    }
+
+    /**
+     * Insert values in database
+     *
+     * @param Db    $zdb    Database instance
+     * @param array $values Values to insert
+     *
+     * @return void
+     */
+    private function _insert($zdb, $values)
+    {
+        $insert = $zdb->insert(self::TABLE);
+        $insert->values(
+            array(
+                'tid'       => ':tid',
+                'tref'      => ':tref',
+                'tsubject'  => ':tsubject',
+                'tbody'     => ':tbody',
+                'tlang'     => ':tlang',
+                'tcomment'  => ':tcomment'
+            )
+        );
+        $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
+
+        foreach ( $values as $value ) {
+            $stmt->execute($value);
+        }
     }
 }

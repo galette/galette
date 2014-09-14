@@ -34,7 +34,7 @@ body {
 }
 
 body {
-    font-family: "Cantarell", Verdana, sans-serif;
+    font-family: "Liberation sans", Verdana, sans-serif;
     font-size:0.85em;
     background-color:white;
     color:black;
@@ -462,7 +462,7 @@ footer li {
 }
 
 /* == Buttons */
-#delete, #sendmail, #btnsave, #btnvalid, #btnadd, #btncancel, #btnsend, #btnpreview, #btnusers, .button {
+#delete, #delete_cascade, #sendmail, #btnsave, #btnvalid, #btnadd, #btncancel, #btnsend, #btnpreview, #btnusers, #btnback, .button {
     padding-left: 2em!important;
     background-position: 10px 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
@@ -514,10 +514,10 @@ h1 #sendmail .ui-button-text {
     display: none;
 }
 
-#delete{
+#delete, #delete_cascade{
     background-image: url(images/icon-trash.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
-#delete.ui-state-hover {
+#delete.ui-state-hover, #delete_cascade.ui-state-hover {
     background-image:url(images/icon-trash.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
@@ -982,6 +982,134 @@ table.infoline {
 /* =/ Public pages */
 
 /*
+ * == Plugins installation
+ */
+
+#plugin_install {
+    background: #DDDDFF;
+    border-radius: 6px;
+    padding: 1em;
+}
+
+#plugin_install footer {
+    margin:.5em 0 0;
+    padding: .1em .5em;
+    text-align: center;
+    font-size: 0.85em;
+    border: 1px rgba(255, 255, 255, 0.5) solid;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border-radius: 10px 10px 10px 10px;
+}
+
+#plugin_install footer p{
+    margin:.5em .5em 0;
+    color: #666666;
+    font-size: 1.2em;
+    font-weight:bold;
+}
+
+#plugin_install footer ol{
+    color:#999;
+    padding:0;
+    margin:0 0.5em 0.5em 0.5em;
+    list-style-type:none;
+}
+#plugin_install footer li{
+    line-height:1.7em;
+    display:inline;
+    margin: .1em;
+    padding: 0;
+}
+
+#plugin_install footer .current{
+    color:black;
+    font-weight:bold;
+}
+
+#btn_box{
+    text-align: right;
+    margin:0;
+}
+
+#plugin_install > div {
+    padding: .2em;
+    background-color: white;
+    border-radius: 6px;
+}
+
+#plugin_install h2{
+    margin: .5em 0 0;
+    font-size:1.2em;
+    text-align: center;
+}
+
+#installation_mode {
+    display: table;
+    table-layout: fixed;
+    border-spacing: .5em;
+    border-collapse: separate;
+}
+
+.installation_mode {
+    display: table-cell;
+    width: 10%;
+    border-radius: 6px;
+    -moz-box-shadow: 0px 1px 2px #555;
+    -webkitbox-shadow: 0px 1px 2px #555;
+    box-shadow: 0px 1px 2px #555;
+}
+
+#plugin_install h3 {
+    font-size: 1.1em;
+    margin: .2em 0 0;
+    color: #666666;
+    text-align: center;
+}
+
+#plugin_install ul {
+    margin: 0 auto .7em!important;
+}
+
+ul.leaders {
+    display: block!important;
+    max-width: 40em;
+    padding: 0;
+    overflow-x: hidden;
+    list-style: none;
+    overflow: hidden;
+}
+
+ul.leaders li {
+    position: relative;
+}
+
+ul.leaders li:before {
+    float: left;
+    width: 0;
+    white-space: nowrap;
+    content:
+ ". . . . . . . . . . . . . . . . . . . . "
+ ". . . . . . . . . . . . . . . . . . . . "
+ ". . . . . . . . . . . . . . . . . . . . "
+ ". . . . . . . . . . . . . . . . . . . . "
+}
+
+ul.leaders span:first-child {
+    padding-right: 0.33em;
+    background: white
+}
+
+ul.leaders span + span {
+    padding-left: 0.33em;
+    position: absolute;
+    background: white;
+    right: 0;
+}
+
+/* =/ Plugins installation */
+
+/*
  * == End
  */
 
@@ -1005,7 +1133,7 @@ input.submit:hover
     font-weight: bold;
 }
 
-#titre{
+#titre, #plugin_install h1{
     font-size:1.3em;
     line-height:1.7em;
     background-color:#DDDDFF;

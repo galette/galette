@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013 The Galette Team
+ * Copyright © 2013-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2013 The Galette Team
+ * @copyright 2011-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,6 +38,7 @@
 namespace Galette\Repository;
 
 use Analog\Analog;
+use Zend\Db\Sql\Expression;
 use Galette\Entity\PdfModel;
 use Galette\Entity\PdfMain;
 use Galette\Entity\PdfInvoice;
@@ -50,7 +51,7 @@ use Galette\Entity\PdfReceipt;
  * @name      PdfModels
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-25
@@ -65,14 +66,12 @@ class PdfModels extends Repository
     public function getList()
     {
         try {
-            $select = new \Zend_Db_Select($this->zdb->db);
-            $select->from(
-                array('a' => PREFIX_DB . PdfModel::TABLE)
-            )->order(PdfModel::PK);
+            $select = $this->zdb->select(PdfModel::TABLE, 'a');
+            $select->order(PdfModel::PK);
 
             $models = array();
-            $res = $select->query()->fetchAll();
-            foreach ( $res as $row ) {
+            $results = $this->zdb->execute($select);
+            foreach ( $results as $row ) {
                 $class = PdfModel::getTypeClass($row->model_type);
                 $models[] = new $class($this->zdb, $this->preferences, $row);
             }
@@ -81,10 +80,6 @@ class PdfModels extends Repository
             Analog::log(
                 'Cannot list pdf models | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->getTraceAsString(),
-                Analog::ERROR
             );
         }
     }
@@ -105,12 +100,16 @@ class PdfModels extends Repository
             //been initialized
             $proceed = false;
             if ( $check_first === true ) {
-                $select = new \Zend_Db_Select($this->zdb->db);
-                $select->from(
-                    PREFIX_DB . $ent::TABLE,
-                    'COUNT(' . $ent::PK . ') as counter'
+                $select = $this->zdb->select(PdfModel::TABLE);
+                $select->columns(
+                    array(
+                        'counter' => new Expression('COUNT(' . $ent::PK . ')')
+                    )
                 );
-                $count = $select->query()->fetchObject()->counter;
+
+                $results = $this->zdb->execute($select);
+                $result = $results->current();
+                $count = $result->counter;
                 if ( $count == 0 ) {
                     //if we got no values in texts table, let's proceed
                     $proceed = true;
@@ -125,30 +124,18 @@ class PdfModels extends Repository
             }
 
             if ( $proceed === true ) {
-                $this->zdb->db->beginTransaction();
+                $this->zdb->connection->beginTransaction();
 
                 //first, we drop all values
-                $this->zdb->db->delete(PREFIX_DB . $ent::TABLE);
+                $delete = $this->zdb->delete($ent::TABLE);
+                $this->zdb->execute($delete);
+                $this->_insert($ent::TABLE, $defaults);
 
-                $stmt = $this->zdb->db->prepare(
-                    'INSERT INTO ' . PREFIX_DB . $ent::TABLE .
-                    ' (model_id, model_name, model_title, model_type, ' .
-                    'model_header, model_footer, model_body, model_styles, ' .
-                    'model_parent) ' .
-                    'VALUES(:model_id, :model_name, :model_title, :model_type, ' .
-                    ':model_header, :model_footer, :model_body, :model_styles, ' .
-                    ':model_parent)'
-                );
-
-                foreach ( $defaults as $d ) {
-                    $stmt->execute($d);
-                }
-
-                $this->zdb->db->commit();
+                $this->zdb->connection->commit();
                 return true;
             }
         } catch (\Exception $e) {
-            $this->zdb->db->rollBack();
+            $this->zdb->connection->rollBack();
             return $e;
         }
     }
@@ -163,12 +150,9 @@ class PdfModels extends Repository
     private function _checkUpdate($defaults)
     {
         try {
-            $select = new \Zend_Db_Select($this->zdb->db);
             $ent = $this->entity;
-            $select->from(
-                PREFIX_DB . $ent::TABLE
-            );
-            $list = $select->query()->fetchAll();
+            $select = $this->zdb->select($ent::TABLE);
+            $list = $this->zdb->execute($select);
 
             $missing = array();
             foreach ( $defaults as $default ) {
@@ -187,31 +171,49 @@ class PdfModels extends Repository
             }
 
             if ( count($missing) >0 ) {
-                $this->zdb->db->beginTransaction();
-                $stmt = $this->zdb->db->prepare(
-                    'INSERT INTO ' . PREFIX_DB . $ent::TABLE .
-                    ' (model_id, model_name, model_title, model_type, ' .
-                    'model_header, model_footer, model_body, model_styles, ' .
-                    'model_parent) ' .
-                    'VALUES(:model_id, :model_name, :model_title, :model_type, ' .
-                    ':model_header, :model_footer, :model_body, :model_styles, ' .
-                    ':model_parent)'
-                );
-
-                foreach ( $missing as $d ) {
-                    $stmt->execute($d);
-                }
-
-                $this->zdb->db->commit();
+                $this->zdb->connection->beginTransaction();
+                $this->_insert($ent::TABLE, $missing);
                 Analog::log(
                     'Missing texts were successfully stored into database.',
                     Analog::INFO
                 );
+                $this->zdb->connection->commit();
                 return true;
             }
         } catch (\Exception $e) {
-            $this->zdb->db->rollBack();
+            $this->zdb->connection->rollBack();
             throw $e;
+        }
+    }
+
+    /**
+     * Insert values in database
+     *
+     * @param string $table  Table name
+     * @param array  $values Values to insert
+     *
+     * @return void
+     */
+    private function _insert($table, $values)
+    {
+        $insert = $this->zdb->insert($table);
+        $insert->values(
+            array(
+                'model_id'      => ':model_id',
+                'model_name'    => ':model_name',
+                'model_title'   => ':model_title',
+                'model_type'    => ':model_type',
+                'model_header'  => ':model_header',
+                'model_footer'  => ':model_footer',
+                'model_body'    => ':model_body',
+                'model_styles'  => ':model_styles',
+                'model_parent'  => ':model_parent'
+            )
+        );
+        $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
+
+        foreach ( $values as $value ) {
+            $stmt->execute($value);
         }
     }
 }

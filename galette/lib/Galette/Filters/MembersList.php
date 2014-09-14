@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2013 The Galette Team
+ * Copyright © 2009-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -50,7 +50,7 @@ use Galette\Repository\Members as Members;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -83,28 +83,28 @@ class MembersList extends Pagination
     );
 
     /**
-    * Default constructor
-    */
+     * Default constructor
+     */
     public function __construct()
     {
         $this->reinit();
     }
 
     /**
-    * Returns the field we want to default set order to
-    *
-    * @return string field name
-    */
+     * Returns the field we want to default set order to
+     *
+     * @return string field name
+     */
     protected function getDefaultOrder()
     {
         return 'nom_adh';
     }
 
     /**
-    * Reinit default parameters
-    *
-    * @return void
-    */
+     * Reinit default parameters
+     *
+     * @return void
+     */
     public function reinit()
     {
         parent::reinit();
@@ -118,12 +118,12 @@ class MembersList extends Pagination
     }
 
     /**
-    * Global getter method
-    *
-    * @param string $name name of the property we want to retrive
-    *
-    * @return object the called property
-    */
+     * Global getter method
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return object the called property
+     */
     public function __get($name)
     {
 
@@ -152,13 +152,13 @@ class MembersList extends Pagination
     }
 
     /**
-    * Global setter method
-    *
-    * @param string $name  name of the property we want to assign a value to
-    * @param object $value a relevant value for the property
-    *
-    * @return void
-    */
+     * Global setter method
+     *
+     * @param string $name  name of the property we want to assign a value to
+     * @param object $value a relevant value for the property
+     *
+     * @return void
+     */
     public function __set($name, $value)
     {
 
@@ -176,7 +176,7 @@ class MembersList extends Pagination
                 if (is_array($value)) {
                     $name = '_' . $name;
                     $this->$name = $value;
-                } else {
+                } else if ( $value !== null ) {
                     Analog::log(
                         '[MembersList] Value for property `' . $name .
                         '` should be an array (' . gettype($value) . ' given)',
@@ -194,7 +194,7 @@ class MembersList extends Pagination
                 if ( is_numeric($value) ) {
                     $name = '_' . $name;
                     $this->$name = $value;
-                } else {
+                } else if ($value !== null) {
                     Analog::log(
                         '[MembersList] Value for property `' . $name .
                         '` should be an integer (' . gettype($value) . ' given)',
@@ -221,7 +221,7 @@ class MembersList extends Pagination
                 }
                 break;
             case 'group_filter':
-                if ( is_numeric($value) ) {
+                if ( is_numeric($value) && $value > 0 ) {
                     //check group existence
                     $g = new Group();
                     $res = $g->load($value);
@@ -233,10 +233,10 @@ class MembersList extends Pagination
                             Analog::WARNING
                         );
                     }
-                } else {
+                } else if ( $value !== null && $value !== '0' ) {
                     Analog::log(
                         '[MembersList] Value for group filter should be an '
-                        .'integer (' . gettype($value) . ' given',
+                        .'integer (' . gettype($value) . ' given)',
                         Analog::WARNING
                     );
                 }
@@ -257,7 +257,7 @@ class MembersList extends Pagination
     /**
      * Add SQL limit
      *
-     * @param Zend_Db_Select $select Original select
+     * @param Select $select Original select
      *
      * @return <type>
      */

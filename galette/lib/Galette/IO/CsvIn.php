@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013 The Galette Team
+ * Copyright © 2013-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -49,7 +49,7 @@ use Analog\Analog as Analog;
  * @name      Csv
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Disponible depuis la Release 0.7.6dev - 2013-08-27
@@ -438,14 +438,7 @@ class CsvIn extends Csv
         }
 
         //identify MIME type
-        if (function_exists("finfo_open")) {
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mime = finfo_file($finfo, $tmpfile);
-            finfo_close($finfo);
-        } else {
-            // deprecated
-            $mime = mime_content_type($tmpfile);
-        }
+        $mime = File::getMimeType($tmpfile);
 
         if ( !in_array($mime, $this->allowed_mimes) ) {
             Analog::log(

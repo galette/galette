@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010-2013 The Galette Team
+ * Copyright © 2010-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2013 The Galette Team
+ * @copyright 2010-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -47,7 +47,7 @@ use Analog\Analog as Analog;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2013 The Galette Team
+ * @copyright 2010-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -74,18 +74,18 @@ abstract class Pagination
     );
 
     /**
-    * Default constructor
-    */
+     * Default constructor
+     */
     public function __construct()
     {
         $this->reinit();
     }
 
     /**
-    * Returns the field we want to default set order to
-    *
-    * @return string field name
-    */
+     * Returns the field we want to default set order to
+     *
+     * @return string field name
+     */
     abstract protected function getDefaultOrder();
 
     /**
@@ -99,10 +99,10 @@ abstract class Pagination
     }
 
     /**
-    * Reinit default parameters
-    *
-    * @return void
-    */
+     * Reinit default parameters
+     *
+     * @return void
+     */
     public function reinit()
     {
         global $preferences;
@@ -114,10 +114,10 @@ abstract class Pagination
     }
 
     /**
-    * Invert sort order
-    *
-    * @return void
-    */
+     * Invert sort order
+     *
+     * @return void
+     */
     public function invertorder()
     {
         $actual=$this->_ordered;
@@ -130,22 +130,22 @@ abstract class Pagination
     }
 
     /**
-    * Get current sort direction
-    *
-    * @return self::ORDER_ASC|self::ORDER_DESC
-    */
+     * Get current sort direction
+     *
+     * @return self::ORDER_ASC|self::ORDER_DESC
+     */
     public function getDirection()
     {
         return $this->_ordered;
     }
 
     /**
-    * Set sort direction
-    *
-    * @param string $direction self::ORDER_ASC|self::ORDER_DESC
-    *
-    * @return void
-    */
+     * Set sort direction
+     *
+     * @param string $direction self::ORDER_ASC|self::ORDER_DESC
+     *
+     * @return void
+     */
     public function setDirection($direction)
     {
         if ( $direction == self::ORDER_ASC || $direction == self::ORDER_DESC ) {
@@ -163,23 +163,25 @@ abstract class Pagination
     /**
      * Add limits so we retrieve only relavant rows
      *
-     * @param Zend_Db_Statement $select Original select
+     * @param Select $select Original select
      *
      * @return void
      */
     protected function setLimits($select)
     {
-        $select->limit(
-            $this->show,
-            ($this->current_page - 1) * $this->show
-        );
+        if ( $this->_show !== 0 ) {
+            $select->limit($this->_show);
+            $select->offset(
+                ($this->current_page - 1) * $this->_show
+            );
+        }
     }
 
     /**
-    * Update or set pages count
-    *
-    * @return void
-    */
+     * Update or set pages count
+     *
+     * @return void
+     */
     protected function countPages()
     {
         if ( $this->_show !== 0 ) {
@@ -200,14 +202,14 @@ abstract class Pagination
     }
 
     /**
-    * Creates pagination links and assign some usefull variables to the
-    * Smarty template
-    *
-    * @param Smarty  $tpl        Smarty template
-    * @param boolean $restricted Do not permit to display all
-    *
-    * @return void
-    */
+     * Creates pagination links and assign some usefull variables to the
+     * Smarty template
+     *
+     * @param Smarty  $tpl        Smarty template
+     * @param boolean $restricted Do not permit to display all
+     *
+     * @return void
+     */
     public function setSmartyPagination($tpl, $restricted = true)
     {
         $paginate = null;
@@ -278,12 +280,12 @@ abstract class Pagination
     }
 
     /**
-    * Global getter method
-    *
-    * @param string $name name of the property we want to retrive
-    *
-    * @return object the called property
-    */
+     * Global getter method
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return object the called property
+     */
     public function __get($name)
     {
 
@@ -306,13 +308,13 @@ abstract class Pagination
     }
 
     /**
-    * Global setter method
-    *
-    * @param string $name  name of the property we want to assign a value to
-    * @param object $value a relevant value for the property
-    *
-    * @return void
-    */
+     * Global setter method
+     *
+     * @param string $name  name of the property we want to assign a value to
+     * @param object $value a relevant value for the property
+     *
+     * @return void
+     */
     public function __set($name, $value)
     {
 

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2013 The Galette Team
+ * Copyright © 2011-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2013 The Galette Team
+ * @copyright 2011-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 use Galette\Repository\Contributions as Contributions;
 
 /**
@@ -47,7 +48,7 @@ use Galette\Repository\Contributions as Contributions;
  * @name      Transaction
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010 The Galette Team
+ * @copyright 2010-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-11
@@ -67,24 +68,24 @@ class Transaction
     private $_fields;
 
     /**
-    * Default constructor
-    *
-    * @param null|int|ResultSet $args Either a ResultSet row or its id for to load
-    *                                   a specific transaction, or null to just
-    *                                   instanciate object
-    */
+     * Default constructor
+     *
+     * @param null|int|ResultSet $args Either a ResultSet row or its id for to load
+     *                                   a specific transaction, or null to just
+     *                                   instanciate object
+     */
     public function __construct($args = null)
     {
         /*
-        * Fields configuration. Each field is an array and must reflect:
-        * array(
-        *   (string)label,
-        *   (string) propname
-        * )
-        *
-        * I'd prefer a static private variable for this...
-        * But call to the _T function does not seem to be allowed there :/
-        */
+         * Fields configuration. Each field is an array and must reflect:
+         * array(
+         *   (string)label,
+         *   (string) propname
+         * )
+         *
+         * I'd prefer a static private variable for this...
+         * But call to the _T function does not seem to be allowed there :/
+         */
         $this->_fields = array(
             self::PK            => array(
                 'label'    => null, //not a field in the form
@@ -119,21 +120,22 @@ class Transaction
     }
 
     /**
-    * Loads a transaction from its id
-    *
-    * @param int $id the identifier for the transaction to load
-    *
-    * @return bool true if query succeed, false otherwise
-    */
+     * Loads a transaction from its id
+     *
+     * @param int $id the identifier for the transaction to load
+     *
+     * @return bool true if query succeed, false otherwise
+     */
     public function load($id)
     {
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . ' = ?', $id);
-            $result = $select->query()->fetch();
+            $select = $zdb->select(self::TABLE);
+            $select->where(self::PK . ' = ' . $id);
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
             if ( $result ) {
                 $this->_loadFromRS($result);
                 return true;
@@ -141,7 +143,6 @@ class Transaction
                 throw new \Exception;
             }
         } catch (\Exception $e) {
-            /** FIXME */
             Analog::log(
                 'Cannot load transaction form id `' . $id . '` | ' .
                 $e->getMessage(),
@@ -164,7 +165,7 @@ class Transaction
 
         try {
             if ( $transaction ) {
-                $zdb->db->beginTransaction();
+                $zdb->connection->beginTransaction();
             }
 
             //remove associated contributions if needeed
@@ -179,19 +180,19 @@ class Transaction
             }
 
             //remove transaction itself
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::TABLE,
+            $delete = $zdb->delete(self::TABLE);
+            $delete->where(
                 self::PK . ' = ' . $this->_id
             );
+            $zdb->execute($delete);
 
             if ( $transaction ) {
-                $zdb->db->commit();
+                $zdb->connection->commit();
             }
             return true;
         } catch (\Exception $e) {
-            /** FIXME */
             if ( $transaction ) {
-                $zdb->db->rollBack();
+                $zdb->connection->rollBack();
             }
             Analog::log(
                 'An error occured trying to remove transaction #' .
@@ -203,12 +204,12 @@ class Transaction
     }
 
     /**
-    * Populate object from a resultset row
-    *
-    * @param ResultSet $r the resultset row
-    *
-    * @return void
-    */
+     * Populate object from a resultset row
+     *
+     * @param ResultSet $r the resultset row
+     *
+     * @return void
+     */
     private function _loadFromRS($r)
     {
         $pk = self::PK;
@@ -348,7 +349,7 @@ class Transaction
         global $zdb, $hist;
 
         try {
-            $zdb->db->beginTransaction();
+            $zdb->connection->beginTransaction();
             $values = array();
             $fields = self::getDbFields();
             /** FIXME: quote? */
@@ -360,12 +361,18 @@ class Transaction
             if ( !isset($this->_id) || $this->_id == '') {
                 //we're inserting a new transaction
                 unset($values[self::PK]);
-                $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
-                if ( $add > 0) {
-                    $this->_id = $zdb->db->lastInsertId(
-                        PREFIX_DB . self::TABLE,
-                        'id'
-                    );
+                $insert = $zdb->insert(self::TABLE);
+                $insert->values($values);
+                $add = $zdb->execute($insert);
+                if ( $add->count() > 0) {
+                    if ( $zdb->isPostgres() ) {
+                        $this->_id = $zdb->driver->getLastGeneratedValue(
+                            PREFIX_DB . 'transactions_id_seq'
+                        );
+                    } else {
+                        $this->_id = $zdb->driver->getLastGeneratedValue();
+                    }
+
                     // logging
                     $hist->add(
                         _T("Transaction added"),
@@ -379,25 +386,24 @@ class Transaction
                 }
             } else {
                 //we're editing an existing transaction
-                $edit = $zdb->db->update(
-                    PREFIX_DB . self::TABLE,
-                    $values,
+                $update = $zdb->update(self::TABLE);
+                $update->set($values)->where(
                     self::PK . '=' . $this->_id
                 );
+                $edit = $zdb->execute($update);
                 //edit == 0 does not mean there were an error, but that there
                 //were nothing to change
-                if ( $edit > 0 ) {
+                if ( $edit->count() > 0 ) {
                     $hist->add(
                         _T("Transaction updated"),
                         Adherent::getSName($this->_member)
                     );
                 }
             }
-            $zdb->db->commit();
+            $zdb->connection->commit();
             return true;
         } catch (\Exception $e) {
-            /** FIXME */
-            $zdb->db->rollBack();
+            $zdb->connection->rollBack();
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
@@ -417,22 +423,22 @@ class Transaction
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . Contribution::TABLE,
-                'SUM(montant_cotis)'
-            )->where(self::PK . ' = ?', $this->_id);
-            $dispatched_amount = $select->query()->fetchColumn();
+            $select = $zdb->select(Contribution::TABLE);
+            $select->columns(
+                array(
+                    'sum' => new Expression('SUM(montant_cotis)')
+                )
+            )->where(self::PK . ' = ' . $this->_id);
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            $dispatched_amount = $result->sum;
             return (double)$dispatched_amount;
         } catch (\Exception $e) {
             Analog::log(
                 'An error occured retrieving dispatched amounts | ' .
                 $e->getMessage(),
                 Analog::ERROR
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString(),
-                Analog::DEBUG
             );
         }
     }
@@ -447,22 +453,22 @@ class Transaction
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . Contribution::TABLE,
-                'SUM(montant_cotis)'
-            )->where(self::PK . ' = ?', $this->_id);
-            $dispatched_amount = $select->query()->fetchColumn();
+            $select = $zdb->select(Contribution::TABLE);
+            $select->columns(
+                array(
+                    'sum' => new Expression('SUM(montant_cotis)')
+                )
+            )->where(self::PK . ' = ' . $this->_id);
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            $dispatched_amount = $result->sum;
             return (double)$this->_amount - (double)$dispatched_amount;
         } catch (\Exception $e) {
             Analog::log(
                 'An error occured retrieving missing amounts | ' .
                 $e->getMessage(),
                 Analog::ERROR
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString(),
-                Analog::DEBUG
             );
         }
     }
@@ -475,14 +481,19 @@ class Transaction
     public static function getDbFields()
     {
         global $zdb;
-        return array_keys($zdb->db->describeTable(PREFIX_DB . self::TABLE));
+        $columns = $zdb->getColumns(self::TABLE);
+        $fields = array();
+        foreach ( $columns as $col ) {
+            $fields[] = $col->getName();
+        }
+        return $fields;
     }
 
     /**
-    * Get the relevant CSS class for current transaction
-    *
-    * @return string current transaction row class
-    */
+     * Get the relevant CSS class for current transaction
+     *
+     * @return string current transaction row class
+     */
     public function getRowClass()
     {
         return ( $this->getMissingAmount() == 0 ) ?
@@ -491,12 +502,12 @@ class Transaction
     }
 
     /**
-    * Global getter method
-    *
-    * @param string $name name of the property we want to retrive
-    *
-    * @return false|object the called property
-    */
+     * Global getter method
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return false|object the called property
+     */
     public function __get($name)
     {
         $forbidden = array();
@@ -505,7 +516,20 @@ class Transaction
         if ( !in_array($name, $forbidden) && isset($this->$rname) ) {
             switch($name) {
             case 'date':
-                return date_db2text($this->$rname);
+                if ( $this->$rname != '' ) {
+                    try {
+                        $d = new \DateTime($this->$rname);
+                        return $d->format(_T("Y-m-d"));
+                    } catch (\Exception $e) {
+                        //oops, we've got a bad date :/
+                        Analog::log(
+                            'Bad date (' . $this->$rname . ') | ' .
+                            $e->getMessage(),
+                            Analog::INFO
+                        );
+                        return $this->$rname;
+                    }
+                }
                 break;
             default:
                 return $this->$rname;
@@ -517,13 +541,13 @@ class Transaction
     }
 
     /**
-    * Global setter method
-    *
-    * @param string $name  name of the property we want to assign a value to
-    * @param object $value a relevant value for the property
-    *
-    * @return void
-    */
+     * Global setter method
+     *
+     * @param string $name  name of the property we want to assign a value to
+     * @param object $value a relevant value for the property
+     *
+     * @return void
+     */
     public function __set($name, $value)
     {
         /*$forbidden = array('fields');*/

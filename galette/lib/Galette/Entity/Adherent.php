@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2013 The Galette Team
+ * Copyright © 2009-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
 use Galette\Core\Picture as Picture;
 use Galette\Core\GaletteMail as GaletteMail;
 use Galette\Core\Password as Password;
@@ -51,7 +52,7 @@ use Galette\Repository\Members as Members;
  * @name      Adherent
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 02-06-2009
@@ -147,13 +148,13 @@ class Adherent
 
 
     /**
-    * Default constructor
-    *
-    * @param mixed   $args Either a ResultSet row, its id or its
-    *                      login or its mail for to load s specific
-    *                      member, or null to just instanciate object
-    * @param boolean $deps Dependencies configuration, see Adherent::$_deps
-    */
+     * Default constructor
+     *
+     * @param mixed   $args Either a ResultSet row, its id or its
+     *                      login or its mail for to load s specific
+     *                      member, or null to just instanciate object
+     * @param boolean $deps Dependencies configuration, see Adherent::$_deps
+     */
     public function __construct($args = null, $deps = null)
     {
         global $i18n, $members_fields;
@@ -171,16 +172,16 @@ class Adherent
         }
 
         /*
-        * Fields configuration. Each field is an array and must reflect:
-        * array(
-        *   (string)label,
-        *   (string) propname,
-        *   (boolean)required,
-        *   (boolean)visible,
-        *   (int)position,
-        *   (int)category
-        * )
-        */
+         * Fields configuration. Each field is an array and must reflect:
+         * array(
+         *   (string)label,
+         *   (string) propname,
+         *   (boolean)required,
+         *   (boolean)visible,
+         *   (int)position,
+         *   (int)category
+         * )
+         */
         $this->_fields = $members_fields;
 
         //disabled fields override
@@ -229,91 +230,81 @@ class Adherent
     }
 
     /**
-    * Loads a member from its id
-    *
-    * @param int $id the identifiant for the member to load
-    *
-    * @return bool true if query succeed, false otherwise
-    */
+     * Loads a member from its id
+     *
+     * @param int $id the identifiant for the member to load
+     *
+     * @return bool true if query succeed, false otherwise
+     */
     public function load($id)
     {
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $select = $zdb->select(self::TABLE, 'a');
 
-            $select->from(
-                array('a' => PREFIX_DB . self::TABLE)
-            )->join(
+            $select->join(
                 array('b' => PREFIX_DB . Status::TABLE),
                 'a.' . Status::PK . '=b.' . Status::PK,
                 array('priorite_statut')
-            )->where(self::PK . '=?', $id);
+            )->where(array(self::PK => $id));
 
-            $result = $select->query()->fetchObject();
-            $this->_loadFromRS($result);
+            $results = $zdb->execute($select);
+
+            $this->_loadFromRS($results->current());
             return true;
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot load member form id `' . $id . '` | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
     }
 
     /**
-    * Loads a member from its login
-    *
-    * @param string $login login for the member to load
-    *
-    * @return bool true if query succeed, false otherwise
-    */
+     * Loads a member from its login
+     *
+     * @param string $login login for the member to load
+     *
+     * @return bool true if query succeed, false otherwise
+     */
     public function loadFromLoginOrMail($login)
     {
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . self::TABLE);
+            $select = $zdb->select(self::TABLE);
             if ( GaletteMail::isValidEmail($login) ) {
                 //we got a valid email adress, use it
-                $select->where('email_adh = ?', $login);
+                $select->where(array('email_adh' => $login));
             } else {
                 ///we did not get an email adress, consider using login
-                $select->where('login_adh = ?', $login);
+                $select->where(array('login_adh' => $login));
             }
-            $result = $select->query()->fetchObject();
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
             if ( $result ) {
                 $this->_loadFromRS($result);
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot load member form login `' . $login . '` | ' .
                 $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
     }
 
     /**
-    * Populate object from a resultset row
-    *
-    * @param ResultSet $r the resultset row
-    *
-    * @return void
-    */
+     * Populate object from a resultset row
+     *
+     * @param ResultSet $r the resultset row
+     *
+     * @return void
+     */
     private function _loadFromRS($r)
     {
         $this->_self_adh = false;
@@ -402,10 +393,10 @@ class Adherent
     }
 
     /**
-    * Check for dues status
-    *
-    * @return void
-    */
+     * Check for dues status
+     *
+     * @return void
+     */
     private function _checkDues()
     {
         //how many days since our beloved member has been created
@@ -442,10 +433,10 @@ class Adherent
     }
 
     /**
-    * Is member admin?
-    *
-    * @return bool
-    */
+     * Is member admin?
+     *
+     * @return bool
+     */
     public function isAdmin()
     {
         return $this->_admin;
@@ -462,10 +453,10 @@ class Adherent
     }
 
     /**
-    * Is member freed of dues?
-    *
-    * @return bool
-    */
+     * Is member freed of dues?
+     *
+     * @return bool
+     */
     public function isDueFree()
     {
         return $this->_due_free;
@@ -545,42 +536,42 @@ class Adherent
 
 
     /**
-    * Can member appears in public members list?
-    *
-    * @return bool
-    */
+     * Can member appears in public members list?
+     *
+     * @return bool
+     */
     public function appearsInMembersList()
     {
         return $this->_appears_in_list;
     }
 
     /**
-    * Is member active?
-    *
-    * @return bool
-    */
+     * Is member active?
+     *
+     * @return bool
+     */
     public function isActive()
     {
         return $this->_active;
     }
 
     /**
-    * Does member have uploaded a picture?
-    *
-    * @return bool
-    */
+     * Does member have uploaded a picture?
+     *
+     * @return bool
+     */
     public function hasPicture()
     {
         return $this->_picture->hasPicture();
     }
 
     /**
-    * Get row class related to current fee status
-    *
-    * @param boolean $public we want the class for public pages
-    *
-    * @return string the class to apply
-    */
+     * Get row class related to current fee status
+     *
+     * @param boolean $public we want the class for public pages
+     *
+     * @return string the class to apply
+     */
     public function getRowClass($public = false)
     {
         $strclass = ($this->isActive()) ? 'active' : 'inactive';
@@ -591,10 +582,10 @@ class Adherent
     }
 
     /**
-    * Get current member due status
-    *
-    * @return string i18n string representing state of due
-    */
+     * Get current member due status
+     *
+     * @return string i18n string representing state of due
+     */
     public function getDues()
     {
         $ret = '';
@@ -651,34 +642,29 @@ class Adherent
     }
 
     /**
-    * Retrieve Full name and surname for the specified member id
-    *
-    * @param int $id member id
-    *
-    * @return string formatted Name and Surname
-    */
+     * Retrieve Full name and surname for the specified member id
+     *
+     * @param int $id member id
+     *
+     * @return string formatted Name and Surname
+     */
     public static function getSName($id)
     {
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . ' = ?', $id);
+            $select = $zdb->select(self::TABLE);
+            $select->where(self::PK . ' = ' . $id);
 
-            $row = $select->query()->fetch();
+            $results = $zdb->execute($select);
+            $row = $results->current();
             return mb_strtoupper($row->nom_adh, 'UTF-8') . ' ' .
                 ucfirst(mb_strtolower($row->prenom_adh, 'UTF-8'));
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 'Cannot get formatted name for member form id `' . $id . '` | ' .
                 $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::ERROR
             );
             return false;
         }
@@ -699,11 +685,11 @@ class Adherent
         try {
             $cpass = password_hash($pass, PASSWORD_BCRYPT);
 
-            $zdb->db->update(
-                PREFIX_DB . self::TABLE,
-                array('mdp_adh' => $cpass),
-                $zdb->db->quoteInto(self::PK . ' = ?', $id_adh)
-            );
+            $update = $zdb->update(self::TABLE);
+            $update->set(
+                array('mdp_adh' => $cpass)
+            )->where(self::PK . ' = ' . $id_adh);
+            $zdb->execute($update);
             Analog::log(
                 'Password for `' . $id_adh . '` has been updated.',
                 Analog::DEBUG
@@ -742,7 +728,12 @@ class Adherent
     public static function getDbFields()
     {
         global $zdb;
-        return array_keys($zdb->db->describeTable(PREFIX_DB . self::TABLE));
+        $columns = $zdb->getColumns(self::TABLE);
+        $fields = array();
+        foreach ( $columns as $col ) {
+            $fields[] = $col->getName();
+        }
+        return $fields;
     }
 
     /**
@@ -898,29 +889,24 @@ class Adherent
                         }
                         if ( $key == 'email_adh' ) {
                             try {
-                                $select = new \Zend_Db_Select($zdb->db);
-                                $select->from(
-                                    PREFIX_DB . self::TABLE,
-                                    self::PK
-                                )->where('email_adh = ?', $value);
+                                $select = $zdb->select(self::TABLE);
+                                $select->columns(
+                                    array(self::PK)
+                                )->where(array('email_adh' => $value));
                                 if ( $this->_id != '' && $this->_id != null ) {
                                     $select->where(
-                                        self::PK . ' != ?',
-                                        $this->_id
+                                        self::PK . ' != ' . $this->_id
                                     );
                                 }
-                                $uniq = $select->query()->fetchAll();
-                                if ( count($uniq) !==  0 ) {
+
+                                $results = $zdb->execute($select);
+                                if ( $results->count() !==  0 ) {
                                     $errors[] = _T("- This E-Mail address is already used by another member!");
                                 }
                             } catch (\Exception $e) {
                                 Analog::log(
                                     'An error occured checking member email unicity.',
                                     Analog::ERROR
-                                );
-                                Analog::log(
-                                    'Query was: ' . $select->__toString(),
-                                    Analog::INFO
                                 );
                                 $errors[] = _T("An error has occured while looking if login already exists.");
                             }
@@ -949,19 +935,18 @@ class Adherent
                             } else {
                                 //check if login is already taken
                                 try {
-                                    $select = new \Zend_Db_Select($zdb->db);
-                                    $select->from(
-                                        PREFIX_DB . self::TABLE,
-                                        self::PK
-                                    )->where('login_adh = ?', $value);
+                                    $select = $zdb->select(self::TABLE);
+                                    $select->columns(
+                                        array(self::PK)
+                                    )->where(array('login_adh' => $value));
                                     if ( $this->_id != '' && $this->_id != null ) {
                                         $select->where(
-                                            self::PK . ' != ?',
-                                            $this->_id
+                                            self::PK . ' != ' . $this->_id
                                         );
                                     }
-                                    $uniq = $select->query()->fetchAll();
-                                    if ( count($uniq) !==  0
+
+                                    $results = $zdb->execute($select);
+                                    if ( $results->count() !==  0
                                         || $value == $preferences->pref_admin_login
                                     ) {
                                         $errors[] = _T("- This username is already in use, please choose another one!");
@@ -970,10 +955,6 @@ class Adherent
                                     Analog::log(
                                         'An error occured checking member login unicity.',
                                         Analog::ERROR
-                                    );
-                                    Analog::log(
-                                        'Query was: ' . $select->__toString(),
-                                        Analog::INFO
                                     );
                                     $errors[] = _T("An error has occured while looking if login already exists.");
                                 }
@@ -1008,12 +989,11 @@ class Adherent
                     case 'id_statut':
                         try {
                             //check if status exists
-                            $select = new \Zend_Db_Select($zdb->db);
-                            $select->from(
-                                PREFIX_DB . Status::TABLE
-                            )->where(Status::PK . '= ?', $value);
+                            $select = $zdb->select(Status::TABLE);
+                            $select->where(Status::PK . '= ' . $value);
 
-                            $result = $select->query()->fetchObject();
+                            $results = $zdb->execute($select);
+                            $result = $results->current();
                             if ( $result === false ) {
                                 $errors[] = str_replace(
                                     '%id',
@@ -1024,16 +1004,16 @@ class Adherent
                             }
 
                             //check for status unicity
-                            $select = new \Zend_Db_Select($zdb->db);
-                            $select->from(
-                                array('a' => PREFIX_DB . self::TABLE)
-                            )->join(
+                            $select = $zdb->select(self::TABLE, 'a');
+                            $select->limit(1)->join(
                                 array('b' => PREFIX_DB . Status::TABLE),
                                 'a.' . Status::PK . '=b.' . Status::PK,
                                 array('libelle_statut')
-                            )->where('b.' . Status::PK . '=?', $value)
-                                ->where('b.priorite_statut < ' . Members::NON_STAFF_MEMBERS)
-                                ->limit(1);
+                            )->where('b.' . Status::PK . '=' . $value);
+                            $select->where->lessThan(
+                                'b.priorite_statut',
+                                Members::NON_STAFF_MEMBERS
+                            );
 
                             if ( $this->_id != '' && $this->_id != null ) {
                                 $select->where(
@@ -1041,7 +1021,8 @@ class Adherent
                                 );
                             }
 
-                            $result = $select->query()->fetchObject();
+                            $results = $zdb->execute($select);
+                            $result = $results->current();
                             if ( $result !== false ) {
                                 $errors[] = str_replace(
                                     array(
@@ -1063,10 +1044,6 @@ class Adherent
                             Analog::log(
                                 'An error occured checking status unicity: ' . $e->getMessage(),
                                 Analog::ERROR
-                            );
-                            Analog::log(
-                                'Query was: ' . $select->__toString(),
-                                Analog::INFO
                             );
                             $errors[] = _T("An error has occured while looking if status is already in use.");
                         }
@@ -1152,16 +1129,16 @@ class Adherent
             //an empty value will cause date to be set to 1901-01-01, a null
             //will result in 0000-00-00. We want a database NULL value here.
             if ( !$this->_birthdate ) {
-                $values['ddn_adh'] = new \Zend_Db_Expr('NULL');
+                $values['ddn_adh'] = new Expression('NULL');
             }
             if ( !$this->_due_date ) {
-                $values['date_echeance'] = new \Zend_Db_Expr('NULL');
+                $values['date_echeance'] = new Expression('NULL');
             }
 
             if ( $this->_title instanceof Title ) {
                 $values['titre_adh'] = $this->_title->id;
             } else {
-                $values['titre_adh'] = new \Zend_Db_Expr('NULL');
+                $values['titre_adh'] = new Expression('NULL');
             }
 
             if ( !isset($this->_id) || $this->_id == '') {
@@ -1170,12 +1147,18 @@ class Adherent
                 //set modification date
                 $this->_modification_date = date('Y-m-d');
                 $values['date_modif_adh'] = $this->_modification_date;
-                $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
-                if ( $add > 0) {
-                    $this->_id = $zdb->db->lastInsertId(
-                        PREFIX_DB . self::TABLE,
-                        'id'
-                    );
+
+                $insert = $zdb->insert(self::TABLE);
+                $insert->values($values);
+                $add = $zdb->execute($insert);
+                if ( $add->count() > 0) {
+                    if ( $zdb->isPostgres() ) {
+                        $this->_id = $zdb->driver->getLastGeneratedValue(
+                            PREFIX_DB . 'adherents_id_seq'
+                        );
+                    } else {
+                        $this->_id = $zdb->driver->getLastGeneratedValue();
+                    }
                     $this->_picture = new Picture($this->_id);
                     // logging
                     $hist->add(
@@ -1203,14 +1186,17 @@ class Adherent
                     unset($values['mdp_adh']);
                 }
 
-                $edit = $zdb->db->update(
-                    PREFIX_DB . self::TABLE,
-                    $values,
+                $update = $zdb->update(self::TABLE);
+                $update->set($values);
+                $update->where(
                     self::PK . '=' . $this->_id
                 );
+
+                $edit = $zdb->execute($update);
+
                 //edit == 0 does not mean there were an error, but that there
                 //were nothing to change
-                if ( $edit > 0 ) {
+                if ( $edit->count() > 0 ) {
                     $this->_updateModificationDate();
                     $hist->add(
                         _T("Member card updated"),
@@ -1222,7 +1208,6 @@ class Adherent
             //DEBUG
             return false;
         } catch (\Exception $e) {
-            /** FIXME */
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
@@ -1242,12 +1227,14 @@ class Adherent
         global $zdb;
 
         try {
-            $edit = $zdb->db->update(
-                PREFIX_DB . self::TABLE,
-                array('date_modif_adh' => date('Y-m-d')),
-                self::PK . '=' . $this->_id
-            );
-            $this->_modification_date = date('Y-m-d');
+            $modif_date = date('Y-m-d');
+            $update = $zdb->update(self::TABLE);
+            $update->set(
+                array('date_modif_adh' => $modif_date)
+            )->where(self::PK . '=' . $this->_id);
+
+            $edit = $zdb->execute($update);
+            $this->_modification_date = $modif_date;
         } catch (\Exception $e) {
             Analog::log(
                 'Something went wrong updating modif date :\'( | ' .
@@ -1258,12 +1245,12 @@ class Adherent
     }
 
     /**
-    * Global getter method
-    *
-    * @param string $name name of the property we want to retrive
-    *
-    * @return false|object the called property
-    */
+     * Global getter method
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return false|object the called property
+     */
     public function __get($name)
     {
         global $log, $login;

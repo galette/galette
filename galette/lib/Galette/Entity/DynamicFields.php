@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2013 The Galette Team
+ * Copyright © 2011-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2013 The Galette Team
+ * @copyright 2011-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,12 +38,15 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
 use Galette\DynamicFieldsTypes\Separator as Separator;
 use Galette\DynamicFieldsTypes\Text as Text;
 use Galette\DynamicFieldsTypes\Line as Line;
 use Galette\DynamicFieldsTypes\Choice as Choice;
 use Galette\DynamicFieldsTypes\Date as Date;
 use Galette\DynamicFieldsTypes\Boolean as Boolean;
+use Galette\DynamicFieldsTypes\File as File;
 use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
 
 /**
@@ -54,7 +57,7 @@ use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2013 The Galette Team
+ * @copyright 2011-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -75,10 +78,14 @@ class DynamicFields
     const DATE = 4;
     /** Boolean field (checkbox) */
     const BOOLEAN = 5;
+    /** File field (upload) */
+    const FILE = 6;
 
     const PERM_ALL = 0;
     const PERM_STAFF = 2;
     const PERM_ADM = 1;
+
+    const DEFAULT_MAX_FILE_SIZE = 1024;
 
     private $_id;
     private $_index;
@@ -92,14 +99,16 @@ class DynamicFields
     private $_perms_names;
     private $_forms_names;
 
+    private $_errors = array();
+
     /**
-    * Default constructor
-    *
-    * @param null|int|ResultSet $args Either a ResultSet row, its id or its
-    *                                 login or its mail for to load
-    *                                 a specific member, or null to just
-    *                                 instanciate object
-    */
+     * Default constructor
+     *
+     * @param null|int|ResultSet $args Either a ResultSet row, its id or its
+     *                                 login or its mail for to load
+     *                                 a specific member, or null to just
+     *                                 instanciate object
+     */
     public function __construct($args = null)
     {
         //Fields types names
@@ -109,7 +118,8 @@ class DynamicFields
             self::LINE      => _T("single line"),
             self::CHOICE    => _T("choice"),
             self::DATE      => _T("date"),
-            self::BOOLEAN   => _T("boolean")
+            self::BOOLEAN   => _T("boolean"),
+            self::FILE      => _T("file")
         );
 
         //Permissions names
@@ -130,13 +140,18 @@ class DynamicFields
     /**
      * Retrieve fixed values table name
      *
-     * @param integer $id Field's id
+     * @param integer $id       Field's id
+     * @param boolean $prefixed Whether db prefix must be added
      *
      * @return string
      */
-    public static function getFixedValuesTableName($id)
+    public static function getFixedValuesTableName($id, $prefixed = true)
     {
-        return PREFIX_DB . 'field_contents_' . $id;
+        $name = 'field_contents_' . $id;
+        if ( $prefixed === true ) {
+            $name = PREFIX_DB . $name;
+        }
+        return $name;
     }
 
     /**
@@ -151,14 +166,13 @@ class DynamicFields
         global $zdb;
 
         try {
-            $val_select = new \Zend_Db_Select($zdb->db);
-
-            $val_select->from(
-                self::getFixedValuesTableName($field_id),
-                'val'
+            $select = $zdb->select(self::getFixedValuesTableName($field_id, false));
+            $select->columns(
+                array('val')
             )->order('id');
 
-            $results = $val_select->query()->fetchAll();
+            $results = $zdb->execute($select);
+
             $fixed_values = array();
             if ( $results ) {
                 foreach ( $results as $val ) {
@@ -170,10 +184,6 @@ class DynamicFields
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $val_select->__toString() . ' ' . $e->__toString(),
-                Analog::INFO
             );
         }
     }
@@ -236,24 +246,25 @@ class DynamicFields
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $select = $zdb->select(self::TABLE, 'a');
 
-            $select->from(
-                array('a' => PREFIX_DB . self::TABLE)
-            )->join(
+            $select->join(
                 array('b' => PREFIX_DB . DynamicFieldType::TABLE),
                 'a.' . DynamicFieldType::PK . '=b.' . DynamicFieldType::PK,
                 array('field_type')
-            )
-                ->where('item_id = ?', $item_id)
-                ->where('a.field_form = ?', $form_name);
+            )->where(
+                array(
+                    'item_id'       => $item_id,
+                    'a.field_form'  => $form_name
+                )
+            );
 
-            $result = $select->query()->fetchAll();
+            $results = $zdb->execute($select);
 
-            if ( count($result) > 0 ) {
+            if ( $results->count() > 0 ) {
                 $dfields = array();
 
-                foreach ($result as $f) {
+                foreach ($results as $f) {
                     $df = $this->getFieldType($f->field_type);
 
                     $value = $f->field_val;
@@ -278,10 +289,7 @@ class DynamicFields
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::INFO
-            );
+            return false;
         }
     }
 
@@ -303,24 +311,25 @@ class DynamicFields
         global $zdb, $login;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $select = $zdb->select(DynamicFieldType::TABLE);
 
-            $select->from(PREFIX_DB . DynamicFieldType::TABLE)
-                ->where('field_form = ?', $form_name)
+            $select
+                ->where(array('field_form' => $form_name))
                 ->order('field_index');
 
-            $result = $select->query(\Zend_DB::FETCH_ASSOC)->fetchAll();
+            $results = $zdb->execute($select);
 
             $dfields = array();
-            if ( $result ) {
+            if ( $results ) {
                 $extra = $edit ? 1 : 0;
 
-                foreach ( $result as $r ) {
+                foreach ( $results as $r ) {
                     $df = $this->getFieldType($r['field_type']);
                     if ( (int)$r['field_type'] === self::CHOICE
                         || (int)$r['field_type'] === self::TEXT
                         || (int)$r['field_type'] === self::DATE
                         || (int)$r['field_type'] === self::BOOLEAN
+                        || (int)$r['field_type'] === self::FILE
                     ) {
                         $r['field_repeat'] = 1;
                     }
@@ -366,15 +375,11 @@ class DynamicFields
                 return false;
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::INFO
-            );
+            return false;
         }
     }
 
@@ -390,17 +395,16 @@ class DynamicFields
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-
-            $select->from(PREFIX_DB . DynamicFieldType::TABLE)
-                ->where('field_form = ?', $form_name)
+            $select = $zdb->select(DynamicFieldType::TABLE);
+            $select
+                ->where(array('field_form' => $form_name))
                 ->order('field_id');
 
-            $result = $select->query(\Zend_DB::FETCH_ASSOC)->fetchAll();
+            $results = $zdb->execute($select);
 
             $dfields = array();
-            if ( $result ) {
-                foreach ( $result as $r ) {
+            if ( $results ) {
+                foreach ( $results as $r ) {
                     $dfields[$r['field_id']] = $r;
                 }
                 return $dfields;
@@ -408,14 +412,9 @@ class DynamicFields
                 return false;
             }
         } catch (\Exception $e) {
-            /** TODO */
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString() . ' ' . $e->__toString(),
-                Analog::INFO
             );
         }
     }
@@ -424,11 +423,12 @@ class DynamicFields
      * Extract posted values for dynamic fields
      *
      * @param array $post     Array containing the posted values
+     * @param array $files    Array containing the posted files
      * @param array $disabled Array with fields that are discarded as key
      *
      * @return array
      */
-    public function extractPosted($post, $disabled)
+    public function extractPosted($post, $files, $disabled, $member_id)
     {
         if ( $post != null ) {
             $dfields = array();
@@ -449,11 +449,88 @@ class DynamicFields
                         if ( is_numeric($field_id)
                             && is_numeric($val_index)
                         ) {
-                            $dfields[$field_id][$val_index] = $value;
+                            if ((int) $descriptions[$field_id]['field_type'] == self::FILE) {
+                                # delete checkbox
+                                $filename = sprintf(
+                                    'member_%d_field_%d_value_%d',
+                                    $member_id,
+                                    $field_id,
+                                    $val_index
+                                );
+                                unlink(GALETTE_FILES_PATH . $filename);
+                                $dfields[$field_id][$val_index] = '';
+                            } else {
+                                # actual field value
+                                $dfields[$field_id][$val_index] = $value;
+                            }
                         }
                     }
                 }
             }
+
+            while ( list($key, $value) = each($files) ) {
+                // if the field is disabled, skip it
+                if (isset($disabled[$key]) ) {
+                    continue;
+                }
+
+                if (substr($key, 0, 11) != 'info_field_') {
+                    continue;
+                }
+
+                list($field_id, $val_index) = explode('_', substr($key, 11));
+                if (! is_numeric($field_id) || ! is_numeric($val_index)) {
+                    continue;
+                }
+
+                if ($files[$key]['error'] !== UPLOAD_ERR_OK ) {
+                    Analog::log("file upload error", Analog::ERROR);
+                    continue;
+                }
+
+                $tmp_filename = $files[$key]['tmp_name'];
+                if ( $tmp_filename == '' ) {
+                    Analog::log("empty temporary filename", Analog::ERROR);
+                    continue;
+                }
+
+                if (! is_uploaded_file($tmp_filename) ) {
+                    Analog::log("not an uploaded file", Analog::ERROR);
+                    continue;
+                }
+
+                $max_size =
+                    $descriptions[$field_id]['field_size'] === 'NULL' ?
+                    self::DEFAULT_MAX_FILE_SIZE            * 1024:
+                    $descriptions[$field_id]['field_size'] * 1024;
+                if ($files[$key]['size'] > $max_size ) {
+                    Analog::log(
+                        "file too large: " . $files[$key]['size'] . " Ko, vs $max_size Ko allowed",
+                        Analog::ERROR
+                    );
+                    $this->_errors[] = preg_replace(
+                        '|%d|',
+                        $max_size,
+                        _T("File is too big. Maximum allowed size is %dKo")
+                    );
+                    continue;
+                }
+
+                $new_filename = sprintf(
+                    'member_%d_field_%d_value_%d',
+                    $member_id,
+                    $field_id,
+                    $val_index
+                );
+                Analog::log("new file: $new_filename", Analog::DEBUG);
+
+                move_uploaded_file(
+                    $tmp_filename,
+                    GALETTE_FILES_PATH . $new_filename
+                );
+                $dfields[$field_id][$val_index] = $files[$key]['name'];
+            }
+
             return $dfields;
         }
     }
@@ -477,27 +554,26 @@ class DynamicFields
         $ret = false;
 
         try {
-            $zdb->db->beginTransaction();
+            $zdb->connection->beginTransaction();
 
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . self::TABLE,
-                array('cnt' => 'count(*)')
-            )->where('item_id = ?', $item_id)
-                ->where('field_form = ?', $form_name)
-                ->where('field_id = ?', $field_id)
-                ->where('val_index = ?', $val_index);
+            $select = $zdb->select(self::TABLE);
+            $select->columns(
+                array('cnt' => new Expression('COUNT(*)'))
+            )->where(
+                array(
+                    'item_id'       => $item_id,
+                    'field_form'    => $form_name,
+                    'field_id'      => $field_id,
+                    'val_index'     => $val_index
+                )
+            );
 
-            $count = $select->query()->fetchColumn();
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            $count = $result->cnt;
 
             if ( $count > 0 ) {
-                //cleanup WHERE array so it can be sent back to update
-                //and delete methods
-                $where = array();
-                $owhere = $select->getPart(\Zend_Db_Select::WHERE);
-                foreach ( $owhere as $c ) {
-                    $where[] = preg_replace('/^AND /', '', $c);
-                }
+                $where = $select->where;
 
                 if ( trim($field_val) == '' ) {
                     Analog::log(
@@ -505,21 +581,22 @@ class DynamicFields
                         $val_index . ')',
                         Analog::DEBUG
                     );
-                    $zdb->db->delete(
-                        PREFIX_DB . self::TABLE,
-                        $where
-                    );
+
+                    $delete = $zdb->delete(self::TABLE);
+                    $delete->where($where);
+                    $zdb->execute($delete);
                 } else {
                     Analog::log(
                         'Field ' . $field_id . ' will be set to value: ' .
                         $field_val . ' (index: ' . $val_index . ')',
                         Analog::DEBUG
                     );
-                    $zdb->db->update(
-                        PREFIX_DB . self::TABLE,
-                        array('field_val' => $field_val),
-                        $where
-                    );
+
+                    $update = $zdb->update(self::TABLE);
+                    $update->set(
+                        array('field_val' => $field_val)
+                    )->where($where);
+                    $zdb->execute($update);
                 }
             } else {
                 if ( $field_val !== '' ) {
@@ -531,17 +608,16 @@ class DynamicFields
                         'field_val'  => $field_val
                     );
 
-                    $zdb->db->insert(
-                        PREFIX_DB . self::TABLE,
-                        $values
-                    );
+                    $insert = $zdb->insert(self::TABLE);
+                    $insert->values($values);
+                    $zdb->execute($insert);
                 }
             }
 
-            $zdb->db->commit();
+            $zdb->connection->commit();
             return true;
         } catch (\Exception $e) {
-            $zdb->db->rollBack();
+            $zdb->connection->rollBack();
             Analog::log(
                 'An error occured storing dynamic field. Form name: ' . $form_name .
                 '; item_id:' . $item_id . '; field_id: ' . $field_id .
@@ -613,8 +689,11 @@ class DynamicFields
         case self::BOOLEAN:
             $df = new \Galette\DynamicFieldsTypes\Boolean($id);
             break;
+        case self::FILE:
+            $df = new \Galette\DynamicFieldsTypes\File($id);
+            break;
         default:
-            throw new \Exception('Unknow field type ' . $t . '!');
+            throw new \Exception('Unknown field type ' . $t . '!');
             break;
         }
         return $df;
@@ -632,12 +711,14 @@ class DynamicFields
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . DynamicFieldType::TABLE,
-                'field_type'
-            )->where('field_id = ?', $id);
-            $field_type = $select->query()->fetchColumn();
+            $select = $zdb->select(DynamicFieldType::TABLE);
+            $select->columns(
+                array('field_type')
+            )->where('field_id = ' . $id);
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            $field_type = $result->field_type;
             if ( $field_type !== false ) {
                 return $this->getFieldType($field_type, $id);
             } else {
@@ -668,17 +749,30 @@ class DynamicFields
         //let's consider field is duplicated, in case of future errors
         $duplicated = true;
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . DynamicFieldType::TABLE,
-                'COUNT(field_id)'
-            )->where('field_form = ?', $form_name)
-                ->where('field_name = ?', $field_name);
+            $select = $zdb->select(DynamicFieldType::TABLE);
+            $select->columns(
+                array(
+                    'cnt' => new Expression('COUNT(field_id)')
+                )
+            )->where(
+                array(
+                    'field_form' => $form_name,
+                    'field_name' => $field_name
+                )
+            );
 
             if ( $field_id !== null ) {
-                $select->where('NOT field_id = ?', $field_id);
+                $select->where->addPredicate(
+                    new PredicateExpression(
+                        'field_id NOT IN (?)',
+                        array($field_id)
+                    )
+                );
             }
-            $dup = $select->query()->fetchColumn();
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            $dup = $result->cnt;
             if ( !$dup > 0 ) {
                 $duplicated = false;
             }
@@ -689,5 +783,15 @@ class DynamicFields
             );
         }
         return $duplicated;
+    }
+
+    /**
+     * Get errors
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->_errors;
     }
 }

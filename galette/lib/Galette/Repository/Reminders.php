@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013 The Galette Team
+ * Copyright © 2013-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -40,6 +40,7 @@ namespace Galette\Repository;
 use Galette\Entity\Reminder;
 use Galette\Filters\MembersList;
 use Analog\Analog;
+use Zend\Db\Sql\Expression;
 
 /**
  * Reminders
@@ -48,7 +49,7 @@ use Analog\Analog;
  * @name      Reminders
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-13
@@ -88,42 +89,43 @@ class Reminders
      */
     private function _loadToRemind($zdb, $type)
     {
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->from(
-            array('a' => PREFIX_DB . Members::TABLE)
-        )->joinLeft(
+        $this->_toremind = array();
+        $select = $zdb->select(Members::TABLE, 'a');
+        $select->join(
             array('r' => PREFIX_DB . self::TABLE),
             'a.' . Members::PK . '=r.reminder_dest',
             array(
-                'last_reminder' => new \Zend_Db_Expr('MAX(r.reminder_date)'),
-                'r.reminder_type'
-            )
-        )->where(
-            'a.email_adh != \'\''
-        )->where('a.activite_adh=true')
+                'last_reminder' => new Expression('MAX(reminder_date)'),
+                'reminder_type'
+            ),
+            $select::JOIN_LEFT
+        )->where('a.email_adh != \'\'')
+            ->where('a.activite_adh=true')
             ->where('bool_exempt_adh=false');
 
         if ( $type === Reminder::LATE ) {
-            $select->where(
-                'date_echeance < ?',
+            $select->where->LessThan(
+                'date_echeance',
                 date('Y-m-d', time())
             );
         } else {
             $now = new \DateTime();
             $duedate = new \DateTime();
             $duedate->modify('+1 month');
-            $select->where('date_echeance > ?', $now->format('Y-m-d'))
-                ->where(
-                    'date_echeance < ?',
-                    $duedate->format('Y-m-d')
-                );
+            $select->where->greaterThan(
+                'date_echeance',
+                $now->format('Y-m-d')
+            )->lessThan(
+                'date_echeance',
+                $duedate->format('Y-m-d')
+            );
         }
 
         $select->group('a.id_adh')->group('r.reminder_type');
 
-        $res = $select->query()->fetchAll();
+        $results = $zdb->execute($select);
 
-        foreach ( $res as $r ) {
+        foreach ( $results as $r ) {
             if ( $r->reminder_type === null || (int)$r->reminder_type === $type ) {
                 $date_checked = false;
 
@@ -194,7 +196,6 @@ class Reminders
         $this->_types = array();
         $this->_reminders = array();
 
-
         $types = array();
         foreach ( $this->_selected as $s ) {
             $this->_loadToRemind($zdb, $s);
@@ -202,7 +203,15 @@ class Reminders
             if ( count($this->_toremind) > 0 ) {
                 //and then get list
                 $m = new Members();
-                $members = $m->getArrayList($this->_toremind, null, false, true, null, false, true);
+                $members = $m->getArrayList(
+                    $this->_toremind,
+                    null,
+                    false,
+                    true,
+                    null,
+                    false,
+                    true
+                );
                 $this->_types[$s] = $members;
             }
         }

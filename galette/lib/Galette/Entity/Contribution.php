@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2010-2013 The Galette Team
+ * Copyright © 2010-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010-2013 The Galette Team
+ * @copyright 2010-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
+use Zend\Db\Sql\Expression;
 use Galette\IO\ExternalScript;
 use Galette\IO\PdfContribution;
 
@@ -48,7 +49,7 @@ use Galette\IO\PdfContribution;
  * @name      Contribution
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2010 The Galette Team
+ * @copyright 2010-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-11
@@ -83,24 +84,24 @@ class Contribution
     private $_fields;
 
     /**
-    * Default constructor
-    *
-    * @param null|int|ResultSet $args Either a ResultSet row to load
-    *                                   a specific contribution, or an type id
-    *                                   to just instanciate object
-    */
+     * Default constructor
+     *
+     * @param null|int|ResultSet $args Either a ResultSet row to load
+     *                                   a specific contribution, or an type id
+     *                                   to just instanciate object
+     */
     public function __construct($args = null)
     {
         /*
-        * Fields configuration. Each field is an array and must reflect:
-        * array(
-        *   (string)label,
-        *   (string) propname
-        * )
-        *
-        * I'd prefer a static private variable for this...
-        * But call to the _T function does not seem to be allowed there :/
-        */
+         * Fields configuration. Each field is an array and must reflect:
+         * array(
+         *   (string)label,
+         *   (string) propname
+         * )
+         *
+         * I'd prefer a static private variable for this...
+         * But call to the _T function does not seem to be allowed there :/
+         */
         $this->_fields = array(
             'id_cotis'            => array(
                 'label'    => null, //not a field in the form
@@ -157,12 +158,19 @@ class Contribution
             if ( isset($args['adh']) && $args['adh'] != '' ) {
                 $this->_member = (int)$args['adh'];
             }
+            if ( isset($args['trans']) ) {
+                $this->_transaction = new Transaction((int)$args['trans']);
+                if ( !isset($this->_member) ) {
+                    $this->_member = (int)$this->_transaction->member;
+                }
+                $this->_amount = $this->_transaction->getMissingAmount();
+            }
             $this->_type = new ContributionsTypes((int)$args['type']);
             $this->_is_cotis = (bool)$this->_type->extension;
             //calculate begin date for cotisation
             $this->_begin_date = $this->_date;
             if ( $this->_is_cotis ) {
-                $curend = self::getDueDate($args['adh']);
+                $curend = self::getDueDate($this->_member);
                 if ($curend != '') {
                     $dend = new \DateTime($curend);
                     $now = date('Y-m-d');
@@ -178,13 +186,6 @@ class Contribution
                     $this->_extension = $args['ext'];
                 }
                 $this->_retrieveEndDate();
-            }
-            if ( isset($args['trans']) ) {
-                $this->_transaction = new Transaction((int)$args['trans']);
-                if ( !isset($this->_member) ) {
-                    $this->_member = (int)$this->_transaction->member;
-                }
-                $this->_amount = $this->_transaction->getMissingAmount();
             }
             if ( isset($args['payment_type']) ) {
                 $this->_payment_type = $args['payment_type'];
@@ -221,25 +222,26 @@ class Contribution
     }
 
     /**
-    * Loads a contribution from its id
-    *
-    * @param int $id the identifiant for the contribution to load
-    *
-    * @return bool true if query succeed, false otherwise
-    */
+     * Loads a contribution from its id
+     *
+     * @param int $id the identifiant for the contribution to load
+     *
+     * @return bool true if query succeed, false otherwise
+     */
     public function load($id)
     {
         global $zdb, $login;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . ' = ?', $id);
+            $select = $zdb->select(self::TABLE);
+            $select->where(self::PK . ' = ' . $id);
             //restrict query on current member id if he's not admin nor staff member
             if ( !$login->isAdmin() && !$login->isStaff() ) {
-                $select->where(Adherent::PK . ' = ?', $login->id);
+                $select->where(Adherent::PK . ' = ' . $login->id);
             }
-            $row = $select->query()->fetch();
+
+            $results = $zdb->execute($select);
+            $row = $results->current();
             if ( $row !== false ) {
                 $this->_loadFromRS($row);
                 return true;
@@ -249,7 +251,6 @@ class Contribution
                 );
             }
         } catch (\Exception $e) {
-            /** FIXME */
             Analog::log(
                 'An error occured attempting to load contribution #' . $id .
                 $e->getMessage(),
@@ -260,12 +261,12 @@ class Contribution
     }
 
     /**
-    * Populate object from a resultset row
-    *
-    * @param ResultSet $r the resultset row
-    *
-    * @return void
-    */
+     * Populate object from a resultset row
+     *
+     * @param ResultSet $r the resultset row
+     *
+     * @return void
+     */
     private function _loadFromRS($r)
     {
         $pk = self::PK;
@@ -471,28 +472,29 @@ class Contribution
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                array('c' => PREFIX_DB . self::TABLE),
+            $select = $zdb->select(self::TABLE, 'c');
+            $select->columns(
                 array('date_debut_cotis', 'date_fin_cotis')
             )->join(
                 array('ct' => PREFIX_DB . ContributionsTypes::TABLE),
                 'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
                 array()
-            )->where(Adherent::PK . ' = ?', $this->_member)
-                ->where('cotis_extension = ?', (string)1)
-                ->where(
-                    '((' . $zdb->db->quoteInto('date_debut_cotis >= ?', $this->_begin_date) .
-                    ' AND '. $zdb->db->quoteInto('date_debut_cotis < ?', $this->_end_date) .
-                    ') OR (' . $zdb->db->quoteInto('date_fin_cotis > ?', $this->_begin_date) .
-                    ' AND ' . $zdb->db->quoteInto('date_fin_cotis <= ?', $this->_end_date) . '))'
-                );
+            )->where(Adherent::PK . ' = ' . $this->_member)
+                ->where(array('cotis_extension' => new Expression('true')))
+                ->where->nest->nest
+                ->greaterThanOrEqualTo('date_debut_cotis', $this->_begin_date)
+                ->lessThan('date_debut_cotis', $this->_end_date)
+                ->unnest
+                ->or->nest
+                ->greaterThan('date_fin_cotis', $this->_begin_date)
+                ->lessThanOrEqualTo('date_fin_cotis', $this->_end_date);
 
             if ( $this->id != '' ) {
-                $select->where(self::PK . ' != ?', $this->id);
+                $select->where(self::PK . ' != ' . $this->id);
             }
 
-            $result = $select->query()->fetch();
+            $results = $zdb->execute($select);
+            $result = $results->current();
             if ( $result !== false ) {
                 $d = new \DateTime($result->date_debut_cotis);
 
@@ -501,14 +503,9 @@ class Contribution
             }
             return true;
         } catch (\Exception $e) {
-            /** FIXME */
             Analog::log(
                 'An error occured checking overlaping fee. ' . $e->getMessage(),
                 Analog::ERROR
-            );
-            Analog::log(
-                'Query was: ' . $select->__toString(),
-                Analog::DEBUG
             );
             return false;
         }
@@ -524,10 +521,9 @@ class Contribution
         global $zdb, $hist;
 
         try {
-            $zdb->db->beginTransaction();
+            $zdb->connection->beginTransaction();
             $values = array();
             $fields = self::getDbFields();
-            /** FIXME: quote? */
             foreach ( $fields as $field ) {
                 $prop = '_' . $this->_fields[$field]['propname'];
                 switch ( $field ) {
@@ -543,7 +539,7 @@ class Contribution
                 }
             }
 
-            //no end date,, let's take database defaults
+            //no end date, let's take database defaults
             if ( !$this->isCotis() && !$this->_end_date ) {
                 unset($values['date_fin_cotis']);
             }
@@ -551,12 +547,20 @@ class Contribution
             if ( !isset($this->_id) || $this->_id == '') {
                 //we're inserting a new contribution
                 unset($values[self::PK]);
-                $add = $zdb->db->insert(PREFIX_DB . self::TABLE, $values);
-                if ( $add > 0) {
-                    $this->_id = (int)$zdb->db->lastInsertId(
-                        PREFIX_DB . self::TABLE,
-                        'id'
-                    );
+
+                $insert = $zdb->insert(self::TABLE);
+                $insert->values($values);
+                $add = $zdb->execute($insert);
+
+                if ( $add->count() > 0) {
+                    if ( $zdb->isPostgres() ) {
+                        $this->_id = $zdb->driver->getLastGeneratedValue(
+                            PREFIX_DB . 'cotisations_id_seq'
+                        );
+                    } else {
+                        $this->_id = $zdb->driver->getLastGeneratedValue();
+                    }
+
                     // logging
                     $hist->add(
                         _T("Contribution added"),
@@ -570,14 +574,15 @@ class Contribution
                 }
             } else {
                 //we're editing an existing contribution
-                $edit = $zdb->db->update(
-                    PREFIX_DB . self::TABLE,
-                    $values,
+                $update = $zdb->update(self::TABLE);
+                $update->set($values)->where(
                     self::PK . '=' . $this->_id
                 );
+                $edit = $zdb->execute($update);
+
                 //edit == 0 does not mean there were an error, but that there
                 //were nothing to change
-                if ( $edit > 0 ) {
+                if ( $edit->count() > 0 ) {
                     $hist->add(
                         _T("Contribution updated"),
                         Adherent::getSName($this->_member)
@@ -596,12 +601,11 @@ class Contribution
                     throw new \Exception('An error occured updating member\'s deadline');
                 }
             }
-            $zdb->db->commit();
+            $zdb->connection->commit();
             $this->_orig_amount = $this->_amount;
             return true;
         } catch (\Exception $e) {
-            /** FIXME */
-            $zdb->db->rollBack();
+            $zdb->connection->rollBack();
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
@@ -626,14 +630,16 @@ class Contribution
             if ( $due_date != '' ) {
                 $date_fin_update = $due_date;
             } else {
-                $date_fin_update = new \Zend_Db_Expr('NULL');
+                $date_fin_update = new Expression('NULL');
             }
 
-            $edit = $zdb->db->update(
-                PREFIX_DB . Adherent::TABLE,
-                array('date_echeance' => $date_fin_update),
+            $update = $zdb->update(Adherent::TABLE);
+            $update->set(
+                array('date_echeance' => $date_fin_update)
+            )->where(
                 Adherent::PK . '=' . $this->_member
             );
+            $zdb->execute($update);
             return true;
         } catch (\Exception $e) {
             Analog::log(
@@ -659,23 +665,22 @@ class Contribution
 
         try {
             if ( $transaction ) {
-                $zdb->db->beginTransaction();
+                $zdb->connection->beginTransaction();
             }
-            $del = $zdb->db->delete(
-                PREFIX_DB . self::TABLE,
-                self::PK . ' = ' . $this->_id
-            );
-            if ( $del > 0 ) {
+
+            $delete = $zdb->delete(self::TABLE);
+            $delete->where(self::PK . ' = ' . $this->_id);
+            $del = $zdb->execute($delete);
+            if ( $del->count() > 0 ) {
                 $this->_updateDeadline();
             }
             if ( $transaction ) {
-                $zdb->db->commit();
+                $zdb->connection->commit();
             }
             return true;
         } catch (\Exception $e) {
-            /** FIXME */
             if ( $transaction ) {
-                $zdb->db->rollBack();
+                $zdb->connection->rollBack();
             }
             Analog::log(
                 'An error occured trying to remove contribution #' .
@@ -712,14 +717,19 @@ class Contribution
     public static function getDbFields()
     {
         global $zdb;
-        return array_keys($zdb->db->describeTable(PREFIX_DB . self::TABLE));
+        $columns = $zdb->getColumns(self::TABLE);
+        $fields = array();
+        foreach ( $columns as $col ) {
+            $fields[] = $col->getName();
+        }
+        return $fields;
     }
 
     /**
-    * Get the relevant CSS class for current contribution
-    *
-    * @return string current contribution row class
-    */
+     * Get the relevant CSS class for current contribution
+     *
+     * @return string current contribution row class
+     */
     public function getRowClass()
     {
         return ( $this->_end_date != $this->_begin_date && $this->_is_cotis) ?
@@ -739,19 +749,23 @@ class Contribution
         global $zdb;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(
-                PREFIX_DB . self::TABLE,
-                'MAX(date_fin_cotis)'
-            )->where(Adherent::PK . ' = ?', $member_id);
-            $due_date = $select->query()->fetchColumn();
+            $select = $zdb->select(self::TABLE);
+            $select->columns(
+                array(
+                    'max_date' => new Expression('MAX(date_fin_cotis)')
+                )
+            )->where(Adherent::PK . ' = ' . $member_id);
+
+            $results = $zdb->execute($select);
+            $result = $results->current();
+            $due_date = $result->max_date;
+
             //avoid bad dates in postgres
             if ( $due_date == '0001-01-01 BC' ) {
                 $due_date = '';
             }
             return $due_date;
         } catch (\Exception $e) {
-            /** FIXME */
             Analog::log(
                 'An error occured trying to retrieve member\'s due date',
                 Analog::ERROR
@@ -776,11 +790,13 @@ class Contribution
             //first, we check if contribution is part of transaction
             $c = new Contribution((int)$contrib_id);
             if ( $c->isTransactionPartOf($trans_id)) {
-                $zdb->db->update(
-                    PREFIX_DB . self::TABLE,
-                    array(Transaction::PK => null),
+                $update = $zdb->update(self::TABLE);
+                $update->set(
+                    array(Transaction::PK => null)
+                )->where(
                     self::PK . ' = ' . $contrib_id
                 );
+                $zdb->execute($update);
                 return true;
             } else {
                 Analog::log(
@@ -813,11 +829,12 @@ class Contribution
         global $zdb;
 
         try {
-            $zdb->db->update(
-                PREFIX_DB . self::TABLE,
-                array(Transaction::PK => $trans_id),
-                self::PK . ' = ' . $contrib_id
-            );
+            $update = $zdb->update(self::TABLE);
+            $update->set(
+                array(Transaction::PK => $trans_id)
+            )->where(self::PK . ' = ' . $contrib_id);
+
+            $zdb->execute($update);
             return true;
         } catch (\Exception $e) {
             Analog::log(
@@ -1019,12 +1036,12 @@ class Contribution
     }
 
     /**
-    * Global getter method
-    *
-    * @param string $name name of the property we want to retrive
-    *
-    * @return false|object the called property
-    */
+     * Global getter method
+     *
+     * @param string $name name of the property we want to retrive
+     *
+     * @return false|object the called property
+     */
     public function __get($name)
     {
 
@@ -1128,13 +1145,13 @@ class Contribution
     }
 
     /**
-    * Global setter method
-    *
-    * @param string $name  name of the property we want to assign a value to
-    * @param object $value a relevant value for the property
-    *
-    * @return void
-    */
+     * Global setter method
+     *
+     * @param string $name  name of the property we want to assign a value to
+     * @param object $value a relevant value for the property
+     *
+     * @return void
+     */
     public function __set($name, $value)
     {
         $forbidden = array('fields', 'is_cotis', 'end_date');

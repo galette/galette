@@ -3,7 +3,7 @@
 body > section {
     width: 50%;
     min-width: 650px;
-    text-align:center;
+    /*text-align:center;*/
     margin:1em auto;
     position:relative;
     background-color: #DDDDFF;
@@ -16,8 +16,15 @@ header img {
     margin-bottom: .2em;
 }
 
+#langs {
+    position: absolute;
+    right: .2em;
+    top: .2em;
+}
+
 p {
     margin: .5em 0 .3em;
+    text-align: center;
 }
 
 section > div {
@@ -29,12 +36,14 @@ section > div {
 section h2{
     margin: .5em 0 0;
     font-size:1.2em;
+    text-align: center;
 }
 
 section h3 {
     font-size: 1.1em;
     margin: .2em 0 0;
     color: #666666;
+    text-align: center;
 }
 
 section ul {
@@ -42,9 +51,9 @@ section ul {
 }
 
 #next_btn {
-    padding-left: 1.8em;;
+    padding-right: 1.8em;;
     background-image: url(images/next.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
-    background-position: .5em 50%, 50% 50%;
+    background-position: 96% 50%, 50% 50%;
     background-repeat: no-repeat, repeat-x;
 }
 
@@ -55,7 +64,7 @@ section ul {
 #retry_btn {
     padding-left: 1.8em;;
     background-image: url(images/icon-refresh.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
-    background-position: .5em 50%, 50% 50%;
+    background-position: .4em 50%, 50% 50%;
     background-repeat: no-repeat, repeat-x;
 }
 
@@ -164,4 +173,61 @@ li.install-bad {
 #copyright {
     display: block;
     text-align:center;
+}
+
+ul.leaders {
+    display: block;
+    max-width: 40em;
+    padding: 0;
+    overflow-x: hidden;
+    list-style: none;
+    overflow: hidden;
+}
+
+ul.leaders li {
+    position: relative;
+}
+
+ul.leaders li:before {
+    float: left;
+    width: 0;
+    white-space: nowrap;
+    content:
+ ". . . . . . . . . . . . . . . . . . . . "
+ ". . . . . . . . . . . . . . . . . . . . "
+ ". . . . . . . . . . . . . . . . . . . . "
+ ". . . . . . . . . . . . . . . . . . . . "
+}
+
+ul.leaders span:first-child {
+    padding-right: 0.33em;
+    background: white
+}
+
+ul.leaders span + span {
+    padding-left: 0.33em;
+    position: absolute;
+    background: white;
+    right: 0;
+}
+
+#installation_mode {
+    display: table;
+    table-layout: fixed;
+    border-spacing: .5em;
+    border-collapse: separate;
+}
+
+.installation_mode {
+    display: table-cell;
+    width: 10%;
+    border-radius: 6px;
+    -moz-box-shadow: 0px 1px 2px #555;
+    -webkitbox-shadow: 0px 1px 2px #555;
+    box-shadow: 0px 1px 2px #555;
+}
+
+#btnback {
+    float: left;
+    background-position: .4em 50%, 50% 50% !important
 }

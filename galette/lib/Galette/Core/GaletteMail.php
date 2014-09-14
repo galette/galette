@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2013 The Galette Team
+ * Copyright © 2009-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id: galette_mail.class.php 728 2009-12-03 17:56:30Z trashy $
  * @link      http://galette.tuxfamily.org
@@ -50,7 +50,7 @@ require_once GALETTE_ROOT . 'includes/html2text.php';
  * @name      GaletteMail
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-07
@@ -71,6 +71,7 @@ class GaletteMail
     private $_message;
     private $_alt_message;
     private $_html;
+    private $_word_wrap = 70;
 
     private $_result;
     private $_errors = array();
@@ -155,18 +156,22 @@ class GaletteMail
         $this->_mail->CharSet = 'UTF-8';
         $this->_mail->SetLanguage($i18n->getAbbrev());
 
-        $this->_mail->WordWrap = 70;
+        if ( $preferences->pref_bool_wrap_mails ) {
+            $this->_mail->WordWrap = $this->_word_wrap;
+        } else {
+            $this->_word_wrap = 0;
+        }
     }
 
     /**
-    * Sets the recipients
-    * For mailing convenience, all recipients will be added as BCC,
-    * regular recipient will be the sender.
-    *
-    * @param array $recipients Array (mail=>name) of all recipients
-    *
-    * @return boolean
-    */
+     * Sets the recipients
+     * For mailing convenience, all recipients will be added as BCC,
+     * regular recipient will be the sender.
+     *
+     * @param array $recipients Array (mail=>name) of all recipients
+     *
+     * @return boolean
+     */
     public function setRecipients($recipients)
     {
         $res = true;
@@ -276,7 +281,8 @@ class GaletteMail
                 $this->_mail->AltBody .= $tsign;
                 //then apply mail sign to html version
                 $sign_style = 'color:grey;border-top:1px solid #ccc;margin-top:2em';
-                $hsign = '<div style="' . $sign_style. '">' . nl2br($sign) . '</div>';
+                $hsign = '<div style="' . $sign_style. '">' .
+                    nl2br($sign) . '</div>';
                 $this->_mail->Body .= $hsign;
             } else {
                 $sign = "\r\n-- \r\n" . $sign;
@@ -331,12 +337,12 @@ class GaletteMail
     }
 
     /**
-    * Check if a mail adress is valid
-    *
-    * @param string $address the mail adress to check
-    *
-    * @return true if address is valid, false otherwise
-    */
+     * Check if a mail adress is valid
+     *
+     * @param string $address the mail adress to check
+     *
+     * @return true if address is valid, false otherwise
+     */
     public static function isValidEmail( $address )
     {
         $valid = \PHPMailer::ValidateAddress($address);
@@ -350,12 +356,12 @@ class GaletteMail
     }
 
     /**
-    * Check if a string is an url
-    *
-    * @param string $url the url to check
-    *
-    * @return true if address is string is an url, false otherwise
-    */
+     * Check if a string is an url
+     *
+     * @param string $url the url to check
+     *
+     * @return true if address is string is an url, false otherwise
+     */
     public static function isUrl( $url )
     {
         $valid = preg_match(
@@ -372,10 +378,10 @@ class GaletteMail
     }
 
     /**
-    * Clean a string embedding html, producing AltText for html mails
-    *
-    * @return current message in plaintext format
-    */
+     * Clean a string embedding html, producing AltText for html mails
+     *
+     * @return current message in plaintext format
+     */
     protected function cleanedHtml()
     {
         $html = $this->message;
@@ -394,12 +400,12 @@ class GaletteMail
     }
 
     /**
-    * Is the mail HTML formatted?
-    *
-    * @param boolean $set The value to set
-    *
-    * @return boolean
-    */
+     * Is the mail HTML formatted?
+     *
+     * @param boolean $set The value to set
+     *
+     * @return boolean
+     */
     public function isHTML($set = null)
     {
         if ( is_bool($set) ) {
@@ -409,10 +415,10 @@ class GaletteMail
     }
 
     /**
-    * Get the subject
-    *
-    * @return string The subject
-    */
+     * Get the subject
+     *
+     * @return string The subject
+     */
     public function getSubject()
     {
         return $this->_subject;
@@ -429,34 +435,51 @@ class GaletteMail
     }
 
     /**
-    * Get the message
-    *
-    * @return string The message
-    */
+     * Get the message
+     *
+     * @return string The message
+     */
     public function getMessage()
     {
         return $this->_message;
     }
 
     /**
-    * Sets the subject
-    *
-    * @param string $s The subject
-    *
-    * @return void
-    */
+     * Get the message, wrapped
+     *
+     * @return string Wrapped message
+     */
+    public function getWrappedMessage()
+    {
+        if ( $this->_word_wrap > 0 ) {
+            return $this->_mail->wrapText(
+                $this->_message,
+                $this->_word_wrap
+            );
+        } else {
+            return $this->_message;
+        }
+    }
+
+    /**
+     * Sets the subject
+     *
+     * @param string $s The subject
+     *
+     * @return void
+     */
     public function setSubject($s)
     {
         $this->_subject = $s;
     }
 
     /**
-    * Sets the message
-    *
-    * @param string $m The message
-    *
-    * @return void
-    */
+     * Sets the message
+     *
+     * @param string $m The message
+     *
+     * @return void
+     */
     public function setMessage($m)
     {
         $this->_message = $m;

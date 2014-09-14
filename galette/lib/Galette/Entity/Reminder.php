@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013 The Galette Team
+ * Copyright © 2013-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013 The Galette Team
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
+use Zend\Db\Sql\Expression;
 use \Galette\Core\GaletteMail;
 
 /**
@@ -47,7 +48,7 @@ use \Galette\Core\GaletteMail;
  * @name      Reminder
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-11
@@ -103,16 +104,16 @@ class Reminder
     {
         global $zdb;
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->limit(1)->from(PREFIX_DB . self::TABLE)
-                ->where(self::PK . ' = ?', $id);
+            $select = $zdb->select(self::TABLE);
+            $select->limit(1)
+                ->where(self::PK . ' = ' . $id);
 
-            $res = $select->query()->fetchAll();
-            $this->_loadFromRs($res[0]);
+            $results = $zdb->execute($select);
+            $this->_loadFromRs($results->current());
         } catch ( \Exception $e ) {
             Analog::log(
                 'An error occured loading reminder #' . $id . "Message:\n" .
-                $e->getMessage() . "\nQuery was:\n" . $select->__toString(),
+                $e->getMessage(),
                 Analog::ERROR
             );
         }
@@ -157,19 +158,20 @@ class Reminder
      */
     private function _store($zdb)
     {
+        $now = new \DateTime();
         $data = array(
             'reminder_type'     => $this->_type,
             'reminder_dest'     => $this->_dest->id,
-            'reminder_date'     => new \Zend_Db_Expr('NOW()'),
+            'reminder_date'     => $now->format('Y-m-d'),
             'reminder_success'  => ($this->_success) ? true : 'false',
             'reminder_nomail'   => ($this->_nomail) ? true : 'false'
         );
         try {
-            $add = $zdb->db->insert(
-                PREFIX_DB . self::TABLE,
-                $data
-            );
-            if ( !$add > 0 ) {
+            $insert = $zdb->insert(self::TABLE);
+            $insert->values($data);
+
+            $add = $zdb->execute($insert);
+            if ( !$add->count() > 0 ) {
                 Analog::log('Reminder not stored!', Analog::ERROR);
                 return false;
             }

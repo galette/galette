@@ -11,7 +11,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2011-2013 The Galette Team
+ * Copyright © 2011-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -31,7 +31,7 @@
  * @category  Plugins
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2013 The Galette Team
+ * @copyright 2011-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -39,7 +39,8 @@
  */
 
 use Analog\Analog as Analog;
-use Galette\Core\Db as Db;
+use Zend\Db\Adapter\Adapter;
+use Galette\Core\Install;
 
 require_once 'includes/galette.inc.php';
 
@@ -52,7 +53,7 @@ if ( GALETTE_MODE === 'DEMO' ) {
 }
 if ( !$login->isLogged() || !$login->isAdmin() ) {
     Analog::log(
-        'Trying to display ajax_members.php without appropriate permissions',
+        'Trying to display plugins installation without appropriate permissions',
         Analog::INFO
     );
     die();
@@ -89,11 +90,19 @@ if ( count($error_detected) == 0 && isset($_POST['install_type']) ) {
 }
 
 if ( count($error_detected) == 0 && isset($_POST['install_permsok']) ) {
-    $istep = 3;
+    if ( $_POST['install_type'] === 'install' ) {
+        $istep = 4;
+    } else {
+        $istep = 3;
+    }
+}
+
+if ( count($error_detected) == 0 && isset($_POST['previous_version']) ) {
+    $istep = 4;
 }
 
 if ( count($error_detected) == 0 && isset($_POST['install_dbwrite_ok']) ) {
-    $istep = 4;
+    $istep = 5;
 }
 
 if ( $istep > 1 && $_POST['install_type'] == 'install' ) {
@@ -106,14 +115,18 @@ switch ( $step ){
 case '1':
     $title = _T("Installation mode");
     //let's look for updates scripts
-    $update_scripts = Db::getUpdateScripts($plugin['root'], TYPE_DB);
+    $update_scripts = Install::getUpdateScripts($plugin['root'], TYPE_DB);
     if ( count($update_scripts) > 0 ) {
         $tpl->assign('update_scripts', $update_scripts);
     }
     break;
 case 'i2':
 case 'u2':
-    $title = _T("Permissions on the base");
+    $install = new Install();
+    if ( !defined('GALETTE_THEME_DIR') ) {
+        define('GALETTE_THEME_DIR', GALETTE_TPL_SUBDIR);
+    }
+    $title = _T("Database access and permissions");
     /** FIXME: when tables already exists and DROP not allowed at this time
     the showed error is about CREATE, whenever CREATE is allowed */
     //We delete the table if exists, no error at this time
@@ -121,63 +134,129 @@ case 'u2':
 
     $results = $zdb->grantCheck(substr($step, 0, 1));
 
-    $result = '';
+    $result = array();
     $error = false;
+
     //test returned values
     if ( $results['create'] instanceof Exception ) {
-        $error_detected[] = _T("CREATE operation not allowed");
-        $error_detected[] = $results['create']->getMessage();
+        $result[] = array(
+            'message'   => _T("CREATE operation not allowed"),
+            'debug'     => $results['create']->getMessage(),
+            'image'     => $install->getValidationImage(false)
+        );
+        $error = true;
     } elseif ( $results['create'] != '' ) {
-        $success_detected[] = _T("CREATE operation allowed");
+        $result[] = array(
+            'message'   => _T("CREATE operation allowed"),
+            'image'     => $install->getValidationImage(true)
+        );
     }
 
     if ( $results['insert'] instanceof Exception ) {
-        $error_detected[] = _T("INSERT operation not allowed");
-        $error_detected[] = $results['insert']->getMessage();
+        $result[] = array(
+            'message'   => _T("INSERT operation not allowed"),
+            'debug'     => $results['insert']->getMessage(),
+            'image'     => $install->getValidationImage(false)
+        );
+        $error = true;
     } elseif ( $results['insert'] != '' ) {
-        $success_detected[] = _T("INSERT operation allowed");
+        $result[] = array(
+            'message'   => _T("INSERT operation allowed"),
+            'image'     => $install->getValidationImage(true)
+        );
     }
 
     if ( $results['update'] instanceof Exception ) {
-        $error_detected[] = _T("UPDATE operation not allowed");
-        $error_detected[] = $results['update']->getMessage();
+        $result[] = array(
+            'message'   => _T("UPDATE operation not allowed"),
+            'debug'     => $results['update']->getMessage(),
+            'image'     => $install->getValidationImage(false)
+        );
+        $error = true;
     } elseif ( $results['update'] != '' ) {
-        $success_detected[] = _T("UPDATE operation allowed");
+        $result[] = array(
+            'message'   => _T("UPDATE operation allowed"),
+            'image'     => $install->getValidationImage(true)
+        );
     }
 
     if ( $results['select'] instanceof Exception ) {
-        $error_detected[] = _T("SELECT operation not allowed");
-        $error_detected[] = $results['select']->getMessage();
+        $result[] = array(
+            'message'   => _T("SELECT operation not allowed"),
+            'debug'     => $results['select']->getMessage(),
+            'image'     => $install->getValidationImage(false)
+        );
+        $error = true;
     } elseif ( $results['select'] != '' ) {
-        $success_detected[] = _T("SELECT operation allowed");
+        $result[] = array(
+            'message'   => _T("SELECT operation allowed"),
+            'image'     => $install->getValidationImage(true)
+        );
     }
 
     if ( $results['delete'] instanceof Exception ) {
-        $error_detected[] = _T("DELETE operation not allowed");
-        $error_detected[] = $results['delete']->getMessage();
+        $result[] = array(
+            'message'   => _T("DELETE operation not allowed"),
+            'debug'     => $results['delete']->getMessage(),
+            'image'     => $install->getValidationImage(false)
+        );
+        $error = true;
     } elseif ( $results['delete'] != '' ) {
-        $success_detected[] = _T("DELETE operation allowed");
+        $result[] = array(
+            'message'   => _T("DELETE operation allowed"),
+            'image'     => $install->getValidationImage(true)
+        );
     }
 
     if ( $results['drop'] instanceof Exception ) {
-        $error_detected[] = _T("DROP operation not allowed");
-        $error_detected[] = $results['drop']->getMessage();
+        $result[] = array(
+            'message'   => _T("DROP operation not allowed"),
+            'debug'     => $results['drop']->getMessage(),
+            'image'     => $install->getValidationImage(false)
+        );
+        $error = true;
     } elseif ( $results['drop'] != '' ) {
-        $success_detected[] = _T("DROP operation allowed");
+        $result[] = array(
+            'message'   => _T("DROP operation allowed"),
+            'image'     => $install->getValidationImage(true)
+        );
     }
 
-    if ( $step == 'u2' ) {
-        if (  $results['alter'] instanceof Exception ) {
-            $error_detected[] = _T("ALTER Operation not allowed");
-            $error_detected[] = $results['alter']->getMessage();
+    if ( $step === 'u2' ) {
+        if ( $results['alter'] instanceof Exception ) {
+            $result[] = array(
+                'message'   => _T("ALTER operation not allowed"),
+                'debug'     => $results['alter']->getMessage(),
+                'image'     => $install->getValidationImage(false)
+            );
+            $error = true;
         } elseif ( $results['alter'] != '' ) {
-            $success_detected[] = _T("ALTER Operation allowed");
+            $result[] = array(
+                'message'   => _T("ALTER operation allowed"),
+                'image'     => $install->getValidationImage(true)
+            );
         }
     }
+
+    if ( $error === true ) {
+        if ( $step === 'i2' ) {
+            $error_detected[] = _T("GALETTE hasn't got enough permissions on the database to continue the installation.");
+        } else {
+            $error_detected[] = _T("GALETTE hasn't got enough permissions on the database to continue the update.");
+        }
+    } else {
+        $success_detected[] = _T("Permissions to database are OK.");
+    }
+    $tpl->assign('result', $result);
     break;
-case 'i3':
 case 'u3':
-    if ( $step == 'i3' ) {
+    $update_scripts = Install::getUpdateScripts($plugin['root'], TYPE_DB);
+    $tpl->assign('update_scripts', $update_scripts);
+    $title = _T("Previous version selection");
+    break;
+case 'i4':
+case 'u4':
+    if ( $step == 'i4' ) {
         $title = _T("Creation of the tables");
     } else {
         $title = _T("Update of the tables");
@@ -185,11 +264,11 @@ case 'u3':
     // begin : copyright (2002) the phpbb group (support@phpbb.com)
     // load in the sql parser
     include GALETTE_ROOT . 'includes/sql_parse.php';
-    if ( $step == 'u3' ) {
-        $update_scripts = Db::getUpdateScripts(
+    if ( $step == 'u4' ) {
+        $update_scripts = Install::getUpdateScripts(
             $plugin['root'],
             TYPE_DB,
-            substr($_POST['install_type'], 8)
+            $_POST['previous_version']
         );
     } else {
         $update_scripts['current'] = TYPE_DB . '.sql';
@@ -198,8 +277,8 @@ case 'u3':
     $sql_query = '';
     while (list($key, $val) = each($update_scripts) ) {
         $sql_query .= @fread(
-            @fopen($plugin['root'] . '/sql/' . $val, 'r'),
-            @filesize($plugin['root'] . '/sql/' . $val)
+            @fopen($plugin['root'] . '/scripts/' . $val, 'r'),
+            @filesize($plugin['root'] . '/scripts/' . $val)
         );
         $sql_query .= "\n";
     }
@@ -218,7 +297,10 @@ case 'u3':
                 $extra = '...';
             }
             try {
-                $result = $zdb->db->getConnection()->exec($query);
+                $zdb->db->query(
+                    $query,
+                    Adapter::QUERY_MODE_EXECUTE
+                );
                 $success_detected[] = $w1 . ' ' . $w2 . ' ' . $w3 .
                     ' ' . $extra;
             } catch (Exception $e) {
@@ -241,9 +323,9 @@ case 'u3':
         }
     }
     break;
-case 'i4':
-case 'u4':
-    if ( $step == 'i4' ) {
+case 'i5':
+case 'u5':
+    if ( $step == 'i5' ) {
         $title = _T("Installation complete !");
     } else {
         $title = _T("Update complete !");

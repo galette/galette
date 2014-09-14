@@ -41,8 +41,13 @@
                                 {/if}
                             {/if}
                         </a>
-                    </th> 
-                    <th class="left"> 
+                    </th>
+                    {if $login->isLogged()}
+                    <th class="left">
+                        {_T string="Email"}
+                    </th>
+                    {/if}
+                    <th class="left">
                         <a href="?tri=infos" class="listing">{_T string="Informations"}</a>
                     </th>
                 </tr>
@@ -76,6 +81,9 @@
                     {/if}
                     </td>
                     <td class="{$member->getRowClass(true)} nowrap">{$member->nickname|htmlspecialchars}</td>
+                    {if $login->isLogged()}
+                    <td class="{$member->getRowClass(true)} nowrap"><a href="mailto:{$member->email}">{$member->email}</a></td>
+                    {/if}
                     <td class="{$member->getRowClass(true)} nowrap">{$member->others_infos}</td>
                 </tr>
     {/foreach}

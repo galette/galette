@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2013 The Galette Team
+ * Copyright © 2009-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog as Analog;
+use Zend\Db\Adapter\Adapter;
 
 /**
  * Fields config class for galette :
@@ -47,7 +48,7 @@ use Analog\Analog as Analog;
  * @name      FieldsConfig
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-26
@@ -77,9 +78,9 @@ class FieldsConfig
     );
 
     /*
-    * Fields that are not visible in the
-    * form should not be visible here.
-    */
+     * Fields that are not visible in the
+     * form should not be visible here.
+     */
     private $_non_required = array(
         'id_adh',
         'date_echeance',
@@ -128,15 +129,15 @@ class FieldsConfig
         $this->_prefs = array();
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
-            $select->from(PREFIX_DB . self::TABLE)
-                ->where('table_name = ?', $this->_table)
+            $select = $zdb->select(self::TABLE);
+            $select
+                ->where(array('table_name' => $this->_table))
                 ->order(array(FieldsCategories::PK, 'position ASC'));
 
-            $result = $select->query()->fetchAll();
+            $results = $zdb->execute($select);
 
             $this->_categorized_fields = null;
-            foreach ( $result as $k ) {
+            foreach ( $results as $k ) {
                 $f = array(
                     'field_id'  =>  $k->field_id,
                     'label'     =>  $this->_defaults[$k->field_id]['label'],
@@ -212,27 +213,18 @@ class FieldsConfig
                             $required = 'false';
                         }
                         $params[] = array(
-                            ':field_id'    => $k,
-                            ':table_name'  => $this->_table,
-                            ':required'    => $required,
-                            ':visible'     => $f['visible'],
-                            ':position'    => $f['position'],
-                            ':category'    => $f['category'],
+                            'field_id'    => $k,
+                            'table_name'  => $this->_table,
+                            'required'    => $required,
+                            'visible'     => $f['visible'],
+                            'position'    => $f['position'],
+                            'category'    => $f['category'],
                         );
                     }
                 }
 
                 if ( count($params) > 0 ) {
-                    $stmt = $zdb->db->prepare(
-                        'INSERT INTO ' . PREFIX_DB . self::TABLE .
-                        ' (table_name, field_id, required, visible, position, ' .
-                        FieldsCategories::PK .
-                        ') VALUES(:table_name, :field_id, :required, :visible, :position, ' .
-                        ':category)'
-                    );
-                    foreach ( $params as $p ) {
-                        $stmt->execute($p);
-                    }
+                    $this->_insert($zdb, $params);
                     $this->load();
                 }
             }
@@ -263,20 +255,13 @@ class FieldsConfig
             $categories = new FieldsCategories();
 
             //first, we drop all values
-            $zdb->db->delete(
-                PREFIX_DB . self::TABLE,
-                $zdb->db->quoteInto('table_name = ?', $this->_table)
+            $delete = $zdb->delete(self::TABLE);
+            $delete->where(
+                array('table_name' => $this->_table)
             );
+            $zdb->execute($delete);
             //take care of fields categories, for db relations
             $categories->installInit($zdb);
-
-            $stmt = $zdb->db->prepare(
-                'INSERT INTO ' . PREFIX_DB . self::TABLE .
-                ' (table_name, field_id, required, visible, position, ' .
-                FieldsCategories::PK .
-                ') VALUES(:table_name, :field_id, :required, :visible, :position, ' .
-                ':category)'
-            );
 
             $fields = array_keys($this->_defaults);
             foreach ( $fields as $f ) {
@@ -285,16 +270,16 @@ class FieldsConfig
                 if ( $required === false ) {
                     $required = 'false';
                 }
-                $params = array(
-                    ':field_id'    => $f,
-                    ':table_name'  => $this->_table,
-                    ':required'    => $required,
-                    ':visible'     => $this->_defaults[$f]['visible'],
-                    ':position'    => $this->_defaults[$f]['position'],
-                    ':category'    => $this->_defaults[$f]['category'],
+                $params[] = array(
+                    'field_id'    => $f,
+                    'table_name'  => $this->_table,
+                    'required'    => $required,
+                    'visible'     => $this->_defaults[$f]['visible'],
+                    'position'    => $this->_defaults[$f]['position'],
+                    'category'    => $this->_defaults[$f]['category'],
                 );
-                $stmt->execute($params);
             }
+            $this->_insert($zdb, $params);
 
             Analog::log(
                 'Default fields configuration were successfully stored.',
@@ -302,10 +287,15 @@ class FieldsConfig
             );
             return true;
         } catch (\Exception $e) {
+            $messages = array();
+            do {
+                $messages[] = $e->getMessage();
+            } while ($e = $e->getPrevious());
+
             Analog::log(
                 'Unable to initialize default fields configuration.' .
-                $e->getMessage(),
-                Analog::WARNING
+                implode("\n", $messages),
+                Analog::ERROR
             );
             return $e;
         }
@@ -398,12 +388,23 @@ class FieldsConfig
         $class = get_class($this);
 
         try {
-            $zdb->db->beginTransaction();
-            $sql = 'UPDATE ' . PREFIX_DB . self::TABLE .
-                ' SET required=:required, visible=:visible, position=:position, ' .
-                FieldsCategories::PK . '=:category WHERE table_name=\'' .
-                $this->_table .'\' AND field_id=:field_id';
-            $stmt = $zdb->db->prepare($sql);
+            $zdb->connection->beginTransaction();
+
+            $update = $zdb->update(self::TABLE);
+            $update->set(
+                array(
+                    'required'              => ':required',
+                    'visible'               => ':visible',
+                    'position'              => ':position',
+                    FieldsCategories::PK    => ':category'
+                )
+            )->where(
+                array(
+                    'field_id'      => ':field_id',
+                    'table_name'    => $this->_table
+                )
+            );
+            $stmt = $zdb->sql->prepareStatementForSqlObject($update);
 
             $params = null;
             foreach ( $this->_categorized_fields as $cat ) {
@@ -412,11 +413,11 @@ class FieldsConfig
                         $field['required'] = 'false';
                     }
                     $params = array(
-                        'field_id'  => $field['field_id'],
                         'required'  => $field['required'],
                         'visible'   => $field['visible'],
                         'position'  => $pos,
-                        'category'  => $field['category']
+                        FieldsCategories::PK => $field['category'],
+                        'where1'    => $field['field_id']
                     );
                     $stmt->execute($params);
                 }
@@ -436,10 +437,10 @@ class FieldsConfig
                 Analog::INFO
             );
 
-            $zdb->db->commit();
+            $zdb->connection->commit();
             return true;
         } catch (\Exception $e) {
-            $zdb->db->rollBack();
+            $zdb->connection->rollBack();
             Analog::log(
                 '[' . $class . '] An error occured while storing fields ' .
                 'configuration for table `' . $this->_table . '`.' .
@@ -468,10 +469,10 @@ class FieldsConfig
         $old_required = null;
 
         try {
-            $select = new \Zend_Db_Select($zdb->db);
+            $select = $zdb->select('required');
             $select->from(PREFIX_DB . 'required');
 
-            $old_required = $select->query()->fetchAll();
+            $old_required = $zdb->execute($select);
         } catch ( \Exception $pe ) {
             Analog::log(
                 'Unable to retrieve required fields_config. Maybe ' .
@@ -482,19 +483,30 @@ class FieldsConfig
             return true;
         }
 
-        $zdb->db->beginTransaction();
+        $zdb->connection->beginTransaction();
         try {
-            $sql = 'UPDATE ' . PREFIX_DB . self::TABLE .
-                ' SET required=:required WHERE table_name=\'' .
-                $this->_table .'\' AND field_id=:field_id';
-            $stmt = $zdb->db->prepare($sql);
+            $update = $zdb->update(self::TABLE);
+            $update->set(
+                array(
+                    'required'  => ':required'
+                )
+            )->where(
+                array(
+                    'field_id'      => ':field_id',
+                    'table_name'    => $this->_table
+                )
+            );
+
+            $stmt = $zdb->sql->prepareStatementForSqlObject($update);
 
             foreach ( $old_required as $or ) {
-                $params = array(
-                    'field_id'  => $or->field_id,
-                    'required'  => ($or->required === false) ?  'false' : true
+                /** Why where parameter is named where1 ?? */
+                $stmt->execute(
+                    array(
+                        'required'  => ($or->required === false) ?  'false' : true,
+                        'where1'    => $or->field_id
+                    )
                 );
-                $stmt->execute($params);
             }
 
             $class = get_class($this);
@@ -508,18 +520,58 @@ class FieldsConfig
                 Analog::INFO
             );
 
-            $zdb->db->query('DROP TABLE ' . PREFIX_DB . 'required;');
+            $zdb->db->query(
+                'DROP TABLE ' . PREFIX_DB . 'required',
+                Adapter::QUERY_MODE_EXECUTE
+            );
 
-            $zdb->db->commit();
+            $zdb->connection->commit();
             return true;
         } catch ( \Exception $e ) {
-            $zdb->db->rollBack();
+            $zdb->connection->rollBack();
             Analog::log(
                 'An error occured migrating old required fields. | ' .
                 $e->getMessage(),
                 Analog::ERROR
             );
             return false;
+        }
+    }
+
+    /**
+     * Insert values in database
+     *
+     * @param Db    $zdb    Database instance
+     * @param array $values Values to insert
+     *
+     * @return void
+     */
+    private function _insert($zdb, $values)
+    {
+        $insert = $zdb->insert(self::TABLE);
+        $insert->values(
+            array(
+                'field_id'      => ':field_id',
+                'table_name'    => ':table_name',
+                'required'      => ':required',
+                'visible'       => ':visible',
+                FieldsCategories::PK => ':category',
+                'position'      => ':position'
+            )
+        );
+        $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
+
+        foreach ( $values as $d ) {
+            $stmt->execute(
+                array(
+                    'field_id'      => $d['field_id'],
+                    'table_name'    => $d['table_name'],
+                    'required'      => $d['required'],
+                    'visible'       => $d['visible'],
+                    FieldsCategories::PK => $d['category'],
+                    'position'      => $d['position']
+                )
+            );
         }
     }
 }

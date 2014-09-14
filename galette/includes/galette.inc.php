@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2013 The Galette Team
+ * Copyright © 2009-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2013 The Galette Team
+ * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -36,7 +36,7 @@
  */
 
 if ( !defined('GALETTE_PHP_MIN') ) {
-    define('GALETTE_PHP_MIN', '5.3.7');
+    define('GALETTE_PHP_MIN', '5.4');
 }
 
 // check required PHP version...
@@ -81,8 +81,9 @@ if ( file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php')
     include_once GALETTE_CONFIG_PATH . 'behavior.inc.php';
 }
 
-if ( !$installer || $installed ) { //If we're not working from installer
-    require_once GALETTE_CONFIG_PATH . 'config.inc.php';
+if ( isset($installer) && $installer !== true ) {
+    //If we're not working from installer
+    include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 }
 
 if ( !function_exists('password_hash') ) {
@@ -95,7 +96,6 @@ use Galette\Core;
 require_once GALETTE_ROOT . 'lib/Galette/Common/ClassLoader.php';
 $galetteLoader = new ClassLoader('Galette', GALETTE_ROOT . 'lib');
 $zendLoader = new ClassLoader('Zend', GALETTE_ZEND_PATH);
-$zendLoader->setNamespaceSeparator('_');
 $analogLoader = new ClassLoader('Analog', GALETTE_ANALOG_PATH);
 $smartyLoader = new ClassLoader(null, GALETTE_SMARTY_PATH);
 $smartyLoader->setFileExtension('.class.php');
@@ -117,9 +117,9 @@ if (defined('GALETTE_XHPROF_PATH')
 //we start a php session
 session_start();
 
-define('GALETTE_VERSION', 'v0.7.8');
-define('GALETTE_COMPAT_VERSION', '0.7.5');
-define('GALETTE_DB_VERSION', '0.704');
+define('GALETTE_VERSION', 'v0.8');
+define('GALETTE_COMPAT_VERSION', '0.8');
+define('GALETTE_DB_VERSION', '0.800');
 if ( !defined('GALETTE_MODE') ) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD or DEMO
 }
@@ -283,8 +283,8 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
     include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 
     /**
-    * Database instanciation
-    */
+     * Database instanciation
+     */
     $zdb = new Core\Db();
 
     if ( $zdb->checkDbVersion()
@@ -292,13 +292,13 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
     ) {
 
         /**
-        * Load preferences
-        */
+         * Load preferences
+         */
         $preferences = new Core\Preferences($zdb);
 
         /**
-        * Set the path to the current theme templates
-        */
+         * Set the path to the current theme templates
+         */
         define(
             '_CURRENT_TEMPLATE_PATH',
             GALETTE_TEMPLATES_PATH . $preferences->pref_theme . '/'
@@ -339,8 +339,8 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
         }
 
         /**
-        * Logo
-        */
+         * Logo
+         */
         if ( isset($session['logo'])
             && !GALETTE_MODE == 'DEV'
         ) {
@@ -352,9 +352,9 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
         }
 
         /**
-        * Now that all objects are correctly setted,
-        * we can include files that need it
-        */
+         * Now that all objects are correctly setted,
+         * we can include files that need it
+         */
         include_once GALETTE_ROOT . 'includes/session.inc.php';
         include_once GALETTE_ROOT . 'includes/smarty.inc.php';
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';

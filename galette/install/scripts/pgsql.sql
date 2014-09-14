@@ -125,7 +125,7 @@ CREATE SEQUENCE galette_import_model_id_seq
 DROP TABLE IF EXISTS galette_statuts CASCADE;
 CREATE TABLE galette_statuts (
   id_statut integer DEFAULT nextval('galette_statuts_id_seq'::text) NOT NULL,
-  libelle_statut  character varying(20) DEFAULT '' NOT NULL,
+  libelle_statut  character varying(100) DEFAULT '' NOT NULL,
   priorite_statut smallint DEFAULT '0' NOT NULL,
   PRIMARY KEY (id_statut)
 );
@@ -185,7 +185,7 @@ CREATE UNIQUE INDEX galette_adherents_login_adh_idx ON galette_adherents (login_
 DROP TABLE IF EXISTS galette_types_cotisation CASCADE;
 CREATE TABLE galette_types_cotisation (
   id_type_cotis integer DEFAULT nextval('galette_types_cotisation_id_seq'::text) NOT NULL,
-  libelle_type_cotis character varying(30) DEFAULT '' NOT NULL,
+  libelle_type_cotis character varying(100) DEFAULT '' NOT NULL,
   cotis_extension boolean DEFAULT FALSE,
   PRIMARY KEY (id_type_cotis)
 );
@@ -229,7 +229,7 @@ DROP TABLE IF EXISTS galette_logs;
 CREATE TABLE galette_logs (
   id_log integer DEFAULT nextval('galette_logs_id_seq'::text) NOT NULL,
   date_log timestamp NOT NULL,
-  ip_log character varying(30) DEFAULT '' NOT NULL,
+  ip_log character varying(46) DEFAULT '' NOT NULL,
   adh_log character varying(41) DEFAULT '' NOT NULL,
   text_log text,
   action_log text,
@@ -280,10 +280,10 @@ CREATE TABLE galette_pictures (
 -- Table for dynamic translation of strings;
 DROP TABLE IF EXISTS galette_l10n;
 CREATE TABLE galette_l10n (
-  text_orig character varying(40) NOT NULL,
+  text_orig character varying(100) NOT NULL,
   text_locale character varying(15) NOT NULL,
   text_nref integer DEFAULT '1' NOT NULL,
-  text_trans character varying(40) DEFAULT '' NOT NULL,
+  text_trans character varying(100) DEFAULT '' NOT NULL,
   PRIMARY KEY (text_orig, text_locale)
 );
 
@@ -409,4 +409,4 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(0.704);
+INSERT INTO galette_database (version) VALUES(0.800);

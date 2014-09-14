@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2013 The Galette Team
+ * Copyright © 2004-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    Stéphane Salès <ssales@tuxz.org>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2004-2013 The Galette Team
+ * @copyright 2004-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -54,6 +54,8 @@ if ( ($login->isLogged()
     header('location: index.php');
     die();
 }
+
+$done = false;
 
 // Validation
 if ( isset($_POST['valid']) && $_POST['valid'] == '1'
@@ -118,6 +120,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
                     if ( $from_admin === false ) {
                         $success_detected[] = _T("A mail has been sent to your adress.<br/>Please check your inbox and follow the instructions.");
                         $tpl->assign('success_detected', $success_detected);
+                        $done = true;
                     } else {
                         $success_detected[] = _T("An mail has been sent to the member.");
                     }
@@ -169,6 +172,8 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
         }
     }
 }
+
+$tpl->assign('done', $done);
 
 if ( $from_admin ) {
     if ( count($error_detected) > 0 ) {

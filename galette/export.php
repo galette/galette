@@ -9,7 +9,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2013 The Galette Team
+ * Copyright © 2009-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -30,7 +30,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2013 The Galette Team
+ * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id: export.php 535 2009-02-11 07:23:06Z trashy $
  * @link      http://galette.tuxfamily.org
@@ -79,17 +79,16 @@ if ( isset($_GET['sup']) ) {
 
 if ( isset( $_POST['export_tables'] ) && $_POST['export_tables'] != '' ) {
     foreach ( $_POST['export_tables'] as $table) {
-        $select = new \Zend_Db_Select($zdb->db);
-        $select->from($table);
-        $result = $select->query()->fetchAll(Zend_Db::FETCH_ASSOC);
+        $select = $zdb->sql->select($table);
+        $results = $zdb->execute($select);
 
-        if ( count($result) > 0 ) {
+        if ( $results->count() > 0 ) {
             $filename = $table . '_full.csv';
             $filepath = CsvOut::DEFAULT_DIRECTORY . $filename;
             $fp = fopen($filepath, 'w');
             if ( $fp ) {
                 $res = $csv->export(
-                    $result,
+                    $results,
                     Csv::DEFAULT_SEPARATOR,
                     Csv::DEFAULT_QUOTE,
                     true,

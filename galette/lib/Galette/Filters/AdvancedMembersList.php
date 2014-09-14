@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2012-2013 The Galette Team
+ * Copyright © 2012-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2013 The Galette Team
+ * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -51,7 +51,7 @@ use Galette\Repository\Members as Members;
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2013 The Galette Team
+ * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
@@ -75,6 +75,8 @@ class AdvancedMembersList extends MembersList
     private $_modif_date_end;
     private $_due_date_begin;
     private $_due_date_end;
+    private $_birth_date_begin;
+    private $_birth_date_end;
     private $_show_public_infos = Members::FILTER_DC_PUBINFOS;
     private $_status = array();
     private $_contrib_creation_date_begin;
@@ -95,6 +97,8 @@ class AdvancedMembersList extends MembersList
         'modif_date_end',
         'due_date_begin',
         'due_date_end',
+        'birth_date_begin',
+        'birth_date_end',
         'show_public_infos',
         'status',
         'contrib_creation_date_begin',
@@ -118,6 +122,8 @@ class AdvancedMembersList extends MembersList
         'rmodif_date_end',
         'rdue_date_begin',
         'rdue_date_end',
+        'rbirth_date_begin',
+        'rbirth_date_end',
         'rcontrib_creation_date_begin',
         'rcontrib_creation_date_end',
         'rcontrib_begin_date_begin',
@@ -204,6 +210,8 @@ class AdvancedMembersList extends MembersList
         $this->_modif_date_end = null;
         $this->_due_date_begin = null;
         $this->_due_date_end = null;
+        $this->_birth_date_begin = null;
+        $this->_birth_date_end = null;
         $this->_show_public_infos = Members::FILTER_DC_PUBINFOS;
         $this->_status = array();
 
@@ -267,6 +275,8 @@ class AdvancedMembersList extends MembersList
                 case 'modif_date_end':
                 case 'due_date_begin':
                 case 'due_date_end':
+                case 'birth_date_begin':
+                case 'birth_date_end':
                 case 'contrib_creation_date_begin':
                 case 'contrib_creation_date_end':
                 case 'contrib_begin_date_begin':
@@ -294,6 +304,8 @@ class AdvancedMembersList extends MembersList
                 case 'rmodif_date_end':
                 case 'rdue_date_begin':
                 case 'rdue_date_end':
+                case 'rbirth_date_begin':
+                case 'rbirth_date_end':
                 case 'rcontrib_creation_date_begin':
                 case 'rcontrib_creation_date_end':
                 case 'rcontrib_begin_date_begin':
@@ -344,23 +356,28 @@ class AdvancedMembersList extends MembersList
             case 'modif_date_end':
             case 'due_date_begin':
             case 'due_date_end':
+            case 'birth_date_begin':
+            case 'birth_date_end':
             case 'contrib_creation_date_begin':
             case 'contrib_creation_date_end':
             case 'contrib_begin_date_begin':
             case 'contrib_begin_date_end':
             case 'contrib_end_date_begin':
             case 'contrib_end_date_end':
-                try {
-                    $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
-                    if ( $d === false ) {
-                        throw new \Exception('Incorrect format');
+                if ( $value !== null && trim($value) !== '' ) {
+                    try {
+                        $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
+                        if ( $d === false ) {
+                            throw new \Exception('Incorrect format');
+                        }
+                        $this->$prop = $d->format('Y-m-d');
+                    } catch ( \Exception $e ) {
+                        Analog::log(
+                            'Incorrect date format for ' . $name .
+                            '! was: ' . $value,
+                            Analog::WARNING
+                        );
                     }
-                    $this->$prop = $d->format('Y-m-d');
-                } catch ( \Exception $e ) {
-                    Analog::log(
-                        'Incorrect date format for ' . $name . '! was: ' . $value,
-                        Analog::WARNING
-                    );
                 }
                 break;
             case 'contrib_min_amount':

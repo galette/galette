@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2004-2013 The Galette Team
+ * Copyright © 2004-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    Frédéric Jacquot <unknown@unknwown.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2004-2013 The Galette Team
+ * @copyright 2004-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -92,6 +92,7 @@ if ( isset($_GET['clear_filter']) ) {
     $contribs->reinit();
 } else {
     if ( isset($_GET['end_date_filter']) || isset($_GET['start_date_filter']) ) {
+        $contribs->date_field = (int)$_GET['date_field_filter'];
         try {
             if ( isset($_GET['start_date_filter']) ) {
                 $field = _T("start date filter");
