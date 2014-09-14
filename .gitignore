@@ -11,7 +11,9 @@ nbproject
 !/galette/data/cache/.htaccess
 
 .vimfiles*
+.exvim*
 *.vimentry
+*.exvim
 quick_gen_project_*
 
 # /galette/data/attachments/
