@@ -876,7 +876,9 @@ class Members
             }
 
             if ( $this->_filters->filter_str != '' ) {
-                $token = '%' . $this->_filters->filter_str . '%';
+                $token = $zdb->platform->quoteValue(
+                    '%' . strtolower($this->_filters->filter_str) . '%'
+                );
                 switch( $this->_filters->field_filter ) {
                 case self::FILTER_NAME:
                     if ( TYPE_DB === 'pgsql' ) {
@@ -893,67 +895,65 @@ class Members
                         '(' .
                         $pre . 'LOWER(nom_adh)' . $sep .
                         'LOWER(prenom_adh)' . $sep .
-                        'LOWER(pseudo_adh)' . $post  . ' LIKE "' .
-                        strtolower($token)
-                        . '" OR ' .
+                        'LOWER(pseudo_adh)' . $post  . ' LIKE ' .
+                        $token
+                        . ' OR ' .
                         $pre . 'LOWER(prenom_adh)' . $sep .
                         'LOWER(nom_adh)' . $sep .
-                        'LOWER(pseudo_adh)' . $post  . ' LIKE "' .
-                        strtolower($token)
-                        . '")'
+                        'LOWER(pseudo_adh)' . $post  . ' LIKE ' .
+                        $token
+                        . ')'
                     );
                     break;
                 case self::FILTER_COMPANY_NAME:
                     $select->where(
-                        'LOWER(societe_adh) LIKE "' .
-                        strtolower($token) . '"'
+                        'LOWER(societe_adh) LIKE ' .
+                        $token
                     );
                     break;
                 case self::FILTER_ADRESS:
                     $select->where(
                         '(' .
-                        'LOWER(adresse_adh) LIKE "' . strtolower($token)
-                        . '" OR ' .
-                        'LOWER(adresse2_adh) LIKE "' . strtolower($token)
-                        . '" OR ' .
-                        'cp_adh LIKE "' . $token
-                        . '" OR ' .
-                        'LOWER(ville_adh) LIKE "' . strtolower($token)
-                        . '" OR ' .
-                        'LOWER(pays_adh) LIKE "' . strtolower($token)
-                        . '")'
+                        'LOWER(adresse_adh) LIKE ' . $token
+                        . ' OR ' .
+                        'LOWER(adresse2_adh) LIKE ' . $token
+                        . ' OR ' .
+                        'cp_adh LIKE ' . $token
+                        . ' OR ' .
+                        'LOWER(ville_adh) LIKE ' . $token
+                        . ' OR ' .
+                        'LOWER(pays_adh) LIKE ' . $token
+                        . ')'
                     );
                     break;
                 case self::FILTER_MAIL:
                     $select->where(
                         '(' .
-                        'LOWER(email_adh) LIKE "' . strtolower($token)
-                        . '" OR ' .
-                        'LOWER(url_adh) LIKE "' . strtolower($token)
-                        . '" OR ' .
-                        'LOWER(msn_adh) LIKE "' . strtolower($token)
-                        . '" OR ' .
-                        'LOWER(icq_adh) LIKE "' . strtolower($token)
-                        . '" OR ' .
-                        'LOWER(jabber_adh) LIKE "' . strtolower($token)
-                        . '")'
+                        'LOWER(email_adh) LIKE ' . $token
+                        . ' OR ' .
+                        'LOWER(url_adh) LIKE ' . $token
+                        . ' OR ' .
+                        'LOWER(msn_adh) LIKE ' . $token
+                        . ' OR ' .
+                        'LOWER(icq_adh) LIKE ' . $token
+                        . ' OR ' .
+                        'LOWER(jabber_adh) LIKE ' . $token
+                        . ')'
                     );
                     break;
                 case self::FILTER_JOB:
                     $select->where(
-                        'LOWER(prof_adh) LIKE "' .
-                        strtolower($token) . '"'
+                        'LOWER(prof_adh) LIKE ' . $token
                     );
                     break;
                 case self::FILTER_INFOS:
                     $more = '';
                     if ( $login->isAdmin() || $login->isStaff() ) {
-                        $more = ' OR LOWER(info_adh) LIKE "' . $token . '"';
+                        $more = ' OR LOWER(info_adh) LIKE ' . $token;
                     }
                     $select->where(
-                        '(LOWER(info_public_adh) LIKE "' .
-                        strtolower($token) . '"'
-                        . $more . ')'
+                        '(LOWER(info_public_adh) LIKE ' .
+                        $token . $more . ')'
                     );
                     break;
                 }
