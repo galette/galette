@@ -156,6 +156,11 @@
                     <span class="tip">{_T string="Enter a script URI that would be called after adding a new contribution.<br/>Script URI must be prefixed by one of '<em>galette://</em>' for Galette internal call. '<em>file://</em>' for a direct file call, '<em>get://</em>' or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in those cases)."}</span>
                     <input type="text" name="pref_new_contrib_script" id="pref_new_contrib_script" value="{$pref.pref_new_contrib_script}"{if isset($required.pref_new_contrib_script) and $required.pref_new_contrib_script eq 1} required{/if}/>
                 </p>
+                <p>
+                    <label for="pref_rss_url" class="bline tooltip" title="{_T string="URL to the RSS feed."}">{_T string="RSS feed URL"}</label>
+                    <span class="tip">{_T string="Enter the full URL to the RSS feed. It will be displayed on Galette desktop, and on login page."}</span>
+                    <input type="text" name="pref_rss_url" id="pref_rss_url" value="{$pref.pref_rss_url}"{if isset($required.pref_new_contrib_script) and $required.pref_new_contrib_script eq 1} required{/if}/>
+                </p>
             </fieldset>
 
             <fieldset class="cssform" id="mail">

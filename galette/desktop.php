@@ -53,6 +53,9 @@ $tpl->assign('contentcls', 'desktop');
 $tpl->assign('show_dashboard', $_COOKIE['show_galette_dashboard']);
 $tpl->assign('require_cookie', true);
 
+$news = new Galette\IO\News($preferences->pref_rss_url);
+$tpl->assign('news', $news->getPosts());
+
 $content = $tpl->fetch('desktop.tpl');
 $tpl->assign('content', $content);
 $tpl->display('page.tpl');

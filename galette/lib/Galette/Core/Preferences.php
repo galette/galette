@@ -150,7 +150,8 @@ class Preferences
         'pref_mail_sign' => "{NAME}\r\n\r\n{WEBSITE}\r\n{GOOGLEPLUS}\r\n{FACEBOOK}\r\n{TWITTER}\r\n{LINKEDIN}\r\n{VIADEO}",
         /* New contribution script */
         'pref_new_contrib_script' => '',
-        'pref_bool_wrap_mails' => true
+        'pref_bool_wrap_mails' => true,
+        'pref_rss_url' => 'http://galette.eu/dc/index.php/feed/atom'
     );
 
     /**

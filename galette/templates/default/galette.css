@@ -189,6 +189,30 @@ nav a{
 #desktop {
     border-spacing:3em 1em;
     text-align: center;
+    width: 50%;
+    min-width: 30em;
+    margin: 0 auto;
+}
+
+#news {
+    width: 50%;
+    min-width: 30em;
+    margin: 1em auto 0;
+}
+
+#news > div {
+    text-align: left;
+}
+
+#news p {
+    margin: 0 .2em .3em;
+    display: inline-block;
+    width: 100%;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+    text-align: justify;
 }
 
 .desktop, .panels {
@@ -196,6 +220,7 @@ nav a{
 }
 
 #desktop,
+#news,
 .plugin,
 #groups_list,
 #group_infos {
@@ -226,6 +251,7 @@ nav a{
 }
 
 #desktop header,
+#news header,
 .plugin header,
 #groups_list header,
 #group_infos header {
@@ -1395,6 +1421,7 @@ table.listing {
 }
 
 #desktop header,
+#news header,
 .plugin header,
 .mailing header,
 #selected_members header,

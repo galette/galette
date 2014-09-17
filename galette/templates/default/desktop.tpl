@@ -17,6 +17,20 @@
 {/if}
             </div>
         </section>
+{if $news|@count > 0}
+    <section id="news">
+        <header class="ui-state-default ui-state-active">
+            {_T string="News"}
+        </header>
+        <div>
+    {foreach from=$news item=post}
+            <p>
+                <a href="{$post.url}" target="_blank">{$post.title}</a>
+            </p>
+    {/foreach}
+        </div>
+    </section>
+{/if}
         <p class="center">
             <input type="checkbox" name="show_dashboard" id="show_dashboard" value="1"{if $show_dashboard} checked="checked"{/if}/>
             <label for="show_dashboard">{_T string="Show dashboard on login"}</label>
