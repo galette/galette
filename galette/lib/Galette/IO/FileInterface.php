@@ -3,11 +3,11 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Files
+ * File interface
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,51 +28,48 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.7dev - 2013-09-06
+ * @since     Available since 0.8.1 - 2014-09-18
  */
 
 namespace Galette\IO;
 
-use Analog\Analog;
-use Galette\IO\FileTrait;
-
 /**
- * Files
+ * File interface
  *
  * @category  IO
  * @name      Csv
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.7dev - 2013-09-06
+ * @since     Available since 0.8.1 - 2014-09-18
  */
 
-class File implements FileInterface
+interface FileInterface
 {
-    use FileTrait;
+    const INVALID_FILENAME = -1;
+    const INVALID_EXTENSION = -2;
+    const FILE_TOO_BIG = -3;
+    const MIME_NOT_ALLOWED = -4;
+    const NEW_FILE_EXISTS = -5;
+    const INVALID_FILE = -6;
+    const CANT_WRITE = -7;
+    const MAX_FILE_SIZE = 1024;
 
     /**
-     * Default constructor
+     * Initialization
      *
      * @param string $dest       File destination directory
      * @param array  $extensions Array of permitted extensions
      * @param array  $mimes      Array of permitted mime types
      * @param int    $maxlenght  Maximum lenght for each file
+     *
+     * @return void
      */
-    public function __construct($dest, $extensions = null, $mimes = null,
-        $maxlenght = null
-    ) {
-        $this->init(
-            $dest,
-            $extensions,
-            $mimes,
-            $maxlentgh
-        );
-    }
+    function init($dest, $extensions = null, $mimes = null, $maxlenght = null);
 }

@@ -37,8 +37,10 @@
 
 namespace Galette\Core;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Galette\Entity\Adherent;
+use Galette\IO\FileInterface;
+use Galette\IO\FileTrait;
 
 /**
  * Picture handling
@@ -52,47 +54,17 @@ use Galette\Entity\Adherent;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
-class Picture
+class Picture implements FileInterface
 {
+    use FileTrait;
+
     //constants that will not be overrided
-    const INVALID_FILE = -1;
-    const INVALID_EXTENSION = -2;
-    const FILE_TOO_BIG = -3;
-    const MIME_NOT_ALLOWED = -4;
-    const SQL_ERROR = -5;
-    const SQL_BLOB_ERROR = -6;
+    const SQL_ERROR = -10;
+    const SQL_BLOB_ERROR = -11;
     //constants that can be overrided
     //(do not use self::CONSTANT, but get_class[$this]::CONSTANT)
-    const MAX_FILE_SIZE = 1024;
     const TABLE = 'pictures';
     const PK = Adherent::PK;
-
-    /*private $_bad_chars = array(
-        '\.', '\\\\', "'", ' ', '\/', ':', '\*', '\?', '"', '<', '>', '|'
-    );*/
-    //array keys contain litteral value of each forbidden character
-    //(to be used when showing an error).
-    //Maybe is there a better way to handle this...
-    private $_bad_chars = array(
-        '.'    =>    '\.',
-        '\\'    =>    '\\\\',
-        "'"    =>    "'",
-        ' '    =>    ' ',
-        '/'    =>    '\/',
-        ':'    =>    ':',
-        '*'    =>    '\*',
-        '?'    =>    '\?',
-        '"'    =>    '"',
-        '<'    =>    '<',
-        '>'    =>    '>',
-        '|'    =>    '|'
-    );
-    private $_allowed_extensions = array('jpeg', 'jpg', 'png', 'gif');
-    private $_allowed_mimes = array(
-        'jpg'    =>    'image/jpeg',
-        'png'    =>    'image/png',
-        'gif'    =>    'image/gif'
-    );
 
     protected $tbl_prefix = '';
 
@@ -116,6 +88,17 @@ class Picture
      */
     public function __construct( $id_adh='' )
     {
+
+        $this->init(
+            null,
+            array('jpeg', 'jpg', 'png', 'gif'),
+            array(
+                'jpg'    =>    'image/jpeg',
+                'png'    =>    'image/png',
+                'gif'    =>    'image/gif'
+            )
+        );
+
         // '!==' needed, otherwise ''==0
         if ( $id_adh !== '' ) {
             $this->id = $id_adh;
@@ -130,7 +113,7 @@ class Picture
         }
 
         // if we still have no picture, take the default one
-        if ( $this->file_path=='' ) {
+        if ( $this->file_path == '' ) {
             $this->getDefaultPicture();
         }
 
@@ -419,8 +402,8 @@ class Picture
         $tmpfile = $file['tmp_name'];
 
         //First, does the file have a valid name?
-        $reg = "/^(.[^" . implode('', $this->_bad_chars) . "]+)\.(" .
-            implode('|', $this->_allowed_extensions) . ")$/i";
+        $reg = "/^(.[^" . implode('', $this->bad_chars) . "]+)\.(" .
+            implode('|', $this->allowed_extensions) . ")$/i";
         if ( preg_match($reg, $name, $matches) ) {
             Analog::log(
                 '[' . $class . '] Filename and extension are OK, proceed.',
@@ -433,7 +416,7 @@ class Picture
                 $extension = 'jpg';
             }
         } else {
-            $erreg = "/^(.[^" . implode('', $this->_bad_chars) . "]+)\.(.*)/i";
+            $erreg = "/^(.[^" . implode('', $this->bad_chars) . "]+)\.(.*)/i";
             $m = preg_match($erreg, $name, $errmatches);
 
             $err_msg = '[' . $class . '] ';
@@ -445,10 +428,10 @@ class Picture
                 $err_msg = 'Invalid filename `' . $name  . '` (Tip: ';
                 $err_msg .= preg_replace(
                     '|%s|',
-                    htmlentities($this->getbadChars()),
+                    htmlentities($this->getBadChars()),
                     "file name should not contain any of: %s). "
                 );
-                $ret = self::INVALID_FILE;
+                $ret = self::INVALID_FILENAME;
             }
 
             Analog::log(
@@ -459,10 +442,10 @@ class Picture
         }
 
         //Second, let's check file size
-        if ( $file['size'] > ( $class::MAX_FILE_SIZE * 1024 ) ) {
+        if ( $file['size'] > ( $this->maxlenght * 1024 ) ) {
             Analog::log(
                 '[' . $class . '] File is too big (' . ( $file['size'] * 1024 ) .
-                'Ko for maximum authorized ' . ( $class::MAX_FILE_SIZE * 1024 ) .
+                'Ko for maximum authorized ' . ( $this->maxlenght * 1024 ) .
                 'Ko',
                 Analog::ERROR
             );
@@ -473,7 +456,7 @@ class Picture
 
         $current = getimagesize($tmpfile);
 
-        if ( !in_array($current['mime'], $this->_allowed_mimes) ) {
+        if ( !in_array($current['mime'], $this->allowed_mimes) ) {
             Analog::log(
                 '[' . $class . '] Mimetype `' . $current['mime'] . '` not allowed',
                 Analog::ERROR
@@ -562,7 +545,7 @@ class Picture
      * @param string $source the source image
      * @param string $ext    file's extension
      * @param string $dest   the destination image.
-     *                           If null, we'll use the source image. Defaults to null
+     *                       If null, we'll use the source image. Defaults to null
      *
      * @return void
      */
@@ -725,40 +708,6 @@ class Picture
     }
 
     /**
-     * Returns unauthorized characters litteral values quoted, comma separated values
-     *
-     * @return string comma separated disallowed characters
-     */
-    public function getBadChars()
-    {
-        $ret = '';
-        foreach ( $this->_bad_chars as $char=>$regchar ) {
-            $ret .= '`' . $char . '`, ';
-        }
-        return $ret;
-    }
-
-    /**
-     * Returns allowed extensions
-     *
-     * @return string comma separated allowed extensiosn
-     */
-    public function getAllowedExts()
-    {
-        return implode(', ', $this->_allowed_extensions);
-    }
-
-    /**
-     * Return the array of allowed mime types
-     *
-     * @return array
-     */
-    public function getAllowedMimeTypes()
-    {
-        return $this->_allowed_mimes;
-    }
-
-    /**
      * Returns current file full path
      *
      * @return string full file path
@@ -787,64 +736,18 @@ class Picture
      */
     public function getErrorMessage($code)
     {
-        $error = _T("An error occued.");
+        $error = null;
         switch( $code ) {
-        case self::INVALID_FILE:
-            $error = _T("File name is invalid, it should not contain any special character or space.");
-            break;
-        case self::INVALID_EXTENSION:
-            $error = preg_replace(
-                '|%s|',
-                $this->getAllowedExts(),
-                _T("- File extension is not allowed, only %s files are.")
-            );
-            break;
-        case self::FILE_TOO_BIG:
-            $error = preg_replace(
-                '|%d|',
-                self::MAX_FILE_SIZE,
-                _T("File is too big. Maximum allowed size is %dKo")
-            );
-            break;
-        case self::MIME_NOT_ALLOWED:
-            /** FIXME: should be more descriptive */
-            $error = _T("Mime-Type not allowed");
-            break;
         case self::SQL_ERROR:
         case self::SQL_BLOB_ERROR:
             $error = _T("An SQL error has occured.");
             break;
-
         }
+
+        if ( $error === null ) {
+            $error = $this->getErrorMessageFromCode($code);
+        }
+
         return $error;
-    }
-
-    /**
-     * Return textual error message send by PHP after upload attempt
-     *
-     * @param int $error_code The error code
-     *
-     * @return string Localized message
-     */
-    public function getPhpErrorMessage($error_code)
-    {
-        switch ($error_code) {
-        case UPLOAD_ERR_INI_SIZE:
-            return _T("The uploaded file exceeds the upload_max_filesize directive in php.ini");
-        case UPLOAD_ERR_FORM_SIZE:
-            return _T("The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form");
-        case UPLOAD_ERR_PARTIAL:
-            return _T("The uploaded file was only partially uploaded");
-        case UPLOAD_ERR_NO_FILE:
-            return _T("No file was uploaded");
-        case UPLOAD_ERR_NO_TMP_DIR:
-            return _T("Missing a temporary folder");
-        case UPLOAD_ERR_CANT_WRITE:
-            return _T("Failed to write file to disk");
-        case UPLOAD_ERR_EXTENSION:
-            return _T("File upload stopped by extension");
-        default:
-            return _T("Unknown upload error");
-        }
     }
 }
