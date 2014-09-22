@@ -81,8 +81,8 @@ $fields = Adherent::getDbFields();
 if ( isset($_POST["nom_adh"]) ) {
     // dynamic fields
     $adherent['dyn'] = $dyn_fields->extractPosted($_POST, $_FILES, $disabled, $member->id);
-    $dyn_fields_errors = $dyn_fields->get_errors();
-    if ( $count($dyn_fields_errors) > 0 ) {
+    $dyn_fields_errors = $dyn_fields->getErrors();
+    if ( count($dyn_fields_errors) > 0 ) {
         $error_detected = array_merge($error_detected, $dyn_fields_errors);
     }
     // regular fields
