@@ -110,7 +110,7 @@ abstract class Pagination
         $this->_current_page = 1;
         $this->_orderby = $this->getDefaultOrder();
         $this->_ordered = $this->getDefaultDirection();
-        $this->_show = $preferences->pref_numrows;
+        $this->_show = (int)$preferences->pref_numrows;
     }
 
     /**

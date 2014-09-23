@@ -104,7 +104,7 @@ if ( count($versions) == 0 ) {
         if ($is_current) {
             echo '</strong>';
         }
-        $is_current = $current === $version;
+        $is_current = $current == $version;
         ?>
 
                     </li>
