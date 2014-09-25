@@ -70,11 +70,9 @@ class GaletteMail
 
     private $_subject;
     private $_message;
-    private $_alt_message;
     private $_html;
     private $_word_wrap = 70;
 
-    private $_result;
     private $_errors = array();
     private $_recipients;
 
@@ -224,7 +222,6 @@ class GaletteMail
         } else {
             //the mail is plaintext :)
             $this->_mail->AltBody = null;
-            $t = $this->_mail;
             $this->_mail->IsHTML(false);
         }
 
@@ -305,7 +302,6 @@ class GaletteMail
             $this->_errors = array();
             //let's send the mail
             if ( !$this->_mail->Send() ) {
-                $m = $this->_mail;
                 $this->_errors[] = $this->_mail->ErrorInfo;
                 Analog::log(
                     'An error occured sending mail to: ' .
@@ -465,24 +461,24 @@ class GaletteMail
     /**
      * Sets the subject
      *
-     * @param string $s The subject
+     * @param string $subject The subject
      *
      * @return void
      */
-    public function setSubject($s)
+    public function setSubject($subject)
     {
-        $this->_subject = $s;
+        $this->_subject = $subject;
     }
 
     /**
      * Sets the message
      *
-     * @param string $m The message
+     * @param string $message The message
      *
      * @return void
      */
-    public function setMessage($m)
+    public function setMessage($message)
     {
-        $this->_message = $m;
+        $this->_message = $message;
     }
 }
