@@ -41,6 +41,7 @@ use Analog\Analog as Analog;
 
 /** @ignore */
 require_once 'class.phpmailer.php';
+require_once 'class.smtp.php';
 require_once GALETTE_ROOT . 'includes/html2text.php';
 
 /**
