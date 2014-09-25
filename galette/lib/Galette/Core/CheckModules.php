@@ -164,9 +164,9 @@ class CheckModules
         $html = null;
         $img_dir = null;
         if ( defined('GALETTE_THEME_DIR') ) {
-            $img_dir = GALETTE_THEME_DIR . 'images/';
+            $img_dir = GALETTE_BASE_PATH . GALETTE_THEME_DIR . 'images/';
         } else {
-            $img_dir = GALETTE_TPL_SUBDIR . 'images/';
+            $img_dir = GALETTE_BASE_PATH . GALETTE_TPL_SUBDIR . 'images/';
         }
 
         if ( count($this->_missing) > 0 ) {
