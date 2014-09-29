@@ -673,7 +673,7 @@ class Members
                         $cdf_field
                     );
                     $select->join(
-                        array('cdf' . $cdf => DynamicFields::getFixedValuesTableName($cdf)),
+                        array('cdf' . $cdf => DynamicFields::getFixedValuesTableName($cdf, true)),
                         $rcdf_field . '=df.field_val',
                         array(),
                         $select::JOIN_LEFT
@@ -691,7 +691,7 @@ class Members
                         $cdf_field
                     );
                     $select->join(
-                        array('cdfc' . $cdf => DynamicFields::getFixedValuesTableName($cdf)),
+                        array('cdfc' . $cdf => DynamicFields::getFixedValuesTableName($cdf, true)),
                         $rcdf_field . '=dfc.field_val',
                         array(),
                         $select::JOIN_LEFT

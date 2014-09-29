@@ -141,11 +141,11 @@ class DynamicFields
      * Retrieve fixed values table name
      *
      * @param integer $id       Field's id
-     * @param boolean $prefixed Whether db prefix must be added
+     * @param boolean $prefixed Whether table name should be prefixed
      *
      * @return string
      */
-    public static function getFixedValuesTableName($id, $prefixed = true)
+    public static function getFixedValuesTableName($id, $prefixed = false)
     {
         $name = 'field_contents_' . $id;
         if ( $prefixed === true ) {
@@ -166,7 +166,7 @@ class DynamicFields
         global $zdb;
 
         try {
-            $select = $zdb->select(self::getFixedValuesTableName($field_id, false));
+            $select = $zdb->select(self::getFixedValuesTableName($field_id));
             $select->columns(
                 array('val')
             )->order('id');
