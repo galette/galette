@@ -44,7 +44,7 @@ use Galette\Entity\Contribution;
 use Galette\Entity\PdfModel;
 use Galette\Entity\PdfInvoice;
 use Galette\Entity\PdfReceipt;
-use Analog\Analog as Analog;
+use Analog\Analog;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';

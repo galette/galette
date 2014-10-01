@@ -37,9 +37,9 @@
 
 namespace Galette\Entity;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Zend\Db\Sql\Expression;
-use Galette\Repository\Contributions as Contributions;
+use Galette\Repository\Contributions;
 
 /**
  * Transaction class for galette

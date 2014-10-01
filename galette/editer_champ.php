@@ -36,11 +36,11 @@
  * @since     Available since 0.62
  */
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Expression;
-use Galette\Entity\DynamicFields as DynamicFields;
-use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
+use Galette\Entity\DynamicFields;
+use Galette\DynamicFieldsTypes\DynamicFieldType;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';

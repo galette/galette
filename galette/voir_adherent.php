@@ -40,12 +40,12 @@
  * @since     Available since 0.60
  */
 
-use Galette\Entity\DynamicFields as DynamicFields;
-use Galette\Entity\Adherent as Adherent;
-use Galette\Entity\FieldsConfig as FieldsConfig;
-use Galette\Repository\Groups as Groups;
-use Galette\Repository\Members as Members;
-use Galette\Filters\MembersList as MembersList;
+use Galette\Entity\DynamicFields;
+use Galette\Entity\Adherent;
+use Galette\Entity\FieldsConfig;
+use Galette\Repository\Groups;
+use Galette\Repository\Members;
+use Galette\Filters\MembersList;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';

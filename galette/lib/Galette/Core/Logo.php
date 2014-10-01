@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 
 /**
  * This class stores and serve the logo.

@@ -37,13 +37,13 @@
 
 namespace Galette\Entity;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Zend\Db\Sql\Expression;
-use Galette\Core\Picture as Picture;
-use Galette\Core\GaletteMail as GaletteMail;
-use Galette\Core\Password as Password;
-use Galette\Repository\Groups as Groups;
-use Galette\Repository\Members as Members;
+use Galette\Core\Picture;
+use Galette\Core\GaletteMail;
+use Galette\Core\Password;
+use Galette\Repository\Groups;
+use Galette\Repository\Members;
 
 /**
  * Member class for galette

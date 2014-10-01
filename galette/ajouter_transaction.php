@@ -36,12 +36,12 @@
  * @since     Available since 0.62
  */
 
-use Galette\Entity\Adherent as Adherent;
-use Galette\Entity\DynamicFields as DynamicFields;
-use Galette\Entity\Transaction as Transaction;
-use Galette\Entity\Contribution as Contribution;
-use Galette\Repository\Contributions as Contributions;
-use Galette\Repository\Members as Members;
+use Galette\Entity\Adherent;
+use Galette\Entity\DynamicFields;
+use Galette\Entity\Transaction;
+use Galette\Entity\Contribution;
+use Galette\Repository\Contributions;
+use Galette\Repository\Members;
 
 require_once 'includes/galette.inc.php';
 

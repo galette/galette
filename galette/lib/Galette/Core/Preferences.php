@@ -37,8 +37,8 @@
 
 namespace Galette\Core;
 
-use Analog\Analog as Analog;
-use Galette\Entity\Adherent as Adherent;
+use Analog\Analog;
+use Galette\Entity\Adherent;
 
 /**
  * Preferences for galette

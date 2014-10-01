@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 
 /** @ignore */
 require_once 'class.phpmailer.php';

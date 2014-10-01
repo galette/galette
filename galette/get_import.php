@@ -34,7 +34,7 @@
  * @since     Available since 0.7.6dev - 2013-08-27
  */
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';

@@ -36,7 +36,7 @@
 
 namespace Galette\Core;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
 

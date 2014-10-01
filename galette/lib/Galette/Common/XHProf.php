@@ -40,7 +40,7 @@
 
 namespace Galette\Common;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 
 /**
  * class XHProf

@@ -36,7 +36,7 @@
  * @since     Available since 0.62
  */
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Galette\Core\L10n;
 use Zend\Db\Sql\Expression;
 

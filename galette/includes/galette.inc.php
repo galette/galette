@@ -91,7 +91,7 @@ if ( !function_exists('password_hash') ) {
 }
 
 use Galette\Common\ClassLoader;
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Galette\Core;
 require_once GALETTE_ROOT . 'lib/Galette/Common/ClassLoader.php';
 $galetteLoader = new ClassLoader('Galette', GALETTE_ROOT . 'lib');

@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 
 /**
  * Fields categories class for galette

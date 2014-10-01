@@ -37,10 +37,10 @@
 
 namespace Galette\Filters;
 
-use Analog\Analog as Analog;
-use Galette\Core\Pagination as Pagination;
-use Galette\Entity\Group as Group;
-use Galette\Repository\Members as Members;
+use Analog\Analog;
+use Galette\Core\Pagination;
+use Galette\Entity\Group;
+use Galette\Repository\Members;
 
 /**
  * Members list filters and paginator

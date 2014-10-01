@@ -37,8 +37,8 @@
 
 namespace Galette\DynamicFieldsTypes;
 
-use Analog\Analog as Analog;
-use Galette\Entity\DynamicFields as DynamicFields;
+use Analog\Analog;
+use Galette\Entity\DynamicFields;
 
 /**
  * Abstrac dynamic field type

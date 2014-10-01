@@ -38,11 +38,11 @@
 namespace Galette\Core;
 
 use Zend\Db\Adapter\Exception as AdapterException;
-use Galette\Repository\Groups as Groups;
-use Galette\Repository\Members as Members;
-use Galette\Entity\Adherent as Adherent;
-use Galette\Entity\Status as Status;
-use Analog\Analog as Analog;
+use Galette\Repository\Groups;
+use Galette\Repository\Members;
+use Galette\Entity\Adherent;
+use Galette\Entity\Status;
+use Analog\Analog;
 
 /**
  * Default authentication class for galette

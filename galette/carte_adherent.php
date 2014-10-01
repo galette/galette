@@ -46,7 +46,7 @@
  */
 
 use Galette\IO\Pdf;
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Galette\Repository\Members;
 
 /** @ignore */

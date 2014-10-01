@@ -40,7 +40,7 @@ if (!defined('GALETTE_ROOT')) {
        die("Sorry. You can't access directly to this file");
 }
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 
 /**
  * Check URL validity

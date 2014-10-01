@@ -39,19 +39,19 @@ namespace Galette\Repository;
 
 use Galette\Entity\DynamicFields;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate\PredicateSet;
-use Galette\Entity\Adherent as Adherent;
-use Galette\Entity\Contribution as Contribution;
-use Galette\Entity\Transaction as Transaction;
+use Galette\Entity\Adherent;
+use Galette\Entity\Contribution;
+use Galette\Entity\Transaction;
 use Galette\Entity\Reminder;
-use Galette\Filters\MembersList as MembersList;
-use Galette\Filters\AdvancedMembersList as AdvancedMembersList;
-use Galette\Core\Picture as Picture;
-use Galette\Entity\Group as Group;
-use Galette\Repository\Groups as Groups;
-use Galette\Entity\Status as Status;
+use Galette\Filters\MembersList;
+use Galette\Filters\AdvancedMembersList;
+use Galette\Core\Picture;
+use Galette\Entity\Group;
+use Galette\Repository\Groups;
+use Galette\Entity\Status;
 
 /**
  * Members class for galette

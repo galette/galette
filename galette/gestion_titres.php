@@ -35,8 +35,8 @@
  * @since     Availaible since 0.7.4dev - 2013-01-27
  */
 
-use Galette\Entity\Title as Title;
-use Galette\Repository\Titles as Titles;
+use Galette\Entity\Title;
+use Galette\Repository\Titles;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';

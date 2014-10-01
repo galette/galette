@@ -37,13 +37,13 @@
 
 namespace Galette\Repository;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Zend\Db\Sql\Expression;
-use Galette\Core\Pagination as Pagination;
-use Galette\Entity\Contribution as Contribution;
-use Galette\Entity\Adherent as Adherent;
-use Galette\Entity\Transaction as Transaction;
-use Galette\Entity\ContributionsTypes as ContributionsTypes;
+use Galette\Core\Pagination;
+use Galette\Entity\Contribution;
+use Galette\Entity\Adherent;
+use Galette\Entity\Transaction;
+use Galette\Entity\ContributionsTypes;
 
 /**
  * Contributions class for galette

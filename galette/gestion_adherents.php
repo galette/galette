@@ -43,9 +43,9 @@
  * @since     Disponible depuis la Release 0.62
  */
 
-use Galette\Repository\Members as Members;
-use Galette\Filters\MembersList as MembersList;
-use Galette\Filters\AdvancedMembersList as AdvancedMembersList;
+use Galette\Repository\Members;
+use Galette\Filters\MembersList;
+use Galette\Filters\AdvancedMembersList;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';

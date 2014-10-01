@@ -35,8 +35,8 @@
  * @since     Available since 0.7.4dev 2013-01-27
  */
 
-use Analog\Analog as Analog;
-use Galette\Entity\Title as Title;
+use Analog\Analog;
+use Galette\Entity\Title;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
