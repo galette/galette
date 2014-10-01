@@ -54,8 +54,6 @@ use Analog\Analog;
 
 class FieldsCategories
 {
-    private $_id;
-    private $_category;
     const TABLE = 'fields_categories';
     const PK = 'id_field_category';
 
