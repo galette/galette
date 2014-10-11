@@ -63,7 +63,7 @@
                         {html_options options=$type_cotis_options selected=$selectedid}
                     </select>
     {if $type_selected eq 1}
-                    <a class="button" id="btnback" href="javascript:back();" title="{_T string="Back to previous window, if you want to select a contribution type that is not listed here"}">{_T string="Back"}</a>
+                    <a class="button" id="btnback" href="javascript:history.back();" title="{_T string="Back to previous window, if you want to select a contribution type that is not listed here"}">{_T string="Back"}</a>
     {/if}
                 </p>
             </fieldset>
