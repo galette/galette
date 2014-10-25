@@ -86,6 +86,8 @@ class PdfContribution
                 'adh_address'       => '/{ADDRESS_ADH}/',
                 'adh_zip'           => '/{ZIP_ADH}/',
                 'adh_town'          => '/{TOWN_ADH}/',
+                'adh_main_group'    => '/{GROUP_ADH}/',
+                'adh_groups'        => '/{GROUPS_ADH}/',
                 'contrib_label'     => '/{CONTRIBUTION_LABEL}/',
                 'contrib_amount'    => '/{CONTRIBUTION_AMOUNT}/',
                 'contrib_date'      => '/{CONTRIBUTION_DATE}/',
@@ -103,12 +105,26 @@ class PdfContribution
             $address .= '<br/>' . $member->adress_continuation;
         }
 
+        $member_groups = $member->groups;
+        $main_group = _T("None");
+        $group_list = _T("None");
+        if ( count($member_groups) > 0 ) {
+            $main_group = $member_groups[0]->getName();
+            $group_list = '<ul>';
+            foreach ( $member_groups as $group ) {
+                $group_list .= '<li>' . $group->getName()  . '</li>';
+            }
+            $group_list .= '</ul>';
+        }
+
         $this->_model->setReplacements(
             array(
                 'adh_name'          => $member->sfullname,
                 'adh_address'       => $address,
                 'adh_zip'           => $member->zipcode,
                 'adh_town'          => $member->town,
+                'adh_main_group'    => $main_group,
+                'adh_groups'        => $group_list,
                 'contrib_label'     => $this->_contrib->type->libelle,
                 'contrib_amount'    => $this->_contrib->amount,
                 'contrib_date'      => $this->_contrib->date,
