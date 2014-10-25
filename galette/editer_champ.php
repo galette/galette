@@ -157,7 +157,10 @@ if ( isset($_POST['valid']) ) {
                     }
                 }
             }
-            $contents_table = DynamicFields::getFixedValuesTableName($field_id);
+            $contents_table = DynamicFields::getFixedValuesTableName(
+                $field_id,
+                true
+            );
 
             try {
                 $zdb->connection->beginTransaction();
@@ -210,7 +213,8 @@ if ( isset($_POST['valid']) ) {
                 }catch (Exception $e) {
                     $zdb->connection->rollBack();
                     Analog::log(
-                        'Unable to store field ' . $field_id . ' values',
+                        'Unable to store field ' . $field_id . ' values (' .
+                        $e->getMessage() . ')',
                         Analog::ERROR
                     );
                 }
