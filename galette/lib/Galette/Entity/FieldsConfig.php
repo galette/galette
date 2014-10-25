@@ -209,7 +209,8 @@ class FieldsConfig
                 Analog::log(
                     'Fields configuration count for `' . $this->_table .
                     '` columns does not match records. Is : ' .
-                    count($_all_fields) . ' and should be ' . count($this->_defaults),
+                    count($_all_fields) . ' and should be ' .
+                    count($this->_defaults),
                     Analog::WARNING
                 );
 
@@ -263,7 +264,6 @@ class FieldsConfig
     {
         try {
             $fields = array_keys($this->_defaults);
-            $class = get_class($this);
             $categories = new FieldsCategories();
 
             //first, we drop all values
