@@ -1810,7 +1810,8 @@ th.bline, td.bline{
 .cssform .bline{
     display: inline-block;
     margin: 0 0 0 -22em;
-    width: 21.2em;
+    width: 19.9em;
+    padding-right: 20px;
 }
 
 .cssform textarea{
