@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2014-10-01 18:10+0200\n"
+"PO-Revision-Date: 2014-10-27 22:59+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -178,7 +178,7 @@ msgstr "Consulter et filtrer toutes mes contributions"
 msgid "Recipient of new online registation emails"
 msgstr "Destinataire pour les courriels des nouvelles inscriptions en ligne"
 
-#: ../editer_champ.php:232
+#: ../editer_champ.php:236
 msgid "Edit field"
 msgstr "Édition de champ"
 
@@ -288,7 +288,7 @@ msgstr "ligne"
 msgid "Previous page (%i)"
 msgstr "Page précédente (%i)"
 
-#: ../templates/default/gestion_pdf.tpl:71
+#: ../templates/default/gestion_pdf.tpl:77
 msgid "Contribution id"
 msgstr "Contribution id"
 
@@ -417,7 +417,7 @@ msgstr "Confirmation :"
 msgid "Jabber"
 msgstr "Jabber&nbsp;:"
 
-#: ../lib/Galette/IO/PdfContribution.php:124
+#: ../lib/Galette/IO/PdfContribution.php:140
 #: ../templates/default/gestion_contributions.tpl:44
 msgid "contribution"
 msgstr "contribution"
@@ -451,7 +451,7 @@ msgstr "Facture"
 msgid "Previous version selection"
 msgstr "Sélection de la version précédente"
 
-#: ../templates/default/gestion_pdf.tpl:51
+#: ../templates/default/gestion_pdf.tpl:57
 msgid "Contribution label"
 msgstr "Libellé de la contribution"
 
@@ -578,7 +578,7 @@ msgstr "Filtrer"
 msgid "Login failed."
 msgstr "Échec de l'identification."
 
-#: ../templates/default/gestion_pdf.tpl:57
+#: ../templates/default/gestion_pdf.tpl:63
 msgid "Contribution full date"
 msgstr "Date complète de la contribution"
 
@@ -1064,8 +1064,8 @@ msgstr ""
 "Une erreur est survenue lors de la vérification des chevauchements de "
 "cotisations :("
 
-#: ../templates/default/ajouter_transaction.tpl:212
-#: ../templates/default/ajouter_contribution.tpl:166
+#: ../templates/default/ajouter_transaction.tpl:213
+#: ../templates/default/ajouter_contribution.tpl:167
 msgid "No member registered!"
 msgstr "Aucun adhérent enregistré&nbsp;!"
 
@@ -1095,7 +1095,7 @@ msgid "Language:"
 msgstr "Langue&nbsp;:"
 
 #: ../templates/default/configurer_fiches.tpl:77
-#: ../templates/default/gestion_pdf.tpl:111
+#: ../templates/default/gestion_pdf.tpl:117
 #: ../templates/default/js_loader.tpl:2
 msgid "Currently loading..."
 msgstr "Chargement en cours..."
@@ -1180,7 +1180,7 @@ msgstr "Identifiant de l'adhérent"
 msgid "all"
 msgstr "tous"
 
-#: ../templates/default/member.tpl:409 ../templates/default/member.tpl:547
+#: ../templates/default/member.tpl:409 ../templates/default/member.tpl:549
 msgid "Manager for '%groupname'"
 msgstr "Responsable pour « %groupname »"
 
@@ -1235,6 +1235,10 @@ msgstr "Trésorier"
 #: ../preferences.php:147 ../preferences.php:168
 msgid "- The numbers and measures have to be integers!"
 msgstr "- Les nombres et mesures doivent être des entiers&nbsp;!"
+
+#: ../templates/default/gestion_pdf.tpl:51
+msgid "Member's main group"
+msgstr "Groupe principal de l'adhérent"
 
 #: ../plugins.php:63
 msgid "Plugin %name has been enabled"
@@ -1464,7 +1468,7 @@ msgstr "Emploi"
 
 #: ../install/steps/galette.php:56
 #: ../templates/default/configurer_fiches.tpl:85
-#: ../templates/default/gestion_pdf.tpl:118
+#: ../templates/default/gestion_pdf.tpl:124
 msgid "An error occured :("
 msgstr "Une erreur est survenue :("
 
@@ -1524,7 +1528,7 @@ msgstr "Impossible de créer le dossier de données dans %path&nbsp;!"
 msgid "CVS members import"
 msgstr "Import CSV de membres "
 
-#: ../templates/default/member.tpl:500
+#: ../templates/default/member.tpl:502
 msgid "An error occured displaying groups interface :("
 msgstr ""
 "Une erreur est survenue lors de l'affichage de l'interface des groupes :("
@@ -1685,7 +1689,7 @@ msgstr "Informations de contact"
 msgid "Woman"
 msgstr "Femme"
 
-#: ../templates/default/member.tpl:509
+#: ../templates/default/member.tpl:511
 msgid "Managed groups selection"
 msgstr "Selection des groupes gérés"
 
@@ -1845,7 +1849,7 @@ msgid "Required fields upgrade has failed :("
 msgstr "La mise à jour des champs requis a échoué :("
 
 #: ../templates/default/gestion_textes.tpl:81
-#: ../templates/default/gestion_pdf.tpl:53
+#: ../templates/default/gestion_pdf.tpl:59
 msgid "Contribution amount"
 msgstr "Montant de la contribution"
 
@@ -1937,7 +1941,7 @@ msgid "- Empty transaction description!"
 msgstr "- La description de la transaction est vide&nbsp;!"
 
 #: ../templates/default/gestion_textes.tpl:106
-#: ../templates/default/gestion_pdf.tpl:82
+#: ../templates/default/gestion_pdf.tpl:88
 msgid "Show existing variables"
 msgstr "Afficher les variables existantes"
 
@@ -2075,7 +2079,7 @@ msgstr ""
 msgid "With photos?"
 msgstr "Avec photos&nbsp;?"
 
-#: ../lib/Galette/IO/PdfContribution.php:128
+#: ../lib/Galette/IO/PdfContribution.php:144
 msgid "receipt"
 msgstr "recu"
 
@@ -2122,9 +2126,9 @@ msgstr "Page d'accueil"
 msgid "Unable to retrieve field informations."
 msgstr "Impossible de récupérer les informations du champ."
 
-#: ../templates/default/public_page.tpl:63
-msgid "Subscribe"
-msgstr "S'inscrire"
+#: ../templates/default/config_fields.tpl:81
+msgid "Expand all"
+msgstr "Tout déplier"
 
 #: ../templates/default/advanced_search.tpl:191
 msgid "do not contains"
@@ -2286,6 +2290,10 @@ msgstr "Les préférences par défaut n'ont pas été initialisées."
 #: ../templates/default/gestion_groupes.tpl:30
 msgid "Export as PDF"
 msgstr "Exporter en PDF"
+
+#: ../templates/default/public_page.tpl:63
+msgid "Subscribe"
+msgstr "S'inscrire"
 
 #: ../templates/default/preferences.tpl:206
 msgid "Emailing method:"
@@ -2541,10 +2549,6 @@ msgstr "Commentaire&nbsp;:"
 #: ../lib/Galette/IO/FileTrait.php:487
 msgid "- File extension is not allowed, only %s files are."
 msgstr "- L'extension de fichier n'est pas autorisée, seules %s le sont."
-
-#: ../templates/default/group.tpl:31
-msgid "None"
-msgstr "Aucun"
 
 #: ../lostpasswd.php:140
 msgid ""
@@ -2847,8 +2851,8 @@ msgstr "Extension d'adhésion&nbsp;?"
 msgid "Files permissions are not OK!"
 msgstr "Les permissions des fichiers ne sont pas correctes&nbsp;!"
 
-#: ../templates/default/ajouter_transaction.tpl:216
-#: ../templates/default/ajouter_contribution.tpl:170
+#: ../templates/default/ajouter_transaction.tpl:217
+#: ../templates/default/ajouter_contribution.tpl:171
 msgid "please create a member"
 msgstr "veuillez créer un adhérent"
 
@@ -2909,9 +2913,17 @@ msgstr "Sélectionnez un groupe"
 msgid "Manage emails texts and subjects"
 msgstr "Gestion des textes et sujets des courriels"
 
-#: ../templates/default/edit_dynamic_fields.tpl:95
-msgid "New occurence"
-msgstr "Nouvelle occurrence"
+#: ../templates/default/gestion_adherents.tpl:422
+#: ../templates/default/member.tpl:461 ../templates/default/member.tpl:471
+#: ../templates/default/edit_dynamic_fields.tpl:162
+#: ../templates/default/ajouter_transaction.tpl:207
+#: ../templates/default/gestion_contributions.tpl:290
+#: ../templates/default/ajouter_contribution.tpl:161
+#: ../templates/default/gestion_transactions.tpl:169
+#: ../templates/default/advanced_search.tpl:255
+#: ../templates/default/advanced_search.tpl:264
+msgid "Select a date"
+msgstr "Sélectionnez une date"
 
 #: ../install/old.index.php:1510 ../install/steps/end.php:52
 msgid "To secure the system, please delete the install directory"
@@ -3195,7 +3207,7 @@ msgstr ""
 "Ce lien n'est plus valide. Vous devriez <a href='lostpasswd.php'>demander la "
 "récupération de votre mot de passe</a> à nouveau"
 
-#: ../templates/default/member.tpl:507
+#: ../templates/default/member.tpl:509
 msgid "Groups selection"
 msgstr "Sélection des groupes"
 
@@ -3572,9 +3584,9 @@ msgstr "Informer l'adhérent lorsque son compte a été créé"
 msgid "Members by groups"
 msgstr "Membres par groupes"
 
-#: ../templates/default/config_fields.tpl:81
-msgid "Expand all"
-msgstr "Tout déplier"
+#: ../templates/default/gestion_groupes.tpl:79
+msgid "An error occured reordering groups :("
+msgstr "Une erreur est survenue lors de la réorganisation des groupes :("
 
 #: ../templates/default/preferences.tpl:4
 msgid "General"
@@ -3751,7 +3763,7 @@ msgid "Reference:"
 msgstr "Référence&nbsp;:"
 
 #: ../templates/default/configurer_fiches.tpl:77
-#: ../templates/default/gestion_pdf.tpl:111
+#: ../templates/default/gestion_pdf.tpl:117
 #: ../templates/default/js_loader.tpl:2
 msgid "Loading..."
 msgstr "Chargement..."
@@ -3962,7 +3974,7 @@ msgstr "Installation de Galette"
 msgid "Preview"
 msgstr "Prévisualisation"
 
-#: ../templates/default/gestion_pdf.tpl:69
+#: ../templates/default/gestion_pdf.tpl:75
 msgid "Contribution end date"
 msgstr "Date de fin de contribution"
 
@@ -4260,7 +4272,7 @@ msgid "Run the import process, but do *not* store anything in the database"
 msgstr ""
 "Lance le processus d'import, mais n'enregistre *rien* dans la base de données"
 
-#: ../templates/default/gestion_pdf.tpl:63
+#: ../templates/default/gestion_pdf.tpl:69
 msgid "Contribution comment"
 msgstr "Commentaire de la contribution"
 
@@ -4383,6 +4395,8 @@ msgstr ""
 #: ../templates/default/gestion_pdf.tpl:69
 #: ../templates/default/gestion_pdf.tpl:71
 #: ../templates/default/gestion_pdf.tpl:75
+#: ../templates/default/gestion_pdf.tpl:77
+#: ../templates/default/gestion_pdf.tpl:81
 msgid "available with reservations"
 msgstr "disponible sous réserves"
 
@@ -4425,7 +4439,7 @@ msgstr "URI du script post contribution"
 msgid "Contribution added"
 msgstr "Contribution ajoutée"
 
-#: ../templates/default/gestion_adherents.tpl:425
+#: ../templates/default/gestion_adherents.tpl:426
 msgid "An error occured displaying attendance sheet details interface :("
 msgstr ""
 "Une erreur est survenue lors de l'affichage de l'interface des détails de la "
@@ -4691,7 +4705,7 @@ msgstr "Émetteur&nbsp;:"
 msgid "Post contribution script failed"
 msgstr "Échec du script post contribution"
 
-#: ../templates/default/gestion_pdf.tpl:65
+#: ../templates/default/gestion_pdf.tpl:71
 msgid "Contribution begin date"
 msgstr "Date de début de contribution"
 
@@ -4802,6 +4816,10 @@ msgstr "Exports"
 msgid "Active accounts"
 msgstr "Comptes actifs"
 
+#: ../templates/default/gestion_pdf.tpl:53
+msgid "Member's groups (as list)"
+msgstr "Groupes de l'adhérent (liste)"
+
 #: ../templates/default/gestion_adherents.tpl:146
 msgid "Export as CSV"
 msgstr "Exporter en CSV"
@@ -4822,8 +4840,8 @@ msgstr "Gestion des types de contribution"
 msgid "Parameted exports"
 msgstr "Exports paramétrés"
 
-#: ../templates/default/ajouter_transaction.tpl:214
-#: ../templates/default/ajouter_contribution.tpl:168
+#: ../templates/default/ajouter_transaction.tpl:215
+#: ../templates/default/ajouter_contribution.tpl:169
 msgid "Unfortunately, there is no member in your database yet,"
 msgstr "Malheureusement, il n'y a pas d'adhérent dans la base actuellement,"
 
@@ -4888,6 +4906,10 @@ msgstr "donation pécunière"
 #: ../lib/Galette/Entity/Group.php:552 ../lib/Galette/Core/Plugins.php:191
 msgid "Y-m-d"
 msgstr "d/m/Y"
+
+#: ../templates/default/edit_dynamic_fields.tpl:95
+msgid "New occurence"
+msgstr "Nouvelle occurrence"
 
 #: ../lib/Galette/IO/Charts.php:245 ../lib/Galette/Entity/Adherent.php:626
 #: ../templates/default/reminder.tpl:15
@@ -5235,7 +5257,7 @@ msgstr "Le nouvel adhérent a été ajouté avec succès."
 msgid "Modified"
 msgstr "Modifié"
 
-#: ../lib/Galette/IO/PdfContribution.php:130
+#: ../lib/Galette/IO/PdfContribution.php:146
 msgid "invoice"
 msgstr "facture"
 
@@ -5359,7 +5381,7 @@ msgstr "Membres du bureau"
 msgid "Y-m-d H:i:s"
 msgstr "d/m/Y H:i:s"
 
-#: ../templates/default/gestion_pdf.tpl:59
+#: ../templates/default/gestion_pdf.tpl:65
 msgid "Contribution year"
 msgstr "Année de la contribution"
 
@@ -5717,7 +5739,7 @@ msgstr "Couleur pour les membres du bureau&nbsp;:"
 msgid "Unable to write file or temporary file"
 msgstr "Impossible d'écrire le fichier ou le fichier temporaire"
 
-#: ../templates/default/member.tpl:399 ../templates/default/member.tpl:549
+#: ../templates/default/member.tpl:399 ../templates/default/member.tpl:551
 msgid "Member of '%groupname'"
 msgstr "Membre de « %groupname »"
 
@@ -5923,7 +5945,7 @@ msgstr "Courriel de réponse&nbsp;:"
 msgid "Compilation"
 msgstr "Compilation"
 
-#: ../templates/default/gestion_pdf.tpl:75
+#: ../templates/default/gestion_pdf.tpl:81
 msgid "Contribution payment type"
 msgstr "Type de paiement de contribution"
 
@@ -6077,9 +6099,10 @@ msgstr "Groupes sélectionnés"
 msgid "Subject"
 msgstr "Sujet"
 
-#: ../templates/default/gestion_groupes.tpl:79
-msgid "An error occured reordering groups :("
-msgstr "Une erreur est survenue lors de la réorganisation des groupes :("
+#: ../lib/Galette/IO/PdfContribution.php:109
+#: ../lib/Galette/IO/PdfContribution.php:110 ../templates/default/group.tpl:31
+msgid "None"
+msgstr "Aucun"
 
 #: ../install/old.index.php:1464
 msgid "Parameters couldn't be saved."
@@ -6127,7 +6150,7 @@ msgstr "Adresse (suite)"
 msgid "Picture"
 msgstr "Image"
 
-#: ../editer_champ.php:182
+#: ../editer_champ.php:185
 msgid "An error occured storing managing fields values table"
 msgstr ""
 "Une erreur est survenue lors du traitement de la table de sotckage des "
