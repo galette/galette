@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2014-10-27 22:59+0100\n"
+"PO-Revision-Date: 2014-10-27 23:35+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -534,7 +534,7 @@ msgstr "Erreur d'envoi inconnue"
 msgid "status"
 msgstr "statut"
 
-#: ../templates/default/voir_adherent.tpl:301
+#: ../templates/default/voir_adherent.tpl:302
 msgid "You are not part of managers for the requested group."
 msgstr "Vous ne faites pas partie des responsables du groupe demandé."
 
@@ -1180,7 +1180,7 @@ msgstr "Identifiant de l'adhérent"
 msgid "all"
 msgstr "tous"
 
-#: ../templates/default/member.tpl:409 ../templates/default/member.tpl:549
+#: ../templates/default/member.tpl:409 ../templates/default/member.tpl:550
 msgid "Manager for '%groupname'"
 msgstr "Responsable pour « %groupname »"
 
@@ -1528,7 +1528,7 @@ msgstr "Impossible de créer le dossier de données dans %path&nbsp;!"
 msgid "CVS members import"
 msgstr "Import CSV de membres "
 
-#: ../templates/default/member.tpl:502
+#: ../templates/default/member.tpl:503
 msgid "An error occured displaying groups interface :("
 msgstr ""
 "Une erreur est survenue lors de l'affichage de l'interface des groupes :("
@@ -1689,7 +1689,7 @@ msgstr "Informations de contact"
 msgid "Woman"
 msgstr "Femme"
 
-#: ../templates/default/member.tpl:511
+#: ../templates/default/member.tpl:512
 msgid "Managed groups selection"
 msgstr "Selection des groupes gérés"
 
@@ -2914,7 +2914,7 @@ msgid "Manage emails texts and subjects"
 msgstr "Gestion des textes et sujets des courriels"
 
 #: ../templates/default/gestion_adherents.tpl:422
-#: ../templates/default/member.tpl:461 ../templates/default/member.tpl:471
+#: ../templates/default/member.tpl:462 ../templates/default/member.tpl:472
 #: ../templates/default/edit_dynamic_fields.tpl:162
 #: ../templates/default/ajouter_transaction.tpl:207
 #: ../templates/default/gestion_contributions.tpl:290
@@ -3056,7 +3056,7 @@ msgstr "Préfixe de table&nbsp;:"
 
 #: ../lib/Galette/Core/CheckModules.php:184
 #: ../lib/Galette/Core/Install.php:166
-#: ../templates/default/voir_adherent.tpl:305
+#: ../templates/default/voir_adherent.tpl:306
 msgid "Ok"
 msgstr "Ok"
 
@@ -3207,7 +3207,7 @@ msgstr ""
 "Ce lien n'est plus valide. Vous devriez <a href='lostpasswd.php'>demander la "
 "récupération de votre mot de passe</a> à nouveau"
 
-#: ../templates/default/member.tpl:509
+#: ../templates/default/member.tpl:510
 msgid "Groups selection"
 msgstr "Sélection des groupes"
 
@@ -5739,7 +5739,7 @@ msgstr "Couleur pour les membres du bureau&nbsp;:"
 msgid "Unable to write file or temporary file"
 msgstr "Impossible d'écrire le fichier ou le fichier temporaire"
 
-#: ../templates/default/member.tpl:399 ../templates/default/member.tpl:551
+#: ../templates/default/member.tpl:399 ../templates/default/member.tpl:552
 msgid "Member of '%groupname'"
 msgstr "Membre de « %groupname »"
 
@@ -5800,7 +5800,7 @@ msgstr "Non spécifié"
 msgid "Secretary"
 msgstr "Secrétaire"
 
-#: ../templates/default/voir_adherent.tpl:301
+#: ../templates/default/voir_adherent.tpl:302
 msgid "Not managed group"
 msgstr "Groupe non géré"
 
@@ -6380,6 +6380,11 @@ msgstr "Préférences"
 #: ../templates/default/gestion_transactions.tpl:125
 msgid "no transaction"
 msgstr "aucune transaction"
+
+#: ../templates/default/member.tpl:442
+#: ../templates/default/voir_adherent.tpl:294
+msgid "Back to top"
+msgstr "Retour en haut"
 
 #: ../lib/Galette/Entity/Group.php:432
 msgid "Group updated"

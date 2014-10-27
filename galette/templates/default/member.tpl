@@ -439,8 +439,9 @@
         <div class="button-container">
             <input type="submit" name="valid" id="btnsave" value="{_T string="Save"}"/>
             <input type="hidden" name="id_adh" value="{$member->id}"/>
+            <a href="#" id="back2top">{_T string="Back to top"}</a>
         </div>
-        </form> 
+        </form>
         <script type="text/javascript">
             $(function() {
                 $('#is_company').change(function(){

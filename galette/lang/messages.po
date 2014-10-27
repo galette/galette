@@ -468,7 +468,7 @@ msgstr ""
 msgid "status"
 msgstr ""
 
-#: ../templates/default/voir_adherent.tpl:301
+#: ../templates/default/voir_adherent.tpl:302
 msgid "You are not part of managers for the requested group."
 msgstr ""
 
@@ -1038,7 +1038,7 @@ msgstr ""
 msgid "all"
 msgstr ""
 
-#: ../templates/default/member.tpl:409 ../templates/default/member.tpl:549
+#: ../templates/default/member.tpl:409 ../templates/default/member.tpl:550
 msgid "Manager for '%groupname'"
 msgstr ""
 
@@ -1341,7 +1341,7 @@ msgstr ""
 msgid "CVS members import"
 msgstr ""
 
-#: ../templates/default/member.tpl:502
+#: ../templates/default/member.tpl:503
 msgid "An error occured displaying groups interface :("
 msgstr ""
 
@@ -1487,7 +1487,7 @@ msgstr ""
 msgid "Woman"
 msgstr ""
 
-#: ../templates/default/member.tpl:511
+#: ../templates/default/member.tpl:512
 msgid "Managed groups selection"
 msgstr ""
 
@@ -2593,8 +2593,8 @@ msgstr ""
 msgid "Manage emails texts and subjects"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:422 ../templates/default/member.tpl:461
-#: ../templates/default/member.tpl:471 ../templates/default/edit_dynamic_fields.tpl:162
+#: ../templates/default/gestion_adherents.tpl:422 ../templates/default/member.tpl:462
+#: ../templates/default/member.tpl:472 ../templates/default/edit_dynamic_fields.tpl:162
 #: ../templates/default/ajouter_transaction.tpl:207 ../templates/default/gestion_contributions.tpl:290
 #: ../templates/default/ajouter_contribution.tpl:161 ../templates/default/gestion_transactions.tpl:169
 #: ../templates/default/advanced_search.tpl:255 ../templates/default/advanced_search.tpl:264
@@ -2721,7 +2721,7 @@ msgid "Table prefix:"
 msgstr ""
 
 #: ../lib/Galette/Core/CheckModules.php:184 ../lib/Galette/Core/Install.php:166
-#: ../templates/default/voir_adherent.tpl:305
+#: ../templates/default/voir_adherent.tpl:306
 msgid "Ok"
 msgstr ""
 
@@ -2850,7 +2850,7 @@ msgstr ""
 msgid "This link is no longer valid. You should <a href='lostpasswd.php'>ask to retrieve your password</a> again."
 msgstr ""
 
-#: ../templates/default/member.tpl:509
+#: ../templates/default/member.tpl:510
 msgid "Groups selection"
 msgstr ""
 
@@ -5054,7 +5054,7 @@ msgstr ""
 msgid "Unable to write file or temporary file"
 msgstr ""
 
-#: ../templates/default/member.tpl:399 ../templates/default/member.tpl:551
+#: ../templates/default/member.tpl:399 ../templates/default/member.tpl:552
 msgid "Member of '%groupname'"
 msgstr ""
 
@@ -5105,7 +5105,7 @@ msgstr ""
 msgid "Secretary"
 msgstr ""
 
-#: ../templates/default/voir_adherent.tpl:301
+#: ../templates/default/voir_adherent.tpl:302
 msgid "Not managed group"
 msgstr ""
 
@@ -5632,6 +5632,10 @@ msgstr ""
 
 #: ../templates/default/gestion_transactions.tpl:125
 msgid "no transaction"
+msgstr ""
+
+#: ../templates/default/member.tpl:442 ../templates/default/voir_adherent.tpl:294
+msgid "Back to top"
 msgstr ""
 
 #: ../lib/Galette/Entity/Group.php:432

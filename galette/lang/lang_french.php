@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Mon Oct 27 21:59:10 2014 (GMT)
+// This file was automatically generated on Mon Oct 27 22:35:53 2014 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -1266,6 +1266,9 @@ $lang['Contribution id'] = 'Contribution id';
 // ../install/steps/check.php:76 ../templates/default/gestion_mailings.tpl:57 ../templates/default/mailing_adherents.tpl:44 
 $lang['Attachments'] = 'Pièces jointes';
 
+// ../lib/Galette/Entity/Adherent.php:1048 
+$lang['An error has occured while looking if status is already in use.'] = 'Une erreur est survenue lors de la vérification de l\'utilisation du statut.';
+
 // ../export.php:129 
 $lang['An error occured running parameted export \'%export\'.'] = 'Une erreur est survenue durant l\'exécution de l\'export paramétré « %export ».';
 
@@ -1449,7 +1452,7 @@ $lang['Delete'] = 'Supprimer';
 // ../templates/default/editer_champ.tpl:3 
 $lang['Edit field %field'] = 'Édition du champ %field';
 
-// ../templates/default/member.tpl:399 ../templates/default/member.tpl:551 
+// ../templates/default/member.tpl:399 ../templates/default/member.tpl:552 
 $lang['Member of \'%groupname\''] = 'Membre de « %groupname »';
 
 // ../install/old.index.php:337 
@@ -2136,7 +2139,7 @@ $lang['Directory %dir has not been moved :('] = 'Le répertoire %dir n\'a pas é
 // ../templates/default/preferences.tpl:333 
 $lang['Active Member Color:'] = 'Couleur pour les membres actifs&nbsp;:';
 
-// ../templates/default/member.tpl:511 
+// ../templates/default/member.tpl:512 
 $lang['Managed groups selection'] = 'Selection des groupes gérés';
 
 // ../needs_update.php:71 
@@ -2220,7 +2223,7 @@ $lang['Unable to remove selected member(s)'] = 'Impossible de supprimer le(s) ad
 // ../lib/Galette/Entity/Group.php:414 
 $lang['Fail to add new group.'] = 'Échec de l\'ajout d\'un nouveau groupe';
 
-// ../templates/default/voir_adherent.tpl:301 
+// ../templates/default/voir_adherent.tpl:302 
 $lang['Not managed group'] = 'Groupe non géré';
 
 // ../templates/default/page.tpl:179 
@@ -2400,7 +2403,7 @@ $lang['Title:'] = 'Titre&nbsp;:';
 // ../templates/default/page.tpl:130 
 $lang['View and filter all my transactions'] = 'Consulter et filtrer toutes mes transactions';
 
-// ../templates/default/member.tpl:409 ../templates/default/member.tpl:549 
+// ../templates/default/member.tpl:409 ../templates/default/member.tpl:550 
 $lang['Manager for \'%groupname\''] = 'Responsable pour « %groupname »';
 
 // ../install/steps/check.php:77 
@@ -2448,7 +2451,7 @@ $lang['Reply-To Email:'] = 'Courriel de réponse&nbsp;:';
 // ../templates/default/editer_champ.tpl:9 
 $lang['Visibility:'] = 'Visibilité&nbsp;:';
 
-// ../templates/default/voir_adherent.tpl:301 
+// ../templates/default/voir_adherent.tpl:302 
 $lang['You are not part of managers for the requested group.'] = 'Vous ne faites pas partie des responsables du groupe demandé.';
 
 // ../templates/default/preferences.tpl:289 
@@ -2607,7 +2610,7 @@ $lang['You\'ll be redirected to the login page in a few seconds'] = 'Vous allez 
 // ../templates/default/editer_champ.tpl:44 
 $lang['Maximum number of characters.'] = 'Nombre maximal de caractères.';
 
-// ../templates/default/member.tpl:502 
+// ../templates/default/member.tpl:503 
 $lang['An error occured displaying groups interface :('] = 'Une erreur est survenue lors de l\'affichage de l\'interface des groupes :(';
 
 // ../templates/default/reminder.tpl:11 ../templates/default/reminder.tpl:18 
@@ -3147,7 +3150,7 @@ $lang['Group updated'] = 'Groupe mis à jour';
 // ../lib/Galette/IO/FileTrait.php:538 
 $lang['The uploaded file exceeds the upload_max_filesize directive in php.ini'] = 'Le fichier envoyé excède la taille maximale autorisée.';
 
-// ../lib/Galette/Core/CheckModules.php:184 ../lib/Galette/Core/Install.php:166 ../templates/default/voir_adherent.tpl:305 
+// ../lib/Galette/Core/CheckModules.php:184 ../lib/Galette/Core/Install.php:166 ../templates/default/voir_adherent.tpl:306 
 $lang['Ok'] = 'Ok';
 
 // ../attendance_sheet.php:241 
@@ -3159,7 +3162,7 @@ $lang['Model has been successfully stored!'] = 'Le modèle a été enregistré a
 // ../install/old.index.php:1378 
 $lang['Required fields upgrade has failed :('] = 'La mise à jour des champs requis a échoué :(';
 
-// ../templates/default/member.tpl:509 
+// ../templates/default/member.tpl:510 
 $lang['Groups selection'] = 'Sélection des groupes';
 
 // ../ajax_plugins_initdb.php:262 ../install/old.index.php:917 
@@ -3402,8 +3405,8 @@ $lang['Galette initialization'] = 'Initialisation de Galette';
 // ../lib/Galette/Repository/Members.php:305 
 $lang['Member Picture deleted'] = 'Photo de l\'adhérent supprimée';
 
-// ../lib/Galette/Entity/Adherent.php:1048 
-$lang['An error has occured while looking if status is already in use.'] = 'Une erreur est survenue lors de la vérification de l\'utilisation du statut.';
+// ../templates/default/member.tpl:442 ../templates/default/voir_adherent.tpl:294 
+$lang['Back to top'] = 'Retour en haut';
 
 // ../templates/default/ajouter_transaction.tpl:45 
 $lang['Select existing contribution'] = 'Sélectionner une contribution existante';
@@ -4002,7 +4005,7 @@ $lang['Email sent is disabled in the preferences. Ask galette admin'] = 'L\'envo
 // ../gestion_adherents.php:276 
 $lang['Members management'] = 'Gestion des membres';
 
-// ../templates/default/gestion_adherents.tpl:422 ../templates/default/member.tpl:461 ../templates/default/member.tpl:471 ../templates/default/edit_dynamic_fields.tpl:162 ../templates/default/ajouter_transaction.tpl:207 ../templates/default/gestion_contributions.tpl:290 ../templates/default/ajouter_contribution.tpl:161 ../templates/default/gestion_transactions.tpl:169 ../templates/default/advanced_search.tpl:255 ../templates/default/advanced_search.tpl:264 
+// ../templates/default/gestion_adherents.tpl:422 ../templates/default/member.tpl:462 ../templates/default/member.tpl:472 ../templates/default/edit_dynamic_fields.tpl:162 ../templates/default/ajouter_transaction.tpl:207 ../templates/default/gestion_contributions.tpl:290 ../templates/default/ajouter_contribution.tpl:161 ../templates/default/gestion_transactions.tpl:169 ../templates/default/advanced_search.tpl:255 ../templates/default/advanced_search.tpl:264 
 $lang['Select a date'] = 'Sélectionnez une date';
 
 // ../templates/default/gestion_textes.tpl:67 

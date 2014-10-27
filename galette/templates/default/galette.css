@@ -112,6 +112,22 @@ select.lang option {
     background-position: 0 50%;
 }
 
+[id=back2top] {
+    background: #DDDDFF;
+    color: black;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    padding: .2em .5em;
+    border-radius: 6px 0 0 0;
+    opacity: 0.45;
+}
+
+[id=back2top]:hover {
+    color: black;
+    opacity: 1;
+}
+
 /* =/ Global main styles */
 
 /*

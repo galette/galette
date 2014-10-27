@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Mon Oct 27 21:59:10 2014 (GMT)
+// This file was automatically generated on Mon Oct 27 22:35:53 2014 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -1266,6 +1266,9 @@ $lang['Contribution id'] = 'Contribution id';
 // ../install/steps/check.php:76 ../templates/default/gestion_mailings.tpl:57 ../templates/default/mailing_adherents.tpl:44 
 $lang['Attachments'] = 'Attachments';
 
+// ../lib/Galette/Entity/Adherent.php:1048 
+$lang['An error has occured while looking if status is already in use.'] = 'An error has occured while looking if status is already in use.';
+
 // ../export.php:129 
 $lang['An error occured running parameted export \'%export\'.'] = 'An error occured running parameted export \'%export\'.';
 
@@ -1449,7 +1452,7 @@ $lang['Delete'] = 'Delete';
 // ../templates/default/editer_champ.tpl:3 
 $lang['Edit field %field'] = 'Edit field %field';
 
-// ../templates/default/member.tpl:399 ../templates/default/member.tpl:551 
+// ../templates/default/member.tpl:399 ../templates/default/member.tpl:552 
 $lang['Member of \'%groupname\''] = 'Member of \'%groupname\'';
 
 // ../install/old.index.php:337 
@@ -2136,7 +2139,7 @@ $lang['Directory %dir has not been moved :('] = 'Directory %dir has not been mov
 // ../templates/default/preferences.tpl:333 
 $lang['Active Member Color:'] = 'Active Member Color:';
 
-// ../templates/default/member.tpl:511 
+// ../templates/default/member.tpl:512 
 $lang['Managed groups selection'] = 'Managed groups selection';
 
 // ../needs_update.php:71 
@@ -2220,7 +2223,7 @@ $lang['Unable to remove selected member(s)'] = 'Unable to remove selected member
 // ../lib/Galette/Entity/Group.php:414 
 $lang['Fail to add new group.'] = 'Fail to add new group.';
 
-// ../templates/default/voir_adherent.tpl:301 
+// ../templates/default/voir_adherent.tpl:302 
 $lang['Not managed group'] = 'Not managed group';
 
 // ../templates/default/page.tpl:179 
@@ -2400,7 +2403,7 @@ $lang['Title:'] = 'Title:';
 // ../templates/default/page.tpl:130 
 $lang['View and filter all my transactions'] = 'View and filter all my transactions';
 
-// ../templates/default/member.tpl:409 ../templates/default/member.tpl:549 
+// ../templates/default/member.tpl:409 ../templates/default/member.tpl:550 
 $lang['Manager for \'%groupname\''] = 'Manager for \'%groupname\'';
 
 // ../install/steps/check.php:77 
@@ -2448,7 +2451,7 @@ $lang['Reply-To Email:'] = 'Reply-To Email:';
 // ../templates/default/editer_champ.tpl:9 
 $lang['Visibility:'] = 'Visibility:';
 
-// ../templates/default/voir_adherent.tpl:301 
+// ../templates/default/voir_adherent.tpl:302 
 $lang['You are not part of managers for the requested group.'] = 'You are not part of managers for the requested group.';
 
 // ../templates/default/preferences.tpl:289 
@@ -2607,7 +2610,7 @@ $lang['You\'ll be redirected to the login page in a few seconds'] = 'You\'ll be 
 // ../templates/default/editer_champ.tpl:44 
 $lang['Maximum number of characters.'] = 'Maximum number of characters.';
 
-// ../templates/default/member.tpl:502 
+// ../templates/default/member.tpl:503 
 $lang['An error occured displaying groups interface :('] = 'An error occured displaying groups interface :(';
 
 // ../templates/default/reminder.tpl:11 ../templates/default/reminder.tpl:18 
@@ -3147,7 +3150,7 @@ $lang['Group updated'] = 'Group updated';
 // ../lib/Galette/IO/FileTrait.php:538 
 $lang['The uploaded file exceeds the upload_max_filesize directive in php.ini'] = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
 
-// ../lib/Galette/Core/CheckModules.php:184 ../lib/Galette/Core/Install.php:166 ../templates/default/voir_adherent.tpl:305 
+// ../lib/Galette/Core/CheckModules.php:184 ../lib/Galette/Core/Install.php:166 ../templates/default/voir_adherent.tpl:306 
 $lang['Ok'] = 'Ok';
 
 // ../attendance_sheet.php:241 
@@ -3159,7 +3162,7 @@ $lang['Model has been successfully stored!'] = 'Model has been successfully stor
 // ../install/old.index.php:1378 
 $lang['Required fields upgrade has failed :('] = 'Required fields upgrade has failed :(';
 
-// ../templates/default/member.tpl:509 
+// ../templates/default/member.tpl:510 
 $lang['Groups selection'] = 'Groups selection';
 
 // ../ajax_plugins_initdb.php:262 ../install/old.index.php:917 
@@ -3402,8 +3405,8 @@ $lang['Galette initialization'] = 'Galette initialization';
 // ../lib/Galette/Repository/Members.php:305 
 $lang['Member Picture deleted'] = 'Member Picture deleted';
 
-// ../lib/Galette/Entity/Adherent.php:1048 
-$lang['An error has occured while looking if status is already in use.'] = 'An error has occured while looking if status is already in use.';
+// ../templates/default/member.tpl:442 ../templates/default/voir_adherent.tpl:294 
+$lang['Back to top'] = 'Back to top';
 
 // ../templates/default/ajouter_transaction.tpl:45 
 $lang['Select existing contribution'] = 'Select existing contribution';
@@ -4002,7 +4005,7 @@ $lang['Email sent is disabled in the preferences. Ask galette admin'] = 'Email s
 // ../gestion_adherents.php:276 
 $lang['Members management'] = 'Members management';
 
-// ../templates/default/gestion_adherents.tpl:422 ../templates/default/member.tpl:461 ../templates/default/member.tpl:471 ../templates/default/edit_dynamic_fields.tpl:162 ../templates/default/ajouter_transaction.tpl:207 ../templates/default/gestion_contributions.tpl:290 ../templates/default/ajouter_contribution.tpl:161 ../templates/default/gestion_transactions.tpl:169 ../templates/default/advanced_search.tpl:255 ../templates/default/advanced_search.tpl:264 
+// ../templates/default/gestion_adherents.tpl:422 ../templates/default/member.tpl:462 ../templates/default/member.tpl:472 ../templates/default/edit_dynamic_fields.tpl:162 ../templates/default/ajouter_transaction.tpl:207 ../templates/default/gestion_contributions.tpl:290 ../templates/default/ajouter_contribution.tpl:161 ../templates/default/gestion_transactions.tpl:169 ../templates/default/advanced_search.tpl:255 ../templates/default/advanced_search.tpl:264 
 $lang['Select a date'] = 'Select a date';
 
 // ../templates/default/gestion_textes.tpl:67 

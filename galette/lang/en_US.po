@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2014-10-27 22:58+0100\n"
+"PO-Revision-Date: 2014-10-27 23:35+0100\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -524,7 +524,7 @@ msgstr "Unknown upload error"
 msgid "status"
 msgstr "status"
 
-#: ../templates/default/voir_adherent.tpl:301
+#: ../templates/default/voir_adherent.tpl:302
 msgid "You are not part of managers for the requested group."
 msgstr "You are not part of managers for the requested group."
 
@@ -1161,7 +1161,7 @@ msgstr "Member's login"
 msgid "all"
 msgstr "all"
 
-#: ../templates/default/member.tpl:409 ../templates/default/member.tpl:549
+#: ../templates/default/member.tpl:409 ../templates/default/member.tpl:550
 msgid "Manager for '%groupname'"
 msgstr "Manager for '%groupname'"
 
@@ -1505,7 +1505,7 @@ msgstr "Unable to create main datadir in %path!"
 msgid "CVS members import"
 msgstr "CVS members import"
 
-#: ../templates/default/member.tpl:502
+#: ../templates/default/member.tpl:503
 msgid "An error occured displaying groups interface :("
 msgstr "An error occured displaying groups interface :("
 
@@ -1663,7 +1663,7 @@ msgstr "Contact information"
 msgid "Woman"
 msgstr "Woman"
 
-#: ../templates/default/member.tpl:511
+#: ../templates/default/member.tpl:512
 msgid "Managed groups selection"
 msgstr "Managed groups selection"
 
@@ -2857,7 +2857,7 @@ msgid "Manage emails texts and subjects"
 msgstr "Manage emails texts and subjects"
 
 #: ../templates/default/gestion_adherents.tpl:422
-#: ../templates/default/member.tpl:461 ../templates/default/member.tpl:471
+#: ../templates/default/member.tpl:462 ../templates/default/member.tpl:472
 #: ../templates/default/edit_dynamic_fields.tpl:162
 #: ../templates/default/ajouter_transaction.tpl:207
 #: ../templates/default/gestion_contributions.tpl:290
@@ -2999,7 +2999,7 @@ msgstr "Table prefix:"
 
 #: ../lib/Galette/Core/CheckModules.php:184
 #: ../lib/Galette/Core/Install.php:166
-#: ../templates/default/voir_adherent.tpl:305
+#: ../templates/default/voir_adherent.tpl:306
 msgid "Ok"
 msgstr "Ok"
 
@@ -3149,7 +3149,7 @@ msgstr ""
 "This link is no longer valid. You should <a href='lostpasswd.php'>ask to "
 "retrieve your password</a> again."
 
-#: ../templates/default/member.tpl:509
+#: ../templates/default/member.tpl:510
 msgid "Groups selection"
 msgstr "Groups selection"
 
@@ -5642,7 +5642,7 @@ msgstr "Board Members Color:"
 msgid "Unable to write file or temporary file"
 msgstr "Unable to write file or temporary file"
 
-#: ../templates/default/member.tpl:399 ../templates/default/member.tpl:551
+#: ../templates/default/member.tpl:399 ../templates/default/member.tpl:552
 msgid "Member of '%groupname'"
 msgstr "Member of '%groupname'"
 
@@ -5704,7 +5704,7 @@ msgstr "Unspecified"
 msgid "Secretary"
 msgstr "Secretary"
 
-#: ../templates/default/voir_adherent.tpl:301
+#: ../templates/default/voir_adherent.tpl:302
 msgid "Not managed group"
 msgstr "Not managed group"
 
@@ -6278,6 +6278,11 @@ msgstr "Settings"
 #: ../templates/default/gestion_transactions.tpl:125
 msgid "no transaction"
 msgstr "no transaction"
+
+#: ../templates/default/member.tpl:442
+#: ../templates/default/voir_adherent.tpl:294
+msgid "Back to top"
+msgstr "Back to top"
 
 #: ../lib/Galette/Entity/Group.php:432
 msgid "Group updated"

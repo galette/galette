@@ -291,6 +291,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         </table>
 
 {include file="display_dynamic_fields.tpl" is_form=false}
+        <a href="#" id="back2top">{_T string="Back to top"}</a>
     </div>
 {if $login->isAdmin() or $login->isStaff() or $login->login eq $member->login}
     <script type="text/javascript">
