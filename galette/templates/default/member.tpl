@@ -120,9 +120,9 @@
     {if $visibles.pref_lang eq constant('Galette\Entity\FieldsConfig::VISIBLE') or ($visibles.pref_lang eq constant('Galette\Entity\FieldsConfig::ADMIN') and ($login->isStaff() or $login->isAdmin() or $login->isSuperAdmin()))}
                     <p>
                         <label for="pref_lang" class="bline">{_T string="Language:"}</label>
-                        <select name="pref_lang" id="pref_lang"{if isset($disabled.pref_lang)} {$disabled.pref_lang}{/if}{if isset($required.pref_lang) and $required.pref_lang eq 1} required{/if}>
+                        <select name="pref_lang" id="pref_lang" class="lang"{if isset($disabled.pref_lang)} {$disabled.pref_lang}{/if}{if isset($required.pref_lang) and $required.pref_lang eq 1} required{/if}>
                             {foreach item=langue from=$languages}
-                                <option value="{$langue->getID()}"{if $member->language eq $langue->getID()} selected="selected"{/if} style="background:url({$langue->getFlag()}) no-repeat;padding-left:30px;">{$langue->getName()|ucfirst}</option>
+                                <option value="{$langue->getID()}"{if $member->language eq $langue->getID()} selected="selected"{/if} style="background-image:url({$langue->getFlag()});">{$langue->getName()|ucfirst}</option>
                             {/foreach}
                         </select>
                     </p>
@@ -457,7 +457,8 @@
                     buttonImage: '{$template_subdir}images/calendar.png',
                     buttonImageOnly: true,
                     maxDate: '-0d',
-                    yearRange: 'c-100:c+0'
+                    yearRange: 'c-100:c+0',
+                    buttonText: '{_T string="Select a date" escape="js"}'
                 });
                 $('#date_crea_adh').datepicker({
                     changeMonth: true,
@@ -466,7 +467,8 @@
                     buttonImage: '{$template_subdir}images/calendar.png',
                     buttonImageOnly: true,
                     maxDate: '-0d',
-                    yearRange: 'c-10:c+0'
+                    yearRange: 'c-10:c+0',
+                    buttonText: '{_T string="Select a date" escape="js"}'
                 });
 
                 {* Groups popup *}

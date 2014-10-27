@@ -53,12 +53,25 @@ input, button, select {
     font-size:100%;
 }
 
+input, textarea, select {
+    border: 1px solid #bbb;
+}
+
+input {
+    padding-right: 8px; /* to get the same size as input:required */
+}
+
 input:required {
     border:1px red solid;
     border-left-width: 8px;
+    padding-right: 0;
 }
 input:required:valid {
     border-color:green;
+}
+
+input[type=file] {
+    border: none;
 }
 
 pre, code, kbd, samp {
@@ -92,6 +105,13 @@ p#required {
     float:left;
     margin:0;
 }
+
+select.lang option {
+    padding-left: 30px;
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+}
+
 /* =/ Global main styles */
 
 /*
@@ -1771,7 +1791,7 @@ legend {
     margin-bottom:1em;
     display:block;
     vertical-align:top;
-    padding:5px;
+    padding:3px;
 }
 
 th.bline, td.bline{
@@ -1786,12 +1806,16 @@ th.bline, td.bline{
 .cssform .bline{
     display: inline-block;
     margin: 0 0 0 -22em;
-    width: 21em;
+    width: 21.2em;
 }
 
 .cssform textarea{
     width:90%;
     height: 150px;
+}
+
+.cssform .ui-button-text-only .ui-button-text {
+    padding: .1em 1em;
 }
 
 .logo{
@@ -2040,6 +2064,7 @@ td.photo img{
 
 .ui-datepicker-trigger{
     cursor:pointer;
+    vertical-align: middle;
 }
 
 /** PAGINATION */

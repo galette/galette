@@ -286,7 +286,8 @@
                         changeYear: true,
                         showOn: 'button',
                         buttonImage: '{$template_subdir}images/calendar.png',
-                        buttonImageOnly: true
+                        buttonImageOnly: true,
+                        buttonText: '{_T string="Select a date" escape="js"}'
                     });
                 }
                 _init_contribs_page();

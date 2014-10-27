@@ -418,7 +418,8 @@
                         showOn: 'button',
                         buttonImage: '{$template_subdir}images/calendar.png',
                         buttonImageOnly: true,
-                        yearRange: 'c:c+5'
+                        yearRange: 'c:c+5',
+                        buttonText: '{_T string="Select a date" escape="js"}'
                     });
                 },
                 error: function() {
