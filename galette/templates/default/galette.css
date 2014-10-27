@@ -1817,6 +1817,7 @@ th.bline, td.bline{
 .cssform textarea{
     width:90%;
     height: 150px;
+    padding-right: 8px;
 }
 
 .cssform .ui-button-text-only .ui-button-text {

@@ -4,11 +4,11 @@
 {if $model->id neq 1}
                 <p>
                     <label class="bline" for="title_{$model->id}">{_T string="Title"}</label>
-                    <input type="text" name="model_title" id="title_{$model->id}" value="{$model->title|escape}"/>
+                    <input type="text" name="model_title" id="title_{$model->id}" class="large" value="{$model->title|escape}"/>
                 </p>
                 <p>
                     <label class="bline" for="subtitle_{$model->id}">{_T string="Subtitle"}</label>
-                    <input type="text" name="model_subtitle" id="subtitle_{$model->id}" value="{$model->subtitle|escape}"/>
+                    <input type="text" name="model_subtitle" id="subtitle_{$model->id}" class="large" value="{$model->subtitle|escape}"/>
                 </p>
 {/if}
                 <p>
