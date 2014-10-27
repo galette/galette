@@ -966,11 +966,15 @@ legend #btnadd_small {
 }
 
 .public_page table.listing,
-table.infoline {
+.public_page table.infoline,
+.public_page p {
     margin: 0 auto;
     width: 95%;
 }
 
+.public_page p {
+    margin: 1em auto .5em;
+}
 .public_page #langs {
     display: block;
     margin:0;
