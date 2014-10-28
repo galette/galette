@@ -35,7 +35,7 @@
  * @since     Available since 0.7.4dev - 2013-01-31
  */
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Galette\IO\Csv;
 use Galette\IO\CsvOut;
 use Galette\Filters\MembersList;

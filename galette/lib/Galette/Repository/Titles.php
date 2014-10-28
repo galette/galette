@@ -37,8 +37,8 @@
 
 namespace Galette\Repository;
 
-use Galette\Entity\Title as Title;
-use Analog\Analog as Analog;
+use Galette\Entity\Title;
+use Analog\Analog;
 use Zend\Db\Sql\Expression;
 
 /**

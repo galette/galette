@@ -37,7 +37,7 @@
 
 namespace Galette\IO;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Zend\Db\Adapter\Adapter;
 
 /**

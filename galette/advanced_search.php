@@ -35,12 +35,12 @@
  * @since     Available since 0.7.3dev - 2012-10-11
  */
 
-use Galette\Filters\MembersList as MembersList;
-use Galette\Filters\AdvancedMembersList as AdvancedMembersList;
-use Galette\Entity\Adherent as Adherent;
-use Galette\Entity\DynamicFields as DynamicFields;
-use Galette\Entity\FieldsConfig as FieldsConfig;
-use Galette\Entity\Contribution as Contribution;
+use Galette\Filters\MembersList;
+use Galette\Filters\AdvancedMembersList;
+use Galette\Entity\Adherent;
+use Galette\Entity\DynamicFields;
+use Galette\Entity\FieldsConfig;
+use Galette\Entity\Contribution;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';

@@ -251,7 +251,8 @@
                     buttonImage: './templates/default/images/calendar.png',
                     buttonImageOnly: true,
                     maxDate: '-0d',
-                    yearRange: 'c-10:c+0'
+                    yearRange: 'c-10:c+0',
+                    buttonText: '{_T string="Select a date" escape="js"}'
                 });
                 $('.due_date').datepicker({
                     changeMonth: true,
@@ -259,7 +260,8 @@
                     showOn: 'button',
                     buttonImage: './templates/default/images/calendar.png',
                     buttonImageOnly: true,
-                    yearRange: 'c-10:c+5'
+                    yearRange: 'c-10:c+5',
+                    buttonText: '{_T string="Select a date" escape="js"}'
                 });
 
                 $('#btnadd_small').click(function(){

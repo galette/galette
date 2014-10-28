@@ -35,11 +35,11 @@
  * @since     Availaible since 0.7.6dev - 2013-09-26
  */
 
-use Analog\Analog as Analog;
-use Galette\IO\Csv as Csv;
-use Galette\IO\CsvIn as CsvIn;
-use Galette\IO\CsvOut as CsvOut;
-use Galette\Entity\ImportModel as ImportModel;
+use Analog\Analog;
+use Galette\IO\Csv;
+use Galette\IO\CsvIn;
+use Galette\IO\CsvOut;
+use Galette\Entity\ImportModel;
 
 require_once 'includes/galette.inc.php';
 

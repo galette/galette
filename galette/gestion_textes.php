@@ -35,7 +35,7 @@
  * @since     Availaible since 0.7dev - 2007-10-16
  */
 
-use Galette\Entity\Texts as Texts;
+use Galette\Entity\Texts;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';

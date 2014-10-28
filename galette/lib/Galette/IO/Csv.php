@@ -37,7 +37,7 @@
 
 namespace Galette\IO;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 
 /**
  * CSV files
@@ -70,10 +70,7 @@ abstract class Csv
     protected $result;
     protected $current_line;
 
-    protected $allowed_extensions = array('csv');
-    protected $allowed_mimes = array(
-        'csv'    =>    'text/csv'
-    );
+    protected $extensions = array('csv');
 
     protected $accepted_separators = array(
         ',',
@@ -109,7 +106,7 @@ abstract class Csv
         $csv_files = array();
         $files = glob(
             $this->_default_directory . '*.{' .
-            implode(',', $this->allowed_extensions) . '}',
+            implode(',', $this->extensions) . '}',
             GLOB_BRACE
         );
         foreach ( $files as $file ) {

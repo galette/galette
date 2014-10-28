@@ -37,17 +37,17 @@
 
 namespace Galette\Entity;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
-use Galette\DynamicFieldsTypes\Separator as Separator;
-use Galette\DynamicFieldsTypes\Text as Text;
-use Galette\DynamicFieldsTypes\Line as Line;
-use Galette\DynamicFieldsTypes\Choice as Choice;
-use Galette\DynamicFieldsTypes\Date as Date;
-use Galette\DynamicFieldsTypes\Boolean as Boolean;
-use Galette\DynamicFieldsTypes\File as File;
-use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
+use Galette\DynamicFieldsTypes\Separator;
+use Galette\DynamicFieldsTypes\Text;
+use Galette\DynamicFieldsTypes\Line;
+use Galette\DynamicFieldsTypes\Choice;
+use Galette\DynamicFieldsTypes\Date;
+use Galette\DynamicFieldsTypes\Boolean;
+use Galette\DynamicFieldsTypes\File;
+use Galette\DynamicFieldsTypes\DynamicFieldType;
 
 /**
  * Dynamic fields handler for Galette
@@ -141,11 +141,11 @@ class DynamicFields
      * Retrieve fixed values table name
      *
      * @param integer $id       Field's id
-     * @param boolean $prefixed Whether db prefix must be added
+     * @param boolean $prefixed Whether table name should be prefixed
      *
      * @return string
      */
-    public static function getFixedValuesTableName($id, $prefixed = true)
+    public static function getFixedValuesTableName($id, $prefixed = false)
     {
         $name = 'field_contents_' . $id;
         if ( $prefixed === true ) {
@@ -166,7 +166,7 @@ class DynamicFields
         global $zdb;
 
         try {
-            $select = $zdb->select(self::getFixedValuesTableName($field_id, false));
+            $select = $zdb->select(self::getFixedValuesTableName($field_id));
             $select->columns(
                 array('val')
             )->order('id');

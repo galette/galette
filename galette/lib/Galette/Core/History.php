@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\Exception as AdapterException;

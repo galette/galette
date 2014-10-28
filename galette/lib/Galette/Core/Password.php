@@ -40,7 +40,7 @@
 
 namespace Galette\Core;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Zend\Db\Adapter\Exception as AdapterException;
 use Galette\Entity\Adherent;
 

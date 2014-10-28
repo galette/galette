@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Zend\Db\Sql\Expression;
 
 /**

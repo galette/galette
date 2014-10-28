@@ -34,8 +34,8 @@
  * @since     Available since 0.7dev - 2011-10-29
  */
 
-use Analog\Analog as Analog;
-use Galette\Repository\Members as Members;
+use Analog\Analog;
+use Galette\Repository\Members;
 
 require_once 'includes/galette.inc.php';
 

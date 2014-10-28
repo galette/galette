@@ -38,7 +38,7 @@
  * @since     Available since 0.7dev - 2012-12-17
  */
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Zend\Db\Adapter\Adapter;
 use Galette\Core\Install;
 

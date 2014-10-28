@@ -138,4 +138,17 @@ $(function() {
         }
     });
     $('.selected').addClass('ui-state-disabled');
+
+    if ( $('#back2top').length > 0 ) {
+        if (!$('#wrapper').scrollTop() && !$('html').scrollTop() ) {
+            $('#back2top').fadeOut();
+        }
+        $(window).scroll(function() {
+            if ($(this).scrollTop()) {
+                $('#back2top').fadeIn();
+            } else {
+                $('#back2top').fadeOut();
+            }
+        });
+    }
 });

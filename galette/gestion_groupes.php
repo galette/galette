@@ -34,7 +34,7 @@
  * @link      http://galette.tuxfamily.org
  */
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Galette\Entity\Group;
 use Galette\Entity\Adherent;
 use Galette\Repository\Members;

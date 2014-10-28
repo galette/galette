@@ -35,7 +35,7 @@
  * @link      http://galette.tuxfamily.org
  */
 
-use Galette\Core\history as History;
+use Galette\Core\History;
 
 require_once 'includes/galette.inc.php';
 

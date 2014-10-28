@@ -40,7 +40,7 @@
 use Galette\IO\Pdf;
 use Galette\Repository\Members;
 use Galette\Filters\MembersList;
-use Analog\Analog as Analog;
+use Analog\Analog;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';

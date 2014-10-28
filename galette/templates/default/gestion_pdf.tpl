@@ -47,6 +47,12 @@
                     <td class="back">{_T string="Member's town"}<br/><span>({_T string="available with reservations"})</span></td>
                 </tr>
                 <tr>
+                    <th><tt>{ldelim}GROUP_ADH{rdelim}</tt></th>
+                    <td class="back">{_T string="Member's main group"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <th><tt>{ldelim}GROUPS_ADH{rdelim}</tt></th>
+                    <td class="back">{_T string="Member's groups (as list)"}<br/><span>({_T string="available with reservations"})</span></td>
+                </tr>
+                <tr>
                     <th><tt>{ldelim}CONTRIBUTION_LABEL{rdelim}</tt></th>
                     <td class="back">{_T string="Contribution label"}<br/><span>({_T string="available with reservations"})</span></td>
                     <th><tt>{ldelim}CONTRIBUTION_AMOUNT{rdelim}</tt></th>

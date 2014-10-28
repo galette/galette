@@ -37,10 +37,10 @@
  * @since     Availaible since 0.7dev - 2009-04-11
  */
 
-use Analog\Analog as Analog;
-use Galette\Entity\Adherent as Adherent;
-use Galette\Entity\FieldsCategories as FieldsCategories;
-use Galette\Entity\FieldsConfig as FieldsConfig;
+use Analog\Analog;
+use Galette\Entity\Adherent;
+use Galette\Entity\FieldsCategories;
+use Galette\Entity\FieldsConfig;
 
 require_once 'includes/galette.inc.php';
 

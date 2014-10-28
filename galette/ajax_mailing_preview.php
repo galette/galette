@@ -38,7 +38,7 @@
  * @since     Available since 0.7dev - 2011-08-28
  */
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Galette\Core\Mailing;
 use Galette\Core\MailingHistory;
 

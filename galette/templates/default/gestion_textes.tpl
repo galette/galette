@@ -4,9 +4,9 @@
                 <legend class="ui-state-active ui-corner-top">{$mtxt->tcomment}</legend>
                 <p>
                     <label for="sel_lang" class="bline">{_T string="Language:"}</label>
-                    <select name="sel_lang" id="sel_lang">
+                    <select name="sel_lang" id="sel_lang" class="lang">
                         {foreach item=langue from=$langlist}
-                            <option value="{$langue->getID()}" {if $cur_lang eq $langue->getID()}selected="selected"{/if} style="padding-left: 30px; background-image: url({$langue->getFlag()}); background-repeat: no-repeat">{$langue->getName()}</option>
+                            <option value="{$langue->getID()}" {if $cur_lang eq $langue->getID()}selected="selected"{/if} style="background-image: url({$langue->getFlag()});">{$langue->getName()}</option>
                         {/foreach}
                     </select>
                     <noscript> <span><input type="submit" name="change_lang" value="{_T string="Change"}" /></span></noscript>

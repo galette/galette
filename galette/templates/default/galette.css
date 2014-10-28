@@ -35,7 +35,7 @@ body {
 
 body {
     font-family: "Liberation sans", Verdana, sans-serif;
-    font-size:0.85em;
+    font-size:0.8em;
     background-color:white;
     color:black;
 }
@@ -53,12 +53,25 @@ input, button, select {
     font-size:100%;
 }
 
+input, textarea, select {
+    border: 1px solid #bbb;
+}
+
+input {
+    padding-right: 8px; /* to get the same size as input:required */
+}
+
 input:required {
     border:1px red solid;
     border-left-width: 8px;
+    padding-right: 0;
 }
 input:required:valid {
     border-color:green;
+}
+
+input[type=file] {
+    border: none;
 }
 
 pre, code, kbd, samp {
@@ -92,6 +105,29 @@ p#required {
     float:left;
     margin:0;
 }
+
+select.lang option {
+    padding-left: 30px;
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+}
+
+[id=back2top] {
+    background: #DDDDFF;
+    color: black;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    padding: .2em .5em;
+    border-radius: 6px 0 0 0;
+    opacity: 0.45;
+}
+
+[id=back2top]:hover {
+    color: black;
+    opacity: 1;
+}
+
 /* =/ Global main styles */
 
 /*
@@ -189,6 +225,30 @@ nav a{
 #desktop {
     border-spacing:3em 1em;
     text-align: center;
+    width: 50%;
+    min-width: 30em;
+    margin: 0 auto;
+}
+
+#news {
+    width: 50%;
+    min-width: 30em;
+    margin: 1em auto 0;
+}
+
+#news > div {
+    text-align: left;
+}
+
+#news p {
+    margin: 0 .2em .3em;
+    display: inline-block;
+    width: 100%;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+    text-align: justify;
 }
 
 .desktop, .panels {
@@ -196,6 +256,7 @@ nav a{
 }
 
 #desktop,
+#news,
 .plugin,
 #groups_list,
 #group_infos {
@@ -226,6 +287,7 @@ nav a{
 }
 
 #desktop header,
+#news header,
 .plugin header,
 #groups_list header,
 #group_infos header {
@@ -920,11 +982,15 @@ legend #btnadd_small {
 }
 
 .public_page table.listing,
-table.infoline {
+.public_page table.infoline,
+.public_page p {
     margin: 0 auto;
     width: 95%;
 }
 
+.public_page p {
+    margin: 1em auto .5em;
+}
 .public_page #langs {
     display: block;
     margin:0;
@@ -1395,6 +1461,7 @@ table.listing {
 }
 
 #desktop header,
+#news header,
 .plugin header,
 .mailing header,
 #selected_members header,
@@ -1744,7 +1811,7 @@ legend {
     margin-bottom:1em;
     display:block;
     vertical-align:top;
-    padding:5px;
+    padding:3px;
 }
 
 th.bline, td.bline{
@@ -1759,12 +1826,18 @@ th.bline, td.bline{
 .cssform .bline{
     display: inline-block;
     margin: 0 0 0 -22em;
-    width: 21em;
+    width: 19.9em;
+    padding-right: 20px;
 }
 
 .cssform textarea{
     width:90%;
     height: 150px;
+    padding-right: 8px;
+}
+
+.cssform .ui-button-text-only .ui-button-text {
+    padding: .1em 1em;
 }
 
 .logo{
@@ -2013,6 +2086,7 @@ td.photo img{
 
 .ui-datepicker-trigger{
     cursor:pointer;
+    vertical-align: middle;
 }
 
 /** PAGINATION */

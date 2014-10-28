@@ -35,8 +35,8 @@
  * @since     0.7.2.8 - 2012-12-18
  */
 
-use Galette\Entity\FieldsConfig as FieldsConfig;
-use Galette\Entity\FieldsCategories as FieldsCategories;
+use Galette\Entity\FieldsConfig;
+use Galette\Entity\FieldsCategories;
 
 $members_fields = array(
     'id_adh' => array(

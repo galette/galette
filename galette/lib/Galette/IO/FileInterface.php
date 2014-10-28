@@ -3,11 +3,11 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * PDF Invoice model
+ * File interface
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -24,46 +24,52 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Entity
+ * @category  IO
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.5dev - 2013-02-25
+ * @since     Available since 0.8.1 - 2014-09-18
  */
 
-namespace Galette\Entity;
-
-use Analog\Analog;
+namespace Galette\IO;
 
 /**
- * PDF invoice model
+ * File interface
  *
- * @category  Entity
- * @name      PdfInvoice
+ * @category  IO
+ * @name      Csv
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.5dev - 2013-02-25
+ * @since     Available since 0.8.1 - 2014-09-18
  */
 
-class PdfInvoice extends PdfModel
+interface FileInterface
 {
-    /**
-     * Main constructor
-     *
-     * @param Db          $zdb         Database instance
-     * @param Preferences $preferences Galette preferences
-     * @param mixed       $args        Arguments
-     */
-    public function __construct($zdb, $preferences, $args = null)
-    {
-        parent::__construct($zdb, $preferences, self::INVOICE_MODEL, $args);
-    }
+    const INVALID_FILENAME = -1;
+    const INVALID_EXTENSION = -2;
+    const FILE_TOO_BIG = -3;
+    const MIME_NOT_ALLOWED = -4;
+    const NEW_FILE_EXISTS = -5;
+    const INVALID_FILE = -6;
+    const CANT_WRITE = -7;
+    const MAX_FILE_SIZE = 1024;
 
+    /**
+     * Initialization
+     *
+     * @param string $dest       File destination directory
+     * @param array  $extensions Array of permitted extensions
+     * @param array  $mimes      Array of permitted mime types
+     * @param int    $maxlenght  Maximum lenght for each file
+     *
+     * @return void
+     */
+    function init($dest, $extensions = null, $mimes = null, $maxlenght = null);
 }

@@ -37,10 +37,10 @@
 
 namespace Galette\Repository;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Zend\Db\Sql\Expression;
-use Galette\Entity\Group as Group;
-use Galette\Entity\Adherent as Adherent;
+use Galette\Entity\Group;
+use Galette\Entity\Adherent;
 
 /**
  * Groups entitiy

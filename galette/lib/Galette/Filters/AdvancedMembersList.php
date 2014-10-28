@@ -37,11 +37,11 @@
 
 namespace Galette\Filters;
 
-use Analog\Analog as Analog;
-use Galette\Entity\Status as Status;
-use Galette\Entity\ContributionsTypes as ContributionsTypes;
-use Galette\Entity\Contribution as Contribution;
-use Galette\Repository\Members as Members;
+use Analog\Analog;
+use Galette\Entity\Status;
+use Galette\Entity\ContributionsTypes;
+use Galette\Entity\Contribution;
+use Galette\Repository\Members;
 
 /**
  * Members list filters and paginator

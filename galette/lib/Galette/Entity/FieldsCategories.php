@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 
 /**
  * Fields categories class for galette
@@ -54,8 +54,6 @@ use Analog\Analog as Analog;
 
 class FieldsCategories
 {
-    private $_id;
-    private $_category;
     const TABLE = 'fields_categories';
     const PK = 'id_field_category';
 

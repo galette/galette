@@ -80,7 +80,7 @@
         </p>
     {/if}
     {if $field.field_type neq 0}
-        {if $field.config_field_repeat == 0}
+        {if $field.config_field_repeat == 0 and $field.config_field_repeat neq null}
         <p class="exemple">{_T string="Enter as many occurences you want."}</p>
         {elseif $field.config_field_repeat > 1}
         <p class="exemple">{_T string="Enter up to %count occurences." pattern="/%count/" replace=$field.field_repeat}</p>
@@ -158,7 +158,8 @@
             changeYear: true,
             showOn: 'button',
             buttonImage: '{$template_subdir}images/calendar.png',
-            buttonImageOnly: true
+            buttonImageOnly: true,
+            buttonText: '{_T string="Select a date" escape="js"}'
         });
                 {/section}
             {/if}

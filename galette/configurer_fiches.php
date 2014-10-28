@@ -36,9 +36,9 @@
  * @since     Available since 0.62
  */
 
-use Galette\Entity\DynamicFields as DynamicFields;
-use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
-use Analog\Analog as Analog;
+use Galette\Entity\DynamicFields;
+use Galette\DynamicFieldsTypes\DynamicFieldType;
+use Analog\Analog;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Adapter\Adapter;
 

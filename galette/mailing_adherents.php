@@ -47,7 +47,7 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 }
 
 use Galette\Core;
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Galette\Repository\Members;
 use Galette\Filters\MembersList;
 

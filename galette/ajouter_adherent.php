@@ -36,16 +36,16 @@
  * @since     Available since 0.62
  */
 
-use Analog\Analog as Analog;
-use Galette\Core\GaletteMail as GaletteMail;
-use Galette\Entity\Adherent as Adherent;
-use Galette\Entity\FieldsConfig as FieldsConfig;
-use Galette\Entity\Texts as Texts;
-use Galette\Entity\DynamicFields as DynamicFields;
-use Galette\Repository\Members as Members;
-use Galette\Repository\Titles as Titles;
-use Galette\Repository\Groups as Groups;
-use Galette\Filters\MembersList as MembersList;
+use Analog\Analog;
+use Galette\Core\GaletteMail;
+use Galette\Entity\Adherent;
+use Galette\Entity\FieldsConfig;
+use Galette\Entity\Texts;
+use Galette\Entity\DynamicFields;
+use Galette\Repository\Members;
+use Galette\Repository\Titles;
+use Galette\Repository\Groups;
+use Galette\Filters\MembersList;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';

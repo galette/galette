@@ -37,13 +37,13 @@
  * @since     Available since 0.62
  */
 
-use Galette\Core\GaletteMail as GaletteMail;
-use Galette\Entity\DynamicFields as DynamicFields;
-use Galette\Entity\Adherent as Adherent;
-use Galette\Entity\FieldsConfig as FieldsConfig;
-use Galette\Entity\Texts as Texts;
-use Galette\Repository\Titles as Titles;
-use Galette\Core\PasswordImage as PasswordImage;
+use Galette\Core\GaletteMail;
+use Galette\Entity\DynamicFields;
+use Galette\Entity\Adherent;
+use Galette\Entity\FieldsConfig;
+use Galette\Entity\Texts;
+use Galette\Repository\Titles;
+use Galette\Core\PasswordImage;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -81,8 +81,8 @@ $fields = Adherent::getDbFields();
 if ( isset($_POST["nom_adh"]) ) {
     // dynamic fields
     $adherent['dyn'] = $dyn_fields->extractPosted($_POST, $_FILES, $disabled, $member->id);
-    $dyn_fields_errors = $dyn_fields->get_errors();
-    if ( $count($dyn_fields_errors) > 0 ) {
+    $dyn_fields_errors = $dyn_fields->getErrors();
+    if ( count($dyn_fields_errors) > 0 ) {
         $error_detected = array_merge($error_detected, $dyn_fields_errors);
     }
     // regular fields

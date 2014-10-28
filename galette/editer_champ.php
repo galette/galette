@@ -36,11 +36,11 @@
  * @since     Available since 0.62
  */
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Expression;
-use Galette\Entity\DynamicFields as DynamicFields;
-use Galette\DynamicFieldsTypes\DynamicFieldType as DynamicFieldType;
+use Galette\Entity\DynamicFields;
+use Galette\DynamicFieldsTypes\DynamicFieldType;
 
 /** @ignore */
 require_once 'includes/galette.inc.php';
@@ -157,7 +157,10 @@ if ( isset($_POST['valid']) ) {
                     }
                 }
             }
-            $contents_table = DynamicFields::getFixedValuesTableName($field_id);
+            $contents_table = DynamicFields::getFixedValuesTableName(
+                $field_id,
+                true
+            );
 
             try {
                 $zdb->connection->beginTransaction();
@@ -210,7 +213,8 @@ if ( isset($_POST['valid']) ) {
                 }catch (Exception $e) {
                     $zdb->connection->rollBack();
                     Analog::log(
-                        'Unable to store field ' . $field_id . ' values',
+                        'Unable to store field ' . $field_id . ' values (' .
+                        $e->getMessage() . ')',
                         Analog::ERROR
                     );
                 }

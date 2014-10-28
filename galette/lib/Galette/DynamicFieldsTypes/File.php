@@ -37,7 +37,7 @@
 
 namespace Galette\DynamicFieldsTypes;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 
 /**
  * File field type

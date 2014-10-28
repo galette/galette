@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 use Zend\Db\Adapter\Adapter;
 
 /**
@@ -179,25 +179,38 @@ class FieldsConfig
 
         try {
             $_all_fields = array();
-            array_walk(
-                $this->_categorized_fields,
-                function ($cat) use (&$_all_fields) {
-                    $field = null;
-                    array_walk(
-                        $cat,
-                        function ($f) use (&$field) {
-                            $field[$f['field_id']] = $f;
-                        }
-                    );
-                    $_all_fields = array_merge($_all_fields, $field);
+            if ( is_array($this->_categorized_fields) ) {
+                array_walk(
+                    $this->_categorized_fields,
+                    function ($cat) use (&$_all_fields) {
+                        $field = null;
+                        array_walk(
+                            $cat,
+                            function ($f) use (&$field) {
+                                $field[$f['field_id']] = $f;
+                            }
+                        );
+                        $_all_fields = array_merge($_all_fields, $field);
+                    }
+                );
+            } else {
+                //hum... no records. Let's check if any category exists
+                $select = $zdb->select(FieldsCategories::TABLE);
+                $results = $zdb->execute($select);
+
+                if ( $results->count() == 0 ) {
+                    //categories are missing, add them
+                    $categories = new FieldsCategories();
+                    $categories->installInit($zdb);
                 }
-            );
+            }
 
             if ( count($this->_defaults) != count($_all_fields) ) {
                 Analog::log(
                     'Fields configuration count for `' . $this->_table .
                     '` columns does not match records. Is : ' .
-                    count($_all_fields) . ' and should be ' . count($this->_defaults),
+                    count($_all_fields) . ' and should be ' .
+                    count($this->_defaults),
                     Analog::WARNING
                 );
 
@@ -251,7 +264,6 @@ class FieldsConfig
     {
         try {
             $fields = array_keys($this->_defaults);
-            $class = get_class($this);
             $categories = new FieldsCategories();
 
             //first, we drop all values

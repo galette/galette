@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Analog\Analog as Analog;
+use Analog\Analog;
 
 /**
  * Pagination and ordering facilities
@@ -110,7 +110,7 @@ abstract class Pagination
         $this->_current_page = 1;
         $this->_orderby = $this->getDefaultOrder();
         $this->_ordered = $this->getDefaultDirection();
-        $this->_show = $preferences->pref_numrows;
+        $this->_show = (int)$preferences->pref_numrows;
     }
 
     /**

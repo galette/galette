@@ -39,10 +39,10 @@
  * @since     Available since 0.7dev - 2011-08-28
  */
 
-use Galette\Entity\Group as Group;
-use Galette\Filters\MembersList as MembersList;
-use Galette\Repository\Members as Members;
-use Analog\Analog as Analog;
+use Galette\Entity\Group;
+use Galette\Filters\MembersList;
+use Galette\Repository\Members;
+use Analog\Analog;
 
 require_once 'includes/galette.inc.php';
 
