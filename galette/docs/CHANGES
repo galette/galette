@@ -1,6 +1,24 @@
 Changes
 -------
 
+0.8 -> 0.8.1
+
+- Add member group to PDF models
+- Fix dynamic choices table name
+- Fix JS back button adding a contribution
+- A bit of cleanup
+- Fix fields categories initialization
+- Fix dynamic fields file
+- Use of PHP traits for File, Picture and CsvIn
+- Dynamic fields lists values not shown
+- Fix SMTP class not found
+- Remove "all" entry for number of rows into preferences
+- Fix fields marked repeatable, but not repeatable
+- Improve view, mainly for forms
+- Fix some invalid HTML
+- Fix issues on self subscription page
+- Add configurable RSS feed
+
 0.7.8 -> 0.8
 
 Bugfixes
