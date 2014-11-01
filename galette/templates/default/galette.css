@@ -415,7 +415,7 @@ footer li {
 /* == Main Galette styles */
 #asso_name {
     text-align: center;
-    margin: 0 0 1em;
+    margin: 0 auto 1em;
     font-weight: bold;
     font-size: 1.1em;
 }
@@ -983,7 +983,7 @@ legend #btnadd_small {
 
 .public_page table.listing,
 .public_page table.infoline,
-.public_page p {
+.public_page body > p {
     margin: 0 auto;
     width: 95%;
 }
