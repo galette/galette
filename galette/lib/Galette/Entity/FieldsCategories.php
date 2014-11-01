@@ -72,13 +72,13 @@ class FieldsCategories
             'id'         => 2,
             'table_name' => Adherent::TABLE,
             'category'   => 'Galette-related data',
-            'position'   => 2
+            'position'   => 3
         ),
         array(
             'id'         => 3,
             'table_name' => Adherent::TABLE,
             'category'   => 'Contact information',
-            'position'   => 3
+            'position'   => 2
         )
     );
 
