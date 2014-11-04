@@ -93,7 +93,7 @@ class Mailing extends GaletteMail
         /** TODO: add a preference that propose default mime-type to use,
             then init it here */
         if ( $members !== null) {
-            //Check which members have a valid email adress and which have not
+            //Check which members have a valid email address and which have not
             $this->setRecipients($members);
         }
         $this->_loadAttachments();

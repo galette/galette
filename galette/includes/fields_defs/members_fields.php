@@ -113,16 +113,16 @@ $members_fields = array(
     ),
     'adresse_adh' => array(
         'label'    => _T("Address:"),
-        'propname' => 'adress',
+        'propname' => 'address',
         'required' => true,
         'visible'  => FieldsConfig::VISIBLE,
         'position' => 11,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
-    /** TODO remove second adress... */
+    /** TODO remove second address... */
     'adresse2_adh' => array(
         'label'    => _T("Address (continuation)"),
-        'propname' => 'adress_continuation',
+        'propname' => 'address_continuation',
         'required' => false,
         'visible'  => FieldsConfig::VISIBLE,
         'position' => 12,

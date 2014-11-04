@@ -112,7 +112,7 @@ abstract class PdfModel
             'asso_logo'         => '/{ASSO_LOGO}/'
         );
 
-        $address = $preferences->getPostalAdress();
+        $address = $preferences->getPostalAddress();
 
         $website = '';
         if ( $preferences->pref_website != '' ) {

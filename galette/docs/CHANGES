@@ -47,7 +47,7 @@ News
 - Order members labels by name and surname
 - Configurable 80 chars text mail splitting
 - Preview splitted mails
-- Display mail adresses in public list for logged in members
+- Display mail addresses in public list for logged in members
 - Mail text for donations
 - Detect file type if relevant functions are disabled
 - Birthdate in advanced search

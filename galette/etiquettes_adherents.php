@@ -153,13 +153,13 @@ foreach ($members as $member) {
     // Print full name
     $pdf->SetXY($x, $y);
     $pdf->Cell($w, $line_h, $member->sfullname, 0, 0, 'L', 0);
-    // Print first line of adress
+    // Print first line of address
     $pdf->SetFont(Pdf::FONT, '', $preferences->pref_etiq_corps);
     $pdf->SetXY($x, $y+$line_h);
-    $pdf->Cell($w, $line_h, $member->adress, 0, 0, 'L', 0);
-    // Print second line of adress
+    $pdf->Cell($w, $line_h, $member->address, 0, 0, 'L', 0);
+    // Print second line of address
     $pdf->SetXY($x, $y+$line_h*2);
-    $pdf->Cell($w, $line_h, $member->adress_continuation, 0, 0, 'L', 0);
+    $pdf->Cell($w, $line_h, $member->address_continuation, 0, 0, 'L', 0);
     // Print zip code and town
     $pdf->SetFont(Pdf::FONT, 'B', $preferences->pref_etiq_corps);
     $pdf->SetXY($x, $y+$line_h*3);

@@ -15,6 +15,10 @@ msgstr ""
 msgid "View, search into and filter member's list"
 msgstr ""
 
+#: ../lostpasswd.php:121
+msgid "A mail has been sent to your address.<br/>Please check your inbox and follow the instructions."
+msgstr ""
+
 #: ../lib/Galette/IO/FileTrait.php:542
 msgid "The uploaded file was only partially uploaded"
 msgstr ""
@@ -201,10 +205,6 @@ msgstr ""
 
 #: ../reminder.php:112
 msgid "Sent reminders:"
-msgstr ""
-
-#: ../templates/default/desktop.tpl:15 ../templates/default/page.tpl:149
-msgid "Set applications preferences (adress, website, member's cards configuration, ...)"
 msgstr ""
 
 #: ../gestion_contributions.php:153
@@ -415,9 +415,8 @@ msgstr ""
 msgid "Password:"
 msgstr ""
 
-#: ../templates/default/gestion_contributions.tpl:192 ../templates/default/gestion_contributions.tpl:198
-#: ../templates/default/ajouter_contribution.tpl:15
-msgid "[view]"
+#: ../lib/Galette/Core/Preferences.php:430
+msgid "%name\n%complement\n%address\n%zip %town - %country"
 msgstr ""
 
 #: ../templates/default/gestion_textes.tpl:91
@@ -464,8 +463,8 @@ msgstr ""
 msgid "Unknown upload error"
 msgstr ""
 
-#: ../lib/Galette/Entity/Status.php:116
-msgid "status"
+#: ../ajouter_adherent.php:249
+msgid "Account modification mail sent to '%s'."
 msgstr ""
 
 #: ../templates/default/voir_adherent.tpl:302
@@ -600,10 +599,6 @@ msgstr ""
 msgid "Original text: '%s'"
 msgstr ""
 
-#: ../lostpasswd.php:160
-msgid "Mails adress %s does not exist"
-msgstr ""
-
 #: ../lib/Galette/Filters/MembersList.php:297
 msgid "Email,URL,IM"
 msgstr ""
@@ -674,6 +669,10 @@ msgstr ""
 
 #: ../change_passwd.php:98 ../lostpasswd.php:193
 msgid "Password recovery"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:143
+msgid "Show public pages for"
 msgstr ""
 
 #: ../templates/default/group.tpl:59
@@ -892,10 +891,6 @@ msgstr ""
 msgid "Send down '%s' field"
 msgstr ""
 
-#: ../ajouter_contribution.php:309
-msgid "Trying to send a mail to a member (%name) with an invalid adress: %email"
-msgstr ""
-
 #: ../templates/default/advanced_search.tpl:26
 msgid "Member of group"
 msgstr ""
@@ -984,6 +979,12 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1013
 msgid "Write configuration file"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:204 ../templates/default/gestion_mailings.tpl:122
+#: ../templates/default/gestion_contributions.tpl:228 ../templates/default/gestion_contributions.tpl:248
+#: ../templates/default/gestion_transactions.tpl:119
+msgid "[del]"
 msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1123
@@ -1239,10 +1240,6 @@ msgstr ""
 
 #: ../install/steps/db_install.php:49
 msgid "Database has not been upgraded!"
-msgstr ""
-
-#: ../lostpasswd.php:149
-msgid "Your account (%s) do not contain any valid mail adress"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:6 ../templates/default/advanced_search.tpl:8
@@ -1536,6 +1533,10 @@ msgstr ""
 msgid "- Mandatory field empty: "
 msgstr ""
 
+#: ../templates/default/preferences.tpl:52
+msgid "Postal address:"
+msgstr ""
+
 #: ../templates/default/ajax_mailing_preview.tpl:5
 msgid "Headers"
 msgstr ""
@@ -1625,8 +1626,9 @@ msgstr ""
 msgid "Required fields upgrade has failed :("
 msgstr ""
 
-#: ../templates/default/gestion_textes.tpl:81 ../templates/default/gestion_pdf.tpl:59
-msgid "Contribution amount"
+#: ../templates/default/gestion_contributions.tpl:192 ../templates/default/gestion_contributions.tpl:198
+#: ../templates/default/ajouter_contribution.tpl:15
+msgid "[view]"
 msgstr ""
 
 #: ../ajax_recipients.php:78 ../templates/default/mailing_adherents.tpl:21
@@ -2024,8 +2026,8 @@ msgstr ""
 msgid "Default preferences cannot be initialized."
 msgstr ""
 
-#: ../templates/default/gestion_groupes.tpl:30
-msgid "Export as PDF"
+#: ../templates/default/gestion_adherents.tpl:4 ../templates/default/advanced_search.tpl:6
+msgid "Search:"
 msgstr ""
 
 #: ../templates/default/public_page.tpl:63
@@ -2137,8 +2139,8 @@ msgstr ""
 msgid "Record date:"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:26
-msgid "Members that have an email adress:"
+#: ../templates/default/member.tpl:255
+msgid "If you check this box (and if you are up to date with your contributions), your full name, website address ad other informations will be publically visilbe on the members list.<br/>If you've uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case."
 msgstr ""
 
 #: ../lib/Galette/Entity/DynamicFields.php:116 ../lib/Galette/DynamicFieldsTypes/Separator.php:74
@@ -2159,10 +2161,6 @@ msgstr ""
 
 #: ../preferences.php:193 ../change_passwd.php:65
 msgid "- The password must be of at least 4 characters!"
-msgstr ""
-
-#: ../templates/default/preferences.tpl:52
-msgid "Postal adress:"
 msgstr ""
 
 #: ../mailing_adherents.php:137
@@ -2355,10 +2353,8 @@ msgstr ""
 msgid "available only from self subscribe page"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:204 ../templates/default/gestion_mailings.tpl:122
-#: ../templates/default/gestion_contributions.tpl:228 ../templates/default/gestion_contributions.tpl:248
-#: ../templates/default/gestion_transactions.tpl:119
-msgid "[del]"
+#: ../templates/default/gestion_adherents.tpl:26
+msgid "Members that have an email address:"
 msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:61
@@ -2442,8 +2438,8 @@ msgstr ""
 msgid "Navigation"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:143
-msgid "Show public pages for"
+#: ../lostpasswd.php:160
+msgid "Mails address %s does not exist"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:36
@@ -3040,10 +3036,6 @@ msgstr ""
 msgid "Groups:"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:53
-msgid "Use either the adress setted below or select a staff member to retrieve he's adress."
-msgstr ""
-
 #: ../templates/default/ajouter_transaction.tpl:56 ../templates/default/gestion_contributions.tpl:100
 #: ../templates/default/ajouter_contribution.tpl:26
 msgid "Member"
@@ -3153,10 +3145,6 @@ msgstr ""
 msgid "An SQL error has occured while storing preferences. Please try again, and contact the administrator if the problem persists."
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:430
-msgid "%name\n%complement\n%adress\n%zip %town - %country"
-msgstr ""
-
 #: ../templates/default/member.tpl:425
 msgid "Notify member his account has been created"
 msgstr ""
@@ -3171,6 +3159,10 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:4
 msgid "General"
+msgstr ""
+
+#: ../templates/default/gestion_groupes.tpl:30
+msgid "Export as PDF"
 msgstr ""
 
 #: ../templates/default/ajouter_transaction.tpl:164 ../templates/default/ajouter_transaction.tpl:186
@@ -3489,6 +3481,10 @@ msgstr ""
 msgid "Delete mailing entries"
 msgstr ""
 
+#: ../templates/default/preferences.tpl:52
+msgid "Use either the address setted below or select user status to retrieve another address."
+msgstr ""
+
 #: ../templates/default/gestion_groupes.tpl:116
 msgid "Add a new group"
 msgstr ""
@@ -3523,6 +3519,10 @@ msgstr ""
 
 #: ../install/old.index.php:1130
 msgid "The tables has been correctly created."
+msgstr ""
+
+#: ../templates/default/desktop.tpl:15 ../templates/default/page.tpl:149
+msgid "Set applications preferences (address, website, member's cards configuration, ...)"
 msgstr ""
 
 #: ../self_adherent.php:242
@@ -3644,10 +3644,6 @@ msgstr ""
 
 #: ../preferences.php:228
 msgid "- You must indicate a sender name for emails!"
-msgstr ""
-
-#: ../templates/default/page.tpl:112
-msgid "List of members"
 msgstr ""
 
 #: ../configurer_fiches.php:82
@@ -3845,8 +3841,8 @@ msgstr ""
 msgid "Priority"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:52
-msgid "Use either the adress setted below or select user status to retrieve another adress."
+#: ../templates/default/page.tpl:112
+msgid "List of members"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:260
@@ -3934,8 +3930,8 @@ msgstr ""
 msgid "Jabber:"
 msgstr ""
 
-#: ../ajouter_adherent.php:249
-msgid "Account modification mail sent to '%s'."
+#: ../lib/Galette/Entity/Status.php:116
+msgid "status"
 msgstr ""
 
 #: ../templates/default/ajax_members.tpl:48
@@ -4008,6 +4004,10 @@ msgstr ""
 
 #: ../templates/default/advanced_search.tpl:188
 msgid "is"
+msgstr ""
+
+#: ../templates/default/import.tpl:6
+msgid "Existing files"
 msgstr ""
 
 #: ../gestion_intitules.php:95
@@ -4102,8 +4102,8 @@ msgstr ""
 msgid "Identity"
 msgstr ""
 
-#: ../templates/default/import.tpl:6
-msgid "Existing files"
+#: ../templates/default/preferences.tpl:53
+msgid "Use either the address setted below or select a staff member to retrieve he's address."
 msgstr ""
 
 #: ../lib/Galette/Core/Install.php:679
@@ -4178,8 +4178,8 @@ msgstr ""
 msgid "Group %groupname has been successfully deleted."
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:4 ../templates/default/advanced_search.tpl:6
-msgid "Search:"
+#: ../ajouter_contribution.php:309
+msgid "Trying to send a mail to a member (%name) with an invalid address: %email"
 msgstr ""
 
 #: ../doandget_export.php:186 ../doandget_export.php:189
@@ -5109,10 +5109,6 @@ msgstr ""
 msgid "Not managed group"
 msgstr ""
 
-#: ../templates/default/member.tpl:255
-msgid "If you check this box (and if you are up to date with your contributions), your full name, website adress ad other informations will be publically visilbe on the members list.<br/>If you've uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case."
-msgstr ""
-
 #: ../lib/Galette/Entity/Reminder.php:263
 msgid "Sent reminder mail for impending membership"
 msgstr ""
@@ -5429,8 +5425,8 @@ msgstr ""
 msgid "CVS database Export"
 msgstr ""
 
-#: ../lostpasswd.php:121
-msgid "A mail has been sent to your adress.<br/>Please check your inbox and follow the instructions."
+#: ../templates/default/gestion_textes.tpl:81 ../templates/default/gestion_pdf.tpl:59
+msgid "Contribution amount"
 msgstr ""
 
 #: ../templates/default/desktop.tpl:23
@@ -5672,6 +5668,10 @@ msgstr ""
 
 #: ../templates/default/edit_dynamic_fields.tpl:3 ../templates/default/display_dynamic_fields.tpl:3
 msgid "Additionnal fields:"
+msgstr ""
+
+#: ../lostpasswd.php:149
+msgid "Your account (%s) do not contain any valid mail address"
 msgstr ""
 
 #: ../templates/default/config_fields.tpl:12

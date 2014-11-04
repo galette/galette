@@ -49,12 +49,12 @@
                     <input{if isset($required.pref_pays) and $required.pref_pays eq 1} required{/if} type="text" name="pref_pays" id="pref_pays" value="{$pref.pref_pays}" maxlength="50"/>
                 </p>
         <div class="p">
-          <span class="bline tooltip" title="{_T string="Use either the adress setted below or select user status to retrieve another adress."}">{_T string="Postal adress:"}</span>
-          <span class="tip">{_T string="Use either the adress setted below or select a staff member to retrieve he's adress."}</span>
+          <span class="bline tooltip" title="{_T string="Use either the address setted below or select user status to retrieve another address."}">{_T string="Postal address:"}</span>
+          <span class="tip">{_T string="Use either the address setted below or select a staff member to retrieve he's address."}</span>
           <label for="pref_postal_adress_0">{_T string="from preferences"}</label>
-          <input type="radio" name="pref_postal_adress" id="pref_postal_adress_0" value="{php}echo Galette\Core\Preferences::POSTAL_ADRESS_FROM_PREFS;{/php}" {if $pref.pref_postal_adress eq constant('Galette\Core\Preferences::POSTAL_ADRESS_FROM_PREFS')}checked="checked"{/if}/>
+          <input type="radio" name="pref_postal_adress" id="pref_postal_adress_0" value="{php}echo Galette\Core\Preferences::POSTAL_ADDRESS_FROM_PREFS;{/php}" {if $pref.pref_postal_adress eq constant('Galette\Core\Preferences::POSTAL_ADDRESS_FROM_PREFS')}checked="checked"{/if}/>
           <label for="pref_postal_adress_1">{_T string="from a staff user"}</label>
-          <input type="radio" name="pref_postal_adress" id="pref_postal_adress_1" value="{php}echo Galette\Core\Preferences::POSTAL_ADRESS_FROM_STAFF;{/php}" {if $pref.pref_postal_adress eq constant('Galette\Core\Preferences::POSTAL_ADRESS_FROM_STAFF')}checked="checked"{/if}/>
+          <input type="radio" name="pref_postal_adress" id="pref_postal_adress_1" value="{php}echo Galette\Core\Preferences::POSTAL_ADDRESS_FROM_STAFF;{/php}" {if $pref.pref_postal_adress eq constant('Galette\Core\Preferences::POSTAL_ADDRESS_FROM_STAFF')}checked="checked"{/if}/>
           <br/><label for="pref_postal_staff_member">{_T string="Staff member"}</label>
           <select name="pref_postal_staff_member" id="pref_postal_staff_member">
             <option value="-1">{_T string="-- Choose a staff member --"}</option>

@@ -185,14 +185,14 @@ class GaletteMail
                 $this->_recipients[$mail] = $name;
                 $this->_mail->AddBCC($mail, $name);
             } else {
-                //one of adresses is not valid :
+                //one of addresses is not valid :
                 //- set $res to false
                 //- clear BCCs
                 //- log an INFO
                 $res = false;
                 Analog::log(
                     '[' . get_class($this) .
-                    '] One of recipients adress is not valid.',
+                    '] One of recipients address is not valid.',
                     Analog::INFO
                 );
                 $this->_mail->ClearBCCs();
@@ -334,9 +334,9 @@ class GaletteMail
     }
 
     /**
-     * Check if a mail adress is valid
+     * Check if a mail address is valid
      *
-     * @param string $address the mail adress to check
+     * @param string $address the mail address to check
      *
      * @return true if address is valid, false otherwise
      */
@@ -345,7 +345,7 @@ class GaletteMail
         $valid = \PHPMailer::ValidateAddress($address);
         if ( !$valid ) {
             Analog::log(
-                '[GaletteMail] Adresss `' . $address . '` is not valid ',
+                '[GaletteMail] Address `' . $address . '` is not valid ',
                 Analog::DEBUG
             );
         }

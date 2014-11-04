@@ -107,9 +107,9 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <tr>
                 <th>{_T string="Address:"}</th>
                 <td>
-                    {$member->adress|htmlspecialchars}
-    {if $member->adress_continuation ne ''}
-                    <br/>{$member->adress_continuation|htmlspecialchars}
+                    {$member->address|htmlspecialchars}
+    {if $member->address_continuation ne ''}
+                    <br/>{$member->address_continuation|htmlspecialchars}
     {/if}
                 </td>
             </tr>

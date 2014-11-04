@@ -253,6 +253,7 @@ class Pdf extends \TCPDF
                 _T("Association %s")
             );
 
+            /** FIXME: get configured postal address */
             $coordonnees_line1 = $name . ' - ' . $preferences->pref_adresse;
             /** FIXME: pref_adresse2 should be removed */
             if ( trim($preferences->pref_adresse2) != '' ) {

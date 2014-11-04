@@ -100,9 +100,9 @@ class PdfContribution
             )
         );
 
-        $address = $member->adress;
-        if ( $member->adress_continuation != '' ) {
-            $address .= '<br/>' . $member->adress_continuation;
+        $address = $member->address;
+        if ( $member->address_continuation != '' ) {
+            $address .= '<br/>' . $member->address_continuation;
         }
 
         $member_groups = $member->groups;

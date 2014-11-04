@@ -62,10 +62,10 @@ class Preferences
     const TABLE = 'preferences';
     const PK = 'nom_pref';
 
-    /** Postal adress will be the one given in the preferences */
-    const POSTAL_ADRESS_FROM_PREFS = 0;
-    /** Postal adress will be the one of the selected staff member */
-    const POSTAL_ADRESS_FROM_STAFF = 1;
+    /** Postal address will be the one given in the preferences */
+    const POSTAL_ADDRESS_FROM_PREFS = 0;
+    /** Postal address will be the one of the selected staff member */
+    const POSTAL_ADDRESS_FROM_STAFF = 1;
 
     /** Public pages stuff */
     /** Public pages are publically visibles */
@@ -90,7 +90,7 @@ class Preferences
         'pref_cp'        =>    '',
         'pref_ville'        =>    '',
         'pref_pays'        =>    '',
-        'pref_postal_adress'  => self::POSTAL_ADRESS_FROM_PREFS,
+        'pref_postal_adress'  => self::POSTAL_ADDRESS_FROM_PREFS,
         'pref_postal_staff_member' => '',
         'pref_lang'        =>    I18n::DEFAULT_LANG,
         'pref_numrows'        =>    30,
@@ -371,16 +371,16 @@ class Preferences
     }
 
     /**
-     * Returns postal adress
+     * Returns postal address
      *
-     * @return string postal adress
+     * @return string postal address
      */
-    public function getPostalAdress()
+    public function getPostalAddress()
     {
         $regs = array(
           '/%name/',
           '/%complement/',
-          '/%adress/',
+          '/%address/',
           '/%zip/',
           '/%town/',
           '/%country/',
@@ -388,35 +388,35 @@ class Preferences
 
         $replacements = null;
 
-        if ( $this->_prefs['pref_postal_adress'] == self::POSTAL_ADRESS_FROM_PREFS) {
-            $_adress = $this->_prefs['pref_adresse'];
+        if ( $this->_prefs['pref_postal_adress'] == self::POSTAL_ADDRESS_FROM_PREFS) {
+            $_address = $this->_prefs['pref_adresse'];
             if ( $this->_prefs['pref_adresse2'] && $this->_prefs['pref_adresse2'] != '' ) {
-                $_adress .= "\n" . $this->_prefs['pref_adresse2'];
+                $_address .= "\n" . $this->_prefs['pref_adresse2'];
             }
             $replacements = array(
                 $this->_prefs['pref_nom'],
                 '',
-                $_adress,
+                $_address,
                 $this->_prefs['pref_cp'],
                 $this->_prefs['pref_ville'],
                 $this->_prefs['pref_pays']
             );
         } else {
-            //get selected staff member adress
+            //get selected staff member address
             $adh = new Adherent((int)$this->_prefs['pref_postal_staff_member']);
             $_complement = preg_replace(
                 array('/%name/', '/%status/'),
                 array($this->_prefs['pref_nom'], $adh->sstatus),
                 _T("%name association's %status")
             );
-            $_adress = $adh->adress;
-            if ( $adh->adress_continuation && $adh->adress_continuation != '' ) {
-                $_adress .= "\n" . $adh->adress_continuation;
+            $_address = $adh->address;
+            if ( $adh->address_continuation && $adh->address_continuation != '' ) {
+                $_address .= "\n" . $adh->address_continuation;
             }
             $replacements = array(
                 $adh->sfullname,
                 $_complement,
-                $_adress,
+                $_address,
                 $adh->zipcode,
                 $adh->town,
                 $adh->country
@@ -427,12 +427,12 @@ class Preferences
         /*$r = preg_replace(
             $regs,
             $replacements,
-            _T("%name\n%complement\n%adress\n%zip %town - %country")
+            _T("%name\n%complement\n%address\n%zip %town - %country")
         );*/
         $r = preg_replace(
             $regs,
             $replacements,
-            "%name\n%complement\n%adress\n%zip %town - %country"
+            "%name\n%complement\n%address\n%zip %town - %country"
         );
         return $r;
     }

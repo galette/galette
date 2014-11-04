@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Mon Oct 27 22:35:53 2014 (GMT)
+// This file was automatically generated on Tue Nov  4 07:24:45 2014 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -33,6 +33,9 @@ $lang['SMTP (or GMail) user:'] = 'Utilisateur SMTP (ou GMail)&nbsp;:';
 // ../templates/default/gestion_pdf_content.tpl:29 
 $lang['CSS styles'] = 'Styles CSS';
 
+// ../templates/default/ajax_plugins_initdb.tpl:3 
+$lang['%plugin plugin installation'] = 'Installation du plugin %plugin';
+
 // ../templates/default/change_passwd.tpl:16 
 $lang['(at least 4 characters)'] = '(au moins 4 caractères)';
 
@@ -63,8 +66,8 @@ $lang['%days days remaining (ending on %date)'] = '%days jours restants (fin le 
 // ../templates/default/import_model.tpl:56 
 $lang['Store new model'] = 'Enregistrer le nouveau modèle';
 
-// ../install/old.index.php:1306 ../install/old.index.php:1356 
-$lang['Titles were successfully stored.'] = 'Les titres ont été sauvegardés avec succès.';
+// ../templates/default/preferences.tpl:52 
+$lang['Postal address:'] = 'Adresse postale :';
 
 // ../templates/default/page.tpl:158 
 $lang['Manage PDF models'] = 'Gestion des modèles PDF';
@@ -180,8 +183,8 @@ $lang['Notify member'] = 'Notifier l\'adhérent';
 // ../templates/default/config_fields.tpl:81 
 $lang['Expand all'] = 'Tout déplier';
 
-// ../templates/default/ajax_plugins_initdb.tpl:3 
-$lang['%plugin plugin installation'] = 'Installation du plugin %plugin';
+// ../templates/default/preferences.tpl:52 
+$lang['Use either the address setted below or select user status to retrieve another address.'] = 'Utiliser soit l\'adresse renseignée ci-dessus, soit celle d\'un membre du bureau.';
 
 // ../champs_adherents.php:49 ../includes/fields_defs/members_fields.php:140 ../templates/default/member.tpl:160 ../templates/default/preferences.tpl:44 ../templates/default/voir_adherent.tpl:125 
 $lang['City:'] = 'Ville&nbsp;:';
@@ -287,6 +290,9 @@ $lang['available only for new password request'] = 'disponible uniquement lors d
 
 // ../lib/Galette/Core/Install.php:1123 
 $lang['Fields config and categories'] = 'Configuration des champs et des catégories';
+
+// ../templates/default/gestion_groupes.tpl:106 
+$lang['An error occured loading selected group :('] = 'Une erreur est survenue lors du chargement du groupe sélectionné :(';
 
 // ../templates/default/plugins.tpl:8 
 $lang['Version'] = 'Version';
@@ -420,8 +426,8 @@ $lang['PDF models'] = 'Modèles PDF';
 // ../champs_adherents.php:40 ../includes/fields_defs/members_fields.php:51 ../templates/default/member.tpl:276 ../templates/default/voir_adherent.tpl:221 
 $lang['Status:'] = 'Statut&nbsp;:';
 
-// ../lib/Galette/Entity/Group.php:409 
-$lang['Group added'] = 'Groupe ajouté';
+// ../templates/default/preferences.tpl:53 
+$lang['Use either the address setted below or select a staff member to retrieve he\'s address.'] = 'Utiliser l\'adresse renseignée ci-dessus ou choisissez un membre du bureau pour utiliser la sienne.';
 
 // ../templates/default/public_page.tpl:66 
 $lang['Lost your password?'] = 'Mot de passe perdu&nbsp;?';
@@ -455,6 +461,9 @@ $lang['labels_print_filename'] = 'Etiquettes';
 
 // ../templates/default/gestion_textes.tpl:43 ../templates/default/gestion_textes.tpl:45 ../templates/default/gestion_textes.tpl:63 ../templates/default/gestion_pdf.tpl:21 ../templates/default/gestion_pdf.tpl:23 ../templates/default/gestion_pdf.tpl:27 ../templates/default/gestion_pdf.tpl:29 ../templates/default/gestion_pdf.tpl:33 
 $lang['globally available'] = 'disponible globalement';
+
+// ../install/old.index.php:1306 ../install/old.index.php:1356 
+$lang['Titles were successfully stored.'] = 'Les titres ont été sauvegardés avec succès.';
 
 // ../templates/default/gestion_contributions.tpl:7 
 $lang['Record'] = 'Enregistrement';
@@ -591,8 +600,8 @@ $lang['DROP operation not allowed'] = 'Opération DROP non autorisée';
 // ../templates/default/import.tpl:43 
 $lang['Dry run'] = 'Galop d\'essai';
 
-// ../lostpasswd.php:149 
-$lang['Your account (%s) do not contain any valid mail adress'] = 'Votre compte (%s) ne contient pas d\'adresse email valide';
+// ../includes/fields_defs/pdfmodels_fields.php:118 ../includes/fields_defs/pdfmodels_fields.php:163 
+$lang['from'] = 'du';
 
 // ../templates/default/advanced_search.tpl:211 
 $lang['If your query does not begin with a \'SELECT\' statement, it will automatically be added.'] = 'Si votre requête ne débute pas par une instruction « SELECT », celle-ci sera automatiquement ajoutée.';
@@ -677,9 +686,6 @@ $lang['No member to show'] = 'Aucun adhérent à afficher';
 
 // ../templates/default/gestion_mailings.tpl:132 
 $lang['Create new mailing'] = 'Créer un nouvel E-Mailing';
-
-// ../lostpasswd.php:121 
-$lang['A mail has been sent to your adress.<br/>Please check your inbox and follow the instructions.'] = 'Un courriel a été envoyé à votre adresse.<br/>Vérifiez votre boite de réception et suivez les instructions.';
 
 // ../templates/default/gestion_groupes.tpl:146 
 $lang['Pleade provide a group name'] = 'Veuillez spécifier un nom de groupe';
@@ -816,9 +822,6 @@ $lang['Account activity'] = 'Activité du compte';
 // ../templates/default/voir_adherent.tpl:254 
 $lang['Last modification date:'] = 'Date de dernière modification&nbsp;:';
 
-// ../lib/Galette/Filters/MembersList.php:295 
-$lang['Company name'] = 'Raison sociale';
-
 // ../templates/default/page.tpl:151 
 $lang['Customize fields'] = 'Personnaliser les champs';
 
@@ -831,8 +834,8 @@ $lang['Advanced search'] = 'Recherche avancée';
 // ../templates/default/global_messages.tpl:29 
 $lang['Do not wait timeout and go to the next page now :)'] = 'Ne pas attendre et passer à la page suivante immédiatement :)';
 
-// ../templates/default/gestion_adherents.tpl:4 ../templates/default/advanced_search.tpl:6 
-$lang['Search:'] = 'Rechercher&nbsp;:';
+// ../templates/default/config_fields.tpl:22 
+$lang['Visible'] = 'Visibilité';
 
 // ../templates/default/gestion_transactions.tpl:118 
 $lang['Do you really want to delete this transaction of the database ?'] = 'Voulez-vous vraiment effacer cette transaction&nbsp;?';
@@ -957,6 +960,9 @@ $lang['Payment type'] = 'Type de paiement';
 // ../templates/default/preferences.tpl:145 
 $lang['Everyone'] = 'Tout le monde';
 
+// ../templates/default/member.tpl:255 
+$lang['If you check this box (and if you are up to date with your contributions), your full name, website address ad other informations will be publically visilbe on the members list.<br/>If you\'ve uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case.'] = 'Si vous cochez cette case (et que vous êtes à jour de vos cotisations), votre nom complet, l\'adresse de votre site web et les autres informations seront visibles publiquement dans la liste des membres.<br/>Si vous avez envoyé une photo, elle sera affichée sur la page trombinoscope.<br/>Notez que les administrateurs peuvent désactiver les pages publiques ; dans ce cas, ce paramètre n\'aura aucun effet.';
+
 // ../templates/default/plugins.tpl:25 
 $lang['Click here to deactivate plugin \'%name\''] = 'Cliquez ici pour désactiver le plugin « %name »';
 
@@ -1047,8 +1053,8 @@ $lang['Members list'] = 'Liste des membres';
 // ../templates/default/ajouter_transaction.tpl:217 ../templates/default/ajouter_contribution.tpl:171 
 $lang['please create a member'] = 'veuillez créer un adhérent';
 
-// ../lib/Galette/Entity/PdfModel.php:327 
-$lang['%field should not be empty!'] = 'Le champ %field ne doit pas être vide !';
+// ../install/scripts/upgrade-to-0.8.php:215 
+$lang['Directory %dir has not been moved :('] = 'Le répertoire %dir n\'a pas été déplacé :(';
 
 // ../install/old.index.php:620 ../install/steps/db.php:78 
 $lang['Port:'] = 'Port&nbsp;:';
@@ -1181,9 +1187,6 @@ $lang['Group is not empty, it cannot be deleted. Use cascade delete instead.'] =
 
 // ../templates/default/preferences.tpl:234 
 $lang['SMTP port:'] = 'Port SMTP&nbsp;:';
-
-// ../lostpasswd.php:160 
-$lang['Mails adress %s does not exist'] = 'L\'adresse mail %s n\'existe pas';
 
 // ../templates/default/footer.tpl:10 
 $lang['Documentation'] = 'Documentation';
@@ -1410,9 +1413,6 @@ $lang['PHP Version'] = 'Version de PHP';
 // ../templates/default/preferences.tpl:107 
 $lang['Default theme:'] = 'Thème par défaut&nbsp;:';
 
-// ../ajouter_contribution.php:309 
-$lang['Trying to send a mail to a member (%name) with an invalid adress: %email'] = 'Tentative d\'envoi de courriel à un adhérent (%name) avec une adresse invalide : %email';
-
 // ../install/old.index.php:1291 ../install/old.index.php:1364 
 $lang['Default fields configuration cannot be initialized.'] = 'La configuration des champs par défaut n\'a pas été initialisée.';
 
@@ -1479,8 +1479,8 @@ $lang['%name <%mail> (%days days)'] = '%name <%mail> (%days jours)';
 // ../templates/default/gestion_adherents.tpl:49 ../templates/default/gestion_mailings.tpl:7 ../templates/default/history.tpl:10 ../templates/default/liste_membres.tpl:8 
 $lang['Records per page:'] = 'Enregistrements par page&nbsp;:';
 
-// ../templates/default/config_fields.tpl:22 
-$lang['Visible'] = 'Visibilité';
+// ../templates/default/gestion_adherents.tpl:4 ../templates/default/advanced_search.tpl:6 
+$lang['Search:'] = 'Rechercher&nbsp;:';
 
 // ../ajax_plugins_initdb.php:129 ../lib/Galette/Core/Install.php:131 
 $lang['Database access and permissions'] = 'Accès et permissions de la base de données';
@@ -1527,8 +1527,8 @@ $lang['Don\'t care'] = 'Sans importance';
 // ../templates/default/member.tpl:77 
 $lang['Is member a company?'] = 'Est-ce que l\'adhérent est une personne morale&nbsp;?';
 
-// ../templates/default/gestion_groupes.tpl:106 
-$lang['An error occured loading selected group :('] = 'Une erreur est survenue lors du chargement du groupe sélectionné :(';
+// ../lostpasswd.php:160 
+$lang['Mails address %s does not exist'] = 'L\'adresse mail %s n\'existe pas';
 
 // ../lib/Galette/Core/Install.php:1013 
 $lang['Write configuration file'] = 'Écriture du fichier de configuration';
@@ -1542,8 +1542,8 @@ $lang['Cache'] = 'Cache';
 // ../gestion_intitules.php:254 
 $lang['Edit contribution type'] = 'Édition d\'un type de contribution';
 
-// ../templates/default/member.tpl:255 
-$lang['If you check this box (and if you are up to date with your contributions), your full name, website adress ad other informations will be publically visilbe on the members list.<br/>If you\'ve uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case.'] = 'Si vous cochez cette case (et que vous êtes à jour de vos cotisations), votre nom complet, l\'adresse de votre site web et les autres informations seront visibles publiquement dans la liste des membres.<br/>Si vous avez envoyé une photo, elle sera affichée sur la page trombinoscope.<br/>Notez que les administrateurs peuvent désactiver les pages publiques ; dans ce cas, ce paramètre n\'aura aucun effet.';
+// ../lib/Galette/Entity/DynamicFields.php:120 ../lib/Galette/DynamicFieldsTypes/Date.php:75 
+$lang['date'] = 'date';
 
 // ../templates/default/ajax_plugins_initdb.tpl:50 
 $lang['You current %name version is...'] = 'Votre version actuelle de %name est...';
@@ -1653,8 +1653,8 @@ $lang['Reduced annual contribution'] = 'Cotisation annuelle réduite';
 // ../templates/default/ajax_members.tpl:54 
 $lang['Selected members'] = 'Membres sélectionnés';
 
-// ../templates/default/preferences.tpl:52 
-$lang['Postal adress:'] = 'Adresse postale :';
+// ../templates/default/ajouter_transaction.tpl:42 
+$lang['Attached contributions'] = 'Contributions attachées';
 
 // ../install/old.index.php:1284 
 $lang['Default status were successfully stored.'] = 'Les statuts par défaut ont été sauvegardés avec succès.';
@@ -1689,9 +1689,6 @@ $lang['Your organisation website'] = 'Site web de votre association';
 // ../lib/Galette/Repository/Contributions.php:644 ../lib/Galette/Repository/Contributions.php:666 ../lib/Galette/Repository/Transactions.php:486 ../lib/Galette/Repository/Transactions.php:508 
 $lang['Y-m'] = 'm/Y';
 
-// ../templates/default/gestion_adherents.tpl:26 
-$lang['Members that have an email adress:'] = 'Les adhérents qui ont une adresse de courriel&nbsp;:';
-
 // ../templates/default/gestion_mailings.tpl:152 ../templates/default/mailing_adherents.tpl:143 
 $lang['An error occured displaying preview :('] = 'Une erreur est survenue lors de l\'affichage de l\'aperçu :(';
 
@@ -1707,8 +1704,8 @@ $lang['Priority'] = 'Priorité';
 // ../lib/Galette/Entity/PdfModel.php:508 
 $lang['body should not be empty!'] = 'le corps ne peut être vide !';
 
-// ../champs_adherents.php:63 ../includes/fields_defs/members_fields.php:252 ../templates/default/member.tpl:340 ../templates/default/group.tpl:13 ../templates/default/voir_adherent.tpl:248 
-$lang['Creation date:'] = 'Date de création&nbsp;:';
+// ../ajax_plugins_initdb.php:150 ../install/old.index.php:792 ../install/steps/db_checks.php:68 
+$lang['CREATE operation allowed'] = 'Opération CREATE autorisée';
 
 // ../templates/default/ajax_plugins_initdb.tpl:21 
 $lang['you wish to erase an older version of of %name without keeping your data'] = 'vous souhaitez effacer une ancienne version de %name sans conserver vos données';
@@ -1724,6 +1721,9 @@ $lang['Partnership'] = 'Partenariat';
 
 // ../templates/default/mailing_adherents.tpl:36 
 $lang['Go back to members list'] = 'Retour à la liste des membres';
+
+// ../includes/fields_defs/pdfmodels_fields.php:134 ../includes/fields_defs/pdfmodels_fields.php:135 ../templates/default/gestion_pdf_content.tpl:38 
+$lang['Receipt'] = 'Reçu';
 
 // ../import_model.php:65 
 $lang['Import model has not been stored :('] = 'Le modèle d\'import n\'a pas été enregistré :(';
@@ -1836,14 +1836,8 @@ $lang['Password recovery'] = 'Récupération de mot de passe';
 // ../install/old.index.php:724 ../install/steps/db_checks.php:184 
 $lang['Database can\'t be reached. Please go back to enter the connection parameters again.'] = 'La base n\'est pas accessible. Veuillez revenir en arrière pour saisir à nouveau les paramètres de connexion.';
 
-// ../lib/Galette/Entity/DynamicFields.php:120 ../lib/Galette/DynamicFieldsTypes/Date.php:75 
-$lang['date'] = 'date';
-
 // ../templates/default/voir_adherent.tpl:11 
 $lang['Generate Member Card'] = 'Générer la carte de membre';
-
-// ../gestion_intitules.php:167 ../gestion_intitules.php:213 
-$lang['- Database error: '] = '- Erreur de base de données&nbsp;:';
 
 // ../templates/default/editer_champ.tpl:42 
 $lang['Maximum file size, in Ko.'] = 'Taille maximale du fichier, en Ko.';
@@ -2013,9 +2007,6 @@ $lang['Subscribe'] = 'S\'inscrire';
 // ../templates/default/import.tpl:57 
 $lang['Select a file:'] = 'Sélectionnez un fichier :';
 
-// ../templates/default/editer_intitule.tpl:14 
-$lang['Priority:'] = 'Priorité&nbsp;:';
-
 // ../templates/default/mailing_adherents.tpl:53 ../templates/default/mailing_adherents.tpl:281 
 $lang['Remove attachment'] = 'Supprimer la pièce jointe';
 
@@ -2132,9 +2123,6 @@ $lang['You cannot delete Mr. or Mrs. titles!'] = 'Vous ne pouvez pas supprimer l
 
 // ../lib/Galette/Filters/MembersList.php:313 
 $lang['Non members'] = 'Non membres';
-
-// ../install/scripts/upgrade-to-0.8.php:215 
-$lang['Directory %dir has not been moved :('] = 'Le répertoire %dir n\'a pas été déplacé :(';
 
 // ../templates/default/preferences.tpl:333 
 $lang['Active Member Color:'] = 'Couleur pour les membres actifs&nbsp;:';
@@ -2349,6 +2337,9 @@ $lang['receipt'] = 'recu';
 // ../templates/default/traduire_libelles.tpl:37 
 $lang['No fields to translate.'] = 'Aucun libellé à traduire';
 
+// ../templates/default/desktop.tpl:15 ../templates/default/page.tpl:149 
+$lang['Set applications preferences (address, website, member\'s cards configuration, ...)'] = 'Renseigner les préférences de l\'application (adresse, cartes de membres, configuration, ...)';
+
 // ../install/old.index.php:110 ../install/installer.php:110 
 $lang['No database name'] = 'Nom de la base non précisé';
 
@@ -2457,8 +2448,8 @@ $lang['You are not part of managers for the requested group.'] = 'Vous ne faites
 // ../templates/default/preferences.tpl:289 
 $lang['Label width:'] = 'Largeur étiquette&nbsp;:';
 
-// ../includes/fields_defs/pdfmodels_fields.php:134 ../includes/fields_defs/pdfmodels_fields.php:135 ../templates/default/gestion_pdf_content.tpl:38 
-$lang['Receipt'] = 'Reçu';
+// ../lib/Galette/Entity/Group.php:409 
+$lang['Group added'] = 'Groupe ajouté';
 
 // ../lib/Galette/Core/Install.php:143 ../install/old.index.php:229 ../install/old.index.php:1531 ../install/installer.php:288 
 $lang['Admin parameters'] = 'paramètres administrateur';
@@ -2598,9 +2589,6 @@ $lang['Unable to detach contribution from transaction'] = 'Impossible de détach
 // ../templates/default/mailing_adherents.tpl:80 
 $lang['Interpret HTML'] = 'Interpréter les balises HTML';
 
-// ../ajax_plugins_initdb.php:150 ../install/old.index.php:792 ../install/steps/db_checks.php:68 
-$lang['CREATE operation allowed'] = 'Opération CREATE autorisée';
-
 // ../lib/Galette/IO/Pdf.php:198 
 $lang['Not a GIF file '] = 'Pas un fichier GIF';
 
@@ -2634,11 +2622,11 @@ $lang['File name is invalid, it should not contain any special character or spac
 // ../lib/Galette/Entity/Adherent.php:1320 ../templates/default/member.tpl:267 
 $lang['Active'] = 'Actif';
 
+// ../templates/default/gestion_groupes.tpl:30 
+$lang['Export as PDF'] = 'Exporter en PDF';
+
 // ../templates/default/gestion_adherents.tpl:102 
 $lang['State of dues'] = 'État cotisations';
-
-// ../templates/default/preferences.tpl:52 
-$lang['Use either the adress setted below or select user status to retrieve another adress.'] = 'Utiliser soit l\'adresse renseignée ci-dessus, soit celle d\'un membre du bureau.';
 
 // ../templates/default/gestion_adherents.tpl:271 
 $lang['Send a mail'] = 'Envoyer un courriel';
@@ -2862,6 +2850,9 @@ $lang['Generate labels for late members without mail address'] = 'Génère des �
 // ../templates/default/gestion_adherents.tpl:181 
 $lang['[Mail]'] = '[Courriel]';
 
+// ../lostpasswd.php:149 
+$lang['Your account (%s) do not contain any valid mail address'] = 'Votre compte (%s) ne contient pas d\'adresse email valide';
+
 // ../templates/default/preferences.tpl:15 
 $lang['General information'] = 'Informations générales';
 
@@ -3000,8 +2991,8 @@ $lang['Cannot remove \'%export\' from disk :/'] = 'Impossible de supprimer « %e
 // ../install/old.index.php:1133 
 $lang['The tables has been correctly updated.'] = 'Les tables ont été correctement mises à jour.';
 
-// ../templates/default/desktop.tpl:15 ../templates/default/page.tpl:149 
-$lang['Set applications preferences (adress, website, member\'s cards configuration, ...)'] = 'Renseigner les préférences de l\'application (adresse, cartes de membres, configuration, ...)';
+// ../gestion_intitules.php:167 ../gestion_intitules.php:213 
+$lang['- Database error: '] = '- Erreur de base de données&nbsp;:';
 
 // ../lib/Galette/IO/FileTrait.php:487 
 $lang['- File extension is not allowed, only %s files are.'] = '- L\'extension de fichier n\'est pas autorisée, seules %s le sont.';
@@ -3042,6 +3033,9 @@ $lang['Member Profile'] = 'Fiche adhérent';
 // ../templates/default/gestion_contributions.tpl:34 
 $lang['Show all members contributions'] = 'Voir les contributions de tous les membres';
 
+// ../lib/Galette/IO/Charts.php:178 
+$lang['Due free'] = 'Exempt de cotisation';
+
 // ../templates/default/preferences.tpl:224 
 $lang['Using QMAIL server'] = 'Utilisation d\'un serveur QMAIL';
 
@@ -3056,6 +3050,9 @@ $lang['Show transactions since'] = 'Afficher les transactions du';
 
 // ../templates/default/member.tpl:433 
 $lang['Member will receive his username and password by email, if he has an address.'] = 'L\'adhérent recevra ses identifiant et mot de passe par courriel, s\'il a une adresse.';
+
+// ../lib/Galette/Core/Preferences.php:430 
+$lang['%name\n%complement\n%address\n%zip %town - %country'] = '%name\n%complement\n%address\n%zip %town - %country';
 
 // ../templates/default/preferences.tpl:201 ../templates/default/preferences.tpl:202 
 $lang['Should HTML editor be activated on page load ?'] = 'L\'éditeur HTML doit-il être activé au chargement de la page ?';
@@ -3453,8 +3450,8 @@ $lang['Signature'] = 'Signature';
 // ../champs_adherents.php:50 ../includes/fields_defs/members_fields.php:148 ../templates/default/member.tpl:168 ../templates/default/preferences.tpl:48 ../templates/default/voir_adherent.tpl:131 
 $lang['Country:'] = 'Pays&nbsp;:';
 
-// ../includes/fields_defs/pdfmodels_fields.php:118 ../includes/fields_defs/pdfmodels_fields.php:163 
-$lang['from'] = 'du';
+// ../templates/default/preferences.tpl:238 
+$lang['Use SMTP authentication?'] = 'Utiliser l\'authentification SMTP&nbsp;?';
 
 // ../lib/Galette/Entity/Adherent.php:1202 
 $lang['Member card updated'] = 'Fiche adhérent mise à jour';
@@ -3567,6 +3564,9 @@ $lang['- Invalid date for beginning of membership.'] = '- Mauvais format de date
 // ../mailing_adherents.php:78 
 $lang['Trying to load mailing while mail is disabled in preferences.'] = 'Tentative de chargement du mailing alors que l\'envoi de mails est désactivé dans les préférences.';
 
+// ../templates/default/gestion_adherents.tpl:26 
+$lang['Members that have an email address:'] = 'Les adhérents qui ont une adresse de courriel&nbsp;:';
+
 // ../lib/Galette/Core/Pagination.php:248 
 $lang['Page %i'] = 'Page %i';
 
@@ -3639,9 +3639,6 @@ $lang['Error creating temporary png file from '] = 'Erreur lors de la création 
 // ../ajax_recipients.php:72 ../templates/default/mailing_adherents.tpl:29 
 $lang['Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail.'] = 'Certains des membres que vous avez sélectionnés n\'ont pas d\'adresse de courriel. Cependant vous pouvez produire des étiquettes d\'enveloppes pour les contacter par courrier postal.';
 
-// ../templates/default/ajouter_transaction.tpl:42 
-$lang['Attached contributions'] = 'Contributions attachées';
-
 // ../templates/default/gestion_mailings.tpl:96 
 $lang['Not sent'] = 'Pas envoyé';
 
@@ -3669,8 +3666,8 @@ $lang['Use mailing \'%subject\' as a template for a new one'] = 'Utiliser le mai
 // ../lib/Galette/Filters/MembersList.php:299 
 $lang['Infos'] = 'Informations';
 
-// ../templates/default/preferences.tpl:53 
-$lang['Use either the adress setted below or select a staff member to retrieve he\'s adress.'] = 'Utiliser l\'adresse renseignée ci-dessus ou choisissez un membre du bureau pour utiliser la sienne.';
+// ../champs_adherents.php:63 ../includes/fields_defs/members_fields.php:252 ../templates/default/member.tpl:340 ../templates/default/group.tpl:13 ../templates/default/voir_adherent.tpl:248 
+$lang['Creation date:'] = 'Date de création&nbsp;:';
 
 // ../lostpasswd.php:140 
 $lang['An error occured storing temporary password for %s. Please inform an admin.'] = 'Une erreur est survenue durant l\'enregistrement du mot de passe temporaire pour %s. Veuillez en informer un administrateur.';
@@ -3891,8 +3888,8 @@ $lang['No file was uploaded'] = 'Aucun fichier n\'a été envoyé';
 // ../lib/Galette/Core/Install.php:679 
 $lang['Unable to run %version update script :('] = 'Impossible de lancer le script de mise à jour %version :(';
 
-// ../lib/Galette/IO/Charts.php:178 
-$lang['Due free'] = 'Exempt de cotisation';
+// ../lostpasswd.php:121 
+$lang['A mail has been sent to your address.<br/>Please check your inbox and follow the instructions.'] = 'Un courriel a été envoyé à votre adresse.<br/>Vérifiez votre boite de réception et suivez les instructions.';
 
 // ../templates/default/preferences.tpl:6 
 $lang['Parameters'] = 'Paramètres';
@@ -3903,8 +3900,8 @@ $lang['Email'] = 'Courriel';
 // ../lib/Galette/Entity/Adherent.php:1170 
 $lang['Fail to add new member.'] = 'Échec de l\'ajout d\'un nouvel adhérent.';
 
-// ../templates/default/gestion_groupes.tpl:30 
-$lang['Export as PDF'] = 'Exporter en PDF';
+// ../lib/Galette/Filters/MembersList.php:295 
+$lang['Company name'] = 'Raison sociale';
 
 // ../templates/default/advanced_search.tpl:195 
 $lang['Remove criteria'] = 'Supprimer le critère';
@@ -3933,8 +3930,8 @@ $lang['Disable plugin'] = 'Désactiver le plugin';
 // ../templates/default/gestion_adherents.tpl:6 ../templates/default/advanced_search.tpl:8 
 $lang['in:'] = 'dans&nbsp;:';
 
-// ../templates/default/preferences.tpl:238 
-$lang['Use SMTP authentication?'] = 'Utiliser l\'authentification SMTP&nbsp;?';
+// ../lib/Galette/Entity/PdfModel.php:327 
+$lang['%field should not be empty!'] = 'Le champ %field ne doit pas être vide !';
 
 // ../install/steps/db_install.php:55 
 $lang['Database has been upgraded :)'] = 'La base de données a été mise à jour :)';
@@ -3990,8 +3987,8 @@ $lang['older than %version'] = 'antérieure à %version';
 // ../templates/default/preferences.tpl:115 
 $lang['Lines / Page:'] = 'Lignes / Page&nbsp;:';
 
-// ../lib/Galette/Core/Preferences.php:430 
-$lang['%name\n%complement\n%adress\n%zip %town - %country'] = '%name\n%complement\n%adress\n%zip %town - %country';
+// ../templates/default/editer_intitule.tpl:14 
+$lang['Priority:'] = 'Priorité&nbsp;:';
 
 // ../templates/default/photo_dnd.tpl:54 
 $lang['An error occured sending photo :('] = 'Une erreur est survenue lors de l\'envoi de la photo :(';
@@ -4025,6 +4022,9 @@ $lang['ICQ:'] = 'ICQ&nbsp;:';
 
 // ../templates/default/gestion_contributions.tpl:192 ../templates/default/gestion_contributions.tpl:198 ../templates/default/ajouter_contribution.tpl:15 
 $lang['[view]'] = '[voir]';
+
+// ../ajouter_contribution.php:309 
+$lang['Trying to send a mail to a member (%name) with an invalid address: %email'] = 'Tentative d\'envoi de courriel à un adhérent (%name) avec une adresse invalide : %email';
 
 // ../templates/default/reminder.tpl:9 ../templates/default/reminder.tpl:16 
 $lang['preview'] = 'prévisualiser';

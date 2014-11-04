@@ -81,8 +81,8 @@ class Adherent
     private $_active;
     private $_status;
     //Contact informations
-    private $_adress;
-    private $_adress_continuation; /** TODO: remove */
+    private $_address;
+    private $_address_continuation; /** TODO: remove */
     private $_zipcode;
     private $_town;
     private $_country;
@@ -276,10 +276,10 @@ class Adherent
         try {
             $select = $zdb->select(self::TABLE);
             if ( GaletteMail::isValidEmail($login) ) {
-                //we got a valid email adress, use it
+                //we got a valid email address, use it
                 $select->where(array('email_adh' => $login));
             } else {
-                ///we did not get an email adress, consider using login
+                ///we did not get an email address, consider using login
                 $select->where(array('login_adh' => $login));
             }
 
@@ -327,9 +327,9 @@ class Adherent
         $this->_active = $r->activite_adh;
         $this->_status = $r->id_statut;
         //Contact informations
-        $this->_adress = $r->adresse_adh;
-        /** TODO: remove and merge with adress */
-        $this->_adress_continuation = $r->adresse2_adh;
+        $this->_address = $r->adresse_adh;
+        /** TODO: remove and merge with address */
+        $this->_address_continuation = $r->adresse2_adh;
         $this->_zipcode = $r->cp_adh;
         $this->_town = $r->ville_adh;
         $this->_country = $r->pays_adh;

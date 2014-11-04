@@ -82,7 +82,7 @@ class Members
     const SHOW_EXPORT = 5;
 
     const FILTER_NAME = 0;
-    const FILTER_ADRESS = 1;
+    const FILTER_ADDRESS = 1;
     const FILTER_MAIL = 2;
     const FILTER_JOB = 3;
     const FILTER_INFOS = 4;
@@ -911,7 +911,7 @@ class Members
                         $token
                     );
                     break;
-                case self::FILTER_ADRESS:
+                case self::FILTER_ADDRESS:
                     $select->where(
                         '(' .
                         'LOWER(adresse_adh) LIKE ' . $token

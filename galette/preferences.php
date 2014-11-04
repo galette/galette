@@ -6,9 +6,9 @@
  * Preferences choice.
  *
  * Préferences contains the following groups:
- * - Association: global parameters (logo, adress, etc.)
+ * - Association: global parameters (logo, address, etc.)
  * - Galette: software usage preferences
- * - Email: sender and responseto email adresses
+ * - Email: sender and responseto email addresses
  * - Labels: labels format (margins, sizes, etc.)
  * - Members cards: format for member cards
  * - Admin account: super-admin parameters : only available for super-admin user
@@ -286,14 +286,14 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
         }
     }
 
-    //postal adress
+    //postal address
     if ( isset($insert_values['pref_postal_adress']) ) {
         $value = $insert_values['pref_postal_adress'];
-        if ( $value == Core\Preferences::POSTAL_ADRESS_FROM_PREFS ) {
+        if ( $value == Core\Preferences::POSTAL_ADDRESS_FROM_PREFS ) {
             if ( isset($insert_values['pref_postal_staff_member']) ) {
                 unset($insert_values['pref_postal_staff_member']);
             }
-        } else if ( $value == Core\Preferences::POSTAL_ADRESS_FROM_STAFF ) {
+        } else if ( $value == Core\Preferences::POSTAL_ADDRESS_FROM_STAFF ) {
             if ( !isset($value) || $value < 1 ) {
                 $error_detected[] = _T("You have to select a staff member");
             }
