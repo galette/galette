@@ -52,10 +52,6 @@ if ( !$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() ) {
     die();
 }
 
-if ( isset($_GET['gid']) ) {
-    //work on a specific group
-}
-
 define('SHEET_FONT', Pdf::FONT_SIZE-2);
 
 /**
@@ -106,7 +102,13 @@ $pdf->SetTextColor(0, 0, 0);
 
 
 $groups = new Groups();
-$groups_list = $groups->getList();
+
+$groups_list = null;
+if ( isset($_GET['gid']) ) {
+    $groups_list = $groups->getList(true, $_GET['gid']);
+} else {
+    $groups_list = $groups->getList();
+}
 //var_dump($groups_list);
 
 $first = true;
