@@ -1045,15 +1045,15 @@ class Install
         }
 
         if ( $fd = @fopen(GALETTE_CONFIG_PATH . 'config.inc.php', 'w') ) {
-                $data = '<?php
-define("TYPE_DB", "' . $this->_db_type . '");
-define("HOST_DB", "' . $this->_db_host . '");
-define("PORT_DB", "' . $this->_db_port . '");
-define("USER_DB", "' . $this->_db_user . '");
-define("PWD_DB", "' . $this->_db_pass . '");
-define("NAME_DB", "' . $this->_db_name . '");
-define("PREFIX_DB", "' . $this->_db_prefix . '");
-';
+                $data = "<?php
+define('TYPE_DB', '" . $this->_db_type . "');
+define('HOST_DB', '" . $this->_db_host . "');
+define('PORT_DB', '" . $this->_db_port . "');
+define('USER_DB', '" . $this->_db_user . "');
+define('PWD_DB', '" . $this->_db_pass . "');
+define('NAME_DB', '" . $this->_db_name . "');
+define('PREFIX_DB', '" . $this->_db_prefix . "');
+";
             fwrite($fd, $data);
             fclose($fd);
             $ret['res'] = true;
