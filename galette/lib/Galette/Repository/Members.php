@@ -1029,9 +1029,9 @@ class Members
                     array('*'),
                     $select::JOIN_LEFT
                 )->where(
-                    'g.' . Group::PK . ' = ' . $this->_filters->group_filter .
+                    '(g.' . Group::PK . ' = ' . $this->_filters->group_filter .
                     ' OR gs.parent_group = NULL OR gs.parent_group = ' .
-                    $this->_filters->group_filter
+                    $this->_filters->group_filter . ')'
                 );
             }
 
