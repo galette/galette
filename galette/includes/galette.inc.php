@@ -204,6 +204,7 @@ if ( defined('GALETTE_TESTS') ) {
             $galette_run_log = \Analog\Handler\Variable::init($galette_log_var);
         }
     }
+    Core\Logs::cleanup();
 }
 
 Analog::handler(
@@ -238,7 +239,7 @@ if ( $installer || !defined('PREFIX_DB') || !defined('NAME_DB') ) {
 $session = &$_SESSION['galette'][$session_name];
 
 /**
-* Language instantiation
+ * Language instantiation
  */
 if ( isset($session['lang']) ) {
     $i18n = unserialize($session['lang']);
