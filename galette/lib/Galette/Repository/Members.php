@@ -1350,7 +1350,7 @@ class Members
     /**
      * Login and password field cannot be empty.
      *
-     * If those ones are not required, or if a file has been importedi
+     * If those ones are not required, or if a file has been imported
      * (from a CSV file for example), we fill here random values.
      *
      * @return boolean
@@ -1378,7 +1378,7 @@ class Members
 
             $processed = 0;
             if ( $results->count() > 0 ) {
-                $update = $this->_zdb->update(Adherent::TABLE);
+                $update = $zdb->update(Adherent::TABLE);
                 $update->set(
                     array(
                         'login_adh' => ':login',
@@ -1386,7 +1386,7 @@ class Members
                     )
                 )->where->equalTo(Adherent::PK, ':id');
 
-                $stmt = $this->_zdb->sql->prepareStatementForSqlObject($update);
+                $stmt = $zdb->sql->prepareStatementForSqlObject($update);
 
                 $p = new \Galette\Core\Password();
 
@@ -1416,8 +1416,8 @@ class Members
                         /** Why where parameter is named where1 ?? */
                         $stmt->execute(
                             array(
-                                'login'     => $m->login_adh,
-                                'pass'      => $m->mdp_adh,
+                                'login_adh' => $m->login_adh,
+                                'mdp_adh'   => $m->mdp_adh,
                                 'where1'    => $m->id_adh
                             )
                         );
