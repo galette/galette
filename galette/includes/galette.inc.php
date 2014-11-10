@@ -310,6 +310,20 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
             GALETTE_TEMPLATES_PATH . $preferences->pref_theme . '/'
         );
 
+        if ( !defined('GALETTE_TPL_SUBDIR') ) {
+            define(
+                'GALETTE_TPL_SUBDIR',
+                'templates/' . $preferences->pref_theme . '/'
+            );
+        }
+
+        if ( !defined('GALETTE_THEME') ) {
+            define(
+                'GALETTE_THEME',
+                'themes/' . $preferences->pref_theme . '/'
+            );
+        }
+
         /**
          * Authentication
          */

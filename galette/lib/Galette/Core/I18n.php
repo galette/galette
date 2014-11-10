@@ -280,7 +280,7 @@ class I18n
         if ( defined('GALETTE_THEME_DIR') ) {
             return GALETTE_THEME_DIR . 'images/' . $this->_flag;
         } else {
-            return GALETTE_BASE_PATH . GALETTE_TPL_SUBDIR . 'images/' . $this->_flag;
+            return GALETTE_THEME . 'images/' . $this->_flag;
         }
     }
 

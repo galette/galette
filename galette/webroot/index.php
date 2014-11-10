@@ -60,14 +60,6 @@ if ( !defined('GALETTE_BASE_PATH') ) {
 /** @ignore */
 require_once GALETTE_ROOT . 'includes/galette.inc.php';
 
-if ( !defined('GALETTE_TPL_SUBDIR') ) {
-    define('GALETTE_TPL_SUBDIR', 'templates/' . $preferences->pref_theme . '/');
-}
-
-if ( !defined('GALETTE_THEME') ) {
-    define('GALETTE_THEME', 'themes/' . $preferences->pref_theme . '/');
-}
-
 $app = new \Slim\Slim(
     array(
         'view'              => new \Galette\Core\Smarty(
