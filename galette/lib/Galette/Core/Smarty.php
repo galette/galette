@@ -48,13 +48,22 @@ namespace Galette\Core;
  * @link      http://www.smarty.net/docs/en/installing.smarty.extended.tpl
  * @since     Available since 0.7.1dev - 2012-05-05
  */
-class Smarty extends \Slim\Extras\Views\Smarty
+class Smarty extends \Slim\Views\Smarty
 {
+
+    public $parserClassName = '\SmartyBC';
 
     /**
      * @var string Path to smatry configuration directory
      */
-    public static $smartyConfigDir = null;
+    public $parserConfigDir = null;
+
+    private $_plugins;
+    private $_i18n;
+    private $_preferences;
+    private $_logo;
+    private $_login;
+    private $_session;
 
     /**
      * Main constructor
@@ -66,30 +75,33 @@ class Smarty extends \Slim\Extras\Views\Smarty
      * @param Login       $login       Galette's login
      * @param array       $session     Galette's session
      */
-    function __construct($plugins, $i18n, $preferences, $logo, $login, $session)
-    {
-        /*parent::__construct();
+    public function __construct($plugins, $i18n, $preferences,
+        $logo, $login, $session
+    ) {
+        $this->_plugins = $plugins;
+        $this->_i18n = $i18n;
+        $this->_preferences = $preferences;
+        $this->_logo = $logo;
+        $this->_login = $login;
+        $this->_session = $session;
 
-        //paths configuration
-        self::$smartyDirectory = GALETTE_SMARTY_PATH;
-        self::$smartyTemplatesDirectory = GALETTE_ROOT . GALETTE_TPL_SUBDIR;
-        self::$smartyCompileDirectory = GALETTE_COMPILE_DIR;
-        self::$smartyCacheDirectory = GALETTE_CACHE_DIR;
-        self::$smartyConfigDir = GALETTE_CONFIG_PATH;
+        parent::__construct();
+        $this->parserDirectory = rtrim(GALETTE_SMARTY_PATH, DIRECTORY_SEPARATOR);
+        $this->templatesDirectory = rtrim(
+            GALETTE_ROOT . GALETTE_TPL_SUBDIR,
+            DIRECTORY_SEPARATOR
+        );
+        $this->parserCompileDirectory = rtrim(
+            GALETTE_COMPILE_DIR,
+            DIRECTORY_SEPARATOR
+        );
+        $this->parserCacheDirectory = rtrim(GALETTE_CACHE_DIR, DIRECTORY_SEPARATOR);
+        $this->parserConfigDir = GALETTE_CONFIG_PATH;
 
-        self::$smartyExtensions = array(
-            GALETTE_SLIM_EXTRAS_PATH . 'Views/Extension/Smarty',
+        $this->parserExtensions = array(
+            GALETTE_SLIM_VIEWS_PATH . 'SmartyPlugins',
             GALETTE_ROOT . 'includes/smarty_plugins'
-        );*/
-
-
-        /*if ( GALETTE_MODE !== 'DEV' ) {
-            //enable caching
-            $this->caching = \Smarty::CACHING_LIFETIME_CURRENT;
-            $this->setCompileCheck(false);
-        }*/
-
-        //$this->addPluginsDir(GALETTE_ROOT . 'includes/smarty_plugins');
+        );
     }
 
     /**
@@ -99,25 +111,31 @@ class Smarty extends \Slim\Extras\Views\Smarty
      * @throws RuntimeException If Smarty lib directory does not exist
      * @return Smarty Instance
      */
-    public static function getGaletteInstance($plugins, $i18n, $preferences, $logo, $login, $session)
+    public function getInstance()
     {
         $instance = parent::getInstance();
 
-        if (self::$smartyConfigDir) {
-            $instance->setConfigDir(self::$smartyConfigDir);
+        if ($this->parserConfigDir) {
+            $instance->setConfigDir($this->parserConfigDir);
         }
 
-        $instance->assign('login', $login);
-        $instance->assign('logo', $logo);
+        $instance->assign('login', $this->_login);
+        $instance->assign('logo', $this->_logo);
         $instance->assign('template_subdir', GALETTE_THEME);
-        foreach ( $plugins->getTplAssignments() as $k=>$v ) {
+        foreach ( $this->_plugins->getTplAssignments() as $k=>$v ) {
             $instance->assign($k, $v);
         }
         $instance->assign('tpl', $instance);
-        $instance->assign('headers', $plugins->getTplHeaders());
-        $instance->assign('plugin_actions', $plugins->getTplAdhActions());
-        $instance->assign('plugin_batch_actions', $plugins->getTplAdhBatchActions());
-        $instance->assign('plugin_detailled_actions', $plugins->getTplAdhDetailledActions());
+        $instance->assign('headers', $this->_plugins->getTplHeaders());
+        $instance->assign('plugin_actions', $this->_plugins->getTplAdhActions());
+        $instance->assign(
+            'plugin_batch_actions',
+            $this->_plugins->getTplAdhBatchActions()
+        );
+        $instance->assign(
+            'plugin_detailled_actions',
+            $this->_plugins->getTplAdhDetailledActions()
+        );
         $instance->assign('jquery_dir', 'js/jquery/');
         $instance->assign('jquery_version', JQUERY_VERSION);
         $instance->assign('jquery_migrate_version', JQUERY_MIGRATE_VERSION);
@@ -130,15 +148,18 @@ class Smarty extends \Slim\Extras\Views\Smarty
         $instance->assign('GALETTE_VERSION', GALETTE_VERSION);
         $instance->assign('GALETTE_MODE', GALETTE_MODE);
         /** galette_lang should be removed and languages used instead */
-        $instance->assign('galette_lang', $i18n->getAbbrev());
-        $instance->assign('languages', $i18n->getList());
-        $instance->assign('plugins', $plugins);
-        $instance->assign('preferences', $preferences);
-        $instance->assign('pref_slogan', $preferences->pref_slogan);
-        $instance->assign('pref_theme', $preferences->pref_theme);
-        $instance->assign('pref_editor_enabled', $preferences->pref_editor_enabled);
-        $instance->assign('pref_mail_method', $preferences->pref_mail_method);
-        $instance->assign('existing_mailing', isset($session['mailing']));
+        $instance->assign('galette_lang', $this->_i18n->getAbbrev());
+        $instance->assign('languages', $this->_i18n->getList());
+        $instance->assign('plugins', $this->_plugins);
+        $instance->assign('preferences', $this->_preferences);
+        $instance->assign('pref_slogan', $this->_preferences->pref_slogan);
+        $instance->assign('pref_theme', $this->_preferences->pref_theme);
+        $instance->assign(
+            'pref_editor_enabled',
+            $this->_preferences->pref_editor_enabled
+        );
+        $instance->assign('pref_mail_method', $this->_preferences->pref_mail_method);
+        $instance->assign('existing_mailing', isset($this->_session['mailing']));
         $instance->assign('require_tabs', null);
         $instance->assign('require_cookie', null);
         $instance->assign('contentcls', null);

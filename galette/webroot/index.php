@@ -44,7 +44,6 @@ use Galette\Entity\FieldsConfig as FieldsConfig;
 use Galette\Filters\MembersList as MembersList;
 use Galette\Repository\Groups as Groups;
 use \Analog\Analog as Analog;
-use \Slim\Extras\Views\Smarty as SmartyView;
 
 $time_start = microtime(true);
 
@@ -61,14 +60,33 @@ if ( !defined('GALETTE_BASE_PATH') ) {
 /** @ignore */
 require_once GALETTE_ROOT . 'includes/galette.inc.php';
 
+if ( !defined('GALETTE_TPL_SUBDIR') ) {
+    define('GALETTE_TPL_SUBDIR', 'templates/' . $preferences->pref_theme . '/');
+}
+
+if ( !defined('GALETTE_THEME') ) {
+    define('GALETTE_THEME', 'themes/' . $preferences->pref_theme . '/');
+}
+
 $app = new \Slim\Slim(
     array(
-        'view' => new \Slim\Extras\Views\Smarty()/*,
+        'view'              => new \Galette\Core\Smarty(
+            $plugins,
+            $i18n,
+            $preferences,
+            $logo,
+            $login,
+            $session
+        ),
+        'templates.path'    => GALETTE_ROOT . GALETTE_TPL_SUBDIR/*,
         'log.enable' => true,
         'log.level' => \Slim\Log::DEBUG,
         'debug' => true*/
     )
 );
+
+$smarty = $app->view()->getInstance();
+require_once GALETTE_ROOT . 'includes/smarty.inc.php';
 
 $authenticate = function ($app) use (&$session) {
     return function () use ($app, &$session) {
@@ -413,7 +431,7 @@ $app->get(
 
         $session['public_filters']['members'] = serialize($filters);
 
-        $smarty = SmartyView::getInstance();
+        $smarty = $app->view();
 
         //assign pagination variables to the template and add pagination links
         $filters->setSmartyPagination($smarty);
@@ -497,7 +515,7 @@ $app->get(
 
         $session['filters']['members'] = serialize($filters);
 
-        $smarty = SmartyView::getInstance();
+        $smarty = $app->view();
 
         //assign pagination variables to the template and add pagination links
         $filters->setSmartyPagination($smarty);
@@ -786,7 +804,7 @@ $app->get(
         $session['contributions'] = serialize($contribs);
         $list_contribs = $contribs->getContributionsList(true);
 
-        $smarty = SmartyView::getInstance();
+        $smarty = $app->view();
 
         //assign pagination variables to the template and add pagination links
         $contribs->setSmartyPagination($smarty);

@@ -77,8 +77,8 @@ if ( !defined('GALETTE_TCPDF_PATH') ) {
 if ( !defined('GALETTE_SLIM_PATH') ) {
     define('GALETTE_SLIM_PATH', GALETTE_ROOT . 'lib/Slim-' . SLIM_VERSION);
 }
-if ( !defined('GALETTE_SLIM_EXTRAS_PATH') ) {
-    define('GALETTE_SLIM_EXTRAS_PATH', GALETTE_ROOT . 'lib/Slim-Extras' . SLIM_VERSION);
+if ( !defined('GALETTE_SLIM_VIEWS_PATH') ) {
+    define('GALETTE_SLIM_VIEWS_PATH', GALETTE_ROOT . 'lib/Slim-Views' . SLIM_VIEWS_VERSION);
 }
 /*if ( !defined('GALETTE_XHPROF_PATH') ) {
     define('GALETTE_XHPROF_PATH', '/usr/share/xhprof/');

@@ -46,4 +46,5 @@ define('JQUERY_MARKITUP_VERSION', '1.1.14');
 define('JQUERY_JQPLOT_VERSION', '1.0.8r1250');
 define('PHP_MAILER_VERSION', '5.2.9');
 define('PASSWORD_COMPAT_VERSION', '1.0.4');
-define('SLIM_VERSION', '2.1.0');
+define('SLIM_VERSION', '2.4.3');
+define('SLIM__VIEWS_VERSION', '0.1.2');

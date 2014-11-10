@@ -108,7 +108,7 @@ $analogLoader->register();
 $smartyLoader->register();
 
 \Slim\Slim::registerAutoloader();
-require_once GALETTE_SLIM_EXTRAS_PATH . 'Views/Smarty.php';
+require_once GALETTE_SLIM_VIEWS_PATH . 'Smarty.php';
 
 //start profiling
 if (defined('GALETTE_XHPROF_PATH')
@@ -378,7 +378,6 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
          * we can include files that need it
          */
         include_once GALETTE_ROOT . 'includes/session.inc.php';
-        include_once GALETTE_ROOT . 'includes/smarty.inc.php';
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
         include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';

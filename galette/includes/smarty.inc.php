@@ -43,34 +43,6 @@ if (!defined('GALETTE_ROOT')) {
        die("Sorry. You can't access directly to this file");
 }
 
-if ( !defined('GALETTE_TPL_SUBDIR') ) {
-    define('GALETTE_TPL_SUBDIR', 'templates/' . $preferences->pref_theme . '/');
-}
-
-if ( !defined('GALETTE_THEME') ) {
-    define('GALETTE_THEME', 'themes/' . $preferences->pref_theme . '/');
-}
-
-Smarty::$smartyDirectory = GALETTE_SMARTY_PATH;
-Smarty::$smartyTemplatesDirectory = GALETTE_ROOT . GALETTE_TPL_SUBDIR;
-Smarty::$smartyCompileDirectory = GALETTE_COMPILE_DIR;
-Smarty::$smartyCacheDirectory = GALETTE_CACHE_DIR;
-Smarty::$smartyConfigDir = GALETTE_CONFIG_PATH;
-
-Smarty::$smartyExtensions = array(
-    GALETTE_SLIM_EXTRAS_PATH . 'Views/Extension/Smarty',
-    GALETTE_ROOT . 'includes/smarty_plugins'
-);
-
-$smarty = Smarty::getGaletteInstance(
-    $plugins,
-    $i18n,
-    $preferences,
-    $logo,
-    $login,
-    $session
-);
-
 $smarty->muteExpectedErrors();
 $smarty->registerClass('GaletteMail', '\Galette\Core\GaletteMail');
 

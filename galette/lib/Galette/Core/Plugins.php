@@ -39,7 +39,6 @@ namespace Galette\Core;
 
 use Analog\Analog;
 use Galette\Common\ClassLoader;
-use \Slim\Extras\Views\Smarty as SmartyView;
 
 /**
  * Plugins class for galette
@@ -406,20 +405,18 @@ class Plugins
      */
     public function getMenus($tpl, $preferences)
     {
-        $smarty = SmartyView::getInstance();
-
         $modules = $this->getModules();
         foreach ( array_keys($this->getModules()) as $r ) {
             $menu_path = $this->getTemplatesPath($r) . '/menu.tpl';
-            if ( $smarty->template_exists($menu_path) ) {
+            if ( $tpl->template_exists($menu_path) ) {
                 $name2path = strtolower(
                     str_replace(' ', '_', $modules[$r]['name'])
                 );
-                $smarty->assign(
+                $tpl->assign(
                     'galette_' . $name2path . '_path',
                     'plugins/' . $r . '/'
                 );
-                $smarty->display($menu_path);
+                $tpl->display($menu_path);
             }
         }
     }
