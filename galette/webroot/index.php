@@ -507,7 +507,7 @@ $app->get(
 
         $session['filters']['members'] = serialize($filters);
 
-        $smarty = $app->view();
+        $smarty = $app->view()->getInstance();
 
         //assign pagination variables to the template and add pagination links
         $filters->setSmartyPagination($smarty);
@@ -525,7 +525,7 @@ $app->get(
                 'filter_field_options'  => array(
                     Members::FILTER_NAME            => _T("Name"),
                     Members::FILTER_COMPANY_NAME    => _T("Company name"),
-                    Members::FILTER_ADRESS          => _T("Address"),
+                    Members::FILTER_ADDRESS         => _T("Address"),
                     Members::FILTER_MAIL            => _T("Email,URL,IM"),
                     Members::FILTER_JOB             => _T("Job"),
                     Members::FILTER_INFOS           => _T("Infos")
@@ -552,7 +552,9 @@ $app->get(
 $app->get(
     '/member/:id',
     $authenticate($app),
-    function ($id) use ($app, $login, $session, $i18n, $preferences) {
+    function ($id) use ($app, $login, $session, $i18n, $preferences,
+        $members_fields, $members_fields_cats
+    ) {
         $dyn_fields = new DynamicFields();
 
         $member = new Adherent();
@@ -585,25 +587,28 @@ $app->get(
 
         if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
             $m = new Members();
-            $ids = $m->getList(false, array(Adherent::PK));
-            //print_r($ids);
+            $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
+            $ids = $ids->toArray();
             foreach ( $ids as $k=>$m ) {
-                if ( $m->id_adh == $member->id ) {
+                if ( $m['id_adh'] == $member->id ) {
                     $navigate = array(
-                        'cur'  => $m->id_adh,
+                        'cur'  => $m['id_adh'],
                         'count' => count($ids),
                         'pos' => $k+1
                     );
                     if ( $k > 0 ) {
-                        $navigate['prev'] = $ids[$k-1]->id_adh;
+                        $navigate['prev'] = $ids[$k-1]['id_adh'];
                     }
                     if ( $k < count($ids)-1 ) {
-                        $navigate['next'] = $ids[$k+1]->id_adh;
+                        $navigate['next'] = $ids[$k+1]['id_adh'];
                     }
                     break;
                 }
             }
         }
+
+        //Set caller page ref for cards error reporting
+        //$session['caller'] = 'voir_adherent.php?id_adh='.$id_adh;
 
         // declare dynamic field values
         $adherent['dyn'] = $dyn_fields->getFields('adh', $id, true);
@@ -630,13 +635,13 @@ $app->get(
         }*/
 
         // flagging fields visibility
-        $fc = new FieldsConfig(Adherent::TABLE, $member->fields);
+        $fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
         $visibles = $fc->getVisibilities();
 
         $app->render(
             'voir_adherent.tpl',
             array(
-                'page_title'        => _T("Member profile"),
+                'page_title'        => _T("Member Profile"),
                 'require_dialog'    => true,
                 'member'            => $member,
                 'data'              => $adherent,
