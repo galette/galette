@@ -217,7 +217,15 @@ class I18n
         $xml = simplexml_load_file($this->_file);
         $current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
         $sxe = $current[0];
-        return GALETTE_BASE_PATH . GALETTE_TPL_SUBDIR . 'images/' . $sxe->flag;
+
+        $path = null;
+        if ( defined('GALETTE_THEME_DIR') ) {
+            $path = GALETTE_THEME_DIR . 'images/' . $sxe->flag;
+        } else {
+            $path = GALETTE_THEME . 'images/' . $sxe->flag;
+        }
+
+        return $path;
     }
 
     /**

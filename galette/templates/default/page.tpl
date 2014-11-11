@@ -4,7 +4,7 @@
         {include file='common_header.tpl'}
 {if $color_picker}
         <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}farbtastic.js"></script>
-        <link rel="stylesheet" type="text/css" href="{$template_subdir}farbtastic.css"/>
+        <link rel="stylesheet" type="text/css" href="{$galette_base_path}{$template_subdir}farbtastic.css"/>
 {/if}
 {* JQuery UI related *}
 {if $require_sorter or $require_dialog}
@@ -34,12 +34,12 @@
         <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery.cookie.js"></script>
 {/if}
 {if $require_charts}
-        <link rel="stylesheet" type="text/css" href="{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.css" />
-        <script type="text/javascript" src="{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.min.js"></script>
-        <script type="text/javascript" src="{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.pieRenderer.min.js"></script>
-        <script type="text/javascript" src="{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.barRenderer.min.js"></script>
-        <script type="text/javascript" src="{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.pointLabels.min.js"></script>
-        <script type="text/javascript" src="{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="{$galette_base_path}{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.css" />
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.min.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.pieRenderer.min.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.barRenderer.min.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.pointLabels.min.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.categoryAxisRenderer.min.js"></script>
 {/if}
 {if $html_editor}
     {if !isset($plugged_html_editor)}

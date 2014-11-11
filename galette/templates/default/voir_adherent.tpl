@@ -105,11 +105,11 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 <td>
                     {if $element->field_id eq 'nom_adh'}
                         {if $member->isCompany()}
-                            <img src="{$template_subdir}images/icon-company.png" alt="{_T string="[C]"}" width="16" height="16"/>
+                        <img src="{$galette_base_path}{$template_subdir}images/icon-company.png" alt="{_T string="[C]"}" width="16" height="16"/>
                         {elseif $member->isMan()}
-                            <img src="{$template_subdir}images/icon-male.png" alt="{_T string="[M]"}" width="16" height="16"/>
+                        <img src="{$galette_base_path}{$template_subdir}images/icon-male.png" alt="{_T string="[M]"}" width="16" height="16"/>
                         {elseif $member->isWoman()}
-                            <img src="{$template_subdir}images/icon-female.png" alt="{_T string="[W]"}" width="16" height="16"/>
+                        <img src="{$galette_base_path}{$template_subdir}images/icon-female.png" alt="{_T string="[W]"}" width="16" height="16"/>
                         {/if}
                     {elseif $element->field_id eq 'pref_lang'}
                         <img src="{$pref_lang_img}" alt=""/>
