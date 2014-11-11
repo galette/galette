@@ -1257,3 +1257,7 @@ $app->get(
 )->name('preferences');
 
 $app->run();
+
+if ( isset($profiler) ) {
+    $profiler->stop();
+}
