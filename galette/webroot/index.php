@@ -90,7 +90,7 @@ $authenticate = function ($app) use (&$session) {
         if ( !$login->isLogged() ) {
             $session['urlRedirect'] = $app->request()->getPathInfo();
             $app->flash('error', _T("Login required"));
-            $app->redirect($app->urlFor('slash'));
+            $app->redirect($app->urlFor('slash'), 403);
         }
     };
 };
