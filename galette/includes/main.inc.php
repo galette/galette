@@ -35,14 +35,19 @@
  * @since     0.8.2dev 2014-11-10
  */
 
-use Galette\Core\Picture as Picture;
-use Galette\Repository\Members as Members;
-use Galette\Entity\Adherent as Adherent;
-use Galette\Entity\Required as Required;
-use Galette\Entity\DynamicFields as DynamicFields;
-use Galette\Entity\FieldsConfig as FieldsConfig;
-use Galette\Filters\MembersList as MembersList;
-use Galette\Repository\Groups as Groups;
+use Galette\Core\Smarty;
+use Galette\Core\Login;
+use Galette\Core\PasswordImage;
+use Galette\Repository\Members;
+use Galette\Entity\Adherent;
+use Galette\Entity\DynamicFields;
+use Galette\Entity\FieldsConfig;
+use Galette\Entity\Politeness;
+use Galette\Entity\Group;
+use Galette\Entity\Contribution;
+use Galette\Filters\MembersList;
+use Galette\Repository\Groups;
+use Galette\Repository\Contributions;
 use \Analog\Analog as Analog;
 
 $time_start = microtime(true);
@@ -62,7 +67,7 @@ require_once GALETTE_ROOT . 'includes/galette.inc.php';
 
 $app = new \Slim\Slim(
     array(
-        'view'              => new \Galette\Core\Smarty(
+        'view'              => new Smarty(
             $plugins,
             $i18n,
             $preferences,
@@ -85,7 +90,7 @@ $authenticate = function ($app) use (&$session) {
         if ( isset($session['login']) ) {
             $login = unserialize($session['login']);
         } else {
-            $login = new Galette\Core\Login();
+            $login = new Login();
         }
         if ( !$login->isLogged() ) {
             $session['urlRedirect'] = $app->request()->getPathInfo();
@@ -176,121 +181,10 @@ $app->hook(
     }
 );
 
-$app->get(
-    '/',
-    function () use ($app, $baseRedirect) {
-        $baseRedirect($app);
-    }
-)->name('slash');
-
-//routes for anonymous users
-$app->get(
-    '/login',
-    function () use ($app, $login, $baseRedirect, &$session) {
-        //store redirect path if any
-        if ($app->request()->get('r')
-            && $app->request()->get('r') != '/logout'
-            && $app->request()->get('r') != '/login'
-        ) {
-            $session['urlRedirect'] = $app->request()->get('r');
-        }
-
-        if ( !$login->isLogged() ) {
-            // display page
-            $app->render(
-                'index.tpl',
-                array(
-                    'page_title'    => _T("Login"),
-                )
-            );
-        } else {
-            $baseRedirect($app);
-        }
-    }
-)->name('login');
-
-// Authentication procedure
-$app->post(
-    '/login',
-    function () use ($app, &$session, $hist, $preferences, $login, $baseRedirect) {
-        $nick = $app->request()->post('login');
-        $password = $app->request()->post('password');
-
-        if ( trim($nick) == '' || trim($password) == '' ) {
-            $app->flash(
-                'loginfault',
-                _T("You must provide both login and password.")
-            );
-            $app->redirect($app->urlFor('login'));
-        }
-
-        if ( $nick === $preferences->pref_admin_login ) {
-            $pw_superadmin = password_verify(
-                $password,
-                $preferences->pref_admin_pass
-            );
-            if ( !$pw_superadmin ) {
-                $pw_superadmin = (
-                    md5($password) === $preferences->pref_admin_pass
-                );
-            }
-            if ( $pw_superadmin ) {
-                $login->logAdmin($nick);
-            }
-        } else {
-            $login->logIn($nick, $password);
-        }
-
-        if ( $login->isLogged() ) {
-            $session['login'] = serialize($login);
-            $hist->add(_T("Login"));
-            $baseRedirect($app);
-        } else {
-            $app->flash('loginfault', _T("Login failed."));
-            $hist->add(_T("Authentication failed"), $nick);
-            $app->redirect($app->urlFor('login'));
-        }
-    }
-)->name('dologin');
-
-$app->get(
-    '/logout',
-    function () use ($app, $login, &$session) {
-        $login->logOut();
-        $session['login'] = null;
-        unset($session['login']);
-        $session['history'] = null;
-        unset($session['history']);
-        $app->redirect($app->urlFor('slash'));
-    }
-)->name('logout');
-
-$app->get(
-    '/logo',
-    function () use ($logo) {
-        $logo->display();
-    }
-)->name('logo');
-
-$app->get(
-    '/photo/:id',
-    function ($id) use ($app, $login) {
-        /** FIXME: we load entire member here... No need to do so! */
-        $adh = new Adherent((int)$id);
-
-        $picture = null;
-        if ( $login->isAdmin()
-            || $login->isStaff()
-            || $adh->appearsInMembersList()
-            || $login->login == $adh->login
-        ) {
-            $picture = $adh->picture;
-        } else {
-            $picture = new Picture();
-        }
-        $picture->display();
-    }
-)->name('photo')->conditions(array('id' => '\d+'));
+require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
+require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
+require_once GALETTE_ROOT . 'includes/routes/management.routes.php';
+require_once GALETTE_ROOT . 'includes/routes/ajax.routes.php';
 
 $app->get(
     '/subscribe',
@@ -328,7 +222,7 @@ $app->get(
         }
 
         //image to defeat mass filling forms
-        $spam = new Galette\Core\PasswordImage();
+        $spam = new PasswordImage();
         $spam_pass = $spam->newImage();
         $spam_img = $spam->getImage();
 
@@ -360,7 +254,7 @@ $app->get(
                 // pseudo random int
                 'time'              => time(),
                 // genre
-                'radio_titres'      => Galette\Entity\Politeness::getList(),
+                'radio_titres'      => Politeness::getList(),
                 //self_adh specific
                 'spam_pass'         => $spam_pass,
                 'spam_img'          => $spam_img
@@ -370,114 +264,9 @@ $app->get(
     }
 )->name('subscribe');
 
-$app->get(
-    '/password-lost',
-    function () use ($app) {
-        $app->render(
-            'lostpasswd.tpl',
-            array(
-                'page_title' => _T("Password recovery")
-            )
-        );
-    }
-)->name('password-lost');
-
-$app->post(
-    '/retrieve-pass',
-    function () use ($app) {
-        $app->redirect($app->urlFor('slash'));
-    }
-)->name('retrieve-pass');
-
-$app->get(
-    '/public/members',
-    function () use ($app, &$session) {
-        if ( isset($session['public_filters']['members']) ) {
-            $filters = unserialize($session['public_filters']['members']);
-        } else {
-            $filters = new MembersList();
-        }
-
-        /*// Filters
-        if (isset($_GET['page'])) {
-            $filters->current_page = (int)$_GET['page'];
-        }
-
-        if ( isset($_GET['clear_filter']) ) {
-            $filters->reinit();
-        }
-
-        //numbers of rows to display
-        if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
-            $filters->show = $_GET['nbshow'];
-        }
-
-        // Sorting
-        if ( isset($_GET['tri']) ) {
-            $filters->orderby = $_GET['tri'];
-        }*/
-
-
-        $m = new Members();
-        $members = $m->getPublicList(false, null);
-
-        $session['public_filters']['members'] = serialize($filters);
-
-        $smarty = $app->view();
-
-        //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($smarty);
-
-        $app->render(
-            'liste_membres.tpl',
-            array(
-                'page_title'    => _T("Members list"),
-                'members'       => $members,
-                'filters'       => $filters
-            )
-        );
-    }
-)->name('public_members');
-
-$app->get(
-    '/public/trombinoscope',
-    function () use ($app) {
-        $m = new Members('trombinoscope_');
-        $members = $m->getPublicList(true, null);
-
-        $app->render(
-            'trombinoscope.tpl',
-            array(
-                'page_title'                => _T("Trombinoscope"),
-                'additionnal_html_class'    => 'trombinoscope',
-                'members'                   => $members,
-                'time'                      => time()
-            )
-        );
-    }
-)->name('public_trombinoscope');
-
 //routes for authenticated users
 //routes for admins
 //routes for admins/staff
-$app->get(
-    '/dashboard',
-    $authenticate($app),
-    function () use ($app, $preferences) {
-        $news = new Galette\IO\News($preferences->pref_rss_url);
-
-        $app->render(
-            'desktop.tpl',
-            array(
-                'page_title'        => _T("Dashboard"),
-                'contentcls'        => 'desktop',
-                'news'              => $news->getPosts(),
-                'show_dashboard'    => $_COOKIE['show_galette_dashboard'],
-                'require_cookie'    => true
-            )
-        );
-    }
-)->name('dashboard');
 
 $app->get(
     '/members',
@@ -493,7 +282,7 @@ $app->get(
             $filters = new MembersList();
         }
 
-        $members = new Galette\Repository\Members();
+        $members = new Members();
 
         $members_list = array();
         if ( $login->isAdmin() || $login->isStaff() ) {
@@ -502,7 +291,7 @@ $app->get(
             $members_list = $members->getManagedMembersList(true);
         }
 
-        $groups = new Galette\Repository\Groups();
+        $groups = new Groups();
         $groups_list = $groups->getList();
 
         $session['filters']['members'] = serialize($filters);
@@ -664,8 +453,8 @@ $app->get(
     $authenticate($app),
     function () use ($app, $login, &$session) {
 
-        $groups = new Galette\Repository\Groups();
-        $group = new Galette\Entity\Group();
+        $groups = new Groups();
+        $group = new Group();
 
         $groups_root = $groups->getList(false);
         $groups_list = $groups->getList();
@@ -707,7 +496,7 @@ $app->get(
         if ( isset($session['contributions'])) {
             $contribs = unserialize($session['contributions']);
         } else {
-            $contribs = new Galette\Repository\Contributions();
+            $contribs = new Contributions();
         }
 
         /*if ( $ajax === true ) {
@@ -760,12 +549,12 @@ $app->get(
 
             if ( isset($_GET['payment_type_filter']) ) {
                 $ptf = $_GET['payment_type_filter'];
-                if ( $ptf == Galette\Entity\Contribution::PAYMENT_OTHER
-                    || $ptf == Galette\Entity\Contribution::PAYMENT_CASH
-                    || $ptf == Galette\Entity\Contribution::PAYMENT_CREDITCARD
-                    || $ptf == Galette\Entity\Contribution::PAYMENT_CHECK
-                    || $ptf == Galette\Entity\Contribution::PAYMENT_TRANSFER
-                    || $ptf == Galette\Entity\Contribution::PAYMENT_PAYPAL
+                if ( $ptf == Contribution::PAYMENT_OTHER
+                    || $ptf == Contribution::PAYMENT_CASH
+                    || $ptf == Contribution::PAYMENT_CREDITCARD
+                    || $ptf == Contribution::PAYMENT_CHECK
+                    || $ptf == Contribution::PAYMENT_TRANSFER
+                    || $ptf == Contribution::PAYMENT_PAYPAL
                 ) {
                     $contribs->payment_type_filter = $ptf;
                 } elseif ( $ptf == -1 ) {
@@ -807,7 +596,7 @@ $app->get(
         $contribs->setSmartyPagination($smarty);
 
         /*if ( $contribs->filtre_cotis_adh != null && !$ajax ) {
-            $member = new Galette\Entity\Adherent();
+            $member = new Adherent();
             $member->load($contribs->filtre_cotis_adh);
             $tpl->assign('member', $member);
         }*/
@@ -828,433 +617,6 @@ $app->get(
     }
 )->name('contributions');
 
-$app->post(
-    '/preferences',
-    $authenticate($app),
-    function () use ($app, $preferences, $login, $logo, &$session) {
-        // Validation
-        if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
-            // verification de champs
-            $insert_values = array();
-
-            $prefs_fields = $preferences->getFieldsNames();
-
-            // flagging required fields
-            $required = array(
-                'pref_nom'              => 1,
-                'pref_lang'             => 1,
-                'pref_numrows'          => 1,
-                'pref_log'              => 1,
-                'pref_etiq_marges_v'    => 1,
-                'pref_etiq_marges_h'    => 1,
-                'pref_etiq_hspace'      => 1,
-                'pref_etiq_vspace'      => 1,
-                'pref_etiq_hsize'       => 1,
-                'pref_etiq_vsize'       => 1,
-                'pref_etiq_cols'        => 1,
-                'pref_etiq_rows'        => 1,
-                'pref_etiq_corps'       => 1,
-                'pref_card_abrev'       => 1,
-                'pref_card_strip'       => 1,
-                'pref_card_marges_v'    => 1,
-                'pref_card_marges_h'    => 1,
-                'pref_card_hspace'      => 1,
-                'pref_card_vspace'      => 1
-            );
-
-            if ( $login->isSuperAdmin() && GALETTE_MODE !== 'DEMO' ) {
-                $required['pref_admin_login'] = 1;
-            }
-
-            // obtain fields
-            foreach ($prefs_fields as $fieldname ) {
-                if (isset($_POST[$fieldname])) {
-                    $value=trim($_POST[$fieldname]);
-                } else {
-                    $value="";
-                }
-
-                $error_detected = array();
-                $success_detected = array();
-
-                // now, check validity
-                if ( $value != '' ) {
-                    switch ( $fieldname ) {
-                    case 'pref_email':
-                        if ( GALETTE_MODE === 'DEMO' ) {
-                            Analog::log(
-                                'Trying to set pref_email while in DEMO.',
-                                Analog::WARNING
-                            );
-                        } else {
-                            if ( !Galette\Core\GaletteMail::isValidEmail($value) ) {
-                                $error_detected[] = _T("- Non-valid E-Mail address!");
-                            }
-                        }
-                        break;
-                    case 'pref_admin_login':
-                        if ( GALETTE_MODE === 'DEMO' ) {
-                            Analog::log(
-                                'Trying to set superadmin login while in DEMO.',
-                                Analog::WARNING
-                            );
-                        } else {
-                            if ( strlen($value) < 4 ) {
-                                $error_detected[] = _T("- The username must be composed of at least 4 characters!");
-                            } else {
-                                //check if login is already taken
-                                if ( $login->loginExists($value) ) {
-                                    $error_detected[] = _T("- This username is already used by another member !");
-                                }
-                            }
-                        }
-                        break;
-                    case 'pref_numrows':
-                        if ( !is_numeric($value) || $value < 0 ) {
-                            $error_detected[] = "<li>"._T("- The numbers and measures have to be integers!")."</li>";
-                        }
-                        break;
-                    case 'pref_etiq_marges_h':
-                    case 'pref_etiq_marges_v':
-                    case 'pref_etiq_hspace':
-                    case 'pref_etiq_vspace':
-                    case 'pref_etiq_hsize':
-                    case 'pref_etiq_vsize':
-                    case 'pref_etiq_cols':
-                    case 'pref_etiq_rows':
-                    case 'pref_etiq_corps':
-                    case 'pref_card_marges_v':
-                    case 'pref_card_marges_h':
-                    case 'pref_card_hspace':
-                    case 'pref_card_vspace':
-                        // prevent division by zero
-                        if ( $fieldname=='pref_numrows' && $value=='0' ) {
-                            $value = '10';
-                        }
-                        if ( !is_numeric($value) || $value < 0 ) {
-                            $error_detected[] = _T("- The numbers and measures have to be integers!");
-                        }
-                        break;
-                    case 'pref_card_tcol':
-                        // Set strip text color to white
-                        if ( ! preg_match("/#([0-9A-F]{6})/i", $value) ) {
-                            $value = '#FFFFFF';
-                        }
-                        break;
-                    case 'pref_card_scol':
-                    case 'pref_card_bcol':
-                    case 'pref_card_hcol':
-                        // Set strip background colors to black
-                        if ( !preg_match("/#([0-9A-F]{6})/i", $value) ) {
-                            $value = '#000000';
-                        }
-                        break;
-                    case 'pref_admin_pass':
-                        if ( GALETTE_MODE == 'DEMO' ) {
-                            Analog::log(
-                                'Trying to set superadmin pass while in DEMO.',
-                                Analog::WARNING
-                            );
-                        } else {
-                            if ( strlen($value) < 4 ) {
-                                $error_detected[] = _T("- The password must be of at least 4 characters!");
-                            }
-                        }
-                        break;
-                    case 'pref_membership_ext':
-                        if ( !is_numeric($value) || $value < 0 ) {
-                            $error_detected[] = _T("- Invalid number of months of membership extension.");
-                        }
-                        break;
-                    case 'pref_beg_membership':
-                        $beg_membership = explode("/", $value);
-                        if ( count($beg_membership) != 2 ) {
-                            $error_detected[] = _T("- Invalid format of beginning of membership.");
-                        } else {
-                            $now = getdate();
-                            if ( !checkdate($beg_membership[1], $beg_membership[0], $now['year']) ) {
-                                $error_detected[] = _T("- Invalid date for beginning of membership.");
-                            }
-                        }
-                        break;
-                    }
-                }
-
-                // fill up pref structure (after $value's modifications)
-                $pref[$fieldname] = stripslashes($value);
-
-                $insert_values[$fieldname] = $value;
-            }
-
-            // missing relations
-            if ( GALETTE_MODE !== 'DEMO' && isset($insert_values['pref_mail_method']) ) {
-                if ( $insert_values['pref_mail_method'] > Galette\Core\GaletteMail::METHOD_DISABLED ) {
-                    if ( !isset($insert_values['pref_email_nom'])
-                        || $insert_values['pref_email_nom'] == ''
-                    ) {
-                        $error_detected[] = _T("- You must indicate a sender name for emails!");
-                    }
-                    if ( !isset($insert_values['pref_email'])
-                        || $insert_values['pref_email'] == ''
-                    ) {
-                        $error_detected[] = _T("- You must indicate an email address Galette should use to send emails!");
-                    }
-                    if ( $insert_values['pref_mail_method'] == Galette\Core\GaletteMail::METHOD_SMTP ) {
-                        if ( !isset($insert_values['pref_mail_smtp_host'])
-                            || $insert_values['pref_mail_smtp_host'] == ''
-                        ) {
-                            $error_detected[] = _T("- You must indicate the SMTP server you want to use!");
-                        }
-                    }
-                    if ( $insert_values['pref_mail_method'] == Galette\Core\GaletteMail::METHOD_GMAIL
-                        || ( $insert_values['pref_mail_method'] == Galette\Core\GaletteMail::METHOD_SMTP
-                        && $insert_values['pref_mail_smtp_auth'] )
-                    ) {
-                        if ( !isset($insert_values['pref_mail_smtp_user'])
-                            || trim($insert_values['pref_mail_smtp_user']) == ''
-                        ) {
-                            $error_detected[] = _T("- You must provide a login for SMTP authentication.");
-                        }
-                        if ( !isset($insert_values['pref_mail_smtp_password'])
-                            || ($insert_values['pref_mail_smtp_password']) == ''
-                        ) {
-                            $error_detected[] = _T("- You must provide a password for SMTP authentication.");
-                        }
-                    }
-                }
-            }
-
-            if ( isset($insert_values['pref_beg_membership'])
-                && $insert_values['pref_beg_membership'] != ''
-                && isset($insert_values['pref_membership_ext'])
-                && $insert_values['pref_membership_ext'] != ''
-            ) {
-                $error_detected[] = _T("- Default membership extention and beginning of membership are mutually exclusive.");
-            }
-
-            // missing required fields?
-            while ( list($key, $val) = each($required) ) {
-                if ( !isset($pref[$key]) ) {
-                    $error_detected[] = _T("- Mandatory field empty.")." ".$key;
-                } elseif ( isset($pref[$key]) ) {
-                    if (trim($pref[$key])=='') {
-                        $error_detected[] = _T("- Mandatory field empty.")." ".$key;
-                    }
-                }
-            }
-
-            if (GALETTE_MODE !== 'DEMO' ) {
-                // Check passwords. MD5 hash will be done into the Preferences class
-                if (strcmp($insert_values['pref_admin_pass'], $_POST['pref_admin_pass_check']) != 0) {
-                    $error_detected[] = _T("Passwords mismatch");
-                }
-            }
-
-            //postal adress
-            if ( isset($insert_values['pref_postal_adress']) ) {
-                $value = $insert_values['pref_postal_adress'];
-                if ( $value == Galette\Core\Preferences::POSTAL_ADRESS_FROM_PREFS ) {
-                    if ( isset($insert_values['pref_postal_staff_member']) ) {
-                        unset($insert_values['pref_postal_staff_member']);
-                    }
-                } else if ( $value == Galette\Core\Preferences::POSTAL_ADRESS_FROM_STAFF ) {
-                    if ( !isset($value) || $value < 1 ) {
-                        $error_detected[] = _T("You have to select a staff member");
-                    }
-                }
-            }
-
-            if ( count($error_detected) == 0 ) {
-                // update preferences
-                while ( list($champ,$valeur) = each($insert_values) ) {
-                    if ( $login->isSuperAdmin()
-                        || (!$login->isSuperAdmin()
-                        && ($champ != 'pref_admin_pass' && $champ != 'pref_admin_login'))
-                    ) {
-                        if ( ($champ == "pref_admin_pass" && $_POST['pref_admin_pass'] !=  '')
-                            || ($champ != "pref_admin_pass")
-                        ) {
-                            $preferences->$champ = $valeur;
-                        }
-                    }
-                }
-                //once all values has been updated, we can store them
-                if ( !$preferences->store() ) {
-                    $error_detected[] = _T("An SQL error has occured while storing preferences. Please try again, and contact the administrator if the problem persists.");
-                } else {
-                    $success_detected[] = _T("Preferences has been saved.");
-                }
-
-                // picture upload
-                if ( GALETTE_MODE !== 'DEMO' &&  isset($_FILES['logo']) ) {
-                    if ( $_FILES['logo']['error'] === UPLOAD_ERR_OK ) {
-                        if ( $_FILES['logo']['tmp_name'] !='' ) {
-                            if ( is_uploaded_file($_FILES['logo']['tmp_name']) ) {
-                                $res = $logo->store($_FILES['logo']);
-                                if ( $res < 0 ) {
-                                    $error_detected[] = $logo->getErrorMessage($res);
-                                } else {
-                                    $logo = new Galette\Core\Logo();
-                                }
-                                $session['logo'] = serialize($logo);
-                            }
-                        }
-                    } else if ($_FILES['logo']['error'] !== UPLOAD_ERR_NO_FILE) {
-                        Analog::log(
-                            $logo->getPhpErrorMessage($_FILES['logo']['error']),
-                            Analog::WARNING
-                        );
-                        $error_detected[] = $logo->getPhpErrorMessage(
-                            $_FILES['logo']['error']
-                        );
-                    }
-                }
-
-                if ( GALETTE_MODE !== 'DEMO' && isset($_POST['del_logo']) ) {
-                    if ( !$logo->delete() ) {
-                        $error_detected[] = _T("Delete failed");
-                    } else {
-                        $logo = new Galette\Core\Logo(); //get default Logo
-                        $session['logo'] = serialize($logo);
-                    }
-                }
-
-                // Card logo upload
-                if ( GALETTE_MODE !== 'DEMO' && isset($_FILES['card_logo']) ) {
-                    if ( $_FILES['card_logo']['error'] === UPLOAD_ERR_OK ) {
-                        if ( $_FILES['card_logo']['tmp_name'] !='' ) {
-                            if ( is_uploaded_file($_FILES['card_logo']['tmp_name']) ) {
-                                $res = $print_logo->store($_FILES['card_logo']);
-                                if ( $res < 0 ) {
-                                    $error_detected[] = $print_logo->getErrorMessage($res);
-                                } else {
-                                    $print_logo = new Galette\Core\PrintLogo();
-                                }
-                            }
-                        }
-                    } else if ($_FILES['card_logo']['error'] !== UPLOAD_ERR_NO_FILE) {
-                        Analog::log(
-                            $print_logo->getPhpErrorMessage($_FILES['card_logo']['error']),
-                            Analog::WARNING
-                        );
-                        $error_detected[] = $print_logo->getPhpErrorMessage(
-                            $_FILES['card_logo']['error']
-                        );
-                    }
-                }
-
-                if ( GALETTE_MODE !== 'DEMO' && isset($_POST['del_card_logo']) ) {
-                    if ( !$print_logo->delete() ) {
-                        $error_detected[] = _T("Delete failed");
-                    } else {
-                        $print_logo = new Galette\Core\PrintLogo();
-                    }
-                }
-            }
-
-            if ( count($error_detected) > 0 ) {
-                $app->flash(
-                    'error_detected',
-                    $error_detected
-                );
-            }
-
-            if ( count($success_detected) > 0 ) {
-                $app->flash(
-                    'success_detected',
-                    $success_detected
-                );
-            }
-
-            $app->redirect($app->urlFor('preferences'));
-        }
-    }
-)->name('store-preferences');
-
-$app->get(
-    '/preferences',
-    $authenticate($app),
-    function () use ($app, $login, $preferences, $i18n, &$session) {
-
-        $print_logo = new Galette\Core\PrintLogo();
-
-        // flagging required fields
-        $required = array(
-            'pref_nom'              => 1,
-            'pref_lang'             => 1,
-            'pref_numrows'          => 1,
-            'pref_log'              => 1,
-            'pref_etiq_marges_v'    => 1,
-            'pref_etiq_marges_h'    => 1,
-            'pref_etiq_hspace'      => 1,
-            'pref_etiq_vspace'      => 1,
-            'pref_etiq_hsize'       => 1,
-            'pref_etiq_vsize'       => 1,
-            'pref_etiq_cols'        => 1,
-            'pref_etiq_rows'        => 1,
-            'pref_etiq_corps'       => 1,
-            'pref_card_abrev'       => 1,
-            'pref_card_strip'       => 1,
-            'pref_card_marges_v'    => 1,
-            'pref_card_marges_h'    => 1,
-            'pref_card_hspace'      => 1,
-            'pref_card_vspace'      => 1
-        );
-
-        if ( $login->isSuperAdmin() && GALETTE_MODE !== 'DEMO' ) {
-            $required['pref_admin_login'] = 1;
-        }
-
-        $prefs_fields = $preferences->getFieldsNames();
-
-            // collect data
-            foreach ( $prefs_fields as $fieldname ) {
-                $pref[$fieldname] = $preferences->$fieldname;
-            }
-
-        //List available themes
-        $themes = array();
-        $d = dir(GALETTE_TEMPLATES_PATH);
-        while ( ($entry = $d->read()) !== false ) {
-            $full_entry = GALETTE_TEMPLATES_PATH . $entry;
-            if ($entry != '.'
-                && $entry != '..'
-                && is_dir($full_entry)
-                && file_exists($full_entry.'/page.tpl')
-            ) {
-                $themes[] = $entry;
-            }
-        }
-        $d->close();
-
-        $m = new Galette\Repository\Members();
-
-        $app->render(
-            'preferences.tpl',
-            array(
-                'page_title'            => _T("Settings"),
-                'staff_members'         => $m->getStaffMembersList(true),
-                'time'                  => time(),
-                'pref'                  => $pref,
-                'pref_numrows_options'  => array(
-                    10 => '10',
-                    20 => '20',
-                    50 => '50',
-                    100 => '100'
-                ),
-                'print_logo'            => $print_logo,
-                'required'              => $required,
-                'languages'             => $i18n->getList(),
-                'themes'                => $themes,
-                /*'error_detected'        => $error_detected,
-                'warning_detected'      => $warning_detected,
-                'success_detected'      => $success_detected,*/
-                'require_tabs'          => true,
-                'color_picker'          => true,
-            )
-        );
-    }
-)->name('preferences');
 
 $app->run();
 
