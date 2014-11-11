@@ -528,7 +528,7 @@ class Plugins
         foreach ( $this->modules as $key=>$module ) {
             $actions_path = $this->getTemplatesPath($key) . '/adh_actions.tpl';
             if ( file_exists($actions_path) ) {
-                $_actions[] = $actions_path;
+                $_actions['actions_' . $key] = $actions_path;
             }
         }
         return $_actions;
@@ -546,7 +546,7 @@ class Plugins
         foreach ( $this->modules as $key=>$module ) {
             $actions_path = $this->getTemplatesPath($key) . '/adh_batch_action.tpl';
             if ( file_exists($actions_path) ) {
-                $_actions[] = $actions_path;
+                $_actions['batch_action_' . $key] = $actions_path;
             }
         }
         return $_actions;
@@ -564,7 +564,7 @@ class Plugins
         foreach ( $this->modules as $key=>$module ) {
             $actions_path = $this->getTemplatesPath($key) . '/adh_fiche_action.tpl';
             if ( file_exists($actions_path) ) {
-                $_actions[] = $actions_path;
+                $_actions['det_actions_' . $key] = $actions_path;
             }
         }
         return $_actions;

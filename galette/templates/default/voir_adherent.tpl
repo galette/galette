@@ -1,4 +1,11 @@
 {extends file="page.tpl"}
+
+{if $plugin_detailled_actions|@count != 0}
+  {foreach from=$plugin_detailled_actions key=plugin_name item=action}
+    {include file=$action assing=$plugin_name}
+  {/foreach}
+{/if}
+
 {block name="content"}
 {if $navigate|@count != 0}
     <nav>
@@ -35,8 +42,8 @@
 {* If some additionnals actions should be added from plugins, we load the relevant template file
 We have to use a template file, so Smarty will do its work (like replacing variables). *}
 {if $plugin_detailled_actions|@count != 0}
-  {foreach from=$plugin_detailled_actions item=action}
-    {include file=$action}
+  {foreach from=$plugin_detailled_actions key=plugin_name item=action}
+    {$plugin_name}
   {/foreach}
 {/if}
 

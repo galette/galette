@@ -1,4 +1,17 @@
 {extends file="page.tpl"}
+
+{if $plugin_actions|@count != 0}
+    {foreach from=$plugin_actions key=plugin_name item=action}
+        {include file=$action assing=$plugin_name}
+    {/foreach}
+{/if}
+
+{if $plugin_batch_actions|@count != 0}
+    {foreach from=$plugin_batch_actions key=plugin_name item=action}
+        {include file=$action assign=$plugin_name}
+    {/foreach}
+{/if}
+
 {block name="content"}
         <form action="gestion_adherents.php" method="get" id="filtre">
         <div id="listfilter">
@@ -163,8 +176,8 @@
                             <li><input type="submit" name="csv" value="{_T string="Export as CSV"}"/></li>
     {/if}
     {if $plugin_batch_actions|@count != 0}
-        {foreach from=$plugin_batch_actions item=action}
-            {include file=$action}
+        {foreach from=$plugin_batch_actions key=plugin_name item=action}
+            {$plugin_name}
         {/foreach}
     {/if}
                         </ul>
@@ -233,8 +246,8 @@
             {* If some additionnals actions should be added from plugins, we load the relevant template file
             We have to use a template file, so Smarty will do its work (like replacing variables). *}
             {if $plugin_actions|@count != 0}
-              {foreach from=$plugin_actions item=action}
-                {include file=$action}
+              {foreach from=$plugin_actions key=plugin_name item=action}
+                {$plugin_name}
               {/foreach}
             {/if}
                     </td>
