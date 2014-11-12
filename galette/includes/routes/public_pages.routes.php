@@ -45,9 +45,20 @@ use Galette\Filters\MembersList as MembersList;
 use Galette\Repository\Groups as Groups;
 use \Analog\Analog as Analog;
 
+
+$showPublicPages = function () use ($preferences, $login) {
+    return function () use ($preferences, $login) {
+        if ( !$preferences->showPublicPages($login) ) {
+            $app->flash('error', _T("Unauthorized"));
+            $app->redirect($app->urlFor('slash'), 403);
+        }
+    };
+};
+
 //public members list
 $app->get(
     '/public/members',
+    $showPublicPages,
     function () use ($app, &$session) {
         if ( isset($session['public_filters']['members']) ) {
             $filters = unserialize($session['public_filters']['members']);
@@ -100,8 +111,9 @@ $app->get(
 //public trombinoscope
 $app->get(
     '/public/trombinoscope',
+    $showPublicPages,
     function () use ($app) {
-        $m = new Members('trombinoscope_');
+        $m = new Members();
         $members = $m->getPublicList(true, null);
 
         $app->render(
