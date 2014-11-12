@@ -251,6 +251,10 @@ class Adherent
 
             $results = $zdb->execute($select);
 
+            if ( $results->count() === 0 ) {
+                return false;
+            }
+
             $this->_loadFromRS($results->current());
             return true;
         } catch (\Exception $e) {
