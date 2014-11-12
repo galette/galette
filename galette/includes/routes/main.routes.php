@@ -59,7 +59,11 @@ $app->get(
     '/photo/:id',
     function ($id) use ($app, $login) {
         /** FIXME: we load entire member here... No need to do so! */
-        $adh = new Adherent((int)$id);
+        $deps = array(
+            'groups'    => false,
+            'dues'      => false
+        );
+        $adh = new Adherent((int)$id, $deps);
 
         $picture = null;
         if ( $login->isAdmin()
