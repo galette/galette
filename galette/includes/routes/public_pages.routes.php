@@ -80,7 +80,7 @@ $app->get(
 
         $session['public_filters']['members'] = serialize($filters);
 
-        $smarty = $app->view();
+        $smarty = $app->view()->getInstance();
 
         //assign pagination variables to the template and add pagination links
         $filters->setSmartyPagination($smarty);
@@ -90,6 +90,7 @@ $app->get(
             array(
                 'page_title'    => _T("Members list"),
                 'members'       => $members,
+                'nb_members'    => $m->getCount(),
                 'filters'       => $filters
             )
         );

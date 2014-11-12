@@ -77,5 +77,5 @@ $app->get(
         }
         $picture->display();
     }
-)->name('photo')->conditions(array('id' => '\d+'));
+)->name('photo');
 

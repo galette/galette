@@ -35,6 +35,8 @@
  * @since     0.8.2dev 2014-11-10
  */
 
+use \Slim\Slim;
+use \Slim\Route;
 use Galette\Core\Smarty;
 use Galette\Core\Login;
 use Galette\Core\PasswordImage;
@@ -65,7 +67,7 @@ if ( !defined('GALETTE_BASE_PATH') ) {
 /** @ignore */
 require_once GALETTE_ROOT . 'includes/galette.inc.php';
 
-$app = new \Slim\Slim(
+$app = new Slim(
     array(
         'view'              => new Smarty(
             $plugins,
@@ -79,6 +81,13 @@ $app = new \Slim\Slim(
         'log.enable' => true,
         'log.level' => \Slim\Log::DEBUG,
         'debug' => true*/
+    )
+);
+
+//set default conditions
+Route::setDefaultConditions(
+    array(
+        'id' => '\d+'
     )
 );
 
@@ -184,6 +193,7 @@ $app->hook(
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/management.routes.php';
+require_once GALETTE_ROOT . 'includes/routes/public_pages.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/ajax.routes.php';
 
 $app->get(
@@ -337,6 +347,22 @@ $app->get(
         );
     }
 )->name('members');
+
+$app->get(
+    '/member/me',
+    $authenticate($app),
+    function () use ($app, $login) {
+        $deps = array(
+            'picture'   => false,
+            'groups'    => false,
+            'dues'      => false
+        );
+        $member = new Adherent($login->login, $deps);
+        $app->redirect(
+            $app->urlFor('member', [$member->id])
+        );
+    }
+)->name('me');
 
 $app->get(
     '/member/:id',
@@ -590,7 +616,7 @@ $app->get(
         $session['contributions'] = serialize($contribs);
         $list_contribs = $contribs->getContributionsList(true);
 
-        $smarty = $app->view();
+        $smarty = $app->view()->getInstance();
 
         //assign pagination variables to the template and add pagination links
         $contribs->setSmartyPagination($smarty);
