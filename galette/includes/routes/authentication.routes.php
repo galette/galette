@@ -35,6 +35,8 @@
  * @since     0.8.2dev 2014-11-11
  */
 
+use Galette\Core\GaletteMail;
+
 //login page
 $app->get(
     '/login',
@@ -134,7 +136,13 @@ $app->get(
 //retrieve password procedure
 $app->post(
     '/retrieve-pass',
-    function () use ($app) {
+    function () use ($app, $login, $preferences) {
+        if ( ($login->isLogged()
+            || $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED)
+            && !$from_admin
+        ) {
+            $app->redirect($app->urlFor('slash'));
+        }
         $app->redirect($app->urlFor('slash'));
     }
 )->name('retrieve-pass');

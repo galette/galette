@@ -1,6 +1,5 @@
 {extends file="public_page.tpl"}
 {block name="content"}
-{if $done neq true}
                 <form action="{urlFor name="retrieve-pass"}" method="post" enctype="multipart/form-data">
                 <section>
                     <p>
@@ -11,5 +10,4 @@
                     <input type="hidden" name="valid" value="1"/>
                 </section>
                 </form>
-{/if}
 {/block}
