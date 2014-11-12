@@ -160,8 +160,14 @@ $app->hook(
         }
 
         $v = $app->view();
+
+        $cur_route = $app->router()->getMatchedRoutes(
+            'get',
+            $app->request()->getPathInfo()
+        )[0]->getName();
+
         $v->setData('galette_base_path', $curUri);
-        $v->setData('cur_path', $app->request()->getPathInfo());
+        $v->setData('cur_route', $cur_route);
         $v->setData('require_tabs', null);
         $v->setData('require_cookie', null);
         $v->setData('contentcls', null);

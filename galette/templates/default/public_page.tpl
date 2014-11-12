@@ -57,18 +57,18 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <h1 id="titre">{$page_title}</h1>
         <p id="asso_name">{$preferences->pref_nom}{if $preferences->pref_slogan}&nbsp;: {$preferences->pref_slogan}{/if}</p>
         <nav>
-            <a id="backhome" class="button{if $cur_path eq "/" or $cur_path eq '/login'} selected{/if}" href="{urlFor name="slash"}">{_T string="Home"}</a>
+            <a id="backhome" class="button{if $cur_route eq "slash" or $cur_route eq 'login'} selected{/if}" href="{urlFor name="slash"}">{_T string="Home"}</a>
     {if !$login->isLogged()}
         {if $preferences->pref_bool_selfsubscribe eq true}
-            <a id="subscribe" class="button{if $cur_path eq "/subscribe"} selected{/if}" href="{urlFor name="subscribe"}">{_T string="Subscribe"}</a>
+            <a id="subscribe" class="button{if $cur_route eq "/subscribe"} selected{/if}" href="{urlFor name="subscribe"}">{_T string="Subscribe"}</a>
         {/if}
         {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
-            <a id="lostpassword" class="button{if $cur_path eq "/password-lost"} selected{/if}" href="{urlFor name="password-lost"}">{_T string="Lost your password?"}</a>
+            <a id="lostpassword" class="button{if $cur_route eq "password-lost"} selected{/if}" href="{urlFor name="password-lost"}">{_T string="Lost your password?"}</a>
         {/if}
     {/if}
     {if $preferences->showPublicPages($login) eq true}
-            <a id="memberslist" class="button{if $cur_path eq "/public/members"} selected{/if}" href="{urlFor name="public_members"}" title="{_T string="Members list"}">{_T string="Members list"}</a>
-            <a id="trombino" class="button{if $cur_path eq "/public/trombinoscope"} selected{/if}" href="{urlFor name="public_trombinoscope"}" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a>
+            <a id="memberslist" class="button{if $cur_route eq "public_members"} selected{/if}" href="{urlFor name="public_members"}" title="{_T string="Members list"}">{_T string="Members list"}</a>
+            <a id="trombino" class="button{if $cur_route eq "public_trombinoscope"} selected{/if}" href="{urlFor name="public_trombinoscope"}" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a>
             {* Include plugins menu entries *}
             {$plugins->getPublicMenus($tpl, $preferences, true)}
     {/if}

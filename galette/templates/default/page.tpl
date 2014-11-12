@@ -108,8 +108,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <h1 class="nojs">{_T string="Navigation"}</h1>
         <ul>
   {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}
-            <li{if $cur_path eq "/dashboard"} class="selected"{/if}><a href="{urlFor name="dashboard"}" title="{_T string="Go to Galette's dashboard"}">{_T string="Dashboard"}</a></li>
-            <li{if $cur_path eq "/members"} class="selected"{/if}><a href="{urlFor name="members"}" title="{_T string="View, search into and filter member's list"}">{_T string="List of members"}</a></li>
+            <li{if $cur_route eq "dashboard"} class="selected"{/if}><a href="{urlFor name="dashboard"}" title="{_T string="Go to Galette's dashboard"}">{_T string="Dashboard"}</a></li>
+            <li{if $cur_route eq "members"} class="selected"{/if}><a href="{urlFor name="members"}" title="{_T string="View, search into and filter member's list"}">{_T string="List of members"}</a></li>
             <li{if $PAGENAME eq "advanced_search.php"} class="selected"{/if}><a href="{$galette_base_path}advanced_search.php" title="{_T string="Perform advanced search into members list"}">{_T string="Advanced search"}</a></li>
             <li{if $PAGENAME eq "gestion_groupes.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_groupes.php" title="{_T string="View and manage groups"}">{_T string="Manage groups"}</a></li>
   {/if}
@@ -137,8 +137,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {if $preferences->showPublicPages($login) eq true}
         <h1 class="nojs">{_T string="Public pages"}</h1>
         <ul>
-            <li><a href="{$galette_base_path}public/liste_membres.php" title="{_T string="Members list"}">{_T string="Members list"}</a></li>
-            <li><a href="{$galette_base_path}public/trombinoscope.php" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a></li>
+            <li><a href="{urlFor name="public_members"}" title="{_T string="Members list"}">{_T string="Members list"}</a></li>
+            <li><a href="{urlFor name="public_trombinoscope"}" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a></li>
             {* Include plugins menu entries *}
             {$plugins->getPublicMenus($tpl, $preferences)}
         </ul>
