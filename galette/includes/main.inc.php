@@ -77,11 +77,20 @@ $app = new Slim(
             $login,
             $session
         ),
-        'templates.path'    => GALETTE_ROOT . GALETTE_TPL_SUBDIR/*,
-        'log.enable' => true,
-        'log.level' => \Slim\Log::DEBUG,
-        'debug' => true*/
+        'templates.path'    => GALETTE_ROOT . GALETTE_TPL_SUBDIR,
+        'mode'              => GALETTE_MODE
     )
+);
+
+$app->configureMode(
+    'DEV',
+    function () use ($app) {
+        $app->config(
+            array(
+                'debug' => true
+            )
+        );
+    }
 );
 
 //set default conditions
