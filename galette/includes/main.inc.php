@@ -211,6 +211,42 @@ require_once GALETTE_ROOT . 'includes/routes/management.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/public_pages.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/ajax.routes.php';
 
+//custom error handler
+//will not be used if mode is DEV.
+$app->error(
+    function (\Exception $e) use ($app) {
+        //ensure error is logged
+        $etype = get_class($e);
+        Analog::log(
+            'exception \'' . $etype . '\' with message \'' . $e->getMessage() .
+            '\' in ' . $e->getFile() . ':' . $e->getLine() .
+            "\nStack trace:\n" . $e->getTraceAsString(),
+            Analog::ERROR
+        );
+
+        $app->render(
+            '500.tpl',
+            array(
+                'page_title'    => _T("Error"),
+                'exception'     => $e
+            )
+        );
+    }
+);
+
+//custom 404 handler
+$app->notFound(
+    function () use ($app) {
+        $app->render(
+            '404.tpl',
+            array(
+                'page_title'    => _T("Page not found :("),
+                'cur_route'     => null
+            )
+        );
+    }
+);
+
 $app->get(
     '/subscribe',
     function () use ($app, $preferences, $login, $i18n) {
