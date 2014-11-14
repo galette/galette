@@ -1,3 +1,5 @@
+{extends file="page.tpl"}
+{block name="content"}
         <div id="{php}echo \Galette\IO\Charts::MEMBERS_STATUS_PIE;{/php}">
         </div>
         <div id="{php}echo \Galette\IO\Charts::MEMBERS_STATEDUE_PIE;{/php}">
@@ -8,6 +10,9 @@
         </div>
         <div id="{php}echo \Galette\IO\Charts::CONTRIBS_ALLTIME;{/php}">
         </div>
+{/block}
+
+{block name="javascripts"}
         <script type="text/javascript">
             $(function(){
                 var _members_status_pie = jQuery.jqplot ('{php}echo \Galette\IO\Charts::MEMBERS_STATUS_PIE;{/php}', [{$charts.MembersStatusPie}],
@@ -85,3 +90,5 @@
                 );
             });
         </script>
+
+{/block}

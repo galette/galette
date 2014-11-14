@@ -41,6 +41,7 @@ use Galette\Core\Preferences;
 use Galette\Core\Logo;
 use Galette\Repository\Members;
 use Galette\IO\News;
+use Galette\IO\Charts;
 use \Analog\Analog;
 
 //galette's dashboard
@@ -495,3 +496,28 @@ $app->post(
     }
 )->name('store-preferences');
 
+//charts
+$app->get(
+    '/charts',
+    $authenticate,
+    function () use ($app) {
+        $charts = new Charts(
+            array(
+                Charts::MEMBERS_STATUS_PIE,
+                Charts::MEMBERS_STATEDUE_PIE,
+                Charts::CONTRIBS_TYPES_PIE,
+                Charts::COMPANIES_OR_NOT,
+                Charts::CONTRIBS_ALLTIME
+            )
+        );
+
+        $app->render(
+            'charts.tpl',
+            array(
+                'page_title'        => _T("Charts"),
+                'charts'            => $charts->getCharts(),
+                'require_charts'    => true
+            )
+        );
+    }
+)->name('charts');

@@ -124,7 +124,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $PAGENAME eq "gestion_mailings.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_mailings.php" title="{_T string="Manage mailings that has been sent"}">{_T string="Manage mailings"}</a></li>
             <li{if $PAGENAME eq "export.php"} class="selected"{/if}><a href="{$galette_base_path}export.php" title="{_T string="Export some data in various formats"}">{_T string="Exports"}</a></li>
             <li{if $PAGENAME eq "import.php" or $PAGENAME eq "import_model.php"} class="selected"{/if}><a href="{$galette_base_path}import.php" title="{_T string="Import members from CSV files"}">{_T string="Imports"}</a></li>
-            <li class="mnu_last{if $PAGENAME eq "charts.php"} selected{/if}"><a href="{$galette_base_path}charts.php" title="{_T string="Various charts"}">{_T string="Charts"}</a></li>
+            <li class="mnu_last{if $cur_route eq "charts"} selected{/if}"><a href="{urlFor name="charts"}" title="{_T string="Various charts"}">{_T string="Charts"}</a></li>
   {else}
             <li{if $PAGENAME eq "gestion_contributions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_contributions.php" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
             <li{if $PAGENAME eq "gestion_transactions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter all my transactions"}">{_T string="My transactions"}</a></li>
@@ -189,5 +189,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {block name="content"}{_T string="Page content"}{/block}
     </div>
     {include file="footer.tpl"}
+    {block name="javascripts"}{/block}
 </body>
 </html>
