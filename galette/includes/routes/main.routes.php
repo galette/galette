@@ -36,6 +36,7 @@
  */
 
 use Galette\Core\Picture;
+use Galette\Core\SysInfos;
 use Galette\Entity\Adherent;
 
 //main route
@@ -79,3 +80,19 @@ $app->get(
     }
 )->name('photo');
 
+//system informations
+$app->get(
+    '/sysinfos',
+    function () use ($app) {
+        $sysinfos = new SysInfos();
+        $sysinfos->grab();
+
+        $app->render(
+            'sysinfos.tpl',
+            array(
+                'page_title'    => _T("System informations"),
+                'rawinfos'      => $sysinfos->getRawData()
+            )
+        );
+    }
+)->name('sysinfos');
