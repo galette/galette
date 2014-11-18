@@ -114,7 +114,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $cur_route eq "groups"} class="selected"{/if}><a href="{urlFor name="groups"}" title="{_T string="View and manage groups"}">{_T string="Manage groups"}</a></li>
   {/if}
   {if $login->isAdmin() or $login->isStaff()}
-            <li{if $PAGENAME eq "gestion_contributions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_contributions.php?id_adh=all" title="{_T string="View and filter contributions"}">{_T string="List of contributions"}</a></li>
+            <li{if $cur_route eq "contributions"} class="selected"{/if}><a href="{urlFor name="contributions"}" title="{_T string="View and filter contributions"}">{_T string="List of contributions"}</a></li>
             <li{if $PAGENAME eq "gestion_transactions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter transactions"}">{_T string="List of transactions"}</a></li>
             <li{if $PAGENAME eq "ajouter_adherent.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_adherent.php" title="{_T string="Add new member in database"}">{_T string="Add a member"}</a></li>
             <li{if $PAGENAME eq "ajouter_contribution.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_contribution.php" title="{_T string="Add new contribution in database"}">{_T string="Add a contribution"}</a></li>
@@ -126,7 +126,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $PAGENAME eq "import.php" or $PAGENAME eq "import_model.php"} class="selected"{/if}><a href="{$galette_base_path}import.php" title="{_T string="Import members from CSV files"}">{_T string="Imports"}</a></li>
             <li class="mnu_last{if $cur_route eq "charts"} selected{/if}"><a href="{urlFor name="charts"}" title="{_T string="Various charts"}">{_T string="Charts"}</a></li>
   {else}
-            <li{if $PAGENAME eq "gestion_contributions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_contributions.php" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
+            <li{if $cur_route eq "contributions"} class="selected"{/if}><a href="{urlFor name="contributions"}" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
             <li{if $PAGENAME eq "gestion_transactions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter all my transactions"}">{_T string="My transactions"}</a></li>
   {/if}
   {if !$login->isSuperAdmin()}
