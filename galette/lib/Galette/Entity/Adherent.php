@@ -1265,7 +1265,7 @@ class Adherent
         );
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
-            'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass'
+            'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass', 'saddress'
         );
         $rname = '_' . $name;
         if ( !in_array($name, $forbidden) && isset($this->$rname)) {
@@ -1323,6 +1323,13 @@ class Adherent
                     $sfn = $this->_title->tshort . ' ' . $sfn;
                 }
                 return $sfn;
+                break;
+            case 'saddress':
+                $address = $this->_address;
+                if ( $this->_address_continuation !== '' ) {
+                    $address .= "\n" . $this->_address_continuation;
+                }
+                return $address;
                 break;
             case 'sname':
                 return mb_strtoupper($this->_name, 'UTF-8') .

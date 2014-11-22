@@ -178,6 +178,10 @@ $tpl->assign('dynamic_fields', $dynamic_fields);
 $tpl->assign('groups', Groups::getSimpleList());
 $tpl->assign('visibles', $visibles);
 $tpl->assign('time', time());
+
+$display_elements = $fc->getDisplayElements();
+$tpl->assign('display_elements', $display_elements);
+
 //if we got a mail warning when adding/editing a member,
 //we show it and delete it from session
 if ( isset($session['mail_warning']) ) {

@@ -121,6 +121,15 @@ class FieldsConfig
         'date_modif_adh'
     );
 
+    private $_non_display_elements = array(
+        'date_echeance',
+        'mdp_adh',
+        'titre_adh',
+        'sexe_adh',
+        'prenom_adh',
+        'adresse2_adh'
+    );
+
     /**
      * Default constructor
      *
@@ -475,6 +484,73 @@ class FieldsConfig
             'fieldsets' => $this->_form_elements,
             'hiddens'   => $this->_hidden_elements
         );
+    }
+
+    /**
+     * Retrieve display elements
+     *
+     * @return array
+     */
+    public function getDisplayElements()
+    {
+        global $log, $login, $members_fields_cats;
+
+        $display_elements = array();
+
+        if ( !count($this->_form_elements) > 0 ) {
+            $categories = FieldsCategories::getList();
+            try {
+                foreach ( $categories as $c ) {
+                    $cpk = FieldsCategories::PK;
+                    $cat_label = null;
+                    foreach ($members_fields_cats as $conf_cat) {
+                        if ( $conf_cat['id'] == $c->$cpk ) {
+                            $cat_label = $conf_cat['category'];
+                            break;
+                        }
+                    }
+                    if ( $cat_label === null ) {
+                        $cat_label = $c->category;
+                    }
+                    $cat = (object) array(
+                        'id' => $c->$cpk,
+                        'label' => $cat_label,
+                        'elements' => array()
+                    );
+
+                    $elements = $this->_categorized_fields[$c->$cpk];
+                    $cat->elements = array();
+
+                    foreach ( $elements as $elt ) {
+                        $o = (object)$elt;
+
+                        if ( in_array($o->field_id, $this->_non_display_elements) ) {
+                            continue;
+                        }
+
+                        if ( !($o->visible == self::ADMIN
+                            && (!$login->isAdmin() && !$login->isStaff()) )
+                        ) {
+                            if ( $o->visible == self::HIDDEN ) {
+                                continue;
+                            }
+
+                            $cat->elements[$o->field_id] = $o;
+                        }
+                    }
+
+                    if ( count($cat->elements) > 0 ) {
+                        $display_elements[] = $cat;
+                    }
+                }
+            } catch ( Exception $e ) {
+                $log->log(
+                    'An error occured getting display elements',
+                    Analog::ERROR
+                );
+            }
+        }
+        return $display_elements;
     }
 
     /**
