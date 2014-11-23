@@ -126,8 +126,8 @@ if ( isset($session['filters']['members']) ) {
     $filters = new MembersList();
 }
 
-if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
-    $m = new Members();
+if ( ($login->isAdmin() || $login->isStaff()) ) {
+    $m = new Members($filters);
     $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
     $ids = $ids->toArray();
     foreach ( $ids as $k=>$m ) {
