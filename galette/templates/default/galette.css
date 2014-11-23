@@ -2075,6 +2075,7 @@ td.photo img{
     margin-top:.3em;
     padding:.1em .2em;
     vertical-align: middle;
+    cursor: move;
 }
 
 .yesno > input, .yesnoadmin > input {
