@@ -452,7 +452,7 @@ $app->get(
         }
 
         if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
-            $m = new Members();
+            $m = new Members($filters);
             $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
             $ids = $ids->toArray();
             foreach ( $ids as $k=>$m ) {
@@ -504,6 +504,8 @@ $app->get(
         $fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
         $visibles = $fc->getVisibilities();
 
+        $display_elements = $fc->getDisplayElements();
+
         $app->render(
             'voir_adherent.tpl',
             array(
@@ -518,7 +520,8 @@ $app->get(
                 'dynamic_fields'    => $dynamic_fields,
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
-                'visibles'          => $visibles
+                'visibles'          => $visibles,
+                'display_elements'  => $display_elements
             )
         );
 

@@ -112,7 +112,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                         <img src="{$galette_base_path}{$template_subdir}images/icon-female.png" alt="{_T string="[W]"}" width="16" height="16"/>
                         {/if}
                     {elseif $element->field_id eq 'pref_lang'}
-                        <img src="{$pref_lang_img}" alt=""/>
+                        <img src="{$galette_base_path}{$pref_lang_img}" alt=""/>
                     {/if}
                     {if $element->field_id eq 'email_adh' or $element->field_id eq 'msn_adh'}
                         <a href="mailto:{$value}">{$value}</a>
@@ -123,9 +123,10 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     {/if}
                 </td>
         {if $display_element@first and $element@first}
+            {assign var="mid" value=$member->id}
                 <td rowspan="{$elements|count}" style="width:{$member->picture->getOptimalWidth()}px;">
                     <img
-                        src="{$galette_base_path}picture.php?id_adh={$member->id}&amp;rand={$time}"
+                        src="{urlFor name="photo" options="id.$mid|rand.$time"}"
                         width="{$member->picture->getOptimalWidth()}"
                         height="{$member->picture->getOptimalHeight()}"
                         alt="{_T string="Picture"}"
@@ -142,10 +143,10 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     <a href="{if $login->isGroupManager($kgroup)}gestion_groupes.php?id_group={$kgroup}{else}#{/if}" class="button group-btn{if not $login->isGroupManager($kgroup)} notmanaged{/if}">
                         {$group}
             {if $member->isGroupMember($group)}
-                        <img src="{$template_subdir}images/icon-user.png" alt="{_T string="[member]"}" width="16" height="16"/>
+                        <img src="{$galette_base_path}{$template_subdir}images/icon-user.png" alt="{_T string="[member]"}" width="16" height="16"/>
             {/if}
             {if $member->isGroupManager($group)}
-                        <img src="{$template_subdir}images/icon-star.png" alt="{_T string="[manager]"}" width="16" height="16"/>
+                        <img src="{$galette_base_path}{$template_subdir}images/icon-star.png" alt="{_T string="[manager]"}" width="16" height="16"/>
             {/if}
                     </a>
         {/if}
