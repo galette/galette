@@ -37,6 +37,9 @@
             <input type="checkbox" name="show_dashboard" id="show_dashboard" value="1"{if $show_dashboard} checked="checked"{/if}/>
             <label for="show_dashboard">{_T string="Show dashboard on login"}</label>
         </p>
+{/block}
+
+{block name="javascripts"}
         <script>
             $(function() {
                 $('#show_dashboard').change(function(){

@@ -440,6 +440,9 @@
         </div>
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
         </form>
+{/block}
+
+{block name="javascripts"}
         <script type="text/javascript">
             $('#prefs_tabs').tabs();
 

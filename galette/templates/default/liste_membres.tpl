@@ -91,7 +91,12 @@
     {/foreach}
             </tbody>
         </table>
-
+{else}
+    <div id="infobox">{_T string="No member to show"}</div>
+{/if}
+{/block}
+{block name="javascripts"}{/block}
+    {if $members|@count > 0}
         <script type="text/javascript">
             $(function(){
                 $('#nbshow').change(function() {
@@ -99,7 +104,5 @@
                 });
             });
         </script>
-{else}
-    <div id="infobox">{_T string="No member to show"}</div>
-{/if}
+    {/if}
 {/block}

@@ -76,5 +76,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {include file="global_messages.tpl"}
         {block name="content"}{_T string="Public page content"}{/block}
         {include file="footer.tpl"}
+        {block name="javascripts"}{/block}
     </body>
 </html>

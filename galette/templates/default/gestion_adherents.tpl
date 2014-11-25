@@ -313,6 +313,9 @@
             </table>
         </div>
 {/if}
+{/block}
+
+{block name="javascripts"}
         <script type="text/javascript">
 {if $nb_members != 0}
         var _is_checked = true;

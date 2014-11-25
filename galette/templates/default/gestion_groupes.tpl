@@ -32,6 +32,9 @@
         <input type="submit" name="pdf" value="{_T string="Export as PDF"}" title="{_T string="Export all groups and their members as PDF"}"/>
     </div>
 </form>
+{/block}
+
+{block name="javascripts"}
 <script type="text/javascript">
     $(function() {
         var _mode;

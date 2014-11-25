@@ -161,7 +161,9 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {include file="display_dynamic_fields.tpl" is_form=false}
         <a href="#" id="back2top">{_T string="Back to top"}</a>
     </div>
-{if $login->isAdmin() or $login->isStaff() or $login->login eq $member->login}
+{/block}
+{block name="javascripts"}
+    {if $login->isAdmin() or $login->isStaff() or $login->login eq $member->login}
     <script type="text/javascript">
         $(function() {
             {include file="photo_dnd.tpl"}
@@ -183,5 +185,5 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             });
         });
     </script>
-{/if}
+    {/if}
 {/block}
