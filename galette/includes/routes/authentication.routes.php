@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Authentication routes
+ * Authentication related routes
  *
  * PHP version 5
  *

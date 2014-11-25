@@ -697,7 +697,6 @@ $app->get(
     }
 )->name('contributions');
 
-
 $app->run();
 
 if ( isset($profiler) ) {
