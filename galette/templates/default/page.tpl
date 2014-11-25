@@ -147,7 +147,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <h1 class="nojs">{_T string="Configuration"}</h1>
         <ul>
             <li{if $cur_route eq "preferences"} class="selected"{/if}><a href="{urlFor name="preferences"}" title="{_T string="Set applications preferences (address, website, member's cards configuration, ...)"}">{_T string="Settings"}</a></li>
-            <li{if $PAGENAME eq "plugins.php"} class="selected"{/if}><a href="{$galette_base_path}plugins.php" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a></li>
+            <li{if $cur_route eq "plugins"} class="selected"{/if}><a href="{urlFor name="plugins"}" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a></li>
             <li{if $PAGENAME eq "config_fields.php"} class="selected"{/if}><a href="{$galette_base_path}config_fields.php" title="{_T string="Customize fields order, set which are required, and for who they're visibles"}">{_T string="Customize fields"}</a></li>
             <li{if $PAGENAME eq "configurer_fiches.php" or $PAGENAME eq "editer_champ.php"} class="selected"{/if}><a href="{$galette_base_path}configurer_fiches.php" title="{_T string="Manage additional fields for various forms"}">{_T string="Configure member forms"}</a></li>
             <li{if $PAGENAME eq "traduire_libelles.php"} class="selected"{/if}><a href="{$galette_base_path}traduire_libelles.php" title="{_T string="Translate additionnals fields labels"}">{_T string="Translate labels"}</a></li>

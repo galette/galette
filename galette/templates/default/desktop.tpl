@@ -15,7 +15,7 @@
 {/if}
 {if $login->isAdmin()}
                 <a id="prefs" href="{urlFor name="preferences"}" title="{_T string="Set applications preferences (adress, website, member's cards configuration, ...)"}">{_T string="Settings"}</a>
-                <a id="plugins" href="{$galette_base_path}plugins.php" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a>
+                <a id="plugins" href="{urlFor name="plugins"}" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a>
 {/if}
             </div>
         </section>

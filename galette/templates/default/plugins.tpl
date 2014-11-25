@@ -1,3 +1,5 @@
+{extends file="page.tpl"}
+{block name="content"}
     <table class="listing">
         <!--<caption>{_T string="Active plugins"}</caption>-->
         <thead>
@@ -59,15 +61,17 @@
 {/foreach}
         </tbody>
     </table>
+{/block}
 
+{block name="javascripts"}
     <script type="text/javascript">
         $(function() {
-{if $GALETTE_MODE eq 'DEMO'}
+    {if $GALETTE_MODE eq 'DEMO'}
             $('.initdb, a.toggleActivation').click(function(){
                 alert('{_T string="Application runs under demo mode. This functionnality is not enabled, sorry." escape="js"}');
                 return false;
             });
-{else}
+    {else}
             var _initdb_dialog = function(res, _plugin){
                 var _title = '{_T string="Plugin database initialization: %name" escape="js"}';
                 var _el = $('<div id="initdb" title="' + _title.replace('%name', _plugin) + '"> </div>');
@@ -134,6 +138,7 @@
                 });
                 return false;
             })
-{/if}
+    {/if}
         });
     </script>
+{/block}

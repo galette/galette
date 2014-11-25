@@ -521,3 +521,60 @@ $app->get(
         );
     }
 )->name('charts');
+
+//plugins
+$app->get(
+    '/plugins',
+    $authenticate,
+    function () use ($app, $plugins) {
+
+        if ( GALETTE_MODE !== 'DEMO' ) {
+            $reload_plugins = false;
+            if ( isset($_GET['activate']) ) {
+                try {
+                    $plugins->activateModule($_GET['activate']);
+                    $success_detected[] = str_replace(
+                        '%name',
+                        $_GET['activate'],
+                        _T("Plugin %name has been enabled")
+                    );
+                    $reload_plugins = true;
+                } catch (Exception $e) {
+                    $error_detected[] = $e->getMessage();
+                }
+            }
+
+            if ( isset($_GET['deactivate']) ) {
+                try {
+                    $plugins->deactivateModule($_GET['deactivate']);
+                    $success_detected[] = str_replace(
+                        '%name',
+                        $_GET['deactivate'],
+                        _T("Plugin %name has been disabled")
+                    );
+                    $reload_plugins = true;
+                } catch (Exception $e) {
+                    $error_detected[] = $e->getMessage();
+                }
+            }
+
+            //If some plugins have been (de)activated, we have to reload
+            if ( $reload_plugins === true ) {
+                $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
+            }
+        }
+
+        $plugins_list = $plugins->getModules();
+        $disabled_plugins = $plugins->getDisabledModules();
+
+        $app->render(
+            'plugins.tpl',
+            array(
+                'page_title'            => _T("Plugins"),
+                'plugins_list'          => $plugins_list,
+                'plugins_disabled_list' => $disabled_plugins,
+                'require_dialog'        => true
+            )
+        );
+    }
+)->name('plugins');
