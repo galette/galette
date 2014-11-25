@@ -1091,6 +1091,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $fc = new \Galette\Entity\FieldsConfig(
                 \Galette\Entity\Adherent::TABLE,
                 $members_fields,
+                $members_fields_cats,
                 true
             );
             //$fc = new \Galette\Entity\FieldsCategories();

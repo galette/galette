@@ -209,7 +209,11 @@ class CsvIn extends Csv implements FileInterface
             $cnt_fields = count($this->_fields);
 
             //check required fields
-            $fc = new FieldsConfig(Adherent::TABLE, $this->_members_fields);
+            $fc = new FieldsConfig(
+                Adherent::TABLE,
+                $this->_members_fields,
+                $members_fields_cats
+            );
             $config_required = $fc->getRequired();
             $this->_required = array();
 
