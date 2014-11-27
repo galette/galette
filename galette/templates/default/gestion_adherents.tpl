@@ -13,7 +13,7 @@
 {/if}
 
 {block name="content"}
-        <form action="gestion_adherents.php" method="get" id="filtre">
+        <form action="{urlFor name="filter-memberslist"}" method="post" id="filtre">
         <div id="listfilter">
 {if !isset($adv_filters) || !$adv_filters}
             <label for="filter_str">{_T string="Search:"}&nbsp;</label>
