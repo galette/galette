@@ -83,6 +83,7 @@ $app->get(
 //system informations
 $app->get(
     '/sysinfos',
+    $authenticate($app),
     function () use ($app) {
         $sysinfos = new SysInfos();
         $sysinfos->grab();
