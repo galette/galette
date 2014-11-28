@@ -279,7 +279,7 @@ $app->get(
     }
 )->name('me');
 
-//mmbers card
+//members card
 $app->get(
     '/member/:id',
     $authenticate($app),
