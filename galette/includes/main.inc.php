@@ -145,23 +145,34 @@ $baseRedirect = function ($app) use ($login, &$session) {
     }
 };
 
+/**
+ * Get current URI
+ *
+ * @param app $app Slim application instance
+ *
+ * @return string
+ */
+function getCurrentUri($app)
+{
+    $curUri = str_replace(
+        'index.php',
+        '',
+        $app->request()->getRootUri()
+    );
+
+    //add ending / if missing
+    if ( $curUri === ''
+        || $curUri !== '/'
+        && substr($curUri, -1) !== '/'
+    ) {
+        $curUri .= '/';
+    }
+    return $curUri;
+};
+
 $app->hook(
     'slim.before.dispatch',
     function () use ($app, $error_detected, $warning_detected, $success_detected) {
-        $curUri = str_replace(
-            'index.php',
-            '',
-            $app->request()->getRootUri()
-        );
-
-        //add ending / if missing
-        if ( $curUri === ''
-            || $curUri !== '/'
-            && substr($curUri, -1) !== '/'
-        ) {
-            $curUri .= '/';
-        }
-
         $v = $app->view();
 
         $cur_route = $app->router()->getMatchedRoutes(
@@ -169,7 +180,7 @@ $app->hook(
             $app->request()->getPathInfo()
         )[0]->getName();
 
-        $v->setData('galette_base_path', $curUri);
+        $v->setData('galette_base_path', getCurrentUri($app));
         $v->setData('cur_route', $cur_route);
         $v->setData('require_tabs', null);
         $v->setData('require_cookie', null);
@@ -222,8 +233,9 @@ $app->error(
         $app->render(
             '500.tpl',
             array(
-                'page_title'    => _T("Error"),
-                'exception'     => $e
+                'page_title'        => _T("Error"),
+                'exception'         => $e,
+                'galette_base_path' => getCurrentUri($app)
             )
         );
     }
@@ -235,8 +247,9 @@ $app->notFound(
         $app->render(
             '404.tpl',
             array(
-                'page_title'    => _T("Page not found :("),
-                'cur_route'     => null
+                'page_title'        => _T("Page not found :("),
+                'cur_route'         => null,
+                'galette_base_path' => getCurrentUri($app)
             )
         );
     }
