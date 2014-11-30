@@ -41,6 +41,7 @@
 
 namespace Galette\IO;
 
+use Galette\Core\Preferences;
 use Galette\Entity\PdfModel;
 use Analog\Analog;
 
@@ -72,28 +73,29 @@ require_once GALETTE_TCPDF_PATH . '/tcpdf.php';
 class Pdf extends \TCPDF
 {
 
-    const FONT='DejaVuSans';
-    const FONT_SIZE=10;
+    const FONT = 'DejaVuSans';
+    const FONT_SIZE = 10;
 
+    private $_preferences;
     private $_model;
     private $_paginated = false;
 
     /**
      * Main constructor, set creator and author
      *
-     * @param PdfModel $model Related model
+     * @param Preferences $prefs Preferences
+     * @param PdfModel    $model Related model
      */
-    public function __construct($model = null)
+    public function __construct(Preferences $prefs, $model = null)
     {
-        global $preferences;
-
+        $this->_preferences = $prefs;
         parent::__construct('P', 'mm', 'A4', true, 'UTF-8');
         //set some values
         $this->SetCreator(PDF_CREATOR);
         $this->SetFont(self::FONT, '', self::FONT_SIZE);
         $name = preg_replace(
             '/%s/',
-            $preferences->pref_nom,
+            $this->_preferences->pref_nom,
             _T("Association %s")
         );
         $this->SetAuthor(
@@ -233,8 +235,6 @@ class Pdf extends \TCPDF
      */
     function Footer()
     {
-        global $preferences;
-
         $this->SetY(-20);
         if ( isset($this->_model) ) {
             $hfooter = '';
@@ -249,25 +249,52 @@ class Pdf extends \TCPDF
 
             $name = preg_replace(
                 '/%s/',
-                $preferences->pref_nom,
+                $this->_preferences->pref_nom,
                 _T("Association %s")
             );
 
             /** FIXME: get configured postal address */
-            $coordonnees_line1 = $name . ' - ' . $preferences->pref_adresse;
+            $coordonnees_line1 = $name . ' - ' . $this->_preferences->pref_adresse;
             /** FIXME: pref_adresse2 should be removed */
-            if ( trim($preferences->pref_adresse2) != '' ) {
-                $coordonnees_line1 .= ', ' . $preferences->pref_adresse2;
+            if ( trim($this->_preferences->pref_adresse2) != '' ) {
+                $coordonnees_line1 .= ', ' . $this->_preferences->pref_adresse2;
             }
-            $coordonnees_line2 = $preferences->pref_cp . ' ' . $preferences->pref_ville;
+            $coordonnees_line2 = $this->_preferences->pref_cp . ' ' .
+                $this->_preferences->pref_ville;
 
-            $this->Cell(0, 4, $coordonnees_line1, 0, 1, 'C', 0, $preferences->pref_website);
-            $this->Cell(0, 4, $coordonnees_line2, 0, 0, 'C', 0, $preferences->pref_website);
+            $this->Cell(
+                0,
+                4,
+                $coordonnees_line1,
+                0,
+                1,
+                'C',
+                0,
+                $this->_preferences->pref_website
+            );
+            $this->Cell(
+                0,
+                4,
+                $coordonnees_line2,
+                0,
+                0,
+                'C',
+                0,
+                $this->_preferences->pref_website
+            );
 
             if ( $this->_paginated ) {
                 $this->SetFont(self::FONT, '', self::FONT_SIZE - 3);
                 $this->Ln();
-                $this->Cell(0, 4, $this->getAliasRightShift().$this->PageNo() . '/' . $this->getAliasNbPages(), 0, 1, 'R');
+                $this->Cell(
+                    0,
+                    4,
+                    $this->getAliasRightShift() . $this->PageNo() .
+                    '/' . $this->getAliasNbPages(),
+                    0,
+                    1,
+                    'R'
+                );
             }
         }
     }
@@ -281,8 +308,6 @@ class Pdf extends \TCPDF
      */
     function PageHeader($title = null)
     {
-        global $preferences;
-
         if ( isset($this->_model) ) {
             $html = null;
             if ( trim($this->_model->hstyles) !== '' ) {
@@ -349,12 +374,12 @@ class Pdf extends \TCPDF
             $this->Cell(
                 0,
                 6,
-                $preferences->pref_nom,
+                $this->_preferences->pref_nom,
                 0,
                 1,
                 'L',
                 0,
-                $preferences->pref_website
+                $this->_preferences->pref_website
             );
             $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
 

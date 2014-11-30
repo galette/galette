@@ -76,13 +76,26 @@ class GroupsPdf extends Pdf
      */
     public function Header()
     {
-        $this->Cell(0, 10, _T("Members by groups"), 0, false, 'C', 0, '', 0, false, 'M', 'M');
+        $this->Cell(
+            0,
+            10,
+            _T("Members by groups"),
+            0,
+            false,
+            'C',
+            0,
+            '',
+            0,
+            false,
+            'M',
+            'M'
+        );
     }
 }
 
 $doc_title = _T("Members by groups");
 
-$pdf=new GroupsPdf();
+$pdf=new GroupsPdf($preferences);
 
 // Set document information
 $pdf->SetTitle($doc_title);
@@ -135,7 +148,14 @@ foreach ( $groups_list as $group ) {
         $managers[] = $m->sfullname;
     }
     if ( count($managers) > 0 ) {
-        $pdf->Cell(190, 4, _T("Managers:") . ' ' . implode(', ', $managers), 0, 1, 'R');
+        $pdf->Cell(
+            190,
+            4,
+            _T("Managers:") . ' ' . implode(', ', $managers),
+            0,
+            1,
+            'R'
+        );
     }
     $pdf->ln(3);
 

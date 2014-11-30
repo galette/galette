@@ -147,7 +147,7 @@ class PdfContribution
         }
         $this->_filename .= '.pdf';
 
-        $this->_pdf = new Pdf($this->_model);
+        $this->_pdf = new Pdf($prefs, $this->_model);
 
         $this->_pdf->Open();
 

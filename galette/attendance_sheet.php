@@ -132,7 +132,7 @@ if ( isset($_POST['sheet_type']) && trim($_POST['sheet_type']) != '' ) {
     $doc_title = $_POST['sheet_type'];
 }
 
-$pdf=new SheetPdf();
+$pdf=new SheetPdf($preferences);
 $pdf->doc_title = $doc_title;
 if ( isset($_POST['sheet_title']) && trim($_POST['sheet_title']) != '' ) {
     $pdf->sheet_title = $_POST['sheet_title'];
