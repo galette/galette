@@ -76,7 +76,7 @@ class Pdf extends \TCPDF
     const FONT = 'DejaVuSans';
     const FONT_SIZE = 10;
 
-    private $_preferences;
+    protected $preferences;
     private $_model;
     private $_paginated = false;
 
@@ -88,14 +88,14 @@ class Pdf extends \TCPDF
      */
     public function __construct(Preferences $prefs, $model = null)
     {
-        $this->_preferences = $prefs;
+        $this->preferences = $prefs;
         parent::__construct('P', 'mm', 'A4', true, 'UTF-8');
         //set some values
         $this->SetCreator(PDF_CREATOR);
         $this->SetFont(self::FONT, '', self::FONT_SIZE);
         $name = preg_replace(
             '/%s/',
-            $this->_preferences->pref_nom,
+            $this->preferences->pref_nom,
             _T("Association %s")
         );
         $this->SetAuthor(
@@ -249,18 +249,18 @@ class Pdf extends \TCPDF
 
             $name = preg_replace(
                 '/%s/',
-                $this->_preferences->pref_nom,
+                $this->preferences->pref_nom,
                 _T("Association %s")
             );
 
             /** FIXME: get configured postal address */
-            $coordonnees_line1 = $name . ' - ' . $this->_preferences->pref_adresse;
+            $coordonnees_line1 = $name . ' - ' . $this->preferences->pref_adresse;
             /** FIXME: pref_adresse2 should be removed */
-            if ( trim($this->_preferences->pref_adresse2) != '' ) {
-                $coordonnees_line1 .= ', ' . $this->_preferences->pref_adresse2;
+            if ( trim($this->preferences->pref_adresse2) != '' ) {
+                $coordonnees_line1 .= ', ' . $this->preferences->pref_adresse2;
             }
-            $coordonnees_line2 = $this->_preferences->pref_cp . ' ' .
-                $this->_preferences->pref_ville;
+            $coordonnees_line2 = $this->preferences->pref_cp . ' ' .
+                $this->preferences->pref_ville;
 
             $this->Cell(
                 0,
@@ -270,7 +270,7 @@ class Pdf extends \TCPDF
                 1,
                 'C',
                 0,
-                $this->_preferences->pref_website
+                $this->preferences->pref_website
             );
             $this->Cell(
                 0,
@@ -280,7 +280,7 @@ class Pdf extends \TCPDF
                 0,
                 'C',
                 0,
-                $this->_preferences->pref_website
+                $this->preferences->pref_website
             );
 
             if ( $this->_paginated ) {
@@ -374,12 +374,12 @@ class Pdf extends \TCPDF
             $this->Cell(
                 0,
                 6,
-                $this->_preferences->pref_nom,
+                $this->preferences->pref_nom,
                 0,
                 1,
                 'L',
                 0,
-                $this->_preferences->pref_website
+                $this->preferences->pref_website
             );
             $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
 
