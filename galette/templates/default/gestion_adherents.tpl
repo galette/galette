@@ -91,7 +91,7 @@
                     <th class="id_row">#</th>
 {/if}
                     <th class="left">
-                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_NAME;{/php}">
+                        <a href="{urlFor name="members" options=["option" => 'order', "value" => "Galette\Repository\Members::ORDERBY_NAME"|constant]}">
                             {_T string="Name"}
                             {if $filters->orderby eq constant('galette\Repository\Members::ORDERBY_NAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -103,7 +103,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_NICKNAME;{/php}">
+                        <a href="{urlFor name="members" options=["option" => 'order', "value" => "Galette\Repository\Members::ORDERBY_NICKNAME"|constant]}">
                             {_T string="Nickname"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NICKNAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -115,7 +115,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_STATUS;{/php}">
+                        <a href="{urlFor name="members" options=["option" => 'order', "value" => "Galette\Repository\Members::ORDERBY_STATUS"|constant]}">
                             {_T string="Status"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_STATUS')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -128,7 +128,7 @@
                     </th>
 {if $login->isAdmin() or $login->isStaff()}
                     <th class="left">
-                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_FEE_STATUS;{/php}">
+                        <a href="{urlFor name="members" options=["option" => 'order', "value" => "Galette\Repository\Members::ORDERBY_FEE_STATUS"|constant]}">
                             {_T string="State of dues"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_FEE_STATUS')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -140,7 +140,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_MODIFDATE;{/php}">
+                        <a href="{urlFor name="members" options=["option" => 'order', "value" => "Galette\Repository\Members::ORDERBY_MODIFDATE"|constant]}">
                             {_T string="Modified"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_MODIFDATE')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}

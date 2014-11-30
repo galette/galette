@@ -37,6 +37,7 @@
 
 namespace Galette\Core;
 
+use Slim\Slim;
 use Analog\Analog;
 
 /**
@@ -205,15 +206,15 @@ abstract class Pagination
      * Creates pagination links and assign some usefull variables to the
      * Smarty template
      *
-     * @param Smarty  $tpl        Smarty template
+     * @param Slim    $app        Application instance
+     * @param Smarty  $view       View instance
      * @param boolean $restricted Do not permit to display all
      *
      * @return void
      */
-    public function setSmartyPagination($tpl, $restricted = true)
+    public function setSmartyPagination(Slim $app, Smarty $view, $restricted = true)
     {
         $paginate = null;
-        $tabs = "\t\t\t\t\t\t";
 
         //Create pagination links
         if ( $this->current_page < 11 ) {
@@ -231,36 +232,52 @@ abstract class Pagination
         $previous = $this->current_page - 1;
 
         if ( $this->current_page != 1 ) {
-            $paginate .= "\n" . $tabs . "<li><a href=\"?page=1\" title=\"" .
-                _T("First page") . "\">&lt;&lt;</a></li>\n";
-            $paginate .= $tabs . "<li><a href=\"?page=" . $previous . "\" title=\"" .
-                preg_replace("(%i)", $previous, _T("Previous page (%i)")) .
-                "\">&lt;</a></li>\n";
+            $paginate .= $this->_getLink(
+                '&lt;&lt;',
+                $this->_getHref($app, 1),
+                preg_replace("(%i)", $next, _T("First page"))
+            );
+
+            $paginate .= $this->_getLink(
+                '&lt;',
+                $this->_getHref($app, $previous),
+                preg_replace("(%i)", $previous, _T("Previous page (%i)"))
+            );
         }
 
         for ( $i = $idepart ; $i <= $ifin ; $i++ ) {
             if ( $i == $this->current_page ) {
-                $paginate .= $tabs . "<li class=\"current\"><a href=\"#\" title=\"" .
-                    preg_replace("(%i)", $this->current_page, _T("Current page (%i)")) .
-                    "\">-&nbsp;$i&nbsp;-</a></li>\n";
+                $paginate .= $this->_getLink(
+                    "-&nbsp;$i&nbsp;-",
+                    $this->_getHref($app, $this->current_page),
+                    preg_replace(
+                        "(%i)",
+                        $this->current_page,
+                        _T("Current page (%i)")
+                    ),
+                    true
+                );
             } else {
-                $paginate .= $tabs . "<li><a href=\"?page=" . $i . "\" title=\"" .
-                    preg_replace("(%i)", $i, _T("Page %i")) . "\">" . $i . "</a></li>\n";
+                $paginate .= $this->_getLink(
+                    $i,
+                    $this->_getHref($app, $i),
+                    preg_replace("(%i)", $i, _T("Page %i"))
+                );
             }
         }
         if ($this->current_page != $this->pages ) {
-            $paginate .= $tabs . "<li><a href=\"?page=" . $next . "\" title=\"" .
-                preg_replace("(%i)", $next, _T("Next page (%i)")) . "\">&gt;</a></li>\n";
-            $paginate .= $tabs . "<li><a href=\"?page=" . $this->pages . "\" title=\"" .
-                preg_replace("(%i)", $this->pages, _T("Last page (%i)")) .
-                "\">&gt;&gt;</a></li>\n";
-        }
+            $paginate .= $this->_getLink(
+                '&gt;',
+                $this->_getHref($app, $next),
+                preg_replace("(%i)", $next, _T("Next page (%i)"))
+            );
 
-        //Now, we assign common variables to Smarty template
-        $tpl->assign('nb_pages', $this->pages);
-        $tpl->assign('page', $this->current_page);
-        $tpl->assign('numrows', $this->show);
-        $tpl->assign('pagination', $paginate);
+            $paginate .= $this->_getLink(
+                '&gt;&gt;',
+                $this->_getHref($app, $this->pages),
+                preg_replace("(%i)", $this->pages, _T("Last page (%i)"))
+            );
+        }
 
         $options = array(
             10 => "10",
@@ -273,10 +290,58 @@ abstract class Pagination
             $options[0] = _T("All");
         }
 
-        $tpl->assign(
-            'nbshow_options',
-            $options
+        //Now, we assign common variables to Smarty template
+        $view->setData(
+            array(
+                'nb_pages'          => $this->pages,
+                'page'              => $this->current_page,
+                'numrows'           => $this->show,
+                'pagination'        => $paginate,
+                'nbshow_options'    => $options
+            )
         );
+    }
+
+    /**
+     * Get a pagination link
+     *
+     * @param string $content Links content
+     * @param string $url     URL the link to point on
+     * @param string $title   Link's title
+     * @param bool   $current Is current page
+     *
+     * @return string
+     */
+    private function _getLink($content, $url, $title, $current = false)
+    {
+        $tabs = "\t\t\t\t\t\t";
+        $link = $tabs . "<li";
+        if ( $current === true ) {
+            $link .= " class=\"current\" ";
+        }
+        $link .= "><a href=\"" . $url . "\" " .
+            "title=\"" . $title . "\">" . $content . "</a></li>\n";
+        return $link;
+    }
+
+    /**
+     * Build href
+     *
+     * @param Slim $app  Application instance
+     * @param int  $page Page
+     *
+     * @return string
+     */
+    private function _getHref($app, $page)
+    {
+        $view = $app->view();
+        $href = $app->urlFor(
+            $view->getData('cur_route'), [
+                'option'    => 'page',
+                'value'     => $page
+            ]
+        );
+        return $href;
     }
 
     /**

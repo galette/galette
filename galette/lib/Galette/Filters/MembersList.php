@@ -38,6 +38,7 @@
 namespace Galette\Filters;
 
 use Analog\Analog;
+use Galette\Core\Smarty;
 use Galette\Core\Pagination;
 use Galette\Entity\Group;
 use Galette\Repository\Members;
@@ -287,7 +288,7 @@ class MembersList extends Pagination
      *
      * @return void
      */
-    public function setTplCommonsFilters($prefs, $tpl)
+    public function setViewCommonsFilters($prefs, Smarty $view)
     {
         $filter_options = array(
             Members::FILTER_NAME            => _T("Name"),
@@ -302,12 +303,12 @@ class MembersList extends Pagination
             $filter_options[Members::FILTER_NUMBER] = _T("Member number");
         }
 
-        $tpl->assign(
+        $view->setData(
             'filter_field_options',
             $filter_options
         );
 
-        $tpl->assign(
+        $view->setData(
             'filter_membership_options',
             array(
                 Members::MEMBERSHIP_ALL     => _T("All members"),
@@ -321,7 +322,7 @@ class MembersList extends Pagination
             )
         );
 
-        $tpl->assign(
+        $view->setData(
             'filter_accounts_options',
             array(
                 Members::ALL_ACCOUNTS       => _T("All accounts"),

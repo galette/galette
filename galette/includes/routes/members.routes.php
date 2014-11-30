@@ -125,17 +125,26 @@ $app->get(
 
 //members list
 $app->get(
-    '/members',
+    '/members(/:option/:value)',
     $authenticate($app),
-    function () use ($app, $login, &$session) {
-        /*if ( isset($session['filters']['members'])
-            && !isset($_POST['mailing'])
-            && !isset($_POST['mailing_new'])
-        ) {*/
+    function ($option = null, $value = null) use (
+        $app, $login, &$session
+    ) {
         if ( isset($session['filters']['members']) ) {
             $filters = unserialize($session['filters']['members']);
         } else {
             $filters = new MembersList();
+        }
+
+        if ( $option !== null ) {
+            switch ( $option ) {
+            case 'page':
+                $filters->current_page = (int)$value;
+                break;
+            case 'order':
+                $filters->orderby = $value;
+                break;
+            }
         }
 
         $members = new Members($filters);
@@ -150,12 +159,14 @@ $app->get(
         $groups = new Groups();
         $groups_list = $groups->getList();
 
-        $session['filters']['members'] = serialize($filters);
-
-        $smarty = $app->view()->getInstance();
+        $view = $app->view();
+        $smarty = $view->getInstance();
 
         //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($smarty);
+        $filters->setSmartyPagination($app, $view, false);
+        $filters->setViewCommonsFilters($view);
+
+        $session['filters']['members'] = serialize($filters);
 
         $app->render(
             'gestion_adherents.tpl',
@@ -167,32 +178,18 @@ $app->get(
                 'filter_groups_options' => $groups_list,
                 'nb_members'            => $members->getCount(),
                 'filters'               => $filters,
-                'filter_field_options'  => array(
-                    Members::FILTER_NAME            => _T("Name"),
-                    Members::FILTER_COMPANY_NAME    => _T("Company name"),
-                    Members::FILTER_ADDRESS         => _T("Address"),
-                    Members::FILTER_MAIL            => _T("Email,URL,IM"),
-                    Members::FILTER_JOB             => _T("Job"),
-                    Members::FILTER_INFOS           => _T("Infos")
-                ),
-                'filter_membership_options' => array(
-                    0 => _T("All members"),
-                    3 => _T("Up to date members"),
-                    1 => _T("Close expiries"),
-                    2 => _T("Latecomers"),
-                    4 => _T("Never contributed"),
-                    5 => _T("Staff members"),
-                    6 => _T("Administrators")
-                ),
-                'filter_accounts_options'   => array(
-                    0 => _T("All accounts"),
-                    1 => _T("Active accounts"),
-                    2 => _T("Inactive accounts")
-                )
+                'adv_filters'           => $filters instanceof AdvancedMembersList
             )
         );
     }
-)->name('members');
+)->name(
+    'members'
+)->conditions(
+    array(
+        'option'    => '(page|order)',
+        'value'     => '\d+'
+    )
+);
 
 //members list filtering
 $app->post(
@@ -250,6 +247,10 @@ $app->post(
                 && $request->post('group_filter') > 0
             ) {
                 $filters->group_filter = (int)$request->post('group_filter');
+            }
+            //number of rows to show
+            if ( $request->post('nbshow') !== null ) {
+                $filters->show = $request->post('nbshow');
             }
         }
 
