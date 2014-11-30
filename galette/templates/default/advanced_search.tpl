@@ -1,4 +1,7 @@
-        <form action="gestion_adherents.php" method="post" id="filtre">
+{extends file="page.tpl"}
+
+{block name="content"}
+        <form action="{urlFor name="filter-memberslist"}" method="post" id="filtre">
             <fieldset class="cssform large">
                 <legend class="ui-state-active ui-corner-top">{_T string="Simple search"}</legend>
                 <div>
@@ -219,6 +222,9 @@
                 <input type="submit" name="clear_adv_filter" class="inline" value="{_T string="Clear filter"}"/>
             </div>
         </form>
+{/block}
+
+{block name="javascripts"}
         <script type="text/javascript">
             var _newFilter = function(elt) {
                 elt.find('input').val('');
@@ -248,7 +254,7 @@
                     changeMonth: true,
                     changeYear: true,
                     showOn: 'button',
-                    buttonImage: './templates/default/images/calendar.png',
+                    buttonImage: '{$galette_base_path}{$template_subdir}images/calendar.png',
                     buttonImageOnly: true,
                     maxDate: '-0d',
                     yearRange: 'c-10:c+0',
@@ -258,7 +264,7 @@
                     changeMonth: true,
                     changeYear: true,
                     showOn: 'button',
-                    buttonImage: './templates/default/images/calendar.png',
+                    buttonImage: '{$galette_base_path}{$template_subdir}images/calendar.png',
                     buttonImageOnly: true,
                     yearRange: 'c-10:c+5',
                     buttonText: '{_T string="Select a date" escape="js"}'
@@ -277,3 +283,4 @@
                 _rmFilter();
             });
         </script>
+{/block}

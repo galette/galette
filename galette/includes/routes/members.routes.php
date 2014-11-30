@@ -39,8 +39,10 @@ use Galette\Entity\DynamicFields;
 use Galette\Core\PasswordImage;
 use Galette\Repository\Members;
 use Galette\Filters\MembersList;
+use Galette\Filters\AdvancedMembersList;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Politeness;
+use Galette\Entity\Contribution;
 use Galette\Repository\Groups;
 use Galette\Entity\Adherent;
 
@@ -160,7 +162,6 @@ $app->get(
         $groups_list = $groups->getList();
 
         $view = $app->view();
-        $smarty = $view->getInstance();
 
         //assign pagination variables to the template and add pagination links
         $filters->setSmartyPagination($app, $view, false);
@@ -211,6 +212,17 @@ $app->post(
             if ($filters instanceof AdvancedMembersList) {
                 $filters = new MembersList();
             }
+
+        } else if ( $request->post('clear_adv_filter') ) {
+            $session['filters']['members'] = null;
+            unset($session['filters']['members']);
+            $app->redirect(
+                $app->urlFor('advanced-search')
+            );
+        } else if ( $request->post('adv_criterias') ) {
+            $app->redirect(
+                $app->urlFor('advanced-search')
+            );
         } else {
             //string to filter
             if ( $request->post('filter_str') !== null ) { //filter search string
@@ -252,6 +264,66 @@ $app->post(
             if ( $request->post('nbshow') !== null ) {
                 $filters->show = $request->post('nbshow');
             }
+
+            if ( $request->post('advanced_filtering') !== null ) {
+                if ( !$filters instanceof AdvancedMembersList ) {
+                    $filters = new AdvancedMembersList($filters);
+                }
+                //Advanced filters
+                $posted = $request->post();
+                $filters->reinit();
+                unset($posted['advanced_filtering']);
+                $freed = false;
+                foreach ( $posted as $k=>$v ) {
+                    if ( strpos($k, 'free_', 0) === 0 ) {
+                        if ( !$freed ) {
+                            $i = 0;
+                            foreach ( $posted['free_field'] as $f ) {
+                                if ( trim($f) !== ''
+                                    && trim($posted['free_text'][$i]) !== ''
+                                ) {
+                                    $fs_search = $posted['free_text'][$i];
+                                    $log_op
+                                        = (int)$posted['free_logical_operator'][$i];
+                                    $qry_op
+                                        = (int)$posted['free_query_operator'][$i];
+                                    $fs = array(
+                                        'idx'       => $i,
+                                        'field'     => $f,
+                                        'search'    => $fs_search,
+                                        'log_op'    => $log_op,
+                                        'qry_op'    => $qry_op
+                                    );
+                                    $filters->free_search = $fs;
+                                }
+                                $i++;
+                            }
+                            $freed = true;
+                        }
+                    } else {
+                        switch($k) {
+                        case 'filter_field':
+                            $k = 'field_filter';
+                            break;
+                        case 'filter_membership':
+                            $k= 'membership_filter';
+                            break;
+                        case 'filter_account':
+                            $k = 'account_status_filter';
+                            break;
+                        case 'contrib_min_amount':
+                        case 'contrib_max_amount':
+                            if ( trim($v) !== '' ) {
+                                $v = (float)$v;
+                            } else {
+                                $v = null;
+                            }
+                            break;
+                        }
+                        $filters->$k = $v;
+                    }
+                }
+            }
         }
 
         $session['filters']['members'] = serialize($filters);
@@ -259,7 +331,6 @@ $app->post(
         $app->redirect(
             $app->urlFor($from)
         );
-
     }
 )->name('filter-memberslist');
 
@@ -393,4 +464,94 @@ $app->get(
 
     }
 )->name('member');
+
+//advanced search page
+$app->get(
+    '/advanced-search',
+    $authenticate($app),
+    function () use ($app, &$session, $members_fields, $members_fields_cats) {
+
+        if ( isset($session['filters']['members']) ) {
+            $filters = unserialize($session['filters']['members']);
+            if ( !$filters instanceof AdvancedMembersList ) {
+                $filters = new AdvancedMembersList($filters);
+            }
+        } else {
+            $filters = new AdvancedMembersList();
+        }
+
+        $groups = new Galette\Repository\Groups();
+        $groups_list = $groups->getList();
+
+        //we want only visibles fields
+        $fields = $members_fields;
+        $fc = new FieldsConfig(
+            Adherent::TABLE,
+            $members_fields,
+            $members_fields_cats
+        );
+        $visibles = $fc->getVisibilities();
+
+        foreach ( $fields as $k=>$f ) {
+            if ( $visibles[$k] == 0 ) {
+                unset($fields[$k]);
+            }
+        }
+
+        //dynamic fields
+        $df = new DynamicFields();
+        $dynamic_fields = $df->prepareForDisplay(
+            'adh',
+            array(),
+            array(),
+            0
+        );
+
+        $cdynamic_fields = $df->prepareForDisplay(
+            'contrib',
+            array(),
+            array(),
+            0
+        );
+
+        //Status
+        $statuts = new Galette\Entity\Status();
+
+        //Contributions types
+        $ct = new Galette\Entity\ContributionsTypes();
+
+        //Payments types
+        $pt = array(
+            Contribution::PAYMENT_OTHER         => _T("Other"),
+            Contribution::PAYMENT_CASH          => _T("Cash"),
+            Contribution::PAYMENT_CREDITCARD    => _T("Credit card"),
+            Contribution::PAYMENT_CHECK         => _T("Check"),
+            Contribution::PAYMENT_TRANSFER      => _T("Transfer"),
+            Contribution::PAYMENT_PAYPAL        => _T("Paypal")
+        );
+
+        $view = $app->view();
+        $filters->setViewCommonsFilters($view);
+
+        $app->render(
+            'advanced_search.tpl',
+            array(
+                'page_title'            => _T("Advanced search"),
+                'require_dialog'        => true,
+                'require_calendar'      => true,
+                'require_sorter'        => true,
+                'filter_groups_options' => $groups_list,
+                'search_fields'         => $fields,
+                'dynamic_fields'        => $dynamic_fields,
+                'cdynamic_fields'       => $cdynamic_fields,
+                'statuts'               => $statuts->getList(),
+                'contributions_types'   => $ct->getList(),
+                'filters'               => $filters,
+                'payments_types'        => $pt
+            )
+        );
+
+
+    }
+)->name('advanced-search');
 

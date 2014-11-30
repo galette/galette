@@ -110,7 +110,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
   {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}
             <li{if $cur_route eq "dashboard"} class="selected"{/if}><a href="{urlFor name="dashboard"}" title="{_T string="Go to Galette's dashboard"}">{_T string="Dashboard"}</a></li>
             <li{if $cur_route eq "members"} class="selected"{/if}><a href="{urlFor name="members"}" title="{_T string="View, search into and filter member's list"}">{_T string="List of members"}</a></li>
-            <li{if $PAGENAME eq "advanced_search.php"} class="selected"{/if}><a href="{$galette_base_path}advanced_search.php" title="{_T string="Perform advanced search into members list"}">{_T string="Advanced search"}</a></li>
+            <li{if $cur_route eq "advanced-search"} class="selected"{/if}><a href="{urlFor name="advanced-search"}" title="{_T string="Perform advanced search into members list"}">{_T string="Advanced search"}</a></li>
             <li{if $cur_route eq "groups"} class="selected"{/if}><a href="{urlFor name="groups"}" title="{_T string="View and manage groups"}">{_T string="Manage groups"}</a></li>
   {/if}
   {if $login->isAdmin() or $login->isStaff()}
