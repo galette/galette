@@ -46,6 +46,7 @@ use Galette\Entity\Contribution;
 use Galette\Repository\Groups;
 use Galette\Entity\Adherent;
 use Galette\IO\PdfMembersCards;
+use Galette\IO\PdfMembersLabels;
 
 //self subscription
 $app->get(
@@ -578,6 +579,13 @@ $app->post(
                     $app->urlFor('pdf-members-cards')
                 );
             }
+
+            if ( $request->post('labels') ) {
+                $app->redirect(
+                    $app->urlFor('pdf-members-labels')
+                );
+            }
+
         } else {
             $app->flash(
                 'error_detected',
@@ -664,3 +672,72 @@ $app->get(
         $pdf->Output(_T("Cards") . '.pdf', 'D');
     }
 )->name('pdf-members-cards');
+
+//PDF members labels
+$app->get(
+    '/members/labels',
+    $authenticate($app),
+    function () use ($app, $preferences, $session) {
+
+        if ( isset ($session['filters']['reminders_labels']) ) {
+            $filters =  unserialize($session['filters']['reminders_labels']);
+            unset($session['filters']['reminders_labels']);
+        } elseif ( isset($session['filters']['members']) ) {
+            $filters =  unserialize($session['filters']['members']);
+        } else {
+            $filters = new MembersList();
+        }
+
+        $request = $app->request();
+
+        $members = null;
+        if ( $request->get('from') !== null
+            && $request->get('from') === 'mailing'
+        ) {
+            //if we're from mailing, we have to retrieve
+            //its unreachables members for labels
+            $mailing = unserialize($session['mailing']);
+            $members = $mailing->unreachables;
+        } else {
+            if ( count($filters->selected) == 0 ) {
+                Analog::log('No member selected to generate labels', Analog::INFO);
+                $app->flash(
+                    'error_detected',
+                    array(
+                        _T("No member was selected, please check at least one name.")
+                    )
+                );
+                $app->redirect(
+                    $app->urlFor('members')
+                );
+            }
+
+            $m = new Members();
+            $members = $m->getArrayList(
+                $filters->selected,
+                array('nom_adh', 'prenom_adh')
+            );
+        }
+
+        if ( !is_array($members) || count($members) < 1 ) {
+            Analog::log(
+                'An error has occured, unable to get members list.',
+                Analog::ERROR
+            );
+
+            $app->flash(
+                'error_detected',
+                array(
+                    _T("Unable to get members list.")
+                )
+            );
+            $app->redirect(
+                $app->urlFor('members')
+            );
+        }
+
+        $pdf = new PdfMembersLabels($preferences);
+        $pdf->drawLabels($members);
+        $pdf->Output(_T("labels_print_filename") . '.pdf', 'D');
+    }
+)->name('pdf-members-labels');
