@@ -70,7 +70,7 @@
             </tr>
         </table>
         </form>
-        <form action="gestion_adherents.php" method="post" id="listform">
+        <form action="{urlFor name="batch-memberslist"}" method="post" id="listform">
         <table class="listing">
             <thead>
                 <tr>

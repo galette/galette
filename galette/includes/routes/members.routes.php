@@ -45,6 +45,7 @@ use Galette\Entity\Politeness;
 use Galette\Entity\Contribution;
 use Galette\Repository\Groups;
 use Galette\Entity\Adherent;
+use Galette\IO\PdfMembersCards;
 
 //self subscription
 $app->get(
@@ -555,3 +556,111 @@ $app->get(
     }
 )->name('advanced-search');
 
+//Batch actions on members list
+$app->post(
+    '/members/batch',
+    $authenticate($app),
+    function () use ($app, &$session) {
+        $request = $app->request();
+
+        if ( $request->post('member_sel') ) {
+            if ( isset($session['filters']['members']) ) {
+                $filters =  unserialize($session['filters']['members']);
+            } else {
+                $filters = new MembersList();
+            }
+
+            $filters->selected = $request->post('member_sel');
+            $session['filters']['members'] = serialize($filters);
+
+            if ( $request->post('cards') ) {
+                $app->redirect(
+                    $app->urlFor('pdf-members-cards')
+                );
+            }
+        } else {
+            $app->flash(
+                'error_detected',
+                array(
+                    _T("No member was selected, please check at least one name.")
+                )
+            );
+            $app->redirect(
+                $app->urlFor('members')
+            );
+        }
+    }
+)->name('batch-memberslist');
+
+//PDF members cards
+$app->get(
+    '/members/cards',
+    $authenticate($app),
+    function () use ($app, $preferences, $session) {
+        if ( isset($session['filters']['members']) ) {
+            $filters =  unserialize($session['filters']['members']);
+        } else {
+            $filters = new MembersList();
+        }
+
+        $request = $app->request();
+        if ( $request->get(Adherent::PK)
+            && $request->get(Adherent::PK) > 0
+        ) {
+            // If we are called from "voir_adherent.php" get unique id value
+            $unique = $request->get(Adherent::PK);
+        } else {
+            if ( count($filters->selected) == 0 ) {
+                Analog::log(
+                    'No member selected to generate members cards',
+                    Analog::INFO
+                );
+                $app->flash(
+                    'error_detected',
+                    array(
+                        _T("No member was selected, please check at least one name.")
+                    )
+                );
+                $app->redirect(
+                    $app->urlFor('members')
+                );
+            }
+        }
+
+        // Fill array $selected with selected ids
+        $selected = array();
+        if ( isset($unique) && $unique ) {
+            $selected[] = $unique;
+        } else {
+            $selected = $filters->selected;
+        }
+
+        $m = new Members();
+        $members = $m->getArrayList(
+            $selected,
+            array('nom_adh', 'prenom_adh'),
+            true
+        );
+
+        if ( !is_array($members) || count($members) < 1 ) {
+            Analog::log(
+                'An error has occured, unable to get members list.',
+                Analog::ERROR
+            );
+
+            $app->flash(
+                'error_detected',
+                array(
+                    _T("Unable to get members list.")
+                )
+            );
+            $app->redirect(
+                $app->urlFor('members')
+            );
+        }
+
+        $pdf = new PdfMembersCards($preferences);
+        $pdf->drawCards($members);
+        $pdf->Output(_T("Cards") . '.pdf', 'D');
+    }
+)->name('pdf-members-cards');
