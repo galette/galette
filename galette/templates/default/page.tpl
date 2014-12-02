@@ -120,8 +120,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $PAGENAME eq "ajouter_contribution.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_contribution.php" title="{_T string="Add new contribution in database"}">{_T string="Add a contribution"}</a></li>
             <li{if $PAGENAME eq "ajouter_transaction.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_transaction.php" title="{_T string="Add new transaction in database"}">{_T string="Add a transaction"}</a></li>
             <li{if $PAGENAME eq "reminder.php"} class="selected"{/if}><a href="{$galette_base_path}reminder.php" title="{_T string="Send reminders to late members"}">{_T string="Reminders"}</a></li>
-            <li{if $PAGENAME eq "history.php"} class="selected"{/if}><a href="{$galette_base_path}history.php" title="{_T string="View application's logs"}">{_T string="Logs"}</a></li>
-            <li{if $PAGENAME eq "gestion_mailings.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_mailings.php" title="{_T string="Manage mailings that has been sent"}">{_T string="Manage mailings"}</a></li>
+            <li{if $cur_route eq "history"} class="selected"{/if}><a href="{urlFor name="history"}" title="{_T string="View application's logs"}">{_T string="Logs"}</a></li>
+            <li{if $cur_route eq "mailings"} class="selected"{/if}><a href="{urlFor name="mailings"}" title="{_T string="Manage mailings that has been sent"}">{_T string="Manage mailings"}</a></li>
             <li{if $PAGENAME eq "export.php"} class="selected"{/if}><a href="{$galette_base_path}export.php" title="{_T string="Export some data in various formats"}">{_T string="Exports"}</a></li>
             <li{if $PAGENAME eq "import.php" or $PAGENAME eq "import_model.php"} class="selected"{/if}><a href="{$galette_base_path}import.php" title="{_T string="Import members from CSV files"}">{_T string="Imports"}</a></li>
             <li class="mnu_last{if $cur_route eq "charts"} selected{/if}"><a href="{urlFor name="charts"}" title="{_T string="Various charts"}">{_T string="Charts"}</a></li>

@@ -39,6 +39,8 @@ use Galette\Core\PrintLogo;
 use Galette\Core\GaletteMail;
 use Galette\Core\Preferences;
 use Galette\Core\Logo;
+use Galette\Core\History;
+use Galette\Core\MailingHistory;
 use Galette\Repository\Members;
 use Galette\IO\News;
 use Galette\IO\Charts;
@@ -578,3 +580,128 @@ $app->get(
         );
     }
 )->name('plugins');
+
+//galette logs
+$app->get(
+    '/logs(/:option/:value)',
+    $authenticate($app),
+    function ($option = null, $value = null) use ($app, $hist) {
+        if ( $option !== null ) {
+            switch ( $option ) {
+            case 'page':
+                $hist->current_page = (int)$value;
+                break;
+            case 'order':
+                $hist->tri = $value;
+                break;
+            case 'reset':
+                $hist->clean();
+                //reinitialize object after flush
+                $hist = new History();
+                break;
+            }
+        }
+
+        if ( $app->request()->get('nbshow') !== null ) {
+            $hist->show = $app->request()->get('nbshow');
+        }
+
+        $logs = array();
+
+        $logs = $hist->getHistory();
+        $session['history'] = serialize($hist);
+
+        $view = $app->view();
+
+        //assign pagination variables to the template and add pagination links
+        $hist->setSmartyPagination($app, $view);
+
+        $app->render(
+            'history.tpl',
+            array(
+                'page_title'        => _T("Logs"),
+                'logs'              => $logs,
+                'nb_lines'          => count($logs),
+                'history'           => $hist
+            )
+        );
+    }
+)->name(
+    'history'
+)->conditions(
+    array(
+        'option'    => '(page|order|reset)'
+    )
+);
+
+//mailings management
+$app->get(
+    '/mailings(/:option/:value)',
+    $authenticate($app),
+    function ($option = null, $value = null) use ($app) {
+        $request = $app->request();
+
+        $mailhist = new MailingHistory();
+
+        if ( $request->get('reset') !== null && $request->get('reset') == 1 ) {
+            $mailhist->clean();
+            //reinitialize object after flush
+            $mailhist = new MailingHistory();
+        }
+
+        //delete mailings
+        if ( $request->get('sup') !== null || $request->post('delete') !== null ) {
+            if ( $request->get('sup') !== null ) {
+                $mailhist->removeEntries($request->get('sup'));
+            } else if ( $request->post('member_sel') !== null ) {
+                $mailhist->removeEntries($request->post('member_sel'));
+            }
+        }
+
+        if ( $option !== null ) {
+            switch ( $option ) {
+            case 'page':
+                $mailhist->current_page = (int)$value;
+                break;
+            case 'order':
+                $mailhist->orderby = $value;
+                break;
+            }
+        }
+
+        if ( $request->get('nbshow') !== null
+            && is_numeric($request->get('nbshow'))
+        ) {
+            $mailhist->show = $request->get('nbshow');
+        }
+
+        if ( $request->get('order') !== null ) {
+            $mailhist->orderby = $request->get('order');
+        }
+
+        $history_list = array();
+        $history_list = $mailhist->getHistory();
+
+        $view = $app->view();
+
+        //assign pagination variables to the template and add pagination links
+        $mailhist->setSmartyPagination($app, $view);
+
+        $app->render(
+            'gestion_mailings.tpl',
+            array(
+                'page_title'        => _T("Mailings"),
+                'require_dialog'    => true,
+                'logs'              => $history_list,
+                'nb_lines'          => count($history_list),
+                'history'           => $mailhist
+            )
+        );
+    }
+)->name(
+    'mailings'
+)->conditions(
+    array(
+        'option'    => '(page|order)'
+    )
+);
