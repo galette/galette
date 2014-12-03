@@ -1,3 +1,5 @@
+{extends file="page.tpl"}
+{block name="content"}
 {if $pref_mail_method == constant('Galette\Core\Mailing::METHOD_DISABLED') and $GALETTE_MODE neq 'DEMO'}
         <div id="errorbox">
             <h1>{_T string="- ERROR -"}</h1>
@@ -113,6 +115,11 @@
             </section>
         </div>
         </form>
+{/if}
+{/block}
+
+{block name="javascripts"}
+{if ($pref_mail_method != constant('Galette\Core\Mailing::METHOD_DISABLED') or $GALETTE_MODE eq 'DEMO') and !isset($mailing_saved)}
     {if $mailing->current_step neq constant('Galette\Core\Mailing::STEP_SENT')}
 <script type="text/javascript">
     $(function() {
@@ -302,3 +309,4 @@
 </script>
     {/if}
 {/if}
+{/block}
