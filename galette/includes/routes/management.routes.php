@@ -49,7 +49,7 @@ use \Analog\Analog;
 //galette's dashboard
 $app->get(
     '/dashboard',
-    $authenticate($app),
+    $authenticate(),
     function () use ($app, $preferences) {
         $news = new News($preferences->pref_rss_url);
 
@@ -69,7 +69,7 @@ $app->get(
 //preferences page
 $app->get(
     '/preferences',
-    $authenticate($app),
+    $authenticate(),
     function () use ($app, $login, $preferences, $i18n, &$session) {
 
         $print_logo = new PrintLogo();
@@ -155,7 +155,7 @@ $app->get(
 //preferences procedure
 $app->post(
     '/preferences',
-    $authenticate($app),
+    $authenticate(),
     function () use ($app, $preferences, $login, $logo, &$session) {
         // Validation
         if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
@@ -501,7 +501,7 @@ $app->post(
 //charts
 $app->get(
     '/charts',
-    $authenticate,
+    $authenticate(),
     function () use ($app) {
         $charts = new Charts(
             array(
@@ -527,7 +527,7 @@ $app->get(
 //plugins
 $app->get(
     '/plugins',
-    $authenticate,
+    $authenticate(),
     function () use ($app, $plugins) {
 
         if ( GALETTE_MODE !== 'DEMO' ) {
@@ -584,7 +584,7 @@ $app->get(
 //galette logs
 $app->get(
     '/logs(/:option/:value)',
-    $authenticate($app),
+    $authenticate(),
     function ($option = null, $value = null) use ($app, $hist) {
         if ( $option !== null ) {
             switch ( $option ) {
@@ -637,7 +637,7 @@ $app->get(
 //mailings management
 $app->get(
     '/mailings(/:option/:value)',
-    $authenticate($app),
+    $authenticate(),
     function ($option = null, $value = null) use ($app) {
         $request = $app->request();
 

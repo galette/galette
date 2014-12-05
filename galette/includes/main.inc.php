@@ -97,8 +97,13 @@ Route::setDefaultConditions(
 $smarty = $app->view()->getInstance();
 require_once GALETTE_ROOT . 'includes/smarty.inc.php';
 
-$authenticate = function ($app) use (&$session) {
-    return function () use ($app, &$session) {
+$acls = [
+    'preferences'   => 'admin',
+    'dashboard'     => 'staff'
+];
+
+$authenticate = function () use (&$session, $acls, $app) {
+    return function () use ($app, &$session, $acls) {
         if ( isset($session['login']) ) {
             $login = unserialize($session['login']);
         } else {
@@ -108,6 +113,65 @@ $authenticate = function ($app) use (&$session) {
             $session['urlRedirect'] = $app->request()->getPathInfo();
             $app->flash('error', _T("Login required"));
             $app->redirect($app->urlFor('slash'), 403);
+        } else {
+            //check for ACLs
+            $cur_route = getCurrentRoute($app);
+            if ( isset($acls[$cur_route]) ) {
+                $acl = $acls[$cur_route];
+                $go = false;
+                switch ( $acl ) {
+                case 'superadmin':
+                    if ( $login->isSuperAdmin() ) {
+                        $go = true;
+                    }
+                    break;
+                case 'admin':
+                    if ( $login->isSuperAdmin()
+                        || $login->isAdmin()
+                    ) {
+                        $go = true;
+                    }
+                    break;
+                case 'staff':
+                    if ( $login->isSuperAdmin()
+                        || $login->isAdmin()
+                        || $login->isStaff()
+                    ) {
+                        $go = true;
+                    }
+                    break;
+                case 'groupmanager':
+                    throw new \RuntimeException(
+                        'routemenager acl is not implemented yet.'
+                    );
+                    break;
+                default:
+                    throw new \RuntimeException(
+                        str_replace(
+                            '%acl',
+                            $acl,
+                            _T("Unknown ACL rule '%acl'!")
+                        )
+                    );
+                    break;
+                }
+                if ( !$go ) {
+                    $app->flash(
+                        'error_detected', [
+                            _T("You do not have permission for requested URL.")
+                        ]
+                    );
+                    $app->redirect($app->urlFor('slash'), 403);
+                }
+            } else {
+                throw new \RuntimeException(
+                    str_replace(
+                        '%name',
+                        $cur_route,
+                        _T("Route '%name' is not registered in ACLs!")
+                    )
+                );
+            }
         }
     };
 };
@@ -168,18 +232,63 @@ function getCurrentUri($app)
     return $curUri;
 };
 
+/**
+ * Retrieve current route name
+ *
+ * @param app $app Slim application instance
+ *
+ * @return string
+ */
+function getCurrentRoute($app)
+{
+    $cur_route = $app->router()->getMatchedRoutes(
+        'get',
+        $app->request()->getPathInfo()
+    )[0]->getName();
+    return $cur_route;
+}
+
 $app->hook(
     'slim.before.dispatch',
-    function () use ($app, $error_detected, $warning_detected, $success_detected) {
+    function () use ($app, $error_detected, $warning_detected, $success_detected,
+        $authenticate, $acls
+    ) {
+
+        if ( GALETTE_MODE === 'DEV' ) {
+            //check for routes that are not in ACLs
+            $named_routes = $app->router()->getNamedRoutes();
+            $missing_acls = [];
+            foreach ( $named_routes as $name=>$route ) {
+                //check if route has $authenticate middleware
+                $middlewares = $route->getMiddleware();
+                if ( count($middlewares) > 0 ) {
+                    foreach ( $middlewares as $middleware ) {
+                        if ( $middleware instanceof $authenticate ) {
+                            if ( !in_array($name, array_keys($acls)) ) {
+                                $missing_acls[] = $name;
+                            }
+                            continue;
+                        }
+                    }
+                }
+            }
+            if ( count($missing_acls) > 0 ) {
+                $msg = str_replace(
+                    '%routes',
+                    implode(', ', $missing_acls),
+                    _T("Routes '%routes' are missing in ACLs!")
+                );
+                Analog::log($msg, Analog::ERROR);
+                //FIXME: with flash(), message is only shown on the seconde round,
+                //with flashNow(), thas just does not work :(
+                $app->flash('error_detected', [$msg]);
+            }
+        }
+
         $v = $app->view();
 
-        $cur_route = $app->router()->getMatchedRoutes(
-            'get',
-            $app->request()->getPathInfo()
-        )[0]->getName();
-
         $v->setData('galette_base_path', getCurrentUri($app));
-        $v->setData('cur_route', $cur_route);
+        $v->setData('cur_route', getCurrentRoute($app));
         $v->setData('require_tabs', null);
         $v->setData('require_cookie', null);
         $v->setData('contentcls', null);
@@ -198,13 +307,18 @@ $app->hook(
         $v->setData('existing_mailing', null);
         $v->setData('html_editor', null);
 
+        //FIXME: no longer works, should be set with $app::flash()
         if ( isset($error_detected) ) {
             $v->setData('error_detected', $error_detected);
         }
+        //FIXME: no longer works, should be set with $app::flash()
         if (isset($warning_detected)) {
             $v->setData('warning_detected', $warning_detected);
         }
-
+        //FIXME: no longer works, should be set with $app::flash()
+        if (isset($success_detected)) {
+            $v->setData('success_detected', $success_detected);
+        }
     }
 );
 
@@ -260,7 +374,7 @@ $app->notFound(
 
 $app->get(
     '/groups',
-    $authenticate($app),
+    $authenticate(),
     function () use ($app, $login, &$session) {
 
         $groups = new Groups();
@@ -300,7 +414,7 @@ $app->get(
 
 $app->get(
     '/contributions',
-    $authenticate($app),
+    $authenticate(),
     function () use ($app, $login, &$session) {
 
         if ( isset($session['contributions'])) {

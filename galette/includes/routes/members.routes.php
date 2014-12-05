@@ -142,7 +142,7 @@ $app->get(
 //members list
 $app->get(
     '/members(/:option/:value)',
-    $authenticate($app),
+    $authenticate(),
     function ($option = null, $value = null) use (
         $app, $login, &$session
     ) {
@@ -209,7 +209,7 @@ $app->get(
 //members list filtering
 $app->post(
     '/members/filter',
-    $authenticate($app),
+    $authenticate(),
     function ($from = 'members') use ($app, &$session) {
         $request = $app->request();
 
@@ -351,7 +351,7 @@ $app->post(
 //members self card
 $app->get(
     '/member/me',
-    $authenticate($app),
+    $authenticate(),
     function () use ($app, $login) {
         $deps = array(
             'picture'   => false,
@@ -368,7 +368,7 @@ $app->get(
 //members card
 $app->get(
     '/member/:id',
-    $authenticate($app),
+    $authenticate(),
     function ($id) use ($app, $login, $session, $i18n, $preferences,
         $members_fields, $members_fields_cats
     ) {
@@ -482,7 +482,7 @@ $app->get(
 //advanced search page
 $app->get(
     '/advanced-search',
-    $authenticate($app),
+    $authenticate(),
     function () use ($app, &$session, $members_fields, $members_fields_cats) {
 
         if ( isset($session['filters']['members']) ) {
@@ -570,7 +570,7 @@ $app->get(
 //Batch actions on members list
 $app->post(
     '/members/batch',
-    $authenticate($app),
+    $authenticate(),
     function () use ($app, &$session) {
         $request = $app->request();
 
@@ -636,7 +636,7 @@ $app->post(
 //PDF members cards
 $app->get(
     '/members/cards',
-    $authenticate($app),
+    $authenticate(),
     function () use ($app, $preferences, $session) {
         if ( isset($session['filters']['members']) ) {
             $filters =  unserialize($session['filters']['members']);
@@ -709,7 +709,7 @@ $app->get(
 //PDF members labels
 $app->get(
     '/members/labels',
-    $authenticate($app),
+    $authenticate(),
     function () use ($app, $preferences, $session) {
 
         if ( isset ($session['filters']['reminders_labels']) ) {
@@ -778,7 +778,7 @@ $app->get(
 //mailing
 $app->get(
     '/mailing',
-    $authenticate($app),
+    $authenticate(),
     function () use ($app, $preferences, &$session,
         &$success_detected, &$warning_detected, &$error_detected
     ) {
@@ -1009,7 +1009,7 @@ $app->get(
 //members list CSV export
 $app->get(
     '/members/export/csv',
-    $authenticate($app),
+    $authenticate(),
     function () use ($app, $session, $login, $zdb,
         $members_fields, $members_fields_cats
     ) {
