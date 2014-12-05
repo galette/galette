@@ -56,7 +56,9 @@ use Galette\Repository\Titles;
 //self subscription
 $app->get(
     '/subscribe',
-    function () use ($app, $preferences, $login, $i18n) {
+    function () use ($app, $zdb, $preferences, $login, $i18n,
+        $members_fields, $members_fields_cats
+    ) {
         if ( !$preferences->pref_bool_selfsubscribe || $login->isLogged() ) {
             $app->redirect($app->urlFor('slash'));
         }
@@ -68,11 +70,15 @@ $app->get(
         $member->setSelfMembership();
 
         // flagging required fields
-        $fc = new FieldsConfig(Adherent::TABLE, $member->fields);
+        $fc = new FieldsConfig(
+            Adherent::TABLE,
+            $members_fields,
+            $members_fields_cats
+        );
         $required = $fc->getRequired();
         // flagging fields visibility
         $visibles = $fc->getVisibilities();
-
+        $form_elements = $fc->getFormElements(true);
 
         // disable some fields
         $disabled  = $member->disabled_fields;
@@ -121,11 +127,12 @@ $app->get(
                 'require_calendar'  => true,
                 // pseudo random int
                 'time'              => time(),
-                // genre
-                'radio_titres'      => Politeness::getList(),
+                'titles_list'       => Titles::getList($zdb),
                 //self_adh specific
                 'spam_pass'         => $spam_pass,
-                'spam_img'          => $spam_img
+                'spam_img'          => $spam_img,
+                'fieldsets'         => $form_elements['fieldsets'],
+                'hidden_elements'   => $form_elements['hiddens']
             )
         );
 

@@ -114,6 +114,7 @@ class Smarty extends \Slim\Views\Smarty
     public function getInstance()
     {
         $instance = parent::getInstance();
+        $instance->inheritance_merge_compiled_includes = false;
 
         if ($this->parserConfigDir) {
             $instance->setConfigDir($this->parserConfigDir);
