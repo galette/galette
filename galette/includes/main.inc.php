@@ -113,15 +113,13 @@ $authenticate = function ($app) use (&$session) {
 };
 
 $baseRedirect = function ($app) use ($login, &$session) {
-    $urlRedirect = null;
-    if (isset($session['urlRedirect'])) {
-        $urlRedirect = $app->request()->getRootUri() . $session['urlRedirect'];
-        unset($session['urlRedirect']);
-    }
-
-    /*echo 'logged? ' . $login->isLogged();
-    var_dump($login);*/
     if ( $login->isLogged() ) {
+        $urlRedirect = null;
+        if (isset($session['urlRedirect'])) {
+            $urlRedirect = $app->request()->getRootUri() . $session['urlRedirect'];
+            unset($session['urlRedirect']);
+        }
+
         if ( $urlRedirect !== null ) {
             $app->redirect($urlRedirect);
         } else {
