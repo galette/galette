@@ -3,9 +3,9 @@
     <head>
         {include file='common_header.tpl'}
 {if $require_calendar}
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery.ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
     {if $galette_lang ne 'en'}
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery.ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.js"></script>
+        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.min.js"></script>
     {/if}
 {/if}
 {if $require_dialog}
