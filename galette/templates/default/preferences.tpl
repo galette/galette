@@ -101,7 +101,7 @@
                     <label for="pref_lang" class="bline">{_T string="Default language:"}</label>
                     <select name="pref_lang" id="pref_lang" class="lang">
 {foreach item=langue from=$languages}
-                        <option value="{$langue->getID()}" {if $pref.pref_lang eq $langue->getID()}selected="selected"{/if} style="background-image: url({$langue->getFlag()});">{$langue->getName()|ucfirst}</option>
+                        <option value="{$langue->getID()}" {if $pref.pref_lang eq $langue->getID()}selected="selected"{/if} style="background-image: url({$galette_base_path}{$langue->getFlag()});">{$langue->getName()|ucfirst}</option>
 {/foreach}
                     </select>
                 </p>
