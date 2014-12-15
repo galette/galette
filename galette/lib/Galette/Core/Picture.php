@@ -596,7 +596,12 @@ class Picture implements FileInterface
             }
             closedir($handle);
 
-            //retrive files in database
+            if ( count($existing_disk) === 0 ) {
+                //no image on disk, nothing to do :)
+                return;
+            }
+
+            //retrieve files in database
             $class = get_class($this);
             $select = $zdb->select($this->tbl_prefix . $class::TABLE);
             $select
