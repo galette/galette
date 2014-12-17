@@ -98,8 +98,10 @@ $smarty = $app->view()->getInstance();
 require_once GALETTE_ROOT . 'includes/smarty.inc.php';
 
 $acls = [
-    'preferences'   => 'admin',
-    'dashboard'     => 'staff'
+    'preferences'       => 'admin',
+    'store-preferences' => 'admin',
+    'dashboard'         => 'staff',
+    'sysinfos'          => 'staff'
 ];
 
 $authenticate = function () use (&$session, $acls, $app) {
@@ -142,7 +144,7 @@ $authenticate = function () use (&$session, $acls, $app) {
                     break;
                 case 'groupmanager':
                     throw new \RuntimeException(
-                        'routemenager acl is not implemented yet.'
+                        'groupmanager acl is not implemented yet.'
                     );
                     break;
                 default:
@@ -258,16 +260,20 @@ $app->hook(
             //check for routes that are not in ACLs
             $named_routes = $app->router()->getNamedRoutes();
             $missing_acls = [];
+            $excluded_names = [
+                'public_members',
+                'public_trombinoscope'
+            ];
             foreach ( $named_routes as $name=>$route ) {
                 //check if route has $authenticate middleware
                 $middlewares = $route->getMiddleware();
                 if ( count($middlewares) > 0 ) {
                     foreach ( $middlewares as $middleware ) {
-                        if ( $middleware instanceof $authenticate ) {
-                            if ( !in_array($name, array_keys($acls)) ) {
-                                $missing_acls[] = $name;
-                            }
-                            continue;
+                        if ( !in_array($name, array_keys($acls))
+                            && !in_array($name, $excluded_names)
+                            && !in_array($name, $missing_acls)
+                        ) {
+                            $missing_acls[] = $name;
                         }
                     }
                 }
