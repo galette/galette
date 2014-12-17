@@ -749,12 +749,20 @@ class Contribution
         global $zdb;
 
         try {
-            $select = $zdb->select(self::TABLE);
+            $select = $zdb->select(self::TABLE, 'c');
             $select->columns(
                 array(
                     'max_date' => new Expression('MAX(date_fin_cotis)')
                 )
-            )->where(Adherent::PK . ' = ' . $member_id);
+            )->join(
+                array('ct' => PREFIX_DB . ContributionsTypes::TABLE),
+                'c.' . ContributionsTypes::PK . '=ct.' . ContributionsTypes::PK,
+                array()
+            )->where(
+                Adherent::PK . ' = ' . $member_id
+            )->where(
+                array('cotis_extension' => new Expression('true'))
+            );
 
             $results = $zdb->execute($select);
             $result = $results->current();
