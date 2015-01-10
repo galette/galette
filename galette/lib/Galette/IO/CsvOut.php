@@ -119,6 +119,11 @@ class CsvOut extends Csv
             $this->result .= implode($this->separator, $fields) . self::NEWLINE;
         } else if ( $titles && is_array($titles) && count($titles)>1 ) {
             foreach ( $titles as $field ) {
+                $field = str_replace(
+                    array(':', '&nbsp;'),
+                    '',
+                    $field
+                );
                 $fields[] = $this->quote . str_replace(
                     $this->quote, $this->escaped, $field
                 ) . $this->quote;
