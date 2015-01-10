@@ -182,6 +182,11 @@
                     {else}
                         <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
                     {/if}
+                    {if $member->website != ''}
+                        <a href="{$member->website}"><img src="{$template_subdir}images/icon-website.png" alt="{_T string="[Website]"}" width="16" height="16"/></a>
+                    {else}
+                        <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
+                    {/if}
                     {if $member->isAdmin()}
                         <img src="{$template_subdir}images/icon-star.png" alt="{_T string="[admin]"}" width="16" height="16"/>
                     {elseif $member->isStaff()}
@@ -261,14 +266,14 @@
                 <tr>
                     <th><img src="{$template_subdir}images/icon-money.png" alt="{_T string="Contribution"}" width="16" height="16"/></th>
                     <td class="back">{_T string="Contributions"}</td>
+                    <th><img src="{$template_subdir}images/icon-mail.png" alt="{_T string="E-mail"}" width="16" height="16"/></th>
+                    <td class="back">{_T string="Send a mail"}</td>
                 </tr>
                 <tr>
                     <th><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="Delete"}" width="16" height="16"/></th>
                     <td class="back">{_T string="Deletion"}</td>
-                </tr>
-                <tr>
-                    <th><img src="{$template_subdir}images/icon-mail.png" alt="{_T string="E-mail"}" width="16" height="16"/></th>
-                    <td class="back">{_T string="Send a mail"}</td>
+                    <th><img src="{$template_subdir}images/icon-website.png" alt="{_T string="Website"}" width="16" height="16"/></th>
+                    <td class="back">{_T string="Website URL"}</td>
                 </tr>
             </table>
         </div>
