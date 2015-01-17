@@ -121,7 +121,7 @@ define('GALETTE_VERSION', 'v0.8.2dev');
 define('GALETTE_COMPAT_VERSION', '0.8');
 define('GALETTE_DB_VERSION', '0.810');
 if ( !defined('GALETTE_MODE') ) {
-    define('GALETTE_MODE', 'PROD'); //DEV, PROD or DEMO
+    define('GALETTE_MODE', 'PROD'); //DEV, PROD, MAINT or DEMO
 }
 
 if ( !isset($_COOKIE['show_galette_dashboard']) ) {
@@ -314,6 +314,21 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
             );
         } else {
             $login = new Core\Login();
+        }
+
+        if (GALETTE_MODE === 'MAINT' && !$login->isSuperAdmin() ) {
+            if ( $login->isLogged() ) {
+                //force logout
+                $login->logOut();
+                $session['login'] = null;
+                unset($session['login']);
+                $session['history'] = null;
+                unset($session['history']);
+            }
+            //redirect, if needed
+            if ( basename($_SERVER['SCRIPT_NAME']) !== 'maintenance.php' ) {
+                header('location: maintenance.php');
+            }
         }
 
         if ( $cron ) {
