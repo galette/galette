@@ -38,6 +38,27 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         </ul>
     <div class="bigtable wrmenu">
         <div id="member_stateofdue" class="{$member->getRowClass()}">{$member->getDues()}</div>
+{if $member->hasParent() or $member->hasChildren()}
+        <table class="details">
+            <caption class="ui-state-active ui-corner-top">{_T string="Family"}</caption>
+    {if $member->hasParent()}
+            <tr>
+                <th>{_T string="Attached to:"}</th>
+                <td><a href="voir_adherent.php?id_adh={$member->parent->id}">{$member->parent->sfullname}</a></td>
+            </tr>
+    {/if}
+    {if $member->hasChildren()}
+            <tr>
+                <th>{_T string="Parent of:"}</th>
+                <td>
+        {foreach from=$children item=child key=cid}
+                    <a href="voir_adherent.php?id_adh={$cid}">{$child}</a>{if not $child@last}, {/if}
+        {/foreach}
+                </td>
+            </tr>
+    {/if}
+
+{/if}
 {foreach from=$display_elements item=display_element}
     {assign var="elements" value=$display_element->elements}
         <table class="details">

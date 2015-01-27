@@ -119,7 +119,7 @@ session_start();
 
 define('GALETTE_VERSION', 'v0.8.2dev');
 define('GALETTE_COMPAT_VERSION', '0.8');
-define('GALETTE_DB_VERSION', '0.810');
+define('GALETTE_DB_VERSION', '0.820');
 if ( !defined('GALETTE_MODE') ) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD, MAINT or DEMO
 }

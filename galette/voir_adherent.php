@@ -94,8 +94,14 @@ if ( isset($session['lostpasswd_success']) ) {
 
 $dyn_fields = new DynamicFields();
 
-$member = new Adherent();
-$member->load($id_adh);
+$deps = array(
+    'picture'   => true,
+    'groups'    => true,
+    'dues'      => true,
+    'parent'    => true,
+    'children'  => true
+);
+$member = new Adherent((int)$id_adh, $deps);
 
 // flagging fields visibility
 $fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
@@ -148,6 +154,13 @@ if ( ($login->isAdmin() || $login->isStaff()) ) {
     }
 }
 
+$children = array();
+if ($member->hasChildren()) {
+    foreach ($member->children as $child) {
+        $children[$child] = Adherent::getSName($child);
+    }
+}
+
 // Set caller page ref for cards error reporting
 $session['caller'] = 'voir_adherent.php?id_adh='.$id_adh;
 
@@ -169,6 +182,7 @@ if ( isset($error_detected) ) {
 $tpl->assign('page_title', _T("Member Profile"));
 $tpl->assign('require_dialog', true);
 $tpl->assign('member', $member);
+$tpl->assign('children', $children);
 $tpl->assign('data', $adherent);
 $tpl->assign('navigate', $navigate);
 $tpl->assign('pref_lang_img', $i18n->getFlagFromId($member->language));

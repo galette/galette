@@ -111,6 +111,8 @@ class Adherent
     private $_days_remaining;
     private $_groups;
     private $_managed_groups;
+    private $_parent;
+    private $_children;
     //
     private $_row_classes;
     //fields list and their translation
@@ -119,7 +121,9 @@ class Adherent
     private $_deps = array(
         'picture'   => true,
         'groups'    => true,
-        'dues'      => true
+        'dues'      => true,
+        'parent'    => false,
+        'children'  => false
     );
 
     private $_disabled_fields = array(
@@ -372,6 +376,21 @@ class Adherent
         $this->_others_infos = $r->info_public_adh;
         $this->_others_infos_admin = $r->info_adh;
 
+        if ($r->parent_id !== null) {
+            if ($this->_deps['parent'] === true) {
+                $deps = $this->_deps;
+                $deps['parent'] = false;
+                $deps['children'] = false;
+                $this->_parent = new Adherent((int)$r->parent_id, $deps);
+            } else {
+                $this->_parent = $r->parent_id;
+            }
+        }
+
+        if ($this->_deps['children'] === true) {
+            $this->_loadChildren();
+        }
+
         if ( $this->_deps['picture'] === true ) {
             $this->_picture = new Picture($this->_id);
         }
@@ -382,6 +401,42 @@ class Adherent
 
         if ( $this->_deps['dues'] === true ) {
             $this->_checkDues();
+        }
+    }
+
+    /**
+     * Load member children
+     *
+     * @return void
+     */
+    private function _loadChildren()
+    {
+        global $zdb;
+
+        $this->_children = array();
+        try {
+            $id = self::PK;
+            $select = $zdb->select(self::TABLE);
+            $select->columns(
+                array($id)
+            )->where(
+                'parent_id = ' . $this->_id
+            );
+
+            $results = $zdb->execute($select);
+
+            if ($results->count() >  0) {
+                foreach ($results as $row) {
+                    $this->_children[] = $row->$id;
+                }
+            }
+        } catch (\Exception $e) {
+            Analog::log(
+                'Cannot load children for member #' . $this->_id . ' | ' .
+                $e->getMessage(),
+                Analog::WARNING
+            );
+            return false;
         }
     }
 
@@ -567,6 +622,34 @@ class Adherent
     public function hasPicture()
     {
         return $this->_picture->hasPicture();
+    }
+
+    /**
+     * Does member have a parent?
+     *
+     * @return bool
+     */
+    public function hasParent()
+    {
+        return $this->_parent !== null;
+    }
+
+    /**
+     * Does member have children?
+     *
+     * @return bool
+     */
+    public function hasChildren()
+    {
+        if ($this->_children === null) {
+            Analog::log(
+                'Children has not been loaded!',
+                Analog::WARNING
+            );
+            return false;
+        } else {
+            return count($this->_children) > 0;
+        }
     }
 
     /**

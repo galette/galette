@@ -42,10 +42,12 @@ CREATE TABLE galette_adherents (
   lieu_naissance text default '',
   gpgid varchar(8) DEFAULT NULL,
   fingerprint varchar(50) DEFAULT NULL,
+  parent_id int(10) unsigned DEFAULT NULL,
   PRIMARY KEY  (id_adh),
   UNIQUE (login_adh),
   FOREIGN KEY (id_statut) REFERENCES galette_statuts (id_statut),
-  FOREIGN KEY (titre_adh) REFERENCES galette_titles (id_title)
+  FOREIGN KEY (titre_adh) REFERENCES galette_titles (id_title),
+  FOREIGN KEY (parent_id) REFERENCES galette_adherents (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_cotisations;
@@ -305,6 +307,6 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-INSERT INTO galette_database(version) VALUES(0.81);
+INSERT INTO galette_database(version) VALUES(0.82);
 
 SET FOREIGN_KEY_CHECKS=1;
