@@ -308,6 +308,9 @@ class CsvIn extends Csv implements FileInterface
                     $values = array();
                     foreach ( $data as $column ) {
                         $values[$this->_fields[$col]] = $column;
+                        if ($this->_fields[$col] === 'societe_adh') {
+                            $values['is_company'] = true;
+                        }
                         $col++;
                     }
                     //import member itself
