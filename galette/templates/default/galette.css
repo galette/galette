@@ -690,11 +690,15 @@ legend #btnadd_small {
     background-image:url(images/icon-mail-send.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#btnusers, #btnusers_small {
+#btnusers, #btnusers_small, #btnattach {
     background-image:url(images/icon-user.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
-#btnusers.ui-state-hover, #btnusers_small.ui-state-hover {
+#btnusers.ui-state-hover, #btnusers_small.ui-state-hover, #btnattach.ui-state-hover {
     background-image:url(images/icon-user.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#btnattach {
+    margin-bottom: .5em;
 }
 
 #btnmanagers, #btnmanagers_small {
@@ -1417,6 +1421,11 @@ a.listing:hover {
 #listing,
 table.listing {
     width: 100%;
+}
+
+#listing.single,
+table.listing.single {
+    display: table;
 }
 
 #listfilter form {

@@ -55,7 +55,14 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-$member = new Adherent();
+$deps = array(
+    'picture'   => true,
+    'groups'    => true,
+    'dues'      => true,
+    'parent'    => true,
+    'children'  => true
+);
+$member = new Adherent(null, $deps);
 //TODO: dynamic fields should be handled by Adherent object
 $dyn_fields = new DynamicFields();
 
@@ -117,6 +124,27 @@ $fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
 if ( $member->id != '' ) {
     $fc->setNotRequired('mdp_adh');
 }
+
+//address and mail fields are not required if member has a parent
+$no_parent_required = array(
+    'adresse_adh',
+    'adresse2_adh',
+    'cp_adh',
+    'ville_adh',
+    'email_adh'
+);
+if ($member->hasParent()) {
+    foreach ($no_parent_required as $field) {
+        if ($fc->isRequired($field)) {
+            $fc->setNotRequired($field);
+        } else {
+            $i = array_search($field, $no_parent_required);
+            unset($no_parent_required[$i]);
+        }
+    }
+    $tpl->assign('no_parent_required', $no_parent_required);
+}
+
 // flagging required fields invisible to members
 if ( $login->isAdmin() || $login->isStaff() ) {
     $fc->setNotRequired('activite_adh');

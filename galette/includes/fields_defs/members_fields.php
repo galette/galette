@@ -335,6 +335,14 @@ $members_fields = array(
         'visible'  => FieldsConfig::HIDDEN,
         'position' => 24,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
+    ),
+    'parent_id'     => array(
+        'label'    => _T("Parent:"),
+        'propname' => 'parent',
+        'required' => false,
+        'visible'  => FieldsConfig::HIDDEN,
+        'position' => 25,
+        'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     )
 );
 

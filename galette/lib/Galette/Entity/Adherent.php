@@ -225,6 +225,7 @@ class Adherent
                 $this->_admin = false;
                 $this->_staff = false;
                 $this->_due_free = false;
+                $this->_parent = null;
             }
         } elseif ( is_object($args) ) {
             $this->_loadFromRS($args);
@@ -908,6 +909,7 @@ class Adherent
                 case 'titre_adh':
                 case 'id_statut':
                 case 'pref_lang':
+                case 'parent_id':
                     //values that are setted at object instanciation
                     $value = $this->$prop;
                     break;
@@ -919,10 +921,12 @@ class Adherent
             // if the field is enabled, check it
             if ( !isset($disabled[$key]) ) {
                 // fill up the adherent structure
-                $this->$prop = stripslashes($value);
+                if ( $value !== null) {
+                    $this->$prop = stripslashes($value);
+                }
 
                 // now, check validity
-                if ( $value != '' ) {
+                if ( $value !== null && $value != '' ) {
                     switch ( $key ) {
                     // dates
                     case 'date_crea_adh':
@@ -1165,6 +1169,11 @@ class Adherent
             }
         }
 
+        //attach to/detach from parent
+        if (isset($values['detach_parent'])) {
+            $this->_parent = null;
+        }
+
         if ( count($errors) > 0 ) {
             Analog::log(
                 'Some errors has been throwed attempting to edit/store a member' .
@@ -1207,6 +1216,15 @@ class Adherent
                     ) {
                         //Handle booleans for postgres ; bugs #18899 and #19354
                         $values[$field] = 'false';
+                    } elseif ($field === 'parent_id') {
+                        //handle parents
+                        if ($this->_parent === null) {
+                            $values['parent_id'] = new Expression('NULL');
+                        } elseif ($this->parent instanceof Adherent) {
+                            $values['parent_id'] = $this->_parent->id;
+                        } else {
+                            $values['parent_id'] = $this->_parent;
+                        }
                     } else {
                         $values[$field] = $this->$prop;
                     }

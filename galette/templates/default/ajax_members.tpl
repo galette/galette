@@ -20,7 +20,8 @@
             </tfoot>
             <tbody>
 {foreach from=$members_list item=member}
-    {assign var=rclass value=$member->getRowClass() }
+    {if !isset($excluded) or $excluded != $member->id}
+        {assign var=rclass value=$member->getRowClass() }
                 <tr>
                     <td class="{$rclass} right">{$member->id}</td>
                     <td class="{$rclass} nowrap username_row">
@@ -44,6 +45,7 @@
                     </td>
                     <td class="{$rclass} nowrap">{$member->zipcode} {$member->town}</td>
                 </tr>
+    {/if}
 {foreachelse}
                 <tr><td colspan="3" class="emptylist">{_T string="no member"}</td></tr>
 {/foreach}

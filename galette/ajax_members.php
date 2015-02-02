@@ -127,6 +127,16 @@ if ( !isset($_POST['from']) ) {
             $selected_members = $m->getArrayList($_POST['members']);
         }
         break;
+    case 'attach':
+        if (!isset($_POST['id_adh'])) {
+            throw new \RuntimeException(
+                'Current selected member must be excluded while attaching!'
+            );
+            exit(0);
+        } else {
+            $tpl->assign('excluded', $_POST['id_adh']);
+        }
+        break;
     }
 }
 

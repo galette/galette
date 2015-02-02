@@ -202,6 +202,18 @@ class FieldsConfig
     }
 
     /**
+     * Is a field set as required?
+     *
+     * @param string $field Field name
+     *
+     * @return boolean
+     */
+    public function isRequired($field)
+    {
+        return isset($this->_all_required[$field]);
+    }
+
+    /**
      * Temporary set a field as not required
      * (password for existing members for example)
      *

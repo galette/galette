@@ -21,6 +21,20 @@
             </div>
 {else}
             <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
+    {if !$self_adh}
+            <div>
+        {if $member->hasParent()}
+                <strong>{_T string="Attached to:"}
+                <a href="voir_adherent.php?id_adh={$member->parent->id}">{$member->parent->sfullname}</a></strong><br/>
+            {if $login->isAdmin() or $login->isStaff() or $login->id eq $member->parent->id}
+                <label for="detach_parent">{_T string="Detach?"}</label>
+                <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
+            {/if}
+        {else if ($login->isAdmin() or $login->isStaff()) and !$member->hasChildren()}
+            <a href="#" class="button" id="btnattach">{_T string="Attach member"}</a>
+        {/if}
+            </div>
+    {/if}
             {foreach item=fieldset from=$fieldsets}
             <fieldset class="galette_form">
                 <legend>{$fieldset->label}</legend>
@@ -113,6 +127,9 @@
                         {if $entry->field_id eq 'bool_exempt_adh'}
                             {assign var="checked" value=$member->isDueFree()}
                         {/if}
+                        {if $entry->field_id eq 'parent_id'}
+                            {assign var="value" value=$member->parent->id}
+                        {/if}
 
                         {* If value has not been set, take the generic value *}
                         {if !$value}
@@ -170,7 +187,15 @@
                 {assign var="tip" value=null}
                 {assign var="size" value=null}
                 {assign var="propname" value=$entry->propname}
-                {assign var="value" value=$member->$propname|escape}
+                {if $entry->field_id eq 'parent_id' }
+                    {if $member->$propname}
+                        {assign var="value" value=$member->$propname->id|escape}
+                    {else}
+                        {assign var="value" value=""}
+                    {/if}
+                {else}
+                    {assign var="value" value=$member->$propname|escape}
+                {/if}
                 {assign var="checked" value=null}
                 {assign var="example" value=null}
 
@@ -327,7 +352,125 @@
 
                 }
 
+    {if !$self_adh and !$member->hasChildren()}
+                {* Members popup *}
+                var _btnattach_mapping = function(){
+                    $('#btnattach').click(function(){
+                        _mode = ($(this).attr('id') == 'btnusers_small') ? 'members' : 'managers';
+                        var _persons = $('input[name="' + _mode + '[]"]').map(function() {
+                            return $(this).val();
+                        }).get();
+                        $.ajax({
+                            url: 'ajax_members.php',
+                            type: "POST",
+                            data: {
+                                ajax: true,
+                                multiple: false,
+                                from: 'attach',
+                                id_adh: {if isset($member->id) and $member->id neq ''}{$member->id}{else}'new'{/if}
+                            },
+                            {include file="js_loader.tpl"},
+                            success: function(res){
+                                _members_dialog(res, _mode);
+                            },
+                            error: function() {
+                                alert("{_T string="An error occured displaying members interface :(" escape="js"}");
+                            }
+                        });
+                        return false;
+                    });
+                }
+                _btnattach_mapping();
+
+                var _members_dialog = function(res, mode){
+                    var _title = '{_T string="Attached member selection" escape="js"}';
+                    var _el = $('<div id="members_list" title="' + _title  + '"> </div>');
+                    _el.appendTo('body').dialog({
+                        modal: true,
+                        hide: 'fold',
+                        width: '60%',
+                        height: 400,
+                        close: function(event, ui){
+                            _el.remove();
+                        }
+                    });
+                    _members_ajax_mapper(res);
+                }
+
+                var _members_ajax_mapper = function(res){
+                    $('#members_list').append(res);
+
+
+                    $('#members_list tbody').find('a').each(function(){
+                        $(this).click(function(){
+                            var _id = this.href.substring(this.href.indexOf('id_adh=') + 7, this.href.length);
+                            $('#parent_id').attr('value', _id);
+                            var _parent_name;
+                            if ($('#parent_name').length > 0) {
+                                _parent_name = $('#parent_name');
+                            } else {
+                                _parent_name = $('<div id="parent_name"/>');
+                                $('#btnattach').after(_parent_name);
+                            }
+                            _parent_name.html($(this).html());
+
+                            //remove required attribute on address and mail fields if member has a parent
+                            $('#adresse_adh,#adresse2_adh,#cp_adh,#ville_adh,#email_adh').removeAttr('required');
+
+                            $('#members_list').dialog('close');
+                            return false;
+                        }).attr('title', '{_T string="Click to choose this member as parent"}');
+                    });
+                    //Remap links
+                    $('#members_list .pages a').click(function(){
+                        var _page = this.href.substring(this.href.indexOf('?')+6);
+                        var gid = $('#the_id').val();
+
+                        $.ajax({
+                            url: 'ajax_members.php',
+                            type: "POST",
+                            data: {
+                                ajax: true,
+                                from: 'attach',
+                                multiple: false,
+                                id_adh: {if isset($member->id) and $member->id neq ''}{$member->id}{else}'new'{/if},
+                                page: _page,
+                            },
+                            {include file="js_loader.tpl"},
+                            success: function(res){
+                                $('#members_list').empty();
+                                _members_ajax_mapper(res);
+                            },
+                            error: function() {
+                                alert("{_T string="An error occured displaying members interface :(" escape="js"}");
+                            }
+                        });
+                        return false;
+                    });
+                }
+    {/if}
+
+    {if !$self_adh and $member->hasParent()}
+        {if isset($no_parent_required) and $no_parent_required|@count gt 0}
+                $('#detach_parent').on('change', function(){
+                    var _checked = $(this).is(':checked');
+                    var _changes = '';
+            {foreach item=req from=$no_parent_required}
+                    _changes += '#{$req}';
+                {if !$req@last}
+                    _changes += ',';
+                {/if}
+            {/foreach}
+                    if (_checked) {
+                        $(_changes).attr('required', 'required');
+                    } else {
+                        $(_changes).removeAttr('required');
+                    }
+                });
+        {/if}
+    {/if}
                 {include file="photo_dnd.tpl"}
+
             });
         </script>
 {/if}
