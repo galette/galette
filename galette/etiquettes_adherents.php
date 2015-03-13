@@ -79,7 +79,13 @@ if ( isset($_GET['from']) && $_GET['from'] === 'mailing' ) {
     $m = new Members();
     $members = $m->getArrayList(
         $filters->selected,
-        array('nom_adh', 'prenom_adh')
+        array('nom_adh', 'prenom_adh'),
+        false,
+        true,
+        null,
+        false,
+        false,
+        true
     );
 }
 
@@ -156,14 +162,30 @@ foreach ($members as $member) {
     // Print first line of address
     $pdf->SetFont(Pdf::FONT, '', $preferences->pref_etiq_corps);
     $pdf->SetXY($x, $y+$line_h);
-    $pdf->Cell($w, $line_h, $member->address, 0, 0, 'L', 0);
+
+    //if member address is missing but there is a parent,
+    //take the parent address
+    $address = $member->address;
+    $address_continuation = $member->address_continuation;
+    $zip = $member->zipcode;
+    $town = $member->town;
+
+    if (empty($address) && $member->hasParent()) {
+        $address = $member->parent->address;
+        $address_continuation = $member->parent->address_continuation;
+        $zip = $member->parent->zipcode;
+        $town = $member->parent->town;
+    }
+
+
+    $pdf->Cell($w, $line_h, $address, 0, 0, 'L', 0);
     // Print second line of address
     $pdf->SetXY($x, $y+$line_h*2);
-    $pdf->Cell($w, $line_h, $member->address_continuation, 0, 0, 'L', 0);
+    $pdf->Cell($w, $line_h, $address_continuation, 0, 0, 'L', 0);
     // Print zip code and town
     $pdf->SetFont(Pdf::FONT, 'B', $preferences->pref_etiq_corps);
     $pdf->SetXY($x, $y+$line_h*3);
-    $pdf->Cell($w, $line_h, $member->zipcode . ' - ' . $member->town, 0, 0, 'L', 0);
+    $pdf->Cell($w, $line_h, $zip . ' - ' . $town, 0, 0, 'L', 0);
     // Print country
     $pdf->SetFont(Pdf::FONT, 'I', $preferences->pref_etiq_corps);
     $pdf->SetXY($x, $y+$line_h*4);

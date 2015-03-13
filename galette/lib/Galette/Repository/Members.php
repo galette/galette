@@ -461,10 +461,11 @@ class Members
      * @param array   $fields      Fields to use
      * @param boolean $export      True if we are exporting
      * @param boolean $dues        True if load dues as Adherent dependency
+     * @param boolean $parent      True if load parent as Adherent dependency
      *
      * @return Adherent[]
      */
-    public function getArrayList($ids, $orderby = null, $with_photos = false, $as_members = true, $fields = null, $export = false, $dues = false)
+    public function getArrayList($ids, $orderby = null, $with_photos = false, $as_members = true, $fields = null, $export = false, $dues = false, $parent = false)
     {
         global $zdb;
 
@@ -502,7 +503,8 @@ class Members
                 $deps = array(
                     'picture'   => $with_photos,
                     'groups'    => false,
-                    'dues'      => $dues
+                    'dues'      => $dues,
+                    'parent'    => $parent
                 );
                 if ( $as_members === true ) {
                     $members[] = new Adherent($o, $deps);

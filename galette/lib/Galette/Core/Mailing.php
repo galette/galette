@@ -258,6 +258,13 @@ class Mailing extends GaletteMail
 
         foreach ($members as $member) {
             $email = $member->email;
+
+            //if member mail is missing but there is a parent,
+            //take the parent email.
+            if (!$email && $member->hasParent()) {
+                $email = $member->parent->email;
+            }
+
             if ( trim($email) != '' && self::isValidEmail($email) ) {
                 if ( !in_array($member, $this->_mrecipients) ) {
                     $this->_mrecipients[] = $member;

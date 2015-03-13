@@ -1246,6 +1246,10 @@ class Adherent
                 $values['titre_adh'] = new Expression('NULL');
             }
 
+            if ( !$this->_parent ) {
+                $values['parent_id'] = new Expression('NULL');
+            }
+
             if ( !isset($this->_id) || $this->_id == '') {
                 //we're inserting a new member
                 unset($values[self::PK]);
