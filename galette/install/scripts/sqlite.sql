@@ -40,6 +40,7 @@ CREATE TABLE galette_adherents (
   lieu_naissance text default '',
   gpgid TEXT DEFAULT NULL,
   fingerprint TEXT DEFAULT NULL,
+  parent_id INTEGER DEFAULT NULL,
   UNIQUE (login_adh),
   FOREIGN KEY (id_statut) REFERENCES galette_statuts (id_statut),
   FOREIGN KEY (titre_adh) REFERENCES galette_titles (id_title),
