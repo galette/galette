@@ -42,7 +42,8 @@ CREATE TABLE galette_adherents (
   fingerprint TEXT DEFAULT NULL,
   UNIQUE (login_adh),
   FOREIGN KEY (id_statut) REFERENCES galette_statuts (id_statut),
-  FOREIGN KEY (titre_adh) REFERENCES galette_titles (id_title)
+  FOREIGN KEY (titre_adh) REFERENCES galette_titles (id_title),
+  FOREIGN KEY (parent_id) REFERENCES galette_adherents (id_adh)
 );
 
 DROP TABLE IF EXISTS galette_cotisations;
@@ -290,6 +291,6 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version REAL NOT NULL
 );
-INSERT INTO galette_database(version) VALUES(0.81);
+INSERT INTO galette_database(version) VALUES(0.82);
 
 PRAGMA foreign_keys = ON;
