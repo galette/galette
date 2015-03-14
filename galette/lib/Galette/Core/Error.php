@@ -131,6 +131,7 @@ class Error
             throw new \ErrorException(
                 'Fatal error: ' . $errstr,
                 $errno,
+                1,
                 $errfile,
                 $errline
             );
@@ -148,6 +149,7 @@ class Error
             throw new \ErrorException(
                 'Unknown error: ' . $errstr,
                 $errno,
+                1,
                 $errfile,
                 $errline
             );
