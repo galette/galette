@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Mon Mar 30 03:54:04 2015 (GMT)
+// This file was automatically generated on Mon Mar 30 03:55:36 2015 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -3907,7 +3907,7 @@ $lang['Export as CSV'] = 'Exporter en CSV';
 $lang['Unfortunately, there is no member in your database yet,'] = 'Malheureusement, il n\'y a pas d\'adhérent dans la base actuellement,';
 
 // ../templates/default/voir_adherent.tpl:52 
-$lang['Parent of:'] = 'Groupe de&nbsp;:';
+$lang['Parent of:'] = 'Parent de&nbsp;:';
 
 // ../templates/default/page.tpl:112 
 $lang['List of members'] = 'Liste des adhérents';

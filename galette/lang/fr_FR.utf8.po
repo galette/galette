@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2015-03-30 05:53+0200\n"
+"PO-Revision-Date: 2015-03-30 05:55+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -2753,7 +2753,7 @@ msgstr "français"
 
 #: ../templates/default/voir_adherent.tpl:52
 msgid "Parent of:"
-msgstr "Groupe de&nbsp;:"
+msgstr "Parent de&nbsp;:"
 
 #: ../champs_adherents.php:39 ../includes/fields_defs/members_fields.php:43
 msgid "Identifiant:"
