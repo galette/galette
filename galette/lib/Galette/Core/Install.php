@@ -924,51 +924,51 @@ class Install
             if ( $conf !== false ) {
                 if ( !isset($post_data['install_dbtype']) ) {
                     $res = preg_match(
-                        '/TYPE_DB", "(.*)"\);/',
+                        '/TYPE_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( $matches[1] ) {
+                    if ( isset($matches[1]) ) {
                         $existing['db_type'] = $matches[1];
                     }
                 }
                 if ( !isset($post_data['install_dbhost']) ) {
                     $res = preg_match(
-                        '/HOST_DB", "(.*)"\);/',
+                        '/HOST_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( $matches[1] ) {
+                    if ( isset($matches[1]) ) {
                         $existing['db_host'] = $matches[1];
                     }
                 }
                 if ( !isset($post_data['install_dbport']) ) {
                     $res = preg_match(
-                        '/PORT_DB", "(.*)"\);/',
+                        '/PORT_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( $matches[1] ) {
+                    if ( isset($matches[1]) ) {
                         $existing['db_port'] = $matches[1];
                     }
                 }
                 if ( !isset($post_data['install_dbuser']) ) {
                     $res = preg_match(
-                        '/USER_DB", "(.*)"\);/',
+                        '/USER_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( $matches[1] ) {
+                    if ( isset($matches[1]) ) {
                         $existing['db_user'] = $matches[1];
                     }
                 }
                 if ( !isset($post_data['install_dbname']) ) {
                     $res = preg_match(
-                        '/NAME_DB", "(.*)"\);/',
+                        '/NAME_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( $matches[1] ) {
+                    if ( isset($matches[1]) ) {
                         $existing['db_name'] = $matches[1];
                     }
                 }
@@ -976,18 +976,18 @@ class Install
 
                 if ( !isset($post_data['install_dbprefix']) ) {
                     $res = preg_match(
-                        '/PREFIX_DB", "(.*)"\);/',
+                        '/PREFIX_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( $matches[1] ) {
+                    if ( isset($matches[1]) ) {
                         $existing['prefix'] = $matches[1];
                     }
                 }
 
                 if ( $pass === true ) {
                     $res = preg_match(
-                        '/PWD_DB", "(.*)"\);/',
+                        '/PWD_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
