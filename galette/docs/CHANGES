@@ -1,6 +1,10 @@
 Changes
 -------
 
+0.8.1 -> 0.8.2
+
+- Drop SQLite support
+
 0.8 -> 0.8.1
 
 - Add member group to PDF models

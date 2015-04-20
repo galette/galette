@@ -367,9 +367,6 @@ class Charts
         } else if ( TYPE_DB === 'mysql' ) {
             $cols['date'] = new Expression('date_format(date_enreg, \'%Y-%m\')');
             $groupby = new Expression('EXTRACT(YEAR_MONTH FROM date_enreg)');
-        } else if ( TYPE_DB === 'sqlite') {
-            $cols['date'] = new Expression('STRFTIME("%Y-%m-%d", date_enreg)');
-            $groupby = 'date';
         }
 
         $select->columns($cols)->group($groupby)->order('date ASC');

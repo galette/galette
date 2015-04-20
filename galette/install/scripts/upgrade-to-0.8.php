@@ -61,7 +61,7 @@ class UpgradeTo08 extends AbstractUpdater
      */
     public function __construct()
     {
-        parent::__construct(false);
+        parent::__construct();
         $this->setSqlScripts('0.80');
     }
 

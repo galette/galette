@@ -66,7 +66,6 @@ if ( !isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql' ) {
                         <select name="install_dbtype" id="install_dbtype">
                             <option value="mysql"<?php if ( $install->getDbType() === GaletteDb::MYSQL ) {echo ' selected="selected"';} ?>>Mysql</option>
                             <option value="pgsql"<?php if ( $install->getDbType() === GaletteDb::PGSQL ) {echo ' selected="selected"';} ?>>Postgresql</option>
-                            <option value="sqlite"<?php if ( $install->getDbType() === GaletteDb::SQLITE ) {echo ' selected="selected"';} ?>>SQLite</option>
                         </select>
                     </p>
                     <div id="install_dbconfig">
@@ -110,20 +109,6 @@ if ( $install->isUpgrade() ) {
                 </p>
             </form>
             <script type="text/javascript">
-                var _changeDbType = function(type) {
-                    if (type == 'sqlite') {
-                        $('#install_dbconfig input').each(function () {
-                            $(this).removeAttr('required');
-                        });
-                        $('#install_dbconfig').hide();
-                    } else {
-                        $('#install_dbconfig input').each(function () {
-                            $(this).attr('required', 'required');
-                        });
-                        $('#install_dbconfig').show();
-                    }
-                };
-
                 $(function(){
                     $('#install_dbtype').change(function(){
                         var _db = $(this).val();
@@ -134,8 +119,6 @@ if ( $install->isUpgrade() ) {
                             _port = <?php echo GaletteDb::MYSQL_DEFAULT_PORT; ?>;
                         }
                         $('#install_dbport').val(_port);
-                        _changeDbType(_db);
                     });
-                    _changeDbType($('#install_dbtype').val());
                 });
             </script>

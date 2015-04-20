@@ -318,7 +318,6 @@ class Install
         switch ( $type ) {
         case Db::MYSQL:
         case Db::PGSQL:
-        case Db::SQLITE:
             $this->_db_type = $type;
             break;
         default:
@@ -456,20 +455,14 @@ class Install
      */
     public function testDbConnexion()
     {
-        if ( $this->_db_type === Db::SQLITE ) {
-            return Db::testConnectivity(
-                $this->_db_type
-            );
-        } else {
-            return Db::testConnectivity(
-                $this->_db_type,
-                $this->_db_user,
-                $this->_db_pass,
-                $this->_db_host,
-                $this->_db_port,
-                $this->_db_name
-            );
-        }
+        return Db::testConnectivity(
+            $this->_db_type,
+            $this->_db_user,
+            $this->_db_pass,
+            $this->_db_host,
+            $this->_db_port,
+            $this->_db_name
+        );
     }
 
     /**

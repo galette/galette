@@ -249,12 +249,7 @@ abstract class Entitled
                 if ( $extent === true ) {
                     $select->where(array($this->_fthird => new Expression('true')));
                 } else if ( $extent === false ) {
-                    if ( TYPE_DB === 'sqlite' ) {               
-                        //TODO: is that still required with ZF2? 
-                        $select->where(array($this->_fthird => 0));
-                    } else {
-                        $select->where(array($this->_fthird => new Expression('false')));
-                    }
+                    $select->where(array($this->_fthird => new Expression('false')));
                 }
             }
 

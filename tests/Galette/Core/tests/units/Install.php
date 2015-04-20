@@ -259,8 +259,7 @@ class Install extends atoum
     {
         $types = array(
             \Galette\Core\Db::MYSQL,
-            \Galette\Core\Db::PGSQL,
-            \Galette\Core\Db::SQLITE
+            \Galette\Core\Db::PGSQL
         );
 
         foreach ( $types as $t ) {
