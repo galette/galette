@@ -101,8 +101,29 @@ $acls = [
     'preferences'       => 'admin',
     'store-preferences' => 'admin',
     'dashboard'         => 'staff',
-    'sysinfos'          => 'staff'
+    'sysinfos'          => 'staff',
+    'charts'            => 'staff',
+    'plugins'           => 'admin',
+    'history'           => 'staff',
+    'members'           => 'groupmanager',
+    'filter-memberslist'=> 'groupmanager',
+    'advanced-search'   => 'groupmanager',
+    'batch-memberslist' => 'groupmanager',
+    'mailing'           => 'staff',
+    'csv-memberslist'   => 'staff',
+    'groups'            => 'groupmanager',
+    'me'                => 'member',
+    'member'            => 'member',
+    'pdf-members-cards' => 'member',
+    'pdf-members-labels'=> 'groupmanager',
+    'mailings'          => 'staff',
+    'contributions'     => 'staff'
 ];
+
+//load user defined ACLs
+if ( file_exists(GALETTE_CONFIG_PATH  . 'local_acls.inc.php') ) {
+    $acls = array_merge($acls, $local_acls);
+}
 
 $authenticate = function () use (&$session, $acls, $app) {
     return function () use ($app, &$session, $acls) {
@@ -143,9 +164,18 @@ $authenticate = function () use (&$session, $acls, $app) {
                     }
                     break;
                 case 'groupmanager':
-                    throw new \RuntimeException(
-                        'groupmanager acl is not implemented yet.'
-                    );
+                    if ( $login->isSuperAdmin()
+                        || $login->isAdmin()
+                        || $login->isStaff()
+                        || $login->isGroupManager()
+                    ) {
+                        $go = true;
+                    }
+                    break;
+                case 'member':
+                    if ( $login->isLogged() ) {
+                        $go = true;
+                    }
                     break;
                 default:
                     throw new \RuntimeException(
