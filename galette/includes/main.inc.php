@@ -39,12 +39,7 @@ use \Slim\Slim;
 use \Slim\Route;
 use Galette\Core\Smarty;
 use Galette\Core\Login;
-use Galette\Entity\Adherent;
-use Galette\Entity\Group;
-use Galette\Entity\Contribution;
-use Galette\Repository\Groups;
-use Galette\Repository\Contributions;
-use \Analog\Analog as Analog;
+use \Analog\Analog;
 
 $time_start = microtime(true);
 
@@ -364,6 +359,8 @@ require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/management.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/members.routes.php';
+require_once GALETTE_ROOT . 'includes/routes/groups.routes.php';
+require_once GALETTE_ROOT . 'includes/routes/contributions.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/public_pages.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/ajax.routes.php';
 
@@ -404,180 +401,6 @@ $app->notFound(
         );
     }
 );
-
-
-//routes for authenticated users
-//routes for admins
-//routes for admins/staff
-
-$app->get(
-    '/groups',
-    $authenticate(),
-    function () use ($app, $login, &$session) {
-
-        $groups = new Groups();
-        $group = new Group();
-
-        $groups_root = $groups->getList(false);
-        $groups_list = $groups->getList();
-
-        $id = $app->request()->get('id');
-
-        if ( $id === null && count($groups_root) > 0 ) {
-            $group = $groups_root[0];
-            if ( !$login->isGroupManager($group->getId()) ) {
-                foreach ( $groups_list as $g ) {
-                    if ( $login->isGroupManager($g->getId()) ) {
-                        $group = $g;
-                        break;
-                    }
-                }
-            }
-        }
-
-        $app->render(
-            'gestion_groupes.tpl',
-            array(
-                'page_title'            => _T("Groups"),
-                'require_dialog'        => true,
-                'require_tabs'          => true,
-                'require_tree'          => true,
-                'groups_root'           => $groups_root,
-                'groups'                => $groups_list,
-                'group'                 => $group
-            )
-        );
-    }
-)->name('groups');
-
-$app->get(
-    '/contributions',
-    $authenticate(),
-    function () use ($app, $login, &$session) {
-
-        if ( isset($session['contributions'])) {
-            $contribs = unserialize($session['contributions']);
-        } else {
-            $contribs = new Contributions();
-        }
-
-        /*if ( $ajax === true ) {
-            $contribs->filtre_transactions = true;
-            if ( isset($_POST['max_amount']) ) {
-                $contribs->max_amount = (int)$_POST['max_amount'];
-            } else if ( $_GET['max_amount'] ) {
-                $contribs->max_amount = (int)$_GET['max_amount'];
-            }
-        } else {
-            $contribs->max_amount = null;
-        }*/
-        $contribs->max_amount = null;
-
-        /*if ( isset($_GET['page']) && is_numeric($_GET['page']) ) {
-            $contribs->current_page = (int)$_GET['page'];
-        }
-
-        if ( (isset($_GET['nbshow']) && is_numeric($_GET['nbshow']))
-        ) {
-            $contribs->show = $_GET['nbshow'];
-        }
-
-        if ( (isset($_POST['nbshow']) && is_numeric($_POST['nbshow']))
-        ) {
-            $contribs->show = $_POST['nbshow'];
-        }
-
-        if ( isset($_GET['tri']) ) {
-            $contribs->orderby = $_GET['tri'];
-        }
-
-        if ( isset($_GET['clear_filter']) ) {
-            $contribs->reinit();
-        } else {
-            if ( isset($_GET['end_date_filter']) || isset($_GET['start_date_filter']) ) {
-                try {
-                    if ( isset($_GET['start_date_filter']) ) {
-                        $field = _T("start date filter");
-                        $contribs->start_date_filter = $_GET['start_date_filter'];
-                    }
-                    if ( isset($_GET['end_date_filter']) ) {
-                        $field = _T("end date filter");
-                        $contribs->end_date_filter = $_GET['end_date_filter'];
-                    }
-                } catch (Exception $e) {
-                    $error_detected[] = $e->getMessage();
-                }
-            }
-
-            if ( isset($_GET['payment_type_filter']) ) {
-                $ptf = $_GET['payment_type_filter'];
-                if ( $ptf == Contribution::PAYMENT_OTHER
-                    || $ptf == Contribution::PAYMENT_CASH
-                    || $ptf == Contribution::PAYMENT_CREDITCARD
-                    || $ptf == Contribution::PAYMENT_CHECK
-                    || $ptf == Contribution::PAYMENT_TRANSFER
-                    || $ptf == Contribution::PAYMENT_PAYPAL
-                ) {
-                    $contribs->payment_type_filter = $ptf;
-                } elseif ( $ptf == -1 ) {
-                    $contribs->payment_type_filter = null;
-                } else {
-                    $error_detected[] = _T("- Unknown payment type!");
-                }
-            }
-        }*/
-
-        $id = $app->request()->get('id');
-        if ( ($login->isAdmin() || $login->isStaff())
-            && isset($id) && $id != ''
-        ) {
-            if ( $id == 'all' ) {
-                $contribs->filtre_cotis_adh = null;
-            } else {
-                $contribs->filtre_cotis_adh = $id;
-            }
-        }
-
-        /*if ( $login->isAdmin() || $login->isStaff() ) {
-            //delete contributions
-            if (isset($_GET['sup']) || isset($_POST['delete'])) {
-                if ( isset($_GET['sup']) ) {
-                    $contribs->removeContributions($_GET['sup']);
-                } else if ( isset($_POST['contrib_sel']) ) {
-                    $contribs->removeContributions($_POST['contrib_sel']);
-                }
-            }
-        }*/
-
-        $session['contributions'] = serialize($contribs);
-        $list_contribs = $contribs->getContributionsList(true);
-
-        $smarty = $app->view()->getInstance();
-
-        //assign pagination variables to the template and add pagination links
-        $contribs->setSmartyPagination($smarty);
-
-        /*if ( $contribs->filtre_cotis_adh != null && !$ajax ) {
-            $member = new Adherent();
-            $member->load($contribs->filtre_cotis_adh);
-            $tpl->assign('member', $member);
-        }*/
-
-        $app->render(
-            'gestion_contributions.tpl',
-            array(
-                'page_title'            => _T("Contributions management"),
-                'require_dialog'        => true,
-                'require_calendar'      => true,
-                'max_amount'            => $contribs->max_amount,
-                'list_contribs'         => $list_contribs,
-                'contributions'         => $contribs,
-                'nb_contributions'      => $contribs->getCount(),
-                'mode'                  => 'std'
-            )
-        );
-    }
-)->name('contributions');
 
 $app->run();
 
