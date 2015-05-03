@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"PO-Revision-Date: 2015-03-30 05:55+0200\n"
+"PO-Revision-Date: 2015-05-03 20:00+0200\n"
 "Last-Translator: \n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -80,7 +80,7 @@ msgstr ""
 msgid "Titles management"
 msgstr "Gestion des titres"
 
-#: ../lib/Galette/Core/Install.php:1121
+#: ../lib/Galette/Core/Install.php:1114
 #: ../templates/default/gestion_adherents.tpl:89
 msgid "Status"
 msgstr "Statut"
@@ -89,7 +89,7 @@ msgstr "Statut"
 msgid "Emailing disabled"
 msgstr "Envoi de courriel désactivé"
 
-#: ../lib/Galette/Entity/Entitled.php:335
+#: ../lib/Galette/Entity/Entitled.php:330
 msgid "- ID must be an integer!"
 msgstr "- L'identifiant doit être un nombre entier&nbsp;!"
 
@@ -439,7 +439,7 @@ msgstr "contribution"
 msgid "Cache"
 msgstr "Cache"
 
-#: ../lib/Galette/Core/Install.php:1113
+#: ../lib/Galette/Core/Install.php:1106
 msgid "Preferences"
 msgstr "Préférences"
 
@@ -469,7 +469,7 @@ msgstr "Libellé de la contribution"
 
 #: ../champs_adherents.php:62 ../includes/fields_defs/members_fields.php:244
 #: ../install/old.index.php:628 ../install/old.index.php:1174
-#: ../install/steps/admin.php:50 ../install/steps/db.php:86
+#: ../install/steps/admin.php:50 ../install/steps/db.php:85
 #: ../templates/default/preferences.tpl:418 ../templates/default/index.tpl:12
 msgid "Password:"
 msgstr "Mot de passe&nbsp;:"
@@ -490,9 +490,9 @@ msgstr ""
 msgid "Membership expired since"
 msgstr "Adhésion expirée depuis"
 
-#: ../templates/default/history.tpl:117
-msgid "Show associated query"
-msgstr "Afficher la requête associée"
+#: ../includes/fields_defs/members_fields_cats.php:56
+msgid "Contact information:"
+msgstr "Informations de contact&nbsp;:"
 
 #: ../lib/Galette/Entity/Reminder.php:296
 msgid "%name (#%id - %days days)"
@@ -698,7 +698,7 @@ msgstr "Sujet du courriel"
 msgid "Address type:"
 msgstr "Type d'adresse&nbsp;:"
 
-#: ../install/installer.php:277
+#: ../install/installer.php:272
 #: ../templates/default/ajax_plugins_initdb.tpl:132
 msgid "Version selection"
 msgstr "Sélection de la version"
@@ -764,7 +764,7 @@ msgid "Default status cannot be initialized."
 msgstr "Les statuts par défaut n'ont pas été initialisés."
 
 #: ../preferences.php:285 ../install/old.index.php:173
-#: ../install/installer.php:160
+#: ../install/installer.php:155
 msgid "Passwords mismatch"
 msgstr "Les mots de passe ne correspondent pas&nbsp;: "
 
@@ -884,7 +884,7 @@ msgstr "Transaction"
 
 #: ../install/steps/galette.php:92 ../install/steps/db_checks.php:230
 #: ../install/steps/type.php:67 ../install/steps/db_install.php:94
-#: ../install/steps/db.php:109 ../install/steps/db_select_version.php:118
+#: ../install/steps/db.php:108 ../install/steps/db_select_version.php:118
 #: ../templates/default/ajouter_contribution.tpl:66
 msgid "Back"
 msgstr "Retour"
@@ -997,7 +997,7 @@ msgstr "Gestion des groupes de l'utilisateur"
 msgid "Configure member forms"
 msgstr "Configurer les fiches"
 
-#: ../lib/Galette/Core/Install.php:1137
+#: ../lib/Galette/Core/Install.php:1130
 msgid "PDF Models"
 msgstr "Modèles PDF"
 
@@ -1140,7 +1140,7 @@ msgstr "Détail des contributions"
 msgid "Do you want to use SMTP authentication?"
 msgstr "Voulez vous utiliser l'authentification SMTP&nbsp;?"
 
-#: ../lib/Galette/Core/Install.php:1013
+#: ../lib/Galette/Core/Install.php:1006
 msgid "Write configuration file"
 msgstr "Écriture du fichier de configuration"
 
@@ -1152,7 +1152,7 @@ msgstr "Écriture du fichier de configuration"
 msgid "[del]"
 msgstr "[suppr]"
 
-#: ../lib/Galette/Core/Install.php:1125
+#: ../lib/Galette/Core/Install.php:1118
 msgid "Fields config and categories"
 msgstr "Configuration des champs et des catégories"
 
@@ -1300,7 +1300,7 @@ msgstr "Opération ALTER autorisée"
 msgid "(Strip color will change according to member's status)"
 msgstr "(Couleur du bandeau dépendant du statut des membres)"
 
-#: ../install/installer.php:273
+#: ../install/installer.php:268
 msgid "Database access/permissions"
 msgstr "Accès et permissions de la base de données"
 
@@ -1313,8 +1313,8 @@ msgid "Do member want to appear publically?"
 msgstr "Est-ce que l'adhérent souhaite apparaître publiquement ?"
 
 #: ../change_passwd.php:59 ../install/old.index.php:107
-#: ../install/old.index.php:164 ../install/installer.php:107
-#: ../install/installer.php:152
+#: ../install/old.index.php:164 ../install/installer.php:103
+#: ../install/installer.php:147
 msgid "No password"
 msgstr "Mot de passe vide"
 
@@ -1671,7 +1671,7 @@ msgstr "se termine par"
 
 #: ../ajax_plugins_initdb.php:116 ../lib/Galette/Core/Install.php:125
 #: ../install/old.index.php:205 ../install/old.index.php:310
-#: ../install/old.index.php:1525 ../install/installer.php:271
+#: ../install/old.index.php:1525 ../install/installer.php:266
 #: ../install/steps/type.php:40
 #: ../templates/default/ajax_plugins_initdb.tpl:129
 msgid "Installation mode"
@@ -1701,7 +1701,7 @@ msgstr "Détails de la liste d'émargement"
 msgid "Username or email:"
 msgstr "Identifiant ou adresse e-mail&nbsp;:"
 
-#: ../install/old.index.php:279 ../install/installer.php:213
+#: ../install/old.index.php:279 ../install/installer.php:208
 msgid "Galette installation"
 msgstr "Installation de Galette"
 
@@ -1750,7 +1750,7 @@ msgstr ""
 "Chacun des exports sélectionnés sera stocké dans son propre fichier dans le "
 "répertoire d'exports."
 
-#: ../install/old.index.php:624 ../install/steps/db.php:82
+#: ../install/old.index.php:624 ../install/steps/db.php:81
 msgid "User:"
 msgstr "Utilisateur&nbsp;:"
 
@@ -2148,7 +2148,7 @@ msgstr ""
 msgid "Members list"
 msgstr "Liste des membres"
 
-#: ../install/old.index.php:110 ../install/installer.php:110
+#: ../install/old.index.php:110 ../install/installer.php:106
 msgid "No database name"
 msgstr "Nom de la base non précisé"
 
@@ -2238,7 +2238,7 @@ msgstr "utilisateur_apache"
 msgid "members"
 msgstr "adhérents"
 
-#: ../lib/Galette/Core/Install.php:1133 ../templates/default/page.tpl:157
+#: ../lib/Galette/Core/Install.php:1126 ../templates/default/page.tpl:157
 msgid "Titles"
 msgstr "Titres"
 
@@ -2307,7 +2307,7 @@ msgstr "Exempt de cotisation"
 msgid "My contributions"
 msgstr "Mes contributions"
 
-#: ../lib/Galette/Core/Install.php:325 ../install/old.index.php:93
+#: ../lib/Galette/Core/Install.php:324 ../install/old.index.php:93
 msgid "Database type unknown"
 msgstr "Type de base inconnu"
 
@@ -2446,9 +2446,9 @@ msgstr ""
 "Le nom de fichier est invalide, il ne doit contenir ni caractère spécial, ni "
 "espace."
 
-#: ../templates/default/advanced_search.tpl:170
-msgid "Select a field"
-msgstr "Sélectionnez un champ"
+#: ../templates/default/gestion_textes.tpl:28
+msgid "Email Body:"
+msgstr "Corps du message&nbsp;:"
 
 #: ../templates/default/member.tpl:117
 msgid ""
@@ -2494,7 +2494,7 @@ msgstr "Veuillez saisir un message."
 msgid "Additionnaly, which table(s) do you want to export?"
 msgstr "Aditionnellement, quelle(s) table(s) souhaitez vous exporter ?"
 
-#: ../lib/Galette/Core/Install.php:1143
+#: ../lib/Galette/Core/Install.php:1136
 msgid "Update preferences"
 msgstr "Mise à jour des préférences"
 
@@ -2514,7 +2514,7 @@ msgstr "L'URL de modification de mot de passe de Galette"
 msgid "Nickname:"
 msgstr "Pseudo&nbsp;:"
 
-#: ../install/installer.php:278
+#: ../install/installer.php:273
 #: ../templates/default/ajax_plugins_initdb.tpl:135
 msgid "Database upgrade"
 msgstr "Mise à jour de la base de données"
@@ -2541,7 +2541,7 @@ msgid "Galette is currently under maintenance!"
 msgstr "Galette est actuellement en maintenance !"
 
 #: ../gestion_intitules.php:129 ../gestion_intitules.php:165
-#: ../lib/Galette/Entity/Entitled.php:349
+#: ../lib/Galette/Entity/Entitled.php:344
 msgid "- Label does not exist"
 msgstr "- Cet intitulé n'existe pas"
 
@@ -2763,7 +2763,7 @@ msgstr "Identifiant&nbsp;:"
 msgid "Parent group:"
 msgstr "Groupe parent&nbsp;:"
 
-#: ../lib/Galette/Core/Install.php:1041
+#: ../lib/Galette/Core/Install.php:1034
 msgid "Config file already exists and is up to date"
 msgstr "Le fichier de configuration existe déjà et est à jour"
 
@@ -2921,7 +2921,7 @@ msgstr "Configurer le modèle d'import"
 msgid "Flush the logs"
 msgstr "Effacer l'historique"
 
-#: ../lib/Galette/Core/Install.php:1065 ../install/old.index.php:1230
+#: ../lib/Galette/Core/Install.php:1058 ../install/old.index.php:1230
 msgid "Unable to create configuration file (%path)"
 msgstr "Impossible de créer le fichier de configuration (%path)"
 
@@ -3081,11 +3081,11 @@ msgstr "Visibilité"
 msgid "Mrs."
 msgstr "Mme."
 
-#: ../install/old.index.php:643 ../install/steps/db.php:94
+#: ../install/old.index.php:643 ../install/steps/db.php:93
 msgid "Table prefix:"
 msgstr "Préfixe de table&nbsp;:"
 
-#: ../lib/Galette/Core/CheckModules.php:184
+#: ../lib/Galette/Core/CheckModules.php:183
 #: ../lib/Galette/Core/Install.php:166
 #: ../templates/default/voir_adherent.tpl:161
 msgid "Ok"
@@ -3116,11 +3116,6 @@ msgstr "Groupe"
 msgid "[Mail]"
 msgstr "[Courriel]"
 
-#: ../lib/Galette/Core/CheckModules.php:98
-#: ../lib/Galette/Core/CheckModules.php:100
-msgid "either 'mysql', 'pgsql' or 'sqlite' PDO driver"
-msgstr "l'un des pilotes PDO « mysql », « pgsql » ou « sqlite »"
-
 #: ../lib/Galette/Entity/Contribution.php:974
 msgid "Script output"
 msgstr "Sortie du script"
@@ -3140,7 +3135,7 @@ msgstr "Administrateur Galette&nbsp;:"
 #: ../install/old.index.php:1440 ../install/steps/galette.php:81
 #: ../install/steps/check.php:166 ../install/steps/db_checks.php:221
 #: ../install/steps/type.php:66 ../install/steps/db_install.php:83
-#: ../install/steps/admin.php:59 ../install/steps/db.php:108
+#: ../install/steps/admin.php:59 ../install/steps/db.php:107
 #: ../install/steps/db_select_version.php:117
 #: ../templates/default/ajax_plugins_initdb.tpl:114
 msgid "Next step"
@@ -3494,7 +3489,7 @@ msgstr "Type"
 
 #: ../lib/Galette/Core/Install.php:128 ../install/old.index.php:213
 #: ../install/old.index.php:521 ../install/old.index.php:605
-#: ../install/old.index.php:1527 ../install/installer.php:272
+#: ../install/old.index.php:1527 ../install/installer.php:267
 #: ../install/steps/db.php:41 ../install/steps/db.php:63
 msgid "Database"
 msgstr "Base de données"
@@ -3535,7 +3530,7 @@ msgstr "filtre date de fin"
 msgid "start date filter"
 msgstr "filtre date de début"
 
-#: ../lib/Galette/Core/CheckModules.php:176
+#: ../lib/Galette/Core/CheckModules.php:175
 #: ../lib/Galette/Core/Install.php:166
 msgid "Ko"
 msgstr "Ko"
@@ -3771,8 +3766,8 @@ msgstr "historique vide"
 msgid "Username:"
 msgstr "Identifiant&nbsp;:"
 
-#: ../lib/Galette/Core/CheckModules.php:140
-#: ../lib/Galette/Core/CheckModules.php:142
+#: ../lib/Galette/Core/CheckModules.php:139
+#: ../lib/Galette/Core/CheckModules.php:141
 msgid "'openssl' support"
 msgstr "support « openssl »"
 
@@ -3803,7 +3798,7 @@ msgstr "Une erreur est survenue lors du chargement du groupe sélectionné :("
 msgid "available only for new password request"
 msgstr "disponible uniquement lors de la réinitialisation du mot de passe"
 
-#: ../install/old.index.php:1522 ../install/installer.php:268
+#: ../install/old.index.php:1522 ../install/installer.php:263
 #: ../templates/default/ajax_plugins_initdb.tpl:127
 msgid "Steps:"
 msgstr "Étapes&nbsp;:"
@@ -3831,7 +3826,7 @@ msgstr "Le logo de votre association"
 msgid "Contributor:"
 msgstr "Contributeur&nbsp;:"
 
-#: ../install/installer.php:282
+#: ../install/installer.php:277
 #: ../templates/default/ajax_plugins_initdb.tpl:135
 msgid "Database installation"
 msgstr "Installation de la base de données"
@@ -3854,7 +3849,7 @@ msgstr "Styles CSS"
 msgid "Group `%groupname` has been successfully saved."
 msgstr "Le groupe `%groupname` a été enregistré avec succès."
 
-#: ../install/old.index.php:632 ../install/steps/db.php:90
+#: ../install/old.index.php:632 ../install/steps/db.php:89
 msgid "Database:"
 msgstr "Nom de la base&nbsp;:"
 
@@ -3867,7 +3862,7 @@ msgstr "Transactions"
 msgid "Files"
 msgstr "Fichiers"
 
-#: ../install/old.index.php:101 ../install/installer.php:101
+#: ../install/old.index.php:101 ../install/installer.php:97
 msgid "No port"
 msgstr "Pas de port"
 
@@ -3880,7 +3875,7 @@ msgstr "Droits d'accès à la base"
 msgid "Import"
 msgstr "Import"
 
-#: ../lib/Galette/Entity/Entitled.php:560
+#: ../lib/Galette/Entity/Entitled.php:555
 msgid "- Cannot delete this label: it's still used"
 msgstr "- Ne peut supprimer cet intitulé&nbsp;: il est toujours utilisé"
 
@@ -3997,7 +3992,7 @@ msgstr "Impossible de détacher le groupe :("
 msgid "Enter as many occurences you want."
 msgstr "Entrez autant d'occurrences que souhaité."
 
-#: ../install/old.index.php:245 ../install/installer.php:191
+#: ../install/old.index.php:245 ../install/installer.php:186
 msgid "Galette Installation"
 msgstr "Installation de Galette"
 
@@ -4111,7 +4106,7 @@ msgstr "Il y a eu quelques avertissements&nbsp;:"
 msgid "Nickname"
 msgstr "Pseudo"
 
-#: ../install/old.index.php:639 ../install/steps/db.php:100
+#: ../install/old.index.php:639 ../install/steps/db.php:99
 msgid "(Indicate the CURRENT prefix of your Galette tables)"
 msgstr "(Indiquez le préfixe ACTUEL de vos tables Galette)"
 
@@ -4144,7 +4139,7 @@ msgstr "Ouvrir « %s » dans une nouvelle fenêtre"
 msgid "Man"
 msgstr "Homme"
 
-#: ../lib/Galette/Core/Install.php:1117
+#: ../lib/Galette/Core/Install.php:1110
 msgid "Contributions types"
 msgstr "Types de contribution"
 
@@ -4228,6 +4223,10 @@ msgstr "(maximum 255 caractères)"
 msgid "Record"
 msgstr "Enregistrement"
 
+#: ../templates/default/history.tpl:117
+msgid "Show associated query"
+msgstr "Afficher la requête associée"
+
 #: ../templates/default/gestion_adherents.tpl:28
 #: ../templates/default/advanced_search.tpl:36
 #: ../templates/default/advanced_search.tpl:78
@@ -4264,7 +4263,7 @@ msgstr ""
 "Le statut sélectionné (%s) est déjà utilisé dans la <a href='voir_adherent."
 "php?id_adh=%i'>fiche de l'adhérent %n %m</a>."
 
-#: ../lib/Galette/Core/Install.php:667
+#: ../lib/Galette/Core/Install.php:660
 msgid "%version script has been successfully executed :)"
 msgstr "Le script %version a été exécuté avec succès :)"
 
@@ -4356,7 +4355,7 @@ msgstr ""
 msgid "Mobile phone:"
 msgstr "GSM&nbsp;:"
 
-#: ../install/old.index.php:616 ../install/steps/db.php:74
+#: ../install/old.index.php:616 ../install/steps/db.php:73
 msgid "Host:"
 msgstr "Hôte&nbsp;:"
 
@@ -4600,16 +4599,16 @@ msgstr "Les tables ont été correctement mises à jour."
 #: ../lib/Galette/Core/CheckModules.php:83
 #: ../lib/Galette/Core/CheckModules.php:88
 #: ../lib/Galette/Core/CheckModules.php:90
-#: ../lib/Galette/Core/CheckModules.php:105
-#: ../lib/Galette/Core/CheckModules.php:107
-#: ../lib/Galette/Core/CheckModules.php:112
-#: ../lib/Galette/Core/CheckModules.php:114
-#: ../lib/Galette/Core/CheckModules.php:119
-#: ../lib/Galette/Core/CheckModules.php:124
-#: ../lib/Galette/Core/CheckModules.php:129
-#: ../lib/Galette/Core/CheckModules.php:134
-#: ../lib/Galette/Core/CheckModules.php:146
-#: ../lib/Galette/Core/CheckModules.php:151
+#: ../lib/Galette/Core/CheckModules.php:104
+#: ../lib/Galette/Core/CheckModules.php:106
+#: ../lib/Galette/Core/CheckModules.php:111
+#: ../lib/Galette/Core/CheckModules.php:113
+#: ../lib/Galette/Core/CheckModules.php:118
+#: ../lib/Galette/Core/CheckModules.php:123
+#: ../lib/Galette/Core/CheckModules.php:128
+#: ../lib/Galette/Core/CheckModules.php:133
+#: ../lib/Galette/Core/CheckModules.php:145
+#: ../lib/Galette/Core/CheckModules.php:150
 msgid "'%s' module"
 msgstr "module « %s »"
 
@@ -4627,7 +4626,7 @@ msgstr ""
 "Impossible de supprimer un adhérent qui a encore des dépendances "
 "(emailings, ...)"
 
-#: ../install/old.index.php:160 ../install/installer.php:149
+#: ../install/old.index.php:160 ../install/installer.php:144
 msgid "The username cannot contain the @ character"
 msgstr "L'identifiant ne peut pas contenir le caractère @&nbsp;!"
 
@@ -4701,7 +4700,7 @@ msgstr ""
 "Utiliser l'adresse renseignée ci-dessus ou choisissez un membre du bureau "
 "pour utiliser la sienne."
 
-#: ../lib/Galette/Core/Install.php:679
+#: ../lib/Galette/Core/Install.php:672
 msgid "Unable to run %version update script :("
 msgstr "Impossible de lancer le script de mise à jour %version :("
 
@@ -4755,7 +4754,7 @@ msgstr ""
 "Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et INSERT."
 
 #: ../lib/Galette/Core/Install.php:122 ../install/old.index.php:209
-#: ../install/old.index.php:1526 ../install/installer.php:270
+#: ../install/old.index.php:1526 ../install/installer.php:265
 msgid "Checks"
 msgstr "Vérifications"
 
@@ -5050,7 +5049,7 @@ msgstr "Le courriel « %s » n'a pas été modifié&nbsp;!"
 msgid "Member's email address"
 msgstr "Adresse de courriel de l'adhérent"
 
-#: ../install/installer.php:292
+#: ../install/installer.php:287
 msgid "Galette initialisation"
 msgstr "Initialisation de Galette"
 
@@ -5076,11 +5075,11 @@ msgid "Statuts"
 msgstr "Statuts"
 
 #: ../install/old.index.php:104 ../install/old.index.php:156
-#: ../install/installer.php:104 ../install/installer.php:146
+#: ../install/installer.php:100 ../install/installer.php:141
 msgid "No user name"
 msgstr "Nom d'utilisateur vide"
 
-#: ../install/old.index.php:620 ../install/steps/db.php:78
+#: ../install/old.index.php:620 ../install/steps/db.php:77
 msgid "Port:"
 msgstr "Port&nbsp;:"
 
@@ -5256,6 +5255,10 @@ msgstr "Paypal"
 #: ../templates/default/page.tpl:119
 msgid "Add new member in database"
 msgstr "Ajouter un nouveau membre à la base"
+
+#: ../templates/default/advanced_search.tpl:170
+msgid "Select a field"
+msgstr "Sélectionnez un champ"
 
 #: ../gestion_titres.php:71
 msgid "An error occured removing title '%name' :("
@@ -5461,7 +5464,7 @@ msgid "Up to date members"
 msgstr "Adhérents à jour"
 
 #: ../lib/Galette/Core/Install.php:149 ../install/old.index.php:237
-#: ../install/old.index.php:1533 ../install/installer.php:293
+#: ../install/old.index.php:1533 ../install/installer.php:288
 #: ../templates/default/ajax_plugins_initdb.tpl:136
 msgid "End!"
 msgstr "Fin&nbsp;!"
@@ -5538,7 +5541,7 @@ msgstr ""
 "Un problème est survenu dans l'envoi du mot de passe pour le compte « %s »"
 
 #: ../install/old.index.php:526 ../install/old.index.php:1162
-#: ../install/old.index.php:1463 ../install/installer.php:230
+#: ../install/old.index.php:1463 ../install/installer.php:225
 #: ../templates/default/mailing_adherents.tpl:3
 #: ../templates/default/global_messages.tpl:4
 msgid "- ERROR -"
@@ -5641,9 +5644,10 @@ msgstr "rouge"
 msgid "Author"
 msgstr "Auteur"
 
-#: ../templates/default/gestion_textes.tpl:28
-msgid "Email Body:"
-msgstr "Corps du message&nbsp;:"
+#: ../lib/Galette/Core/CheckModules.php:97
+#: ../lib/Galette/Core/CheckModules.php:99
+msgid "either 'mysql' or 'pgsql' PDO driver"
+msgstr "l'un des pilotes PDO « mysql » ou « pgsql »"
 
 #: ../templates/default/change_passwd.tpl:16
 msgid "(at least 4 characters)"
@@ -5929,7 +5933,7 @@ msgstr "[H]"
 msgid "Name of the association:"
 msgstr "Nom de l'association&nbsp;:"
 
-#: ../install/old.index.php:98 ../install/installer.php:98
+#: ../install/old.index.php:98 ../install/installer.php:94
 msgid "No host"
 msgstr "Aucun hôte"
 
@@ -6018,7 +6022,7 @@ msgid "Translate additionnals fields labels"
 msgstr "Traduction des étiquettes pour les champs additionnels"
 
 #: ../lib/Galette/Core/Install.php:143 ../install/old.index.php:229
-#: ../install/old.index.php:1531 ../install/installer.php:288
+#: ../install/old.index.php:1531 ../install/installer.php:283
 msgid "Admin parameters"
 msgstr "paramètres administrateur"
 
@@ -6412,7 +6416,7 @@ msgstr "Date de fin d'adhésion"
 msgid "Remove '%file' from disk"
 msgstr "Supprimer le fichier « %file » du disque"
 
-#: ../lib/Galette/Core/Install.php:1129
+#: ../lib/Galette/Core/Install.php:1122
 msgid "Mails texts"
 msgstr "Textes courriels"
 
@@ -6461,9 +6465,6 @@ msgstr "Don"
 #: ../install/steps/check.php:90
 msgid "Galette requirements are met :)"
 msgstr "Les prérequis de Galette sont respectés :)"
-
-#~ msgid "Contact information:"
-#~ msgstr "Informations de contact&nbsp;:"
 
 #~ msgid "Last modification date:"
 #~ msgstr "Date de dernière modification&nbsp;:"

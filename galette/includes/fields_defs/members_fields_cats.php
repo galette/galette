@@ -53,7 +53,7 @@ $members_fields_cats = array(
     array(
         'id'         => 3,
         'table_name' => Adherent::TABLE,
-        'category'   => _("Contact information:"),
+        'category'   => _T("Contact information:"),
         'position'   => 2
     )
 );
