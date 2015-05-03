@@ -238,7 +238,7 @@
                     <td class="{$rclass}">{$member->modification_date}</td>
 {/if}
                     <td class="{$rclass} center nowrap actions_row">
-                        <a href="ajouter_adherent.php?id_adh={$member->id}"><img src="{$galette_base_path}{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="%membername: edit informations" pattern="/%membername/" replace=$member->sname}"/></a>
+                        <a href="{urlFor name="editmember" options="action.edit|id.$mid"}"><img src="{$galette_base_path}{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="%membername: edit informations" pattern="/%membername/" replace=$member->sname}"/></a>
 {if $login->isAdmin() or $login->isStaff()}
                         <a href="gestion_contributions.php?id_adh={$member->id}"><img src="{$galette_base_path}{$template_subdir}images/icon-money.png" alt="{_T string="[$]"}" width="16" height="16" title="{_T string="%membername: contributions" pattern="/%membername/" replace=$member->sname}"/></a>
                         <a onclick="return confirm('{_T string="Do you really want to delete this member from the base? This will also delete the history of his fees. You could instead disable the account.\n\nDo you still want to delete this member ?"|escape:"javascript"}')" href="gestion_adherents.php?sup={$member->id}"><img src="{$galette_base_path}{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="%membername: remove from database" pattern="/%membername/" replace=$member->sname}"/></a>

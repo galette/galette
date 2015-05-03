@@ -117,7 +117,9 @@ $acls = [
     'pdf-members-cards' => 'member',
     'pdf-members-labels'=> 'groupmanager',
     'mailings'          => 'staff',
-    'contributions'     => 'staff'
+    'contributions'     => 'staff',
+    'editmember'        => 'member',
+    'storemembers'    => 'member'
 ];
 
 //load user defined ACLs

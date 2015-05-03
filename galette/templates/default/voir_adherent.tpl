@@ -29,7 +29,7 @@
     {/if}
 {/if}
             <li>
-                <a class="button" href="ajouter_adherent.php?id_adh={$member->id}" id="btn_edit">{_T string="Modification"}</a>
+                <a class="button" href="{urlFor name="editmember" options="action.edit|id.`$member->id`"}" id="btn_edit">{_T string="Modification"}</a>
             </li>
 {if $login->isAdmin() or $login->isStaff()}
             <li>
@@ -56,7 +56,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     {if $member->hasParent()}
             <tr>
                 <th>{_T string="Attached to:"}</th>
-                <td><a href="voir_adherent.php?id_adh={$member->parent->id}">{$member->parent->sfullname}</a></td>
+                <td><a href="{urlFor name="member" options="id.`$member->parent->id`"}">{$member->parent->sfullname}</a></td>
             </tr>
     {/if}
     {if $member->hasChildren()}

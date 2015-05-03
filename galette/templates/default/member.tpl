@@ -2,12 +2,12 @@
 {block name="content"}
 {if isset($navigate) and $navigate|@count != 0}
     <nav>
-        <a id="prev" href="{if isset($navigate.prev)}?id_adh={$navigate.prev}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">{_T string="Previous"}</a>
+        <a id="prev" href="{if isset($navigate.prev)}{urlFor name="editmember" options="action.edit|id.`$navigate.prev`"}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">{_T string="Previous"}</a>
         {$navigate.pos}/{$navigate.count}
-        <a id="next" href="{if isset($navigate.next)}?id_adh={$navigate.next}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">{_T string="Next"}</a>
+        <a id="next" href="{if isset($navigate.next)}{urlFor name="editmember" options="action.edit|id.`$navigate.next`"}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">{_T string="Next"}</a>
     </nav>
 {/if}
-        <form action="{if $login->isLogged()}ajouter_adherent.php{else}self_adherent.php{/if}" method="post" enctype="multipart/form-data" id="form">
+        <form action="{urlFor name="storemembers"}" method="post" enctype="multipart/form-data" id="form">
         <div class="bigtable">
 {if $self_adh and $head_redirect}
             <div id="infobox">
@@ -61,6 +61,7 @@
                         {/if}
                         {if $entry->field_id eq 'titre_adh'}
                             {assign var="template" value="titles.tpl"}
+                            {assign var="value" value=$member->title}
                         {/if}
                         {if $entry->field_id eq 'pref_lang'}
                             {assign var="template" value="lang.tpl"}
