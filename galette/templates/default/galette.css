@@ -70,6 +70,12 @@ input:required:valid {
     border-color:green;
 }
 
+input[readonly] {
+    color: #555;
+    background-color: #e6e6e6;
+    cursor: default;
+}
+
 input[type=file] {
     border: none;
 }

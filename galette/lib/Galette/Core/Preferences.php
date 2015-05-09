@@ -151,7 +151,8 @@ class Preferences
         /* New contribution script */
         'pref_new_contrib_script' => '',
         'pref_bool_wrap_mails' => true,
-        'pref_rss_url' => 'http://galette.eu/dc/index.php/feed/atom'
+        'pref_rss_url' => 'http://galette.eu/dc/index.php/feed/atom',
+        'pref_show_id' => false
     );
 
     /**

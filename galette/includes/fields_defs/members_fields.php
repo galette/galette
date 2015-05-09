@@ -40,7 +40,7 @@ use Galette\Entity\FieldsCategories;
 
 $members_fields = array(
     'id_adh' => array(
-        'label'    => _T("Identifiant:"),
+        'label'    => _T("Member number:"),
         'propname' => 'id',
         'required' => false,
         'visible'  => FieldsConfig::HIDDEN,

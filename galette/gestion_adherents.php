@@ -289,7 +289,7 @@ $tpl->assign(
     ($filters instanceof AdvancedMembersList) ? true : false
 );
 
-$filters->setTplCommonsFilters($tpl);
+$filters->setTplCommonsFilters($preferences, $tpl);
 
 $content = $tpl->fetch('gestion_adherents.tpl');
 $tpl->assign('content', $content);

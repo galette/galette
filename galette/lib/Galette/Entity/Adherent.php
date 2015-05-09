@@ -127,7 +127,7 @@ class Adherent
     );
 
     private $_disabled_fields = array(
-        'id_adh' => 'disabled="disabled"',
+        'id_adh' => 'readonly="readonly"',
         'date_crea_adh' => 'disabled="disabled"',
         'id_statut' => 'disabled="disabled"',
         'activite_adh' => 'disabled="disabled"',
@@ -146,7 +146,7 @@ class Adherent
         'bool_admin_adh' => 'disabled="disabled"'
     );
     private $_adm_edit_disabled_fields = array(
-        'id_adh' => 'disabled="disabled"',
+        'id_adh' => 'readonly="readonly"',
         'date_echeance' => 'disabled="disabled"'
     );
 

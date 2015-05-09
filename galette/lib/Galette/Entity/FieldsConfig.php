@@ -159,9 +159,7 @@ class FieldsConfig
      */
     public function load()
     {
-        global $zdb;
-
-        $this->_prefs = array();
+        global $zdb, $preferences;
 
         try {
             $select = $zdb->select(self::TABLE);
@@ -173,6 +171,9 @@ class FieldsConfig
 
             $this->_categorized_fields = null;
             foreach ( $results as $k ) {
+                if ($k->field_id === 'id_adh' && !$preferences->pref_show_id) {
+                    $k->visible = false;
+                }
                 $f = array(
                     'field_id'  => $k->field_id,
                     'label'     => $this->_defaults[$k->field_id]['label'],

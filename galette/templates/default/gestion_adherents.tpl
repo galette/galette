@@ -59,7 +59,22 @@
         <table class="listing">
             <thead>
                 <tr>
+{if $preferences->pref_show_id}
+                    <th class="id_row">
+                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_ID;{/php}">
+                            {_T string="Mbr num"}
+                            {if $filters->orderby eq constant('galette\Repository\Members::ORDERBY_ID')}
+                                {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
+                            <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                                {else}
+                            <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                                {/if}
+                            {/if}
+                        </a>
+                    </th>
+{else}
                     <th class="id_row">#</th>
+{/if}
                     <th class="left">
                         <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_NAME;{/php}">
                             {_T string="Name"}
@@ -165,7 +180,11 @@
 {foreach from=$members item=member key=ordre}
     {assign var=rclass value=$member->getRowClass() }
                 <tr>
+{if $preferences->pref_show_id}
+                    <td class="{$rclass} right">{$member->id}</td>
+{else}
                     <td class="{$rclass} right">{$ordre+1+($filters->current_page - 1)*$numrows}</td>
+{/if}
                     <td class="{$rclass} nowrap username_row">
                         <input type="checkbox" name="member_sel[]" value="{$member->id}"/>
                     {if $member->isCompany()}

@@ -93,6 +93,7 @@ class Members
     const FILTER_DC_PUBINFOS = 9;
     const FILTER_W_PUBINFOS = 10;
     const FILTER_WO_PUBINFOS = 11;
+    const FILTER_NUMBER = 12;
 
     const MEMBERSHIP_ALL = 0;
     const MEMBERSHIP_UP2DATE = 3;
@@ -108,6 +109,7 @@ class Members
     const ORDERBY_STATUS = 2;
     const ORDERBY_FEE_STATUS = 3;
     const ORDERBY_MODIFDATE = 4;
+    const ORDERBY_ID = 5;
 
     const NON_STAFF_MEMBERS = 30;
 
@@ -821,6 +823,11 @@ class Members
                 $order[] = 'date_echeance ' . $this->_filters->getDirection();
             }
             break;
+        case self::ORDERBY_ID:
+            if ( $this->_canOrderBy('id_adh', $fields) ) {
+                $order[] = 'id_adh ' . $this->_filters->getDirection();
+            }
+            break;
         }
 
         //anyways, we want to order by firstname, lastname
@@ -957,6 +964,9 @@ class Members
                         '(LOWER(info_public_adh) LIKE ' .
                         $token . $more . ')'
                     );
+                    break;
+                case self::FILTER_NUMBER:
+                    $select->where->equalTo('a.id_adh', $this->_filters->filter_str);
                     break;
                 }
             }

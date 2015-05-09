@@ -125,7 +125,7 @@ $tpl->assign('payments_types', $pt);
 
 $tpl->assign('filters', $filters);
 
-$filters->setTplCommonsFilters($tpl);
+$filters->setTplCommonsFilters($preferences, $tpl);
 
 $content = $tpl->fetch('advanced_search.tpl');
 $tpl->assign('content', $content);

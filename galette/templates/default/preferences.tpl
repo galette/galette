@@ -159,7 +159,12 @@
                 <p>
                     <label for="pref_rss_url" class="bline tooltip" title="{_T string="URL to the RSS feed."}">{_T string="RSS feed URL"}</label>
                     <span class="tip">{_T string="Enter the full URL to the RSS feed. It will be displayed on Galette desktop."}</span>
-                    <input type="text" name="pref_rss_url" id="pref_rss_url" value="{$pref.pref_rss_url}"{if isset($required.pref_new_contrib_script) and $required.pref_new_contrib_script eq 1} required{/if}/>
+                    <input type="text" name="pref_rss_url" id="pref_rss_url" value="{$pref.pref_rss_url}"{if isset($required.pref_rss_url) and $required.pref_rss_url eq 1} required{/if}/>
+                </p>
+                <p>
+                    <label for="pref_show_id" class="bline tooltip" title="{_T string="Display member number in member related windows"}">{_T string="Show member number"}</label>
+                    <span class="tip">{_T string="Display member number in member related windows"}</span>
+                    <input type="checkbox" name="pref_show_id" id="pref_show_id" value="1" {if $pref.pref_show_id} checked="checked"{/if}{if isset($required.pref_show_id) and $required.pref_show_id eq 1} required{/if}/>
                 </p>
             </fieldset>
 
