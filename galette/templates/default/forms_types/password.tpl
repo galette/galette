@@ -1,5 +1,5 @@
 {include
-    file="./input.tpl"
+    file="forms_types/input.tpl"
     type="password"
     name=$entry->field_id
     id=$entry->field_id
@@ -10,7 +10,7 @@
     value=null
 }
 {include
-    file="./input.tpl"
+    file="forms_types/input.tpl"
     type="password"
     name="mdp_adh2"
     id="mdp_adh2"

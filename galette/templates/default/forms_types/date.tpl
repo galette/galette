@@ -1,4 +1,4 @@
-{extends file="./input.tpl"}
+{extends file="forms_types/input.tpl"}
 
 {block name="component"}
     {assign var="type" value="text"}

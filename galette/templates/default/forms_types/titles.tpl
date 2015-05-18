@@ -1,4 +1,4 @@
-{extends file="./select.tpl"}
+{extends file="forms_types/select.tpl"}
 
 {block name="element"}
     {assign var="values" value=""}

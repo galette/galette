@@ -1,5 +1,5 @@
 {include
-    file="./checkbox.tpl"
+    file="forms_types/checkbox.tpl"
     name="is_company"
     id="is_company"
     value="1"

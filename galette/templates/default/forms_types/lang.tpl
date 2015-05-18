@@ -1,4 +1,4 @@
-{extends file="./select.tpl"}
+{extends file="forms_types/select.tpl"}
 
 {block name="element"}
     <select name="pref_lang" id="pref_lang" class="lang"{if isset($disabled.pref_lang)} {$disabled.pref_lang}{/if}{if isset($required.pref_lang) and $required.pref_lang eq 1} required{/if}>

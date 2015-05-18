@@ -1,4 +1,4 @@
-{extends file="./select.tpl"}
+{extends file="forms_types/select.tpl"}
 
 {block name="element"}
     <select name="id_statut" id="id_statut"{if isset($disabled.id_statut)} {$disabled.id_statut}{/if}{if isset($required.id_statut) and $required.id_statut eq 1} required{/if}>
