@@ -3,7 +3,36 @@ Changes
 
 0.8.1 -> 0.8.2
 
+Bugfixes
+^^^^^^^^
+
+- Fix database password with '$' char
+- Fix plugins upgrade version display
+- Fix empty login/passswords generation
+- Store members images missing in database
+- Fix quoting in pgsql upgrade script
+- Remove extra characters on fields translations for csv export
+- Exclude donations froms due date calculation
+- Properly import companies from CSV
+- Do not submit advanced search form on group selection
+
+News
+^^^^
+
+- Dynamic and configurable member form
+- Attach members
+- Member number
+- Remove old logs files
+- Display groups members by member name
 - Drop SQLite support
+- Export selected group and its sub-groups
+- Use current filters to navigate members cards
+- Add maintainance mode
+
+Under the hood
+^^^^^^^^^^^^^^
+
+- Update 3rd party components (and fix various issues)
 
 0.8 -> 0.8.1
 
