@@ -306,7 +306,7 @@ if ( isset($_POST['valid']) ) {
                     $txt = preg_replace(
                         array('/%name/', '/%email/'),
                         array($adh->sname, $adh->email),
-                        _T("Trying to send a mail to a member (%name) with an invalid adress: %email")
+                        _T("Trying to send a mail to a member (%name) with an invalid address: %email")
                     );
                     $hist->add($txt);
                     $warning_detected[] = $txt;

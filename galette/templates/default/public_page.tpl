@@ -44,7 +44,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             </ul>
 {if $login->isLogged()}
             <div id="user">
-                <a id="userlink" title="{_T string="View your member card"}" href="{$galette_base_path}voir_adherent.php">{$login->loggedInAs(true)}</a>
+                <a id="userlink" title="{_T string="View your member card"}" href="{$galette_base_path}{if $login->isSuperAdmin()}index.php{else}voir_adherent.php{/if}">{$login->loggedInAs(true)}</a>
                 <a id="logout" title="{_T string="Log off"}" href="{$galette_base_path}index.php?logout=1">{_T string="Log off"}</a>
             </div>
 {/if}

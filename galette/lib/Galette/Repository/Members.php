@@ -82,7 +82,7 @@ class Members
     const SHOW_EXPORT = 5;
 
     const FILTER_NAME = 0;
-    const FILTER_ADRESS = 1;
+    const FILTER_ADDRESS = 1;
     const FILTER_MAIL = 2;
     const FILTER_JOB = 3;
     const FILTER_INFOS = 4;
@@ -93,6 +93,7 @@ class Members
     const FILTER_DC_PUBINFOS = 9;
     const FILTER_W_PUBINFOS = 10;
     const FILTER_WO_PUBINFOS = 11;
+    const FILTER_NUMBER = 12;
 
     const MEMBERSHIP_ALL = 0;
     const MEMBERSHIP_UP2DATE = 3;
@@ -108,6 +109,7 @@ class Members
     const ORDERBY_STATUS = 2;
     const ORDERBY_FEE_STATUS = 3;
     const ORDERBY_MODIFDATE = 4;
+    const ORDERBY_ID = 5;
 
     const NON_STAFF_MEMBERS = 30;
 
@@ -461,10 +463,11 @@ class Members
      * @param array   $fields      Fields to use
      * @param boolean $export      True if we are exporting
      * @param boolean $dues        True if load dues as Adherent dependency
+     * @param boolean $parent      True if load parent as Adherent dependency
      *
      * @return Adherent[]
      */
-    public function getArrayList($ids, $orderby = null, $with_photos = false, $as_members = true, $fields = null, $export = false, $dues = false)
+    public function getArrayList($ids, $orderby = null, $with_photos = false, $as_members = true, $fields = null, $export = false, $dues = false, $parent = false)
     {
         global $zdb;
 
@@ -502,7 +505,8 @@ class Members
                 $deps = array(
                     'picture'   => $with_photos,
                     'groups'    => false,
-                    'dues'      => $dues
+                    'dues'      => $dues,
+                    'parent'    => $parent
                 );
                 if ( $as_members === true ) {
                     $members[] = new Adherent($o, $deps);
@@ -819,6 +823,11 @@ class Members
                 $order[] = 'date_echeance ' . $this->_filters->getDirection();
             }
             break;
+        case self::ORDERBY_ID:
+            if ( $this->_canOrderBy('id_adh', $fields) ) {
+                $order[] = 'id_adh ' . $this->_filters->getDirection();
+            }
+            break;
         }
 
         //anyways, we want to order by firstname, lastname
@@ -911,7 +920,7 @@ class Members
                         $token
                     );
                     break;
-                case self::FILTER_ADRESS:
+                case self::FILTER_ADDRESS:
                     $select->where(
                         '(' .
                         'LOWER(adresse_adh) LIKE ' . $token
@@ -955,6 +964,9 @@ class Members
                         '(LOWER(info_public_adh) LIKE ' .
                         $token . $more . ')'
                     );
+                    break;
+                case self::FILTER_NUMBER:
+                    $select->where->equalTo('a.id_adh', $this->_filters->filter_str);
                     break;
                 }
             }
@@ -1029,9 +1041,9 @@ class Members
                     array('*'),
                     $select::JOIN_LEFT
                 )->where(
-                    'g.' . Group::PK . ' = ' . $this->_filters->group_filter .
+                    '(g.' . Group::PK . ' = ' . $this->_filters->group_filter .
                     ' OR gs.parent_group = NULL OR gs.parent_group = ' .
-                    $this->_filters->group_filter
+                    $this->_filters->group_filter . ')'
                 );
             }
 
@@ -1350,7 +1362,7 @@ class Members
     /**
      * Login and password field cannot be empty.
      *
-     * If those ones are not required, or if a file has been importedi
+     * If those ones are not required, or if a file has been imported
      * (from a CSV file for example), we fill here random values.
      *
      * @return boolean
@@ -1378,7 +1390,7 @@ class Members
 
             $processed = 0;
             if ( $results->count() > 0 ) {
-                $update = $this->_zdb->update(Adherent::TABLE);
+                $update = $zdb->update(Adherent::TABLE);
                 $update->set(
                     array(
                         'login_adh' => ':login',
@@ -1386,7 +1398,7 @@ class Members
                     )
                 )->where->equalTo(Adherent::PK, ':id');
 
-                $stmt = $this->_zdb->sql->prepareStatementForSqlObject($update);
+                $stmt = $zdb->sql->prepareStatementForSqlObject($update);
 
                 $p = new \Galette\Core\Password();
 
@@ -1416,8 +1428,8 @@ class Members
                         /** Why where parameter is named where1 ?? */
                         $stmt->execute(
                             array(
-                                'login'     => $m->login_adh,
-                                'pass'      => $m->mdp_adh,
+                                'login_adh' => $m->login_adh,
+                                'mdp_adh'   => $m->mdp_adh,
                                 'where1'    => $m->id_adh
                             )
                         );

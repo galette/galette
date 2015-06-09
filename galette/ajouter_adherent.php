@@ -55,7 +55,14 @@ if ( !$login->isLogged() ) {
     die();
 }
 
-$member = new Adherent();
+$deps = array(
+    'picture'   => true,
+    'groups'    => true,
+    'dues'      => true,
+    'parent'    => true,
+    'children'  => true
+);
+$member = new Adherent(null, $deps);
 //TODO: dynamic fields should be handled by Adherent object
 $dyn_fields = new DynamicFields();
 
@@ -92,9 +99,12 @@ if ( $login->isAdmin() || $login->isStaff() || $login->isGroupManager() ) {
     if ( $login->isAdmin() ) {
         $disabled = $member->adm_edit_disabled_fields;
     } elseif ( $login->isStaff() ) {
-        $disabled = $member->adm_edit_disabled_fields + $member->staff_edit_disabled_fields;
+        $disabled = $member->adm_edit_disabled_fields
+            + $member->staff_edit_disabled_fields;
     } else {
-        $disabled = $member->adm_edit_disabled_fields + $member->staff_edit_disabled_fields + $member->disabled_fields;
+        $disabled = $member->adm_edit_disabled_fields
+            + $member->staff_edit_disabled_fields
+            + $member->disabled_fields;
     }
 
     if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED ) {
@@ -108,27 +118,52 @@ if ( $login->isAdmin() || $login->isStaff() || $login->isGroupManager() ) {
 }
 
 // flagging required fields
-$fc = new FieldsConfig(Adherent::TABLE, $member->fields);
-$required = $fc->getRequired();
-// flagging fields visibility
-$visibles = $fc->getVisibilities();
+$fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
 
 // password required if we create a new member
 if ( $member->id != '' ) {
-    unset($required['mdp_adh']);
+    $fc->setNotRequired('mdp_adh');
+}
+
+//address and mail fields are not required if member has a parent
+$no_parent_required = array(
+    'adresse_adh',
+    'adresse2_adh',
+    'cp_adh',
+    'ville_adh',
+    'email_adh'
+);
+if ($member->hasParent()) {
+    foreach ($no_parent_required as $field) {
+        if ($fc->isRequired($field)) {
+            $fc->setNotRequired($field);
+        } else {
+            $i = array_search($field, $no_parent_required);
+            unset($no_parent_required[$i]);
+        }
+    }
+    $tpl->assign('no_parent_required', $no_parent_required);
 }
 
 // flagging required fields invisible to members
 if ( $login->isAdmin() || $login->isStaff() ) {
-    $required['activite_adh'] = 1;
-    $required['id_statut'] = 1;
+    $fc->setNotRequired('activite_adh');
+    $fc->setNotRequired('id_statut');
 }
+
+$required = $fc->getRequired();
+// flagging fields visibility
+$visibles = $fc->getVisibilities();
 
 $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
 // Validation
 if ( isset($_POST[array_shift($real_requireds)]) ) {
-    $adherent['dyn'] = $dyn_fields->extractPosted($_POST, $_FILES, $disabled, $member->id);
+    $adherent['dyn'] = $dyn_fields->extractPosted(
+        $_POST,
+        $_FILES,
+        $disabled, $member->id
+    );
     $dyn_fields_errors = $dyn_fields->getErrors();
     if ( count($dyn_fields_errors) > 0 ) {
         $error_detected = array_merge($error_detected, $dyn_fields_errors);
@@ -139,7 +174,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
         $error_detected = array_merge($error_detected, $valid);
     }
 
-    if ( count($error_detected ) == 0) {
+    if ( count($error_detected) == 0) {
         //all goes well, we can proceed
 
         $new = false;
@@ -159,11 +194,21 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                         $texts_fields,
                         $preferences,
                         array(
-                            'name_adh'      => custom_html_entity_decode($member->sname),
-                            'firstname_adh' => custom_html_entity_decode($member->surname),
-                            'lastname_adh'  => custom_html_entity_decode($member->name),
-                            'mail_adh'      => custom_html_entity_decode($member->email),
-                            'login_adh'     => custom_html_entity_decode($member->login)
+                            'name_adh'      => custom_html_entity_decode(
+                                $member->sname
+                            ),
+                            'firstname_adh' => custom_html_entity_decode(
+                                $member->surname
+                            ),
+                            'lastname_adh'  => custom_html_entity_decode(
+                                $member->name
+                            ),
+                            'mail_adh'      => custom_html_entity_decode(
+                                $member->email
+                            ),
+                            'login_adh'     => custom_html_entity_decode(
+                                $member->login
+                            )
                         )
                     );
                     $mtxt = $texts->getTexts('newadh', $preferences->pref_lang);
@@ -213,12 +258,24 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                             $texts_fields,
                             $preferences,
                             array(
-                                'name_adh'      => custom_html_entity_decode($member->sname),
-                                'firstname_adh' => custom_html_entity_decode($member->surname),
-                                'lastname_adh'  => custom_html_entity_decode($member->name),
-                                'mail_adh'      => custom_html_entity_decode($member->email),
-                                'login_adh'     => custom_html_entity_decode($member->login),
-                                'password_adh'  => custom_html_entity_decode($_POST['mdp_adh'])
+                                'name_adh'      => custom_html_entity_decode(
+                                    $member->sname
+                                ),
+                                'firstname_adh' => custom_html_entity_decode(
+                                    $member->surname
+                                ),
+                                'lastname_adh'  => custom_html_entity_decode(
+                                    $member->name
+                                ),
+                                'mail_adh'      => custom_html_entity_decode(
+                                    $member->email
+                                ),
+                                'login_adh'     => custom_html_entity_decode(
+                                    $member->login
+                                ),
+                                'password_adh'  => custom_html_entity_decode(
+                                    $_POST['mdp_adh']
+                                )
                             )
                         );
                         $mlang = $preferences->pref_lang;
@@ -315,7 +372,8 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                     if ( is_uploaded_file($_FILES['photo']['tmp_name']) ) {
                         $res = $member->picture->store($_FILES['photo']);
                         if ( $res < 0 ) {
-                            $error_detected[] = $member->picture->getErrorMessage($res);
+                            $error_detected[]
+                                = $member->picture->getErrorMessage($res);
                         }
                     }
                 }
@@ -445,6 +503,11 @@ $tpl->assign('statuts', $statuts->getList());
 $groups = new Groups();
 $groups_list = $groups->getSimpleList(true);
 $tpl->assign('groups', $groups_list);
+
+$form_elements = $fc->getFormElements();
+
+$tpl->assign('fieldsets', $form_elements['fieldsets']);
+$tpl->assign('hidden_elements', $form_elements['hiddens']);
 
 // page generation
 $content = $tpl->fetch('member.tpl');

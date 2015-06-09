@@ -63,7 +63,6 @@ abstract class AbstractUpdater
     private $_engines = array(
         Db::MYSQL   => Db::MYSQL,
         Db::PGSQL   => Db::PGSQL,
-        Db::SQLITE  => Db::SQLITE
     );
     protected $zdb;
     protected $installer;
@@ -71,14 +70,9 @@ abstract class AbstractUpdater
 
     /**
      * Main constructor
-     *
-     * @param boolean $with_sqlite Wheter SQLite support was existing
      */
-    public function __construct($with_sqlite = true)
+    public function __construct()
     {
-        if ( $with_sqlite === false ) {
-            unset($this->_engines[Db::SQLITE]);
-        }
         if ( $this->db_version === null ) {
             Analog::log(
                 'Upgrade version can not be empty!',

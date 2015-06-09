@@ -68,11 +68,11 @@
                 {if isset($disabled.dyn[$field.field_id])} {$disabled.dyn[$field.field_id]}{/if}
                 {if $field.field_required eq 1} required{/if}
             />
-            {_T string="current"}: <input type="text" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}_current" disabled
+            {_T string="current"}: <input type="text" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}_current" disabled="disabled"
                 value="{if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}{/if}"
             />
             {_T string="delete"}: <input type="checkbox" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}_delete"
-                {if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index]) && !$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}disabled{/if}
+                {if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index]) && !$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}disabled="disabled"{/if}
                 onclick="this.form.info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}_new.disabled = this.checked;"
             />
         {/if}

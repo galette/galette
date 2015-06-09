@@ -94,11 +94,17 @@ if ( isset($session['lostpasswd_success']) ) {
 
 $dyn_fields = new DynamicFields();
 
-$member = new Adherent();
-$member->load($id_adh);
+$deps = array(
+    'picture'   => true,
+    'groups'    => true,
+    'dues'      => true,
+    'parent'    => true,
+    'children'  => true
+);
+$member = new Adherent((int)$id_adh, $deps);
 
 // flagging fields visibility
-$fc = new FieldsConfig(Adherent::TABLE, $member->fields);
+$fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
 $visibles = $fc->getVisibilities();
 
 if ( $login->id != $id_adh && !$login->isAdmin() && !$login->isStaff() ) {
@@ -126,8 +132,8 @@ if ( isset($session['filters']['members']) ) {
     $filters = new MembersList();
 }
 
-if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
-    $m = new Members();
+if ( ($login->isAdmin() || $login->isStaff()) ) {
+    $m = new Members($filters);
     $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
     $ids = $ids->toArray();
     foreach ( $ids as $k=>$m ) {
@@ -145,6 +151,13 @@ if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
             }
             break;
         }
+    }
+}
+
+$children = array();
+if ($member->hasChildren()) {
+    foreach ($member->children as $child) {
+        $children[$child] = Adherent::getSName($child);
     }
 }
 
@@ -169,6 +182,7 @@ if ( isset($error_detected) ) {
 $tpl->assign('page_title', _T("Member Profile"));
 $tpl->assign('require_dialog', true);
 $tpl->assign('member', $member);
+$tpl->assign('children', $children);
 $tpl->assign('data', $adherent);
 $tpl->assign('navigate', $navigate);
 $tpl->assign('pref_lang_img', $i18n->getFlagFromId($member->language));
@@ -178,6 +192,10 @@ $tpl->assign('dynamic_fields', $dynamic_fields);
 $tpl->assign('groups', Groups::getSimpleList());
 $tpl->assign('visibles', $visibles);
 $tpl->assign('time', time());
+
+$display_elements = $fc->getDisplayElements();
+$tpl->assign('display_elements', $display_elements);
+
 //if we got a mail warning when adding/editing a member,
 //we show it and delete it from session
 if ( isset($session['mail_warning']) ) {

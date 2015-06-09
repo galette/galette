@@ -57,36 +57,20 @@ class FieldsCategories
     const TABLE = 'fields_categories';
     const PK = 'id_field_category';
 
+    private $_defaults;
+
     const ADH_CATEGORY_IDENTITY = 1;
     const ADH_CATEGORY_GALETTE = 2;
     const ADH_CATEGORY_CONTACT = 3;
 
-    private static $_defaults = array(
-        array(
-            'id'         => 1,
-            'table_name' => Adherent::TABLE,
-            'category'   => 'Identity',
-            'position'   => 1
-        ),
-        array(
-            'id'         => 2,
-            'table_name' => Adherent::TABLE,
-            'category'   => 'Galette-related data',
-            'position'   => 2
-        ),
-        array(
-            'id'         => 3,
-            'table_name' => Adherent::TABLE,
-            'category'   => 'Contact information',
-            'position'   => 3
-        )
-    );
-
     /**
      * Default constructor
+     *
+     * @param array $defaults default values
      */
-    function __construct()
+    function __construct($defaults)
     {
+        $this->_defaults = $defaults;
     }
 
     /**
@@ -109,6 +93,46 @@ class FieldsCategories
                 Analog::WARNING
             );
             return false;
+        }
+    }
+
+    /**
+     * Store the categories
+     *
+     * @param array $categories Categories
+     *
+     * @return boolean
+     */
+    public static function setCategories($categories)
+    {
+        global $zdb;
+
+        try {
+            $zdb->connection->beginTransaction();
+
+            $update = $zdb->update(self::TABLE);
+            $update->set(
+                array(
+                    'position' => ':position'
+                )
+            )->where(
+                array(
+                    self::PK => ':pk'
+                )
+            );
+            $stmt = $zdb->sql->prepareStatementForSqlObject($update);
+
+            foreach ( $categories as $k=>$v ) {
+                $params = array(
+                    'position'  => $k,
+                    'where1'    => $v
+                );
+                $stmt->execute($params);
+            }
+            $zdb->connection->commit();
+        } catch ( Exception $e ) {
+            $zdb->connection->rollBack();
+            throw $e;
         }
     }
 
@@ -137,7 +161,7 @@ class FieldsCategories
             );
             $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
-            foreach ( self::$_defaults as $d ) {
+            foreach ( $this->_defaults as $d ) {
                 $stmt->execute(
                     array(
                         self::PK        => $d['id'],
@@ -163,3 +187,4 @@ class FieldsCategories
         }
     }
 }
+

@@ -142,7 +142,7 @@ class Preferences extends atoum
         $this->_preferences->pref_pays = 'France';
 
         $expected = "Galette\n\nPalais des Papes\nAu milieu\n84000 Avignon - France";
-        $address = $this->_preferences->getPostalAdress();
+        $address = $this->_preferences->getPostalAddress();
 
         $this->variable($address)->isIdenticalTo($expected);
 

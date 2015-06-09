@@ -73,14 +73,11 @@ function initDbConstants($install)
 {
     define('TYPE_DB', $install->getDbType());
     define('PREFIX_DB', $install->getTablesPrefix());
-
-    if (TYPE_DB != 'sqlite') {
-        define('USER_DB', $install->getDbUser());
-        define('PWD_DB', $install->getDbPass());
-        define('HOST_DB', $install->getDbHost());
-        define('PORT_DB', $install->getDbPort());
-        define('NAME_DB', $install->getDbName());
-    }
+    define('USER_DB', $install->getDbUser());
+    define('PWD_DB', $install->getDbPass());
+    define('HOST_DB', $install->getDbHost());
+    define('PORT_DB', $install->getDbPort());
+    define('NAME_DB', $install->getDbName());
 }
 
 if ( isset($_POST['stepback_btn']) ) {
@@ -93,22 +90,20 @@ if ( isset($_POST['stepback_btn']) ) {
 } elseif ( isset($_POST['install_dbtype'])  ) {
     $install->setDbType($_POST['install_dbtype'], $error_detected);
 
-    if ( $install->getDbType() != GaletteDb::SQLITE ) {
-        if ( empty($_POST['install_dbhost']) ) {
-            $error_detected[] = _T("No host");
-        }
-        if ( empty($_POST['install_dbport']) ) {
-            $error_detected[] = _T("No port");
-        }
-        if ( empty($_POST['install_dbuser']) ) {
-            $error_detected[] = _T("No user name");
-        }
-        if ( empty($_POST['install_dbpass']) ) {
-            $error_detected[] = _T("No password");
-        }
-        if ( empty($_POST['install_dbname']) ) {
-                $error_detected[] = _T("No database name");
-        }
+    if ( empty($_POST['install_dbhost']) ) {
+        $error_detected[] = _T("No host");
+    }
+    if ( empty($_POST['install_dbport']) ) {
+        $error_detected[] = _T("No port");
+    }
+    if ( empty($_POST['install_dbuser']) ) {
+        $error_detected[] = _T("No user name");
+    }
+    if ( empty($_POST['install_dbpass']) ) {
+        $error_detected[] = _T("No password");
+    }
+    if ( empty($_POST['install_dbname']) ) {
+            $error_detected[] = _T("No database name");
     }
 
     if (count($error_detected) == 0) {

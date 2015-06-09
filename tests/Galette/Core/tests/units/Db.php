@@ -105,20 +105,7 @@ class Db extends atoum
             $this->string($type)
                 ->isIdenticalTo(\Galette\Core\Db::MYSQL);
             break;
-        case \galette\Core\Db::SQLITE:
-            $this->boolean($is_pg)
-                ->isFalse();
-            $this->string($type)
-                ->isIdenticalTo(\Galette\Core\Db::SQLITE);
-            break;
         }
-
-        $dsn['TYPE_DB'] = \Galette\Core\Db::SQLITE;
-        $db = new \Galette\Core\Db($dsn);
-
-        $type = $db->type_db;
-        $this->string($type)
-            ->isIdenticalTo(\Galette\Core\Db::SQLITE);
 
         $this->exception(
             function () use ($dsn) {
@@ -144,12 +131,6 @@ class Db extends atoum
             NAME_DB
         );
         $this->boolean($res)->isTrue();
-
-        $res = $this->_db->testConnectivity(
-            \Galette\Core\Db::SQLITE
-        );
-        $this->boolean($res)->isTrue();
-
     }
 
     /**
@@ -178,21 +159,10 @@ class Db extends atoum
         //in update mode, we need alter
         $result = $this->_db->grantCheck('u');
 
-        if ( TYPE_DB !== \Galette\Core\Db::SQLITE ) {
-            $expected['alter'] = true;
-            $this->array($result)
-                ->hasSize(7)
-                ->isIdenticalTo($expected);
-        } else {
-            //for SQLITE, ALTER will not work.
-            $alter = $result['alter'];
-            $this->object($alter)->IsInstanceOf('\PDOException');
-
-            unset($result['alter']);
-            $this->array($result)
-                ->hasSize(6)
-                ->isIdenticalTo($expected);
-        }
+        $expected['alter'] = true;
+        $this->array($result)
+            ->hasSize(7)
+            ->isIdenticalTo($expected);
     }
 
     /**
@@ -233,11 +203,6 @@ class Db extends atoum
             $type = $this->_db->type_db;
             $this->string($type)
                 ->isIdenticalTo('mysql');
-            break;
-        case 'sqlite':
-            $type = $this->_db->type_db;
-            $this->string($type)
-                ->isIdenticalTo('sqlite');
             break;
         }
 

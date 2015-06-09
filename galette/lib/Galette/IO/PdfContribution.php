@@ -88,6 +88,7 @@ class PdfContribution
                 'adh_town'          => '/{TOWN_ADH}/',
                 'adh_main_group'    => '/{GROUP_ADH}/',
                 'adh_groups'        => '/{GROUPS_ADH}/',
+                'adh_company'       => '/{COMPANY_ADH}/',
                 'contrib_label'     => '/{CONTRIBUTION_LABEL}/',
                 'contrib_amount'    => '/{CONTRIBUTION_AMOUNT}/',
                 'contrib_date'      => '/{CONTRIBUTION_DATE}/',
@@ -100,9 +101,9 @@ class PdfContribution
             )
         );
 
-        $address = $member->adress;
-        if ( $member->adress_continuation != '' ) {
-            $address .= '<br/>' . $member->adress_continuation;
+        $address = $member->address;
+        if ( $member->address_continuation != '' ) {
+            $address .= '<br/>' . $member->address_continuation;
         }
 
         $member_groups = $member->groups;
@@ -125,6 +126,7 @@ class PdfContribution
                 'adh_town'          => $member->town,
                 'adh_main_group'    => $main_group,
                 'adh_groups'        => $group_list,
+                'adh_company'       => $member->company_name,
                 'contrib_label'     => $this->_contrib->type->libelle,
                 'contrib_amount'    => $this->_contrib->amount,
                 'contrib_date'      => $this->_contrib->date,
@@ -147,7 +149,7 @@ class PdfContribution
         }
         $this->_filename .= '.pdf';
 
-        $this->_pdf = new Pdf($this->_model);
+        $this->_pdf = new Pdf($prefs, $this->_model);
 
         $this->_pdf->Open();
 

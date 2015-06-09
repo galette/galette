@@ -48,17 +48,19 @@
 {if $step == 'u3'}
         <fieldset class="cssform">
             <legend class="ui-state-active ui-corner-top">{_T string="You current %name version is..." pattern="/%name/" replace=$plugin.name}</legend>
- 
             <ul class="leaders">
+    {assign var=last value=0.00}
     {foreach from=$update_scripts key=k item=val}
-        {assign var=last value=0}
                 <li>
                     <span>
                         <label for="upgrade-{$val}">
-        {if $last != number_format($val - 0.01, 2)}
-            {_T string="comprised between"} {$last} {_T string="and"} {$val - 0.01|number_format:2}
+
+        {if $last eq 0.00}
+            {_T string="older than %version" pattern="/%version/" replace=$val}
+        {elseif $last != $val}
+            {_T string="comprised between"} {$last} {_T string="and"} {$val}
         {else}
-            {$val - 0.01|number_format:2}
+            {$val}
         {/if}
         {assign var=last value=$val}
                         </label>

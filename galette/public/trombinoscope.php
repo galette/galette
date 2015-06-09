@@ -39,6 +39,9 @@
  * @since     Available since 0.62
  */
 
+use Galette\Core\Picture;
+use Galette\Repository\Members;
+
 define('GALETTE_BASE_PATH', '../');
 require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
 if ( !$preferences->showPublicPages($login) ) {
@@ -47,7 +50,10 @@ if ( !$preferences->showPublicPages($login) ) {
     die();
 }
 
-$m = new Galette\Repository\Members();
+$pic = new Picture();
+$pic->missingInDb($zdb);
+
+$m = new Members();
 $members = $m->getPublicList(true, null);
 
 $tpl->assign('page_title', _T("Trombinoscope"));

@@ -53,6 +53,12 @@
                     <td class="back">{_T string="Member's groups (as list)"}<br/><span>({_T string="available with reservations"})</span></td>
                 </tr>
                 <tr>
+                    <th><tt>{ldelim}COMPANY_ADH{rdelim}</tt></th>
+                    <td class="back">{_T string="Company name"}</td>
+                    <th>&nbsp;</th>
+                    <td class="back">&nbsp;</td>
+                </tr>
+                <tr>
                     <th><tt>{ldelim}CONTRIBUTION_LABEL{rdelim}</tt></th>
                     <td class="back">{_T string="Contribution label"}<br/><span>({_T string="available with reservations"})</span></td>
                     <th><tt>{ldelim}CONTRIBUTION_AMOUNT{rdelim}</tt></th>

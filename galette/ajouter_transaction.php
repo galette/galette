@@ -79,7 +79,7 @@ if ( isset($_GET['detach']) ) {
     if ( !Contribution::unsetTransactionPart($trans_id, $_GET['detach']) ) {
         $error_detected[] = _T("Unable to detach contribution from transaction");
     } else {
-        $success_detected[] = _T("Contribution has been successfyully detached from current transaction");
+        $success_detected[] = _T("Contribution has been successfully detached from current transaction");
     }
 }
 
@@ -87,7 +87,7 @@ if ( isset($_GET['cid']) && $_GET['cid'] != null ) {
     if ( !Contribution::setTransactionPart($trans_id, $_GET['cid']) ) {
         $error_detected[] = _T("Unable to attach contribution to transaction");
     } else {
-        $success_detected[] = _T("Contribution has been successfyully attached to current transaction");
+        $success_detected[] = _T("Contribution has been successfully attached to current transaction");
     }
 }
 

@@ -81,8 +81,8 @@ class Adherent
     private $_active;
     private $_status;
     //Contact informations
-    private $_adress;
-    private $_adress_continuation; /** TODO: remove */
+    private $_address;
+    private $_address_continuation; /** TODO: remove */
     private $_zipcode;
     private $_town;
     private $_country;
@@ -111,6 +111,8 @@ class Adherent
     private $_days_remaining;
     private $_groups;
     private $_managed_groups;
+    private $_parent;
+    private $_children;
     //
     private $_row_classes;
     //fields list and their translation
@@ -119,11 +121,13 @@ class Adherent
     private $_deps = array(
         'picture'   => true,
         'groups'    => true,
-        'dues'      => true
+        'dues'      => true,
+        'parent'    => false,
+        'children'  => false
     );
 
     private $_disabled_fields = array(
-        'id_adh' => 'disabled="disabled"',
+        'id_adh' => 'readonly="readonly"',
         'date_crea_adh' => 'disabled="disabled"',
         'id_statut' => 'disabled="disabled"',
         'activite_adh' => 'disabled="disabled"',
@@ -142,7 +146,7 @@ class Adherent
         'bool_admin_adh' => 'disabled="disabled"'
     );
     private $_adm_edit_disabled_fields = array(
-        'id_adh' => 'disabled="disabled"',
+        'id_adh' => 'readonly="readonly"',
         'date_echeance' => 'disabled="disabled"'
     );
 
@@ -221,6 +225,7 @@ class Adherent
                 $this->_admin = false;
                 $this->_staff = false;
                 $this->_due_free = false;
+                $this->_parent = null;
             }
         } elseif ( is_object($args) ) {
             $this->_loadFromRS($args);
@@ -251,6 +256,10 @@ class Adherent
 
             $results = $zdb->execute($select);
 
+            if ( $results->count() === 0 ) {
+                return false;
+            }
+
             $this->_loadFromRS($results->current());
             return true;
         } catch (\Exception $e) {
@@ -276,10 +285,10 @@ class Adherent
         try {
             $select = $zdb->select(self::TABLE);
             if ( GaletteMail::isValidEmail($login) ) {
-                //we got a valid email adress, use it
+                //we got a valid email address, use it
                 $select->where(array('email_adh' => $login));
             } else {
-                ///we did not get an email adress, consider using login
+                ///we did not get an email address, consider using login
                 $select->where(array('login_adh' => $login));
             }
 
@@ -327,9 +336,9 @@ class Adherent
         $this->_active = $r->activite_adh;
         $this->_status = $r->id_statut;
         //Contact informations
-        $this->_adress = $r->adresse_adh;
-        /** TODO: remove and merge with adress */
-        $this->_adress_continuation = $r->adresse2_adh;
+        $this->_address = $r->adresse_adh;
+        /** TODO: remove and merge with address */
+        $this->_address_continuation = $r->adresse2_adh;
         $this->_zipcode = $r->cp_adh;
         $this->_town = $r->ville_adh;
         $this->_country = $r->pays_adh;
@@ -368,6 +377,21 @@ class Adherent
         $this->_others_infos = $r->info_public_adh;
         $this->_others_infos_admin = $r->info_adh;
 
+        if ($r->parent_id !== null) {
+            if ($this->_deps['parent'] === true) {
+                $deps = $this->_deps;
+                $deps['parent'] = false;
+                $deps['children'] = false;
+                $this->_parent = new Adherent((int)$r->parent_id, $deps);
+            } else {
+                $this->_parent = $r->parent_id;
+            }
+        }
+
+        if ($this->_deps['children'] === true) {
+            $this->_loadChildren();
+        }
+
         if ( $this->_deps['picture'] === true ) {
             $this->_picture = new Picture($this->_id);
         }
@@ -378,6 +402,42 @@ class Adherent
 
         if ( $this->_deps['dues'] === true ) {
             $this->_checkDues();
+        }
+    }
+
+    /**
+     * Load member children
+     *
+     * @return void
+     */
+    private function _loadChildren()
+    {
+        global $zdb;
+
+        $this->_children = array();
+        try {
+            $id = self::PK;
+            $select = $zdb->select(self::TABLE);
+            $select->columns(
+                array($id)
+            )->where(
+                'parent_id = ' . $this->_id
+            );
+
+            $results = $zdb->execute($select);
+
+            if ($results->count() >  0) {
+                foreach ($results as $row) {
+                    $this->_children[] = $row->$id;
+                }
+            }
+        } catch (\Exception $e) {
+            Analog::log(
+                'Cannot load children for member #' . $this->_id . ' | ' .
+                $e->getMessage(),
+                Analog::WARNING
+            );
+            return false;
         }
     }
 
@@ -563,6 +623,34 @@ class Adherent
     public function hasPicture()
     {
         return $this->_picture->hasPicture();
+    }
+
+    /**
+     * Does member have a parent?
+     *
+     * @return bool
+     */
+    public function hasParent()
+    {
+        return $this->_parent !== null;
+    }
+
+    /**
+     * Does member have children?
+     *
+     * @return bool
+     */
+    public function hasChildren()
+    {
+        if ($this->_children === null) {
+            Analog::log(
+                'Children has not been loaded!',
+                Analog::WARNING
+            );
+            return false;
+        } else {
+            return count($this->_children) > 0;
+        }
     }
 
     /**
@@ -821,6 +909,7 @@ class Adherent
                 case 'titre_adh':
                 case 'id_statut':
                 case 'pref_lang':
+                case 'parent_id':
                     //values that are setted at object instanciation
                     $value = $this->$prop;
                     break;
@@ -832,10 +921,12 @@ class Adherent
             // if the field is enabled, check it
             if ( !isset($disabled[$key]) ) {
                 // fill up the adherent structure
-                $this->$prop = stripslashes($value);
+                if ( $value !== null) {
+                    $this->$prop = stripslashes($value);
+                }
 
                 // now, check validity
-                if ( $value != '' ) {
+                if ( $value !== null && $value != '' ) {
                     switch ( $key ) {
                     // dates
                     case 'date_crea_adh':
@@ -1078,6 +1169,11 @@ class Adherent
             }
         }
 
+        //attach to/detach from parent
+        if (isset($values['detach_parent'])) {
+            $this->_parent = null;
+        }
+
         if ( count($errors) > 0 ) {
             Analog::log(
                 'Some errors has been throwed attempting to edit/store a member' .
@@ -1120,6 +1216,15 @@ class Adherent
                     ) {
                         //Handle booleans for postgres ; bugs #18899 and #19354
                         $values[$field] = 'false';
+                    } elseif ($field === 'parent_id') {
+                        //handle parents
+                        if ($this->_parent === null) {
+                            $values['parent_id'] = new Expression('NULL');
+                        } elseif ($this->parent instanceof Adherent) {
+                            $values['parent_id'] = $this->_parent->id;
+                        } else {
+                            $values['parent_id'] = $this->_parent;
+                        }
                     } else {
                         $values[$field] = $this->$prop;
                     }
@@ -1139,6 +1244,10 @@ class Adherent
                 $values['titre_adh'] = $this->_title->id;
             } else {
                 $values['titre_adh'] = new Expression('NULL');
+            }
+
+            if ( !$this->_parent ) {
+                $values['parent_id'] = new Expression('NULL');
             }
 
             if ( !isset($this->_id) || $this->_id == '') {
@@ -1261,7 +1370,7 @@ class Adherent
         );
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
-            'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass'
+            'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass', 'saddress'
         );
         $rname = '_' . $name;
         if ( !in_array($name, $forbidden) && isset($this->$rname)) {
@@ -1285,24 +1394,6 @@ class Adherent
                     }
                 }
                 break;
-            case 'fields':
-                //filter according to logged user ACLs
-                $fc = new FieldsConfig(Adherent::TABLE, $this->_fields);
-                // fields visibility
-                $visibles = $fc->getVisibilities();
-                $fields = array();
-                foreach ( $this->_fields as $k=>$f ) {
-                    if ( $visibles[$k] === FieldsConfig::VISIBLE ) {
-                        $fields[$k] = $f;
-                    } else if ( ($login->isAdmin()
-                        || $login->isStaff()
-                        || $login->isSuperAdmin())
-                        && $visibles[$k] === FieldsConfig::ADMIN
-                    ) {
-                        $fields[$k] = $f;
-                    }
-                }
-                return $this->_fields;
             default:
                 return $this->$rname;
                 break;
@@ -1337,6 +1428,13 @@ class Adherent
                     $sfn = $this->_title->tshort . ' ' . $sfn;
                 }
                 return $sfn;
+                break;
+            case 'saddress':
+                $address = $this->_address;
+                if ( $this->_address_continuation !== '' ) {
+                    $address .= "\n" . $this->_address_continuation;
+                }
+                return $address;
                 break;
             case 'sname':
                 return mb_strtoupper($this->_name, 'UTF-8') .

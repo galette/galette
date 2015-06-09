@@ -163,20 +163,27 @@ class Group
 
         if ( $this->_id ) {
             try {
-                $from = null;
+                $join = null;
                 switch ( $type ) {
                 case self::MEMBER_TYPE:
-                    $from = self::GROUPSUSERS_TABLE;
+                    $join = PREFIX_DB . self::GROUPSUSERS_TABLE;
                     break;
                 case self::MANAGER_TYPE:
-                    $from = self::GROUPSMANAGERS_TABLE;
+                    $join = PREFIX_DB . self::GROUPSMANAGERS_TABLE;
                     break;
                 }
 
-                $select = $zdb->select($from);
-                $select->columns(
-                    array(Adherent::PK)
-                )->where(self::PK . ' = ' . $this->_id);
+                $select = $zdb->select(Adherent::TABLE, 'a');
+                $select->join(
+                    array('g' => $join),
+                    'g.' . Adherent::PK . '=a.' . Adherent::PK,
+                    array()
+                )->where(
+                    'g.' . self::PK . ' = ' . $this->_id
+                )->order(
+                    'nom_adh ASC',
+                    'prenom_adh ASC'
+                );
 
                 $results = $zdb->execute($select);
                 $members = array();
@@ -189,7 +196,7 @@ class Group
                 );
 
                 foreach ( $results as $m ) {
-                    $members[] = new Adherent((int)$m->$adhpk, $deps);
+                    $members[] = new Adherent($m, $deps);
                 }
 
                 if ( $type === self::MEMBER_TYPE) {

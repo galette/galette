@@ -49,12 +49,12 @@
                     <input{if isset($required.pref_pays) and $required.pref_pays eq 1} required{/if} type="text" name="pref_pays" id="pref_pays" value="{$pref.pref_pays}" maxlength="50"/>
                 </p>
         <div class="p">
-          <span class="bline tooltip" title="{_T string="Use either the adress setted below or select user status to retrieve another adress."}">{_T string="Postal adress:"}</span>
-          <span class="tip">{_T string="Use either the adress setted below or select a staff member to retrieve he's adress."}</span>
+          <span class="bline tooltip" title="{_T string="Use either the address setted below or select user status to retrieve another address."}">{_T string="Postal address:"}</span>
+          <span class="tip">{_T string="Use either the address setted below or select a staff member to retrieve he's address."}</span>
           <label for="pref_postal_adress_0">{_T string="from preferences"}</label>
-          <input type="radio" name="pref_postal_adress" id="pref_postal_adress_0" value="{php}echo Galette\Core\Preferences::POSTAL_ADRESS_FROM_PREFS;{/php}" {if $pref.pref_postal_adress eq constant('Galette\Core\Preferences::POSTAL_ADRESS_FROM_PREFS')}checked="checked"{/if}/>
+          <input type="radio" name="pref_postal_adress" id="pref_postal_adress_0" value="{php}echo Galette\Core\Preferences::POSTAL_ADDRESS_FROM_PREFS;{/php}" {if $pref.pref_postal_adress eq constant('Galette\Core\Preferences::POSTAL_ADDRESS_FROM_PREFS')}checked="checked"{/if}/>
           <label for="pref_postal_adress_1">{_T string="from a staff user"}</label>
-          <input type="radio" name="pref_postal_adress" id="pref_postal_adress_1" value="{php}echo Galette\Core\Preferences::POSTAL_ADRESS_FROM_STAFF;{/php}" {if $pref.pref_postal_adress eq constant('Galette\Core\Preferences::POSTAL_ADRESS_FROM_STAFF')}checked="checked"{/if}/>
+          <input type="radio" name="pref_postal_adress" id="pref_postal_adress_1" value="{php}echo Galette\Core\Preferences::POSTAL_ADDRESS_FROM_STAFF;{/php}" {if $pref.pref_postal_adress eq constant('Galette\Core\Preferences::POSTAL_ADDRESS_FROM_STAFF')}checked="checked"{/if}/>
           <br/><label for="pref_postal_staff_member">{_T string="Staff member"}</label>
           <select name="pref_postal_staff_member" id="pref_postal_staff_member">
             <option value="-1">{_T string="-- Choose a staff member --"}</option>
@@ -159,7 +159,12 @@
                 <p>
                     <label for="pref_rss_url" class="bline tooltip" title="{_T string="URL to the RSS feed."}">{_T string="RSS feed URL"}</label>
                     <span class="tip">{_T string="Enter the full URL to the RSS feed. It will be displayed on Galette desktop."}</span>
-                    <input type="text" name="pref_rss_url" id="pref_rss_url" value="{$pref.pref_rss_url}"{if isset($required.pref_new_contrib_script) and $required.pref_new_contrib_script eq 1} required{/if}/>
+                    <input type="text" name="pref_rss_url" id="pref_rss_url" value="{$pref.pref_rss_url}"{if isset($required.pref_rss_url) and $required.pref_rss_url eq 1} required{/if}/>
+                </p>
+                <p>
+                    <label for="pref_show_id" class="bline tooltip" title="{_T string="Display member number in member related windows"}">{_T string="Show member number"}</label>
+                    <span class="tip">{_T string="Display member number in member related windows"}</span>
+                    <input type="checkbox" name="pref_show_id" id="pref_show_id" value="1" {if $pref.pref_show_id} checked="checked"{/if}{if isset($required.pref_show_id) and $required.pref_show_id eq 1} required{/if}/>
                 </p>
             </fieldset>
 

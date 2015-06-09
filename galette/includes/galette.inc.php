@@ -117,11 +117,11 @@ if (defined('GALETTE_XHPROF_PATH')
 //we start a php session
 session_start();
 
-define('GALETTE_VERSION', 'v0.8.1');
+define('GALETTE_VERSION', 'v0.8.2');
 define('GALETTE_COMPAT_VERSION', '0.8');
-define('GALETTE_DB_VERSION', '0.810');
+define('GALETTE_DB_VERSION', '0.820');
 if ( !defined('GALETTE_MODE') ) {
-    define('GALETTE_MODE', 'PROD'); //DEV, PROD or DEMO
+    define('GALETTE_MODE', 'PROD'); //DEV, PROD, MAINT or DEMO
 }
 
 if ( !isset($_COOKIE['show_galette_dashboard']) ) {
@@ -204,6 +204,7 @@ if ( defined('GALETTE_TESTS') ) {
             $galette_run_log = \Analog\Handler\Variable::init($galette_log_var);
         }
     }
+    Core\Logs::cleanup();
 }
 
 Analog::handler(
@@ -238,7 +239,7 @@ if ( $installer || !defined('PREFIX_DB') || !defined('NAME_DB') ) {
 $session = &$_SESSION['galette'][$session_name];
 
 /**
-* Language instantiation
+ * Language instantiation
  */
 if ( isset($session['lang']) ) {
     $i18n = unserialize($session['lang']);
@@ -315,6 +316,21 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
             $login = new Core\Login();
         }
 
+        if (GALETTE_MODE === 'MAINT' && !$login->isSuperAdmin() ) {
+            if ( $login->isLogged() ) {
+                //force logout
+                $login->logOut();
+                $session['login'] = null;
+                unset($session['login']);
+                $session['history'] = null;
+                unset($session['history']);
+            }
+            //redirect, if needed
+            if ( basename($_SERVER['SCRIPT_NAME']) !== 'maintenance.php' ) {
+                header('location: maintenance.php');
+            }
+        }
+
         if ( $cron ) {
             $login->logCron(basename($argv[0], '.php'));
         }
@@ -358,6 +374,7 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
         include_once GALETTE_ROOT . 'includes/session.inc.php';
         include_once GALETTE_ROOT . 'includes/smarty.inc.php';
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
+        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
         include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
         include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
     } else {

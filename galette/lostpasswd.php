@@ -118,7 +118,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
                         )
                     );
                     if ( $from_admin === false ) {
-                        $success_detected[] = _T("A mail has been sent to your adress.<br/>Please check your inbox and follow the instructions.");
+                        $success_detected[] = _T("A mail has been sent to your address.<br/>Please check your inbox and follow the instructions.");
                         $tpl->assign('success_detected', $success_detected);
                         $done = true;
                     } else {
@@ -146,7 +146,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
             $str = str_replace(
                 '%s',
                 $login_adh,
-                _T("Your account (%s) do not contain any valid mail adress")
+                _T("Your account (%s) do not contain any valid mail address")
             );
             $hist->add($str);
             $error_detected[] = $str;
@@ -157,7 +157,7 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
             $str = str_replace(
                 '%s',
                 $login_adh,
-                _T("Mails adress %s does not exist")
+                _T("Mails address %s does not exist")
             );
             $hist->add($str);
             $error_detected[] = $str;

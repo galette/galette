@@ -39,6 +39,7 @@ namespace Galette\Repository;
 
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Predicate\PredicateSet;
 use Galette\Entity\Group;
 use Galette\Entity\Adherent;
 
@@ -100,10 +101,11 @@ class Groups
      * Get groups list
      *
      * @param boolean $full Return full list or root only
+     * @param int     $id   Group ID to retrieve
      *
      * @return Group[]
      */
-    public function getList($full = true)
+    public function getList($full = true, $id=null)
     {
         global $zdb, $login;
         try {
@@ -125,6 +127,16 @@ class Groups
 
             if ( $full !== true ) {
                 $select->where('parent_group IS NULL');
+            }
+
+            if ( $id !== null ) {
+                $select->where(
+                    array(
+                        'a.' . Group::PK => $id,
+                        'a.parent_group' => $id
+                    ),
+                    PredicateSet::OP_OR
+                );
             }
 
             $select->group('a.' . Group::PK)

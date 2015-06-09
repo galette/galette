@@ -93,11 +93,10 @@ class CheckModules
         //one of mysql or pgsql driver must be present
         if ( !extension_loaded('pdo_mysql')
             && !extension_loaded('pdo_pgsql')
-            && !extension_loaded('pdo_sqlite')
         ) {
-            $this->_missing[] = _T("either 'mysql', 'pgsql' or 'sqlite' PDO driver");
+            $this->_missing[] = _T("either 'mysql' or 'pgsql' PDO driver");
         } else {
-            $this->_good['pdo_driver'] = _T("either 'mysql', 'pgsql' or 'sqlite' PDO driver");
+            $this->_good['pdo_driver'] = _T("either 'mysql' or 'pgsql' PDO driver");
         }
 
         //curl module is optionnal

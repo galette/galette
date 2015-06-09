@@ -64,9 +64,6 @@ quick_gen_project_*
 !/galette/data/files/readme.txt
 !/galette/data/files/.htaccess
 
-# sqlite databases
-/galette/data/*.sqlite
-
 # Test stuff
 tests/coverage/
 tests/mageekguy.atoum.phar

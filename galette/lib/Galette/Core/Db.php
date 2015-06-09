@@ -65,7 +65,6 @@ class Db
 
     const MYSQL = 'mysql';
     const PGSQL = 'pgsql';
-    const SQLITE = 'sqlite';
 
     const MYSQL_DEFAULT_PORT = 3306;
     const PGSQL_DEFAULT_PORT = 5432;
@@ -82,22 +81,18 @@ class Db
 
         if ( $dsn !== null && is_array($dsn) ) {
             $_type_db = $dsn['TYPE_DB'];
-            if ($_type_db != self::SQLITE) {
-                $_host_db = $dsn['HOST_DB'];
-                $_port_db = $dsn['PORT_DB'];
-                $_user_db = $dsn['USER_DB'];
-                $_pwd_db = $dsn['PWD_DB'];
-                $_name_db = $dsn['NAME_DB'];
-            }
+            $_host_db = $dsn['HOST_DB'];
+            $_port_db = $dsn['PORT_DB'];
+            $_user_db = $dsn['USER_DB'];
+            $_pwd_db = $dsn['PWD_DB'];
+            $_name_db = $dsn['NAME_DB'];
         } else {
             $_type_db = TYPE_DB;
-            if ($_type_db != self::SQLITE) {
-                $_host_db = HOST_DB;
-                $_port_db = PORT_DB;
-                $_user_db = USER_DB;
-                $_pwd_db = PWD_DB;
-                $_name_db = NAME_DB;
-            }
+            $_host_db = HOST_DB;
+            $_port_db = PORT_DB;
+            $_user_db = USER_DB;
+            $_pwd_db = PWD_DB;
+            $_name_db = NAME_DB;
         }
 
         try {
@@ -105,30 +100,21 @@ class Db
                 $_type = 'Pdo_Mysql';
             } else if ( $_type_db === self::PGSQL ) {
                 $_type = 'Pdo_Pgsql';
-            } else if ( $_type_db == self::SQLITE ) {
-                $_type = 'Pdo_Sqlite';
             } else {
                 throw new \Exception;
             }
 
             $this->_type_db = $_type_db;
-            if ($_type_db != self::SQLITE) {
-                $_options = array(
-                    'driver'   => $_type,
-                    'hostname' => $_host_db,
-                    'port'     => $_port_db,
-                    'username' => $_user_db,
-                    'password' => $_pwd_db,
-                    'database' => $_name_db
-                );
-                if ($_type_db === self::MYSQL) {
-                    $_options['charset'] = 'utf8';
-                }
-            } else {
-                $_options = array(
-                    'driver'   => $_type,
-                    'database' => GALETTE_SQLITE_PATH,
-                );
+            $_options = array(
+                'driver'   => $_type,
+                'hostname' => $_host_db,
+                'port'     => $_port_db,
+                'username' => $_user_db,
+                'password' => $_pwd_db,
+                'database' => $_name_db
+            );
+            if ($_type_db === self::MYSQL && !defined('NON_UTF_DBCONNECT')) {
+                $_options['charset'] = 'utf8';
             }
 
             $this->_db = new Adapter($_options);
@@ -242,28 +228,18 @@ class Db
                 $_type = 'Pdo_Mysql';
             } else if ( $type === self::PGSQL ) {
                 $_type = 'Pdo_Pgsql';
-            } else if ( $type == self::SQLITE ) {
-                $_type = 'Pdo_Sqlite';
             } else {
                 throw new \Exception;
             }
 
-
-            if ($type != self::SQLITE) {
-                $_options = array(
-                    'driver'   => $_type,
-                    'hostname' => $host,
-                    'port'     => $port,
-                    'username' => $user,
-                    'password' => $pass,
-                    'database' => $db
-                );
-            } else {
-                $_options = array(
-                    'driver'   => $_type,
-                    'databse'   => GALETTE_SQLITE_PATH,
-                );
-            }
+            $_options = array(
+                'driver'   => $_type,
+                'hostname' => $host,
+                'port'     => $port,
+                'username' => $user,
+                'password' => $pass,
+                'database' => $db
+            );
 
             $_db = new Adapter($_options);
             $_db->getDriver()->getConnection()->connect();
@@ -416,19 +392,11 @@ class Db
 
                 //can Galette SELECT records ?
                 try {
-                    //For reasons I do not understand, count() always return 0
-                    //with SQLITE but current() give expected result.
-                    //Just executing the query will make DROP test fail
-                    //because database is locked...
                     $pass = false;
-                    if ( $this->isSQLite() ) {
-                        $pass = true;
-                    } else {
-                        $select = $this->_sql->select('galette_test');
-                        $select->where('test_id = 1');
-                        $res = $this->execute($select);
-                        $pass = $res->count() === 1;
-                    }
+                    $select = $this->_sql->select('galette_test');
+                    $select->where('test_id = 1');
+                    $res = $this->execute($select);
+                    $pass = $res->count() === 1;
 
                     if ( $pass ) {
                         $results['select'] = true;
@@ -674,16 +642,6 @@ class Db
     public function isPostgres()
     {
         return $this->_type_db === self::PGSQL;
-    }
-
-    /**
-     * Is current database using SQLite?
-     *
-     * @return boolean
-     */
-    public function isSQLite()
-    {
-        return $this->_type_db === self::SQLITE;
     }
 
     /**

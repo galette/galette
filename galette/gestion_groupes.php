@@ -72,8 +72,8 @@ if ( $id !== null ) {
 
 if ( isset($_POST['pdf']) ) {
     $qstring = 'groups_list.php';
-    if ( isset($_POST['gid']) ) {
-        $qstring .= '?gid=' . $_POST['gid'];
+    if ( isset($_POST['id_group']) ) {
+        $qstring .= '?gid=' . $_POST['id_group'];
     }
     header('location: '.$qstring);
     die();

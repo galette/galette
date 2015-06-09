@@ -93,7 +93,7 @@ class Mailing extends GaletteMail
         /** TODO: add a preference that propose default mime-type to use,
             then init it here */
         if ( $members !== null) {
-            //Check which members have a valid email adress and which have not
+            //Check which members have a valid email address and which have not
             $this->setRecipients($members);
         }
         $this->_loadAttachments();
@@ -258,6 +258,13 @@ class Mailing extends GaletteMail
 
         foreach ($members as $member) {
             $email = $member->email;
+
+            //if member mail is missing but there is a parent,
+            //take the parent email.
+            if (!$email && $member->hasParent()) {
+                $email = $member->parent->email;
+            }
+
             if ( trim($email) != '' && self::isValidEmail($email) ) {
                 if ( !in_array($member, $this->_mrecipients) ) {
                     $this->_mrecipients[] = $member;

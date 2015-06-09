@@ -128,9 +128,10 @@ class Error
                 ),
                 Analog::ERROR
             );
-            throw new ErrorException(
+            throw new \ErrorException(
                 'Fatal error: ' . $errstr,
                 $errno,
+                1,
                 $errfile,
                 $errline
             );
@@ -145,9 +146,10 @@ class Error
                 ),
                 Analog::ERROR
             );
-            throw new ErrorException(
+            throw new \ErrorException(
                 'Unknown error: ' . $errstr,
                 $errno,
+                1,
                 $errfile,
                 $errline
             );

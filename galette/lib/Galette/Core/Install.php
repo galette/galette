@@ -318,7 +318,6 @@ class Install
         switch ( $type ) {
         case Db::MYSQL:
         case Db::PGSQL:
-        case Db::SQLITE:
             $this->_db_type = $type;
             break;
         default:
@@ -456,20 +455,14 @@ class Install
      */
     public function testDbConnexion()
     {
-        if ( $this->_db_type === Db::SQLITE ) {
-            return Db::testConnectivity(
-                $this->_db_type
-            );
-        } else {
-            return Db::testConnectivity(
-                $this->_db_type,
-                $this->_db_user,
-                $this->_db_pass,
-                $this->_db_host,
-                $this->_db_port,
-                $this->_db_name
-            );
-        }
+        return Db::testConnectivity(
+            $this->_db_type,
+            $this->_db_user,
+            $this->_db_pass,
+            $this->_db_host,
+            $this->_db_port,
+            $this->_db_name
+        );
     }
 
     /**
@@ -924,51 +917,51 @@ class Install
             if ( $conf !== false ) {
                 if ( !isset($post_data['install_dbtype']) ) {
                     $res = preg_match(
-                        '/TYPE_DB", "(.*)"\);/',
+                        '/TYPE_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( $matches[1] ) {
+                    if ( isset($matches[1]) ) {
                         $existing['db_type'] = $matches[1];
                     }
                 }
                 if ( !isset($post_data['install_dbhost']) ) {
                     $res = preg_match(
-                        '/HOST_DB", "(.*)"\);/',
+                        '/HOST_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( $matches[1] ) {
+                    if ( isset($matches[1]) ) {
                         $existing['db_host'] = $matches[1];
                     }
                 }
                 if ( !isset($post_data['install_dbport']) ) {
                     $res = preg_match(
-                        '/PORT_DB", "(.*)"\);/',
+                        '/PORT_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( $matches[1] ) {
+                    if ( isset($matches[1]) ) {
                         $existing['db_port'] = $matches[1];
                     }
                 }
                 if ( !isset($post_data['install_dbuser']) ) {
                     $res = preg_match(
-                        '/USER_DB", "(.*)"\);/',
+                        '/USER_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( $matches[1] ) {
+                    if ( isset($matches[1]) ) {
                         $existing['db_user'] = $matches[1];
                     }
                 }
                 if ( !isset($post_data['install_dbname']) ) {
                     $res = preg_match(
-                        '/NAME_DB", "(.*)"\);/',
+                        '/NAME_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( $matches[1] ) {
+                    if ( isset($matches[1]) ) {
                         $existing['db_name'] = $matches[1];
                     }
                 }
@@ -976,18 +969,18 @@ class Install
 
                 if ( !isset($post_data['install_dbprefix']) ) {
                     $res = preg_match(
-                        '/PREFIX_DB", "(.*)"\);/',
+                        '/PREFIX_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( $matches[1] ) {
+                    if ( isset($matches[1]) ) {
                         $existing['prefix'] = $matches[1];
                     }
                 }
 
                 if ( $pass === true ) {
                     $res = preg_match(
-                        '/PWD_DB", "(.*)"\);/',
+                        '/PWD_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
@@ -1045,15 +1038,15 @@ class Install
         }
 
         if ( $fd = @fopen(GALETTE_CONFIG_PATH . 'config.inc.php', 'w') ) {
-                $data = '<?php
-define("TYPE_DB", "' . $this->_db_type . '");
-define("HOST_DB", "' . $this->_db_host . '");
-define("PORT_DB", "' . $this->_db_port . '");
-define("USER_DB", "' . $this->_db_user . '");
-define("PWD_DB", "' . $this->_db_pass . '");
-define("NAME_DB", "' . $this->_db_name . '");
-define("PREFIX_DB", "' . $this->_db_prefix . '");
-';
+                $data = "<?php
+define('TYPE_DB', '" . $this->_db_type . "');
+define('HOST_DB', '" . $this->_db_host . "');
+define('PORT_DB', '" . $this->_db_port . "');
+define('USER_DB', '" . $this->_db_user . "');
+define('PWD_DB', '" . $this->_db_pass . "');
+define('NAME_DB', '" . $this->_db_name . "');
+define('PREFIX_DB', '" . $this->_db_prefix . "');
+";
             fwrite($fd, $data);
             fclose($fd);
             $ret['res'] = true;
@@ -1087,9 +1080,11 @@ define("PREFIX_DB", "' . $this->_db_prefix . '");
             $ct = new \Galette\Entity\ContributionsTypes();
             $status = new \Galette\Entity\Status();
             include_once '../includes/fields_defs/members_fields.php';
+            include_once '../includes/fields_defs/members_fields_cats.php';
             $fc = new \Galette\Entity\FieldsConfig(
                 \Galette\Entity\Adherent::TABLE,
                 $members_fields,
+                $members_fields_cats,
                 true
             );
             //$fc = new \Galette\Entity\FieldsCategories();

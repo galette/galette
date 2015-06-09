@@ -8,7 +8,7 @@
         <li{if $current eq 'members'} class="current_tab"{/if}><a href="?table=members">{_T string="Members"}</a></li>
     </ul>*}
     <form action="config_fields.php" method="post" id="config_fields_form">
-    <div {*class="tabbed" *}id="{$current}_tab">
+    <div id="{$current}_tab">
         {*<a href="#" title="{_T string="Add a new category"}" id="add_category">{_T string="Add new category"}</a>*}
 {foreach item=category from=$categories name=categories_list}
         <fieldset class="cssform large" id="cat_{$smarty.foreach.categories_list.iteration}">
@@ -23,7 +23,7 @@
                 </li>
     {assign var='fs' value=$category->id_field_category}
     {foreach key=col item=field from=$categorized_fields[$fs] name=fields_list}
-        {if $field.field_id neq 'id_adh'}
+        {if $preferences->pref_show_id or $field.field_id neq 'id_adh'}
             {assign var='fid' value=$field.field_id}
                 <li class="tbl_line_{if $smarty.foreach.fields_list.iteration % 2 eq 0}even{else}odd{/if}">
                     <span class="label">
@@ -58,14 +58,14 @@
         </div>
     </form>
     <script type="text/javascript">
-{*        var _initSortable = function(){
+        var _initSortable = function(){
             $('.fields_list').sortable({
                 items: 'li:not(.listing)',
                 connectWith: '.connectedSortable',
                 update: function(event, ui) {
                     // When sort is updated, we must check for the newer category item belongs to
                     var _item = $(ui.item[0]);
-                    var _category = _item.parent().prevAll('input[name^≃categories]').attr('value');
+                    var _category = _item.parent().prevAll('input[name^=categories]').attr('value');
                     _item.find('input[name$=category]').attr('value', _category);
                 }
             }).disableSelection();
@@ -106,7 +106,6 @@
                 });
             });
         }
-*}
 
         var _warnings = [];
         var _checkCoherence = function(index, elt){
@@ -160,7 +159,7 @@
 
             _collapsibleFieldsets();
             _bindForm();
-{*
+
             _bindCollapse();
 
             _initSortable();
@@ -195,6 +194,6 @@
                 document.location = _url;
                 _legend.children(':input').focus();
                 return false;
-            });*}
+            });
         });
     </script>

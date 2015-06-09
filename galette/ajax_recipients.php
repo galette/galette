@@ -50,7 +50,17 @@ if ( !$login->isLogged() || !$login->isAdmin() && !$login->isStaff() ) {
 $mailing = unserialize($session['mailing']);
 
 $m = new Members();
-$members = $m->getArrayList($_POST['recipients']);
+
+$members = $m->getArrayList(
+    $_POST['recipients'],
+    null,
+    false,
+    true,
+    null,
+    false,
+    false,
+    true
+);
 $mailing->setRecipients($members);
 
 $session['mailing'] = serialize($mailing);

@@ -23,7 +23,7 @@
             <input type="submit" class="inline" value="{_T string="Filter"}"/>
             <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
             <div>
-                {_T string="Members that have an email adress:"}
+                {_T string="Members that have an email address:"}
                 <input type="radio" name="email_filter" id="filter_dc_email" value="{php}echo Galette\Repository\Members::FILTER_DC_EMAIL;{/php}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_DC_EMAIL')} checked="checked"{/if}>
                 <label for="filter_dc_email" >{_T string="Don't care"}</label>
                 <input type="radio" name="email_filter" id="filter_with_email" value="{php}echo Galette\Repository\Members::FILTER_W_EMAIL;{/php}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_W_EMAIL')} checked="checked"{/if}>
@@ -59,7 +59,22 @@
         <table class="listing">
             <thead>
                 <tr>
+{if $preferences->pref_show_id}
+                    <th class="id_row">
+                        <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_ID;{/php}">
+                            {_T string="Mbr num"}
+                            {if $filters->orderby eq constant('galette\Repository\Members::ORDERBY_ID')}
+                                {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
+                            <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                                {else}
+                            <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                                {/if}
+                            {/if}
+                        </a>
+                    </th>
+{else}
                     <th class="id_row">#</th>
+{/if}
                     <th class="left">
                         <a href="gestion_adherents.php?tri={php}echo Galette\Repository\Members::ORDERBY_NAME;{/php}">
                             {_T string="Name"}
@@ -165,7 +180,11 @@
 {foreach from=$members item=member key=ordre}
     {assign var=rclass value=$member->getRowClass() }
                 <tr>
+{if $preferences->pref_show_id}
+                    <td class="{$rclass} right">{$member->id}</td>
+{else}
                     <td class="{$rclass} right">{$ordre+1+($filters->current_page - 1)*$numrows}</td>
+{/if}
                     <td class="{$rclass} nowrap username_row">
                         <input type="checkbox" name="member_sel[]" value="{$member->id}"/>
                     {if $member->isCompany()}
@@ -179,6 +198,11 @@
                     {/if}
                     {if $member->email != ''}
                         <a href="mailto:{$member->email}"><img src="{$template_subdir}images/icon-mail.png" alt="{_T string="[Mail]"}" width="16" height="16"/></a>
+                    {else}
+                        <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
+                    {/if}
+                    {if $member->website != ''}
+                        <a href="{$member->website}"><img src="{$template_subdir}images/icon-website.png" alt="{_T string="[Website]"}" width="16" height="16"/></a>
                     {else}
                         <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
                     {/if}
@@ -261,14 +285,14 @@
                 <tr>
                     <th><img src="{$template_subdir}images/icon-money.png" alt="{_T string="Contribution"}" width="16" height="16"/></th>
                     <td class="back">{_T string="Contributions"}</td>
+                    <th><img src="{$template_subdir}images/icon-mail.png" alt="{_T string="E-mail"}" width="16" height="16"/></th>
+                    <td class="back">{_T string="Send a mail"}</td>
                 </tr>
                 <tr>
                     <th><img src="{$template_subdir}images/icon-trash.png" alt="{_T string="Delete"}" width="16" height="16"/></th>
                     <td class="back">{_T string="Deletion"}</td>
-                </tr>
-                <tr>
-                    <th><img src="{$template_subdir}images/icon-mail.png" alt="{_T string="E-mail"}" width="16" height="16"/></th>
-                    <td class="back">{_T string="Send a mail"}</td>
+                    <th><img src="{$template_subdir}images/icon-website.png" alt="{_T string="Website"}" width="16" height="16"/></th>
+                    <td class="back">{_T string="Website URL"}</td>
                 </tr>
             </table>
         </div>

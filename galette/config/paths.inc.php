@@ -118,6 +118,3 @@ if ( !defined('GALETTE_FILES_PATH') ) {
 if ( !defined('GALETTE_TEMPIMAGES_PATH') ) {
     define('GALETTE_TEMPIMAGES_PATH', GALETTE_DATA_PATH . 'tempimages/');
 }
-if ( !defined('GALETTE_SQLITE_PATH') ) {
-    define('GALETTE_SQLITE_PATH', GALETTE_DATA_PATH . 'database.sqlite');
-}

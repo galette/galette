@@ -120,7 +120,8 @@ class Install extends atoum
             '0.75' => 'upgrade-to-0.75-pgsql.sql',
             '0.76' => 'upgrade-to-0.76-pgsql.sql',
             '0.8'  => 'upgrade-to-0.8.php',
-            '0.81' => 'upgrade-to-0.81-pgsql.sql'
+            '0.81' => 'upgrade-to-0.81-pgsql.sql',
+            '0.82' => 'upgrade-to-0.82-pgsql.sql'
         );
 
         //as of 0.8, we got 10 update scripts total
@@ -258,8 +259,7 @@ class Install extends atoum
     {
         $types = array(
             \Galette\Core\Db::MYSQL,
-            \Galette\Core\Db::PGSQL,
-            \Galette\Core\Db::SQLITE
+            \Galette\Core\Db::PGSQL
         );
 
         foreach ( $types as $t ) {

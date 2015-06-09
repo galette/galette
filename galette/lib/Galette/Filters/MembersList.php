@@ -282,22 +282,29 @@ class MembersList extends Pagination
     /**
      * Set commons filters for templates
      *
-     * @param Smarty $tpl Smarty template reference
+     * @param Preferences $prefs Preferences instance
+     * @param Smarty      $tpl   Smarty template reference
      *
      * @return void
      */
-    public function setTplCommonsFilters($tpl)
+    public function setTplCommonsFilters($prefs, $tpl)
     {
+        $filter_options = array(
+            Members::FILTER_NAME            => _T("Name"),
+            Members::FILTER_COMPANY_NAME    => _T("Company name"),
+            Members::FILTER_ADDRESS         => _T("Address"),
+            Members::FILTER_MAIL            => _T("Email,URL,IM"),
+            Members::FILTER_JOB             => _T("Job"),
+            Members::FILTER_INFOS           => _T("Infos")
+        );
+
+        if ($prefs->pref_show_id) {
+            $filter_options[Members::FILTER_NUMBER] = _T("Member number");
+        }
+
         $tpl->assign(
             'filter_field_options',
-            array(
-                Members::FILTER_NAME            => _T("Name"),
-                Members::FILTER_COMPANY_NAME    => _T("Company name"),
-                Members::FILTER_ADRESS          => _T("Address"),
-                Members::FILTER_MAIL            => _T("Email,URL,IM"),
-                Members::FILTER_JOB             => _T("Job"),
-                Members::FILTER_INFOS           => _T("Infos")
-            )
+            $filter_options
         );
 
         $tpl->assign(

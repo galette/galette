@@ -60,16 +60,4 @@ interface FileInterface
     const INVALID_FILE = -6;
     const CANT_WRITE = -7;
     const MAX_FILE_SIZE = 1024;
-
-    /**
-     * Initialization
-     *
-     * @param string $dest       File destination directory
-     * @param array  $extensions Array of permitted extensions
-     * @param array  $mimes      Array of permitted mime types
-     * @param int    $maxlenght  Maximum lenght for each file
-     *
-     * @return void
-     */
-    function init($dest, $extensions = null, $mimes = null, $maxlenght = null);
 }

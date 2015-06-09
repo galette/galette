@@ -176,6 +176,21 @@ class I18n
     }
 
     /**
+     * List languages as simple array
+     *
+     * @return array
+     */
+    public function getArrayList()
+    {
+        $list = $this->getList();
+        $al = array();
+        foreach ( $list as $l ) {
+            $al[$l->getID()] = ucfirst($l->getName());
+        }
+        return $al;
+    }
+
+    /**
      * Gets language full name from its ID
      *
      * @param string $id the language identifier

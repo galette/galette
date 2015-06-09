@@ -39,6 +39,7 @@ namespace Galette\Core;
 
 use Analog\Analog;
 use Galette\Entity\Adherent;
+use Galette\Repository\Members;
 use Galette\IO\FileInterface;
 use Galette\IO\FileTrait;
 
@@ -80,6 +81,7 @@ class Picture implements FileInterface
     protected $store_path = GALETTE_PHOTOS_PATH;
     protected $max_width = 200;
     protected $max_height = 200;
+    private $_insert_stmt;
 
     /**
      * Default constructor.
@@ -390,10 +392,7 @@ class Picture implements FileInterface
      */
     public function store($file, $ajax = false)
     {
-        /** TODO:
-            - fix max size (by preferences ?)
-            - make possible to store images in database, filesystem or both
-        */
+        /** TODO: fix max size (by preferences ?) */
         global $zdb;
 
         $class = get_class($this);
@@ -486,48 +485,71 @@ class Picture implements FileInterface
             $this->_resizeImage($new_file, $extension);
         }
 
-        //store file in database
-        $f = fopen($new_file, 'r');
+        return $this->_storeInDb($zdb, $this->db_id, $new_file, $extension);
+    }
+
+    /**
+     * Stores an image in the database
+     *
+     * @param Db     $zdb  Database instance
+     * @param int    $id   Member ID
+     * @param string $file File path on disk
+     * @param string $ext  File extension
+     *
+     * @return boolean
+     */
+    private function _storeInDb(Db $zdb, $id, $file, $ext)
+    {
+        $f = fopen($file, 'r');
         $picture = '';
         while ( $r=fread($f, 8192) ) {
             $picture .= $r;
         }
         fclose($f);
 
+        $class = get_class($this);
+
         try {
-            $insert = $zdb->insert($this->tbl_prefix . $class::TABLE);
-            $insert->values(
-                array(
-                    $class::PK  => ':id',
-                    'picture'   => ':picture',
-                    'format'    => ':format'
-                )
-            );
-            $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
-            $container = $stmt->getParameterContainer();
-            $container->offsetSet(
-                $class::PK,
-                ':id'
-            );
-            $container->offsetSet(
-                'picture',
-                ':picture',
-                $container::TYPE_LOB
-            );
-            $container->offsetSet(
-                'format',
-                ':format'
-            );
-            $stmt->setParameterContainer($container);
+            $zdb->connection->beginTransaction();
+            $stmt = $this->_insert_stmt;
+            if ( $stmt == null ) {
+                $insert = $zdb->insert($this->tbl_prefix . $class::TABLE);
+                $insert->values(
+                    array(
+                        $class::PK  => ':id',
+                        'picture'   => ':picture',
+                        'format'    => ':format'
+                    )
+                );
+                $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
+                $container = $stmt->getParameterContainer();
+                $container->offsetSet(
+                    $class::PK,
+                    ':id'
+                );
+                $container->offsetSet(
+                    'picture',
+                    ':picture',
+                    $container::TYPE_LOB
+                );
+                $container->offsetSet(
+                    'format',
+                    ':format'
+                );
+                $stmt->setParameterContainer($container);
+                $this->_insert_stmt = $stmt;
+            }
 
             $stmt->execute(
                 array(
-                    $class::PK  => $this->db_id,
+                    $class::PK  => $id,
                     'picture'   => $picture,
-                    'format'    => $extension
+                    'format'    => $ext
                 )
             );
+            $zdb->connection->commit();
         } catch (\Exception $e) {
+            $zdb->connection->rollBack();
             Analog::log(
                 'An error occured storing picture in database: ' .
                 $e->getMessage(),
@@ -537,6 +559,90 @@ class Picture implements FileInterface
         }
 
         return true;
+
+    }
+
+    /**
+     * Check for missing images in database
+     *
+     * @param Db $zdb Database instance
+     *
+     * @return void
+     */
+    public function missingInDb(Db $zdb)
+    {
+        $existing_disk = array();
+
+        //retrieve files on disk
+        if ( $handle = opendir($this->store_path) ) {
+            while (false !== ($entry = readdir($handle))) {
+                $reg = "/^(\d+)\.(" .
+                    implode('|', $this->allowed_extensions) . ")$/i";
+                if ( preg_match($reg, $entry, $matches) ) {
+                    $id = $matches[1];
+                    $extension = strtolower($matches[2]);
+                    if ( $extension == 'jpeg' ) {
+                        //jpeg is an allowed extension,
+                        //but we change it to jpg to reduce further tests :)
+                        $extension = 'jpg';
+                    }
+                    $existing_disk[$id] = array(
+                        'name'  => $entry,
+                        'id'    => $id,
+                        'ext'   => $extension
+                    );
+                }
+
+            }
+            closedir($handle);
+
+            if ( count($existing_disk) === 0 ) {
+                //no image on disk, nothing to do :)
+                return;
+            }
+
+            //retrieve files in database
+            $class = get_class($this);
+            $select = $zdb->select($this->tbl_prefix . $class::TABLE);
+            $select
+                ->columns(array(self::PK))
+                ->where->in(self::PK, array_keys($existing_disk));
+
+            $results = $zdb->execute($select);
+
+            $existing_db = array();
+            foreach ( $results as $result ) {
+                $existing_db[] = (int)$result[self::PK];
+            }
+
+            $existing_diff = array_diff(array_keys($existing_disk), $existing_db);
+
+            //retrieve valid members ids
+            $members = new Members();
+            $valids = $members->getArrayList(
+                $existing_diff,
+                null,
+                false,
+                false,
+                array(self::PK)
+            );
+
+            foreach ( $valids as $valid ) {
+                $file = $existing_disk[$valid->id_adh];
+                $this->_storeInDb(
+                    $zdb,
+                    $file['id'],
+                    $this->store_path . $file['id'] . '.' . $file['ext'],
+                    $file['ext']
+                );
+            }
+        } else {
+            Analog::log(
+                'Something went wrong opening images directory ' .
+                $this->store_path,
+                Analog::ERROR
+            );
+        }
     }
 
     /**

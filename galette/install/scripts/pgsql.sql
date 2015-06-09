@@ -177,6 +177,7 @@ CREATE TABLE galette_adherents (
     lieu_naissance text DEFAULT '',
     gpgid character varying(8) DEFAULT NULL,
     fingerprint character varying(50) DEFAULT NULL,
+    parent_id integer DEFAULT NULL REFERENCES galette_adherents(id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (id_adh)
 );
 -- add index for faster search on login_adh (auth)
@@ -409,4 +410,4 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(0.81);
+INSERT INTO galette_database (version) VALUES(0.82);

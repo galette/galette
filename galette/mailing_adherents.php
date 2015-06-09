@@ -118,7 +118,16 @@ if ( $preferences->pref_mail_method == Core\Mailing::METHOD_DISABLED
             die();
         }
         $m = new Members();
-        $members = $m->getArrayList($filters->selected);
+        $members = $m->getArrayList(
+            $filters->selected,
+            null,
+            false,
+            true,
+            null,
+            false,
+            false,
+            true
+        );
         $mailing = new Core\Mailing(($members !== false) ? $members : null);
     }
 
