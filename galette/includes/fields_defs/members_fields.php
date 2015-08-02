@@ -210,7 +210,7 @@ $members_fields = array(
     ),
     'info_adh' => array(
         'label'    => _T("Other informations (admin):"),
-        'propname' => 'other_infos_admin',
+        'propname' => 'others_infos_admin',
         'required' => false,
         'visible'  => FieldsConfig::VISIBLE,
         'position' => 33,
