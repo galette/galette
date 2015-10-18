@@ -57,6 +57,7 @@ var _fieldsInSortable = function(){
     $('.fields_list input, .fields_list select').bind(
         'click.sortable mousedown.sortable',
         function(ev) {
+            ev.stopPropagation();
             ev.target.focus();
         }
     );
