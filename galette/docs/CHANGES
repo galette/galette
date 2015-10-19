@@ -1,6 +1,14 @@
 Changes
 -------
 
+0.8.2.1 -> 0.8.2.2
+
+- Fix select with sortable issue in Firefox
+- Fix company field display on edit
+- Fix mailing to attached members
+- Fix preview display in mailing to attached members
+- Typos
+
 0.8.2 -> 0.8.2.1
 
 - Fix issue storing other infos admin
