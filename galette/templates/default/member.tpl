@@ -133,7 +133,7 @@
 
                         {* If value has not been set, take the generic value *}
                         {if !$value}
-                            {assign var="value" value=$member->$propname|escape}
+                            {assign var="value" value=$member->$propname}
                         {/if}
 
                         {include
