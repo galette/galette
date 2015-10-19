@@ -165,8 +165,9 @@ class Mailing extends GaletteMail
         $orig_recipients = unserialize($rs->mailing_recipients);
 
         $_recipients = array();
+        $mdeps = ['parent' => true];
         foreach ( $orig_recipients as $k=>$v ) {
-            $m = new Adherent($k);
+            $m = new Adherent($k, $mdeps);
             $_recipients[] = $m;
         }
         $this->setRecipients($_recipients);
@@ -236,8 +237,14 @@ class Mailing extends GaletteMail
     public function send()
     {
         $m = array();
-        foreach ( $this->_mrecipients as $member ) {
-            $m[$member->email] = $member->sname;
+        foreach ($this->_mrecipients as $member) {
+            $email = $member->email;
+            //if member mail is missing but there is a parent,
+            //take the parent email.
+            if (!$email && $member->hasParent()) {
+                $email = $member->parent->email;
+            }
+            $m[$email] = $member->sname;
         }
         parent::setRecipients($m);
         return parent::send();

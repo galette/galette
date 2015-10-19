@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sat May 23 05:57:43 2015 (GMT)
+// This file was automatically generated on Mon Oct 19 17:42:45 2015 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -1646,9 +1646,6 @@ $lang['Reference:'] = 'Reference:';
 
 // ../includes/fields_defs/pdfmodels_fields.php:53 
 $lang['Association'] = 'Association';
-
-// ../templates/default/preferences.tpl:165 
-$lang['Display member nubmer in member related windows'] = 'Display member nubmer in member related windows';
 
 // ../lib/Galette/Core/Install.php:1034 
 $lang['Config file already exists and is up to date'] = 'Config file already exists and is up to date';
@@ -3483,7 +3480,7 @@ $lang['apache_user'] = 'apache_user';
 // ../install/old.index.php:925 
 $lang['Update Report'] = 'Update Report';
 
-// ../templates/default/preferences.tpl:166 
+// ../templates/default/preferences.tpl:165 ../templates/default/preferences.tpl:166 
 $lang['Display member number in member related windows'] = 'Display member number in member related windows';
 
 // ../lib/Galette/IO/FileTrait.php:548 

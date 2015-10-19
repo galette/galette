@@ -71,7 +71,7 @@ msgstr ""
 msgid "- ID must be an integer!"
 msgstr ""
 
-#: ../templates/default/ajax_mailing_preview.tpl:33
+#: ../templates/default/ajax_mailing_preview.tpl:38
 msgid "Mail body"
 msgstr ""
 
@@ -2763,7 +2763,7 @@ msgstr ""
 msgid "Public pages"
 msgstr ""
 
-#: ../templates/default/reminder.tpl:35 ../templates/default/ajax_mailing_preview.tpl:15
+#: ../templates/default/reminder.tpl:35 ../templates/default/ajax_mailing_preview.tpl:20
 msgid "Subject:"
 msgstr ""
 
@@ -4466,7 +4466,7 @@ msgstr ""
 msgid "Creation date:"
 msgstr ""
 
-#: ../templates/default/ajax_mailing_preview.tpl:17
+#: ../templates/default/ajax_mailing_preview.tpl:22
 msgid "Attachments:"
 msgstr ""
 

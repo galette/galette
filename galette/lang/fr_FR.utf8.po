@@ -93,7 +93,7 @@ msgstr "Envoi de courriel désactivé"
 msgid "- ID must be an integer!"
 msgstr "- L'identifiant doit être un nombre entier&nbsp;!"
 
-#: ../templates/default/ajax_mailing_preview.tpl:33
+#: ../templates/default/ajax_mailing_preview.tpl:38
 msgid "Mail body"
 msgstr "Corps du message"
 
@@ -612,7 +612,7 @@ msgid ""
 "<br/>More informations on required modules may be found in the documentation."
 msgstr ""
 "Certains modules PHP sont manquants. Merci de les installer, ou de contacter "
-"votre support.<br/>D'avantage d'informations sur les modules requis pourront "
+"votre support.<br/>Davantage d'informations sur les modules requis pourront "
 "être trouvées dans la documentation."
 
 #: ../templates/default/gestion_adherents.tpl:152
@@ -3117,7 +3117,7 @@ msgid "Public pages"
 msgstr "Pages publiques"
 
 #: ../templates/default/reminder.tpl:35
-#: ../templates/default/ajax_mailing_preview.tpl:15
+#: ../templates/default/ajax_mailing_preview.tpl:20
 msgid "Subject:"
 msgstr "Sujet&nbsp;:"
 
@@ -5083,7 +5083,7 @@ msgstr "Exempt de cotisation&nbsp;:"
 msgid "Creation date:"
 msgstr "Date de création&nbsp;:"
 
-#: ../templates/default/ajax_mailing_preview.tpl:17
+#: ../templates/default/ajax_mailing_preview.tpl:22
 msgid "Attachments:"
 msgstr "Pièces jointes :"
 
