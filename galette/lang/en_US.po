@@ -92,7 +92,7 @@ msgstr "Emailing disabled"
 msgid "- ID must be an integer!"
 msgstr "- ID must be an integer!"
 
-#: ../templates/default/ajax_mailing_preview.tpl:33
+#: ../templates/default/ajax_mailing_preview.tpl:38
 msgid "Mail body"
 msgstr "Mail body"
 
@@ -3060,7 +3060,7 @@ msgid "Public pages"
 msgstr "Public pages"
 
 #: ../templates/default/reminder.tpl:35
-#: ../templates/default/ajax_mailing_preview.tpl:15
+#: ../templates/default/ajax_mailing_preview.tpl:20
 msgid "Subject:"
 msgstr "Subject:"
 
@@ -4999,7 +4999,7 @@ msgstr "Freed of dues:"
 msgid "Creation date:"
 msgstr "Creation date:"
 
-#: ../templates/default/ajax_mailing_preview.tpl:17
+#: ../templates/default/ajax_mailing_preview.tpl:22
 msgid "Attachments:"
 msgstr "Attachments:"
 
