@@ -9,7 +9,12 @@
                 <dt>{_T string="To:"}</dt>
                 <dd>
 {foreach from=$recipients item=recipient}
-                    <a href="mailto:{$recipient->email}">{$recipient->sname} &lt;{$recipient->email}&gt;</a>, 
+    {if $recipient->email eq null and $recipient->hasParent()}
+        {assign var="email" value=$recipient->parent->email}
+    {else }
+        {assign var="email" value=$recipient->email}
+    {/if}
+                    <a href="mailto:{$email}">{$recipient->sname} &lt;{$email}&gt;</a>, 
 {/foreach}
                 </dd>
                 <dt>{_T string="Subject:"}</dt>

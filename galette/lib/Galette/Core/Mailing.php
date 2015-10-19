@@ -165,8 +165,9 @@ class Mailing extends GaletteMail
         $orig_recipients = unserialize($rs->mailing_recipients);
 
         $_recipients = array();
+        $mdeps = ['parent' => true];
         foreach ( $orig_recipients as $k=>$v ) {
-            $m = new Adherent($k);
+            $m = new Adherent($k, $mdeps);
             $_recipients[] = $m;
         }
         $this->setRecipients($_recipients);
