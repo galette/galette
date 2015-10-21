@@ -145,7 +145,7 @@ $app->get(
     '/members(/:option/:value)',
     $authenticate(),
     function ($option = null, $value = null) use (
-        $app, $login, &$session
+        $app, $login, &$session, $preferences
     ) {
         if ( isset($session['filters']['members']) ) {
             $filters = unserialize($session['filters']['members']);
@@ -180,7 +180,7 @@ $app->get(
 
         //assign pagination variables to the template and add pagination links
         $filters->setSmartyPagination($app, $view, false);
-        $filters->setViewCommonsFilters($view);
+        $filters->setViewCommonsFilters($preferences, $view);
 
         $session['filters']['members'] = serialize($filters);
 
@@ -1103,7 +1103,7 @@ $app->post(
 $app->get(
     '/advanced-search',
     $authenticate(),
-    function () use ($app, &$session, $members_fields, $members_fields_cats) {
+    function () use ($app, &$session, $members_fields, $members_fields_cats, $preferences) {
         if ( isset($session['filters']['members']) ) {
             $filters = unserialize($session['filters']['members']);
             if ( !$filters instanceof AdvancedMembersList ) {
@@ -1164,7 +1164,7 @@ $app->get(
         );
 
         $view = $app->view();
-        $filters->setViewCommonsFilters($view);
+        $filters->setViewCommonsFilters($preferences, $view);
 
         $app->render(
             'advanced_search.tpl',
