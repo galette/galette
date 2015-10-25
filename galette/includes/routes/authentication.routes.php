@@ -89,7 +89,7 @@ $app->post(
                 );
             }
             if ( $pw_superadmin ) {
-                $login->logAdmin($nick);
+                $login->logAdmin($nick, $preferences);
             }
         } else {
             $login->logIn($nick, $password);

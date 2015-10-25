@@ -122,12 +122,13 @@ if ( file_exists(GALETTE_CONFIG_PATH  . 'local_acls.inc.php') ) {
     $acls = array_merge($acls, $local_acls);
 }
 
-$authenticate = function () use (&$session, $acls, $app) {
-    return function () use ($app, &$session, $acls) {
+$authenticate = function () use ($zdb, $i18n, &$session, $acls, $app) {
+    return function () use ($app, $zdb, &$session, $acls) {
         if ( isset($session['login']) ) {
             $login = unserialize($session['login']);
+            $login->setDb($zdb);
         } else {
-            $login = new Login();
+            $login = new Login($zdb, $i18n, $session);
         }
         if ( !$login->isLogged() ) {
             $session['urlRedirect'] = $app->request()->getPathInfo();
