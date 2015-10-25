@@ -207,6 +207,7 @@ $authenticate = function () use ($zdb, $i18n, &$session, $acls, $app) {
 };
 
 $baseRedirect = function ($app) use ($login, &$session) {
+    $app->flashKeep();
     if ( $login->isLogged() ) {
         $urlRedirect = null;
         if (isset($session['urlRedirect'])) {
