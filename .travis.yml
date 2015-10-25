@@ -1,3 +1,4 @@
+sudo: false
 before_script:
   - ./bin/install_deps
   - sh -c "if [ '$DB' = 'pgsql' ]; then psql -c 'DROP DATABASE IF EXISTS galette_tests;' -U postgres; fi"
