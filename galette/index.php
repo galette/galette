@@ -36,18 +36,3 @@
  */
 
 header('location:webroot/');
-    $pw_superadmin = false;
-    if ( $_POST['login'] == $preferences->pref_admin_login ) {
-        $pw_superadmin = password_verify(
-            $_POST['password'],
-            $preferences->pref_admin_pass
-        );
-        if ( !$pw_superadmin ) {
-            $pw_superadmin = (
-                md5($_POST['password']) === $preferences->pref_admin_pass
-            );
-        }
-    }
-
-        die();
-        die();
