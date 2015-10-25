@@ -170,7 +170,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         </ul>
 {if $login->isLogged()}
         <div>{$login->loggedInAs()}</div>
-        <a id="logout" class="button" href="{urlFor name="logout"}">{_T string="Log off"}</a>
+        <a id="{if $login->isImpersonated()}unimpersonate{else}logout{/if}" class="button" href="{if $login->isImpersonated()}{urlFor name="unimpersonate"}{else}{urlFor name="logout"}{/if}">{_T string="Log off"}</a>
 {/if}
     </div>
     <div id="content"{if $contentcls} class="{$contentcls}"{/if}>

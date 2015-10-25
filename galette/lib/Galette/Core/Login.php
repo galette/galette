@@ -64,6 +64,7 @@ class Login extends Authentication
     private $_zdb;
     private $_i18n;
     private $_session;
+    private $_impersonated;
 
     /**
      * Instanciate object
@@ -285,6 +286,56 @@ class Login extends Authentication
     }
 
     /**
+     * Impersonate user
+     *
+     * @param int $id Member ID
+     *
+     * @return boolean
+     */
+    public function impersonate($id)
+    {
+        if (!$this->isSuperAdmin()) {
+            throw new \RuntimeException(
+                'Only superadmin can impersonate!'
+            );
+        }
+
+        Analog::log('Impersonating `' . $id . '`...', Analog::INFO);
+        try {
+            $select = $this->select();
+            $select->where(array(Adherent::PK => $id));
+
+            $results = $this->_zdb->execute($select);
+            if ($results->count() == 0) {
+                Analog::log(
+                    'No entry found for id `' . $id . '`',
+                    Analog::WARNING
+                );
+                return false;
+            } else {
+                $this->_impersonated = true;
+                $row = $results->current();
+                $this->logUser($row);
+                return true;
+            }
+        } catch (AdapterException $e) {
+            Analog::log(
+                'An error occured: ' . $e->getChainedException()->getMessage(),
+                Analog::WARNING
+            );
+            Analog::log($e->getTrace(), Analog::ERROR);
+            return false;
+        } catch (\Exception $e) {
+            Analog::log(
+                'An error occured: ' . $e->getMessage(),
+                Analog::WARNING
+            );
+            Analog::log($e->getTraceAsString(), Analog::ERROR);
+            return false;
+        }
+    }
+
+    /**
      * Does this login already exists ?
      * These function should be used for setting admin login into Preferences
      *
@@ -316,4 +367,13 @@ class Login extends Authentication
         }
     }
 
+    /**
+     * Is impersonated
+     *
+     * @return boolean
+     */
+    public function isImpersonated()
+    {
+        return $this->_impersonated;
+    }
 }

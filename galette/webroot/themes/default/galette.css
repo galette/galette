@@ -636,6 +636,12 @@ h1 #sendmail .ui-button-text {
     background-image:url(images/icon-quit.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
+#unimpersonate {
+    background-image:url(images/icon-impersonate.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#unimpersonate.ui-state-hover {
+    background-image:url(images/icon-impersonate.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
 #btnadd, #btnadd_small {
     background-image:url(images/icon-add.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }

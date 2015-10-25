@@ -114,7 +114,9 @@ $acls = [
     'mailings'          => 'staff',
     'contributions'     => 'staff',
     'editmember'        => 'member',
-    'storemembers'    => 'member'
+    'storemembers'      => 'member',
+    'impersonate'       => 'superadmin',
+    'unimpersonate'     => 'superadmin'
 ];
 
 //load user defined ACLs

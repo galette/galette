@@ -243,6 +243,9 @@
                         <a href="gestion_contributions.php?id_adh={$member->id}"><img src="{$galette_base_path}{$template_subdir}images/icon-money.png" alt="{_T string="[$]"}" width="16" height="16" title="{_T string="%membername: contributions" pattern="/%membername/" replace=$member->sname}"/></a>
                         <a onclick="return confirm('{_T string="Do you really want to delete this member from the base? This will also delete the history of his fees. You could instead disable the account.\n\nDo you still want to delete this member ?"|escape:"javascript"}')" href="gestion_adherents.php?sup={$member->id}"><img src="{$galette_base_path}{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="%membername: remove from database" pattern="/%membername/" replace=$member->sname}"/></a>
 {/if}
+{if $login->isSuperAdmin()}
+                        <a href="{urlFor name="impersonate" options="id.$mid"}"><img src="{$galette_base_path}{$template_subdir}images/icon-impersonate.png" alt="{_T string="Impersonate"}" width="16" height="16" title="{_T string="Log in in as %membername" pattern="/%membername/" replace=$member->sname}"/></a>
+{/if}
             {* If some additionnals actions should be added from plugins, we load the relevant template file
             We have to use a template file, so Smarty will do its work (like replacing variables). *}
             {if $plugin_actions|@count != 0}

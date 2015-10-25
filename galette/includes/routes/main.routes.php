@@ -97,3 +97,56 @@ $app->get(
         );
     }
 )->name('sysinfos');
+
+//impersonating
+$app->get(
+    '/impersonate/:id',
+    $authenticate(),
+    function ($id) use ($app, $login, &$session, $hist) {
+        $success = $login->impersonate($id);
+
+        if ($success === true) {
+            $session['login'] = serialize($login);
+            $msg = str_replace(
+                '%login',
+                $login->login,
+                _T("Impersonating as %login")
+            );
+
+            $hist->add($msg);
+            $app->flash(
+                'success_detected',
+                [$msg]
+            );
+        } else {
+            $msg = str_replace(
+                '%id',
+                $id,
+                _T("Unable to impersonate as %id")
+            );
+            $app->flash(
+                'error_detected',
+                [$msg]
+            );
+            $hist->add($msg);
+        }
+
+        $app->redirect($app->urlFor('slash'));
+    }
+)->name('impersonate');
+
+$app->get(
+    '/unimpersonate',
+    $authenticate(),
+    function () use ($app, $zdb, $i18n, $login, &$session, $preferences, $hist) {
+        $login = new \Galette\Core\Login($zdb, $i18n, $session);
+        $login->logAdmin($preferences->pref_admin_login, $preferences);
+        $hist->add(_T("Impersonating ended"));
+        $session['login'] = serialize($login);
+        $app->flash(
+            'success_detected',
+            [_T("Impersonating ended")]
+        );
+        $app->redirect($app->urlFor('slash'));
+    }
+)->name('unimpersonate');
