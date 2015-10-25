@@ -227,18 +227,31 @@ class Preferences extends atoum
     public function testPublicPagesVisibility()
     {
         $this->_preferences->load();
+        $session = [];
 
         $visibility = $this->_preferences->pref_publicpages_visibility;
         $this->variable($visibility)->isEqualTo(
             \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED
         );
 
-        $anon_login = new \Galette\Core\Login();
+        $anon_login = new \Galette\Core\Login(
+            $this->_zdb,
+            new \Galette\Core\I18n(),
+            $session
+        );
 
-        $admin_login = new \mock\Galette\Core\Login();
+        $admin_login = new \mock\Galette\Core\Login(
+            $this->_zdb,
+            new \Galette\Core\I18n(),
+            $session
+        );
         $this->calling($admin_login)->isAdmin = true;
 
-        $user_login = new \mock\Galette\Core\Login();
+        $user_login = new \mock\Galette\Core\Login(
+            $this->_zdb,
+             new \Galette\Core\I18n(),
+            $session
+        );
         $this->calling($user_login)->isUp2Date = true;
 
         $visible = $this->_preferences->showPublicPages($anon_login);
