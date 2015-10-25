@@ -312,8 +312,9 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
             $login = unserialize(
                 $session['login']
             );
+            $login->setDb($zdb);
         } else {
-            $login = new Core\Login();
+            $login = new Core\Login($zdb, $i18n, $session);
         }
 
         if (GALETTE_MODE === 'MAINT' && !$login->isSuperAdmin() ) {

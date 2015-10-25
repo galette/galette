@@ -65,7 +65,7 @@ if (isset($_POST['ident'])) {
     if ( $_POST['login'] == $preferences->pref_admin_login
         && $pw_superadmin
     ) {
-        $login->logAdmin($_POST['login']);
+        $login->logAdmin($_POST['login'], $preferences);
         $session['login'] = serialize($login);
         $hist->add(_T("Login"));
         if ( !isset($_COOKIE['show_galette_dashboard'])
