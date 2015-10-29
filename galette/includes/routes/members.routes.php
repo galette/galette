@@ -392,6 +392,7 @@ $app->get(
                 //requested member is not part of managed groups, fall back to logged
                 //in member
                 $member->load($login->id);
+                $id = $login->id;
             }
         }
 
@@ -403,7 +404,7 @@ $app->get(
             $filters = new MembersList();
         }
 
-        if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
+        if ( ($login->isAdmin() || $login->isStaff() || $login->isGroupManager()) && count($filters) > 0 ) {
             $m = new Members($filters);
             $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
             $ids = $ids->toArray();
