@@ -63,6 +63,7 @@ class Plugins
     protected $mroot;
 
     protected $preferences;
+    private $app;
 
     /**
      * Constructor
@@ -72,6 +73,18 @@ class Plugins
     public function __construct(Preferences $preferences)
     {
         $this->preferences = $preferences;
+    }
+
+    /**
+     * Set Slim instance
+     *
+     * @param Slim $app Slim app instance
+     *
+     * @return void
+     */
+    public function setApp(\Slim\Slim $app)
+    {
+        $this->app = $app;
     }
 
     /**
@@ -104,8 +117,9 @@ class Plugins
             while (($entry = $d->read()) !== false) {
                 $full_entry = $root . $entry;
 
-                if ( $entry != '.' && $entry != '..' && is_dir($full_entry)
-                    && file_exists($full_entry.'/_define.php')
+                if ($entry != '.' && $entry != '..' && is_dir($full_entry)
+                    && file_exists($full_entry . '/_define.php')
+                    && file_exists($full_entry . '/_routes.php')
                 ) {
                     if (!file_exists($full_entry.'/_disabled')) {
                         $this->id = $entry;
@@ -155,22 +169,29 @@ class Plugins
      * <var>$priority</var> is an integer. Modules are sorted by priority and name.
      * Lowest priority comes first.
      *
-     * @param string  $name        Module name
-     * @param string  $desc        Module description
-     * @param string  $author      Module author name
-     * @param string  $version     Module version
-     * @param string  $compver     Galette version compatibility
-     * @param string  $date        Module release date
-     * @param string  $permissions Module permissions
-     * @param integer $priority    Module priority
+     * @param string  $name     Module name
+     * @param string  $desc     Module description
+     * @param string  $author   Module author name
+     * @param string  $version  Module version
+     * @param string  $compver  Galette version compatibility
+     * @param string  $route    Module route name
+     * @param string  $date     Module release date
+     * @param string  $acls     Module routes ACLs
+     * @param integer $priority Module priority
      *
      * @return void
      */
     public function register(
-        $name, $desc, $author, $version, $compver = null, $date = null,
-        $permissions=null, $priority=1000
+        $name,
+        $desc,
+        $author,
+        $version,
+        $compver = null,
+        $route = null,
+        $date = null,
+        $acls = null,
+        $priority = 1000
     ) {
-
         if ( $compver === null ) {
             //plugin compatibility missing!
             Analog::log(
@@ -216,12 +237,13 @@ class Plugins
                     'desc'          => $desc,
                     'author'        => $author,
                     'version'       => $version,
-                    'permissions'   => $permissions,
+                    'acls'          => $acls,
                     'date'          => $release_date,
                     'priority'      => $priority === null ?
                                          1000 :
                                          (integer) $priority,
-                    'root_writable' => is_writable($this->mroot)
+                    'root_writable' => is_writable($this->mroot),
+                    'route'         => $route
                 );
             }
         }
@@ -625,7 +647,7 @@ class Plugins
         }
     }
 
-    /**
+        /**
      * Override preferences from plugin
      *
      * @param string $id Module ID
@@ -646,6 +668,42 @@ class Plugins
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Get plugins routes ACLs
+     *
+     * @return array
+     */
+    public function getAcls()
+    {
+        $acls = [];
+        foreach ($this->modules as $module) {
+            $acls = array_merge($acls, $module['acls']);
+        }
+        return $acls;
+    }
+
+    /**
+     * Retrieve a file that should be publically exposed
+     *
+     * @param int    $id   Module id
+     * @param string $path File path
+     *
+     * @return string
+     */
+    public function getFile($id, $path)
+    {
+        if (isset($this->modules[$id])) {
+            $file = $this->modules[$id]['root'] . '/webroot/' . $path;
+            if (file_exists($file)) {
+                return file_get_contents($file);
+            } else {
+                throw new \RuntimeException(_T("File not found!"));
+            }
+        } else {
+            throw new \Exception(_T("Module does not exists!"));
         }
     }
 }

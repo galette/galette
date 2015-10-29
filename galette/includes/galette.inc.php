@@ -359,7 +359,6 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
          * Plugins
          */
         $plugins = new Core\Plugins($preferences);
-        $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
 
         /**
          * Instanciate history object

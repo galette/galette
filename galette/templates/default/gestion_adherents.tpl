@@ -250,7 +250,7 @@
             We have to use a template file, so Smarty will do its work (like replacing variables). *}
             {if $plugin_actions|@count != 0}
               {foreach from=$plugin_actions key=plugin_name item=action}
-                {$plugin_name}
+                {include file=$action}
               {/foreach}
             {/if}
                     </td>

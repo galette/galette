@@ -92,6 +92,12 @@ Route::setDefaultConditions(
 $smarty = $app->view()->getInstance();
 require_once GALETTE_ROOT . 'includes/smarty.inc.php';
 
+/**
+ * Load plugins
+ */
+$plugins->setApp($app);
+$plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
+
 $acls = [
     'preferences'       => 'admin',
     'store-preferences' => 'admin',
@@ -124,8 +130,8 @@ if ( file_exists(GALETTE_CONFIG_PATH  . 'local_acls.inc.php') ) {
     $acls = array_merge($acls, $local_acls);
 }
 
-$authenticate = function () use ($zdb, $i18n, &$session, $acls, $app) {
-    return function () use ($app, $zdb, &$session, $acls) {
+$authenticate = function () use ($zdb, $i18n, &$session, $acls, $app, $plugins) {
+    return function () use ($app, $zdb, &$session, $acls, $plugins) {
         if ( isset($session['login']) ) {
             $login = unserialize($session['login']);
             $login->setDb($zdb);
@@ -139,7 +145,9 @@ $authenticate = function () use ($zdb, $i18n, &$session, $acls, $app) {
         } else {
             //check for ACLs
             $cur_route = getCurrentRoute($app);
-            if ( isset($acls[$cur_route]) ) {
+            //ACLs for plugins
+            $acls = array_merge($acls, $plugins->getAcls());
+            if (isset($acls[$cur_route])) {
                 $acl = $acls[$cur_route];
                 $go = false;
                 switch ( $acl ) {
@@ -284,9 +292,9 @@ function getCurrentRoute($app)
 $app->hook(
     'slim.before.dispatch',
     function () use ($app, $error_detected, $warning_detected, $success_detected,
-        $authenticate, $acls
+        $authenticate, $acls, $plugins
     ) {
-
+        $acls = array_merge($acls, $plugins->getAcls());
         if ( GALETTE_MODE === 'DEV' ) {
             //check for routes that are not in ACLs
             $named_routes = $app->router()->getNamedRoutes();
@@ -367,6 +375,7 @@ require_once GALETTE_ROOT . 'includes/routes/groups.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/contributions.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/public_pages.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/ajax.routes.php';
+require_once GALETTE_ROOT . 'includes/routes/plugins.routes.php';
 
 //custom error handler
 //will not be used if mode is DEV.
