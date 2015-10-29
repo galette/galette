@@ -530,10 +530,10 @@ class Plugins
     public function getTplHeaders()
     {
         $_headers = array();
-        foreach ($this->modules as $key => $module) {
+        foreach (array_keys($this->modules) as $key) {
             $headers_path = $this->getTemplatesPath($key) . '/headers.tpl';
             if (file_exists($headers_path)) {
-                $_headers[] = $headers_path;
+                $_headers[$key] = $headers_path;
             }
         }
         return $_headers;

@@ -74,8 +74,8 @@
 {* If some additionnals headers should be added from plugins, we load the relevant template file
 We have to use a template file, so Smarty will do its work (like replacing variables). *}
 {if $headers|@count != 0}
-    {foreach from=$headers item=header}
-        {include file=$header}
+    {foreach from=$headers item=header key=mid}
+        {include file=$header module_id=$mid}
     {/foreach}
 {/if}
 {if $head_redirect}
