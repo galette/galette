@@ -37,14 +37,14 @@
 
 $app->group(
     '/plugins',
-    function () use ($app, $plugins, $authenticate, $preferences) {
+    function () use ($app, $plugins, $authenticate, $preferences, $login) {
         $modules = $plugins->getModules();
 
         //Declare configured routes for each plugin
         foreach ($modules as $module_id => $module) {
             $app->group(
                 '/' . $module['route'],
-                function () use ($app, $module, $module_id, $authenticate, $preferences) {
+                function () use ($app, $module, $module_id, $authenticate, $preferences, $login) {
                     $f = $module['root'] . '/_routes.php';
                     include_once $f;
                 }
