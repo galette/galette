@@ -44,12 +44,12 @@ use \Analog\Analog;
 $time_start = microtime(true);
 
 //define galette's root directory
-if ( !defined('GALETTE_ROOT') ) {
+if (!defined('GALETTE_ROOT')) {
     define('GALETTE_ROOT', __DIR__ . '/../');
 }
 
 // define relative base path templating can use
-if ( !defined('GALETTE_BASE_PATH') ) {
+if (!defined('GALETTE_BASE_PATH')) {
     define('GALETTE_BASE_PATH', '../');
 }
 
@@ -126,19 +126,19 @@ $acls = [
 ];
 
 //load user defined ACLs
-if ( file_exists(GALETTE_CONFIG_PATH  . 'local_acls.inc.php') ) {
+if (file_exists(GALETTE_CONFIG_PATH  . 'local_acls.inc.php')) {
     $acls = array_merge($acls, $local_acls);
 }
 
 $authenticate = function () use ($zdb, $i18n, &$session, $acls, $app, $plugins) {
     return function () use ($app, $zdb, &$session, $acls, $plugins) {
-        if ( isset($session['login']) ) {
+        if (isset($session['login'])) {
             $login = unserialize($session['login']);
             $login->setDb($zdb);
         } else {
             $login = new Login($zdb, $i18n, $session);
         }
-        if ( !$login->isLogged() ) {
+        if (!$login->isLogged()) {
             $session['urlRedirect'] = $app->request()->getPathInfo();
             $app->flash('error', _T("Login required"));
             $app->redirect($app->urlFor('slash'), 403);
@@ -150,54 +150,55 @@ $authenticate = function () use ($zdb, $i18n, &$session, $acls, $app, $plugins) 
             if (isset($acls[$cur_route])) {
                 $acl = $acls[$cur_route];
                 $go = false;
-                switch ( $acl ) {
-                case 'superadmin':
-                    if ( $login->isSuperAdmin() ) {
-                        $go = true;
-                    }
-                    break;
-                case 'admin':
-                    if ( $login->isSuperAdmin()
-                        || $login->isAdmin()
-                    ) {
-                        $go = true;
-                    }
-                    break;
-                case 'staff':
-                    if ( $login->isSuperAdmin()
-                        || $login->isAdmin()
-                        || $login->isStaff()
-                    ) {
-                        $go = true;
-                    }
-                    break;
-                case 'groupmanager':
-                    if ( $login->isSuperAdmin()
-                        || $login->isAdmin()
-                        || $login->isStaff()
-                        || $login->isGroupManager()
-                    ) {
-                        $go = true;
-                    }
-                    break;
-                case 'member':
-                    if ( $login->isLogged() ) {
-                        $go = true;
-                    }
-                    break;
-                default:
-                    throw new \RuntimeException(
-                        str_replace(
-                            '%acl',
-                            $acl,
-                            _T("Unknown ACL rule '%acl'!")
-                        )
-                    );
-                    break;
+                switch ($acl) {
+                    case 'superadmin':
+                        if ($login->isSuperAdmin()) {
+                            $go = true;
+                        }
+                        break;
+                    case 'admin':
+                        if ($login->isSuperAdmin()
+                            || $login->isAdmin()
+                        ) {
+                            $go = true;
+                        }
+                        break;
+                    case 'staff':
+                        if ($login->isSuperAdmin()
+                            || $login->isAdmin()
+                            || $login->isStaff()
+                        ) {
+                            $go = true;
+                        }
+                        break;
+                    case 'groupmanager':
+                        if ($login->isSuperAdmin()
+                            || $login->isAdmin()
+                            || $login->isStaff()
+                            || $login->isGroupManager()
+                        ) {
+                            $go = true;
+                        }
+                        break;
+                    case 'member':
+                        if ($login->isLogged()) {
+                            $go = true;
+                        }
+                        break;
+                    default:
+                        throw new \RuntimeException(
+                            str_replace(
+                                '%acl',
+                                $acl,
+                                _T("Unknown ACL rule '%acl'!")
+                            )
+                        );
+                        break;
                 }
-                if ( !$go ) {
+                if (!$go) {
                     $app->flash(
-                        'error_detected', [
+                        'error_detected',
+                        [
                             _T("You do not have permission for requested URL.")
                         ]
                     );
