@@ -375,8 +375,14 @@ $app->get(
     ) {
         $dyn_fields = new DynamicFields();
 
-        $member = new Adherent();
-        $member->load($id);
+        $deps = array(
+            'picture'   => true,
+            'groups'    => true,
+            'dues'      => true,
+            'parent'    => true,
+            'children'  => true
+        );
+        $member = new Adherent((int)$id, $deps);
 
         if ( $login->id != $id && !$login->isAdmin() && !$login->isStaff() ) {
             //check if requested member is part of managed groups
