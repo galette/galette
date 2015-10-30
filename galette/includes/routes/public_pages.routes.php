@@ -90,10 +90,10 @@ $app->get(
 
         $session['public_filters']['members'] = serialize($filters);
 
-        $smarty = $app->view()->getInstance();
+        $view = $app->view();
 
         //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($smarty);
+        $filters->setSmartyPagination($app, $view, false);
 
         $app->render(
             'liste_membres.tpl',
