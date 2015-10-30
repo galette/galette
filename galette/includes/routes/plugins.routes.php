@@ -37,14 +37,14 @@
 
 $app->group(
     '/plugins',
-    function () use ($app, $plugins, $authenticate, $preferences, $login) {
-        $modules = $plugins->getModules();
+    function () use ($app, $authenticate) {
+        $modules = $app->plugins->getModules();
 
         //Declare configured routes for each plugin
         foreach ($modules as $module_id => $module) {
             $app->group(
                 '/' . $module['route'],
-                function () use ($app, $module, $module_id, $authenticate, $preferences, $login) {
+                function () use ($app, $module, $module_id, $authenticate) {
                     $f = $module['root'] . '/_routes.php';
                     include_once $f;
                 }
@@ -54,7 +54,7 @@ $app->group(
         //Global route to access plugin resources (CSS, JS, images, ...)
         $app->get(
             '/:plugin/res/:path+',
-            function ($plugin, $path) use ($app, $plugins, $preferences) {
+            function ($plugin, $path) use ($app) {
                 $ext = pathinfo($path)['extension'];
                 $auth_ext = [
                     'js'    => 'text/javascript',
@@ -65,7 +65,7 @@ $app->group(
                     'gif'   => 'image/gif'
                 ];
                 if (strpos($path, '../') === false && isset($auth_ext[$ext])) {
-                    $file = $plugins->getFile(
+                    $file = $app->plugins->getFile(
                         $plugin,
                         $path
                     );

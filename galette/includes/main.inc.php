@@ -217,6 +217,13 @@ $authenticate = function () use ($zdb, $i18n, &$session, $acls, $app, $plugins) 
     };
 };
 
+//dependency injection
+$app->zdb           = $zdb;
+$app->i18n          = $i18n;
+$app->plugins       = $plugins;
+$app->preferences   = $preferences;
+$app->login         = $login;
+
 $baseRedirect = function ($app) use ($login, &$session) {
     $app->flashKeep();
     if ( $login->isLogged() ) {
