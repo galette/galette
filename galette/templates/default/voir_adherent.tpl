@@ -1,11 +1,5 @@
 {extends file="page.tpl"}
 
-{if $plugin_detailled_actions|@count != 0}
-  {foreach from=$plugin_detailled_actions key=plugin_name item=action}
-    {include file=$action assing=$plugin_name}
-  {/foreach}
-{/if}
-
 {block name="content"}
 {if $navigate|@count != 0}
     <nav>
@@ -43,7 +37,7 @@
 We have to use a template file, so Smarty will do its work (like replacing variables). *}
 {if $plugin_detailled_actions|@count != 0}
   {foreach from=$plugin_detailled_actions key=plugin_name item=action}
-    {$plugin_name}
+    {include file=$action module_id=$plugin_name|replace:'det_actions_':''}
   {/foreach}
 {/if}
 
@@ -56,7 +50,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     {if $member->hasParent()}
             <tr>
                 <th>{_T string="Attached to:"}</th>
-                <td><a href="{urlFor name="member" options="id.`$member->parent->id`"}">{$member->parent->sfullname}</a></td>
+                <td><a href="{urlFor name="member" options=["id" => $member->parent->id]}">{$member->parent->sfullname}</a></td>
             </tr>
     {/if}
     {if $member->hasChildren()}

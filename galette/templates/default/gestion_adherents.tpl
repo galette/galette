@@ -1,17 +1,5 @@
 {extends file="page.tpl"}
 
-{if $plugin_actions|@count != 0}
-    {foreach from=$plugin_actions key=plugin_name item=action}
-        {include file=$action assing=$plugin_name}
-    {/foreach}
-{/if}
-
-{if $plugin_batch_actions|@count != 0}
-    {foreach from=$plugin_batch_actions key=plugin_name item=action}
-        {include file=$action assign=$plugin_name}
-    {/foreach}
-{/if}
-
 {block name="content"}
         <form action="{urlFor name="filter-memberslist"}" method="post" id="filtre">
         <div id="listfilter">
@@ -177,7 +165,7 @@
     {/if}
     {if $plugin_batch_actions|@count != 0}
         {foreach from=$plugin_batch_actions key=plugin_name item=action}
-            {$plugin_name}
+          {include file=$action module_id=$plugin_name|replace:'batch_action_':''}
         {/foreach}
     {/if}
                         </ul>
@@ -250,7 +238,7 @@
             We have to use a template file, so Smarty will do its work (like replacing variables). *}
             {if $plugin_actions|@count != 0}
               {foreach from=$plugin_actions key=plugin_name item=action}
-                {include file=$action}
+                {include file=$action module_id=$plugin_name|replace:'actions_':''}
               {/foreach}
             {/if}
                     </td>

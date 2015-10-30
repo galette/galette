@@ -547,7 +547,7 @@ class Plugins
     public function getTplAdhActions()
     {
         $_actions = array();
-        foreach ($this->modules as $key => $module) {
+        foreach (array_keys($this->modules) as $key) {
             $actions_path = $this->getTemplatesPath($key) . '/adh_actions.tpl';
             if (file_exists($actions_path)) {
                 $_actions['actions_' . $key] = $actions_path;
@@ -565,7 +565,7 @@ class Plugins
     public function getTplAdhBatchActions()
     {
         $_actions = array();
-        foreach ($this->modules as $key => $module) {
+        foreach (array_keys($this->modules) as $key) {
             $actions_path = $this->getTemplatesPath($key) . '/adh_batch_action.tpl';
             if (file_exists($actions_path)) {
                 $_actions['batch_action_' . $key] = $actions_path;
@@ -583,7 +583,7 @@ class Plugins
     public function getTplAdhDetailledActions()
     {
         $_actions = array();
-        foreach ($this->modules as $key => $module) {
+        foreach (array_keys($this->modules) as $key) {
             $actions_path = $this->getTemplatesPath($key) . '/adh_fiche_action.tpl';
             if (file_exists($actions_path)) {
                 $_actions['det_actions_' . $key] = $actions_path;
