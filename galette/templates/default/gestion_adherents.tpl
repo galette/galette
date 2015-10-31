@@ -68,9 +68,9 @@
                             {_T string="Mbr num"}
                             {if $filters->orderby eq constant('galette\Repository\Members::ORDERBY_ID')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
-                            <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                            <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                                 {else}
-                            <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                            <img src="{$galette_base_path}{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                                 {/if}
                             {/if}
                         </a>

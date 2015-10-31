@@ -529,7 +529,6 @@ $app->get(
     '/plugins',
     $authenticate(),
     function () use ($app, $plugins) {
-
         if ( GALETTE_MODE !== 'DEMO' ) {
             $reload_plugins = false;
             if ( isset($_GET['activate']) ) {
