@@ -119,9 +119,10 @@ class Plugins
 
                 if ($entry != '.' && $entry != '..' && is_dir($full_entry)
                     && file_exists($full_entry . '/_define.php')
-                    && file_exists($full_entry . '/_routes.php')
                 ) {
-                    if (!file_exists($full_entry.'/_disabled')) {
+                    if (!file_exists($full_entry.'/_disabled')
+                        && file_exists($full_entry . '/_routes.php')
+                    ) {
                         $this->id = $entry;
                         $this->mroot = $full_entry;
                         include $full_entry . '/_define.php';
