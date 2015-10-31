@@ -53,23 +53,49 @@ if (!defined('GALETTE_BASE_PATH')) {
     define('GALETTE_BASE_PATH', '../');
 }
 
+$needs_update = false;
 /** @ignore */
 require_once GALETTE_ROOT . 'includes/galette.inc.php';
 
-$app = new Slim(
-    array(
-        'view'              => new Smarty(
-            $plugins,
-            $i18n,
-            $preferences,
-            $logo,
-            $login,
-            $session
-        ),
-        'templates.path'    => GALETTE_ROOT . GALETTE_TPL_SUBDIR,
-        'mode'              => GALETTE_MODE
-    )
-);
+//Galette needs database update!
+if ($needs_update) {
+    $app = new Slim(
+        array(
+            'templates.path'    => GALETTE_ROOT . 'templates/default/',
+            'mode'              => 'NEED_UPDATE'
+        )
+    );
+
+    define(
+        'GALETTE_THEME',
+        'themes/default/'
+    );
+
+    $app->configureMode(
+        'NEED_UPDATE',
+        function () use ($app, $i18n) {
+            $app->add(new Galette\Core\Middleware($i18n, null, Galette\Core\Middleware::NEED_UPDATE));
+        }
+    );
+
+    $app->run();
+    die();
+} else {
+    $app = new Slim(
+        array(
+            'view'              => new Smarty(
+                $plugins,
+                $i18n,
+                $preferences,
+                $logo,
+                $login,
+                $session
+            ),
+            'templates.path'    => GALETTE_ROOT . GALETTE_TPL_SUBDIR,
+            'mode'              => GALETTE_MODE
+        )
+    );
+}
 
 $app->configureMode(
     'DEV',
@@ -79,6 +105,13 @@ $app->configureMode(
                 'debug' => true
             )
         );
+    }
+);
+
+$app->configureMode(
+    'MAINT',
+    function () use ($app, $i18n, $login) {
+        $app->add(new Galette\Core\Middleware($i18n, $login));
     }
 );
 
@@ -131,7 +164,7 @@ if (file_exists(GALETTE_CONFIG_PATH  . 'local_acls.inc.php')) {
 }
 
 $authenticate = function () use ($zdb, $i18n, &$session, $acls, $app, $plugins) {
-    return function () use ($app, $zdb, &$session, $acls, $plugins) {
+    return function () use ($app, $zdb, &$session, $acls, $plugins, $i18n) {
         if (isset($session['login'])) {
             $login = unserialize($session['login']);
             $login->setDb($zdb);

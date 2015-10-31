@@ -336,21 +336,6 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
             $login = new Core\Login($zdb, $i18n, $session);
         }
 
-        if (GALETTE_MODE === 'MAINT' && !$login->isSuperAdmin() ) {
-            if ( $login->isLogged() ) {
-                //force logout
-                $login->logOut();
-                $session['login'] = null;
-                unset($session['login']);
-                $session['history'] = null;
-                unset($session['history']);
-            }
-            //redirect, if needed
-            if ( basename($_SERVER['SCRIPT_NAME']) !== 'maintenance.php' ) {
-                header('location: maintenance.php');
-            }
-        }
-
         if ( $cron ) {
             $login->logCron(basename($argv[0], '.php'));
         }
@@ -396,7 +381,6 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
         include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
         include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
     } else {
-        header('location: needs_update.php');
-        die();
+        $needs_update = true;
     }
 }
