@@ -354,6 +354,11 @@ $app->get(
     '/member/me',
     $authenticate(),
     function () use ($app, $login) {
+        if ($login->isSuperAdmin()) {
+            $app->redirect(
+                $app->urlFor('slash')
+            );
+        }
         $deps = array(
             'picture'   => false,
             'groups'    => false,
@@ -505,7 +510,7 @@ $app->get(
     ) {
         if ($action === 'edit' && $id === null) {
             throw new \RuntimeException(
-                _T("Member ID cannot ben null xalling edit route!")
+                _T("Member ID cannot ben null calling edit route!")
             );
         }
         $deps = array(
