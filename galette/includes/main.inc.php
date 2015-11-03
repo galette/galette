@@ -134,7 +134,7 @@ $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
 $acls = [
     'preferences'       => 'admin',
     'store-preferences' => 'admin',
-    'dashboard'         => 'staff',
+    'dashboard'         => 'groupmanager',
     'sysinfos'          => 'staff',
     'charts'            => 'staff',
     'plugins'           => 'admin',
