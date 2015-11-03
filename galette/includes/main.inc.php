@@ -155,7 +155,7 @@ $acls = [
     'editmember'        => 'member',
     'storemembers'      => 'member',
     'impersonate'       => 'superadmin',
-    'unimpersonate'     => 'superadmin'
+    'unimpersonate'     => 'member'
 ];
 
 //load user defined ACLs
