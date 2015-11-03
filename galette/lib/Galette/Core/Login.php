@@ -314,6 +314,7 @@ class Login extends Authentication
                 return false;
             } else {
                 $this->_impersonated = true;
+                $this->superadmin = false;
                 $row = $results->current();
                 $this->logUser($row);
                 return true;

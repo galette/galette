@@ -165,6 +165,7 @@ if (file_exists(GALETTE_CONFIG_PATH  . 'local_acls.inc.php')) {
 
 $authenticate = function () use ($zdb, $i18n, &$session, $acls, $app, $plugins) {
     return function () use ($app, $zdb, &$session, $acls, $plugins, $i18n) {
+        $app->flashKeep();
         if (isset($session['login'])) {
             $login = unserialize($session['login']);
             $login->setDb($zdb);

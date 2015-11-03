@@ -366,7 +366,7 @@ $app->get(
         );
         $member = new Adherent($login->login, $deps);
         $app->redirect(
-            $app->urlFor('member', [$member->id])
+            $app->urlFor('member', ['id' => $member->id])
         );
     }
 )->name('me');
