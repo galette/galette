@@ -46,7 +46,7 @@
             },
 {/if}
             'themes': {
-                'url': '{$template_subdir}/jstree/style.css'
+                'url': '{$galette_base_path}{$template_subdir}/jstree/style.css'
             },
             'unique' : {
                 'error_callback': function (n, p, f) {
