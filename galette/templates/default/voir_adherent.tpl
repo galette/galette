@@ -58,7 +58,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 <th>{_T string="Parent of:"}</th>
                 <td>
         {foreach from=$children item=child key=cid}
-                    <a href="voir_adherent.php?id_adh={$cid}">{$child}</a>{if not $child@last}, {/if}
+                    <a href="{urlFor name="member" options="id.`$cid`"}">{$child}</a>{if not $child@last}, {/if}
         {/foreach}
                 </td>
             </tr>

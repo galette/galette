@@ -27,7 +27,7 @@
             <div>
         {if $member->hasParent()}
                 <strong>{_T string="Attached to:"}
-                <a href="voir_adherent.php?id_adh={$member->parent->id}">{$member->parent->sfullname}</a></strong><br/>
+                <a href="{urlFor name="member" options=["id" => $member->parent->id]}">{$member->parent->sfullname}</a></strong><br/>
             {if $login->isAdmin() or $login->isStaff() or $login->id eq $member->parent->id}
                 <label for="detach_parent">{_T string="Detach?"}</label>
                 <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>

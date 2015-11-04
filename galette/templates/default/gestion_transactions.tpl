@@ -16,7 +16,7 @@
     {/if}
                     <strong>{$member->sname}</strong>
     {if $login->isAdmin() or $login->isStaff()}
-                    (<a href="voir_adherent.php?id_adh={$member->id}">{_T string="See member profile"}</a> -
+                    (<a href="{urlFor name="member" options=["id" => $member->id]}">{_T string="See member profile"}</a> -
                     <a href="ajouter_transaction.php?id_adh={$member->id}">{_T string="Add a transaction"}</a>)
     {/if}
                     &nbsp;:
@@ -103,7 +103,7 @@
                             {if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}
                         </a>
     {else}
-                        <a href="voir_adherent.php?id_adh={$mid}">
+                        <a href="{urlFor name="member" options=["id" => $mid]}">
                             {if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}
                         </a>
     {/if}

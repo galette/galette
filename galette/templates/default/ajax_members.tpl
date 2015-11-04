@@ -41,7 +41,7 @@
                     {else}
                         <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
                     {/if}
-                    <a href="voir_adherent.php?id_adh={$member->id}">{$member->sfullname}</a>
+                    <a href="{urlFor name="member" options=["id" => $member->id]}">{$member->sfullname}</a>
                     </td>
                     <td class="{$rclass} nowrap">{$member->zipcode} {$member->town}</td>
                 </tr>

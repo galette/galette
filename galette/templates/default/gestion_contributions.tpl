@@ -38,7 +38,7 @@
                     <strong>{$member->sname}</strong>
     {if not $member->isActive() } ({_T string="Inactive"}){/if}
     {if $login->isAdmin() or $login->isStaff()}
-                    (<a href="voir_adherent.php?id_adh={$member->id}">{_T string="See member profile"}</a> -
+                    (<a href="{urlFor name="member" options=["id" => $member->id]}">{_T string="See member profile"}</a> -
                     <a href="ajouter_contribution.php?id_adh={$member->id}">{_T string="Add a contribution"}</a>)
     {/if}
                     &nbsp;:
@@ -210,7 +210,7 @@
         {if $contribution->filtre_cotis_adh eq ""}
                         <a href="gestion_contributions.php?id_adh={$mid}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
         {else}
-                        <a href="voir_adherent.php?id_adh={$mid}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
+                        <a href="{urlFor name="member" options=["id" => $mid]}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
         {/if}
                     </td>
     {/if}
