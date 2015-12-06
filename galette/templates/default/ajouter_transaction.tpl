@@ -92,7 +92,7 @@
     {if $login->isAdmin() or $login->isStaff()}
                     <td class="{$cclass}">
                         <a href="?trans_id={$transaction->id}&detach={$contrib->id}">
-                            <img src="{$template_subdir}images/delete.png" alt="{_T string="Detach"}" width="16" height="16" title="{_T string="Detach contribution from this transaction"}"/>
+                            <img src="{$galette_base_path}{$template_subdir}images/delete.png" alt="{_T string="Detach"}" width="16" height="16" title="{_T string="Detach contribution from this transaction"}"/>
                         </a>
                     </td>
     {/if}
@@ -202,7 +202,7 @@
                     changeMonth: true,
                     changeYear: true,
                     showOn: 'button',
-                    buttonImage: '{$template_subdir}images/calendar.png',
+                    buttonImage: '{$galette_base_path}{$template_subdir}images/calendar.png',
                     buttonImageOnly: true,
                     buttonText: '{_T string="Select a date" escape="js"}'
                 });

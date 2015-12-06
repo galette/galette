@@ -92,7 +92,7 @@
 </fieldset>
 <script type="text/javascript">
     var _addLnk = function(){
-        return $('<a href="#"><img src="{$template_subdir}images/icon-add.png" alt="{_T string="New occurence"}"/></a>');
+        return $('<a href="#"><img src="{$galette_base_path}{$template_subdir}images/icon-add.png" alt="{_T string="New occurence"}"/></a>');
     };
 
     var _lnkEvent = function(_a, _input, _parent) {
@@ -157,7 +157,7 @@
             changeMonth: true,
             changeYear: true,
             showOn: 'button',
-            buttonImage: '{$template_subdir}images/calendar.png',
+            buttonImage: '{$galette_base_path}{$template_subdir}images/calendar.png',
             buttonImageOnly: true,
             buttonText: '{_T string="Select a date" escape="js"}'
         });

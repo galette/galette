@@ -287,7 +287,7 @@
                         changeMonth: true,
                         changeYear: true,
                         showOn: 'button',
-                        buttonImage: '{$template_subdir}images/calendar.png',
+                        buttonImage: '{$galette_base_path}{$template_subdir}images/calendar.png',
                         buttonImageOnly: true,
                         buttonText: '{_T string="Select a date" escape="js"}'
                     });

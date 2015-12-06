@@ -41,9 +41,9 @@
                         <a href="gestion_transactions.php?tri={php}echo Galette\Repository\Transactions::ORDERBY_DATE;{/php}" class="listing">{_T string="Date"}
                         {if $transactions->orderby eq constant('Galette\Repository\Transactions::ORDERBY_DATE')}
                             {if $transactions->ordered eq constant('galette\Repository\Transactions::ORDER_ASC')}
-                        <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-                        <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{$galette_base_path}{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
                         {/if}
                         </a>
@@ -54,9 +54,9 @@
                         <a href="gestion_transactions.php?tri={php}echo Galette\Repository\Transactions::ORDERBY_MEMBER;{/php}" class="listing">{_T string="Originator"}
                         {if $transactions->orderby eq constant('Galette\Repository\Transactions::ORDERBY_MEMBER')}
                             {if $transactions->ordered eq constant('Galette\Repository\Transactions::ORDER_ASC')}
-                        <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-                        <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{$galette_base_path}{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
                         {/if}
                         </a>
@@ -66,9 +66,9 @@
                         <a href="gestion_transactions.php?tri={php}echo Galette\Repository\Transactions::ORDERBY_AMOUNT;{/php}" class="listing">{_T string="Amount"}
                         {if $transactions->orderby eq constant('Galette\Repository\Transactions::ORDERBY_AMOUNT')}
                             {if $transactions->ordered eq constant('Galette\Repository\Transactions::ORDER_ASC')}
-                        <img src="{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-                        <img src="{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{$galette_base_path}{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
                         {/if}
                         </a>
@@ -113,10 +113,10 @@
 {if $login->isAdmin() or $login->isStaff()}
                     <td class="{$cclass} center nowrap">
                         <a href="ajouter_transaction.php?trans_id={$transaction->id}">
-                            <img src="{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/>
+                            <img src="{$galette_base_path}{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/>
                         </a>
                         <a onclick="return confirm('{_T string="Do you really want to delete this transaction of the database ?"|escape:"javascript"}')" href="gestion_transactions.php?sup={$transaction->id}">
-                            <img src="{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/>
+                            <img src="{$galette_base_path}{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/>
                         </a>
                     </td>
 {/if}
@@ -130,11 +130,11 @@
             <h1>{_T string="Legend"}</h1>
             <table>
                 <tr>
-                    <th class="transaction-normal color-sample"><img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/></th>
+                    <th class="transaction-normal color-sample"><img src="{$galette_base_path}{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/></th>
                     <td class="back">{_T string="Completely dispatched transaction"}</td>
                 </tr>
                 <tr>
-                    <th class="transaction-uncomplete color-sample"><img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/></th>
+                    <th class="transaction-uncomplete color-sample"><img src="{$galette_base_path}{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/></th>
                     <td class="back">{_T string="Uncomplete dispatched transaction"}</td>
                 </tr>
             </table>
@@ -164,7 +164,7 @@
                     changeMonth: true,
                     changeYear: true,
                     showOn: 'button',
-                    buttonImage: '{$template_subdir}images/calendar.png',
+                    buttonImage: '{$galette_base_path}{$template_subdir}images/calendar.png',
                     buttonImageOnly: true,
                     buttonText: '{_T string="Select a date" escape="js"}'
                 });

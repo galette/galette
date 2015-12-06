@@ -76,6 +76,9 @@ galette/includes/Zend*
 galette/includes/Analog*
 galette/password_compat*
 
+# API documentation
+apidocs/
+
 #Backup files
 *~
 
