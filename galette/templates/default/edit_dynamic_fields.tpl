@@ -59,7 +59,7 @@
             <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
         {elseif $field.field_type eq 5}
             <input type="checkbox" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}" value="1"
-            {if isset($data) and $data.dyn[$field.field_id][$smarty.section.fieldLoop.index] eq 1} checked="checked"{/if}
+            {if isset($data) and isset($data.dyn[$field.field_id]) and $data.dyn[$field.field_id][$smarty.section.fieldLoop.index] eq 1} checked="checked"{/if}
                 {if isset($disabled.dyn[$field.field_id])} {$disabled.dyn[$field.field_id]}{/if}
                 {if $field.field_required eq 1} required{/if}
             />

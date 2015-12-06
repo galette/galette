@@ -520,6 +520,7 @@ $app->get(
             'parent'    => true,
             'children'  => true
         );
+        $route_params = [];
         $member = new Adherent(null, $deps);
         //TODO: dynamic fields should be handled by Adherent object
         $dyn_fields = new DynamicFields();
@@ -592,7 +593,7 @@ $app->get(
                     unset($no_parent_required[$i]);
                 }
             }
-            $tpl->assign('no_parent_required', $no_parent_required);
+            $route_params['no_parent_required'] = $no_parent_required;
         }
 
         // flagging required fields invisible to members
@@ -677,27 +678,30 @@ $app->get(
 
         $app->render(
             'member.tpl',
-            array(
-                'parent_tpl'        => 'page.tpl',
-                'navigate'          => $navigate,
-                'require_dialog'    => true,
-                'page_title'        => $title,
-                'required'          => $required,
-                'visibles'          => $visibles,
-                'disabled'          => $disabled,
-                'member'            => $member,
-                'data'              => $adherent,
-                'self_adh'          => false,
-                'dynamic_fields'    => $dynamic_fields,
-                'languages'         => $i18n->getList(),
-                'require_calendar'  => true,
-                // pseudo random int
-                'time'              => time(),
-                'titles_list'       => Titles::getList($zdb),
-                'statuts'           => $statuts->getList(),
-                'groups'            => $groups_list,
-                'fieldsets'         => $form_elements['fieldsets'],
-                'hidden_elements'   => $form_elements['hiddens']
+            array_merge(
+                $route_params,
+                array(
+                    'parent_tpl'        => 'page.tpl',
+                    'navigate'          => $navigate,
+                    'require_dialog'    => true,
+                    'page_title'        => $title,
+                    'required'          => $required,
+                    'visibles'          => $visibles,
+                    'disabled'          => $disabled,
+                    'member'            => $member,
+                    'data'              => $adherent,
+                    'self_adh'          => false,
+                    'dynamic_fields'    => $dynamic_fields,
+                    'languages'         => $i18n->getList(),
+                    'require_calendar'  => true,
+                    // pseudo random int
+                    'time'              => time(),
+                    'titles_list'       => Titles::getList($zdb),
+                    'statuts'           => $statuts->getList(),
+                    'groups'            => $groups_list,
+                    'fieldsets'         => $form_elements['fieldsets'],
+                    'hidden_elements'   => $form_elements['hiddens']
+                )
             )
         );
 
