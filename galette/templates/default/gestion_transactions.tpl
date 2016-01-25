@@ -1,3 +1,5 @@
+{extends file="page.tpl"}
+{block name="content"}
         <form action="gestion_transactions.php" method="get" id="filtre">
         <div id="listfilter">
             <label for="start_date_filter">{_T string="Show transactions since"}</label>&nbsp;
@@ -139,6 +141,9 @@
                 </tr>
             </table>
         </div>
+{/block}
+
+{block name="javascripts"}
         <script type="text/javascript">
             $(function(){
                 $('#nbshow').change(function() {
@@ -170,3 +175,4 @@
                 });
             });
         </script>
+{/block}

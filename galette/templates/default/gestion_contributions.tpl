@@ -1,6 +1,6 @@
 {extends file="page.tpl"}
 {block name="content"}
-        <form action="gestion_contributions.php" method="get" id="filtre">
+        <form action="{urlFor name="payments_filter" options="type.contributions" }" method="post" id="filtre">
         <div id="listfilter">
             <label for="date_field_filter">{_T string="Show contributions by"}</label>&nbsp;
             <select name="date_field_filter" id="date_field_filter">
@@ -59,7 +59,7 @@
             </tr>
         </table>
         </form>
-        <form action="gestion_contributions.php" method="post" id="listform">
+        <form action="{urlFor name="contributions"}" method="post" id="listform">
         <table class="listing">
             <thead>
                 <tr>
@@ -261,7 +261,9 @@
                 </tr>
             </table>
         </div>
+{/block}
 
+{block name="javascripts"}
         <script type="text/javascript">
             $(function(){
                 var _init_contribs_page = function(res){
