@@ -286,7 +286,7 @@ class Transaction
                         break;
                     case 'trans_amount':
                         $this->_amount = $value;
-                        $us_value = strtr($value, ',', '.');
+                        $value = strtr($value, ',', '.');
                         if ( !is_numeric($value) ) {
                             $errors[] = _T("- The amount must be an integer!");
                         }
