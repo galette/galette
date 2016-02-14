@@ -601,11 +601,11 @@ class Members
                 );
             }
 
-            //check if there are dynamic fields in the filter
+            //check if there are dynamic fields in filter
             $hasDf = false;
             $hasCdf = false;
+            $dfs = array();
             $cdfs = array();
-            $cdfcs = array();
 
             if ( $this->_filters instanceof AdvancedMembersList
                 && $this->_filters->free_search
@@ -615,9 +615,12 @@ class Members
                 $free_searches = $this->_filters->free_search;
                 foreach ( $free_searches as $fs ) {
                     if ( strpos($fs['field'], 'dyn_') === 0 ) {
+                        // simple dynamic fields
                         $hasDf = true;
+                        $dfs[] = str_replace('dyn_', '', $fs['field']);
                     }
                     if ( strpos($fs['field'], 'dync_') === 0 ) {
+                        // choice dynamic fields
                         $hasCdf = true;
                         $cdfs[] = str_replace('dync_', '', $fs['field']);
                     }
@@ -627,6 +630,8 @@ class Members
             //check if there are dynamic fields for contributions in filter
             $hasDfc = false;
             $hasCdfc = false;
+            $cdfcs = array();
+
             if ( $this->_filters instanceof AdvancedMembersList
                 && $this->_filters->withinContributions()
             ) {
@@ -647,15 +652,6 @@ class Members
 
             }
 
-            if ( $hasDf === true || $hasCdf === true ) {
-                $select->join(
-                    array('df' => PREFIX_DB . DynamicFields::TABLE),
-                    'df.item_id=a.' . self::PK,
-                    array(),
-                    $select::JOIN_LEFT
-                );
-            }
-
             if ( $hasDfc === true || $hasCdfc === true ) {
                 $select->join(
                     array('dfc' => PREFIX_DB . DynamicFields::TABLE),
@@ -664,21 +660,45 @@ class Members
                     $select::JOIN_LEFT
                 );
             }
+            
+            // simple dynamic fields
+            if ( $hasDf === true ) {
+                foreach ( $dfs as $df ) {
+                    $subselect = $zdb->select(DynamicFields::TABLE, 'df');
+                    $subselect->columns(array(
+                        'item_id' => 'item_id', 'val' => 'field_val')
+                    );
+                    $subselect->where('df.field_form = \'adh\'');
+                    $subselect->where('df.field_id = ' . $df);
+                    $select->join(
+                        array('df' . $df => $subselect),
+                        'a.id_adh = df' . $df . '.item_id',
+                        array(),
+                        $select::JOIN_LEFT
+                    );
+                }
+            }
 
+            // choice dynamic fields
             if ( $hasCdf === true || $hasCdfc === true ) {
                 $cdf_field = 'cdf.id';
                 if ( TYPE_DB === 'pgsql' ) {
                     $cdf_field .= '::text';
                 }
                 foreach ( $cdfs as $cdf ) {
-                    $rcdf_field = str_replace(
-                        'cdf.',
-                        'cdf' . $cdf . '.',
-                        $cdf_field
+                    $subselect = $zdb->select(DynamicFields::TABLE, 'df');
+                    $subselect->columns(array('item_id'));
+                    $subselect->join(
+                        array('dfc' . $cdf  => DynamicFields::getFixedValuesTableName($cdf, true)),
+                        "df.field_val=id",
+                        array('val'),
+                        $select::JOIN_LEFT
                     );
+                    $subselect->where('df.field_form = \'adh\'');
+                    $subselect->where('df.field_id = ' . $cdf);
                     $select->join(
-                        array('cdf' . $cdf => DynamicFields::getFixedValuesTableName($cdf, true)),
-                        $rcdf_field . '=df.field_val',
+                        array('df' . $cdf => $subselect),
+                        'a.id_adh = df' . $cdf . '.item_id',
                         array(),
                         $select::JOIN_LEFT
                     );
@@ -1319,18 +1339,15 @@ class Members
                         $qry = '';
                         $prefix = 'a.';
                         if ( strpos($fs['field'], 'dync_') === 0 ) {
-                            //dynamic choice spotted!
+                            // choice dynamic choice spotted!
                             $index = str_replace('dync_', '', $fs['field']);
-                            $prefix = 'cdf' . $index . '.';
-                            $qry = 'df.field_form = \'adh\' AND df.field_id = ' .
-                                str_replace('dync_', '', $fs['field']) . ' AND ';
+                            $prefix = 'df' . $index . '.';
                             $fs['field'] = 'val';
                         } elseif ( strpos($fs['field'], 'dyn_') === 0 ) {
-                            //dynamic field spotted!
-                            $prefix = 'df.';
-                            $qry = 'df.field_form = \'adh\' AND df.field_id = ' .
-                                str_replace('dyn_', '', $fs['field']) . ' AND ';
-                            $fs['field'] = 'field_val';
+                            // simple dynamic field spotted!
+                            $index = str_replace('dyn_', '', $fs['field']);
+                            $prefix = 'df' . $index . '.';
+                            $fs['field'] = 'val';
                         }
 
                         if ( !strncmp($fs['field'], 'bool_', strlen('bool_')) ) {
