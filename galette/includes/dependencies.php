@@ -120,7 +120,7 @@ $container['preferences'] = function ($c) {
     return new Galette\Core\Preferences($c->zdb);
 };
 
-$container['login'] = function ($c) use($session_name) {
+$container['login'] = function ($c) use ($session_name) {
     $session = &$_SESSION['galette'][$session_name];
     if (isset($session['login'])) {
         $login = unserialize(
@@ -140,6 +140,11 @@ $container['login'] = function ($c) use($session_name) {
     }
 
     return $login;
+};
+
+$container['session'] = function ($c) use ($session_name) {
+    $session = &$_SESSION['galette'][$session_name];
+    return $session;
 };
 
 $container['logo'] = function ($c) {
