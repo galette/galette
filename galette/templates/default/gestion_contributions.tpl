@@ -4,9 +4,9 @@
         <div id="listfilter">
             <label for="date_field_filter">{_T string="Show contributions by"}</label>&nbsp;
             <select name="date_field_filter" id="date_field_filter">
-                <option value="{php}echo Galette\Repository\Contributions::DATE_BEGIN;{/php}"{if $contributions->date_field eq constant('Galette\Repository\Contributions::DATE_BEGIN')} selected="selected"{/if}>{_T string="Begin"}</option>
-                <option value="{php}echo Galette\Repository\Contributions::DATE_END;{/php}"{if $contributions->date_field eq constant('Galette\Repository\Contributions::DATE_END')} selected="selected"{/if}>{_T string="End"}</option>
-                <option value="{php}echo Galette\Repository\Contributions::DATE_RECORD;{/php}"{if $contributions->date_field eq constant('Galette\Repository\Contributions::DATE_RECORD')} selected="selected"{/if}>{_T string="Record"}</option>
+                <option value="{Galette\Repository\Contributions::DATE_BEGIN}"{if $contributions->date_field eq constant('Galette\Repository\Contributions::DATE_BEGIN')} selected="selected"{/if}>{_T string="Begin"}</option>
+                <option value="{Galette\Repository\Contributions::DATE_END}"{if $contributions->date_field eq constant('Galette\Repository\Contributions::DATE_END')} selected="selected"{/if}>{_T string="End"}</option>
+                <option value="{Galette\Repository\Contributions::DATE_RECORD}"{if $contributions->date_field eq constant('Galette\Repository\Contributions::DATE_RECORD')} selected="selected"{/if}>{_T string="Record"}</option>
             </select>
             <label for="start_date_filter">{_T string="since"}</label>&nbsp;
             <input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$contributions->start_date_filter}"/>
@@ -15,12 +15,12 @@
             <label for="payment_type_filter">{_T string="Payment type"}</label>
             <select name="payment_type_filter" id="payment_type_filter">
                 <option value="-1">{_T string="Select"}</option>
-                <option value="{php}echo Galette\Entity\Contribution::PAYMENT_CASH;{/php}"{if $contributions->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_CASH')} selected="selected"{/if}>{_T string="Cash"}</option>
-                <option value="{php}echo Galette\Entity\Contribution::PAYMENT_CREDITCARD;{/php}"{if $contributions->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_CREDITCARD')} selected="selected"{/if}>{_T string="Credit card"}</option>
-                <option value="{php}echo Galette\Entity\Contribution::PAYMENT_CHECK;{/php}"{if $contributions->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_CHECK')} selected="selected"{/if}>{_T string="Check"}</option>
-                <option value="{php}echo Galette\Entity\Contribution::PAYMENT_TRANSFER;{/php}"{if $contributions->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_TRANSFER')} selected="selected"{/if}>{_T string="Transfer"}</option>
-                <option value="{php}echo Galette\Entity\Contribution::PAYMENT_PAYPAL;{/php}"{if $contributions->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_PAYPAL')} selected="selected"{/if}>{_T string="Paypal"}</option>
-                <option value="{php}echo Galette\Entity\Contribution::PAYMENT_OTHER;{/php}"{if $contributions->payment_type_filter === constant('Galette\Entity\Contribution::PAYMENT_OTHER')} selected="selected"{/if}>{_T string="Other"}</option>
+                <option value="{Galette\Entity\Contribution::PAYMENT_CASH}"{if $contributions->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_CASH')} selected="selected"{/if}>{_T string="Cash"}</option>
+                <option value="{Galette\Entity\Contribution::PAYMENT_CREDITCARD}"{if $contributions->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_CREDITCARD')} selected="selected"{/if}>{_T string="Credit card"}</option>
+                <option value="{Galette\Entity\Contribution::PAYMENT_CHECK}"{if $contributions->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_CHECK')} selected="selected"{/if}>{_T string="Check"}</option>
+                <option value="{Galette\Entity\Contribution::PAYMENT_TRANSFER}"{if $contributions->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_TRANSFER')} selected="selected"{/if}>{_T string="Transfer"}</option>
+                <option value="{Galette\Entity\Contribution::PAYMENT_PAYPAL}"{if $contributions->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_PAYPAL')} selected="selected"{/if}>{_T string="Paypal"}</option>
+                <option value="{Galette\Entity\Contribution::PAYMENT_OTHER}"{if $contributions->payment_type_filter === constant('Galette\Entity\Contribution::PAYMENT_OTHER')} selected="selected"{/if}>{_T string="Other"}</option>
             </select>
             <input type="submit" class="inline" value="{_T string="Filter"}"/>
             <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
@@ -65,7 +65,7 @@
                 <tr>
                     <th class="listing id_row">#</th>
                     <th class="listing left date_row">
-                        <a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_DATE;{/php}" class="listing">{_T string="Date"}
+                        <a href="gestion_contributions.php?tri={Galette\Repository\Contributions::ORDERBY_DATE}" class="listing">{_T string="Date"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_DATE')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
                         <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -76,7 +76,7 @@
                         </a>
                     </th>
                     <th class="listing left date_row">
-                        <a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_BEGIN_DATE;{/php}" class="listing">{_T string="Begin"}
+                        <a href="gestion_contributions.php?tri={Galette\Repository\Contributions::ORDERBY_BEGIN_DATE}" class="listing">{_T string="Begin"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_BEGIN_DATE')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
                         <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -87,7 +87,7 @@
                         </a>
                     </th>
                     <th class="listing left date_row">
-                        <a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_END_DATE;{/php}" class="listing">{_T string="End"}
+                        <a href="gestion_contributions.php?tri={Galette\Repository\Contributions::ORDERBY_END_DATE}" class="listing">{_T string="End"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_END_DATE')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
                         <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -99,7 +99,7 @@
                     </th>
 {if ($login->isAdmin() or $login->isStaff()) and !isset($member)}
                     <th class="listing left">
-                        <a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_MEMBER;{/php}" class="listing">{_T string="Member"}
+                        <a href="gestion_contributions.php?tri={Galette\Repository\Contributions::ORDERBY_MEMBER}" class="listing">{_T string="Member"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_MEMBER')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
                         <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -111,7 +111,7 @@
                     </th>
 {/if}
                     <th class="listing left">
-                        <a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_TYPE;{/php}" class="listing">{_T string="Type"}
+                        <a href="gestion_contributions.php?tri={Galette\Repository\Contributions::ORDERBY_TYPE}" class="listing">{_T string="Type"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_TYPE')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
                         <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -122,7 +122,7 @@
                         </a>
                     </th>
                     <th class="listing left">
-                        <a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_AMOUNT;{/php}" class="listing">{_T string="Amount"}
+                        <a href="gestion_contributions.php?tri={Galette\Repository\Contributions::ORDERBY_AMOUNT}" class="listing">{_T string="Amount"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_AMOUNT')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
                         <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -133,7 +133,7 @@
                         </a>
                     </th>
                     <th class="listing left">
-                        <a href="gestion_contributions.php?tri={php}echo Galette\Repository\Contributions::ORDERBY_PAYMENT_TYPE;{/php}" class="listing">{_T string="Payment type"}
+                        <a href="gestion_contributions.php?tri={Galette\Repository\Contributions::ORDERBY_PAYMENT_TYPE}" class="listing">{_T string="Payment type"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_PAYMENT_TYPE')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
                         <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>

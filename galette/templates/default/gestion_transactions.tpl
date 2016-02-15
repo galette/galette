@@ -40,7 +40,7 @@
                 <tr>
                     <th class="listing id_row">#</th>
                     <th class="listing left date_row">
-                        <a href="gestion_transactions.php?tri={php}echo Galette\Repository\Transactions::ORDERBY_DATE;{/php}" class="listing">{_T string="Date"}
+                        <a href="gestion_transactions.php?tri={Galette\Repository\Transactions::ORDERBY_DATE}" class="listing">{_T string="Date"}
                         {if $transactions->orderby eq constant('Galette\Repository\Transactions::ORDERBY_DATE')}
                             {if $transactions->ordered eq constant('galette\Repository\Transactions::ORDER_ASC')}
                         <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -53,7 +53,7 @@
                     <th class="listing left">{_T string="Description"}</th>
 {if $login->isAdmin() or $login->isStaff()}
                     <th class="listing left">
-                        <a href="gestion_transactions.php?tri={php}echo Galette\Repository\Transactions::ORDERBY_MEMBER;{/php}" class="listing">{_T string="Originator"}
+                        <a href="gestion_transactions.php?tri={Galette\Repository\Transactions::ORDERBY_MEMBER}" class="listing">{_T string="Originator"}
                         {if $transactions->orderby eq constant('Galette\Repository\Transactions::ORDERBY_MEMBER')}
                             {if $transactions->ordered eq constant('Galette\Repository\Transactions::ORDER_ASC')}
                         <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -65,7 +65,7 @@
                     </th>
 {/if}
                     <th class="listing left">
-                        <a href="gestion_transactions.php?tri={php}echo Galette\Repository\Transactions::ORDERBY_AMOUNT;{/php}" class="listing">{_T string="Amount"}
+                        <a href="gestion_transactions.php?tri={Galette\Repository\Transactions::ORDERBY_AMOUNT}" class="listing">{_T string="Amount"}
                         {if $transactions->orderby eq constant('Galette\Repository\Transactions::ORDERBY_AMOUNT')}
                             {if $transactions->ordered eq constant('Galette\Repository\Transactions::ORDER_ASC')}
                         <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>

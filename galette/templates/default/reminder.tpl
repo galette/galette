@@ -4,14 +4,14 @@
                 <div>
                     <ul>
                         <li{if $count_impending eq 0 and $count_impending_nomail eq 0} class="disabled"{/if}>
-                            <input type="checkbox" name="reminders[]" id="reminder_impending" value="{php}echo \Galette\Entity\Reminder::IMPENDING;{/php}"{if $count_impending eq 0 and $count_impending_nomail eq 0} disabled="disabled"{/if}/>
+                            <input type="checkbox" name="reminders[]" id="reminder_impending" value="{\Galette\Entity\Reminder::IMPENDING}"{if $count_impending eq 0 and $count_impending_nomail eq 0} disabled="disabled"{/if}/>
                             <label for="reminder_impending">{_T string="Impending due date"}</label>
                             <a class="show_previews" id="impending" href="#impending_preview">({_T string="preview"})</a> -
                             <a href="gestion_adherents.php?filter_membership=1&filter_account=1&email_filter=6">{_T string="%s members with mail" pattern="/%s/" replace=$count_impending}</a>
                             <a href="gestion_adherents.php?filter_membership=1&filter_account=1&email_filter=7">{_T string="%s members without mail" pattern="/%s/" replace=$count_impending_nomail}</a>
                         </li>
                         <li{if $count_late eq 0 and $count_late_nomail eq 0} class="disabled"{/if}>
-                            <input type="checkbox" name="reminders[]" id="reminder_late" value="{php}echo \Galette\Entity\Reminder::LATE;{/php}"{if $count_late eq 0 and $count_late_nomail eq 0} disabled="disabled"{/if}/>
+                            <input type="checkbox" name="reminders[]" id="reminder_late" value="{\Galette\Entity\Reminder::LATE}"{if $count_late eq 0 and $count_late_nomail eq 0} disabled="disabled"{/if}/>
                             <label for="reminder_late">{_T string="Late"}</label>
                             <a class="show_previews" id="late" href="#impending_preview">({_T string="preview"})</a> -
                             <a href="gestion_adherents.php?filter_membership=2&filter_account=1&email_filter=6">{_T string="%s members with mail" pattern="/%s/" replace=$count_late}</a>

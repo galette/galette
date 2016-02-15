@@ -21,7 +21,7 @@
 
                 <tr>
                     <th class="left">
-                        <a href="?tri={php}echo Galette\Repository\Members::ORDERBY_NAME;{/php}" class="listing">
+                        <a href="?tri={Galette\Repository\Members::ORDERBY_NAME}" class="listing">
                             {_T string="Name"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -33,7 +33,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="?tri={php}echo Galette\Repository\Members::ORDERBY_NICKNAME;{/php}" class="listing">
+                        <a href="?tri={Galette\Repository\Members::ORDERBY_NICKNAME}" class="listing">
                             {_T string="Nickname"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NICKNAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
