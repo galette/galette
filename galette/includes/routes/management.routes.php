@@ -48,7 +48,7 @@ use \Analog\Analog;
 
 //galette's dashboard
 $app->get(
-    '/dashboard',
+    '/' . _T("dashboard"),
     function ($request, $response, $args = []) {
         $news = new News($this->preferences->pref_rss_url);
 

@@ -4152,4 +4152,5 @@ $lang['Company:'] = 'Personne morale&nbsp;:';
 // ../install/old.index.php:1302 ../install/old.index.php:1352 
 $lang['Titles cannot be initialized.'] = 'Les titres n\'ont pas été initialisés.';
 
+$lang['dashboard'] = 'tableau-de-bord';
 ?>
