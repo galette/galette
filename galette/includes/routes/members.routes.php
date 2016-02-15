@@ -143,34 +143,234 @@ $app->get(
     }
 )->setName('subscribe');
 
-//members list
+//members list CSV export
 $app->get(
-    '/members(/:option/:value)',
-    $authenticate,
-    function ($option = null, $value = null) use (
-        $app, $login, &$session, $preferences
+    '/members/export/csv',
+    function () use ($app, $session, $login, $zdb,
+        $members_fields, $members_fields_cats
     ) {
+        $csv = new CsvOut();
+
         if ( isset($session['filters']['members']) ) {
+            //CAUTION: this one may be simple or advanced, display must change
             $filters = unserialize($session['filters']['members']);
         } else {
             $filters = new MembersList();
         }
 
-        if ( $option !== null ) {
-            switch ( $option ) {
-            case 'page':
-                $filters->current_page = (int)$value;
-                break;
-            case 'order':
-                $filters->orderby = $value;
-                break;
+        $export_fields = null;
+        if ( file_exists(GALETTE_CONFIG_PATH  . 'local_export_fields.inc.php') ) {
+            include_once GALETTE_CONFIG_PATH  . 'local_export_fields.inc.php';
+            $export_fields = $fields;
+        }
+
+        // fields visibility
+        $fc = new FieldsConfig(
+            Adherent::TABLE,
+            $members_fields,
+            $members_fields_cats
+        );
+        $visibles = $fc->getVisibilities();
+        $fields = array();
+        $headers = array();
+        foreach ( $members_fields as $k=>$f ) {
+            if ( $k !== 'mdp_adh'
+                && $export_fields === null
+                || (is_array($export_fields) && in_array($k, $export_fields))
+            ) {
+                if ( $visibles[$k] == FieldsConfig::VISIBLE ) {
+                    $fields[] = $k;
+                    $labels[] = $f['label'];
+                } else if ( ($login->isAdmin()
+                    || $login->isStaff()
+                    || $login->isSuperAdmin())
+                    && $visibles[$k] == FieldsConfig::ADMIN
+                ) {
+                    $fields[] = $k;
+                    $labels[] = $f['label'];
+                }
+            }
+        }
+
+        $members = new Members($filters);
+        $members_list = $members->getArrayList(
+            $filters->selected,
+            null,
+            false,
+            false,
+            $fields,
+            true
+        );
+
+        $s = new Status();
+        $statuses = $s->getList();
+
+        $t = new Titles();
+        $titles = $t->getList($zdb);
+
+        foreach ($members_list as &$member ) {
+            if ( isset($member->id_statut) ) {
+                //add textual status
+                $member->id_statut = $statuses[$member->id_statut];
+            }
+
+            if ( isset($member->titre_adh) ) {
+                //add textuel title
+                $member->titre_adh = $titles[$member->titre_adh]->short;
+            }
+
+            //handle dates
+            if (isset($member->date_crea_adh) ) {
+                if ( $member->date_crea_adh != ''
+                    && $member->date_crea_adh != '1901-01-01'
+                ) {
+                    $dcrea = new DateTime($member->date_crea_adh);
+                    $member->date_crea_adh = $dcrea->format(_T("Y-m-d"));
+                } else {
+                    $member->date_crea_adh = '';
+                }
+            }
+
+            if ( isset($member->date_modif_adh) ) {
+                if ( $member->date_modif_adh != ''
+                    && $member->date_modif_adh != '1901-01-01'
+                ) {
+                    $dmodif = new DateTime($member->date_modif_adh);
+                    $member->date_modif_adh = $dmodif->format(_T("Y-m-d"));
+                } else {
+                    $member->date_modif_adh = '';
+                }
+            }
+
+            if ( isset($member->date_echeance) ) {
+                if ( $member->date_echeance != ''
+                    && $member->date_echeance != '1901-01-01'
+                ) {
+                    $dech = new DateTime($member->date_echeance);
+                    $member->date_echeance = $dech->format(_T("Y-m-d"));
+                } else {
+                    $member->date_echeance = '';
+                }
+            }
+
+            if ( isset($member->ddn_adh) ) {
+                if ( $member->ddn_adh != ''
+                    && $member->ddn_adh != '1901-01-01'
+                ) {
+                    $ddn = new DateTime($member->ddn_adh);
+                    $member->ddn_adh = $ddn->format(_T("Y-m-d"));
+                } else {
+                    $member->ddn_adh = '';
+                }
+            }
+
+            if ( isset($member->sexe_adh) ) {
+                //handle gender
+                switch ( $member->sexe_adh ) {
+                case Adherent::MAN:
+                    $member->sexe_adh = _T("Man");
+                    break;
+                case Adherent::WOMAN:
+                    $member->sexe_adh = _T("Woman");
+                    break;
+                case Adherent::NC:
+                    $member->sexe_adh = _T("Unspecified");
+                    break;
+                }
+            }
+
+            //handle booleans
+            if ( isset($member->activite_adh) ) {
+                $member->activite_adh
+                    = ($member->activite_adh) ? _T("Yes") : _T("No");
+            }
+            if ( isset($member->bool_admin_adh) ) {
+                $member->bool_admin_adh
+                    = ($member->bool_admin_adh) ? _T("Yes") : _T("No");
+            }
+            if ( isset($member->bool_exempt_adh) ) {
+                $member->bool_exempt_adh
+                    = ($member->bool_exempt_adh) ? _T("Yes") : _T("No");
+            }
+            if ( isset($member->bool_display_info) ) {
+                $member->bool_display_info
+                    = ($member->bool_display_info) ? _T("Yes") : _T("No");
+            }
+        }
+        $filename = 'filtered_memberslist.csv';
+        $filepath = CsvOut::DEFAULT_DIRECTORY . $filename;
+        $fp = fopen($filepath, 'w');
+        if ( $fp ) {
+            $res = $csv->export(
+                $members_list,
+                Csv::DEFAULT_SEPARATOR,
+                Csv::DEFAULT_QUOTE,
+                $labels,
+                $fp
+            );
+            fclose($fp);
+            $written[] = array(
+                'name' => $filename,
+                'file' => $filepath
+            );
+        }
+
+        $response = $app->response;
+        if (file_exists(CsvOut::DEFAULT_DIRECTORY . $filename) ) {
+            $response->headers->set('Content-Type', 'text/csv');
+            $response->headers->set(
+                'Content-Disposition',
+                'attachment; filename="' . $filename . '";'
+            );
+            $response->headers->set('Pragma', 'no-cache');
+            $response->setBody(
+                readfile(CsvOut::DEFAULT_DIRECTORY . $filename)
+            );
+        } else {
+            Analog::log(
+                'A request has been made to get an exported file named `' .
+                $filename .'` that does not exists.',
+                Analog::WARNING
+            );
+            $response->setStatus(404);
+        }
+    }
+)->setName('csv-memberslist')->add($authenticate);
+
+//members list
+$app->get(
+    '/members[/{option}/{value}]',
+    function ($request, $response, $args = []) {
+        $option = null;
+        if (isset($args['option'])) {
+            $option = $args['option'];
+        }
+        $value = null;
+        if (isset($args['value'])) {
+            $value = $args['value'];
+        }
+
+        if (isset($this->session['filters']['members'])) {
+            $filters = unserialize($this->session['filters']['members']);
+        } else {
+            $filters = new MembersList();
+        }
+
+        if ($option !== null) {
+            switch ($option) {
+                case 'page':
+                    $filters->current_page = (int)$value;
+                    break;
+                case 'order':
+                    $filters->orderby = $value;
+                    break;
             }
         }
 
         $members = new Members($filters);
 
         $members_list = array();
-        if ( $login->isAdmin() || $login->isStaff() ) {
+        if ($this->login->isAdmin() || $this->login->isStaff()) {
             $members_list = $members->getMembersList(true);
         } else {
             $members_list = $members->getManagedMembersList(true);
@@ -179,15 +379,18 @@ $app->get(
         $groups = new Groups();
         $groups_list = $groups->getList();
 
-        $view = $app->view();
+        //$view = $app->view();
 
         //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($app, $view, false);
-        $filters->setViewCommonsFilters($preferences, $view);
+        $filters->setSmartyPagination($this->router, $this->view, false);
+        $filters->setViewCommonsFilters($this->preferences, $view);
 
-        $session['filters']['members'] = serialize($filters);
+        $this->session['filters']['members'] = serialize($filters);
 
-        $app->render(
+
+        // display page
+        $this->view->render(
+            $response,
             'gestion_adherents.tpl',
             array(
                 'page_title'            => _T("Members management"),
@@ -200,10 +403,11 @@ $app->get(
                 'adv_filters'           => $filters instanceof AdvancedMembersList
             )
         );
+        return $response;
     }
 )->setName(
     'members'
-)/*->conditions(
+)->add($authenticate)/*->conditions(
     array(
         'option'    => '(page|order)',
         'value'     => '\d+'
@@ -213,7 +417,6 @@ $app->get(
 //members list filtering
 $app->post(
     '/members/filter',
-    $authenticate,
     function ($from = 'members') use ($app, &$session) {
         $request = $app->request();
 
@@ -352,12 +555,11 @@ $app->post(
             ->withStatus(301)
             ->withHeader('Location', $this->router->pathFor($from));
     }
-)->setName('filter-memberslist');
+)->setName('filter-memberslist')->add($authenticate);
 
 //members self card
 $app->get(
     '/member/me',
-    $authenticate,
     function () use ($app, $login) {
         if ($login->isSuperAdmin()) {
 
@@ -376,12 +578,11 @@ $app->get(
             ->withStatus(301)
             ->withHeader('Location', $this->router->pathFor('member'), ['id' => $member->id]);
     }
-)->setName('me');
+)->setName('me')->add($authenticate);
 
 //members card
 $app->get(
     '/member/:id',
-    $authenticate,
     function ($id) use ($app, $login, $session, $i18n, $preferences,
         $members_fields, $members_fields_cats
     ) {
@@ -497,11 +698,10 @@ $app->get(
         );
 
     }
-)->setName('member');
+)->setName('member')->add($authenticate);
 
 $app->get(
     '/member/:action(/:id)',
-    $authenticate,
     function (
         $action,
         $id = null
@@ -715,7 +915,7 @@ $app->get(
     }
 )->setName(
     'editmember'
-)/*->conditions(
+)->add($authenticate)/*->conditions(
     array(
         'action' => '(edit|add)',
     )
@@ -723,7 +923,6 @@ $app->get(
 
 $app->post(
     '/member/store',
-    $authenticate,
     function () use (
         $app,
         $login,
@@ -1116,12 +1315,11 @@ $app->post(
             }
         }
     }
-)->setName('storemembers');
+)->setName('storemembers')->add($authenticate);
 
 //advanced search page
 $app->get(
     '/advanced-search',
-    $authenticate,
     function () use ($app, &$session, $members_fields, $members_fields_cats, $preferences) {
         if ( isset($session['filters']['members']) ) {
             $filters = unserialize($session['filters']['members']);
@@ -1203,12 +1401,11 @@ $app->get(
             )
         );
     }
-)->setName('advanced-search');
+)->setName('advanced-search')->add($authenticate);
 
 //Batch actions on members list
 $app->post(
     '/members/batch',
-    $authenticate,
     function () use ($app, &$session) {
         $request = $app->request();
 
@@ -1268,12 +1465,11 @@ $app->post(
                 ->withHeader('Location', $this->router->pathFor('members'));
         }
     }
-)->setName('batch-memberslist');
+)->setName('batch-memberslist')->add($authenticate);
 
 //PDF members cards
 $app->get(
     '/members/cards',
-    $authenticate,
     function () use ($app, $preferences, $session) {
         if ( isset($session['filters']['members']) ) {
             $filters =  unserialize($session['filters']['members']);
@@ -1343,12 +1539,11 @@ $app->get(
         $pdf->drawCards($members);
         $pdf->Output(_T("Cards") . '.pdf', 'D');
     }
-)->setName('pdf-members-cards');
+)->setName('pdf-members-cards')->add($authenticate);
 
 //PDF members labels
 $app->get(
     '/members/labels',
-    $authenticate,
     function () use ($app, $preferences, $session) {
 
         if ( isset ($session['filters']['reminders_labels']) ) {
@@ -1414,12 +1609,11 @@ $app->get(
         $pdf->drawLabels($members);
         $pdf->Output(_T("labels_print_filename") . '.pdf', 'D');
     }
-)->setName('pdf-members-labels');
+)->setName('pdf-members-labels')->add($authenticate);
 
 //mailing
 $app->get(
     '/mailing',
-    $authenticate,
     function () use ($app, $preferences, &$session,
         &$success_detected, &$warning_detected, &$error_detected
     ) {
@@ -1645,199 +1839,4 @@ $app->get(
         );
 
     }
-)->setName('mailing');
-
-//members list CSV export
-$app->get(
-    '/members/export/csv',
-    $authenticate,
-    function () use ($app, $session, $login, $zdb,
-        $members_fields, $members_fields_cats
-    ) {
-        $csv = new CsvOut();
-
-        if ( isset($session['filters']['members']) ) {
-            //CAUTION: this one may be simple or advanced, display must change
-            $filters = unserialize($session['filters']['members']);
-        } else {
-            $filters = new MembersList();
-        }
-
-        $export_fields = null;
-        if ( file_exists(GALETTE_CONFIG_PATH  . 'local_export_fields.inc.php') ) {
-            include_once GALETTE_CONFIG_PATH  . 'local_export_fields.inc.php';
-            $export_fields = $fields;
-        }
-
-        // fields visibility
-        $fc = new FieldsConfig(
-            Adherent::TABLE,
-            $members_fields,
-            $members_fields_cats
-        );
-        $visibles = $fc->getVisibilities();
-        $fields = array();
-        $headers = array();
-        foreach ( $members_fields as $k=>$f ) {
-            if ( $k !== 'mdp_adh'
-                && $export_fields === null
-                || (is_array($export_fields) && in_array($k, $export_fields))
-            ) {
-                if ( $visibles[$k] == FieldsConfig::VISIBLE ) {
-                    $fields[] = $k;
-                    $labels[] = $f['label'];
-                } else if ( ($login->isAdmin()
-                    || $login->isStaff()
-                    || $login->isSuperAdmin())
-                    && $visibles[$k] == FieldsConfig::ADMIN
-                ) {
-                    $fields[] = $k;
-                    $labels[] = $f['label'];
-                }
-            }
-        }
-
-        $members = new Members($filters);
-        $members_list = $members->getArrayList(
-            $filters->selected,
-            null,
-            false,
-            false,
-            $fields,
-            true
-        );
-
-        $s = new Status();
-        $statuses = $s->getList();
-
-        $t = new Titles();
-        $titles = $t->getList($zdb);
-
-        foreach ($members_list as &$member ) {
-            if ( isset($member->id_statut) ) {
-                //add textual status
-                $member->id_statut = $statuses[$member->id_statut];
-            }
-
-            if ( isset($member->titre_adh) ) {
-                //add textuel title
-                $member->titre_adh = $titles[$member->titre_adh]->short;
-            }
-
-            //handle dates
-            if (isset($member->date_crea_adh) ) {
-                if ( $member->date_crea_adh != ''
-                    && $member->date_crea_adh != '1901-01-01'
-                ) {
-                    $dcrea = new DateTime($member->date_crea_adh);
-                    $member->date_crea_adh = $dcrea->format(_T("Y-m-d"));
-                } else {
-                    $member->date_crea_adh = '';
-                }
-            }
-
-            if ( isset($member->date_modif_adh) ) {
-                if ( $member->date_modif_adh != ''
-                    && $member->date_modif_adh != '1901-01-01'
-                ) {
-                    $dmodif = new DateTime($member->date_modif_adh);
-                    $member->date_modif_adh = $dmodif->format(_T("Y-m-d"));
-                } else {
-                    $member->date_modif_adh = '';
-                }
-            }
-
-            if ( isset($member->date_echeance) ) {
-                if ( $member->date_echeance != ''
-                    && $member->date_echeance != '1901-01-01'
-                ) {
-                    $dech = new DateTime($member->date_echeance);
-                    $member->date_echeance = $dech->format(_T("Y-m-d"));
-                } else {
-                    $member->date_echeance = '';
-                }
-            }
-
-            if ( isset($member->ddn_adh) ) {
-                if ( $member->ddn_adh != ''
-                    && $member->ddn_adh != '1901-01-01'
-                ) {
-                    $ddn = new DateTime($member->ddn_adh);
-                    $member->ddn_adh = $ddn->format(_T("Y-m-d"));
-                } else {
-                    $member->ddn_adh = '';
-                }
-            }
-
-            if ( isset($member->sexe_adh) ) {
-                //handle gender
-                switch ( $member->sexe_adh ) {
-                case Adherent::MAN:
-                    $member->sexe_adh = _T("Man");
-                    break;
-                case Adherent::WOMAN:
-                    $member->sexe_adh = _T("Woman");
-                    break;
-                case Adherent::NC:
-                    $member->sexe_adh = _T("Unspecified");
-                    break;
-                }
-            }
-
-            //handle booleans
-            if ( isset($member->activite_adh) ) {
-                $member->activite_adh
-                    = ($member->activite_adh) ? _T("Yes") : _T("No");
-            }
-            if ( isset($member->bool_admin_adh) ) {
-                $member->bool_admin_adh
-                    = ($member->bool_admin_adh) ? _T("Yes") : _T("No");
-            }
-            if ( isset($member->bool_exempt_adh) ) {
-                $member->bool_exempt_adh
-                    = ($member->bool_exempt_adh) ? _T("Yes") : _T("No");
-            }
-            if ( isset($member->bool_display_info) ) {
-                $member->bool_display_info
-                    = ($member->bool_display_info) ? _T("Yes") : _T("No");
-            }
-        }
-        $filename = 'filtered_memberslist.csv';
-        $filepath = CsvOut::DEFAULT_DIRECTORY . $filename;
-        $fp = fopen($filepath, 'w');
-        if ( $fp ) {
-            $res = $csv->export(
-                $members_list,
-                Csv::DEFAULT_SEPARATOR,
-                Csv::DEFAULT_QUOTE,
-                $labels,
-                $fp
-            );
-            fclose($fp);
-            $written[] = array(
-                'name' => $filename,
-                'file' => $filepath
-            );
-        }
-
-        $response = $app->response;
-        if (file_exists(CsvOut::DEFAULT_DIRECTORY . $filename) ) {
-            $response->headers->set('Content-Type', 'text/csv');
-            $response->headers->set(
-                'Content-Disposition',
-                'attachment; filename="' . $filename . '";'
-            );
-            $response->headers->set('Pragma', 'no-cache');
-            $response->setBody(
-                readfile(CsvOut::DEFAULT_DIRECTORY . $filename)
-            );
-        } else {
-            Analog::log(
-                'A request has been made to get an exported file named `' .
-                $filename .'` that does not exists.',
-                Analog::WARNING
-            );
-            $response->setStatus(404);
-        }
-    }
-)->setName('csv-memberslist');
+)->setName('mailing')->add($authenticate);

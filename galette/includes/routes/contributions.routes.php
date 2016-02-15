@@ -40,7 +40,6 @@ use Galette\Repository\Contributions;
 
 $app->get(
     '/contributions(/:id)(/:option/:value)',
-    $authenticate,
     function ($id = null, $option = null, $value = null) use ($app, $login, &$session) {
         if (isset($session['contributions'])) {
             $contribs = unserialize($session['contributions']);
@@ -123,7 +122,7 @@ $app->get(
     }
 )->setName(
     'contributions'
-)/*->conditions(
+)->add($authenticate)/*->conditions(
     array(
         'option'    => '(page|order)',
         'value'     => '\d+'
@@ -132,7 +131,6 @@ $app->get(
 
 $app->get(
     '/transactions',
-    $authenticate,
     function () use ($app, $login, &$session) {
         if (!$login->isAdmin() && !$login->isStaff()) {
             $id_adh = $login->id;
@@ -220,11 +218,10 @@ $app->get(
         );
 
     }
-)->setName('transactions');
+)->setName('transactions')->add($authenticate);
 
 $app->post(
     '/:type/filter',
-    $authenticate,
     function ($type) use ($app, $login, &$session) {
         $request = $app->request();
 
@@ -317,7 +314,7 @@ $app->post(
     }
 )->setName(
     'payments_filter'
-)/*->conditions(
+)->add($authenticate)/*->conditions(
     array(
         'type' => '(contributions|transactions)',
     )

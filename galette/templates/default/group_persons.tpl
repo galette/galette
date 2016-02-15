@@ -30,7 +30,7 @@
                                 {else}
                                     <img src="{$galette_base_path}{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
                                 {/if}
-                                <a href="{urlFor name="member" options=["id" => $person->id]}">{$person->sfullname}</a>
+                                <a href="{path_for name="member" options=["id" => $person->id]}">{$person->sfullname}</a>
                                 </td>
                                 <td class="nowrap">{$person->nickname|htmlspecialchars}</td>
                             </tr>

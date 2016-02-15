@@ -40,22 +40,20 @@ use Galette\Repository\Groups;
 
 $app->get(
     '/groups',
-    $authenticate,
-    function () use ($app, $login, &$session) {
-
+    function ($request, $response) {
         $groups = new Groups();
         $group = new Group();
 
         $groups_root = $groups->getList(false);
         $groups_list = $groups->getList();
 
-        $id = $app->request()->get('id');
+        //$id = $app->request()->get('id');
 
-        if ( $id === null && count($groups_root) > 0 ) {
+        if ($id === null && count($groups_root) > 0) {
             $group = $groups_root[0];
-            if ( !$login->isGroupManager($group->getId()) ) {
-                foreach ( $groups_list as $g ) {
-                    if ( $login->isGroupManager($g->getId()) ) {
+            if (!$this->login->isGroupManager($group->getId())) {
+                foreach ($groups_list as $g) {
+                    if ($this->login->isGroupManager($g->getId())) {
                         $group = $g;
                         break;
                     }
@@ -63,7 +61,9 @@ $app->get(
             }
         }
 
-        $app->render(
+        // display page
+        $this->view->render(
+            $response,
             'gestion_groupes.tpl',
             array(
                 'page_title'            => _T("Groups"),
@@ -75,6 +75,6 @@ $app->get(
                 'group'                 => $group
             )
         );
+        return $response;
     }
-)->setName('groups');
-
+)->setName('groups')->add($authenticate);

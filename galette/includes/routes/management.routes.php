@@ -503,7 +503,7 @@ $app->post(
 //charts
 $app->get(
     '/charts',
-    function () use ($app) {
+    function ($request, $response) {
         $charts = new Charts(
             array(
                 Charts::MEMBERS_STATUS_PIE,
@@ -514,7 +514,9 @@ $app->get(
             )
         );
 
-        $app->render(
+        // display page
+        $this->view->render(
+            $response,
             'charts.tpl',
             array(
                 'page_title'        => _T("Charts"),
@@ -522,17 +524,18 @@ $app->get(
                 'require_charts'    => true
             )
         );
+        return $response;
     }
 )->setName('charts')->add($authenticate);
 
 //plugins
 $app->get(
     '/plugins',
-    function () use ($app) {
+    function ($request, $response) {
         $plugins = $this->get('plugins');
-        if ( GALETTE_MODE !== 'DEMO' ) {
+        if (GALETTE_MODE !== 'DEMO') {
             $reload_plugins = false;
-            if ( isset($_GET['activate']) ) {
+            if (isset($_GET['activate'])) {
                 try {
                     $plugins->activateModule($_GET['activate']);
                     $success_detected[] = str_replace(
@@ -546,7 +549,7 @@ $app->get(
                 }
             }
 
-            if ( isset($_GET['deactivate']) ) {
+            if (isset($_GET['deactivate'])) {
                 try {
                     $plugins->deactivateModule($_GET['deactivate']);
                     $success_detected[] = str_replace(
@@ -561,7 +564,7 @@ $app->get(
             }
 
             //If some plugins have been (de)activated, we have to reload
-            if ( $reload_plugins === true ) {
+            if ($reload_plugins === true) {
                 $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
             }
         }
@@ -569,7 +572,9 @@ $app->get(
         $plugins_list = $plugins->getModules();
         $disabled_plugins = $plugins->getDisabledModules();
 
-        $app->render(
+        // display page
+        $this->view->render(
+            $response,
             'plugins.tpl',
             array(
                 'page_title'            => _T("Plugins"),
@@ -578,6 +583,7 @@ $app->get(
                 'require_dialog'        => true
             )
         );
+        return $response;
     }
 )->setName('plugins')->add($authenticate);
 
@@ -633,45 +639,56 @@ $app->get(
 
 //mailings management
 $app->get(
-    '/mailings(/:option/:value)',
-    function ($option = null, $value = null) use ($app) {
+    '/mailings[/{option}/{value}]',
+    function ($request, $response, $args = []) {
+        $option = null;
+        if (isset($args['option'])) {
+            $option = $args['option'];
+        }
+
+        $value = null;
+        if (isset($args['value'])) {
+            $option = $args['value'];
+        }
+
+
         $request = $app->request();
 
         $mailhist = new MailingHistory();
 
-        if ( $request->get('reset') !== null && $request->get('reset') == 1 ) {
+        if ($request->get('reset') !== null && $request->get('reset') == 1) {
             $mailhist->clean();
             //reinitialize object after flush
             $mailhist = new MailingHistory();
         }
 
         //delete mailings
-        if ( $request->get('sup') !== null || $request->post('delete') !== null ) {
-            if ( $request->get('sup') !== null ) {
+        if ($request->get('sup') !== null || $request->post('delete') !== null) {
+            if ($request->get('sup') !== null) {
                 $mailhist->removeEntries($request->get('sup'));
-            } else if ( $request->post('member_sel') !== null ) {
+            } elseif ($request->post('member_sel') !== null) {
                 $mailhist->removeEntries($request->post('member_sel'));
             }
         }
 
-        if ( $option !== null ) {
-            switch ( $option ) {
-            case 'page':
-                $mailhist->current_page = (int)$value;
-                break;
-            case 'order':
-                $mailhist->orderby = $value;
-                break;
+        if ($option !== null) {
+            switch ($option) {
+                case 'page':
+                    $mailhist->current_page = (int)$value;
+                    break;
+                case 'order':
+                    $mailhist->orderby = $value;
+                    break;
             }
         }
 
-        if ( $request->get('nbshow') !== null
+        if ($request->get('nbshow') !== null
             && is_numeric($request->get('nbshow'))
         ) {
             $mailhist->show = $request->get('nbshow');
         }
 
-        if ( $request->get('order') !== null ) {
+        if ($request->get('order') !== null) {
             $mailhist->orderby = $request->get('order');
         }
 
