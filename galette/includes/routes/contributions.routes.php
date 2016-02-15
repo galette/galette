@@ -40,7 +40,7 @@ use Galette\Repository\Contributions;
 
 $app->get(
     '/contributions(/:id)(/:option/:value)',
-    $authenticate(),
+    $authenticate,
     function ($id = null, $option = null, $value = null) use ($app, $login, &$session) {
         if (isset($session['contributions'])) {
             $contribs = unserialize($session['contributions']);
@@ -121,18 +121,18 @@ $app->get(
             )
         );
     }
-)->name(
+)->setName(
     'contributions'
-)->conditions(
+)/*->conditions(
     array(
         'option'    => '(page|order)',
         'value'     => '\d+'
     )
-);
+)*/;
 
 $app->get(
     '/transactions',
-    $authenticate(),
+    $authenticate,
     function () use ($app, $login, &$session) {
         if (!$login->isAdmin() && !$login->isStaff()) {
             $id_adh = $login->id;
@@ -220,11 +220,11 @@ $app->get(
         );
 
     }
-)->name('transactions');
+)->setName('transactions');
 
 $app->post(
     '/:type/filter',
-    $authenticate(),
+    $authenticate,
     function ($type) use ($app, $login, &$session) {
         $request = $app->request();
 
@@ -311,14 +311,14 @@ $app->post(
 
         $session[$type] = serialize($contribs);
 
-        $app->redirect(
-            $app->urlFor($type)
-        );
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor($type));
     }
-)->name(
+)->setName(
     'payments_filter'
-)->conditions(
+)/*->conditions(
     array(
         'type' => '(contributions|transactions)',
     )
-);
+)*/;

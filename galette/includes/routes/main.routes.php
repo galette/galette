@@ -42,23 +42,24 @@ use Galette\Entity\Adherent;
 //main route
 $app->get(
     '/',
-    function () use ($app, $baseRedirect) {
-        $baseRedirect($app);
+    function ($request, $response, $args) use ($baseRedirect) {
+        return $baseRedirect($request, $response, $args);
     }
-)->name('slash');
+)->setName('slash');
 
 //logo route
 $app->get(
     '/logo',
-    function () use ($logo) {
-        $logo->display();
+    function ($request, $response, $args) {
+        $this->logo->display();
     }
-)->name('logo');
+)->setName('logo');
 
 //photo route
 $app->get(
-    '/photo/:id',
-    function ($id) use ($app, $login) {
+    '/photo/{id:\d+}',
+    function ($request, $response, $args) {
+        $id = $args['id'];
         /** FIXME: we load entire member here... No need to do so! */
         $deps = array(
             'groups'    => false,
@@ -67,10 +68,10 @@ $app->get(
         $adh = new Adherent((int)$id, $deps);
 
         $picture = null;
-        if ( $login->isAdmin()
-            || $login->isStaff()
+        if ($this->login->isAdmin()
+            || $this->login->isStaff()
             || $adh->appearsInMembersList()
-            || $login->login == $adh->login
+            || $this->login->login == $adh->login
         ) {
             $picture = $adh->picture;
         } else {
@@ -78,43 +79,45 @@ $app->get(
         }
         $picture->display();
     }
-)->name('photo');
+)->setName('photo');
 
 //system informations
 $app->get(
     '/sysinfos',
-    $authenticate(),
-    function () use ($app) {
+    function ($request, $response, $args = []) {
         $sysinfos = new SysInfos();
         $sysinfos->grab();
 
-        $app->render(
+        // display page
+        $this->view->render(
+            $response,
             'sysinfos.tpl',
             array(
                 'page_title'    => _T("System informations"),
-                'rawinfos'      => $sysinfos->getRawData()
+                'rawinfos'      => $sysinfos->getRawData($this->plugins)
             )
         );
+        return $response;
     }
-)->name('sysinfos');
+)->setName('sysinfos')->add($authenticate);
 
 //impersonating
 $app->get(
-    '/impersonate/:id',
-    $authenticate(),
-    function ($id) use ($app, $login, &$session, $hist) {
+    '/impersonate/{id:\d+}',
+    function ($request, $response, $args) {
         $success = $login->impersonate($id);
 
         if ($success === true) {
-            $session['login'] = serialize($login);
+            $this->session['login'] = serialize($login);
+            $this->login = $login;
             $msg = str_replace(
                 '%login',
                 $login->login,
                 _T("Impersonating as %login")
             );
 
-            $hist->add($msg);
-            $app->flash(
+            $this->history->add($msg);
+            $this->flash->addMessage(
                 'success_detected',
                 [$msg]
             );
@@ -124,29 +127,33 @@ $app->get(
                 $id,
                 _T("Unable to impersonate as %id")
             );
-            $app->flash(
+            $this->flash->addMessage(
                 'error_detected',
                 [$msg]
             );
-            $hist->add($msg);
+            $this->history->add($msg);
         }
 
-        $app->redirect($app->urlFor('slash'));
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('slash'));
     }
-)->name('impersonate');
+)->setName('impersonate')->add($authenticate);
 
 $app->get(
     '/unimpersonate',
-    $authenticate(),
-    function () use ($app, $zdb, $i18n, $login, &$session, $preferences, $hist) {
-        $login = new \Galette\Core\Login($zdb, $i18n, $session);
-        $login->logAdmin($preferences->pref_admin_login, $preferences);
-        $hist->add(_T("Impersonating ended"));
-        $session['login'] = serialize($login);
-        $app->flash(
+    function ($request, $response, $args) {
+        $login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $login->logAdmin($this->preferences->pref_admin_login, $this->preferences);
+        $this->history->add(_T("Impersonating ended"));
+        $this->session['login'] = serialize($login);
+        $this->login = $login;
+        $this->flash->addMessage(
             'success_detected',
             [_T("Impersonating ended")]
         );
-        $app->redirect($app->urlFor('slash'));
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('slash'));
     }
-)->name('unimpersonate');
+)->setName('unimpersonate')->add($authenticate);

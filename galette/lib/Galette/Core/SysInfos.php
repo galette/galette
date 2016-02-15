@@ -79,12 +79,12 @@ class SysInfos
     /**
      * Get data as RAW (to send by mail)
      *
+     * @param Plugins $plugins Plugins
+     *
      * @return string
      */
-    public function getRawData()
+    public function getRawData(Plugins $plugins)
     {
-        global $plugins;
-
         $str =  'Galette version: ' . $this->_galette_version . "\n";
         $str .= 'PHP version:     ' . $this->_php_version . "\n";
         $str .= 'PHP/Web:         ' . php_sapi_name() . "\n";
@@ -96,33 +96,33 @@ class SysInfos
         $mods = new CheckModules();
 
         $str .= '  OK:' . "\n";
-        foreach ( $mods->getGoods() as $g ) {
+        foreach ($mods->getGoods() as $g) {
             $str .= '    ' . stripslashes($g) . "\n";
         }
 
         $str .= '  May:' . "\n";
-        foreach ( $mods->getMays() as $m ) {
+        foreach ($mods->getMays() as $m) {
             $str .= '    ' . stripslashes($m) . "\n";
         }
 
         $str .= '  Should:' . "\n";
-        foreach ( $mods->getShoulds() as $s ) {
+        foreach ($mods->getShoulds() as $s) {
             $str .= '    ' . stripslashes($s) . "\n";
         }
 
         $str .= '  Missing:' . "\n";
-        foreach ( $mods->getMissings() as $m ) {
+        foreach ($mods->getMissings() as $m) {
             $str .= '    ' . stripslashes($m) . "\n";
         }
 
         $str .= "\n" . 'Plugins:' . "\n";
-        foreach ( $plugins->getModules() as $p ) {
+        foreach ($plugins->getModules() as $p) {
             $str .= '  ' . $p['name'] .  ' ' . $p['version'] .
                 ' (' . $p['author'] . ")\n";
         }
 
         $str .= "\n" . 'PHP loaded modules:' . "\n";
-        foreach ( get_loaded_extensions() as $e ) {
+        foreach (get_loaded_extensions() as $e) {
             $str .= '  ' . $e . "\n";
         }
 

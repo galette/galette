@@ -36,7 +36,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         </div>
         <![endif]-->
         <header>
-            <img src="{urlFor name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
+            <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
             <ul id="langs">
 {foreach item=langue from=$languages}
                 <li><a href="?pref_lang={$langue->getID()}"><img src="{$galette_base_path}{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
@@ -44,7 +44,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             </ul>
 {if $login->isLogged()}
             <div id="user">
-                <a id="userlink" title="{_T string="View your member card"}" href="{if $login->isSuperAdmin()}{urlFor name="slash"}{else}{urlFor name="me"}{/if}">{$login->loggedInAs(true)}</a>
+                <a id="userlink" title="{_T string="View your member card"}" href="{if $login->isSuperAdmin()}{path_for name="slash"}{else}{path_for name="me"}{/if}">{$login->loggedInAs(true)}</a>
                 <a id="logout" title="{_T string="Log off"}" href="{$galette_base_path}index.php?logout=1">{_T string="Log off"}</a>
             </div>
 {/if}
@@ -57,18 +57,18 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <h1 id="titre">{$page_title}</h1>
         <p id="asso_name">{$preferences->pref_nom}{if $preferences->pref_slogan}&nbsp;: {$preferences->pref_slogan}{/if}</p>
         <nav>
-            <a id="backhome" class="button{if $cur_route eq "slash" or $cur_route eq 'login'} selected{/if}" href="{urlFor name="slash"}">{_T string="Home"}</a>
+            <a id="backhome" class="button{if $cur_route eq "slash" or $cur_route eq 'login'} selected{/if}" href="{path_for name="slash"}">{_T string="Home"}</a>
     {if !$login->isLogged()}
         {if $preferences->pref_bool_selfsubscribe eq true}
-            <a id="subscribe" class="button{if $cur_route eq "/subscribe"} selected{/if}" href="{urlFor name="subscribe"}">{_T string="Subscribe"}</a>
+            <a id="subscribe" class="button{if $cur_route eq "/subscribe"} selected{/if}" href="{path_for name="subscribe"}">{_T string="Subscribe"}</a>
         {/if}
         {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
-            <a id="lostpassword" class="button{if $cur_route eq "password-lost"} selected{/if}" href="{urlFor name="password-lost"}">{_T string="Lost your password?"}</a>
+            <a id="lostpassword" class="button{if $cur_route eq "password-lost"} selected{/if}" href="{path_for name="password-lost"}">{_T string="Lost your password?"}</a>
         {/if}
     {/if}
     {if $preferences->showPublicPages($login) eq true}
-            <a id="memberslist" class="button{if $cur_route eq "public_members"} selected{/if}" href="{urlFor name="public_members"}" title="{_T string="Members list"}">{_T string="Members list"}</a>
-            <a id="trombino" class="button{if $cur_route eq "public_trombinoscope"} selected{/if}" href="{urlFor name="public_trombinoscope"}" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a>
+            <a id="memberslist" class="button{if $cur_route eq "public_members"} selected{/if}" href="{path_for name="public_members"}" title="{_T string="Members list"}">{_T string="Members list"}</a>
+            <a id="trombino" class="button{if $cur_route eq "public_trombinoscope"} selected{/if}" href="{path_for name="public_trombinoscope"}" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a>
             {* Include plugins menu entries *}
             {$plugins->getPublicMenus($tpl, $preferences, true)}
     {/if}

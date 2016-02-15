@@ -74,12 +74,12 @@ if ( !defined('GALETTE_TCPDF_PATH') ) {
         GALETTE_ROOT . 'includes/tcpdf_' . TCPDF_VERSION
     );
 }
-if ( !defined('GALETTE_SLIM_PATH') ) {
+/*if ( !defined('GALETTE_SLIM_PATH') ) {
     define('GALETTE_SLIM_PATH', GALETTE_ROOT . 'lib/Slim-' . SLIM_VERSION);
 }
 if ( !defined('GALETTE_SLIM_VIEWS_PATH') ) {
-    define('GALETTE_SLIM_VIEWS_PATH', GALETTE_ROOT . 'lib/Slim-Views' . SLIM_VIEWS_VERSION);
-}
+    define('GALETTE_SLIM_VIEWS_PATH', GALETTE_ROOT . 'lib/Slim-Views');
+}*/
 /*if ( !defined('GALETTE_XHPROF_PATH') ) {
     define('GALETTE_XHPROF_PATH', '/usr/share/xhprof/');
 }*/

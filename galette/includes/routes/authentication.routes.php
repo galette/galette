@@ -40,110 +40,118 @@ use Galette\Core\GaletteMail;
 //login page
 $app->get(
     '/login',
-    function () use ($app, $login, $baseRedirect, &$session) {
+    function ($request, $response, $args = []) use ($baseRedirect) {
         //store redirect path if any
-        if ($app->request()->get('r')
-            && $app->request()->get('r') != '/logout'
-            && $app->request()->get('r') != '/login'
+        if (isset($args['r'])
+            && $args['r'] != '/logout'
+            && $args['r'] != '/login'
         ) {
-            $session['urlRedirect'] = $app->request()->get('r');
+            $this->session['urlRedirect'] = $args['r'];
         }
 
-        if ( !$login->isLogged() ) {
+        if (!$this->login->isLogged()) {
             // display page
-            $app->render(
+            $this->view->render(
+                $response,
                 'index.tpl',
                 array(
                     'page_title'    => _T("Login"),
                 )
             );
+            return $response;
         } else {
-            $baseRedirect($app);
+            return $baseRedirect($request, $response, $args);
         }
     }
-)->name('login');
+)->setName('login');
 
 //Authentication procedure
 $app->post(
     '/login',
-    function () use ($app, &$session, $hist, $preferences, $login, $baseRedirect) {
-        $nick = $app->request()->post('login');
-        $password = $app->request()->post('password');
+    function ($request, $response) use ($app, $baseRedirect) {
+        $nick = $request->getParsedBody()['login'];
+        $password = $request->getParsedBody()['password'];
 
-        if ( trim($nick) == '' || trim($password) == '' ) {
-            $app->flash(
+        if (trim($nick) == '' || trim($password) == '') {
+            $this->flash->addMessage(
                 'loginfault',
                 _T("You must provide both login and password.")
             );
-            $app->redirect($app->urlFor('login'));
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('login'));
         }
 
-        if ( $nick === $preferences->pref_admin_login ) {
+        if ($nick === $this->preferences->pref_admin_login) {
             $pw_superadmin = password_verify(
                 $password,
-                $preferences->pref_admin_pass
+                $this->preferences->pref_admin_pass
             );
-            if ( !$pw_superadmin ) {
+            if (!$pw_superadmin) {
                 $pw_superadmin = (
-                    md5($password) === $preferences->pref_admin_pass
+                    md5($password) === $this->preferences->pref_admin_pass
                 );
             }
-            if ( $pw_superadmin ) {
-                $login->logAdmin($nick, $preferences);
+            if ($pw_superadmin) {
+                $this->login->logAdmin($nick, $this->preferences);
             }
         } else {
-            $login->logIn($nick, $password);
+            $this->login->logIn($nick, $password);
         }
 
-        if ( $login->isLogged() ) {
-            $session['login'] = serialize($login);
-            $hist->add(_T("Login"));
-            $baseRedirect($app);
+        if ($this->login->isLogged()) {
+            $this->session['login'] = serialize($this->login);
+            $this->history->add(_T("Login"));
+            return $baseRedirect($request, $response, $args);
         } else {
-            $app->flash('loginfault', _T("Login failed."));
-            $hist->add(_T("Authentication failed"), $nick);
-            $app->redirect($app->urlFor('login'));
+            $this->flash->addMessage('loginfault', _T("Login failed."));
+            $this->history->add(_T("Authentication failed"), $nick);
+            return $response->withStatus(301)->withHeader('Location', $this->router->pathFor('login'));
         }
     }
-)->name('dologin');
+)->setName('dologin');
 
 //logout procedure
 $app->get(
     '/logout',
-    function () use ($app, $login, &$session) {
-        $login->logOut();
+    function ($request, $response) use ($app, $login, &$session) {
+        $this->login->logOut();
         $session['login'] = null;
-        unset($session['login']);
-        $session['history'] = null;
-        unset($session['history']);
-        $app->redirect($app->urlFor('slash'));
+        unset($this->session['login']);
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('slash'));
     }
-)->name('logout');
+)->setName('logout');
 
 //password lost page
 $app->get(
     '/password-lost',
-    function () use ($app) {
-        $app->render(
+    function ($request, $response) {
+        // display page
+        $this->view->render(
+            $response,
             'lostpasswd.tpl',
             array(
-                'page_title' => _T("Password recovery")
+                'page_title'    => _T("Password recovery")
             )
         );
+        return $response;
     }
-)->name('password-lost');
+)->setName('password-lost');
 
 //retrieve password procedure
 $app->post(
     '/retrieve-pass',
-    function () use ($app, $login, $preferences) {
-        if ( ($login->isLogged()
-            || $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED)
+    function ($request, $response) {
+        if (($this->login->isLogged()
+            || $this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED)
             && !$from_admin
         ) {
-            $app->redirect($app->urlFor('slash'));
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('slash'));
         }
-        $app->redirect($app->urlFor('slash'));
+        $app->redirect($app->pathFor('slash'));
     }
-)->name('retrieve-pass');
-
+)->setName('retrieve-pass');

@@ -48,8 +48,11 @@ use \Analog\Analog;
 $showPublicPages = function () use ($preferences, $login) {
     return function () use ($preferences, $login) {
         if ( !$preferences->showPublicPages($login) ) {
-            $app->flash('error', _T("Unauthorized"));
-            $app->redirect($app->urlFor('slash'), 403);
+            $this->flash->addMessage('error', _T("Unauthorized"));
+
+            return $response
+                ->withStatus(403)
+                ->withHeader('Location', $this->router->pathFor('slash'));
         }
     };
 };
@@ -105,7 +108,7 @@ $app->get(
             )
         );
     }
-)->name('public_members');
+)->setName('public_members');
 
 //public trombinoscope
 $app->get(
@@ -125,4 +128,4 @@ $app->get(
             )
         );
     }
-)->name('public_trombinoscope');
+)->setName('public_trombinoscope');

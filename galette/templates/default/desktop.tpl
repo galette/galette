@@ -5,17 +5,17 @@
                 {_T string="Activities"}
             </header>
             <div>
-                <a id="members" href="{urlFor name="members"}" title="{_T string="View, search into and filter member's list"}">{_T string="Members"}</a>
-                <a id="groups" href="{urlFor name="groups"}" title="{_T string="View and manage groups"}">{_T string="Groups"}</a>
+                <a id="members" href="{path_for name="members"}" title="{_T string="View, search into and filter member's list"}">{_T string="Members"}</a>
+                <a id="groups" href="{path_for name="groups"}" title="{_T string="View and manage groups"}">{_T string="Groups"}</a>
 {if $login->isAdmin() or $login->isStaff()}
-                <a id="contribs" href="{urlFor name="contributions"}" title="{_T string="View and filter contributions"}">{_T string="Contributions"}</a><br/>
+                <a id="contribs" href="{path_for name="contributions"}" title="{_T string="View and filter contributions"}">{_T string="Contributions"}</a><br/>
                 <a id="transactions" href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter transactions"}">{_T string="Transactions"}</a>
                 <a id="mailings" href="{$galette_base_path}gestion_mailings.php" title="{_T string="Manage mailings that has been sent"}">{_T string="Mailings"}</a>
                 <a id="reminder" href="{$galette_base_path}reminder.php" title="{_T string="Send reminders to late members"}">{_T string="Reminders"}</a>
 {/if}
 {if $login->isAdmin()}
-                <a id="prefs" href="{urlFor name="preferences"}" title="{_T string="Set applications preferences (adress, website, member's cards configuration, ...)"}">{_T string="Settings"}</a>
-                <a id="plugins" href="{urlFor name="plugins"}" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a>
+                <a id="prefs" href="{path_for name="preferences"}" title="{_T string="Set applications preferences (adress, website, member's cards configuration, ...)"}">{_T string="Settings"}</a>
+                <a id="plugins" href="{path_for name="plugins"}" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a>
 {/if}
             </div>
         </section>

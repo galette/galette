@@ -1,6 +1,6 @@
 {extends file="page.tpl"}
 {block name="content"}
-        <form action="{urlFor name="store-preferences"}" method="post" enctype="multipart/form-data" class="tabbed">
+        <form action="{path_for name="store-preferences"}" method="post" enctype="multipart/form-data" class="tabbed">
         <div id="prefs_tabs">
             <ul>
                 <li><a href="#general">{_T string="General"}</a></li>
@@ -27,7 +27,7 @@
                 <p>
                     <label for="logo_picture" class="bline">{_T string="Logo:"}</label>
 {if $logo->isCustom()}
-                    <img src="{urlFor name="logo"}" class="picture" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="{_T string="Current logo"}"/><br/>
+                    <img src="{path_for name="logo"}" class="picture" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="{_T string="Current logo"}"/><br/>
                     <label for="del_logo">{_T string="Delete image"}</label><input type="checkbox" name="del_logo" id="del_logo" value="1" /><br />
 {/if}
                     <input type="file" name="logo" id="logo_picture"{if $GALETTE_MODE eq 'DEMO'} disabled="disabled"{/if}/>
@@ -116,7 +116,7 @@
                 <p>
                     <label for="pref_numrows" class="bline">{_T string="Lines / Page:"}</label>
                     <select name="pref_numrows" id="pref_numrows">
-                        {html_options options=$pref_numrows_options selected=$pref.pref_numrows}
+                        {*html_options options=$pref_numrows_options selected=$pref.pref_numrows*}
                     </select>
                 </p>
                 <p>

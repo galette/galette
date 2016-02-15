@@ -59,7 +59,7 @@ require_once GALETTE_ROOT . 'includes/galette.inc.php';
 
 //Galette needs database update!
 if ($needs_update) {
-    $app = new Slim(
+    $app = new \Slim\App(
         array(
             'templates.path'    => GALETTE_ROOT . 'templates/default/',
             'mode'              => 'NEED_UPDATE'
@@ -81,8 +81,8 @@ if ($needs_update) {
     $app->run();
     die();
 } else {
-    $app = new Slim(
-        array(
+    $app = new \Slim\App(
+        /*array(
             'view'              => new Smarty(
                 $plugins,
                 $i18n,
@@ -93,11 +93,43 @@ if ($needs_update) {
             ),
             'templates.path'    => GALETTE_ROOT . GALETTE_TPL_SUBDIR,
             'mode'              => GALETTE_MODE
-        )
+        )*/
+        [
+            'settings' => [
+                'determineRouteBeforeAppMiddleware' => true,
+                'displayErrorDetails' => true,
+
+                // View settings
+                /*'view' => [
+                    'template_path' => __DIR__ . '/templates',
+                    'twig' => [
+                        'cache' => __DIR__ . '/../cache/twig',
+                        'debug' => true,
+                        'auto_reload' => true,
+                    ],
+                ],*/
+
+                // monolog settings
+                'logger' => [
+                    'name' => 'app',
+                    'path' => __DIR__ . '/../log/app.log',
+                ]
+            ]
+        ]
     );
 }
 
-$app->configureMode(
+// Set up dependencies
+require GALETTE_ROOT . '/includes/dependencies.php';
+
+// Register middleware
+/*require __DIR__ . '/../app/middleware.php';
+
+// Register routes
+require __DIR__ . '/../app/routes.php';*/
+
+
+/*$app->configureMode(
     'DEV',
     function () use ($app) {
         $app->config(
@@ -106,32 +138,32 @@ $app->configureMode(
             )
         );
     }
-);
+);*/
 
-$app->configureMode(
+/*$app->configureMode(
     'MAINT',
     function () use ($app, $i18n, $login) {
         $app->add(new Galette\Core\Middleware($i18n, $login));
     }
-);
+);*/
 
 //set default conditions
-Route::setDefaultConditions(
+/*Route::setDefaultConditions(
     array(
         'id' => '\d+'
     )
-);
+);*/
 
-$smarty = $app->view()->getInstance();
+$smarty = $app->getContainer()->get('view')->getSmarty();
 require_once GALETTE_ROOT . 'includes/smarty.inc.php';
 
 /**
  * Load plugins
  */
-$plugins->setApp($app);
-$plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
+/*$plugins->setApp($app);
+$plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());*/
 
-$acls = [
+/*$acls = [
     'preferences'       => 'admin',
     'store-preferences' => 'admin',
     'dashboard'         => 'groupmanager',
@@ -163,9 +195,98 @@ $acls = [
 //load user defined ACLs
 if (file_exists(GALETTE_CONFIG_PATH  . 'local_acls.inc.php')) {
     $acls = array_merge($acls, $local_acls);
-}
+}*/
 
-$authenticate = function () use ($zdb, $i18n, &$session, $acls, $app, $plugins) {
+
+$authenticate = function ($request, $response, $next) use ($container, &$session) {
+    $login = $container->login;
+
+    if (!$login->isLogged()) {
+        $session['urlRedirect'] = $request->getPathInfo();
+        $this->flash->addMessage('error', _T("Login required"));
+        return $response
+            ->withStatus(403)
+            ->withHeader('Location', $this->router->pathFor('slash'));
+    } else {
+        //check for ACLs
+        $cur_route = $request->getAttribute('route')->getName();
+
+        //ACLs for plugins
+        $acls = array_merge($container->acls, $container->plugins->getAcls());
+        if (isset($acls[$cur_route])) {
+            $acl = $acls[$cur_route];
+            $go = false;
+            switch ($acl) {
+                case 'superadmin':
+                    if ($login->isSuperAdmin()) {
+                        $go = true;
+                    }
+                    break;
+                case 'admin':
+                    if ($login->isSuperAdmin()
+                        || $login->isAdmin()
+                    ) {
+                        $go = true;
+                    }
+                    break;
+                case 'staff':
+                    if ($login->isSuperAdmin()
+                        || $login->isAdmin()
+                        || $login->isStaff()
+                    ) {
+                        $go = true;
+                    }
+                    break;
+                case 'groupmanager':
+                    if ($login->isSuperAdmin()
+                        || $login->isAdmin()
+                        || $login->isStaff()
+                        || $login->isGroupManager()
+                    ) {
+                        $go = true;
+                    }
+                    break;
+                case 'member':
+                    if ($login->isLogged()) {
+                        $go = true;
+                    }
+                    break;
+                default:
+                    throw new \RuntimeException(
+                        str_replace(
+                            '%acl',
+                            $acl,
+                            _T("Unknown ACL rule '%acl'!")
+                        )
+                    );
+                    break;
+            }
+            if (!$go) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    [
+                        _T("You do not have permission for requested URL.")
+                    ]
+                );
+                return $response
+                    ->withStatus(403)
+                    ->withHeader('Location', $this->router->pathFor('slash'));
+            }
+        } else {
+            throw new \RuntimeException(
+                str_replace(
+                    '%name',
+                    $cur_route,
+                    _T("Route '%name' is not registered in ACLs!")
+                )
+            );
+        }
+    }
+
+    return $next($request, $response);
+};
+
+/*$authenticate = function () use ($zdb, $i18n, &$session, $acls, $app, $plugins) {
     return function () use ($app, $zdb, &$session, $acls, $plugins, $i18n) {
         $app->flashKeep();
         if (isset($session['login'])) {
@@ -176,8 +297,8 @@ $authenticate = function () use ($zdb, $i18n, &$session, $acls, $app, $plugins) 
         }
         if (!$login->isLogged()) {
             $session['urlRedirect'] = $app->request()->getPathInfo();
-            $app->flash('error', _T("Login required"));
-            $app->redirect($app->urlFor('slash'), 403);
+            $this->flash->addMessage('error', _T("Login required"));
+            $app->redirect($app->pathFor('slash'), 403);
         } else {
             //check for ACLs
             $cur_route = getCurrentRoute($app);
@@ -232,13 +353,13 @@ $authenticate = function () use ($zdb, $i18n, &$session, $acls, $app, $plugins) 
                         break;
                 }
                 if (!$go) {
-                    $app->flash(
+                    $this->flash->addMessage(
                         'error_detected',
                         [
                             _T("You do not have permission for requested URL.")
                         ]
                     );
-                    $app->redirect($app->urlFor('slash'), 403);
+                    $app->redirect($app->pathFor('slash'), 403);
                 }
             } else {
                 throw new \RuntimeException(
@@ -251,44 +372,58 @@ $authenticate = function () use ($zdb, $i18n, &$session, $acls, $app, $plugins) 
             }
         }
     };
-};
+};*/
 
 //dependency injection
 $app->zdb           = $zdb;
 $app->i18n          = $i18n;
-$app->plugins       = $plugins;
+//$app->plugins       = $plugins;
 $app->preferences   = $preferences;
 $app->login         = $login;
 
-$baseRedirect = function ($app) use ($login, &$session) {
-    $app->flashKeep();
-    if ( $login->isLogged() ) {
+$baseRedirect = function ($request, $response, $args = []) use ($app, $container, &$session) {
+    $login = $container->get('login');
+    $router = $container->get('router');
+
+    //$app->flashKeep();
+    if ($login->isLogged()) {
         $urlRedirect = null;
         if (isset($session['urlRedirect'])) {
             $urlRedirect = $app->request()->getRootUri() . $session['urlRedirect'];
             unset($session['urlRedirect']);
         }
 
-        if ( $urlRedirect !== null ) {
-            $app->redirect($urlRedirect);
+        if ($urlRedirect !== null) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $urlRedirect);
         } else {
-            if ( $login->isSuperAdmin()
+            if ($login->isSuperAdmin()
                 || $login->isAdmin()
                 || $login->isStaff()
             ) {
-                if ( !isset($_COOKIE['show_galette_dashboard'])
+                if (!isset($_COOKIE['show_galette_dashboard'])
                     || $_COOKIE['show_galette_dashboard'] == 1
                 ) {
-                    $app->redirect($app->urlFor('dashboard'));
+
+                    return $response
+                        ->withStatus(301)
+                        ->withHeader('Location', $router->pathFor('dashboard'));
                 } else {
-                    $app->redirect($app->urlFor('members'));
+                    return $response
+                        ->withStatus(301)
+                        ->withHeader('Location', $router->pathFor('members'));
                 }
             } else {
-                $app->redirect($app->urlFor('me'));
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $router->pathFor('me'));
             }
         }
     } else {
-        $app->redirect($app->urlFor('login'));
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $router->pathFor('login'));
     }
 };
 
@@ -333,7 +468,73 @@ function getCurrentRoute($app)
     return $cur_route;
 }
 
-$app->hook(
+$app->add(function ($request, $response, $next) {
+    $route = $request->getAttribute('route');
+    /*$name = $route->getName();
+    $group = $route->getGroup();
+    $methods = $route->getMethods();
+    $arguments = $route->getArguments();*/
+
+    /*var_dump($this->get('router')->getRoutes());
+    throw new \RuntimeException('STOP');*/
+    /*if ($request->getAttribute('route')->getArgument('auth', true)) {
+        $response->write('Authed: ');
+    }*/
+    return $next($request, $response);
+});
+
+/**
+ * This is important this one to be the last, so it'll be executed first.
+ */
+$app->add(function ($request, $response, $next) {
+    $route = $request->getAttribute('route');
+
+    //$this->view->getSmarty()->assign('cur_route', $route->getName());
+    $this->view->getSmarty()->assign('cur_route', 'dashboard');
+
+    $acls = array_merge($this->get('acls'), $this->get('plugins')->getAcls());
+
+    if (GALETTE_MODE === 'DEV') {
+        //check for routes that are not in ACLs
+        $routes = $this->get('router')->getRoutes();
+
+        $missing_acls = [];
+        $excluded_names = [
+            'public_members',
+            'public_trombinoscope'
+        ];
+        foreach ($routes as $route) {
+            $name = $route->getName();
+            //check if route has $authenticate middleware
+            $middlewares = $route->getMiddleware();
+            if (count($middlewares) > 0) {
+                foreach ($middlewares as $middleware) {
+                    if (!in_array($name, array_keys($acls))
+                        && !in_array($name, $excluded_names)
+                        && !in_array($name, $missing_acls)
+                    ) {
+                        $missing_acls[] = $name;
+                    }
+                }
+            }
+        }
+        if (count($missing_acls) > 0) {
+            $msg = str_replace(
+                '%routes',
+                implode(', ', $missing_acls),
+                _T("Routes '%routes' are missing in ACLs!")
+            );
+            Analog::log($msg, Analog::ERROR);
+            //FIXME: with flash(), message is only shown on the seconde round,
+            //with flashNow(), thas just does not work :(
+            $this->flash->addMessage('error_detected', [$msg]);
+        }
+    }
+
+    return $next($request, $response);
+});
+
+/*$app->hook(
     'slim.before.dispatch',
     function () use ($app, $error_detected, $warning_detected, $success_detected,
         $authenticate, $acls, $plugins
@@ -370,7 +571,7 @@ $app->hook(
                 Analog::log($msg, Analog::ERROR);
                 //FIXME: with flash(), message is only shown on the seconde round,
                 //with flashNow(), thas just does not work :(
-                $app->flash('error_detected', [$msg]);
+                $this->flash->addMessage('error_detected', [$msg]);
             }
         }
 
@@ -409,7 +610,7 @@ $app->hook(
             $v->setData('success_detected', $success_detected);
         }
     }
-);
+);*/
 
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
@@ -423,7 +624,7 @@ require_once GALETTE_ROOT . 'includes/routes/plugins.routes.php';
 
 //custom error handler
 //will not be used if mode is DEV.
-$app->error(
+/*$app->error(
     function (\Exception $e) use ($app) {
         //ensure error is logged
         $etype = get_class($e);
@@ -443,10 +644,10 @@ $app->error(
             )
         );
     }
-);
+);*/
 
 //custom 404 handler
-$app->notFound(
+/*$app->notFound(
     function () use ($app) {
         $app->render(
             '404.tpl',
@@ -457,10 +658,10 @@ $app->notFound(
             )
         );
     }
-);
+);*/
 
 $app->run();
 
-if ( isset($profiler) ) {
+if (isset($profiler)) {
     $profiler->stop();
 }

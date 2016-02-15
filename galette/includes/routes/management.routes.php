@@ -49,11 +49,12 @@ use \Analog\Analog;
 //galette's dashboard
 $app->get(
     '/dashboard',
-    $authenticate(),
-    function () use ($app, $preferences) {
-        $news = new News($preferences->pref_rss_url);
+    function ($request, $response, $args = []) {
+        $news = new News($this->preferences->pref_rss_url);
 
-        $app->render(
+        // display page
+        $this->view->render(
+            $response,
             'desktop.tpl',
             array(
                 'page_title'        => _T("Dashboard"),
@@ -63,15 +64,14 @@ $app->get(
                 'require_cookie'    => true
             )
         );
+        return $response;
     }
-)->name('dashboard');
+)->setName('dashboard')->add($authenticate);
 
 //preferences page
 $app->get(
     '/preferences',
-    $authenticate(),
-    function () use ($app, $login, $preferences, $i18n, &$session) {
-
+    function ($request, $response) {
         $print_logo = new PrintLogo();
 
         // flagging required fields
@@ -97,21 +97,21 @@ $app->get(
             'pref_card_vspace'      => 1
         );
 
-        if ( $login->isSuperAdmin() && GALETTE_MODE !== 'DEMO' ) {
+        if ($this->login->isSuperAdmin() && GALETTE_MODE !== 'DEMO') {
             $required['pref_admin_login'] = 1;
         }
 
-        $prefs_fields = $preferences->getFieldsNames();
+        $prefs_fields = $this->preferences->getFieldsNames();
 
         // collect data
-        foreach ( $prefs_fields as $fieldname ) {
-            $pref[$fieldname] = $preferences->$fieldname;
+        foreach ($prefs_fields as $fieldname) {
+            $pref[$fieldname] = $this->preferences->$fieldname;
         }
 
         //List available themes
         $themes = array();
         $d = dir(GALETTE_TEMPLATES_PATH);
-        while ( ($entry = $d->read()) !== false ) {
+        while (($entry = $d->read()) !== false) {
             $full_entry = GALETTE_TEMPLATES_PATH . $entry;
             if ($entry != '.'
                 && $entry != '..'
@@ -125,7 +125,9 @@ $app->get(
 
         $m = new Members();
 
-        $app->render(
+        // display page
+        $this->view->render(
+            $response,
             'preferences.tpl',
             array(
                 'page_title'            => _T("Settings"),
@@ -140,29 +142,26 @@ $app->get(
                 ),
                 'print_logo'            => $print_logo,
                 'required'              => $required,
-                'languages'             => $i18n->getList(),
+                'languages'             => $this->i18n->getList(),
                 'themes'                => $themes,
-                /*'error_detected'        => $error_detected,
-                'warning_detected'      => $warning_detected,
-                'success_detected'      => $success_detected,*/
                 'require_tabs'          => true,
                 'color_picker'          => true,
             )
         );
+        return $response;
     }
-)->name('preferences');
+)->setName('preferences')->add($authenticate);
 
 //preferences procedure
 $app->post(
     '/preferences',
-    $authenticate(),
-    function () use ($app, $preferences, $login, $logo, &$session) {
+    function ($request, $response) use ($app, &$session) {
         // Validation
-        if ( isset($_POST['valid']) && $_POST['valid'] == '1' ) {
+        if (isset($_POST['valid']) && $_POST['valid'] == '1') {
             // verification de champs
             $insert_values = array();
 
-            $prefs_fields = $preferences->getFieldsNames();
+            $prefs_fields = $this->preferences->getFieldsNames();
 
             // flagging required fields
             $required = array(
@@ -187,7 +186,7 @@ $app->post(
                 'pref_card_vspace'      => 1
             );
 
-            if ( $login->isSuperAdmin() && GALETTE_MODE !== 'DEMO' ) {
+            if ($this->login->isSuperAdmin() && GALETTE_MODE !== 'DEMO') {
                 $required['pref_admin_login'] = 1;
             }
 
@@ -228,7 +227,7 @@ $app->post(
                                 $error_detected[] = _T("- The username must be composed of at least 4 characters!");
                             } else {
                                 //check if login is already taken
-                                if ( $login->loginExists($value) ) {
+                                if ($this->login->loginExists($value)) {
                                     $error_detected[] = _T("- This username is already used by another member !");
                                 }
                             }
@@ -394,55 +393,55 @@ $app->post(
             if ( count($error_detected) == 0 ) {
                 // update preferences
                 while ( list($champ,$valeur) = each($insert_values) ) {
-                    if ( $login->isSuperAdmin()
-                        || (!$login->isSuperAdmin()
+                    if ($this->login->isSuperAdmin()
+                        || (!$this->login->isSuperAdmin()
                         && ($champ != 'pref_admin_pass' && $champ != 'pref_admin_login'))
                     ) {
                         if ( ($champ == "pref_admin_pass" && $_POST['pref_admin_pass'] !=  '')
                             || ($champ != "pref_admin_pass")
                         ) {
-                            $preferences->$champ = $valeur;
+                            $this->preferences->$champ = $valeur;
                         }
                     }
                 }
                 //once all values has been updated, we can store them
-                if ( !$preferences->store() ) {
+                if (!$this->preferences->store()) {
                     $error_detected[] = _T("An SQL error has occured while storing preferences. Please try again, and contact the administrator if the problem persists.");
                 } else {
                     $success_detected[] = _T("Preferences has been saved.");
                 }
 
                 // picture upload
-                if ( GALETTE_MODE !== 'DEMO' &&  isset($_FILES['logo']) ) {
-                    if ( $_FILES['logo']['error'] === UPLOAD_ERR_OK ) {
-                        if ( $_FILES['logo']['tmp_name'] !='' ) {
-                            if ( is_uploaded_file($_FILES['logo']['tmp_name']) ) {
-                                $res = $logo->store($_FILES['logo']);
-                                if ( $res < 0 ) {
-                                    $error_detected[] = $logo->getErrorMessage($res);
+                if (GALETTE_MODE !== 'DEMO' &&  isset($_FILES['logo'])) {
+                    if ($_FILES['logo']['error'] === UPLOAD_ERR_OK) {
+                        if ($_FILES['logo']['tmp_name'] !='') {
+                            if (is_uploaded_file($_FILES['logo']['tmp_name'])) {
+                                $res = $this->logo->store($_FILES['logo']);
+                                if ($res < 0) {
+                                    $error_detected[] = $this->logo->getErrorMessage($res);
                                 } else {
-                                    $logo = new Logo();
+                                    $this->logo = new Logo();
                                 }
-                                $session['logo'] = serialize($logo);
+                                $this->session['logo'] = serialize($this->logo);
                             }
                         }
-                    } else if ($_FILES['logo']['error'] !== UPLOAD_ERR_NO_FILE) {
+                    } elseif ($_FILES['logo']['error'] !== UPLOAD_ERR_NO_FILE) {
                         Analog::log(
-                            $logo->getPhpErrorMessage($_FILES['logo']['error']),
+                            $this->logo->getPhpErrorMessage($_FILES['logo']['error']),
                             Analog::WARNING
                         );
-                        $error_detected[] = $logo->getPhpErrorMessage(
+                        $error_detected[] = $this->logo->getPhpErrorMessage(
                             $_FILES['logo']['error']
                         );
                     }
                 }
 
-                if ( GALETTE_MODE !== 'DEMO' && isset($_POST['del_logo']) ) {
-                    if ( !$logo->delete() ) {
+                if (GALETTE_MODE !== 'DEMO' && isset($_POST['del_logo'])) {
+                    if (!$this->logo->delete()) {
                         $error_detected[] = _T("Delete failed");
                     } else {
-                        $logo = new Logo(); //get default Logo
-                        $session['logo'] = serialize($logo);
+                        $this->logo = new Logo(); //get default Logo
+                        $this->session['logo'] = serialize($this->logo);
                     }
                 }
 
@@ -480,28 +479,30 @@ $app->post(
             }
 
             if ( count($error_detected) > 0 ) {
-                $app->flash(
+                $this->flash->addMessage(
                     'error_detected',
                     $error_detected
                 );
             }
 
             if ( count($success_detected) > 0 ) {
-                $app->flash(
+                $this->flash->addMessage(
                     'success_detected',
                     $success_detected
                 );
             }
 
-            $app->redirect($app->urlFor('preferences'));
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('preferences'));
         }
     }
-)->name('store-preferences');
+)->setName('store-preferences')->add($authenticate);
 
 //charts
 $app->get(
     '/charts',
-    $authenticate(),
     function () use ($app) {
         $charts = new Charts(
             array(
@@ -522,13 +523,13 @@ $app->get(
             )
         );
     }
-)->name('charts');
+)->setName('charts')->add($authenticate);
 
 //plugins
 $app->get(
     '/plugins',
-    $authenticate(),
-    function () use ($app, $plugins) {
+    function () use ($app) {
+        $plugins = $this->get('plugins');
         if ( GALETTE_MODE !== 'DEMO' ) {
             $reload_plugins = false;
             if ( isset($_GET['activate']) ) {
@@ -578,38 +579,35 @@ $app->get(
             )
         );
     }
-)->name('plugins');
+)->setName('plugins')->add($authenticate);
 
 //galette logs
 $app->get(
-    '/logs(/:option/:value)',
-    $authenticate(),
+    '/logs[/{option:page|order|reset}/{value}]',
     function ($option = null, $value = null) use ($app, $hist) {
-        if ( $option !== null ) {
-            switch ( $option ) {
-            case 'page':
-                $hist->current_page = (int)$value;
-                break;
-            case 'order':
-                $hist->tri = $value;
-                break;
-            case 'reset':
-                $hist->clean();
-                //reinitialize object after flush
-                $hist = new History();
-                break;
+        if ($option !== null) {
+            switch ($option) {
+                case 'page':
+                    $hist->current_page = (int)$value;
+                    break;
+                case 'order':
+                    $hist->tri = $value;
+                    break;
+                case 'reset':
+                    $hist->clean();
+                    //reinitialize object after flush
+                    $hist = new History();
+                    break;
             }
         }
 
-        if ( $app->request()->get('nbshow') !== null ) {
+        if ($app->request()->get('nbshow') !== null) {
             $hist->show = $app->request()->get('nbshow');
         }
 
         $logs = array();
 
         $logs = $hist->getHistory();
-        $session['history'] = serialize($hist);
-
         $view = $app->view();
 
         //assign pagination variables to the template and add pagination links
@@ -625,18 +623,17 @@ $app->get(
             )
         );
     }
-)->name(
+)->setName(
     'history'
-)->conditions(
+)->add($authenticate)/*->conditions(
     array(
         'option'    => '(page|order|reset)'
     )
-);
+)*/;
 
 //mailings management
 $app->get(
     '/mailings(/:option/:value)',
-    $authenticate(),
     function ($option = null, $value = null) use ($app) {
         $request = $app->request();
 
@@ -697,10 +694,10 @@ $app->get(
             )
         );
     }
-)->name(
+)->setName(
     'mailings'
-)->conditions(
+)->add($authenticate)/*->conditions(
     array(
         'option'    => '(page|order)'
     )
-);
+)*/;

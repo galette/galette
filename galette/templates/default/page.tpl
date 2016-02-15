@@ -92,7 +92,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <![endif]-->
     <div id="menu">
         <div id="logo">
-            <img src="{urlFor name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
+            <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
         </div>
 {if $login->isSuperAdmin()}
         <div id="superadmin" title="{_T string="You are actually logged-in as superadmin. Some functionnalities may not be available since this is *not* a regular member."}">
@@ -108,37 +108,37 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <h1 class="nojs">{_T string="Navigation"}</h1>
         <ul>
   {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}
-            <li{if $cur_route eq "dashboard"} class="selected"{/if}><a href="{urlFor name="dashboard"}" title="{_T string="Go to Galette's dashboard"}">{_T string="Dashboard"}</a></li>
-            <li{if $cur_route eq "members"} class="selected"{/if}><a href="{urlFor name="members"}" title="{_T string="View, search into and filter member's list"}">{_T string="List of members"}</a></li>
-            <li{if $cur_route eq "advanced-search"} class="selected"{/if}><a href="{urlFor name="advanced-search"}" title="{_T string="Perform advanced search into members list"}">{_T string="Advanced search"}</a></li>
-            <li{if $cur_route eq "groups"} class="selected"{/if}><a href="{urlFor name="groups"}" title="{_T string="View and manage groups"}">{_T string="Manage groups"}</a></li>
+            <li{if $cur_route eq "dashboard"} class="selected"{/if}><a href="{path_for name="dashboard"}" title="{_T string="Go to Galette's dashboard"}">{_T string="Dashboard"}</a></li>
+            <li{if $cur_route eq "members"} class="selected"{/if}><a href="{path_for name="members"}" title="{_T string="View, search into and filter member's list"}">{_T string="List of members"}</a></li>
+            <li{if $cur_route eq "advanced-search"} class="selected"{/if}><a href="{path_for name="advanced-search"}" title="{_T string="Perform advanced search into members list"}">{_T string="Advanced search"}</a></li>
+            <li{if $cur_route eq "groups"} class="selected"{/if}><a href="{path_for name="groups"}" title="{_T string="View and manage groups"}">{_T string="Manage groups"}</a></li>
   {/if}
   {if $login->isAdmin() or $login->isStaff()}
-            <li{if $cur_route eq "contributions"} class="selected"{/if}><a href="{urlFor name="contributions"}" title="{_T string="View and filter contributions"}">{_T string="List of contributions"}</a></li>
+            <li{if $cur_route eq "contributions"} class="selected"{/if}><a href="{path_for name="contributions"}" title="{_T string="View and filter contributions"}">{_T string="List of contributions"}</a></li>
             <li{if $PAGENAME eq "gestion_transactions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter transactions"}">{_T string="List of transactions"}</a></li>
             <li{if $PAGENAME eq "ajouter_adherent.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_adherent.php" title="{_T string="Add new member in database"}">{_T string="Add a member"}</a></li>
             <li{if $PAGENAME eq "ajouter_contribution.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_contribution.php" title="{_T string="Add new contribution in database"}">{_T string="Add a contribution"}</a></li>
             <li{if $PAGENAME eq "ajouter_transaction.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_transaction.php" title="{_T string="Add new transaction in database"}">{_T string="Add a transaction"}</a></li>
             <li{if $PAGENAME eq "reminder.php"} class="selected"{/if}><a href="{$galette_base_path}reminder.php" title="{_T string="Send reminders to late members"}">{_T string="Reminders"}</a></li>
-            <li{if $cur_route eq "history"} class="selected"{/if}><a href="{urlFor name="history"}" title="{_T string="View application's logs"}">{_T string="Logs"}</a></li>
-            <li{if $cur_route eq "mailings"} class="selected"{/if}><a href="{urlFor name="mailings"}" title="{_T string="Manage mailings that has been sent"}">{_T string="Manage mailings"}</a></li>
+            <li{if $cur_route eq "history"} class="selected"{/if}><a href="{path_for name="history"}" title="{_T string="View application's logs"}">{_T string="Logs"}</a></li>
+            <li{if $cur_route eq "mailings"} class="selected"{/if}><a href="{path_for name="mailings"}" title="{_T string="Manage mailings that has been sent"}">{_T string="Manage mailings"}</a></li>
             <li{if $PAGENAME eq "export.php"} class="selected"{/if}><a href="{$galette_base_path}export.php" title="{_T string="Export some data in various formats"}">{_T string="Exports"}</a></li>
             <li{if $PAGENAME eq "import.php" or $PAGENAME eq "import_model.php"} class="selected"{/if}><a href="{$galette_base_path}import.php" title="{_T string="Import members from CSV files"}">{_T string="Imports"}</a></li>
-            <li class="mnu_last{if $cur_route eq "charts"} selected{/if}"><a href="{urlFor name="charts"}" title="{_T string="Various charts"}">{_T string="Charts"}</a></li>
+            <li class="mnu_last{if $cur_route eq "charts"} selected{/if}"><a href="{path_for name="charts"}" title="{_T string="Various charts"}">{_T string="Charts"}</a></li>
   {else}
-            <li{if $cur_route eq "contributions"} class="selected"{/if}><a href="{urlFor name="contributions"}" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
+            <li{if $cur_route eq "contributions"} class="selected"{/if}><a href="{path_for name="contributions"}" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
             <li{if $PAGENAME eq "gestion_transactions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter all my transactions"}">{_T string="My transactions"}</a></li>
   {/if}
   {if !$login->isSuperAdmin()}
-            <li{if $cur_route eq "me" or $cur_route eq "member"} class="selected"{/if}><a href="{urlFor name="me"}" title="{_T string="View my member card"}">{_T string="My information"}</a></li>
+            <li{if $cur_route eq "me" or $cur_route eq "member"} class="selected"{/if}><a href="{path_for name="me"}" title="{_T string="View my member card"}">{_T string="My information"}</a></li>
   {/if}
         </ul>
 {/if}
 {if $preferences->showPublicPages($login) eq true}
         <h1 class="nojs">{_T string="Public pages"}</h1>
         <ul>
-            <li><a href="{urlFor name="public_members"}" title="{_T string="Members list"}">{_T string="Members list"}</a></li>
-            <li><a href="{urlFor name="public_trombinoscope"}" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a></li>
+            <li><a href="{path_for name="public_members"}" title="{_T string="Members list"}">{_T string="Members list"}</a></li>
+            <li><a href="{path_for name="public_trombinoscope"}" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a></li>
             {* Include plugins menu entries *}
             {$plugins->getPublicMenus($tpl, $preferences)}
         </ul>
@@ -146,8 +146,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {if $login->isAdmin()}
         <h1 class="nojs">{_T string="Configuration"}</h1>
         <ul>
-            <li{if $cur_route eq "preferences"} class="selected"{/if}><a href="{urlFor name="preferences"}" title="{_T string="Set applications preferences (address, website, member's cards configuration, ...)"}">{_T string="Settings"}</a></li>
-            <li{if $cur_route eq "plugins"} class="selected"{/if}><a href="{urlFor name="plugins"}" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a></li>
+            <li{if $cur_route eq "preferences"} class="selected"{/if}><a href="{path_for name="preferences"}" title="{_T string="Set applications preferences (address, website, member's cards configuration, ...)"}">{_T string="Settings"}</a></li>
+            <li{if $cur_route eq "plugins"} class="selected"{/if}><a href="{path_for name="plugins"}" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a></li>
             <li{if $PAGENAME eq "config_fields.php"} class="selected"{/if}><a href="{$galette_base_path}config_fields.php" title="{_T string="Customize fields order, set which are required, and for who they're visibles"}">{_T string="Customize fields"}</a></li>
             <li{if $PAGENAME eq "configurer_fiches.php" or $PAGENAME eq "editer_champ.php"} class="selected"{/if}><a href="{$galette_base_path}configurer_fiches.php" title="{_T string="Manage additional fields for various forms"}">{_T string="Configure member forms"}</a></li>
             <li{if $PAGENAME eq "traduire_libelles.php"} class="selected"{/if}><a href="{$galette_base_path}traduire_libelles.php" title="{_T string="Translate additionnals fields labels"}">{_T string="Translate labels"}</a></li>
@@ -170,7 +170,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         </ul>
 {if $login->isLogged()}
         <div>{$login->loggedInAs()}</div>
-        <a id="{if $login->isImpersonated()}unimpersonate{else}logout{/if}" class="button" href="{if $login->isImpersonated()}{urlFor name="unimpersonate"}{else}{urlFor name="logout"}{/if}">{_T string="Log off"}</a>
+        <a id="{if $login->isImpersonated()}unimpersonate{else}logout{/if}" class="button" href="{if $login->isImpersonated()}{path_for name="unimpersonate"}{else}{path_for name="logout"}{/if}">{_T string="Log off"}</a>
 {/if}
     </div>
     <div id="content"{if $contentcls} class="{$contentcls}"{/if}>

@@ -3,7 +3,7 @@
     {if isset($smarty.session['slim.flash']['loginfault'])}
                 <div id="errorbox">{$smarty.session['slim.flash']['loginfault']}</div>
     {/if}
-                <form action="{urlFor name="dologin"}" method="post">
+                <form action="{path_for name="dologin"}" method="post">
                 <section>
                     <table>
                         <tr>

@@ -61,7 +61,10 @@ $app->get(
         $members_fields, $members_fields_cats
     ) {
         if ( !$preferences->pref_bool_selfsubscribe || $login->isLogged() ) {
-            $app->redirect($app->urlFor('slash'));
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('slash'));
         }
 
         $dyn_fields = new DynamicFields();
@@ -138,12 +141,12 @@ $app->get(
         );
 
     }
-)->name('subscribe');
+)->setName('subscribe');
 
 //members list
 $app->get(
     '/members(/:option/:value)',
-    $authenticate(),
+    $authenticate,
     function ($option = null, $value = null) use (
         $app, $login, &$session, $preferences
     ) {
@@ -198,19 +201,19 @@ $app->get(
             )
         );
     }
-)->name(
+)->setName(
     'members'
-)->conditions(
+)/*->conditions(
     array(
         'option'    => '(page|order)',
         'value'     => '\d+'
     )
-);
+)*/;
 
 //members list filtering
 $app->post(
     '/members/filter',
-    $authenticate(),
+    $authenticate,
     function ($from = 'members') use ($app, &$session) {
         $request = $app->request();
 
@@ -231,13 +234,15 @@ $app->post(
         } else if ( $request->post('clear_adv_filter') ) {
             $session['filters']['members'] = null;
             unset($session['filters']['members']);
-            $app->redirect(
-                $app->urlFor('advanced-search')
-            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('advanced-search'));
         } else if ( $request->post('adv_criterias') ) {
-            $app->redirect(
-                $app->urlFor('advanced-search')
-            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('advanced-search'));
         } else {
             //string to filter
             if ( $request->post('filter_str') !== null ) { //filter search string
@@ -343,21 +348,22 @@ $app->post(
 
         $session['filters']['members'] = serialize($filters);
 
-        $app->redirect(
-            $app->urlFor($from)
-        );
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor($from));
     }
-)->name('filter-memberslist');
+)->setName('filter-memberslist');
 
 //members self card
 $app->get(
     '/member/me',
-    $authenticate(),
+    $authenticate,
     function () use ($app, $login) {
         if ($login->isSuperAdmin()) {
-            $app->redirect(
-                $app->urlFor('slash')
-            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('slash'));
         }
         $deps = array(
             'picture'   => false,
@@ -365,16 +371,17 @@ $app->get(
             'dues'      => false
         );
         $member = new Adherent($login->login, $deps);
-        $app->redirect(
-            $app->urlFor('member', ['id' => $member->id])
-        );
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('member'), ['id' => $member->id]);
     }
-)->name('me');
+)->setName('me');
 
 //members card
 $app->get(
     '/member/:id',
-    $authenticate(),
+    $authenticate,
     function ($id) use ($app, $login, $session, $i18n, $preferences,
         $members_fields, $members_fields_cats
     ) {
@@ -490,11 +497,11 @@ $app->get(
         );
 
     }
-)->name('member');
+)->setName('member');
 
 $app->get(
     '/member/:action(/:id)',
-    $authenticate(),
+    $authenticate,
     function (
         $action,
         $id = null
@@ -706,17 +713,17 @@ $app->get(
         );
 
     }
-)->name(
+)->setName(
     'editmember'
-)->conditions(
+)/*->conditions(
     array(
         'action' => '(edit|add)',
     )
-);
+)*/;
 
 $app->post(
     '/member/store',
-    $authenticate(),
+    $authenticate,
     function () use (
         $app,
         $login,
@@ -873,7 +880,7 @@ $app->post(
                                         $member->surname
                                     ),
                                     'lastname_adh'  => custom_html_entity_decode(
-                                        $member->name
+                                        $member->setName
                                     ),
                                     'mail_adh'      => custom_html_entity_decode(
                                         $member->email
@@ -937,7 +944,7 @@ $app->post(
                                             $member->surname
                                         ),
                                         'lastname_adh'  => custom_html_entity_decode(
-                                            $member->name
+                                            $member->setName
                                         ),
                                         'mail_adh'      => custom_html_entity_decode(
                                             $member->email
@@ -1078,13 +1085,13 @@ $app->post(
             if ( count($error_detected) == 0 ) {
                 $session['account_success'] = serialize($success_detected);
                 if (count($warning_detected) > 0) {
-                    $app->flash(
+                    $this->flash->addMessage(
                         'warning_detected',
                         $warning_detected
                     );
                 }
                 if (count($success_detected) > 0) {
-                    $app->flash(
+                    $this->flash->addMessage(
                         'success_detected',
                         $success_detected
                     );
@@ -1096,29 +1103,25 @@ $app->post(
                     );
                     die();
                 } elseif ( count($error_detected) == 0 ) {
-                    $app->redirect(
-                        $app->urlFor(
-                            'member',
-                            array(
-                                'id' => $member->id
-                            )
-                        )
-                    );
+
+                    return $response
+                        ->withStatus(301)
+                        ->withHeader('Location', $this->router->pathFor('member', ['id' => $member->id]));
                 }
             } else {
-                $app->flash(
+                $this->flash->addMessage(
                     'error_detected',
                     $error_detected
                 );
             }
         }
     }
-)->name('storemembers');
+)->setName('storemembers');
 
 //advanced search page
 $app->get(
     '/advanced-search',
-    $authenticate(),
+    $authenticate,
     function () use ($app, &$session, $members_fields, $members_fields_cats, $preferences) {
         if ( isset($session['filters']['members']) ) {
             $filters = unserialize($session['filters']['members']);
@@ -1200,12 +1203,12 @@ $app->get(
             )
         );
     }
-)->name('advanced-search');
+)->setName('advanced-search');
 
 //Batch actions on members list
 $app->post(
     '/members/batch',
-    $authenticate(),
+    $authenticate,
     function () use ($app, &$session) {
         $request = $app->request();
 
@@ -1220,15 +1223,15 @@ $app->post(
             $session['filters']['members'] = serialize($filters);
 
             if ( $request->post('cards') ) {
-                $app->redirect(
-                    $app->urlFor('pdf-members-cards')
-                );
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('pdf-members-cards'));
             }
 
             if ( $request->post('labels') ) {
-                $app->redirect(
-                    $app->urlFor('pdf-members-labels')
-                );
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('pdf-members-labels'));
             }
 
             if ( $request->post('mailing') ) {
@@ -1236,12 +1239,10 @@ $app->post(
                 if ( $request->post() ) {
                     $options['new'] = 'new';
                 }
-                $app->redirect(
-                    $app->urlFor(
-                        'mailing',
-                        $options
-                    )
-                );
+
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('mailing', $options));
             }
 
             if ( $request->post('attendance_sheet') ) {
@@ -1249,29 +1250,30 @@ $app->post(
             }
 
             if ( $request->post('csv') ) {
-                $app->redirect(
-                    $app->urlFor('csv-memberslist')
-                );
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('csv-memberslist'));
             }
 
         } else {
-            $app->flash(
+            $this->flash->addMessage(
                 'error_detected',
                 array(
                     _T("No member was selected, please check at least one name.")
                 )
             );
-            $app->redirect(
-                $app->urlFor('members')
-            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('members'));
         }
     }
-)->name('batch-memberslist');
+)->setName('batch-memberslist');
 
 //PDF members cards
 $app->get(
     '/members/cards',
-    $authenticate(),
+    $authenticate,
     function () use ($app, $preferences, $session) {
         if ( isset($session['filters']['members']) ) {
             $filters =  unserialize($session['filters']['members']);
@@ -1291,15 +1293,16 @@ $app->get(
                     'No member selected to generate members cards',
                     Analog::INFO
                 );
-                $app->flash(
+                $this->flash->addMessage(
                     'error_detected',
                     array(
                         _T("No member was selected, please check at least one name.")
                     )
                 );
-                $app->redirect(
-                    $app->urlFor('members')
-                );
+
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('members'));
             }
         }
 
@@ -1324,27 +1327,28 @@ $app->get(
                 Analog::ERROR
             );
 
-            $app->flash(
+            $this->flash->addMessage(
                 'error_detected',
                 array(
                     _T("Unable to get members list.")
                 )
             );
-            $app->redirect(
-                $app->urlFor('members')
-            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('members'));
         }
 
         $pdf = new PdfMembersCards($preferences);
         $pdf->drawCards($members);
         $pdf->Output(_T("Cards") . '.pdf', 'D');
     }
-)->name('pdf-members-cards');
+)->setName('pdf-members-cards');
 
 //PDF members labels
 $app->get(
     '/members/labels',
-    $authenticate(),
+    $authenticate,
     function () use ($app, $preferences, $session) {
 
         if ( isset ($session['filters']['reminders_labels']) ) {
@@ -1369,15 +1373,16 @@ $app->get(
         } else {
             if ( count($filters->selected) == 0 ) {
                 Analog::log('No member selected to generate labels', Analog::INFO);
-                $app->flash(
+                $this->flash->addMessage(
                     'error_detected',
                     array(
                         _T("No member was selected, please check at least one name.")
                     )
                 );
-                $app->redirect(
-                    $app->urlFor('members')
-                );
+
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('members'));
             }
 
             $m = new Members();
@@ -1393,27 +1398,28 @@ $app->get(
                 Analog::ERROR
             );
 
-            $app->flash(
+            $this->flash->addMessage(
                 'error_detected',
                 array(
                     _T("Unable to get members list.")
                 )
             );
-            $app->redirect(
-                $app->urlFor('members')
-            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('members'));
         }
 
         $pdf = new PdfMembersLabels($preferences);
         $pdf->drawLabels($members);
         $pdf->Output(_T("labels_print_filename") . '.pdf', 'D');
     }
-)->name('pdf-members-labels');
+)->setName('pdf-members-labels');
 
 //mailing
 $app->get(
     '/mailing',
-    $authenticate(),
+    $authenticate,
     function () use ($app, $preferences, &$session,
         &$success_detected, &$warning_detected, &$error_detected
     ) {
@@ -1639,12 +1645,12 @@ $app->get(
         );
 
     }
-)->name('mailing');
+)->setName('mailing');
 
 //members list CSV export
 $app->get(
     '/members/export/csv',
-    $authenticate(),
+    $authenticate,
     function () use ($app, $session, $login, $zdb,
         $members_fields, $members_fields_cats
     ) {
@@ -1834,4 +1840,4 @@ $app->get(
             $response->setStatus(404);
         }
     }
-)->name('csv-memberslist');
+)->setName('csv-memberslist');

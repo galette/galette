@@ -40,7 +40,7 @@ use Galette\Repository\Groups;
 
 $app->get(
     '/groups',
-    $authenticate(),
+    $authenticate,
     function () use ($app, $login, &$session) {
 
         $groups = new Groups();
@@ -76,5 +76,5 @@ $app->get(
             )
         );
     }
-)->name('groups');
+)->setName('groups');
 
