@@ -443,7 +443,7 @@ function getCurrentUri($app)
     );
 
     //add ending / if missing
-    if ( $curUri === ''
+    if ($curUri === ''
         || $curUri !== '/'
         && substr($curUri, -1) !== '/'
     ) {
@@ -489,8 +489,9 @@ $app->add(function ($request, $response, $next) {
 $app->add(function ($request, $response, $next) {
     $route = $request->getAttribute('route');
 
-    //$this->view->getSmarty()->assign('cur_route', $route->getName());
-    $this->view->getSmarty()->assign('cur_route', 'dashboard');
+    if ($route != null) {
+        $this->view->getSmarty()->assign('cur_route', $route->getName());
+    }
 
     $acls = array_merge($this->get('acls'), $this->get('plugins')->getAcls());
 

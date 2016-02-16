@@ -3,9 +3,9 @@
 {block name="content"}
 {if $navigate|@count != 0}
     <nav>
-        <a id="prev" href="{if isset($navigate.prev)}{urlFor name="member" options="id.`$navigate.prev`"}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">{_T string="Previous"}</a>
+        <a id="prev" href="{if isset($navigate.prev)}{path_for name="member" data=["id" => $navigate.prev]}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">{_T string="Previous"}</a>
         {$navigate.pos}/{$navigate.count}
-        <a id="next" href="{if isset($navigate.next)}{urlFor name="member" options="id.`$navigate.next`"}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">{_T string="Next"}</a>
+        <a id="next" href="{if isset($navigate.next)}{path_for name="member" data=["id" => $navigate.next]}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">{_T string="Next"}</a>
     </nav>
 {/if}
         <ul id="details_menu">
@@ -23,7 +23,7 @@
     {/if}
 {/if}
             <li>
-                <a class="button" href="{urlFor name="editmember" options="action.edit|id.`$member->id`"}" id="btn_edit">{_T string="Modification"}</a>
+                <a class="button" href="{path_for name="editmember" data=["action" => "edit", "id" => $member->id]}" id="btn_edit">{_T string="Modification"}</a>
             </li>
 {if $login->isAdmin() or $login->isStaff()}
             <li>
@@ -50,15 +50,15 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     {if $member->hasParent()}
             <tr>
                 <th>{_T string="Attached to:"}</th>
-                <td><a href="{urlFor name="member" options=["id" => $member->parent->id]}">{$member->parent->sfullname}</a></td>
+                <td><a href="{path_for name="member" data=["id" => $member->parent->id]}">{$member->parent->sfullname}</a></td>
             </tr>
     {/if}
     {if $member->hasChildren()}
             <tr>
                 <th>{_T string="Parent of:"}</th>
                 <td>
-        {foreach from=$children item=child key=cid}
-                    <a href="{urlFor name="member" options="id.`$cid`"}">{$child}</a>{if not $child@last}, {/if}
+        {foreach from=$member->children item=child key=cid}
+                    <a href="{path_for name="member" data=["id" => $cid]}">{$child}</a>{if not $child@last}, {/if}
         {/foreach}
                 </td>
             </tr>
@@ -120,7 +120,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {assign var="mid" value=$member->id}
                 <td rowspan="{$elements|count}" style="width:{$member->picture->getOptimalWidth()}px;">
                     <img
-                        src="{urlFor name="photo" options="id.$mid|rand.$time"}"
+                        src="{path_for name="photo" data=["id" => $mid, "rand" => $time]}"
                         width="{$member->picture->getOptimalWidth()}"
                         height="{$member->picture->getOptimalHeight()}"
                         alt="{_T string="Picture"}"

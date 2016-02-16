@@ -1,7 +1,7 @@
 {extends file="page.tpl"}
 
 {block name="content"}
-        <form action="{urlFor name="filter-memberslist"}" method="post" id="filtre">
+        <form action="{path_for name="filter-memberslist"}" method="post" id="filtre">
         <div id="listfilter">
 {if !isset($adv_filters) || !$adv_filters}
             <label for="filter_str">{_T string="Search:"}&nbsp;</label>
@@ -58,7 +58,7 @@
             </tr>
         </table>
         </form>
-        <form action="{urlFor name="batch-memberslist"}" method="post" id="listform">
+        <form action="{path_for name="batch-memberslist"}" method="post" id="listform">
         <table class="listing">
             <thead>
                 <tr>
@@ -79,7 +79,7 @@
                     <th class="id_row">#</th>
 {/if}
                     <th class="left">
-                        <a href="{urlFor name="members" options=["option" => 'order', "value" => "Galette\Repository\Members::ORDERBY_NAME"|constant]}">
+                        <a href="{path_for name="members" data=["option" => 'order', "value" => "Galette\Repository\Members::ORDERBY_NAME"|constant]}">
                             {_T string="Name"}
                             {if $filters->orderby eq constant('galette\Repository\Members::ORDERBY_NAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -91,7 +91,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="{urlFor name="members" options=["option" => 'order', "value" => "Galette\Repository\Members::ORDERBY_NICKNAME"|constant]}">
+                        <a href="{path_for name="members" data=["option" => 'order', "value" => "Galette\Repository\Members::ORDERBY_NICKNAME"|constant]}">
                             {_T string="Nickname"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NICKNAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -103,7 +103,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="{urlFor name="members" options=["option" => 'order', "value" => "Galette\Repository\Members::ORDERBY_STATUS"|constant]}">
+                        <a href="{path_for name="members" data=["option" => 'order', "value" => "Galette\Repository\Members::ORDERBY_STATUS"|constant]}">
                             {_T string="Status"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_STATUS')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -116,7 +116,7 @@
                     </th>
 {if $login->isAdmin() or $login->isStaff()}
                     <th class="left">
-                        <a href="{urlFor name="members" options=["option" => 'order', "value" => "Galette\Repository\Members::ORDERBY_FEE_STATUS"|constant]}">
+                        <a href="{path_for name="members" data=["option" => 'order', "value" => "Galette\Repository\Members::ORDERBY_FEE_STATUS"|constant]}">
                             {_T string="State of dues"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_FEE_STATUS')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -128,7 +128,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="{urlFor name="members" options=["option" => 'order', "value" => "Galette\Repository\Members::ORDERBY_MODIFDATE"|constant]}">
+                        <a href="{path_for name="members" data=["option" => 'order', "value" => "Galette\Repository\Members::ORDERBY_MODIFDATE"|constant]}">
                             {_T string="Modified"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_MODIFDATE')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -217,7 +217,7 @@
                         <img src="{$galette_base_path}{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
                     {/if}
                         {assign var="mid" value=$member->id}
-                        <a href="{urlFor name="member" options="id.$mid"}">{$member->sname}{if $member->company_name} ({$member->company_name}){/if}</a>
+                        <a href="{path_for name="member" data=["id" => $member->id]}">{$member->sname}{if $member->company_name} ({$member->company_name}){/if}</a>
                     </td>
                     <td class="{$rclass} nowrap">{$member->nickname|htmlspecialchars}</td>
                     <td class="{$rclass} nowrap">{statusLabel id=$member->status}</td>
@@ -226,13 +226,13 @@
                     <td class="{$rclass}">{$member->modification_date}</td>
 {/if}
                     <td class="{$rclass} center nowrap actions_row">
-                        <a href="{urlFor name="editmember" options="action.edit|id.$mid"}"><img src="{$galette_base_path}{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="%membername: edit informations" pattern="/%membername/" replace=$member->sname}"/></a>
+                        <a href="{path_for name="editmember" data=["action" => "edit", "id" => $mid]}"><img src="{$galette_base_path}{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="%membername: edit informations" pattern="/%membername/" replace=$member->sname}"/></a>
 {if $login->isAdmin() or $login->isStaff()}
                         <a href="gestion_contributions.php?id_adh={$member->id}"><img src="{$galette_base_path}{$template_subdir}images/icon-money.png" alt="{_T string="[$]"}" width="16" height="16" title="{_T string="%membername: contributions" pattern="/%membername/" replace=$member->sname}"/></a>
                         <a onclick="return confirm('{_T string="Do you really want to delete this member from the base? This will also delete the history of his fees. You could instead disable the account.\n\nDo you still want to delete this member ?"|escape:"javascript"}')" href="gestion_adherents.php?sup={$member->id}"><img src="{$galette_base_path}{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="%membername: remove from database" pattern="/%membername/" replace=$member->sname}"/></a>
 {/if}
 {if $login->isSuperAdmin()}
-                        <a href="{urlFor name="impersonate" options="id.$mid"}"><img src="{$galette_base_path}{$template_subdir}images/icon-impersonate.png" alt="{_T string="Impersonate"}" width="16" height="16" title="{_T string="Log in in as %membername" pattern="/%membername/" replace=$member->sname}"/></a>
+                        <a href="{path_for name="impersonate" data=["id" => $mid]}"><img src="{$galette_base_path}{$template_subdir}images/icon-impersonate.png" alt="{_T string="Impersonate"}" width="16" height="16" title="{_T string="Log in in as %membername" pattern="/%membername/" replace=$member->sname}"/></a>
 {/if}
             {* If some additionnals actions should be added from plugins, we load the relevant template file
             We have to use a template file, so Smarty will do its work (like replacing variables). *}

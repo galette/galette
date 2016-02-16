@@ -55,12 +55,14 @@ use Analog\Analog;
 
 abstract class Pagination
 {
-    private $_current_page;
-    private $_orderby;
-    private $_ordered;
-    private $_show;
-    private $_pages = 1;
-    private $_counter = null;
+    private $current_page;
+    private $orderby;
+    private $ordered;
+    private $show;
+    private $pages = 1;
+    private $counter = null;
+    private $view;
+    private $router;
 
     const ORDER_ASC = 'ASC';
     const ORDER_DESC = 'DESC';
@@ -108,10 +110,10 @@ abstract class Pagination
     {
         global $preferences;
 
-        $this->_current_page = 1;
-        $this->_orderby = $this->getDefaultOrder();
-        $this->_ordered = $this->getDefaultDirection();
-        $this->_show = (int)$preferences->pref_numrows;
+        $this->current_page = 1;
+        $this->orderby = $this->getDefaultOrder();
+        $this->ordered = $this->getDefaultDirection();
+        $this->show = (int)$preferences->pref_numrows;
     }
 
     /**
@@ -121,12 +123,12 @@ abstract class Pagination
      */
     public function invertorder()
     {
-        $actual=$this->_ordered;
+        $actual=$this->ordered;
         if ($actual == self::ORDER_ASC) {
-                $this->_ordered = self::ORDER_DESC;
+                $this->ordered = self::ORDER_DESC;
         }
         if ($actual == self::ORDER_DESC) {
-                $this->_ordered = self::ORDER_ASC;
+                $this->ordered = self::ORDER_ASC;
         }
     }
 
@@ -137,7 +139,7 @@ abstract class Pagination
      */
     public function getDirection()
     {
-        return $this->_ordered;
+        return $this->ordered;
     }
 
     /**
@@ -149,15 +151,15 @@ abstract class Pagination
      */
     public function setDirection($direction)
     {
-        if ( $direction == self::ORDER_ASC || $direction == self::ORDER_DESC ) {
-            $this->_ordered = $direction;
+        if ($direction == self::ORDER_ASC || $direction == self::ORDER_DESC) {
+            $this->ordered = $direction;
         } else {
             Analog::log(
                 'Trying to set a sort direction that is not know (`' .
                 $direction . '`). Reverting to default value.',
                 Analog::WARNING
             );
-            $this->_ordered == self::ORDER_ASC;
+            $this->ordered == self::ORDER_ASC;
         }
     }
 
@@ -170,10 +172,10 @@ abstract class Pagination
      */
     protected function setLimits($select)
     {
-        if ( $this->_show !== 0 ) {
-            $select->limit($this->_show);
+        if ($this->show !== 0) {
+            $select->limit($this->show);
             $select->offset(
-                ($this->current_page - 1) * $this->_show
+                ($this->current_page - 1) * $this->show
             );
         }
     }
@@ -185,20 +187,20 @@ abstract class Pagination
      */
     protected function countPages()
     {
-        if ( $this->_show !== 0 ) {
-            if ($this->_counter % $this->_show == 0) {
-                $this->_pages = intval($this->_counter / $this->_show);
+        if ($this->show !== 0) {
+            if ($this->counter % $this->show == 0) {
+                $this->pages = intval($this->counter / $this->show);
             } else {
-                $this->_pages = intval($this->_counter / $this->_show) + 1;
+                $this->pages = intval($this->counter / $this->show) + 1;
             }
         } else {
-            $this->_pages = 0;
+            $this->pages = 0;
         }
-        if ($this->_pages == 0) {
-            $this->_pages = 1;
+        if ($this->pages == 0) {
+            $this->pages = 1;
         }
-        if ( $this->_current_page > $this->_pages ) {
-            $this->_current_page = $this->_pages;
+        if ($this->current_page > $this->pages) {
+            $this->current_page = $this->pages;
         }
     }
 
@@ -206,23 +208,25 @@ abstract class Pagination
      * Creates pagination links and assign some usefull variables to the
      * Smarty template
      *
-     * @param Slim    $app        Application instance
+     * @param Router  $router     Application instance
      * @param Smarty  $view       View instance
      * @param boolean $restricted Do not permit to display all
      *
      * @return void
      */
-    public function setSmartyPagination(Slim $app, Smarty $view, $restricted = true)
+    public function setSmartyPagination(\Slim\Router $router, \Smarty $view, $restricted = true)
     {
         $paginate = null;
+        $this->view = $view;
+        $this->router = $router;
 
         //Create pagination links
-        if ( $this->current_page < 11 ) {
+        if ($this->current_page < 11) {
             $idepart=1;
         } else {
             $idepart = $this->current_page - 10;
         }
-        if ( $this->current_page + 10 < $this->pages ) {
+        if ($this->current_page + 10 < $this->pages) {
             $ifin = $this->current_page + 10;
         } else {
             $ifin = $this->pages;
@@ -231,25 +235,25 @@ abstract class Pagination
         $next = $this->current_page + 1;
         $previous = $this->current_page - 1;
 
-        if ( $this->current_page != 1 ) {
-            $paginate .= $this->_getLink(
+        if ($this->current_page != 1) {
+            $paginate .= $this->getLink(
                 '&lt;&lt;',
-                $this->_getHref($app, 1),
+                $this->getHref(1),
                 preg_replace("(%i)", $next, _T("First page"))
             );
 
-            $paginate .= $this->_getLink(
+            $paginate .= $this->getLink(
                 '&lt;',
-                $this->_getHref($app, $previous),
+                $this->getHref($previous),
                 preg_replace("(%i)", $previous, _T("Previous page (%i)"))
             );
         }
 
-        for ( $i = $idepart ; $i <= $ifin ; $i++ ) {
-            if ( $i == $this->current_page ) {
-                $paginate .= $this->_getLink(
+        for ($i = $idepart; $i <= $ifin; $i++) {
+            if ($i == $this->current_page) {
+                $paginate .= $this->getLink(
                     "-&nbsp;$i&nbsp;-",
-                    $this->_getHref($app, $this->current_page),
+                    $this->getHref($this->current_page),
                     preg_replace(
                         "(%i)",
                         $this->current_page,
@@ -258,23 +262,23 @@ abstract class Pagination
                     true
                 );
             } else {
-                $paginate .= $this->_getLink(
+                $paginate .= $this->getLink(
                     $i,
-                    $this->_getHref($app, $i),
+                    $this->getHref($i),
                     preg_replace("(%i)", $i, _T("Page %i"))
                 );
             }
         }
-        if ($this->current_page != $this->pages ) {
-            $paginate .= $this->_getLink(
+        if ($this->current_page != $this->pages) {
+            $paginate .= $this->getLink(
                 '&gt;',
-                $this->_getHref($app, $next),
+                $this->getHref($next),
                 preg_replace("(%i)", $next, _T("Next page (%i)"))
             );
 
-            $paginate .= $this->_getLink(
+            $paginate .= $this->getLink(
                 '&gt;&gt;',
-                $this->_getHref($app, $this->pages),
+                $this->getHref($this->pages),
                 preg_replace("(%i)", $this->pages, _T("Last page (%i)"))
             );
         }
@@ -286,20 +290,19 @@ abstract class Pagination
             100 => "100"
         );
 
-        if ( $restricted === false ) {
+        if ($restricted === false) {
             $options[0] = _T("All");
         }
 
         //Now, we assign common variables to Smarty template
-        $view->setData(
-            array(
-                'nb_pages'          => $this->pages,
-                'page'              => $this->current_page,
-                'numrows'           => $this->show,
-                'pagination'        => $paginate,
-                'nbshow_options'    => $options
-            )
-        );
+        $view->assign('nb_pages', $this->pages);
+        $view->assign('page', $this->current_page);
+        $view->assign('numrows', $this->show);
+        $view->assign('pagination', $paginate);
+        $view->assign('nbshow_options', $options);
+
+        $this->view = null;
+        $this->router = null;
     }
 
     /**
@@ -312,11 +315,11 @@ abstract class Pagination
      *
      * @return string
      */
-    private function _getLink($content, $url, $title, $current = false)
+    private function getLink($content, $url, $title, $current = false)
     {
         $tabs = "\t\t\t\t\t\t";
         $link = $tabs . "<li";
-        if ( $current === true ) {
+        if ($current === true) {
             $link .= " class=\"current\" ";
         }
         $link .= "><a href=\"" . $url . "\" " .
@@ -327,16 +330,15 @@ abstract class Pagination
     /**
      * Build href
      *
-     * @param Slim $app  Application instance
-     * @param int  $page Page
+     * @param int $page Page
      *
      * @return string
      */
-    private function _getHref($app, $page)
+    private function getHref($page)
     {
-        $view = $app->view();
-        $href = $app->urlFor(
-            $view->getData('cur_route'), [
+        $href = $this->router->pathFor(
+            $this->view->getTemplateVars('cur_route'),
+            [
                 'option'    => 'page',
                 'value'     => $page
             ]
@@ -360,7 +362,7 @@ abstract class Pagination
             Analog::DEBUG
         );
 
-        if ( in_array($name, $this->pagination_fields) ) {
+        if (in_array($name, $this->pagination_fields)) {
             $name = '_' . $name;
             return $this->$name;
         } else {
@@ -389,66 +391,65 @@ abstract class Pagination
             Analog::DEBUG
         );
 
-        $rname = '_' . $name;
-        switch($name) {
-        case 'ordered':
-            if ( $value == self::ORDER_ASC || $value == self::ORDER_DESC ) {
-                $this->$rname = $value;
-            } else {
+        switch ($name) {
+            case 'ordered':
+                if ($value == self::ORDER_ASC || $value == self::ORDER_DESC) {
+                    $this->$name = $value;
+                } else {
+                    Analog::log(
+                        '[' . get_class($this) .
+                        '|Pagination] Possibles values for field `' .
+                        $name . '` are: `' . self::ORDER_ASC . '` or `' .
+                        self::ORDER_DESC . '` - `' . $value . '` given',
+                        Analog::WARNING
+                    );
+                }
+                break;
+            case 'orderby':
+                if ($this->$name == $value) {
+                    $this->invertorder();
+                } else {
+                    $this->$name = $value;
+                    $this->setDirection(self::ORDER_ASC);
+                }
+                break;
+            case 'current_page':
+            case 'counter':
+            case 'pages':
+                if (is_int($value) && $value > 0) {
+                    $this->$name = $value;
+                } else {
+                    Analog::log(
+                        '[' . get_class($this) .
+                        '|Pagination] Value for field `' .
+                        $name . '` should be a positive integer - (' .
+                        gettype($value) . ')' . $value . ' given',
+                        Analog::WARNING
+                    );
+                }
+                break;
+            case 'show':
+                if ($value == 'all'
+                    || preg_match('/[[:digit:]]/', $value)
+                    && $value >= 0
+                ) {
+                    $this->$name = (int)$value;
+                } else {
+                    Analog::log(
+                        '[' . get_class($this) . '|Pagination] Value for `' .
+                        $name . '` should be a positive integer or \'all\' - (' .
+                        gettype($value) . ')' . $value . ' given',
+                        Analog::WARNING
+                    );
+                }
+                break;
+            default:
                 Analog::log(
                     '[' . get_class($this) .
-                    '|Pagination] Possibles values for field `' .
-                    $name . '` are: `' . self::ORDER_ASC . '` or `' .
-                    self::ORDER_DESC . '` - `' . $value . '` given',
+                    '|Pagination] Unable to set proprety `' . $name . '`',
                     Analog::WARNING
                 );
-            }
-            break;
-        case 'orderby':
-            if ( $this->$rname == $value ) {
-                $this->invertorder();
-            } else {
-                $this->$rname = $value;
-                $this->setDirection(self::ORDER_ASC);
-            }
-            break;
-        case 'current_page':
-        case 'counter':
-        case 'pages':
-            if ( is_int($value) && $value > 0 ) {
-                $this->$rname = $value;
-            } else {
-                Analog::log(
-                    '[' . get_class($this) .
-                    '|Pagination] Value for field `' .
-                    $name . '` should be a positive integer - (' .
-                    gettype($value) . ')' . $value . ' given',
-                    Analog::WARNING
-                );
-            }
-            break;
-        case 'show':
-            if (   $value == 'all'
-                || preg_match('/[[:digit:]]/', $value)
-                && $value >= 0
-            ) {
-                $this->$rname = (int)$value;
-            } else {
-                Analog::log(
-                    '[' . get_class($this) . '|Pagination] Value for `' .
-                    $name . '` should be a positive integer or \'all\' - (' .
-                    gettype($value) . ')' . $value . ' given',
-                    Analog::WARNING
-                );
-            }
-            break;
-        default:
-            Analog::log(
-                '[' . get_class($this) .
-                '|Pagination] Unable to set proprety `' . $name . '`',
-                Analog::WARNING
-            );
-            break;
+                break;
         }
     }
 }

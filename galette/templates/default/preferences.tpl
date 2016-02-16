@@ -116,7 +116,7 @@
                 <p>
                     <label for="pref_numrows" class="bline">{_T string="Lines / Page:"}</label>
                     <select name="pref_numrows" id="pref_numrows">
-                        {*html_options options=$pref_numrows_options selected=$pref.pref_numrows*}
+                        {html_options options=$pref_numrows_options selected=$pref.pref_numrows}
                     </select>
                 </p>
                 <p>

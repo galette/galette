@@ -339,7 +339,7 @@ $app->get(
 
 //members list
 $app->get(
-    '/members[/{option}/{value}]',
+    '/members[/{option:page|order}/{value:\d+}]',
     function ($request, $response, $args = []) {
         $option = null;
         if (isset($args['option'])) {
@@ -382,11 +382,10 @@ $app->get(
         //$view = $app->view();
 
         //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($this->router, $this->view, false);
-        $filters->setViewCommonsFilters($this->preferences, $view);
+        $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
+        $filters->setViewCommonsFilters($this->preferences, $this->view->getSmarty());
 
         $this->session['filters']['members'] = serialize($filters);
-
 
         // display page
         $this->view->render(
@@ -407,12 +406,7 @@ $app->get(
     }
 )->setName(
     'members'
-)->add($authenticate)/*->conditions(
-    array(
-        'option'    => '(page|order)',
-        'value'     => '\d+'
-    )
-)*/;
+)->add($authenticate);
 
 //members list filtering
 $app->post(
@@ -420,7 +414,7 @@ $app->post(
     function ($from = 'members') use ($app, &$session) {
         $request = $app->request();
 
-        if ( isset($session['filters']['members']) ) {
+        if (isset($session['filters']['members'])) {
             //CAUTION: this one may be simple or advanced, display must change
             $filters = unserialize($session['filters']['members']);
         } else {
@@ -428,68 +422,67 @@ $app->post(
         }
 
         //reintialize filters
-        if ( $request->post('clear_filter') ) {
+        if ($request->post('clear_filter')) {
             $filters->reinit();
             if ($filters instanceof AdvancedMembersList) {
                 $filters = new MembersList();
             }
 
-        } else if ( $request->post('clear_adv_filter') ) {
+        } elseif ($request->post('clear_adv_filter')) {
             $session['filters']['members'] = null;
             unset($session['filters']['members']);
 
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('advanced-search'));
-        } else if ( $request->post('adv_criterias') ) {
-
+        } elseif ($request->post('adv_criterias')) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('advanced-search'));
         } else {
             //string to filter
-            if ( $request->post('filter_str') !== null ) { //filter search string
+            if ($request->post('filter_str') !== null) { //filter search string
                 $filters->filter_str = stripslashes(
                     htmlspecialchars($request->post('filter_str'), ENT_QUOTES)
                 );
             }
             //field to filter
-            if ( $request->post('filter_field') !== null ) {
-                if ( is_numeric($request->post('filter_field')) ) {
+            if ($request->post('filter_field') !== null) {
+                if (is_numeric($request->post('filter_field'))) {
                     $filters->field_filter = $request->post('filter_field');
                 }
             }
             //membership to filter
-            if ( $request->post('filter_membership') !== null ) {
-                if ( is_numeric($request->post('filter_membership')) ) {
+            if ($request->post('filter_membership') !== null) {
+                if (is_numeric($request->post('filter_membership'))) {
                     $filters->membership_filter
                         = $request->post('filter_membership');
                 }
             }
             //account status to filter
-            if ( $request->post('filter_account') !== null ) {
-                if ( is_numeric($request->post('filter_account')) ) {
+            if ($request->post('filter_account') !== null) {
+                if (is_numeric($request->post('filter_account'))) {
                     $filters->account_status_filter
                         = $request->post('filter_account');
                 }
             }
             //email filter
-            if ( $request->post('email_filter') !== null ) {
+            if ($request->post('email_filter') !== null) {
                 $filters->email_filter = (int)$request->post('email_filter');
             }
             //group filter
-            if ( $request->post('group_filter') !== null
+            if ($request->post('group_filter') !== null
                 && $request->post('group_filter') > 0
             ) {
                 $filters->group_filter = (int)$request->post('group_filter');
             }
             //number of rows to show
-            if ( $request->post('nbshow') !== null ) {
+            if ($request->post('nbshow') !== null) {
                 $filters->show = $request->post('nbshow');
             }
 
-            if ( $request->post('advanced_filtering') !== null ) {
-                if ( !$filters instanceof AdvancedMembersList ) {
+            if ($request->post('advanced_filtering') !== null) {
+                if (!$filters instanceof AdvancedMembersList) {
                     $filters = new AdvancedMembersList($filters);
                 }
                 //Advanced filters
@@ -497,12 +490,12 @@ $app->post(
                 $filters->reinit();
                 unset($posted['advanced_filtering']);
                 $freed = false;
-                foreach ( $posted as $k=>$v ) {
-                    if ( strpos($k, 'free_', 0) === 0 ) {
-                        if ( !$freed ) {
+                foreach ($posted as $k => $v) {
+                    if (strpos($k, 'free_', 0) === 0) {
+                        if (!$freed) {
                             $i = 0;
-                            foreach ( $posted['free_field'] as $f ) {
-                                if ( trim($f) !== ''
+                            foreach ($posted['free_field'] as $f) {
+                                if (trim($f) !== ''
                                     && trim($posted['free_text'][$i]) !== ''
                                 ) {
                                     $fs_search = $posted['free_text'][$i];
@@ -524,24 +517,24 @@ $app->post(
                             $freed = true;
                         }
                     } else {
-                        switch($k) {
-                        case 'filter_field':
-                            $k = 'field_filter';
-                            break;
-                        case 'filter_membership':
-                            $k= 'membership_filter';
-                            break;
-                        case 'filter_account':
-                            $k = 'account_status_filter';
-                            break;
-                        case 'contrib_min_amount':
-                        case 'contrib_max_amount':
-                            if ( trim($v) !== '' ) {
-                                $v = (float)$v;
-                            } else {
-                                $v = null;
-                            }
-                            break;
+                        switch ($k) {
+                            case 'filter_field':
+                                $k = 'field_filter';
+                                break;
+                            case 'filter_membership':
+                                $k= 'membership_filter';
+                                break;
+                            case 'filter_account':
+                                $k = 'account_status_filter';
+                                break;
+                            case 'contrib_min_amount':
+                            case 'contrib_max_amount':
+                                if (trim($v) !== '') {
+                                    $v = (float)$v;
+                                } else {
+                                    $v = null;
+                                }
+                                break;
                         }
                         $filters->$k = $v;
                     }
@@ -560,9 +553,8 @@ $app->post(
 //members self card
 $app->get(
     '/member/me',
-    function () use ($app, $login) {
-        if ($login->isSuperAdmin()) {
-
+    function ($request, $response) use ($app) {
+        if ($this->login->isSuperAdmin()) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('slash'));
@@ -572,20 +564,22 @@ $app->get(
             'groups'    => false,
             'dues'      => false
         );
-        $member = new Adherent($login->login, $deps);
+        $member = new Adherent($this->login->login, $deps);
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('member'), ['id' => $member->id]);
+            ->withHeader(
+                'Location',
+                $this->router->pathFor('member', ['id' => $member->id])
+            );
     }
 )->setName('me')->add($authenticate);
 
 //members card
 $app->get(
-    '/member/:id',
-    function ($id) use ($app, $login, $session, $i18n, $preferences,
-        $members_fields, $members_fields_cats
-    ) {
+    '/member/{id:\d+}',
+    function ($request, $response, $args) use ($members_fields, $members_fields_cats) {
+        $id = $args['id'];
         $dyn_fields = new DynamicFields();
 
         $deps = array(
@@ -597,47 +591,51 @@ $app->get(
         );
         $member = new Adherent((int)$id, $deps);
 
-        if ( $login->id != $id && !$login->isAdmin() && !$login->isStaff() ) {
+        if ($this->login->id != $id && !$this->login->isAdmin() && !$this->login->isStaff()) {
             //check if requested member is part of managed groups
             $groups = $member->groups;
             $is_managed = false;
-            foreach ( $groups as $g ) {
-                if ( $login->isGroupManager($g->getId()) ) {
+            foreach ($groups as $g) {
+                if ($this->login->isGroupManager($g->getId())) {
                     $is_managed = true;
                     break;
                 }
             }
-            if ( $is_managed !== true ) {
+            if ($is_managed !== true) {
                 //requested member is not part of managed groups, fall back to logged
                 //in member
-                $member->load($login->id);
-                $id = $login->id;
+                $member->load($this->login->id);
+                $id = $this->login->id;
             }
         }
 
         $navigate = array();
 
-        if ( isset($session['filters']['members']) ) {
-            $filters =  unserialize($session['filters']['members']);
+        if (isset($this->session['filters']['members'])) {
+            $filters =  unserialize($this->session['filters']['members']);
         } else {
             $filters = new MembersList();
         }
 
-        if ( ($login->isAdmin() || $login->isStaff() || $login->isGroupManager()) && count($filters) > 0 ) {
+        if (($this->login->isAdmin()
+            || $this->login->isStaff()
+            || $this->login->isGroupManager())
+            && count($filters) > 0
+        ) {
             $m = new Members($filters);
             $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
             $ids = $ids->toArray();
-            foreach ( $ids as $k=>$m ) {
-                if ( $m['id_adh'] == $member->id ) {
+            foreach ($ids as $k => $m) {
+                if ($m['id_adh'] == $member->id) {
                     $navigate = array(
                         'cur'  => $m['id_adh'],
                         'count' => count($ids),
                         'pos' => $k+1
                     );
-                    if ( $k > 0 ) {
+                    if ($k > 0) {
                         $navigate['prev'] = $ids[$k-1]['id_adh'];
                     }
-                    if ( $k < count($ids)-1 ) {
+                    if ($k < count($ids)-1) {
                         $navigate['next'] = $ids[$k+1]['id_adh'];
                     }
                     break;
@@ -646,7 +644,7 @@ $app->get(
         }
 
         //Set caller page ref for cards error reporting
-        //$session['caller'] = 'voir_adherent.php?id_adh='.$id_adh;
+        //$this->session['caller'] = 'voir_adherent.php?id_adh='.$id_adh;
 
         // declare dynamic field values
         $adherent['dyn'] = $dyn_fields->getFields('adh', $id, true);
@@ -662,14 +660,14 @@ $app->get(
 
         //if we got a mail warning when adding/editing a member,
         //we show it and delete it from session
-        /*if ( isset($session['mail_warning']) ) {
-            $warning_detected[] = $session['mail_warning'];
-            unset($session['mail_warning']);
+        /*if ( isset($this->session['mail_warning']) ) {
+            $warning_detected[] = $this->session['mail_warning'];
+            unset($this->session['mail_warning']);
         }
         $tpl->assign('warning_detected', $warning_detected);
-        if ( isset($session['account_success']) ) {
-            $success_detected = unserialize($session['account_success']);
-            unset($session['account_success']);
+        if ( isset($this->session['account_success']) ) {
+            $success_detected = unserialize($this->session['account_success']);
+            unset($this->session['account_success']);
         }*/
 
         // flagging fields visibility
@@ -678,7 +676,9 @@ $app->get(
 
         $display_elements = $fc->getDisplayElements();
 
-        $app->render(
+        // display page
+        $this->view->render(
+            $response,
             'voir_adherent.tpl',
             array(
                 'page_title'        => _T("Member Profile"),
@@ -686,9 +686,9 @@ $app->get(
                 'member'            => $member,
                 'data'              => $adherent,
                 'navigate'          => $navigate,
-                'pref_lang_img'     => $i18n->getFlagFromId($member->language),
-                'pref_lang'         => ucfirst($i18n->getNameFromId($member->language)),
-                'pref_card_self'    => $preferences->pref_card_self,
+                'pref_lang_img'     => $this->i18n->getFlagFromId($member->language),
+                'pref_lang'         => ucfirst($this->i18n->getNameFromId($member->language)),
+                'pref_card_self'    => $this->preferences->pref_card_self,
                 'dynamic_fields'    => $dynamic_fields,
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
@@ -696,7 +696,7 @@ $app->get(
                 'display_elements'  => $display_elements
             )
         );
-
+        return $response;
     }
 )->setName('member')->add($authenticate);
 
