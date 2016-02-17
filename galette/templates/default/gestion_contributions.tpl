@@ -1,6 +1,6 @@
 {extends file="page.tpl"}
 {block name="content"}
-        <form action="{urlFor name="payments_filter" options="type.contributions" }" method="post" id="filtre">
+        <form action="{path_for name="payments_filter" data=["type" => "contributions"]}" method="post" id="filtre">
         <div id="listfilter">
             <label for="date_field_filter">{_T string="Show contributions by"}</label>&nbsp;
             <select name="date_field_filter" id="date_field_filter">
@@ -38,7 +38,7 @@
                     <strong>{$member->sname}</strong>
     {if not $member->isActive() } ({_T string="Inactive"}){/if}
     {if $login->isAdmin() or $login->isStaff()}
-                    (<a href="{urlFor name="member" options=["id" => $member->id]}">{_T string="See member profile"}</a> -
+                    (<a href="{path_for name="member" data=["id" => $member->id]}">{_T string="See member profile"}</a> -
                     <a href="ajouter_contribution.php?id_adh={$member->id}">{_T string="Add a contribution"}</a>)
     {/if}
                     &nbsp;:
@@ -59,7 +59,7 @@
             </tr>
         </table>
         </form>
-        <form action="{urlFor name="contributions"}" method="post" id="listform">
+        <form action="{path_for name="contributions"}" method="post" id="listform">
         <table class="listing">
             <thead>
                 <tr>
@@ -210,7 +210,7 @@
         {if $contribution->filtre_cotis_adh eq ""}
                         <a href="gestion_contributions.php?id_adh={$mid}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
         {else}
-                        <a href="{urlFor name="member" options=["id" => $mid]}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
+                        <a href="{path_for name="member" data=["id" => $mid]}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
         {/if}
                     </td>
     {/if}

@@ -95,7 +95,7 @@
     <div id="infobox">{_T string="No member to show"}</div>
 {/if}
 {/block}
-{block name="javascripts"}{/block}
+{block name="javascripts"}
     {if $members|@count > 0}
         <script type="text/javascript">
             $(function(){

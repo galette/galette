@@ -3,7 +3,7 @@
 {foreach from=$members item=member}
         <div class="trombino">
             {assign var="mid" value=$member->id}
-            <img src="{urlFor name="photo" options="id.$mid|rand.$time"}" height="{$member->picture->getOptimalHeight()}" width="{$member->picture->getOptimalWidth()}" alt="{$member->sfullname}{if $member->nickname ne ''} ({$member->nickname|htmlspecialchars}){/if}"/>
+            <img src="{path_for name="photo" data=["id" => $mid, "rand" => $time]}" height="{$member->picture->getOptimalHeight()}" width="{$member->picture->getOptimalWidth()}" alt="{$member->sfullname}{if $member->nickname ne ''} ({$member->nickname|htmlspecialchars}){/if}"/>
             <br/>{$member->sfullname}{if $member->nickname ne ''} ({$member->nickname|htmlspecialchars}){/if}
         </div>
 {foreachelse}

@@ -39,10 +39,20 @@ use Galette\Entity\Contribution;
 use Galette\Repository\Contributions;
 
 $app->get(
-    '/contributions(/:id)(/:option/:value)',
-    function ($id = null, $option = null, $value = null) use ($app, $login, &$session) {
-        if (isset($session['contributions'])) {
-            $contribs = unserialize($session['contributions']);
+    '/contributions[/{option:page|order}/{value:\d+}]',
+    function ($request, $response, $args) {
+        //$id = $args['id'];
+        $option = null;
+        if (isset($args['option'])) {
+            $option = $args['option'];
+        }
+        $value = null;
+        if (isset($args['value'])) {
+            $value = $args['value'];
+        }
+
+        if (isset($this->session['contributions'])) {
+            $contribs = unserialize($this->session['contributions']);
         } else {
             $contribs = new Contributions();
         }
@@ -70,18 +80,15 @@ $app->get(
         }*/
         $contribs->max_amount = null;
 
-        $id = $app->request()->get('id');
-        if ( ($login->isAdmin() || $login->isStaff())
-            && isset($id) && $id != ''
-        ) {
-            if ( $id == 'all' ) {
+        /*if (($this->login->isAdmin() || $this->login->isStaff())) {
+            if ($id == 'all') {
                 $contribs->filtre_cotis_adh = null;
             } else {
                 $contribs->filtre_cotis_adh = $id;
             }
-        }
+        }*/
 
-        /*if ( $login->isAdmin() || $login->isStaff() ) {
+        /*if ($this->login->isAdmin() || $this->login->isStaff()) {
             //delete contributions
             if (isset($_GET['sup']) || isset($_POST['delete'])) {
                 if ( isset($_GET['sup']) ) {
@@ -92,13 +99,11 @@ $app->get(
             }
         }*/
 
-        $session['contributions'] = serialize($contribs);
+        //$this->session['contributions'] = serialize($contribs);
         $list_contribs = $contribs->getContributionsList(true);
 
-        $view = $app->view();
-
         //assign pagination variables to the template and add pagination links
-        $contribs->setSmartyPagination($app, $view);
+        $contribs->setSmartyPagination($this->router, $this->view->getSmarty());
 
         /*if ( $contribs->filtre_cotis_adh != null && !$ajax ) {
             $member = new Adherent();
@@ -106,7 +111,9 @@ $app->get(
             $tpl->assign('member', $member);
         }*/
 
-        $app->render(
+        // display page
+        $this->view->render(
+            $response,
             'gestion_contributions.tpl',
             array(
                 'page_title'            => _T("Contributions management"),
@@ -119,29 +126,25 @@ $app->get(
                 'mode'                  => 'std'
             )
         );
+        return $response;
     }
 )->setName(
     'contributions'
-)->add($authenticate)/*->conditions(
-    array(
-        'option'    => '(page|order)',
-        'value'     => '\d+'
-    )
-)*/;
+)->add($authenticate);
 
 $app->get(
     '/transactions',
-    function () use ($app, $login, &$session) {
-        if (!$login->isAdmin() && !$login->isStaff()) {
-            $id_adh = $login->id;
+    function ($request, $response) {
+        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+            $id_adh = $this->login->id;
         } else {
             $id_adh = get_numeric_form_value('id_adh', '');
         }
 
         $filtre_id_adh = '';
 
-        if ( isset($session['transactions']) ) {
-            $trans = unserialize($session['transactions']);
+        if (isset($this->session['transactions'])) {
+            $trans = unserialize($this->session['transactions']);
         } else {
             $trans = new Galette\Repository\Transactions();
         }
@@ -176,26 +179,25 @@ $app->get(
                 }
             }
         }*/
-        /*if ( ($login->isAdmin() || $login->isStaff()) && isset($_GET['id_adh']) && $_GET['id_adh'] != '' ) {
+        /*if ( ($this->login->isAdmin() || $this->login->isStaff()) && isset($_GET['id_adh']) && $_GET['id_adh'] != '' ) {
             if ( $_GET['id_adh'] == 'all' ) {
                 $trans->filtre_cotis_adh = null;
             } else {
                 $trans->filtre_cotis_adh = $_GET['id_adh'];
             }
         }
-        if ( $login->isAdmin() || $login->isStaff() ) {
+        if ( $this->login->isAdmin() || $this->login->isStaff() ) {
             $trans_id = get_numeric_form_value('sup', '');
             if ($trans_id != '') {
                 $trans->removeTransactions($trans_id);
             }
         }*/
 
-        $session['transactions'] = serialize($trans);
+        $this->session['transactions'] = serialize($trans);
         $list_trans = $trans->getTransactionsList(true);
 
-        $view = $app->view();
         //assign pagination variables to the template and add pagination links
-        $trans->setSmartyPagination($app, $view);
+        $trans->setSmartyPagination($this->router, $this->view->getSmarty());
 
         /*if ( $trans->filtre_cotis_adh != null ) {
             $member = new Galette\Entity\Adherent();
@@ -203,8 +205,9 @@ $app->get(
             $tpl->assign('member', $member);
         }*/
 
-
-        $app->render(
+        // display page
+        $this->view->render(
+            $response,
             'gestion_transactions.tpl',
             array(
                 'page_title'            => _T("Transactions management"),
@@ -216,17 +219,18 @@ $app->get(
                 'mode'                  => 'std'
             )
         );
-
+        return $response;
     }
 )->setName('transactions')->add($authenticate);
 
 $app->post(
-    '/:type/filter',
-    function ($type) use ($app, $login, &$session) {
-        $request = $app->request();
+    '/{type:contributions|transactions}/filter',
+    function ($request, $response, $args) {
+        $type = $args['type'];
+        $post = $request->getParsedBody();
 
-        if (isset($session[$type])) {
-            $contribs = unserialize($session[$type]);
+        if (isset($this->session[$type])) {
+            $contribs = unserialize($this->session[$type]);
         } else {
             $contribs = new Contributions();
         }
@@ -243,31 +247,31 @@ $app->post(
         }*/
         $contribs->max_amount = null;
 
-        if (($request->post('nbshow') && is_numeric($request->post('nbshow')))
+        if ((isset($post['nbshow']) && is_numeric($post['nbshow']))
         ) {
-            $contribs->show = $request->post('nbshow');
+            $contribs->show = $post['nbshow'];
         }
 
-        if ($request->post('clear_filter')) {
+        if (isset($post['clear_filter'])) {
             $contribs->reinit();
         } else {
-            if ($request->post('end_date_filter') || $request->post('start_date_filter')) {
+            if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
                 try {
-                    if ($request->post('start_date_filter')) {
+                    if (isset($post['start_date_filter'])) {
                         $field = _T("start date filter");
-                        $contribs->start_date_filter = $request->post('start_date_filter');
+                        $contribs->start_date_filter = $post['start_date_filter'];
                     }
-                    if ($request->post('end_date_filter')) {
+                    if (isset($post['end_date_filter'])) {
                         $field = _T("end date filter");
-                        $contribs->end_date_filter = $request->post('end_date_filter');
+                        $contribs->end_date_filter = $post['end_date_filter'];
                     }
                 } catch (Exception $e) {
                     $error_detected[] = $e->getMessage();
                 }
             }
 
-            if ($request->post('payment_type_filter') !== null) {
-                $ptf = (int)$request->post('payment_type_filter');
+            if (isset($post['payment_type_filter'])) {
+                $ptf = (int)$post['payment_type_filter'];
                 if ($ptf == Contribution::PAYMENT_OTHER
                     || $ptf == Contribution::PAYMENT_CASH
                     || $ptf == Contribution::PAYMENT_CREDITCARD
@@ -284,8 +288,8 @@ $app->post(
             }
         }
 
-        $id = $request->get('id');
-        if (($login->isAdmin() || $login->isStaff())
+        /*$id = $request->get('id');
+        if (($this->login->isAdmin() || $this->login->isStaff())
             && isset($id) && $id != ''
         ) {
             if ($id == 'all') {
@@ -293,9 +297,9 @@ $app->post(
             } else {
                 $contribs->filtre_cotis_adh = $id;
             }
-        }
+        }*/
 
-        /*if ( $login->isAdmin() || $login->isStaff() ) {
+        /*if ( $this->login->isAdmin() || $this->login->isStaff() ) {
             //delete contributions
             if (isset($_GET['sup']) || isset($_POST['delete'])) {
                 if ( isset($_GET['sup']) ) {
@@ -306,7 +310,7 @@ $app->post(
             }
         }*/
 
-        $session[$type] = serialize($contribs);
+        $this->session[$type] = serialize($contribs);
 
         return $response
             ->withStatus(301)
@@ -314,8 +318,4 @@ $app->post(
     }
 )->setName(
     'payments_filter'
-)->add($authenticate)/*->conditions(
-    array(
-        'type' => '(contributions|transactions)',
-    )
-)*/;
+)->add($authenticate);

@@ -1,6 +1,6 @@
 {extends file="page.tpl"}
 {block name="content"}
-        <form action="gestion_transactions.php" method="get" id="filtre">
+        <form action="{path_for name="payments_filter" data=["type" => "transactions"]}" method="post" id="filtre">
         <div id="listfilter">
             <label for="start_date_filter">{_T string="Show transactions since"}</label>&nbsp;
             <input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$transactions->start_date_filter}"/>
@@ -18,7 +18,7 @@
     {/if}
                     <strong>{$member->sname}</strong>
     {if $login->isAdmin() or $login->isStaff()}
-                    (<a href="{urlFor name="member" options=["id" => $member->id]}">{_T string="See member profile"}</a> -
+                    (<a href="{path_for name="member" data=["id" => $member->id]}">{_T string="See member profile"}</a> -
                     <a href="ajouter_transaction.php?id_adh={$member->id}">{_T string="Add a transaction"}</a>)
     {/if}
                     &nbsp;:
@@ -105,7 +105,7 @@
                             {if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}
                         </a>
     {else}
-                        <a href="{urlFor name="member" options=["id" => $mid]}">
+                        <a href="{path_for name="member" data=["id" => $mid]}">
                             {if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}
                         </a>
     {/if}

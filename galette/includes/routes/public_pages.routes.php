@@ -45,87 +45,99 @@ use Galette\Filters\MembersList;
 use Galette\Repository\Groups;
 use \Analog\Analog;
 
-$showPublicPages = function () use ($preferences, $login) {
-    return function () use ($preferences, $login) {
-        if ( !$preferences->showPublicPages($login) ) {
-            $this->flash->addMessage('error', _T("Unauthorized"));
+$showPublicPages = function ($request, $response, $next) use ($container, &$session) {
+    $login = $container->login;
+    $preferences = $container->preferences;
 
-            return $response
-                ->withStatus(403)
-                ->withHeader('Location', $this->router->pathFor('slash'));
-        }
-    };
+    if (!$preferences->showPublicPages($login)) {
+        $this->flash->addMessage('error', _T("Unauthorized"));
+
+        return $response
+            ->withStatus(403)
+            ->withHeader(
+                'Location',
+                $this->router->pathFor('slash')
+            );
+    }
+
+    return $next($request, $response);
 };
 
-//public members list
-$app->get(
-    '/public/members',
-    $showPublicPages,
-    function () use ($app, &$session) {
-        if ( isset($session['public_filters']['members']) ) {
-            $filters = unserialize($session['public_filters']['members']);
-        } else {
-            $filters = new MembersList();
+$app->group('/public', function () {
+    //public members list
+    $this->get(
+        '/members',
+        function ($request, $response) {
+            if (isset($this->session['public_filters']['members'])) {
+                $filters = unserialize($this->session['public_filters']['members']);
+            } else {
+                $filters = new MembersList();
+            }
+
+            /*// Filters
+            if (isset($_GET['page'])) {
+                $filters->current_page = (int)$_GET['page'];
+            }
+
+            if ( isset($_GET['clear_filter']) ) {
+                $filters->reinit();
+            }
+
+            //numbers of rows to display
+            if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
+                $filters->show = $_GET['nbshow'];
+            }
+
+            // Sorting
+            if ( isset($_GET['tri']) ) {
+                $filters->orderby = $_GET['tri'];
+            }*/
+
+
+            $m = new Members();
+            $members = $m->getPublicList(false, null);
+
+            $session = $this->session;
+            $session['public_filters']['members'] = serialize($filters);
+            $this->session = $session;
+
+            //assign pagination variables to the template and add pagination links
+            $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
+
+            // display page
+            $this->view->render(
+                $response,
+                'liste_membres.tpl',
+                array(
+                    'page_title'    => _T("Members list"),
+                    'members'       => $members,
+                    'nb_members'    => $m->getCount(),
+                    'filters'       => $filters
+                )
+            );
+            return $response;
         }
+    )->setName('public_members');
 
-        /*// Filters
-        if (isset($_GET['page'])) {
-            $filters->current_page = (int)$_GET['page'];
+    //public trombinoscope
+    $this->get(
+        '/trombinoscope',
+        function ($request, $response) {
+            $m = new Members();
+            $members = $m->getPublicList(true, null);
+
+            // display page
+            $this->view->render(
+                $response,
+                'trombinoscope.tpl',
+                array(
+                    'page_title'                => _T("Trombinoscope"),
+                    'additionnal_html_class'    => 'trombinoscope',
+                    'members'                   => $members,
+                    'time'                      => time()
+                )
+            );
+            return $response;
         }
-
-        if ( isset($_GET['clear_filter']) ) {
-            $filters->reinit();
-        }
-
-        //numbers of rows to display
-        if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
-            $filters->show = $_GET['nbshow'];
-        }
-
-        // Sorting
-        if ( isset($_GET['tri']) ) {
-            $filters->orderby = $_GET['tri'];
-        }*/
-
-
-        $m = new Members();
-        $members = $m->getPublicList(false, null);
-
-        $session['public_filters']['members'] = serialize($filters);
-
-        $view = $app->view();
-
-        //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($app, $view, false);
-
-        $app->render(
-            'liste_membres.tpl',
-            array(
-                'page_title'    => _T("Members list"),
-                'members'       => $members,
-                'nb_members'    => $m->getCount(),
-                'filters'       => $filters
-            )
-        );
-    }
-)->setName('public_members');
-
-//public trombinoscope
-$app->get(
-    '/public/trombinoscope',
-    $showPublicPages,
-    function () use ($app) {
-        $m = new Members();
-        $members = $m->getPublicList(true, null);
-
-        $app->render(
-            'trombinoscope.tpl',
-            array(
-                'page_title'                => _T("Trombinoscope"),
-                'additionnal_html_class'    => 'trombinoscope',
-                'members'                   => $members,
-                'time'                      => time()
-            )
-        );
-    }
-)->setName('public_trombinoscope');
+    )->setName('public_trombinoscope');
+})->add($showPublicPages);
