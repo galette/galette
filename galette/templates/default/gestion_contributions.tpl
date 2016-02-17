@@ -68,9 +68,9 @@
                         <a href="gestion_contributions.php?tri={Galette\Repository\Contributions::ORDERBY_DATE}" class="listing">{_T string="Date"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_DATE')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
-                        <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-                        <img src="{$galette_base_path}{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
                         {/if}
                         </a>
@@ -79,9 +79,9 @@
                         <a href="gestion_contributions.php?tri={Galette\Repository\Contributions::ORDERBY_BEGIN_DATE}" class="listing">{_T string="Begin"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_BEGIN_DATE')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
-                        <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-                        <img src="{$galette_base_path}{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
                         {/if}
                         </a>
@@ -90,9 +90,9 @@
                         <a href="gestion_contributions.php?tri={Galette\Repository\Contributions::ORDERBY_END_DATE}" class="listing">{_T string="End"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_END_DATE')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
-                        <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-                        <img src="{$galette_base_path}{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
                         {/if}
                         </a>
@@ -102,9 +102,9 @@
                         <a href="gestion_contributions.php?tri={Galette\Repository\Contributions::ORDERBY_MEMBER}" class="listing">{_T string="Member"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_MEMBER')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
-                        <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-                        <img src="{$galette_base_path}{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
                         {/if}
                         </a>
@@ -114,9 +114,9 @@
                         <a href="gestion_contributions.php?tri={Galette\Repository\Contributions::ORDERBY_TYPE}" class="listing">{_T string="Type"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_TYPE')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
-                        <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-                        <img src="{$galette_base_path}{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
                         {/if}
                         </a>
@@ -125,9 +125,9 @@
                         <a href="gestion_contributions.php?tri={Galette\Repository\Contributions::ORDERBY_AMOUNT}" class="listing">{_T string="Amount"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_AMOUNT')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
-                        <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-                        <img src="{$galette_base_path}{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
                         {/if}
                         </a>
@@ -136,9 +136,9 @@
                         <a href="gestion_contributions.php?tri={Galette\Repository\Contributions::ORDERBY_PAYMENT_TYPE}" class="listing">{_T string="Payment type"}
                         {if $contributions->orderby eq constant('Galette\Repository\Contributions::ORDERBY_PAYMENT_TYPE')}
                             {if $contributions->ordered eq constant('Galette\Repository\Contributions::ORDER_ASC')}
-                        <img src="{$galette_base_path}{$template_subdir}images/down.png" width="10" height="6" alt=""/>
+                        <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
-                        <img src="{$galette_base_path}{$template_subdir}images/up.png" width="10" height="6" alt=""/>
+                        <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
                             {/if}
                         {/if}
                         </a>
@@ -189,14 +189,14 @@
                         {/if}
                         {$ordre+1}
         {if $contribution->isTransactionPart() }
-                        <a href="{$galette_base_path}ajouter_transaction.php?trans_id={$contribution->transaction->id}" title="{_T string="Transaction: %s" pattern="/%s/" replace=$contribution->transaction->description}">
-                            <img src="{$galette_base_path}{$template_subdir}images/icon-money.png"
+                        <a href="{base_url}/ajouter_transaction.php?trans_id={$contribution->transaction->id}" title="{_T string="Transaction: %s" pattern="/%s/" replace=$contribution->transaction->description}">
+                            <img src="{base_url}/{$template_subdir}images/icon-money.png"
                                 alt="{_T string="[view]"}"
                                 width="16"
                                 height="16"/>
                         </a>
         {else}
-                        <img src="{$galette_base_path}{$template_subdir}images/icon-empty.png"
+                        <img src="{base_url}/{$template_subdir}images/icon-empty.png"
                             alt=""
                             width="16"
                             height="16"/>
@@ -221,13 +221,13 @@
     {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
                     <td class="{$cclass} center nowrap">
                         <a href="pdf_contribution.php?id_cotis={$contribution->id}">
-                            <img src="{$galette_base_path}{$template_subdir}images/icon-pdf.png" alt="{_T string="[pdf]"}" width="16" height="16" title="{_T string="Print an invoice or a receipt (depending on contribution type)"}"/>
+                            <img src="{base_url}/{$template_subdir}images/icon-pdf.png" alt="{_T string="[pdf]"}" width="16" height="16" title="{_T string="Print an invoice or a receipt (depending on contribution type)"}"/>
                         </a>
                         <a href="ajouter_contribution.php?id_cotis={$contribution->id}">
-                            <img src="{$galette_base_path}{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="Edit the contribution"}"/>
+                            <img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="Edit the contribution"}"/>
                         </a>
                         <a onclick="return confirm('{_T string="Do you really want to delete this contribution of the database ?"|escape:"javascript"}')" href="gestion_contributions.php?sup={$contribution->id}">
-                            <img src="{$galette_base_path}{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="Delete the contribution"}"/>
+                            <img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="Delete the contribution"}"/>
                         </a>
                     </td>
     {/if}
@@ -243,11 +243,11 @@
             <table>
 {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
                 <tr>
-                    <th class="back"><img src="{$galette_base_path}{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></th>
+                    <th class="back"><img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></th>
                     <td class="back">{_T string="Modification"}</td>
                 </tr>
                 <tr>
-                    <th class="back"><img src="{$galette_base_path}{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/></th>
+                    <th class="back"><img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/></th>
                     <td class="back">{_T string="Deletion"}</td>
                 </tr>
 {/if}
@@ -289,7 +289,7 @@
                         changeMonth: true,
                         changeYear: true,
                         showOn: 'button',
-                        buttonImage: '{$galette_base_path}{$template_subdir}images/calendar.png',
+                        buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
                         buttonImageOnly: true,
                         buttonText: '{_T string="Select a date" escape="js"}'
                     });

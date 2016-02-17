@@ -111,7 +111,7 @@ class History extends Pagination
         global $zdb, $login;
 
         $ip = null;
-        if ( PHP_SAPI === 'cli' ) {
+        if (PHP_SAPI === 'cli') {
             $ip = '127.0.0.1';
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];
@@ -163,7 +163,7 @@ class History extends Pagination
                 Adapter::QUERY_MODE_EXECUTE
             );
 
-            if ( !$result ) {
+            if (!$result) {
                 Analog::log(
                     'An error occured cleaning history. ',
                     Analog::WARNING
@@ -257,36 +257,37 @@ class History extends Pagination
     public function __get($name)
     {
 
-        Analog::log(
+        /*Analog::log(
             '[History] Getting property `' . $name . '`',
             Analog::DEBUG
-        );
+        );*/
 
-        if ( in_array($name, $this->pagination_fields) ) {
+
+        if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
         } else {
             $forbidden = array();
-            if ( !in_array($name, $forbidden) ) {
+            if (!in_array($name, $forbidden)) {
                 $name = '_' . $name;
-                switch ( $name ) {
-                case 'fdate':
-                    //return formatted datemime
-                    try {
-                        $d = new \DateTime($this->$rname);
-                        return $d->format(_T("Y-m-d H:i:s"));
-                    } catch (\Exception $e) {
-                        //oops, we've got a bad date :/
-                        Analog::log(
-                            'Bad date (' . $this->$rname . ') | ' .
-                            $e->getMessage(),
-                            Analog::INFO
-                        );
-                        return $this->$rname;
-                    }
-                    break;
-                default:
-                    return $this->$name;
-                    break;
+                switch ($name) {
+                    case 'fdate':
+                        //return formatted datemime
+                        try {
+                            $d = new \DateTime($this->$rname);
+                            return $d->format(_T("Y-m-d H:i:s"));
+                        } catch (\Exception $e) {
+                            //oops, we've got a bad date :/
+                            Analog::log(
+                                'Bad date (' . $this->$rname . ') | ' .
+                                $e->getMessage(),
+                                Analog::INFO
+                            );
+                            return $this->$rname;
+                        }
+                        break;
+                    default:
+                        return $this->$name;
+                        break;
                 }
             } else {
                 Analog::log(
@@ -307,7 +308,7 @@ class History extends Pagination
      */
     public function __set($name, $value)
     {
-        if ( in_array($name, $this->pagination_fields) ) {
+        if (in_array($name, $this->pagination_fields)) {
             parent::__set($name, $value);
         } else {
             Analog::log(
@@ -316,17 +317,17 @@ class History extends Pagination
             );
 
             $forbidden = array();
-            if ( !in_array($name, $forbidden) ) {
+            if (!in_array($name, $forbidden)) {
                 $rname = '_' . $name;
-                switch($name) {
-                case 'tri':
-                    if (in_array($value, $this->_fields)) {
-                        $this->orderby = $value;
-                    }
-                    break;
-                default:
-                    $this->$rname = $value;
-                    break;
+                switch ($name) {
+                    case 'tri':
+                        if (in_array($value, $this->_fields)) {
+                            $this->orderby = $value;
+                        }
+                        break;
+                    default:
+                        $this->$rname = $value;
+                        break;
                 }
             } else {
                 Analog::log(
@@ -346,7 +347,7 @@ class History extends Pagination
      */
     protected function getTableName($prefixed = false)
     {
-        if ( $prefixed === true ) {
+        if ($prefixed === true) {
             return PREFIX_DB . self::TABLE;
         } else {
             return self::TABLE;

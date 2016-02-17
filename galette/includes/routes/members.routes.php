@@ -1320,10 +1320,10 @@ $app->post(
 //advanced search page
 $app->get(
     '/advanced-search',
-    function () use ($app, &$session, $members_fields, $members_fields_cats, $preferences) {
-        if ( isset($session['filters']['members']) ) {
-            $filters = unserialize($session['filters']['members']);
-            if ( !$filters instanceof AdvancedMembersList ) {
+    function ($request, $response) use ($app, $members_fields, $members_fields_cats) {
+        if (isset($this->session['filters']['members'])) {
+            $filters = unserialize($this->session['filters']['members']);
+            if (!$filters instanceof AdvancedMembersList) {
                 $filters = new AdvancedMembersList($filters);
             }
         } else {
@@ -1342,8 +1342,8 @@ $app->get(
         );
         $visibles = $fc->getVisibilities();
 
-        foreach ( $fields as $k=>$f ) {
-            if ( $visibles[$k] == 0 ) {
+        foreach ($fields as $k => $f) {
+            if ($visibles[$k] == 0) {
                 unset($fields[$k]);
             }
         }
@@ -1380,10 +1380,11 @@ $app->get(
             Contribution::PAYMENT_PAYPAL        => _T("Paypal")
         );
 
-        $view = $app->view();
-        $filters->setViewCommonsFilters($preferences, $view);
+        $filters->setViewCommonsFilters($this->preferences, $this->view->getSmarty());
 
-        $app->render(
+        // display page
+        $this->view->render(
+            $response,
             'advanced_search.tpl',
             array(
                 'page_title'            => _T("Advanced search"),
@@ -1400,6 +1401,7 @@ $app->get(
                 'payments_types'        => $pt
             )
         );
+        return $response;
     }
 )->setName('advanced-search')->add($authenticate);
 

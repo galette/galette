@@ -101,7 +101,7 @@
                     <label for="pref_lang" class="bline">{_T string="Default language:"}</label>
                     <select name="pref_lang" id="pref_lang" class="lang">
 {foreach item=langue from=$languages}
-                        <option value="{$langue->getID()}" {if $pref.pref_lang eq $langue->getID()}selected="selected"{/if} style="background-image: url({$galette_base_path}{$langue->getFlag()});">{$langue->getName()|ucfirst}</option>
+                        <option value="{$langue->getID()}" {if $pref.pref_lang eq $langue->getID()}selected="selected"{/if} style="background-image: url({base_url}/{$langue->getFlag()});">{$langue->getName()|ucfirst}</option>
 {/foreach}
                     </select>
                 </p>
@@ -355,7 +355,7 @@
                 <p>
                     <label for="card_logo" class="bline"{if isset($required.card_logo) and $required.card_logo eq 1}required{/if}>{_T string="Logo:"}</label>
 {if $print_logo->isCustom()}
-                    <img src="{$galette_base_path}picture.php?print_logo=true&amp;rand={$time}" class="picture" width="{$print_logo->getOptimalWidth()}" height="{$print_logo->getOptimalHeight()}" alt="{_T string="Current logo for printing"}"/><br/>
+                    <img src="{base_url}/picture.php?print_logo=true&amp;rand={$time}" class="picture" width="{$print_logo->getOptimalWidth()}" height="{$print_logo->getOptimalHeight()}" alt="{_T string="Current logo for printing"}"/><br/>
                     <label for="del_card_logo">{_T string="Delete image"}</label><input type="checkbox" name="del_card_logo" id="del_card_logo" value="1" /><br />
 {/if}
                     <input type="file" name="card_logo" id="card_logo"{if $GALETTE_MODE eq 'DEMO'} disabled="disabled"{/if}/>

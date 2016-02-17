@@ -3,50 +3,50 @@
     <head>
         {include file='common_header.tpl'}
 {if $color_picker}
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}farbtastic.js"></script>
-        <link rel="stylesheet" type="text/css" href="{$galette_base_path}{$template_subdir}farbtastic.css"/>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}farbtastic.js"></script>
+        <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}farbtastic.css"/>
 {/if}
 {* JQuery UI related *}
 {if $require_sorter or $require_dialog}
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.mouse.min.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.mouse.min.js"></script>
 {/if}
 {if $require_sorter}
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.sortable.min.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.sortable.min.js"></script>
 {/if}
 {if $require_calendar}
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
     {if $galette_lang ne 'en'}
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.min.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.min.js"></script>
     {/if}
 {/if}
 {if $require_tabs}
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.tabs.min.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.tabs.min.js"></script>
 {/if}
 {if $require_dialog}
         {* Drag component, only used for Dialog for the moment *}
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.draggable.min.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.draggable.min.js"></script>
         {* So the dialog could be aligned in the middle of the screen *}
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.position.min.js"></script>
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.dialog.min.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.position.min.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.dialog.min.js"></script>
 {/if}
 {* /JQuery UI related *}
 {if $require_cookie}
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery.cookie.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery.cookie.js"></script>
 {/if}
 {if $require_charts}
-        <link rel="stylesheet" type="text/css" href="{$galette_base_path}{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.css" />
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.min.js"></script>
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.pieRenderer.min.js"></script>
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.barRenderer.min.js"></script>
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.pointLabels.min.js"></script>
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.css" />
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.min.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.pieRenderer.min.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.barRenderer.min.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.pointLabels.min.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.categoryAxisRenderer.min.js"></script>
 {/if}
 {if $html_editor}
     {if !isset($plugged_html_editor)}
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}markitup-{$jquery_markitup_version}/jquery.markitup.js"></script>
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/set-{$galette_lang}.js"></script>
-        <link rel="stylesheet" type="text/css" href="{$galette_base_path}{$jquery_dir}markitup-{$jquery_markitup_version}/skins/galette/style.css" />
-        <link rel="stylesheet" type="text/css" href="{$galette_base_path}{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/style.css" />
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}markitup-{$jquery_markitup_version}/jquery.markitup.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/set-{$galette_lang}.js"></script>
+        <link rel="stylesheet" type="text/css" href="{base_url}/{$jquery_dir}markitup-{$jquery_markitup_version}/skins/galette/style.css" />
+        <link rel="stylesheet" type="text/css" href="{base_url}/{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/style.css" />
         <script language="javascript">
             function toggleMailingEditor(id) {
                 if(!$('#mailing_html').attr('checked')){
@@ -69,7 +69,7 @@
     {/if}
 {/if}
 {if $require_tree}
-    <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery.jstree.js"></script>
+    <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery.jstree.js"></script>
 {/if}
 {* If some additionnals headers should be added from plugins, we load the relevant template file
 We have to use a template file, so Smarty will do its work (like replacing variables). *}
@@ -165,7 +165,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 
         <ul id="langs">
 {foreach item=langue from=$languages}
-            <li><a href="?pref_lang={$langue->getID()}"><img src="{$galette_base_path}{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
+            <li><a href="?pref_lang={$langue->getID()}"><img src="{base_url}/{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
 {/foreach}
         </ul>
 {if $login->isLogged()}

@@ -363,7 +363,6 @@ abstract class Pagination
         );
 
         if (in_array($name, $this->pagination_fields)) {
-            $name = '_' . $name;
             return $this->$name;
         } else {
             Analog::log(

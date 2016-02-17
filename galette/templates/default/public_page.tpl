@@ -3,9 +3,9 @@
     <head>
         {include file='common_header.tpl'}
 {if $require_calendar}
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
     {if $galette_lang ne 'en'}
-        <script type="text/javascript" src="{$galette_base_path}{$jquery_dir}jquery-ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.min.js"></script>
+        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.min.js"></script>
     {/if}
 {/if}
 {if $require_dialog}
@@ -39,13 +39,13 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
             <ul id="langs">
 {foreach item=langue from=$languages}
-                <li><a href="?pref_lang={$langue->getID()}"><img src="{$galette_base_path}{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
+                <li><a href="?pref_lang={$langue->getID()}"><img src="{base_url}/{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
 {/foreach}
             </ul>
 {if $login->isLogged()}
             <div id="user">
                 <a id="userlink" title="{_T string="View your member card"}" href="{if $login->isSuperAdmin()}{path_for name="slash"}{else}{path_for name="me"}{/if}">{$login->loggedInAs(true)}</a>
-                <a id="logout" title="{_T string="Log off"}" href="{$galette_base_path}index.php?logout=1">{_T string="Log off"}</a>
+                <a id="logout" title="{_T string="Log off"}" href="{base_url}/index.php?logout=1">{_T string="Log off"}</a>
             </div>
 {/if}
 {if $GALETTE_MODE eq 'DEMO'}

@@ -1,7 +1,7 @@
 {extends file="page.tpl"}
 
 {block name="content"}
-        <form action="{urlFor name="filter-memberslist"}" method="post" id="filtre">
+        <form action="{path_for name="filter-memberslist"}" method="post" id="filtre">
             <fieldset class="cssform large">
                 <legend class="ui-state-active ui-corner-top">{_T string="Simple search"}</legend>
                 <div>
@@ -254,7 +254,7 @@
                     changeMonth: true,
                     changeYear: true,
                     showOn: 'button',
-                    buttonImage: '{$galette_base_path}{$template_subdir}images/calendar.png',
+                    buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
                     buttonImageOnly: true,
                     maxDate: '-0d',
                     yearRange: 'c-10:c+0',
@@ -264,7 +264,7 @@
                     changeMonth: true,
                     changeYear: true,
                     showOn: 'button',
-                    buttonImage: '{$galette_base_path}{$template_subdir}images/calendar.png',
+                    buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
                     buttonImageOnly: true,
                     yearRange: 'c-10:c+5',
                     buttonText: '{_T string="Select a date" escape="js"}'

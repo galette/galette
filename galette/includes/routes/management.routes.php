@@ -590,44 +590,54 @@ $app->get(
 //galette logs
 $app->get(
     '/logs[/{option:page|order|reset}/{value}]',
-    function ($option = null, $value = null) use ($app, $hist) {
+    function ($request, $response, $args = []) {
+        $option = null;
+        if (isset($args['option'])) {
+            $option = $args['option'];
+        }
+        $value = null;
+        if (isset($args['value'])) {
+            $value = $args['value'];
+        }
+
         if ($option !== null) {
             switch ($option) {
                 case 'page':
-                    $hist->current_page = (int)$value;
+                    $this->history->current_page = (int)$value;
                     break;
                 case 'order':
-                    $hist->tri = $value;
+                    $this->history->tri = $value;
                     break;
                 case 'reset':
-                    $hist->clean();
+                    $this->history->clean();
                     //reinitialize object after flush
-                    $hist = new History();
+                    $this->history = new History();
                     break;
             }
         }
 
-        if ($app->request()->get('nbshow') !== null) {
-            $hist->show = $app->request()->get('nbshow');
+        if (isset($request->getQueryParams()['nbshow'])) {
+            $this->history->show = $request->getQueryParams()['nbshow'];
         }
 
         $logs = array();
-
-        $logs = $hist->getHistory();
-        $view = $app->view();
+        $logs = $this->history->getHistory();
 
         //assign pagination variables to the template and add pagination links
-        $hist->setSmartyPagination($app, $view);
+        $this->history->setSmartyPagination($this->router, $this->view->getSmarty());
 
-        $app->render(
+        // display page
+        $this->view->render(
+            $response,
             'history.tpl',
             array(
                 'page_title'        => _T("Logs"),
                 'logs'              => $logs,
                 'nb_lines'          => count($logs),
-                'history'           => $hist
+                'history'           => $this->history
             )
         );
+        return $response;
     }
 )->setName(
     'history'
@@ -651,23 +661,20 @@ $app->get(
             $option = $args['value'];
         }
 
-
-        $request = $app->request();
-
         $mailhist = new MailingHistory();
 
-        if ($request->get('reset') !== null && $request->get('reset') == 1) {
+        if (isset($request->getQueryParams()['reset'])) {
             $mailhist->clean();
             //reinitialize object after flush
             $mailhist = new MailingHistory();
         }
 
         //delete mailings
-        if ($request->get('sup') !== null || $request->post('delete') !== null) {
-            if ($request->get('sup') !== null) {
-                $mailhist->removeEntries($request->get('sup'));
-            } elseif ($request->post('member_sel') !== null) {
-                $mailhist->removeEntries($request->post('member_sel'));
+        if (isset($request->getQueryParams()['sup']) || isset($request->getParsedBody()['delete'])) {
+            if (isset($request->getQueryParams()['sup'])) {
+                $mailhist->removeEntries($request->getQueryParams()['sup']);
+            } elseif (isset($request->getParsedBody()['member_sel'])) {
+                $mailhist->removeEntries($request->getParsedBody()['member_sel']);
             }
         }
 
@@ -682,25 +689,25 @@ $app->get(
             }
         }
 
-        if ($request->get('nbshow') !== null
-            && is_numeric($request->get('nbshow'))
+        if (isset($request->getQueryParams()['nbshow'])
+            && is_numeric($request->getQueryParams()['nbshow'])
         ) {
-            $mailhist->show = $request->get('nbshow');
+            $mailhist->show = $request->getQueryParams()['nbshow'];
         }
 
-        if ($request->get('order') !== null) {
-            $mailhist->orderby = $request->get('order');
+        if (isset($request->getQueryParams()['order'])) {
+            $mailhist->orderby = $request->getQueryParams()['order'];
         }
 
         $history_list = array();
         $history_list = $mailhist->getHistory();
 
-        $view = $app->view();
-
         //assign pagination variables to the template and add pagination links
-        $mailhist->setSmartyPagination($app, $view);
+        $mailhist->setSmartyPagination($this->router, $this->view->getSmarty());
 
-        $app->render(
+        // display page
+        $this->view->render(
+            $response,
             'gestion_mailings.tpl',
             array(
                 'page_title'        => _T("Mailings"),
@@ -710,6 +717,7 @@ $app->get(
                 'history'           => $mailhist
             )
         );
+        return $response;
     }
 )->setName(
     'mailings'
