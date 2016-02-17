@@ -613,6 +613,8 @@ $app->add(function ($request, $response, $next) {
     }
 );*/
 
+$app->add(new \RKA\SessionMiddleware(['name' => 'galette_' . $session_name]));
+
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/management.routes.php';

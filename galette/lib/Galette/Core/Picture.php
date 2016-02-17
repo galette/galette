@@ -192,8 +192,8 @@ class Picture implements FileInterface
             $select = $this->getCheckFileQuery();
             $results = $zdb->execute($select);
             $pic = $results->current();
-            //what's $pic if no result?
-            if ( $pic !== false ) {
+
+            if ($pic) {
                 // we must regenerate the picture file
                 $file_wo_ext = $this->store_path . $this->id;
                 file_put_contents(
@@ -202,16 +202,16 @@ class Picture implements FileInterface
                 );
 
                 $this->format = $pic->format;
-                switch($this->format) {
-                case 'jpg':
-                    $this->mime = 'image/jpeg';
-                    break;
-                case 'png':
-                    $this->mime = 'image/png';
-                    break;
-                case 'gif':
-                    $this->mime = 'image/gif';
-                    break;
+                switch ($this->format) {
+                    case 'jpg':
+                        $this->mime = 'image/jpeg';
+                        break;
+                    case 'png':
+                        $this->mime = 'image/png';
+                        break;
+                    case 'gif':
+                        $this->mime = 'image/gif';
+                        break;
                 }
                 $this->file_path = $file_wo_ext . '.' . $this->format;
                 return true;

@@ -4,9 +4,53 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "471a0a768868b1d1fa826bf96b2efc58",
-    "content-hash": "97b39980252882bbdbba3a96b708c9e3",
+    "hash": "d1699427875f83f17193e0d5f6deff79",
+    "content-hash": "426a9e826a6f9f22fdb7e4cfd02fd305",
     "packages": [
+        {
+            "name": "akrabat/rka-slim-session-middleware",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/akrabat/rka-slim-session-middleware.git",
+                "reference": "74f35bb0b3a5aceda526cd12a57ee1167fb8c45f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/akrabat/rka-slim-session-middleware/zipball/74f35bb0b3a5aceda526cd12a57ee1167fb8c45f",
+                "reference": "74f35bb0b3a5aceda526cd12a57ee1167fb8c45f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4",
+                "slim/slim": ">=2.4 <4.0@dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RKA\\": "RKA"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Allen",
+                    "email": "rob@akrabat.com",
+                    "homepage": "http://akrabat.com"
+                }
+            ],
+            "description": "Simple session middleware for Slim Framework",
+            "homepage": "http://github.com/akrabat/rka-slim-session-middleware",
+            "keywords": [
+                "middleware",
+                "session",
+                "slim"
+            ],
+            "time": "2015-05-24 21:47:44"
+        },
         {
             "name": "analog/analog",
             "version": "1.0.7-stable",
@@ -941,20 +985,20 @@
         },
         {
             "name": "zendframework/zend-stdlib",
-            "version": "2.7.4",
+            "version": "2.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-stdlib.git",
-                "reference": "cae029346a33663b998507f94962eb27de060683"
+                "reference": "b894a85f3ef8a52e7aa62c3c5aa245e383c70cca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/cae029346a33663b998507f94962eb27de060683",
-                "reference": "cae029346a33663b998507f94962eb27de060683",
+                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/b894a85f3ef8a52e7aa62c3c5aa245e383c70cca",
+                "reference": "b894a85f3ef8a52e7aa62c3c5aa245e383c70cca",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5",
+                "php": "^5.5 || ^7.0",
                 "zendframework/zend-hydrator": "~1.0"
             },
             "require-dev": {
@@ -977,8 +1021,9 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.7-dev",
-                    "dev-develop": "2.8-dev"
+                    "dev-release-2.7": "2.7-dev",
+                    "dev-master": "3.0-dev",
+                    "dev-develop": "3.1-dev"
                 }
             },
             "autoload": {
@@ -995,13 +1040,15 @@
                 "stdlib",
                 "zf2"
             ],
-            "time": "2015-10-15 15:57:32"
+            "time": "2016-02-16 18:25:48"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "akrabat/rka-slim-session-middleware": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

@@ -57,10 +57,10 @@ use Galette\Repository\Titles;
 //self subscription
 $app->get(
     '/subscribe',
-    function () use ($app, $zdb, $preferences, $login, $i18n,
+    function () use ($app, $zdb, $i18n,
         $members_fields, $members_fields_cats
     ) {
-        if ( !$preferences->pref_bool_selfsubscribe || $login->isLogged() ) {
+        if ( !$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged() ) {
 
             return $response
                 ->withStatus(301)
@@ -146,14 +146,14 @@ $app->get(
 //members list CSV export
 $app->get(
     '/members/export/csv',
-    function () use ($app, $session, $login, $zdb,
+    function () use ($app, $zdb,
         $members_fields, $members_fields_cats
     ) {
         $csv = new CsvOut();
 
-        if ( isset($session['filters']['members']) ) {
+        if ( isset($this->session->filter_members) ) {
             //CAUTION: this one may be simple or advanced, display must change
-            $filters = unserialize($session['filters']['members']);
+            $filters = $this->session->filter_members;
         } else {
             $filters = new MembersList();
         }
@@ -181,9 +181,9 @@ $app->get(
                 if ( $visibles[$k] == FieldsConfig::VISIBLE ) {
                     $fields[] = $k;
                     $labels[] = $f['label'];
-                } else if ( ($login->isAdmin()
-                    || $login->isStaff()
-                    || $login->isSuperAdmin())
+                } else if ( ($this->login->isAdmin()
+                    || $this->login->isStaff()
+                    || $this->login->isSuperAdmin())
                     && $visibles[$k] == FieldsConfig::ADMIN
                 ) {
                     $fields[] = $k;
@@ -350,8 +350,8 @@ $app->get(
             $value = $args['value'];
         }
 
-        if (isset($this->session['filters']['members'])) {
-            $filters = unserialize($this->session['filters']['members']);
+        if (isset($this->session->filter_members)) {
+            $filters = $this->session->filter_members;
         } else {
             $filters = new MembersList();
         }
@@ -385,7 +385,7 @@ $app->get(
         $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
         $filters->setViewCommonsFilters($this->preferences, $this->view->getSmarty());
 
-        $this->session['filters']['members'] = serialize($filters);
+        $this->session->filter_members = $filters;
 
         // display page
         $this->view->render(
@@ -411,98 +411,96 @@ $app->get(
 //members list filtering
 $app->post(
     '/members/filter',
-    function ($from = 'members') use ($app, &$session) {
-        $request = $app->request();
-
-        if (isset($session['filters']['members'])) {
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        if (isset($this->session->filter_members)) {
             //CAUTION: this one may be simple or advanced, display must change
-            $filters = unserialize($session['filters']['members']);
+            $filters = $this->session->filter_members;
         } else {
             $filters = new MembersList();
         }
 
         //reintialize filters
-        if ($request->post('clear_filter')) {
+        if (isset($post['clear_filter'])) {
             $filters->reinit();
             if ($filters instanceof AdvancedMembersList) {
                 $filters = new MembersList();
             }
 
-        } elseif ($request->post('clear_adv_filter')) {
-            $session['filters']['members'] = null;
-            unset($session['filters']['members']);
+        } elseif (isset($post['clear_adv_filter'])) {
+            $this->session->filter_members = null;
+            unset($this->session->filter_members);
 
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('advanced-search'));
-        } elseif ($request->post('adv_criterias')) {
+        } elseif (isset($post['adv_criterias'])) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('advanced-search'));
         } else {
             //string to filter
-            if ($request->post('filter_str') !== null) { //filter search string
+            if (isset($post['filter_str'])) { //filter search string
                 $filters->filter_str = stripslashes(
-                    htmlspecialchars($request->post('filter_str'), ENT_QUOTES)
+                    htmlspecialchars($post['filter_str'], ENT_QUOTES)
                 );
             }
             //field to filter
-            if ($request->post('filter_field') !== null) {
-                if (is_numeric($request->post('filter_field'))) {
-                    $filters->field_filter = $request->post('filter_field');
+            if (isset($post['filter_field'])) {
+                if (is_numeric($post['filter_field'])) {
+                    $filters->field_filter = $post['filter_field'];
                 }
             }
             //membership to filter
-            if ($request->post('filter_membership') !== null) {
-                if (is_numeric($request->post('filter_membership'))) {
+            if (isset($post['filter_membership'])) {
+                if (is_numeric($post['filter_membership'])) {
                     $filters->membership_filter
-                        = $request->post('filter_membership');
+                        = $post['filter_membership'];
                 }
             }
             //account status to filter
-            if ($request->post('filter_account') !== null) {
-                if (is_numeric($request->post('filter_account'))) {
+            if (isset($post['filter_account'])) {
+                if (is_numeric($post['filter_account'])) {
                     $filters->account_status_filter
-                        = $request->post('filter_account');
+                        = $post['filter_account'];
                 }
             }
             //email filter
-            if ($request->post('email_filter') !== null) {
-                $filters->email_filter = (int)$request->post('email_filter');
+            if (isset($post['email_filter'])) {
+                $filters->email_filter = (int)$post['email_filter'];
             }
             //group filter
-            if ($request->post('group_filter') !== null
-                && $request->post('group_filter') > 0
+            if (isset($post['group_filter'])
+                && $post['group_filter'] > 0
             ) {
-                $filters->group_filter = (int)$request->post('group_filter');
+                $filters->group_filter = (int)$post['group_filter'];
             }
             //number of rows to show
-            if ($request->post('nbshow') !== null) {
-                $filters->show = $request->post('nbshow');
+            if (isset($post['nbshow'])) {
+                $filters->show = $post['nbshow'];
             }
 
-            if ($request->post('advanced_filtering') !== null) {
+            if (isset($post['advanced_filtering'])) {
                 if (!$filters instanceof AdvancedMembersList) {
                     $filters = new AdvancedMembersList($filters);
                 }
                 //Advanced filters
-                $posted = $request->post();
                 $filters->reinit();
-                unset($posted['advanced_filtering']);
+                unset($post['advanced_filtering']);
                 $freed = false;
-                foreach ($posted as $k => $v) {
+                foreach ($post as $k => $v) {
                     if (strpos($k, 'free_', 0) === 0) {
                         if (!$freed) {
                             $i = 0;
-                            foreach ($posted['free_field'] as $f) {
+                            foreach ($post['free_field'] as $f) {
                                 if (trim($f) !== ''
-                                    && trim($posted['free_text'][$i]) !== ''
+                                    && trim($post['free_text'][$i]) !== ''
                                 ) {
-                                    $fs_search = $posted['free_text'][$i];
+                                    $fs_search = $post['free_text'][$i];
                                     $log_op
-                                        = (int)$posted['free_logical_operator'][$i];
+                                        = (int)$post['free_logical_operator'][$i];
                                     $qry_op
-                                        = (int)$posted['free_query_operator'][$i];
+                                        = (int)$post['free_query_operator'][$i];
                                     $fs = array(
                                         'idx'       => $i,
                                         'field'     => $f,
@@ -542,11 +540,11 @@ $app->post(
             }
         }
 
-        $session['filters']['members'] = serialize($filters);
+        $this->session->filter_members = $filters;
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor($from));
+            ->withHeader('Location', $this->router->pathFor('members'));
     }
 )->setName('filter-memberslist')->add($authenticate);
 
@@ -611,8 +609,8 @@ $app->get(
 
         $navigate = array();
 
-        if (isset($this->session['filters']['members'])) {
-            $filters =  unserialize($this->session['filters']['members']);
+        if (isset($this->session->filter_members)) {
+            $filters =  $this->session->filter_members;
         } else {
             $filters = new MembersList();
         }
@@ -708,10 +706,7 @@ $app->get(
     ) use (
         $app,
         $zdb,
-        $login,
-        $session,
         $i18n,
-        $preferences,
         $members_fields,
         $members_fields_cats
     ) {
@@ -732,36 +727,36 @@ $app->get(
         //TODO: dynamic fields should be handled by Adherent object
         $dyn_fields = new DynamicFields();
 
-        if ( $login->isAdmin() || $login->isStaff() || $login->isGroupManager() ) {
+        if ( $this->login->isAdmin() || $this->login->isStaff() || $this->login->isGroupManager() ) {
             if ( $id !== null ) {
                 $adherent['id_adh'] = $id;
                 $member->load($id);
-                if ( !$login->isAdmin() && !$login->isStaff() && $login->isGroupManager() ) {
+                if ( !$this->login->isAdmin() && !$this->login->isStaff() && $this->login->isGroupManager() ) {
                     //check if current logged in user can manage loaded member
                     $groups = $member->groups;
                     $can_manage = false;
                     foreach ( $groups as $group ) {
-                        if ( $login->isGroupManager($group->getId()) ) {
+                        if ( $this->login->isGroupManager($group->getId()) ) {
                             $can_manage = true;
                             break;
                         }
                     }
                     if ( $can_manage !== true ) {
                         Analog::log(
-                            'Logged in member ' . $login->login .
+                            'Logged in member ' . $this->login->login .
                             ' has tried to load member #' . $member->id .
                             ' but do not manage any groups he belongs to.',
                             Analog::WARNING
                         );
-                        $member->load($login->id);
+                        $member->load($this->login->id);
                     }
                 }
             }
 
             // disable some fields
-            if ( $login->isAdmin() ) {
+            if ( $this->login->isAdmin() ) {
                 $disabled = $member->adm_edit_disabled_fields;
-            } elseif ( $login->isStaff() ) {
+            } elseif ( $this->login->isStaff() ) {
                 $disabled = $member->adm_edit_disabled_fields
                     + $member->staff_edit_disabled_fields;
             } else {
@@ -770,12 +765,12 @@ $app->get(
                     + $member->disabled_fields;
             }
 
-            if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED ) {
+            if ( $this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED ) {
                 $disabled['send_mail'] = 'disabled="disabled"';
             }
         } else {
-            $member->load($login->id);
-            $adherent['id_adh'] = $login->id;
+            $member->load($this->login->id);
+            $adherent['id_adh'] = $this->login->id;
             // disable some fields
             $disabled  = $member->disabled_fields + $member->edit_disabled_fields;
         }
@@ -804,7 +799,7 @@ $app->get(
         }
 
         // flagging required fields invisible to members
-        if ( $login->isAdmin() || $login->isStaff() ) {
+        if ( $this->login->isAdmin() || $this->login->isStaff() ) {
             $fc->setNotRequired('activite_adh');
             $fc->setNotRequired('id_statut');
         }
@@ -841,13 +836,13 @@ $app->get(
 
         $navigate = array();
 
-        if ( isset($session['filters']['members']) ) {
-            $filters =  unserialize($session['filters']['members']);
+        if ( isset($this->session->filter_members) ) {
+            $filters =  $this->session->filter_members;
         } else {
             $filters = new MembersList();
         }
 
-        if ( ($login->isAdmin() || $login->isStaff()) && count($filters) > 0 ) {
+        if ( ($this->login->isAdmin() || $this->login->isStaff()) && count($filters) > 0 ) {
             $m = new Members();
             $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
             $ids = $ids->toArray();
@@ -869,9 +864,9 @@ $app->get(
             }
         }
 
-        if ( isset($session['mail_warning']) ) {
+        if ( isset($this->session->mail_warning) ) {
             //warning will be showed here, no need to keep it longer into session
-            unset($session['mail_warning']);
+            unset($this->session->mail_warning);
         }
 
         //Status
@@ -925,9 +920,6 @@ $app->post(
     '/member/store',
     function () use (
         $app,
-        $login,
-        $session,
-        $preferences,
         $members_fields,
         $members_fields_cats,
         &$success_detected,
@@ -948,35 +940,35 @@ $app->post(
         // new or edit
         $adherent['id_adh'] = get_numeric_form_value('id_adh', '');
 
-        if ( $login->isAdmin() || $login->isStaff() || $login->isGroupManager() ) {
+        if ( $this->login->isAdmin() || $this->login->isStaff() || $this->login->isGroupManager() ) {
             if ( $adherent['id_adh'] ) {
                 $member->load($adherent['id_adh']);
-                if ( !$login->isAdmin() && !$login->isStaff() && $login->isGroupManager() ) {
+                if ( !$this->login->isAdmin() && !$this->login->isStaff() && $this->login->isGroupManager() ) {
                     //check if current logged in user can manage loaded member
                     $groups = $member->groups;
                     $can_manage = false;
                     foreach ( $groups as $group ) {
-                        if ( $login->isGroupManager($group->getId()) ) {
+                        if ( $this->login->isGroupManager($group->getId()) ) {
                             $can_manage = true;
                             break;
                         }
                     }
                     if ( $can_manage !== true ) {
                         Analog::log(
-                            'Logged in member ' . $login->login .
+                            'Logged in member ' . $this->login->login .
                             ' has tried to load member #' . $member->id .
                             ' but do not manage any groups he belongs to.',
                             Analog::WARNING
                         );
-                        $member->load($login->id);
+                        $member->load($this->login->id);
                     }
                 }
             }
 
             // disable some fields
-            if ( $login->isAdmin() ) {
+            if ( $this->login->isAdmin() ) {
                 $disabled = $member->adm_edit_disabled_fields;
-            } elseif ( $login->isStaff() ) {
+            } elseif ( $this->login->isStaff() ) {
                 $disabled = $member->adm_edit_disabled_fields
                     + $member->staff_edit_disabled_fields;
             } else {
@@ -985,12 +977,12 @@ $app->post(
                     + $member->disabled_fields;
             }
 
-            if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED ) {
+            if ( $this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED ) {
                 $disabled['send_mail'] = 'disabled="disabled"';
             }
         } else {
-            $member->load($login->id);
-            $adherent['id_adh'] = $login->id;
+            $member->load($this->login->id);
+            $adherent['id_adh'] = $this->login->id;
             // disable some fields
             $disabled  = $member->disabled_fields + $member->edit_disabled_fields;
         }
@@ -1024,7 +1016,7 @@ $app->post(
         }
 
         // flagging required fields invisible to members
-        if ( $login->isAdmin() || $login->isStaff() ) {
+        if ($this->login->isAdmin() || $this->login->isStaff()) {
             $fc->setNotRequired('activite_adh');
             $fc->setNotRequired('id_statut');
         }
@@ -1036,41 +1028,42 @@ $app->post(
         $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
         // Validation
-        if ( isset($_POST[array_shift($real_requireds)]) ) {
+        if (isset($_POST[array_shift($real_requireds)])) {
             $adherent['dyn'] = $dyn_fields->extractPosted(
                 $_POST,
                 $_FILES,
-                $disabled, $member->id
+                $disabled,
+                $member->id
             );
             $dyn_fields_errors = $dyn_fields->getErrors();
-            if ( count($dyn_fields_errors) > 0 ) {
+            if (count($dyn_fields_errors) > 0) {
                 $error_detected = array_merge($error_detected, $dyn_fields_errors);
             }
             // regular fields
             $valid = $member->check($_POST, $required, $disabled);
-            if ( $valid !== true ) {
+            if ($valid !== true) {
                 $error_detected = array_merge($error_detected, $valid);
             }
 
-            if ( count($error_detected) == 0) {
+            if (count($error_detected) == 0) {
                 //all goes well, we can proceed
 
                 $new = false;
-                if ( $member->id == '' ) {
+                if ($member->id == '') {
                     $new = true;
                 }
                 $store = $member->store();
-                if ( $store === true ) {
+                if ($store === true) {
                     //member has been stored :)
-                    if ( $new ) {
+                    if ($new) {
                         $success_detected[] = _T("New member has been successfully added.");
                         //Send email to admin if preference checked
-                        if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
-                            && $preferences->pref_bool_mailadh
+                        if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+                            && $this->preferences->pref_bool_mailadh
                         ) {
                             $texts = new Texts(
                                 $texts_fields,
-                                $preferences,
+                                $this->preferences,
                                 array(
                                     'name_adh'      => custom_html_entity_decode(
                                         $member->sname
@@ -1089,19 +1082,19 @@ $app->post(
                                     )
                                 )
                             );
-                            $mtxt = $texts->getTexts('newadh', $preferences->pref_lang);
+                            $mtxt = $texts->getTexts('newadh', $this->preferences->pref_lang);
 
                             $mail = new GaletteMail();
                             $mail->setSubject($texts->getSubject());
                             $mail->setRecipients(
                                 array(
-                                    $preferences->pref_email_newadh => 'Galette admin'
+                                    $this->preferences->pref_email_newadh => 'Galette admin'
                                 )
                             );
                             $mail->setMessage($texts->getBody());
                             $sent = $mail->send();
 
-                            if ( $sent == GaletteMail::MAIL_SENT ) {
+                            if ($sent == GaletteMail::MAIL_SENT) {
                                 $hist->add(
                                     str_replace(
                                         '%s',
@@ -1118,23 +1111,23 @@ $app->post(
                                 $hist->add($str);
                                 $error_detected[] = $str;
                             }
-                            unset ($texts);
+                            unset($texts);
                         }
                     } else {
                         $success_detected[] = _T("Member account has been modified.");
                     }
 
                     // send mail to member
-                    if ( isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {
-                        if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED ) {
-                            if ( $member->email == '' ) {
+                    if (isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1') {
+                        if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
+                            if ($member->email == '') {
                                 $error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
                             } else {
                                 //send mail to member
                                 // Get email text in database
                                 $texts = new Texts(
                                     $texts_fields,
-                                    $preferences,
+                                    $this->preferences,
                                     array(
                                         'name_adh'      => custom_html_entity_decode(
                                             $member->sname
@@ -1156,8 +1149,8 @@ $app->post(
                                         )
                                     )
                                 );
-                                $mlang = $preferences->pref_lang;
-                                if ( isset($_POST['pref_lang']) ) {
+                                $mlang = $this->preferences->pref_lang;
+                                if (isset($_POST['pref_lang'])) {
                                     $mlang = $_POST['pref_lang'];
                                 }
                                 $mtxt = $texts->getTexts(
@@ -1175,7 +1168,7 @@ $app->post(
                                 $mail->setMessage($texts->getBody());
                                 $sent = $mail->send();
 
-                                if ( $sent == GaletteMail::MAIL_SENT ) {
+                                if ($sent == GaletteMail::MAIL_SENT) {
                                     $msg = str_replace(
                                         '%s',
                                         $member->sname . ' (' . $member->email . ')',
@@ -1195,11 +1188,11 @@ $app->post(
                                     $error_detected[] = $str;
                                 }
                             }
-                        } else if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
+                        } else if ($this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
                             //if mail has been disabled in the preferences, we should not be here ; we do not throw an error, just a simple warning that will be show later
                             $msg = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
                             $warning_detected[] = $msg;
-                            $session['mail_warning'] = $msg;
+                            $this->session->mail_warning = $msg;
                         }
                     }
 
@@ -1209,7 +1202,7 @@ $app->post(
                     $managed_groups_adh = null;
 
                     //add/remove user from groups
-                    if ( isset($_POST['groups_adh']) ) {
+                    if (isset($_POST['groups_adh'])) {
                         $groups_adh = $_POST['groups_adh'];
                     }
                     $add_groups = Groups::addMemberToGroups(
@@ -1217,12 +1210,12 @@ $app->post(
                         $groups_adh
                     );
 
-                    if ( $add_groups === false ) {
+                    if ($add_groups === false) {
                         $error_detected[] = _T("An error occured adding member to its groups.");
                     }
 
                     //add/remove manager from groups
-                    if ( isset($_POST['groups_managed_adh']) ) {
+                    if (isset($_POST['groups_managed_adh'])) {
                         $managed_groups_adh = $_POST['groups_managed_adh'];
                     }
                     $add_groups = Groups::addMemberToGroups(
@@ -1232,7 +1225,7 @@ $app->post(
                     );
                     $member->loadGroups();
 
-                    if ( $add_groups === false ) {
+                    if ($add_groups === false) {
                         $error_detected[] = _T("An error occured adding member to its groups as manager.");
                     }
                 } else {
@@ -1241,21 +1234,21 @@ $app->post(
                 }
             }
 
-            if ( count($error_detected) == 0 ) {
+            if (count($error_detected) == 0) {
 
                 // picture upload
-                if ( isset($_FILES['photo']) ) {
-                    if ( $_FILES['photo']['error'] === UPLOAD_ERR_OK ) {
-                        if ( $_FILES['photo']['tmp_name'] !='' ) {
-                            if ( is_uploaded_file($_FILES['photo']['tmp_name']) ) {
+                if (isset($_FILES['photo'])) {
+                    if ($_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+                        if ($_FILES['photo']['tmp_name'] !='') {
+                            if (is_uploaded_file($_FILES['photo']['tmp_name'])) {
                                 $res = $member->picture->store($_FILES['photo']);
-                                if ( $res < 0 ) {
+                                if ($res < 0) {
                                     $error_detected[]
                                         = $member->picture->getErrorMessage($res);
                                 }
                             }
                         }
-                    } else if ($_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
+                    } elseif ($_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
                         Analog::log(
                             $member->picture->getPhpErrorMessage($_FILES['photo']['error']),
                             Analog::WARNING
@@ -1266,8 +1259,8 @@ $app->post(
                     }
                 }
 
-                if ( isset($_POST['del_photo']) ) {
-                    if ( !$member->picture->delete($member->id) ) {
+                if (isset($_POST['del_photo'])) {
+                    if (!$member->picture->delete($member->id)) {
                         $error_detected[] = _T("Delete failed");
                         $str_adh = $member->id . ' (' . $member->sname  . ' ' . ')';
                         Analog::log(
@@ -1281,8 +1274,8 @@ $app->post(
                 $dyn_fields->setAllFields('adh', $member->id, $adherent['dyn']);
             }
 
-            if ( count($error_detected) == 0 ) {
-                $session['account_success'] = serialize($success_detected);
+            if (count($error_detected) == 0) {
+                $this->session->account_success = $success_detected;
                 if (count($warning_detected) > 0) {
                     $this->flash->addMessage(
                         'warning_detected',
@@ -1295,14 +1288,13 @@ $app->post(
                         $success_detected
                     );
                 }
-                if ( !isset($_POST['id_adh']) ) {
+                if (!isset($_POST['id_adh'])) {
                     //TODO: use route
                     header(
                         'location: ajouter_contribution.php?id_adh=' . $member->id
                     );
                     die();
-                } elseif ( count($error_detected) == 0 ) {
-
+                } elseif (count($error_detected) == 0) {
                     return $response
                         ->withStatus(301)
                         ->withHeader('Location', $this->router->pathFor('member', ['id' => $member->id]));
@@ -1321,8 +1313,8 @@ $app->post(
 $app->get(
     '/advanced-search',
     function ($request, $response) use ($app, $members_fields, $members_fields_cats) {
-        if (isset($this->session['filters']['members'])) {
-            $filters = unserialize($this->session['filters']['members']);
+        if (isset($this->session->filter_members)) {
+            $filters = $this->session->filter_members;
             if (!$filters instanceof AdvancedMembersList) {
                 $filters = new AdvancedMembersList($filters);
             }
@@ -1408,47 +1400,48 @@ $app->get(
 //Batch actions on members list
 $app->post(
     '/members/batch',
-    function () use ($app, &$session) {
-        $request = $app->request();
+    function ($request, $response) {
+        $post = $request->getParsedBody();
 
-        if ( $request->post('member_sel') ) {
-            if ( isset($session['filters']['members']) ) {
-                $filters =  unserialize($session['filters']['members']);
+        if (isset($post['member_sel'])) {
+            if (isset($this->session->filter_members)) {
+                $filters = $this->session->filter_members;
             } else {
                 $filters = new MembersList();
             }
 
-            $filters->selected = $request->post('member_sel');
-            $session['filters']['members'] = serialize($filters);
+            $filters->selected = $post['member_sel'];
+            $this->session->filter_members = $filters;
 
-            if ( $request->post('cards') ) {
+            if (isset($post['cards'])) {
                 return $response
                     ->withStatus(301)
                     ->withHeader('Location', $this->router->pathFor('pdf-members-cards'));
             }
 
-            if ( $request->post('labels') ) {
+            if (isset($post['labels'])) {
                 return $response
                     ->withStatus(301)
                     ->withHeader('Location', $this->router->pathFor('pdf-members-labels'));
             }
 
-            if ( $request->post('mailing') ) {
+            if (isset($post['mailing'])) {
                 $options = array();
-                if ( $request->post() ) {
+                //FIXME
+                /*if ( $request->post() ) {
                     $options['new'] = 'new';
-                }
+                }*/
 
                 return $response
                     ->withStatus(301)
                     ->withHeader('Location', $this->router->pathFor('mailing', $options));
             }
 
-            if ( $request->post('attendance_sheet') ) {
+            if (isset($post['attendance_sheet'])) {
                 //TODO
             }
 
-            if ( $request->post('csv') ) {
+            if (isset($post['csv'])) {
                 return $response
                     ->withStatus(301)
                     ->withHeader('Location', $this->router->pathFor('csv-memberslist'));
@@ -1457,9 +1450,7 @@ $app->post(
         } else {
             $this->flash->addMessage(
                 'error_detected',
-                array(
-                    _T("No member was selected, please check at least one name.")
-                )
+                _T("No member was selected, please check at least one name.")
             );
 
             return $response
@@ -1472,30 +1463,28 @@ $app->post(
 //PDF members cards
 $app->get(
     '/members/cards',
-    function () use ($app, $preferences, $session) {
-        if ( isset($session['filters']['members']) ) {
-            $filters =  unserialize($session['filters']['members']);
+    function ($request, $response) {
+        if ($this->session->filter_members) {
+            $filters =  $this->session->filter_members;
         } else {
             $filters = new MembersList();
         }
 
-        $request = $app->request();
-        if ( $request->get(Adherent::PK)
-            && $request->get(Adherent::PK) > 0
+        $get = $request->getQueryParams();
+        if (isset($get[Adherent::PK])
+            && $get[Adherent::PK] > 0
         ) {
             // If we are called from "voir_adherent.php" get unique id value
-            $unique = $request->get(Adherent::PK);
+            $unique = $get[Adherent::PK];
         } else {
-            if ( count($filters->selected) == 0 ) {
+            if (count($filters->selected) == 0) {
                 Analog::log(
                     'No member selected to generate members cards',
                     Analog::INFO
                 );
                 $this->flash->addMessage(
                     'error_detected',
-                    array(
-                        _T("No member was selected, please check at least one name.")
-                    )
+                    _T("No member was selected, please check at least one name.")
                 );
 
                 return $response
@@ -1506,7 +1495,7 @@ $app->get(
 
         // Fill array $selected with selected ids
         $selected = array();
-        if ( isset($unique) && $unique ) {
+        if (isset($unique) && $unique) {
             $selected[] = $unique;
         } else {
             $selected = $filters->selected;
@@ -1519,7 +1508,7 @@ $app->get(
             true
         );
 
-        if ( !is_array($members) || count($members) < 1 ) {
+        if (!is_array($members) || count($members) < 1) {
             Analog::log(
                 'An error has occured, unable to get members list.',
                 Analog::ERROR
@@ -1527,9 +1516,7 @@ $app->get(
 
             $this->flash->addMessage(
                 'error_detected',
-                array(
-                    _T("Unable to get members list.")
-                )
+                _T("Unable to get members list.")
             );
 
             return $response
@@ -1537,7 +1524,7 @@ $app->get(
                 ->withHeader('Location', $this->router->pathFor('members'));
         }
 
-        $pdf = new PdfMembersCards($preferences);
+        $pdf = new PdfMembersCards($this->preferences);
         $pdf->drawCards($members);
         $pdf->Output(_T("Cards") . '.pdf', 'D');
     }
@@ -1546,35 +1533,33 @@ $app->get(
 //PDF members labels
 $app->get(
     '/members/labels',
-    function () use ($app, $preferences, $session) {
+    function ($request, $response) {
+        $get = $request->getQueryParams();
 
-        if ( isset ($session['filters']['reminders_labels']) ) {
-            $filters =  unserialize($session['filters']['reminders_labels']);
-            unset($session['filters']['reminders_labels']);
-        } elseif ( isset($session['filters']['members']) ) {
-            $filters =  unserialize($session['filters']['members']);
+
+        if ($this->session->filter_reminders_labels) {
+            $filters =  $this->session->filter_reminders_labels;
+            unset($this->session->filter_reminders_labels);
+        } elseif ($this->session->filter_members) {
+            $filters =  $this->session->filter_members;
         } else {
             $filters = new MembersList();
         }
 
-        $request = $app->request();
-
         $members = null;
-        if ( $request->get('from') !== null
-            && $request->get('from') === 'mailing'
+        if (isset($get['from'])
+            && $get['from'] === 'mailing'
         ) {
             //if we're from mailing, we have to retrieve
             //its unreachables members for labels
-            $mailing = unserialize($session['mailing']);
+            $mailing = $this->session->mailing;
             $members = $mailing->unreachables;
         } else {
-            if ( count($filters->selected) == 0 ) {
+            if (count($filters->selected) == 0) {
                 Analog::log('No member selected to generate labels', Analog::INFO);
                 $this->flash->addMessage(
                     'error_detected',
-                    array(
-                        _T("No member was selected, please check at least one name.")
-                    )
+                    _T("No member was selected, please check at least one name.")
                 );
 
                 return $response
@@ -1589,7 +1574,7 @@ $app->get(
             );
         }
 
-        if ( !is_array($members) || count($members) < 1 ) {
+        if (!is_array($members) || count($members) < 1) {
             Analog::log(
                 'An error has occured, unable to get members list.',
                 Analog::ERROR
@@ -1597,17 +1582,15 @@ $app->get(
 
             $this->flash->addMessage(
                 'error_detected',
-                array(
-                    _T("Unable to get members list.")
-                )
+                _T("Unable to get members list.")
             );
 
-            return $response
+            /*return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
+                ->withHeader('Location', $this->router->pathFor('members'));*/
         }
 
-        $pdf = new PdfMembersLabels($preferences);
+        $pdf = new PdfMembersLabels($this->preferences);
         $pdf->drawLabels($members);
         $pdf->Output(_T("labels_print_filename") . '.pdf', 'D');
     }
@@ -1616,7 +1599,7 @@ $app->get(
 //mailing
 $app->get(
     '/mailing',
-    function () use ($app, $preferences, &$session,
+    function () use ($app,
         &$success_detected, &$warning_detected, &$error_detected
     ) {
         $request = $app->request();
@@ -1626,13 +1609,13 @@ $app->get(
             || isset($_GET['mailing_new'])
             || isset($_GET['reminder'])
         ) {
-            if ( isset($session['mailing']) ) {
+            if ( isset($this->session->mailing) ) {
                 // check for temporary attachments to remove
-                $m = unserialize($session['mailing']);
+                $m = $this->session->mailing;
                 $m->removeAttachments(true);
             }
-            $session['mailing'] = null;
-            unset($session['mailing']);
+            $this->session->mailing = null;
+            unset($this->session->mailing);
             if ( !isset($_GET['mailing_new']) && !isset($_GET['reminder']) ) {
                 header('location: gestion_adherents.php');
                 exit(0);
@@ -1641,25 +1624,25 @@ $app->get(
 
         $params = array();
 
-        if ( $preferences->pref_mail_method == Mailing::METHOD_DISABLED
+        if ( $this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
             && !GALETTE_MODE === 'DEMO'
         ) {
             $hist->add(
                 _T("Trying to load mailing while mail is disabled in preferences.")
             );
         } else {
-            if ( isset($session['filters']['members']) ) {
-                $filters =  unserialize($session['filters']['members']);
+            if ( isset($this->session->filter_members) ) {
+                $filters =  $this->session->filter_members;
             } else {
                 $filters = new MembersList();
             }
 
-            if ( isset($session['mailing'])
+            if ( isset($this->session->mailing)
                 && !isset($_POST['mailing_cancel'])
                 && !isset($_GET['from'])
                 && !isset($_GET['reset'])
             ) {
-                $mailing = unserialize($session['mailing']);
+                $mailing = $this->session->mailing;
             } else if (isset($_GET['from']) && is_numeric($_GET['from'])) {
                 $mailing = new Mailing(null, $_GET['from']);
                 MailingHistory::loadFrom((int)$_GET['from'], $mailing);
@@ -1776,9 +1759,9 @@ $app->get(
                     $mailing->current_step = Mailing::STEP_SENT;
                     //cleanup
                     $filters->selected = null;
-                    $session['filters']['members'] = serialize($filters);
-                    $session['mailing'] = null;
-                    unset($session['mailing']);
+                    $this->session->filter_members = $filters;
+                    $this->session->mailing = null;
+                    unset($this->session->mailing);
                 }
             }
 
@@ -1787,16 +1770,16 @@ $app->get(
             }
 
             if ( $mailing->current_step !== Mailing::STEP_SENT ) {
-                $session['mailing'] = serialize($mailing);
+                $this->session->mailing = $mailing;
             }
 
             /** TODO: replace that... */
-            $session['labels'] = $mailing->unreachables;
+            $this->session->labels = $mailing->unreachables;
 
             if ( !isset($_POST['html_editor_active'])
                 || trim($_POST['html_editor_active']) == ''
             ) {
-                $_POST['html_editor_active'] = $preferences->pref_editor_enabled;
+                $_POST['html_editor_active'] = $this->preferences->pref_editor_enabled;
             }
 
             if ( isset($_POST['mailing_save']) ) {
@@ -1805,8 +1788,8 @@ $app->get(
                 if ( $histo->storeMailing() !== false ) {
                     $success_detected[] = _T("Mailing has been successfully saved.");
                     $params['mailing_saved'] = true;
-                    $session['mailing'] = null;
-                    unset($session['mailing']);
+                    $this->session->mailing = null;
+                    unset($this->session->mailing);
                     $head_redirect = array(
                         'timeout'   => 30,
                         'url'       => 'gestion_mailings.php'
