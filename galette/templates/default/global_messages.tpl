@@ -1,9 +1,9 @@
     {* Let's see if there are error messages to show *}
-    {if isset($smarty.session['slim.flash']['error_detected'])}
+    {if $flash->getMessage('error_detected')|@count > 0}
             <div id="errorbox">
                 <h1>{_T string="- ERROR -"}</h1>
                 <ul>
-        {foreach from=$smarty.session['slim.flash']['error_detected'] item=error}
+        {foreach from=$flash->getMessage('error_detected') item=error}
                     <li>{$error}</li>
         {/foreach}
                 </ul>
@@ -11,11 +11,11 @@
     {/if}
 
     {* Let's see if there are warning messages to show *}
-    {if isset($smarty.session['slim.flash']['warning_detected'])}
+    {if $flash->getMessage('warning_detected')|@count > 0}
             <div id="warningbox">
                 <h1>{_T string="- WARNING -"}</h1>
                 <ul>
-        {foreach from=$smarty.session['slim.flash']['warning_detected'] item=warning}
+        {foreach from=$flash->getMessage('warning_detected') item=warning}
                     <li>{$warning}</li>
         {/foreach}
                 </ul>
@@ -31,10 +31,10 @@
     {/if}
 
     {* Let's see if there are success messages to show *}
-    {if isset($smarty.session['slim.flash']['success_detected'])}
+    {if $flash->getMessage('success_detected')|@count > 0}
         <div id="successbox">
                 <ul>
-        {foreach from=$smarty.session['slim.flash']['success_detected'] item=success}
+        {foreach from=$flash->getMessage('success_detected') item=success}
                     <li>{$success}</li>
         {/foreach}
                 </ul>

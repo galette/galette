@@ -23,9 +23,10 @@ $container['view'] = function ($c) {
     // Add Slim specific plugins
     $view->addSlimPlugins($c['router'], $c['request']->getUri());
 
-
     $smarty = $view->getSmarty();
     $smarty->inheritance_merge_compiled_includes = false;
+
+    $smarty->assign('flash', $c->get('flash'));
 
     $smarty->assign('login', $c->login);
     $smarty->assign('logo', $c->logo);
@@ -184,7 +185,11 @@ $container['acls'] = function ($c) {
         'storemembers'      => 'member',
         'impersonate'       => 'superadmin',
         'unimpersonate'     => 'member',
-        'reminders'         => 'staff'
+        'reminders'         => 'staff',
+        'export'            => 'staff',
+        'doExport'          => 'staff',
+        'removeExport'      => 'staff',
+        'getExport'         => 'staff'
     ];
 
     //load user defined ACLs

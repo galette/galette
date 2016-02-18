@@ -1,11 +1,14 @@
-        <form class="form" action="export.php" method="post" enctype="multipart/form-data">
+{extends file="page.tpl"}
+
+{block name="content"}
+        <form class="form" action="{path_for name="doExport"}" method="post" enctype="multipart/form-data">
         <p>{_T string="Each selected export will be stored into a separate file in the exports directory."}</p>
 {if $written|@count gt 0}
         <div id="successbox">
             <p>{_T string="The following files have been written on disk:"}</p>
             <ul>
 {foreach item=ex from=$written}
-                <li><a href="get_export.php?file={$ex.name}">{$ex.name} ({$ex.file})</a></li>
+                <li><a href="{path_for name="getExport" data=["file" => $ex.name]}">{$ex.name} ({$ex.file})</a></li>
 {/foreach}
             </ul>
         </div>
@@ -28,7 +31,7 @@
     {foreach item=export from=$existing name=existing_list}
                             <tr class="{if $smarty.foreach.existing_list.iteration % 2 eq 0}even{else}odd{/if}">
                                 <td >
-                                    <a href="get_export.php?file={$export.name}">{$export.name}</a>
+                                    <a href="{path_for name="getExport" data=["file" => $export.name]}">{$export.name}</a>
                                 </td>
                                 <td>
                                     {$export.date}
@@ -37,7 +40,7 @@
                                     {$export.size}
                                 </td>
                                 <td class="actions_row">
-                                    <a href="export.php?sup={$export.name}" title="{_T string="Remove '%file' from disk" pattern="/%file/" replace=$export.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
+                                    <a href="{path_for name="removeExport" data=["file" => $export.name]}" title="{_T string="Remove '%file' from disk" pattern="/%file/" replace=$export.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
                                 </td>
                             </tr>
     {/foreach}
@@ -110,9 +113,12 @@
                 <input type="submit" name="valid" value="{_T string="Continue"}"/>
             </div>
         </form>
+{/block}
 
+{block name="javascripts"}
         <script type="text/javascript">
             $(function() {
                 _collapsibleFieldsets();
             });
         </script>
+{/block}

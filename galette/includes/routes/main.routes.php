@@ -129,7 +129,7 @@ $app->get(
             );
             $this->flash->addMessage(
                 'error_detected',
-                [$msg]
+                $msg
             );
             $this->history->add($msg);
         }
