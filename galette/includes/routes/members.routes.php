@@ -116,30 +116,35 @@ $app->get(
         }*/
         // /self_adh specific
 
-        $app->render(
+        // display page
+        $this->view->render(
+            $response,
             'member.tpl',
-            array(
-                'page_title'        => _T("Subscription"),
-                'parent_tpl'        => 'public_page.tpl',
-                'required'          => $required,
-                'visibles'          => $visibles,
-                'disabled'          => $disabled,
-                'member'            => $member,
-                'self_adh'          => true,
-                'dynamic_fields'    => $dynamic_fields,
-                'languages'         => $i18n->getList(),
-                'require_calendar'  => true,
-                // pseudo random int
-                'time'              => time(),
-                'titles_list'       => Titles::getList($zdb),
-                //self_adh specific
-                'spam_pass'         => $spam_pass,
-                'spam_img'          => $spam_img,
-                'fieldsets'         => $form_elements['fieldsets'],
-                'hidden_elements'   => $form_elements['hiddens']
+            array_merge(
+                $route_params,
+                array(
+                    'page_title'        => _T("Subscription"),
+                    'parent_tpl'        => 'public_page.tpl',
+                    'required'          => $required,
+                    'visibles'          => $visibles,
+                    'disabled'          => $disabled,
+                    'member'            => $member,
+                    'self_adh'          => true,
+                    'dynamic_fields'    => $dynamic_fields,
+                    'languages'         => $i18n->getList(),
+                    'require_calendar'  => true,
+                    // pseudo random int
+                    'time'              => time(),
+                    'titles_list'       => Titles::getList($zdb),
+                    //self_adh specific
+                    'spam_pass'         => $spam_pass,
+                    'spam_img'          => $spam_img,
+                    'fieldsets'         => $form_elements['fieldsets'],
+                    'hidden_elements'   => $form_elements['hiddens']
+                )
             )
         );
-
+        return $response;
     }
 )->setName('subscribe');
 
@@ -699,17 +704,14 @@ $app->get(
 )->setName('member')->add($authenticate);
 
 $app->get(
-    '/member/:action(/:id)',
-    function (
-        $action,
-        $id = null
-    ) use (
-        $app,
-        $zdb,
-        $i18n,
-        $members_fields,
-        $members_fields_cats
-    ) {
+    '/member/{action:edit|add}[/{id:\d+}]',
+    function ($request, $response, $args) use ($members_fields, $members_fields_cats) {
+        $action = $args['action'];
+        $id = null;
+        if (isset($args['id'])) {
+            $id = $args['id'];
+        }
+
         if ($action === 'edit' && $id === null) {
             throw new \RuntimeException(
                 _T("Member ID cannot ben null calling edit route!")
@@ -727,21 +729,21 @@ $app->get(
         //TODO: dynamic fields should be handled by Adherent object
         $dyn_fields = new DynamicFields();
 
-        if ( $this->login->isAdmin() || $this->login->isStaff() || $this->login->isGroupManager() ) {
-            if ( $id !== null ) {
+        if ($this->login->isAdmin() || $this->login->isStaff() || $this->login->isGroupManager()) {
+            if ($id !== null) {
                 $adherent['id_adh'] = $id;
                 $member->load($id);
-                if ( !$this->login->isAdmin() && !$this->login->isStaff() && $this->login->isGroupManager() ) {
+                if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->login->isGroupManager()) {
                     //check if current logged in user can manage loaded member
                     $groups = $member->groups;
                     $can_manage = false;
-                    foreach ( $groups as $group ) {
-                        if ( $this->login->isGroupManager($group->getId()) ) {
+                    foreach ($groups as $group) {
+                        if ($this->login->isGroupManager($group->getId())) {
                             $can_manage = true;
                             break;
                         }
                     }
-                    if ( $can_manage !== true ) {
+                    if ($can_manage !== true) {
                         Analog::log(
                             'Logged in member ' . $this->login->login .
                             ' has tried to load member #' . $member->id .
@@ -754,9 +756,9 @@ $app->get(
             }
 
             // disable some fields
-            if ( $this->login->isAdmin() ) {
+            if ($this->login->isAdmin()) {
                 $disabled = $member->adm_edit_disabled_fields;
-            } elseif ( $this->login->isStaff() ) {
+            } elseif ($this->login->isStaff()) {
                 $disabled = $member->adm_edit_disabled_fields
                     + $member->staff_edit_disabled_fields;
             } else {
@@ -765,7 +767,7 @@ $app->get(
                     + $member->disabled_fields;
             }
 
-            if ( $this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED ) {
+            if ($this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
                 $disabled['send_mail'] = 'disabled="disabled"';
             }
         } else {
@@ -799,7 +801,7 @@ $app->get(
         }
 
         // flagging required fields invisible to members
-        if ( $this->login->isAdmin() || $this->login->isStaff() ) {
+        if ($this->login->isAdmin() || $this->login->isStaff()) {
             $fc->setNotRequired('activite_adh');
             $fc->setNotRequired('id_statut');
         }
@@ -810,13 +812,13 @@ $app->get(
 
         $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
-        if ( $member->id !== false &&  $member->id !== '' ) {
+        if ($member->id !== false &&  $member->id !== '') {
             $adherent['dyn'] = $dyn_fields->getFields('adh', $member->id, false);
         }
 
         // - declare dynamic fields for display
         $disabled['dyn'] = array();
-        if ( !isset($adherent['dyn']) ) {
+        if (!isset($adherent['dyn'])) {
             $adherent['dyn'] = array();
         }
 
@@ -828,7 +830,7 @@ $app->get(
         );
         // template variable declaration
         $title = _T("Member Profile");
-        if ( $member->id != '' ) {
+        if ($member->id != '') {
             $title .= ' (' . _T("modification") . ')';
         } else {
             $title .= ' (' . _T("creation") . ')';
@@ -836,27 +838,27 @@ $app->get(
 
         $navigate = array();
 
-        if ( isset($this->session->filter_members) ) {
+        if (isset($this->session->filter_members)) {
             $filters =  $this->session->filter_members;
         } else {
             $filters = new MembersList();
         }
 
-        if ( ($this->login->isAdmin() || $this->login->isStaff()) && count($filters) > 0 ) {
+        if (($this->login->isAdmin() || $this->login->isStaff()) && count($filters) > 0) {
             $m = new Members();
             $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
             $ids = $ids->toArray();
-            foreach ( $ids as $k=>$m ) {
-                if ( $m['id_adh'] == $member->id ) {
+            foreach ($ids as $k => $m) {
+                if ($m['id_adh'] == $member->id) {
                     $navigate = array(
                         'cur'  => $m['id_adh'],
                         'count' => count($ids),
                         'pos' => $k+1
                     );
-                    if ( $k > 0 ) {
+                    if ($k > 0) {
                         $navigate['prev'] = $ids[$k-1]['id_adh'];
                     }
-                    if ( $k < count($ids)-1 ) {
+                    if ($k < count($ids)-1) {
                         $navigate['next'] = $ids[$k+1]['id_adh'];
                     }
                     break;
@@ -864,7 +866,7 @@ $app->get(
             }
         }
 
-        if ( isset($this->session->mail_warning) ) {
+        if (isset($this->session->mail_warning)) {
             //warning will be showed here, no need to keep it longer into session
             unset($this->session->mail_warning);
         }
@@ -878,7 +880,9 @@ $app->get(
 
         $form_elements = $fc->getFormElements();
 
-        $app->render(
+        // display page
+        $this->view->render(
+            $response,
             'member.tpl',
             array_merge(
                 $route_params,
@@ -894,11 +898,11 @@ $app->get(
                     'data'              => $adherent,
                     'self_adh'          => false,
                     'dynamic_fields'    => $dynamic_fields,
-                    'languages'         => $i18n->getList(),
+                    'languages'         => $this->i18n->getList(),
                     'require_calendar'  => true,
                     // pseudo random int
                     'time'              => time(),
-                    'titles_list'       => Titles::getList($zdb),
+                    'titles_list'       => Titles::getList($this->zdb),
                     'statuts'           => $statuts->getList(),
                     'groups'            => $groups_list,
                     'fieldsets'         => $form_elements['fieldsets'],
@@ -906,15 +910,11 @@ $app->get(
                 )
             )
         );
-
+        return $response;
     }
 )->setName(
     'editmember'
-)->add($authenticate)/*->conditions(
-    array(
-        'action' => '(edit|add)',
-    )
-)*/;
+)->add($authenticate);
 
 $app->post(
     '/member/store',

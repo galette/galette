@@ -1,13 +1,14 @@
 {extends file="$parent_tpl"}
+
 {block name="content"}
 {if isset($navigate) and $navigate|@count != 0}
     <nav>
-        <a id="prev" href="{if isset($navigate.prev)}{urlFor name="editmember" options="action.edit|id.`$navigate.prev`"}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">{_T string="Previous"}</a>
+        <a id="prev" href="{if isset($navigate.prev)}{path_for name="editmember" data=["action" => "edit", "id" => $navigate.prev]}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">{_T string="Previous"}</a>
         {$navigate.pos}/{$navigate.count}
-        <a id="next" href="{if isset($navigate.next)}{urlFor name="editmember" options="action.edit|id.`$navigate.next`"}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">{_T string="Next"}</a>
+        <a id="next" href="{if isset($navigate.next)}{path_for name="editmember" data=["action" => "edit", "id" => $navigate.next]}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">{_T string="Next"}</a>
     </nav>
 {/if}
-        <form action="{urlFor name="storemembers"}" method="post" enctype="multipart/form-data" id="form">
+        <form action="{path_for name="storemembers"}" method="post" enctype="multipart/form-data" id="form">
         <div class="bigtable">
 {if $self_adh and $head_redirect}
             <div id="infobox">
@@ -27,7 +28,7 @@
             <div>
         {if $member->hasParent()}
                 <strong>{_T string="Attached to:"}
-                <a href="{urlFor name="member" options=["id" => $member->parent->id]}">{$member->parent->sfullname}</a></strong><br/>
+                <a href="{path_for name="member" data=["id" => $member->parent->id]}">{$member->parent->sfullname}</a></strong><br/>
             {if $login->isAdmin() or $login->isStaff() or $login->id eq $member->parent->id}
                 <label for="detach_parent">{_T string="Detach?"}</label>
                 <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
