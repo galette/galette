@@ -53,6 +53,7 @@ use Galette\IO\Csv;
 use Galette\IO\CsvOut;
 use Galette\Entity\Status;
 use Galette\Repository\Titles;
+use Galette\Entity\Texts;
 
 //self subscription
 $app->get(
@@ -716,6 +717,10 @@ $app->get(
             throw new \RuntimeException(
                 _T("Member ID cannot ben null calling edit route!")
             );
+        } elseif ($action === 'add' && $id !== null) {
+             return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('editmember', ['action' => 'add']));
         }
         $deps = array(
             'picture'   => true,
@@ -1062,7 +1067,7 @@ $app->post(
                             && $this->preferences->pref_bool_mailadh
                         ) {
                             $texts = new Texts(
-                                $texts_fields,
+                                $this->texts_fields,
                                 $this->preferences,
                                 array(
                                     'name_adh'      => custom_html_entity_decode(
@@ -1126,7 +1131,7 @@ $app->post(
                                 //send mail to member
                                 // Get email text in database
                                 $texts = new Texts(
-                                    $texts_fields,
+                                    $this->texts_fields,
                                     $this->preferences,
                                     array(
                                         'name_adh'      => custom_html_entity_decode(
@@ -1825,3 +1830,100 @@ $app->get(
 
     }
 )->setName('mailing')->add($authenticate);
+
+//reminders
+$app->get(
+    '/reminders',
+    function ($request, $response) {
+        $texts = new Texts($this->texts_fields, $this->preferences);
+        $post = $request->getParsedBody();
+
+        if (isset($post['reminders'])) {
+            $selected = null;
+            if (isset($post['reminders'])) {
+                $selected = $post['reminders'];
+            }
+            $reminders = new Reminders($selected);
+
+            $labels = false;
+            $labels_members = array();
+            if (isset($post['reminder_wo_mail'])) {
+                $labels = true;
+            }
+
+            $list_reminders = $reminders->getList($zdb, $labels);
+            if (count($list_reminders) == 0) {
+                $warning_detected[] = _T("No reminder to send for now.");
+            } else {
+                foreach ($list_reminders as $reminder) {
+                    if ($labels === false) {
+                        //send reminders by mail
+                        $sent = $reminder->send($texts, $hist, $zdb);
+
+                        if ($sent === true) {
+                            $success_detected[] = $reminder->getMessage();
+                        } else {
+                            $error_detected[] = $reminder->getMessage();
+                        }
+                    } else {
+                        //generate labels for members without mail address
+                        $labels_members[] = $reminder->member_id;
+                    }
+                }
+
+                if ($labels === true) {
+                    if (count($labels_members) > 0) {
+                        $labels_filters = new MembersList();
+                        $labels_filters->selected = $labels_members;
+                        $session['filters']['reminders_labels'] = serialize($labels_filters);
+                        header('location: etiquettes_adherents.php');
+                        die();
+                    } else {
+                        $error_detected[] = _T("There are no member to proceed.");
+                    }
+                }
+
+                if (count($error_detected) > 0) {
+                    array_unshift(
+                        $error_detected,
+                        _T("Reminder has not been sent:")
+                    );
+                }
+
+                if (count($success_detected) > 0) {
+                    array_unshift(
+                        $success_detected,
+                        _T("Sent reminders:")
+                    );
+                }
+            }
+        }
+
+        $previews = array(
+            'impending' => $texts->getTexts('impendingduedate', $preferences->pref_lang),
+            'late'      => $texts->getTexts('lateduedate', $preferences->pref_lang)
+        );
+
+        $members = new Members();
+        $reminders = $members->getRemindersCount();
+
+        // display page
+        $this->view->render(
+            $response,
+            'reminder.tpl',
+            [
+                'page_title'                => _T("Reminders"),
+                'previews'                  => $previews,
+                'require_dialog'            => true,
+                'count_impending'           => $reminders['impending'],
+                'count_impending_nomail'    => $reminders['nomail']['impending'],
+                'count_late'                => $reminders['late'],
+                'count_late_nomail'         => $reminders['nomail']['late'],
+                'error_detected'            => $error_detected,
+                'warning_detected'          => $warning_detected,
+                'success_detected'          => $success_detected
+            ]
+        );
+        return $response;
+    }
+)->setName('reminders')->add($authenticate);

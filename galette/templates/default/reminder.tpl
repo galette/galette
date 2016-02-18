@@ -1,3 +1,6 @@
+{extends file="page.tpl"}
+
+{block name="content"}
         <form class="form" id="send_reminders" action="reminder.php" method="post" enctype="multipart/form-data">
             <fieldset>
                 <legend class="ui-state-active ui-corner-top">{_T string="Choose wich reminder(s) you want to send:"}</legend>
@@ -42,6 +45,9 @@
             </div>
         </div>
 {/foreach}
+{/block}
+
+{block name="javascripts"}
         <script type="text/javascript">
             $(function(){
                 $('.preview').hide().dialog({
@@ -75,3 +81,4 @@
                 });
             });
         </script>
+{/block}

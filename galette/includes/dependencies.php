@@ -183,7 +183,8 @@ $container['acls'] = function ($c) {
         'editmember'        => 'member',
         'storemembers'      => 'member',
         'impersonate'       => 'superadmin',
-        'unimpersonate'     => 'member'
+        'unimpersonate'     => 'member',
+        'reminders'         => 'staff'
     ];
 
     //load user defined ACLs
@@ -194,6 +195,10 @@ $container['acls'] = function ($c) {
     return $acls;
 };
 
+$container['texts_fields'] = function ($c) {
+    include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
+    return $texts_fields;
+};
 
 // -----------------------------------------------------------------------------
 // Service factories

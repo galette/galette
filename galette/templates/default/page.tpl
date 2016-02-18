@@ -116,7 +116,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
   {if $login->isAdmin() or $login->isStaff()}
             <li{if $cur_route eq "contributions"} class="selected"{/if}><a href="{path_for name="contributions"}" title="{_T string="View and filter contributions"}">{_T string="List of contributions"}</a></li>
             <li{if $cur_route eq "transactions"} class="selected"{/if}><a href="{path_for name="transactions"}" title="{_T string="View and filter transactions"}">{_T string="List of transactions"}</a></li>
-            <li{if $PAGENAME eq "ajouter_adherent.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_adherent.php" title="{_T string="Add new member in database"}">{_T string="Add a member"}</a></li>
+            <li{if $cur_route eq "editmember"} class="selected"{/if}><a href="{path_for name="editmember" data=["action" => "add"]}" title="{_T string="Add new member in database"}">{_T string="Add a member"}</a></li>
             <li{if $PAGENAME eq "ajouter_contribution.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_contribution.php" title="{_T string="Add new contribution in database"}">{_T string="Add a contribution"}</a></li>
             <li{if $PAGENAME eq "ajouter_transaction.php"} class="selected"{/if}><a href="{$galette_base_path}ajouter_transaction.php" title="{_T string="Add new transaction in database"}">{_T string="Add a transaction"}</a></li>
             <li{if $PAGENAME eq "reminder.php"} class="selected"{/if}><a href="{$galette_base_path}reminder.php" title="{_T string="Send reminders to late members"}">{_T string="Reminders"}</a></li>
