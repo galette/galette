@@ -11,7 +11,7 @@
                 <a id="contribs" href="{path_for name="contributions"}" title="{_T string="View and filter contributions"}">{_T string="Contributions"}</a><br/>
                 <a id="transactions" href="{path_for name="transactions"}" title="{_T string="View and filter transactions"}">{_T string="Transactions"}</a>
                 <a id="mailings" href="{path_for name="mailings"}" title="{_T string="Manage mailings that has been sent"}">{_T string="Mailings"}</a>
-                <a id="reminder" href="{$galette_base_path}reminder.php" title="{_T string="Send reminders to late members"}">{_T string="Reminders"}</a>
+                <a id="reminder" href="{path_for name="reminders"}" title="{_T string="Send reminders to late members"}">{_T string="Reminders"}</a>
 {/if}
 {if $login->isAdmin()}
                 <a id="prefs" href="{path_for name="preferences"}" title="{_T string="Set applications preferences (adress, website, member's cards configuration, ...)"}">{_T string="Settings"}</a>
