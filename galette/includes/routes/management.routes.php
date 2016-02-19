@@ -51,6 +51,8 @@ use Galette\IO\CsvIn;
 use Galette\Entity\ImportModel;
 use Galette\Entity\PdfModel;
 use Galette\Repository\PdfModels;
+use Galette\Entity\Title;
+use Galette\Repository\Titles;
 
 //galette's dashboard
 $app->get(
@@ -1281,7 +1283,6 @@ $app->get(
             $params
         );
         return $response;
-
     }
 )->setName('pdfModels')->add($authenticate);
 
@@ -1345,3 +1346,172 @@ $app->post(
             ->withHeader('Location', $this->router->pathFor('pdfModels'));
     }
 )->setName('pdfModels')->add($authenticate);
+
+$app->get(
+    '/titles',
+    function ($request, $response) {
+
+        $titles = Titles::getList($this->zdb);
+
+        // display page
+        $this->view->render(
+            $response,
+            'gestion_titres.tpl',
+            [
+                'page_title'    => _T("Titles management"),
+                'titles_list'   => $titles
+            ]
+        );
+        return $response;
+    }
+)->setName('titles')->add($authenticate);
+
+$app->post(
+    '/titles',
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        $title = new Title();
+
+        $title->short = $post['short_label'];
+        $title->long = $post['long_label'];
+
+        $res = $title->store($this->zdb);
+
+        if (!$res) {
+            $this->flash->addMessage(
+                'error_detected',
+                preg_replace(
+                    '(%s)',
+                    $title->short,
+                    _T("Title '%s' has not been added!")
+                )
+            );
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                preg_replace(
+                    '(%s)',
+                    $title->short,
+                    _T("Title '%s' has been successfully added.")
+                )
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('titles'));
+    }
+)->setName('titles')->add($authenticate);
+
+$app->get(
+    '/titles/remove/{id:\d+}',
+    function ($request, $response, $args) {
+        $id = $args['id'];
+
+        $title = new Title((int)$id);
+        try {
+            $res = $title->remove($this->zdb);
+            if ($res === true) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    str_replace(
+                        '%name',
+                        $title->short,
+                        _T("Title '%name' has been successfully deleted.")
+                    )
+                );
+            } else {
+                $this->flash->addMessage(
+                    'error_detected',
+                    str_replace(
+                        '%name',
+                        $title->short,
+                        _T("An error occured removing title '%name' :(")
+                    )
+                );
+            }
+        } catch (\Exception $e) {
+            if ($e->getCode() == 23000) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("That title is still in use, you cannot delete it!")
+                );
+            } else {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $e->getMessage()
+                );
+            }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('titles'));
+    }
+)->setName('removeTitle')->add($authenticate);
+
+$app->get(
+    '/titles/edit/{id:\d+}',
+    function ($request, $response, $args) {
+        $id = $args['id'];
+        $title = new Title((int)$id);
+
+        // display page
+        $this->view->render(
+            $response,
+            'edit_title.tpl',
+            [
+                'page_title'    => _T("Edit title"),
+                'title'         => $title
+            ]
+        );
+        return $response;
+    }
+)->setname('editTitle')->add($authenticate);
+
+$app->post(
+    '/titles/edit/{id:\d+}',
+    function ($request, $response, $args) {
+        $id = $args['id'];
+        $post = $request->getParsedBody();
+
+        if (isset($post['cancel'])) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('titles'));
+        }
+
+        $title = new Title((int)$id);
+        $title->short = $post['short_label'];
+        $title->long = $post['long_label'];
+        $res = $title->store($this->zdb);
+
+        if (!$res) {
+            $this->flash->addMessage(
+                'error_detected',
+                preg_replace(
+                    '(%s)',
+                    $title->short,
+                    _T("Title '%s' has not been modified!")
+                )
+            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('editTitle', ['id' => $id]));
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                preg_replace(
+                    '(%s)',
+                    $title->short,
+                    _T("Title '%s' has been successfully modified.")
+                )
+            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('titles'));
+        }
+    }
+)->setname('editTitle')->add($authenticate);

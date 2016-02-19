@@ -1,4 +1,7 @@
-        <form action="gestion_titres.php" method="post" enctype="multipart/form-data">
+{extends file="page.tpl"}
+
+{block name="content"}
+        <form action="{path_for name="titles"}" method="post" enctype="multipart/form-data">
                 <table class="listing">
                     <thead>
                         <tr>
@@ -31,13 +34,13 @@
                             <td class="left">{$title->long}</td>
                             <td class="center actions_row">
 
-                                <a href="edit_title.php?id={$title->id}">
+                                <a href="{path_for name="editTitle" data=["id" => $title->id]}">
                                     <img src="{$template_subdir}images/icon-edit.png" alt="{_T string="Edit '%s' title" pattern="/%s/" replace=$title->short}" title="{_T string="Edit '%s' title" pattern="/%s/" replace=$title->short}" width="16" height="16"/>
                                 </a>
                 {if $title->id eq 1 or $title->id eq 2}
                                 <img src="{$template_subdir}images/icon-empty.png" alt="" width="16px" height="16px"/>
                 {else}
-                                <a onclick="return confirm('{_T string="Do you really want to delete this entry?"|escape:"javascript"}')" href="gestion_titres.php?del={$title->id}">
+                                <a onclick="return confirm('{_T string="Do you really want to delete this entry?"|escape:"javascript"}')" href="{path_for name="removeTitle" data=["id" => $title->id]}">
                                     <img src="{$template_subdir}images/icon-trash.png" alt="{_T string="Delete '%s' title" pattern="/%s/" replace=$title->short}" title="{_T string="Delete '%s' title" pattern="/%s/" replace=$title->short}" width="16" height="16" />
                                 </a>
                 {/if}
@@ -47,3 +50,4 @@
                     </tbody>
                 </table>
         </form>
+{/block}

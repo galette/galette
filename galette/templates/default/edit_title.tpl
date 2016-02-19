@@ -1,4 +1,7 @@
-    <form action="edit_title.php" method="post">
+{extends file="page.tpl"}
+
+{block name="content"}
+    <form action="{path_for name="editTitle" data=["id" => $title->id]}" method="post">
         <div class="bigtable">
             <fieldset class="cssform" id="general">
             <p>
@@ -16,5 +19,5 @@
                 <input type="submit" name="cancel" value="{_T string="Cancel"}"/>
                 <input type="hidden" name="id" id="id" value="{$title->id}"/>
             </div>
-
      </form>
+{/block}

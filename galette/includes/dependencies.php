@@ -180,7 +180,10 @@ $container['acls'] = function ($c) {
         'getImportModel'    => 'staff',
         'storeImportModel'  => 'staff',
         'uploadImportFile'  => 'staff',
-        'pdfModels'         => 'staff'
+        'pdfModels'         => 'staff',
+        'titles'            => 'staff',
+        'removeTitle'       => 'staff',
+        'editTitle'         => 'staff'
     ];
 
     //load user defined ACLs
