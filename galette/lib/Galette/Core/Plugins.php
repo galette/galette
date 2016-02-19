@@ -431,7 +431,7 @@ class Plugins
         $modules = $this->getModules();
         foreach (array_keys($this->getModules()) as $r) {
             $menu_path = $this->getTemplatesPath($r) . '/menu.tpl';
-            if ($tpl->template_exists($menu_path)) {
+            if ($tpl->templateExists($menu_path)) {
                 $name2path = strtolower(
                     str_replace(' ', '_', $modules[$r]['name'])
                 );
@@ -459,7 +459,7 @@ class Plugins
         $modules = $this->getModules();
         foreach (array_keys($this->getModules()) as $r) {
             $menu_path = $this->getTemplatesPath($r) . '/public_menu.tpl';
-            if ($tpl->template_exists($menu_path)) {
+            if ($tpl->templateExists($menu_path)) {
                 $name2path = strtolower(
                     str_replace(' ', '_', $modules[$r]['name'])
                 );
@@ -699,7 +699,7 @@ class Plugins
         if (isset($this->modules[$id])) {
             $file = $this->modules[$id]['root'] . '/webroot/' . $path;
             if (file_exists($file)) {
-                return file_get_contents($file);
+                return $file;
             } else {
                 throw new \RuntimeException(_T("File not found!"));
             }

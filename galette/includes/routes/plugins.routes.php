@@ -37,47 +37,55 @@
 
 $app->group(
     '/plugins',
-    function () use ($container, $app, $authenticate) {
+    function () use ($authenticate, $app) {
+        $container = $this->getContainer();
         $modules = $container->plugins->getModules();
 
         //Declare configured routes for each plugin
         foreach ($modules as $module_id => $module) {
             $this->group(
                 '/' . $module['route'],
-                function () use ($app, $module, $module_id, $authenticate) {
+                function () use ($module, $module_id, $authenticate) {
                     $f = $module['root'] . '/_routes.php';
                     include_once $f;
+
+                    //Global route to access plugin resources (CSS, JS, images, ...)
+                    $this->get(
+                        '/res/{path:.*}',
+                        function ($request, $response, $args) use ($module_id) {
+                            $plugin = $module_id;
+                            $path = $args['path'];
+                            $ext = pathinfo($args['path'])['extension'];
+                            $auth_ext = [
+                                'js'    => 'text/javascript',
+                                'css'   => 'text/css',
+                                'png'   => 'image/png',
+                                'jpg'   => 'image/jpg',
+                                'jpeg'  => 'image/jpg',
+                                'gif'   => 'image/gif'
+                            ];
+                            if (strpos($path, '../') === false && isset($auth_ext[$ext])) {
+                                $file = $this->plugins->getFile(
+                                    $plugin,
+                                    $path
+                                );
+
+                                $response = $response->withHeader('Content-type', $auth_ext[$ext]);
+
+                                $body = $response->getBody();
+                                $body->write(file_get_contents($file));
+                                return $response;
+                            } else {
+                                $app->halt(
+                                    500,
+                                    _T("Invalid extension!")
+                                );
+                            }
+
+                        }
+                    )->setName('plugin_res');
                 }
             );
         }
-
-        //Global route to access plugin resources (CSS, JS, images, ...)
-        $this->get(
-            '/:plugin/res/:path+',
-            function ($request, $response, $args, $plugin, $path) use ($app) {
-                $ext = pathinfo($args['path'])['extension'];
-                $auth_ext = [
-                    'js'    => 'text/javascript',
-                    'css'   => 'text/css',
-                    'png'   => 'image/png',
-                    'jpg'   => 'image/jpg',
-                    'jpeg'  => 'image/jpg',
-                    'gif'   => 'image/gif'
-                ];
-                if (strpos($path, '../') === false && isset($auth_ext[$ext])) {
-                    $file = $this->plugins->getFile(
-                        $plugin,
-                        $path
-                    );
-                    $app->response->headers->set('Content-Type', $auth_ext[$ext]);
-                    echo $file;
-                } else {
-                    $app->halt(
-                        500,
-                        _T("Invalid extension!")
-                    );
-                }
-            }
-        )->setName('plugin_res')/*->conditions(array('path' => '.*'))*/;
     }
 );
