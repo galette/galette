@@ -183,7 +183,8 @@ $container['acls'] = function ($c) {
         'pdfModels'         => 'staff',
         'titles'            => 'staff',
         'removeTitle'       => 'staff',
-        'editTitle'         => 'staff'
+        'editTitle'         => 'staff',
+        'texts'             => 'staff'
     ];
 
     //load user defined ACLs

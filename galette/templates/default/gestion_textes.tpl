@@ -1,4 +1,7 @@
-        <form action="gestion_textes.php" method="post" enctype="multipart/form-data"> 
+{extends file="page.tpl"}
+
+{block name="content"}
+        <form action="{path_for name="texts"}" method="post" enctype="multipart/form-data"> 
         <div class="bigtable">
             <fieldset class="cssform" id="{$mtxt->tlang}">
                 <legend class="ui-state-active ui-corner-top">{$mtxt->tcomment}</legend>
@@ -94,6 +97,9 @@
                 </tr>
         </table>
         </div>
+{/block}
+
+{block name="javascripts"}
         <script type="text/javascript">
             $(function() {
                 $('#sel_ref, #sel_lang').change(function() {
@@ -118,3 +124,4 @@
                 });
             });
         </script>
+{/block}

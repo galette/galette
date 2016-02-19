@@ -53,6 +53,7 @@ use Galette\Entity\PdfModel;
 use Galette\Repository\PdfModels;
 use Galette\Entity\Title;
 use Galette\Repository\Titles;
+use Galette\Entity\Texts;
 
 //galette's dashboard
 $app->get(
@@ -1515,3 +1516,80 @@ $app->post(
         }
     }
 )->setname('editTitle')->add($authenticate);
+
+$app->get(
+    '/texts',
+    function ($request, $response) {
+        $cur_lang = $this->preferences->pref_lang;
+        $cur_ref = Texts::DEFAULT_REF;
+
+        $texts = new Texts($this->texts_fields, $this->preferences);
+
+        $mtxt = $texts->getTexts($cur_ref, $cur_lang);
+
+        // display page
+        $this->view->render(
+            $response,
+            'gestion_textes.tpl',
+            [
+                'page_title'        => _T("Automatic emails texts edition"),
+                'reflist'           => $texts->getRefs($cur_lang),
+                'langlist'          => $this->i18n->getList(),
+                'cur_lang'          => $cur_lang,
+                'cur_ref'           => $cur_ref,
+                'mtxt'              => $mtxt,
+                'require_dialog'    => true
+            ]
+        );
+        return $response;
+    }
+)->setName('texts')->add($authenticate);
+
+$app->post(
+    '/texts',
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        $texts = new Texts($this->texts_fields, $this->preferences);
+
+        //set the language
+        if (isset($post['sel_lang'])) {
+            $cur_lang = $post['sel_lang'];
+        }
+        //set the text entry
+        if (isset($post['sel_ref'])) {
+            $cur_ref = $post['sel_ref'];
+        }
+
+        $mtxt = $texts->getTexts($cur_ref, $cur_lang);
+        $res = $texts->setTexts(
+            $cur_ref,
+            $cur_lang,
+            $post['text_subject'],
+            $post['text_body']
+        );
+
+        if (!$res) {
+            $this->flash->addMessage(
+                'error_detected',
+                preg_replace(
+                    '(%s)',
+                    $mtxt->tcomment,
+                    _T("Email: '%s' has not been modified!")
+                )
+            );
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                preg_replace(
+                    '(%s)',
+                    $mtxt->tcomment,
+                    _T("Email: '%s' has been successfully modified.")
+                )
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('texts'));
+    }
+)->setName('texts')->add($authenticate);
