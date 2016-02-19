@@ -1,4 +1,4 @@
-        <form action="gestion_pdf.php" method="post" enctype="multipart/form-data">
+        <form action="{path_for name="pdfModels"}" method="post" enctype="multipart/form-data">
             <fieldset class="cssform">
                 <legend>{$model->name}</legend>
 {if $model->id neq 1}

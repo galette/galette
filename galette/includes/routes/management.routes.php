@@ -49,6 +49,8 @@ use Galette\IO\Csv;
 use Galette\IO\CsvOut;
 use Galette\IO\CsvIn;
 use Galette\Entity\ImportModel;
+use Galette\Entity\PdfModel;
+use Galette\Repository\PdfModels;
 
 //galette's dashboard
 $app->get(
@@ -1160,7 +1162,6 @@ $app->get(
             )
         );
         return $response;
-
     }
 )->setName('importModel')->add($authenticate);
 
@@ -1226,3 +1227,121 @@ $app->post(
             ->withHeader('Location', $this->router->pathFor('importModel'));
     }
 )->setName('storeImportModel')->add($authenticate);
+
+$app->get(
+    '/models/pdf',
+    function ($request, $response) {
+        $id = 1;
+        if (isset($_GET['id'])) {
+            $id = (int)$_GET['id'];
+        } elseif (isset($_POST[PdfModel::PK])) {
+            $id = (int)$_POST[PdfModel::PK];
+        }
+
+        $model = null;
+
+        $ms = new PdfModels($this->zdb, $this->preferences);
+        $models = $ms->getList();
+
+        foreach ($models as $m) {
+            if ($m->id === $id) {
+                $model = $m;
+                break;
+            }
+        }
+
+        $ajax = false;
+        if ($request->isXhr()
+            || isset($request->getQueryParams()['ajax'])
+            && $request->getQueryParams()['ajax'] == 'true'
+        ) {
+            $ajax = true;
+        }
+
+        $tpl = null;
+        $params = [];
+        if ($ajax) {
+            $tpl = 'gestion_pdf_content.tpl';
+            $params['model'] = $model;
+        } else {
+            $tpl = 'gestion_pdf.tpl';
+            $params = [
+                'page_title'        => _T("PDF models"),
+                'models'            => $models,
+                'require_tabs'      => true,
+                'require_dialog'    => true,
+                'model'             => $model
+            ];
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            $tpl,
+            $params
+        );
+        return $response;
+
+    }
+)->setName('pdfModels')->add($authenticate);
+
+$app->post(
+    '/models/pdf',
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        $type = null;
+        if (isset($post['model_type'])) {
+            $type = (int)$post['model_type'];
+        }
+
+        if ($type === null) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Missing PDF model type!")
+            );
+        } else {
+            $class = PdfModel::getTypeClass($type);
+            if (isset($post[PdfModel::PK])) {
+                $model = new $class($this->zdb, $this->preferences, (int)$_POST[PdfModel::PK]);
+            } else {
+                $model = new $class($this->zdb, $this->preferences);
+            }
+
+            try {
+                $model->header = $post['model_header'];
+                $model->footer = $post['model_footer'];
+                $model->type = $type;
+                if (isset($post['model_body'])) {
+                    $model->body = $post['model_body'];
+                }
+                if (isset($post['model_title'])) {
+                    $model->title = $post['model_title'];
+                }
+                if (isset($post['model_body'])) {
+                    $model->subtitle = $post['model_subtitle'];
+                }
+                if (isset($post['model_styles'])) {
+                    $model->styles = $post['model_styles'];
+                }
+                $res = $model->store();
+                if ($res === true) {
+                    $this->flash->addMessage(
+                        'success_detected',
+                        _T("Model has been successfully stored!")
+                    );
+                } else {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        _T("Model has not been stored :(")
+                    );
+                }
+            } catch (\Exception $e) {
+                $error_detected[] = $e->getMessage();
+            }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('pdfModels'));
+    }
+)->setName('pdfModels')->add($authenticate);
