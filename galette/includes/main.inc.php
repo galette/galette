@@ -198,12 +198,12 @@ if (file_exists(GALETTE_CONFIG_PATH  . 'local_acls.inc.php')) {
 }*/
 
 
-$authenticate = function ($request, $response, $next) use ($container, &$session) {
-    $login = $container->login;
+$authenticate = function ($request, $response, $next) use ($container) {
+    $login = $container->session->login;
 
     if (!$login->isLogged()) {
-        $session['urlRedirect'] = $request->getPathInfo();
-        $this->flash->addMessage('error', _T("Login required"));
+        //$this->session->urlRedirect = $request->getPathInfo();
+        $this->flash->addMessage('error_detected', _T("Login required"));
         return $response
             ->withStatus(403)
             ->withHeader('Location', $this->router->pathFor('slash'));
@@ -377,16 +377,17 @@ $app->i18n          = $i18n;
 $app->preferences   = $preferences;
 $app->login         = $login;
 
-$baseRedirect = function ($request, $response, $args = []) use ($app, $container, &$session) {
+$baseRedirect = function ($request, $response, $args = []) use ($app, $container) {
     $login = $container->get('login');
     $router = $container->get('router');
+    $session = $container->get('session');
 
     //$app->flashKeep();
     if ($login->isLogged()) {
         $urlRedirect = null;
-        if (isset($session['urlRedirect'])) {
-            $urlRedirect = $app->request()->getRootUri() . $session['urlRedirect'];
-            unset($session['urlRedirect']);
+        if ($session->urlRedirect !== null) {
+            $urlRedirect = $app->request()->getRootUri() . $session->urlRedirect;
+            $session->urlRedirect = null;
         }
 
         if ($urlRedirect !== null) {
@@ -398,10 +399,9 @@ $baseRedirect = function ($request, $response, $args = []) use ($app, $container
                 || $login->isAdmin()
                 || $login->isStaff()
             ) {
-                if (!isset($_COOKIE['show_galette_dashboard'])
+               if (!isset($_COOKIE['show_galette_dashboard'])
                     || $_COOKIE['show_galette_dashboard'] == 1
-                ) {
-
+               ) {
                     return $response
                         ->withStatus(301)
                         ->withHeader('Location', $router->pathFor('dashboard'));

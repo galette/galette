@@ -122,24 +122,8 @@ $container['preferences'] = function ($c) {
 };
 
 $container['login'] = function ($c) use ($session_name) {
-    $session = &$_SESSION['galette'][$session_name];
-    if (isset($session['login'])) {
-        $login = unserialize(
-            $session['login']
-        );
-        $login->setDb($c->get('zdb'));
-    } else {
-        $login = new Galette\Core\Login(
-            $c->get('zdb'),
-            $c->get('i18n'),
-            $session
-        );
-    }
-
-    if (PHP_SAPI === 'cli') {
-        $login->logCron(basename($argv[0], '.php'));
-    }
-
+    $login = $c->get('session')->login;
+    $login->setDb($c->get('zdb'));
     return $login;
 };
 
@@ -188,8 +172,14 @@ $container['acls'] = function ($c) {
         'reminders'         => 'staff',
         'export'            => 'staff',
         'doExport'          => 'staff',
-        'removeExport'      => 'staff',
-        'getExport'         => 'staff'
+        'removeCsv'         => 'staff',
+        'getCsv'            => 'staff',
+        'import'            => 'staff',
+        'doImport'          => 'staff',
+        'importModel'       => 'staff',
+        'getImportModel'    => 'staff',
+        'storeImportModel'  => 'staff',
+        'uploadImportFile'  => 'staff'
     ];
 
     //load user defined ACLs
@@ -203,6 +193,21 @@ $container['acls'] = function ($c) {
 $container['texts_fields'] = function ($c) {
     include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
     return $texts_fields;
+};
+
+$container['members_fields'] = function ($c) {
+    include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
+    return $members_fields;
+};
+
+$container['members_fields_cats'] = function ($c) {
+    include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
+    return $members_fields_cats;
+};
+
+$container['pdfmodels_fields'] = function ($c) {
+    include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
+    return $pdfmodels_fields;
 };
 
 // -----------------------------------------------------------------------------

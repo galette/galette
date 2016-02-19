@@ -350,45 +350,10 @@ if (!$installer and !defined('GALETTE_TESTS')) {
         }
 
         /**
-         * Plugins
-         */
-        /*$plugins = new Core\Plugins($preferences);*/
-
-        /**
-         * Instanciate history object
-         */
-        if ( isset($session['history'])
-            && !GALETTE_MODE == 'DEV'
-        ) {
-            $hist = unserialize(
-                $session['history']
-            );
-        } else {
-            $hist = new Core\History();
-        }
-
-        /**
-         * Logo
-         */
-        if ( isset($session['logo'])
-            && !GALETTE_MODE == 'DEV'
-        ) {
-            $logo = unserialize(
-                $session['logo']
-            );
-        } else {
-            $logo = new Core\Logo();
-        }
-
-        /**
          * Now that all objects are correctly setted,
          * we can include files that need it
          */
         include_once GALETTE_ROOT . 'includes/session.inc.php';
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
-        include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
-        include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
     } else {
         $needs_update = true;
     }

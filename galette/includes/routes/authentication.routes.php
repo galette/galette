@@ -46,7 +46,7 @@ $app->get(
             && $args['r'] != '/logout'
             && $args['r'] != '/login'
         ) {
-            $this->session['urlRedirect'] = $args['r'];
+            $this->session->urlRedirect = $args['r'];
         }
 
         if (!$this->login->isLogged()) {
@@ -100,11 +100,11 @@ $app->post(
         }
 
         if ($this->login->isLogged()) {
-            $this->session['login'] = serialize($this->login);
+        	$this->session->login = $this->login;
             $this->history->add(_T("Login"));
-            return $baseRedirect($request, $response, $args);
+            return $baseRedirect($request, $response, []);
         } else {
-            $this->flash->addMessage('loginfault', _T("Login failed."));
+            $this->flash->addMessage('error_detected', _T("Login failed."));
             $this->history->add(_T("Authentication failed"), $nick);
             return $response->withStatus(301)->withHeader('Location', $this->router->pathFor('login'));
         }
@@ -114,10 +114,9 @@ $app->post(
 //logout procedure
 $app->get(
     '/logout',
-    function ($request, $response) use ($app, $login, &$session) {
+    function ($request, $response) use ($app, $login) {
         $this->login->logOut();
-        $session['login'] = null;
-        unset($this->session['login']);
+        \RKA\Session::destroy();
         return $response
             ->withStatus(301)
             ->withHeader('Location', $this->router->pathFor('slash'));

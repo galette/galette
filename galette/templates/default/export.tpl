@@ -8,7 +8,7 @@
             <p>{_T string="The following files have been written on disk:"}</p>
             <ul>
 {foreach item=ex from=$written}
-                <li><a href="{path_for name="getExport" data=["file" => $ex.name]}">{$ex.name} ({$ex.file})</a></li>
+                <li><a href="{path_for name="getCsv" data=["type" => "export", "file" => $ex.name]}">{$ex.name} ({$ex.file})</a></li>
 {/foreach}
             </ul>
         </div>
@@ -31,7 +31,7 @@
     {foreach item=export from=$existing name=existing_list}
                             <tr class="{if $smarty.foreach.existing_list.iteration % 2 eq 0}even{else}odd{/if}">
                                 <td >
-                                    <a href="{path_for name="getExport" data=["file" => $export.name]}">{$export.name}</a>
+                                    <a href="{path_for name="getCsv" data=["type" => "export", "file" => $export.name]}">{$export.name}</a>
                                 </td>
                                 <td>
                                     {$export.date}
@@ -40,7 +40,7 @@
                                     {$export.size}
                                 </td>
                                 <td class="actions_row">
-                                    <a href="{path_for name="removeExport" data=["file" => $export.name]}" title="{_T string="Remove '%file' from disk" pattern="/%file/" replace=$export.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
+                                    <a href="{path_for name="removeCsv" data=["type" => "export", "file" => $export.name]}" title="{_T string="Remove '%file' from disk" pattern="/%file/" replace=$export.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
                                 </td>
                             </tr>
     {/foreach}

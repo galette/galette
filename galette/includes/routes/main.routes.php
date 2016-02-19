@@ -108,7 +108,7 @@ $app->get(
         $success = $login->impersonate($id);
 
         if ($success === true) {
-            $this->session['login'] = serialize($login);
+            $this->session->login = $login;
             $this->login = $login;
             $msg = str_replace(
                 '%login',
@@ -146,7 +146,7 @@ $app->get(
         $login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
         $login->logAdmin($this->preferences->pref_admin_login, $this->preferences);
         $this->history->add(_T("Impersonating ended"));
-        $this->session['login'] = serialize($login);
+        $this->session->login = $login;
         $this->login = $login;
         $this->flash->addMessage(
             'success_detected',

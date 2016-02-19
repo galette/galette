@@ -68,8 +68,8 @@ $app->group('/public', function () {
     $this->get(
         '/members',
         function ($request, $response) {
-            if (isset($this->session['public_filters']['members'])) {
-                $filters = unserialize($this->session['public_filters']['members']);
+            if (isset($this->session->public_filters_members)) {
+                $filters = $this->session->public_filters_members;
             } else {
                 $filters = new MembersList();
             }
@@ -98,7 +98,7 @@ $app->group('/public', function () {
             $members = $m->getPublicList(false, null);
 
             $session = $this->session;
-            $session['public_filters']['members'] = serialize($filters);
+            $session->public_filters_members = $filters;
             $this->session = $session;
 
             //assign pagination variables to the template and add pagination links

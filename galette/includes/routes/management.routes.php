@@ -47,10 +47,13 @@ use Galette\IO\Charts;
 use \Analog\Analog;
 use Galette\IO\Csv;
 use Galette\IO\CsvOut;
+use Galette\IO\CsvIn;
+use Galette\Entity\ImportModel;
 
 //galette's dashboard
 $app->get(
-    '/' . _T("dashboard"),
+    '/dashboard',
+    /*'/' . _T("dashboard"),*/
     function ($request, $response, $args = []) {
         $news = new News($this->preferences->pref_rss_url);
 
@@ -157,7 +160,7 @@ $app->get(
 //preferences procedure
 $app->post(
     '/preferences',
-    function ($request, $response) use ($app, &$session) {
+    function ($request, $response) {
         // Validation
         if (isset($_POST['valid']) && $_POST['valid'] == '1') {
             // verification de champs
@@ -487,7 +490,6 @@ $app->post(
                                 } else {
                                     $this->logo = new Logo();
                                 }
-                                $this->session['logo'] = serialize($this->logo);
                             }
                         }
                     } elseif ($_FILES['logo']['error'] !== UPLOAD_ERR_NO_FILE) {
@@ -512,7 +514,6 @@ $app->post(
                         );
                     } else {
                         $this->logo = new Logo(); //get default Logo
-                        $this->session['logo'] = serialize($this->logo);
                     }
                 }
 
@@ -825,9 +826,9 @@ $app->get(
 )->add($authenticate);
 
 $app->get(
-    '/export/remove/{file}',
+    '/{type:export|import}/remove/{file}',
     function ($request, $response, $args) {
-        $csv = new CsvOut();
+        $csv = $args['type'] === 'export' ? new CsvOut() : new CsvIn;
         $res = $csv->remove($args['file']);
         if ($res === true) {
             $this->flash->addMessage(
@@ -851,9 +852,9 @@ $app->get(
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('export'));
+            ->withHeader('Location', $this->router->pathFor($args['type']));
     }
-)->setName('removeExport')->add($authenticate);
+)->setName('removeCsv')->add($authenticate);
 
 $app->post(
     '/export',
@@ -956,21 +957,23 @@ $app->post(
 )->setName('doExport')->add($authenticate);
 
 $app->get(
-    '/export/get/{file}',
+    '/{type:export|import}/get/{file}',
     function ($request, $response, $args) {
         $filename = $args['file'];
+
         //Exports main contain user confidential data, they're accessible only for
         //admins or staff members
         if ($this->login->isAdmin() || $this->login->isStaff()) {
-
-            if (file_exists(CsvOut::DEFAULT_DIRECTORY . $filename)) {
+            $filepath = $args['type'] === 'export' ? CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
+            $filepath .= $filename;
+            if (file_exists($filepath)) {
                 header('Content-Type: text/csv');
                 header('Content-Disposition: attachment; filename="' . $filename . '";');
                 header('Pragma: no-cache');
-                readfile(CsvOut::DEFAULT_DIRECTORY . $filename);
+                readfile($filepath);
             } else {
                 Analog::log(
-                    'A request has been made to get an exported file named `' .
+                    'A request has been made to get an ' . $args['type'] . 'ed file named `' .
                     $filename .'` that does not exists.',
                     Analog::WARNING
                 );
@@ -978,11 +981,248 @@ $app->get(
             }
         } else {
             Analog::log(
-                'A non authorized person asked to retrieve exported file named `' .
+                'A non authorized person asked to retrieve ' . $args['type'] . 'ed file named `' .
                 $filename . '`. Access has not been granted.',
                 Analog::WARNING
             );
             header('HTTP/1.0 403 Forbidden');
         }
     }
-)->setName('getExport')->add($authenticate);
+)->setName('getCsv')->add($authenticate);
+
+$app->get(
+    '/import',
+    function ($request, $response) {
+        $csv = new CsvIn();
+        $existing = $csv->getExisting();
+        $dryrun = true;
+
+        // display page
+        $this->view->render(
+            $response,
+            'import.tpl',
+            array(
+                'page_title'        => _T("CSV members import"),
+                'require_dialog'    => true,
+                'existing'          => $existing,
+                'dryrun'            => $dryrun,
+                'import_file'       => $this->flash->getMessage('import_file')[0]
+            )
+        );
+        return $response;
+    }
+)->setName('import')->add($authenticate);
+
+$app->post(
+    '/import',
+    function ($request, $response) {
+        $csv = new CsvIn();
+        $post = $request->getParsedBody();
+        $dryrun = isset($post['dryrun']);
+        $res = $csv->import($post['import_file'], $this->members_fields, $dryrun);
+        if ($res !== true) {
+            if ($res < 0) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $csv->getErrorMessage($res)
+                );
+                if (count($csv->getErrors()) > 0) {
+                    foreach ($csv->getErrors() as $error) {
+                        $this->flash->addMessage(
+                            'error_detected',
+                            $error
+                        );
+                    }
+                }
+            } else {
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("An error occured importing the file :(")
+                );
+            }
+
+            $this->flash->addMessage(
+                'import_file',
+                $post['import_file']
+            );
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                str_replace(
+                    '%filename%',
+                    $post['import_file'],
+                    _T("File '%filename%' has been successfully imported :)")
+                )
+            );
+        }
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('import'));
+    }
+)->setName('doImport')->add($authenticate);
+
+$app->post(
+    '/import/upload',
+    function ($request, $response) {
+        $csv = new CsvIn();
+        if (isset($_FILES['new_file'])) {
+            if ($_FILES['new_file']['error'] === UPLOAD_ERR_OK) {
+                if ($_FILES['new_file']['tmp_name'] !='') {
+                    if (is_uploaded_file($_FILES['new_file']['tmp_name'])) {
+                        $res = $csv->store($_FILES['new_file']);
+                        if ($res < 0) {
+                            $this->flash->addMessage(
+                                'error_detected',
+                                $csv->getErrorMessage($res)
+                            );
+                        } else {
+                            $this->flash->addMessage(
+                                'success_detected',
+                                _T("Your file has been successfully uploaded!")
+                            );
+                        }
+                    }
+                }
+            } elseif ($_FILES['new_file']['error'] !== UPLOAD_ERR_NO_FILE) {
+                Analog::log(
+                    $csv->getPhpErrorMessage($_FILES['new_file']['error']),
+                    Analog::WARNING
+                );
+                $this->flash->addMessage(
+                    'error_detected',
+                    $csv->getPhpErrorMessage(
+                        $_FILES['new_file']['error']
+                    )
+                );
+            } elseif (isset($_POST['upload'])) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("No files has been seleted for upload!")
+                );
+            }
+        } else {
+            $this->flash->addMessage(
+                'warning_detected',
+                _T("No files has been uploaded!")
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('import'));
+    }
+)->setname('uploadImportFile')->add($authenticate);
+
+$app->get(
+    '/import/model',
+    function ($request, $response) {
+        $model = new ImportModel();
+        $model->load();
+
+        if (isset($request->getQueryParams()['remove'])) {
+            $model->remove($this->zdb);
+            $model->load();
+        }
+
+        $csv = new CsvIn();
+
+        /** FIXME:
+        * - set fields that should not be part of import
+        * - set fields that must be part of import, and visually disable them in the list
+        */
+
+        $fields = $model->getFields();
+        $defaults = $csv->getDefaultFields();
+        $defaults_loaded = false;
+
+        if ($fields === null) {
+            $fields = $defaults;
+            $defaults_loaded = true;
+        }
+
+        $import_fields = $this->members_fields;
+        //we do not want to import id_adh. Never.
+        unset($import_fields['id_adh']);
+
+        // display page
+        $this->view->render(
+            $response,
+            'import_model.tpl',
+            array(
+                'page_title'        => _T("CSV import model"),
+                'require_dialog'    => true,
+                'fields'            => $fields,
+                'model'             => $model,
+                'defaults'          => $defaults,
+                'members_fields'    => $import_fields,
+                'defaults_loaded'   => $defaults_loaded,
+                'require_tabs'      => true
+            )
+        );
+        return $response;
+
+    }
+)->setName('importModel')->add($authenticate);
+
+$app->get(
+    '/import/model/get',
+    function ($request, $response) {
+        $model = new ImportModel();
+        $model->load();
+
+        $csv = new CsvIn();
+
+        /** FIXME:
+        * - set fields that should not be part of import
+        * - set fields that must be part of import, and visually disable them in the list
+        */
+
+        $fields = $model->getFields();
+        $defaults = $csv->getDefaultFields();
+        $defaults_loaded = false;
+
+        if ($fields === null) {
+            $fields = $defaults;
+            $defaults_loaded = true;
+        }
+
+        $ocsv = new CsvOut();
+        $res = $ocsv->export(
+            $fields,
+            Csv::DEFAULT_SEPARATOR,
+            Csv::DEFAULT_QUOTE,
+            $fields
+        );
+        $filename = _T("galette_import_model.csv");
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '";');
+        header('Pragma: no-cache');
+        echo $res;
+    }
+)->setName('getImportModel')->add($authenticate);
+
+$app->post(
+    '/import/model/store',
+    function ($request, $response) {
+        $model = new ImportModel();
+        $model->load();
+
+        $model->setFields($request->getParsedBody()['fields']);
+        $res = $model->store($this->zdb);
+        if ($res === true) {
+            $this->flash->addMessage(
+                'success_detected',
+                _T("Import model has been successfully stored :)")
+            );
+        } else {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Import model has not been stored :(")
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('importModel'));
+    }
+)->setName('storeImportModel')->add($authenticate);

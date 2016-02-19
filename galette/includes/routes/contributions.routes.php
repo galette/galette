@@ -51,8 +51,8 @@ $app->get(
             $value = $args['value'];
         }
 
-        if (isset($this->session['contributions'])) {
-            $contribs = unserialize($this->session['contributions']);
+        if ($this->session->contributions !== null) {
+            $contribs = $this->session->contributions;
         } else {
             $contribs = new Contributions();
         }
@@ -99,7 +99,7 @@ $app->get(
             }
         }*/
 
-        //$this->session['contributions'] = serialize($contribs);
+        $this->session->contributions = $contribs;
         $list_contribs = $contribs->getContributionsList(true);
 
         //assign pagination variables to the template and add pagination links
@@ -143,8 +143,8 @@ $app->get(
 
         $filtre_id_adh = '';
 
-        if (isset($this->session['transactions'])) {
-            $trans = unserialize($this->session['transactions']);
+        if ($this->session->transactions !== null) {
+            $trans = $this->session->transactions;
         } else {
             $trans = new Galette\Repository\Transactions();
         }
@@ -193,7 +193,7 @@ $app->get(
             }
         }*/
 
-        $this->session['transactions'] = serialize($trans);
+        $this->session->transactions = $trans;
         $list_trans = $trans->getTransactionsList(true);
 
         //assign pagination variables to the template and add pagination links
@@ -229,8 +229,8 @@ $app->post(
         $type = $args['type'];
         $post = $request->getParsedBody();
 
-        if (isset($this->session[$type])) {
-            $contribs = unserialize($this->session[$type]);
+        if ($this->session->$type !== null) {
+            $contribs = $this->session->$type;
         } else {
             $contribs = new Contributions();
         }
@@ -310,7 +310,7 @@ $app->post(
             }
         }*/
 
-        $this->session[$type] = serialize($contribs);
+        $this->session->$type = $contribs;
 
         return $response
             ->withStatus(301)

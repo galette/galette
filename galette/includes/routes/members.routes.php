@@ -58,11 +58,8 @@ use Galette\Entity\Texts;
 //self subscription
 $app->get(
     '/subscribe',
-    function () use ($app, $zdb, $i18n,
-        $members_fields, $members_fields_cats
-    ) {
-        if ( !$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged() ) {
-
+    function ($request, $response) {
+        if (!$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged()) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('slash'));
@@ -77,8 +74,8 @@ $app->get(
         // flagging required fields
         $fc = new FieldsConfig(
             Adherent::TABLE,
-            $members_fields,
-            $members_fields_cats
+            $this->members_fields,
+            $this->members_fields_cats
         );
         $required = $fc->getRequired();
         // flagging fields visibility
@@ -96,7 +93,7 @@ $app->get(
 
         // - declare dynamic fields for display
         $disabled['dyn'] = array();
-        if ( !isset($adherent['dyn']) ) {
+        if (!isset($adherent['dyn'])) {
             $adherent['dyn'] = array();
         }
 
@@ -106,7 +103,10 @@ $app->get(
         $spam_img = $spam->getImage();
 
         $dynamic_fields = $dyn_fields->prepareForDisplay(
-            'adh', $adherent['dyn'], $disabled['dyn'], 1
+            'adh',
+            $adherent['dyn'],
+            $disabled['dyn'],
+            1
         );
 
         /*if ( $has_register ) {
@@ -132,7 +132,7 @@ $app->get(
                     'member'            => $member,
                     'self_adh'          => true,
                     'dynamic_fields'    => $dynamic_fields,
-                    'languages'         => $i18n->getList(),
+                    'languages'         => $this->i18n->getList(),
                     'require_calendar'  => true,
                     // pseudo random int
                     'time'              => time(),
@@ -152,9 +152,7 @@ $app->get(
 //members list CSV export
 $app->get(
     '/members/export/csv',
-    function () use ($app, $zdb,
-        $members_fields, $members_fields_cats
-    ) {
+    function () use ($app, $zdb) {
         $csv = new CsvOut();
 
         if ( isset($this->session->filter_members) ) {
@@ -173,21 +171,21 @@ $app->get(
         // fields visibility
         $fc = new FieldsConfig(
             Adherent::TABLE,
-            $members_fields,
-            $members_fields_cats
+            $this->members_fields,
+            $this->members_fields_cats
         );
         $visibles = $fc->getVisibilities();
         $fields = array();
         $headers = array();
-        foreach ( $members_fields as $k=>$f ) {
-            if ( $k !== 'mdp_adh'
+        foreach ($this->members_fields as $k => $f) {
+            if ($k !== 'mdp_adh'
                 && $export_fields === null
                 || (is_array($export_fields) && in_array($k, $export_fields))
             ) {
-                if ( $visibles[$k] == FieldsConfig::VISIBLE ) {
+                if ($visibles[$k] == FieldsConfig::VISIBLE) {
                     $fields[] = $k;
                     $labels[] = $f['label'];
-                } else if ( ($this->login->isAdmin()
+                } elseif (($this->login->isAdmin()
                     || $this->login->isStaff()
                     || $this->login->isSuperAdmin())
                     && $visibles[$k] == FieldsConfig::ADMIN
@@ -214,20 +212,20 @@ $app->get(
         $t = new Titles();
         $titles = $t->getList($zdb);
 
-        foreach ($members_list as &$member ) {
-            if ( isset($member->id_statut) ) {
+        foreach ($members_list as &$member) {
+            if (isset($member->id_statut)) {
                 //add textual status
                 $member->id_statut = $statuses[$member->id_statut];
             }
 
-            if ( isset($member->titre_adh) ) {
+            if (isset($member->titre_adh)) {
                 //add textuel title
                 $member->titre_adh = $titles[$member->titre_adh]->short;
             }
 
             //handle dates
-            if (isset($member->date_crea_adh) ) {
-                if ( $member->date_crea_adh != ''
+            if (isset($member->date_crea_adh)) {
+                if ($member->date_crea_adh != ''
                     && $member->date_crea_adh != '1901-01-01'
                 ) {
                     $dcrea = new DateTime($member->date_crea_adh);
@@ -237,8 +235,8 @@ $app->get(
                 }
             }
 
-            if ( isset($member->date_modif_adh) ) {
-                if ( $member->date_modif_adh != ''
+            if (isset($member->date_modif_adh)) {
+                if ($member->date_modif_adh != ''
                     && $member->date_modif_adh != '1901-01-01'
                 ) {
                     $dmodif = new DateTime($member->date_modif_adh);
@@ -248,8 +246,8 @@ $app->get(
                 }
             }
 
-            if ( isset($member->date_echeance) ) {
-                if ( $member->date_echeance != ''
+            if (isset($member->date_echeance)) {
+                if ($member->date_echeance != ''
                     && $member->date_echeance != '1901-01-01'
                 ) {
                     $dech = new DateTime($member->date_echeance);
@@ -259,8 +257,8 @@ $app->get(
                 }
             }
 
-            if ( isset($member->ddn_adh) ) {
-                if ( $member->ddn_adh != ''
+            if (isset($member->ddn_adh)) {
+                if ($member->ddn_adh != ''
                     && $member->ddn_adh != '1901-01-01'
                 ) {
                     $ddn = new DateTime($member->ddn_adh);
@@ -270,35 +268,35 @@ $app->get(
                 }
             }
 
-            if ( isset($member->sexe_adh) ) {
+            if (isset($member->sexe_adh)) {
                 //handle gender
-                switch ( $member->sexe_adh ) {
-                case Adherent::MAN:
-                    $member->sexe_adh = _T("Man");
-                    break;
-                case Adherent::WOMAN:
-                    $member->sexe_adh = _T("Woman");
-                    break;
-                case Adherent::NC:
-                    $member->sexe_adh = _T("Unspecified");
-                    break;
+                switch ($member->sexe_adh) {
+                    case Adherent::MAN:
+                        $member->sexe_adh = _T("Man");
+                        break;
+                    case Adherent::WOMAN:
+                        $member->sexe_adh = _T("Woman");
+                        break;
+                    case Adherent::NC:
+                        $member->sexe_adh = _T("Unspecified");
+                        break;
                 }
             }
 
             //handle booleans
-            if ( isset($member->activite_adh) ) {
+            if (isset($member->activite_adh)) {
                 $member->activite_adh
                     = ($member->activite_adh) ? _T("Yes") : _T("No");
             }
-            if ( isset($member->bool_admin_adh) ) {
+            if (isset($member->bool_admin_adh)) {
                 $member->bool_admin_adh
                     = ($member->bool_admin_adh) ? _T("Yes") : _T("No");
             }
-            if ( isset($member->bool_exempt_adh) ) {
+            if (isset($member->bool_exempt_adh)) {
                 $member->bool_exempt_adh
                     = ($member->bool_exempt_adh) ? _T("Yes") : _T("No");
             }
-            if ( isset($member->bool_display_info) ) {
+            if (isset($member->bool_display_info)) {
                 $member->bool_display_info
                     = ($member->bool_display_info) ? _T("Yes") : _T("No");
             }
@@ -306,7 +304,7 @@ $app->get(
         $filename = 'filtered_memberslist.csv';
         $filepath = CsvOut::DEFAULT_DIRECTORY . $filename;
         $fp = fopen($filepath, 'w');
-        if ( $fp ) {
+        if ($fp) {
             $res = $csv->export(
                 $members_list,
                 Csv::DEFAULT_SEPARATOR,
@@ -322,7 +320,7 @@ $app->get(
         }
 
         $response = $app->response;
-        if (file_exists(CsvOut::DEFAULT_DIRECTORY . $filename) ) {
+        if (file_exists(CsvOut::DEFAULT_DIRECTORY . $filename)) {
             $response->headers->set('Content-Type', 'text/csv');
             $response->headers->set(
                 'Content-Disposition',
@@ -582,7 +580,7 @@ $app->get(
 //members card
 $app->get(
     '/member/{id:\d+}',
-    function ($request, $response, $args) use ($members_fields, $members_fields_cats) {
+    function ($request, $response, $args) {
         $id = $args['id'];
         $dyn_fields = new DynamicFields();
 
@@ -648,7 +646,7 @@ $app->get(
         }
 
         //Set caller page ref for cards error reporting
-        //$this->session['caller'] = 'voir_adherent.php?id_adh='.$id_adh;
+        //$this->session->caller = 'voir_adherent.php?id_adh='.$id_adh;
 
         // declare dynamic field values
         $adherent['dyn'] = $dyn_fields->getFields('adh', $id, true);
@@ -675,7 +673,7 @@ $app->get(
         }*/
 
         // flagging fields visibility
-        $fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
+        $fc = new FieldsConfig(Adherent::TABLE, $this->members_fields, $this->members_fields_cats);
         $visibles = $fc->getVisibilities();
 
         $display_elements = $fc->getDisplayElements();
@@ -706,7 +704,7 @@ $app->get(
 
 $app->get(
     '/member/{action:edit|add}[/{id:\d+}]',
-    function ($request, $response, $args) use ($members_fields, $members_fields_cats) {
+    function ($request, $response, $args) {
         $action = $args['action'];
         $id = null;
         if (isset($args['id'])) {
@@ -783,7 +781,7 @@ $app->get(
         }
 
         // flagging required fields
-        $fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
+        $fc = new FieldsConfig(Adherent::TABLE, $this->members_fields, $this->members_fields_cats);
 
         //address and mail fields are not required if member has a parent
         $no_parent_required = array(
@@ -925,8 +923,6 @@ $app->post(
     '/member/store',
     function () use (
         $app,
-        $members_fields,
-        $members_fields_cats,
         &$success_detected,
         &$warning_detected,
         &$error_detected
@@ -993,7 +989,7 @@ $app->post(
         }
 
         // flagging required fields
-        $fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
+        $fc = new FieldsConfig(Adherent::TABLE, $this->members_fields, $this->members_fields_cats);
 
         // password required if we create a new member
         if ( $member->id != '' ) {
@@ -1317,7 +1313,7 @@ $app->post(
 //advanced search page
 $app->get(
     '/advanced-search',
-    function ($request, $response) use ($app, $members_fields, $members_fields_cats) {
+    function ($request, $response) {
         if (isset($this->session->filter_members)) {
             $filters = $this->session->filter_members;
             if (!$filters instanceof AdvancedMembersList) {
@@ -1331,11 +1327,11 @@ $app->get(
         $groups_list = $groups->getList();
 
         //we want only visibles fields
-        $fields = $members_fields;
+        $fields = $this->members_fields;
         $fc = new FieldsConfig(
             Adherent::TABLE,
-            $members_fields,
-            $members_fields_cats
+            $this->members_fields,
+            $this->members_fields_cats
         );
         $visibles = $fc->getVisibilities();
 
@@ -1875,7 +1871,7 @@ $app->get(
                     if (count($labels_members) > 0) {
                         $labels_filters = new MembersList();
                         $labels_filters->selected = $labels_members;
-                        $session['filters']['reminders_labels'] = serialize($labels_filters);
+                        $session->filters_reminders_labels = $labels_filters;
                         header('location: etiquettes_adherents.php');
                         die();
                     } else {

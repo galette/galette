@@ -1,7 +1,10 @@
+{extends file="page.tpl"}
+
+{block name="content"}
         <p class="center">
-            <a class="button" id="preferences" href="import_model.php">{_T string="Configure import model"}</a>
+            <a class="button" id="preferences" href="{path_for name="importModel"}">{_T string="Configure import model"}</a>
         </p>
-        <form class="form" action="import.php" method="post" enctype="multipart/form-data">
+        <form class="form" action="{path_for name="doImport"}" method="post">
             <fieldset>
                 <legend class="ui-state-active ui-corner-top">{_T string="Existing files"}</legend>
                 <div class="warningbox">
@@ -24,7 +27,7 @@
                             <tr class="{if $smarty.foreach.existing_list.iteration % 2 eq 0}even{else}odd{/if}">
                                 <td>
                                     <input type="radio" name="import_file" id="file{$smarty.foreach.existing_list.iteration}" value="{$import.name}"{if isset($import_file) and $import_file eq $import.name} checked="checked"{/if}/>
-                                    <label for="file{$smarty.foreach.existing_list.iteration}">{$import.name}</label> (<a href="get_import.php?file={$import.name}">{_T string="see"}</a>)
+                                    <label for="file{$smarty.foreach.existing_list.iteration}">{$import.name}</label> (<a href="{path_for name="getCsv" data=["type" => "import", "file" => $import.name]}">{_T string="see"}</a>)
                                 </td>
                                 <td>
                                     {$import.date}
@@ -33,7 +36,7 @@
                                     {$import.size}
                                 </td>
                                 <td class="actions_row">
-                                    <a href="import.php?sup={$import.name}" title="{_T string="Remove '%file' from disk" pattern="/%file/" replace=$import.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
+                                    <a href="{path_for name="removeCsv" data=["type" => "import", "file" => $import.name]}" title="{_T string="Remove '%file' from disk" pattern="/%file/" replace=$import.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
                                 </td>
                             </tr>
     {/foreach}
@@ -49,7 +52,8 @@
 {/if}
                 </div>
             </fieldset>
-
+        </form>
+        <form class="form" action="{path_for name="uploadImportFile"}" method="post" enctype="multipart/form-data">
             <fieldset>
                 <legend class="ui-state-active ui-corner-top">{_T string="Upload new file"}</legend>
                 <div>
@@ -63,7 +67,9 @@
                 </div>
             </fieldset>
         </form>
+{/block}
 
+{block name="javascripts"}
         <script type="text/javascript">
             $(function() {
                 _collapsibleFieldsets();
@@ -110,3 +116,4 @@
                 });
             });
         </script>
+{/block}
