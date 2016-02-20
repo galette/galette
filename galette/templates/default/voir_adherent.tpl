@@ -57,8 +57,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <tr>
                 <th>{_T string="Parent of:"}</th>
                 <td>
-        {foreach from=$member->children item=child key=cid}
-                    <a href="{path_for name="member" data=["id" => $cid]}">{$child}</a>{if not $child@last}, {/if}
+        {foreach from=$member->children item=child}
+                    <a href="{path_for name="member" data=["id" => $child->id]}">{$child->sfullname}</a>{if not $child@last}, {/if}
         {/foreach}
                 </td>
             </tr>

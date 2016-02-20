@@ -432,7 +432,10 @@ class Adherent
 
             if ($results->count() >  0) {
                 foreach ($results as $row) {
-                    $this->_children[] = $row->$id;
+                    $deps = $this->_deps;
+                    $deps['children'] = false;
+                    $deps['parent'] = false;
+                    $this->_children[] = new Adherent((int)$row->$id, $this->_deps);
                 }
             }
         } catch (\Exception $e) {
