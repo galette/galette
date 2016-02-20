@@ -1475,7 +1475,7 @@ $app->get(
         if (isset($get[Adherent::PK])
             && $get[Adherent::PK] > 0
         ) {
-            // If we are called from "voir_adherent.php" get unique id value
+            // If we are called from a member's card, get unique id value
             $unique = $get[Adherent::PK];
         } else {
             if (count($filters->selected) == 0) {
