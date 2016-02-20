@@ -1,4 +1,6 @@
-{if !$head_redirect}
+{extends file="page.tpl"}
+
+{block name="content"}
 {if isset($adh_options)}
         <form action="ajouter_contribution.php" method="post">
         <div class="bigtable">
@@ -172,4 +174,4 @@
         </p>
     </div>
 {/if}
-{/if}
+{/block}

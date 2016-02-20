@@ -42,6 +42,7 @@ use Galette\Repository\Transactions;
 use Galette\Entity\DynamicFields;
 use Galette\Repository\Members;
 use Galette\Entity\Adherent;
+use Galette\Entity\ContributionsTypes;
 
 $app->get(
     '/contributions[/{option:page|order}/{value:\d+}]',
@@ -143,13 +144,6 @@ $app->get(
 )->setName(
     'contributions'
 )->add($authenticate);
-
-$app->get(
-    '/contributions/{action:add|edit}[/{id:\d+}]',
-    function ($request, $response, $args) {
-        //
-    }
-)->setName('contribution')->add($authenticate);
 
 $app->get(
     '/transactions',
@@ -340,10 +334,492 @@ $app->post(
 )->add($authenticate);
 
 $app->get(
+    '/contributions/{action:add|edit}[/{id:\d+}]',
+    function ($request, $response, $args) {
+        if ($this->session->contribution !== null) {
+            $contrib = $this->session->contribution['contribution'];
+            $dyn_fields = $this->session->contribution['dyn_fields'];
+            $this->session->contribution = null;
+        } else {
+            $contrib = new Contribution($this->zdb);
+            //TODO: dynamic fields should be handled by Contribution object
+            $dyn_fields = new DynamicFields();
+        }
+
+        $action = $args['action'];
+        $id_cotis = null;
+        if (isset($args['id'])) {
+            $id_cotis = $args['id'];
+        }
+
+        if ($action === 'edit' && $trans_id === null) {
+            throw new \RuntimeException(
+                _T("Contribution ID cannot ben null calling edit route!")
+            );
+        } elseif ($action === 'add' && $id_cotis !== null) {
+             return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('contribution', ['action' => 'add']));
+        }
+
+        //first/second step: select member
+        $id_adh = get_numeric_form_value('id_adh', '');
+        //first/second step: select contribution type
+        $selected_type = get_form_value('id_type_cotis', 1);
+        //first/second step: transaction id
+        $trans_id = get_numeric_form_value('trans_id', '');
+        //mark first step has been passed
+        $type_selected = $id_cotis != null || get_form_value('type_selected', 0);
+
+        // flagging required fields for first step only
+        $required = array(
+            'id_type_cotis'     => 1,
+            'id_adh'            => 1,
+            'date_enreg'        => 1
+        );
+
+        $cotis_extension = 0; // TODO: remove and remplace with $contrib->isCotis()
+        $disabled = array();
+
+        if ($type_selected && !($id_adh || $id_cotis)) {
+            $error_detected[] = _T("You have to select a member.");
+            $type_selected = false;
+        } elseif ($id_cotis || $type_selected || $trans_id || $id_adh) {
+            if ($id_cotis) {
+                $contrib = new Contribution((int)$id_cotis);
+                if ($contrib->id == '') {
+                    //not possible to load contribution, exit
+                    header('location: index.php');
+                    die();
+                }
+            } else {
+                $args = array(
+                    'type'  => $selected_type,
+                    'adh'   => $id_adh
+                );
+                if ($trans_id != '') {
+                    $args['trans'] = $trans_id;
+                }
+                if ($this->preferences->pref_membership_ext != '') {
+                    $args['ext'] = $this->preferences->pref_membership_ext;
+                }
+                $contrib = new Contribution($args);
+                if ($contrib->isTransactionPart()) {
+                    $id_adh = $contrib->member;
+                    //Should we disable contribution member selection if we're from
+                    //a transaction? In most cases, it would be OK I guess, but I'm
+                    //very unsure
+                    //$disabled['id_adh'] = ' disabled="disabled"';
+                }
+            }
+
+            //second step only: first step, and all the rest
+            // flagging required fields for second step
+            $second_required = array(
+                'montant_cotis'     => 1,
+                'date_debut_cotis'  => 1,
+                'date_fin_cotis'    => $contrib->isCotis(),
+            );
+            $required = $required + $second_required;
+
+        }
+
+        // Validation
+        $contribution['dyn'] = array();
+
+        if (!is_int($contrib->id)) {
+            // initialiser la structure contribution à vide (nouvelle contribution)
+            $contribution['duree_mois_cotis'] = $this->preferences->pref_membership_ext;
+        } else {
+            // dynamic fields
+            $contribution['dyn'] = $dyn_fields->getFields(
+                'contrib',
+                $id_cotis,
+                false
+            );
+        }
+
+        // template variable declaration
+        $title = _T("Contribution card");
+        if ($contrib->id != '') {
+            $title .= ' (' . _T("modification") . ')';
+        } else {
+            $title .= ' (' . _T("creation") . ')';
+        }
+
+        $params = [
+            'page_title'        => $title,
+            'required'          => $required,
+            'disabled'          => $disabled,
+            'data'              => $contribution, //TODO: remove
+            'contribution'      => $contrib,
+            'type_selected'     => $type_selected,
+            'adh_selected'      => $id_adh,
+            'require_calendar'  => true
+        ];
+
+        if (isset($head_redirect)) {
+            $params['head_redirect'] = $head_redirect;
+        }
+
+        // contribution types
+        $ct = new ContributionsTypes();
+        $type_cotis_options = $ct->getList(
+            ($type_selected == 1 && $id_adh != '') ? $contrib->isCotis() : null
+        );
+        $params['type_cotis_options'] = $type_cotis_options;
+
+        // members
+        $m = new Members();
+        $required_fields = array(
+            'id_adh',
+            'nom_adh',
+            'prenom_adh'
+        );
+        $members = $m->getList(false, $required_fields);
+        if (count($members) > 0) {
+            foreach ($members as $member) {
+                $pk = Adherent::PK;
+                $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
+                    ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
+                $adh_options[$member->$pk] = $sname;
+            }
+            $params['adh_options'] = $adh_options;
+        }
+
+        $params['pref_membership_ext'] = $cotis_extension ?
+            $this->preferences->pref_membership_ext :
+            '';  //TODO: remove and replace with $contrib specific property
+
+        // - declare dynamic fields for display
+        $dynamic_fields = $dyn_fields->prepareForDisplay(
+            'contrib',
+            $contribution['dyn'],
+            array(),
+            1
+        );
+        $params['dynamic_fields'] = $dynamic_fields;
+
+        // display page
+        $this->view->render(
+            $response,
+            'ajouter_contribution.tpl',
+            $params
+        );
+        return $response;
+    }
+)->setName('contribution')->add($authenticate);
+
+$app->post(
+    '/contributions/{action:add|edit}[/{id:\d+}]',
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+        $error_detected = [];
+
+        if ($post['id_adh'] || $post['id_cotis']) {
+            $error_detected[] = _T("You have to select a member.");
+        } else {
+            /*// dynamic fields
+            $contribution['dyn'] = $dyn_fields->extractPosted(
+                $_POST,
+                $_FILES,
+                array(),
+                $id_adh
+            );
+            $dyn_fields_errors = $dyn_fields->getErrors();
+            if (count($dyn_fields_errors) > 0) {
+                $error_detected = array_merge($error_detected, $dyn_fields_errors);
+            }
+            // regular fields
+            $valid = $contrib->check($_POST, $required, $disabled);
+            if ($valid !== true) {
+                $error_detected = array_merge($error_detected, $valid);
+            }
+
+            if (count($error_detected) == 0) {
+                //all goes well, we can proceed
+                if ($contrib->isCotis()) {
+                    // Check that membership fees does not overlap
+                    $overlap = $contrib->checkOverlap();
+                    if ($overlap !== true) {
+                        if ($overlap === false) {
+                            $error_detected[] = _T("An error occured checking overlaping fees :(");
+                        } else {
+                            //method directly return erro message
+                            $error_detected[] = $overlap;
+                        }
+                    } else {
+
+                    }
+                }
+                $new = false;
+                if ($contrib->id == '') {
+                    $new = true;
+                }
+
+                if (count($error_detected) == 0) {
+                    $store = $contrib->store();
+                    if ($store === true) {
+                        //contribution has been stored :)
+                        if ($new) {
+                            //if an external script has been configured, we call it
+                            if ($this->preferences->pref_new_contrib_script) {
+                                $es = new Galette\IO\ExternalScript($this->preferences);
+                                $res = $contrib->executePostScript($es);
+
+                                if ($res !== true) {
+                                    //send admin a mail with all details
+                                    if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
+                                        $mail = new GaletteMail();
+                                        $mail->setSubject(
+                                            _T("Post contribution script failed")
+                                        );
+                                        ** TODO: only super-admin is contacted here. We should send
+                                        *  a message to all admins, or propose them a chekbox if
+                                        *  they don't want to get bored
+                                        *
+                                        $mail->setRecipients(
+                                            array(
+                                                $this->preferences->pref_email_newadh => str_replace(
+                                                    '%asso',
+                                                    $this->preferences->pref_name,
+                                                    _T("%asso Galette's admin")
+                                                )
+                                            )
+                                        );
+
+                                        $message = _T("The configured post contribution script has failed.");
+                                        $message .= "\n" . _T("You can find contribution information and script output below.");
+                                        $message .= "\n\n";
+                                        $message .= $res;
+
+                                        $mail->setMessage($message);
+                                        $sent = $mail->send();
+
+                                        if (!$sent) {
+                                            $txt = preg_replace(
+                                                array('/%name/', '/%email/'),
+                                                array($adh->sname, $adh->email),
+                                                _T("A problem happened while sending to admin post contribution notification for user %name (%email) contribution")
+                                            );
+                                            $hist->add($txt);
+                                            $error_detected[] = $txt;
+                                            //Mails are disabled... We log (not safe, but)...
+                                            Analog::log(
+                                                'Post contribution script has failed. Here was the data: ' .
+                                                "\n" . print_r($res, true),
+                                                Analog::ERROR
+                                            );
+                                        }
+                                    } else {
+                                        //Mails are disabled... We log (not safe, but)...
+                                        Analog::log(
+                                            'Post contribution script has failed. Here was the data: ' .
+                                            "\n" . print_r($res, true),
+                                            Analog::ERROR
+                                        );
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        //something went wrong :'(
+                        $error_detected[] = _T("An error occured while storing the contribution.");
+                    }
+                }
+            }
+
+            if (count($error_detected) == 0) {
+                $dyn_fields->setAllFields(
+                    'contrib',
+                    $contrib->id,
+                    $contribution['dyn']
+                );
+
+                // Get member informations
+                $adh = new Adherent();
+                $adh->load($contrib->member);
+
+                if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
+                    $texts = new Texts(
+                        $texts_fields,
+                        $this->preferences,
+                        array(
+                            'name_adh'          => custom_html_entity_decode($adh->sname),
+                            'firstname_adh'     => custom_html_entity_decode($adh->surname),
+                            'lastname_adh'      => custom_html_entity_decode($adh->name),
+                            'mail_adh'          => custom_html_entity_decode($adh->email),
+                            'login_adh'         => custom_html_entity_decode($adh->login),
+                            'deadline'          => custom_html_entity_decode($contrib->end_date),
+                            'contrib_info'      => custom_html_entity_decode($contrib->info),
+                            'contrib_amount'    => custom_html_entity_decode($contrib->amount),
+                            'contrib_type'      => custom_html_entity_decode($contrib->type->libelle)
+                        )
+                    );
+                    if ($new && isset($_POST['mail_confirm'])
+                        && $_POST['mail_confirm'] == '1'
+                    ) {
+                        if (GaletteMail::isValidEmail($adh->email)) {
+                            $text = 'contrib';
+                            if (!$contrib->isCotis()) {
+                                $text = 'donation';
+                            }
+                            $mtxt = $texts->getTexts($text, $adh->language);
+
+                            $mail = new GaletteMail();
+                            $mail->setSubject($texts->getSubject());
+                            $mail->setRecipients(
+                                array(
+                                    $adh->email => $adh->sname
+                                )
+                            );
+
+                            $mail->setMessage($texts->getBody());
+                            $sent = $mail->send();
+
+                            if ($sent) {
+                                $hist->add(
+                                    preg_replace(
+                                        array('/%name/', '/%email/'),
+                                        array($adh->sname, $adh->email),
+                                        _T("Mail sent to user %name (%email)")
+                                    )
+                                );
+                            } else {
+                                $txt = preg_replace(
+                                    array('/%name/', '/%email/'),
+                                    array($adh->sname, $adh->email),
+                                    _T("A problem happened while sending contribution receipt to user %name (%email)")
+                                );
+                                $hist->add($txt);
+                                $error_detected[] = $txt;
+                            }
+                        } else {
+                            $txt = preg_replace(
+                                array('/%name/', '/%email/'),
+                                array($adh->sname, $adh->email),
+                                _T("Trying to send a mail to a member (%name) with an invalid address: %email")
+                            );
+                            $hist->add($txt);
+                            $warning_detected[] = $txt;
+                        }
+                    }
+
+                    // Sent email to admin if pref checked
+                    if ($new && $this->preferences->pref_bool_mailadh) {
+                        // Get email text in database
+                        $text = 'newcont';
+                        if (!$contrib->isCotis()) {
+                            $text = 'newdonation';
+                        }
+                        $mtxt = $texts->getTexts($text, $this->preferences->pref_lang);
+
+                        $mail = new GaletteMail();
+                        $mail->setSubject($texts->getSubject());
+                        ** TODO: only super-admin is contacted here. We should send
+                        *  a message to all admins, or propose them a chekbox if
+                        *  they don't want to get bored
+                        *
+                        $mail->setRecipients(
+                            array(
+                                $this->preferences->pref_email_newadh => str_replace(
+                                    '%asso',
+                                    $this->preferences->pref_name,
+                                    _T("%asso Galette's admin")
+                                )
+                            )
+                        );
+
+                        $mail->setMessage($texts->getBody());
+                        $sent = $mail->send();
+
+                        if ($sent) {
+                            $hist->add(
+                                preg_replace(
+                                    array('/%name/', '/%email/'),
+                                    array($adh->sname, $adh->email),
+                                    _T("Mail sent to admin for user %name (%email)")
+                                )
+                            );
+                        } else {
+                            $txt = preg_replace(
+                                array('/%name/', '/%email/'),
+                                array($adh->sname, $adh->email),
+                                _T("A problem happened while sending to admin notification for user %name (%email) contribution")
+                            );
+                            $hist->add($txt);
+                            $error_detected[] = $txt;
+                        }
+                    }
+                }
+
+                if (count($error_detected) == 0) {
+                    if ($contrib->isTransactionPart()
+                        && $contrib->transaction->getMissingAmount() > 0
+                    ) {
+                        $url = 'ajouter_contribution.php?trans_id=' .
+                            $contrib->transaction->id . '&id_adh=' .
+                            $contrib->member;
+                    } else {
+                        $url = 'gestion_contributions.php?id_adh=' . $contrib->member;
+                    }
+                    if (count($warning_detected) == 0) {
+                        header('location: ' . $url);
+                        die();
+                    } else {
+                        $head_redirect = array(
+                            'timeout'   => 30,
+                            'url'       => $url
+                        );
+                    }
+                }
+            }
+
+            * TODO: remove *
+            if (!isset($contribution['duree_mois_cotis'])
+                || $contribution['duree_mois_cotis'] == ''
+            ) {
+                // On error restore entered value or default to display the form again
+                if (isset($_POST['duree_mois_cotis'])
+                    && $_POST['duree_mois_cotis'] != ''
+                ) {
+                    $contribution['duree_mois_cotis'] = $_POST['duree_mois_cotis'];
+                } else {
+                    $contribution['duree_mois_cotis'] = $this->preferences->pref_membership_ext;
+                }
+            }*/
+        }
+
+        if (count($error_detected) > 0) {
+            //something went wrong.
+            //store entity in session
+            $this->session->contribution = [
+                'contribution'  => $contrib,
+                'dyn_fields'    => $dyn_fields
+            ];
+
+            //report errors
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
+            }
+        }
+
+        //redirect to calling action
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('contribution', $args));
+    }
+)->setName('contribution')->add($authenticate);
+
+$app->get(
     '/transactions/{action:add|edit}[/{id:\d+}]',
     function ($request, $response, $args) {
         $trans = null;
         $dyn_fields = null;
+
         if ($this->session->transaction !== null) {
             $trans = $this->session->transaction['transaction'];
             $dyn_fields = $this->session->transaction['dyn_fields'];
@@ -370,7 +846,7 @@ $app->get(
                 ->withHeader('Location', $this->router->pathFor('transaction', ['action' => 'add']));
         }
 
-        $transaction['trans_id'] = get_numeric_form_value("trans_id", '');
+        $transaction['trans_id'] = $trans_id;
         $transaction['trans_amount'] = get_numeric_form_value("trans_amount", '');
         $transaction['trans_date'] = get_form_value("trans_date", '');
         $transaction['trans_desc'] = get_form_value("trans_desc", '');

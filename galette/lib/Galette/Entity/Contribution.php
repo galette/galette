@@ -39,6 +39,7 @@ namespace Galette\Entity;
 
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
+use Galette\Core\Db;
 use Galette\IO\ExternalScript;
 use Galette\IO\PdfContribution;
 
