@@ -184,7 +184,10 @@ $container['acls'] = function ($c) {
         'titles'            => 'staff',
         'removeTitle'       => 'staff',
         'editTitle'         => 'staff',
-        'texts'             => 'staff'
+        'texts'             => 'staff',
+        'transaction'       => 'staff',
+        'doEditTransaction' => 'staff',
+        'contribution'      => 'staff'
     ];
 
     //load user defined ACLs

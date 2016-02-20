@@ -40,6 +40,8 @@ namespace Galette\Entity;
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
 use Galette\Repository\Contributions;
+use Galette\Core\Db;
+use Galette\Core\History;
 
 /**
  * Transaction class for galette
@@ -67,6 +69,8 @@ class Transaction
     //fields list and their translation
     private $_fields;
 
+    private $zdb;
+
     /**
      * Default constructor
      *
@@ -74,8 +78,10 @@ class Transaction
      *                                   a specific transaction, or null to just
      *                                   instanciate object
      */
-    public function __construct($args = null)
+    public function __construct(Db $zdb, $args = null)
     {
+        $this->zdb = $zdb;
+
         /*
          * Fields configuration. Each field is an array and must reflect:
          * array(
@@ -128,13 +134,11 @@ class Transaction
      */
     public function load($id)
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE);
             $select->where(self::PK . ' = ' . $id);
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $result = $results->current();
             if ( $result ) {
                 $this->_loadFromRS($result);
@@ -161,11 +165,9 @@ class Transaction
      */
     public function remove($transaction = true)
     {
-        global $zdb;
-
         try {
             if ( $transaction ) {
-                $zdb->connection->beginTransaction();
+                $this->zdb->connection->beginTransaction();
             }
 
             //remove associated contributions if needeed
@@ -180,19 +182,19 @@ class Transaction
             }
 
             //remove transaction itself
-            $delete = $zdb->delete(self::TABLE);
+            $delete = $this->zdb->delete(self::TABLE);
             $delete->where(
                 self::PK . ' = ' . $this->_id
             );
-            $zdb->execute($delete);
+            $this->zdb->execute($delete);
 
             if ( $transaction ) {
-                $zdb->connection->commit();
+                $this->zdb->connection->commit();
             }
             return true;
         } catch (\Exception $e) {
             if ( $transaction ) {
-                $zdb->connection->rollBack();
+                $this->zdb->connection->rollBack();
             }
             Analog::log(
                 'An error occured trying to remove transaction #' .
@@ -233,7 +235,6 @@ class Transaction
      */
     public function check($values, $required, $disabled)
     {
-        global $zdb;
         $errors = array();
 
         $fields = array_keys($this->_fields);
@@ -342,35 +343,35 @@ class Transaction
     /**
      * Store the transaction
      *
+     * @param History $hist History
+     *
      * @return boolean
      */
-    public function store()
+    public function store(History $hist)
     {
-        global $zdb, $hist;
-
         try {
-            $zdb->connection->beginTransaction();
+            $this->zdb->connection->beginTransaction();
             $values = array();
-            $fields = self::getDbFields();
+            $fields = $this->getDbFields();
             /** FIXME: quote? */
-            foreach ( $fields as $field ) {
+            foreach ($fields as $field) {
                 $prop = '_' . $this->_fields[$field]['propname'];
                 $values[$field] = $this->$prop;
             }
 
-            if ( !isset($this->_id) || $this->_id == '') {
+            if (!isset($this->_id) || $this->_id == '') {
                 //we're inserting a new transaction
                 unset($values[self::PK]);
-                $insert = $zdb->insert(self::TABLE);
+                $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($values);
-                $add = $zdb->execute($insert);
-                if ( $add->count() > 0) {
-                    if ( $zdb->isPostgres() ) {
-                        $this->_id = $zdb->driver->getLastGeneratedValue(
+                $add = $this->zdb->execute($insert);
+                if ($add->count() > 0) {
+                    if ($this->zdb->isPostgres()) {
+                        $this->_id = $this->zdb->driver->getLastGeneratedValue(
                             PREFIX_DB . 'transactions_id_seq'
                         );
                     } else {
-                        $this->_id = $zdb->driver->getLastGeneratedValue();
+                        $this->_id = $this->zdb->driver->getLastGeneratedValue();
                     }
 
                     // logging
@@ -386,24 +387,24 @@ class Transaction
                 }
             } else {
                 //we're editing an existing transaction
-                $update = $zdb->update(self::TABLE);
+                $update = $this->zdb->update(self::TABLE);
                 $update->set($values)->where(
                     self::PK . '=' . $this->_id
                 );
-                $edit = $zdb->execute($update);
+                $edit = $this->zdb->execute($update);
                 //edit == 0 does not mean there were an error, but that there
                 //were nothing to change
-                if ( $edit->count() > 0 ) {
+                if ($edit->count() > 0) {
                     $hist->add(
                         _T("Transaction updated"),
                         Adherent::getSName($this->_member)
                     );
                 }
             }
-            $zdb->connection->commit();
+            $this->zdb->connection->commit();
             return true;
         } catch (\Exception $e) {
-            $zdb->connection->rollBack();
+            $this->zdb->connection->rollBack();
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
@@ -420,17 +421,15 @@ class Transaction
      */
     public function getDispatchedAmount()
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select(Contribution::TABLE);
+            $select = $this->zdb->select(Contribution::TABLE);
             $select->columns(
                 array(
                     'sum' => new Expression('SUM(montant_cotis)')
                 )
             )->where(self::PK . ' = ' . $this->_id);
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $result = $results->current();
             $dispatched_amount = $result->sum;
             return (double)$dispatched_amount;
@@ -450,17 +449,15 @@ class Transaction
      */
     public function getMissingAmount()
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select(Contribution::TABLE);
+            $select = $this->zdb->select(Contribution::TABLE);
             $select->columns(
                 array(
                     'sum' => new Expression('SUM(montant_cotis)')
                 )
             )->where(self::PK . ' = ' . $this->_id);
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $result = $results->current();
             $dispatched_amount = $result->sum;
             return (double)$this->_amount - (double)$dispatched_amount;
@@ -478,12 +475,11 @@ class Transaction
      *
      * @return array
      */
-    public static function getDbFields()
+    public function getDbFields()
     {
-        global $zdb;
-        $columns = $zdb->getColumns(self::TABLE);
+        $columns = $this->zdb->getColumns(self::TABLE);
         $fields = array();
-        foreach ( $columns as $col ) {
+        foreach ($columns as $col) {
             $fields[] = $col->getName();
         }
         return $fields;

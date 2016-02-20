@@ -167,7 +167,7 @@ class Contributions extends Pagination
             $results = $zdb->execute($select);
             if ( $as_contrib ) {
                 foreach ( $results as $row ) {
-                    $contributions[] = new Contribution($row);
+                    $contributions[] = new Contribution($this->zdb, $row);
                 }
             } else {
                 $contributions = $results;

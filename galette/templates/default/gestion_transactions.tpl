@@ -114,7 +114,7 @@
                     <td class="{$cclass} nowrap">{$transaction->amount}</td>
 {if $login->isAdmin() or $login->isStaff()}
                     <td class="{$cclass} center nowrap">
-                        <a href="ajouter_transaction.php?trans_id={$transaction->id}">
+                        <a href="{path_for name="transaction" data=["action" => "edit", "id" => $transaction->id]}">
                             <img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/>
                         </a>
                         <a onclick="return confirm('{_T string="Do you really want to delete this transaction of the database ?"|escape:"javascript"}')" href="gestion_transactions.php?sup={$transaction->id}">

@@ -83,15 +83,20 @@ class Contribution
     //fields list and their translation
     private $_fields;
 
+    private $zdb;
+
     /**
      * Default constructor
      *
+     * @param Db                 $zdb  Database
      * @param null|int|ResultSet $args Either a ResultSet row to load
      *                                   a specific contribution, or an type id
      *                                   to just instanciate object
      */
-    public function __construct($args = null)
+    public function __construct(Db $zdb, $args = null)
     {
+        $this->zdb = $zdb;
+
         /*
          * Fields configuration. Each field is an array and must reflect:
          * array(
@@ -159,7 +164,7 @@ class Contribution
                 $this->_member = (int)$args['adh'];
             }
             if ( isset($args['trans']) ) {
-                $this->_transaction = new Transaction((int)$args['trans']);
+                $this->_transaction = new Transaction($this->zdb, (int)$args['trans']);
                 if ( !isset($this->_member) ) {
                     $this->_member = (int)$this->_transaction->member;
                 }
@@ -230,17 +235,17 @@ class Contribution
      */
     public function load($id)
     {
-        global $zdb, $login;
+        global $login;
 
         try {
-            $select = $zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE);
             $select->where(self::PK . ' = ' . $id);
             //restrict query on current member id if he's not admin nor staff member
             if ( !$login->isAdmin() && !$login->isStaff() ) {
                 $select->where(Adherent::PK . ' = ' . $login->id);
             }
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $row = $results->current();
             if ( $row !== false ) {
                 $this->_loadFromRS($row);
@@ -293,7 +298,7 @@ class Contribution
 
         $transpk = Transaction::PK;
         if ( $r->$transpk != '' ) {
-            $this->_transaction = new Transaction((int)$r->$transpk);
+            $this->_transaction = new Transaction($this->zdb, (int)$r->$transpk);
         }
 
         $this->_type = new ContributionsTypes((int)$r->id_type_cotis);
@@ -316,7 +321,6 @@ class Contribution
      */
     public function check($values, $required, $disabled)
     {
-        global $zdb;
         $errors = array();
 
         $fields = array_keys($this->_fields);
@@ -405,7 +409,7 @@ class Contribution
                     break;
                 case Transaction::PK:
                     if ( $value != '' ) {
-                        $this->_transaction = new Transaction((int)$value);
+                        $this->_transaction = new Transaction($this->zdb, (int)$value);
                     }
                     break;
                 case 'duree_mois_cotis':
@@ -469,10 +473,8 @@ class Contribution
      */
     public function checkOverlap()
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select(self::TABLE, 'c');
+            $select = $this->zdb->select(self::TABLE, 'c');
             $select->columns(
                 array('date_debut_cotis', 'date_fin_cotis')
             )->join(
@@ -493,7 +495,7 @@ class Contribution
                 $select->where(self::PK . ' != ' . $this->id);
             }
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $result = $results->current();
             if ( $result !== false ) {
                 $d = new \DateTime($result->date_debut_cotis);
@@ -518,10 +520,10 @@ class Contribution
      */
     public function store()
     {
-        global $zdb, $hist;
+        global $hist;
 
         try {
-            $zdb->connection->beginTransaction();
+            $this->zdb->connection->beginTransaction();
             $values = array();
             $fields = self::getDbFields();
             foreach ( $fields as $field ) {
@@ -548,17 +550,17 @@ class Contribution
                 //we're inserting a new contribution
                 unset($values[self::PK]);
 
-                $insert = $zdb->insert(self::TABLE);
+                $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($values);
-                $add = $zdb->execute($insert);
+                $add = $this->zdb->execute($insert);
 
                 if ( $add->count() > 0) {
-                    if ( $zdb->isPostgres() ) {
-                        $this->_id = $zdb->driver->getLastGeneratedValue(
+                    if ( $this->zdb->isPostgres() ) {
+                        $this->_id = $this->zdb->driver->getLastGeneratedValue(
                             PREFIX_DB . 'cotisations_id_seq'
                         );
                     } else {
-                        $this->_id = $zdb->driver->getLastGeneratedValue();
+                        $this->_id = $this->zdb->driver->getLastGeneratedValue();
                     }
 
                     // logging
@@ -574,11 +576,11 @@ class Contribution
                 }
             } else {
                 //we're editing an existing contribution
-                $update = $zdb->update(self::TABLE);
+                $update = $this->zdb->update(self::TABLE);
                 $update->set($values)->where(
                     self::PK . '=' . $this->_id
                 );
-                $edit = $zdb->execute($update);
+                $edit = $this->zdb->execute($update);
 
                 //edit == 0 does not mean there were an error, but that there
                 //were nothing to change
@@ -601,11 +603,11 @@ class Contribution
                     throw new \Exception('An error occured updating member\'s deadline');
                 }
             }
-            $zdb->connection->commit();
+            $this->zdb->connection->commit();
             $this->_orig_amount = $this->_amount;
             return true;
         } catch (\Exception $e) {
-            $zdb->connection->rollBack();
+            $this->zdb->connection->rollBack();
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
@@ -622,8 +624,6 @@ class Contribution
      */
     private function _updateDeadline()
     {
-        global $zdb;
-
         try {
             $due_date = self::getDueDate($this->_member);
 
@@ -633,13 +633,13 @@ class Contribution
                 $date_fin_update = new Expression('NULL');
             }
 
-            $update = $zdb->update(Adherent::TABLE);
+            $update = $this->zdb->update(Adherent::TABLE);
             $update->set(
                 array('date_echeance' => $date_fin_update)
             )->where(
                 Adherent::PK . '=' . $this->_member
             );
-            $zdb->execute($update);
+            $this->zdb->execute($update);
             return true;
         } catch (\Exception $e) {
             Analog::log(
@@ -661,26 +661,24 @@ class Contribution
      */
     public function remove($transaction = true)
     {
-        global $zdb;
-
         try {
             if ( $transaction ) {
-                $zdb->connection->beginTransaction();
+                $this->zdb->connection->beginTransaction();
             }
 
-            $delete = $zdb->delete(self::TABLE);
+            $delete = $this->zdb->delete(self::TABLE);
             $delete->where(self::PK . ' = ' . $this->_id);
-            $del = $zdb->execute($delete);
+            $del = $this->zdb->execute($delete);
             if ( $del->count() > 0 ) {
                 $this->_updateDeadline();
             }
             if ( $transaction ) {
-                $zdb->connection->commit();
+                $this->zdb->connection->commit();
             }
             return true;
         } catch (\Exception $e) {
             if ( $transaction ) {
-                $zdb->connection->rollBack();
+                $this->zdb->connection->rollBack();
             }
             Analog::log(
                 'An error occured trying to remove contribution #' .
@@ -716,8 +714,7 @@ class Contribution
      */
     public static function getDbFields()
     {
-        global $zdb;
-        $columns = $zdb->getColumns(self::TABLE);
+        $columns = $this->zdb->getColumns(self::TABLE);
         $fields = array();
         foreach ( $columns as $col ) {
             $fields[] = $col->getName();
@@ -746,10 +743,9 @@ class Contribution
      */
     public static function getDueDate($member_id)
     {
-        global $zdb;
 
         try {
-            $select = $zdb->select(self::TABLE, 'c');
+            $select = $this->zdb->select(self::TABLE, 'c');
             $select->columns(
                 array(
                     'max_date' => new Expression('MAX(date_fin_cotis)')
@@ -764,12 +760,12 @@ class Contribution
                 array('cotis_extension' => new Expression('true'))
             );
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $result = $results->current();
             $due_date = $result->max_date;
 
             //avoid bad dates in postgres
-            if ( $due_date == '0001-01-01 BC' ) {
+            if ($due_date == '0001-01-01 BC') {
                 $due_date = '';
             }
             return $due_date;
@@ -792,19 +788,17 @@ class Contribution
      */
     public static function unsetTransactionPart($trans_id, $contrib_id)
     {
-        global $zdb;
-
         try {
             //first, we check if contribution is part of transaction
-            $c = new Contribution((int)$contrib_id);
-            if ( $c->isTransactionPartOf($trans_id)) {
-                $update = $zdb->update(self::TABLE);
+            $c = new Contribution($this->zdb, (int)$contrib_id);
+            if ($c->isTransactionPartOf($trans_id)) {
+                $update = $this->zdb->update(self::TABLE);
                 $update->set(
                     array(Transaction::PK => null)
                 )->where(
                     self::PK . ' = ' . $contrib_id
                 );
-                $zdb->execute($update);
+                $this->zdb->execute($update);
                 return true;
             } else {
                 Analog::log(
@@ -834,15 +828,13 @@ class Contribution
      */
     public static function setTransactionPart($trans_id, $contrib_id)
     {
-        global $zdb;
-
         try {
-            $update = $zdb->update(self::TABLE);
+            $update = $this->zdb->update(self::TABLE);
             $update->set(
                 array(Transaction::PK => $trans_id)
             )->where(self::PK . ' = ' . $contrib_id);
 
-            $zdb->execute($update);
+            $this->zdb->execute($update);
             return true;
         } catch (\Exception $e) {
             Analog::log(
@@ -904,7 +896,7 @@ class Contribution
     public function executePostScript(ExternalScript $es,
         $extra = null, $pextra = null
     ) {
-        global $zdb, $preferences;
+        global $preferences;
 
         $payment = array(
             'type'  => $this->getPaymentType()
@@ -920,7 +912,7 @@ class Contribution
 
         $voucher_path = null;
         if ( $this->_id !== null ) {
-            $voucher = new PdfContribution($this, $zdb, $preferences);
+            $voucher = new PdfContribution($this, $this->zdb, $preferences);
             $voucher->store(GALETTE_CACHE_DIR . '/pdf_contribs');
             $voucher_path = $voucher->getPath();
         }
@@ -1169,7 +1161,7 @@ class Contribution
             switch($name) {
             case 'transaction':
                 if ( is_int($value) ) {
-                    $this->$rname = new Transaction($value);
+                    $this->$rname = new Transaction($this->zdb, $value);
                 } else {
                     Analog::log(
                         'Trying to set a transaction from an id that is not an integer.',

@@ -42,6 +42,8 @@ use Zend\Db\Sql\Expression;
 use Galette\Core\Pagination;
 use Galette\Entity\Transaction;
 use Galette\Entity\Adherent;
+use Galette\Core\Db;
+use Galette\Core\Login;
 
 /**
  * Transactions class for galette
@@ -68,12 +70,19 @@ class Transactions extends Pagination
     private $_start_date_filter = null;
     private $_end_date_filter = null;
     private $_filtre_cotis_adh = null;
+    private $zdb;
+    private $login;
 
     /**
      * Default constructor
+     *
+     * @param Db    $zdb   Database
+     * @param Login $login Login
      */
-    public function __construct()
+    public function __construct(Db $zdb, Login $login)
     {
+        $this->zdb = $zdb;
+        $this->login = $login;
         parent::__construct();
     }
 
@@ -118,23 +127,17 @@ class Transactions extends Pagination
      *
      * @return Transaction[]|ResultSet
      */
-    public function getTransactionsList(
-        $as_trans=false, $fields=null, $count=true
-    ) {
-        global $zdb;
-
+    public function getTransactionsList($as_trans = false, $fields = null, $count = true)
+    {
         try {
-            $select = $this->_buildSelect(
-                $fields, $count
-            );
-
+            $select = $this->_buildSelect($fields, $count);
             $this->setLimits($select);
 
             $transactions = array();
-            $results = $zdb->execute($select);
-            if ( $as_trans ) {
-                foreach ( $results as $row ) {
-                    $transactions[] = new Transaction($row);
+            $results = $this->zdb->execute($select);
+            if ($as_trans) {
+                foreach ($results as $row) {
+                    $transactions[] = new Transaction($this->zdb, $row);
                 }
             } else {
                 $transactions = $results;
@@ -160,14 +163,12 @@ class Transactions extends Pagination
      */
     private function _buildSelect($fields, $count = false)
     {
-        global $zdb;
-
         try {
             $fieldsList = ( $fields != null )
                             ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
                             : implode(', ', $fields)) : (array)'*';
 
-            $select = $zdb->select(self::TABLE, 't');
+            $select = $this->zdb->select(self::TABLE, 't');
             $select->columns(
                 array(
                     'trans_date',
@@ -208,8 +209,6 @@ class Transactions extends Pagination
      */
     private function _proceedCount($select)
     {
-        global $zdb;
-
         try {
             $countSelect = clone $select;
             $countSelect->reset($countSelect::COLUMNS);
@@ -221,7 +220,7 @@ class Transactions extends Pagination
                 )
             );
 
-            $results = $zdb->execute($countSelect);
+            $results = $this->zdb->execute($countSelect);
             $result = $results->current();
 
             $k = self::PK;
@@ -276,10 +275,8 @@ class Transactions extends Pagination
      */
     private function _buildWhereClause($select)
     {
-        global $zdb, $login;
-
         try {
-            if ( $this->_start_date_filter != null ) {
+            if ($this->_start_date_filter != null) {
                 $d = new \DateTime($this->_start_date_filter);
                 $select->where->greaterThanOrEqualTo(
                     'trans_date',
@@ -287,7 +284,7 @@ class Transactions extends Pagination
                 );
             }
 
-            if ( $this->_end_date_filter != null ) {
+            if ($this->_end_date_filter != null) {
                 $d = new \DateTime($this->_end_date_filter);
                 $select->where->lessThanOrEqualTo(
                     'trans_date',
@@ -295,10 +292,10 @@ class Transactions extends Pagination
                 );
             }
 
-            if ( !$login->isAdmin() && !$login->isStaff() ) {
+            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
                 //non staff members can only view their own transactions
-                $select->where('t.' . Adherent::PK . ' = ' . $login->id);
-            } else if ( $this->_filtre_cotis_adh != null ) {
+                $select->where('t.' . Adherent::PK . ' = ' . $this->login->id);
+            } elseif ($this->_filtre_cotis_adh != null) {
                 $select->where(
                     't.' . Adherent::PK . ' = ' . $this->_filtre_cotis_adh
                 );
@@ -336,44 +333,43 @@ class Transactions extends Pagination
     /**
      * Remove specified transactions
      *
-     * @param interger|array $ids Transactions identifiers to delete
+     * @param interger|array $ids  Transactions identifiers to delete
+     * @param History        $hist History
      *
      * @return boolean
      */
-    public function removeTransactions($ids)
+    public function removeTransactions($ids, History $hist)
     {
-        global $zdb, $hist;
-
         $list = array();
-        if ( is_numeric($ids) ) {
+        if (is_numeric($ids)) {
             //we've got only one identifier
             $list[] = $ids;
         } else {
             $list = $ids;
         }
 
-        if ( is_array($list) ) {
+        if (is_array($list)) {
             $res = true;
             try {
-                $zdb->connection->beginTransaction();
+                $this->zdb->connection->beginTransaction();
 
-                $select = $zdb->select(self::TABLE);
+                $select = $this->zdb->select(self::TABLE);
                 $select->where->in(self::PK, $list);
 
-                $results = $zdb->execute($select);
-                foreach ( $results as $transaction ) {
-                    $c = new Transaction($transaction);
+                $results = $this->zdb->execute($select);
+                foreach ($results as $transaction) {
+                    $c = new Transaction($this->zdb, $transaction);
                     $res = $c->remove(false);
-                    if ( $res === false ) {
+                    if ($res === false) {
                         throw new \Exception;
                     }
                 }
-                $zdb->connection->commit();
+                $this->zdb->connection->commit();
                 $hist->add(
                     "Transactions deleted (" . print_r($list, true) . ')'
                 );
             } catch (\Exception $e) {
-                $zdb->connection->rollBack();
+                $this->zdb->connection->rollBack();
                 Analog::log(
                     'An error occured trying to remove transactions | ' .
                     $e->getMessage(),
