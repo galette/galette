@@ -6,7 +6,7 @@
             <p>{_T string="Email sent is disabled in the preferences. Ask galette admin"}</p>
         </div>
 {elseif !isset($mailing_saved)}
-        <form action="mailing_adherents.php#mail_preview" id="listform" method="post" enctype="multipart/form-data">
+        <form action="{path_for name="mailing"}#mail_preview" id="listform" method="post" enctype="multipart/form-data">
         <div class="mailing">
             <section class="mailing_infos">
                 <header class="ui-state-default ui-state-active">{_T string="Mailing informations"}</header>
@@ -293,7 +293,7 @@
                     Ok: function() {
                         var _this = $(this);
                         _this.dialog( "close" );
-                        window.location.href = 'mailing_adherents.php' + _link.attr('href');
+                        window.location.href = '{path_for name="mailing"}' + _link.attr('href');
                     },
                     {_T string="Cancel"}: function() {
                          $(this).dialog( "close" );

@@ -378,7 +378,7 @@
                             buttons: {
                                 '{_T string="Resume"}': function() {
                                     $(this).dialog( "close" );
-                                    location.href = 'mailing_adherents.php';
+                                    location.href = '{path_for name="mailing"}';
                                 },
                                 '{_T string="New"}': function() {
                                     $(this).dialog( "close" );

@@ -82,18 +82,6 @@ if ($needs_update) {
     die();
 } else {
     $app = new \Slim\App(
-        /*array(
-            'view'              => new Smarty(
-                $plugins,
-                $i18n,
-                $preferences,
-                $logo,
-                $login,
-                $session
-            ),
-            'templates.path'    => GALETTE_ROOT . GALETTE_TPL_SUBDIR,
-            'mode'              => GALETTE_MODE
-        )*/
         [
             'settings' => [
                 'determineRouteBeforeAppMiddleware' => true,
@@ -158,46 +146,8 @@ $smarty = $app->getContainer()->get('view')->getSmarty();
 require_once GALETTE_ROOT . 'includes/smarty.inc.php';
 
 /**
- * Load plugins
+ * Authentication middleware
  */
-/*$plugins->setApp($app);
-$plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());*/
-
-/*$acls = [
-    'preferences'       => 'admin',
-    'store-preferences' => 'admin',
-    'dashboard'         => 'groupmanager',
-    'sysinfos'          => 'staff',
-    'charts'            => 'staff',
-    'plugins'           => 'admin',
-    'history'           => 'staff',
-    'members'           => 'groupmanager',
-    'filter-memberslist'=> 'groupmanager',
-    'advanced-search'   => 'groupmanager',
-    'batch-memberslist' => 'groupmanager',
-    'mailing'           => 'staff',
-    'csv-memberslist'   => 'staff',
-    'groups'            => 'groupmanager',
-    'me'                => 'member',
-    'member'            => 'member',
-    'pdf-members-cards' => 'member',
-    'pdf-members-labels'=> 'groupmanager',
-    'mailings'          => 'staff',
-    'contributions'     => 'staff',
-    'transactions'      => 'staff',
-    'payments_filter'   => 'member',
-    'editmember'        => 'member',
-    'storemembers'      => 'member',
-    'impersonate'       => 'superadmin',
-    'unimpersonate'     => 'member'
-];
-
-//load user defined ACLs
-if (file_exists(GALETTE_CONFIG_PATH  . 'local_acls.inc.php')) {
-    $acls = array_merge($acls, $local_acls);
-}*/
-
-
 $authenticate = function ($request, $response, $next) use ($container) {
     $login = $container->session->login;
 
@@ -370,13 +320,10 @@ $authenticate = function ($request, $response, $next) use ($container) {
     };
 };*/
 
-//dependency injection
-$app->zdb           = $zdb;
-$app->i18n          = $i18n;
-//$app->plugins       = $plugins;
-$app->preferences   = $preferences;
-$app->login         = $login;
-
+/**
+ * Redirection middleware.
+ * Each user sill have a default homepage varying on it status (logged in or not, its credentials, etc.
+ */
 $baseRedirect = function ($request, $response, $args = []) use ($app, $container) {
     $login = $container->get('login');
     $router = $container->get('router');
@@ -399,9 +346,9 @@ $baseRedirect = function ($request, $response, $args = []) use ($app, $container
                 || $login->isAdmin()
                 || $login->isStaff()
             ) {
-               if (!isset($_COOKIE['show_galette_dashboard'])
+                if (!isset($_COOKIE['show_galette_dashboard'])
                     || $_COOKIE['show_galette_dashboard'] == 1
-               ) {
+                ) {
                     return $response
                         ->withStatus(301)
                         ->withHeader('Location', $router->pathFor('dashboard'));

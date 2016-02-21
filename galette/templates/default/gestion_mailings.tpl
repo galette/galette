@@ -109,7 +109,7 @@
                                 title="{_T string="Display mailing '%subject' details in preview window" pattern="/%subject/" replace=$log.mailing_subject}"
                                 />
                         </a>
-                        <a href="mailing_adherents.php?from={$log.mailing_id}">
+                        <a href="{path_for name="mailing"}?from={$log.mailing_id}">
                             <img
                                 src="{base_url}/{$template_subdir}images/icon-mail.png"
                                 alt="{_T string="New mailing from %s" pattern="/%s/" replace=$log.mailing_id}"
@@ -132,7 +132,7 @@
             </tbody>
         </table>
         <div class="center">
-            <a class="button" id="btnadd" href="mailing_adherents.php?mailing_new=true">{_T string="Create new mailing"}</a>
+            <a class="button" id="btnadd" href="{path_for name="mailing"}?mailing_new=true">{_T string="Create new mailing"}</a>
         </div>
 {/block}
 

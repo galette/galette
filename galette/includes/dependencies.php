@@ -73,7 +73,7 @@ $container['view'] = function ($c) {
         $c->preferences->pref_editor_enabled
     );
     $smarty->assign('pref_mail_method', $c->preferences->pref_mail_method);
-    $smarty->assign('existing_mailing', isset($c->get('session')->mailing));
+    $smarty->assign('existing_mailing', $c->get('session')->mailing !== null);
     $smarty->assign('require_tabs', null);
     $smarty->assign('require_cookie', null);
     $smarty->assign('contentcls', null);

@@ -176,8 +176,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     <div id="content"{if $contentcls} class="{$contentcls}"{/if}>
         <h1 id="titre">
             {$page_title}
-            {if $PAGENAME neq 'mailing_adherents.php' and $existing_mailing eq true}
-                <a class="button" id="sendmail" href="{$galette_base_path}mailing_adherents.php" title="{_T string="A mailing exists in the current session. Click here if you want to resume or cancel it."}">
+            {if $cur_route neq 'mailing' and $existing_mailing eq true}
+                <a class="button" id="sendmail" href="{path_for name="mailing"}" title="{_T string="A mailing exists in the current session. Click here if you want to resume or cancel it."}">
                     {_T string="Existing mailing"}
                 </a>
             {/if}

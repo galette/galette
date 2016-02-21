@@ -37,8 +37,6 @@
  * @since     Available since 0.63
  */
 
-use Galette\Core\Smarty;
-
 if (!defined('GALETTE_ROOT')) {
        die("Sorry. You can't access directly to this file");
 }
@@ -86,4 +84,3 @@ $smarty->registerPlugin(
     'statusLabel',
     'getStatusLabel'
 );
-

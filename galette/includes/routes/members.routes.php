@@ -1427,15 +1427,9 @@ $app->post(
             }
 
             if (isset($post['mailing'])) {
-                $options = array();
-                //FIXME
-                /*if ( $request->post() ) {
-                    $options['new'] = 'new';
-                }*/
-
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('mailing', $options));
+                    ->withHeader('Location', $this->router->pathFor('mailing') . '?new=new');
             }
 
             if (isset($post['attendance_sheet'])) {
@@ -1598,56 +1592,59 @@ $app->get(
 )->setName('pdf-members-labels')->add($authenticate);
 
 //mailing
-$app->get(
+$app->map(
+    ['GET', 'POST'],
     '/mailing',
-    function () use ($app,
-        &$success_detected, &$warning_detected, &$error_detected
-    ) {
-        $request = $app->request();
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        $get = $request->getQueryParams();
+        $error_detected = [];
+        $success_detected = [];
+
         //We're done :-)
-        if ( isset($_POST['mailing_done'])
-            || isset($_POST['mailing_cancel'])
-            || isset($_GET['mailing_new'])
-            || isset($_GET['reminder'])
+        if (isset($post['mailing_done'])
+            || isset($post['mailing_cancel'])
+            || isset($get['mailing_new'])
+            || isset($get['reminder'])
         ) {
-            if ( isset($this->session->mailing) ) {
+            if ($this->session->mailing !== null) {
                 // check for temporary attachments to remove
                 $m = $this->session->mailing;
                 $m->removeAttachments(true);
             }
             $this->session->mailing = null;
-            unset($this->session->mailing);
-            if ( !isset($_GET['mailing_new']) && !isset($_GET['reminder']) ) {
-                header('location: gestion_adherents.php');
-                exit(0);
+            if (!isset($get['mailing_new']) && !isset($get['reminder'])) {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('members'));
             }
         }
 
         $params = array();
 
-        if ( $this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
+        if ($this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
             && !GALETTE_MODE === 'DEMO'
         ) {
-            $hist->add(
+            $this->history->add(
                 _T("Trying to load mailing while mail is disabled in preferences.")
             );
         } else {
-            if ( isset($this->session->filter_members) ) {
+            if (isset($this->session->filter_members)) {
                 $filters =  $this->session->filter_members;
             } else {
                 $filters = new MembersList();
             }
 
-            if ( isset($this->session->mailing)
-                && !isset($_POST['mailing_cancel'])
-                && !isset($_GET['from'])
-                && !isset($_GET['reset'])
+            if ($this->session->mailing !== null
+                && !isset($post['mailing_cancel'])
+                && !isset($get['from'])
+                && !isset($get['reset'])
             ) {
                 $mailing = $this->session->mailing;
-            } else if (isset($_GET['from']) && is_numeric($_GET['from'])) {
-                $mailing = new Mailing(null, $_GET['from']);
-                MailingHistory::loadFrom((int)$_GET['from'], $mailing);
-            } else if (isset($_GET['reminder'])) {
+            } elseif (isset($get['from']) && is_numeric($get['from'])) {
+                $mailing = new Mailing(null, $get['from']);
+                MailingHistory::loadFrom((int)$get['from'], $mailing);
+            } elseif (isset($get['reminder'])) {
                 //FIXME: use a constant!
                 $filters->reinit();
                 $filters->membership_filter = Members::MEMBERSHIP_LATE;
@@ -1656,64 +1653,65 @@ $app->get(
                 $members = $m->getList(true);
                 $mailing = new Mailing(($members !== false) ? $members : null);
             } else {
-                if ( count($filters->selected) == 0
-                    && !isset($_GET['mailing_new'])
-                    && !isset($_GET['reminder'])
+                if (count($filters->selected) == 0
+                    && !isset($get['mailing_new'])
+                    && !isset($get['reminder'])
                 ) {
                     Analog::log(
-                        '[mailing_adherents.php] No member selected for mailing',
+                        '[Mailings] No member selected for mailing',
                         Analog::WARNING
                     );
 
-                    if ( isset($profiler) ) {
+                    if (isset($profiler)) {
                         $profiler->stop();
                     }
 
-                    header('location:gestion_adherents.php');
-                    die();
+                    return $response
+                        ->withStatus(301)
+                        ->withHeader('Location', $this->router->pathFor('members'));
                 }
                 $m = new Members();
                 $members = $m->getArrayList($filters->selected);
                 $mailing = new Mailing(($members !== false) ? $members : null);
             }
 
-            if ( isset($_POST['mailing_go'])
-                || isset($_POST['mailing_reset'])
-                || isset($_POST['mailing_confirm'])
-                || isset($_POST['mailing_save'])
+            if (isset($post['mailing_go'])
+                || isset($post['mailing_reset'])
+                || isset($post['mailing_confirm'])
+                || isset($post['mailing_save'])
             ) {
-                if ( trim($_POST['mailing_objet']) == '' ) {
+                if (trim($post['mailing_objet']) == '') {
                     $error_detected[] = _T("Please type an object for the message.");
                 } else {
                     $mailing->subject = $_POST['mailing_objet'];
                 }
 
-                if ( trim($_POST['mailing_corps']) == '') {
+                if (trim($post['mailing_corps']) == '') {
                     $error_detected[] = _T("Please enter a message.");
                 } else {
-                    $mailing->message = $_POST['mailing_corps'];
+                    $mailing->message = $post['mailing_corps'];
                 }
 
-                $mailing->html = ( isset($_POST['mailing_html']) ) ? true : false;
+                $mailing->html = (isset($post['mailing_html'])) ? true : false;
 
                 //handle attachments
-                if ( isset($_FILES['files']) ) {
-                    for ( $i = 0; $i < count($_FILES['files']['name']); $i++) {
-                        if ( $_FILES['files']['error'][$i] === UPLOAD_ERR_OK ) {
-                            if ( $_FILES['files']['tmp_name'][$i] !='' ) {
-                                if ( is_uploaded_file($_FILES['files']['tmp_name'][$i]) ) {
+                if (isset($_FILES['files'])) {
+                    for ($i = 0; $i < count($_FILES['files']['name']); $i++) {
+                        if ($_FILES['files']['error'][$i] === UPLOAD_ERR_OK) {
+                            if ($_FILES['files']['tmp_name'][$i] != '') {
+                                if (is_uploaded_file($_FILES['files']['tmp_name'][$i])) {
                                     $da_file = array();
-                                    foreach ( array_keys($_FILES['files']) as $key ) {
+                                    foreach (array_keys($_FILES['files']) as $key) {
                                         $da_file[$key] = $_FILES['files'][$key][$i];
                                     }
                                     $res = $mailing->store($da_file);
-                                    if ( $res < 0 ) {
+                                    if ($res < 0) {
                                         //what to do if one of attachments fail? should other be removed?
                                         $error_detected[] = $mailing->getAttachmentErrorMessage($res);
                                     }
                                 }
                             }
-                        } else if ($_FILES['files']['error'][$i] !== UPLOAD_ERR_NO_FILE) {
+                        } elseif ($_FILES['files']['error'][$i] !== UPLOAD_ERR_NO_FILE) {
                             Analog::log(
                                 $mailing->getPhpErrorMessage($_FILES['files']['error'][$i]),
                                 Analog::WARNING
@@ -1725,7 +1723,7 @@ $app->get(
                     }
                 }
 
-                if ( count($error_detected) == 0
+                if (count($error_detected) == 0
                     && !isset($_POST['mailing_reset'])
                     && !isset($_POST['mailing_save'])
                 ) {
@@ -1735,26 +1733,25 @@ $app->get(
                 }
             }
 
-            if ( isset($_POST['mailing_confirm']) && count($error_detected) == 0 ) {
-
+            if (isset($_POST['mailing_confirm']) && count($error_detected) == 0) {
                 $mailing->current_step = Mailing::STEP_SEND;
                 //ok... let's go for fun
                 $sent = $mailing->send();
-                if ( $sent == Mailing::MAIL_ERROR ) {
+                if ($sent == Mailing::MAIL_ERROR) {
                     $mailing->current_step = Mailing::STEP_START;
                     Analog::log(
-                        '[mailing_adherents.php] Message was not sent. Errors: ' .
+                        '[Mailings] Message was not sent. Errors: ' .
                         print_r($mailing->errors, true),
                         Analog::ERROR
                     );
-                    foreach ( $mailing->errors as $e ) {
+                    foreach ($mailing->errors as $e) {
                         $error_detected[] = $e;
                     }
                 } else {
                     $mlh = new MailingHistory($mailing);
                     $mlh->storeMailing(true);
                     Analog::log(
-                        '[mailing_adherents.php] Message has been sent.',
+                        '[Mailings] Message has been sent.',
                         Analog::INFO
                     );
                     $mailing->current_step = Mailing::STEP_SENT;
@@ -1762,35 +1759,33 @@ $app->get(
                     $filters->selected = null;
                     $this->session->filter_members = $filters;
                     $this->session->mailing = null;
-                    unset($this->session->mailing);
                 }
             }
 
-            if ( isset($_GET['remove_attachment']) ) {
-                $mailing->removeAttachment($_GET['remove_attachment']);
+            if (isset($get['remove_attachment'])) {
+                $mailing->removeAttachment($get['remove_attachment']);
             }
 
-            if ( $mailing->current_step !== Mailing::STEP_SENT ) {
+            if ($mailing->current_step !== Mailing::STEP_SENT) {
                 $this->session->mailing = $mailing;
             }
 
             /** TODO: replace that... */
             $this->session->labels = $mailing->unreachables;
 
-            if ( !isset($_POST['html_editor_active'])
-                || trim($_POST['html_editor_active']) == ''
+            if (!isset($post['html_editor_active'])
+                || trim($post['html_editor_active']) == ''
             ) {
-                $_POST['html_editor_active'] = $this->preferences->pref_editor_enabled;
+                $post['html_editor_active'] = $this->preferences->pref_editor_enabled;
             }
 
-            if ( isset($_POST['mailing_save']) ) {
+            if (isset($post['mailing_save'])) {
                 //user requested to save the mailing
                 $histo = new MailingHistory($mailing);
-                if ( $histo->storeMailing() !== false ) {
+                if ($histo->storeMailing() !== false) {
                     $success_detected[] = _T("Mailing has been successfully saved.");
                     $params['mailing_saved'] = true;
                     $this->session->mailing = null;
-                    unset($this->session->mailing);
                     $head_redirect = array(
                         'timeout'   => 30,
                         'url'       => 'gestion_mailings.php'
@@ -1802,18 +1797,17 @@ $app->get(
             $params = array_merge(
                 $params,
                 array(
-                    'success_detected'  => $success_detected,
-                    'warning_detected'  => $warning_detected,
-                    'error_detected'    => $error_detected,
                     'mailing'           => $mailing,
                     'attachments'       => $mailing->attachments,
                     'html_editor'       => true,
-                    'html_editor_active'=> $request->post('html_editor_active')
+                    'html_editor_active'=> $post['html_editor_active']
                 )
             );
         }
 
-        $app->render(
+        // display page
+        $this->view->render(
+            $response,
             'mailing_adherents.tpl',
             array_merge(
                 array(
@@ -1823,7 +1817,7 @@ $app->get(
                 $params
             )
         );
-
+        return $response;
     }
 )->setName('mailing')->add($authenticate);
 

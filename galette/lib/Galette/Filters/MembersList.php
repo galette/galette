@@ -38,7 +38,6 @@
 namespace Galette\Filters;
 
 use Analog\Analog;
-use Galette\Core\Smarty;
 use Galette\Core\Pagination;
 use Galette\Entity\Group;
 use Galette\Repository\Members;
