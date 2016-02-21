@@ -123,7 +123,10 @@ $container['preferences'] = function ($c) {
 
 $container['login'] = function ($c) use ($session_name) {
     $login = $c->get('session')->login;
-    $login->setDb($c->get('zdb'));
+    if (!$login) {
+        $session = &$_SESSION['galette'][$session_name];
+        $login = new Galette\Core\Login($c->get('zdb'), $c->get('i18n'), $session);
+    }
     return $login;
 };
 
