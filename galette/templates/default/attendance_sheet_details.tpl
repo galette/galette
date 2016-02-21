@@ -1,4 +1,4 @@
-    <form action="attendance_sheet.php" id="sheet_details_form" method="POST">
+    <form action="{path_for name="attendance_sheet"}" id="sheet_details_form" method="POST">
         <fieldset class="cssform">
             <legend class="ui-state-active ui-corner-top">{_T string="Some details about your attendance sheet..."} - <span>{_T string="%s attendees" pattern="/%s/" replace=$selection|@count}</span></legend>
             <p>
@@ -21,6 +21,9 @@
             <p>
                 <label for="sheet_photos" class="bline">{_T string="With photos?"}</label>
                 <input type="checkbox" name="sheet_photos" id="sheet_photos" value="1"/>
+{foreach $selection as $member}
+                <input type="hidden" name="selection[]" value="{$member}"/>
+{/foreach}
             </p>
         </fieldset>
     </form>

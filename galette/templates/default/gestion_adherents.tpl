@@ -419,7 +419,7 @@
                 _selecteds.push($(this).val());
             });
             $.ajax({
-                url: 'ajax_attendance_sheet_details.php',
+                url: '{path_for name="attendance_sheet_details"}',
                 type: "POST",
                 data: {
                     ajax: true,

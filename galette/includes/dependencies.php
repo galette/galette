@@ -190,7 +190,9 @@ $container['acls'] = function ($c) {
         'texts'             => 'staff',
         'transaction'       => 'staff',
         'doEditTransaction' => 'staff',
-        'contribution'      => 'staff'
+        'contribution'      => 'staff',
+        'attendance_sheet_details'  => 'groupmanager',
+        'attendance_sheet'  => 'groupmanager'
     ];
 
     //load user defined ACLs

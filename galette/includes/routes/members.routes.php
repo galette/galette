@@ -54,6 +54,7 @@ use Galette\IO\CsvOut;
 use Galette\Entity\Status;
 use Galette\Repository\Titles;
 use Galette\Entity\Texts;
+use Galette\IO\Pdf;
 
 //self subscription
 $app->get(
@@ -1531,7 +1532,6 @@ $app->get(
     function ($request, $response) {
         $get = $request->getQueryParams();
 
-
         if ($this->session->filter_reminders_labels) {
             $filters =  $this->session->filter_reminders_labels;
             unset($this->session->filter_reminders_labels);
@@ -1865,7 +1865,7 @@ $app->get(
                     if (count($labels_members) > 0) {
                         $labels_filters = new MembersList();
                         $labels_filters->selected = $labels_members;
-                        $session->filters_reminders_labels = $labels_filters;
+                        $this->session->filters_reminders_labels = $labels_filters;
                         header('location: etiquettes_adherents.php');
                         die();
                     } else {
@@ -1917,3 +1917,128 @@ $app->get(
         return $response;
     }
 )->setName('reminders')->add($authenticate);
+
+$app->map(
+    ['GET', 'POST'],
+    '/attendance-sheet/details',
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+
+        if ($this->session->filters_members !== null) {
+            $filters = $this->session->filters_members;
+        } else {
+            $filters = new Galette\Filters\MembersList();
+        }
+
+        // check for ajax mode
+        $ajax = false;
+        if ($request->isXhr()
+            || isset($post['ajax'])
+            && $post['ajax'] == 'true'
+        ) {
+            $ajax = true;
+        }
+
+        //retrieve selected members
+        $selection = (isset($post['selection']) ) ? $post['selection'] : array();
+
+        $filters->selected = $selection;
+        $this->session->filters_members = $filters;
+
+        // display page
+        $this->view->render(
+            $response,
+            'attendance_sheet_details.tpl',
+            [
+                'page_title'    => _T("Attendance sheet configuration"),
+                'ajax'          => $ajax,
+                'selection'     => $selection
+            ]
+        );
+        return $response;
+    }
+)->setName('attendance_sheet_details')->add($authenticate);
+
+$app->post(
+    '/attendance-sheet',
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+
+        if ($this->session->filters_members !== null) {
+            $filters = $this->session->filters_members;
+        } else {
+            $filters = new MembersList();
+        }
+
+        //retrieve selected members
+        $selection = (isset($post['selection']) ) ? $post['selection'] : array();
+
+        $filters->selected = $selection;
+        $this->session->filters_members = $filters;
+
+        if (count($filters->selected) == 0) {
+            Analog::log('No member selected to generate attendance sheet', Analog::INFO);
+            $this->flash->addMessage(
+                'error_detected',
+                _T("No member selected to generate attendance sheet")
+            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('members'));
+        }
+
+        $m = new Members();
+        $members = $m->getArrayList(
+            $filters->selected,
+            array('nom_adh', 'prenom_adh'),
+            true
+        );
+
+        if (!is_array($members) || count($members) < 1) {
+            Analog::log('No member selected to generate attendance sheet', Analog::INFO);
+            $this->flash->addMessage(
+                'error_detected',
+                _T("No member selected to generate attendance sheet")
+            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('members'));
+        }
+
+        //with or without images?
+        $_wimages = false;
+        if (isset($post['sheet_photos']) && $post['sheet_photos'] === '1') {
+            $_wimages = true;
+        }
+
+        $doc_title = _T("Attendance sheet");
+        if (isset($post['sheet_type']) && trim($post['sheet_type']) != '') {
+            $doc_title = $post['sheet_type'];
+        }
+
+        $pdf = new Galette\IO\PdfAttendanceSheet($this->preferences);
+        $pdf->doc_title = $doc_title;
+        // Set document information
+        $pdf->SetTitle($doc_title);
+
+        if (isset($post['sheet_title']) && trim($post['sheet_title']) != '') {
+            $pdf->sheet_title = $post['sheet_title'];
+        }
+        if (isset($post['sheet_sub_title']) && trim($post['sheet_sub_title']) != '') {
+            $pdf->sheet_sub_title = $_POST['sheet_sub_title'];
+        }
+        if (isset($post['sheet_date']) && trim($post['sheet_date']) != '') {
+            $dformat = _T("Y-m-d");
+            $date = DateTime::createFromFormat(
+                $dformat,
+                $post['sheet_date']
+            );
+            $pdf->sheet_date = $date;
+        }
+
+        $pdf->drawSheet($members, $doc_title);
+        $pdf->Output(_T("attendance_sheet") . '.pdf', 'D');
+    }
+)->setName('attendance_sheet')->add($authenticate);
