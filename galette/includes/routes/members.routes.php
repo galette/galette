@@ -322,15 +322,10 @@ $app->get(
 
         $response = $app->response;
         if (file_exists(CsvOut::DEFAULT_DIRECTORY . $filename)) {
-            $response->headers->set('Content-Type', 'text/csv');
-            $response->headers->set(
-                'Content-Disposition',
-                'attachment; filename="' . $filename . '";'
-            );
-            $response->headers->set('Pragma', 'no-cache');
-            $response->setBody(
-                readfile(CsvOut::DEFAULT_DIRECTORY . $filename)
-            );
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $filename . '";');
+            header('Pragma: no-cache');
+            echo readfile(CsvOut::DEFAULT_DIRECTORY . $filename);
         } else {
             Analog::log(
                 'A request has been made to get an exported file named `' .
