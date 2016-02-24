@@ -103,7 +103,7 @@ if ( isset($_POST) && count($_POST) > 0 ) {
     //okay, we've got the new array, we send it to the
     //Object that will store it in the database
     $success = $fc->setFields($res);
-    FieldsCategories::setCategories($_POST['categories']);
+    FieldsCategories::setCategories($zdb, $_POST['categories']);
     if ( $success === true ) {
         $success_detected[] = _T("Fields configuration has been successfully stored");
     } else {
@@ -113,7 +113,7 @@ if ( isset($_POST) && count($_POST) > 0 ) {
 
 $tpl->assign('page_title', _T("Fields configuration"));
 $tpl->assign('time', time());
-$tpl->assign('categories', FieldsCategories::getList());
+$tpl->assign('categories', FieldsCategories::getList($zdb));
 $tpl->assign('categorized_fields', $fc->getCategorizedFields());
 $tpl->assign('non_required', $fc->getNonRequired());
 $tpl->assign('current', $current);

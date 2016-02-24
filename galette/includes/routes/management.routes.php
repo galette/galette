@@ -833,7 +833,7 @@ $app->get(
 $app->get(
     '/{type:export|import}/remove/{file}',
     function ($request, $response, $args) {
-        $csv = $args['type'] === 'export' ? new CsvOut() : new CsvIn;
+        $csv = $args['type'] === 'export' ? new CsvOut() : new CsvIn($this->zdb);
         $res = $csv->remove($args['file']);
         if ($res === true) {
             $this->flash->addMessage(
@@ -998,7 +998,7 @@ $app->get(
 $app->get(
     '/import',
     function ($request, $response) {
-        $csv = new CsvIn();
+        $csv = new CsvIn($this->zdb);
         $existing = $csv->getExisting();
         $dryrun = true;
 
@@ -1021,7 +1021,7 @@ $app->get(
 $app->post(
     '/import',
     function ($request, $response) {
-        $csv = new CsvIn();
+        $csv = new CsvIn($this->zdb);
         $post = $request->getParsedBody();
         $dryrun = isset($post['dryrun']);
         $res = $csv->import($post['import_file'], $this->members_fields, $dryrun);
@@ -1069,7 +1069,7 @@ $app->post(
 $app->post(
     '/import/upload',
     function ($request, $response) {
-        $csv = new CsvIn();
+        $csv = new CsvIn($this->zdb);
         if (isset($_FILES['new_file'])) {
             if ($_FILES['new_file']['error'] === UPLOAD_ERR_OK) {
                 if ($_FILES['new_file']['tmp_name'] !='') {
@@ -1129,7 +1129,7 @@ $app->get(
             $model->load();
         }
 
-        $csv = new CsvIn();
+        $csv = new CsvIn($this->zdb);
 
         /** FIXME:
         * - set fields that should not be part of import
@@ -1174,7 +1174,7 @@ $app->get(
         $model = new ImportModel();
         $model->load();
 
-        $csv = new CsvIn();
+        $csv = new CsvIn($this->zdb);
 
         /** FIXME:
         * - set fields that should not be part of import

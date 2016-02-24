@@ -73,15 +73,11 @@ $app->get(
         $member->setSelfMembership();
 
         // flagging required fields
-        $fc = new FieldsConfig(
-            Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats
-        );
+        $fc = $this->fields_config;
         $required = $fc->getRequired();
         // flagging fields visibility
         $visibles = $fc->getVisibilities();
-        $form_elements = $fc->getFormElements(true);
+        $form_elements = $fc->getFormElements($this->members_fields_cats, true);
 
         // disable some fields
         $disabled  = $member->disabled_fields;
@@ -170,11 +166,7 @@ $app->get(
         }
 
         // fields visibility
-        $fc = new FieldsConfig(
-            Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats
-        );
+        $fc = $this->fields_config;
         $visibles = $fc->getVisibilities();
         $fields = array();
         $headers = array();
@@ -669,7 +661,7 @@ $app->get(
         }*/
 
         // flagging fields visibility
-        $fc = new FieldsConfig(Adherent::TABLE, $this->members_fields, $this->members_fields_cats);
+        $fc = $this->fields_config;
         $visibles = $fc->getVisibilities();
 
         $display_elements = $fc->getDisplayElements();
@@ -777,7 +769,7 @@ $app->get(
         }
 
         // flagging required fields
-        $fc = new FieldsConfig(Adherent::TABLE, $this->members_fields, $this->members_fields_cats);
+        $fc = $this->fields_config;
 
         //address and mail fields are not required if member has a parent
         $no_parent_required = array(
@@ -877,7 +869,7 @@ $app->get(
         $groups = new Groups();
         $groups_list = $groups->getSimpleList(true);
 
-        $form_elements = $fc->getFormElements();
+        $form_elements = $fc->getFormElements($this->members_fields_cats);
 
         // display page
         $this->view->render(
@@ -985,7 +977,7 @@ $app->post(
         }
 
         // flagging required fields
-        $fc = new FieldsConfig(Adherent::TABLE, $this->members_fields, $this->members_fields_cats);
+        $fc = $this->fields_config;
 
         // password required if we create a new member
         if ( $member->id != '' ) {
@@ -1324,11 +1316,7 @@ $app->get(
 
         //we want only visibles fields
         $fields = $this->members_fields;
-        $fc = new FieldsConfig(
-            Adherent::TABLE,
-            $this->members_fields,
-            $this->members_fields_cats
-        );
+        $fc = $this->fields_config;
         $visibles = $fc->getVisibilities();
 
         foreach ($fields as $k => $f) {

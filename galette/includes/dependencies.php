@@ -236,6 +236,16 @@ $container['logger'] = function ($c) {
     return $logger;
 };
 
+$container['fields_config'] = function ($c) {
+    $fc = new Galette\Entity\FieldsConfig(
+        $c->get('zdb'),
+        Galette\Entity\Adherent::TABLE,
+        $c->get('members_fields'),
+        $c->get('members_fields_cats')
+    );
+    return $fc;
+};
+
 // -----------------------------------------------------------------------------
 // Action factories
 // -----------------------------------------------------------------------------

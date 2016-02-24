@@ -132,15 +132,18 @@ class FieldsConfig
         'adresse2_adh'
     );
 
+    private $zdb;
+
     /**
      * Default constructor
      *
+     * @param Db      $zdb           Database
      * @param string  $table         the table for which to get fields configuration
      * @param array   $defaults      default values
      * @param array   $cats_defaults default categories values
      * @param boolean $install       Are we calling from installer?
      */
-    function __construct(Db $zdb, $table, $defaults, $cats_defaults, $install = false)
+    public function __construct(Db $zdb, $table, $defaults, $cats_defaults, $install = false)
     {
         $this->zdb = $zdb;
         $this->_table = $table;
@@ -149,7 +152,7 @@ class FieldsConfig
         $this->_all_required = array();
         $this->_all_visibles = array();
         //prevent check at install time...
-        if ( !$install ) {
+        if (!$install) {
             $this->load();
             $this->_checkUpdate();
         }
@@ -173,7 +176,7 @@ class FieldsConfig
             $results = $this->zdb->execute($select);
 
             $this->_categorized_fields = null;
-            foreach ( $results as $k ) {
+            foreach ($results as $k) {
                 if ($k->field_id === 'id_adh' && (!isset($preferences) || !$preferences->pref_show_id)) {
                     $k->visible = self::HIDDEN;
                 }
@@ -275,8 +278,8 @@ class FieldsConfig
 
                 if ( $results->count() == 0 ) {
                     //categories are missing, add them
-                    $categories = new FieldsCategories($this->_cats_defaults);
-                    $categories->installInit($this->zdb);
+                    $categories = new FieldsCategories($this->zdb, $this->_cats_defaults);
+                    $categories->installInit();
                 }
             }
 
@@ -337,7 +340,7 @@ class FieldsConfig
     {
         try {
             $fields = array_keys($this->_defaults);
-            $categories = new FieldsCategories($this->_cats_defaults);
+            $categories = new FieldsCategories($this->zdb, $this->_cats_defaults);
 
             //first, we drop all values
             $delete = $this->zdb->delete(self::TABLE);
@@ -399,30 +402,31 @@ class FieldsConfig
     /**
      * Retrieve form elements
      *
-     * @param boolean $selfs True if we're called from self subscirption page
+     * @param array   $members_fields_cats Members fields categories
+     * @param boolean $selfs               True if we're called from self subscirption page
      *
      * @return array
      */
-    public function getFormElements($selfs = false)
+    public function getFormElements($members_fields_cats, $selfs = false)
     {
-        global $login;
+        global $log, $login;
 
-        if ( !count($this->_form_elements) > 0 ) {
+        if (!count($this->_form_elements) > 0) {
             //get columns descriptions
             $columns = $this->zdb->getColumns($this->_table);
 
-            $categories = FieldsCategories::getList();
+            $categories = FieldsCategories::getList($this->zdb);
             try {
-                foreach ( $categories as $c ) {
+                foreach ($categories as $c) {
                     $cpk = FieldsCategories::PK;
                     $cat_label = null;
                     foreach ($this->_cats_defaults as $conf_cat) {
-                        if ( $conf_cat['id'] == $c->$cpk ) {
+                        if ($conf_cat['id'] == $c->$cpk) {
                             $cat_label = $conf_cat['category'];
                             break;
                         }
                     }
-                    if ( $cat_label === null ) {
+                    if ($cat_label === null) {
                         $cat_label = $c->category;
                     }
                     $cat = (object) array(
@@ -434,30 +438,30 @@ class FieldsConfig
                     $elements = $this->_categorized_fields[$c->$cpk];
                     $cat->elements = array();
 
-                    foreach ( $elements as $elt ) {
+                    foreach ($elements as $elt) {
                         $o = (object)$elt;
 
-                        if ( in_array($o->field_id, $this->_non_form_elements)
+                        if (in_array($o->field_id, $this->_non_form_elements)
                             || $selfs && $this->isSelfExcluded($o->field_id)
                         ) {
                             continue;
                         }
 
-                        if ( !($o->visible == self::ADMIN
+                        if (!($o->visible == self::ADMIN
                             && (!$login->isAdmin() && !$login->isStaff()) )
                         ) {
-                            if ( $o->visible == self::HIDDEN ) {
+                            if ($o->visible == self::HIDDEN) {
                                 $o->type = self::TYPE_HIDDEN;
-                            } else if (preg_match('/date/', $o->field_id) ) {
+                            } elseif (preg_match('/date/', $o->field_id)) {
                                 $o->type = self::TYPE_DATE;
-                            } else if (preg_match('/bool/', $o->field_id) ) {
+                            } elseif (preg_match('/bool/', $o->field_id)) {
                                 $o->type = self::TYPE_BOOL;
-                            } else if ( $o->field_id == 'titre_adh'
+                            } elseif ($o->field_id == 'titre_adh'
                                 || $o->field_id == 'pref_lang'
                                 || $o->field_id == 'id_statut'
                             ) {
                                 $o->type = self::TYPE_SELECT;
-                            } else if ( $o->field_id == 'sexe_adh' ) {
+                            } elseif ($o->field_id == 'sexe_adh') {
                                 $o->type = self::TYPE_RADIO;
                             } else {
                                 $o->type = self::TYPE_STR;
@@ -511,7 +515,7 @@ class FieldsConfig
         $display_elements = array();
 
         if ( !count($this->_form_elements) > 0 ) {
-            $categories = FieldsCategories::getList();
+            $categories = FieldsCategories::getList($this->zdb);
             try {
                 foreach ( $categories as $c ) {
                     $cpk = FieldsCategories::PK;

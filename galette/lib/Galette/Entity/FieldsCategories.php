@@ -57,7 +57,9 @@ class FieldsCategories
     const TABLE = 'fields_categories';
     const PK = 'id_field_category';
 
-    private $_defaults;
+    private $defaults;
+
+    private $zdb;
 
     const ADH_CATEGORY_IDENTITY = 1;
     const ADH_CATEGORY_GALETTE = 2;
@@ -66,22 +68,24 @@ class FieldsCategories
     /**
      * Default constructor
      *
+     * @param Db    $zdb      Database
      * @param array $defaults default values
      */
-    function __construct($defaults)
+    public function __construct(Db $zdb, $defaults)
     {
-        $this->_defaults = $defaults;
+        $this->zdb = $zdb;
+        $this->defaults = $defaults;
     }
 
     /**
      * Get list of categories
      *
+     * @param Db $zdb Database
+     *
      * @return array
      */
-    public static function getList()
+    public static function getList($zdb)
     {
-        global $zdb;
-
         try {
             $select = $zdb->select(self::TABLE);
             $select->order('position');
@@ -99,14 +103,13 @@ class FieldsCategories
     /**
      * Store the categories
      *
+     * @param Db    $zdb        Database
      * @param array $categories Categories
      *
      * @return boolean
      */
-    public static function setCategories($categories)
+    public static function setCategories($zdb, $categories)
     {
-        global $zdb;
-
         try {
             $zdb->connection->beginTransaction();
 
@@ -122,7 +125,7 @@ class FieldsCategories
             );
             $stmt = $zdb->sql->prepareStatementForSqlObject($update);
 
-            foreach ( $categories as $k=>$v ) {
+            foreach ($categories as $k => $v) {
                 $params = array(
                     'position'  => $k,
                     'where1'    => $v
@@ -130,7 +133,7 @@ class FieldsCategories
                 $stmt->execute($params);
             }
             $zdb->connection->commit();
-        } catch ( Exception $e ) {
+        } catch (\Exception $e) {
             $zdb->connection->rollBack();
             throw $e;
         }
@@ -139,18 +142,17 @@ class FieldsCategories
     /**
      * Set default fields categories at install time
      *
-     * @param Db $zdb Database instance
      *
      * @return boolean|Exception
      */
-    public function installInit($zdb)
+    public function installInit()
     {
         try {
             //first, we drop all values
-            $delete = $zdb->delete(self::TABLE);
-            $zdb->execute($delete);
+            $delete = $this->zdb->delete(self::TABLE);
+            $this->zdb->execute($delete);
 
-            $insert = $zdb->insert(self::TABLE);
+            $insert = $this->zdb->insert(self::TABLE);
             $insert->values(
                 array(
                     self::PK        => ':id',
@@ -159,9 +161,9 @@ class FieldsCategories
                     'position'      => ':position'
                 )
             );
-            $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
+            $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
-            foreach ( $this->_defaults as $d ) {
+            foreach ($this->defaults as $d) {
                 $stmt->execute(
                     array(
                         self::PK        => $d['id'],
@@ -187,4 +189,3 @@ class FieldsCategories
         }
     }
 }
-

@@ -96,11 +96,16 @@ class CsvIn extends Csv implements FileInterface
     private $_required;
     private $zdb;
 
+    private $zdb;
+
     /**
      * Default constructor
+     *
+     * @param Db $zdb Database
      */
-    public function __construct()
+    public function __construct(Db $zdb)
     {
+        $this->zdb = $zdb;
         $this->init(
             self::DEFAULT_DIRECTORY,
             $this->extensions,
