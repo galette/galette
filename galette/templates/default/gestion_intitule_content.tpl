@@ -20,16 +20,16 @@
             <tr>
                 <td>&nbsp;</td>
                 <td class="left">
-                    <input size="40" type="text" name="{$fields.$class.name}"/>
+                    <input size="40" type="text" name="{$fields.libelle}"/>
                 </td>
                 <td class="left">
 {if $class == 'ContributionsTypes'}
-                    <select name="{$fields.$class.field}">
+                    <select name="{$fields.third}">
                         <option value="0" selected="selected">{_T string="No"}</option>
                         <option value="1">{_T string="Yes"}</option>
                     </select>
 {elseif $class == 'Status'}
-                    <input size="4" type="text" name="{$fields.$class.field}" value="99" />
+                    <input size="4" type="text" name="{$fields.third}" value="99" />
 {/if}
                 </td>
                 <td class="center">
@@ -66,10 +66,10 @@
     {/if}
                 </td>
                 <td class="center actions_row">
-                    <a href="gestion_intitules.php?class={$class}&amp;id={$eid}">
+                    <a href="{path_for name="editEntitled" data=["class" => $url_class, "action" => "edit", "id" => $eid]}">
                         <img src="{$template_subdir}images/icon-edit.png" alt="{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name}" title="{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name}" width="16" height="16"/>
                     </a>
-                    <a onclick="return confirm('{_T string="Do you really want to delete this entry?"|escape:"javascript"}')" href="gestion_intitules.php?class={$class}&amp;del={$eid}">
+                    <a onclick="return confirm('{_T string="Do you really want to delete this entry?"|escape:"javascript"}')" href="{path_for name="removeEntitled" data=["class" => $url_class, "id" => $eid]}">
                         <img src="{$template_subdir}images/icon-trash.png" alt="{_T string="Delete '%s' field" pattern="/%s/" replace=$entry.name}" title="{_T string="Delete '%s' field" pattern="/%s/" replace=$entry.name}" width="16" height="16" />
                     </a>
                 </td>

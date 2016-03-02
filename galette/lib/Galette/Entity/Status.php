@@ -37,6 +37,8 @@
 
 namespace Galette\Entity;
 
+use Galette\Core\Db;
+
 /**
  * Members status
  *
@@ -59,10 +61,10 @@ class Status extends Entitled
 
     const ID_NOT_EXITS = -1;
 
-    protected static $fields = array(
-        'id_statut',
-        'libelle_statut',
-        'priorite_statut'
+    public static $fields = array(
+        'id'        => 'id_statut',
+        'libelle'   => 'libelle_statut',
+        'third'     => 'priorite_statut'
     );
 
     protected static $defaults = array(
@@ -81,11 +83,13 @@ class Status extends Entitled
     /**
      * Default constructor
      *
+     * @param Db        $zdb  Database
      * @param ResultSet $args Optionnal existing result set
      */
-    public function __construct($args = null)
+    public function __construct(Db $zdb, $args = null)
     {
         parent::__construct(
+            $zdb,
             self::TABLE,
             self::PK,
             self::LABEL_FIELD,
@@ -111,7 +115,7 @@ class Status extends Entitled
      *
      * @return string
      */
-    protected function getI18nType()
+    public function getI18nType()
     {
         return _T("status");
     }
@@ -125,13 +129,10 @@ class Status extends Entitled
      */
     public function delete($id)
     {
-        global $zdb;
-
-        if ( (int)$id === self::DEFAULT_STATUS ) {
+        if ((int)$id === self::DEFAULT_STATUS) {
             throw new \RuntimeException(_T("You cannot delete default status!"));
         }
 
-        parent::delete($id);
+        return parent::delete($id);
     }
-
 }

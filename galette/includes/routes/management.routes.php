@@ -1593,3 +1593,210 @@ $app->post(
             ->withHeader('Location', $this->router->pathFor('texts'));
     }
 )->setName('texts')->add($authenticate);
+
+$app->get(
+    '/{class:contributions-types|status}',
+    function ($request, $response, $args) {
+        $className = null;
+        $class = null;
+
+        $params = [
+            'require_tabs'  => true
+        ];
+
+        switch ($args['class']) {
+            case 'status':
+                $className = 'Status';
+                $class = new Galette\Entity\Status($this->zdb);
+                $params['page_title'] = _T("User statuses");
+                $params['non_staff_priority'] = Galette\Repository\Members::NON_STAFF_MEMBERS;
+                break;
+            case 'contributions-types':
+                $className = 'ContributionsTypes';
+                $class = new Galette\Entity\ContributionsTypes($this->zdb);
+                $params['page_title'] = _T("Contribution types");
+                break;
+        }
+
+        $params['class'] = $className;
+        $params['url_class'] = $args['class'];
+        $params['fields'] = $class::$fields;
+
+        $list = $class->getCompleteList();
+        $params['entries'] = $list;
+
+        if (count($class->errors) > 0) {
+            $error_detected = array_merge($error_detected, $class->errors);
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            'gestion_intitules.tpl',
+            $params
+        );
+        return $response;
+    }
+)->setName('entitleds')->add($authenticate);
+
+$app->get(
+    '/{class:contributions-types|status}/{action:edit|add}[/{id:\d+}]',
+    function ($request, $response, $args) {
+        $className = null;
+        $class = null;
+
+        $params = [
+            'require_tabs'  => true,
+        ];
+
+        switch ($args['class']) {
+            case 'status':
+                $className = 'Status';
+                $class = new Galette\Entity\Status($this->zdb);
+                $params['page_title'] = _T("Edit status");
+                $params['non_staff_priority'] = Galette\Repository\Members::NON_STAFF_MEMBERS;
+                break;
+            case 'contributions-types':
+                $className = 'ContributionsTypes';
+                $class = new Galette\Entity\ContributionsTypes($this->zdb);
+                $params['page_title'] = _T("Edit contribution type");
+                break;
+        }
+
+        $params['class'] = $className;
+        $params['url_class'] = $args['class'];
+        $params['fields'] = $class::$fields;
+
+        $entry = $class->get($args['id']);
+        $params['entry'] = $entry;
+
+        // display page
+        $this->view->render(
+            $response,
+            'editer_intitule.tpl',
+            $params
+        );
+        return $response;
+    }
+)->setName('editEntitled')->add($authenticate);
+
+$app->post(
+    '/{class:contributions-types|status}/{action:edit|add}[/{id:\d+}]',
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+        $class = null;
+
+        switch ($args['class']) {
+            case 'status':
+                $class = new Galette\Entity\Status($this->zdb);
+                break;
+            case 'contributions-types':
+                $class = new Galette\Entity\ContributionsTypes($this->zdb);
+                break;
+        }
+
+        $label = trim($post[$class::$fields['libelle']]);
+        $field = trim($post[$class::$fields['third']]);
+
+        $ret = null;
+        if ($args['action'] === 'add') {
+            $ret = $class->add($label, $field);
+            if ($ret === true) {
+                addDynamicTranslation($label, $error_detected);
+            }
+        } else {
+            $oldlabel = $class->getLabel($id, false);
+            $ret = $class->update($args['id'], $label, $field);
+            if ($ret === true) {
+                if (isset($label) && ($oldlabel != $label)) {
+                    deleteDynamicTranslation($oldlabel, $error_detected);
+                    addDynamicTranslation($label, $error_detected);
+                }
+            }
+        }
+
+        if ($ret !== true) {
+            $msg_type = 'error_detected';
+            $msg = $args['action'] === 'add' ?
+                _T("%type has not been added :(") :
+                _T("%type #%id has not been updated");
+        } else {
+            $msg_type = 'success_detected';
+            $msg = $args['action'] === 'add' ?
+                _T("%type has been successfully added!") :
+                _T("%type #%id has been successfully updated!");
+        }
+
+        $this->flash->addMessage(
+            $msg_type,
+            str_replace(
+                ['%type', '%id'],
+                [$class->getI18nType(), (isset($args['id']) ? $args['id'] : null)],
+                $msg
+            )
+        );
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('entitleds', ['class' => $args['class']]));
+    }
+)->setName('editEntitled')->add($authenticate);
+
+$app->get(
+    '/{class:contributions-types|status}/delete/{id:\d+}',
+    function ($request, $response, $args) {
+        $class = null;
+        switch ($args['class']) {
+            case 'status':
+                $class = new Galette\Entity\Status($this->zdb);
+                break;
+            case 'contributions-types':
+                $class = new Galette\Entity\ContributionsTypes($this->zdb);
+                break;
+        }
+
+        try {
+            $label = $class->getLabel((int)$args['id']);
+            if ($label !== $class::ID_NOT_EXITS) {
+                $ret = $class->delete((int)$args['id']);
+
+                if ($ret === true) {
+                    deleteDynamicTranslation($label, $error_detected);
+                    $this->flash->addMessage(
+                        'success_detected',
+                        str_replace(
+                            ['%type', '%label'],
+                            [$class->getI18nType(), $label],
+                            _T("%type '%label' was successfully removed")
+                        )
+                    );
+                } else {
+                    $errors = $class->errors;
+                    if (count($errors) === 0) {
+                        $errors[] = str_replace(
+                            ['%type', '%id'],
+                            [$class->getI18nType(), $args['id']],
+                            _T("An error occured trying to remove %type #%id")
+                        );
+                    }
+
+                    foreach ($errors as $error) {
+                        $this->flash->addMessage(
+                            'error_detected',
+                            $error
+                        );
+                    }
+                }
+            }
+        } catch (RuntimeException $re) {
+            $this->flash->addMessage(
+                'error_detected',
+                $re->getMessage()
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('entitleds', ['class' => $args['class']]));
+    }
+)->setName('removeEntitled')->add($authenticate);

@@ -39,6 +39,7 @@ namespace Galette\Entity;
 
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
+use Galette\Core\Db;
 
 /**
  * Entitled handling. Manage:
@@ -60,26 +61,28 @@ abstract class Entitled
 {
     const ID_NOT_EXITS = -1;
 
-    private $_table;
-    private $_fpk;
-    private $_flabel;
-    private $_fthird;
-    private $_used;
+    private $zdb;
+    private $table;
+    private $fpk;
+    private $flabel;
+    private $fthird;
+    private $used;
 
-    protected static $fields;
+    public static $fields;
     protected static $defaults;
 
     protected $order_field = false;
 
-    private $_id;
-    private $_label;
-    private $_third;
+    private $id;
+    private $label;
+    private $third;
 
-    private $_errors = array();
+    private $errors = array();
 
     /**
      * Default constructor
      *
+     * @param Db     $zdb    Database
      * @param string $table  Table name
      * @param string $fpk    Primary key field name
      * @param string $flabel Label fields name
@@ -87,16 +90,17 @@ abstract class Entitled
      * @param string $used   Table name for isUsed function
      * @param mixed  $args   Either an int or a resultset to load
      */
-    public function __construct($table, $fpk, $flabel, $fthird, $used, $args = null)
+    public function __construct(Db $zdb, $table, $fpk, $flabel, $fthird, $used, $args = null)
     {
-        $this->_table = $table;
-        $this->_fpk = $fpk;
-        $this->_flabel = $flabel;
-        $this->_fthird = $fthird;
-        $this->_used = $used;
-        if ( is_int($args) ) {
+        $this->zdb = $zdb;
+        $this->table = $table;
+        $this->fpk = $fpk;
+        $this->flabel = $flabel;
+        $this->fthird = $fthird;
+        $this->used = $used;
+        if (is_int($args)) {
             $this->load($args);
-        } else if ( is_object($args) ) {
+        } elseif (is_object($args)) {
             $this->loadFromRS($args);
         }
     }
@@ -110,15 +114,13 @@ abstract class Entitled
      */
     public function load($id)
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select($this->_table);
-            $select->where($this->_fpk . ' = ' . $id);
+            $select = $this->zdb->select($this->table);
+            $select->where($this->fpk . ' = ' . $id);
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $result = $results->current();
-            $this->_loadFromRS($result);
+            $this->loadFromRS($result);
 
             return true;
         } catch (\Exception $e) {
@@ -138,14 +140,14 @@ abstract class Entitled
      *
      * @return void
      */
-    private function _loadFromRS($r)
+    private function loadFromRS($r)
     {
-        $pk = $this->_fpk;
-        $this->_id = $r->$pk;
-        $flabel = $this->_flabel;
-        $this->_libelle = $r->$flabel;
-        $fthird = $this->_fthird;
-        $this->_third = $r->$fthird;
+        $pk = $this->fpk;
+        $this->id = $r->$pk;
+        $flabel = $this->flabel;
+        $this->label = $r->$flabel;
+        $fthird = $this->fthird;
+        $this->third = $r->$fthird;
     }
 
     /**
@@ -155,38 +157,26 @@ abstract class Entitled
      */
     public function installInit()
     {
-        global $zdb;
-
         $class = get_class($this);
 
         try {
             //first, we drop all values
-            $delete = $zdb->delete($this->_table);
-            $zdb->execute($delete);
+            $delete = $this->zdb->delete($this->table);
+            $this->zdb->execute($delete);
 
             $values = array();
-            $i = 0;
-            foreach ( $class::$fields as $f ) {
-                $v = null;
-                if ( $i === 0 ) {
-                    $v = ':id';
-                } else if ( $i === 1 ) {
-                    $v = ':libelle';
-                } else if ( $i === 2 ) {
-                    $v = ':third';
-                }
-                $values[$f] = $v;
-                $i++;
+            foreach ($class::$fields as $key => $f) {
+                $values[$f] = ':' . $key;
             }
 
-            $insert = $zdb->insert($this->_table);
+            $insert = $this->zdb->insert($this->table);
             $insert->values($values);
-            $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
+            $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
             $fnames = array_keys($values);
-            foreach ( $class::$defaults as $d ) {
+            foreach ($class::$defaults as $d) {
                 $val = null;
-                if ( isset($d['priority']) ) {
+                if (isset($d['priority'])) {
                     $val = $d['priority'];
                 } else {
                     $val = $d['extension'];
@@ -227,37 +217,36 @@ abstract class Entitled
      */
     public function getList($extent = null)
     {
-        global $zdb;
         $list = array();
 
         try {
-            $select = $zdb->select($this->_table);
-            $fields = array($this->_fpk, $this->_flabel);
-            if ( $this->order_field !== false
-                && $this->order_field !== $this->_fpk
-                && $this->order_field !== $this->_flabel
+            $select = $this->zdb->select($this->table);
+            $fields = array($this->fpk, $this->flabel);
+            if ($this->order_field !== false
+                && $this->order_field !== $this->fpk
+                && $this->order_field !== $this->flabel
             ) {
                 $fields[] = $this->order_field;
             }
             $select->quantifier('DISTINCT');
             $select->columns($fields);
 
-            if ( $this->order_field !== false ) {
-                $select->order($this->order_field, $this->_fpk);
+            if ($this->order_field !== false) {
+                $select->order($this->order_field, $this->fpk);
             }
-            if ( $extent !== null ) {
-                if ( $extent === true ) {
-                    $select->where(array($this->_fthird => new Expression('true')));
-                } else if ( $extent === false ) {
-                    $select->where(array($this->_fthird => new Expression('false')));
+            if ($extent !== null) {
+                if ($extent === true) {
+                    $select->where(array($this->fthird => new Expression('true')));
+                } elseif ($extent === false) {
+                    $select->where(array($this->fthird => new Expression('false')));
                 }
             }
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
 
-            foreach ( $results as $r ) {
-                $fpk = $this->_fpk;
-                $flabel = $this->_flabel;
+            foreach ($results as $r) {
+                $fpk = $this->fpk;
+                $flabel = $this->flabel;
                 $list[$r->$fpk] = _T($r->$flabel);
             }
             return $list;
@@ -277,28 +266,27 @@ abstract class Entitled
      */
     public function getCompleteList()
     {
-        global $zdb;
         $list = array();
 
         try {
-            $select = $zdb->select($this->_table);
-            if ( $this->order_field !== false ) {
-                $select->order(array($this->order_field, $this->_fpk));
+            $select = $this->zdb->select($this->table);
+            if ($this->order_field !== false) {
+                $select->order(array($this->order_field, $this->fpk));
             }
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
 
-            if ( $results->count() == 0 ) {
+            if ($results->count() == 0) {
                 Analog::log(
                     'No entries (' . $this->getType()  . ') defined in database.',
                     Analog::INFO
                 );
             } else {
-                $pk = $this->_fpk;
-                $flabel = $this->_flabel;
-                $fprio = $this->_fthird;
+                $pk = $this->fpk;
+                $flabel = $this->flabel;
+                $fprio = $this->fthird;
 
-                foreach ( $results as $r ) {
+                foreach ($results as $r) {
                     $list[$r->$pk] = array(
                         'name'  => _T($r->$flabel),
                         'extra' => $r->$fprio
@@ -308,7 +296,7 @@ abstract class Entitled
             return $list;
         } catch (\Exception $e) {
             Analog::log(
-                'Cannot list entries (' . $this->getType() . 
+                'Cannot list entries (' . $this->getType() .
                 ') | ' . $e->getMessage(),
                 Analog::WARNING
             );
@@ -325,23 +313,20 @@ abstract class Entitled
      */
     public function get($id)
     {
-
-        if ( !is_numeric($id) ) {
-            $this->_errors[] = _T("- ID must be an integer!");
+        if (!is_numeric($id)) {
+            $this->errors[] = _T("ID must be an integer!");
             return false;
         }
 
-        global $zdb;
-
         try {
-            $select = $zdb->select($this->_table);
-            $select->where($this->_fpk . '=' . $id);
+            $select = $this->zdb->select($this->table);
+            $select->where($this->fpk . '=' . $id);
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $result = $results->current();
 
-            if ( !$result ) {
-                $this->_errors[] = _T("- Label does not exist");
+            if (!$result) {
+                $this->errors[] = _T("Label does not exist");
                 return false;
             }
 
@@ -367,11 +352,11 @@ abstract class Entitled
     public function getLabel($id, $translated = true)
     {
         $res = $this->get($id);
-        if ( $res === false ) {
+        if ($res === false) {
             //get() alred logged
             return self::ID_NOT_EXITS;
         };
-        $field = $this->_flabel;
+        $field = $this->flabel;
         return ($translated) ? _T($res->$field) : $res->$field;
     }
 
@@ -384,17 +369,15 @@ abstract class Entitled
      */
     public function getIdByLabel($label)
     {
-        global $zdb;
-
         try {
-            $pk = $this->_fpk;
-            $select = $zdb->select($this->_table);
+            $pk = $this->fpk;
+            $select = $this->zdb->select($this->table);
             $select->columns(array($pk))
-                ->where(array($this->_flabel => $label));
+                ->where(array($this->flabel => $label));
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $result = $results->current();
-            if ( $result ) {
+            if ($result) {
                 return $result->$pk;
             } else {
                 return false;
@@ -420,12 +403,10 @@ abstract class Entitled
      */
     public function add($label, $extra)
     {
-        global $zdb;
-
         // Avoid duplicates.
         $ret = $this->getIdByLabel($label);
 
-        if ( $ret !== false ) {
+        if ($ret !== false) {
             Analog::log(
                 $this->getType() . ' with label `' . $label . '` already exists',
                 Analog::WARNING
@@ -435,32 +416,22 @@ abstract class Entitled
 
         try {
             $values = array(
-                $this->_flabel  => $label,
-                $this->_fthird  => $extra
+                $this->flabel  => $label,
+                $this->fthird  => $extra
             );
 
-            $insert = $zdb->insert($this->_table);
+            $insert = $this->zdb->insert($this->table);
             $insert->values($values);
 
-            $ret = $zdb->execute($insert);
+            $ret = $this->zdb->execute($insert);
 
-            if ( $ret->count() >  0) {
+            if ($ret->count() >  0) {
                 Analog::log(
                     'New ' . $this->getType() .' `' . $label .
                     '` added successfully.',
                     Analog::INFO
                 );
-
-                if ( $zdb->isPostgres() ) {
-                    return $zdb->driver->getLastGeneratedValue(
-                        PREFIX_DB . $this->_table . '_id_seq'
-                    );
-                } else {
-                    return $zdb->driver->getLastGeneratedValue();
-                }
-
-
-                return $zdb->driver->getLastGeneratedValue();
+                return true;
             } else {
                 throw new \Exception('New ' . $this->getType() .' not added.');
             }
@@ -478,55 +449,43 @@ abstract class Entitled
      * Update in database.
      *
      * @param integer $id    Entry ID
-     * @param string  $field Field to update
-     * @param mixed   $value The value to set
+     * @param string  $label The label
+     * @param integer $extra Extra values (priority for statuses,
+     *                       extension for contributions types, ...)
      *
      * @return integer -2 : ID does not exist ; -1 : DB error ; 0 : success.
      */
-    public function update($id, $field, $value)
+    public function update($id, $label, $extra)
     {
-        global $zdb;
-
         $ret = $this->get($id);
-        if ( !$ret ) {
+        if (!$ret) {
             /* get() already logged and set $this->error. */
             return self::ID_NOT_EXITS;
         }
 
-        $fieldtype = '';
-        if ( $field == self::$fields[1] ) {
-            // label.
-            $fieldtype = 'text';
-        } elseif ( self::$fields[2] ) {
-            // priority.
-            $fieldtype = 'integer';
-        }
-
-        Analog::log(
-            "Setting field $field to $value for " . $this->getType()  . " $id",
-            Analog::INFO
-        );
+        $class = get_class($this);
 
         try {
-            $values= array(
-                $field => $value
+            $values = array(
+                $this->flabel  => $label,
+                $this->fthird  => $extra
             );
 
-            $update = $zdb->update($this->_table);
+            $update = $this->zdb->update($this->table);
             $update->set($values);
-            $update->where($this->_fpk . ' = ' . $id);
+            $update->where($this->fpk . ' = ' . $id);
 
-            $zdb->execute($update);
+            $ret = $this->zdb->execute($update);
 
             Analog::log(
-                $this->getType() . ' ' . $id . ' updated successfully.',
+                $this->getType() . ' #' . $id . ' updated successfully.',
                 Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
             Analog::log(
-                'Unable to update ' . $this->getType()  . ' ' . $id .
-                ' | ' . $e->getMessage(),
+                'Unable to update ' . $this->getType() . ' #' . $id  . ' | ' .
+                $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -542,25 +501,23 @@ abstract class Entitled
      */
     public function delete($id)
     {
-        global $zdb;
-
         $ret = $this->get($id);
-        if ( !$ret ) {
+        if (!$ret) {
             /* get() already logged */
             return self::ID_NOT_EXITS;
         }
 
         $ret = $this->isUsed($id);
-        if ( $ret === true ) {
-            $this->_errors[] = _T("- Cannot delete this label: it's still used");
+        if ($ret === true) {
+            $this->errors[] = _T("Cannot delete this label: it's still used");
             return false;
         }
 
         try {
-            $delete = $zdb->delete($this->_table);
-            $delete->where($this->_fpk . ' = ' . $id);
+            $delete = $this->zdb->delete($this->table);
+            $delete->where($this->fpk . ' = ' . $id);
 
-            $zdb->execute($delete);
+            $this->zdb->execute($delete);
 
             Analog::log(
                 $this->getType() . ' ' . $id . ' deleted successfully.',
@@ -578,7 +535,7 @@ abstract class Entitled
     }
 
     /**
-     * Check whether this entry is used.
+     * Check if this entry is used.
      *
      * @param integer $id Entry ID
      *
@@ -586,17 +543,14 @@ abstract class Entitled
      */
     public function isUsed($id)
     {
-        global $zdb;
-
-        // Check if it's used.
         try {
-            $select = $zdb->select($this->_used);
-            $select->where($this->_fpk . ' = ' . $id);
+            $select = $this->zdb->select($this->used);
+            $select->where($this->fpk . ' = ' . $id);
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $result = $results->current();
 
-            if ( $result !== false ) {
+            if ($result !== null) {
                 return true;
             } else {
                 return false;
@@ -617,14 +571,14 @@ abstract class Entitled
      *
      * @return string
      */
-    protected abstract function getType();
+    abstract protected function getType();
 
     /**
      * Get translated textual representation
      *
      * @return string
      */
-    protected abstract function getI18nType();
+    abstract public function getI18nType();
 
     /**
      * Global getter method
@@ -637,26 +591,23 @@ abstract class Entitled
     {
         $forbidden = array();
         $virtuals = array('extension');
-        $rname = '_' . $name;
-        if ( in_array($name, $virtuals)
+        if (in_array($name, $virtuals)
             || !in_array($name, $forbidden)
-            && isset($this->$rname)
+            && isset($this->$name)
         ) {
-            switch($name) {
-            case 'libelle':
-                return _T($this->_libelle);
-                break;
-            case 'extension':
-                return $this->_third;
-                break;
-            default:
-                return $this->$rname;
-                break;
+            switch ($name) {
+                case 'libelle':
+                    return _T($this->label);
+                    break;
+                case 'extension':
+                    return $this->third;
+                    break;
+                default:
+                    return $this->$name;
+                    break;
             }
         } else {
             return false;
         }
     }
-
 }
-

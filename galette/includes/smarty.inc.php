@@ -63,7 +63,7 @@ $smarty->registerPlugin(
     'getMemberName'
 );
 
-$s = new Galette\Entity\Status();
+$s = new Galette\Entity\Status($container->get('zdb'));
 $statuses_list = $s->getList();
 
 /**

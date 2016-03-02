@@ -37,7 +37,7 @@
 
 namespace Galette\Entity;
 
-use Analog\Analog;
+use Galette\Core\Db;
 
 /**
  * Contributions types handling
@@ -62,10 +62,10 @@ class ContributionsTypes extends Entitled
 
     const ID_NOT_EXITS = -1;
 
-    protected static $fields = array(
-        'id_type_cotis',
-        'libelle_type_cotis',
-        'cotis_extension'
+    public static $fields = array(
+        'id'        => 'id_type_cotis',
+        'libelle'   => 'libelle_type_cotis',
+        'third'     => 'cotis_extension'
     );
 
     protected static $defaults = array(
@@ -81,11 +81,13 @@ class ContributionsTypes extends Entitled
     /**
      * Default constructor
      *
+     * @param Db        $zdb  Database
      * @param ResultSet $args Optionnal existing result set
      */
-    public function __construct($args = null)
+    public function __construct(Db $zdb, $args = null)
     {
         parent::__construct(
+            $zdb,
             self::TABLE,
             self::PK,
             self::LABEL_FIELD,
@@ -111,7 +113,7 @@ class ContributionsTypes extends Entitled
      *
      * @return string
      */
-    protected function getI18nType()
+    public function getI18nType()
     {
         return _T("contribution type");
     }

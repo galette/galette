@@ -192,7 +192,10 @@ $container['acls'] = function ($c) {
         'doEditTransaction' => 'staff',
         'contribution'      => 'staff',
         'attendance_sheet_details'  => 'groupmanager',
-        'attendance_sheet'  => 'groupmanager'
+        'attendance_sheet'  => 'groupmanager',
+        'entitleds'         => 'staff',
+        'editEntitled'      => 'staff',
+        'removeEntitled'    => 'staff'
     ];
 
     //load user defined ACLs

@@ -431,9 +431,13 @@ $app->add(function ($request, $response, $next) {
  */
 $app->add(function ($request, $response, $next) {
     $route = $request->getAttribute('route');
+    $route_info = $request->getAttribute('routeInfo');
 
     if ($route != null) {
         $this->view->getSmarty()->assign('cur_route', $route->getName());
+        if ($route_info != null && is_array($route_info[2])) {
+            $this->view->getSmarty()->assign('cur_subroute', array_pop($route_info[2]));
+        }
     }
 
     $acls = array_merge($this->get('acls'), $this->get('plugins')->getAcls());
