@@ -1702,15 +1702,15 @@ $app->post(
         if ($args['action'] === 'add') {
             $ret = $class->add($label, $field);
             if ($ret === true) {
-                addDynamicTranslation($label, $error_detected);
+                addDynamicTranslation($label);
             }
         } else {
             $oldlabel = $class->getLabel($id, false);
             $ret = $class->update($args['id'], $label, $field);
             if ($ret === true) {
                 if (isset($label) && ($oldlabel != $label)) {
-                    deleteDynamicTranslation($oldlabel, $error_detected);
-                    addDynamicTranslation($label, $error_detected);
+                    deleteDynamicTranslation($oldlabel);
+                    addDynamicTranslation($label);
                 }
             }
         }
@@ -1761,7 +1761,7 @@ $app->get(
                 $ret = $class->delete((int)$args['id']);
 
                 if ($ret === true) {
-                    deleteDynamicTranslation($label, $error_detected);
+                    deleteDynamicTranslation($label);
                     $this->flash->addMessage(
                         'success_detected',
                         str_replace(

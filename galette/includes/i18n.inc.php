@@ -53,7 +53,7 @@ $short_language = $i18n->getAbbrev();
 setlocale(LC_ALL, $language, $i18n->getAlternate());
 
 // if (function_exists('putenv')) putenv() can exist, but doesn't work ...
-if ( @putenv("LANG=$language")
+if (@putenv("LANG=$language")
     or @putenv("LANGUAGE=$language")
     or @putenv("LC_ALL=$language")
 ) {
@@ -71,17 +71,16 @@ if ( @putenv("LANG=$language")
 /**
  * Add a translation stored in the database
  *
- * @param string $text_orig      Text to translate
- * @param array  $error_detected Pointer to errors array
+ * @param string $text_orig Text to translate
  *
  * @return void
  */
-function addDynamicTranslation($text_orig, $error_detected)
+function addDynamicTranslation($text_orig)
 {
     global $zdb, $i18n;
 
     try {
-        foreach (  $i18n->getList() as $lang ) {
+        foreach ($i18n->getList() as $lang) {
             //check if translation already exists
             $select = $zdb->select(L10n::TABLE);
             $select->columns(array('text_nref'))
@@ -95,11 +94,11 @@ function addDynamicTranslation($text_orig, $error_detected)
             $results = $zdb->execute($select);
             $result = $results->current();
             $nref = 0;
-            if ( $result ) {
+            if ($result) {
                 $nref = $result->text_nref;
             }
 
-            if ( is_numeric($nref) && $nref > 0 ) {
+            if (is_numeric($nref) && $nref > 0) {
                 //already existing, update
                 $values = array(
                     'text_nref' => new Expression('text_nref+1')
@@ -120,7 +119,7 @@ function addDynamicTranslation($text_orig, $error_detected)
                 //add new entry
                 // User is supposed to use current language as original text.
                 $text_trans = $text_orig;
-                if ( $lang->getLongID() != $i18n->getLongID() ) {
+                if ($lang->getLongID() != $i18n->getLongID()) {
                     $text_trans = '';
                 }
                 $values = array(
@@ -147,12 +146,11 @@ function addDynamicTranslation($text_orig, $error_detected)
 /**
  * Delete a translation stored in the database
  *
- * @param string $text_orig      Text to translate
- * @param array  $error_detected Pointer to errors array
+ * @param string $text_orig Text to translate
  *
  * @return void
  */
-function deleteDynamicTranslation($text_orig, $error_detected)
+function deleteDynamicTranslation($text_orig)
 {
     global $zdb, $i18n;
 
@@ -166,7 +164,7 @@ function deleteDynamicTranslation($text_orig, $error_detected)
         );
         $stmt = $zdb->sql->prepareStatementForSqlObject($delete);
 
-        foreach ( $i18n->getList() as $lang ) {
+        foreach ($i18n->getList() as $lang) {
             $stmt->execute(
                 array(
                     'where2' => $lang->getLongID()
@@ -188,19 +186,14 @@ function deleteDynamicTranslation($text_orig, $error_detected)
 /**
  * Update a translation stored in the database
  *
- * @param string $text_orig      Text to translate
- * @param string $text_locale    The locale
- * @param string $text_trans     Translated text
- * @param array  $error_detected Pointer to errors array
+ * @param string $text_orig   Text to translate
+ * @param string $text_locale The locale
+ * @param string $text_trans  Translated text
  *
  * @return translated string
  */
-function updateDynamicTranslation(
-    $text_orig,
-    $text_locale,
-    $text_trans,
-    $error_detected
-) {
+function updateDynamicTranslation($text_orig, $text_locale, $text_trans)
+{
     global $zdb;
 
     try {
@@ -217,7 +210,7 @@ function updateDynamicTranslation(
         $result = $results->current();
 
         $exists = false;
-        if ( $result ) {
+        if ($result) {
             $nref = $result->text_nref;
             $exists = (is_numeric($nref) && $nref > 0);
         }
@@ -227,7 +220,7 @@ function updateDynamicTranslation(
         );
 
         $res = false;
-        if ( $exists ) {
+        if ($exists) {
             $where = array();
             $owhere = $select->where;
 
@@ -275,7 +268,7 @@ function getDynamicTranslation($text_orig, $text_locale)
             )
         );
         $results = $zdb->execute($select);
-        if ( $results->count() > 0 ) {
+        if ($results->count() > 0) {
             $res = $results->current();
             return $res->text_trans;
         } else {
@@ -292,16 +285,16 @@ function getDynamicTranslation($text_orig, $text_locale)
 }
 
 /** FIXME : $loc undefined */
-if ( (isset($loc) && $loc!=$language) || $disable_gettext) {
+if ((isset($loc) && $loc!=$language) || $disable_gettext) {
     include GALETTE_ROOT . 'lang/lang_' . $i18n->getFileName() . '.php';
     //check if a local lang file exists and load it
     $locfile = GALETTE_ROOT . 'lang/lang_' . $i18n->getFileName() . '_local.php';
-    if ( file_exists($locfile) ) {
+    if (file_exists($locfile)) {
         include $locfile;
     }
 }
 
-if ( !function_exists('_T') ) {
+if (!function_exists('_T')) {
     /**
      * Translate a string
      *
@@ -312,15 +305,15 @@ if ( !function_exists('_T') ) {
     function _T($chaine)
     {
         global $language, $disable_gettext, $installer;
-        if ( $disable_gettext === true && isset($GLOBALS['lang']) ) {
+        if ($disable_gettext === true && isset($GLOBALS['lang'])) {
             $trans = $chaine;
-            if ( isset($GLOBALS['lang'][$chaine])
+            if (isset($GLOBALS['lang'][$chaine])
                 && $GLOBALS['lang'][$chaine] != ''
             ) {
                 $trans = $GLOBALS['lang'][$chaine];
             } else {
                 $trans = false;
-                if ( !isset($installer) || $installer !== true ) {
+                if (!isset($installer) || $installer !== true) {
                     $trans = getDynamicTranslation(
                         $chaine,
                         $language
@@ -343,29 +336,29 @@ if ( !function_exists('_T') ) {
 * some constant strings found in the database *
 **********************************************/
 /** TODO: these string should be not be handled here */
-$foo=_T("Realization:");
-$foo=_T("Graphics:");
-$foo=_T("Publisher:");
-$foo=_T("President");
-$foo=_T("Vice-president");
-$foo=_T("Treasurer");
-$foo=_T("Vice-treasurer");
-$foo=_T("Secretary");
-$foo=_T("Vice-secretary");
-$foo=_T("Active member");
-$foo=_T("Benefactor member");
-$foo=_T("Founder member");
-$foo=_T("Old-timer");
-$foo=_T("Legal entity");
-$foo=_T("Non-member");
-$foo=_T("Reduced annual contribution");
-$foo=_T("Company cotisation");
-$foo=_T("Donation in kind");
-$foo=_T("Donation in money");
-$foo=_T("Partnership");
-$foo=_T("french");
-$foo=_T("english");
-$foo=_T("spanish");
+$foo = _T("Realization:");
+$foo = _T("Graphics:");
+$foo = _T("Publisher:");
+$foo = _T("President");
+$foo = _T("Vice-president");
+$foo = _T("Treasurer");
+$foo = _T("Vice-treasurer");
+$foo = _T("Secretary");
+$foo = _T("Vice-secretary");
+$foo = _T("Active member");
+$foo = _T("Benefactor member");
+$foo = _T("Founder member");
+$foo = _T("Old-timer");
+$foo = _T("Legal entity");
+$foo = _T("Non-member");
+$foo = _T("Reduced annual contribution");
+$foo = _T("Company cotisation");
+$foo = _T("Donation in kind");
+$foo = _T("Donation in money");
+$foo = _T("Partnership");
+$foo = _T("french");
+$foo = _T("english");
+$foo = _T("spanish");
 $foo = _T("annual fee");
 $foo = _T("annual fee (to be paid)");
 $foo = _T("company fee");
@@ -376,4 +369,3 @@ $foo = _T("reduced annual fee");
 $foo = _T("Identity");
 $foo = _T("Galette-related data");
 $foo = _T("Contact information");
-
