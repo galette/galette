@@ -195,7 +195,8 @@ $container['acls'] = function ($c) {
         'attendance_sheet'  => 'groupmanager',
         'entitleds'         => 'staff',
         'editEntitled'      => 'staff',
-        'removeEntitled'    => 'staff'
+        'removeEntitled'    => 'staff',
+        'dynamicTranslations'       => 'staff'
     ];
 
     //load user defined ACLs

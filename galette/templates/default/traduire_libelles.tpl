@@ -1,3 +1,6 @@
+{extends file="page.tpl"}
+
+{block name="content"}
 {if isset($trans) && $trans|@count > 0}
         <form action="traduire_libelles.php" method="post" enctype="multipart/form-data">
             <div clasis="bigtable">
@@ -28,11 +31,15 @@
                 <input type="submit" name="trans" value="{_T string="Save"}"/>
             </div>
         </form>
-        <script type="text/javascript">
-            $('#text_orig').change(function() {
-                this.form.submit();
-            });
-        </script>
 {else}
         <p>{_T string="No fields to translate."}</p>
 {/if}
+{/block}
+
+{block name="javascripts"}
+    <script type="text/javascript">
+        $('#text_orig').change(function() {
+            this.form.submit();
+        });
+    </script>
+{/block}

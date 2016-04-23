@@ -1800,3 +1800,139 @@ $app->get(
             ->withHeader('Location', $this->router->pathFor('entitleds', ['class' => $args['class']]));
     }
 )->setName('removeEntitled')->add($authenticate);
+
+$app->get(
+    '/dynamic-translations',
+    function ($request, $response) {
+        $text_orig = get_form_value('text_orig', '');
+
+        $params = [
+            'page_title'    => _T("Translate labels"),
+            'text_orig'     => $text_orig
+        ];
+
+        /*if ( isset($_POST['trans']) && isset($text_orig) ) {
+            if ( isset($_POST['new']) && $_POST['new'] == 'true' ) {
+                //create translation if it does not exists yet
+                $res = addDynamicTranslation(
+                    $_POST['text_orig']
+                );
+            }
+
+            // Validate form
+            while ( list($key, $value) = each($_POST) ) {
+                if ( substr($key, 0, 11) == 'text_trans_' ) {
+                    $trans_lang = substr($key, 11);
+                    $trans_lang = str_replace('_utf8', '.utf8', $trans_lang);
+                    $res = updateDynamicTranslation(
+                        $text_orig,
+                        $trans_lang,
+                        $value
+                    );
+                    if ( $res !== true ) {
+                        $error_detected[] = preg_replace(
+                            array(
+                                '/%label/',
+                                '/%lang/'
+                            ),
+                            array(
+                                $text_orig,
+                                $trans_lang
+                            ),
+                            _T("An error occured saving label `%label` for language `%lang`")
+                        );
+                    }
+                }
+            }
+            if ( count($error_detected) == 0 ) {
+                $success_detected[] = _T("Labels has been sucessfully translated!");
+            }
+        }*/
+
+        /*$form_title = '';
+        if ( !isset($all_forms) ) {
+            $all_forms='';
+        }
+        $tpl->assign('all_forms', $all_forms);*/
+
+        $nb_fields = 0;
+        try {
+            $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
+            $select->columns(
+                array('nb' => new Zend\Db\Sql\Expression('COUNT(text_orig)'))
+            );
+            $results = $this->zdb->execute($select);
+            $result = $results->current();
+            $nb_fields = $result->nb;
+        } catch (Exception $e) {
+            Analog::log(
+                'An error occured counting l10n entries | ' .
+                $e->getMessage(),
+                Analog::WARNING
+            );
+        }
+
+        if (is_numeric($nb_fields) && $nb_fields > 0) {
+            try {
+                $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
+                $select->quantifier('DISTINCT')->columns(
+                    array('text_orig')
+                )->order('text_orig');
+
+                $all_texts = $this->zdb->execute($select);
+
+                $orig = array();
+                foreach ($all_texts as $idx => $row) {
+                    $orig[] = $row->text_orig;
+                }
+                $exists = true;
+                if ($text_orig == '') {
+                    $text_orig = $orig[0];
+                } elseif (!in_array($text_orig, $orig)) {
+                    $exists = false;
+                    $this->flash->addMessage(
+                        'error_detected',
+                        str_replace(
+                            '%s',
+                            $text_orig,
+                            _T("No translation for '%s'!<br/>Please fill and submit above form to create it.")
+                        )
+                    );
+                }
+
+                $trans = array();
+                /**
+                * FIXME : it would be faster to get all translations at once
+                * for a specific string
+                */
+                foreach ($this->i18n->getList() as $l) {
+                    $text_trans = getDynamicTranslation($text_orig, $l->getLongID());
+                    $lang_name = $l->getName();
+                    $trans[] = array(
+                        'key'  => $l->getLongID(),
+                        'name' => ucwords($lang_name),
+                        'text' => $text_trans
+                    );
+                }
+
+                $params['exists'] = $exists;
+                $params['orig'] = $orig;
+                $params['trans'] = $trans;
+            } catch (\Exception $e) {
+                Analog::log(
+                    'An error occured retrieving l10n entries | ' .
+                    $e->getMessage(),
+                    Analog::WARNING
+                );
+            }
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            'traduire_libelles.tpl',
+            $params
+        );
+        return $response;
+    }
+)->setName('dynamicTranslations')->add($authenticate);

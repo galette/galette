@@ -88,7 +88,7 @@ class Picture implements FileInterface
      *
      * @param int $id_adh the id of the member
      */
-    public function __construct( $id_adh='' )
+    public function __construct($id_adh = '')
     {
 
         $this->init(
