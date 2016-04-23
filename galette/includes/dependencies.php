@@ -75,9 +75,7 @@ $container['view'] = function ($c) {
     $smarty->assign('pref_mail_method', $c->preferences->pref_mail_method);
     $smarty->assign('existing_mailing', $c->get('session')->mailing !== null);
     $smarty->assign('require_tabs', null);
-    $smarty->assign('require_cookie', null);
     $smarty->assign('contentcls', null);
-    $smarty->assign('require_tabs', null);
     $smarty->assign('require_cookie', false);
     $smarty->assign('additionnal_html_class', null);
     $smarty->assign('require_calendar', null);
