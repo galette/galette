@@ -37,7 +37,6 @@
 
 use \Slim\Slim;
 use \Slim\Route;
-use Galette\Core\Smarty;
 use Galette\Core\Login;
 use \Analog\Analog;
 

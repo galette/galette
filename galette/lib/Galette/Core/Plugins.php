@@ -39,6 +39,7 @@ namespace Galette\Core;
 
 use Analog\Analog;
 use Galette\Common\ClassLoader;
+use Galette\Core\Preferences;
 
 /**
  * Plugins class for galette
@@ -62,29 +63,19 @@ class Plugins
     protected $id;
     protected $mroot;
 
-    protected $preferences;
-    private $app;
+    private $preferences;
 
     /**
-     * Constructor
+     * Set Galette's preferences
      *
-     * @param Preferences $preferences eferences instance
+     * @param Preferences $preferences Galette's Preferences
+     *
+     * @return Plugins
      */
-    public function __construct(Preferences $preferences)
+    public function setPreferences(Preferences $preferences)
     {
         $this->preferences = $preferences;
-    }
-
-    /**
-     * Set Slim instance
-     *
-     * @param \Slim\App $app Slim app instance
-     *
-     * @return void
-     */
-    public function setApp(\Slim\App $app)
-    {
-        $this->app = $app;
+        return $this;
     }
 
     /**
@@ -316,8 +307,6 @@ class Plugins
      */
     public function loadModuleL10N($id, $language)
     {
-        global $lang;
-
         if (!$language || !isset($this->modules[$id])) {
             return;
         }
@@ -421,12 +410,11 @@ class Plugins
      * Search and load menu templates from plugins.
      * Also sets the web path to the plugin with the var "galette_[plugin-name]_path"
      *
-     * @param Smarty      $tpl         Smarty template
-     * @param Preferences $preferences Galette's preferences
+     * @param Smarty $tpl Smarty template
      *
      * @return void
      */
-    public function getMenus($tpl, $preferences)
+    public function getMenus($tpl)
     {
         $modules = $this->getModules();
         foreach (array_keys($this->getModules()) as $r) {
@@ -448,13 +436,12 @@ class Plugins
      * Search and load public menu templates from plugins.
      * Also sets the web path to the plugin with the var "galette_[plugin-name]_path"
      *
-     * @param Smarty      $tpl         Smarty template
-     * @param Preferences $preferences Galette's preferences
-     * @param boolean     $public_page Called from a public page
+     * @param Smarty  $tpl         Smarty template
+     * @param boolean $public_page Called from a public page
      *
      * @return void
      */
-    public function getPublicMenus($tpl, $preferences, $public_page = false)
+    public function getPublicMenus($tpl, $public_page = false)
     {
         $modules = $this->getModules();
         foreach (array_keys($this->getModules()) as $r) {
