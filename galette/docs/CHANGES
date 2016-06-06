@@ -1,6 +1,12 @@
 Changes
 -------
 
+0.8.2.2 -> 0.8.2.3
+- Fix advanced search dynamic fields
+- Update Analog library for PHP7 compatibility
+- Prevent inactive members to log in
+- mbstring is now required
+
 0.8.2.1 -> 0.8.2.2
 
 - Fix select with sortable issue in Firefox
