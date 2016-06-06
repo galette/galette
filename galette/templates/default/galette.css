@@ -1665,6 +1665,7 @@ table.listing input{
 
 td img, a img {
     vertical-align: middle;
+    max-width: none;
 }
 
 .sql_log {

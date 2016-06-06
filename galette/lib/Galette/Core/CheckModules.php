@@ -125,7 +125,7 @@ class CheckModules
         }
 
         if ( !extension_loaded('mbstring') ) {
-            $this->_may[] = str_replace('%s', 'mbstring', _T("'%s' module"));
+            $this->_missing[] = str_replace('%s', 'mbstring', _T("'%s' module"));
         } else {
             $this->_good['mbstring'] = str_replace(
                 '%s',
@@ -163,9 +163,9 @@ class CheckModules
         $html = null;
         $img_dir = null;
         if ( defined('GALETTE_THEME_DIR') ) {
-            $img_dir = GALETTE_BASE_PATH . GALETTE_THEME_DIR . 'images/';
+            $img_dir = GALETTE_THEME_DIR . 'images/';
         } else {
-            $img_dir = GALETTE_BASE_PATH . GALETTE_TPL_SUBDIR . 'images/';
+            $img_dir = GALETTE_TPL_SUBDIR . 'images/';
         }
 
         if ( count($this->_missing) > 0 ) {

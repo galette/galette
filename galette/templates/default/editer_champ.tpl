@@ -38,11 +38,11 @@
             <p>
                 <label for="field_size" class="bline">{_T string="Size:"}</label>
                 <input type="text" name="field_size" id="field_size" value="{$df->getSize()}" size="3"/>
-		{if $df instanceof 'Galette\DynamicFieldsTypes\File'}
+        {if $df|is_a:'Galette\DynamicFieldsTypes\File'}
                 <span class="exemple">{_T string="Maximum file size, in Ko."}</span>
-		{else}
+        {else}
                 <span class="exemple">{_T string="Maximum number of characters."}</span>
-		{/if}
+        {/if}
             </p>
 {/if}
 {if $df->isMultiValued()}
