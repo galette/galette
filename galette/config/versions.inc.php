@@ -37,7 +37,7 @@
  */
 define('SMARTY_VERSION', '3.1.21');
 define('ZEND_VERSION', '2.3.7');
-define('ANALOG_VERSION', '1.0.0.git876d8a3bb');
+define('ANALOG_VERSION', '1.0.7');
 define('TCPDF_VERSION', '6.2.6');
 define('JQUERY_VERSION', '1.10.2');
 define('JQUERY_MIGRATE_VERSION', '1.2.1');

@@ -160,7 +160,7 @@ if ( !$cron && (!defined('GALETTE_HANDLE_ERRORS')
 }
 
 $galette_run_log = null;
-$galette_null_log = \Analog\Handler\Null::init();
+$galette_null_log = \Analog\Handler\Ignore::init();
 $galette_debug_log = $galette_null_log;
 
 //Log level cannot be <= 3, would be ignored.
@@ -173,7 +173,7 @@ if ( !defined('GALETTE_LOG_LVL') ) {
 }
 
 if ( defined('GALETTE_TESTS') ) {
-    $galette_run_log = \Analog\Handler\Null::init();
+    $galette_run_log = \Analog\Handler\Ignore::init();
 
 } else {
     if ( !$installer && !$cron ) {
