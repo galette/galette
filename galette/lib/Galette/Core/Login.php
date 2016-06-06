@@ -156,6 +156,17 @@ class Login extends Authentication
                 return false;
             } else {
                 $row = $results->current();
+
+                //check if member is active
+                $active = $row->activite_adh;
+                if (!$row->activite_adh == true) {
+                    Analog::log(
+                        'Member `' . $user .' is inactive!`',
+                        Analog::WARNING
+                    );
+                    return false;
+                }
+
                 //check if pawwsord matches
                 $pw_checked = password_verify($passe, $row->mdp_adh);
                 if (!$pw_checked) {

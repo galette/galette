@@ -117,7 +117,7 @@ if (defined('GALETTE_XHPROF_PATH')
 //we start a php session
 session_start();
 
-define('GALETTE_VERSION', 'v0.8.2.2');
+define('GALETTE_VERSION', 'v0.8.2.3');
 define('GALETTE_COMPAT_VERSION', '0.8');
 define('GALETTE_DB_VERSION', '0.820');
 if ( !defined('GALETTE_MODE') ) {
@@ -160,7 +160,7 @@ if ( !$cron && (!defined('GALETTE_HANDLE_ERRORS')
 }
 
 $galette_run_log = null;
-$galette_null_log = \Analog\Handler\Null::init();
+$galette_null_log = \Analog\Handler\Ignore::init();
 $galette_debug_log = $galette_null_log;
 
 //Log level cannot be <= 3, would be ignored.
@@ -173,7 +173,7 @@ if ( !defined('GALETTE_LOG_LVL') ) {
 }
 
 if ( defined('GALETTE_TESTS') ) {
-    $galette_run_log = \Analog\Handler\Null::init();
+    $galette_run_log = \Analog\Handler\Ignore::init();
 
 } else {
     if ( !$installer && !$cron ) {
