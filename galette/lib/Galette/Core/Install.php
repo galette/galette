@@ -1068,12 +1068,13 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
     /**
      * Initialize Galette relevant objects
      *
-     * @param I18n $i18n I18n
-     * @param Db   $zdb  Database instance
+     * @param I18n  $i18n  I18n
+     * @param Db    $zdb   Database instance
+     * @param Login $login Loged in instance
      *
      * @return boolean
      */
-    public function initObjects($i18n, $zdb)
+    public function initObjects(I18n $i18n, Db $zdb, Login $login)
     {
         if ( $this->isInstall() ) {
             $preferences = new Preferences($zdb, false);
@@ -1093,7 +1094,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $texts = new \Galette\Entity\Texts($texts_fields, $preferences);
             $titles = new \Galette\Repository\Titles();
 
-            $models = new \Galette\Repository\PdfModels($zdb, $preferences);
+            $models = new \Galette\Repository\PdfModels($zdb, $preferences, $login);
 
             $this->_error = false;
 

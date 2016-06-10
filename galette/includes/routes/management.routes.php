@@ -1243,7 +1243,7 @@ $app->get(
 
         $model = null;
 
-        $ms = new PdfModels($this->zdb, $this->preferences);
+        $ms = new PdfModels($this->zdb, $this->preferences, $this->login);
         $models = $ms->getList();
 
         foreach ($models as $m) {

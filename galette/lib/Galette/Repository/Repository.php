@@ -69,7 +69,7 @@ abstract class Repository
      * @param Login       $login       Logged in instance
      * @param string      $entity      Related entity class name
      */
-    public function __construct(Zdb $zdb, Preferences $preferences, Login $login, $entity = null)
+    public function __construct(Db $zdb, Preferences $preferences, Login $login, $entity = null)
     {
         $this->zdb = $zdb;
         $this->preferences = $preferences;
