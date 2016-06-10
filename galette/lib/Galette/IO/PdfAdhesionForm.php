@@ -69,15 +69,15 @@ class PdfAdhesionForm
     /**
      * Main constructor
      *
-     * @param Adherent      $adh     Adherent
-     * @param Db            $zdb     Database instance
-     * @param Preferences   $prefs   Preferences instance
+     * @param Adherent    $adh   Adherent
+     * @param Db          $zdb   Database instance
+     * @param Preferences $prefs Preferences instance
      */
     public function __construct($adh, $zdb, $prefs)
     {
         $this->_adh = $adh;
 
-        if ($adh !== null ) {
+        if ($adh !== null) {
             $dyn_fields = new DynamicFields();
             $dyn_values = $dyn_fields->getFields('adh', $adh->id, true);
             $dyn_descriptions = $dyn_fields->getFieldsDescription('adh');
@@ -119,12 +119,12 @@ class PdfAdhesionForm
         }
 
         $address = $adh->adress;
-        if ( $adh->adress_continuation != '' ) {
+        if ($adh->adress_continuation != '') {
             $address .= '<br/>' . $adh->adress_continuation;
         }
 
         if ($adh !== null) {
-            if ( $adh->isMan()) {
+            if ($adh->isMan()) {
                 $gender = _T("Man");
             } elseif ($adh->isWoman()) {
                 $gender = _T("Woman");
@@ -211,10 +211,10 @@ class PdfAdhesionForm
                         $value = '<input type="checkbox"' .
                             ' name="' .  $field_name . '"' .
                             ' value="1"';
-                            if ($field_value == 1) {
-                                $value .= ' checked="checked"';
-                            }
-                            $value .= '/>';
+                        if ($field_value == 1) {
+                            $value .= ' checked="checked"';
+                        }
+                        $value .= '/>';
                         break;
                     case DynamicFields::FILE:
                         $value = '<input type="text" name="' .
@@ -232,7 +232,7 @@ class PdfAdhesionForm
             _T("adherent_form") . '.' . $adh->id . '.pdf' :
             _T("adherent_form") . '.pdf';
 
-        $this->_pdf = new Pdf($this->_model);
+        $this->_pdf = new Pdf($prefs, $this->_model);
 
         $this->_pdf->Open();
 
@@ -260,13 +260,13 @@ class PdfAdhesionForm
      */
     public function store($path)
     {
-        if ( file_exists($path) && is_dir($path) && is_writeable($path) ) {
+        if (file_exists($path) && is_dir($path) && is_writeable($path)) {
             $this->_path = $path . '/' . $this->_filename;
             $this->_pdf->Output($this->_path, 'F');
             return true;
         } else {
             Analog::log(
-                __METHOD__ . ' ' . $path . 
+                __METHOD__ . ' ' . $path .
                 ' does not exists or is not a directory or is not writeable.',
                 Analog::ERROR
             );

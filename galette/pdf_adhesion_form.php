@@ -44,15 +44,15 @@ use Galette\Entity\Adherent;
 /** @ignore */
 require_once 'includes/galette.inc.php';
 
-if ( !$login->isLogged() or $login->isAdmin()
+if (!$login->isLogged() or $login->isAdmin()
     && (!isset($_GET[Adherent::PK]) || trim($_GET[Adherent::PK]) == '')
 ) {
     //If not logged, or if admin without a member id ; print en empty card
     $adh = null;
-} else if ( $login->isAdmin() && isset($_GET[Adherent::PK]) ) {
+} elseif ($login->isAdmin() && isset($_GET[Adherent::PK])) {
     //If admin with a member id
     $adh = new Adherent((int)$_GET[Adherent::PK]);
-} else if ( $login->isLogged() ) {
+} elseif ($login->isLogged()) {
     //If user logged in
     $adh = new Adherent((int)$login->id);
 }
