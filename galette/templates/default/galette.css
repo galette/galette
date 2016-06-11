@@ -760,7 +760,7 @@ legend #btnadd_small {
     background-image:url(images/printer.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#btn_membercard, #btn_edit, #btn_contrib, #btn_addcontrib, #btn_lostpassword {
+#btn_membercard, #btn_edit, #btn_contrib, #btn_addcontrib, #btn_lostpassword, #btn_adhesionform {
     padding-top:30px!important;
     padding-left: 0!important;
     display: block;
