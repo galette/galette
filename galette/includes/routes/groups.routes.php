@@ -50,7 +50,8 @@ $app->get(
         //$id = $app->request()->get('id');
 
         if ($id === null && count($groups_root) > 0) {
-            $group = $groups_root[0];
+            reset($groups);
+            $group = current($groups_root);
             if (!$this->login->isGroupManager($group->getId())) {
                 foreach ($groups_list as $g) {
                     if ($this->login->isGroupManager($g->getId())) {
