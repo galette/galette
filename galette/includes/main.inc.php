@@ -435,7 +435,7 @@ $app->add(function ($request, $response, $next) {
     if ($route != null) {
         $this->view->getSmarty()->assign('cur_route', $route->getName());
         if ($route_info != null && is_array($route_info[2])) {
-            $this->view->getSmarty()->assign('cur_subroute', array_pop($route_info[2]));
+            $this->view->getSmarty()->assign('cur_subroute', array_shift($route_info[2]));
         }
     }
 
