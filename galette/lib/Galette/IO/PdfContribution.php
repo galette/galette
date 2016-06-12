@@ -78,7 +78,7 @@ class PdfContribution
         $class = PdfModel::getTypeClass($this->_contrib->model);
         $this->_model = new $class($zdb, $prefs, $this->_contrib->model);
 
-        $member = new Adherent($this->_contrib->member);
+        $member = new Adherent($zdb, $this->_contrib->member);
 
         $this->_model->setPatterns(
             array(

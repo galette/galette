@@ -62,7 +62,7 @@ $deps = array(
     'parent'    => true,
     'children'  => true
 );
-$member = new Adherent(null, $deps);
+$member = new Adherent($zdb, null, $deps);
 //TODO: dynamic fields should be handled by Adherent object
 $dyn_fields = new DynamicFields();
 

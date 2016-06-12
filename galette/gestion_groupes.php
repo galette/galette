@@ -151,7 +151,7 @@ if ( isset($_GET['new']) ) {
     $group = new Group();
     $group->setName($_GET['group_name']);
     if ( !$login->isSuperAdmin() ) {
-        $group->setManagers(new Adherent($login->id));
+        $group->setManagers(new Adherent($zdb, $login->id));
     }
     $group->store();
     $id = $group->getId();

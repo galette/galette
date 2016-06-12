@@ -119,7 +119,7 @@ $app->get(
         $contribs->setSmartyPagination($this->router, $this->view->getSmarty());
 
         /*if ( $contribs->filtre_cotis_adh != null && !$ajax ) {
-            $member = new Adherent();
+            $member = new Adherent($this->zdb);
             $member->load($contribs->filtre_cotis_adh);
             $tpl->assign('member', $member);
         }*/
@@ -213,7 +213,7 @@ $app->get(
         $trans->setSmartyPagination($this->router, $this->view->getSmarty());
 
         /*if ( $trans->filtre_cotis_adh != null ) {
-            $member = new Galette\Entity\Adherent();
+            $member = new Galette\Entity\Adherent($this->zdb);
             $member->load($trans->filtre_cotis_adh);
             $tpl->assign('member', $member);
         }*/
@@ -637,7 +637,7 @@ $app->post(
                 );
 
                 // Get member informations
-                $adh = new Adherent();
+                $adh = new Adherent($this->zdb);
                 $adh->load($contrib->member);
 
                 if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {

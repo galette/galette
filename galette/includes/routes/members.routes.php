@@ -68,7 +68,7 @@ $app->get(
 
         $dyn_fields = new DynamicFields();
 
-        $member = new Adherent();
+        $member = new Adherent($this->zdb);
         //mark as self membership
         $member->setSelfMembership();
 
@@ -86,7 +86,7 @@ $app->get(
         // On recupere de la base la longueur et les flags des champs
         // et on initialise des valeurs par defaut
 
-        $fields = Adherent::getDbFields();
+        $fields = Adherent::getDbFields($this->zdb);
 
         // - declare dynamic fields for display
         $disabled['dyn'] = array();
@@ -554,7 +554,7 @@ $app->get(
             'groups'    => false,
             'dues'      => false
         );
-        $member = new Adherent($this->login->login, $deps);
+        $member = new Adherent($this->zdb, $this->login->login, $deps);
 
         return $response
             ->withStatus(301)
@@ -579,7 +579,7 @@ $app->get(
             'parent'    => true,
             'children'  => true
         );
-        $member = new Adherent((int)$id, $deps);
+        $member = new Adherent($this->zdb, (int)$id, $deps);
 
         if ($this->login->id != $id && !$this->login->isAdmin() && !$this->login->isStaff()) {
             //check if requested member is part of managed groups
@@ -716,7 +716,7 @@ $app->get(
             'children'  => true
         );
         $route_params = [];
-        $member = new Adherent(null, $deps);
+        $member = new Adherent($this->zdb, null, $deps);
         //TODO: dynamic fields should be handled by Adherent object
         $dyn_fields = new DynamicFields();
 
@@ -922,7 +922,7 @@ $app->post(
             'parent'    => true,
             'children'  => true
         );
-        $member = new Adherent(null, $deps);
+        $member = new Adherent($this->zdb, null, $deps);
         //TODO: dynamic fields should be handled by Adherent object
         $dyn_fields = new DynamicFields();
 

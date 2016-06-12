@@ -64,11 +64,11 @@ if ( isset($_POST['valid']) && $_POST['valid'] == '1'
     $adh = null;
     $login_adh = null;
     if ( ($login->isAdmin() || $login->isStaff()) && isset($_GET['id_adh']) ) {
-        $adh = new Adherent((int)$_GET['id_adh']);
+        $adh = new Adherent($zdb, (int)$_GET['id_adh']);
         $login_adh = $adh->login;
     } else {
         $login_adh = $_POST['login'];
-        $adh = new Adherent($login_adh);
+        $adh = new Adherent($zdb, $login_adh);
     }
 
     if ( $adh->id != '' ) {

@@ -116,7 +116,7 @@ $tpl->assign('list_trans', $list_trans);
 $tpl->assign('transactions', $trans);
 $tpl->assign('nb_transactions', $trans->getCount());
 if ( $trans->filtre_cotis_adh != null ) {
-    $member = new Galette\Entity\Adherent();
+    $member = new Galette\Entity\Adherent($zdb);
     $member->load($trans->filtre_cotis_adh);
     $tpl->assign('member', $member);
 }

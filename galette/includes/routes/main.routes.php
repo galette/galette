@@ -65,7 +65,7 @@ $app->get(
             'groups'    => false,
             'dues'      => false
         );
-        $adh = new Adherent((int)$id, $deps);
+        $adh = new Adherent($this->zdb, (int)$id, $deps);
 
         $picture = null;
         if ($this->login->isAdmin()

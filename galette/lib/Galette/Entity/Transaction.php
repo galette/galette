@@ -377,7 +377,7 @@ class Transaction
                     // logging
                     $hist->add(
                         _T("Transaction added"),
-                        Adherent::getSName($this->_member)
+                        Adherent::getSName($this->zdb, $this->_member)
                     );
                 } else {
                     $hist->add(_T("Fail to add new transaction."));
@@ -397,7 +397,7 @@ class Transaction
                 if ($edit->count() > 0) {
                     $hist->add(
                         _T("Transaction updated"),
-                        Adherent::getSName($this->_member)
+                        Adherent::getSName($this->zdb, $this->_member)
                     );
                 }
             }

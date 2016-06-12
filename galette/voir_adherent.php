@@ -101,7 +101,7 @@ $deps = array(
     'parent'    => true,
     'children'  => true
 );
-$member = new Adherent((int)$id_adh, $deps);
+$member = new Adherent($zdb, (int)$id_adh, $deps);
 
 // flagging fields visibility
 $fc = new FieldsConfig($zdb, Adherent::TABLE, $members_fields, $members_fields_cats);
@@ -157,7 +157,7 @@ if ( ($login->isAdmin() || $login->isStaff()) ) {
 $children = array();
 if ($member->hasChildren()) {
     foreach ($member->children as $child) {
-        $children[$child] = Adherent::getSName($child);
+        $children[$child] = Adherent::getSName($zdb, $child);
     }
 }
 

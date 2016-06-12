@@ -410,7 +410,7 @@ class Preferences
             );
         } else {
             //get selected staff member address
-            $adh = new Adherent((int)$this->_prefs['pref_postal_staff_member']);
+            $adh = new Adherent($this->_zdb, (int)$this->_prefs['pref_postal_staff_member']);
             $_complement = preg_replace(
                 array('/%name/', '/%status/'),
                 array($this->_prefs['pref_nom'], $adh->sstatus),

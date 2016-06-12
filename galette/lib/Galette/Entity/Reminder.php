@@ -128,11 +128,13 @@ class Reminder
      */
     private function _loadFromRs($rs)
     {
+        global $zdb;
+
         try {
             $pk = self::PK;
             $this->_id = $rs->$pk;
             $this->_type = $rs->reminder_type;
-            $this->_dest = new Adherent((int)$rs->reminder_dest);
+            $this->_dest = new Adherent($zdb, (int)$rs->reminder_dest);
             $this->_date = $rs->reminder_date;
             $this->_success = $rs->reminder_success;
             $this->_nomail = $rs->reminder_nomail;

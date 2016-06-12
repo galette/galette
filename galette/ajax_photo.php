@@ -72,7 +72,7 @@ $fp = fopen($tmpname, 'w');
 fwrite($fp, $raw_file);
 fclose($fp);
 
-$adh = new Galette\Entity\Adherent((int)$mid);
+$adh = new Galette\Entity\Adherent($zdb, (int)$mid);
 
 $ret = array();
 $res = $adh->picture->store(

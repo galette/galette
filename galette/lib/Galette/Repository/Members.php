@@ -241,7 +241,7 @@ class Members
                     'groups'    => false
                 );
                 foreach ( $rows as $row ) {
-                    $members[] = new Adherent($row, $deps);
+                    $members[] = new Adherent($zdb, $row, $deps);
                 }
             } else {
                 $members = $rows;
@@ -441,7 +441,7 @@ class Members
                     'dues'      => false,
                     'picture'   => $with_photos
                 );
-                $members[] = new Adherent($row, $deps);
+                $members[] = new Adherent($zdb, $row, $deps);
             }
             return $members;
         } catch (\Exception $e) {
@@ -510,7 +510,7 @@ class Members
                     'parent'    => $parent
                 );
                 if ( $as_members === true ) {
-                    $members[] = new Adherent($o, $deps);
+                    $members[] = new Adherent($zdb, $o, $deps);
                 } else {
                     $members[] = $o;
                 }

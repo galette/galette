@@ -62,7 +62,7 @@ if (  isset($_GET['logo']) && $_GET['logo'] == 'true' ) {
             $deps['groups'] = true;
         }
 
-        $adh = new Galette\Entity\Adherent($id_adh, $deps);
+        $adh = new Galette\Entity\Adherent($zdb, $id_adh, $deps);
 
         $is_manager = false;
         if ( !$login->isAdmin() && !$login->isStaff() && $login->isGroupManager() ) {

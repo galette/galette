@@ -54,7 +54,7 @@ if ( !$preferences->pref_bool_selfsubscribe ) {
 
 $dyn_fields = new DynamicFields();
 
-$member = new Adherent();
+$member = new Adherent($zdb);
 //mark as self membership
 $member->setSelfMembership();
 
@@ -81,7 +81,7 @@ $insert_string_fields = '';
 $insert_string_values = '';
 $has_register = false;
 
-$fields = Adherent::getDbFields();
+$fields = Adherent::getDbFields($zdb);
 
 if ( isset($_POST["nom_adh"]) ) {
     // dynamic fields

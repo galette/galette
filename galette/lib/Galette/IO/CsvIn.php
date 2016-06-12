@@ -327,7 +327,7 @@ class CsvIn extends Csv implements FileInterface
                         $col++;
                     }
                     //import member itself
-                    $member = new Adherent();
+                    $member = new Adherent($this->zdb);
                     //check for empty creation date
                     if ( isset($values['date_crea_adh']) && trim($values['date_crea_adh']) === '' ) {
                         unset($values['date_crea_adh']);

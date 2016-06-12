@@ -54,8 +54,9 @@ $smarty->registerClass('GaletteMail', '\Galette\Core\GaletteMail');
  */
 function getMemberName($params)
 {
+    global $container;
     extract($params);
-    return Galette\Entity\Adherent::getSName($id);
+    return Galette\Entity\Adherent::getSName($container->get('zdb'), $id);
 }
 $smarty->registerPlugin(
     'function',

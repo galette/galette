@@ -164,7 +164,7 @@ if (isset($warning_detected)) {
 $tpl->assign('list_contribs', $list_contribs);
 $tpl->assign('contributions', $contribs);
 if ( $contribs->filtre_cotis_adh != null && !$ajax ) {
-    $member = new Galette\Entity\Adherent();
+    $member = new Galette\Entity\Adherent($zdb);
     $member->load($contribs->filtre_cotis_adh);
     $tpl->assign('member', $member);
 }

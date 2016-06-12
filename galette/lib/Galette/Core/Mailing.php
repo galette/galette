@@ -162,12 +162,14 @@ class Mailing extends GaletteMail
      */
     public function loadFromHistory($rs, $new = true)
     {
+        global $zdb;
+
         $orig_recipients = unserialize($rs->mailing_recipients);
 
         $_recipients = array();
         $mdeps = ['parent' => true];
         foreach ( $orig_recipients as $k=>$v ) {
-            $m = new Adherent($k, $mdeps);
+            $m = new Adherent($zdb, $k, $mdeps);
             $_recipients[] = $m;
         }
         $this->setRecipients($_recipients);

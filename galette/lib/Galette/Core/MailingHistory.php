@@ -134,7 +134,7 @@ class MailingHistory extends History
             foreach ( $results as $r ) {
                 if ( $r['mailing_sender'] !== null ) {
                     $r['mailing_sender_name'] 
-                        = Adherent::getSName($r['mailing_sender']);
+                        = Adherent::getSName($zdb, $r['mailing_sender']);
                 }
                 $body_resume = $r['mailing_body'];
                 if ( strlen($body_resume) > 150 ) {

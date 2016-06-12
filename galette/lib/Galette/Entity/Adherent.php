@@ -39,6 +39,7 @@ namespace Galette\Entity;
 
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
+use Galette\Core\Db;
 use Galette\Core\Picture;
 use Galette\Core\GaletteMail;
 use Galette\Core\Password;
@@ -145,6 +146,7 @@ class Adherent
         'date_echeance' => 'disabled="disabled"'
     );
 
+    private $zdb;
 
     /**
      * Default constructor
@@ -154,9 +156,11 @@ class Adherent
      *                      member, or null to just instanciate object
      * @param boolean $deps Dependencies configuration, see Adherent::$_deps
      */
-    public function __construct($args = null, $deps = null)
+    public function __construct(Db $zdb, $args = null, $deps = null)
     {
         global $i18n, $members_fields;
+
+        $this->zdb = $zdb;
 
         if ( $deps !== null && is_array($deps) ) {
             $this->_deps = array_merge(
@@ -238,10 +242,8 @@ class Adherent
      */
     public function load($id)
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select(self::TABLE, 'a');
+            $select = $this->zdb->select(self::TABLE, 'a');
 
             $select->join(
                 array('b' => PREFIX_DB . Status::TABLE),
@@ -249,7 +251,7 @@ class Adherent
                 array('priorite_statut')
             )->where(array(self::PK => $id));
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
 
             if ( $results->count() === 0 ) {
                 return false;
@@ -275,10 +277,8 @@ class Adherent
      */
     public function loadFromLoginOrMail($login)
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE);
             if ( GaletteMail::isValidEmail($login) ) {
                 //we got a valid email address, use it
                 $select->where(array('email_adh' => $login));
@@ -287,7 +287,7 @@ class Adherent
                 $select->where(array('login_adh' => $login));
             }
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $result = $results->current();
             if ( $result ) {
                 $this->_loadFromRS($result);
@@ -405,7 +405,7 @@ class Adherent
     {
         if (!$this->_parent instanceof Adherent) {
             $deps = array_fill_keys(array_keys($this->_deps), false);
-            $this->_parent = new Adherent((int)$this->_parent, $deps);
+            $this->_parent = new Adherent($this->zdb, (int)$this->_parent, $deps);
         }
     }
 
@@ -416,26 +416,24 @@ class Adherent
      */
     private function _loadChildren()
     {
-        global $zdb;
-
         $this->_children = array();
         try {
             $id = self::PK;
-            $select = $zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE);
             $select->columns(
                 array($id)
             )->where(
                 'parent_id = ' . $this->_id
             );
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
 
             if ($results->count() >  0) {
                 foreach ($results as $row) {
                     $deps = $this->_deps;
                     $deps['children'] = false;
                     $deps['parent'] = false;
-                    $this->_children[] = new Adherent((int)$row->$id, $this->_deps);
+                    $this->_children[] = new Adherent($this->zdb, (int)$row->$id, $this->_deps);
                 }
             }
         } catch (\Exception $e) {
@@ -739,14 +737,13 @@ class Adherent
     /**
      * Retrieve Full name and surname for the specified member id
      *
-     * @param int $id member id
+     * @param Db  $zdb Database instance
+     * @param int $id  member id
      *
      * @return string formatted Name and Surname
      */
-    public static function getSName($id)
+    public static function getSName($zdb, $id)
     {
-        global $zdb;
-
         try {
             $select = $zdb->select(self::TABLE);
             $select->where(self::PK . ' = ' . $id);
@@ -768,15 +765,14 @@ class Adherent
     /**
      * Change password for a given user
      *
+     * @param Db     $zdb    Database instance
      * @param string $id_adh Member identifier
      * @param string $pass   New password
      *
      * @return boolean
      */
-    public static function updatePassword($id_adh, $pass)
+    public static function updatePassword(Db $zdb, $id_adh, $pass)
     {
-        global $zdb;
-
         try {
             $cpass = password_hash($pass, PASSWORD_BCRYPT);
 
@@ -818,14 +814,15 @@ class Adherent
     /**
      * Retrieve fields from database
      *
+     * @param Db $zdb Database instance
+     *
      * @return array
      */
-    public static function getDbFields()
+    public static function getDbFields(Db $zdb)
     {
-        global $zdb;
         $columns = $zdb->getColumns(self::TABLE);
         $fields = array();
-        foreach ( $columns as $col ) {
+        foreach ($columns as $col) {
             $fields[] = $col->getName();
         }
         return $fields;
@@ -882,7 +879,7 @@ class Adherent
      */
     public function check($values, $required, $disabled)
     {
-        global $zdb, $preferences;
+        global $preferences;
         $errors = array();
 
         $fields = self::getDbFields();
@@ -987,7 +984,7 @@ class Adherent
                         }
                         if ( $key == 'email_adh' ) {
                             try {
-                                $select = $zdb->select(self::TABLE);
+                                $select = $this->zdb->select(self::TABLE);
                                 $select->columns(
                                     array(self::PK)
                                 )->where(array('email_adh' => $value));
@@ -997,7 +994,7 @@ class Adherent
                                     );
                                 }
 
-                                $results = $zdb->execute($select);
+                                $results = $this->zdb->execute($select);
                                 if ( $results->count() !==  0 ) {
                                     $errors[] = _T("- This E-Mail address is already used by another member!");
                                 }
@@ -1033,7 +1030,7 @@ class Adherent
                             } else {
                                 //check if login is already taken
                                 try {
-                                    $select = $zdb->select(self::TABLE);
+                                    $select = $this->zdb->select(self::TABLE);
                                     $select->columns(
                                         array(self::PK)
                                     )->where(array('login_adh' => $value));
@@ -1043,7 +1040,7 @@ class Adherent
                                         );
                                     }
 
-                                    $results = $zdb->execute($select);
+                                    $results = $this->zdb->execute($select);
                                     if ( $results->count() !==  0
                                         || $value == $preferences->pref_admin_login
                                     ) {
@@ -1087,10 +1084,10 @@ class Adherent
                     case 'id_statut':
                         try {
                             //check if status exists
-                            $select = $zdb->select(Status::TABLE);
+                            $select = $this->zdb->select(Status::TABLE);
                             $select->where(Status::PK . '= ' . $value);
 
-                            $results = $zdb->execute($select);
+                            $results = $this->zdb->execute($select);
                             $result = $results->current();
                             if ( $result === false ) {
                                 $errors[] = str_replace(
@@ -1102,7 +1099,7 @@ class Adherent
                             }
 
                             //check for status unicity
-                            $select = $zdb->select(self::TABLE, 'a');
+                            $select = $this->zdb->select(self::TABLE, 'a');
                             $select->limit(1)->join(
                                 array('b' => PREFIX_DB . Status::TABLE),
                                 'a.' . Status::PK . '=b.' . Status::PK,
@@ -1119,7 +1116,7 @@ class Adherent
                                 );
                             }
 
-                            $results = $zdb->execute($select);
+                            $results = $this->zdb->execute($select);
                             $result = $results->current();
                             if ( $result !== false ) {
                                 $errors[] = str_replace(
@@ -1204,7 +1201,7 @@ class Adherent
      */
     public function store()
     {
-        global $zdb, $hist;
+        global $hist;
 
         try {
             $values = array();
@@ -1264,16 +1261,16 @@ class Adherent
                 $this->_modification_date = date('Y-m-d');
                 $values['date_modif_adh'] = $this->_modification_date;
 
-                $insert = $zdb->insert(self::TABLE);
+                $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($values);
-                $add = $zdb->execute($insert);
+                $add = $this->zdb->execute($insert);
                 if ( $add->count() > 0) {
-                    if ( $zdb->isPostgres() ) {
-                        $this->_id = $zdb->driver->getLastGeneratedValue(
+                    if ( $this->zdb->isPostgres() ) {
+                        $this->_id = $this->zdb->driver->getLastGeneratedValue(
                             PREFIX_DB . 'adherents_id_seq'
                         );
                     } else {
-                        $this->_id = $zdb->driver->getLastGeneratedValue();
+                        $this->_id = $this->zdb->driver->getLastGeneratedValue();
                     }
                     $this->_picture = new Picture($this->_id);
                     // logging
@@ -1302,13 +1299,13 @@ class Adherent
                     unset($values['mdp_adh']);
                 }
 
-                $update = $zdb->update(self::TABLE);
+                $update = $this->zdb->update(self::TABLE);
                 $update->set($values);
                 $update->where(
                     self::PK . '=' . $this->_id
                 );
 
-                $edit = $zdb->execute($update);
+                $edit = $this->zdb->execute($update);
 
                 //edit == 0 does not mean there were an error, but that there
                 //were nothing to change
@@ -1340,16 +1337,14 @@ class Adherent
      */
     private function _updateModificationDate()
     {
-        global $zdb;
-
         try {
             $modif_date = date('Y-m-d');
-            $update = $zdb->update(self::TABLE);
+            $update = $this->zdb->update(self::TABLE);
             $update->set(
                 array('date_modif_adh' => $modif_date)
             )->where(self::PK . '=' . $this->_id);
 
-            $edit = $zdb->execute($update);
+            $edit = $this->zdb->execute($update);
             $this->_modification_date = $modif_date;
         } catch (\Exception $e) {
             Analog::log(
@@ -1425,7 +1420,7 @@ class Adherent
                 }
                 break;
             case 'sstatus':
-                $status = new Status();
+                $status = new Status($this->zdb);
                 return $status->getLabel($this->_status);
                 break;
             case 'sfullname':

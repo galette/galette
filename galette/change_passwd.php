@@ -65,6 +65,7 @@ if ( isset($hash) && !empty($hash) ) {
                         $error_detected[] = _T("- The password must be of at least 4 characters!");
                     } else {
                         $res = Galette\Entity\Adherent::updatePassword(
+                            $zdb,
                             $id_adh,
                             $_POST['mdp_adh']
                         );

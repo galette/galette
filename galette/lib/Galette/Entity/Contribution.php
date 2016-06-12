@@ -567,7 +567,7 @@ class Contribution
                     // logging
                     $hist->add(
                         _T("Contribution added"),
-                        Adherent::getSName($this->_member)
+                        Adherent::getSName($this->zdb, $this->_member)
                     );
                 } else {
                     $hist->add(_T("Fail to add new contribution."));
@@ -588,7 +588,7 @@ class Contribution
                 if ( $edit->count() > 0 ) {
                     $hist->add(
                         _T("Contribution updated"),
-                        Adherent::getSName($this->_member)
+                        Adherent::getSName($this->zdb, $this->_member)
                     );
                 } else if ($edit === false) {
                     throw new \Exception(
@@ -931,7 +931,7 @@ class Contribution
         );
 
         if ( $this->_member !== null ) {
-            $m = new Adherent((int)$this->_member);
+            $m = new Adherent($this->zdb, (int)$this->_member);
             $member = array(
                 'name'          => $m->sfullname,
                 'email'         => $m->email,

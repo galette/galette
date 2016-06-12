@@ -51,10 +51,10 @@ if (!$login->isLogged() or $login->isAdmin()
     $adh = new Adherent();
 } elseif ($login->isAdmin() && isset($_GET[Adherent::PK])) {
     //If admin with a member id
-    $adh = new Adherent((int)$_GET[Adherent::PK]);
+    $adh = new Adherent($zdb, (int)$_GET[Adherent::PK]);
 } elseif ($login->isLogged()) {
     //If user logged in
-    $adh = new Adherent((int)$login->id);
+    $adh = new Adherent($zdb, (int)$login->id);
 }
 
 $pdf = new PdfAdhesionForm($adh, $zdb, $preferences);
