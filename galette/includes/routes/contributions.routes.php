@@ -43,8 +43,9 @@ use Galette\Entity\DynamicFields;
 use Galette\Repository\Members;
 use Galette\Entity\Adherent;
 use Galette\Entity\ContributionsTypes;
+use Galette\Filters\ContributionsList;
 
-$app->get(
+/*$app->get(
     '/contributions[/{option:page|order}/{value:\d+}]',
     function ($request, $response, $args) {
         $ajax = false;
@@ -80,7 +81,7 @@ $app->get(
                     $contribs->orderby = $value;
                     break;
             }
-        }
+        }*/
 
         /*if ($ajax === true) {
             $contribs->filtre_transactions = true;
@@ -112,11 +113,11 @@ $app->get(
             }
         }*/
 
-        $this->session->contributions = $contribs;
+        /*$this->session->contributions = $contribs;
         $list_contribs = $contribs->getContributionsList(true);
 
         //assign pagination variables to the template and add pagination links
-        $contribs->setSmartyPagination($this->router, $this->view->getSmarty());
+        $contribs->setSmartyPagination($this->router, $this->view->getSmarty());*/
 
         /*if ( $contribs->filtre_cotis_adh != null && !$ajax ) {
             $member = new Adherent($this->zdb);
@@ -125,7 +126,7 @@ $app->get(
         }*/
 
         // display page
-        $this->view->render(
+        /*$this->view->render(
             $response,
             'gestion_contributions.tpl',
             array(
@@ -143,140 +144,128 @@ $app->get(
     }
 )->setName(
     'contributions'
-)->add($authenticate);
+)->add($authenticate);*/
 
 $app->get(
-    '/transactions',
-    function ($request, $response) {
+    '/{type:transactions|contributions}[/{option:page|order|member}/{value:\d+|all}]',
+    function ($request, $response, $args = []) {
+        $option = null;
+        if (isset($args['option'])) {
+            $option = $args['option'];
+        }
+        $value = null;
+        if (isset($args['value'])) {
+            $value = $args['value'];
+        }
+
+        $filter_name = 'filter_' . $args['type'];
+
+        if (isset($this->session->$filter_name)) {
+            $filters = $this->session->$filter_name;
+        } else {
+            $filter_class = '\\Galette\\Filters\\' . ucwords($args['type'] . 'List');
+            $filters = new $filter_class();
+        }
+
+        if ($option !== null) {
+            switch ($option) {
+                case 'page':
+                    $filters->current_page = (int)$value;
+                    break;
+                case 'order':
+                    $filters->orderby = $value;
+                    break;
+                case 'member':
+                    if (($this->login->isAdmin()
+                        || $this->login->isStaff())
+                    ) {
+                        if ($value == 'all') {
+                            $filters->filtre_cotis_adh = null;
+                        } else {
+                            $filters->filtre_cotis_adh = $value;
+                        }
+                    }
+                    break;
+            }
+        }
+
         if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-            $id_adh = $this->login->id;
-        } else {
-            $id_adh = get_numeric_form_value('id_adh', '');
+            $filters->filtre_cotis_adh = $this->login->id;
         }
 
-        $filtre_id_adh = '';
+        $class = '\\Galette\\Repository\\' . ucwords($args['type']);
+        $contrib = new $class($this->zdb, $this->login, $filters);
 
-        /*if ($this->session->transactions !== null) {
-            $trans = $this->session->transactions;
-        } else {*/
-            $trans = new Galette\Repository\Transactions($this->zdb, $this->login);
-        /*}*/
-
-        /*if ( isset($_GET['page']) && is_numeric($_GET['page']) ) {
-            $trans->current_page = (int)$_GET['page'];
-        }
-
-        if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
-            $trans->show = $_GET['nbshow'];
-        }
-
-        if ( isset($_GET['tri']) ) {
-            $trans->orderby = $_GET['tri'];
-        }
-
-        if ( isset($_GET['clear_filter']) ) {
-            $trans->reinit();
-        } else {
-            if ( isset($_GET['end_date_filter']) || isset($_GET['start_date_filter']) ) {
-                try {
-                    if ( isset($_GET['start_date_filter']) ) {
-                        $field = _T("start date filter");
-                        $trans->start_date_filter = $_GET['start_date_filter'];
-                    }
-                    if ( isset($_GET['end_date_filter']) ) {
-                        $field = _T("end date filter");
-                        $trans->end_date_filter = $_GET['end_date_filter'];
-                    }
-                } catch (Exception $e) {
-                    $error_detected[] = $e->getMessage();
-                }
-            }
-        }*/
-        /*if ( ($this->login->isAdmin() || $this->login->isStaff()) && isset($_GET['id_adh']) && $_GET['id_adh'] != '' ) {
-            if ( $_GET['id_adh'] == 'all' ) {
-                $trans->filtre_cotis_adh = null;
-            } else {
-                $trans->filtre_cotis_adh = $_GET['id_adh'];
-            }
-        }
-        if ( $this->login->isAdmin() || $this->login->isStaff() ) {
-            $trans_id = get_numeric_form_value('sup', '');
-            if ($trans_id != '') {
-                $trans->removeTransactions($trans_id);
-            }
-        }*/
-
-        $this->session->transactions = $trans;
-        $list_trans = $trans->getTransactionsList(true);
+        //store filters into session
+        $this->session->$filter_name = $filters;
 
         //assign pagination variables to the template and add pagination links
-        $trans->setSmartyPagination($this->router, $this->view->getSmarty());
+        $filters->setSmartyPagination($this->router, $this->view->getSmarty());
 
-        /*if ( $trans->filtre_cotis_adh != null ) {
-            $member = new Galette\Entity\Adherent($this->zdb);
-            $member->load($trans->filtre_cotis_adh);
-            $tpl->assign('member', $member);
-        }*/
+        $tpl_vars = [
+            'page_title'        => $args['type'] === 'contributions' ?
+                                    _T("Contributions management") :
+                                    _T("Transactions management"),
+            'require_dialog'    => true,
+            'require_calendar'  => true,
+            'contribs'          => $contrib,
+            'list'              => $contrib->getList(true),
+            'nb'                => $contrib->getCount(),
+            'filters'           => $filters,
+            'mode'              => 'std'
+        ];
+
+        if ($filters->filtre_cotis_adh != null) {
+            $member = new Adherent($this->zdb);
+            $member->load($filters->filtre_cotis_adh);
+            $tpl_vars['member'] = $member;
+        }
 
         // display page
         $this->view->render(
             $response,
-            'gestion_transactions.tpl',
-            array(
-                'page_title'            => _T("Transactions management"),
-                'require_dialog'        => true,
-                'require_calendar'      => true,
-                'list_trans'            => $list_trans,
-                'transactions'          => $trans,
-                'nb_transactions'       => $trans->getCount(),
-                'mode'                  => 'std'
-            )
+            'gestion_' . $args['type'] . '.tpl',
+            $tpl_vars
         );
         return $response;
     }
-)->setName('transactions')->add($authenticate);
+)->setName('contributions')->add($authenticate);
 
 $app->post(
     '/{type:contributions|transactions}/filter',
     function ($request, $response, $args) {
-        $type = $args['type'];
+        $type = 'filter_' . $args['type'];
         $post = $request->getParsedBody();
+        $error_detected = [];
 
         if ($this->session->$type !== null) {
-            $contribs = $this->session->$type;
+            $filters = $this->session->$type;
         } else {
-            $contribs = new Contributions();
-        }
-
-        /*if ( $ajax === true ) {
-            $contribs->filtre_transactions = true;
-            if ( isset($_POST['max_amount']) ) {
-                $contribs->max_amount = (int)$_POST['max_amount'];
-            } else if ( $_GET['max_amount'] ) {
-                $contribs->max_amount = (int)$_GET['max_amount'];
-            }
-        } else {
-            $contribs->max_amount = null;
-        }*/
-        $contribs->max_amount = null;
-
-        if ((isset($post['nbshow']) && is_numeric($post['nbshow']))
-        ) {
-            $contribs->show = $post['nbshow'];
+            $filter_class = '\\Galette\\Filters\\' . ucwords($args['type']) . 'List';
+            $filters = new $filter_class();
         }
 
         if (isset($post['clear_filter'])) {
-            $contribs->reinit();
+            $filters->reinit();
         } else {
+            if (isset($post['max_amount'])) {
+                $filters->max_amount = null;
+            }
+
+            if ((isset($post['nbshow']) && is_numeric($post['nbshow']))
+            ) {
+                $filters->show = $post['nbshow'];
+            }
+
             if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
                 try {
                     if (isset($post['start_date_filter'])) {
                         $field = _T("start date filter");
-                        $contribs->start_date_filter = $post['start_date_filter'];
+                        $filters->start_date_filter = $post['start_date_filter'];
                     }
                     if (isset($post['end_date_filter'])) {
                         $field = _T("end date filter");
-                        $contribs->end_date_filter = $post['end_date_filter'];
+                        $filters->end_date_filter = $post['end_date_filter'];
                     }
                 } catch (Exception $e) {
                     $error_detected[] = $e->getMessage();
@@ -292,42 +281,30 @@ $app->post(
                     || $ptf == Contribution::PAYMENT_TRANSFER
                     || $ptf == Contribution::PAYMENT_PAYPAL
                 ) {
-                    $contribs->payment_type_filter = $ptf;
+                    $filters->payment_type_filter = $ptf;
                 } elseif ($ptf == -1) {
-                    $contribs->payment_type_filter = null;
+                    $filters->payment_type_filter = null;
                 } else {
                     $error_detected[] = _T("- Unknown payment type!");
                 }
             }
         }
 
-        /*$id = $request->get('id');
-        if (($this->login->isAdmin() || $this->login->isStaff())
-            && isset($id) && $id != ''
-        ) {
-            if ($id == 'all') {
-                $contribs->filtre_cotis_adh = null;
-            } else {
-                $contribs->filtre_cotis_adh = $id;
-            }
-        }*/
+        $this->session->$type = $filters;
 
-        /*if ( $this->login->isAdmin() || $this->login->isStaff() ) {
-            //delete contributions
-            if (isset($_GET['sup']) || isset($_POST['delete'])) {
-                if ( isset($_GET['sup']) ) {
-                    $contribs->removeContributions($_GET['sup']);
-                } else if ( isset($_POST['contrib_sel']) ) {
-                    $contribs->removeContributions($_POST['contrib_sel']);
-                }
+        if (count($error_detected) > 0) {
+            //report errors
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
             }
-        }*/
-
-        $this->session->$type = $contribs;
+        }
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor($type));
+            ->withHeader('Location', $this->router->pathFor('contributions', ['type' => $args['type']]));
     }
 )->setName(
     'payments_filter'
@@ -341,7 +318,7 @@ $app->get(
             $dyn_fields = $this->session->contribution['dyn_fields'];
             $this->session->contribution = null;
         } else {
-            $contrib = new Contribution($this->zdb);
+            $contrib = new Contribution($this->zdb, $this->login);
             //TODO: dynamic fields should be handled by Contribution object
             $dyn_fields = new DynamicFields();
         }
@@ -352,7 +329,7 @@ $app->get(
             $id_cotis = $args['id'];
         }
 
-        if ($action === 'edit' && $trans_id === null) {
+        if ($action === 'edit' && $id_cotis === null) {
             throw new \RuntimeException(
                 _T("Contribution ID cannot ben null calling edit route!")
             );
@@ -386,11 +363,20 @@ $app->get(
             $type_selected = false;
         } elseif ($id_cotis || $type_selected || $trans_id || $id_adh) {
             if ($id_cotis) {
-                $contrib = new Contribution((int)$id_cotis);
+                $contrib = new Contribution($this->zdb, $this->login, (int)$id_cotis);
                 if ($contrib->id == '') {
                     //not possible to load contribution, exit
-                    header('location: index.php');
-                    die();
+                    $this->flash->addMessage(
+                        'error_detected',
+                        str_replace(
+                            '%id',
+                            $id_cotis,
+                            _T("Unable to load contribution #%id!")
+                        )
+                    );
+                    return $response
+                        ->withStatus(301)
+                        ->withHeader('Location', $this->router->pathFor('contributions', ['type' => 'contributions']));
                 }
             } else {
                 $args = array(
@@ -403,7 +389,7 @@ $app->get(
                 if ($this->preferences->pref_membership_ext != '') {
                     $args['ext'] = $this->preferences->pref_membership_ext;
                 }
-                $contrib = new Contribution($args);
+                $contrib = new Contribution($this->zdb, $this->login, $args);
                 if ($contrib->isTransactionPart()) {
                     $id_adh = $contrib->member;
                     //Should we disable contribution member selection if we're from
@@ -421,7 +407,6 @@ $app->get(
                 'date_fin_cotis'    => $contrib->isCotis(),
             );
             $required = $required + $second_required;
-
         }
 
         // Validation
@@ -463,7 +448,7 @@ $app->get(
         }
 
         // contribution types
-        $ct = new ContributionsTypes();
+        $ct = new ContributionsTypes($this->zdb);
         $type_cotis_options = $ct->getList(
             ($type_selected == 1 && $id_adh != '') ? $contrib->isCotis() : null
         );
@@ -915,7 +900,7 @@ $app->get(
         ];
 
         if ($trans->id != '') {
-            $contribs = new Contributions();
+            $contribs = new Contributions($this->zdb, $this->login);
             $params['contribs'] = $contribs->getListFromTransaction($trans->id);
         }
 

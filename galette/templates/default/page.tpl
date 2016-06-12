@@ -114,8 +114,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $cur_route eq "groups"} class="selected"{/if}><a href="{path_for name="groups"}" title="{_T string="View and manage groups"}">{_T string="Manage groups"}</a></li>
   {/if}
   {if $login->isAdmin() or $login->isStaff()}
-            <li{if $cur_route eq "contributions"} class="selected"{/if}><a href="{path_for name="contributions"}" title="{_T string="View and filter contributions"}">{_T string="List of contributions"}</a></li>
-            <li{if $cur_route eq "transactions"} class="selected"{/if}><a href="{path_for name="transactions"}" title="{_T string="View and filter transactions"}">{_T string="List of transactions"}</a></li>
+            <li{if $cur_route eq "contributions" and $cur_subroute eq "contributions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter contributions"}">{_T string="List of contributions"}</a></li>
+            <li{if $cur_route eq "contributions" and $cur_subroute eq "transactions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => "transactions"]}" title="{_T string="View and filter transactions"}">{_T string="List of transactions"}</a></li>
             <li{if $cur_route eq "editmember"} class="selected"{/if}><a href="{path_for name="editmember" data=["action" => "add"]}" title="{_T string="Add new member in database"}">{_T string="Add a member"}</a></li>
             <li{if $cur_route eq "contribution"} class="selected"{/if}><a href="{path_for name="contribution" data=["action" => "add"]}" title="{_T string="Add new contribution in database"}">{_T string="Add a contribution"}</a></li>
             <li{if $cur_route eq "transaction"} class="selected"{/if}><a href="{path_for name="transaction" data=["action" => "add"]}" title="{_T string="Add new transaction in database"}">{_T string="Add a transaction"}</a></li>
@@ -126,8 +126,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $cur_route eq "import" or $cur_route eq "importModel"} class="selected"{/if}><a href="{path_for name="import"}" title="{_T string="Import members from CSV files"}">{_T string="Imports"}</a></li>
             <li class="mnu_last{if $cur_route eq "charts"} selected{/if}"><a href="{path_for name="charts"}" title="{_T string="Various charts"}">{_T string="Charts"}</a></li>
   {else}
-            <li{if $cur_route eq "contributions"} class="selected"{/if}><a href="{path_for name="contributions"}" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
-            <li{if $PAGENAME eq "gestion_transactions.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter all my transactions"}">{_T string="My transactions"}</a></li>
+            <li{if $cur_route eq "contributions" and $cur_subroute eq "contributions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
+            <li{if $cur_route eq "contributions" and $cur_subroute eq "transactions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => "transactions"]}" title="{_T string="View and filter all my transactions"}">{_T string="My transactions"}</a></li>
   {/if}
   {if !$login->isSuperAdmin()}
             <li{if $cur_route eq "me" or $cur_route eq "member"} class="selected"{/if}><a href="{path_for name="me"}" title="{_T string="View my member card"}">{_T string="My information"}</a></li>

@@ -40,6 +40,7 @@ namespace Galette\Entity;
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
 use Galette\Core\Db;
+use Galette\Core\Login;
 use Galette\IO\ExternalScript;
 use Galette\IO\PdfContribution;
 
@@ -85,6 +86,7 @@ class Contribution
     private $_fields;
 
     private $zdb;
+    private $login;
 
     /**
      * Default constructor
@@ -94,9 +96,10 @@ class Contribution
      *                                   a specific contribution, or an type id
      *                                   to just instanciate object
      */
-    public function __construct(Db $zdb, $args = null)
+    public function __construct(Db $zdb, Login $login, $args = null)
     {
         $this->zdb = $zdb;
+        $this->login = $login;
 
         /*
          * Fields configuration. Each field is an array and must reflect:
@@ -236,14 +239,12 @@ class Contribution
      */
     public function load($id)
     {
-        global $login;
-
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->where(self::PK . ' = ' . $id);
             //restrict query on current member id if he's not admin nor staff member
-            if ( !$login->isAdmin() && !$login->isStaff() ) {
-                $select->where(Adherent::PK . ' = ' . $login->id);
+            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+                $select->where(Adherent::PK . ' = ' . $this->login->id);
             }
 
             $results = $this->zdb->execute($select);
@@ -253,7 +254,7 @@ class Contribution
                 return true;
             } else {
                 throw new \Exception(
-                    'No contribution #' . $id . ' (user ' .$login->id . ')'
+                    'No contribution #' . $id . ' (user ' .$this->login->id . ')'
                 );
             }
         } catch (\Exception $e) {
@@ -791,7 +792,7 @@ class Contribution
     {
         try {
             //first, we check if contribution is part of transaction
-            $c = new Contribution($this->zdb, (int)$contrib_id);
+            $c = new Contribution($this->zdb, $this->login, (int)$contrib_id);
             if ($c->isTransactionPartOf($trans_id)) {
                 $update = $this->zdb->update(self::TABLE);
                 $update->set(

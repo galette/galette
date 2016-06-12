@@ -336,12 +336,18 @@ abstract class Pagination
      */
     private function getHref($page)
     {
+        $args = [
+            'option'    => 'page',
+            'value'     => $page
+        ];
+
+        if ($this->view->getTemplateVars('cur_subroute')) {
+            $args['type'] = $this->view->getTemplateVars('cur_subroute');
+        }
+
         $href = $this->router->pathFor(
             $this->view->getTemplateVars('cur_route'),
-            [
-                'option'    => 'page',
-                'value'     => $page
-            ]
+            $args
         );
         return $href;
     }

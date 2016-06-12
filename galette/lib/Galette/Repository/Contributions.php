@@ -39,11 +39,13 @@ namespace Galette\Repository;
 
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
-use Galette\Core\Pagination;
+use Galette\Core\Db;
+use Galette\Core\Login;
 use Galette\Entity\Contribution;
 use Galette\Entity\Adherent;
 use Galette\Entity\Transaction;
 use Galette\Entity\ContributionsTypes;
+use Galette\Filters\ContributionsList;
 
 /**
  * Contributions class for galette
@@ -57,73 +59,32 @@ use Galette\Entity\ContributionsTypes;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
-class Contributions extends Pagination
+class Contributions
 {
     const TABLE = Contribution::TABLE;
     const PK = Contribution::PK;
 
-    const ORDERBY_DATE = 0;
-    const ORDERBY_BEGIN_DATE = 1;
-    const ORDERBY_END_DATE = 2;
-    const ORDERBY_MEMBER = 3;
-    const ORDERBY_TYPE = 4;
-    const ORDERBY_AMOUNT = 5;
-    const ORDERBY_DURATION = 6;
-    const ORDERBY_PAYMENT_TYPE = 7;
-
-    const DATE_BEGIN = 0;
-    const DATE_END = 1;
-    const DATE_RECORD = 2;
-
     private $_count = null;
-    private $_date_field = null;
-    private $_start_date_filter = null;
-    private $_end_date_filter = null;
-    private $_payment_type_filter = null;
-    private $_filtre_cotis_adh = null;
-    private $_filtre_transactions = null;
 
-    private $_from_transaction = false;
-    private $_max_amount = null;
-    private $_sum;
+    private $sum;
 
-    /**
+   /**
      * Default constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->_date_field = self::DATE_BEGIN;
-    }
-
-    /**
-     * Returns the field we want to default set order to
      *
-     * @return string field name
+     * @param Db                $zdb     Database
+     * @param Login             $login   Login
+     * @param ContributionsList $filters Filtering
      */
-    protected function getDefaultOrder()
+    public function __construct(Db $zdb, Login $login, $filters = null)
     {
-        return 'date_debut_cotis';
-    }
+        $this->zdb = $zdb;
+        $this->login = $login;
 
-    /**
-     * Return the default direction for ordering
-     *
-     * @return string ASC or DESC
-     */
-    protected function getDefaultDirection()
-    {
-        return self::ORDER_DESC;
-    }
-
-    /**
-     * Returns the field we want to default set order to (public method)
-     *
-     * @return string field name
-     */
-    public static function defaultOrder()
-    {
-        return self::getDefaultOrder();
+        if ($filters === null) {
+            $this->filters = new ContributionsList();
+        } else {
+            $this->filters = $filters;
+        }
     }
 
     /**
@@ -135,8 +96,8 @@ class Contributions extends Pagination
      */
     public function getListFromTransaction($trans_id)
     {
-        $this->_from_transaction = $trans_id;
-        return $this->getContributionsList(true);
+        $this->filters->from_transaction = $trans_id;
+        return $this->getList(true);
     }
 
     /**
@@ -151,23 +112,18 @@ class Contributions extends Pagination
      *
      * @return Contribution[]|ResultSet
      */
-    public function getContributionsList(
-        $as_contrib=false, $fields=null, $count=true
-    ) {
-        global $zdb;
-
+    public function getList($as_contrib = false, $fields = null, $count = true)
+    {
         try {
-            $select = $this->_buildSelect(
-                $fields, $count
-            );
+            $select = $this->_buildSelect($fields, $count);
 
-            $this->setLimits($select);
+            $this->filters->setLimit($select);
 
             $contributions = array();
-            $results = $zdb->execute($select);
-            if ( $as_contrib ) {
-                foreach ( $results as $row ) {
-                    $contributions[] = new Contribution($this->zdb, $row);
+            $results = $this->zdb->execute($select);
+            if ($as_contrib) {
+                foreach ($results as $row) {
+                    $contributions[] = new Contribution($this->zdb, $this->login, $row);
                 }
             } else {
                 $contributions = $results;
@@ -193,14 +149,12 @@ class Contributions extends Pagination
      */
     private function _buildSelect($fields, $count = false)
     {
-        global $zdb;
-
         try {
             $fieldsList = ( $fields != null )
                             ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
                             : implode(', ', $fields)) : (array)'*';
 
-            $select = $zdb->select(self::TABLE, 'a');
+            $select = $this->zdb->select(self::TABLE, 'a');
             $select->columns($fieldsList);
 
             $select->join(
@@ -213,7 +167,7 @@ class Contributions extends Pagination
 
             $this->_calculateSum($select);
 
-            if ( $count ) {
+            if ($count) {
                 $this->_proceedCount($select);
             }
 
@@ -236,8 +190,6 @@ class Contributions extends Pagination
      */
     private function _proceedCount($select)
     {
-        global $zdb;
-
         try {
             $countSelect = clone $select;
             $countSelect->reset($countSelect::COLUMNS);
@@ -249,14 +201,13 @@ class Contributions extends Pagination
                 )
             );
 
-            $results = $zdb->execute($countSelect);
+            $results = $this->zdb->execute($countSelect);
             $result = $results->current();
 
             $k = self::PK;
             $this->_count = $result->$k;
-            if ( $this->_count > 0 ) {
+            if ($this->_count > 0) {
                 $this->counter = (int)$this->_count;
-                $this->countPages();
             }
         } catch (\Exception $e) {
             Analog::log(
@@ -276,8 +227,6 @@ class Contributions extends Pagination
      */
     private function _calculateSum($select)
     {
-        global $zdb;
-
         try {
             $sumSelect = clone $select;
             $sumSelect->reset($sumSelect::COLUMNS);
@@ -289,10 +238,10 @@ class Contributions extends Pagination
                 )
             );
 
-            $results = $zdb->execute($sumSelect);
+            $results = $this->zdb->execute($sumSelect);
             $result = $results->current();
 
-            $this->_sum = round($result->contribsum, 2);
+            $this->sum = round($result->contribsum, 2);
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot calculate contributions sum | ' . $e->getMessage(),
@@ -311,37 +260,37 @@ class Contributions extends Pagination
     {
         $order = array();
 
-        switch ( $this->orderby ) {
-        case self::ORDERBY_DATE:
-            $order[] = 'date_enreg ' . $this->ordered;
-            break;
-        case self::ORDERBY_BEGIN_DATE:
-            $order[] = 'date_debut_cotis ' . $this->ordered;
-            break;
-        case self::ORDERBY_END_DATE:
-            $order[] = 'date_fin_cotis ' . $this->ordered;
-            break;
-        case self::ORDERBY_MEMBER:
-            $order[] = 'nom_adh ' . $this->ordered;
-            $order[] = 'prenom_adh ' . $this->ordered;
-            break;
-        case self::ORDERBY_TYPE:
-            $order[] = ContributionsTypes::PK;
-            break;
-        case self::ORDERBY_AMOUNT:
-            $order[] = 'montant_cotis ' . $this->ordered;
-            break;
-        /*
-        Hum... I really do not know how to sort a query with a value that
-        is calculated code side :/
-        case self::ORDERBY_DURATION:
-            break;*/
-        case self::ORDERBY_PAYMENT_TYPE:
-            $order[] = 'type_paiement_cotis ' . $this->ordered;
-            break;
-        default:
-            $order[] = $this->orderby . ' ' . $this->ordered;
-            break;
+        switch ($this->filters->orderby) {
+            case ContributionsList::ORDERBY_DATE:
+                $order[] = 'date_enreg ' . $this->filters->ordered;
+                break;
+            case ContributionsList::ORDERBY_BEGIN_DATE:
+                $order[] = 'date_debut_cotis ' . $this->filters->ordered;
+                break;
+            case ContributionsList::ORDERBY_END_DATE:
+                $order[] = 'date_fin_cotis ' . $this->filters->ordered;
+                break;
+            case ContributionsList::ORDERBY_MEMBER:
+                $order[] = 'nom_adh ' . $this->filters->ordered;
+                $order[] = 'prenom_adh ' . $this->filters->ordered;
+                break;
+            case ContributionsList::ORDERBY_TYPE:
+                $order[] = ContributionsTypes::PK;
+                break;
+            case ContributionsList::ORDERBY_AMOUNT:
+                $order[] = 'montant_cotis ' . $this->filters->ordered;
+                break;
+            /*
+            Hum... I really do not know how to sort a query with a value that
+            is calculated code side :/
+            case ContributionsList::ORDERBY_DURATION:
+                break;*/
+            case ContributionsList::ORDERBY_PAYMENT_TYPE:
+                $order[] = 'type_paiement_cotis ' . $this->ordered;
+                break;
+            default:
+                $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
+                break;
         }
 
         return $order;
@@ -356,74 +305,72 @@ class Contributions extends Pagination
      */
     private function _buildWhereClause($select)
     {
-        global $zdb, $login;
-
         $field = 'date_debut_cotis';
 
-        switch ( $this->_date_field ) {
-        case self::DATE_RECORD:
-            $field = 'date_enreg';
-            break;
-        case self::DATE_END:
-            $field = 'date_fin_cotis';
-            break;
-        case self::DATE_BEGIN:
-        default:
-            $field = 'date_debut_cotis';
-            break;
+        switch ($this->filters->date_field) {
+            case ContributionsList::DATE_RECORD:
+                $field = 'date_enreg';
+                break;
+            case ContributionsList::DATE_END:
+                $field = 'date_fin_cotis';
+                break;
+            case ContributionsList::DATE_BEGIN:
+            default:
+                $field = 'date_debut_cotis';
+                break;
         }
 
         try {
-            if ( $this->_start_date_filter != null ) {
-                $d = new \DateTime($this->_start_date_filter);
+            if ($this->filters->start_date_filter != null) {
+                $d = new \DateTime($this->filters->start_date_filter);
                 $select->where->greaterThanOrEqualTo(
                     $field,
                     $d->format('Y-m-d')
                 );
             }
 
-            if ( $this->_end_date_filter != null ) {
-                $d = new \DateTime($this->_end_date_filter);
+            if ($this->filters->end_date_filter != null) {
+                $d = new \DateTime($this->filters->end_date_filter);
                 $select->where->lessThanOrEqualTo(
                     $field,
                     $d->format('Y-m-d')
                 );
             }
 
-            if ( $this->_payment_type_filter != null ) {
+            if ($this->filters->payment_type_filter != null) {
                 $select->where->equalTo(
                     'type_paiement_cotis',
-                    $this->_payment_type_filter
+                    $this->filters->payment_type_filter
                 );
             }
 
-            if ( $this->_from_transaction !== false ) {
+            if ($this->filters->from_transaction !== false) {
                 $select->where->equalTo(
                     Transaction::PK,
-                    $this->_from_transaction
+                    $this->filters->from_transaction
                 );
             }
 
-            if ( $this->_max_amount !== null && is_int($this->_max_amount)) {
+            if ($this->filters->max_amount !== null && is_int($this->filters->max_amount)) {
                 $select->where(
-                    '(montant_cotis <= ' . $this->_max_amount .
+                    '(montant_cotis <= ' . $this->filters->max_amount .
                     ' OR montant_cotis IS NULL)'
                 );
             }
 
-            if ( !$login->isAdmin() && !$login->isStaff() ) {
+            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
                 //non staff members can only view their own contributions
                 $select->where(
                     array(
-                        'a.' . Adherent::PK => $login->id
+                        'a.' . Adherent::PK => $this->login->id
                     )
                 );
-            } else if ( $this->_filtre_cotis_adh != null ) {
+            } elseif ($this->filters->filtre_cotis_adh != null) {
                 $select->where(
-                    'a.' . Adherent::PK . ' = ' . $this->_filtre_cotis_adh
+                    'a.' . Adherent::PK . ' = ' . $this->filters->filtre_cotis_adh
                 );
             }
-            if ( $this->_filtre_transactions === true ) {
+            if ($this->filters->filtre_transactions === true) {
                 $select->where('a.trans_id IS NULL');
             }
         } catch (\Exception $e) {
@@ -445,23 +392,13 @@ class Contributions extends Pagination
     }
 
     /**
-     * Reinit default parameters
+     * Get sum
      *
-     * @return void
+     * @return int
      */
-    public function reinit()
+    public function getSum()
     {
-        parent::reinit();
-        $this->_date_field = self::DATE_BEGIN;
-        $this->_start_date_filter = null;
-        $this->_end_date_filter = null;
-        $this->_payment_type_filter = null;
-        $this->_filtre_transactions = null;
-        $this->_count = null;
-        $this->_filtre_cotis_adh = null;
-        $this->_from_transaction = false;
-        $this->_max_amount = null;
-        $this->_sum = null;
+        return $this->sum;
     }
 
     /**
@@ -474,34 +411,34 @@ class Contributions extends Pagination
      */
     public function removeContributions($ids, $transaction = true)
     {
-        global $zdb, $hist;
+        global $hist;
 
         $list = array();
-        if ( is_numeric($ids) ) {
+        if (is_numeric($ids)) {
             //we've got only one identifier
             $list[] = $ids;
         } else {
             $list = $ids;
         }
 
-        if ( is_array($list) ) {
+        if (is_array($list)) {
             $res = true;
             try {
-                if ( $transaction ) {
-                    $zdb->connection->beginTransaction();
+                if ($transaction) {
+                    $this->zdb->connection->beginTransaction();
                 }
-                $select = $zdb->select(self::TABLE);
+                $select = $this->zdb->select(self::TABLE);
                 $select->where->in(self::PK, $list);
-                $contributions = $zdb->execute($select);
-                foreach ( $contributions as $contribution ) {
-                    $c = new Contribution($contribution);
+                $contributions = $this->zdb->execute($select);
+                foreach ($contributions as $contribution) {
+                    $c = new Contribution($this->zdb, $this->login, $contribution);
                     $res = $c->remove(false);
-                    if ( $res === false ) {
+                    if ($res === false) {
                         throw new \Exception;
                     }
                 }
-                if ( $transaction ) {
-                    $zdb->connection->commit();
+                if ($transaction) {
+                    $this->zdb->connection->commit();
                 }
                 $hist->add(
                     str_replace(
@@ -511,8 +448,8 @@ class Contributions extends Pagination
                     )
                 );
             } catch (\Exception $e) {
-                if ( $transaction ) {
-                    $zdb->connection->rollBack();
+                if ($transaction) {
+                    $this->zdb->connection->rollBack();
                 }
                 Analog::log(
                     'An error occured trying to remove contributions | ' .
@@ -531,185 +468,4 @@ class Contributions extends Pagination
         }
 
     }
-
-    /**
-     * Global getter method
-     *
-     * @param string $name name of the property we want to retrive
-     *
-     * @return object the called property
-     */
-    public function __get($name)
-    {
-
-        Analog::log(
-            '[Contributions] Getting property `' . $name . '`',
-            Analog::DEBUG
-        );
-
-        if ( in_array($name, $this->pagination_fields) ) {
-            return parent::__get($name);
-        } else {
-            $return_ok = array(
-                'filtre_cotis_adh',
-                'date_field',
-                'start_date_filter',
-                'end_date_filter',
-                'payment_type_filter',
-                'sum',
-                'max_amount'
-            );
-            if (in_array($name, $return_ok)) {
-                $rname = '_' . $name;
-
-                switch ( $name ) {
-                case 'start_date_filter':
-                case 'end_date_filter':
-                    if ( $this->$rname !== null ) {
-                        $d = new \DateTime($this->$rname);
-                        return $d->format(_T("Y-m-d"));
-                    } else {
-                        return null;
-                    }
-                    break;
-                default:
-                    return $this->$rname;
-                    break;
-                }
-            } else {
-                Analog::log(
-                    '[Contributions] Unable to get proprety `' .$name . '`',
-                    Analog::WARNING
-                );
-            }
-        }
-    }
-
-    /**
-     * Global setter method
-     *
-     * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
-     *
-     * @return void
-     */
-    public function __set($name, $value)
-    {
-        if ( in_array($name, $this->pagination_fields) ) {
-            parent::__set($name, $value);
-        } else {
-            Analog::log(
-                '[Contributions] Setting property `' . $name . '`',
-                Analog::DEBUG
-            );
-
-            $forbidden = array();
-            if ( !in_array($name, $forbidden) ) {
-                $rname = '_' . $name;
-                switch($name) {
-                case 'tri':
-                    $allowed_orders = array(
-                        self::ORDERBY_DATE,
-                        self::ORDERBY_BEGIN_DATE,
-                        self::ORDERBY_END_DATE,
-                        self::ORDERBY_MEMBER,
-                        self::ORDERBY_TYPE,
-                        self::ORDERBY_AMOUNT,
-                        self::ORDERBY_DURATION
-                    );
-                    if ( in_array($value, $allowed_orders) ) {
-                        $this->orderby = $value;
-                    }
-                    break;
-                case 'start_date_filter':
-                case 'end_date_filter':
-                    try {
-                        if ( $value !== '' ) {
-                            $y = \DateTime::createFromFormat(_T("Y"), $value);
-                            if ( $y !== false ) {
-                                $month = 1;
-                                $day = 1;
-                                if ( $name === 'end_date_filter' ) {
-                                    $month = 12;
-                                    $day = 31;
-                                }
-                                $y->setDate(
-                                    $y->format('Y'),
-                                    $month,
-                                    $day
-                                );
-                                $this->$rname = $y->format('Y-m-d');
-                            }
-
-                            $ym = \DateTime::createFromFormat(_T("Y-m"), $value);
-                            if ( $y === false && $ym  !== false ) {
-                                $day = 1;
-                                if ( $name === 'end_date_filter' ) {
-                                    $day = $ym->format('t');
-                                }
-                                $ym->setDate(
-                                    $ym->format('Y'),
-                                    $ym->format('m'),
-                                    $day
-                                );
-                                $this->$rname = $ym->format('Y-m-d');
-                            }
-
-                            $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
-                            if ( $y === false && $ym  === false && $d !== false ) {
-                                $this->$rname = $d->format('Y-m-d');
-                            }
-
-                            if ( $y === false && $ym === false && $d === false ) {
-                                $formats = array(
-                                    _T("Y"),
-                                    _T("Y-m"),
-                                    _T("Y-m-d"),
-                                );
-
-                                $field = null;
-                                if ($name === 'start_date_filter' ) {
-                                    $field = _T("start date filter");
-                                }
-                                if ($name === 'end_date_filter' ) {
-                                    $field = _T("end date filter");
-                                }
-
-                                throw new \Exception(
-                                    str_replace(
-                                        array('%field', '%format'),
-                                        array(
-                                            $field,
-                                            implode(', ', $formats)
-                                        ),
-                                        _T("Unknown date format for %field.<br/>Know formats are: %formats")
-                                    )
-                                );
-                            }
-                        } else {
-                            $this->$rname = null;
-                        }
-                    } catch (\Exception $e) {
-                        Analog::log(
-                            'Wrong date format. field: ' . $key .
-                            ', value: ' . $value . ', expected fmt: ' .
-                            _T("Y-m-d") . ' | ' . $e->getMessage(),
-                            Analog::INFO
-                        );
-                        throw $e;
-                    }
-                    break;
-                default:
-                    $this->$rname = $value;
-                    break;
-                }
-            } else {
-                Analog::log(
-                    '[Contributions] Unable to set proprety `' .$name . '`',
-                    Analog::WARNING
-                );
-            }
-        }
-    }
-
 }
