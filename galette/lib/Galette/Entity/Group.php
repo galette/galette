@@ -196,7 +196,7 @@ class Group
                 );
 
                 foreach ( $results as $m ) {
-                    $members[] = new Adherent($m, $deps);
+                    $members[] = new Adherent($zdb, $m, $deps);
                 }
 
                 if ( $type === self::MEMBER_TYPE) {

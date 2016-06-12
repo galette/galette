@@ -39,15 +39,18 @@ use Galette\Entity\Group;
 use Galette\Repository\Groups;
 
 $app->get(
-    '/groups',
-    function ($request, $response) {
+    '/groups[/{id}]',
+    function ($request, $response, $args) {
         $groups = new Groups();
         $group = new Group();
 
         $groups_root = $groups->getList(false);
         $groups_list = $groups->getList();
 
-        //$id = $app->request()->get('id');
+        $id = null;
+        if (isset($args['id'])) {
+            $id = $args['id'];
+        }
 
         if ($id === null && count($groups_root) > 0) {
             reset($groups);

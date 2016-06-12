@@ -336,6 +336,7 @@ class AdvancedMembersList extends MembersList
      */
     public function __set($name, $value)
     {
+        global $zdb;
 
         if ( in_array($name, $this->pagination_fields)
             || in_array($name, $this->memberslist_fields)
@@ -440,7 +441,7 @@ class AdvancedMembersList extends MembersList
                 foreach ( $value as $v ) {
                     if ( is_numeric($v) ) {
                         //check type existence
-                        $s = new ContributionsTypes();
+                        $s = new ContributionsTypes($zdb);
                         $res = $s->get($v);
                         if ( $res !== false ) {
                             $this->_contributions_types[] = $v;

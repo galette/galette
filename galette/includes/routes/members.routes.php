@@ -199,7 +199,7 @@ $app->get(
             true
         );
 
-        $s = new Status();
+        $s = new Status($this->zdb);
         $statuses = $s->getList();
 
         $t = new Titles();
@@ -863,7 +863,7 @@ $app->get(
         }
 
         //Status
-        $statuts = new Galette\Entity\Status();
+        $statuts = new Status($this->zdb);
 
         //Groups
         $groups = new Groups();
@@ -1342,10 +1342,10 @@ $app->get(
         );
 
         //Status
-        $statuts = new Galette\Entity\Status();
+        $statuts = new Status($this->zdb);
 
         //Contributions types
-        $ct = new Galette\Entity\ContributionsTypes();
+        $ct = new Galette\Entity\ContributionsTypes($this->zdb);
 
         //Payments types
         $pt = array(
