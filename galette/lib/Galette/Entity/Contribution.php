@@ -783,24 +783,26 @@ class Contribution
     /**
      * Detach a contribution from a transaction
      *
-     * @param int $trans_id   Transaction identifier
-     * @param int $contrib_id Contribution identifier
+     * @param Db    $zdb        Database instance
+     * @param Login $login      Login instance
+     * @param int   $trans_id   Transaction identifier
+     * @param int   $contrib_id Contribution identifier
      *
      * @return boolean
      */
-    public static function unsetTransactionPart($trans_id, $contrib_id)
+    public static function unsetTransactionPart(Db $zdb, Login $login, $trans_id, $contrib_id)
     {
         try {
             //first, we check if contribution is part of transaction
-            $c = new Contribution($this->zdb, $this->login, (int)$contrib_id);
+            $c = new Contribution($zdb, $login, (int)$contrib_id);
             if ($c->isTransactionPartOf($trans_id)) {
-                $update = $this->zdb->update(self::TABLE);
+                $update = $zdb->update(self::TABLE);
                 $update->set(
                     array(Transaction::PK => null)
                 )->where(
                     self::PK . ' = ' . $contrib_id
                 );
-                $this->zdb->execute($update);
+                $zdb->execute($update);
                 return true;
             } else {
                 Analog::log(
@@ -823,20 +825,21 @@ class Contribution
     /**
      * Set a contribution as a transaction part
      *
+     * @param Db  $zdb        Database instance
      * @param int $trans_id   Transaction identifier
      * @param int $contrib_id Contribution identifier
      *
      * @return boolean
      */
-    public static function setTransactionPart($trans_id, $contrib_id)
+    public static function setTransactionPart(Db $zdb, $trans_id, $contrib_id)
     {
         try {
-            $update = $this->zdb->update(self::TABLE);
+            $update = $zdb->update(self::TABLE);
             $update->set(
                 array(Transaction::PK => $trans_id)
             )->where(self::PK . ' = ' . $contrib_id);
 
-            $this->zdb->execute($update);
+            $zdb->execute($update);
             return true;
         } catch (\Exception $e) {
             Analog::log(

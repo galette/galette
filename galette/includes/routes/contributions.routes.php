@@ -865,22 +865,6 @@ $app->get(
         );
         $disabled = array();
 
-        /*if (isset($_GET['detach'])) {
-            if (!Contribution::unsetTransactionPart($trans_id, $_GET['detach'])) {
-                $error_detected[] = _T("Unable to detach contribution from transaction");
-            } else {
-                $success_detected[] = _T("Contribution has been successfully detached from current transaction");
-            }
-        }*/
-
-        /*if (isset($_GET['cid']) && $_GET['cid'] != null) {
-            if (!Contribution::setTransactionPart($trans_id, $_GET['cid'])) {
-                $error_detected[] = _T("Unable to attach contribution to transaction");
-            } else {
-                $success_detected[] = _T("Contribution has been successfully attached to current transaction");
-            }
-        }*/
-
         if ($action === 'edit') {
             // initialize transactions structure with database values
             $trans->load($trans_id);
@@ -960,6 +944,48 @@ $app->get(
         return $response;
     }
 )->setName('transaction')->add($authenticate);
+
+$app->get(
+    '/transactions/{id}/attach/{cid}',
+    function ($request, $response, $args) {
+        if (!Contribution::setTransactionPart($this->zdb, $args['id'], $args['cid'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Unable to attach contribution to transaction")
+            );
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                _T("Contribution has been successfully attached to current transaction")
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('transaction', ['action' => 'edit', 'id' => $args['id']]));
+    }
+)->setName('attach_contribution')->add($authenticate);
+
+$app->get(
+    '/transactions/{id}/detach/{cid}',
+    function ($request, $response, $args) {
+        if (!Contribution::unsetTransactionPart($this->zdb, $this->login, $args['id'], $args['cid'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Unable to detach contribution from transaction")
+            );
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                _T("Contribution has been successfully detached from current transaction")
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('transaction', ['action' => 'edit', 'id' => $args['id']]));
+    }
+)->setName('detach_contribution')->add($authenticate);
 
 $app->post(
     '/transactions/{action:add|edit}[/{id:\d+}]',

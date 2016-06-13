@@ -94,7 +94,7 @@
                     <td class="{$cclass} nowrap right">{$contrib->amount}</td>
             {if $login->isAdmin() or $login->isStaff()}
                     <td class="{$cclass}">
-                        <a href="?trans_id={$transaction->id}&detach={$contrib->id}">
+                        <a href="{path_for name="detach_contribution" data=["id" => $transaction->id, "cid" => $contrib->id]}">
                             <img src="{base_url}/{$template_subdir}images/delete.png" alt="{_T string="Detach"}" width="16" height="16" title="{_T string="Detach contribution from this transaction"}"/>
                         </a>
                     </td>
@@ -209,7 +209,7 @@
                 $('.contribution_row').click(function(){
                     $('#contributions_list').dialog("close");
                     var _cid = $(this).find('input[name="contrib_id"]').val();
-                    window.location.href = window.location.href + '&cid=' + _cid;
+                    window.location.href = '{path_for name="attach_contribution" data=["id" => $transaction->id, "cid" => "%cid"]}'.replace(/%cid/, _cid);
                 }).css('cursor', 'pointer').attr('title', '{_T string="Click on a contribution row to attach it to the current transaction" escape="js"}');
             }
 {/if}
