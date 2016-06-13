@@ -124,7 +124,7 @@
 {if $transaction->id}
             $('#memberslist').click(function(){
                 $.ajax({
-                    url: '{path_for name="contributions"}',
+                    url: '{path_for name="contributions" data=["type" => "contributions"]}',
                     type: "GET",
                     data: {
                         ajax: true,
@@ -191,7 +191,7 @@
                 $('.pages a').bind({
                     click: function(){
                         $.ajax({
-                            url: '{path_for name="contributions" data=[]}gestion_contributions.php' + this.href.substring(this.href.indexOf('?')) + "&ajax=true",
+                            url: '{path_for name="contributions" data=["type" => "contributions"]}' + this.href.substring(this.href.indexOf('?')) + "&ajax=true",
                             type: "GET",
                             {include file="js_loader.tpl"},
                             success: function(res){

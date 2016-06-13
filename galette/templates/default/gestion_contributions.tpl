@@ -1,4 +1,9 @@
-{extends file="page.tpl"}
+{if $mode eq 'ajax'}
+    {assign var="extend" value='ajax.tpl'}
+{else}
+    {assign var="extend" value='page.tpl'}
+{/if}
+{extends file=$extend}
 {block name="content"}
         <form action="{path_for name="payments_filter" data=["type" => "contributions"]}" method="post" id="filtre">
         <div id="listfilter">
@@ -48,7 +53,7 @@
                 <td class="right">
                     {if $mode eq 'ajax'}
                         <input type="hidden" name="ajax" value="true"/>
-                        <input type="hidden" name="max_amount" value="{$max_amount}"/>
+                        <input type="hidden" name="max_amount" value="{$filters->max_amount}"/>
                     {/if}
                     <label for="nbshow">{_T string="Show:"}</label>
                     <select name="nbshow" id="nbshow">
@@ -65,7 +70,7 @@
                 <tr>
                     <th class="listing id_row">#</th>
                     <th class="listing left date_row">
-                        <a href="gestion_contributions.php?tri={Galette\Filters\ContributionsList::ORDERBY_DATE}" class="listing">{_T string="Date"}
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_DATE"|constant]}" class="listing">{_T string="Date"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_DATE')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -76,7 +81,7 @@
                         </a>
                     </th>
                     <th class="listing left date_row">
-                        <a href="gestion_contributions.php?tri={Galette\Filters\ContributionsList::ORDERBY_BEGIN_DATE}" class="listing">{_T string="Begin"}
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_BEGIN_DATE"|constant]}" class="listing">{_T string="Begin"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_BEGIN_DATE')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -87,7 +92,7 @@
                         </a>
                     </th>
                     <th class="listing left date_row">
-                        <a href="gestion_contributions.php?tri={Galette\Filters\ContributionsList::ORDERBY_END_DATE}" class="listing">{_T string="End"}
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_END_DATE"|constant]}" class="listing">{_T string="End"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_END_DATE')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -99,7 +104,7 @@
                     </th>
 {if ($login->isAdmin() or $login->isStaff()) and !isset($member)}
                     <th class="listing left">
-                        <a href="gestion_contributions.php?tri={Galette\Filters\ContributionsList::ORDERBY_MEMBER}" class="listing">{_T string="Member"}
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_MEMBER"|constant]}" class="listing">{_T string="Member"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_MEMBER')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -111,7 +116,7 @@
                     </th>
 {/if}
                     <th class="listing left">
-                        <a href="gestion_contributions.php?tri={Galette\Filters\ContributionsList::ORDERBY_TYPE}" class="listing">{_T string="Type"}
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_TYPE"|constant]}" class="listing">{_T string="Type"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_TYPE')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -122,7 +127,7 @@
                         </a>
                     </th>
                     <th class="listing left">
-                        <a href="gestion_contributions.php?tri={Galette\Filters\ContributionsList::ORDERBY_AMOUNT}" class="listing">{_T string="Amount"}
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_AMOUNT"|constant]}" class="listing">{_T string="Amount"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_AMOUNT')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -133,7 +138,7 @@
                         </a>
                     </th>
                     <th class="listing left">
-                        <a href="gestion_contributions.php?tri={Galette\Filters\ContributionsList::ORDERBY_PAYMENT_TYPE}" class="listing">{_T string="Payment type"}
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_PAYMENT_TYPE"|constant]}" class="listing">{_T string="Payment type"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_PAYMENT_TYPE')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>

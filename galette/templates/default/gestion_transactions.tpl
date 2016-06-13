@@ -40,9 +40,9 @@
                 <tr>
                     <th class="listing id_row">#</th>
                     <th class="listing left date_row">
-                        <a href="{path_for name="contributions" data=["type" => "transactions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_DATE"|constant]}" class="listing">{_T string="Date"}
-                        {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_DATE')}
-                            {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
+                        <a href="{path_for name="contributions" data=["type" => "transactions", "option" => "order", "value" => "Galette\Filters\TransactionsList::ORDERBY_DATE"|constant]}" class="listing">{_T string="Date"}
+                        {if $filters->orderby eq constant('Galette\Filters\TransactionsList::ORDERBY_DATE')}
+                            {if $filters->ordered eq constant('Galette\Filters\TransactionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
                         <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -53,9 +53,9 @@
                     <th class="listing left">{_T string="Description"}</th>
 {if $login->isAdmin() or $login->isStaff()}
                     <th class="listing left">
-                        <a href="{path_for name="contributions" data=["type" => "transactions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_MEMBER"|constant]}" class="listing">{_T string="Originator"}
-                        {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_MEMBER')}
-                            {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
+                        <a href="{path_for name="contributions" data=["type" => "transactions", "option" => "order", "value" => "Galette\Filters\TransactionsList::ORDERBY_MEMBER"|constant]}" class="listing">{_T string="Originator"}
+                        {if $filters->orderby eq constant('Galette\Filters\TransactionsList::ORDERBY_MEMBER')}
+                            {if $filters->ordered eq constant('Galette\Filters\TransactionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
                         <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
@@ -65,9 +65,9 @@
                     </th>
 {/if}
                     <th class="listing left">
-                        <a href="{path_for name="contributions" data=["type" => "transactions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_AMOUNT"|constant]}" class="listing">{_T string="Amount"}
-                        {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_AMOUNT')}
-                            {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
+                        <a href="{path_for name="contributions" data=["type" => "transactions", "option" => "order", "value" => "Galette\Filters\TransactionsList::ORDERBY_AMOUNT"|constant]}" class="listing">{_T string="Amount"}
+                        {if $filters->orderby eq constant('Galette\Filters\TransactionsList::ORDERBY_AMOUNT')}
+                            {if $filters->ordered eq constant('Galette\Filters\TransactionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
                             {else}
                         <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>

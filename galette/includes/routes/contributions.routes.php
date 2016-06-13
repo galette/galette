@@ -149,6 +149,14 @@ use Galette\Filters\ContributionsList;
 $app->get(
     '/{type:transactions|contributions}[/{option:page|order|member}/{value:\d+|all}]',
     function ($request, $response, $args = []) {
+        $ajax = false;
+        if ($request->isXhr()
+            || isset($request->getQueryParams()['ajax'])
+            && $request->getQueryParams()['ajax'] == 'true'
+        ) {
+            $ajax = true;
+        }
+
         $option = null;
         if (isset($args['option'])) {
             $option = $args['option'];
@@ -160,11 +168,20 @@ $app->get(
 
         $filter_name = 'filter_' . $args['type'];
 
-        if (isset($this->session->$filter_name)) {
+        if (isset($this->session->$filter_name) && $ajax === false) {
             $filters = $this->session->$filter_name;
         } else {
             $filter_class = '\\Galette\\Filters\\' . ucwords($args['type'] . 'List');
             $filters = new $filter_class();
+        }
+
+        $max_amount = null;
+        if (isset($request->getQueryParams()['max_amount'])) {
+            $filters->filtre_transactions = true;
+            $filters->max_amount = (int)$request->getQueryParams()['max_amount'];
+        } else {
+            $filters->filtre_transactions = false;
+            $filters->max_amount = null;
         }
 
         if ($option !== null) {
@@ -197,7 +214,9 @@ $app->get(
         $contrib = new $class($this->zdb, $this->login, $filters);
 
         //store filters into session
-        $this->session->$filter_name = $filters;
+        if ($ajax === false) {
+            $this->session->$filter_name = $filters;
+        }
 
         //assign pagination variables to the template and add pagination links
         $filters->setSmartyPagination($this->router, $this->view->getSmarty());
@@ -212,7 +231,7 @@ $app->get(
             'list'              => $contrib->getList(true),
             'nb'                => $contrib->getCount(),
             'filters'           => $filters,
-            'mode'              => 'std'
+            'mode'              => ($ajax === true ? 'ajax' : 'std')
         ];
 
         if ($filters->filtre_cotis_adh != null) {
@@ -896,7 +915,8 @@ $app->get(
             'required'          => $required,
             'data'              => $transaction, //TODO: remove
             'transaction'       => $trans,
-            'require_calendar'  => true
+            'require_calendar'  => true,
+            'require_dialog'    => true
         ];
 
         if ($trans->id != '') {
@@ -1095,6 +1115,6 @@ $app->post(
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('transactions'));
+            ->withHeader('Location', $this->router->pathFor('contributions', ['type' => 'transactions']));
     }
 )->setName('doEditTransaction')->add($authenticate);
