@@ -196,7 +196,8 @@ $container['acls'] = function ($c) {
         'removeEntitled'    => 'staff',
         'dynamicTranslations'       => 'staff',
         'attach_contribution'       => 'staff',
-        'detach_contribution'       => 'staff'
+        'detach_contribution'       => 'staff',
+        'removeContributions'       => 'staff'
     ];
 
     //load user defined ACLs

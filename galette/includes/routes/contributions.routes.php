@@ -1144,3 +1144,65 @@ $app->post(
             ->withHeader('Location', $this->router->pathFor('contributions', ['type' => 'transactions']));
     }
 )->setName('doEditTransaction')->add($authenticate);
+
+$app->map(
+    ['GET', 'POST'],
+    '/{type:contributions|transactions}/remove[/{id}]',
+    function ($request, $response, $args) {
+        $ids = null;
+
+        if ($request->isGet() && isset($args['id'])) {
+            $ids = $args['id'];
+        } elseif ($request->isPost()) {
+            $post = $request->getParsedBody();
+            if (isset($post['contrib_sel'])) {
+                $ids = $post['contrib_sel'];
+            }
+        }
+
+        if ($ids !== null) {
+            $class = '\\Galette\Repository\\' . ucwords($args['type']);
+            $contribs = new $class($this->zdb, $this->login);
+            $rm = $contribs->remove($ids, $this->history);
+            if ($rm) {
+                $msg = null;
+                if ($args['type'] === 'contributions') {
+                    $msg = _T("Contributions(s) has been removed!");
+                } else {
+                    $msg = _T("Transactions(s) has been removed!");
+                }
+                $this->flash->addMessage(
+                    'success_detected',
+                    $msg
+                );
+            } else {
+                $msg = null;
+                if ($args['type'] === 'contributions') {
+                    $msg = _T("An error occured trying to remove contributions(s) :(");
+                } else {
+                    $msg = _T("An error occured trying to remove transaction(s) :(");
+                }
+                $this->flash->addMessage(
+                    'error_detected',
+                    $msg
+                );
+            }
+        } else {
+            $msg = null;
+            if ($args['type'] === 'contributions') {
+                $msg = _T("Please provide an ID to remove contributions!");
+            } else {
+                $msg = _T("Please provide an ID to remove transactions!");
+            }
+
+            $this->flash->addMessage(
+                'error_detected',
+                $msg
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('contributions', ['type' => $args['type']]));
+    }
+)->setName('removeContributions')->add($authenticate);

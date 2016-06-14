@@ -179,7 +179,7 @@ class Contribution
             //calculate begin date for cotisation
             $this->_begin_date = $this->_date;
             if ( $this->_is_cotis ) {
-                $curend = self::getDueDate($this->_member);
+                $curend = self::getDueDate($this->zdb, $this->_member);
                 if ($curend != '') {
                     $dend = new \DateTime($curend);
                     $now = date('Y-m-d');
@@ -627,7 +627,7 @@ class Contribution
     private function _updateDeadline()
     {
         try {
-            $due_date = self::getDueDate($this->_member);
+            $due_date = self::getDueDate($this->zdb, $this->_member);
 
             if ( $due_date != '' ) {
                 $date_fin_update = $due_date;
@@ -739,15 +739,15 @@ class Contribution
     /**
      * Retrieve member due date
      *
+     * @param Db      $zdb       Database instance
      * @param integer $member_id Member identifier
      *
      * @return date
      */
-    public static function getDueDate($member_id)
+    public static function getDueDate(Db $zdb, $member_id)
     {
-
         try {
-            $select = $this->zdb->select(self::TABLE, 'c');
+            $select = $zdb->select(self::TABLE, 'c');
             $select->columns(
                 array(
                     'max_date' => new Expression('MAX(date_fin_cotis)')
@@ -762,7 +762,7 @@ class Contribution
                 array('cotis_extension' => new Expression('true'))
             );
 
-            $results = $this->zdb->execute($select);
+            $results = $zdb->execute($select);
             $result = $results->current();
             $due_date = $result->max_date;
 

@@ -43,6 +43,7 @@ use Galette\Entity\Transaction;
 use Galette\Entity\Adherent;
 use Galette\Core\Db;
 use Galette\Core\Login;
+use Galette\Core\History;
 use Galette\Filters\TransactionsList;
 
 /**
@@ -295,7 +296,7 @@ class Transactions
      *
      * @return boolean
      */
-    public function removeTransactions($ids, History $hist)
+    public function remove($ids, History $hist)
     {
         $list = array();
         if (is_numeric($ids)) {
@@ -325,6 +326,7 @@ class Transactions
                 $hist->add(
                     "Transactions deleted (" . print_r($list, true) . ')'
                 );
+                return true;
             } catch (\Exception $e) {
                 $this->zdb->connection->rollBack();
                 Analog::log(

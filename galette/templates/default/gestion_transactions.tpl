@@ -117,7 +117,7 @@
                         <a href="{path_for name="transaction" data=["action" => "edit", "id" => $transaction->id]}">
                             <img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/>
                         </a>
-                        <a onclick="return confirm('{_T string="Do you really want to delete this transaction of the database ?"|escape:"javascript"}')" href="gestion_transactions.php?sup={$transaction->id}">
+                        <a onclick="return confirm('{_T string="Do you really want to delete this transaction of the database ?"|escape:"javascript"}')" href="{path_for name="removeContributions" data=["type" => "transactions", "id" => $transaction->id]}">
                             <img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/>
                         </a>
                     </td>

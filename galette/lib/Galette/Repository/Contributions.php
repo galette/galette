@@ -41,6 +41,7 @@ use Analog\Analog;
 use Zend\Db\Sql\Expression;
 use Galette\Core\Db;
 use Galette\Core\Login;
+use Galette\Core\History;
 use Galette\Entity\Contribution;
 use Galette\Entity\Adherent;
 use Galette\Entity\Transaction;
@@ -405,14 +406,13 @@ class Contributions
      * Remove specified contributions
      *
      * @param integer|array $ids         Contributions identifiers to delete
+     * @param History       $hist        History
      * @param boolean       $transaction True to begin a database transaction
      *
      * @return boolean
      */
-    public function removeContributions($ids, $transaction = true)
+    public function remove($ids, History $hist, $transaction = true)
     {
-        global $hist;
-
         $list = array();
         if (is_numeric($ids)) {
             //we've got only one identifier
@@ -447,6 +447,7 @@ class Contributions
                         _T("Contributions deleted (%list)")
                     )
                 );
+                return true;
             } catch (\Exception $e) {
                 if ($transaction) {
                     $this->zdb->connection->rollBack();
