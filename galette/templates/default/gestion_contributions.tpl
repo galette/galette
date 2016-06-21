@@ -228,7 +228,12 @@
                         <a href="pdf_contribution.php?id_cotis={$contribution->id}">
                             <img src="{base_url}/{$template_subdir}images/icon-pdf.png" alt="{_T string="[pdf]"}" width="16" height="16" title="{_T string="Print an invoice or a receipt (depending on contribution type)"}"/>
                         </a>
-                        <a href="{path_for name="contribution" data=["action" => "edit", "id" => $contribution->id]}">
+                        {if $contribution->isCotis()}
+                            {assign var="ctype" value="fee"}
+                        {else}
+                            {assign var="ctype" value="donation"}
+                        {/if}
+                        <a href="{path_for name="contribution" data=["type" => $ctype, "action" => "edit", "id" => $contribution->id]}">
                             <img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="Edit the contribution"}"/>
                         </a>
                         <a onclick="return confirm('{_T string="Do you really want to delete this contribution of the database ?"|escape:"javascript"}')" href="{path_for name="removeContributions" data=["type" => "contributions", "id" => $contribution->id]}">

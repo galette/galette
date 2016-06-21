@@ -330,7 +330,7 @@ $app->post(
 )->add($authenticate);
 
 $app->get(
-    '/contributions/{action:add|edit}[/{id:\d+}]',
+    '/contribution/{type:fee|donation}/{action:add|edit}[/{id:\d+}]',
     function ($request, $response, $args) {
         if ($this->session->contribution !== null) {
             $contrib = $this->session->contribution['contribution'];
@@ -358,74 +358,55 @@ $app->get(
                 ->withHeader('Location', $this->router->pathFor('contribution', ['action' => 'add']));
         }
 
-        //first/second step: select member
-        $id_adh = get_numeric_form_value('id_adh', '');
-        //first/second step: select contribution type
-        $selected_type = get_form_value('id_type_cotis', 1);
+        $id_adh = null;
         //first/second step: transaction id
         $trans_id = get_numeric_form_value('trans_id', '');
-        //mark first step has been passed
-        $type_selected = $id_cotis != null || get_form_value('type_selected', 0);
 
         // flagging required fields for first step only
-        $required = array(
+        $required = [
             'id_type_cotis'     => 1,
             'id_adh'            => 1,
-            'date_enreg'        => 1
-        );
+            'date_enreg'        => 1,
+            'montant_cotis'     => 1, //TODO: not always required, see #196
+            'date_debut_cotis'  => 1,
+            'date_fin_cotis'    => $contrib->isCotis(),
 
-        $cotis_extension = 0; // TODO: remove and remplace with $contrib->isCotis()
+        ];
+
         $disabled = array();
 
-        if ($type_selected && !($id_adh || $id_cotis)) {
-            $error_detected[] = _T("You have to select a member.");
-            $type_selected = false;
-        } elseif ($id_cotis || $type_selected || $trans_id || $id_adh) {
-            if ($id_cotis) {
-                $contrib = new Contribution($this->zdb, $this->login, (int)$id_cotis);
-                if ($contrib->id == '') {
-                    //not possible to load contribution, exit
-                    $this->flash->addMessage(
-                        'error_detected',
-                        str_replace(
-                            '%id',
-                            $id_cotis,
-                            _T("Unable to load contribution #%id!")
-                        )
-                    );
-                    return $response
-                        ->withStatus(301)
-                        ->withHeader('Location', $this->router->pathFor('contributions', ['type' => 'contributions']));
-                }
-            } else {
-                $args = array(
-                    'type'  => $selected_type,
-                    'adh'   => $id_adh
+        if ($args['action'] === 'edit') {
+            $contrib = new Contribution($this->zdb, $this->login, (int)$id_cotis);
+            if ($contrib->id == '') {
+                //not possible to load contribution, exit
+                $this->flash->addMessage(
+                    'error_detected',
+                    str_replace(
+                        '%id',
+                        $id_cotis,
+                        _T("Unable to load contribution #%id!")
+                    )
                 );
-                if ($trans_id != '') {
-                    $args['trans'] = $trans_id;
-                }
-                if ($this->preferences->pref_membership_ext != '') {
-                    $args['ext'] = $this->preferences->pref_membership_ext;
-                }
-                $contrib = new Contribution($this->zdb, $this->login, $args);
-                if ($contrib->isTransactionPart()) {
-                    $id_adh = $contrib->member;
-                    //Should we disable contribution member selection if we're from
-                    //a transaction? In most cases, it would be OK I guess, but I'm
-                    //very unsure
-                    //$disabled['id_adh'] = ' disabled="disabled"';
-                }
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('contributions', ['type' => 'contributions']));
             }
+        }
 
-            //second step only: first step, and all the rest
-            // flagging required fields for second step
-            $second_required = array(
-                'montant_cotis'     => 1,
-                'date_debut_cotis'  => 1,
-                'date_fin_cotis'    => $contrib->isCotis(),
-            );
-            $required = $required + $second_required;
+        if ($trans_id) {
+            $cparams = ['trans' => $trans_id];
+            if ($this->preferences->pref_membership_ext != '') {
+                $cparams['ext'] = $this->preferences->pref_membership_ext;
+            }
+            $contrib = new Contribution($this->zdb, $this->login, $cparams);
+            if ($contrib->isTransactionPart()) {
+                $id_adh = $contrib->member;
+                //Should we disable contribution member selection if we're from
+                //a transaction? In most cases, it would be OK I guess, but I'm
+                //unsure
+                //Maybe we should consider to propose family's members if any, and disable if not.
+                //$disabled['id_adh'] = ' disabled="disabled"';
+            }
         }
 
         // Validation
@@ -444,7 +425,13 @@ $app->get(
         }
 
         // template variable declaration
-        $title = _T("Contribution card");
+        $title = null;
+        if ($args['type'] === 'fee') {
+            $title = _T("Membership fee");
+        } else {
+            $title = _T("Donation");
+        }
+
         if ($contrib->id != '') {
             $title .= ' (' . _T("modification") . ')';
         } else {
@@ -455,23 +442,15 @@ $app->get(
             'page_title'        => $title,
             'required'          => $required,
             'disabled'          => $disabled,
-            'data'              => $contribution, //TODO: remove
             'contribution'      => $contrib,
-            'type_selected'     => $type_selected,
             'adh_selected'      => $id_adh,
-            'require_calendar'  => true
+            'require_calendar'  => true,
+            'type'              => $args['type']
         ];
-
-        if (isset($head_redirect)) {
-            $params['head_redirect'] = $head_redirect;
-        }
 
         // contribution types
         $ct = new ContributionsTypes($this->zdb);
-        $type_cotis_options = $ct->getList(
-            ($type_selected == 1 && $id_adh != '') ? $contrib->isCotis() : null
-        );
-        $params['type_cotis_options'] = $type_cotis_options;
+        $params['type_cotis_options'] = $ct->getList($args['type'] === 'fee');
 
         // members
         $m = new Members();
@@ -491,9 +470,11 @@ $app->get(
             $params['adh_options'] = $adh_options;
         }
 
-        $params['pref_membership_ext'] = $cotis_extension ?
-            $this->preferences->pref_membership_ext :
-            '';  //TODO: remove and replace with $contrib specific property
+        $ext_membership = '';
+        if (isset($contrib) && $contrib->isCotis() || !isset($contrib) && $args['type'] === 'fee') {
+            $ext_membership = $this->preferences->pref_membership_ext;
+        }
+        $params['pref_membership_ext'] = $ext_membership;
 
         // - declare dynamic fields for display
         $dynamic_fields = $dyn_fields->prepareForDisplay(
@@ -515,7 +496,7 @@ $app->get(
 )->setName('contribution')->add($authenticate);
 
 $app->post(
-    '/contributions/{action:add|edit}[/{id:\d+}]',
+    '/contribution/{type:fee|donation}/{action:add|edit}[/{id:\d+}]',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
         $error_detected = [];

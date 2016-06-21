@@ -2,7 +2,7 @@
 
 {block name="content"}
 {if isset($adh_options)}
-        <form action="ajouter_contribution.php" method="post">
+        <form action="{path_for name="contribution" data=["type" => $type, "action" => "add"]}" method="post">
         <div class="bigtable">
     {if $contribution->isTransactionPart()}
         {assign var="mid" value=$contribution->transaction->member}
@@ -12,7 +12,7 @@
                     <tr>
                         <td colspan="5">
                             {$contribution->transaction->description}
-                            <a href="{$galette_base_path}ajouter_transaction.php?trans_id={$contribution->transaction->id}" title="{_T string="View transaction"}">
+                            <a href="{path_for name="transaction" data=["action" => "edit", "id" => $contribution->transaction->id]}" title="{_T string="View transaction"}">
                                 <img src="{base_url}/{$template_subdir}images/icon-money.png"
                                     alt="{_T string="[view]"}"
                                     width="16"
@@ -41,7 +41,7 @@
     {/if}
             <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
             <fieldset class="cssform">
-                <legend class="ui-state-active ui-corner-top">{_T string="Select contributor and contribution type"}</legend>
+                <legend class="ui-state-active ui-corner-top">{if $type eq 'fee'}{_T string="Select contributor and membership fee type"}{else}{_T string="Select contributor and donation type"}{/if}</legend>
                 <p>
                     <label for="id_adh" class="bline">{_T string="Contributor:"}</label>
                     <select name="id_adh" id="id_adh"{if isset($disabled.id_adh)} {$disabled.id_adh}{/if}>
@@ -55,8 +55,7 @@
                 </p>
                 <p>
                     <label for="id_type_cotis" class="bline">{_T string="Contribution type:"}</label>
-                    <select name="id_type_cotis" id="id_type_cotis"
-                        {if $type_selected eq 0}onchange="form.submit()"{/if}{if $required.id_type_cotis eq 1} required{/if}>
+                    <select name="id_type_cotis" id="id_type_cotis"{if $required.id_type_cotis eq 1} required="required"{/if}>
                         {if $contribution->type}
                             {assign var="selectedid" value=$contribution->type->id}
                         {else}
@@ -64,15 +63,11 @@
                         {/if}
                         {html_options options=$type_cotis_options selected=$selectedid}
                     </select>
-    {if $type_selected eq 1}
-                    <a class="button" id="btnback" href="javascript:history.back();" title="{_T string="Back to previous window, if you want to select a contribution type that is not listed here"}">{_T string="Back"}</a>
-    {/if}
                 </p>
             </fieldset>
 
-    {if $type_selected eq 1}
             <fieldset class="cssform">
-                <legend class="ui-state-active ui-corner-top">{_T string="Details of contribution"}</legend>
+                <legend class="ui-state-active ui-corner-top">{if $type eq 'fee'}{_T string="Details of membership fee"}{else}{_T string="Details of donation"}{/if}</legend>
                 <p>
                     <label class="bline" for="montant_cotis">{_T string="Amount:"}</label>
                     <input type="text" name="montant_cotis" id="montant_cotis" value="{$contribution->amount}" maxlength="10"{if $required.montant_cotis eq 1} required{/if}/>
@@ -98,7 +93,7 @@
 
                 <p>
                     <label class="bline" for="date_debut_cotis">
-                        {if $contribution->isCotis()}
+                        {if $type eq 'fee'}
                             {_T string="Start date of membership:"}
                         {else}
                             {_T string="Date of contribution:"}
@@ -107,7 +102,7 @@
                     <input class="past-date-pick" type="text" name="date_debut_cotis" id="date_debut_cotis" value="{$contribution->begin_date}" maxlength="10"{if $required.date_debut_cotis eq 1} required{/if}/>
                     <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
                 </p>
-        {if $contribution->isCotis()}
+        {if $type eq 'fee'}
                 <p>
             {if $pref_membership_ext != ""}
                     <label class="bline" for="duree_mois_cotis">{_T string="Membership extension:"}</label>
@@ -126,7 +121,6 @@
                 </p>
             </fieldset>
         {include file="edit_dynamic_fields.tpl"}
-    {/if} {* $type_selected eq 1 *}
     {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
             <p>
                 <label for="mail_confirm">{_T string="Notify member"}</label>
@@ -136,19 +130,10 @@
     {/if}
         </div>
         <div class="button-container">
-    {if $type_selected eq 1}
             <input type="submit" id="btnsave" value="{_T string="Save"}"/>
             <input type="hidden" name="id_cotis" value="{$contribution->id}"/>
-            {* Second step validator *}
             <input type="hidden" name="valid" value="1"/>
-    {else} {* $type_selected ne 1 *}
-            <input type="submit" value="{_T string="Continue"}"/>
-            {* At creation time, we can get an amount, that will be hidden on the first step *}
-            <input type="hidden" name="montant_cotis" value="{$contribution->amount}"/>
-    {/if} {* $type_selected eq 1 *}
             <input type="hidden" name="trans_id" value="{if $contribution->transaction neq NULL}{$contribution->transaction->id}{/if}"/>
-            {* First step validator *}
-            <input type="hidden" name="type_selected" value="1"/>
         </div>
         </form>
     <script type="text/javascript">
@@ -170,7 +155,7 @@
         <p>
             {_T string="Unfortunately, there is no member in your database yet,"}
             <br/>
-            <a href="ajouter_adherent.php">{_T string="please create a member"}</a>
+            <a href="{path_for name="editmember" data=["action" => "add"]}">{_T string="please create a member"}</a>
         </p>
     </div>
 {/if}
