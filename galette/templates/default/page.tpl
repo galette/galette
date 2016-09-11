@@ -141,7 +141,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li><a href="{path_for name="public_members"}" title="{_T string="Members list"}">{_T string="Members list"}</a></li>
             <li><a href="{path_for name="public_trombinoscope"}" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a></li>
             {* Include plugins menu entries *}
-            {$plugins->getPublicMenus($tpl, $preferences)}
+            {$plugins->getPublicMenus($tpl)}
         </ul>
 {/if}
 {if $login->isAdmin()}
