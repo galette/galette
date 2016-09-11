@@ -199,7 +199,9 @@ $container['acls'] = function ($c) {
         'detach_contribution'       => 'staff',
         'removeContributions'       => 'staff',
         'pdf_groups'                => 'groupmanager',
-        'ajax_group'                => 'groupmanager'
+        'ajax_group'                => 'groupmanager',
+        'ajax_groupname_unique'     => 'staff',
+        'add_group'                 => 'staff'
     ];
 
     //load user defined ACLs
@@ -260,3 +262,7 @@ $container['fields_config'] = function ($c) {
 $container['App\Action\HomeAction'] = function ($c) {
     return new App\Action\HomeAction($c->get('view'), $c->get('logger'));
 };
+
+//For bad existing globals can be used...
+$hist = $container['history'];
+$login = $container['login'];

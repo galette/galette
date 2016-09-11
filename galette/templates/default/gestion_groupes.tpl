@@ -14,7 +14,7 @@
         </div>
 {if $login->isAdmin() or $login->isStaff()}
         <div class="center">
-            <a href="gestion_groupes.php?new" id="btnadd" class="button">{_T string="New group"}</a>
+            <a href="{path_for name="add_group" data=["name" => NAME]}" id="btnadd" class="button">{_T string="New group"}</a>
         </div>
 {/if}
     </aside>
@@ -126,7 +126,7 @@
                         if ( _name != '' ) {
                             //check uniqueness
                             $.ajax({
-                                url: 'ajax_unique_group.php',
+                                url: '{path_for name="ajax_groupname_unique"}',
                                 type: "POST",
                                 data: {
                                     ajax: true,
@@ -136,9 +136,13 @@
                                 success: function(res){
                                     var _res = jQuery.parseJSON(res);
                                     if ( _res.success == false ) {
-                                        alert('{_T string="The group name you have requested already exits in the database."}');
+                                        if (_res.message) {
+                                            alert(_res.message)
+                                        } else {
+                                            alert('{_T string="The group name you have requested already exits in the database."}');
+                                            }
                                     } else {
-                                        $(location).attr('href', _href + '&group_name=' + _name);
+                                        $(location).attr('href', _href.replace('NAME', _name));
                                     }
                                 },
                                 error: function() {

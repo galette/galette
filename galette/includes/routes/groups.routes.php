@@ -35,6 +35,7 @@
  * @since     0.8.2dev 2014-11-27
  */
 
+use Galette\Entity\Adherent;
 use Galette\Entity\Group;
 use Galette\Repository\Groups;
 use Galette\IO\PdfGroups;
@@ -96,6 +97,24 @@ $app->get(
 )->setName('groups')->add($authenticate);
 
 $app->get(
+    '/group/add/{name}',
+    function ($request, $response, $args) {
+        $group = new Group();
+        $group->setLogin($this->login);
+        $group->setName($args['name']);
+        if (!$this->login->isSuperAdmin()) {
+            $group->setManagers(new Adherent($this->zdb, $this->login->id));
+        }
+        $group->store();
+        $id = $group->getId();
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('groups', ["id" => $id]));
+    }
+)->setName('add_group')->add($authenticate);
+
+$app->get(
     '/pdf/groups[/{id}]',
     function ($request, $response, $args) {
         $groups = new Groups($this->zdb, $this->login);
@@ -151,3 +170,19 @@ $app->post(
         return $response;
     }
 )->setName('ajax_group')->add($authenticate);
+
+$app->post(
+    '/ajax/unique_groupname',
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        if (!isset($post['gname']) || $post['gname'] == '') {
+            Analog::log(
+                'Trying to check if group name is unique without name specified',
+                Analog::INFO
+            );
+            echo json_encode(['success' => false, 'message' => htmlentities(_T("Group name is missing!"))]);
+        } else {
+            echo json_encode(['success' => Groups::isUnique($this->zdb, $post['gname'])]);
+        }
+    }
+)->setName('ajax_groupname_unique')->add($authenticate);

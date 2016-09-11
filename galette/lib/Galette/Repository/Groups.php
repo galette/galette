@@ -398,14 +398,13 @@ class Groups
     /**
      * Check if groupname is unique
      *
+     * @param Db     $zdb  Database instance
      * @param string $name Requested name
      *
      * @return boolean
      */
-    public static function isUnique($name)
+    public static function isUnique(Db $zdb, $name)
     {
-        global $zdb;
-
         try {
             $select = $zdb->select(Group::TABLE);
             $select->columns(
@@ -421,4 +420,3 @@ class Groups
         }
     }
 }
-
