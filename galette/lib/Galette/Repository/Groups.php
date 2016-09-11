@@ -42,6 +42,8 @@ use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate\PredicateSet;
 use Galette\Entity\Group;
 use Galette\Entity\Adherent;
+use Galette\Core\Login;
+use Galette\Core\Db;
 
 /**
  * Groups entitiy
@@ -59,6 +61,18 @@ class Groups
 {
 
     /**
+     * Constructor
+     *
+     * @param Db    $zdb   Database instance
+     * @param Login $login Login instance
+     */
+    public function __construct(Db $zdb, Login $login)
+    {
+        $this->zdb = $zdb;
+        $this->login = $login;
+    }
+
+    /**
      * Get simple groups list (only id and names)
      *
      * @param boolean $as_groups Retrieve Group[]
@@ -71,7 +85,7 @@ class Groups
 
         try {
             $select = $zdb->select(Group::TABLE);
-            if ( $as_groups === false ) {
+            if ($as_groups === false) {
                 $select->columns(
                     array(Group::PK, 'group_name')
                 );
@@ -81,8 +95,8 @@ class Groups
 
             $results = $zdb->execute($select);
 
-            foreach ( $results as $row ) {
-                if ( $as_groups === false ) {
+            foreach ($results as $row) {
+                if ($as_groups === false) {
                     $groups[$row->$gpk] = $row->group_name;
                 } else {
                     $groups[$row->$gpk] = new Group($row);
@@ -105,11 +119,10 @@ class Groups
      *
      * @return Group[]
      */
-    public function getList($full = true, $id=null)
+    public function getList($full = true, $id = null)
     {
-        global $zdb, $login;
         try {
-            $select = $zdb->select(Group::TABLE, 'a');
+            $select = $this->zdb->select(Group::TABLE, 'a');
             $select->join(
                 array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
                 'a.' . Group::PK . '=b.' . Group::PK,
@@ -117,19 +130,19 @@ class Groups
                 $select::JOIN_LEFT
             );
 
-            if ( !$login->isAdmin() && !$login->isStaff() && $full === true ) {
+            if (!$this->login->isAdmin() && !$this->login->isStaff() && $full === true) {
                 $select->join(
                     array('c' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
                     'a.' . Group::PK . '=c.' . Group::PK,
                     array()
-                )->where('c.' . Adherent::PK . ' = ' . $login->id);
+                )->where('c.' . Adherent::PK . ' = ' . $this->login->id);
             }
 
-            if ( $full !== true ) {
+            if ($full !== true) {
                 $select->where('parent_group IS NULL');
             }
 
-            if ( $id !== null ) {
+            if ($id !== null) {
                 $select->where(
                     array(
                         'a.' . Group::PK => $id,
@@ -147,13 +160,13 @@ class Groups
 
             $groups = array();
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
 
-            foreach ( $results as $row ) {
-                $group = new Group($row);;
+            foreach ($results as $row) {
+                $group = new Group($row);
                 $groups[$group->getFullName()] = $group;
             }
-            if ( $full ) { // Order by tree name instead of name
+            if ($full) { // Order by tree name instead of name
                 ksort($groups);
                 Analog::log(
                     'SORTED:' . print_r(array_keys($groups), true),

@@ -100,7 +100,7 @@ $app->post(
         }
 
         if ($this->login->isLogged()) {
-        	$this->session->login = $this->login;
+            $this->session->login = $this->login;
             $this->history->add(_T("Login"));
             return $baseRedirect($request, $response, []);
         } else {
@@ -114,7 +114,7 @@ $app->post(
 //logout procedure
 $app->get(
     '/logout',
-    function ($request, $response) use ($app, $login) {
+    function ($request, $response) {
         $this->login->logOut();
         \RKA\Session::destroy();
         return $response
