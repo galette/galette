@@ -371,8 +371,6 @@ $app->get(
         $groups = new Groups();
         $groups_list = $groups->getList();
 
-        //$view = $app->view();
-
         //assign pagination variables to the template and add pagination links
         $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
         $filters->setViewCommonsFilters($this->preferences, $this->view->getSmarty());
