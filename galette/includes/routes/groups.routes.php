@@ -37,12 +37,14 @@
 
 use Galette\Entity\Group;
 use Galette\Repository\Groups;
+use Galette\IO\PdfGroups;
 
 $app->get(
     '/groups[/{id}]',
     function ($request, $response, $args) {
-        $groups = new Groups();
+        $groups = new Groups($this->zdb, $this->login);
         $group = new Group();
+        $group->setLogin($this->login);
 
         $groups_root = $groups->getList(false);
         $groups_list = $groups->getList();
@@ -50,6 +52,16 @@ $app->get(
         $id = null;
         if (isset($args['id'])) {
             $id = $args['id'];
+            if ($this->login->isGroupManager($id)) {
+                $group->load($id);
+            } else {
+                Analog::log(
+                    'Trying to display group ' . $id . ' without appropriate permissions',
+                    Analog::INFO
+                );
+                $response->setStatus(403);
+                return $response;
+            }
         }
 
         if ($id === null && count($groups_root) > 0) {
@@ -82,3 +94,60 @@ $app->get(
         return $response;
     }
 )->setName('groups')->add($authenticate);
+
+$app->get(
+    '/pdf/groups[/{id}]',
+    function ($request, $response, $args) {
+        $groups = new Groups($this->zdb, $this->login);
+
+        $groups_list = null;
+        if (isset($args['id'])) {
+            $groups_list = $groups->getList(true, $args['id']);
+        } else {
+            $groups_list = $groups->getList();
+        }
+
+        if (!is_array($groups_list) || count($groups_list) < 1) {
+            Analog::log(
+                'An error has occured, unable to get groups list.',
+                Analog::ERROR
+            );
+
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Unable to get groups list.")
+            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('groups'));
+        }
+
+        $pdf = new PdfGroups($this->preferences);
+        $pdf->draw($groups_list, $this->login);
+        $pdf->Output(_T("groups_list") . '.pdf', 'D');
+    }
+)->setName('pdf_groups')->add($authenticate);
+
+$app->post(
+    '/ajax/group',
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        $id = $post['id_group'];
+        $group = new Galette\Entity\Group((int)$id);
+
+        $groups = new Groups($this->zdb, $this->login);
+
+        // display page
+        $this->view->render(
+            $response,
+            'group.tpl',
+            array(
+                'mode'      => 'ajax',
+                'groups'    => $groups->getList(),
+                'group'     => $group
+            )
+        );
+        return $response;
+    }
+)->setName('ajax_group')->add($authenticate);

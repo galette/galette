@@ -197,7 +197,9 @@ $container['acls'] = function ($c) {
         'dynamicTranslations'       => 'staff',
         'attach_contribution'       => 'staff',
         'detach_contribution'       => 'staff',
-        'removeContributions'       => 'staff'
+        'removeContributions'       => 'staff',
+        'pdf_groups'                => 'groupmanager',
+        'ajax_group'                => 'groupmanager'
     ];
 
     //load user defined ACLs

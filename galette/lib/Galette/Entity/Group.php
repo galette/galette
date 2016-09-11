@@ -37,6 +37,7 @@
 
 namespace Galette\Entity;
 
+use Galette\Core\Login;
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
 
@@ -146,7 +147,7 @@ class Group
             //we're probably from a single group, let's load sub entities
             //$this->_loadPersons(self::MEMBER_TYPE);
             //$this->_loadPersons(self::MANAGER_TYPE);
-            //$this->_loadSubGroups();
+            //$this->loadSubGroups();
         }
     }
 
@@ -218,19 +219,19 @@ class Group
      *
      * @return void
      */
-    private function _loadSubGroups()
+    private function loadSubGroups()
     {
-        global $zdb, $login;
+        global $zdb;
 
         try {
             $select = $zdb->select(self::TABLE, 'a');
 
-            if ( !$login->isAdmin() && !$login->isStaff() ) {
+            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
                 $select->join(
                     array('b' => PREFIX_DB . self::GROUPSMANAGERS_TABLE),
                     'a.' . self::PK . '=b.' . self::PK,
                     array()
-                )->where('b.' . Adherent::PK . ' = ' . $login->id);
+                )->where('b.' . Adherent::PK . ' = ' . $this->login->id);
             }
 
             $select->where('parent_group = ' . $this->_id)
@@ -239,11 +240,13 @@ class Group
             $results = $zdb->execute($select);
             $groups = array();
             $grppk = self::PK;
-            foreach ( $results as $m ) {
-                $groups[] = new Group((int)$m->$grppk);
+            foreach ($results as $m) {
+                $group = new Group((int)$m->$grppk);
+                $group->setLogin($this->login);
+                $groups[] = $group;
             }
             $this->_groups = $groups;
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
             Analog::log(
                 'Cannot get subgroup for group ' . $this->_group_name .
                 ' (' . $this->_id . ')| ' . $e->getMessage(),
@@ -456,18 +459,19 @@ class Group
     /**
      * Is current loggedin user manager of the group?
      *
+     * @param Login $login Login instance
+     *
      * @return boolean
      */
-    public function isManager()
+    public function isManager(Login $login)
     {
-        global $login;
-        if ( $login->isAdmin() || $login->isStaff() ) {
+        if ($login->isAdmin() || $login->isStaff()) {
             //admins as well as staff members are managers for all groups!
             return true;
         } else {
             //let's check if current loggedin user is part of group managers
             foreach ($this->_managers as $manager) {
-                if ( $login->login == $manager->login ) {
+                if ($login->login == $manager->login) {
                     return true;
                     break;
                 }
@@ -568,8 +572,8 @@ class Group
      */
     public function getGroups()
     {
-        if ( !is_array($this->_groups) ) {
-            $this->_loadSubGroups();
+        if (!is_array($this->_groups)) {
+            $this->loadSubGroups();
         }
         return $this->_groups;
     }
@@ -869,5 +873,18 @@ class Group
             );
             return false;
         }
+    }
+
+    /**
+     * Set login instance
+     *
+     * @param Login $login Login instance
+     *
+     * @return Group
+     */
+    public function setLogin(Login $login)
+    {
+        $this->login = $login;
+        return $this;
     }
 }

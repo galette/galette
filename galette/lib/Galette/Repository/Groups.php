@@ -164,6 +164,7 @@ class Groups
 
             foreach ($results as $row) {
                 $group = new Group($row);
+                $group->setLogin($this->login);
                 $groups[$group->getFullName()] = $group;
             }
             if ($full) { // Order by tree name instead of name

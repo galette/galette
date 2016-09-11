@@ -66,7 +66,7 @@
             <input type="submit" name="valid" id="btnsave" value="{_T string="Save"}"/>
             <input type="submit" name="delete" id="delete" value="{_T string="Delete"}"/>
             <input type="submit" name="delete_cascade" id="delete_cascade" value="{_T string="Cascade delete"}"/>
-            <input type="submit" name="pdf" value="{_T string="Export as PDF"}" title="{_T string="Export current group, its subgroups and their members as PDF"}"/>
+            <a href="{path_for name="pdf_groups" data=["id" => $group->getId()]}" class="button btn_pdf" title="{_T string="Export all groups and their members as PDF"}">{_T string="Export as PDF"}</a>
             <input type="hidden" name="id_group" id="id_group" value="{$group->getId()}"/>
         </div>
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>

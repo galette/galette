@@ -27,11 +27,9 @@
         </div>
     </section>
 </div>
-<form action="gestion_groupes.php" method="POST">
-    <div class="button-container">
-        <input type="submit" name="pdf" value="{_T string="Export as PDF"}" title="{_T string="Export all groups and their members as PDF"}"/>
-    </div>
-</form>
+<div class="button-container">
+    <a href="{path_for name="pdf_groups"}" class="button btn_pdf" title="{_T string="Export all groups and their members as PDF"}">{_T string="Export as PDF"}</a>
+</div>
 {/block}
 
 {block name="javascripts"}
@@ -62,7 +60,7 @@
             var _gid = data.rslt.o.attr('id').substring(6);
             var _to = data.rslt.np.attr('id').substring(6);
             $.ajax({
-                url: 'ajax_group.php',
+                url: '{path_for name="ajax_group"}',
                 type: "POST",
                 data: {
                     id_group: _gid,
@@ -95,7 +93,7 @@
                 if ( $(this).attr('href') != '#' ) {
                     var _gid = $(this).parent('li').attr('id').substring(6);
                     $.ajax({
-                        url: 'ajax_group.php',
+                        url: '{path_for name="ajax_group"}',
                         type: "POST",
                         data: {
                             id_group: _gid,

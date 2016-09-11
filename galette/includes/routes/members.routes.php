@@ -368,7 +368,7 @@ $app->get(
             $members_list = $members->getManagedMembersList(true);
         }
 
-        $groups = new Groups();
+        $groups = new Groups($this->zdb, $this->login);
         $groups_list = $groups->getList();
 
         //assign pagination variables to the template and add pagination links
@@ -864,7 +864,7 @@ $app->get(
         $statuts = new Status($this->zdb);
 
         //Groups
-        $groups = new Groups();
+        $groups = new Groups($this->zdb, $this->login);
         $groups_list = $groups->getSimpleList(true);
 
         $form_elements = $fc->getFormElements($this->members_fields_cats);
@@ -1309,7 +1309,7 @@ $app->get(
             $filters = new AdvancedMembersList();
         }
 
-        $groups = new Galette\Repository\Groups();
+        $groups = new Groups($this->zdb, $this->login);
         $groups_list = $groups->getList();
 
         //we want only visibles fields

@@ -813,6 +813,13 @@ legend #btnadd_small {
     background-image: url(images/add_contribution.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
+.ui-state-default.btn_pdf {
+    background-image: url(images/icon-pdf.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+.btn_pdf.ui-state-hover {
+    background-image: url(images/icon-pdf.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
 .left {
     text-align: left!important;
 }
