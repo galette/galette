@@ -1,4 +1,4 @@
-        <form class="tabbed" action="gestion_groupes.php" method="post" enctype="multipart/form-data" id="group_form">
+        <form class="tabbed" action="{path_for name="groups"}" method="post" enctype="multipart/form-data" id="group_form">
         <div id="group">
             <ul>
                 <li><a href="#group_informations">{_T string="Informations"}</a></li>
@@ -64,8 +64,8 @@
       </div>
         <div class="button-container">
             <input type="submit" name="valid" id="btnsave" value="{_T string="Save"}"/>
-            <input type="submit" name="delete" id="delete" value="{_T string="Delete"}"/>
-            <input type="submit" name="delete_cascade" id="delete_cascade" value="{_T string="Cascade delete"}"/>
+            <a class="button" id="delete" href="{path_for name="removeGroup" data=["id" => $group->getId()]}">{_T string="Delete"}</a>
+            <a class="button" id="delete_cascade" href="{path_for name="removeGroup" data=["id" => $group->getId(), 'cascade' => 'true']}">{_T string="Cascade delete"}</a>
             <a href="{path_for name="pdf_groups" data=["id" => $group->getId()]}" class="button btn_pdf" title="{_T string="Export all groups and their members as PDF"}">{_T string="Export as PDF"}</a>
             <input type="hidden" name="id_group" id="id_group" value="{$group->getId()}"/>
         </div>

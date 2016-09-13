@@ -41,7 +41,7 @@ use Galette\Repository\Groups;
 use Galette\IO\PdfGroups;
 
 $app->get(
-    '/groups[/{id}]',
+    '/groups[/{id:\d+}]',
     function ($request, $response, $args) {
         $groups = new Groups($this->zdb, $this->login);
         $group = new Group();
@@ -115,7 +115,88 @@ $app->get(
 )->setName('add_group')->add($authenticate);
 
 $app->get(
-    '/pdf/groups[/{id}]',
+    '/group/remove/{id:\d+}[/{cascade:true|false}]',
+    function ($request, $response, $args) {
+        $group = new Group((int)$args['id']);
+
+        $data = [
+            'id'            => $args['id'],
+            'redirect_uri'  => $this->router->pathFor('groups')
+        ];
+        if (isset($args['cascade']) && $args['cascade'] === 'true') {
+            $data['cascade'] = true;
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'type'          => _T("Group"),
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => sprintf(
+                    _T("Remove group %1\$s"),
+                    $group->getFullName()
+                ),
+                'form_url'      => $this->router->pathFor('doRemoveGroup', ['id' => $group->getId()]),
+                'cancel_uri'    => $this->router->pathFor('groups', ['id' => $group->getId()]),
+                'data'          => $data
+            )
+        );
+        return $response;
+    }
+)->setName('removeGroup')->add($authenticate);
+
+$app->post(
+    '/group/remove/{id:\d+}',
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+
+        $uri = isset($post['redirect_uri']) ?
+            $post['redirect_uri'] :
+            $this->router->pathFor('slash');
+
+        if (!isset($post['confirm'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Removal has not been confirmed!")
+            );
+        } else {
+            //delete groups
+            $group = new Group((int)$post['id']);
+            $cascade = isset($post['cascade']);
+            $del = $group->remove($cascade);
+            if ($del !== true) {
+                if ($group->isEmpty() === false) {
+                    $error_detected = _T("Group is not empty, it cannot be deleted. Use cascade delete instead.");
+                } else {
+                    $error_detected = _T("An error occured trying to remove group :/");
+                }
+
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error_detected
+                );
+            } else {
+                $this->flash->addMessage(
+                    'success_detected',
+                    str_replace(
+                        '%groupname',
+                        $group->getName(),
+                        _T("Group %groupname has been successfully deleted.")
+                    )
+                );
+            }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $uri);
+    }
+)->setName('doRemoveGroup')->add($authenticate);
+
+$app->get(
+    '/pdf/groups[/{id:\d+}]',
     function ($request, $response, $args) {
         $groups = new Groups($this->zdb, $this->login);
 

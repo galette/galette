@@ -201,7 +201,10 @@ $container['acls'] = function ($c) {
         'pdf_groups'                => 'groupmanager',
         'ajax_group'                => 'groupmanager',
         'ajax_groupname_unique'     => 'staff',
-        'add_group'                 => 'staff'
+        'add_group'                 => 'staff',
+        'removeGroup'               => 'staff',
+        'doRemoveGroup'             => 'staff',
+        'doEditGroup'               => 'staff'
     ];
 
     //load user defined ACLs
