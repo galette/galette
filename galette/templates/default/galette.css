@@ -421,7 +421,7 @@ footer li {
 /* == Main Galette styles */
 #asso_name {
     text-align: center;
-    margin: 0 auto 1em;
+    margin: .5em auto 1em;
     font-weight: bold;
     font-size: 1.1em;
 }
@@ -531,9 +531,14 @@ footer li {
 
 /* == Buttons */
 #delete, #delete_cascade, #sendmail, #btnsave, #btnvalid, #btnadd, #btncancel, #btnsend, #btnpreview, #btnusers, #btnback, .button {
-    padding-left: 2em!important;
+    padding-left: 1.4em!important;
     background-position: 10px 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
+}
+
+
+input#delete, input#delete_cascade, input#sendmail, input#btnsave, input#btnvalid, input#btnadd, input#btncancel, input#btnsend, input#btnpreview, input#btnusers, input#btnback, button.button, input.button {
+    padding-left:2.4em!important;
 }
 
 .button.small {
@@ -649,6 +654,7 @@ h1 #sendmail .ui-button-text {
     position: absolute;
     top: .5em;
     right: .5em;
+    padding-left: 2em!important;
 }
 legend #btnadd_small {
     right: 2.5em;
