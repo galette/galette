@@ -1,4 +1,4 @@
-        <form class="tabbed" action="{path_for name="groups"}" method="post" enctype="multipart/form-data" id="group_form">
+        <form class="tabbed" action="{path_for name="doEditGroup" data=["id" => $group->getId()]}" method="post" enctype="multipart/form-data" id="group_form">
         <div id="group">
             <ul>
                 <li><a href="#group_informations">{_T string="Informations"}</a></li>

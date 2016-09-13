@@ -38,6 +38,7 @@
 use Galette\Entity\Adherent;
 use Galette\Entity\Group;
 use Galette\Repository\Groups;
+use Galette\Repository\Members;
 use Galette\IO\PdfGroups;
 
 $app->get(
@@ -113,6 +114,68 @@ $app->get(
             ->withHeader('Location', $this->router->pathFor('groups', ["id" => $id]));
     }
 )->setName('add_group')->add($authenticate);
+
+$app->post(
+    '/group/edit/{id:\d+}',
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+        $group = new Group((int)$args['id']);
+        $error = false;
+
+        $group->setName($_POST['group_name']);
+        try {
+            if ($post['parent_group'] !== '') {
+                $group->setParentGroup((int)$post['parent_group']);
+            } else {
+                $group->detach();
+            }
+
+            //handle group managers
+            $managers_id = [];
+            if (isset($post['managers'])) {
+                $managers_id = $post['managers'];
+            }
+            $m = new Members();
+            $managers = $m->getArrayList($managers_id);
+            $group->setManagers($managers);
+
+            //handle group members
+            $members_id = [];
+            if (isset($post['members'])) {
+                $members_id = $post['members'];
+            }
+            $members = $m->getArrayList($members_id);
+            $group->setMembers($members);
+
+            $store = $group->store();
+            if ($store === true) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    str_replace(
+                        '%groupname',
+                        $group->getName(),
+                        _T("Group `%groupname` has been successfully saved.")
+                    )
+                );
+            } else {
+                //something went wrong :'(
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("An error occured while storing the group.")
+                );
+            }
+        } catch (Exception $e) {
+            $this->flash->addMessage(
+                'error_detected',
+                $e->getMessage()
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('groups', ['id' => $group->getId()]));
+    }
+)->setName('doEditGroup')->add($authenticate);
 
 $app->get(
     '/group/remove/{id:\d+}[/{cascade:true|false}]',
