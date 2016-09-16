@@ -227,6 +227,7 @@ $app->post(
         } else {
             //delete groups
             $group = new Group((int)$post['id']);
+            $group->setLogin($this->login);
             $cascade = isset($post['cascade']);
             $del = $group->remove($cascade);
             if ($del !== true) {

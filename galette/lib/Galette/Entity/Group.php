@@ -265,11 +265,27 @@ class Group
     public function remove($cascade = false)
     {
         global $zdb;
+        $transaction = false;
 
         try {
-            $zdb->connection->beginTransaction();
+            if (!$zdb->connection->inTransaction()) {
+                $zdb->connection->beginTransaction();
+                $transaction = true;
+            }
 
             if ($cascade === true) {
+                $subgroups = $this->getGroups();
+                if (count($subgroups) > 0) {
+                    Analog::log(
+                        'Cascading remove ' . $this->group_name .
+                        '. Subgroups, their members and managers will be detached.',
+                        Analog::INFO
+                    );
+                    foreach ($subgroups as $subgroup) {
+                        $subgroup->remove(true);
+                    }
+                }
+
                 Analog::log(
                     'Cascading remove ' . $this->group_name .
                     '. Members and managers will be detached.',
@@ -299,11 +315,15 @@ class Group
             $zdb->execute($delete);
 
             //commit all changes
-            $zdb->connection->commit();
+            if ($transaction) {
+                $zdb->connection->commit();
+            }
 
             return true;
         } catch (\Exception $e) {
-            $zdb->connection->rollBack();
+            if ($transaction) {
+                $zdb->connection->rollBack();
+            }
             if ($e->getCode() == 23000) {
                 Analog::log(
                     str_replace(
