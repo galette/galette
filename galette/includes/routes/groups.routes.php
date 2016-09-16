@@ -178,7 +178,7 @@ $app->post(
 )->setName('doEditGroup')->add($authenticate);
 
 $app->get(
-    '/group/remove/{id:\d+}[/{cascade:true|false}]',
+    '/group/remove/{id:\d+}',
     function ($request, $response, $args) {
         $group = new Group((int)$args['id']);
 
@@ -186,9 +186,6 @@ $app->get(
             'id'            => $args['id'],
             'redirect_uri'  => $this->router->pathFor('groups')
         ];
-        if (isset($args['cascade']) && $args['cascade'] === 'true') {
-            $data['cascade'] = true;
-        }
 
         // display page
         $this->view->render(
@@ -203,7 +200,8 @@ $app->get(
                 ),
                 'form_url'      => $this->router->pathFor('doRemoveGroup', ['id' => $group->getId()]),
                 'cancel_uri'    => $this->router->pathFor('groups', ['id' => $group->getId()]),
-                'data'          => $data
+                'data'          => $data,
+                'with_cascade'  => 'true'
             )
         );
         return $response;
@@ -214,6 +212,8 @@ $app->post(
     '/group/remove/{id:\d+}',
     function ($request, $response) {
         $post = $request->getParsedBody();
+        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
+        $success = false;
 
         $uri = isset($post['redirect_uri']) ?
             $post['redirect_uri'] :
@@ -249,12 +249,21 @@ $app->post(
                         _T("Group %groupname has been successfully deleted.")
                     )
                 );
+                $success = true;
             }
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $uri);
+        if (!$ajax) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $uri);
+        } else {
+            return $response->withJson(
+                [
+                    'success'   => $success
+                ]
+            );
+        }
     }
 )->setName('doRemoveGroup')->add($authenticate);
 

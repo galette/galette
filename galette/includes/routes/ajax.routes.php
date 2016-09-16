@@ -45,3 +45,15 @@ use Galette\Filters\MembersList;
 use Galette\Repository\Groups;
 use \Analog\Analog;
 
+$app->group('/ajax', function () {
+    $this->get(
+        '/messages',
+        function ($request, $response) {
+            $this->view->render(
+                $response,
+                'ajax_messages.tpl'
+            );
+            return $response;
+        }
+    )->setName('ajaxMessages');
+});
