@@ -348,12 +348,6 @@ if (!$installer and !defined('GALETTE_TESTS')) {
         if ($cron) {
             $login->logCron(basename($argv[0], '.php'));
         }
-
-        /**
-         * Now that all objects are correctly setted,
-         * we can include files that need it
-         */
-        include_once GALETTE_ROOT . 'includes/session.inc.php';
     } else {
         $needs_update = true;
     }

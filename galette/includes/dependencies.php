@@ -119,17 +119,20 @@ $container['preferences'] = function ($c) {
     return new Galette\Core\Preferences($c->zdb);
 };
 
-$container['login'] = function ($c) use ($session_name) {
+$container['session_name'] = function ($c) use ($session_name) {
+    return $session_name;
+};
+
+$container['login'] = function ($c) {
     $login = $c->get('session')->login;
     if (!$login) {
-        $session = &$_SESSION['galette'][$session_name];
+        $session = &$_SESSION['galette'][$c->get('session_name')];
         $login = new Galette\Core\Login($c->get('zdb'), $c->get('i18n'), $session);
     }
     return $login;
 };
 
-$container['session'] = function ($c) use ($session_name) {
-    /*$session = &$_SESSION['galette'][$session_name];*/
+$container['session'] = function ($c) {
     $session = new \RKA\Session();
     return $session;
 };
