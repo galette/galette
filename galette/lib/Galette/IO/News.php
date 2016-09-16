@@ -54,7 +54,7 @@ use Analog\Analog;
 class News
 {
     private $_cache_filename = '%feed.cache';
-    private $_show = 5;
+    private $_show = 10;
     //number of hours until cache will be invalid
     private $_cache_timeout = 24;
     private $_feed_url = null;
@@ -195,15 +195,35 @@ class News
             }
 
             $posts = array();
-            foreach ( $xml->entry as $post ) {
-                $posts[] = array(
-                    'title' => (string)$post->title,
-                    'url'   => (string)$post->link['href'],
-                    'date'  => (string)$post->published
-                );
-                if ( count($posts) == 10 ) {
-                    break;
+
+            if (isset($xml->entry)) {
+                //Reading an atom feed
+                foreach ($xml->entry as $post) {
+                    $posts[] = array(
+                        'title' => (string)$post->title,
+                        'url'   => (string)$post->link['href'],
+                        'date'  => (string)$post->published
+                    );
+                    if (count($posts) == $this->_show) {
+                        break;
+                    }
                 }
+            } elseif (isset($xml->channel->item)) {
+                //Reading a RSS feed
+                foreach ($xml->channel->item as $post) {
+                    $posts[] = array(
+                        'title' => (string)$post->title,
+                        'url'   => (string)$post->link,
+                        'date'  => (string)$post->pubDate
+                    );
+                    if (count($posts) == $this->_show) {
+                        break;
+                    }
+                }
+            } else {
+                throw new \RuntimeException(
+                    'Unknown feed type!'
+                );
             }
             $this->_posts = $posts;
         } catch (\Exception $e) {
