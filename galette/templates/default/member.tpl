@@ -200,12 +200,14 @@
                     {assign var="checked" value=null}
                     {assign var="example" value=null}
 
-                    {include
-                        file="forms_types/hidden.tpl"
-                        name=$entry->field_id
-                        id=$entry->field_id
-                        value=$value
-                    }
+                    {if $value neq ''}
+                        {include
+                            file="forms_types/hidden.tpl"
+                            name=$entry->field_id
+                            id=$entry->field_id
+                            value=$value
+                        }
+                    {/if}
                 {/if}
             {/foreach}
             <a href="#" id="back2top">{_T string="Back to top"}</a>
