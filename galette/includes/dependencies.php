@@ -129,6 +129,7 @@ $container['login'] = function ($c) {
         $session = &$_SESSION['galette'][$c->get('session_name')];
         $login = new Galette\Core\Login($c->get('zdb'), $c->get('i18n'), $session);
     }
+    $login->setDb($c->get('zdb'));
     return $login;
 };
 
