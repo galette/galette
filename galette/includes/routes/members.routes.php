@@ -590,10 +590,22 @@ $app->get(
                 }
             }
             if ($is_managed !== true) {
-                //requested member is not part of managed groups, fall back to logged
-                //in member
-                $member->load($this->login->id);
-                $id = $this->login->id;
+                //requested member is not part of managed groups,
+                //fall back to logged in member
+                Analog::log(
+                    'Trying to display member #' . $id . ' without appropriate ACLs',
+                    Analog::WARNING
+                );
+
+                return $response
+                    ->withStatus(403)
+                    ->withHeader(
+                        'Location',
+                        $this->router->pathFor(
+                            'member',
+                            ['id' => $this->login->id]
+                        )
+                    );
             }
         }
 
