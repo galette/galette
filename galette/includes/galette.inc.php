@@ -188,7 +188,6 @@ if (!defined('GALETTE_LOG_LVL')) {
 
 if (defined('GALETTE_TESTS')) {
     $galette_run_log = \Analog\Handler\Ignore::init();
-
 } else {
     if (!$installer && !$cron) {
         $now = new \DateTime();
@@ -196,7 +195,6 @@ if (defined('GALETTE_TESTS')) {
             $now->format('Y-m-d')  . '.log';
         $galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
     }
-    $galette_run_log = null;
     $galette_log_var = null;
 
     if (GALETTE_MODE === 'DEV' || $cron
