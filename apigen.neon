@@ -1,0 +1,12 @@
+source:
+    - ./galette
+destination: ./apidocs
+templateTheme: bootstrap
+title: Galette API documentation
+tree: true
+todo: false
+deprecated: true
+exclude:
+    - data/
+    - plugins/
+    - vendor/
