@@ -43,6 +43,7 @@ use Galette\Repository\Members;
 use Galette\Entity\Adherent;
 use Galette\Entity\Status;
 use Analog\Analog;
+use RKA\Session;
 
 /**
  * Default authentication class for galette
@@ -69,11 +70,11 @@ class Login extends Authentication
     /**
      * Instanciate object
      *
-     * @param Db    $zdb     Database instance
-     * @param I18n  $i18n    I18n instance
-     * @param array $session Current session
+     * @param Db      $zdb     Database instance
+     * @param I18n    $i18n    I18n instance
+     * @param Session $session Current session
      */
-    public function __construct(Db $zdb, I18n $i18n, array &$session)
+    public function __construct(Db $zdb, I18n $i18n, Session $session)
     {
         $this->setDb($zdb);
         $this->_i18n = $i18n;
@@ -251,7 +252,7 @@ class Login extends Authentication
         $this->surname = $row->prenom_adh;
         $this->lang = $row->pref_lang;
         $this->_i18n->changeLanguage($this->lang);
-        $this->_session['lang'] = serialize($this->_i18n);
+        $this->_session->lang = serialize($this->_i18n);
         $this->active = $row->activite_adh;
         $this->logged = true;
         if ($row->priorite_statut < Members::NON_STAFF_MEMBERS) {

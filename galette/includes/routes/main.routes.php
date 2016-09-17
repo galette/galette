@@ -105,21 +105,20 @@ $app->get(
 $app->get(
     '/impersonate/{id:\d+}',
     function ($request, $response, $args) {
-        $success = $login->impersonate($id);
+        $success = $this->login->impersonate($args['id']);
 
         if ($success === true) {
-            $this->session->login = $login;
-            $this->login = $login;
+            $this->session->login = $this->login;
             $msg = str_replace(
                 '%login',
-                $login->login,
+                $this->login->login,
                 _T("Impersonating as %login")
             );
 
             $this->history->add($msg);
             $this->flash->addMessage(
                 'success_detected',
-                [$msg]
+                $msg
             );
         } else {
             $msg = str_replace(
@@ -150,7 +149,7 @@ $app->get(
         $this->login = $login;
         $this->flash->addMessage(
             'success_detected',
-            [_T("Impersonating ended")]
+            _T("Impersonating ended")
         );
         return $response
             ->withStatus(301)
