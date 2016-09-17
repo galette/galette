@@ -83,7 +83,7 @@ $app->get(
 
 //system informations
 $app->get(
-    '/sysinfos',
+    __("/system-informations"),
     function ($request, $response, $args = []) {
         $sysinfos = new SysInfos();
         $sysinfos->grab();

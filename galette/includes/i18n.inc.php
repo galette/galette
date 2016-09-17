@@ -294,42 +294,55 @@ if ((isset($loc) && $loc!=$language) || $disable_gettext) {
     }
 }
 
-if (!function_exists('_T')) {
-    /**
-     * Translate a string
-     *
-     * @param string $chaine The string to translate
-     *
-     * @return Translated string (if available) ; $chaine otherwise
-     */
-    function _T($chaine)
-    {
-        global $language, $disable_gettext, $installer;
-        if ($disable_gettext === true && isset($GLOBALS['lang'])) {
-            $trans = $chaine;
-            if (isset($GLOBALS['lang'][$chaine])
-                && $GLOBALS['lang'][$chaine] != ''
-            ) {
-                $trans = $GLOBALS['lang'][$chaine];
+/**
+ * Translate a string
+ *
+ * @param string  $string The string to translate
+ * @param boolean $nt     Indicate not translated strings; defaults to true
+ *
+ * @return Translated string (if available) ; $chaine otherwise
+ */
+function _T($string, $nt = true)
+{
+    global $language, $disable_gettext, $installer;
+    if ($disable_gettext === true && isset($GLOBALS['lang'])) {
+        if (isset($GLOBALS['lang'][$string])
+            && $GLOBALS['lang'][$string] != ''
+        ) {
+            $trans = $GLOBALS['lang'][$string];
+        } else {
+            $trans = false;
+            if (!isset($installer) || $installer !== true) {
+                $trans = getDynamicTranslation(
+                    $string,
+                    $language
+                );
+            }
+            if ($trans) {
+                $GLOBALS['lang'][$string] = $trans;
             } else {
-                $trans = false;
-                if (!isset($installer) || $installer !== true) {
-                    $trans = getDynamicTranslation(
-                        $chaine,
-                        $language
-                    );
-                }
-                if ($trans) {
-                    $GLOBALS['lang'][$chaine] = $trans;
-                } else {
-                    $trans = $chaine . ' (not translated)';
+                $trans = $string;
+                if ($nt === true) {
+                    $trans .= ' (not translated)';
                 }
             }
-            return $trans;
-        } else {
-            return _($chaine);
         }
+        return $trans;
+    } else {
+        return _($chaine);
     }
+}
+
+/**
+ * Translate a string, without displaying not translated
+ *
+ * @param string $string The string to translate
+ *
+ * @return Translated string (if available), verbatim string otherwise
+ */
+function __($string)
+{
+    return _T($string, false);
 }
 
 /**********************************************

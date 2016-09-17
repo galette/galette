@@ -30,7 +30,7 @@ import sys
 import re
 
 # pattern definition
-translatable= re.compile("_T\((\"[^\"]*\")\)")
+translatable= re.compile("_(T|_)\((\"[^\"]*\")\)")
 tpl_translatable= re.compile("_T\ string=(\"[^\"]*\")")
 
 # constants string
@@ -53,13 +53,14 @@ for inputFileName in sys.argv[1:] :
       # search translatable strings
       matchs =  translatable.findall(line)
       for match in matchs:
-          if dico.has_key(match):
-            if dico[match][-1:] == "\n":
-              dico[match] += startLoc + location()
+          trans = match[1]
+          if dico.has_key(trans):
+            if dico[trans][-1:] == "\n":
+              dico[tans] += startLoc + location()
             else :
-              dico[match] += nextLoc + location() + "\n"
+              dico[trans] += nextLoc + location() + "\n"
           else :
-            dico[match] = startLoc + location()
+            dico[trans] = startLoc + location()
       tpl_matchs =  tpl_translatable.findall(line)
       for tpl_match in tpl_matchs:
           if dico.has_key(tpl_match):
@@ -70,11 +71,14 @@ for inputFileName in sys.argv[1:] :
           else :
             dico[tpl_match] = startLoc + location()
 
+print dico
 #
-outFile = open("messages.po",'w')
+#outFile = open("messages.po",'w')
 for k, v in dico.iteritems():
-   outFile.write(v)
-   if v[-1:] != "\n" :
-     outFile.write("\n")
-   outFile.write("msgid " + k + "\nmsgstr \"\"\n\n")
-outFile.close()
+    print v
+    print "msgid " + k + "\nmsgstr \"\"\n\n"
+#   outFile.write(v)
+#   if v[-1:] != "\n" :
+#     outFile.write("\n")
+#   outFile.write("msgid " + k + "\nmsgstr \"\"\n\n")
+#outFile.close()
