@@ -126,10 +126,15 @@ $container['session_name'] = function ($c) use ($session_name) {
 $container['login'] = function ($c) {
     $login = $c->get('session')->login;
     if (!$login) {
-        $session = &$_SESSION['galette'][$c->get('session_name')];
-        $login = new Galette\Core\Login($c->get('zdb'), $c->get('i18n'), $session);
+        $session = $c->get('session');
+        $login = new Galette\Core\Login(
+            $c->get('zdb'),
+            $c->get('i18n'),
+            $c->get('session')
+        );
+    } else {
+        $login->setDb($c->get('zdb'));
     }
-    $login->setDb($c->get('zdb'));
     return $login;
 };
 
