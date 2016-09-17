@@ -328,7 +328,14 @@ $baseRedirect = function ($request, $response, $args = []) use ($app, $container
     $router = $container->get('router');
     $session = $container->get('session');
 
-    //$app->flashKeep();
+    $flashes = $container->get('flash')->getMessages();
+    var_dump($flashes);
+    foreach ($flashes as $type => $messages) {
+        foreach ($messages as $message) {
+            $container->get('flash')->addMessage($type, $message);
+        }
+    }
+
     if ($login->isLogged()) {
         $urlRedirect = null;
         if ($session->urlRedirect !== null) {
