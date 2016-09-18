@@ -1435,7 +1435,6 @@ $app->post(
                     ->withStatus(301)
                     ->withHeader('Location', $this->router->pathFor('csv-memberslist'));
             }
-
         } else {
             $this->flash->addMessage(
                 'error_detected',
@@ -1451,20 +1450,19 @@ $app->post(
 
 //PDF members cards
 $app->get(
-    '/members/cards',
-    function ($request, $response) {
+    '/members/cards[/{' . Adherent::PK . ':\d+}]',
+    function ($request, $response, $args) {
         if ($this->session->filter_members) {
             $filters =  $this->session->filter_members;
         } else {
             $filters = new MembersList();
         }
 
-        $get = $request->getQueryParams();
-        if (isset($get[Adherent::PK])
-            && $get[Adherent::PK] > 0
+        if (isset($args[Adherent::PK])
+            && $args[Adherent::PK] > 0
         ) {
             // If we are called from a member's card, get unique id value
-            $unique = $get[Adherent::PK];
+            $unique = $args[Adherent::PK];
         } else {
             if (count($filters->selected) == 0) {
                 Analog::log(
