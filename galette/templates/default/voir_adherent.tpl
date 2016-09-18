@@ -27,10 +27,13 @@
             </li>
 {if $login->isAdmin() or $login->isStaff()}
             <li>
-                <a class="button" href="gestion_contributions.php?id_adh={$member->id}" id="btn_contrib">{_T string="View contributions"}</a>
+                <a class="button" href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}" id="btn_contrib">{_T string="View contributions"}</a>
             </li>
             <li>
-                <a class="button" href="ajouter_contribution.php?id_adh={$member->id}" id="btn_addcontrib">{_T string="Add a contribution"}</a>
+                <a class="button" id="btn_addcontrib" href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a>
+            </li>
+            <li>
+                <a class="button" id="btn_addcontrib" href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?id_adh={$member->id}">{_T string="Add a donation"}</a>
             </li>
 {/if}
 {* If some additionnals actions should be added from plugins, we load the relevant template file

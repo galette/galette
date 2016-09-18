@@ -191,9 +191,6 @@ class Contribution
                         $this->_begin_date = $curend;
                     }
                 }
-                if ( isset($args['ext']) ) {
-                    $this->_extension = $args['ext'];
-                }
                 $this->_retrieveEndDate();
             }
             if ( isset($args['payment_type']) ) {
@@ -224,6 +221,7 @@ class Contribution
             $this->_end_date = $edate->format('Y-m-d');
         } else if ( $preferences->pref_membership_ext != '' ) {
             //case membership extension
+            $this->_extension = $preferences->pref_membership_ext;
             $dext = new \DateInterval('P' . $this->_extension . 'M');
             $edate = $bdate->add($dext);
             $this->_end_date = $edate->format('Y-m-d');
@@ -1227,6 +1225,12 @@ class Contribution
                         'or with a zero value',
                         Analog::WARNING
                     );
+                }
+                break;
+            case 'member':
+                if (is_int($value)) {
+                    //set type
+                    $this->$rname = $value;
                 }
                 break;
             default:
