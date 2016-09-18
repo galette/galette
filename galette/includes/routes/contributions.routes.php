@@ -398,11 +398,23 @@ $app->get(
 
                 if ($contrib->isTransactionPart()) {
                     $id_adh = $contrib->member;
-                    //Should we disable contribution member selection if we're from
-                    //a transaction? In most cases, it would be OK I guess, but I'm
-                    //unsure
-                    //Maybe we should consider to propose family's members if any, and disable if not.
-                    //$disabled['id_adh'] = ' disabled="disabled"';
+
+                    //check if mmber has children to populate members list
+                    $deps = [
+                        'picture'   => false,
+                        'groups'    => false,
+                        'dues'      => false,
+                        'parent'    => false,
+                        'children'  => true
+                    ];
+                    $tmember = new Adherent($this->zdb, $id_adh, $deps);
+                    $members = [$tmember->id => $tmember->sname];
+
+                    if ($tmember->hasChildren()) {
+                        foreach ($tmember->children as $member) {
+                            $members[$member->id] = $member->sname;
+                        }
+                    }
                 }
 
                 //TODO: dynamic fields should be handled by Contribution object
@@ -465,21 +477,28 @@ $app->get(
         $params['type_cotis_options'] = $contributions_types;
 
         // members
-        $m = new Members();
-        $required_fields = array(
-            'id_adh',
-            'nom_adh',
-            'prenom_adh'
-        );
-        $members = $m->getList(false, $required_fields);
-        if (count($members) > 0) {
-            foreach ($members as $member) {
-                $pk = Adherent::PK;
-                $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
-                    ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
-                $adh_options[$member->$pk] = $sname;
+        if (!isset($members)) {
+            $members = [];
+            $m = new Members();
+            $required_fields = array(
+                'id_adh',
+                'nom_adh',
+                'prenom_adh'
+            );
+            $list_members = $m->getList(false, $required_fields);
+
+            if (count($list_members) > 0) {
+                foreach ($list_members as $member) {
+                    $pk = Adherent::PK;
+                    $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
+                        ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
+                    $members[$member->$pk] = $sname;
+                }
             }
-            $params['adh_options'] = $adh_options;
+        }
+
+        if (isset($members) && is_array($members)) {
+            $params['adh_options'] = $members;
         }
 
         $ext_membership = '';
