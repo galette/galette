@@ -1,0 +1,96 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2016-09-22 23:07+0200\n"
+"Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.8.7.1\n"
+
+#: ../includes/routes/management.routes.php:1520
+#: ../includes/routes/management.routes.php:1548
+msgid "/texts"
+msgstr "/texts"
+
+#: ../includes/routes/management.routes.php:1171
+msgid "/import/model/get"
+msgstr "/import/model/get"
+
+#: ../includes/routes/management.routes.php:1234
+#: ../includes/routes/management.routes.php:1290
+msgid "/models/pdf"
+msgstr "/models/pdf"
+
+#: ../includes/routes/management.routes.php:1069
+msgid "/import/upload"
+msgstr "/import/upload"
+
+#: ../includes/routes/management.routes.php:998
+#: ../includes/routes/management.routes.php:1021
+msgid "/import"
+msgstr "/import"
+
+#: ../includes/routes/management.routes.php:806
+#: ../includes/routes/management.routes.php:864
+msgid "/export"
+msgstr "/export"
+
+#: ../includes/routes/management.routes.php:82
+#: ../includes/routes/management.routes.php:166
+msgid "/preferences"
+msgstr "/preferences"
+
+#: ../includes/routes/management.routes.php:674
+msgid "/logs"
+msgstr "/logs"
+
+#: ../includes/routes/management.routes.php:1208
+msgid "/import/model/store"
+msgstr "/import/model/store"
+
+#: ../includes/routes/management.routes.php:603
+msgid "/plugins"
+msgstr "/plugins"
+
+#: ../includes/routes/management.routes.php:1804
+msgid "/dynamic-translations"
+msgstr "/dynamic-translations"
+
+#: ../includes/routes/management.routes.php:1351
+#: ../includes/routes/management.routes.php:1370
+msgid "/titles"
+msgstr "/titles"
+
+#: ../includes/routes/ajax.routes.php:50
+msgid "/messages"
+msgstr "/messages"
+
+#: ../includes/routes/management.routes.php:1121
+msgid "/import/model"
+msgstr "/import/model"
+
+#: ../includes/routes/management.routes.php:575
+msgid "/charts"
+msgstr "/charts"
+
+#: ../includes/routes/management.routes.php:60
+msgid "/dashboard"
+msgstr "/dashboard"
+
+#: ../includes/routes/management.routes.php:730
+msgid "/mailings"
+msgstr "/mailings"
+
+#: ../includes/routes/management.routes.php:1454
+#: ../includes/routes/management.routes.php:1473
+msgid "/titles/edit"
+msgstr "/titles/edit"
+
+#: ../includes/routes/management.routes.php:1407
+msgid "/titles/remove"
+msgstr "/titles/remove"

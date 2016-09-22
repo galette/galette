@@ -57,8 +57,7 @@ use Galette\Entity\Texts;
 
 //galette's dashboard
 $app->get(
-    '/dashboard',
-    /*'/' . _T("dashboard"),*/
+    __('/dashboard', 'routes'),
     function ($request, $response, $args = []) {
         $news = new News($this->preferences->pref_rss_url);
 
@@ -80,7 +79,7 @@ $app->get(
 
 //preferences page
 $app->get(
-    '/preferences',
+    __('/preferences', 'routes'),
     function ($request, $response) {
         $print_logo = new PrintLogo();
 
@@ -164,7 +163,7 @@ $app->get(
 
 //preferences procedure
 $app->post(
-    '/preferences',
+    __('/preferences', 'routes'),
     function ($request, $response) {
         // Validation
         if (isset($_POST['valid']) && $_POST['valid'] == '1') {
@@ -573,7 +572,7 @@ $app->post(
 
 //charts
 $app->get(
-    '/charts',
+    __('/charts', 'routes'),
     function ($request, $response) {
         $charts = new Charts(
             array(
@@ -601,7 +600,7 @@ $app->get(
 
 //plugins
 $app->get(
-    '/plugins',
+    __('/plugins', 'routes'),
     function ($request, $response) {
         $plugins = $this->get('plugins');
         if (GALETTE_MODE !== 'DEMO') {
@@ -672,7 +671,7 @@ $app->get(
 
 //galette logs
 $app->get(
-    '/logs[/{option:page|order|reset}/{value}]',
+    __('/logs', 'routes') . '[/{option:page|order|reset}/{value}]',
     function ($request, $response, $args = []) {
         $option = null;
         if (isset($args['option'])) {
@@ -728,7 +727,7 @@ $app->get(
 
 //mailings management
 $app->get(
-    '/mailings[/{option:page|order}/{value:\d+}]',
+    __('/mailings', 'routes') . '[/{option:page|order}/{value:\d+}]',
     function ($request, $response, $args = []) {
         $option = null;
         if (isset($args['option'])) {
@@ -804,7 +803,7 @@ $app->get(
 
 //galette exports
 $app->get(
-    '/export',
+    __('/export', 'routes'),
     function ($request, $response) {
         $csv = new CsvOut();
 
@@ -862,7 +861,7 @@ $app->get(
 )->setName('removeCsv')->add($authenticate);
 
 $app->post(
-    '/export',
+    __('/export', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
         $csv = new CsvOut();
@@ -996,7 +995,7 @@ $app->get(
 )->setName('getCsv')->add($authenticate);
 
 $app->get(
-    '/import',
+    __('/import', 'routes'),
     function ($request, $response) {
         $csv = new CsvIn($this->zdb);
         $existing = $csv->getExisting();
@@ -1019,7 +1018,7 @@ $app->get(
 )->setName('import')->add($authenticate);
 
 $app->post(
-    '/import',
+    __('/import', 'routes'),
     function ($request, $response) {
         $csv = new CsvIn($this->zdb);
         $post = $request->getParsedBody();
@@ -1067,7 +1066,7 @@ $app->post(
 )->setName('doImport')->add($authenticate);
 
 $app->post(
-    '/import/upload',
+    __('/import/upload', 'routes'),
     function ($request, $response) {
         $csv = new CsvIn($this->zdb);
         if (isset($_FILES['new_file'])) {
@@ -1119,7 +1118,7 @@ $app->post(
 )->setname('uploadImportFile')->add($authenticate);
 
 $app->get(
-    '/import/model',
+    __('/import/model', 'routes'),
     function ($request, $response) {
         $model = new ImportModel();
         $model->load();
@@ -1169,7 +1168,7 @@ $app->get(
 )->setName('importModel')->add($authenticate);
 
 $app->get(
-    '/import/model/get',
+    __('/import/model/get', 'routes'),
     function ($request, $response) {
         $model = new ImportModel();
         $model->load();
@@ -1206,7 +1205,7 @@ $app->get(
 )->setName('getImportModel')->add($authenticate);
 
 $app->post(
-    '/import/model/store',
+    __('/import/model/store', 'routes'),
     function ($request, $response) {
         $model = new ImportModel();
         $model->load();
@@ -1232,7 +1231,7 @@ $app->post(
 )->setName('storeImportModel')->add($authenticate);
 
 $app->get(
-    '/models/pdf',
+    __('/models/pdf', 'routes'),
     function ($request, $response) {
         $id = 1;
         if (isset($_GET['id'])) {
@@ -1288,7 +1287,7 @@ $app->get(
 )->setName('pdfModels')->add($authenticate);
 
 $app->post(
-    '/models/pdf',
+    __('/models/pdf', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
         $type = null;
@@ -1349,7 +1348,7 @@ $app->post(
 )->setName('pdfModels')->add($authenticate);
 
 $app->get(
-    '/titles',
+    __('/titles', 'routes'),
     function ($request, $response) {
 
         $titles = Titles::getList($this->zdb);
@@ -1368,7 +1367,7 @@ $app->get(
 )->setName('titles')->add($authenticate);
 
 $app->post(
-    '/titles',
+    __('/titles', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
         $title = new Title();
@@ -1405,7 +1404,7 @@ $app->post(
 )->setName('titles')->add($authenticate);
 
 $app->get(
-    '/titles/remove/{id:\d+}',
+    __('/titles/remove', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $id = $args['id'];
 
@@ -1452,7 +1451,7 @@ $app->get(
 )->setName('removeTitle')->add($authenticate);
 
 $app->get(
-    '/titles/edit/{id:\d+}',
+    __('/titles/edit', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $id = $args['id'];
         $title = new Title((int)$id);
@@ -1471,7 +1470,7 @@ $app->get(
 )->setname('editTitle')->add($authenticate);
 
 $app->post(
-    '/titles/edit/{id:\d+}',
+    __('/titles/edit', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $id = $args['id'];
         $post = $request->getParsedBody();
@@ -1518,7 +1517,7 @@ $app->post(
 )->setname('editTitle')->add($authenticate);
 
 $app->get(
-    '/texts',
+    __('/texts', 'routes'),
     function ($request, $response) {
         $cur_lang = $this->preferences->pref_lang;
         $cur_ref = Texts::DEFAULT_REF;
@@ -1546,7 +1545,7 @@ $app->get(
 )->setName('texts')->add($authenticate);
 
 $app->post(
-    '/texts',
+    __('/texts', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
         $texts = new Texts($this->texts_fields, $this->preferences);
@@ -1802,7 +1801,7 @@ $app->get(
 )->setName('removeEntitled')->add($authenticate);
 
 $app->get(
-    '/dynamic-translations',
+    __('/dynamic-translations', 'routes'),
     function ($request, $response) {
         $text_orig = get_form_value('text_orig', '');
 

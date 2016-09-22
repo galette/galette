@@ -1,0 +1,76 @@
+#: ../includes/routes/management.routes.php:1520 ../includes/routes/management.routes.php:1548
+msgid "/texts"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1171
+msgid "/import/model/get"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1234 ../includes/routes/management.routes.php:1290
+msgid "/models/pdf"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1069
+msgid "/import/upload"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:998 ../includes/routes/management.routes.php:1021
+msgid "/import"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:806 ../includes/routes/management.routes.php:864
+msgid "/export"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:82 ../includes/routes/management.routes.php:166
+msgid "/preferences"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:674
+msgid "/logs"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1208
+msgid "/import/model/store"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:603
+msgid "/plugins"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1804
+msgid "/dynamic-translations"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1351 ../includes/routes/management.routes.php:1370
+msgid "/titles"
+msgstr ""
+
+#: ../includes/routes/ajax.routes.php:50
+msgid "/messages"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1121
+msgid "/import/model"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:575
+msgid "/charts"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:60
+msgid "/dashboard"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:730
+msgid "/mailings"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1454 ../includes/routes/management.routes.php:1473
+msgid "/titles/edit"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1407
+msgid "/titles/remove"
+msgstr ""
+
