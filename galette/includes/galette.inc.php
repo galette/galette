@@ -313,15 +313,16 @@ if (!$installer and !defined('GALETTE_TESTS')) {
         /**
          * Authentication
          */
-        if (isset($session['login'])) {
+        /*if (isset($session['login'])) {
             $login = unserialize(
                 $session['login']
             );
             $login->setDb($zdb);
         } else {
             $login = new Core\Login($zdb, $i18n, $session);
-        }
+        }*/
 
+        /** TODO: login is now handled in dependencies.php; the cron case should be aswell */
         if ($cron) {
             $login->logCron(basename($argv[0], '.php'));
         }
