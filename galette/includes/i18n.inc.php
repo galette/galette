@@ -45,7 +45,7 @@ use Analog\Analog;
 use Zend\Db\Sql\Expression;
 use Galette\Core\L10n;
 
-$disable_gettext=true;
+$disable_gettext = true;
 
 $language = $i18n->getLongID();
 $short_language = $i18n->getAbbrev();
@@ -57,13 +57,17 @@ if (@putenv("LANG=$language")
     or @putenv("LANGUAGE=$language")
     or @putenv("LC_ALL=$language")
 ) {
+    $textdomain = dirname(__FILE__) . '/../lang';
+    //main translation domain
     $domain = 'galette';
-
-    @define('THIS_BASE_DIR', dirname(__FILE__));
-    $textdomain = THIS_BASE_DIR . '/../lang';
     bindtextdomain($domain, $textdomain);
+    //routes translation domain
+    $routes_domain = 'routes';
+    bindtextdomain($routes_domain, $textdomain);
+    //set default translation domain and encoding
     textdomain($domain);
     bind_textdomain_codeset($domain, 'UTF-8');
+    bind_textdomain_codeset($routes_domain, 'UTF-8');
 } else {
     $loc='';
 }
@@ -286,11 +290,14 @@ function getDynamicTranslation($text_orig, $text_locale)
 
 /** FIXME : $loc undefined */
 if ((isset($loc) && $loc!=$language) || $disable_gettext) {
-    include GALETTE_ROOT . 'lang/lang_' . $i18n->getFileName() . '.php';
-    //check if a local lang file exists and load it
-    $locfile = GALETTE_ROOT . 'lang/lang_' . $i18n->getFileName() . '_local.php';
-    if (file_exists($locfile)) {
-        include $locfile;
+    $domains = ['galette', 'routes'];
+    foreach ($domains as $domain) {
+        include GALETTE_ROOT . 'lang/' . $domain . '_' . $i18n->getLongID() . '.php';
+        //check if a local lang file exists and load it
+        $locfile = GALETTE_ROOT . 'lang/' . $domain . '_' . $i18n->getLongID() . '_local.php';
+        if (file_exists($locfile)) {
+            include $locfile;
+        }
     }
 }
 
@@ -298,18 +305,19 @@ if ((isset($loc) && $loc!=$language) || $disable_gettext) {
  * Translate a string
  *
  * @param string  $string The string to translate
+ * @param string  $domain Translation domain. Default to false (will take default domain)
  * @param boolean $nt     Indicate not translated strings; defaults to true
  *
  * @return Translated string (if available) ; $chaine otherwise
  */
-function _T($string, $nt = true)
+function _T($string, $domain = 'galette', $nt = true)
 {
     global $language, $disable_gettext, $installer;
     if ($disable_gettext === true && isset($GLOBALS['lang'])) {
-        if (isset($GLOBALS['lang'][$string])
-            && $GLOBALS['lang'][$string] != ''
+        if (isset($GLOBALS['lang'][$domain][$string])
+            && $GLOBALS['lang'][$domain][$string] != ''
         ) {
-            $trans = $GLOBALS['lang'][$string];
+            $trans = $GLOBALS['lang'][$domain][$string];
         } else {
             $trans = false;
             if (!isset($installer) || $installer !== true) {
@@ -319,7 +327,7 @@ function _T($string, $nt = true)
                 );
             }
             if ($trans) {
-                $GLOBALS['lang'][$string] = $trans;
+                $GLOBALS['lang'][$domain][$string] = $trans;
             } else {
                 $trans = $string;
                 if ($nt === true) {
@@ -329,7 +337,11 @@ function _T($string, $nt = true)
         }
         return $trans;
     } else {
-        return _($chaine);
+        if ($domain === null) {
+            return _($chaine);
+        } else {
+            return dgettext($string, $domain);
+        }
     }
 }
 
@@ -337,12 +349,13 @@ function _T($string, $nt = true)
  * Translate a string, without displaying not translated
  *
  * @param string $string The string to translate
+ * @param string $domain Translation domain. Default to false (will take default domain)
  *
  * @return Translated string (if available), verbatim string otherwise
  */
-function __($string)
+function __($string, $domain = 'galette')
 {
-    return _T($string, false);
+    return _T($string, $domain, false);
 }
 
 /**********************************************

@@ -1,73 +1,63 @@
-.SUFFIXES = .mo .po
 INSTALLDIR = .
 LANGUAGES = en_US fr_FR.utf8
-PACKAGE = galette
+DOMAINS = galette routes
 MKLANG = ./make_lang_l12n.py
 PHP_SOURCES = $(shell find ../ -maxdepth 1 -name \*.php) \
               $(shell find ../lib/Galette -name \*.php) \
-              $(shell find ../includes -maxdepth 1 -name \*.php) \
-              $(shell find ../includes/fields_defs -name \*.php) \
+              $(shell find ../includes -name \*.php) \
               $(shell find ../install -name \*.php) \
               $(shell find ../public -name \*.php) \
               $(shell find ../templates -name \*.tpl)
 
 
-all : messages.po lang
-	@echo "Génération des fichiers *.po :"
+all : messages.po lang check
+	@echo "Generating PO files:"
 	@for l in ${LANGUAGES}; do \
-	  echo -n "  Mise à jour de $$l.po"; \
-	  msgmerge -U $$l.po messages.po >/dev/null ; \
-	  mkdir -p ${INSTALLDIR}/$$l/LC_MESSAGES; \
-	  echo "    formatage de ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo."; \
-	  msgfmt $$l.po -o ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo.new; \
-	  if diff -qI 'PO-Revision-Date:.*' ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo.new ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo > /dev/null; then \
-	    echo "    ${PACKAGE}.mo non mis à jour."; \
-	    rm ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo.new; \
-	  else \
-	    echo "    ${PACKAGE}.mo mis à jour."; \
-	    mv ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo.new ${INSTALLDIR}/$$l/LC_MESSAGES/${PACKAGE}.mo; \
-	  fi; \
+	  for d in ${DOMAINS}; do \
+	    if [ -f $${d}_$${l}.po ]; then \
+	      echo -n "  Updating $${d}_$${l}.po"; \
+	      msgmerge -U $${d}_$${l}.po $$d.pot >/dev/null ; \
+	    else \
+	      echo "  Creating of $${d}_$${l}.po"; \
+	      msginit -o $${d}_$${l}.po -i $$d.pot >/dev/null ; \
+	    fi; \
+	    mkdir -p ${INSTALLDIR}/$${l}/LC_MESSAGES; \
+	    echo "    formatting ${INSTALLDIR}/$${l}/LC_MESSAGES/$${d}.mo."; \
+	    msgfmt $${d}_$${l}.po -o ${INSTALLDIR}/$${l}/LC_MESSAGES/$${d}.mo.new; \
+	    if diff -qI 'PO-Revision-Date:.*' ${INSTALLDIR}/$${l}/LC_MESSAGES/$${d}.mo.new ${INSTALLDIR}/$${l}/LC_MESSAGES/$${d}.mo > /dev/null; then \
+	      echo "    $${d}.mo NOT updated."; \
+	      rm ${INSTALLDIR}/$${l}/LC_MESSAGES/$${d}.mo.new; \
+	    else \
+	      echo "    $${d}.mo UPDATED."; \
+	      mv ${INSTALLDIR}/$${l}/LC_MESSAGES/$${d}.mo.new ${INSTALLDIR}/$${l}/LC_MESSAGES/$${d}.mo; \
+	    fi; \
+	  done \
 	done
 
 
 lang :
-	@echo "Génération des fichiers lang_*.php"
-	@echo "  Mise à jour de lang_english.php"
-	@echo "    extraction des chaines..."
-	@${MKLANG} en_US.po lang_english.php.new
-	@if diff -qI 'This file was automatically generated.*' lang_english.php lang_english.php.new > /dev/null; then \
-	  echo "    lang_english.php non mis à jour."; \
-	  rm lang_english.php.new; \
-	else \
-	  echo "    lang_english.php mis à jour."; \
-	  mv lang_english.php.new lang_english.php; \
-	fi;
-
-	@echo "  Mise à jour de lang_french.php"
-	@echo "    extraction des chaines..."
-	@${MKLANG} fr_FR.utf8.po lang_french.php.new
-	@if diff -qI 'This file was automatically generated.*' lang_french.php lang_french.php.new > /dev/null; then \
-	  echo "    lang_french.php non mis à jour."; \
-	  rm lang_french.php.new; \
-	else \
-	  echo "    lang_french.php mis à jour."; \
-	  mv lang_french.php.new lang_french.php; \
-	fi;
+	@echo "Generating PHP lang files:"
+	@for l in ${LANGUAGES}; do \
+	  for d in ${DOMAINS}; do \
+	    echo "    extracting $${d} $${l} strings..."; \
+	    if [ ! -f $${d}_$${l}.php ]; then \
+	      touch $${d}_$${l}.php; \
+	    fi; \
+	    ${MKLANG} $${d}_$${l}.po $${d}_$${l}.php.new $${d}; \
+	    if diff -qI 'This file was automatically generated.*' $${d}_$${l}.php $${d}_$${l}.php.new > /dev/null; then \
+	      echo "    $${d}_$${l}.php NOT updated."; \
+	      rm $${d}_$${l}.php.new; \
+	    else \
+	      echo "    $${d}_$${l}.php UPDATED."; \
+	      mv $${d}_$${l}.php.new $${d}_$${l}.php; \
+	    fi; \
+	  done \
+	done
 
 messages.po : ${PHP_SOURCES} Makefile xgettext.py
 	./xgettext.py ${PHP_SOURCES}
 
 check:
-	@for FILE in ${PHP_SOURCES}; do				\
-		test -f $$FILE || echo "Not found $$FILE";	\
-	done
-	@for NFILE in ../*.php ../includes/*.php		\
-			../templates/default/*.tpl; do		\
-		for OFILE in ${PHP_SOURCES}; do			\
-			if [ "$$NFILE" = "$$OFILE" ]; then	\
-				unset NFILE;			\
-				break;				\
-			fi;					\
-		done;						\
-		test -z "$$NFILE" || echo "Missing $$NFILE";	\
+	@for NFILE in ./*.php; do \
+		php -l $$NFILE; \
 	done

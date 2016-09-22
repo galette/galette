@@ -30,55 +30,68 @@ import sys
 import re
 
 # pattern definition
-translatable= re.compile("_(T|_)\((\"[^\"]*\")\)")
-tpl_translatable= re.compile("_T\ string=(\"[^\"]*\")")
+translatable        = re.compile("_(T|_)\((\"[^\"]*\")(, \"([^\"]*)\")?\)")
+#same, with single quotes...
+translatable_single = re.compile("_(T|_)\(('[^']*')\)(, '([^']*)')?")
+tpl_translatable    = re.compile("_(T|_)\ string=(\"[^\"]*\")( domain=\"([^\"]*)\")?")
 
 # constants string
 startLoc = "#: "
 nextLoc  = " "
 
 #
+domains = {}
 dico = {}
 
-def location() :
-   return inputFileName + ":" + str(lineNum+1)
+def location():
+    """
+    String location in file
+    """
+    return inputFileName + ":" + str(lineNum+1)
+
+def handleMatches(matches, repl_quotes=False):
+    for match in matches:
+        trans = match[1]
+        #handle single quotes
+        if repl_quotes == True:
+            trans = '"%s"' % trans[1:-1]
+
+        #define domain
+        cur_domain = 'galette'
+        if match[3] != '':
+            cur_domain = match[3]
+
+        if not domains.has_key(cur_domain):
+            domains[cur_domain] = {}
+
+        if domains[cur_domain].has_key(trans):
+            if domains[cur_domain][trans][-1:] == "\n":
+                domains[cur_domain][trans] += startLoc + location()
+            else:
+                domains[cur_domain][trans] += nextLoc + location() + "\n"
+        else:
+            domains[cur_domain][trans] = startLoc + location()
 
 #
-for inputFileName in sys.argv[1:] :
-   inFile=open(inputFileName)
-   lines = inFile.readlines()
-   inFile.close()
-   # get line
-   for lineNum, line in enumerate(lines) :
-      # search translatable strings
-      matchs =  translatable.findall(line)
-      for match in matchs:
-          trans = match[1]
-          if dico.has_key(trans):
-            if dico[trans][-1:] == "\n":
-              dico[tans] += startLoc + location()
-            else :
-              dico[trans] += nextLoc + location() + "\n"
-          else :
-            dico[trans] = startLoc + location()
-      tpl_matchs =  tpl_translatable.findall(line)
-      for tpl_match in tpl_matchs:
-          if dico.has_key(tpl_match):
-            if dico[tpl_match][-1:] == "\n":
-              dico[tpl_match] += startLoc + location()
-            else :
-              dico[tpl_match] += nextLoc + location() + "\n"
-          else :
-            dico[tpl_match] = startLoc + location()
+for inputFileName in sys.argv[1:]:
+    inFile = open(inputFileName)
+    lines = inFile.readlines()
+    inFile.close()
+    # get line
+    for lineNum, line in enumerate(lines):
+        # search translatable strings
+        matches = translatable.findall(line)
+        handleMatches(matches)
+        matches = translatable_single.findall(line)
+        handleMatches(matches, True)
+        matches = tpl_translatable.findall(line)
+        handleMatches(matches)
 
-print dico
-#
-#outFile = open("messages.po",'w')
-for k, v in dico.iteritems():
-    print v
-    print "msgid " + k + "\nmsgstr \"\"\n\n"
-#   outFile.write(v)
-#   if v[-1:] != "\n" :
-#     outFile.write("\n")
-#   outFile.write("msgid " + k + "\nmsgstr \"\"\n\n")
-#outFile.close()
+for domain, strings in domains.iteritems():
+    outFile = open("%s.pot" % domain, 'w')
+    for k, v in strings.iteritems():
+        outFile.write(v)
+        if v[-1:] != "\n":
+            outFile.write("\n")
+        outFile.write("msgid " + k + "\nmsgstr \"\"\n\n")
+    outFile.close()

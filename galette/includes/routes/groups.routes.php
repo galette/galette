@@ -195,7 +195,7 @@ $app->get(
                 'type'          => _T("Group"),
                 'mode'          => $request->isXhr() ? 'ajax' : '',
                 'page_title'    => sprintf(
-                    _T("Remove group %1\$s"),
+                    _T('Remove group %1$s'),
                     $group->getFullName()
                 ),
                 'form_url'      => $this->router->pathFor('doRemoveGroup', ['id' => $group->getId()]),

@@ -47,7 +47,7 @@ use \Analog\Analog;
 
 $app->group('/ajax', function () {
     $this->get(
-        '/messages',
+        __("/messages", "routes"),
         function ($request, $response) {
             $this->view->render(
                 $response,
