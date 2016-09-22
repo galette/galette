@@ -250,27 +250,6 @@ if ($installer || !defined('PREFIX_DB') || !defined('NAME_DB')) {
 }
 $session = &$_SESSION['galette'][$session_name];
 
-/**
- * Language instantiation
- */
-if (isset($session['lang'])) {
-    $i18n = unserialize($session['lang']);
-} else {
-    $i18n = new Core\I18n();
-}
-
-if (isset($_POST['pref_lang'])
-    && (strpos($_SERVER['PHP_SELF'], 'self_adherent.php') !== false
-    || strpos($_SERVER['PHP_SELF'], 'install/index.php') !== false)
-) {
-    $_GET['pref_lang'] = $_POST['pref_lang'];
-}
-if (isset($_GET['pref_lang'])) {
-    $i18n->changeLanguage($_GET['pref_lang']);
-}
-$session['lang'] = serialize($i18n);
-require_once GALETTE_ROOT . 'includes/i18n.inc.php';
-
 // initialize messages arrays
 $error_detected = array();
 $warning_detected = array();
