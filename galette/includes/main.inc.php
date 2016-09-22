@@ -98,8 +98,8 @@ if ($needs_update) {
 
                 // monolog settings
                 'logger' => [
-                    'name' => 'app',
-                    'path' => __DIR__ . '/../log/app.log',
+                    'name' => 'galette',
+                    'path' => GALETTE_LOGS_PATH . 'galette_slim.log',
                 ]
             ]
         ]
