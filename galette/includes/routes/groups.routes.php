@@ -42,7 +42,7 @@ use Galette\Repository\Members;
 use Galette\IO\PdfGroups;
 
 $app->get(
-    '/groups[/{id:\d+}]',
+    __("/groups", "routes") . '[/{id:\d+}]',
     function ($request, $response, $args) {
         $groups = new Groups($this->zdb, $this->login);
         $group = new Group();
@@ -98,7 +98,7 @@ $app->get(
 )->setName('groups')->add($authenticate);
 
 $app->get(
-    '/group/add/{name}',
+    __('/group/add', 'routes') . '/{name}',
     function ($request, $response, $args) {
         $group = new Group();
         $group->setLogin($this->login);
@@ -116,7 +116,7 @@ $app->get(
 )->setName('add_group')->add($authenticate);
 
 $app->post(
-    '/group/edit/{id:\d+}',
+    __('/group/edit', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
         $group = new Group((int)$args['id']);
@@ -178,7 +178,7 @@ $app->post(
 )->setName('doEditGroup')->add($authenticate);
 
 $app->get(
-    '/group/remove/{id:\d+}',
+    __('/group/remove', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $group = new Group((int)$args['id']);
 
@@ -209,7 +209,7 @@ $app->get(
 )->setName('removeGroup')->add($authenticate);
 
 $app->post(
-    '/group/remove/{id:\d+}',
+    __('/group/remove', 'routes') . '/{id:\d+}',
     function ($request, $response) {
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
@@ -269,7 +269,7 @@ $app->post(
 )->setName('doRemoveGroup')->add($authenticate);
 
 $app->get(
-    '/pdf/groups[/{id:\d+}]',
+    __('/pdf/groups', 'routes') . '[/{id:\d+}]',
     function ($request, $response, $args) {
         $groups = new Groups($this->zdb, $this->login);
 
@@ -303,7 +303,7 @@ $app->get(
 )->setName('pdf_groups')->add($authenticate);
 
 $app->post(
-    '/ajax/group',
+    __('/ajax/group', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
         $id = $post['id_group'];
@@ -326,7 +326,7 @@ $app->post(
 )->setName('ajax_group')->add($authenticate);
 
 $app->post(
-    '/ajax/unique_groupname',
+    __('/ajax/unique_groupname', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
         if (!isset($post['gname']) || $post['gname'] == '') {

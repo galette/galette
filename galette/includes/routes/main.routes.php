@@ -49,7 +49,7 @@ $app->get(
 
 //logo route
 $app->get(
-    '/logo',
+    __('/logo', 'routes'),
     function ($request, $response, $args) {
         $this->logo->display();
     }
@@ -57,7 +57,7 @@ $app->get(
 
 //photo route
 $app->get(
-    '/photo/{id:\d+}',
+    __('/photo', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $id = $args['id'];
         /** FIXME: we load entire member here... No need to do so! */
@@ -83,7 +83,7 @@ $app->get(
 
 //system informations
 $app->get(
-    __("/system-informations"),
+    __('/system-informations', 'routes'),
     function ($request, $response, $args = []) {
         $sysinfos = new SysInfos();
         $sysinfos->grab();
@@ -103,7 +103,7 @@ $app->get(
 
 //impersonating
 $app->get(
-    '/impersonate/{id:\d+}',
+    __('/impersonate', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $success = $this->login->impersonate($args['id']);
 
@@ -140,7 +140,7 @@ $app->get(
 )->setName('impersonate')->add($authenticate);
 
 $app->get(
-    '/unimpersonate',
+    __('/unimpersonate', 'routes'),
     function ($request, $response, $args) {
         $login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
         $login->logAdmin($this->preferences->pref_admin_login, $this->preferences);
