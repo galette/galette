@@ -425,7 +425,7 @@ trait FileTrait
     public static function getMimeType($file)
     {
         $mime = null;
-        $class = get_class($this);
+        $class = get_called_class();
 
         if (function_exists('finfo_open')) {
             Analog::log(
@@ -435,7 +435,7 @@ trait FileTrait
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mime = finfo_file($finfo, $file);
             finfo_close($finfo);
-        } else if (function_exists('mime_content_type')) {
+        } elseif (function_exists('mime_content_type')) {
             Analog::log(
                 '[' . $class . '] Function mime_content_type exist ',
                 Analog::DEBUG
