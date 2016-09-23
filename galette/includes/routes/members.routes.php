@@ -222,7 +222,7 @@ $app->get(
                     && $member->date_crea_adh != '1901-01-01'
                 ) {
                     $dcrea = new DateTime($member->date_crea_adh);
-                    $member->date_crea_adh = $dcrea->format(_T("Y-m-d"));
+                    $member->date_crea_adh = $dcrea->format(__("Y-m-d"));
                 } else {
                     $member->date_crea_adh = '';
                 }
@@ -233,7 +233,7 @@ $app->get(
                     && $member->date_modif_adh != '1901-01-01'
                 ) {
                     $dmodif = new DateTime($member->date_modif_adh);
-                    $member->date_modif_adh = $dmodif->format(_T("Y-m-d"));
+                    $member->date_modif_adh = $dmodif->format(__("Y-m-d"));
                 } else {
                     $member->date_modif_adh = '';
                 }
@@ -244,7 +244,7 @@ $app->get(
                     && $member->date_echeance != '1901-01-01'
                 ) {
                     $dech = new DateTime($member->date_echeance);
-                    $member->date_echeance = $dech->format(_T("Y-m-d"));
+                    $member->date_echeance = $dech->format(__("Y-m-d"));
                 } else {
                     $member->date_echeance = '';
                 }
@@ -255,7 +255,7 @@ $app->get(
                     && $member->ddn_adh != '1901-01-01'
                 ) {
                     $ddn = new DateTime($member->ddn_adh);
-                    $member->ddn_adh = $ddn->format(_T("Y-m-d"));
+                    $member->ddn_adh = $ddn->format(__("Y-m-d"));
                 } else {
                     $member->ddn_adh = '';
                 }
@@ -2021,7 +2021,7 @@ $app->post(
             $pdf->sheet_sub_title = $_POST['sheet_sub_title'];
         }
         if (isset($post['sheet_date']) && trim($post['sheet_date']) != '') {
-            $dformat = _T("Y-m-d");
+            $dformat = __("Y-m-d");
             $date = DateTime::createFromFormat(
                 $dformat,
                 $post['sheet_date']

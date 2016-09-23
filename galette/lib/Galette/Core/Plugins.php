@@ -214,7 +214,7 @@ class Plugins
                     //try to localize release date
                     try {
                         $release_date = new \DateTime($date);
-                        $release_date = $release_date->format(_T("Y-m-d"));
+                        $release_date = $release_date->format(__("Y-m-d"));
                     } catch (\Exception $e) {
                         Analog::log(
                             'Unable to localize release date for plugin ' . $name,

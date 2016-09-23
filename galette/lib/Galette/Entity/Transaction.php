@@ -257,7 +257,7 @@ class Transaction
                     // dates
                     case 'trans_date':
                         try {
-                            $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
+                            $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
                             if ( $d === false ) {
                                 throw new \Exception('Incorrect format');
                             }
@@ -266,7 +266,7 @@ class Transaction
                             Analog::log(
                                 'Wrong date format. field: ' . $key .
                                 ', value: ' . $value . ', expected fmt: ' .
-                                _T("Y-m-d") . ' | ' . $e->getMessage(),
+                                __("Y-m-d") . ' | ' . $e->getMessage(),
                                 Analog::INFO
                             );
                             $errors[] = str_replace(
@@ -275,7 +275,7 @@ class Transaction
                                     '%field'
                                 ),
                                 array(
-                                    _T("Y-m-d"),
+                                    __("Y-m-d"),
                                     $this->_fields[$key]['label']
                                 ),
                                 _T("- Wrong date format (%date_format) for %field!")
@@ -515,7 +515,7 @@ class Transaction
                 if ( $this->$rname != '' ) {
                     try {
                         $d = new \DateTime($this->$rname);
-                        return $d->format(_T("Y-m-d"));
+                        return $d->format(__("Y-m-d"));
                     } catch (\Exception $e) {
                         //oops, we've got a bad date :/
                         Analog::log(

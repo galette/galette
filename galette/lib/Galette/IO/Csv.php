@@ -113,7 +113,7 @@ abstract class Csv
             if ( $file === $this->_default_directory . 'readme.txt' ) {
                 continue;
             }
-            $mdate = date(_T("Y-m-d H:i:s"), filemtime($file));
+            $mdate = date(__("Y-m-d H:i:s"), filemtime($file));
 
             $raw_size = filesize($file);
             $size = 0;

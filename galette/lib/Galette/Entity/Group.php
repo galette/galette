@@ -619,7 +619,7 @@ class Group
     {
         if ($formatted === true) {
             $date = new \DateTime($this->creation_date);
-            return $date->format(_T("Y-m-d"));
+            return $date->format(__("Y-m-d"));
         } else {
             return $this->creation_date;
         }

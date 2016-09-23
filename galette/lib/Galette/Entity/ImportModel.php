@@ -209,7 +209,7 @@ class ImportModel
     {
         if ( $formatted === true ) {
             $date = new \DateTime($this->_creation_date);
-            return $date->format(_T("Y-m-d"));
+            return $date->format(__("Y-m-d"));
         } else {
             return $this->_creation_date;
         }

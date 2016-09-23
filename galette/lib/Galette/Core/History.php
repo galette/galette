@@ -274,7 +274,7 @@ class History extends Pagination
                         //return formatted datemime
                         try {
                             $d = new \DateTime($this->$rname);
-                            return $d->format(_T("Y-m-d H:i:s"));
+                            return $d->format(__("Y-m-d H:i:s"));
                         } catch (\Exception $e) {
                             //oops, we've got a bad date :/
                             Analog::log(

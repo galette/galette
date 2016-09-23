@@ -153,7 +153,7 @@ class TransactionsList extends Pagination
                 case 'end_date_filter':
                     try {
                         if ($value !== '') {
-                            $y = \DateTime::createFromFormat(_T("Y"), $value);
+                            $y = \DateTime::createFromFormat(__("Y"), $value);
                             if ($y !== false) {
                                 $month = 1;
                                 $day = 1;
@@ -169,7 +169,7 @@ class TransactionsList extends Pagination
                                 $this->$name = $y->format('Y-m-d');
                             }
 
-                            $ym = \DateTime::createFromFormat(_T("Y-m"), $value);
+                            $ym = \DateTime::createFromFormat(__("Y-m"), $value);
                             if ($y === false && $ym  !== false) {
                                 $day = 1;
                                 if ($name === 'end_date_filter') {
@@ -183,16 +183,16 @@ class TransactionsList extends Pagination
                                 $this->$name = $ym->format('Y-m-d');
                             }
 
-                            $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
+                            $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
                             if ($y === false && $ym  === false && $d !== false) {
                                 $this->$name = $d->format('Y-m-d');
                             }
 
                             if ($y === false && $ym === false && $d === false) {
                                 $formats = array(
-                                    _T("Y"),
-                                    _T("Y-m"),
-                                    _T("Y-m-d"),
+                                    __("Y"),
+                                    __("Y-m"),
+                                    __("Y-m-d"),
                                 );
 
                                 $field = null;
@@ -221,7 +221,7 @@ class TransactionsList extends Pagination
                         Analog::log(
                             'Wrong date format. field: ' . $key .
                             ', value: ' . $value . ', expected fmt: ' .
-                            _T("Y-m-d") . ' | ' . $e->getMessage(),
+                            __("Y-m-d") . ' | ' . $e->getMessage(),
                             Analog::INFO
                         );
                         throw $e;

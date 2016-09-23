@@ -79,7 +79,7 @@ class PdfAttendanceSheet extends Pdf
             $head_title .= ' - ' . $this->sheet_sub_title;
         }
         if ( $this->sheet_date !== null ) {
-            $head_title .= ' - ' . $this->sheet_date->format(_T("Y-m-d"));
+            $head_title .= ' - ' . $this->sheet_date->format(__("Y-m-d"));
         }
         $this->Cell(0, 10, $head_title, 0, false, 'C', 0, '', 0, false, 'M', 'M');
     }
@@ -165,7 +165,7 @@ class PdfAttendanceSheet extends Pdf
                 );
                 $date_fmt = strftime($format, $this->sheet_date->getTimestamp());
             } else {
-                $format = _T("Y-m-d");
+                $format = __("Y-m-d");
                 $date_fmt = $this->sheet_date->format($format);
             }
             $this->Cell(190, 7, $date_fmt, 0, 1, 'C');

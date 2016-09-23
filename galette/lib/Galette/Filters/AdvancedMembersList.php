@@ -286,7 +286,7 @@ class AdvancedMembersList extends MembersList
                     try {
                         if ( $this->$rname !== null ) {
                             $d = new \DateTime($this->$rname);
-                            return $d->format(_T("Y-m-d"));
+                            return $d->format(__("Y-m-d"));
                         }
                     } catch (\Exception $e) {
                         //oops, we've got a bad date :/
@@ -367,7 +367,7 @@ class AdvancedMembersList extends MembersList
             case 'contrib_end_date_end':
                 if ( $value !== null && trim($value) !== '' ) {
                     try {
-                        $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
+                        $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
                         if ( $d === false ) {
                             throw new \Exception('Incorrect format');
                         }
