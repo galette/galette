@@ -882,7 +882,7 @@ class Adherent
         global $preferences;
         $errors = array();
 
-        $fields = self::getDbFields();
+        $fields = self::getDbFields($this->zdb);
 
         //reset company name if needeed
         if ( !isset($values['is_company']) || $values['is_company'] != 1 ) {
@@ -1205,7 +1205,7 @@ class Adherent
 
         try {
             $values = array();
-            $fields = self::getDbFields();
+            $fields = self::getDbFields($this->zdb);
             /** FIXME: quote? */
             foreach ( $fields as $field ) {
                 if ( $field !== 'date_modif_adh'
