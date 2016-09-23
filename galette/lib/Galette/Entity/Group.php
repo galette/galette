@@ -680,7 +680,7 @@ class Group
         if ( ! $this->canSetParentGroup($group) ) {
             throw new \Exception(
                 sprintf(
-                    _T('Group `%1$s` is a child of `%2$s`, cannot be set as parent!'),
+                    _T("Group `%1$s` is a child of `%2$s`, cannot be set as parent!"),
                     $tmpname,
                     $this->getName()
                 )

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-06-11 17:40+0200\n"
+"PO-Revision-Date: 2016-09-23 07:48+0200\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -294,7 +294,7 @@ msgstr "Database access/permissions"
 msgid "New password"
 msgstr "New password"
 
-#: ../lib/Galette/IO/CsvIn.php:241
+#: ../lib/Galette/IO/CsvIn.php:244
 msgid ""
 "Fields count mismatch... There should be %should_count fields and there are "
 "%count (row %row)"
@@ -398,7 +398,7 @@ msgstr "Your database is maybe not usable, try to restore the older version."
 msgid "Modifiy mailing"
 msgstr "Modifiy mailing"
 
-#: ../templates/default/member.tpl:386
+#: ../templates/default/member.tpl:390
 msgid "Attached member selection"
 msgstr "Attached member selection"
 
@@ -762,7 +762,7 @@ msgstr ""
 "This link is no longer valid. You should <a href='lostpasswd.php'>ask to "
 "retrieve your password</a> again."
 
-#: ../templates/default/member.tpl:277
+#: ../templates/default/member.tpl:281
 msgid "Groups selection"
 msgstr "Groups selection"
 
@@ -791,7 +791,7 @@ msgstr "Title '%s' has not been modified!"
 msgid "Donation in kind"
 msgstr "Donation in kind"
 
-#: ../lib/Galette/IO/CsvIn.php:275
+#: ../lib/Galette/IO/CsvIn.php:278
 msgid "File is empty!"
 msgstr "File is empty!"
 
@@ -1408,7 +1408,7 @@ msgstr ""
 "Back to previous window, if you want to select a contribution type that is "
 "not listed here"
 
-#: ../templates/default/member.tpl:319
+#: ../templates/default/member.tpl:323
 #: ../templates/default/forms_types/groups.tpl:31
 msgid "Member of '%groupname'"
 msgstr "Member of '%groupname'"
@@ -1622,7 +1622,7 @@ msgstr "Public pages enabled?"
 msgid "Permissions on the base"
 msgstr "Permissions on the base"
 
-#: ../lib/Galette/IO/CsvIn.php:259
+#: ../lib/Galette/IO/CsvIn.php:262
 msgid "Field %field is required, but missing in row %row"
 msgstr "Field %field is required, but missing in row %row"
 
@@ -1921,7 +1921,7 @@ msgstr "Completely dispatched transaction"
 msgid "Member's login"
 msgstr "Member's login"
 
-#: ../templates/default/member.tpl:317
+#: ../templates/default/member.tpl:321
 #: ../templates/default/forms_types/groups.tpl:41
 msgid "Manager for '%groupname'"
 msgstr "Manager for '%groupname'"
@@ -2061,6 +2061,10 @@ msgstr "Plugins"
 #: ../templates/default/footer.tpl:9
 msgid "Website"
 msgstr "Website"
+
+#: ../lib/Galette/Entity/Group.php:683
+msgid "Group `%1$s` is a child of `%2$s`, cannot be set as parent!"
+msgstr "Group `%1$s` is a child of `%2$s`, cannot be set as parent!"
 
 #: ../templates/default/edit_title.tpl:9
 msgid "Long form:"
@@ -3482,7 +3486,7 @@ msgstr "Database has not been installed!"
 msgid "Back"
 msgstr "Back"
 
-#: ../templates/default/member.tpl:270
+#: ../templates/default/member.tpl:274
 msgid "An error occured displaying groups interface :("
 msgstr "An error occured displaying groups interface :("
 
@@ -3799,7 +3803,7 @@ msgstr "Select installation mode to launch"
 msgid "Originator"
 msgstr "Originator"
 
-#: ../templates/default/member.tpl:377 ../templates/default/member.tpl:445
+#: ../templates/default/member.tpl:381 ../templates/default/member.tpl:449
 #: ../templates/default/mailing_adherents.tpl:176
 #: ../templates/default/mailing_adherents.tpl:222
 #: ../templates/default/mailing_adherents.tpl:272
@@ -3940,7 +3944,7 @@ msgid ""
 msgstr ""
 "Hereby, I agree to comply to {ASSO_NAME} association statutes and its rules."
 
-#: ../templates/default/member.tpl:422
+#: ../templates/default/member.tpl:426
 msgid "Click to choose this member as parent"
 msgstr "Click to choose this member as parent"
 
@@ -4590,7 +4594,7 @@ msgstr "Your organisation slogan"
 msgid "An SQL error has occured."
 msgstr "An SQL error has occured."
 
-#: ../lib/Galette/IO/CsvIn.php:375
+#: ../lib/Galette/IO/CsvIn.php:378
 msgid "An error occured while importing members"
 msgstr "An error occured while importing members"
 
@@ -4674,7 +4678,7 @@ msgstr ""
 msgid "Creation of the tables"
 msgstr "Creation of the tables"
 
-#: ../lib/Galette/IO/CsvIn.php:331 ../lib/Galette/IO/CsvIn.php:342
+#: ../lib/Galette/IO/CsvIn.php:334 ../lib/Galette/IO/CsvIn.php:345
 msgid "An error occured storing member at row %row (%name):"
 msgstr "An error occured storing member at row %row (%name):"
 
@@ -4775,7 +4779,7 @@ msgstr "Change my password"
 msgid "Active account"
 msgstr "Active account"
 
-#: ../templates/default/member.tpl:209
+#: ../templates/default/member.tpl:213
 #: ../templates/default/voir_adherent.tpl:152
 msgid "Back to top"
 msgstr "Back to top"
@@ -5208,7 +5212,7 @@ msgstr "Attendance sheet details"
 msgid "Sender"
 msgstr "Sender"
 
-#: ../templates/default/member.tpl:279
+#: ../templates/default/member.tpl:283
 msgid "Managed groups selection"
 msgstr "Managed groups selection"
 
@@ -5522,7 +5526,7 @@ msgid "Activities"
 msgstr "Activities"
 
 #: ../templates/default/gestion_adherents.tpl:446
-#: ../templates/default/member.tpl:229 ../templates/default/member.tpl:239
+#: ../templates/default/member.tpl:233 ../templates/default/member.tpl:243
 #: ../templates/default/edit_dynamic_fields.tpl:162
 #: ../templates/default/ajouter_transaction.tpl:207
 #: ../templates/default/gestion_contributions.tpl:290
@@ -6479,13 +6483,6 @@ msgstr "Required membership:"
 
 #~ msgid "A group cannot be set as its own parent!"
 #~ msgstr "A group cannot be set as its own parent!"
-
-#~ msgid ""
-#~ "Group `%subgroupname` is a child of `%groupname`, cnanot be setted as "
-#~ "parent!"
-#~ msgstr ""
-#~ "Group `%subgroupname` is a child of `%groupname`, cnanot be setted as "
-#~ "parent!"
 
 #~ msgid "Display member nubmer in member related windows"
 #~ msgstr "Display member nubmer in member related windows"

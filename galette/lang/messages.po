@@ -242,7 +242,7 @@ msgstr ""
 msgid "New password"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:241
+#: ../lib/Galette/IO/CsvIn.php:244
 msgid "Fields count mismatch... There should be %should_count fields and there are %count (row %row)"
 msgstr ""
 
@@ -336,7 +336,7 @@ msgstr ""
 msgid "Modifiy mailing"
 msgstr ""
 
-#: ../templates/default/member.tpl:386
+#: ../templates/default/member.tpl:390
 msgid "Attached member selection"
 msgstr ""
 
@@ -672,7 +672,7 @@ msgstr ""
 msgid "This link is no longer valid. You should <a href='lostpasswd.php'>ask to retrieve your password</a> again."
 msgstr ""
 
-#: ../templates/default/member.tpl:277
+#: ../templates/default/member.tpl:281
 msgid "Groups selection"
 msgstr ""
 
@@ -700,7 +700,7 @@ msgstr ""
 msgid "Donation in kind"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:275
+#: ../lib/Galette/IO/CsvIn.php:278
 msgid "File is empty!"
 msgstr ""
 
@@ -1250,7 +1250,7 @@ msgstr ""
 msgid "Back to previous window, if you want to select a contribution type that is not listed here"
 msgstr ""
 
-#: ../templates/default/member.tpl:319 ../templates/default/forms_types/groups.tpl:31
+#: ../templates/default/member.tpl:323 ../templates/default/forms_types/groups.tpl:31
 msgid "Member of '%groupname'"
 msgstr ""
 
@@ -1449,7 +1449,7 @@ msgstr ""
 msgid "Permissions on the base"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:259
+#: ../lib/Galette/IO/CsvIn.php:262
 msgid "Field %field is required, but missing in row %row"
 msgstr ""
 
@@ -1720,7 +1720,7 @@ msgstr ""
 msgid "Member's login"
 msgstr ""
 
-#: ../templates/default/member.tpl:317 ../templates/default/forms_types/groups.tpl:41
+#: ../templates/default/member.tpl:321 ../templates/default/forms_types/groups.tpl:41
 msgid "Manager for '%groupname'"
 msgstr ""
 
@@ -1841,6 +1841,10 @@ msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:294 ../templates/default/footer.tpl:9
 msgid "Website"
+msgstr ""
+
+#: ../lib/Galette/Entity/Group.php:683
+msgid "Group `%1$s` is a child of `%2$s`, cannot be set as parent!"
 msgstr ""
 
 #: ../templates/default/edit_title.tpl:9
@@ -3118,7 +3122,7 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: ../templates/default/member.tpl:270
+#: ../templates/default/member.tpl:274
 msgid "An error occured displaying groups interface :("
 msgstr ""
 
@@ -3414,7 +3418,7 @@ msgstr ""
 msgid "Originator"
 msgstr ""
 
-#: ../templates/default/member.tpl:377 ../templates/default/member.tpl:445
+#: ../templates/default/member.tpl:381 ../templates/default/member.tpl:449
 #: ../templates/default/mailing_adherents.tpl:176 ../templates/default/mailing_adherents.tpl:222
 #: ../templates/default/mailing_adherents.tpl:272 ../templates/default/gestion_groupes.tpl:180
 #: ../templates/default/gestion_groupes.tpl:240 ../templates/default/gestion_groupes.tpl:294
@@ -3541,7 +3545,7 @@ msgstr ""
 msgid "Hereby, I agree to comply to {ASSO_NAME} association statutes and its rules."
 msgstr ""
 
-#: ../templates/default/member.tpl:422
+#: ../templates/default/member.tpl:426
 msgid "Click to choose this member as parent"
 msgstr ""
 
@@ -4097,7 +4101,7 @@ msgstr ""
 msgid "An SQL error has occured."
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:375
+#: ../lib/Galette/IO/CsvIn.php:378
 msgid "An error occured while importing members"
 msgstr ""
 
@@ -4177,7 +4181,7 @@ msgstr ""
 msgid "Creation of the tables"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:331 ../lib/Galette/IO/CsvIn.php:342
+#: ../lib/Galette/IO/CsvIn.php:334 ../lib/Galette/IO/CsvIn.php:345
 msgid "An error occured storing member at row %row (%name):"
 msgstr ""
 
@@ -4272,7 +4276,7 @@ msgstr ""
 msgid "Active account"
 msgstr ""
 
-#: ../templates/default/member.tpl:209 ../templates/default/voir_adherent.tpl:152
+#: ../templates/default/member.tpl:213 ../templates/default/voir_adherent.tpl:152
 msgid "Back to top"
 msgstr ""
 
@@ -4663,7 +4667,7 @@ msgstr ""
 msgid "Sender"
 msgstr ""
 
-#: ../templates/default/member.tpl:279
+#: ../templates/default/member.tpl:283
 msgid "Managed groups selection"
 msgstr ""
 
@@ -4953,8 +4957,8 @@ msgstr ""
 msgid "Activities"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:446 ../templates/default/member.tpl:229
-#: ../templates/default/member.tpl:239 ../templates/default/edit_dynamic_fields.tpl:162
+#: ../templates/default/gestion_adherents.tpl:446 ../templates/default/member.tpl:233
+#: ../templates/default/member.tpl:243 ../templates/default/edit_dynamic_fields.tpl:162
 #: ../templates/default/ajouter_transaction.tpl:207 ../templates/default/gestion_contributions.tpl:290
 #: ../templates/default/ajouter_contribution.tpl:161 ../templates/default/gestion_transactions.tpl:169
 #: ../templates/default/advanced_search.tpl:255 ../templates/default/advanced_search.tpl:264

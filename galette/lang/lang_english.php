@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sat Jun 11 15:43:53 2016 (GMT)
+// This file was automatically generated on Fri Sep 23 05:48:05 2016 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -153,7 +153,7 @@ $lang['Edit \'%s\' field'] = 'Edit \'%s\' field';
 // ../ajouter_groupe.php:83 
 $lang['Group'] = 'Group';
 
-// ../templates/default/member.tpl:386 
+// ../templates/default/member.tpl:390 
 $lang['Attached member selection'] = 'Attached member selection';
 
 // ../champs_adherents.php:54 ../includes/fields_defs/members_fields.php:180 ../templates/default/preferences.tpl:67 
@@ -414,7 +414,7 @@ $lang['[W]'] = '[W]';
 // ../templates/default/import.tpl:61 
 $lang['Upload file'] = 'Upload file';
 
-// ../templates/default/member.tpl:319 ../templates/default/forms_types/groups.tpl:31 
+// ../templates/default/member.tpl:323 ../templates/default/forms_types/groups.tpl:31 
 $lang['Member of \'%groupname\''] = 'Member of \'%groupname\'';
 
 // ../templates/default/preferences.tpl:264 
@@ -666,7 +666,7 @@ $lang['Group informations'] = 'Group informations';
 // ../install/steps/db_select_version.php:50 
 $lang['Your previous version should be selected and <strong>displayed in bold</strong>.'] = 'Your previous version should be selected and <strong>displayed in bold</strong>.';
 
-// ../lib/Galette/IO/CsvIn.php:331 ../lib/Galette/IO/CsvIn.php:342 
+// ../lib/Galette/IO/CsvIn.php:334 ../lib/Galette/IO/CsvIn.php:345 
 $lang['An error occured storing member at row %row (%name):'] = 'An error occured storing member at row %row (%name):';
 
 // ../templates/default/ajouter_transaction.tpl:197 
@@ -870,8 +870,8 @@ $lang['PDF Models'] = 'PDF Models';
 // ../templates/default/page.tpl:119 
 $lang['Add a member'] = 'Add a member';
 
-// ../templates/default/gestion_adherents.tpl:277 
-$lang['Membership will expire soon (&lt;30d)'] = 'Membership will expire soon (&lt;30d)';
+// ../lib/Galette/Entity/Group.php:683 
+$lang['Group `%1$s` is a child of `%2$s`, cannot be set as parent!'] = 'Group `%1$s` is a child of `%2$s`, cannot be set as parent!';
 
 // ../change_passwd.php:62 ../lib/Galette/Entity/Adherent.php:1068 
 $lang['- The passwords don\'t match!'] = '- The passwords don\'t match!';
@@ -885,7 +885,7 @@ $lang['Contribution type:'] = 'Contribution type:';
 // ../install/old.index.php:1378 
 $lang['Required fields upgrade has failed :('] = 'Required fields upgrade has failed :(';
 
-// ../templates/default/member.tpl:277 
+// ../templates/default/member.tpl:281 
 $lang['Groups selection'] = 'Groups selection';
 
 // ../install/old.index.php:221 ../install/old.index.php:1529 ../templates/default/ajax_plugins_initdb.tpl:130 
@@ -1317,6 +1317,9 @@ $lang['No sent mailing has been stored in the database yet.'] = 'No sent mailing
 // ../templates/default/preferences.tpl:56 
 $lang['from a staff user'] = 'from a staff user';
 
+// ../templates/default/gestion_adherents.tpl:277 
+$lang['Membership will expire soon (&lt;30d)'] = 'Membership will expire soon (&lt;30d)';
+
 // ../install/old.index.php:693 
 $lang['Check the parameters and the existence of the database'] = 'Check the parameters and the existence of the database';
 
@@ -1527,8 +1530,8 @@ $lang['spanish'] = 'spanish';
 // ../templates/default/gestion_pdf.tpl:77 
 $lang['Contribution begin date'] = 'Contribution begin date';
 
-// ../lib/Galette/Entity/Adherent.php:1025 
-$lang['- The username cannot contain the @ character'] = '- The username cannot contain the @ character';
+// ../templates/default/gestion_groupes.tpl:79 
+$lang['An error occured reordering groups :('] = 'An error occured reordering groups :(';
 
 // ../templates/default/voir_adherent.tpl:136 
 $lang['[member]'] = '[member]';
@@ -2109,7 +2112,7 @@ $lang['CREATE operation allowed'] = 'CREATE operation allowed';
 // ../gestion_transactions.php:112 
 $lang['Transactions managment'] = 'Transactions managment';
 
-// ../lib/Galette/IO/CsvIn.php:375 
+// ../lib/Galette/IO/CsvIn.php:378 
 $lang['An error occured while importing members'] = 'An error occured while importing members';
 
 // ../install/old.index.php:1259 
@@ -2403,8 +2406,8 @@ $lang['Logged in as:<br/>%login'] = 'Logged in as:<br/>%login';
 // ../templates/default/ajouter_contribution.tpl:143 ../templates/default/export.tpl:110 
 $lang['Continue'] = 'Continue';
 
-// ../templates/default/gestion_groupes.tpl:79 
-$lang['An error occured reordering groups :('] = 'An error occured reordering groups :(';
+// ../lib/Galette/Entity/Adherent.php:1025 
+$lang['- The username cannot contain the @ character'] = '- The username cannot contain the @ character';
 
 // ../templates/default/preferences.tpl:145 
 $lang['Everyone'] = 'Everyone';
@@ -2703,7 +2706,7 @@ $lang['You cannot delete Mr. or Mrs. titles!'] = 'You cannot delete Mr. or Mrs. 
 // ../templates/default/preferences.tpl:338 
 $lang['Active Member Color:'] = 'Active Member Color:';
 
-// ../templates/default/member.tpl:279 
+// ../templates/default/member.tpl:283 
 $lang['Managed groups selection'] = 'Managed groups selection';
 
 // ../needs_update.php:71 
@@ -2727,7 +2730,7 @@ $lang['Subtitle'] = 'Subtitle';
 // ../templates/default/advanced_search.tpl:170 
 $lang['Select a field'] = 'Select a field';
 
-// ../templates/default/member.tpl:422 
+// ../templates/default/member.tpl:426 
 $lang['Click to choose this member as parent'] = 'Click to choose this member as parent';
 
 // ../templates/default/gestion_groupes.tpl:121 
@@ -2742,7 +2745,7 @@ $lang['Notify member his account has been created'] = 'Notify member his account
 // ../install/old.index.php:727 
 $lang['Go back'] = 'Go back';
 
-// ../templates/default/member.tpl:317 ../templates/default/forms_types/groups.tpl:41 
+// ../templates/default/member.tpl:321 ../templates/default/forms_types/groups.tpl:41 
 $lang['Manager for \'%groupname\''] = 'Manager for \'%groupname\'';
 
 // ../ajax_plugins_initdb.php:199 ../install/old.index.php:827 ../install/steps/db_checks.php:117 
@@ -3072,7 +3075,7 @@ $lang['Not supplied'] = 'Not supplied';
 // ../install/installer.php:272 ../templates/default/ajax_plugins_initdb.tpl:132 
 $lang['Version selection'] = 'Version selection';
 
-// ../templates/default/member.tpl:377 ../templates/default/member.tpl:445 ../templates/default/mailing_adherents.tpl:176 ../templates/default/mailing_adherents.tpl:222 ../templates/default/mailing_adherents.tpl:272 ../templates/default/gestion_groupes.tpl:180 ../templates/default/gestion_groupes.tpl:240 ../templates/default/gestion_groupes.tpl:294 ../templates/default/ajouter_transaction.tpl:122 
+// ../templates/default/member.tpl:381 ../templates/default/member.tpl:449 ../templates/default/mailing_adherents.tpl:176 ../templates/default/mailing_adherents.tpl:222 ../templates/default/mailing_adherents.tpl:272 ../templates/default/gestion_groupes.tpl:180 ../templates/default/gestion_groupes.tpl:240 ../templates/default/gestion_groupes.tpl:294 ../templates/default/ajouter_transaction.tpl:122 
 $lang['An error occured displaying members interface :('] = 'An error occured displaying members interface :(';
 
 // ../lostpasswd.php:83 ../lostpasswd.php:95 ../lib/Galette/IO/Csv.php:116 ../lib/Galette/Core/History.php:276 
@@ -3285,7 +3288,7 @@ $lang['Unable to run %version update script :('] = 'Unable to run %version updat
 // ../lib/Galette/Entity/Transaction.php:107 ../templates/default/ajouter_transaction.tpl:11 
 $lang['Originator:'] = 'Originator:';
 
-// ../templates/default/gestion_adherents.tpl:446 ../templates/default/member.tpl:229 ../templates/default/member.tpl:239 ../templates/default/edit_dynamic_fields.tpl:162 ../templates/default/ajouter_transaction.tpl:207 ../templates/default/gestion_contributions.tpl:290 ../templates/default/ajouter_contribution.tpl:161 ../templates/default/gestion_transactions.tpl:169 ../templates/default/advanced_search.tpl:255 ../templates/default/advanced_search.tpl:264 
+// ../templates/default/gestion_adherents.tpl:446 ../templates/default/member.tpl:233 ../templates/default/member.tpl:243 ../templates/default/edit_dynamic_fields.tpl:162 ../templates/default/ajouter_transaction.tpl:207 ../templates/default/gestion_contributions.tpl:290 ../templates/default/ajouter_contribution.tpl:161 ../templates/default/gestion_transactions.tpl:169 ../templates/default/advanced_search.tpl:255 ../templates/default/advanced_search.tpl:264 
 $lang['Select a date'] = 'Select a date';
 
 // ../templates/default/group.tpl:5 ../templates/default/group.tpl:43 
@@ -3342,7 +3345,7 @@ $lang['Click here to deactivate plugin \'%name\''] = 'Click here to deactivate p
 // ../templates/default/ajax_plugins_initdb.tpl:21 
 $lang['you wish to erase an older version of of %name without keeping your data'] = 'you wish to erase an older version of of %name without keeping your data';
 
-// ../lib/Galette/IO/CsvIn.php:275 
+// ../lib/Galette/IO/CsvIn.php:278 
 $lang['File is empty!'] = 'File is empty!';
 
 // ../install/steps/db_install.php:47 
@@ -3663,7 +3666,7 @@ $lang['Membership expired since'] = 'Membership expired since';
 // ../gestion_adherents.php:255 
 $lang['Unable to remove selected member(s)'] = 'Unable to remove selected member(s)';
 
-// ../lib/Galette/IO/CsvIn.php:241 
+// ../lib/Galette/IO/CsvIn.php:244 
 $lang['Fields count mismatch... There should be %should_count fields and there are %count (row %row)'] = 'Fields count mismatch... There should be %should_count fields and there are %count (row %row)';
 
 // ../ajouter_adherent.php:343 
@@ -3774,7 +3777,7 @@ $lang['Not a GIF file '] = 'Not a GIF file ';
 // ../champs_adherents.php:56 ../includes/fields_defs/members_fields.php:196 
 $lang['MSN:'] = 'MSN:';
 
-// ../templates/default/member.tpl:270 
+// ../templates/default/member.tpl:274 
 $lang['An error occured displaying groups interface :('] = 'An error occured displaying groups interface :(';
 
 // ../groups_list.php:166 
@@ -3993,7 +3996,7 @@ $lang['Country'] = 'Country';
 // ../lib/Galette/Entity/Transaction.php:103 ../templates/default/ajouter_transaction.tpl:7 
 $lang['Description:'] = 'Description:';
 
-// ../templates/default/member.tpl:209 ../templates/default/voir_adherent.tpl:152 
+// ../templates/default/member.tpl:213 ../templates/default/voir_adherent.tpl:152 
 $lang['Back to top'] = 'Back to top';
 
 // ../templates/default/preferences.tpl:75 
@@ -4092,7 +4095,7 @@ $lang['beetween'] = 'beetween';
 // ../ajouter_adherent.php:358 
 $lang['An error occured adding member to its groups as manager.'] = 'An error occured adding member to its groups as manager.';
 
-// ../lib/Galette/IO/CsvIn.php:259 
+// ../lib/Galette/IO/CsvIn.php:262 
 $lang['Field %field is required, but missing in row %row'] = 'Field %field is required, but missing in row %row';
 
 // ../groups_list.php:154 

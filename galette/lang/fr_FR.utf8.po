@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-06-11 17:43+0200\n"
+"PO-Revision-Date: 2016-09-23 07:47+0200\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -298,7 +298,7 @@ msgstr "Accès et permissions de la base de données"
 msgid "New password"
 msgstr "Nouveau Mot de passe"
 
-#: ../lib/Galette/IO/CsvIn.php:241
+#: ../lib/Galette/IO/CsvIn.php:244
 msgid ""
 "Fields count mismatch... There should be %should_count fields and there are "
 "%count (row %row)"
@@ -404,7 +404,7 @@ msgstr ""
 msgid "Modifiy mailing"
 msgstr "Modification E-Mailing"
 
-#: ../templates/default/member.tpl:386
+#: ../templates/default/member.tpl:390
 msgid "Attached member selection"
 msgstr "Sélection des adhérents attachés"
 
@@ -773,7 +773,7 @@ msgstr ""
 "Ce lien n'est plus valide. Vous devriez <a href='lostpasswd.php'>demander la "
 "récupération de votre mot de passe</a> à nouveau"
 
-#: ../templates/default/member.tpl:277
+#: ../templates/default/member.tpl:281
 msgid "Groups selection"
 msgstr "Sélection des groupes"
 
@@ -802,7 +802,7 @@ msgstr "Le titre « %s » n'a pas été modifié&nbsp;!"
 msgid "Donation in kind"
 msgstr "Donation en nature"
 
-#: ../lib/Galette/IO/CsvIn.php:275
+#: ../lib/Galette/IO/CsvIn.php:278
 msgid "File is empty!"
 msgstr "Le fichier est vide !"
 
@@ -1426,7 +1426,7 @@ msgstr ""
 "Retour à la fenêtre précédente, si vous souhaitez sélectionnez un type de "
 "contribution qui n'est pas listé ici"
 
-#: ../templates/default/member.tpl:319
+#: ../templates/default/member.tpl:323
 #: ../templates/default/forms_types/groups.tpl:31
 msgid "Member of '%groupname'"
 msgstr "Membre de « %groupname »"
@@ -1644,7 +1644,7 @@ msgstr "Pages publiques actives&nbsp;?"
 msgid "Permissions on the base"
 msgstr "Permissions sur la base"
 
-#: ../lib/Galette/IO/CsvIn.php:259
+#: ../lib/Galette/IO/CsvIn.php:262
 msgid "Field %field is required, but missing in row %row"
 msgstr "Le champ %field est requis mais manquant à la ligne %row"
 
@@ -1947,7 +1947,7 @@ msgstr "Transaction entièrement ventilée"
 msgid "Member's login"
 msgstr "Identifiant de l'adhérent"
 
-#: ../templates/default/member.tpl:317
+#: ../templates/default/member.tpl:321
 #: ../templates/default/forms_types/groups.tpl:41
 msgid "Manager for '%groupname'"
 msgstr "Responsable pour « %groupname »"
@@ -2092,6 +2092,12 @@ msgstr "Plugins"
 #: ../templates/default/footer.tpl:9
 msgid "Website"
 msgstr "Site Web"
+
+#: ../lib/Galette/Entity/Group.php:683
+msgid "Group `%1$s` is a child of `%2$s`, cannot be set as parent!"
+msgstr ""
+"Le groupe `%1$s` est un enfant de `%2$s`, il ne peut être défini comme "
+"parent&nbsp;!"
 
 #: ../templates/default/edit_title.tpl:9
 msgid "Long form:"
@@ -3532,7 +3538,7 @@ msgstr "La base de données n'a pas été installée&nbsp;!"
 msgid "Back"
 msgstr "Retour"
 
-#: ../templates/default/member.tpl:270
+#: ../templates/default/member.tpl:274
 msgid "An error occured displaying groups interface :("
 msgstr ""
 "Une erreur est survenue lors de l'affichage de l'interface des groupes :("
@@ -3856,7 +3862,7 @@ msgstr "Sélectionnez le type d'installation à lancer"
 msgid "Originator"
 msgstr "Emetteur"
 
-#: ../templates/default/member.tpl:377 ../templates/default/member.tpl:445
+#: ../templates/default/member.tpl:381 ../templates/default/member.tpl:449
 #: ../templates/default/mailing_adherents.tpl:176
 #: ../templates/default/mailing_adherents.tpl:222
 #: ../templates/default/mailing_adherents.tpl:272
@@ -4003,7 +4009,7 @@ msgstr ""
 "Par la présente, je m'engage à respecter les statuts ainsi que le règlement "
 "intérieur de l'association {ASSO_NAME}."
 
-#: ../templates/default/member.tpl:422
+#: ../templates/default/member.tpl:426
 msgid "Click to choose this member as parent"
 msgstr "Cliquez pour choisir ce membre comme parent"
 
@@ -4660,7 +4666,7 @@ msgstr "Le slogan de votre association"
 msgid "An SQL error has occured."
 msgstr "Une erreur SQL est survenue."
 
-#: ../lib/Galette/IO/CsvIn.php:375
+#: ../lib/Galette/IO/CsvIn.php:378
 msgid "An error occured while importing members"
 msgstr "Une erreur est survenue lors de l'enregistrement des adhérents"
 
@@ -4747,7 +4753,7 @@ msgstr ""
 msgid "Creation of the tables"
 msgstr "Création des tables"
 
-#: ../lib/Galette/IO/CsvIn.php:331 ../lib/Galette/IO/CsvIn.php:342
+#: ../lib/Galette/IO/CsvIn.php:334 ../lib/Galette/IO/CsvIn.php:345
 msgid "An error occured storing member at row %row (%name):"
 msgstr ""
 "Une erreur est survenue lors de l'enregistrement de l'adhérent ligne %row "
@@ -4851,7 +4857,7 @@ msgstr "Modifier mon mot de passe"
 msgid "Active account"
 msgstr "Compte actif"
 
-#: ../templates/default/member.tpl:209
+#: ../templates/default/member.tpl:213
 #: ../templates/default/voir_adherent.tpl:152
 msgid "Back to top"
 msgstr "Retour en haut"
@@ -5293,7 +5299,7 @@ msgstr "Détails de la liste d'émargement"
 msgid "Sender"
 msgstr "Expéditeur"
 
-#: ../templates/default/member.tpl:279
+#: ../templates/default/member.tpl:283
 msgid "Managed groups selection"
 msgstr "Selection des groupes gérés"
 
@@ -5614,7 +5620,7 @@ msgid "Activities"
 msgstr "Activités"
 
 #: ../templates/default/gestion_adherents.tpl:446
-#: ../templates/default/member.tpl:229 ../templates/default/member.tpl:239
+#: ../templates/default/member.tpl:233 ../templates/default/member.tpl:243
 #: ../templates/default/edit_dynamic_fields.tpl:162
 #: ../templates/default/ajouter_transaction.tpl:207
 #: ../templates/default/gestion_contributions.tpl:290
@@ -6582,13 +6588,6 @@ msgstr "Adhésion souhaitée :"
 
 #~ msgid "A group cannot be set as its own parent!"
 #~ msgstr "Un groupe ne peut pas être son propre parent&nbsp;!"
-
-#~ msgid ""
-#~ "Group `%subgroupname` is a child of `%groupname`, cnanot be setted as "
-#~ "parent!"
-#~ msgstr ""
-#~ "Le groupe `%subgroupname` est un enfant de `%groupname`, il ne peut être "
-#~ "défini comme son parent&nbsp;!"
 
 #~ msgid "Display member nubmer in member related windows"
 #~ msgstr "Afficher le numéro adhérent dans les fenêtres relatives"
