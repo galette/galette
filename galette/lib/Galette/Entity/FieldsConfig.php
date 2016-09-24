@@ -174,7 +174,7 @@ class FieldsConfig
 
             $this->_categorized_fields = null;
             foreach ( $results as $k ) {
-                if ($k->field_id === 'id_adh' && !$preferences->pref_show_id) {
+                if ($k->field_id === 'id_adh' && (!isset($preferences) || !$preferences->pref_show_id)) {
                     $k->visible = self::HIDDEN;
                 }
                 $f = array(
