@@ -1082,6 +1082,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             include_once '../includes/fields_defs/members_fields.php';
             include_once '../includes/fields_defs/members_fields_cats.php';
             $fc = new \Galette\Entity\FieldsConfig(
+                $zdb,
                 \Galette\Entity\Adherent::TABLE,
                 $members_fields,
                 $members_fields_cats,
@@ -1114,7 +1115,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $this->_proceedReport(_T("Status"), $res);
 
             //Install fields configuration and categories
-            $res = $fc->installInit($zdb);
+            $res = $fc->installInit();
             $this->_proceedReport(_T("Fields config and categories"), $res);
 
             //Install texts

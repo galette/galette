@@ -59,7 +59,7 @@ $member = new Adherent();
 $member->setSelfMembership();
 
 // flagging required fields
-$fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
+$fc = new FieldsConfig($zdb, Adherent::TABLE, $members_fields, $members_fields_cats);
 
 // flagging required fields invisible to members
 $fc->setNotRequired('activite_adh');

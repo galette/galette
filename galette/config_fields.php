@@ -62,7 +62,7 @@ $fc = null;
 
 switch ( $current ) {
 case 'members':
-    $fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
+    $fc = new FieldsConfig($zdb, Adherent::TABLE, $members_fields, $members_fields_cats);
     break;
 default:
     Analog::log(

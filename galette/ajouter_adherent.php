@@ -118,7 +118,7 @@ if ( $login->isAdmin() || $login->isStaff() || $login->isGroupManager() ) {
 }
 
 // flagging required fields
-$fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
+$fc = new FieldsConfig($zdb, Adherent::TABLE, $members_fields, $members_fields_cats);
 
 // password required if we create a new member
 if ( $member->id != '' ) {

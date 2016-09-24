@@ -38,6 +38,7 @@
 namespace Galette\IO;
 
 use Analog\Analog;
+use Galette\Core\Db;
 use Galette\Entity\Adherent;
 use Galette\Entity\ImportModel;
 use Galette\Entity\FieldsConfig;
@@ -93,6 +94,7 @@ class CsvIn extends Csv implements FileInterface
     private $_members_fields;
     private $_members_fields_cats;
     private $_required;
+    private $zdb;
 
     /**
      * Default constructor
@@ -142,6 +144,7 @@ class CsvIn extends Csv implements FileInterface
     /**
      * Import members from CSV file
      *
+     * @param Db      $zdb                 Database instance
      * @param string  $filename            CSV filename
      * @param array   $members_fields      Members fields
      * @param array   $members_fields_cats Members fields categories
@@ -149,7 +152,7 @@ class CsvIn extends Csv implements FileInterface
      *
      * @return boolean
      */
-    public function import($filename, $members_fields, $members_fields_cats, $dryrun)
+    public function import(Db $zdb, $filename, $members_fields, $members_fields_cats, $dryrun)
     {
         if ( !file_exists(self::DEFAULT_DIRECTORY . '/' . $filename)
             || !is_readable(self::DEFAULT_DIRECTORY . '/' . $filename)
@@ -161,6 +164,7 @@ class CsvIn extends Csv implements FileInterface
             return false;
         }
 
+        $this->zdb = $zdb;
         if ( $dryrun === false ) {
             $this->_dryrun = false;
         }
@@ -213,6 +217,7 @@ class CsvIn extends Csv implements FileInterface
 
             //check required fields
             $fc = new FieldsConfig(
+                $this->zdb,
                 Adherent::TABLE,
                 $this->_members_fields,
                 $this->_members_fields_cats
