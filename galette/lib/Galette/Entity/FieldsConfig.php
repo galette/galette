@@ -402,14 +402,13 @@ class FieldsConfig
     /**
      * Retrieve form elements
      *
-     * @param array   $members_fields_cats Members fields categories
-     * @param boolean $selfs               True if we're called from self subscirption page
+     * @param boolean $selfs True if we're called from self subscirption page
      *
      * @return array
      */
-    public function getFormElements($members_fields_cats, $selfs = false)
+    public function getFormElements($selfs = false)
     {
-        global $log, $login;
+        global $login;
 
         if (!count($this->_form_elements) > 0) {
             //get columns descriptions

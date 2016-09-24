@@ -77,7 +77,7 @@ $app->get(
         $required = $fc->getRequired();
         // flagging fields visibility
         $visibles = $fc->getVisibilities();
-        $form_elements = $fc->getFormElements($this->members_fields_cats, true);
+        $form_elements = $fc->getFormElements(true);
 
         // disable some fields
         $disabled  = $member->disabled_fields;
