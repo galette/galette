@@ -39,11 +39,11 @@ CREATE TABLE galette_adherents (
   bool_display_info tinyint(1) NOT NULL default 0,
   date_echeance date default NULL,
   pref_lang varchar(20) default 'fr_FR',
-  lieu_naissance text default '',
+  lieu_naissance text,
   gpgid varchar(8) DEFAULT NULL,
   fingerprint varchar(50) DEFAULT NULL,
   parent_id int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY  (id_adh),
+  PRIMARY KEY (id_adh),
   UNIQUE (login_adh),
   FOREIGN KEY (id_statut) REFERENCES galette_statuts (id_statut),
   FOREIGN KEY (titre_adh) REFERENCES galette_titles (id_title),
@@ -62,7 +62,7 @@ CREATE TABLE galette_cotisations (
   date_debut_cotis date NOT NULL default '1901-01-01',
   date_fin_cotis date NOT NULL default '1901-01-01',
   trans_id int(10) unsigned default NULL,
-  PRIMARY KEY  (id_cotis),
+  PRIMARY KEY (id_cotis),
   FOREIGN KEY (id_type_cotis) REFERENCES galette_types_cotisation (id_type_cotis),
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -74,7 +74,7 @@ CREATE TABLE galette_transactions (
   trans_amount decimal(15, 2) default '0',
   trans_desc varchar(150) NOT NULL default '',
   id_adh int(10) unsigned default NULL,
-  PRIMARY KEY  (trans_id),
+  PRIMARY KEY (trans_id),
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -83,7 +83,7 @@ CREATE TABLE galette_statuts (
   id_statut int(10) unsigned NOT NULL auto_increment,
   libelle_statut varchar(100) NOT NULL default '',
   priorite_statut tinyint(4) NOT NULL default '0',
-  PRIMARY KEY  (id_statut)
+  PRIMARY KEY (id_statut)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_titles;
@@ -91,7 +91,7 @@ CREATE TABLE galette_titles (
   id_title int(10) unsigned NOT NULL auto_increment,
   short_label varchar(10) NOT NULL default '',
   long_label varchar(30) default '',
-  PRIMARY KEY  (id_title)
+  PRIMARY KEY (id_title)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_types_cotisation;
@@ -99,7 +99,7 @@ CREATE TABLE galette_types_cotisation (
   id_type_cotis int(10) unsigned NOT NULL auto_increment,
   libelle_type_cotis varchar(100) NOT NULL default '',
   cotis_extension tinyint(1) NOT NULL default 0,
-  PRIMARY KEY  (id_type_cotis)
+  PRIMARY KEY (id_type_cotis)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_preferences;
@@ -120,7 +120,7 @@ CREATE TABLE galette_logs (
   text_log text,
   action_log text,
   sql_log text,
-  PRIMARY KEY  (id_log)
+  PRIMARY KEY (id_log)
 ) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Table for dynamic fields description;
@@ -150,7 +150,7 @@ CREATE TABLE galette_dynamic_fields (
     field_id int(10) unsigned NOT NULL default '0',
     field_form varchar(10) NOT NULL,
     val_index int(10) NOT NULL default '0',
-    field_val text DEFAULT '',
+    field_val text,
     PRIMARY KEY (item_id, field_id, field_form, val_index),
     FOREIGN KEY (field_id) REFERENCES galette_field_types (field_id)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -160,7 +160,7 @@ CREATE TABLE galette_pictures (
     id_adh int(10) unsigned NOT NULL default '0',
     picture mediumblob NOT NULL,
     format varchar(10) NOT NULL default '',
-    PRIMARY KEY  (id_adh)
+    PRIMARY KEY (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Table for dynamic translation of strings;
@@ -173,7 +173,7 @@ CREATE TABLE galette_l10n (
     PRIMARY KEY (text_orig, text_locale)
 ) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
--- new table for temporary passwords  2006-02-18;
+-- new table for temporary passwords 2006-02-18;
 DROP TABLE IF EXISTS galette_tmppasswds;
 CREATE TABLE galette_tmppasswds (
     id_adh int(10) unsigned NOT NULL,
@@ -192,7 +192,7 @@ CREATE TABLE galette_texts (
   tbody text NOT NULL,
   tlang varchar(16) NOT NULL,
   tcomment varchar(64) NOT NULL,
-  PRIMARY KEY  (tid)
+  PRIMARY KEY (tid)
 ) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_fields_categories;
@@ -202,8 +202,7 @@ CREATE TABLE galette_fields_categories (
   category varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   position int(2) NOT NULL,
   PRIMARY KEY (id_field_category)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_fields_config;
 CREATE TABLE galette_fields_config (
