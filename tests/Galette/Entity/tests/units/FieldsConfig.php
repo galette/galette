@@ -151,10 +151,113 @@ class FieldsConfig extends atoum
         ];
         $this->array($required)->isEqualTo($expected);
 
+        $isrequired = $fields_config->isRequired('login_adh');
+        $this->boolean($isrequired)->isTrue();
+
+        $isrequired = $fields_config->isRequired('info_adh');
+        $this->boolean($isrequired)->isFalse();
+
+
         $visibles = $fields_config->getVisibilities();
         $this->array($visibles)
             ->hasSize(count($categorized[1]) + count($categorized[2]) + count($categorized[3]))
             ->integer['id_adh']->isIdenticalTo(0)
             ->integer['nom_adh']->isIdenticalTo(1);
+    }
+
+    /**
+     * Test setNotRequired
+     *
+     * @return void
+     */
+    public function testSetNotRequired()
+    {
+        $fields_config = $this->fields_config;
+        $fields_config->load();
+
+        $required_mdp = $fields_config->getRequired()['mdp_adh'];
+        $this->boolean($required_mdp)->isTrue();
+
+        $required_mdp = $fields_config->getCategorizedFields()[2][6]['required'];
+        $this->boolean($required_mdp)->isTrue();
+
+        $fields_config->setNotRequired('mdp_adh');
+
+        $required_mdp = $fields_config->getRequired();
+        $this->array($required_mdp)->notHasKey('mdp_adh');
+
+        $required_mdp = $fields_config->getCategorizedFields()[2][6]['required'];
+        $this->boolean($required_mdp)->isFalse();
+    }
+
+    /**
+     * Test getVisibility
+     *
+     * @return void
+     */
+    public function testGetVisibility()
+    {
+        $this->fields_config->load();
+
+        $visible = $this->fields_config->getVisibility('nom_adh');
+        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::VISIBLE);
+
+        $visible = $this->fields_config->getVisibility('id_adh');
+        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::HIDDEN);
+
+        $visible = $this->fields_config->getVisibility('info_adh');
+        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::ADMIN);
+    }
+
+    /**
+     * Test setFields and storage
+     *
+     * @return void
+     */
+    public function testSetFields()
+    {
+        $fields_config = $this->fields_config;
+        $fields_config->installInit();
+        $fields_config->load();
+
+        $fields = $fields_config->getCategorizedFields();
+
+        //town
+        $town = &$fields[3][3];
+        $this->boolean($town['required'])->isTrue();
+        $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::VISIBLE);
+
+        $town['required'] = false;
+        $town['visible'] = \Galette\Entity\FieldsConfig::HIDDEN;
+
+        //jabber
+        $jabber = $fields[3][10];
+        unset($fields[3][10]);
+        $jabber['category'] = 1;
+        $fields[1][] = $jabber;
+
+        $fields_config->setFields($fields);
+
+        $fields_config->load();
+        $fields = $fields_config->getCategorizedFields();
+
+        $town = $fields[3][3];
+        $this->boolean($town['required'])->isFalse();
+        $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::HIDDEN);
+
+        $jabber2 = $fields[1][12];
+        $this->array($jabber2)->isIdenticalTo($jabber);
+    }
+
+    /**
+     * Test isSelfExcluded
+     *
+     * @return void
+     */
+    public function testIsSelfExcluded()
+    {
+        $this->boolean($this->fields_config->isSelfExcluded('bool_admin_adh'))->isTrue();
+        $this->boolean($this->fields_config->isSelfExcluded('info_adh'))->isTrue();
+        $this->boolean($this->fields_config->isSelfExcluded('nom_adh'))->isFalse();
     }
 }

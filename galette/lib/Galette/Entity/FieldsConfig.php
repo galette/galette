@@ -180,16 +180,16 @@ class FieldsConfig
                 $f = array(
                     'field_id'  => $k->field_id,
                     'label'     => $this->_defaults[$k->field_id]['label'],
-                    'category'  => $k->id_field_category,
+                    'category'  => (int)$k->id_field_category,
                     'visible'   => (int)$k->visible,
-                    'required'  => $k->required,
+                    'required'  => (boolean)$k->required,
                     'propname'  => $this->_defaults[$k->field_id]['propname']
                 );
                 $this->_categorized_fields[$k->id_field_category][] = $f;
 
                 //array of all required fields
                 if ( $k->required == 1 ) {
-                    $this->_all_required[$k->field_id] = $k->required;
+                    $this->_all_required[$k->field_id] = (boolean)$k->required;
                 }
 
                 //array of all fields visibility
@@ -234,7 +234,7 @@ class FieldsConfig
         foreach ($this->_categorized_fields as &$cat) {
             foreach ( $cat as &$f ) {
                 if ( $f['field_id'] === $field ) {
-                    $f['required'] = 0;
+                    $f['required'] = false;
                     return;
                 }
             }
