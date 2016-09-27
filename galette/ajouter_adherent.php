@@ -405,7 +405,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
 
     if ( count($error_detected) == 0 ) {
         $session['account_success'] = serialize($success_detected);
-        if ( !isset($_POST['id_adh']) ) {
+        if ( !isset($_POST['id_adh']) && !$member->isDueFree()  ) {
             header(
                 'location: ajouter_contribution.php?id_adh=' . $member->id
             );
