@@ -48,7 +48,7 @@ if (!$login->isLogged() or $login->isAdmin()
     && (!isset($_GET[Adherent::PK]) || trim($_GET[Adherent::PK]) == '')
 ) {
     //If not logged, or if admin without a member id ; print en empty card
-    $adh = null;
+    $adh = new Adherent();
 } elseif ($login->isAdmin() && isset($_GET[Adherent::PK])) {
     //If admin with a member id
     $adh = new Adherent((int)$_GET[Adherent::PK]);

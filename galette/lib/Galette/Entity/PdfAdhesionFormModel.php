@@ -32,7 +32,7 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.5dev - 2013-02-25
+ * @since     Available since 0.8.3dev - 2014-07-02
  */
 
 namespace Galette\Entity;
@@ -43,13 +43,13 @@ use Analog\Analog as Analog;
  * PDF form model
  *
  * @category  Entity
- * @name      PdfInvoice
+ * @name      PdfAdhesionFormModel
  * @package   Galette
  * @author    Guillaume Rousse <guillomovitch@gmail.com>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.5dev - 2013-02-25
+ * @since     Available since 0.8.3dev - 2014-07-02
  */
 
 class PdfAdhesionFormModel extends PdfModel
