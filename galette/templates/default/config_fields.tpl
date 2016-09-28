@@ -14,7 +14,7 @@
         <fieldset class="cssform large" id="cat_{$smarty.foreach.categories_list.iteration}">
     {assign var='catname' value=$category->category}
             <input type="hidden" name="categories[]" id="category{$smarty.foreach.categories_list.iteration}" value="{$category->id_field_category}"/>
-            <legend class="ui-state-active ui-corner-top">{_T string="$catname"}</legend>
+            <legend class="ui-state-active ui-corner-top">{$catname}</legend>
             <ul id="sortable_{$smarty.foreach.categories_list.iteration}" class="fields_list connectedSortable">
                 <li class="listing ">
                     <span class="label">{_T string="Field name"}</span>
