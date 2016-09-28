@@ -97,8 +97,8 @@ class PdfAdhesionForm
                 'adh_first_name'    => '/{FIRST_NAME_ADH}/',
                 'adh_nick_name'     => '/{NICKNAME_ADH}/',
                 'adh_gender'        => '/{GENDER_ADH}/',
-                'adh_birth_date'    => '/{GENDER_BIRTH_DATE}/',
-                'adh_birth_place'   => '/{GENDER_BIRTH_PLACE}/',
+                'adh_birth_date'    => '/{ADH_BIRTH_DATE}/',
+                'adh_birth_place'   => '/{ADH_BIRTH_PLACE}/',
                 'adh_profession'    => '/{PROFESSION_ADH}/',
                 'adh_company_name'  => '/{COMPANY_NAME_ADH}/',
                 'adh_address'       => '/{ADDRESS_ADH}/',
@@ -118,8 +118,8 @@ class PdfAdhesionForm
             Analog::log("adding dynamic pattern $key => {" . $pattern . "}", Analog::DEBUG);
         }
 
-        $address = $adh->adress;
-        if ($adh->adress_continuation != '') {
+        $address = $adh->address;
+        if ($adh->address_continuation != '') {
             $address .= '<br/>' . $adh->adress_continuation;
         }
 
@@ -137,8 +137,8 @@ class PdfAdhesionForm
             array(
                 'adh_title'         => $adh->stitle,
                 'adh_name'          => $adh->sfullname,
-                'adh_first_name'    => $adh->name,
                 'adh_last_name'     => $adh->surname,
+                'adh_first_name'    => $adh->name,
                 'adh_nickname'      => $adh->nickname,
                 'adh_gender'        => $gender,
                 'adh_birth_date'    => $adh->birthdate,
