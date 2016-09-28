@@ -205,7 +205,7 @@ msgstr ""
 msgid "Informations about available plugins"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:540
+#: ../lib/Galette/Entity/PdfModel.php:554
 msgid "header and footer should not be empty!"
 msgstr ""
 
@@ -412,10 +412,6 @@ msgstr ""
 msgid "Members by state of dues"
 msgstr ""
 
-#: ../templates/default/voir_adherent.tpl:14
-msgid "Adherent file card"
-msgstr ""
-
 #: ../install/old.index.php:487 ../install/steps/check.php:146
 msgid "apache_user"
 msgstr ""
@@ -544,7 +540,7 @@ msgstr ""
 msgid "Using GMAIL as SMTP server (slower)"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:523 ../templates/default/gestion_pdf_content.tpl:6
+#: ../lib/Galette/Entity/PdfModel.php:537 ../templates/default/gestion_pdf_content.tpl:6
 #: ../templates/default/ajax_attendance_sheet_details.tpl:9
 msgid "Title"
 msgstr ""
@@ -952,6 +948,10 @@ msgstr ""
 msgid "List of members"
 msgstr ""
 
+#: ../includes/fields_defs/pdfmodels_fields.php:266
+msgid "Hereby, I agree to comply to %s association statutes and its rules."
+msgstr ""
+
 #: ../templates/default/gestion_textes.tpl:49 ../templates/default/gestion_textes.tpl:51
 #: ../templates/default/gestion_textes.tpl:55 ../templates/default/gestion_textes.tpl:57
 #: ../templates/default/gestion_textes.tpl:61 ../templates/default/gestion_pdf.tpl:39
@@ -1286,6 +1286,10 @@ msgstr ""
 msgid "Current logo for printing"
 msgstr ""
 
+#: ../templates/default/page.tpl:159
+msgid "Download empty adhesion form"
+msgstr ""
+
 #: ../templates/default/preferences.tpl:185
 msgid "Reply-To Email:"
 msgstr ""
@@ -1465,7 +1469,7 @@ msgstr ""
 msgid "To:"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:544
+#: ../lib/Galette/Entity/PdfModel.php:558
 msgid "body should not be empty!"
 msgstr ""
 
@@ -1724,7 +1728,7 @@ msgstr ""
 msgid "Manager for '%groupname'"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:507
+#: ../lib/Galette/Entity/PdfModel.php:521
 msgid "Unknown type %type!"
 msgstr ""
 
@@ -2932,7 +2936,7 @@ msgid "Mailings"
 msgstr ""
 
 #: ../attendance_sheet.php:195 ../groups_list.php:164
-#: ../lib/Galette/Filters/MembersList.php:293 ../lib/Galette/Entity/PdfModel.php:514
+#: ../lib/Galette/Filters/MembersList.php:293 ../lib/Galette/Entity/PdfModel.php:528
 #: ../includes/fields_defs/pdfmodels_fields.php:217 ../templates/default/gestion_adherents.tpl:80
 #: ../templates/default/gestion_adherents.tpl:252 ../templates/default/gestion_adherents.tpl:258
 #: ../templates/default/ajax_groups.tpl:6 ../templates/default/gestion_intitule_content.tpl:10
@@ -3061,6 +3065,10 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:134
 msgid "Beginning of membership:"
+msgstr ""
+
+#: ../templates/default/page.tpl:159
+msgid "Empty adhesion form"
 msgstr ""
 
 #: ../install/old.index.php:1280
@@ -3213,6 +3221,7 @@ msgid "Y-m"
 msgstr ""
 
 #: ../includes/fields_defs/pdfmodels_fields.php:179 ../includes/fields_defs/pdfmodels_fields.php:180
+#: ../templates/default/voir_adherent.tpl:14
 msgid "Adhesion form"
 msgstr ""
 
@@ -3539,10 +3548,6 @@ msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:240
 msgid "No member has been found"
-msgstr ""
-
-#: ../includes/fields_defs/pdfmodels_fields.php:266
-msgid "Hereby, I agree to comply to {ASSO_NAME} association statutes and its rules."
 msgstr ""
 
 #: ../templates/default/member.tpl:426
@@ -4155,10 +4160,6 @@ msgstr ""
 
 #: ../templates/default/voir_adherent.tpl:160
 msgid "Not managed group"
-msgstr ""
-
-#: ../templates/default/config_fields.tpl:17
-msgid "$catname"
 msgstr ""
 
 #: ../install/old.index.php:1269
@@ -4799,10 +4800,6 @@ msgstr ""
 msgid "Show mailing %s details"
 msgstr ""
 
-#: ../templates/default/page.tpl:159
-msgid "Download empty member file card"
-msgstr ""
-
 #: ../templates/default/mailing_adherents.tpl:84 ../templates/default/mailing_adherents.tpl:106
 msgid "Cancel mailing"
 msgstr ""
@@ -4927,7 +4924,7 @@ msgstr ""
 msgid "Advanced search mode"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:525 ../templates/default/gestion_pdf_content.tpl:10
+#: ../lib/Galette/Entity/PdfModel.php:539 ../templates/default/gestion_pdf_content.tpl:10
 #: ../templates/default/ajax_attendance_sheet_details.tpl:13
 msgid "Subtitle"
 msgstr ""
@@ -5642,10 +5639,6 @@ msgstr ""
 
 #: ../needs_update.php:52 ../needs_update.php:70
 msgid "Galette needs update!"
-msgstr ""
-
-#: ../templates/default/page.tpl:159
-msgid "Empty member file card"
 msgstr ""
 
 #: ../preferences.php:199

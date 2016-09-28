@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-09-28 19:06+0200\n"
+"PO-Revision-Date: 2016-09-28 21:45+0200\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -259,7 +259,7 @@ msgstr "Écriture du fichier de configuration"
 msgid "Informations about available plugins"
 msgstr "Informations sur les plugins disponibles"
 
-#: ../lib/Galette/Entity/PdfModel.php:540
+#: ../lib/Galette/Entity/PdfModel.php:554
 msgid "header and footer should not be empty!"
 msgstr "l'en-tête et le pied de page ne peuvent être vides !"
 
@@ -482,10 +482,6 @@ msgstr "Permettre aux membres d'imprimer leur carte ?"
 msgid "Members by state of dues"
 msgstr "Adhérents par statut d'adhésion"
 
-#: ../templates/default/voir_adherent.tpl:14
-msgid "Adherent file card"
-msgstr "Fiche adhérent"
-
 #: ../install/old.index.php:487 ../install/steps/check.php:146
 msgid "apache_user"
 msgstr "utilisateur_apache"
@@ -622,7 +618,7 @@ msgstr "Couleur pour les membres actifs&nbsp;:"
 msgid "Using GMAIL as SMTP server (slower)"
 msgstr "Utilisation de GMAIL comme serveur SMTP (plus lent)"
 
-#: ../lib/Galette/Entity/PdfModel.php:523
+#: ../lib/Galette/Entity/PdfModel.php:537
 #: ../templates/default/gestion_pdf_content.tpl:6
 #: ../templates/default/ajax_attendance_sheet_details.tpl:9
 msgid "Title"
@@ -1090,6 +1086,12 @@ msgstr "Priorité"
 msgid "List of members"
 msgstr "Liste des adhérents"
 
+#: ../includes/fields_defs/pdfmodels_fields.php:266
+msgid "Hereby, I agree to comply to %s association statutes and its rules."
+msgstr ""
+"Par la présente, je m'engage à respecter les statuts ainsi que le règlement "
+"intérieur de l'association %s"
+
 #: ../templates/default/gestion_textes.tpl:49
 #: ../templates/default/gestion_textes.tpl:51
 #: ../templates/default/gestion_textes.tpl:55
@@ -1465,6 +1467,10 @@ msgstr "galette_import_model.csv"
 msgid "Current logo for printing"
 msgstr "Logo actuel pour l'impression"
 
+#: ../templates/default/page.tpl:159
+msgid "Download empty adhesion form"
+msgstr "Télécharger un formulaire d'adhésion vierge"
+
 #: ../templates/default/preferences.tpl:185
 msgid "Reply-To Email:"
 msgstr "Courriel de réponse&nbsp;:"
@@ -1662,7 +1668,7 @@ msgstr "Aller au tableau de bord de Galette"
 msgid "To:"
 msgstr "À&nbsp:"
 
-#: ../lib/Galette/Entity/PdfModel.php:544
+#: ../lib/Galette/Entity/PdfModel.php:558
 msgid "body should not be empty!"
 msgstr "le corps ne peut être vide !"
 
@@ -1952,7 +1958,7 @@ msgstr "Identifiant de l'adhérent"
 msgid "Manager for '%groupname'"
 msgstr "Responsable pour « %groupname »"
 
-#: ../lib/Galette/Entity/PdfModel.php:507
+#: ../lib/Galette/Entity/PdfModel.php:521
 msgid "Unknown type %type!"
 msgstr "Type %type inconnu !"
 
@@ -3324,7 +3330,7 @@ msgstr "E-Mailings"
 
 #: ../attendance_sheet.php:195 ../groups_list.php:164
 #: ../lib/Galette/Filters/MembersList.php:293
-#: ../lib/Galette/Entity/PdfModel.php:514
+#: ../lib/Galette/Entity/PdfModel.php:528
 #: ../includes/fields_defs/pdfmodels_fields.php:217
 #: ../templates/default/gestion_adherents.tpl:80
 #: ../templates/default/gestion_adherents.tpl:252
@@ -3474,6 +3480,10 @@ msgstr "Échec de l'ajout d'une nouvelle transaction"
 #: ../templates/default/preferences.tpl:134
 msgid "Beginning of membership:"
 msgstr "Date de début d'exercice&nbsp;:"
+
+#: ../templates/default/page.tpl:159
+msgid "Empty adhesion form"
+msgstr "Formulaire d'adhésion vierge"
 
 #: ../install/old.index.php:1280
 msgid "Default status cannot be initialized."
@@ -3640,6 +3650,7 @@ msgstr "m/Y"
 
 #: ../includes/fields_defs/pdfmodels_fields.php:179
 #: ../includes/fields_defs/pdfmodels_fields.php:180
+#: ../templates/default/voir_adherent.tpl:14
 msgid "Adhesion form"
 msgstr "Formulaire d'adhésion"
 
@@ -4001,13 +4012,6 @@ msgstr "Obligatoire&nbsp;:"
 #: ../templates/default/gestion_adherents.tpl:240
 msgid "No member has been found"
 msgstr "Aucun membre n'a été trouvé"
-
-#: ../includes/fields_defs/pdfmodels_fields.php:266
-msgid ""
-"Hereby, I agree to comply to {ASSO_NAME} association statutes and its rules."
-msgstr ""
-"Par la présente, je m'engage à respecter les statuts ainsi que le règlement "
-"intérieur de l'association {ASSO_NAME}."
 
 #: ../templates/default/member.tpl:426
 msgid "Click to choose this member as parent"
@@ -4724,10 +4728,6 @@ msgstr "Erreur au chargement "
 msgid "Not managed group"
 msgstr "Groupe non géré"
 
-#: ../templates/default/config_fields.tpl:17
-msgid "$catname"
-msgstr "$catname"
-
 #: ../install/old.index.php:1269
 msgid "Default contributions types cannot be initialized."
 msgstr "Les types de contribution par défaut n'ont pas été initialisés."
@@ -5439,10 +5439,6 @@ msgstr "Informations relatives à Galette&nbsp;:"
 msgid "Show mailing %s details"
 msgstr "Afficher les détails de l'E-Mailing %s"
 
-#: ../templates/default/page.tpl:159
-msgid "Download empty member file card"
-msgstr "Télécharger un formulaire d'adhésion vide"
-
 #: ../templates/default/mailing_adherents.tpl:84
 #: ../templates/default/mailing_adherents.tpl:106
 msgid "Cancel mailing"
@@ -5588,7 +5584,7 @@ msgstr ""
 msgid "Advanced search mode"
 msgstr "Mode recherche avancée"
 
-#: ../lib/Galette/Entity/PdfModel.php:525
+#: ../lib/Galette/Entity/PdfModel.php:539
 #: ../templates/default/gestion_pdf_content.tpl:10
 #: ../templates/default/ajax_attendance_sheet_details.tpl:13
 msgid "Subtitle"
@@ -6378,10 +6374,6 @@ msgstr "Les tables ont été correctement mises à jour."
 msgid "Galette needs update!"
 msgstr "Galette requiert une mise à jour !"
 
-#: ../templates/default/page.tpl:159
-msgid "Empty member file card"
-msgstr "Formulaire d'adhésion vide"
-
 #: ../preferences.php:199
 msgid "- Invalid number of months of membership extension."
 msgstr "- Durée d'extension d'adhésion invalide"
@@ -6585,6 +6577,15 @@ msgstr "Activer le plugin"
 #: ../includes/fields_defs/pdfmodels_fields.php:198
 msgid "Required membership:"
 msgstr "Adhésion souhaitée :"
+
+#~ msgid "Adherent file card"
+#~ msgstr "Fiche adhérent"
+
+#~ msgid "$catname"
+#~ msgstr "$catname"
+
+#~ msgid "Empty member file card"
+#~ msgstr "Formulaire d'adhésion vide"
 
 #~ msgid "A group cannot be set as its own parent!"
 #~ msgstr "Un groupe ne peut pas être son propre parent&nbsp;!"

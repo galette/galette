@@ -263,7 +263,7 @@ td#pdf_logo {
         <td class="input"></td>
     </tr>
 </table>
-<p>_T("Hereby, I agree to comply to {ASSO_NAME} association statutes and its rules.")<br/>_T("At ")<br/>_T("On             /            /            ")<br/>_T("Signature")</p>
+<p>str_replace(\'%s\', \'{ASSO_NAME}\', \'_T("Hereby, I agree to comply to %s association statutes and its rules.")\')<br/>_T("At ")<br/>_T("On             /            /            ")<br/>_T("Signature")</p>
 <p class="notes">_T("* Only for compagnies")<br/>_T("** Galette identifier, if applicable")</p>',
         'model_styles'  => 'td.label {
     width: 20%;
