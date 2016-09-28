@@ -452,13 +452,6 @@ abstract class PdfModel
                 $prop_value = $this->_parent->$pname;
             }
 
-            //handle replacements
-            $value = preg_replace(
-                $this->_patterns,
-                $this->_replaces,
-                $prop_value
-            );
-
             //handle translations
             $callback = function ($matches) {
                 return _T($matches[1]);
@@ -466,6 +459,27 @@ abstract class PdfModel
             $value = preg_replace_callback(
                 '/_T\("([^\"]+)"\)/',
                 $callback,
+                $prop_value
+            );
+
+            //handle replacements
+            $value = preg_replace(
+                $this->_patterns,
+                $this->_replaces,
+                $value
+            );
+
+            //handle translations with replacements
+            $repl_callback = function($matches) {
+                return str_replace(
+                    $matches[1],
+                    $matches[2],
+                    $matches[3]
+                );
+            };
+            $value = preg_replace_callback(
+                '/str_replace\(\'([^,]+)\', ?\'([^,]+)\', ?\'(.*)\'\)/',
+                $repl_callback,
                 $value
             );
 
