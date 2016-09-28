@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-09-28 21:45+0200\n"
+"PO-Revision-Date: 2016-09-28 22:15+0200\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -113,6 +113,10 @@ msgstr "Mot de passe perdu&nbsp;?"
 #: ../lib/Galette/DynamicFieldsTypes/Text.php:77
 msgid "text"
 msgstr "texte"
+
+#: ../includes/fields_defs/pdfmodels_fields.php:266
+msgid "On .......... / .......... / .......... "
+msgstr "On .......... / .......... / .......... "
 
 #: ../lib/Galette/Core/Preferences.php:431
 msgid ""
@@ -2247,10 +2251,6 @@ msgstr ""
 msgid "Contributions over time"
 msgstr "Contributions de par les âges"
 
-#: ../includes/fields_defs/pdfmodels_fields.php:266
-msgid "On             /            /            "
-msgstr "Le             /            /            "
-
 #: ../includes/i18n.inc.php:378
 msgid "Contact information"
 msgstr "Informations de contact"
@@ -4182,10 +4182,6 @@ msgstr "Global"
 msgid "Click here to activate plugin '%name'"
 msgstr "Cliquez ici pour activer le plugin « %name »"
 
-#: ../includes/fields_defs/pdfmodels_fields.php:266
-msgid "At "
-msgstr "Fait à"
-
 #: ../install/old.index.php:1337 ../templates/default/gestion_adherents.tpl:256
 msgid "Miss"
 msgstr "Mlle"
@@ -5087,6 +5083,10 @@ msgstr "Contenu des courriels"
 #: ../change_passwd.php:98 ../lostpasswd.php:193
 msgid "Password recovery"
 msgstr "Récupération de mot de passe"
+
+#: ../includes/fields_defs/pdfmodels_fields.php:266
+msgid "At ................................................"
+msgstr "At ................................................"
 
 #: ../ajax_plugins_initdb.php:228 ../install/steps/db_checks.php:146
 msgid "ALTER operation not allowed"
@@ -6577,6 +6577,12 @@ msgstr "Activer le plugin"
 #: ../includes/fields_defs/pdfmodels_fields.php:198
 msgid "Required membership:"
 msgstr "Adhésion souhaitée :"
+
+#~ msgid "On             /            /            "
+#~ msgstr "Le             /            /            "
+
+#~ msgid "At "
+#~ msgstr "Fait à"
 
 #~ msgid "Adherent file card"
 #~ msgstr "Fiche adhérent"

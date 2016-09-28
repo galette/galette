@@ -83,6 +83,10 @@ msgstr ""
 msgid "text"
 msgstr ""
 
+#: ../includes/fields_defs/pdfmodels_fields.php:266
+msgid "On .......... / .......... / .......... "
+msgstr ""
+
 #: ../lib/Galette/Core/Preferences.php:431
 msgid "%name\n%complement\n%address\n%zip %town - %country"
 msgstr ""
@@ -1969,10 +1973,6 @@ msgstr ""
 msgid "Contributions over time"
 msgstr ""
 
-#: ../includes/fields_defs/pdfmodels_fields.php:266
-msgid "On             /            /            "
-msgstr ""
-
 #: ../includes/i18n.inc.php:378
 msgid "Contact information"
 msgstr ""
@@ -3683,10 +3683,6 @@ msgstr ""
 msgid "Click here to activate plugin '%name'"
 msgstr ""
 
-#: ../includes/fields_defs/pdfmodels_fields.php:266
-msgid "At "
-msgstr ""
-
 #: ../install/old.index.php:1337 ../templates/default/gestion_adherents.tpl:256
 msgid "Miss"
 msgstr ""
@@ -4484,6 +4480,10 @@ msgstr ""
 
 #: ../change_passwd.php:98 ../lostpasswd.php:193
 msgid "Password recovery"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:266
+msgid "At ................................................"
 msgstr ""
 
 #: ../ajax_plugins_initdb.php:228 ../install/steps/db_checks.php:146

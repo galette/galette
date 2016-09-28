@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Wed Sep 28 19:45:24 2016 (GMT)
+// This file was automatically generated on Wed Sep 28 20:15:55 2016 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -1278,8 +1278,8 @@ $lang['Each selected export will be stored into a separate file in the exports d
 // ../champs_adherents.php:69 ../includes/fields_defs/members_fields.php:308 ../templates/default/gestion_textes.tpl:6 
 $lang['Language:'] = 'Langue&nbsp;:';
 
-// ../templates/default/advanced_search.tpl:110 
-$lang['End date'] = 'Date de fin';
+// ../templates/default/group.tpl:4 ../templates/default/group.tpl:9 ../templates/default/liste_membres.tpl:51 
+$lang['Informations'] = 'Informations';
 
 // ../templates/default/config_fields.tpl:158 
 $lang['Please correct above warnings to continue.'] = 'Veuillez corriger les erreurs ci-dessous pour continuer.';
@@ -2019,9 +2019,6 @@ $lang['Other informations:'] = 'Autres informations&nbsp;:';
 // ../templates/default/configurer_fiches.tpl:8 ../templates/default/configurer_fiche_content.tpl:6 
 $lang['Visibility'] = 'Visibilité';
 
-// ../includes/fields_defs/pdfmodels_fields.php:266 
-$lang['On             /            /            '] = 'Le             /            /            ';
-
 // ../install/steps/check.php:72 ../templates/default/page.tpl:147 
 $lang['Configuration'] = 'Configuration';
 
@@ -2610,9 +2607,6 @@ $lang['Translation of \'%s\' label'] = 'Traduction du libellé « %s »';
 // ../ajax_plugins_initdb.php:245 ../install/old.index.php:865 ../install/steps/db_checks.php:197 
 $lang['GALETTE hasn\'t got enough permissions on the database to continue the update.'] = 'Galette ne dispose pas de droits suffisants sur la base de données pour poursuivre la mise à jour.';
 
-// ../includes/fields_defs/pdfmodels_fields.php:266 
-$lang['At '] = 'Fait à';
-
 // ../lib/Galette/Filters/MembersList.php:327 
 $lang['All accounts'] = 'Tous  les comptes';
 
@@ -3012,6 +3006,9 @@ $lang['Association\'s short description:'] = 'Description de l\'association&nbsp
 // ../templates/default/group.tpl:69 
 $lang['Export current group, its subgroups and their members as PDF'] = 'Export de l\'ensemble des groupes, et leurs sous-groupes en PDF';
 
+// ../includes/fields_defs/pdfmodels_fields.php:266 
+$lang['At ................................................'] = 'At ................................................';
+
 // ../includes/i18n.inc.php:369 
 $lang['annual fee'] = 'cotisation annuelle';
 
@@ -3156,8 +3153,8 @@ $lang['Sends an email each time a new member registers online'] = 'Envoie un mai
 // ../templates/default/gestion_transactions.tpl:125 
 $lang['no transaction'] = 'aucune transaction';
 
-// ../templates/default/group.tpl:4 ../templates/default/group.tpl:9 ../templates/default/liste_membres.tpl:51 
-$lang['Informations'] = 'Informations';
+// ../includes/fields_defs/pdfmodels_fields.php:266 
+$lang['On .......... / .......... / .......... '] = 'On .......... / .......... / .......... ';
 
 // ../templates/default/reminder.tpl:22 
 $lang['Generate labels for late members without mail address'] = 'Génère des étiquettes pour les adhérents en retard sans adresse courriel';
@@ -3329,6 +3326,9 @@ $lang['An error occured :('] = 'Une erreur est survenue :(';
 
 // ../templates/default/global_messages.tpl:29 
 $lang['Do not wait timeout and go to the next page now :)'] = 'Ne pas attendre et passer à la page suivante immédiatement :)';
+
+// ../templates/default/advanced_search.tpl:110 
+$lang['End date'] = 'Date de fin';
 
 // ../templates/default/preferences.tpl:185 ../templates/default/preferences.tpl:186 
 $lang['Leave empty to use Sender Email as reply address'] = 'Laisser vide pour utiliser le courriel expéditeur comme adresse de réponse';

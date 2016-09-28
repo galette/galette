@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-09-28 21:44+0200\n"
+"PO-Revision-Date: 2016-09-28 22:15+0200\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -112,6 +112,10 @@ msgstr "Lost your password?"
 #: ../lib/Galette/DynamicFieldsTypes/Text.php:77
 msgid "text"
 msgstr "text"
+
+#: ../includes/fields_defs/pdfmodels_fields.php:266
+msgid "On .......... / .......... / .......... "
+msgstr "Le .......... / .......... / .......... "
 
 #: ../lib/Galette/Core/Preferences.php:431
 msgid ""
@@ -2207,10 +2211,6 @@ msgstr "Group is not empty, it cannot be deleted. Use cascade delete instead."
 msgid "Contributions over time"
 msgstr "Contributions over time"
 
-#: ../includes/fields_defs/pdfmodels_fields.php:266
-msgid "On             /            /            "
-msgstr "On             /            /            "
-
 #: ../includes/i18n.inc.php:378
 msgid "Contact information"
 msgstr "Contact information"
@@ -4114,10 +4114,6 @@ msgstr "Main"
 msgid "Click here to activate plugin '%name'"
 msgstr "Click here to activate plugin '%name'"
 
-#: ../includes/fields_defs/pdfmodels_fields.php:266
-msgid "At "
-msgstr "At "
-
 #: ../install/old.index.php:1337 ../templates/default/gestion_adherents.tpl:256
 msgid "Miss"
 msgstr "Miss"
@@ -5004,6 +5000,10 @@ msgstr "Emails content"
 #: ../change_passwd.php:98 ../lostpasswd.php:193
 msgid "Password recovery"
 msgstr "Password recovery"
+
+#: ../includes/fields_defs/pdfmodels_fields.php:266
+msgid "At ................................................"
+msgstr "À ................................................"
 
 #: ../ajax_plugins_initdb.php:228 ../install/steps/db_checks.php:146
 msgid "ALTER operation not allowed"
@@ -6471,6 +6471,12 @@ msgstr "Enable plugin"
 #: ../includes/fields_defs/pdfmodels_fields.php:198
 msgid "Required membership:"
 msgstr "Required membership:"
+
+#~ msgid "On             /            /            "
+#~ msgstr "On             /            /            "
+
+#~ msgid "At "
+#~ msgstr "At "
 
 #~ msgid "Adherent file card"
 #~ msgstr "Adherent file card"
