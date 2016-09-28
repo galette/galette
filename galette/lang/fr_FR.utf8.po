@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-09-23 07:47+0200\n"
+"PO-Revision-Date: 2016-09-28 19:06+0200\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -298,7 +298,7 @@ msgstr "Accès et permissions de la base de données"
 msgid "New password"
 msgstr "Nouveau Mot de passe"
 
-#: ../lib/Galette/IO/CsvIn.php:244
+#: ../lib/Galette/IO/CsvIn.php:249
 msgid ""
 "Fields count mismatch... There should be %should_count fields and there are "
 "%count (row %row)"
@@ -802,7 +802,7 @@ msgstr "Le titre « %s » n'a pas été modifié&nbsp;!"
 msgid "Donation in kind"
 msgstr "Donation en nature"
 
-#: ../lib/Galette/IO/CsvIn.php:278
+#: ../lib/Galette/IO/CsvIn.php:283
 msgid "File is empty!"
 msgstr "Le fichier est vide !"
 
@@ -1048,7 +1048,7 @@ msgstr "- Le champ nom ne peut pas être vide."
 msgid "Latecomers"
 msgstr "Les retardataires"
 
-#: ../lib/Galette/Repository/Members.php:348
+#: ../lib/Galette/Repository/Members.php:349
 msgid "Delete members cards, transactions and dues"
 msgstr "Suppression des fiches adhérent, transactions et cotisations"
 
@@ -1623,7 +1623,7 @@ msgstr ""
 "Un courriel a été envoyé à votre adresse.<br/>Vérifiez votre boite de "
 "réception et suivez les instructions."
 
-#: ../export.php:129
+#: ../export.php:128
 msgid "An error occured running parameted export '%export'."
 msgstr ""
 "Une erreur est survenue durant l'exécution de l'export paramétré « %export »."
@@ -1644,7 +1644,7 @@ msgstr "Pages publiques actives&nbsp;?"
 msgid "Permissions on the base"
 msgstr "Permissions sur la base"
 
-#: ../lib/Galette/IO/CsvIn.php:262
+#: ../lib/Galette/IO/CsvIn.php:267
 msgid "Field %field is required, but missing in row %row"
 msgstr "Le champ %field est requis mais manquant à la ligne %row"
 
@@ -1876,7 +1876,7 @@ msgstr "Votre version actuelle de Galette est..."
 msgid "With"
 msgstr "Avec"
 
-#: ../lib/Galette/Core/Install.php:1141
+#: ../lib/Galette/Core/Install.php:1142
 msgid "Update models"
 msgstr "Mise à jour des modèles"
 
@@ -2028,7 +2028,7 @@ msgstr ""
 "Note&nbsp;: les membres qui possèdent un statut dont la priorité est "
 "inférieure à %priority sont membres du bureau."
 
-#: ../lib/Galette/Core/Install.php:1110
+#: ../lib/Galette/Core/Install.php:1111
 msgid "Contributions types"
 msgstr "Types de contribution"
 
@@ -2777,7 +2777,7 @@ msgstr "aucune contribution"
 msgid "Do member want to appear publically?"
 msgstr "Est-ce que l'adhérent souhaite apparaître publiquement ?"
 
-#: ../export.php:153
+#: ../export.php:152
 msgid "CVS database Export"
 msgstr "Export CSV de la base de données"
 
@@ -2827,7 +2827,7 @@ msgstr "Hauteur&nbsp;:"
 msgid "Member's address"
 msgstr "Adresse de l'adhérent"
 
-#: ../import.php:115
+#: ../import.php:114
 msgid "An error occured importing the file :("
 msgstr "Une erreur est survenue lors de l'import du fichier :("
 
@@ -3288,7 +3288,7 @@ msgstr "Sélectionnez des pièces jointes"
 msgid "Contribution card"
 msgstr "Fiche contribution"
 
-#: ../lib/Galette/Core/Install.php:1114
+#: ../lib/Galette/Core/Install.php:1115
 #: ../templates/default/gestion_adherents.tpl:104
 msgid "Status"
 msgstr "Statut"
@@ -3384,7 +3384,7 @@ msgstr "Champs par défaut"
 msgid "Use TLS for SMTP?"
 msgstr "Utiliser TLS pour SMPT&nbsp;?"
 
-#: ../lib/Galette/Core/Install.php:1106
+#: ../lib/Galette/Core/Install.php:1107
 msgid "Preferences"
 msgstr "Préférences"
 
@@ -3511,7 +3511,7 @@ msgstr "Prénom de l'adhérent"
 msgid "Password image"
 msgstr "Image mot de passe"
 
-#: ../lib/Galette/Core/Install.php:1130
+#: ../lib/Galette/Core/Install.php:1131
 msgid "PDF Models"
 msgstr "Modèles PDF"
 
@@ -4022,8 +4022,8 @@ msgid ""
 msgstr ""
 "Cette page ne montre que les membres qui ont choisi d'être visibles sur la "
 "liste publique, et sont à jour de leurs cotisations. Si vous souhaitez que "
-"votre compte soit affiché ici, modifiez votre profil et cochez « Je souhaite "
-"apparaître dans la liste des membres »."
+"votre compte soit affiché ici, modifiez votre profil et cochez « Apparaître "
+"dans la liste des membres »."
 
 #: ../templates/default/public_page.tpl:48 ../templates/default/page.tpl:173
 msgid "Log off"
@@ -4666,7 +4666,7 @@ msgstr "Le slogan de votre association"
 msgid "An SQL error has occured."
 msgstr "Une erreur SQL est survenue."
 
-#: ../lib/Galette/IO/CsvIn.php:378
+#: ../lib/Galette/IO/CsvIn.php:383
 msgid "An error occured while importing members"
 msgstr "Une erreur est survenue lors de l'enregistrement des adhérents"
 
@@ -4708,7 +4708,7 @@ msgstr "%name <%mail> (%days jours)"
 msgid "Membership in order"
 msgstr "Adhésion en règle"
 
-#: ../import.php:122
+#: ../import.php:121
 msgid "File '%filename%' has been successfully imported :)"
 msgstr "Le fichier « %filename% » a été importé avec succès :)"
 
@@ -4753,7 +4753,7 @@ msgstr ""
 msgid "Creation of the tables"
 msgstr "Création des tables"
 
-#: ../lib/Galette/IO/CsvIn.php:334 ../lib/Galette/IO/CsvIn.php:345
+#: ../lib/Galette/IO/CsvIn.php:339 ../lib/Galette/IO/CsvIn.php:350
 msgid "An error occured storing member at row %row (%name):"
 msgstr ""
 "Une erreur est survenue lors de l'enregistrement de l'adhérent ligne %row "
@@ -4781,7 +4781,7 @@ msgstr "NB&nbsp;: Les champs obligatoires apparaissent en"
 msgid "Generate empty CSV file"
 msgstr "Générer un fichier CSV vide"
 
-#: ../export.php:136
+#: ../export.php:135
 msgid ""
 "An error occured running parameted export '%export'. Please check the logs."
 msgstr ""
@@ -5142,7 +5142,7 @@ msgstr "Profession"
 msgid "Failed to write file to disk"
 msgstr "Impossible d'écrire le fichier sur le disque"
 
-#: ../lib/Galette/Core/Install.php:1118
+#: ../lib/Galette/Core/Install.php:1119
 msgid "Fields config and categories"
 msgstr "Configuration des champs et des catégories"
 
@@ -5253,7 +5253,7 @@ msgstr "Oui"
 msgid "Unable to create main datadir in %path!"
 msgstr "Impossible de créer le dossier de données dans %path&nbsp;!"
 
-#: ../import.php:130
+#: ../import.php:129
 msgid "CVS members import"
 msgstr "Import CSV de membres "
 
@@ -5485,7 +5485,7 @@ msgstr "Première page"
 msgid "Please enter a message."
 msgstr "Veuillez saisir un message."
 
-#: ../lib/Galette/Core/Install.php:1136
+#: ../lib/Galette/Core/Install.php:1137
 msgid "Update preferences"
 msgstr "Mise à jour des préférences"
 
@@ -5599,7 +5599,7 @@ msgstr "Sous-titre"
 msgid "Informations"
 msgstr "Informations"
 
-#: ../import.php:97
+#: ../import.php:96
 msgid "No files has been seleted for upload!"
 msgstr "Aucun fichier n'a encore été sélectionné pour l'envoi !"
 
@@ -5783,7 +5783,7 @@ msgstr "Une erreur est survenue lors de l'affichage de l'aperçu :("
 msgid "french"
 msgstr "français"
 
-#: ../export.php:69 ../import.php:65
+#: ../export.php:68 ../import.php:64
 msgid "'%export' file has been removed from disk."
 msgstr "Le fichier « %export » a été supprimé du disque."
 
@@ -5821,7 +5821,7 @@ msgstr "Formulaire d'adhésion"
 msgid "Footer"
 msgstr "Pied de page"
 
-#: ../lib/Galette/Core/Install.php:1126 ../templates/default/page.tpl:157
+#: ../lib/Galette/Core/Install.php:1127 ../templates/default/page.tpl:157
 msgid "Titles"
 msgstr "Titres"
 
@@ -6059,7 +6059,7 @@ msgstr "Thème par défaut&nbsp;:"
 msgid "Missing or incorrect image file "
 msgstr "Fichier d'image manquant ou incorrect "
 
-#: ../lib/Galette/Repository/Members.php:365
+#: ../lib/Galette/Repository/Members.php:366
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr ""
 "Impossible de supprimer un adhérent qui a encore des dépendances "
@@ -6180,7 +6180,7 @@ msgstr "Exempt de cotisation&nbsp;:"
 msgid "Creation date:"
 msgstr "Date de création&nbsp;:"
 
-#: ../lib/Galette/Repository/Members.php:307
+#: ../lib/Galette/Repository/Members.php:308
 msgid "Member Picture deleted"
 msgstr "Photo de l'adhérent supprimée"
 
@@ -6196,7 +6196,7 @@ msgstr "Courriel&nbsp;:"
 msgid "Mail sent to '%s' for password recovery."
 msgstr "Courriel envoyé à « %s » pour la récupération du mot de passe."
 
-#: ../export.php:107
+#: ../export.php:106
 msgid "Table %table is empty, and has not been exported."
 msgstr "La table %table est vide, et n'a pas été exportée."
 
@@ -6270,7 +6270,7 @@ msgstr "[$]"
 msgid "View application's logs"
 msgstr "Voir les logs de l'application"
 
-#: ../export.php:122
+#: ../export.php:121
 msgid ""
 "Export file could not be write on disk for '%export'. Make sure web server "
 "can write in the exports directory."
@@ -6436,7 +6436,7 @@ msgstr "paramètres administrateur"
 msgid "Label height:"
 msgstr "Hauteur étiquette&nbsp;:"
 
-#: ../export.php:75 ../import.php:71
+#: ../export.php:74 ../import.php:70
 msgid "Cannot remove '%export' from disk :/"
 msgstr "Impossible de supprimer « %export » du disque :/"
 
@@ -6562,7 +6562,7 @@ msgstr ""
 msgid "Remove '%file' from disk"
 msgstr "Supprimer le fichier « %file » du disque"
 
-#: ../lib/Galette/Core/Install.php:1122
+#: ../lib/Galette/Core/Install.php:1123
 msgid "Mails texts"
 msgstr "Textes courriels"
 

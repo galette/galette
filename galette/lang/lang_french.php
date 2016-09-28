@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Fri Sep 23 05:48:06 2016 (GMT)
+// This file was automatically generated on Wed Sep 28 17:06:53 2016 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -1750,7 +1750,7 @@ $lang['PHP Version'] = 'Version de PHP';
 $lang['Existing files'] = 'Fichiers existants';
 
 // ../templates/default/liste_membres.tpl:2 
-$lang['This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check \'Be visible in the members list\''] = 'Cette page ne montre que les membres qui ont choisi d\'être visibles sur la liste publique, et sont à jour de leurs cotisations. Si vous souhaitez que votre compte soit affiché ici, modifiez votre profil et cochez « Je souhaite apparaître dans la liste des membres ».';
+$lang['This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check \'Be visible in the members list\''] = 'Cette page ne montre que les membres qui ont choisi d\'être visibles sur la liste publique, et sont à jour de leurs cotisations. Si vous souhaitez que votre compte soit affiché ici, modifiez votre profil et cochez « Apparaître dans la liste des membres ».';
 
 // ../lib/Galette/Core/Pagination.php:255 
 $lang['Last page (%i)'] = 'Dernière page (%i)';

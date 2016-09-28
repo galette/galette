@@ -242,7 +242,7 @@ msgstr ""
 msgid "New password"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:244
+#: ../lib/Galette/IO/CsvIn.php:249
 msgid "Fields count mismatch... There should be %should_count fields and there are %count (row %row)"
 msgstr ""
 
@@ -700,7 +700,7 @@ msgstr ""
 msgid "Donation in kind"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:278
+#: ../lib/Galette/IO/CsvIn.php:283
 msgid "File is empty!"
 msgstr ""
 
@@ -915,7 +915,7 @@ msgstr ""
 msgid "Latecomers"
 msgstr ""
 
-#: ../lib/Galette/Repository/Members.php:348
+#: ../lib/Galette/Repository/Members.php:349
 msgid "Delete members cards, transactions and dues"
 msgstr ""
 
@@ -1429,7 +1429,7 @@ msgstr ""
 msgid "A mail has been sent to your address.<br/>Please check your inbox and follow the instructions."
 msgstr ""
 
-#: ../export.php:129
+#: ../export.php:128
 msgid "An error occured running parameted export '%export'."
 msgstr ""
 
@@ -1449,7 +1449,7 @@ msgstr ""
 msgid "Permissions on the base"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:262
+#: ../lib/Galette/IO/CsvIn.php:267
 msgid "Field %field is required, but missing in row %row"
 msgstr ""
 
@@ -1656,7 +1656,7 @@ msgstr ""
 msgid "With"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1141
+#: ../lib/Galette/Core/Install.php:1142
 msgid "Update models"
 msgstr ""
 
@@ -1785,7 +1785,7 @@ msgstr ""
 msgid "Note: members with a status priority lower than %priority are staff members."
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1110
+#: ../lib/Galette/Core/Install.php:1111
 msgid "Contributions types"
 msgstr ""
 
@@ -2440,7 +2440,7 @@ msgstr ""
 msgid "Do member want to appear publically?"
 msgstr ""
 
-#: ../export.php:153
+#: ../export.php:152
 msgid "CVS database Export"
 msgstr ""
 
@@ -2484,7 +2484,7 @@ msgstr ""
 msgid "Member's address"
 msgstr ""
 
-#: ../import.php:115
+#: ../import.php:114
 msgid "An error occured importing the file :("
 msgstr ""
 
@@ -2899,7 +2899,7 @@ msgstr ""
 msgid "Contribution card"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1114 ../templates/default/gestion_adherents.tpl:104
+#: ../lib/Galette/Core/Install.php:1115 ../templates/default/gestion_adherents.tpl:104
 msgid "Status"
 msgstr ""
 
@@ -2988,7 +2988,7 @@ msgstr ""
 msgid "Use TLS for SMTP?"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1106
+#: ../lib/Galette/Core/Install.php:1107
 msgid "Preferences"
 msgstr ""
 
@@ -3095,7 +3095,7 @@ msgstr ""
 msgid "Password image"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1130
+#: ../lib/Galette/Core/Install.php:1131
 msgid "PDF Models"
 msgstr ""
 
@@ -4101,7 +4101,7 @@ msgstr ""
 msgid "An SQL error has occured."
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:378
+#: ../lib/Galette/IO/CsvIn.php:383
 msgid "An error occured while importing members"
 msgstr ""
 
@@ -4141,7 +4141,7 @@ msgstr ""
 msgid "Membership in order"
 msgstr ""
 
-#: ../import.php:122
+#: ../import.php:121
 msgid "File '%filename%' has been successfully imported :)"
 msgstr ""
 
@@ -4181,7 +4181,7 @@ msgstr ""
 msgid "Creation of the tables"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:334 ../lib/Galette/IO/CsvIn.php:345
+#: ../lib/Galette/IO/CsvIn.php:339 ../lib/Galette/IO/CsvIn.php:350
 msgid "An error occured storing member at row %row (%name):"
 msgstr ""
 
@@ -4204,7 +4204,7 @@ msgstr ""
 msgid "Generate empty CSV file"
 msgstr ""
 
-#: ../export.php:136
+#: ../export.php:135
 msgid "An error occured running parameted export '%export'. Please check the logs."
 msgstr ""
 
@@ -4533,7 +4533,7 @@ msgstr ""
 msgid "Failed to write file to disk"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1118
+#: ../lib/Galette/Core/Install.php:1119
 msgid "Fields config and categories"
 msgstr ""
 
@@ -4626,7 +4626,7 @@ msgstr ""
 msgid "Unable to create main datadir in %path!"
 msgstr ""
 
-#: ../import.php:130
+#: ../import.php:129
 msgid "CVS members import"
 msgstr ""
 
@@ -4839,7 +4839,7 @@ msgstr ""
 msgid "Please enter a message."
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1136
+#: ../lib/Galette/Core/Install.php:1137
 msgid "Update preferences"
 msgstr ""
 
@@ -4937,7 +4937,7 @@ msgstr ""
 msgid "Informations"
 msgstr ""
 
-#: ../import.php:97
+#: ../import.php:96
 msgid "No files has been seleted for upload!"
 msgstr ""
 
@@ -5096,7 +5096,7 @@ msgstr ""
 msgid "french"
 msgstr ""
 
-#: ../export.php:69 ../import.php:65
+#: ../export.php:68 ../import.php:64
 msgid "'%export' file has been removed from disk."
 msgstr ""
 
@@ -5132,7 +5132,7 @@ msgstr ""
 msgid "Footer"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1126 ../templates/default/page.tpl:157
+#: ../lib/Galette/Core/Install.php:1127 ../templates/default/page.tpl:157
 msgid "Titles"
 msgstr ""
 
@@ -5359,7 +5359,7 @@ msgstr ""
 msgid "Missing or incorrect image file "
 msgstr ""
 
-#: ../lib/Galette/Repository/Members.php:365
+#: ../lib/Galette/Repository/Members.php:366
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr ""
 
@@ -5469,7 +5469,7 @@ msgstr ""
 msgid "Creation date:"
 msgstr ""
 
-#: ../lib/Galette/Repository/Members.php:307
+#: ../lib/Galette/Repository/Members.php:308
 msgid "Member Picture deleted"
 msgstr ""
 
@@ -5485,7 +5485,7 @@ msgstr ""
 msgid "Mail sent to '%s' for password recovery."
 msgstr ""
 
-#: ../export.php:107
+#: ../export.php:106
 msgid "Table %table is empty, and has not been exported."
 msgstr ""
 
@@ -5551,7 +5551,7 @@ msgstr ""
 msgid "View application's logs"
 msgstr ""
 
-#: ../export.php:122
+#: ../export.php:121
 msgid "Export file could not be write on disk for '%export'. Make sure web server can write in the exports directory."
 msgstr ""
 
@@ -5701,7 +5701,7 @@ msgstr ""
 msgid "Label height:"
 msgstr ""
 
-#: ../export.php:75 ../import.php:71
+#: ../export.php:74 ../import.php:70
 msgid "Cannot remove '%export' from disk :/"
 msgstr ""
 
@@ -5805,7 +5805,7 @@ msgstr ""
 msgid "Remove '%file' from disk"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1122
+#: ../lib/Galette/Core/Install.php:1123
 msgid "Mails texts"
 msgstr ""
 
