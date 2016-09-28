@@ -170,7 +170,7 @@ abstract class Entitled
                 $v = null;
                 if ( $i === 0 ) {
                     $v = ':id';
-                } else if ( $v === 1 ) {
+                } else if ( $i === 1 ) {
                     $v = ':libelle';
                 } else if ( $i === 2 ) {
                     $v = ':third';
