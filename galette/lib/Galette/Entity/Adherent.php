@@ -1154,7 +1154,7 @@ class Adherent
         while ( list($key, $val) = each($required) ) {
             $prop = '_' . $this->_fields[$key]['propname'];
 
-            if ( isset($disabled[$key]) ) {
+            if ( !isset($disabled[$key]) ) {
                 $mandatory_missing = false;
                 if ( !isset($this->$prop) ) {
                     $mandatory_missing = true;
