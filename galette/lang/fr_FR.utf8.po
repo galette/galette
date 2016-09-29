@@ -116,7 +116,7 @@ msgstr "texte"
 
 #: ../includes/fields_defs/pdfmodels_fields.php:266
 msgid "On .......... / .......... / .......... "
-msgstr "On .......... / .......... / .......... "
+msgstr "Le .......... / .......... / .......... "
 
 #: ../lib/Galette/Core/Preferences.php:431
 msgid ""
@@ -5086,7 +5086,7 @@ msgstr "Récupération de mot de passe"
 
 #: ../includes/fields_defs/pdfmodels_fields.php:266
 msgid "At ................................................"
-msgstr "At ................................................"
+msgstr "Fait à ................................................"
 
 #: ../ajax_plugins_initdb.php:228 ../install/steps/db_checks.php:146
 msgid "ALTER operation not allowed"

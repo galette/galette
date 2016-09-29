@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Wed Sep 28 20:15:55 2016 (GMT)
+// This file was automatically generated on Thu Sep 29 02:36:25 2016 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -3007,7 +3007,7 @@ $lang['Association\'s short description:'] = 'Description de l\'association&nbsp
 $lang['Export current group, its subgroups and their members as PDF'] = 'Export de l\'ensemble des groupes, et leurs sous-groupes en PDF';
 
 // ../includes/fields_defs/pdfmodels_fields.php:266 
-$lang['At ................................................'] = 'At ................................................';
+$lang['At ................................................'] = 'Fait à ................................................';
 
 // ../includes/i18n.inc.php:369 
 $lang['annual fee'] = 'cotisation annuelle';
@@ -3154,7 +3154,7 @@ $lang['Sends an email each time a new member registers online'] = 'Envoie un mai
 $lang['no transaction'] = 'aucune transaction';
 
 // ../includes/fields_defs/pdfmodels_fields.php:266 
-$lang['On .......... / .......... / .......... '] = 'On .......... / .......... / .......... ';
+$lang['On .......... / .......... / .......... '] = 'Le .......... / .......... / .......... ';
 
 // ../templates/default/reminder.tpl:22 
 $lang['Generate labels for late members without mail address'] = 'Génère des étiquettes pour les adhérents en retard sans adresse courriel';
