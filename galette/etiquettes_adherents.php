@@ -163,20 +163,10 @@ foreach ($members as $member) {
     $pdf->SetFont(Pdf::FONT, '', $preferences->pref_etiq_corps);
     $pdf->SetXY($x, $y+$line_h);
 
-    //if member address is missing but there is a parent,
-    //take the parent address
-    $address = $member->address;
-    $address_continuation = $member->address_continuation;
-    $zip = $member->zipcode;
-    $town = $member->town;
-
-    if (empty($address) && $member->hasParent()) {
-        $address = $member->parent->address;
-        $address_continuation = $member->parent->address_continuation;
-        $zip = $member->parent->zipcode;
-        $town = $member->parent->town;
-    }
-
+    $address = $member->getAdress();
+    $address_continuation = $member->getAdressContinuation();
+    $zip = $member->getZipcode();
+    $town = $member->getTown();
 
     $pdf->Cell($w, $line_h, $address, 0, 0, 'L', 0);
     // Print second line of address
@@ -189,7 +179,7 @@ foreach ($members as $member) {
     // Print country
     $pdf->SetFont(Pdf::FONT, 'I', $preferences->pref_etiq_corps);
     $pdf->SetXY($x, $y+$line_h*4);
-    $pdf->Cell($w, $line_h, $member->country, 0, 0, 'R', 0);
+    $pdf->Cell($w, $line_h, $member->getCountry(), 0, 0, 'R', 0);
     $nb_etiq++;
 }
 

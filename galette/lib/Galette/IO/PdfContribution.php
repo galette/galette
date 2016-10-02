@@ -101,9 +101,9 @@ class PdfContribution
             )
         );
 
-        $address = $member->address;
-        if ( $member->address_continuation != '' ) {
-            $address .= '<br/>' . $member->address_continuation;
+        $address = $member->getAddress();
+        if ( $member->getAdressContinuation() != '' ) {
+            $address .= '<br/>' . $member->getAdressContinuation();
         }
 
         $member_groups = $member->groups;
@@ -122,8 +122,8 @@ class PdfContribution
             array(
                 'adh_name'          => $member->sfullname,
                 'adh_address'       => $address,
-                'adh_zip'           => $member->zipcode,
-                'adh_town'          => $member->town,
+                'adh_zip'           => $member->getZipcode(),
+                'adh_town'          => $member->getTown(),
                 'adh_main_group'    => $main_group,
                 'adh_groups'        => $group_list,
                 'adh_company'       => $member->company_name,
