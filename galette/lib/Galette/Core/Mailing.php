@@ -238,12 +238,7 @@ class Mailing extends GaletteMail
     {
         $m = array();
         foreach ($this->_mrecipients as $member) {
-            $email = $member->email;
-            //if member mail is missing but there is a parent,
-            //take the parent email.
-            if (!$email && $member->hasParent()) {
-                $email = $member->parent->email;
-            }
+            $email = $member->getEmail();
             $m[$email] = $member->sname;
         }
         parent::setRecipients($m);
@@ -264,13 +259,7 @@ class Mailing extends GaletteMail
         $this->_unreachables = array();
 
         foreach ($members as $member) {
-            $email = $member->email;
-
-            //if member mail is missing but there is a parent,
-            //take the parent email.
-            if (!$email && $member->hasParent()) {
-                $email = $member->parent->email;
-            }
+            $email = $member->getEmail();
 
             if ( trim($email) != '' && self::isValidEmail($email) ) {
                 if ( !in_array($member, $this->_mrecipients) ) {

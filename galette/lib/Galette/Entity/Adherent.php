@@ -1456,6 +1456,23 @@ class Adherent
     }
 
     /**
+     * Get member email
+     * If member does not have an email adress, but is attached to another member, we'll take informations from its parent.
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        $email = $this->_email;
+        if (empty($email)) {
+            $this->_loadParent();
+            $email = $this->parent->email;
+        }
+
+        return $email;
+    }
+
+    /**
      * Get member adress.
      * If member does not have an adress, but is attached to another member, we'll take informations from its parent.
      *
