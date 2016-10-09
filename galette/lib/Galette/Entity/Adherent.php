@@ -136,12 +136,7 @@ class Adherent
         'date_echeance' => 'disabled="disabled"',
         'info_adh' => 'disabled="disabled"'
     );
-    private $_edit_disabled_fields = array(
-        'titre_adh' => 'disabled',
-        'nom_adh' => 'disabled="disabled"',
-        'prenom_adh' => 'disabled="disabled"',
-        'sexe_adh' => 'disabled="disabled"'
-    );
+    private $_edit_disabled_fields = [];
     private $_staff_edit_disabled_fields = array(
         'bool_admin_adh' => 'disabled="disabled"'
     );
