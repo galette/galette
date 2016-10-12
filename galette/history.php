@@ -80,4 +80,5 @@ $tpl->assign('nb_lines', count($logs));
 $tpl->assign('history', $hist);
 $content = $tpl->fetch('history.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('page.tpl');

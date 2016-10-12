@@ -53,4 +53,5 @@ $tpl->assign('rawinfos', $sysinfos->getRawData());
 $tpl->assign('require_tabs', true);
 $content = $tpl->fetch('sysinfos.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('page.tpl');

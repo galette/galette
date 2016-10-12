@@ -58,4 +58,5 @@ $tpl->assign('news', $news->getPosts());
 
 $content = $tpl->fetch('desktop.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('page.tpl');

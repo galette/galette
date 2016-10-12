@@ -104,4 +104,5 @@ $tpl->assign('hash', $hash);
 // display page
 $content = $tpl->fetch('change_passwd.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('public_page.tpl');

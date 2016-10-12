@@ -124,4 +124,5 @@ $tpl->assign('error_detected', $error_detected);
 //$tpl->assign('require_sorter', true);
 $content = $tpl->fetch('config_fields.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('page.tpl');

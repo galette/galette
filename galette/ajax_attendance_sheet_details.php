@@ -77,5 +77,6 @@ if ( $ajax ) {
 } else {
     $content = $tpl->fetch('ajax_attendance_sheet_details.tpl');
     $tpl->assign('content', $content);
+    $tpl->assign('adhesion_form_url', $adhesion_form_url);
     $tpl->display('page.tpl');
 }

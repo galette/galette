@@ -439,6 +439,7 @@ $tpl->assign('color_picker', true);
 // page generation
 $content = $tpl->fetch('preferences.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('page.tpl');
 
 if ( isset($profiler) ) {

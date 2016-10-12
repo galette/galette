@@ -61,4 +61,5 @@ $tpl->assign('charts', $charts->getCharts());
 $tpl->assign('require_charts', true);
 $content = $tpl->fetch('charts.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('page.tpl');

@@ -473,4 +473,5 @@ $tpl->assign('dynamic_fields', $dynamic_fields);
 // page generation
 $content = $tpl->fetch('ajouter_contribution.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('page.tpl');

@@ -87,5 +87,6 @@ if ( $ajax ) {
     $tpl->assign('page_title', _T("Mailing preview"));
     $content = $tpl->fetch('ajax_mailing_preview.tpl');
     $tpl->assign('content', $content);
+    $tpl->assign('adhesion_form_url', $adhesion_form_url);
     $tpl->display('page.tpl');
 }

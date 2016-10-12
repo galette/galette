@@ -293,6 +293,7 @@ $filters->setTplCommonsFilters($preferences, $tpl);
 
 $content = $tpl->fetch('gestion_adherents.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('page.tpl');
 if ( isset($profiler) ) {
     $profiler->stop();

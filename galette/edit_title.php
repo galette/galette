@@ -94,4 +94,5 @@ $tpl->assign('success_detected', $success_detected);
 
 $content = $tpl->fetch('edit_title.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('page.tpl');

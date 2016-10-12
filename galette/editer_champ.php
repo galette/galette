@@ -245,4 +245,5 @@ $tpl->assign('perm_names', $dyn_fields->getPermsNames());
 
 $content = $tpl->fetch('editer_champ.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('page.tpl');

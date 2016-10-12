@@ -512,4 +512,5 @@ $tpl->assign('hidden_elements', $form_elements['hiddens']);
 // page generation
 $content = $tpl->fetch('member.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('page.tpl');

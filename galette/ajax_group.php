@@ -80,6 +80,7 @@ if ( !isset($_POST['reorder']) ) {
         $tpl->assign('require_tabs', true);
         $content = $tpl->fetch('group.tpl');
         $tpl->assign('content', $content);
+        $tpl->assign('adhesion_form_url', $adhesion_form_url);
         $tpl->display('page.tpl');
     }
 } else {
