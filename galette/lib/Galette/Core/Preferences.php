@@ -152,7 +152,8 @@ class Preferences
         'pref_new_contrib_script' => '',
         'pref_bool_wrap_mails' => true,
         'pref_rss_url' => 'http://galette.eu/dc/index.php/feed/atom',
-        'pref_show_id' => false
+        'pref_show_id' => false,
+        'pref_adhesion_form_url' => 'pdf_adhesion_form.php'
     );
 
     /**
@@ -341,10 +342,15 @@ class Preferences
             foreach ( self::$_defaults as $k=>$v ) {
                 Analog::log('Storing ' . $k, Analog::DEBUG);
 
-                /** Why where parameter is named where1 ?? */
+                $value = $this->_prefs[$k];
+                //do not store pdf_adhesion_form URI, it's designed to be overriden by plugin
+                if ($k === 'pdf_adhesion_form') {
+                    $value = $v;
+                }
+
                 $stmt->execute(
                     array(
-                        'val_pref'  => $this->_prefs[$k],
+                        'val_pref'  => $value,
                         'where1'    => $k
                     )
                 );
