@@ -111,6 +111,7 @@ if ( !$login->isLogged() ) {
     $content = $tpl->fetch('index.tpl');
     $tpl->assign('page_title', _T("Login"));
     $tpl->assign('content', $content);
+    $tpl->assign('adhesion_form_url', $adhesion_form_url);
     $tpl->display('public_page.tpl');
 } else {
     if ( isset($profiler) ) {

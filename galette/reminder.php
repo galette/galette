@@ -139,6 +139,7 @@ if ( !$login->isCron() ) {
 
     $content = $tpl->fetch('reminder.tpl');
     $tpl->assign('content', $content);
+    $tpl->assign('adhesion_form_url', $adhesion_form_url);
     $tpl->display('page.tpl');
 } else {
     //called from a cron. warning and errors has been stored into history

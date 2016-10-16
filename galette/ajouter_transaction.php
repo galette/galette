@@ -227,4 +227,5 @@ $tpl->assign('dynamic_fields', $dynamic_fields);
 $tpl->assign('require_dialog', true);
 $content = $tpl->fetch("ajouter_transaction.tpl");
 $tpl->assign("content", $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display("page.tpl");

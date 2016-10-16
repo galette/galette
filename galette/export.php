@@ -159,5 +159,6 @@ $tpl->assign('warning_detected', $warning_detected);
 $tpl->assign('parameted', $parameted);
 $content = $tpl->fetch('export.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 
 $tpl->display('page.tpl');

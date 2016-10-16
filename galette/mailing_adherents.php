@@ -265,6 +265,7 @@ $tpl->assign('require_dialog', true);
 $tpl->assign('page_title', _T("Mailing"));
 $content = $tpl->fetch('mailing_adherents.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('page.tpl');
 
 if ( isset($profiler) ) {

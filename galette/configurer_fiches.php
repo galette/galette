@@ -315,5 +315,6 @@ if ( isset($_GET['ajax']) && $_GET['ajax'] == 'true' ) {
 } else {
     $content = $tpl->fetch('configurer_fiches.tpl');
     $tpl->assign('content', $content);
+    $tpl->assign('adhesion_form_url', $adhesion_form_url);
     $tpl->display('page.tpl');
 }

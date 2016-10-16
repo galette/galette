@@ -191,4 +191,5 @@ if ( $id === null && count($groups_root) > 0 ) {
 $tpl->assign('group', $group);
 $content = $tpl->fetch('gestion_groupes.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('page.tpl');

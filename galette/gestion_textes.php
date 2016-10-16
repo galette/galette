@@ -103,4 +103,5 @@ $tpl->assign('error_detected', $error_detected);
 $tpl->assign('success_detected', $success_detected);
 $content = $tpl->fetch('gestion_textes.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('page.tpl');

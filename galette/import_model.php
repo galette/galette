@@ -118,6 +118,7 @@ if ( isset($_GET['generate'] ) ) {
     $tpl->assign('page_title', _T("CVS import model"));
     $content = $tpl->fetch('import_model.tpl');
     $tpl->assign('content', $content);
+    $tpl->assign('adhesion_form_url', $adhesion_form_url);
     $tpl->display('page.tpl');
 }
 

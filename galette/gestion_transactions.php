@@ -122,4 +122,5 @@ if ( $trans->filtre_cotis_adh != null ) {
 }
 $content = $tpl->fetch('gestion_transactions.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('page.tpl');

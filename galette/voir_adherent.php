@@ -192,6 +192,7 @@ $tpl->assign('dynamic_fields', $dynamic_fields);
 $tpl->assign('groups', Groups::getSimpleList());
 $tpl->assign('visibles', $visibles);
 $tpl->assign('time', time());
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 
 $display_elements = $fc->getDisplayElements();
 $tpl->assign('display_elements', $display_elements);

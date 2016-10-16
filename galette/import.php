@@ -135,5 +135,6 @@ $tpl->assign('error_detected', $error_detected);
 $tpl->assign('warning_detected', $warning_detected);
 $content = $tpl->fetch('import.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 
 $tpl->display('page.tpl');

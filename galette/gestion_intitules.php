@@ -314,5 +314,6 @@ if ( isset($_GET['ajax']) && $_GET['ajax'] == 'true' ) {
         $content = $tpl->fetch('gestion_intitules.tpl');
     }
     $tpl->assign('content', $content);
+    $tpl->assign('adhesion_form_url', $adhesion_form_url);
     $tpl->display('page.tpl');
 }

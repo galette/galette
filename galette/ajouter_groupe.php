@@ -98,4 +98,5 @@ $tpl->assign('languages', $i18n->getList());
 // page generation
 $content = $tpl->fetch('group.tpl');
 $tpl->assign('content', $content);
+$tpl->assign('adhesion_form_url', $adhesion_form_url);
 $tpl->display('page.tpl');

@@ -350,5 +350,6 @@ if ( $ajax ) {
 } else {
     $content = $tpl->fetch('ajax_plugins_initdb.tpl');
     $tpl->assign('content', $content);
+    $tpl->assign('adhesion_form_url', $adhesion_form_url);
     $tpl->display('page.tpl');
 }

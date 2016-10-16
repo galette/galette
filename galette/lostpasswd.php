@@ -197,6 +197,7 @@ if ( $from_admin ) {
     // display page
     $content = $tpl->fetch('lostpasswd.tpl');
     $tpl->assign('content', $content);
+    $tpl->assign('adhesion_form_url', $adhesion_form_url);
     $tpl->display('public_page.tpl');
 
     if ( isset($profiler) ) {

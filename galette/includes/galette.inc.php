@@ -337,6 +337,11 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
         }
 
         /**
+         * Overridable stuff
+         */
+        $adhesion_form_url = 'pdf_adhesion_form.php';
+
+        /**
          * Plugins
          */
         $plugins = new Core\Plugins();
