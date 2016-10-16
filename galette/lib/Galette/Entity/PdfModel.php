@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Galette\Core;
+use Galette\Repository\PdfModels;
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
 
@@ -145,10 +146,11 @@ abstract class PdfModel
      *
      * @param int         $id          Identifier
      * @param Preferences $preferences Galette preferences
+     * @param boolean     $init        Init data if required model is missing
      *
      * @return void
      */
-    protected function load($id, $preferences)
+    protected function load($id, $preferences, $init = true)
     {
         try {
             $select = $this->_zdb->select(self::TABLE);
@@ -156,7 +158,19 @@ abstract class PdfModel
                 ->where(self::PK . ' = ' . $id);
 
             $results = $this->_zdb->execute($select);
-            $this->loadFromRs($results->current(), $preferences);
+
+            $count = $results->count();
+            if ($count === 0) {
+                if($init === true) {
+                    $models = new PdfModels($this->_zdb, $preferences);
+                    $models->installInit();
+                    $this->load($id, $preferences, false);
+                } else {
+                    throw new \RuntimeException('Model not found!');
+                }
+            } else {
+                $this->loadFromRs($results->current(), $preferences);
+            }
         } catch ( \Exception $e ) {
             Analog::log(
                 'An error occured loading model #' . $id . "Message:\n" .
