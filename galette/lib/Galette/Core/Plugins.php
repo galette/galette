@@ -62,6 +62,18 @@ class Plugins
     protected $id;
     protected $mroot;
 
+    protected $preferences;
+
+    /**
+     * Constructor
+     *
+     * @param Preferences $preferences eferences instance
+     */
+    public function __construct(Preferences $preferences)
+    {
+        $this->preferences = $preferences;
+    }
+
     /**
      * Loads modules.
      *
@@ -128,6 +140,7 @@ class Plugins
         foreach ($this->modules as $id => $m) {
             $this->loadModuleL10N($id, $lang);
             $this->loadSmarties($id);
+            $this->overridePrefs($id);
         }
     }
 
@@ -466,8 +479,7 @@ class Plugins
      */
     public function getTemplatesPath($id)
     {
-        global $preferences;
-        return $this->moduleRoot($id) . '/templates/' . $preferences->pref_theme;
+        return $this->moduleRoot($id) . '/templates/' . $this->preferences->pref_theme;
     }
 
     /**
@@ -565,7 +577,6 @@ class Plugins
      */
     public function getTplAssignments()
     {
-        global $preferences;
         $_assign = array();
         foreach ( $this->modules as $key=>$module ) {
             if ( isset($module['tpl_assignments']) ) {
@@ -583,7 +594,7 @@ class Plugins
                     $v = str_replace(
                         '__plugin_templates_dir__',
                         'plugins/' . $key . '/templates/' .
-                        $preferences->pref_theme . '/',
+                        $this->preferences->pref_theme . '/',
                         $v
                     );
                     $_assign[$k] = $v;
@@ -614,4 +625,27 @@ class Plugins
         }
     }
 
+    /**
+     * Override preferences from plugin
+     *
+     * @param string $id Module ID
+     *
+     * @return void
+     */
+    public function overridePrefs($id)
+    {
+        $overridables = ['pref_adhesion_form_url'];
+
+        $f = $this->modules[$id]['root'] . '/_preferences.php';
+        if (file_exists($f)) {
+            include_once $f;
+            if (isset($_preferences)) {
+                foreach ($_preferences as $k => $v) {
+                    if (in_array($k, $overridables)) {
+                        $this->preferences->$k = $v;
+                    }
+                }
+            }
+        }
+    }
 }
