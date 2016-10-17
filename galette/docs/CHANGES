@@ -11,9 +11,10 @@ Bugfixes
 - Minor display issues
 - Fix data types mismatches
 - Do not create contributions adding a due free member
-- Do not display exempted members that are no longer active on poublic pages
+- Do not display exempted members that are no longer active on public pages
 - Fix required flags on some fields
 - Automatically load parent when required even if it has not been configured
+- Fix an issue regarding to default MySQL values on some windows configurations
 
 News
 ^^^^
