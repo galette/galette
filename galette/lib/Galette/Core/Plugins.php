@@ -63,19 +63,16 @@ class Plugins
     protected $id;
     protected $mroot;
 
-    private $preferences;
+    protected $preferences;
 
     /**
-     * Set Galette's preferences
+     * Constructor
      *
      * @param Preferences $preferences Galette's Preferences
-     *
-     * @return Plugins
      */
-    public function setPreferences(Preferences $preferences)
+    public function __construct(Preferences $preferences)
     {
         $this->preferences = $preferences;
-        return $this;
     }
 
     /**
@@ -635,7 +632,7 @@ class Plugins
         }
     }
 
-        /**
+    /**
      * Override preferences from plugin
      *
      * @param string $id Module ID

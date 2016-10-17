@@ -132,8 +132,6 @@ class FieldsConfig
         'adresse2_adh'
     );
 
-    private $zdb;
-
     /**
      * Default constructor
      *
