@@ -61,6 +61,78 @@ class Login extends Authentication
     const TABLE = Adherent::TABLE;
     const PK = 'login_adh';
 
+    private $_zdb;
+    private $_i18n;
+    private $_session;
+
+    /**
+     * Instanciate object
+     *
+     * @param Db    $zdb     Database instance
+     * @param I18n  $i18n    I18n instance
+     * @param array $session Current session
+     */
+    public function __construct(Db $zdb, I18n $i18n, array &$session)
+    {
+        $this->setDb($zdb);
+        $this->_i18n = $i18n;
+        $this->_session = $session;
+    }
+
+    /**
+     * Set database instance
+     *
+     * @param Db $zdb Database instance
+     *
+     * @return void
+     */
+    public function setDb(Db $zdb)
+    {
+        $this->_zdb = $zdb;
+    }
+
+    /**
+     * Method to run on serialize()
+     *
+     * @return string
+     */
+    public function serialize()
+    {
+        $this->_zdb = null;
+
+        $vars = parent::getObjectVars();
+        $vars = array_merge(
+            $vars,
+            get_object_vars($this)
+        );
+
+        return base64_encode(
+            serialize($vars)
+        );
+    }
+
+    /**
+     * Method to run on unserialize()
+     *
+     * @param string $serialized Serialized data
+     *
+     * @return void
+     */
+    public function unserialize($serialized)
+    {
+        $serialized = unserialize(
+            base64_decode($serialized)
+        );
+
+        $locals = array_keys(get_object_vars($this));
+        foreach ($serialized as $key => $value) {
+            if (!in_array($key, $locals)) {
+                $key = substr($key, 1);
+            }
+            $this->$key = $value;
+        }
+    }
+
     /**
      * Logs in user.
      *
@@ -71,31 +143,12 @@ class Login extends Authentication
      */
     public function logIn($user, $passe)
     {
-        global $zdb, $i18n, $session;
-
         try {
-            $select = $zdb->select(self::TABLE, 'a');
-            $select->columns(
-                array(
-                    'id_adh',
-                    'bool_admin_adh',
-                    'nom_adh',
-                    'prenom_adh',
-                    'mdp_adh',
-                    'pref_lang',
-                    'activite_adh',
-                    'bool_exempt_adh',
-                    'date_echeance'
-                )
-            )->join(
-                array('b' => PREFIX_DB . Status::TABLE),
-                'a.' . Status::PK . '=b.' . Status::PK,
-                array('priorite_statut')
-            );
+            $select = $this->select();
             $select->where(array(self::PK => $user));
 
-            $results = $zdb->execute($select);
-            if ( $results->count() == 0 ) {
+            $results = $this->_zdb->execute($select);
+            if ($results->count() == 0) {
                 Analog::log(
                     'No entry found for login `' . $user . '`',
                     Analog::WARNING
@@ -116,12 +169,12 @@ class Login extends Authentication
 
                 //check if pawwsord matches
                 $pw_checked = password_verify($passe, $row->mdp_adh);
-                if ( !$pw_checked ) {
+                if (!$pw_checked) {
                     //if password did not match, we try old md5 method
                     $pw_checked = (md5($passe) === $row->mdp_adh);
                 }
 
-                if ( $pw_checked === false ) {
+                if ($pw_checked === false) {
                     //Passwords mismatch. Log and return.
                     Analog::log(
                         'Passwords mismatch for login `' . $user . '`',
@@ -130,47 +183,7 @@ class Login extends Authentication
                     return false;
                 }
 
-                Analog::log('User `' . $user . '` logged in.', Analog::INFO);
-                $this->id = $row->id_adh;
-                $this->login = $user;
-                $this->passe = $row->mdp_adh;
-                $this->admin = $row->bool_admin_adh;
-                $this->name = $row->nom_adh;
-                $this->surname = $row->prenom_adh;
-                $this->lang = $row->pref_lang;
-                $i18n->changeLanguage($this->lang);
-                $session['lang'] = serialize($i18n);
-                $this->active = $row->activite_adh;
-                $this->logged = true;
-                if ( $row->priorite_statut < Members::NON_STAFF_MEMBERS ) {
-                    $this->staff = true;
-                }
-                //check if member is up to date
-                if ( $row->bool_exempt_adh == true ) {
-                    //member is due free, he's up to date.
-                    $this->uptodate = true;
-                } else {
-                    //let's check from end date, if present
-                    if ( $row->date_echeance == null ) {
-                        $this->uptodate = false;
-                    } else {
-                        $ech = new \DateTime($row->date_echeance);
-                        $now = new \DateTime();
-                        $now->setTime(0, 0, 0);
-                        $this->uptodate = $ech >= $now;
-                    }
-                }
-                //staff members and admins are de facto groups managers. For all
-                //others, get managed groups
-                if ( !$this->isSuperAdmin()
-                    && !$this->isAdmin()
-                    && !$this->isStaff()
-                ) {
-                    $this->managed_groups = Groups::loadManagedGroups(
-                        $this->id,
-                        false
-                    );
-                }
+                $this->logUser($row);
                 return true;
             }
         } catch (AdapterException $e) {
@@ -180,13 +193,94 @@ class Login extends Authentication
             );
             Analog::log($e->getTrace(), Analog::ERROR);
             return false;
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             Analog::log(
                 'An error occured: ' . $e->getMessage(),
                 Analog::WARNING
             );
             Analog::log($e->getTrace(), Analog::ERROR);
             return false;
+        }
+    }
+
+    /**
+     * Get select query without where clause
+     *
+     * @return \Zend\Db\Sql\Select
+     */
+    private function select()
+    {
+        $select = $this->_zdb->select(self::TABLE, 'a');
+        $select->columns(
+            array(
+                'id_adh',
+                'login_adh',
+                'bool_admin_adh',
+                'nom_adh',
+                'prenom_adh',
+                'mdp_adh',
+                'pref_lang',
+                'activite_adh',
+                'bool_exempt_adh',
+                'date_echeance'
+            )
+        )->join(
+            array('b' => PREFIX_DB . Status::TABLE),
+            'a.' . Status::PK . '=b.' . Status::PK,
+            array('priorite_statut')
+        );
+        return $select;
+    }
+
+    /**
+     * Populate object after successfull login
+     *
+     * @param \ArrayObject $row User informations
+     *
+     * @return void
+     */
+    private function logUser(\ArrayObject $row)
+    {
+        Analog::log('User `' . $row->login_adh . '` logged in.', Analog::INFO);
+        $this->id = $row->id_adh;
+        $this->login = $row->login_adh;
+        $this->passe = $row->mdp_adh;
+        $this->admin = $row->bool_admin_adh;
+        $this->name = $row->nom_adh;
+        $this->surname = $row->prenom_adh;
+        $this->lang = $row->pref_lang;
+        $this->_i18n->changeLanguage($this->lang);
+        $this->_session['lang'] = serialize($this->_i18n);
+        $this->active = $row->activite_adh;
+        $this->logged = true;
+        if ($row->priorite_statut < Members::NON_STAFF_MEMBERS) {
+            $this->staff = true;
+        }
+        //check if member is up to date
+        if ($row->bool_exempt_adh == true) {
+            //member is due free, he's up to date.
+            $this->uptodate = true;
+        } else {
+            //let's check from end date, if present
+            if ($row->date_echeance == null) {
+                $this->uptodate = false;
+            } else {
+                $ech = new \DateTime($row->date_echeance);
+                $now = new \DateTime();
+                $now->setTime(0, 0, 0);
+                $this->uptodate = $ech >= $now;
+            }
+        }
+        //staff members and admins are de facto groups managers. For all
+        //others, get managed groups
+        if (!$this->isSuperAdmin()
+            && !$this->isAdmin()
+            && !$this->isStaff()
+        ) {
+            $this->managed_groups = Groups::loadManagedGroups(
+                $this->id,
+                false
+            );
         }
     }
 
@@ -200,14 +294,12 @@ class Login extends Authentication
      */
     public function loginExists($user)
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select(self::TABLE);
+            $select = $this->_zdb->select(self::TABLE);
             $select->where(array(self::PK => $user));
-            $results = $zdb->execute($select);
+            $results = $this->_zdb->execute($select);
 
-            if ( $results->count() > 0 ) {
+            if ($results->count() > 0) {
                 /* We got results, user already exists */
                 return true;
             } else {

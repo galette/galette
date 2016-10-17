@@ -207,7 +207,7 @@ if ( isset($_POST['valid']) ) {
                                 if ( !$sent ) {
                                     $txt = preg_replace(
                                         array('/%name/', '/%email/'),
-                                        array($adh->sname, $adh->email),
+                                        array($adh->sname, $adh->getEmail()),
                                         _T("A problem happened while sending to admin post contribution notification for user %name (%email) contribution")
                                     );
                                     $hist->add($txt);
@@ -256,7 +256,7 @@ if ( isset($_POST['valid']) ) {
                     'name_adh'          => custom_html_entity_decode($adh->sname),
                     'firstname_adh'     => custom_html_entity_decode($adh->surname),
                     'lastname_adh'      => custom_html_entity_decode($adh->name),
-                    'mail_adh'          => custom_html_entity_decode($adh->email),
+                    'mail_adh'          => custom_html_entity_decode($adh->getEmail()),
                     'login_adh'         => custom_html_entity_decode($adh->login),
                     'deadline'          => custom_html_entity_decode($contrib->end_date),
                     'contrib_info'      => custom_html_entity_decode($contrib->info),
@@ -267,7 +267,7 @@ if ( isset($_POST['valid']) ) {
             if ( $new && isset($_POST['mail_confirm'])
                 && $_POST['mail_confirm'] == '1'
             ) {
-                if ( GaletteMail::isValidEmail($adh->email) ) {
+                if ( GaletteMail::isValidEmail($adh->getEmail()) ) {
                     $text = 'contrib';
                     if ( !$contrib->isCotis() ) {
                         $text = 'donation';
@@ -278,7 +278,7 @@ if ( isset($_POST['valid']) ) {
                     $mail->setSubject($texts->getSubject());
                     $mail->setRecipients(
                         array(
-                            $adh->email => $adh->sname
+                            $adh->getEmail() => $adh->sname
                         )
                     );
 
@@ -289,14 +289,14 @@ if ( isset($_POST['valid']) ) {
                         $hist->add(
                             preg_replace(
                                 array('/%name/', '/%email/'),
-                                array($adh->sname, $adh->email),
+                                array($adh->sname, $adh->getEmail()),
                                 _T("Mail sent to user %name (%email)")
                             )
                         );
                     } else {
                         $txt = preg_replace(
                             array('/%name/', '/%email/'),
-                            array($adh->sname, $adh->email),
+                            array($adh->sname, $adh->getEmail()),
                             _T("A problem happened while sending contribution receipt to user %name (%email)")
                         );
                         $hist->add($txt);
@@ -305,7 +305,7 @@ if ( isset($_POST['valid']) ) {
                 } else {
                     $txt = preg_replace(
                         array('/%name/', '/%email/'),
-                        array($adh->sname, $adh->email),
+                        array($adh->sname, $adh->getEmail()),
                         _T("Trying to send a mail to a member (%name) with an invalid address: %email")
                     );
                     $hist->add($txt);
@@ -345,14 +345,14 @@ if ( isset($_POST['valid']) ) {
                         $hist->add(
                             preg_replace(
                                 array('/%name/', '/%email/'),
-                                array($adh->sname, $adh->email),
+                                array($adh->sname, $adh->getEmail()),
                                 _T("Mail sent to admin for user %name (%email)")
                             )
                         );
                 } else {
                     $txt = preg_replace(
                         array('/%name/', '/%email/'),
-                        array($adh->sname, $adh->email),
+                        array($adh->sname, $adh->getEmail()),
                         _T("A problem happened while sending to admin notification for user %name (%email) contribution")
                     );
                     $hist->add($txt);

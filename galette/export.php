@@ -51,7 +51,6 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 use Galette\IO\Csv;
 use Galette\IO\CsvOut;
 use Galette\Entity\Adherent;
-use Galette\Entity\FieldsConfig;
 use Galette\Repository\Members;
 
 $csv = new CsvOut();

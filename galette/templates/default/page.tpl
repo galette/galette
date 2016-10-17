@@ -156,6 +156,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $PAGENAME eq "gestion_textes.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_textes.php" title="{_T string="Manage emails texts and subjects"}">{_T string="Emails content"}</a></li>
             <li{if $PAGENAME eq "gestion_titres.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_titres.php" title="{_T string="Manage titles"}">{_T string="Titles"}</a></li>
             <li{if $PAGENAME eq "gestion_pdf.php"} class="selected"{/if}><a href="{$galette_base_path}gestion_pdf.php" title="{_T string="Manage PDF models"}">{_T string="PDF models"}</a></li>
+            <li><a href="{$galette_base_path}{$preferences->pref_adhesion_form_url}" title="{_T string="Download empty adhesion form"}">{_T string="Empty adhesion form"}</a></li>
         </ul>
 {/if}
 

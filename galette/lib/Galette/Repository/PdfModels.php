@@ -87,13 +87,13 @@ class PdfModels extends Repository
     /**
      * Add default models in database
      *
-     * @param array   $defaults    Fields definition defaults
      * @param boolean $check_first Check first if it seem initialized
      *
      * @return boolean
      */
-    public function installInit($defaults, $check_first = true)
+    public function installInit($check_first = true)
     {
+        include GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
         try {
             $ent = $this->entity;
             //first of all, let's check if data seem to have already
@@ -114,8 +114,8 @@ class PdfModels extends Repository
                     //if we got no values in texts table, let's proceed
                     $proceed = true;
                 } else {
-                    if ( $count < count($defaults) ) {
-                        return $this->_checkUpdate($defaults);
+                    if ( $count < count($pdfmodels_fields) ) {
+                        return $this->_checkUpdate($pdfmodels_fields);
                     }
                     return false;
                 }
@@ -129,7 +129,7 @@ class PdfModels extends Repository
                 //first, we drop all values
                 $delete = $this->zdb->delete($ent::TABLE);
                 $this->zdb->execute($delete);
-                $this->_insert($ent::TABLE, $defaults);
+                $this->_insert($ent::TABLE, $pdfmodels_fields);
 
                 $this->zdb->connection->commit();
                 return true;

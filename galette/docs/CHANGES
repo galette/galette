@@ -1,6 +1,33 @@
 Changes
 -------
 
+0.8.2.3 -> 0.8.3
+
+Bugfixes
+^^^^^^^^
+
+- Improvements on groups management
+- Fix issues on hidden fields
+- Minor display issues
+- Fix data types mismatches
+- Do not create contributions adding a due free member
+- Do not display exempted members that are no longer active on public pages
+- Fix required flags on some fields
+- Automatically load parent when required even if it has not been configured
+- Fix an issue regarding to default MySQL values on some windows configurations
+
+News
+^^^^
+
+- Add ASSO_ADDRESS_MULTI pattern on PDF models
+- Add patterns for dynamic fields on PDF models
+- Add basic adhesion form PDF based on models, which can be overriden using the fullcard plugin
+- Add RSS support on news feeds
+- Add simple str_replace capability on PDF models
+- Retrieve adress from parent if member does not have one
+- Retrieve email from parent if member does not have one (extended)
+- Simple members can now change their own name, gender and title
+
 0.8.2.2 -> 0.8.2.3
 - Fix advanced search dynamic fields
 - Update Analog library for PHP7 compatibility

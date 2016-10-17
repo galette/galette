@@ -97,7 +97,6 @@ abstract class Repository
                 'Entity class ' . $entity . ' cannot be found!'
             );
         }
-
     }
 
     /**
@@ -110,10 +109,9 @@ abstract class Repository
     /**
      * Add default values in database
      *
-     * @param array $defaults Defaults fields definition (optionnal)
+     * @param boolean $check_first Check first if it seem initialized, defaults to true
      *
      * @return boolean
      */
-    abstract public function installInit($defaults);
+    abstract public function installInit($check_first = true);
 }
-

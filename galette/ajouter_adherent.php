@@ -118,7 +118,7 @@ if ( $login->isAdmin() || $login->isStaff() || $login->isGroupManager() ) {
 }
 
 // flagging required fields
-$fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
+$fc = new FieldsConfig($zdb, Adherent::TABLE, $members_fields, $members_fields_cats);
 
 // password required if we create a new member
 if ( $member->id != '' ) {
@@ -249,7 +249,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
             // send mail to member
             if ( isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1' ) {
                 if ( $preferences->pref_mail_method > GaletteMail::METHOD_DISABLED ) {
-                    if ( $member->email == '' ) {
+                    if ( $member->getEmail() == '' ) {
                         $error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
                     } else {
                         //send mail to member
@@ -268,7 +268,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                                     $member->name
                                 ),
                                 'mail_adh'      => custom_html_entity_decode(
-                                    $member->email
+                                    $member->getEmail()
                                 ),
                                 'login_adh'     => custom_html_entity_decode(
                                     $member->login
@@ -291,7 +291,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                         $mail->setSubject($texts->getSubject());
                         $mail->setRecipients(
                             array(
-                                $member->email => $member->sname
+                                $member->getEmail() => $member->sname
                             )
                         );
                         $mail->setMessage($texts->getBody());
@@ -300,7 +300,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                         if ( $sent == GaletteMail::MAIL_SENT ) {
                             $msg = str_replace(
                                 '%s',
-                                $member->sname . ' (' . $member->email . ')',
+                                $member->sname . ' (' . $member->getEmail() . ')',
                                 ($new) ?
                                 _T("New account mail sent to '%s'.") :
                                 _T("Account modification mail sent to '%s'.")
@@ -310,7 +310,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
                         } else {
                             $str = str_replace(
                                 '%s',
-                                $member->sname . ' (' . $member->email . ')',
+                                $member->sname . ' (' . $member->getEmail() . ')',
                                 _T("A problem happened while sending account mail to '%s'")
                             );
                             $hist->add($str);
@@ -405,7 +405,7 @@ if ( isset($_POST[array_shift($real_requireds)]) ) {
 
     if ( count($error_detected) == 0 ) {
         $session['account_success'] = serialize($success_detected);
-        if ( !isset($_POST['id_adh']) ) {
+        if ( !isset($_POST['id_adh']) && !$member->isDueFree()  ) {
             header(
                 'location: ajouter_contribution.php?id_adh=' . $member->id
             );

@@ -70,7 +70,7 @@ if ( $login->isAdmin() || $login->isStaff() ) {
     }
 
     // fields visibility
-    $fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
+    $fc = new FieldsConfig($zdb, Adherent::TABLE, $members_fields, $members_fields_cats);
     $visibles = $fc->getVisibilities();
     $fields = array();
     $headers = array();

@@ -42,6 +42,7 @@ use Galette\Entity\DynamicFields;
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate\PredicateSet;
+use Zend\Db\Sql\Predicate\Operator;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\Transaction;
@@ -660,7 +661,7 @@ class Members
                     $select::JOIN_LEFT
                 );
             }
-            
+
             // simple dynamic fields
             if ( $hasDf === true ) {
                 foreach ( $dfs as $df ) {
@@ -729,13 +730,40 @@ class Members
                 }
                 $select->order($this->_buildOrderClause($fields));
             } else if ( $mode == self::SHOW_PUBLIC_LIST ) {
-                $select
-                    ->where('activite_adh = true')
-                    ->where('bool_display_info = true');
-                $select->where
-                    ->greaterThan('date_echeance', date('Y-m-d'))
-                    ->or
-                    ->equalTo('bool_exempt_adh', true);
+                $select->where(
+                    array(
+                        new PredicateSet(
+                            array(
+                                new Operator(
+                                    'date_echeance',
+                                    '>=',
+                                    date('Y-m-d')
+                                ),
+                                new Operator(
+                                    'bool_exempt_adh',
+                                    '=',
+                                    new Expression('true')
+                                )
+                            ),
+                            PredicateSet::OP_OR
+                        ),
+                        new PredicateSet(
+                            array(
+                                new Operator(
+                                    'bool_display_info',
+                                    '=',
+                                    new Expression('true')
+                                ),
+                                new Operator(
+                                    'activite_adh',
+                                    '=',
+                                    new Expression('true')
+                                )
+                            ),
+                            PredicateSet::OP_AND
+                        )
+                    )
+                );
             }
 
             if ( $mode === self::SHOW_STAFF ) {

@@ -212,7 +212,7 @@ $members_fields = array(
         'label'    => _T("Other informations (admin):"),
         'propname' => 'others_infos_admin',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::ADMIN,
         'position' => 33,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),

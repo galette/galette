@@ -310,7 +310,6 @@ class Install extends atoum
         $this->string($title)->isIdenticalTo('Database access and permissions');
 
         $connected = $this->_install->testDbConnexion();
-        var_dump($connected);
         $this->boolean($connected)->isTrue();
 
         $host = $this->_install->getDbHost();

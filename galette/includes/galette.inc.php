@@ -117,7 +117,7 @@ if (defined('GALETTE_XHPROF_PATH')
 //we start a php session
 session_start();
 
-define('GALETTE_VERSION', 'v0.8.2.3');
+define('GALETTE_VERSION', 'v0.8.3');
 define('GALETTE_COMPAT_VERSION', '0.8');
 define('GALETTE_DB_VERSION', '0.820');
 if ( !defined('GALETTE_MODE') ) {
@@ -312,8 +312,9 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
             $login = unserialize(
                 $session['login']
             );
+            $login->setDb($zdb);
         } else {
-            $login = new Core\Login();
+            $login = new Core\Login($zdb, $i18n, $session);
         }
 
         if (GALETTE_MODE === 'MAINT' && !$login->isSuperAdmin() ) {
@@ -338,7 +339,7 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
         /**
          * Plugins
          */
-        $plugins = new Core\Plugins();
+        $plugins = new Core\Plugins($preferences);
         $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
 
         /**

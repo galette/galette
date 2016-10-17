@@ -183,28 +183,32 @@
             <input type="submit" name="valid" id="btnsave" value="{_T string="Save"}"/>
 
             {foreach item=entry from=$hidden_elements}
-                {assign var="title" value=null}
-                {assign var="tip" value=null}
-                {assign var="size" value=null}
-                {assign var="propname" value=$entry->propname}
-                {if $entry->field_id eq 'parent_id' }
-                    {if $member->$propname}
-                        {assign var="value" value=$member->$propname->id|escape}
+                {if $entry->field_id neq 'mdp_adh'}
+                    {assign var="title" value=null}
+                    {assign var="tip" value=null}
+                    {assign var="size" value=null}
+                    {assign var="propname" value=$entry->propname}
+                    {if $entry->field_id eq 'parent_id' }
+                        {if $member->$propname}
+                            {assign var="value" value=$member->$propname->id|escape}
+                        {else}
+                            {assign var="value" value=""}
+                        {/if}
                     {else}
-                        {assign var="value" value=""}
+                        {assign var="value" value=$member->$propname|escape}
                     {/if}
-                {else}
-                    {assign var="value" value=$member->$propname|escape}
-                {/if}
-                {assign var="checked" value=null}
-                {assign var="example" value=null}
+                    {assign var="checked" value=null}
+                    {assign var="example" value=null}
 
-                {include
-                    file="forms_types/hidden.tpl"
-                    name=$entry->field_id
-                    id=$entry->field_id
-                    value=$value
-                }
+                    {if $value neq ''}
+                        {include
+                            file="forms_types/hidden.tpl"
+                            name=$entry->field_id
+                            id=$entry->field_id
+                            value=$value
+                        }
+                    {/if}
+                {/if}
             {/foreach}
             <a href="#" id="back2top">{_T string="Back to top"}</a>
         </div>

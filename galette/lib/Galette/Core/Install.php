@@ -1082,6 +1082,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             include_once '../includes/fields_defs/members_fields.php';
             include_once '../includes/fields_defs/members_fields_cats.php';
             $fc = new \Galette\Entity\FieldsConfig(
+                $zdb,
                 \Galette\Entity\Adherent::TABLE,
                 $members_fields,
                 $members_fields_cats,
@@ -1092,7 +1093,6 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $texts = new \Galette\Entity\Texts($texts_fields, $preferences);
             $titles = new \Galette\Repository\Titles();
 
-            include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
             $models = new \Galette\Repository\PdfModels($zdb, $preferences);
 
             $this->_error = false;
@@ -1114,7 +1114,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $this->_proceedReport(_T("Status"), $res);
 
             //Install fields configuration and categories
-            $res = $fc->installInit($zdb);
+            $res = $fc->installInit();
             $this->_proceedReport(_T("Fields config and categories"), $res);
 
             //Install texts
@@ -1126,7 +1126,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $this->_proceedReport(_T("Titles"), $res);
 
             //Install PDF models
-            $res = $models->installInit($pdfmodels_fields, false);
+            $res = $models->installInit(false);
             $this->_proceedReport(_T("PDF Models"), $res);
 
             return !$this->_error;
@@ -1134,6 +1134,10 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $preferences = new Preferences($zdb);
             $preferences->store();
             $this->_proceedReport(_T("Update preferences"), true);
+
+            $models = new \Galette\Repository\PdfModels($zdb, $preferences);
+            $res = $models->installInit(true);
+            $this->_proceedReport(_T("Update models"), true);
             return true;
         }
     }

@@ -173,6 +173,130 @@ td#pdf_logo {
 </table>',
         'model_styles'  => null,
         'model_parent'  => PdfModel::MAIN_MODEL
+    ),
+    array(
+        'model_id'  => PdfModel::ADHESION_FORM_MODEL,
+        'model_name'    => '_T("Adhesion form")',
+        'model_title'   => '_T("Adhesion form")',
+        'model_type'    => PdfModel::ADHESION_FORM_MODEL,
+        'model_header'  => null,
+        'model_footer'  => null,
+        'model_body'    => '<hr/>
+<div class="infos">_T("Complete the following form and send it with your funds, in order to complete your subscription.")</div>
+<table>
+    <tr>
+        <td width="50%"></td>
+        <td width="50%">{ASSO_ADDRESS_MULTI}</td>
+    </tr>
+</table>
+<hr/>
+<table>
+    <tr>
+        <td height="30"></td>
+    </tr>
+    <tr>
+        <td>_T("Required membership:")
+            <form action="none">
+                <input type="checkbox" class="box" name="cotisation1" value="none">_T("Active member")
+                <input type="checkbox" class="box" name="cotisation2" value="none">_T("Benefactor member")
+                <input type="checkbox" class="box" name="cotisation3" value="none">_T("Donation")
+                <div class="infos">_T("The minimum contribution for each type of membership are defined on the website of the association. The amount of donations are free to be decided by the generous donor.")  </div>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td height="30"></td>
+    </tr>
+</table>
+<table class="member">
+    <tr>
+        <td class="label">_T("Politeness")</td>
+        <td class="input">{TITLE_ADH}</td>
+    </tr>
+    <tr>
+        <td class="label">_T("Name")</td>
+        <td class="input">{LAST_NAME_ADH}</td>
+    </tr>
+    <tr>
+        <td class="label">_T("First name")</td>
+        <td class="input">{FIRST_NAME_ADH}</td>
+    </tr>
+    <tr>
+        <td class="label">_T("Company name") *</td>
+        <td class="input">{COMPANY_NAME_ADH}</td>
+    </tr>
+    <tr>
+        <td class="label">_T("Address")</td>
+        <td class="input">{ADDRESS_ADH}</td>
+    </tr>
+    <tr>
+        <td class="label"></td>
+        <td class="input"></td>
+    </tr>
+    <tr>
+        <td class="label"></td>
+        <td class="input"></td>
+    </tr>
+    <tr>
+        <td class="label">_T("Zip Code")</td>
+        <td class="cpinput">{ZIP_ADH}</td>
+        <td class="label">_T("City")</td>
+        <td class="towninput">{TOWN_ADH}</td>
+    </tr>
+    <tr>
+        <td class="label">_T("Country")</td>
+        <td class="input">{COUNTRY_ADH}</td>
+    </tr>
+    <tr>
+        <td class="label">_T("Email adress")</td>
+        <td class="input">{EMAIL_ADH}</td>
+    </tr>
+    <tr>
+        <td class="label">_T("Username") **</td>
+        <td class="input">{LOGIN_ADH}</td>
+    </tr>
+    <tr>
+        <td colspan="2" height="10"></td>
+    </tr>
+    <tr>
+        <td class="label">_T("Amount")</td>
+        <td class="input"></td>
+    </tr>
+</table>
+<p>str_replace(\'%s\', \'{ASSO_NAME}\', \'_T("Hereby, I agree to comply to %s association statutes and its rules.")\')</p><p>_T("At ................................................")</p><p>_T("On .......... / .......... / .......... ")</p><p>_T("Signature")</p>
+<p class="notes">_T("* Only for compagnies")<br/>_T("** Galette identifier, if applicable")</p>',
+        'model_styles'  => 'td.label {
+    width: 20%;
+    font-weight: bold;
+}
+td.input {
+    width: 80%;
+    border-bottom: 1px dotted black;
+}
+
+td.cpinput {
+    width: 10%;
+    border-bottom: 1px dotted black;
+}
+
+td.towninput {
+    width: 50%;
+    border-bottom: 1px dotted black;
+}
+
+div.infos {
+    font-size: .8em;
+}
+
+p.notes {
+    font-size: 0.6em;
+    text-align: right;
+}
+
+.member td {
+    line-height: 20px;
+    height: 20px;
+}',
+        'model_parent'  => PdfModel::MAIN_MODEL
     )
 );
-

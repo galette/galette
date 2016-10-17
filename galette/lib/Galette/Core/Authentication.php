@@ -50,7 +50,7 @@ namespace Galette\Core;
  * @since     Available since 0.7dev - 2009-02-28
  */
 
-abstract class Authentication
+abstract class Authentication implements \Serializable
 {
     private $_login;
     private $_passe;
@@ -66,13 +66,6 @@ abstract class Authentication
     private $_uptodate = false;
     private $_managed_groups;
     private $_cron = false;
-
-    /**
-    * Default constructor
-    */
-    public function __construct()
-    {
-    }
 
     /**
     * Logs in user.
@@ -101,10 +94,8 @@ abstract class Authentication
     *
     * @return void
     */
-    public function logAdmin($login)
+    public function logAdmin($login, Preferences $preferences)
     {
-        global $preferences;
-
         $this->_logged = true;
         $this->_name = 'Admin';
         $this->_login = $login;
@@ -302,5 +293,15 @@ abstract class Authentication
     {
         $name = '_' . $name;
         $this->$name = $value;
+    }
+
+    /**
+     * Apply get_object_vars to get private properties
+     *
+     * @return array
+     */
+    protected function getObjectVars()
+    {
+        return get_object_vars($this);
     }
 }

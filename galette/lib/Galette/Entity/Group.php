@@ -487,6 +487,45 @@ class Group
     }
 
     /**
+     * Get Level of the group
+     *
+     * @return integer
+     */
+    public function getLevel()
+    {
+        if ( $this->_parent_group ) {
+            return $this->_parent_group->getLevel()+1;
+        }
+        return 0;
+    }
+
+    /**
+     * Get the full name of the group "foo / bar"
+     *
+     * @return string
+     */
+    public function getFullName()
+    {
+        if ( $this->_parent_group ) {
+            return $this->_parent_group->getFullName().' / '.$this->_group_name;
+        }
+        return $this->_group_name;
+    }
+
+    /**
+     * Get the indented short name of the group "  >> bar"
+     *
+     * @return string
+     */
+    public function getIndentName()
+    {
+        if (($level = $this->getLevel())) {
+            return str_repeat("&nbsp;", 3*$level).'&raquo; '.$this->_group_name;
+        }
+        return $this->_group_name;
+    }
+
+    /**
      * Get group name
      *
      * @return string
@@ -609,6 +648,24 @@ class Group
     }
 
     /**
+     * check if can Set parent group
+     *
+     * @param Group    $group    Parent group
+     *
+     * @return boolean
+     */
+    public function canSetParentGroup(Group $group)
+    {
+        do {
+            if ( $group->getId() == $this->getId() ) {
+                return false;
+            }
+        } while ( $group = $group->getParentGroup() );
+
+        return true;
+    }
+
+    /**
      * Set parent group
      *
      * @param int $id Parent group identifier
@@ -617,21 +674,20 @@ class Group
      */
     public function setParentGroup($id)
     {
-        if ( $id == $this->_id ) {
-            throw new \Exception(_T("A group cannot be set as its own parent!"));
+        $group = new Group((int)$id);
+        $tmpname = $group->getName();
+
+        if ( ! $this->canSetParentGroup($group) ) {
+            throw new \Exception(
+                sprintf(
+                    _T("Group `%1$s` is a child of `%2$s`, cannot be set as parent!"),
+                    $tmpname,
+                    $this->getName()
+                )
+            );
         }
-        foreach ( $this->getGroups() as $g ) {
-            if ( $id == $g->getId() ) {
-                throw new \Exception(
-                    preg_replace(
-                        array('/%subgroupname/', '/%groupname/'),
-                        array($g->getName(), $this->getName()),
-                        _T("Group `%subgroupname` is a child of `%groupname`, cnanot be setted as parent!")
-                    )
-                );
-            }
-        }
-        $this->_parent_group = new Group((int)$id);
+
+        $this->_parent_group = $group;
     }
 
     /**

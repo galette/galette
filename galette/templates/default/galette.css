@@ -421,7 +421,7 @@ footer li {
 /* == Main Galette styles */
 #asso_name {
     text-align: center;
-    margin: 0 auto 1em;
+    margin: .5em auto 1em;
     font-weight: bold;
     font-size: 1.1em;
 }
@@ -531,9 +531,14 @@ footer li {
 
 /* == Buttons */
 #delete, #delete_cascade, #sendmail, #btnsave, #btnvalid, #btnadd, #btncancel, #btnsend, #btnpreview, #btnusers, #btnback, .button {
-    padding-left: 2em!important;
+    padding-left: 1.4em!important;
     background-position: 10px 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
+}
+
+
+input#delete, input#delete_cascade, input#sendmail, input#btnsave, input#btnvalid, input#btnadd, input#btncancel, input#btnsend, input#btnpreview, input#btnusers, input#btnback, button.button, input.button {
+    padding-left:2.4em!important;
 }
 
 .button.small {
@@ -649,6 +654,7 @@ h1 #sendmail .ui-button-text {
     position: absolute;
     top: .5em;
     right: .5em;
+    padding-left: 2em!important;
 }
 legend #btnadd_small {
     right: 2.5em;
@@ -760,7 +766,7 @@ legend #btnadd_small {
     background-image:url(images/printer.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#btn_membercard, #btn_edit, #btn_contrib, #btn_addcontrib, #btn_lostpassword {
+#btn_membercard, #btn_edit, #btn_contrib, #btn_addcontrib, #btn_lostpassword, #btn_adhesionform {
     padding-top:30px!important;
     padding-left: 0!important;
     display: block;
@@ -772,6 +778,12 @@ legend #btnadd_small {
 }
 #btn_membercard.ui-state-hover {
     background-image: url(images/member_card.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+#btn_adhesionform {
+    background-image:url(images/adhesion_form.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#btn_adhesionform.ui-state-hover {
+    background-image: url(images/adhesion_form.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 #btn_edit {

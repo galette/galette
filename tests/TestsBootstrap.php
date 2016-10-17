@@ -16,14 +16,20 @@
  */
 
 $basepath = null;
-if ( file_exists('../galette/index.php') ) {
+if (file_exists('../galette/index.php')) {
     $basepath = '../galette/';
-} elseif ( file_exists('galette/index.php') ) {
+} elseif (file_exists('galette/index.php')) {
     $basepath = 'galette/';
 } else {
     die('Unable to define GALETTE_BASE_PATH :\'(');
 }
 
+$db = getenv('DB');
+if ($db === false || $db !== 'pgsql') {
+    $db = 'mysql';
+}
+
+define('GALETTE_CONFIG_PATH', __DIR__ . '/config/' . $db . '/');
 define('GALETTE_BASE_PATH', $basepath);
 define('GALETTE_TESTS', true);
 define('GALETTE_MODE', 'PROD');

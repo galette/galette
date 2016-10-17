@@ -48,7 +48,6 @@ if ( !$login->isAdmin() && !$login->isStaff() ) {
 use Galette\IO\Csv;
 use Galette\IO\CsvIn;
 use Galette\Entity\Adherent;
-use Galette\Entity\FieldsConfig;
 use Galette\Repository\Members;
 
 $csv = new CsvIn();
@@ -104,7 +103,7 @@ if ( isset($_POST['import']) && isset($_POST['import_file']) ) {
     } else {
         $dryrun = false;
     }
-    $res = $csv->import($_POST['import_file'], $members_fields, $dryrun);
+    $res = $csv->import($zdb, $_POST['import_file'], $members_fields, $members_fields_cats, $dryrun);
     if ( $res !== true ) {
         if ( $res < 0 ) {
             $error_detected[] = $csv->getErrorMessage($res);

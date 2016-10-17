@@ -39,6 +39,7 @@ namespace Galette\Entity;
 
 use Analog\Analog;
 use Zend\Db\Adapter\Adapter;
+use Galette\Core\Db;
 
 /**
  * Fields config class for galette :
@@ -72,6 +73,7 @@ class FieldsConfig
     const TYPE_RADIO = 10;
     const TYPE_SELECT = 11;
 
+    private $zdb;
     private $_all_required;
     private $_all_visibles;
     //private $error = array();
@@ -138,8 +140,9 @@ class FieldsConfig
      * @param array   $cats_defaults default categories values
      * @param boolean $install       Are we calling from installer?
      */
-    function __construct($table, $defaults, $cats_defaults, $install = false)
+    function __construct(Db $zdb, $table, $defaults, $cats_defaults, $install = false)
     {
+        $this->zdb = $zdb;
         $this->_table = $table;
         $this->_defaults = $defaults;
         $this->_cats_defaults = $cats_defaults;
@@ -153,44 +156,44 @@ class FieldsConfig
     }
 
     /**
-     * Load current preferences from database.
+     * Load current fields configuration from database.
      *
      * @return boolean
      */
     public function load()
     {
-        global $zdb, $preferences;
+        global $preferences;
 
         try {
-            $select = $zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE);
             $select
                 ->where(array('table_name' => $this->_table))
                 ->order(array(FieldsCategories::PK, 'position ASC'));
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
 
             $this->_categorized_fields = null;
             foreach ( $results as $k ) {
-                if ($k->field_id === 'id_adh' && !$preferences->pref_show_id) {
-                    $k->visible = false;
+                if ($k->field_id === 'id_adh' && (!isset($preferences) || !$preferences->pref_show_id)) {
+                    $k->visible = self::HIDDEN;
                 }
                 $f = array(
                     'field_id'  => $k->field_id,
                     'label'     => $this->_defaults[$k->field_id]['label'],
-                    'category'  => $k->id_field_category,
-                    'visible'   => $k->visible,
-                    'required'  => $k->required,
+                    'category'  => (int)$k->id_field_category,
+                    'visible'   => (int)$k->visible,
+                    'required'  => (boolean)$k->required,
                     'propname'  => $this->_defaults[$k->field_id]['propname']
                 );
                 $this->_categorized_fields[$k->id_field_category][] = $f;
 
                 //array of all required fields
                 if ( $k->required == 1 ) {
-                    $this->_all_required[$k->field_id] = $k->required;
+                    $this->_all_required[$k->field_id] = (boolean)$k->required;
                 }
 
                 //array of all fields visibility
-                $this->_all_visibles[$k->field_id] = $k->visible;
+                $this->_all_visibles[$k->field_id] = (int)$k->visible;
             }
             return true;
         } catch (\Exception $e) {
@@ -231,7 +234,7 @@ class FieldsConfig
         foreach ($this->_categorized_fields as &$cat) {
             foreach ( $cat as &$f ) {
                 if ( $f['field_id'] === $field ) {
-                    $f['required'] = 0;
+                    $f['required'] = false;
                     return;
                 }
             }
@@ -247,7 +250,6 @@ class FieldsConfig
      */
     private function _checkUpdate()
     {
-        global $zdb;
         $class = get_class($this);
 
         try {
@@ -268,13 +270,13 @@ class FieldsConfig
                 );
             } else {
                 //hum... no records. Let's check if any category exists
-                $select = $zdb->select(FieldsCategories::TABLE);
-                $results = $zdb->execute($select);
+                $select = $this->zdb->select(FieldsCategories::TABLE);
+                $results = $this->zdb->execute($select);
 
                 if ( $results->count() == 0 ) {
                     //categories are missing, add them
                     $categories = new FieldsCategories($this->_cats_defaults);
-                    $categories->installInit($zdb);
+                    $categories->installInit($this->zdb);
                 }
             }
 
@@ -310,7 +312,7 @@ class FieldsConfig
                 }
 
                 if ( count($params) > 0 ) {
-                    $this->_insert($zdb, $params);
+                    $this->_insert($this->zdb, $params);
                     $this->load();
                 }
             }
@@ -329,24 +331,22 @@ class FieldsConfig
      * Set default fields configuration at install time. All previous
      * existing values will be dropped first, including fields categories.
      *
-     * @param Db $zdb Database instance
-     *
      * @return boolean|Exception
      */
-    public function installInit($zdb)
+    public function installInit()
     {
         try {
             $fields = array_keys($this->_defaults);
             $categories = new FieldsCategories($this->_cats_defaults);
 
             //first, we drop all values
-            $delete = $zdb->delete(self::TABLE);
+            $delete = $this->zdb->delete(self::TABLE);
             $delete->where(
                 array('table_name' => $this->_table)
             );
-            $zdb->execute($delete);
+            $this->zdb->execute($delete);
             //take care of fields categories, for db relations
-            $categories->installInit($zdb);
+            $categories->installInit($this->zdb);
 
             $fields = array_keys($this->_defaults);
             foreach ( $fields as $f ) {
@@ -364,7 +364,7 @@ class FieldsConfig
                     'category'    => $this->_defaults[$f]['category'],
                 );
             }
-            $this->_insert($zdb, $params);
+            $this->_insert($params);
 
             Analog::log(
                 'Default fields configuration were successfully stored.',
@@ -405,18 +405,18 @@ class FieldsConfig
      */
     public function getFormElements($selfs = false)
     {
-        global $zdb, $log, $login, $members_fields_cats;
+        global $login;
 
         if ( !count($this->_form_elements) > 0 ) {
             //get columns descriptions
-            $columns = $zdb->getColumns($this->_table);
+            $columns = $this->zdb->getColumns($this->_table);
 
             $categories = FieldsCategories::getList();
             try {
                 foreach ( $categories as $c ) {
                     $cpk = FieldsCategories::PK;
                     $cat_label = null;
-                    foreach ($members_fields_cats as $conf_cat) {
+                    foreach ($this->_cats_defaults as $conf_cat) {
                         if ( $conf_cat['id'] == $c->$cpk ) {
                             $cat_label = $conf_cat['category'];
                             break;
@@ -487,7 +487,7 @@ class FieldsConfig
                     }
                 }
             } catch ( Exception $e ) {
-                $log->log(
+                Analog::log(
                     'An error occured getting form elements',
                     Analog::ERROR
                 );
@@ -506,7 +506,7 @@ class FieldsConfig
      */
     public function getDisplayElements()
     {
-        global $log, $login, $members_fields_cats;
+        global $login;
 
         $display_elements = array();
 
@@ -516,7 +516,7 @@ class FieldsConfig
                 foreach ( $categories as $c ) {
                     $cpk = FieldsCategories::PK;
                     $cat_label = null;
-                    foreach ($members_fields_cats as $conf_cat) {
+                    foreach ($this->_cats_defaults as $conf_cat) {
                         if ( $conf_cat['id'] == $c->$cpk ) {
                             $cat_label = $conf_cat['category'];
                             break;
@@ -557,7 +557,7 @@ class FieldsConfig
                     }
                 }
             } catch ( Exception $e ) {
-                $log->log(
+                Analog::log(
                     'An error occured getting display elements',
                     Analog::ERROR
                 );
@@ -609,16 +609,6 @@ class FieldsConfig
     }
 
     /**
-     * Get all fields
-     *
-     * @return array
-     */
-    public function getFields()
-    {
-        return $this->fields;
-    }
-
-    /**
      * Set fields
      *
      * @param array $fields categorized fields array
@@ -638,14 +628,12 @@ class FieldsConfig
      */
     private function _store()
     {
-        global $zdb;
-
         $class = get_class($this);
 
         try {
-            $zdb->connection->beginTransaction();
+            $this->zdb->connection->beginTransaction();
 
-            $update = $zdb->update(self::TABLE);
+            $update = $this->zdb->update(self::TABLE);
             $update->set(
                 array(
                     'required'              => ':required',
@@ -659,7 +647,7 @@ class FieldsConfig
                     'table_name'    => $this->_table
                 )
             );
-            $stmt = $zdb->sql->prepareStatementForSqlObject($update);
+            $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
             $params = null;
             foreach ( $this->_categorized_fields as $cat ) {
@@ -692,10 +680,10 @@ class FieldsConfig
                 Analog::INFO
             );
 
-            $zdb->connection->commit();
+            $this->zdb->connection->commit();
             return true;
         } catch (\Exception $e) {
-            $zdb->connection->rollBack();
+            $this->zdb->connection->rollBack();
             Analog::log(
                 '[' . $class . '] An error occured while storing fields ' .
                 'configuration for table `' . $this->_table . '`.' .
@@ -715,19 +703,17 @@ class FieldsConfig
      * Only needeed for 0.7.4 upgrade
      * (should have been 0.7.3 - but I missed that.)
      *
-     * @param Db $zdb Database instance
-     *
      * @return boolean
      */
-    public function migrateRequired($zdb)
+    public function migrateRequired()
     {
         $old_required = null;
 
         try {
-            $select = $zdb->select('required');
+            $select = $this->zdb->select('required');
             $select->from(PREFIX_DB . 'required');
 
-            $old_required = $zdb->execute($select);
+            $old_required = $this->zdb->execute($select);
         } catch ( \Exception $pe ) {
             Analog::log(
                 'Unable to retrieve required fields_config. Maybe ' .
@@ -738,9 +724,9 @@ class FieldsConfig
             return true;
         }
 
-        $zdb->connection->beginTransaction();
+        $this->zdb->connection->beginTransaction();
         try {
-            $update = $zdb->update(self::TABLE);
+            $update = $this->zdb->update(self::TABLE);
             $update->set(
                 array(
                     'required'  => ':required'
@@ -752,7 +738,7 @@ class FieldsConfig
                 )
             );
 
-            $stmt = $zdb->sql->prepareStatementForSqlObject($update);
+            $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
             foreach ( $old_required as $or ) {
                 /** Why where parameter is named where1 ?? */
@@ -775,15 +761,15 @@ class FieldsConfig
                 Analog::INFO
             );
 
-            $zdb->db->query(
+            $this->zdb->db->query(
                 'DROP TABLE ' . PREFIX_DB . 'required',
                 Adapter::QUERY_MODE_EXECUTE
             );
 
-            $zdb->connection->commit();
+            $this->zdb->connection->commit();
             return true;
         } catch ( \Exception $e ) {
-            $zdb->connection->rollBack();
+            $this->zdb->connection->rollBack();
             Analog::log(
                 'An error occured migrating old required fields. | ' .
                 $e->getMessage(),
@@ -796,14 +782,13 @@ class FieldsConfig
     /**
      * Insert values in database
      *
-     * @param Db    $zdb    Database instance
      * @param array $values Values to insert
      *
      * @return void
      */
-    private function _insert($zdb, $values)
+    private function _insert($values)
     {
-        $insert = $zdb->insert(self::TABLE);
+        $insert = $this->zdb->insert(self::TABLE);
         $insert->values(
             array(
                 'field_id'      => ':field_id',
@@ -814,7 +799,7 @@ class FieldsConfig
                 'position'      => ':position'
             )
         );
-        $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
+        $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
         foreach ( $values as $d ) {
             $stmt->execute(

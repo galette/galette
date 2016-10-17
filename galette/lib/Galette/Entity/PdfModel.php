@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Galette\Core;
+use Galette\Repository\PdfModels;
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
 
@@ -62,6 +63,7 @@ abstract class PdfModel
     const MAIN_MODEL = 1;
     const INVOICE_MODEL = 2;
     const RECEIPT_MODEL = 3;
+    const ADHESION_FORM_MODEL = 4;
 
     private $_zdb;
 
@@ -105,14 +107,16 @@ abstract class PdfModel
         }
 
         $this->_patterns = array(
-            'asso_name'         => '/{ASSO_NAME}/',
-            'asso_slogan'       => '/{ASSO_SLOGAN}/',
-            'asso_address'      => '/{ASSO_ADDRESS}/',
-            'asso_website'      => '/{ASSO_WEBSITE}/',
-            'asso_logo'         => '/{ASSO_LOGO}/'
+            'asso_name'          => '/{ASSO_NAME}/',
+            'asso_slogan'        => '/{ASSO_SLOGAN}/',
+            'asso_address'       => '/{ASSO_ADDRESS}/',
+            'asso_address_multi' => '/{ASSO_ADDRESS_MULTI}/',
+            'asso_website'       => '/{ASSO_WEBSITE}/',
+            'asso_logo'          => '/{ASSO_LOGO}/'
         );
 
         $address = $preferences->getPostalAddress();
+        $address_multi = preg_replace("/\n/", "<br>", $address);
 
         $website = '';
         if ( $preferences->pref_website != '' ) {
@@ -128,11 +132,12 @@ abstract class PdfModel
             '/>';
 
         $this->_replaces = array(
-            'asso_name'         => $preferences->pref_nom,
-            'asso_slogan'       => $preferences->pref_slogan,
-            'asso_address'      => $address,
-            'asso_website'      => $website,
-            'asso_logo'         => $logo_elt
+            'asso_name'          => $preferences->pref_nom,
+            'asso_slogan'        => $preferences->pref_slogan,
+            'asso_address'       => $address,
+            'asso_address_multi' => $address_multi,
+            'asso_website'       => $website,
+            'asso_logo'          => $logo_elt
         );
     }
 
@@ -141,10 +146,11 @@ abstract class PdfModel
      *
      * @param int         $id          Identifier
      * @param Preferences $preferences Galette preferences
+     * @param boolean     $init        Init data if required model is missing
      *
      * @return void
      */
-    protected function load($id, $preferences)
+    protected function load($id, $preferences, $init = true)
     {
         try {
             $select = $this->_zdb->select(self::TABLE);
@@ -152,7 +158,19 @@ abstract class PdfModel
                 ->where(self::PK . ' = ' . $id);
 
             $results = $this->_zdb->execute($select);
-            $this->loadFromRs($results->current(), $preferences);
+
+            $count = $results->count();
+            if ($count === 0) {
+                if($init === true) {
+                    $models = new PdfModels($this->_zdb, $preferences);
+                    $models->installInit();
+                    $this->load($id, $preferences, false);
+                } else {
+                    throw new \RuntimeException('Model not found!');
+                }
+            } else {
+                $this->loadFromRs($results->current(), $preferences);
+            }
         } catch ( \Exception $e ) {
             Analog::log(
                 'An error occured loading model #' . $id . "Message:\n" .
@@ -288,6 +306,9 @@ abstract class PdfModel
         case self::RECEIPT_MODEL:
             $class = 'PdfReceipt';
             break;
+        case self::ADHESION_FORM_MODEL:
+            $class = 'PdfAdhesionFormModel';
+            break;
         default:
             $class = 'PdfMain';
             break;
@@ -331,10 +352,38 @@ abstract class PdfModel
         }
     }
 
-    /**
-     * Set patterns
+     /**
+     * Extract patterns
      *
      * @param array $patterns Patterns to add
+     *
+     * @return array
+     */
+    public function extractDynamicPatterns()
+    {
+
+        $patterns = array();
+        $parts    = array('header', 'footer', 'title', 'subtitle', 'body');
+        foreach ($parts as $part) {
+            $rpart = '_' . $part;
+            $content = $this->$rpart;
+
+            $matches = array();
+            preg_match_all(
+                '/{((LABEL|INPUT)?_DYNFIELD_[0-9]+_ADH)}/',
+                $content,
+                $matches
+            );
+            $patterns = array_merge($patterns, $matches[1]);
+
+           Analog::log("dynamic patterns found in $part: " . join(",", $matches[1]), Analog::DEBUG);
+        }
+
+        return $patterns;
+    }
+
+    /**
+     * Set patterns
      *
      * @return void
      */
@@ -417,13 +466,6 @@ abstract class PdfModel
                 $prop_value = $this->_parent->$pname;
             }
 
-            //handle replacements
-            $value = preg_replace(
-                $this->_patterns,
-                $this->_replaces,
-                $prop_value
-            );
-
             //handle translations
             $callback = function ($matches) {
                 return _T($matches[1]);
@@ -431,6 +473,27 @@ abstract class PdfModel
             $value = preg_replace_callback(
                 '/_T\("([^\"]+)"\)/',
                 $callback,
+                $prop_value
+            );
+
+            //handle replacements
+            $value = preg_replace(
+                $this->_patterns,
+                $this->_replaces,
+                $value
+            );
+
+            //handle translations with replacements
+            $repl_callback = function($matches) {
+                return str_replace(
+                    $matches[1],
+                    $matches[2],
+                    $matches[3]
+                );
+            };
+            $value = preg_replace_callback(
+                '/str_replace\(\'([^,]+)\', ?\'([^,]+)\', ?\'(.*)\'\)/',
+                $repl_callback,
                 $value
             );
 
@@ -461,6 +524,7 @@ abstract class PdfModel
             if ( $value === self::MAIN_MODEL
                 || $value === self::INVOICE_MODEL
                 || $value === self::RECEIPT_MODEL
+                || $value === self::ADHESION_FORM_MODEL
             ) {
                 $this->$rname = $value;
             } else {

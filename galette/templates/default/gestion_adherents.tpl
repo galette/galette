@@ -17,7 +17,7 @@
             <select name="group_filter" onchange="form.submit()">
                 <option value="0">{_T string="Select a group"}</option>
 {foreach from=$filter_groups_options item=group}
-                <option value="{$group->getId()}"{if $filters->group_filter eq $group->getId()} selected="selected"{/if}>{$group->getName()}</option>
+                <option value="{$group->getId()}"{if $filters->group_filter eq $group->getId()} selected="selected"{/if}>{$group->getIndentName()}</option>
 {/foreach}
             </select>
             <input type="submit" class="inline" value="{_T string="Filter"}"/>

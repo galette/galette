@@ -150,7 +150,15 @@ class Groups
             $results = $zdb->execute($select);
 
             foreach ( $results as $row ) {
-                $groups[] = new Group($row);
+                $group = new Group($row);;
+                $groups[$group->getFullName()] = $group;
+            }
+            if ( $full ) { // Order by tree name instead of name
+                ksort($groups);
+                Analog::log(
+                    'SORTED:' . print_r(array_keys($groups), true),
+                    Analog::WARNING
+                );
             }
             return $groups;
         } catch (\Exception $e) {

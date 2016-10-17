@@ -26,6 +26,8 @@ quick_gen_project_*
 !/galette/config/config.inc.php.dist
 /galette/config/local_*
 /galette/config/behavior.inc.php
+/tests/config/mysql/local_config.inc.php
+/tests/config/pgsql/local_config.inc.php
 
 # /galette/data/exports/
 /galette/data/exports/*

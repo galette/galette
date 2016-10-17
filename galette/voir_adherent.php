@@ -104,7 +104,7 @@ $deps = array(
 $member = new Adherent((int)$id_adh, $deps);
 
 // flagging fields visibility
-$fc = new FieldsConfig(Adherent::TABLE, $members_fields, $members_fields_cats);
+$fc = new FieldsConfig($zdb, Adherent::TABLE, $members_fields, $members_fields_cats);
 $visibles = $fc->getVisibilities();
 
 if ( $login->id != $id_adh && !$login->isAdmin() && !$login->isStaff() ) {

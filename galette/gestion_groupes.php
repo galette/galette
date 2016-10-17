@@ -176,7 +176,8 @@ $tpl->assign('groups_root', $groups_root);
 $tpl->assign('groups', $groups_list);
 
 if ( $id === null && count($groups_root) > 0 ) {
-    $group = $groups_root[0];
+    reset($groups_root);
+    $group = current($groups_root);
     if ( !$login->isGroupManager($group->getId()) ) {
         foreach ( $groups_list as $g ) {
             if ( $login->isGroupManager($g->getId()) ) {
