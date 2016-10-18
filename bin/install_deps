@@ -1,2 +1,4 @@
 #!/bin/sh
+pushd galette > /dev/null
 composer install --no-dev --optimize-autoloader --prefer-dist --quiet
+popd > /dev/null
