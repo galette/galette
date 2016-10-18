@@ -1,4 +1,4 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../galette"
 cd $DIR
-composer install --no-dev --optimize-autoloader --prefer-dist --quiet
+composer install --optimize-autoloader
