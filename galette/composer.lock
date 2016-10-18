@@ -171,16 +171,16 @@
         },
         {
             "name": "mathmarques/smarty-view",
-            "version": "1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mathmarques/Smarty-View.git",
-                "reference": "0e7e34611d78183efbf748fa351be3faf09bcbce"
+                "reference": "c8f8501a0be4c290e1165fcb9e5064952ef6969d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mathmarques/Smarty-View/zipball/0e7e34611d78183efbf748fa351be3faf09bcbce",
-                "reference": "0e7e34611d78183efbf748fa351be3faf09bcbce",
+                "url": "https://api.github.com/repos/mathmarques/Smarty-View/zipball/c8f8501a0be4c290e1165fcb9e5064952ef6969d",
+                "reference": "c8f8501a0be4c290e1165fcb9e5064952ef6969d",
                 "shasum": ""
             },
             "require": {
@@ -212,11 +212,12 @@
             "keywords": [
                 "framework",
                 "slim",
+                "slim 3",
                 "smarty",
                 "template",
                 "view"
             ],
-            "time": "2015-12-07 21:31:37"
+            "time": "2016-08-25 19:04:49"
         },
         {
             "name": "monolog/monolog",
