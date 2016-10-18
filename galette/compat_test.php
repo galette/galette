@@ -41,7 +41,7 @@ $modules['gd'] = (extension_loaded('SimpleXML')) ? 'Ok' : 'Missing';
 $modules['sql'] = (extension_loaded('pdo_mysql') || $extension_loaded('pdo_pgsql')) ? 'Ok' : 'Missing';
 $modules['mbstring'] = (extension_loaded('SimpleXML')) ? 'Ok' : 'Missing';
 
-$phpok = !version_compare(PHP_VERSION, '5.4', '<');
+$phpok = !version_compare(PHP_VERSION, '5.5', '<');
 ?>
 <html>
     <head>

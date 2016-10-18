@@ -2,7 +2,7 @@ Dependencies
 ------------
 
 - Apache 2 Webserver,
-- PHP 5.4 minimum (also tested on php 5.5);,
+- PHP 5.5 minimum (also tested on php 5.6, 7.0 and 7.1);,
 - MySQL 5 or Postgresql >= 9.1 (tested on MariaDB 5.5.32 and postgresql 9.2.4),
   and its php driver,
 - php gd extension,

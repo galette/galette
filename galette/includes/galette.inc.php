@@ -36,7 +36,7 @@
  */
 
 if (!defined('GALETTE_PHP_MIN')) {
-    define('GALETTE_PHP_MIN', '5.4');
+    define('GALETTE_PHP_MIN', '5.5');
 }
 
 // check required PHP version...
