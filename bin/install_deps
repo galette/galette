@@ -1,4 +1,2 @@
 #!/bin/sh
-cd galette/includes/
-wget http://download.tuxfamily.org/galette/dev/galette_dev_includes.tar.bz2
-tar xjf galette_dev_includes.tar.bz2
+composer install --no-dev --optimize-autoloader --prefer-dist --quiet
