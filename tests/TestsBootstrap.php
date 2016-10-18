@@ -35,6 +35,7 @@ define('GALETTE_TESTS', true);
 define('GALETTE_MODE', 'PROD');
 define('GALETTE_PLUGINS_PATH', __DIR__ . '/plugins/');
 define('GALETTE_TPL_SUBDIR', 'templates/default/');
+define('GALETTE_THEME', 'themes/default/');
 $logfile = 'galette_tests';
 
 require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';

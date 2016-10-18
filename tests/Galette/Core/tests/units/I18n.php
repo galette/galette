@@ -144,7 +144,7 @@ class I18n extends atoum
 
         $this->variable($flag)
             ->isIdenticalTo(
-                GALETTE_BASE_PATH . GALETTE_TPL_SUBDIR . 'images/english.gif'
+                GALETTE_THEME. 'images/english.gif'
             );
     }
 
@@ -175,7 +175,7 @@ class I18n extends atoum
             ->isIdenticalTo('fr');
         $this->variable($flag)
             ->isIdenticalTo(
-                GALETTE_BASE_PATH . GALETTE_TPL_SUBDIR . 'images/french.gif'
+                GALETTE_THEME . 'images/french.gif'
             );
         $this->variable($file)
             ->isIdenticalTo('french');
