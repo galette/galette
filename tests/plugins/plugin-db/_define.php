@@ -42,6 +42,7 @@ $this->register(
     '1.0',                      //Version
     '0.9',                      //Galette compatible version
     'plugdb',                   //routing name
+    '2015-01-30',               //release date
     [   //Permissions needed
         'plugdb_root'   => 'member',
         'plugdb_admin'  => 'staff'
