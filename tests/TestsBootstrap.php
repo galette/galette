@@ -45,3 +45,8 @@ function _T($string)
 {
     return $string;
 }
+
+function __($string)
+{
+    return $string;
+}

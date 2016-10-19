@@ -40,6 +40,10 @@ $this->register(
     'Test one plugin',          //Short description
     'Johan Cwiklinski',         //Author
     '1.0',                      //Version
-    '0.8',                      //Galette compatible version
-    null                        //Permissions needed - not yet implemented
+    '0.9',                      //Galette compatible version
+    'plugin1',                  //routing name
+    '2016-10-19',               //Release date
+    [   //Permissions needed
+        'plugin1_root'  => 'groupmanager'
+    ]
 );

@@ -63,10 +63,14 @@ class Plugins extends atoum
         'desc'          => 'Test two plugin',
         'author'        => 'Johan Cwiklinski',
         'version'       => '1.0',
-        'permissions'   => null,
+        'acls'          => [
+            'plugin2_root'  => 'member',
+            'plugin2_admin' => 'staff'
+        ],
         'date'          => '2013-12-15',
         'priority'      => 1000,
-        'root_writable' => true
+        'root_writable' => true,
+        'route'         => 'plugin2'
     );
 
     /**

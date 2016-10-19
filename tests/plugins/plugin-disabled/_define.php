@@ -40,6 +40,10 @@ $this->register(
     'Test disabled plugin',     //Short description
     'Johan Cwiklinski',         //Author
     '1.0',                      //Version
-    '0.8',                      //Galette compatible version
-    null                        //Permissions needed - not yet implemented
+    '0.9',                      //Galette compatible version
+    'plugdis',                  //routing name
+    '2016-10-19',               //Release date
+    [   //Permissions needed
+        'plugdis_root'  => 'admin'
+    ]
 );

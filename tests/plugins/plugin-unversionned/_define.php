@@ -41,5 +41,9 @@ $this->register(
     'Johan Cwiklinski',         //Author
     '1.0',                      //Version
     null,                       //Galette compatible version
-    null                        //Permissions needed - not yet implemented
+    'pluginunver',              //routing name
+    '2016-10-19',               //Release date
+    [   //Permissions needed
+        'pluginunver_root'  => 'admin'
+    ]
 );
