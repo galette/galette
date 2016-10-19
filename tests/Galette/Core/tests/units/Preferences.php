@@ -227,7 +227,7 @@ class Preferences extends atoum
     public function testPublicPagesVisibility()
     {
         $this->_preferences->load();
-        $session = [];
+        $session = new \RKA\Session();
 
         $visibility = $this->_preferences->pref_publicpages_visibility;
         $this->variable($visibility)->isEqualTo(
