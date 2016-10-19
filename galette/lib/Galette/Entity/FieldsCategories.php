@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
+use Galette\Core\Db;
 
 /**
  * Fields categories class for galette
@@ -108,7 +109,7 @@ class FieldsCategories
      *
      * @return boolean
      */
-    public static function setCategories($zdb, $categories)
+    public static function setCategories(Db $zdb, $categories)
     {
         try {
             $zdb->connection->beginTransaction();
