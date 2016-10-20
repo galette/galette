@@ -1,6 +1,8 @@
 # Galette
 ## Gestionnaire d'Adhérents en Ligne Extrêmement Tarabiscoté mais Tellement Efficace
 
+[![Build Status](https://travis-ci.org/galette/galette.svg?branch=develop)](https://travis-ci.org/galette/galette)
+
 ### English
 
 Galette is a membership management web application towards non profit organizations; released under GPLv3.
