@@ -23,6 +23,5 @@ notifications:
     template:
       - "%{build_number} by %{author} on %{branch}: %{message} "
       - "Build details: %{build_url}"
-branches:
-  only:
-    - develop
+    use_notice: true
+    skip_join: true
