@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-09-22 23:06+0200\n"
+"PO-Revision-Date: 2016-10-21 23:42+0200\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -12,28 +12,69 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 1.8.7.1\n"
 
+#: ../includes/routes/management.routes.php:1171
+msgid "/import/model/get"
+msgstr "/import/modele/obtenir"
+
+#: ../includes/routes/groups.routes.php:306
+msgid "/ajax/group"
+msgstr "/ajax/groupe"
+
+#: ../includes/routes/management.routes.php:1121
+msgid "/import/model"
+msgstr "/import/modele"
+
+#: ../includes/routes/authentication.routes.php:42
+#: ../includes/routes/authentication.routes.php:70
+msgid "/login"
+msgstr "/connexion"
+
+#: ../includes/routes/management.routes.php:1351
+#: ../includes/routes/management.routes.php:1370
+msgid "/titles"
+msgstr "/titres"
+
+#: ../includes/routes/groups.routes.php:45
+msgid "/groups"
+msgstr "/groupes"
+
+#: ../includes/routes/management.routes.php:1407
+msgid "/titles/remove"
+msgstr "/titres/supprimer"
+
+#: ../includes/routes/management.routes.php:1804
+msgid "/dynamic-translations"
+msgstr "/traductions-dynamiques"
+
 #: ../includes/routes/management.routes.php:1520
 #: ../includes/routes/management.routes.php:1548
 msgid "/texts"
 msgstr "/textes"
 
-#: ../includes/routes/management.routes.php:1171
-msgid "/import/model/get"
-msgstr "/import/modele/obtenir"
-
-#: ../includes/routes/management.routes.php:1234
-#: ../includes/routes/management.routes.php:1290
-msgid "/models/pdf"
-msgstr "/modeles/pdf"
-
 #: ../includes/routes/management.routes.php:1069
 msgid "/import/upload"
 msgstr "/import/televersement"
 
-#: ../includes/routes/management.routes.php:998
-#: ../includes/routes/management.routes.php:1021
-msgid "/import"
-msgstr "/import"
+#: ../includes/routes/main.routes.php:52
+msgid "/logo"
+msgstr "/logo"
+
+#: ../includes/routes/groups.routes.php:329
+msgid "/ajax/unique_groupname"
+msgstr "/ajax/nom-groupe-unique"
+
+#: ../includes/routes/management.routes.php:60
+msgid "/dashboard"
+msgstr "/tableau-de-bord"
+
+#: ../includes/routes/groups.routes.php:101
+msgid "/group/add"
+msgstr "/groupe/ajouter"
+
+#: ../includes/routes/groups.routes.php:181
+#: ../includes/routes/groups.routes.php:212
+msgid "/group/remove"
+msgstr "/groupe/supprimer"
 
 #: ../includes/routes/management.routes.php:806
 #: ../includes/routes/management.routes.php:864
@@ -45,42 +86,67 @@ msgstr "/export"
 msgid "/preferences"
 msgstr "/preferences"
 
-#: ../includes/routes/management.routes.php:674
-msgid "/logs"
-msgstr "/journaux"
-
 #: ../includes/routes/management.routes.php:1208
 msgid "/import/model/store"
 msgstr "/import/modele/enregistrer"
 
-#: ../includes/routes/management.routes.php:603
-msgid "/plugins"
-msgstr "/plugins"
+#: ../includes/routes/main.routes.php:60
+msgid "/photo"
+msgstr "/photo"
 
-#: ../includes/routes/management.routes.php:1804
-msgid "/dynamic-translations"
-msgstr "/traductions-dynamiques"
+#: ../includes/routes/main.routes.php:106
+msgid "/impersonate"
+msgstr "/imposture"
 
-#: ../includes/routes/management.routes.php:1351
-#: ../includes/routes/management.routes.php:1370
-msgid "/titles"
-msgstr "/titres"
-
-#: ../includes/routes/ajax.routes.php:50
-msgid "/messages"
-msgstr "/messages"
-
-#: ../includes/routes/management.routes.php:1121
-msgid "/import/model"
-msgstr "/import/modele"
+#: ../includes/routes/main.routes.php:143
+msgid "/unimpersonate"
+msgstr "/stopper_imposture"
 
 #: ../includes/routes/management.routes.php:575
 msgid "/charts"
 msgstr "/graphiques"
 
-#: ../includes/routes/management.routes.php:60
-msgid "/dashboard"
-msgstr "/tableau-de-bord"
+#: ../includes/routes/main.routes.php:86
+msgid "/system-informations"
+msgstr "/informations-systeme"
+
+#: ../includes/routes/authentication.routes.php:147
+msgid "/retrieve-pass"
+msgstr "/recupere-mot-de-passe"
+
+#: ../includes/routes/groups.routes.php:272
+msgid "/pdf/groups"
+msgstr "/pdf/groupes"
+
+#: ../includes/routes/groups.routes.php:119
+msgid "/group/edit"
+msgstr "/groupe/modifier"
+
+#: ../includes/routes/management.routes.php:998
+#: ../includes/routes/management.routes.php:1021
+msgid "/import"
+msgstr "/import"
+
+#: ../includes/routes/ajax.routes.php:50
+msgid "/messages"
+msgstr "/messages"
+
+#: ../includes/routes/management.routes.php:1234
+#: ../includes/routes/management.routes.php:1290
+msgid "/models/pdf"
+msgstr "/modeles/pdf"
+
+#: ../includes/routes/management.routes.php:674
+msgid "/logs"
+msgstr "/journaux"
+
+#: ../includes/routes/management.routes.php:603
+msgid "/plugins"
+msgstr "/plugins"
+
+#: ../includes/routes/authentication.routes.php:116
+msgid "/logout"
+msgstr "/deconnexion"
 
 #: ../includes/routes/management.routes.php:730
 msgid "/mailings"
@@ -90,7 +156,3 @@ msgstr "/mailings"
 #: ../includes/routes/management.routes.php:1473
 msgid "/titles/edit"
 msgstr "/titres/modifier"
-
-#: ../includes/routes/management.routes.php:1407
-msgid "/titles/remove"
-msgstr "/titres/supprimer"

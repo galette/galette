@@ -1,21 +1,61 @@
-#: ../includes/routes/management.routes.php:1520 ../includes/routes/management.routes.php:1548
-msgid "/texts"
-msgstr ""
-
 #: ../includes/routes/management.routes.php:1171
 msgid "/import/model/get"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1234 ../includes/routes/management.routes.php:1290
-msgid "/models/pdf"
+#: ../includes/routes/groups.routes.php:306
+msgid "/ajax/group"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1121
+msgid "/import/model"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:42 ../includes/routes/authentication.routes.php:70
+msgid "/login"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1351 ../includes/routes/management.routes.php:1370
+msgid "/titles"
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:45
+msgid "/groups"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1407
+msgid "/titles/remove"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1804
+msgid "/dynamic-translations"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1520 ../includes/routes/management.routes.php:1548
+msgid "/texts"
 msgstr ""
 
 #: ../includes/routes/management.routes.php:1069
 msgid "/import/upload"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:998 ../includes/routes/management.routes.php:1021
-msgid "/import"
+#: ../includes/routes/main.routes.php:52
+msgid "/logo"
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:329
+msgid "/ajax/unique_groupname"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:60
+msgid "/dashboard"
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:101
+msgid "/group/add"
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:181 ../includes/routes/groups.routes.php:212
+msgid "/group/remove"
 msgstr ""
 
 #: ../includes/routes/management.routes.php:806 ../includes/routes/management.routes.php:864
@@ -26,40 +66,64 @@ msgstr ""
 msgid "/preferences"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:674
-msgid "/logs"
-msgstr ""
-
 #: ../includes/routes/management.routes.php:1208
 msgid "/import/model/store"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:603
-msgid "/plugins"
+#: ../includes/routes/main.routes.php:60
+msgid "/photo"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1804
-msgid "/dynamic-translations"
+#: ../includes/routes/main.routes.php:106
+msgid "/impersonate"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1351 ../includes/routes/management.routes.php:1370
-msgid "/titles"
-msgstr ""
-
-#: ../includes/routes/ajax.routes.php:50
-msgid "/messages"
-msgstr ""
-
-#: ../includes/routes/management.routes.php:1121
-msgid "/import/model"
+#: ../includes/routes/main.routes.php:143
+msgid "/unimpersonate"
 msgstr ""
 
 #: ../includes/routes/management.routes.php:575
 msgid "/charts"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:60
-msgid "/dashboard"
+#: ../includes/routes/main.routes.php:86
+msgid "/system-informations"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:147
+msgid "/retrieve-pass"
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:272
+msgid "/pdf/groups"
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:119
+msgid "/group/edit"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:998 ../includes/routes/management.routes.php:1021
+msgid "/import"
+msgstr ""
+
+#: ../includes/routes/ajax.routes.php:50
+msgid "/messages"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1234 ../includes/routes/management.routes.php:1290
+msgid "/models/pdf"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:674
+msgid "/logs"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:603
+msgid "/plugins"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:116
+msgid "/logout"
 msgstr ""
 
 #: ../includes/routes/management.routes.php:730
@@ -68,9 +132,5 @@ msgstr ""
 
 #: ../includes/routes/management.routes.php:1454 ../includes/routes/management.routes.php:1473
 msgid "/titles/edit"
-msgstr ""
-
-#: ../includes/routes/management.routes.php:1407
-msgid "/titles/remove"
 msgstr ""
 
