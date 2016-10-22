@@ -14,7 +14,7 @@
                 <a class="button{if !$member->isUp2Date()} disabled{/if}" href="{if $member->isUp2Date()}{path_for name="pdf-members-cards" data=['id_adh' => $member->id]}{else}#{/if}" id="btn_membercard">{_T string="Generate Member Card"}</a>
             </li>
             <li>
-                <a class="button" href="{$preferences->pref_adhesion_form_url}?id_adh={$member->id}" id="btn_adhesionform">{_T string="Adhesion form"}</a>
+                <a class="button" href="{path_for name="adhesionForm" data=["id_adh" => $member->id]}" id="btn_adhesionform">{_T string="Adhesion form"}</a>
             </li>
     {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') && ($login->isAdmin() || $login->isStaff())}
             <li>

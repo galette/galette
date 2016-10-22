@@ -641,7 +641,7 @@ class Plugins
      */
     public function overridePrefs($id)
     {
-        $overridables = ['pref_adhesion_form_url'];
+        $overridables = ['pref_adhesion_form'];
 
         $f = $this->modules[$id]['root'] . '/_preferences.php';
         if (file_exists($f)) {

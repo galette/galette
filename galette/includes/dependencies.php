@@ -212,7 +212,8 @@ $container['acls'] = function ($c) {
         'add_group'                 => 'staff',
         'removeGroup'               => 'staff',
         'doRemoveGroup'             => 'staff',
-        'doEditGroup'               => 'staff'
+        'doEditGroup'               => 'staff',
+        'adhesionForm'              => 'staff'
     ];
 
     //load user defined ACLs

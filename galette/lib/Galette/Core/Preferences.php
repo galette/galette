@@ -153,7 +153,7 @@ class Preferences
         'pref_bool_wrap_mails' => true,
         'pref_rss_url' => 'http://galette.eu/dc/index.php/feed/atom',
         'pref_show_id' => false,
-        'pref_adhesion_form_url' => 'pdf_adhesion_form.php'
+        'pref_adhesion_form' => '\Galette\IO\PdfAdhesionForm'
     );
 
     /**
@@ -339,12 +339,12 @@ class Preferences
 
             $stmt = $this->_zdb->sql->prepareStatementForSqlObject($update);
 
-            foreach ( self::$_defaults as $k=>$v ) {
+            foreach (self::$_defaults as $k => $v) {
                 Analog::log('Storing ' . $k, Analog::DEBUG);
 
                 $value = $this->_prefs[$k];
-                //do not store pdf_adhesion_form URI, it's designed to be overriden by plugin
-                if ($k === 'pdf_adhesion_form') {
+                //do not store pdf_adhesion_form, it's designed to be overriden by plugin
+                if ($k === 'pref_adhesion_form') {
                     $value = $v;
                 }
 

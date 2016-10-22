@@ -37,10 +37,13 @@
 
 namespace Galette\IO;
 
+use Galette\Core\Db;
+use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
 use Galette\Entity\PdfModel;
 use Galette\Entity\PdfAdhesionFormModel;
 use Galette\Entity\DynamicFields;
+use Galette\IO\Pdf;
 use Analog\Analog;
 
 /**
@@ -59,12 +62,11 @@ use Analog\Analog;
 
 class PdfAdhesionForm
 {
-    private $_adh;
-    private $_values;
-    private $_pdf;
-    private $_model;
-    private $_filename;
-    private $_path;
+    protected $adh;
+    protected $prefs;
+    protected $pdf;
+    protected $filename;
+    private $path;
 
     /**
      * Main constructor
@@ -73,9 +75,10 @@ class PdfAdhesionForm
      * @param Db          $zdb   Database instance
      * @param Preferences $prefs Preferences instance
      */
-    public function __construct($adh, $zdb, $prefs)
+    public function __construct(Adherent $adh, Db $zdb, Preferences $prefs)
     {
-        $this->_adh = $adh;
+        $this->adh = $adh;
+        $this->prefs = $prefs;
 
         if ($adh !== null) {
             $dyn_fields = new DynamicFields();
@@ -83,13 +86,13 @@ class PdfAdhesionForm
             $dyn_descriptions = $dyn_fields->getFieldsDescription('adh');
         }
 
-        $this->_model = new PdfAdhesionFormModel($zdb, $prefs, PdfModel::ADHESION_FORM_MODEL);
-        Analog::log("model id: " . $this->_model->id, Analog::DEBUG);
-        Analog::log("model title: " . $this->_model->title, Analog::DEBUG);
+        $model = new PdfAdhesionFormModel($zdb, $prefs, PdfModel::ADHESION_FORM_MODEL);
+        Analog::log("model id: " . $model->id, Analog::DEBUG);
+        Analog::log("model title: " . $model->title, Analog::DEBUG);
 
-        $dynamic_patterns = $this->_model->extractDynamicPatterns();
+        $dynamic_patterns = $model->extractDynamicPatterns();
 
-        $this->_model->setPatterns(
+        $model->setPatterns(
             array(
                 'adh_title'         => '/{TITLE_ADH}/',
                 'adh_name'          => '/{NAME_ADH}/',
@@ -114,7 +117,7 @@ class PdfAdhesionForm
 
         foreach ($dynamic_patterns as $pattern) {
             $key = strtolower($pattern);
-            $this->_model->setPatterns(array($key => "/\{$pattern\}/"));
+            $model->setPatterns(array($key => "/\{$pattern\}/"));
             Analog::log("adding dynamic pattern $key => {" . $pattern . "}", Analog::DEBUG);
         }
 
@@ -133,7 +136,7 @@ class PdfAdhesionForm
             }
         }
 
-        $this->_model->setReplacements(
+        $model->setReplacements(
             array(
                 'adh_title'         => $adh->stitle,
                 'adh_name'          => $adh->sfullname,
@@ -224,21 +227,21 @@ class PdfAdhesionForm
                 }
             }
 
-            $this->_model->setReplacements(array($key => $value));
+            $model->setReplacements(array($key => $value));
             Analog::log("adding dynamic replacement $key => $value", Analog::DEBUG);
         }
 
-        $this->_filename = $adh ?
+        $this->filename = $adh ?
             _T("adherent_form") . '.' . $adh->id . '.pdf' :
             _T("adherent_form") . '.pdf';
 
-        $this->_pdf = new Pdf($prefs, $this->_model);
+        $this->pdf = new Pdf($prefs, $model);
 
-        $this->_pdf->Open();
+        $this->pdf->Open();
 
-        $this->_pdf->AddPage();
-        $this->_pdf->PageHeader();
-        $this->_pdf->PageBody();
+        $this->pdf->AddPage();
+        $this->pdf->PageHeader();
+        $this->pdf->PageBody();
     }
 
     /**
@@ -248,7 +251,7 @@ class PdfAdhesionForm
      */
     public function download()
     {
-        $this->_pdf->Output($this->_filename, 'D');
+        $this->pdf->Output($this->filename, 'D');
     }
 
     /**
@@ -261,8 +264,8 @@ class PdfAdhesionForm
     public function store($path)
     {
         if (file_exists($path) && is_dir($path) && is_writeable($path)) {
-            $this->_path = $path . '/' . $this->_filename;
-            $this->_pdf->Output($this->_path, 'F');
+            $this->path = $path . '/' . $this->filename;
+            $this->pdf->Output($this->path, 'F');
             return true;
         } else {
             Analog::log(
@@ -281,6 +284,6 @@ class PdfAdhesionForm
      */
     public function getPath()
     {
-        return realpath($this->_path);
+        return realpath($this->path);
     }
 }

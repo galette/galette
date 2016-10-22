@@ -157,7 +157,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $cur_route eq "texts"} class="selected"{/if}><a href="{path_for name="texts"}" title="{_T string="Manage emails texts and subjects"}">{_T string="Emails content"}</a></li>
             <li{if $cur_route eq "titles"} class="selected"{/if}><a href="{path_for name="titles"}" title="{_T string="Manage titles"}">{_T string="Titles"}</a></li>
             <li{if $cur_route eq "pdfModels"} class="selected"{/if}><a href="{path_for name="pdfModels"}" title="{_T string="Manage PDF models"}">{_T string="PDF models"}</a></li>
-            <li><a href="{$galette_base_path}{$preferences->pref_adhesion_form_url}" title="{_T string="Download empty adhesion form"}">{_T string="Empty adhesion form"}</a></li>
+            <li><a href="{path_for name="emptyAdhesionForm"}" title="{_T string="Download empty adhesion form"}">{_T string="Empty adhesion form"}</a></li>
         </ul>
 {/if}
 

@@ -49,6 +49,7 @@ use Galette\Repository\Groups;
 use Galette\Entity\Adherent;
 use Galette\IO\PdfMembersCards;
 use Galette\IO\PdfMembersLabels;
+use Galette\IO\PdfAdhesionForm;
 use Galette\IO\Csv;
 use Galette\IO\CsvOut;
 use Galette\Entity\Status;
@@ -58,7 +59,7 @@ use Galette\IO\Pdf;
 
 //self subscription
 $app->get(
-    '/subscribe',
+    __('/subscribe', 'routes'),
     function ($request, $response) {
         if (!$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged()) {
             return $response
@@ -1581,6 +1582,34 @@ $app->get(
         $pdf->Output(_T("labels_print_filename") . '.pdf', 'D');
     }
 )->setName('pdf-members-labels')->add($authenticate);
+
+//PDF adhesion form
+$app->get(
+    '/members/adhesion-form/{' . Adherent::PK . ':\d+}',
+    function ($request, $response, $args) {
+        $id_adh = (int)$args[Adherent::PK];
+
+        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+            $id_adh = (int)$this->login->id;
+        }
+
+        $adh = new Adherent($this->zdb, $id_adh);
+        $form = $this->preferences->pref_adhesion_form;
+        $pdf = new $form($adh, $this->zdb, $this->preferences);
+        $pdf->download();
+    }
+)->setName('adhesionForm')->add($authenticate);
+
+//Empty PDF adhesion form
+$app->get(
+    '/members/empty-adhesion-form',
+    function ($request, $response) {
+        $adh = new Adherent($this->zdb);
+        $form = $this->preferences->pdf_adhesion_form;
+        $pdf = new $form($adh, $this->zdb, $this->preferences);
+        $pdf->download();
+    }
+)->setName('emptyAdhesionForm');
 
 //mailing
 $app->map(
