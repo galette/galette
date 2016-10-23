@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-10-21 23:39+0200\n"
+"PO-Revision-Date: 2016-10-23 09:20+0200\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -23,6 +23,10 @@ msgstr "/ajax/group"
 #: ../includes/routes/management.routes.php:1121
 msgid "/import/model"
 msgstr "/import/model"
+
+#: ../includes/routes/members.routes.php:62
+msgid "/subscribe"
+msgstr "/subscribe"
 
 #: ../includes/routes/authentication.routes.php:42
 #: ../includes/routes/authentication.routes.php:70

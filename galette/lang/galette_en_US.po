@@ -63,7 +63,7 @@ msgstr ""
 msgid "Required membership:"
 msgstr "Required membership:"
 
-#: ../includes/routes/members.routes.php:1877
+#: ../includes/routes/members.routes.php:1906
 msgid "Sent reminders:"
 msgstr "Sent reminders:"
 
@@ -136,7 +136,7 @@ msgid "Is company?"
 msgstr "Is company?"
 
 #: ../advanced_search.php:120 ../lib/Galette/Entity/Contribution.php:1120
-#: ../includes/routes/members.routes.php:1365
+#: ../includes/routes/members.routes.php:1366
 #: ../templates/default/gestion_contributions.tpl:25
 #: ../templates/default/ajouter_contribution.tpl:80
 msgid "Check"
@@ -424,7 +424,7 @@ msgstr "No import file actually exists."
 msgid "Public page content"
 msgstr "Public page content"
 
-#: ../mailing_adherents.php:78 ../includes/routes/members.routes.php:1620
+#: ../mailing_adherents.php:78 ../includes/routes/members.routes.php:1649
 msgid "Trying to load mailing while mail is disabled in preferences."
 msgstr "Trying to load mailing while mail is disabled in preferences."
 
@@ -612,8 +612,8 @@ msgstr ""
 "the imports directory."
 
 #: ../ajouter_adherent.php:437 ../voir_adherent.php:182
-#: ../includes/routes/members.routes.php:684
-#: ../includes/routes/members.routes.php:833
+#: ../includes/routes/members.routes.php:685
+#: ../includes/routes/members.routes.php:834
 msgid "Member Profile"
 msgstr "Member Profile"
 
@@ -824,7 +824,7 @@ msgstr "Donation in kind"
 msgid "File is empty!"
 msgstr "File is empty!"
 
-#: ../mailing_adherents.php:140 ../includes/routes/members.routes.php:1675
+#: ../mailing_adherents.php:140 ../includes/routes/members.routes.php:1704
 msgid "Please type an object for the message."
 msgstr "Please type an object for the message."
 
@@ -1031,7 +1031,7 @@ msgstr "No manager attached"
 msgid "Galette Installation"
 msgstr "Galette Installation"
 
-#: ../self_adherent.php:274 ../includes/routes/members.routes.php:124
+#: ../self_adherent.php:274 ../includes/routes/members.routes.php:125
 msgid "Subscription"
 msgstr "Subscription"
 
@@ -1100,7 +1100,7 @@ msgid "Log in in as %membername"
 msgstr "Log in in as %membername"
 
 #: ../advanced_search.php:118 ../lib/Galette/Entity/Contribution.php:1114
-#: ../includes/routes/members.routes.php:1363
+#: ../includes/routes/members.routes.php:1364
 #: ../templates/default/gestion_contributions.tpl:23
 #: ../templates/default/ajouter_contribution.tpl:78
 msgid "Cash"
@@ -1308,7 +1308,7 @@ msgstr "Show all members transactions"
 msgid "An error occured removing title '%name' :("
 msgstr "An error occured removing title '%name' :("
 
-#: ../ajouter_adherent.php:188 ../includes/routes/members.routes.php:1058
+#: ../ajouter_adherent.php:188 ../includes/routes/members.routes.php:1059
 msgid "New member has been successfully added."
 msgstr "New member has been successfully added."
 
@@ -1392,7 +1392,7 @@ msgstr ""
 "Member will receive his username and password by email, if he has an address."
 
 #: ../advanced_search.php:117 ../lib/Galette/Entity/Contribution.php:1111
-#: ../includes/routes/members.routes.php:1362
+#: ../includes/routes/members.routes.php:1363
 #: ../templates/default/gestion_contributions.tpl:28
 #: ../templates/default/ajouter_contribution.tpl:83
 msgid "Other"
@@ -1735,7 +1735,7 @@ msgid "Charts"
 msgstr "Charts"
 
 #: ../preferences.php:353 ../preferences.php:387 ../ajouter_adherent.php:393
-#: ../includes/routes/members.routes.php:1263
+#: ../includes/routes/members.routes.php:1264
 #: ../includes/routes/management.routes.php:517
 #: ../includes/routes/management.routes.php:558
 msgid "Delete failed"
@@ -1985,7 +1985,7 @@ msgstr "Membership extension:"
 msgid "View, search into and filter member's list"
 msgstr "View, search into and filter member's list"
 
-#: ../includes/routes/members.routes.php:1896
+#: ../includes/routes/members.routes.php:1925
 #: ../templates/default/desktop.tpl:14 ../templates/default/page.tpl:123
 msgid "Reminders"
 msgstr "Reminders"
@@ -2043,7 +2043,7 @@ msgstr ""
 "you already have installed Galette, and you want to upgrade to the latest "
 "version"
 
-#: ../etiquettes_adherents.php:187 ../includes/routes/members.routes.php:1581
+#: ../etiquettes_adherents.php:187 ../includes/routes/members.routes.php:1582
 msgid "labels_print_filename"
 msgstr "Labels"
 
@@ -2116,8 +2116,8 @@ msgstr "Date settings"
 msgid "Transactions management"
 msgstr "Transactions management"
 
-#: ../doandget_export.php:175 ../lib/Galette/IO/PdfAdhesionForm.php:130
-#: ../includes/routes/members.routes.php:271
+#: ../doandget_export.php:175 ../lib/Galette/IO/PdfAdhesionForm.php:133
+#: ../includes/routes/members.routes.php:272
 #: ../templates/default/gestion_adherents.tpl:264
 #: ../templates/default/forms_types/gender.tpl:15
 msgid "Woman"
@@ -2546,7 +2546,7 @@ msgid "Error creating temporary png file from "
 msgstr "Error creating temporary png file from "
 
 #: ../ajouter_adherent.php:441 ../ajouter_contribution.php:418
-#: ../ajouter_groupe.php:87 ../includes/routes/members.routes.php:837
+#: ../ajouter_groupe.php:87 ../includes/routes/members.routes.php:838
 #: ../includes/routes/contributions.routes.php:453
 #: ../includes/routes/contributions.routes.php:947
 msgid "creation"
@@ -2573,8 +2573,8 @@ msgstr "Add a contribution"
 msgid "Notify member his account has been modified"
 msgstr "Notify member his account has been modified"
 
-#: ../includes/routes/members.routes.php:1974
-#: ../includes/routes/members.routes.php:1993
+#: ../includes/routes/members.routes.php:2003
+#: ../includes/routes/members.routes.php:2022
 msgid "No member selected to generate attendance sheet"
 msgstr "No member selected to generate attendance sheet"
 
@@ -2602,7 +2602,7 @@ msgstr "Transaction details"
 msgid "Never contributed: Registered %days days ago (since %date)"
 msgstr "Never contributed: Registered %days days ago (since %date)"
 
-#: ../ajouter_adherent.php:322 ../includes/routes/members.routes.php:1192
+#: ../ajouter_adherent.php:322 ../includes/routes/members.routes.php:1193
 msgid ""
 "You asked Galette to send a confirmation mail to the member, but mail has "
 "been disabled in the preferences."
@@ -2706,7 +2706,7 @@ msgstr "Membership fee"
 msgid "Statuts"
 msgstr "Statuts"
 
-#: ../includes/routes/members.routes.php:2033
+#: ../includes/routes/members.routes.php:2062
 msgid "attendance_sheet"
 msgstr "attendance_sheet"
 
@@ -2815,7 +2815,7 @@ msgstr "Click here to deactivate plugin '%name'"
 msgid "Update of the tables"
 msgstr "Update of the tables"
 
-#: ../ajouter_adherent.php:306 ../includes/routes/members.routes.php:1176
+#: ../ajouter_adherent.php:306 ../includes/routes/members.routes.php:1177
 msgid "Account modification mail sent to '%s'."
 msgstr "Account modification mail sent to '%s'."
 
@@ -2949,15 +2949,15 @@ msgstr "directory_name"
 #: ../lib/Galette/Entity/Contribution.php:1212
 #: ../lib/Galette/Entity/ImportModel.php:212
 #: ../lib/Galette/Entity/Group.php:622 ../lib/Galette/Core/Plugins.php:214
-#: ../includes/routes/members.routes.php:225
-#: ../includes/routes/members.routes.php:236
-#: ../includes/routes/members.routes.php:247
-#: ../includes/routes/members.routes.php:258
-#: ../includes/routes/members.routes.php:2024
+#: ../includes/routes/members.routes.php:226
+#: ../includes/routes/members.routes.php:237
+#: ../includes/routes/members.routes.php:248
+#: ../includes/routes/members.routes.php:259
+#: ../includes/routes/members.routes.php:2053
 msgid "Y-m-d"
 msgstr "m/d/Y"
 
-#: ../includes/routes/members.routes.php:1944
+#: ../includes/routes/members.routes.php:1973
 msgid "Attendance sheet configuration"
 msgstr "Attendance sheet configuration"
 
@@ -3001,8 +3001,8 @@ msgstr "Mailing has not been sent yet"
 msgid "PHP mail() function"
 msgstr "PHP mail() function"
 
-#: ../lib/Galette/IO/PdfAdhesionForm.php:232
-#: ../lib/Galette/IO/PdfAdhesionForm.php:233
+#: ../lib/Galette/IO/PdfAdhesionForm.php:235
+#: ../lib/Galette/IO/PdfAdhesionForm.php:236
 msgid "adherent_form"
 msgstr "adherent_form"
 
@@ -3015,7 +3015,7 @@ msgid "Manage emails texts and subjects"
 msgstr "Manage emails texts and subjects"
 
 #: ../advanced_search.php:122 ../lib/Galette/Entity/Contribution.php:1126
-#: ../includes/routes/members.routes.php:1367
+#: ../includes/routes/members.routes.php:1368
 #: ../templates/default/gestion_contributions.tpl:27
 #: ../templates/default/ajouter_contribution.tpl:82
 msgid "Paypal"
@@ -3165,8 +3165,8 @@ msgstr "Unable to write file or temporary file"
 msgid "Name:"
 msgstr "Name:"
 
-#: ../doandget_export.php:178 ../lib/Galette/IO/PdfAdhesionForm.php:132
-#: ../includes/routes/members.routes.php:274
+#: ../doandget_export.php:178 ../lib/Galette/IO/PdfAdhesionForm.php:135
+#: ../includes/routes/members.routes.php:275
 #: ../templates/default/forms_types/gender.tpl:11
 msgid "Unspecified"
 msgstr "Unspecified"
@@ -3475,7 +3475,7 @@ msgstr "Admin and staff only"
 msgid "Manager(s)"
 msgstr "Manager(s)"
 
-#: ../gestion_adherents.php:276 ../includes/routes/members.routes.php:385
+#: ../gestion_adherents.php:276 ../includes/routes/members.routes.php:386
 msgid "Members management"
 msgstr "Members management"
 
@@ -3689,7 +3689,7 @@ msgid "No fields to translate."
 msgstr "No fields to translate."
 
 #: ../lib/Galette/IO/PdfMembersCards.php:100
-#: ../includes/routes/members.routes.php:1516
+#: ../includes/routes/members.routes.php:1517
 #: ../templates/default/preferences.tpl:11
 msgid "Cards"
 msgstr "Cards"
@@ -3937,7 +3937,7 @@ msgid "The group name you have requested already exits in the database."
 msgstr "The group name you have requested already exits in the database."
 
 #: ../advanced_search.php:121 ../lib/Galette/Entity/Contribution.php:1123
-#: ../includes/routes/members.routes.php:1366
+#: ../includes/routes/members.routes.php:1367
 #: ../templates/default/gestion_contributions.tpl:26
 #: ../templates/default/ajouter_contribution.tpl:81
 msgid "Transfer"
@@ -3984,7 +3984,7 @@ msgstr "Group %groupname has been successfully deleted."
 msgid "Password misrepeated: "
 msgstr "Password misrepeated: "
 
-#: ../ajouter_adherent.php:343 ../includes/routes/members.routes.php:1213
+#: ../ajouter_adherent.php:343 ../includes/routes/members.routes.php:1214
 msgid "An error occured adding member to its groups."
 msgstr "An error occured adding member to its groups."
 
@@ -4123,10 +4123,10 @@ msgstr "Configure import model"
 #: ../doandget_export.php:185 ../doandget_export.php:188
 #: ../doandget_export.php:191 ../doandget_export.php:194
 #: ../lib/Galette/Entity/Adherent.php:1410
-#: ../includes/routes/members.routes.php:282
-#: ../includes/routes/members.routes.php:286
-#: ../includes/routes/members.routes.php:290
-#: ../includes/routes/members.routes.php:294
+#: ../includes/routes/members.routes.php:283
+#: ../includes/routes/members.routes.php:287
+#: ../includes/routes/members.routes.php:291
+#: ../includes/routes/members.routes.php:295
 #: ../templates/default/gestion_intitule_content.tpl:28
 #: ../templates/default/gestion_intitule_content.tpl:62
 #: ../templates/default/config_fields.tpl:38
@@ -4198,7 +4198,7 @@ msgstr ""
 "the index page and into pages' title."
 
 #: ../self_adherent.php:151 ../ajouter_adherent.php:231
-#: ../includes/routes/members.routes.php:1101
+#: ../includes/routes/members.routes.php:1102
 msgid "New account mail sent to admin for '%s'."
 msgstr "New account mail sent to admin for '%s'."
 
@@ -4271,7 +4271,7 @@ msgstr ""
 "version"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:126
-#: ../includes/routes/members.routes.php:2007
+#: ../includes/routes/members.routes.php:2036
 #: ../templates/default/gestion_adherents.tpl:159
 #: ../templates/default/attendance_sheet_details.tpl:6
 msgid "Attendance sheet"
@@ -4438,7 +4438,7 @@ msgid "Line:"
 msgstr "Line:"
 
 #: ../ajouter_adherent.php:439 ../ajouter_contribution.php:416
-#: ../ajouter_groupe.php:85 ../includes/routes/members.routes.php:835
+#: ../ajouter_groupe.php:85 ../includes/routes/members.routes.php:836
 #: ../includes/routes/contributions.routes.php:451
 #: ../includes/routes/contributions.routes.php:945
 msgid "modification"
@@ -4464,8 +4464,8 @@ msgstr "Infos"
 msgid "An error occured storing the field."
 msgstr "An error occured storing the field."
 
-#: ../doandget_export.php:172 ../lib/Galette/IO/PdfAdhesionForm.php:128
-#: ../includes/routes/members.routes.php:268
+#: ../doandget_export.php:172 ../lib/Galette/IO/PdfAdhesionForm.php:131
+#: ../includes/routes/members.routes.php:269
 #: ../templates/default/gestion_adherents.tpl:258
 #: ../templates/default/forms_types/gender.tpl:13
 msgid "Man"
@@ -4570,11 +4570,11 @@ msgstr "no member"
 msgid "Your subscription has been registered."
 msgstr "Your subscription has been registered."
 
-#: ../mailing_adherents.php:265 ../includes/routes/members.routes.php:1805
+#: ../mailing_adherents.php:265 ../includes/routes/members.routes.php:1834
 msgid "Mailing"
 msgstr "Mailing"
 
-#: ../includes/routes/members.routes.php:1837
+#: ../includes/routes/members.routes.php:1866
 msgid "No reminder to send for now."
 msgstr "No reminder to send for now."
 
@@ -4609,8 +4609,8 @@ msgstr "Show title ?"
 msgid "The username cannot contain the @ character"
 msgstr "The username cannot contain the @ character"
 
-#: ../includes/routes/members.routes.php:1506
-#: ../includes/routes/members.routes.php:1571
+#: ../includes/routes/members.routes.php:1507
+#: ../includes/routes/members.routes.php:1572
 msgid "Unable to get members list."
 msgstr "Unable to get members list."
 
@@ -4662,7 +4662,7 @@ msgstr ""
 msgid "No port"
 msgstr "No port"
 
-#: ../ajouter_adherent.php:358 ../includes/routes/members.routes.php:1228
+#: ../ajouter_adherent.php:358 ../includes/routes/members.routes.php:1229
 msgid "An error occured adding member to its groups as manager."
 msgstr "An error occured adding member to its groups as manager."
 
@@ -4701,9 +4701,9 @@ msgstr "Non-member"
 msgid "Description"
 msgstr "Description"
 
-#: ../gestion_adherents.php:123 ../includes/routes/members.routes.php:1441
-#: ../includes/routes/members.routes.php:1474
-#: ../includes/routes/members.routes.php:1548
+#: ../gestion_adherents.php:123 ../includes/routes/members.routes.php:1442
+#: ../includes/routes/members.routes.php:1475
+#: ../includes/routes/members.routes.php:1549
 msgid "No member was selected, please check at least one name."
 msgstr "No member was selected, please check at least one name."
 
@@ -4799,7 +4799,7 @@ msgid "New mailing from %s"
 msgstr "New mailing from %s"
 
 #: ../self_adherent.php:244 ../ajouter_adherent.php:362
-#: ../includes/routes/members.routes.php:1232
+#: ../includes/routes/members.routes.php:1233
 msgid "An error occured while storing the member."
 msgstr "An error occured while storing the member."
 
@@ -5194,7 +5194,7 @@ msgstr "Do you really want to delete all selected contributions?"
 msgid "Title '%s' has not been added!"
 msgstr "Title '%s' has not been added!"
 
-#: ../mailing_adherents.php:244 ../includes/routes/members.routes.php:1777
+#: ../mailing_adherents.php:244 ../includes/routes/members.routes.php:1806
 msgid "Mailing has been successfully saved."
 msgstr "Mailing has been successfully saved."
 
@@ -5228,7 +5228,7 @@ msgid "Default preferences were successfully stored."
 msgstr "Default preferences were successfully stored."
 
 #: ../self_adherent.php:214 ../ajouter_adherent.php:305
-#: ../includes/routes/members.routes.php:1175
+#: ../includes/routes/members.routes.php:1176
 msgid "New account mail sent to '%s'."
 msgstr "New account mail sent to '%s'."
 
@@ -5303,7 +5303,7 @@ msgstr "Use above links to go back to the application."
 msgid "General information"
 msgstr "General information"
 
-#: ../ajouter_adherent.php:253 ../includes/routes/members.routes.php:1123
+#: ../ajouter_adherent.php:253 ../includes/routes/members.routes.php:1124
 msgid ""
 "- You can't send a confirmation by email if the member hasn't got an address!"
 msgstr ""
@@ -5443,10 +5443,10 @@ msgstr "An error occured :("
 #: ../doandget_export.php:185 ../doandget_export.php:188
 #: ../doandget_export.php:191 ../doandget_export.php:194
 #: ../lib/Galette/Entity/Adherent.php:1410
-#: ../includes/routes/members.routes.php:282
-#: ../includes/routes/members.routes.php:286
-#: ../includes/routes/members.routes.php:290
-#: ../includes/routes/members.routes.php:294
+#: ../includes/routes/members.routes.php:283
+#: ../includes/routes/members.routes.php:287
+#: ../includes/routes/members.routes.php:291
+#: ../includes/routes/members.routes.php:295
 #: ../templates/default/gestion_intitule_content.tpl:29
 #: ../templates/default/gestion_intitule_content.tpl:60
 #: ../templates/default/config_fields.tpl:36
@@ -5626,7 +5626,7 @@ msgstr "Contribution"
 msgid "No active plugin."
 msgstr "No active plugin."
 
-#: ../includes/routes/members.routes.php:1870
+#: ../includes/routes/members.routes.php:1899
 msgid "Reminder has not been sent:"
 msgstr "Reminder has not been sent:"
 
@@ -5691,7 +5691,7 @@ msgstr "Select a field"
 msgid "First page"
 msgstr "First page"
 
-#: ../mailing_adherents.php:146 ../includes/routes/members.routes.php:1681
+#: ../mailing_adherents.php:146 ../includes/routes/members.routes.php:1710
 msgid "Please enter a message."
 msgstr "Please enter a message."
 
@@ -6086,12 +6086,12 @@ msgstr "Add new membership fee in database"
 msgid "Application error"
 msgstr "Application error"
 
-#: ../includes/routes/members.routes.php:714
+#: ../includes/routes/members.routes.php:715
 msgid "Member ID cannot ben null calling edit route!"
 msgstr "Member ID cannot ben null calling edit route!"
 
 #: ../advanced_search.php:119 ../lib/Galette/Entity/Contribution.php:1117
-#: ../includes/routes/members.routes.php:1364
+#: ../includes/routes/members.routes.php:1365
 #: ../templates/default/gestion_contributions.tpl:24
 #: ../templates/default/ajouter_contribution.tpl:79
 msgid "Credit card"
@@ -6165,7 +6165,7 @@ msgstr "The tables has been correctly created."
 msgid "Existing files"
 msgstr "Existing files"
 
-#: ../ajouter_adherent.php:246 ../includes/routes/members.routes.php:1116
+#: ../ajouter_adherent.php:246 ../includes/routes/members.routes.php:1117
 msgid "Member account has been modified."
 msgstr "Member account has been modified."
 
@@ -6353,7 +6353,7 @@ msgid "An error occured trying to remove contributions(s) :("
 msgstr "An error occured trying to remove contributions(s) :("
 
 #: ../self_adherent.php:158 ../ajouter_adherent.php:238
-#: ../includes/routes/members.routes.php:1108
+#: ../includes/routes/members.routes.php:1109
 msgid "A problem happened while sending email to admin for account '%s'."
 msgstr "A problem happened while sending email to admin for account '%s'."
 
@@ -6385,7 +6385,7 @@ msgstr "All members"
 msgid "Manage PDF models"
 msgstr "Manage PDF models"
 
-#: ../advanced_search.php:65 ../includes/routes/members.routes.php:1377
+#: ../advanced_search.php:65 ../includes/routes/members.routes.php:1378
 #: ../templates/default/advanced_search.tpl:48
 #: ../templates/default/page.tpl:113
 msgid "Advanced search"
@@ -6562,7 +6562,7 @@ msgstr "company fee"
 msgid "Duration"
 msgstr "Duration"
 
-#: ../includes/routes/members.routes.php:1863
+#: ../includes/routes/members.routes.php:1892
 msgid "There are no member to proceed."
 msgstr "There are no member to proceed."
 
@@ -6776,7 +6776,7 @@ msgstr ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 
-#: ../ajouter_adherent.php:314 ../includes/routes/members.routes.php:1184
+#: ../ajouter_adherent.php:314 ../includes/routes/members.routes.php:1185
 msgid "A problem happened while sending account mail to '%s'"
 msgstr "A problem happened while sending account mail to '%s'"
 

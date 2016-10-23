@@ -10,6 +10,10 @@ msgstr ""
 msgid "/import/model"
 msgstr ""
 
+#: ../includes/routes/members.routes.php:62
+msgid "/subscribe"
+msgstr ""
+
 #: ../includes/routes/authentication.routes.php:42 ../includes/routes/authentication.routes.php:70
 msgid "/login"
 msgstr ""

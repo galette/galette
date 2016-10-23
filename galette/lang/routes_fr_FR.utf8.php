@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Fri Oct 21 21:59:46 2016 (GMT)
+// This file was automatically generated on Sun Oct 23 07:20:59 2016 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -80,6 +80,9 @@ $lang['routes']['/titles'] = '/titres';
 
 // ../includes/routes/management.routes.php:603 
 $lang['routes']['/plugins'] = '/plugins';
+
+// ../includes/routes/members.routes.php:62 
+$lang['routes']['/subscribe'] = '/inscription';
 
 // ../includes/routes/groups.routes.php:329 
 $lang['routes']['/ajax/unique_groupname'] = '/ajax/nom-groupe-unique';
