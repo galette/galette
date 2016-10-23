@@ -149,7 +149,7 @@ $app->get(
 
 //members list CSV export
 $app->get(
-    '/members/export/csv',
+    __('/members/export/csv', 'routes'),
     function () use ($app, $zdb) {
         $csv = new CsvOut();
 
@@ -332,7 +332,7 @@ $app->get(
 
 //members list
 $app->get(
-    '/members[/{option:page|order}/{value:\d+}]',
+    __('/members', 'routes') . '[/{option:' . __('page', 'routes') . '|' . __('order', 'routes') . '}/{value:\d+}]',
     function ($request, $response, $args = []) {
         $option = null;
         if (isset($args['option'])) {
@@ -401,7 +401,7 @@ $app->get(
 
 //members list filtering
 $app->post(
-    '/members/filter',
+    __('/members/filter', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
         if (isset($this->session->filter_members)) {
@@ -541,7 +541,7 @@ $app->post(
 
 //members self card
 $app->get(
-    '/member/me',
+    __('/member/me', 'routes'),
     function ($request, $response) use ($app) {
         if ($this->login->isSuperAdmin()) {
             return $response
@@ -566,7 +566,7 @@ $app->get(
 
 //members card
 $app->get(
-    '/member/{id:\d+}',
+    __('/member', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $id = $args['id'];
         $dyn_fields = new DynamicFields();
@@ -702,7 +702,7 @@ $app->get(
 )->setName('member')->add($authenticate);
 
 $app->get(
-    '/member/{action:edit|add}[/{id:\d+}]',
+    __('/member', 'routes') . '/{action:' . __('edit', 'routes') . '|' . __('add', 'routes') . '}[/{id:\d+}]',
     function ($request, $response, $args) {
         $action = $args['action'];
         $id = null;
@@ -919,7 +919,7 @@ $app->get(
 )->add($authenticate);
 
 $app->post(
-    '/member/store',
+    __('/member/store', 'routes'),
     function () use (
         $app,
         &$success_detected,
@@ -1406,7 +1406,7 @@ $app->post(
 
 //advanced search page
 $app->get(
-    '/advanced-search',
+    __('/advanced-search', 'routes'),
     function ($request, $response) {
         if (isset($this->session->filter_members)) {
             $filters = $this->session->filter_members;
@@ -1490,7 +1490,7 @@ $app->get(
 
 //Batch actions on members list
 $app->post(
-    '/members/batch',
+    __('/members/batch', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
 
@@ -1546,7 +1546,7 @@ $app->post(
 
 //PDF members cards
 $app->get(
-    '/members/cards[/{' . Adherent::PK . ':\d+}]',
+    __('/members/cards', 'routes') . '[/{' . Adherent::PK . ':\d+}]',
     function ($request, $response, $args) {
         if ($this->session->filter_members) {
             $filters =  $this->session->filter_members;
@@ -1615,7 +1615,7 @@ $app->get(
 
 //PDF members labels
 $app->get(
-    '/members/labels',
+    __('/members/labels', 'routes'),
     function ($request, $response) {
         $get = $request->getQueryParams();
 
@@ -1680,7 +1680,7 @@ $app->get(
 
 //PDF adhesion form
 $app->get(
-    '/members/adhesion-form/{' . Adherent::PK . ':\d+}',
+    __('/members/adhesion-form', 'routes') . '/{' . Adherent::PK . ':\d+}',
     function ($request, $response, $args) {
         $id_adh = (int)$args[Adherent::PK];
 
@@ -1697,7 +1697,7 @@ $app->get(
 
 //Empty PDF adhesion form
 $app->get(
-    '/members/empty-adhesion-form',
+    __('/members/empty-adhesion-form', 'routes'),
     function ($request, $response) {
         $adh = new Adherent($this->zdb);
         $form = $this->preferences->pdf_adhesion_form;
@@ -1709,7 +1709,7 @@ $app->get(
 //mailing
 $app->map(
     ['GET', 'POST'],
-    '/mailing',
+    __('/mailing', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
         $get = $request->getQueryParams();
@@ -1938,7 +1938,7 @@ $app->map(
 
 //reminders
 $app->get(
-    '/reminders',
+    __('/reminders', 'routes'),
     function ($request, $response) {
         $texts = new Texts($this->texts_fields, $this->preferences);
         $post = $request->getParsedBody();
@@ -2035,7 +2035,7 @@ $app->get(
 
 $app->map(
     ['GET', 'POST'],
-    '/attendance-sheet/details',
+    __('/attendance-sheet/details', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
 
@@ -2075,7 +2075,7 @@ $app->map(
 )->setName('attendance_sheet_details')->add($authenticate);
 
 $app->post(
-    '/attendance-sheet',
+    __('/attendance-sheet', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
 
