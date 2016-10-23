@@ -153,7 +153,7 @@ $app->get(
     function () use ($app, $zdb) {
         $csv = new CsvOut();
 
-        if ( isset($this->session->filter_members) ) {
+        if (isset($this->session->filter_members)) {
             //CAUTION: this one may be simple or advanced, display must change
             $filters = $this->session->filter_members;
         } else {
@@ -161,7 +161,7 @@ $app->get(
         }
 
         $export_fields = null;
-        if ( file_exists(GALETTE_CONFIG_PATH  . 'local_export_fields.inc.php') ) {
+        if (file_exists(GALETTE_CONFIG_PATH  . 'local_export_fields.inc.php')) {
             include_once GALETTE_CONFIG_PATH  . 'local_export_fields.inc.php';
             $export_fields = $fields;
         }
@@ -417,7 +417,6 @@ $app->post(
             if ($filters instanceof AdvancedMembersList) {
                 $filters = new MembersList();
             }
-
         } elseif (isset($post['clear_adv_filter'])) {
             $this->session->filter_members = null;
             unset($this->session->filter_members);
@@ -940,20 +939,20 @@ $app->post(
         // new or edit
         $adherent['id_adh'] = get_numeric_form_value('id_adh', '');
 
-        if ( $this->login->isAdmin() || $this->login->isStaff() || $this->login->isGroupManager() ) {
-            if ( $adherent['id_adh'] ) {
+        if ($this->login->isAdmin() || $this->login->isStaff() || $this->login->isGroupManager()) {
+            if ($adherent['id_adh']) {
                 $member->load($adherent['id_adh']);
-                if ( !$this->login->isAdmin() && !$this->login->isStaff() && $this->login->isGroupManager() ) {
+                if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->login->isGroupManager()) {
                     //check if current logged in user can manage loaded member
                     $groups = $member->groups;
                     $can_manage = false;
-                    foreach ( $groups as $group ) {
-                        if ( $this->login->isGroupManager($group->getId()) ) {
+                    foreach ($groups as $group) {
+                        if ($this->login->isGroupManager($group->getId())) {
                             $can_manage = true;
                             break;
                         }
                     }
-                    if ( $can_manage !== true ) {
+                    if ($can_manage !== true) {
                         Analog::log(
                             'Logged in member ' . $this->login->login .
                             ' has tried to load member #' . $member->id .
@@ -966,9 +965,9 @@ $app->post(
             }
 
             // disable some fields
-            if ( $this->login->isAdmin() ) {
+            if ($this->login->isAdmin()) {
                 $disabled = $member->adm_edit_disabled_fields;
-            } elseif ( $this->login->isStaff() ) {
+            } elseif ($this->login->isStaff()) {
                 $disabled = $member->adm_edit_disabled_fields
                     + $member->staff_edit_disabled_fields;
             } else {
@@ -977,7 +976,7 @@ $app->post(
                     + $member->disabled_fields;
             }
 
-            if ( $this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED ) {
+            if ($this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
                 $disabled['send_mail'] = 'disabled="disabled"';
             }
         } else {
@@ -991,7 +990,7 @@ $app->post(
         $fc = $this->fields_config;
 
         // password required if we create a new member
-        if ( $member->id != '' ) {
+        if ($member->id != '') {
             $fc->setNotRequired('mdp_adh');
         }
 
@@ -1188,8 +1187,9 @@ $app->post(
                                     $error_detected[] = $str;
                                 }
                             }
-                        } else if ($this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
-                            //if mail has been disabled in the preferences, we should not be here ; we do not throw an error, just a simple warning that will be show later
+                        } elseif ($this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
+                            //if mail has been disabled in the preferences, we should not be here ;
+                            //we do not throw an error, just a simple warning that will be show later
                             $msg = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
                             $warning_detected[] = $msg;
                             $this->session->mail_warning = $msg;
@@ -1235,7 +1235,6 @@ $app->post(
             }
 
             if (count($error_detected) == 0) {
-
                 // picture upload
                 if (isset($_FILES['photo'])) {
                     if ($_FILES['photo']['error'] === UPLOAD_ERR_OK) {

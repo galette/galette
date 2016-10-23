@@ -73,7 +73,6 @@ $app->group(
                         _T("Invalid extension!")
                     );
                 }
-
             }
         )->setName('plugin_res');
 
