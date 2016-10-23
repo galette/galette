@@ -273,9 +273,8 @@ abstract class Authentication implements \Serializable
     public function __get($name)
     {
         $forbidden = array('logged', 'admin', 'active');
-        $rname = '_' . $name;
-        if (!in_array($name, $forbidden) && isset($this->$rname)) {
-            return $this->$rname;
+        if (!in_array($name, $forbidden) && isset($this->$name)) {
+            return $this->$name;
         } else {
             return false;
         }
@@ -291,7 +290,6 @@ abstract class Authentication implements \Serializable
     */
     public function __set($name, $value)
     {
-        $name = '_' . $name;
         $this->$name = $value;
     }
 

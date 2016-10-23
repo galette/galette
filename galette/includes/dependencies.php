@@ -288,7 +288,7 @@ $zdb = $container['zdb'];
 if (isset($session['lang'])) {
     $i18n = unserialize($session['lang']);
 } else {
-    $i18n = new Core\I18n();
+    $i18n = new Galette\Core\I18n();
 }
 
 if (isset($_POST['pref_lang'])

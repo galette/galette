@@ -62,10 +62,10 @@ class Login extends Authentication
     const TABLE = Adherent::TABLE;
     const PK = 'login_adh';
 
-    private $_zdb;
-    private $_i18n;
-    private $_session;
-    private $_impersonated;
+    private $zdb;
+    private $i18n;
+    private $session;
+    private $impersonated;
 
     /**
      * Instanciate object
@@ -77,8 +77,8 @@ class Login extends Authentication
     public function __construct(Db $zdb, I18n $i18n, Session $session)
     {
         $this->setDb($zdb);
-        $this->_i18n = $i18n;
-        $this->_session = $session;
+        $this->i18n = $i18n;
+        $this->session = $session;
     }
 
     /**
@@ -90,7 +90,7 @@ class Login extends Authentication
      */
     public function setDb(Db $zdb)
     {
-        $this->_zdb = $zdb;
+        $this->zdb = $zdb;
     }
 
     /**
@@ -100,7 +100,7 @@ class Login extends Authentication
      */
     public function serialize()
     {
-        $this->_zdb = null;
+        $this->zdb = null;
 
         $vars = parent::getObjectVars();
         $vars = array_merge(
@@ -128,9 +128,6 @@ class Login extends Authentication
 
         $locals = array_keys(get_object_vars($this));
         foreach ($serialized as $key => $value) {
-            if (!in_array($key, $locals)) {
-                $key = substr($key, 1);
-            }
             $this->$key = $value;
         }
     }
@@ -149,7 +146,7 @@ class Login extends Authentication
             $select = $this->select();
             $select->where(array(self::PK => $user));
 
-            $results = $this->_zdb->execute($select);
+            $results = $this->zdb->execute($select);
             if ($results->count() == 0) {
                 Analog::log(
                     'No entry found for login `' . $user . '`',
@@ -212,7 +209,7 @@ class Login extends Authentication
      */
     private function select()
     {
-        $select = $this->_zdb->select(self::TABLE, 'a');
+        $select = $this->zdb->select(self::TABLE, 'a');
         $select->columns(
             array(
                 'id_adh',
@@ -251,8 +248,8 @@ class Login extends Authentication
         $this->name = $row->nom_adh;
         $this->surname = $row->prenom_adh;
         $this->lang = $row->pref_lang;
-        $this->_i18n->changeLanguage($this->lang);
-        $this->_session->lang = serialize($this->_i18n);
+        $this->i18n->changeLanguage($this->lang);
+        $this->session->lang = serialize($this->i18n);
         $this->active = $row->activite_adh;
         $this->logged = true;
         if ($row->priorite_statut < Members::NON_STAFF_MEMBERS) {
@@ -306,7 +303,7 @@ class Login extends Authentication
             $select = $this->select();
             $select->where(array(Adherent::PK => $id));
 
-            $results = $this->_zdb->execute($select);
+            $results = $this->zdb->execute($select);
             if ($results->count() == 0) {
                 Analog::log(
                     'No entry found for id `' . $id . '`',
@@ -314,7 +311,7 @@ class Login extends Authentication
                 );
                 return false;
             } else {
-                $this->_impersonated = true;
+                $this->impersonated = true;
                 $this->superadmin = false;
                 $row = $results->current();
                 $this->logUser($row);
@@ -348,9 +345,9 @@ class Login extends Authentication
     public function loginExists($user)
     {
         try {
-            $select = $this->_zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE);
             $select->where(array(self::PK => $user));
-            $results = $this->_zdb->execute($select);
+            $results = $this->zdb->execute($select);
 
             if ($results->count() > 0) {
                 /* We got results, user already exists */
@@ -376,6 +373,6 @@ class Login extends Authentication
      */
     public function isImpersonated()
     {
-        return $this->_impersonated;
+        return $this->impersonated;
     }
 }
