@@ -229,7 +229,7 @@
                         <a href="{path_for name="editmember" data=["action" => "edit", "id" => $mid]}"><img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="%membername: edit informations" pattern="/%membername/" replace=$member->sname}"/></a>
 {if $login->isAdmin() or $login->isStaff()}
                         <a href="gestion_contributions.php?id_adh={$member->id}"><img src="{base_url}/{$template_subdir}images/icon-money.png" alt="{_T string="[$]"}" width="16" height="16" title="{_T string="%membername: contributions" pattern="/%membername/" replace=$member->sname}"/></a>
-                        <a onclick="return confirm('{_T string="Do you really want to delete this member from the base? This will also delete the history of his fees. You could instead disable the account.\n\nDo you still want to delete this member ?"|escape:"javascript"}')" href="gestion_adherents.php?sup={$member->id}"><img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="%membername: remove from database" pattern="/%membername/" replace=$member->sname}"/></a>
+                        <a class="delete" href="{path_for name="removeMember" data=["id" => $member->id]}"><img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="%membername: remove from database" pattern="/%membername/" replace=$member->sname}"/></a>
 {/if}
 {if $login->isSuperAdmin()}
                         <a href="{path_for name="impersonate" data=["id" => $mid]}"><img src="{base_url}/{$template_subdir}images/icon-impersonate.png" alt="{_T string="Impersonate"}" width="16" height="16" title="{_T string="Log in in as %membername" pattern="/%membername/" replace=$member->sname}"/></a>
@@ -413,6 +413,78 @@
             }
         });
 {if $nb_members != 0}
+        //handle removals
+        //TODO: factorize with group removal stuff
+        $('.delete').on('click', function(event) {
+            event.preventDefault();
+            var _this = $(this);
+            var _href = _this.attr('href');
+
+            $.ajax({
+                url: _href,
+                type: "GET",
+                data: {
+                    ajax: true,
+                },
+                datatype: 'json',
+                {include file="js_loader.tpl"},
+                success: function(res){
+                    var _res = $(res);
+                    _res.find('#btncancel')
+                        .button()
+                        .on('click', function(e) {
+                            e.preventDefault();
+                            _res.dialog('close');
+                        });
+
+                    _res.find('input[type=submit]')
+                        .button();
+
+                    _res.find('form').on('submit', function(e) {
+                        e.preventDefault();
+                        var _form = $(this);
+                        var _data = _form.serialize();
+                        $.ajax({
+                            url: _form.attr('action'),
+                            type: "POST",
+                            data: _data,
+                            datatype: 'json',
+                            {include file="js_loader.tpl"},
+                            success: function(res){
+                                if (res.success) {
+                                    window.location.href = _form.find('input[name=redirect_uri]').val();
+                                } else {
+                                    $.ajax({
+                                        url: '{path_for name="ajaxMessages"}',
+                                        method: "GET",
+                                        success: function (message) {
+                                            $('#asso_name').after(message);
+                                        }
+                                    });
+                                }
+                            },
+                            error: function() {
+                                alert("{_T string="An error occured :(" escape="js"}");
+                            }
+                        });
+                    });
+
+                    $('body').append(_res);
+
+                    _res.dialog({
+                        width: '25em',
+                        modal: true,
+                        close: function(event, ui){
+                            $(this).dialog('destroy').remove()
+                        }
+                    });
+                },
+                error: function() {
+                    alert("{_T string="An error occured :(" escape="js"}");
+                }
+            });
+        });
+
         var _attendance_sheet_details = function(){
             var _selecteds = [];
             $('table.listing').find('input[type=checkbox]:checked').each(function(){

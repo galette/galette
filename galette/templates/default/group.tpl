@@ -102,7 +102,8 @@
         });
 
         //handle removals
-        $('#delete, #delete_cascade').on('click', function(event) {
+        //TODO: factorize with single member removal stuff
+        $('#delete').on('click', function(event) {
             event.preventDefault();
             var _this = $(this);
             var _href = _this.attr('href');

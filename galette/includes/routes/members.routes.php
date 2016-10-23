@@ -1309,6 +1309,101 @@ $app->post(
     }
 )->setName('storemembers')->add($authenticate);
 
+$app->get(
+    __('/member/remove', 'routes') . '/{id:\d+}',
+    function ($request, $response, $args) {
+        $adh = new Adherent($this->zdb, (int)$args['id']);
+
+        $data = [
+            'id'            => $args['id'],
+            'redirect_uri'  => $this->router->pathFor('members')
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'type'          => _T("Member"),
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => sprintf(
+                    _T('Remove member %1$s'),
+                    $adh->sfullname
+                ),
+                'form_url'      => $this->router->pathFor('doRemoveMember', ['id' => $adh->id]),
+                'cancel_uri'    => $this->router->pathFor('members'),
+                'data'          => $data
+            )
+        );
+        return $response;
+    }
+)->setName('removeMember')->add($authenticate);
+
+$app->post(
+    __('/member/remove', 'routes') . '/{id:\d+}',
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
+        $success = false;
+
+        $uri = isset($post['redirect_uri']) ?
+            $post['redirect_uri'] :
+            $this->router->pathFor('slash');
+
+        if (!isset($post['confirm'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Removal has not been confirmed!")
+            );
+        } else {
+            //delete member
+            $adh = new Adherent($this->zdb, (int)$post['id']);
+            if (isset($this->session->filter_members)) {
+                $filters =  $this->session->filter_members;
+            } else {
+                $filters = new MembersList();
+            }
+            $members = new Members($filters);
+            $del = $members->removeMembers((int)$post['id']);
+
+            if ($del !== true) {
+                $error_detected = str_replace(
+                    '%name',
+                    $adh->sname,
+                    _T("An error occured trying to remove member %name :/")
+                );
+
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error_detected
+                );
+            } else {
+                $this->flash->addMessage(
+                    'success_detected',
+                    str_replace(
+                        '%name',
+                        $adh->sname,
+                        _T("Member %name has been successfully deleted.")
+                    )
+                );
+                $success = true;
+            }
+        }
+
+        if (!$ajax) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $uri);
+        } else {
+            return $response->withJson(
+                [
+                    'success'   => $success
+                ]
+            );
+        }
+    }
+)->setName('doRemoveMember')->add($authenticate);
+
 //advanced search page
 $app->get(
     '/advanced-search',
