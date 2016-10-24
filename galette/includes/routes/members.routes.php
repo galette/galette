@@ -150,7 +150,7 @@ $app->get(
 //members list CSV export
 $app->get(
     __('/members/export/csv', 'routes'),
-    function () use ($app, $zdb) {
+    function ($request, $response) {
         $csv = new CsvOut();
 
         if (isset($this->session->filter_members)) {
@@ -204,7 +204,7 @@ $app->get(
         $statuses = $s->getList();
 
         $t = new Titles();
-        $titles = $t->getList($zdb);
+        $titles = $t->getList($this->zdb);
 
         foreach ($members_list as &$member) {
             if (isset($member->id_statut)) {
@@ -313,7 +313,6 @@ $app->get(
             );
         }
 
-        $response = $app->response;
         if (file_exists(CsvOut::DEFAULT_DIRECTORY . $filename)) {
             header('Content-Type: text/csv');
             header('Content-Disposition: attachment; filename="' . $filename . '";');
