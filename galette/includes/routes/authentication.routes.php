@@ -128,7 +128,7 @@ $app->get(
 
 //password lost page
 $app->get(
-    _("/password-lost"),
+    __("/password-lost"),
     function ($request, $response) {
         // display page
         $this->view->render(
