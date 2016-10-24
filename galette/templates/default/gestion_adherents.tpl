@@ -228,7 +228,7 @@
                     <td class="{$rclass} center nowrap actions_row">
                         <a href="{path_for name="editmember" data=["action" => "edit", "id" => $mid]}"><img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="%membername: edit informations" pattern="/%membername/" replace=$member->sname}"/></a>
 {if $login->isAdmin() or $login->isStaff()}
-                        <a href="gestion_contributions.php?id_adh={$member->id}"><img src="{base_url}/{$template_subdir}images/icon-money.png" alt="{_T string="[$]"}" width="16" height="16" title="{_T string="%membername: contributions" pattern="/%membername/" replace=$member->sname}"/></a>
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}"><img src="{base_url}/{$template_subdir}images/icon-money.png" alt="{_T string="[$]"}" width="16" height="16" title="{_T string="%membername: contributions" pattern="/%membername/" replace=$member->sname}"/></a>
                         <a class="delete" href="{path_for name="removeMember" data=["id" => $member->id]}"><img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="%membername: remove from database" pattern="/%membername/" replace=$member->sname}"/></a>
 {/if}
 {if $login->isSuperAdmin()}
