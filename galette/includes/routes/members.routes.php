@@ -1286,12 +1286,19 @@ $app->post(
                         $success_detected
                     );
                 }
-                if (!isset($_POST['id_adh'])) {
-                    //TODO: use route
-                    header(
-                        'location: ajouter_contribution.php?id_adh=' . $member->id
-                    );
-                    die();
+                if (!isset($_POST['id_adh']) && !$member->isDueFree()) {
+                    return $response
+                        ->withStatus(301)
+                        ->withHeader(
+                            'Location',
+                            $this->router->pathFor(
+                                'contribution',
+                                [
+                                    'type'      => __('fee', 'routes'),
+                                    'action'    => __('add', 'routes'),
+                                ]
+                            ) . '?id_adh=' . $member->id
+                        );
                 } elseif (count($error_detected) == 0) {
                     return $response
                         ->withStatus(301)
