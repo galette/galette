@@ -24,3 +24,4 @@ notifications:
       - "%{build_number} by %{author} on %{branch}: %{message} "
       - "Build details: %{build_url}"
     use_notice: true
+    skip_join: true
