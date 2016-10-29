@@ -964,7 +964,7 @@ $app->post(
 )->setName('doExport')->add($authenticate);
 
 $app->get(
-    '/{type:i' . __('export', 'routes') . '|' . __('import', 'routes') . '}' . __('/get', 'routes') . '/{file}',
+    '/{type:' . __('export', 'routes') . '|' . __('import', 'routes') . '}' . __('/get', 'routes') . '/{file}',
     function ($request, $response, $args) {
         $filename = $args['file'];
 
