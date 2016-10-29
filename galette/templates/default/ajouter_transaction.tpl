@@ -2,7 +2,7 @@
 
 {block name="content"}
 {if isset($adh_options)}
-        <form action="{if $transaction->id}{path_for name="transaction" data=["action" => "edit", "id" => $transaction->id]}{else}{path_for name="transaction" data=["action" => "add"]}{/if}" method="post">
+        <form action="{if $transaction->id}{path_for name="transaction" data=["action" => {_T string="edit" catalog="routes"}, "id" => $transaction->id]}{else}{path_for name="transaction" data=["action" => {_T string="add" catalog="routes"}]}{/if}" method="post">
         <div class="bigtable">
             <fieldset class="cssform">
                 <legend class="ui-state-active ui-corner-top">{_T string="Transaction details"}</legend>
@@ -112,7 +112,7 @@
         <p>
             {_T string="Unfortunately, there is no member in your database yet,"}
             <br/>
-            <a href="{path_for name="editmember" data=["action" => "add"]}">{_T string="please create a member"}</a>
+            <a href="{path_for name="editmember" data=["action" => {_T string="add" catalog="routes"}]}">{_T string="please create a member"}</a>
         </p>
     </div>
 {/if}
@@ -124,7 +124,7 @@
 {if $transaction->id}
             $('#memberslist').click(function(){
                 $.ajax({
-                    url: '{path_for name="contributions" data=["type" => "contributions"]}',
+                    url: '{path_for name="contributions" data=["type" => {_T string="contributions" catalog="routes"}]}',
                     type: "GET",
                     data: {
                         ajax: true,
@@ -191,7 +191,7 @@
                 $('.pages a').bind({
                     click: function(){
                         $.ajax({
-                            url: '{path_for name="contributions" data=["type" => "contributions"]}' + this.href.substring(this.href.indexOf('?')) + "&ajax=true",
+                            url: '{path_for name="contributions" data=["type" => {_T string="contributions" catalog="routes"}]}' + this.href.substring(this.href.indexOf('?')) + "&ajax=true",
                             type: "GET",
                             {include file="js_loader.tpl"},
                             success: function(res){

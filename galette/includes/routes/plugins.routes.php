@@ -36,7 +36,7 @@
  */
 
 $app->group(
-    '/plugins',
+    __('/plugins', 'routes'),
     function () use ($authenticate, $app) {
         $container = $this->getContainer();
         $modules = $container->plugins->getModules();

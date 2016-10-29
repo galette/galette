@@ -19,7 +19,7 @@
                 <tr>
                     <th class="small_head">#</th>
                     <th class="left date_row">
-                        <a href="{path_for name="mailings" data=["option" => 'order', "value" => 'mailing_date']}">
+                        <a href="{path_for name="mailings" data=["option" => {_T string="order" catalog="routes"}, "value" => 'mailing_date']}">
                             {_T string="Date"}
                             {if $history->orderby eq "date_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -31,7 +31,7 @@
                         </a>
                     </th>
                     <th class="left username_row">
-                        <a href="{path_for name="mailings" data=["option" => 'order', "value" => 'mailing_sender']}">
+                        <a href="{path_for name="mailings" data=["option" => {_T string="order" catalog="routes"}, "value" => 'mailing_sender']}">
                             {_T string="Sender"}
                             {if $history->orderby eq "adh_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -46,7 +46,7 @@
                         {_T string="Recipients"}
                     </th>
                     <th class="left">
-                        <a href="{path_for name="mailings" data=["option" => 'order', "value" => 'mailing_subject']}">
+                        <a href="{path_for name="mailings" data=["option" => {_T string="order" catalog="routes"}, "value" => 'mailing_subject']}">
                             {_T string="Subject"}
                             {if $history->orderby eq "action_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -61,7 +61,7 @@
                         {_T string="Att."}
                     </th>
                     <th class="left right small_head">
-                        <a href="{path_for name="mailings" data=["option" => 'order', "value" => 'mailing_sent']}">
+                        <a href="{path_for name="mailings" data=["option" => {_T string="order" catalog="routes"}, "value" => 'mailing_sent']}">
                             {_T string="Sent"}
                             {if $history->orderby eq "sent"}
                                 {if $history->getDirection() eq "DESC"}

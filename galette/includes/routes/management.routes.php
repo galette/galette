@@ -671,7 +671,8 @@ $app->get(
 
 //galette logs
 $app->get(
-    __('/logs', 'routes') . '[/{option:page|order|reset}/{value}]',
+    __('/logs', 'routes') . '[/{option:' . __('page', 'routes') .'|' .
+        __('order', 'routes') .'|' . __('reset', 'routes') .'}/{value}]',
     function ($request, $response, $args = []) {
         $option = null;
         if (isset($args['option'])) {
@@ -684,13 +685,13 @@ $app->get(
 
         if ($option !== null) {
             switch ($option) {
-                case 'page':
+                case __('page', 'routes'):
                     $this->history->current_page = (int)$value;
                     break;
-                case 'order':
+                case __('order', 'routes'):
                     $this->history->tri = $value;
                     break;
-                case 'reset':
+                case __('reset', 'routes'):
                     $this->history->clean();
                     //reinitialize object after flush
                     $this->history = new History();
@@ -727,7 +728,7 @@ $app->get(
 
 //mailings management
 $app->get(
-    __('/mailings', 'routes') . '[/{option:page|order}/{value:\d+}]',
+    __('/mailings', 'routes') . '[/{option:' . __('page', 'routes') . '|' . __('order', 'routes') . '}/{value:\d+}]',
     function ($request, $response, $args = []) {
         $option = null;
         if (isset($args['option'])) {
@@ -758,10 +759,10 @@ $app->get(
 
         if ($option !== null) {
             switch ($option) {
-                case 'page':
+                case __('page', 'routes'):
                     $mailhist->current_page = (int)$value;
                     break;
-                case 'order':
+                case __('order', 'routes'):
                     $mailhist->orderby = $value;
                     break;
             }
@@ -830,9 +831,11 @@ $app->get(
 )->add($authenticate);
 
 $app->get(
-    '/{type:export|import}/remove/{file}',
+    '/{type:' . __('export', 'routes') . '|' . __('import', 'routes') . '}' . __('/remove', 'routes') .'/{file}',
     function ($request, $response, $args) {
-        $csv = $args['type'] === 'export' ? new CsvOut() : new CsvIn($this->zdb);
+        $csv = $args['type'] === __('export', 'routes') ?
+            new CsvOut() :
+            new CsvIn($this->zdb);
         $res = $csv->remove($args['file']);
         if ($res === true) {
             $this->flash->addMessage(
@@ -961,14 +964,16 @@ $app->post(
 )->setName('doExport')->add($authenticate);
 
 $app->get(
-    '/{type:export|import}/get/{file}',
+    '/{type:i' . __('export', 'routes') . '|' . __('import', 'routes') . '}' . __('/get', 'routes') . '/{file}',
     function ($request, $response, $args) {
         $filename = $args['file'];
 
         //Exports main contain user confidential data, they're accessible only for
         //admins or staff members
         if ($this->login->isAdmin() || $this->login->isStaff()) {
-            $filepath = $args['type'] === 'export' ? CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
+            $filepath = $args['type'] === __('export', 'routes') ?
+                CsvOut::DEFAULT_DIRECTORY :
+                CsvIn::DEFAULT_DIRECTORY;
             $filepath .= $filename;
             if (file_exists($filepath)) {
                 header('Content-Type: text/csv');
@@ -977,7 +982,7 @@ $app->get(
                 readfile($filepath);
             } else {
                 Analog::log(
-                    'A request has been made to get an ' . $args['type'] . 'ed file named `' .
+                    'A request has been made to get an ' . $args['type'] . ' file named `' .
                     $filename .'` that does not exists.',
                     Analog::WARNING
                 );
@@ -985,7 +990,7 @@ $app->get(
             }
         } else {
             Analog::log(
-                'A non authorized person asked to retrieve ' . $args['type'] . 'ed file named `' .
+                'A non authorized person asked to retrieve ' . $args['type'] . ' file named `' .
                 $filename . '`. Access has not been granted.',
                 Analog::WARNING
             );
@@ -1594,7 +1599,7 @@ $app->post(
 )->setName('texts')->add($authenticate);
 
 $app->get(
-    '/{class:contributions-types|status}',
+    '/{class:' . __('contributions-types', 'routes') . '|' . __('status', 'routes') . '}',
     function ($request, $response, $args) {
         $className = null;
         $class = null;
@@ -1604,13 +1609,13 @@ $app->get(
         ];
 
         switch ($args['class']) {
-            case 'status':
+            case __('status', 'routes'):
                 $className = 'Status';
                 $class = new Galette\Entity\Status($this->zdb);
                 $params['page_title'] = _T("User statuses");
                 $params['non_staff_priority'] = Galette\Repository\Members::NON_STAFF_MEMBERS;
                 break;
-            case 'contributions-types':
+            case __('contributions-types', 'routes'):
                 $className = 'ContributionsTypes';
                 $class = new Galette\Entity\ContributionsTypes($this->zdb);
                 $params['page_title'] = _T("Contribution types");
@@ -1639,7 +1644,8 @@ $app->get(
 )->setName('entitleds')->add($authenticate);
 
 $app->get(
-    '/{class:contributions-types|status}/{action:edit|add}[/{id:\d+}]',
+    '/{class:' . __('contributions-types', 'routes') . '|' . __('status', 'routes') .
+        '}/{action:' . __('edit', 'routes') .'|' . __('add', 'routes') .'}[/{id:\d+}]',
     function ($request, $response, $args) {
         $className = null;
         $class = null;
@@ -1649,13 +1655,13 @@ $app->get(
         ];
 
         switch ($args['class']) {
-            case 'status':
+            case __('status', 'routes'):
                 $className = 'Status';
                 $class = new Galette\Entity\Status($this->zdb);
                 $params['page_title'] = _T("Edit status");
                 $params['non_staff_priority'] = Galette\Repository\Members::NON_STAFF_MEMBERS;
                 break;
-            case 'contributions-types':
+            case __('contributions-types', 'routes'):
                 $className = 'ContributionsTypes';
                 $class = new Galette\Entity\ContributionsTypes($this->zdb);
                 $params['page_title'] = _T("Edit contribution type");
@@ -1680,16 +1686,17 @@ $app->get(
 )->setName('editEntitled')->add($authenticate);
 
 $app->post(
-    '/{class:contributions-types|status}/{action:edit|add}[/{id:\d+}]',
+    '/{class:' . __('contributions-types', 'routes') . '|' . __('status', 'routes') .
+        '}/{action:' . __('edit', 'routes') . '|' . __('add', 'routes') . '}[/{id:\d+}]',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
         $class = null;
 
         switch ($args['class']) {
-            case 'status':
+            case __('status', 'routes'):
                 $class = new Galette\Entity\Status($this->zdb);
                 break;
-            case 'contributions-types':
+            case __('contributions-types', 'routes'):
                 $class = new Galette\Entity\ContributionsTypes($this->zdb);
                 break;
         }
@@ -1698,7 +1705,7 @@ $app->post(
         $field = trim($post[$class::$fields['third']]);
 
         $ret = null;
-        if ($args['action'] === 'add') {
+        if ($args['action'] === __('add', 'routes')) {
             $ret = $class->add($label, $field);
             if ($ret === true) {
                 addDynamicTranslation($label);
@@ -1716,12 +1723,12 @@ $app->post(
 
         if ($ret !== true) {
             $msg_type = 'error_detected';
-            $msg = $args['action'] === 'add' ?
+            $msg = $args['action'] === __('add', 'routes') ?
                 _T("%type has not been added :(") :
                 _T("%type #%id has not been updated");
         } else {
             $msg_type = 'success_detected';
-            $msg = $args['action'] === 'add' ?
+            $msg = $args['action'] === __('add', 'routes') ?
                 _T("%type has been successfully added!") :
                 _T("%type #%id has been successfully updated!");
         }
@@ -1742,14 +1749,15 @@ $app->post(
 )->setName('editEntitled')->add($authenticate);
 
 $app->get(
-    '/{class:contributions-types|status}/delete/{id:\d+}',
+    '/{class:' . __('contributions-types', 'routes') . '|' . __('status', 'routes') .
+        '}' . __('/delete', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $class = null;
         switch ($args['class']) {
-            case 'status':
+            case __('status', 'routes'):
                 $class = new Galette\Entity\Status($this->zdb);
                 break;
-            case 'contributions-types':
+            case __('contributions-types', 'routes'):
                 $class = new Galette\Entity\ContributionsTypes($this->zdb);
                 break;
         }

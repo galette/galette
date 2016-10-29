@@ -350,10 +350,10 @@ $app->get(
 
         if ($option !== null) {
             switch ($option) {
-                case 'page':
+                case __('page', 'routes'):
                     $filters->current_page = (int)$value;
                     break;
-                case 'order':
+                case __('order', 'routes'):
                     $filters->orderby = $value;
                     break;
             }
@@ -1345,7 +1345,7 @@ $app->get(
 )->setName('removeMember')->add($authenticate);
 
 $app->post(
-    __('/member/remove', 'routes') . '/{id:\d+}',
+    __('/member/remove', 'routes') . '[/{id:\d+}]',
     function ($request, $response) {
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';

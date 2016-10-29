@@ -39,7 +39,7 @@ use Galette\Core\GaletteMail;
 
 //login page
 $app->get(
-    __("/login", "routes"),
+    __('/login', 'routes'),
     function ($request, $response, $args = []) use ($baseRedirect) {
         //store redirect path if any
         if (isset($args['r'])
@@ -67,7 +67,7 @@ $app->get(
 
 //Authentication procedure
 $app->post(
-    __("/login", "routes"),
+    __('/login', 'routes'),
     function ($request, $response) use ($app, $baseRedirect) {
         $nick = $request->getParsedBody()['login'];
         $password = $request->getParsedBody()['password'];
@@ -113,7 +113,7 @@ $app->post(
 
 //logout procedure
 $app->get(
-    __("/logout", "routes"),
+    __('/logout', 'routes'),
     function ($request, $response) {
         $this->login->logOut();
         $this->history->add(_("Log off"));
@@ -128,7 +128,7 @@ $app->get(
 
 //password lost page
 $app->get(
-    __("/password-lost"),
+    __('/password-lost', 'routes'),
     function ($request, $response) {
         // display page
         $this->view->render(
@@ -144,7 +144,7 @@ $app->get(
 
 //retrieve password procedure
 $app->post(
-    __("/retrieve-pass", "routes"),
+    __('/retrieve-pass', 'routes'),
     function ($request, $response) {
         if (($this->login->isLogged()
             || $this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED)

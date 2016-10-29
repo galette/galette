@@ -45,9 +45,9 @@ use Galette\Filters\MembersList;
 use Galette\Repository\Groups;
 use \Analog\Analog;
 
-$app->group('/ajax', function () {
+$app->group(__('/ajax', 'routes'), function () {
     $this->get(
-        __("/messages", "routes"),
+        __('/messages', 'routes'),
         function ($request, $response) {
             $this->view->render(
                 $response,

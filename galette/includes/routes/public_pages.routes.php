@@ -63,10 +63,10 @@ $showPublicPages = function ($request, $response, $next) use ($container, &$sess
     return $next($request, $response);
 };
 
-$app->group('/public', function () {
+$app->group(__('/public', 'routes'), function () {
     //public members list
     $this->get(
-        '/members',
+        __('/members', 'routes'),
         function ($request, $response) {
             if (isset($this->session->public_filters_members)) {
                 $filters = $this->session->public_filters_members;
@@ -121,7 +121,7 @@ $app->group('/public', function () {
 
     //public trombinoscope
     $this->get(
-        '/trombinoscope',
+        __('/trombinoscope', 'routes'),
         function ($request, $response) {
             $m = new Members();
             $members = $m->getPublicList(true, null);

@@ -23,17 +23,17 @@
     {/if}
 {/if}
             <li>
-                <a class="button" href="{path_for name="editmember" data=["action" => "edit", "id" => $member->id]}" id="btn_edit">{_T string="Modification"}</a>
+                <a class="button" href="{path_for name="editmember" data=["action" => {_T string="edit" catalog="routes"}, "id" => $member->id]}" id="btn_edit">{_T string="Modification"}</a>
             </li>
 {if $login->isAdmin() or $login->isStaff()}
             <li>
-                <a class="button" href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}" id="btn_contrib">{_T string="View contributions"}</a>
+                <a class="button" href="{path_for name="contributions" data=["type" => {_T string="contributions" catalog="routes"}, "option" => {_T string="member" catalog="routes"}, "value" => $member->id]}" id="btn_contrib">{_T string="View contributions"}</a>
             </li>
             <li>
-                <a class="button" id="btn_addcontrib" href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a>
+                <a class="button" id="btn_addcontrib" href="{path_for name="contribution" data=["type" => {_T string="fee" catalog="routes"}, "action" => {_T string="add" catalog="routes"}]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a>
             </li>
             <li>
-                <a class="button" id="btn_addcontrib" href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?id_adh={$member->id}">{_T string="Add a donation"}</a>
+                <a class="button" id="btn_addcontrib" href="{path_for name="contribution" data=["type" => {_T string="donation" catalog="routes"}, "action" => {_T string="add" catalog="routes"}]}?id_adh={$member->id}">{_T string="Add a donation"}</a>
             </li>
 {/if}
 {* If some additionnals actions should be added from plugins, we load the relevant template file

@@ -313,6 +313,11 @@ if ((isset($loc) && $loc!=$language) || $disable_gettext) {
 function _T($string, $domain = 'galette', $nt = true)
 {
     global $language, $disable_gettext, $installer;
+
+    if ($domain == 'routes') {
+        $nt = false;
+    }
+
     if ($disable_gettext === true && isset($GLOBALS['lang'])) {
         if (isset($GLOBALS['lang'][$domain][$string])
             && $GLOBALS['lang'][$domain][$string] != ''

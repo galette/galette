@@ -42,7 +42,7 @@ use Galette\Repository\Members;
 use Galette\IO\PdfGroups;
 
 $app->get(
-    __("/groups", "routes") . '[/{id:\d+}]',
+    __('/groups', 'routes') . '[/{id:\d+}]',
     function ($request, $response, $args) {
         $groups = new Groups($this->zdb, $this->login);
         $group = new Group();

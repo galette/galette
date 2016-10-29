@@ -5,7 +5,7 @@
             <thead>
                 <tr>
                     <td colspan="3">
-                        <a id="histreset" class="button" href="{path_for name="history" data=["option" => 'reset', "value" => 'true']}">{_T string="Flush the logs"}</a>
+                        <a id="histreset" class="button" href="{path_for name="history" data=["option" => {_T string="reset" catalog="routes"}, "value" => 'true']}">{_T string="Flush the logs"}</a>
                     </td>
                     <td colspan="3" class="right">
                         <form action="{path_for name="history"}" method="get" id="historyform">
@@ -22,7 +22,7 @@
                 <tr>
                     <th class="small_head">#</th>
                     <th class="left date_row">
-                        <a href="{path_for name="history" data=["option" => 'order', "value" => 'date_log']}">
+                        <a href="{path_for name="history" data=["option" => {_T string="order" catalog="routes"}, "value" => 'date_log']}">
                             {_T string="Date"}
                             {if $history->orderby eq "date_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -34,7 +34,7 @@
                         </a>
                     </th>
                     <th class="left date_row">
-                        <a href="{path_for name="history" data=["option" => 'order', "value" => 'ip_log']}">
+                        <a href="{path_for name="history" data=["option" => {_T string="order" catalog="routes"}, "value" => 'ip_log']}">
                             {_T string="IP"}
                             {if $history->orderby eq "ip_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -46,7 +46,7 @@
                         </a>
                     </th>
                     <th class="left date_row">
-                        <a href="{path_for name="history" data=["option" => 'order', "value" => 'adh_log']}">
+                        <a href="{path_for name="history" data=["option" => {_T string="order" catalog="routes"}, "value" => 'adh_log']}">
                             {_T string="User"}
                             {if $history->orderby eq "adh_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -58,7 +58,7 @@
                         </a>
                     </th>
                     <th class="left username_row">
-                        <a href="{path_for name="history" data=["option" => 'order', "value" => 'action_log']}">
+                        <a href="{path_for name="history" data=["option" => {_T string="order" catalog="routes"}, "value" => 'action_log']}">
                             {_T string="Action"}
                             {if $history->orderby eq "action_log"}
                                 {if $history->getDirection() eq "DESC"}
@@ -70,7 +70,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="{path_for name="history" data=["option" => 'order', "value" => 'text_log']}">
+                        <a href="{path_for name="history" data=["option" => {_T string="order" catalog="routes"}, "value" => 'text_log']}">
                             {_T string="Description"}
                             {if $history->orderby eq "text_log"}
                                 {if $history->getDirection() eq "DESC"}
