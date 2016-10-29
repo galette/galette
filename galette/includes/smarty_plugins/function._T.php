@@ -40,7 +40,7 @@
  *
  * @param array  $params An array that can contains:
  *                       string: the string to translate
- *                       catalog: a catalog name
+ *                       domain: a translation domain name
  *                       notrans: do not indicate not translated strings
  *                       pattern: A pattern (optional - required if replace present)
  *                       replace: Replacement for pattern (optional - required
@@ -53,8 +53,8 @@ function smarty_function__T($params, &$smarty)
 {
     extract($params);
 
-    if (!isset($catalog)) {
-        $catalog = 'galette';
+    if (!isset($domain)) {
+        $domain = 'galette';
     }
 
     if (!isset($notrans)) {
@@ -62,9 +62,9 @@ function smarty_function__T($params, &$smarty)
     }
 
     if (isset($pattern) && isset($replace)) {
-        $ret = preg_replace($pattern, $replace, _T($string, $catalog, $notrans));
+        $ret = preg_replace($pattern, $replace, _T($string, $domain, $notrans));
     } else {
-        $ret = _T($string, $catalog, $notrans);
+        $ret = _T($string, $domain, $notrans);
     }
     if (isset($escape)) {
         //replace insecable spaces

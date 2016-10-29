@@ -27,7 +27,7 @@
                             <tr class="{if $smarty.foreach.existing_list.iteration % 2 eq 0}even{else}odd{/if}">
                                 <td>
                                     <input type="radio" name="import_file" id="file{$smarty.foreach.existing_list.iteration}" value="{$import.name}"{if isset($import_file) and $import_file eq $import.name} checked="checked"{/if}/>
-                                    <label for="file{$smarty.foreach.existing_list.iteration}">{$import.name}</label> (<a href="{path_for name="getCsv" data=["type" => {_T string="import" catalog="routes"}, "file" => $import.name]}">{_T string="see"}</a>)
+                                    <label for="file{$smarty.foreach.existing_list.iteration}">{$import.name}</label> (<a href="{path_for name="getCsv" data=["type" => {_T string="import" domain="routes"}, "file" => $import.name]}">{_T string="see"}</a>)
                                 </td>
                                 <td>
                                     {$import.date}
@@ -36,7 +36,7 @@
                                     {$import.size}
                                 </td>
                                 <td class="actions_row">
-                                    <a href="{path_for name="removeCsv" data=["type" => {_T string="import" catalog="routes"}, "file" => $import.name]}" title="{_T string="Remove '%file' from disk" pattern="/%file/" replace=$import.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
+                                    <a href="{path_for name="removeCsv" data=["type" => {_T string="import" domain="routes"}, "file" => $import.name]}" title="{_T string="Remove '%file' from disk" pattern="/%file/" replace=$import.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
                                 </td>
                             </tr>
     {/foreach}

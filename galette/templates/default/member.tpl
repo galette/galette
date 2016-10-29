@@ -3,9 +3,9 @@
 {block name="content"}
 {if isset($navigate) and $navigate|@count != 0}
     <nav>
-        <a id="prev" href="{if isset($navigate.prev)}{path_for name="editmember" data=["action" => {_T string="edit" catalog="routes"}, "id" => $navigate.prev]}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">{_T string="Previous"}</a>
+        <a id="prev" href="{if isset($navigate.prev)}{path_for name="editmember" data=["action" => {_T string="edit" domain="routes"}, "id" => $navigate.prev]}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">{_T string="Previous"}</a>
         {$navigate.pos}/{$navigate.count}
-        <a id="next" href="{if isset($navigate.next)}{path_for name="editmember" data=["action" => {_T string="edit" catalog="routes"}, "id" => $navigate.next]}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">{_T string="Next"}</a>
+        <a id="next" href="{if isset($navigate.next)}{path_for name="editmember" data=["action" => {_T string="edit" domain="routes"}, "id" => $navigate.next]}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">{_T string="Next"}</a>
     </nav>
 {/if}
         <form action="{path_for name="storemembers"}" method="post" enctype="multipart/form-data" id="form">

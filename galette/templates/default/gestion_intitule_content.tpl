@@ -66,7 +66,7 @@
     {/if}
                 </td>
                 <td class="center actions_row">
-                    <a href="{path_for name="editEntitled" data=["class" => $url_class, "action" => {_T string="edit" catalog="routes"}, "id" => $eid]}">
+                    <a href="{path_for name="editEntitled" data=["class" => $url_class, "action" => {_T string="edit" domain="routes"}, "id" => $eid]}">
                         <img src="{$template_subdir}images/icon-edit.png" alt="{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name}" title="{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name}" width="16" height="16"/>
                     </a>
                     <a onclick="return confirm('{_T string="Do you really want to delete this entry?"|escape:"javascript"}')" href="{path_for name="removeEntitled" data=["class" => $url_class, "id" => $eid]}">

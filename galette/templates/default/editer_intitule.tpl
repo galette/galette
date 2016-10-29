@@ -5,7 +5,7 @@
 {assign var='id' value=$fields.id}
 {assign var='field' value=$fields.third}
 
-<form action="{path_for name="editEntitled" data=["class" => $url_class, "action" => {_T string="edit" catalog="routes"}, "id" => $entry->$id]}" method="post">
+<form action="{path_for name="editEntitled" data=["class" => $url_class, "action" => {_T string="edit" domain="routes"}, "id" => $entry->$id]}" method="post">
     <div class="bigtable">
     <fieldset class="cssform" id="general">
         <div>

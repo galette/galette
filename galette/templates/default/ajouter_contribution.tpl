@@ -2,7 +2,7 @@
 
 {block name="content"}
 {if isset($adh_options)}
-        <form action="{path_for name="contribution" data=["type" => $type, "action" => {_T string="add" catalog="routes"}]}" method="post">
+        <form action="{path_for name="contribution" data=["type" => $type, "action" => {_T string="add" domain="routes"}]}" method="post">
         <div class="bigtable">
     {if $contribution->isTransactionPart()}
         {assign var="mid" value=$contribution->transaction->member}
@@ -12,7 +12,7 @@
                     <tr>
                         <td colspan="5">
                             {$contribution->transaction->description}
-                            <a href="{path_for name="transaction" data=["action" => {_T string="edit" catalog="routes"}, "id" => $contribution->transaction->id]}" title="{_T string="View transaction"}">
+                            <a href="{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $contribution->transaction->id]}" title="{_T string="View transaction"}">
                                 <img src="{base_url}/{$template_subdir}images/icon-money.png"
                                     alt="{_T string="[view]"}"
                                     width="16"
@@ -155,7 +155,7 @@
         <p>
             {_T string="Unfortunately, there is no member in your database yet,"}
             <br/>
-            <a href="{path_for name="editmember" data=["action" => {_T string="add" catalog="routes"}]}">{_T string="please create a member"}</a>
+            <a href="{path_for name="editmember" data=["action" => {_T string="add" domain="routes"}]}">{_T string="please create a member"}</a>
         </p>
     </div>
 {/if}
