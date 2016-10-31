@@ -230,7 +230,10 @@ class Db extends atoum
     {
         $select = $this->db->select('preferences', 'p');
         $select->where(array('p.nom_pref' => 'pref_nom'));
+
         $results = $this->db->execute($select);
+        $this->integer($results->count())->isGreaterThanOrEqualTo(1);
+
         $query = $this->db->query_string;
 
         $expected = 'SELECT "p".* FROM "galette_preferences" AS "p" ' .
@@ -242,6 +245,87 @@ class Db extends atoum
         }
 
         $this->string($query)->isIdenticalTo($expected);
+    }
+
+    /**
+     * Test insert
+     *
+     * @return void
+     */
+    public function testInsert()
+    {
+        $insert = $this->db->insert('titles');
+        $data = [
+            'id_title'      => '150',
+            'short_label'   => 'Dr',
+            'long_label'    => 'Doctor'
+        ];
+        $insert->values($data);
+        $res = $this->db->execute($insert);
+
+        $select = $this->db->select('titles', 't');
+        $select->where(['t.id_title' => $data['id_title']]);
+
+        $results = $this->db->execute($select);
+        $this->integer($results->count())->isIdenticalTo(1);
+
+        $this->array((array)$results->current())->isIdenticalTo($data);
+    }
+
+    /**
+     * Test update
+     *
+     * @return void
+     */
+    public function testUpdate()
+    {
+        $update = $this->db->update('titles');
+        $data = [
+            'long_label'    => 'DoctorS'
+        ];
+        $where = ['id_title' => 150];
+
+        $select = $this->db->select('titles', 't');
+        $select->columns(['long_label']);
+        $select->where($where);
+        $results = $this->db->execute($select);
+
+        $long_label = $results->current()->long_label;
+        $this->string($long_label)->isIdenticalTo('Doctor');
+
+        $update->set($data);
+        $update->where($where);
+        $res = $this->db->execute($update);
+        $this->integer($res->count())->isIdenticalTo(1);
+
+        $results = $this->db->execute($select);
+        $this->integer($results->count())->isIdenticalTo(1);
+
+        $long_label = $results->current()->long_label;
+        $this->string($long_label)->isIdenticalTo('DoctorS');
+    }
+
+    /**
+     * Test delete
+     *
+     * @return void
+     */
+    public function testDelete()
+    {
+        $delete = $this->db->delete('titles');
+        $where = ['id_title' => 150];
+
+        $select = $this->db->select('titles', 't');
+        $select->where($where);
+        $results = $this->db->execute($select);
+        $this->integer($results->count())->isIdenticalTo(1);
+
+        $delete->where($where);
+        $res = $this->db->execute($delete);
+        $this->integer($res->count())->isIdenticalTo(1);
+
+        $results = $this->db->execute($select);
+        $this->integer($results->count())->isIdenticalTo(0);
     }
 
     /**
