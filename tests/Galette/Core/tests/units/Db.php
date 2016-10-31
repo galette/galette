@@ -232,7 +232,6 @@ class Db extends atoum
         $select->where(array('p.nom_pref' => 'pref_nom'));
 
         $results = $this->db->execute($select);
-        $this->integer($results->count())->isGreaterThanOrEqualTo(1);
 
         $query = $this->db->query_string;
 
