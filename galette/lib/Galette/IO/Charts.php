@@ -67,8 +67,8 @@ class Charts
     const COMPANIES_OR_NOT = 'CompaniesOrNot';
     const CONTRIBS_ALLTIME = 'ContribsAllTime';
 
-    private $_types;
-    private $_charts;
+    private $types;
+    private $charts;
 
     /**
      * Default constructor
@@ -77,16 +77,16 @@ class Charts
      */
     public function __construct($types = null)
     {
-        if ( $types !== null ) {
-            if ( !is_array($types) ) {
+        if ($types !== null) {
+            if (!is_array($types)) {
                 $types = array($types);
             }
-            $this->_types = $types;
+            $this->types = $types;
         } else {
-            $this->_types = array(self::DEFAULT_CHART);
+            $this->types = array(self::DEFAULT_CHART);
         }
 
-        $this->_load();
+        $this->load();
     }
 
     /**
@@ -94,10 +94,10 @@ class Charts
      *
      * @return void
      */
-    private function _load()
+    private function load()
     {
-        foreach ( $this->_types as $t ) {
-            $classname = "_getChart" . $t;
+        foreach ($this->types as $t) {
+            $classname = "getChart" . $t;
             $this->$classname();
         }
     }
@@ -109,7 +109,7 @@ class Charts
      */
     public function getCharts()
     {
-        return $this->_charts;
+        return $this->charts;
     }
 
     /**
@@ -117,7 +117,7 @@ class Charts
      *
      * @return void
      */
-    private function _getChartMembersStatusPie()
+    private function getChartMembersStatusPie()
     {
         global $zdb;
 
@@ -140,8 +140,8 @@ class Charts
 
         $chart = array();
         $staff = array(_T("Staff members"), 0);
-        foreach ( $results as $r ) {
-            if ( $r->priority >= Members::NON_STAFF_MEMBERS ) {
+        foreach ($results as $r) {
+            if ($r->priority >= Members::NON_STAFF_MEMBERS) {
                 $chart[] = array(
                     _T($r->status),
                     (int)$r->cnt
@@ -151,7 +151,7 @@ class Charts
             }
         }
         $chart[] = $staff;
-        $this->_charts[self::MEMBERS_STATUS_PIE] = json_encode($chart);
+        $this->charts[self::MEMBERS_STATUS_PIE] = json_encode($chart);
     }
 
     /**
@@ -159,7 +159,7 @@ class Charts
      *
      * @return void
      */
-    private function _getChartMembersStateDuePie()
+    private function getChartMembersStateDuePie()
     {
         global $zdb;
 
@@ -246,7 +246,7 @@ class Charts
             (int)$result->cnt
         );
 
-        $this->_charts[self::MEMBERS_STATEDUE_PIE] = json_encode($chart);
+        $this->charts[self::MEMBERS_STATEDUE_PIE] = json_encode($chart);
     }
 
     /**
@@ -254,7 +254,7 @@ class Charts
      *
      * @return void
      */
-    private function _getChartCompaniesOrNot()
+    private function getChartCompaniesOrNot()
     {
         global $zdb;
 
@@ -291,7 +291,7 @@ class Charts
 
         $individuals = $result->cnt;
         $companies = 0;
-        if ( $next ) {
+        if ($next) {
             $companies = $next->cnt;
         }
 
@@ -305,7 +305,7 @@ class Charts
                 (int)$companies
             )
         );
-        $this->_charts[self::COMPANIES_OR_NOT] = json_encode($chart);
+        $this->charts[self::COMPANIES_OR_NOT] = json_encode($chart);
     }
 
     /**
@@ -313,7 +313,7 @@ class Charts
      *
      * @return void
      */
-    private function _getChartContribsTypesPie()
+    private function getChartContribsTypesPie()
     {
         global $zdb;
 
@@ -335,13 +335,13 @@ class Charts
         $results = $zdb->execute($select);
 
         $chart = array();
-        foreach ( $results as $r ) {
+        foreach ($results as $r) {
             $chart[] = array(
                 _T($r->label),
                 (int)$r->cnt
             );
         }
-        $this->_charts[self::CONTRIBS_TYPES_PIE] = json_encode($chart);
+        $this->charts[self::CONTRIBS_TYPES_PIE] = json_encode($chart);
     }
 
     /**
@@ -349,7 +349,7 @@ class Charts
      *
      * @return void
      */
-    private function _getChartContribsAllTime()
+    private function getChartContribsAllTime()
     {
         global $zdb;
 
@@ -361,10 +361,10 @@ class Charts
         );
         $groupby = null;
 
-        if ( TYPE_DB === 'pgsql' ) {
+        if (TYPE_DB === 'pgsql') {
             $cols['date'] = new Expression('date_trunc(\'month\', date_enreg)');
             $groupby = new Expression('date_trunc(\'month\', date_enreg)');
-        } else if ( TYPE_DB === 'mysql' ) {
+        } elseif (TYPE_DB === 'mysql') {
             $cols['date'] = new Expression('date_format(date_enreg, \'%Y-%m\')');
             $groupby = new Expression('EXTRACT(YEAR_MONTH FROM date_enreg)');
         }
@@ -374,13 +374,13 @@ class Charts
         $results = $zdb->execute($select);
 
         $chart = array();
-        foreach ( $results as $r ) {
+        foreach ($results as $r) {
             $d = new \DateTime($r->date);
             $chart[] = array(
                 $d->format('Y-m'),
                 (float)$r->amount
             );
         }
-        $this->_charts[self::CONTRIBS_ALLTIME] = json_encode($chart);
+        $this->charts[self::CONTRIBS_ALLTIME] = json_encode($chart);
     }
 }

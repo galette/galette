@@ -58,15 +58,14 @@ class MailingHistory extends History
     const TABLE = 'mailing_history';
     const PK = 'mailing_id';
 
-    private $_mailing = null;
-    private $_id;
-    private $_date;
-    private $_subject;
-    private $_message;
-    private $_recipients;
-    private $_sender;
-    private $_sent = false;
-    private $_no_longer_members;
+    private $mailing = null;
+    private $id;
+    private $date;
+    private $subject;
+    private $message;
+    private $recipients;
+    private $sender;
+    private $sent = false;
 
     /**
      * Default constructor
@@ -77,9 +76,9 @@ class MailingHistory extends History
     {
         parent::__construct();
 
-        if ( $mailing instanceof Mailing ) {
-            $this->_mailing = $mailing;
-        } else if ( $mailing !== null ) {
+        if ($mailing instanceof Mailing) {
+            $this->mailing = $mailing;
+        } elseif ($mailing !== null) {
             Analog::log(
                 '[' . __METHOD__ .
                 '] Mailing should be either null or an instance of Mailing',
@@ -131,17 +130,17 @@ class MailingHistory extends History
             $this->setLimits($select);
             $results = $zdb->execute($select);
             $ret = array();
-            foreach ( $results as $r ) {
-                if ( $r['mailing_sender'] !== null ) {
-                    $r['mailing_sender_name'] 
+            foreach ($results as $r) {
+                if ($r['mailing_sender'] !== null) {
+                    $r['mailing_sender_name']
                         = Adherent::getSName($zdb, $r['mailing_sender']);
                 }
                 $body_resume = $r['mailing_body'];
-                if ( strlen($body_resume) > 150 ) {
+                if (strlen($body_resume) > 150) {
                     $body_resume = substr($body_resume, 0, 150);
                     $body_resume .= '[...]';
                 }
-                if (function_exists('tidy_parse_string') ) {
+                if (function_exists('tidy_parse_string')) {
                     //if tidy extension is present, we use it to clean a bit
                     $tidy_config = array(
                         'clean'             => true,
@@ -157,7 +156,7 @@ class MailingHistory extends History
                 }
 
                 $attachments = 0;
-                if ( file_exists(GALETTE_ATTACHMENTS_PATH . $r[self::PK]) ) {
+                if (file_exists(GALETTE_ATTACHMENTS_PATH . $r[self::PK])) {
                     $rdi = new \RecursiveDirectoryIterator(
                         GALETTE_ATTACHMENTS_PATH . $r[self::PK],
                         \FilesystemIterator::SKIP_DOTS
@@ -166,8 +165,8 @@ class MailingHistory extends History
                         $rdi,
                         \RecursiveIteratorIterator::CHILD_FIRST
                     );
-                    foreach ( $contents as $path) {
-                        if ( $path->isFile() ) {
+                    foreach ($contents as $path) {
+                        if ($path->isFile()) {
                             $attachments++;
                         }
                     }
@@ -228,21 +227,21 @@ class MailingHistory extends History
     {
         global $login;
 
-        if ( $this->_mailing instanceof Mailing ) {
-            $this->_sender = $login->id;
-            $this->_subject = $this->_mailing->subject;
-            $this->_message = $this->_mailing->message;
-            $this->_recipients = $this->_mailing->recipients;
-            $this->_sent = $sent;
-            $this->_date = date('Y-m-d H:i:s');
-            if ( !$this->_mailing->existsInHistory() ) {
+        if ($this->mailing instanceof Mailing) {
+            $this->sender = $login->id;
+            $this->subject = $this->mailing->subject;
+            $this->message = $this->mailing->message;
+            $this->recipients = $this->mailing->recipients;
+            $this->sent = $sent;
+            $this->date = date('Y-m-d H:i:s');
+            if (!$this->mailing->existsInHistory()) {
                 $this->store();
-                $this->_mailing->id = $this->_id;
-                $this->_mailing->moveAttachments($this->_id);
+                $this->mailing->id = $this->id;
+                $this->mailing->moveAttachments($this->id);
             } else {
-                if ( $this->_mailing->tmp_path !== false ) {
+                if ($this->mailing->tmp_path !== false) {
                     //attachments are still in a temporary path, move them
-                    $this->_mailing->moveAttachments($this->_id);
+                    $this->mailing->moveAttachments($this->id);
                 }
                 //existing stored mailing. Just update row.
                 $this->update();
@@ -268,28 +267,28 @@ class MailingHistory extends History
 
         try {
             $_recipients = array();
-            if ( $this->_recipients != null ) {
-                foreach ( $this->_recipients as $_r ) {
+            if ($this->recipients != null) {
+                foreach ($this->recipients as $_r) {
                     $_recipients[$_r->id] = $_r->sname . ' <' . $_r->email . '>';
                 }
             }
 
-            $sender = ($this->_sender === 0) ?
+            $sender = ($this->sender === 0) ?
                 new Expression('NULL') :
-                $this->_sender;
+                $this->sender;
 
             $values = array(
                 'mailing_sender' => $sender,
-                'mailing_subject' => $this->_subject,
-                'mailing_body' => $this->_message,
-                'mailing_date' => $this->_date,
+                'mailing_subject' => $this->subject,
+                'mailing_body' => $this->message,
+                'mailing_date' => $this->date,
                 'mailing_recipients' => serialize($_recipients),
-                'mailing_sent' => ($this->_sent) ? true : 'false'
+                'mailing_sent' => ($this->sent) ? true : 'false'
             );
 
             $update = $zdb->update(self::TABLE);
             $update->set($values);
-            $update->where(self::PK . ' = ' . $this->_mailing->history_id);
+            $update->where(self::PK . ' = ' . $this->mailing->history_id);
             $zdb->execute($update);
             return true;
         } catch (\Exception $e) {
@@ -312,38 +311,38 @@ class MailingHistory extends History
 
         try {
             $_recipients = array();
-            if ( $this->_recipients != null ) {
-                foreach ( $this->_recipients as $_r ) {
+            if ($this->recipients != null) {
+                foreach ($this->recipients as $_r) {
                     $_recipients[$_r->id] = $_r->sname . ' <' . $_r->email . '>';
                 }
             }
 
             $sender = null;
-            if ( $this->_sender === 0 ) {
+            if ($this->sender === 0) {
                 $sender = new Expression('NULL');
             } else {
-                $sender = $this->_sender;
+                $sender = $this->sender;
             }
 
             $values = array(
                 'mailing_sender' => $sender,
-                'mailing_subject' => $this->_subject,
-                'mailing_body' => $this->_message,
-                'mailing_date' => $this->_date,
+                'mailing_subject' => $this->subject,
+                'mailing_body' => $this->message,
+                'mailing_date' => $this->date,
                 'mailing_recipients' => serialize($_recipients),
-                'mailing_sent' => ($this->_sent) ? true : 'false'
+                'mailing_sent' => ($this->sent) ? true : 'false'
             );
 
             $insert = $zdb->insert(self::TABLE);
             $insert->values($values);
             $zdb->execute($insert);
 
-            if ( $zdb->isPostgres() ) {
-                $this->_id = $zdb->driver->getLastGeneratedValue(
+            if ($zdb->isPostgres()) {
+                $this->id = $zdb->driver->getLastGeneratedValue(
                     PREFIX_DB . 'mailing_history_id_seq'
                 );
             } else {
-                $this->_id = $zdb->driver->getLastGeneratedValue();
+                $this->id = $zdb->driver->getLastGeneratedValue();
             }
             return true;
         } catch (\Exception $e) {
@@ -367,16 +366,16 @@ class MailingHistory extends History
         global $zdb, $hist;
 
         $list = array();
-        if ( is_numeric($ids) ) {
+        if (is_numeric($ids)) {
             //we've got only one identifier
             $list[] = $ids;
         } else {
             $list = $ids;
         }
 
-        if ( is_array($list) ) {
+        if (is_array($list)) {
             try {
-                foreach ( $list as $id ) {
+                foreach ($list as $id) {
                     $mailing = new Mailing(null, $id);
                     $mailing->removeAttachments();
                 }
@@ -426,7 +425,7 @@ class MailingHistory extends History
      */
     protected function getTableName($prefixed = false)
     {
-        if ( $prefixed === true ) {
+        if ($prefixed === true) {
             return PREFIX_DB . self::TABLE;
         } else {
             return self::TABLE;
@@ -452,5 +451,4 @@ class MailingHistory extends History
     {
         return 'mailing_date';
     }
-
 }

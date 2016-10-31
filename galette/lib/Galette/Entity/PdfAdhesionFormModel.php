@@ -65,5 +65,4 @@ class PdfAdhesionFormModel extends PdfModel
     {
         parent::__construct($zdb, $preferences, self::ADHESION_FORM_MODEL, $args);
     }
-
 }

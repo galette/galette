@@ -66,10 +66,10 @@ class Password
     const PK = Adherent::PK;
 
     /** Default password size */
-    private $_size = 8;
-    private $_chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
-    private $_hash = null;
-    private $_new_password;
+    private $size = 8;
+    private $chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
+    private $hash = null;
+    private $new_password;
 
     /**
      * Default constructor
@@ -78,7 +78,7 @@ class Password
      */
     public function __construct($clean = true)
     {
-        if ( $clean === true ) {
+        if ($clean === true) {
             $this->cleanExpired();
         }
     }
@@ -92,17 +92,17 @@ class Password
      */
     public function makeRandomPassword($size = null)
     {
-        if ( $size === null 
+        if ($size === null
             || trim($size) == ''
             || !is_int($size)
         ) {
-            $size = $this->_size;
+            $size = $this->size;
         }
         $pass = '';
         $i = 0;
-        while ( $i <= $size-1 ) {
+        while ($i <= $size-1) {
             $num = mt_rand(0, 32) % 33;
-            $pass .= substr($this->_chars, $num, 1);
+            $pass .= substr($this->chars, $num, 1);
             $i++;
         }
         return $pass;
@@ -115,7 +115,7 @@ class Password
      *
      * @return boolean
      */
-    private function _removeOldEntries($id_adh)
+    private function removeOldEntries($id_adh)
     {
         global $zdb;
 
@@ -124,7 +124,7 @@ class Password
             $delete->where(self::PK . ' = ' . $id_adh);
 
             $del = $zdb->execute($delete);
-            if ( $del ) {
+            if ($del) {
                 Analog::log(
                     'Temporary passwords for `' . $id_adh . '` has been removed.',
                     Analog::DEBUG
@@ -152,7 +152,7 @@ class Password
         global $zdb;
 
         //first of all, we'll remove all existant entries for specified id
-        $this->_removeOldEntries($id_adh);
+        $this->removeOldEntries($id_adh);
 
         //second, generate a new password and store it in the database
         $password = $this->makeRandomPassword();
@@ -169,13 +169,13 @@ class Password
             $insert->values($values);
 
             $add = $zdb->execute($insert);
-            if ( $add ) {
+            if ($add) {
                 Analog::log(
                     'New passwords temporary set for `' . $id_adh . '`.',
                     Analog::DEBUG
                 );
-                $this->_new_password = $password;
-                $this->_hash = $hash;
+                $this->new_password = $password;
+                $this->hash = $hash;
                 return true;
             } else {
                 return false;
@@ -216,7 +216,7 @@ class Password
                 $date->format('Y-m-d H:i:s')
             );
             $del = $zdb->execute($delete);
-            if ( $del ) {
+            if ($del) {
                 Analog::log(
                     'Old Temporary passwords has been deleted.',
                     Analog::DEBUG
@@ -281,7 +281,7 @@ class Password
             );
 
             $del = $zdb->execute($delete);
-            if ( $del ) {
+            if ($del) {
                 Analog::log(
                     'Used hash has been successfully remove',
                     Analog::DEBUG
@@ -305,7 +305,7 @@ class Password
      */
     public function getNewPassword()
     {
-        return $this->_new_password;
+        return $this->new_password;
     }
 
     /**
@@ -315,7 +315,7 @@ class Password
      */
     public function getHash()
     {
-        return $this->_hash;
+        return $this->hash;
     }
 
     /**
@@ -327,7 +327,7 @@ class Password
      */
     protected function setPassword($password)
     {
-        $this->_new_password = $password;
+        $this->new_password = $password;
     }
 
     /**
@@ -339,6 +339,6 @@ class Password
      */
     protected function setHash($hash)
     {
-        $this->_hash = $hash;
+        $this->hash = $hash;
     }
 }

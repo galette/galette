@@ -65,7 +65,7 @@ class Contributions
     const TABLE = Contribution::TABLE;
     const PK = Contribution::PK;
 
-    private $_count = null;
+    private $count = null;
 
     private $sum;
 
@@ -116,7 +116,7 @@ class Contributions
     public function getList($as_contrib = false, $fields = null, $count = true)
     {
         try {
-            $select = $this->_buildSelect($fields, $count);
+            $select = $this->buildSelect($fields, $count);
 
             $this->filters->setLimit($select);
 
@@ -148,7 +148,7 @@ class Contributions
      *
      * @return string SELECT statement
      */
-    private function _buildSelect($fields, $count = false)
+    private function buildSelect($fields, $count = false)
     {
         try {
             $fieldsList = ( $fields != null )
@@ -163,13 +163,13 @@ class Contributions
                 'a.' . Adherent::PK . '= p.' . Adherent::PK
             );
 
-            $this->_buildWhereClause($select);
-            $select->order(self::_buildOrderClause());
+            $this->buildWhereClause($select);
+            $select->order(self::buildOrderClause());
 
-            $this->_calculateSum($select);
+            $this->calculateSum($select);
 
             if ($count) {
-                $this->_proceedCount($select);
+                $this->proceedCount($select);
             }
 
             return $select;
@@ -189,7 +189,7 @@ class Contributions
      *
      * @return void
      */
-    private function _proceedCount($select)
+    private function proceedCount($select)
     {
         try {
             $countSelect = clone $select;
@@ -206,9 +206,9 @@ class Contributions
             $result = $results->current();
 
             $k = self::PK;
-            $this->_count = $result->$k;
-            if ($this->_count > 0) {
-                $this->counter = (int)$this->_count;
+            $this->count = $result->$k;
+            if ($this->count > 0) {
+                $this->counter = (int)$this->count;
             }
         } catch (\Exception $e) {
             Analog::log(
@@ -226,7 +226,7 @@ class Contributions
      *
      * @return void
      */
-    private function _calculateSum($select)
+    private function calculateSum($select)
     {
         try {
             $sumSelect = clone $select;
@@ -257,7 +257,7 @@ class Contributions
      *
      * @return string SQL ORDER clause
      */
-    private function _buildOrderClause()
+    private function buildOrderClause()
     {
         $order = array();
 
@@ -304,7 +304,7 @@ class Contributions
      *
      * @return string SQL WHERE clause
      */
-    private function _buildWhereClause($select)
+    private function buildWhereClause($select)
     {
         $field = 'date_debut_cotis';
 
@@ -389,7 +389,7 @@ class Contributions
      */
     public function getCount()
     {
-        return $this->_count;
+        return $this->count;
     }
 
     /**
@@ -467,6 +467,5 @@ class Contributions
             );
             return false;
         }
-
     }
 }

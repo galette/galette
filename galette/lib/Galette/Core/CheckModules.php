@@ -51,10 +51,10 @@ namespace Galette\Core;
  */
 class CheckModules
 {
-    private $_good = array();
-    private $_may = array();
-    private $_should = array();
-    private $_missing = array();
+    private $good = array();
+    private $may = array();
+    private $should = array();
+    private $missing = array();
 
     /**
      * Check various modules and dispatch them beetween:
@@ -66,10 +66,10 @@ class CheckModules
     public function __construct()
     {
         //simplexml module is mandatory
-        if ( !extension_loaded('SimpleXML') ) {
-            $this->_missing[] = str_replace('%s', 'SimpleXML', _T("'%s' module"));
+        if (!extension_loaded('SimpleXML')) {
+            $this->missing[] = str_replace('%s', 'SimpleXML', _T("'%s' module"));
         } else {
-            /*$this->_good['SimpleXML'] = str_replace(
+            /*$this->good['SimpleXML'] = str_replace(
                 '%s',
                  'SimpleXML',
                 _T("'%s' module")
@@ -78,56 +78,56 @@ class CheckModules
 
         //gd module is required
         if (!extension_loaded('gd')) {
-            $this->_missing[] = str_replace('%s', 'gd', _T("'%s' module"));
+            $this->missing[] = str_replace('%s', 'gd', _T("'%s' module"));
         } else {
-            $this->_good['gd'] = str_replace('%s', 'gd', _T("'%s' module"));
+            $this->good['gd'] = str_replace('%s', 'gd', _T("'%s' module"));
         }
 
         //mcrypt module is required
         if (!extension_loaded('mcrypt')) {
-            $this->_missing[] = str_replace('%s', 'mcrypt', _T("'%s' module"));
+            $this->missing[] = str_replace('%s', 'mcrypt', _T("'%s' module"));
         } else {
-            $this->_good['mcrypt'] = str_replace('%s', 'mcrypt', _T("'%s' module"));
+            $this->good['mcrypt'] = str_replace('%s', 'mcrypt', _T("'%s' module"));
         }
 
         //one of mysql or pgsql driver must be present
-        if ( !extension_loaded('pdo_mysql')
+        if (!extension_loaded('pdo_mysql')
             && !extension_loaded('pdo_pgsql')
         ) {
-            $this->_missing[] = _T("either 'mysql' or 'pgsql' PDO driver");
+            $this->missing[] = _T("either 'mysql' or 'pgsql' PDO driver");
         } else {
-            $this->_good['pdo_driver'] = _T("either 'mysql' or 'pgsql' PDO driver");
+            $this->good['pdo_driver'] = _T("either 'mysql' or 'pgsql' PDO driver");
         }
 
         //curl module is optionnal
-        if ( !extension_loaded('curl') ) {
-            $this->_should[] = str_replace('%s', 'curl', _T("'%s' module"));
+        if (!extension_loaded('curl')) {
+            $this->should[] = str_replace('%s', 'curl', _T("'%s' module"));
         } else {
-            $this->_good['curl'] = str_replace('%s', 'curl', _T("'%s' module"));
+            $this->good['curl'] = str_replace('%s', 'curl', _T("'%s' module"));
         }
 
         //tidy module is optionnal
-        if ( !extension_loaded('tidy') ) {
-            $this->_may[] = str_replace('%s', 'tidy', _T("'%s' module"));
+        if (!extension_loaded('tidy')) {
+            $this->may[] = str_replace('%s', 'tidy', _T("'%s' module"));
         } else {
-            $this->_good['tidy'] = str_replace('%s', 'tidy', _T("'%s' module"));
+            $this->good['tidy'] = str_replace('%s', 'tidy', _T("'%s' module"));
         }
 
         //gettext module is optionnal
-        if ( !extension_loaded('gettext') ) {
-            $this->_may[] = str_replace('%s', 'gettext', _T("'%s' module"));
+        if (!extension_loaded('gettext')) {
+            $this->may[] = str_replace('%s', 'gettext', _T("'%s' module"));
         } else {
-            $this->_good['gettext'] = str_replace(
+            $this->good['gettext'] = str_replace(
                 '%s',
                 'gettext',
                 _T("'%s' module")
             );
         }
 
-        if ( !extension_loaded('mbstring') ) {
-            $this->_missing[] = str_replace('%s', 'mbstring', _T("'%s' module"));
+        if (!extension_loaded('mbstring')) {
+            $this->missing[] = str_replace('%s', 'mbstring', _T("'%s' module"));
         } else {
-            $this->_good['mbstring'] = str_replace(
+            $this->good['mbstring'] = str_replace(
                 '%s',
                 'mbstring',
                 _T("'%s' module")
@@ -135,22 +135,21 @@ class CheckModules
         }
 
         //ssl support is optionnal
-        if ( !extension_loaded('openssl') ) {
-            $this->_should[] = _T("'openssl' support");
+        if (!extension_loaded('openssl')) {
+            $this->should[] = _T("'openssl' support");
         } else {
-            $this->_good['ssl'] = _T("'openssl' support");
+            $this->good['ssl'] = _T("'openssl' support");
         }
 
-        if ( !extension_loaded('fileinfo') ) {
-            $this->_missing[] = str_replace('%s', 'fileinfo', _T("'%s' module"));
+        if (!extension_loaded('fileinfo')) {
+            $this->missing[] = str_replace('%s', 'fileinfo', _T("'%s' module"));
         } else {
-            $this->_good['fileinfo'] = str_replace(
+            $this->good['fileinfo'] = str_replace(
                 '%s',
                 'fileinfo',
                 _T("'%s' module")
             );
         }
-
     }
 
     /**
@@ -162,30 +161,30 @@ class CheckModules
     {
         $html = null;
         $img_dir = null;
-        if ( defined('GALETTE_THEME_DIR') ) {
+        if (defined('GALETTE_THEME_DIR')) {
             $img_dir = GALETTE_THEME_DIR . 'images/';
         } else {
             $img_dir = GALETTE_TPL_SUBDIR . 'images/';
         }
 
-        if ( count($this->_missing) > 0 ) {
-            foreach ( $this->_missing as $m ) {
+        if (count($this->missing) > 0) {
+            foreach ($this->missing as $m) {
                 $html .= '<li><span>' . $m  . '</span><span><img src="' .
                     $img_dir  . 'icon-invalid.png" alt="' .
                     _T("Ko") . '"/></span></li>';
             }
         }
 
-        if ( count($this->_good) > 0 ) {
-            foreach ( $this->_good as $m ) {
+        if (count($this->good) > 0) {
+            foreach ($this->good as $m) {
                 $html .= '<li><span>' . $m  . '</span><span><img src="' .
                     $img_dir  . 'icon-valid.png" alt="' .
                     _T("Ok") . '"/></span></li>';
             }
         }
 
-        if ( count($this->_should) > 0 ) {
-            foreach ( $this->_should as $m ) {
+        if (count($this->should) > 0) {
+            foreach ($this->should as $m) {
                 $html .= '<li><span>' . $m  . '</span><span><img src="' .
                     $img_dir  . 'icon-warning.png" alt=""' .
                     '/></span></li>';
@@ -202,7 +201,7 @@ class CheckModules
      */
     public function isValid()
     {
-        return count($this->_missing) === 0;
+        return count($this->missing) === 0;
     }
 
     /**
@@ -214,7 +213,7 @@ class CheckModules
      */
     public function isGood($module)
     {
-        return isset($this->_good[$module]);
+        return isset($this->good[$module]);
     }
 
     /**
@@ -224,7 +223,7 @@ class CheckModules
      */
     public function getGoods()
     {
-        return $this->_good;
+        return $this->good;
     }
 
     /**
@@ -234,7 +233,7 @@ class CheckModules
      */
     public function getMays()
     {
-        return $this->_may;
+        return $this->may;
     }
 
     /**
@@ -244,7 +243,7 @@ class CheckModules
      */
     public function getShoulds()
     {
-        return $this->_should;
+        return $this->should;
     }
 
     /**
@@ -254,7 +253,6 @@ class CheckModules
      */
     public function getMissings()
     {
-        return $this->_missing;
+        return $this->missing;
     }
-
 }

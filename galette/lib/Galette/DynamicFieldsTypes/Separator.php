@@ -73,5 +73,4 @@ class Separator extends DynamicFieldType
     {
         return _T("separator");
     }
-
 }

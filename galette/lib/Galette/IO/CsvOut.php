@@ -57,9 +57,9 @@ class CsvOut extends Csv
 {
     const DEFAULT_DIRECTORY = GALETTE_EXPORTS_PATH;
 
-    private $_rs;
-    private $_parameted_path;
-    private $_parameted_file = 'exports.xml';
+    private $rs;
+    private $parameted_path;
+    private $parameted_file = 'exports.xml';
 
     /**
      * Default constructor
@@ -67,8 +67,8 @@ class CsvOut extends Csv
     public function __construct()
     {
         parent::__construct(self::DEFAULT_DIRECTORY);
-        $this->_parameted_path = GALETTE_CONFIG_PATH;
-        $this->_parameted_file = $this->_parameted_path . $this->_parameted_file;
+        $this->parameted_path = GALETTE_CONFIG_PATH;
+        $this->parameted_file = $this->parameted_path . $this->parameted_file;
     }
 
     /**
@@ -85,23 +85,23 @@ class CsvOut extends Csv
      *
      * @return string CSV result
      */
-    function export($rs, $separator, $quote, $titles=false, $file=false)
+    public function export($rs, $separator, $quote, $titles = false, $file = false)
     {
         if (!$rs) {
             return '';
         }
         //switch back to the default separator if not in accepted_separators array
-        if ( !in_array($separator, $this->accepted_separators) ) {
+        if (!in_array($separator, $this->accepted_separators)) {
             $separator = self::DEFAULT_SEPARATOR;
         }
         //switch back to the default quote if not in accepted_quotes array
-        if ( !in_array($quote, $this->accepted_quotes) ) {
+        if (!in_array($quote, $this->accepted_quotes)) {
             $quote = self::DEFAULT_QUOTE;
         }
 
         $this->result = '';
-        $this->_rs = $rs;
-        $this->max = count($this->_rs);
+        $this->rs = $rs;
+        $this->max = count($this->rs);
         $this->separator = $separator;
         $this->quote = $quote;
         //dubbing quote for escaping
@@ -110,34 +110,40 @@ class CsvOut extends Csv
         $this->current_line = 0;
 
         $fields = array();
-        if ( $titles && !count($titles>1) ) {
-            foreach ( array_key($this->_rs) as $field ) {
+        if ($titles && !count($titles>1)) {
+            foreach (array_key($this->rs) as $field) {
                 $fields[] = $this->quote . str_replace(
-                    $this->quote, $this->escaped, $field
+                    $this->quote,
+                    $this->escaped,
+                    $field
                 ) . $this->quote;
             }
             $this->result .= implode($this->separator, $fields) . self::NEWLINE;
-        } else if ( $titles && is_array($titles) && count($titles)>1 ) {
-            foreach ( $titles as $field ) {
+        } elseif ($titles && is_array($titles) && count($titles)>1) {
+            foreach ($titles as $field) {
                 $field = str_replace(
                     array(':', '&nbsp;'),
                     '',
                     $field
                 );
                 $fields[] = $this->quote . str_replace(
-                    $this->quote, $this->escaped, $field
+                    $this->quote,
+                    $this->escaped,
+                    $field
                 ) . $this->quote;
             }
             $this->result .= implode($this->separator, $fields) . self::NEWLINE;
         }
 
-        foreach ( $this->_rs as $row ) {
+        foreach ($this->rs as $row) {
             $elts = array();
 
-            if ( is_array($row) || is_object($row) ) {
+            if (is_array($row) || is_object($row)) {
                 foreach ($row as $k => $v) {
                     $elts[] = $this->quote . str_replace(
-                        $this->quote, $this->escaped, $v
+                        $this->quote,
+                        $this->escaped,
+                        $v
                     ) . $this->quote;
                 }
 
@@ -145,10 +151,10 @@ class CsvOut extends Csv
 
                 $this->current_line += 1;
 
-                $this->_write();
+                $this->write();
             }
         }
-        $this->_write(true);
+        $this->write(true);
         return $this->result;
     }
 
@@ -161,9 +167,9 @@ class CsvOut extends Csv
      *
      * @return void
      */
-    private function _write($last=false)
+    private function write($last = false)
     {
-        if (   $last && $this->file
+        if ($last && $this->file
             || !$last && $this->file
             && ($this->current_line % self::BUFLINES) == 0
         ) {
@@ -185,7 +191,7 @@ class CsvOut extends Csv
      */
     public function getParamedtedExportName($id)
     {
-        $xml = simplexml_load_file($this->_parameted_file);
+        $xml = simplexml_load_file($this->parameted_file);
         $xpath = $xml->xpath(
             '/exports/export[@id=\'' . $id . '\'][1]/@name'
         );
@@ -201,10 +207,10 @@ class CsvOut extends Csv
     {
         $parameted = array();
 
-        $xml = simplexml_load_file($this->_parameted_file);
+        $xml = simplexml_load_file($this->parameted_file);
 
-        foreach ( $xml->export as $export) {
-            if ( !($export['inactive'] == 'inactive') ) {
+        foreach ($xml->export as $export) {
+            if (!($export['inactive'] == 'inactive')) {
                 $parameted[] = array(
                     'id'          => (string)$export['id'],
                     'name'        => (string)$export['name'],
@@ -226,7 +232,7 @@ class CsvOut extends Csv
     {
         global $zdb;
 
-        $xml = simplexml_load_file($this->_parameted_file);
+        $xml = simplexml_load_file($this->parameted_file);
 
         $xpath = $xml->xpath(
             '/exports/export[@id=\'' . $id . '\'][not(@inactive)][1]'
@@ -242,22 +248,22 @@ class CsvOut extends Csv
             $filename=self::DEFAULT_DIRECTORY . $export['filename'];
 
             $fp = fopen($filename, 'w');
-            if ( $fp ) {
+            if ($fp) {
                 $separator = ( $export->separator )
                     ? $export->separator
                     : self::DEFAULT_SEPARATOR;
                 $quote = ( $export->quote ) ? $export->quote : self::DEFAULT_QUOTE;
-                if ( $export->headers->none ) {
+                if ($export->headers->none) {
                     //No title
                     $title = false;
                 } else {
                     $xpath = $export->xpath('headers/header');
-                    if ( count($xpath) == 0 ) {
+                    if (count($xpath) == 0) {
                         //show titles
                         $title = true;
                     } else {
                         //titles from array
-                        foreach ( $xpath as $header ) {
+                        foreach ($xpath as $header) {
                             $title[] = (string)$header;
                         }
                     }
@@ -280,6 +286,5 @@ class CsvOut extends Csv
             );
             return self::DB_ERROR;
         }
-
     }
 }

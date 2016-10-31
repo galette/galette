@@ -54,21 +54,19 @@ use Analog\Analog;
 
 class I18n
 {
-    private $_id;
-    private $_longid;
-    private $_name;
-    private $_abbrev;
-    private $_flag;
-    private $_filename;
-    private $_alternate;
-
-    private $_langs;
+    private $id;
+    private $longid;
+    private $name;
+    private $abbrev;
+    private $flag;
+    private $filename;
+    private $alternate;
 
     const DEFAULT_LANG = 'fr_FR';
 
-    private $_dir = 'lang/';
-    private $_path;
-    private $_file = 'languages.xml';
+    private $dir = 'lang/';
+    private $path;
+    private $file = 'languages.xml';
 
     /**
      * Default constructor.
@@ -78,19 +76,19 @@ class I18n
      *
      * @return void
      */
-    function __construct($lang = false)
+    public function __construct($lang = false)
     {
-        $this->_path = GALETTE_ROOT . $this->_dir;
-        $this->_file = $this->_path . $this->_file;
+        $this->path = GALETTE_ROOT . $this->dir;
+        $this->file = $this->path . $this->file;
 
-        if ( !$lang ) {
+        if (!$lang) {
             //try to determine user language
             $dlang = self::DEFAULT_LANG;
-            if ( isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ) {
+            if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
                 $blang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-                if ( substr($blang, 0, 2) == 'fr' ) {
+                if (substr($blang, 0, 2) == 'fr') {
                     $dlang = 'fr_FR';
-                } else if ( substr($blang, 0, 2) == 'en' ) {
+                } elseif (substr($blang, 0, 2) == 'en') {
                     $dlang = 'en_US';
                 } else {
                     $dlang = self::DEFAULT_LANG;
@@ -98,7 +96,7 @@ class I18n
             }
             $this->changeLanguage($dlang);
         } else {
-            $this->_load($lang);
+            $this->load($lang);
         }
     }
 
@@ -113,12 +111,12 @@ class I18n
     {
         Analog::log('Trying to set locale to ' . $id, Analog::DEBUG);
 
-        $xml = simplexml_load_file($this->_file);
+        $xml = simplexml_load_file($this->file);
         $xpath = '/translations/lang[@id=\'' . $id . '\'][not(@inactive)]';
         $current = $xml->xpath($xpath);
 
         //if no match, switch to default
-        if ( !isset($current[0]) ) {
+        if (!isset($current[0])) {
             $msg = $id . ' does not exist in XML file, switching to default.';
             Analog::log($msg, Analog::WARNING);
             $id = self::DEFAULT_LANG;
@@ -127,13 +125,13 @@ class I18n
         }
 
         $sxe = $current[0];
-        $this->_id = $id;
-        $this->_longid = ( isset($sxe['long']) )?(string)$sxe['long']:$id;
-        $this->_name = (string)$sxe->longname;
-        $this->_abbrev = (string)$sxe->shortname;
-        $this->_flag = (string)$sxe->flag;
-        $this->_filename = (string)$sxe->filename;
-        $this->_alternate = (string)$sxe['alter'];
+        $this->id = $id;
+        $this->longid = ( isset($sxe['long']) )?(string)$sxe['long']:$id;
+        $this->name = (string)$sxe->longname;
+        $this->abbrev = (string)$sxe->shortname;
+        $this->flag = (string)$sxe->flag;
+        $this->filename = (string)$sxe->filename;
+        $this->alternate = (string)$sxe['alter'];
     }
 
     /**
@@ -143,18 +141,18 @@ class I18n
      *
      * @return void
      */
-    private function _load($id)
+    private function load($id)
     {
-        $xml = simplexml_load_file($this->_file);
+        $xml = simplexml_load_file($this->file);
         $current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
         $sxe = $current[0];
-        $this->_id = $id;
-        $this->_longid = ( isset($sxe['long']) )?(string)$sxe['long']:$id;
-        $this->_name = (string)$sxe->longname;
-        $this->_abbrev = (string)$sxe->shortname;
-        $this->_flag = (string)$sxe->flag;
-        $this->_filename = (string)$sxe->filename;
-        $this->_alternate = (string)$sxe['alter'];
+        $this->id = $id;
+        $this->longid = ( isset($sxe['long']) )?(string)$sxe['long']:$id;
+        $this->name = (string)$sxe->longname;
+        $this->abbrev = (string)$sxe->shortname;
+        $this->flag = (string)$sxe->flag;
+        $this->filename = (string)$sxe->filename;
+        $this->alternate = (string)$sxe['alter'];
     }
 
     /**
@@ -165,9 +163,9 @@ class I18n
     public function getList()
     {
         $result = array();
-        $xml = simplexml_load_file($this->_file);
-        foreach ( $xml->lang as $lang ) {
-            if ( !$lang['inactive'] ) {
+        $xml = simplexml_load_file($this->file);
+        foreach ($xml->lang as $lang) {
+            if (!$lang['inactive']) {
                 $result[] = new I18n((string)$lang['id']);
             }
         }
@@ -184,7 +182,7 @@ class I18n
     {
         $list = $this->getList();
         $al = array();
-        foreach ( $list as $l ) {
+        foreach ($list as $l) {
             $al[$l->getID()] = ucfirst($l->getName());
         }
         return $al;
@@ -199,7 +197,7 @@ class I18n
      */
     public function getNameFromId($id)
     {
-        $xml = simplexml_load_file($this->_file);
+        $xml = simplexml_load_file($this->file);
         $current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
         $sxe = $current[0];
         return (string)$sxe->longname;
@@ -214,12 +212,12 @@ class I18n
      */
     public function getFlagFromId($id)
     {
-        $xml = simplexml_load_file($this->_file);
+        $xml = simplexml_load_file($this->file);
         $current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
         $sxe = $current[0];
 
         $path = null;
-        if ( defined('GALETTE_THEME_DIR') ) {
+        if (defined('GALETTE_THEME_DIR')) {
             $path = GALETTE_THEME_DIR . 'images/' . $sxe->flag;
         } else {
             $path = GALETTE_THEME . 'images/' . $sxe->flag;
@@ -235,7 +233,7 @@ class I18n
      */
     public function getID()
     {
-        return $this->_id;
+        return $this->id;
     }
 
     /**
@@ -245,7 +243,7 @@ class I18n
      */
     public function getLongID()
     {
-        return $this->_longid;
+        return $this->longid;
     }
 
     /**
@@ -255,7 +253,7 @@ class I18n
      */
     public function getAlternate()
     {
-        return $this->_alternate;
+        return $this->alternate;
     }
 
     /**
@@ -265,7 +263,7 @@ class I18n
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
 
     /**
@@ -275,7 +273,7 @@ class I18n
      */
     public function getAbbrev()
     {
-        return $this->_abbrev;
+        return $this->abbrev;
     }
 
     /**
@@ -285,10 +283,10 @@ class I18n
      */
     public function getFlag()
     {
-        if ( defined('GALETTE_THEME_DIR') ) {
-            return GALETTE_THEME_DIR . 'images/' . $this->_flag;
+        if (defined('GALETTE_THEME_DIR')) {
+            return GALETTE_THEME_DIR . 'images/' . $this->flag;
         } else {
-            return GALETTE_THEME . 'images/' . $this->_flag;
+            return GALETTE_THEME . 'images/' . $this->flag;
         }
     }
 
@@ -299,7 +297,7 @@ class I18n
      */
     public function getFileName()
     {
-        return $this->_filename;
+        return $this->filename;
     }
 
     /**
@@ -313,5 +311,4 @@ class I18n
     {
         return mb_check_encoding($str, 'UTF-8');
     }
-
 }

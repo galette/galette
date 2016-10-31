@@ -72,37 +72,17 @@ class PdfAttendanceSheet extends Pdf
     {
         $this->SetFont(Pdf::FONT, '', SHEET_FONT - 2);
         $head_title = $this->doc_title;
-        if ( $this->sheet_title !== null ) {
+        if ($this->sheet_title !== null) {
             $head_title .= ' - ' . $this->sheet_title;
         }
-        if ( $this->sheet_sub_title !== null ) {
+        if ($this->sheet_sub_title !== null) {
             $head_title .= ' - ' . $this->sheet_sub_title;
         }
-        if ( $this->sheet_date !== null ) {
+        if ($this->sheet_date !== null) {
             $head_title .= ' - ' . $this->sheet_date->format(__("Y-m-d"));
         }
         $this->Cell(0, 10, $head_title, 0, false, 'C', 0, '', 0, false, 'M', 'M');
     }
-
-    private $_tcol;
-    private $_scol;
-    private $_bcol;
-    private $_hcol;
-    private $_xorigin;
-    private $_yorigin;
-    private $_w;
-    private $_h;
-    private $_nbcol;
-    private $_nbrow;
-    private $_hspacing;
-    private $_vspacing;
-    private $_max_text_size;
-    private $_year_font_size;
-    private $_an_cot;
-    private $_abrev;
-    private $_wlogo;
-    private $_hlogo;
-    private $_logofile;
 
     /**
      * Main constructor, set creator and author

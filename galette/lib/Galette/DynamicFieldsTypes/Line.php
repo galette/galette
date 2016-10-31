@@ -77,5 +77,4 @@ class Line extends DynamicFieldType
     {
         return _T("line");
     }
-
 }

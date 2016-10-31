@@ -59,15 +59,15 @@ class Reminder
     const TABLE = 'reminders';
     const PK = 'reminder_id';
 
-    private $_id;
-    private $_type;
-    private $_dest;
-    private $_date;
-    private $_success;
-    private $_nomail;
-    private $_comment;
-    private $_replaces;
-    private $_msg;
+    private $id;
+    private $type;
+    private $dest;
+    private $date;
+    private $success;
+    private $nomail;
+    private $comment;
+    private $replaces;
+    private $msg;
 
     const IMPENDING = 1;
     const LATE = 2;
@@ -79,11 +79,11 @@ class Reminder
      */
     public function __construct($args = null)
     {
-        if ( $args !== null ) {
-            if ( is_int($args) ) {
-                $this->_load($args);
-            } else if ( is_object($args) ) {
-                $this->_loadFromRs($args);
+        if ($args !== null) {
+            if (is_int($args)) {
+                $this->load($args);
+            } elseif (is_object($args)) {
+                $this->loadFromRs($args);
             } else {
                 Analog::log(
                     __METHOD__ . ': unknonw arg',
@@ -100,7 +100,7 @@ class Reminder
      *
      * @return void
      */
-    private function _load($id)
+    private function load($id)
     {
         global $zdb;
         try {
@@ -109,8 +109,8 @@ class Reminder
                 ->where(self::PK . ' = ' . $id);
 
             $results = $zdb->execute($select);
-            $this->_loadFromRs($results->current());
-        } catch ( \Exception $e ) {
+            $this->loadFromRs($results->current());
+        } catch (\Exception $e) {
             Analog::log(
                 'An error occured loading reminder #' . $id . "Message:\n" .
                 $e->getMessage(),
@@ -126,20 +126,20 @@ class Reminder
      *
      * @return void
      */
-    private function _loadFromRs($rs)
+    private function loadFromRs($rs)
     {
         global $zdb;
 
         try {
             $pk = self::PK;
-            $this->_id = $rs->$pk;
-            $this->_type = $rs->reminder_type;
-            $this->_dest = new Adherent($zdb, (int)$rs->reminder_dest);
-            $this->_date = $rs->reminder_date;
-            $this->_success = $rs->reminder_success;
-            $this->_nomail = $rs->reminder_nomail;
-            $this->_comment = $rs->reminder_comment;
-        } catch ( \Exception $e ) {
+            $this->id = $rs->$pk;
+            $this->type = $rs->reminder_type;
+            $this->dest = new Adherent($zdb, (int)$rs->reminder_dest);
+            $this->date = $rs->reminder_date;
+            $this->success = $rs->reminder_success;
+            $this->nomail = $rs->reminder_nomail;
+            $this->comment = $rs->reminder_comment;
+        } catch (\Exception $e) {
             Analog::log(
                 __METHOD__ . ': incorrect ResultSet. Error: ' .$e->getMessage(),
                 Analog::ERROR
@@ -158,27 +158,27 @@ class Reminder
      *
      * @return boolean
      */
-    private function _store($zdb)
+    private function store($zdb)
     {
         $now = new \DateTime();
         $data = array(
-            'reminder_type'     => $this->_type,
-            'reminder_dest'     => $this->_dest->id,
+            'reminder_type'     => $this->type,
+            'reminder_dest'     => $this->dest->id,
             'reminder_date'     => $now->format('Y-m-d'),
-            'reminder_success'  => ($this->_success) ? true : 'false',
-            'reminder_nomail'   => ($this->_nomail) ? true : 'false'
+            'reminder_success'  => ($this->success) ? true : 'false',
+            'reminder_nomail'   => ($this->nomail) ? true : 'false'
         );
         try {
             $insert = $zdb->insert(self::TABLE);
             $insert->values($data);
 
             $add = $zdb->execute($insert);
-            if ( !$add->count() > 0 ) {
+            if (!$add->count() > 0) {
                 Analog::log('Reminder not stored!', Analog::ERROR);
                 return false;
             }
             return true;
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
             Analog::log(
                 'An error occured storing reminder: ' . $e->getMessage() .
                 "\n" . print_r($data, true),
@@ -195,7 +195,7 @@ class Reminder
      */
     public function isSuccess()
     {
-        return $this->_success;
+        return $this->success;
     }
 
     /**
@@ -205,7 +205,7 @@ class Reminder
      */
     public function hasMail()
     {
-        return !$this->_nomail;
+        return !$this->nomail;
     }
 
     /**
@@ -220,23 +220,23 @@ class Reminder
     public function send($texts, $hist, $zdb)
     {
         $type_name = 'late';
-        if ( $this->_type === self::IMPENDING ) {
+        if ($this->type === self::IMPENDING) {
             $type_name = 'impending';
         }
 
-        if ( $this->hasMail() ) {
-            $texts->setReplaces($this->_replaces);
+        if ($this->hasMail()) {
+            $texts->setReplaces($this->replaces);
 
             $texts->getTexts(
                 $type_name . 'duedate',
-                $this->_dest->language
+                $this->dest->language
             );
 
             $mail = new GaletteMail();
             $mail->setSubject($texts->getSubject());
             $mail->setRecipients(
                 array(
-                    $this->_dest->email => $this->_dest->sname
+                    $this->dest->email => $this->dest->sname
                 )
             );
             $mail->setMessage($texts->getBody());
@@ -249,36 +249,36 @@ class Reminder
                     '%days'
                 ),
                 array(
-                    $this->_dest->sname,
-                    $this->_dest->email,
-                    $this->_dest->days_remaining
+                    $this->dest->sname,
+                    $this->dest->email,
+                    $this->dest->days_remaining
                 ),
                 _T("%name <%mail> (%days days)")
             );
 
-            if ( $sent == GaletteMail::MAIL_SENT ) {
-                $this->_success = true;
+            if ($sent == GaletteMail::MAIL_SENT) {
+                $this->success = true;
                 $msg = '';
-                if ( $type_name == 'late' ) {
+                if ($type_name == 'late') {
                     $msg = _T("Sent reminder mail for late membership");
                 } else {
                     $msg = _T("Sent reminder mail for impending membership");
                 }
-                $this->_msg = $details;
+                $this->msg = $details;
                 $hist->add($msg, $details);
             } else {
-                $this->_success = false;
-                if ( $type_name == 'late' ) {
+                $this->success = false;
+                if ($type_name == 'late') {
                     $msg = _T("A problem happened while sending late membership mail");
                 } else {
                     $msg = _T("A problem happened while sending impending membership mail");
                 }
-                $this->_msg = $details;
+                $this->msg = $details;
                 $hist->add($str, $details);
             }
         } else {
-            $this->_success = false;
-            $this->_nomail = true;
+            $this->success = false;
+            $this->nomail = true;
             $str = str_replace(
                 '%membership',
                 $type_name,
@@ -291,18 +291,18 @@ class Reminder
                     '%days'
                 ),
                 array(
-                    $this->_dest->sname,
-                    $this->_dest->id,
-                    $this->_dest->days_remaining
+                    $this->dest->sname,
+                    $this->dest->id,
+                    $this->dest->days_remaining
                 ),
                 _T("%name (#%id - %days days)")
             );
             $hist->add($str, $details);
-            $this->_msg = $this->_dest->sname;
+            $this->msg = $this->dest->sname;
         }
         //store reminder in database
-        $this->_store($zdb);
-        return $this->_success;
+        $this->store($zdb);
+        return $this->success;
     }
 
     /**
@@ -312,7 +312,7 @@ class Reminder
      */
     public function getMessage()
     {
-        return $this->_msg;
+        return $this->msg;
     }
 
     /**
@@ -324,17 +324,16 @@ class Reminder
      */
     public function __get($name)
     {
-        $rname = '_' . $name;
-        switch ( $name ) {
-        case 'member_id':
-            return $this->_dest->id;
-            break;
-        default:
-            Analog::log(
-                'Unable to get Reminder property ' . $name,
-                Analog::WARNING
-            );
-            break;
+        switch ($name) {
+            case 'member_id':
+                return $this->dest->id;
+                break;
+            default:
+                Analog::log(
+                    'Unable to get Reminder property ' . $name,
+                    Analog::WARNING
+                );
+                break;
         }
     }
 
@@ -348,53 +347,52 @@ class Reminder
      */
     public function __set($name, $value)
     {
-        $rname = '_' . $name;
-        switch ( $name ) {
-        case 'type':
-            if ( $value === self::IMPENDING
-                || $value === self::LATE
-            ) {
-                $this->_type = $value;
-            } else {
-                throw new \UnexpectedValueException(
-                    'Unknown type!'
-                );
-            }
-            break;
-        case 'dest':
-            if ( $this->_type !== null && $value instanceof Adherent ) {
-                $this->_dest = $value;
-                $this->_replaces['login_adh'] = $value->login;
-                $this->_replaces['name_adh'] = custom_html_entity_decode($value->sname);
-                $this->_replaces['firstname_adh'] = custom_html_entity_decode($value->surname);
-                $this->_replaces['lastname_adh'] = custom_html_entity_decode($value->name);
-                if ( $value->email != '' ) {
-                    $this->_nomail = false;
-                }
-                if ( $this->_type === self::LATE ) {
-                    $this->_replaces['days_expired'] = $value->days_remaining *-1;
-                }
-                if ( $this->_type === self::IMPENDING ) {
-                    $this->_replaces['days_remaining'] = $value->days_remaining;
-                }
-            } else {
-                if ( !$value instanceof Adherent ) {
-                    throw new \UnexpectedValueException(
-                        'Please provide a member object.'
-                    );
+        switch ($name) {
+            case 'type':
+                if ($value === self::IMPENDING
+                    || $value === self::LATE
+                ) {
+                    $this->type = $value;
                 } else {
-                    throw new \UnderflowException(
-                        'Please set reminder type first.'
+                    throw new \UnexpectedValueException(
+                        'Unknown type!'
                     );
                 }
-            }
-            break;
-        default:
-            Analog::log(
-                'Unable to set property ' .$name,
-                Analog::WARNING
-            );
-            break;
+                break;
+            case 'dest':
+                if ($this->type !== null && $value instanceof Adherent) {
+                    $this->dest = $value;
+                    $this->replaces['login_adh'] = $value->login;
+                    $this->replaces['name_adh'] = custom_html_entity_decode($value->sname);
+                    $this->replaces['firstname_adh'] = custom_html_entity_decode($value->surname);
+                    $this->replaces['lastname_adh'] = custom_html_entity_decode($value->name);
+                    if ($value->email != '') {
+                        $this->nomail = false;
+                    }
+                    if ($this->type === self::LATE) {
+                        $this->replaces['days_expired'] = $value->days_remaining *-1;
+                    }
+                    if ($this->type === self::IMPENDING) {
+                        $this->replaces['days_remaining'] = $value->days_remaining;
+                    }
+                } else {
+                    if (!$value instanceof Adherent) {
+                        throw new \UnexpectedValueException(
+                            'Please provide a member object.'
+                        );
+                    } else {
+                        throw new \UnderflowException(
+                            'Please set reminder type first.'
+                        );
+                    }
+                }
+                break;
+            default:
+                Analog::log(
+                    'Unable to set property ' .$name,
+                    Analog::WARNING
+                );
+                break;
         }
     }
 }

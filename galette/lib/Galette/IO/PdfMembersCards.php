@@ -57,25 +57,25 @@ use Analog\Analog;
 
 class PdfMembersCards extends Pdf
 {
-    private $_tcol;
-    private $_scol;
-    private $_bcol;
-    private $_hcol;
-    private $_xorigin;
-    private $_yorigin;
-    private $_w;
-    private $_h;
-    private $_nbcol;
-    private $_nbrow;
-    private $_hspacing;
-    private $_vspacing;
-    private $_max_text_size;
-    private $_year_font_size;
-    private $_an_cot;
-    private $_abrev;
-    private $_wlogo;
-    private $_hlogo;
-    private $_logofile;
+    private $tcol;
+    private $scol;
+    private $bcol;
+    private $hcol;
+    private $xorigin;
+    private $yorigin;
+    private $w;
+    private $h;
+    private $nbcol;
+    private $nbrow;
+    private $hspacing;
+    private $vspacing;
+    private $max_text_size;
+    private $year_font_size;
+    private $an_cot;
+    private $abrev;
+    private $wlogo;
+    private $hlogo;
+    private $logofile;
 
     /**
      * Main constructor, set creator and author
@@ -85,14 +85,14 @@ class PdfMembersCards extends Pdf
     public function __construct(Preferences $prefs)
     {
         parent::__construct($prefs);
-        $this->_init();
+        $this->init();
     }
     /**
      * Initialize PDF
      *
      * @return void
      */
-    private function _init()
+    private function init()
     {
         // Set document information
         $this->SetTitle(_T("Member's Cards"));
@@ -114,10 +114,10 @@ class PdfMembersCards extends Pdf
         // Set colors
         $this->SetDrawColor(160, 160, 160);
         $this->SetTextColor(0);
-        $this->_tcol = $this->colorHex2Dec($this->preferences->pref_card_tcol);
-        $this->_scol = $this->colorHex2Dec($this->preferences->pref_card_scol);
-        $this->_bcol = $this->colorHex2Dec($this->preferences->pref_card_bcol);
-        $this->_hcol = $this->colorHex2Dec($this->preferences->pref_card_hcol);
+        $this->tcol = $this->colorHex2Dec($this->preferences->pref_card_tcol);
+        $this->scol = $this->colorHex2Dec($this->preferences->pref_card_scol);
+        $this->bcol = $this->colorHex2Dec($this->preferences->pref_card_bcol);
+        $this->hcol = $this->colorHex2Dec($this->preferences->pref_card_hcol);
 
         // Set margins
         $this->SetMargins(
@@ -130,52 +130,52 @@ class PdfMembersCards extends Pdf
 
         // Set origin
         // Top left corner
-        $this->_xorigin = $this->preferences->pref_card_marges_h;
-        $this->_yorigin = $this->preferences->pref_card_marges_v;
+        $this->xorigin = $this->preferences->pref_card_marges_h;
+        $this->yorigin = $this->preferences->pref_card_marges_v;
 
         // Card width
-        $this->_w = 75;
+        $this->w = 75;
         // Card heigth
-        $this->_h = 40;
+        $this->h = 40;
         // Number of colons
-        $this->_nbcol=2;
+        $this->nbcol=2;
         // Number of rows
-        $this->_nbrow=6;
+        $this->nbrow=6;
         // Spacing betweeen cards
-        $this->_hspacing = $this->preferences->pref_card_hspace;
-        $this->_vspacing = $this->preferences->pref_card_vspace;
+        $this->hspacing = $this->preferences->pref_card_hspace;
+        $this->vspacing = $this->preferences->pref_card_vspace;
 
         //maximum size for visible text. May vary with fonts.
-        $this->_max_text_size = 80;
-        $this->_year_font_size = 8;
+        $this->max_text_size = 80;
+        $this->year_font_size = 8;
 
 
         // Get fixed data from preferences
-        $this->_an_cot = '<strong>' . $this->preferences->pref_card_year .
+        $this->an_cot = '<strong>' . $this->preferences->pref_card_year .
             '</strong>';
-        $this->_abrev = '<strong>' . $this->preferences->pref_card_abrev .
+        $this->abrev = '<strong>' . $this->preferences->pref_card_abrev .
             '</strong>';
 
         $print_logo = new PrintLogo();
-        if ( $print_logo->hasPicture() ) {
-            $this->_logofile = $print_logo->getPath();
+        if ($print_logo->hasPicture()) {
+            $this->logofile = $print_logo->getPath();
 
             // Set logo size to max width 30 mm or max height 25 mm
             $ratio = $print_logo->getWidth()/$print_logo->getHeight();
-            if ( $ratio < 1 ) {
-                if ( $print_logo->getHeight() > 16 ) {
-                    $this->_hlogo = 25;
+            if ($ratio < 1) {
+                if ($print_logo->getHeight() > 16) {
+                    $this->hlogo = 25;
                 } else {
-                    $this->_hlogo = $print_logo->getHeight();
+                    $this->hlogo = $print_logo->getHeight();
                 }
-                $this->_wlogo = round($this->_hlogo*$ratio);
+                $this->wlogo = round($this->hlogo*$ratio);
             } else {
-                if ( $print_logo->getWidth() > 16 ) {
-                    $this->_wlogo = 30;
+                if ($print_logo->getWidth() > 16) {
+                    $this->wlogo = 30;
                 } else {
-                    $this->_wlogo = $print_logo->getWidth();
+                    $this->wlogo = $print_logo->getWidth();
                 }
-                $this->_hlogo = round($this->_wlogo/$ratio);
+                $this->hlogo = round($this->wlogo/$ratio);
             }
         }
     }
@@ -190,69 +190,69 @@ class PdfMembersCards extends Pdf
     public function drawCards($members)
     {
         $nb_card=0;
-        foreach ( $members as $member ) {
+        foreach ($members as $member) {
             // Detect page breaks
-            if ( $nb_card % ($this->_nbcol * $this->_nbrow)==0 ) {
+            if ($nb_card % ($this->nbcol * $this->nbrow)==0) {
                 $this->AddPage();
             }
 
             // Compute card position on page
-            $col = $nb_card % $this->_nbcol;
-            $row = ($nb_card/$this->_nbcol) % $this->_nbrow;
+            $col = $nb_card % $this->nbcol;
+            $row = ($nb_card/$this->nbcol) % $this->nbrow;
             // Set origin
-            $x0 = $this->_xorigin + $col*(round($this->_w)+round($this->_hspacing));
-            $y0 = $this->_yorigin + $row*(round($this->_h)+round($this->_vspacing));
+            $x0 = $this->xorigin + $col*(round($this->w)+round($this->hspacing));
+            $y0 = $this->yorigin + $row*(round($this->h)+round($this->vspacing));
             // Logo X position
-            $xl = round($x0 + $this->_w - $this->_wlogo);
+            $xl = round($x0 + $this->w - $this->wlogo);
             // Get data
             $email = '<strong>';
-            switch ( $this->preferences->pref_card_address ) {
-            case 0:
-                $email .= $member->email;
-                break;
-            case 1:
-                $email .= $member->msn;
-                break;
-            case 2:
-                $email .= $member->jabber;
-                break;
-            case 3:
-                $email .= $member->website;
-                break;
-            case 4:
-                $email .= $member->icq;
-                break;
-            case 5:
-                $email .= $member->zipcode . ' - ' . $member->town;
-                break;
-            case 6:
-                $email .= $member->nickname;
-                break;
-            case 7:
-                $email .= $member->job;
-                break;
+            switch ($this->preferences->pref_card_address) {
+                case 0:
+                    $email .= $member->email;
+                    break;
+                case 1:
+                    $email .= $member->msn;
+                    break;
+                case 2:
+                    $email .= $member->jabber;
+                    break;
+                case 3:
+                    $email .= $member->website;
+                    break;
+                case 4:
+                    $email .= $member->icq;
+                    break;
+                case 5:
+                    $email .= $member->zipcode . ' - ' . $member->town;
+                    break;
+                case 6:
+                    $email .= $member->nickname;
+                    break;
+                case 7:
+                    $email .= $member->job;
+                    break;
             }
             $email .= '</strong>';
 
             // Select strip color according to status
-            switch ( $member->status ) {
-            case  1 :
-            case  2 :
-            case  3 :
-            case 10 :
-                $fcol = $this->_bcol;
-                break;
-            case  5 :
-            case  6 :
-                $fcol = $this->_hcol;
-                break;
-            default :
-                $fcol = $this->_scol;
+            switch ($member->status) {
+                case 1:
+                case 2:
+                case 3:
+                case 10:
+                    $fcol = $this->bcol;
+                    break;
+                case 5:
+                case 6:
+                    $fcol = $this->hcol;
+                    break;
+                default:
+                    $fcol = $this->scol;
             }
 
             $id = '<strong>' . $member->id . '</strong>';
             $nom_adh_ext = '<strong>';
-            if ( $this->preferences->pref_bool_display_title ) {
+            if ($this->preferences->pref_bool_display_title) {
                 $nom_adh_ext .= $member->stitle;
             }
             $nom_adh_ext .= $member->sname . '</strong>';
@@ -261,13 +261,13 @@ class PdfMembersCards extends Pdf
 
             // Photo 100x130 and logo
             $this->Image($photofile, $x0, $y0, 25);
-            $this->Image($this->_logofile, $xl, $y0, round($this->_wlogo));
+            $this->Image($this->logofile, $xl, $y0, round($this->wlogo));
 
             // Color=#8C8C8C: Shadow of the year
             $this->SetTextColor(140);
-            $this->SetFontSize($this->_year_font_size);
-            $this->SetXY($x0 + 65, $y0 + $this->_hlogo);
-            $this->writeHTML($this->_an_cot, false, 0);
+            $this->SetFontSize($this->year_font_size);
+            $this->SetXY($x0 + 65, $y0 + $this->hlogo);
+            $this->writeHTML($this->an_cot, false, 0);
 
             // Colored Text (Big label, id, year)
             $this->SetTextColor($fcol['R'], $fcol['G'], $fcol['B']);
@@ -275,25 +275,25 @@ class PdfMembersCards extends Pdf
             $this->SetFontSize(8);
             $this->SetXY($x0 + 69, $y0 + 28);
             $this->writeHTML($id, false, 0);
-            $this->SetFontSize($this->_year_font_size);
-            $this->SetXY($x0 + 64.7, $y0 + $this->_hlogo - 0.3);
-            $this->writeHTML($this->_an_cot, false, 0);
+            $this->SetFontSize($this->year_font_size);
+            $this->SetXY($x0 + 64.7, $y0 + $this->hlogo - 0.3);
+            $this->writeHTML($this->an_cot, false, 0);
 
             // Abbrev: Adapt font size to text length
             $fontsz = 12;
             $this->SetFontSize($fontsz);
-            while ( $this->GetStringWidth($this->_abrev) > $this->_max_text_size ) {
+            while ($this->GetStringWidth($this->abrev) > $this->max_text_size) {
                 $fontsz--;
                 $this->SetFontSize($fontsz);
             }
             $this->SetXY($x0 + 27, $y0 + 12);
-            $this->writeHTML($this->_abrev, true, 0);
+            $this->writeHTML($this->abrev, true, 0);
 
             // Name: Adapt font size to text length
             $this->SetTextColor(0);
             $fontsz = 8;
             $this->SetFontSize($fontsz);
-            while ( $this->GetStringWidth($nom_adh_ext) > $this->_max_text_size ) {
+            while ($this->GetStringWidth($nom_adh_ext) > $this->max_text_size) {
                 $fontsz--;
                 $this->SetFontSize($fontsz);
             }
@@ -304,7 +304,7 @@ class PdfMembersCards extends Pdf
             // Email (adapt too)
             $fontsz = 6;
             $this->SetFontSize($fontsz);
-            while ( $this->GetStringWidth($email) > $this->_max_text_size ) {
+            while ($this->GetStringWidth($email) > $this->max_text_size) {
                 $fontsz--;
                 $this->SetFontSize($fontsz);
             }
@@ -314,14 +314,14 @@ class PdfMembersCards extends Pdf
             // Lower colored strip with long text
             $this->SetFillColor($fcol['R'], $fcol['G'], $fcol['B']);
             $this->SetTextColor(
-                $this->_tcol['R'],
-                $this->_tcol['G'],
-                $this->_tcol['B']
+                $this->tcol['R'],
+                $this->tcol['G'],
+                $this->tcol['B']
             );
             $this->SetFont(self::FONT, 'B', 6);
             $this->SetXY($x0, $y0 + 33);
             $this->Cell(
-                $this->_w,
+                $this->w,
                 7,
                 $this->preferences->pref_card_strip,
                 0,
@@ -331,9 +331,8 @@ class PdfMembersCards extends Pdf
             );
 
             // Draw a gray frame around the card
-            $this->Rect($x0, $y0, $this->_w, $this->_h);
+            $this->Rect($x0, $y0, $this->w, $this->h);
             $nb_card++;
         }
-
     }
 }

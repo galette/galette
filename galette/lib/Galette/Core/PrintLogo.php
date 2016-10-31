@@ -75,5 +75,4 @@ class PrintLogo extends Logo
         //anyways, we have no custom print logo
         $this->custom = false;
     }
-
 }

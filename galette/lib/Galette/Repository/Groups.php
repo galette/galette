@@ -225,8 +225,8 @@ class Groups
             $results = $zdb->execute($select);
 
             $groups = array();
-            foreach ( $results as $r ) {
-                if ( $as_group === true ) {
+            foreach ($results as $r) {
+                if ($as_group === true) {
                     $groups[] = new Group($r);
                 } else {
                     $gpk = Group::PK;
@@ -261,12 +261,12 @@ class Groups
     {
         global $zdb;
         try {
-            if ( $transaction === false) {
+            if ($transaction === false) {
                 $zdb->connection->beginTransaction();
             }
 
             $table = null;
-            if ( $manager === true ) {
+            if ($manager === true) {
                 $table = Group::GROUPSMANAGERS_TABLE;
             } else {
                 $table = Group::GROUPSUSERS_TABLE;
@@ -280,7 +280,7 @@ class Groups
             $zdb->execute($delete);
 
             $msg = null;
-            if ( $manager === true ) {
+            if ($manager === true) {
                 $msg = 'Member `' . $adh->sname . '` has been detached from groups he manages';
             } else {
                 $msg = 'Member `' . $adh->sname . '` has been detached of its groups';
@@ -291,7 +291,7 @@ class Groups
             );
 
             //we proceed, if groups has been specified
-            if ( is_array($groups) ) {
+            if (is_array($groups)) {
                 $insert = $zdb->insert($table);
                 $insert->values(
                     array(
@@ -301,7 +301,7 @@ class Groups
                 );
                 $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
-                foreach ( $groups as $group ) {
+                foreach ($groups as $group) {
                     list($gid, $gname) = explode('|', $group);
 
                     $result = $stmt->execute(
@@ -311,10 +311,10 @@ class Groups
                         )
                     );
 
-                    if ( $result ) {
+                    if ($result) {
                         $msg = 'Member `' . $adh->sname . '` attached to group `' .
                             $gname . '` (' . $gid . ')';
-                        if ( $manager === true ) {
+                        if ($manager === true) {
                             $msg .= ' as a manager';
                         }
                         Analog::log(
@@ -325,7 +325,7 @@ class Groups
                         $msg = 'Unable to attach member `' .
                             $adh->sname . '` (' . $adh->id . ') to group `' .
                             $gname . '` (' . $gid . ').';
-                        if ( $manager === true ) {
+                        if ($manager === true) {
                             $msg .= ' as a manager';
                         }
                         Analog::log(
@@ -336,18 +336,18 @@ class Groups
                     }
                 }
             }
-            if ( $transaction === false) {
+            if ($transaction === false) {
                 //commit all changes
                 $zdb->connection->commit();
             }
             return true;
         } catch (\Exception $e) {
-            if ( $transaction === false) {
+            if ($transaction === false) {
                 $zdb->connection->rollBack();
             }
             $msg = 'Unable to add member `' . $adh->sname . '` (' . $adh->id .
                 ') to specified groups ' . print_r($groups, true);
-            if ( $manager === true ) {
+            if ($manager === true) {
                 $msg .= ' as a manager';
             }
             do {
@@ -385,7 +385,7 @@ class Groups
                 Adherent::PK . ' = ' . $id
             );
             $zdb->execute($del_qry);
-        } catch ( \Exception $e) {
+        } catch (\Exception $e) {
             Analog::log(
                 'Unable to remove member #' . $id . ' from his groups: ' .
                 $e->getMessage(),

@@ -56,14 +56,14 @@ use Zend\Db\Sql\Expression;
  */
 class Texts
 {
-    private $_all_texts;
+    private $all_texts;
     const TABLE = "texts";
     const PK = 'tid';
     const DEFAULT_REF = 'sub';
 
-    private $_patterns;
-    private $_replaces;
-    private $_defaults;
+    private $patterns;
+    private $replaces;
+    private $defaults;
 
     /**
      * Main constructor
@@ -74,8 +74,8 @@ class Texts
      */
     public function __construct($texts_fields, $preferences, $replaces = null)
     {
-        $this->_defaults = $texts_fields;
-        $this->_patterns = array(
+        $this->defaults = $texts_fields;
+        $this->patterns = array(
             'asso_name'         => '/{ASSO_NAME}/',
             'asso_slogan'       => '/{ASSO_SLOGAN}/',
             'name_adh'          => '/{NAME_ADH}/',
@@ -96,11 +96,11 @@ class Texts
         );
 
         $login_uri = null;
-        if ( isset($_SERVER['SERVER_NAME']) && isset($_SERVER['REQUEST_URI']) ) {
+        if (isset($_SERVER['SERVER_NAME']) && isset($_SERVER['REQUEST_URI'])) {
             $login_uri = 'http://' . $_SERVER['SERVER_NAME'] .
                 dirname($_SERVER['REQUEST_URI']);
         }
-        $this->_replaces = array(
+        $this->replaces = array(
             'asso_name'         => $preferences->pref_nom,
             'asso_slogan'       => $preferences->pref_slogan,
             'name_adh'          => null,
@@ -120,7 +120,7 @@ class Texts
             'contrib_type'      => null
         );
 
-        if ( $replaces != null && is_array($replaces) ) {
+        if ($replaces != null && is_array($replaces)) {
             $this->setReplaces($replaces);
         }
     }
@@ -135,8 +135,8 @@ class Texts
     public function setReplaces($replaces)
     {
         //let's populate replacement array with values provided
-        foreach ( $replaces as $k=>$v ) {
-            $this->_replaces[$k] = $v;
+        foreach ($replaces as $k => $v) {
+            $this->replaces[$k] = $v;
         }
     }
 
@@ -148,21 +148,21 @@ class Texts
      *
      * @return array of all text fields for one language.
      */
-    public function getTexts($ref,$lang)
+    public function getTexts($ref, $lang)
     {
         global $zdb, $i18n;
 
         //check if language is set and exists
         $langs = $i18n->getList();
         $is_lang_ok = false;
-        foreach ( $langs as $l ) {
-            if ( $lang === $l->getID() ) {
+        foreach ($langs as $l) {
+            if ($lang === $l->getID()) {
                 $is_lang_ok = true;
                 break;
             }
         }
 
-        if ( $is_lang_ok !== true ) {
+        if ($is_lang_ok !== true) {
             Analog::log(
                 'Language ' . $lang .
                 ' does not exists. Falling back to default Galette lang.',
@@ -181,19 +181,19 @@ class Texts
             );
             $results = $zdb->execute($select);
             $result = $results->current();
-            if ( $result ) {
-                $this->_all_texts = $result;
+            if ($result) {
+                $this->all_texts = $result;
             } else {
                 //hum... no result... That means text do not exist in the
                 //database, let's add it
                 $default = null;
-                foreach ( $this->_defaults as $d) {
-                    if ( $d['tref'] == $ref && $d['tlang'] == $lang ) {
-                            $default = $d;
-                            break;
+                foreach ($this->defaults as $d) {
+                    if ($d['tref'] == $ref && $d['tlang'] == $lang) {
+                        $default = $d;
+                        break;
                     }
                 }
-                if ( $default !== null ) {
+                if ($default !== null) {
                     $values = array(
                         'tid'       => $default['tid'],
                         'tref'      => $default['tref'],
@@ -208,7 +208,7 @@ class Texts
                         $insert->values($values);
                         $zdb->execute($insert);
                         return $this->getTexts($ref, $lang);
-                    } catch( \Exception $e ) {
+                    } catch (\Exception $e) {
                         Analog::log(
                             'Unable to add missing requested text "' . $ref .
                             ' (' . $lang . ') | ' . $e->getMessage(),
@@ -223,7 +223,7 @@ class Texts
                     );
                 }
             }
-            return $this->_all_texts;
+            return $this->all_texts;
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot get text `' . $ref . '` for lang `' . $lang . '` | ' .
@@ -316,7 +316,7 @@ class Texts
         global $zdb;
         $columns = $zdb->getColumns(self::TABLE);
         $fields = array();
-        foreach ( $columns as $col ) {
+        foreach ($columns as $col) {
             $fields[] = $col->getName();
         }
         return $fields;
@@ -338,7 +338,7 @@ class Texts
             //first of all, let's check if data seem to have already
             //been initialized
             $proceed = false;
-            if ( $check_first === true ) {
+            if ($check_first === true) {
                 $select = $zdb->select(self::TABLE);
                 $select->columns(
                     array(
@@ -349,12 +349,12 @@ class Texts
                 $results = $zdb->execute($select);
                 $result = $results->current();
                 $count = $result->counter;
-                if ( $count == 0 ) {
+                if ($count == 0) {
                     //if we got no values in texts table, let's proceed
                     $proceed = true;
                 } else {
-                    if ( $count < count($this->_defaults) ) {
-                        return $this->_checkUpdate();
+                    if ($count < count($this->defaults)) {
+                        return $this->checkUpdate();
                     }
                     return false;
                 }
@@ -362,12 +362,12 @@ class Texts
                 $proceed = true;
             }
 
-            if ( $proceed === true ) {
+            if ($proceed === true) {
                 //first, we drop all values
                 $delete = $zdb->delete(self::TABLE);
                 $zdb->execute($delete);
 
-                $this->_insert($zdb, $this->_defaults);
+                $this->insert($zdb, $this->defaults);
 
                 Analog::log(
                     'Default texts were successfully stored into database.',
@@ -389,7 +389,7 @@ class Texts
      *
      * @return boolean
      */
-    private function _checkUpdate()
+    private function checkUpdate()
     {
         global $zdb;
 
@@ -398,10 +398,10 @@ class Texts
             $list = $zdb->execute($select);
 
             $missing = array();
-            foreach ( $this->_defaults as $default ) {
+            foreach ($this->defaults as $default) {
                 $exists = false;
-                foreach ( $list as $text ) {
-                    if ( $text->tref == $default['tref']
+                foreach ($list as $text) {
+                    if ($text->tref == $default['tref']
                         && $text->tlang == $default['tlang']
                     ) {
                         $exists = true;
@@ -409,14 +409,14 @@ class Texts
                     }
                 }
 
-                if ( $exists === false ) {
+                if ($exists === false) {
                     //text does not exists in database, insert it.
                     $missing[] = $default;
                 }
             }
 
-            if ( count($missing) >0 ) {
-                $this->_insert($zdb, $missing);
+            if (count($missing) >0) {
+                $this->insert($zdb, $missing);
 
                 Analog::log(
                     'Missing texts were successfully stored into database.',
@@ -441,9 +441,9 @@ class Texts
     public function getSubject()
     {
         return preg_replace(
-            $this->_patterns,
-            $this->_replaces,
-            $this->_all_texts->tsubject
+            $this->patterns,
+            $this->replaces,
+            $this->all_texts->tsubject
         );
     }
 
@@ -455,9 +455,9 @@ class Texts
     public function getBody()
     {
         return preg_replace(
-            $this->_patterns,
-            $this->_replaces,
-            $this->_all_texts->tbody
+            $this->patterns,
+            $this->replaces,
+            $this->all_texts->tbody
         );
     }
 
@@ -469,7 +469,7 @@ class Texts
      *
      * @return void
      */
-    private function _insert($zdb, $values)
+    private function insert($zdb, $values)
     {
         $insert = $zdb->insert(self::TABLE);
         $insert->values(
@@ -484,7 +484,7 @@ class Texts
         );
         $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
-        foreach ( $values as $value ) {
+        foreach ($values as $value) {
             $stmt->execute($value);
         }
     }

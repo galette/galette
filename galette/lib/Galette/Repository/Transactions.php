@@ -101,7 +101,7 @@ class Transactions
     public function getList($as_trans = false, $fields = null, $count = true)
     {
         try {
-            $select = $this->_buildSelect($fields, $count);
+            $select = $this->buildSelect($fields, $count);
             $this->filters->setLimit($select);
 
             $transactions = array();
@@ -132,7 +132,7 @@ class Transactions
      *
      * @return string SELECT statement
      */
-    private function _buildSelect($fields, $count = false)
+    private function buildSelect($fields, $count = false)
     {
         try {
             $fieldsList = ( $fields != null )
@@ -154,11 +154,11 @@ class Transactions
                 array('nom_adh', 'prenom_adh')
             );
 
-            $this->_buildWhereClause($select);
-            $select->order(self::_buildOrderClause());
+            $this->buildWhereClause($select);
+            $select->order(self::buildOrderClause());
 
             if ($count) {
-                $this->_proceedCount($select);
+                $this->proceedCount($select);
             }
 
             return $select;
@@ -178,7 +178,7 @@ class Transactions
      *
      * @return void
      */
-    private function _proceedCount($select)
+    private function proceedCount($select)
     {
         try {
             $countSelect = clone $select;
@@ -213,7 +213,7 @@ class Transactions
      *
      * @return string SQL ORDER clause
      */
-    private function _buildOrderClause()
+    private function buildOrderClause()
     {
         $order = array();
 
@@ -243,7 +243,7 @@ class Transactions
      *
      * @return string SQL WHERE clause
      */
-    private function _buildWhereClause($select)
+    private function buildWhereClause($select)
     {
         try {
             if ($this->filters->start_date_filter != null) {

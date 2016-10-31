@@ -82,7 +82,7 @@ abstract class DynamicFieldType
      */
     public function __construct($id = null)
     {
-        if ( $id !== null ) {
+        if ($id !== null) {
             $this->id = $id;
         }
     }
@@ -112,8 +112,8 @@ abstract class DynamicFieldType
                 $this->height = $result->field_height;
                 $this->repeat = $result->field_repeat;
                 $this->size = $result->field_size;
-                if ( $this->hasFixedValues() ) {
-                    $this->_loadFixedValues();
+                if ($this->hasFixedValues()) {
+                    $this->loadFixedValues();
                 }
             } // $result != false
         } catch (Exception $e) {
@@ -130,7 +130,7 @@ abstract class DynamicFieldType
      *
      * @return void
      */
-    private function _loadFixedValues()
+    private function loadFixedValues()
     {
         global $zdb;
 
@@ -147,8 +147,8 @@ abstract class DynamicFieldType
 
             $results = $zdb->execute($val_select);
             $this->values = array();
-            if ( $results ) {
-                foreach ( $results as $val ) {
+            if ($results) {
+                foreach ($results as $val) {
                     $this->values[] = $val->val;
                 }
             }
@@ -165,7 +165,7 @@ abstract class DynamicFieldType
      *
      * @return String
      */
-    public abstract function getTypeName();
+    abstract public function getTypeName();
 
     /**
      * Does the field handle data?
@@ -315,7 +315,7 @@ abstract class DynamicFieldType
     public function getValues()
     {
 
-        if ( $this->fixed_values ) {
+        if ($this->fixed_values) {
             return implode("\n", $this->values);
         } else {
             Analog::log(

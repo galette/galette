@@ -66,15 +66,15 @@ class GaletteMail
     const METHOD_GMAIL = 4;
     const METHOD_SENDMAIL = 5;
 
-    private $_subject;
-    private $_message;
-    private $_html;
-    private $_word_wrap = 70;
+    private $subject;
+    private $message;
+    private $html;
+    private $word_wrap = 70;
 
-    private $_errors = array();
-    private $_recipients;
+    private $errors = array();
+    private $recipients;
 
-    private $_mail = null;
+    private $mail = null;
     protected $attachments = array();
 
     /**
@@ -82,81 +82,81 @@ class GaletteMail
      *
      * @return void
      */
-    private function _initMailer()
+    private function initMailer()
     {
         global $preferences, $i18n;
 
-        $this->_mail = new \PHPMailer();
+        $this->mail = new \PHPMailer();
 
-        switch ( $preferences->pref_mail_method ) {
-        case self::METHOD_SMTP:
-        case self::METHOD_GMAIL:
-            //if we want to send mails using a smtp server
-            $this->_mail->IsSMTP();
-            // enables SMTP debug information (for testing)
-            /*$this->_mail->SMTPDebug = 2;*/
+        switch ($preferences->pref_mail_method) {
+            case self::METHOD_SMTP:
+            case self::METHOD_GMAIL:
+                //if we want to send mails using a smtp server
+                $this->mail->IsSMTP();
+                // enables SMTP debug information (for testing)
+                /*$this->mail->SMTPDebug = 2;*/
 
-            if ( $preferences->pref_mail_method == self::METHOD_GMAIL ) {
-                // sets GMAIL as the SMTP server
-                $this->_mail->Host = "smtp.gmail.com";
-                // enable SMTP authentication
-                $this->_mail->SMTPAuth   = true;
-                // sets the prefix to the servier
-                $this->_mail->SMTPSecure = "tls";
-                // set the SMTP port for the GMAIL server
-                $this->_mail->Port = 587;
-            } else {
-                $this->_mail->Host = $preferences->pref_mail_smtp_host;
-                $this->_mail->SMTPAuth   = $preferences->pref_mail_smtp_auth;
-                $this->_mail->SMTPSecure = $preferences->pref_mail_smtp_secure;
-                if ( $preferences->pref_mail_smtp_port
-                    && $preferences->pref_mail_smtp_port != ''
-                ) {
-                    // set the SMTP port for the SMTP server
-                    $this->_mail->Port = $preferences->pref_mail_smtp_port;
+                if ($preferences->pref_mail_method == self::METHOD_GMAIL) {
+                    // sets GMAIL as the SMTP server
+                    $this->mail->Host = "smtp.gmail.com";
+                    // enable SMTP authentication
+                    $this->mail->SMTPAuth   = true;
+                    // sets the prefix to the servier
+                    $this->mail->SMTPSecure = "tls";
+                    // set the SMTP port for the GMAIL server
+                    $this->mail->Port = 587;
                 } else {
-                    Analog::log(
-                        '[' . get_class($this) .
-                        ']No SMTP port provided. Switch to default (25).',
-                        Analog::INFO
-                    );
-                    $this->_mail->Port = 25;
+                    $this->mail->Host = $preferences->pref_mail_smtp_host;
+                    $this->mail->SMTPAuth   = $preferences->pref_mail_smtp_auth;
+                    $this->mail->SMTPSecure = $preferences->pref_mail_smtp_secure;
+                    if ($preferences->pref_mail_smtp_port
+                        && $preferences->pref_mail_smtp_port != ''
+                    ) {
+                        // set the SMTP port for the SMTP server
+                        $this->mail->Port = $preferences->pref_mail_smtp_port;
+                    } else {
+                        Analog::log(
+                            '[' . get_class($this) .
+                            ']No SMTP port provided. Switch to default (25).',
+                            Analog::INFO
+                        );
+                        $this->mail->Port = 25;
+                    }
                 }
-            }
 
-            // SMTP account username
-            $this->_mail->Username   = $preferences->pref_mail_smtp_user;
-            // SMTP account password
-            $this->_mail->Password   = $preferences->pref_mail_smtp_password;
-            break;
-        case self::METHOD_SENDMAIL:
-            // telling the class to use Sendmail transport
-            $this->_mail->IsSendmail();
-            break;
-        case self::METHOD_QMAIL:
-            // telling the class to use QMail transport
-            $this->_mail->IsQmail();
-            break;
+                // SMTP account username
+                $this->mail->Username   = $preferences->pref_mail_smtp_user;
+                // SMTP account password
+                $this->mail->Password   = $preferences->pref_mail_smtp_password;
+                break;
+            case self::METHOD_SENDMAIL:
+                // telling the class to use Sendmail transport
+                $this->mail->IsSendmail();
+                break;
+            case self::METHOD_QMAIL:
+                // telling the class to use QMail transport
+                $this->mail->IsQmail();
+                break;
         }
 
-        $this->_mail->SetFrom(
+        $this->mail->SetFrom(
             $preferences->pref_email,
             $preferences->pref_email_nom
         );
         // Add a Reply-To field in the mail headers.
         // Fix bug #6654.
-        if ( $preferences->pref_email_reply_to ) {
-            $this->_mail->AddReplyTo($preferences->pref_email_reply_to);
+        if ($preferences->pref_email_reply_to) {
+            $this->mail->AddReplyTo($preferences->pref_email_reply_to);
         } else {
-            $this->_mail->AddReplyTo($preferences->pref_email);
+            $this->mail->AddReplyTo($preferences->pref_email);
         }
-        $this->_mail->CharSet = 'UTF-8';
-        $this->_mail->SetLanguage($i18n->getAbbrev());
+        $this->mail->CharSet = 'UTF-8';
+        $this->mail->SetLanguage($i18n->getAbbrev());
 
-        if ( $preferences->pref_bool_wrap_mails ) {
-            $this->_mail->WordWrap = $this->_word_wrap;
+        if ($preferences->pref_bool_wrap_mails) {
+            $this->mail->WordWrap = $this->word_wrap;
         } else {
-            $this->_word_wrap = 0;
+            $this->word_wrap = 0;
         }
     }
 
@@ -173,15 +173,15 @@ class GaletteMail
     {
         $res = true;
 
-        if ( $this->_mail === null ) {
-            $this->_initMailer();
+        if ($this->mail === null) {
+            $this->initMailer();
         }
 
-        $this->_recipients = array();
-        foreach ( $recipients as $mail => $name ) {
-            if ( self::isValidEmail($mail) ) {
-                $this->_recipients[$mail] = $name;
-                $this->_mail->AddBCC($mail, $name);
+        $this->recipients = array();
+        foreach ($recipients as $mail => $name) {
+            if (self::isValidEmail($mail)) {
+                $this->recipients[$mail] = $name;
+                $this->mail->AddBCC($mail, $name);
             } else {
                 //one of addresses is not valid :
                 //- set $res to false
@@ -193,7 +193,7 @@ class GaletteMail
                     '] One of recipients address is not valid.',
                     Analog::INFO
                 );
-                $this->_mail->ClearBCCs();
+                $this->mail->ClearBCCs();
                 break;
             }
         }
@@ -209,41 +209,40 @@ class GaletteMail
     {
         global $preferences;
 
-        if ( $this->_mail === null ) {
-            $this->_initMailer();
+        if ($this->mail === null) {
+            $this->initMailer();
         }
 
-        if ( $this->_html ) {
+        if ($this->html) {
             //the mail is html :(
-            $this->_mail->AltBody = $this->cleanedHtml();
-            $this->_mail->IsHTML(true);
+            $this->mail->AltBody = $this->cleanedHtml();
+            $this->mail->IsHTML(true);
         } else {
             //the mail is plaintext :)
-            $this->_mail->AltBody = null;
-            $this->_mail->IsHTML(false);
+            $this->mail->AltBody = null;
+            $this->mail->IsHTML(false);
         }
 
-        $this->_mail->Subject = $this->_subject;
-        $this->_mail->Body = $this->_message;
+        $this->mail->Subject = $this->subject;
+        $this->mail->Body = $this->message;
 
         //set at least on real recipient (not bcc)
-        if ( count($this->_recipients) === 1 ) {
+        if (count($this->recipients) === 1) {
             //there is only one recipient, clean bcc and readd as simple recipient
-            $this->_mail->ClearBCCs();
-            $this->_mail->AddAddress(
-                key($this->_recipients),
-                current($this->_recipients)
+            $this->mail->ClearBCCs();
+            $this->mail->AddAddress(
+                key($this->recipients),
+                current($this->recipients)
             );
         } else {
             //we're sending a mailing. Set main recipient to sender
-            $this->_mail->AddAddress(
+            $this->mail->AddAddress(
                 $preferences->pref_email,
                 $preferences->pref_email_nom
             );
         }
 
-        if ( trim($preferences->pref_mail_sign) != '' ) {
-
+        if (trim($preferences->pref_mail_sign) != '') {
             $patterns = array(
                 '/{NAME}/',
                 '/{WEBSITE}/',
@@ -270,26 +269,26 @@ class GaletteMail
                 $preferences->pref_mail_sign
             );
 
-            if ( $this->_html ) {
+            if ($this->html) {
                 //we are sending html message
                 $tsign = "\r\n-- \r\n" . $sign;
                 //apply mail sign to text version
-                $this->_mail->AltBody .= $tsign;
+                $this->mail->AltBody .= $tsign;
                 //then apply mail sign to html version
                 $sign_style = 'color:grey;border-top:1px solid #ccc;margin-top:2em';
                 $hsign = '<div style="' . $sign_style. '">' .
                     nl2br($sign) . '</div>';
-                $this->_mail->Body .= $hsign;
+                $this->mail->Body .= $hsign;
             } else {
                 $sign = "\r\n-- \r\n" . $sign;
-                $this->_mail->Body .= $sign;
+                $this->mail->Body .= $sign;
             }
         }
 
         //join attachments
-        if ( count($this->attachments) > 0 ) {
-            foreach ( $this->attachments as $attachment ) {
-                $this->_mail->AddAttachment(
+        if (count($this->attachments) > 0) {
+            foreach ($this->attachments as $attachment) {
+                $this->mail->AddAttachment(
                     $attachment->getDestDir() . $attachment->getFileName()
                 );
             }
@@ -297,27 +296,27 @@ class GaletteMail
 
         try {
             //reinit errors array
-            $this->_errors = array();
+            $this->errors = array();
             //let's send the mail
-            if ( !$this->_mail->Send() ) {
-                $this->_errors[] = $this->_mail->ErrorInfo;
+            if (!$this->mail->Send()) {
+                $this->errors[] = $this->mail->ErrorInfo;
                 Analog::log(
                     'An error occured sending mail to: ' .
-                    implode(', ', array_keys($this->_recipients)),
+                    implode(', ', array_keys($this->recipients)),
                     Analog::INFO
                 );
-                $this->_mail = null;
+                $this->mail = null;
                 return self::MAIL_ERROR;
             } else {
                 $txt = '';
-                foreach ( $this->_recipients as $k=>$v ) {
+                foreach ($this->recipients as $k => $v) {
                     $txt .= $v . ' (' . $k . '), ';
                 }
                 Analog::log(
                     'A mail has been sent to: ' . $txt,
                     Analog::INFO
                 );
-                $this->_mail = null;
+                $this->mail = null;
                 return self::MAIL_SENT;
             }
         } catch (\Exception $e) {
@@ -326,7 +325,7 @@ class GaletteMail
                 Analog::ERROR
             );
             $this->errors[] = $e->getMessage();
-            $this->_mail = null;
+            $this->mail = null;
             return self::MAIL_ERROR;
         }
     }
@@ -338,10 +337,10 @@ class GaletteMail
      *
      * @return true if address is valid, false otherwise
      */
-    public static function isValidEmail( $address )
+    public static function isValidEmail($address)
     {
         $valid = \PHPMailer::ValidateAddress($address);
-        if ( !$valid ) {
+        if (!$valid) {
             Analog::log(
                 '[GaletteMail] Address `' . $address . '` is not valid ',
                 Analog::DEBUG
@@ -357,13 +356,13 @@ class GaletteMail
      *
      * @return true if address is string is an url, false otherwise
      */
-    public static function isUrl( $url )
+    public static function isUrl($url)
     {
         $valid = preg_match(
             '|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i',
             $url
         );
-        if ( !$valid ) {
+        if (!$valid) {
             Analog::log(
                 '[GaletteMail] `' . $url . '` is not an url',
                 Analog::DEBUG
@@ -391,7 +390,7 @@ class GaletteMail
      */
     protected function getPhpMailer()
     {
-        return $this->_mail;
+        return $this->mail;
     }
 
     /**
@@ -403,10 +402,10 @@ class GaletteMail
      */
     public function isHTML($set = null)
     {
-        if ( is_bool($set) ) {
-            $this->_html = $set;
+        if (is_bool($set)) {
+            $this->html = $set;
         }
-        return $this->_html;
+        return $this->html;
     }
 
     /**
@@ -416,7 +415,7 @@ class GaletteMail
      */
     public function getSubject()
     {
-        return $this->_subject;
+        return $this->subject;
     }
 
     /**
@@ -426,7 +425,7 @@ class GaletteMail
      */
     public function getErrors()
     {
-        return $this->_errors;
+        return $this->errors;
     }
 
     /**
@@ -436,7 +435,7 @@ class GaletteMail
      */
     public function getMessage()
     {
-        return $this->_message;
+        return $this->message;
     }
 
     /**
@@ -446,13 +445,13 @@ class GaletteMail
      */
     public function getWrappedMessage()
     {
-        if ( $this->_word_wrap > 0 ) {
-            return $this->_mail->wrapText(
-                $this->_message,
-                $this->_word_wrap
+        if ($this->word_wrap > 0) {
+            return $this->mail->wrapText(
+                $this->message,
+                $this->word_wrap
             );
         } else {
-            return $this->_message;
+            return $this->message;
         }
     }
 
@@ -465,7 +464,7 @@ class GaletteMail
      */
     public function setSubject($subject)
     {
-        $this->_subject = $subject;
+        $this->subject = $subject;
     }
 
     /**
@@ -477,6 +476,6 @@ class GaletteMail
      */
     public function setMessage($message)
     {
-        $this->_message = $message;
+        $this->message = $message;
     }
 }

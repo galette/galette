@@ -56,11 +56,11 @@ use Analog\Analog;
 
 class PdfMembersLabels extends Pdf
 {
-    private $_xorigin;
-    private $_yorigin;
-    private $_w;
-    private $_h;
-    private $_line_h;
+    private $xorigin;
+    private $yorigin;
+    private $w;
+    private $h;
+    private $line_h;
 
     /**
      * Main constructor, set creator and author
@@ -70,14 +70,14 @@ class PdfMembersLabels extends Pdf
     public function __construct(Preferences $prefs)
     {
         parent::__construct($prefs);
-        $this->_init();
+        $this->init();
     }
     /**
      * Initialize PDF
      *
      * @return void
      */
-    private function _init()
+    private function init()
     {
         // Set document information
         $this->SetTitle(_T("Member's Labels"));
@@ -111,15 +111,15 @@ class PdfMembersLabels extends Pdf
 
         // Set origin
         // Top left corner
-        $this->_xorigin = $this->preferences->pref_etiq_marges_h;
-        $this->_yorigin = $this->preferences->pref_etiq_marges_v;
+        $this->xorigin = $this->preferences->pref_etiq_marges_h;
+        $this->yorigin = $this->preferences->pref_etiq_marges_v;
 
         // Label width
-        $this->_w = round($this->preferences->pref_etiq_hsize);
+        $this->w = round($this->preferences->pref_etiq_hsize);
         // Label heigth
-        $this->_h = round($this->preferences->pref_etiq_vsize);
+        $this->h = round($this->preferences->pref_etiq_vsize);
         // Line heigth
-        $this->_line_h=round($this->_h/5);
+        $this->line_h=round($this->h/5);
     }
 
     /**
@@ -147,28 +147,28 @@ class PdfMembersLabels extends Pdf
             $row = ($nb_etiq / $this->preferences->pref_etiq_cols)
                 % $this->preferences->pref_etiq_rows;
             // Set label origin
-            $x = $this->_xorigin + $col*(
+            $x = $this->xorigin + $col*(
                 round($this->preferences->pref_etiq_hsize) +
                 round($this->preferences->pref_etiq_hspace)
             );
-            $y = $this->_yorigin + $row*(
+            $y = $this->yorigin + $row*(
                 round($this->preferences->pref_etiq_vsize) +
                 round($this->preferences->pref_etiq_vspace)
             );
             // Draw a frame around the label
-            $this->Rect($x, $y, $this->_w, $this->_h);
+            $this->Rect($x, $y, $this->w, $this->h);
             // Print full name
             $this->SetXY($x, $y);
-            $this->Cell($this->_w, $this->_line_h, $member->sfullname, 0, 0, 'L', 0);
+            $this->Cell($this->w, $this->line_h, $member->sfullname, 0, 0, 'L', 0);
             // Print first line of address
             $this->SetFont(self::FONT, '', $this->preferences->pref_etiq_corps);
-            $this->SetXY($x, $y + $this->_line_h);
-            $this->Cell($this->_w, $this->_line_h, $member->address, 0, 0, 'L', 0);
+            $this->SetXY($x, $y + $this->line_h);
+            $this->Cell($this->w, $this->line_h, $member->address, 0, 0, 'L', 0);
             // Print second line of address
-            $this->SetXY($x, $y + $this->_line_h*2);
+            $this->SetXY($x, $y + $this->line_h*2);
             $this->Cell(
-                $this->_w,
-                $this->_line_h,
+                $this->w,
+                $this->line_h,
                 $member->address_continuation,
                 0,
                 0,
@@ -177,10 +177,10 @@ class PdfMembersLabels extends Pdf
             );
             // Print zip code and town
             $this->SetFont(self::FONT, 'B', $this->preferences->pref_etiq_corps);
-            $this->SetXY($x, $y + $this->_line_h*3);
+            $this->SetXY($x, $y + $this->line_h*3);
             $this->Cell(
-                $this->_w,
-                $this->_line_h,
+                $this->w,
+                $this->line_h,
                 $member->zipcode . ' - ' . $member->town,
                 0,
                 0,
@@ -189,10 +189,9 @@ class PdfMembersLabels extends Pdf
             );
             // Print country
             $this->SetFont(self::FONT, 'I', $this->preferences->pref_etiq_corps);
-            $this->SetXY($x, $y + $this->_line_h*4);
-            $this->Cell($this->_w, $this->_line_h, $member->country, 0, 0, 'R', 0);
+            $this->SetXY($x, $y + $this->line_h*4);
+            $this->Cell($this->w, $this->line_h, $member->country, 0, 0, 'R', 0);
             $nb_etiq++;
         }
-
     }
 }

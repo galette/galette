@@ -60,10 +60,10 @@ class Reminders
     const TABLE = 'reminders';
     const PK = 'reminder_id';
 
-    private $_selected;
-    private $_types;
-    private $_reminders;
-    private $_toremind;
+    private $selected;
+    private $types;
+    private $reminders;
+    private $toremind;
 
     /**
      * Main constructor
@@ -72,10 +72,10 @@ class Reminders
      */
     public function __construct($selected)
     {
-        if ( isset($selected) && is_array($selected) ) {
-            $this->_selected = array_map('intval', $selected);
+        if (isset($selected) && is_array($selected)) {
+            $this->selected = array_map('intval', $selected);
         } else {
-            $this->_selected = array(Reminder::IMPENDING, Reminder::LATE);
+            $this->selected = array(Reminder::IMPENDING, Reminder::LATE);
         }
     }
 
@@ -87,9 +87,9 @@ class Reminders
      *
      * @return void
      */
-    private function _loadToRemind($zdb, $type)
+    private function loadToRemind($zdb, $type)
     {
-        $this->_toremind = array();
+        $this->toremind = array();
         $select = $zdb->select(Members::TABLE, 'a');
         $select->join(
             array('r' => PREFIX_DB . self::TABLE),
@@ -103,7 +103,7 @@ class Reminders
             ->where('a.activite_adh=true')
             ->where('bool_exempt_adh=false');
 
-        if ( $type === Reminder::LATE ) {
+        if ($type === Reminder::LATE) {
             $select->where->LessThan(
                 'date_echeance',
                 date('Y-m-d', time())
@@ -125,53 +125,53 @@ class Reminders
 
         $results = $zdb->execute($select);
 
-        foreach ( $results as $r ) {
-            if ( $r->reminder_type === null || (int)$r->reminder_type === $type ) {
+        foreach ($results as $r) {
+            if ($r->reminder_type === null || (int)$r->reminder_type === $type) {
                 $date_checked = false;
 
                 $due_date = new \DateTime($r->date_echeance);
                 $now = new \DateTime();
 
-                switch ( $type ) {
-                case Reminder::IMPENDING:
-                    //reminders 30 days and 7 days before
-                    $first = clone $due_date;
-                    $second = clone $due_date;
-                    $first->modify('-1 month');
-                    $second->modify('-7 day');
-                    if ( $now >= $first || $now >= $second ) {
-                        if ( $r->last_reminder == '' ) {
-                            $date_checked = true;
-                        } else {
-                            $last_reminder = new \DateTime($r->last_reminder);
-                            if ( $now >= $second && $second > $last_reminder ) {
+                switch ($type) {
+                    case Reminder::IMPENDING:
+                        //reminders 30 days and 7 days before
+                        $first = clone $due_date;
+                        $second = clone $due_date;
+                        $first->modify('-1 month');
+                        $second->modify('-7 day');
+                        if ($now >= $first || $now >= $second) {
+                            if ($r->last_reminder == '') {
                                 $date_checked = true;
+                            } else {
+                                $last_reminder = new \DateTime($r->last_reminder);
+                                if ($now >= $second && $second > $last_reminder) {
+                                    $date_checked = true;
+                                }
                             }
                         }
-                    }
-                    break;
-                case Reminder::LATE:
-                    //reminders 30 days and 60 days after
-                    $first = clone $due_date;
-                    $second = clone $due_date;
-                    $first->modify('1 month');
-                    $second->modify('2 month');
-                    if ( $now >= $second || $now >= $first ) {
-                        if ( $r->last_reminder == '' ) {
-                            $date_checked = true;
-                        } else {
-                            $last_reminder = new \DateTime($r->last_reminder);
-                            if ( $now >= $second && $second > $last_reminder ) {
+                        break;
+                    case Reminder::LATE:
+                        //reminders 30 days and 60 days after
+                        $first = clone $due_date;
+                        $second = clone $due_date;
+                        $first->modify('1 month');
+                        $second->modify('2 month');
+                        if ($now >= $second || $now >= $first) {
+                            if ($r->last_reminder == '') {
                                 $date_checked = true;
+                            } else {
+                                $last_reminder = new \DateTime($r->last_reminder);
+                                if ($now >= $second && $second > $last_reminder) {
+                                    $date_checked = true;
+                                }
                             }
                         }
-                    }
-                    break;
+                        break;
                 }
 
-                if ( $date_checked ) {
+                if ($date_checked) {
                     $pk = Members::PK;
-                    $this->_toremind[] = $r->$pk;
+                    $this->toremind[] = $r->$pk;
                 }
             } else {
                 Analog::log(
@@ -193,18 +193,18 @@ class Reminders
      */
     public function getList($zdb, $nomail = false)
     {
-        $this->_types = array();
-        $this->_reminders = array();
+        $this->types = array();
+        $this->reminders = array();
 
         $types = array();
-        foreach ( $this->_selected as $s ) {
-            $this->_loadToRemind($zdb, $s);
+        foreach ($this->selected as $s) {
+            $this->loadToRemind($zdb, $s);
 
-            if ( count($this->_toremind) > 0 ) {
+            if (count($this->toremind) > 0) {
                 //and then get list
                 $m = new Members();
                 $members = $m->getArrayList(
-                    $this->_toremind,
+                    $this->toremind,
                     null,
                     false,
                     true,
@@ -212,24 +212,24 @@ class Reminders
                     false,
                     true
                 );
-                $this->_types[$s] = $members;
+                $this->types[$s] = $members;
             }
         }
 
-        if ( is_array($this->_types) ) {
-            foreach ( $this->_types as $type=>$members ) {
+        if (is_array($this->types)) {
+            foreach ($this->types as $type => $members) {
                 //load message
-                if ( is_array($members) ) {
-                    foreach ( $members as $member ) {
+                if (is_array($members)) {
+                    foreach ($members as $member) {
                         $reminder = new Reminder();
                         $reminder->type = $type;
                         $reminder->dest = $member;
 
-                        $this->_reminders[] = $reminder;
+                        $this->reminders[] = $reminder;
                     }
                 }
             }
         }
-        return $this->_reminders;
+        return $this->reminders;
     }
 }

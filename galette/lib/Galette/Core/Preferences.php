@@ -54,10 +54,8 @@ use Galette\Entity\Adherent;
  */
 class Preferences
 {
-    private $_zdb;
-
-    private $_prefs;
-    private $_error;
+    private $zdb;
+    private $prefs;
 
     const TABLE = 'preferences';
     const PK = 'nom_pref';
@@ -75,12 +73,12 @@ class Preferences
     /** Public pages are visibles for admin and staff members only */
     const PUBLIC_PAGES_VISIBILITY_PRIVATE = 2;
 
-    private static $_fields = array(
+    private static $fields = array(
         'nom_pref',
         'val_pref'
     );
 
-    private static $_defaults = array(
+    private static $defaults = array(
         'pref_admin_login'    =>    'admin',
         'pref_admin_pass'    =>    'admin',
         'pref_nom'        =>    'Galette',
@@ -166,10 +164,10 @@ class Preferences
      */
     public function __construct($zdb, $load = true)
     {
-        $this->_zdb = $zdb;
-        if ( $load ) {
+        $this->zdb = $zdb;
+        if ($load) {
             $this->load();
-            $this->_checkUpdate();
+            $this->checkUpdate();
         }
     }
 
@@ -179,13 +177,13 @@ class Preferences
      *
      * @return void
      */
-    private function _checkUpdate()
+    private function checkUpdate()
     {
         $proceed = false;
         $params = array();
-        foreach ( self::$_defaults as $k=>$v ) {
-            if ( !isset($this->_prefs[$k]) ) {
-                $this->_prefs[$k] = $v;
+        foreach (self::$defaults as $k => $v) {
+            if (!isset($this->prefs[$k])) {
+                $this->prefs[$k] = $v;
                 Analog::log(
                     'The field `' . $k . '` does not exists, Galette will attempt to create it.',
                     Analog::INFO
@@ -197,18 +195,18 @@ class Preferences
                 );
             }
         }
-        if ( $proceed !== false ) {
+        if ($proceed !== false) {
             try {
-                $insert = $this->_zdb->insert(self::TABLE);
+                $insert = $this->zdb->insert(self::TABLE);
                 $insert->values(
                     array(
                         'nom_pref'  => ':nom_pref',
                         'val_pref'  => ':val_pref'
                     )
                 );
-                $stmt = $this->_zdb->sql->prepareStatementForSqlObject($insert);
+                $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
-                foreach ( $params as $p ) {
+                foreach ($params as $p) {
                     $stmt->execute(
                         array(
                             'nom_pref' => $p['nom_pref'],
@@ -238,12 +236,12 @@ class Preferences
      */
     public function load()
     {
-        $this->_prefs = array();
+        $this->prefs = array();
 
         try {
-            $result = $this->_zdb->selectAll(self::TABLE);
-            foreach ( $result as $pref ) {
-                $this->_prefs[$pref->nom_pref] = $pref->val_pref;
+            $result = $this->zdb->selectAll(self::TABLE);
+            foreach ($result as $pref) {
+                $this->prefs[$pref->nom_pref] = $pref->val_pref;
             }
             return true;
         } catch (\Exception $e) {
@@ -269,26 +267,26 @@ class Preferences
     {
         try {
             //first, we drop all values
-            $delete = $this->_zdb->delete(self::TABLE);
-            $this->_zdb->execute($delete);
+            $delete = $this->zdb->delete(self::TABLE);
+            $this->zdb->execute($delete);
 
             //we then replace default values with the ones user has selected
-            $values = self::$_defaults;
+            $values = self::$defaults;
             $values['pref_lang'] = $lang;
             $values['pref_admin_login'] = $adm_login;
             $values['pref_admin_pass'] = $adm_pass;
             $values['pref_card_year'] = date('Y');
 
-            $insert = $this->_zdb->insert(self::TABLE);
+            $insert = $this->zdb->insert(self::TABLE);
             $insert->values(
                 array(
                     'nom_pref'  => ':nom_pref',
                     'val_pref'  => ':val_pref'
                 )
             );
-            $stmt = $this->_zdb->sql->prepareStatementForSqlObject($insert);
+            $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
-            foreach ( $values as $k=>$v ) {
+            foreach ($values as $k => $v) {
                 $stmt->execute(
                     array(
                         'nom_pref' => $k,
@@ -318,7 +316,7 @@ class Preferences
      */
     public function getFieldsNames()
     {
-        return array_keys($this->_prefs);
+        return array_keys($this->prefs);
     }
 
     /**
@@ -329,20 +327,20 @@ class Preferences
     public function store()
     {
         try {
-            $this->_zdb->connection->beginTransaction();
-            $update = $this->_zdb->update(self::TABLE);
+            $this->zdb->connection->beginTransaction();
+            $update = $this->zdb->update(self::TABLE);
             $update->set(
                 array(
                     'val_pref'  => ':val_pref'
                 )
             )->where->equalTo('nom_pref', ':nom_pref');
 
-            $stmt = $this->_zdb->sql->prepareStatementForSqlObject($update);
+            $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
-            foreach (self::$_defaults as $k => $v) {
+            foreach (self::$defaults as $k => $v) {
                 Analog::log('Storing ' . $k, Analog::DEBUG);
 
-                $value = $this->_prefs[$k];
+                $value = $this->prefs[$k];
                 //do not store pdf_adhesion_form, it's designed to be overriden by plugin
                 if ($k === 'pref_adhesion_form') {
                     $value = $v;
@@ -355,14 +353,14 @@ class Preferences
                     )
                 );
             }
-            $this->_zdb->connection->commit();
+            $this->zdb->connection->commit();
             Analog::log(
                 'Preferences were successfully stored into database.',
                 Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
-            $this->_zdb->connection->rollBack();
+            $this->zdb->connection->rollBack();
 
             $messages = array();
             do {
@@ -395,29 +393,29 @@ class Preferences
 
         $replacements = null;
 
-        if ( $this->_prefs['pref_postal_adress'] == self::POSTAL_ADDRESS_FROM_PREFS) {
-            $_address = $this->_prefs['pref_adresse'];
-            if ( $this->_prefs['pref_adresse2'] && $this->_prefs['pref_adresse2'] != '' ) {
-                $_address .= "\n" . $this->_prefs['pref_adresse2'];
+        if ($this->prefs['pref_postal_adress'] == self::POSTAL_ADDRESS_FROM_PREFS) {
+            $_address = $this->prefs['pref_adresse'];
+            if ($this->prefs['pref_adresse2'] && $this->prefs['pref_adresse2'] != '') {
+                $_address .= "\n" . $this->prefs['pref_adresse2'];
             }
             $replacements = array(
-                $this->_prefs['pref_nom'],
+                $this->prefs['pref_nom'],
                 '',
                 $_address,
-                $this->_prefs['pref_cp'],
-                $this->_prefs['pref_ville'],
-                $this->_prefs['pref_pays']
+                $this->prefs['pref_cp'],
+                $this->prefs['pref_ville'],
+                $this->prefs['pref_pays']
             );
         } else {
             //get selected staff member address
-            $adh = new Adherent($this->_zdb, (int)$this->_prefs['pref_postal_staff_member']);
+            $adh = new Adherent($this->zdb, (int)$this->prefs['pref_postal_staff_member']);
             $_complement = preg_replace(
                 array('/%name/', '/%status/'),
-                array($this->_prefs['pref_nom'], $adh->sstatus),
+                array($this->prefs['pref_nom'], $adh->sstatus),
                 _T("%name association's %status")
             );
             $_address = $adh->address;
-            if ( $adh->address_continuation && $adh->address_continuation != '' ) {
+            if ($adh->address_continuation && $adh->address_continuation != '') {
                 $_address .= "\n" . $adh->address_continuation;
             }
             $replacements = array(
@@ -453,37 +451,37 @@ class Preferences
      */
     public function showPublicPages(Authentication $login)
     {
-        if ( $this->_prefs['pref_bool_publicpages'] ) {
+        if ($this->prefs['pref_bool_publicpages']) {
             //if public pages are actives, let's check if we
             //display them for curent call
-            switch ( $this->_prefs['pref_publicpages_visibility'] ) {
-            case self::PUBLIC_PAGES_VISIBILITY_PUBLIC:
-                //pages are publically visibles
-                return true;
-                break;
-            case self::PUBLIC_PAGES_VISIBILITY_RESTRICTED:
-                //pages should be displayed only for up to date members
-                if ( $login->isUp2Date()
-                    || $login->isAdmin()
-                    || $login->isStaff()
-                ) {
+            switch ($this->prefs['pref_publicpages_visibility']) {
+                case self::PUBLIC_PAGES_VISIBILITY_PUBLIC:
+                    //pages are publically visibles
                     return true;
-                } else {
+                    break;
+                case self::PUBLIC_PAGES_VISIBILITY_RESTRICTED:
+                    //pages should be displayed only for up to date members
+                    if ($login->isUp2Date()
+                        || $login->isAdmin()
+                        || $login->isStaff()
+                    ) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                    break;
+                case self::PUBLIC_PAGES_VISIBILITY_PRIVATE:
+                    //pages should be displayed only for staff and admins
+                    if ($login->isAdmin() || $login->isStaff()) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                    break;
+                default:
+                    //should never be there
                     return false;
-                }
-                break;
-            case self::PUBLIC_PAGES_VISIBILITY_PRIVATE:
-                //pages should be displayed only for staff and admins
-                if ( $login->isAdmin() || $login->isStaff() ) {
-                    return true;
-                } else {
-                    return false;
-                }
-                break;
-            default:
-                //should never be there
-                return false;
-                break;
+                    break;
             }
         } else {
             return false;
@@ -501,13 +499,13 @@ class Preferences
     {
         $forbidden = array('logged', 'admin', 'active', 'defaults');
 
-        if ( !in_array($name, $forbidden) && isset($this->_prefs[$name])) {
-            if ( GALETTE_MODE === 'DEMO'
+        if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
+            if (GALETTE_MODE === 'DEMO'
                 && $name == 'pref_mail_method'
             ) {
                 return GaletteMail::METHOD_DISABLED;
             } else {
-                return $this->_prefs[$name];
+                return $this->prefs[$name];
             }
         } else {
             Analog::log(
@@ -525,7 +523,7 @@ class Preferences
      */
     public function getDefaults()
     {
-        return self::$_defaults;
+        return self::$defaults;
     }
 
     /**
@@ -539,7 +537,7 @@ class Preferences
     public function __set($name, $value)
     {
         //does this pref exists ?
-        if ( !array_key_exists($name, self::$_defaults) ) {
+        if (!array_key_exists($name, self::$defaults)) {
             Analog::log(
                 'Trying to set a preference value which does not seem to exist ('
                 . $name . ')',
@@ -554,7 +552,6 @@ class Preferences
         }
 
         //okay, let's update value
-        $this->_prefs[$name] = $value;
+        $this->prefs[$name] = $value;
     }
-
 }

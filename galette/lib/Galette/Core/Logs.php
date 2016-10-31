@@ -67,8 +67,8 @@ class Logs
             GLOB_BRACE
         );
 
-        foreach ( $match as $logfile ) {
-            if ( filemtime($logfile) <= $interval ) {
+        foreach ($match as $logfile) {
+            if (filemtime($logfile) <= $interval) {
                 unlink($logfile);
             }
         }

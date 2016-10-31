@@ -189,21 +189,24 @@ trait FileTrait
      *
      * @return void
      */
-    protected function init($dest, $extensions = null, $mimes = null,
+    protected function init(
+        $dest,
+        $extensions = null,
+        $mimes = null,
         $maxlenght = null
     ) {
-        if ( $dest !== null && substr($dest, -1) !== '/' ) {
+        if ($dest !== null && substr($dest, -1) !== '/') {
             //normalize path
             $dest .= '/';
         }
         $this->dest_dir = $dest;
-        if ( $extensions !== null ) {
+        if ($extensions !== null) {
             $this->allowed_extensions = $extensions;
         }
-        if ( $mimes !== null ) {
+        if ($mimes !== null) {
             $this->allowed_mimes = $mimes;
         }
-        if ( $maxlenght !== null ) {
+        if ($maxlenght !== null) {
             $this->maxlenght = $maxlenght;
         } else {
             $this->maxlenght = self::MAX_FILE_SIZE;
@@ -223,7 +226,7 @@ trait FileTrait
             $this->dest_dir . $this->name,
             $dest . $this->name
         );
-        if ( $res === true ) {
+        if ($res === true) {
             $this->dest_dir = $dest;
         }
         return $res;
@@ -246,13 +249,13 @@ trait FileTrait
 
         //First, does the file have a valid name?
         $reg = "/^(.[^" . implode('', $this->bad_chars) . "]+)\.";
-        if ( count($this->allowed_extensions) > 0 ) {
+        if (count($this->allowed_extensions) > 0) {
             $reg .= "(" . implode('|', $this->allowed_extensions) . ")";
         } else {
             $reg .= "(.*)";
         }
         $reg .= "$/i";
-        if ( preg_match($reg, $this->name, $matches) ) {
+        if (preg_match($reg, $this->name, $matches)) {
             Analog::log(
                 '[' . $class . '] Filename and extension are OK, proceed.',
                 Analog::DEBUG
@@ -263,7 +266,7 @@ trait FileTrait
             $m = preg_match($erreg, $this->name, $errmatches);
 
             $err_msg = '[' . $class . '] ';
-            if ( $m == 1 ) {
+            if ($m == 1) {
                 //ok, we got a good filename and an extension. Extension is bad :)
                 $err_msg .= 'Invalid extension for file ' . $this->name . '.';
                 $ret = self::INVALID_EXTENSION;
@@ -285,7 +288,7 @@ trait FileTrait
         }
 
         //Second, let's check file size
-        if ( $file['size'] > ( $this->maxlenght * 1024 ) ) {
+        if ($file['size'] > ($this->maxlenght * 1024)) {
             Analog::log(
                 '[' . $class . '] File is too big (' . ( $file['size'] * 1024 ) .
                 'Ko for maximum authorized ' . ( $this->maxlenght * 1024 ) .
@@ -299,7 +302,7 @@ trait FileTrait
 
         $mime = $this->getMimeType($tmpfile);
 
-        if ( count($this->allowed_mimes) > 0
+        if (count($this->allowed_mimes) > 0
             && !in_array($mime, $this->allowed_mimes)
         ) {
             Analog::log(
@@ -316,7 +319,7 @@ trait FileTrait
 
         $new_file = $this->dest_dir . $this->name;
 
-        if ( file_exists($new_file) ) {
+        if (file_exists($new_file)) {
             Analog::log(
                 '[' . $class . '] File `' . $new_file . '` already exists',
                 Analog::ERROR
@@ -325,13 +328,13 @@ trait FileTrait
         }
 
         $in_place = false;
-        if ( $ajax === true ) {
+        if ($ajax === true) {
             $in_place = rename($tmpfile, $new_file);
         } else {
             $in_place = move_uploaded_file($tmpfile, $new_file);
         }
 
-        if ( $in_place === false ) {
+        if ($in_place === false) {
             return self::CANT_WRITE;
         }
         return $in_place;
@@ -389,7 +392,7 @@ trait FileTrait
     public function getBadChars()
     {
         $ret = '';
-        foreach ( $this->bad_chars as $char=>$regchar ) {
+        foreach ($this->bad_chars as $char => $regchar) {
             $ret .= '`' . $char . '`, ';
         }
         return $ret;
@@ -476,37 +479,37 @@ trait FileTrait
     {
         $error = _T("An error occued.");
 
-        switch( $code ) {
-        case self::INVALID_FILENAME:
-            $error = _T("File name is invalid, it should not contain any special character or space.");
-            break;
-        case self::INVALID_EXTENSION:
-            $error = preg_replace(
-                '|%s|',
-                $this->getAllowedExts(),
-                _T("- File extension is not allowed, only %s files are.")
-            );
-            break;
-        case self::FILE_TOO_BIG:
-            $error = preg_replace(
-                '|%d|',
-                $this->maxlenght,
-                _T("File is too big. Maximum allowed size is %dKo")
-            );
-            break;
-        case self::MIME_NOT_ALLOWED:
-            /** FIXME: should be more descriptive */
-            $error = _T("Mime-Type not allowed");
-            break;
-        case self::NEW_FILE_EXISTS:
-            $error = _T("A file with that name already exists!");
-            break;
-        case self::INVALID_FILE:
-            $error = _T("File does not comply with requirements.");
-            break;
-        case self::CANT_WRITE:
-            $error = _T("Unable to write file or temporary file");
-            break;
+        switch ($code) {
+            case self::INVALID_FILENAME:
+                $error = _T("File name is invalid, it should not contain any special character or space.");
+                break;
+            case self::INVALID_EXTENSION:
+                $error = preg_replace(
+                    '|%s|',
+                    $this->getAllowedExts(),
+                    _T("- File extension is not allowed, only %s files are.")
+                );
+                break;
+            case self::FILE_TOO_BIG:
+                $error = preg_replace(
+                    '|%d|',
+                    $this->maxlenght,
+                    _T("File is too big. Maximum allowed size is %dKo")
+                );
+                break;
+            case self::MIME_NOT_ALLOWED:
+                /** FIXME: should be more descriptive */
+                $error = _T("Mime-Type not allowed");
+                break;
+            case self::NEW_FILE_EXISTS:
+                $error = _T("A file with that name already exists!");
+                break;
+            case self::INVALID_FILE:
+                $error = _T("File does not comply with requirements.");
+                break;
+            case self::CANT_WRITE:
+                $error = _T("Unable to write file or temporary file");
+                break;
         }
 
         return $error;
@@ -534,22 +537,22 @@ trait FileTrait
     public function getPhpErrorMessage($error_code)
     {
         switch ($error_code) {
-        case UPLOAD_ERR_INI_SIZE:
-            return _T("The uploaded file exceeds the upload_max_filesize directive in php.ini");
-        case UPLOAD_ERR_FORM_SIZE:
-            return _T("The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form");
-        case UPLOAD_ERR_PARTIAL:
-            return _T("The uploaded file was only partially uploaded");
-        case UPLOAD_ERR_NO_FILE:
-            return _T("No file was uploaded");
-        case UPLOAD_ERR_NO_TMP_DIR:
-            return _T("Missing a temporary folder");
-        case UPLOAD_ERR_CANT_WRITE:
-            return _T("Failed to write file to disk");
-        case UPLOAD_ERR_EXTENSION:
-            return _T("File upload stopped by extension");
-        default:
-            return _T("Unknown upload error");
+            case UPLOAD_ERR_INI_SIZE:
+                return _T("The uploaded file exceeds the upload_max_filesize directive in php.ini");
+            case UPLOAD_ERR_FORM_SIZE:
+                return _T("The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form");
+            case UPLOAD_ERR_PARTIAL:
+                return _T("The uploaded file was only partially uploaded");
+            case UPLOAD_ERR_NO_FILE:
+                return _T("No file was uploaded");
+            case UPLOAD_ERR_NO_TMP_DIR:
+                return _T("Missing a temporary folder");
+            case UPLOAD_ERR_CANT_WRITE:
+                return _T("Failed to write file to disk");
+            case UPLOAD_ERR_EXTENSION:
+                return _T("File upload stopped by extension");
+            default:
+                return _T("Unknown upload error");
         }
     }
 }

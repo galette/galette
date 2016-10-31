@@ -151,6 +151,7 @@ class Adherent
     /**
      * Default constructor
      *
+     * @param Db      $zdb  Database instance
      * @param mixed   $args Either a ResultSet row, its id or its
      *                      login or its mail for to load s specific
      *                      member, or null to just instanciate object
@@ -162,12 +163,12 @@ class Adherent
 
         $this->zdb = $zdb;
 
-        if ( $deps !== null && is_array($deps) ) {
+        if ($deps !== null && is_array($deps)) {
             $this->_deps = array_merge(
                 $this->_deps,
                 $deps
             );
-        } else if ( $deps !== null ) {
+        } elseif ($deps !== null) {
             Analog::log(
                 '$deps shoud be an array, ' . gettype($deps) . ' given!',
                 Analog::WARNING
@@ -189,27 +190,27 @@ class Adherent
 
         //disabled fields override
         $locfile = GALETTE_CONFIG_PATH . 'disabled_fields.php';
-        if ( file_exists($locfile) ) {
+        if (file_exists($locfile)) {
             include $locfile;
-            if ( isset($loc_disabled_fields)
+            if (isset($loc_disabled_fields)
                 && is_array($loc_disabled_fields)
             ) {
                 $this->_disabled_fields = $loc_disabled_fields;
             }
-            if ( isset($loc_edit_disabled_fields)
+            if (isset($loc_edit_disabled_fields)
                 && is_array($loc_edit_disabled_fields)
             ) {
                 $this->_edit_disabled_fields = $loc_edit_disabled_fields;
             }
-            if ( isset($loc_adm_edit_disabled_fields)
+            if (isset($loc_adm_edit_disabled_fields)
                 && is_array($loc_adm_edit_disabled_fields)
             ) {
                 $this->_adm_edit_disabled_fields = $loc_adm_edit_disabled_fields;
             }
         }
 
-        if ( $args == null || is_int($args) ) {
-            if ( is_int($args) && $args > 0 ) {
+        if ($args == null || is_int($args)) {
+            if (is_int($args) && $args > 0) {
                 $this->load($args);
             } else {
                 $this->_active = true;
@@ -226,9 +227,9 @@ class Adherent
                 $this->_due_free = false;
                 $this->_parent = null;
             }
-        } elseif ( is_object($args) ) {
-            $this->_loadFromRS($args);
-        } elseif (is_string($args) ) {
+        } elseif (is_object($args)) {
+            $this->loadFromRS($args);
+        } elseif (is_string($args)) {
             $this->loadFromLoginOrMail($args);
         }
     }
@@ -253,11 +254,11 @@ class Adherent
 
             $results = $this->zdb->execute($select);
 
-            if ( $results->count() === 0 ) {
+            if ($results->count() === 0) {
                 return false;
             }
 
-            $this->_loadFromRS($results->current());
+            $this->loadFromRS($results->current());
             return true;
         } catch (\Exception $e) {
             Analog::log(
@@ -279,7 +280,7 @@ class Adherent
     {
         try {
             $select = $this->zdb->select(self::TABLE);
-            if ( GaletteMail::isValidEmail($login) ) {
+            if (GaletteMail::isValidEmail($login)) {
                 //we got a valid email address, use it
                 $select->where(array('email_adh' => $login));
             } else {
@@ -289,8 +290,8 @@ class Adherent
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            if ( $result ) {
-                $this->_loadFromRS($result);
+            if ($result) {
+                $this->loadFromRS($result);
             }
         } catch (\Exception $e) {
             Analog::log(
@@ -309,19 +310,19 @@ class Adherent
      *
      * @return void
      */
-    private function _loadFromRS($r)
+    private function loadFromRS($r)
     {
         $this->_self_adh = false;
         $this->_id = $r->id_adh;
         //Identity
-        if ( $r->titre_adh !== null ) {
+        if ($r->titre_adh !== null) {
             $this->_title = new Title((int)$r->titre_adh);
         }
         $this->_company_name = $r->societe_adh;
         $this->_name = $r->nom_adh;
         $this->_surname = $r->prenom_adh;
         $this->_nickname = $r->pseudo_adh;
-        if ( $r->ddn_adh != '1901-01-01' ) {
+        if ($r->ddn_adh != '1901-01-01') {
             $this->_birthdate = $r->ddn_adh;
         }
         $this->_birth_place = $r->lieu_naissance;
@@ -354,7 +355,7 @@ class Adherent
         //Galette relative informations
         $this->_appears_in_list = ($r->bool_display_info == 1) ? true : false;
         $this->_admin = ($r->bool_admin_adh == 1) ? true : false;
-        if ( isset($r->priorite_statut)
+        if (isset($r->priorite_statut)
             && $r->priorite_statut < Members::NON_STAFF_MEMBERS
         ) {
             $this->_staff = true;
@@ -363,7 +364,7 @@ class Adherent
         $this->_login = $r->login_adh;
         $this->_password = $r->mdp_adh;
         $this->_creation_date = $r->date_crea_adh;
-        if ( $r->date_modif_adh != '1901-01-01' ) {
+        if ($r->date_modif_adh != '1901-01-01') {
             $this->_modification_date = $r->date_modif_adh;
         } else {
             $this->_modification_date = $this->_creation_date;
@@ -375,24 +376,24 @@ class Adherent
         if ($r->parent_id !== null) {
             $this->_parent = $r->parent_id;
             if ($this->_deps['parent'] === true) {
-                $this->_loadParent($r->parent_id);
+                $this->loadParent($r->parent_id);
             }
         }
 
         if ($this->_deps['children'] === true) {
-            $this->_loadChildren();
+            $this->loadChildren();
         }
 
-        if ( $this->_deps['picture'] === true ) {
+        if ($this->_deps['picture'] === true) {
             $this->_picture = new Picture($this->_id);
         }
 
-        if ( $this->_deps['groups'] === true ) {
+        if ($this->_deps['groups'] === true) {
             $this->loadGroups();
         }
 
-        if ( $this->_deps['dues'] === true ) {
-            $this->_checkDues();
+        if ($this->_deps['dues'] === true) {
+            $this->checkDues();
         }
     }
 
@@ -401,7 +402,7 @@ class Adherent
      *
      * @return void
      */
-    private function _loadParent()
+    private function loadParent()
     {
         if (!$this->_parent instanceof Adherent) {
             $deps = array_fill_keys(array_keys($this->_deps), false);
@@ -414,7 +415,7 @@ class Adherent
      *
      * @return void
      */
-    private function _loadChildren()
+    private function loadChildren()
     {
         $this->_children = array();
         try {
@@ -462,7 +463,7 @@ class Adherent
      *
      * @return void
      */
-    private function _checkDues()
+    private function checkDues()
     {
         //how many days since our beloved member has been created
         $date_now = new \DateTime();
@@ -470,12 +471,12 @@ class Adherent
             new \DateTime($this->_creation_date)
         )->days;
 
-        if ( $this->isDueFree() ) {
+        if ($this->isDueFree()) {
             //no fee required, we don't care about dates
             $this->_row_classes .= ' cotis-exempt';
         } else {
             //ok, fee is required. Let's check the dates
-            if ( $this->_due_date == '' ) {
+            if ($this->_due_date == '') {
                 $this->_row_classes .= ' cotis-never';
             } else {
                 $date_end = new \DateTime($this->_due_date);
@@ -484,11 +485,11 @@ class Adherent
                     ? $date_diff->days * -1
                     : $date_diff->days;
 
-                if ( $this->_days_remaining == 0 ) {
+                if ($this->_days_remaining == 0) {
                     $this->_row_classes .= ' cotis-lastday';
-                } else if ( $this->_days_remaining < 0 ) {
+                } elseif ($this->_days_remaining < 0) {
                     $this->_row_classes .= ' cotis-late';
-                } else if ( $this->_days_remaining < 30 ) {
+                } elseif ($this->_days_remaining < 30) {
                     $this->_row_classes .= ' cotis-soon';
                 } else {
                     $this->_row_classes .= ' cotis-ok';
@@ -536,9 +537,9 @@ class Adherent
      */
     public function isGroupMember($group_name)
     {
-        if ( is_array($this->_groups) ) {
-            foreach ( $this->_groups as $g ) {
-                if ( $g->getName() == $group_name ) {
+        if (is_array($this->_groups)) {
+            foreach ($this->_groups as $g) {
+                if ($g->getName() == $group_name) {
                     return true;
                     break;
                 }
@@ -557,9 +558,9 @@ class Adherent
      */
     public function isGroupManager($group_name)
     {
-        if ( is_array($this->_managed_groups) ) {
-            foreach ( $this->_managed_groups as $mg ) {
-                if ( $mg->getName() == $group_name ) {
+        if (is_array($this->_managed_groups)) {
+            foreach ($this->_managed_groups as $mg) {
+                if ($mg->getName() == $group_name) {
                     return true;
                     break;
                 }
@@ -668,7 +669,7 @@ class Adherent
     public function getRowClass($public = false)
     {
         $strclass = ($this->isActive()) ? 'active' : 'inactive';
-        if ( $public === false ) {
+        if ($public === false) {
             $strclass .= $this->_row_classes;
         }
         return $strclass;
@@ -682,16 +683,16 @@ class Adherent
     public function getDues()
     {
         $ret = '';
-        if ( $this->isDueFree() ) {
+        if ($this->isDueFree()) {
             $ret = _T("Freed of dues");
-        } else if ( $this->_due_date == '') {
+        } elseif ($this->_due_date == '') {
             $patterns = array('/%days/', '/%date/');
             $cdate = new \DateTime($this->_creation_date);
             $replace = array(
                 $this->_oldness,
                 $cdate->format(__("Y-m-d"))
             );
-            if ( $this->_active ) {
+            if ($this->_active) {
                 $ret = preg_replace(
                     $patterns,
                     $replace,
@@ -700,16 +701,16 @@ class Adherent
             } else {
                 $ret = _T("Never contributed");
             }
-        } else if ( $this->_days_remaining == 0 ) {
+        } elseif ($this->_days_remaining == 0) {
             $ret = _T("Last day!");
-        } else if ( $this->_days_remaining < 0 ) {
+        } elseif ($this->_days_remaining < 0) {
             $patterns = array('/%days/', '/%date/');
             $ddate = new \DateTime($this->_due_date);
             $replace = array(
                 $this->_days_remaining *-1,
                 $ddate->format(__("Y-m-d"))
             );
-            if ( $this->_active ) {
+            if ($this->_active) {
                 $ret = preg_replace(
                     $patterns,
                     $replace,
@@ -845,13 +846,13 @@ class Adherent
      */
     public function isUp2Date()
     {
-        if ( $this->_deps['dues'] ) {
-            if ( $this->isDueFree() ) {
+        if ($this->_deps['dues']) {
+            if ($this->isDueFree()) {
                 //member is due free, he's up to date.
                 return true;
             } else {
                 //let's check from end date, if present
-                if ( $this->_due_date == null ) {
+                if ($this->_due_date == null) {
                     return false;
                 } else {
                     $ech = new \DateTime($this->_due_date);
@@ -885,266 +886,265 @@ class Adherent
         $fields = self::getDbFields($this->zdb);
 
         //reset company name if needeed
-        if ( !isset($values['is_company']) || $values['is_company'] != 1 ) {
+        if (!isset($values['is_company']) || $values['is_company'] != 1) {
             unset($values['is_company']);
             unset($values['societe_adh']);
         }
 
-        foreach ( $fields as $key ) {
+        foreach ($fields as $key) {
             //first of all, let's sanitize values
             $key = strtolower($key);
             $prop = '_' . $this->_fields[$key]['propname'];
 
-            if ( isset($values[$key]) ) {
+            if (isset($values[$key])) {
                 $value = trim($values[$key]);
             } else {
                 switch ($key) {
-                case 'bool_admin_adh':
-                case 'bool_exempt_adh':
-                case 'bool_display_info':
-                    $value = 0;
-                    break;
-                case 'activite_adh':
-                    //values that are setted at object instanciation
-                    $value = true;
-                    break;
-                case 'date_crea_adh':
-                case 'sexe_adh':
-                case 'titre_adh':
-                case 'id_statut':
-                case 'pref_lang':
-                case 'parent_id':
-                    //values that are setted at object instanciation
-                    $value = $this->$prop;
-                    break;
-                default:
-                    $value = '';
+                    case 'bool_admin_adh':
+                    case 'bool_exempt_adh':
+                    case 'bool_display_info':
+                        $value = 0;
+                        break;
+                    case 'activite_adh':
+                        //values that are setted at object instanciation
+                        $value = true;
+                        break;
+                    case 'date_crea_adh':
+                    case 'sexe_adh':
+                    case 'titre_adh':
+                    case 'id_statut':
+                    case 'pref_lang':
+                    case 'parent_id':
+                        //values that are setted at object instanciation
+                        $value = $this->$prop;
+                        break;
+                    default:
+                        $value = '';
                 }
             }
 
             // if the field is enabled, check it
-            if ( !isset($disabled[$key]) ) {
+            if (!isset($disabled[$key])) {
                 // fill up the adherent structure
-                if ( $value !== null) {
+                if ($value !== null) {
                     $this->$prop = stripslashes($value);
                 }
 
                 // now, check validity
-                if ( $value !== null && $value != '' ) {
-                    switch ( $key ) {
-                    // dates
-                    case 'date_crea_adh':
-                    case 'ddn_adh':
-                        try {
-                            $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
-                            if ( $d === false ) {
-                                //try with non localized date
-                                $d = \DateTime::createFromFormat("Y-m-d", $value);
-                                if ( $d === false ) {
-                                    throw new \Exception('Incorrect format');
-                                }
-                            }
-                            $this->$prop = $d->format('Y-m-d');
-                        } catch (\Exception $e) {
-                            Analog::log(
-                                'Wrong date format. field: ' . $key .
-                                ', value: ' . $value . ', expected fmt: ' .
-                                __("Y-m-d") . ' | ' . $e->getMessage(),
-                                Analog::INFO
-                            );
-                            $errors[] = str_replace(
-                                array(
-                                    '%date_format',
-                                    '%field'
-                                ),
-                                array(
-                                    __("Y-m-d"),
-                                    $this->_fields[$key]['label']
-                                ),
-                                _T("- Wrong date format (%date_format) for %field!")
-                            );
-                        }
-                        break;
-                    case 'titre_adh':
-                        if ( $value !== null && $value !== '' ) {
-                            if ( $value == '-1' ) {
-                                $this->$prop = null;
-                            } else {
-                                $this->$prop = new Title((int)$value);
-                            }
-                        } else {
-                            $this->$prop = null;
-                        }
-                        break;
-                    case 'email_adh':
-                    case 'msn_adh':
-                        if ( !GaletteMail::isValidEmail($value) ) {
-                            $errors[] = _T("- Non-valid E-Mail address!") .
-                                ' (' . $this->getFieldName($key) . ')';
-                        }
-                        if ( $key == 'email_adh' ) {
+                if ($value !== null && $value != '') {
+                    switch ($key) {
+                        // dates
+                        case 'date_crea_adh':
+                        case 'ddn_adh':
                             try {
-                                $select = $this->zdb->select(self::TABLE);
-                                $select->columns(
-                                    array(self::PK)
-                                )->where(array('email_adh' => $value));
-                                if ( $this->_id != '' && $this->_id != null ) {
-                                    $select->where(
-                                        self::PK . ' != ' . $this->_id
-                                    );
+                                $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
+                                if ($d === false) {
+                                    //try with non localized date
+                                    $d = \DateTime::createFromFormat("Y-m-d", $value);
+                                    if ($d === false) {
+                                        throw new \Exception('Incorrect format');
+                                    }
                                 }
-
-                                $results = $this->zdb->execute($select);
-                                if ( $results->count() !==  0 ) {
-                                    $errors[] = _T("- This E-Mail address is already used by another member!");
-                                }
+                                $this->$prop = $d->format('Y-m-d');
                             } catch (\Exception $e) {
                                 Analog::log(
-                                    'An error occured checking member email unicity.',
-                                    Analog::ERROR
+                                    'Wrong date format. field: ' . $key .
+                                    ', value: ' . $value . ', expected fmt: ' .
+                                    __("Y-m-d") . ' | ' . $e->getMessage(),
+                                    Analog::INFO
                                 );
-                                $errors[] = _T("An error has occured while looking if login already exists.");
+                                $errors[] = str_replace(
+                                    array(
+                                        '%date_format',
+                                        '%field'
+                                    ),
+                                    array(
+                                        __("Y-m-d"),
+                                        $this->_fields[$key]['label']
+                                    ),
+                                    _T("- Wrong date format (%date_format) for %field!")
+                                );
                             }
-
-                        }
-                        break;
-                    case 'url_adh':
-                        if ( $value == 'http://' ) {
-                            $this->$prop = '';
-                        } elseif ( !isValidWebUrl($value) ) {
-                            $errors[] = _T("- Non-valid Website address! Maybe you've skipped the http:// ?");
-                        }
-                        break;
-                    case 'login_adh':
-                        /** FIXME: add a preference for login lenght */
-                        if ( strlen($value) < 2 ) {
-                            $errors[] = str_replace(
-                                '%i',
-                                2,
-                                _T("- The username must be composed of at least %i characters!")
-                            );
-                        } else {
-                            //check if login does not contain the @ character
-                            if ( strpos($value, '@') != false ) {
-                                $errors[] = _T("- The username cannot contain the @ character");
+                            break;
+                        case 'titre_adh':
+                            if ($value !== null && $value !== '') {
+                                if ($value == '-1') {
+                                    $this->$prop = null;
+                                } else {
+                                    $this->$prop = new Title((int)$value);
+                                }
                             } else {
-                                //check if login is already taken
+                                $this->$prop = null;
+                            }
+                            break;
+                        case 'email_adh':
+                        case 'msn_adh':
+                            if (!GaletteMail::isValidEmail($value)) {
+                                $errors[] = _T("- Non-valid E-Mail address!") .
+                                    ' (' . $this->getFieldName($key) . ')';
+                            }
+                            if ($key == 'email_adh') {
                                 try {
                                     $select = $this->zdb->select(self::TABLE);
                                     $select->columns(
                                         array(self::PK)
-                                    )->where(array('login_adh' => $value));
-                                    if ( $this->_id != '' && $this->_id != null ) {
+                                    )->where(array('email_adh' => $value));
+                                    if ($this->_id != '' && $this->_id != null) {
                                         $select->where(
                                             self::PK . ' != ' . $this->_id
                                         );
                                     }
 
                                     $results = $this->zdb->execute($select);
-                                    if ( $results->count() !==  0
-                                        || $value == $preferences->pref_admin_login
-                                    ) {
-                                        $errors[] = _T("- This username is already in use, please choose another one!");
+                                    if ($results->count() !==  0) {
+                                        $errors[] = _T("- This E-Mail address is already used by another member!");
                                     }
                                 } catch (\Exception $e) {
                                     Analog::log(
-                                        'An error occured checking member login unicity.',
+                                        'An error occured checking member email unicity.',
                                         Analog::ERROR
                                     );
                                     $errors[] = _T("An error has occured while looking if login already exists.");
                                 }
                             }
-                        }
-                        break;
-                    case 'mdp_adh':
-                        /** TODO: check password complexity, set by a preference */
-                        /** FIXME: add a preference for password lenght */
-                        if ( strlen($value) < 6 ) {
-                            $errors[] = str_replace(
-                                '%i',
-                                6,
-                                _T("- The password must be of at least %i characters!")
-                            );
-                        } else if ( $this->_self_adh !== true
-                            && (!isset($values['mdp_adh2'])
-                            || $values['mdp_adh2'] != $value)
-                        ) {
-                            $errors[] = _T("- The passwords don't match!");
-                        } else if ( $this->_self_adh === true
-                            && !crypt($value, $values['mdp_crypt'])==$values['mdp_crypt']
-                        ) {
-                            $errors[] = _T("Password misrepeated: ");
-                        } else {
-                            $this->$prop = password_hash(
-                                $value,
-                                PASSWORD_BCRYPT
-                            );
-                        }
-                        break;
-                    case 'id_statut':
-                        try {
-                            //check if status exists
-                            $select = $this->zdb->select(Status::TABLE);
-                            $select->where(Status::PK . '= ' . $value);
-
-                            $results = $this->zdb->execute($select);
-                            $result = $results->current();
-                            if ( $result === false ) {
+                            break;
+                        case 'url_adh':
+                            if ($value == 'http://') {
+                                $this->$prop = '';
+                            } elseif (!isValidWebUrl($value)) {
+                                $errors[] = _T("- Non-valid Website address! Maybe you've skipped the http:// ?");
+                            }
+                            break;
+                        case 'login_adh':
+                            /** FIXME: add a preference for login lenght */
+                            if (strlen($value) < 2) {
                                 $errors[] = str_replace(
-                                    '%id',
+                                    '%i',
+                                    2,
+                                    _T("- The username must be composed of at least %i characters!")
+                                );
+                            } else {
+                                //check if login does not contain the @ character
+                                if (strpos($value, '@') != false) {
+                                    $errors[] = _T("- The username cannot contain the @ character");
+                                } else {
+                                    //check if login is already taken
+                                    try {
+                                        $select = $this->zdb->select(self::TABLE);
+                                        $select->columns(
+                                            array(self::PK)
+                                        )->where(array('login_adh' => $value));
+                                        if ($this->_id != '' && $this->_id != null) {
+                                            $select->where(
+                                                self::PK . ' != ' . $this->_id
+                                            );
+                                        }
+
+                                        $results = $this->zdb->execute($select);
+                                        if ($results->count() !==  0
+                                            || $value == $preferences->pref_admin_login
+                                        ) {
+                                            $errors[] = _T("- This username is already in use, please choose another one!");
+                                        }
+                                    } catch (\Exception $e) {
+                                        Analog::log(
+                                            'An error occured checking member login unicity.',
+                                            Analog::ERROR
+                                        );
+                                        $errors[] = _T("An error has occured while looking if login already exists.");
+                                    }
+                                }
+                            }
+                            break;
+                        case 'mdp_adh':
+                            /** TODO: check password complexity, set by a preference */
+                            /** TODO: add a preference for password lenght */
+                            if (strlen($value) < 6) {
+                                $errors[] = str_replace(
+                                    '%i',
+                                    6,
+                                    _T("- The password must be of at least %i characters!")
+                                );
+                            } elseif ($this->_self_adh !== true
+                                && (!isset($values['mdp_adh2'])
+                                || $values['mdp_adh2'] != $value)
+                            ) {
+                                $errors[] = _T("- The passwords don't match!");
+                            } elseif ($this->_self_adh === true
+                                && !crypt($value, $values['mdp_crypt'])==$values['mdp_crypt']
+                            ) {
+                                $errors[] = _T("Password misrepeated: ");
+                            } else {
+                                $this->$prop = password_hash(
                                     $value,
-                                    _T("Status #%id does not exists in database.")
-                                );
-                                break;
-                            }
-
-                            //check for status unicity
-                            $select = $this->zdb->select(self::TABLE, 'a');
-                            $select->limit(1)->join(
-                                array('b' => PREFIX_DB . Status::TABLE),
-                                'a.' . Status::PK . '=b.' . Status::PK,
-                                array('libelle_statut')
-                            )->where('b.' . Status::PK . '=' . $value);
-                            $select->where->lessThan(
-                                'b.priorite_statut',
-                                Members::NON_STAFF_MEMBERS
-                            );
-
-                            if ( $this->_id != '' && $this->_id != null ) {
-                                $select->where(
-                                    'a.' . self::PK . ' != ' . $this->_id
+                                    PASSWORD_BCRYPT
                                 );
                             }
+                            break;
+                        case 'id_statut':
+                            try {
+                                //check if status exists
+                                $select = $this->zdb->select(Status::TABLE);
+                                $select->where(Status::PK . '= ' . $value);
 
-                            $results = $this->zdb->execute($select);
-                            $result = $results->current();
-                            if ( $result !== false ) {
-                                $errors[] = str_replace(
-                                    array(
-                                        '%s',
-                                        '%i',
-                                        '%n',
-                                        '%m'
-                                    ),
-                                    array(
-                                        $result->libelle_statut,
-                                        $result->id_adh,
-                                        $result->nom_adh,
-                                        $result->prenom_adh
-                                    ),
-                                    _T("Selected status (%s) is already in use in <a href='voir_adherent.php?id_adh=%i'>%n %m's profile</a>.")
+                                $results = $this->zdb->execute($select);
+                                $result = $results->current();
+                                if ($result === false) {
+                                    $errors[] = str_replace(
+                                        '%id',
+                                        $value,
+                                        _T("Status #%id does not exists in database.")
+                                    );
+                                    break;
+                                }
+
+                                //check for status unicity
+                                $select = $this->zdb->select(self::TABLE, 'a');
+                                $select->limit(1)->join(
+                                    array('b' => PREFIX_DB . Status::TABLE),
+                                    'a.' . Status::PK . '=b.' . Status::PK,
+                                    array('libelle_statut')
+                                )->where('b.' . Status::PK . '=' . $value);
+                                $select->where->lessThan(
+                                    'b.priorite_statut',
+                                    Members::NON_STAFF_MEMBERS
                                 );
+
+                                if ($this->_id != '' && $this->_id != null) {
+                                    $select->where(
+                                        'a.' . self::PK . ' != ' . $this->_id
+                                    );
+                                }
+
+                                $results = $this->zdb->execute($select);
+                                $result = $results->current();
+                                if ($result !== false) {
+                                    $errors[] = str_replace(
+                                        array(
+                                            '%s',
+                                            '%i',
+                                            '%n',
+                                            '%m'
+                                        ),
+                                        array(
+                                            $result->libelle_statut,
+                                            $result->id_adh,
+                                            $result->nom_adh,
+                                            $result->prenom_adh
+                                        ),
+                                        _T("Selected status (%s) is already in use in <a href='voir_adherent.php?id_adh=%i'>%n %m's profile</a>.")
+                                    );
+                                }
+                            } catch (\Exception $e) {
+                                Analog::log(
+                                    'An error occured checking status unicity: ' . $e->getMessage(),
+                                    Analog::ERROR
+                                );
+                                $errors[] = _T("An error has occured while looking if status is already in use.");
                             }
-                        } catch ( \Exception $e ) {
-                            Analog::log(
-                                'An error occured checking status unicity: ' . $e->getMessage(),
-                                Analog::ERROR
-                            );
-                            $errors[] = _T("An error has occured while looking if status is already in use.");
-                        }
-                        break;
+                            break;
                     }
-                } else if ( ($key == 'login_adh' && !isset($required['login_adh']))
+                } elseif (($key == 'login_adh' && !isset($required['login_adh']))
                     || ($key == 'mdp_adh' && !isset($required['mdp_adh']))
                     && !isset($this->_id)
                 ) {
@@ -1155,18 +1155,18 @@ class Adherent
         }
 
         // missing required fields?
-        while ( list($key, $val) = each($required) ) {
+        while (list($key, $val) = each($required)) {
             $prop = '_' . $this->_fields[$key]['propname'];
 
-            if ( !isset($disabled[$key]) ) {
+            if (!isset($disabled[$key])) {
                 $mandatory_missing = false;
-                if ( !isset($this->$prop) ) {
+                if (!isset($this->$prop)) {
                     $mandatory_missing = true;
-                } else if ( $key === 'titre_adh' && $this->$prop == '-1' ) {
+                } elseif ($key === 'titre_adh' && $this->$prop == '-1') {
                     $mandatory_missing = true;
                 }
 
-                if ( $mandatory_missing === true ) {
+                if ($mandatory_missing === true) {
                     $errors[] = _T("- Mandatory field empty: ") .
                     ' <a href="#' . $key . '">' . $this->getFieldName($key) .'</a>';
                 }
@@ -1178,7 +1178,7 @@ class Adherent
             $this->_parent = null;
         }
 
-        if ( count($errors) > 0 ) {
+        if (count($errors) > 0) {
             Analog::log(
                 'Some errors has been throwed attempting to edit/store a member' .
                 print_r($errors, true),
@@ -1207,13 +1207,13 @@ class Adherent
             $values = array();
             $fields = self::getDbFields($this->zdb);
             /** FIXME: quote? */
-            foreach ( $fields as $field ) {
-                if ( $field !== 'date_modif_adh'
+            foreach ($fields as $field) {
+                if ($field !== 'date_modif_adh'
                     || !isset($this->_id)
                     || $this->_id == ''
                 ) {
                     $prop = '_' . $this->_fields[$field]['propname'];
-                    if ( ($field === 'bool_admin_adh'
+                    if (($field === 'bool_admin_adh'
                         || $field === 'bool_exempt_adh'
                         || $field === 'bool_display_info')
                         && $this->$prop === false
@@ -1237,24 +1237,24 @@ class Adherent
 
             //an empty value will cause date to be set to 1901-01-01, a null
             //will result in 0000-00-00. We want a database NULL value here.
-            if ( !$this->_birthdate ) {
+            if (!$this->_birthdate) {
                 $values['ddn_adh'] = new Expression('NULL');
             }
-            if ( !$this->_due_date ) {
+            if (!$this->_due_date) {
                 $values['date_echeance'] = new Expression('NULL');
             }
 
-            if ( $this->_title instanceof Title ) {
+            if ($this->_title instanceof Title) {
                 $values['titre_adh'] = $this->_title->id;
             } else {
                 $values['titre_adh'] = new Expression('NULL');
             }
 
-            if ( !$this->_parent ) {
+            if (!$this->_parent) {
                 $values['parent_id'] = new Expression('NULL');
             }
 
-            if ( !isset($this->_id) || $this->_id == '') {
+            if (!isset($this->_id) || $this->_id == '') {
                 //we're inserting a new member
                 unset($values[self::PK]);
                 //set modification date
@@ -1264,8 +1264,8 @@ class Adherent
                 $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($values);
                 $add = $this->zdb->execute($insert);
-                if ( $add->count() > 0) {
-                    if ( $this->zdb->isPostgres() ) {
+                if ($add->count() > 0) {
+                    if ($this->zdb->isPostgres()) {
                         $this->_id = $this->zdb->driver->getLastGeneratedValue(
                             PREFIX_DB . 'adherents_id_seq'
                         );
@@ -1287,15 +1287,15 @@ class Adherent
                 }
             } else {
                 //we're editing an existing member
-                if ( !$this->isDueFree() ) {
+                if (!$this->isDueFree()) {
                     // deadline
                     $due_date = Contribution::getDueDate($this->zdb, $this->_id);
-                    if ( $due_date ) {
+                    if ($due_date) {
                         $values['date_echeance'] = $due_date;
                     }
                 }
 
-                if ( !$this->_password ) {
+                if (!$this->_password) {
                     unset($values['mdp_adh']);
                 }
 
@@ -1309,8 +1309,8 @@ class Adherent
 
                 //edit == 0 does not mean there were an error, but that there
                 //were nothing to change
-                if ( $edit->count() > 0 ) {
-                    $this->_updateModificationDate();
+                if ($edit->count() > 0) {
+                    $this->updateModificationDate();
                     $hist->add(
                         _T("Member card updated"),
                         strtoupper($this->_login)
@@ -1335,7 +1335,7 @@ class Adherent
      *
      * @return void
      */
-    private function _updateModificationDate()
+    private function updateModificationDate()
     {
         try {
             $modif_date = date('Y-m-d');
@@ -1375,73 +1375,73 @@ class Adherent
             'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass', 'saddress'
         );
         $rname = '_' . $name;
-        if ( !in_array($name, $forbidden) && isset($this->$rname)) {
-            switch($name) {
-            case 'birthdate':
-            case 'creation_date':
-            case 'modification_date':
-            case 'due_date':
-                if ( $this->$rname != '' ) {
-                    try {
-                        $d = new \DateTime($this->$rname);
-                        return $d->format(__("Y-m-d"));
-                    } catch (\Exception $e) {
-                        //oops, we've got a bad date :/
-                        Analog::log(
-                            'Bad date (' . $this->$rname . ') | ' .
-                            $e->getMessage(),
-                            Analog::INFO
-                        );
-                        return $this->$rname;
+        if (!in_array($name, $forbidden) && isset($this->$rname)) {
+            switch ($name) {
+                case 'birthdate':
+                case 'creation_date':
+                case 'modification_date':
+                case 'due_date':
+                    if ($this->$rname != '') {
+                        try {
+                            $d = new \DateTime($this->$rname);
+                            return $d->format(__("Y-m-d"));
+                        } catch (\Exception $e) {
+                            //oops, we've got a bad date :/
+                            Analog::log(
+                                'Bad date (' . $this->$rname . ') | ' .
+                                $e->getMessage(),
+                                Analog::INFO
+                            );
+                            return $this->$rname;
+                        }
                     }
-                }
-                break;
-            default:
-                return $this->$rname;
-                break;
+                    break;
+                default:
+                    return $this->$rname;
+                    break;
             }
-        } else if ( !in_array($name, $forbidden) && in_array($name, $virtuals) ) {
+        } elseif (!in_array($name, $forbidden) && in_array($name, $virtuals)) {
             $real = '_' . substr($name, 1);
-            switch($name) {
-            case 'sadmin':
-            case 'sdue_free':
-            case 'sappears_in_list':
-            case 'sstaff':
-                return (($this->$real) ? _T("Yes") : _T("No"));
-                break;
-            case 'sactive':
-                return (($this->$real) ? _T("Active") : _T("Inactive"));
-                break;
-            case 'stitle':
-                if ( isset($this->_title) ) {
-                    return $this->_title->tshort;
-                } else {
-                    return null;
-                }
-                break;
-            case 'sstatus':
-                $status = new Status($this->zdb);
-                return $status->getLabel($this->_status);
-                break;
-            case 'sfullname':
-                $sfn = mb_strtoupper($this->_name, 'UTF-8') . ' ' .
-                    ucwords(mb_strtolower($this->_surname, 'UTF-8'));
-                if ( isset($this->_title) ) {
-                    $sfn = $this->_title->tshort . ' ' . $sfn;
-                }
-                return $sfn;
-                break;
-            case 'saddress':
-                $address = $this->_address;
-                if ( $this->_address_continuation !== '' ) {
-                    $address .= "\n" . $this->_address_continuation;
-                }
-                return $address;
-                break;
-            case 'sname':
-                return mb_strtoupper($this->_name, 'UTF-8') .
-                    ' ' . ucwords(mb_strtolower($this->_surname, 'UTF-8'));
-                break;
+            switch ($name) {
+                case 'sadmin':
+                case 'sdue_free':
+                case 'sappears_in_list':
+                case 'sstaff':
+                    return (($this->$real) ? _T("Yes") : _T("No"));
+                    break;
+                case 'sactive':
+                    return (($this->$real) ? _T("Active") : _T("Inactive"));
+                    break;
+                case 'stitle':
+                    if (isset($this->_title)) {
+                        return $this->_title->tshort;
+                    } else {
+                        return null;
+                    }
+                    break;
+                case 'sstatus':
+                    $status = new Status($this->zdb);
+                    return $status->getLabel($this->_status);
+                    break;
+                case 'sfullname':
+                    $sfn = mb_strtoupper($this->_name, 'UTF-8') . ' ' .
+                        ucwords(mb_strtolower($this->_surname, 'UTF-8'));
+                    if (isset($this->_title)) {
+                        $sfn = $this->_title->tshort . ' ' . $sfn;
+                    }
+                    return $sfn;
+                    break;
+                case 'saddress':
+                    $address = $this->_address;
+                    if ($this->_address_continuation !== '') {
+                        $address .= "\n" . $this->_address_continuation;
+                    }
+                    return $address;
+                    break;
+                case 'sname':
+                    return mb_strtoupper($this->_name, 'UTF-8') .
+                        ' ' . ucwords(mb_strtolower($this->_surname, 'UTF-8'));
+                    break;
             }
         } else {
             return false;
@@ -1450,7 +1450,8 @@ class Adherent
 
     /**
      * Get member email
-     * If member does not have an email adress, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an email adress, but is attached to
+     * another member, we'll take informations from its parent.
      *
      * @return string
      */
@@ -1458,7 +1459,7 @@ class Adherent
     {
         $email = $this->_email;
         if (empty($email)) {
-            $this->_loadParent();
+            $this->loadParent();
             $email = $this->parent->email;
         }
 
@@ -1475,7 +1476,7 @@ class Adherent
     {
         $adress = $this->_address;
         if (empty($address) && $this->hasParent()) {
-            $this->_loadParent();
+            $this->loadParent();
             $adress = $this->parent->address;
         }
 
@@ -1493,7 +1494,7 @@ class Adherent
         $adress = $this->_address;
         $adress_continuation = $this->_address_continuation;
         if (empty($address) && $this->hasParent()) {
-            $this->_loadParent();
+            $this->loadParent();
             $adress_continuation = $this->parent->address_continuation;
         }
 
@@ -1511,7 +1512,7 @@ class Adherent
         $adress = $this->_address;
         $zip = $this->_zipcode;
         if (empty($address) && $this->hasParent()) {
-            $this->_loadParent();
+            $this->loadParent();
             $zip = $this->parent->zipcode;
         }
 
@@ -1529,7 +1530,7 @@ class Adherent
         $adress = $this->_address;
         $town = $this->_town;
         if (empty($address) && $this->hasParent()) {
-            $this->_loadParent();
+            $this->loadParent();
             $town = $this->parent->town;
         }
 
@@ -1547,7 +1548,7 @@ class Adherent
         $adress = $this->_address;
         $country = $this->_country;
         if (empty($address) && $this->hasParent()) {
-            $this->_loadParent();
+            $this->loadParent();
             $country = $this->parent->country;
         }
 

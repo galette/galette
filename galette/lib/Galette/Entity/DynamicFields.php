@@ -148,7 +148,7 @@ class DynamicFields
     public static function getFixedValuesTableName($id, $prefixed = false)
     {
         $name = 'field_contents_' . $id;
-        if ( $prefixed === true ) {
+        if ($prefixed === true) {
             $name = PREFIX_DB . $name;
         }
         return $name;
@@ -174,8 +174,8 @@ class DynamicFields
             $results = $zdb->execute($select);
 
             $fixed_values = array();
-            if ( $results ) {
-                foreach ( $results as $val ) {
+            if ($results) {
+                foreach ($results as $val) {
                     $fixed_values[] = $val->val;
                 }
             }
@@ -261,21 +261,21 @@ class DynamicFields
 
             $results = $zdb->execute($select);
 
-            if ( $results->count() > 0 ) {
+            if ($results->count() > 0) {
                 $dfields = array();
 
                 foreach ($results as $f) {
                     $df = $this->getFieldType($f->field_type);
 
                     $value = $f->field_val;
-                    if ( $quote ) {
-                        if ( $df->hasFixedValues() ) {
+                    if ($quote) {
+                        if ($df->hasFixedValues()) {
                             $choices = $this->getFixedValues($f->field_id);
                             $value = $choices[$value];
                         }
                     }
                     $array_index = 1;
-                    if ( isset($dfields[$f->field_id]) ) {
+                    if (isset($dfields[$f->field_id])) {
                         $array_index = count($dfields[$f->field_id]) + 1;
                     }
                     $dfields[$f->field_id][$array_index] = $value;
@@ -306,7 +306,10 @@ class DynamicFields
      * @return array
      */
     public function prepareForDisplay(
-        $form_name, $all_values, $disabled, $edit
+        $form_name,
+        $all_values,
+        $disabled,
+        $edit
     ) {
         global $zdb, $login;
 
@@ -320,12 +323,12 @@ class DynamicFields
             $results = $zdb->execute($select);
 
             $dfields = array();
-            if ( $results ) {
+            if ($results) {
                 $extra = $edit ? 1 : 0;
 
-                foreach ( $results as $r ) {
+                foreach ($results as $r) {
                     $df = $this->getFieldType($r['field_type']);
-                    if ( (int)$r['field_type'] === self::CHOICE
+                    if ((int)$r['field_type'] === self::CHOICE
                         || (int)$r['field_type'] === self::TEXT
                         || (int)$r['field_type'] === self::DATE
                         || (int)$r['field_type'] === self::BOOLEAN
@@ -338,15 +341,15 @@ class DynamicFields
                     //store field repetition config as field_repeat may change
                     $r['config_field_repeat'] = $r['field_repeat'];
 
-                    if ( $df->isMultiValued() ) {
+                    if ($df->isMultiValued()) {
                          // Infinite multi-valued field
-                        if ( $r['field_repeat'] == 0 ) {
-                            if ( isset($all_values[$r['field_id']]) ) {
+                        if ($r['field_repeat'] == 0) {
+                            if (isset($all_values[$r['field_id']])) {
                                 $nb_values = count($all_values[$r['field_id']]);
                             } else {
                                 $nb_values = 0;
                             }
-                            if ( isset($all_values) ) {
+                            if (isset($all_values)) {
                                 $r['field_repeat'] = $nb_values + $extra;
                             } else {
                                 $r['field_repeat'] = 1 + $extra;
@@ -354,13 +357,13 @@ class DynamicFields
                         }
                     } else {
                         $r['field_repeat'] = 1;
-                        if ( $df->hasFixedValues() ) {
+                        if ($df->hasFixedValues()) {
                             $r['choices'] = $this->getFixedValues($field_id);
                         }
                     }
 
                     //Disable field depending on ACLs
-                    if ( !$login->isAdmin()
+                    if (!$login->isAdmin()
                         && !$login->isStaff()
                         && ($r['field_perm'] == self::PERM_ADM
                         || $r['field_perm'] == self::PERM_STAFF)
@@ -403,8 +406,8 @@ class DynamicFields
             $results = $zdb->execute($select);
 
             $dfields = array();
-            if ( $results ) {
-                foreach ( $results as $r ) {
+            if ($results) {
+                foreach ($results as $r) {
                     $dfields[$r['field_id']] = $r;
                 }
                 return $dfields;
@@ -422,15 +425,16 @@ class DynamicFields
     /**
      * Extract posted values for dynamic fields
      *
-     * @param array $post     Array containing the posted values
-     * @param array $files    Array containing the posted files
-     * @param array $disabled Array with fields that are discarded as key
+     * @param array $post      Array containing the posted values
+     * @param array $files     Array containing the posted files
+     * @param array $disabled  Array with fields that are discarded as key
+     * @param int   $member_id Member id
      *
      * @return array
      */
     public function extractPosted($post, $files, $disabled, $member_id)
     {
-        if ( $post != null ) {
+        if ($post != null) {
             $dfields = array();
 
             // initialize all boolean fields to 0
@@ -441,16 +445,16 @@ class DynamicFields
                 }
             }
 
-            while ( list($key, $value) = each($post) ) {
+            while (list($key, $value) = each($post)) {
                 // if the field is enabled, check it
-                if ( !isset($disabled[$key]) ) {
+                if (!isset($disabled[$key])) {
                     if (substr($key, 0, 11) == 'info_field_') {
                         list($field_id, $val_index) = explode('_', substr($key, 11));
-                        if ( is_numeric($field_id)
+                        if (is_numeric($field_id)
                             && is_numeric($val_index)
                         ) {
                             if ((int) $descriptions[$field_id]['field_type'] == self::FILE) {
-                                # delete checkbox
+                                //delete checkbox
                                 $filename = sprintf(
                                     'member_%d_field_%d_value_%d',
                                     $member_id,
@@ -460,7 +464,7 @@ class DynamicFields
                                 unlink(GALETTE_FILES_PATH . $filename);
                                 $dfields[$field_id][$val_index] = '';
                             } else {
-                                # actual field value
+                                //actual field value
                                 $dfields[$field_id][$val_index] = $value;
                             }
                         }
@@ -468,9 +472,9 @@ class DynamicFields
                 }
             }
 
-            while ( list($key, $value) = each($files) ) {
+            while (list($key, $value) = each($files)) {
                 // if the field is disabled, skip it
-                if (isset($disabled[$key]) ) {
+                if (isset($disabled[$key])) {
                     continue;
                 }
 
@@ -483,18 +487,18 @@ class DynamicFields
                     continue;
                 }
 
-                if ($files[$key]['error'] !== UPLOAD_ERR_OK ) {
+                if ($files[$key]['error'] !== UPLOAD_ERR_OK) {
                     Analog::log("file upload error", Analog::ERROR);
                     continue;
                 }
 
                 $tmp_filename = $files[$key]['tmp_name'];
-                if ( $tmp_filename == '' ) {
+                if ($tmp_filename == '') {
                     Analog::log("empty temporary filename", Analog::ERROR);
                     continue;
                 }
 
-                if (! is_uploaded_file($tmp_filename) ) {
+                if (!is_uploaded_file($tmp_filename)) {
                     Analog::log("not an uploaded file", Analog::ERROR);
                     continue;
                 }
@@ -503,7 +507,7 @@ class DynamicFields
                     $descriptions[$field_id]['field_size'] === 'NULL' ?
                     self::DEFAULT_MAX_FILE_SIZE            * 1024:
                     $descriptions[$field_id]['field_size'] * 1024;
-                if ($files[$key]['size'] > $max_size ) {
+                if ($files[$key]['size'] > $max_size) {
                     Analog::log(
                         "file too large: " . $files[$key]['size'] . " Ko, vs $max_size Ko allowed",
                         Analog::ERROR
@@ -547,8 +551,12 @@ class DynamicFields
      *
      * @return boolean
      */
-    private function _setField(
-        $form_name, $item_id, $field_id, $val_index, $field_val
+    private function setField(
+        $form_name,
+        $item_id,
+        $field_id,
+        $val_index,
+        $field_val
     ) {
         global $zdb;
         $ret = false;
@@ -572,10 +580,10 @@ class DynamicFields
             $result = $results->current();
             $count = $result->cnt;
 
-            if ( $count > 0 ) {
+            if ($count > 0) {
                 $where = $select->where;
 
-                if ( trim($field_val) == '' ) {
+                if (trim($field_val) == '') {
                     Analog::log(
                         'Field ' . $field_id . ' is empty (index:' .
                         $val_index . ')',
@@ -599,7 +607,7 @@ class DynamicFields
                     $zdb->execute($update);
                 }
             } else {
-                if ( $field_val !== '' ) {
+                if ($field_val !== '') {
                     $values = array(
                         'item_id'    => $item_id,
                         'field_form' => $form_name,
@@ -642,16 +650,16 @@ class DynamicFields
     public function setAllFields($form_name, $item_id, $all_values)
     {
         $ret = true;
-        while ( list($field_id, $contents) = each($all_values) ) {
-            while ( list($val_index, $field_val) = each($contents) ) {
-                $res = $this->_setField(
+        while (list($field_id, $contents) = each($all_values)) {
+            while (list($val_index, $field_val) = each($contents)) {
+                $res = $this->setField(
                     $form_name,
                     $item_id,
                     $field_id,
                     $val_index,
                     $field_val
                 );
-                if ( !$res ) {
+                if (!$res) {
                     $ret = false;
                 }
             }
@@ -670,31 +678,31 @@ class DynamicFields
     public function getFieldType($t, $id = null)
     {
         $df = null;
-        switch ( $t ) {
-        case self::SEPARATOR:
-            $df = new \Galette\DynamicFieldsTypes\Separator($id);
-            break;
-        case self::TEXT:
-            $df = new \Galette\DynamicFieldsTypes\Text($id);
-            break;
-        case self::LINE:
-            $df = new \Galette\DynamicFieldsTypes\Line($id);
-            break;
-        case self::CHOICE:
-            $df = new \Galette\DynamicFieldsTypes\Choice($id);
-            break;
-        case self::DATE:
-            $df = new \Galette\DynamicFieldsTypes\Date($id);
-            break;
-        case self::BOOLEAN:
-            $df = new \Galette\DynamicFieldsTypes\Boolean($id);
-            break;
-        case self::FILE:
-            $df = new \Galette\DynamicFieldsTypes\File($id);
-            break;
-        default:
-            throw new \Exception('Unknown field type ' . $t . '!');
-            break;
+        switch ($t) {
+            case self::SEPARATOR:
+                $df = new \Galette\DynamicFieldsTypes\Separator($id);
+                break;
+            case self::TEXT:
+                $df = new \Galette\DynamicFieldsTypes\Text($id);
+                break;
+            case self::LINE:
+                $df = new \Galette\DynamicFieldsTypes\Line($id);
+                break;
+            case self::CHOICE:
+                $df = new \Galette\DynamicFieldsTypes\Choice($id);
+                break;
+            case self::DATE:
+                $df = new \Galette\DynamicFieldsTypes\Date($id);
+                break;
+            case self::BOOLEAN:
+                $df = new \Galette\DynamicFieldsTypes\Boolean($id);
+                break;
+            case self::FILE:
+                $df = new \Galette\DynamicFieldsTypes\File($id);
+                break;
+            default:
+                throw new \Exception('Unknown field type ' . $t . '!');
+                break;
         }
         return $df;
     }
@@ -719,7 +727,7 @@ class DynamicFields
             $results = $zdb->execute($select);
             $result = $results->current();
             $field_type = $result->field_type;
-            if ( $field_type !== false ) {
+            if ($field_type !== false) {
                 return $this->getFieldType($field_type, $id);
             } else {
                 return false;
@@ -761,7 +769,7 @@ class DynamicFields
                 )
             );
 
-            if ( $field_id !== null ) {
+            if ($field_id !== null) {
                 $select->where->addPredicate(
                     new PredicateExpression(
                         'field_id NOT IN (?)',
@@ -773,7 +781,7 @@ class DynamicFields
             $results = $zdb->execute($select);
             $result = $results->current();
             $dup = $result->cnt;
-            if ( !$dup > 0 ) {
+            if (!$dup > 0) {
                 $duplicated = false;
             }
         } catch (\Exception $e) {

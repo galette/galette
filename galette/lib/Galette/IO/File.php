@@ -65,7 +65,10 @@ class File implements FileInterface
      * @param array  $mimes      Array of permitted mime types
      * @param int    $maxlenght  Maximum lenght for each file
      */
-    public function __construct($dest, $extensions = null, $mimes = null,
+    public function __construct(
+        $dest,
+        $extensions = null,
+        $mimes = null,
         $maxlenght = null
     ) {
         $this->init(

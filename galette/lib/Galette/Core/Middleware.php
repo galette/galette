@@ -31,7 +31,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2015 The Galette Team
+ * @copyright 2015-2016 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2015-10-31
@@ -46,6 +46,15 @@ use Galette\Core\Login;
  * Galette's Slim middleware
  *
  * Renders maintainance and needs update pages, as 503 (service not available)
+ *
+ * @category  Core
+ * @name      Middleware
+ * @package   Galette
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2015-2016 The Galette Team
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @link      http://galette.tuxfamily.org
+ * @since     Available since 0.9dev - 2015-10-31
  */
 class Middleware extends \Slim\Middleware
 {
@@ -166,7 +175,6 @@ class Middleware extends \Slim\Middleware
         $this->app->contentType('text/html');
         $this->app->response()->status(503);
         $this->app->response()->body($body);
-
     }
 
     /**
