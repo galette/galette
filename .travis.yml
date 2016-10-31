@@ -11,7 +11,7 @@ before_script:
   - phpenv rehash
 
 script:
-  - phpcs -n -p --standard=phpcs-rules.xml galette/lib/Galette/Common tests/ galette/webroot/index.php galette/includes/fields_defs/ galette/includes/smarty_plugins/ galette/includes/functions.inc.php galette/includes/galette.inc.php galette/includes/dependencies.php galette/includes/main.inc.php
+  - phpcs -n -p --ignore=Pdf.php --ignore=PdfGroups.php --ignore=PdfAttendanceSheet.php --standard=phpcs-rules.xml galette/lib/ tests/ galette/webroot/index.php galette/includes/fields_defs/ galette/includes/smarty_plugins/ galette/includes/functions.inc.php galette/includes/galette.inc.php galette/includes/dependencies.php galette/includes/main.inc.php
   - php atoum.phar -mcn 1 -bf tests/TestsBootstrap.php -d tests/Galette/
 
 language: php
