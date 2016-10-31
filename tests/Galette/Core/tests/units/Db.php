@@ -268,6 +268,9 @@ class Db extends atoum
         $results = $this->db->execute($select);
         $this->integer($results->count())->isIdenticalTo(1);
 
+        if (TYPE_DB === 'pgsql') {
+            $data['id_title'] = (int)$data['id_title'];
+        }
         $this->array((array)$results->current())->isIdenticalTo($data);
     }
 
