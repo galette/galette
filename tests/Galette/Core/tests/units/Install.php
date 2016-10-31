@@ -231,7 +231,7 @@ class Install extends atoum
         $this->string($title)->isIdenticalTo('Database');
 
         $this->install->atPreviousStep();
-        $step = $this->_install->isTypeStep();
+        $step = $this->install->isTypeStep();
 
         $this->boolean($step)->isTrue();
     }
@@ -362,7 +362,7 @@ class Install extends atoum
         $step = $this->install->isDbinstallStep();
         $this->boolean($step)->isTrue();
 
-        $title = $this->_install->getStepTitle();
+        $title = $this->install->getStepTitle();
         $this->string($title)->isIdenticalTo('Tables Creation');
 
         $post_check = $this->install->postCheckDb();
