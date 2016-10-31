@@ -14,6 +14,7 @@
                 <input type="checkbox" name="cascade" id="cascade" value="true" title="{_T string="Delete all associated data"}"/>
             </p>
         {/if}
+        {if isset($message)}<p>{$message}</p>{/if}
         <p>{_T string="Are you sure you want to proceed?"}<br/>{_T string="This can't be undone."}</p>
         <div class="button-container">
             <input type="submit" id="delete" value="{_T string="Remove"}"/>

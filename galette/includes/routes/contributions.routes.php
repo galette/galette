@@ -44,6 +44,8 @@ use Galette\Repository\Members;
 use Galette\Entity\Adherent;
 use Galette\Entity\ContributionsTypes;
 use Galette\Filters\ContributionsList;
+use Galette\Core\GaletteMail;
+use Galette\Entity\Texts;
 
 /*$app->get(
     '/contributions[/{option:page|order}/{value:\d+}]',
@@ -150,7 +152,7 @@ $app->get(
     '/{type:' . __('transactions', 'routes') .'|'. __('contributions', 'routes') .
         '}[/{option:' . __('page', 'routes') .'|'. __('order', 'routes') .'|' .
         __('member', 'routes') .'}/{value:\d+|all}]',
-    function ($request, $response, $args = []) {
+    function ($request, $response, $args) {
         $ajax = false;
         if ($request->isXhr()
             || isset($request->getQueryParams()['ajax'])
@@ -158,6 +160,7 @@ $app->get(
         ) {
             $ajax = true;
         }
+        $get = $request->getQueryParams();
 
         $option = null;
         if (isset($args['option'])) {
@@ -185,6 +188,13 @@ $app->get(
         } else {
             $filter_class = '\\Galette\\Filters\\' . ucwords($raw_type . 'List');
             $filters = new $filter_class();
+        }
+
+        //member id
+        $id_adh = null;
+        if (isset($get[Adherent::PK]) && $get[Adherent::PK] > 0) {
+            $id_adh = (int)$get[Adherent::PK];
+            $filters->filtre_cotis_adh = $id_adh;
         }
 
         $max_amount = null;
@@ -560,6 +570,8 @@ $app->post(
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
         $error_detected = [];
+        $warning_detected = [];
+        $reditect_url = null;
 
         $action = $args['action'];
         $id_cotis = null;
@@ -614,6 +626,7 @@ $app->post(
             'date_debut_cotis'  => 1,
             'date_fin_cotis'    => ($args['type'] === __('fee', 'routes'))
         ];
+        $disabled = [];
 
         // regular fields
         $valid = $contrib->check($post, $required, $disabled);
@@ -621,7 +634,7 @@ $app->post(
             $error_detected = array_merge($error_detected, $valid);
         }
 
-        /*if (count($error_detected) == 0) {
+        if (count($error_detected) == 0) {
             //all goes well, we can proceed
             if ($contrib->isCotis()) {
                 // Check that membership fees does not overlap
@@ -633,8 +646,6 @@ $app->post(
                         //method directly return erro message
                         $error_detected[] = $overlap;
                     }
-                } else {
-
                 }
             }
             $new = false;
@@ -659,10 +670,10 @@ $app->post(
                                     $mail->setSubject(
                                         _T("Post contribution script failed")
                                     );
-                                    ** TODO: only super-admin is contacted here. We should send
+                                    /** TODO: only super-admin is contacted here. We should send
                                     *  a message to all admins, or propose them a chekbox if
                                     *  they don't want to get bored
-                                    *
+                                    */
                                     $mail->setRecipients(
                                         array(
                                             $this->preferences->pref_email_newadh => str_replace(
@@ -727,7 +738,7 @@ $app->post(
 
             if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
                 $texts = new Texts(
-                    $texts_fields,
+                    $this->texts_fields,
                     $this->preferences,
                     array(
                         'name_adh'          => custom_html_entity_decode($adh->sname),
@@ -801,10 +812,10 @@ $app->post(
 
                     $mail = new GaletteMail();
                     $mail->setSubject($texts->getSubject());
-                    ** TODO: only super-admin is contacted here. We should send
+                    /** TODO: only super-admin is contacted here. We should send
                     *  a message to all admins, or propose them a chekbox if
                     *  they don't want to get bored
-                    *
+                    */
                     $mail->setRecipients(
                         array(
                             $this->preferences->pref_email_newadh => str_replace(
@@ -838,29 +849,38 @@ $app->post(
                 }
             }
 
+            if (count($warning_detected) > 0) {
+                foreach ($warning_detected as $warning) {
+                    $this->flash->addMessage(
+                        'warning_detected',
+                        $warning
+                    );
+                }
+            }
+
             if (count($error_detected) == 0) {
                 if ($contrib->isTransactionPart()
                     && $contrib->transaction->getMissingAmount() > 0
                 ) {
-                    $url = 'ajouter_contribution.php?trans_id=' .
-                        $contrib->transaction->id . '&id_adh=' .
-                        $contrib->member;
+                    $reditect_url = $this->router->pathFor(
+                        'contribution',
+                        [
+                            'action'    => __('add', 'routes'),
+                            'trans_id'  => $contrib->transaction->id
+                        ]
+                    ) . '?id_adh=' . $contrib->member;
                 } else {
-                    $url = 'gestion_contributions.php?id_adh=' . $contrib->member;
-                }
-                if (count($warning_detected) == 0) {
-                    header('location: ' . $url);
-                    die();
-                } else {
-                    $head_redirect = array(
-                        'timeout'   => 30,
-                        'url'       => $url
-                    );
+                    $reditect_url = $this->router->pathFor(
+                        'contributions',
+                        [
+                            'type'      => __('contributions', 'routes')
+                        ]
+                    ) . '?id_adh=' . $contrib->member;
                 }
             }
         }
 
-        * TODO: remove *
+        /* TODO: remove */
         if (!isset($contribution['duree_mois_cotis'])
             || $contribution['duree_mois_cotis'] == ''
         ) {
@@ -872,7 +892,7 @@ $app->post(
             } else {
                 $contribution['duree_mois_cotis'] = $this->preferences->pref_membership_ext;
             }
-        }*/
+        }
 
         if (count($error_detected) > 0) {
             //something went wrong.
@@ -881,6 +901,7 @@ $app->post(
                 'contribution'  => $contrib,
                 'dyn_fields'    => $dyn_fields
             ];
+            $reditect_url = $this->router->pathFor('contribution', $args);
 
             //report errors
             foreach ($error_detected as $error) {
@@ -891,12 +912,15 @@ $app->post(
             }
         } else {
             $this->session->contribution = null;
+            if ($reditect_url === null) {
+                $reditect_url = $this->router->pathFor('contributions', ['type' => $args['type']]);
+            }
         }
 
         //redirect to calling action
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('contribution', $args));
+            ->withHeader('Location', $reditect_url);
     }
 )->setName('contribution')->add($authenticate);
 
@@ -1180,7 +1204,7 @@ $app->post(
                 ];
 
                 if (isset($trans->member)) {
-                    $params['id_adh'] = $trans->member;
+                    $rparams['id_adh'] = $trans->member;
                 }
 
                 return $response
@@ -1235,20 +1259,62 @@ $app->post(
     }
 )->setName('doEditTransaction')->add($authenticate);
 
-$app->map(
-    ['GET', 'POST'],
+$app->get(
+    '/{type:' . __('contributions', 'routes') .'|' . __('transactions', 'routes') .'}' .
+        __('/remove', 'routes') .'/{id:\d+}',
+    function ($request, $response, $args) {
+        $raw_type = null;
+        switch ($args['type']) {
+            case __('transactions', 'routes'):
+                $raw_type = 'transactions';
+                break;
+            case __('contributions', 'routes'):
+                $raw_type = 'contributions';
+                break;
+        }
+
+        $data = [
+            'id'            => $args['id'],
+            'redirect_uri'  => $this->router->pathFor('contributions', ['type' => $args['type']])
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'type'          => ($raw_type === 'contributions') ? _T('Contributions') : _T('Transactions'),
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => sprintf(
+                    _T('Remove %1$s #%2$s'),
+                    ($raw_type === 'contributions') ? _T('contribution') : _T('transaction'),
+                    $args['id']
+                ),
+                'form_url'      => $this->router->pathFor(
+                    'doRemoveContribution',
+                    ['id' => $args['id'], 'type' => $args['type']]
+                ),
+                'cancel_uri'    => $data['redirect_uri'],
+                'data'          => $data
+            )
+        );
+        return $response;
+    }
+)->setName('removeContributions')->add($authenticate);
+
+$app->post(
     '/{type:' . __('contributions', 'routes') .'|' . __('transactions', 'routes') .'}' .
         __('/remove', 'routes') .'[/{id}]',
     function ($request, $response, $args) {
         $ids = null;
+        $post = $request->getParsedBody();
+        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
+        $success = false;
 
-        if ($request->isGet() && isset($args['id'])) {
-            $ids = $args['id'];
-        } elseif ($request->isPost()) {
-            $post = $request->getParsedBody();
-            if (isset($post['contrib_sel'])) {
-                $ids = $post['contrib_sel'];
-            }
+        if (isset($post['contrib_sel'])) {
+            $ids = $post['contrib_sel'];
+        } elseif (isset($post['id'])) {
+            $ids = [$post['id']];
         }
 
         $raw_type = null;
@@ -1261,7 +1327,16 @@ $app->map(
                 break;
         }
 
-        if ($ids !== null) {
+        $uri = isset($post['redirect_uri']) ?
+            $post['redirect_uri'] :
+            $this->router->pathFor('slash');
+
+        if (!isset($post['confirm'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Removal has not been confirmed!")
+            );
+        } else {
             $class = '\\Galette\Repository\\' . ucwords($raw_type);
             $contribs = new $class($this->zdb, $this->login);
             $rm = $contribs->remove($ids, $this->history);
@@ -1276,6 +1351,7 @@ $app->map(
                     'success_detected',
                     $msg
                 );
+                $success = true;
             } else {
                 $msg = null;
                 if ($raw_type === 'contributions') {
@@ -1288,22 +1364,18 @@ $app->map(
                     $msg
                 );
             }
-        } else {
-            $msg = null;
-            if ($raw_type === 'contributions') {
-                $msg = _T("Please provide an ID to remove contributions!");
-            } else {
-                $msg = _T("Please provide an ID to remove transactions!");
-            }
-
-            $this->flash->addMessage(
-                'error_detected',
-                $msg
-            );
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('contributions', ['type' => $args['type']]));
+        if (!$ajax) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $uri);
+        } else {
+            return $response->withJson(
+                [
+                    'success'   => $success
+                ]
+            );
+        }
     }
-)->setName('removeContributions')->add($authenticate);
+)->setName('doRemoveContribution')->add($authenticate);

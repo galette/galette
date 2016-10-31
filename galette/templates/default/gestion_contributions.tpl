@@ -64,7 +64,7 @@
             </tr>
         </table>
         </form>
-        <form action="{path_for name="removeContributions" data=["type" => {_T string="contributions" domain="routes"}]}" method="post" id="listform">
+        <form action="" method="post" id="listform">
         <table class="listing">
             <thead>
                 <tr>
@@ -236,7 +236,7 @@
                         <a href="{path_for name="contribution" data=["type" => $ctype, "action" => {_T string="edit" domain="routes"}, "id" => $contribution->id]}">
                             <img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="Edit the contribution"}"/>
                         </a>
-                        <a onclick="return confirm('{_T string="Do you really want to delete this contribution of the database ?"|escape:"javascript"}')" href="{path_for name="removeContributions" data=["type" => {_T string="contributions" domain="routes"}, "id" => $contribution->id]}">
+                        <a class="delete" href="{path_for name="removeContributions" data=["type" => {_T string="contributions" domain="routes"}, "id" => $contribution->id]}">
                             <img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="Delete the contribution"}"/>
                         </a>
                     </td>
@@ -305,6 +305,8 @@
                     });
                 }
                 _init_contribs_page();
+
+                {include file="js_removal.tpl"}
             });
         </script>
 {/block}

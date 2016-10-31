@@ -173,6 +173,8 @@
                     buttonImageOnly: true,
                     buttonText: '{_T string="Select a date" escape="js"}'
                 });
+
+                {include file="js_removal.tpl"}
             });
         </script>
 {/block}

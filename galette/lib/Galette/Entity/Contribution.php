@@ -525,28 +525,28 @@ class Contribution
         try {
             $this->zdb->connection->beginTransaction();
             $values = array();
-            $fields = self::getDbFields();
-            foreach ( $fields as $field ) {
+            $fields = self::getDbFields($this->zdb);
+            foreach ($fields as $field) {
                 $prop = '_' . $this->_fields[$field]['propname'];
-                switch ( $field ) {
-                case ContributionsTypes::PK:
-                case Transaction::PK:
-                    if ( isset($this->$prop) ) {
-                        $values[$field] = $this->$prop->id;
-                    }
-                    break;
-                default:
-                    $values[$field] = $this->$prop;
-                    break;
+                switch ($field) {
+                    case ContributionsTypes::PK:
+                    case Transaction::PK:
+                        if (isset($this->$prop)) {
+                            $values[$field] = $this->$prop->id;
+                        }
+                        break;
+                    default:
+                        $values[$field] = $this->$prop;
+                        break;
                 }
             }
 
             //no end date, let's take database defaults
-            if ( !$this->isCotis() && !$this->_end_date ) {
+            if (!$this->isCotis() && !$this->_end_date) {
                 unset($values['date_fin_cotis']);
             }
 
-            if ( !isset($this->_id) || $this->_id == '') {
+            if (!isset($this->_id) || $this->_id == '') {
                 //we're inserting a new contribution
                 unset($values[self::PK]);
 
@@ -554,8 +554,8 @@ class Contribution
                 $insert->values($values);
                 $add = $this->zdb->execute($insert);
 
-                if ( $add->count() > 0) {
-                    if ( $this->zdb->isPostgres() ) {
+                if ($add->count() > 0) {
+                    if ($this->zdb->isPostgres()) {
                         $this->_id = $this->zdb->driver->getLastGeneratedValue(
                             PREFIX_DB . 'cotisations_id_seq'
                         );
@@ -710,11 +710,13 @@ class Contribution
     /**
      * Retrieve fields from database
      *
+     * @param Db $zdb Database instance
+     *
      * @return array
      */
-    public static function getDbFields()
+    public static function getDbFields(Db $zdb)
     {
-        $columns = $this->zdb->getColumns(self::TABLE);
+        $columns = $zdb->getColumns(self::TABLE);
         $fields = array();
         foreach ( $columns as $col ) {
             $fields[] = $col->getName();

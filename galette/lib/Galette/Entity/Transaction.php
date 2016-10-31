@@ -352,7 +352,7 @@ class Transaction
         try {
             $this->zdb->connection->beginTransaction();
             $values = array();
-            $fields = $this->getDbFields();
+            $fields = $this->getDbFields($this->zdb);
             /** FIXME: quote? */
             foreach ($fields as $field) {
                 $prop = '_' . $this->_fields[$field]['propname'];
@@ -473,11 +473,13 @@ class Transaction
     /**
      * Retrieve fields from database
      *
+     * @param Db $zdb Database instance
+     *
      * @return array
      */
-    public function getDbFields()
+    public function getDbFields(Db $zdb)
     {
-        $columns = $this->zdb->getColumns(self::TABLE);
+        $columns = $zdb->getColumns(self::TABLE);
         $fields = array();
         foreach ($columns as $col) {
             $fields[] = $col->getName();
