@@ -53,16 +53,18 @@ use \atoum;
  */
 class I18n extends atoum
 {
-    private $_i18n = null;
+    private $i18n = null;
 
     /**
      * Set up tests
+     *
+     * @param string $testMethod Tested method name
      *
      * @return void
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->_i18n = new \Galette\Core\I18n(
+        $this->i18n = new \Galette\Core\I18n(
             \Galette\Core\I18n::DEFAULT_LANG
         );
     }
@@ -74,32 +76,31 @@ class I18n extends atoum
      */
     public function testAutoLang()
     {
-        $this->_i18n = new \Galette\Core\I18n();
+        $this->i18n = new \Galette\Core\I18n();
 
-        $this->variable($this->_i18n->getID())
+        $this->variable($this->i18n->getID())
             ->isIdenticalTo('fr_FR');
 
         //simulate fr from browser
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'fr_BE';
-        $this->_i18n = new \Galette\Core\I18n();
+        $this->i18n = new \Galette\Core\I18n();
 
-        $this->variable($this->_i18n->getID())
+        $this->variable($this->i18n->getID())
             ->isIdenticalTo('fr_FR');
 
         //simulate en from browser
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en_GB';
-        $this->_i18n = new \Galette\Core\I18n();
+        $this->i18n = new \Galette\Core\I18n();
 
-        $this->variable($this->_i18n->getID())
+        $this->variable($this->i18n->getID())
             ->isIdenticalTo('en_US');
 
         //simulate unknown lang from browser
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'es_ES';
-        $this->_i18n = new \Galette\Core\I18n();
+        $this->i18n = new \Galette\Core\I18n();
 
-        $this->variable($this->_i18n->getID())
+        $this->variable($this->i18n->getID())
             ->isIdenticalTo('fr_FR');
-
     }
 
     /**
@@ -109,12 +110,12 @@ class I18n extends atoum
      */
     public function testGetList()
     {
-        $list = $this->_i18n->getList();
+        $list = $this->i18n->getList();
 
         $this->array($list)
             ->hasSize(2);
 
-        foreach ( $list as $elt ) {
+        foreach ($list as $elt) {
             $this->object($elt)
                 ->isInstanceOf('\Galette\Core\I18n');
         }
@@ -127,7 +128,7 @@ class I18n extends atoum
      */
     public function testGetNameFromid()
     {
-        $lang = $this->_i18n->getNameFromId('en_US');
+        $lang = $this->i18n->getNameFromId('en_US');
 
         $this->variable($lang)
             ->isIdenticalTo('english');
@@ -140,7 +141,7 @@ class I18n extends atoum
      */
     public function testGetFlagFromid()
     {
-        $flag = $this->_i18n->getFlagFromId('en_US');
+        $flag = $this->i18n->getFlagFromId('en_US');
 
         $this->variable($flag)
             ->isIdenticalTo(
@@ -155,13 +156,13 @@ class I18n extends atoum
      */
     public function testGetLangInfos()
     {
-        $id = $this->_i18n->getID();
-        $longid = $this->_i18n->getLongID();
-        $alt = $this->_i18n->getAlternate();
-        $name = $this->_i18n->getName();
-        $abbrev = $this->_i18n->getAbbrev();
-        $flag = $this->_i18n->getFlag();
-        $file = $this->_i18n->getFileName();
+        $id = $this->i18n->getID();
+        $longid = $this->i18n->getLongID();
+        $alt = $this->i18n->getAlternate();
+        $name = $this->i18n->getName();
+        $abbrev = $this->i18n->getAbbrev();
+        $flag = $this->i18n->getFlag();
+        $file = $this->i18n->getFileName();
 
         $this->variable($id)
             ->isIdenticalTo('fr_FR');
@@ -188,8 +189,8 @@ class I18n extends atoum
      */
     public function testChangeUnknownLanguage()
     {
-        $this->_i18n->changeLanguage('de_DE');
-        $id = $this->_i18n->getID();
+        $this->i18n->changeLanguage('de_DE');
+        $id = $this->i18n->getID();
 
         $this->variable($id)
             ->isIdenticalTo('fr_FR');
@@ -202,8 +203,8 @@ class I18n extends atoum
      */
     public function testSeemUtf8()
     {
-        $is_utf = $this->_i18n->seemUtf8('HéhéHÉHÉâ-ôß¬- ©»«<ëßßä€êþÿûîœô');
-        $is_iso = $this->_i18n->seemUtf8(utf8_decode('Héhé'));
+        $is_utf = $this->i18n->seemUtf8('HéhéHÉHÉâ-ôß¬- ©»«<ëßßä€êþÿûîœô');
+        $is_iso = $this->i18n->seemUtf8(utf8_decode('Héhé'));
 
         $this->boolean($is_utf)->isTrue();
         $this->boolean($is_iso)->isFalse();

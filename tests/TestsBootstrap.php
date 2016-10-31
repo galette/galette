@@ -41,11 +41,25 @@ $logfile = 'galette_tests';
 require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
 //require_once GALETTE_BASE_PATH . 'includes/i18n.inc.php';
 
+/**
+ * Maps _T Galette's function
+ *
+ * @param string $string String to translate
+ *
+ * @return string
+ */
 function _T($string)
 {
     return $string;
 }
 
+/**
+ * Maps __ Galette's function
+ *
+ * @param string $string String to translate
+ *
+ * @return string
+ */
 function __($string)
 {
     return $string;

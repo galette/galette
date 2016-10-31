@@ -53,7 +53,7 @@ use \atoum;
  */
 class Password extends atoum
 {
-    private $_pass = null;
+    private $pass = null;
 
     /**
      * Set up tests
@@ -64,7 +64,7 @@ class Password extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->_pass = new \Galette\Core\Password(false);
+        $this->pass = new \Galette\Core\Password(false);
     }
 
     /**
@@ -76,8 +76,8 @@ class Password extends atoum
     {
         $results = array();
 
-        for ( $i = 0 ; $i < 200 ; $i++ ) {
-            $random = $this->_pass->makeRandomPassword(15);
+        for ($i = 0; $i < 200; $i++) {
+            $random = $this->pass->makeRandomPassword(15);
             $this->string($random)->hasLength(15);
 
             $exists = in_array($random, $results);

@@ -74,6 +74,7 @@ class Transaction
     /**
      * Default constructor
      *
+     * @param Db                 $zdb  Database instance
      * @param null|int|ResultSet $args Either a ResultSet row or its id for to load
      *                                   a specific transaction, or null to just
      *                                   instanciate object
@@ -114,14 +115,14 @@ class Transaction
                 'propname' => 'member'
             )
         );
-        if ( $args == null || is_int($args) ) {
+        if ($args == null || is_int($args)) {
             $this->_date = date("Y-m-d");
 
-            if ( is_int($args) && $args > 0 ) {
+            if (is_int($args) && $args > 0) {
                 $this->load($args);
             }
-        } elseif ( is_object($args) ) {
-            $this->_loadFromRS($args);
+        } elseif (is_object($args)) {
+            $this->loadFromRS($args);
         }
     }
 
@@ -140,8 +141,8 @@ class Transaction
 
             $results = $this->zdb->execute($select);
             $result = $results->current();
-            if ( $result ) {
-                $this->_loadFromRS($result);
+            if ($result) {
+                $this->loadFromRS($result);
                 return true;
             } else {
                 throw new \Exception;
@@ -166,16 +167,16 @@ class Transaction
     public function remove($transaction = true)
     {
         try {
-            if ( $transaction ) {
+            if ($transaction) {
                 $this->zdb->connection->beginTransaction();
             }
 
             //remove associated contributions if needeed
-            if ( $this->getDispatchedAmount() > 0 ) {
+            if ($this->getDispatchedAmount() > 0) {
                 $c = new Contributions();
                 $clist = $c->getListFromTransaction($this->_id);
                 $cids = array();
-                foreach ( $clist as $cid) {
+                foreach ($clist as $cid) {
                     $cids[] = $cid->id;
                 }
                 $rem = $c->removeContributions($cids, false);
@@ -188,12 +189,12 @@ class Transaction
             );
             $this->zdb->execute($delete);
 
-            if ( $transaction ) {
+            if ($transaction) {
                 $this->zdb->connection->commit();
             }
             return true;
         } catch (\Exception $e) {
-            if ( $transaction ) {
+            if ($transaction) {
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
@@ -212,7 +213,7 @@ class Transaction
      *
      * @return void
      */
-    private function _loadFromRS($r)
+    private function loadFromRS($r)
     {
         $pk = self::PK;
         $this->_id = $r->$pk;
@@ -238,93 +239,93 @@ class Transaction
         $errors = array();
 
         $fields = array_keys($this->_fields);
-        foreach ( $fields as $key ) {
+        foreach ($fields as $key) {
             //first of all, let's sanitize values
             $key = strtolower($key);
             $prop = '_' . $this->_fields[$key]['propname'];
 
-            if ( isset($values[$key]) ) {
+            if (isset($values[$key])) {
                 $value = trim($values[$key]);
             } else {
                 $value = '';
             }
 
             // if the field is enabled, check it
-            if ( !isset($disabled[$key]) ) {
+            if (!isset($disabled[$key])) {
                 // now, check validity
-                if ( $value != '' ) {
-                    switch ( $key ) {
-                    // dates
-                    case 'trans_date':
-                        try {
-                            $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
-                            if ( $d === false ) {
-                                throw new \Exception('Incorrect format');
+                if ($value != '') {
+                    switch ($key) {
+                        // dates
+                        case 'trans_date':
+                            try {
+                                $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
+                                if ($d === false) {
+                                    throw new \Exception('Incorrect format');
+                                }
+                                $this->$prop = $d->format('Y-m-d');
+                            } catch (\Exception $e) {
+                                Analog::log(
+                                    'Wrong date format. field: ' . $key .
+                                    ', value: ' . $value . ', expected fmt: ' .
+                                    __("Y-m-d") . ' | ' . $e->getMessage(),
+                                    Analog::INFO
+                                );
+                                $errors[] = str_replace(
+                                    array(
+                                        '%date_format',
+                                        '%field'
+                                    ),
+                                    array(
+                                        __("Y-m-d"),
+                                        $this->_fields[$key]['label']
+                                    ),
+                                    _T("- Wrong date format (%date_format) for %field!")
+                                );
                             }
-                            $this->$prop = $d->format('Y-m-d');
-                        } catch (\Exception $e) {
-                            Analog::log(
-                                'Wrong date format. field: ' . $key .
-                                ', value: ' . $value . ', expected fmt: ' .
-                                __("Y-m-d") . ' | ' . $e->getMessage(),
-                                Analog::INFO
-                            );
-                            $errors[] = str_replace(
-                                array(
-                                    '%date_format',
-                                    '%field'
-                                ),
-                                array(
-                                    __("Y-m-d"),
-                                    $this->_fields[$key]['label']
-                                ),
-                                _T("- Wrong date format (%date_format) for %field!")
-                            );
-                        }
-                        break;
-                    case Adherent::PK:
-                        $this->_member = $value;
-                        break;
-                    case 'trans_amount':
-                        $this->_amount = $value;
-                        $value = strtr($value, ',', '.');
-                        if ( !is_numeric($value) ) {
-                            $errors[] = _T("- The amount must be an integer!");
-                        }
-                        break;
-                    case 'trans_desc':
-                        /** TODO: retrieve field length from database and check that */
-                        $this->_description = $value;
-                        if ( trim($value) == '' ) {
-                            $errors[] = _T("- Empty transaction description!");
-                        } else if (strlen($value) > 150 ) {
-                            $errors[] = _T("- Transaction description must be 150 characters long maximum.");
-                        }
-                        break;
+                            break;
+                        case Adherent::PK:
+                            $this->_member = $value;
+                            break;
+                        case 'trans_amount':
+                            $this->_amount = $value;
+                            $value = strtr($value, ',', '.');
+                            if (!is_numeric($value)) {
+                                $errors[] = _T("- The amount must be an integer!");
+                            }
+                            break;
+                        case 'trans_desc':
+                            /** TODO: retrieve field length from database and check that */
+                            $this->_description = $value;
+                            if (trim($value) == '') {
+                                $errors[] = _T("- Empty transaction description!");
+                            } elseif (strlen($value) > 150) {
+                                $errors[] = _T("- Transaction description must be 150 characters long maximum.");
+                            }
+                            break;
                     }
                 }
             }
         }
 
         // missing required fields?
-        while ( list($key, $val) = each($required) ) {
-            if ( $val === 1) {
+        while (list($key, $val) = each($required)) {
+            if ($val === 1) {
                 $prop = '_' . $this->_fields[$key]['propname'];
-                if ( !isset($disabled[$key]) && !isset($this->$prop) ) {
+                if (!isset($disabled[$key]) && !isset($this->$prop)) {
                     $errors[] = _T("- Mandatory field empty: ") .
                     ' <a href="#' . $key . '">' . $this->getFieldName($key) .'</a>';
                 }
             }
         }
 
-        if ( $this->_id != '' ) {
+        if ($this->_id != '') {
             $dispatched = $this->getDispatchedAmount();
-            if ( $dispatched > $this->_amount ) {
+            if ($dispatched > $this->_amount) {
                 $errors[] = _T("- Sum of all contributions exceed corresponding transaction amount.");
             }
         }
 
-        if ( count($errors) > 0 ) {
+        if (count($errors) > 0) {
             Analog::log(
                 'Some errors has been throwed attempting to edit/store a transaction' .
                 print_r($errors, true),
@@ -511,27 +512,27 @@ class Transaction
         $forbidden = array();
 
         $rname = '_' . $name;
-        if ( !in_array($name, $forbidden) && isset($this->$rname) ) {
-            switch($name) {
-            case 'date':
-                if ( $this->$rname != '' ) {
-                    try {
-                        $d = new \DateTime($this->$rname);
-                        return $d->format(__("Y-m-d"));
-                    } catch (\Exception $e) {
-                        //oops, we've got a bad date :/
-                        Analog::log(
-                            'Bad date (' . $this->$rname . ') | ' .
-                            $e->getMessage(),
-                            Analog::INFO
-                        );
-                        return $this->$rname;
+        if (!in_array($name, $forbidden) && isset($this->$rname)) {
+            switch ($name) {
+                case 'date':
+                    if ($this->$rname != '') {
+                        try {
+                            $d = new \DateTime($this->$rname);
+                            return $d->format(__("Y-m-d"));
+                        } catch (\Exception $e) {
+                            //oops, we've got a bad date :/
+                            Analog::log(
+                                'Bad date (' . $this->$rname . ') | ' .
+                                $e->getMessage(),
+                                Analog::INFO
+                            );
+                            return $this->$rname;
+                        }
                     }
-                }
-                break;
-            default:
-                return $this->$rname;
-                break;
+                    break;
+                default:
+                    return $this->$rname;
+                    break;
             }
         } else {
             return false;

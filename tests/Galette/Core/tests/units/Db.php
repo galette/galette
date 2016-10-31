@@ -53,7 +53,7 @@ use \atoum;
  */
 class Db extends atoum
 {
-    private $_db;
+    private $db;
 
     /**
      * Set up tests
@@ -64,7 +64,7 @@ class Db extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->_db = new \Galette\Core\Db();
+        $this->db = new \Galette\Core\Db();
     }
 
     /**
@@ -93,18 +93,18 @@ class Db extends atoum
         $type = $db->type_db;
 
         switch (TYPE_DB) {
-        case 'pgsql':
-            $this->boolean($is_pg)
-                ->isTrue();
-            $this->string($type)
-                ->isIdenticalTo(\Galette\Core\Db::PGSQL);
-            break;
-        case \Galette\Core\Db::MYSQL:
-            $this->boolean($is_pg)
-                ->isFalse();
-            $this->string($type)
-                ->isIdenticalTo(\Galette\Core\Db::MYSQL);
-            break;
+            case 'pgsql':
+                $this->boolean($is_pg)
+                    ->isTrue();
+                $this->string($type)
+                    ->isIdenticalTo(\Galette\Core\Db::PGSQL);
+                break;
+            case \Galette\Core\Db::MYSQL:
+                $this->boolean($is_pg)
+                    ->isFalse();
+                $this->string($type)
+                    ->isIdenticalTo(\Galette\Core\Db::MYSQL);
+                break;
         }
 
         $this->exception(
@@ -122,7 +122,7 @@ class Db extends atoum
      */
     public function testConnectivity()
     {
-        $res = $this->_db->testConnectivity(
+        $res = $this->db->testConnectivity(
             TYPE_DB,
             USER_DB,
             PWD_DB,
@@ -140,7 +140,7 @@ class Db extends atoum
      */
     public function testGrant()
     {
-        $result = $this->_db->dropTestTable();
+        $result = $this->db->dropTestTable();
 
         $expected = array(
             'create' => true,
@@ -150,14 +150,14 @@ class Db extends atoum
             'delete' => true,
             'drop'   => true
         );
-        $result = $this->_db->grantCheck();
+        $result = $this->db->grantCheck();
 
         $this->array($result)
             ->hasSize(6)
             ->isIdenticalTo($expected);
 
         //in update mode, we need alter
-        $result = $this->_db->grantCheck('u');
+        $result = $this->db->grantCheck('u');
 
         $expected['alter'] = true;
         $this->array($result)
@@ -172,17 +172,17 @@ class Db extends atoum
      */
     public function testIsPostgres()
     {
-        $is_pg = $this->_db->isPostgres();
+        $is_pg = $this->db->isPostgres();
 
         switch (TYPE_DB) {
-        case 'pgsql':
-            $this->boolean($is_pg)
-                ->isTrue();
-            break;
-        default:
-            $this->boolean($is_pg)
-                ->isFalse();
-            break;
+            case 'pgsql':
+                $this->boolean($is_pg)
+                    ->isTrue();
+                break;
+            default:
+                $this->boolean($is_pg)
+                    ->isFalse();
+                break;
         }
     }
 
@@ -193,30 +193,30 @@ class Db extends atoum
      */
     public function testGetters()
     {
-        switch(TYPE_DB) {
-        case 'pgsql':
-            $type = $this->_db->type_db;
-            $this->string($type)
-                ->isIdenticalTo('pgsql');
-            break;
-        case 'mysql':
-            $type = $this->_db->type_db;
-            $this->string($type)
-                ->isIdenticalTo('mysql');
-            break;
+        switch (TYPE_DB) {
+            case 'pgsql':
+                $type = $this->db->type_db;
+                $this->string($type)
+                    ->isIdenticalTo('pgsql');
+                break;
+            case 'mysql':
+                $type = $this->db->type_db;
+                $this->string($type)
+                    ->isIdenticalTo('mysql');
+                break;
         }
 
-        $db = $this->_db->db;
+        $db = $this->db->db;
         $this->object($db)->IsInstanceOf('Zend\Db\Adapter\Adapter');
 
-        $sql = $this->_db->sql;
+        $sql = $this->db->sql;
         $this->object($sql)->IsInstanceOf('Zend\Db\Sql\Sql');
 
-        $connection = $this->_db->connection;
+        $connection = $this->db->connection;
         $this->object($connection)
             ->IsInstanceOf('Zend\Db\Adapter\Driver\Pdo\Connection');
 
-        $driver = $this->_db->driver;
+        $driver = $this->db->driver;
         $this->object($driver)
             ->IsInstanceOf('Zend\Db\Adapter\Driver\Pdo\Pdo');
     }
@@ -228,15 +228,15 @@ class Db extends atoum
      */
     public function testSelect()
     {
-        $select = $this->_db->select('preferences', 'p');
+        $select = $this->db->select('preferences', 'p');
         $select->where(array('p.nom_pref' => 'pref_nom'));
-        $results = $this->_db->execute($select);
-        $query = $this->_db->query_string;
+        $results = $this->db->execute($select);
+        $query = $this->db->query_string;
 
         $expected = 'SELECT "p".* FROM "galette_preferences" AS "p" ' .
             'WHERE "p"."nom_pref" = \'pref_nom\'';
 
-        if ( TYPE_DB === 'mysql' ) {
+        if (TYPE_DB === 'mysql') {
             $expected = 'SELECT `p`.* FROM `galette_preferences` AS `p` ' .
                 'WHERE `p`.`nom_pref` = \'pref_nom\'';
         }
@@ -251,10 +251,10 @@ class Db extends atoum
      */
     public function testDbVersion()
     {
-        $db_version = $this->_db->getDbVersion();
+        $db_version = $this->db->getDbVersion();
         $this->variable($db_version)->isIdenticalTo(GALETTE_DB_VERSION);
 
-        $res = $this->_db->checkDbVersion();
+        $res = $this->db->checkDbVersion();
         $this->boolean($res)->isTrue();
     }
 
@@ -265,12 +265,12 @@ class Db extends atoum
      */
     public function testGetColumns()
     {
-        $cols = $this->_db->getColumns('preferences');
+        $cols = $this->db->getColumns('preferences');
 
         $this->array($cols)->hasSize(3);
 
         $columns = array();
-        foreach ( $cols as $c ) {
+        foreach ($cols as $c) {
             $columns[] = $c->getName();
         }
 
@@ -320,11 +320,11 @@ class Db extends atoum
             'galette_preferences',
         );
 
-        $tables = $this->_db->getTables();
+        $tables = $this->db->getTables();
 
         //tables created in grantCheck il sometimes
         //presnet here... :(
-        if ( in_array('galette_test', $tables) ) {
+        if (in_array('galette_test', $tables)) {
             unset($tables[array_search('galette_test', $tables)]);
         }
 
@@ -343,8 +343,8 @@ class Db extends atoum
      */
     public function testConvertToUtf()
     {
-        if ( TYPE_DB === \Galette\Core\Db::MYSQL ) {
-            $convert = $this->_db->convertToUTF();
+        if (TYPE_DB === \Galette\Core\Db::MYSQL) {
+            $convert = $this->db->convertToUTF();
 
             $this->variable($convert)->isNull();
         }

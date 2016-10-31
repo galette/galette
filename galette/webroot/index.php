@@ -36,10 +36,9 @@
  */
 
 // define relative base path templating can use
-if ( !defined('GALETTE_BASE_PATH') ) {
+if (!defined('GALETTE_BASE_PATH')) {
     define('GALETTE_BASE_PATH', '../');
 }
 
 /** @ignore */
 require_once __DIR__ . '/../includes/main.inc.php';
-

@@ -53,8 +53,8 @@ use \atoum;
  */
 class Preferences extends atoum
 {
-    private $_preferences = null;
-    private $_zdb;
+    private $preferences = null;
+    private $zdb;
 
     /**
      * Set up tests
@@ -65,9 +65,9 @@ class Preferences extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->_zdb = new \Galette\Core\Db();
-        $this->_preferences = new \Galette\Core\Preferences(
-            $this->_zdb
+        $this->zdb = new \Galette\Core\Db();
+        $this->preferences = new \Galette\Core\Preferences(
+            $this->zdb
         );
     }
 
@@ -78,7 +78,7 @@ class Preferences extends atoum
      */
     public function testInstallInit()
     {
-        $result = $this->_preferences->installInit(
+        $result = $this->preferences->installInit(
             'en_US',
             'da_admin',
             password_hash('da_secret', PASSWORD_BCRYPT)
@@ -86,33 +86,33 @@ class Preferences extends atoum
         $this->boolean($result)->isTrue();
 
         //new object with values loaded from database to compare
-        $prefs = new \Galette\Core\Preferences($this->_zdb);
+        $prefs = new \Galette\Core\Preferences($this->zdb);
 
-        foreach ( $prefs->getDefaults() as $key=>$expected  ) {
+        foreach ($prefs->getDefaults() as $key => $expected) {
             $value = $prefs->$key;
 
-            switch ( $key ) {
-            case 'pref_admin_login':
-                $this->variable($value)->isIdenticalTo('da_admin');
-                break;
-            case 'pref_admin_pass':
-                $pw_checked = password_verify('da_secret', $value);
-                $this->boolean($pw_checked)->isTrue();
-                break;
-            case 'pref_lang':
-                $this->variable($value)->isIdenticalTo('en_US');
-                break;
-            case 'pref_card_year':
-                $this->variable($value)->isIdenticalTo(date('Y'));
-                break;
-            default:
-                if ( TYPE_DB === \Galette\Core\Db::PGSQL ) {
-                    if ( $value === 'f' ) {
-                        $value = false;
+            switch ($key) {
+                case 'pref_admin_login':
+                    $this->variable($value)->isIdenticalTo('da_admin');
+                    break;
+                case 'pref_admin_pass':
+                    $pw_checked = password_verify('da_secret', $value);
+                    $this->boolean($pw_checked)->isTrue();
+                    break;
+                case 'pref_lang':
+                    $this->variable($value)->isIdenticalTo('en_US');
+                    break;
+                case 'pref_card_year':
+                    $this->variable($value)->isIdenticalTo(date('Y'));
+                    break;
+                default:
+                    if (TYPE_DB === \Galette\Core\Db::PGSQL) {
+                        if ($value === 'f') {
+                            $value = false;
+                        }
                     }
-                }
-                $this->variable($value)->isEqualTo($expected);
-                break;
+                    $this->variable($value)->isEqualTo($expected);
+                    break;
             }
         }
 
@@ -134,34 +134,34 @@ class Preferences extends atoum
         $pw_checked = password_verify($new_pass, $pass);
         $this->boolean($pw_checked)->isTrue();
 
-        $this->_preferences->pref_nom = 'Galette';
-        $this->_preferences->pref_ville = 'Avignon';
-        $this->_preferences->pref_cp = '84000';
-        $this->_preferences->pref_adresse = 'Palais des Papes';
-        $this->_preferences->pref_adresse2 = 'Au milieu';
-        $this->_preferences->pref_pays = 'France';
+        $this->preferences->pref_nom = 'Galette';
+        $this->preferences->pref_ville = 'Avignon';
+        $this->preferences->pref_cp = '84000';
+        $this->preferences->pref_adresse = 'Palais des Papes';
+        $this->preferences->pref_adresse2 = 'Au milieu';
+        $this->preferences->pref_pays = 'France';
 
         $expected = "Galette\n\nPalais des Papes\nAu milieu\n84000 Avignon - France";
-        $address = $this->_preferences->getPostalAddress();
+        $address = $this->preferences->getPostalAddress();
 
         $this->variable($address)->isIdenticalTo($expected);
 
-        $slogan = $this->_preferences->pref_slogan;
+        $slogan = $this->preferences->pref_slogan;
         $this->variable($slogan)->isEqualTo('');
 
         $slogan = 'One Galette to rule them all';
-        $this->_preferences->pref_slogan = $slogan;
-        $result = $this->_preferences->store();
+        $this->preferences->pref_slogan = $slogan;
+        $result = $this->preferences->store();
 
         $this->boolean($result)->isTrue();
 
-        $prefs = new \Galette\Core\Preferences($this->_zdb);
+        $prefs = new \Galette\Core\Preferences($this->zdb);
         $check_slogan = $prefs->pref_slogan;
         $this->variable($check_slogan)->isEqualTo($slogan);
 
         //reset database value...
-        $this->_preferences->pref_slogan = '';
-        $this->_preferences->store();
+        $this->preferences->pref_slogan = '';
+        $this->preferences->store();
     }
 
     /**
@@ -171,9 +171,9 @@ class Preferences extends atoum
      */
     public function testFieldsNames()
     {
-        $this->_preferences->load();
-        $fields_names = $this->_preferences->getFieldsNames();
-        $expected = array_keys($this->_preferences->getDefaults());
+        $this->preferences->load();
+        $fields_names = $this->preferences->getFieldsNames();
+        $expected = array_keys($this->preferences->getDefaults());
 
         sort($fields_names);
         sort($expected);
@@ -188,30 +188,30 @@ class Preferences extends atoum
      */
     public function testUpdate()
     {
-        $delete = $this->_zdb->delete(\Galette\Core\Preferences::TABLE);
+        $delete = $this->zdb->delete(\Galette\Core\Preferences::TABLE);
         $delete->where(
             array(
                 \Galette\Core\Preferences::PK => 'pref_facebook'
             )
         );
-        $this->_zdb->execute($delete);
+        $this->zdb->execute($delete);
 
-        $delete = $this->_zdb->delete(\Galette\Core\Preferences::TABLE);
+        $delete = $this->zdb->delete(\Galette\Core\Preferences::TABLE);
         $delete->where(
             array(
                 \Galette\Core\Preferences::PK => 'pref_viadeo'
             )
         );
-        $this->_zdb->execute($delete);
+        $this->zdb->execute($delete);
 
-        $this->_preferences->load();
-        $fb = $this->_preferences->pref_facebook;
-        $viadeo = $this->_preferences->pref_viadeo;
+        $this->preferences->load();
+        $fb = $this->preferences->pref_facebook;
+        $viadeo = $this->preferences->pref_viadeo;
 
         $this->boolean($fb)->isFalse();
         $this->boolean($viadeo)->isFalse();
 
-        $prefs = new \Galette\Core\Preferences($this->_zdb);
+        $prefs = new \Galette\Core\Preferences($this->zdb);
         $fb = $prefs->pref_facebook;
         $viadeo = $prefs->pref_viadeo;
 
@@ -226,65 +226,65 @@ class Preferences extends atoum
      */
     public function testPublicPagesVisibility()
     {
-        $this->_preferences->load();
+        $this->preferences->load();
         $session = new \RKA\Session();
 
-        $visibility = $this->_preferences->pref_publicpages_visibility;
+        $visibility = $this->preferences->pref_publicpages_visibility;
         $this->variable($visibility)->isEqualTo(
             \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED
         );
 
         $anon_login = new \Galette\Core\Login(
-            $this->_zdb,
+            $this->zdb,
             new \Galette\Core\I18n(),
             $session
         );
 
         $admin_login = new \mock\Galette\Core\Login(
-            $this->_zdb,
+            $this->zdb,
             new \Galette\Core\I18n(),
             $session
         );
         $this->calling($admin_login)->isAdmin = true;
 
         $user_login = new \mock\Galette\Core\Login(
-            $this->_zdb,
-             new \Galette\Core\I18n(),
+            $this->zdb,
+            new \Galette\Core\I18n(),
             $session
         );
         $this->calling($user_login)->isUp2Date = true;
 
-        $visible = $this->_preferences->showPublicPages($anon_login);
+        $visible = $this->preferences->showPublicPages($anon_login);
         $this->boolean($visible)->isFalse();
 
-        $visible = $this->_preferences->showPublicPages($admin_login);
+        $visible = $this->preferences->showPublicPages($admin_login);
         $this->boolean($visible)->isTrue();
 
-        $visible = $this->_preferences->showPublicPages($user_login);
+        $visible = $this->preferences->showPublicPages($user_login);
         $this->boolean($visible)->isTrue();
 
-        $this->_preferences->pref_publicpages_visibility
+        $this->preferences->pref_publicpages_visibility
             = \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC;
 
-        $visible = $this->_preferences->showPublicPages($anon_login);
+        $visible = $this->preferences->showPublicPages($anon_login);
         $this->boolean($visible)->isTrue();
 
-        $visible = $this->_preferences->showPublicPages($admin_login);
+        $visible = $this->preferences->showPublicPages($admin_login);
         $this->boolean($visible)->isTrue();
 
-        $visible = $this->_preferences->showPublicPages($user_login);
+        $visible = $this->preferences->showPublicPages($user_login);
         $this->boolean($visible)->isTrue();
 
-        $this->_preferences->pref_publicpages_visibility
+        $this->preferences->pref_publicpages_visibility
             = \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE;
 
-        $visible = $this->_preferences->showPublicPages($anon_login);
+        $visible = $this->preferences->showPublicPages($anon_login);
         $this->boolean($visible)->isFalse();
 
-        $visible = $this->_preferences->showPublicPages($admin_login);
+        $visible = $this->preferences->showPublicPages($admin_login);
         $this->boolean($visible)->isTrue();
 
-        $visible = $this->_preferences->showPublicPages($user_login);
+        $visible = $this->preferences->showPublicPages($user_login);
         $this->boolean($visible)->isFalse();
     }
 }

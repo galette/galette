@@ -39,5 +39,3 @@ $_tpl_assignments = array(
     'one' => 'one',
     'two' => 'two'
 );
-
-?>

@@ -345,4 +345,3 @@ $members_fields = array(
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     )
 );
-

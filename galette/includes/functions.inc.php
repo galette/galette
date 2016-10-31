@@ -57,7 +57,15 @@ function isValidWebUrl($url)
     ));
 }
 
-function custom_html_entity_decode( $given_html, $quote_style = ENT_QUOTES )
+/**
+ * Custom HTML entitiy decode
+ *
+ * @param string $given_html  Original HTML
+ * @param int    $quote_style Quoting style
+ *
+ * @return string
+ */
+function custom_html_entity_decode($given_html, $quote_style = ENT_QUOTES)
 {
     $trans_table = array_flip(
         get_html_translation_table(
@@ -83,9 +91,9 @@ function custom_html_entity_decode( $given_html, $quote_style = ENT_QUOTES )
 function get_form_value($name, $defval)
 {
     $val = $defval;
-    if ( isset($_GET[$name]) ) {
+    if (isset($_GET[$name])) {
         $val = $_GET[$name];
-    } elseif ( isset($_POST[$name]) ) {
+    } elseif (isset($_POST[$name])) {
         $val = $_POST[$name];
     }
     return $val;
@@ -105,7 +113,7 @@ function get_form_value($name, $defval)
 function get_numeric_form_value($name, $defval)
 {
     $val = get_form_value($name, $defval);
-    if ( !is_numeric($val) ) {
+    if (!is_numeric($val)) {
         Analog::log(
             '[get_numeric_form_value] not a numeric value! (value was: `' .
             $val . '`)',
@@ -128,9 +136,9 @@ function get_numeric_form_value($name, $defval)
  */
 function get_numeric_posted_value($name, $defval)
 {
-    if ( isset($_POST[$name]) ) {
+    if (isset($_POST[$name])) {
         $val = $_POST[$name];
-        if ( is_numeric($val) ) {
+        if (is_numeric($val)) {
             return $val;
         }
     }

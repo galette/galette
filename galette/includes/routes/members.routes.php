@@ -1344,6 +1344,38 @@ $app->get(
     }
 )->setName('removeMember')->add($authenticate);
 
+/*$app->get(
+    __('/members/remove', 'routes'),
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+
+        $data = [
+            'ids'           => $post['ids'],
+            'redirect_uri'  => $this->router->pathFor('members')
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'type'          => _T("Member"),
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => _T('Remove members'),
+                'message'       => str_replace(
+                    '%count',
+                    count($data['ids']),
+                    _T('You are about to remove %count members.')
+                ),
+                'form_url'      => $this->router->pathFor('doRemoveMember'),
+                'cancel_uri'    => $this->router->pathFor('members'),
+                'data'          => $data
+            )
+        );
+        return $response;
+    }
+)->setName('removeMembers')->add($authenticate);*/
+
 $app->post(
     __('/member/remove', 'routes') . '[/{id:\d+}]',
     function ($request, $response) {

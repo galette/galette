@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -15,6 +15,14 @@
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
+ *
+ * @category Libraries
+ * @package  ClassLoader
+ * @author   Doctrine project <contact@doctrine-project.org>
+ * @author   Johan Cwiklinski <johan@x-tnd.be>
+ * @license  LGPL https://www.gnu.org/licenses/lgpl-3.0.fr.html
+ * @link     http://www.doctrine-project.org - http://galette.tuxfamily.org
+ * @since    ?
  */
 
 namespace Galette\Common;
@@ -28,7 +36,11 @@ namespace Galette\Common;
  * If no include path is configured through the constructor or {@link setIncludePath}, a ClassLoader
  * relies on the PHP <code>include_path</code>.
  *
+ * @category Libraries
+ * @package  ClassLoader
  * @author Roman Borschel <roman@code-factory.org>
+ * @license  LGPL https://www.gnu.org/licenses/lgpl-3.0.fr.html
+ * @link     http://www.doctrine-project.org - http://galette.tuxfamily.org
  * @since 2.0
  */
 class ClassLoader
@@ -61,13 +73,12 @@ class ClassLoader
      * If neither a namespace nor an include path is given, the ClassLoader will
      * be responsible for loading all classes, thereby relying on the PHP include_path.
      *
-     * @param string $ns The namespace of the classes to load.
+     * @param string $ns          The namespace of the classes to load.
      * @param string $includePath The base include path to use.
      */
     public function __construct($ns = null, $includePath = null)
     {
-        if (!file_exists($includePath))
-        {
+        if (!file_exists($includePath)) {
             throw new \RuntimeException('Include path "'.$includePath.'" doesn\'t exists');
         }
 
@@ -79,6 +90,8 @@ class ClassLoader
      * Sets the namespace separator used by classes in the namespace of this ClassLoader.
      *
      * @param string $sep The separator to use.
+     *
+     * @return void
      */
     public function setNamespaceSeparator($sep)
     {
@@ -98,7 +111,9 @@ class ClassLoader
     /**
      * Sets the base include path for all class files in the namespace of this ClassLoader.
      *
-     * @param string $includePath
+     * @param string $includePath Include path
+     *
+     * @return void
      */
     public function setIncludePath($includePath)
     {
@@ -118,7 +133,9 @@ class ClassLoader
     /**
      * Sets the file extension of class files in the namespace of this ClassLoader.
      *
-     * @param string $fileExtension
+     * @param string $fileExtension File extension
+     *
+     * @return void
      */
     public function setFileExtension($fileExtension)
     {
@@ -137,6 +154,8 @@ class ClassLoader
 
     /**
      * Registers this ClassLoader on the SPL autoload stack.
+     *
+     * @return void
      */
     public function register()
     {
@@ -145,6 +164,8 @@ class ClassLoader
 
     /**
      * Removes this ClassLoader from the SPL autoload stack.
+     *
+     * @return void
      */
     public function unregister()
     {
@@ -154,7 +175,8 @@ class ClassLoader
     /**
      * Loads the given class or interface.
      *
-     * @param string $classname The name of the class to load.
+     * @param string $className The name of the class to load.
+     *
      * @return boolean TRUE if the class has been successfully loaded, FALSE otherwise.
      */
     public function loadClass($className)
@@ -163,7 +185,7 @@ class ClassLoader
             return false;
         }
 
-        if ( $this->namespace !== null ) {
+        if ($this->namespace !== null) {
             $className = str_replace(
                 $this->namespaceSeparator,
                 DIRECTORY_SEPARATOR,
@@ -175,7 +197,7 @@ class ClassLoader
                . $className
                . $this->fileExtension;
 
-        if ( file_exists($path) ) {
+        if (file_exists($path)) {
             require $path;
             return true;
         } else {
@@ -239,17 +261,17 @@ class ClassLoader
                         if ($loader[0]->canLoadClass($className)) {
                             return true;
                         }
-                    } else if ($loader[0]->{$loader[1]}($className)) {
+                    } elseif ($loader[0]->{$loader[1]}($className)) {
                         return true;
                     }
-                } else if ($loader[0]::$loader[1]($className)) { // array('ClassName', 'methodName')
+                } elseif ($loader[0]::$loader[1]($className)) { // array('ClassName', 'methodName')
                     return true;
                 }
-            } else if ($loader instanceof \Closure) { // function($className) {..}
+            } elseif ($loader instanceof \Closure) { // function($className) {..}
                 if ($loader($className)) {
                     return true;
                 }
-            } else if (is_string($loader) && $loader($className)) { // "MyClass::loadClass"
+            } elseif (is_string($loader) && $loader($className)) { // "MyClass::loadClass"
                 return true;
             }
         }
@@ -266,7 +288,7 @@ class ClassLoader
      */
     public static function getClassLoader($className)
     {
-         foreach (spl_autoload_functions() as $loader) {
+        foreach (spl_autoload_functions() as $loader) {
             if (is_array($loader)
                 && $loader[0] instanceof ClassLoader
                 && $loader[0]->canLoadClass($className)

@@ -833,6 +833,7 @@ $app->get(
 $app->get(
     '/{type:' . __('export', 'routes') . '|' . __('import', 'routes') . '}' . __('/remove', 'routes') .'/{file}',
     function ($request, $response, $args) {
+        //FIXME: add two steps removal
         $csv = $args['type'] === __('export', 'routes') ?
             new CsvOut() :
             new CsvIn($this->zdb);
@@ -1411,6 +1412,7 @@ $app->post(
 $app->get(
     __('/titles/remove', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
+        //FIXME: add two steps removal
         $id = $args['id'];
 
         $title = new Title((int)$id);
@@ -1752,6 +1754,7 @@ $app->get(
     '/{class:' . __('contributions-types', 'routes') . '|' . __('status', 'routes') .
         '}' . __('/remove', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
+        //FIXME: add two steps removal
         $class = null;
         switch ($args['class']) {
             case __('status', 'routes'):
