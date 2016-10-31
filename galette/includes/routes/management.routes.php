@@ -1750,7 +1750,7 @@ $app->post(
 
 $app->get(
     '/{class:' . __('contributions-types', 'routes') . '|' . __('status', 'routes') .
-        '}' . __('/delete', 'routes') . '/{id:\d+}',
+        '}' . __('/remove', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $class = null;
         switch ($args['class']) {
