@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ruleset name="Seritech">
+    <description>Coding standard based on PSR2 with comments from Zend for Galette</description>
+
+     <!-- Include the whole PSR2 standard -->
+     <rule ref="PSR2"/>
+
+     <!-- Comments rules from PEAR standard -->
+     <rule ref="PEAR.Commenting.ClassComment"/>
+     <rule ref="PEAR.Commenting.FileComment"/>
+     <rule ref="PEAR.Commenting.FunctionComment"/>
+     <rule ref="PEAR.Commenting.InlineComment"/>
+</ruleset>
