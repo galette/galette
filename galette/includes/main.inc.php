@@ -85,21 +85,11 @@ if ($needs_update) {
             'settings' => [
                 'determineRouteBeforeAppMiddleware' => true,
                 'displayErrorDetails' => true,
-
-                // View settings
-                /*'view' => [
-                    'template_path' => __DIR__ . '/templates',
-                    'twig' => [
-                        'cache' => __DIR__ . '/../cache/twig',
-                        'debug' => true,
-                        'auto_reload' => true,
-                    ],
-                ],*/
-
                 // monolog settings
                 'logger' => [
-                    'name' => 'galette',
-                    'path' => GALETTE_LOGS_PATH . 'galette_slim.log',
+                    'name'  => 'galette',
+                    'level' => \Monolog\Logger::DEBUG,
+                    'path'  => GALETTE_LOGS_PATH . '/galette_slim.log',
                 ],
                 'routerCacheFile' => (GALETTE_MODE === 'DEV') ? false : GALETTE_CACHE_DIR . '/fastroute.cache'
             ]
