@@ -100,7 +100,8 @@ if ($needs_update) {
                 'logger' => [
                     'name' => 'galette',
                     'path' => GALETTE_LOGS_PATH . 'galette_slim.log',
-                ]
+                ],
+                'routerCacheFile' => (GALETTE_MODE === 'DEV') ? false : GALETTE_CACHE_DIR . '/fastroute.cache'
             ]
         ]
     );
