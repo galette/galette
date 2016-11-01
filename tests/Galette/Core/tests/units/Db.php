@@ -247,6 +247,17 @@ class Db extends atoum
     }
 
     /**
+     * Test selectAll
+     *
+     * @return void
+     */
+    public function testSelectAll()
+    {
+        $all = $this->db->selectAll('preferences');
+        $this->object($all)->IsInstanceOf('Zend\Db\ResultSet\ResultSet');
+    }
+
+    /**
      * Test insert
      *
      * @return void
