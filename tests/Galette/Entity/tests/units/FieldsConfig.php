@@ -120,7 +120,6 @@ class FieldsConfig extends atoum
         );
         $this->boolean($result)->isTrue();
 
-
         //new object with values loaded from database to compare
         $fields_config = new \Galette\Entity\FieldsConfig(
             $this->zdb,
@@ -130,15 +129,7 @@ class FieldsConfig extends atoum
         );
 
         $categorized = $fields_config->getCategorizedFields();
-
-        $this->array($categorized)
-            ->hasSize(3);
-        $this->array($categorized[1])
-            ->hasSize(12);
-        $this->array($categorized[2])
-            ->hasSize(11);
-        $this->array($categorized[3])
-            ->hasSize(15);
+        $this->countCategorizedFields($categorized);
 
         $required = $fields_config->getRequired();
         $expected = [
@@ -157,12 +148,30 @@ class FieldsConfig extends atoum
         $isrequired = $fields_config->isRequired('info_adh');
         $this->boolean($isrequired)->isFalse();
 
-
         $visibles = $fields_config->getVisibilities();
         $this->array($visibles)
             ->hasSize(count($categorized[1]) + count($categorized[2]) + count($categorized[3]))
             ->integer['id_adh']->isIdenticalTo(0)
             ->integer['nom_adh']->isIdenticalTo(1);
+    }
+
+    /**
+     * Count categorized_fields
+     *
+     * @param array $categorized Categorized fields
+     *
+     * @return void
+     */
+    private function countCategorizedFields($categorized)
+    {
+        $this->array($categorized)
+            ->hasSize(3);
+        $this->array($categorized[1])
+            ->hasSize(12);
+        $this->array($categorized[2])
+            ->hasSize(11);
+        $this->array($categorized[3])
+            ->hasSize(15);
     }
 
     /**
@@ -259,5 +268,219 @@ class FieldsConfig extends atoum
         $this->boolean($this->fields_config->isSelfExcluded('bool_admin_adh'))->isTrue();
         $this->boolean($this->fields_config->isSelfExcluded('info_adh'))->isTrue();
         $this->boolean($this->fields_config->isSelfExcluded('nom_adh'))->isFalse();
+    }
+
+    /**
+     * Test checkUpdate
+     *
+     * @return void
+     */
+    public function testCheckUpdate()
+    {
+        $fields_config = $this->fields_config;
+        $fields_config->load();
+
+        $categorized_init = $fields_config->getCategorizedFields();
+
+        $exists = false;
+        foreach ($categorized_init[1] as $field) {
+            if ($field['field_id'] === 'nom_adh') {
+                $exists = true;
+                break;
+            }
+        }
+        $this->boolean($exists)->isTrue();
+
+        $delete = $this->zdb->delete(\Galette\Entity\FieldsConfig::TABLE);
+        $delete->where(
+            [
+                'table_name'    => \Galette\Entity\Adherent::TABLE,
+                'field_id'      => 'nom_adh'
+            ]
+        );
+        $res = $this->zdb->execute($delete);
+        $this->integer($res->count())->isIdenticalTo(1);
+
+        $fields_config->load();
+
+        $categorized = $fields_config->getCategorizedFields();
+        $this->integer(count($categorized[1]))->isIdenticalTo(12);
+
+        //new object instanciation should add missing field back
+        $fields_config = new \Galette\Entity\FieldsConfig(
+            $this->zdb,
+            \Galette\Entity\Adherent::TABLE,
+            $this->members_fields,
+            $this->members_fields_cats
+        );
+
+        $categorized = $fields_config->getCategorizedFields();
+        $this->array($categorized)->isIdenticalTo($categorized_init);
+    }
+
+    /**
+     * Test check update when all is empty
+     *
+     * @return void
+     */
+    public function testCheckUpdateWhenEmpty()
+    {
+        $this->zdb->db->query(
+            'TRUNCATE ' . PREFIX_DB . \Galette\Entity\FieldsConfig::TABLE,
+            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+        );
+        $this->zdb->db->query(
+            'DELETE FROM ' . PREFIX_DB . \Galette\Entity\FieldsCategories::TABLE,
+            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+        );
+
+        //new object instanciation should add missing fieldis and categories
+        $fields_config = new \Galette\Entity\FieldsConfig(
+            $this->zdb,
+            \Galette\Entity\Adherent::TABLE,
+            $this->members_fields,
+            $this->members_fields_cats
+        );
+
+        $categorized = $fields_config->getCategorizedFields();
+        $this->countCategorizedFields($categorized);
+    }
+
+    /**
+     * Test get display elements
+     *
+     * @return void
+     */
+    public function testGetDisplayElements()
+    {
+        $fields_config = $this->fields_config;
+        $fields_config->load();
+
+        $session = new \RKA\Session();
+        $admin_login = new \mock\Galette\Core\Login(
+            $this->zdb,
+            new \Galette\Core\I18n(),
+            $session
+        );
+        $this->calling($admin_login)->isAdmin = true;
+
+        $elements = $fields_config->getDisplayElements($admin_login);
+        $this->array($elements)
+            ->hasSize(3);
+
+        $this->object($elements[0])->isInstanceOf('\stdClass');
+        $this->integer($elements[0]->id)->isIdenticalTo(1);
+        $this->array($elements[0]->elements)->hasSize(7);
+
+        $this->object($elements[1])->isInstanceOf('\stdClass');
+        $this->integer($elements[1]->id)->isIdenticalTo(3);
+        $this->array($elements[1]->elements)->hasSize(10);
+
+        $this->object($elements[2])->isInstanceOf('\stdClass');
+        $this->integer($elements[2]->id)->isIdenticalTo(2);
+        $this->array($elements[2]->elements)
+            ->hasSize(10)
+            ->hasKey('info_adh');
+
+        $user_login = new \mock\Galette\Core\Login(
+            $this->zdb,
+            new \Galette\Core\I18n(),
+            $session
+        );
+        $this->calling($user_login)->isUp2Date = true;
+
+        $elements = $fields_config->getDisplayElements($user_login);
+        $this->array($elements)
+            ->hasSize(3);
+
+        $this->object($elements[0])->isInstanceOf('\stdClass');
+        $this->integer($elements[0]->id)->isIdenticalTo(1);
+        $this->array($elements[0]->elements)->hasSize(7);
+
+        $this->object($elements[1])->isInstanceOf('\stdClass');
+        $this->integer($elements[1]->id)->isIdenticalTo(3);
+        $this->array($elements[1]->elements)->hasSize(10);
+
+        $this->object($elements[2])->isInstanceOf('\stdClass');
+        $this->integer($elements[2]->id)->isIdenticalTo(2);
+        $this->array($elements[2]->elements)
+            ->hasSize(9)
+            ->notHasKey('info_adh');
+    }
+
+    /**
+     * Test get form elements
+     *
+     * @return void
+     */
+    public function testGetFormElements()
+    {
+        $fields_config = $this->fields_config;
+        $fields_config->load();
+
+        $session = new \RKA\Session();
+        $admin_login = new \mock\Galette\Core\Login(
+            $this->zdb,
+            new \Galette\Core\I18n(),
+            $session
+        );
+        $this->calling($admin_login)->isAdmin = true;
+
+        $elements = $fields_config->getFormElements($admin_login);
+        $this->array($elements)
+            ->hasSize(2)
+            ->hasKeys(['fieldsets', 'hiddens']);
+
+        $this->array($elements['fieldsets'])
+            ->hasSize(3);
+
+        $this->object($elements['fieldsets'][0])->isInstanceOf('\stdClass');
+        $this->integer($elements['fieldsets'][0]->id)->isIdenticalTo(1);
+        $this->array($elements['fieldsets'][0]->elements)->hasSize(10);
+
+        $this->object($elements['fieldsets'][1])->isInstanceOf('\stdClass');
+        $this->integer($elements['fieldsets'][1]->id)->isIdenticalTo(3);
+        $this->array($elements['fieldsets'][1]->elements)->hasSize(11);
+
+        $this->object($elements['fieldsets'][2])->isInstanceOf('\stdClass');
+        $this->integer($elements['fieldsets'][2]->id)->isIdenticalTo(2);
+        $this->array($elements['fieldsets'][2]->elements)
+            ->hasSize(10)
+            ->hasKey('info_adh');
+
+        $this->array($elements['hiddens'])
+            ->hasSize(5);
+
+        $user_login = new \mock\Galette\Core\Login(
+            $this->zdb,
+            new \Galette\Core\I18n(),
+            $session
+        );
+        $this->calling($user_login)->isUp2Date = true;
+
+        $elements = $fields_config->getFormElements($user_login);
+        $this->array($elements)
+            ->hasSize(2)
+            ->hasKeys(['fieldsets', 'hiddens']);
+
+        $this->array($elements['fieldsets'])
+            ->hasSize(3);
+
+        $this->object($elements['fieldsets'][0])->isInstanceOf('\stdClass');
+        $this->integer($elements['fieldsets'][0]->id)->isIdenticalTo(1);
+        $this->array($elements['fieldsets'][0]->elements)->hasSize(10);
+
+        $this->object($elements['fieldsets'][1])->isInstanceOf('\stdClass');
+        $this->integer($elements['fieldsets'][1]->id)->isIdenticalTo(3);
+        $this->array($elements['fieldsets'][1]->elements)->hasSize(11);
+
+        $this->object($elements['fieldsets'][2])->isInstanceOf('\stdClass');
+        $this->integer($elements['fieldsets'][2]->id)->isIdenticalTo(2);
+        $this->array($elements['fieldsets'][2]->elements)
+            ->hasSize(9)
+            ->notHasKey('info_adh');
+
+        $this->array($elements['hiddens'])
+            ->hasSize(5);
     }
 }

@@ -83,10 +83,6 @@ class FieldsConfig
     private $defaults = null;
     private $cats_defaults = null;
 
-    private $form_elements = array();
-    private $hidden_elements = array();
-    private $display_elements = [];
-
     private $staff_fields = array(
         'activite_adh',
         'id_statut',
@@ -409,96 +405,98 @@ class FieldsConfig
      */
     public function getFormElements(Login $login, $selfs = false)
     {
-        if (!count($this->form_elements) > 0) {
-            //get columns descriptions
-            $columns = $this->zdb->getColumns($this->table);
+        $hidden_elements = [];
+        $form_elements = [];
 
-            $categories = FieldsCategories::getList($this->zdb);
-            try {
-                foreach ($categories as $c) {
-                    $cpk = FieldsCategories::PK;
-                    $cat_label = null;
-                    foreach ($this->cats_defaults as $conf_cat) {
-                        if ($conf_cat['id'] == $c->$cpk) {
-                            $cat_label = $conf_cat['category'];
-                            break;
-                        }
-                    }
-                    if ($cat_label === null) {
-                        $cat_label = $c->category;
-                    }
-                    $cat = (object) array(
-                        'id' => $c->$cpk,
-                        'label' => $cat_label,
-                        'elements' => array()
-                    );
+        //get columns descriptions
+        $columns = $this->zdb->getColumns($this->table);
 
-                    $elements = $this->categorized_fields[$c->$cpk];
-                    $cat->elements = array();
-
-                    foreach ($elements as $elt) {
-                        $o = (object)$elt;
-
-                        if (in_array($o->field_id, $this->non_form_elements)
-                            || $selfs && $this->isSelfExcluded($o->field_id)
-                        ) {
-                            continue;
-                        }
-
-                        if (!($o->visible == self::ADMIN
-                            && (!$login->isAdmin() && !$login->isStaff()) )
-                        ) {
-                            if ($o->visible == self::HIDDEN) {
-                                $o->type = self::TYPE_HIDDEN;
-                            } elseif (preg_match('/date/', $o->field_id)) {
-                                $o->type = self::TYPE_DATE;
-                            } elseif (preg_match('/bool/', $o->field_id)) {
-                                $o->type = self::TYPE_BOOL;
-                            } elseif ($o->field_id == 'titre_adh'
-                                || $o->field_id == 'pref_lang'
-                                || $o->field_id == 'id_statut'
-                            ) {
-                                $o->type = self::TYPE_SELECT;
-                            } elseif ($o->field_id == 'sexe_adh') {
-                                $o->type = self::TYPE_RADIO;
-                            } else {
-                                $o->type = self::TYPE_STR;
-                            }
-
-                            //retrieve field informations from DB
-                            foreach ($columns as $column) {
-                                if ($column->getName() === $o->field_id) {
-                                    $o->max_length
-                                        = $column->getCharacterMaximumLength();
-                                    $o->default = $column->getColumnDefault();
-                                    $o->datatype = $column->getDataType();
-                                    break;
-                                }
-                            }
-
-                            if ($o->type === self::TYPE_HIDDEN) {
-                                $this->hidden_elements[] = $o;
-                            } else {
-                                $cat->elements[$o->field_id] = $o;
-                            }
-                        }
-                    }
-
-                    if (count($cat->elements) > 0) {
-                        $this->form_elements[] = $cat;
+        $categories = FieldsCategories::getList($this->zdb);
+        try {
+            foreach ($categories as $c) {
+                $cpk = FieldsCategories::PK;
+                $cat_label = null;
+                foreach ($this->cats_defaults as $conf_cat) {
+                    if ($conf_cat['id'] == $c->$cpk) {
+                        $cat_label = $conf_cat['category'];
+                        break;
                     }
                 }
-            } catch (\Exception $e) {
-                Analog::log(
-                    'An error occured getting form elements',
-                    Analog::ERROR
+                if ($cat_label === null) {
+                    $cat_label = $c->category;
+                }
+                $cat = (object) array(
+                    'id'        => (int)$c->$cpk,
+                    'label'     => $cat_label,
+                    'elements'  => array()
                 );
+
+                $elements = $this->categorized_fields[$c->$cpk];
+                $cat->elements = array();
+
+                foreach ($elements as $elt) {
+                    $o = (object)$elt;
+
+                    if (in_array($o->field_id, $this->non_form_elements)
+                        || $selfs && $this->isSelfExcluded($o->field_id)
+                    ) {
+                        continue;
+                    }
+
+                    if (!($o->visible == self::ADMIN
+                        && (!$login->isAdmin() && !$login->isStaff()) )
+                    ) {
+                        if ($o->visible == self::HIDDEN) {
+                            $o->type = self::TYPE_HIDDEN;
+                        } elseif (preg_match('/date/', $o->field_id)) {
+                            $o->type = self::TYPE_DATE;
+                        } elseif (preg_match('/bool/', $o->field_id)) {
+                            $o->type = self::TYPE_BOOL;
+                        } elseif ($o->field_id == 'titre_adh'
+                            || $o->field_id == 'pref_lang'
+                            || $o->field_id == 'id_statut'
+                        ) {
+                            $o->type = self::TYPE_SELECT;
+                        } elseif ($o->field_id == 'sexe_adh') {
+                            $o->type = self::TYPE_RADIO;
+                        } else {
+                            $o->type = self::TYPE_STR;
+                        }
+
+                        //retrieve field informations from DB
+                        foreach ($columns as $column) {
+                            if ($column->getName() === $o->field_id) {
+                                $o->max_length
+                                    = $column->getCharacterMaximumLength();
+                                $o->default = $column->getColumnDefault();
+                                $o->datatype = $column->getDataType();
+                                break;
+                            }
+                        }
+
+                        if ($o->type === self::TYPE_HIDDEN) {
+                            $hidden_elements[] = $o;
+                        } else {
+                            $cat->elements[$o->field_id] = $o;
+                        }
+                    }
+                }
+
+                if (count($cat->elements) > 0) {
+                    $form_elements[] = $cat;
+                }
             }
+            return array(
+                'fieldsets' => $form_elements,
+                'hiddens'   => $hidden_elements
+            );
+        } catch (\Exception $e) {
+            Analog::log(
+                'An error occured getting form elements',
+                Analog::ERROR
+            );
+            throw $e;
         }
-        return array(
-            'fieldsets' => $this->form_elements,
-            'hiddens'   => $this->hidden_elements
-        );
     }
 
     /**
@@ -510,60 +508,60 @@ class FieldsConfig
      */
     public function getDisplayElements(Login $login)
     {
-        if (!count($this->display_elements) > 0) {
-            $categories = FieldsCategories::getList($this->zdb);
-            try {
-                foreach ($categories as $c) {
-                    $cpk = FieldsCategories::PK;
-                    $cat_label = null;
-                    foreach ($this->cats_defaults as $conf_cat) {
-                        if ($conf_cat['id'] == $c->$cpk) {
-                            $cat_label = $conf_cat['category'];
-                            break;
-                        }
+        $display_elements = [];
+        $categories = FieldsCategories::getList($this->zdb);
+        try {
+            foreach ($categories as $c) {
+                $cpk = FieldsCategories::PK;
+                $cat_label = null;
+                foreach ($this->cats_defaults as $conf_cat) {
+                    if ($conf_cat['id'] == $c->$cpk) {
+                        $cat_label = $conf_cat['category'];
+                        break;
                     }
-                    if ($cat_label === null) {
-                        $cat_label = $c->category;
+                }
+                if ($cat_label === null) {
+                    $cat_label = $c->category;
+                }
+                $cat = (object) array(
+                    'id'        => (int)$c->$cpk,
+                    'label'     => $cat_label,
+                    'elements'  => array()
+                );
+
+                $elements = $this->categorized_fields[$c->$cpk];
+                $cat->elements = array();
+
+                foreach ($elements as $elt) {
+                    $o = (object)$elt;
+
+                    if (in_array($o->field_id, $this->non_display_elements)) {
+                        continue;
                     }
-                    $cat = (object) array(
-                        'id' => $c->$cpk,
-                        'label' => $cat_label,
-                        'elements' => array()
-                    );
 
-                    $elements = $this->categorized_fields[$c->$cpk];
-                    $cat->elements = array();
-
-                    foreach ($elements as $elt) {
-                        $o = (object)$elt;
-
-                        if (in_array($o->field_id, $this->non_display_elements)) {
+                    if (!($o->visible == self::ADMIN
+                        && (!$login->isAdmin() && !$login->isStaff()) )
+                    ) {
+                        if ($o->visible == self::HIDDEN) {
                             continue;
                         }
 
-                        if (!($o->visible == self::ADMIN
-                            && (!$login->isAdmin() && !$login->isStaff()) )
-                        ) {
-                            if ($o->visible == self::HIDDEN) {
-                                continue;
-                            }
-
-                            $cat->elements[$o->field_id] = $o;
-                        }
-                    }
-
-                    if (count($cat->elements) > 0) {
-                        $this->display_elements[] = $cat;
+                        $cat->elements[$o->field_id] = $o;
                     }
                 }
-            } catch (\Exception $e) {
-                Analog::log(
-                    'An error occured getting display elements',
-                    Analog::ERROR
-                );
+
+                if (count($cat->elements) > 0) {
+                    $display_elements[] = $cat;
+                }
             }
+            return $display_elements;
+        } catch (\Exception $e) {
+            Analog::log(
+                'An error occured getting display elements',
+                Analog::ERROR
+            );
+            throw $e;
         }
-        return $this->display_elements;
     }
 
     /**
