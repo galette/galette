@@ -40,6 +40,7 @@ namespace Galette\Entity;
 use Analog\Analog;
 use Zend\Db\Adapter\Adapter;
 use Galette\Core\Db;
+use Galette\Core\Login;
 
 /**
  * Fields config class for galette :
@@ -401,14 +402,13 @@ class FieldsConfig
     /**
      * Retrieve form elements
      *
+     * @param Login   $login Login instance
      * @param boolean $selfs True if we're called from self subscirption page
      *
      * @return array
      */
-    public function getFormElements($selfs = false)
+    public function getFormElements(Login $login, $selfs = false)
     {
-        global $login;
-
         if (!count($this->form_elements) > 0) {
             //get columns descriptions
             $columns = $this->zdb->getColumns($this->table);
@@ -504,12 +504,12 @@ class FieldsConfig
     /**
      * Retrieve display elements
      *
+     * @param Login $login Login instance
+     *
      * @return array
      */
-    public function getDisplayElements()
+    public function getDisplayElements(Login $login)
     {
-        global $login;
-
         if (!count($this->display_elements) > 0) {
             $categories = FieldsCategories::getList($this->zdb);
             try {

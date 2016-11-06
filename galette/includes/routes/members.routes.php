@@ -78,7 +78,7 @@ $app->get(
         $required = $fc->getRequired();
         // flagging fields visibility
         $visibles = $fc->getVisibilities();
-        $form_elements = $fc->getFormElements(true);
+        $form_elements = $fc->getFormElements($this->login, true);
 
         // disable some fields
         $disabled  = $member->disabled_fields;
@@ -673,7 +673,7 @@ $app->get(
         $fc = $this->fields_config;
         $visibles = $fc->getVisibilities();
 
-        $display_elements = $fc->getDisplayElements();
+        $display_elements = $fc->getDisplayElements($this->login);
 
         // display page
         $this->view->render(
@@ -878,7 +878,7 @@ $app->get(
         $groups = new Groups($this->zdb, $this->login);
         $groups_list = $groups->getSimpleList(true);
 
-        $form_elements = $fc->getFormElements($this->members_fields_cats);
+        $form_elements = $fc->getFormElements($this->login);
 
         // display page
         $this->view->render(
