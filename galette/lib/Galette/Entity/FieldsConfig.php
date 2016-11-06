@@ -84,6 +84,7 @@ class FieldsConfig
 
     private $form_elements = array();
     private $hidden_elements = array();
+    private $display_elements = [];
 
     private $staff_fields = array(
         'activite_adh',
@@ -313,7 +314,7 @@ class FieldsConfig
                 }
 
                 if (count($params) > 0) {
-                    $this->insert($this->zdb, $params);
+                    $this->insert($params);
                     $this->load();
                 }
             }
@@ -509,9 +510,7 @@ class FieldsConfig
     {
         global $login;
 
-        $display_elements = array();
-
-        if (!count($this->form_elements) > 0) {
+        if (!count($this->display_elements) > 0) {
             $categories = FieldsCategories::getList($this->zdb);
             try {
                 foreach ($categories as $c) {
@@ -554,7 +553,7 @@ class FieldsConfig
                     }
 
                     if (count($cat->elements) > 0) {
-                        $display_elements[] = $cat;
+                        $this->display_elements[] = $cat;
                     }
                 }
             } catch (\Exception $e) {
@@ -564,7 +563,7 @@ class FieldsConfig
                 );
             }
         }
-        return $display_elements;
+        return $this->display_elements;
     }
 
     /**
