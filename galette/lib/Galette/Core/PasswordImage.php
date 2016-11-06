@@ -161,6 +161,7 @@ class PasswordImage extends Password
      * @param string $crypt Crypted password
      *
      * @return boolean
+     * @deprecated Seems no longer used
      */
     public function check($pass, $crypt)
     {

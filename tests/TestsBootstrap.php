@@ -36,6 +36,23 @@ define('GALETTE_MODE', 'PROD');
 define('GALETTE_PLUGINS_PATH', __DIR__ . '/plugins/');
 define('GALETTE_TPL_SUBDIR', 'templates/default/');
 define('GALETTE_THEME', 'themes/default/');
+define('GALETTE_TEMPIMAGES_PATH', __DIR__ . '/tests-data');
+if (is_dir(GALETTE_TEMPIMAGES_PATH)) {
+    $files = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator(
+            GALETTE_TEMPIMAGES_PATH,
+            RecursiveDirectoryIterator::SKIP_DOTS
+        ),
+        RecursiveIteratorIterator::CHILD_FIRST
+    );
+
+    foreach ($files as $fileinfo) {
+        $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
+        $todo($fileinfo->getRealPath());
+    }
+    rmdir(GALETTE_TEMPIMAGES_PATH);
+}
+mkdir(GALETTE_TEMPIMAGES_PATH);
 $logfile = 'galette_tests';
 
 require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';

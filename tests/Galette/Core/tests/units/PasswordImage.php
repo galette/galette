@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Password tests
+ * PasswordImage tests
  *
  * PHP version 5
  *
@@ -40,10 +40,10 @@ namespace Galette\Core\test\units;
 use \atoum;
 
 /**
- * Password tests class
+ * PasswordImage tests class
  *
  * @category  Core
- * @name      Password
+ * @name      PasswordImage
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
@@ -51,7 +51,7 @@ use \atoum;
  * @link      http://galette.tuxfamily.org
  * @since     2013-01-13
  */
-class Password extends atoum
+class PasswordImage extends atoum
 {
     private $pass = null;
 
@@ -64,27 +64,50 @@ class Password extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->pass = new \Galette\Core\Password(false);
+        $this->pass = new \Galette\Core\PasswordImage(false);
     }
 
     /**
-     * Test unique password generator
+     * Test new PasswordImage generation
      *
      * @return void
      */
-    public function testRandom()
+    public function testGenerateNewPassword()
     {
-        $results = array();
+        $pass = $this->pass;
+        $pass->generateNewPassword();
+        $new_pass = $pass->getNewPassword();
+        $this->string($new_pass)
+            ->hasLength($pass::DEFAULT_SIZE);
+        $hash = $pass->getHash();
+        $this->string($hash)->hasLength(60);
 
-        for ($i = 0; $i < 200; $i++) {
-            $random = $this->pass->makeRandomPassword(15);
-            $this->string($random)->hasLength(15);
+        $this->string($pass->getImageName())
+            ->isIdenticalTo('pw_' . md5($hash) . '.png');
+    }
 
-            $exists = in_array($random, $results);
-            $this->boolean($exists)->isFalse();
+    /**
+     * Test new PasswordImage image generation
+     *
+     * @return void
+     */
+    public function testNewImage()
+    {
+        $pass = new \mock\Galette\Core\PasswordImage(false);
+        $password = 'azerty12';
+        $this->calling($pass)->makeRandomPassword = $password;
 
-            $results[] = $random;
-            $this->array($results)->hasSize($i + 1);
-        }
+        $pass->newImage();
+
+        $pw_checked = password_verify('azerty12', $pass->getHash());
+        $this->boolean($pw_checked)->isTrue();
+
+        $this->string($pass->getImageName())
+            ->isIdenticalTo('pw_' . md5($pass->getHash()) . '.png');
+
+        $exists = is_file(
+            GALETTE_TEMPIMAGES_PATH . '/' . $pass->getImageName()
+        );
+        $this->boolean($exists)->isTrue();
     }
 }

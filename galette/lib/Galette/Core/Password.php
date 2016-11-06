@@ -64,9 +64,9 @@ class Password
 
     const TABLE = 'tmppasswds';
     const PK = Adherent::PK;
-
     /** Default password size */
-    private $size = 8;
+    const DEFAULT_SIZE = 8;
+
     private $chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
     private $hash = null;
     private $new_password;
@@ -96,7 +96,7 @@ class Password
             || trim($size) == ''
             || !is_int($size)
         ) {
-            $size = $this->size;
+            $size = self::DEFAULT_SIZE;
         }
         $pass = '';
         $i = 0;
