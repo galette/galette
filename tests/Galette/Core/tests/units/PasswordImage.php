@@ -110,4 +110,66 @@ class PasswordImage extends atoum
         );
         $this->boolean($exists)->isTrue();
     }
+
+    /**
+     * Test getImage
+     *
+     * @return void
+     */
+    public function testGetImage()
+    {
+        $this->assert('Image generated without exif')
+            ->given($pass = new \Galette\Core\PasswordImage(false))
+            ->if($this->function->function_exists = false)
+            ->then
+                ->string($pass->newImage())
+                    ->hasLength(60)
+                ->string($pass->getImage())
+                    ->hasLengthGreaterThan(200)
+                    ->startWith('data:image/png;base64,');
+
+        if (function_exists('exif_imagetype')) {
+            $this->assert('Image generated without exif')
+                ->given($pass = new \Galette\Core\PasswordImage(false))
+                ->if($this->function->function_exists = true)
+                ->then
+                    ->string($pass->newImage())
+                        ->hasLength(60)
+                    ->string($pass->getImage())
+                        ->hasLengthGreaterThan(200)
+                        ->startWith('data:image/png;base64,');
+        }
+    }
+
+    /**
+     * Test cleanExpired
+     *
+     * @return void
+     */
+    public function testCleanExpired()
+    {
+        $files = scandir(GALETTE_TEMPIMAGES_PATH);
+
+        if (count($files) == 2) {
+            $files = [
+                'pw_one.png',
+                'pw_two.png',
+                'pw_three.png'
+            ];
+        }
+
+        foreach ($files as $f) {
+            if ($f != '.' && $f != '..') {
+                touch(GALETTE_TEMPIMAGES_PATH . '/' . $f, time() - 3600);
+            }
+        }
+
+        $dirfiles = scandir(GALETTE_TEMPIMAGES_PATH);
+        $this->integer(count($dirfiles))->isGreaterThan(2);
+
+        //default constructor call clean
+        $pass = new \Galette\Core\PasswordImage();
+        $dirfiles = scandir(GALETTE_TEMPIMAGES_PATH);
+        $this->integer(count($dirfiles))->isEqualTo(2);
+    }
 }
