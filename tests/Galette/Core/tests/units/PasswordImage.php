@@ -75,7 +75,8 @@ class PasswordImage extends atoum
     public function testGenerateNewPassword()
     {
         $pass = $this->pass;
-        $pass->generateNewPassword();
+        $res = $pass->generateNewPassword();
+        $this->boolean($res)->isTrue();
         $new_pass = $pass->getNewPassword();
         $this->string($new_pass)
             ->hasLength($pass::DEFAULT_SIZE);

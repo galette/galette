@@ -41,7 +41,6 @@
 namespace Galette\Core;
 
 use Analog\Analog;
-use Zend\Db\Adapter\Exception as AdapterException;
 use Galette\Entity\Adherent;
 
 /**
@@ -148,13 +147,6 @@ class Password extends AbstractPassword
             } else {
                 return false;
             }
-        } catch (AdapterException $e) {
-            Analog::log(
-                'Unable to add add new password entry into database.' .
-                $e->getMessage(),
-                Analog::WARNING
-            );
-            return false;
         } catch (\Exception $e) {
             Analog::log(
                 "An error occured trying to add temporary password entry. " .

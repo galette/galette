@@ -88,5 +88,111 @@ class Password extends atoum
             $results[] = $random;
             $this->array($results)->hasSize($i + 1);
         }
+
+        $random = $this->pass->makeRandomPassword();
+        $this->string($random)->hasLength(\Galette\Core\Password::DEFAULT_SIZE);
+    }
+
+    /**
+     * Create member and get its id
+     *
+     * @return int
+     */
+    private function createMember()
+    {
+        $insert = $this->zdb->insert(\Galette\Entity\Adherent::TABLE);
+        $insert->values(
+            [
+                'nom_adh'   => 'Test password user',
+                'login_adh' => 'test_password_user'
+            ]
+        );
+        $this->zdb->execute($insert);
+
+        if ($this->zdb->isPostgres()) {
+            return $this->zdb->driver->getLastGeneratedValue(
+                PREFIX_DB . 'adherents_id_seq'
+            );
+        } else {
+            return $this->zdb->driver->getLastGeneratedValue();
+        }
+    }
+
+    /**
+     * Delete member
+     *
+     * @return void
+     */
+    private function deleteMember($id)
+    {
+        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
+        $delete->where([\Galette\Entity\Adherent::PK => $id]);
+        $this->zdb->execute($delete);
+    }
+
+    /**
+     * Test new PasswordImage generation
+     *
+     * @return void
+     */
+    public function testGenerateNewPassword()
+    {
+        $id_adh = $this->createMember();
+        $pass = $this->pass;
+        $res = $pass->generateNewPassword($id_adh);
+        $this->boolean($res)->isTrue();
+        $new_pass = $pass->getNewPassword();
+        $this->string($new_pass)
+            ->hasLength($pass::DEFAULT_SIZE);
+        $hash = $pass->getHash();
+        $this->string($hash)->hasLength(60);
+
+        $is_valid = $pass->isHashValid($hash);
+        $this->string($is_valid)->isNotNull();
+
+        $select = $this->zdb->select(\Galette\Core\Password::TABLE);
+        $results = $this->zdb->execute($select);
+        $this->integer($results->count())->isIdenticalTo(1);
+
+        $removed = $pass->removeHash($hash);
+        $this->boolean($removed)->isTrue();
+
+        $results = $this->zdb->execute($select);
+        $this->integer($results->count())->isIdenticalTo(0);
+
+        $this->deleteMember($id_adh);
+    }
+
+    /**
+     * Test cleanExpired
+     *
+     * @return void
+     */
+    public function testCleanExpired()
+    {
+        $id_adh = $this->createMember();
+
+        $date = new \DateTime();
+        $date->sub(new \DateInterval('PT48H'));
+
+        $insert = $this->zdb->insert(\Galette\Core\Password::TABLE);
+        $insert->values(
+            [
+                \Galette\Core\Password::PK  => $id_adh,
+                'date_crea_tmp_passwd'      => $date->format('Y-m-d')
+            ]
+        );
+        $this->zdb->execute($insert);
+
+        $select = $this->zdb->select(\Galette\Core\Password::TABLE);
+        $results = $this->zdb->execute($select);
+        $this->integer($results->count())->isIdenticalTo(1);
+
+        $pass = new \Galette\Core\Password($this->zdb, true);
+
+        $results = $this->zdb->execute($select);
+        $this->integer($results->count())->isIdenticalTo(0);
+
+        $this->deleteMember($id_adh);
     }
 }
