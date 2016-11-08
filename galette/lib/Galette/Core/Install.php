@@ -1244,6 +1244,8 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
     /**
      * Check if step is passed
      *
+     * @param int $step Step
+     *
      * @return boolean
      */
     public function isStepPassed($step)
