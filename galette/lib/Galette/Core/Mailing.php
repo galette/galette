@@ -106,7 +106,9 @@ class Mailing extends GaletteMail
      */
     private function generateNewId()
     {
-        $pass = new Password();
+        global $zdb;
+
+        $pass = new Password($zdb);
         $this->id = $pass->makeRandomPassword(30);
         $this->generateTmpPath($this->id);
     }
@@ -121,7 +123,9 @@ class Mailing extends GaletteMail
     private function generateTmpPath($id = null)
     {
         if ($id === null) {
-            $pass = new Password();
+            global $zdb;
+
+            $pass = new Password($zdb);
             $id = $pass->makeRandomPassword(30);
         }
         $this->tmp_path = GALETTE_ATTACHMENTS_PATH . '/' . $id;

@@ -219,7 +219,7 @@ class Adherent
                 $this->_status = Status::DEFAULT_STATUS;
                 $this->_title = null;
                 $this->_gender = self::NC;
-                $gp = new Password();
+                $gp = new Password($this->zdb);
                 $this->_password = $gp->makeRandomPassword();
                 $this->_picture = new Picture();
                 $this->_admin = false;
@@ -1148,7 +1148,7 @@ class Adherent
                     || ($key == 'mdp_adh' && !isset($required['mdp_adh']))
                     && !isset($this->_id)
                 ) {
-                    $p = new Password();
+                    $p = new Password($this->zdb);
                     $this->$prop = $p->makeRandomPassword(15);
                 }
             }

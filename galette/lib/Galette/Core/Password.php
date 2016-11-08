@@ -64,13 +64,17 @@ class Password extends AbstractPassword
     const TABLE = 'tmppasswds';
     const PK = Adherent::PK;
 
+    private $zdb;
+
     /**
      * Default constructor
      *
+     * @param Db      $zdb   Database instance:
      * @param boolean $clean Whether we should clean expired passwords in database
      */
-    public function __construct($clean = true)
+    public function __construct(Db $zdb, $clean = true)
     {
+        $this->zdb = $zdb;
         if ($clean === true) {
             $this->cleanExpired();
         }
@@ -85,13 +89,11 @@ class Password extends AbstractPassword
      */
     private function removeOldEntries($id_adh)
     {
-        global $zdb;
-
         try {
-            $delete = $zdb->delete(self::TABLE);
+            $delete = $this->zdb->delete(self::TABLE);
             $delete->where(self::PK . ' = ' . $id_adh);
 
-            $del = $zdb->execute($delete);
+            $del = $this->zdb->execute($delete);
             if ($del) {
                 Analog::log(
                     'Temporary passwords for `' . $id_adh . '` has been removed.',
@@ -117,8 +119,6 @@ class Password extends AbstractPassword
      */
     public function generateNewPassword($id_adh)
     {
-        global $zdb;
-
         //first of all, we'll remove all existant entries for specified id
         $this->removeOldEntries($id_adh);
 
@@ -133,10 +133,10 @@ class Password extends AbstractPassword
                 'date_crea_tmp_passwd' => date('Y-m-d H:i:s')
             );
 
-            $insert = $zdb->insert(self::TABLE);
+            $insert = $this->zdb->insert(self::TABLE);
             $insert->values($values);
 
-            $add = $zdb->execute($insert);
+            $add = $this->zdb->execute($insert);
             if ($add) {
                 Analog::log(
                     'New passwords temporary set for `' . $id_adh . '`.',
@@ -172,18 +172,16 @@ class Password extends AbstractPassword
      */
     protected function cleanExpired()
     {
-        global $zdb;
-
         $date = new \DateTime();
         $date->sub(new \DateInterval('PT24H'));
 
         try {
-            $delete = $zdb->delete(self::TABLE);
+            $delete = $this->zdb->delete(self::TABLE);
             $delete->where->lessThan(
                 'date_crea_tmp_passwd',
                 $date->format('Y-m-d H:i:s')
             );
-            $del = $zdb->execute($delete);
+            $del = $this->zdb->execute($delete);
             if ($del) {
                 Analog::log(
                     'Old Temporary passwords has been deleted.',
@@ -209,15 +207,13 @@ class Password extends AbstractPassword
      */
     public function isHashValid($hash)
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE);
             $select->columns(
                 array(self::PK)
             )->where(array('tmp_passwd' => $hash));
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $result = $results->current();
 
             $pk = self::PK;
@@ -240,15 +236,13 @@ class Password extends AbstractPassword
      */
     public function removeHash($hash)
     {
-        global $zdb;
-
         try {
-            $delete = $zdb->delete(self::TABLE);
+            $delete = $this->zdb->delete(self::TABLE);
             $delete->where(
                 array('tmp_passwd' => $hash)
             );
 
-            $del = $zdb->execute($delete);
+            $del = $this->zdb->execute($delete);
             if ($del) {
                 Analog::log(
                     'Used hash has been successfully remove',

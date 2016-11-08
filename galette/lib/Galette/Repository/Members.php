@@ -1467,7 +1467,7 @@ class Members
 
                 $stmt = $zdb->sql->prepareStatementForSqlObject($update);
 
-                $p = new \Galette\Core\Password();
+                $p = new \Galette\Core\Password($zdb);
 
                 foreach ($results as $m) {
                     $dirty = false;
