@@ -54,6 +54,7 @@ use \atoum;
 class Password extends atoum
 {
     private $pass = null;
+    private $zdb;
 
     /**
      * Set up tests
@@ -64,7 +65,8 @@ class Password extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->pass = new \Galette\Core\Password(false);
+        $this->zdb = new \Galette\Core\Db();
+        $this->pass = new \Galette\Core\Password($this->zdb, false);
     }
 
     /**
