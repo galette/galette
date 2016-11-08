@@ -100,6 +100,9 @@ class Password extends atoum
      */
     private function createMember()
     {
+        $status = new \Galette\Entity\Status($this->zdb);
+        $res = $status->installInit();
+        $this->boolean($res)->isTrue();
         $insert = $this->zdb->insert(\Galette\Entity\Adherent::TABLE);
         $insert->values(
             [
@@ -120,6 +123,8 @@ class Password extends atoum
 
     /**
      * Delete member
+     *
+     * @param int $id Member id
      *
      * @return void
      */
