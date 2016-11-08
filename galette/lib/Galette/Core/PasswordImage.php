@@ -53,8 +53,19 @@ use Galette\Entity\Adherent;
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.3.1 - 2012-01-03
  */
-class PasswordImage extends Password
+class PasswordImage extends AbstractPassword
 {
+    /**
+     * Default constructor
+     *
+     * @param boolean $clean Whether we should clean expired passwords in database
+     */
+    public function __construct($clean = true)
+    {
+        if ($clean === true) {
+            $this->cleanExpired();
+        }
+    }
 
     /**
      * Cleans any password image file older than 1 minute

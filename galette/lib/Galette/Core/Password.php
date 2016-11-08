@@ -59,17 +59,10 @@ use Galette\Entity\Adherent;
  * @since     Available since 0.7dev - 2011-06-16
  */
 
-class Password
+class Password extends AbstractPassword
 {
-
     const TABLE = 'tmppasswds';
     const PK = Adherent::PK;
-    /** Default password size */
-    const DEFAULT_SIZE = 8;
-
-    private $chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
-    private $hash = null;
-    private $new_password;
 
     /**
      * Default constructor
@@ -81,31 +74,6 @@ class Password
         if ($clean === true) {
             $this->cleanExpired();
         }
-    }
-
-    /**
-     * Generates a random passord based on default salt
-     *
-     * @param int $size Password size (optionnal)
-     *
-     * @return string random password
-     */
-    public function makeRandomPassword($size = null)
-    {
-        if ($size === null
-            || trim($size) == ''
-            || !is_int($size)
-        ) {
-            $size = self::DEFAULT_SIZE;
-        }
-        $pass = '';
-        $i = 0;
-        while ($i <= $size-1) {
-            $num = mt_rand(0, 32) % 33;
-            $pass .= substr($this->chars, $num, 1);
-            $i++;
-        }
-        return $pass;
     }
 
     /**
@@ -296,49 +264,5 @@ class Password
             );
             return false;
         }
-    }
-
-    /**
-     * Retrieve new pasword for sending it to the user
-     *
-     * @return string the new password
-     */
-    public function getNewPassword()
-    {
-        return $this->new_password;
-    }
-
-    /**
-     * Retrieve new hash
-     *
-     * @return string hash
-     */
-    public function getHash()
-    {
-        return $this->hash;
-    }
-
-    /**
-     * Set password
-     *
-     * @param string $password Password
-     *
-     * @return void
-     */
-    protected function setPassword($password)
-    {
-        $this->new_password = $password;
-    }
-
-    /**
-     * Set hash
-     *
-     * @param string $hash Hash
-     *
-     * @return void
-     */
-    protected function setHash($hash)
-    {
-        $this->hash = $hash;
     }
 }
