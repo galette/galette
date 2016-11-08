@@ -626,17 +626,26 @@ class Install
         $update_scripts = $this->getScripts();
         $sql_query = '';
         $this->_report = array();
+        $scripts_path = GALETTE_ROOT . '/install/scripts/';
 
         while (list($key, $val) = each($update_scripts)) {
             if (substr($val, -strlen('.sql')) === '.sql') {
                 //just a SQL script, run it
+                $script = fopen($scripts_path . $val, 'r');
+
+                if ($script === false) {
+                    throw new \RuntimeException(
+                        'Unable to read SQL script from ' . $scripts_path . $val
+                    );
+                }
+
                 $sql_query .= @fread(
-                    @fopen('scripts/' . $val, 'r'),
-                    @filesize('scripts/' . $val)
+                    $script,
+                    @filesize($scripts_path . $val)
                 ) . "\n";
             } else {
                 //we got an update class
-                include_once 'scripts/' . $val;
+                include_once $scripts_path . $val;
                 $className = '\Galette\Updates\UpgradeTo' .
                     str_replace('.', '', $key);
                 $ret = array(
@@ -1081,8 +1090,8 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
     {
         if ($this->isInstall()) {
             $preferences = new Preferences($zdb, false);
-            $ct = new \Galette\Entity\ContributionsTypes();
-            $status = new \Galette\Entity\Status();
+            $ct = new \Galette\Entity\ContributionsTypes($zdb);
+            $status = new \Galette\Entity\Status($zdb);
             include_once '../includes/fields_defs/members_fields.php';
             include_once '../includes/fields_defs/members_fields_cats.php';
             $fc = new \Galette\Entity\FieldsConfig(
@@ -1230,5 +1239,15 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
         } catch (\LogicException $e) {
             return false;
         }
+    }
+
+    /**
+     * Check if step is passed
+     *
+     * @return boolean
+     */
+    public function isStepPassed($step)
+    {
+        return $this->_step > $step;
     }
 }

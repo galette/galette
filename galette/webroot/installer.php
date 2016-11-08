@@ -44,9 +44,17 @@ $installer = true;
 //specific logfile for installer
 $logfile = 'galette_install';
 define('GALETTE_BASE_PATH', '../');
-define('GALETTE_THEME_DIR', GALETTE_BASE_PATH . 'templates/default/');
+define('GALETTE_THEME_DIR', './themes/default/');
 
 require_once '../includes/galette.inc.php';
+
+if (isset($session['lang'])) {
+    $i18n = unserialize($session['lang']);
+} else {
+    $i18n = new Galette\Core\I18n();
+}
+
+require_once '../includes/i18n.inc.php';
 
 //when upgrading, make sure that old objects in current session are destroyed
 if ( defined('PREFIX_DB') && defined('NAME_DB') ) {
@@ -78,6 +86,10 @@ function initDbConstants($install)
     define('HOST_DB', $install->getDbHost());
     define('PORT_DB', $install->getDbPort());
     define('NAME_DB', $install->getDbName());
+}
+
+if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
+    define('GALETTE_LOGGER_CHECKED', true);
 }
 
 if ( isset($_POST['stepback_btn']) ) {
@@ -177,7 +189,6 @@ if ( !$install->isEndStep()
     }
 }
 
-
 header('Content-Type: text/html; charset=UTF-8');
 ?>
 <!DOCTYPE html>
@@ -185,26 +196,25 @@ header('Content-Type: text/html; charset=UTF-8');
     <head>
         <title><?php echo _T("Galette Installation") . ' - ' . $install->getStepTitle(); ?></title>
         <meta charset="UTF-8"/>
-        <link rel="stylesheet" type="text/css" href="<?php echo GALETTE_THEME_DIR; ?>galette.css"/>
-        <link rel="stylesheet" type="text/css" href="<?php echo GALETTE_THEME_DIR; ?>install.css"/>
-        <link rel="stylesheet" type="text/css" href="<?php echo GALETTE_THEME_DIR; ?>jquery-ui/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>.custom.css"/>
-        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-<?php echo JQUERY_VERSION; ?>.min.js"></script>
-        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-migrate-<?php echo JQUERY_MIGRATE_VERSION; ?>.min.js"></script>
-        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
-        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.button.min.js"></script>
-        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.tooltip.min.js"></script>
-        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/jquery/jquery.bgFade.js"></script>
-        <script type="text/javascript" src="<?php echo GALETTE_BASE_PATH; ?>includes/common.js"></script>
-        <link rel="shortcut icon" href="<?php echo GALETTE_THEME_DIR; ?>images/favicon.png" />
+        <link rel="stylesheet" type="text/css" href="./themes/default/galette.css"/>
+        <link rel="stylesheet" type="text/css" href="./themes/default/install.css"/>
+        <link rel="stylesheet" type="text/css" href="./themes/default/jquery-ui/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>.custom.css"/>
+        <script type="text/javascript" src="./js/jquery/jquery-<?php echo JQUERY_VERSION; ?>.min.js"></script>
+        <script type="text/javascript" src="./js/jquery/jquery-migrate-<?php echo JQUERY_MIGRATE_VERSION; ?>.min.js"></script>
+        <script type="text/javascript" src="./js/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
+        <script type="text/javascript" src="./js//jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.button.min.js"></script>
+        <script type="text/javascript" src="./js/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.tooltip.min.js"></script>
+        <script type="text/javascript" src="./js/jquery/jquery.bgFade.js"></script>
+        <script type="text/javascript" src="./js/common.js"></script>
+        <link rel="shortcut icon" href="./themes/default/images/favicon.png" />
         <!--[if lt IE9]>
-            <script type="text/javascript" src="{$scripts_dir}html5-ie.js"></script>
+            <script type="text/javascript" src="./js/html5-ie.js"></script>
         <!endif]-->
     </head>
     <body>
         <section>
             <header>
                 <h1 id="titre">
-                    <img src="<?php echo GALETTE_THEME_DIR; ?>images/galette.png" alt="[ Galette ]" />
                     <?php echo _T("Galette installation") . ' - ' . $install->getStepTitle(); ?>
                 </h1>
                 <ul id="langs">
@@ -239,23 +249,23 @@ if ( count($error_detected) > 0 ) {
             <div>
 <?php
 if ( $install->isCheckStep() ) {
-    include_once 'steps/check.php';
+    include_once __DIR__ . '/../install/steps/check.php';
 } else if ( $install->isTypeStep() ) {
-    include_once 'steps/type.php';
+    include_once __DIR__ . '/../install/steps/type.php';
 } else if ( $install->isDbStep() ) {
-    include_once 'steps/db.php';
+    include_once __DIR__ . '/../install/steps/db.php';
 } else if ( $install->isDbCheckStep() ) {
-    include_once 'steps/db_checks.php';
+    include_once __DIR__ . '/../install/steps/db_checks.php';
 } else if ( $install->isVersionSelectionStep() ) {
-    include_once 'steps/db_select_version.php';
+    include_once __DIR__ . '/../install/steps/db_select_version.php';
 } else if ( $install->isDbinstallStep() || $install->isDbUpgradeStep() ) {
-    include_once 'steps/db_install.php';
+    include_once __DIR__ . '/../install/steps/db_install.php';
 } else if ( $install->isAdminStep() ) {
-    include_once 'steps/admin.php';
+    include_once __DIR__ . '/../install/steps/admin.php';
 } else if ( $install->isGaletteInitStep()  ) {
-    include_once 'steps/galette.php';
+    include_once __DIR__ . '/../install/steps/galette.php';
 } else if ( $install->isEndStep() ) {
-    include_once 'steps/end.php';
+    include_once __DIR__ . '/../install/steps/end.php';
 }
 ?>
             </div>

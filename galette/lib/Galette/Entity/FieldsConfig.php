@@ -371,7 +371,12 @@ class FieldsConfig
             );
             return true;
         } catch (\Exception $e) {
-            $messages = array();
+            Analog::log(
+                'Unable to initialize default fields configuration.' . $e->getMessage(),
+                Analog::ERROR
+            );
+
+            /*$messages = array();
             do {
                 $messages[] = $e->getMessage();
             } while ($e = $e->getPrevious());
@@ -380,7 +385,7 @@ class FieldsConfig
                 'Unable to initialize default fields configuration.' .
                 implode("\n", $messages),
                 Analog::ERROR
-            );
+            );*/
             return $e;
         }
     }
