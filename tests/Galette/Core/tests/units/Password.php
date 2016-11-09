@@ -102,7 +102,9 @@ class Password extends atoum
     {
         try {
             $this->deleteMember();
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+            //empty catch
+        }
 
         $status = new \Galette\Entity\Status($this->zdb);
         $res = $status->installInit();
