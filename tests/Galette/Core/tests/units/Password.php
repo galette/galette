@@ -100,6 +100,10 @@ class Password extends atoum
      */
     private function createMember()
     {
+        try {
+            $this->deleteMember();
+        } catch (\Exception $e) {}
+
         $status = new \Galette\Entity\Status($this->zdb);
         $res = $status->installInit();
         $this->boolean($res)->isTrue();
@@ -124,14 +128,12 @@ class Password extends atoum
     /**
      * Delete member
      *
-     * @param int $id Member id
-     *
      * @return void
      */
-    private function deleteMember($id)
+    private function deleteMember()
     {
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where([\Galette\Entity\Adherent::PK => $id]);
+        $delete->where(['login_adh' => 'test_password_user']);
         $this->zdb->execute($delete);
     }
 
@@ -153,7 +155,7 @@ class Password extends atoum
         $this->string($hash)->hasLength(60);
 
         $is_valid = $pass->isHashValid($hash);
-        $this->string($is_valid)->isNotNull();
+        $this->variable($is_valid)->isNotNull();
 
         $select = $this->zdb->select(\Galette\Core\Password::TABLE);
         $results = $this->zdb->execute($select);
@@ -165,7 +167,7 @@ class Password extends atoum
         $results = $this->zdb->execute($select);
         $this->integer($results->count())->isIdenticalTo(0);
 
-        $this->deleteMember($id_adh);
+        $this->deleteMember();
     }
 
     /**
@@ -184,7 +186,8 @@ class Password extends atoum
         $insert->values(
             [
                 \Galette\Core\Password::PK  => $id_adh,
-                'date_crea_tmp_passwd'      => $date->format('Y-m-d')
+                'date_crea_tmp_passwd'      => $date->format('Y-m-d'),
+                'tmp_passwd'                => 'azerty'
             ]
         );
         $this->zdb->execute($insert);
@@ -198,6 +201,6 @@ class Password extends atoum
         $results = $this->zdb->execute($select);
         $this->integer($results->count())->isIdenticalTo(0);
 
-        $this->deleteMember($id_adh);
+        $this->deleteMember();
     }
 }
