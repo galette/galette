@@ -455,7 +455,12 @@ class Db extends atoum
     public function testGetPlatform()
     {
         $quoted = $this->db->platform->quoteValue('somethin\' to "quote"');
+
+        $expected = ($this->db->isPostgres()) ?
+            "'somethin'' to \"quote\"'" :
+            "'somethin\\' to \\\"quote\\\"'";
+
         $this->string($quoted)
-            ->isIdenticalTo("'somethin'' to \"quote\"'");
+            ->isIdenticalTo($expected);
     }
 }
