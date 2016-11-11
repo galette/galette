@@ -148,6 +148,10 @@
                     </select>
                 </p>
                 <p>
+                    <label for="pref_bool_mailmulti" class="bline">{_T string="Same email address for different members?"}</label>
+                    <input type="checkbox" name="pref_bool_mailmulti" id="pref_bool_mailmulti" value="1"{if $pref.pref_bool_mailmulti} checked="checked"{/if} {if isset($required.pref_bool_mailmulti) and $required.pref_bool_mailmulti eq 1} required{/if}/>
+                </p>
+                <p>
                     <label for="pref_bool_selfsubscribe" class="bline">{_T string="Self subscription enabled?"}</label>
                     <input type="checkbox" name="pref_bool_selfsubscribe" id="pref_bool_selfsubscribe" value="1"{if $pref.pref_bool_selfsubscribe} checked="checked"{/if} {if isset($required.pref_bool_selfsubscribe) and $required.pref_bool_selfsubscribe eq 1} required{/if}/>
                 </p>
