@@ -141,8 +141,8 @@ class Password extends AbstractPassword
                     'New passwords temporary set for `' . $id_adh . '`.',
                     Analog::DEBUG
                 );
-                $this->new_password = $password;
-                $this->hash = $hash;
+                $this->setPassword($password);
+                $this->setHash($hash);
                 return true;
             } else {
                 return false;
