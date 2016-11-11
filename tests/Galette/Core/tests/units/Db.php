@@ -166,6 +166,101 @@ class Db extends atoum
     }
 
     /**
+     * Test database grants that throws an exception
+     *
+     * @return void
+     */
+    public function testGrantWException()
+    {
+        $atoum = $this;
+
+        //test insert failing
+        $this->db = new \mock\Galette\Core\Db();
+        $this->calling($this->db)->execute = function ($o) {
+            if ($o instanceof \Zend\Db\Sql\Insert) {
+                throw new \LogicException('Error executing query!', 123);
+            }
+        };
+
+        $result = $this->db->grantCheck('u');
+
+        $this->array($result)
+            ->boolean['create']->isTrue()
+            ->boolean['alter']->isTrue()
+            ->object['insert']->IsInstanceOf('\LogicException')
+            ->boolean['update']->isFalse()
+            ->boolean['select']->isFalse()
+            ->boolean['delete']->isFalse()
+            ->boolean['drop']->isTrue();
+
+        //test select failing
+        $this->calling($this->db)->execute = function ($o) use ($atoum) {
+            if ($o instanceof \Zend\Db\Sql\Select) {
+                throw new \LogicException('Error executing query!', 123);
+            } else {
+                $rs = new \mock\Zend\Db\ResultSet();
+                $atoum->calling($rs)->count = 1;
+                return $rs;
+            }
+        };
+
+        $result = $this->db->grantCheck('u');
+
+        $this->array($result)
+            ->boolean['create']->isTrue()
+            ->boolean['alter']->isTrue()
+            ->boolean['insert']->isTrue()
+            ->boolean['update']->isTrue()
+            ->object['select']->IsInstanceOf('\LogicException')
+            ->boolean['delete']->isTrue()
+            ->boolean['drop']->isTrue();
+
+        //test update failing
+        $this->calling($this->db)->execute = function ($o) use ($atoum) {
+            if ($o instanceof \Zend\Db\Sql\Update) {
+                throw new \LogicException('Error executing query!', 123);
+            } else {
+                $rs = new \mock\Zend\Db\ResultSet();
+                $atoum->calling($rs)->count = 1;
+                return $rs;
+            }
+        };
+
+        $result = $this->db->grantCheck('u');
+
+        $this->array($result)
+            ->boolean['create']->isTrue()
+            ->boolean['alter']->isTrue()
+            ->boolean['insert']->isTrue()
+            ->object['update']->IsInstanceOf('\LogicException')
+            ->boolean['select']->isTrue()
+            ->boolean['delete']->isTrue()
+            ->boolean['drop']->isTrue();
+
+        //test delete failing
+        $this->calling($this->db)->execute = function ($o) use ($atoum) {
+            if ($o instanceof \Zend\Db\Sql\Delete) {
+                throw new \LogicException('Error executing query!', 123);
+            } else {
+                $rs = new \mock\Zend\Db\ResultSet();
+                $atoum->calling($rs)->count = 1;
+                return $rs;
+            }
+        };
+
+        $result = $this->db->grantCheck('u');
+
+        $this->array($result)
+            ->boolean['create']->isTrue()
+            ->boolean['alter']->isTrue()
+            ->boolean['insert']->isTrue()
+            ->boolean['update']->isTrue()
+            ->boolean['select']->isTrue()
+            ->object['delete']->IsInstanceOf('\LogicException')
+            ->boolean['drop']->isTrue();
+    }
+
+    /**
      * Is database Postgresql powered?
      *
      * @return void
@@ -353,6 +448,29 @@ class Db extends atoum
 
         $res = $this->db->checkDbVersion();
         $this->boolean($res)->isTrue();
+    }
+
+    /**
+     * Test database version that throws an exception
+     *
+     * @return void
+     */
+    public function testDbVersionWException()
+    {
+        $this->db = new \mock\Galette\Core\Db();
+        $this->calling($this->db)->execute = function ($o) {
+            throw new \LogicException('Error executing query!', 123);
+        };
+
+        $db = $this->db;
+        $this
+            ->exception(
+                function () use ($db) {
+                    $db->getDbVersion();
+                }
+            )->IsInstanceOf('\LogicException');
+
+        $this->boolean($db->checkDbVersion())->isFalse();
     }
 
     /**

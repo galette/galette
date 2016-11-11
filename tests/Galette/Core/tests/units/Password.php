@@ -205,4 +205,87 @@ class Password extends atoum
 
         $this->deleteMember();
     }
+
+    /**
+     * Generate new password that throws an exception
+     *
+     * @return void
+     */
+    public function testGenerateNewPasswordWException()
+    {
+        $this->zdb = new \mock\Galette\Core\Db();
+        $this->calling($this->zdb)->execute = function ($o) {
+            throw new \LogicException('Error executing query!', 123);
+        };
+
+        $pass = new \Galette\Core\Password($this->zdb, false);
+        $res = $pass->generateNewPassword(12);
+        $this->boolean($res)->isFalse();
+    }
+
+    /**
+     * Generate new password when insert returns false
+     *
+     * @return void
+     */
+    public function testGenerateNewPasswordWFalseInsert()
+    {
+        $this->zdb = new \mock\Galette\Core\Db();
+        $this->calling($this->zdb)->execute = function ($o) {
+            return false;
+        };
+
+        $pass = new \Galette\Core\Password($this->zdb, false);
+        $res = $pass->generateNewPassword(12);
+        $this->boolean($res)->isFalse();
+    }
+
+    /**
+     * Test cleanExpired that throws an exception
+     *
+     * @return void
+     */
+    public function testCleanExpiredWException()
+    {
+        $this->zdb = new \mock\Galette\Core\Db();
+        $this->calling($this->zdb)->execute = function ($o) {
+            throw new \LogicException('Error executing query!', 123);
+        };
+
+        $pass = new \Galette\Core\Password($this->zdb);
+    }
+
+    /**
+     * Test hash validity that throws an exception
+     *
+     * @return void
+     */
+    public function testIsHashValidWException()
+    {
+        $this->zdb = new \mock\Galette\Core\Db();
+        $this->calling($this->zdb)->execute = function ($o) {
+            throw new \LogicException('Error executing query!', 123);
+        };
+
+        $pass = new \Galette\Core\Password($this->zdb, false);
+        $res = $pass->isHashValid('thehash');
+        $this->boolean($res)->isFalse();
+    }
+
+    /**
+     * Test hash removal that throws an exception
+     *
+     * @return void
+     */
+    public function testRemoveHashWException()
+    {
+        $this->zdb = new \mock\Galette\Core\Db();
+        $this->calling($this->zdb)->execute = function ($o) {
+            throw new \LogicException('Error executing query!', 123);
+        };
+
+        $pass = new \Galette\Core\Password($this->zdb, false);
+        $res = $pass->removeHash('thehash');
+        $this->boolean($res)->isFalse();
+    }
 }
