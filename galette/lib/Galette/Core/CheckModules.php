@@ -57,13 +57,27 @@ class CheckModules
     private $missing = array();
 
     /**
+     * Constructor
+     *
+     * @param boolean $do Whether to do checks, defaults to true
+     */
+    public function __construct($do = true)
+    {
+        if ($do === true) {
+            $this->doCheck();
+        }
+    }
+
+    /**
      * Check various modules and dispatch them beetween:
      * - good: module that are present,
      * - may: modules that may be present but are not,
      * - should: modules that should be present but are not,
      * - missing: required modules that are missing
+     *
+     * @return void
      */
-    public function __construct()
+    public function doCheck()
     {
         //simplexml module is mandatory
         if (!extension_loaded('SimpleXML')) {

@@ -446,4 +446,16 @@ class Db extends atoum
             $this->variable($convert)->isNull();
         }
     }
+
+    /**
+     * Test get platform
+     *
+     * @return void
+     */
+    public function testGetPlatform()
+    {
+        $quoted = $this->db->platform->quoteValue('somethin\' to "quote"');
+        $this->string($quoted)
+            ->isIdenticalTo("'somethin'' to \"quote\"'");
+    }
 }
