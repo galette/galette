@@ -187,7 +187,7 @@ class Db extends atoum
         $this->array($result)
             ->boolean['create']->isTrue()
             ->boolean['alter']->isTrue()
-            ->object['insert']->IsInstanceOf('\LogicException')
+            ->object['insert']->isInstanceOf('\LogicException')
             ->boolean['update']->isFalse()
             ->boolean['select']->isFalse()
             ->boolean['delete']->isFalse()
@@ -211,7 +211,7 @@ class Db extends atoum
             ->boolean['alter']->isTrue()
             ->boolean['insert']->isTrue()
             ->boolean['update']->isTrue()
-            ->object['select']->IsInstanceOf('\LogicException')
+            ->object['select']->isInstanceOf('\LogicException')
             ->boolean['delete']->isTrue()
             ->boolean['drop']->isTrue();
 
@@ -232,7 +232,7 @@ class Db extends atoum
             ->boolean['create']->isTrue()
             ->boolean['alter']->isTrue()
             ->boolean['insert']->isTrue()
-            ->object['update']->IsInstanceOf('\LogicException')
+            ->object['update']->isInstanceOf('\LogicException')
             ->boolean['select']->isTrue()
             ->boolean['delete']->isTrue()
             ->boolean['drop']->isTrue();
@@ -256,7 +256,7 @@ class Db extends atoum
             ->boolean['insert']->isTrue()
             ->boolean['update']->isTrue()
             ->boolean['select']->isTrue()
-            ->object['delete']->IsInstanceOf('\LogicException')
+            ->object['delete']->isInstanceOf('\LogicException')
             ->boolean['drop']->isTrue();
     }
 
@@ -302,18 +302,18 @@ class Db extends atoum
         }
 
         $db = $this->db->db;
-        $this->object($db)->IsInstanceOf('Zend\Db\Adapter\Adapter');
+        $this->object($db)->isInstanceOf('Zend\Db\Adapter\Adapter');
 
         $sql = $this->db->sql;
-        $this->object($sql)->IsInstanceOf('Zend\Db\Sql\Sql');
+        $this->object($sql)->isInstanceOf('Zend\Db\Sql\Sql');
 
         $connection = $this->db->connection;
         $this->object($connection)
-            ->IsInstanceOf('Zend\Db\Adapter\Driver\Pdo\Connection');
+            ->isInstanceOf('Zend\Db\Adapter\Driver\Pdo\Connection');
 
         $driver = $this->db->driver;
         $this->object($driver)
-            ->IsInstanceOf('Zend\Db\Adapter\Driver\Pdo\Pdo');
+            ->isInstanceOf('Zend\Db\Adapter\Driver\Pdo\Pdo');
     }
 
     /**
@@ -349,7 +349,7 @@ class Db extends atoum
     public function testSelectAll()
     {
         $all = $this->db->selectAll('preferences');
-        $this->object($all)->IsInstanceOf('Zend\Db\ResultSet\ResultSet');
+        $this->object($all)->isInstanceOf('Zend\Db\ResultSet\ResultSet');
     }
 
     /**
@@ -468,7 +468,7 @@ class Db extends atoum
                 function () use ($db) {
                     $db->getDbVersion();
                 }
-            )->IsInstanceOf('\LogicException');
+            )->isInstanceOf('\LogicException');
 
         $this->boolean($db->checkDbVersion())->isFalse();
     }
@@ -580,5 +580,27 @@ class Db extends atoum
 
         $this->string($quoted)
             ->isIdenticalTo($expected);
+    }
+
+    /**
+     * Test execute Method
+     *
+     * @return void
+     */
+    public function testExecute()
+    {
+        $select = $this->db->select('preferences', 'p');
+        $select->where(['p.nom_pref' => 'azerty']);
+        $results = $this->db->execute($select);
+
+        $this->object($results)
+            ->isInstanceOf('\Zend\Db\ResultSet\ResultSet');
+
+        $this->exception(
+            function () use ($select) {
+                $select->where(['p.notknown' => 'azerty']);
+                $results = $this->db->execute($select);
+            }
+        )->isInstanceOf('\PDOException');
     }
 }
