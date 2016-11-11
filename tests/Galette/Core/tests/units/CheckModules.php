@@ -78,7 +78,7 @@ class CheckModules extends atoum
     /**
      * Test all extensions missing
      *
-     * @reutrn void
+     * @return void
      */
     public function testAllKO()
     {
