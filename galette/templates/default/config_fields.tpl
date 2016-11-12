@@ -1,14 +1,11 @@
-    {*<p id="collapse" class="ui-state-default ui-corner-all">
+{extends file="page.tpl"}
+{block name="content"}
+    <p id="collapse" class="ui-state-default ui-corner-all">
         <span class="ui-icon ui-icon-circle-arrow-s"></span>
         {_T string="Collapse all"}
-    </p>*}
-    {* TODO: Dynamically generate required tabs entries *}
-    {*<ul id="tabs">
-        <li{if $current eq 'membership'} class="current_tab"{/if}><a href="?table=membership">{_T string="Membership"}</a></li>
-        <li{if $current eq 'members'} class="current_tab"{/if}><a href="?table=members">{_T string="Members"}</a></li>
-    </ul>*}
-    <form action="config_fields.php" method="post" id="config_fields_form">
-    <div id="{$current}_tab">
+    </p>
+    <form action="{path_for name="configureCoreFields"}" method="post" id="config_fields_form">
+    <div id="members_tab">
         {*<a href="#" title="{_T string="Add a new category"}" id="add_category">{_T string="Add new category"}</a>*}
 {foreach item=category from=$categories name=categories_list}
         <fieldset class="cssform large" id="cat_{$smarty.foreach.categories_list.iteration}">
@@ -57,6 +54,9 @@
             <input type="submit" value="{_T string="Save"}"/>
         </div>
     </form>
+{/block}
+
+{block name="javascripts"}
     <script type="text/javascript">
         var _initSortable = function(){
             $('.fields_list').sortable({
@@ -179,7 +179,7 @@
                 _legend.prepend(_a);
                 _a.spinDown();
 
-                $('#{$current}_tab').append(_fs);
+                $('#members_tab').append(_fs);
                 _initSortable();
                 _bindCollapse();
 
@@ -197,3 +197,4 @@
             });
         });
     </script>
+{/block}

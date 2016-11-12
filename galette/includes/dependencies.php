@@ -248,7 +248,9 @@ $container['acls'] = function ($c) {
         'adhesionForm'              => 'staff',
         'removeMember'              => 'staff',
         'doRemoveMember'            => 'staff',
-        'doRemoveContribution'      => 'staff'
+        'doRemoveContribution'      => 'staff',
+        'configureCoreFields'       => 'admin',
+        'storeCoreFieldsConfig'     => 'admin'
     ];
 
     //load user defined ACLs
