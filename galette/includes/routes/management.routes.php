@@ -1815,58 +1815,18 @@ $app->get(
 )->setName('removeEntitled')->add($authenticate);
 
 $app->get(
-    __('/dynamic-translations', 'routes'),
-    function ($request, $response) {
-        $text_orig = get_form_value('text_orig', '');
+    __('/dynamic-translations', 'routes') . '[/{text_orig}]',
+    function ($request, $response, $args) {
+        $text_orig = '';
+        if (isset($args['text_orig'])) {
+            $text_orig = $args['text_orig'];
+        } elseif (isset($_GET['text_orig'])) {
+            $text_orig = $_GET['text_orig'];
+        }
 
         $params = [
-            'page_title'    => _T("Translate labels"),
-            'text_orig'     => $text_orig
+            'page_title'    => _T("Translate labels")
         ];
-
-        /*if ( isset($_POST['trans']) && isset($text_orig) ) {
-            if ( isset($_POST['new']) && $_POST['new'] == 'true' ) {
-                //create translation if it does not exists yet
-                $res = addDynamicTranslation(
-                    $_POST['text_orig']
-                );
-            }
-
-            // Validate form
-            while ( list($key, $value) = each($_POST) ) {
-                if ( substr($key, 0, 11) == 'text_trans_' ) {
-                    $trans_lang = substr($key, 11);
-                    $trans_lang = str_replace('_utf8', '.utf8', $trans_lang);
-                    $res = updateDynamicTranslation(
-                        $text_orig,
-                        $trans_lang,
-                        $value
-                    );
-                    if ( $res !== true ) {
-                        $error_detected[] = preg_replace(
-                            array(
-                                '/%label/',
-                                '/%lang/'
-                            ),
-                            array(
-                                $text_orig,
-                                $trans_lang
-                            ),
-                            _T("An error occured saving label `%label` for language `%lang`")
-                        );
-                    }
-                }
-            }
-            if ( count($error_detected) == 0 ) {
-                $success_detected[] = _T("Labels has been sucessfully translated!");
-            }
-        }*/
-
-        /*$form_title = '';
-        if ( !isset($all_forms) ) {
-            $all_forms='';
-        }
-        $tpl->assign('all_forms', $all_forms);*/
 
         $nb_fields = 0;
         try {
@@ -1940,6 +1900,8 @@ $app->get(
             }
         }
 
+        $params['text_orig'] = $text_orig;
+
         // display page
         $this->view->render(
             $response,
@@ -1949,6 +1911,65 @@ $app->get(
         return $response;
     }
 )->setName('dynamicTranslations')->add($authenticate);
+
+$app->post(
+    __('/dynamic-translations', 'routes'),
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+
+        if (isset($post['trans']) && isset($post['text_orig'])) {
+            if (isset($_POST['new']) && $_POST['new'] == 'true') {
+                //create translation if it does not exists yet
+                $res = addDynamicTranslation(
+                    $post['text_orig']
+                );
+            }
+
+            // Validate form
+            while (list($key, $value) = each($post)) {
+                if (substr($key, 0, 11) == 'text_trans_') {
+                    $trans_lang = substr($key, 11);
+                    $trans_lang = str_replace('_utf8', '.utf8', $trans_lang);
+                    $res = updateDynamicTranslation(
+                        $post['text_orig'],
+                        $trans_lang,
+                        $value
+                    );
+                    if ($res !== true) {
+                        $this->flash->addMessage(
+                            'error_detected',
+                            preg_replace(
+                                array(
+                                    '/%label/',
+                                    '/%lang/'
+                                ),
+                                array(
+                                    $post['text_orig'],
+                                    $trans_lang
+                                ),
+                                _T("An error occured saving label `%label` for language `%lang`")
+                            )
+                        );
+                    }
+                }
+            }
+
+            if (count($error_detected) == 0) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    _T("Labels has been sucessfully translated!")
+                );
+            }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor(
+                'dynamicTranslations',
+                ['text_orig' => $post['text_orig']]
+            ));
+    }
+)->setName('editDynamicTranslation')->add($authenticate);
 
 $app->get(
     __('/fields', 'routes') . __('/core', 'routes') . __('/configure', 'routes'),
