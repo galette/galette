@@ -1,3 +1,5 @@
+{extends file="page.tpl"}
+{block name="content"}
         <form action="configurer_fiches.php" method="post" enctype="multipart/form-data" class="tabbed">
             <div id="addfield" class="cssform">
                 <p>
@@ -35,7 +37,7 @@
     {if $form_name eq $key}
         {assign var='activetab' value=$smarty.foreach.formseach.iteration}
     {/if}
-            <li{if $form_name eq $key} class="ui-tabs-selected"{/if}><a href="?form={$key}">{$form}</a></li>
+            <li{if $form_name eq $key} class="ui-tabs-selected"{/if}><a href="{path_for name="configureDynamicFields" data=["form" => $key]}">{$form}</a></li>
 {/foreach}
         </ul>
         <div id="ui-tabs-{$activetab}">
@@ -43,6 +45,9 @@
         </div>
         </div>
         </form>
+{/block}
+
+{block name="javascripts"}
         <script type="text/javascript">
             $('#configfiches_tabs').append('<a class="button notext" id="btnadd_small">{_T string="Add"}</a>');
             var _dialogform = $('<form id="dialogform" action="configurer_fiches.php" method="post" title="{_T string="Add new dynamic field"}"">');
@@ -54,13 +59,9 @@
                 width: '40%'
             }).dialog('close');
 
-            $('#btnadd_small').click(function(){
+            $('#btnadd_small').click(function(e){
+                e.preventDefault();
                 $('#dialogform').dialog('open');
-                return false;
-            });
-
-            $('#configfiches_tabs > ul > li > a').each(function(){
-                $(this).attr('href', $(this).attr('href')  + '&ajax=true');
             });
 
             $('#configfiches_tabs').tabs({
@@ -68,13 +69,11 @@
                     $('#configfiches_tabs input:submit, #configfiches_tabs .button, #configfiches_tabs input:reset' ).button();
                 },
                 beforeLoad: function(event, ui) {
-                    var _reg = /\?form=(.*)&ajax=true/g;
-                    $('#formname').val(_reg.exec(ui.ajaxSettings.url)[1]);
-                    if ( ui.ajaxSettings.url.match(/\?form={$form_name}.*/) ) {
+                    if ( ui.ajaxSettings.url == '{path_for name="configureDynamicFields" data=["form" => $form_name]}' ) {
                         return false; //avoid reloading first tab onload
                     }
 
-                    var _img = $('<figure id="loading"><p><img src="{$template_subdir}images/loading.png" alt="{_T string="Loading..."}"/><br/>{_T string="Currently loading..."}</p></figure>');
+                    var _img = $('<figure id="loading"><p><img src="{base_url}/{$template_subdir}images/loading.png" alt="{_T string="Loading..."}"/><br/>{_T string="Currently loading..."}</p></figure>');
                     $('body').append(_img);
 
                     ui.jqXHR.complete(function(){
@@ -87,3 +86,4 @@
                 }
             });
         </script>
+{/block}
