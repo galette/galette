@@ -1916,6 +1916,7 @@ $app->post(
     __('/dynamic-translations', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
+        $error_detected = false;
 
         if (isset($post['trans']) && isset($post['text_orig'])) {
             if (isset($_POST['new']) && $_POST['new'] == 'true') {
@@ -1936,6 +1937,7 @@ $app->post(
                         $value
                     );
                     if ($res !== true) {
+                        $error_detected = true;
                         $this->flash->addMessage(
                             'error_detected',
                             preg_replace(
@@ -1954,7 +1956,7 @@ $app->post(
                 }
             }
 
-            if (count($error_detected) == 0) {
+            if ($error_detected === false) {
                 $this->flash->addMessage(
                     'success_detected',
                     _T("Labels has been sucessfully translated!")
