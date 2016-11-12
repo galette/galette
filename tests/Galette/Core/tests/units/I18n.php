@@ -122,6 +122,24 @@ class I18n extends atoum
     }
 
     /**
+     * Test languages list as array
+     *
+     * @return void
+     */
+    public function testGetArrayList()
+    {
+        $list = $this->i18n->getArrayList();
+
+        $expected = [
+            'fr_FR' => 'Français',
+            'en_US' => 'English'
+        ];
+
+        $this->array($list)
+            ->isIdenticalTo($expected);
+    }
+
+    /**
      * Test getting language name from its ID
      *
      * @return void
