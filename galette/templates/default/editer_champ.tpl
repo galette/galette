@@ -1,4 +1,6 @@
-    <form action="editer_champ.php" method="post">
+{extends file="page.tpl"}
+{block name="content"}
+    <form action="{path_for name="doEditDynamicField" data=["action" => $action, "form" => $form_name, "id" => $df->getId()]}" method="post">
         <fieldset class="cssform">
             <legend class="ui-state-active ui-corner-top">{_T string="Edit field %field" pattern="/%field/" replace=$df->getName()}</legend>
             <p>
@@ -61,9 +63,7 @@
 {/if}
             <div class="button-container">
                 <input type="submit" name="valid" value="{_T string="Save"}" id="btnsave"/>
-                <input type="submit" name="cancel" value="{_T string="Cancel"}" id="btncancel"/>
-                <input type="hidden" name="form" value="{$form_name}"/>
-                <input type="hidden" name="id" value="{$df->getId()}"/>
             </div>
         </fieldset>
      </form>
+{/block}

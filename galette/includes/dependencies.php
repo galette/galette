@@ -253,7 +253,11 @@ $container['acls'] = function ($c) {
         'configureCoreFields'       => 'admin',
         'configureDynamicFields'    => 'admin',
         'storeCoreFieldsConfig'     => 'admin',
-        'editDynamicFields'         => 'admin'
+        'editDynamicField'          => 'admin',
+        'doEditDynamicField'        => 'admin',
+        'moveDynamicField'          => 'admin',
+        'removeDynamicField'        => 'admin',
+        'doRemoveDynamicField'      => 'admin'
     ];
 
     //load user defined ACLs

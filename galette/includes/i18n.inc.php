@@ -77,7 +77,7 @@ if (@putenv("LANG=$language")
  *
  * @param string $text_orig Text to translate
  *
- * @return void
+ * @return boolean
  */
 function addDynamicTranslation($text_orig)
 {
@@ -137,7 +137,8 @@ function addDynamicTranslation($text_orig)
                 $zdb->execute($insert);
             }
         }
-    } catch (Exception $e) {
+        return true;
+    } catch (\Exception $e) {
         Analog::log(
             'An error occured adding dynamic translation for `' .
             $text_orig . '` | ' . $e->getMessage(),
@@ -152,7 +153,7 @@ function addDynamicTranslation($text_orig)
  *
  * @param string $text_orig Text to translate
  *
- * @return void
+ * @return boolean
  */
 function deleteDynamicTranslation($text_orig)
 {
@@ -194,7 +195,7 @@ function deleteDynamicTranslation($text_orig)
  * @param string $text_locale The locale
  * @param string $text_trans  Translated text
  *
- * @return translated string
+ * @return boolean
  */
 function updateDynamicTranslation($text_orig, $text_locale, $text_trans)
 {
@@ -223,7 +224,6 @@ function updateDynamicTranslation($text_orig, $text_locale, $text_trans)
             'text_trans' => $text_trans
         );
 
-        $res = false;
         if ($exists) {
             $where = array();
             $owhere = $select->where;
