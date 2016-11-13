@@ -19,7 +19,7 @@
                     <strong>{$member->sname}</strong>
     {if $login->isAdmin() or $login->isStaff()}
                     (<a href="{path_for name="member" data=["id" => $member->id]}">{_T string="See member profile"}</a> -
-                    <a href="ajouter_transaction.php?id_adh={$member->id}">{_T string="Add a transaction"}</a>)
+                    <a href="{path_for name="transaction" data=["action" => {_T string="add" domain="routes"}]}?id_adh={$member->id}">{_T string="Add a transaction"}</a>)
     {/if}
                     &nbsp;:
 {/if}

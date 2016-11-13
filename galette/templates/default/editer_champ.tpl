@@ -1,5 +1,12 @@
-{extends file="page.tpl"}
+{if $mode eq 'ajax'}
+    {assign var="extend" value='ajax.tpl'}
+{else}
+    {assign var="extend" value='page.tpl'}
+{/if}
+{extends file=$extend}
+
 {block name="content"}
+{if $action == {_T string="edit" domain="routes"}}
     <form action="{path_for name="doEditDynamicField" data=["action" => $action, "form" => $form_name, "id" => $df->getId()]}" method="post">
         <fieldset class="cssform">
             <legend class="ui-state-active ui-corner-top">{_T string="Edit field %field" pattern="/%field/" replace=$df->getName()}</legend>
@@ -66,4 +73,46 @@
             </div>
         </fieldset>
      </form>
+{elseif $action == {_T string="add" domain="routes"}}
+    <form action="{path_for name="doEditDynamicField" data=["form" => $form_name, "action" => {_T string="add" domain="routes"}]}" method="post" enctype="multipart/form-data" title="{_T string="New dynamic field"}">
+    {if $mode neq 'ajax'}
+        <fieldset class="cssform">
+            <legend class="ui-state-active ui-corner-top">{_T string="New dynamic field"}</legend>
+    {else}
+        <div class="cssform">
+    {/if}
+            <p>
+                <label for="field_name" class="bline">{_T string="Field name"}</label>
+                <input size="40" type="text" name="field_name" id="field_name"/>
+            </p>
+            <p>
+                <label for="field_perm" class="bline">{_T string="Visibility"}</label>
+                <select name="field_perm" id="field_perm">
+                    {html_options options=$perm_names selected="0"}
+                </select>
+            </p>
+            <p>
+                <label for="field_type" class="bline">{_T string="Type"}</label>
+                <select name="field_type" id="field_type">
+                    {html_options options=$field_type_names selected="0"}
+                </select>
+            </p>
+            <p>
+                <label for="field_required" class="bline">{_T string="Required"}</label>
+                <select name="field_required" id="field_required">
+                    <option value="0">{_T string="No"}</option>
+                    <option value="1">{_T string="Yes"}</option>
+                </select>
+            </p>
+            <div class="center">
+                <input type="submit" name="valid" id="btnadd" value="{_T string="Add"}"/>
+                <input type="hidden" name="form" id="formname" value="{$form_name}"/>
+            </div>
+    {if $mode neq 'ajax'}
+        </fieldset>
+    {else}
+        </div>
+    {/if}
+    </form>
+{/if}
 {/block}
