@@ -14,7 +14,7 @@
                 <a id="reminder" href="{path_for name="reminders"}" title="{_T string="Send reminders to late members"}">{_T string="Reminders"}</a>
 {/if}
 {if $login->isAdmin()}
-                <a id="prefs" href="{path_for name="preferences"}" title="{_T string="Set applications preferences (adress, website, member's cards configuration, ...)"}">{_T string="Settings"}</a>
+                <a id="prefs" href="{path_for name="preferences"}" title="{_T string="Set applications preferences (address, website, member's cards configuration, ...)"}">{_T string="Settings"}</a>
                 <a id="plugins" href="{path_for name="plugins"}" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a>
 {/if}
             </div>
@@ -50,13 +50,8 @@
                         { expires: 365 }
                     );
                     if ( !_checked ) {
-                        var _url = window.location.href;
-                        window.location.replace(
-                            _url.replace(
-                                /\/desktop\.php.*/,
-                                '/gestion_adherents.php'
-                            )
-                        );
+                        var _url = '{path_for name="members"}';
+                        window.location.replace(_url);
                     }
                 });
             });
