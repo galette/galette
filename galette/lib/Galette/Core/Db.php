@@ -57,6 +57,7 @@ class Db
     private $db;
     private $type_db;
     private $sql;
+    private $options;
 
     const MYSQL = 'mysql';
     const PGSQL = 'pgsql';
@@ -100,7 +101,7 @@ class Db
             }
 
             $this->type_db = $_type_db;
-            $_options = array(
+            $this->options = array(
                 'driver'   => $_type,
                 'hostname' => $_host_db,
                 'port'     => $_port_db,
@@ -109,17 +110,10 @@ class Db
                 'database' => $_name_db
             );
             if ($_type_db === self::MYSQL && !defined('NON_UTF_DBCONNECT')) {
-                $_options['charset'] = 'utf8';
+                $this->options['charset'] = 'utf8';
             }
 
-            $this->db = new Adapter($_options);
-            $this->db->getDriver()->getConnection()->connect();
-            $this->sql = new Sql($this->db);
-
-            Analog::log(
-                '[Db] Database connection was successfull!',
-                Analog::DEBUG
-            );
+            $this->doConnection();
         } catch (\Exception $e) {
             // perhaps factory() failed to load the specified Adapter class
             Analog::log(
@@ -129,6 +123,43 @@ class Db
             );
             throw $e;
         }
+    }
+
+    /**
+     * Do database connection
+     *
+     * @return void
+     */
+    private function doConnection()
+    {
+        $this->db = new Adapter($this->options);
+        $this->db->getDriver()->getConnection()->connect();
+        $this->sql = new Sql($this->db);
+
+        Analog::log(
+            '[Db] Database connection was successfull!',
+            Analog::DEBUG
+        );
+    }
+
+    /**
+     * To store Db in session
+     *
+     * @return array
+     */
+    public function __sleep()
+    {
+        return ['type_db', 'options'];
+    }
+
+    /**
+     * Connect again to the database on wakeup
+     *
+     * @return void
+     */
+    public function __wakeup()
+    {
+        $this->doConnection();
     }
 
     /**
