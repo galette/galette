@@ -39,6 +39,8 @@ namespace Galette\IO;
 
 use Analog\Analog;
 use Galette\Core\Db;
+use Galette\Core\Preferences;
+use Galette\Core\History;
 use Galette\Entity\Adherent;
 use Galette\Entity\ImportModel;
 use Galette\Entity\FieldsConfig;
@@ -95,6 +97,8 @@ class CsvIn extends Csv implements FileInterface
     private $_members_fields_cats;
     private $_required;
     private $zdb;
+    private $preferences;
+    private $history;
 
     /**
      * Default constructor
@@ -147,16 +151,25 @@ class CsvIn extends Csv implements FileInterface
     /**
      * Import members from CSV file
      *
-     * @param Db      $zdb                 Database instance
-     * @param string  $filename            CSV filename
-     * @param array   $members_fields      Members fields
-     * @param array   $members_fields_cats Members fields categories
-     * @param boolean $dryrun              Run in dry run mode (do not store in database)
+     * @param Db          $zdb                 Database instance
+     * @param Preferences $preferences         Preferences instance
+     * @param History     $history             History instance
+     * @param string      $filename            CSV filename
+     * @param array       $members_fields      Members fields
+     * @param array       $members_fields_cats Members fields categories
+     * @param boolean     $dryrun              Run in dry run mode (do not store in database)
      *
      * @return boolean
      */
-    public function import(Db $zdb, $filename, $members_fields, $members_fields_cats, $dryrun)
-    {
+    public function import(
+        Db $zdb,
+        Preferences $preferences,
+        History $history,
+        $filename,
+        array $members_fields,
+        array $members_fields_cats,
+        $dryrun
+    ) {
         if (!file_exists(self::DEFAULT_DIRECTORY . '/' . $filename)
             || !is_readable(self::DEFAULT_DIRECTORY . '/' . $filename)
         ) {
@@ -168,6 +181,8 @@ class CsvIn extends Csv implements FileInterface
         }
 
         $this->zdb = $zdb;
+        $this->preferences = $preferences;
+        $this->history = $history;
         if ($dryrun === false) {
             $this->_dryrun = false;
         }
@@ -324,6 +339,11 @@ class CsvIn extends Csv implements FileInterface
                     }
                     //import member itself
                     $member = new Adherent($this->zdb);
+                    $member->setDependencies(
+                        $this->preferences,
+                        $this->_members_fields,
+                        $this->history
+                    );
                     //check for empty creation date
                     if (isset($values['date_crea_adh']) && trim($values['date_crea_adh']) === '') {
                         unset($values['date_crea_adh']);

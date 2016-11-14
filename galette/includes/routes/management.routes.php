@@ -1032,7 +1032,15 @@ $app->post(
         $csv = new CsvIn($this->zdb);
         $post = $request->getParsedBody();
         $dryrun = isset($post['dryrun']);
-        $res = $csv->import($post['import_file'], $this->members_fields, $this->members_fields_cats, $dryrun);
+        $res = $csv->import(
+            $this->zdb,
+            $this->preferences,
+            $this->history,
+            $post['import_file'],
+            $this->members_fields,
+            $this->members_fields_cats,
+            $dryrun
+        );
         if ($res !== true) {
             if ($res < 0) {
                 $this->flash->addMessage(

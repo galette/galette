@@ -725,14 +725,23 @@ $app->get(
             'children'  => true
         );
         $route_params = [];
-        $member = new Adherent($this->zdb, null, $deps);
+
+        if ($this->session->member !== null) {
+            $member = $this->session->member;
+            $this->session->member = null;
+        } else {
+            $member = new Adherent($this->zdb, null, $deps);
+        }
+
         //TODO: dynamic fields should be handled by Adherent object
         $dyn_fields = new DynamicFields();
 
         if ($this->login->isAdmin() || $this->login->isStaff() || $this->login->isGroupManager()) {
             if ($id !== null) {
                 $adherent['id_adh'] = $id;
-                $member->load($id);
+                if ($member->id != $id) {
+                    $member->load($id);
+                }
                 if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->login->isGroupManager()) {
                     //check if current logged in user can manage loaded member
                     $groups = $member->groups;
@@ -771,7 +780,9 @@ $app->get(
                 $disabled['send_mail'] = 'disabled="disabled"';
             }
         } else {
-            $member->load($this->login->id);
+            if ($member->id != $id) {
+                $member->load($this->login->id);
+            }
             $adherent['id_adh'] = $this->login->id;
             // disable some fields
             $disabled  = $member->disabled_fields + $member->edit_disabled_fields;
@@ -918,12 +929,7 @@ $app->get(
 
 $app->post(
     __('/member/store', 'routes'),
-    function () use (
-        $app,
-        &$success_detected,
-        &$warning_detected,
-        &$error_detected
-    ) {
+    function ($request, $response) {
         $deps = array(
             'picture'   => true,
             'groups'    => true,
@@ -932,8 +938,16 @@ $app->post(
             'children'  => true
         );
         $member = new Adherent($this->zdb, null, $deps);
+        $member->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
         //TODO: dynamic fields should be handled by Adherent object
         $dyn_fields = new DynamicFields();
+        $success_detected = [];
+        $warning_detected = [];
+        $error_detected = [];
 
         // new or edit
         $adherent['id_adh'] = get_numeric_form_value('id_adh', '');
@@ -1275,16 +1289,20 @@ $app->post(
             if (count($error_detected) == 0) {
                 $this->session->account_success = $success_detected;
                 if (count($warning_detected) > 0) {
-                    $this->flash->addMessage(
-                        'warning_detected',
-                        $warning_detected
-                    );
+                    foreach ($warning_detected as $warning) {
+                        $this->flash->addMessage(
+                            'warning_detected',
+                            $warning
+                        );
+                    }
                 }
                 if (count($success_detected) > 0) {
-                    $this->flash->addMessage(
-                        'success_detected',
-                        $success_detected
-                    );
+                    foreach ($success_detected as $success) {
+                        $this->flash->addMessage(
+                            'success_detected',
+                            $success
+                        );
+                    }
                 }
                 if (!isset($_POST['id_adh']) && !$member->isDueFree()) {
                     return $response
@@ -1305,10 +1323,31 @@ $app->post(
                         ->withHeader('Location', $this->router->pathFor('member', ['id' => $member->id]));
                 }
             } else {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error_detected
-                );
+                //store entity in session
+                $this->session->member = $member;
+
+                foreach ($error_detected as $error) {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        $error
+                    );
+                }
+
+                if ($member->id) {
+                    $rparams = [
+                        'id'    => $member->id,
+                        'action'    => __('edit', 'routes')
+                    ];
+                } else {
+                    $rparams = ['action' => __('add', 'routes')];
+                }
+
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor(
+                        'editmember',
+                        $rparams
+                    ));
             }
         }
     }

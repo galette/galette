@@ -43,6 +43,8 @@ use Galette\Core\Db;
 use Galette\Core\Picture;
 use Galette\Core\GaletteMail;
 use Galette\Core\Password;
+use Galette\Core\Preferences;
+use Galette\Core\History;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
 
@@ -117,7 +119,6 @@ class Adherent
     //
     private $_row_classes;
     //fields list and their translation
-    private $_fields;
     private $_self_adh = false;
     private $_deps = array(
         'picture'   => true,
@@ -147,6 +148,9 @@ class Adherent
     );
 
     private $zdb;
+    private $preferences;
+    private $fields;
+    private $history;
 
     /**
      * Default constructor
@@ -159,7 +163,7 @@ class Adherent
      */
     public function __construct(Db $zdb, $args = null, $deps = null)
     {
-        global $i18n, $members_fields;
+        global $i18n;
 
         $this->zdb = $zdb;
 
@@ -174,19 +178,6 @@ class Adherent
                 Analog::WARNING
             );
         }
-
-        /*
-         * Fields configuration. Each field is an array and must reflect:
-         * array(
-         *   (string)label,
-         *   (string) propname,
-         *   (boolean)required,
-         *   (boolean)visible,
-         *   (int)position,
-         *   (int)category
-         * )
-         */
-        $this->_fields = $members_fields;
 
         //disabled fields override
         $locfile = GALETTE_CONFIG_PATH . 'disabled_fields.php';
@@ -804,9 +795,9 @@ class Adherent
      *
      * @return string
      */
-    public function getFieldName($field)
+    private function getFieldName($field)
     {
-        $label = $this->_fields[$field]['label'];
+        $label = $this->fields[$field]['label'];
         //remove trailing ':' and then nbsp (for french at least)
         $label = trim(trim($label, ':'), '&nbsp;');
         return $label;
@@ -869,6 +860,25 @@ class Adherent
     }
 
     /**
+     * Set dependencies
+     *
+     * @param Preferences $preferences Preferences instance
+     * @param array       $fields      Members fields configuration
+     * @param History     $history     History instance
+     *
+     * @return void
+     */
+    public function setDependencies(
+        Preferences $preferences,
+        array $fields,
+        History $history
+    ) {
+        $this->preferences = $preferences;
+        $this->fields = $fields;
+        $this->history = $history;
+    }
+
+    /**
      * Check posted values validity
      *
      * @param array $values   All values to check, basically the $_POST array
@@ -894,7 +904,7 @@ class Adherent
         foreach ($fields as $key) {
             //first of all, let's sanitize values
             $key = strtolower($key);
-            $prop = '_' . $this->_fields[$key]['propname'];
+            $prop = '_' . $this->fields[$key]['propname'];
 
             if (isset($values[$key])) {
                 $value = trim($values[$key]);
@@ -960,7 +970,7 @@ class Adherent
                                     ),
                                     array(
                                         __("Y-m-d"),
-                                        $this->_fields[$key]['label']
+                                        $this->fields[$key]['label']
                                     ),
                                     _T("- Wrong date format (%date_format) for %field!")
                                 );
@@ -1117,8 +1127,8 @@ class Adherent
                                 }
 
                                 $results = $this->zdb->execute($select);
-                                $result = $results->current();
-                                if ($result !== false) {
+                                if ($results->count() > 0) {
+                                    $result = $results->current();
                                     $errors[] = str_replace(
                                         array(
                                             '%s',
@@ -1156,7 +1166,7 @@ class Adherent
 
         // missing required fields?
         while (list($key, $val) = each($required)) {
-            $prop = '_' . $this->_fields[$key]['propname'];
+            $prop = '_' . $this->fields[$key]['propname'];
 
             if (!isset($disabled[$key])) {
                 $mandatory_missing = false;
@@ -1212,7 +1222,7 @@ class Adherent
                     || !isset($this->_id)
                     || $this->_id == ''
                 ) {
-                    $prop = '_' . $this->_fields[$field]['propname'];
+                    $prop = '_' . $this->fields[$field]['propname'];
                     if (($field === 'bool_admin_adh'
                         || $field === 'bool_exempt_adh'
                         || $field === 'bool_display_info')
