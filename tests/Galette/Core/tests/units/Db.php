@@ -603,4 +603,20 @@ class Db extends atoum
             }
         )->isInstanceOf('\PDOException');
     }
+
+    /**
+     * Test serialization
+     *
+     * @return void
+     */
+    public function testSerialization()
+    {
+        $db = $this->db;
+        $serialized = serialize($db);
+        $this->string($serialized)
+            ->isNotNull();
+
+        $unserialized = unserialize($serialized);
+        $this->object($unserialized)->isInstanceOf('Galette\Core\Db');
+    }
 }
