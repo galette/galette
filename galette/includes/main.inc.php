@@ -445,8 +445,9 @@ $app->add(function ($request, $response, $next) {
 
         $missing_acls = [];
         $excluded_names = [
-            'public_members',
-            'public_trombinoscope'
+            'publicMembers',
+            'filterPublicMemberslist',
+            'publicTrombinoscope'
         ];
         foreach ($routes as $route) {
             $name = $route->getName();
@@ -490,8 +491,8 @@ $app->add(function ($request, $response, $next) {
             $named_routes = $app->router()->getNamedRoutes();
             $missing_acls = [];
             $excluded_names = [
-                'public_members',
-                'public_trombinoscope'
+                'publicMembers',
+                'publicTrombinoscope'
             ];
             foreach ( $named_routes as $name=>$route ) {
                 //check if route has $authenticate middleware

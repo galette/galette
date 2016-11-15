@@ -2,7 +2,7 @@
 {block name="content"}
 {if $members|@count > 0}
         <p>{_T string="This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'"}</p>
-        <form action="liste_membres.php" method="get" id="filtre">
+        <form action="{path_for name="filterPublicMemberslist"}" method="POST" id="filtre">
         <table class="infoline">
             <tr>
                 <td class="left">{$nb_members} {if $nb_members != 1}{_T string="members"}{else}{_T string="member"}{/if}</td>
@@ -21,7 +21,7 @@
 
                 <tr>
                     <th class="left">
-                        <a href="?tri={Galette\Repository\Members::ORDERBY_NAME}" class="listing">
+                        <a href="{path_for name="publicMembers" data=["option" => {_T string="order" domain="routes"}, "value" => {Galette\Repository\Members::ORDERBY_NAME}]}" class="listing">
                             {_T string="Name"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -33,7 +33,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="?tri={Galette\Repository\Members::ORDERBY_NICKNAME}" class="listing">
+                        <a href="{path_for name="publicMembers" data=["option" => {_T string="order" domain="routes"}, "value" => {Galette\Repository\Members::ORDERBY_NICKNAME}]}" class="listing">
                             {_T string="Nickname"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NICKNAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -50,7 +50,7 @@
                     </th>
                     {/if}
                     <th class="left">
-                        <a href="?tri=infos" class="listing">{_T string="Informations"}</a>
+                        {_T string="Informations"}
                     </th>
                 </tr>
             </thead>
@@ -95,6 +95,7 @@
     <div id="infobox">{_T string="No member to show"}</div>
 {/if}
 {/block}
+
 {block name="javascripts"}
     {if $members|@count > 0}
         <script type="text/javascript">

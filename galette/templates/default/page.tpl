@@ -138,8 +138,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {if $preferences->showPublicPages($login) eq true}
         <h1 class="nojs">{_T string="Public pages"}</h1>
         <ul>
-            <li><a href="{path_for name="public_members"}" title="{_T string="Members list"}">{_T string="Members list"}</a></li>
-            <li><a href="{path_for name="public_trombinoscope"}" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a></li>
+            <li><a href="{path_for name="publicMembers"}" title="{_T string="Members list"}">{_T string="Members list"}</a></li>
+            <li><a href="{path_for name="publicTrombinoscope"}" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a></li>
             {* Include plugins menu entries *}
             {$plugins->getPublicMenus($tpl)}
         </ul>

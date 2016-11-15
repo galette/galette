@@ -45,7 +45,7 @@ use Galette\Filters\MembersList;
 use Galette\Repository\Groups;
 use \Analog\Analog;
 
-$showPublicPages = function ($request, $response, $next) use ($container, &$session) {
+$showPublicPages = function ($request, $response, $next) use ($container) {
     $login = $container->login;
     $preferences = $container->preferences;
 
@@ -66,40 +66,38 @@ $showPublicPages = function ($request, $response, $next) use ($container, &$sess
 $app->group(__('/public', 'routes'), function () {
     //public members list
     $this->get(
-        __('/members', 'routes'),
+        __('/members', 'routes') . '[/{option:' . __('page', 'routes') . '|' . __('order', 'routes') . '}/{value:\d+}]',
         function ($request, $response) {
-            if (isset($this->session->public_filters_members)) {
-                $filters = $this->session->public_filters_members;
+            $option = null;
+            if (isset($args['option'])) {
+                $option = $args['option'];
+            }
+            $value = null;
+            if (isset($args['value'])) {
+                $value = $args['value'];
+            }
+
+            if (isset($this->session->public_filter_members)) {
+                $filters = $this->session->public_filter_members;
             } else {
                 $filters = new MembersList();
             }
 
-            /*// Filters
-            if (isset($_GET['page'])) {
-                $filters->current_page = (int)$_GET['page'];
+            if ($option !== null) {
+                switch ($option) {
+                    case __('page', 'routes'):
+                        $filters->current_page = (int)$value;
+                        break;
+                    case __('order', 'routes'):
+                        $filters->orderby = $value;
+                        break;
+                }
             }
-
-            if ( isset($_GET['clear_filter']) ) {
-                $filters->reinit();
-            }
-
-            //numbers of rows to display
-            if ( isset($_GET['nbshow']) && is_numeric($_GET['nbshow'])) {
-                $filters->show = $_GET['nbshow'];
-            }
-
-            // Sorting
-            if ( isset($_GET['tri']) ) {
-                $filters->orderby = $_GET['tri'];
-            }*/
-
 
             $m = new Members();
             $members = $m->getPublicList(false, null);
 
-            $session = $this->session;
-            $session->public_filters_members = $filters;
-            $this->session = $session;
+            $this->session->public_filter_members = $filters;
 
             //assign pagination variables to the template and add pagination links
             $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
@@ -117,7 +115,36 @@ $app->group(__('/public', 'routes'), function () {
             );
             return $response;
         }
-    )->setName('public_members');
+    )->setName('publicMembers');
+
+    //members list filtering
+    $this->post(
+        __('/members/filter', 'routes') . '[/{from}]',
+        function ($request, $response, $args) {
+            $post = $request->getParsedBody();
+            if (isset($this->session->public_filter_members)) {
+                $filters = $this->session->public_filter_members;
+            } else {
+                $filters = new MembersList();
+            }
+
+            //reintialize filters
+            if (isset($post['clear_filter'])) {
+                $filters->reinit();
+            } else {
+                //number of rows to show
+                if (isset($post['nbshow'])) {
+                    $filters->show = $post['nbshow'];
+                }
+            }
+
+            $this->session->public_filter_members = $filters;
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('publicMembers'));
+        }
+    )->setName('filterPublicMemberslist');
 
     //public trombinoscope
     $this->get(
@@ -139,5 +166,5 @@ $app->group(__('/public', 'routes'), function () {
             );
             return $response;
         }
-    )->setName('public_trombinoscope');
+    )->setName('publicTrombinoscope');
 })->add($showPublicPages);

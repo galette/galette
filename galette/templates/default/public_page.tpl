@@ -67,8 +67,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {/if}
     {/if}
     {if $preferences->showPublicPages($login) eq true}
-            <a id="memberslist" class="button{if $cur_route eq "public_members"} selected{/if}" href="{path_for name="public_members"}" title="{_T string="Members list"}">{_T string="Members list"}</a>
-            <a id="trombino" class="button{if $cur_route eq "public_trombinoscope"} selected{/if}" href="{path_for name="public_trombinoscope"}" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a>
+            <a id="memberslist" class="button{if $cur_route eq "publicMembers"} selected{/if}" href="{path_for name="publicMembers"}" title="{_T string="Members list"}">{_T string="Members list"}</a>
+            <a id="trombino" class="button{if $cur_route eq "publicTrombinoscope"} selected{/if}" href="{path_for name="publicTrombinoscope"}" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a>
             {* Include plugins menu entries *}
             {$plugins->getPublicMenus($tpl, true)}
     {/if}
