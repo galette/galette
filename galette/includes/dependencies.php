@@ -178,6 +178,11 @@ $container['logo'] = function ($c) {
     return new Galette\Core\Logo();
 };
 
+$container['print_logo'] = function ($c) {
+    return new Galette\Core\PrintLogo();
+};
+
+
 $container['history'] = function ($c) {
     return new Galette\Core\History();
 };

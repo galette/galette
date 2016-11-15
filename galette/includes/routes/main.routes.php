@@ -55,23 +55,54 @@ $app->get(
     }
 )->setName('logo');
 
+//print logo route
+$app->get(
+    __('/print-logo', 'routes'),
+    function ($request, $response, $args) {
+        $this->print_logo->display();
+    }
+)->setName('printLogo');
+
 //photo route
 $app->get(
     __('/photo', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $id = $args['id'];
-        /** FIXME: we load entire member here... No need to do so! */
+
         $deps = array(
             'groups'    => false,
             'dues'      => false
         );
+
+        //if loggedin user is a group manager, we have to check
+        //he manages a group requested member belongs to.
+        if ($this->login->isGroupManager()) {
+            $deps['groups'] = true;
+        }
+
         $adh = new Adherent($this->zdb, (int)$id, $deps);
+
+        $is_manager = false;
+        if (!$this->login->isAdmin()
+            && !$this->login->isStaff()
+            && $this->login->isGroupManager()
+        ) {
+            $groups = $adh->groups;
+            foreach ($groups as $group) {
+                if ($this->login->isGroupManager($group->getId())) {
+                    $is_manager = true;
+                    break;
+                }
+            }
+        }
 
         $picture = null;
         if ($this->login->isAdmin()
             || $this->login->isStaff()
-            || $adh->appearsInMembersList()
+            || $this->preferences->showPublicPages($this->login)
+            && $adh->appearsInMembersList()
             || $this->login->login == $adh->login
+            || $is_manager
         ) {
             $picture = $adh->picture;
         } else {
