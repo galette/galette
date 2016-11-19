@@ -174,22 +174,21 @@ if (!$cron && (!defined('GALETTE_HANDLE_ERRORS')
 }
 
 $galette_run_log = null;
-$galette_null_log = \Analog\Handler\Ignore::init();
-$galette_debug_log = $galette_null_log;
+$galette_debug_log = \Analog\Handler\Ignore::init();
 
-//Log level cannot be <= 3, would be ignored.
 if (!defined('GALETTE_LOG_LVL')) {
     if (GALETTE_MODE === 'DEV') {
-        define('GALETTE_LOG_LVL', 10);
+        define('GALETTE_LOG_LVL', \Analog\Analog::DEBUG);
     } else {
-        define('GALETTE_LOG_LVL', 5);
+        define('GALETTE_LOG_LVL', \Analog\Analog::WARNING);
     }
 }
 
 if (defined('GALETTE_TESTS')) {
+    //FIXME: we should check logs files from tests
     $galette_run_log = \Analog\Handler\Ignore::init();
 } else {
-    if (!$installer && !$cron) {
+    if ((!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) && !$cron) {
         $now = new \DateTime();
         $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
             $now->format('Y-m-d')  . '.log';
@@ -200,17 +199,16 @@ if (defined('GALETTE_TESTS')) {
     if (GALETTE_MODE === 'DEV' || $cron
         || ( defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true )
     ) {
-        //logs everything in PHP logs (per chance /var/log/http/error_log)
+        //logs everything in PHP logs (per chance /var/log/http/error_log or /var/log/php-fpm/error.log)
         $galette_run_log = \Analog\Handler\Stderr::init();
     } else {
         if (!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) {
             //logs everything in galette log file
             if (!isset($logfile)) {
-                //if no filename has been setetd (ie. from install), set default one
+                //if no filename has been setted (ie. from install), set default one
                 $logfile = 'galette_run';
             }
-            $log_path = GALETTE_LOGS_PATH . $logfile . '_' .
-                $now->format('Y-m-d')  . '.log';
+            $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
             $galette_run_log = \Analog\Handler\File::init($log_path);
         } else {
             $galette_run_log = \Analog\Handler\Variable::init($galette_log_var);
@@ -222,24 +220,18 @@ if (defined('GALETTE_TESTS')) {
 Analog::handler(
     \Analog\Handler\Multi::init(
         array (
-            Analog::URGENT      => $galette_run_log,
-            Analog::ALERT       => $galette_run_log,
-            Analog::CRITICAL    => $galette_run_log,
-            Analog::ERROR       => $galette_run_log,
-            Analog::WARNING     => (GALETTE_LOG_LVL >= Analog::WARNING)
-                                        ? $galette_run_log : $galette_null_log,
-            Analog::NOTICE      => (GALETTE_LOG_LVL >= Analog::NOTICE)
-                                        ? $galette_run_log : $galette_null_log,
-            Analog::INFO        => (GALETTE_LOG_LVL >= Analog::INFO)
-                                        ? $galette_run_log : $galette_null_log,
-            Analog::DEBUG       => (GALETTE_LOG_LVL >= Analog::DEBUG)
-                                        ? $galette_debug_log : $galette_null_log
+            Analog::NOTICE  => \Analog\Handler\Threshold::init(
+                $galette_run_log,
+                GALETTE_LOG_LVL
+            ),
+            Analog::DEBUG   => $galette_debug_log
         )
     )
 );
 
 require_once GALETTE_ROOT . 'includes/functions.inc.php';
 
+//FIXME: native sessions should not be used right now
 $session_name = null;
 //since PREFIX_DB and NAME_DB are required to properly instanciate sessions,
 // we have to check here if they're assigned
@@ -249,26 +241,6 @@ if ($installer || !defined('PREFIX_DB') || !defined('NAME_DB')) {
     $session_name = PREFIX_DB . '_' . NAME_DB;
 }
 $session = &$_SESSION['galette'][$session_name];
-
-// initialize messages arrays
-$error_detected = array();
-$warning_detected = array();
-$success_detected = array();
-/**
- * "Flash" messages management
- */
-if (isset($session['error_detected'])) {
-    $error_detected = unserialize($session['error_detected']);
-    unset($session['error_detected']);
-}
-if (isset($session['warning_detected'])) {
-    $warning_detected = unserialize($session['warning_detected']);
-    unset($session['warning_detected']);
-}
-if (isset($session['success_detected'])) {
-    $success_detected = unserialize($session['success_detected']);
-    unset($session['success_detected']);
-}
 
 if (!$installer and !defined('GALETTE_TESTS')) {
     //If we're not working from installer nor from tests
