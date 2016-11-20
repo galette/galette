@@ -308,8 +308,9 @@ class Plugins
             return;
         }
 
-        $f = $this->modules[$id]['root'] . '/lang' . '/lang_' . $language . '.php';
+        $f = $this->modules[$id]['root'] . '/lang/' . $this->modules[$id]['route'] . '_' . $language . '.php';
         if (file_exists($f)) {
+            $lang = &$GLOBALS['lang'];
             include_once $f;
         }
     }

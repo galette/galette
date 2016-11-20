@@ -133,7 +133,7 @@ $container['flash'] = function ($c) {
 $container['plugins'] = function ($c) use ($app) {
     $plugins = new Galette\Core\Plugins($c->preferences);
     $i18n = $c->get('i18n');
-    $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
+    $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getLongID());
     return $plugins;
 };
 
