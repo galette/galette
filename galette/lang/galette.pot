@@ -1897,7 +1897,7 @@ msgstr ""
 msgid "Note: members with a status priority lower than %priority are staff members."
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1123
+#: ../lib/Galette/Core/Install.php:1123 ../templates/default/page.tpl:156
 msgid "Contributions types"
 msgstr ""
 
@@ -2800,10 +2800,6 @@ msgstr ""
 msgid "LinkedIn"
 msgstr ""
 
-#: ../templates/default/page.tpl:152
-msgid "Configure core fields"
-msgstr ""
-
 #: ../templates/default/forms_types/groups.tpl:7
 msgid "Manage user's managed groups"
 msgstr ""
@@ -3704,6 +3700,10 @@ msgstr ""
 msgid "partnership"
 msgstr ""
 
+#: ../templates/default/page.tpl:152
+msgid "Core fields"
+msgstr ""
+
 #: ../templates/default/editer_champ.tpl:36
 msgid "Width:"
 msgstr ""
@@ -4062,7 +4062,7 @@ msgstr ""
 msgid "Man"
 msgstr ""
 
-#: ../templates/default/page.tpl:156 ../templates/default/page.tpl:156
+#: ../templates/default/page.tpl:156
 msgid "Manage contributions types"
 msgstr ""
 
@@ -4154,6 +4154,10 @@ msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:70
 msgid "Write your mailing"
+msgstr ""
+
+#: ../templates/default/page.tpl:153
+msgid "Dynamic fields"
 msgstr ""
 
 #: ../lib/Galette/Core/CheckModules.php:84 ../lib/Galette/Core/CheckModules.php:89
@@ -5785,10 +5789,6 @@ msgstr ""
 
 #: ../includes/routes/authentication.routes.php:78
 msgid "You must provide both login and password."
-msgstr ""
-
-#: ../templates/default/page.tpl:153
-msgid "Configure dynamic fields"
 msgstr ""
 
 #: ../templates/default/gestion_pdf.tpl:56

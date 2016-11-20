@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-11-20 11:26+0100\n"
+"PO-Revision-Date: 2016-11-20 11:35+0100\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -2107,7 +2107,7 @@ msgid ""
 msgstr ""
 "Note: members with a status priority lower than %priority are staff members."
 
-#: ../lib/Galette/Core/Install.php:1123
+#: ../lib/Galette/Core/Install.php:1123 ../templates/default/page.tpl:156
 msgid "Contributions types"
 msgstr "Contributions types"
 
@@ -3123,10 +3123,6 @@ msgstr "Upload new file"
 msgid "LinkedIn"
 msgstr "LinkedIn"
 
-#: ../templates/default/page.tpl:152
-msgid "Configure core fields"
-msgstr "Configure core fields"
-
 #: ../templates/default/forms_types/groups.tpl:7
 msgid "Manage user's managed groups"
 msgstr "Manage user's managed groups"
@@ -4111,6 +4107,10 @@ msgstr ""
 msgid "partnership"
 msgstr "partnership"
 
+#: ../templates/default/page.tpl:152
+msgid "Core fields"
+msgstr "Core fields"
+
 #: ../templates/default/editer_champ.tpl:36
 msgid "Width:"
 msgstr "Width:"
@@ -4648,6 +4648,10 @@ msgstr "No reminder to send for now."
 #: ../templates/default/mailing_adherents.tpl:70
 msgid "Write your mailing"
 msgstr "Write your mailing"
+
+#: ../templates/default/page.tpl:153
+msgid "Dynamic fields"
+msgstr "Dynamic fields"
 
 #: ../lib/Galette/Core/CheckModules.php:84
 #: ../lib/Galette/Core/CheckModules.php:89
@@ -6432,10 +6436,6 @@ msgstr "Send a mail"
 msgid "You must provide both login and password."
 msgstr "You must provide both login and password."
 
-#: ../templates/default/page.tpl:153
-msgid "Configure dynamic fields"
-msgstr "Configure dynamic fields"
-
 #: ../templates/default/gestion_pdf.tpl:56
 msgid "Member's groups (as list)"
 msgstr "Member's groups (as list)"
@@ -6881,11 +6881,14 @@ msgstr ""
 msgid "Enable plugin"
 msgstr "Enable plugin"
 
+#~ msgid "Configure core fields"
+#~ msgstr "Configure core fields"
+
+#~ msgid "Configure dynamic fields"
+#~ msgstr "Configure dynamic fields"
+
 #~ msgid "Database access/permissions"
 #~ msgstr "Database access/permissions"
-
-#~ msgid "Customize fields"
-#~ msgstr "Customize fields"
 
 #~ msgid "Do you really want to delete this contribution of the database ?"
 #~ msgstr "Do you really want to delete this contribution of the database ?"

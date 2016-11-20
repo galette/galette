@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sun Nov 20 10:32:24 2016 (GMT)
+// This file was automatically generated on Sun Nov 20 10:35:55 2016 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -92,6 +92,9 @@ $lang['galette']['Navigation'] = 'Navigation';
 
 // ../templates/default/edit_dynamic_fields.tpl:67 
 $lang['galette']['new'] = 'nouveau';
+
+// ../templates/default/page.tpl:153 
+$lang['galette']['Dynamic fields'] = 'Champs dynamiques';
 
 // ../templates/default/traduire_libelles.tpl:41 
 $lang['galette']['No fields to translate.'] = 'Aucun libellé à traduire';
@@ -632,6 +635,9 @@ $lang['galette']['Manage members'] = 'Gestion des membres';
 
 // ../templates/default/gestion_groupes.tpl:31 ../templates/default/group.tpl:68 
 $lang['galette']['Export all groups and their members as PDF'] = 'Export de l\'ensemble des groupes ainsi que leurs membres en PDF';
+
+// ../templates/default/page.tpl:152 
+$lang['galette']['Core fields'] = 'Champs du coeur';
 
 // ../includes/fields_defs/pdfmodels_fields.php:241 
 $lang['galette']['Zip Code'] = 'Code Postal';
@@ -3072,9 +3078,6 @@ $lang['galette']['Contribution comment'] = 'Commentaire de la contribution';
 // ../templates/default/editer_intitule.tpl:21 ../templates/default/gestion_intitule_content.tpl:12 
 $lang['galette']['Extends membership?'] = 'Extension d\'adhésion&nbsp;?';
 
-// ../templates/default/page.tpl:153 
-$lang['galette']['Configure dynamic fields'] = 'Configuration des champs dynamiques';
-
 // ../lib/Galette/Core/CheckModules.php:189 ../lib/Galette/Core/Install.php:166 ../templates/default/voir_adherent.tpl:173 
 $lang['galette']['Ok'] = 'Ok';
 
@@ -3254,9 +3257,6 @@ $lang['galette']['[admin]'] = '[admin]';
 
 // ../templates/default/export.tpl:20 
 $lang['galette']['The following exports already seems to exist on the disk:'] = 'Les exports suivants semblent exister sur le disque&nbsp;:';
-
-// ../lib/Galette/Entity/Transaction.php:384 
-$lang['galette']['Fail to add new transaction.'] = 'Échec de l\'ajout d\'une nouvelle transaction';
 
 // ../templates/default/preferences.tpl:162 
 $lang['galette']['RSS feed URL'] = 'URL du flux RSS';
@@ -4224,8 +4224,8 @@ $lang['galette']['Google+'] = 'Google+';
 // ../ajouter_contribution.php:200 ../includes/routes/contributions.routes.php:688 
 $lang['galette']['You can find contribution information and script output below.'] = 'Vous trouverez les informations sur la contribution ainsi que la sortie du script ci-dessous.';
 
-// ../templates/default/page.tpl:152 
-$lang['galette']['Configure core fields'] = 'Configurer les champs du coeur';
+// ../lib/Galette/Entity/Transaction.php:384 
+$lang['galette']['Fail to add new transaction.'] = 'Échec de l\'ajout d\'une nouvelle transaction';
 
 // ../templates/default/preferences.tpl:366 
 $lang['galette']['(Members will be able to generate their own member card)'] = '(Les membres pourront imprimer leur carte)';
@@ -4347,7 +4347,7 @@ $lang['galette']['Modification date'] = 'Date de modification';
 // ../install/old.index.php:410 ../install/steps/check.php:103 
 $lang['galette']['Date settings'] = 'Paramètres de date';
 
-// ../lib/Galette/Core/Install.php:1123 
+// ../lib/Galette/Core/Install.php:1123 ../templates/default/page.tpl:156 
 $lang['galette']['Contributions types'] = 'Types de contribution';
 
 // ../lib/Galette/Entity/Adherent.php:696 

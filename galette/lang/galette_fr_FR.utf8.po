@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-11-20 11:32+0100\n"
+"PO-Revision-Date: 2016-11-20 11:35+0100\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -2141,7 +2141,7 @@ msgstr ""
 "Note&nbsp;: les membres qui possèdent un statut dont la priorité est "
 "inférieure à %priority sont membres du bureau."
 
-#: ../lib/Galette/Core/Install.php:1123
+#: ../lib/Galette/Core/Install.php:1123 ../templates/default/page.tpl:156
 msgid "Contributions types"
 msgstr "Types de contribution"
 
@@ -3174,10 +3174,6 @@ msgstr "Envoyer un nouveau fichier"
 msgid "LinkedIn"
 msgstr "LinkedIn"
 
-#: ../templates/default/page.tpl:152
-msgid "Configure core fields"
-msgstr "Configurer les champs du coeur"
-
 #: ../templates/default/forms_types/groups.tpl:7
 msgid "Manage user's managed groups"
 msgstr "Gestion des groupes gérés par l'utilisateur"
@@ -4178,6 +4174,10 @@ msgstr ""
 msgid "partnership"
 msgstr "partenariat"
 
+#: ../templates/default/page.tpl:152
+msgid "Core fields"
+msgstr "Champs du coeur"
+
 #: ../templates/default/editer_champ.tpl:36
 msgid "Width:"
 msgstr "Largeur&nbsp;:"
@@ -4721,6 +4721,10 @@ msgstr "Aucun rappel à envoyer pour le moment."
 #: ../templates/default/mailing_adherents.tpl:70
 msgid "Write your mailing"
 msgstr "Rédigez votre message"
+
+#: ../templates/default/page.tpl:153
+msgid "Dynamic fields"
+msgstr "Champs dynamiques"
 
 #: ../lib/Galette/Core/CheckModules.php:84
 #: ../lib/Galette/Core/CheckModules.php:89
@@ -6542,10 +6546,6 @@ msgstr "Envoyer un courriel"
 msgid "You must provide both login and password."
 msgstr "Vous devez fournir un identifiant et un mot de passe"
 
-#: ../templates/default/page.tpl:153
-msgid "Configure dynamic fields"
-msgstr "Configuration des champs dynamiques"
-
 #: ../templates/default/gestion_pdf.tpl:56
 msgid "Member's groups (as list)"
 msgstr "Groupes de l'adhérent (liste)"
@@ -6997,11 +6997,14 @@ msgstr ""
 msgid "Enable plugin"
 msgstr "Activer le plugin"
 
+#~ msgid "Configure core fields"
+#~ msgstr "Configurer les champs du coeur"
+
+#~ msgid "Configure dynamic fields"
+#~ msgstr "Configuration des champs dynamiques"
+
 #~ msgid "Database access/permissions"
 #~ msgstr "Accès et permissions de la base de données"
-
-#~ msgid "Customize fields"
-#~ msgstr "Personnaliser les champs"
 
 #~ msgid "Do you really want to delete this contribution of the database ?"
 #~ msgstr ""

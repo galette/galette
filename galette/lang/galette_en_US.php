@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sun Nov 20 10:32:24 2016 (GMT)
+// This file was automatically generated on Sun Nov 20 10:35:55 2016 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -92,6 +92,9 @@ $lang['galette']['Navigation'] = 'Navigation';
 
 // ../templates/default/edit_dynamic_fields.tpl:67 
 $lang['galette']['new'] = 'new';
+
+// ../templates/default/page.tpl:153 
+$lang['galette']['Dynamic fields'] = 'Dynamic fields';
 
 // ../templates/default/traduire_libelles.tpl:41 
 $lang['galette']['No fields to translate.'] = 'No fields to translate.';
@@ -632,6 +635,9 @@ $lang['galette']['Manage members'] = 'Manage members';
 
 // ../templates/default/gestion_groupes.tpl:31 ../templates/default/group.tpl:68 
 $lang['galette']['Export all groups and their members as PDF'] = 'Export all groups and their members as PDF';
+
+// ../templates/default/page.tpl:152 
+$lang['galette']['Core fields'] = 'Core fields';
 
 // ../includes/fields_defs/pdfmodels_fields.php:241 
 $lang['galette']['Zip Code'] = 'Zip Code';
@@ -3072,9 +3078,6 @@ $lang['galette']['Contribution comment'] = 'Contribution comment';
 // ../templates/default/editer_intitule.tpl:21 ../templates/default/gestion_intitule_content.tpl:12 
 $lang['galette']['Extends membership?'] = 'Extends membership?';
 
-// ../templates/default/page.tpl:153 
-$lang['galette']['Configure dynamic fields'] = 'Configure dynamic fields';
-
 // ../lib/Galette/Core/CheckModules.php:189 ../lib/Galette/Core/Install.php:166 ../templates/default/voir_adherent.tpl:173 
 $lang['galette']['Ok'] = 'Ok';
 
@@ -3254,9 +3257,6 @@ $lang['galette']['[admin]'] = '[admin]';
 
 // ../templates/default/export.tpl:20 
 $lang['galette']['The following exports already seems to exist on the disk:'] = 'The following exports already seems to exist on the disk:';
-
-// ../lib/Galette/Entity/Transaction.php:384 
-$lang['galette']['Fail to add new transaction.'] = 'Fail to add new transaction.';
 
 // ../templates/default/preferences.tpl:162 
 $lang['galette']['RSS feed URL'] = 'RSS feed URL';
@@ -4224,8 +4224,8 @@ $lang['galette']['Google+'] = 'Google+';
 // ../ajouter_contribution.php:200 ../includes/routes/contributions.routes.php:688 
 $lang['galette']['You can find contribution information and script output below.'] = 'You can find contribution information and script output below.';
 
-// ../templates/default/page.tpl:152 
-$lang['galette']['Configure core fields'] = 'Configure core fields';
+// ../lib/Galette/Entity/Transaction.php:384 
+$lang['galette']['Fail to add new transaction.'] = 'Fail to add new transaction.';
 
 // ../templates/default/preferences.tpl:366 
 $lang['galette']['(Members will be able to generate their own member card)'] = '(Members will be able to generate their own member card)';
@@ -4347,7 +4347,7 @@ $lang['galette']['Modification date'] = 'Modification date';
 // ../install/old.index.php:410 ../install/steps/check.php:103 
 $lang['galette']['Date settings'] = 'Date settings';
 
-// ../lib/Galette/Core/Install.php:1123 
+// ../lib/Galette/Core/Install.php:1123 ../templates/default/page.tpl:156 
 $lang['galette']['Contributions types'] = 'Contributions types';
 
 // ../lib/Galette/Entity/Adherent.php:696 
