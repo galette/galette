@@ -2334,7 +2334,7 @@ $app->post(
                     );
                     $this->zdb->db->query(
                         'DROP TABLE IF EXISTS ' . $contents_table,
-                        Adapter::QUERY_MODE_EXECUTE
+                        \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
                     );
                 }
                 deleteDynamicTranslation($result->field_name);
@@ -2588,13 +2588,13 @@ $app->post(
                     $this->zdb->connection->beginTransaction();
                     $this->zdb->db->query(
                         'DROP TABLE IF EXISTS ' . $contents_table,
-                        Adapter::QUERY_MODE_EXECUTE
+                        \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
                     );
                     $this->zdb->db->query(
                         'CREATE TABLE ' . $contents_table .
                         ' (id INTEGER NOT NULL,val varchar(' . $max_length .
                         ') NOT NULL)',
-                        Adapter::QUERY_MODE_EXECUTE
+                        \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
                     );
                     $this->zdb->connection->commit();
                 } catch (\Exception $e) {
