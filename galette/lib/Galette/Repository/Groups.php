@@ -170,8 +170,8 @@ class Groups
             if ($full) { // Order by tree name instead of name
                 ksort($groups);
                 Analog::log(
-                    'SORTED:' . print_r(array_keys($groups), true),
-                    Analog::WARNING
+                    'Groups SORTED: ' . print_r(array_keys($groups), true),
+                    Analog::DEBUG
                 );
             }
             return $groups;
