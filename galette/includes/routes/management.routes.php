@@ -2692,17 +2692,25 @@ $app->post(
                         $insert->values($values);
                         $this->zdb->execute($insert);
 
+                        if ($this->zdb->isPostgres()) {
+                            $field_id = $this->zdb->driver->getLastGeneratedValue(
+                                PREFIX_DB . 'field_types_id_seq'
+                            );
+                        } else {
+                            $field_id = $this->zdb->driver->getLastGeneratedValue();
+                        }
+
+                        if ($field_name != '') {
+                            $translated = addDynamicTranslation($field_name);
+                            if (!$translated) {
+                                $error_detected[] =
+                                    _T('An error occured adding dynamic translation for dynamic field :(');
+                            }
+                        }
+
                         if ($field_type != DynamicFields::SEPARATOR
                             && count($error_detected) == 0
                         ) {
-                            if ($this->zdb->isPostgres()) {
-                                $field_id = $this->zdb->driver->getLastGeneratedValue(
-                                    PREFIX_DB . 'field_types_id_seq'
-                                );
-                            } else {
-                                $field_id = $this->zdb->driver->getLastGeneratedValue();
-                            }
-
                             return $response
                                 ->withStatus(301)
                                 ->withHeader(
@@ -2716,13 +2724,6 @@ $app->post(
                                         ]
                                     )
                                 );
-                        }
-                        if ($field_name != '') {
-                            $translated = addDynamicTranslation($field_name);
-                            if (!$translated) {
-                                $error_detected[] =
-                                    _T('An error occured adding dynamic translation for dynamic field :(');
-                            }
                         }
                     } catch (\Exception $e) {
                         Analog::log(

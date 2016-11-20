@@ -29,7 +29,7 @@
                         <a href="{path_for name="editDynamicField" data=["action" => {_T string="edit" domain="routes"}, "form" => $form_name, "id" => $field.id]}"><img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="Edit '%s' field" pattern="/%s/" replace=$field.name}" title="{_T string="Edit '%s' field" pattern="/%s/" replace=$field.name}" width="16" height="16"/></a>
                         <a href="{path_for name="dynamicTranslations" data=["text_orig" => {$field.name|escape}]}"><img src="{base_url}/{$template_subdir}images/icon-i18n.png" alt="{_T string="Edit '%s' field" pattern="/%s/" replace=$field.name}" title="{_T string="Translate '%s' field" pattern="/%s/" replace=$field.name}" width="16" height="16"/></a>
     {/if}
-                        <a href="{path_for name="removeDynamicField" data=["form" => $form_name, "id" => $field.id]}">
+                        <a href="{path_for name="removeDynamicField" data=["form" => $form_name, "id" => $field.id]}" class="delete">
                             <img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="Delete '%s' field" pattern="/%s/" replace=$field.name}" title="{_T string="Delete '%s' field" pattern="/%s/" replace=$field.name}" width="16" height="16"/>
                         </a>
     {if $field.index eq 1}
@@ -57,3 +57,6 @@
 {/foreach}
             </tbody>
         </table>
+        <script type="text/javascript">
+            {include file="js_removal.tpl"}
+        </script>

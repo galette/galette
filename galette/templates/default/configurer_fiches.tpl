@@ -62,7 +62,6 @@
                 beforeLoad: function(event, ui) {
                     _form_name = ui.ajaxSettings.url.split('/');
                     _form_name = _form_name[_form_name.length-1]
-                    console.log(_form_name);
 
                     if ( ui.ajaxSettings.url == '{path_for name="configureDynamicFields" data=["form" => $form_name]}' ) {
                         return false; //avoid reloading first tab onload
