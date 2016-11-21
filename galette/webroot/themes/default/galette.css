@@ -1615,12 +1615,9 @@ table.listing.single {
 }
 
 #warningbox h1 {
-    background-color: #FFB619;
-    text-align: center;
-    font-size: 10px;
+    font-size: 1em;
     font-weight: bold;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin: 0;
 }
 
 #warningbox ul {
