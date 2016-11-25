@@ -308,7 +308,15 @@ class Plugins
             return;
         }
 
+        //main plugin translations
         $f = $this->modules[$id]['root'] . '/lang/' . $this->modules[$id]['route'] . '_' . $language . '.php';
+        if (file_exists($f)) {
+            $lang = &$GLOBALS['lang'];
+            include_once $f;
+        }
+
+        //plugin routes translations
+        $f = $this->modules[$id]['root'] . '/lang/' . $this->modules[$id]['route'] . '_routes_' . $language . '.php';
         if (file_exists($f)) {
             $lang = &$GLOBALS['lang'];
             include_once $f;
