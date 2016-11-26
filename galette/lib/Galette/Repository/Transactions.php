@@ -197,7 +197,7 @@ class Transactions
             $k = self::PK;
             $this->count = $result->$k;
             if ($this->count > 0) {
-                $this->counter = (int)$this->count;
+                $this->filters->setCounter($this->count);
             }
         } catch (\Exception $e) {
             Analog::log(

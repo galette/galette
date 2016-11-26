@@ -64,7 +64,7 @@
                 <tr>
 {if $preferences->pref_show_id}
                     <th class="id_row">
-                        <a href="gestion_adherents.php?tri={Galette\Repository\Members::ORDERBY_ID}">
+                        <a href="{path_for name="members" data=["option" => {_T string='order' domain="routes"}, "value" => "Galette\Repository\Members::ORDERBY_ID"|constant]}">
                             {_T string="Mbr num"}
                             {if $filters->orderby eq constant('galette\Repository\Members::ORDERBY_ID')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
