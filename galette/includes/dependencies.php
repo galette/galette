@@ -184,7 +184,7 @@ $container['print_logo'] = function ($c) {
 
 
 $container['history'] = function ($c) {
-    return new Galette\Core\History();
+    return new Galette\Core\History($c->get('zdb'), $c->get('login'));
 };
 
 $container['acls'] = function ($c) {
@@ -196,6 +196,7 @@ $container['acls'] = function ($c) {
         'charts'            => 'staff',
         'plugins'           => 'admin',
         'history'           => 'staff',
+        'history_filter'    => 'staff',
         'members'           => 'groupmanager',
         'filter-memberslist'=> 'groupmanager',
         'advanced-search'   => 'groupmanager',

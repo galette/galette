@@ -1,31 +1,65 @@
 {extends file="page.tpl"}
 
 {block name="content"}
+    <form action="{path_for name="history_filter"}" method="post" id="filtre">
+        <div id="listfilter">
+            <label for="start_date_filter">{_T string="since"}</label>&nbsp;
+            <input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$history->filters->start_date_filter}"/>
+            <label for="end_date_filter">{_T string="until"}</label>&nbsp;
+            <input type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$history->filters->end_date_filter}"/>
+
+            <label for="user_filter">{_T string="Member"}</label>&nbsp;
+
+    {assign var="users" value=$history->getUsersList()}
+    {if $users|@count gt 0}
+            <select name="user_filter" id="user_filter">
+                <option value="0"{if $history->filters->user_filter eq 0} selected="selected"{/if}>{_T string="Select an user"}</option>
+        {foreach from=$users item=$user}
+                <option value="{$user}"{if $history->filters->user_filter === $user} selected="selected"{/if}>{$user}</option>
+        {/foreach}
+            </select>
+    {/if}
+
+    {assign var="actions" value=$history->getActionsList()}
+    {if $actions|@count gt 0}
+            <select name="action_filter" id="action_filter">
+                <option value="0">{_T string="Select an action"}</option>
+        {foreach from=$actions item=$action}
+                <option value="{$action}"{if $history->filters->action_filter eq $action} selected="selected"{/if}>{$action}</option>
+        {/foreach}
+            </select>
+    {/if}
+
+
+            <input type="submit" class="inline" value="{_T string="Filter"}"/>
+            <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
+        </div>
+        <table class="infoline">
+            <tr>
+                <td class="left nowrap">
+                    <a id="histreset" class="button" href="{path_for name="history" data=["option" => {_T string="reset" domain="routes"}, "value" => 'true']}">{_T string="Flush the logs"}</a>
+                    {$history->getCount()} {if $history->getCount() != 1}{_T string="entries"}{else}{_T string="entry"}{/if}
+                </td>
+                <td class="right">
+                    <label for="nbshow">{_T string="Show:"}</label>
+                    <select name="nbshow" id="nbshow">
+                        {html_options options=$nbshow_options selected=$numrows}
+                    </select>
+                    <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+                </td>
+            </tr>
+        </table>
+    </form>
+
         <table class="listing">
             <thead>
                 <tr>
-                    <td colspan="3">
-                        <a id="histreset" class="button" href="{path_for name="history" data=["option" => {_T string="reset" domain="routes"}, "value" => 'true']}">{_T string="Flush the logs"}</a>
-                    </td>
-                    <td colspan="3" class="right">
-                        <form action="{path_for name="history"}" method="get" id="historyform">
-                            <span>
-                                <label for="nbshow">{_T string="Records per page:"}</label>
-                                <select name="nbshow" id="nbshow">
-                                    {html_options options=$nbshow_options selected=$numrows}
-                                </select>
-                                <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
-                            </span>
-                        </form>
-                    </td>
-                </tr>
-                <tr>
                     <th class="small_head">#</th>
                     <th class="left date_row">
-                        <a href="{path_for name="history" data=["option" => {_T string="order" domain="routes"}, "value" => 'date_log']}">
+                        <a href="{path_for name="history" data=["option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\HistoryList::ORDERBY_DATE"|constant]}">
                             {_T string="Date"}
-                            {if $history->orderby eq "date_log"}
-                                {if $history->getDirection() eq "DESC"}
+                            {if $history->filters->orderby eq constant('Galette\Filters\HistoryList::ORDERBY_DATE')}
+                                {if $history->filters->ordered eq constant('Galette\Filters\HistoryList::ORDER_ASC')}
                             <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
                                 {else}
                             <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
@@ -34,10 +68,10 @@
                         </a>
                     </th>
                     <th class="left date_row">
-                        <a href="{path_for name="history" data=["option" => {_T string="order" domain="routes"}, "value" => 'ip_log']}">
+                        <a href="{path_for name="history" data=["option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\HistoryList::ORDERBY_IP"|constant]}">
                             {_T string="IP"}
-                            {if $history->orderby eq "ip_log"}
-                                {if $history->getDirection() eq "DESC"}
+                            {if $history->filters->orderby eq constant('Galette\Filters\HistoryList::ORDERBY_IP')}
+                                {if $history->filters->ordered eq constant('Galette\Filters\HistoryList::ORDER_ASC')}
                             <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
                                 {else}
                             <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
@@ -46,10 +80,10 @@
                         </a>
                     </th>
                     <th class="left date_row">
-                        <a href="{path_for name="history" data=["option" => {_T string="order" domain="routes"}, "value" => 'adh_log']}">
+                        <a href="{path_for name="history" data=["option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\HistoryList::ORDERBY_USER"|constant]}">
                             {_T string="User"}
-                            {if $history->orderby eq "adh_log"}
-                                {if $history->getDirection() eq "DESC"}
+                            {if $history->filters->orderby eq constant('Galette\Filters\HistoryList::ORDERBY_USER')}
+                                {if $history->filters->ordered eq constant('Galette\Filters\HistoryList::ORDER_ASC')}
                             <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
                                 {else}
                             <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
@@ -58,10 +92,10 @@
                         </a>
                     </th>
                     <th class="left username_row">
-                        <a href="{path_for name="history" data=["option" => {_T string="order" domain="routes"}, "value" => 'action_log']}">
+                        <a href="{path_for name="history" data=["option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\HistoryList::ORDERBY_ACTION"|constant]}">
                             {_T string="Action"}
-                            {if $history->orderby eq "action_log"}
-                                {if $history->getDirection() eq "DESC"}
+                            {if $history->filters->orderby eq constant('Galette\Filters\HistoryList::ORDERBY_ACTION')}
+                                {if $history->filters->ordered eq constant('Galette\Filters\HistoryList::ORDER_ASC')}
                             <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
                                 {else}
                             <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
@@ -70,16 +104,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="{path_for name="history" data=["option" => {_T string="order" domain="routes"}, "value" => 'text_log']}">
-                            {_T string="Description"}
-                            {if $history->orderby eq "text_log"}
-                                {if $history->getDirection() eq "DESC"}
-                            <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt="{_T string="Ascendent"}"/>
-                                {else}
-                            <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt="{_T string="Descendant"}"/>
-                                {/if}
-                            {/if}
-                        </a>
+                        {_T string="Description"}
                     </th>
                 </tr>
             </thead>
@@ -125,6 +150,16 @@
                 $('.qryhide').click(function() {
                     $(this).next('.sql_log').show();
                 });
+            });
+
+            $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
+            $('#start_date_filter, #end_date_filter').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                showOn: 'button',
+                buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
+                buttonImageOnly: true,
+                buttonText: '{_T string="Select a date" escape="js"}'
             });
         </script>
 {/block}

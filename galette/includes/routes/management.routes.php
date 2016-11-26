@@ -40,6 +40,7 @@ use Galette\Core\GaletteMail;
 use Galette\Core\Preferences;
 use Galette\Core\Logo;
 use Galette\Core\History;
+use Galette\Filters\HistoryList;
 use Galette\Core\MailingHistory;
 use Galette\Entity\FieldsCategories;
 use Galette\Entity\DynamicFields;
@@ -686,31 +687,40 @@ $app->get(
             $value = $args['value'];
         }
 
+        if (isset($this->session->filter_history)) {
+            $filters = $this->session->filter_history;
+        } else {
+            $filters = new HistoryList();
+        }
+
+        if (isset($request->getQueryParams()['nbshow'])) {
+            $filters->show = $request->getQueryParams()['nbshow'];
+        }
+
         if ($option !== null) {
             switch ($option) {
                 case __('page', 'routes'):
-                    $this->history->current_page = (int)$value;
+                    $filters->current_page = (int)$value;
                     break;
                 case __('order', 'routes'):
-                    $this->history->tri = $value;
+                    $filters->orderby = $value;
                     break;
                 case __('reset', 'routes'):
                     $this->history->clean();
                     //reinitialize object after flush
-                    $this->history = new History();
+                    $this->history = new History($this->zdb, $this->login);
+                    $filters = new HistoryList();
                     break;
             }
         }
 
-        if (isset($request->getQueryParams()['nbshow'])) {
-            $this->history->show = $request->getQueryParams()['nbshow'];
-        }
+        $this->session->filter_history = $filters;
 
-        $logs = array();
+        $this->history->setFilters($filters);
         $logs = $this->history->getHistory();
 
         //assign pagination variables to the template and add pagination links
-        $this->history->setSmartyPagination($this->router, $this->view->getSmarty());
+        $this->history->filters->setSmartyPagination($this->router, $this->view->getSmarty());
 
         // display page
         $this->view->render(
@@ -719,8 +729,8 @@ $app->get(
             array(
                 'page_title'        => _T("Logs"),
                 'logs'              => $logs,
-                'nb_lines'          => count($logs),
-                'history'           => $this->history
+                'history'           => $this->history,
+                'require_calendar'  => true,
             )
         );
         return $response;
@@ -729,6 +739,69 @@ $app->get(
     'history'
 )->add($authenticate);
 
+$app->post(
+    __('/logs', 'routes') . __('/filter', 'routes'),
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+        $error_detected = [];
+
+        if ($this->session->history_filter !== null) {
+            $filters = $this->session->history_filter;
+        } else {
+            $filters = new HistoryList();
+        }
+
+        if (isset($post['clear_filter'])) {
+            $filters->reinit();
+        } else {
+            if ((isset($post['nbshow']) && is_numeric($post['nbshow']))
+            ) {
+                $filters->show = $post['nbshow'];
+            }
+
+            if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
+                try {
+                    if (isset($post['start_date_filter'])) {
+                        $field = _T("start date filter");
+                        $filters->start_date_filter = $post['start_date_filter'];
+                    }
+                    if (isset($post['end_date_filter'])) {
+                        $field = _T("end date filter");
+                        $filters->end_date_filter = $post['end_date_filter'];
+                    }
+                } catch (Exception $e) {
+                    $error_detected[] = $e->getMessage();
+                }
+            }
+
+            if (isset($post['user_filter'])) {
+                $filters->user_filter = $post['user_filter'];
+            }
+
+            if (isset($post['action_filter'])) {
+                $filters->action_filter = $post['action_filter'];
+            }
+        }
+
+        $this->session->filter_history = $filters;
+
+        if (count($error_detected) > 0) {
+            //report errors
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
+            }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('history'));
+    }
+)->setName(
+    'history_filter'
+)->add($authenticate);
 //mailings management
 $app->get(
     __('/mailings', 'routes') . '[/{option:' . __('page', 'routes') . '|' . __('order', 'routes') . '}/{value:\d+}]',
