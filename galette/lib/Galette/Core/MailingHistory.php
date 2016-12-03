@@ -284,7 +284,9 @@ class MailingHistory extends History
                 'mailing_body' => $this->_message,
                 'mailing_date' => $this->_date,
                 'mailing_recipients' => serialize($_recipients),
-                'mailing_sent' => ($this->_sent) ? true : 'false'
+                'mailing_sent' => ($this->_sent) ?
+                    true :
+                    ($this->zdb->isPostgres() ? 'false' : 0)
             );
 
             $update = $zdb->update(self::TABLE);
@@ -331,7 +333,9 @@ class MailingHistory extends History
                 'mailing_body' => $this->_message,
                 'mailing_date' => $this->_date,
                 'mailing_recipients' => serialize($_recipients),
-                'mailing_sent' => ($this->_sent) ? true : 'false'
+                'mailing_sent' => ($this->_sent) ?
+                    true :
+                    ($this->zdb->isPostgres() ? 'false' : 0)
             );
 
             $insert = $zdb->insert(self::TABLE);
