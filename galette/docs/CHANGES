@@ -1,6 +1,10 @@
 Changes
 -------
 
+0.8.3 -> 0.8.3.1
+
+- Fix MySQL 5.7 strict mode issues
+
 0.8.2.3 -> 0.8.3
 
 Bugfixes
