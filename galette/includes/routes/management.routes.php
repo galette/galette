@@ -956,7 +956,6 @@ $app->get(
             $response,
             'confirm_removal.tpl',
             array(
-                'type'          => _T("Dynamic field"),
                 'mode'          => $request->isXhr() ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Remove mailing #%1$s'),
