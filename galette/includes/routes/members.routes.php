@@ -1744,9 +1744,9 @@ $app->get(
                 _T("Unable to get members list.")
             );
 
-            /*return $response
+            return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));*/
+                ->withHeader('Location', $this->router->pathFor('members'));
         }
 
         $pdf = new PdfMembersLabels($this->preferences);
@@ -2012,6 +2012,53 @@ $app->map(
         return $response;
     }
 )->setName('mailing')->add($authenticate);
+
+$app->map(
+    ['GET', 'POST'],
+    __('/mailing', 'routes') . __('/preview', 'routes') . '[/{id:\d+}]',
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+        // check for ajax mode
+        $ajax = false;
+        if ($request->isXhr()
+            || isset($post['ajax'])
+            && $post['ajax'] == 'true'
+        ) {
+            $ajax = true;
+        }
+
+        $mailing = null;
+        if (isset($args['id'])) {
+            $mailing = new Mailing(null);
+            MailingHistory::loadFrom($this->zdb, (int)$args['id'], $mailing, false);
+            $attachments = $mailing->attachments;
+        } else {
+            $mailing = $this->session->mailing;
+
+            $mailing->subject = $post['subject'];
+            $mailing->message = $post['body'];
+            $mailing->html = ($post['html'] === 'true');
+            $attachments = (isset($post['attachments']) ? $post['attachments'] : []);
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            'mailing_preview.tpl',
+            [
+                'page_title'    => _T("Mailing preview"),
+                'mode'          => ($ajax ? 'ajax' : ''),
+                'mailing'       => $mailing,
+                'recipients'    => $mailing->recipients,
+                'sender'        => $this->preferences->pref_email_nom . ' &lt;' .
+                    $this->preferences->pref_email . '&gt;',
+                'attachments'   => $attachments
+
+            ]
+        );
+        return $response;
+    }
+)->setName('mailingPreview')->add($authenticate);
 
 //reminders
 $app->get(

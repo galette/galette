@@ -29,13 +29,13 @@
                 <p id="unreachables_count">
                     <strong>{$count_unreachables} {if $count_unreachables != 1}{_T string="unreachable members:"}{else}{_T string="unreachable member:"}{/if}</strong><br/>
                     {_T string="Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail."}
-                    <br/><a id="btnlabels" class="button" href="etiquettes_adherents.php?from=mailing">{_T string="Generate labels"}</a>
+                    <br/><a id="btnlabels" class="button" href="{path_for name="pdf-members-labels"}?from=mailing">{_T string="Generate labels"}</a>
                 </p>
     {/if}
 
                 <div class="center">
     {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_SENT')}
-                    <a class="button" id="btnusers" href="gestion_adherents.php">{_T string="Go back to members list"}</a>
+                    <a class="button" id="btnusers" href="{path_for name="members"}">{_T string="Go back to members list"}</a>
     {else}
                     <a class="button" id="btnusers" href="gestion_adherents.php?nbshow=0&showChecked=true">{_T string="Manage selected members"}</a>
     {/if}
@@ -133,10 +133,9 @@
                 _attachments[_attachments.length] = $(this).text();
             });
             $.ajax({
-                url: 'ajax_mailing_preview.php',
+                url: '{path_for name="mailingPreview"}',
                 type: "POST",
                 data: {
-                    ajax: true,
                     subject: _subject,
                     body: _body,
                     html: _html,

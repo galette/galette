@@ -137,7 +137,7 @@
                         {/if}
                     </td>
                     <td class="center nowrap actions_row">
-                        <a class="showdetails" href="ajax_mailing_preview.php?id={$log.mailing_id}">
+                        <a class="showdetails" href="{path_for name="mailingPreview" data=["id" => $log.mailing_id]}">
                             <img
                                 src="{base_url}/{$template_subdir}images/icon-preview.png"
                                 alt="{_T string="Show mailing %s details" pattern="/%s/" replace=$log.mailing_id}"
