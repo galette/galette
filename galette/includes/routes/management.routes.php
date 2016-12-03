@@ -852,24 +852,7 @@ $app->get(
 
         //assign pagination variables to the template and add pagination links
         $mailhist->filters->setSmartyPagination($this->router, $this->view->getSmarty());
-
-        //delete mailings
-        /*if (isset($request->getQueryParams()['sup']) || isset($request->getParsedBody()['delete'])) {
-            if (isset($request->getQueryParams()['sup'])) {
-                $mailhist->removeEntries($request->getQueryParams()['sup']);
-            } elseif (isset($request->getParsedBody()['member_sel'])) {
-                $mailhist->removeEntries($request->getParsedBody()['member_sel']);
-            }
-        }*/
-
-        /*if (isset($request->getQueryParams()['nbshow'])
-            && is_numeric($request->getQueryParams()['nbshow'])
-        ) {
-            $mailhist->show = $request->getQueryParams()['nbshow'];
-        }*/
-
         $history_list = $mailhist->getHistory();
-
         //assign pagination variables to the template and add pagination links
         $mailhist->filters->setSmartyPagination($this->router, $this->view->getSmarty());
 
@@ -960,6 +943,94 @@ $app->post(
     'mailings_filter'
 )->add($authenticate);
 
+$app->get(
+    __('/mailings', 'routes') . __('/remove', 'routes') . '/{id:\d+}',
+    function ($request, $response, $args) {
+        $data = [
+            'id'            => $args['id'],
+            'redirect_uri'  => $this->router->pathFor('mailings')
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'type'          => _T("Dynamic field"),
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => sprintf(
+                    _T('Remove mailing #%1$s'),
+                    $args['id']
+                ),
+                'form_url'      => $this->router->pathFor(
+                    'doRemoveMailing',
+                    ['id' => $args['id']]
+                ),
+                'cancel_uri'    => $data['redirect_uri'],
+                'data'          => $data
+            )
+        );
+        return $response;
+    }
+)->setName('removeMailing')->add($authenticate);
+
+$app->post(
+    __('/mailings', 'routes') . __('/remove', 'routes') . '/{id:\d+}',
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
+        $success = false;
+        $dyn_fields = new DynamicFields();
+        $field_id = (int)$args['id'];
+
+        $uri = isset($post['redirect_uri']) ?
+            $post['redirect_uri'] :
+            $this->router->pathFor('slash');
+
+        if (!isset($post['confirm'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Removal has not been confirmed!")
+            );
+        } else {
+            try {
+                $mailhist = new MailingHistory($this->zdb, $this->login);
+                $mailhist->removeEntries($args['id'], $this->history);
+
+                $this->flash->addMessage(
+                    'success_detected',
+                    _T('Mailing has been successfully deleted!')
+                );
+                $success = true;
+            } catch (\Exception $e) {
+                $this->zdb->connection->rollBack();
+                Analog::log(
+                    'An error occured deleting mailing | ' . $e->getMessage(),
+                    Analog::ERROR
+                );
+
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T('An error occured trying to delete mailing :(')
+                );
+
+                $success = false;
+            }
+        }
+
+        if (!$ajax) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $uri);
+        } else {
+            return $response->withJson(
+                [
+                    'success'   => $success
+                ]
+            );
+        }
+    }
+)->setName('doRemoveMailing')->add($authenticate);
 
 //galette exports
 $app->get(

@@ -155,10 +155,9 @@
                                 title="{_T string="Use mailing '%subject' as a template for a new one" pattern="/%subject/" replace=$log.mailing_subject}"
                                 />
                         </a>
-                        <a
-                            onclick="return confirm('{_T string="Do you really want to delete this mailing from the base?"|escape:"javascript"}')"
+                        <a class="delete"
                             title="{_T string="Delete mailing '%subject'" pattern="/%subject/" replace=$log.mailing_subject}"
-                            href="?sup={$log.mailing_id}">
+                            href="{path_for name="removeMailing" data=["id" => $log.mailing_id]}">
                             <img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/>
                         </a>
                     </td>
@@ -178,6 +177,8 @@
             $('#nbshow').change(function() {
                 this.form.submit();
             });
+
+            {include file="js_removal.tpl"}
 
             $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
             $('#start_date_filter, #end_date_filter').datepicker({

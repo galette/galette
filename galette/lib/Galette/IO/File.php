@@ -75,7 +75,7 @@ class File implements FileInterface
             $dest,
             $extensions,
             $mimes,
-            $maxlentgh
+            $maxlenght
         );
     }
 }
