@@ -42,6 +42,7 @@ use Galette\Core\Logo;
 use Galette\Core\History;
 use Galette\Filters\HistoryList;
 use Galette\Core\MailingHistory;
+use Galette\Filters\MailingsList;
 use Galette\Entity\FieldsCategories;
 use Galette\Entity\DynamicFields;
 use Galette\DynamicFieldsTypes\DynamicFieldType;
@@ -802,9 +803,11 @@ $app->post(
 )->setName(
     'history_filter'
 )->add($authenticate);
+
 //mailings management
 $app->get(
-    __('/mailings', 'routes') . '[/{option:' . __('page', 'routes') . '|' . __('order', 'routes') . '}/{value:\d+}]',
+    __('/mailings', 'routes') . '[/{option:' . __('page', 'routes') .'|' .
+        __('order', 'routes') .'|' . __('reset', 'routes') .'}/{value}]',
     function ($request, $response, $args = []) {
         $option = null;
         if (isset($args['option'])) {
@@ -816,49 +819,59 @@ $app->get(
             $option = $args['value'];
         }
 
-        $mailhist = new MailingHistory();
-
-        if (isset($request->getQueryParams()['reset'])) {
-            $mailhist->clean();
-            //reinitialize object after flush
-            $mailhist = new MailingHistory();
+        if (isset($this->session->filter_mailings)) {
+            $filters = $this->session->filter_mailings;
+        } else {
+            $filters = new MailingsList();
         }
 
+        if (isset($request->getQueryParams()['nbshow'])) {
+            $filters->show = $request->getQueryParams()['nbshow'];
+        }
+
+        $mailhist = new MailingHistory($this->zdb, $this->login, $filters);
+
+        if ($option !== null) {
+            switch ($option) {
+                case __('page', 'routes'):
+                    $filters->current_page = (int)$value;
+                    break;
+                case __('order', 'routes'):
+                    $filters->orderby = $value;
+                    break;
+                case __('reset', 'routes'):
+                    $mailhist->clean();
+                    //reinitialize object after flush
+                    $filters = new MailingsList();
+                    $mailhist = new MailingHistory($this->zdb, $this->login, $filters);
+                    break;
+            }
+        }
+
+        $this->session->filter_mailings = $filters;
+
+        //assign pagination variables to the template and add pagination links
+        $mailhist->filters->setSmartyPagination($this->router, $this->view->getSmarty());
+
         //delete mailings
-        if (isset($request->getQueryParams()['sup']) || isset($request->getParsedBody()['delete'])) {
+        /*if (isset($request->getQueryParams()['sup']) || isset($request->getParsedBody()['delete'])) {
             if (isset($request->getQueryParams()['sup'])) {
                 $mailhist->removeEntries($request->getQueryParams()['sup']);
             } elseif (isset($request->getParsedBody()['member_sel'])) {
                 $mailhist->removeEntries($request->getParsedBody()['member_sel']);
             }
-        }
+        }*/
 
-        if ($option !== null) {
-            switch ($option) {
-                case __('page', 'routes'):
-                    $mailhist->current_page = (int)$value;
-                    break;
-                case __('order', 'routes'):
-                    $mailhist->orderby = $value;
-                    break;
-            }
-        }
-
-        if (isset($request->getQueryParams()['nbshow'])
+        /*if (isset($request->getQueryParams()['nbshow'])
             && is_numeric($request->getQueryParams()['nbshow'])
         ) {
             $mailhist->show = $request->getQueryParams()['nbshow'];
-        }
+        }*/
 
-        if (isset($request->getQueryParams()['order'])) {
-            $mailhist->orderby = $request->getQueryParams()['order'];
-        }
-
-        $history_list = array();
         $history_list = $mailhist->getHistory();
 
         //assign pagination variables to the template and add pagination links
-        $mailhist->setSmartyPagination($this->router, $this->view->getSmarty());
+        $mailhist->filters->setSmartyPagination($this->router, $this->view->getSmarty());
 
         // display page
         $this->view->render(
@@ -868,8 +881,8 @@ $app->get(
                 'page_title'        => _T("Mailings"),
                 'require_dialog'    => true,
                 'logs'              => $history_list,
-                'nb_lines'          => count($history_list),
-                'history'           => $mailhist
+                'history'           => $mailhist,
+                'require_calendar'  => true,
             )
         );
         return $response;
@@ -877,6 +890,76 @@ $app->get(
 )->setName(
     'mailings'
 )->add($authenticate);
+
+$app->post(
+    __('/mailings', 'routes') . __('/filter', 'routes'),
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+        $error_detected = [];
+
+        if ($this->session->filter_mailings !== null) {
+            $filters = $this->session->filter_mailings;
+        } else {
+            $filters = new MailingsList();
+        }
+
+        if (isset($post['clear_filter'])) {
+            $filters->reinit();
+        } else {
+            if ((isset($post['nbshow']) && is_numeric($post['nbshow']))
+            ) {
+                $filters->show = $post['nbshow'];
+            }
+
+            if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
+                try {
+                    if (isset($post['start_date_filter'])) {
+                        $field = _T("start date filter");
+                        $filters->start_date_filter = $post['start_date_filter'];
+                    }
+                    if (isset($post['end_date_filter'])) {
+                        $field = _T("end date filter");
+                        $filters->end_date_filter = $post['end_date_filter'];
+                    }
+                } catch (Exception $e) {
+                    $error_detected[] = $e->getMessage();
+                }
+            }
+
+            if (isset($post['sender_filter'])) {
+                $filters->sender_filter = $post['sender_filter'];
+            }
+
+            if (isset($post['sent_filter'])) {
+                $filters->sent_filter = $post['sent_filter'];
+            }
+
+
+            if (isset($post['subject_filter'])) {
+                $filters->subject_filter = $post['subject_filter'];
+            }
+        }
+
+        $this->session->filter_mailings = $filters;
+
+        if (count($error_detected) > 0) {
+            //report errors
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
+            }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('mailings'));
+    }
+)->setName(
+    'mailings_filter'
+)->add($authenticate);
+
 
 //galette exports
 $app->get(

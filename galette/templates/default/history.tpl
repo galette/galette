@@ -8,10 +8,10 @@
             <label for="end_date_filter">{_T string="until"}</label>&nbsp;
             <input type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$history->filters->end_date_filter}"/>
 
-            <label for="user_filter">{_T string="Member"}</label>&nbsp;
 
     {assign var="users" value=$history->getUsersList()}
     {if $users|@count gt 0}
+            <label for="user_filter">{_T string="Member"}</label>&nbsp;
             <select name="user_filter" id="user_filter">
                 <option value="0"{if $history->filters->user_filter eq 0} selected="selected"{/if}>{_T string="Select an user"}</option>
         {foreach from=$users item=$user}
@@ -22,6 +22,7 @@
 
     {assign var="actions" value=$history->getActionsList()}
     {if $actions|@count gt 0}
+            <label for="action_filter">{_T string="Action"}</label>&nbsp;
             <select name="action_filter" id="action_filter">
                 <option value="0">{_T string="Select an action"}</option>
         {foreach from=$actions item=$action}
@@ -41,7 +42,7 @@
                     {$history->getCount()} {if $history->getCount() != 1}{_T string="entries"}{else}{_T string="entry"}{/if}
                 </td>
                 <td class="right">
-                    <label for="nbshow">{_T string="Show:"}</label>
+                    <label for="nbshow">{_T string="Records per page:"}</label>
                     <select name="nbshow" id="nbshow">
                         {html_options options=$nbshow_options selected=$numrows}
                     </select>

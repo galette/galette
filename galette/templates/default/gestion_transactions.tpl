@@ -26,7 +26,7 @@
                     {$nb} {if $nb > 1}{_T string="transactions"}{else}{_T string="transaction"}{/if}
                 </td>
                 <td class="right">
-                    <label for="nbshow">{_T string="Show:"}</label>
+                    <label for="nbshow">{_T string="Records per page:"}</label>
                     <select name="nbshow" id="nbshow">
                         {html_options options=$nbshow_options selected=$numrows}
                     </select>

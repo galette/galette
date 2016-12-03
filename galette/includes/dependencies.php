@@ -209,6 +209,7 @@ $container['acls'] = function ($c) {
         'pdf-members-cards' => 'member',
         'pdf-members-labels'=> 'groupmanager',
         'mailings'          => 'staff',
+        'mailings_filter'   => 'staff',
         'contributions'     => 'staff',
         'transactions'      => 'staff',
         'payments_filter'   => 'member',

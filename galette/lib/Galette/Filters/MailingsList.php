@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * History lists filters and paginator
+ * Mailiungs history lists filters and paginator
  *
  * PHP version 5
  *
@@ -32,16 +32,17 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     june, 12th 2016
+ * @since     2016-11-26
  */
 
 namespace Galette\Filters;
 
 use Analog\Analog;
 use Galette\Core\Pagination;
+use Galette\Core\MailingHistory;
 
 /**
- * History lists filters and paginator
+ * Mailings history lists filters and paginator
  *
  * @name      ContributionsList
  * @category  Filters
@@ -53,26 +54,28 @@ use Galette\Core\Pagination;
  * @link      http://galette.tuxfamily.org
  */
 
-class HistoryList extends Pagination
+class MailingsList extends Pagination
 {
     const ORDERBY_DATE = 0;
-    const ORDERBY_IP = 1;
-    const ORDERBY_USER = 2;
-    const ORDERBY_ACTION = 3;
+    const ORDERBY_SENDER = 1;
+    const ORDERBY_SUBJECT = 2;
+    const ORDERBY_SENT = 3;
 
     //filters
     private $start_date_filter = null;
     private $end_date_filter = null;
-    private $user_filter = 0;
-    private $action_filter = null;
+    private $sender_filter = 0;
+    private $sent_filter = MailingHistory::FILTER_DC_SENT;
+    private $subject_filter = null;
 
     protected $list_fields = array(
         'start_date_filter',
         'raw_start_date_filter',
         'end_date_filter',
         'raw_end_date_filter',
-        'user_filter',
-        'action_filter'
+        'sender_filter',
+        'sent_filter',
+        'subject_filter'
     );
 
     /**
@@ -103,8 +106,9 @@ class HistoryList extends Pagination
         parent::reinit();
         $this->start_date_filter = null;
         $this->end_date_filter = null;
-        $this->user_filter = 0;
-        $this->action_filter = null;
+        $this->sender_filter = 0;
+        $this->sent_filter = MailingHistory::FILTER_DC_SENT;
+        $this->subject_filter = null;
     }
 
     /**
@@ -117,7 +121,7 @@ class HistoryList extends Pagination
     public function __get($name)
     {
         Analog::log(
-            '[HistoryList] Getting property `' . $name . '`',
+            '[MailingsList] Getting property `' . $name . '`',
             Analog::DEBUG
         );
 
@@ -154,7 +158,7 @@ class HistoryList extends Pagination
                 }
             } else {
                 Analog::log(
-                    '[HistoryList] Unable to get proprety `' .$name . '`',
+                    '[MailingsList] Unable to get proprety `' .$name . '`',
                     Analog::WARNING
                 );
             }
@@ -175,7 +179,7 @@ class HistoryList extends Pagination
             parent::__set($name, $value);
         } else {
             Analog::log(
-                '[HistoryList] Setting property `' . $name . '`',
+                '[MailingsList] Setting property `' . $name . '`',
                 Analog::DEBUG
             );
 

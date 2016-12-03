@@ -56,6 +56,7 @@ use Galette\Entity\Status;
 use Galette\Repository\Titles;
 use Galette\Entity\Texts;
 use Galette\IO\Pdf;
+use Galette\Core\MailingHistory;
 
 //self subscription
 $app->get(
@@ -1834,7 +1835,7 @@ $app->map(
                 $mailing = $this->session->mailing;
             } elseif (isset($get['from']) && is_numeric($get['from'])) {
                 $mailing = new Mailing(null, $get['from']);
-                MailingHistory::loadFrom((int)$get['from'], $mailing);
+                MailingHistory::loadFrom($this->zdb, (int)$get['from'], $mailing);
             } elseif (isset($get['reminder'])) {
                 //FIXME: use a constant!
                 $filters->reinit();
@@ -1939,7 +1940,7 @@ $app->map(
                         $error_detected[] = $e;
                     }
                 } else {
-                    $mlh = new MailingHistory($mailing);
+                    $mlh = new MailingHistory($this->zdb, $this->login, null, $mailing);
                     $mlh->storeMailing(true);
                     Analog::log(
                         '[Mailings] Message has been sent.',
@@ -1972,7 +1973,7 @@ $app->map(
 
             if (isset($post['mailing_save'])) {
                 //user requested to save the mailing
-                $histo = new MailingHistory($mailing);
+                $histo = new MailingHistory($this->zdb, $this->login, null, $mailing);
                 if ($histo->storeMailing() !== false) {
                     $success_detected[] = _T("Mailing has been successfully saved.");
                     $params['mailing_saved'] = true;

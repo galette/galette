@@ -55,7 +55,7 @@
                         <input type="hidden" name="ajax" value="true"/>
                         <input type="hidden" name="max_amount" value="{$filters->max_amount}"/>
                     {/if}
-                    <label for="nbshow">{_T string="Show:"}</label>
+                    <label for="nbshow">{_T string="Records per page:"}</label>
                     <select name="nbshow" id="nbshow">
                         {html_options options=$nbshow_options selected=$numrows}
                     </select>
