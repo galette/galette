@@ -224,6 +224,7 @@ $container['acls'] = function ($c) {
         'export'            => 'staff',
         'doExport'          => 'staff',
         'removeCsv'         => 'staff',
+        'doRemoveCsv'       => 'staff',
         'getCsv'            => 'staff',
         'import'            => 'staff',
         'doImport'          => 'staff',

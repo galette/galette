@@ -1051,7 +1051,8 @@ $app->get(
                 'tables_list'       => $tables_list,
                 'written'           => $this->flash->getMessage('written_exports'),
                 'existing'          => $existing,
-                'parameted'         => $parameted
+                'parameted'         => $parameted,
+                'require_dialog'    => true
             )
         );
         return $response;
@@ -1063,36 +1064,93 @@ $app->get(
 $app->get(
     '/{type:' . __('export', 'routes') . '|' . __('import', 'routes') . '}' . __('/remove', 'routes') .'/{file}',
     function ($request, $response, $args) {
-        //FIXME: add two steps removal
-        $csv = $args['type'] === __('export', 'routes') ?
-            new CsvOut() :
-            new CsvIn($this->zdb);
-        $res = $csv->remove($args['file']);
-        if ($res === true) {
-            $this->flash->addMessage(
-                'success_detected',
-                str_replace(
-                    '%export',
-                    $args['file'],
-                    _T("'%export' file has been removed from disk.")
-                )
-            );
-        } else {
-            $this->flash->addMessage(
-                'error_detected',
-                str_replace(
-                    '%export',
-                    $args['file'],
-                    _T("Cannot remove '%export' from disk :/")
-                )
-            );
-        }
+        $data = [
+            'id'            => $args['id'],
+            'redirect_uri'  => $this->router->pathFor($args['type'])
+        ];
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor($args['type']));
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => sprintf(
+                    _T('Remove %1$s file'),
+                    $args['type']
+                ),
+                'form_url'      => $this->router->pathFor(
+                    'doRemoveCsv',
+                    [
+                        'type' => $args['type'],
+                        'file' => $args['file']
+                    ]
+                ),
+                'cancel_uri'    => $data['redirect_uri'],
+                'data'          => $data
+            )
+        );
+        return $response;
     }
 )->setName('removeCsv')->add($authenticate);
+
+$app->post(
+    '/{type:' . __('export', 'routes') . '|' . __('import', 'routes') . '}' . __('/remove', 'routes') .'/{file}',
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
+        $success = false;
+
+        $uri = isset($post['redirect_uri']) ?
+            $post['redirect_uri'] :
+            $this->router->pathFor('slash');
+
+        if (!isset($post['confirm'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Removal has not been confirmed!")
+            );
+        } else {
+            $csv = $args['type'] === __('export', 'routes') ?
+                new CsvOut() :
+                new CsvIn($this->zdb);
+            $res = $csv->remove($args['file']);
+            if ($res === true) {
+                $success = true;
+                $this->flash->addMessage(
+                    'success_detected',
+                    str_replace(
+                        '%export',
+                        $args['file'],
+                        _T("'%export' file has been removed from disk.")
+                    )
+                );
+            } else {
+                $success = false;
+                $this->flash->addMessage(
+                    'error_detected',
+                    str_replace(
+                        '%export',
+                        $args['file'],
+                        _T("Cannot remove '%export' from disk :/")
+                    )
+                );
+            }
+        }
+
+        if (!$ajax) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $uri);
+        } else {
+            return $response->withJson(
+                [
+                    'success'   => $success
+                ]
+            );
+        }
+    }
+)->setName('doRemoveCsv')->add($authenticate);
 
 $app->post(
     __('/export', 'routes'),
