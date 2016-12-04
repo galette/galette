@@ -163,8 +163,8 @@ foreach ($members as $member) {
     $pdf->SetFont(Pdf::FONT, '', $preferences->pref_etiq_corps);
     $pdf->SetXY($x, $y+$line_h);
 
-    $address = $member->getAdress();
-    $address_continuation = $member->getAdressContinuation();
+    $address = $member->getAddress();
+    $address_continuation = $member->getAddressContinuation();
     $zip = $member->getZipcode();
     $town = $member->getTown();
 

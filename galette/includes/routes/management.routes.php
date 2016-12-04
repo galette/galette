@@ -441,7 +441,7 @@ $app->post(
                 }
             }
 
-            //postal adress
+            //postal address
             if (isset($insert_values['pref_postal_adress'])) {
                 $value = $insert_values['pref_postal_adress'];
                 if ($value == Preferences::POSTAL_ADDRESS_FROM_PREFS) {

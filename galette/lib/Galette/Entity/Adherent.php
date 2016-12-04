@@ -1460,7 +1460,7 @@ class Adherent
 
     /**
      * Get member email
-     * If member does not have an email adress, but is attached to
+     * If member does not have an email address, but is attached to
      * another member, we'll take informations from its parent.
      *
      * @return string
@@ -1477,49 +1477,49 @@ class Adherent
     }
 
     /**
-     * Get member adress.
-     * If member does not have an adress, but is attached to another member, we'll take informations from its parent.
+     * Get member address.
+     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
      *
      * @return string
      */
-    public function getAdress()
+    public function getAddress()
     {
-        $adress = $this->_address;
+        $address = $this->_address;
         if (empty($address) && $this->hasParent()) {
             $this->loadParent();
-            $adress = $this->parent->address;
+            $address = $this->parent->address;
         }
 
-        return $adress;
+        return $address;
     }
 
     /**
-     * Get member adress continuation.
-     * If member does not have an adress, but is attached to another member, we'll take informations from its parent.
+     * Get member address continuation.
+     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
      *
      * @return string
      */
-    public function getAdressContinuation()
+    public function getAddressContinuation()
     {
-        $adress = $this->_address;
-        $adress_continuation = $this->_address_continuation;
+        $address = $this->_address;
+        $address_continuation = $this->_address_continuation;
         if (empty($address) && $this->hasParent()) {
             $this->loadParent();
-            $adress_continuation = $this->parent->address_continuation;
+            $address_continuation = $this->parent->address_continuation;
         }
 
-        return $adress_continuation;
+        return $address_continuation;
     }
 
     /**
      * Get member zipcode.
-     * If member does not have an adress, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
      *
      * @return string
      */
     public function getZipcode()
     {
-        $adress = $this->_address;
+        $address = $this->_address;
         $zip = $this->_zipcode;
         if (empty($address) && $this->hasParent()) {
             $this->loadParent();
@@ -1531,13 +1531,13 @@ class Adherent
 
     /**
      * Get member town.
-     * If member does not have an adress, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
      *
      * @return string
      */
     public function getTown()
     {
-        $adress = $this->_address;
+        $address = $this->_address;
         $town = $this->_town;
         if (empty($address) && $this->hasParent()) {
             $this->loadParent();
@@ -1549,13 +1549,13 @@ class Adherent
 
     /**
      * Get member country.
-     * If member does not have an adress, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
      *
      * @return string
      */
     public function getCountry()
     {
-        $adress = $this->_address;
+        $address = $this->_address;
         $country = $this->_country;
         if (empty($address) && $this->hasParent()) {
             $this->loadParent();
