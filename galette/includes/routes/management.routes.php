@@ -677,7 +677,7 @@ $app->get(
 //galette logs
 $app->get(
     __('/logs', 'routes') . '[/{option:' . __('page', 'routes') .'|' .
-        __('order', 'routes') .'|' . __('reset', 'routes') .'}/{value}]',
+        __('order', 'routes') .'}/{value}]',
     function ($request, $response, $args = []) {
         $option = null;
         if (isset($args['option'])) {
@@ -706,12 +706,6 @@ $app->get(
                 case __('order', 'routes'):
                     $filters->orderby = $value;
                     break;
-                case __('reset', 'routes'):
-                    $this->history->clean();
-                    //reinitialize object after flush
-                    $this->history = new History($this->zdb, $this->login);
-                    $filters = new HistoryList();
-                    break;
             }
         }
 
@@ -732,6 +726,7 @@ $app->get(
                 'logs'              => $logs,
                 'history'           => $this->history,
                 'require_calendar'  => true,
+                'require_dialog'    => true
             )
         );
         return $response;
@@ -803,6 +798,86 @@ $app->post(
 )->setName(
     'history_filter'
 )->add($authenticate);
+
+$app->get(
+    __('/logs', 'routes') . __('/flush', 'routes'),
+    function ($request, $response) {
+        $data = [
+            'redirect_uri'  => $this->router->pathFor('history')
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => _T('Flush the logs'),
+                'form_url'      => $this->router->pathFor('doFlushHistory'),
+                'cancel_uri'    => $data['redirect_uri'],
+                'data'          => $data
+            )
+        );
+        return $response;
+    }
+)->setName('flushHistory')->add($authenticate);
+
+$app->post(
+    __('/logs', 'routes') . __('/flush', 'routes'),
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
+        $success = false;
+
+        $uri = isset($post['redirect_uri']) ?
+            $post['redirect_uri'] :
+            $this->router->pathFor('slash');
+
+        if (!isset($post['confirm'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Removal has not been confirmed!")
+            );
+        } else {
+            try {
+                $this->history->clean();
+                //reinitialize object after flush
+                $this->history = new History($this->zdb, $this->login);
+                $filters = new HistoryList();
+                $this->session->filter_history = $filters;
+
+                $this->flash->addMessage(
+                    'success_detected',
+                    _T('Logs have been flushed!')
+                );
+                $success = true;
+            } catch (\Exception $e) {
+                $this->zdb->connection->rollBack();
+                Analog::log(
+                    'An error occured flushing logs | ' . $e->getMessage(),
+                    Analog::ERROR
+                );
+
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T('An error occured trying to flush logs :(')
+                );
+            }
+        }
+
+        if (!$ajax) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $uri);
+        } else {
+            return $response->withJson(
+                [
+                    'success'   => $success
+                ]
+            );
+        }
+    }
+)->setName('doFlushHistory')->add($authenticate);
 
 //mailings management
 $app->get(

@@ -38,7 +38,7 @@
         <table class="infoline">
             <tr>
                 <td class="left nowrap">
-                    <a id="histreset" class="button" href="{path_for name="history" data=["option" => {_T string="reset" domain="routes"}, "value" => 'true']}">{_T string="Flush the logs"}</a>
+                    <a id="histreset" class="button delete" href="{path_for name="flushHistory"}">{_T string="Flush the logs"}</a>
                     {$history->getCount()} {if $history->getCount() != 1}{_T string="entries"}{else}{_T string="entry"}{/if}
                 </td>
                 <td class="right">
@@ -150,6 +150,7 @@
             });
 
             $(function() {
+                {include file="js_removal.tpl"}
                 var _elt = $('<img src="{base_url}/{$template_subdir}images/info.png" class="qryhide" alt="" title="{_T string="Show associated query"}"/>');
                 $('.sql_log').hide().parent().prepend(_elt);
                 $('.qryhide').click(function() {
