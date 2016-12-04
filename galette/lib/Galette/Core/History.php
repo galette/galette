@@ -41,7 +41,6 @@ use Analog\Analog;
 use Galette\Filters\HistoryList;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Adapter\Adapter;
-use Zend\Db\Adapter\Exception as AdapterException;
 
 /**
  * History management
@@ -119,13 +118,6 @@ class History
             $insert = $this->zdb->insert($this->getTableName());
             $insert->values($values);
             $this->zdb->execute($insert);
-        } catch (AdapterException $e) {
-            Analog::log(
-                'Unable to initialize add log entry into database.' .
-                $e->getMessage(),
-                Analog::WARNING
-            );
-            return false;
         } catch (\Exception $e) {
             Analog::log(
                 "An error occured trying to add log entry. " . $e->getMessage(),

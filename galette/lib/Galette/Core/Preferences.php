@@ -39,6 +39,7 @@ namespace Galette\Core;
 
 use Analog\Analog;
 use Galette\Entity\Adherent;
+use Galette\Core\Db;
 
 /**
  * Preferences for galette
@@ -162,7 +163,7 @@ class Preferences
      *
      * @return void
      */
-    public function __construct($zdb, $load = true)
+    public function __construct(Db $zdb, $load = true)
     {
         $this->zdb = $zdb;
         if ($load) {
