@@ -432,8 +432,7 @@ abstract class PdfModel
             case 'subtitle':
             case 'type':
             case 'styles':
-                $rname = '_' . $name;
-                return $this->$rname;
+                return $this->$name;
                 break;
             case 'hstyles':
                 $value = null;
@@ -454,8 +453,7 @@ abstract class PdfModel
             case 'hsubtitle':
             case 'hbody':
                 $pname = substr($name, 1);
-                $rname = '_' . $pname;
-                $prop_value = $this->$rname;
+                $prop_value = $this->$pname;
 
                 //get header and footer from parent if not defined in current model
                 if ($this->id > self::MAIN_MODEL
@@ -519,7 +517,6 @@ abstract class PdfModel
      */
     public function __set($name, $value)
     {
-        $rname = '_' . $name;
         switch ($name) {
             case 'type':
                 if ($value === self::MAIN_MODEL
@@ -527,7 +524,7 @@ abstract class PdfModel
                     || $value === self::RECEIPT_MODEL
                     || $value === self::ADHESION_FORM_MODEL
                 ) {
-                    $this->$rname = $value;
+                    $this->$name = $value;
                 } else {
                     throw new \UnexpectedValueException(
                         str_replace(
@@ -541,7 +538,7 @@ abstract class PdfModel
             case 'name':
                 try {
                     $this->checkChars($value, 50, _T("Name"));
-                    $this->$rname = $value;
+                    $this->$name = $value;
                 } catch (\Exception $e) {
                     throw $e;
                 }
@@ -555,7 +552,7 @@ abstract class PdfModel
                 }
                 try {
                     $this->checkChars($value, 100, $field, true);
-                    $this->$rname = $value;
+                    $this->$name = $value;
                 } catch (\Exception $e) {
                     throw $e;
                 }
@@ -586,11 +583,11 @@ abstract class PdfModel
                     );
                     $tidy = tidy_parse_string($value, $tidy_config, 'UTF8');
                     $tidy->cleanRepair();
-                    $this->$rname = tidy_get_output($tidy);*/
-                    $this->$rname = $value;
+                    $this->$name = tidy_get_output($tidy);*/
+                    $this->$name = $value;
                 } else {
                     //if it is not... Well, let's serve the text as it.
-                    $this->$rname = $value;
+                    $this->$name = $value;
                 }
                 break;
             case 'styles':
