@@ -159,6 +159,7 @@ class History
                 return false;
             }
             $this->add('Logs flushed');
+            $this->filters = new HistoryList();
             return true;
         } catch (\Exception $e) {
             Analog::log(
@@ -283,18 +284,20 @@ class History
     {
         try {
             if ($this->filters->start_date_filter != null) {
-                $d = new \DateTime($this->filters->start_date_filter);
+                $d = new \DateTime($this->filters->raw_start_date_filter);
+                $d->setTime(0, 0, 0);
                 $select->where->greaterThanOrEqualTo(
                     'date_log',
-                    $d->format('Y-m-d')
+                    $d->format('Y-m-d H:i:s')
                 );
             }
 
             if ($this->filters->end_date_filter != null) {
-                $d = new \DateTime($this->filters->end_date_filter);
+                $d = new \DateTime($this->filters->raw_end_date_filter);
+                $d->setTime(23, 59, 59);
                 $select->where->lessThanOrEqualTo(
                     'date_log',
-                    $d->format('Y-m-d')
+                    $d->format('Y-m-d H:i:s')
                 );
             }
 

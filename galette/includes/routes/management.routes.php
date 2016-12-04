@@ -746,8 +746,8 @@ $app->post(
         $post = $request->getParsedBody();
         $error_detected = [];
 
-        if ($this->session->history_filter !== null) {
-            $filters = $this->session->history_filter;
+        if ($this->session->filter_history !== null) {
+            $filters = $this->session->filter_history;
         } else {
             $filters = new HistoryList();
         }

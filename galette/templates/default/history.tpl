@@ -118,7 +118,10 @@
                 </tr>
             </tfoot>
             <tbody>
-{foreach from=$logs item=log name=eachlog}
+{if $logs|@count == 0}
+                <tr><td colspan="6" class="emptylist">{_T string="No log found"}</td></tr>
+{else}
+    {foreach from=$logs item=log name=eachlog}
                 <tr class="{if $smarty.foreach.eachlog.iteration % 2 eq 0}even{else}odd{/if}">
                     <td class="center">{$smarty.foreach.eachlog.iteration}</td>
                     <td class="nowrap">{$log.date_log|date_format:"%a %d/%m/%Y - %R"}</td>
@@ -127,14 +130,15 @@
                     <td>{$log.action_log}</td>
                     <td>
                         {$log.text_log}
-    {if $log.sql_log}
+        {if $log.sql_log}
                         <span class="sql_log">{$log.sql_log|escape:"htmlall"}</span>
-    {/if}
+        {/if}
                     </td>
                 </tr>
-{foreachelse}
+    {foreachelse}
                 <tr><td colspan="6" class="emptylist">{_T string="logs are empty"}</td></tr>
-{/foreach}
+    {/foreach}
+{/if}
             </tbody>
         </table>
 {/block}
