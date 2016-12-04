@@ -1777,7 +1777,7 @@ $app->get(
     __('/members/empty-adhesion-form', 'routes'),
     function ($request, $response) {
         $adh = new Adherent($this->zdb);
-        $form = $this->preferences->pdf_adhesion_form;
+        $form = $this->preferences->pref_adhesion_form;
         $pdf = new $form($adh, $this->zdb, $this->preferences);
         $pdf->download();
     }

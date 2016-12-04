@@ -364,8 +364,7 @@ abstract class PdfModel
         $patterns = array();
         $parts    = array('header', 'footer', 'title', 'subtitle', 'body');
         foreach ($parts as $part) {
-            $rpart = '_' . $part;
-            $content = $this->$rpart;
+            $content = $this->$part;
 
             $matches = array();
             preg_match_all(
