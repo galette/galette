@@ -246,6 +246,7 @@ $container['acls'] = function ($c) {
         'entitleds'         => 'staff',
         'editEntitled'      => 'staff',
         'removeEntitled'    => 'staff',
+        'doRemoveEntitled'  => 'staff',
         'dynamicTranslations'       => 'staff',
         'editDynamicTranslation'    => 'staff',
         'attach_contribution'       => 'staff',

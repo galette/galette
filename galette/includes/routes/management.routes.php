@@ -1953,7 +1953,8 @@ $app->get(
         $class = null;
 
         $params = [
-            'require_tabs'  => true
+            'require_tabs'      => true,
+            'require_dialog'    => true
         ];
 
         switch ($args['class']) {
@@ -2100,7 +2101,11 @@ $app->get(
     '/{class:' . __('contributions-types', 'routes') . '|' . __('status', 'routes') .
         '}' . __('/remove', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
-        //FIXME: add two steps removal
+        $data = [
+            'id'            => $args['id'],
+            'redirect_uri'  => $this->router->pathFor('entitleds', ['class' => $args['class']])
+        ];
+
         $class = null;
         switch ($args['class']) {
             case __('status', 'routes'):
@@ -2110,52 +2115,122 @@ $app->get(
                 $class = new Galette\Entity\ContributionsTypes($this->zdb);
                 break;
         }
+        $label = $class->getLabel((int)$args['id']);
 
-        try {
-            $label = $class->getLabel((int)$args['id']);
-            if ($label !== $class::ID_NOT_EXITS) {
-                $ret = $class->delete((int)$args['id']);
-
-                if ($ret === true) {
-                    deleteDynamicTranslation($label);
-                    $this->flash->addMessage(
-                        'success_detected',
-                        str_replace(
-                            ['%type', '%label'],
-                            [$class->getI18nType(), $label],
-                            _T("%type '%label' was successfully removed")
-                        )
-                    );
-                } else {
-                    $errors = $class->errors;
-                    if (count($errors) === 0) {
-                        $errors[] = str_replace(
-                            ['%type', '%id'],
-                            [$class->getI18nType(), $args['id']],
-                            _T("An error occured trying to remove %type #%id")
-                        );
-                    }
-
-                    foreach ($errors as $error) {
-                        $this->flash->addMessage(
-                            'error_detected',
-                            $error
-                        );
-                    }
-                }
-            }
-        } catch (RuntimeException $re) {
-            $this->flash->addMessage(
-                'error_detected',
-                $re->getMessage()
-            );
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('entitleds', ['class' => $args['class']]));
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => str_replace(
+                    ['%type', '%label'],
+                    [$class->getI18nType(), $label],
+                    _T("Remove %type '%label'")
+                ),
+                'form_url'      => $this->router->pathFor(
+                    'doRemoveEntitled',
+                    [
+                        'class' => $args['class'],
+                        'id'    => $args['id']
+                    ]
+                ),
+                'cancel_uri'    => $data['redirect_uri'],
+                'data'          => $data
+            )
+        );
+        return $response;
     }
 )->setName('removeEntitled')->add($authenticate);
+
+$app->post(
+    '/{class:' . __('contributions-types', 'routes') . '|' . __('status', 'routes') .
+        '}' . __('/remove', 'routes') . '/{id:\d+}',
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
+        $success = false;
+
+        $uri = isset($post['redirect_uri']) ?
+            $post['redirect_uri'] :
+            $this->router->pathFor('slash');
+
+        if (!isset($post['confirm'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Removal has not been confirmed!")
+            );
+        } else {
+            $class = null;
+            switch ($args['class']) {
+                case __('status', 'routes'):
+                    $class = new Galette\Entity\Status($this->zdb);
+                    break;
+                case __('contributions-types', 'routes'):
+                    $class = new Galette\Entity\ContributionsTypes($this->zdb);
+                    break;
+            }
+
+            try {
+                $label = $class->getLabel((int)$args['id']);
+                if ($label !== $class::ID_NOT_EXITS) {
+                    $ret = $class->delete((int)$args['id']);
+
+                    if ($ret === true) {
+                        deleteDynamicTranslation($label);
+                        $this->flash->addMessage(
+                            'success_detected',
+                            str_replace(
+                                ['%type', '%label'],
+                                [$class->getI18nType(), $label],
+                                _T("%type '%label' was successfully removed")
+                            )
+                        );
+                        $success = true;
+                    } else {
+                        $errors = $class->errors;
+                        if (count($errors) === 0) {
+                            $errors[] = str_replace(
+                                ['%type', '%id'],
+                                [$class->getI18nType(), $args['id']],
+                                _T("An error occured trying to remove %type #%id")
+                            );
+                        }
+
+                        foreach ($errors as $error) {
+                            $this->flash->addMessage(
+                                'error_detected',
+                                $error
+                            );
+                        }
+                    }
+                } else {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        _T("Requested label does not exists!")
+                    );
+                }
+            } catch (RuntimeException $re) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $re->getMessage()
+                );
+            }
+        }
+
+        if (!$ajax) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $uri);
+        } else {
+            return $response->withJson(
+                [
+                    'success'   => $success
+                ]
+            );
+        }
+    }
+)->setName('doRemoveEntitled')->add($authenticate);
 
 $app->get(
     __('/dynamic-translations', 'routes') . '[/{text_orig}]',

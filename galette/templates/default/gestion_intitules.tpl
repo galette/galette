@@ -7,3 +7,11 @@
 </div>
 </form>
 {/block}
+
+{block name="javascripts"}
+    <script type="text/javascript">
+        $(function() {
+            {include file="js_removal.tpl"}
+        });
+    </script>
+{/block}
