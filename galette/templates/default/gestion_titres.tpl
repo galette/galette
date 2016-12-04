@@ -40,7 +40,7 @@
                 {if $title->id eq 1 or $title->id eq 2}
                                 <img src="{$template_subdir}images/icon-empty.png" alt="" width="16px" height="16px"/>
                 {else}
-                                <a onclick="return confirm('{_T string="Do you really want to delete this entry?"|escape:"javascript"}')" href="{path_for name="removeTitle" data=["id" => $title->id]}">
+                                <a class="delete" href="{path_for name="removeTitle" data=["id" => $title->id]}">
                                     <img src="{$template_subdir}images/icon-trash.png" alt="{_T string="Delete '%s' title" pattern="/%s/" replace=$title->short}" title="{_T string="Delete '%s' title" pattern="/%s/" replace=$title->short}" width="16" height="16" />
                                 </a>
                 {/if}
@@ -50,4 +50,12 @@
                     </tbody>
                 </table>
         </form>
+{/block}
+
+{block name="javascripts"}
+        <script type="text/javascript">
+            $(function() {
+                {include file="js_removal.tpl"}
+            });
+        </script>
 {/block}

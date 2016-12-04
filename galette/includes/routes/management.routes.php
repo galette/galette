@@ -979,8 +979,6 @@ $app->post(
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
         $success = false;
-        $dyn_fields = new DynamicFields();
-        $field_id = (int)$args['id'];
 
         $uri = isset($post['redirect_uri']) ?
             $post['redirect_uri'] :
@@ -1659,8 +1657,9 @@ $app->get(
             $response,
             'gestion_titres.tpl',
             [
-                'page_title'    => _T("Titles management"),
-                'titles_list'   => $titles
+                'page_title'        => _T("Titles management"),
+                'titles_list'       => $titles,
+                'require_dialog'    => true
             ]
         );
         return $response;
@@ -1705,52 +1704,104 @@ $app->post(
 )->setName('titles')->add($authenticate);
 
 $app->get(
-    __('/titles/remove', 'routes') . '/{id:\d+}',
+    __('/titles', 'routes') . __('/remove', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
-        //FIXME: add two steps removal
-        $id = $args['id'];
+        $data = [
+            'id'            => $args['id'],
+            'redirect_uri'  => $this->router->pathFor('titles')
+        ];
+        $title = new Title((int)$args['id']);
 
-        $title = new Title((int)$id);
-        try {
-            $res = $title->remove($this->zdb);
-            if ($res === true) {
-                $this->flash->addMessage(
-                    'success_detected',
-                    str_replace(
-                        '%name',
-                        $title->short,
-                        _T("Title '%name' has been successfully deleted.")
-                    )
-                );
-            } else {
-                $this->flash->addMessage(
-                    'error_detected',
-                    str_replace(
-                        '%name',
-                        $title->short,
-                        _T("An error occured removing title '%name' :(")
-                    )
-                );
-            }
-        } catch (\Exception $e) {
-            if ($e->getCode() == 23000) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("That title is still in use, you cannot delete it!")
-                );
-            } else {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $e->getMessage()
-                );
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => sprintf(
+                    _T('Remove title %1$s'),
+                    $title->short
+                ),
+                'form_url'      => $this->router->pathFor(
+                    'doRemoveTitle',
+                    ['id' => $args['id']]
+                ),
+                'cancel_uri'    => $data['redirect_uri'],
+                'data'          => $data
+            )
+        );
+        return $response;
+    }
+)->setName('removeTitle')->add($authenticate);
+
+$app->post(
+    __('/titles', 'routes') . __('/remove', 'routes') . '/{id:\d+}',
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
+        $success = false;
+
+        $uri = isset($post['redirect_uri']) ?
+            $post['redirect_uri'] :
+            $this->router->pathFor('slash');
+
+        if (!isset($post['confirm'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Removal has not been confirmed!")
+            );
+        } else {
+            $title = new Title((int)$args['id']);
+            try {
+                $res = $title->remove($this->zdb);
+                if ($res === true) {
+                    $this->flash->addMessage(
+                        'success_detected',
+                        str_replace(
+                            '%name',
+                            $title->short,
+                            _T("Title '%name' has been successfully deleted.")
+                        )
+                    );
+                    $success = true;
+                } else {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        str_replace(
+                            '%name',
+                            $title->short,
+                            _T("An error occured removing title '%name' :(")
+                        )
+                    );
+                }
+            } catch (\Exception $e) {
+                if ($e->getCode() == 23000) {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        _T("That title is still in use, you cannot delete it!")
+                    );
+                } else {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        $e->getMessage()
+                    );
+                }
             }
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('titles'));
+        if (!$ajax) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $uri);
+        } else {
+            return $response->withJson(
+                [
+                    'success'   => $success
+                ]
+            );
+        }
     }
-)->setName('removeTitle')->add($authenticate);
+)->setName('doRemoveTitle')->add($authenticate);
 
 $app->get(
     __('/titles/edit', 'routes') . '/{id:\d+}',

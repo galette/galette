@@ -235,6 +235,7 @@ $container['acls'] = function ($c) {
         'pdfModels'         => 'staff',
         'titles'            => 'staff',
         'removeTitle'       => 'staff',
+        'doRemoveTitle'     => 'staff',
         'editTitle'         => 'staff',
         'texts'             => 'staff',
         'transaction'       => 'staff',
