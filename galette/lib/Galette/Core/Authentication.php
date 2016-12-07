@@ -63,7 +63,7 @@ abstract class Authentication
     private $superadmin = false;
     private $staff = false;
     private $uptodate = false;
-    private $managed_groups;
+    private $managed_groups = [];
     private $cron = false;
 
     /**
