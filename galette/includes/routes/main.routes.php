@@ -136,13 +136,14 @@ $app->get(
 $app->get(
     __('/impersonate', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
+        $original_login = $this->login->login;
         $success = $this->login->impersonate($args['id']);
 
         if ($success === true) {
             $this->session->login = $this->login;
             $msg = str_replace(
                 '%login',
-                $this->login->login,
+                $original_login,
                 _T("Impersonating as %login")
             );
 
