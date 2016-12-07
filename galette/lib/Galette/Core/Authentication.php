@@ -292,14 +292,4 @@ abstract class Authentication
     {
         $this->$name = $value;
     }
-
-    /**
-     * Apply get_object_vars to get private properties
-     *
-     * @return array
-     */
-    protected function getObjectVars()
-    {
-        return get_object_vars($this);
-    }
 }
