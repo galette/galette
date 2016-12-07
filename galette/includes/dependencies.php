@@ -163,8 +163,6 @@ $container['login'] = function ($c) {
             $c->get('i18n'),
             $c->get('session')
         );
-    } else {
-        $login->setDb($c->get('zdb'));
     }
     return $login;
 };

@@ -50,7 +50,7 @@ namespace Galette\Core;
  * @since     Available since 0.7dev - 2009-02-28
  */
 
-abstract class Authentication implements \Serializable
+abstract class Authentication
 {
     private $login;
     private $name;

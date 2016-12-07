@@ -65,7 +65,7 @@ class Login extends Authentication
     private $zdb;
     private $i18n;
     private $session;
-    private $impersonated;
+    private $impersonated = false;
 
     /**
      * Instanciate object
@@ -76,60 +76,34 @@ class Login extends Authentication
      */
     public function __construct(Db $zdb, I18n $i18n, Session $session)
     {
-        $this->setDb($zdb);
+        $this->zdb = $zdb;
         $this->i18n = $i18n;
         $this->session = $session;
     }
 
     /**
-     * Set database instance
-     *
-     * @param Db $zdb Database instance
-     *
-     * @return void
-     */
-    public function setDb(Db $zdb)
+    * Login for the superuser
+    *
+    * @param string      $login       name
+    * @param Preferences $preferences Preferences instance
+    *
+    * @return void
+    */
+    public function logAdmin($login, Preferences $preferences)
     {
-        $this->zdb = $zdb;
+        parent::logAdmin($login, $preferences);
+        $this->impersonated = false;
     }
 
     /**
-     * Method to run on serialize()
-     *
-     * @return string
-     */
-    public function serialize()
+    * Log out user and unset variables
+    *
+    * @return void
+    */
+    public function logOut()
     {
-        $this->zdb = null;
-
-        $vars = parent::getObjectVars();
-        $vars = array_merge(
-            $vars,
-            get_object_vars($this)
-        );
-
-        return base64_encode(
-            serialize($vars)
-        );
-    }
-
-    /**
-     * Method to run on unserialize()
-     *
-     * @param string $serialized Serialized data
-     *
-     * @return void
-     */
-    public function unserialize($serialized)
-    {
-        $serialized = unserialize(
-            base64_decode($serialized)
-        );
-
-        $locals = array_keys(get_object_vars($this));
-        foreach ($serialized as $key => $value) {
-            $this->$key = $value;
-        }
+        parent::logOut();
+        $this->impersonated = false;
     }
 
     /**
