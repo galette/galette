@@ -115,6 +115,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                         <a href="mailto:{$value}">{$value}</a>
                     {elseif $element->field_id eq 'url_adh'}
                         <a href="{$value}">{$value}</a>
+                    {elseif $element->field_id eq 'ddn_adh'}
+                        {$value} {$member->getAge()}
                     {else}
                         {$value}
                     {/if}

@@ -1564,4 +1564,27 @@ class Adherent
 
         return $country;
     }
+
+    /**
+     * Get member age
+     *
+     * @return string
+     */
+    public function getAge()
+    {
+        $d = \DateTime::createFromFormat('Y-m-d', $this->_birthdate);
+        if ($d === false) {
+            Analog::log(
+                'Invalid birthdate: ' . $this->_birthdate,
+                Analog::ERROR
+            );
+            return;
+        }
+
+        return str_replace(
+            '%age',
+            $d->diff(new \DateTime())->y,
+            _T(' (%age years old)')
+        );
+    }
 }
