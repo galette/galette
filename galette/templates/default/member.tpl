@@ -484,6 +484,25 @@
     {/if}
                 {include file="photo_dnd.tpl"}
 
+                $('#ddn_adh').on('blur', function() {
+                    var _bdate = $(this).val();
+                    if ('{_T string="Y-m-d"}' === 'Y-m-d') {
+                        _bdate = new Date(_bdate);
+                    } else {
+                        //try for dd/mm/yyyy
+                        var _dparts = _bdate.split("/");
+                        _bdate = new Date(_dparts[2], _dparts[1] - 1, _dparts[0]);
+                    }
+
+                    if (! isNaN(_bdate.getTime())) {
+                        var _today = new Date();
+                        var _age = Math.floor((_today-_bdate) / (365.25 * 24 * 60 * 60 * 1000));
+                        $('#member_age').html('{_T string=" (%age years old)"}'.replace(/%age/, _age))
+                    } else {
+                        $('#member_age').html('');
+                    }
+                });
+
             });
         </script>
 {/if}
