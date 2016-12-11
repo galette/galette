@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014 The Galette Team
+ * Copyright © 2014-2016 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
+ * @copyright 2014-2016 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,107 +46,6 @@ use Galette\Entity\ContributionsTypes;
 use Galette\Filters\ContributionsList;
 use Galette\Core\GaletteMail;
 use Galette\Entity\Texts;
-
-/*$app->get(
-    '/contributions[/{option:page|order}/{value:\d+}]',
-    function ($request, $response, $args) {
-        $ajax = false;
-        if ($request->isXhr()
-            || isset($request->getQueryParams()['ajax'])
-            && $request->getQueryParams()['ajax'] == 'true'
-        ) {
-            $ajax = true;
-        }
-
-        //$id = $args['id'];
-        $option = null;
-        if (isset($args['option'])) {
-            $option = $args['option'];
-        }
-        $value = null;
-        if (isset($args['value'])) {
-            $value = $args['value'];
-        }
-
-        if ($this->session->contributions !== null) {
-            $contribs = $this->session->contributions;
-        } else {
-            $contribs = new Contributions();
-        }
-
-        if ($option !== null) {
-            switch ($option) {
-                case 'page':
-                    $contribs->current_page = (int)$value;
-                    break;
-                case 'order':
-                    $contribs->orderby = $value;
-                    break;
-            }
-        }*/
-
-        /*if ($ajax === true) {
-            $contribs->filtre_transactions = true;
-            if (isset($_POST['max_amount'])) {
-                $contribs->max_amount = (int)$_POST['max_amount'];
-            } elseif ($_GET['max_amount']) {
-                $contribs->max_amount = (int)$_GET['max_amount'];
-            }
-        } else {
-            $contribs->max_amount = null;
-        }*/
-
-        /*if (($this->login->isAdmin() || $this->login->isStaff())) {
-            if ($id == 'all') {
-                $contribs->filtre_cotis_adh = null;
-            } else {
-                $contribs->filtre_cotis_adh = $id;
-            }
-        }*/
-
-        /*if ($this->login->isAdmin() || $this->login->isStaff()) {
-            //delete contributions
-            if (isset($_GET['sup']) || isset($_POST['delete'])) {
-                if ( isset($_GET['sup']) ) {
-                    $contribs->removeContributions($_GET['sup']);
-                } else if ( isset($_POST['contrib_sel']) ) {
-                    $contribs->removeContributions($_POST['contrib_sel']);
-                }
-            }
-        }*/
-
-        /*$this->session->contributions = $contribs;
-        $list_contribs = $contribs->getContributionsList(true);
-
-        //assign pagination variables to the template and add pagination links
-        $contribs->setSmartyPagination($this->router, $this->view->getSmarty());*/
-
-        /*if ( $contribs->filtre_cotis_adh != null && !$ajax ) {
-            $member = new Adherent($this->zdb);
-            $member->load($contribs->filtre_cotis_adh);
-            $tpl->assign('member', $member);
-        }*/
-
-        // display page
-        /*$this->view->render(
-            $response,
-            'gestion_contributions.tpl',
-            array(
-                'page_title'            => _T("Contributions management"),
-                'require_dialog'        => true,
-                'require_calendar'      => true,
-                'max_amount'            => $contribs->max_amount,
-                'list_contribs'         => $list_contribs,
-                'contributions'         => $contribs,
-                'nb_contributions'      => $contribs->getCount(),
-                'mode'                  => 'std'
-            )
-        );
-        return $response;
-    }
-)->setName(
-    'contributions'
-)->add($authenticate);*/
 
 $app->get(
     '/{type:' . __('transactions', 'routes') .'|'. __('contributions', 'routes') .
@@ -865,10 +764,10 @@ $app->post(
                     $reditect_url = $this->router->pathFor(
                         'contribution',
                         [
-                            'action'    => __('add', 'routes'),
-                            'trans_id'  => $contrib->transaction->id
+                            'type'      => $args['type'],
+                            'action'    => __('add', 'routes')
                         ]
-                    ) . '?id_adh=' . $contrib->member;
+                    ) . '?trans_id=' . $contrib->transaction->id . '&id_adh=' . $contrib->member;
                 } else {
                     $reditect_url = $this->router->pathFor(
                         'contributions',
