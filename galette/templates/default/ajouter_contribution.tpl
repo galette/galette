@@ -41,7 +41,7 @@
     {/if}
             <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
             <fieldset class="cssform">
-                <legend class="ui-state-active ui-corner-top">{if $type eq 'fee'}{_T string="Select contributor and membership fee type"}{else}{_T string="Select contributor and donation type"}{/if}</legend>
+                <legend class="ui-state-active ui-corner-top">{if $type eq {_T string="fee" domain="routes"}}{_T string="Select contributor and membership fee type"}{else}{_T string="Select contributor and donation type"}{/if}</legend>
                 <p>
                     <label for="id_adh" class="bline">{_T string="Contributor:"}</label>
                     <select name="id_adh" id="id_adh"{if isset($disabled.id_adh)} {$disabled.id_adh}{/if}>
@@ -67,7 +67,7 @@
             </fieldset>
 
             <fieldset class="cssform">
-                <legend class="ui-state-active ui-corner-top">{if $type eq 'fee'}{_T string="Details of membership fee"}{else}{_T string="Details of donation"}{/if}</legend>
+                <legend class="ui-state-active ui-corner-top">{if $type eq {_T string="fee" domain="routes"}}{_T string="Details of membership fee"}{else}{_T string="Details of donation"}{/if}</legend>
                 <p>
                     <label class="bline" for="montant_cotis">{_T string="Amount:"}</label>
                     <input type="text" name="montant_cotis" id="montant_cotis" value="{$contribution->amount}" maxlength="10"{if $required.montant_cotis eq 1} required{/if}/>
@@ -93,7 +93,7 @@
 
                 <p>
                     <label class="bline" for="date_debut_cotis">
-                        {if $type eq 'fee'}
+                        {if $type eq {_T string="fee" domain="routes"}}
                             {_T string="Start date of membership:"}
                         {else}
                             {_T string="Date of contribution:"}
@@ -102,7 +102,7 @@
                     <input class="past-date-pick" type="text" name="date_debut_cotis" id="date_debut_cotis" value="{$contribution->begin_date}" maxlength="10"{if $required.date_debut_cotis eq 1} required{/if}/>
                     <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
                 </p>
-        {if $type eq 'fee'}
+        {if $type eq {_T string="fee" domain="routes"}}
                 <p>
             {if $pref_membership_ext != ""}
                     <label class="bline" for="duree_mois_cotis">{_T string="Membership extension:"}</label>
