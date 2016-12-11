@@ -44,7 +44,8 @@
             <caption>
                 {_T string="Attached contributions"}
                 {if $transaction->getMissingAmount() > 0}
-                    <a href="ajouter_contribution.php?trans_id={$transaction->id}" class="button notext fright" id="btnadd" title="{_T string="Create a new contribution that will be attached to the current transaction"}">{_T string="New attached contribution"}</a>
+                    <a href="{path_for name="contribution" data=["type" => {_T string="fee" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?trans_id={$transaction->id}" class="button notext fright" id="btnadd" title="{_T string="Create a new fee that will be attached to the current transaction"}">{_T string="New attached fee"}</a>
+                    <a href="{path_for name="contribution" data=["type" => {_T string="donation" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?trans_id={$transaction->id}" class="button notext fright" id="btnadddon" title="{_T string="Create a new donation that will be attached to the current transaction"}">{_T string="New attached donation"}</a>
                     <a href="#" class="button notext fright" id="memberslist" title="{_T string="Select an existing contribution in the database, and attach it to the current transaction"}">{_T string="Select existing contribution"}</a>
                 {/if}
             </caption>
