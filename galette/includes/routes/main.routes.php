@@ -143,7 +143,7 @@ $app->get(
             $this->session->login = $this->login;
             $msg = str_replace(
                 '%login',
-                $original_login,
+                $this->login->login,
                 _T("Impersonating as %login")
             );
 

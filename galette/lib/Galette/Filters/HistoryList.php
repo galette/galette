@@ -94,6 +94,16 @@ class HistoryList extends Pagination
     }
 
     /**
+     * Return the default direction for ordering
+     *
+     * @return string ASC or DESC
+     */
+    protected function getDefaultDirection()
+    {
+        return self::ORDER_DESC;
+    }
+
+    /**
      * Reinit default parameters
      *
      * @return void

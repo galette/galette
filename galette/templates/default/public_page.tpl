@@ -45,7 +45,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {if $login->isLogged()}
             <div id="user">
                 <a id="userlink" title="{_T string="View your member card"}" href="{if $login->isSuperAdmin()}{path_for name="slash"}{else}{path_for name="me"}{/if}">{$login->loggedInAs(true)}</a>
-                <a id="logout" title="{_T string="Log off"}" href="{base_url}/index.php?logout=1">{_T string="Log off"}</a>
+                <a id="{if $login->isImpersonated()}unimpersonate{else}logout{/if}" href="{if $login->isImpersonated()}{path_for name="unimpersonate"}{else}{path_for name="logout"}{/if}">{_T string="Log off"}</a>
             </div>
 {/if}
 {if $GALETTE_MODE eq 'DEMO'}
