@@ -1229,7 +1229,7 @@ class Adherent
                         && $this->$prop === false
                     ) {
                         //Handle booleans for postgres ; bugs #18899 and #19354
-                        $values[$field] = 'false';
+                        $values['field'] = $this->zdb->isPostgres() ? 'false' : 0;
                     } elseif ($field === 'parent_id') {
                         //handle parents
                         if ($this->_parent === null) {
