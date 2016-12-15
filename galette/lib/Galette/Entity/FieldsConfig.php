@@ -40,6 +40,7 @@ namespace Galette\Entity;
 use Analog\Analog;
 use Zend\Db\Adapter\Adapter;
 use Galette\Core\Db;
+use Zend\Db\Sql\Expression;
 
 /**
  * Fields config class for galette :
@@ -298,7 +299,7 @@ class FieldsConfig
                         );
                         $required = $f['required'];
                         if ( $required === false ) {
-                            $required = 'false';
+                            $required = $this->zdb->isPostgres() ? 'false' : 0;
                         }
                         $params[] = array(
                             'field_id'    => $k,
@@ -312,7 +313,7 @@ class FieldsConfig
                 }
 
                 if ( count($params) > 0 ) {
-                    $this->_insert($this->zdb, $params);
+                    $this->_insert($params);
                     $this->load();
                 }
             }
@@ -353,7 +354,7 @@ class FieldsConfig
                 //build default config for each field
                 $required = $this->_defaults[$f]['required'];
                 if ( $required === false ) {
-                    $required = 'false';
+                    $required = $this->zdb->isPostgres() ? 'false' : 0;
                 }
                 $params[] = array(
                     'field_id'    => $f,
@@ -653,7 +654,7 @@ class FieldsConfig
             foreach ( $this->_categorized_fields as $cat ) {
                 foreach ( $cat as $pos=>$field ) {
                     if ( in_array($field['field_id'], $this->_non_required) ) {
-                        $field['required'] = 'false';
+                        $field['required'] = $this->zdb->isPostgres() ? 'false' : 0;
                     }
                     $params = array(
                         'required'  => $field['required'],
@@ -744,7 +745,9 @@ class FieldsConfig
                 /** Why where parameter is named where1 ?? */
                 $stmt->execute(
                     array(
-                        'required'  => ($or->required === false) ?  'false' : true,
+                        'required'  => ($or->required === false) ?
+                            ($this->zdb->isPostgres() ? 'false' : 0) :
+                            true,
                         'where1'    => $or->field_id
                     )
                 );
@@ -800,7 +803,6 @@ class FieldsConfig
             )
         );
         $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
-
         foreach ( $values as $d ) {
             $stmt->execute(
                 array(
