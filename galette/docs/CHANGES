@@ -1,9 +1,14 @@
 Changes
 -------
 
+0.8.3.1 -> 0.8.3.2
+
+- Fix minor regression introduced in cd8da6
+
 0.8.3 -> 0.8.3.1
 
 - Fix MySQL 5.7 strict mode issues
+- Fix PDF address
 
 0.8.2.3 -> 0.8.3
 
