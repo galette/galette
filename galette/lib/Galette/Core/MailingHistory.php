@@ -437,7 +437,7 @@ class MailingHistory extends History
                 'mailing_body' => $this->message,
                 'mailing_date' => $this->date,
                 'mailing_recipients' => serialize($_recipients),
-                'mailing_sent' => ($this->_sent) ?
+                'mailing_sent' => ($this->sent) ?
                     true :
                     ($this->zdb->isPostgres() ? 'false' : 0)
             );
@@ -484,7 +484,7 @@ class MailingHistory extends History
                 'mailing_body' => $this->message,
                 'mailing_date' => $this->date,
                 'mailing_recipients' => serialize($_recipients),
-                'mailing_sent' => ($this->_sent) ?
+                'mailing_sent' => ($this->sent) ?
                     true :
                     ($this->zdb->isPostgres() ? 'false' : 0)
             );

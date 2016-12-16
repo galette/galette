@@ -311,7 +311,7 @@ class FieldsConfig
                 }
 
                 if (count($params) > 0) {
-                    $this->_insert($params);
+                    $this->insert($params);
                     $this->load();
                 }
             }

@@ -165,10 +165,10 @@ class Reminder
             'reminder_type'     => $this->type,
             'reminder_dest'     => $this->dest->id,
             'reminder_date'     => $now->format('Y-m-d'),
-            'reminder_success'  => ($this->_success) ?
+            'reminder_success'  => ($this->success) ?
                 true :
                 ($this->zdb->isPostgres() ? 'false' : 0),
-            'reminder_nomail'   => ($this->_nomail) ?
+            'reminder_nomail'   => ($this->nomail) ?
                 true :
                 ($this->zdb->isPostgres() ? 'false' : 0)
         );
