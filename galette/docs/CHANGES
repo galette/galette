@@ -1,6 +1,11 @@
 Changes
 -------
 
+0.8.3.2 -> 0.8.3.3
+
+- Fix member storage
+- Drop extension no longer required
+
 0.8.3.1 -> 0.8.3.2
 
 - Fix minor regression introduced in cd8da6
