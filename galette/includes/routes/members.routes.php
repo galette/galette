@@ -541,7 +541,7 @@ $app->post(
 //members self card
 $app->get(
     __('/member/me', 'routes'),
-    function ($request, $response) use ($app) {
+    function ($request, $response) {
         if ($this->login->isSuperAdmin()) {
             return $response
                 ->withStatus(301)
@@ -2156,6 +2156,33 @@ $app->get(
         return $response;
     }
 )->setName('reminders')->add($authenticate);
+
+$app->get(
+    __('/members/reminder-filter', 'routes') .
+        '/{membership:' . __('nearly', 'routes') . '|' . __('late', 'routes')  . '}' .
+        '/{mail:' . __('withmail', 'routes'). '|' . __('withoutmail', 'routes') . '}',
+    function ($request, $response, $args) {
+        //always reset filters
+        $filters = new MembersList();
+        $filters->account_status_filter = Members::ACTIVE_ACCOUNT;
+
+        $membership = ($args['membership'] === __('nearly', 'routes') ?
+            Members::MEMBERSHIP_NEARLY :
+            Members::MEMBERSHIP_LATE);
+        $filters->membership_filter = $membership;
+
+        $mail = ($args['mail'] === __('withmail', 'routes') ?
+            Members::FILTER_W_EMAIL :
+            Members::FILTER_WO_EMAIL);
+        $filters->email_filter = $mail;
+
+        $this->session->filter_members = $filters;
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('members'));
+    }
+)->setName('reminders-filter')->add($authenticate);
 
 $app->map(
     ['GET', 'POST'],

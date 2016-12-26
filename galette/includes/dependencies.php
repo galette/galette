@@ -221,6 +221,7 @@ $container['acls'] = function ($c) {
         'impersonate'       => 'superadmin',
         'unimpersonate'     => 'member',
         'reminders'         => 'staff',
+        'reminders-filter'  => 'staff',
         'export'            => 'staff',
         'doExport'          => 'staff',
         'removeCsv'         => 'staff',
