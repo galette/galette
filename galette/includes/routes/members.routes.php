@@ -1997,6 +1997,18 @@ $app->map(
             );
         }
 
+        //flash messages if any
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage('error_detected', $error);
+            }
+        }
+        if (count($success_detected) > 0) {
+            foreach ($success_detected as $success) {
+                $this->flash->addMessage('success_detected', $success);
+            }
+        }
+
         // display page
         $this->view->render(
             $response,
@@ -2066,6 +2078,9 @@ $app->get(
     function ($request, $response) {
         $texts = new Texts($this->texts_fields, $this->preferences);
         $post = $request->getParsedBody();
+        $error_detected = [];
+        $warning_detected = [];
+        $success_detected = [];
 
         if (isset($post['reminders'])) {
             $selected = null;
@@ -2128,9 +2143,26 @@ $app->get(
             }
         }
 
+        //flash messages if any
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage('error_detected', $error);
+            }
+        }
+        if (count($warning_detected) > 0) {
+            foreach ($warning_detected as $warning) {
+                $this->flash->addMessage('warning_detected', $warning);
+            }
+        }
+        if (count($success_detected) > 0) {
+            foreach ($success_detected as $success) {
+                $this->flash->addMessage('success_detected', $success);
+            }
+        }
+
         $previews = array(
-            'impending' => $texts->getTexts('impendingduedate', $preferences->pref_lang),
-            'late'      => $texts->getTexts('lateduedate', $preferences->pref_lang)
+            'impending' => $texts->getTexts('impendingduedate', $this->preferences->pref_lang),
+            'late'      => $texts->getTexts('lateduedate', $this->preferences->pref_lang)
         );
 
         $members = new Members();
@@ -2147,10 +2179,7 @@ $app->get(
                 'count_impending'           => $reminders['impending'],
                 'count_impending_nomail'    => $reminders['nomail']['impending'],
                 'count_late'                => $reminders['late'],
-                'count_late_nomail'         => $reminders['nomail']['late'],
-                'error_detected'            => $error_detected,
-                'warning_detected'          => $warning_detected,
-                'success_detected'          => $success_detected
+                'count_late_nomail'         => $reminders['nomail']['late']
             ]
         );
         return $response;
