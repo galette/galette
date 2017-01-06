@@ -1572,6 +1572,10 @@ class Adherent
      */
     public function getAge()
     {
+        if ($this->_birthdate == null) {
+            return '';
+        }
+
         $d = \DateTime::createFromFormat('Y-m-d', $this->_birthdate);
         if ($d === false) {
             Analog::log(
