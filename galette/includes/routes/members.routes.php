@@ -45,6 +45,7 @@ use Galette\Filters\AdvancedMembersList;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Contribution;
 use Galette\Repository\Groups;
+use Galette\Repository\Reminders;
 use Galette\Entity\Adherent;
 use Galette\IO\PdfMembersCards;
 use Galette\IO\PdfMembersLabels;
@@ -2055,87 +2056,6 @@ $app->get(
     __('/reminders', 'routes'),
     function ($request, $response) {
         $texts = new Texts($this->texts_fields, $this->preferences);
-        $error_detected = [];
-        $warning_detected = [];
-        $success_detected = [];
-
-        if (isset($post['reminders'])) {
-            $selected = null;
-            if (isset($post['reminders'])) {
-                $selected = $post['reminders'];
-            }
-            $reminders = new Reminders($selected);
-
-            $labels = false;
-            $labels_members = array();
-            if (isset($post['reminder_wo_mail'])) {
-                $labels = true;
-            }
-
-            $list_reminders = $reminders->getList($zdb, $labels);
-            if (count($list_reminders) == 0) {
-                $warning_detected[] = _T("No reminder to send for now.");
-            } else {
-                foreach ($list_reminders as $reminder) {
-                    if ($labels === false) {
-                        //send reminders by mail
-                        $sent = $reminder->send($texts, $hist, $zdb);
-
-                        if ($sent === true) {
-                            $success_detected[] = $reminder->getMessage();
-                        } else {
-                            $error_detected[] = $reminder->getMessage();
-                        }
-                    } else {
-                        //generate labels for members without mail address
-                        $labels_members[] = $reminder->member_id;
-                    }
-                }
-
-                if ($labels === true) {
-                    if (count($labels_members) > 0) {
-                        $labels_filters = new MembersList();
-                        $labels_filters->selected = $labels_members;
-                        $this->session->filters_reminders_labels = $labels_filters;
-                        header('location: etiquettes_adherents.php');
-                        die();
-                    } else {
-                        $error_detected[] = _T("There are no member to proceed.");
-                    }
-                }
-
-                if (count($error_detected) > 0) {
-                    array_unshift(
-                        $error_detected,
-                        _T("Reminder has not been sent:")
-                    );
-                }
-
-                if (count($success_detected) > 0) {
-                    array_unshift(
-                        $success_detected,
-                        _T("Sent reminders:")
-                    );
-                }
-            }
-        }
-
-        //flash messages if any
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage('error_detected', $error);
-            }
-        }
-        if (count($warning_detected) > 0) {
-            foreach ($warning_detected as $warning) {
-                $this->flash->addMessage('warning_detected', $warning);
-            }
-        }
-        if (count($success_detected) > 0) {
-            foreach ($success_detected as $success) {
-                $this->flash->addMessage('success_detected', $success);
-            }
-        }
 
         $previews = array(
             'impending' => $texts->getTexts('impendingduedate', $this->preferences->pref_lang),
@@ -2162,6 +2082,97 @@ $app->get(
         return $response;
     }
 )->setName('reminders')->add($authenticate);
+
+$app->post(
+    __('/reminders', 'routes'),
+    function ($request, $response) {
+        $error_detected = [];
+        $warning_detected = [];
+        $success_detected = [];
+
+        $post = $request->getParsedBody();
+        $texts = new Texts($this->texts_fields, $this->preferences);
+        $selected = null;
+        if (isset($post['reminders'])) {
+            $selected = $post['reminders'];
+        }
+        $reminders = new Reminders($selected);
+
+        $labels = false;
+        $labels_members = array();
+        if (isset($post['reminder_wo_mail'])) {
+            $labels = true;
+        }
+
+        $list_reminders = $reminders->getList($this->zdb, $labels);
+        if (count($list_reminders) == 0) {
+            $warning_detected[] = _T("No reminder to send for now.");
+        } else {
+            foreach ($list_reminders as $reminder) {
+                if ($labels === false) {
+                    //send reminders by mail
+                    $sent = $reminder->send($texts, $this->hist, $this->zdb);
+
+                    if ($sent === true) {
+                        $success_detected[] = $reminder->getMessage();
+                    } else {
+                        $error_detected[] = $reminder->getMessage();
+                    }
+                } else {
+                    //generate labels for members without mail address
+                    $labels_members[] = $reminder->member_id;
+                }
+            }
+
+            if ($labels === true) {
+                if (count($labels_members) > 0) {
+                    $labels_filters = new MembersList();
+                    $labels_filters->selected = $labels_members;
+                    $this->session->filters_reminders_labels = $labels_filters;
+                    header('location: etiquettes_adherents.php');
+                    die();
+                } else {
+                    $error_detected[] = _T("There are no member to proceed.");
+                }
+            }
+
+            if (count($error_detected) > 0) {
+                array_unshift(
+                    $error_detected,
+                    _T("Reminder has not been sent:")
+                );
+            }
+
+            if (count($success_detected) > 0) {
+                array_unshift(
+                    $success_detected,
+                    _T("Sent reminders:")
+                );
+            }
+        }
+
+        //flash messages if any
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage('error_detected', $error);
+            }
+        }
+        if (count($warning_detected) > 0) {
+            foreach ($warning_detected as $warning) {
+                $this->flash->addMessage('warning_detected', $warning);
+            }
+        }
+        if (count($success_detected) > 0) {
+            foreach ($success_detected as $success) {
+                $this->flash->addMessage('success_detected', $success);
+            }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('reminders'));
+    }
+)->setName('doReminders')->add($authenticate);
 
 $app->get(
     __('/members/reminder-filter', 'routes') .

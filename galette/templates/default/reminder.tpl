@@ -1,7 +1,7 @@
 {extends file="page.tpl"}
 
 {block name="content"}
-        <form class="form" id="send_reminders" action="reminder.php" method="post" enctype="multipart/form-data">
+        <form class="form" id="send_reminders" action="{path_for name="doReminders"}" method="post" enctype="multipart/form-data">
             <fieldset>
                 <legend class="ui-state-active ui-corner-top">{_T string="Choose wich reminder(s) you want to send:"}</legend>
                 <div>
