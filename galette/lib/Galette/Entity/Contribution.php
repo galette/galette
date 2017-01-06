@@ -382,7 +382,7 @@ class Contribution
                         break;
                     case ContributionsTypes::PK:
                         if ($value != '') {
-                            $this->_type = new ContributionsTypes($this->zdb, (int)$value);
+                            $this->type = (int)$value;
                         }
                         break;
                     case 'montant_cotis':
