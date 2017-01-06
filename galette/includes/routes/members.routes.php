@@ -43,13 +43,11 @@ use Galette\Repository\Members;
 use Galette\Filters\MembersList;
 use Galette\Filters\AdvancedMembersList;
 use Galette\Entity\FieldsConfig;
-use Galette\Entity\Politeness;
 use Galette\Entity\Contribution;
 use Galette\Repository\Groups;
 use Galette\Entity\Adherent;
 use Galette\IO\PdfMembersCards;
 use Galette\IO\PdfMembersLabels;
-use Galette\IO\PdfAdhesionForm;
 use Galette\IO\Csv;
 use Galette\IO\CsvOut;
 use Galette\Entity\Status;
@@ -1006,26 +1004,6 @@ $app->post(
         // password required if we create a new member
         if ($member->id != '') {
             $fc->setNotRequired('mdp_adh');
-        }
-
-        //address and mail fields are not required if member has a parent
-        $no_parent_required = array(
-            'adresse_adh',
-            'adresse2_adh',
-            'cp_adh',
-            'ville_adh',
-            'email_adh'
-        );
-        if ($member->hasParent()) {
-            foreach ($no_parent_required as $field) {
-                if ($fc->isRequired($field)) {
-                    $fc->setNotRequired($field);
-                } else {
-                    $i = array_search($field, $no_parent_required);
-                    unset($no_parent_required[$i]);
-                }
-            }
-            $tpl->assign('no_parent_required', $no_parent_required);
         }
 
         // flagging required fields invisible to members
@@ -2077,7 +2055,6 @@ $app->get(
     __('/reminders', 'routes'),
     function ($request, $response) {
         $texts = new Texts($this->texts_fields, $this->preferences);
-        $post = $request->getParsedBody();
         $error_detected = [];
         $warning_detected = [];
         $success_detected = [];

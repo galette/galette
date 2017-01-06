@@ -43,7 +43,6 @@ use Galette\Entity\DynamicFields;
 use Galette\Repository\Members;
 use Galette\Entity\Adherent;
 use Galette\Entity\ContributionsTypes;
-use Galette\Filters\ContributionsList;
 use Galette\Core\GaletteMail;
 use Galette\Entity\Texts;
 

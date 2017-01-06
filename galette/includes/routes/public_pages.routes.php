@@ -35,15 +35,8 @@
  * @since     0.8.2dev 2014-11-11
  */
 
-use Galette\Core\Picture;
 use Galette\Repository\Members;
-use Galette\Entity\Adherent;
-use Galette\Entity\Required;
-use Galette\Entity\DynamicFields;
-use Galette\Entity\FieldsConfig;
 use Galette\Filters\MembersList;
-use Galette\Repository\Groups;
-use \Analog\Analog;
 
 $showPublicPages = function ($request, $response, $next) use ($container) {
     $login = $container->login;
