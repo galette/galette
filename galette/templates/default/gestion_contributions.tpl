@@ -44,7 +44,8 @@
     {if not $member->isActive() } ({_T string="Inactive"}){/if}
     {if $login->isAdmin() or $login->isStaff()}
                     (<a href="{path_for name="member" data=["id" => $member->id]}">{_T string="See member profile"}</a> -
-                    <a href="ajouter_contribution.php?id_adh={$member->id}">{_T string="Add a contribution"}</a>)
+                    <a href="{path_for name="contribution" data=["type" => {_T string="fee" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a> -
+                    <a href="{path_for name="contribution" data=["type" => {_T string="donation" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?id_adh={$member->id}">{_T string="Add a donation"}</a>)
     {/if}
                     &nbsp;:
 {/if}
