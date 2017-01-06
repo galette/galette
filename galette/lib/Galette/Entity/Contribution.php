@@ -497,8 +497,8 @@ class Contribution
             }
 
             $results = $this->zdb->execute($select);
-            $result = $results->current();
-            if ($result !== false) {
+            if ($results->count() > 0) {
+                $result = $results->current();
                 $d = new \DateTime($result->date_debut_cotis);
 
                 return _T("- Membership period overlaps period starting at ") .
@@ -767,8 +767,8 @@ class Contribution
             $result = $results->current();
             $due_date = $result->max_date;
 
-            //avoid bad dates in postgres
-            if ($due_date == '0001-01-01 BC') {
+            //avoid bad dates in postgres and bad mysql return from zenddb
+            if ($due_date == '0001-01-01 BC' || $due_date == '1901-01-01') {
                 $due_date = '';
             }
             return $due_date;
