@@ -35,16 +35,6 @@
  * @since     0.8.2dev 2014-11-11
  */
 
-use Galette\Core\Picture;
-use Galette\Repository\Members;
-use Galette\Entity\Adherent;
-use Galette\Entity\Required;
-use Galette\Entity\DynamicFields;
-use Galette\Entity\FieldsConfig;
-use Galette\Filters\MembersList;
-use Galette\Repository\Groups;
-use \Analog\Analog;
-
 $app->group(__('/ajax', 'routes'), function () {
     $this->get(
         __('/messages', 'routes'),
@@ -56,4 +46,65 @@ $app->group(__('/ajax', 'routes'), function () {
             return $response;
         }
     )->setName('ajaxMessages');
+
+    $this->post(
+        __('photo', 'routes'),
+        function ($request, $response) {
+            $post = $request->getParsedBody();
+            $ret = ['result' => false];
+
+            if (!isset($post['member_id'])
+                || !isset($post['file'])
+                || !isset($post['filename'])
+                || !isset($post['filesize'])
+            ) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("Required argument not present!")
+                );
+                return $response->withJson($ret);
+            }
+
+            $mid = $post['member_id'];
+            $fsize = $post['filesize'];
+            $fname = $post['filename'];
+            $tmpname = GALETTE_TEMPIMAGES_PATH . 'ajax_upload_' . $fname;
+
+            $temp = explode('base64,', $post['file']);
+            $mime = str_replace('data:', '', trim($temp[0], ';'));
+            $raw_file = base64_decode($temp[1]);
+
+            //write temporary file
+            $fp = fopen($tmpname, 'w');
+            fwrite($fp, $raw_file);
+            fclose($fp);
+
+            $adh = new \Galette\Entity\Adherent($this->zdb, (int)$mid);
+
+            $res = $adh->picture->store(
+                array(
+                    'name'      => $fname,
+                    'tmp_name'  => $tmpname,
+                    'size'      => $fsize
+                ),
+                true
+            );
+
+            if ($res < 0) {
+                $ret['message'] = $adh->picture->getErrorMessage($res);
+                $this->flash->addMessage(
+                    'error_detected',
+                    $ret['message']
+                );
+            } else {
+                $ret['result'] = true;
+                $this->flash->addMessage(
+                    'success_detected',
+                    _T('Member photo has been changed.')
+                );
+            }
+
+            return $response->withJson($ret);
+        }
+    )->setName('photoDnd');
 });

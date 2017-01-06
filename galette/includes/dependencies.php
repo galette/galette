@@ -271,7 +271,8 @@ $container['acls'] = function ($c) {
         'doEditDynamicField'        => 'admin',
         'moveDynamicField'          => 'admin',
         'removeDynamicField'        => 'admin',
-        'doRemoveDynamicField'      => 'admin'
+        'doRemoveDynamicField'      => 'admin',
+        'photoDnd'                  => 'staff'
     ];
 
     //load user defined ACLs
