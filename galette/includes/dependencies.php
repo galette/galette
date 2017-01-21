@@ -193,6 +193,7 @@ $container['acls'] = function ($c) {
         'sysinfos'          => 'staff',
         'charts'            => 'staff',
         'plugins'           => 'admin',
+        'pluginInitDb'      => 'admin',
         'history'           => 'staff',
         'history_filter'    => 'staff',
         'flushHistory'      => 'staff',

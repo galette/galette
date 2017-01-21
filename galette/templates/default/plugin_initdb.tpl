@@ -1,19 +1,28 @@
+{if $mode eq 'ajax'}
+    {assign var="extend" value='ajax.tpl'}
+{else}
+    {assign var="extend" value='page.tpl'}
+{/if}
+{extends file=$extend}
+{block name="content"}
 <section id="plugin_install">
     <header>
         <h1>{_T string="%plugin plugin installation" pattern="/%plugin/" replace=$plugin.name}</h1>
     </header>
     <div>
-    <form action="ajax_plugins_initdb.php" id="plugins_initdb_form" method="post">
+    <form action="{path_for name="pluginInitDb" data=["id" => $plugid]}" id="plugins_initdb_form" method="post">
         <h2>{$page_title}</h2>
-{if $ajax}
+{if $mode eq 'ajax'}
     {include file="global_messages.tpl"}
 {/if}
+
+
 
 {if $step == 1}
         <div id="installation_mode">
             <article id="mode_new" class="installation_mode">
                 <h3>
-                    <input type="radio" name="install_type" value="install" checked="checked" id="install"/>
+                    <input type="radio" name="install_type" value="{Galette\Core\PluginInstall::INSTALL}" checked="checked" id="install"/>
                     <label for="install">{_T string="New installation"}</label>
                 </h3>
                 <ul>
@@ -24,7 +33,7 @@
     {if isset($update_scripts) and $update_scripts|@count > 0}
             <article id="mode_update" class="installation_mode">
                 <h3>
-                    <input type="radio" name="install_type" value="upgrade" id="update"/>
+                    <input type="radio" name="install_type" value="{Galette\Core\PluginInstall::UPDATE}" id="update"/>
                     <label for="update">{_T string="Update"}</label>
                 </h3>
                 <ul>
@@ -36,14 +45,7 @@
         </div>
 {/if}
 {if $step == 'i2' || $step == 'u2'}
-        <ul class="leaders">
-    {foreach from=$result item=r}
-            <li>
-                <span>{$r.message}</span>
-                <span>{$r.image}</span>
-            </li>
-    {/foreach}
-        </ul>
+    {$results}
 {/if}
 {if $step == 'u3'}
         <fieldset class="cssform">
@@ -103,7 +105,7 @@
             <input type="hidden" name="install_type" value="{$install_type}"/>
     {/if}
     {if $error_detected|@count == 0 && $istep >= 2 || $istep > 2}
-            <input type="hidden" name="install_permsok" value="1"/>
+            <input type="hidden" name="install_dbperms_ok" value="1"/>
     {/if}
     {if $error_detected|@count == 0 && $istep >= 4 || $istep > 4}
             <input type="hidden" name="install_dbwrite_ok" value="1"/>
@@ -114,7 +116,7 @@
             <input id="next" type="submit" value="{_T string="Next step"}"/>
     {/if}
 {else}
-    {if $ajax}
+    {if $mode eq 'ajax'}
             <a href="#" class="button" id="btnback">{_T string="Close"}</a>
     {else}
             <a href="plugins.php" class="button" id="btnback">{_T string="Back to plugins managment page"}</a>
@@ -137,3 +139,4 @@
         </ol>
     </footer>
 </section>
+{/block}

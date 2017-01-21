@@ -28,7 +28,7 @@
                         <img src="{base_url}/{$template_subdir}images/icon-on.png" alt="{_T string="Disable plugin"}"/>
                     </a>
     {if $plugins->needsDatabase($name)}
-                    <a href="ajax_plugins_initdb.php?plugid={$name}" class="initdb" id="initdb_{$name}" title="{_T string="Initialize '%name' database" pattern="/%name/" replace=$plugin.name}">
+                    <a href="{path_for name="pluginInitDb" data=["id" => $name]}" class="initdb" id="initdb_{$name}" title="{_T string="Initialize '%name' database" pattern="/%name/" replace=$plugin.name}">
                         <img src="{base_url}/{$template_subdir}images/icon-db.png" alt="{_T string="Initialize database"}" width="16" height="16"/>
                     </a>
     {else}
@@ -120,14 +120,11 @@
 
             $('.initdb').click(function(){
                 var _plugin = this.id.substring(7);
+                var _url = $(this).attr('href');
 
                 $.ajax({
-                    url: 'ajax_plugins_initdb.php',
-                    type: "POST",
-                    data: {
-                        ajax: true,
-                        plugid: _plugin
-                    },
+                    url: _url,
+                    type: "GET",
                     {include file="js_loader.tpl"},
                     success: function(res){
                         _initdb_dialog(res, _plugin);
