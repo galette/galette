@@ -36,6 +36,9 @@
  */
 
 use Galette\Core\GaletteMail;
+use Galette\Core\Password;
+use Galette\Entity\Adherent;
+use Galette\Entity\Texts;
 
 //login page
 $app->get(
@@ -144,16 +147,178 @@ $app->get(
 
 //retrieve password procedure
 $app->post(
-    __('/retrieve-pass', 'routes'),
-    function ($request, $response) {
+    __('/retrieve-pass', 'routes') . '[/{' . Adherent::PK . ':\d+}]',
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+
+        $from_admin = false;
+        if ((($this->login->isAdmin() || $this->login->isStaff()) && isset($args['id_adh']))) {
+            $from_admin = true;
+        }
+
         if (($this->login->isLogged()
             || $this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED)
             && !$from_admin
         ) {
+            if ($this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("Email sent is disabled in the preferences. Ask galette admin")
+                );
+            }
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('slash'));
         }
-        $app->redirect($app->pathFor('slash'));
+
+        $adh = null;
+        $login_adh = null;
+        if (($this->login->isAdmin() || $this->login->isStaff()) && isset($args[Adherent::PK])) {
+            $adh = new Adherent($this->zdb, (int)$args[Adherent::PK]);
+            $login_adh = $adh->login;
+        } else {
+            $login_adh = $post['login'];
+            $adh = new Adherent($this->zdb, $login_adh);
+        }
+
+        if ($adh->id != '') {
+            //account has been found, proceed
+            if (GaletteMail::isValidEmail($adh->email)) {
+                $password = new Password($this->zdb);
+                $res = $password->generateNewPassword($adh->id);
+                if ($res == true) {
+                    $link_validity = new DateTime();
+                    $link_validity->add(new DateInterval('PT24H'));
+
+                    $df = _T("Y-m-d H:i:s");
+                    $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
+
+                    var_dump();
+                    exit;
+                    $texts = new Texts(
+                        $this->texts_fields,
+                        $this->preferences,
+                        array(
+                            'change_pass_uri'   => $scheme . '://' . $_SERVER['SERVER_NAME'] .
+                                                    $this->router->pathFor(
+                                                        'password-recovery',
+                                                        ['hash' => $password->getHash()]
+                                                    ),
+                            'link_validity'     => $link_validity->format(_T("Y-m-d H:i:s")),
+                            'login_adh'         => custom_html_entity_decode($adh->login, ENT_QUOTES)
+                        )
+                    );
+                    $mtxt = $texts->getTexts('pwd', $adh->language);
+
+                    $mail = new GaletteMail();
+                    $mail->setSubject($texts->getSubject());
+                    $mail->setRecipients(
+                        array(
+                            $adh->email => $adh->sname
+                        )
+                    );
+
+                    $mail->setMessage($texts->getBody());
+                    $sent = $mail->send();
+
+                    if ($sent == GaletteMail::MAIL_SENT) {
+                        $this->history->add(
+                            str_replace(
+                                '%s',
+                                $login_adh,
+                                _T("Mail sent to '%s' for password recovery.")
+                            )
+                        );
+                        if ($from_admin === false) {
+                            $message = _T("A mail has been sent to your address.<br/>Please check your inbox and follow the instructions.");
+                            $done = true;
+                        } else {
+                            $message = _T("An mail has been sent to the member.");
+                        }
+
+                        $this->flash->addMessage(
+                            'success_detected',
+                            $message
+                        );
+                    } else {
+                        $str = str_replace(
+                            '%s',
+                            $login_adh,
+                            _T("A problem happened while sending password for account '%s'")
+                        );
+                        $this->history->add($str);
+                        $this->flash->addMessage(
+                            'error_detected',
+                            $str
+                        );
+
+                        $error_detected[] = $str;
+                    }
+                } else {
+                    $str = str_replace(
+                        '%s',
+                        $login_adh,
+                        _T("An error occured storing temporary password for %s. Please inform an admin.")
+                    );
+                    $this->history->add($str);
+                    $this->flash->addMessage(
+                        'error_detected',
+                        $str
+                    );
+                }
+            } else {
+                $str = str_replace(
+                    '%s',
+                    $login_adh,
+                    _T("Your account (%s) do not contain any valid mail address")
+                );
+                $this->history->add($str);
+                $this->flash->addMessage(
+                    'error_detected',
+                    $str
+                );
+            }
+        } else {
+            //account has not been found
+            if (GaletteMail::isValidEmail($login_adh)) {
+                $str = str_replace(
+                    '%s',
+                    $login_adh,
+                    _T("Mails address %s does not exist")
+                );
+            } else {
+                $str = str_replace(
+                    '%s',
+                    $login_adh,
+                    _T("Login %s does not exist")
+                );
+            }
+
+            $this->history->add($str);
+            $this->flash->addMessage(
+                'error_detected',
+                $str
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('slash'));
     }
 )->setName('retrieve-pass');
+
+//password recovery page
+$app->get(
+    __('/password-recovery/{hash}', 'routes'),
+    function ($request, $response, $args) {
+        // display page
+        $this->view->render(
+            $response,
+            'change_passwd.tpl',
+            array(
+                'page_title'    => _T("Password recovery")
+            )
+        );
+        return $response;
+    }
+)->setName('password-recovery');

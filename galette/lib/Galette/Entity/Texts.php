@@ -97,7 +97,8 @@ class Texts
 
         $login_uri = null;
         if (isset($_SERVER['SERVER_NAME']) && isset($_SERVER['REQUEST_URI'])) {
-            $login_uri = 'http://' . $_SERVER['SERVER_NAME'] .
+            $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
+            $login_uri = $scheme . '://' . $_SERVER['SERVER_NAME'] .
                 dirname($_SERVER['REQUEST_URI']);
         }
         $this->replaces = array(
