@@ -152,8 +152,10 @@ $app->post(
         $post = $request->getParsedBody();
 
         $from_admin = false;
-        if ((($this->login->isAdmin() || $this->login->isStaff()) && isset($args['id_adh']))) {
+        $redirect_url = $this->router->pathFor('slash');
+        if ((($this->login->isAdmin() || $this->login->isStaff()) && isset($args[Adherent::PK]))) {
             $from_admin = true;
+            $redirect_url = $this->router->pathFor('member', ['id' => $args[Adherent::PK]]);
         }
 
         if (($this->login->isLogged()
@@ -168,7 +170,7 @@ $app->post(
             }
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('slash'));
+                ->withHeader('Location', $redirect_url);
         }
 
         $adh = null;
@@ -303,7 +305,7 @@ $app->post(
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('slash'));
+            ->withHeader('Location', $redirect_url);
     }
 )->setName('retrieve-pass');
 
