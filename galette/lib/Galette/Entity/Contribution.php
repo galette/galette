@@ -489,7 +489,7 @@ class Contribution
 
             $results = $zdb->execute($select);
             $result = $results->current();
-            if ( $result !== false ) {
+            if ( $result ) {
                 $d = new \DateTime($result->date_debut_cotis);
 
                 return _T("- Membership period overlaps period starting at ") .

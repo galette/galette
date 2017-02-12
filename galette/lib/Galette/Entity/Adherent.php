@@ -1118,7 +1118,7 @@ class Adherent
 
                             $results = $zdb->execute($select);
                             $result = $results->current();
-                            if ( $result !== false ) {
+                            if ( $result ) {
                                 $errors[] = str_replace(
                                     array(
                                         '%s',

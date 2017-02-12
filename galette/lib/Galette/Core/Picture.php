@@ -193,7 +193,7 @@ class Picture implements FileInterface
             $results = $zdb->execute($select);
             $pic = $results->current();
             //what's $pic if no result?
-            if ( $pic !== false ) {
+            if ( $pic ) {
                 // we must regenerate the picture file
                 $file_wo_ext = $this->store_path . $this->id;
                 file_put_contents(
