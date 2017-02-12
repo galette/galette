@@ -175,8 +175,7 @@ class Contribution
                 }
                 $this->_amount = $this->_transaction->getMissingAmount();
             }
-            $this->_type = new ContributionsTypes($this->zdb, (int)$args['type']);
-            $this->_is_cotis = (bool)$this->_type->extension;
+            $this->type = (int)$args['type'];
             //calculate begin date for cotisation
             $this->_begin_date = $this->_date;
             if ($this->_is_cotis) {
@@ -302,12 +301,7 @@ class Contribution
             $this->_transaction = new Transaction($this->zdb, (int)$r->$transpk);
         }
 
-        $this->_type = new ContributionsTypes($this->zdb, (int)$r->id_type_cotis);
-        if ($this->_type->extension == 1) {
-            $this->_is_cotis = true;
-        } else {
-            $this->_is_cotis = false;
-        }
+        $this->type = (int)$r->id_type_cotis;
     }
 
     /**
