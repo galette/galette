@@ -1,9 +1,16 @@
 {
     "name": "galette/galette",
-    "description": "Galette webapp.",
+    "description": "Galette - web membership management towards non profit organizations",
     "license": "GPLv3",
     "type": "project",
-    "keywords": ["membership"],
+    "keywords": ["membership", "web", "management"],
+    "homepage": "http://galette.eu/",
+    "support": {
+        "irc": "irc://irc.oftc.net/galette",
+        "forum": "https://forums.galette.eu/",
+        "issues": "https://bugs.galette.eu/projects/galette",
+        "docs": "http://galette.eu/documentation/"
+    },
     "authors": [
         {
             "name": "Johan Cwiklinski",
@@ -17,6 +24,7 @@
         }
     },
     "require": {
+        "php": ">=5.6.0",
         "slim/slim": "^3.0",
         "slim/flash": "^0.1.0",
         "monolog/monolog": "^1.13",
@@ -30,6 +38,9 @@
     },
     "require-dev": {
         "atoum/atoum": "^2.9"
+    },
+    "config": {
+        "optimize-autoloader": true
     },
     "scripts": {
         "post-install-cmd": "if [ $COMPOSER_DEV_MODE -eq 1 ]; then patch -d vendor/atoum/atoum -p1 < ../tests/atoum-php71.patch; fi"
