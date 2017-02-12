@@ -1,6 +1,6 @@
 {extends file="public_page.tpl"}
 {block name="content"}
-                <form action="{urlFor name="retrieve-pass"}" method="post" enctype="multipart/form-data">
+                <form action="{path_for name="retrieve-pass"}" method="post" enctype="multipart/form-data">
                 <section>
                     <p>
                         <label for="login" class="">{_T string="Username or email:"}</label>
