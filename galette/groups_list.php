@@ -172,7 +172,7 @@ foreach ( $groups_list as $group ) {
 
     foreach ( $members as $m ) {
         $pdf->Cell(80, 7, $m->sname, 1, 0, 'L');
-        $pdf->Cell(50, 7, $m->email, 1, 0, 'L');
+        $pdf->Cell(50, 7, $m->getEmail(), 1, 0, 'L');
         $pdf->Cell(30, 7, $m->phone, 1, 0, 'L');
         $pdf->Cell(30, 7, $m->gsm, 1, 1, 'L');
     }
