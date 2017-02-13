@@ -206,10 +206,14 @@ class Password extends AbstractPassword
             )->where(array('tmp_passwd' => $hash));
 
             $results = $this->zdb->execute($select);
-            $result = $results->current();
 
-            $pk = self::PK;
-            return $result->$pk;
+            if ($results->count() > 0) {
+                $result = $results->current();
+                $pk = self::PK;
+                return $result->$pk;
+            } else {
+                return false;
+            }
         } catch (\Exception $e) {
             Analog::log(
                 'An error occured getting requested hash. ' . $e->getMessage(),

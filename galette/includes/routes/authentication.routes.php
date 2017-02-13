@@ -202,7 +202,7 @@ $app->post(
                             'change_pass_uri'   => $scheme . '://' . $_SERVER['SERVER_NAME'] .
                                                     $this->router->pathFor(
                                                         'password-recovery',
-                                                        ['hash' => $password->getHash()]
+                                                        ['hash' => base64_encode($password->getHash())]
                                                     ),
                             'link_validity'     => $link_validity->format(_T("Y-m-d H:i:s")),
                             'login_adh'         => custom_html_entity_decode($adh->login, ENT_QUOTES)
@@ -309,16 +309,108 @@ $app->post(
 
 //password recovery page
 $app->get(
-    __('/password-recovery/{hash}', 'routes'),
+    __('/password-recovery', 'routes') . '/{hash}',
     function ($request, $response, $args) {
+        $password = new Password($this->zdb);
+        if (!$id_adh = $password->isHashValid(base64_decode($args['hash']))) {
+            $this->flash->addMessage(
+                'warning_detected',
+                _T("This link is no longer valid. You should ask to retrieve your password again.")
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor('password-lost')
+                );
+        }
+
         // display page
         $this->view->render(
             $response,
             'change_passwd.tpl',
             array(
+                'hash'          => $args['hash'],
                 'page_title'    => _T("Password recovery")
             )
         );
         return $response;
     }
 )->setName('password-recovery');
+
+//password recovery page
+$app->post(
+    __('/password-recovery', 'routes'),
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        $password = new Password($this->zdb);
+        $hash_ok = true;
+
+        if (!$id_adh = $password->isHashValid(base64_decode($post['hash']))) {
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor('password-recovery', ['hash' => $post['hash']])
+                );
+        }
+
+        $error = null;
+        if ($post['mdp_adh'] == '') {
+            $error = _T("No password");
+        } elseif (isset($post['mdp_adh2'])) {
+            if (strcmp($post['mdp_adh'], $post['mdp_adh2'])) {
+                $error = _T("- The passwords don't match!");
+            } else {
+                if (strlen($post['mdp_adh']) < 4) {
+                    $error = _T("- The password must be of at least 4 characters!");
+                } else {
+                    $res = Galette\Entity\Adherent::updatePassword(
+                        $this->zdb,
+                        $id_adh,
+                        $post['mdp_adh']
+                    );
+                    if ($res !== true) {
+                        $error = _T("An error occured while updating your password.");
+                    } else {
+                        $this->history->add(
+                            str_replace(
+                                '%s',
+                                $id_adh,
+                                _T("Password changed for member '%s'.")
+                            )
+                        );
+                        //once password has been changed, we can remove the
+                        //temporary password entry
+                        $password->removeHash(base64_decode($post['hash']));
+                        $password_updated = true;
+                        $this->flash->addMessage(
+                            'success_detected',
+                            _T("Your password has been changed!")
+                        );
+                        return $response
+                            ->withStatus(301)
+                            ->withHeader(
+                                'Location',
+                                $this->router->pathFor('slash')
+                            );
+                    }
+                }
+            }
+        }
+
+        if ($error !== null) {
+            $this->flash->addMessage(
+                'error_detected',
+                $error
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader(
+                'Location',
+                $this->router->pathFor('password-recovery', ['hash' => $post['hash']])
+            );
+    }
+)->setName('do-password-recovery');
