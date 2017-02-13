@@ -141,7 +141,7 @@ require_once GALETTE_ROOT . 'includes/smarty.inc.php';
 $authenticate = function ($request, $response, $next) use ($container) {
     $login = $container->session->login;
 
-    if (!$login->isLogged()) {
+    if (!$login || !$login->isLogged()) {
         //$this->session->urlRedirect = $request->getPathInfo();
         $this->flash->addMessage('error_detected', _T("Login required"));
         return $response

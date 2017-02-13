@@ -195,8 +195,6 @@ $app->post(
                     $df = _T("Y-m-d H:i:s");
                     $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
 
-                    var_dump();
-                    exit;
                     $texts = new Texts(
                         $this->texts_fields,
                         $this->preferences,
