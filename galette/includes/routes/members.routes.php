@@ -616,10 +616,9 @@ $app->get(
             $filters = new MembersList();
         }
 
-        if (($this->login->isAdmin()
+        if ($this->login->isAdmin()
             || $this->login->isStaff()
-            || $this->login->isGroupManager())
-            && count($filters) > 0
+            || $this->login->isGroupManager()
         ) {
             $m = new Members($filters);
             $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
@@ -642,9 +641,6 @@ $app->get(
             }
         }
 
-        //Set caller page ref for cards error reporting
-        //$this->session->caller = 'voir_adherent.php?id_adh='.$id_adh;
-
         // declare dynamic field values
         $adherent['dyn'] = $dyn_fields->getFields('adh', $id, true);
 
@@ -656,18 +652,6 @@ $app->get(
             $disabled['dyn'],
             0
         );
-
-        //if we got a mail warning when adding/editing a member,
-        //we show it and delete it from session
-        /*if ( isset($this->session['mail_warning']) ) {
-            $warning_detected[] = $this->session['mail_warning'];
-            unset($this->session['mail_warning']);
-        }
-        $tpl->assign('warning_detected', $warning_detected);
-        if ( isset($this->session['account_success']) ) {
-            $success_detected = unserialize($this->session['account_success']);
-            unset($this->session['account_success']);
-        }*/
 
         // flagging fields visibility
         $fc = $this->fields_config;
@@ -875,11 +859,6 @@ $app->get(
                     break;
                 }
             }
-        }
-
-        if (isset($this->session->mail_warning)) {
-            //warning will be showed here, no need to keep it longer into session
-            unset($this->session->mail_warning);
         }
 
         //Status
@@ -1185,7 +1164,6 @@ $app->post(
                             //we do not throw an error, just a simple warning that will be show later
                             $msg = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
                             $warning_detected[] = $msg;
-                            $this->session->mail_warning = $msg;
                         }
                     }
 
@@ -1267,23 +1245,32 @@ $app->post(
             }
 
             if (count($error_detected) == 0) {
-                $this->session->account_success = $success_detected;
-                if (count($warning_detected) > 0) {
-                    foreach ($warning_detected as $warning) {
-                        $this->flash->addMessage(
-                            'warning_detected',
-                            $warning
-                        );
-                    }
+                foreach ($error_detected as $error) {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        $error
+                    );
                 }
-                if (count($success_detected) > 0) {
-                    foreach ($success_detected as $success) {
-                        $this->flash->addMessage(
-                            'success_detected',
-                            $success
-                        );
-                    }
+            }
+
+            if (count($warning_detected) > 0) {
+                foreach ($warning_detected as $warning) {
+                    $this->flash->addMessage(
+                        'warning_detected',
+                        $warning
+                    );
                 }
+            }
+            if (count($success_detected) > 0) {
+                foreach ($success_detected as $success) {
+                    $this->flash->addMessage(
+                        'success_detected',
+                        $success
+                    );
+                }
+            }
+
+            if (count($error_detected) == 0) {
                 if (!isset($_POST['id_adh']) && !$member->isDueFree()) {
                     return $response
                         ->withStatus(301)
@@ -1305,13 +1292,6 @@ $app->post(
             } else {
                 //store entity in session
                 $this->session->member = $member;
-
-                foreach ($error_detected as $error) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $error
-                    );
-                }
 
                 if ($member->id) {
                     $rparams = [

@@ -141,6 +141,7 @@ class Pdf extends \TCPDF
      * document would probably be invalid.
      * 2004-06-11 :: Nicola Asuni : changed bold tag with strong
      * 2007-07-21 :: John Perr : changed function to return error to session
+     * 2017-02-14 :: Johan Cwiklinski : use slim's flash message; do not rely on session for redirect
      *
      * @param string $msg The error message
      *
@@ -151,15 +152,21 @@ class Pdf extends \TCPDF
     public function Error($msg)
     {
         global $container;
-        $session = $container->get('session');
-        /** FIXME: I do not really like this, we should find sthing better */
-        $session->pdf_error = true;
-        $session->pdf_error_msg = $msg;
+
         Analog::log(
             'PDF error: ' .$msg,
             Analog::ERROR
         );
-        header("location:" . $session->caller);
+
+        $container->get('flash')->addMessage(
+            'error_detected',
+            $msg
+        );
+
+        $redirect = (isset($_SERVER['HTTP_REFERER']) ?
+            $_SERVER['HTTP_REFERER'] :
+            $container->get('router')->pathFor('slash'));
+        header('Location: ' . $redirect);
         die();
     }
 
