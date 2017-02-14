@@ -146,11 +146,10 @@ $app->get(
 )->setName('password-lost');
 
 //retrieve password procedure
-$app->post(
+$app->map(
+    ['GET', 'POST'],
     __('/retrieve-pass', 'routes') . '[/{' . Adherent::PK . ':\d+}]',
     function ($request, $response, $args) {
-        $post = $request->getParsedBody();
-
         $from_admin = false;
         $redirect_url = $this->router->pathFor('slash');
         if ((($this->login->isAdmin() || $this->login->isStaff()) && isset($args[Adherent::PK]))) {
@@ -179,6 +178,7 @@ $app->post(
             $adh = new Adherent($this->zdb, (int)$args[Adherent::PK]);
             $login_adh = $adh->login;
         } else {
+            $post = $request->getParsedBody();
             $login_adh = $post['login'];
             $adh = new Adherent($this->zdb, $login_adh);
         }
