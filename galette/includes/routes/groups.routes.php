@@ -340,3 +340,24 @@ $app->post(
         }
     }
 )->setName('ajax_groupname_unique')->add($authenticate);
+
+$app->post(
+    __('/ajax/groups', 'routes'),
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+
+        $groups = new Groups($this->zdb, $this->login);
+
+        // display page
+        $this->view->render(
+            $response,
+            'ajax_groups.tpl',
+            array(
+                'mode'              => 'ajax',
+                'groups_list'       => $groups->getList(),
+                'selected_groups'   => (isset($post['groups']) ? $post['groups'] : [])
+            )
+        );
+        return $response;
+    }
+)->setName('ajax_groups')->add($authenticate);

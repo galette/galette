@@ -258,6 +258,7 @@ $container['acls'] = function ($c) {
         'removeContributions'       => 'staff',
         'pdf_groups'                => 'groupmanager',
         'ajax_group'                => 'groupmanager',
+        'ajax_groups'               => 'groupmanager',
         'ajax_groupname_unique'     => 'staff',
         'add_group'                 => 'staff',
         'removeGroup'               => 'staff',

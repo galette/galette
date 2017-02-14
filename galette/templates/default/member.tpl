@@ -268,7 +268,7 @@
                         };
                     });
                     $.ajax({
-                        url: 'ajax_groups.php',
+                        url: '{path_for name="ajax_groups"}',
                         type: "POST",
                         data: {
                             ajax: true,
@@ -311,7 +311,14 @@
                         var _form = (_managed) ? 'managed' : 'user';
                         $('#' + _form + 'groups_form').empty();
                         var _groups = new Array();
-                        var _groups_str = '';
+                        var _groups_str = '<strong>';
+                        if ( _managed ) {
+                            _groups_str += '{_T string="Manager for:" escape="js"}';
+                        } else {
+                            _groups_str += '{_T string="Member of:" escape="js"}';
+                        }
+                        _groups_str += '</strong>';
+
                         $('li[id^="group_"]').each(function(){
                             //get group values
                             _gid = this.id.substring(6, this.id.length);
@@ -326,11 +333,7 @@
                             if ( _groups_str != '' ) {
                                 _groups_str += ', ';
                             }
-                            if ( _managed ) {
-                                _groups_str += '{_T string="Manager for '%groupname'" escape="js"}'.replace(/%groupname/, _gname);
-                            } else {
-                                _groups_str += '{_T string="Member of '%groupname'" escape="js"}'.replace(/%groupname/, _gname);
-                            }
+                            _groups_str += _gname;
                         });
                         $('#' + _form + 'groups').html(_groups_str);
                         $('#ajax_groups_list').dialog("close");
