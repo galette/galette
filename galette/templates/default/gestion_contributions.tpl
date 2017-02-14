@@ -195,7 +195,7 @@
                         {/if}
                         {$ordre+1}
         {if $contribution->isTransactionPart() }
-                        <a href="{base_url}/ajouter_transaction.php?trans_id={$contribution->transaction->id}" title="{_T string="Transaction: %s" pattern="/%s/" replace=$contribution->transaction->description}">
+                        <a href="{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $contribution->transaction->id]}" title="{_T string="Transaction: %s" pattern="/%s/" replace=$contribution->transaction->description}">
                             <img src="{base_url}/{$template_subdir}images/icon-money.png"
                                 alt="{_T string="[view]"}"
                                 width="16"
@@ -226,7 +226,7 @@
                     <td class="{$cclass} nowrap">{$contribution->duration}</td>
     {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
                     <td class="{$cclass} center nowrap">
-                        <a href="pdf_contribution.php?id_cotis={$contribution->id}">
+                        <a href="{path_for name="printContribution" data=["id" => $contribution->id]}">
                             <img src="{base_url}/{$template_subdir}images/icon-pdf.png" alt="{_T string="[pdf]"}" width="16" height="16" title="{_T string="Print an invoice or a receipt (depending on contribution type)"}"/>
                         </a>
                         {if $contribution->isCotis()}

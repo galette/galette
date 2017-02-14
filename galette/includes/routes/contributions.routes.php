@@ -45,6 +45,7 @@ use Galette\Entity\Adherent;
 use Galette\Entity\ContributionsTypes;
 use Galette\Core\GaletteMail;
 use Galette\Entity\Texts;
+use Galette\IO\PdfContribution;
 
 $app->get(
     '/{type:' . __('transactions', 'routes') .'|'. __('contributions', 'routes') .
@@ -1277,3 +1278,13 @@ $app->post(
         }
     }
 )->setName('doRemoveContribution')->add($authenticate);
+
+//Contribution PDF
+$app->get(
+    __('/contribution', 'routes') . __('/print', 'routes') . '/{id:\d+}',
+    function ($request, $response, $args) {
+        $contribution = new Contribution($this->zdb, $this->login, (int)$args['id']);
+        $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
+        $pdf->download();
+    }
+)->setName('printContribution')->add($authenticate);

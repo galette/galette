@@ -101,7 +101,7 @@ class PdfContribution
             )
         );
 
-        $address = $member->getAdress();
+        $address = $member->getAddress();
         if ($member->getAddressContinuation() != '') {
             $address .= '<br/>' . $member->getAddressContinuation();
         }
