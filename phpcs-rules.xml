@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="Seritech">
+<ruleset name="Galette">
     <description>Coding standard based on PSR2 with comments from Zend for Galette</description>
 
      <!-- Include the whole PSR2 standard -->
