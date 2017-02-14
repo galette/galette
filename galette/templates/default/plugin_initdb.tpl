@@ -119,7 +119,7 @@
     {if $mode eq 'ajax'}
             <a href="#" class="button" id="btnback">{_T string="Close"}</a>
     {else}
-            <a href="plugins.php" class="button" id="btnback">{_T string="Back to plugins managment page"}</a>
+            <a href="{path_for name="plugins"}" class="button" id="btnback">{_T string="Back to plugins managment page"}</a>
     {/if}
 {/if}
         </p>

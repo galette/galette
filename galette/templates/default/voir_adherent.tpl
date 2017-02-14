@@ -139,7 +139,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 <td>
     {foreach from=$groups item=group key=kgroup}
         {if $member->isGroupMember($group) or $member->isGroupManager($group)}
-                    <a href="{if $login->isGroupManager($kgroup)}gestion_groupes.php?id_group={$kgroup}{else}#{/if}" class="button group-btn{if not $login->isGroupManager($kgroup)} notmanaged{/if}">
+                    <a href="{if $login->isGroupManager($kgroup)}{path_for name="groups" data=["id" => $kgroup]}{else}#{/if}" class="button group-btn{if not $login->isGroupManager($kgroup)} notmanaged{/if}">
                         {$group}
             {if $member->isGroupMember($group)}
                         <img src="{base_url}/{$template_subdir}images/icon-user.png" alt="{_T string="[member]"}" width="16" height="16"/>
