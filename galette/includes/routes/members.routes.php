@@ -1244,8 +1244,17 @@ $app->post(
                 $dyn_fields->setAllFields('adh', $member->id, $adherent['dyn']);
             }
 
-            if (count($error_detected) == 0) {
+            if (count($error_detected) > 0) {
                 foreach ($error_detected as $error) {
+                    if (strpos($error, '%member_url_') !== false) {
+                        preg_match('/%member_url_(\d+)/', $error, $matches);
+                        $url = $this->router->pathFor('member', ['id' => $matches[1]]);
+                        $error = str_replace(
+                            '%member_url_' . $matches[1],
+                            $url,
+                            $error
+                        );
+                    }
                     $this->flash->addMessage(
                         'error_detected',
                         $error

@@ -1131,10 +1131,10 @@ class Adherent
                                     $result = $results->current();
                                     $errors[] = str_replace(
                                         array(
-                                            '%s',
-                                            '%i',
-                                            '%n',
-                                            '%m'
+                                            '%status',
+                                            '%id',
+                                            '%name',
+                                            '%surname'
                                         ),
                                         array(
                                             $result->libelle_statut,
@@ -1142,7 +1142,7 @@ class Adherent
                                             $result->nom_adh,
                                             $result->prenom_adh
                                         ),
-                                        _T("Selected status (%s) is already in use in <a href='voir_adherent.php?id_adh=%i'>%n %m's profile</a>.")
+                                        _T("Selected status (%status) is already in use in <a href='%member_url_%id'>%name %surname's profile</a>.")
                                     );
                                 }
                             } catch (\Exception $e) {
