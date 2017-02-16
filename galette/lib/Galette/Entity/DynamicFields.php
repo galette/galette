@@ -329,6 +329,7 @@ class DynamicFields
                 foreach ($results as $r) {
                     $df = $this->getFieldType($r['field_type']);
                     if ((int)$r['field_type'] === self::CHOICE
+                        || (int)$r['field_type'] === self::LINE
                         || (int)$r['field_type'] === self::TEXT
                         || (int)$r['field_type'] === self::DATE
                         || (int)$r['field_type'] === self::BOOLEAN
