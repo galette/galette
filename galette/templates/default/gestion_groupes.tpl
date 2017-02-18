@@ -169,10 +169,9 @@
                     return $(this).val();
                 }).get();
                 $.ajax({
-                    url: 'ajax_members.php',
+                    url: '{path_for name="ajaxMembers"}',
                     type: "POST",
                     data: {
-                        ajax: true,
                         multiple: true,
                         from: 'groups',
                         gid: $('#id_group').val(),
@@ -232,7 +231,7 @@
                 $('#members_list').dialog("close");
 
                 $.ajax({
-                    url: 'ajax_group_members.php',
+                    url: '{path_for name="ajaxGroupMembers"}',
                     type: "POST",
                     data: {
                         persons: _persons,
@@ -256,8 +255,9 @@
                     $('#selected_members ul').append(_none);
                 }
             });
-            $('#members_list #listing tbody a').click(function(){
-                var _mid = this.href.substring(this.href.indexOf('?')+8);
+            $('#members_list #listing tbody a').click(function(e){
+                e.preventDefault();
+                var _mid = this.href.match(/.*\/(\d+)$/)[1];
                 var _mname = $(this).text();
                 $('#none_selected').remove()
                 if ( $('#member_' + _mid).length == 0 ) {
@@ -274,7 +274,6 @@
             });
 
             $('#members_list .pages a').click(function(){
-                var _page = this.href.substring(this.href.indexOf('?')+6);
                 var gid = $('#the_id').val();
                 var _members = new Array();
                 $('li[id^="member_"]').each(function(){
@@ -282,15 +281,14 @@
                 });
 
                 $.ajax({
-                    url: 'ajax_members.php',
+                    url: this.href,
                     type: "POST",
                     data: {
-                        ajax: true,
                         from: 'groups',
                         gid: gid,
                         members: _members,
-                        page: _page,
-                        mode: _mode
+                        mode: _mode,
+                        multiple: true
                     },
                     {include file="js_loader.tpl"},
                     success: function(res){

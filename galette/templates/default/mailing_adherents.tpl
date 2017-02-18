@@ -52,7 +52,7 @@
                             {foreach item=attachment from=$attachments}
                             <li>
                                 <a href="?remove_attachment={$attachment->getFileName()}" class="rm_attachement">
-                                    <img alt="{_T string="Remove attachment"}" src="./templates/default/images/delete.png">
+                                    <img alt="{_T string="Remove attachment"}" src="{base_url}/{$template_subdir}images/delete.png">
                                 </a>
                                 {$attachment->getFileName()}
                             </li>
@@ -169,10 +169,10 @@
         {* Members popup *}
         $('#btnusers').click(function(){
             $.ajax({
-                url: 'ajax_members.php',
+                url: '{path_for name="ajaxMembers"}',
                 type: "POST",
                 data: {
-                    ajax: true
+                    multiple: true
                 },
                 {include file="js_loader.tpl"},
                 success: function(res){
@@ -255,19 +255,24 @@
             });
 
             $('#members_list .pages a').click(function(){
-                var _page = this.href.substring(this.href.indexOf('?')+6);
                 var _members = new Array();
+                var _unreach = new Array();
                 $('li[id^="member_"]').each(function(){
-                    _members[_members.length] = this.id.substring(7, this.id.length);
+                    var _mid = this.id.substring(7, this.id.length);
+                    if ($(this).hasClass('unreachables')) {
+                        _unreach[_unreach.length] = _mid;
+                    } else {
+                        _members[_members.length] = _mid;
+                    }
                 });
 
                 $.ajax({
-                    url: 'ajax_members.php',
+                    url: this.href,
                     type: "POST",
                     data: {
-                        ajax: true,
+                        multiple: true,
                         members: _members,
-                        page: _page
+                        unreachables: _unreach
                     },
                     {include file="js_loader.tpl"},
                     success: function(res){

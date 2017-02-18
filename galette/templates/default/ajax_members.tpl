@@ -26,22 +26,22 @@
                     <td class="{$rclass} right">{$member->id}</td>
                     <td class="{$rclass} nowrap username_row">
                     {if $member->isCompany()}
-                        <img src="{$template_subdir}images/icon-company.png" alt="{_T string="[W]"}" width="16" height="16"/>
+                        <img src="{base_url}/{$template_subdir}images/icon-company.png" alt="{_T string="[W]"}" width="16" height="16"/>
                     {elseif $member->isMan()}
-                        <img src="{$template_subdir}images/icon-male.png" alt="{_T string="[M]"}" width="16" height="16"/>
+                        <img src="{base_url}/{$template_subdir}images/icon-male.png" alt="{_T string="[M]"}" width="16" height="16"/>
                     {elseif $member->isWoman()}
-                        <img src="{$template_subdir}images/icon-female.png" alt="{_T string="[W]"}" width="16" height="16"/>
+                        <img src="{base_url}/{$template_subdir}images/icon-female.png" alt="{_T string="[W]"}" width="16" height="16"/>
                     {else}
-                        <img src="{$template_subdir}images/icon-empty.png" alt="" width="10" height="12"/>
+                        <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="10" height="12"/>
                     {/if}
                     {if $member->isAdmin()}
-                        <img src="{$template_subdir}images/icon-star.png" alt="{_T string="[admin]"}" width="16" height="16"/>
+                        <img src="{base_url}/{$template_subdir}images/icon-star.png" alt="{_T string="[admin]"}" width="16" height="16"/>
                     {elseif $member->isStaff()}
-                        <img src="{$template_subdir}images/icon-staff.png" alt="{_T string="[staff]"}" width="16" height="16"/>
+                        <img src="{base_url}/{$template_subdir}images/icon-staff.png" alt="{_T string="[staff]"}" width="16" height="16"/>
                     {else}
-                        <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
+                        <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
                     {/if}
-                    <a href="{path_for name="member" options=["id" => $member->id]}">{$member->sfullname}</a>
+                    <a href="{path_for name="member" data=["id" => $member->id]}">{$member->sfullname}</a>
                     </td>
                     <td class="{$rclass} nowrap">{$member->zipcode} {$member->town}</td>
                 </tr>

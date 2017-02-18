@@ -56,6 +56,7 @@ use Galette\Repository\Titles;
 use Galette\Entity\Texts;
 use Galette\IO\Pdf;
 use Galette\Core\MailingHistory;
+use Galette\Entity\Group;
 
 //self subscription
 $app->get(
@@ -2314,3 +2315,151 @@ $app->post(
         $pdf->Output(_T("attendance_sheet") . '.pdf', 'D');
     }
 )->setName('attendance_sheet')->add($authenticate);
+
+$app->post(
+    __('/ajax/members', 'routes') . '[/{option:' . __('page', 'routes') . '|' . __('order', 'routes') . '}/{value:\d+}]',
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+
+        if (isset($this->session->ajax_members_filters)) {
+            $filters = $this->session->ajax_members_filters;
+        } else {
+            $filters = new MembersList();
+        }
+
+        if (isset($args['option']) && $args['option'] == __('page', 'routes')) {
+            $filters->current_page = (int)$args['value'];
+        }
+
+        //numbers of rows to display
+        if (isset($post['nbshow']) && is_numeric($post['nbshow'])) {
+            $filters->show = $post['nbshow'];
+        }
+
+        $members = new Members($filters);
+        $members_list = $members->getMembersList(true);
+
+        //assign pagination variables to the template and add pagination links
+        $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
+
+        $this->session->ajax_members_filters = $filters;
+
+        $selected_members = null;
+        $unreachables_members = null;
+        if (!isset($post['from'])) {
+            $mailing = $this->session->mailing;
+            if (!isset($post['members'])) {
+                $selected_members = $mailing->recipients;
+                $unreachables_members = $mailing->unreachables;
+            } else {
+                $m = new Members();
+                $selected_members = $m->getArrayList($post['members']);
+                if (isset($post['unreachables']) && is_array($post['unreachables'])) {
+                    $unreachables_members = $m->getArrayList($post['unreachables']);
+                }
+            }
+        } else {
+            switch ($post['from']) {
+                case 'groups':
+                    if (!isset($post['gid'])) {
+                        Analog::log(
+                            'Trying to list group members with no group id provided',
+                            Analog::ERROR
+                        );
+                        throw new Exception('A group id is required.');
+                        exit(0);
+                    }
+                    if (!isset($post['members'])) {
+                        $group = new Group((int)$post['gid']);
+                        $selected_members = array();
+                        if (!isset($post['mode']) || $post['mode'] == 'members') {
+                            $selected_members = $group->getMembers();
+                        } elseif ($post['mode'] == 'managers') {
+                            $selected_members = $group->getManagers();
+                        } else {
+                            Analog::log(
+                                'Trying to list group members with unknown mode',
+                                Analog::ERROR
+                            );
+                            throw new Exception('Unknown mode.');
+                            exit(0);
+                        }
+                    } else {
+                        $m = new Members();
+                        $selected_members = $m->getArrayList($post['members']);
+                        if (isset($post['unreachables']) && is_array($post['unreachables'])) {
+                            $unreachables_members = $m->getArrayList($post['unreachables']);
+                        }
+                    }
+                    break;
+                case 'attach':
+                    if (!isset($post['id_adh'])) {
+                        throw new \RuntimeException(
+                            'Current selected member must be excluded while attaching!'
+                        );
+                        exit(0);
+                    }
+                    break;
+            }
+        }
+
+        $params = [
+            'filters'               => $filters,
+            'members_list'          => $members_list,
+            'selected_members'      => $selected_members,
+            'unreachables_members'  => $unreachables_members
+        ];
+
+        if (isset($post['multiple'])) {
+            $params['multiple'] = true;
+        }
+
+        if (isset($post['gid'])) {
+            $params['the_id'] = $post['gid'];
+        }
+
+        if (isset($post['id_adh'])) {
+            $params['excluded'] = $post['id_adh'];
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            'ajax_members.tpl',
+            $params
+        );
+        return $response;
+    }
+)->setName('ajaxMembers')->add($authenticate);
+
+$app->post(
+    __('/ajax/group/members', 'routes'),
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+
+        $ids = $post['persons'];
+        $mode = $post['person_mode'];
+
+        if (!$ids || !$mode) {
+            Analog::log(
+                'Missing persons and mode for ajaxGroupMembers',
+                Analog::INFO
+            );
+            die();
+        }
+
+        $m = new Members;
+        $persons = $m->getArrayList($ids);
+
+        // display page
+        $this->view->render(
+            $response,
+            'group_persons.tpl',
+            [
+                'persons'       => $persons,
+                'person_mode'   => $mode
+            ]
+        );
+        return $response;
+    }
+)->setName('ajaxGroupMembers');

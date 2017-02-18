@@ -377,11 +377,9 @@
                             return $(this).val();
                         }).get();
                         $.ajax({
-                            url: 'ajax_members.php',
+                            url: '{path_for name="ajaxMembers"}',
                             type: "POST",
                             data: {
-                                ajax: true,
-                                multiple: false,
                                 from: 'attach',
                                 id_adh: {if isset($member->id) and $member->id neq ''}{$member->id}{else}'new'{/if}
                             },
@@ -439,18 +437,14 @@
                     });
                     //Remap links
                     $('#members_list .pages a').click(function(){
-                        var _page = this.href.substring(this.href.indexOf('?')+6);
                         var gid = $('#the_id').val();
 
                         $.ajax({
-                            url: 'ajax_members.php',
+                            url: this.href,
                             type: "POST",
                             data: {
-                                ajax: true,
                                 from: 'attach',
-                                multiple: false,
-                                id_adh: {if isset($member->id) and $member->id neq ''}{$member->id}{else}'new'{/if},
-                                page: _page,
+                                id_adh: {if isset($member->id) and $member->id neq ''}{$member->id}{else}'new'{/if}
                             },
                             {include file="js_loader.tpl"},
                             success: function(res){
