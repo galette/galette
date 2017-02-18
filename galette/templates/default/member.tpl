@@ -311,13 +311,13 @@
                         var _form = (_managed) ? 'managed' : 'user';
                         $('#' + _form + 'groups_form').empty();
                         var _groups = new Array();
-                        var _groups_str = '<strong>';
+                        var _groups_str = '<br/><strong>';
                         if ( _managed ) {
                             _groups_str += '{_T string="Manager for:" escape="js"}';
                         } else {
                             _groups_str += '{_T string="Member of:" escape="js"}';
                         }
-                        _groups_str += '</strong>';
+                        _groups_str += '</strong> ';
 
                         $('li[id^="group_"]').each(function(){
                             //get group values
@@ -330,7 +330,7 @@
                                 _gid + '|' + _gname + '|' +
                                 '" name="' + _iname + '[]">'
                             );
-                            if ( _groups_str != '' ) {
+                            if ( _groups.length > 1 ) {
                                 _groups_str += ', ';
                             }
                             _groups_str += _gname;
@@ -349,8 +349,9 @@
                             $('#selected_groups ul').append(_none);
                         }
                     });
-                    $('#listing a').click(function(){
-                        var _gid = this.href.substring(this.href.indexOf('?')+10);
+                    $('#listing a').click(function(e){
+                        e.preventDefault();
+                        var _gid = this.href.match(/.*\/(\d+)$/)[1];
                         var _gname = $(this).text();
                         $('#none_selected').remove()
                         if ( $('#group_' + _gid).length == 0 ) {
