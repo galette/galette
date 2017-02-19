@@ -1345,13 +1345,15 @@ $app->get(
     }
 )->setName('removeMember')->add($authenticate);
 
-/*$app->get(
+$app->get(
     __('/members/remove', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
 
+        $filters =  $this->session->filter_members;
+
         $data = [
-            'ids'           => $post['ids'],
+            'id'           => $filters->selected,
             'redirect_uri'  => $this->router->pathFor('members')
         ];
 
@@ -1365,7 +1367,7 @@ $app->get(
                 'page_title'    => _T('Remove members'),
                 'message'       => str_replace(
                     '%count',
-                    count($data['ids']),
+                    count($data['id']),
                     _T('You are about to remove %count members.')
                 ),
                 'form_url'      => $this->router->pathFor('doRemoveMember'),
@@ -1375,7 +1377,7 @@ $app->get(
         );
         return $response;
     }
-)->setName('removeMembers')->add($authenticate);*/
+)->setName('removeMembers')->add($authenticate);
 
 $app->post(
     __('/member/remove', 'routes') . '[/{id:\d+}]',
@@ -1394,36 +1396,58 @@ $app->post(
                 _T("Removal has not been confirmed!")
             );
         } else {
-            //delete member
-            $adh = new Adherent($this->zdb, (int)$post['id']);
             if (isset($this->session->filter_members)) {
                 $filters =  $this->session->filter_members;
             } else {
                 $filters = new MembersList();
             }
             $members = new Members($filters);
-            $del = $members->removeMembers((int)$post['id']);
+
+            if (!is_array($post['id'])) {
+                //delete member
+                $adh = new Adherent($this->zdb, (int)$post['id']);
+                $ids = (array)$post['id'];
+            } else {
+                $ids = $post['id'];
+            }
+
+            $del = $members->removeMembers($ids);
 
             if ($del !== true) {
-                $error_detected = str_replace(
-                    '%name',
-                    $adh->sname,
-                    _T("An error occured trying to remove member %name :/")
-                );
+                if (count($ids) === 1) {
+                    $error_detected = str_replace(
+                        '%name',
+                        $adh->sname,
+                        _T("An error occured trying to remove member %name :/")
+                    );
+                } else {
+                    $error_detected = _T("An error occured trying to remove members :/");
+                }
 
                 $this->flash->addMessage(
                     'error_detected',
                     $error_detected
                 );
             } else {
-                $this->flash->addMessage(
-                    'success_detected',
-                    str_replace(
+                if (count($ids) === 1) {
+                    $success_detected = str_replace(
                         '%name',
                         $adh->sname,
                         _T("Member %name has been successfully deleted.")
-                    )
+                    );
+                } else {
+                    $success_detected = str_replace(
+                        '%count',
+                        count($ids),
+                        _T("%count members have been successfully deleted.")
+                    );
+                }
+
+                $this->flash->addMessage(
+                    'success_detected',
+                    $success_detected
                 );
+
                 $success = true;
             }
         }
@@ -1571,6 +1595,13 @@ $app->post(
                     ->withStatus(301)
                     ->withHeader('Location', $this->router->pathFor('csv-memberslist'));
             }
+
+            if (isset($post['delete'])) {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('removeMembers'));
+            }
+
         } else {
             $this->flash->addMessage(
                 'error_detected',

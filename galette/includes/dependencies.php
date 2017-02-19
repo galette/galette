@@ -267,6 +267,7 @@ $container['acls'] = function ($c) {
         'doEditGroup'               => 'staff',
         'adhesionForm'              => 'staff',
         'removeMember'              => 'staff',
+        'removeMembers'             => 'staff',
         'doRemoveMember'            => 'staff',
         'doRemoveContribution'      => 'staff',
         'configureCoreFields'       => 'admin',

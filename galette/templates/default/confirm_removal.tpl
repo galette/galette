@@ -22,7 +22,13 @@
             <input type="hidden" name="confirm" value="1"/>
             {if $mode eq 'ajax'}<input type="hidden" name="ajax" value="true"/>{/if}
             {foreach $data as $key=>$value}
+                {if is_array($value)}
+                    {foreach $value as $val}
+                <input type="hidden" name="{$key}[]" value="{$val}"/>
+                    {/foreach}
+                {else}
                 <input type="hidden" name="{$key}" value="{$value}"/>
+                {/if}
             {/foreach}
         </div>
     </form>

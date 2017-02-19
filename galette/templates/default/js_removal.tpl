@@ -1,11 +1,20 @@
+{if !$selector}
+    {assign var="selector" value=".delete"}
+{/if}
+{if !$deleteurl}
+    {assign var="deleteurl" value="_this.attr('href')"}
+{/if}
         //handle removals
-        $('.delete').on('click', function(event) {
+        $('{$selector}').on('click', function(event) {
             event.preventDefault();
             var _this = $(this);
-            var _href = _this.attr('href');
+
+{if $extra_check}
+            {$extra_check}
+{/if}
 
             $.ajax({
-                url: _href,
+                url: {$deleteurl},
                 type: "GET",
                 data: {
                     ajax: true,

@@ -324,6 +324,25 @@
                 });
                 return false;
             });
+        };
+        var _checkselection = function() {
+            var _checkeds = $('table.listing').find('input[type=checkbox]:checked').length;
+            if ( _checkeds == 0 ) {
+                var _el = $('<div id="pleaseselect" title="{_T string="No member selected" escape="js"}">{_T string="Please make sure to select at least one member from the list to perform this action." escape="js"}</div>');
+                _el.appendTo('body').dialog({
+                    modal: true,
+                    buttons: {
+                        Ok: function() {
+                            $(this).dialog( "close" );
+                        }
+                    },
+                    close: function(event, ui){
+                        _el.remove();
+                    }
+                });
+                return false;
+            }
+            return true;
         }
 {/if}
         {* Use of Javascript to draw specific elements that are not relevant is JS is inactive *}
@@ -348,20 +367,13 @@
                 return false;
             });
             $('.selection_menu input[type="submit"], .selection_menu input[type="button"]').click(function(){
-                var _checkeds = $('table.listing').find('input[type=checkbox]:checked').length;
-                if ( _checkeds == 0 ) {
-                    var _el = $('<div id="pleaseselect" title="{_T string="No member selected" escape="js"}">{_T string="Please make sure to select at least one member from the list to perform this action." escape="js"}</div>');
-                    _el.appendTo('body').dialog({
-                        modal: true,
-                        buttons: {
-                            Ok: function() {
-                                $(this).dialog( "close" );
-                            }
-                        },
-                        close: function(event, ui){
-                            _el.remove();
-                        }
-                    });
+
+                if ( this.id == 'delete' ) {
+                    //mass removal is handled from 2 steps removal
+                    return;
+                }
+
+                if (!_checkselection()) {
                     return false;
                 } else {
     {if $existing_mailing eq true}
@@ -397,10 +409,6 @@
                         _attendance_sheet_details();
                         return false;
                     }
-
-                    if ( this.id == 'delete' ) {
-                        return confirm('{_T string="Do you really want to delete all selected accounts (and related contributions)?" escape="js"}');
-                    }
                     return true;
                 }
             });
@@ -414,6 +422,7 @@
         });
 {if $nb_members != 0}
         {include file="js_removal.tpl"}
+        {include file="js_removal.tpl" selector="#delete" deleteurl="'{path_for name="removeMembers"}'" extra_check="if (!_checkselection()) {ldelim}return false;{rdelim}"}
 
         var _attendance_sheet_details = function(){
             var _selecteds = [];
