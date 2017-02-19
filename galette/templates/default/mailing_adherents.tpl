@@ -10,29 +10,7 @@
         <div class="mailing">
             <section class="mailing_infos">
                 <header class="ui-state-default ui-state-active">{_T string="Mailing informations"}</header>
-    {assign var='count' value=$mailing->recipients|@count}
-    {assign var='count_unreachables' value=$mailing->unreachables|@count}
-    {if $count > 0}
-        {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_SENT')}
-                <p>{_T string="Your message has been sent to <strong>%s members</strong>" pattern="/%s/" replace=$count}</p>
-        {else}
-                <p id="recipients_count">{_T string="You are about to send an e-mail to <strong>%s members</strong>" pattern="/%s/" replace=$count}</p>
-        {/if}
-    {else}
-        {if $count_unreachables > 0}
-                <p id="recipients_count"><strong>{_T string="None of the selected members has an email address."}</strong></p>
-         {else}
-                <p id="recipients_count"><strong>{_T string="No member selected (yet)."}</strong></p>
-         {/if}
-    {/if}
-    {if $count_unreachables > 0}
-                <p id="unreachables_count">
-                    <strong>{$count_unreachables} {if $count_unreachables != 1}{_T string="unreachable members:"}{else}{_T string="unreachable member:"}{/if}</strong><br/>
-                    {_T string="Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail."}
-                    <br/><a id="btnlabels" class="button" href="{path_for name="pdf-members-labels"}?from=mailing">{_T string="Generate labels"}</a>
-                </p>
-    {/if}
-
+                    {include file="mailing_recipients.tpl"}
                 <div class="center">
     {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_SENT')}
                     <a class="button" id="btnusers" href="{path_for name="members"}">{_T string="Go back to members list"}</a>
@@ -212,7 +190,7 @@
                     _recipients[_recipients.length] = this.id.substring(7, this.id.length);
                 });
                 $.ajax({
-                    url: 'ajax_recipients.php',
+                    url: '{path_for name="mailingRecipients"}',
                     type: "POST",
                     data: {
                         recipients: _recipients
@@ -237,8 +215,9 @@
                     $('#selected_members ul').append(_none);
                 }
             });
-            $('#listing tbody a').click(function(){
-                var _mid = this.href.substring(this.href.indexOf('?')+8);
+            $('#listing tbody a').click(function(e){
+                e.preventDefault();
+                var _mid = this.href.match(/.*\/(\d+)$/)[1];
                 var _mname = $(this).text();
                 $('#none_selected').remove()
                 if ( $('#member_' + _mid).length == 0 ) {

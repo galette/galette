@@ -204,6 +204,7 @@ $container['acls'] = function ($c) {
         'batch-memberslist' => 'groupmanager',
         'mailing'           => 'staff',
         'mailingPreview'    => 'staff',
+        'mailingRecipients' => 'staff',
         'csv-memberslist'   => 'staff',
         'groups'            => 'groupmanager',
         'me'                => 'member',

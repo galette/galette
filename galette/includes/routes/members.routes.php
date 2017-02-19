@@ -1789,6 +1789,8 @@ $app->map(
             $this->history->add(
                 _T("Trying to load mailing while mail is disabled in preferences.")
             );
+            $error_detected[] = _T("Trying to load mailing while mail is disabled in preferences.");
+            $goto = $this->router->pathFor('slash');
         } else {
             if (isset($this->session->filter_members)) {
                 $filters =  $this->session->filter_members;
@@ -1945,13 +1947,8 @@ $app->map(
                 $histo = new MailingHistory($this->zdb, $this->login, null, $mailing);
                 if ($histo->storeMailing() !== false) {
                     $success_detected[] = _T("Mailing has been successfully saved.");
-                    $params['mailing_saved'] = true;
                     $this->session->mailing = null;
-                    $head_redirect = array(
-                        'timeout'   => 30,
-                        'url'       => 'gestion_mailings.php'
-                    );
-                    $params['head_redirect'] = $head_redirect;
+                    $goto = $this->router->pathFor('mailings');
                 }
             }
 
@@ -1976,6 +1973,12 @@ $app->map(
             foreach ($success_detected as $success) {
                 $this->flash->addMessage('success_detected', $success);
             }
+        }
+
+        if (isset($goto)) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $goto);
         }
 
         // display page
@@ -2040,6 +2043,41 @@ $app->map(
         return $response;
     }
 )->setName('mailingPreview')->add($authenticate);
+
+$app->post(
+    __('/ajax', 'routes') . __('/mailing', 'routes') . __('/set-recipients', 'routes'),
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+        $mailing = $this->session->mailing;
+
+        $m = new Members();
+
+        $members = $m->getArrayList(
+            $post['recipients'],
+            null,
+            false,
+            true,
+            null,
+            false,
+            false,
+            true
+        );
+        $mailing->setRecipients($members);
+
+        $this->session->mailing = $mailing;
+
+        // display page
+        $this->view->render(
+            $response,
+            'mailing_recipients.tpl',
+            [
+                'mailing'       => $mailing
+
+            ]
+        );
+        return $response;
+    }
+)->setName('mailingRecipients')->add($authenticate);
 
 //reminders
 $app->get(
@@ -2317,7 +2355,8 @@ $app->post(
 )->setName('attendance_sheet')->add($authenticate);
 
 $app->post(
-    __('/ajax/members', 'routes') . '[/{option:' . __('page', 'routes') . '|' . __('order', 'routes') . '}/{value:\d+}]',
+    __('/ajax/members', 'routes') .
+    '[/{option:' . __('page', 'routes') . '|' . __('order', 'routes') . '}/{value:\d+}]',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
 
