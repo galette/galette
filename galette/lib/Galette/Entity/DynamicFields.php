@@ -505,7 +505,7 @@ class DynamicFields
                 }
 
                 $max_size =
-                    $descriptions[$field_id]['field_size'] === 'NULL' ?
+                    empty($descriptions[$field_id]['field_size']) ?
                     self::DEFAULT_MAX_FILE_SIZE            * 1024:
                     $descriptions[$field_id]['field_size'] * 1024;
                 if ($files[$key]['size'] > $max_size) {

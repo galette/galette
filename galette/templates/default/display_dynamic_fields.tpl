@@ -29,7 +29,7 @@
             <br/>
                             {else if $field.field_type eq 6}
 
-            <a href="get_file.php?file=member_{$member->id}_field_{$field.field_id}_value_{$smarty.section.fieldLoop.index}&name={$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}">{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}</a><br/>
+            <a href="{path_for name="getDynamicFile" data=["id" => $member->id, "fid" => $field.field_id, "pos" => $smarty.section.fieldLoop.index, "name" => $data.dyn[$field.field_id][$smarty.section.fieldLoop.index]]}">{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}</a><br/>
                             {else}
             {$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|nl2br|default:"&nbsp;"}<br/>
                             {/if}

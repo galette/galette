@@ -57,6 +57,7 @@ use Galette\Entity\Texts;
 use Galette\IO\Pdf;
 use Galette\Core\MailingHistory;
 use Galette\Entity\Group;
+use Galette\IO\File;
 
 //self subscription
 $app->get(
@@ -317,7 +318,7 @@ $app->get(
                 $filename .'` that does not exists.',
                 Analog::WARNING
             );
-            $response->setStatus(404);
+            return $response->withStatus(404);
         }
     }
 )->setName('csv-memberslist')->add($authenticate);
@@ -2529,4 +2530,49 @@ $app->post(
         );
         return $response;
     }
-)->setName('ajaxGroupMembers');
+)->setName('ajaxGroupMembers')->add($authenticate);
+
+$app->get(
+    __('/member', 'routes') . '/{id:\d+}' . __('/file', 'routes') . '/{fid:\d+}/{pos:\d+}/{name}',
+    function ($request, $response, $args) {
+        $filename = str_replace(
+            [
+                '%mid',
+                '%fid',
+                '%pos'
+            ],
+            [
+                $args['id'],
+                $args['fid'],
+                $args['pos']
+            ],
+            'member_%mid_field_%fid_value_%pos'
+        );
+
+        if (file_exists(GALETTE_FILES_PATH . $filename)) {
+            $type = File::getMimeType($filename);
+            header('Content-Type: ' . $type);
+            header('Content-Disposition: attachment; filename="' . $args['name'] . '";');
+            header('Pragma: no-cache');
+            echo readfile(GALETTE_FILES_PATH . $filename);
+        } else {
+            Analog::log(
+                'A request has been made to get an exported file named `' .
+                $filename .'` that does not exists.',
+                Analog::WARNING
+            );
+
+            $this->flash->addMessage(
+                'error_detected',
+                _T("The file does not exists or cannot be read :(")
+            );
+
+            return $response
+                ->withStatus(404)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor('member', ['id' => $args['id']])
+                );
+        }
+    }
+)->setName('getDynamicFile')->add($authenticate);

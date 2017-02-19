@@ -280,7 +280,8 @@ $container['acls'] = function ($c) {
         'doRemoveDynamicField'      => 'admin',
         'photoDnd'                  => 'staff',
         'ajaxMembers'               => 'groupmanager',
-        'ajaxGroupMembers'          => 'staff'
+        'ajaxGroupMembers'          => 'staff',
+        'getDynamicFile'            => 'staff'
     ];
 
     //load user defined ACLs
