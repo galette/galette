@@ -37,7 +37,7 @@
     {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_SENT')}
                     <a class="button" id="btnusers" href="{path_for name="members"}">{_T string="Go back to members list"}</a>
     {else}
-                    <a class="button" id="btnusers" href="gestion_adherents.php?nbshow=0&showChecked=true">{_T string="Manage selected members"}</a>
+                    <a class="button" id="btnusers" href="#">{_T string="Manage selected members"}</a>
     {/if}
                 </div>
             </section>
