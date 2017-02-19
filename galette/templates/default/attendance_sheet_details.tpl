@@ -1,3 +1,10 @@
+{if $ajax}
+    {assign var="extend" value='ajax.tpl'}
+{else}
+    {assign var="extend" value='page.tpl'}
+{/if}
+{extends file=$extend}
+{block name="content"}
     <form action="{path_for name="attendance_sheet"}" id="sheet_details_form" method="POST">
         <fieldset class="cssform">
             <legend class="ui-state-active ui-corner-top">{_T string="Some details about your attendance sheet..."} - <span>{_T string="%s attendees" pattern="/%s/" replace=$selection|@count}</span></legend>
@@ -26,4 +33,11 @@
 {/foreach}
             </p>
         </fieldset>
+{if not $ajax}
+        <div class="button-container">
+            <input class="button btn_pdf" type="submit" value="{_T string="Generate"}"/>
+        </div>
+{/if}
+
     </form>
+{/block}

@@ -108,14 +108,6 @@ $app->get(
             1
         );
 
-        /*if ( $has_register ) {
-            $tpl->assign('has_register', $has_register);
-        }
-        if ( isset($head_redirect) ) {
-            $tpl->assign('head_redirect', $head_redirect);
-        }*/
-        // /self_adh specific
-
         // display page
         $this->view->render(
             $response,
@@ -1569,7 +1561,9 @@ $app->post(
             }
 
             if (isset($post['attendance_sheet'])) {
-                //TODO
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('attendance_sheet_details'));
             }
 
             if (isset($post['csv'])) {
@@ -2235,10 +2229,10 @@ $app->map(
     function ($request, $response) {
         $post = $request->getParsedBody();
 
-        if ($this->session->filters_members !== null) {
-            $filters = $this->session->filters_members;
+        if ($this->session->filter_members !== null) {
+            $filters = $this->session->filter_members;
         } else {
-            $filters = new Galette\Filters\MembersList();
+            $filters = new MembersList();
         }
 
         // check for ajax mode
@@ -2248,13 +2242,16 @@ $app->map(
             && $post['ajax'] == 'true'
         ) {
             $ajax = true;
+
+            //retrieve selected members
+            $selection = (isset($post['selection']) ) ? $post['selection'] : array();
+
+            $filters->selected = $selection;
+            $this->session->filter_members = $filters;
+        } else {
+            $selection = $filters->selected;
         }
 
-        //retrieve selected members
-        $selection = (isset($post['selection']) ) ? $post['selection'] : array();
-
-        $filters->selected = $selection;
-        $this->session->filters_members = $filters;
 
         // display page
         $this->view->render(
@@ -2275,8 +2272,8 @@ $app->post(
     function ($request, $response) {
         $post = $request->getParsedBody();
 
-        if ($this->session->filters_members !== null) {
-            $filters = $this->session->filters_members;
+        if ($this->session->filter_members !== null) {
+            $filters = $this->session->filter_members;
         } else {
             $filters = new MembersList();
         }
@@ -2285,7 +2282,7 @@ $app->post(
         $selection = (isset($post['selection']) ) ? $post['selection'] : array();
 
         $filters->selected = $selection;
-        $this->session->filters_members = $filters;
+        $this->session->filter_members = $filters;
 
         if (count($filters->selected) == 0) {
             Analog::log('No member selected to generate attendance sheet', Analog::INFO);
