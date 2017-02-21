@@ -3469,3 +3469,76 @@ $app->post(
             );
     }
 )->setName('doEditDynamicField')->add($authenticate);
+
+$app->get(
+    __('/generate-data', 'routes'),
+    function ($request, $response, $args) {
+
+        $params = [
+            'page_title'            => _T('Generate fake data'),
+            'number_members'        => \Galette\Util\FakeData::DEFAULT_NB_MEMBERS,
+            'number_contrib'        => \Galette\Util\FakeData::DEFAULT_NB_CONTRIB,
+            'number_groups'         => \Galette\Util\FakeData::DEFAULT_NB_GROUPS,
+            'number_transactions'   => \Galette\Util\FakeData::DEFAULT_NB_TRANSACTIONS
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'fake_data.tpl',
+            $params
+        );
+        return $response;
+    }
+)->setName('fakeData')->add($authenticate);
+
+$app->post(
+    __('/generate-data', 'routes'),
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+
+        $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
+
+        $fakedata->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history,
+            $this->login
+        );
+
+        $fakedata
+            ->setNbMembers($post['number_members'])
+            ->setNbGroups($post['number_groups'])
+            ->setNbTransactions($post['number_transactions'])
+            ->setMaxContribs($post['number_contrib']);
+
+        $fakedata->generate();
+
+        $report = $fakedata->getReport();
+
+        foreach ($report['success'] as $success) {
+            $this->flash->addMessage(
+                'success_detected',
+                $success
+            );
+        }
+
+        foreach ($report['errors'] as $error) {
+            $this->flash->addMessage(
+                'error_detected',
+                $error
+            );
+        }
+
+        foreach ($report['warnings'] as $warning) {
+            $this->flash->addMessage(
+                'warning_detected',
+                $warning
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('slash'));
+    }
+)->setName('doFakeData')->add($authenticate);

@@ -40,19 +40,42 @@ namespace Galette\Util;
 use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Core\I18n;
+use Galette\Core\Preferences;
+use Galette\Core\History;
+use Galette\Core\Login;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Repository\Titles;
 use Galette\Entity\Status;
 use Galette\Entity\ContributionsTypes;
+use Galette\Entity\Group;
+use Galette\Entity\Transaction;
 
 /**
  * Generate random data
  *
- * @see https://github.com/fzaninotto/Faker
+ * @category  Core
+ * @name      FakeData
+ * @package   Galette
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2017 The Galette Team
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @link      http://framework.zend.com/apidoc/2.2/namespaces/Zend.Db.html
+ * @see       https://github.com/fzaninotto/Faker
+ * @since     Available since 0.7dev - 2011-07-27
  */
 class FakeData
 {
+    const DEFAULT_NB_MEMBERS       = 20;
+    const DEFAULT_NB_CONTRIB       = 5;
+    const DEFAULT_NB_GROUPS        = 5;
+    const DEFAULT_NB_TRANSACTIONS  = 2;
+
+    protected $preferences;
+    protected $member_fields;
+    protected $history;
+    protected $login;
+
     protected $zdb;
     protected $i18n;
     protected $faker;
@@ -62,20 +85,34 @@ class FakeData
         'warnings'  => []
     ];
 
-    protected $mids = [];
+    protected $groups       = [];
+    protected $mids         = [];
+    protected $transactions = [];
 
     /**
      * @var integer
      * Number of members to generate
      */
-    protected $nbmembers = 20;
+    protected $nbmembers = self::DEFAULT_NB_MEMBERS;
+
+    /**
+     * @var integer
+     * Number of groups to generate
+     */
+    protected $nbgroups = self::DEFAULT_NB_GROUPS;
 
     /**
      * @var integer
      * Max number of contributions to generate
      * for each member
      */
-    protected $maxcontribs = 5;
+    protected $maxcontribs = self::DEFAULT_NB_CONTRIB;
+
+    /**
+     * @var integer
+     * Number of transactions to generate
+     */
+    protected $nbtransactions = self::DEFAULT_NB_TRANSACTIONS;
 
     /**
      * Default constructor
@@ -109,6 +146,46 @@ class FakeData
     }
 
     /**
+     * Set maximum number of contribution per member to generate
+     *
+     * @param integer $nb Number of contributions
+     *
+     * @return FakeData
+     */
+    public function setMaxContribs($nb)
+    {
+        $this->maxcontribs = $nb;
+        return $this;
+    }
+
+    /**
+     * Set number of groups to generate
+     *
+     * @param integer $nb Number of groups
+     *
+     * @return FakeData
+     */
+    public function setNbGroups($nb)
+    {
+        $this->nbgroups = $nb;
+        return $this;
+    }
+
+    /**
+     * Set number of transactions to generate
+     *
+     * @param integer $nb Number of transactions
+     *
+     * @return FakeData
+     */
+    public function setNbTransactions($nb)
+    {
+        $this->nbtransactions = $nb;
+        return $this;
+    }
+
+
+    /**
      * Do data generation
      *
      * @return void
@@ -117,8 +194,59 @@ class FakeData
     {
         $this->faker = \Faker\Factory::create($this->i18n->getID());
 
+        $this->generateGroups($this->nbgroups);
         $this->generateMembers($this->nbmembers);
+        $this->generateTransactions($this->nbtransactions);
         $this->generateContributions();
+    }
+
+    /**
+     * Generate groups
+     *
+     * @param integer $count Number of groups to generate
+     *
+     * @return void
+     */
+    public function generateGroups($count = null)
+    {
+        $faker = $this->faker;
+
+        $done = 0;
+        $parent_group = null;
+
+        if ($count === null) {
+            $count = $this->nbgroups;
+        }
+
+        for ($i = 0; $i < $count; $i++) {
+            $group = new Group();
+            $group->setName($faker->unique()->lastName());
+            if (count($this->groups) > 0 && $faker->boolean($chanceOfGettingTrue = 10)) {
+                if ($parent_group === null) {
+                    $parent_group = $faker->randomElement($this->groups);
+                }
+                $group->setParentGroup($parent_group->getId());
+            }
+
+            if ($group->store()) {
+                $this->groups[] = $group;
+                ++$done;
+            }
+        }
+
+        if ($done === $count) {
+            $this->addSuccess(
+                str_replace('%count', $count, _T("%count groups created"))
+            );
+        } else {
+            $this->addWarning(
+                str_replace(
+                    ['%count', '%done'],
+                    [$count, $done],
+                    _T("%count groups requested, and %done created")
+                )
+            );
+        }
     }
 
     /**
@@ -133,7 +261,7 @@ class FakeData
         $faker = $this->faker;
         $langs = $this->i18n->getArrayList();
         $titles = Titles::getArrayList($this->zdb);
-        $status = new Status();
+        $status = new Status($this->zdb);
         $status = $status->getList();
 
         $done = 0;
@@ -185,11 +313,33 @@ class FakeData
                 $data['societe_adh'] = $faker->company();
             }
 
-            $member = new Adherent();
+            $member = new Adherent($this->zdb);
+            $member->setDependencies(
+                $this->preferences,
+                $this->member_fields,
+                $this->history
+            );
             if ($member->check($data, [], [])) {
                 if ($member->store()) {
                     $this->mids[] = $member->id;
                     ++$done;
+                }
+
+                //add to a group?
+                if (count($this->groups) > 0 && $faker->boolean($chanceOfGettingTrue = 60)) {
+                    $groups = $faker->randomElements($this->groups);
+                    foreach ($groups as $group) {
+                        $manager = $faker->boolean($chanceOfGettingTrue = 10);
+                        if ($manager) {
+                            $managers = $group->getManagers();
+                            $managers[] = $member;
+                            $group->setManagers($managers);
+                        } else {
+                            $members = $group->getMembers();
+                            $members[] = $member;
+                            $group->setMembers($members);
+                        }
+                    }
                 }
             }
         }
@@ -210,6 +360,60 @@ class FakeData
     }
 
     /**
+     * Generate transactions
+     *
+     * @param integer $count Number of transactions to generate
+     * @param array   $mids  Members ids. Defaults to null (will work with previously generated ids)
+     *
+     * @return void
+     */
+    public function generateTransactions($count = null, $mids = null)
+    {
+        $faker = $this->faker;
+
+        $done = 0;
+
+        if ($count === null) {
+            $count = $this->nbtransactions;
+        }
+
+        if ($mids === null) {
+            $mids = $this->mids;
+        }
+
+        for ($i = 0; $i < $count; $i++) {
+            $data= [
+                'trans_date'    => $faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now')->format(_T("Y-m-d")),
+                Adherent::PK    => $faker->randomElement($mids),
+                'trans_amount'  => $faker->numberBetween($min = 50, $max = 2000),
+                'trans_desc'    => $faker->realText($maxNbChars = 150)
+            ];
+
+            $transaction = new Transaction($this->zdb);
+            if ($transaction->check($data, [], [])) {
+                if ($transaction->store($this->history)) {
+                    $this->transactions[] = $transaction;
+                    ++$done;
+                }
+            }
+        }
+
+        if ($done === $count) {
+            $this->addSuccess(
+                str_replace('%count', $count, _T("%count transactions created"))
+            );
+        } else {
+            $this->addWarning(
+                str_replace(
+                    ['%count', '%done'],
+                    [$count, $done],
+                    _T("%count transactions requested, and %done created")
+                )
+            );
+        }
+    }
+
+    /**
      * Generate members contributions
      *
      * @param array $mids Members ids. Defaults to null (will work with previously generated ids)
@@ -220,7 +424,7 @@ class FakeData
     {
         $faker = $this->faker;
 
-        $types = new ContributionsTypes();
+        $types = new ContributionsTypes($this->zdb);
         $types = $types->getCompleteList();
 
         if ($mids === null) {
@@ -259,10 +463,28 @@ class FakeData
                     'date_fin_cotis'        => $end_date->format(_T("Y-m-d"))
                 ];
 
-                $contrib = new Contribution();
+                if ($faker->boolean($chanceOfGettingTrue = 90)) {
+                    $transaction = $faker->randomElement($this->transactions);
+                    $missing = $transaction->getMissingAmount();
+                    if ($data['montant_cotis'] > $missing) {
+                        $data['montant_cotis'] = $missing;
+                    }
+                }
+
+                $contrib = new Contribution($this->zdb, $this->login);
                 if ($contrib->check($data, [], []) === true) {
                     if ($contrib->store()) {
+                        $pk = Contribution::PK;
+                        $this->cids[] = $contrib->$pk;
                         ++$done;
+                    }
+
+                    if ($faker->boolean($chanceOfGettingTrue = 90)) {
+                        $contrib::setTransactionPart(
+                            $this->zdb,
+                            $transaction->id,
+                            $contrib->id
+                        );
                     }
                 }
             }
@@ -323,5 +545,27 @@ class FakeData
     public function getReport()
     {
         return $this->report;
+    }
+
+    /**
+     * Set dependencies
+     *
+     * @param Preferences $preferences Preferences instance
+     * @param array       $fields      Members fields configuration
+     * @param History     $history     History instance
+     * @param Login       $login       Login instance
+     *
+     * @return void
+     */
+    public function setDependencies(
+        Preferences $preferences,
+        array $fields,
+        History $history,
+        Login $login
+    ) {
+        $this->preferences = $preferences;
+        $this->member_fields = $fields;
+        $this->history = $history;
+        $this->login = $login;
     }
 }
