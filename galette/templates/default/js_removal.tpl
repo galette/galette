@@ -1,7 +1,7 @@
-{if !$selector}
+{if !isset($selector)}
     {assign var="selector" value=".delete"}
 {/if}
-{if !$deleteurl}
+{if !isset($deleteurl)}
     {assign var="deleteurl" value="_this.attr('href')"}
 {/if}
         //handle removals
@@ -9,7 +9,7 @@
             event.preventDefault();
             var _this = $(this);
 
-{if $extra_check}
+{if isset($extra_check)}
             {$extra_check}
 {/if}
 
