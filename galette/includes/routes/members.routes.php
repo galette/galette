@@ -1430,7 +1430,7 @@ $app->post(
                     $error_detected
                 );
             } else {
-                if (count($ids) === 1) {
+                if (!is_array($post['id'])) {
                     $success_detected = str_replace(
                         '%name',
                         $adh->sname,
