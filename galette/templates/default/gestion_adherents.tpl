@@ -422,7 +422,7 @@
         });
 {if $nb_members != 0}
         {include file="js_removal.tpl"}
-        {include file="js_removal.tpl" selector="#delete" deleteurl="'{path_for name="removeMembers"}'" extra_check="if (!_checkselection()) {ldelim}return false;{rdelim}"}
+        {include file="js_removal.tpl" selector="#delete" deleteurl="'{path_for name="batch-memberslist"}'" extra_check="if (!_checkselection()) {ldelim}return false;{rdelim}" extra_data="delete: true, member_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()" method="POST"}
 
         var _attendance_sheet_details = function(){
             var _selecteds = [];

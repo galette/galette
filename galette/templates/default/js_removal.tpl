@@ -12,12 +12,17 @@
 {if isset($extra_check)}
             {$extra_check}
 {/if}
-
+{if !isset($method)}
+    {assign var="method" value="GET"}
+{/if}
             $.ajax({
                 url: {$deleteurl},
-                type: "GET",
+                type: "{$method}",
                 data: {
                     ajax: true,
+{if isset($extra_data)}
+                    {$extra_data}
+{/if}
                 },
                 datatype: 'json',
                 {include file="js_loader.tpl"},
