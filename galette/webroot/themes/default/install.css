@@ -50,6 +50,11 @@ section ul {
     margin: 0 auto .7em!important;
 }
 
+#logout {
+    padding-right: 1.8em;;
+    background-position: 96% 50%, 50% 50%;
+    background-repeat: no-repeat, repeat-x;
+}
 #next_btn {
     padding-right: 1.8em;;
     background-image: url(images/next.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);

@@ -57,12 +57,19 @@ if (isset($session['lang'])) {
 require_once '../includes/i18n.inc.php';
 
 //when upgrading, make sure that old objects in current session are destroyed
-if ( defined('PREFIX_DB') && defined('NAME_DB') ) {
+if (defined('PREFIX_DB') && defined('NAME_DB')) {
     unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]);
 }
 
+if (isset($_POST['abort_btn'])) {
+    if (isset($session[md5(GALETTE_ROOT)])) {
+        unset($session[md5(GALETTE_ROOT)]);
+    }
+    header('location: ' . GALETTE_BASE_PATH);
+}
+
 $install = null;
-if ( isset($session[md5(GALETTE_ROOT)]) && !isset($_GET['raz']) ) {
+if (isset($session[md5(GALETTE_ROOT)]) && !isset($_GET['raz'])) {
     $install = unserialize($session[md5(GALETTE_ROOT)]);
 } else {
     $install = new GaletteInstall();
@@ -92,29 +99,29 @@ if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     define('GALETTE_LOGGER_CHECKED', true);
 }
 
-if ( isset($_POST['stepback_btn']) ) {
+if (isset($_POST['stepback_btn'])) {
     $install->atPreviousStep();
-} else if ( isset($_POST['install_permsok']) && $_POST['install_permsok'] == 1 ) {
+} elseif (isset($_POST['install_permsok']) && $_POST['install_permsok'] == 1) {
     $install->atTypeStep();
-} else if ( isset($_POST['install_type']) ) {
+} elseif (isset($_POST['install_type'])) {
     $install->setMode($_POST['install_type']);
     $install->atDbStep();
-} elseif ( isset($_POST['install_dbtype'])  ) {
+} elseif (isset($_POST['install_dbtype'])) {
     $install->setDbType($_POST['install_dbtype'], $error_detected);
 
-    if ( empty($_POST['install_dbhost']) ) {
+    if (empty($_POST['install_dbhost'])) {
         $error_detected[] = _T("No host");
     }
-    if ( empty($_POST['install_dbport']) ) {
+    if (empty($_POST['install_dbport'])) {
         $error_detected[] = _T("No port");
     }
-    if ( empty($_POST['install_dbuser']) ) {
+    if (empty($_POST['install_dbuser'])) {
         $error_detected[] = _T("No user name");
     }
-    if ( empty($_POST['install_dbpass']) ) {
+    if (empty($_POST['install_dbpass'])) {
         $error_detected[] = _T("No password");
     }
-    if ( empty($_POST['install_dbname']) ) {
+    if (empty($_POST['install_dbname'])) {
             $error_detected[] = _T("No database name");
     }
 
@@ -131,34 +138,33 @@ if ( isset($_POST['stepback_btn']) ) {
         );
         $install->atDbCheckStep();
     }
-} elseif ( isset($_POST['install_dbperms_ok']) ) {
-    if ( $install->isInstall() ) {
+} elseif (isset($_POST['install_dbperms_ok'])) {
+    if ($install->isInstall()) {
         $install->atDbInstallStep();
-    } elseif ( $install->isUpgrade() ) {
+    } elseif ($install->isUpgrade()) {
         $install->atVersionSelection();
     }
-} elseif ( isset($_POST['previous_version']) ) {
+} elseif (isset($_POST['previous_version'])) {
     $install->setInstalledVersion($_POST['previous_version']);
     $install->atDbUpgradeStep();
-} elseif ( isset($_POST['install_dbwrite_ok']) && $install->isInstall() ) {
+} elseif (isset($_POST['install_dbwrite_ok']) && $install->isInstall()) {
     $install->atAdminStep();
-} else if ( isset($_POST['install_dbwrite_ok']) && $install->isUpgrade() ) {
+} elseif (isset($_POST['install_dbwrite_ok']) && $install->isUpgrade()) {
     $install->atGaletteInitStep();
-} elseif ( isset($_POST['install_adminlogin'])
+} elseif (isset($_POST['install_adminlogin'])
     && isset($_POST['install_adminpass'])
     && $install->isInstall()
 ) {
-
-    if ( $_POST['install_adminlogin'] == '' ) {
+    if ($_POST['install_adminlogin'] == '') {
         $error_detected[] = _T("No user name");
     }
-    if ( strpos($_POST['install_adminlogin'], '@') != false ) {
+    if (strpos($_POST['install_adminlogin'], '@') != false) {
         $error_detected[] = _T("The username cannot contain the @ character");
     }
-    if ( $_POST['install_adminpass'] == '' ) {
+    if ($_POST['install_adminpass'] == '') {
         $error_detected[] = _T("No password");
     }
-    if ( ! isset($_POST['install_passwdverified'])
+    if (! isset($_POST['install_passwdverified'])
         && strcmp(
             $_POST['install_adminpass'],
             $_POST['install_adminpass_verif']
@@ -166,24 +172,24 @@ if ( isset($_POST['stepback_btn']) ) {
     ) {
         $error_detected[] = _T("Passwords mismatch");
     }
-    if ( count($error_detected) == 0 ) {
+    if (count($error_detected) == 0) {
         $install->setAdminInfos(
             $_POST['install_adminlogin'],
             $_POST['install_adminpass']
         );
         $install->atGaletteInitStep();
     }
-} elseif ( isset($_POST['install_prefs_ok']) ) {
+} elseif (isset($_POST['install_prefs_ok'])) {
     $install->atEndStep();
 }
 
-if ( !$install->isEndStep()
+if (!$install->isEndStep()
     && ($install->postCheckDb() || $install->isDbCheckStep())
 ) {
     //if we have passed database configuration, define required constants
     initDbConstants($install);
 
-    if ( $install->postCheckDb() ) {
+    if ($install->postCheckDb()) {
         //while before check db, connection is not checked
         $zdb = new GaletteDb();
     }
@@ -219,7 +225,7 @@ header('Content-Type: text/html; charset=UTF-8');
                 </h1>
                 <ul id="langs">
 <?php
-foreach ( $i18n->getList() as $langue ) {
+foreach ($i18n->getList() as $langue) {
     ?>
                     <li><a href="?pref_lang=<?php echo $langue->getID(); ?>"><img src="<?php echo $langue->getFlag(); ?>" alt="<?php echo $langue->getName(); ?>" lang="<?php echo $langue->getAbbrev(); ?>" class="flag"/></a></li>
     <?php
@@ -228,14 +234,14 @@ foreach ( $i18n->getList() as $langue ) {
                 </ul>
             </header>
 <?php
-if ( count($error_detected) > 0 ) {
+if (count($error_detected) > 0) {
     ?>
 
             <div id="errorbox">
                 <h1><?php echo _T("- ERROR -"); ?></h1>
                 <ul>
     <?php
-    foreach ( $error_detected as $error ) {
+    foreach ($error_detected as $error) {
         ?>
                     <li><?php echo $error; ?></li>
         <?php
@@ -248,23 +254,23 @@ if ( count($error_detected) > 0 ) {
 ?>
             <div>
 <?php
-if ( $install->isCheckStep() ) {
+if ($install->isCheckStep()) {
     include_once __DIR__ . '/../install/steps/check.php';
-} else if ( $install->isTypeStep() ) {
+} elseif ($install->isTypeStep()) {
     include_once __DIR__ . '/../install/steps/type.php';
-} else if ( $install->isDbStep() ) {
+} elseif ($install->isDbStep()) {
     include_once __DIR__ . '/../install/steps/db.php';
-} else if ( $install->isDbCheckStep() ) {
+} elseif ($install->isDbCheckStep()) {
     include_once __DIR__ . '/../install/steps/db_checks.php';
-} else if ( $install->isVersionSelectionStep() ) {
+} elseif ($install->isVersionSelectionStep()) {
     include_once __DIR__ . '/../install/steps/db_select_version.php';
-} else if ( $install->isDbinstallStep() || $install->isDbUpgradeStep() ) {
+} elseif ($install->isDbinstallStep() || $install->isDbUpgradeStep()) {
     include_once __DIR__ . '/../install/steps/db_install.php';
-} else if ( $install->isAdminStep() ) {
+} elseif ($install->isAdminStep()) {
     include_once __DIR__ . '/../install/steps/admin.php';
-} else if ( $install->isGaletteInitStep()  ) {
+} elseif ($install->isGaletteInitStep()) {
     include_once __DIR__ . '/../install/steps/galette.php';
-} else if ( $install->isEndStep() ) {
+} elseif ($install->isEndStep()) {
     include_once __DIR__ . '/../install/steps/end.php';
 }
 ?>
@@ -272,30 +278,30 @@ if ( $install->isCheckStep() ) {
             <footer>
                 <p><?php echo _T("Steps:"); ?></p>
                 <ol>
-                    <li<?php if( $install->isCheckStep() ) echo ' class="current"'; ?>><?php echo _T("Checks"); ?> - </li>
-                    <li<?php if( $install->isTypeStep() ) echo ' class="current"'; ?>><?php echo _T("Installation mode"); ?> - </li>
-                    <li<?php if( $install->isDbStep() ) echo ' class="current"'; ?>><?php echo _T("Database"); ?> - </li>
-                    <li<?php if( $install->isDbCheckStep() ) echo ' class="current"'; ?>><?php echo _T("Database access/permissions"); ?> - </li>
+                    <li<?php if ($install->isCheckStep()) echo ' class="current"'; ?>><?php echo _T("Checks"); ?> - </li>
+                    <li<?php if ($install->isTypeStep()) echo ' class="current"'; ?>><?php echo _T("Installation mode"); ?> - </li>
+                    <li<?php if ($install->isDbStep()) echo ' class="current"'; ?>><?php echo _T("Database"); ?> - </li>
+                    <li<?php if ($install->isDbCheckStep()) echo ' class="current"'; ?>><?php echo _T("Database access/permissions"); ?> - </li>
 <?php
 if ( $install->isUpgrade() ) {
     ?>
-                    <li<?php if( $install->isVersionSelectionStep() ) echo ' class="current"'; ?>><?php echo _T("Version selection"); ?> - </li>
-                    <li<?php if( $install->isDbUpgradeStep() ) echo ' class="current"'; ?>><?php echo _T("Database upgrade"); ?> - </li>
+                    <li<?php if ($install->isVersionSelectionStep()) echo ' class="current"'; ?>><?php echo _T("Version selection"); ?> - </li>
+                    <li<?php if ($install->isDbUpgradeStep()) echo ' class="current"'; ?>><?php echo _T("Database upgrade"); ?> - </li>
     <?php
 } else {
     ?>
-                    <li<?php if( $install->isDbinstallStep() ) echo ' class="current"'; ?>><?php echo _T("Database installation"); ?> - </li>
+                    <li<?php if ($install->isDbinstallStep()) echo ' class="current"'; ?>><?php echo _T("Database installation"); ?> - </li>
     <?php
 }
 
 if ( !$install->isUpgrade() ) {
     ?>
-                    <li<?php if( $install->isAdminStep() ) echo ' class="current"'; ?>><?php echo _T("Admin parameters"); ?> - </li>
+                    <li<?php if ($install->isAdminStep()) echo ' class="current"'; ?>><?php echo _T("Admin parameters"); ?> - </li>
     <?php
 }
 ?>
-                    <li<?php if( $install->isGaletteInitStep() ) echo ' class="current"'; ?>><?php echo _T("Galette initialisation"); ?> - </li>
-                    <li<?php if( $install->isEndStep() ) echo ' class="current"'; ?>><?php echo _T("End!"); ?></li>
+                    <li<?php if ($install->isGaletteInitStep()) echo ' class="current"'; ?>><?php echo _T("Galette initialisation"); ?> - </li>
+                    <li<?php if ($install->isEndStep()) echo ' class="current"'; ?>><?php echo _T("End!"); ?></li>
                 </ol>
             </footer>
         </section>
@@ -303,11 +309,11 @@ if ( !$install->isUpgrade() ) {
     </body>
 </html>
 <?php
-if ( !$install->isEndStep() ) {
+if (!$install->isEndStep()) {
     $session[md5(GALETTE_ROOT)] = serialize($install);
 }
 
-if ( isset($profiler) ) {
+if (isset($profiler)) {
     $profiler->stop();
 }
 ?>
