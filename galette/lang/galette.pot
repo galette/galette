@@ -257,6 +257,10 @@ msgstr ""
 msgid "UPDATE operation not allowed"
 msgstr ""
 
+#: ../webroot/installer.php:278
+msgid "Database access/permissions"
+msgstr ""
+
 #: ../templates/default/voir_adherent.tpl:21
 msgid "New password"
 msgstr ""
@@ -442,7 +446,7 @@ msgstr ""
 msgid "receipt"
 msgstr ""
 
-#: ../install/old.index.php:110
+#: ../webroot/installer.php:118 ../install/old.index.php:110
 msgid "No database name"
 msgstr ""
 
@@ -474,8 +478,8 @@ msgstr ""
 msgid "Due free"
 msgstr ""
 
-#: ../preferences.php:285 ../includes/routes/management.routes.php:442
-#: ../install/old.index.php:173
+#: ../preferences.php:285 ../webroot/installer.php:167
+#: ../includes/routes/management.routes.php:442 ../install/old.index.php:173
 msgid "Passwords mismatch"
 msgstr ""
 
@@ -905,8 +909,8 @@ msgstr ""
 msgid "Unknown date format for %field.<br/>Know formats are: %formats"
 msgstr ""
 
-#: ../install/old.index.php:279
-msgid "Galette installation"
+#: ../includes/routes/members.routes.php:1425
+msgid "An error occured trying to remove members :/"
 msgstr ""
 
 #: ../templates/default/import.tpl:48
@@ -922,8 +926,8 @@ msgstr ""
 msgid "Transactions managment"
 msgstr ""
 
-#: ../templates/default/gestion_textes.tpl:70
-msgid "available only from self subscribe page"
+#: ../includes/routes/contributions.routes.php:984
+msgid "Unable to detach contribution from transaction"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:197
@@ -949,7 +953,7 @@ msgstr ""
 msgid "No manager attached"
 msgstr ""
 
-#: ../install/old.index.php:245
+#: ../webroot/installer.php:197 ../install/old.index.php:245
 msgid "Galette Installation"
 msgstr ""
 
@@ -1105,8 +1109,8 @@ msgstr ""
 msgid "Change search criterias"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:122 ../install/old.index.php:209
-#: ../install/old.index.php:1526
+#: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:275
+#: ../install/old.index.php:209 ../install/old.index.php:1526
 msgid "Checks"
 msgstr ""
 
@@ -1282,8 +1286,9 @@ msgstr ""
 msgid "Group added"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:149 ../install/old.index.php:237
-#: ../install/old.index.php:1533 ../templates/default/plugin_initdb.tpl:138
+#: ../lib/Galette/Core/Install.php:149 ../webroot/installer.php:298
+#: ../install/old.index.php:237 ../install/old.index.php:1533
+#: ../templates/default/plugin_initdb.tpl:138
 msgid "End!"
 msgstr ""
 
@@ -1724,9 +1729,9 @@ msgstr ""
 msgid "No file to upload"
 msgstr ""
 
-#: ../install/old.index.php:526 ../install/old.index.php:1162
-#: ../install/old.index.php:1463 ../templates/default/mailing_adherents.tpl:5
-#: ../templates/default/global_messages.tpl:4
+#: ../webroot/installer.php:235 ../install/old.index.php:526
+#: ../install/old.index.php:1162 ../install/old.index.php:1463
+#: ../templates/default/mailing_adherents.tpl:5 ../templates/default/global_messages.tpl:4
 msgid "- ERROR -"
 msgstr ""
 
@@ -2150,7 +2155,7 @@ msgstr ""
 msgid "Nickname:"
 msgstr ""
 
-#: ../templates/default/plugin_initdb.tpl:137
+#: ../webroot/installer.php:283 ../templates/default/plugin_initdb.tpl:137
 msgid "Database upgrade"
 msgstr ""
 
@@ -2960,7 +2965,7 @@ msgstr ""
 msgid "Receipt"
 msgstr ""
 
-#: ../install/old.index.php:98
+#: ../webroot/installer.php:106 ../install/old.index.php:98
 msgid "No host"
 msgstr ""
 
@@ -3308,7 +3313,7 @@ msgstr ""
 msgid "Group managers selection"
 msgstr ""
 
-#: ../templates/default/plugin_initdb.tpl:134
+#: ../webroot/installer.php:282 ../templates/default/plugin_initdb.tpl:134
 msgid "Version selection"
 msgstr ""
 
@@ -3444,6 +3449,7 @@ msgstr ""
 msgid "ALTER Operation allowed"
 msgstr ""
 
+#: ../webroot/installer.php:115 ../webroot/installer.php:159
 #: ../includes/routes/authentication.routes.php:360 ../install/old.index.php:107
 #: ../install/old.index.php:164
 msgid "No password"
@@ -3800,10 +3806,6 @@ msgstr ""
 msgid "Trombinoscope"
 msgstr ""
 
-#: ../templates/default/gestion_transactions.tpl:120
-msgid "Do you really want to delete this transaction of the database ?"
-msgstr ""
-
 #: ../includes/routes/management.routes.php:3053
 msgid "Field has been successfully deleted!"
 msgstr ""
@@ -4029,7 +4031,7 @@ msgstr ""
 msgid "Status:"
 msgstr ""
 
-#: ../templates/default/plugin_initdb.tpl:137
+#: ../webroot/installer.php:287 ../templates/default/plugin_initdb.tpl:137
 msgid "Database installation"
 msgstr ""
 
@@ -4038,7 +4040,8 @@ msgstr ""
 msgid "Access permissions to database"
 msgstr ""
 
-#: ../install/old.index.php:1522 ../templates/default/plugin_initdb.tpl:129
+#: ../webroot/installer.php:273 ../install/old.index.php:1522
+#: ../templates/default/plugin_initdb.tpl:129
 msgid "Steps:"
 msgstr ""
 
@@ -4232,7 +4235,7 @@ msgstr ""
 msgid "Show title ?"
 msgstr ""
 
-#: ../install/old.index.php:160
+#: ../webroot/installer.php:156 ../install/old.index.php:160
 msgid "The username cannot contain the @ character"
 msgstr ""
 
@@ -4278,7 +4281,7 @@ msgstr ""
 msgid "Trying to send a mail to a member (%name) with an invalid address: %email"
 msgstr ""
 
-#: ../install/old.index.php:101
+#: ../webroot/installer.php:109 ../install/old.index.php:101
 msgid "No port"
 msgstr ""
 
@@ -4317,8 +4320,12 @@ msgstr ""
 msgid "No member was selected, please check at least one name."
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:984
-msgid "Unable to detach contribution from transaction"
+#: ../templates/default/gestion_textes.tpl:70
+msgid "available only from self subscribe page"
+msgstr ""
+
+#: ../webroot/installer.php:297
+msgid "Galette initialisation"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:7 ../templates/default/preferences.tpl:75
@@ -5000,8 +5007,8 @@ msgid "Recover password"
 msgstr ""
 
 #: ../install/steps/galette.php:57 ../templates/default/configurer_fiches.tpl:52
-#: ../templates/default/configurer_fiches.tpl:78 ../templates/default/js_removal.tpl:60
-#: ../templates/default/js_removal.tpl:76 ../templates/default/gestion_pdf.tpl:136
+#: ../templates/default/configurer_fiches.tpl:78 ../templates/default/js_removal.tpl:65
+#: ../templates/default/js_removal.tpl:81 ../templates/default/gestion_pdf.tpl:136
 msgid "An error occured :("
 msgstr ""
 
@@ -5043,9 +5050,9 @@ msgid "ends with"
 msgstr ""
 
 #: ../ajax_plugins_initdb.php:116 ../lib/Galette/Core/Install.php:125
-#: ../install/old.index.php:205 ../install/old.index.php:310
-#: ../install/old.index.php:1525 ../install/steps/type.php:40
-#: ../templates/default/plugin_initdb.tpl:131
+#: ../webroot/installer.php:276 ../install/old.index.php:205
+#: ../install/old.index.php:310 ../install/old.index.php:1525
+#: ../install/steps/type.php:40 ../templates/default/plugin_initdb.tpl:131
 msgid "Installation mode"
 msgstr ""
 
@@ -5389,6 +5396,7 @@ msgstr ""
 msgid "Do not wait timeout and go to the next page now :)"
 msgstr ""
 
+#: ../webroot/installer.php:112 ../webroot/installer.php:153
 #: ../install/old.index.php:104 ../install/old.index.php:156
 msgid "No user name"
 msgstr ""
@@ -5520,10 +5528,10 @@ msgstr ""
 msgid "'%export' file has been removed from disk."
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:128 ../install/old.index.php:213
-#: ../install/old.index.php:521 ../install/old.index.php:605
-#: ../install/old.index.php:1527 ../install/steps/db.php:41
-#: ../install/steps/db.php:63
+#: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:277
+#: ../install/old.index.php:213 ../install/old.index.php:521
+#: ../install/old.index.php:605 ../install/old.index.php:1527
+#: ../install/steps/db.php:41 ../install/steps/db.php:63
 msgid "Database"
 msgstr ""
 
@@ -5575,8 +5583,8 @@ msgstr ""
 msgid "Inactive account"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1425
-msgid "An error occured trying to remove members :/"
+#: ../webroot/installer.php:218 ../install/old.index.php:279
+msgid "Galette installation"
 msgstr ""
 
 #: ../templates/default/gestion_groupes.tpl:23
@@ -6168,8 +6176,8 @@ msgstr ""
 msgid "Admin account (independant of members)"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:143 ../install/old.index.php:229
-#: ../install/old.index.php:1531
+#: ../lib/Galette/Core/Install.php:143 ../webroot/installer.php:293
+#: ../install/old.index.php:229 ../install/old.index.php:1531
 msgid "Admin parameters"
 msgstr ""
 

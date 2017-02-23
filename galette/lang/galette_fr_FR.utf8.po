@@ -310,6 +310,10 @@ msgstr "Date de sortie"
 msgid "UPDATE operation not allowed"
 msgstr "Opération UPDATE non autorisée"
 
+#: ../webroot/installer.php:278
+msgid "Database access/permissions"
+msgstr "Accès et permissions de la base de données"
+
 #: ../templates/default/voir_adherent.tpl:21
 msgid "New password"
 msgstr "Nouveau Mot de passe"
@@ -509,7 +513,7 @@ msgstr "n'est pas"
 msgid "receipt"
 msgstr "recu"
 
-#: ../install/old.index.php:110
+#: ../webroot/installer.php:118 ../install/old.index.php:110
 msgid "No database name"
 msgstr "Nom de la base non précisé"
 
@@ -542,8 +546,8 @@ msgstr "Voulez vous utiliser l'authentification SMTP&nbsp;?"
 msgid "Due free"
 msgstr "Exempt de cotisation"
 
-#: ../preferences.php:285 ../includes/routes/management.routes.php:442
-#: ../install/old.index.php:173
+#: ../preferences.php:285 ../webroot/installer.php:167
+#: ../includes/routes/management.routes.php:442 ../install/old.index.php:173
 msgid "Passwords mismatch"
 msgstr "Les mots de passe ne correspondent pas&nbsp;: "
 
@@ -1030,9 +1034,9 @@ msgid "Unknown date format for %field.<br/>Know formats are: %formats"
 msgstr ""
 "Format de date inconnu pour %field.<br/>Les formats connus sont : %formats"
 
-#: ../install/old.index.php:279
-msgid "Galette installation"
-msgstr "Installation de Galette"
+#: ../includes/routes/members.routes.php:1425
+msgid "An error occured trying to remove members :/"
+msgstr "Une erreur est survenue lors de la suppression des adhérents :/"
 
 #: ../templates/default/import.tpl:48
 msgid "Import"
@@ -1050,9 +1054,9 @@ msgstr ""
 msgid "Transactions managment"
 msgstr "Gestion des transactions"
 
-#: ../templates/default/gestion_textes.tpl:70
-msgid "available only from self subscribe page"
-msgstr "disponible uniquement depuis la page d'auto inscription"
+#: ../includes/routes/contributions.routes.php:984
+msgid "Unable to detach contribution from transaction"
+msgstr "Impossible de détacher la contribution de la transaction"
 
 #: ../templates/default/preferences.tpl:197
 msgid "Send email to administrators?"
@@ -1079,7 +1083,7 @@ msgstr "Attacher un adhérent"
 msgid "No manager attached"
 msgstr "Aucun responsable attaché"
 
-#: ../install/old.index.php:245
+#: ../webroot/installer.php:197 ../install/old.index.php:245
 msgid "Galette Installation"
 msgstr "Installation de Galette"
 
@@ -1253,8 +1257,8 @@ msgstr "Installation du plugin %plugin"
 msgid "Change search criterias"
 msgstr "Modifier les critères de recherche"
 
-#: ../lib/Galette/Core/Install.php:122 ../install/old.index.php:209
-#: ../install/old.index.php:1526
+#: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:275
+#: ../install/old.index.php:209 ../install/old.index.php:1526
 msgid "Checks"
 msgstr "Vérifications"
 
@@ -1441,8 +1445,9 @@ msgstr "Corps du message"
 msgid "Group added"
 msgstr "Groupe ajouté"
 
-#: ../lib/Galette/Core/Install.php:149 ../install/old.index.php:237
-#: ../install/old.index.php:1533 ../templates/default/plugin_initdb.tpl:138
+#: ../lib/Galette/Core/Install.php:149 ../webroot/installer.php:298
+#: ../install/old.index.php:237 ../install/old.index.php:1533
+#: ../templates/default/plugin_initdb.tpl:138
 msgid "End!"
 msgstr "Fin&nbsp;!"
 
@@ -1925,8 +1930,9 @@ msgstr "Activer l'éditeur HTML ?"
 msgid "No file to upload"
 msgstr "Aucun fichier à envoyer"
 
-#: ../install/old.index.php:526 ../install/old.index.php:1162
-#: ../install/old.index.php:1463 ../templates/default/mailing_adherents.tpl:5
+#: ../webroot/installer.php:235 ../install/old.index.php:526
+#: ../install/old.index.php:1162 ../install/old.index.php:1463
+#: ../templates/default/mailing_adherents.tpl:5
 #: ../templates/default/global_messages.tpl:4
 msgid "- ERROR -"
 msgstr "- ERREUR -"
@@ -2428,7 +2434,7 @@ msgstr "Si ce qui suit n'est pas vide, tous les autres filtres seront ignorés."
 msgid "Nickname:"
 msgstr "Pseudo&nbsp;:"
 
-#: ../templates/default/plugin_initdb.tpl:137
+#: ../webroot/installer.php:283 ../templates/default/plugin_initdb.tpl:137
 msgid "Database upgrade"
 msgstr "Mise à jour de la base de données"
 
@@ -3353,7 +3359,7 @@ msgstr "(jj/mm)"
 msgid "Receipt"
 msgstr "Reçu"
 
-#: ../install/old.index.php:98
+#: ../webroot/installer.php:106 ../install/old.index.php:98
 msgid "No host"
 msgstr "Aucun hôte"
 
@@ -3736,7 +3742,7 @@ msgstr "Impossible d'obtenir la liste des groupes."
 msgid "Group managers selection"
 msgstr "Sélection des responsables du groupe"
 
-#: ../templates/default/plugin_initdb.tpl:134
+#: ../webroot/installer.php:282 ../templates/default/plugin_initdb.tpl:134
 msgid "Version selection"
 msgstr "Sélection de la version"
 
@@ -3881,6 +3887,7 @@ msgstr "Numéro adhérent"
 msgid "ALTER Operation allowed"
 msgstr "Opération ALTER autorisée"
 
+#: ../webroot/installer.php:115 ../webroot/installer.php:159
 #: ../includes/routes/authentication.routes.php:360
 #: ../install/old.index.php:107 ../install/old.index.php:164
 msgid "No password"
@@ -4285,10 +4292,6 @@ msgstr ""
 msgid "Trombinoscope"
 msgstr "Trombinoscope"
 
-#: ../templates/default/gestion_transactions.tpl:120
-msgid "Do you really want to delete this transaction of the database ?"
-msgstr "Voulez-vous vraiment effacer cette transaction&nbsp;?"
-
 #: ../includes/routes/management.routes.php:3053
 msgid "Field has been successfully deleted!"
 msgstr "Le champ a été supprimé avec succès !"
@@ -4577,7 +4580,7 @@ msgstr "ne contient pas"
 msgid "Status:"
 msgstr "Statut&nbsp;:"
 
-#: ../templates/default/plugin_initdb.tpl:137
+#: ../webroot/installer.php:287 ../templates/default/plugin_initdb.tpl:137
 msgid "Database installation"
 msgstr "Installation de la base de données"
 
@@ -4586,7 +4589,8 @@ msgstr "Installation de la base de données"
 msgid "Access permissions to database"
 msgstr "Droits d'accès à la base"
 
-#: ../install/old.index.php:1522 ../templates/default/plugin_initdb.tpl:129
+#: ../webroot/installer.php:273 ../install/old.index.php:1522
+#: ../templates/default/plugin_initdb.tpl:129
 msgid "Steps:"
 msgstr "Étapes&nbsp;:"
 
@@ -4815,7 +4819,7 @@ msgstr "module « %s »"
 msgid "Show title ?"
 msgstr "Afficher le titre&nbsp;?"
 
-#: ../install/old.index.php:160
+#: ../webroot/installer.php:156 ../install/old.index.php:160
 msgid "The username cannot contain the @ character"
 msgstr "L'identifiant ne peut pas contenir le caractère @&nbsp;!"
 
@@ -4873,7 +4877,7 @@ msgstr ""
 "Tentative d'envoi de courriel à un adhérent (%name) avec une adresse "
 "invalide : %email"
 
-#: ../install/old.index.php:101
+#: ../webroot/installer.php:109 ../install/old.index.php:101
 msgid "No port"
 msgstr "Pas de port"
 
@@ -4915,9 +4919,13 @@ msgstr "Description"
 msgid "No member was selected, please check at least one name."
 msgstr "Veuillez sélectionner au moins un adhérent."
 
-#: ../includes/routes/contributions.routes.php:984
-msgid "Unable to detach contribution from transaction"
-msgstr "Impossible de détacher la contribution de la transaction"
+#: ../templates/default/gestion_textes.tpl:70
+msgid "available only from self subscribe page"
+msgstr "disponible uniquement depuis la page d'auto inscription"
+
+#: ../webroot/installer.php:297
+msgid "Galette initialisation"
+msgstr "Initialisation de Galette"
 
 #: ../templates/default/preferences.tpl:7
 #: ../templates/default/preferences.tpl:75
@@ -5676,8 +5684,8 @@ msgstr "Récupérer le mot de passe"
 #: ../install/steps/galette.php:57
 #: ../templates/default/configurer_fiches.tpl:52
 #: ../templates/default/configurer_fiches.tpl:78
-#: ../templates/default/js_removal.tpl:60
-#: ../templates/default/js_removal.tpl:76
+#: ../templates/default/js_removal.tpl:65
+#: ../templates/default/js_removal.tpl:81
 #: ../templates/default/gestion_pdf.tpl:136
 msgid "An error occured :("
 msgstr "Une erreur est survenue :("
@@ -5729,9 +5737,9 @@ msgid "ends with"
 msgstr "se termine par"
 
 #: ../ajax_plugins_initdb.php:116 ../lib/Galette/Core/Install.php:125
-#: ../install/old.index.php:205 ../install/old.index.php:310
-#: ../install/old.index.php:1525 ../install/steps/type.php:40
-#: ../templates/default/plugin_initdb.tpl:131
+#: ../webroot/installer.php:276 ../install/old.index.php:205
+#: ../install/old.index.php:310 ../install/old.index.php:1525
+#: ../install/steps/type.php:40 ../templates/default/plugin_initdb.tpl:131
 msgid "Installation mode"
 msgstr "Type d'installation"
 
@@ -6115,6 +6123,7 @@ msgstr "Informations relatives à Galette"
 msgid "Do not wait timeout and go to the next page now :)"
 msgstr "Ne pas attendre et passer à la page suivante immédiatement :)"
 
+#: ../webroot/installer.php:112 ../webroot/installer.php:153
 #: ../install/old.index.php:104 ../install/old.index.php:156
 msgid "No user name"
 msgstr "Nom d'utilisateur vide"
@@ -6266,10 +6275,10 @@ msgstr "français"
 msgid "'%export' file has been removed from disk."
 msgstr "Le fichier « %export » a été supprimé du disque."
 
-#: ../lib/Galette/Core/Install.php:128 ../install/old.index.php:213
-#: ../install/old.index.php:521 ../install/old.index.php:605
-#: ../install/old.index.php:1527 ../install/steps/db.php:41
-#: ../install/steps/db.php:63
+#: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:277
+#: ../install/old.index.php:213 ../install/old.index.php:521
+#: ../install/old.index.php:605 ../install/old.index.php:1527
+#: ../install/steps/db.php:41 ../install/steps/db.php:63
 msgid "Database"
 msgstr "Base de données"
 
@@ -6325,9 +6334,9 @@ msgstr "Types de contribution"
 msgid "Inactive account"
 msgstr "Compte désactivé"
 
-#: ../includes/routes/members.routes.php:1425
-msgid "An error occured trying to remove members :/"
-msgstr "Une erreur est survenue lors de la suppression des adhérents :/"
+#: ../webroot/installer.php:218 ../install/old.index.php:279
+msgid "Galette installation"
+msgstr "Installation de Galette"
 
 #: ../templates/default/gestion_groupes.tpl:23
 msgid "Group informations"
@@ -6979,8 +6988,8 @@ msgstr "Aucun membre n'a encore été sélectionné."
 msgid "Admin account (independant of members)"
 msgstr "Compte administrateur (indépendant des adhérents)"
 
-#: ../lib/Galette/Core/Install.php:143 ../install/old.index.php:229
-#: ../install/old.index.php:1531
+#: ../lib/Galette/Core/Install.php:143 ../webroot/installer.php:293
+#: ../install/old.index.php:229 ../install/old.index.php:1531
 msgid "Admin parameters"
 msgstr "paramètres administrateur"
 
@@ -7120,6 +7129,9 @@ msgstr "Textes courriels"
 msgid "Enable plugin"
 msgstr "Activer le plugin"
 
+#~ msgid "Do you really want to delete this transaction of the database ?"
+#~ msgstr "Voulez-vous vraiment effacer cette transaction&nbsp;?"
+
 #~ msgid ""
 #~ "Do you really want to delete all selected accounts (and related "
 #~ "contributions)?"
@@ -7151,16 +7163,10 @@ msgstr "Activer le plugin"
 #~ msgid "Configure dynamic fields"
 #~ msgstr "Configuration des champs dynamiques"
 
-#~ msgid "Database access/permissions"
-#~ msgstr "Accès et permissions de la base de données"
-
 #~ msgid "Do you really want to delete this contribution of the database ?"
 #~ msgstr ""
 #~ "Voulez vous vraiment effacer cette contribution de la base de "
 #~ "données&nbsp;?"
-
-#~ msgid "Galette initialisation"
-#~ msgstr "Initialisation de Galette"
 
 #~ msgid ""
 #~ "Do you really want to delete this field ?\n"
