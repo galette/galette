@@ -71,7 +71,7 @@ if (!isset($installer)) {
 // and redirect to install page if not
 $installed = file_exists(GALETTE_CONFIG_PATH . 'config.inc.php');
 if (!$installed && !$installer) {
-    header('location: install/index.php');
+    header('location: ./installer.php');
     die();
 }
 
@@ -86,11 +86,6 @@ if (isset($installer) && $installer !== true) {
     include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 }
 
-if (!function_exists('password_hash')) {
-    include_once GALETTE_PASSWORD_COMPAT_PATH . '/password.php';
-}
-
-use Galette\Common\ClassLoader;
 use Analog\Analog;
 use Galette\Core;
 
@@ -110,12 +105,13 @@ $smartyLoader->register();
 
 \Slim\Slim::registerAutoloader();
 require_once GALETTE_SLIM_VIEWS_PATH . 'Smarty.php';*/
-
+/*
+BREAKS as of Galette 0.9-dev
 // To help the built-in PHP dev server, check if the request was actually for
 // something which should probably be served as a static file
 if (PHP_SAPI === 'cli-server' && $_SERVER['SCRIPT_FILENAME'] !== __FILE__) {
     return false;
-}
+}*/
 
 require GALETTE_ROOT . '/vendor/autoload.php';
 
