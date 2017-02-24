@@ -141,7 +141,7 @@ class FakeData
      */
     public function setNbMembers($nb)
     {
-        $this->nbmembers = $nb;
+        $this->nbmembers = (int)$nb;
         return $this;
     }
 
@@ -154,7 +154,7 @@ class FakeData
      */
     public function setMaxContribs($nb)
     {
-        $this->maxcontribs = $nb;
+        $this->maxcontribs = (int)$nb;
         return $this;
     }
 
@@ -167,7 +167,7 @@ class FakeData
      */
     public function setNbGroups($nb)
     {
-        $this->nbgroups = $nb;
+        $this->nbgroups = (int)$nb;
         return $this;
     }
 
@@ -180,7 +180,7 @@ class FakeData
      */
     public function setNbTransactions($nb)
     {
-        $this->nbtransactions = $nb;
+        $this->nbtransactions = (int)$nb;
         return $this;
     }
 
@@ -234,18 +234,20 @@ class FakeData
             }
         }
 
-        if ($done === $count) {
-            $this->addSuccess(
-                str_replace('%count', $count, _T("%count groups created"))
-            );
-        } else {
-            $this->addWarning(
-                str_replace(
-                    ['%count', '%done'],
-                    [$count, $done],
-                    _T("%count groups requested, and %done created")
-                )
-            );
+        if ($count !=0 && $done != 0) {
+            if ($done === $count) {
+                $this->addSuccess(
+                    str_replace('%count', $count, _T("%count groups created"))
+                );
+            } else {
+                $this->addWarning(
+                    str_replace(
+                        ['%count', '%done'],
+                        [$count, $done],
+                        _T("%count groups requested, and %done created")
+                    )
+                );
+            }
         }
     }
 
@@ -323,6 +325,7 @@ class FakeData
                 if ($member->store()) {
                     $this->mids[] = $member->id;
                     ++$done;
+                    $this->addPhoto($member);
                 }
 
                 //add to a group?
@@ -344,17 +347,61 @@ class FakeData
             }
         }
 
-        if ($done === $count) {
-            $this->addSuccess(
-                str_replace('%count', $count, _T("%count members created"))
-            );
-        } else {
-            $this->addWarning(
-                str_replace(
-                    ['%count', '%done'],
-                    [$count, $done],
-                    _T("%count members requested, and %done created")
+        if ($count !=0 && $done != 0) {
+            if ($done === $count) {
+                $this->addSuccess(
+                    str_replace('%count', $count, _T("%count members created"))
+                );
+            } else {
+                $this->addWarning(
+                    str_replace(
+                        ['%count', '%done'],
+                        [$count, $done],
+                        _T("%count members requested, and %done created")
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * Add phto to a member
+     *
+     * @param Adherent $member Member instance
+     *
+     * @return void
+     */
+    public function addPhoto(Adherent $member)
+    {
+        $file = GALETTE_TEMPIMAGES_PATH . 'fakephoto.jpg';
+        $url = $this->faker->unique()->imageUrl(
+            $width = 800,
+            $height = 600,
+            'people',
+            true,
+            'Galette fake data'
+        );
+        var_dump($url);
+
+        if (copy($url, $file)) {
+            $_FILES = array(
+                'photo' => array(
+                    'name'      => 'fakephoto.jpg',
+                    'type'      => 'image/jpeg',
+                    'size'      => filesize($file),
+                    'tmp_name'  => $file,
+                    'error'     => 0
                 )
+            );
+            $res = $member->picture->store($_FILES['photo'], true);
+            if ($res < 0) {
+                $this->addError(
+                    _T("Photo has not been stored!")
+                );
+            }
+        } else {
+            $this->addError(
+                _T("Photo has not been copied!")
             );
         }
     }
@@ -398,18 +445,20 @@ class FakeData
             }
         }
 
-        if ($done === $count) {
-            $this->addSuccess(
-                str_replace('%count', $count, _T("%count transactions created"))
-            );
-        } else {
-            $this->addWarning(
-                str_replace(
-                    ['%count', '%done'],
-                    [$count, $done],
-                    _T("%count transactions requested, and %done created")
-                )
-            );
+        if ($count !=0 && $done != 0) {
+            if ($done === $count) {
+                $this->addSuccess(
+                    str_replace('%count', $count, _T("%count transactions created"))
+                );
+            } else {
+                $this->addWarning(
+                    str_replace(
+                        ['%count', '%done'],
+                        [$count, $done],
+                        _T("%count transactions requested, and %done created")
+                    )
+                );
+            }
         }
     }
 
@@ -423,6 +472,10 @@ class FakeData
     public function generateContributions($mids = null)
     {
         $faker = $this->faker;
+
+        if ($this->maxcontribs == 0) {
+            return;
+        }
 
         $types = new ContributionsTypes($this->zdb);
         $types = $types->getCompleteList();
@@ -534,7 +587,7 @@ class FakeData
      */
     protected function addWarning($msg)
     {
-        $this->report['warning'][] = $msg;
+        $this->report['warnings'][] = $msg;
     }
 
     /**
