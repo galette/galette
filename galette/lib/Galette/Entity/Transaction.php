@@ -42,6 +42,7 @@ use Zend\Db\Sql\Expression;
 use Galette\Repository\Contributions;
 use Galette\Core\Db;
 use Galette\Core\History;
+use Galette\Core\Login;
 
 /**
  * Transaction class for galette
@@ -70,18 +71,21 @@ class Transaction
     private $_fields;
 
     private $zdb;
+    private $login;
 
     /**
      * Default constructor
      *
      * @param Db                 $zdb  Database instance
+     * @param Login              $login Login instance
      * @param null|int|ResultSet $args Either a ResultSet row or its id for to load
      *                                   a specific transaction, or null to just
      *                                   instanciate object
      */
-    public function __construct(Db $zdb, $args = null)
+    public function __construct(Db $zdb, Login $login, $args = null)
     {
         $this->zdb = $zdb;
+        $this->login = $login;
 
         /*
          * Fields configuration. Each field is an array and must reflect:
@@ -160,11 +164,12 @@ class Transaction
     /**
      * Remove transaction (and all associated contributions) from database
      *
+     * @param History $hist        History
      * @param boolean $transaction Activate transaction mode (defaults to true)
      *
      * @return boolean
      */
-    public function remove($transaction = true)
+    public function remove(History $hist, $transaction = true)
     {
         try {
             if ($transaction) {
@@ -173,13 +178,13 @@ class Transaction
 
             //remove associated contributions if needeed
             if ($this->getDispatchedAmount() > 0) {
-                $c = new Contributions();
+                $c = new Contributions($this->zdb, $this->login);
                 $clist = $c->getListFromTransaction($this->_id);
                 $cids = array();
                 foreach ($clist as $cid) {
                     $cids[] = $cid->id;
                 }
-                $rem = $c->removeContributions($cids, false);
+                $rem = $c->remove($cids, $hist, false);
             }
 
             //remove transaction itself

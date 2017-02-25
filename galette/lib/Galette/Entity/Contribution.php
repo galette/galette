@@ -169,7 +169,7 @@ class Contribution
                 $this->_member = (int)$args['adh'];
             }
             if (isset($args['trans'])) {
-                $this->_transaction = new Transaction($this->zdb, (int)$args['trans']);
+                $this->_transaction = new Transaction($this->zdb, $this->login, (int)$args['trans']);
                 if (!isset($this->_member)) {
                     $this->_member = (int)$this->_transaction->member;
                 }
@@ -298,7 +298,7 @@ class Contribution
 
         $transpk = Transaction::PK;
         if ($r->$transpk != '') {
-            $this->_transaction = new Transaction($this->zdb, (int)$r->$transpk);
+            $this->_transaction = new Transaction($this->zdb, $this->login, (int)$r->$transpk);
         }
 
         $this->type = (int)$r->id_type_cotis;
@@ -404,7 +404,7 @@ class Contribution
                         break;
                     case Transaction::PK:
                         if ($value != '') {
-                            $this->_transaction = new Transaction($this->zdb, (int)$value);
+                            $this->_transaction = new Transaction($this->zdb, $this->login, (int)$value);
                         }
                         break;
                     case 'duree_mois_cotis':
@@ -1164,7 +1164,7 @@ class Contribution
             switch ($name) {
                 case 'transaction':
                     if (is_int($value)) {
-                        $this->$rname = new Transaction($this->zdb, $value);
+                        $this->$rname = new Transaction($this->zdb, $this->login, $value);
                     } else {
                         Analog::log(
                             'Trying to set a transaction from an id that is not an integer.',

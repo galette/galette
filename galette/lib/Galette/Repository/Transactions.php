@@ -108,7 +108,7 @@ class Transactions
             $results = $this->zdb->execute($select);
             if ($as_trans) {
                 foreach ($results as $row) {
-                    $transactions[] = new Transaction($this->zdb, $row);
+                    $transactions[] = new Transaction($this->zdb, $this->login, $row);
                 }
             } else {
                 $transactions = $results;
@@ -316,8 +316,8 @@ class Transactions
 
                 $results = $this->zdb->execute($select);
                 foreach ($results as $transaction) {
-                    $c = new Transaction($this->zdb, $transaction);
-                    $res = $c->remove(false);
+                    $c = new Transaction($this->zdb, $this->login, $transaction);
+                    $res = $c->remove($hist, false);
                     if ($res === false) {
                         throw new \Exception;
                     }

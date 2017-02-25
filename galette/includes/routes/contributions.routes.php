@@ -835,7 +835,7 @@ $app->get(
             $dyn_fields = $this->session->transaction['dyn_fields'];
             $this->session->transaction = null;
         } else {
-            $trans = new Transaction($this->zdb);
+            $trans = new Transaction($this->zdb, $this->login);
             //TODO: dynamic fields should be handled by Transaction object
             $dyn_fields = new DynamicFields();
         }
@@ -1004,7 +1004,7 @@ $app->post(
         '/{action:' . __('add') . '|' . __('edit') .'}[/{id:\d+}]',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
-        $trans = new Transaction($this->zdb);
+        $trans = new Transaction($this->zdb, $this->login);
         //TODO: dynamic fields should be handled by Transaction object
         $dyn_fields = new DynamicFields();
 
