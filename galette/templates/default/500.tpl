@@ -1,6 +1,7 @@
 {extends file="public_page.tpl"}
 
 {block name="content"}
+    <div class="error">
     <div id="errorbox">
         <h2>{_T string="Application error"}</h2>
     </div>
@@ -39,6 +40,7 @@
         {/function}
 
         {call render_ex exception=$exception}
+    </div>
     </div>
     {/if}
 {/block}

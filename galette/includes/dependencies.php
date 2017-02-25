@@ -47,6 +47,10 @@ $container['phpErrorHandler'] = function ($c) {
     return new Galette\Handlers\PhpError($c['view'], true);
 };
 
+$container['notFoundHandler'] = function ($c) {
+    return new Galette\Handlers\NotFound($c['view']);
+};
+
 // -----------------------------------------------------------------------------
 // Service providers
 // -----------------------------------------------------------------------------
