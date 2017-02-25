@@ -109,6 +109,8 @@ class Error
                         ),
                         Analog::NOTICE
                     );
+                } else {
+                    $throw = null;
                 }
                 break;
             case E_WARNING:
@@ -150,7 +152,7 @@ class Error
                 break;
         }
 
-        if ($throw === true || GALETTE_MODE == 'DEV') {
+        if ($throw === true || GALETTE_MODE == 'DEV' && $throw !== null) {
             throw new \ErrorException(
                 $type . ': ' . $errstr,
                 $errno,
