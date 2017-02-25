@@ -872,9 +872,6 @@ $app->map(
                 break;
         }
 
-        var_dump($post);
-        var_dump($install);
-
         $this->session->$mdplugin = $install;
 
         $params += [

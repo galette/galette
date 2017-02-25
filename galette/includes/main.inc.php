@@ -234,7 +234,6 @@ $baseRedirect = function ($request, $response, $args = []) use ($app, $container
     $session = $container->get('session');
 
     $flashes = $container->get('flash')->getMessages();
-    var_dump($flashes);
     foreach ($flashes as $type => $messages) {
         foreach ($messages as $message) {
             $container->get('flash')->addMessage($type, $message);
