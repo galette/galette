@@ -157,9 +157,7 @@ set_include_path(
 /*------------------------------------------------------------------------------
 Logger stuff
 ------------------------------------------------------------------------------*/
-if (!$cron && (!defined('GALETTE_HANDLE_ERRORS')
-    || GALETTE_HANDLE_ERRORS === true)
-) {
+if (!$cron) {
     //set custom error handler
     set_error_handler(
         array(
