@@ -40,11 +40,11 @@ $container = $app->getContainer();
 // -----------------------------------------------------------------------------
 
 $container['errorHandler'] = function ($c) {
-    return new Galette\Handlers\Error(true);
+    return new Galette\Handlers\Error($c['view'], true);
 };
 
 $container['phpErrorHandler'] = function ($c) {
-    return new Galette\Handlers\PhpError(true);
+    return new Galette\Handlers\PhpError($c['view'], true);
 };
 
 // -----------------------------------------------------------------------------
@@ -96,6 +96,7 @@ $container['view'] = function ($c) {
     $smarty->assign('galette_base_path', './');
     $smarty->assign('GALETTE_VERSION', GALETTE_VERSION);
     $smarty->assign('GALETTE_MODE', GALETTE_MODE);
+    $smarty->assign('GALETTE_DISPLAY_ERRORS', GALETTE_DISPLAY_ERRORS);
 
     /*if ($this->parserConfigDir) {
         $instance->setConfigDir($this->parserConfigDir);

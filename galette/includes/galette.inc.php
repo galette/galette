@@ -145,7 +145,7 @@ if (!isset($_COOKIE['show_galette_dashboard'])) {
 if (!defined('GALETTE_DISPLAY_ERRORS')) {
     define('GALETTE_DISPLAY_ERRORS', 0);
 }
-ini_set('display_errors', GALETTE_DISPLAY_ERRORS);
+ini_set('display_errors', 0);
 
 set_include_path(
     GALETTE_ZEND_PATH . PATH_SEPARATOR .

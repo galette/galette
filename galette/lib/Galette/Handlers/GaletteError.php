@@ -37,6 +37,8 @@
 namespace Galette\Handlers;
 
 use Analog\Analog;
+use Slim\Views\Smarty;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Error handler
@@ -52,6 +54,21 @@ use Analog\Analog;
  */
 trait GaletteError
 {
+    protected $view;
+
+    /**
+     * Constructor
+     *
+     * @param Smarty $view                View instance
+     * @param bool   $displayErrorDetails Set to true to display full details
+     */
+    public function __construct(Smarty $view, $displayErrorDetails = false)
+    {
+        $this->view = $view;
+        $this->displayErrorDetails = (bool) $displayErrorDetails;
+    }
+
+
     /**
      * Write to the error log whether displayErrorDetails is false or not
      *
@@ -62,13 +79,32 @@ trait GaletteError
      */
     protected function writeToErrorLog($throwable)
     {
-        $message = __('Galette error:') . PHP_EOL;
+        $message = 'Galette error:' . PHP_EOL;
         $message .= $this->renderThrowableAsText($throwable);
         while ($throwable = $throwable->getPrevious()) {
-            $message .= PHP_EOL . __('Previous error:') . PHP_EOL;
+            $message .= PHP_EOL . 'Previous error:' . PHP_EOL;
             $message .= $this->renderThrowableAsText($throwable);
         }
 
         $this->logError($message);
+    }
+
+    /**
+     * Determine which content type we know about is wanted using Accept header
+     *
+     * Note: This method is a bare-bones implementation designed specifically for
+     * Slim's error handling requirements. Consider a fully-feature solution such
+     * as willdurand/negotiation for any other situation.
+     *
+     * @param ServerRequestInterface $request Request
+     * @return string
+     */
+    protected function determineContentType(ServerRequestInterface $request)
+    {
+        if ($request->isXhr()) {
+            //get error as JSON for XHR request; more lisible
+            return 'application/json';
+        }
+        return parent::determineContentType($request);
     }
 }

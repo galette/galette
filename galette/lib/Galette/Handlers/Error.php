@@ -37,6 +37,8 @@
 namespace Galette\Handlers;
 
 use Slim\Handlers\Error as SlimError;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Analog\Analog;
 
 /**
@@ -54,4 +56,34 @@ use Analog\Analog;
 class Error extends SlimError
 {
     use GaletteError;
+
+    /**
+     * Invoke error handler
+     *
+     * @param ServerRequestInterface $request   The most recent Request object
+     * @param ResponseInterface      $response  The most recent Response object
+     * @param \Exception             $exception The caught Exception object
+     *
+     * @return ResponseInterface
+     * @throws UnexpectedValueException
+     */
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, \Exception $exception)
+    {
+        $response = parent::__invoke($request, $response, $exception);
+
+        if ($response->getHeaderLine('Content-Type') == 'text/html') {
+            $response->getBody()->rewind();
+
+            $this->view->render(
+                $response,
+                '500.tpl',
+                [
+                    'page_title'    => __('Galette error'),
+                    'exception'     => $exception
+                ]
+            );
+        }
+
+        return $response;
+    }
 }
