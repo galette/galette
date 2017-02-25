@@ -49,7 +49,7 @@ if ($install->isUpgrade()) {
     $install->loadExistingConfig($_POST, $error_detected);
 } else {
     if (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
-        echo '<div id="warningbox">' . _T("It seems that you have already instaleld Galette once.<br/>All existing data will be removed if you continue using existing database!") . "</div>";
+        echo '<div id="warningbox">' . _T("It seems that you have already installed Galette once.<br/>All existing data will be removed if you keep going on using existing database!") . "</div>";
     }
 }
 
