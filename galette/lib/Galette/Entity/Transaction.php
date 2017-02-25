@@ -76,11 +76,11 @@ class Transaction
     /**
      * Default constructor
      *
-     * @param Db                 $zdb  Database instance
+     * @param Db                 $zdb   Database instance
      * @param Login              $login Login instance
-     * @param null|int|ResultSet $args Either a ResultSet row or its id for to load
-     *                                   a specific transaction, or null to just
-     *                                   instanciate object
+     * @param null|int|ResultSet $args  Either a ResultSet row or its id for to load
+     *                                  a specific transaction, or null to just
+     *                                  instanciate object
      */
     public function __construct(Db $zdb, Login $login, $args = null)
     {
