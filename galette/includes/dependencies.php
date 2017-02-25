@@ -36,6 +36,18 @@
 $container = $app->getContainer();
 
 // -----------------------------------------------------------------------------
+// Error handling
+// -----------------------------------------------------------------------------
+
+$container['errorHandler'] = function ($c) {
+    return new Galette\Handlers\Error(true);
+};
+
+$container['phpErrorHandler'] = function ($c) {
+    return new Galette\Handlers\PhpError(true);
+};
+
+// -----------------------------------------------------------------------------
 // Service providers
 // -----------------------------------------------------------------------------
 
