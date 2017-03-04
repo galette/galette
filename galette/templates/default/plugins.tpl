@@ -24,7 +24,7 @@
                 <td>{$plugin.version}</td>
                 <td>{$plugin.date}</td>
                 <td class="nowrap">
-                    <a class="toggleActivation" href="?deactivate={$name}" title="{_T string="Click here to deactivate plugin '%name'" pattern="/%name/" replace=$plugin.name}">
+                    <a class="toggleActivation" href="{path_for name="pluginsActivation" data=["action" => {_T string="deactivate" domain="routes"}, "module_id" => $name]}" title="{_T string="Click here to deactivate plugin '%name'" pattern="/%name/" replace=$plugin.name}">
                         <img src="{base_url}/{$template_subdir}images/icon-on.png" alt="{_T string="Disable plugin"}"/>
                     </a>
     {if $plugins->needsDatabase($name)}
@@ -48,7 +48,7 @@
             <tr>
                 <td colspan="5">{$name}</td>
                 <td>
-                    <a class="toggleActivation" href="?activate={$name}" title="{_T string="Click here to activate plugin '%name'" pattern="/%name/" replace=$name}">
+                    <a class="toggleActivation" href="{path_for name="pluginsActivation" data=["action" => {_T string="activate" domain="routes"}, "module_id" => $name]}" title="{_T string="Click here to activate plugin '%name'" pattern="/%name/" replace=$name}">
                         <img src="{base_url}/{$template_subdir}images/icon-off.png" alt="{_T string="Enable plugin"}"/>
                     </a>
                     <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>

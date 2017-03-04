@@ -611,53 +611,6 @@ $app->get(
     __('/plugins', 'routes'),
     function ($request, $response) {
         $plugins = $this->get('plugins');
-        if (GALETTE_MODE !== 'DEMO') {
-            $reload_plugins = false;
-            if (isset($_GET['activate'])) {
-                try {
-                    $plugins->activateModule($_GET['activate']);
-                    $this->flash->addMessage(
-                        'success_detected',
-                        str_replace(
-                            '%name',
-                            $_GET['activate'],
-                            _T("Plugin %name has been enabled")
-                        )
-                    );
-                    $reload_plugins = true;
-                } catch (Exception $e) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $e->getMessage()
-                    );
-                }
-            }
-
-            if (isset($_GET['deactivate'])) {
-                try {
-                    $plugins->deactivateModule($_GET['deactivate']);
-                    $this->flash->addMessage(
-                        'success_detected',
-                        str_replace(
-                            '%name',
-                            $_GET['deactivate'],
-                            _T("Plugin %name has been disabled")
-                        )
-                    );
-                    $reload_plugins = true;
-                } catch (Exception $e) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $e->getMessage()
-                    );
-                }
-            }
-
-            //If some plugins have been (de)activated, we have to reload
-            if ($reload_plugins === true) {
-                $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
-            }
-        }
 
         $plugins_list = $plugins->getModules();
         $disabled_plugins = $plugins->getDisabledModules();
@@ -676,6 +629,65 @@ $app->get(
         return $response;
     }
 )->setName('plugins')->add($authenticate);
+
+//plugins (de)activation
+$app->get(
+    __('/plugins', 'routes') .
+    '/{action:' . __('activate', 'routes') . '|' . __('deactivate', 'routes') .'}/{module_id}',
+    function ($request, $response, $args) {
+        if (GALETTE_MODE !== 'DEMO') {
+            $plugins = $this->get('plugins');
+            $action = $args['action'];
+            $reload_plugins = false;
+            if ($action == __('activate', 'routes')) {
+                try {
+                    $plugins->activateModule($args['module_id']);
+                    $this->flash->addMessage(
+                        'success_detected',
+                        str_replace(
+                            '%name',
+                            $args['module_id'],
+                            _T("Plugin %name has been enabled")
+                        )
+                    );
+                    $reload_plugins = true;
+                } catch (\Exception $e) {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        $e->getMessage()
+                    );
+                }
+            } elseif ($args['action'] == __('deactivate', 'routes')) {
+                try {
+                    $plugins->deactivateModule($args['module_id']);
+                    $this->flash->addMessage(
+                        'success_detected',
+                        str_replace(
+                            '%name',
+                            $args['module_id'],
+                            _T("Plugin %name has been disabled")
+                        )
+                    );
+                    $reload_plugins = true;
+                } catch (\Exception $e) {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        $e->getMessage()
+                    );
+                }
+            }
+
+            //If some plugins have been (de)activated, we have to reload
+            if ($reload_plugins === true) {
+                $plugins->loadModules(GALETTE_PLUGINS_PATH, $this->i18n->getFileName());
+            }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('plugins'));
+    }
+)->setName('pluginsActivation')->add($authenticate);
 
 $app->map(
     ['GET', 'POST'],
@@ -735,14 +747,8 @@ $app->map(
             $install->atDbStep();
         }
 
-
-
-
-
-
         $step = 1;
         $istep = 1;
-
 
         if (isset($post['install_type'])) {
             $params['install_type'] = $post['install_type'];

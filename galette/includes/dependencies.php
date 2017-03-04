@@ -211,6 +211,7 @@ $container['acls'] = function ($c) {
         'charts'            => 'staff',
         'plugins'           => 'admin',
         'pluginInitDb'      => 'admin',
+        'pluginsActivation' => 'admin',
         'history'           => 'staff',
         'history_filter'    => 'staff',
         'flushHistory'      => 'staff',
