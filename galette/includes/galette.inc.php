@@ -245,9 +245,7 @@ if (!$installer and !defined('GALETTE_TESTS')) {
      */
     $zdb = new Core\Db();
 
-    if ($zdb->checkDbVersion()
-        || strpos($_SERVER['PHP_SELF'], 'picture.php') !== false
-    ) {
+    if ($zdb->checkDbVersion()) {
 
         /**
          * Load preferences
