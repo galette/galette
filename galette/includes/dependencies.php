@@ -210,6 +210,7 @@ $container['acls'] = function ($c) {
         'sysinfos'          => 'staff',
         'charts'            => 'staff',
         'plugins'           => 'admin',
+        'pluginInfo'        => 'member',
         'pluginInitDb'      => 'admin',
         'history'           => 'staff',
         'history_filter'    => 'staff',

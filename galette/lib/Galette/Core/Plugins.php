@@ -103,7 +103,7 @@ class Plugins
             }
 
             while (($entry = $d->read()) !== false) {
-                $full_entry = $root . $entry;
+                $full_entry = realpath($root . $entry);
 
                 if ($entry != '.' && $entry != '..' && is_dir($full_entry)
                     && file_exists($full_entry . '/_define.php')

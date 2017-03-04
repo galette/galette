@@ -81,6 +81,30 @@ $app->group(
             $this->group(
                 '/' . $module['route'],
                 function () use ($module, $module_id, $authenticate) {
+                    //Plugin home: give informations
+                    $this->get(
+                        '',
+                        function ($request, $response) use ($module) {
+                            $params = [
+                                'page_title'    => $module['name'],
+                                'name'          => $module['name'],
+                                'version'       => $module['version'],
+                                'date'          => $module['date'],
+                                'author'        => $module['author']
+                            ];
+                            if ($this->login->isAdmin()) {
+                                $params['module'] = $module;
+                            }
+                            // display page
+                            $this->view->render(
+                                $response,
+                                'plugin_info.tpl',
+                                $params
+                            );
+                            return $response;
+                        }
+                    )->setName('pluginInfo')->add($authenticate);
+
                     $f = $module['root'] . '/_routes.php';
                     include_once $f;
                 }
