@@ -70,11 +70,14 @@ if ($needs_update) {
         'themes/default/'
     );
 
-    $app->configureMode(
-        'NEED_UPDATE',
-        function () use ($app, $i18n) {
-            $app->add(new Galette\Core\Middleware($i18n, null, Galette\Core\Middleware::NEED_UPDATE));
-        }
+    $i18n = new Galette\Core\I18n();
+    require_once __DIR__ . '/i18n.inc.php';
+
+    $app->add(
+        new Galette\Core\Middleware(
+            $i18n,
+            Galette\Core\Middleware::NEED_UPDATE
+        )
     );
 
     $app->run();
@@ -100,24 +103,6 @@ if ($needs_update) {
 // Set up dependencies
 require GALETTE_ROOT . '/includes/dependencies.php';
 
-// Register middleware
-/*require __DIR__ . '/../app/middleware.php';
-
-// Register routes
-require __DIR__ . '/../app/routes.php';*/
-
-
-/*$app->configureMode(
-    'DEV',
-    function () use ($app) {
-        $app->config(
-            array(
-                'debug' => true
-            )
-        );
-    }
-);*/
-
 /*$app->configureMode(
     'MAINT',
     function () use ($app, $i18n, $login) {
@@ -125,12 +110,6 @@ require __DIR__ . '/../app/routes.php';*/
     }
 );*/
 
-//set default conditions
-/*Route::setDefaultConditions(
-    array(
-        'id' => '\d+'
-    )
-);*/
 
 $smarty = $app->getContainer()->get('view')->getSmarty();
 require_once GALETTE_ROOT . 'includes/smarty.inc.php';
@@ -223,6 +202,18 @@ $authenticate = function ($request, $response, $next) use ($container) {
 
     return $next($request, $response);
 };
+
+
+//Maintainance middleware
+if ('MAINT' === GALETTE_MODE && !$container->get('login')->isSuperAdmin()) {
+    $app->add(
+        new Galette\Core\Middleware(
+            $i18n,
+            Galette\Core\Middleware::MAINTENANCE
+        )
+    );
+}
+
 
 /**
  * Redirection middleware.

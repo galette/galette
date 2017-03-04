@@ -40,7 +40,6 @@
 namespace Galette\Core;
 
 use Galette\Core\I18n;
-use Galette\Core\Login;
 
 /**
  * Galette's Slim middleware
@@ -51,12 +50,12 @@ use Galette\Core\Login;
  * @name      Middleware
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2015-2016 The Galette Team
+ * @copyright 2015-2017 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2015-10-31
  */
-class Middleware extends \Slim\Middleware
+class Middleware
 {
     const MAINTENANCE = 0;
     const NEED_UPDATE = 1;
@@ -72,21 +71,14 @@ class Middleware extends \Slim\Middleware
     protected $i18n;
 
     /**
-     * @var Login
-     */
-    protected $login;
-
-    /**
      * Constructor
      *
      * @param I18n         $i18n     I18n instance
-     * @param Login        $login    Login instance
      * @param callable|int $callback Callable or local constant
      */
-    public function __construct(I18n $i18n, $login = null, $callback = self::MAINTENANCE)
+    public function __construct(I18n $i18n, $callback = self::MAINTENANCE)
     {
         $this->i18n = $i18n;
-        $this->login = $login;
 
         if ($callback === self::MAINTENANCE) {
             $this->callback = array($this, 'maintenancePage');
@@ -102,37 +94,37 @@ class Middleware extends \Slim\Middleware
     }
 
     /**
-     * Call
+     * Middleware invokable class
      *
-     * @return void
+     * @param  \Psr\Http\Message\ServerRequestInterface $request  PSR7 request
+     * @param  \Psr\Http\Message\ResponseInterface      $response PSR7 response
+     * @param  callable                                 $next     Next middleware
+     *
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function call()
+    public function __invoke($request, $response, $next)
     {
-        $mode = $this->app->getMode();
-        if ('MAINT' === $mode && !$this->login->isSuperAdmin()
-            || 'NEED_UPDATE' === $mode
-        ) {
-            call_user_func($this->callback);
-        } else {
-            $this->next->call();
-        }
+        $response
+            ->withStatus(503)
+            ->withHeader('Content-type', 'text/html')
+            ->getBody()->write(call_user_func($this->callback, $request));
+        return $response;
     }
 
     /**
      * Renders the page
      *
-     * @param string $contents HTML page contents
+     * @param \Psr\Http\Message\ServerRequestInterface $request  PSR7 request
+     * @param string                                   $contents HTML page contents
      *
-     * @return void
+     * @return string
      */
-    private function renderPage($contents)
+    private function renderPage($request, $contents)
     {
-        $view = $this->app->view();
-
         $path = str_replace(
             'index.php',
             '',
-            $this->app->request()->getRootUri()
+            $request->getUri()->getBasePath()
         );
 
         //add ending / if missing
@@ -143,13 +135,12 @@ class Middleware extends \Slim\Middleware
             $path .= '/';
         }
 
-        $path .= $view->get('galette_base_path');
         $css_path = $path . GALETTE_THEME;
 
         $body = "<!DOCTYPE html>
 <html lang=\"" . $this->i18n->getAbbrev() . "\">
     <head>
-        <title>" . _T("Galette is currently under maintenance!") . "</title>
+        <title>" . _T("Galette needs update!") . "</title>
         <meta charset=\"UTF-8\"/>
         <link rel=\"stylesheet\" type=\"text/css\" href=\"" . $css_path . "galette.css\"/>
         <link rel=\"stylesheet\" type=\"text/css\" href=\"" . $css_path . "jquery-ui/jquery-ui-" . JQUERY_UI_VERSION . ".custom.css\"/>
@@ -172,33 +163,35 @@ class Middleware extends \Slim\Middleware
         <div id=\"errorbox\">" . $contents . "</div>
     </body>
 </html>";
-        $this->app->contentType('text/html');
-        $this->app->response()->status(503);
-        $this->app->response()->body($body);
+        return $body;
     }
 
     /**
      * Displays maintenance page
      *
-     * @return void
+     * @param \Psr\Http\Message\ServerRequestInterface $request PSR7 request
+     *
+     * @return string
      */
-    private function maintenancePage()
+    private function maintenancePage($request)
     {
         $contents = "<h1>" . _T("Galette is currently under maintenance!") . "</h1>
             <p>" . _T("The Galette instance you are requesting is currently under maintenance. Please come back later.") . "</p>";
-        $this->renderPage($contents);
+        return $this->renderPage($request, $contents);
     }
 
     /**
      * Displays needs update page
      *
-     * @return void
+     * @param \Psr\Http\Message\ServerRequestInterface $request PSR7 request
+     *
+     * @return string
      */
-    private function needsUpdatePage()
+    private function needsUpdatePage($request)
     {
         $contents = "<h1>" . _T("Galette needs update!") . "</h1>
             <p>" . _T("Your Galette database is not present, or not up to date.") . "</p>
             <p><em>" . _T("Please run install or upgrade procedure (check the documentation)") . "</em></p>";
-        $this->renderPage($contents);
+        return $this->renderPage($request, $contents);
     }
 }
