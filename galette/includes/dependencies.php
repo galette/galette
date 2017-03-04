@@ -210,7 +210,6 @@ $container['acls'] = function ($c) {
         'sysinfos'          => 'staff',
         'charts'            => 'staff',
         'plugins'           => 'admin',
-        'pluginInfo'        => 'member',
         'pluginInitDb'      => 'admin',
         'history'           => 'staff',
         'history_filter'    => 'staff',
@@ -301,6 +300,10 @@ $container['acls'] = function ($c) {
         'ajaxGroupMembers'          => 'staff',
         'getDynamicFile'            => 'staff'
     ];
+
+    foreach ($c['plugins']->getModules() as $plugin) {
+        $acls[$plugin['route'] . 'Info'] = 'member';
+    }
 
     //load user defined ACLs
     if (file_exists(GALETTE_CONFIG_PATH  . 'local_acls.inc.php')) {

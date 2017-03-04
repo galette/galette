@@ -103,7 +103,7 @@ $app->group(
                             );
                             return $response;
                         }
-                    )->setName('pluginInfo')->add($authenticate);
+                    )->setName($module['route'] . 'Info')->add($authenticate);
 
                     $f = $module['root'] . '/_routes.php';
                     include_once $f;

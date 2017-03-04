@@ -18,7 +18,7 @@
             </tr>
 {foreach from=$plugins_list key=name item=plugin name=allplugins}
             <tr class="{if $smarty.foreach.allplugins.iteration % 2 eq 0}even{else}odd{/if}">
-                <td>{$plugin.name} ({$name})</td>
+                <td><a href="{path_for name=$plugin.route|cat:"Info" data=["plugin" => $name]}">{$plugin.name} ({$name})</a></td>
                 <td>{$plugin.desc}</td>
                 <td>{$plugin.author}</td>
                 <td>{$plugin.version}</td>
@@ -46,7 +46,7 @@
             </tr>
 {foreach from=$plugins_disabled_list key=name item=plugin}
             <tr>
-                <td colspan="4">{$name}</td>
+                <td colspan="5">{$name}</td>
                 <td>
                     <a class="toggleActivation" href="?activate={$name}" title="{_T string="Click here to activate plugin '%name'" pattern="/%name/" replace=$name}">
                         <img src="{base_url}/{$template_subdir}images/icon-off.png" alt="{_T string="Enable plugin"}"/>
