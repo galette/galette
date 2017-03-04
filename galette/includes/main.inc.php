@@ -84,7 +84,7 @@ if ($needs_update) {
         [
             'settings' => [
                 'determineRouteBeforeAppMiddleware' => true,
-                'displayErrorDetails' => true,
+                'displayErrorDetails' => (GALETTE_MODE === 'DEV'),
                 // monolog settings
                 'logger' => [
                     'name'  => 'galette',

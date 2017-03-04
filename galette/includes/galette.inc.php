@@ -272,7 +272,7 @@ if (!$installer and !defined('GALETTE_TESTS')) {
         if (!defined('GALETTE_THEME')) {
             define(
                 'GALETTE_THEME',
-                'themes/' . $preferences->pref_theme . '/'
+                GALETTE_BASE_PATH . 'themes/' . $preferences->pref_theme . '/'
             );
         }
 
