@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2017 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,7 +46,7 @@ $phpok = !version_compare(PHP_VERSION, '5.5', '<');
 <html>
     <head>
         <title>Galette compatibility tests</title>
-        <link rel="stylesheet" type="text/css" href="templates/default/galette.css"/>
+        <link rel="stylesheet" type="text/css" href="themes/default/galette.css"/>
         <style type="text/css">
             h1 {
                 margin-top: .5em;
@@ -79,7 +79,7 @@ $phpok = !version_compare(PHP_VERSION, '5.5', '<');
     </head>
     <body>
         <h1>
-            <img src="templates/default/images/galette.png"/>
+            <img src="themes/default/images/galette.png"/>
             <br/>Compatibility tests
         </h1>
 <?php
