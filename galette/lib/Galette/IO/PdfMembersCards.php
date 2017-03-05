@@ -63,8 +63,8 @@ class PdfMembersCards extends Pdf
     private $hcol;
     private $xorigin;
     private $yorigin;
-    private $w;
-    private $h;
+    private $wi;
+    private $he;
     private $nbcol;
     private $nbrow;
     private $hspacing;
@@ -134,9 +134,9 @@ class PdfMembersCards extends Pdf
         $this->yorigin = $this->preferences->pref_card_marges_v;
 
         // Card width
-        $this->w = 75;
+        $this->wi = 75;
         // Card heigth
-        $this->h = 40;
+        $this->he = 40;
         // Number of colons
         $this->nbcol=2;
         // Number of rows
@@ -200,10 +200,10 @@ class PdfMembersCards extends Pdf
             $col = $nb_card % $this->nbcol;
             $row = ($nb_card/$this->nbcol) % $this->nbrow;
             // Set origin
-            $x0 = $this->xorigin + $col*(round($this->w)+round($this->hspacing));
-            $y0 = $this->yorigin + $row*(round($this->h)+round($this->vspacing));
+            $x0 = $this->xorigin + $col*(round($this->wi)+round($this->hspacing));
+            $y0 = $this->yorigin + $row*(round($this->he)+round($this->vspacing));
             // Logo X position
-            $xl = round($x0 + $this->w - $this->wlogo);
+            $xl = round($x0 + $this->wi - $this->wlogo);
             // Get data
             $email = '<strong>';
             switch ($this->preferences->pref_card_address) {
@@ -321,7 +321,7 @@ class PdfMembersCards extends Pdf
             $this->SetFont(self::FONT, 'B', 6);
             $this->SetXY($x0, $y0 + 33);
             $this->Cell(
-                $this->w,
+                $this->wi,
                 7,
                 $this->preferences->pref_card_strip,
                 0,
@@ -331,7 +331,7 @@ class PdfMembersCards extends Pdf
             );
 
             // Draw a gray frame around the card
-            $this->Rect($x0, $y0, $this->w, $this->h);
+            $this->Rect($x0, $y0, $this->wi, $this->he);
             $nb_card++;
         }
     }
