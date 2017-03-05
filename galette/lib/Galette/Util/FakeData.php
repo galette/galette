@@ -516,11 +516,13 @@ class FakeData
                     'date_fin_cotis'        => $end_date->format(_T("Y-m-d"))
                 ];
 
-                if ($faker->boolean($chanceOfGettingTrue = 90)) {
-                    $transaction = $faker->randomElement($this->transactions);
-                    $missing = $transaction->getMissingAmount();
-                    if ($data['montant_cotis'] > $missing) {
-                        $data['montant_cotis'] = $missing;
+                if (count($this->transactions) > 0) {
+                    if ($faker->boolean($chanceOfGettingTrue = 90)) {
+                        $transaction = $faker->randomElement($this->transactions);
+                        $missing = $transaction->getMissingAmount();
+                        if ($data['montant_cotis'] > $missing) {
+                            $data['montant_cotis'] = $missing;
+                        }
                     }
                 }
 
