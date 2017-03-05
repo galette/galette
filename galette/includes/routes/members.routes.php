@@ -541,19 +541,56 @@ $app->get(
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('slash'));
         }
+        $dyn_fields = new DynamicFields();
         $deps = array(
-            'picture'   => false,
-            'groups'    => false,
-            'dues'      => false
+            'picture'   => true,
+            'groups'    => true,
+            'dues'      => true,
+            'parent'    => true,
+            'children'  => true
         );
-        $member = new Adherent($this->zdb, $this->login->login, $deps);
 
-        return $response
-            ->withStatus(301)
-            ->withHeader(
-                'Location',
-                $this->router->pathFor('member', ['id' => $member->id])
-            );
+        $member = new Adherent($this->zdb, $this->login->login, $deps);
+        $id = $member->id;
+        var_dump($id);
+
+        // declare dynamic field values
+        $adherent['dyn'] = $dyn_fields->getFields('adh', $id, true);
+
+        // - declare dynamic fields for display
+        $disabled['dyn'] = array();
+        $dynamic_fields = $dyn_fields->prepareForDisplay(
+            'adh',
+            $adherent['dyn'],
+            $disabled['dyn'],
+            0
+        );
+
+        // flagging fields visibility
+        $fc = $this->fields_config;
+        $visibles = $fc->getVisibilities();
+
+        $display_elements = $fc->getDisplayElements($this->login);
+
+        // display page
+        $this->view->render(
+            $response,
+            'voir_adherent.tpl',
+            array(
+                'page_title'        => _T("Member Profile"),
+                'require_dialog'    => true,
+                'member'            => $member,
+                'data'              => $adherent,
+                'pref_lang_img'     => $this->i18n->getFlagFromId($member->language),
+                'pref_lang'         => ucfirst($this->i18n->getNameFromId($member->language)),
+                'pref_card_self'    => $this->preferences->pref_card_self,
+                'dynamic_fields'    => $dynamic_fields,
+                'groups'            => Groups::getSimpleList(),
+                'time'              => time(),
+                'visibles'          => $visibles,
+                'display_elements'  => $display_elements
+            )
+        );
     }
 )->setName('me')->add($authenticate);
 
