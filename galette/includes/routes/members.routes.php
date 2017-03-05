@@ -804,6 +804,11 @@ $app->get(
         // flagging required fields
         $fc = $this->fields_config;
 
+        // password required if we create a new member
+        if ($member->id != '') {
+            $fc->setNotRequired('mdp_adh');
+        }
+
         //address and mail fields are not required if member has a parent
         $no_parent_required = array(
             'adresse_adh',
