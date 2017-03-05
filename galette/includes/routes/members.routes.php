@@ -113,28 +113,25 @@ $app->get(
         $this->view->render(
             $response,
             'member.tpl',
-            array_merge(
-                $route_params,
-                array(
-                    'page_title'        => _T("Subscription"),
-                    'parent_tpl'        => 'public_page.tpl',
-                    'required'          => $required,
-                    'visibles'          => $visibles,
-                    'disabled'          => $disabled,
-                    'member'            => $member,
-                    'self_adh'          => true,
-                    'dynamic_fields'    => $dynamic_fields,
-                    'languages'         => $this->i18n->getList(),
-                    'require_calendar'  => true,
-                    // pseudo random int
-                    'time'              => time(),
-                    'titles_list'       => Titles::getList($zdb),
-                    //self_adh specific
-                    'spam_pass'         => $spam_pass,
-                    'spam_img'          => $spam_img,
-                    'fieldsets'         => $form_elements['fieldsets'],
-                    'hidden_elements'   => $form_elements['hiddens']
-                )
+            array(
+                'page_title'        => _T("Subscription"),
+                'parent_tpl'        => 'public_page.tpl',
+                'required'          => $required,
+                'visibles'          => $visibles,
+                'disabled'          => $disabled,
+                'member'            => $member,
+                'self_adh'          => true,
+                'dynamic_fields'    => $dynamic_fields,
+                'languages'         => $this->i18n->getList(),
+                'require_calendar'  => true,
+                // pseudo random int
+                'time'              => time(),
+                'titles_list'       => Titles::getList($this->zdb),
+                //self_adh specific
+                'spam_pass'         => $spam_pass,
+                'spam_img'          => $spam_img,
+                'fieldsets'         => $form_elements['fieldsets'],
+                'hidden_elements'   => $form_elements['hiddens']
             )
         );
         return $response;
