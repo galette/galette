@@ -714,7 +714,8 @@ $app->map(
                 'Unable to load plugin `' . $plugid . '`!',
                 Analog::URGENT
             );
-            return $response->withStatus(404);
+            $notFound = $this->notFoundHandler;
+            return $notFound($request, $response);
         }
 
         $install = null;

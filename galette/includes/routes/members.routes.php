@@ -318,7 +318,8 @@ $app->get(
                 $filename .'` that does not exists.',
                 Analog::WARNING
             );
-            return $response->withStatus(404);
+            $notFound = $this->notFoundHandler;
+            return $notFound($request, $response);
         }
     }
 )->setName('csv-memberslist')->add($authenticate);
