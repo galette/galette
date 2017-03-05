@@ -1572,7 +1572,8 @@ $app->get(
                     $filename .'` that does not exists.',
                     Analog::WARNING
                 );
-                header('HTTP/1.0 404 Not Found');
+                $notFound = $this->notFoundHandler;
+                return $notFound($request, $response);
             }
         } else {
             Analog::log(
@@ -1580,7 +1581,11 @@ $app->get(
                 $filename . '`. Access has not been granted.',
                 Analog::WARNING
             );
-            header('HTTP/1.0 403 Forbidden');
+            $error = $this->errorHandler;
+            return $error(
+                $request,
+                $response->withStatus(403)
+            );
         }
     }
 )->setName('getCsv')->add($authenticate);
