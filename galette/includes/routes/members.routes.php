@@ -1942,6 +1942,8 @@ $app->post(
         $error_detected = [];
         $success_detected = [];
 
+        $goto = $this->router->pathFor('mailings');
+
         //We're done :-)
         if (isset($post['mailing_done'])
             || isset($post['mailing_cancel'])
@@ -1984,10 +1986,6 @@ $app->post(
                         '[Mailings] No member selected for mailing',
                         Analog::WARNING
                     );
-
-                    if (isset($profiler)) {
-                        $profiler->stop();
-                    }
 
                     return $response
                         ->withStatus(301)
@@ -2082,6 +2080,8 @@ $app->post(
                     $filters->selected = null;
                     $this->session->filter_members = $filters;
                     $this->session->mailing = null;
+                    $success_detected[] = _T("Mailing has been successfully sent!");
+                    $goto = $this->router->pathFor('members');
                 }
             }
 
@@ -2104,7 +2104,6 @@ $app->post(
                 if ($histo->storeMailing() !== false) {
                     $success_detected[] = _T("Mailing has been successfully saved.");
                     $this->session->mailing = null;
-                    $goto = $this->router->pathFor('mailings');
                 }
             }
         }
@@ -2123,7 +2122,7 @@ $app->post(
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('mailing'));
+            ->withHeader('Location', $goto);
     }
 )->setName('doMailing')->add($authenticate);
 
