@@ -6,7 +6,7 @@
             <p>{_T string="Email sent is disabled in the preferences. Ask galette admin"}</p>
         </div>
 {elseif !isset($mailing_saved)}
-        <form action="{path_for name="mailing"}#mail_preview" id="listform" method="post" enctype="multipart/form-data">
+        <form action="{path_for name="doMailing"}" id="listform" method="post" enctype="multipart/form-data">
         <div class="mailing">
             <section class="mailing_infos">
                 <header class="ui-state-default ui-state-active">{_T string="Mailing informations"}</header>

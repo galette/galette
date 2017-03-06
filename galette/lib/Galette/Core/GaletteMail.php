@@ -321,7 +321,7 @@ class GaletteMail
             }
         } catch (\Exception $e) {
             Analog::log(
-                'Error sending message: ' . $e.getMessage(),
+                'Error sending message: ' . $e->getMessage(),
                 Analog::ERROR
             );
             $this->errors[] = $e->getMessage();
@@ -446,6 +446,10 @@ class GaletteMail
     public function getWrappedMessage()
     {
         if ($this->word_wrap > 0) {
+            if ($this->mail === null) {
+                $this->initMailer();
+            }
+
             return $this->mail->wrapText(
                 $this->message,
                 $this->word_wrap

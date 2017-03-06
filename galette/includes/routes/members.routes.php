@@ -1819,19 +1819,13 @@ $app->get(
 )->setName('emptyAdhesionForm');
 
 //mailing
-$app->map(
-    ['GET', 'POST'],
+$app->get(
     __('/mailing', 'routes'),
     function ($request, $response) {
-        $post = $request->getParsedBody();
         $get = $request->getQueryParams();
-        $error_detected = [];
-        $success_detected = [];
 
         //We're done :-)
-        if (isset($post['mailing_done'])
-            || isset($post['mailing_cancel'])
-            || isset($get['mailing_new'])
+        if (isset($get['mailing_new'])
             || isset($get['reminder'])
         ) {
             if ($this->session->mailing !== null) {
@@ -1840,11 +1834,127 @@ $app->map(
                 $m->removeAttachments(true);
             }
             $this->session->mailing = null;
-            if (!isset($get['mailing_new']) && !isset($get['reminder'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('members'));
+        }
+
+        $params = array();
+
+        if ($this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
+            && !GALETTE_MODE === 'DEMO'
+        ) {
+            $this->history->add(
+                _T("Trying to load mailing while mail is disabled in preferences.")
+            );
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Trying to load mailing while mail is disabled in preferences.")
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('slash'));
+        } else {
+            if (isset($this->session->filter_members)) {
+                $filters =  $this->session->filter_members;
+            } else {
+                $filters = new MembersList();
             }
+
+            if ($this->session->mailing !== null
+                && !isset($get['from'])
+                && !isset($get['reset'])
+            ) {
+                $mailing = $this->session->mailing;
+            } elseif (isset($get['from']) && is_numeric($get['from'])) {
+                $mailing = new Mailing(null, $get['from']);
+                MailingHistory::loadFrom($this->zdb, (int)$get['from'], $mailing);
+            } elseif (isset($get['reminder'])) {
+                //FIXME: use a constant!
+                $filters->reinit();
+                $filters->membership_filter = Members::MEMBERSHIP_LATE;
+                $filters->account_status_filter = Members::ACTIVE_ACCOUNT;
+                $m = new Members($filters);
+                $members = $m->getList(true);
+                $mailing = new Mailing(($members !== false) ? $members : null);
+            } else {
+                if (count($filters->selected) == 0
+                    && !isset($get['mailing_new'])
+                    && !isset($get['reminder'])
+                ) {
+                    Analog::log(
+                        '[Mailings] No member selected for mailing',
+                        Analog::WARNING
+                    );
+
+                    if (isset($profiler)) {
+                        $profiler->stop();
+                    }
+
+                    return $response
+                        ->withStatus(301)
+                        ->withHeader('Location', $this->router->pathFor('members'));
+                }
+                $m = new Members();
+                $members = $m->getArrayList($filters->selected);
+                $mailing = new Mailing(($members !== false) ? $members : null);
+            }
+
+            if (isset($get['remove_attachment'])) {
+                $mailing->removeAttachment($get['remove_attachment']);
+            }
+
+            if ($mailing->current_step !== Mailing::STEP_SENT) {
+                $this->session->mailing = $mailing;
+            }
+
+            /** TODO: replace that... */
+            $this->session->labels = $mailing->unreachables;
+
+            $params = array_merge(
+                $params,
+                array(
+                    'mailing'           => $mailing,
+                    'attachments'       => $mailing->attachments,
+                    'html_editor'       => true,
+                    'html_editor_active'=> $this->preferences->pref_editor_enabled
+                )
+            );
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            'mailing_adherents.tpl',
+            array_merge(
+                array(
+                    'page_title'            => _T("Mailing"),
+                    'require_dialog'        => true
+                ),
+                $params
+            )
+        );
+        return $response;
+    }
+)->setName('mailing')->add($authenticate);
+
+$app->post(
+    __('/mailing', 'routes'),
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        $error_detected = [];
+        $success_detected = [];
+
+        //We're done :-)
+        if (isset($post['mailing_done'])
+            || isset($post['mailing_cancel'])
+        ) {
+            if ($this->session->mailing !== null) {
+                // check for temporary attachments to remove
+                $m = $this->session->mailing;
+                $m->removeAttachments(true);
+            }
+            $this->session->mailing = null;
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('members'));
         }
 
         $params = array();
@@ -1866,26 +1976,10 @@ $app->map(
 
             if ($this->session->mailing !== null
                 && !isset($post['mailing_cancel'])
-                && !isset($get['from'])
-                && !isset($get['reset'])
             ) {
                 $mailing = $this->session->mailing;
-            } elseif (isset($get['from']) && is_numeric($get['from'])) {
-                $mailing = new Mailing(null, $get['from']);
-                MailingHistory::loadFrom($this->zdb, (int)$get['from'], $mailing);
-            } elseif (isset($get['reminder'])) {
-                //FIXME: use a constant!
-                $filters->reinit();
-                $filters->membership_filter = Members::MEMBERSHIP_LATE;
-                $filters->account_status_filter = Members::ACTIVE_ACCOUNT;
-                $m = new Members($filters);
-                $members = $m->getList(true);
-                $mailing = new Mailing(($members !== false) ? $members : null);
             } else {
-                if (count($filters->selected) == 0
-                    && !isset($get['mailing_new'])
-                    && !isset($get['reminder'])
-                ) {
+                if (count($filters->selected) == 0) {
                     Analog::log(
                         '[Mailings] No member selected for mailing',
                         Analog::WARNING
@@ -1991,10 +2085,6 @@ $app->map(
                 }
             }
 
-            if (isset($get['remove_attachment'])) {
-                $mailing->removeAttachment($get['remove_attachment']);
-            }
-
             if ($mailing->current_step !== Mailing::STEP_SENT) {
                 $this->session->mailing = $mailing;
             }
@@ -2017,16 +2107,6 @@ $app->map(
                     $goto = $this->router->pathFor('mailings');
                 }
             }
-
-            $params = array_merge(
-                $params,
-                array(
-                    'mailing'           => $mailing,
-                    'attachments'       => $mailing->attachments,
-                    'html_editor'       => true,
-                    'html_editor_active'=> $post['html_editor_active']
-                )
-            );
         }
 
         //flash messages if any
@@ -2041,27 +2121,11 @@ $app->map(
             }
         }
 
-        if (isset($goto)) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $goto);
-        }
-
-        // display page
-        $this->view->render(
-            $response,
-            'mailing_adherents.tpl',
-            array_merge(
-                array(
-                    'page_title'            => _T("Mailing"),
-                    'require_dialog'        => true
-                ),
-                $params
-            )
-        );
-        return $response;
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('mailing'));
     }
-)->setName('mailing')->add($authenticate);
+)->setName('doMailing')->add($authenticate);
 
 $app->map(
     ['GET', 'POST'],

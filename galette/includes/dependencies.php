@@ -221,6 +221,7 @@ $container['acls'] = function ($c) {
         'advanced-search'   => 'groupmanager',
         'batch-memberslist' => 'groupmanager',
         'mailing'           => 'staff',
+        'doMailing'         => 'staff',
         'mailingPreview'    => 'staff',
         'mailingRecipients' => 'staff',
         'csv-memberslist'   => 'staff',
