@@ -3658,7 +3658,7 @@ msgstr "Champs par défaut"
 
 #: ../templates/default/preferences.tpl:250
 msgid "Use TLS for SMTP?"
-msgstr "Utiliser TLS pour SMPT&nbsp;?"
+msgstr "Utiliser TLS pour SMTP&nbsp;?"
 
 #: ../lib/Galette/Core/Install.php:1119
 msgid "Preferences"

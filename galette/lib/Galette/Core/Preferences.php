@@ -152,7 +152,8 @@ class Preferences
         'pref_bool_wrap_mails' => true,
         'pref_rss_url' => 'http://galette.eu/dc/index.php/feed/atom',
         'pref_show_id' => false,
-        'pref_adhesion_form' => '\Galette\IO\PdfAdhesionForm'
+        'pref_adhesion_form' => '\Galette\IO\PdfAdhesionForm',
+        'pref_mail_allow_unsecure' => false
     );
 
     /**
