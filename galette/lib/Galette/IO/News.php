@@ -58,7 +58,7 @@ class News
     //number of hours until cache will be invalid
     private $cache_timeout = 24;
     private $feed_url = null;
-    private $posts;
+    private $posts = [];
 
     /**
      * Default constructor
@@ -187,6 +187,11 @@ class News
     private function parseFeed()
     {
         try {
+            if (!ini_get('allow_url_fopen')) {
+                throw new \RuntimeException(
+                    'allow_url_fopen is set to false; cannot load news.'
+                );
+            }
             $xml = simplexml_load_file($this->feed_url);
 
             if (!$xml) {
@@ -231,13 +236,12 @@ class News
                 '" :( | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            $this->_tweets = array();
         }
     }
 
 
     /**
-     * Get tweets
+     * Get posts
      *
      * @return array
      */
