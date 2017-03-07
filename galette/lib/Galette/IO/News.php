@@ -71,12 +71,14 @@ class News
         $this->feed_url = $url;
 
         //only if cache should be used
-        if ($nocache === false) {
-            if (GALETTE_MODE === 'DEV' || !$this->checkCache()) {
+        if ($nocache === false && GALETTE_MODE !== 'DEV') {
+            if (!$this->checkCache()) {
                 $this->makeCache();
             } else {
                 $this->loadCache();
             }
+        } else {
+            $this->parseFeed();
         }
     }
 
@@ -87,7 +89,6 @@ class News
      */
     private function checkCache()
     {
-
         $cfile = $this->getCacheFilename();
         if (file_exists($cfile)) {
             try {
@@ -107,10 +108,11 @@ class News
                 return !$has_expired;
             } catch (\Exception $e) {
                 Analog::log(
-                    'Unable chack cache expiracy. Are you sure you have ' .
+                    'Unable check cache expiracy. Are you sure you have ' .
                     'properly configured PHP timezone settings on your server?',
                     Analog::WARNING
                 );
+                return false;
             }
         } else {
             return false;
@@ -120,16 +122,11 @@ class News
     /**
      * Creates/update the cache
      *
-     * @param boolean $load Load cache from web
-     *
      * @return boolean
      */
-    private function makeCache($load = true)
+    private function makeCache()
     {
-        if ($load === true) {
-            $this->parseFeed();
-        }
-
+        $this->parseFeed();
         $cfile = $this->getCacheFilename();
         $stream = fopen($cfile, 'w+');
         fwrite(
