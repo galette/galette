@@ -82,7 +82,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     <meta http-equiv="refresh" content="{$head_redirect.timeout};url={$head_redirect.url}" />
 {/if}
 </head>
-<body>
+<body id="galette_body">
         {* IE7 and above are no longer supported *}
         <!--[if lt IE 8]>
         <div id="oldie">
@@ -179,6 +179,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     </div>
     <div id="content"{if $contentcls} class="{$contentcls}"{/if}>
         <h1 id="titre">
+            <a href="#galette_body" class="nav-button-open" aria-label="open navigation"></a>
+            <a href="#" class="nav-button-close" aria-label="close navigation"></a>
             {$page_title}
             {if $cur_route neq 'mailing' and $existing_mailing eq true}
                 <a class="button" id="sendmail" href="{path_for name="mailing"}" title="{_T string="A mailing exists in the current session. Click here if you want to resume or cancel it."}">

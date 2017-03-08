@@ -1458,6 +1458,8 @@ a.listing:hover {
     margin-left:17em;
     margin-top: 10px;
     padding: 0.5em;
+    position: relative;
+    min-height: 100vh;
 }
 
 #full_content {
@@ -2265,7 +2267,7 @@ td.photo img{
 }
 
 /** Mobile devices */
-@media (max-width: 640px) {
+@media (max-width: 767px) {
 
     /* Un message personnalisé */
     body:before {
@@ -2303,8 +2305,66 @@ td.photo img{
         top:0;
         right:0;
     }
+
+    #titre, #listfilter {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    /** Responsive menu */
+    #menu {
+        float: none;
+        position: absolute;
+        min-height: 100vh;
+    }
+
+    #content {
+        margin: 0;
+        background-color: white;
+        transform: translateX(0) translateZ(0);
+        transition: transform .2s;
+        will-change: transform;
+    }
+
+    /* Button deco */
+    [class^="nav-button"] {
+        display: block;
+        z-index: 1;
+        height: 1.5rem;
+        width: 1.5rem;
+        background-color: transparent;
+        background-image: linear-gradient(to right, #333, #333),
+        linear-gradient(to right, #333, #333),
+        linear-gradient(to right, #333, #333);
+        background-position: center top, center, center bottom;
+        background-repeat: no-repeat;
+        background-size: 1.5rem .3rem;
+        padding: 0;
+        outline: 0;
+        border: 0;
+        cursor: pointer;
+        -webkit-tap-highlight-color:rgba(0,0,0,0);
+        float:left;
+        margin-top: .2em;
+        margin-left: .3em;
+    }
+
+    /* here's goes the push left effect */
+    body:target #content {
+        /* same as #content margin-left */
+        transform: translateX(17em);
+    }
+    .nav-button-close,
+    body:target .nav-button-open {
+        display: none;
+    }
+    .nav-button-open,
+    body:target .nav-button-close {
+        display: block;
+    }
+
 }
-@media screen and (max-width:640px) and (orientation: landscape) {
+@media screen and (max-width:767px) and (orientation: landscape) {
     body {
         -webkit-text-size-adjust: 70%;
     }
