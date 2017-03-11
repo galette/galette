@@ -321,6 +321,7 @@ class CsvIn extends Csv implements FileInterface
         $row = 0;
 
         try {
+            $this->zdb->connection->beginTransaction();
             while (($data = fgetcsv(
                 $handle,
                 1000,
@@ -381,8 +382,10 @@ class CsvIn extends Csv implements FileInterface
                 }
                 $row++;
             }
+            $this->zdb->connection->commit();
             return true;
         } catch (\Exception $e) {
+            $this->zdb->connection->rollBack();
             $this->addError($e->getMessage());
         }
 
