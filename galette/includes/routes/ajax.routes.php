@@ -152,4 +152,38 @@ $app->group(__('/ajax', 'routes'), function () {
             return $response->withJson($ret);
         }
     )->setName('suggestTown');
+
+    $this->post(
+        __('suggest', 'routes') . '/' . __('countries', 'routes'),
+        function ($request, $response) {
+            $post = $request->getParsedBody();
+
+            $ret = [];
+
+            try {
+                $select = $this->zdb->select(Adherent::TABLE);
+                $select->columns(['pays_adh']);
+                $select->where->like('pays_adh', '%' . html_entity_decode($post['term']) . '%');
+                $select->limit(10);
+                $select->order(['pays_adh ASC']);
+
+                $towns = $this->zdb->execute($select);
+
+                foreach ($towns as $town) {
+                    $ret[] = [
+                        'id'    => $town->pays_adh,
+                        'label' => $town->pays_adh
+                    ];
+                }
+            } catch (\Exception $e) {
+                Analog::log(
+                    'Something went wrong is countries suggestion: ' . $e->getMessage(),
+                    Analog::WARNING
+                );
+                throw $e;
+            }
+
+            return $response->withJson($ret);
+        }
+    )->setName('suggestCountry');
 });

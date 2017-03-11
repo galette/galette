@@ -16,7 +16,7 @@
         <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.position.min.js"></script>
         <script type="text/javascript" src="{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.dialog.min.js"></script>
 {/if}
-{if $town_autocomplete}
+{if $autocomplete}
     <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.menu.min.js"></script>
     <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.autocomplete.min.js"></script>
     <script type="text/javascript">
@@ -24,6 +24,12 @@
             $('#ville_adh, #lieu_naissance').autocomplete({
                 source: function (request, response) {
                     $.post('{path_for name="suggestTown"}', request, response);
+                },
+                minLength: 2
+            });
+            $('#pays_adh').autocomplete({
+                source: function (request, response) {
+                    $.post('{path_for name="suggestCountry"}', request, response);
                 },
                 minLength: 2
             });

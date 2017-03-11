@@ -124,7 +124,7 @@ $app->get(
                 'dynamic_fields'    => $dynamic_fields,
                 'languages'         => $this->i18n->getList(),
                 'require_calendar'  => true,
-                'town_autocomplete' => true,
+                'autocomplete'      => true,
                 // pseudo random int
                 'time'              => time(),
                 'titles_list'       => Titles::getList($this->zdb),
@@ -915,7 +915,7 @@ $app->get(
                     'parent_tpl'        => 'page.tpl',
                     'navigate'          => $navigate,
                     'require_dialog'    => true,
-                    'town_autocomplete' => true,
+                    'autocomplete'      => true,
                     'page_title'        => $title,
                     'required'          => $required,
                     'visibles'          => $visibles,
