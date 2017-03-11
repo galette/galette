@@ -8,7 +8,7 @@
         <a id="next" href="{if isset($navigate.next)}{path_for name="editmember" data=["action" => {_T string="edit" domain="routes"}, "id" => $navigate.next]}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">{_T string="Next"}</a>
     </nav>
 {/if}
-        <form action="{path_for name="storemembers"}" method="post" enctype="multipart/form-data" id="form">
+        <form action="{if $self_adh}{path_for name="storemembers" data=["self" => {_T string="subscribe" domain="routes"}]}{else}{path_for name="storemembers"}{/if}" method="post" enctype="multipart/form-data" id="form">
         <div class="bigtable">
 {if $self_adh and $head_redirect}
             <div id="infobox">

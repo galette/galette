@@ -71,7 +71,13 @@ $app->get(
 
         $dyn_fields = new DynamicFields();
 
-        $member = new Adherent($this->zdb);
+        if ($this->session->member !== null) {
+            $member = $this->session->member;
+            $this->session->member = null;
+        } else {
+            $member = new Adherent($this->zdb);
+        }
+
         //mark as self membership
         $member->setSelfMembership();
 
@@ -943,8 +949,14 @@ $app->get(
 )->add($authenticate);
 
 $app->post(
-    __('/member/store', 'routes'),
-    function ($request, $response) {
+    __('/member/store', 'routes') . '[/{self:' . __('subscribe', 'routes') . '}]',
+    function ($request, $response, $args) {
+        if (!$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged()) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('slash'));
+        }
+
         $deps = array(
             'picture'   => true,
             'groups'    => true,
@@ -958,6 +970,11 @@ $app->post(
             $this->members_fields,
             $this->history
         );
+        if (isset($args['self'])) {
+            //mark as self membership
+            $member->setSelfMembership();
+        }
+
         //TODO: dynamic fields should be handled by Adherent object
         $dyn_fields = new DynamicFields();
         $success_detected = [];
@@ -1063,7 +1080,14 @@ $app->post(
                 if ($store === true) {
                     //member has been stored :)
                     if ($new) {
-                        $success_detected[] = _T("New member has been successfully added.");
+                        if (isset($args['self'])) {
+                            $success_detected[] = _T("Your account has been created!");
+                            if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED && $member->getEmail() != '') {
+                                $success_detected[] = _T("An email has been sent to you, check your inbox.");
+                            }
+                        } else {
+                            $success_detected[] = _T("New member has been successfully added.");
+                        }
                         //Send email to admin if preference checked
                         if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
                             && $this->preferences->pref_bool_mailadh
@@ -1117,7 +1141,7 @@ $app->post(
                                     _T("A problem happened while sending email to admin for account '%s'.")
                                 );
                                 $this->hist->add($str);
-                                $error_detected[] = $str;
+                                $warning_detected[] = $str;
                             }
                             unset($texts);
                         }
@@ -1126,9 +1150,9 @@ $app->post(
                     }
 
                     // send mail to member
-                    if (isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1') {
+                    if (isset($args['self']) || isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1') {
                         if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
-                            if ($member->getEmail() == '') {
+                            if ($member->getEmail() == '' && !isset($args['self'])) {
                                 $error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
                             } else {
                                 //send mail to member
@@ -1332,33 +1356,43 @@ $app->post(
                             ) . '?id_adh=' . $member->id
                         );
                 } elseif (count($error_detected) == 0) {
+                    if (isset($args['self'])) {
+                        $redirect_url = $this->router->pathFor('login');
+                    } else {
+                        $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
+                    }
                     return $response
                         ->withStatus(301)
-                        ->withHeader('Location', $this->router->pathFor('member', ['id' => $member->id]));
+                        ->withHeader('Location', $redirect_url);
                 }
             } else {
                 //store entity in session
                 $this->session->member = $member;
 
-                if ($member->id) {
-                    $rparams = [
-                        'id'    => $member->id,
-                        'action'    => __('edit', 'routes')
-                    ];
+                if (isset($args['self'])) {
+                    $redirect_url = $this->router->pathFor('subscribe');
                 } else {
-                    $rparams = ['action' => __('add', 'routes')];
+                    if ($member->id) {
+                        $rparams = [
+                            'id'    => $member->id,
+                            'action'    => __('edit', 'routes')
+                        ];
+                    } else {
+                        $rparams = ['action' => __('add', 'routes')];
+                    }
+                    $redirect_url = $this->router->pathFor(
+                        'editmember',
+                        $rparams
+                    );
                 }
 
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor(
-                        'editmember',
-                        $rparams
-                    ));
+                    ->withHeader('Location', $redirect_url);
             }
         }
     }
-)->setName('storemembers')->add($authenticate);
+)->setName('storemembers');
 
 $app->get(
     __('/member/remove', 'routes') . '/{id:\d+}',

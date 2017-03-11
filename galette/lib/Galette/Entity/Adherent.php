@@ -1284,10 +1284,17 @@ class Adherent
                     }
                     $this->_picture = new Picture($this->_id);
                     // logging
-                    $hist->add(
-                        _T("Member card added"),
-                        strtoupper($this->_login)
-                    );
+                    if ($this->_self_adh) {
+                        $hist->add(
+                            _T("Self_subscription as a member: ") .
+                            strtoupper($this->_name) . ' ' . $this->_surname
+                        );
+                    } else {
+                        $hist->add(
+                            _T("Member card added"),
+                            strtoupper($this->_login)
+                        );
+                    }
                     return true;
                 } else {
                     $hist->add(_T("Fail to add new member."));

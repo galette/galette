@@ -238,7 +238,6 @@ $container['acls'] = function ($c) {
         'transactions'      => 'staff',
         'payments_filter'   => 'member',
         'editmember'        => 'member',
-        'storemembers'      => 'member',
         'impersonate'       => 'superadmin',
         'unimpersonate'     => 'member',
         'reminders'         => 'staff',
