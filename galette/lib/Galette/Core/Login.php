@@ -118,7 +118,13 @@ class Login extends Authentication
     {
         try {
             $select = $this->select();
-            $select->where(array(self::PK => $user));
+            $select->where(
+                [
+                    self::PK => $user,
+                    'email_adh' => $user
+                ],
+                \Zend\Db\Sql\Predicate\PredicateSet::OP_OR
+            );
 
             $results = $this->zdb->execute($select);
             if ($results->count() == 0) {
