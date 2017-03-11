@@ -36,7 +36,7 @@
                                     {$import.size}
                                 </td>
                                 <td class="actions_row">
-                                    <a href="{path_for name="removeCsv" data=["type" => {_T string="import" domain="routes"}, "file" => $import.name]}" title="{_T string="Remove '%file' from disk" pattern="/%file/" replace=$import.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
+                                    <a class="delete" href="{path_for name="removeCsv" data=["type" => {_T string="import" domain="routes"}, "file" => $import.name]}" title="{_T string="Remove '%file' from disk" pattern="/%file/" replace=$import.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
                                 </td>
                             </tr>
     {/foreach}
@@ -115,5 +115,6 @@
                     }
                 });
             });
+            {include file="js_removal.tpl"}
         </script>
 {/block}

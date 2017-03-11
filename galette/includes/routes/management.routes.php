@@ -1375,8 +1375,9 @@ $app->get(
             array(
                 'mode'          => $request->isXhr() ? 'ajax' : '',
                 'page_title'    => sprintf(
-                    _T('Remove %1$s file'),
-                    $args['type']
+                    _T('Remove %1$s file %2$s'),
+                    $args['type'],
+                    $args['file']
                 ),
                 'form_url'      => $this->router->pathFor(
                     'doRemoveCsv',
