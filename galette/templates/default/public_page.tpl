@@ -21,7 +21,7 @@
     <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.autocomplete.min.js"></script>
     <script type="text/javascript">
         $(function() {
-            $('#ville_adh').autocomplete({
+            $('#ville_adh, #lieu_naissance').autocomplete({
                 source: function (request, response) {
                     $.post('{path_for name="suggestTown"}', request, response);
                 },

@@ -118,11 +118,20 @@ $app->group(__('/ajax', 'routes'), function () {
             $ret = [];
 
             try {
-                $select = $this->zdb->select(Adherent::TABLE);
-                $select->columns(['ville_adh']);
-                $select->where->like('ville_adh', '%' . html_entity_decode($post['term']) . '%');
-                $select->limit(10);
-                $select->order(['ville_adh ASC']);
+                $select1 = $this->zdb->select(Adherent::TABLE);
+                $select1->columns(['ville_adh']);
+                $select1->where->like('ville_adh', '%' . html_entity_decode($post['term']) . '%');
+
+                $select2 = $this->zdb->select(Adherent::TABLE);
+                $select2->columns(['lieu_naissance']);
+                $select2->where->like('lieu_naissance', '%' . html_entity_decode($post['term']) . '%');
+
+                $select1->combine($select2);
+
+                $select = $this->zdb->sql->select();
+                $select->from(['sub' => $select1])
+                    ->order('ville_adh ASCC')
+                    ->limit(10);
 
                 $towns = $this->zdb->execute($select);
 
