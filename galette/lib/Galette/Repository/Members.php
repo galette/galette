@@ -1414,7 +1414,7 @@ class Members
                         if ($fs['log_op'] === AdvancedMembersList::OP_AND) {
                             $select->where($qry);
                         } elseif ($fs['log_op'] === AdvancedMembersList::OP_OR) {
-                            $select->orWhere($qry);
+                            $select->where($qry, PredicateSet::OP_OR);
                         }
                     }
                 }
