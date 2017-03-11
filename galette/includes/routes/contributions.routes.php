@@ -293,6 +293,7 @@ $app->get(
         } else {
             if ($args['action'] === __('edit', 'routes')) {
                 $contrib = new Contribution($this->zdb, $this->login, (int)$id_cotis);
+                $id_adh = $contrib->member;
                 if ($contrib->id == '') {
                     //not possible to load contribution, exit
                     $this->flash->addMessage(
