@@ -53,6 +53,7 @@ use Galette\Core\Picture;
 use Galette\Entity\Group;
 use Galette\Repository\Groups;
 use Galette\Entity\Status;
+use Galette\Core\Db;
 
 /**
  * Members class for galette
@@ -1607,5 +1608,28 @@ class Members
     public function getErrors()
     {
         return $this->errors;
+    }
+
+    /**
+     * Get all existing emails
+     *
+     * @param Db $zdb Database instance
+     *
+     * @return array ['email' => 'id_adh']
+     */
+    public static function getEmails(Db $zdb)
+    {
+        $emails = [];
+        $select = $zdb->select(self::TABLE);
+        $select->columns([
+            self::PK,
+            'email_adh'
+        ]);
+        $select->where('email_adh != \'\' AND email_adh IS NOT NULL');
+        $rows = $zdb->execute($select);
+        foreach ($rows as $row) {
+            $emails[$row->email_adh] = $row->{self::PK};
+        }
+        return $emails;
     }
 }

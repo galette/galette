@@ -46,6 +46,7 @@ use Galette\Entity\ImportModel;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Status;
 use Galette\IO\FileTrait;
+use Galette\Repository\Members;
 
 /**
  * CSV imports
@@ -98,6 +99,7 @@ class CsvIn extends Csv implements FileInterface
     private $_members_fields_cats;
     private $_required;
     private $statuses;
+    private $emails;
     private $zdb;
     private $preferences;
     private $history;
@@ -309,6 +311,32 @@ class CsvIn extends Csv implements FileInterface
                                     );
                                     return false;
                                 }
+                            }
+                        }
+
+                        //check for email unicity
+                        if ($this->_fields[$col] == 'email_adh' && !empty($column)) {
+                            if ($this->emails === null) {
+                                //load existing emails
+                                $this->emails = Members::getEmails($this->zdb);
+                            }
+                            if (isset($this->emails[$column])) {
+                                $existing = $this->emails[$column];
+                                $extra = ($existing == -1 ?
+                                    _T("from another member in import") :
+                                    str_replace('%id_adh', $existing, _T("from member %id_adh"))
+                                );
+                                $this->addError(
+                                    str_replace(
+                                        ['%address', '%extra'],
+                                        [$column, $extra],
+                                        _T("Email address %address is already used! (%extra)")
+                                    )
+                                );
+                                return false;
+                            } else {
+                                //add email to list
+                                $this->emails[$column] = -1;
                             }
                         }
                         $col++;
