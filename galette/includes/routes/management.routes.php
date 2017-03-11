@@ -793,6 +793,7 @@ $app->map(
                 }
 
                 $install_plugin = true;
+                //not used here, but from include
                 $zdb = $this->zdb;
                 ob_start();
                 include_once __DIR__ . '/../../install/steps/db_checks.php';
