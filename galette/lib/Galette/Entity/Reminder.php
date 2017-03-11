@@ -39,7 +39,10 @@ namespace Galette\Entity;
 
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
-use \Galette\Core\GaletteMail;
+use Galette\Core\GaletteMail;
+use Galette\Entity\Texts;
+use Galette\Core\Db;
+use Galette\Core\History;
 
 /**
  * Reminders
@@ -221,7 +224,7 @@ class Reminder
      *
      * @return boolean
      */
-    public function send($texts, $hist, $zdb)
+    public function send(Texts $texts, History $hist, Db $zdb)
     {
         $type_name = 'late';
         if ($this->type === self::IMPENDING) {

@@ -38,6 +38,7 @@
 namespace Galette\IO;
 
 use Analog\Analog;
+use Galette\Core\Preferences;
 
 /**
  * External script call
@@ -64,7 +65,7 @@ class ExternalScript
      *
      * @param Preferences $pref Galette preferences
      */
-    public function __construct($pref)
+    public function __construct(Preferences $pref)
     {
         $uri = $pref->pref_new_contrib_script;
         list($protocol,) = explode('://', $uri);
@@ -78,6 +79,7 @@ class ExternalScript
 
         switch ($protocol) {
             case 'galette':
+                //FIXME: should probably be changed to use pref_galette_url and Slim routing
                 $this->protocol = 'http';
                 if (isset($_SERVER['HTTPS'])) {
                     $this->protocol = 'https';

@@ -193,13 +193,13 @@ $app->map(
                     $link_validity->add(new DateInterval('PT24H'));
 
                     $df = _T("Y-m-d H:i:s");
-                    $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
 
                     $texts = new Texts(
                         $this->texts_fields,
                         $this->preferences,
+                        $this->router,
                         array(
-                            'change_pass_uri'   => $scheme . '://' . $_SERVER['SERVER_NAME'] .
+                            'change_pass_uri'   => $preferences->getURL() .
                                                     $this->router->pathFor(
                                                         'password-recovery',
                                                         ['hash' => base64_encode($password->getHash())]

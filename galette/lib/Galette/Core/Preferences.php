@@ -556,4 +556,32 @@ class Preferences
         //okay, let's update value
         $this->prefs[$name] = $value;
     }
+
+    /**
+     * Get instance URL from configuration (if set) or guessed if not
+     *
+     * @return string
+     */
+    public function getURL()
+    {
+        $url = null;
+        if (isset($this->prefs['pref_galette_url']) && !empty($this->prefs['pref_galette_url'])) {
+            $url = $this->prefs['url'];
+        } else {
+            $url = $this->getDefaultURL();
+        }
+        return $url;
+    }
+
+    /**
+     * Get default URL (when not setted by user in preferences)
+     *
+     * @return string
+     */
+    public function getDefaultURL()
+    {
+        $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
+        $uri = $scheme . '://' . $_SERVER['SERVER_NAME'];
+        return $uri;
+    }
 }

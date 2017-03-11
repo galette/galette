@@ -40,6 +40,8 @@ namespace Galette\Entity;
 
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
+use Galette\Core\Preferences;
+use Slim\Router;
 
 /**
  * Texts class for galette
@@ -70,9 +72,10 @@ class Texts
      *
      * @param array       $texts_fields Text fields definition
      * @param Preferences $preferences  Galette's preferences
+     * @param Router      $router       Router instance
      * @param array       $replaces     Data that will be used as replacments
      */
-    public function __construct($texts_fields, $preferences, $replaces = null)
+    public function __construct($texts_fields, Preferences $preferences, Router $router, $replaces = null)
     {
         $this->defaults = $texts_fields;
         $this->patterns = array(
@@ -95,12 +98,8 @@ class Texts
             'contrib_type'      => '/{CONTRIB_TYPE}/'
         );
 
-        $login_uri = null;
-        if (isset($_SERVER['SERVER_NAME']) && isset($_SERVER['REQUEST_URI'])) {
-            $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
-            $login_uri = $scheme . '://' . $_SERVER['SERVER_NAME'] .
-                dirname($_SERVER['REQUEST_URI']);
-        }
+        $login_uri = $preferences->getURL() . $router->pathFor('login');
+
         $this->replaces = array(
             'asso_name'         => $preferences->pref_nom,
             'asso_slogan'       => $preferences->pref_slogan,

@@ -164,6 +164,11 @@
                     <input type="text" name="pref_rss_url" id="pref_rss_url" value="{$pref.pref_rss_url}"{if isset($required.pref_rss_url) and $required.pref_rss_url eq 1} required{/if}/>
                 </p>
                 <p>
+                    <label for="pref_galette_url" class="bline tooltip" title="{_T string="Galette base URL"}">{_T string="Galette base URL"}</label>
+                    <span class="tip">{_T string="Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%galette_url" pattern="/%galette_url/" replace=$preferences->getDefaultURL()|cat:{path_for name="preferences"}}</span>
+                    <input type="text" name="pref_galette_url" id="pref_galette_url" placeholder="{$preferences->getDefaultURL()}" value="{$pref.pref_galette_url}"{if isset($required.pref_galette_url) and $required.pref_galette_url eq 1} required{/if}/>
+                </p>
+                <p>
                     <label for="pref_show_id" class="bline tooltip" title="{_T string="Display member number in member related windows"}">{_T string="Show member number"}</label>
                     <span class="tip">{_T string="Display member number in member related windows"}</span>
                     <input type="checkbox" name="pref_show_id" id="pref_show_id" value="1" {if $pref.pref_show_id} checked="checked"{/if}{if isset($required.pref_show_id) and $required.pref_show_id eq 1} required{/if}/>

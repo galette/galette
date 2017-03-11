@@ -1071,6 +1071,7 @@ $app->post(
                             $texts = new Texts(
                                 $this->texts_fields,
                                 $this->preferences,
+                                $this->router,
                                 array(
                                     'name_adh'      => custom_html_entity_decode(
                                         $member->sname
@@ -1135,6 +1136,7 @@ $app->post(
                                 $texts = new Texts(
                                     $this->texts_fields,
                                     $this->preferences,
+                                    $this->router,
                                     array(
                                         'name_adh'      => custom_html_entity_decode(
                                             $member->sname
@@ -2214,7 +2216,7 @@ $app->post(
 $app->get(
     __('/reminders', 'routes'),
     function ($request, $response) {
-        $texts = new Texts($this->texts_fields, $this->preferences);
+        $texts = new Texts($this->texts_fields, $this->preferences, $this->router);
 
         $previews = array(
             'impending' => $texts->getTexts('impendingduedate', $this->preferences->pref_lang),
@@ -2250,7 +2252,7 @@ $app->post(
         $success_detected = [];
 
         $post = $request->getParsedBody();
-        $texts = new Texts($this->texts_fields, $this->preferences);
+        $texts = new Texts($this->texts_fields, $this->preferences, $this->router);
         $selected = null;
         if (isset($post['reminders'])) {
             $selected = $post['reminders'];

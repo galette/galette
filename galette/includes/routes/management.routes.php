@@ -2188,7 +2188,7 @@ $app->get(
         $cur_lang = $this->preferences->pref_lang;
         $cur_ref = Texts::DEFAULT_REF;
 
-        $texts = new Texts($this->texts_fields, $this->preferences);
+        $texts = new Texts($this->texts_fields, $this->preferences, $this->router);
 
         $mtxt = $texts->getTexts($cur_ref, $cur_lang);
 
@@ -2214,7 +2214,7 @@ $app->post(
     __('/texts', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
-        $texts = new Texts($this->texts_fields, $this->preferences);
+        $texts = new Texts($this->texts_fields, $this->preferences, $this->router);
 
         //set the language
         if (isset($post['sel_lang'])) {
@@ -2225,7 +2225,7 @@ $app->post(
             $cur_ref = $post['sel_ref'];
         }
 
-        $mtxt = $texts->getTexts($cur_ref, $cur_lang);
+        $mtxt = $texts->getTexts($cur_ref, $cur_lang, $this->router);
         $res = $texts->setTexts(
             $cur_ref,
             $cur_lang,
