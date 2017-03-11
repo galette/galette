@@ -3,16 +3,18 @@
 {block name="content"}
         <form class="form" action="{path_for name="doExport"}" method="post" enctype="multipart/form-data">
         <p>{_T string="Each selected export will be stored into a separate file in the exports directory."}</p>
-{if $written|@count gt 0}
+
+{if $flash->getMessage('written_exports')|@count > 0}
         <div id="successbox">
             <p>{_T string="The following files have been written on disk:"}</p>
             <ul>
-{foreach item=ex from=$written}
-                <li><a href="{path_for name="getCsv" data=["type" => {_T string="export" domain="routes"}, "file" => $ex.name]}">{$ex.name} ({$ex.file})</a></li>
-{/foreach}
+    {foreach from=$flash->getMessage('written_exports') item=ex}
+                <li>{$ex}</li>
+    {/foreach}
             </ul>
         </div>
 {/if}
+
 {if $existing|@count gt 0}
             <fieldset>
                 <legend class="ui-state-active ui-corner-top">{_T string="Existing exports"}</legend>

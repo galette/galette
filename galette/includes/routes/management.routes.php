@@ -1456,6 +1456,7 @@ $app->post(
     function ($request, $response) {
         $post = $request->getParsedBody();
         $csv = new CsvOut();
+        $written = [];
 
         if (isset($post['export_tables']) && $post['export_tables'] != '') {
             foreach ($post['export_tables'] as $table) {
@@ -1475,13 +1476,10 @@ $app->post(
                             $fp
                         );
                         fclose($fp);
-                        $this->flash->addMessage(
-                            'written_exports',
-                            array(
-                                'name' => $filename,
-                                'file' => $filepath
-                            )
-                        );
+                        $written[] = [
+                            'name' => $table,
+                            'file' => $filename
+                        ];
                     }
                 } else {
                     $this->flash->addMessage(
@@ -1533,15 +1531,22 @@ $app->post(
                         break;
                     default:
                         //no error, file has been writted to disk
-                        $this->flash->addMessage(
-                            'written_exports',
-                            array(
-                                'name' => $pn,
-                                'file' => $res
-                            )
-                        );
+                        $written[] = [
+                            'name' => $pn,
+                            'file' => (string)$res
+                        ];
                         break;
                 }
+            }
+        }
+
+        if (count($written)) {
+            foreach ($written as $ex) {
+                $path = $this->router->pathFor('getCsv', ['type' => __('export', 'routes'), 'file' => $ex['file']]);
+                $this->flash->addMessage(
+                    'written_exports',
+                    '<a href="' . $path . '">' . $ex['name'] . ' (' . $ex['file'] . ')</a>'
+                );
             }
         }
 
