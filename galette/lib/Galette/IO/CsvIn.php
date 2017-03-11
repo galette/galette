@@ -44,6 +44,7 @@ use Galette\Core\History;
 use Galette\Entity\Adherent;
 use Galette\Entity\ImportModel;
 use Galette\Entity\FieldsConfig;
+use Galette\Entity\Status;
 use Galette\IO\FileTrait;
 
 /**
@@ -96,6 +97,7 @@ class CsvIn extends Csv implements FileInterface
     private $_members_fields;
     private $_members_fields_cats;
     private $_required;
+    private $statuses;
     private $zdb;
     private $preferences;
     private $history;
@@ -268,11 +270,11 @@ class CsvIn extends Csv implements FileInterface
                     return false;
                 }
 
-                //check required fields
                 if ($row > 0) {
                     //header line is the first one. Here comes data
                     $col = 0;
                     foreach ($data as $column) {
+                        //check required fields
                         if (in_array($this->_fields[$col], $this->_required)
                             && trim($column) == ''
                         ) {
@@ -284,6 +286,30 @@ class CsvIn extends Csv implements FileInterface
                                 )
                             );
                             return false;
+                        }
+
+                        //check for statuses
+                        //if missing, set default one; if not check it does exists
+                        if ($this->_fields[$col] == Status::PK) {
+                            if (empty(trim($column))) {
+                                $column = Status::DEFAULT_STATUS;
+                            } else {
+                                if ($this->statuses === null) {
+                                    //load existing status
+                                    $status = new Status($this->zdb);
+                                    $this->statuses = $status->getList();
+                                }
+                                if (!isset($this->statuses[$column])) {
+                                    $this->addError(
+                                        str_replace(
+                                            '%status',
+                                            $column,
+                                            _T("Status %status does not exists!")
+                                        )
+                                    );
+                                    return false;
+                                }
+                            }
                         }
                         $col++;
                     }
