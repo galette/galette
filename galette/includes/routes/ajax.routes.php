@@ -35,6 +35,8 @@
  * @since     0.8.2dev 2014-11-11
  */
 
+use Galette\Entity\Adherent;
+
 $app->group(__('/ajax', 'routes'), function () {
     $this->get(
         __('/messages', 'routes'),
@@ -79,7 +81,7 @@ $app->group(__('/ajax', 'routes'), function () {
             fwrite($fp, $raw_file);
             fclose($fp);
 
-            $adh = new \Galette\Entity\Adherent($this->zdb, (int)$mid);
+            $adh = new Adherent($this->zdb, (int)$mid);
 
             $res = $adh->picture->store(
                 array(
@@ -107,4 +109,38 @@ $app->group(__('/ajax', 'routes'), function () {
             return $response->withJson($ret);
         }
     )->setName('photoDnd');
+
+    $this->post(
+        __('suggest', 'routes') . '/' . __('towns', 'routes'),
+        function ($request, $response) {
+            $post = $request->getParsedBody();
+
+            $ret = [];
+
+            try {
+                $select = $this->zdb->select(Adherent::TABLE);
+                $select->columns(['ville_adh']);
+                $select->where->like('ville_adh', '%' . html_entity_decode($post['term']) . '%');
+                $select->limit(10);
+                $select->order(['ville_adh ASC']);
+
+                $towns = $this->zdb->execute($select);
+
+                foreach ($towns as $town) {
+                    $ret[] = [
+                        'id'    => $town->ville_adh,
+                        'label' => $town->ville_adh
+                    ];
+                }
+            } catch (\Exception $e) {
+                Analog::log(
+                    'Something went wrong is towns suggestion: ' . $e->getMessage(),
+                    Analog::WARNING
+                );
+                throw $e;
+            }
+
+            return $response->withJson($ret);
+        }
+    )->setName('suggestTown');
 });
