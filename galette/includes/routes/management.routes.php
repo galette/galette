@@ -578,6 +578,54 @@ $app->post(
     }
 )->setName('store-preferences')->add($authenticate);
 
+$app->get(
+    __('/test/email', 'routes'),
+    function ($request, $response) {
+        if (!$this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("You asked Galette to send a test email, but mail has been disabled in the preferences.")
+            );
+        } else {
+            $mail = new GaletteMail();
+            $mail->setSubject(_T('Test message'));
+            $mail->setRecipients(
+                array(
+                    $this->preferences->pref_email_newadh => _T("Galette admin")
+                )
+            );
+            $mail->setMessage(_T('Test message.'));
+            $sent = $mail->send();
+
+            if ($sent) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    str_replace(
+                        '%email',
+                        $this->preferences->pref_email_newadh,
+                        _T("An email has been sent to %email")
+                    )
+                );
+            } else {
+                $this->flash->addMessage(
+                    'error_detected',
+                    str_replace(
+                        '%email',
+                        $preferences->pref_email_newadh,
+                        _T("No email sent to %email")
+                    )
+                );
+            }
+        }
+
+        if (!$request->isXhr()) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('preferences'));
+        }
+    }
+)->setName('testEmail')->add($authenticate);
+
 //charts
 $app->get(
     __('/charts', 'routes'),

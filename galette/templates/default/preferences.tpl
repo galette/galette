@@ -236,6 +236,7 @@
                             <input type="radio" name="pref_mail_method" id="qmail" value="{Galette\Core\GaletteMail::METHOD_QMAIL}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_QMAIL')}checked="checked"{/if}/><label for="qmail">{_T string="Using QMAIL server"}</label>
                         </li>
                     </ul>
+                    <br/><a href="{path_for name="testEmail"}#mail" id="btnmail" class="button">{_T string="Test mail settings"}</a>
                 </div>
                 <div id="smtp_parameters"{if $pref.pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_SMTP')} style="display: none;"{/if}>
                     <p>

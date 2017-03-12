@@ -206,6 +206,7 @@ $container['acls'] = function ($c) {
     $acls = [
         'preferences'       => 'admin',
         'store-preferences' => 'admin',
+        'testEmail'         => 'admin',
         'dashboard'         => 'groupmanager',
         'sysinfos'          => 'staff',
         'charts'            => 'staff',
