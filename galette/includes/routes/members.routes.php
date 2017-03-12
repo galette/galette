@@ -1120,7 +1120,7 @@ $app->post(
                             $mail->setSubject($texts->getSubject());
                             $mail->setRecipients(
                                 array(
-                                    $this->preferences->pref_email_newadh => 'Galette admin'
+                                    $this->preferences->pref_email_newadh => _T("Galette admin")
                                 )
                             );
                             $mail->setMessage($texts->getBody());
