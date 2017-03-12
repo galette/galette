@@ -199,7 +199,7 @@ $app->map(
                         $this->preferences,
                         $this->router,
                         array(
-                            'change_pass_uri'   => $preferences->getURL() .
+                            'change_pass_uri'   => $this->preferences->getURL() .
                                                     $this->router->pathFor(
                                                         'password-recovery',
                                                         ['hash' => base64_encode($password->getHash())]
