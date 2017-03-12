@@ -24,7 +24,12 @@
                     <p>
 {if !$login->isAdmin() && !$login->isStaff()}
                         <span class="bline">{_T string="Parent group:"}</span>
-                        <span>{if isset($pgroup)}{$pgroup->getName()}{/if}</span>
+                        <span>
+    {if isset($pgroup)}
+                            {$pgroup->getName()}
+                            <input type="hidden" name="parent_group" value="{$pgroup->getId()}"/>
+    {/if}
+                        </span>
 {else}
                         <label for="parent_group" class="bline">{_T string="Parent group:"}</label>
                         <select name="parent_group" id="parent_group">
