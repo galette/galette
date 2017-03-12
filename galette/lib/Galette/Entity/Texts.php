@@ -75,7 +75,7 @@ class Texts
      * @param Router      $router       Router instance
      * @param array       $replaces     Data that will be used as replacments
      */
-    public function __construct($texts_fields, Preferences $preferences, Router $router, $replaces = null)
+    public function __construct($texts_fields, Preferences $preferences, Router $router = null, $replaces = null)
     {
         $this->defaults = $texts_fields;
         $this->patterns = array(
@@ -98,7 +98,10 @@ class Texts
             'contrib_type'      => '/{CONTRIB_TYPE}/'
         );
 
-        $login_uri = $preferences->getURL() . $router->pathFor('login');
+        $login_uri = '';
+        if ($router !== null) {
+            $login_uri = $preferences->getURL() . $router->pathFor('login');
+        }
 
         $this->replaces = array(
             'asso_name'         => $preferences->pref_nom,
