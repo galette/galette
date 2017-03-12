@@ -11,7 +11,6 @@
                         <option value="{$langue->getID()}" {if $cur_lang eq $langue->getID()}selected="selected"{/if} style="background-image: url({base_url|cat:'/'|cat:$langue->getFlag()});">{$langue->getName()}</option>
                     {/foreach}
                 </select>
-                <noscript> <span><input type="submit" name="change_lang" value="{_T string="Change"}" /></span></noscript>
 
                 <label for="sel_ref">{_T string="Reference:"}</label>
                 <select name="sel_ref" id="sel_ref">
