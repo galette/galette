@@ -111,7 +111,7 @@ $app->group(__('/ajax', 'routes'), function () {
     )->setName('photoDnd');
 
     $this->post(
-        __('suggest', 'routes') . '/' . __('towns', 'routes'),
+        __('/suggest', 'routes') . __('/towns', 'routes'),
         function ($request, $response) {
             $post = $request->getParsedBody();
 
@@ -154,7 +154,7 @@ $app->group(__('/ajax', 'routes'), function () {
     )->setName('suggestTown');
 
     $this->post(
-        __('suggest', 'routes') . '/' . __('countries', 'routes'),
+        __('/suggest', 'routes') . __('/countries', 'routes'),
         function ($request, $response) {
             $post = $request->getParsedBody();
 
