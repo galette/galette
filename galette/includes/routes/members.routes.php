@@ -1127,7 +1127,7 @@ $app->post(
                             $sent = $mail->send();
 
                             if ($sent == GaletteMail::MAIL_SENT) {
-                                $this->hist->add(
+                                $this->history->add(
                                     str_replace(
                                         '%s',
                                         $member->sname . ' (' . $member->email . ')',
@@ -1140,7 +1140,7 @@ $app->post(
                                     $member->sname . ' (' . $member->email . ')',
                                     _T("A problem happened while sending email to admin for account '%s'.")
                                 );
-                                $this->hist->add($str);
+                                $this->history->add($str);
                                 $warning_detected[] = $str;
                             }
                             unset($texts);
@@ -1209,7 +1209,7 @@ $app->post(
                                         _T("New account mail sent to '%s'.") :
                                         _T("Account modification mail sent to '%s'.")
                                     );
-                                    $this->hist->add($msg);
+                                    $this->history->add($msg);
                                     $success_detected[] = $msg;
                                 } else {
                                     $str = str_replace(
@@ -1217,7 +1217,7 @@ $app->post(
                                         $member->sname . ' (' . $member->getEmail() . ')',
                                         _T("A problem happened while sending account mail to '%s'")
                                     );
-                                    $this->hist->add($str);
+                                    $this->history->add($str);
                                     $error_detected[] = $str;
                                 }
                             }
@@ -2306,7 +2306,7 @@ $app->post(
             foreach ($list_reminders as $reminder) {
                 if ($labels === false) {
                     //send reminders by mail
-                    $sent = $reminder->send($texts, $this->hist, $this->zdb);
+                    $sent = $reminder->send($texts, $this->history, $this->zdb);
 
                     if ($sent === true) {
                         $success_detected[] = $reminder->getMessage();

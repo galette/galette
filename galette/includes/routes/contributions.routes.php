@@ -640,6 +640,7 @@ $app->post(
                 $texts = new Texts(
                     $this->texts_fields,
                     $this->preferences,
+                    $this->router,
                     array(
                         'name_adh'          => custom_html_entity_decode($adh->sname),
                         'firstname_adh'     => custom_html_entity_decode($adh->surname),
