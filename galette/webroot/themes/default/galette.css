@@ -1588,7 +1588,8 @@ table.listing.single {
 
 .attached {
     background: url(images/attached.png) 0 50% no-repeat;
-    padding-left: 20px;
+    padding: .2em 0 .2em 16px;
+    display: inline-block;
 }
 
 .membercount {

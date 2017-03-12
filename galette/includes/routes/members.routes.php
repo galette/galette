@@ -2198,6 +2198,7 @@ $app->map(
             'mailing_preview.tpl',
             [
                 'page_title'    => _T("Mailing preview"),
+                'mailing_id'    => $args['id'],
                 'mode'          => ($ajax ? 'ajax' : ''),
                 'mailing'       => $mailing,
                 'recipients'    => $mailing->recipients,
@@ -2210,6 +2211,25 @@ $app->map(
         return $response;
     }
 )->setName('mailingPreview')->add($authenticate);
+
+$app->get(
+    __('/mailing', 'routes') . __('/preview', 'routes') . '/{id:\d+}' . __('/attachment', 'routes') . '/{pos:\d+}',
+    function ($request, $response, $args) {
+        $mailing = new Mailing(null);
+        MailingHistory::loadFrom($this->zdb, (int)$args['id'], $mailing, false);
+        $attachments = $mailing->attachments;
+        $attachment = $attachments[$args['pos']];
+        $filepath = $attachment->getDestDir() .  $attachment->getFileName();
+
+
+        $ext = pathinfo($attachment->getFileName())['extension'];
+        $response = $response->withHeader('Content-type', $attachment->getMimeType($filepath));
+
+        $body = $response->getBody();
+        $body->write(file_get_contents($filepath));
+        return $response;
+    }
+)->setName('previewAttachment')->add($authenticate);
 
 $app->post(
     __('/ajax', 'routes') . __('/mailing', 'routes') . __('/set-recipients', 'routes'),

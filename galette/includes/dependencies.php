@@ -223,6 +223,7 @@ $container['acls'] = function ($c) {
         'mailing'           => 'staff',
         'doMailing'         => 'staff',
         'mailingPreview'    => 'staff',
+        'previewAttachment' => 'staff',
         'mailingRecipients' => 'staff',
         'csv-memberslist'   => 'staff',
         'groups'            => 'groupmanager',

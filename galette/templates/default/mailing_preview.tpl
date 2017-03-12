@@ -18,7 +18,7 @@
         {else }
             {assign var="email" value=$recipient->email}
         {/if}
-                    <a href="mailto:{$email}">{$recipient->sname} &lt;{$email}&gt;</a>, 
+                    <a href="mailto:{$email}">{$recipient->sname} &lt;{$email}&gt;</a>{if not $recipient@last}, {/if}
     {/foreach}
                 </dd>
                 <dt>{_T string="Subject:"}</dt>
@@ -26,7 +26,7 @@
                 <dt>{_T string="Attachments:"}</dt>
                 <dd>
     {foreach from=$attachments item=attachment}
-                    <span class="attached">{$attachment}</span>
+                    <span class="attached"><a target="_blank" href="{path_for name="previewAttachment" data=["id" => $mailing_id, "pos" => $attachment@index]}">{$attachment->getFileName()}</a></span>
     {foreachelse}
                     -
     {/foreach}
