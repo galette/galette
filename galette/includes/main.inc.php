@@ -121,7 +121,13 @@ $authenticate = function ($request, $response, $next) use ($container) {
     $login = $container->session->login;
 
     if (!$login || !$login->isLogged()) {
-        //$this->session->urlRedirect = $request->getPathInfo();
+        if ($request->isGet()) {
+            $this->session->urlRedirect = $request->getUri()->getPath();
+        }
+        Analog::log(
+            'Login required to access ' . $this->session->urlRedirect,
+            Analog::DEBUG
+        );
         $this->flash->addMessage('error_detected', _T("Login required"));
         return $response
             ->withStatus(403)
@@ -181,6 +187,10 @@ $authenticate = function ($request, $response, $next) use ($container) {
                     break;
             }
             if (!$go) {
+                Analog::log(
+                    'Permission denied for route ' . $cur_route . ' for user ' . $login->login,
+                    Analog::DEBUG
+                );
                 $this->flash->addMessage(
                     'error_detected',
                     _T("You do not have permission for requested URL.")
@@ -234,7 +244,7 @@ $baseRedirect = function ($request, $response, $args = []) use ($app, $container
     if ($login->isLogged()) {
         $urlRedirect = null;
         if ($session->urlRedirect !== null) {
-            $urlRedirect = $app->request()->getRootUri() . $session->urlRedirect;
+            $urlRedirect = $request->getUri()->getBaseUrl() . $session->urlRedirect;
             $session->urlRedirect = null;
         }
 
