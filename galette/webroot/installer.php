@@ -50,6 +50,9 @@ require_once '../includes/galette.inc.php';
 
 if (isset($session['lang'])) {
     $i18n = unserialize($session['lang']);
+    if (!$i18n->getId()) {
+        $i18n = new Galette\Core\I18n();
+    }
 } else {
     $i18n = new Galette\Core\I18n();
 }
