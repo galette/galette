@@ -311,14 +311,14 @@
 {if $nb_members != 0}
         var _is_checked = true;
         var _bind_check = function(){
-            $('#checkall').click(function(){
+            $('.checkall').click(function(){
                 $('table.listing :checkbox[name="member_sel[]"]').each(function(){
                     this.checked = _is_checked;
                 });
                 _is_checked = !_is_checked;
                 return false;
             });
-            $('#checkinvert').click(function(){
+            $('.checkinvert').click(function(){
                 $('table.listing :checkbox[name="member_sel[]"]').each(function(){
                     this.checked = !$(this).is(':checked');
                 });
@@ -348,12 +348,13 @@
         {* Use of Javascript to draw specific elements that are not relevant is JS is inactive *}
         $(function(){
 {if $nb_members != 0}
-            $('#table_footer').parent().before('<tr><td id="checkboxes" colspan="4"><span class="fleft"><a href="#" id="checkall">{_T string="(Un)Check all"}</a> | <a href="#" id="checkinvert">{_T string="Invert selection"}</a></span></td></tr>');
+            var _checklinks = '<tr class="checkboxes"><td colspan="4"><span class="fleft"><a href="#" class="checkall">{_T string="(Un)Check all"}</a> | <a href="#" class="checkinvert">{_T string="Invert selection"}</a></span></td><td class="right" colspan="3"><a href="#" class="show_legend">{_T string="Show legend"}</a></td></tr>';
+            $('#table_footer').parent().before(_checklinks);
+            $('thead').prepend(_checklinks);
             _bind_check();
             $('#nbshow').change(function() {
                 this.form.submit();
             });
-            $('#checkboxes').after('<td class="right" colspan="3"><a href="#" id="show_legend">{_T string="Show legend"}</a></td>');
             $('#legende h1').remove();
             $('#legende').dialog({
                 autoOpen: false,
@@ -362,7 +363,7 @@
                 width: '40%'
             }).dialog('close');
 
-            $('#show_legend').click(function(){
+            $('.show_legend').click(function(){
                 $('#legende').dialog('open');
                 return false;
             });

@@ -2149,7 +2149,7 @@ td.photo img{
     background-color: #DDDDFF!important;
 }
 
-.listing tfoot tr:hover td {
+.listing tfoot tr:hover td, tr.checkboxes:hover td {
     background-color: transparent!important;
 }
 
