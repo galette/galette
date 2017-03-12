@@ -260,6 +260,7 @@ $container['acls'] = function ($c) {
         'doRemoveTitle'     => 'staff',
         'editTitle'         => 'staff',
         'texts'             => 'staff',
+        'changeText'        => 'staff',
         'transaction'       => 'staff',
         'doEditTransaction' => 'staff',
         'contribution'      => 'staff',

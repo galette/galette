@@ -1,39 +1,46 @@
 {extends file="page.tpl"}
 
 {block name="content"}
-        <form action="{path_for name="texts"}" method="post" enctype="multipart/form-data"> 
+        <div id="listfilter">
+        <form action="{path_for name="changeText"}" method="post" enctype="multipart/form-data">
+            <p><strong>{_T string="Choose an entry"}</strong></p>
+            <p>
+                <label for="sel_lang">{_T string="Language:"}</label>
+                <select name="sel_lang" id="sel_lang" class="lang">
+                    {foreach item=langue from=$langlist}
+                        <option value="{$langue->getID()}" {if $cur_lang eq $langue->getID()}selected="selected"{/if} style="background-image: url({base_url|cat:'/'|cat:$langue->getFlag()});">{$langue->getName()}</option>
+                    {/foreach}
+                </select>
+                <noscript> <span><input type="submit" name="change_lang" value="{_T string="Change"}" /></span></noscript>
+
+                <label for="sel_ref">{_T string="Reference:"}</label>
+                <select name="sel_ref" id="sel_ref">
+                    {foreach item=ref from=$reflist}
+                        <option value="{$ref.tref}" {if $cur_ref eq $ref.tref}selected="selected"{/if} >{$ref.tcomment}</option>
+                    {/foreach}
+                </select>
+                <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+            </p>
+        </form>
+        </div>
+
+        <form action="{path_for name="texts"}" method="post" enctype="multipart/form-data">
         <div class="bigtable">
             <fieldset class="cssform" id="{$mtxt->tlang}">
                 <legend class="ui-state-active ui-corner-top">{$mtxt->tcomment}</legend>
-                <p>
-                    <label for="sel_lang" class="bline">{_T string="Language:"}</label>
-                    <select name="sel_lang" id="sel_lang" class="lang">
-                        {foreach item=langue from=$langlist}
-                            <option value="{$langue->getID()}" {if $cur_lang eq $langue->getID()}selected="selected"{/if} style="background-image: url({$langue->getFlag()});">{$langue->getName()}</option>
-                        {/foreach}
-                    </select>
-                    <noscript> <span><input type="submit" name="change_lang" value="{_T string="Change"}" /></span></noscript>
-                </p>
-                <p>
-                    <label for="sel_ref" class="bline">{_T string="Reference:"}</label>
-                    <select name="sel_ref" id="sel_ref">
-                        {foreach item=ref from=$reflist}
-                            <option value="{$ref.tref}" {if $cur_ref eq $ref.tref}selected="selected"{/if} >{$ref.tcomment}</option>
-                        {/foreach}
-                    </select>
-                    <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
-                </p>
                 <p>
                     <label for="tsubject" class="bline">{_T string="Email Subject"}</label> 
                     <input type="text" name="text_subject" id="tsubject" value="{$mtxt->tsubject}" maxlength="255" size="32"/> <span class="exemple">{_T string="(Max 255 characters)"}</span>
                 </p>
                 <p>
-                    <label for="text_body" class="bline">{_T string="Email Body:"}</label>
+                    <label id="body_label" for="text_body" class="bline">{_T string="Email Body:"}</label>
                     <textarea name="text_body" id="text_body" cols="64" rows="15">{$mtxt->tbody}</textarea>
                 </p>
             </fieldset>
         </div>
         <div class="button-container">
+            <input type="hidden" name="cur_lang"  value="{$cur_lang}"/>
+            <input type="hidden" name="cur_ref" value="{$cur_ref}"/>
             <input type="hidden" name="valid" id="valid" value="1"/>
             <input type="submit" value="{_T string="Save"}"/>
         </div>
@@ -109,7 +116,7 @@
                     this.form.submit();
                 });
 
-                $('.cssform').prepend('<div class="fright"><a href="#" id="show_legend" class="help">{_T string="Show existing variables"}</a></div>');
+                $('#body_label').prepend('<a href="#" id="show_legend" class="help fright" title="{_T string="Show existing variables"}"></a>');
                 $('#legende h1').remove();
                 $('#legende').dialog({
                     autoOpen: false,

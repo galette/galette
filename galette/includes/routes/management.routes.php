@@ -2183,14 +2183,22 @@ $app->post(
 )->setname('editTitle')->add($authenticate);
 
 $app->get(
-    __('/texts', 'routes'),
-    function ($request, $response) {
-        $cur_lang = $this->preferences->pref_lang;
-        $cur_ref = Texts::DEFAULT_REF;
+    __('/texts', 'routes') . '[/{lang}/{ref}]',
+    function ($request, $response, $args) {
+        if (!isset($args['lang'])) {
+            $args['lang'] = $this->preferences->pref_lang;
+        }
+        if (!isset($args['ref'])) {
+            $args['ref'] = Texts::DEFAULT_REF;
+        }
 
-        $texts = new Texts($this->texts_fields, $this->preferences, $this->router);
+        $texts = new Texts(
+            $this->texts_fields,
+            $this->preferences,
+            $this->router
+        );
 
-        $mtxt = $texts->getTexts($cur_ref, $cur_lang);
+        $mtxt = $texts->getTexts($args['ref'], $args['lang']);
 
         // display page
         $this->view->render(
@@ -2198,10 +2206,10 @@ $app->get(
             'gestion_textes.tpl',
             [
                 'page_title'        => _T("Automatic emails texts edition"),
-                'reflist'           => $texts->getRefs($cur_lang),
+                'reflist'           => $texts->getRefs($args['lang']),
                 'langlist'          => $this->i18n->getList(),
-                'cur_lang'          => $cur_lang,
-                'cur_ref'           => $cur_ref,
+                'cur_lang'          => $args['lang'],
+                'cur_ref'           => $args['ref'],
                 'mtxt'              => $mtxt,
                 'require_dialog'    => true
             ]
@@ -2209,6 +2217,25 @@ $app->get(
         return $response;
     }
 )->setName('texts')->add($authenticate);
+
+$app->post(
+    __('/texts', 'routes') . __('/change', 'routes'),
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        return $response
+            ->withStatus(301)
+            ->withHeader(
+                'Location',
+                $this->router->pathFor(
+                    'texts',
+                    [
+                        'lang'  => $post['sel_lang'],
+                        'ref'   => $post['sel_ref']
+                    ]
+                )
+            );
+    }
+)->setName('changeText')->add($authenticate);
 
 $app->post(
     __('/texts', 'routes'),
