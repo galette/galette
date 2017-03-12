@@ -839,7 +839,7 @@ $app->map(
                     $query = trim($sql_query[$i]);
                     if ($query != '' && $query[0] != '-') {
                         //some output infos
-                        @list($w1, $w2, $w3, $extra) = explode(' ', $query, 4);
+                        @list($w1, $w2, $w3, $extra) = array_pad(explode(' ', $query, 4), 4, '');
                         if ($extra != '') {
                             $extra = '...';
                         }
