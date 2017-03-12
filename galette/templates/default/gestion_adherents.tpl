@@ -348,7 +348,7 @@
         {* Use of Javascript to draw specific elements that are not relevant is JS is inactive *}
         $(function(){
 {if $nb_members != 0}
-            var _checklinks = '<tr class="checkboxes"><td colspan="4"><span class="fleft"><a href="#" class="checkall">{_T string="(Un)Check all"}</a> | <a href="#" class="checkinvert">{_T string="Invert selection"}</a></span></td><td class="right" colspan="3"><a href="#" class="show_legend">{_T string="Show legend"}</a></td></tr>';
+            var _checklinks = '<tr class="checkboxes"><td colspan="{if $login->isAdmin() or $login->isStaff()}4{else}2{/if}"><span class="fleft"><a href="#" class="checkall">{_T string="(Un)Check all"}</a> | <a href="#" class="checkinvert">{_T string="Invert selection"}</a></span></td><td class="right" colspan="3"><a href="#" class="show_legend">{_T string="Show legend"}</a></td></tr>';
             $('#table_footer').parent().before(_checklinks);
             $('thead').prepend(_checklinks);
             _bind_check();
