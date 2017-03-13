@@ -163,6 +163,7 @@ $app->get(
                 'themes'                => $themes,
                 'require_tabs'          => true,
                 'color_picker'          => true,
+                'require_dialog'        => true
             )
         );
         return $response;
@@ -581,39 +582,49 @@ $app->post(
 $app->get(
     __('/test/email', 'routes'),
     function ($request, $response) {
+        $sent = false;
         if (!$this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
             $this->flash->addMessage(
                 'error_detected',
                 _T("You asked Galette to send a test email, but mail has been disabled in the preferences.")
             );
         } else {
-            $mail = new GaletteMail();
-            $mail->setSubject(_T('Test message'));
-            $mail->setRecipients(
-                array(
-                    $this->preferences->pref_email_newadh => _T("Galette admin")
-                )
-            );
-            $mail->setMessage(_T('Test message.'));
-            $sent = $mail->send();
-
-            if ($sent) {
-                $this->flash->addMessage(
-                    'success_detected',
-                    str_replace(
-                        '%email',
-                        $this->preferences->pref_email_newadh,
-                        _T("An email has been sent to %email")
+            $get = $request->getQueryParams();
+            $dest = (isset($get['adress']) ? $get['adress'] : $this->preferences->pref_email_newadh);
+            if (GaletteMail::isValidEmail($dest)) {
+                $mail = new GaletteMail();
+                $mail->setSubject(_T('Test message'));
+                $mail->setRecipients(
+                    array(
+                        $dest => _T("Galette admin")
                     )
                 );
+                $mail->setMessage(_T('Test message.'));
+                $sent = $mail->send();
+
+                if ($sent) {
+                    $this->flash->addMessage(
+                        'success_detected',
+                        str_replace(
+                            '%email',
+                            $dest,
+                            _T("An email has been sent to %email")
+                        )
+                    );
+                } else {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        str_replace(
+                            '%email',
+                            $dest,
+                            _T("No email sent to %email")
+                        )
+                    );
+                }
             } else {
                 $this->flash->addMessage(
                     'error_detected',
-                    str_replace(
-                        '%email',
-                        $preferences->pref_email_newadh,
-                        _T("No email sent to %email")
-                    )
+                    _T("Invalid email adress!")
                 );
             }
         }
@@ -622,6 +633,12 @@ $app->get(
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('preferences'));
+        } else {
+            return $response->withJson(
+                [
+                    'sent'  => $sent
+                ]
+            );
         }
     }
 )->setName('testEmail')->add($authenticate);

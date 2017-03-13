@@ -498,6 +498,47 @@
                 $('#pref_bool_publicpages').change(function(){
                     $('#publicpages_visibility').toggleClass('hidden');
                 });
+
+                $('#btnmail').on('click', function(e) {
+                    e.preventDefault();
+                    var _this = $(this);
+                    var _value = $('#pref_email_newadh').val();
+                    $('body').append('<div id="testEmail" title="{_T string="Test mail settings" escape="js"}"><label for="email_adress">{_T string="Enter the email adress" escape="js"}</label><input type="text" name="email_adress" id="email_adress" value="' + _value + '"/></div>');
+                    $('#testEmail').dialog({
+                        'modal': true,
+                        'hide': 'fold',
+                        'width': '20em',
+                        close: function(event, ui) {
+                            $('#testEmail').remove();
+                        },
+                        buttons: {
+                            Ok: function() {
+                                $.ajax({
+                                    url: _this.attr('href'),
+                                    type: 'GET',
+                                    data: {
+                                        adress: $('#email_adress').val()
+                                    },
+                                    {include file="js_loader.tpl"},
+                                    success: function(res) {
+                                        console.log(res);
+                                        //display message
+                                        $.ajax({
+                                            url: '{path_for name="ajaxMessages"}',
+                                            method: "GET",
+                                            success: function (message) {
+                                                $('#testEmail').prepend(message);
+                                            }
+                                        });
+                                    },
+                                    error: function () {
+                                        alert('{_T string="An error occured sending test email :(" escape="js"}');
+                                    }
+                                });
+                            }
+                        }
+                    });
+                });
             });
 
             //color pickers setup (sets bg color of inputs)
