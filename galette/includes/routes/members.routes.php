@@ -1342,7 +1342,7 @@ $app->post(
             }
 
             if (count($error_detected) == 0) {
-                if (!isset($_POST['id_adh']) && !$member->isDueFree()) {
+                if (!isset($_POST['id_adh']) && !$member->isDueFree() && !isset($args['self'])) {
                     return $response
                         ->withStatus(301)
                         ->withHeader(
@@ -1355,7 +1355,7 @@ $app->post(
                                 ]
                             ) . '?id_adh=' . $member->id
                         );
-                } elseif (count($error_detected) == 0) {
+                } else {
                     if (isset($args['self'])) {
                         $redirect_url = $this->router->pathFor('login');
                     } else {
