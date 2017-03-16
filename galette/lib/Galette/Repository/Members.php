@@ -568,6 +568,7 @@ class Members
                             : $fields) : (array)'*';
 
             $select = $zdb->select(self::TABLE, 'a');
+
             $select->columns($fieldsList);
 
             $select->quantifier('DISTINCT');
@@ -802,9 +803,6 @@ class Members
             if ($count) {
                 $this->proceedCount($select);
             }
-
-            //Fix for #687, but only for MySQL (break on PostgreSQL)
-            //$select->group('a.' . Adherent::PK);
 
             return $select;
         } catch (\Exception $e) {
@@ -1107,12 +1105,12 @@ class Members
                 $select->join(
                     array('g' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
                     'a.' . Adherent::PK . '=g.' . Adherent::PK,
-                    array('*'),
+                    array(),
                     $select::JOIN_LEFT
                 )->join(
                     array('gs' => PREFIX_DB . Group::TABLE),
                     'gs.' . Group::PK . '=g.' . Group::PK,
-                    array('*'),
+                    array(),
                     $select::JOIN_LEFT
                 )->where(
                     '(g.' . Group::PK . ' = ' . $this->filters->group_filter .
