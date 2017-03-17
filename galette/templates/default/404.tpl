@@ -5,7 +5,7 @@
     </head>
     <body>
         {* IE8 and above are no longer supported *}
-        <!--[if lt IE 8]>
+        <!--[if lte IE 8]>
         <div id="oldie">
             <p>{_T string="Your browser version is way too old and no longer supported in Galette for a while."}</p>
             <p>{_T string="Please update your browser or use an alternative one, like Mozilla Firefox (http://mozilla.org)."}</p>

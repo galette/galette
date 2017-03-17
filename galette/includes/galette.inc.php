@@ -143,7 +143,11 @@ if (!isset($_COOKIE['show_galette_dashboard'])) {
 }
 
 if (!defined('GALETTE_DISPLAY_ERRORS')) {
-    define('GALETTE_DISPLAY_ERRORS', 0);
+    if (GALETTE_MODE === 'DEV') {
+        define('GALETTE_DISPLAY_ERRORS', 1);
+    } else {
+        define('GALETTE_DISPLAY_ERRORS', 0);
+    }
 }
 ini_set('display_errors', 0);
 
