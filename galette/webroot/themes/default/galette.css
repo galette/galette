@@ -602,10 +602,10 @@ h1 #sendmail .ui-button-text {
 }
 
 #lostpassword, #btn_lostpassword {
-    background-image:url(images/icon-lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+    background-image:url(images/lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
 #lostpassword.ui-state-hover, #btn_lostpassword.ui-state-hover {
-    background-image:url(images/icon-lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+    background-image:url(images/lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 #memberslist {
@@ -849,7 +849,7 @@ legend #btnadd_small {
 }
 
 .center {
-    text-align: center;
+    text-align: center!important;
 }
 
 .center_table {
@@ -2026,17 +2026,27 @@ td.photo img{
 #details_menu{
     padding:0;
     text-align:center;
-    float: right;
     list-style-type: none;
-    width: 10em;
+    width: 85%;
+    margin: 0 auto;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    justify-content: space-around;
 }
 #details_menu li {
+    width: 10em;
     margin-bottom:.5em;
 }
 
-.wrmenu {
-    margin-right: 10em;
+#details_menu li a {
+    height: calc(100% - 32px);
 }
+
 /*** /Voir adhérent ***/
 
 /*** Onglets ***/
@@ -2293,13 +2303,17 @@ td.photo img{
         padding: auto !important;
     }
 
+    #details_menu, #member_stateofdue, .details {
+        width: 100%;
+    }
+
     /* fixer une largeur maximale  de 100 % aux éléments potentiellement problématiques */
     img, table, td, blockquote, code, pre, textarea, input, object, embed, video {
         max-width: 100% !important;
     }
 
     /* gestion des mots longs */
-    textarea, table, td, th, code, pre, samp {
+    textarea, code, pre, samp {
         word-wrap: break-word; /* césure forcée */
         white-space: pre-line; /* passage à la ligne spécifique pour les éléments à châsse fixe */
     }
