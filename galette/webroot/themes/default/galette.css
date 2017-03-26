@@ -2385,6 +2385,35 @@ td.photo img{
         display: block;
     }
 
+    /** Dashboard */
+    #desktop, #news {
+        width: 100%;
+    }
+
+    /** Forms */
+    .cssform p, .cssform div.p,
+    .galette_form p, .galette_form div.p {
+        padding-left: 0;
+    }
+
+    .cssform .bline, .galette_form label, .galette_form .bline {
+        margin-left: 0;
+        margin-bottom: .2em;
+        padding-right: 0;
+        display: block;
+        width: auto;
+    }
+
+    fieldset, fieldset.large {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .galette_form textarea,
+    .cssform textarea{
+        width: 100%;
+        height: 5em;
+    }
 }
 @media screen and (max-width:767px) and (orientation: landscape) {
     body {
