@@ -520,7 +520,7 @@
                             $('#testEmail').remove();
                         },
                         buttons: {
-                            Ok: function() {
+                            {_T string="Send"}: function() {
                                 $.ajax({
                                     url: _this.attr('href'),
                                     type: 'GET',
