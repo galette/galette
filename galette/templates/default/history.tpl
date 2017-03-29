@@ -35,21 +35,17 @@
             <input type="submit" class="inline" value="{_T string="Filter"}"/>
             <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
         </div>
-        <table class="infoline">
-            <tr>
-                <td class="left nowrap">
-                    <a id="histreset" class="button delete" href="{path_for name="flushHistory"}">{_T string="Flush the logs"}</a>
-                    {$history->getCount()} {if $history->getCount() != 1}{_T string="entries"}{else}{_T string="entry"}{/if}
-                </td>
-                <td class="right">
-                    <label for="nbshow">{_T string="Records per page:"}</label>
-                    <select name="nbshow" id="nbshow">
-                        {html_options options=$nbshow_options selected=$numrows}
-                    </select>
-                    <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
-                </td>
-            </tr>
-        </table>
+        <div class="infoline">
+            <a id="histreset" class="button delete" href="{path_for name="flushHistory"}">{_T string="Flush the logs"}</a>
+            {$history->getCount()} {if $history->getCount() != 1}{_T string="entries"}{else}{_T string="entry"}{/if}
+            <div class="fright">
+                <label for="nbshow">{_T string="Records per page:"}</label>
+                <select name="nbshow" id="nbshow">
+                    {html_options options=$nbshow_options selected=$numrows}
+                </select>
+                <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+            </div>
+        </div>
     </form>
 
         <table class="listing">
@@ -109,26 +105,23 @@
                     </th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <td colspan="6" class="center">
-                        {_T string="Pages:"}<br/>
-                        <ul class="pages">{$pagination}</ul>
-                    </td>
-                </tr>
-            </tfoot>
             <tbody>
 {if $logs|@count == 0}
                 <tr><td colspan="6" class="emptylist">{_T string="No log found"}</td></tr>
 {else}
     {foreach from=$logs item=log name=eachlog}
                 <tr class="{if $smarty.foreach.eachlog.iteration % 2 eq 0}even{else}odd{/if}">
-                    <td class="center">{$smarty.foreach.eachlog.iteration}</td>
-                    <td class="nowrap">{$log.date_log|date_format:"%a %d/%m/%Y - %R"}</td>
-                    <td class="nowrap">{$log.ip_log}</td>
-                    <td>{$log.adh_log}</td>
-                    <td>{$log.action_log}</td>
-                    <td>
+                    <td data-scope="row">
+                        {$smarty.foreach.eachlog.iteration}
+                        <span class="row-title">
+                            {_T string="History entry %id" pattern="/%id/" replace=$smarty.foreach.eachlog.iteration}
+                        </span>
+                    </td>
+                    <td class="nowrap" data-title="{_T string="Date"}">{$log.date_log|date_format:"%a %d/%m/%Y - %R"}</td>
+                    <td class="nowrap" data-title="{_T string="IP"}">{$log.ip_log}</td>
+                    <td data-title="{_T string="User"}">{$log.adh_log}</td>
+                    <td data-title="{_T string="Action"}">{$log.action_log}</td>
+                    <td data-title="{_T string="Description"}">
                         {$log.text_log}
         {if $log.sql_log}
                         <span class="sql_log">{$log.sql_log|escape:"htmlall"}</span>
@@ -141,6 +134,12 @@
 {/if}
             </tbody>
         </table>
+{if $logs|@count != 0}
+        <div class="center cright">
+            {_T string="Pages:"}<br/>
+            <ul class="pages">{$pagination}</ul>
+        </div>
+{/if}
 {/block}
 
 {block name="javascripts"}

@@ -54,18 +54,10 @@
                     </th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <td colspan="7" class="center">
-                        {_T string="Pages:"}<br/>
-                        <ul class="pages">{$pagination}</ul>
-                    </td>
-                </tr>
-            </tfoot>
             <tbody>
     {foreach from=$members item=member name=allmembers}
                 <tr class="{if $smarty.foreach.allmembers.iteration % 2 eq 0}even{else}odd{/if}">
-                    <td class="{$member->getRowClass(true)} nowrap username_row">
+                    <td class="{$member->getRowClass(true)} nowrap username_row" data-scope="row">
                     {if $member->isCompany()}
                         <img src="{$template_subdir}images/icon-company.png" alt="" width="16" height="16"/>
                     {elseif $member->isMan()}
@@ -82,15 +74,19 @@
                         {$member->sfullname}
                     {/if}
                     </td>
-                    <td class="{$member->getRowClass(true)} nowrap">{$member->nickname|htmlspecialchars}</td>
+                    <td class="{$member->getRowClass(true)} nowrap" data-title="{_T string="Nickname"}">{$member->nickname|htmlspecialchars}</td>
                     {if $login->isLogged()}
-                    <td class="{$member->getRowClass(true)} nowrap"><a href="mailto:{$member->email}">{$member->email}</a></td>
+                    <td class="{$member->getRowClass(true)} nowrap" data-title="{_T string="Email"}"><a href="mailto:{$member->email}">{$member->email}</a></td>
                     {/if}
-                    <td class="{$member->getRowClass(true)} nowrap">{$member->others_infos}</td>
+                    <td class="{$member->getRowClass(true)} nowrap" data-title="{_T string="Informations"}">{$member->others_infos}</td>
                 </tr>
     {/foreach}
             </tbody>
         </table>
+        <div class="center cright">
+            {_T string="Pages:"}<br/>
+            <ul class="pages">{$pagination}</ul>
+        </div>
 {else}
     <div id="infobox">{_T string="No member to show"}</div>
 {/if}

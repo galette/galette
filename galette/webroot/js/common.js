@@ -93,6 +93,49 @@ var _messagesEffects = function(){
     });
 }
 
+var _bind_check = function(boxelt){
+    if (typeof(boxelt) == 'undefined') {
+        boxelt = 'member_sel'
+    }
+    var _is_checked = true;
+    $('.checkall').click(function(){
+        $('table.listing :checkbox[name="' + boxelt + '[]"]').each(function(){
+            this.checked = _is_checked;
+        });
+        _is_checked = !_is_checked;
+        return false;
+    });
+    $('.checkinvert').click(function(){
+        $('table.listing :checkbox[name="' + boxelt + '[]"]').each(function(){
+            this.checked = !$(this).is(':checked');
+        });
+        return false;
+    });
+};
+
+var _bind_legend = function() {
+    $('#legende h1').remove();
+    $('#legende').dialog({
+        autoOpen: false,
+        modal: true,
+        hide: 'fold',
+        width: '40%',
+        create: function (event, ui) {
+            if ($(window ).width() < 767) {
+                $(this).dialog('option', {
+                        'width': '95%',
+                        'draggable': false
+                });
+            }
+        }
+    }).dialog('close');
+
+    $('.show_legend').click(function(e){
+        e.preventDefault();
+        $('#legende').dialog('open');
+    });
+}
+
 $(function() {
     _messagesEffects();
     $('.debuginfos span').hide();
@@ -131,7 +174,7 @@ $(function() {
         });
     }
 
-    $('input:submit, .button, input:reset' ).button({
+    $('input:submit, .button, input:reset, button:submit' ).button({
         create: function(event, ui) {
             if ( $(event.target).hasClass('disabled') ) {
                 $(event.target).button('disable');

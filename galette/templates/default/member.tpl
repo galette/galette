@@ -299,6 +299,14 @@
                         height: 500,
                         close: function(event, ui){
                             _el.remove();
+                        },
+                        create: function (event, ui) {
+                            if ($(window ).width() < 767) {
+                                $(this).dialog('option', {
+                                        'width': '95%',
+                                        'draggable': false
+                                });
+                            }
                         }
                     });
                     _groups_ajax_mapper(res, _groups, _managed);
@@ -407,6 +415,14 @@
                         height: 400,
                         close: function(event, ui){
                             _el.remove();
+                        },
+                        create: function (event, ui) {
+                            if ($(window ).width() < 767) {
+                                $(this).dialog('option', {
+                                        'width': '95%',
+                                        'draggable': false
+                                });
+                            }
                         }
                     });
                     _members_ajax_mapper(res);

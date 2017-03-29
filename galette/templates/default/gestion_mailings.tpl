@@ -112,24 +112,21 @@
                     <th class="small_head"></th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <td colspan="7" class="center">
-                        {_T string="Pages:"}<br/>
-                        <ul class="pages">{$pagination}</ul>
-                    </td>
-                </tr>
-            </tfoot>
             <tbody>
 {foreach from=$logs item=log name=eachlog}
                 <tr class="{if $smarty.foreach.eachlog.iteration % 2 eq 0}even{else}odd{/if}">
-                    <td class="center">{$smarty.foreach.eachlog.iteration}</td>
-                    <td class="nowrap">{$log.mailing_date|date_format:"%a %d/%m/%Y - %R"}</td>
-                    <td>{if $log.mailing_sender eq 0}{_T string="Superadmin"}{else}{$log.mailing_sender_name}{/if}</td>
-                    <td>{$log.mailing_recipients|unserialize|@count}</td>
-                    <td>{$log.mailing_subject}</td>
-                    <td>{$log.attachments}</td>
-                    <td class="center">
+                    <td data-scope="row">
+                        {$smarty.foreach.eachlog.iteration}
+                        <span class="row-title">
+                            {_T string="Mailing entry %id" pattern="/%id/" replace=$smarty.foreach.eachlog.iteration}
+                        </span>
+                    </td>
+                    <td class="nowrap" data-title="{_T string="Date"}">{$log.mailing_date|date_format:"%a %d/%m/%Y - %R"}</td>
+                    <td data-title="{_T string="Sender"}">{if $log.mailing_sender eq 0}{_T string="Superadmin"}{else}{$log.mailing_sender_name}{/if}</td>
+                    <td data-title="{_T string="Recipients"}">{$log.mailing_recipients|unserialize|@count}</td>
+                    <td data-title="{_T string="Subject"}">{$log.mailing_subject}</td>
+                    <td class="center" data-title="{_T string="Attachments"}">{$log.attachments}</td>
+                    <td class="center" data-title="{_T string="Sent"}">
                         {if $log.mailing_sent == 1}
                             <img src="{base_url}/{$template_subdir}images/icon-on.png" alt="{_T string="Sent"}" title="{_T string="Mailing has been sent"}"/>
                         {else}
@@ -167,6 +164,10 @@
 {/foreach}
             </tbody>
         </table>
+        <div class="center cright">
+            {_T string="Pages:"}<br/>
+            <ul class="pages">{$pagination}</ul>
+        </div>
         <div class="center">
             <a class="button" id="btnadd" href="{path_for name="mailing"}?mailing_new=true">{_T string="Create new mailing"}</a>
         </div>
