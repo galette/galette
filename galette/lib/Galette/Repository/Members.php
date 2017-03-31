@@ -631,9 +631,7 @@ class Members
 
             //check if there are dynamic fields in filter
             $hasDf = false;
-            $hasCdf = false;
             $dfs = array();
-            $cdfs = array();
 
             if ($this->filters instanceof AdvancedMembersList
                 && $this->filters->free_search
@@ -646,11 +644,6 @@ class Members
                         // simple dynamic fields
                         $hasDf = true;
                         $dfs[] = str_replace('dyn_', '', $fs['field']);
-                    }
-                    if (strpos($fs['field'], 'dync_') === 0) {
-                        // choice dynamic fields
-                        $hasCdf = true;
-                        $cdfs[] = str_replace('dync_', '', $fs['field']);
                     }
                 }
             }
@@ -710,28 +703,10 @@ class Members
             }
 
             // choice dynamic fields
-            if ($hasCdf === true || $hasCdfc === true) {
+            if ($hasCdfc === true) {
                 $cdf_field = 'cdf.id';
                 if (TYPE_DB === 'pgsql') {
                     $cdf_field .= '::text';
-                }
-                foreach ($cdfs as $cdf) {
-                    $subselect = $zdb->select(DynamicFields::TABLE, 'df');
-                    $subselect->columns(array('item_id'));
-                    $subselect->join(
-                        array('dfc' . $cdf  => DynamicFields::getFixedValuesTableName($cdf, true)),
-                        "df.field_val=id",
-                        array('val'),
-                        $select::JOIN_LEFT
-                    );
-                    $subselect->where('df.field_form = \'adh\'');
-                    $subselect->where('df.field_id = ' . $cdf);
-                    $select->join(
-                        array('df' . $cdf => $subselect),
-                        'a.id_adh = df' . $cdf . '.item_id',
-                        array(),
-                        $select::JOIN_LEFT
-                    );
                 }
 
                 $cdf_field = 'cdfc.id';
@@ -1389,12 +1364,7 @@ class Members
 
                         $qry = '';
                         $prefix = 'a.';
-                        if (strpos($fs['field'], 'dync_') === 0) {
-                            // choice dynamic choice spotted!
-                            $index = str_replace('dync_', '', $fs['field']);
-                            $prefix = 'df' . $index . '.';
-                            $fs['field'] = 'val';
-                        } elseif (strpos($fs['field'], 'dyn_') === 0) {
+                        if (strpos($fs['field'], 'dyn_') === 0) {
                             // simple dynamic field spotted!
                             $index = str_replace('dyn_', '', $fs['field']);
                             $prefix = 'df' . $index . '.';
