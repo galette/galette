@@ -217,6 +217,8 @@
     {elseif $type eq constant('Galette\Entity\DynamicFields::DATE')}
                         <select name="free_query_operator[]">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
+                            <option value="{Galette\Filters\AdvancedMembersList::OP_BEFORE}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_BEFORE')} selected="selected"{/if}>{_T string="before"}</option>
+                            <option value="{Galette\Filters\AdvancedMembersList::OP_AFTER}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_AFTER')} selected="selected"{/if}>{_T string="after"}</option>
                         </select>
 			<input type="text" name="free_text[]" value="{$fs.search}" class="modif_date" maxlength="10" size="10"/>
     {elseif $type eq constant('Galette\Entity\DynamicFields::BOOLEAN')}
@@ -272,6 +274,8 @@
                 op_not_contains: { id: {Galette\Filters\AdvancedMembersList::OP_NOT_CONTAINS}, name: "{_T string='do not contains'}" },
                 op_starts_with: { id: {Galette\Filters\AdvancedMembersList::OP_STARTS_WITH}, name: "{_T string='starts with'}" },
                 op_ends_with: { id: {Galette\Filters\AdvancedMembersList::OP_ENDS_WITH}, name: "{_T string='ends with'}" },
+                op_before: { id: {Galette\Filters\AdvancedMembersList::OP_BEFORE}, name: "{_T string='before'}" },
+                op_after: { id: {Galette\Filters\AdvancedMembersList::OP_AFTER}, name: "{_T string='after'}" },
             };
 
             var _fields = {
@@ -393,7 +397,7 @@
                             _html += '<input type="text" name="free_text[]"/>';
                             break;
                         case 'date':
-                            _html  = _getOperatorSelector(['op_equals']);
+                            _html  = _getOperatorSelector(['op_equals', 'op_before', 'op_after']);
                             _html += '<input type="text" name="free_text[] class="modif_date" maxlength="10" size="10"/>';
                             break;
                     }
