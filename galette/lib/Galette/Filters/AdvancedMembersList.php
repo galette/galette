@@ -68,6 +68,8 @@ class AdvancedMembersList extends MembersList
     const OP_NOT_CONTAINS = 3;
     const OP_STARTS_WITH = 4;
     const OP_ENDS_WITH = 5;
+    const OP_BEFORE = 6;
+    const OP_AFTER = 7;
 
     private $_creation_date_begin;
     private $_creation_date_end;

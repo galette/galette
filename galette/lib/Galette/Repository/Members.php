@@ -1350,6 +1350,14 @@ class Members
                                 $qop = 'LIKE';
                                 $fs['search'] = '%' . $fs['search'];
                                 break;
+                            case AdvancedMembersList::OP_BEFORE:
+                                $qop = '<';
+                                $fs['search'] = "STR_TO_DATE('" . $fs['search'] . "', '%d/%m/%Y')";
+                                break;
+                            case AdvancedMembersList::OP_AFTER:
+                                $qop = '>';
+                                $fs['search'] = 'STR_TO_DATE(\'' . $fs['search'] . '\', \'%d/%m/%Y\')';
+                                break;
                             default:
                                 Analog::log(
                                     'Unknown query operator: ' . $fs['qry_op'] .
@@ -1372,6 +1380,9 @@ class Members
                         if (!strncmp($fs['field'], 'bool_', strlen('bool_'))) {
                             $qry .= $prefix . $fs['field'] . $qop  . ' ' .
                                 $fs['search'] ;
+                        } elseif ($fs['qry_op'] === AdvancedMembersList::OP_BEFORE || $fs['qry_op'] === AdvancedMembersList::OP_AFTER) {
+                            $qry .= 'STR_TO_DATE(' . $prefix . $fs['field'] . ', \'%d/%m/%Y\') ' .
+                                $qop  . ' ' .  $fs['search'] ;
                         } else {
                             $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' .
                                 $qop  . ' ' . $zdb->platform->quoteValue(
