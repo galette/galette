@@ -188,3 +188,19 @@ $app->get(
             ->withHeader('Location', $this->router->pathFor('slash'));
     }
 )->setName('unimpersonate')->add($authenticate);
+
+$app->get(
+    '/change-language',
+    function ($request, $response) {
+        $route = $this->session->changelang_route;
+        $this->session->changelang_route = null;
+
+        return $response->withRedirect(
+            $this->router->pathFor(
+                $route['name'],
+                $route['arguments']
+            ),
+            301
+        );
+    }
+)->setName('changeLanguage');
