@@ -951,7 +951,7 @@ $app->get(
 $app->post(
     __('/member/store', 'routes') . '[/{self:' . __('subscribe', 'routes') . '}]',
     function ($request, $response, $args) {
-        if (!$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged()) {
+        if (!$this->preferences->pref_bool_selfsubscribe && !$this->login->isLogged()) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('slash'));
