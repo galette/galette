@@ -1593,7 +1593,7 @@ class Members
         $reminders = array();
 
         $soon_date = new \DateTime();
-        $soon_date->modify('+30 day');
+        $soon_date->modify('+1 month');
 
         $now = new \DateTime();
 
@@ -1603,17 +1603,25 @@ class Members
                 'cnt' => new Expression('count(a.' . Adherent::PK . ')')
             )
         );
+
+        $select->join(
+            array('p' => PREFIX_DB . self::TABLE),
+            'a.parent_id=p.' . self::PK,
+            array(),
+            $select::JOIN_LEFT
+        );
+
         $select->where
-            ->lessThan('date_echeance', $soon_date->format('Y-m-d'))
-            ->greaterThanOrEqualTo('date_echeance', $now->format('Y-m-d'));
+            ->lessThan('a.date_echeance', $soon_date->format('Y-m-d'))
+            ->greaterThanOrEqualTo('a.date_echeance', $now->format('Y-m-d'));
         $select
-            ->where('activite_adh=true')
-            ->where('bool_exempt_adh=false');
+            ->where('a.activite_adh=true')
+            ->where('a.bool_exempt_adh=false');
 
         $select_wo_mail = clone $select;
 
-        $select->where('email_adh != \'\'');
-        $select_wo_mail->where('email_adh = \'\'');
+        $select->where('(a.email_adh != \'\' OR p.email_adh != \'\')');
+        $select_wo_mail->where('a.email_adh = \'\' AND p.email_adh = \'\'');
 
         $results = $zdb->execute($select);
         $res = $results->current();
@@ -1629,16 +1637,24 @@ class Members
                 'cnt' => new Expression('count(a.' . Adherent::PK . ')')
             )
         );
+
+        $select->join(
+            array('p' => PREFIX_DB . self::TABLE),
+            'a.parent_id=p.' . self::PK,
+            array(),
+            $select::JOIN_LEFT
+        );
+
         $select->where
-            ->lessThan('date_echeance', $now->format('Y-m-d'));
+            ->lessThan('a.date_echeance', $now->format('Y-m-d'));
         $select
-            ->where('activite_adh=true')
-            ->where('bool_exempt_adh=false');
+            ->where('a.activite_adh=true')
+            ->where('a.bool_exempt_adh=false');
 
         $select_wo_mail = clone $select;
 
-        $select->where('email_adh != \'\'');
-        $select_wo_mail->where('email_adh = \'\'');
+        $select->where('(a.email_adh != \'\' OR p.email_adh != \'\')');
+        $select_wo_mail->where('a.email_adh = \'\' AND p.email_adh = \'\'');
 
         $results = $zdb->execute($select);
         $res = $results->current();

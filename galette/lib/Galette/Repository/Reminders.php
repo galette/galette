@@ -99,13 +99,18 @@ class Reminders
                 'reminder_type'
             ),
             $select::JOIN_LEFT
-        )->where('a.email_adh != \'\'')
+        )->join(
+            array('p' => PREFIX_DB . Members::TABLE),
+            'a.parent_id=p.' . Members::PK,
+            array('email_adh'),
+            $select::JOIN_LEFT
+        )->where('(a.email_adh != \'\' OR p.email_adh != \'\')')
             ->where('a.activite_adh=true')
-            ->where('bool_exempt_adh=false');
+            ->where('a.bool_exempt_adh=false');
 
         if ($type === Reminder::LATE) {
             $select->where->LessThan(
-                'date_echeance',
+                'a.date_echeance',
                 date('Y-m-d', time())
             );
         } else {
@@ -113,10 +118,10 @@ class Reminders
             $duedate = new \DateTime();
             $duedate->modify('+1 month');
             $select->where->greaterThanOrEqualTo(
-                'date_echeance',
+                'a.date_echeance',
                 $now->format('Y-m-d')
             )->lessThan(
-                'date_echeance',
+                'a.date_echeance',
                 $duedate->format('Y-m-d')
             );
         }
@@ -156,7 +161,7 @@ class Reminders
                         $second = clone $due_date;
                         $first->modify('1 month');
                         $second->modify('2 month');
-                        if ($now >= $second || $now >= $first) {
+                        if ($r->last_reminder == null || $now >= $second || $now >= $first) {
                             if ($r->last_reminder == '') {
                                 $date_checked = true;
                             } else {
