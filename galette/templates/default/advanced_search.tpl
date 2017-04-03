@@ -165,11 +165,11 @@
                 <ul id="fs_sortable" class="fields_list connectedSortable">
 {foreach from=$filters->free_search item=fs}
                     <li>
-                        <select id="logical_operator_selector" name="free_logical_operator[]">
+                        <select name="free_logical_operator[]" class="operator_selector">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_AND}"{if $fs.log_op eq constant('Galette\Filters\AdvancedMembersList::OP_AND')} selected="selected"{/if}>{_T string="and"}</option>
                             <option value="{Galette\Filters\AdvancedMembersList::OP_OR}"{if $fs.log_op eq constant('Galette\Filters\AdvancedMembersList::OP_OR')} selected="selected"{/if}>{_T string="or"}</option>
                         </select>
-                        <select id="field_selector" name="free_field[]">
+                        <select name="free_field[]" class="field_selector">
                             <option value="">{_T string="Select a field"}</option>
     {foreach $search_fields as $field}
                             <option value="{$field@key}"{if $fs.field eq $field@key} selected="selected"{assign var=type value=constant('Galette\Entity\DynamicFields::LINE')}{/if}>{$field.label}</option>
@@ -183,7 +183,7 @@
 			    <option value="dyn_{$field.field_id}"{if $fs.field eq $rid} selected="selected"{assign var=type value=$field.field_type}{assign var=choices value=$field.choices}{/if}>{$field.field_name}</option>
     {/foreach}
                         </select>
-                        <span id="field_input">
+                        <span>
     {if $type eq constant('Galette\Entity\DynamicFields::LINE')}
                         <select name="free_query_operator[]">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
@@ -303,8 +303,8 @@
 
             var _newFilter = function(elt) {
                 elt.find('span').html('');
-                elt.find('#logical_operator_selector').val(0);
-                elt.find('#field_selector').val('');
+                elt.find('select.operator_selector').val(0);
+                elt.find('select.field_selector').val('');
             }
             var _rmFilter = function(elt) {
                 if ( !elt ) {
@@ -364,7 +364,7 @@
                     return false;
                 });
 
-                $('#field_selector').change(function () {
+                $('.field_selector').change(function () {
                     var _field_id = $(this).val();
                     var _field    = _fields[_field_id];
                     var _type     = _field.type;
@@ -401,7 +401,7 @@
                             _html += '<input type="text" name="free_text[] class="modif_date" maxlength="10" size="10"/>';
                             break;
                     }
-                    $(this).parent().find('#field_input').html(_html);
+                    $(this).parent().find('span').html(_html);
                     _fieldsInSortable();
                 });
 
