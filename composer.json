@@ -1,0 +1,9 @@
+{
+    "require": {
+        "phpmailer/phpmailer": "^5.2",
+        "smarty/smarty": "^3.1",
+        "zendframework/zend-db": "^2.8",
+        "analog/analog": "^1.0",
+        "tecnickcom/tcpdf": "^6.2"
+    }
+}
