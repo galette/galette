@@ -1,0 +1,9 @@
+<?php
+define('GALETTE_ANALOG_PATH',     GALETTE_ROOT . '../vendor/analog/analog');
+define('GALETTE_ZEND_PATH',       GALETTE_ROOT . '../vendor/zendframework/zend-db');
+define('GALETTE_PHP_MAILER_PATH', GALETTE_ROOT . '../vendor/phpmailer/phpmailer');
+define('GALETTE_SMARTY_PATH',     GALETTE_ROOT . '../vendor/smarty/smarty/libs');
+define('GALETTE_TCPDF_PATH',      GALETTE_ROOT . '../vendor/tecnickcom/tcpdf');
+
+require GALETTE_ROOT . '../vendor/autoload.php';
+?>
