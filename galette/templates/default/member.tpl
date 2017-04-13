@@ -204,7 +204,7 @@
                     {assign var="checked" value=null}
                     {assign var="example" value=null}
 
-                    {if $value neq ''}
+                    {if $value neq '' or $entry->field_id eq 'parent_id'}
                         {include
                             file="forms_types/hidden.tpl"
                             name=$entry->field_id
@@ -434,7 +434,7 @@
 
                     $('#members_list tbody').find('a').each(function(){
                         $(this).click(function(){
-                            var _id = this.href.substring(this.href.indexOf('id_adh=') + 7, this.href.length);
+                            var _id = this.href.match(/.*\/(\d+)$/)[1];
                             $('#parent_id').attr('value', _id);
                             var _parent_name;
                             if ($('#parent_name').length > 0) {
