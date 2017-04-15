@@ -53,7 +53,7 @@ use \atoum;
  */
 class Separator extends atoum
 {
-    private $_separator;
+    private $separator;
 
     /**
      * Set up tests
@@ -64,7 +64,7 @@ class Separator extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->_separator = new \Galette\DynamicFieldsTypes\Separator;
+        $this->separator = new \Galette\DynamicFieldsTypes\Separator;
     }
 
     /**
@@ -86,7 +86,7 @@ class Separator extends atoum
      */
     public function testGetTypeName()
     {
-        $this->variable($this->_separator->getTypeName())
+        $this->variable($this->separator->getTypeName())
             ->isIdenticalTo(_T('separator'));
     }
 
@@ -97,47 +97,47 @@ class Separator extends atoum
      */
     public function testBaseProperties()
     {
-        $muliple = $this->_separator->isMultiValued();
+        $muliple = $this->separator->isMultiValued();
         $this->boolean($muliple)->isFalse();
 
-        $required = $this->_separator->isRequired();
+        $required = $this->separator->isRequired();
         //should'nt that one be false?
         $this->variable($required)->isNull();
 
-        $name = $this->_separator->getName();
+        $name = $this->separator->getName();
         $this->variable($name)->isNull();
 
-        $has_fixed_values = $this->_separator->hasFixedValues();
+        $has_fixed_values = $this->separator->hasFixedValues();
         $this->boolean($has_fixed_values)->isFalse();
 
-        $has_data = $this->_separator->hasData();
+        $has_data = $this->separator->hasData();
         $this->boolean($has_data)->isFalse();
 
-        $has_w = $this->_separator->hasWidth();
+        $has_w = $this->separator->hasWidth();
         $this->boolean($has_w)->isFalse();
 
-        $has_h = $this->_separator->hasHeight();
+        $has_h = $this->separator->hasHeight();
         $this->boolean($has_h)->isFalse();
 
-        $has_s = $this->_separator->hasSize();
+        $has_s = $this->separator->hasSize();
         $this->boolean($has_s)->isFalse();
 
-        $perms = $this->_separator->getPerm();
+        $perms = $this->separator->getPerm();
         $this->variable($perms)->isNull();
 
-        $width = $this->_separator->getWidth();
+        $width = $this->separator->getWidth();
         $this->variable($width)->isNull();
 
-        $height = $this->_separator->getHeight();
+        $height = $this->separator->getHeight();
         $this->variable($height)->isNull();
 
-        $repeat = $this->_separator->getRepeat();
+        $repeat = $this->separator->getRepeat();
         $this->variable($repeat)->isNull();
 
-        $size = $this->_separator->getSize();
+        $size = $this->separator->getSize();
         $this->variable($size)->isNull();
 
-        $values = $this->_separator->getValues();
+        $values = $this->separator->getValues();
         $this->boolean($values)->isFalse();
     }
 }

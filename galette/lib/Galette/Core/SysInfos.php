@@ -51,13 +51,8 @@ namespace Galette\Core;
  */
 class SysInfos
 {
-    private $_sysinfos = array();
-    private $_php_version = '';
-    private $_php_modules = array();
-    private $_galette_version = '';
-    private $_galette_plugins = array();
-    private $_database = '';
-    private $_os = '';
+    private $php_version = '';
+    private $galette_version = '';
 
     /**
      * Grab various system informations
@@ -67,13 +62,13 @@ class SysInfos
     public function grab()
     {
         //PHP version
-        $this->_php_version = PHP_VERSION;
+        $this->php_version = PHP_VERSION;
 
         //Galette version
-        $this->_galette_version = GALETTE_VERSION;
+        $this->galette_version = GALETTE_VERSION;
 
         //Database type
-        $this->_database = TYPE_DB;
+        $this->database = TYPE_DB;
     }
 
     /**
@@ -85,10 +80,10 @@ class SysInfos
      */
     public function getRawData(Plugins $plugins)
     {
-        $str =  'Galette version: ' . $this->_galette_version . "\n";
-        $str .= 'PHP version:     ' . $this->_php_version . "\n";
+        $str =  'Galette version: ' . $this->galette_version . "\n";
+        $str .= 'PHP version:     ' . $this->php_version . "\n";
         $str .= 'PHP/Web:         ' . php_sapi_name() . "\n";
-        $str .= 'Database:        ' . $this->_database . "\n";
+        $str .= 'Database:        ' . $this->database . "\n";
         $str .= 'OS:              ' . php_uname() . "\n";
         $str .= 'Browser:         ' . $_SERVER['HTTP_USER_AGENT'] . "\n\n";
 
