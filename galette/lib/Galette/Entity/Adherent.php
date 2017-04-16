@@ -1169,7 +1169,7 @@ class Adherent
         }
 
         // missing required fields?
-        while (list($key, $val) = each($required)) {
+        foreach ($required as $key => $val) {
             $prop = '_' . $this->fields[$key]['propname'];
 
             if (!isset($disabled[$key])) {
