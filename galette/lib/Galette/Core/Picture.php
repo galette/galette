@@ -603,8 +603,8 @@ class Picture implements FileInterface
             $class = get_class($this);
             $select = $zdb->select($this->tbl_prefix . $class::TABLE);
             $select
-                ->columns(array(self::PK))
-                ->where->in(self::PK, array_keys($existing_disk));
+                ->columns(array($class::PK))
+                ->where->in($class::PK, array_keys($existing_disk));
 
             $results = $zdb->execute($select);
 

@@ -448,7 +448,7 @@ class Contribution
             Analog::log(
                 'Some errors has been throwed attempting to edit/store a contribution' .
                 print_r($errors, true),
-                Analog::DEBUG
+                Analog::ERROR
             );
             return $errors;
         } else {

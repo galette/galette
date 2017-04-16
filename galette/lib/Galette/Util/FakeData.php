@@ -115,6 +115,12 @@ class FakeData
     protected $nbtransactions = self::DEFAULT_NB_TRANSACTIONS;
 
     /**
+     * @var integer
+     * Seed to use for data generation (to get same data accross runs)
+     */
+    protected $seed;
+
+    /**
      * Default constructor
      *
      * @param Db      $zdb      Db instance
@@ -130,6 +136,19 @@ class FakeData
         if ($generate) {
             $this->generate();
         }
+    }
+
+    /**
+     * Set seed
+     *
+     * @param integer $seed Seed
+     *
+     * @return FakeData
+     */
+    public function setSeed($seed)
+    {
+        $this->seed = $seed;
+        return $this;
     }
 
     /**
@@ -193,6 +212,9 @@ class FakeData
     public function generate()
     {
         $this->faker = \Faker\Factory::create($this->i18n->getID());
+        if ($this->seed !== null) {
+            $this->faker->seed($this->seed);
+        }
 
         $this->generateGroups($this->nbgroups);
         $this->generateMembers($this->nbmembers);
@@ -308,7 +330,7 @@ class FakeData
                                         ->randomElement(array_keys($status)),
                 'date_crea_adh'     => $creation_date->format(_T("Y-m-d")),
                 'pref_lang'         => $faker->randomElement(array_keys($langs)),
-                'fingerprint'       => 'FAKER'
+                'fingerprint'       => 'FAKER' . ($this->seed !== null ? $this->seed : '')
             ];
 
             if ($faker->boolean($chanceOfGettingTrue = 20)) {
@@ -365,7 +387,7 @@ class FakeData
     }
 
     /**
-     * Add phto to a member
+     * Add photo to a member
      *
      * @param Adherent $member Member instance
      *
@@ -381,7 +403,6 @@ class FakeData
             true,
             'Galette fake data'
         );
-        var_dump($url);
 
         if (copy($url, $file)) {
             $_FILES = array(
@@ -534,12 +555,14 @@ class FakeData
                         ++$done;
                     }
 
-                    if ($faker->boolean($chanceOfGettingTrue = 90)) {
-                        $contrib::setTransactionPart(
-                            $this->zdb,
-                            $transaction->id,
-                            $contrib->id
-                        );
+                    if (count($this->transactions) > 0) {
+                        if ($faker->boolean($chanceOfGettingTrue = 90)) {
+                            $contrib::setTransactionPart(
+                                $this->zdb,
+                                $transaction->id,
+                                $contrib->id
+                            );
+                        }
                     }
                 }
             }
@@ -610,7 +633,7 @@ class FakeData
      * @param History     $history     History instance
      * @param Login       $login       Login instance
      *
-     * @return void
+     * @return FakeData
      */
     public function setDependencies(
         Preferences $preferences,
@@ -622,5 +645,17 @@ class FakeData
         $this->member_fields = $fields;
         $this->history = $history;
         $this->login = $login;
+
+        return $this;
+    }
+
+    /**
+     * Get generated members ids
+     *
+     * @return array
+     */
+    public function getMembersIds()
+    {
+        return $this->mids;
     }
 }
