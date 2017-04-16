@@ -152,7 +152,7 @@ class Members extends atoum
      */
     private function deleteMembers()
     {
-        if (count($this->mids) > 0) {
+        if (is_array($this->mids) && count($this->mids) > 0) {
             $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
             $delete->where->in(\Galette\Entity\Adherent::PK, $this->mids);
             $this->zdb->execute($delete);
