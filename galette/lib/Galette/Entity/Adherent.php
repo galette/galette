@@ -320,7 +320,7 @@ class Adherent
         $this->_gender = (int)$r->sexe_adh;
         $this->_job = $r->prof_adh;
         $this->_language = $r->pref_lang;
-        $this->_active = $r->activite_adh;
+        $this->_active = ($r->activite_adh == 1) ? true : false;
         $this->_status = $r->id_statut;
         //Contact informations
         $this->_address = $r->adresse_adh;
@@ -907,7 +907,10 @@ class Adherent
             $prop = '_' . $this->fields[$key]['propname'];
 
             if (isset($values[$key])) {
-                $value = trim($values[$key]);
+                $value = $values[$key];
+                if ($value !== true && $value !== false) {
+                    $value = trim($value);
+                }
             } else {
                 switch ($key) {
                     case 'bool_admin_adh':
@@ -936,9 +939,10 @@ class Adherent
             // if the field is enabled, check it
             if (!isset($disabled[$key])) {
                 // fill up the adherent structure
-                if ($value !== null) {
-                    $this->$prop = stripslashes($value);
+                if ($value !== null && $value !== true && $value !== false) {
+                    $value = stripslashes($value);
                 }
+                $this->$prop = $value;
 
                 // now, check validity
                 if ($value !== null && $value != '') {
@@ -1192,7 +1196,7 @@ class Adherent
             Analog::log(
                 'Some errors has been throwed attempting to edit/store a member' .
                 print_r($errors, true),
-                Analog::DEBUG
+                Analog::ERROR
             );
             return $errors;
         } else {
@@ -1225,7 +1229,8 @@ class Adherent
                     $prop = '_' . $this->fields[$field]['propname'];
                     if (($field === 'bool_admin_adh'
                         || $field === 'bool_exempt_adh'
-                        || $field === 'bool_display_info')
+                        || $field === 'bool_display_info'
+                        || $field === 'activite_adh')
                         && $this->$prop === false
                     ) {
                         //Handle booleans for postgres ; bugs #18899 and #19354

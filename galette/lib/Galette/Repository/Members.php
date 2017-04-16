@@ -390,7 +390,7 @@ class Members
             //not numeric and not an array: incorrect.
             Analog::log(
                 'Asking to remove members, but without providing an array or a single numeric value.',
-                Analog::WARNING
+                Analog::ERROR
             );
             return false;
         }
