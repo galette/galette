@@ -35,7 +35,7 @@
         "phpmailer/phpmailer": "^5.2",
         "tecnickcom/tcpdf": "^6.2",
         "akrabat/rka-slim-session-middleware": "dev-master@dev",
-        "fzaninotto/Faker": "^1.6"
+        "fzaninotto/Faker": "dev-master"
     },
     "require-dev": {
         "atoum/atoum": "^3.0"

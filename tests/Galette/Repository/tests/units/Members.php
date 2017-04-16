@@ -60,7 +60,7 @@ class Members extends atoum
     private $login;
     private $history;
     private $members_fields;
-    private $seed = 335588;
+    private $seed = 335689;
     private $mids;
 
     /**
@@ -192,8 +192,8 @@ class Members extends atoum
         $list = $members->getEmails($this->zdb);
         $this->array($list)->hasSize(10)
             ->hasKeys([
-                'frederic40@club-internet.fr',
-                'gabrielle25@noos.fr'
+                'perrin.eugene@mahe.org',
+                'eleonore54@lecoq.net'
             ]);
 
 
@@ -203,7 +203,7 @@ class Members extends atoum
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
-        $this->integer($list->count())->isIdenticalTo(8);
+        $this->integer($list->count())->isIdenticalTo(9);
 
         //Filter on inactive accounts
         $filters = new \Galette\Filters\MembersList;
@@ -211,7 +211,7 @@ class Members extends atoum
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
-        $this->integer($list->count())->isIdenticalTo(2);
+        $this->integer($list->count())->isIdenticalTo(1);
 
         //Search on address
         $filters = new \Galette\Filters\MembersList;
@@ -220,7 +220,7 @@ class Members extends atoum
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
-        $this->integer($list->count())->isIdenticalTo(3);
+        $this->integer($list->count())->isIdenticalTo(2);
 
         $members = new \Galette\Repository\Members();
         $list = $members->getList(true);
@@ -232,7 +232,7 @@ class Members extends atoum
         //Get staff
         $members = new \Galette\Repository\Members();
         $list = $members->getStaffMembersList();
-        $this->integer($list->count())->isIdenticalTo(1);
+        $this->integer($list->count())->isIdenticalTo(3);
 
         //Remove 2 members
         $torm = [];
