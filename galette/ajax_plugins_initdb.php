@@ -275,7 +275,7 @@ case 'u4':
     }
 
     $sql_query = '';
-    while (list($key, $val) = each($update_scripts) ) {
+    foreach ($update_scripts as $key => $val) {
         $sql_query .= @fread(
             @fopen($plugin['root'] . '/scripts/' . $val, 'r'),
             @filesize($plugin['root'] . '/scripts/' . $val)
