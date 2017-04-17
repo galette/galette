@@ -68,6 +68,19 @@ class Db extends atoum
     }
 
     /**
+     * Cleanup after tests
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        $this->db = new \Galette\Core\Db();
+        $delete = $this->db->delete(\Galette\Entity\Title::TABLE);
+        $delete->where([\Galette\Entity\Title::PK => '150']);
+        $this->db->execute($delete);
+    }
+
+    /**
      * Test constructor
      *
      * @return void
