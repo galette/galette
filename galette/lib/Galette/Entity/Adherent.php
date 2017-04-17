@@ -322,7 +322,7 @@ class Adherent
         $this->_job = $r->prof_adh;
         $this->_language = $r->pref_lang;
         $this->_active = ($r->activite_adh == 1) ? true : false;
-        $this->_status = $r->id_statut;
+        $this->_status = (int)$r->id_statut;
         //Contact informations
         $this->_address = $r->adresse_adh;
         /** TODO: remove and merge with address */
@@ -1106,6 +1106,7 @@ class Adherent
                             break;
                         case 'id_statut':
                             try {
+                                $this->$prop = (int)$value;
                                 //check if status exists
                                 $select = $this->zdb->select(Status::TABLE);
                                 $select->where(Status::PK . '= ' . $value);
@@ -1484,6 +1485,7 @@ class Adherent
                 $rname = '_' . $name;
                 switch ($name) {
                     case 'id':
+                    case 'id_statut':
                         return (int)$this->$rname;
                         break;
                     case 'birthdate':

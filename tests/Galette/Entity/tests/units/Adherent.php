@@ -321,7 +321,7 @@ class Adherent extends atoum
             'tel_adh' => '0439153432',
             'url_adh' => 'https://www.besson.com/rerum-porro-rem-harum-non-aut-quidem-dolorum',
             'activite_adh' => true,
-            'id_statut' => '8',
+            'id_statut' => 8,
             'pref_lang' => 'en_US',
             'fingerprint' => 'FAKER95842354',
             'societe_adh' => 'Tanguy'
