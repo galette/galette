@@ -344,6 +344,8 @@ class Adherent extends atoum
                     $this->boolean($adh->isActive())->isIdenticalTo($value);
                     break;
                 case 'mdp_adh':
+                    $pw_checked = password_verify($value, $adh->password);
+                    $this->boolean($pw_checked)->isTrue();
                     break;
                 default:
                     $this->variable($adh->$property)->isIdenticalTo($value);
