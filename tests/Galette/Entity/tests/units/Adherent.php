@@ -357,7 +357,20 @@ class Adherent extends atoum
 
         $expected_str = ' (82 years old)';
         $this->string($adh->getAge())->isIdenticalTo($expected_str);
+        $this->boolean($adh->hasChildren())->isFalse();
+        $this->boolean($adh->hasParent())->isFalse();
+        $this->boolean($adh->hasPicture())->isFalse();
 
+        $this->string($adh->sadmin)->isIdenticalTo('No');
+        $this->string($adh->sdue_free)->isIdenticalTo('No');
+        $this->string($adh->sappears_in_list)->isIdenticalTo('Yes');
+        $this->string($adh->sstaff)->isIdenticalTo('No');
+        $this->string($adh->sactive)->isIdenticalTo('Active');
+        $this->variable($adh->stitle)->isNull();
+        $this->string($adh->sstatus)->isIdenticalTo('Society');
+        $this->string($adh->sfullname)->isIdenticalTo('DURAND René');
+        $this->string($adh->saddress)->isIdenticalTo('66, boulevard De Oliveira');
+        $this->string($adh->sname)->isIdenticalTo('DURAND René');
 
         $this->string($adh->getAddress())->isIdenticalTo($expecteds['adresse_adh']);
         $this->string($adh->getAddressContinuation())->isIdenticalTo('');
