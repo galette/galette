@@ -77,7 +77,7 @@ class Picture implements FileInterface
     protected $file_path;
     protected $format;
     protected $mime;
-    protected $has_picture = true;
+    protected $has_picture = false;
     protected $store_path = GALETTE_PHOTOS_PATH;
     protected $max_width = 200;
     protected $max_height = 200;
@@ -110,7 +110,11 @@ class Picture implements FileInterface
 
             //if file does not exists on the FileSystem, check for it in the database
             if (!$this->checkFileOnFS()) {
-                $this->checkFileInDB();
+                if ($this->checkFileInDB()) {
+                    $this->has_picture = true;
+                }
+            } else {
+                $this->has_picture = false;
             }
         }
 
@@ -138,6 +142,8 @@ class Picture implements FileInterface
             //if file does not exists on the FileSystem,
             //check for it in the database
             //$this->checkFileInDB();
+        } else {
+            $this->has_picture = false;
         }
 
         // if we still have no picture, take the default one
