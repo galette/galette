@@ -203,6 +203,11 @@ class Adherent extends atoum
         $this->ids[] = $adh->id;
     }
 
+    /**
+     * Test simple member creation
+     *
+     * @return void
+     */
     public function testSimpleMember()
     {
         $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
