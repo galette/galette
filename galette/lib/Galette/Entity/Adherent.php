@@ -216,6 +216,7 @@ class Adherent
                 $this->_admin = false;
                 $this->_staff = false;
                 $this->_due_free = false;
+                $this->_appears_in_list = false;
                 $this->_parent = null;
             }
         } elseif (is_object($args)) {
@@ -425,7 +426,7 @@ class Adherent
                     $deps = $this->_deps;
                     $deps['children'] = false;
                     $deps['parent'] = false;
-                    $this->_children[] = new Adherent($this->zdb, (int)$row->$id, $this->_deps);
+                    $this->_children[] = new Adherent($this->zdb, (int)$row->$id, $deps);
                 }
             }
         } catch (\Exception $e) {
@@ -536,6 +537,10 @@ class Adherent
                 }
             }
         } else {
+            Analog::log(
+                'Calling ' . __METHOD__ . ' without groups loaded!',
+                Analog::ERROR
+            );
             return false;
         }
     }
@@ -557,6 +562,10 @@ class Adherent
                 }
             }
         } else {
+            Analog::log(
+                'Calling ' . __METHOD__ . ' without groups loaded!',
+                Analog::ERROR
+            );
             return false;
         }
     }
@@ -568,7 +577,7 @@ class Adherent
      */
     public function isCompany()
     {
-        return trim($this->_company_name != '');
+        return trim($this->_company_name) != '';
     }
 
     /**
@@ -1392,81 +1401,117 @@ class Adherent
             'admin', 'staff', 'due_free', 'appears_in_list', 'active',
             'row_classes'
         );
+
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
             'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass', 'saddress'
         );
-        $rname = '_' . $name;
-        if (!in_array($name, $forbidden) && isset($this->$rname)) {
+
+        if (in_array($name, $forbidden)) {
+            Analog::log(
+                "Call to __get for '$name' is forbidden!",
+                Analog::WARNING
+            );
             switch ($name) {
-                case 'birthdate':
-                case 'creation_date':
-                case 'modification_date':
-                case 'due_date':
-                    if ($this->$rname != '') {
-                        try {
-                            $d = new \DateTime($this->$rname);
-                            return $d->format(__("Y-m-d"));
-                        } catch (\Exception $e) {
-                            //oops, we've got a bad date :/
-                            Analog::log(
-                                'Bad date (' . $this->$rname . ') | ' .
-                                $e->getMessage(),
-                                Analog::INFO
-                            );
-                            return $this->$rname;
-                        }
-                    }
+                case 'admin':
+                    return $this->isAdmin();
+                    break;
+                case 'staff':
+                    return $this->isStaff();
+                    break;
+                case 'due_free':
+                    return $this->isDueFree();
+                    break;
+                case 'appears_in_list':
+                    return $this->appearsInMembersList();
+                    break;
+                case 'active':
+                    return $this->isActive();
                     break;
                 default:
-                    return $this->$rname;
-                    break;
-            }
-        } elseif (!in_array($name, $forbidden) && in_array($name, $virtuals)) {
-            $real = '_' . substr($name, 1);
-            switch ($name) {
-                case 'sadmin':
-                case 'sdue_free':
-                case 'sappears_in_list':
-                case 'sstaff':
-                    return (($this->$real) ? _T("Yes") : _T("No"));
-                    break;
-                case 'sactive':
-                    return (($this->$real) ? _T("Active") : _T("Inactive"));
-                    break;
-                case 'stitle':
-                    if (isset($this->_title)) {
-                        return $this->_title->tshort;
-                    } else {
-                        return null;
-                    }
-                    break;
-                case 'sstatus':
-                    $status = new Status($this->zdb);
-                    return $status->getLabel($this->_status);
-                    break;
-                case 'sfullname':
-                    $sfn = mb_strtoupper($this->_name, 'UTF-8') . ' ' .
-                        ucwords(mb_strtolower($this->_surname, 'UTF-8'));
-                    if (isset($this->_title)) {
-                        $sfn = $this->_title->tshort . ' ' . $sfn;
-                    }
-                    return $sfn;
-                    break;
-                case 'saddress':
-                    $address = $this->_address;
-                    if ($this->_address_continuation !== '') {
-                        $address .= "\n" . $this->_address_continuation;
-                    }
-                    return $address;
-                    break;
-                case 'sname':
-                    return mb_strtoupper($this->_name, 'UTF-8') .
-                        ' ' . ucwords(mb_strtolower($this->_surname, 'UTF-8'));
-                    break;
+                    throw new \RuntimeException("Call to __get for '$name' is forbidden!");
             }
         } else {
-            return false;
+            if (in_array($name, $virtuals)) {
+                if (substr($name, 0, 1) !== '_') {
+                    $real = '_' . substr($name, 1);
+                }
+                switch ($name) {
+                    case 'sadmin':
+                    case 'sdue_free':
+                    case 'sappears_in_list':
+                    case 'sstaff':
+                        return (($this->$real) ? _T("Yes") : _T("No"));
+                        break;
+                    case 'sactive':
+                        return (($this->$real) ? _T("Active") : _T("Inactive"));
+                        break;
+                    case 'stitle':
+                        if (isset($this->_title)) {
+                            return $this->_title->tshort;
+                        } else {
+                            return null;
+                        }
+                        break;
+                    case 'sstatus':
+                        $status = new Status($this->zdb);
+                        return $status->getLabel($this->_status);
+                        break;
+                    case 'sfullname':
+                        $sfn = mb_strtoupper($this->_name, 'UTF-8') . ' ' .
+                            ucwords(mb_strtolower($this->_surname, 'UTF-8'));
+                        if (isset($this->_title)) {
+                            $sfn = $this->_title->tshort . ' ' . $sfn;
+                        }
+                        return $sfn;
+                        break;
+                    case 'saddress':
+                        $address = $this->_address;
+                        if ($this->_address_continuation !== '') {
+                            $address .= "\n" . $this->_address_continuation;
+                        }
+                        return $address;
+                        break;
+                    case 'sname':
+                        return mb_strtoupper($this->_name, 'UTF-8') .
+                            ' ' . ucwords(mb_strtolower($this->_surname, 'UTF-8'));
+                        break;
+                }
+            } else {
+                $rname = '_' . $name;
+                switch ($name) {
+                    case 'birthdate':
+                    case 'creation_date':
+                    case 'modification_date':
+                    case 'due_date':
+                        if ($this->$rname != '') {
+                            try {
+                                $d = new \DateTime($this->$rname);
+                                return $d->format(__("Y-m-d"));
+                            } catch (\Exception $e) {
+                                //oops, we've got a bad date :/
+                                Analog::log(
+                                    'Bad date (' . $this->$rname . ') | ' .
+                                    $e->getMessage(),
+                                    Analog::INFO
+                                );
+                                return $this->$rname;
+                            }
+                        }
+                        break;
+                    default:
+                        if (!isset($this->$rname)) {
+                            Analog::log(
+                                "Unknown property '$rname'",
+                                Analog::WARNING
+                            );
+                            return null;
+                        } else {
+                            return $this->$rname;
+                        }
+                        break;
+                }
+            }
         }
     }
 

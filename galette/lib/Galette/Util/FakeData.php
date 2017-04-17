@@ -88,6 +88,8 @@ class FakeData
     protected $groups       = [];
     protected $mids         = [];
     protected $transactions = [];
+    protected $titles;
+    protected $status;
 
     /**
      * @var integer
@@ -203,7 +205,6 @@ class FakeData
         return $this;
     }
 
-
     /**
      * Do data generation
      *
@@ -283,11 +284,6 @@ class FakeData
     public function generateMembers($count = null)
     {
         $faker = $this->faker;
-        $langs = $this->i18n->getArrayList();
-        $titles = Titles::getArrayList($this->zdb);
-        $status = new Status($this->zdb);
-        $status = $status->getList();
-
         $done = 0;
 
         if ($count === null) {
@@ -295,47 +291,7 @@ class FakeData
         }
 
         for ($i = 0; $i < $count; $i++) {
-            $creation_date = $faker->dateTimeBetween($startDate = '-3 years', $endDate = 'now');
-            $mdp_adh = $faker->password();
-
-            $data= [
-                'nom_adh'           => $faker->lastName(),
-                'prenom_adh'        => $faker->firstName(),
-                'ville_adh'         => $faker->city(),
-                'cp_ad'             => $faker->postcode(),
-                'adresse_adh'       => $faker->streetAddress(),
-                'ville_adh'         => $faker->city(),
-                'email_adh'         => $faker->unique()->email(),
-                'login_adh'         => $faker->unique()->userName(),
-                'mdp_adh'           => $mdp_adh,
-                'mdp_adh2'          => $mdp_adh,
-                'bool_admin_adh'    => $faker->boolean($chanceOfGettingTrue = 5),
-                'bool_exempt_adh'   => $faker->boolean($chanceOfGettingTrue = 5),
-                'bool_display_info' => $faker->boolean($chanceOfGettingTrue = 70),
-                'sexe_adh'          => $faker->randomElement([Adherent::NC, Adherent::MAN, Adherent::WOMAN]),
-                'prof_adh'          => $faker->jobTitle(),
-                'titre_adh'         => $faker->randomElement(array_keys($titles)),
-                'ddn_adh'           => $faker->dateTimeBetween($startDate = '-110 years', $endDate = 'now')->format(_T("Y-m-d")),
-                'lieu_naissance'    => $faker->city(),
-                'pseudo_adh'        => $faker->userName(),
-                'adresse_adh'       => $faker->streetAddress(),
-                'cp_adh'            => $faker->postcode(),
-                'ville_adh'         => $faker->city(),
-                'pays_adh'          => $faker->optional()->country(),
-                'tel_adh'           => $faker->phoneNumber(),
-                'email_adh'         => $faker->email(),
-                'url_adh'           => $faker->optional()->url(),
-                'activite_adh'      => $faker->boolean($chanceOfGettingTrue = 90),
-                'id_statut'         => $faker->optional($weight = 0.3, $default = Status::DEFAULT_STATUS)
-                                        ->randomElement(array_keys($status)),
-                'date_crea_adh'     => $creation_date->format(_T("Y-m-d")),
-                'pref_lang'         => $faker->randomElement(array_keys($langs)),
-                'fingerprint'       => 'FAKER' . ($this->seed !== null ? $this->seed : '')
-            ];
-
-            if ($faker->boolean($chanceOfGettingTrue = 20)) {
-                $data['societe_adh'] = $faker->company();
-            }
+            $data = $this->fakeMember();
 
             $member = new Adherent($this->zdb);
             $member->setDependencies(
@@ -384,6 +340,78 @@ class FakeData
                 );
             }
         }
+    }
+
+    /**
+     * Get faked member data
+     *
+     * @return array
+     */
+    public function fakeMember()
+    {
+        if ($this->faker === null) {
+            $this->faker = \Faker\Factory::create($this->i18n->getID());
+            if ($this->seed !== null) {
+                $this->faker->seed($this->seed);
+            }
+        }
+        $faker = $this->faker;
+        $creation_date = $faker->dateTimeBetween($startDate = '-3 years', $endDate = 'now');
+        $mdp_adh = $faker->password();
+
+        if ($this->titles === null) {
+            $this->titles = Titles::getArrayList($this->zdb);
+        }
+
+        if ($this->status === null) {
+            $status = new Status($this->zdb);
+            $this->status = array_keys($status->getList());
+        }
+
+        $data= [
+            'nom_adh'           => $faker->lastName(),
+            'prenom_adh'        => $faker->firstName(),
+            'ville_adh'         => $faker->city(),
+            'cp_adh'            => $faker->postcode(),
+            'adresse_adh'       => $faker->streetAddress(),
+            'ville_adh'         => $faker->city(),
+            'email_adh'         => $faker->unique()->email(),
+            'login_adh'         => $faker->unique()->userName(),
+            'mdp_adh'           => $mdp_adh,
+            'mdp_adh2'          => $mdp_adh,
+            'bool_admin_adh'    => $faker->boolean($chanceOfGettingTrue = 5),
+            'bool_exempt_adh'   => $faker->boolean($chanceOfGettingTrue = 5),
+            'bool_display_info' => $faker->boolean($chanceOfGettingTrue = 70),
+            'sexe_adh'          => $faker->randomElement([Adherent::NC, Adherent::MAN, Adherent::WOMAN]),
+            'prof_adh'          => $faker->jobTitle(),
+            'titre_adh'         => $faker->randomElement(array_keys($this->titles)),
+            'ddn_adh'           => $faker->dateTimeBetween(
+                $startDate = '-110 years',
+                $endDate = 'now'
+            )->format(_T("Y-m-d")),
+            'lieu_naissance'    => $faker->city(),
+            'pseudo_adh'        => $faker->userName(),
+            'adresse_adh'       => $faker->streetAddress(),
+            'cp_adh'            => $faker->postcode(),
+            'ville_adh'         => $faker->city(),
+            'pays_adh'          => $faker->optional()->country(),
+            'tel_adh'           => $faker->phoneNumber(),
+            'email_adh'         => $faker->email(),
+            'url_adh'           => $faker->optional()->url(),
+            'activite_adh'      => $faker->boolean($chanceOfGettingTrue = 90),
+            'id_statut'         => $faker->optional($weight = 0.3, $default = Status::DEFAULT_STATUS)
+                                    ->randomElement($this->status),
+            'date_crea_adh'     => $creation_date->format(_T("Y-m-d")),
+            'pref_lang'         => $faker->randomElement(array_keys($this->i18n->getArrayList())),
+            'fingerprint'       => 'FAKER' . ($this->seed !== null ? $this->seed : '')
+        ];
+
+        if ($faker->boolean($chanceOfGettingTrue = 20)) {
+            $data['societe_adh'] = $faker->company();
+            $data['is_company'] = true;
+        }
+
+        return $data;
     }
 
     /**
