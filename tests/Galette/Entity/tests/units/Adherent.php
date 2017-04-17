@@ -353,7 +353,6 @@ class Adherent extends atoum
             }
         }
 
-        //try {
         $d = \DateTime::createFromFormat('Y-m-d', $expecteds['ddn_adh']);
 
         $expected_str = ' (82 years old)';
@@ -365,6 +364,9 @@ class Adherent extends atoum
         $this->string($adh->getZipcode())->isIdenticalTo($expecteds['cp_adh']);
         $this->string($adh->getTown())->isIdenticalTo($expecteds['ville_adh']);
         $this->string($adh->getCountry())->isIdenticalTo($expecteds['pays_adh']);
+
+        $this->string($adh::getSName($this->zdb, $adh->id))->isIdenticalTo('DURAND René');
+        $this->string($adh->getRowClass())->isIdenticalTo('active cotis-never');
     }
 
     /**
@@ -412,5 +414,31 @@ class Adherent extends atoum
 
         $adh = new \Galette\Entity\Adherent($this->zdb, $email);
         $this->checkMemberExpected($adh);
+    }
+
+    /**
+     * Test password updating
+     *
+     * @return void
+     */
+    public function testUpdatePassword()
+    {
+        $rs = $this->adhExists();
+        if ($rs === false) {
+            $this->createAdherent();
+        } else {
+            $this->loadAdherent($rs->current()->id_adh);
+        }
+
+        $this->checkMemberExpected();
+
+        $newpass = 'aezrty';
+        \Galette\Entity\Adherent::updatePassword($this->zdb, $this->adh->id, $newpass);
+        $adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
+        $pw_checked = password_verify($newpass, $adh->password);
+        $this->boolean($pw_checked)->isTrue();
+
+        //reset original password
+        \Galette\Entity\Adherent::updatePassword($this->zdb, $this->adh->id, 'J^B-()f');
     }
 }

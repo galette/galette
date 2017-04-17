@@ -1213,6 +1213,8 @@ class Adherent
             );
             return $errors;
         } else {
+            $this->checkDues();
+
             Analog::log(
                 'Member checked successfully.',
                 Analog::DEBUG
