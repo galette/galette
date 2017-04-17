@@ -136,6 +136,57 @@ class Adherent extends atoum
     }
 
     /**
+     * Look in database if test member already exists
+     *
+     * @return false|ResultSet
+     */
+    private function adhExists()
+    {
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
+        $select->where(array('a.fingerprint' => 'FAKER' . $this->seed));
+
+        $results = $this->zdb->execute($select);
+        if ($results->count() === 0) {
+            return false;
+        } else {
+            return $results;
+        }
+    }
+
+    /**
+     * Create test user in database
+     *
+     * @return void
+     */
+    private function createAdherent()
+    {
+        $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
+        $fakedata
+            ->setSeed($this->seed)
+            ->setDependencies(
+                $this->preferences,
+                $this->members_fields,
+                $this->history,
+                $this->login
+            );
+
+        $data = $fakedata->fakeMember();
+        $this->createMember($data);
+    }
+
+    /**
+     * Loads member from a resultset
+     *
+     * @param integer $id Id
+     *
+     * @return void
+     */
+    private function loadAdherent($id)
+    {
+        $this->adh = new \Galette\Entity\Adherent($this->zdb, (int)$id);
+    }
+
+    /**
      * Test empty member
      *
      * @return void
@@ -204,21 +255,48 @@ class Adherent extends atoum
     }
 
     /**
-     * Test simple member creation
+     * Set dependencies from constructor
      *
      * @return void
      */
-    public function testSimpleMember()
+    public function testDepsAtConstuct()
     {
-        $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
-        $fakedata
-            ->setSeed($this->seed)
-            ->setDependencies(
-                $this->preferences,
-                $this->members_fields,
-                $this->history,
-                $this->login
-            );
+        $deps = [
+            'picture'   => false,
+            'groups'    => false,
+            'dues'      => false,
+            'parent'    => false,
+            'children'  => false
+        ];
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            null,
+            $deps
+        );
+
+        $this->array($adh->deps)->isIdenticalTo($deps);
+
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            null,
+            'not an array'
+        );
+        $this->array($adh->deps)->isIdenticalTo($this->default_deps);
+    }
+
+    /**
+     * Check members expecteds
+     *
+     * @param Adherent $adh           Member instance, if any
+     * @param array    $new_expecteds Changes on expected values
+     *
+     * @return void
+     */
+    private function checkMemberExpected($adh = null, $new_expecteds = [])
+    {
+        if ($adh === null) {
+            $adh = $this->adh;
+        }
 
         $expecteds = [
             'nom_adh' => 'Durand',
@@ -232,7 +310,7 @@ class Adherent extends atoum
             'bool_admin_adh' => false,
             'bool_exempt_adh' => false,
             'bool_display_info' => true,
-            'sexe_adh' => '0',
+            'sexe_adh' => 0,
             'prof_adh' => 'Chef de fabrication',
             'titre_adh' => null,
             'ddn_adh' => '1934-06-05',
@@ -244,35 +322,93 @@ class Adherent extends atoum
             'url_adh' => 'https://www.besson.com/rerum-porro-rem-harum-non-aut-quidem-dolorum',
             'activite_adh' => true,
             'id_statut' => '8',
-            'date_crea_adh' => '2016-11-18',
             'pref_lang' => 'en_US',
             'fingerprint' => 'FAKER95842354',
             'societe_adh' => 'Tanguy'
         ];
-        $data = $fakedata->fakeMember();
+        $expecteds = array_merge($expecteds, $new_expecteds);
 
-        $this->createMember($data);
         foreach ($expecteds as $key => $value) {
             $property = $this->members_fields[$key]['propname'];
             switch ($key) {
                 case 'bool_admin_adh':
-                    $this->boolean($this->adh->isAdmin())->isIdenticalTo($value);
+                    $this->boolean($adh->isAdmin())->isIdenticalTo($value);
                     break;
                 case 'bool_exempt_adh':
-                    $this->boolean($this->adh->isDueFree())->isIdenticalTo($value);
+                    $this->boolean($adh->isDueFree())->isIdenticalTo($value);
                     break;
                 case 'bool_display_info':
-                    $this->boolean($this->adh->appearsInMembersList())->isIdenticalTo($value);
+                    $this->boolean($adh->appearsInMembersList())->isIdenticalTo($value);
                     break;
                 case 'activite_adh':
-                    $this->boolean($this->adh->isActive())->isIdenticalTo($value);
+                    $this->boolean($adh->isActive())->isIdenticalTo($value);
                     break;
                 case 'mdp_adh':
                     break;
                 default:
-                    $this->variable($this->adh->$property)->isIdenticalTo($value);
+                    $this->variable($adh->$property)->isIdenticalTo($value);
                     break;
             }
         }
+
+        //try {
+        $d = \DateTime::createFromFormat('Y-m-d', $expecteds['ddn_adh']);
+
+        $expected_str = ' (82 years old)';
+        $this->string($adh->getAge())->isIdenticalTo($expected_str);
+
+
+        $this->string($adh->getAddress())->isIdenticalTo($expecteds['adresse_adh']);
+        $this->string($adh->getAddressContinuation())->isIdenticalTo('');
+        $this->string($adh->getZipcode())->isIdenticalTo($expecteds['cp_adh']);
+        $this->string($adh->getTown())->isIdenticalTo($expecteds['ville_adh']);
+        $this->string($adh->getCountry())->isIdenticalTo($expecteds['pays_adh']);
+    }
+
+    /**
+     * Test simple member creation
+     *
+     * @return void
+     */
+    public function testSimpleMember()
+    {
+        $rs = $this->adhExists();
+        if ($rs === false) {
+            $this->createAdherent();
+        } else {
+            $this->loadAdherent($rs->current()->id_adh);
+        }
+
+        $this->checkMemberExpected();
+
+        //load member from db
+        $adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
+        $this->checkMemberExpected($adh);
+    }
+
+    /**
+     * Test load form login and email
+     *
+     * @return void
+     */
+    public function testLoadForLogin()
+    {
+        $rs = $this->adhExists();
+        if ($rs === false) {
+            $this->createAdherent();
+        } else {
+            $this->loadAdherent($rs->current()->id_adh);
+        }
+
+        $login = $this->adh->login;
+        $email = $this->adh->email;
+
+        $this->variable($this->adh->email)->isIdenticalTo($this->adh->getEmail());
+
+        $adh = new \Galette\Entity\Adherent($this->zdb, $login);
+        $this->checkMemberExpected($adh);
+
+        $adh = new \Galette\Entity\Adherent($this->zdb, $email);
+        $this->checkMemberExpected($adh);
     }
 }

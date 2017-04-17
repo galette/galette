@@ -1166,6 +1166,9 @@ class Adherent
                                 $errors[] = _T("An error has occured while looking if status is already in use.");
                             }
                             break;
+                        case 'sexe_adh':
+                            $this->$prop = (int)$value;
+                            break;
                     }
                 } elseif (($key == 'login_adh' && !isset($required['login_adh']))
                     || ($key == 'mdp_adh' && !isset($required['mdp_adh']))
@@ -1480,6 +1483,9 @@ class Adherent
             } else {
                 $rname = '_' . $name;
                 switch ($name) {
+                    case 'id':
+                        return (int)$this->$rname;
+                        break;
                     case 'birthdate':
                     case 'creation_date':
                     case 'modification_date':
