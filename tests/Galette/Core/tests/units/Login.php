@@ -57,6 +57,27 @@ class Login extends atoum
     private $i18n;
     private $session;
     private $login;
+    private $preferences;
+    private $seed = 320112365;
+    private $login_adh = 'dumas.roger';
+    private $mdp_adh = 'sd8)AvtE|*';
+
+    private $members_fields;
+    private $history;
+    private $adh;
+
+    /**
+     * Cleanup after tests
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        $this->zdb = new \Galette\Core\Db();
+        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
+        $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
+        $this->zdb->execute($delete);
+    }
 
     /**
      * Set up tests
@@ -71,6 +92,20 @@ class Login extends atoum
         $this->i18n = new \Galette\Core\I18n();
         $this->session = new \RKA\Session();
         $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->preferences = new \Galette\Core\Preferences(
+            $this->zdb
+        );
+        $this->history = new \Galette\Core\History($this->zdb, $this->login);
+
+        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
+        $this->members_fields = $members_fields;
+
+        if (!defined('_CURRENT_TEMPLATE_PATH')) {
+            define(
+                '_CURRENT_TEMPLATE_PATH',
+                GALETTE_TEMPLATES_PATH . $this->preferences->pref_theme . '/'
+            );
+        }
     }
 
     /**
@@ -235,5 +270,104 @@ class Login extends atoum
 
         $login = new \Galette\Core\Login($zdb, $this->i18n, $this->session);
         $this->boolean($login->loginExists('doesnotexists'))->isTrue();
+    }
+
+    /**
+     * Test login as super admin
+     *
+     * @return void
+     */
+    public function testLogAdmin()
+    {
+        $this->login->logAdmin('superadmin', $this->preferences);
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isStaff())->isFalse();
+        $this->boolean($this->login->isAdmin())->isTrue();
+        $this->boolean($this->login->isSuperAdmin())->isTrue();
+        $this->boolean($this->login->isActive())->isTrue();
+        $this->boolean($this->login->isCron())->isFalse();
+        $this->boolean($this->login->isUp2Date())->isFalse();
+        $this->boolean($this->login->isImpersonated())->isFalse();
+
+        //test logout
+        $this->login->logOut();
+        $this->testDefaults();
+    }
+
+    /**
+     * Creates or load test user
+     *
+     * @return void
+     */
+    private function createUser()
+    {
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
+        $select->where(array('a.fingerprint' => 'FAKER' . $this->seed));
+        $results = $this->zdb->execute($select);
+
+        global $zdb, $login, $hist, $i18n; // globals :(
+        $zdb = $this->zdb;
+        $login = $this->login;
+        $hist = $this->history;
+        $i18n = $this->i18n;
+
+        if ($results->count() === 0) {
+            $status = new \Galette\Entity\Status($this->zdb);
+            $res = $status->installInit();
+            $this->boolean($res)->isTrue();
+
+            $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
+            $fakedata
+                ->setSeed($this->seed)
+                ->setDependencies(
+                    $this->preferences,
+                    $this->members_fields,
+                    $this->history,
+                    $this->login
+                );
+
+            $data = $fakedata->fakeMember();
+
+            $this->adh = new \Galette\Entity\Adherent($this->zdb);
+            $this->adh->setDependencies(
+                $this->preferences,
+                $this->members_fields,
+                $this->history
+            );
+
+            $check = $this->adh->check($data, [], []);
+            if (is_array($check)) {
+                var_dump($check);
+            }
+            $this->boolean($check)->isTrue();
+
+            $store = $this->adh->store();
+            $this->boolean($store)->isTrue();
+        } else {
+            $this->adh = new \Galette\Entity\Adherent($this->zdb, $results->current());
+        }
+    }
+
+    /**
+     * Look for a login that does exists
+     *
+     * @return void
+     */
+    public function testLoginExistsDb()
+    {
+        $this->createUser();
+        $this->boolean($this->login->loginExists($this->login))->isTrue();
+    }
+
+    /**
+     * Test user login
+     *
+     * @return void
+     */
+    public function testLogin()
+    {
+        $this->createUser();
+        $this->boolean($this->login->login('doenotexists', 'empty'))->isFalse();
+        $this->boolean($this->login->Login($this->login_adh, $this->mdp_adh))->isTrue();
     }
 }
