@@ -758,8 +758,12 @@ class Db
                 Adapter::QUERY_MODE_EXECUTE
             );
         } catch (\Exception $e) {
+            $msg = 'Query error: ';
+            if (isset($query_string)) {
+                $msg .= $query_string;
+            }
             Analog::log(
-                'Query error: ' . $query_string . ' ' . $e->__toString(),
+                $msg . ' ' . $e->__toString(),
                 Analog::ERROR
             );
             throw $e;
