@@ -1441,6 +1441,8 @@ class Adherent
             if (in_array($name, $virtuals)) {
                 if (substr($name, 0, 1) !== '_') {
                     $real = '_' . substr($name, 1);
+                } else {
+                    $real = $name;
                 }
                 switch ($name) {
                     case 'sadmin':
@@ -1484,7 +1486,12 @@ class Adherent
                         break;
                 }
             } else {
-                $rname = '_' . $name;
+                if (substr($name, 0, 1) !== '_') {
+                    $rname = '_' . $name;
+                } else {
+                    $rname = $name;
+                }
+
                 switch ($name) {
                     case 'id':
                     case 'id_statut':
