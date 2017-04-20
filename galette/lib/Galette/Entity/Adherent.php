@@ -1121,50 +1121,12 @@ class Adherent
                                     );
                                     break;
                                 }
-
-                                //check for status unicity
-                                $select = $this->zdb->select(self::TABLE, 'a');
-                                $select->limit(1)->join(
-                                    array('b' => PREFIX_DB . Status::TABLE),
-                                    'a.' . Status::PK . '=b.' . Status::PK,
-                                    array('libelle_statut')
-                                )->where('b.' . Status::PK . '=' . $value);
-                                $select->where->lessThan(
-                                    'b.priorite_statut',
-                                    Members::NON_STAFF_MEMBERS
-                                );
-
-                                if ($this->_id != '' && $this->_id != null) {
-                                    $select->where(
-                                        'a.' . self::PK . ' != ' . $this->_id
-                                    );
-                                }
-
-                                $results = $this->zdb->execute($select);
-                                if ($results->count() > 0) {
-                                    $result = $results->current();
-                                    $errors[] = str_replace(
-                                        array(
-                                            '%status',
-                                            '%id',
-                                            '%name',
-                                            '%surname'
-                                        ),
-                                        array(
-                                            $result->libelle_statut,
-                                            $result->id_adh,
-                                            $result->nom_adh,
-                                            $result->prenom_adh
-                                        ),
-                                        _T("Selected status (%status) is already in use in <a href='%member_url_%id'>%name %surname's profile</a>.")
-                                    );
-                                }
                             } catch (\Exception $e) {
                                 Analog::log(
-                                    'An error occured checking status unicity: ' . $e->getMessage(),
+                                    'An error occured checking status existance: ' . $e->getMessage(),
                                     Analog::ERROR
                                 );
-                                $errors[] = _T("An error has occured while looking if status is already in use.");
+                                $errors[] = _T("An error has occured while looking if status does exists.");
                             }
                             break;
                         case 'sexe_adh':
