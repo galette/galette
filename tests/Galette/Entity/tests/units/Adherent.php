@@ -313,7 +313,7 @@ class Adherent extends atoum
             'sexe_adh' => 0,
             'prof_adh' => 'Chef de fabrication',
             'titre_adh' => null,
-            'ddn_adh' => '1934-06-05',
+            'ddn_adh' => '1934-06-08',
             'lieu_naissance' => 'Gonzalez-sur-Meunier',
             'pseudo_adh' => 'ubertrand',
             'cp_adh' => '39 069',

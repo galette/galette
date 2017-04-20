@@ -387,7 +387,7 @@ class FakeData
             'titre_adh'         => $faker->randomElement(array_keys($this->titles)),
             'ddn_adh'           => $faker->dateTimeBetween(
                 $startDate = '-110 years',
-                $endDate = 'now'
+                $endDate = date('Y-m-d')
             )->format(_T("Y-m-d")),
             'lieu_naissance'    => $faker->city(),
             'pseudo_adh'        => $faker->userName(),
