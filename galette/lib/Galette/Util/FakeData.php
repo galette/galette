@@ -206,13 +206,26 @@ class FakeData
     }
 
     /**
+     * Get (and create if needed) Faker instance
+     *
+     * @return \Faker\Factory
+     */
+    private function getFaker()
+    {
+        if ($this->faker === null) {
+            $this->faker = \Faker\Factory::create($this->i18n->getID());
+        }
+        return $this->faker;
+    }
+
+    /**
      * Do data generation
      *
      * @return void
      */
     public function generate()
     {
-        $this->faker = \Faker\Factory::create($this->i18n->getID());
+        $this->getFaker();
         if ($this->seed !== null) {
             $this->faker->seed($this->seed);
         }
@@ -232,7 +245,7 @@ class FakeData
      */
     public function generateGroups($count = null)
     {
-        $faker = $this->faker;
+        $faker = $this->getFaker();
 
         $done = 0;
         $parent_group = null;
@@ -283,7 +296,7 @@ class FakeData
      */
     public function generateMembers($count = null)
     {
-        $faker = $this->faker;
+        $faker = $this->getFaker();
         $done = 0;
 
         if ($count === null) {
@@ -349,13 +362,10 @@ class FakeData
      */
     public function fakeMember()
     {
-        if ($this->faker === null) {
-            $this->faker = \Faker\Factory::create($this->i18n->getID());
-            if ($this->seed !== null) {
-                $this->faker->seed($this->seed);
-            }
+        $faker = $this->getFaker();
+        if ($this->seed !== null) {
+            $this->faker->seed($this->seed);
         }
-        $faker = $this->faker;
         $creation_date = $faker->dateTimeBetween($startDate = '-3 years', $endDate = 'now');
         $mdp_adh = $faker->password();
 
@@ -423,8 +433,9 @@ class FakeData
      */
     public function addPhoto(Adherent $member)
     {
+        $faker = $this->getFaker();
         $file = GALETTE_TEMPIMAGES_PATH . 'fakephoto.jpg';
-        $url = $this->faker->unique()->imageUrl(
+        $url = $faker->unique()->imageUrl(
             $width = 800,
             $height = 600,
             'people',
@@ -465,7 +476,7 @@ class FakeData
      */
     public function generateTransactions($count = null, $mids = null)
     {
-        $faker = $this->faker;
+        $faker = $this->getFaker();
 
         $done = 0;
 
@@ -520,7 +531,7 @@ class FakeData
      */
     public function generateContributions($mids = null)
     {
-        $faker = $this->faker;
+        $faker = $this->getFaker();
 
         if ($this->maxcontribs == 0) {
             return;
