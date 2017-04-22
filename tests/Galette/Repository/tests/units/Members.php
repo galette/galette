@@ -85,6 +85,19 @@ class Members extends atoum
 
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         $this->members_fields = $members_fields;
+        $this->createMembers();
+    }
+
+    /**
+     * Tear down tests
+     *
+     * @param string $testMethod Calling method
+     *
+     * @return void
+     */
+    public function afterTestMethod($testMethod)
+    {
+        $this->deleteMembers();
     }
 
     /**
@@ -126,7 +139,7 @@ class Members extends atoum
             ->setNbMembers(10)
             ->setNbGroups(0)
             ->setNbTransactions(0)
-            ->setMaxContribs(3)
+            ->setMaxContribs(0)
             ->setDependencies(
                 $this->preferences,
                 $this->members_fields,
@@ -138,7 +151,7 @@ class Members extends atoum
 
         $report = $fakedata->getReport();
 
-        $this->array($report['success'])->hasSize(2);
+        $this->array($report['success'])->hasSize(1);
         $this->array($report['errors'])->hasSize(0);
         $this->array($report['warnings'])->hasSize(0);
 
@@ -182,8 +195,6 @@ class Members extends atoum
      */
     public function testGetList()
     {
-        $this->createMembers();
-
         $members = new \Galette\Repository\Members();
 
         $list = $members->getList();
@@ -259,7 +270,32 @@ class Members extends atoum
 
         $list = $members->getList();
         $this->integer($list->count())->isIdenticalTo(8);
+    }
 
-        $this->deleteMembers();
+    /**
+     * Test getPublicList
+     *
+     * @return void
+     */
+    public function testGetPublicList()
+    {
+        $members = new \Galette\Repository\Members();
+
+        $list = $members->getPublicList(false);
+        $this->array($list)->hasSize(1);
+
+        $adh = $list[0];
+
+        $this->object($adh)->isInstanceOf('\Galette\Entity\Adherent');
+        $this->boolean($adh->appearsInMembersList())->isTrue();
+        $this->variable($adh->_picture)->isNull();
+
+        $list = $members->getPublicList(true);
+        $this->array($list)->hasSize(1);
+
+        $adh = $list[0];
+
+        $this->object($adh)->isInstanceOf('\Galette\Entity\Adherent');
+        $this->boolean($adh->appearsInMembersList())->isTrue();
     }
 }
