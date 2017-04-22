@@ -1035,7 +1035,7 @@ class Adherent
                             if ($value == 'http://') {
                                 $this->$prop = '';
                             } elseif (!isValidWebUrl($value)) {
-                                $errors[] = _T("- Non-valid Website address! Maybe you've skipped the http:// ?");
+                                $errors[] = _T("- Non-valid Website address! Maybe you've skipped the http://?");
                             }
                             break;
                         case 'login_adh':
@@ -1113,7 +1113,7 @@ class Adherent
 
                                 $results = $this->zdb->execute($select);
                                 $result = $results->current();
-                                if ($result === false) {
+                                if (!$result) {
                                     $errors[] = str_replace(
                                         '%id',
                                         $value,
@@ -1169,7 +1169,7 @@ class Adherent
 
         if (count($errors) > 0) {
             Analog::log(
-                'Some errors has been throwed attempting to edit/store a member' .
+                'Some errors has been throwed attempting to edit/store a member' . "\n" .
                 print_r($errors, true),
                 Analog::ERROR
             );

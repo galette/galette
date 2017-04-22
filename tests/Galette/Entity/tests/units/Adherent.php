@@ -459,4 +459,78 @@ class Adherent extends atoum
         //reset original password
         \Galette\Entity\Adherent::updatePassword($this->zdb, $this->adh->id, 'J^B-()f');
     }
+
+    /**
+     * Tests check errors
+     *
+     * @return void
+     */
+    public function testCheckErrors()
+    {
+        $adh = $this->adh;
+
+        $data = ['ddn_adh' => 'not a date'];
+        $expected = ['- Wrong date format (Y-m-d) for Birth date!'];
+        $check = $adh->check($data, [], []);
+        $this->array($check)->isIdenticalTo($expected);
+
+        $data = ['date_crea_adh' => 'not a date'];
+        $expected = ['- Wrong date format (Y-m-d) for Creation date!'];
+        $check = $adh->check($data, [], []);
+        $this->array($check)->isIdenticalTo($expected);
+
+        //reste creation date to its default value
+        $data = ['date_crea_adh' => date('Y-m-d')];
+        $check = $adh->check($data, [], []);
+        $this->boolean($check)->isTrue();
+
+        $data = ['email_adh' => 'not an email'];
+        $expected = ['- Non-valid E-Mail address! (E-Mail)'];
+        $check = $adh->check($data, [], []);
+        $this->array($check)->isIdenticalTo($expected);
+
+        $data = ['url_adh' => 'mywebsite'];
+        $expected = ['- Non-valid Website address! Maybe you\'ve skipped the http://?'];
+        $check = $adh->check($data, [], []);
+        $this->array($check)->isIdenticalTo($expected);
+
+        $data = ['url_adh' => 'http://'];
+        $expected = ['- Non-valid Website address! Maybe you\'ve skipped the http://?'];
+        $check = $adh->check($data, [], []);
+        $this->boolean($check)->isTrue($expected);
+        $this->variable($adh->_website)->isIdenticalTo('');
+
+        $data = ['login_adh' => 'a'];
+        $expected = ['- The username must be composed of at least 2 characters!'];
+        $check = $adh->check($data, [], []);
+        $this->array($check)->isIdenticalTo($expected);
+
+        $data = ['login_adh' => 'login@galette'];
+        $expected = ['- The username cannot contain the @ character'];
+        $check = $adh->check($data, [], []);
+        $this->array($check)->isIdenticalTo($expected);
+
+        $data = ['mdp_adh' => 'short'];
+        $expected = ['- The password must be of at least 6 characters!'];
+        $check = $adh->check($data, [], []);
+        $this->array($check)->isIdenticalTo($expected);
+
+        $data = ['mdp_adh' => 'mypassword'];
+        $expected = ['- The passwords don\'t match!'];
+        $check = $adh->check($data, [], []);
+        $this->array($check)->isIdenticalTo($expected);
+
+        $data = [
+            'mdp_adh'   => 'mypassword',
+            'mdp_adh2'  => 'mypasswor'
+        ];
+        $expected = ['- The passwords don\'t match!'];
+        $check = $adh->check($data, [], []);
+        $this->array($check)->isIdenticalTo($expected);
+
+        $data = ['id_statut' => 256];
+        $expected = ['Status #256 does not exists in database.'];
+        $check = $adh->check($data, [], []);
+        $this->array($check)->isIdenticalTo($expected);
+    }
 }
