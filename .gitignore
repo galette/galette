@@ -34,6 +34,11 @@ quick_gen_project_*
 !/galette/data/exports/readme.txt
 !/galette/data/exports/.htaccess
 
+# /galette/exports/
+/galette/exports/*
+!/galette/exports/readme.txt
+!/galette/exports/.htaccess
+
 # /galette/data/imports/
 /galette/data/imports/*
 !/galette/data/imports/readme.txt
@@ -43,6 +48,16 @@ quick_gen_project_*
 /galette/data/logs/*.log
 !/galette/data/logs/readme.txt
 !/galette/data/logs/.htaccess
+
+# /galette/logs/
+/galette/logs/*.log
+!/galette/logs/readme.txt
+!/galette/logs/.htaccess
+
+# /galette/photos/
+/galette/photos/*
+!/galette/photos/readme.txt
+!/galette/photos/.htaccess
 
 # /galette/photos/
 /galette/data/photos/*
@@ -65,6 +80,19 @@ quick_gen_project_*
 /galette/data/files/*
 !/galette/data/files/readme.txt
 !/galette/data/files/.htaccess
+
+# /galette/tempimages/
+/galette/tempimages/*.png
+/galette/tempimages/*.jpg
+/galette/tempimages/*.gif
+
+# /galette/templates_c/
+/galette/templates_c/*.php
+
+# /galette/files/
+/galette/files/*
+!/galette/files/readme.txt
+!/galette/files/.htaccess
 
 # Test stuff
 tests/coverage/
