@@ -425,23 +425,22 @@ class Members
      *
      * @param boolean $with_photos get only members which have uploaded a
      *                                photo (for trombinoscope)
-     * @param array   $fields      fields list
      *
      * @return Adherent[]
      */
-    public function getPublicList($with_photos, $fields)
+    public function getPublicList($with_photos)
     {
         global $zdb;
 
         try {
             $select = $this->buildSelect(
                 self::SHOW_PUBLIC_LIST,
-                $fields,
+                null,
                 $with_photos
             );
 
             if ($this->filters) {
-                $select->order($this->buildOrderClause($fields));
+                $select->order($this->buildOrderClause(null));
             }
 
             $this->proceedCount($select);
