@@ -229,6 +229,18 @@ class Members extends atoum
             ->hasSize(10)
             ->object[0]->isInstanceOf('\Galette\Entity\Adherent');
 
+        $list = $members->getList(false, ['nom_adh', 'ville_adh']);
+        $this->integer($list->count())->isIdenticalTo(10);
+        $arraylist = $list->toArray();
+        foreach ($arraylist as $array) {
+            $this->array($array)
+                ->hasSize(2)
+                ->keys->isIdenticalTo([
+                    'nom_adh',
+                    'ville_adh'
+                ]);
+        }
+
         //Get staff
         $members = new \Galette\Repository\Members();
         $list = $members->getStaffMembersList();
