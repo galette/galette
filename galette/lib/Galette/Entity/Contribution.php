@@ -430,7 +430,7 @@ class Contribution
                     || (is_object($this->$prop) && trim($this->$prop->id) == ''))
                 ) {
                     $errors[] = _T("- Mandatory field empty: ") .
-                    ' <a href="#' . $key . '">' . $this->getFieldName($key) .'</a>';
+                    ' <a href="#' . $key . '">' . $this->getFieldLabel($key) .'</a>';
                 }
             }
         }
@@ -691,7 +691,7 @@ class Contribution
      *
      * @return string
      */
-    public function getFieldName($field)
+    public function getFieldLabel($field)
     {
         $label = $this->_fields[$field]['label'];
         if ($this->isCotis() && $field == 'date_debut_cotis') {

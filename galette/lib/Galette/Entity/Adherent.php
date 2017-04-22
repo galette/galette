@@ -804,7 +804,7 @@ class Adherent
      *
      * @return string
      */
-    private function getFieldName($field)
+    private function getFieldLabel($field)
     {
         $label = $this->fields[$field]['label'];
         //remove trailing ':' and then nbsp (for french at least)
@@ -983,7 +983,7 @@ class Adherent
                                     ),
                                     array(
                                         __("Y-m-d"),
-                                        $this->fields[$key]['label']
+                                        $this->getFieldLabel($key)
                                     ),
                                     _T("- Wrong date format (%date_format) for %field!")
                                 );
@@ -1004,7 +1004,7 @@ class Adherent
                         case 'msn_adh':
                             if (!GaletteMail::isValidEmail($value)) {
                                 $errors[] = _T("- Non-valid E-Mail address!") .
-                                    ' (' . $this->getFieldName($key) . ')';
+                                    ' (' . $this->getFieldLabel($key) . ')';
                             }
                             if ($key == 'email_adh') {
                                 try {
@@ -1157,7 +1157,7 @@ class Adherent
 
                 if ($mandatory_missing === true) {
                     $errors[] = _T("- Mandatory field empty: ") .
-                    ' <a href="#' . $key . '">' . $this->getFieldName($key) .'</a>';
+                    ' <a href="#' . $key . '">' . $this->getFieldLabel($key) .'</a>';
                 }
             }
         }
