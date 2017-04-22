@@ -373,6 +373,7 @@ class Picture implements FileInterface
                 if ($transaction === true) {
                     $zdb->connection->commit();
                 }
+                $this->has_picture = false;
                 return true;
             }
         } catch (\Exception $e) {
@@ -554,6 +555,7 @@ class Picture implements FileInterface
                 )
             );
             $zdb->connection->commit();
+            $this->has_picture = true;
         } catch (\Exception $e) {
             $zdb->connection->rollBack();
             Analog::log(

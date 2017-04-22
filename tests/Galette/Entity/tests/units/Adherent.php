@@ -364,7 +364,7 @@ class Adherent extends atoum
         $this->string($adh->getAge())->isIdenticalTo($expected_str);
         $this->boolean($adh->hasChildren())->isFalse();
         $this->boolean($adh->hasParent())->isFalse();
-        $this->boolean($adh->hasPicture())->isFalse();
+        $this->boolean($adh->hasPicture())->isTrue();
 
         $this->string($adh->sadmin)->isIdenticalTo('No');
         $this->string($adh->sdue_free)->isIdenticalTo('No');
