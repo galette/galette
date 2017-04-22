@@ -347,6 +347,11 @@ class Adherent extends atoum
                     $pw_checked = password_verify($value, $adh->password);
                     $this->boolean($pw_checked)->isTrue();
                     break;
+                case 'ddn_adh':
+                    //rely on age, not on birthdate
+                    $this->variable($adh->$property)->isNotNull();
+                    $this->string($adh->getAge())->isIdenticalTo(' (82 years old)');
+                    break;
                 default:
                     $this->variable($adh->$property)->isIdenticalTo($value);
                     break;
