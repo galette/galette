@@ -556,7 +556,6 @@ $app->get(
 
         $member = new Adherent($this->zdb, $this->login->login, $deps);
         $id = $member->id;
-        var_dump($id);
 
         // declare dynamic field values
         $adherent['dyn'] = $dyn_fields->getFields('adh', $id, true);
