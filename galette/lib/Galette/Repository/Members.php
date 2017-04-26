@@ -562,6 +562,9 @@ class Members
         global $zdb, $login;
 
         try {
+            if ($fields != null && is_array($fields) && !in_array('id_adh', $fields)) {
+                $fields[] = 'id_adh';
+            }
             $fieldsList = ( $fields != null )
                             ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
                             : $fields) : (array)'*';
