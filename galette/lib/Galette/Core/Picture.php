@@ -114,7 +114,7 @@ class Picture implements FileInterface
                     $this->has_picture = true;
                 }
             } else {
-                $this->has_picture = false;
+                $this->has_picture = true;
             }
         }
 
