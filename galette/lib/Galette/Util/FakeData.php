@@ -406,7 +406,6 @@ class FakeData
             'ville_adh'         => $faker->city(),
             'pays_adh'          => $faker->optional()->country(),
             'tel_adh'           => $faker->phoneNumber(),
-            'email_adh'         => $faker->email(),
             'url_adh'           => $faker->optional()->url(),
             'activite_adh'      => $faker->boolean($chanceOfGettingTrue = 90),
             'id_statut'         => $faker->optional($weight = 0.3, $default = Status::DEFAULT_STATUS)

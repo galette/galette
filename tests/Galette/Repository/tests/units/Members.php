@@ -203,8 +203,8 @@ class Members extends atoum
         $list = $members->getEmails($this->zdb);
         $this->array($list)->hasSize(10)
             ->hasKeys([
-                'perrin.eugene@mahe.org',
-                'eleonore54@lecoq.net'
+                'georges.didier@perrot.fr',
+                'marc25@pires.org'
             ]);
 
 
@@ -240,22 +240,24 @@ class Members extends atoum
             ->hasSize(10)
             ->object[0]->isInstanceOf('\Galette\Entity\Adherent');
 
+        $members = new \Galette\Repository\Members();
         $list = $members->getList(false, ['nom_adh', 'ville_adh']);
         $this->integer($list->count())->isIdenticalTo(10);
         $arraylist = $list->toArray();
         foreach ($arraylist as $array) {
             $this->array($array)
-                ->hasSize(2)
+                ->hasSize(3)
                 ->keys->isIdenticalTo([
                     'nom_adh',
-                    'ville_adh'
+                    'ville_adh',
+                    'id_adh',
                 ]);
         }
 
         //Get staff
         $members = new \Galette\Repository\Members();
         $list = $members->getStaffMembersList();
-        $this->integer($list->count())->isIdenticalTo(3);
+        $this->integer($list->count())->isIdenticalTo(2);
 
         //Remove 2 members
         $torm = [];
@@ -297,5 +299,7 @@ class Members extends atoum
 
         $this->object($adh)->isInstanceOf('\Galette\Entity\Adherent');
         $this->boolean($adh->appearsInMembersList())->isTrue();
+
+        $this->boolean($adh->hasPicture())->isTrue();
     }
 }

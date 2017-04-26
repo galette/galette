@@ -304,7 +304,7 @@ class Adherent extends atoum
             'ville_adh' => 'Martel',
             'cp_adh' => '07 926',
             'adresse_adh' => '66, boulevard De Oliveira',
-            'email_adh' => 'bouchet.lucas@traore.net',
+            'email_adh' => 'meunier.josephine@ledoux.com',
             'login_adh' => 'arthur.hamon',
             'mdp_adh' => 'J^B-()f',
             'bool_admin_adh' => false,
@@ -319,12 +319,12 @@ class Adherent extends atoum
             'cp_adh' => '39 069',
             'pays_adh' => 'Antarctique',
             'tel_adh' => '0439153432',
-            'url_adh' => 'https://www.besson.com/rerum-porro-rem-harum-non-aut-quidem-dolorum',
+            'url_adh' => 'http://bouchet.com/',
             'activite_adh' => true,
-            'id_statut' => 8,
-            'pref_lang' => 'en_US',
+            'id_statut' => 9,
+            'pref_lang' => 'fr_FR',
             'fingerprint' => 'FAKER95842354',
-            'societe_adh' => 'Tanguy'
+            'societe_adh' => ''
         ];
         $expecteds = array_merge($expecteds, $new_expecteds);
 
@@ -364,7 +364,7 @@ class Adherent extends atoum
         $this->string($adh->getAge())->isIdenticalTo($expected_str);
         $this->boolean($adh->hasChildren())->isFalse();
         $this->boolean($adh->hasParent())->isFalse();
-        $this->boolean($adh->hasPicture())->isTrue();
+        $this->boolean($adh->hasPicture())->isFalse();
 
         $this->string($adh->sadmin)->isIdenticalTo('No');
         $this->string($adh->sdue_free)->isIdenticalTo('No');
@@ -372,7 +372,7 @@ class Adherent extends atoum
         $this->string($adh->sstaff)->isIdenticalTo('No');
         $this->string($adh->sactive)->isIdenticalTo('Active');
         $this->variable($adh->stitle)->isNull();
-        $this->string($adh->sstatus)->isIdenticalTo('Society');
+        $this->string($adh->sstatus)->isIdenticalTo('Non-member');
         $this->string($adh->sfullname)->isIdenticalTo('DURAND René');
         $this->string($adh->saddress)->isIdenticalTo('66, boulevard De Oliveira');
         $this->string($adh->sname)->isIdenticalTo('DURAND René');
@@ -532,5 +532,33 @@ class Adherent extends atoum
         $expected = ['Status #256 does not exists in database.'];
         $check = $adh->check($data, [], []);
         $this->array($check)->isIdenticalTo($expected);
+    }
+
+    /**
+     * Test picture
+     *
+     * @return void
+     */
+    public function testPhoto()
+    {
+        $rs = $this->adhExists();
+        if ($rs === false) {
+            $this->createAdherent();
+        } else {
+            $this->loadAdherent($rs->current()->id_adh);
+        }
+
+        $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
+        $fakedata
+            ->setSeed($this->seed)
+            ->setDependencies(
+                $this->preferences,
+                $this->members_fields,
+                $this->history,
+                $this->login
+            );
+        $fakedata->addPhoto($this->adh);
+
+        $this->boolean($this->adh->hasPicture())->isTrue();
     }
 }
