@@ -432,15 +432,19 @@ class FakeData
      */
     public function addPhoto(Adherent $member)
     {
-        $faker = $this->getFaker();
         $file = GALETTE_TEMPIMAGES_PATH . 'fakephoto.jpg';
-        $url = $faker->unique()->imageUrl(
-            $width = 800,
-            $height = 600,
-            'people',
-            true,
-            'Galette fake data'
-        );
+        if (!defined('GALETTE_TESTS')) {
+            $faker = $this->getFaker();
+            $url = $faker->unique()->imageUrl(
+                $width = 800,
+                $height = 600,
+                'people',
+                true,
+                'Galette fake data'
+            );
+        } else {
+            $url = GALETTE_ROOT . '../tests/fake_image.jpg';
+        }
 
         if (copy($url, $file)) {
             $_FILES = array(
