@@ -628,7 +628,7 @@ class Install
         $this->_report = array();
         $scripts_path = GALETTE_ROOT . '/install/scripts/';
 
-        foreach ($update_scripts as $key => $value) {
+        foreach ($update_scripts as $key => $val) {
             if (substr($val, -strlen('.sql')) === '.sql') {
                 //just a SQL script, run it
                 $script = fopen($scripts_path . $val, 'r');
