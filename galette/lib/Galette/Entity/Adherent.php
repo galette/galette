@@ -101,6 +101,7 @@ class Adherent
     //Galette relative informations
     private $_appears_in_list;
     private $_admin;
+    private $_staff;
     private $_due_free;
     private $_login;
     private $_password;
