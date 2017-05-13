@@ -60,19 +60,17 @@
             var _gid = data.rslt.o.attr('id').substring(6);
             var _to = data.rslt.np.attr('id').substring(6);
             $.ajax({
-                url: '{path_for name="ajax_group"}',
+                url: '{path_for name="ajax_groups_reorder"}',
                 type: "POST",
                 data: {
                     id_group: _gid,
-                    ajax: true,
                     reorder: true,
                     to: _to
                 },
                 datatype: 'json',
                 {include file="js_loader.tpl"},
                 success: function(res){
-                    var _res = jQuery.parseJSON(res);
-                    if ( _res.success == false ) {
+                    if (res.success == false) {
                         alert("{_T string="Missing destination group" escape="js"}");
                         {* TODO: revert preceding move so the tree is ok with database *}
                     }

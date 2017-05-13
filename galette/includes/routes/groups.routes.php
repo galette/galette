@@ -361,3 +361,28 @@ $app->post(
         return $response;
     }
 )->setName('ajax_groups')->add($authenticate);
+
+$app->post(
+    __('/ajax/groups/reorder'),
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        if (!isset($post['to']) || $post['to'] == '' || !isset($post['id_group']) || $post['id_group'] == '') {
+            Analog::log(
+                'Trying to reorder without required parameters!',
+                Analog::INFO
+            );
+            $result = false;
+        } else {
+            $id = $post['id_group'];
+            $group = new Galette\Entity\Group((int)$id);
+            $group->setParentGroup((int)$_POST['to']);
+            $result = $group->store();
+        }
+
+        return $response->withJson(
+            [
+                'success'   =>  $result
+            ]
+        );
+    }
+)->setName('ajax_groups_reorder')->add($authenticate);

@@ -287,6 +287,7 @@ $container['acls'] = function ($c) {
         'ajax_group'                => 'groupmanager',
         'ajax_groups'               => 'groupmanager',
         'ajax_groupname_unique'     => 'groupmanager',
+        'ajax_groups_reorder'       => 'admin',
         'add_group'                 => 'staff',
         'removeGroup'               => 'staff',
         'doRemoveGroup'             => 'staff',
