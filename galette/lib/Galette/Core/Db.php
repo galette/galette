@@ -69,7 +69,7 @@ class Db
      * Main constructor
      *
      * @param array $dsn Connection informations
-     * If not set, database constants will be used.
+     *                   If not set, database constants will be used.
      */
     public function __construct($dsn = null)
     {
