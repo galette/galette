@@ -94,8 +94,8 @@ class Contribution
      * @param Db                 $zdb   Database
      * @param Login              $login Login instance
      * @param null|int|ResultSet $args  Either a ResultSet row to load
-     *                                   a specific contribution, or an type id
-     *                                   to just instanciate object
+     *                                  a specific contribution, or an type id
+     *                                  to just instanciate object
      */
     public function __construct(Db $zdb, Login $login, $args = null)
     {
@@ -887,9 +887,9 @@ class Contribution
      *
      * @param ExternalScript $es     External script to execute
      * @param array          $extra  Extra informations on contribution
-     *                                  Defaults to null
+     *                               Defaults to null
      * @param array          $pextra Extra information on payment
-     *                                  Defaults to null
+     *                               Defaults to null
      *
      * @return mixed Script return value on success, values and script output on fail
      */

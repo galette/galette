@@ -137,10 +137,10 @@ class Members
      * Get staff members list
      *
      * @param bool    $as_members return the results as an array of
-     *                               Member object.
+     *                            Member object.
      * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                               an array. If null, all fields will be
-     *                               returned
+     *                            an array. If null, all fields will be
+     *                            returned
      * @param boolean $count      true if we want to count members
      * @param boolean $limit      true to LIMIT query
      *
@@ -166,10 +166,10 @@ class Members
      * Get managed members list (for groups managers)
      *
      * @param bool    $as_members return the results as an array of
-     *                               Member object.
+     *                            Member object.
      * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                               an array. If null, all fields will be
-     *                               returned
+     *                            an array. If null, all fields will be
+     *                            returned
      * @param boolean $count      true if we want to count members
      * @param boolean $limit      true to LIMIT query
      *
@@ -194,10 +194,10 @@ class Members
      * Get members list
      *
      * @param bool    $as_members return the results as an array of
-     *                               Member object.
+     *                            Member object.
      * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                               an array. If null, all fields will be
-     *                               returned
+     *                            an array. If null, all fields will be
+     *                            returned
      * @param boolean $count      true if we want to count members
      * @param boolean $staff      true if we want only staff members
      * @param boolean $managed    true if we want only managed groups
@@ -424,7 +424,7 @@ class Members
      * Get members list with public informations available
      *
      * @param boolean $with_photos get only members which have uploaded a
-     *                                photo (for trombinoscope)
+     *                             photo (for trombinoscope)
      *
      * @return Adherent[]
      */
