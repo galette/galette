@@ -182,10 +182,10 @@ class Picture extends atoum
     public function testStore()
     {
         foreach ($this->expected_badchars as $badchar) {
-            $expected = $this->picture::INVALID_FILENAME;
+            $expected = \Galette\Core\Picture::INVALID_FILENAME;
             if ($badchar == '.') {
                 //will give an invalid extension
-                $expected = $this->picture::INVALID_EXTENSION;
+                $expected = \Galette\Core\Picture::INVALID_EXTENSION;
             }
             $file = [
                 'name'      => 'file-with-' . $badchar . '-char.jpg',
@@ -207,10 +207,10 @@ class Picture extends atoum
             $file = [
                 'name'      => $file,
                 'tmp_name'  => 'none',
-                'size'      => $this->picture::MAX_FILE_SIZE * 1024 * 100
+                'size'      => \Galette\Core\Picture::MAX_FILE_SIZE * 1024 * 100
             ];
             //Will fail on filesize, but this is OK, filenames and extensions have been checked :)
-            $this->integer($this->picture->store($file))->isIdenticalTo($this->picture::FILE_TOO_BIG);
+            $this->integer($this->picture->store($file))->isIdenticalTo(\Galette\Core\Picture::FILE_TOO_BIG);
         }
     }
 
@@ -221,21 +221,21 @@ class Picture extends atoum
      */
     public function testErrorMessages()
     {
-        $this->string($this->picture->getErrorMessage($this->picture::INVALID_FILENAME))
+        $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::INVALID_FILENAME))
             ->isIdenticalTo('File name is invalid, it should not contain any special character or space.');
-        $this->string($this->picture->getErrorMessage($this->picture::INVALID_EXTENSION))
+        $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::INVALID_EXTENSION))
             ->isIdenticalTo('File extension is not allowed, only jpeg, jpg, png, gif files are.');
-        $this->string($this->picture->getErrorMessage($this->picture::FILE_TOO_BIG))
+        $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::FILE_TOO_BIG))
             ->isIdenticalTo('File is too big. Maximum allowed size is 1024Ko');
-        $this->string($this->picture->getErrorMessage($this->picture::MIME_NOT_ALLOWED))
+        $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::MIME_NOT_ALLOWED))
             ->isIdenticalTo('Mime-Type not allowed');
-        $this->string($this->picture->getErrorMessage($this->picture::INVALID_FILE))
+        $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::INVALID_FILE))
             ->isIdenticalTo('File does not comply with requirements.');
-        $this->string($this->picture->getErrorMessage($this->picture::CANT_WRITE))
+        $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::CANT_WRITE))
             ->isIdenticalTo('Unable to write file or temporary file');
-        $this->string($this->picture->getErrorMessage($this->picture::SQL_ERROR))
+        $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::SQL_ERROR))
             ->isIdenticalTo('An SQL error has occured.');
-        $this->string($this->picture->getErrorMessage($this->picture::SQL_BLOB_ERROR))
+        $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::SQL_BLOB_ERROR))
             ->isIdenticalTo('An SQL error has occured.');
     }
 }
