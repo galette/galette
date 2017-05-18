@@ -401,7 +401,7 @@ class Picture implements FileInterface
         $tmpfile = $file['tmp_name'];
 
         //First, does the file have a valid name?
-        $reg = "/^(.[^" . implode('', $this->bad_chars) . "]+)\.(" .
+        $reg = "/^([^" . implode('', $this->bad_chars) . "]+)\.(" .
             implode('|', $this->allowed_extensions) . ")$/i";
         if ( preg_match($reg, $name, $matches) ) {
             Analog::log(
@@ -415,7 +415,7 @@ class Picture implements FileInterface
                 $extension = 'jpg';
             }
         } else {
-            $erreg = "/^(.[^" . implode('', $this->bad_chars) . "]+)\.(.*)/i";
+            $erreg = "/^([^" . implode('', $this->bad_chars) . "]+)\.(.*)/i";
             $m = preg_match($erreg, $name, $errmatches);
 
             $err_msg = '[' . $class . '] ';

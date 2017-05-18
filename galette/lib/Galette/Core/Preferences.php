@@ -344,7 +344,7 @@ class Preferences
 
                 $value = $this->_prefs[$k];
                 //do not store pdf_adhesion_form URI, it's designed to be overriden by plugin
-                if ($k === 'pdf_adhesion_form') {
+                if ($k === 'pref_adhesion_form_url') {
                     $value = $v;
                 }
 
