@@ -935,14 +935,6 @@ $app->map(
                     }
                 }
                 break;
-            case 'i5':
-            case 'u5':
-                if ($step == 'i5') {
-                    $title = _T("Installation complete !");
-                } else {
-                    $title = _T("Update complete !");
-                }
-                break;
         }
 
         $this->session->$mdplugin = $install;
