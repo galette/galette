@@ -245,7 +245,7 @@ trait FileTrait
         $tmpfile = $file['tmp_name'];
 
         //First, does the file have a valid name?
-        $reg = "/^(.[^" . implode('', $this->bad_chars) . "]+)\.";
+        $reg = "/^([^" . implode('', $this->bad_chars) . "]+)\.";
         if ( count($this->allowed_extensions) > 0 ) {
             $reg .= "(" . implode('|', $this->allowed_extensions) . ")";
         } else {
@@ -259,7 +259,7 @@ trait FileTrait
             );
             $extension = strtolower($matches[2]);
         } else {
-            $erreg = "/^(.[^" . implode('', $this->bad_chars) . "]+)\.(.*)/i";
+            $erreg = "/^([^" . implode('', $this->bad_chars) . "]+)\.(.*)/i";
             $m = preg_match($erreg, $this->name, $errmatches);
 
             $err_msg = '[' . $class . '] ';
@@ -388,11 +388,7 @@ trait FileTrait
      */
     public function getBadChars()
     {
-        $ret = '';
-        foreach ( $this->bad_chars as $char=>$regchar ) {
-            $ret .= '`' . $char . '`, ';
-        }
-        return $ret;
+        return '`' . implode('`, `', array_keys($this->bad_chars)) . '`';
     }
 
     /**
