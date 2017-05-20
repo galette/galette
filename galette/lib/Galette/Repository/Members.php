@@ -1354,11 +1354,9 @@ class Members
                                 break;
                             case AdvancedMembersList::OP_BEFORE:
                                 $qop = '<';
-                                $fs['search'] = "STR_TO_DATE('" . $fs['search'] . "', '%d/%m/%Y')";
                                 break;
                             case AdvancedMembersList::OP_AFTER:
                                 $qop = '>';
-                                $fs['search'] = 'STR_TO_DATE(\'' . $fs['search'] . '\', \'%d/%m/%Y\')';
                                 break;
                             default:
                                 Analog::log(
@@ -1382,9 +1380,28 @@ class Members
                         if (!strncmp($fs['field'], 'bool_', strlen('bool_'))) {
                             $qry .= $prefix . $fs['field'] . $qop  . ' ' .
                                 $fs['search'] ;
-                        } elseif ($fs['qry_op'] === AdvancedMembersList::OP_BEFORE || $fs['qry_op'] === AdvancedMembersList::OP_AFTER) {
-                            $qry .= 'STR_TO_DATE(' . $prefix . $fs['field'] . ', \'%d/%m/%Y\') ' .
-                                $qop  . ' ' .  $fs['search'] ;
+                        } elseif ($fs['qry_op'] === AdvancedMembersList::OP_BEFORE
+                            || $fs['qry_op'] === AdvancedMembersList::OP_AFTER
+                        ) {
+                            if ($prefix === 'a.') {
+                                //dates are OK in the main fields. no cast, just query!
+                                $qry .= $prefix . $fs['field'] . $qop  . ' ' .
+                                    $zdb->platform->quoteValue($fs['search']);
+                            } else {
+                                //dynamic dates are stored in their localized format :/
+                                //use current lang format to query for now
+                                if ($zdb->isPostgres()) {
+                                    $fs['search'] = "to_date('" . $fs['search'] . "', 'YYYY-MM-DD')";
+                                    $store_fmt = __("Y-m-d") === 'Y-m-d' ? 'YYYY-MM-DD' : 'DD/MM/YYYY';
+                                    $qry .= "to_date('" . $prefix . $fs['field'] . "', '$store_fmt')";
+                                } else {
+                                    $fs['search'] = "STR_TO_DATE('" . $fs['search'] . "', '%Y-%m-%d')";
+                                    $store_fmt = __("Y-m-d") === 'Y-m-d' ? '%Y-%m-%d' : '%d/%m/%Y';
+                                    $qry .= 'STR_TO_DATE(' . $prefix . $fs['field'] . ', \'' . $store_fmt . '\') ';
+                                }
+
+                                $qry .= $qop  . ' ' .  $fs['search'] ;
+                            }
                         } else {
                             $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' .
                                 $qop  . ' ' . $zdb->platform->quoteValue(

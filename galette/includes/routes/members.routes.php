@@ -489,9 +489,11 @@ $app->post(
                                         = (int)$post['free_logical_operator'][$i];
                                     $qry_op
                                         = (int)$post['free_query_operator'][$i];
+                                    $type = (int)$post['free_type'][$i];
                                     $fs = array(
                                         'idx'       => $i,
                                         'field'     => $f,
+                                        'type'      => $type,
                                         'search'    => $fs_search,
                                         'log_op'    => $log_op,
                                         'qry_op'    => $qry_op
