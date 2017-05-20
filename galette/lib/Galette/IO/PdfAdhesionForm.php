@@ -81,7 +81,7 @@ class PdfAdhesionForm
         $this->prefs = $prefs;
 
         if ($adh !== null) {
-            $dyn_fields = new DynamicFields();
+            $dyn_fields = new DynamicFields($zdb);
             $dyn_values = $dyn_fields->getFields('adh', $adh->id, true);
             $dyn_descriptions = $dyn_fields->getFieldsDescription('adh');
         }

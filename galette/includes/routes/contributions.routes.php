@@ -356,7 +356,7 @@ $app->get(
             }
 
             //TODO: dynamic fields should be handled by Contribution object
-            $dyn_fields = new DynamicFields();
+            $dyn_fields = new DynamicFields($this->zdb);
         }
 
         $disabled = array();
@@ -505,7 +505,7 @@ $app->post(
 
         // dynamic fields
         //TODO: dynamic fields should be handled by Contribution object
-        $dyn_fields = new DynamicFields();
+        $dyn_fields = new DynamicFields($this->zdb);
         $contribution['dyn'] = $dyn_fields->extractPosted(
             $post,
             $_FILES,
@@ -839,7 +839,7 @@ $app->get(
         } else {
             $trans = new Transaction($this->zdb, $this->login);
             //TODO: dynamic fields should be handled by Transaction object
-            $dyn_fields = new DynamicFields();
+            $dyn_fields = new DynamicFields($this->zdb);
         }
 
         $action = $args['action'];
@@ -1008,7 +1008,7 @@ $app->post(
         $post = $request->getParsedBody();
         $trans = new Transaction($this->zdb, $this->login);
         //TODO: dynamic fields should be handled by Transaction object
-        $dyn_fields = new DynamicFields();
+        $dyn_fields = new DynamicFields($this->zdb);
 
         $action = $args['action'];
         $trans_id = null;

@@ -53,6 +53,7 @@ use \atoum;
  */
 class Boolean extends atoum
 {
+    private $zdb;
     private $bool;
 
     /**
@@ -64,7 +65,8 @@ class Boolean extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->bool = new \Galette\DynamicFieldsTypes\Boolean;
+        $this->zdb = new \Galette\Core\Db();
+        $this->bool = new \Galette\DynamicFieldsTypes\Boolean($this->zdb);
     }
 
     /**
@@ -74,7 +76,7 @@ class Boolean extends atoum
      */
     public function testConstructor()
     {
-        $o = new \Galette\DynamicFieldsTypes\Boolean(10);
+        $o = new \Galette\DynamicFieldsTypes\Boolean($this->zdb, 10);
         $this->variable($o->getId())
             ->isIdenticalTo(10);
     }

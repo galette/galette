@@ -38,6 +38,7 @@
 namespace Galette\DynamicFieldsTypes;
 
 use Analog\Analog;
+use Galette\Core\Db;
 use Galette\Entity\DynamicFields;
 
 /**
@@ -75,13 +76,17 @@ abstract class DynamicFieldType
     protected $size;
     protected $values;
 
+    protected $zdb;
+
     /**
      * Default constructor
      *
-     * @param int $id Optionnal field id to load data
+     * @param Db  $zdb Database instance
+     * @param int $id  Optionnal field id to load data
      */
-    public function __construct($id = null)
+    public function __construct(Db $zdb, $id = null)
     {
+        $this->zdb = $zdb;
         if ($id !== null) {
             $this->id = $id;
         }
@@ -94,13 +99,11 @@ abstract class DynamicFieldType
      */
     public function load()
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE);
             $select->where('field_id = ' . $this->id);
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $result = $results->current();
 
             if ($result !== false) {
@@ -132,10 +135,8 @@ abstract class DynamicFieldType
      */
     private function loadFixedValues()
     {
-        global $zdb;
-
         try {
-            $val_select = $zdb->select(
+            $val_select = $this->zdb->select(
                 DynamicFields::getFixedValuesTableName($this->id)
             );
 
@@ -145,7 +146,7 @@ abstract class DynamicFieldType
                 )
             )->order('id');
 
-            $results = $zdb->execute($val_select);
+            $results = $this->zdb->execute($val_select);
             $this->values = array();
             if ($results) {
                 foreach ($results as $val) {

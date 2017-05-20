@@ -69,7 +69,7 @@ $app->get(
                 ->withHeader('Location', $this->router->pathFor('slash'));
         }
 
-        $dyn_fields = new DynamicFields();
+        $dyn_fields = new DynamicFields($this->zdb);
 
         if ($this->session->member !== null) {
             $member = $this->session->member;
@@ -547,7 +547,7 @@ $app->get(
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('slash'));
         }
-        $dyn_fields = new DynamicFields();
+        $dyn_fields = new DynamicFields($this->zdb);
         $deps = array(
             'picture'   => true,
             'groups'    => true,
@@ -604,7 +604,7 @@ $app->get(
     __('/member', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $id = $args['id'];
-        $dyn_fields = new DynamicFields();
+        $dyn_fields = new DynamicFields($this->zdb);
 
         $deps = array(
             'picture'   => true,
@@ -755,7 +755,7 @@ $app->get(
         }
 
         //TODO: dynamic fields should be handled by Adherent object
-        $dyn_fields = new DynamicFields();
+        $dyn_fields = new DynamicFields($this->zdb);
 
         if ($this->login->isAdmin() || $this->login->isStaff() || $this->login->isGroupManager()) {
             if ($id !== null) {
@@ -977,7 +977,7 @@ $app->post(
         }
 
         //TODO: dynamic fields should be handled by Adherent object
-        $dyn_fields = new DynamicFields();
+        $dyn_fields = new DynamicFields($this->zdb);
         $success_detected = [];
         $warning_detected = [];
         $error_detected = [];
@@ -1574,7 +1574,7 @@ $app->get(
         }
 
         //dynamic fields
-        $df = new DynamicFields();
+        $df = new DynamicFields($this->zdb);
         $dynamic_fields = $df->prepareForDisplay(
             'adh',
             array(),

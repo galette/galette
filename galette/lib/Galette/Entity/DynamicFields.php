@@ -40,6 +40,7 @@ namespace Galette\Entity;
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
+use Galette\Core\Db;
 use Galette\DynamicFieldsTypes\Separator;
 use Galette\DynamicFieldsTypes\Text;
 use Galette\DynamicFieldsTypes\Line;
@@ -95,24 +96,28 @@ class DynamicFields
     private $_type_name;
     private $_required;
 
-    private $_fields_types_names;
-    private $_perms_names;
-    private $_forms_names;
+    private $fields_types_names;
+    private $perms_names;
+    private $forms_names;
 
-    private $_errors = array();
+    private $errors = array();
+
+    private $zdb;
 
     /**
      * Default constructor
      *
+     * @param Db                 $zdb  Dtaabase instance
      * @param null|int|ResultSet $args Either a ResultSet row, its id or its
      *                                 login or its mail for to load
      *                                 a specific member, or null to just
      *                                 instanciate object
      */
-    public function __construct($args = null)
+    public function __construct(Db $zdb, $args = null)
     {
+        $this->zdb = $zdb;
         //Fields types names
-        $this->_fields_types_names = array(
+        $this->fields_types_names = array(
             self::SEPARATOR => _T("separator"),
             self::TEXT      => _T("free text"),
             self::LINE      => _T("single line"),
@@ -123,14 +128,14 @@ class DynamicFields
         );
 
         //Permissions names
-        $this->_perms_names = array (
+        $this->perms_names = array (
             self::PERM_ALL      => _T("all"),
             self::PERM_STAFF    => _T("staff"),
             self::PERM_ADM      => _T("admin")
         );
 
         //Forms names
-        $this->_forms_names = array(
+        $this->forms_names = array(
             'adh'       => _T("Members"),
             'contrib'   => _T("Contributions"),
             'trans'     => _T("Transactions")
@@ -163,15 +168,13 @@ class DynamicFields
      */
     public function getFixedValues($field_id)
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select(self::getFixedValuesTableName($field_id));
+            $select = $this->zdb->select(self::getFixedValuesTableName($field_id));
             $select->columns(
                 array('val')
             )->order('id');
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
 
             $fixed_values = array();
             if ($results) {
@@ -195,7 +198,7 @@ class DynamicFields
      */
     public function getPermsNames()
     {
-        return $this->_perms_names;
+        return $this->perms_names;
     }
 
     /**
@@ -207,7 +210,7 @@ class DynamicFields
      */
     public function getPermName($i)
     {
-        return $this->_perms_names[$i];
+        return $this->perms_names[$i];
     }
 
     /**
@@ -217,7 +220,7 @@ class DynamicFields
      */
     public function getFormsNames()
     {
-        return $this->_forms_names;
+        return $this->forms_names;
     }
 
     /**
@@ -227,7 +230,7 @@ class DynamicFields
      */
     public function getFieldsTypesNames()
     {
-        return $this->_fields_types_names;
+        return $this->fields_types_names;
     }
 
     /**
@@ -243,10 +246,8 @@ class DynamicFields
      */
     public function getFields($form_name, $item_id, $quote)
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select(self::TABLE, 'a');
+            $select = $this->zdb->select(self::TABLE, 'a');
 
             $select->join(
                 array('b' => PREFIX_DB . DynamicFieldType::TABLE),
@@ -259,7 +260,7 @@ class DynamicFields
                 )
             );
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
 
             if ($results->count() > 0) {
                 $dfields = array();
@@ -311,16 +312,16 @@ class DynamicFields
         $disabled,
         $edit
     ) {
-        global $zdb, $login;
+        global $login;
 
         try {
-            $select = $zdb->select(DynamicFieldType::TABLE);
+            $select = $this->zdb->select(DynamicFieldType::TABLE);
 
             $select
                 ->where(array('field_form' => $form_name))
                 ->order('field_index');
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
 
             $dfields = array();
             if ($results) {
@@ -396,15 +397,13 @@ class DynamicFields
      */
     public function getFieldsDescription($form_name)
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select(DynamicFieldType::TABLE);
+            $select = $this->zdb->select(DynamicFieldType::TABLE);
             $select
                 ->where(array('field_form' => $form_name))
                 ->order('field_id');
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
 
             $dfields = array();
             if ($results) {
@@ -513,7 +512,7 @@ class DynamicFields
                         "file too large: " . $files[$key]['size'] . " Ko, vs $max_size Ko allowed",
                         Analog::ERROR
                     );
-                    $this->_errors[] = preg_replace(
+                    $this->errors[] = preg_replace(
                         '|%d|',
                         $max_size,
                         _T("File is too big. Maximum allowed size is %dKo")
@@ -559,13 +558,12 @@ class DynamicFields
         $val_index,
         $field_val
     ) {
-        global $zdb;
         $ret = false;
 
         try {
-            $zdb->connection->beginTransaction();
+            $this->zdb->connection->beginTransaction();
 
-            $select = $zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE);
             $select->columns(
                 array('cnt' => new Expression('COUNT(*)'))
             )->where(
@@ -577,7 +575,7 @@ class DynamicFields
                 )
             );
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $result = $results->current();
             $count = $result->cnt;
 
@@ -591,9 +589,9 @@ class DynamicFields
                         Analog::DEBUG
                     );
 
-                    $delete = $zdb->delete(self::TABLE);
+                    $delete = $this->zdb->delete(self::TABLE);
                     $delete->where($where);
-                    $zdb->execute($delete);
+                    $this->zdb->execute($delete);
                 } else {
                     Analog::log(
                         'Field ' . $field_id . ' will be set to value: ' .
@@ -601,11 +599,11 @@ class DynamicFields
                         Analog::DEBUG
                     );
 
-                    $update = $zdb->update(self::TABLE);
+                    $update = $this->zdb->update(self::TABLE);
                     $update->set(
                         array('field_val' => $field_val)
                     )->where($where);
-                    $zdb->execute($update);
+                    $this->zdb->execute($update);
                 }
             } else {
                 if ($field_val !== '') {
@@ -617,16 +615,16 @@ class DynamicFields
                         'field_val'  => $field_val
                     );
 
-                    $insert = $zdb->insert(self::TABLE);
+                    $insert = $this->zdb->insert(self::TABLE);
                     $insert->values($values);
-                    $zdb->execute($insert);
+                    $this->zdb->execute($insert);
                 }
             }
 
-            $zdb->connection->commit();
+            $this->zdb->connection->commit();
             return true;
         } catch (\Exception $e) {
-            $zdb->connection->rollBack();
+            $this->zdb->connection->rollBack();
             Analog::log(
                 'An error occured storing dynamic field. Form name: ' . $form_name .
                 '; item_id:' . $item_id . '; field_id: ' . $field_id .
@@ -681,25 +679,25 @@ class DynamicFields
         $df = null;
         switch ($t) {
             case self::SEPARATOR:
-                $df = new \Galette\DynamicFieldsTypes\Separator($id);
+                $df = new \Galette\DynamicFieldsTypes\Separator($this->zdb, $id);
                 break;
             case self::TEXT:
-                $df = new \Galette\DynamicFieldsTypes\Text($id);
+                $df = new \Galette\DynamicFieldsTypes\Text($this->zdb, $id);
                 break;
             case self::LINE:
-                $df = new \Galette\DynamicFieldsTypes\Line($id);
+                $df = new \Galette\DynamicFieldsTypes\Line($this->zdb, $id);
                 break;
             case self::CHOICE:
-                $df = new \Galette\DynamicFieldsTypes\Choice($id);
+                $df = new \Galette\DynamicFieldsTypes\Choice($this->zdb, $id);
                 break;
             case self::DATE:
-                $df = new \Galette\DynamicFieldsTypes\Date($id);
+                $df = new \Galette\DynamicFieldsTypes\Date($this->zdb, $id);
                 break;
             case self::BOOLEAN:
-                $df = new \Galette\DynamicFieldsTypes\Boolean($id);
+                $df = new \Galette\DynamicFieldsTypes\Boolean($this->zdb, $id);
                 break;
             case self::FILE:
-                $df = new \Galette\DynamicFieldsTypes\File($id);
+                $df = new \Galette\DynamicFieldsTypes\File($this->zdb, $id);
                 break;
             default:
                 throw new \Exception('Unknown field type ' . $t . '!');
@@ -717,15 +715,13 @@ class DynamicFields
      */
     public function loadFieldType($id)
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select(DynamicFieldType::TABLE);
+            $select = $this->zdb->select(DynamicFieldType::TABLE);
             $select->columns(
                 array('field_type')
             )->where('field_id = ' . $id);
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $result = $results->current();
             $field_type = $result->field_type;
             if ($field_type !== false) {
@@ -746,19 +742,18 @@ class DynamicFields
     /**
      * Is field duplicated?
      *
-     * @param Db     $zdb        Database instance
      * @param string $form_name  Form name
      * @param string $field_name Field name
      * @param string $field_id   Field ID
      *
      * @return boolean
      */
-    public function isDuplicate($zdb, $form_name, $field_name, $field_id = null)
+    public function isDuplicate($form_name, $field_name, $field_id = null)
     {
         //let's consider field is duplicated, in case of future errors
         $duplicated = true;
         try {
-            $select = $zdb->select(DynamicFieldType::TABLE);
+            $select = $this->zdb->select(DynamicFieldType::TABLE);
             $select->columns(
                 array(
                     'cnt' => new Expression('COUNT(field_id)')
@@ -779,7 +774,7 @@ class DynamicFields
                 );
             }
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $result = $results->current();
             $dup = $result->cnt;
             if (!$dup > 0) {
@@ -801,6 +796,6 @@ class DynamicFields
      */
     public function getErrors()
     {
-        return $this->_errors;
+        return $this->errors;
     }
 }

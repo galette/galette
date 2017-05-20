@@ -53,6 +53,7 @@ use \atoum;
  */
 class Separator extends atoum
 {
+    private $zdb;
     private $separator;
 
     /**
@@ -64,7 +65,8 @@ class Separator extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->separator = new \Galette\DynamicFieldsTypes\Separator;
+        $this->zdb = new \Galette\Core\Db();
+        $this->separator = new \Galette\DynamicFieldsTypes\Separator($this->zdb);
     }
 
     /**
@@ -74,7 +76,7 @@ class Separator extends atoum
      */
     public function testConstructor()
     {
-        $o = new \Galette\DynamicFieldsTypes\Separator(10);
+        $o = new \Galette\DynamicFieldsTypes\Separator($this->zdb, 10);
         $this->variable($o->getId())
             ->isIdenticalTo(10);
     }

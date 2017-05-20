@@ -38,6 +38,7 @@
 namespace Galette\DynamicFieldsTypes;
 
 use Analog\Analog;
+use Galette\Core\Db;
 
 /**
  * Separator field type
@@ -57,11 +58,12 @@ class Separator extends DynamicFieldType
     /**
      * Default constructor
      *
-     * @param int $id Optionnal field id to load data
+     * @param Db  $zdb Database instance
+     * @param int $id  Optionnal field id to load data
      */
-    public function __construct($id = null)
+    public function __construct(Db $zdb, $id = null)
     {
-        parent::__construct($id);
+        parent::__construct($zdb, $id);
     }
 
     /**

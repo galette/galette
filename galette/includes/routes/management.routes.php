@@ -2871,7 +2871,7 @@ $app->post(
 $app->get(
     __('/fields', 'routes') . __('/dynamic', 'routes') . __('/configure', 'routes') . '[/{form:adh|contrib|trans}]',
     function ($request, $response, $args) {
-        $dyn_fields = new DynamicFields();
+        $dyn_fields = new DynamicFields($this->zdb);
         $all_forms = $dyn_fields->getFormsNames();
 
         $form_name = (isset($args['form'])) ? $args['form'] : 'adh';
@@ -3038,7 +3038,7 @@ $app->get(
     __('/fields', 'routes') . __('/dynamic', 'routes') .
         __('/remove', 'routes') . '/{form:adh|contrib|trans}/{id:\d+}',
     function ($request, $response, $args) {
-        $dyn_fields = new DynamicFields();
+        $dyn_fields = new DynamicFields($this->zdb);
         $dyn_field = $dyn_fields->loadFieldType($args['id']);
 
         $data = [
@@ -3076,7 +3076,7 @@ $app->post(
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
         $success = false;
-        $dyn_fields = new DynamicFields();
+        $dyn_fields = new DynamicFields($this->zdb);
         $field_id = (int)$args['id'];
         $form_name = $args['form'];
 
@@ -3215,7 +3215,7 @@ $app->get(
         }
 
 
-        $dyn_fields = new DynamicFields();
+        $dyn_fields = new DynamicFields($this->zdb);
         $all_forms = $dyn_fields->getFormsNames();
 
         $form_name = $args['form'];
@@ -3275,7 +3275,7 @@ $app->post(
         '/{form:adh|contrib|trans}[/{id:\d+}]',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
-        $dyn_fields = new DynamicFields();
+        $dyn_fields = new DynamicFields($this->zdb);
 
         //EDITION
         $error_detected = [];
@@ -3305,7 +3305,6 @@ $app->post(
             $fixed_values = get_form_value('fixed_values', '');
 
             $duplicated = $dyn_fields->isDuplicate(
-                $this->zdb,
                 $args['form'],
                 $field_name,
                 $field_id
@@ -3460,7 +3459,6 @@ $app->post(
             }
 
             $duplicated = $dyn_fields->isDuplicate(
-                $this->zdb,
                 $form_name,
                 $field_name
             );
