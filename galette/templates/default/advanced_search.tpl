@@ -225,7 +225,7 @@
                         <select name="free_query_operator[]">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
                         </select>
-			<input type="radio" name="free_text[]" value="1"{if $fs.search eq 1} checked="checked"{/if}/>{_T string="true"}<input type="radio" name="free_text[]" value="0"{if $fs.search eq 0} checked="checked"{/if}/>{_T string="false"}
+                        <input type="radio" name="free_text[]" id="free_text_yes" value="1"{if $fs.search eq 1} checked="checked"{/if}/><label for="free_text_yes">{_T string="Yes"}</label><input type="radio" name="free_text[]" id="free_text_no" value="0"{if $fs.search eq 0} checked="checked"{/if}/><label for="free_text_no">{_T string="No"}</label>
     {elseif $type eq constant('Galette\Entity\DynamicFields::FILE')}
                         <select name="free_query_operator[]">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
@@ -377,7 +377,8 @@
                     switch(_type) {
                         case 'boolean':
                             _html  = _getOperatorSelector(['op_equals']);
-                            _html += '<input type="radio" name="free_text[]" value="1"/>{_T string="true"}<input type="radio" name="free_text[]" value="0"/>{_T string="false"}';
+
+                            _html += '<input type="radio" name="free_text[]" id="free_text_yes" value="1"{if $fs.search eq 1} checked="checked"{/if}/><label for="free_text_yes">{_T string="Yes"}</label><input type="radio" name="free_text[]" id="free_text_no" value="0"{if $fs.search eq 0} checked="checked"{/if}/><label for="free_text_no">{_T string="No"}</label>';
                             break;
                         case 'choice':
                             _html = _getOperatorSelector(['op_equals', 'op_not_equals']);
