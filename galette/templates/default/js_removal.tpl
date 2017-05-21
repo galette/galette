@@ -5,7 +5,7 @@
     {assign var="deleteurl" value="_this.attr('href')"}
 {/if}
         //handle removals
-        $('{$selector}').on('click', function(event) {
+        $('{$selector}').off('click').on('click', function(event) {
             event.preventDefault();
             var _this = $(this);
 
