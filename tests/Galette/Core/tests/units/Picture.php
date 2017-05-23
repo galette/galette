@@ -111,7 +111,7 @@ class Picture extends atoum
         $this->array($picture->getAllowedMimeTypes())->isIdenticalTo($expected_mimes);
 
         $this->string($this->picture->getBadChars())
-            ->isIdenticalTo('`' . implode('`, `', $this->expected_badchars) . '`' );
+            ->isIdenticalTo('`' . implode('`, `', $this->expected_badchars) . '`');
     }
 
     /**
