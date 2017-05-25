@@ -127,9 +127,17 @@ class Login extends Authentication
             );
 
             $results = $this->zdb->execute($select);
+            $log_suffix = '';
+            if ( isset($_SERVER['REMOTE_ADDR']) ) {
+               $log_suffix = $log_suffix . ' Client ' . $_SERVER['REMOTE_ADDR'];
+            }
+            if ( isset($_SERVER['HTTP_X_FORWARDED_FOR']) ) {
+               $log_suffix = $log_suffix . ' X-Forwarded-For ' . $_SERVER['HTTP_X_FORWARDED_FOR'];
+            }
+
             if ($results->count() == 0) {
                 Analog::log(
-                    'No entry found for login `' . $user . '`',
+                    'No entry found for login `' . $user . '`' . $log_suffix,
                     Analog::WARNING
                 );
                 return false;
@@ -140,7 +148,7 @@ class Login extends Authentication
                 $active = $row->activite_adh;
                 if (!$row->activite_adh == true) {
                     Analog::log(
-                        'Member `' . $user .' is inactive!`',
+                        'Member `' . $user .' is inactive!`' . $log_suffix,
                         Analog::WARNING
                     );
                     return false;
@@ -156,7 +164,7 @@ class Login extends Authentication
                 if ($pw_checked === false) {
                     //Passwords mismatch. Log and return.
                     Analog::log(
-                        'Passwords mismatch for login `' . $user . '`',
+                        'Passwords mismatch for login `' . $user . '`' . $log_suffix,
                         Analog::WARNING
                     );
                     return false;
