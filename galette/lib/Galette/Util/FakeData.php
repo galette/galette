@@ -88,6 +88,8 @@ class FakeData
     protected $groups       = [];
     protected $mids         = [];
     protected $transactions = [];
+    protected $titles;
+    protected $status;
 
     /**
      * @var integer
@@ -115,6 +117,12 @@ class FakeData
     protected $nbtransactions = self::DEFAULT_NB_TRANSACTIONS;
 
     /**
+     * @var integer
+     * Seed to use for data generation (to get same data accross runs)
+     */
+    protected $seed;
+
+    /**
      * Default constructor
      *
      * @param Db      $zdb      Db instance
@@ -130,6 +138,19 @@ class FakeData
         if ($generate) {
             $this->generate();
         }
+    }
+
+    /**
+     * Set seed
+     *
+     * @param integer $seed Seed
+     *
+     * @return FakeData
+     */
+    public function setSeed($seed)
+    {
+        $this->seed = $seed;
+        return $this;
     }
 
     /**
@@ -184,6 +205,18 @@ class FakeData
         return $this;
     }
 
+    /**
+     * Get (and create if needed) Faker instance
+     *
+     * @return \Faker\Factory
+     */
+    private function getFaker()
+    {
+        if ($this->faker === null) {
+            $this->faker = \Faker\Factory::create($this->i18n->getID());
+        }
+        return $this->faker;
+    }
 
     /**
      * Do data generation
@@ -192,7 +225,10 @@ class FakeData
      */
     public function generate()
     {
-        $this->faker = \Faker\Factory::create($this->i18n->getID());
+        $this->getFaker();
+        if ($this->seed !== null) {
+            $this->faker->seed($this->seed);
+        }
 
         $this->generateGroups($this->nbgroups);
         $this->generateMembers($this->nbmembers);
@@ -209,7 +245,7 @@ class FakeData
      */
     public function generateGroups($count = null)
     {
-        $faker = $this->faker;
+        $faker = $this->getFaker();
 
         $done = 0;
         $parent_group = null;
@@ -260,12 +296,7 @@ class FakeData
      */
     public function generateMembers($count = null)
     {
-        $faker = $this->faker;
-        $langs = $this->i18n->getArrayList();
-        $titles = Titles::getArrayList($this->zdb);
-        $status = new Status($this->zdb);
-        $status = $status->getList();
-
+        $faker = $this->getFaker();
         $done = 0;
 
         if ($count === null) {
@@ -273,47 +304,7 @@ class FakeData
         }
 
         for ($i = 0; $i < $count; $i++) {
-            $creation_date = $faker->dateTimeBetween($startDate = '-3 years', $endDate = 'now');
-            $mdp_adh = $faker->password();
-
-            $data= [
-                'nom_adh'           => $faker->lastName(),
-                'prenom_adh'        => $faker->firstName(),
-                'ville_adh'         => $faker->city(),
-                'cp_ad'             => $faker->postcode(),
-                'adresse_adh'       => $faker->streetAddress(),
-                'ville_adh'         => $faker->city(),
-                'email_adh'         => $faker->unique()->email(),
-                'login_adh'         => $faker->unique()->userName(),
-                'mdp_adh'           => $mdp_adh,
-                'mdp_adh2'          => $mdp_adh,
-                'bool_admin_adh'    => $faker->boolean($chanceOfGettingTrue = 5),
-                'bool_exempt_adh'   => $faker->boolean($chanceOfGettingTrue = 5),
-                'bool_display_info' => $faker->boolean($chanceOfGettingTrue = 70),
-                'sexe_adh'          => $faker->randomElement([Adherent::NC, Adherent::MAN, Adherent::WOMAN]),
-                'prof_adh'          => $faker->jobTitle(),
-                'titre_adh'         => $faker->randomElement(array_keys($titles)),
-                'ddn_adh'           => $faker->dateTimeBetween($startDate = '-110 years', $endDate = 'now')->format(_T("Y-m-d")),
-                'lieu_naissance'    => $faker->city(),
-                'pseudo_adh'        => $faker->userName(),
-                'adresse_adh'       => $faker->streetAddress(),
-                'cp_adh'            => $faker->postcode(),
-                'ville_adh'         => $faker->city(),
-                'pays_adh'          => $faker->optional()->country(),
-                'tel_adh'           => $faker->phoneNumber(),
-                'email_adh'         => $faker->email(),
-                'url_adh'           => $faker->optional()->url(),
-                'activite_adh'      => $faker->boolean($chanceOfGettingTrue = 90),
-                'id_statut'         => $faker->optional($weight = 0.3, $default = Status::DEFAULT_STATUS)
-                                        ->randomElement(array_keys($status)),
-                'date_crea_adh'     => $creation_date->format(_T("Y-m-d")),
-                'pref_lang'         => $faker->randomElement(array_keys($langs)),
-                'fingerprint'       => 'FAKER'
-            ];
-
-            if ($faker->boolean($chanceOfGettingTrue = 20)) {
-                $data['societe_adh'] = $faker->company();
-            }
+            $data = $this->fakeMember();
 
             $member = new Adherent($this->zdb);
             $member->setDependencies(
@@ -365,7 +356,75 @@ class FakeData
     }
 
     /**
-     * Add phto to a member
+     * Get faked member data
+     *
+     * @return array
+     */
+    public function fakeMember()
+    {
+        $faker = $this->getFaker();
+        if ($this->seed !== null) {
+            $this->faker->seed($this->seed);
+        }
+        $creation_date = $faker->dateTimeBetween($startDate = '-3 years', $endDate = 'now');
+        $mdp_adh = $faker->password();
+
+        if ($this->titles === null) {
+            $this->titles = Titles::getArrayList($this->zdb);
+        }
+
+        if ($this->status === null) {
+            $status = new Status($this->zdb);
+            $this->status = array_keys($status->getList());
+        }
+
+        $data= [
+            'nom_adh'           => $faker->lastName(),
+            'prenom_adh'        => $faker->firstName(),
+            'ville_adh'         => $faker->city(),
+            'cp_adh'            => $faker->postcode(),
+            'adresse_adh'       => $faker->streetAddress(),
+            'ville_adh'         => $faker->city(),
+            'email_adh'         => $faker->unique()->email(),
+            'login_adh'         => $faker->unique()->userName(),
+            'mdp_adh'           => $mdp_adh,
+            'mdp_adh2'          => $mdp_adh,
+            'bool_admin_adh'    => $faker->boolean($chanceOfGettingTrue = 5),
+            'bool_exempt_adh'   => $faker->boolean($chanceOfGettingTrue = 5),
+            'bool_display_info' => $faker->boolean($chanceOfGettingTrue = 70),
+            'sexe_adh'          => $faker->randomElement([Adherent::NC, Adherent::MAN, Adherent::WOMAN]),
+            'prof_adh'          => $faker->jobTitle(),
+            'titre_adh'         => $faker->randomElement(array_keys($this->titles)),
+            'ddn_adh'           => $faker->dateTimeBetween(
+                $startDate = '-110 years',
+                $endDate = date('Y-m-d')
+            )->format(_T("Y-m-d")),
+            'lieu_naissance'    => $faker->city(),
+            'pseudo_adh'        => $faker->userName(),
+            'adresse_adh'       => $faker->streetAddress(),
+            'cp_adh'            => $faker->postcode(),
+            'ville_adh'         => $faker->city(),
+            'pays_adh'          => $faker->optional()->country(),
+            'tel_adh'           => $faker->phoneNumber(),
+            'url_adh'           => $faker->optional()->url(),
+            'activite_adh'      => $faker->boolean($chanceOfGettingTrue = 90),
+            'id_statut'         => $faker->optional($weight = 0.3, $default = Status::DEFAULT_STATUS)
+                                    ->randomElement($this->status),
+            'date_crea_adh'     => $creation_date->format(_T("Y-m-d")),
+            'pref_lang'         => $faker->randomElement(array_keys($this->i18n->getArrayList())),
+            'fingerprint'       => 'FAKER' . ($this->seed !== null ? $this->seed : '')
+        ];
+
+        if ($faker->boolean($chanceOfGettingTrue = 20)) {
+            $data['societe_adh'] = $faker->company();
+            $data['is_company'] = true;
+        }
+
+        return $data;
+    }
+
+    /**
+     * Add photo to a member
      *
      * @param Adherent $member Member instance
      *
@@ -374,14 +433,18 @@ class FakeData
     public function addPhoto(Adherent $member)
     {
         $file = GALETTE_TEMPIMAGES_PATH . 'fakephoto.jpg';
-        $url = $this->faker->unique()->imageUrl(
-            $width = 800,
-            $height = 600,
-            'people',
-            true,
-            'Galette fake data'
-        );
-        var_dump($url);
+        if (!defined('GALETTE_TESTS')) {
+            $faker = $this->getFaker();
+            $url = $faker->unique()->imageUrl(
+                $width = 800,
+                $height = 600,
+                'people',
+                true,
+                'Galette fake data'
+            );
+        } else {
+            $url = GALETTE_ROOT . '../tests/fake_image.jpg';
+        }
 
         if (copy($url, $file)) {
             $_FILES = array(
@@ -416,7 +479,7 @@ class FakeData
      */
     public function generateTransactions($count = null, $mids = null)
     {
-        $faker = $this->faker;
+        $faker = $this->getFaker();
 
         $done = 0;
 
@@ -471,7 +534,7 @@ class FakeData
      */
     public function generateContributions($mids = null)
     {
-        $faker = $this->faker;
+        $faker = $this->getFaker();
 
         if ($this->maxcontribs == 0) {
             return;
@@ -534,12 +597,14 @@ class FakeData
                         ++$done;
                     }
 
-                    if ($faker->boolean($chanceOfGettingTrue = 90)) {
-                        $contrib::setTransactionPart(
-                            $this->zdb,
-                            $transaction->id,
-                            $contrib->id
-                        );
+                    if (count($this->transactions) > 0) {
+                        if ($faker->boolean($chanceOfGettingTrue = 90)) {
+                            $contrib::setTransactionPart(
+                                $this->zdb,
+                                $transaction->id,
+                                $contrib->id
+                            );
+                        }
                     }
                 }
             }
@@ -610,7 +675,7 @@ class FakeData
      * @param History     $history     History instance
      * @param Login       $login       Login instance
      *
-     * @return void
+     * @return FakeData
      */
     public function setDependencies(
         Preferences $preferences,
@@ -622,5 +687,17 @@ class FakeData
         $this->member_fields = $fields;
         $this->history = $history;
         $this->login = $login;
+
+        return $this;
+    }
+
+    /**
+     * Get generated members ids
+     *
+     * @return array
+     */
+    public function getMembersIds()
+    {
+        return $this->mids;
     }
 }

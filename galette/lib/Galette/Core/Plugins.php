@@ -79,9 +79,9 @@ class Plugins
      * Loads modules.
      *
      * @param string $path could be a separated list of paths
-     * (path separator depends on your OS).
+     *                     (path separator depends on your OS).
      * @param string $lang Indicates if we need to load a lang file on plugin
-     * loading.
+     *                     loading.
      *
      * @return void
      */

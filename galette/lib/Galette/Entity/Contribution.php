@@ -94,8 +94,8 @@ class Contribution
      * @param Db                 $zdb   Database
      * @param Login              $login Login instance
      * @param null|int|ResultSet $args  Either a ResultSet row to load
-     *                                   a specific contribution, or an type id
-     *                                   to just instanciate object
+     *                                  a specific contribution, or an type id
+     *                                  to just instanciate object
      */
     public function __construct(Db $zdb, Login $login, $args = null)
     {
@@ -421,7 +421,7 @@ class Contribution
         }
 
         // missing required fields?
-        while (list($key, $val) = each($required)) {
+        foreach ($required as $key => $val) {
             if ($val === 1) {
                 $prop = '_' . $this->_fields[$key]['propname'];
                 if (!isset($disabled[$key])
@@ -430,7 +430,7 @@ class Contribution
                     || (is_object($this->$prop) && trim($this->$prop->id) == ''))
                 ) {
                     $errors[] = _T("- Mandatory field empty: ") .
-                    ' <a href="#' . $key . '">' . $this->getFieldName($key) .'</a>';
+                    ' <a href="#' . $key . '">' . $this->getFieldLabel($key) .'</a>';
                 }
             }
         }
@@ -448,7 +448,7 @@ class Contribution
             Analog::log(
                 'Some errors has been throwed attempting to edit/store a contribution' .
                 print_r($errors, true),
-                Analog::DEBUG
+                Analog::ERROR
             );
             return $errors;
         } else {
@@ -691,7 +691,7 @@ class Contribution
      *
      * @return string
      */
-    public function getFieldName($field)
+    public function getFieldLabel($field)
     {
         $label = $this->_fields[$field]['label'];
         if ($this->isCotis() && $field == 'date_debut_cotis') {
@@ -887,9 +887,9 @@ class Contribution
      *
      * @param ExternalScript $es     External script to execute
      * @param array          $extra  Extra informations on contribution
-     *                                  Defaults to null
+     *                               Defaults to null
      * @param array          $pextra Extra information on payment
-     *                                  Defaults to null
+     *                               Defaults to null
      *
      * @return mixed Script return value on success, values and script output on fail
      */

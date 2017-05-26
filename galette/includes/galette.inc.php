@@ -161,7 +161,7 @@ set_include_path(
 /*------------------------------------------------------------------------------
 Logger stuff
 ------------------------------------------------------------------------------*/
-if (!$cron) {
+if (!$cron && !defined('GALETTE_TESTS')) {
     //set custom error handler
     set_error_handler(
         array(
@@ -177,14 +177,16 @@ $galette_debug_log = \Analog\Handler\Ignore::init();
 if (!defined('GALETTE_LOG_LVL')) {
     if (GALETTE_MODE === 'DEV') {
         define('GALETTE_LOG_LVL', \Analog\Analog::DEBUG);
+    } elseif (defined('GALETTE_TESTS')) {
+        define('GALETTE_LOG_LVL', \Analog\Analog::ERROR);
     } else {
         define('GALETTE_LOG_LVL', \Analog\Analog::WARNING);
     }
 }
 
 if (defined('GALETTE_TESTS')) {
-    //FIXME: we should check logs files from tests
-    $galette_run_log = \Analog\Handler\Ignore::init();
+    $log_path = GALETTE_LOGS_PATH . 'tests.log';
+    $galette_run_log = \Analog\Handler\File::init($log_path);
 } else {
     if ((!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) && !$cron) {
         $now = new \DateTime();

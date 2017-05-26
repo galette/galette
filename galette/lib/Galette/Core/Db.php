@@ -69,7 +69,7 @@ class Db
      * Main constructor
      *
      * @param array $dsn Connection informations
-     * If not set, database constants will be used.
+     *                   If not set, database constants will be used.
      */
     public function __construct($dsn = null)
     {
@@ -758,8 +758,12 @@ class Db
                 Adapter::QUERY_MODE_EXECUTE
             );
         } catch (\Exception $e) {
+            $msg = 'Query error: ';
+            if (isset($query_string)) {
+                $msg .= $query_string;
+            }
             Analog::log(
-                'Query error: ' . $query_string . ' ' . $e->__toString(),
+                $msg . ' ' . $e->__toString(),
                 Analog::ERROR
             );
             throw $e;

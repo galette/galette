@@ -2,6 +2,9 @@
 .settings/
 nbproject
 
+# Mac OS files
+.DS_Store
+
 # /galette/
 /galette/build-stamp
 /galette/configure-stamp

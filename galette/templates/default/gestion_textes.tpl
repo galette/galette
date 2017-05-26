@@ -121,7 +121,15 @@
                     autoOpen: false,
                     modal: true,
                     hide: 'fold',
-                    width: '40%'
+                    width: '40%',
+                    create: function (event, ui) {
+                        if ($(window ).width() < 767) {
+                            $(this).dialog('option', {
+                                    'width': '95%',
+                                    'draggable': false
+                            });
+                        }
+                    }
                 }).dialog('close');
 
                 $('#show_legend').click(function(){

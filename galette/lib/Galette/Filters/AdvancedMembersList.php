@@ -42,6 +42,7 @@ use Galette\Entity\Status;
 use Galette\Entity\ContributionsTypes;
 use Galette\Entity\Contribution;
 use Galette\Repository\Members;
+use Galette\Entity\DynamicFields;
 
 /**
  * Members list filters and paginator
@@ -502,9 +503,32 @@ class AdvancedMembersList extends MembersList
                             && isset($value['log_op'])
                             && isset($value['qry_op'])
                             && isset($value['idx'])
+                            && isset($value['type'])
                         ) {
                             $id = $value['idx'];
                             unset($value['idx']);
+
+                            //handle value according to type
+                            switch ($value['type']) {
+                                case DynamicFields::DATE:
+                                    if ($value['search'] !== null && trim($value['search']) !== '') {
+                                        try {
+                                            $d = \DateTime::createFromFormat(__("Y-m-d"), $value['search']);
+                                            if ($d === false) {
+                                                throw new \Exception('Incorrect format');
+                                            }
+                                            $value['search'] = $d->format('Y-m-d');
+                                        } catch (\Exception $e) {
+                                            Analog::log(
+                                                'Incorrect date format for ' . $value['field'] .
+                                                '! was: ' . $value['search'],
+                                                Analog::WARNING
+                                            );
+                                        }
+                                    }
+                                    break;
+                            }
+
                             $this->_free_search[$id] = $value;
                         } else {
                             Analog::log(

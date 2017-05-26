@@ -105,10 +105,10 @@ class Contributions
      * Get contributions list
      *
      * @param bool    $as_contrib return the results as an array of
-     *                               Contribution object.
+     *                            Contribution object.
      * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                               an array. If null, all fields will be
-     *                               returned
+     *                            an array. If null, all fields will be
+     *                            returned
      * @param boolean $count      true if we want to count members
      *
      * @return Contribution[]|ResultSet

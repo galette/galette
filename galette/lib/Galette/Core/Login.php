@@ -146,7 +146,7 @@ class Login extends Authentication
                     return false;
                 }
 
-                //check if pawwsord matches
+                //check if passwords matches
                 $pw_checked = password_verify($passe, $row->mdp_adh);
                 if (!$pw_checked) {
                     //if password did not match, we try old md5 method

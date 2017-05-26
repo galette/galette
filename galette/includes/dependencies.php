@@ -155,7 +155,12 @@ $container['plugins'] = function ($c) use ($app) {
 };
 
 $container['i18n'] = function ($c) {
-    return new Galette\Core\I18n();
+    $i18n = $c->get('session')->i18n;
+    if (!$i18n || !$i18n->getId()) {
+        $i18n = new Galette\Core\I18n();
+        $c->get('session')->i18n = $i18n;
+    }
+    return $i18n;
 };
 
 $container['zdb'] = function ($c) {
@@ -282,6 +287,7 @@ $container['acls'] = function ($c) {
         'ajax_group'                => 'groupmanager',
         'ajax_groups'               => 'groupmanager',
         'ajax_groupname_unique'     => 'groupmanager',
+        'ajax_groups_reorder'       => 'admin',
         'add_group'                 => 'staff',
         'removeGroup'               => 'staff',
         'doRemoveGroup'             => 'staff',
@@ -374,27 +380,6 @@ $container['App\Action\HomeAction'] = function ($c) {
 $hist = $container['history'];
 $login = $container['login'];
 $zdb = $container['zdb'];
+$i18n = $container['i18n'];
 
-/**
- * Language instantiation
- */
-if (isset($session['lang'])) {
-    $i18n = unserialize($session['lang']);
-    if (!$i18n->getId()) {
-        $i18n = new Galette\Core\I18n();
-    }
-} else {
-    $i18n = new Galette\Core\I18n();
-}
-
-if (isset($_POST['pref_lang'])
-    && (strpos($_SERVER['PHP_SELF'], 'self_adherent.php') !== false
-    || strpos($_SERVER['PHP_SELF'], 'install/index.php') !== false)
-) {
-    $_GET['pref_lang'] = $_POST['pref_lang'];
-}
-if (isset($_GET['pref_lang'])) {
-    $i18n->changeLanguage($_GET['pref_lang']);
-}
-$session['lang'] = serialize($i18n);
 require_once GALETTE_ROOT . 'includes/i18n.inc.php';

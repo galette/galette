@@ -249,11 +249,11 @@ class Groups
      *
      * @param Adherent $adh         Member
      * @param array    $groups      Groups Groups list. Each entry must contain
-     *                                the group id, name each value separated
-     *                                by a pipe.
+     *                              the group id, name each value separated
+     *                              by a pipe.
      * @param boolean  $manager     Add member as manager, defaults to false
      * @param boolean  $transaction Does a SQL transaction already exists? Defaults
-     *                                 to false.
+     *                              to false.
      *
      * @return boolean
      */

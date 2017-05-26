@@ -77,7 +77,7 @@ class Picture implements FileInterface
     protected $file_path;
     protected $format;
     protected $mime;
-    protected $has_picture = true;
+    protected $has_picture = false;
     protected $store_path = GALETTE_PHOTOS_PATH;
     protected $max_width = 200;
     protected $max_height = 200;
@@ -110,7 +110,11 @@ class Picture implements FileInterface
 
             //if file does not exists on the FileSystem, check for it in the database
             if (!$this->checkFileOnFS()) {
-                $this->checkFileInDB();
+                if ($this->checkFileInDB()) {
+                    $this->has_picture = true;
+                }
+            } else {
+                $this->has_picture = true;
             }
         }
 
@@ -138,6 +142,8 @@ class Picture implements FileInterface
             //if file does not exists on the FileSystem,
             //check for it in the database
             //$this->checkFileInDB();
+        } else {
+            $this->has_picture = false;
         }
 
         // if we still have no picture, take the default one
@@ -367,6 +373,7 @@ class Picture implements FileInterface
                 if ($transaction === true) {
                     $zdb->connection->commit();
                 }
+                $this->has_picture = false;
                 return true;
             }
         } catch (\Exception $e) {
@@ -401,7 +408,7 @@ class Picture implements FileInterface
         $tmpfile = $file['tmp_name'];
 
         //First, does the file have a valid name?
-        $reg = "/^(.[^" . implode('', $this->bad_chars) . "]+)\.(" .
+        $reg = "/^([^" . implode('', $this->bad_chars) . "]+)\.(" .
             implode('|', $this->allowed_extensions) . ")$/i";
         if (preg_match($reg, $name, $matches)) {
             Analog::log(
@@ -415,7 +422,7 @@ class Picture implements FileInterface
                 $extension = 'jpg';
             }
         } else {
-            $erreg = "/^(.[^" . implode('', $this->bad_chars) . "]+)\.(.*)/i";
+            $erreg = "/^([^" . implode('', $this->bad_chars) . "]+)\.(.*)/i";
             $m = preg_match($erreg, $name, $errmatches);
 
             $err_msg = '[' . $class . '] ';
@@ -548,6 +555,7 @@ class Picture implements FileInterface
                 )
             );
             $zdb->connection->commit();
+            $this->has_picture = true;
         } catch (\Exception $e) {
             $zdb->connection->rollBack();
             Analog::log(
@@ -603,8 +611,8 @@ class Picture implements FileInterface
             $class = get_class($this);
             $select = $zdb->select($this->tbl_prefix . $class::TABLE);
             $select
-                ->columns(array(self::PK))
-                ->where->in(self::PK, array_keys($existing_disk));
+                ->columns(array($class::PK))
+                ->where->in($class::PK, array_keys($existing_disk));
 
             $results = $zdb->execute($select);
 

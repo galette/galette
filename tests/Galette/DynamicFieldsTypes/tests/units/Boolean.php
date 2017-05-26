@@ -53,7 +53,7 @@ use \atoum;
  */
 class Boolean extends atoum
 {
-    private $_bool;
+    private $bool;
 
     /**
      * Set up tests
@@ -64,7 +64,7 @@ class Boolean extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->_bool = new \Galette\DynamicFieldsTypes\Boolean;
+        $this->bool = new \Galette\DynamicFieldsTypes\Boolean;
     }
 
     /**
@@ -86,7 +86,7 @@ class Boolean extends atoum
      */
     public function testGetTypeName()
     {
-        $this->variable($this->_bool->getTypeName())
+        $this->variable($this->bool->getTypeName())
             ->isIdenticalTo(_T('boolean'));
     }
 
@@ -97,47 +97,47 @@ class Boolean extends atoum
      */
     public function testBaseProperties()
     {
-        $muliple = $this->_bool->isMultiValued();
+        $muliple = $this->bool->isMultiValued();
         $this->boolean($muliple)->isFalse();
 
-        $required = $this->_bool->isRequired();
+        $required = $this->bool->isRequired();
         //should'nt that one be false?
         $this->variable($required)->isNull();
 
-        $name = $this->_bool->getName();
+        $name = $this->bool->getName();
         $this->variable($name)->isNull();
 
-        $has_fixed_values = $this->_bool->hasFixedValues();
+        $has_fixed_values = $this->bool->hasFixedValues();
         $this->boolean($has_fixed_values)->isFalse();
 
-        $has_data = $this->_bool->hasData();
+        $has_data = $this->bool->hasData();
         $this->boolean($has_data)->isTrue();
 
-        $has_w = $this->_bool->hasWidth();
+        $has_w = $this->bool->hasWidth();
         $this->boolean($has_w)->isFalse();
 
-        $has_h = $this->_bool->hasHeight();
+        $has_h = $this->bool->hasHeight();
         $this->boolean($has_h)->isFalse();
 
-        $has_s = $this->_bool->hasSize();
+        $has_s = $this->bool->hasSize();
         $this->boolean($has_s)->isFalse();
 
-        $perms = $this->_bool->getPerm();
+        $perms = $this->bool->getPerm();
         $this->variable($perms)->isNull();
 
-        $width = $this->_bool->getWidth();
+        $width = $this->bool->getWidth();
         $this->variable($width)->isNull();
 
-        $height = $this->_bool->getHeight();
+        $height = $this->bool->getHeight();
         $this->variable($height)->isNull();
 
-        $repeat = $this->_bool->getRepeat();
+        $repeat = $this->bool->getRepeat();
         $this->variable($repeat)->isNull();
 
-        $size = $this->_bool->getSize();
+        $size = $this->bool->getSize();
         $this->variable($size)->isNull();
 
-        $values = $this->_bool->getValues();
+        $values = $this->bool->getValues();
         $this->boolean($values)->isFalse();
     }
 }

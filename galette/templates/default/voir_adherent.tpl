@@ -8,6 +8,8 @@
         <a id="next" href="{if isset($navigate.next)}{path_for name="member" data=["id" => $navigate.next]}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">{_T string="Next"}</a>
     </nav>
 {/if}
+    <div class="bigtable">
+        <div id="member_stateofdue" class="{$member->getRowClass()}">{$member->getDues()}</div>
         <ul id="details_menu">
 {if ($pref_card_self eq 1) or ($login->isAdmin() or $login->isStaff())}
             <li>
@@ -45,8 +47,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/if}
 
         </ul>
-    <div class="bigtable wrmenu">
-        <div id="member_stateofdue" class="{$member->getRowClass()}">{$member->getDues()}</div>
 {if $member->hasParent() or $member->hasChildren()}
         <table class="details">
             <caption class="ui-state-active ui-corner-top">{_T string="Family"}</caption>

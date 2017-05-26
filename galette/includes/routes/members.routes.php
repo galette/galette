@@ -489,9 +489,11 @@ $app->post(
                                         = (int)$post['free_logical_operator'][$i];
                                     $qry_op
                                         = (int)$post['free_query_operator'][$i];
+                                    $type = (int)$post['free_type'][$i];
                                     $fs = array(
                                         'idx'       => $i,
                                         'field'     => $f,
+                                        'type'      => $type,
                                         'search'    => $fs_search,
                                         'log_op'    => $log_op,
                                         'qry_op'    => $qry_op
@@ -556,7 +558,6 @@ $app->get(
 
         $member = new Adherent($this->zdb, $this->login->login, $deps);
         $id = $member->id;
-        var_dump($id);
 
         // declare dynamic field values
         $adherent['dyn'] = $dyn_fields->getFields('adh', $id, true);
@@ -951,7 +952,7 @@ $app->get(
 $app->post(
     __('/member/store', 'routes') . '[/{self:' . __('subscribe', 'routes') . '}]',
     function ($request, $response, $args) {
-        if (!$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged()) {
+        if (!$this->preferences->pref_bool_selfsubscribe && !$this->login->isLogged()) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('slash'));

@@ -137,10 +137,10 @@ class Members
      * Get staff members list
      *
      * @param bool    $as_members return the results as an array of
-     *                               Member object.
+     *                            Member object.
      * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                               an array. If null, all fields will be
-     *                               returned
+     *                            an array. If null, all fields will be
+     *                            returned
      * @param boolean $count      true if we want to count members
      * @param boolean $limit      true to LIMIT query
      *
@@ -166,10 +166,10 @@ class Members
      * Get managed members list (for groups managers)
      *
      * @param bool    $as_members return the results as an array of
-     *                               Member object.
+     *                            Member object.
      * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                               an array. If null, all fields will be
-     *                               returned
+     *                            an array. If null, all fields will be
+     *                            returned
      * @param boolean $count      true if we want to count members
      * @param boolean $limit      true to LIMIT query
      *
@@ -194,10 +194,10 @@ class Members
      * Get members list
      *
      * @param bool    $as_members return the results as an array of
-     *                               Member object.
+     *                            Member object.
      * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                               an array. If null, all fields will be
-     *                               returned
+     *                            an array. If null, all fields will be
+     *                            returned
      * @param boolean $count      true if we want to count members
      * @param boolean $staff      true if we want only staff members
      * @param boolean $managed    true if we want only managed groups
@@ -390,7 +390,7 @@ class Members
             //not numeric and not an array: incorrect.
             Analog::log(
                 'Asking to remove members, but without providing an array or a single numeric value.',
-                Analog::WARNING
+                Analog::ERROR
             );
             return false;
         }
@@ -424,24 +424,23 @@ class Members
      * Get members list with public informations available
      *
      * @param boolean $with_photos get only members which have uploaded a
-     *                                photo (for trombinoscope)
-     * @param array   $fields      fields list
+     *                             photo (for trombinoscope)
      *
      * @return Adherent[]
      */
-    public function getPublicList($with_photos, $fields)
+    public function getPublicList($with_photos)
     {
         global $zdb;
 
         try {
             $select = $this->buildSelect(
                 self::SHOW_PUBLIC_LIST,
-                $fields,
+                null,
                 $with_photos
             );
 
             if ($this->filters) {
-                $select->order($this->buildOrderClause($fields));
+                $select->order($this->buildOrderClause(null));
             }
 
             $this->proceedCount($select);
@@ -563,6 +562,9 @@ class Members
         global $zdb, $login;
 
         try {
+            if ($fields != null && is_array($fields) && !in_array('id_adh', $fields)) {
+                $fields[] = 'id_adh';
+            }
             $fieldsList = ( $fields != null )
                             ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
                             : $fields) : (array)'*';
@@ -1352,11 +1354,9 @@ class Members
                                 break;
                             case AdvancedMembersList::OP_BEFORE:
                                 $qop = '<';
-                                $fs['search'] = "STR_TO_DATE('" . $fs['search'] . "', '%d/%m/%Y')";
                                 break;
                             case AdvancedMembersList::OP_AFTER:
                                 $qop = '>';
-                                $fs['search'] = 'STR_TO_DATE(\'' . $fs['search'] . '\', \'%d/%m/%Y\')';
                                 break;
                             default:
                                 Analog::log(
@@ -1380,9 +1380,28 @@ class Members
                         if (!strncmp($fs['field'], 'bool_', strlen('bool_'))) {
                             $qry .= $prefix . $fs['field'] . $qop  . ' ' .
                                 $fs['search'] ;
-                        } elseif ($fs['qry_op'] === AdvancedMembersList::OP_BEFORE || $fs['qry_op'] === AdvancedMembersList::OP_AFTER) {
-                            $qry .= 'STR_TO_DATE(' . $prefix . $fs['field'] . ', \'%d/%m/%Y\') ' .
-                                $qop  . ' ' .  $fs['search'] ;
+                        } elseif ($fs['qry_op'] === AdvancedMembersList::OP_BEFORE
+                            || $fs['qry_op'] === AdvancedMembersList::OP_AFTER
+                        ) {
+                            if ($prefix === 'a.') {
+                                //dates are OK in the main fields. no cast, just query!
+                                $qry .= $prefix . $fs['field'] . $qop  . ' ' .
+                                    $zdb->platform->quoteValue($fs['search']);
+                            } else {
+                                //dynamic dates are stored in their localized format :/
+                                //use current lang format to query for now
+                                if ($zdb->isPostgres()) {
+                                    $fs['search'] = "to_date('" . $fs['search'] . "', 'YYYY-MM-DD')";
+                                    $store_fmt = __("Y-m-d") === 'Y-m-d' ? 'YYYY-MM-DD' : 'DD/MM/YYYY';
+                                    $qry .= "to_date('" . $prefix . $fs['field'] . "', '$store_fmt')";
+                                } else {
+                                    $fs['search'] = "STR_TO_DATE('" . $fs['search'] . "', '%Y-%m-%d')";
+                                    $store_fmt = __("Y-m-d") === 'Y-m-d' ? '%Y-%m-%d' : '%d/%m/%Y';
+                                    $qry .= 'STR_TO_DATE(' . $prefix . $fs['field'] . ', \'' . $store_fmt . '\') ';
+                                }
+
+                                $qry .= $qop  . ' ' .  $fs['search'] ;
+                            }
                         } else {
                             $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' .
                                 $qop  . ' ' . $zdb->platform->quoteValue(

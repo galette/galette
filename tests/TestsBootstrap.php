@@ -36,12 +36,11 @@ define('GALETTE_MODE', 'PROD');
 define('GALETTE_PLUGINS_PATH', __DIR__ . '/plugins/');
 define('GALETTE_TPL_SUBDIR', 'templates/default/');
 define('GALETTE_THEME', 'themes/default/');
-define('GALETTE_TEMPIMAGES_PATH', __DIR__ . '/tests-data');
-define('GALETTE_CACHE_DIR', __DIR__ . '/tests-data/');
-if (is_dir(GALETTE_TEMPIMAGES_PATH)) {
+define('GALETTE_DATA_PATH', __DIR__ . '/tests-data/');
+if (is_dir(GALETTE_DATA_PATH)) {
     $files = new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator(
-            GALETTE_TEMPIMAGES_PATH,
+            GALETTE_DATA_PATH,
             RecursiveDirectoryIterator::SKIP_DOTS
         ),
         RecursiveIteratorIterator::CHILD_FIRST
@@ -51,9 +50,25 @@ if (is_dir(GALETTE_TEMPIMAGES_PATH)) {
         $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
         $todo($fileinfo->getRealPath());
     }
-    rmdir(GALETTE_TEMPIMAGES_PATH);
+    rmdir(GALETTE_DATA_PATH);
 }
-mkdir(GALETTE_TEMPIMAGES_PATH);
+
+mkdir(GALETTE_DATA_PATH);
+$directories = [
+    'logs',
+    'templates_c',
+    'cache',
+    'exports',
+    'imports',
+    'photos',
+    'attachments',
+    'files',
+    'tempimages'
+];
+foreach ($directories as $directory) {
+    mkdir(GALETTE_DATA_PATH . $directory);
+}
+
 $logfile = 'galette_tests';
 
 require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';

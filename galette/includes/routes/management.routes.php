@@ -419,7 +419,7 @@ $app->post(
             }
 
             // missing required fields?
-            while (list($key, $val) = each($required)) {
+            foreach ($required as $key => $val) {
                 if (!isset($pref[$key])) {
                     $this->flash->addMessage(
                         'error_detected',
@@ -464,7 +464,7 @@ $app->post(
 
             if (count($this->flash->getMessage('error_detected')) == 0) {
                 // update preferences
-                while (list($champ,$valeur) = each($insert_values)) {
+                foreach ($insert_values as $champ=>$valeur) {
                     if ($this->login->isSuperAdmin()
                         || (!$this->login->isSuperAdmin()
                         && ($champ != 'pref_admin_pass' && $champ != 'pref_admin_login'))
@@ -887,7 +887,7 @@ $app->map(
                 }
 
                 $sql_query = '';
-                while (list($key, $val) = each($update_scripts)) {
+                foreach ($update_scripts as $key => $val) {
                     $sql_query .= @fread(
                         @fopen($plugin['root'] . '/scripts/' . $val, 'r'),
                         @filesize($plugin['root'] . '/scripts/' . $val)
@@ -933,14 +933,6 @@ $app->map(
                             }
                         }
                     }
-                }
-                break;
-            case 'i5':
-            case 'u5':
-                if ($step == 'i5') {
-                    $title = _T("Installation complete !");
-                } else {
-                    $title = _T("Update complete !");
                 }
                 break;
         }
@@ -2750,7 +2742,7 @@ $app->post(
             }
 
             // Validate form
-            while (list($key, $value) = each($post)) {
+            foreach ($post as $key => $value) {
                 if (substr($key, 0, 11) == 'text_trans_') {
                     $trans_lang = substr($key, 11);
                     $trans_lang = str_replace('_utf8', '.utf8', $trans_lang);

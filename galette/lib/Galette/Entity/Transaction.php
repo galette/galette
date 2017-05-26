@@ -313,12 +313,12 @@ class Transaction
         }
 
         // missing required fields?
-        while (list($key, $val) = each($required)) {
+        foreach ($required as $key => $val) {
             if ($val === 1) {
                 $prop = '_' . $this->_fields[$key]['propname'];
                 if (!isset($disabled[$key]) && !isset($this->$prop)) {
                     $errors[] = _T("- Mandatory field empty: ") .
-                    ' <a href="#' . $key . '">' . $this->getFieldName($key) .'</a>';
+                    ' <a href="#' . $key . '">' . $this->getFieldLabel($key) .'</a>';
                 }
             }
         }
@@ -556,5 +556,20 @@ class Transaction
     {
         /*$forbidden = array('fields');*/
         /** TODO: What to do ? :-) */
+    }
+
+    /**
+     * Get field label
+     *
+     * @param string $field Field name
+     *
+     * @return string
+     */
+    private function getFieldLabel($field)
+    {
+        $label = $this->_fields[$field]['label'];
+        //remove trailing ':' and then nbsp (for french at least)
+        $label = trim(trim($label, ':'), '&nbsp;');
+        return $label;
     }
 }

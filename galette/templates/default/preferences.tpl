@@ -508,11 +508,19 @@
                         'modal': true,
                         'hide': 'fold',
                         'width': '20em',
+                        create: function (event, ui) {
+                            if ($(window ).width() < 767) {
+                                $(this).dialog('option', {
+                                        'width': '95%',
+                                        'draggable': false
+                                });
+                            }
+                        },
                         close: function(event, ui) {
                             $('#testEmail').remove();
                         },
                         buttons: {
-                            Ok: function() {
+                            {_T string="Send"}: function() {
                                 $.ajax({
                                     url: _this.attr('href'),
                                     type: 'GET',

@@ -314,9 +314,12 @@ abstract class DynamicFieldType
      */
     public function getValues()
     {
-
         if ($this->fixed_values) {
-            return implode("\n", $this->values);
+            if (is_array($this->values)) {
+                return implode("\n", $this->values);
+            } else {
+                return '';
+            }
         } else {
             Analog::log(
                 'Field do not have fixed values, cannot retrieve values.',

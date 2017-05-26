@@ -23,19 +23,19 @@
         {if $preferences->pref_show_id or $field.field_id neq 'id_adh'}
             {assign var='fid' value=$field.field_id}
                 <li class="tbl_line_{if $smarty.foreach.fields_list.iteration % 2 eq 0}even{else}odd{/if}">
-                    <span class="label">
+                    <span class="label" data-title="{_T string="Field name"}">
                         <input type="hidden" name="fields[]" value="{$fid}"/>
                         <input type="hidden" name="{$fid}_category" value="{$category->id_field_category}"/>
                         <input type="hidden" name="{$fid}_label" value="{$field.label}"/>
                         {$field.label}
                     </span>
-                    <span class="yesno" title="{if in_array($fid, $non_required)}{_T string="Field '%field' cannot be set as required." pattern="/%field/" replace=$field.label}{else}{_T string="Mark '%field' as (not) required" pattern="/%field/" replace=$field.label}{/if}">
+                    <span data-title="{_T string="Required"}" class="yesno" title="{if in_array($fid, $non_required)}{_T string="Field '%field' cannot be set as required." pattern="/%field/" replace=$field.label}{else}{_T string="Mark '%field' as (not) required" pattern="/%field/" replace=$field.label}{/if}">
                         <label for="{$fid}_required_yes">{_T string="Yes"}</label>
                         <input type="radio" name="{$fid}_required" id="{$fid}_required_yes" value="1"{if $field.required} checked="checked"{/if}{if in_array($fid, $non_required)} disabled="disabled"{/if}/>
                         <label for="{$fid}_required_no">{_T string="No"}</label>
                         <input type="radio" name="{$fid}_required" id="{$fid}_required_no" value="0"{if !$field.required} checked="checked"{/if}{if in_array($fid, $non_required)} disabled="disabled"{/if}/>
                     </span>
-                    <span class="yesnoadmin" title="{_T string="Change '%field' visibility" pattern="/%field/" replace=$field.label}">
+                    <span data-title="{_T string="Visible"}" class="yesnoadmin" title="{_T string="Change '%field' visibility" pattern="/%field/" replace=$field.label}">
                         <label for="{$fid}_visible_yes">{_T string="Yes"}</label>
                         <input type="radio" name="{$fid}_visible" id="{$fid}_visible_yes" value="{Galette\Entity\FieldsConfig::VISIBLE}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::VISIBLE')} checked="checked"{/if}/>
                         <label for="{$fid}_visible_no">{_T string="No"}</label>

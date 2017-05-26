@@ -245,7 +245,7 @@ if ( isset($_POST["nom_adh"]) ) {
         }
     }
 } elseif ( isset($_POST["update_lang"]) && $_POST["update_lang"] == 1 ) {
-    while ( list($key, $properties) = each($fields) ) {
+    foreach ($fields as $key => $properties) {
         $key = strtolower($key);
         if ( isset($_POST[$key]) ) {
             $adherent[$key] = trim($_POST[$key]);

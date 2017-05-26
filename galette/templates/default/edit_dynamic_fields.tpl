@@ -56,7 +56,7 @@
             </select>
         {elseif $field.field_type eq 4}
             <input type="text" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}" maxlength="10"
-                value="{$valuedata}"
+                value="{$valuedata}" class="dynamic_date"
                 {if isset($disabled.dyn[$field.field_id])} {$disabled.dyn[$field.field_id]}{/if}
                 {if $field.field_required eq 1} required{/if}
             />
@@ -161,10 +161,7 @@
                 }
             }
         });
-        {foreach from=$dynamic_fields item=field}
-            {if $field.field_type eq 4}
-                {section name="fieldLoop" start=1 loop=$loops}
-        $('#info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}').datepicker({
+        $('.dynamic_date').datepicker({
             changeMonth: true,
             changeYear: true,
             showOn: 'button',
@@ -172,9 +169,6 @@
             buttonImageOnly: true,
             buttonText: '{_T string="Select a date" escape="js"}'
         });
-                {/section}
-            {/if}
-        {/foreach}
     });
 </script>
 {/if}

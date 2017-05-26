@@ -88,7 +88,7 @@ $app->group(__('/public', 'routes'), function () {
             }
 
             $m = new Members();
-            $members = $m->getPublicList(false, null);
+            $members = $m->getPublicList(false);
 
             $this->session->public_filter_members = $filters;
 
@@ -144,7 +144,7 @@ $app->group(__('/public', 'routes'), function () {
         __('/trombinoscope', 'routes'),
         function ($request, $response) {
             $m = new Members();
-            $members = $m->getPublicList(true, null);
+            $members = $m->getPublicList(true);
 
             // display page
             $this->view->render(

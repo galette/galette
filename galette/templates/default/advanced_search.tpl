@@ -172,7 +172,14 @@
                         <select name="free_field[]" class="field_selector">
                             <option value="">{_T string="Select a field"}</option>
     {foreach $search_fields as $field}
-                            <option value="{$field@key}"{if $fs.field eq $field@key} selected="selected"{assign var=type value=constant('Galette\Entity\DynamicFields::LINE')}{/if}>{$field.label}</option>
+        {if $fs.field eq $field@key}
+            {if $field@key|strpos:'date_' === 0 or $field@key eq 'ddn_adh'}
+                {assign var=type value=constant('Galette\Entity\DynamicFields::DATE')}
+            {else}
+                {assign var=type value=constant('Galette\Entity\DynamicFields::LINE')}
+            {/if}
+        {/if}
+                            <option value="{$field@key}"{if $fs.field eq $field@key} selected="selected"{/if}>{$field.label}</option>
     {/foreach}
     {foreach $dynamic_fields as $field}
         {if $field.field_type eq constant('Galette\Entity\DynamicFields::SEPARATOR')}
@@ -180,39 +187,20 @@
         {/if}
         {assign var=fid value=$field.field_id}
         {assign var=rid value="dyn_$fid"}
-			    <option value="dyn_{$field.field_id}"{if $fs.field eq $rid} selected="selected"{assign var=type value=$field.field_type}{assign var=choices value=$field.choices}{/if}>{$field.field_name}</option>
+                            <option value="dyn_{$field.field_id}"{if $fs.field eq $rid} selected="selected"{assign var=type value=$field.field_type}{assign var=choices value=$field.choices}{/if}>{$field.field_name}</option>
     {/foreach}
                         </select>
                         <span>
-    {if $type eq constant('Galette\Entity\DynamicFields::LINE')}
-                        <select name="free_query_operator[]">
-                            <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
-                            <option value="{Galette\Filters\AdvancedMembersList::OP_CONTAINS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_CONTAINS')} selected="selected"{/if}>{_T string="contains"}</option>
-                            <option value="{Galette\Filters\AdvancedMembersList::OP_NOT_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_NOT_EQUALS')} selected="selected"{/if}>{_T string="is not"}</option>
-                            <option value="{Galette\Filters\AdvancedMembersList::OP_NOT_CONTAINS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_NOT_CONTAINS')} selected="selected"{/if}>{_T string="do not contains"}</option>
-                            <option value="{Galette\Filters\AdvancedMembersList::OP_STARTS_WITH}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_STARTS_WITH')} selected="selected"{/if}>{_T string="starts with"}</option>
-                            <option value="{Galette\Filters\AdvancedMembersList::OP_ENDS_WITH}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_ENDS_WITH')} selected="selected"{/if}>{_T string="ends with"}</option>
-                        </select>
-			<input type="text" name="free_text[]" value="{$fs.search}"/>
-    {elseif $type eq constant('Galette\Entity\DynamicFields::TEXT')}
-                        <select name="free_query_operator[]">
-                            <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
-                            <option value="{Galette\Filters\AdvancedMembersList::OP_CONTAINS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_CONTAINS')} selected="selected"{/if}>{_T string="contains"}</option>
-                            <option value="{Galette\Filters\AdvancedMembersList::OP_NOT_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_NOT_EQUALS')} selected="selected"{/if}>{_T string="is not"}</option>
-                            <option value="{Galette\Filters\AdvancedMembersList::OP_NOT_CONTAINS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_NOT_CONTAINS')} selected="selected"{/if}>{_T string="do not contains"}</option>
-                            <option value="{Galette\Filters\AdvancedMembersList::OP_STARTS_WITH}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_STARTS_WITH')} selected="selected"{/if}>{_T string="starts with"}</option>
-                            <option value="{Galette\Filters\AdvancedMembersList::OP_ENDS_WITH}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_ENDS_WITH')} selected="selected"{/if}>{_T string="ends with"}</option>
-                        </select>
-			<input type="text" name="free_text[]" value="{$fs.search}" class="large"/>
-    {elseif $type eq constant('Galette\Entity\DynamicFields::CHOICE')}
+                            <input type="hidden" name="free_type[]" value="{$type}"/>
+    {if $type eq constant('Galette\Entity\DynamicFields::CHOICE')}
                         <select name="free_query_operator[]">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
                             <option value="{Galette\Filters\AdvancedMembersList::OP_NOT_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_NOT_EQUALS')} selected="selected"{/if}>{_T string="is not"}</option>
                         </select>
                         <select name="free_text[]">
-	{foreach $choices as $choice}
+        {foreach $choices as $choice}
                             <option value="{$choice@index}"{if $fs.search eq $choice@index} selected="selected"{/if}>{$choice}</option>
-	{/foreach}
+        {/foreach}
                         </select>
     {elseif $type eq constant('Galette\Entity\DynamicFields::DATE')}
                         <select name="free_query_operator[]">
@@ -220,13 +208,14 @@
                             <option value="{Galette\Filters\AdvancedMembersList::OP_BEFORE}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_BEFORE')} selected="selected"{/if}>{_T string="before"}</option>
                             <option value="{Galette\Filters\AdvancedMembersList::OP_AFTER}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_AFTER')} selected="selected"{/if}>{_T string="after"}</option>
                         </select>
-			<input type="text" name="free_text[]" value="{$fs.search}" class="modif_date" maxlength="10" size="10"/>
+                        <input type="text" name="free_text[]" value="{$fs.search|date_format:{_T string="Y-m-d"}}" class="modif_date" maxlength="10" size="10"/>
+                        <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
     {elseif $type eq constant('Galette\Entity\DynamicFields::BOOLEAN')}
                         <select name="free_query_operator[]">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
                         </select>
-			<input type="radio" name="free_text[]" value="1"{if $fs.search eq 1} checked="checked"{/if}/>{_T string="true"}<input type="radio" name="free_text[]" value="0"{if $fs.search eq 0} checked="checked"{/if}/>{_T string="false"}
-    {elseif $type eq constant('Galette\Entity\DynamicFields::FILE')}
+                        <input type="radio" name="free_text[]" id="free_text_yes" value="1"{if $fs.search eq 1} checked="checked"{/if}/><label for="free_text_yes">{_T string="Yes"}</label><input type="radio" name="free_text[]" id="free_text_no" value="0"{if $fs.search eq 0} checked="checked"{/if}/><label for="free_text_no">{_T string="No"}</label>
+    {else}
                         <select name="free_query_operator[]">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
                             <option value="{Galette\Filters\AdvancedMembersList::OP_CONTAINS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_CONTAINS')} selected="selected"{/if}>{_T string="contains"}</option>
@@ -235,9 +224,9 @@
                             <option value="{Galette\Filters\AdvancedMembersList::OP_STARTS_WITH}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_STARTS_WITH')} selected="selected"{/if}>{_T string="starts with"}</option>
                             <option value="{Galette\Filters\AdvancedMembersList::OP_ENDS_WITH}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_ENDS_WITH')} selected="selected"{/if}>{_T string="ends with"}</option>
                         </select>
-			<input type="text" name="free_text[]" value="{$fs.search}"/>
+                        <input type="text" name="free_text[]" value="{$fs.search}"{if $type eq constant('Galette\Entity\DynamicFields::TEXT')} class="large"{/if}/>
     {/if}
-			</span>
+            </span>
                         <a class="fright clearfilter" href="#" title="{_T string="Remove criteria"}">{_T string="Remove criteria"}</a>
                     </li>
 {/foreach}
@@ -280,23 +269,18 @@
 
             var _fields = {
 {foreach $search_fields as $field}
-                {$field@key}: { type:'line' },
+    {if $field@key|strpos:'date_' === 0 or $field@key eq 'ddn_adh'}
+        {assign var=type value=constant('Galette\Entity\DynamicFields::DATE')}
+    {else}
+        {assign var=type value=constant('Galette\Entity\DynamicFields::LINE')}
+    {/if}
+                {$field@key}: { type:'{$type}' },
 {/foreach}
 {foreach $dynamic_fields as $field}
     {if $field.field_type eq constant('Galette\Entity\DynamicFields::SEPARATOR')}
         {continue}
-    {elseif $field.field_type eq constant('Galette\Entity\DynamicFields::TEXT')}
-                dyn_{$field.field_id}: { type:'text' },
-    {elseif $field.field_type eq constant('Galette\Entity\DynamicFields::LINE')}
-                dyn_{$field.field_id}: { type:'line' },
-    {elseif $field.field_type eq constant('Galette\Entity\DynamicFields::CHOICE')}
-                dyn_{$field.field_id}: { type:'choice', values: {$field.choices|@json_encode} },
-    {elseif $field.field_type eq constant('Galette\Entity\DynamicFields::DATE')}
-                dyn_{$field.field_id}: { type:'date' },
-    {elseif $field.field_type eq constant('Galette\Entity\DynamicFields::BOOLEAN')}
-                dyn_{$field.field_id}: { type:'boolean' },
-    {elseif $field.field_type eq constant('Galette\Entity\DynamicFields::FILE')}
-                dyn_{$field.field_id}: { type:'file' },
+    {else}
+                dyn_{$field.field_id}: { type:'{$field.field_type}' },
     {/if}
 {/foreach}
             };
@@ -329,10 +313,7 @@
                 return '<select name="free_query_operator[]">' + _options + '</select>';
             }
 
-            $(function(){
-                _collapsibleFieldsets();
-                _initSortable();
-
+            var _datePickers = function() {
                 $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
                 $('.modif_date').datepicker({
                     changeMonth: true,
@@ -353,6 +334,12 @@
                     yearRange: 'c-10:c+5',
                     buttonText: '{_T string="Select a date" escape="js"}'
                 });
+            }
+
+            $(function(){
+                _collapsibleFieldsets();
+                _initSortable();
+                _datePickers();
 
                 $('#btnadd_small').click(function(){
                     var _ul = $('#fs_sortable');
@@ -369,17 +356,18 @@
                     var _field    = _fields[_field_id];
                     var _type     = _field.type;
 
-		    if (!_type) {
-			return false;
-		    }
+                    if (!_type) {
+                        return false;
+                    }
 
                     var _html;
                     switch(_type) {
-                        case 'boolean':
+                        case '{constant('Galette\Entity\DynamicFields::BOOLEAN')}':
                             _html  = _getOperatorSelector(['op_equals']);
-                            _html += '<input type="radio" name="free_text[]" value="1"/>{_T string="true"}<input type="radio" name="free_text[]" value="0"/>{_T string="false"}';
+
+                            _html += '<input type="radio" name="free_text[]" id="free_text_yes" value="1"{if $fs.search eq 1} checked="checked"{/if}/><label for="free_text_yes">{_T string="Yes"}</label><input type="radio" name="free_text[]" id="free_text_no" value="0"{if $fs.search eq 0} checked="checked"{/if}/><label for="free_text_no">{_T string="No"}</label>';
                             break;
-                        case 'choice':
+                        case '{constant('Galette\Entity\DynamicFields::CHOICE')}':
                             _html = _getOperatorSelector(['op_equals', 'op_not_equals']);
                             var _options = '';
                             for (var i = 0; i < _field.values.length; i++) {
@@ -387,21 +375,24 @@
                             }
                             _html += '<select name="free_text[]">' + _options + '</select>';
                             break;
-                        case 'text':
-                            _html  = _getOperatorSelector(['op_equals', 'op_contains', 'op_not_equals', 'op_not_contains', 'op_starts_with', 'op_ends_with']);
-                            _html += '<input type="text" name="free_text[]" class="large"/>';
-                            break;
-                        case 'line':
-                        case 'file':
-                            _html  = _getOperatorSelector(['op_equals', 'op_contains', 'op_not_equals', 'op_not_contains', 'op_starts_with', 'op_ends_with']);
-                            _html += '<input type="text" name="free_text[]"/>';
-                            break;
-                        case 'date':
+                        case '{constant('Galette\Entity\DynamicFields::DATE')}':
                             _html  = _getOperatorSelector(['op_equals', 'op_before', 'op_after']);
-                            _html += '<input type="text" name="free_text[] class="modif_date" maxlength="10" size="10"/>';
+                            _html += '<input type="text" name="free_text[]" class="modif_date" maxlength="10" size="10"/>';
+                            _html += '<span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>';
                             break;
+                        default:
+                            _html  = _getOperatorSelector(['op_equals', 'op_contains', 'op_not_equals', 'op_not_contains', 'op_starts_with', 'op_ends_with']);
+                            _html += '<input type="text" name="free_text[]"';
+                            if (_type == 'text') {
+                                _html += ' class="large"';
+                            }
+                            _html += '/>';
+                            break;
+
                     }
+                    _html += '<input type="hidden" name="free_type[]" value="' + _type + '"/>';
                     $(this).parent().find('span').html(_html);
+                    _datePickers();
                     _fieldsInSortable();
                 });
 
