@@ -39,7 +39,6 @@ use Galette\Entity\Contribution;
 use Galette\Repository\Contributions;
 use Galette\Entity\Transaction;
 use Galette\Repository\Transactions;
-use Galette\Entity\DynamicFields;
 use Galette\Repository\Members;
 use Galette\Entity\Adherent;
 use Galette\Entity\ContributionsTypes;
@@ -268,6 +267,7 @@ $app->get(
         $action = $args['action'];
         $get = $request->getQueryParams();
         $id_cotis = null;
+        $id_adh = null;
         if (isset($args['id'])) {
             $id_cotis = $args['id'];
         }
@@ -287,8 +287,7 @@ $app->get(
         $contributions_types = $ct->getList($args['type'] === __('fee', 'routes'));
 
         if ($this->session->contribution !== null) {
-            $contrib = $this->session->contribution['contribution'];
-            $dyn_fields = $this->session->contribution['dyn_fields'];
+            $contrib = $this->session->contribution;
             $this->session->contribution = null;
         } else {
             if ($args['action'] === __('edit', 'routes')) {
@@ -354,26 +353,13 @@ $app->get(
                     }
                 }
             }
-
-            //TODO: dynamic fields should be handled by Contribution object
-            $dyn_fields = new DynamicFields($this->zdb);
         }
 
         $disabled = array();
 
-        // Validation
-        $contribution['dyn'] = array();
-
         if (!is_int($contrib->id)) {
             // initialiser la structure contribution à vide (nouvelle contribution)
             $contribution['duree_mois_cotis'] = $this->preferences->pref_membership_ext;
-        } else {
-            // dynamic fields
-            $contribution['dyn'] = $dyn_fields->getFields(
-                'contrib',
-                $id_cotis,
-                false
-            );
         }
 
         // template variable declaration
@@ -444,14 +430,6 @@ $app->get(
         }
         $params['pref_membership_ext'] = $ext_membership;
 
-        // - declare dynamic fields for display
-        $dynamic_fields = $dyn_fields->prepareForDisplay(
-            'contrib',
-            $contribution['dyn'],
-            array(),
-            1
-        );
-        $params['dynamic_fields'] = $dynamic_fields;
 
         // display page
         $this->view->render(
@@ -492,8 +470,7 @@ $app->post(
         }
 
         if ($this->session->contribution !== null) {
-            $contrib = $this->session->contribution['contribution'];
-            $dyn_fields = $this->session->contribution['dyn_fields'];
+            $contrib = $this->session->contribution;
             $this->session->contribution = null;
         } else {
             if ($id_cotis === null) {
@@ -501,20 +478,6 @@ $app->post(
             } else {
                 $contrib = new Contribution($this->zdb, $this->login, (int)$id_cotis);
             }
-        }
-
-        // dynamic fields
-        //TODO: dynamic fields should be handled by Contribution object
-        $dyn_fields = new DynamicFields($this->zdb);
-        $contribution['dyn'] = $dyn_fields->extractPosted(
-            $post,
-            $_FILES,
-            array(),
-            $id_adh
-        );
-        $dyn_fields_errors = $dyn_fields->getErrors();
-        if (count($dyn_fields_errors) > 0) {
-            $error_detected = array_merge($error_detected, $dyn_fields_errors);
         }
 
         // flagging required fields for first step only
@@ -626,12 +589,6 @@ $app->post(
         }
 
         if (count($error_detected) == 0) {
-            $dyn_fields->setAllFields(
-                'contrib',
-                $contrib->id,
-                $contribution['dyn']
-            );
-
             // Get member informations
             $adh = new Adherent($this->zdb);
             $adh->load($contrib->member);
@@ -798,10 +755,7 @@ $app->post(
         if (count($error_detected) > 0) {
             //something went wrong.
             //store entity in session
-            $this->session->contribution = [
-                'contribution'  => $contrib,
-                'dyn_fields'    => $dyn_fields
-            ];
+            $this->session->contribution = $contrib;
             $reditect_url = $this->router->pathFor('contribution', $args);
 
             //report errors
@@ -830,16 +784,12 @@ $app->get(
         '/{action:' . __('add') . '|' . __('edit') .'}[/{id:\d+}]',
     function ($request, $response, $args) {
         $trans = null;
-        $dyn_fields = null;
 
         if ($this->session->transaction !== null) {
-            $trans = $this->session->transaction['transaction'];
-            $dyn_fields = $this->session->transaction['dyn_fields'];
+            $trans = $this->session->transaction;
             $this->session->transaction = null;
         } else {
             $trans = new Transaction($this->zdb, $this->login);
-            //TODO: dynamic fields should be handled by Transaction object
-            $dyn_fields = new DynamicFields($this->zdb);
         }
 
         $action = $args['action'];
@@ -882,18 +832,6 @@ $app->get(
             }
         }
 
-        // Validation
-        $transaction['dyn'] = array();
-
-        if ($trans->id != '') {
-            // dynamic fields
-            $transaction['dyn'] = $dyn_fields->getFields(
-                'trans',
-                $transaction["trans_id"],
-                false
-            );
-        }
-
         // template variable declaration
         $title = _T("Transaction");
         if ($action === __('edit', 'routes')) {
@@ -933,15 +871,6 @@ $app->get(
             }
             $params['adh_options'] = $adh_options;
         }
-
-        // - declare dynamic fields for display
-        $dynamic_fields = $dyn_fields->prepareForDisplay(
-            'trans',
-            $transaction['dyn'],
-            array(),
-            1
-        );
-        $params['dynamic_fields'] = $dynamic_fields;
 
         // display page
         $this->view->render(
@@ -1007,8 +936,6 @@ $app->post(
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
         $trans = new Transaction($this->zdb, $this->login);
-        //TODO: dynamic fields should be handled by Transaction object
-        $dyn_fields = new DynamicFields($this->zdb);
 
         $action = $args['action'];
         $trans_id = null;
@@ -1050,21 +977,7 @@ $app->post(
             }
         }
 
-        // Validation
-        $transaction['dyn'] = array();
-
-        // dynamic fields
-        $transaction['dyn'] = $dyn_fields->extractPosted(
-            $post,
-            $_FILES,
-            array(),
-            $transaction['id_adh']
-        );
-        $dyn_fields_errors = $dyn_fields->getErrors();
         $error_detected = [];
-        if (count($dyn_fields_errors) > 0) {
-            $error_detected = array_merge($error_detected, $dyn_fields_errors);
-        }
         // regular fields
         $valid = $trans->check($_POST, $required, $disabled);
         if ($valid !== true) {
@@ -1091,13 +1004,6 @@ $app->post(
         }
 
         if (count($error_detected) == 0) {
-            // dynamic fields
-            $dyn_fields->setAllFields(
-                'trans',
-                $transaction['trans_id'],
-                $transaction['dyn']
-            );
-
             if ($trans->getMissingAmount() > 0) {
                 $rparams = [
                     'action'    => __('add', 'routes'),
@@ -1135,10 +1041,7 @@ $app->post(
         } else {
             //something went wrong.
             //store entity in session
-            $this->session->transaction = [
-                'transaction'   => $trans,
-                'dyn_fields'    => $dyn_fields
-            ];
+            $this->session->transaction = $trans;
 
             //report errors
             foreach ($error_detected as $error) {

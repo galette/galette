@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  DynamicFields
+ * @category  DynamicFieldsTypes
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -44,7 +44,7 @@ use Galette\Core\Db;
  * Line field type
  *
  * @name      Line
- * @category  DynamicFields
+ * @category  DynamicFieldsTypes
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -71,12 +71,12 @@ class Line extends DynamicFieldType
     }
 
     /**
-     * Get field type name
+     * Get field type
      *
-     * @return String
+     * @return integer
      */
-    public function getTypeName()
+    public function getType()
     {
-        return _T("line");
+        return self::LINE;
     }
 }

@@ -120,7 +120,7 @@
                     <textarea name="info_cotis" id="info_cotis" cols="61" rows="6"{if isset($required.info_cotis) and $required.info_cotis eq 1} required{/if}>{$contribution->info}</textarea>
                 </p>
             </fieldset>
-        {include file="edit_dynamic_fields.tpl"}
+        {include file="edit_dynamic_fields.tpl" object=$contribution}
     {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
             <p>
                 <label for="mail_confirm">{_T string="Notify member"}</label>

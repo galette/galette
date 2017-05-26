@@ -157,7 +157,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         </table>
 {/foreach}
 
-{include file="display_dynamic_fields.tpl" is_form=false}
+{include file="display_dynamic_fields.tpl" object=$member}
         <a href="#" id="back2top">{_T string="Back to top"}</a>
     </div>
 {/block}

@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  DynamicFields
+ * @category  DynamicFieldsTypes
  * @package   Galette
  *
  * @author    Guillaume Rousse <guillomovitch@gmail.com>
@@ -44,7 +44,7 @@ use Galette\Core\Db;
  * File field type
  *
  * @name      File
- * @category  DynamicFields
+ * @category  DynamicFieldsTypes
  * @package   Galette
  *
  * @author    Guillaume Rousse <guillomovitch@gmail.com>
@@ -69,23 +69,12 @@ class File extends DynamicFieldType
     }
 
     /**
-     * Get field type name
+     * Get field type
      *
-     * @return String
+     * @return integer
      */
-    public function getTypeName()
+    public function getType()
     {
-        return _T("file");
-    }
-
-    /**
-     * Load field
-     *
-     * @return void
-     */
-    public function load()
-    {
-        parent::load();
-        $this->repeat = 1;
+        return self::FILE;
     }
 }

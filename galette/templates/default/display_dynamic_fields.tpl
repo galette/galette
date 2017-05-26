@@ -1,41 +1,38 @@
-{if !empty($dynamic_fields)}
+{if !empty($object->getDynamicFields())}
 <table class="details">
     <caption class="ui-state-active ui-corner-top">{_T string="Additionnal fields:"}</caption>
-    {foreach from=$dynamic_fields item=field}
-        {if $field.field_perm eq 0 || $login->isAdmin() || $login->isStaff() && $field.field_perm eq 2}
-            {if $field.field_type eq 0}
+    {foreach from=$object->getDynamicFields()->getFields() item=field}
+        {if $field->getPerm() eq  constant('Galette\DynamicFieldsTypes\DynamicFieldType::PERM_ALL')|| $login->isAdmin() || $login->isStaff() && $field.field_perm eq constant('Galette\DynamicFieldsTypes\DynamicFieldType::PERM_STAFF')}
+            {if $field|is_a:'Galette\DynamicFieldsTypes\Separator'}
     <tr>
-        <th class="separator" colspan="2">{$field.field_name|escape}</th>
+        <th class="separator" colspan="2">{$field->getName()|escape}</th>
     </tr>
             {else}
     <tr>
-        <th>{$field.field_name|escape}</th>
+        <th>{$field->getName()|escape}</th>
         <td>
-                {section name="fieldLoop" start=1 loop=$field.field_repeat+1}
-                    {if isset($data.dyn[$field.field_id])}
-                        {if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}
-                            {if GaletteMail::isValidEmail($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}
-                                {if $smarty.section.fieldLoop.index_prev > 0}<br />{/if}
-            <a href="mailto:{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}">{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}</a>
-                            {else if GaletteMail::isUrl($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}
-                                {if $smarty.section.fieldLoop.index_prev > 0}<br />{/if}
-            <a href="{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}" target="_blank" title="{_T string="Open '%s' in a new window" replace=$data.dyn[$field.field_id][$smarty.section.fieldLoop.index] pattern="/%s/"}">{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}</a>
-                            {else if $field.field_type eq 5}
-                                {if $data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}
+    {foreach from=$object->getDynamicFields()->getValues($field->getId()) item=field_data}
+        {assign var=value value=$field_data.field_val}
+        {if $field|is_a:'Galette\DynamicFieldsTypes\Choice'}
+            {assign var=value value=$field_data.text_val}
+        {/if}
+        {if not $field_data@first}<br />{/if}
+        {if GaletteMail::isValidEmail($value)}
+            <a href="mailto:{$value}">{$value}</a>
+        {else if GaletteMail::isUrl($value)}
+            <a href="{$value}" target="_blank" title="{_T string="Open '%s' in a new window" replace=$value pattern="/%s/"}">{$value}</a>
+        {else if $field|is_a:'Galette\DynamicFieldsTypes\Boolean'}
+            {if $value}
             {_T string="Yes"}
-                                {else}
+            {else}
             {_T string="No"}
-                                {/if}
-            <br/>
-                            {else if $field.field_type eq 6}
-
-            <a href="{path_for name="getDynamicFile" data=["id" => $member->id, "fid" => $field.field_id, "pos" => $smarty.section.fieldLoop.index, "name" => $data.dyn[$field.field_id][$smarty.section.fieldLoop.index]]}">{$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}</a><br/>
-                            {else}
-            {$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|nl2br|default:"&nbsp;"}<br/>
-                            {/if}
-                        {/if}
-                    {/if}
-                {/section}
+            {/if}
+        {else if $field|is_a:'Galette\DynamicFieldsTypes\File'}
+            <a href="{path_for name="getDynamicFile" data=["id" => $object->id, "fid" => $field->getId(), "pos" => $field_data@iteration, "name" => $value]}">{$value}</a>
+        {else}
+            {$value|nl2br|default:"&nbsp;"}
+        {/if}
+    {/foreach}
         </td>
     </tr>
             {/if}

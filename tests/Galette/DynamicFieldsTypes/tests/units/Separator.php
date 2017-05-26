@@ -78,7 +78,7 @@ class Separator extends atoum
     {
         $o = new \Galette\DynamicFieldsTypes\Separator($this->zdb, 10);
         $this->variable($o->getId())
-            ->isIdenticalTo(10);
+            ->isIdenticalTo(null);
     }
 
     /**

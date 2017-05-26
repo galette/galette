@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  DynamicFields
+ * @category  DynamicFieldsTypes
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -44,7 +44,7 @@ use Galette\Core\Db;
  * Separator field type
  *
  * @name      Separator
- * @category  DynamicFields
+ * @category  DynamicFieldsTypes
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -67,26 +67,16 @@ class Text extends DynamicFieldType
         $this->has_data = true;
         $this->has_width = true;
         $this->has_height = true;
-    }
-
-    /**
-     * Get field type name
-     *
-     * @return String
-     */
-    public function getTypeName()
-    {
-        return _T("text");
-    }
-
-    /**
-     * Load field
-     *
-     * @return void
-     */
-    public function load()
-    {
-        parent::load();
         $this->repeat = 1;
+    }
+
+    /**
+     * Get field type
+     *
+     * @return integer
+     */
+    public function getType()
+    {
+        return self::TEXT;
     }
 }

@@ -78,7 +78,7 @@ class Boolean extends atoum
     {
         $o = new \Galette\DynamicFieldsTypes\Boolean($this->zdb, 10);
         $this->variable($o->getId())
-            ->isIdenticalTo(10);
+            ->isNull();
     }
 
     /**

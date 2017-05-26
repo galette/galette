@@ -118,7 +118,8 @@ class Adherent extends atoum
             'groups'    => true,
             'dues'      => true,
             'parent'    => false,
-            'children'  => false
+            'children'  => false,
+            'dynamics'  => false
         ];
 
         global $zdb, $login, $hist, $i18n; // globals :(
@@ -266,7 +267,8 @@ class Adherent extends atoum
             'groups'    => false,
             'dues'      => false,
             'parent'    => false,
-            'children'  => false
+            'children'  => false,
+            'dynamics'  => false
         ];
         $adh = new \Galette\Entity\Adherent(
             $this->zdb,
