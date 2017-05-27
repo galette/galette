@@ -88,6 +88,27 @@ class History
     }
 
     /**
+     * Helper function to find the user IP address
+     *
+     * This function uses the client address or the appropriate part of
+     * X-Forwarded-For, if present and the configuration specifies it.
+     * (blindly trusting X-Forwarded-For would make the IP address logging
+     * very easy to deveive.
+     *
+     * @return string
+     */
+    public static function findUserIPAddress()
+    {
+        if (defined('GALETTE_X_FORWARDED_FOR_INDEX')
+            && isset($_SERVER['HTTP_X_FORWARDED_FOR'])
+        ) {
+            $split_xff = preg_split('/,\s*/', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            return $split_xff[count($split_xff) - GALETTE_X_FORWARDED_FOR_INDEX];
+        }
+        return $_SERVER['REMOTE_ADDR'];
+    }
+
+    /**
      * Add a new entry
      *
      * @param string $action   the action to log
@@ -102,7 +123,7 @@ class History
         if (PHP_SAPI === 'cli') {
             $ip = '127.0.0.1';
         } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
+            $ip = self::findUserIpAddress();
         }
 
         try {
