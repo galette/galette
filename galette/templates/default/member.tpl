@@ -118,7 +118,7 @@
                         {/if}
                         {if $entry->field_id eq 'bool_display_info'}
                             {assign var="title" value={_T string="Do member want to appear publically?"}}
-                            {assign var="tip" value={_T string="If you check this box (and if you are up to date with your contributions), your full name, website address ad other informations will be publically visilbe on the members list.<br/>If you've uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case."}}
+                            {assign var="tip" value={_T string="If you check this box (and if you are up to date with your contributions), your full name, website address ad other informations will be publically visible on the members list.<br/>If you've uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case."}}
                             {assign var="checked" value=$member->appearsInMembersList()}
                         {/if}
                         {if $entry->field_id eq 'login_adh'}
