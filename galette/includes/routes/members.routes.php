@@ -82,8 +82,6 @@ $app->get(
         // flagging required fields
         $fc = $this->fields_config;
         $required = $fc->getRequired();
-        // flagging fields visibility
-        $visibles = $fc->getVisibilities();
         $form_elements = $fc->getFormElements($this->login, true);
 
         // disable some fields
@@ -108,7 +106,6 @@ $app->get(
                 'page_title'        => _T("Subscription"),
                 'parent_tpl'        => 'public_page.tpl',
                 'required'          => $required,
-                'visibles'          => $visibles,
                 'disabled'          => $disabled,
                 'member'            => $member,
                 'self_adh'          => true,
@@ -543,10 +540,7 @@ $app->get(
         $member = new Adherent($this->zdb, $this->login->login, $deps);
         $id = $member->id;
 
-        // flagging fields visibility
         $fc = $this->fields_config;
-        $visibles = $fc->getVisibilities();
-
         $display_elements = $fc->getDisplayElements($this->login);
 
         // display page
@@ -562,7 +556,6 @@ $app->get(
                 'pref_card_self'    => $this->preferences->pref_card_self,
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
-                'visibles'          => $visibles,
                 'display_elements'  => $display_elements
             )
         );
@@ -650,8 +643,6 @@ $app->get(
 
         // flagging fields visibility
         $fc = $this->fields_config;
-        $visibles = $fc->getVisibilities();
-
         $display_elements = $fc->getDisplayElements($this->login);
 
         // display page
@@ -668,7 +659,6 @@ $app->get(
                 'pref_card_self'    => $this->preferences->pref_card_self,
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
-                'visibles'          => $visibles,
                 'display_elements'  => $display_elements
             )
         );
@@ -796,8 +786,6 @@ $app->get(
         }
 
         $required = $fc->getRequired();
-        // flagging fields visibility
-        $visibles = $fc->getVisibilities();
 
         $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
@@ -861,7 +849,6 @@ $app->get(
                     'autocomplete'      => true,
                     'page_title'        => $title,
                     'required'          => $required,
-                    'visibles'          => $visibles,
                     'disabled'          => $disabled,
                     'member'            => $member,
                     'self_adh'          => false,
@@ -980,8 +967,6 @@ $app->post(
         }
 
         $required = $fc->getRequired();
-        // flagging fields visibility
-        $visibles = $fc->getVisibilities();
 
         $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
