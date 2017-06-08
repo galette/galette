@@ -41,6 +41,7 @@ use Analog\Analog;
 use Zend\Db\Adapter\Adapter;
 use Galette\Core\Db;
 use Galette\Core\Login;
+use Galette\Core\Authentication;
 
 /**
  * Fields config class for galette :
@@ -514,6 +515,7 @@ class FieldsConfig
     public function getDisplayElements(Login $login)
     {
         $display_elements = [];
+        $access_level = $login->getAccessLevel();
         $categories = FieldsCategories::getList($this->zdb);
         try {
             foreach ($categories as $c) {
@@ -540,19 +542,20 @@ class FieldsConfig
                 foreach ($elements as $elt) {
                     $o = (object)$elt;
 
+                    // skip fields blacklisted for display
                     if (in_array($o->field_id, $this->non_display_elements)) {
                         continue;
                     }
 
-                    if (!($o->visible == self::ADMIN
-                        && (!$login->isAdmin() && !$login->isStaff()) )
+                    // skip fields according to access control
+                    if ($o->visible == self::HIDDEN ||
+                        ($o->visible == self::ADMIN &&
+                            $access_level < Authentication::ACCESS_STAFF)
                     ) {
-                        if ($o->visible == self::HIDDEN) {
-                            continue;
-                        }
-
-                        $cat->elements[$o->field_id] = $o;
+                        continue;
                     }
+
+                    $cat->elements[$o->field_id] = $o;
                 }
 
                 if (count($cat->elements) > 0) {
