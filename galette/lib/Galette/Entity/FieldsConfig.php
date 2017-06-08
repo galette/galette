@@ -41,6 +41,7 @@ use Analog\Analog;
 use Zend\Db\Adapter\Adapter;
 use Galette\Core\Db;
 use Galette\Core\Login;
+use Galette\Core\Authentication;
 
 /**
  * Fields config class for galette :
@@ -57,9 +58,12 @@ use Galette\Core\Login;
  */
 class FieldsConfig
 {
-    const HIDDEN = 0;
-    const VISIBLE = 1;
+    const NOBODY = 0;
+    const USER_WRITE = 1;
     const ADMIN = 2;
+    const STAFF = 3;
+    const MANAGER = 4;
+    const USER_READ = 5;
 
     const TYPE_STR = 0;
     const TYPE_HIDDEN = 1;
@@ -174,11 +178,8 @@ class FieldsConfig
 
             $this->categorized_fields = null;
             foreach ($results as $k) {
-                if ($k->field_id === 'id_adh' && (!isset($preferences) || !$preferences->pref_show_id)) {
-                    $k->visible = self::HIDDEN;
-                }
                 if ($k->field_id === 'parent_id') {
-                    $k->visible = self::HIDDEN;
+                    $k->visible = self::NOBODY;
                     $k->required = false;
                 }
                 $f = array(
@@ -421,6 +422,7 @@ class FieldsConfig
         //get columns descriptions
         $columns = $this->zdb->getColumns($this->table);
 
+        $access_level = $login->getAccessLevel();
         $categories = FieldsCategories::getList($this->zdb);
         try {
             foreach ($categories as $c) {
@@ -447,18 +449,36 @@ class FieldsConfig
                 foreach ($elements as $elt) {
                     $o = (object)$elt;
 
-                    if (in_array($o->field_id, $this->non_form_elements)
-                        || $selfs && $this->isSelfExcluded($o->field_id)
-                    ) {
-                        continue;
-                    }
+                    if ($o->field_id == 'id_adh') {
+                        // ignore access control, as member ID is always needed
+                        if (!isset($preferences) || !$preferences->pref_show_id) {
+                            $hidden_elements[] = $o;
+                        } else {
+                            $o->type = self::TYPE_STR;
+                            $o->readonly = true;
+                            $cat->elements[$o->field_id] = $o;
+                        }
+                    } else {
+                        // skip fields blacklisted for edition
+                        if (in_array($o->field_id, $this->non_form_elements)
+                            || $selfs && $this->isSelfExcluded($o->field_id)
+                        ) {
+                            continue;
+                        }
 
-                    if (!($o->visible == self::ADMIN
-                        && (!$login->isAdmin() && !$login->isStaff()) )
-                    ) {
-                        if ($o->visible == self::HIDDEN) {
-                            $o->type = self::TYPE_HIDDEN;
-                        } elseif (preg_match('/date/', $o->field_id)) {
+                        // skip fields according to access control
+                        if ($o->visible == self::NOBODY ||
+                            ($o->visible == self::ADMIN &&
+                                $access_level < Authentication::ACCESS_ADMIN) ||
+                            ($o->visible == self::STAFF &&
+                                $access_level < Authentication::ACCESS_STAFF) ||
+                            ($o->visible == self::MANAGER &&
+                                $access_level < Authentication::ACCESS_MANAGER)
+                        ) {
+                            continue;
+                        }
+
+                        if (preg_match('/date/', $o->field_id)) {
                             $o->type = self::TYPE_DATE;
                         } elseif (preg_match('/bool/', $o->field_id)) {
                             $o->type = self::TYPE_BOOL;
@@ -484,11 +504,15 @@ class FieldsConfig
                             }
                         }
 
-                        if ($o->type === self::TYPE_HIDDEN) {
-                            $hidden_elements[] = $o;
+                        // disabled field according to access control
+                        if ($o->visible == self::USER_READ &&
+                                $access_level == Authentication::ACCESS_USER) {
+                            $o->disabled = true;
                         } else {
-                            $cat->elements[$o->field_id] = $o;
+                            $o->disabled = false;
                         }
+
+                        $cat->elements[$o->field_id] = $o;
                     }
                 }
 
@@ -519,6 +543,7 @@ class FieldsConfig
     public function getDisplayElements(Login $login)
     {
         $display_elements = [];
+        $access_level = $login->getAccessLevel();
         $categories = FieldsCategories::getList($this->zdb);
         try {
             foreach ($categories as $c) {
@@ -545,19 +570,24 @@ class FieldsConfig
                 foreach ($elements as $elt) {
                     $o = (object)$elt;
 
+                    // skip fields blacklisted for display
                     if (in_array($o->field_id, $this->non_display_elements)) {
                         continue;
                     }
 
-                    if (!($o->visible == self::ADMIN
-                        && (!$login->isAdmin() && !$login->isStaff()) )
+                    // skip fields according to access control
+                    if ($o->visible == self::NOBODY ||
+                        ($o->visible == self::ADMIN &&
+                            $access_level < Authentication::ACCESS_ADMIN) ||
+                        ($o->visible == self::STAFF &&
+                            $access_level < Authentication::ACCESS_STAFF) ||
+                        ($o->visible == self::MANAGER &&
+                            $access_level < Authentication::ACCESS_MANAGER)
                     ) {
-                        if ($o->visible == self::HIDDEN) {
-                            continue;
-                        }
-
-                        $cat->elements[$o->field_id] = $o;
+                        continue;
                     }
+
+                    $cat->elements[$o->field_id] = $o;
                 }
 
                 if (count($cat->elements) > 0) {

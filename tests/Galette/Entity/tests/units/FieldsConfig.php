@@ -210,10 +210,10 @@ class FieldsConfig extends atoum
         $this->fields_config->load();
 
         $visible = $this->fields_config->getVisibility('nom_adh');
-        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::VISIBLE);
+        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::USER_WRITE);
 
         $visible = $this->fields_config->getVisibility('id_adh');
-        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::HIDDEN);
+        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::NOBODY);
 
         $visible = $this->fields_config->getVisibility('info_adh');
         $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::ADMIN);
@@ -235,10 +235,10 @@ class FieldsConfig extends atoum
         //town
         $town = &$fields[3][3];
         $this->boolean($town['required'])->isTrue();
-        $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::VISIBLE);
+        $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::USER_WRITE);
 
         $town['required'] = false;
-        $town['visible'] = \Galette\Entity\FieldsConfig::HIDDEN;
+        $town['visible'] = \Galette\Entity\FieldsConfig::NOBODY;
 
         //jabber
         $jabber = $fields[3][10];
@@ -253,7 +253,7 @@ class FieldsConfig extends atoum
 
         $town = $fields[3][3];
         $this->boolean($town['required'])->isFalse();
-        $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::HIDDEN);
+        $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::NOBODY);
 
         $jabber2 = $fields[1][12];
         $this->array($jabber2)->isIdenticalTo($jabber);

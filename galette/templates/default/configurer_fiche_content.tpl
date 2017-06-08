@@ -3,7 +3,7 @@
                 <tr>
                     <th class="id_row">#</th>
                     <th>{_T string="Name"}</th>
-                    <th class="date_row">{_T string="Visibility"}</th>
+                    <th>{_T string="Permissions"}</th>
                     <th class="date_row">{_T string="Type"}</th>
                     <th class="date_row">{_T string="Required"}</th>
                     <th>{_T string="Actions"}</th>

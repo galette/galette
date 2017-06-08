@@ -15,6 +15,7 @@
     id=$entry->field_id
     value=$member->company_name
     required=$entry->required
+    disabled=$entry->disabled
     label=$entry->label
     component_id="company_field"
     component_class="{if not $member->isCompany()}hidden{/if}"

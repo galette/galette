@@ -16,7 +16,7 @@
                 <li class="listing ">
                     <span class="label">{_T string="Field name"}</span>
                     <span class="yesno">{_T string="Required"}</span>
-                    <span class="yesnoadmin">{_T string="Visible"}</span>
+                    <span class="access">{_T string="Permissions"}</span>
                 </li>
     {assign var='fs' value=$category->id_field_category}
     {foreach key=col item=field from=$categorized_fields[$fs] name=fields_list}
@@ -35,13 +35,15 @@
                         <label for="{$fid}_required_no">{_T string="No"}</label>
                         <input type="radio" name="{$fid}_required" id="{$fid}_required_no" value="0"{if !$field.required} checked="checked"{/if}{if in_array($fid, $non_required)} disabled="disabled"{/if}/>
                     </span>
-                    <span data-title="{_T string="Visible"}" class="yesnoadmin" title="{_T string="Change '%field' visibility" pattern="/%field/" replace=$field.label}">
-                        <label for="{$fid}_visible_yes">{_T string="Yes"}</label>
-                        <input type="radio" name="{$fid}_visible" id="{$fid}_visible_yes" value="{Galette\Entity\FieldsConfig::VISIBLE}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::VISIBLE')} checked="checked"{/if}/>
-                        <label for="{$fid}_visible_no">{_T string="No"}</label>
-                        <input type="radio" name="{$fid}_visible" id="{$fid}_visible_no" value="{Galette\Entity\FieldsConfig::HIDDEN}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::HIDDEN')} checked="checked"{/if}/>
-                        <label for="{$fid}_visible_admin">{_T string="Admin only"}</label>
-                        <input type="radio" name="{$fid}_visible" id="{$fid}_visible_admin" value="{Galette\Entity\FieldsConfig::ADMIN}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::ADMIN')} checked="checked"{/if}/>
+                    <span data-title="{_T string="Permissions"}" class="access" title="{_T string="Change '%field' permissions" pattern="/%field/" replace=$field.label}">
+                        <select name="{$fid}_visible" id="{$fid}_visible">
+                            <option value="{Galette\Entity\FieldsConfig::NOBODY}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::NOBODY')} selected="selected"{/if}>{_T string="Nobody"}</option>
+                            <option value="{Galette\Entity\FieldsConfig::ADMIN}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::ADMIN')} selected="selected"{/if}>{_T string="Administrator"}</option>
+                            <option value="{Galette\Entity\FieldsConfig::STAFF}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::STAFF')} selected="selected"{/if}>{_T string="Staff member"}</option>
+                            <option value="{Galette\Entity\FieldsConfig::MANAGER}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::MANAGER')} selected="selected"{/if}>{_T string="Group manager"}</option>
+                            <option value="{Galette\Entity\FieldsConfig::USER_READ}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::USER_READ')} selected="selected"{/if}>{_T string="Read only"}</option>
+                            <option value="{Galette\Entity\FieldsConfig::USER_WRITE}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::USER_WRITE')} selected="selected"{/if}>{_T string="Read/Write"}</option>
+                        </select>
                     </span>
                 </li>
         {/if}
@@ -110,12 +112,13 @@
         var _warnings = [];
         var _checkCoherence = function(index, elt){
             var _elt = $(elt);
-            var _disabled = _elt.find('.yesno input:disabled, .yesnoadmin input:disabled');
+            var _disabled = _elt.find('.yesno input:disabled, .access input:disabled');
             if ( _disabled.length == 0 ) {
                 var _required = parseInt(_elt.find('.yesno input:checked').val());
-                var _visible = parseInt(_elt.find('.yesnoadmin input:checked').val());
+                var _accessible = parseInt(_elt.find('.access option:selected').val());
 
-                if ( _required === 1 && _visible !== 1 ) {
+
+                if ( _required === 1 && _accessible === 0 ) {
                     _elt.find('.label').addClass('warnings');
                     _warnings[_warnings.length] = _elt;
                 }
