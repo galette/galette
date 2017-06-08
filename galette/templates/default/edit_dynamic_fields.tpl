@@ -8,18 +8,18 @@
             cols="{if $field->getWidth() > 0}{$field->getWidth()}{else}61{/if}"
             rows="{if $field->getHeight() > 0}{$field->getHeight()}{else}6{/if}"
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
-            {if $field->isRequired()} required{/if}>{$valuedata}</textarea>
+            {if $field->isRequired()} required="required"{/if}>{$valuedata}</textarea>
     {elseif $field|is_a:'Galette\DynamicFieldsTypes\Line'}
         <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}"
             {if $field->getWidth() > 0}size="{$field->getWidth()}"{/if}
             {if $field->getSize() > 0}maxlength="{$field->getSize()}"{/if}
             value="{$valuedata}"
-            {if $field->isRequired()} required{/if}
+            {if $field->isRequired()} required="required"{/if}
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
         />
     {elseif $field|is_a:'Galette\DynamicFieldsTypes\Choice'}
         <select name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}"
-            {if $field->isRequired()} required{/if}
+            {if $field->isRequired()} required="required"{/if}
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
         >
             <!-- If no option is present, page is not XHTML compliant -->
@@ -30,18 +30,18 @@
         <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}" maxlength="10"
             value="{$valuedata}" class="dynamic_date"
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
-            {if $field->isRequired()} required{/if}
+            {if $field->isRequired()} required="required"{/if}
         />
         <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
     {elseif $field|is_a:'Galette\DynamicFieldsTypes\Boolean'}
         <input type="checkbox" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}" value="1"
             {if $valuedata eq 1} checked="checked"{/if}
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
-            {if $field->isRequired()} required{/if}
+            {if $field->isRequired()} required="required"{/if}
         />
     {elseif $field|is_a:'Galette\DynamicFieldsTypes\File'}
         {_T string="new"}: <input type="file" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_new"
-            {if $field->isRequired()} required{/if}
+            {if $field->isRequired()} required="required"{/if}
         />
         {_T string="current"}: <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_current" disabled="disabled"
             value="{$valuedata}"
