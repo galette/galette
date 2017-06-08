@@ -1488,7 +1488,7 @@ $app->get(
         $visibles = $fc->getVisibilities();
 
         foreach ($fields as $k => $f) {
-            if ($visibles[$k] == 0) {
+            if ($visibles[$k] == FieldsConfig::HIDDEN) {
                 unset($fields[$k]);
             }
         }
