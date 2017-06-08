@@ -37,7 +37,7 @@
 
 namespace Galette\Repository;
 
-use Galette\Entity\DynamicFields;
+use Galette\DynamicFieldsTypes\DynamicFieldType;
 
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
@@ -674,7 +674,7 @@ class Members
 
             if ($hasDfc === true || $hasCdfc === true) {
                 $select->join(
-                    array('dfc' => PREFIX_DB . DynamicFields::TABLE),
+                    array('dfc' => PREFIX_DB . DynamicFieldType::TABLE),
                     'dfc.item_id=ct.' . Contribution::PK,
                     array(),
                     $select::JOIN_LEFT
@@ -684,7 +684,7 @@ class Members
             // simple dynamic fields
             if ($hasDf === true) {
                 foreach ($dfs as $df) {
-                    $subselect = $zdb->select(DynamicFields::TABLE, 'df');
+                    $subselect = $zdb->select(DynamicFieldType::TABLE, 'df');
                     $subselect->columns(
                         [
                             'item_id' => 'item_id',
@@ -720,7 +720,7 @@ class Members
                         $cdf_field
                     );
                     $select->join(
-                        array('cdfc' . $cdf => DynamicFields::getFixedValuesTableName($cdf, true)),
+                        array('cdfc' . $cdf => DynamicFieldType::getFixedValuesTableName($cdf, true)),
                         $rcdf_field . '=dfc.field_val',
                         array(),
                         $select::JOIN_LEFT

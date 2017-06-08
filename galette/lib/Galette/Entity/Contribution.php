@@ -58,6 +58,8 @@ use Galette\IO\PdfContribution;
  */
 class Contribution
 {
+    use DynamicsTrait;
+
     const TABLE = 'cotisations';
     const PK = 'id_cotis';
 
@@ -87,6 +89,8 @@ class Contribution
 
     private $zdb;
     private $login;
+
+    private $errors;
 
     /**
      * Default constructor
@@ -198,6 +202,10 @@ class Contribution
             }
         } elseif (is_object($args)) {
             $this->loadFromRS($args);
+        }
+
+        if ($this->id !== null) {
+            $this->loadDynamicFields();
         }
     }
 
@@ -316,7 +324,7 @@ class Contribution
      */
     public function check($values, $required, $disabled)
     {
-        $errors = array();
+        $this->errors = array();
 
         $fields = array_keys($this->_fields);
         foreach ($fields as $key) {
@@ -355,7 +363,7 @@ class Contribution
                                     __("Y-m-d") . ' | ' . $e->getMessage(),
                                     Analog::INFO
                                 );
-                                $errors[] = str_replace(
+                                $this->errors[] = str_replace(
                                     array(
                                         '%date_format',
                                         '%field'
@@ -383,7 +391,7 @@ class Contribution
                         $this->_amount = $value;
                         $value = strtr($value, ',', '.');
                         if (!is_numeric($value)) {
-                            $errors[] = _T("- The amount must be an integer!");
+                            $this->errors[] = _T("- The amount must be an integer!");
                         }
                         break;
                     case 'type_paiement_cotis':
@@ -396,7 +404,7 @@ class Contribution
                         ) {
                             $this->_payment_type = $value;
                         } else {
-                            $errors[] = _T("- Unknown payment type");
+                            $this->errors[] = _T("- Unknown payment type");
                         }
                         break;
                     case 'info_cotis':
@@ -410,7 +418,7 @@ class Contribution
                     case 'duree_mois_cotis':
                         if ($value != '') {
                             if (!is_numeric($value) || $value <= 0) {
-                                $errors[] = _T("- The duration must be a positive integer!");
+                                $this->errors[] = _T("- The duration must be a positive integer!");
                             }
                             $this->$prop = $value;
                             $this->retrieveEndDate();
@@ -429,7 +437,7 @@ class Contribution
                     || (!is_object($this->$prop) && trim($this->$prop) == '')
                     || (is_object($this->$prop) && trim($this->$prop->id) == ''))
                 ) {
-                    $errors[] = _T("- Mandatory field empty: ") .
+                    $this->errors[] = _T("- Mandatory field empty: ") .
                     ' <a href="#' . $key . '">' . $this->getFieldLabel($key) .'</a>';
                 }
             }
@@ -440,17 +448,17 @@ class Contribution
             //calculate new missing amount
             $missing = $missing + $this->_orig_amount - $this->_amount;
             if ($missing < 0) {
-                $errors[] = _T("- Sum of all contributions exceed corresponding transaction amount.");
+                $this->errors[] = _T("- Sum of all contributions exceed corresponding transaction amount.");
             }
         }
 
-        if (count($errors) > 0) {
+        if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been throwed attempting to edit/store a contribution' .
-                print_r($errors, true),
+                print_r($this->errors, true),
                 Analog::ERROR
             );
-            return $errors;
+            return $this->errors;
         } else {
             Analog::log(
                 'Contribution checked successfully.',
@@ -1203,7 +1211,7 @@ class Contribution
                             __("Y-m-d") . ' | ' . $e->getMessage(),
                             Analog::INFO
                         );
-                        $errors[] = str_replace(
+                        $this->errors[] = str_replace(
                             array(
                                 '%date_format',
                                 '%field'

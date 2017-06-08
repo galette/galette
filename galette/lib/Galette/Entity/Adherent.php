@@ -47,6 +47,7 @@ use Galette\Core\Preferences;
 use Galette\Core\History;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
+use Galette\Repository\DynamicFieldsTypes;
 
 /**
  * Member class for galette
@@ -62,6 +63,8 @@ use Galette\Repository\Members;
  */
 class Adherent
 {
+    use DynamicsTrait;
+
     const TABLE = 'adherents';
     const PK = 'id_adh';
 
@@ -126,7 +129,8 @@ class Adherent
         'groups'    => true,
         'dues'      => true,
         'parent'    => false,
-        'children'  => false
+        'children'  => false,
+        'dynamics'  => false
     );
 
     private $_disabled_fields = array(
@@ -152,6 +156,8 @@ class Adherent
     private $preferences;
     private $fields;
     private $history;
+
+    private $errors;
 
     /**
      * Default constructor
@@ -387,6 +393,10 @@ class Adherent
 
         if ($this->_deps['dues'] === true) {
             $this->checkDues();
+        }
+
+        if ($this->_deps['dynamics'] === true) {
+            $this->loadDynamicFields();
         }
     }
 
@@ -901,7 +911,7 @@ class Adherent
     public function check($values, $required, $disabled)
     {
         global $preferences;
-        $errors = array();
+        $this->errors = array();
 
         $fields = self::getDbFields($this->zdb);
 
@@ -977,7 +987,7 @@ class Adherent
                                     __("Y-m-d") . ' | ' . $e->getMessage(),
                                     Analog::INFO
                                 );
-                                $errors[] = str_replace(
+                                $this->errors[] = str_replace(
                                     array(
                                         '%date_format',
                                         '%field'
@@ -1004,7 +1014,7 @@ class Adherent
                         case 'email_adh':
                         case 'msn_adh':
                             if (!GaletteMail::isValidEmail($value)) {
-                                $errors[] = _T("- Non-valid E-Mail address!") .
+                                $this->errors[] = _T("- Non-valid E-Mail address!") .
                                     ' (' . $this->getFieldLabel($key) . ')';
                             }
                             if ($key == 'email_adh') {
@@ -1021,14 +1031,14 @@ class Adherent
 
                                     $results = $this->zdb->execute($select);
                                     if ($results->count() !==  0) {
-                                        $errors[] = _T("- This E-Mail address is already used by another member!");
+                                        $this->errors[] = _T("- This E-Mail address is already used by another member!");
                                     }
                                 } catch (\Exception $e) {
                                     Analog::log(
                                         'An error occured checking member email unicity.',
                                         Analog::ERROR
                                     );
-                                    $errors[] = _T("An error has occured while looking if login already exists.");
+                                    $this->errors[] = _T("An error has occured while looking if login already exists.");
                                 }
                             }
                             break;
@@ -1036,13 +1046,13 @@ class Adherent
                             if ($value == 'http://') {
                                 $this->$prop = '';
                             } elseif (!isValidWebUrl($value)) {
-                                $errors[] = _T("- Non-valid Website address! Maybe you've skipped the http://?");
+                                $this->errors[] = _T("- Non-valid Website address! Maybe you've skipped the http://?");
                             }
                             break;
                         case 'login_adh':
                             /** FIXME: add a preference for login lenght */
                             if (strlen($value) < 2) {
-                                $errors[] = str_replace(
+                                $this->errors[] = str_replace(
                                     '%i',
                                     2,
                                     _T("- The username must be composed of at least %i characters!")
@@ -1050,7 +1060,7 @@ class Adherent
                             } else {
                                 //check if login does not contain the @ character
                                 if (strpos($value, '@') != false) {
-                                    $errors[] = _T("- The username cannot contain the @ character");
+                                    $this->errors[] = _T("- The username cannot contain the @ character");
                                 } else {
                                     //check if login is already taken
                                     try {
@@ -1068,14 +1078,14 @@ class Adherent
                                         if ($results->count() !==  0
                                             || $value == $preferences->pref_admin_login
                                         ) {
-                                            $errors[] = _T("- This username is already in use, please choose another one!");
+                                            $this->errors[] = _T("- This username is already in use, please choose another one!");
                                         }
                                     } catch (\Exception $e) {
                                         Analog::log(
                                             'An error occured checking member login unicity.',
                                             Analog::ERROR
                                         );
-                                        $errors[] = _T("An error has occured while looking if login already exists.");
+                                        $this->errors[] = _T("An error has occured while looking if login already exists.");
                                     }
                                 }
                             }
@@ -1084,7 +1094,7 @@ class Adherent
                             /** TODO: check password complexity, set by a preference */
                             /** TODO: add a preference for password lenght */
                             if (strlen($value) < 6) {
-                                $errors[] = str_replace(
+                                $this->errors[] = str_replace(
                                     '%i',
                                     6,
                                     _T("- The password must be of at least %i characters!")
@@ -1093,11 +1103,11 @@ class Adherent
                                 && (!isset($values['mdp_adh2'])
                                 || $values['mdp_adh2'] != $value)
                             ) {
-                                $errors[] = _T("- The passwords don't match!");
+                                $this->errors[] = _T("- The passwords don't match!");
                             } elseif ($this->_self_adh === true
                                 && !crypt($value, $values['mdp_crypt'])==$values['mdp_crypt']
                             ) {
-                                $errors[] = _T("Password misrepeated: ");
+                                $this->errors[] = _T("Password misrepeated: ");
                             } else {
                                 $this->$prop = password_hash(
                                     $value,
@@ -1115,7 +1125,7 @@ class Adherent
                                 $results = $this->zdb->execute($select);
                                 $result = $results->current();
                                 if (!$result) {
-                                    $errors[] = str_replace(
+                                    $this->errors[] = str_replace(
                                         '%id',
                                         $value,
                                         _T("Status #%id does not exists in database.")
@@ -1127,7 +1137,7 @@ class Adherent
                                     'An error occured checking status existance: ' . $e->getMessage(),
                                     Analog::ERROR
                                 );
-                                $errors[] = _T("An error has occured while looking if status does exists.");
+                                $this->errors[] = _T("An error has occured while looking if status does exists.");
                             }
                             break;
                         case 'sexe_adh':
@@ -1157,7 +1167,7 @@ class Adherent
                 }
 
                 if ($mandatory_missing === true) {
-                    $errors[] = _T("- Mandatory field empty: ") .
+                    $this->errors[] = _T("- Mandatory field empty: ") .
                     ' <a href="#' . $key . '">' . $this->getFieldLabel($key) .'</a>';
                 }
             }
@@ -1168,13 +1178,15 @@ class Adherent
             $this->_parent = null;
         }
 
-        if (count($errors) > 0) {
+        $this->dynamicsCheck($values, $_FILES);
+
+        if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been throwed attempting to edit/store a member' . "\n" .
-                print_r($errors, true),
+                print_r($this->errors, true),
                 Analog::ERROR
             );
-            return $errors;
+            return $this->errors;
         } else {
             $this->checkDues();
 
@@ -1198,7 +1210,7 @@ class Adherent
         try {
             $values = array();
             $fields = self::getDbFields($this->zdb);
-            /** FIXME: quote? */
+
             foreach ($fields as $field) {
                 if ($field !== 'date_modif_adh'
                     || !isset($this->_id)
@@ -1247,6 +1259,7 @@ class Adherent
                 $values['parent_id'] = new Expression('NULL');
             }
 
+            $success = false;
             if (!isset($this->_id) || $this->_id == '') {
                 //we're inserting a new member
                 unset($values[self::PK]);
@@ -1278,7 +1291,7 @@ class Adherent
                             strtoupper($this->_login)
                         );
                     }
-                    return true;
+                    $success = true;
                 } else {
                     $hist->add(_T("Fail to add new member."));
                     throw new \Exception(
@@ -1316,10 +1329,15 @@ class Adherent
                         strtoupper($this->_login)
                     );
                 }
-                return true;
+                $success = true;
             }
-            //DEBUG
-            return false;
+
+            //dynamic fields
+            if ($success) {
+                $success = $this->dynamicsStore();
+            }
+
+            return $success;
         } catch (\Exception $e) {
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
@@ -1364,8 +1382,6 @@ class Adherent
      */
     public function __get($name)
     {
-        global $log, $login;
-
         $forbidden = array(
             'admin', 'staff', 'due_free', 'appears_in_list', 'active',
             'row_classes'
@@ -1480,7 +1496,7 @@ class Adherent
                         }
                         break;
                     default:
-                        if (!isset($this->$rname)) {
+                        if (!property_exists($this, $rname)) {
                             Analog::log(
                                 "Unknown property '$rname'",
                                 Analog::WARNING

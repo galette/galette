@@ -1,104 +1,91 @@
-{if !empty($dynamic_fields)}
+{if !empty($object->getDynamicFields())}
+
+{function name=draw_field}
+    {assign var=valuedata value=$field_data.field_val|escape}
+    <label class="bline libelle" for="info_field_{$field->getId()}_{$loop}">{$field->getName()|escape}</label>
+    {if $field|is_a:'Galette\DynamicFieldsTypes\Text'}
+        <textarea name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}"
+            cols="{if $field->getWidth() > 0}{$field->getWidth()}{else}61{/if}"
+            rows="{if $field->getHeight() > 0}{$field->getHeight()}{else}6{/if}"
+            {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
+            {if $field->isRequired()} required{/if}>{$valuedata}</textarea>
+    {elseif $field|is_a:'Galette\DynamicFieldsTypes\Line'}
+        <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}"
+            {if $field->getWidth() > 0}size="{$field->getWidth()}"{/if}
+            {if $field->getSize() > 0}maxlength="{$field->getSize()}"{/if}
+            value="{$valuedata}"
+            {if $field->isRequired()} required{/if}
+            {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
+        />
+    {elseif $field|is_a:'Galette\DynamicFieldsTypes\Choice'}
+        <select name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}"
+            {if $field->isRequired()} required{/if}
+            {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
+        >
+            <!-- If no option is present, page is not XHTML compliant -->
+            <option value="">{if $field->isRequired()}{_T string="Select an option"}{/if}</option>
+            {html_options options=$field->getValues() selected=$valuedata}
+        </select>
+    {elseif $field|is_a:'Galette\DynamicFieldsTypes\Date'}
+        <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}" maxlength="10"
+            value="{$valuedata}" class="dynamic_date"
+            {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
+            {if $field->isRequired()} required{/if}
+        />
+        <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
+    {elseif $field|is_a:'Galette\DynamicFieldsTypes\Boolean'}
+        <input type="checkbox" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}" value="1"
+            {if $valuedata eq 1} checked="checked"{/if}
+            {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
+            {if $field->isRequired()} required{/if}
+        />
+    {elseif $field|is_a:'Galette\DynamicFieldsTypes\File'}
+        {_T string="new"}: <input type="file" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_new"
+            {if $field->isRequired()} required{/if}
+        />
+        {_T string="current"}: <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_current" disabled="disabled"
+            value="{$valuedata}"
+        />
+        <label for="info_field_{$field->getId()}_{$loop}_delete">{_T string="delete"}:</label> <input type="checkbox" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_delete"
+            onclick="this.form.info_field_{$field->getId()}_{$loop}_new.disabled = this.checked;"
+        />
+    {/if}
+{/function}
+
 <fieldset class="cssform">
     <legend class="ui-state-active ui-corner-top">{_T string="Additionnal fields:"}</legend>
     <div>
-{foreach from=$dynamic_fields item=field}
-{if $field.field_perm eq 0 || $login->isAdmin() || $login->isStaff() && $field.field_perm eq 2}
-    {if $field.field_type eq 0}
-        <div class="separator">{$field.field_name|escape}</div>
-    {else}
-        <p{if $field.config_field_repeat == 0 || $field.config_field_repeat > 1} class="repetable"{/if}>
-            <label class="bline libelle" for="info_field_{$field.field_id}_1_{$field.field_repeat}">{$field.field_name|escape}</label>
-    {* Number of configured occurences *}
-    {assign var="count" value=$field.config_field_repeat}
-    {if isset($data) and isset($data.dyn[$field.field_id]) and $data.dyn[$field.field_id]|@count > $field.config_field_repeat}
-        {assign var="loops" value=$data.dyn[$field.field_id]|@count + 2}
-    {elseif $field.config_field_repeat == 0 || $field.config_field_repeat > 1}
-        {if isset($data) and isset($data.dyn[$field.field_id]) and $data.dyn[$field.field_id]|@count >= 2}
-            {assign var="loops" value=$count + 1}
-        {else}
-            {assign var="loops" value="3"}
-        {/if}
-    {else}
-        {assign var="loops" value="2"}
-    {/if}
-
-    {section name="fieldLoop" start=1 loop=$loops}
-        {* Calculate field value *}
-        {assign var="valuedata" value=null}
-        {if isset($data.dyn[$field.field_id])}
-            {if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}
-                {assign var="valuedata" value=$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]|escape}
-            {/if}
-        {/if}
-
-        <!-- Create line break for each entry exept the first one -->
-        {if $smarty.section.fieldLoop.index gt 1}<br/>{/if}
-        {if $field.field_type eq 1}
-            <textarea name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}"
-                cols="{if $field.field_width > 0}{$field.field_width}{else}61{/if}"
-                rows="{if $field.field_height > 0}{$field.field_height}{else}6{/if}"
-                {if isset($disabled.dyn[$field.field_id])} {$disabled.dyn[$field.field_id]}{/if}
-                {if $field.field_required eq 1} required{/if}>{$valuedata}</textarea>
-        {elseif $field.field_type eq 2}
-            <input type="text" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}"
-                {if $field.field_width > 0}size="{$field.field_width}"{/if}
-                {if $field.field_size > 0}maxlength="{$field.field_size}"{/if}
-                value="{$valuedata}"
-                {if isset($disabled.dyn[$field.field_id])} {$disabled.dyn[$field.field_id]}{/if}
-                {if $field.field_required eq 1} required{/if}
-            />
-        {elseif $field.field_type eq 3}
-            <select name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}"{if $field.field_required eq 1} required{/if}>
-                <!-- If no option is present, page is not XHTML compliant -->
-                {if $field.choices|@count eq 0}<option value=""></option>{/if}
-                {html_options options=$field.choices selected=$valuedata}
-            </select>
-        {elseif $field.field_type eq 4}
-            <input type="text" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}" maxlength="10"
-                value="{$valuedata}" class="dynamic_date"
-                {if isset($disabled.dyn[$field.field_id])} {$disabled.dyn[$field.field_id]}{/if}
-                {if $field.field_required eq 1} required{/if}
-            />
-            <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
-        {elseif $field.field_type eq 5}
-            <input type="checkbox" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}" value="1"
-            {if $valuedata eq 1} checked="checked"{/if}
-                {if isset($disabled.dyn[$field.field_id])} {$disabled.dyn[$field.field_id]}{/if}
-                {if $field.field_required eq 1} required{/if}
-            />
-        {elseif $field.field_type eq 6}
-            {if isset($data.dyn[$field.field_id])}
-                {if isset($data.dyn[$field.field_id][$smarty.section.fieldLoop.index])}
-                    {if !$data.dyn[$field.field_id][$smarty.section.fieldLoop.index]}
-                        {assign var="disableddata" value=true}
+    {foreach from=$object->getDynamicFields()->getFields() item=field}
+        {if $field->getPerm() eq constant('Galette\DynamicFieldsTypes\DynamicFieldType::PERM_ALL') || $login->isAdmin() || $login->isStaff() && $field->getPerm() eq constant('Galette\DynamicFieldsTypes\DynamicFieldType::PERM_STAFF')}
+            {if $field|is_a:'Galette\DynamicFieldsTypes\Separator'}
+        <div class="separator">{$field->getName()|escape}</div>
+            {else}
+        <p{if $field->isRepeatable()} class="repetable"{/if}>
+                {assign var=values value=$object->getDynamicFields()->getValues($field->getId())}
+                {assign var=can_add value=false}
+                {if $field->getRepeat() === 0 || $values|@count < $field->getRepeat() || $values|@count === 0}
+                    {assign var=can_add value=true}
+                {/if}
+                {foreach from=$values item=field_data}
+                    {if not $field_data@first}<br/>{/if}
+                    {draw_field field=$field field_data=$field_data loop=$field_data@iteration}
+                {/foreach}
+                {if $values|@count === 0}
+                    {$field_data = ['field_val' => '']}
+                    {draw_field field=$field field_data=$field_data loop=$values@count + 1}
+                {/if}
+        </p>
+                {if $field->isRepeatable()}
+                    {if $field->getRepeat() === 0}
+        <p class="exemple" id="repeat_msg">{_T string="Enter as many occurences you want."}</p>
+                    {elseif $values|@count < $field->getRepeat() || $values|@count === 0}
+                        {assign var=remaining value=$field->getRepeat() - $values|@count}
+        <p class="exemple" id="repeat_msg">{_T string="Enter up to %count more occurences." pattern="/%count/" replace=$remaining}</p>
                     {/if}
                 {/if}
             {/if}
-            {_T string="new"}: <input type="file" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}_new"
-                {if isset($disabled.dyn[$field.field_id])} {$disabled.dyn[$field.field_id]}{/if}
-                {if $field.field_required eq 1} required{/if}
-            />
-            {_T string="current"}: <input type="text" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}_current" disabled="disabled"
-                value="{$valuedata}"
-            />
-            {_T string="delete"}: <input type="checkbox" name="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}" id="info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}_delete"
-                {if isset($disableddata)}disabled="disabled"{/if}
-                onclick="this.form.info_field_{$field.field_id}_{$smarty.section.fieldLoop.index}_{$count}_new.disabled = this.checked;"
-            />
         {/if}
-    {/section}
-        </p>
-    {/if}
-    {if $field.field_type neq 0}
-        {if $field.config_field_repeat == 0 and $field.config_field_repeat neq null}
-        <p class="exemple">{_T string="Enter as many occurences you want."}</p>
-        {elseif $field.config_field_repeat > 1}
-        <p class="exemple">{_T string="Enter up to %count occurences." pattern="/%count/" replace=$field.field_repeat}</p>
-        {/if}
-    {/if}
-{/if}
-{/foreach}
+    {/foreach}
     </div>
 </fieldset>
 <script type="text/javascript">
@@ -108,20 +95,20 @@
 
     var _lnkEvent = function(_a, _input, _parent) {
         var _vals = _input[0].id.split(/_/);
-        var _total = _vals[_vals.length-1]; //max number of occurences
-        var _current = _vals[_vals.length-2]; //current occurrence
+        var _total = $(_input[0]).data('maxrepeat'); //max number of occurences
+        var _current = _vals[_vals.length-1]; //current occurrence
 
        _a.click(function(e) {
             var _new = _input.clone();
 
             var _id = '';
 
-            for ( var i = 0 ; i < _vals.length -2 ; i++ ) {
+            for ( var i = 0 ; i < _vals.length -1 ; i++ ) {
                 _id += _vals[i] + '_';
             }
 
             _current = Number(_current) + 1;
-            _new.attr('id', _id + _current + '_' + _total);
+            _new.attr('id', _id + _current);
             _new.attr('name', _id + _current);
             _new.val('');
             _a.remove();
@@ -132,6 +119,11 @@
                 var _b = _addLnk();
                 _lnkEvent(_b, _new, _parent);
                 _parent.append(_b);
+                if (_current < _total) {
+                    $('#repeat_msg').html('{_T string="Enter up to %count more occurences." pattern="/%count/" replace="COUNT" escape="js"}'.replace(/COUNT/, _total - _current));
+                }
+            } else if (_current == _total) {
+                $('#repeat_msg').remove();
             }
             return false;
         });
@@ -151,8 +143,8 @@
                     _input = $(this).find('input:last')
                 }
                 var _vals = _input[0].id.split(/_/);
-                var _total = _vals[_vals.length-1]; //max number of occurences
-                var _current = _vals[_vals.length-2]; //current occurrence
+                var _total = $(_input[0]).data('maxrepeat'); //max number of occurences
+                var _current = _vals[_vals.length-1]; //current occurrence
 
                 if ( _total === '0' || _current < _total ) {
                     var _a = _addLnk();

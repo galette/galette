@@ -42,7 +42,7 @@ use Galette\Entity\Status;
 use Galette\Entity\ContributionsTypes;
 use Galette\Entity\Contribution;
 use Galette\Repository\Members;
-use Galette\Entity\DynamicFields;
+use Galette\DynamicFieldsTypes\DynamicFieldType;
 
 /**
  * Members list filters and paginator
@@ -510,7 +510,7 @@ class AdvancedMembersList extends MembersList
 
                             //handle value according to type
                             switch ($value['type']) {
-                                case DynamicFields::DATE:
+                                case DynamicFieldType::DATE:
                                     if ($value['search'] !== null && trim($value['search']) !== '') {
                                         try {
                                             $d = \DateTime::createFromFormat(__("Y-m-d"), $value['search']);

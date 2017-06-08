@@ -58,6 +58,8 @@ use Galette\Core\Login;
  */
 class Transaction
 {
+    use DynamicsTrait;
+
     const TABLE = 'transactions';
     const PK = 'trans_id';
 
@@ -72,6 +74,8 @@ class Transaction
 
     private $zdb;
     private $login;
+
+    private $errors;
 
     /**
      * Default constructor
@@ -127,6 +131,10 @@ class Transaction
             }
         } elseif (is_object($args)) {
             $this->loadFromRS($args);
+        }
+
+        if ($this->id !== null) {
+            $this->loadDynamicFields();
         }
     }
 
@@ -241,7 +249,7 @@ class Transaction
      */
     public function check($values, $required, $disabled)
     {
-        $errors = array();
+        $this->errors = array();
 
         $fields = array_keys($this->_fields);
         foreach ($fields as $key) {
@@ -275,7 +283,7 @@ class Transaction
                                     __("Y-m-d") . ' | ' . $e->getMessage(),
                                     Analog::INFO
                                 );
-                                $errors[] = str_replace(
+                                $this->errors[] = str_replace(
                                     array(
                                         '%date_format',
                                         '%field'
@@ -295,16 +303,16 @@ class Transaction
                             $this->_amount = $value;
                             $value = strtr($value, ',', '.');
                             if (!is_numeric($value)) {
-                                $errors[] = _T("- The amount must be an integer!");
+                                $this->errors[] = _T("- The amount must be an integer!");
                             }
                             break;
                         case 'trans_desc':
                             /** TODO: retrieve field length from database and check that */
                             $this->_description = $value;
                             if (trim($value) == '') {
-                                $errors[] = _T("- Empty transaction description!");
-                            } elseif (strlen($value) > 150) {
-                                $errors[] = _T("- Transaction description must be 150 characters long maximum.");
+                                $this->errors[] = _T("- Empty transaction description!");
+                            } elseif (mb_strlen($value) > 150) {
+                                $this->errors[] = _T("- Transaction description must be 150 characters long maximum.");
                             }
                             break;
                     }
@@ -317,7 +325,7 @@ class Transaction
             if ($val === 1) {
                 $prop = '_' . $this->_fields[$key]['propname'];
                 if (!isset($disabled[$key]) && !isset($this->$prop)) {
-                    $errors[] = _T("- Mandatory field empty: ") .
+                    $this->errors[] = _T("- Mandatory field empty: ") .
                     ' <a href="#' . $key . '">' . $this->getFieldLabel($key) .'</a>';
                 }
             }
@@ -326,17 +334,17 @@ class Transaction
         if ($this->_id != '') {
             $dispatched = $this->getDispatchedAmount();
             if ($dispatched > $this->_amount) {
-                $errors[] = _T("- Sum of all contributions exceed corresponding transaction amount.");
+                $this->errors[] = _T("- Sum of all contributions exceed corresponding transaction amount.");
             }
         }
 
-        if (count($errors) > 0) {
+        if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been throwed attempting to edit/store a transaction' .
-                print_r($errors, true),
+                print_r($this->errors, true),
                 Analog::DEBUG
             );
-            return $errors;
+            return $this->errors;
         } else {
             Analog::log(
                 'Transaction checked successfully.',

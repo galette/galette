@@ -2871,76 +2871,35 @@ $app->post(
 $app->get(
     __('/fields', 'routes') . __('/dynamic', 'routes') . __('/configure', 'routes') . '[/{form:adh|contrib|trans}]',
     function ($request, $response, $args) {
-        $dyn_fields = new DynamicFields();
-        $all_forms = $dyn_fields->getFormsNames();
-
         $form_name = (isset($args['form'])) ? $args['form'] : 'adh';
         if (isset($_POST['form']) && trim($_POST['form']) != '') {
             $form_name = $_POST['form'];
         }
-        if (!isset($all_forms[$form_name])) {
-            $form_name = '';
-        }
+        $fields = new \Galette\Repository\DynamicFieldsTypes($this->zdb);
+        $fields_list = $fields->getList($form_name, $this->login);
 
-        $field_type_names = $dyn_fields->getFieldsTypesNames();
+        $field_type_names = DynamicFieldType::getFieldsTypesNames();
 
-        //UI configuration
         $params = [
             'require_tabs'      => true,
-            'require_dialog'    => true
+            'require_dialog'    => true,
+            'fields_list'       => $fields_list,
+            'form_name'         => $form_name,
+            'form_title'        => DynamicFieldType::getFormTitle($form_name),
+            'page_title'        => _T("Dynamic fields configuration")
         ];
 
-        if ($form_name == '') {
-            $form_title = '';
-        } else {
-            $form_title = $all_forms[$form_name];
-
-            $select = $this->zdb->select(DynamicFieldType::TABLE);
-            $select
-                ->where(array('field_form' => $form_name))
-                ->order('field_index');
-
-            $results = $this->zdb->execute($select);
-
-            $dfields = array();
-            if ($results) {
-                $count = 0;
-                foreach ($results as $r) {
-                    $dfields[$count]['id'] = $r->field_id;
-                    $dfields[$count]['index'] = $r->field_index;
-                    $dfields[$count]['name'] = $r->field_name;
-                    $dfields[$count]['perm'] =  $dyn_fields->getPermName($r->field_perm);
-                    $dfields[$count]['type'] = $r->field_type;
-                    $dfields[$count]['type_name'] = $field_type_names[$r->field_type];
-                    $dfields[$count]['required'] = ($r->field_required == '1');
-                    ++$count;
-                }
-            } // $result != false
-
-            $params['dyn_fields'] = $dfields;
-        } // $form_name == ''
-
-        //Populate template with data
-        $params['all_forms'] = $all_forms;
-        $params['form_name'] = $form_name;
-        $params['form_title'] = $form_title;
-        $params['page_title'] = _T("Profile configuration");
-        $params['perm_names'] = $dyn_fields->getPermsNames();
-        $params['field_type_names'] = $field_type_names;
-
-        $ajax = false;
+        $tpl = 'configurer_fiches.tpl';
+        //Render directly template if we called from ajax,
+        //render in a full page otherwise
         if ($request->isXhr()
             || isset($request->getQueryParams()['ajax'])
             && $request->getQueryParams()['ajax'] == 'true'
         ) {
-            $ajax = true;
-        }
-
-        //Render directly template if we called from ajax,
-        //render in a full page otherwise
-        $tpl = 'configurer_fiches.tpl';
-        if ($ajax === true) {
             $tpl = 'configurer_fiche_content.tpl';
+        } else {
+            $all_forms = DynamicFieldType::getFormsNames();
+            $params['all_forms'] = $all_forms;
         }
 
         // display page
@@ -2959,69 +2918,14 @@ $app->get(
     function ($request, $response, $args) {
         $field_id = (int)$args['id'];
         $form_name = $args['form'];
-        $action = $args['direction'];
 
-        try {
-            $this->zdb->connection->beginTransaction();
-            $select = $this->zdb->select(DynamicFieldType::TABLE);
-            $select->columns(
-                array('field_type', 'field_index', 'field_name')
-            )->where(
-                array(
-                    DynamicFieldType::PK    => $field_id,
-                    'field_form'            => $form_name
-                )
-            );
-
-            $results = $this->zdb->execute($select);
-            $result = $results->current();
-
-            if ($result !== false) {
-                $old_rank = $result->field_index;
-                $query_list = array();
-
-                $direction = $action == "up" ? -1: 1;
-                $new_rank = $old_rank + $direction;
-                $update = $this->zdb->update(DynamicFieldType::TABLE);
-                $update->set(
-                    array(
-                        'field_index' => $old_rank
-                    )
-                )->where(
-                    array(
-                        'field_index'   => $new_rank,
-                        'field_form'    => $form_name
-                    )
-                );
-                $this->zdb->execute($update);
-
-                $update = $this->zdb->update(DynamicFieldType::TABLE);
-                $update->set(
-                    array(
-                        'field_index' => $new_rank
-                    )
-                )->where(
-                    array(
-                        'field_id'      => $field_id,
-                        'field_form'    => $form_name
-                    )
-                );
-                $this->zdb->execute($update);
-            }
-            $this->zdb->connection->commit();
-
+        $field = DynamicFieldType::loadFieldType($this->zdb, $field_id);
+        if ($field->move($args['direction'])) {
             $this->flash->addMessage(
                 'success_detected',
                 _T("Field has been successfully moved")
             );
-        } catch (\Exception $e) {
-            $this->zdb->connection->rollBack();
-            Analog::log(
-                'Unable to change field ' . $field_id . ' rank | ' .
-                $e->getMessage(),
-                Analog::ERROR
-            );
-
+        } else {
             $this->flash->addMessage(
                 'error_detected',
                 _T("An error occured moving field :(")
@@ -3038,9 +2942,7 @@ $app->get(
     __('/fields', 'routes') . __('/dynamic', 'routes') .
         __('/remove', 'routes') . '/{form:adh|contrib|trans}/{id:\d+}',
     function ($request, $response, $args) {
-        $dyn_fields = new DynamicFields();
-        $dyn_field = $dyn_fields->loadFieldType($args['id']);
-
+        $field = DynamicFieldType::loadFieldType($this->zdb, (int)$args['id']);
         $data = [
             'id'            => $args['id'],
             'redirect_uri'  => $this->router->pathFor('configureDynamicFields', ['form' => $args['form']])
@@ -3055,7 +2957,7 @@ $app->get(
                 'mode'          => $request->isXhr() ? 'ajax' : '',
                 'page_title'    => sprintf(
                     _T('Remove dynamic field %1$s'),
-                    $dyn_field->getName()
+                    $field->getName()
                 ),
                 'form_url'      => $this->router->pathFor(
                     'doRemoveDynamicField',
@@ -3076,9 +2978,6 @@ $app->post(
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
         $success = false;
-        $dyn_fields = new DynamicFields();
-        $field_id = (int)$args['id'];
-        $form_name = $args['form'];
 
         $uri = isset($post['redirect_uri']) ?
             $post['redirect_uri'] :
@@ -3090,81 +2989,19 @@ $app->post(
                 _T("Removal has not been confirmed!")
             );
         } else {
-            try {
-                $select = $this->zdb->select(DynamicFieldType::TABLE);
-                $select->columns(
-                    array('field_type', 'field_index', 'field_name')
-                )->where(
-                    array(
-                        DynamicFieldType::PK    => $field_id,
-                        'field_form'            => $form_name
-                    )
-                );
-
-                $results = $this->zdb->execute($select);
-                $result = $results->current();
-                $old_rank = $result->field_index;
-
-                $this->zdb->connection->beginTransaction();
-                $update = $this->zdb->update(DynamicFieldType::TABLE);
-                $update->set(
-                    array(
-                        'field_index' => new Zend\Db\Sql\Expression('field_index-1')
-                    )
-                )->where
-                    ->greaterThan('field_index', $old_rank)
-                    ->equalTo('field_form', $form_name);
-                $this->zdb->execute($update);
-
-                $delete = $this->zdb->delete(DynamicFields::TABLE);
-                $delete->where(
-                    array(
-                        'field_id'      => $field_id,
-                        'field_form'    => $form_name
-                    )
-                );
-                $this->zdb->execute($delete);
-
-                $delete = $this->zdb->delete(DynamicFieldType::TABLE);
-                $delete->where(
-                    array(
-                        'field_id'      => $field_id,
-                        'field_form'    => $form_name
-                    )
-                );
-                $this->zdb->execute($delete);
-
-                $df = $dyn_fields->getFieldType($result->field_type);
-                if ($df->hasFixedValues()) {
-                    $contents_table = DynamicFields::getFixedValuesTableName(
-                        $field_id
-                    );
-                    $this->zdb->db->query(
-                        'DROP TABLE IF EXISTS ' . $contents_table,
-                        \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-                    );
-                }
-                deleteDynamicTranslation($result->field_name);
-
-                $this->zdb->connection->commit();
-
+            $field_id = (int)$args['id'];
+            $field = DynamicFieldType::loadFieldType($this->zdb, $field_id);
+            if ($field->remove()) {
                 $this->flash->addMessage(
                     'success_detected',
                     _T('Field has been successfully deleted!')
                 );
                 $success = true;
-            } catch (\Exception $e) {
-                $this->zdb->connection->rollBack();
-                Analog::log(
-                    'An error occured deleting field | ' . $e->getMessage(),
-                    Analog::ERROR
-                );
-
+            } else {
                 $this->flash->addMessage(
                     'error_detected',
                     _T('An error occured trying to delete field :(')
                 );
-
                 $success = false;
             }
         }
@@ -3174,11 +3011,7 @@ $app->post(
                 ->withStatus(301)
                 ->withHeader('Location', $uri);
         } else {
-            return $response->withJson(
-                [
-                    'success'   => $success
-                ]
-            );
+            return $response->withJson(['success'   => $success]);
         }
     }
 )->setName('doRemoveDynamicField')->add($authenticate);
@@ -3214,19 +3047,14 @@ $app->get(
                 );
         }
 
-
-        $dyn_fields = new DynamicFields();
-        $all_forms = $dyn_fields->getFormsNames();
-
         $form_name = $args['form'];
-        if (!isset($all_forms[$form_name])) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('configureDynamicFields'));
-        }
 
-        if ($action === __('edit', 'routes')) {
-            $df = $dyn_fields->loadFieldType($id_dynf);
+        $df = null;
+        if ($this->session->dynamicfieldtype) {
+            $df = $this->session->dynamicfieldtype;
+            $this->session->dynamicfieldtype = null;
+        } elseif ($action === __('edit', 'routes')) {
+            $df = DynamicFieldType::loadFieldType($this->zdb, $id_dynf);
             if ($df === false) {
                 $this->flash->addMessage(
                     'error_detected',
@@ -3236,27 +3064,21 @@ $app->get(
                     ->withStatus(301)
                     ->withHeader('Location', $this->router->pathFor('configureDynamicFields'));
             }
-
-            //We load values here, making sure all changes are stored in database
-            $df->load();
         }
 
         $params = [
             'page_title'    => _T("Edit field"),
             'action'        => $action,
             'form_name'     => $form_name,
-            'perm_all'      => DynamicFields::PERM_ALL,
-            'perm_staff'    => DynamicFields::PERM_STAFF,
-            'perm_admin'    => DynamicFields::PERM_ADM,
-            'perm_names'    => $dyn_fields->getPermsNames(),
+            'perm_names'    => DynamicFieldType::getPermsNames(),
             'mode'          => ($request->isXhr() ? 'ajax' : '')
         ];
 
-        if ($action === __('edit', 'routes')) {
+        if ($df !== null) {
             $params['df'] = $df;
-        } else {
-            $field_type_names = $dyn_fields->getFieldsTypesNames();
-            $params['field_type_names'] = $field_type_names;
+        }
+        if ($action === __('add', 'routes')) {
+            $params['field_type_names'] = DynamicFieldType::getFieldsTypesNames();
         }
 
         // display page
@@ -3275,278 +3097,39 @@ $app->post(
         '/{form:adh|contrib|trans}[/{id:\d+}]',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
-        $dyn_fields = new DynamicFields();
 
-        //EDITION
         $error_detected = [];
+        $warning_detected = [];
 
-        if (!isset($post['field_name'])) {
-            $error_detected[] = _T('Missing required field name!');
+        if ($args['action'] === __('add', 'routes')) {
+            $df = DynamicFieldType::getFieldType($this->zdb, $post['field_type']);
         } else {
-            $field_name = $post['field_name'];
+            $field_id = (int)$args['id'];
+            $df = DynamicFieldType::loadFieldType($this->zdb, $field_id);
         }
 
-        if (!isset($post['field_perm']) || $post['field_perm'] == '') {
-            $error_detected[] = _T('Missing required field permissions!');
-        } else {
-            $field_perm = get_numeric_posted_value('field_perm', '');
-        }
-        $field_required = get_numeric_posted_value('field_required', '0');
-
-        if (count($error_detected) === 0 && $args['action'] === __('edit', 'routes')) {
-            $field_id = $args['id'];
-            $field_width = get_numeric_posted_value('field_width', null);
-            $field_height = get_numeric_posted_value('field_height', null);
-            $field_size = get_numeric_posted_value('field_size', null);
-            $field_repeat = get_numeric_posted_value(
-                'field_repeat',
-                new Zend\Db\Sql\Expression('NULL')
-            );
-            $fixed_values = get_form_value('fixed_values', '');
-
-            $duplicated = $dyn_fields->isDuplicate(
-                $this->zdb,
-                $args['form'],
-                $field_name,
-                $field_id
-            );
-
-            if ($duplicated) {
-                $error_detected[] = _T("- Field name already used.");
+        try {
+            $df->store($post);
+            $error_detected = $df->getErrors();
+            $warning_detected = $df->getWarnings();
+        } catch (\Exception $e) {
+            if ($args['action'] === __('edit', 'routes')) {
+                $msg = 'An error occured storing dynamic field ' . $df->getId() . '.';
             } else {
-                $select = $this->zdb->select(DynamicFieldType::TABLE);
-                $select->columns(
-                    array('field_name')
-                )->where(array('field_id' => $field_id));
-
-                $results = $this->zdb->execute($select);
-                $result = $results->current();
-                $old_field_name = $result->field_name;
-
-                if ($old_field_name && $field_name != $old_field_name) {
-                    $added = addDynamicTranslation($field_name);
-                    if ($added === false) {
-                        $error_detected[] = str_replace(
-                            '%field',
-                            $field_name,
-                            _T('Unable to add dynamic translation for %field :(')
-                        );
-                    }
-
-                    $deleted = deleteDynamicTranslation($old_field_name);
-                    if ($deleted === false) {
-                        $error_detected[] = str_replace(
-                            '%field',
-                            $old_field_name,
-                            _T('Unable to remove old dynamic translation for %field :(')
-                        );
-                    }
-                }
+                $msg = 'An error occured adding new dynamic field.';
             }
-
-            if (count($error_detected) == 0) {
-                try {
-                    $values = array(
-                        'field_name'     => $field_name,
-                        'field_perm'     => $field_perm,
-                        'field_required' => $field_required,
-                        'field_width'    => $field_width,
-                        'field_height'   => $field_height,
-                        'field_size'     => $field_size,
-                        'field_repeat'   => $field_repeat
-                    );
-
-                    $update = $this->zdb->update(DynamicFieldType::TABLE);
-                    $update->set($values)->where(
-                        'field_id = ' . $field_id
-                    );
-                    $this->zdb->execute($update);
-                } catch (Exception $e) {
-                    Analog::log(
-                        'An error occured storing field | ' . $e->getMessage(),
-                        Analog::ERROR
-                    );
-                    $error_detected[] = _T("An error occured storing the field.");
-                }
-            }
-
-            $df = $dyn_fields->loadFieldType($field_id);
-            if ($df->hasFixedValues()) {
-                $values = array();
-                $max_length = 1;
-                $efixed_values = explode("\n", $fixed_values);
-                foreach ($efixed_values as $val) {
-                    $val = trim($val);
-                    $len = strlen($val);
-                    if ($len > 0) {
-                        $values[] = $val;
-                        if ($len > $max_length) {
-                            $max_length = $len;
-                        }
-                    }
-                }
-
-                $contents_table = DynamicFields::getFixedValuesTableName(
-                    $field_id,
-                    true
-                );
-
-                try {
-                    $this->zdb->connection->beginTransaction();
-                    $this->zdb->db->query(
-                        'DROP TABLE IF EXISTS ' . $contents_table,
-                        \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-                    );
-                    $this->zdb->db->query(
-                        'CREATE TABLE ' . $contents_table .
-                        ' (id INTEGER NOT NULL,val varchar(' . $max_length .
-                        ') NOT NULL)',
-                        \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-                    );
-                    $this->zdb->connection->commit();
-                } catch (\Exception $e) {
-                    $this->zdb->connection->rollBack();
-                    Analog::log(
-                        'Unable to manage fields values table ' .
-                        $contents_table . ' | ' . $e->getMessage(),
-                        Analog::ERROR
-                    );
-                    $error_detected[] = _T("An error occured storing managing fields values table");
-                }
-
-                if (count($error_detected) == 0) {
-                    try {
-                        $this->zdb->connection->beginTransaction();
-
-                        $insert = $this->zdb->insert(
-                            str_replace(PREFIX_DB, '', $contents_table)
-                        );
-                        $insert->values(
-                            array(
-                                'id'    => ':id',
-                                'val'   => ':val'
-                            )
-                        );
-                        $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
-
-                        for ($i = 0; $i < count($values); $i++) {
-                            $stmt->execute(
-                                array(
-                                    'id'    => $i,
-                                    'val'   => $values[$i]
-                                )
-                            );
-                        }
-                        $this->zdb->connection->commit();
-                    } catch (\Exception $e) {
-                        $this->zdb->connection->rollBack();
-                        Analog::log(
-                            'Unable to store field ' . $field_id . ' values (' .
-                            $e->getMessage() . ')',
-                            Analog::ERROR
-                        );
-                        $error_detected[] = _T('An error occured storing dynamic field :(');
-                    }
-                }
-            }
-        }
-        if (count($error_detected) === 0 && $args['action'] === __('add', 'routes')) {
-            $field_type = $post['field_type'];
-            $form_name = $args['form'];
-            if ($post['field_type'] != DynamicFields::SEPARATOR
-                && (!isset($post['field_name']) || $post['field_name'] == '')
-            ) {
-                $error_detected[] = _T("- The name field cannot be void.");
-            }
-
-            $duplicated = $dyn_fields->isDuplicate(
-                $this->zdb,
-                $form_name,
-                $field_name
+            Analog::log(
+                $msg . ' | ' .
+                $e->getMessage(),
+                Analog::ERROR
             );
-            if ($duplicated) {
-                $error_detected[] = _T("- Field name already used.");
+            if (GALETTE_MODE == 'DEV') {
+                throw $e;
             }
-
-            if (!$duplicated) {
-                try {
-                    $select = $this->zdb->select(DynamicFieldType::TABLE);
-                    $select->columns(
-                        array(
-                            'idx' => new Zend\Db\Sql\Expression('COUNT(*) + 1')
-                        )
-                    );
-                    $select->where(array('field_form' => $form_name));
-                    $results = $this->zdb->execute($select);
-                    $result = $results->current();
-                    $idx = $result->idx;
-                } catch (\Exception $e) {
-                    throw $e;
-                }
-
-                if ($idx !== false) {
-                    try {
-                        $values = array(
-                            'field_index'    => $idx,
-                            'field_form'     => $form_name,
-                            'field_name'     => $field_name,
-                            'field_perm'     => $field_perm,
-                            'field_type'     => $field_type,
-                            'field_required' => $field_required
-                        );
-
-                        $insert = $this->zdb->insert(DynamicFieldType::TABLE);
-                        $insert->values($values);
-                        $this->zdb->execute($insert);
-
-                        if ($this->zdb->isPostgres()) {
-                            $field_id = $this->zdb->driver->getLastGeneratedValue(
-                                PREFIX_DB . 'field_types_id_seq'
-                            );
-                        } else {
-                            $field_id = $this->zdb->driver->getLastGeneratedValue();
-                        }
-
-                        if ($field_name != '') {
-                            $translated = addDynamicTranslation($field_name);
-                            if (!$translated) {
-                                $error_detected[] =
-                                    _T('An error occured adding dynamic translation for dynamic field :(');
-                            }
-                        }
-
-                        if ($field_type != DynamicFields::SEPARATOR
-                            && count($error_detected) == 0
-                        ) {
-                            return $response
-                                ->withStatus(301)
-                                ->withHeader(
-                                    'Location',
-                                    $this->router->pathFor(
-                                        'editDynamicField',
-                                        [
-                                            'action'    => __('edit', 'routes'),
-                                            'form'      => $args['form'],
-                                            'id'        => $field_id
-                                        ]
-                                    )
-                                );
-                        }
-                    } catch (\Exception $e) {
-                        Analog::log(
-                            'An error occured adding new dynamic field. | ' .
-                            $e->getMessage(),
-                            Analog::ERROR
-                        );
-                        if (GALETTE_MODE == 'DEV') {
-                            throw $e;
-                        }
-                        $error_detected[] = _T('An error occured adding dynamic field :(');
-                    }
-                }
-            }
+            $error_detected[] = _T('An error occured adding dynamic field :(');
         }
 
+        //flash messages
         if (count($error_detected) > 0) {
             foreach ($error_detected as $error) {
                 $this->flash->addMessage(
@@ -3561,15 +3144,57 @@ $app->post(
             );
         }
 
-        return $response
-            ->withStatus(301)
-            ->withHeader(
-                'Location',
-                $this->router->pathFor(
-                    'configureDynamicFields',
-                    ['form' => $args['form']]
-                )
-            );
+        if (count($warning_detected) > 0) {
+            foreach ($warning_detected as $warning) {
+                $this->flash->addMessage(
+                    'warning_detected',
+                    $warning
+                );
+            }
+        }
+
+        //handle redirections
+        if (count($error_detected) > 0) {
+            //something went wrong :'(
+            $this->session->dynamicfieldtype = $df;
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor(
+                        'editDynamicField',
+                        $args
+                    )
+                );
+        } else {
+            if (!$df instanceof \Galette\DynamicFieldsTypes\Separator
+                && $args['action'] == __('add', 'routes')
+            ) {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader(
+                        'Location',
+                        $this->router->pathFor(
+                            'editDynamicField',
+                            [
+                                'action'    => __('edit', 'routes'),
+                                'form'      => $args['form'],
+                                'id'        => $df->getId()
+                            ]
+                        )
+                    );
+            }
+
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor(
+                        'configureDynamicFields',
+                        ['form' => $args['form']]
+                    )
+                );
+        }
     }
 )->setName('doEditDynamicField')->add($authenticate);
 

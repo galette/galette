@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  DynamicFields
+ * @category  DynamicFieldsTypes
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -38,12 +38,13 @@
 namespace Galette\DynamicFieldsTypes;
 
 use Analog\Analog;
+use Galette\Core\Db;
 
 /**
  * Separator field type
  *
  * @name      Separator
- * @category  DynamicFields
+ * @category  DynamicFieldsTypes
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -57,34 +58,25 @@ class Text extends DynamicFieldType
     /**
      * Default constructor
      *
-     * @param int $id Optionnal field id to load data
+     * @param Db  $zdb Database instance
+     * @param int $id  Optionnal field id to load data
      */
-    public function __construct($id = null)
+    public function __construct(Db $zdb, $id = null)
     {
-        parent::__construct($id);
+        parent::__construct($zdb, $id);
         $this->has_data = true;
         $this->has_width = true;
         $this->has_height = true;
-    }
-
-    /**
-     * Get field type name
-     *
-     * @return String
-     */
-    public function getTypeName()
-    {
-        return _T("text");
-    }
-
-    /**
-     * Load field
-     *
-     * @return void
-     */
-    public function load()
-    {
-        parent::load();
         $this->repeat = 1;
+    }
+
+    /**
+     * Get field type
+     *
+     * @return integer
+     */
+    public function getType()
+    {
+        return self::TEXT;
     }
 }

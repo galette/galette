@@ -12,14 +12,12 @@
             <legend class="ui-state-active ui-corner-top">{_T string="Edit field %field" pattern="/%field/" replace=$df->getName()}</legend>
             <p>
                 <label for="field_name" class="bline">{_T string="Name:"}</label>
-                <input type="text" name="field_name" id="field_name" value="{$df->getName()}"/>
+                <input type="text" name="field_name" id="field_name" value="{$df->getName()}"{if not $df|is_a:'Galette\DynamicFieldsTypes\Separator'} required="required"{/if}/>
             </p>
             <p>
                 <label for="field_perm" class="bline">{_T string="Visibility:"}</label>
                 <select name="field_perm" id="field_perm">
-                    <option value="{$perm_all}" {if $df->getPerm() eq constant('Galette\Entity\DynamicFields::PERM_ALL')}selected="selected"{/if}>{$perm_names[$perm_all]}</option>
-                    <option value="{$perm_staff}" {if $df->getPerm() eq constant('Galette\Entity\DynamicFields::PERM_STAFF')}selected="selected"{/if}>{$perm_names[$perm_staff]}</option>
-                    <option value="{$perm_admin}" {if $df->getPerm() eq constant('Galette\Entity\DynamicFields::PERM_ADM')}selected="selected"{/if}>{$perm_names[$perm_admin]}</option>
+                    {html_options options=$perm_names selected=$df->getPerm()}
                 </select>
             </p>
 {if $df->hasData()}
@@ -64,7 +62,7 @@
 {if $df->hasFixedValues()}
             <p>
                 <label for="fixed_values" class="bline">{_T string="Values:"}</label>
-                <textarea name="fixed_values" id="fixed_values" cols="20" rows="6">{$df->getValues()}</textarea>
+                <textarea name="fixed_values" id="fixed_values" cols="20" rows="6">{$df->getValues(true)}</textarea>
                 <br/><span class="exemple">{_T string="Choice list (one entry per line)."}</span>
             </p>
 {/if}
@@ -83,25 +81,33 @@
     {/if}
             <p>
                 <label for="field_name" class="bline">{_T string="Field name"}</label>
-                <input size="40" type="text" name="field_name" id="field_name"/>
+                <input size="40" type="text" name="field_name" id="field_name" value="{if isset($df)}{$df->getName()}{/if}"/>
             </p>
             <p>
                 <label for="field_perm" class="bline">{_T string="Visibility"}</label>
                 <select name="field_perm" id="field_perm">
-                    {html_options options=$perm_names selected="0"}
+                    {assign var="perm" value=0}
+                    {if isset($df)}
+                        {assign var="perm" value=$df->getPerm()}
+                    {/if}
+                    {html_options options=$perm_names selected=$perm}
                 </select>
             </p>
             <p>
                 <label for="field_type" class="bline">{_T string="Type"}</label>
                 <select name="field_type" id="field_type">
-                    {html_options options=$field_type_names selected="0"}
+                    {assign var="type" value=0}
+                    {if isset($df)}
+                        {assign var="type" value=$df->getType()}
+                    {/if}
+                    {html_options options=$field_type_names selected=$type}
                 </select>
             </p>
             <p>
                 <label for="field_required" class="bline">{_T string="Required"}</label>
                 <select name="field_required" id="field_required">
-                    <option value="0">{_T string="No"}</option>
-                    <option value="1">{_T string="Yes"}</option>
+                    <option value="0"{if not isset($df) or not $df->isRequired()} selected="selected"{/if}>{_T string="No"}</option>
+                    <option value="1"{if isset($df) and $df->isRequired()} selected="selected"{/if}>{_T string="Yes"}</option>
                 </select>
             </p>
             <div class="center">

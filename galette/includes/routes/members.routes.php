@@ -69,8 +69,6 @@ $app->get(
                 ->withHeader('Location', $this->router->pathFor('slash'));
         }
 
-        $dyn_fields = new DynamicFields();
-
         if ($this->session->member !== null) {
             $member = $this->session->member;
             $this->session->member = null;
@@ -97,23 +95,10 @@ $app->get(
 
         $fields = Adherent::getDbFields($this->zdb);
 
-        // - declare dynamic fields for display
-        $disabled['dyn'] = array();
-        if (!isset($adherent['dyn'])) {
-            $adherent['dyn'] = array();
-        }
-
         //image to defeat mass filling forms
         $spam = new PasswordImage();
         $spam_pass = $spam->newImage();
         $spam_img = $spam->getImage();
-
-        $dynamic_fields = $dyn_fields->prepareForDisplay(
-            'adh',
-            $adherent['dyn'],
-            $disabled['dyn'],
-            1
-        );
 
         // display page
         $this->view->render(
@@ -127,7 +112,6 @@ $app->get(
                 'disabled'          => $disabled,
                 'member'            => $member,
                 'self_adh'          => true,
-                'dynamic_fields'    => $dynamic_fields,
                 'languages'         => $this->i18n->getList(),
                 'require_calendar'  => true,
                 'autocomplete'      => true,
@@ -547,29 +531,17 @@ $app->get(
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('slash'));
         }
-        $dyn_fields = new DynamicFields();
         $deps = array(
             'picture'   => true,
             'groups'    => true,
             'dues'      => true,
             'parent'    => true,
-            'children'  => true
+            'children'  => true,
+            'dynamics'  => true
         );
 
         $member = new Adherent($this->zdb, $this->login->login, $deps);
         $id = $member->id;
-
-        // declare dynamic field values
-        $adherent['dyn'] = $dyn_fields->getFields('adh', $id, true);
-
-        // - declare dynamic fields for display
-        $disabled['dyn'] = array();
-        $dynamic_fields = $dyn_fields->prepareForDisplay(
-            'adh',
-            $adherent['dyn'],
-            $disabled['dyn'],
-            0
-        );
 
         // flagging fields visibility
         $fc = $this->fields_config;
@@ -585,11 +557,9 @@ $app->get(
                 'page_title'        => _T("Member Profile"),
                 'require_dialog'    => true,
                 'member'            => $member,
-                'data'              => $adherent,
                 'pref_lang_img'     => $this->i18n->getFlagFromId($member->language),
                 'pref_lang'         => ucfirst($this->i18n->getNameFromId($member->language)),
                 'pref_card_self'    => $this->preferences->pref_card_self,
-                'dynamic_fields'    => $dynamic_fields,
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
                 'visibles'          => $visibles,
@@ -604,14 +574,14 @@ $app->get(
     __('/member', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $id = $args['id'];
-        $dyn_fields = new DynamicFields();
 
         $deps = array(
             'picture'   => true,
             'groups'    => true,
             'dues'      => true,
             'parent'    => true,
-            'children'  => true
+            'children'  => true,
+            'dynamics'  => true
         );
         $member = new Adherent($this->zdb, (int)$id, $deps);
 
@@ -678,18 +648,6 @@ $app->get(
             }
         }
 
-        // declare dynamic field values
-        $adherent['dyn'] = $dyn_fields->getFields('adh', $id, true);
-
-        // - declare dynamic fields for display
-        $disabled['dyn'] = array();
-        $dynamic_fields = $dyn_fields->prepareForDisplay(
-            'adh',
-            $adherent['dyn'],
-            $disabled['dyn'],
-            0
-        );
-
         // flagging fields visibility
         $fc = $this->fields_config;
         $visibles = $fc->getVisibilities();
@@ -704,12 +662,10 @@ $app->get(
                 'page_title'        => _T("Member Profile"),
                 'require_dialog'    => true,
                 'member'            => $member,
-                'data'              => $adherent,
                 'navigate'          => $navigate,
                 'pref_lang_img'     => $this->i18n->getFlagFromId($member->language),
                 'pref_lang'         => ucfirst($this->i18n->getNameFromId($member->language)),
                 'pref_card_self'    => $this->preferences->pref_card_self,
-                'dynamic_fields'    => $dynamic_fields,
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
                 'visibles'          => $visibles,
@@ -743,7 +699,8 @@ $app->get(
             'groups'    => true,
             'dues'      => true,
             'parent'    => true,
-            'children'  => true
+            'children'  => true,
+            'dynamics'  => true
         );
         $route_params = [];
 
@@ -754,12 +711,8 @@ $app->get(
             $member = new Adherent($this->zdb, null, $deps);
         }
 
-        //TODO: dynamic fields should be handled by Adherent object
-        $dyn_fields = new DynamicFields();
-
         if ($this->login->isAdmin() || $this->login->isStaff() || $this->login->isGroupManager()) {
             if ($id !== null) {
-                $adherent['id_adh'] = $id;
                 if ($member->id != $id) {
                     $member->load($id);
                 }
@@ -804,7 +757,6 @@ $app->get(
             if ($member->id != $id) {
                 $member->load($this->login->id);
             }
-            $adherent['id_adh'] = $this->login->id;
             // disable some fields
             $disabled  = $member->disabled_fields + $member->edit_disabled_fields;
         }
@@ -849,22 +801,6 @@ $app->get(
 
         $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
-        if ($member->id !== false &&  $member->id !== '') {
-            $adherent['dyn'] = $dyn_fields->getFields('adh', $member->id, false);
-        }
-
-        // - declare dynamic fields for display
-        $disabled['dyn'] = array();
-        if (!isset($adherent['dyn'])) {
-            $adherent['dyn'] = array();
-        }
-
-        $dynamic_fields = $dyn_fields->prepareForDisplay(
-            'adh',
-            $adherent['dyn'],
-            $disabled['dyn'],
-            1
-        );
         // template variable declaration
         $title = _T("Member Profile");
         if ($member->id != '') {
@@ -928,9 +864,7 @@ $app->get(
                     'visibles'          => $visibles,
                     'disabled'          => $disabled,
                     'member'            => $member,
-                    'data'              => $adherent,
                     'self_adh'          => false,
-                    'dynamic_fields'    => $dynamic_fields,
                     'languages'         => $this->i18n->getList(),
                     'require_calendar'  => true,
                     // pseudo random int
@@ -963,7 +897,8 @@ $app->post(
             'groups'    => true,
             'dues'      => true,
             'parent'    => true,
-            'children'  => true
+            'children'  => true,
+            'dynamics'  => true
         );
         $member = new Adherent($this->zdb, null, $deps);
         $member->setDependencies(
@@ -976,8 +911,6 @@ $app->post(
             $member->setSelfMembership();
         }
 
-        //TODO: dynamic fields should be handled by Adherent object
-        $dyn_fields = new DynamicFields();
         $success_detected = [];
         $warning_detected = [];
         $error_detected = [];
@@ -1054,16 +987,6 @@ $app->post(
 
         // Validation
         if (isset($_POST[array_shift($real_requireds)])) {
-            $adherent['dyn'] = $dyn_fields->extractPosted(
-                $_POST,
-                $_FILES,
-                $disabled,
-                $member->id
-            );
-            $dyn_fields_errors = $dyn_fields->getErrors();
-            if (count($dyn_fields_errors) > 0) {
-                $error_detected = array_merge($error_detected, $dyn_fields_errors);
-            }
             // regular fields
             $valid = $member->check($_POST, $required, $disabled);
             if ($valid !== true) {
@@ -1302,9 +1225,6 @@ $app->post(
                         );
                     }
                 }
-
-                // dynamic fields
-                $dyn_fields->setAllFields('adh', $member->id, $adherent['dyn']);
             }
 
             if (count($error_detected) > 0) {
@@ -1574,20 +1494,19 @@ $app->get(
         }
 
         //dynamic fields
-        $df = new DynamicFields();
-        $dynamic_fields = $df->prepareForDisplay(
-            'adh',
-            array(),
-            array(),
-            0
+        $deps = array(
+            'picture'   => false,
+            'groups'    => false,
+            'dues'      => false,
+            'parent'    => false,
+            'children'  => false,
+            'dynamics'  => false
         );
+        $member = new Adherent($this->zdb, $this->login->login, $deps);
+        $adh_dynamics = new DynamicFields($this->zdb, $this->login, $member);
 
-        $cdynamic_fields = $df->prepareForDisplay(
-            'contrib',
-            array(),
-            array(),
-            0
-        );
+        $contrib = new Contribution($this->zdb, $this->login);
+        $contrib_dynamics = new DynamicFields($this->zdb, $this->login, $contrib);
 
         //Status
         $statuts = new Status($this->zdb);
@@ -1618,8 +1537,8 @@ $app->get(
                 'require_sorter'        => true,
                 'filter_groups_options' => $groups_list,
                 'search_fields'         => $fields,
-                'dynamic_fields'        => $dynamic_fields,
-                'cdynamic_fields'       => $cdynamic_fields,
+                'adh_dynamics'          => $adh_dynamics->getDynamicFields(),
+                'contrib_dynamics'      => $contrib_dynamics->getDynamicFields(),
                 'statuts'               => $statuts->getList(),
                 'contributions_types'   => $ct->getList(),
                 'filters'               => $filters,
@@ -1839,7 +1758,7 @@ $app->get(
             $id_adh = (int)$this->login->id;
         }
 
-        $adh = new Adherent($this->zdb, $id_adh);
+        $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
         $form = $this->preferences->pref_adhesion_form;
         $pdf = new $form($adh, $this->zdb, $this->preferences);
         $pdf->download();
@@ -2712,7 +2631,7 @@ $app->get(
         );
 
         if (file_exists(GALETTE_FILES_PATH . $filename)) {
-            $type = File::getMimeType($filename);
+            $type = File::getMimeType(GALETTE_FILES_PATH . $filename);
             header('Content-Type: ' . $type);
             header('Content-Disposition: attachment; filename="' . $args['name'] . '";');
             header('Pragma: no-cache');
