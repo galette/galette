@@ -58,6 +58,7 @@ use Galette\IO\Pdf;
 use Galette\Core\MailingHistory;
 use Galette\Entity\Group;
 use Galette\IO\File;
+use Galette\Core\Authentication;
 
 //self subscription
 $app->get(
@@ -148,25 +149,28 @@ $app->get(
         // fields visibility
         $fc = $this->fields_config;
         $visibles = $fc->getVisibilities();
+        $access_level = $this->login->getAccessLevel();
         $fields = array();
         $labels = array();
         foreach ($this->members_fields as $k => $f) {
-            if ($k !== 'mdp_adh'
-                && $export_fields === null
-                || (is_array($export_fields) && in_array($k, $export_fields))
+            // skip fields blacklisted for export
+            if ($k === 'mdp_adh' ||
+                ($export_fields !== null &&
+                    (is_array($export_fields) && in_array($k, $export_fields)))
             ) {
-                if ($visibles[$k] == FieldsConfig::VISIBLE) {
-                    $fields[] = $k;
-                    $labels[] = $f['label'];
-                } elseif (($this->login->isAdmin()
-                    || $this->login->isStaff()
-                    || $this->login->isSuperAdmin())
-                    && $visibles[$k] == FieldsConfig::ADMIN
-                ) {
-                    $fields[] = $k;
-                    $labels[] = $f['label'];
-                }
+                continue;
             }
+
+            // skip fields according to access control
+            if ($visibles[$k] == FieldsConfig::HIDDEN ||
+                ($visibles[$k] == FieldsConfig::ADMIN &&
+                    $access_level < Authentication::ACCESS_STAFF)
+            ) {
+                continue;
+            }
+
+            $fields[] = $k;
+            $labels[] = $f['label'];
         }
 
         $members = new Members($filters);
