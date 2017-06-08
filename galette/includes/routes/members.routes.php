@@ -1469,9 +1469,13 @@ $app->get(
         $fields = $this->members_fields;
         $fc = $this->fields_config;
         $visibles = $fc->getVisibilities();
+        $access_level = $this->login->getAccessLevel();
 
         foreach ($fields as $k => $f) {
-            if ($visibles[$k] == FieldsConfig::HIDDEN) {
+            if ($visibles[$k] == FieldsConfig::HIDDEN ||
+                ($visibles[$k] == FieldsConfig::ADMIN &&
+                    $access_level < Authentication::ACCESS_STAFF)
+            ) {
                 unset($fields[$k]);
             }
         }
