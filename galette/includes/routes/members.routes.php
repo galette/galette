@@ -152,7 +152,7 @@ $app->get(
         $fc = $this->fields_config;
         $visibles = $fc->getVisibilities();
         $fields = array();
-        $headers = array();
+        $labels = array();
         foreach ($this->members_fields as $k => $f) {
             if ($k !== 'mdp_adh'
                 && $export_fields === null
