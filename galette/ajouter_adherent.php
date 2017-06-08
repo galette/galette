@@ -106,10 +106,6 @@ if ( $login->isAdmin() || $login->isStaff() || $login->isGroupManager() ) {
             + $member->staff_edit_disabled_fields
             + $member->disabled_fields;
     }
-
-    if ( $preferences->pref_mail_method == GaletteMail::METHOD_DISABLED ) {
-        $disabled['send_mail'] = 'disabled="disabled"';
-    }
 } else {
     $member->load($login->id);
     $adherent['id_adh'] = $login->id;

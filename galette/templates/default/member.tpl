@@ -163,7 +163,7 @@
             {/foreach}
 
     {include file="edit_dynamic_fields.tpl" object=$member}
-    {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') and (!$self_adh and ($login->isAdmin() or $login->isStaff())) and (!isset($disabled.send_mail) or !$disabled.send_mail)}
+    {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') and (!$self_adh and ($login->isAdmin() or $login->isStaff()))}
                     <p>
                         <label for="mail_confirm">
         {if $member->id}

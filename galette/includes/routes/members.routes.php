@@ -739,10 +739,6 @@ $app->get(
                     + $member->staff_edit_disabled_fields
                     + $member->disabled_fields;
             }
-
-            if ($this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
-                $disabled['send_mail'] = 'disabled="disabled"';
-            }
         } else {
             if ($member->id != $id) {
                 $member->load($this->login->id);
@@ -940,10 +936,6 @@ $app->post(
                 $disabled = $member->adm_edit_disabled_fields
                     + $member->staff_edit_disabled_fields
                     + $member->disabled_fields;
-            }
-
-            if ($this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
-                $disabled['send_mail'] = 'disabled="disabled"';
             }
         } else {
             $member->load($this->login->id);
