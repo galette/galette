@@ -8,11 +8,11 @@
                 <legend class="ui-state-active ui-corner-top">{_T string="Transaction details"}</legend>
                 <p>
                     <label for="trans_desc" class="bline">{_T string="Description:"}</label>
-                    <input type="text" name="trans_desc" id="trans_desc" value="{$transaction->description}" maxlength="150" size="30"{if $required.trans_desc eq 1} required{/if}/>
+                    <input type="text" name="trans_desc" id="trans_desc" value="{$transaction->description}" maxlength="150" size="30"{if $required.trans_desc eq 1} required="required"{/if}/>
                 </p>
                 <p>
                     <label for="id_adh" class="bline" >{_T string="Originator:"}</label>
-                    <select name="id_adh" id="id_adh"{if $required.id_adh eq 1} required{/if}>
+                    <select name="id_adh" id="id_adh"{if $required.id_adh eq 1} required="required"{/if}>
     {if !$transaction->member}
                         <option>{_T string="-- select a name --"}</option>
     {/if}
@@ -23,15 +23,15 @@
                 </p>
                 <p>
                     <label for="trans_date" class="bline">{_T string="Date:"}</label>
-                    <input type="text" class="date-pick" name="trans_date" id="trans_date" value="{$transaction->date}" maxlength="10"{if $required.trans_date eq 1} required{/if}/> <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
+                    <input type="text" class="date-pick" name="trans_date" id="trans_date" value="{$transaction->date}" maxlength="10"{if $required.trans_date eq 1} required="required"{/if}/> <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
                 </p>
                 <p>
                     <label for="trans_amount" class="bline">{_T string="Amount:"}</label>
-                    <input type="text" name="trans_amount" id="trans_amount" value="{$transaction->amount}" maxlength="10"{if $required.trans_amount eq 1} required{/if}/>
+                    <input type="text" name="trans_amount" id="trans_amount" value="{$transaction->amount}" maxlength="10"{if $required.trans_amount eq 1} required="required"{/if}/>
                 </p>
             </fieldset>
         </div>
-    {include file="edit_dynamic_fields.tpl object=$transaction"}
+    {include file="edit_dynamic_fields.tpl" object=$transaction}
         <div class="button-container">
             <input id="btnsave" type="submit" value="{_T string="Save"}"/>
             <input type="hidden" name="trans_id" value="{$transaction->id}"/>

@@ -82,8 +82,6 @@ $app->get(
         // flagging required fields
         $fc = $this->fields_config;
         $required = $fc->getRequired();
-        // flagging fields visibility
-        $visibles = $fc->getVisibilities();
         $form_elements = $fc->getFormElements($this->login, true);
 
         // disable some fields
@@ -108,7 +106,6 @@ $app->get(
                 'page_title'        => _T("Subscription"),
                 'parent_tpl'        => 'public_page.tpl',
                 'required'          => $required,
-                'visibles'          => $visibles,
                 'disabled'          => $disabled,
                 'member'            => $member,
                 'self_adh'          => true,
@@ -152,7 +149,7 @@ $app->get(
         $fc = $this->fields_config;
         $visibles = $fc->getVisibilities();
         $fields = array();
-        $headers = array();
+        $labels = array();
         foreach ($this->members_fields as $k => $f) {
             if ($k !== 'mdp_adh'
                 && $export_fields === null
@@ -543,10 +540,7 @@ $app->get(
         $member = new Adherent($this->zdb, $this->login->login, $deps);
         $id = $member->id;
 
-        // flagging fields visibility
         $fc = $this->fields_config;
-        $visibles = $fc->getVisibilities();
-
         $display_elements = $fc->getDisplayElements($this->login);
 
         // display page
@@ -562,7 +556,6 @@ $app->get(
                 'pref_card_self'    => $this->preferences->pref_card_self,
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
-                'visibles'          => $visibles,
                 'display_elements'  => $display_elements
             )
         );
@@ -650,8 +643,6 @@ $app->get(
 
         // flagging fields visibility
         $fc = $this->fields_config;
-        $visibles = $fc->getVisibilities();
-
         $display_elements = $fc->getDisplayElements($this->login);
 
         // display page
@@ -668,7 +659,6 @@ $app->get(
                 'pref_card_self'    => $this->preferences->pref_card_self,
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
-                'visibles'          => $visibles,
                 'display_elements'  => $display_elements
             )
         );
@@ -749,10 +739,6 @@ $app->get(
                     + $member->staff_edit_disabled_fields
                     + $member->disabled_fields;
             }
-
-            if ($this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
-                $disabled['send_mail'] = 'disabled="disabled"';
-            }
         } else {
             if ($member->id != $id) {
                 $member->load($this->login->id);
@@ -796,8 +782,6 @@ $app->get(
         }
 
         $required = $fc->getRequired();
-        // flagging fields visibility
-        $visibles = $fc->getVisibilities();
 
         $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
@@ -861,7 +845,6 @@ $app->get(
                     'autocomplete'      => true,
                     'page_title'        => $title,
                     'required'          => $required,
-                    'visibles'          => $visibles,
                     'disabled'          => $disabled,
                     'member'            => $member,
                     'self_adh'          => false,
@@ -954,10 +937,6 @@ $app->post(
                     + $member->staff_edit_disabled_fields
                     + $member->disabled_fields;
             }
-
-            if ($this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
-                $disabled['send_mail'] = 'disabled="disabled"';
-            }
         } else {
             $member->load($this->login->id);
             $adherent['id_adh'] = $this->login->id;
@@ -980,8 +959,6 @@ $app->post(
         }
 
         $required = $fc->getRequired();
-        // flagging fields visibility
-        $visibles = $fc->getVisibilities();
 
         $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
@@ -1488,7 +1465,7 @@ $app->get(
         $visibles = $fc->getVisibilities();
 
         foreach ($fields as $k => $f) {
-            if ($visibles[$k] == 0) {
+            if ($visibles[$k] == FieldsConfig::HIDDEN) {
                 unset($fields[$k]);
             }
         }
