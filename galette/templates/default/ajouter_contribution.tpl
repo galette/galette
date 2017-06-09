@@ -2,7 +2,7 @@
 
 {block name="content"}
 {if isset($adh_options)}
-        <form action="{path_for name="contribution" data=["type" => $type, "action" => {_T string="add" domain="routes"}]}" method="post">
+        <form action="{if $contribution->id}{path_for name="contribution" data=["type" => $type, "action" => {_T string="edit" domain="routes"}, "id" => $contribution->id]}{else}{path_for name="contribution" data=["type" => $type, "action" => {_T string="add" domain="routes"}]}{/if}" method="post">
         <div class="bigtable">
     {if $contribution->isTransactionPart()}
         {assign var="mid" value=$contribution->transaction->member}
