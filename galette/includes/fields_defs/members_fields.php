@@ -43,7 +43,7 @@ $members_fields = array(
         'label'    => _T("Member number:"),
         'propname' => 'id',
         'required' => false,
-        'visible'  => FieldsConfig::HIDDEN,
+        'visible'  => FieldsConfig::NOBODY,
         'position' => 0,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
@@ -51,7 +51,7 @@ $members_fields = array(
         'label'    => _T("Status:"),
         'propname' => 'status',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 27,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
@@ -59,7 +59,7 @@ $members_fields = array(
         'label'    => _T("Name:"),
         'propname' => 'name',
         'required' => true ,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 3,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
@@ -67,7 +67,7 @@ $members_fields = array(
         'label'    => _T("First name:"),
         'propname' => 'surname',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 4,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
@@ -75,7 +75,7 @@ $members_fields = array(
         'label'    => _T("Company:"),
         'propname' => 'company_name',
         'required' => false ,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 5,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
@@ -83,7 +83,7 @@ $members_fields = array(
         'label'    => _T("Nickname:"),
         'propname' => 'nickname',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 6,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
@@ -91,7 +91,7 @@ $members_fields = array(
         'label'    => _T("Title:"),
         'propname' => 'title',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 1,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
@@ -99,7 +99,7 @@ $members_fields = array(
         'label'    => _T("Birth date:"),
         'propname' => 'birthdate',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 7,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
@@ -107,7 +107,7 @@ $members_fields = array(
         'label'    => _T("Gender:"),
         'propname' => 'gender',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 2,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
@@ -115,7 +115,7 @@ $members_fields = array(
         'label'    => _T("Address:"),
         'propname' => 'address',
         'required' => true,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 11,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
@@ -124,7 +124,7 @@ $members_fields = array(
         'label'    => _T("Address (continuation)"),
         'propname' => 'address_continuation',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 12,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
@@ -132,7 +132,7 @@ $members_fields = array(
         'label'    => _T("Zip Code:"),
         'propname' => 'zipcode',
         'required' => true,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 13,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
@@ -140,7 +140,7 @@ $members_fields = array(
         'label'    => _T("City:"),
         'propname' => 'town',
         'required' => true,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 14,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
@@ -148,7 +148,7 @@ $members_fields = array(
         'label'    => _T("Country:"),
         'propname' => 'country',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 15,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
@@ -156,7 +156,7 @@ $members_fields = array(
         'label'    => _T("Phone:"),
         'propname' => 'phone',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 16,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
@@ -164,7 +164,7 @@ $members_fields = array(
         'label'    => _T("Mobile phone:"),
         'propname' => 'gsm',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 17,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
@@ -172,7 +172,7 @@ $members_fields = array(
         'label'    => _T("E-Mail:"),
         'propname' => 'email',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 18,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
@@ -180,7 +180,7 @@ $members_fields = array(
         'label'    => _T("Website:"),
         'propname' => 'website',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 19,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
@@ -188,7 +188,7 @@ $members_fields = array(
         'label'    => _T("ICQ:"),
         'propname' => 'icq',
         'required' => false,
-        'visible'  => FieldsConfig::HIDDEN,
+        'visible'  => FieldsConfig::NOBODY,
         'position' => 20,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
@@ -196,7 +196,7 @@ $members_fields = array(
         'label'    => _T("MSN:"),
         'propname' => 'msn',
         'required' => false,
-        'visible'  => FieldsConfig::HIDDEN,
+        'visible'  => FieldsConfig::NOBODY,
         'position' => 22,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
@@ -204,7 +204,7 @@ $members_fields = array(
         'label'    => _T("Jabber:"),
         'propname' => 'jabber',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 21,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
@@ -220,7 +220,7 @@ $members_fields = array(
         'label'    => _T("Other informations:"),
         'propname' => 'others_infos',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 34,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
@@ -228,7 +228,7 @@ $members_fields = array(
         'label'    => _T("Profession:"),
         'propname' => 'job',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 9,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
@@ -236,7 +236,7 @@ $members_fields = array(
         'label'    => _T("Username:"),
         'propname' => 'login',
         'required' => true,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 30,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
@@ -244,7 +244,7 @@ $members_fields = array(
         'label'    => _T("Password:"),
         'propname' => 'password',
         'required' => true,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 31,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
@@ -252,7 +252,7 @@ $members_fields = array(
         'label'    => _T("Creation date:"),
         'propname' => 'creation_date',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 32,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
@@ -260,7 +260,7 @@ $members_fields = array(
         'label'    => _T("Modification date:"),
         'propname' => 'modification_date',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 35,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
@@ -268,7 +268,7 @@ $members_fields = array(
         'label'    => _T("Account:"),
         'propname' => 'active',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 26,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
@@ -276,7 +276,7 @@ $members_fields = array(
         'label'    => _T("Galette Admin:"),
         'propname' => 'admin',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 28,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
@@ -284,7 +284,7 @@ $members_fields = array(
         'label'    => _T("Freed of dues:"),
         'propname' => 'due_free',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 29,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
@@ -292,7 +292,7 @@ $members_fields = array(
         'label'    => _T("Be visible in the members list:"),
         'propname' => 'appears_in_list',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 25,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
@@ -300,7 +300,7 @@ $members_fields = array(
         'label'    => _T("Due date:"),
         'propname' => 'due_date',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 36,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
@@ -308,7 +308,7 @@ $members_fields = array(
         'label'    => _T("Language:"),
         'propname' => 'language',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 10,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
@@ -316,7 +316,7 @@ $members_fields = array(
         'label'    => _T("Birthplace:"),
         'propname' => 'birth_place',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 8,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),
@@ -324,7 +324,7 @@ $members_fields = array(
         'label'    => _T("Id GNUpg (GPG):"),
         'propname' => 'gnupgid',
         'required' => false,
-        'visible'  => FieldsConfig::VISIBLE,
+        'visible'  => FieldsConfig::USER_WRITE,
         'position' => 23,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
@@ -332,7 +332,7 @@ $members_fields = array(
         'label'    => _T("fingerprint:"),
         'propname' => 'fingerprint',
         'required' => false,
-        'visible'  => FieldsConfig::HIDDEN,
+        'visible'  => FieldsConfig::NOBODY,
         'position' => 24,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
@@ -340,7 +340,7 @@ $members_fields = array(
         'label'    => _T("Parent:"),
         'propname' => 'parent',
         'required' => false,
-        'visible'  => FieldsConfig::HIDDEN,
+        'visible'  => FieldsConfig::NOBODY,
         'position' => 25,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     )

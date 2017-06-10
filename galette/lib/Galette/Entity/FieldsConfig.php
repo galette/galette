@@ -58,9 +58,12 @@ use Galette\Core\Authentication;
  */
 class FieldsConfig
 {
-    const HIDDEN = 0;
-    const VISIBLE = 1;
+    const NOBODY = 0;
+    const USER_WRITE = 1;
     const ADMIN = 2;
+    const STAFF = 3;
+    const MANAGER = 4;
+    const USER_READ = 5;
 
     const TYPE_STR = 0;
     const TYPE_HIDDEN = 1;
@@ -459,7 +462,7 @@ class FieldsConfig
                         }
 
                         // skip fields according to access control
-                        if ($o->visible == self::HIDDEN ||
+                        if ($o->visible == self::NOBODY ||
                             ($o->visible == self::ADMIN &&
                                 $access_level < Authentication::ACCESS_STAFF)
                         ) {
@@ -556,7 +559,7 @@ class FieldsConfig
                     }
 
                     // skip fields according to access control
-                    if ($o->visible == self::HIDDEN ||
+                    if ($o->visible == self::NOBODY ||
                         ($o->visible == self::ADMIN &&
                             $access_level < Authentication::ACCESS_STAFF)
                     ) {

@@ -158,7 +158,7 @@ $app->get(
             }
 
             // skip fields according to access control
-            if ($visibles[$k] == FieldsConfig::HIDDEN ||
+            if ($visibles[$k] == FieldsConfig::NOBODY ||
                 ($visibles[$k] == FieldsConfig::ADMIN &&
                     $access_level < Authentication::ACCESS_STAFF)
             ) {
@@ -1435,7 +1435,7 @@ $app->get(
         $access_level = $this->login->getAccessLevel();
 
         foreach ($fields as $k => $f) {
-            if ($visibles[$k] == FieldsConfig::HIDDEN ||
+            if ($visibles[$k] == FieldsConfig::NOBODY ||
                 ($visibles[$k] == FieldsConfig::ADMIN &&
                     $access_level < Authentication::ACCESS_STAFF)
             ) {
