@@ -146,6 +146,7 @@
                             id=$entry->field_id
                             value=$value
                             required=$entry->required
+                            readonly=$entry->readonly
                             label=$entry->label
                             title=$title
                             size=$size
