@@ -174,9 +174,6 @@ class FieldsConfig
 
             $this->categorized_fields = null;
             foreach ($results as $k) {
-                if ($k->field_id === 'id_adh' && (!isset($preferences) || !$preferences->pref_show_id)) {
-                    $k->visible = self::HIDDEN;
-                }
                 $f = array(
                     'field_id'  => $k->field_id,
                     'label'     => $this->defaults[$k->field_id]['label'],
@@ -417,6 +414,7 @@ class FieldsConfig
         //get columns descriptions
         $columns = $this->zdb->getColumns($this->table);
 
+        $access_level = $login->getAccessLevel();
         $categories = FieldsCategories::getList($this->zdb);
         try {
             foreach ($categories as $c) {
@@ -443,18 +441,32 @@ class FieldsConfig
                 foreach ($elements as $elt) {
                     $o = (object)$elt;
 
-                    if (in_array($o->field_id, $this->non_form_elements)
-                        || $selfs && $this->isSelfExcluded($o->field_id)
-                    ) {
-                        continue;
-                    }
+                    if ($o->field_id == 'id_adh') {
+                        // ignore access control, as member ID is always needed
+                        if (!isset($preferences) || !$preferences->pref_show_id) {
+                            $hidden_elements[] = $o;
+                        } else {
+                            $o->type = self::TYPE_STR;
+                            $o->readonly = true;
+                            $cat->elements[$o->field_id] = $o;
+                        }
+                    } else {
+                        // skip fields blacklisted for edition
+                        if (in_array($o->field_id, $this->non_form_elements)
+                            || $selfs && $this->isSelfExcluded($o->field_id)
+                        ) {
+                            continue;
+                        }
 
-                    if (!($o->visible == self::ADMIN
-                        && (!$login->isAdmin() && !$login->isStaff()) )
-                    ) {
-                        if ($o->visible == self::HIDDEN) {
-                            $o->type = self::TYPE_HIDDEN;
-                        } elseif (preg_match('/date/', $o->field_id)) {
+                        // skip fields according to access control
+                        if ($o->visible == self::HIDDEN ||
+                            ($o->visible == self::ADMIN &&
+                                $access_level < Authentication::ACCESS_STAFF)
+                        ) {
+                            continue;
+                        }
+
+                        if (preg_match('/date/', $o->field_id)) {
                             $o->type = self::TYPE_DATE;
                         } elseif (preg_match('/bool/', $o->field_id)) {
                             $o->type = self::TYPE_BOOL;
@@ -480,11 +492,7 @@ class FieldsConfig
                             }
                         }
 
-                        if ($o->type === self::TYPE_HIDDEN) {
-                            $hidden_elements[] = $o;
-                        } else {
-                            $cat->elements[$o->field_id] = $o;
-                        }
+                        $cat->elements[$o->field_id] = $o;
                     }
                 }
 
