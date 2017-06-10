@@ -778,8 +778,6 @@ $app->get(
 
         $required = $fc->getRequired();
 
-        $real_requireds = array_diff(array_keys($required), array_keys($disabled));
-
         // template variable declaration
         $title = _T("Member Profile");
         if ($member->id != '') {
