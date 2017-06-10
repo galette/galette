@@ -85,9 +85,6 @@ $app->get(
         $required = $fc->getRequired();
         $form_elements = $fc->getFormElements($this->login, true);
 
-        // disable some fields
-        $disabled  = $member->disabled_fields;
-
         // DEBUT parametrage des champs
         // On recupere de la base la longueur et les flags des champs
         // et on initialise des valeurs par defaut
@@ -107,7 +104,6 @@ $app->get(
                 'page_title'        => _T("Subscription"),
                 'parent_tpl'        => 'public_page.tpl',
                 'required'          => $required,
-                'disabled'          => $disabled,
                 'member'            => $member,
                 'self_adh'          => true,
                 'languages'         => $this->i18n->getList(),
@@ -731,24 +727,10 @@ $app->get(
                     }
                 }
             }
-
-            // disable some fields
-            if ($this->login->isAdmin()) {
-                $disabled = $member->adm_edit_disabled_fields;
-            } elseif ($this->login->isStaff()) {
-                $disabled = $member->adm_edit_disabled_fields
-                    + $member->staff_edit_disabled_fields;
-            } else {
-                $disabled = $member->adm_edit_disabled_fields
-                    + $member->staff_edit_disabled_fields
-                    + $member->disabled_fields;
-            }
         } else {
             if ($member->id != $id) {
                 $member->load($this->login->id);
             }
-            // disable some fields
-            $disabled  = $member->disabled_fields + $member->edit_disabled_fields;
         }
 
         // flagging required fields
@@ -847,7 +829,6 @@ $app->get(
                     'autocomplete'      => true,
                     'page_title'        => $title,
                     'required'          => $required,
-                    'disabled'          => $disabled,
                     'member'            => $member,
                     'self_adh'          => false,
                     'languages'         => $this->i18n->getList(),
@@ -927,23 +908,9 @@ $app->post(
                     }
                 }
             }
-
-            // disable some fields
-            if ($this->login->isAdmin()) {
-                $disabled = $member->adm_edit_disabled_fields;
-            } elseif ($this->login->isStaff()) {
-                $disabled = $member->adm_edit_disabled_fields
-                    + $member->staff_edit_disabled_fields;
-            } else {
-                $disabled = $member->adm_edit_disabled_fields
-                    + $member->staff_edit_disabled_fields
-                    + $member->disabled_fields;
-            }
         } else {
             $member->load($this->login->id);
             $adherent['id_adh'] = $this->login->id;
-            // disable some fields
-            $disabled  = $member->disabled_fields + $member->edit_disabled_fields;
         }
 
         // flagging required fields
@@ -961,7 +928,7 @@ $app->post(
         }
 
         $required = $fc->getRequired();
-
+        $disabled = array();
         $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
         // Validation
