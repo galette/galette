@@ -446,7 +446,16 @@
                             _parent_name.html($(this).html());
 
                             //remove required attribute on address and mail fields if member has a parent
-                            $('#adresse_adh,#adresse2_adh,#cp_adh,#ville_adh,#email_adh').removeAttr('required');
+                            var _parentfields = '';
+        {if $parent_fields|@count gt 0}
+            {foreach item=req from=$parent_fields}
+                            _parentfields += '#{$req}';
+                {if !$req@last}
+                            _parentfields += ',';
+                {/if}
+            {/foreach}
+        {/if}
+                            $(_parentfields).removeAttr('required');
 
                             $('#members_list').dialog('close');
                             return false;
@@ -478,11 +487,11 @@
     {/if}
 
     {if !$self_adh and $member->hasParent()}
-        {if isset($no_parent_required) and $no_parent_required|@count gt 0}
+        {if $parent_fields|@count gt 0}
                 $('#detach_parent').on('change', function(){
                     var _checked = $(this).is(':checked');
                     var _changes = '';
-            {foreach item=req from=$no_parent_required}
+            {foreach item=req from=$parent_fields}
                     _changes += '#{$req}';
                 {if !$req@last}
                     _changes += ',';

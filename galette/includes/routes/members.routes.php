@@ -755,25 +755,16 @@ $app->get(
             $fc->setNotRequired('mdp_adh');
         }
 
-        //address and mail fields are not required if member has a parent
-        $no_parent_required = array(
-            'adresse_adh',
-            'adresse2_adh',
-            'cp_adh',
-            'ville_adh',
-            'email_adh'
-        );
-        if ($member->hasParent()) {
-            foreach ($no_parent_required as $field) {
-                if ($fc->isRequired($field)) {
-                    $fc->setNotRequired($field);
-                } else {
-                    $i = array_search($field, $no_parent_required);
-                    unset($no_parent_required[$i]);
-                }
+        //handle requirements for parent fields
+        $parent_fields = $member->getParentFields();
+        foreach ($parent_fields as $key => $field) {
+            if ($fc->isRequired($field) && $member->hasParent()) {
+                $fc->setNotRequired($field);
+            } else {
+                unset($parent_fields[$key]);
             }
-            $route_params['no_parent_required'] = $no_parent_required;
         }
+        $route_params['parent_fields'] = $parent_fields;
 
         // flagging required fields invisible to members
         if ($this->login->isAdmin() || $this->login->isStaff()) {
@@ -950,6 +941,17 @@ $app->post(
         // password required if we create a new member
         if ($member->id != '') {
             $fc->setNotRequired('mdp_adh');
+        }
+
+        if ($member->hasParent() && !isset($post['detach_parent'])
+            || isset($post['parent']) && !empty($post['parent'])
+        ) {
+            $parent_fields = $member->getParentFields();
+            foreach ($parent_fields as $field) {
+                if ($fc->isRequired($field)) {
+                    $fc->setNotRequired($field);
+                }
+            }
         }
 
         // flagging required fields invisible to members

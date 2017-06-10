@@ -157,6 +157,14 @@ class Adherent
     private $fields;
     private $history;
 
+    private $parent_fields = [
+        'adresse_adh',
+        'adresse2_adh',
+        'cp_adh',
+        'ville_adh',
+        'email_adh'
+    ];
+
     private $errors;
 
     /**
@@ -1643,5 +1651,15 @@ class Adherent
             $d->diff(new \DateTime())->y,
             _T(' (%age years old)')
         );
+    }
+
+    /**
+     * Get parent inherited fields
+     *
+     * @return array
+     */
+    public function getParentFields()
+    {
+        return $this->parent_fields;
     }
 }
