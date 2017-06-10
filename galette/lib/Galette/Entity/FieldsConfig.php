@@ -464,7 +464,11 @@ class FieldsConfig
                         // skip fields according to access control
                         if ($o->visible == self::NOBODY ||
                             ($o->visible == self::ADMIN &&
-                                $access_level < Authentication::ACCESS_STAFF)
+                                $access_level < Authentication::ACCESS_ADMIN) ||
+                            ($o->visible == self::STAFF &&
+                                $access_level < Authentication::ACCESS_STAFF) ||
+                            ($o->visible == self::MANAGER &&
+                                $access_level < Authentication::ACCESS_MANAGER)
                         ) {
                             continue;
                         }
@@ -493,6 +497,12 @@ class FieldsConfig
                                 $o->datatype = $column->getDataType();
                                 break;
                             }
+                        }
+
+                        // disabled field according to access control
+                        if ($o->visible == self::USER_READ &&
+                                $access_level == Authentication::ACCESS_USER) {
+                            $o->disabled = true;
                         }
 
                         $cat->elements[$o->field_id] = $o;
@@ -561,7 +571,11 @@ class FieldsConfig
                     // skip fields according to access control
                     if ($o->visible == self::NOBODY ||
                         ($o->visible == self::ADMIN &&
-                            $access_level < Authentication::ACCESS_STAFF)
+                            $access_level < Authentication::ACCESS_ADMIN) ||
+                        ($o->visible == self::STAFF &&
+                            $access_level < Authentication::ACCESS_STAFF) ||
+                        ($o->visible == self::MANAGER &&
+                            $access_level < Authentication::ACCESS_MANAGER)
                     ) {
                         continue;
                     }

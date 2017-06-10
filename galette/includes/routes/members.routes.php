@@ -160,7 +160,11 @@ $app->get(
             // skip fields according to access control
             if ($visibles[$k] == FieldsConfig::NOBODY ||
                 ($visibles[$k] == FieldsConfig::ADMIN &&
-                    $access_level < Authentication::ACCESS_STAFF)
+                    $access_level < Authentication::ACCESS_ADMIN) ||
+                ($visibles[$k] == FieldsConfig::STAFF &&
+                    $access_level < Authentication::ACCESS_STAFF) ||
+                ($visibles[$k] == FieldsConfig::MANAGER &&
+                    $access_level < Authentication::ACCESS_MANAGER)
             ) {
                 continue;
             }
@@ -1439,7 +1443,11 @@ $app->get(
         foreach ($fields as $k => $f) {
             if ($visibles[$k] == FieldsConfig::NOBODY ||
                 ($visibles[$k] == FieldsConfig::ADMIN &&
-                    $access_level < Authentication::ACCESS_STAFF)
+                    $access_level < Authentication::ACCESS_ADMIN) ||
+                ($visibles[$k] == FieldsConfig::STAFF &&
+                    $access_level < Authentication::ACCESS_STAFF) ||
+                ($visibles[$k] == FieldsConfig::MANAGER &&
+                    $access_level < Authentication::ACCESS_MANAGER)
             ) {
                 unset($fields[$k]);
             }
