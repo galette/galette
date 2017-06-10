@@ -7,11 +7,11 @@
                 <table>
                     <tr>
                         <th><label for="mdp_adh">{_T string="New password:"}</label></th>
-                        <td><input type="password" name="mdp_adh" id="mdp_adh" value="" maxlength="20" required="required"/></td>
+                        <td><input type="password" name="mdp_adh" id="mdp_adh" value="" required="required"/></td>
                     </tr>
                     <tr>
                         <th><label for="mdp_adh2">{_T string="Confirmation:"}</label></th>
-                        <td><input type="password" name="mdp_adh2" id="mdp_adh2" value="" maxlength="20" required="required"/></td>
+                        <td><input type="password" name="mdp_adh2" id="mdp_adh2" value="" required="required"/></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="exemple">{_T string="(at least 4 characters)"}</td>
