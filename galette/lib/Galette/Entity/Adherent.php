@@ -133,25 +133,6 @@ class Adherent
         'dynamics'  => false
     );
 
-    private $_disabled_fields = array(
-        'id_adh' => 'readonly="readonly"',
-        'date_crea_adh' => 'disabled="disabled"',
-        'id_statut' => 'disabled="disabled"',
-        'activite_adh' => 'disabled="disabled"',
-        'bool_exempt_adh' => 'disabled="disabled"',
-        'bool_admin_adh' => 'disabled="disabled"',
-        'date_echeance' => 'disabled="disabled"',
-        'info_adh' => 'disabled="disabled"'
-    );
-    private $_edit_disabled_fields = [];
-    private $_staff_edit_disabled_fields = array(
-        'bool_admin_adh' => 'disabled="disabled"'
-    );
-    private $_adm_edit_disabled_fields = array(
-        'id_adh' => 'readonly="readonly"',
-        'date_echeance' => 'disabled="disabled"'
-    );
-
     private $zdb;
     private $preferences;
     private $fields;
@@ -192,27 +173,6 @@ class Adherent
                 '$deps shoud be an array, ' . gettype($deps) . ' given!',
                 Analog::WARNING
             );
-        }
-
-        //disabled fields override
-        $locfile = GALETTE_CONFIG_PATH . 'disabled_fields.php';
-        if (file_exists($locfile)) {
-            include $locfile;
-            if (isset($loc_disabled_fields)
-                && is_array($loc_disabled_fields)
-            ) {
-                $this->_disabled_fields = $loc_disabled_fields;
-            }
-            if (isset($loc_edit_disabled_fields)
-                && is_array($loc_edit_disabled_fields)
-            ) {
-                $this->_edit_disabled_fields = $loc_edit_disabled_fields;
-            }
-            if (isset($loc_adm_edit_disabled_fields)
-                && is_array($loc_adm_edit_disabled_fields)
-            ) {
-                $this->_adm_edit_disabled_fields = $loc_adm_edit_disabled_fields;
-            }
         }
 
         if ($args == null || is_int($args)) {
