@@ -5,6 +5,7 @@
         name="{$name}"
         id="{$id}"
         {if isset($required) and $required == true} required="required"{/if}
+        {if isset($disabled) and $disabled == true} disabled="disabled"{/if}
         >
         {foreach item=label from=$values key=value}
         <option value="{$value}">{$label}</option>

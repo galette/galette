@@ -147,6 +147,7 @@
                             value=$value
                             required=$entry->required
                             readonly=$entry->readonly
+                            disabled=$entry->disabled
                             label=$entry->label
                             title=$title
                             size=$size
