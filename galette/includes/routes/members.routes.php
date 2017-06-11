@@ -58,6 +58,7 @@ use Galette\IO\Pdf;
 use Galette\Core\MailingHistory;
 use Galette\Entity\Group;
 use Galette\IO\File;
+use Galette\Core\Authentication;
 
 //self subscription
 $app->get(
@@ -81,11 +82,7 @@ $app->get(
 
         // flagging required fields
         $fc = $this->fields_config;
-        $required = $fc->getRequired();
         $form_elements = $fc->getFormElements($this->login, true);
-
-        // disable some fields
-        $disabled  = $member->disabled_fields;
 
         // DEBUT parametrage des champs
         // On recupere de la base la longueur et les flags des champs
@@ -105,8 +102,6 @@ $app->get(
             array(
                 'page_title'        => _T("Subscription"),
                 'parent_tpl'        => 'public_page.tpl',
-                'required'          => $required,
-                'disabled'          => $disabled,
                 'member'            => $member,
                 'self_adh'          => true,
                 'languages'         => $this->i18n->getList(),
@@ -148,25 +143,32 @@ $app->get(
         // fields visibility
         $fc = $this->fields_config;
         $visibles = $fc->getVisibilities();
+        $access_level = $this->login->getAccessLevel();
         $fields = array();
         $labels = array();
         foreach ($this->members_fields as $k => $f) {
-            if ($k !== 'mdp_adh'
-                && $export_fields === null
-                || (is_array($export_fields) && in_array($k, $export_fields))
+            // skip fields blacklisted for export
+            if ($k === 'mdp_adh' ||
+                ($export_fields !== null &&
+                    (is_array($export_fields) && in_array($k, $export_fields)))
             ) {
-                if ($visibles[$k] == FieldsConfig::VISIBLE) {
-                    $fields[] = $k;
-                    $labels[] = $f['label'];
-                } elseif (($this->login->isAdmin()
-                    || $this->login->isStaff()
-                    || $this->login->isSuperAdmin())
-                    && $visibles[$k] == FieldsConfig::ADMIN
-                ) {
-                    $fields[] = $k;
-                    $labels[] = $f['label'];
-                }
+                continue;
             }
+
+            // skip fields according to access control
+            if ($visibles[$k] == FieldsConfig::NOBODY ||
+                ($visibles[$k] == FieldsConfig::ADMIN &&
+                    $access_level < Authentication::ACCESS_ADMIN) ||
+                ($visibles[$k] == FieldsConfig::STAFF &&
+                    $access_level < Authentication::ACCESS_STAFF) ||
+                ($visibles[$k] == FieldsConfig::MANAGER &&
+                    $access_level < Authentication::ACCESS_MANAGER)
+            ) {
+                continue;
+            }
+
+            $fields[] = $k;
+            $labels[] = $f['label'];
         }
 
         $members = new Members($filters);
@@ -727,24 +729,10 @@ $app->get(
                     }
                 }
             }
-
-            // disable some fields
-            if ($this->login->isAdmin()) {
-                $disabled = $member->adm_edit_disabled_fields;
-            } elseif ($this->login->isStaff()) {
-                $disabled = $member->adm_edit_disabled_fields
-                    + $member->staff_edit_disabled_fields;
-            } else {
-                $disabled = $member->adm_edit_disabled_fields
-                    + $member->staff_edit_disabled_fields
-                    + $member->disabled_fields;
-            }
         } else {
             if ($member->id != $id) {
                 $member->load($this->login->id);
             }
-            // disable some fields
-            $disabled  = $member->disabled_fields + $member->edit_disabled_fields;
         }
 
         // flagging required fields
@@ -771,10 +759,6 @@ $app->get(
             $fc->setNotRequired('activite_adh');
             $fc->setNotRequired('id_statut');
         }
-
-        $required = $fc->getRequired();
-
-        $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
         // template variable declaration
         $title = _T("Member Profile");
@@ -835,8 +819,6 @@ $app->get(
                     'require_dialog'    => true,
                     'autocomplete'      => true,
                     'page_title'        => $title,
-                    'required'          => $required,
-                    'disabled'          => $disabled,
                     'member'            => $member,
                     'self_adh'          => false,
                     'languages'         => $this->i18n->getList(),
@@ -916,23 +898,9 @@ $app->post(
                     }
                 }
             }
-
-            // disable some fields
-            if ($this->login->isAdmin()) {
-                $disabled = $member->adm_edit_disabled_fields;
-            } elseif ($this->login->isStaff()) {
-                $disabled = $member->adm_edit_disabled_fields
-                    + $member->staff_edit_disabled_fields;
-            } else {
-                $disabled = $member->adm_edit_disabled_fields
-                    + $member->staff_edit_disabled_fields
-                    + $member->disabled_fields;
-            }
         } else {
             $member->load($this->login->id);
             $adherent['id_adh'] = $this->login->id;
-            // disable some fields
-            $disabled  = $member->disabled_fields + $member->edit_disabled_fields;
         }
 
         // flagging required fields
@@ -960,7 +928,21 @@ $app->post(
             $fc->setNotRequired('id_statut');
         }
 
-        $required = $fc->getRequired();
+        $form_elements = $fc->getFormElements($this->login, true);
+        $fieldsets     = $form_elements['fieldsets'];
+        $required      = array();
+        $disabled      = array();
+
+        foreach ($fieldsets as $category) {
+            foreach ($category->elements as $field) {
+                if ($field->required == true) {
+                    $required[$field->field_id] = true;
+                }
+                if ($field->disabled == true) {
+                    $disabled[$field->field_id] = true;
+                }
+            }
+        }
 
         $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
@@ -1465,9 +1447,17 @@ $app->get(
         $fields = $this->members_fields;
         $fc = $this->fields_config;
         $visibles = $fc->getVisibilities();
+        $access_level = $this->login->getAccessLevel();
 
         foreach ($fields as $k => $f) {
-            if ($visibles[$k] == FieldsConfig::HIDDEN) {
+            if ($visibles[$k] == FieldsConfig::NOBODY ||
+                ($visibles[$k] == FieldsConfig::ADMIN &&
+                    $access_level < Authentication::ACCESS_ADMIN) ||
+                ($visibles[$k] == FieldsConfig::STAFF &&
+                    $access_level < Authentication::ACCESS_STAFF) ||
+                ($visibles[$k] == FieldsConfig::MANAGER &&
+                    $access_level < Authentication::ACCESS_MANAGER)
+            ) {
                 unset($fields[$k]);
             }
         }

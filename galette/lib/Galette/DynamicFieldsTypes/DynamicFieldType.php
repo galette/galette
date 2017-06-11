@@ -75,9 +75,11 @@ abstract class DynamicFieldType
     /** File field (upload) */
     const FILE = 6;
 
-    const PERM_ALL = 0;
+    const PERM_USER_WRITE = 0;
+    const PERM_ADMIN = 1;
     const PERM_STAFF = 2;
-    const PERM_ADM = 1;
+    const PERM_MANAGER = 3;
+    const PERM_USER_READ = 4;
 
     const DEFAULT_MAX_FILE_SIZE = 1024;
     const VALUES_FIELD_LENGTH = 100;
@@ -507,9 +509,11 @@ abstract class DynamicFieldType
     public static function getPermsNames()
     {
         return [
-            self::PERM_ALL      => _T("all"),
-            self::PERM_STAFF    => _T("staff"),
-            self::PERM_ADM      => _T("admin")
+            self::PERM_USER_WRITE => _T("User, read/write"),
+            self::PERM_STAFF      => _T("Staff member"),
+            self::PERM_ADMIN      => _T("Administrator"),
+            self::PERM_MANAGER    => _T("Group manager"),
+            self::PERM_USER_READ  => _T("User, read only")
         ];
     }
 

@@ -52,6 +52,12 @@ namespace Galette\Core;
 
 abstract class Authentication
 {
+    const ACCESS_USER = 0;
+    const ACCESS_MANAGER = 1;
+    const ACCESS_STAFF = 2;
+    const ACCESS_ADMIN = 3;
+    const ACCESS_SUPERADMIN = 4;
+
     private $login;
     private $name;
     private $surname;
@@ -292,4 +298,26 @@ abstract class Authentication
     {
         $this->$name = $value;
     }
+
+    /**
+     * get user access level
+     *
+     * @return integer
+     */
+    public function getAccessLevel()
+    {
+
+        if ($this->isSuperAdmin()) {
+            return self::ACCESS_SUPERADMIN;
+        } elseif ($this->isAdmin()) {
+            return self::ACCESS_ADMIN;
+        } elseif ($this->isStaff()) {
+            return self::ACCESS_STAFF;
+        } elseif ($this->isGroupManager()) {
+            return self::ACCESS_MANAGER;
+        } else {
+            return self::ACCESS_USER;
+        }
+    }
+
 }

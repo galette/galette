@@ -2200,7 +2200,7 @@ td.photo img{
     text-align:center;
     width: 18%;
 }
-.fields_list span.yesnoadmin{
+.fields_list span.access{
     margin-right:.2em;
     min-width:25em;
     width:33%;
