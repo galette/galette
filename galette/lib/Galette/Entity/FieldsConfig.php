@@ -503,6 +503,8 @@ class FieldsConfig
                         if ($o->visible == self::USER_READ &&
                                 $access_level == Authentication::ACCESS_USER) {
                             $o->disabled = true;
+                        } else {
+                            $o->disabled = false;
                         }
 
                         $cat->elements[$o->field_id] = $o;
