@@ -1014,6 +1014,10 @@ class Contribution
      */
     public function getPaymentType()
     {
+        if ($this->_payment_type === null) {
+            return '-';
+        }
+
         switch ($this->payment_type) {
             case Contribution::PAYMENT_CASH:
                 return 'cash';
@@ -1060,8 +1064,21 @@ class Contribution
         );
 
         $rname = '_' . $name;
-        if (!in_array($name, $forbidden)
-            && isset($this->$rname)
+
+        if (in_array($name, $forbidden)) {
+            Analog::log(
+                "Call to __get for '$name' is forbidden!",
+                Analog::WARNING
+            );
+
+            switch ($name) {
+                case 'is_cotis':
+                    return $this->isCotis();
+                    break;
+                default:
+                    throw new \RuntimeException("Call to __get for '$name' is forbidden!");
+            }
+        } elseif (property_exists($this, $rname)
             || in_array($name, $virtuals)
         ) {
             switch ($name) {
@@ -1113,6 +1130,9 @@ class Contribution
                     }
                     break;
                 case 'spayment_type':
+                    if ($this->_payment_type === null) {
+                        return '-';
+                    }
                     switch ($this->_payment_type) {
                         case self::PAYMENT_OTHER:
                             return _T("Other");
@@ -1142,6 +1162,9 @@ class Contribution
                     }
                     break;
                 case 'model':
+                    if ($this->_is_cotis === null) {
+                        return null;
+                    }
                     return ($this->isCotis()) ?
                         PdfModel::INVOICE_MODEL :
                         PdfModel::RECEIPT_MODEL;
@@ -1151,7 +1174,11 @@ class Contribution
                     break;
             }
         } else {
-            return false;
+            Analog::log(
+                "Unknown property '$rname'",
+                Analog::WARNING
+            );
+            return null;
         }
     }
 

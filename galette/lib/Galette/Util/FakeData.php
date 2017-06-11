@@ -90,6 +90,7 @@ class FakeData
     protected $transactions = [];
     protected $titles;
     protected $status;
+    protected $contrib_types;
 
     /**
      * @var integer
@@ -541,7 +542,7 @@ class FakeData
         }
 
         $types = new ContributionsTypes($this->zdb);
-        $types = $types->getCompleteList();
+        $this->contrib_types = $types->getCompleteList();
 
         if ($mids === null) {
             $mids = $this->mids;
@@ -552,43 +553,7 @@ class FakeData
         foreach ($mids as $mid) {
             $nbcontribs = $faker->numberBetween(0, $this->maxcontribs);
             for ($i = 0; $i < $nbcontribs; $i++) {
-                $begin_date = $faker->dateTimeBetween($startDate = '-3 years', $endDate = 'now');
-                $end_date = clone $begin_date;
-                $end_date->modify('+1 year');
-                if (!$begin_date) {
-                    $begin_date = new \DateTime();
-                }
-
-                $data = [
-                    Adherent::PK            => $mid,
-                    ContributionsTypes::PK  => $faker->randomElement(array_keys($types)),
-                    'montant_cotis'         => $faker->numberBetween($min = 5, $max = 200),
-                    'type_paiement_cotis'   => $faker->randomElement(
-                        [
-                            Contribution::PAYMENT_OTHER,
-                            Contribution::PAYMENT_CASH,
-                            Contribution::PAYMENT_CREDITCARD,
-                            Contribution::PAYMENT_CHECK,
-                            Contribution::PAYMENT_TRANSFER,
-                            Contribution::PAYMENT_PAYPAL
-                        ]
-                    ),
-                    'info_cotis'            => $faker->optional($weight = 0.1)->realText($maxNbChars = 500),
-                    'date_enreg'            => $faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now')->format(_T("Y-m-d")),
-                    'date_debut_cotis'      => $begin_date->format(_T("Y-m-d")),
-                    'date_fin_cotis'        => $end_date->format(_T("Y-m-d"))
-                ];
-
-                if (count($this->transactions) > 0) {
-                    if ($faker->boolean($chanceOfGettingTrue = 90)) {
-                        $transaction = $faker->randomElement($this->transactions);
-                        $missing = $transaction->getMissingAmount();
-                        if ($data['montant_cotis'] > $missing) {
-                            $data['montant_cotis'] = $missing;
-                        }
-                    }
-                }
-
+                $data = $this->fakeContrib($mid);
                 $contrib = new Contribution($this->zdb, $this->login);
                 if ($contrib->check($data, [], []) === true) {
                     if ($contrib->store()) {
@@ -619,6 +584,68 @@ class FakeData
                 _T("No contribution created!")
             );
         }
+    }
+
+    /**
+     * Get faked contribution data
+     *
+     * @param integer $mid Member id.
+     *
+     * @return array
+     */
+    public function fakeContrib($mid)
+    {
+        $faker = $this->getFaker();
+        if ($this->seed !== null) {
+            $this->faker->seed($this->seed);
+        }
+
+        if ($this->contrib_types === null) {
+            $types = new ContributionsTypes($this->zdb);
+            $this->contrib_types = $types->getCompleteList();
+        }
+        $types = $this->contrib_types;
+
+        $begin_date = $faker->dateTimeBetween($startDate = '-3 years', $endDate = 'now');
+        $end_date = clone $begin_date;
+        $end_date->modify('+1 year');
+        if (!$begin_date) {
+            $begin_date = new \DateTime();
+        }
+
+        $data = [
+            Adherent::PK            => $mid,
+            ContributionsTypes::PK  => $faker->randomElement(array_keys($types)),
+            'montant_cotis'         => $faker->numberBetween($min = 5, $max = 200),
+            'type_paiement_cotis'   => $faker->randomElement(
+                [
+                    Contribution::PAYMENT_OTHER,
+                    Contribution::PAYMENT_CASH,
+                    Contribution::PAYMENT_CREDITCARD,
+                    Contribution::PAYMENT_CHECK,
+                    Contribution::PAYMENT_TRANSFER,
+                    Contribution::PAYMENT_PAYPAL
+                ]
+            ),
+            'info_cotis'            => ($this->seed !== null ?
+                                        'FAKER' . $this->seed :
+                                        $faker->optional($weight = 0.1)->realText($maxNbChars = 500)),
+            'date_enreg'            => $faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now')->format(_T("Y-m-d")),
+            'date_debut_cotis'      => $begin_date->format(_T("Y-m-d")),
+            'date_fin_cotis'        => $end_date->format(_T("Y-m-d"))
+        ];
+
+        if (count($this->transactions) > 0) {
+            if ($faker->boolean($chanceOfGettingTrue = 90)) {
+                $transaction = $faker->randomElement($this->transactions);
+                $missing = $transaction->getMissingAmount();
+                if ($data['montant_cotis'] > $missing) {
+                    $data['montant_cotis'] = $missing;
+                }
+            }
+        }
+
+        return $data;
     }
 
     /**
