@@ -40,6 +40,7 @@ namespace Galette\Repository;
 use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Core\Login;
+use Galette\Core\Authentication;
 use Galette\DynamicFieldsTypes\DynamicFieldType;
 
 /**
@@ -81,11 +82,30 @@ class DynamicFieldsTypes
     {
         $select = $this->zdb->select(DynamicFieldType::TABLE);
         $where = ['field_form' => $form_name];
+        $access_level = $login->getAccessLevel();
 
-        if (!$login->isAdmin() && !$login->isStaff()) {
-            $where['field_perm'] = DynamicFieldType::PERM_ALL;
-        } elseif (!$login->isAdmin()) {
-            $where['field_perm'] = DynamicFieldType::PERM_STAFF;
+        switch ($access_level) {
+            case Authentication::ACCESS_STAFF:
+                $where['field_perm'] = [
+                    DynamicFieldType::PERM_STAFF,
+                    DynamicFieldType::PERM_MANAGER,
+                    DynamicFieldType::PERM_USER_READ,
+                    DynamicFieldType::PERM_USER_WRITE
+                ];
+                break;
+            case Authentication::ACCESS_MANAGER:
+                $where['field_perm'] = [
+                    DynamicFieldType::PERM_MANAGER,
+                    DynamicFieldType::PERM_USER_READ,
+                    DynamicFieldType::PERM_USER_WRITE
+                ];
+                break;
+            case Authentication::ACCESS_USER:
+                $where['field_perm'] = [
+                    DynamicFieldType::PERM_USER_READ,
+                    DynamicFieldType::PERM_USER_WRITE
+                ];
+                break;
         }
 
         $select

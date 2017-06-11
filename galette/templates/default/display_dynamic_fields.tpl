@@ -2,12 +2,11 @@
 <table class="details">
     <caption class="ui-state-active ui-corner-top">{_T string="Additionnal fields:"}</caption>
     {foreach from=$object->getDynamicFields()->getFields() item=field}
-        {if $field->getPerm() eq  constant('Galette\DynamicFieldsTypes\DynamicFieldType::PERM_ALL')|| $login->isAdmin() || $login->isStaff() && $field.field_perm eq constant('Galette\DynamicFieldsTypes\DynamicFieldType::PERM_STAFF')}
-            {if $field|is_a:'Galette\DynamicFieldsTypes\Separator'}
+	{if $field|is_a:'Galette\DynamicFieldsTypes\Separator'}
     <tr>
         <th class="separator" colspan="2">{$field->getName()|escape}</th>
     </tr>
-            {else}
+	{else}
     <tr>
         <th>{$field->getName()|escape}</th>
         <td>
@@ -35,8 +34,7 @@
     {/foreach}
         </td>
     </tr>
-            {/if}
-        {/if}
+	{/if}
     {/foreach}
 </table>
 {/if}

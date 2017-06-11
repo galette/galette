@@ -8,18 +8,21 @@
             cols="{if $field->getWidth() > 0}{$field->getWidth()}{else}61{/if}"
             rows="{if $field->getHeight() > 0}{$field->getHeight()}{else}6{/if}"
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
-            {if $field->isRequired()} required="required"{/if}>{$valuedata}</textarea>
+            {if $field->isRequired()} required="required"{/if}
+            {if $disabled} disabled="disabled"{/if}>{$valuedata}</textarea>
     {elseif $field|is_a:'Galette\DynamicFieldsTypes\Line'}
         <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}"
             {if $field->getWidth() > 0}size="{$field->getWidth()}"{/if}
             {if $field->getSize() > 0}maxlength="{$field->getSize()}"{/if}
             value="{$valuedata}"
             {if $field->isRequired()} required="required"{/if}
+            {if $disabled} disabled="disabled"{/if}
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
         />
     {elseif $field|is_a:'Galette\DynamicFieldsTypes\Choice'}
         <select name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}"
             {if $field->isRequired()} required="required"{/if}
+            {if $disabled} disabled="disabled"{/if}
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
         >
             <!-- If no option is present, page is not XHTML compliant -->
@@ -31,6 +34,7 @@
             value="{$valuedata}" class="dynamic_date"
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
             {if $field->isRequired()} required="required"{/if}
+            {if $disabled} disabled="disabled"{/if}
         />
         <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
     {elseif $field|is_a:'Galette\DynamicFieldsTypes\Boolean'}
@@ -38,10 +42,12 @@
             {if $valuedata eq 1} checked="checked"{/if}
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
             {if $field->isRequired()} required="required"{/if}
+            {if $disabled} disabled="disabled"{/if}
         />
     {elseif $field|is_a:'Galette\DynamicFieldsTypes\File'}
         {_T string="new"}: <input type="file" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_new"
             {if $field->isRequired()} required="required"{/if}
+            {if $disabled} disabled="disabled"{/if}
         />
         {_T string="current"}: <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_current" disabled="disabled"
             value="{$valuedata}"
@@ -55,36 +61,40 @@
 <fieldset class="cssform">
     <legend class="ui-state-active ui-corner-top">{_T string="Additionnal fields:"}</legend>
     <div>
+    {assign var=access_level value=$login->getAccessLevel()}
     {foreach from=$object->getDynamicFields()->getFields() item=field}
-        {if $field->getPerm() eq constant('Galette\DynamicFieldsTypes\DynamicFieldType::PERM_ALL') || $login->isAdmin() || $login->isStaff() && $field->getPerm() eq constant('Galette\DynamicFieldsTypes\DynamicFieldType::PERM_STAFF')}
-            {if $field|is_a:'Galette\DynamicFieldsTypes\Separator'}
+	{assign var=perm value=$field->getPerm()}
+	{if $field|is_a:'Galette\DynamicFieldsTypes\Separator'}
         <div class="separator">{$field->getName()|escape}</div>
-            {else}
+	{else}
         <p{if $field->isRepeatable()} class="repetable"{/if}>
-                {assign var=values value=$object->getDynamicFields()->getValues($field->getId())}
-                {assign var=can_add value=false}
-                {if $field->getRepeat() === 0 || $values|@count < $field->getRepeat() || $values|@count === 0}
-                    {assign var=can_add value=true}
-                {/if}
-                {foreach from=$values item=field_data}
-                    {if not $field_data@first}<br/>{/if}
-                    {draw_field field=$field field_data=$field_data loop=$field_data@iteration}
-                {/foreach}
-                {if $values|@count === 0}
-                    {$field_data = ['field_val' => '']}
-                    {draw_field field=$field field_data=$field_data loop=$values@count + 1}
-                {/if}
+	    {assign var=disabled value=false}
+	    {if $perm eq constant('Galette\DynamicFieldsTypes\DynamicFieldType::PERM_USER_READ') && $access_level eq constant('Galette\Core\Authentication::ACCESS_USER')}
+		{assign var=disabled value=true}
+	    {/if}
+	    {assign var=values value=$object->getDynamicFields()->getValues($field->getId())}
+	    {assign var=can_add value=false}
+	    {if $field->getRepeat() === 0 || $values|@count < $field->getRepeat() || $values|@count === 0}
+		{assign var=can_add value=true}
+	    {/if}
+	    {foreach from=$values item=field_data}
+		{if not $field_data@first}<br/>{/if}
+		{draw_field field=$field field_data=$field_data disabled=$disabled loop=$field_data@iteration}
+	    {/foreach}
+	    {if $values|@count === 0}
+		{$field_data = ['field_val' => '']}
+		{draw_field field=$field field_data=$field_data disabled=$disabled loop=$values@count + 1}
+	    {/if}
         </p>
-                {if $field->isRepeatable()}
-                    {if $field->getRepeat() === 0}
+	    {if $field->isRepeatable()}
+		{if $field->getRepeat() === 0}
         <p class="exemple" id="repeat_msg">{_T string="Enter as many occurences you want."}</p>
-                    {elseif $values|@count < $field->getRepeat() || $values|@count === 0}
-                        {assign var=remaining value=$field->getRepeat() - $values|@count}
+		{elseif $values|@count < $field->getRepeat() || $values|@count === 0}
+		    {assign var=remaining value=$field->getRepeat() - $values|@count}
         <p class="exemple" id="repeat_msg">{_T string="Enter up to %count more occurences." pattern="/%count/" replace=$remaining}</p>
-                    {/if}
-                {/if}
-            {/if}
-        {/if}
+		{/if}
+	    {/if}
+	{/if}
     {/foreach}
     </div>
 </fieldset>
