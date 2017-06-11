@@ -82,7 +82,6 @@ $app->get(
 
         // flagging required fields
         $fc = $this->fields_config;
-        $required = $fc->getRequired();
         $form_elements = $fc->getFormElements($this->login, true);
 
         // DEBUT parametrage des champs
@@ -103,7 +102,6 @@ $app->get(
             array(
                 'page_title'        => _T("Subscription"),
                 'parent_tpl'        => 'public_page.tpl',
-                'required'          => $required,
                 'member'            => $member,
                 'self_adh'          => true,
                 'languages'         => $this->i18n->getList(),
@@ -771,8 +769,6 @@ $app->get(
             $fc->setNotRequired('id_statut');
         }
 
-        $required = $fc->getRequired();
-
         // template variable declaration
         $title = _T("Member Profile");
         if ($member->id != '') {
@@ -832,7 +828,6 @@ $app->get(
                     'require_dialog'    => true,
                     'autocomplete'      => true,
                     'page_title'        => $title,
-                    'required'          => $required,
                     'member'            => $member,
                     'self_adh'          => false,
                     'languages'         => $this->i18n->getList(),
