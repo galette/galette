@@ -933,8 +933,22 @@ $app->post(
             $fc->setNotRequired('id_statut');
         }
 
-        $required = $fc->getRequired();
-        $disabled = array();
+        $form_elements = $fc->getFormElements($this->login, true);
+        $fieldsets     = $form_elements['fieldsets'];
+        $required      = array();
+        $disabled      = array();
+
+        foreach ($fieldsets as $category) {
+            foreach ($category->elements as $field) {
+                if ($field->required == true) {
+                    $required[$field->field_id] = true;
+                }
+                if ($field->disabled == true) {
+                    $disabled[$field->field_id] = true;
+                }
+            }
+        }
+
         $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
         // Validation
