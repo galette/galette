@@ -15,7 +15,7 @@
                 <input type="text" name="field_name" id="field_name" value="{$df->getName()}"{if not $df|is_a:'Galette\DynamicFieldsTypes\Separator'} required="required"{/if}/>
             </p>
             <p>
-                <label for="field_perm" class="bline">{_T string="Visibility:"}</label>
+                <label for="field_perm" class="bline">{_T string="Accessibility:"}</label>
                 <select name="field_perm" id="field_perm">
                     {html_options options=$perm_names selected=$df->getPerm()}
                 </select>
