@@ -442,15 +442,24 @@ class Contribution extends atoum
             $contrib = $this->contrib;
         }
 
+        $date_enr = new \DateTime();
+        $date_enr->sub(new \DateInterval('P236D'));
+
+        $date_begin = new \DateTime();
+        $date_begin->sub(new \DateInterval('P150D'));
+
+        $date_end = clone $date_begin;
+        $date_end->add(new \DateInterval('P1Y'));
+
         $expecteds = [
             'id_adh' => "{$this->adh->id}",
             'id_type_cotis' => 1,
             'montant_cotis' => '92',
             'type_paiement_cotis' => '3',
             'info_cotis' => 'FAKER95842354',
-            'date_enreg' => '2016-10-18',
-            'date_debut_cotis' => '2017-01-12',
-            'date_fin_cotis' => '2018-01-12',
+            'date_enreg' => $date_enr->format('Y-m-d'),
+            'date_debut_cotis' => $date_begin->format('Y-m-d'),
+            'date_fin_cotis' => $date_end->format('Y-m-d'),
         ];
         $expecteds = array_merge($expecteds, $new_expecteds);
 
