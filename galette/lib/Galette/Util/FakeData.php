@@ -541,9 +541,6 @@ class FakeData
             return;
         }
 
-        $types = new ContributionsTypes($this->zdb);
-        $this->contrib_types = $types->getCompleteList();
-
         if ($mids === null) {
             $mids = $this->mids;
         }
@@ -601,8 +598,8 @@ class FakeData
         }
 
         if ($this->contrib_types === null) {
-            $types = new ContributionsTypes($this->zdb);
-            $this->contrib_types = $types->getCompleteList();
+            $ct = new ContributionsTypes($this->zdb);
+            $this->contrib_types = $ct->getCompleteList();
         }
         $types = $this->contrib_types;
 

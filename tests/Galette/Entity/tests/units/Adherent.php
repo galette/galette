@@ -67,6 +67,22 @@ class Adherent extends atoum
     private $ids = [];
 
     /**
+     * Set up tests
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        $this->zdb = new \Galette\Core\Db();
+        $status = new \Galette\Entity\Status($this->zdb);
+        if (count($status->getList()) === 0) {
+            //status are not yet instanciated.
+            $res = $status->installInit();
+            $this->boolean($res)->isTrue();
+        }
+    }
+
+    /**
      * Cleanup after tests
      *
      * @return void

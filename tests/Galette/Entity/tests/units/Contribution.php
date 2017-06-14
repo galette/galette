@@ -67,6 +67,22 @@ class Contribution extends atoum
     private $members_fields;
 
     /**
+     * Set up tests
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        $this->zdb = new \Galette\Core\Db();
+        $ct = new \Galette\Entity\ContributionsTypes($this->zdb);
+        if (count($ct->getCompleteList()) === 0) {
+            //status are not yet instanciated.
+            $res = $ct->installInit();
+            $this->boolean($res)->isTrue();
+        }
+    }
+
+    /**
      * Cleanup after tests
      *
      * @return void
