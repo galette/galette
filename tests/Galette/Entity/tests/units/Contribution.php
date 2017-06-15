@@ -530,4 +530,61 @@ class Contribution extends atoum
         $this->adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
         $this->checkContribExpected();
     }
+
+    /**
+     * Test end date retrieving
+     * This is based on some Preferences parameters
+     *
+     * @return void
+     */
+    public function testRetrieveEndDate()
+    {
+        global $preferences;
+        $orig_pref_beg_membership = $this->preferences->pref_beg_membership;
+        $orig_pref_membership_ext = $this->preferences->pref_membership_ext;
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1] //anual fee
+        );
+
+        $expected = new \DateTime();
+        $expected->add(new \DateInterval('P1Y'));
+        $this->string($contrib->end_date)->isIdenticalTo($expected->format('Y-m-d'));
+
+        //unset pref_beg_membership and pref_membership_ext
+        $preferences->pref_beg_membership = '';
+        $preferences->pref_membership_ext = '';
+
+        $this->exception(
+            function () {
+                $contrib = new \Galette\Entity\Contribution(
+                    $this->zdb,
+                    $this->login,
+                    ['type' => 1] //anual fee
+                );
+            }
+        )
+            ->isInstanceOf('RuntimeException')
+            ->hasMessage('Unable to define end date; none of pref_beg_membership nor pref_membership_ext are defined!');
+
+        $preferences->pref_beg_membership = '29/05';
+        $expected = new \DateTime();
+        $expected->setDate(date('Y'), 5, 29);
+        if ($expected < new \DateTime()) {
+            $expected->add(new \DateInterval('P1Y'));
+        }
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1] // anual fee
+        );
+        $this->string($contrib->end_date)->isIdenticalTo($expected->format('Y-m-d'));
+
+        //reset
+        $preferences->pref_beg_membership = $orig_pref_beg_membership;
+        $preferences->pref_membership_ext = $orig_pref_membership_ext;
+    }
 }

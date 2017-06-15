@@ -233,6 +233,10 @@ class Contribution
             $dext = new \DateInterval('P' . $this->_extension . 'M');
             $edate = $bdate->add($dext);
             $this->_end_date = $edate->format('Y-m-d');
+        } else {
+            throw new \RuntimeException(
+                'Unable to define end date; none of pref_beg_membership nor pref_membership_ext are defined!'
+            );
         }
     }
 
