@@ -607,6 +607,7 @@ class Contribution extends atoum
                 'nom_adh'                   => 'Overlapped',
                 'date_crea_adh'             => date(_T("Y-m-d")),
                 \Galette\Entity\Status::PK  => \Galette\Entity\Status::DEFAULT_STATUS,
+                'fingerprint'               => 'FAKER' . $this->seed
             ],
             [],
             []
@@ -632,7 +633,8 @@ class Contribution extends atoum
             'type_paiement_cotis'                   => \Galette\Entity\Contribution::PAYMENT_CHECK,
             'date_enreg'                            => $now->format(_T("Y-m-d")),
             'date_debut_cotis'                      => $now->format(_T("Y-m-d")),
-            'date_fin_cotis'                        => $end_date->format(_T("Y-m-d"))
+            'date_fin_cotis'                        => $end_date->format(_T("Y-m-d")),
+            'info_cotis'                            => 'FAKER' . $this->seed
         ];
 
         $check = $contrib->check($data, [], []);
@@ -660,7 +662,8 @@ class Contribution extends atoum
             'type_paiement_cotis'                   => \Galette\Entity\Contribution::PAYMENT_CHECK,
             'date_enreg'                            => $now->format(_T("Y-m-d")),
             'date_debut_cotis'                      => $begin->format(_T("Y-m-d")),
-            'date_fin_cotis'                        => $end_date->format(_T("Y-m-d"))
+            'date_fin_cotis'                        => $end_date->format(_T("Y-m-d")),
+            'info_cotis'                            => 'FAKER' . $this->seed
         ];
 
         $check = $contrib->check($data, [], []);
