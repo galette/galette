@@ -313,8 +313,10 @@ class Login extends atoum
 
         if ($results->count() === 0) {
             $status = new \Galette\Entity\Status($this->zdb);
-            $res = $status->installInit();
-            $this->boolean($res)->isTrue();
+            if (count($status->getList()) === 0) {
+                $res = $status->installInit();
+                $this->boolean($res)->isTrue();
+            }
 
             $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
             $fakedata
