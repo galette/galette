@@ -587,4 +587,93 @@ class Contribution extends atoum
         $preferences->pref_beg_membership = $orig_pref_beg_membership;
         $preferences->pref_membership_ext = $orig_pref_membership_ext;
     }
+
+    /**
+     * Test checkOverlap method
+     *
+     * @return void
+     */
+    public function testCheckOverlap()
+    {
+        $adh = new \Galette\Entity\Adherent($this->zdb);
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $check = $adh->check(
+            [
+                'nom_adh'                   => 'Overlapped',
+                'date_crea_adh'             => date(_T("Y-m-d")),
+                \Galette\Entity\Status::PK  => \Galette\Entity\Status::DEFAULT_STATUS,
+            ],
+            [],
+            []
+        );
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->boolean($check)->isTrue();
+
+        $store = $adh->store();
+        $this->boolean($store)->isTrue();
+
+        //create first contribution for member
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+
+        $now = new \DateTime();
+        $end_date = clone $now;
+        $end_date->add(new \DateInterval('P1Y'));
+        $data = [
+            \Galette\Entity\Adherent::PK            => $adh->id,
+            \Galette\Entity\ContributionsTypes::PK  => 1, //anual fee
+            'montant_cotis'                         => 20,
+            'type_paiement_cotis'                   => \Galette\Entity\Contribution::PAYMENT_CHECK,
+            'date_enreg'                            => $now->format(_T("Y-m-d")),
+            'date_debut_cotis'                      => $now->format(_T("Y-m-d")),
+            'date_fin_cotis'                        => $end_date->format(_T("Y-m-d"))
+        ];
+
+        $check = $contrib->check($data, [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->boolean($check)->isTrue();
+        $this->boolean($contrib->checkOverlap())->isTrue();
+
+        $store = $contrib->store();
+        $this->boolean($store)->isTrue();
+
+        //load member from db
+        $adh = new \Galette\Entity\Adherent($this->zdb, $adh->id);
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $begin = clone $end_date;
+        $begin->sub(new \DateInterval('P3M'));
+        $end_date = clone $begin;
+        $end_date->add(new \DateInterval('P1Y'));
+        $data = [
+            \Galette\Entity\Adherent::PK            => $adh->id,
+            \Galette\Entity\ContributionsTypes::PK  => 1, //anual fee
+            'montant_cotis'                         => 20,
+            'type_paiement_cotis'                   => \Galette\Entity\Contribution::PAYMENT_CHECK,
+            'date_enreg'                            => $now->format(_T("Y-m-d")),
+            'date_debut_cotis'                      => $begin->format(_T("Y-m-d")),
+            'date_fin_cotis'                        => $end_date->format(_T("Y-m-d"))
+        ];
+
+        $check = $contrib->check($data, [], []);
+        $this->array($check)->isIdenticalTo([
+            '- Membership period overlaps period starting at ' . $now->format('Y-m-d')
+        ]);
+
+        $this->exception(
+            function () use ($contrib) {
+                $store = $contrib->store();
+            }
+        )
+            ->isInstanceOf('RuntimeException')
+            ->message->startWith('Existing errors prevents storing contribution');
+    }
 }
