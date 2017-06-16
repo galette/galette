@@ -541,6 +541,14 @@ class Contribution
     {
         global $hist;
 
+        if (count($this->errors) > 0) {
+            throw new \RuntimeException(
+                'Existing errors prevents storing contribution: ' .
+                print_r($this->errors, true)
+            );
+            return false;
+        }
+
         try {
             $this->zdb->connection->beginTransaction();
             $values = array();
