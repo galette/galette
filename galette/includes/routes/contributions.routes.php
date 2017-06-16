@@ -499,18 +499,6 @@ $app->post(
 
         if (count($error_detected) == 0) {
             //all goes well, we can proceed
-            if ($contrib->isCotis()) {
-                // Check that membership fees does not overlap
-                $overlap = $contrib->checkOverlap();
-                if ($overlap !== true) {
-                    if ($overlap === false) {
-                        $error_detected[] = _T("An error occured checking overlaping fees :(");
-                    } else {
-                        //method directly return erro message
-                        $error_detected[] = $overlap;
-                    }
-                }
-            }
             $new = false;
             if ($contrib->id == '') {
                 $new = true;

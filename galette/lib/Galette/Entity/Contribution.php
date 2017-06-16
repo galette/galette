@@ -456,6 +456,18 @@ class Contribution
             }
         }
 
+        if ($this->isCotis() && count($this->errors) == 0) {
+            $overlap = $this->checkOverlap();
+            if ($overlap !== true) {
+                if ($overlap === false) {
+                    $this->errors[] = _T("An error occured checking overlaping fees :(");
+                } else {
+                    //method directly return error message
+                    $this->errors[] = $overlap;
+                }
+            }
+        }
+
         if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been throwed attempting to edit/store a contribution' .
