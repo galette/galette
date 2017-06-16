@@ -107,8 +107,10 @@ class Password extends atoum
         }
 
         $status = new \Galette\Entity\Status($this->zdb);
-        $res = $status->installInit();
-        $this->boolean($res)->isTrue();
+        if (count($status->getList()) === 0) {
+            $res = $status->installInit();
+            $this->boolean($res)->isTrue();
+        }
         $insert = $this->zdb->insert(\Galette\Entity\Adherent::TABLE);
         $insert->values(
             [

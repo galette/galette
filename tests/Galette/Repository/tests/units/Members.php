@@ -120,12 +120,16 @@ class Members extends atoum
         }
 
         $status = new \Galette\Entity\Status($this->zdb);
-        $res = $status->installInit();
-        $this->boolean($res)->isTrue();
+        if (count($status->getList()) === 0) {
+            $res = $status->installInit();
+            $this->boolean($res)->isTrue();
+        }
 
         $contribtypes = new \Galette\Entity\ContributionsTypes($this->zdb);
-        $res = $contribtypes->installInit();
-        $this->boolean($res)->isTrue();
+        if (count($contribtypes->getCompleteList()) === 0) {
+            $res = $contribtypes->installInit();
+            $this->boolean($res)->isTrue();
+        }
 
         $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
 
