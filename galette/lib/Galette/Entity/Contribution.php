@@ -394,7 +394,7 @@ class Contribution
                     case 'montant_cotis':
                         $this->_amount = $value;
                         $value = strtr($value, ',', '.');
-                        if (!is_numeric($value)) {
+                        if (!is_numeric($value) && $value !== '') {
                             $this->errors[] = _T("- The amount must be an integer!");
                         }
                         break;
@@ -1257,7 +1257,7 @@ class Contribution
                         $this->_begin_date = $d->format('Y-m-d');
                     } catch (\Exception $e) {
                         Analog::log(
-                            'Wrong date format. field: ' . $key .
+                            'Wrong date format. field: ' . $name .
                             ', value: ' . $value . ', expected fmt: ' .
                             __("Y-m-d") . ' | ' . $e->getMessage(),
                             Analog::INFO
@@ -1269,7 +1269,7 @@ class Contribution
                             ),
                             array(
                                 __("Y-m-d"),
-                                $this->_fields[$key]['label']
+                                $this->_fields['date_debut_cotis']['label']
                             ),
                             _T("- Wrong date format (%date_format) for %field!")
                         );

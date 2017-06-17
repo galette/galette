@@ -119,10 +119,16 @@ abstract class Entitled
             $select->where($this->fpk . ' = ' . $id);
 
             $results = $this->zdb->execute($select);
-            $result = $results->current();
-            $this->loadFromRS($result);
+            if ($results->count() > 0) {
+                $result = $results->current();
+                $this->loadFromRS($result);
 
-            return true;
+                return true;
+            } else {
+                throw new \RuntimeException(
+                    'Unknown ID ' . $id . '!'
+                );
+            }
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot load ' . $this->getType()  . ' from id `' . $id . '` | ' .
