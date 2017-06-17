@@ -294,6 +294,58 @@ class Contribution extends atoum
         $this->string($contrib->getRawType())->isIdenticalTo('donation');
         $this->string($contrib->getTypeLabel())->isIdenticalTo('Donation');
         $this->string($contrib->getPaymentType())->isIdenticalTo('-');
+        $this->variable($contrib->unknown_property)->isNull();
+    }
+
+    /**
+     * Test getter and setter special cases
+     *
+     * @return void
+     */
+    public function testGetterSetter()
+    {
+        $contrib = $this->contrib;
+
+        //set a bad date
+        $contrib->begin_date = 'not a date';
+        $this->variable($contrib->raw_begin_date)->isNull();
+        $this->variable($contrib->begin_date)->isNull();
+
+        $contrib->begin_date = '2017-06-17';
+        $this->object($contrib->raw_begin_date)->isInstanceOf('DateTime');
+        $this->string($contrib->begin_date)->isIdenticalTo('2017-06-17');
+
+        $contrib->amount = 'not an amount';
+        $this->variable($contrib->amount)->isNull();
+        $contrib->amount = 0;
+        $this->variable($contrib->amount)->isNull();
+        $contrib->amount = 42;
+        $this->integer($contrib->amount)->isIdenticalTo(42);
+        $contrib->amount = '42';
+        $this->string($contrib->amount)->isIdenticalTo('42');
+
+        $contrib->type = 'not a type';
+        $this->variable($contrib->type)->isNull();
+        $contrib->type = 156;
+        $this->object($contrib->type)->isInstanceOf('\Galette\Entity\ContributionsTypes');
+        $this->boolean($contrib->type->id)->isFalse();
+        $contrib->type = 1;
+        $this->object($contrib->type)->isInstanceOf('\Galette\Entity\ContributionsTypes');
+        $this->variable($contrib->type->id)->isEqualTo(1);
+
+        $contrib->transaction = 'not a transaction id';
+        $this->variable($contrib->transaction)->isNull();
+        $contrib->transaction = 46;
+        $this->object($contrib->transaction)->isInstanceOf('\Galette\Entity\Transaction');
+        $this->boolean($contrib->transaction->id)->isFalse();
+
+        $contrib->member = 'not a member';
+        $this->variable($contrib->member)->isNull();
+        $contrib->member = 118218;
+        $this->integer($contrib->member)->isIdenticalTo(118218);
+
+        $contrib->not_a_property = 'abcde';
+        $this->boolean(property_exists($contrib, 'not_a_property'))->isFalse();
     }
 
     /**
@@ -495,6 +547,13 @@ class Contribution extends atoum
                     break;
             }
         }
+
+        $this->object($contrib->raw_date)->isInstanceOf('DateTime');
+        $this->string($contrib->raw_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_enreg']);
+        $this->object($contrib->raw_begin_date)->isInstanceOf('DateTime');
+        $this->string($contrib->raw_begin_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_debut_cotis']);
+        $this->object($contrib->raw_end_date)->isInstanceOf('DateTime');
+        $this->string($contrib->raw_end_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_fin_cotis']);
 
         //member is now up-to-date
         $this->string($this->adh->getRowClass())->isIdenticalTo('active cotis-ok');
