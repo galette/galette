@@ -729,8 +729,10 @@ class Contribution
         if ($this->isCotis() && $field == 'date_debut_cotis') {
             $label = $this->_fields[$field]['cotlabel'];
         }
-        //remove trailing ':' and then nbsp (for french at least)
-        $label = trim(trim($label, ':'), '&nbsp;');
+        //replace "&nbsp;"
+        $label = str_replace('&nbsp;', ' ', $label);
+        //remove trailing ':' and then trim
+        $label = trim(trim($label, ':'));
         return $label;
     }
 
@@ -1290,6 +1292,22 @@ class Contribution
                     if (is_int($value)) {
                         //set type
                         $this->$rname = $value;
+                    }
+                    break;
+                case 'payment_type':
+                    if ($value == self::PAYMENT_OTHER
+                        || $value == self::PAYMENT_CASH
+                        || $value == self::PAYMENT_CREDITCARD
+                        || $value == self::PAYMENT_CHECK
+                        || $value == self::PAYMENT_TRANSFER
+                        || $value == self::PAYMENT_PAYPAL
+                    ) {
+                        $this->_payment_type = $value;
+                    } else {
+                        Analog::log(
+                            'Unknown payment type ' . $value,
+                            Analog::WARNING
+                        );
                     }
                     break;
                 default:

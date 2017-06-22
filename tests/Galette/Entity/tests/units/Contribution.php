@@ -346,6 +346,30 @@ class Contribution extends atoum
 
         $contrib->not_a_property = 'abcde';
         $this->boolean(property_exists($contrib, 'not_a_property'))->isFalse();
+
+        $contrib->payment_type = \Galette\Entity\Contribution::PAYMENT_CASH;
+        $this->string($contrib->getPaymentType())->isIdenticalTo('cash');
+        $this->string($contrib->spayment_type)->isIdenticalTo('Cash');
+
+        $contrib->payment_type = \Galette\Entity\Contribution::PAYMENT_CHECK;
+        $this->string($contrib->getPaymentType())->isIdenticalTo('check');
+        $this->string($contrib->spayment_type)->isIdenticalTo('Check');
+
+        $contrib->payment_type = \Galette\Entity\Contribution::PAYMENT_OTHER;
+        $this->string($contrib->getPaymentType())->isIdenticalTo('other');
+        $this->string($contrib->spayment_type)->isIdenticalTo('Other');
+
+        $contrib->payment_type = \Galette\Entity\Contribution::PAYMENT_CREDITCARD;
+        $this->string($contrib->getPaymentType())->isIdenticalTo('credit_card');
+        $this->string($contrib->spayment_type)->isIdenticalTo('Credit card');
+
+        $contrib->payment_type = \Galette\Entity\Contribution::PAYMENT_TRANSFER;
+        $this->string($contrib->getPaymentType())->isIdenticalTo('transfer');
+        $this->string($contrib->spayment_type)->isIdenticalTo('Transfer');
+
+        $contrib->payment_type = \Galette\Entity\Contribution::PAYMENT_PAYPAL;
+        $this->string($contrib->getPaymentType())->isIdenticalTo('paypal');
+        $this->string($contrib->spayment_type)->isIdenticalTo('Paypal');
     }
 
     /**
@@ -737,5 +761,42 @@ class Contribution extends atoum
         )
             ->isInstanceOf('RuntimeException')
             ->message->startWith('Existing errors prevents storing contribution');
+    }
+
+    /**
+     * Test checkOverlap method that throws an exception
+     *
+     * @return void
+     */
+    public function testCheckOverlapWException()
+    {
+        $zdb = new \mock\Galette\Core\Db();
+        $this->calling($zdb)->execute = function ($o) {
+            if ($o instanceof \Zend\Db\Sql\Select) {
+                throw new \LogicException('Error executing query!', 123);
+            }
+        };
+
+        $contrib = new \Galette\Entity\Contribution($zdb, $this->login);
+        $this->boolean($contrib->checkOverlap())->isFalse();
+    }
+
+
+    /**
+     * Test fields labels
+     *
+     * @return void
+     */
+    public function testGetFieldLabel()
+    {
+        $this->string($this->contrib->getFieldLabel('montant_cotis'))
+            ->isIdenticalTo('Amount');
+
+        $this->string($this->contrib->getFieldLabel('date_debut_cotis'))
+            ->isIdenticalTo('Date of contribution');
+
+        $this->contrib->type = 1;
+        $this->string($this->contrib->getFieldLabel('date_debut_cotis'))
+            ->isIdenticalTo('Start date of membership');
     }
 }
