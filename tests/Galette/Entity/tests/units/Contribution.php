@@ -778,4 +778,21 @@ class Contribution extends atoum
 
         $this->boolean($contrib->load(1355522012))->isFalse();
     }
+
+    /**
+     * Test contribution removal
+     *
+     * @return void
+     */
+    public function testRemove()
+    {
+        $this->createAdherent();
+        $this->createContribution();
+
+        $id = (int)$this->contrib->id;
+        $this->boolean($this->contrib->remove())->isTrue();
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $this->boolean($this->contrib->remove())->isFalse();
+    }
 }

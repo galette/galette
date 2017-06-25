@@ -698,6 +698,10 @@ class Contribution
             $del = $this->zdb->execute($delete);
             if ($del->count() > 0) {
                 $this->updateDeadline();
+            } else {
+                throw new \RuntimeException(
+                    'Contribution has not been removed!'
+                );
             }
             if ($transaction) {
                 $this->zdb->connection->commit();
