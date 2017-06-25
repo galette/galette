@@ -258,8 +258,8 @@ class Contribution
             }
 
             $results = $this->zdb->execute($select);
-            $row = $results->current();
-            if ($row !== false) {
+            if ($results->count() > 0) {
+                $row = $results->current();
                 $this->loadFromRS($row);
                 return true;
             } else {

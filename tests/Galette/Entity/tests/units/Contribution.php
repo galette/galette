@@ -83,11 +83,13 @@ class Contribution extends atoum
     }
 
     /**
-     * Cleanup after tests
+     * Cleanup after testeach test method
+     *
+     * @param string $method Calling method
      *
      * @return void
      */
-    public function tearDown()
+    public function afterTestMethod($method)
     {
         $this->zdb = new \Galette\Core\Db();
         $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
@@ -146,42 +148,6 @@ class Contribution extends atoum
     }
 
     /**
-     * Look in database if test member already exists
-     *
-     * @return false|ResultSet
-     */
-    private function adhExists()
-    {
-        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE, 'a');
-        $select->where(array('a.fingerprint' => 'FAKER' . $this->seed));
-
-        $results = $this->zdb->execute($select);
-        if ($results->count() === 0) {
-            return false;
-        } else {
-            return $results;
-        }
-    }
-
-    /**
-     * Look in database if test contrib already exists
-     *
-     * @return false|ResultSet
-     */
-    private function contribExists()
-    {
-        $select = $this->zdb->select(\Galette\Entity\Contribution::TABLE, 'c');
-        $select->where(array('c.info_cotis' => 'FAKER' . $this->seed));
-
-        $results = $this->zdb->execute($select);
-        if ($results->count() === 0) {
-            return false;
-        } else {
-            return $results;
-        }
-    }
-
-    /**
      * Create test user in database
      *
      * @return void
@@ -200,6 +166,7 @@ class Contribution extends atoum
 
         $data = $fakedata->fakeMember();
         $this->createMember($data);
+        $this->checkMemberExpected();
     }
 
     /**
@@ -221,6 +188,7 @@ class Contribution extends atoum
 
         $data = $fakedata->fakeContrib($this->adh->id);
         $this->createContrib($data);
+        $this->checkContribExpected();
     }
 
     /**
@@ -456,7 +424,7 @@ class Contribution extends atoum
             'activite_adh' => true,
             'id_statut' => 9,
             'pref_lang' => 'fr_FR',
-            'fingerprint' => 'FAKER95842354',
+            'fingerprint' => 'FAKER' . $this->seed,
             'societe_adh' => ''
         ];
         $expecteds = array_merge($expecteds, $new_expecteds);
@@ -548,7 +516,7 @@ class Contribution extends atoum
             'id_type_cotis' => 1,
             'montant_cotis' => '92',
             'type_paiement_cotis' => '3',
-            'info_cotis' => 'FAKER95842354',
+            'info_cotis' => 'FAKER' . $this->seed,
             'date_enreg' => $date_enr->format('Y-m-d'),
             'date_debut_cotis' => $date_begin->format('Y-m-d'),
             'date_fin_cotis' => $date_end->format('Y-m-d'),
@@ -567,7 +535,7 @@ class Contribution extends atoum
                     }
                     break;
                 default:
-                    $this->variable($contrib->$property)->isIdenticalTo($value);
+                    $this->variable($contrib->$property)->isEqualTo($value);
                     break;
             }
         }
@@ -579,6 +547,8 @@ class Contribution extends atoum
         $this->object($contrib->raw_end_date)->isInstanceOf('DateTime');
         $this->string($contrib->raw_end_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_fin_cotis']);
 
+        //load member from db
+        $this->adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
         //member is now up-to-date
         $this->string($this->adh->getRowClass())->isIdenticalTo('active cotis-ok');
         $this->string($this->adh->due_date)->isIdenticalTo($this->contrib->end_date);
@@ -592,26 +562,9 @@ class Contribution extends atoum
      */
     public function testCreation()
     {
-        $rs = $this->adhExists();
-        if ($rs === false) {
-            $this->createAdherent();
-        } else {
-            $this->loadAdherent($rs->current());
-        }
-
-        $this->checkMemberExpected();
-
+        $this->createAdherent();
         //create contribution for member
-        $rs = $this->contribExists();
-        if ($rs === false) {
-            $this->createContribution();
-        } else {
-            $this->loadContribution($rs->current());
-        }
-
-        //load member from db
-        $this->adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
-        $this->checkContribExpected();
+        $this->createContribution();
     }
 
     /**
@@ -798,5 +751,31 @@ class Contribution extends atoum
         $this->contrib->type = 1;
         $this->string($this->contrib->getFieldLabel('date_debut_cotis'))
             ->isIdenticalTo('Start date of membership');
+    }
+
+    /**
+     * Test contribution loading
+     *
+     * @return void
+     */
+    public function testLoad()
+    {
+        $this->login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->calling($this->login)->isLogged = true;
+        $this->calling($this->login)->isStaff = true;
+        $this->calling($this->login)->isAdmin = true;
+
+        $this->createAdherent();
+
+        //create contribution for member
+        $this->createContribution();
+
+        $id = $this->contrib->id;
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+
+        $this->boolean($contrib->load((int)$id))->isTrue();
+        $this->checkContribExpected($contrib);
+
+        $this->boolean($contrib->load(1355522012))->isFalse();
     }
 }
