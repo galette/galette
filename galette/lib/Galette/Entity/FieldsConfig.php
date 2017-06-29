@@ -664,7 +664,7 @@ class FieldsConfig
                         $field['required'] = $this->zdb->isPostgres() ? 'false' : 0;
                     }
                     if ($field['field_id'] === 'parent_id') {
-                        $field['visible'] = $this->zdb->isPostgres() ? 'false' : 0;
+                        $field['visible'] = 0;
                     }
                     $params = array(
                         'required'  => $field['required'],
