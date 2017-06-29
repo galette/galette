@@ -246,7 +246,7 @@ class FieldsConfig extends atoum
         $jabber['category'] = 1;
         $fields[1][] = $jabber;
 
-        $fields_config->setFields($fields);
+        $this->boolean($fields_config->setFields($fields))->isTrue();
 
         $fields_config->load();
         $fields = $fields_config->getCategorizedFields();
