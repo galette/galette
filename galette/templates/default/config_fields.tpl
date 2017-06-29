@@ -20,7 +20,7 @@
                 </li>
     {assign var='fs' value=$category->id_field_category}
     {foreach key=col item=field from=$categorized_fields[$fs] name=fields_list}
-        {if $preferences->pref_show_id or $field.field_id neq 'id_adh'}
+        {if ($preferences->pref_show_id or $field.field_id neq 'id_adh') and $field.field_id neq 'parent_id'}
             {assign var='fid' value=$field.field_id}
                 <li class="tbl_line_{if $smarty.foreach.fields_list.iteration % 2 eq 0}even{else}odd{/if}">
                     <span class="label" data-title="{_T string="Field name"}">

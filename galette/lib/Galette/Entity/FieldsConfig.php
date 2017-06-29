@@ -113,7 +113,8 @@ class FieldsConfig
         'societe_adh',
         'id_statut',
         'pref_lang',
-        'sexe_adh'
+        'sexe_adh',
+        'parent_id'
     );
 
     private $non_form_elements = array(
@@ -175,6 +176,10 @@ class FieldsConfig
             foreach ($results as $k) {
                 if ($k->field_id === 'id_adh' && (!isset($preferences) || !$preferences->pref_show_id)) {
                     $k->visible = self::HIDDEN;
+                }
+                if ($k->field_id === 'parent_id') {
+                    $k->visible = self::HIDDEN;
+                    $k->required = false;
                 }
                 $f = array(
                     'field_id'  => $k->field_id,
@@ -657,6 +662,9 @@ class FieldsConfig
                 foreach ($cat as $pos => $field) {
                     if (in_array($field['field_id'], $this->non_required)) {
                         $field['required'] = $this->zdb->isPostgres() ? 'false' : 0;
+                    }
+                    if ($field['field_id'] === 'parent_id') {
+                        $field['visible'] = $this->zdb->isPostgres() ? 'false' : 0;
                     }
                     $params = array(
                         'required'  => $field['required'],
