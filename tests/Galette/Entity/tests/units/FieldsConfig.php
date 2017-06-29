@@ -103,7 +103,8 @@ class FieldsConfig extends atoum
             'societe_adh',
             'id_statut',
             'pref_lang',
-            'sexe_adh'
+            'sexe_adh',
+            'parent_id'
         ];
         $this->array($nrequired)->isIdenticalTo($expected);
     }
