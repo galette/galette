@@ -40,7 +40,7 @@ namespace Galette\Core;
 use Analog\Analog;
 
 /**
-i * Logs
+ * Logs
  *
  * @category  Core
  * @name      Logs
