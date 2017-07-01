@@ -612,13 +612,19 @@ h1 #sendmail .ui-button-text {
     background-image:url(images/subscribe.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#lostpassword, #btn_lostpassword {
+#lostpassword {
+    background-image:url(images/icon-lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#btn_lostpassword {
     background-image:url(images/lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
-#lostpassword.ui-state-hover, #btn_lostpassword.ui-state-hover {
+
+#lostpassword.ui-state-hover {
+    background-image:url(images/icon-lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+#btn_lostpassword.ui-state-hover {
     background-image:url(images/lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
-
 #memberslist {
     background-image:url(images/members-list.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
