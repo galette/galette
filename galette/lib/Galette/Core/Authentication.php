@@ -126,7 +126,7 @@ abstract class Authentication
             $this->cron = true;
             $this->login = 'cron';
         } else {
-            die('Not authorized!');
+            trigger_error('Not authorized!', E_USER_ERROR);
         }
     }
 

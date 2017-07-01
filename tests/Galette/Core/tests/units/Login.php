@@ -370,6 +370,47 @@ class Login extends atoum
     {
         $this->createUser();
         $this->boolean($this->login->login('doenotexists', 'empty'))->isFalse();
-        $this->boolean($this->login->Login($this->login_adh, $this->mdp_adh))->isTrue();
+        $this->boolean($this->login->login($this->login_adh, $this->mdp_adh))->isTrue();
+    }
+
+    /**
+     * Test logged user name
+     *
+     * @return void
+     */
+    public function testLoggedInAs()
+    {
+        $this->createUser();
+        $this->boolean($this->login->login($this->login_adh, $this->mdp_adh))->isTrue();
+        $this->string($this->login->loggedInAs())->isIdenticalTo('Logged in as:<br/>Barre Olivier (dumas.roger)');
+        $this->string($this->login->loggedInAs(true))->isIdenticalTo('Barre Olivier (dumas.roger)');
+    }
+
+    /**
+     * Test login from cron
+     *
+     * @return void
+     */
+    public function testLogCron()
+    {
+        $this->login->logCron('reminder');
+        $this->boolean($this->login->isLogged())->isTrue();
+        $this->boolean($this->login->isStaff())->isFalse();
+        $this->boolean($this->login->isAdmin())->isFalse();
+        $this->boolean($this->login->isSuperAdmin())->isFalse();
+        $this->boolean($this->login->isActive())->isFalse();
+        $this->boolean($this->login->isCron())->isTrue();
+        $this->boolean($this->login->isUp2Date())->isFalse();
+        $this->boolean($this->login->isImpersonated())->isFalse();
+        $this->string($this->login->login)->isIdenticalTo('cron');
+
+        $this->when(
+            function () {
+                $this->login->logCron('filename');
+            }
+        )->error()
+            ->withMessage('Not authorized!')
+            ->withType(E_USER_ERROR)
+            ->exists();
     }
 }
