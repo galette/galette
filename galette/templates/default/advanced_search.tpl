@@ -277,13 +277,13 @@
     {/if}
                 {$field@key}: { type:'{$type}' },
 {/foreach}
-{foreach $dynamic_fields as $field}
-    {if $field.field_type eq constant('Galette\DynamicFieldsTypes\DynamicFieldType::SEPARATOR')}
+{foreach $adh_dynamics as $field}
+    {if $field|is_a:'Galette\DynamicFieldsTypes\Separator'}
         {continue}
-    {else if $field.field_type eq constant('Galette\DynamicFieldsTypes\DynamicFieldType::CHOICE')}
-                dyn_{$field.field_id}: { type:'{$field.field_type}', values: {$field.choices|@json_encode} },
+    {else if $field|is_a:'Galette\DynamicFieldsTypes\Choice'}
+                dyn_{$field->getId()}: { type:'{$field->getType()}', values: {$field->getValues()|@json_encode} },
     {else}
-                dyn_{$field.field_id}: { type:'{$field.field_type}' },
+                dyn_{$field->getId()}: { type:'{$field->getType()}' },
     {/if}
 {/foreach}
             };
