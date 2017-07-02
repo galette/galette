@@ -233,6 +233,10 @@ class Adherent
                 $this->_due_free = false;
                 $this->_appears_in_list = false;
                 $this->_parent = null;
+
+                if ($this->_deps['dynamics'] === true) {
+                    $this->loadDynamicFields();
+                }
             }
         } elseif (is_object($args)) {
             $this->loadFromRS($args);

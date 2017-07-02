@@ -160,7 +160,7 @@ class PdfAdhesionForm
 
         $dyn_values = [];
         $df = $adh->getDynamicFields();
-        $fields = $df->getDynamicFields();
+        $fields = $df->getFields();
         foreach ($dynamic_patterns as $pattern) {
             $key   = strtolower($pattern);
             $value = '';

@@ -213,6 +213,14 @@ class DynamicFields
     {
         if (isset($this->current_values[$field])) {
             return $this->current_values[$field];
+        } else {
+            $this->current_values[$field][] = [
+                'item_id'       => '',
+                'field_form'    => $this->dynamic_fields[$field]->getForm(),
+                'val_index'     => '',
+                'field_val'     => '',
+                'is_new'        => true
+            ];
         }
     }
 
