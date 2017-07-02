@@ -2943,6 +2943,15 @@ $app->get(
         __('/remove', 'routes') . '/{form:adh|contrib|trans}/{id:\d+}',
     function ($request, $response, $args) {
         $field = DynamicFieldType::loadFieldType($this->zdb, (int)$args['id']);
+        if ($field === false) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Requested field does not exists!")
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('configureDynamicFields', ['form' => $args['form']]));
+        }
         $data = [
             'id'            => $args['id'],
             'redirect_uri'  => $this->router->pathFor('configureDynamicFields', ['form' => $args['form']])
