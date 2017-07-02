@@ -23,7 +23,7 @@
                     </td>
                     <td class="center actions_row">
                         <a href="{path_for name="editDynamicField" data=["action" => {_T string="edit" domain="routes"}, "form" => $form_name, "id" => $field->getId()]}"><img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="Edit '%s' field" pattern="/%s/" replace=$field->getName()}" title="{_T string="Edit '%s' field" pattern="/%s/" replace=$field->getName()}" width="16" height="16"/></a>
-                        <a href="{path_for name="dynamicTranslations" data=["text_orig" => {$field->getName()|escape}]}"><img src="{base_url}/{$template_subdir}images/icon-i18n.png" alt="{_T string="Edit '%s' field" pattern="/%s/" replace=$field->getName()}" title="{_T string="Translate '%s' field" pattern="/%s/" replace=$field->getName()}" width="16" height="16"/></a>
+                        <a href="{path_for name="dynamicTranslations" data=["text_orig" => {$field->getName(false)|escape}]}"><img src="{base_url}/{$template_subdir}images/icon-i18n.png" alt="{_T string="Edit '%s' field" pattern="/%s/" replace=$field->getName()}" title="{_T string="Translate '%s' field" pattern="/%s/" replace=$field->getName()}" width="16" height="16"/></a>
                         <a href="{path_for name="removeDynamicField" data=["form" => $form_name, "id" => $field->getId()]}" class="delete">
                             <img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="Delete '%s' field" pattern="/%s/" replace=$field->getName()}" title="{_T string="Delete '%s' field" pattern="/%s/" replace=$field->getName()}" width="16" height="16"/>
                         </a>

@@ -411,11 +411,17 @@ abstract class DynamicFieldType
     /**
      * Get field name
      *
+     * @param boolean $translated Get translated or raw name
+     *
      * @return String
      */
-    public function getName()
+    public function getName($translated = true)
     {
-        return $this->name;
+        if ($translated === true) {
+            return _T($this->name);
+        } else {
+            return $this->name;
+        }
     }
 
     /**
