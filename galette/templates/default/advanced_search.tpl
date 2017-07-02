@@ -185,11 +185,11 @@
         {if $field|is_a:'Galette\DynamicFieldsTypes\Separator'}
                 {continue}
         {/if}
+        {assign var=fid value=$field->getId()}
+        {assign var=rid value="dyn_$fid"}
         {if $fs.field eq $rid}
             {assign var=cur_field value=$field}
         {/if}
-        {assign var=fid value=$field->getId()}
-        {assign var=rid value="dyn_$fid"}
                             <option value="dyn_{$field->getId()}"{if $fs.field eq $rid} selected="selected"{/if}>{$field->getName()}</option>
     {/foreach}
                         </select>
