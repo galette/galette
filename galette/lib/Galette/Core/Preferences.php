@@ -344,7 +344,11 @@ class Preferences
 
                 $value = $this->prefs[$k];
                 //do not store pdf_adhesion_form, it's designed to be overriden by plugin
-                if ($k === 'pref_adhesion_form_url') {
+                if ($k === 'pref_adhesion_form') {
+                    if (trim($v) == '') {
+                        //Reset to default, should not be empty
+                        $v = self::$defaults['pref_adhesion_form'];
+                    }
                     $value = $v;
                 }
 
@@ -507,6 +511,9 @@ class Preferences
             ) {
                 return GaletteMail::METHOD_DISABLED;
             } else {
+                if ($name == 'pref_adhesion_form' && $this->prefs[$name] == '') {
+                    $this->prefs[$name] = self::$defaults['pref_adhesion_form'];
+                }
                 return $this->prefs[$name];
             }
         } else {
