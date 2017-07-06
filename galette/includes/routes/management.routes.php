@@ -2457,7 +2457,7 @@ $app->post(
                 addDynamicTranslation($label);
             }
         } else {
-            $oldlabel = $class->getLabel($id, false);
+            $oldlabel = $class->getLabel($args['id'], false);
             $ret = $class->update($args['id'], $label, $field);
             if ($ret === true) {
                 if (isset($label) && ($oldlabel != $label)) {
