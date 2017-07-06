@@ -94,7 +94,7 @@ if ($needs_update) {
                     'level' => \Monolog\Logger::DEBUG,
                     'path'  => GALETTE_LOGS_PATH . '/galette_slim.log',
                 ],
-                'routerCacheFile' => (GALETTE_MODE === 'DEV') ? false : GALETTE_CACHE_DIR . '/fastroute.cache'
+                //'routerCacheFile' => (GALETTE_MODE === 'DEV') ? false : GALETTE_CACHE_DIR . '/fastroute.cache' //disabled until properly handled
             ]
         ]
     );
