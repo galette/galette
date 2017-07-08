@@ -166,17 +166,17 @@ class Picture implements FileInterface
     {
         $file_wo_ext = $this->store_path . $this->id;
         if (file_exists($file_wo_ext . '.jpg')) {
-            $this->file_path = $file_wo_ext . '.jpg';
+            $this->file_path = realpath($file_wo_ext . '.jpg');
             $this->format = 'jpg';
             $this->mime = 'image/jpeg';
             return true;
         } elseif (file_exists($file_wo_ext . '.png')) {
-            $this->file_path = $file_wo_ext . '.png';
+            $this->file_path = realpath($file_wo_ext . '.png');
             $this->format = 'png';
             $this->mime = 'image/png';
             return true;
         } elseif (file_exists($file_wo_ext . '.gif')) {
-            $this->file_path = $file_wo_ext . '.gif';
+            $this->file_path = realpath($file_wo_ext . '.gif');
             $this->format = 'gif';
             $this->mime = 'image/gif';
             return true;
@@ -219,7 +219,7 @@ class Picture implements FileInterface
                         $this->mime = 'image/gif';
                         break;
                 }
-                $this->file_path = $file_wo_ext . '.' . $this->format;
+                $this->file_path = realpath($file_wo_ext . '.' . $this->format);
                 return true;
             }
         } catch (\Exception $e) {
@@ -255,7 +255,7 @@ class Picture implements FileInterface
      */
     protected function getDefaultPicture()
     {
-        $this->file_path = _CURRENT_TEMPLATE_PATH . 'images/default.png';
+        $this->file_path = realpath(_CURRENT_TEMPLATE_PATH . 'images/default.png');
         $this->format = 'png';
         $this->mime = 'image/png';
         $this->has_picture = false;
