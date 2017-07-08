@@ -87,12 +87,6 @@ $app->get(
         // disable some fields
         $disabled  = $member->disabled_fields;
 
-        // DEBUT parametrage des champs
-        // On recupere de la base la longueur et les flags des champs
-        // et on initialise des valeurs par defaut
-
-        $fields = Adherent::getDbFields($this->zdb);
-
         //image to defeat mass filling forms
         $spam = new PasswordImage();
         $spam_pass = $spam->newImage();
@@ -985,7 +979,9 @@ $app->post(
                     if ($new) {
                         if (isset($args['self'])) {
                             $success_detected[] = _T("Your account has been created!");
-                            if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED && $member->getEmail() != '') {
+                            if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+                                && $member->getEmail() != ''
+                            ) {
                                 $success_detected[] = _T("An email has been sent to you, check your inbox.");
                             }
                         } else {
@@ -1017,7 +1013,10 @@ $app->post(
                                     )
                                 )
                             );
-                            $mtxt = $texts->getTexts('newadh', $this->preferences->pref_lang);
+                            $mtxt = $texts->getTexts(
+                                (isset($args['self']) ? 'newselfadh' : 'newadh'),
+                                $this->preferences->pref_lang
+                            );
 
                             $mail = new GaletteMail();
                             $mail->setSubject($texts->getSubject());
