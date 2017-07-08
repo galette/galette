@@ -57,11 +57,13 @@ use Analog\Analog;
 
 class PdfAttendanceSheet extends Pdf
 {
+    const SHEET_FONT = self::FONT_SIZE-2;
 
     public $doc_title = null;
     public $sheet_title = null;
     public $sheet_sub_title = null;
     public $sheet_date = null;
+    private $wimages = false;
 
     /**
      * Page header
@@ -70,7 +72,7 @@ class PdfAttendanceSheet extends Pdf
      */
     public function Header()
     {
-        $this->SetFont(Pdf::FONT, '', SHEET_FONT - 2);
+        $this->SetFont(Pdf::FONT, '', self::SHEET_FONT);
         $head_title = $this->doc_title;
         if ($this->sheet_title !== null) {
             $head_title .= ' - ' . $this->sheet_title;
@@ -164,7 +166,7 @@ class PdfAttendanceSheet extends Pdf
             $mcount++;
             $this->Cell(10, 16, $mcount, 'LTB', 0, 'R');
 
-            if ($m->hasPicture() && $_wimages) {
+            if ($m->hasPicture() && $this->wimages) {
                 $p = $m->picture->getPath();
 
                 // Set logo size to max width 30 mm or max height 25 mm
@@ -199,5 +201,15 @@ class PdfAttendanceSheet extends Pdf
             $this->Cell(80, 16, '', 1, 1, 'L');
         }
         $this->Cell(190, 0, '', 'T');
+    }
+
+    /**
+     * Add images to file
+     *
+     * @return PdfAttendanceSheet
+     */
+    public function withImages()
+    {
+        $this->wimages = true;
     }
 }

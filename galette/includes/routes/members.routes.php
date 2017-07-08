@@ -2406,12 +2406,6 @@ $app->post(
                 ->withHeader('Location', $this->router->pathFor('members'));
         }
 
-        //with or without images?
-        $_wimages = false;
-        if (isset($post['sheet_photos']) && $post['sheet_photos'] === '1') {
-            $_wimages = true;
-        }
-
         $doc_title = _T("Attendance sheet");
         if (isset($post['sheet_type']) && trim($post['sheet_type']) != '') {
             $doc_title = $post['sheet_type'];
@@ -2436,7 +2430,10 @@ $app->post(
             );
             $pdf->sheet_date = $date;
         }
-
+        //with or without images?
+        if (isset($post['sheet_photos']) && $post['sheet_photos'] === '1') {
+            $pdf->withImages();
+        }
         $pdf->drawSheet($members, $doc_title);
         $pdf->Output(_T("attendance_sheet") . '.pdf', 'D');
     }
