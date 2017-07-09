@@ -363,7 +363,7 @@ $app->post(
 )->setName('ajax_groups')->add($authenticate);
 
 $app->post(
-    __('/ajax/groups/reorder'),
+    __('/ajax/groups/reorder', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
         if (!isset($post['to']) || $post['to'] == '' || !isset($post['id_group']) || $post['id_group'] == '') {
