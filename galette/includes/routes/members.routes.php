@@ -602,6 +602,21 @@ $app->get(
             }
         }
 
+        if ($member->id == null) {
+            //member does not exists!
+            $this->flash->addMessage(
+                'error_detected',
+                str_replace('%id', $args['id'], _T("No member #%id."))
+            );
+
+            return $response
+                ->withStatus(404)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor('slash')
+                );
+        }
+
         $navigate = array();
 
         if (isset($this->session->filter_members)) {
