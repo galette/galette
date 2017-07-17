@@ -68,6 +68,8 @@ class History
     protected $users;
     protected $actions;
 
+    protected $with_lists = true;
+
     /**
      * Default constructor
      *
@@ -193,8 +195,10 @@ class History
         try {
             $select = $this->zdb->select($this->getTableName());
             $this->buildWhereClause($select);
-            $select->order(self::buildOrderClause());
-            $this->buildLists($select);
+            $select->order($this->buildOrderClause());
+            if ($this->with_lists === true) {
+                $this->buildLists($select);
+            }
             $this->proceedCount($select);
             //add limits to retrieve only relavant rows
             $this->filters->setLimit($select);
@@ -264,7 +268,7 @@ class History
      *
      * @return string SQL ORDER clause
      */
-    private function buildOrderClause()
+    protected function buildOrderClause()
     {
         $order = array();
 
@@ -351,14 +355,14 @@ class History
             $countSelect->reset($countSelect::ORDER);
             $countSelect->columns(
                 array(
-                    self::PK => new Expression('COUNT(' . self::PK . ')')
+                    $this->getPk() => new Expression('COUNT(' . $this->getPk() . ')')
                 )
             );
 
             $results = $this->zdb->execute($countSelect);
             $result = $results->current();
 
-            $k = self::PK;
+            $k = $this->getPk();
             $this->count = $result->$k;
             if ($this->count > 0) {
                 $this->filters->setCounter($this->count);
