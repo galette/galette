@@ -102,7 +102,7 @@ class Picture implements FileInterface
         );
 
         // '!==' needed, otherwise ''==0
-        if ($id_adh !== '') {
+        if ($id_adh !== '' && $id_adh !== null) {
             $this->id = $id_adh;
             if (!isset($this->db_id)) {
                 $this->db_id = $id_adh;
@@ -119,12 +119,12 @@ class Picture implements FileInterface
         }
 
         // if we still have no picture, take the default one
-        if ($this->file_path == '') {
+        if (empty($this->file_path)) {
             $this->getDefaultPicture();
         }
 
         //we should not have an empty file_path, but...
-        if ($this->file_path !== '') {
+        if (empty($this->file_path)) {
             $this->setSizes();
         }
     }
@@ -147,12 +147,12 @@ class Picture implements FileInterface
         }
 
         // if we still have no picture, take the default one
-        if ($this->file_path=='') {
+        if (empty($this->file_path)) {
             $this->getDefaultPicture();
         }
 
         //we should not have an empty file_path, but...
-        if ($this->file_path !== '') {
+        if (empty($this->file_path)) {
             $this->setSizes();
         }
     }
