@@ -135,7 +135,7 @@ class Members extends atoum
 
         define(
             '_CURRENT_THEME_PATH',
-            GALETTE_TEMPLATES_PATH . $this->preferences->pref_theme . '/'
+            GALETTE_THEMES_PATH . $this->preferences->pref_theme . '/'
         );
 
         $fakedata

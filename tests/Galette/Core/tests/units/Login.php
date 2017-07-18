@@ -103,7 +103,7 @@ class Login extends atoum
         if (!defined('_CURRENT_THEME_PATH')) {
             define(
                 '_CURRENT_THEME_PATH',
-                GALETTE_TEMPLATES_PATH . $this->preferences->pref_theme . '/'
+                GALETTE_THEMES_PATH . $this->preferences->pref_theme . '/'
             );
         }
     }

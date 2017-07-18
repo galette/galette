@@ -71,7 +71,7 @@ class Logo extends atoum
             $preferences = new \Galette\Core\Preferences($this->zdb);
             define(
                 '_CURRENT_THEME_PATH',
-                GALETTE_TEMPLATES_PATH . $preferences->pref_theme . '/'
+                GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
             );
         }
     }
