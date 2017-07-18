@@ -100,9 +100,9 @@ class Login extends atoum
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         $this->members_fields = $members_fields;
 
-        if (!defined('_CURRENT_TEMPLATE_PATH')) {
+        if (!defined('_CURRENT_THEME_PATH')) {
             define(
-                '_CURRENT_TEMPLATE_PATH',
+                '_CURRENT_THEME_PATH',
                 GALETTE_TEMPLATES_PATH . $this->preferences->pref_theme . '/'
             );
         }

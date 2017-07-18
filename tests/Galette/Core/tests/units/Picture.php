@@ -78,11 +78,11 @@ class Picture extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        if (!defined('_CURRENT_TEMPLATE_PATH')) {
+        if (!defined('_CURRENT_THEME_PATH')) {
             $zdb = new \Galette\Core\Db();
             $preferences = new \Galette\Core\Preferences($zdb);
             define(
-                '_CURRENT_TEMPLATE_PATH',
+                '_CURRENT_THEME_PATH',
                 GALETTE_TEMPLATES_PATH . $preferences->pref_theme . '/'
             );
         }

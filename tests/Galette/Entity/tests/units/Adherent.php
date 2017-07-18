@@ -122,9 +122,9 @@ class Adherent extends atoum
         $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
         $this->history = new \Galette\Core\History($this->zdb, $this->login);
 
-        if (!defined('_CURRENT_TEMPLATE_PATH')) {
+        if (!defined('_CURRENT_THEME_PATH')) {
             define(
-                '_CURRENT_TEMPLATE_PATH',
+                '_CURRENT_THEME_PATH',
                 GALETTE_TEMPLATES_PATH . $this->preferences->pref_theme . '/'
             );
         }
