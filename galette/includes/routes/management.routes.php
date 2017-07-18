@@ -127,9 +127,9 @@ $app->get(
 
         //List available themes
         $themes = array();
-        $d = dir(GALETTE_TEMPLATES_PATH);
+        $d = dir(GALETTE_THEMES_PATH);
         while (($entry = $d->read()) !== false) {
-            $full_entry = GALETTE_TEMPLATES_PATH . $entry;
+            $full_entry = GALETTE_THEMES_PATH . $entry;
             if ($entry != '.'
                 && $entry != '..'
                 && is_dir($full_entry)

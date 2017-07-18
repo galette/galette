@@ -77,7 +77,7 @@ class Logo extends Picture
      */
     protected function getDefaultPicture()
     {
-        $this->file_path = realpath(_CURRENT_TEMPLATE_PATH . 'images/galette.png');
+        $this->file_path = realpath(_CURRENT_THEME_PATH . 'images/galette.png');
         $this->format = 'png';
         $this->mime = 'image/png';
         $this->custom = false;

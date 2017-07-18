@@ -262,8 +262,8 @@ if (!$installer and !defined('GALETTE_TESTS')) {
          * Set the path to the current theme templates
          */
         define(
-            '_CURRENT_TEMPLATE_PATH',
-            GALETTE_TEMPLATES_PATH . $preferences->pref_theme . '/'
+            '_CURRENT_THEME_PATH',
+            GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
         );
 
         if (!defined('GALETTE_TPL_SUBDIR')) {
