@@ -78,6 +78,10 @@ $app->group(
 
         //Declare configured routes for each plugin
         foreach ($modules as $module_id => $module) {
+            $container['Plugin ' . $module['name']] = function ($c) use ($module_id) {
+                return $module_id;
+            };
+
             $this->group(
                 '/' . $module['route'],
                 function () use ($module, $module_id, $authenticate) {
