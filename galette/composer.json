@@ -42,5 +42,10 @@
     },
     "config": {
         "optimize-autoloader": true
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "patch -d vendor/zendframework/zend-db// -p1 < ../zend-db-php7.2.patch"
+        ]
     }
 }
