@@ -234,16 +234,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.22.1",
+            "version": "1.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "1e044bc4b34e91743943479f1be7a1d5eb93add0"
+                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1e044bc4b34e91743943479f1be7a1d5eb93add0",
-                "reference": "1e044bc4b34e91743943479f1be7a1d5eb93add0",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
+                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
                 "shasum": ""
             },
             "require": {
@@ -264,7 +264,7 @@
                 "phpunit/phpunit-mock-objects": "2.3.0",
                 "ruflin/elastica": ">=0.90 <3.0",
                 "sentry/sentry": "^0.13",
-                "swiftmailer/swiftmailer": "~5.3"
+                "swiftmailer/swiftmailer": "^5.3|^6.0"
             },
             "suggest": {
                 "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
@@ -308,7 +308,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-03-13T07:08:03+00:00"
+            "time": "2017-06-19T01:22:40+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -431,25 +431,29 @@
         },
         {
             "name": "pimple/pimple",
-            "version": "v3.0.2",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Pimple.git",
-                "reference": "a30f7d6e57565a2e1a316e1baf2a483f788b258a"
+                "reference": "729436408ef52f9845f9b60d60b2563f314bf1a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/a30f7d6e57565a2e1a316e1baf2a483f788b258a",
-                "reference": "a30f7d6e57565a2e1a316e1baf2a483f788b258a",
+                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/729436408ef52f9845f9b60d60b2563f314bf1a9",
+                "reference": "729436408ef52f9845f9b60d60b2563f314bf1a9",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=5.3.0",
+                "psr/container": "^1.0"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "^3.2"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0.x-dev"
+                    "dev-master": "3.2.x-dev"
                 }
             },
             "autoload": {
@@ -473,7 +477,7 @@
                 "container",
                 "dependency injection"
             ],
-            "time": "2015-09-11T15:10:35+00:00"
+            "time": "2017-07-17T17:05:21+00:00"
         },
         {
             "name": "psr/container",
@@ -792,16 +796,16 @@
         },
         {
             "name": "tecnickcom/tcpdf",
-            "version": "6.2.12",
+            "version": "6.2.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "2f732eaa91b5665274689b1d40b285a7bacdc37f"
+                "reference": "95c5938aafe4b20df1454dbddb3e5005c0b26f64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/2f732eaa91b5665274689b1d40b285a7bacdc37f",
-                "reference": "2f732eaa91b5665274689b1d40b285a7bacdc37f",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/95c5938aafe4b20df1454dbddb3e5005c0b26f64",
+                "reference": "95c5938aafe4b20df1454dbddb3e5005c0b26f64",
                 "shasum": ""
             },
             "require": {
@@ -810,7 +814,6 @@
             "type": "library",
             "autoload": {
                 "classmap": [
-                    "fonts",
                     "config",
                     "include",
                     "tcpdf.php",
@@ -851,7 +854,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2015-09-12T10:08:34+00:00"
+            "time": "2017-04-26T08:14:48+00:00"
         },
         {
             "name": "zendframework/zend-db",
@@ -959,16 +962,16 @@
     "packages-dev": [
         {
             "name": "atoum/atoum",
-            "version": "3.0.0",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/atoum/atoum.git",
-                "reference": "decb381ef771ada37f8850774a9e9770a3da506f"
+                "reference": "b0d20cc3de4ffa53f87ac306a84607e4061dd3de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atoum/atoum/zipball/decb381ef771ada37f8850774a9e9770a3da506f",
-                "reference": "decb381ef771ada37f8850774a9e9770a3da506f",
+                "url": "https://api.github.com/repos/atoum/atoum/zipball/b0d20cc3de4ffa53f87ac306a84607e4061dd3de",
+                "reference": "b0d20cc3de4ffa53f87ac306a84607e4061dd3de",
                 "shasum": ""
             },
             "require": {
@@ -1039,7 +1042,7 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2017-02-22T13:05:37+00:00"
+            "time": "2017-07-11T17:41:39+00:00"
         }
     ],
     "aliases": [],
