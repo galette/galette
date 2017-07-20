@@ -104,9 +104,9 @@ $session_name = '';
 //since PREFIX_DB and NAME_DB are required to properly instanciate sessions,
 // we have to check here if they're assigned
 if ($installer || !defined('PREFIX_DB') || !defined('NAME_DB')) {
-    $session_name = 'install';
+    $session_name = 'install_' . str_replace('.', '_', GALETTE_VERSION);
 } else {
-    $session_name = PREFIX_DB . '_' . NAME_DB;
+    $session_name = PREFIX_DB . '_' . NAME_DB . '_' . str_replace('.', '_', GALETTE_VERSION);
 }
 $session_name = 'galette_' . $session_name;
 $session = new \RKA\SessionMiddleware(['name' => $session_name]);
