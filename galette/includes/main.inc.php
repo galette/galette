@@ -100,6 +100,13 @@ if ($needs_update) {
     );
 }
 
+//Session duration
+if (!defined('GALETTE_TIMEOUT')) {
+    //See php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime
+    define('GALETTE_TIMEOUT', 0);
+}
+
+
 $session_name = '';
 //since PREFIX_DB and NAME_DB are required to properly instanciate sessions,
 // we have to check here if they're assigned
@@ -109,7 +116,10 @@ if ($installer || !defined('PREFIX_DB') || !defined('NAME_DB')) {
     $session_name = PREFIX_DB . '_' . NAME_DB . '_' . str_replace('.', '_', GALETTE_VERSION);
 }
 $session_name = 'galette_' . $session_name;
-$session = new \RKA\SessionMiddleware(['name' => $session_name]);
+$session = new \RKA\SessionMiddleware([
+    'name'      => $session_name,
+    'lifetime'  => GALETTE_TIMEOUT
+]);
 $app->add($session);
 $session->start();
 
