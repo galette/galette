@@ -121,8 +121,6 @@ $app->get(
         $this->login->logOut();
         $this->history->add(_("Log off"));
         \RKA\Session::destroy();
-        //FIXME: should not be required on 0.9x; kept for transition
-        unset($_SESSION['galette'][$this->session_name]);
         return $response
             ->withStatus(301)
             ->withHeader('Location', $this->router->pathFor('slash'));

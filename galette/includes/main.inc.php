@@ -100,6 +100,19 @@ if ($needs_update) {
     );
 }
 
+$session_name = '';
+//since PREFIX_DB and NAME_DB are required to properly instanciate sessions,
+// we have to check here if they're assigned
+if ($installer || !defined('PREFIX_DB') || !defined('NAME_DB')) {
+    $session_name = 'install';
+} else {
+    $session_name = PREFIX_DB . '_' . NAME_DB;
+}
+$session_name = 'galette_' . $session_name;
+$session = new \RKA\SessionMiddleware(['name' => $session_name]);
+$app->add($session);
+$session->start();
+
 // Set up dependencies
 require GALETTE_ROOT . '/includes/dependencies.php';
 
@@ -424,8 +437,6 @@ $app->add(function ($request, $response, $next) {
 
     return $next($request, $response);
 });
-
-$app->add(new \RKA\SessionMiddleware(['name' => 'galette_' . $session_name]));
 
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';

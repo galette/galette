@@ -124,9 +124,6 @@ if (defined('GALETTE_XHPROF_PATH')
     $profiler->start();
 }
 
-//we start a php session
-session_start();
-
 define('GALETTE_VERSION', 'v0.9dev');
 define('GALETTE_COMPAT_VERSION', '0.9');
 define('GALETTE_DB_VERSION', '0.820');
@@ -231,17 +228,6 @@ Analog::handler(
 
 require_once GALETTE_ROOT . 'includes/functions.inc.php';
 
-//FIXME: native sessions should not be used right now
-$session_name = null;
-//since PREFIX_DB and NAME_DB are required to properly instanciate sessions,
-// we have to check here if they're assigned
-if ($installer || !defined('PREFIX_DB') || !defined('NAME_DB')) {
-    $session_name = 'galette_install';
-} else {
-    $session_name = PREFIX_DB . '_' . NAME_DB;
-}
-$session = &$_SESSION['galette'][$session_name];
-
 if (!$installer and !defined('GALETTE_TESTS')) {
     //If we're not working from installer nor from tests
     include_once GALETTE_CONFIG_PATH . 'config.inc.php';
@@ -279,18 +265,6 @@ if (!$installer and !defined('GALETTE_TESTS')) {
                 GALETTE_BASE_PATH . 'themes/' . $preferences->pref_theme . '/'
             );
         }
-
-        /**
-         * Authentication
-         */
-        /*if (isset($session['login'])) {
-            $login = unserialize(
-                $session['login']
-            );
-            $login->setDb($zdb);
-        } else {
-            $login = new Core\Login($zdb, $i18n, $session);
-        }*/
 
         /** TODO: login is now handled in dependencies.php; the cron case should be aswell */
         if ($cron) {

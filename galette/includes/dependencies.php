@@ -172,10 +172,6 @@ $container['preferences'] = function ($c) {
     return new Galette\Core\Preferences($c->zdb);
 };
 
-$container['session_name'] = function ($c) use ($session_name) {
-    return $session_name;
-};
-
 $container['login'] = function ($c) {
     $login = $c->get('session')->login;
     if (!$login) {
