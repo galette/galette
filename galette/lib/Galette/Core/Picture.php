@@ -124,7 +124,7 @@ class Picture implements FileInterface
         }
 
         //we should not have an empty file_path, but...
-        if (empty($this->file_path)) {
+        if (!empty($this->file_path)) {
             $this->setSizes();
         }
     }
@@ -152,7 +152,7 @@ class Picture implements FileInterface
         }
 
         //we should not have an empty file_path, but...
-        if (empty($this->file_path)) {
+        if (!empty($this->file_path)) {
             $this->setSizes();
         }
     }
@@ -760,7 +760,7 @@ class Picture implements FileInterface
      */
     public function getOptimalHeight()
     {
-        return round($this->optimal_height);
+        return (int)round($this->optimal_height, 1);
     }
 
     /**
@@ -780,7 +780,7 @@ class Picture implements FileInterface
      */
     public function getOptimalWidth()
     {
-        return $this->optimal_width;
+        return (int)round($this->optimal_width, 1);
     }
 
     /**

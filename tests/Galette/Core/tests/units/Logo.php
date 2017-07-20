@@ -94,6 +94,10 @@ class Logo extends atoum
                 ->string($this->testedInstance->getPath())->isIdenticalTo($expected_path)
                 ->string($this->testedInstance->getMime())->isIdenticalTo('image/png')
                 ->string($this->testedInstance->getFormat())->isIdenticalTo('png')
-                ->boolean($this->testedInstance->isCustom())->isFalse();
+                ->boolean($this->testedInstance->isCustom())->isFalse()
+                ->integer($this->testedInstance->getOptimalWidth())->isIdenticalTo(129)
+                ->integer($this->testedInstance->getOptimalHeight())->isIdenticalTo(60)
+                ->integer($this->testedInstance->getWidth())->isIdenticalTo(129)
+                ->integer($this->testedInstance->getHeight())->isIdenticalTo(60);
     }
 }
