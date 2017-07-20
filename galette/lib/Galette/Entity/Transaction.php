@@ -325,8 +325,11 @@ class Transaction
             if ($val === 1) {
                 $prop = '_' . $this->_fields[$key]['propname'];
                 if (!isset($disabled[$key]) && !isset($this->$prop)) {
-                    $this->errors[] = _T("- Mandatory field empty: ") .
-                    ' <a href="#' . $key . '">' . $this->getFieldLabel($key) .'</a>';
+                    $this->errors[] = str_replace(
+                        '%field',
+                        '<a href="#' . $key . '">' . $this->getFieldLabel($key) .'</a>',
+                        _T("- Mandatory field %field empty.")
+                    );
                 }
             }
         }

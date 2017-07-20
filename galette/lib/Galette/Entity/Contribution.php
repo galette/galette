@@ -441,8 +441,11 @@ class Contribution
                     || (!is_object($this->$prop) && trim($this->$prop) == '')
                     || (is_object($this->$prop) && trim($this->$prop->id) == ''))
                 ) {
-                    $this->errors[] = _T("- Mandatory field empty: ") .
-                    ' <a href="#' . $key . '">' . $this->getFieldLabel($key) .'</a>';
+                    $this->errors[] = str_replace(
+                        '%field',
+                        '<a href="#' . $key . '">' . $this->getFieldLabel($key) .'</a>',
+                        _T("- Mandatory field %field empty.")
+                    );
                 }
             }
         }

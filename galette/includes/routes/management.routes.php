@@ -420,18 +420,15 @@ $app->post(
 
             // missing required fields?
             foreach ($required as $key => $val) {
-                if (!isset($pref[$key])) {
+                if (!isset($pref[$key]) || isset($pref[$key]) && trim($pref[$key]) == '') {
                     $this->flash->addMessage(
                         'error_detected',
-                        _T("- Mandatory field empty.")." ".$key
+                        str_replace(
+                            '%field',
+                            $key,
+                            _T("- Mandatory field %field empty.")
+                        )
                     );
-                } elseif (isset($pref[$key])) {
-                    if (trim($pref[$key])=='') {
-                        $this->flash->addMessage(
-                            'error_detected',
-                            _T("- Mandatory field empty.")." ".$key
-                        );
-                    }
                 }
             }
 
