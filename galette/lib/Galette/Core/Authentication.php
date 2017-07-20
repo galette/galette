@@ -213,21 +213,30 @@ abstract class Authentication
      * If no group id is specified, check if user is manager for at
      * least one group.
      *
-     * @param int $id_group Group identifier
+     * @param array|int $id_group Group(s) identifier(s)
      *
      * @return boolean
      */
     public function isGroupManager($id_group = null)
     {
+        $manager = false;
         if ($this->isAdmin() || $this->isStaff()) {
             return true;
         } else {
             if ($id_group === null) {
-                return count($this->managed_groups) > 0;
+                $manager = count($this->managed_groups) > 0;
             } else {
-                return in_array($id_group, $this->managed_groups);
+                $groups = (array)$id_group;
+
+                foreach ($groups as $group) {
+                    if (in_array($group, $this->managed_groups)) {
+                        $manager = true;
+                        break;
+                    }
+                }
             }
         }
+        return $manager;
     }
 
     /**
