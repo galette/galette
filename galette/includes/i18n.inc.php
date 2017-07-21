@@ -47,30 +47,8 @@ use Galette\Core\L10n;
 
 $disable_gettext = true;
 
+$i18n->updateEnv();
 $language = $i18n->getLongID();
-$short_language = $i18n->getAbbrev();
-
-setlocale(LC_ALL, $language, $i18n->getAlternate());
-
-// if (function_exists('putenv')) putenv() can exist, but doesn't work ...
-if (@putenv("LANG=$language")
-    or @putenv("LANGUAGE=$language")
-    or @putenv("LC_ALL=$language")
-) {
-    $textdomain = dirname(__FILE__) . '/../lang';
-    //main translation domain
-    $domain = 'galette';
-    bindtextdomain($domain, $textdomain);
-    //routes translation domain
-    $routes_domain = 'routes';
-    bindtextdomain($routes_domain, $textdomain);
-    //set default translation domain and encoding
-    textdomain($domain);
-    bind_textdomain_codeset($domain, 'UTF-8');
-    bind_textdomain_codeset($routes_domain, 'UTF-8');
-} else {
-    $loc='';
-}
 
 /**
  * Add a translation stored in the database
@@ -285,19 +263,6 @@ function getDynamicTranslation($text_orig, $text_locale)
             Analog::WARNING
         );
         return false;
-    }
-}
-
-/** FIXME : $loc undefined */
-if ((isset($loc) && $loc!=$language) || $disable_gettext) {
-    $domains = ['galette', 'routes'];
-    foreach ($domains as $domain) {
-        include GALETTE_ROOT . 'lang/' . $domain . '_' . $i18n->getLongID() . '.php';
-        //check if a local lang file exists and load it
-        $locfile = GALETTE_ROOT . 'lang/' . $domain . '_' . $i18n->getLongID() . '_local.php';
-        if (file_exists($locfile)) {
-            include $locfile;
-        }
     }
 }
 
