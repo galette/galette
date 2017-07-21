@@ -1544,7 +1544,7 @@ $app->get(
 
 //Batch actions on members list
 $app->post(
-    __('/members/batch', 'routes'),
+    __('/members', 'routes') . __('/batch', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
 

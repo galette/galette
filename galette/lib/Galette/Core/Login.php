@@ -237,7 +237,6 @@ class Login extends Authentication
         $this->surname = $row->prenom_adh;
         $this->lang = $row->pref_lang;
         $this->i18n->changeLanguage($this->lang);
-        $this->session->lang = serialize($this->i18n);
         $this->active = $row->activite_adh;
         $this->logged = true;
         if ($row->priorite_statut < Members::NON_STAFF_MEMBERS) {

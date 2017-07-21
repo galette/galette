@@ -175,7 +175,6 @@ $container['preferences'] = function ($c) {
 $container['login'] = function ($c) {
     $login = $c->get('session')->login;
     if (!$login) {
-        $session = $c->get('session');
         $login = new Galette\Core\Login(
             $c->get('zdb'),
             $c->get('i18n'),
