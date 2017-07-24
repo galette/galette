@@ -684,14 +684,14 @@ $app->get(
             $id = $args['id'];
         }
 
-        if ($action === 'edit' && $id === null) {
+        if ($action === __('edit', 'routes') && $id === null) {
             throw new \RuntimeException(
                 _T("Member ID cannot ben null calling edit route!")
             );
-        } elseif ($action === 'add' && $id !== null) {
+        } elseif ($action === __('add', 'routes') && $id !== null) {
              return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('editmember', ['action' => 'add']));
+                ->withHeader('Location', $this->router->pathFor('editmember', ['action' => __('add', 'routes')]));
         }
         $deps = array(
             'picture'   => true,
