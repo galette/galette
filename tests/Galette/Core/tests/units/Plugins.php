@@ -85,8 +85,8 @@ class Plugins extends atoum
         $this->zdb = new \Galette\Core\Db();
         $this->preferences = new \Galette\Core\Preferences($this->zdb);
 
-        $this->plugins = new \Galette\Core\Plugins($this->preferences);
-        $this->plugins->loadModules(GALETTE_PLUGINS_PATH);
+        $this->plugins = new \Galette\Core\Plugins();
+        $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
 
         $this->plugin2['root'] = GALETTE_PLUGINS_PATH .
             $this->plugin2['root'];
@@ -100,8 +100,8 @@ class Plugins extends atoum
      */
     public function testLoadModules()
     {
-        $plugins = new \Galette\Core\Plugins($this->preferences);
-        $plugins->loadModules(GALETTE_PLUGINS_PATH);
+        $plugins = new \Galette\Core\Plugins();
+        $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
 
         $this->array($this->plugins->getModules())
             ->hasSize(3);
@@ -192,29 +192,29 @@ class Plugins extends atoum
             ->hasKey('plugin-test2');
         $this->plugins->deactivateModule('plugin-test2');
 
-        $this->plugins = new \Galette\Core\Plugins($this->preferences);
-        $this->plugins->loadModules(GALETTE_PLUGINS_PATH);
+        $this->plugins = new \Galette\Core\Plugins();
+        $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         $this->array($this->plugins->getModules())
             ->notHasKey('plugin-test2');
         $this->plugins->activateModule('plugin-test2');
 
-        $this->plugins = new \Galette\Core\Plugins($this->preferences);
-        $this->plugins->loadModules(GALETTE_PLUGINS_PATH);
+        $this->plugins = new \Galette\Core\Plugins();
+        $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
         $this->array($this->plugins->getModules())
             ->hasKey('plugin-test2');
 
         $this->exception(
             function () {
-                $plugins = new \Galette\Core\Plugins($this->preferences);
-                $plugins->loadModules(GALETTE_PLUGINS_PATH);
+                $plugins = new \Galette\Core\Plugins();
+                $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
                 $plugins->deactivateModule('nonexistant');
             }
         )->hasMessage(_T('No such module.'));
 
         $this->exception(
             function () {
-                $plugins = new \Galette\Core\Plugins($this->preferences);
-                $plugins->loadModules(GALETTE_PLUGINS_PATH);
+                $plugins = new \Galette\Core\Plugins();
+                $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
                 $plugins->activateModule('nonexistant');
             }
         )->hasMessage(_T('No such module.'));
@@ -234,8 +234,8 @@ class Plugins extends atoum
 
         $this->exception(
             function () {
-                $plugins = new \Galette\Core\Plugins($this->preferences);
-                $plugins->loadModules(GALETTE_PLUGINS_PATH);
+                $plugins = new \Galette\Core\Plugins();
+                $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
                 $plugins->needsDatabase('nonexistant');
             }
         )->hasMessage(_T('Module does not exists!'));
