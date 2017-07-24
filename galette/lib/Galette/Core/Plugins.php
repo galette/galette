@@ -64,31 +64,30 @@ class Plugins
     protected $mroot;
 
     protected $preferences;
+    protected $autoload = false;
 
     /**
-     * Constructor
-     *
-     * @param Preferences $preferences Galette's Preferences
-     */
-    public function __construct(Preferences $preferences)
-    {
-        $this->preferences = $preferences;
-    }
-
-    /**
-     * Loads modules.
+     * Register autoloaders for all plugins
      *
      * @param string $path could be a separated list of paths
      *                     (path separator depends on your OS).
-     * @param string $lang Indicates if we need to load a lang file on plugin
-     *                     loading.
      *
      * @return void
      */
-    public function loadModules($path, $lang = null)
+    public function autoload($path)
     {
         $this->path = explode(PATH_SEPARATOR, $path);
+        $this->autoload = true;
+        $this->parseModules();
+    }
 
+    /**
+     * Parse modules in current path
+     *
+     * @return void
+     */
+    protected function parseModules()
+    {
         foreach ($this->path as $root) {
             if (!is_dir($root) || !is_readable($root)) {
                     continue;
@@ -116,14 +115,16 @@ class Plugins
                         include $full_entry . '/_define.php';
                         $this->id = null;
                         $this->mroot = null;
-                        //set autoloader to PluginName.
-                        if (file_exists($full_entry . '/lib')) {
-                            $varname = $entry . 'Loader';
-                            $$varname = new ClassLoader(
-                                str_replace(' ', '', $this->modules[$entry]['name']),
-                                $full_entry . '/lib'
-                            );
-                            $$varname->register();
+                        if ($this->autoload == true) {
+                            //set autoloader to PluginName.
+                            if (file_exists($full_entry . '/lib')) {
+                                $varname = $entry . 'Loader';
+                                $$varname = new ClassLoader(
+                                    str_replace(' ', '', $this->modules[$entry]['name']),
+                                    $full_entry . '/lib'
+                                );
+                                $$varname->register();
+                            }
                         }
                     } else {
                         $this->disabled[$entry] = array(
@@ -135,6 +136,25 @@ class Plugins
             }
             $d->close();
         }
+    }
+
+    /**
+     * Loads modules.
+     *
+     * @param Preferences $preferences Galette's Preferences
+     * @param string      $path        could be a separated list of paths
+     *                                 (path separator depends on your OS).
+     * @param string      $lang        Indicates if we need to load a lang file on plugin
+     *                                 loading.
+     *
+     * @return void
+     */
+    public function loadModules(Preferences $preferences, $path, $lang = null)
+    {
+        $this->preferences = $preferences;
+        $this->path = explode(PATH_SEPARATOR, $path);
+
+        $this->parseModules();
 
         // Sort plugins
         uasort($this->modules, array($this, 'sortModules'));
@@ -207,7 +227,7 @@ class Plugins
         } else {
             if ($this->id) {
                 $release_date = $date;
-                if ($date !== null) {
+                if ($date !== null && $this->autoload === false) {
                     //try to localize release date
                     try {
                         $release_date = new \DateTime($date);

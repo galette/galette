@@ -106,6 +106,8 @@ if (!defined('GALETTE_TIMEOUT')) {
     define('GALETTE_TIMEOUT', 0);
 }
 
+$plugins = new Galette\Core\Plugins();
+$plugins->autoload(GALETTE_PLUGINS_PATH);
 
 $session_name = '';
 //since PREFIX_DB and NAME_DB are required to properly instanciate sessions,
