@@ -60,6 +60,7 @@ abstract class Repository
     protected $preferences;
     protected $entity;
     protected $login;
+    protected $filters;
 
     /**
      * Main constructor
@@ -68,8 +69,9 @@ abstract class Repository
      * @param Preferences $preferences Galette preferences
      * @param Login       $login       Logged in instance
      * @param string      $entity      Related entity class name
+     * @param string      $ns          Related entity namespace
      */
-    public function __construct(Db $zdb, Preferences $preferences, Login $login, $entity = null)
+    public function __construct(Db $zdb, Preferences $preferences, Login $login, $entity = null, $ns = null)
     {
         $this->zdb = $zdb;
         $this->preferences = $preferences;
@@ -90,7 +92,10 @@ abstract class Repository
                 );
             }
         }
-        $entity = 'Galette\\Entity\\' . $entity;
+        if ($ns === null) {
+            $ns = 'Galette\\Entity';
+        }
+        $entity = $ns . '\\' . $entity;
         if (class_exists($entity)) {
             $this->entity = $entity;
         } else {
@@ -130,4 +135,26 @@ abstract class Repository
      * @return boolean
      */
     abstract public function installInit($check_first = true);
+
+    /**
+     * Get filters
+     *
+     * @return Object
+     */
+    protected function getFilters()
+    {
+        return $this->filters;
+    }
+
+    /**
+     * Set filters
+     *
+     * @param Object $filters Filters
+     *
+     * @return void
+     */
+    protected function setFilters($filters)
+    {
+        $this->filters = $filters;
+    }
 }
