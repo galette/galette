@@ -1,6 +1,7 @@
-diff -up ./src/Metadata/Source/AbstractSource.php.patch ./src/Metadata/Source/AbstractSource.php
---- ./src/Metadata/Source/AbstractSource.php.patch	2017-07-18 09:48:37.269374165 +0200
-+++ ./src/Metadata/Source/AbstractSource.php	2017-07-18 09:50:13.828368845 +0200
+diff --git a/src/Metadata/Source/AbstractSource.php b/src/Metadata/Source/AbstractSource.php
+index 5c3c4d0..209be55 100644
+--- a/src/Metadata/Source/AbstractSource.php
++++ b/src/Metadata/Source/AbstractSource.php
 @@ -11,7 +11,12 @@ namespace Zend\Db\Metadata\Source;
  
  use Zend\Db\Adapter\Adapter;
@@ -15,7 +16,7 @@ diff -up ./src/Metadata/Source/AbstractSource.php.patch ./src/Metadata/Source/Ab
  
  abstract class AbstractSource implements MetadataInterface
  {
-@@ -115,10 +120,10 @@ abstract class AbstractSource implements
+@@ -115,10 +120,10 @@ abstract class AbstractSource implements MetadataInterface
          $data = $this->data['table_names'][$schema][$tableName];
          switch ($data['table_type']) {
              case 'BASE TABLE':
@@ -28,7 +29,7 @@ diff -up ./src/Metadata/Source/AbstractSource.php.patch ./src/Metadata/Source/Ab
                  $table->setViewDefinition($data['view_definition']);
                  $table->setCheckOption($data['check_option']);
                  $table->setIsUpdatable($data['is_updatable']);
-@@ -238,7 +243,7 @@ abstract class AbstractSource implements
+@@ -238,7 +243,7 @@ abstract class AbstractSource implements MetadataInterface
  
          $info = $this->data['columns'][$schema][$table][$columnName];
  
@@ -37,7 +38,7 @@ diff -up ./src/Metadata/Source/AbstractSource.php.patch ./src/Metadata/Source/Ab
          $props = [
              'ordinal_position', 'column_default', 'is_nullable',
              'data_type', 'character_maximum_length', 'character_octet_length',
-@@ -300,7 +305,7 @@ abstract class AbstractSource implements
+@@ -300,7 +305,7 @@ abstract class AbstractSource implements MetadataInterface
          }
  
          $info = $this->data['constraints'][$schema][$table][$constraintName];
@@ -46,7 +47,7 @@ diff -up ./src/Metadata/Source/AbstractSource.php.patch ./src/Metadata/Source/Ab
  
          foreach ([
              'constraint_type'         => 'setType',
-@@ -345,7 +350,7 @@ abstract class AbstractSource implements
+@@ -345,7 +350,7 @@ abstract class AbstractSource implements MetadataInterface
          $keys = [];
          foreach ($this->data['constraint_keys'][$schema] as $constraintKeyInfo) {
              if ($constraintKeyInfo['table_name'] == $table && $constraintKeyInfo['constraint_name'] === $constraint) {
@@ -55,7 +56,7 @@ diff -up ./src/Metadata/Source/AbstractSource.php.patch ./src/Metadata/Source/Ab
                  $key->setOrdinalPosition($constraintKeyInfo['ordinal_position']);
                  if (isset($references[$constraint])) {
                      //$key->setReferencedTableSchema($constraintKeyInfo['referenced_table_schema']);
-@@ -408,7 +413,7 @@ abstract class AbstractSource implements
+@@ -408,7 +413,7 @@ abstract class AbstractSource implements MetadataInterface
  
          $info = $this->data['triggers'][$schema][$triggerName];
  
@@ -64,10 +65,11 @@ diff -up ./src/Metadata/Source/AbstractSource.php.patch ./src/Metadata/Source/Ab
  
          $trigger->setName($triggerName);
          $trigger->setEventManipulation($info['event_manipulation']);
-diff -up ./src/Sql/AbstractSql.php.patch ./src/Sql/AbstractSql.php
---- ./src/Sql/AbstractSql.php.patch	2017-07-18 09:50:48.210366950 +0200
-+++ ./src/Sql/AbstractSql.php	2017-07-18 09:57:47.227343862 +0200
-@@ -241,14 +241,21 @@ abstract class AbstractSql implements Sq
+diff --git a/src/Sql/AbstractSql.php b/src/Sql/AbstractSql.php
+index 1c5c8b6..2035267 100644
+--- a/src/Sql/AbstractSql.php
++++ b/src/Sql/AbstractSql.php
+@@ -241,14 +241,18 @@ abstract class AbstractSql implements SqlInterface
              if (isset($paramSpecs[$position]['combinedby'])) {
                  $multiParamValues = [];
                  foreach ($paramsForPosition as $multiParamsForPosition) {
@@ -76,11 +78,9 @@ diff -up ./src/Sql/AbstractSql.php.patch ./src/Sql/AbstractSql.php
 -                        throw new Exception\RuntimeException(sprintf(
 -                            'A number of parameters (%d) was found that is not supported by this specification',
 -                            $ppCount
+-                        ));
 +                    if (!is_array($multiParamsForPosition) && !$multiParamsForPosition instanceof Countable) {
-+                        throw new Exception\UnexpectedValueException(sprintf(
-+                            'Parameters must be an array or a countable object, %s given',
-+                            gettype($multiParamsForPosition)
-                         ));
++                        $multiParamValues[] = $multiParamsForPosition;
 +                    } else {
 +                        $ppCount = count($multiParamsForPosition);
 +                        if (!isset($paramSpecs[$position][$ppCount])) {
