@@ -170,10 +170,10 @@ class Reminder
             'reminder_date'     => $now->format('Y-m-d'),
             'reminder_success'  => ($this->success) ?
                 true :
-                ($this->zdb->isPostgres() ? 'false' : 0),
+                ($zdb->isPostgres() ? 'false' : 0),
             'reminder_nomail'   => ($this->nomail) ?
                 true :
-                ($this->zdb->isPostgres() ? 'false' : 0)
+                ($zdb->isPostgres() ? 'false' : 0)
         );
         try {
             $insert = $zdb->insert(self::TABLE);
