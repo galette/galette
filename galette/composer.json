@@ -38,7 +38,7 @@
         "fzaninotto/Faker": "dev-master"
     },
     "require-dev": {
-        "atoum/atoum": "^3.0"
+        "atoum/atoum": "^3"
     },
     "config": {
         "optimize-autoloader": true
