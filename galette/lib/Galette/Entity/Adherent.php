@@ -971,7 +971,7 @@ class Adherent
             // if the field is enabled, check it
             if (!isset($disabled[$key])) {
                 // fill up the adherent structure
-                if ($value !== null && $value !== true && $value !== false) {
+                if ($value !== null && $value !== true && $value !== false && !is_object($value)) {
                     $value = stripslashes($value);
                 }
                 $this->$prop = $value;
