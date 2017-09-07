@@ -514,7 +514,13 @@ class Preferences
                 if ($name == 'pref_adhesion_form' && $this->prefs[$name] == '') {
                     $this->prefs[$name] = self::$defaults['pref_adhesion_form'];
                 }
-                return $this->prefs[$name];
+                $value = $this->prefs[$name];
+                if (TYPE_DB === \Galette\Core\Db::PGSQL) {
+                    if ($value === 'f') {
+                        $value = false;
+                    }
+                }
+                return $value;
             }
         } else {
             Analog::log(

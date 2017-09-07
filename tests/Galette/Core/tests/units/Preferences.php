@@ -106,11 +106,6 @@ class Preferences extends atoum
                     $this->variable($value)->isIdenticalTo(date('Y'));
                     break;
                 default:
-                    if (TYPE_DB === \Galette\Core\Db::PGSQL) {
-                        if ($value === 'f') {
-                            $value = false;
-                        }
-                    }
                     $this->variable($value)->isEqualTo($expected);
                     break;
             }
