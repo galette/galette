@@ -166,8 +166,6 @@ class FieldsConfig
      */
     public function load()
     {
-        global $preferences;
-
         try {
             $select = $this->zdb->select(self::TABLE);
             $select
@@ -416,6 +414,8 @@ class FieldsConfig
      */
     public function getFormElements(Login $login, $selfs = false)
     {
+        global $preferences;
+
         $hidden_elements = [];
         $form_elements = [];
 
@@ -542,6 +542,8 @@ class FieldsConfig
      */
     public function getDisplayElements(Login $login)
     {
+        global $preferences;
+
         $display_elements = [];
         $access_level = $login->getAccessLevel();
         $categories = FieldsCategories::getList($this->zdb);
@@ -570,24 +572,34 @@ class FieldsConfig
                 foreach ($elements as $elt) {
                     $o = (object)$elt;
 
-                    // skip fields blacklisted for display
-                    if (in_array($o->field_id, $this->non_display_elements)) {
-                        continue;
-                    }
+                    if ($o->field_id == 'id_adh') {
+                        // ignore access control, as member ID is always needed
+                        if (!isset($preferences) || !$preferences->pref_show_id) {
+                            $hidden_elements[] = $o;
+                        } else {
+                            $o->type = self::TYPE_STR;
+                            $cat->elements[$o->field_id] = $o;
+                        }
+                    } else {
+                        // skip fields blacklisted for display
+                        if (in_array($o->field_id, $this->non_display_elements)) {
+                            continue;
+                        }
 
-                    // skip fields according to access control
-                    if ($o->visible == self::NOBODY ||
-                        ($o->visible == self::ADMIN &&
-                            $access_level < Authentication::ACCESS_ADMIN) ||
-                        ($o->visible == self::STAFF &&
-                            $access_level < Authentication::ACCESS_STAFF) ||
-                        ($o->visible == self::MANAGER &&
-                            $access_level < Authentication::ACCESS_MANAGER)
-                    ) {
-                        continue;
-                    }
+                        // skip fields according to access control
+                        if ($o->visible == self::NOBODY ||
+                            ($o->visible == self::ADMIN &&
+                                $access_level < Authentication::ACCESS_ADMIN) ||
+                            ($o->visible == self::STAFF &&
+                                $access_level < Authentication::ACCESS_STAFF) ||
+                            ($o->visible == self::MANAGER &&
+                                $access_level < Authentication::ACCESS_MANAGER)
+                        ) {
+                            continue;
+                        }
 
-                    $cat->elements[$o->field_id] = $o;
+                        $cat->elements[$o->field_id] = $o;
+                    }
                 }
 
                 if (count($cat->elements) > 0) {
