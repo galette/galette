@@ -450,7 +450,7 @@ class FieldsConfig extends atoum
             ->hasKey('info_adh');
 
         $this->array($elements['hiddens'])
-            ->hasSize(5);
+            ->hasSize(2);
 
         $user_login = new \mock\Galette\Core\Login(
             $this->zdb,
@@ -482,6 +482,6 @@ class FieldsConfig extends atoum
             ->notHasKey('info_adh');
 
         $this->array($elements['hiddens'])
-            ->hasSize(5);
+            ->hasSize(2);
     }
 }

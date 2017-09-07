@@ -73,6 +73,9 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <table class="details">
             <caption class="ui-state-active ui-corner-top">{$display_element->label}</caption>
     {foreach from=$elements item=element}
+        {if $element->field_id eq 'parent_id'}
+            {continue}
+        {/if}
         {assign var="propname" value=$element->propname}
         {assign var="value" value=$member->$propname|escape}
 

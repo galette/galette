@@ -177,7 +177,7 @@ class FieldsConfig
             $this->categorized_fields = null;
             foreach ($results as $k) {
                 if ($k->field_id === 'parent_id') {
-                    $k->visible = self::NOBODY;
+                    $k->readonly = true;
                     $k->required = false;
                 }
                 $f = array(
@@ -451,13 +451,15 @@ class FieldsConfig
 
                     if ($o->field_id == 'id_adh') {
                         // ignore access control, as member ID is always needed
-                        if (!isset($preferences) || !$preferences->pref_show_id) {
+                        if (!$preferences->pref_show_id) {
                             $hidden_elements[] = $o;
                         } else {
                             $o->type = self::TYPE_STR;
                             $o->readonly = true;
                             $cat->elements[$o->field_id] = $o;
                         }
+                    } elseif ($o->field_id == 'parent_id') {
+                        $hidden_elements[] = $o;
                     } else {
                         // skip fields blacklisted for edition
                         if (in_array($o->field_id, $this->non_form_elements)
