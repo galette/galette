@@ -288,25 +288,25 @@ $baseRedirect = function ($request, $response, $args = []) use ($app, $container
                     return $response
                         ->withStatus(301)
                         //Do not use "$router->pathFor('dashboard'))" to prevent translation issues when login
-                        ->withHeader('Location', __('/dashboard', 'routes'));
+                        ->withHeader('Location', $request->getUri()->getBaseUrl() . __('/dashboard', 'routes'));
                 } else {
                     return $response
                         ->withStatus(301)
                         //Do not use "$router->pathFor('members'))" to prevent translation issues when login
-                        ->withHeader('Location', __('/members', 'routes'));
+                        ->withHeader('Location', $request->getUri()->getBaseUrl() . __('/members', 'routes'));
                 }
             } else {
                 return $response
                     ->withStatus(301)
                     //Do not use "$router->pathFor('me'))" to prevent translation issues when login
-                    ->withHeader('Location', __('/member/me', 'routes'));
+                    ->withHeader('Location', $request->getUri()->getBaseUrl() . __('/member/me', 'routes'));
             }
         }
     } else {
         return $response
             ->withStatus(301)
             //Do not use "$router->pathFor('login'))" to prevent translation issues when login
-            ->withHeader('Location', __('/login', 'routes'));
+            ->withHeader('Location', $request->getUri()->getBaseUrl() . __('/login', 'routes'));
     }
 };
 
