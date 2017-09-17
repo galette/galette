@@ -48,6 +48,10 @@ define('GALETTE_THEME_DIR', './themes/default/');
 
 require_once '../includes/galette.inc.php';
 
+session_start();
+$session_name = 'galette_install_' . str_replace('.', '_', GALETTE_VERSION);
+$session = &$_SESSION['galette'][$session_name];
+
 if (isset($session['lang'])) {
     $i18n = unserialize($session['lang']);
     if (!$i18n->getId()) {
@@ -55,14 +59,10 @@ if (isset($session['lang'])) {
     }
 } else {
     $i18n = new Galette\Core\I18n();
+    $session['lang'] = serialize($i18n);
 }
 
 require_once '../includes/i18n.inc.php';
-
-//when upgrading, make sure that old objects in current session are destroyed
-if (defined('PREFIX_DB') && defined('NAME_DB')) {
-    unset($_SESSION['galette'][PREFIX_DB . '_' . NAME_DB]);
-}
 
 if (isset($_POST['abort_btn'])) {
     if (isset($session[md5(GALETTE_ROOT)])) {
