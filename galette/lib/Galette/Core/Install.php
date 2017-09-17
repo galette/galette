@@ -1151,7 +1151,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $preferences->store();
             $this->proceedReport(_T("Update preferences"), true);
 
-            $models = new \Galette\Repository\PdfModels($zdb, $preferences);
+            $models = new \Galette\Repository\PdfModels($zdb, $preferences, new Login($zdb, $i18n, new \RKA\Session()));
             $res = $models->installInit(true);
             $this->proceedReport(_T("Update models"), true);
             return true;
