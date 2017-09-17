@@ -1,6 +1,12 @@
 Changes
 -------
 
+0.8.3.3 -> 0.8.3.4
+
+- Fix member card PDF url
+- Send images with a one character name
+- Fix mailings storage
+
 0.8.3.2 -> 0.8.3.3
 
 - Fix member storage
