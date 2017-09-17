@@ -19,13 +19,16 @@ News
 - Select all and invert selection on both begining and end of lists
 - Status are no longer uniques
 - Login with email address
-- Handle reverse proxies for logs
+- Handle reverse proxies for logs (thanks to Georges R.)
 - Autocomplete towns, zipcodes, countries and places of birth
 - An example behavior file is provided in config directory
 - Display a warning if app is configured to display errors
 - Allow "unsecure" SMTP connections (self-signed certificates, ...)
 - Set 5.6 as minimal PHP version
 - Possibility to only expose "webroot" directory
+- Type free search fields (thanks to Guillaume R.)
+- Improve fields acces control adding new roles (thanks to Guillaume R.)
+
 
 Bugfixes
 ^^^^^^^^
