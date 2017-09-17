@@ -54,16 +54,16 @@
         },
         {
             "name": "analog/analog",
-            "version": "1.0.9-stable",
+            "version": "1.0.10-stable",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jbroadway/analog.git",
-                "reference": "2f0f5e0be983bf84e97dd86f39465a486f9f3af6"
+                "reference": "65dce6b5aff8c77307c783e607c04a35df8259d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jbroadway/analog/zipball/2f0f5e0be983bf84e97dd86f39465a486f9f3af6",
-                "reference": "2f0f5e0be983bf84e97dd86f39465a486f9f3af6",
+                "url": "https://api.github.com/repos/jbroadway/analog/zipball/65dce6b5aff8c77307c783e607c04a35df8259d6",
+                "reference": "65dce6b5aff8c77307c783e607c04a35df8259d6",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,7 @@
                     "homepage": "http://www.johnnybroadway.com/"
                 }
             ],
-            "description": "PHP 5.3+ micro logging class that can be extended via closures. Includes several pre-built handlers including file, mail, syslog, HTTP post, and MongoDB.",
+            "description": "PHP logging class that can be extended via closures. Includes several pre-built handlers including file, mail, syslog, HTTP post, and MongoDB.",
             "homepage": "https://github.com/jbroadway/analog",
             "keywords": [
                 "alerts",
@@ -99,7 +99,7 @@
                 "logging",
                 "syslog"
             ],
-            "time": "2016-11-17T14:39:33+00:00"
+            "time": "2017-09-17T02:30:30+00:00"
         },
         {
             "name": "container-interop/container-interop",
@@ -963,22 +963,21 @@
     "packages-dev": [
         {
             "name": "atoum/atoum",
-            "version": "3.1.1",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/atoum/atoum.git",
-                "reference": "6af6b609a108fd2e63f2f42efbb4f0b799e6c710"
+                "reference": "6f4ab88f3a1826aed2372c9f7f0d53b9303f672a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atoum/atoum/zipball/6af6b609a108fd2e63f2f42efbb4f0b799e6c710",
-                "reference": "6af6b609a108fd2e63f2f42efbb4f0b799e6c710",
+                "url": "https://api.github.com/repos/atoum/atoum/zipball/6f4ab88f3a1826aed2372c9f7f0d53b9303f672a",
+                "reference": "6f4ab88f3a1826aed2372c9f7f0d53b9303f672a",
                 "shasum": ""
             },
             "require": {
                 "ext-hash": "*",
                 "ext-json": "*",
-                "ext-session": "*",
                 "ext-tokenizer": "*",
                 "ext-xml": "*",
                 "php": "^5.6.0 || ^7.0.0"
@@ -1043,7 +1042,7 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2017-07-19T19:59:03+00:00"
+            "time": "2017-09-07T08:27:13+00:00"
         }
     ],
     "aliases": [],
