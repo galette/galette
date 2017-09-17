@@ -1,3 +1,5 @@
+{extends file="page.tpl"}
+{block name="content"}
     <table class="listing">
         <!--<caption>{_T string="Active plugins"}</caption>-->
         <thead>
@@ -16,21 +18,21 @@
             </tr>
 {foreach from=$plugins_list key=name item=plugin name=allplugins}
             <tr class="{if $smarty.foreach.allplugins.iteration % 2 eq 0}even{else}odd{/if}">
-                <td>{$plugin.name} ({$name})</td>
-                <td>{$plugin.desc}</td>
-                <td>{$plugin.author}</td>
-                <td>{$plugin.version}</td>
-                <td>{$plugin.date}</td>
-                <td class="nowrap">
-                    <a class="toggleActivation" href="?deactivate={$name}" title="{_T string="Click here to deactivate plugin '%name'" pattern="/%name/" replace=$plugin.name}">
-                        <img src="{$template_subdir}images/icon-on.png" alt="{_T string="Disable plugin"}"/>
+                <td data-scope="row"><a href="{path_for name=$plugin.route|cat:"Info" data=["plugin" => $name]}">{$plugin.name} ({$name})</a></td>
+                <td data-title="{_T string="Description"}">{$plugin.desc}</td>
+                <td data-title="{_T string="Author"}">{$plugin.author}</td>
+                <td data-title="{_T string="Version"}">{$plugin.version}</td>
+                <td data-title="{_T string="Release date"}">{$plugin.date}</td>
+                <td class="nowrap center actions_row">
+                    <a class="toggleActivation" href="{path_for name="pluginsActivation" data=["action" => {_T string="deactivate" domain="routes"}, "module_id" => $name]}" title="{_T string="Click here to deactivate plugin '%name'" pattern="/%name/" replace=$plugin.name}">
+                        <img src="{base_url}/{$template_subdir}images/icon-on.png" alt="{_T string="Disable plugin"}"/>
                     </a>
     {if $plugins->needsDatabase($name)}
-                    <a href="ajax_plugins_initdb.php?plugid={$name}" class="initdb" id="initdb_{$name}" title="{_T string="Initialize '%name' database" pattern="/%name/" replace=$plugin.name}">
-                        <img src="{$template_subdir}images/icon-db.png" alt="{_T string="Initialize database"}" width="16" height="16"/>
+                    <a href="{path_for name="pluginInitDb" data=["id" => $name]}" class="initdb" id="initdb_{$name}" title="{_T string="Initialize '%name' database" pattern="/%name/" replace=$plugin.name}">
+                        <img src="{base_url}/{$template_subdir}images/icon-db.png" alt="{_T string="Initialize database"}" width="16" height="16"/>
                     </a>
     {else}
-                    <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
+                    <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
     {/if}
                 </td>
             </tr>
@@ -43,13 +45,13 @@
                 <th colspan="5" class="bgfree center"><strong>{_T string="Inactive plugins"}</strong></th>
             </tr>
 {foreach from=$plugins_disabled_list key=name item=plugin}
-            <tr>
-                <td colspan="4">{$name}</td>
+            <tr class="same">
+                <td colspan="5">{$name}</td>
                 <td>
-                    <a class="toggleActivation" href="?activate={$name}" title="{_T string="Click here to activate plugin '%name'" pattern="/%name/" replace=$name}">
-                        <img src="{$template_subdir}images/icon-off.png" alt="{_T string="Enable plugin"}"/>
+                    <a class="toggleActivation" href="{path_for name="pluginsActivation" data=["action" => {_T string="activate" domain="routes"}, "module_id" => $name]}" title="{_T string="Click here to activate plugin '%name'" pattern="/%name/" replace=$name}">
+                        <img src="{base_url}/{$template_subdir}images/icon-off.png" alt="{_T string="Enable plugin"}"/>
                     </a>
-                    <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
+                    <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
                 </td>
             </tr>
 {foreachelse}
@@ -59,15 +61,17 @@
 {/foreach}
         </tbody>
     </table>
+{/block}
 
+{block name="javascripts"}
     <script type="text/javascript">
         $(function() {
-{if $GALETTE_MODE eq 'DEMO'}
+    {if $GALETTE_MODE eq 'DEMO'}
             $('.initdb, a.toggleActivation').click(function(){
                 alert('{_T string="Application runs under demo mode. This functionnality is not enabled, sorry." escape="js"}');
                 return false;
             });
-{else}
+    {else}
             var _initdb_dialog = function(res, _plugin){
                 var _title = '{_T string="Plugin database initialization: %name" escape="js"}';
                 var _el = $('<div id="initdb" title="' + _title.replace('%name', _plugin) + '"> </div>');
@@ -76,6 +80,14 @@
                     hide: 'fold',
                     width: '80%',
                     height: 500,
+                    create: function (event, ui) {
+                        if ($(window ).width() < 767) {
+                            $(this).dialog('option', {
+                                    'width': '95%',
+                                    'draggable': false
+                            });
+                        }
+                    },
                     close: function(event, ui){
                         _el.remove();
                     }
@@ -116,14 +128,11 @@
 
             $('.initdb').click(function(){
                 var _plugin = this.id.substring(7);
+                var _url = $(this).attr('href');
 
                 $.ajax({
-                    url: 'ajax_plugins_initdb.php',
-                    type: "POST",
-                    data: {
-                        ajax: true,
-                        plugid: _plugin
-                    },
+                    url: _url,
+                    type: "GET",
                     {include file="js_loader.tpl"},
                     success: function(res){
                         _initdb_dialog(res, _plugin);
@@ -134,6 +143,7 @@
                 });
                 return false;
             })
-{/if}
+    {/if}
         });
     </script>
+{/block}

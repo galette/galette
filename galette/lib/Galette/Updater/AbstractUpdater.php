@@ -60,20 +60,20 @@ abstract class AbstractUpdater
 
     protected $sql_scripts = null;
     protected $db_version = null;
-    private $_engines = array(
+    private $engines = array(
         Db::MYSQL   => Db::MYSQL,
         Db::PGSQL   => Db::PGSQL,
     );
     protected $zdb;
     protected $installer;
-    private $_report = array();
+    private $report = array();
 
     /**
      * Main constructor
      */
     public function __construct()
     {
-        if ( $this->db_version === null ) {
+        if ($this->db_version === null) {
             Analog::log(
                 'Upgrade version can not be empty!',
                 Analog::ERROR
@@ -87,7 +87,7 @@ abstract class AbstractUpdater
      *
      * @return boolean
      */
-    private function _hasSql()
+    private function hasSql()
     {
         return !($this->sql_scripts === null);
     }
@@ -108,28 +108,28 @@ abstract class AbstractUpdater
      *
      * @return Boolean|Exception
      */
-    public final function run($zdb, $installer)
+    final public function run($zdb, $installer)
     {
         $this->zdb = $zdb;
         $this->installer = $installer;
 
         $res = $this->preUpdate();
-        if ( $res !== true ) {
+        if ($res !== true) {
             throw new \RuntimeException(
                 'Fail executing pre-update instructions'
             );
         }
 
         $res = $this->update();
-        if ( $res !== true ) {
+        if ($res !== true) {
             throw new \RuntimeException(
                 'Fail executing update instructions'
             );
         }
 
-        if ( $this->_hasSql() ) {
-            $res = $this->_sql($zdb, $installer);
-            if ( $res !== true ) {
+        if ($this->hasSql()) {
+            $res = $this->sql($zdb, $installer);
+            if ($res !== true) {
                 throw new \RuntimeException(
                     'Fail executing SQL instructions'
                 );
@@ -137,13 +137,13 @@ abstract class AbstractUpdater
         }
 
         $res = $this->postUpdate();
-        if ( $res !== true ) {
+        if ($res !== true) {
             throw new \RuntimeException(
                 'Fail executing post-update instructions'
             );
         }
 
-        $this->_updateDbVersion();
+        $this->updateDbVersion();
     }
 
     /**
@@ -172,7 +172,7 @@ abstract class AbstractUpdater
      *
      * @return boolean
      */
-    private function _sql($zdb, $installer)
+    private function sql($zdb, $installer)
     {
         $script = $this->sql_scripts[TYPE_DB];
 
@@ -181,7 +181,7 @@ abstract class AbstractUpdater
             @filesize($script)
         ) . "\n";
 
-        if ( $sql_query !== '' ) {
+        if ($sql_query !== '') {
             return $installer->executeSql($zdb, $sql_query);
         }
     }
@@ -206,14 +206,14 @@ abstract class AbstractUpdater
      */
     protected function setSqlScripts($version)
     {
-        $scripts = $this->_getSqlScripts($version);
-        if ( is_array($scripts)
-            && count($scripts) === count($this->_engines)
-            && count(array_diff(array_keys($scripts), $this->_engines)) == 0
+        $scripts = $this->getSqlScripts($version);
+        if (is_array($scripts)
+            && count($scripts) === count($this->engines)
+            && count(array_diff(array_keys($scripts), $this->engines)) == 0
         ) {
             $checked = false;
-            foreach ( $scripts as $file ) {
-                if ( file_exists($file) ) {
+            foreach ($scripts as $file) {
+                if (file_exists($file)) {
                     $checked = true;
                 } else {
                     $checked = false;
@@ -221,7 +221,7 @@ abstract class AbstractUpdater
                 }
             }
 
-            if ( $checked === true ) {
+            if ($checked === true) {
                 $this->sql_scripts = $scripts;
             }
             return $checked;
@@ -242,15 +242,15 @@ abstract class AbstractUpdater
      *
      * @return array
      */
-    private function _getSqlScripts($version)
+    private function getSqlScripts($version)
     {
         $dh = opendir('./scripts/sql');
         $scripts = array();
 
-        if ( $dh !== false ) {
-            while ( ($file = readdir($dh)) !== false ) {
-                if ( preg_match('/upgrade-to-(.*)-(.+)\.sql/', $file, $ver) ) {
-                    if ( $ver[1] === $version ) {
+        if ($dh !== false) {
+            while (($file = readdir($dh)) !== false) {
+                if (preg_match('/upgrade-to-(.*)-(.+)\.sql/', $file, $ver)) {
+                    if ($ver[1] === $version) {
                         $scripts[$ver[2]] = realpath('./scripts/sql/' . $file);
                     }
                 }
@@ -272,10 +272,10 @@ abstract class AbstractUpdater
     public function addReportEntry($msg, $type)
     {
         $res = true;
-        if ( $type === self::REPORT_ERROR ) {
+        if ($type === self::REPORT_ERROR) {
             $res = false;
         }
-        $this->_report[] = array(
+        $this->report[] = array(
             'message'   => $msg,
             'type'      => $type,
             'res'       => $res
@@ -301,8 +301,8 @@ abstract class AbstractUpdater
      */
     public function hasErrors()
     {
-        foreach ( $this->_report as $report ) {
-            if ( $report['type'] === self::REPORT_ERROR ) {
+        foreach ($this->report as $report) {
+            if ($report['type'] === self::REPORT_ERROR) {
                 return true;
             }
         }
@@ -315,7 +315,7 @@ abstract class AbstractUpdater
      */
     public function getReport()
     {
-        return $this->_report;
+        return $this->report;
     }
 
     /**
@@ -323,7 +323,7 @@ abstract class AbstractUpdater
      *
      * @return void
      */
-    private function _updateDbVersion()
+    private function updateDbVersion()
     {
         $update = $this->zdb->update('database');
         $update->set(
@@ -332,4 +332,3 @@ abstract class AbstractUpdater
         $this->zdb->execute($update);
     }
 }
-

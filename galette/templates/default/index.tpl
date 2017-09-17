@@ -1,7 +1,9 @@
-{if $loginfault}
-                <div id="errorbox">{_T string="Login failed."}</div>
-{/if}
-                <form action="index.php" method="post">
+{extends file="public_page.tpl"}
+{block name="content"}
+    {if isset($smarty.session['slim.flash']['loginfault'])}
+                <div id="errorbox">{$smarty.session['slim.flash']['loginfault']}</div>
+    {/if}
+                <form action="{path_for name="dologin"}" method="post">
                 <section>
                     <table>
                         <tr>
@@ -17,3 +19,4 @@
                     <input type="hidden" name="ident" value="1" />
                 </section>
                 </form>
+{/block}

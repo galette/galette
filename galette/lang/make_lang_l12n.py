@@ -262,7 +262,7 @@ class tt_dic :
             outfile.write('\n')
         outfile.close()
         
-    def write_langfile(self, filename):
+    def write_langfile(self, filename, domain):
         """ Outputs a langfile in PHP syntax, based on self's contents,
         named filename """
         
@@ -279,9 +279,8 @@ class tt_dic :
                 outfile.write(file+" ")
             outfile.write("\n")
             """ Stripped quotes """
-            outfile.write("$lang['"+msgid.replace("'","\\'")+"'] = '"+\
+            outfile.write("$lang['"+domain+"']['"+msgid.replace("'","\\'")+"'] = '"+\
                           tt.msgstr.replace("'","\\'")+"';\n\n")
-        outfile.write("?>")
         outfile.close()
         
     def __init__ (self, filename=''):
@@ -297,15 +296,14 @@ class tt_dic :
             self.entete=self.read_header(filename)
 
 
-ttdic_en=tt_dic('en_US.po')
 import sys
 
-if (len(sys.argv) < 3):
-    print "Usage : make_lang_l12n.py po_filename lang_filename"
-    print "  outputs translations (PHP syntax) to the file lang_filename"
+if len(sys.argv) < 4:
+    print "Usage : make_lang_l12n.py po_filename lang_filename domain"
+    print "  outputs translations (PHP syntax) to the specified file"
 else:
-    pofile=sys.argv[1]
-    ttdic=tt_dic(pofile)
-    langfile=sys.argv[2]
-    ttdic.write_langfile(langfile)
-    
+    pofile = sys.argv[1]
+    ttdic = tt_dic(pofile)
+    langfile = sys.argv[2]
+    domain = sys.argv[3]
+    ttdic.write_langfile(langfile, domain)

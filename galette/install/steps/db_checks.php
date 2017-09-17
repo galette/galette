@@ -42,8 +42,14 @@ $db_connected = $install->testDbConnexion();
 $conndb_ok = true;
 $permsdb_ok = true;
 
-if ( $db_connected === true ) {
-    $zdb = new GaletteDb();
+if (!isset($show_form)) {
+    $show_form = true;
+}
+
+if ($db_connected === true) {
+    if (!isset($zdb)) {
+        $zdb = new GaletteDb();
+    }
 
     /** FIXME: when tables already exists and DROP not allowed at this time
     the showed error is about CREATE, whenever CREATE is allowed */
@@ -56,99 +62,99 @@ if ( $db_connected === true ) {
     $error = false;
 
     //test returned values
-    if ( $results['create'] instanceof Exception ) {
+    if ($results['create'] instanceof Exception) {
         $result[] = array(
             'message'   => _T("CREATE operation not allowed"),
             'debug'     => $results['create']->getMessage(),
             'res'       => false
         );
         $error = true;
-    } elseif ( $results['create'] != '' ) {
+    } elseif ($results['create'] != '') {
         $result[] = array(
             'message'   => _T("CREATE operation allowed"),
             'res'       => true
         );
     }
 
-    if ( $results['insert'] instanceof Exception ) {
+    if ($results['insert'] instanceof Exception) {
         $result[] = array(
             'message'   => _T("INSERT operation not allowed"),
             'debug'     => $results['insert']->getMessage(),
             'res'       => false
         );
         $error = true;
-    } elseif ( $results['insert'] != '' ) {
+    } elseif ($results['insert'] != '') {
         $result[] = array(
             'message'   => _T("INSERT operation allowed"),
             'res'       => true
         );
     }
 
-    if ( $results['update'] instanceof Exception ) {
+    if ($results['update'] instanceof Exception) {
         $result[] = array(
             'message'   => _T("UPDATE operation not allowed"),
             'debug'     => $results['update']->getMessage(),
             'res'       => false
         );
         $error = true;
-    } elseif ( $results['update'] != '' ) {
+    } elseif ($results['update'] != '') {
         $result[] = array(
             'message'   => _T("UPDATE operation allowed"),
             'res'       => true
         );
     }
 
-    if ( $results['select'] instanceof Exception ) {
+    if ($results['select'] instanceof Exception) {
         $result[] = array(
             'message'   => _T("SELECT operation not allowed"),
             'debug'     => $results['select']->getMessage(),
             'res'       => false
         );
         $error = true;
-    } elseif ( $results['select'] != '' ) {
+    } elseif ($results['select'] != '') {
         $result[] = array(
             'message'   => _T("SELECT operation allowed"),
             'res'       => true
         );
     }
 
-    if ( $results['delete'] instanceof Exception ) {
+    if ($results['delete'] instanceof Exception) {
         $result[] = array(
             'message'   => _T("DELETE operation not allowed"),
             'debug'     => $results['delete']->getMessage(),
             'res'       => false
         );
         $error = true;
-    } elseif ( $results['delete'] != '' ) {
+    } elseif ($results['delete'] != '') {
         $result[] = array(
             'message'   => _T("DELETE operation allowed"),
             'res'       => true
         );
     }
 
-    if ( $results['drop'] instanceof Exception ) {
+    if ($results['drop'] instanceof Exception) {
         $result[] = array(
             'message'   => _T("DROP operation not allowed"),
             'debug'     => $results['drop']->getMessage(),
             'res'       => false
         );
         $error = true;
-    } elseif ( $results['drop'] != '' ) {
+    } elseif ($results['drop'] != '') {
         $result[] = array(
             'message'   => _T("DROP operation allowed"),
             'res'       => true
         );
     }
 
-    if ( $install->isUpgrade() ) {
-        if ( $results['alter'] instanceof Exception ) {
+    if ($install->isUpgrade()) {
+        if ($results['alter'] instanceof Exception) {
             $result[] = array(
                 'message'   => _T("ALTER operation not allowed"),
                 'debug'     => $results['alter']->getMessage(),
                 'res'       => false
             );
             $error = true;
-        } elseif ( $results['alter'] != '' ) {
+        } elseif ($results['alter'] != '') {
             $result[] = array(
                 'message'   => _T("ALTER operation allowed"),
                 'res'       => true
@@ -156,21 +162,33 @@ if ( $db_connected === true ) {
         }
     }
 
-    if ( $error ) {
+    if ($error) {
         $permsdb_ok = false;
     }
 }
+
+if (!isset($install_plugin)) {
 ?>
                 <h2><?php echo $install->getStepTitle() ?></h2>
 <?php
-if ( $db_connected === true && $permsdb_ok === true ) {
-    echo '<p id="infobox">' . _T("Connection to database successfull") .
-        '<br/>' . _T("Permissions to database are OK.") . '</p>';
 }
+
+if ($db_connected === true && $permsdb_ok === true) {
+    if (!isset($install_plugin)) {
+        echo '<p id="infobox">' . _T("Connection to database successfull") .
+            '<br/>' . _T("Permissions to database are OK.") . '</p>';
+    } else {
+         echo '<p id="infobox">' . _T("Permissions to database are OK.") . '</p>';
+    }
+}
+
+if (!isset($install_plugin)) {
 ?>
                 <h3><?php echo _T("Check of the database"); ?></h3>
 <?php
-if ( $db_connected !== true ) {
+}
+
+if ($db_connected !== true) {
     $conndb_ok = false;
     echo '<div id="errorbox">';
     echo '<h1>' . _T("Unable to connect to the database") . '</h1>';
@@ -179,48 +197,51 @@ if ( $db_connected !== true ) {
     echo '</div>';
 }
 
-if ( !$conndb_ok ) {
+if (!$conndb_ok) {
     ?>
                 <p><?php echo _T("Database can't be reached. Please go back to enter the connection parameters again."); ?></p>
     <?php
 } else {
+    if (!isset($install_plugin)) {
     ?>
                 <p><?php echo _T("Database exists and connection parameters are OK."); ?></p>
                 <h3><?php echo _T("Permissions on the base"); ?></h3>
     <?php
-    if ( !$permsdb_ok ) {
+    }
+    if (!$permsdb_ok) {
         echo '<div id="errorbox">';
         echo '<h1>';
-        if ( $install->isInstall() ) {
+        if ($install->isInstall()) {
             echo _T("GALETTE hasn't got enough permissions on the database to continue the installation.");
-        } else if ( $install->isUpgrade() ) {
+        } elseif ($install->isUpgrade()) {
             echo _T("GALETTE hasn't got enough permissions on the database to continue the update.");
         }
         echo '</h1>';
         echo '</div>';
-
     }
     ?>
             <ul class="leaders">
         <?php
-    foreach ( $result as $r ) {
+        foreach ($result as $r) {
         ?>
                 <li>
                     <span><?php echo $r['message'] ?></span>
                     <span><?php echo $install->getValidationImage($r['res']); ?></span>
                 </li>
         <?php
-    }
+        }
         ?>
             </ul>
         <?php
 }
+
+if (!isset($install_plugin)) {
 ?>
             <form action="installer.php" method="POST">
                 <p id="btn_box">
-                    <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"<?php if ( !$conndb_ok || !$permsdb_ok ) { echo ' disabled="disabled"';  } ?>/>
+                    <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"<?php if (!$conndb_ok || !$permsdb_ok) { echo ' disabled="disabled"';  } ?>/>
 <?php
-if ( $conndb_ok && $permsdb_ok ) {
+if ($conndb_ok && $permsdb_ok) {
     ?>
 
                     <input type="hidden" name="install_dbperms_ok" value="1"/>
@@ -230,4 +251,6 @@ if ( $conndb_ok && $permsdb_ok ) {
                     <input type="submit" id="btnback" name="stepback_btn" value="<?php echo _T("Back"); ?>"/>
                 </p>
             </form>
-
+<?php
+}
+?>

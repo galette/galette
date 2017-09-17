@@ -38,6 +38,7 @@
 namespace Galette\Entity;
 
 use Galette\Core;
+use Galette\Core\Db;
 use Galette\Repository\PdfModels;
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
@@ -65,21 +66,21 @@ abstract class PdfModel
     const RECEIPT_MODEL = 3;
     const ADHESION_FORM_MODEL = 4;
 
-    private $_zdb;
+    private $zdb;
 
-    private $_id;
-    private $_name;
-    private $_type;
-    private $_header;
-    private $_footer;
-    private $_title;
-    private $_subtitle;
-    private $_body;
-    private $_styles;
-    private $_parent;
+    private $id;
+    private $name;
+    private $type;
+    private $header;
+    private $footer;
+    private $title;
+    private $subtitle;
+    private $body;
+    private $styles;
+    private $parent;
 
-    private $_patterns;
-    private $_replaces;
+    private $patterns;
+    private $replaces;
 
     /**
      * Main constructor
@@ -89,24 +90,24 @@ abstract class PdfModel
      * @param int         $type        Model type
      * @param mixed       $args        Arguments
      */
-    public function __construct($zdb, $preferences, $type, $args = null)
+    public function __construct(Db $zdb, $preferences, $type, $args = null)
     {
-        if ( !$zdb ) {
+        if (!$zdb) {
             throw new \RuntimeException(
                 get_class($this) . ' Database instance required!'
             );
         }
 
-        $this->_zdb = $zdb;
-        $this->_type = $type;
+        $this->zdb = $zdb;
+        $this->type = $type;
 
-        if ( is_int($args) ) {
+        if (is_int($args)) {
             $this->load($args, $preferences);
-        } else if ( $args !== null && is_object($args) ) {
+        } elseif ($args !== null && is_object($args)) {
             $this->loadFromRs($args, $preferences);
         }
 
-        $this->_patterns = array(
+        $this->patterns = array(
             'asso_name'          => '/{ASSO_NAME}/',
             'asso_slogan'        => '/{ASSO_SLOGAN}/',
             'asso_address'       => '/{ASSO_ADDRESS}/',
@@ -119,7 +120,7 @@ abstract class PdfModel
         $address_multi = preg_replace("/\n/", "<br>", $address);
 
         $website = '';
-        if ( $preferences->pref_website != '' ) {
+        if ($preferences->pref_website != '') {
             $website = '<a href="' . $preferences->pref_website . '">' .
                 $preferences->pref_website . '</a>';
         }
@@ -131,7 +132,7 @@ abstract class PdfModel
             ' height="' . $logo->getOptimalHeight() . '"' .
             '/>';
 
-        $this->_replaces = array(
+        $this->replaces = array(
             'asso_name'          => $preferences->pref_nom,
             'asso_slogan'        => $preferences->pref_slogan,
             'asso_address'       => $address,
@@ -153,16 +154,16 @@ abstract class PdfModel
     protected function load($id, $preferences, $init = true)
     {
         try {
-            $select = $this->_zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE);
             $select->limit(1)
                 ->where(self::PK . ' = ' . $id);
 
-            $results = $this->_zdb->execute($select);
+            $results = $this->zdb->execute($select);
 
             $count = $results->count();
             if ($count === 0) {
-                if($init === true) {
-                    $models = new PdfModels($this->_zdb, $preferences);
+                if ($init === true) {
+                    $models = new PdfModels($this->zdb, $preferences);
                     $models->installInit();
                     $this->load($id, $preferences, false);
                 } else {
@@ -171,7 +172,7 @@ abstract class PdfModel
             } else {
                 $this->loadFromRs($results->current(), $preferences);
             }
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
             Analog::log(
                 'An error occured loading model #' . $id . "Message:\n" .
                 $e->getMessage(),
@@ -191,44 +192,44 @@ abstract class PdfModel
     protected function loadFromRs($rs, $preferences)
     {
         $pk = self::PK;
-        $this->_id = (int)$rs->$pk;
+        $this->id = (int)$rs->$pk;
 
         $callback = function ($matches) {
             return _T($matches[1]);
         };
-        $this->_name = preg_replace_callback(
+        $this->name = preg_replace_callback(
             '/_T\("([^\"]+)"\)/',
             $callback,
             $rs->model_name
         );
 
-        $this->_title = $rs->model_title;
-        $this->_subtitle = $rs->model_subtitle;
-        $this->_header = $rs->model_header;
-        $this->_footer = $rs->model_footer;
-        $this->_body = $rs->model_body;
-        $this->_styles .= $rs->model_styles;
+        $this->title = $rs->model_title;
+        $this->subtitle = $rs->model_subtitle;
+        $this->header = $rs->model_header;
+        $this->footer = $rs->model_footer;
+        $this->body = $rs->model_body;
+        $this->styles .= $rs->model_styles;
 
-        if ( $this->_id > self::MAIN_MODEL ) {
+        if ($this->id > self::MAIN_MODEL) {
             //FIXME: for now, parent will always be a PdfMain
-            $this->_parent = new PdfMain(
-                $this->_zdb,
+            $this->parent = new PdfMain(
+                $this->zdb,
                 $preferences,
                 (int)$rs->model_parent
             );
         }
 
         //let's check if some values should be retrieved from parent model
-        /*if ( $this->_id > self::MAIN_MODEL ) {
+        /*if ( $this->id > self::MAIN_MODEL ) {
             //some infos are missing, load parent
-            if ( trim($this->_header) === ''
-                || trim($this->_footer) === ''
+            if ( trim($this->header) === ''
+                || trim($this->footer) === ''
             ) {
-                if ( trim($this->_header) === '' ) {
-                    $this->_header = $parent->header;
+                if ( trim($this->header) === '' ) {
+                    $this->header = $parent->header;
                 }
-                if ( trim($this->_header) === '' ) {
-                    $this->_footer = $parent->footer;
+                if ( trim($this->header) === '' ) {
+                    $this->footer = $parent->footer;
                 }
             }
         }*/
@@ -241,45 +242,45 @@ abstract class PdfModel
      */
     public function store()
     {
-        $title = $this->_title;
-        if ( trim($title === '') ) {
+        $title = $this->title;
+        if (trim($title === '')) {
             $title = new Expression('NULL');
         }
 
-        $subtitle = $this->_subtitle;
-        if ( trim($subtitle === '') ) {
+        $subtitle = $this->subtitle;
+        if (trim($subtitle === '')) {
             $subtitle = new Expression('NULL');
         }
 
         $data = array(
-            'model_header'      => $this->_header,
-            'model_footer'      => $this->_footer,
-            'model_type'        => $this->_type,
+            'model_header'      => $this->header,
+            'model_footer'      => $this->footer,
+            'model_type'        => $this->type,
             'model_title'       => $title,
             'model_subtitle'    => $subtitle,
-            'model_body'        => $this->_body,
-            'model_styles'      => $this->_styles
+            'model_body'        => $this->body,
+            'model_styles'      => $this->styles
         );
 
         try {
-            if ( $this->_id !== null ) {
-                $update = $this->_zdb->update(self::TABLE);
+            if ($this->id !== null) {
+                $update = $this->zdb->update(self::TABLE);
                 $update->set($data)->where(
-                    self::PK . '=' . $this->_id
+                    self::PK . '=' . $this->id
                 );
-                $this->_zdb->execute($update);
+                $this->zdb->execute($update);
             } else {
-                $data['model_name'] = $this->_name;
-                $insert = $this->_zdb->insert(self::TABLE);
+                $data['model_name'] = $this->name;
+                $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($data);
-                $add = $this->_zdb->execute($insert);
-                if ( !$add->count() > 0 ) {
+                $add = $this->zdb->execute($insert);
+                if (!$add->count() > 0) {
                     Analog::log('Not stored!', Analog::ERROR);
                     return false;
                 }
             }
             return true;
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
             Analog::log(
                 'An error occured storing model: ' . $e->getMessage() .
                 "\n" . print_r($data, true),
@@ -299,19 +300,19 @@ abstract class PdfModel
     public static function getTypeClass($type)
     {
         $class = null;
-        switch ( $type ) {
-        case self::INVOICE_MODEL:
-            $class = 'PdfInvoice';
-            break;
-        case self::RECEIPT_MODEL:
-            $class = 'PdfReceipt';
-            break;
-        case self::ADHESION_FORM_MODEL:
-            $class = 'PdfAdhesionFormModel';
-            break;
-        default:
-            $class = 'PdfMain';
-            break;
+        switch ($type) {
+            case self::INVOICE_MODEL:
+                $class = 'PdfInvoice';
+                break;
+            case self::RECEIPT_MODEL:
+                $class = 'PdfReceipt';
+                break;
+            case self::ADHESION_FORM_MODEL:
+                $class = 'PdfAdhesionFormModel';
+                break;
+            default:
+                $class = 'PdfMain';
+                break;
         }
         $class = 'Galette\\Entity\\' . $class;
         return $class;
@@ -327,10 +328,10 @@ abstract class PdfModel
      *
      * @return void
      */
-    protected function checkChars($value, $chars, $field, $empty=false)
+    protected function checkChars($value, $chars, $field, $empty = false)
     {
-        if ( $value !== null && trim($value) !== '' ) {
-            if ( mb_strlen($value) > $chars ) {
+        if ($value !== null && trim($value) !== '') {
+            if (mb_strlen($value) > $chars) {
                 throw new \LengthException(
                     str_replace(
                         array('%field', '%chars'),
@@ -340,7 +341,7 @@ abstract class PdfModel
                 );
             }
         } else {
-            if ( $empty === false ) {
+            if ($empty === false) {
                 throw new \UnexpectedValueException(
                     str_replace(
                         '%field',
@@ -355,8 +356,6 @@ abstract class PdfModel
      /**
      * Extract patterns
      *
-     * @param array $patterns Patterns to add
-     *
      * @return array
      */
     public function extractDynamicPatterns()
@@ -365,8 +364,7 @@ abstract class PdfModel
         $patterns = array();
         $parts    = array('header', 'footer', 'title', 'subtitle', 'body');
         foreach ($parts as $part) {
-            $rpart = '_' . $part;
-            $content = $this->$rpart;
+            $content = $this->$part;
 
             $matches = array();
             preg_match_all(
@@ -376,7 +374,7 @@ abstract class PdfModel
             );
             $patterns = array_merge($patterns, $matches[1]);
 
-           Analog::log("dynamic patterns found in $part: " . join(",", $matches[1]), Analog::DEBUG);
+            Analog::log("dynamic patterns found in $part: " . join(",", $matches[1]), Analog::DEBUG);
         }
 
         return $patterns;
@@ -385,12 +383,14 @@ abstract class PdfModel
     /**
      * Set patterns
      *
+     * @param array $patterns Patterns to add
+     *
      * @return void
      */
     public function setPatterns($patterns)
     {
-        $this->_patterns = array_merge(
-            $this->_patterns,
+        $this->patterns = array_merge(
+            $this->patterns,
             $patterns
         );
     }
@@ -404,8 +404,8 @@ abstract class PdfModel
      */
     public function setReplacements($replaces)
     {
-        $this->_replaces = array_merge(
-            $this->_replaces,
+        $this->replaces = array_merge(
+            $this->replaces,
             $replaces
         );
     }
@@ -421,90 +421,88 @@ abstract class PdfModel
     {
         global $lang;
 
-        switch ( $name ) {
-        case 'name':
-        case 'id':
-        case 'header':
-        case 'footer':
-        case 'body':
-        case 'title':
-        case 'subtitle':
-        case 'type':
-        case 'styles':
-            $rname = '_' . $name;
-            return $this->$rname;
-            break;
-        case 'hstyles':
-            $value = null;
+        switch ($name) {
+            case 'name':
+            case 'id':
+            case 'header':
+            case 'footer':
+            case 'body':
+            case 'title':
+            case 'subtitle':
+            case 'type':
+            case 'styles':
+                return $this->$name;
+                break;
+            case 'hstyles':
+                $value = null;
 
-            //get header and footer from parent if not defined in current model
-            if ( $this->_id > self::MAIN_MODEL
-                && $this->_parent !== null
-            ) {
-                $value = $this->_parent->styles;
-            }
+                //get header and footer from parent if not defined in current model
+                if ($this->id > self::MAIN_MODEL
+                    && $this->parent !== null
+                ) {
+                    $value = $this->parent->styles;
+                }
 
-            $value .= $this->_styles;
-            return $value;
-            break;
-        case 'hheader':
-        case 'hfooter':
-        case 'htitle':
-        case 'hsubtitle':
-        case 'hbody':
-            $pname = substr($name, 1);
-            $rname = '_' . $pname;
-            $prop_value = $this->$rname;
+                $value .= $this->styles;
+                return $value;
+                break;
+            case 'hheader':
+            case 'hfooter':
+            case 'htitle':
+            case 'hsubtitle':
+            case 'hbody':
+                $pname = substr($name, 1);
+                $prop_value = $this->$pname;
 
-            //get header and footer from parent if not defined in current model
-            if ( $this->_id > self::MAIN_MODEL
-                && trim($prop_value) === ''
-                && $this->_parent !== null
-                && ($pname === 'footer'
-                || $pname === 'header')
-            ) {
-                $prop_value = $this->_parent->$pname;
-            }
+                //get header and footer from parent if not defined in current model
+                if ($this->id > self::MAIN_MODEL
+                    && trim($prop_value) === ''
+                    && $this->parent !== null
+                    && ($pname === 'footer'
+                    || $pname === 'header')
+                ) {
+                    $prop_value = $this->parent->$pname;
+                }
 
-            //handle translations
-            $callback = function ($matches) {
-                return _T($matches[1]);
-            };
-            $value = preg_replace_callback(
-                '/_T\("([^\"]+)"\)/',
-                $callback,
-                $prop_value
-            );
-
-            //handle replacements
-            $value = preg_replace(
-                $this->_patterns,
-                $this->_replaces,
-                $value
-            );
-
-            //handle translations with replacements
-            $repl_callback = function($matches) {
-                return str_replace(
-                    $matches[1],
-                    $matches[2],
-                    $matches[3]
+                //handle translations
+                $callback = function ($matches) {
+                    return _T($matches[1]);
+                };
+                $value = preg_replace_callback(
+                    '/_T\("([^\"]+)"\)/',
+                    $callback,
+                    $prop_value
                 );
-            };
-            $value = preg_replace_callback(
-                '/str_replace\(\'([^,]+)\', ?\'([^,]+)\', ?\'(.*)\'\)/',
-                $repl_callback,
-                $value
-            );
 
-            return $value;
-            break;
-        default:
-            Analog::log(
-                'Unable to get PdfModel property ' . $name,
-                Analog::WARNING
-            );
-            break;
+                //handle replacements
+                $value = preg_replace(
+                    $this->patterns,
+                    $this->replaces,
+                    $value
+                );
+
+                //handle translations with replacements
+                $repl_callback = function ($matches) {
+                    return str_replace(
+                        $matches[1],
+                        $matches[2],
+                        $matches[3]
+                    );
+                };
+                $value = preg_replace_callback(
+                    '/str_replace\(\'([^,]+)\', ?\'([^,]+)\', ?\'(.*)\'\)/',
+                    $repl_callback,
+                    $value
+                );
+
+                return $value;
+                break;
+            default:
+                Analog::log(
+                    'Unable to get PdfModel property ' . $name,
+                    Analog::WARNING
+                );
+                break;
         }
     }
 
@@ -518,89 +516,88 @@ abstract class PdfModel
      */
     public function __set($name, $value)
     {
-        $rname = '_' . $name;
-        switch ( $name ) {
-        case 'type':
-            if ( $value === self::MAIN_MODEL
-                || $value === self::INVOICE_MODEL
-                || $value === self::RECEIPT_MODEL
-                || $value === self::ADHESION_FORM_MODEL
-            ) {
-                $this->$rname = $value;
-            } else {
-                throw new \UnexpectedValueException(
-                    str_replace(
-                        '%type',
-                        $value,
-                        _T("Unknown type %type!")
-                    )
-                );
-            }
-            break;
-        case 'name':
-            try {
-                $this->checkChars($value, 50, _T("Name"));
-                $this->$rname = $value;
-            } catch ( \Exception $e) {
-                throw $e;
-            }
-            break;
-        case 'title':
-        case 'subtitle':
-            if ( $name == 'title' ) {
-                $field = _T("Title");
-            } else {
-                $field = _T("Subtitle");
-            }
-            try {
-                $this->checkChars($value, 100, $field, true);
-                $this->$rname = $value;
-            } catch ( \Exception $e ) {
-                throw $e;
-            }
-            break;
-        case 'header':
-        case 'footer':
-        case 'body':
-            if ( $value == null || trim($value) == '' ) {
-                if ( get_class($this) === 'PdfMain' && $name !== 'body' ) {
+        switch ($name) {
+            case 'type':
+                if ($value === self::MAIN_MODEL
+                    || $value === self::INVOICE_MODEL
+                    || $value === self::RECEIPT_MODEL
+                    || $value === self::ADHESION_FORM_MODEL
+                ) {
+                    $this->$name = $value;
+                } else {
                     throw new \UnexpectedValueException(
-                        _T("header and footer should not be empty!")
-                    );
-                } elseif ( get_class($this) !== 'PdfMain' && $name === 'body' ) {
-                    throw new \UnexpectedValueException(
-                        _T("body should not be empty!")
+                        str_replace(
+                            '%type',
+                            $value,
+                            _T("Unknown type %type!")
+                        )
                     );
                 }
-            }
+                break;
+            case 'name':
+                try {
+                    $this->checkChars($value, 50, _T("Name"));
+                    $this->$name = $value;
+                } catch (\Exception $e) {
+                    throw $e;
+                }
+                break;
+            case 'title':
+            case 'subtitle':
+                if ($name == 'title') {
+                    $field = _T("Title");
+                } else {
+                    $field = _T("Subtitle");
+                }
+                try {
+                    $this->checkChars($value, 100, $field, true);
+                    $this->$name = $value;
+                } catch (\Exception $e) {
+                    throw $e;
+                }
+                break;
+            case 'header':
+            case 'footer':
+            case 'body':
+                if ($value == null || trim($value) == '') {
+                    if (get_class($this) === 'PdfMain' && $name !== 'body') {
+                        throw new \UnexpectedValueException(
+                            _T("header and footer should not be empty!")
+                        );
+                    } elseif (get_class($this) !== 'PdfMain' && $name === 'body') {
+                        throw new \UnexpectedValueException(
+                            _T("body should not be empty!")
+                        );
+                    }
+                }
 
-            if (function_exists('tidy_parse_string') ) {
-                //if tidy extension is present, we use it to clean a bit
-                /*$tidy_config = array(
-                    'clean'             => true,
-                    'show-body-only'    => true,
-                    'join-styles'       => false,
-                    'join-classes'      => false,
-                    'wrap' => 0,
+                if (function_exists('tidy_parse_string')) {
+                    //if tidy extension is present, we use it to clean a bit
+                    /*$tidy_config = array(
+                        'clean'             => true,
+                        'show-body-only'    => true,
+                        'join-styles'       => false,
+                        'join-classes'      => false,
+                        'wrap' => 0,
+                    );
+                    $tidy = tidy_parse_string($value, $tidy_config, 'UTF8');
+                    $tidy->cleanRepair();
+                    $this->$name = tidy_get_output($tidy);*/
+                    $this->$name = $value;
+                } else {
+                    //if it is not... Well, let's serve the text as it.
+                    $this->$name = $value;
+                }
+                break;
+            case 'styles':
+                $this->styles = $value;
+                break;
+            default:
+                Analog::log(
+                    'Unable to set PdfModel property ' .$name,
+                    Analog::WARNING
                 );
-                $tidy = tidy_parse_string($value, $tidy_config, 'UTF8');
-                $tidy->cleanRepair();
-                $this->$rname = tidy_get_output($tidy);*/
-                $this->$rname = $value;
-            } else {
-                //if it is not... Well, let's serve the text as it.
-                $this->$rname = $value;
-            }
-            break;
-        case 'styles':
-            $this->_styles = $value;
-            break;
-        default:
-            Analog::log(
-                'Unable to set PdfModel property ' .$name,
-                Analog::WARNING
-            );
-            break;
+                break;
         }
     }
 }

@@ -1,3 +1,6 @@
+{extends file="page.tpl"}
+
+{block name="content"}
         <div class="tabbed">
         <div id="tabs">
             <ul>
@@ -90,6 +93,9 @@
                 </tr>
             </table>
         </div>
+{/block}
+
+{block name="javascripts"}
         <script type="text/javascript">
             $('#tabs').append('<a class="button notext" id="btninfo_small" title="{_T string="Show existing variables"}">{_T string="Show existing variables"}</a>');
             $(function(){
@@ -133,3 +139,4 @@
                 });
             });
         </script>
+{/block}

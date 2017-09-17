@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<config xmlns="http://zanata.org/namespace/config/">
+    <url>https://translate.zanata.org/</url>
+    <project>galette</project>
+    <project-version>0.9</project-version>
+    <project-type>gettext</project-type>
+    <src-dir>galette/lang</src-dir>
+    <trans-dir>galette/lang</trans-dir>
+    <includes>*.pot</includes>
+    <rules>
+        <rule pattern="**/*.pot">{path}/{filename}_{locale_with_underscore}.po</rule>
+    </rules>
+</config>

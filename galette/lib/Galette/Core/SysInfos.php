@@ -51,13 +51,8 @@ namespace Galette\Core;
  */
 class SysInfos
 {
-    private $_sysinfos = array();
-    private $_php_version = '';
-    private $_php_modules = array();
-    private $_galette_version = '';
-    private $_galette_plugins = array();
-    private $_database = '';
-    private $_os = '';
+    private $php_version = '';
+    private $galette_version = '';
 
     /**
      * Grab various system informations
@@ -67,28 +62,28 @@ class SysInfos
     public function grab()
     {
         //PHP version
-        $this->_php_version = PHP_VERSION;
+        $this->php_version = PHP_VERSION;
 
         //Galette version
-        $this->_galette_version = GALETTE_VERSION;
+        $this->galette_version = GALETTE_VERSION;
 
         //Database type
-        $this->_database = TYPE_DB;
+        $this->database = TYPE_DB;
     }
 
     /**
      * Get data as RAW (to send by mail)
      *
+     * @param Plugins $plugins Plugins
+     *
      * @return string
      */
-    public function getRawData()
+    public function getRawData(Plugins $plugins)
     {
-        global $plugins;
-
-        $str =  'Galette version: ' . $this->_galette_version . "\n";
-        $str .= 'PHP version:     ' . $this->_php_version . "\n";
+        $str =  'Galette version: ' . $this->galette_version . "\n";
+        $str .= 'PHP version:     ' . $this->php_version . "\n";
         $str .= 'PHP/Web:         ' . php_sapi_name() . "\n";
-        $str .= 'Database:        ' . $this->_database . "\n";
+        $str .= 'Database:        ' . $this->database . "\n";
         $str .= 'OS:              ' . php_uname() . "\n";
         $str .= 'Browser:         ' . $_SERVER['HTTP_USER_AGENT'] . "\n\n";
 
@@ -96,33 +91,33 @@ class SysInfos
         $mods = new CheckModules();
 
         $str .= '  OK:' . "\n";
-        foreach ( $mods->getGoods() as $g ) {
+        foreach ($mods->getGoods() as $g) {
             $str .= '    ' . stripslashes($g) . "\n";
         }
 
         $str .= '  May:' . "\n";
-        foreach ( $mods->getMays() as $m ) {
+        foreach ($mods->getMays() as $m) {
             $str .= '    ' . stripslashes($m) . "\n";
         }
 
         $str .= '  Should:' . "\n";
-        foreach ( $mods->getShoulds() as $s ) {
+        foreach ($mods->getShoulds() as $s) {
             $str .= '    ' . stripslashes($s) . "\n";
         }
 
         $str .= '  Missing:' . "\n";
-        foreach ( $mods->getMissings() as $m ) {
+        foreach ($mods->getMissings() as $m) {
             $str .= '    ' . stripslashes($m) . "\n";
         }
 
         $str .= "\n" . 'Plugins:' . "\n";
-        foreach ( $plugins->getModules() as $p ) {
+        foreach ($plugins->getModules() as $p) {
             $str .= '  ' . $p['name'] .  ' ' . $p['version'] .
                 ' (' . $p['author'] . ")\n";
         }
 
         $str .= "\n" . 'PHP loaded modules:' . "\n";
-        foreach ( get_loaded_extensions() as $e ) {
+        foreach (get_loaded_extensions() as $e) {
             $str .= '  ' . $e . "\n";
         }
 

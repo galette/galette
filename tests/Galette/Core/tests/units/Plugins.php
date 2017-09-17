@@ -55,18 +55,22 @@ class Plugins extends atoum
 {
     private $zdb;
     private $preferences;
-    private $_plugins;
+    private $plugins;
 
-    private $_plugin2 = array(
+    private $plugin2 = array(
         'root'          => 'plugin-test2',
         'name'          => 'Galette Test2 Plugin',
         'desc'          => 'Test two plugin',
         'author'        => 'Johan Cwiklinski',
         'version'       => '1.0',
-        'permissions'   => null,
+        'acls'          => [
+            'plugin2_root'  => 'member',
+            'plugin2_admin' => 'staff'
+        ],
         'date'          => '2013-12-15',
         'priority'      => 1000,
-        'root_writable' => true
+        'root_writable' => true,
+        'route'         => 'plugin2'
     );
 
     /**
@@ -81,11 +85,11 @@ class Plugins extends atoum
         $this->zdb = new \Galette\Core\Db();
         $this->preferences = new \Galette\Core\Preferences($this->zdb);
 
-        $this->_plugins = new \Galette\Core\Plugins($this->preferences);
-        $this->_plugins->loadModules(GALETTE_PLUGINS_PATH);
+        $this->plugins = new \Galette\Core\Plugins();
+        $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
 
-        $this->_plugin2['root'] = GALETTE_PLUGINS_PATH .
-            $this->_plugin2['root'];
+        $this->plugin2['root'] = GALETTE_PLUGINS_PATH .
+            $this->plugin2['root'];
     }
 
 
@@ -96,17 +100,17 @@ class Plugins extends atoum
      */
     public function testLoadModules()
     {
-        $plugins = new \Galette\Core\Plugins($this->preferences);
-        $plugins->loadModules(GALETTE_PLUGINS_PATH);
+        $plugins = new \Galette\Core\Plugins();
+        $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
 
-        $this->array($this->_plugins->getModules())
+        $this->array($this->plugins->getModules())
             ->hasSize(3);
 
-        $loaded_plugin = $this->_plugins->getModules('plugin-test2');
-        $loaded_plugin['date'] = $this->_plugin2['date'];
+        $loaded_plugin = $this->plugins->getModules('plugin-test2');
+        $loaded_plugin['date'] = $this->plugin2['date'];
 
         $this->variable($loaded_plugin)
-            ->isIdenticalTo($this->_plugin2);
+            ->isIdenticalTo($this->plugin2);
     }
 
     /**
@@ -116,9 +120,9 @@ class Plugins extends atoum
      */
     public function testModuleExists()
     {
-        $this->boolean($this->_plugins->moduleExists('plugin-test2'))
+        $this->boolean($this->plugins->moduleExists('plugin-test2'))
             ->isTrue();
-        $this->boolean($this->_plugins->moduleExists('plugin-disabled'))
+        $this->boolean($this->plugins->moduleExists('plugin-disabled'))
             ->isFalse();
     }
 
@@ -129,7 +133,7 @@ class Plugins extends atoum
      */
     public function testDisabledModules()
     {
-        $this->array($this->_plugins->getDisabledModules())
+        $this->array($this->plugins->getDisabledModules())
             ->hasKeys(
                 array(
                     'plugin-disabled',
@@ -146,8 +150,8 @@ class Plugins extends atoum
      */
     public function testModuleRoot()
     {
-        $this->variable($this->_plugins->moduleRoot('plugin-test2'))
-            ->isIdenticalTo($this->_plugin2['root']);
+        $this->variable($this->plugins->moduleRoot('plugin-test2'))
+            ->isIdenticalTo($this->plugin2['root']);
     }
 
     /**
@@ -160,8 +164,8 @@ class Plugins extends atoum
         //FIXME:
         //  - at the moment, there is no config for preferences, so default theme is empty
         //  - remove global $preferences to have this one working as expected...
-        $this->variable($this->_plugins->getTemplatesPath('plugin-test2'))
-            ->isIdenticalTo($this->_plugin2['root'] . '/templates/');
+        $this->variable($this->plugins->getTemplatesPath('plugin-test2'))
+            ->isIdenticalTo($this->plugin2['root'] . '/templates/');
     }*/
 
     /**
@@ -171,9 +175,9 @@ class Plugins extends atoum
      */
     public function testResetModulesList()
     {
-        $this->_plugins->resetModulesList();
+        $this->plugins->resetModulesList();
 
-        $this->array($this->_plugins->getModules())
+        $this->array($this->plugins->getModules())
             ->isempty();
     }
 
@@ -184,33 +188,33 @@ class Plugins extends atoum
      */
     public function testModuleActivation()
     {
-        $this->array($this->_plugins->getModules())
+        $this->array($this->plugins->getModules())
             ->hasKey('plugin-test2');
-        $this->_plugins->deactivateModule('plugin-test2');
+        $this->plugins->deactivateModule('plugin-test2');
 
-        $this->_plugins = new \Galette\Core\Plugins($this->preferences);
-        $this->_plugins->loadModules(GALETTE_PLUGINS_PATH);
-        $this->array($this->_plugins->getModules())
+        $this->plugins = new \Galette\Core\Plugins();
+        $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        $this->array($this->plugins->getModules())
             ->notHasKey('plugin-test2');
-        $this->_plugins->activateModule('plugin-test2');
+        $this->plugins->activateModule('plugin-test2');
 
-        $this->_plugins = new \Galette\Core\Plugins($this->preferences);
-        $this->_plugins->loadModules(GALETTE_PLUGINS_PATH);
-        $this->array($this->_plugins->getModules())
+        $this->plugins = new \Galette\Core\Plugins();
+        $this->plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
+        $this->array($this->plugins->getModules())
             ->hasKey('plugin-test2');
 
         $this->exception(
             function () {
-                $plugins = new \Galette\Core\Plugins($this->preferences);
-                $plugins->loadModules(GALETTE_PLUGINS_PATH);
+                $plugins = new \Galette\Core\Plugins();
+                $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
                 $plugins->deactivateModule('nonexistant');
             }
         )->hasMessage(_T('No such module.'));
 
         $this->exception(
             function () {
-                $plugins = new \Galette\Core\Plugins($this->preferences);
-                $plugins->loadModules(GALETTE_PLUGINS_PATH);
+                $plugins = new \Galette\Core\Plugins();
+                $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
                 $plugins->activateModule('nonexistant');
             }
         )->hasMessage(_T('No such module.'));
@@ -223,15 +227,15 @@ class Plugins extends atoum
      */
     public function testNeedDatabse()
     {
-        $this->boolean($this->_plugins->needsDatabase('plugin-db'))
+        $this->boolean($this->plugins->needsDatabase('plugin-db'))
             ->isTrue();
-        $this->boolean($this->_plugins->needsDatabase('plugin-test2'))
+        $this->boolean($this->plugins->needsDatabase('plugin-test2'))
             ->isFalse();
 
         $this->exception(
             function () {
-                $plugins = new \Galette\Core\Plugins($this->preferences);
-                $plugins->loadModules(GALETTE_PLUGINS_PATH);
+                $plugins = new \Galette\Core\Plugins();
+                $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH);
                 $plugins->needsDatabase('nonexistant');
             }
         )->hasMessage(_T('Module does not exists!'));

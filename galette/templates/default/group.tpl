@@ -1,4 +1,4 @@
-        <form class="tabbed" action="gestion_groupes.php" method="post" enctype="multipart/form-data" id="group_form">
+        <form class="tabbed" action="{path_for name="doEditGroup" data=["id" => $group->getId()]}" method="post" enctype="multipart/form-data" id="group_form">
         <div id="group">
             <ul>
                 <li><a href="#group_informations">{_T string="Informations"}</a></li>
@@ -24,7 +24,12 @@
                     <p>
 {if !$login->isAdmin() && !$login->isStaff()}
                         <span class="bline">{_T string="Parent group:"}</span>
-                        <span>{if isset($pgroup)}{$pgroup->getName()}{/if}</span>
+                        <span>
+    {if isset($pgroup)}
+                            {$pgroup->getName()}
+                            <input type="hidden" name="parent_group" value="{$pgroup->getId()}"/>
+    {/if}
+                        </span>
 {else}
                         <label for="parent_group" class="bline">{_T string="Parent group:"}</label>
                         <select name="parent_group" id="parent_group">
@@ -64,9 +69,8 @@
       </div>
         <div class="button-container">
             <input type="submit" name="valid" id="btnsave" value="{_T string="Save"}"/>
-            <input type="submit" name="delete" id="delete" value="{_T string="Delete"}"/>
-            <input type="submit" name="delete_cascade" id="delete_cascade" value="{_T string="Cascade delete"}"/>
-            <input type="submit" name="pdf" value="{_T string="Export as PDF"}" title="{_T string="Export current group, its subgroups and their members as PDF"}"/>
+            <a class="button delete" id="delete" href="{path_for name="removeGroup" data=["id" => $group->getId()]}">{_T string="Delete"}</a>
+            <a href="{path_for name="pdf_groups" data=["id" => $group->getId()]}" class="button btn_pdf" title="{_T string="Export all groups and their members as PDF"}">{_T string="Export as PDF"}</a>
             <input type="hidden" name="id_group" id="id_group" value="{$group->getId()}"/>
         </div>
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
@@ -101,5 +105,6 @@
 {/if}
             }
         });
+        {include file="js_removal.tpl"}
     });
 </script>

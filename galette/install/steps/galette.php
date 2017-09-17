@@ -37,6 +37,7 @@
 
 use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
+use Galette\Core\Login;
 
 $results = array();
 $oks = array();
@@ -44,7 +45,7 @@ $errs = array();
 $install->reinitReport();
 
 $config_file_ok = $install->writeConfFile();
-$objects_ok = $install->initObjects($i18n, $zdb);
+$objects_ok = $install->initObjects($i18n, $zdb, new Login($zdb, $i18n, new RKA\Session()));
 ?>
                 <h2><?php echo $install->getStepTitle(); ?></h2>
 <?php

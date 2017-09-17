@@ -57,9 +57,9 @@ class ImportModel
     const TABLE = 'import_model';
     const PK = 'model_id';
 
-    private $_id;
-    private $_fields;
-    private $_creation_date;
+    private $id;
+    private $fields;
+    private $creation_date;
 
     /**
      * Loads model
@@ -77,8 +77,8 @@ class ImportModel
             $results = $zdb->execute($select);
             $result = $results->current();
 
-            if ( $result ) {
-                $this->_loadFromRS($result);
+            if ($result) {
+                $this->loadFromRS($result);
                 return true;
             } else {
                 return false;
@@ -100,11 +100,11 @@ class ImportModel
      *
      * @return void
      */
-    private function _loadFromRS($r)
+    private function loadFromRS($r)
     {
-        $this->_id = $r->model_id;
-        $this->_fields = unserialize($r->model_fields);
-        $this->_creation_date = $r->model_creation_date;
+        $this->id = $r->model_id;
+        $this->fields = unserialize($r->model_fields);
+        $this->creation_date = $r->model_creation_date;
     }
 
     /**
@@ -122,10 +122,10 @@ class ImportModel
                 Adapter::QUERY_MODE_EXECUTE
             );
 
-            if ( $result ) {
-                $this->_id = null;
-                $this->_fields = null;
-                $this->_creation_date = null;
+            if ($result) {
+                $this->id = null;
+                $this->fields = null;
+                $this->creation_date = null;
             }
 
             return $result;
@@ -149,21 +149,21 @@ class ImportModel
     {
         try {
             $values = array(
-                self::PK        => $this->_id,
-                'model_fields'  => serialize($this->_fields)
+                self::PK        => $this->id,
+                'model_fields'  => serialize($this->fields)
             );
 
-            if ( !isset($this->_id) || $this->_id == '') {
+            if (!isset($this->id) || $this->id == '') {
                 //we're inserting a new model
                 unset($values[self::PK]);
-                $this->_creation_date = date("Y-m-d H:i:s");
-                $values['model_creation_date'] = $this->_creation_date;
+                $this->creation_date = date("Y-m-d H:i:s");
+                $values['model_creation_date'] = $this->creation_date;
 
                 $insert = $zdb->insert(self::TABLE);
                 $insert->values($values);
                 $results = $zdb->execute($insert);
 
-                if ( $results->count() > 0) {
+                if ($results->count() > 0) {
                     return true;
                 } else {
                     throw new \Exception(
@@ -174,11 +174,11 @@ class ImportModel
                 //we're editing an existing model
                 $update = $zdb->update(self::TABLE);
                 $update->set($values);
-                $update->where(self::PK . '=' . $this->_id);
+                $update->where(self::PK . '=' . $this->id);
                 $zdb->execute($update);
                 return true;
             }
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
             Analog::log(
                 'Something went wrong storing import model :\'( | ' .
                 $e->getMessage() . "\n" . $e->getTraceAsString(),
@@ -195,7 +195,7 @@ class ImportModel
      */
     public function getFields()
     {
-        return $this->_fields;
+        return $this->fields;
     }
 
     /**
@@ -207,11 +207,11 @@ class ImportModel
      */
     public function getCreationDate($formatted = true)
     {
-        if ( $formatted === true ) {
-            $date = new \DateTime($this->_creation_date);
-            return $date->format(_T("Y-m-d"));
+        if ($formatted === true) {
+            $date = new \DateTime($this->creation_date);
+            return $date->format(__("Y-m-d"));
         } else {
-            return $this->_creation_date;
+            return $this->creation_date;
         }
     }
 
@@ -224,6 +224,6 @@ class ImportModel
      */
     public function setFields($fields)
     {
-        $this->_fields = $fields;
+        $this->fields = $fields;
     }
 }

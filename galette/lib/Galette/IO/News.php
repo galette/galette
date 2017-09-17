@@ -53,12 +53,12 @@ use Analog\Analog;
  */
 class News
 {
-    private $_cache_filename = '%feed.cache';
-    private $_show = 10;
+    private $cache_filename = '%feed.cache';
+    private $show = 10;
     //number of hours until cache will be invalid
-    private $_cache_timeout = 24;
-    private $_feed_url = null;
-    private $_posts;
+    private $cache_timeout = 24;
+    private $feed_url = null;
+    private $posts = [];
 
     /**
      * Default constructor
@@ -68,15 +68,17 @@ class News
      */
     public function __construct($url, $nocache = false)
     {
-        $this->_feed_url = $url;
+        $this->feed_url = $url;
 
         //only if cache should be used
-        if ( $nocache === false ) {
-            if ( GALETTE_MODE === 'DEV' || !$this->_checkCache() ) {
-                $this->_makeCache();
+        if ($nocache === false && GALETTE_MODE !== 'DEV') {
+            if (!$this->checkCache()) {
+                $this->makeCache();
             } else {
-                $this->_loadCache();
+                $this->loadCache();
             }
+        } else {
+            $this->parseFeed();
         }
     }
 
@@ -85,11 +87,10 @@ class News
      *
      * @return boolean
      */
-    private function _checkCache()
+    private function checkCache()
     {
-
-        $cfile = $this->_getCacheFilename();
-        if (file_exists($cfile) ) {
+        $cfile = $this->getCacheFilename();
+        if (file_exists($cfile)) {
             try {
                 $dformat = 'Y-m-d H:i:s';
                 $mdate = \DateTime::createFromFormat(
@@ -100,17 +101,18 @@ class News
                     )
                 );
                 $expire = $mdate->add(
-                    new \DateInterval('PT' . $this->_cache_timeout . 'H')
+                    new \DateInterval('PT' . $this->cache_timeout . 'H')
                 );
                 $now = new \DateTime();
                 $has_expired = $now > $expire;
                 return !$has_expired;
-            } catch ( \Exception $e ) {
+            } catch (\Exception $e) {
                 Analog::log(
-                    'Unable chack cache expiracy. Are you sure you have ' .
+                    'Unable check cache expiracy. Are you sure you have ' .
                     'properly configured PHP timezone settings on your server?',
                     Analog::WARNING
                 );
+                return false;
             }
         } else {
             return false;
@@ -120,22 +122,17 @@ class News
     /**
      * Creates/update the cache
      *
-     * @param boolean $load Load cache from web
-     *
      * @return boolean
      */
-    private function _makeCache($load = true)
+    private function makeCache()
     {
-        if ( $load === true ) {
-            $this->_parseFeed();
-        }
-
-        $cfile = $this->_getCacheFilename();
+        $this->parseFeed();
+        $cfile = $this->getCacheFilename();
         $stream = fopen($cfile, 'w+');
         fwrite(
             $stream,
             serialize(
-                $this->_posts
+                $this->posts
             )
         );
         fclose($stream);
@@ -147,21 +144,21 @@ class News
      *
      * @return void
      */
-    private function _loadCache()
+    private function loadCache()
     {
-        $cfile = $this->_getCacheFilename();
+        $cfile = $this->getCacheFilename();
         $data = unserialize(file_get_contents($cfile));
 
         $refresh_cache = false;
-        $this->_posts = $data;
+        $this->posts = $data;
         //check if posts were cached
-        if ( !is_array($this->_posts) || count($this->_posts) == 0 ) {
-            $this->_parseFeed();
+        if (!is_array($this->posts) || count($this->posts) == 0) {
+            $this->parseFeed();
             $refresh_cache = true;
         }
 
-        if ( $refresh_cache === true ) {
-            $this->_makeCache(false);
+        if ($refresh_cache === true) {
+            $this->makeCache(false);
         }
     }
 
@@ -170,12 +167,12 @@ class News
      *
      * @return string
      */
-    private function _getCacheFilename()
+    private function getCacheFilename()
     {
         return GALETTE_CACHE_DIR .str_replace(
             '%feed',
-            md5($this->_feed_url),
-            $this->_cache_filename
+            md5($this->feed_url),
+            $this->cache_filename
         );
     }
 
@@ -184,13 +181,17 @@ class News
      *
      * @return void
      */
-    private function _parseFeed()
+    private function parseFeed()
     {
-
         try {
-            $xml = simplexml_load_file($this->_feed_url);
+            if (!ini_get('allow_url_fopen')) {
+                throw new \RuntimeException(
+                    'allow_url_fopen is set to false; cannot load news.'
+                );
+            }
+            $xml = simplexml_load_file($this->feed_url);
 
-            if ( !$xml ) {
+            if (!$xml) {
                 throw new \Exception();
             }
 
@@ -204,7 +205,7 @@ class News
                         'url'   => (string)$post->link['href'],
                         'date'  => (string)$post->published
                     );
-                    if (count($posts) == $this->_show) {
+                    if (count($posts) == $this->show) {
                         break;
                     }
                 }
@@ -216,7 +217,7 @@ class News
                         'url'   => (string)$post->link,
                         'date'  => (string)$post->pubDate
                     );
-                    if (count($posts) == $this->_show) {
+                    if (count($posts) == $this->show) {
                         break;
                     }
                 }
@@ -225,25 +226,24 @@ class News
                     'Unknown feed type!'
                 );
             }
-            $this->_posts = $posts;
+            $this->posts = $posts;
         } catch (\Exception $e) {
             Analog::log(
-                'Unable to load feed from "' . $this->_feed_url  .
+                'Unable to load feed from "' . $this->feed_url  .
                 '" :( | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            $this->_tweets = array();
         }
     }
 
 
     /**
-     * Get tweets
+     * Get posts
      *
      * @return array
      */
     public function getPosts()
     {
-        return $this->_posts;
+        return $this->posts;
     }
 }

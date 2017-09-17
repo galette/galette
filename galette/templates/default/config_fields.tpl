@@ -1,50 +1,49 @@
-    {*<p id="collapse" class="ui-state-default ui-corner-all">
+{extends file="page.tpl"}
+{block name="content"}
+    <p id="collapse" class="ui-state-default ui-corner-all">
         <span class="ui-icon ui-icon-circle-arrow-s"></span>
         {_T string="Collapse all"}
-    </p>*}
-    {* TODO: Dynamically generate required tabs entries *}
-    {*<ul id="tabs">
-        <li{if $current eq 'membership'} class="current_tab"{/if}><a href="?table=membership">{_T string="Membership"}</a></li>
-        <li{if $current eq 'members'} class="current_tab"{/if}><a href="?table=members">{_T string="Members"}</a></li>
-    </ul>*}
-    <form action="config_fields.php" method="post" id="config_fields_form">
-    <div id="{$current}_tab">
+    </p>
+    <form action="{path_for name="configureCoreFields"}" method="post" id="config_fields_form">
+    <div id="members_tab">
         {*<a href="#" title="{_T string="Add a new category"}" id="add_category">{_T string="Add new category"}</a>*}
 {foreach item=category from=$categories name=categories_list}
         <fieldset class="cssform large" id="cat_{$smarty.foreach.categories_list.iteration}">
     {assign var='catname' value=$category->category}
             <input type="hidden" name="categories[]" id="category{$smarty.foreach.categories_list.iteration}" value="{$category->id_field_category}"/>
-            <legend class="ui-state-active ui-corner-top">{$catname}</legend>
+            <legend class="ui-state-active ui-corner-top">{_T string="$catname"}</legend>
             <ul id="sortable_{$smarty.foreach.categories_list.iteration}" class="fields_list connectedSortable">
                 <li class="listing ">
                     <span class="label">{_T string="Field name"}</span>
                     <span class="yesno">{_T string="Required"}</span>
-                    <span class="yesnoadmin">{_T string="Visible"}</span>
+                    <span class="access">{_T string="Permissions"}</span>
                 </li>
     {assign var='fs' value=$category->id_field_category}
     {foreach key=col item=field from=$categorized_fields[$fs] name=fields_list}
-        {if $preferences->pref_show_id or $field.field_id neq 'id_adh'}
+        {if ($preferences->pref_show_id or $field.field_id neq 'id_adh') and $field.field_id neq 'parent_id'}
             {assign var='fid' value=$field.field_id}
                 <li class="tbl_line_{if $smarty.foreach.fields_list.iteration % 2 eq 0}even{else}odd{/if}">
-                    <span class="label">
+                    <span class="label" data-title="{_T string="Field name"}">
                         <input type="hidden" name="fields[]" value="{$fid}"/>
                         <input type="hidden" name="{$fid}_category" value="{$category->id_field_category}"/>
                         <input type="hidden" name="{$fid}_label" value="{$field.label}"/>
                         {$field.label}
                     </span>
-                    <span class="yesno" title="{if in_array($fid, $non_required)}{_T string="Field '%field' cannot be set as required." pattern="/%field/" replace=$field.label}{else}{_T string="Mark '%field' as (not) required" pattern="/%field/" replace=$field.label}{/if}">
+                    <span data-title="{_T string="Required"}" class="yesno" title="{if in_array($fid, $non_required)}{_T string="Field '%field' cannot be set as required." pattern="/%field/" replace=$field.label}{else}{_T string="Mark '%field' as (not) required" pattern="/%field/" replace=$field.label}{/if}">
                         <label for="{$fid}_required_yes">{_T string="Yes"}</label>
                         <input type="radio" name="{$fid}_required" id="{$fid}_required_yes" value="1"{if $field.required} checked="checked"{/if}{if in_array($fid, $non_required)} disabled="disabled"{/if}/>
                         <label for="{$fid}_required_no">{_T string="No"}</label>
                         <input type="radio" name="{$fid}_required" id="{$fid}_required_no" value="0"{if !$field.required} checked="checked"{/if}{if in_array($fid, $non_required)} disabled="disabled"{/if}/>
                     </span>
-                    <span class="yesnoadmin" title="{_T string="Change '%field' visibility" pattern="/%field/" replace=$field.label}">
-                        <label for="{$fid}_visible_yes">{_T string="Yes"}</label>
-                        <input type="radio" name="{$fid}_visible" id="{$fid}_visible_yes" value="{php}echo Galette\Entity\FieldsConfig::VISIBLE;{/php}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::VISIBLE')} checked="checked"{/if}/>
-                        <label for="{$fid}_visible_no">{_T string="No"}</label>
-                        <input type="radio" name="{$fid}_visible" id="{$fid}_visible_no" value="{php}echo Galette\Entity\FieldsConfig::HIDDEN;{/php}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::HIDDEN')} checked="checked"{/if}/>
-                        <label for="{$fid}_visible_admin">{_T string="Admin only"}</label>
-                        <input type="radio" name="{$fid}_visible" id="{$fid}_visible_admin" value="{php}echo Galette\Entity\FieldsConfig::ADMIN;{/php}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::ADMIN')} checked="checked"{/if}/>
+                    <span data-title="{_T string="Permissions"}" class="access" title="{_T string="Change '%field' permissions" pattern="/%field/" replace=$field.label}">
+                        <select name="{$fid}_visible" id="{$fid}_visible">
+                            <option value="{Galette\Entity\FieldsConfig::NOBODY}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::NOBODY')} selected="selected"{/if}>{_T string="Nobody"}</option>
+                            <option value="{Galette\Entity\FieldsConfig::ADMIN}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::ADMIN')} selected="selected"{/if}>{_T string="Administrator"}</option>
+                            <option value="{Galette\Entity\FieldsConfig::STAFF}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::STAFF')} selected="selected"{/if}>{_T string="Staff member"}</option>
+                            <option value="{Galette\Entity\FieldsConfig::MANAGER}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::MANAGER')} selected="selected"{/if}>{_T string="Group manager"}</option>
+                            <option value="{Galette\Entity\FieldsConfig::USER_READ}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::USER_READ')} selected="selected"{/if}>{_T string="Read only"}</option>
+                            <option value="{Galette\Entity\FieldsConfig::USER_WRITE}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::USER_WRITE')} selected="selected"{/if}>{_T string="Read/Write"}</option>
+                        </select>
                     </span>
                 </li>
         {/if}
@@ -57,6 +56,9 @@
             <input type="submit" value="{_T string="Save"}"/>
         </div>
     </form>
+{/block}
+
+{block name="javascripts"}
     <script type="text/javascript">
         var _initSortable = function(){
             $('.fields_list').sortable({
@@ -110,12 +112,13 @@
         var _warnings = [];
         var _checkCoherence = function(index, elt){
             var _elt = $(elt);
-            var _disabled = _elt.find('.yesno input:disabled, .yesnoadmin input:disabled');
+            var _disabled = _elt.find('.yesno input:disabled, .access input:disabled');
             if ( _disabled.length == 0 ) {
                 var _required = parseInt(_elt.find('.yesno input:checked').val());
-                var _visible = parseInt(_elt.find('.yesnoadmin input:checked').val());
+                var _accessible = parseInt(_elt.find('.access option:selected').val());
 
-                if ( _required === 1 && _visible !== 1 ) {
+
+                if ( _required === 1 && _accessible === 0 ) {
                     _elt.find('.label').addClass('warnings');
                     _warnings[_warnings.length] = _elt;
                 }
@@ -179,7 +182,7 @@
                 _legend.prepend(_a);
                 _a.spinDown();
 
-                $('#{$current}_tab').append(_fs);
+                $('#members_tab').append(_fs);
                 _initSortable();
                 _bindCollapse();
 
@@ -197,3 +200,4 @@
             });
         });
     </script>
+{/block}

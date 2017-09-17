@@ -39,9 +39,12 @@ namespace Galette\Repository;
 
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
-use Galette\Core\Pagination;
 use Galette\Entity\Transaction;
 use Galette\Entity\Adherent;
+use Galette\Core\Db;
+use Galette\Core\Login;
+use Galette\Core\History;
+use Galette\Filters\TransactionsList;
 
 /**
  * Transactions class for galette
@@ -55,56 +58,33 @@ use Galette\Entity\Adherent;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
-class Transactions extends Pagination
+class Transactions
 {
     const TABLE = Transaction::TABLE;
     const PK = Transaction::PK;
 
-    const ORDERBY_DATE = 0;
-    const ORDERBY_MEMBER = 1;
-    const ORDERBY_AMOUNT = 2;
-
-    private $_count = null;
-    private $_start_date_filter = null;
-    private $_end_date_filter = null;
-    private $_filtre_cotis_adh = null;
+    private $count = null;
+    private $zdb;
+    private $login;
+    private $filters;
 
     /**
      * Default constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * Returns the field we want to default set order to
      *
-     * @return string field name
+     * @param Db               $zdb     Database
+     * @param Login            $login   Login
+     * @param TransactionsList $filters Filtering
      */
-    protected function getDefaultOrder()
+    public function __construct(Db $zdb, Login $login, $filters = null)
     {
-        return self::ORDERBY_DATE;
-    }
+        $this->zdb = $zdb;
+        $this->login = $login;
 
-    /**
-     * Returns the field we want to default set order to (public method)
-     *
-     * @return string field name
-     */
-    public static function defaultOrder()
-    {
-        return self::getDefaultOrder();
-    }
-
-    /**
-     * Return the default direction for ordering
-     *
-     * @return string ASC or DESC
-     */
-    protected function getDefaultDirection()
-    {
-        return self::ORDER_DESC;
+        if ($filters === null) {
+            $this->filters = new TransactionsList();
+        } else {
+            $this->filters = $filters;
+        }
     }
 
     /**
@@ -118,23 +98,17 @@ class Transactions extends Pagination
      *
      * @return Transaction[]|ResultSet
      */
-    public function getTransactionsList(
-        $as_trans=false, $fields=null, $count=true
-    ) {
-        global $zdb;
-
+    public function getList($as_trans = false, $fields = null, $count = true)
+    {
         try {
-            $select = $this->_buildSelect(
-                $fields, $count
-            );
-
-            $this->setLimits($select);
+            $select = $this->buildSelect($fields, $count);
+            $this->filters->setLimit($select);
 
             $transactions = array();
-            $results = $zdb->execute($select);
-            if ( $as_trans ) {
-                foreach ( $results as $row ) {
-                    $transactions[] = new Transaction($row);
+            $results = $this->zdb->execute($select);
+            if ($as_trans) {
+                foreach ($results as $row) {
+                    $transactions[] = new Transaction($this->zdb, $this->login, $row);
                 }
             } else {
                 $transactions = $results;
@@ -158,16 +132,14 @@ class Transactions extends Pagination
      *
      * @return string SELECT statement
      */
-    private function _buildSelect($fields, $count = false)
+    private function buildSelect($fields, $count = false)
     {
-        global $zdb;
-
         try {
             $fieldsList = ( $fields != null )
                             ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
                             : implode(', ', $fields)) : (array)'*';
 
-            $select = $zdb->select(self::TABLE, 't');
+            $select = $this->zdb->select(self::TABLE, 't');
             $select->columns(
                 array(
                     'trans_date',
@@ -182,11 +154,11 @@ class Transactions extends Pagination
                 array('nom_adh', 'prenom_adh')
             );
 
-            $this->_buildWhereClause($select);
-            $select->order(self::_buildOrderClause());
+            $this->buildWhereClause($select);
+            $select->order(self::buildOrderClause());
 
-            if ( $count ) {
-                $this->_proceedCount($select);
+            if ($count) {
+                $this->proceedCount($select);
             }
 
             return $select;
@@ -206,10 +178,8 @@ class Transactions extends Pagination
      *
      * @return void
      */
-    private function _proceedCount($select)
+    private function proceedCount($select)
     {
-        global $zdb;
-
         try {
             $countSelect = clone $select;
             $countSelect->reset($countSelect::COLUMNS);
@@ -221,14 +191,13 @@ class Transactions extends Pagination
                 )
             );
 
-            $results = $zdb->execute($countSelect);
+            $results = $this->zdb->execute($countSelect);
             $result = $results->current();
 
             $k = self::PK;
-            $this->_count = $result->$k;
-            if ( $this->_count > 0 ) {
-                $this->counter = (int)$this->_count;
-                $this->countPages();
+            $this->count = $result->$k;
+            if ($this->count > 0) {
+                $this->filters->setCounter($this->count);
             }
         } catch (\Exception $e) {
             Analog::log(
@@ -244,24 +213,24 @@ class Transactions extends Pagination
      *
      * @return string SQL ORDER clause
      */
-    private function _buildOrderClause()
+    private function buildOrderClause()
     {
         $order = array();
 
-        switch ( $this->orderby ) {
-        case self::ORDERBY_DATE:
-            $order[] = 'trans_date' . ' ' . $this->ordered;
-            break;
-        case self::ORDERBY_MEMBER:
-            $order[] = 'nom_adh' . ' ' . $this->ordered;
-            $order[] = 'prenom_adh' . ' ' . $this->ordered;
-            break;
-        case self::ORDERBY_AMOUNT:
-            $order[] = 'trans_amount' . ' ' . $this->ordered;
-            break;
-        default:
-            $order[] = $this->orderby . ' ' . $this->ordered;
-            break;
+        switch ($this->filters->orderby) {
+            case TransactionsList::ORDERBY_DATE:
+                $order[] = 'trans_date' . ' ' . $this->filters->ordered;
+                break;
+            case TransactionsList::ORDERBY_MEMBER:
+                $order[] = 'nom_adh' . ' ' . $this->filters->ordered;
+                $order[] = 'prenom_adh' . ' ' . $this->filters->ordered;
+                break;
+            case TransactionsList::ORDERBY_AMOUNT:
+                $order[] = 'trans_amount' . ' ' . $this->filters->ordered;
+                break;
+            default:
+                $order[] = $this->filters->orderby . ' ' . $this->filters->ordered;
+                break;
         }
 
         return $order;
@@ -274,33 +243,31 @@ class Transactions extends Pagination
      *
      * @return string SQL WHERE clause
      */
-    private function _buildWhereClause($select)
+    private function buildWhereClause($select)
     {
-        global $zdb, $login;
-
         try {
-            if ( $this->_start_date_filter != null ) {
-                $d = new \DateTime($this->_start_date_filter);
+            if ($this->filters->start_date_filter != null) {
+                $d = new \DateTime($this->filters->start_date_filter);
                 $select->where->greaterThanOrEqualTo(
                     'trans_date',
                     $d->format('Y-m-d')
                 );
             }
 
-            if ( $this->_end_date_filter != null ) {
-                $d = new \DateTime($this->_end_date_filter);
+            if ($this->filters->end_date_filter != null) {
+                $d = new \DateTime($this->filters->end_date_filter);
                 $select->where->lessThanOrEqualTo(
                     'trans_date',
                     $d->format('Y-m-d')
                 );
             }
 
-            if ( !$login->isAdmin() && !$login->isStaff() ) {
+            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
                 //non staff members can only view their own transactions
-                $select->where('t.' . Adherent::PK . ' = ' . $login->id);
-            } else if ( $this->_filtre_cotis_adh != null ) {
+                $select->where('t.' . Adherent::PK . ' = ' . $this->login->id);
+            } elseif ($this->filters->filtre_cotis_adh != null) {
                 $select->where(
-                    't.' . Adherent::PK . ' = ' . $this->_filtre_cotis_adh
+                    't.' . Adherent::PK . ' = ' . $this->filters->filtre_cotis_adh
                 );
             }
         } catch (\Exception $e) {
@@ -318,62 +285,50 @@ class Transactions extends Pagination
      */
     public function getCount()
     {
-        return $this->_count;
-    }
-
-    /**
-     * Reinit default parameters
-     *
-     * @return void
-     */
-    public function reinit()
-    {
-        parent::reinit();
-        $this->_start_date_filter = null;
-        $this->_end_date_filter = null;
+        return $this->count;
     }
 
     /**
      * Remove specified transactions
      *
-     * @param interger|array $ids Transactions identifiers to delete
+     * @param interger|array $ids  Transactions identifiers to delete
+     * @param History        $hist History
      *
      * @return boolean
      */
-    public function removeTransactions($ids)
+    public function remove($ids, History $hist)
     {
-        global $zdb, $hist;
-
         $list = array();
-        if ( is_numeric($ids) ) {
+        if (is_numeric($ids)) {
             //we've got only one identifier
             $list[] = $ids;
         } else {
             $list = $ids;
         }
 
-        if ( is_array($list) ) {
+        if (is_array($list)) {
             $res = true;
             try {
-                $zdb->connection->beginTransaction();
+                $this->zdb->connection->beginTransaction();
 
-                $select = $zdb->select(self::TABLE);
+                $select = $this->zdb->select(self::TABLE);
                 $select->where->in(self::PK, $list);
 
-                $results = $zdb->execute($select);
-                foreach ( $results as $transaction ) {
-                    $c = new Transaction($transaction);
-                    $res = $c->remove(false);
-                    if ( $res === false ) {
+                $results = $this->zdb->execute($select);
+                foreach ($results as $transaction) {
+                    $c = new Transaction($this->zdb, $this->login, $transaction);
+                    $res = $c->remove($hist, false);
+                    if ($res === false) {
                         throw new \Exception;
                     }
                 }
-                $zdb->connection->commit();
+                $this->zdb->connection->commit();
                 $hist->add(
                     "Transactions deleted (" . print_r($list, true) . ')'
                 );
+                return true;
             } catch (\Exception $e) {
-                $zdb->connection->rollBack();
+                $this->zdb->connection->rollBack();
                 Analog::log(
                     'An error occured trying to remove transactions | ' .
                     $e->getMessage(),
@@ -391,167 +346,4 @@ class Transactions extends Pagination
             return false;
         }
     }
-
-    /**
-     * Global getter method
-     *
-     * @param string $name name of the property we want to retrive
-     *
-     * @return object the called property
-     */
-    public function __get($name)
-    {
-
-        Analog::log(
-            '[Transactions] Getting property `' . $name . '`',
-            Analog::DEBUG
-        );
-
-        if ( in_array($name, $this->pagination_fields) ) {
-            return parent::__get($name);
-        } else {
-            $return_ok = array(
-                'filtre_cotis_adh',
-                'start_date_filter',
-                'end_date_filter'
-            );
-            if (in_array($name, $return_ok)) {
-                $name = '_' . $name;
-                return $this->$name;
-            } else {
-                Analog::log(
-                    '[Transactions] Unable to get proprety `' .$name . '`',
-                    Analog::WARNING
-                );
-            }
-        }
-    }
-
-    /**
-     * Global setter method
-     *
-     * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
-     *
-     * @return void
-     */
-    public function __set($name, $value)
-    {
-        if ( in_array($name, $this->pagination_fields) ) {
-            parent::__set($name, $value);
-        } else {
-            Analog::log(
-                '[Transactions] Setting property `' . $name . '`',
-                Analog::DEBUG
-            );
-
-            $forbidden = array();
-            if ( !in_array($name, $forbidden) ) {
-                $rname = '_' . $name;
-                switch($name) {
-                case 'tri':
-                    $allowed_orders = array(
-                        self::ORDERBY_DATE,
-                        self::ORDERBY_BEGIN_DATE,
-                        self::ORDERBY_END_DATE,
-                        self::ORDERBY_MEMBER,
-                        self::ORDERBY_TYPE,
-                        self::ORDERBY_AMOUNT,
-                        self::ORDERBY_DURATION
-                    );
-                    if ( in_array($value, $allowed_orders) ) {
-                        $this->orderby = $value;
-                    }
-                    break;
-                case 'start_date_filter':
-                case 'end_date_filter':
-                    try {
-                        if ( $value !== '' ) {
-                            $y = \DateTime::createFromFormat(_T("Y"), $value);
-                            if ( $y !== false ) {
-                                $month = 1;
-                                $day = 1;
-                                if ( $name === 'end_date_filter' ) {
-                                    $month = 12;
-                                    $day = 31;
-                                }
-                                $y->setDate(
-                                    $y->format('Y'),
-                                    $month,
-                                    $day
-                                );
-                                $this->$rname = $y->format('Y-m-d');
-                            }
-
-                            $ym = \DateTime::createFromFormat(_T("Y-m"), $value);
-                            if ( $y === false && $ym  !== false ) {
-                                $day = 1;
-                                if ( $name === 'end_date_filter' ) {
-                                    $day = $ym->format('t');
-                                }
-                                $ym->setDate(
-                                    $ym->format('Y'),
-                                    $ym->format('m'),
-                                    $day
-                                );
-                                $this->$rname = $ym->format('Y-m-d');
-                            }
-
-                            $d = \DateTime::createFromFormat(_T("Y-m-d"), $value);
-                            if ( $y === false && $ym  === false && $d !== false ) {
-                                $this->$rname = $d->format('Y-m-d');
-                            }
-
-                            if ( $y === false && $ym === false && $d === false ) {
-                                $formats = array(
-                                    _T("Y"),
-                                    _T("Y-m"),
-                                    _T("Y-m-d"),
-                                );
-
-                                $field = null;
-                                if ($name === 'start_date_filter' ) {
-                                    $field = _T("start date filter");
-                                }
-                                if ($name === 'end_date_filter' ) {
-                                    $field = _T("end date filter");
-                                }
-
-                                throw new \Exception(
-                                    str_replace(
-                                        array('%field', '%format'),
-                                        array(
-                                            $field,
-                                            implode(', ', $formats)
-                                        ),
-                                        _T("Unknown date format for %field.<br/>Know formats are: %formats")
-                                    )
-                                );
-                            }
-                        } else {
-                            $this->$rname = null;
-                        }
-                    } catch (\Exception $e) {
-                        Analog::log(
-                            'Wrong date format. field: ' . $key .
-                            ', value: ' . $value . ', expected fmt: ' .
-                            _T("Y-m-d") . ' | ' . $e->getMessage(),
-                            Analog::INFO
-                        );
-                        throw $e;
-                    }
-                    break;
-                default:
-                    $this->$rname = $value;
-                    break;
-                }
-            } else {
-                Analog::log(
-                    '[Transactions] Unable to set proprety `' .$name . '`',
-                    Analog::WARNING
-                );
-            }
-        }
-    }
-
 }

@@ -54,14 +54,10 @@ use Zend\Db\Sql\Sql;
  */
 class Db
 {
-    private $_persistent;
-    private $_dsn_array;
-    private $_dsn;
-    private $_options;
-    private $_db;
-    private $_error;
-    private $_type_db;
-    private $_sql;
+    private $db;
+    private $type_db;
+    private $sql;
+    private $options;
 
     const MYSQL = 'mysql';
     const PGSQL = 'pgsql';
@@ -73,13 +69,13 @@ class Db
      * Main constructor
      *
      * @param array $dsn Connection informations
-     * If not set, database constants will be used.
+     *                   If not set, database constants will be used.
      */
-    function __construct($dsn = null)
+    public function __construct($dsn = null)
     {
         $_type = null;
 
-        if ( $dsn !== null && is_array($dsn) ) {
+        if ($dsn !== null && is_array($dsn)) {
             $_type_db = $dsn['TYPE_DB'];
             $_host_db = $dsn['HOST_DB'];
             $_port_db = $dsn['PORT_DB'];
@@ -96,16 +92,16 @@ class Db
         }
 
         try {
-            if ( $_type_db === self::MYSQL ) {
+            if ($_type_db === self::MYSQL) {
                 $_type = 'Pdo_Mysql';
-            } else if ( $_type_db === self::PGSQL ) {
+            } elseif ($_type_db === self::PGSQL) {
                 $_type = 'Pdo_Pgsql';
             } else {
                 throw new \Exception;
             }
 
-            $this->_type_db = $_type_db;
-            $_options = array(
+            $this->type_db = $_type_db;
+            $this->options = array(
                 'driver'   => $_type,
                 'hostname' => $_host_db,
                 'port'     => $_port_db,
@@ -114,17 +110,10 @@ class Db
                 'database' => $_name_db
             );
             if ($_type_db === self::MYSQL && !defined('NON_UTF_DBCONNECT')) {
-                $_options['charset'] = 'utf8';
+                $this->options['charset'] = 'utf8';
             }
 
-            $this->_db = new Adapter($_options);
-            $this->_db->getDriver()->getConnection()->connect();
-            $this->_sql = new Sql($this->_db);
-
-            Analog::log(
-                '[Db] Database connection was successfull!',
-                Analog::DEBUG
-            );
+            $this->doConnection();
         } catch (\Exception $e) {
             // perhaps factory() failed to load the specified Adapter class
             Analog::log(
@@ -134,6 +123,43 @@ class Db
             );
             throw $e;
         }
+    }
+
+    /**
+     * Do database connection
+     *
+     * @return void
+     */
+    private function doConnection()
+    {
+        $this->db = new Adapter($this->options);
+        $this->db->getDriver()->getConnection()->connect();
+        $this->sql = new Sql($this->db);
+
+        Analog::log(
+            '[Db] Database connection was successfull!',
+            Analog::DEBUG
+        );
+    }
+
+    /**
+     * To store Db in session
+     *
+     * @return array
+     */
+    public function __sleep()
+    {
+        return ['type_db', 'options'];
+    }
+
+    /**
+     * Connect again to the database on wakeup
+     *
+     * @return void
+     */
+    public function __wakeup()
+    {
+        $this->doConnection();
     }
 
     /**
@@ -159,14 +185,13 @@ class Db
                 '.',
                 ''
             );
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
             Analog::log(
                 'Cannot check database version: ' . $e->getMessage(),
                 Analog::ERROR
             );
             throw new \LogicException('Cannot check database version');
         }
-
     }
 
     /**
@@ -176,7 +201,7 @@ class Db
      */
     public function checkDbVersion()
     {
-        if ( GALETTE_MODE === 'DEV' ) {
+        if (GALETTE_MODE === 'DEV') {
             Analog::log(
                 'Database version not checked in DEV mode.',
                 Analog::INFO
@@ -186,7 +211,7 @@ class Db
 
         try {
             return $this->getDbVersion() === GALETTE_DB_VERSION;
-        } catch ( \LogicException $e ) {
+        } catch (\LogicException $e) {
             return false;
         }
     }
@@ -200,7 +225,7 @@ class Db
      */
     public function selectAll($table)
     {
-        return $this->_db->query(
+        return $this->db->query(
             'SELECT * FROM ' . PREFIX_DB . $table,
             Adapter::QUERY_MODE_EXECUTE
         );
@@ -220,13 +245,18 @@ class Db
      *                    an array with some infos otherwise
      */
     public static function testConnectivity(
-        $type, $user = null, $pass = null, $host = null, $port = null, $db = null
+        $type,
+        $user = null,
+        $pass = null,
+        $host = null,
+        $port = null,
+        $db = null
     ) {
         $_type = null;
         try {
-            if ( $type === self::MYSQL ) {
+            if ($type === self::MYSQL) {
                 $_type = 'Pdo_Mysql';
-            } else if ( $type === self::PGSQL ) {
+            } elseif ($type === self::PGSQL) {
                 $_type = 'Pdo_Pgsql';
             } else {
                 throw new \Exception;
@@ -258,7 +288,6 @@ class Db
             );
             return $e;
         }
-
     }
 
     /**
@@ -269,7 +298,7 @@ class Db
     public function dropTestTable()
     {
         try {
-            $this->_db->query('DROP TABLE IF EXISTS galette_test');
+            $this->db->query('DROP TABLE IF EXISTS galette_test');
             Analog::log('Test table successfully dropped.', Analog::DEBUG);
         } catch (\Exception $e) {
             Analog::log(
@@ -303,7 +332,7 @@ class Db
             'delete' => false,
             'drop'   => false
         );
-        if ( $mode === 'u' ) {
+        if ($mode === 'u') {
             $results['alter'] = false;
         }
 
@@ -313,7 +342,7 @@ class Db
                 test_id INTEGER NOT NULL,
                 test_text VARCHAR(20)
             )';
-            $this->_db->query($sql, Adapter::QUERY_MODE_EXECUTE);
+            $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE);
             $results['create'] = true;
         } catch (\Exception $e) {
             Analog::log('Cannot CREATE TABLE', Analog::WARNING);
@@ -323,12 +352,12 @@ class Db
         }
 
         //all those tests need the table to exists
-        if ( !$stop ) {
-            if ( $mode == 'u' ) {
+        if (!$stop) {
+            if ($mode == 'u') {
                 //can Galette ALTER tables? (only for update mode)
                 try {
                     $sql = 'ALTER TABLE galette_test ALTER test_text SET DEFAULT \'nothing\'';
-                    $this->_db->query($sql, Adapter::QUERY_MODE_EXECUTE);
+                    $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE);
                     $results['alter'] = true;
                 } catch (\Exception $e) {
                     Analog::log(
@@ -345,12 +374,12 @@ class Db
                 'test_text'    => 'a simple text'
             );
             try {
-                $insert = $this->_sql->insert('galette_test');
+                $insert = $this->sql->insert('galette_test');
                 $insert->values($values);
 
                 $res = $this->execute($insert);
 
-                if ( $res->count() === 1 ) {
+                if ($res->count() === 1) {
                     $results['insert'] = true;
                 } else {
                     throw new \Exception('No row inserted!');
@@ -366,18 +395,18 @@ class Db
             }
 
             //all those tests need that the first record exists
-            if ( !$stop ) {
+            if (!$stop) {
                 //can Galette UPDATE records ?
                 $values = array(
                     'test_text' => 'another simple text'
                 );
                 try {
-                    $update = $this->_sql->update('galette_test');
+                    $update = $this->sql->update('galette_test');
                     $update->set($values)->where(
                         array('test_id' => 1)
                     );
                     $res = $this->execute($update);
-                    if ( $res->count() === 1 ) {
+                    if ($res->count() === 1) {
                         $results['update'] = true;
                     } else {
                         throw new \Exception('No row updated!');
@@ -393,12 +422,12 @@ class Db
                 //can Galette SELECT records ?
                 try {
                     $pass = false;
-                    $select = $this->_sql->select('galette_test');
+                    $select = $this->sql->select('galette_test');
                     $select->where('test_id = 1');
                     $res = $this->execute($select);
                     $pass = $res->count() === 1;
 
-                    if ( $pass ) {
+                    if ($pass) {
                         $results['select'] = true;
                     } else {
                         throw new \Exception('Select is empty!');
@@ -413,7 +442,7 @@ class Db
 
                 //can Galette DELETE records ?
                 try {
-                    $delete = $this->_sql->delete('galette_test');
+                    $delete = $this->sql->delete('galette_test');
                     $delete->where(array('test_id' => 1));
                     $this->execute($delete);
                     $results['delete'] = true;
@@ -429,7 +458,7 @@ class Db
             //can Galette DROP tables ?
             try {
                 $sql = 'DROP TABLE galette_test';
-                $this->_db->query($sql, Adapter::QUERY_MODE_EXECUTE);
+                $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE);
                 $results['drop'] = true;
             } catch (\Exception $e) {
                 Analog::log(
@@ -452,17 +481,17 @@ class Db
      */
     public function getTables($prefix = null)
     {
-        $metadata = new \Zend\Db\Metadata\Metadata($this->_db);
+        $metadata = new \Zend\Db\Metadata\Metadata($this->db);
         $tmp_tables_list = $metadata->getTableNames();
 
-        if ( $prefix === null ) {
+        if ($prefix === null) {
             $prefix = PREFIX_DB;
         }
 
         $tables_list = array();
         //filter table_list: we only want PREFIX_DB tables
-        foreach ( $tmp_tables_list as $t ) {
-            if ( preg_match('/^' . $prefix . '/', $t) ) {
+        foreach ($tmp_tables_list as $t) {
+            if (preg_match('/^' . $prefix . '/', $t)) {
                 $tables_list[] = $t;
             }
         }
@@ -478,7 +507,7 @@ class Db
      */
     public function getColumns($table)
     {
-        $metadata = new \Zend\Db\Metadata\Metadata($this->_db);
+        $metadata = new \Zend\Db\Metadata\Metadata($this->db);
         $table = $metadata->getTable(PREFIX_DB . $table);
         return $table->getColumns();
     }
@@ -493,8 +522,7 @@ class Db
      */
     public function convertToUTF($prefix = null, $content_only = false)
     {
-
-        if ( $prefix === null ) {
+        if ($prefix === null) {
             $prefix = PREFIX_DB;
         }
 
@@ -504,14 +532,14 @@ class Db
             $tables = $this->getTables($prefix);
 
             foreach ($tables as $table) {
-                if ( $content_only === false ) {
+                if ($content_only === false) {
                     //Change whole table charset
                     //CONVERT TO instruction will take care of each fields,
                     //but converting data stay our problem.
                     $query = 'ALTER TABLE ' . $table .
                         ' CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci';
 
-                    $this->_db->query(
+                    $this->db->query(
                         $query,
                         Adapter::QUERY_MODE_EXECUTE
                     );
@@ -523,8 +551,8 @@ class Db
                 }
 
                 //Data conversion
-                if ( $table != $prefix . 'pictures' ) {
-                    $this->_convertContentToUTF($prefix, $table);
+                if ($table != $prefix . 'pictures') {
+                    $this->convertContentToUTF($prefix, $table);
                 }
             }
             $this->connection->commit();
@@ -546,16 +574,16 @@ class Db
      *
      * @return void
      */
-    private function _convertContentToUTF($prefix, $table)
+    private function convertContentToUTF($prefix, $table)
     {
 
         try {
             $query = 'SET NAMES latin1';
-            $this->_db->query(
+            $this->db->query(
                 $query,
                 Adapter::QUERY_MODE_EXECUTE
             );
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             Analog::log(
                 'Cannot SET NAMES on table `' . $table . '`. ' .
                 $e->getMessage(),
@@ -564,32 +592,32 @@ class Db
         }
 
         try {
-            $metadata = new \Zend\Db\Metadata\Metadata($this->_db);
+            $metadata = new \Zend\Db\Metadata\Metadata($this->db);
             $tbl = $metadata->getTable($table);
             $columns = $tbl->getColumns();
             $constraints = $tbl->getConstraints();
             $pkeys = array();
 
-            foreach ( $constraints as $constraint ) {
-                if ( $constraint->getType() === 'PRIMARY KEY' ) {
+            foreach ($constraints as $constraint) {
+                if ($constraint->getType() === 'PRIMARY KEY') {
                     $pkeys = $constraint->getColumns();
                 }
             }
 
-            if ( count($pkeys) == 0 ) {
+            if (count($pkeys) == 0) {
                 //no primary key! How to do an update without that?
                 //Prior to 0.7, l10n and dynamic_fields tables does not
                 //contains any primary key. Since encoding conversion is done
                 //_before_ the SQL upgrade, we'll have to manually
                 //check these ones
-                if (preg_match('/' . $prefix . 'dynamic_fields/', $table) !== 0 ) {
+                if (preg_match('/' . $prefix . 'dynamic_fields/', $table) !== 0) {
                     $pkeys = array(
                         'item_id',
                         'field_id',
                         'field_form',
                         'val_index'
                     );
-                } else if ( preg_match('/' . $prefix . 'l10n/', $table) !== 0  ) {
+                } elseif (preg_match('/' . $prefix . 'l10n/', $table) !== 0) {
                     $pkeys = array(
                         'text_orig',
                         'text_locale'
@@ -603,25 +631,25 @@ class Db
                 }
             }
 
-            $select = $this->_sql->select($table);
+            $select = $this->sql->select($table);
             $results = $this->execute($select);
 
-            foreach ( $results as $row ) {
+            foreach ($results as $row) {
                 $data = array();
                 $where = array();
 
                 //build where
-                foreach ( $pkeys as $k ) {
+                foreach ($pkeys as $k) {
                     $where[] = $k . ' = "' . $row->$k .'"';
                 }
 
                 //build data
-                foreach ( $row as $key => $value ) {
+                foreach ($row as $key => $value) {
                     $data[$key] = $value;
                 }
 
                 //finally, update data!
-                $update = $this->_sql->update($table);
+                $update = $this->sql->update($table);
                 $update->set($data)->where($where);
                 $this->execute($update);
             }
@@ -641,7 +669,7 @@ class Db
      */
     public function isPostgres()
     {
-        return $this->_type_db === self::PGSQL;
+        return $this->type_db === self::PGSQL;
     }
 
     /**
@@ -654,12 +682,12 @@ class Db
      */
     public function select($table, $alias = null)
     {
-        if ( $alias === null ) {
-            return $this->_sql->select(
+        if ($alias === null) {
+            return $this->sql->select(
                 PREFIX_DB . $table
             );
         } else {
-            return $this->_sql->select(
+            return $this->sql->select(
                 array(
                     $alias => PREFIX_DB . $table
                 )
@@ -676,7 +704,7 @@ class Db
      */
     public function insert($table)
     {
-        return $this->_sql->insert(
+        return $this->sql->insert(
             PREFIX_DB . $table
         );
     }
@@ -690,7 +718,7 @@ class Db
      */
     public function update($table)
     {
-        return $this->_sql->update(
+        return $this->sql->update(
             PREFIX_DB . $table
         );
     }
@@ -704,7 +732,7 @@ class Db
      */
     public function delete($table)
     {
-        return $this->_sql->delete(
+        return $this->sql->delete(
             PREFIX_DB . $table
         );
     }
@@ -719,19 +747,23 @@ class Db
     public function execute($sql)
     {
         try {
-            $query_string = $this->_sql->getSqlStringForSqlObject($sql);
+            $query_string = $this->sql->getSqlStringForSqlObject($sql);
             $this->_last_query = $query_string;
             Analog::log(
                 'Executing query: ' . $query_string,
                 Analog::DEBUG
             );
-            return $this->_db->query(
+            return $this->db->query(
                 $query_string,
                 Adapter::QUERY_MODE_EXECUTE
             );
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
+            $msg = 'Query error: ';
+            if (isset($query_string)) {
+                $msg .= $query_string;
+            }
             Analog::log(
-                'Query error: ' . $query_string . ' ' . $e->__toString(),
+                $msg . ' ' . $e->__toString(),
                 Analog::ERROR
             );
             throw $e;
@@ -747,29 +779,28 @@ class Db
      */
     public function __get($name)
     {
-        switch ( $name ) {
-        case 'db':
-            return $this->_db;
-            break;
-        case 'sql':
-            return $this->_sql;
-            break;
-        case 'driver':
-            return $this->_db->getDriver();
-            break;
-        case 'connection':
-            return $this->_db->getDriver()->getConnection();
-            break;
-        case 'platform':
-            return $this->_db->getPlatform();
-            break;
-        case 'query_string':
-            return $this->_last_query;
-            break;
-        case 'type_db':
-            return $this->_type_db;
-            break;
+        switch ($name) {
+            case 'db':
+                return $this->db;
+                break;
+            case 'sql':
+                return $this->sql;
+                break;
+            case 'driver':
+                return $this->db->getDriver();
+                break;
+            case 'connection':
+                return $this->db->getDriver()->getConnection();
+                break;
+            case 'platform':
+                return $this->db->getPlatform();
+                break;
+            case 'query_string':
+                return $this->_last_query;
+                break;
+            case 'type_db':
+                return $this->type_db;
+                break;
         }
     }
-
 }

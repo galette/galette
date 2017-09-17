@@ -132,11 +132,11 @@ class MembersList extends Pagination
             Analog::DEBUG
         );
 
-        if ( in_array($name, $this->pagination_fields) ) {
+        if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
         } else {
             if (in_array($name, $this->memberslist_fields)) {
-                if ( $name === 'query' ) {
+                if ($name === 'query') {
                     return $this->$name;
                 } else {
                     $name = '_' . $name;
@@ -161,8 +161,7 @@ class MembersList extends Pagination
      */
     public function __set($name, $value)
     {
-
-        if ( in_array($name, $this->pagination_fields) ) {
+        if (in_array($name, $this->pagination_fields)) {
             parent::__set($name, $value);
         } else {
             Analog::log(
@@ -170,86 +169,86 @@ class MembersList extends Pagination
                 Analog::DEBUG
             );
 
-            switch($name) {
-            case 'selected':
-            case 'unreachable':
-                if (is_array($value)) {
-                    $name = '_' . $name;
-                    $this->$name = $value;
-                } else if ( $value !== null ) {
-                    Analog::log(
-                        '[MembersList] Value for property `' . $name .
-                        '` should be an array (' . gettype($value) . ' given)',
-                        Analog::WARNING
-                    );
-                }
-                break;
-            case 'filter_str':
-                $name = '_' . $name;
-                $this->$name = $value;
-                break;
-            case 'field_filter':
-            case 'membership_filter':
-            case 'account_status_filter':
-                if ( is_numeric($value) ) {
-                    $name = '_' . $name;
-                    $this->$name = $value;
-                } else if ($value !== null) {
-                    Analog::log(
-                        '[MembersList] Value for property `' . $name .
-                        '` should be an integer (' . gettype($value) . ' given)',
-                        Analog::WARNING
-                    );
-                }
-                break;
-            case 'email_filter':
-                switch ($value) {
-                case Members::FILTER_DC_EMAIL:
-                case Members::FILTER_W_EMAIL:
-                case Members::FILTER_WO_EMAIL:
-                    $this->_email_filter = $value;
-                    break;
-                default:
-                    Analog::log(
-                        '[MembersList] Value for email filter should be either ' .
-                        Members::FILTER_DC_EMAIL . ', ' .
-                        Members::FILTER_W_EMAIL . ' or ' .
-                        Members::FILTER_WO_EMAIL . ' (' . $value . ' given)',
-                        Analog::WARNING
-                    );
-                    break;
-                }
-                break;
-            case 'group_filter':
-                if ( is_numeric($value) && $value > 0 ) {
-                    //check group existence
-                    $g = new Group();
-                    $res = $g->load($value);
-                    if ( $res === true ) {
-                        $this->_group_filter = $value;
-                    } else {
+            switch ($name) {
+                case 'selected':
+                case 'unreachable':
+                    if (is_array($value)) {
+                        $name = '_' . $name;
+                        $this->$name = $value;
+                    } elseif ($value !== null) {
                         Analog::log(
-                            'Group #' . $value . ' does not exists!',
+                            '[MembersList] Value for property `' . $name .
+                            '` should be an array (' . gettype($value) . ' given)',
                             Analog::WARNING
                         );
                     }
-                } else if ( $value !== null && $value !== '0' ) {
+                    break;
+                case 'filter_str':
+                    $name = '_' . $name;
+                    $this->$name = $value;
+                    break;
+                case 'field_filter':
+                case 'membership_filter':
+                case 'account_status_filter':
+                    if (is_numeric($value)) {
+                        $name = '_' . $name;
+                        $this->$name = $value;
+                    } elseif ($value !== null) {
+                        Analog::log(
+                            '[MembersList] Value for property `' . $name .
+                            '` should be an integer (' . gettype($value) . ' given)',
+                            Analog::WARNING
+                        );
+                    }
+                    break;
+                case 'email_filter':
+                    switch ($value) {
+                        case Members::FILTER_DC_EMAIL:
+                        case Members::FILTER_W_EMAIL:
+                        case Members::FILTER_WO_EMAIL:
+                            $this->_email_filter = $value;
+                            break;
+                        default:
+                            Analog::log(
+                                '[MembersList] Value for email filter should be either ' .
+                                Members::FILTER_DC_EMAIL . ', ' .
+                                Members::FILTER_W_EMAIL . ' or ' .
+                                Members::FILTER_WO_EMAIL . ' (' . $value . ' given)',
+                                Analog::WARNING
+                            );
+                            break;
+                    }
+                    break;
+                case 'group_filter':
+                    if (is_numeric($value) && $value > 0) {
+                        //check group existence
+                        $g = new Group();
+                        $res = $g->load($value);
+                        if ($res === true) {
+                            $this->_group_filter = $value;
+                        } else {
+                            Analog::log(
+                                'Group #' . $value . ' does not exists!',
+                                Analog::WARNING
+                            );
+                        }
+                    } elseif ($value !== null && $value !== '0') {
+                        Analog::log(
+                            '[MembersList] Value for group filter should be an '
+                            .'integer (' . gettype($value) . ' given)',
+                            Analog::WARNING
+                        );
+                    }
+                    break;
+                case 'query':
+                    $this->$name = $value;
+                    break;
+                default:
                     Analog::log(
-                        '[MembersList] Value for group filter should be an '
-                        .'integer (' . gettype($value) . ' given)',
+                        '[MembersList] Unable to set proprety `' . $name . '`',
                         Analog::WARNING
                     );
-                }
-                break;
-            case 'query':
-                $this->$name = $value;
-                break;
-            default:
-                Analog::log(
-                    '[MembersList] Unable to set proprety `' . $name . '`',
-                    Analog::WARNING
-                );
-                break;
+                    break;
             }
         }
     }
@@ -283,11 +282,11 @@ class MembersList extends Pagination
      * Set commons filters for templates
      *
      * @param Preferences $prefs Preferences instance
-     * @param Smarty      $tpl   Smarty template reference
+     * @param Smarty      $view  Smarty template reference
      *
      * @return void
      */
-    public function setTplCommonsFilters($prefs, $tpl)
+    public function setViewCommonsFilters($prefs, \Smarty $view)
     {
         $filter_options = array(
             Members::FILTER_NAME            => _T("Name"),
@@ -302,12 +301,12 @@ class MembersList extends Pagination
             $filter_options[Members::FILTER_NUMBER] = _T("Member number");
         }
 
-        $tpl->assign(
+        $view->assign(
             'filter_field_options',
             $filter_options
         );
 
-        $tpl->assign(
+        $view->assign(
             'filter_membership_options',
             array(
                 Members::MEMBERSHIP_ALL     => _T("All members"),
@@ -321,7 +320,7 @@ class MembersList extends Pagination
             )
         );
 
-        $tpl->assign(
+        $view->assign(
             'filter_accounts_options',
             array(
                 Members::ALL_ACCOUNTS       => _T("All accounts"),
@@ -329,7 +328,5 @@ class MembersList extends Pagination
                 Members::INACTIVE_ACCOUNT   => _T("Inactive accounts")
             )
         );
-
-
     }
 }

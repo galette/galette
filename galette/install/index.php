@@ -36,8 +36,8 @@
  */
 
 // check required PHP version...
-if ( version_compare(PHP_VERSION, '5.3', '>') ) {
-    header('location: installer.php');
+if (version_compare(PHP_VERSION, '5.3', '>')) {
+    header('location: ../webroot/installer.php');
     die();
 }
 ?>

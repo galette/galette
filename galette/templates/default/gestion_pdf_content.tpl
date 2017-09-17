@@ -1,4 +1,4 @@
-        <form action="gestion_pdf.php" method="post" enctype="multipart/form-data">
+        <form action="{path_for name="pdfModels"}" method="post" enctype="multipart/form-data">
             <fieldset class="cssform">
                 <legend>{$model->name}</legend>
 {if $model->id neq 1}
@@ -34,9 +34,9 @@
                     <label class="bline" for="type_{$model->id}">{_T string="Type"}</label>
                     <select name="model_type" id="type_{$model->id}" required>
                         <option value="">{_T string="Select"}</option>
-                        <option value="{php}echo Galette\Entity\PdfModel::INVOICE_MODEL;{/php}">{_T string="Invoice"}</option>
-                        <option value="{php}echo Galette\Entity\PdfModel::RECEIPT_MODEL;{/php}">{_T string="Receipt"}</option>
-                        <option value="{php}echo Galette\Entity\PdfModel::ADHESION_FORM_MODEL;{/php}">{_T string="Adhesion Form"}</option>
+                        <option value="{Galette\Entity\PdfModel::INVOICE_MODEL}">{_T string="Invoice"}</option>
+                        <option value="{Galette\Entity\PdfModel::RECEIPT_MODEL}">{_T string="Receipt"}</option>
+                        <option value="{Galette\Entity\PdfModel::ADHESION_FORM_MODEL}">{_T string="Adhesion Form"}</option>
                     </select>
                 </p>
 {/if}

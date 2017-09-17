@@ -40,6 +40,11 @@ $this->register(
     'Test db plugin',           //Short description
     'Johan Cwiklinski',         //Author
     '1.0',                      //Version
-    '0.8',                      //Galette compatible version
-    null                        //Permissions needed - not yet implemented
+    '0.9',                      //Galette compatible version
+    'plugdb',                   //routing name
+    '2015-01-30',               //release date
+    [   //Permissions needed
+        'plugdb_root'   => 'member',
+        'plugdb_admin'  => 'staff'
+    ]
 );

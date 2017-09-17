@@ -38,9 +38,9 @@
 namespace Galette\Core;
 
 use Analog\Analog;
+use Galette\Filters\HistoryList;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Adapter\Adapter;
-use Zend\Db\Adapter\Exception as AdapterException;
 
 /**
  * History management
@@ -55,46 +55,59 @@ use Zend\Db\Adapter\Exception as AdapterException;
  * @since     Available since 0.7dev - 2009-02-09
  */
 
-class History extends Pagination
+class History
 {
     const TABLE = 'logs';
     const PK = 'id_log';
 
-    protected $_types = array(
-        'date',
-        'text',
-        'text',
-        'text',
-        'text',
-        'text'
-    );
+    protected $count;
+    protected $zdb;
+    protected $login;
+    protected $filters;
 
-    protected $_fields = array(
-        'date_log',
-        'ip_log',
-        'adh_log',
-        'action_log',
-        'text_log',
-        'sql_log'
-    );
+    protected $users;
+    protected $actions;
+
+    protected $with_lists = true;
 
     /**
      * Default constructor
+     *
+     * @param Db          $zdb     Database
+     * @param Login       $login   Login
+     * @param HistoryList $filters Filtering
      */
-    public function __construct()
+    public function __construct(Db $zdb, Login $login, $filters = null)
     {
-        parent::__construct();
-        $this->ordered = self::ORDER_DESC;
+        $this->zdb = $zdb;
+        $this->login = $login;
+
+        if ($filters === null) {
+            $this->filters = new HistoryList();
+        } else {
+            $this->filters = $filters;
+        }
     }
 
     /**
-     * Returns the field we want to default set order to
+     * Helper function to find the user IP address
      *
-     * @return string field name
+     * This function uses the client address or the appropriate part of
+     * X-Forwarded-For, if present and the configuration specifies it.
+     * (blindly trusting X-Forwarded-For would make the IP address logging
+     * very easy to deveive.
+     *
+     * @return string
      */
-    protected function getDefaultOrder()
+    public static function findUserIPAddress()
     {
-        return 'date_log';
+        if (defined('GALETTE_X_FORWARDED_FOR_INDEX')
+            && isset($_SERVER['HTTP_X_FORWARDED_FOR'])
+        ) {
+            $split_xff = preg_split('/,\s*/', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            return $split_xff[count($split_xff) - GALETTE_X_FORWARDED_FOR_INDEX];
+        }
+        return $_SERVER['REMOTE_ADDR'];
     }
 
     /**
@@ -108,35 +121,26 @@ class History extends Pagination
      */
     public function add($action, $argument = '', $query = '')
     {
-        global $zdb, $login;
-
         $ip = null;
-        if ( PHP_SAPI === 'cli' ) {
+        if (PHP_SAPI === 'cli') {
             $ip = '127.0.0.1';
         } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
+            $ip = self::findUserIpAddress();
         }
 
         try {
             $values = array(
                 'date_log'   => date('Y-m-d H:i:s'),
                 'ip_log'     => $ip,
-                'adh_log'    => $login->login,
+                'adh_log'    => $this->login->login,
                 'action_log' => $action,
                 'text_log'   => $argument,
                 'sql_log'    => $query
             );
 
-            $insert = $zdb->insert($this->getTableName());
+            $insert = $this->zdb->insert($this->getTableName());
             $insert->values($values);
-            $zdb->execute($insert);
-        } catch (AdapterException $e) {
-            Analog::log(
-                'Unable to initialize add log entry into database.' .
-                $e->getMessage(),
-                Analog::WARNING
-            );
-            return false;
+            $this->zdb->execute($insert);
         } catch (\Exception $e) {
             Analog::log(
                 "An error occured trying to add log entry. " . $e->getMessage(),
@@ -155,15 +159,13 @@ class History extends Pagination
      */
     public function clean()
     {
-        global $zdb;
-
         try {
-            $result = $zdb->db->query(
+            $result = $this->zdb->db->query(
                 'TRUNCATE TABLE ' . $this->getTableName(true),
                 Adapter::QUERY_MODE_EXECUTE
             );
 
-            if ( !$result ) {
+            if (!$result) {
                 Analog::log(
                     'An error occured cleaning history. ',
                     Analog::WARNING
@@ -172,6 +174,7 @@ class History extends Pagination
                 return false;
             }
             $this->add('Logs flushed');
+            $this->filters = new HistoryList();
             return true;
         } catch (\Exception $e) {
             Analog::log(
@@ -189,26 +192,17 @@ class History extends Pagination
      */
     public function getHistory()
     {
-        global $zdb;
-
-        if ($this->counter == null) {
-            $c = $this->getCount();
-
-            if ($c == 0) {
-                Analog::log('No entry in history (yet?).', Analog::DEBUG);
-                return;
-            } else {
-                $this->counter = (int)$c;
-                $this->countPages();
-            }
-        }
-
         try {
-            $select = $zdb->select($this->getTableName());
-            $select->order($this->orderby . ' ' . $this->ordered);
+            $select = $this->zdb->select($this->getTableName());
+            $this->buildWhereClause($select);
+            $select->order($this->buildOrderClause());
+            if ($this->with_lists === true) {
+                $this->buildLists($select);
+            }
+            $this->proceedCount($select);
             //add limits to retrieve only relavant rows
-            $this->setLimits($select);
-            $results = $zdb->execute($select);
+            $this->filters->setLimit($select);
+            $results = $this->zdb->execute($select);
             return $results;
         } catch (\Exception $e) {
             Analog::log(
@@ -220,27 +214,162 @@ class History extends Pagination
     }
 
     /**
-     * Count history entries
+     * Builds users and actions lists
      *
-     * @return int
+     * @param Select $select Original select
+     *
+     * @return void
      */
-    protected function getCount()
+    private function buildLists($select)
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select($this->getTableName());
-            $select->columns(
-                array(
-                    'counter' => new Expression('COUNT(' . $this->getPk() . ')')
-                )
-            );
-            $results = $zdb->execute($select);
-            $result = $results->current();
-            return $result->counter;
+            $usersSelect = clone $select;
+            $usersSelect->reset($usersSelect::COLUMNS);
+            $usersSelect->reset($usersSelect::ORDER);
+            $usersSelect->quantifier('DISTINCT')->columns(['adh_log']);
+            $usersSelect->order(['adh_log ASC']);
+
+            $results = $this->zdb->execute($usersSelect);
+
+            $this->users = [];
+            foreach ($results as $result) {
+                $this->users[] = $result->adh_log;
+            }
         } catch (\Exception $e) {
             Analog::log(
-                'Unable to get history count. | ' . $e->getMessage(),
+                'Cannot list members from history! | ' . $e->getMessage(),
+                Analog::WARNING
+            );
+        }
+
+        try {
+            $actionsSelect = clone $select;
+            $actionsSelect->reset($actionsSelect::COLUMNS);
+            $actionsSelect->reset($actionsSelect::ORDER);
+            $actionsSelect->quantifier('DISTINCT')->columns(['action_log']);
+            $actionsSelect->order(['action_log ASC']);
+
+            $results = $this->zdb->execute($actionsSelect);
+
+            $this->actions = [];
+            foreach ($results as $result) {
+                $this->actions[] = $result->action_log;
+            }
+        } catch (\Exception $e) {
+            Analog::log(
+                'Cannot list actions from history! | ' . $e->getMessage(),
+                Analog::WARNING
+            );
+        }
+    }
+
+    /**
+     * Builds the order clause
+     *
+     * @return string SQL ORDER clause
+     */
+    protected function buildOrderClause()
+    {
+        $order = array();
+
+        switch ($this->filters->orderby) {
+            case HistoryList::ORDERBY_DATE:
+                $order[] = 'date_log ' . $this->filters->ordered;
+                break;
+            case HistoryList::ORDERBY_IP:
+                $order[] = 'ip_log ' . $this->filters->ordered;
+                break;
+            case HistoryList::ORDERBY_USER:
+                $order[] = 'adh_log ' . $this->filters->ordered;
+                break;
+            case HistoryList::ORDERBY_ACTION:
+                $order[] = 'action_log ' . $this->filters->ordered;
+                break;
+        }
+
+        return $order;
+    }
+
+    /**
+     * Builds where clause, for filtering on simple list mode
+     *
+     * @param Select $select Original select
+     *
+     * @return string SQL WHERE clause
+     */
+    private function buildWhereClause($select)
+    {
+        try {
+            if ($this->filters->start_date_filter != null) {
+                $d = new \DateTime($this->filters->raw_start_date_filter);
+                $d->setTime(0, 0, 0);
+                $select->where->greaterThanOrEqualTo(
+                    'date_log',
+                    $d->format('Y-m-d H:i:s')
+                );
+            }
+
+            if ($this->filters->end_date_filter != null) {
+                $d = new \DateTime($this->filters->raw_end_date_filter);
+                $d->setTime(23, 59, 59);
+                $select->where->lessThanOrEqualTo(
+                    'date_log',
+                    $d->format('Y-m-d H:i:s')
+                );
+            }
+
+            if ($this->filters->user_filter != null && $this->filters->user_filter != '0') {
+                $select->where->equalTo(
+                    'adh_log',
+                    $this->filters->user_filter
+                );
+            }
+
+            if ($this->filters->action_filter != null && $this->filters->action_filter != '0') {
+                $select->where->equalTo(
+                    'action_log',
+                    $this->filters->action_filter
+                );
+            }
+        } catch (\Exception $e) {
+            Analog::log(
+                __METHOD__ . ' | ' . $e->getMessage(),
+                Analog::WARNING
+            );
+        }
+    }
+
+    /**
+     * Count history entries from the query
+     *
+     * @param Select $select Original select
+     *
+     * @return void
+     */
+    private function proceedCount($select)
+    {
+        try {
+            $countSelect = clone $select;
+            $countSelect->reset($countSelect::COLUMNS);
+            $countSelect->reset($countSelect::JOINS);
+            $countSelect->reset($countSelect::ORDER);
+            $countSelect->columns(
+                array(
+                    $this->getPk() => new Expression('COUNT(' . $this->getPk() . ')')
+                )
+            );
+
+            $results = $this->zdb->execute($countSelect);
+            $result = $results->current();
+
+            $k = $this->getPk();
+            $this->count = $result->$k;
+            if ($this->count > 0) {
+                $this->filters->setCounter($this->count);
+            }
+        } catch (\Exception $e) {
+            Analog::log(
+                'Cannot count history | ' . $e->getMessage(),
                 Analog::WARNING
             );
             return false;
@@ -256,44 +385,38 @@ class History extends Pagination
      */
     public function __get($name)
     {
-
         Analog::log(
             '[History] Getting property `' . $name . '`',
             Analog::DEBUG
         );
 
-        if ( in_array($name, $this->pagination_fields) ) {
-            return parent::__get($name);
-        } else {
-            $forbidden = array();
-            if ( !in_array($name, $forbidden) ) {
-                $name = '_' . $name;
-                switch ( $name ) {
+        $forbidden = array();
+        if (!in_array($name, $forbidden)) {
+            switch ($name) {
                 case 'fdate':
                     //return formatted datemime
                     try {
-                        $d = new \DateTime($this->$rname);
-                        return $d->format(_T("Y-m-d H:i:s"));
+                        $d = new \DateTime($this->$name);
+                        return $d->format(__("Y-m-d H:i:s"));
                     } catch (\Exception $e) {
                         //oops, we've got a bad date :/
                         Analog::log(
-                            'Bad date (' . $this->$rname . ') | ' .
+                            'Bad date (' . $this->$name . ') | ' .
                             $e->getMessage(),
                             Analog::INFO
                         );
-                        return $this->$rname;
+                        return $this->$name;
                     }
                     break;
                 default:
                     return $this->$name;
                     break;
-                }
-            } else {
-                Analog::log(
-                    '[History] Unable to get proprety `' .$name . '`',
-                    Analog::WARNING
-                );
             }
+        } else {
+            Analog::log(
+                '[History] Unable to get proprety `' .$name . '`',
+                Analog::WARNING
+            );
         }
     }
 
@@ -307,33 +430,23 @@ class History extends Pagination
      */
     public function __set($name, $value)
     {
-        if ( in_array($name, $this->pagination_fields) ) {
-            parent::__set($name, $value);
+        Analog::log(
+            '[History] Setting property `' . $name . '`',
+            Analog::DEBUG
+        );
+
+        $forbidden = array();
+        if (!in_array($name, $forbidden)) {
+            switch ($name) {
+                default:
+                    $this->$name = $value;
+                    break;
+            }
         } else {
             Analog::log(
-                '[History] Setting property `' . $name . '`',
-                Analog::DEBUG
+                '[History] Unable to set proprety `' .$name . '`',
+                Analog::WARNING
             );
-
-            $forbidden = array();
-            if ( !in_array($name, $forbidden) ) {
-                $rname = '_' . $name;
-                switch($name) {
-                case 'tri':
-                    if (in_array($value, $this->_fields)) {
-                        $this->orderby = $value;
-                    }
-                    break;
-                default:
-                    $this->$rname = $value;
-                    break;
-                }
-            } else {
-                Analog::log(
-                    '[History] Unable to set proprety `' .$name . '`',
-                    Analog::WARNING
-                );
-            }
         }
     }
 
@@ -346,7 +459,7 @@ class History extends Pagination
      */
     protected function getTableName($prefixed = false)
     {
-        if ( $prefixed === true ) {
+        if ($prefixed === true) {
             return PREFIX_DB . self::TABLE;
         } else {
             return self::TABLE;
@@ -361,5 +474,48 @@ class History extends Pagination
     protected function getPk()
     {
         return self::PK;
+    }
+
+    /**
+     * Set filters
+     *
+     * @param HistoryList $filters Filters
+     *
+     * @return History
+     */
+    public function setFilters(HistoryList $filters)
+    {
+        $this->filters = $filters;
+        return $this;
+    }
+
+    /**
+     * Get count for current query
+     *
+     * @return int
+     */
+    public function getCount()
+    {
+        return $this->count;
+    }
+
+    /**
+     * Get users list
+     *
+     * @return array
+     */
+    public function getUsersList()
+    {
+        return $this->users;
+    }
+
+    /**
+     * Get actions list
+     *
+     * @return array
+     */
+    public function getActionsList()
+    {
+        return $this->actions;
     }
 }

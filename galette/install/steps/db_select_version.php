@@ -44,33 +44,44 @@ $last = '0.00';
 ?>
             <h2><?php echo _T("Previous version selection"); ?></h2>
             <p><?php echo _T("Select your previous Galette version below, and then click next."); ?></p>
+            <form action="installer.php" method="post">
 <?php
-    if ( $current !== false ) {
+if (count($versions) == 0) {
+    ?>
+            <p id="errorbox"><?php echo _T("No update script found!"); ?></p>
+<?php
+    if ($zdb->getDbVersion() === GALETTE_DB_VERSION) {
+        ?>
+            <p id="warningbox"><?php echo _T("It seems you already use latest Galette version!"); ?></p>
+        <?php
+    }
+?>
+                <p id="btn_box">
+                    <input id="logout" type="submit" name="abort_btn" value="<?php echo _T("Cancel"); ?>"/>
+                    <input type="submit" id="btnback" name="stepback_btn" value="<?php echo _T("Back"); ?>" formnovalidate/>
+                </p>
+
+<?php
+} else {
+    if ($current !== false) {
     ?>
             <p id="successbox"><?php echo _T("Your previous version should be selected and <strong>displayed in bold</strong>."); ?></p>
     <?php
     }
-?>
-<?php
-if ( count($versions) == 0 ) {
-    ?>
-            <p id="errorbox"><?php echo _T("No update script found!"); ?></p>
-    <?php
-} else {
-    if ( $zdb->getDbVersion() === GALETTE_DB_VERSION ) {
+
+    if ($zdb->getDbVersion() === GALETTE_DB_VERSION) {
         ?>
             <p id="warningbox"><?php echo _T("It seems you already use latest Galette version!<br/>Are you sure you want to upgrade?"); ?></p>
         <?php
     }
     ?>
-            <form action="installer.php" method="post">
                 <fieldset class="cssform">
                     <legend class="ui-state-active ui-corner-top"><?php echo _T("Your current Galette version is..."); ?></legend>
- 
+
                     <ul class="leaders">
     <?php
     $is_current = false;
-    foreach ( $versions as $version ) {
+    foreach ($versions as $version) {
         ?>
                     <li>
         <?php
@@ -81,13 +92,13 @@ if ( count($versions) == 0 ) {
                         <span>
                             <label for="upgrade-<?php echo $version; ?>">
         <?php
-        if ( $last === '0.00') {
+        if ($last === '0.00') {
             echo str_replace(
                 '%version',
                 number_format($version, 2),
                 _T("older than %version")
             );
-        } else if ( $last != number_format($version - 0.01, 2) ) {
+        } elseif ($last != number_format($version - 0.01, 2)) {
             echo _T("comprised between") . " " .
                 $last . " " . _T("and") . " " . number_format($version - 0.01, 2);
         } else {
@@ -117,7 +128,7 @@ if ( count($versions) == 0 ) {
                     <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
                     <input type="submit" id="btnback" name="stepback_btn" value="<?php echo _T("Back"); ?>" formnovalidate/>
                 </p>
-            </form>
     <?php
 }
 ?>
+            </form>

@@ -1,6 +1,8 @@
-{if !$head_redirect}
+{extends file="page.tpl"}
+
+{block name="content"}
 {if isset($adh_options)}
-        <form action="ajouter_contribution.php" method="post">
+        <form action="{if $contribution->id}{path_for name="contribution" data=["type" => $type, "action" => {_T string="edit" domain="routes"}, "id" => $contribution->id]}{else}{path_for name="contribution" data=["type" => $type, "action" => {_T string="add" domain="routes"}]}{/if}" method="post">
         <div class="bigtable">
     {if $contribution->isTransactionPart()}
         {assign var="mid" value=$contribution->transaction->member}
@@ -10,8 +12,8 @@
                     <tr>
                         <td colspan="5">
                             {$contribution->transaction->description}
-                            <a href="{$galette_base_path}ajouter_transaction.php?trans_id={$contribution->transaction->id}" title="{_T string="View transaction"}">
-                                <img src="{$template_subdir}images/icon-money.png"
+                            <a href="{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $contribution->transaction->id]}" title="{_T string="View transaction"}">
+                                <img src="{base_url}/{$template_subdir}images/icon-money.png"
                                     alt="{_T string="[view]"}"
                                     width="16"
                                     height="16"/>
@@ -39,7 +41,7 @@
     {/if}
             <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
             <fieldset class="cssform">
-                <legend class="ui-state-active ui-corner-top">{_T string="Select contributor and contribution type"}</legend>
+                <legend class="ui-state-active ui-corner-top">{if $type eq {_T string="fee" domain="routes"}}{_T string="Select contributor and membership fee type"}{else}{_T string="Select contributor and donation type"}{/if}</legend>
                 <p>
                     <label for="id_adh" class="bline">{_T string="Contributor:"}</label>
                     <select name="id_adh" id="id_adh"{if isset($disabled.id_adh)} {$disabled.id_adh}{/if}>
@@ -53,8 +55,7 @@
                 </p>
                 <p>
                     <label for="id_type_cotis" class="bline">{_T string="Contribution type:"}</label>
-                    <select name="id_type_cotis" id="id_type_cotis"
-                        {if $type_selected eq 0}onchange="form.submit()"{/if}{if $required.id_type_cotis eq 1} required{/if}>
+                    <select name="id_type_cotis" id="id_type_cotis"{if $required.id_type_cotis eq 1} required="required"{/if}>
                         {if $contribution->type}
                             {assign var="selectedid" value=$contribution->type->id}
                         {else}
@@ -62,69 +63,64 @@
                         {/if}
                         {html_options options=$type_cotis_options selected=$selectedid}
                     </select>
-    {if $type_selected eq 1}
-                    <a class="button" id="btnback" href="javascript:history.back();" title="{_T string="Back to previous window, if you want to select a contribution type that is not listed here"}">{_T string="Back"}</a>
-    {/if}
                 </p>
             </fieldset>
 
-    {if $type_selected eq 1}
             <fieldset class="cssform">
-                <legend class="ui-state-active ui-corner-top">{_T string="Details of contribution"}</legend>
+                <legend class="ui-state-active ui-corner-top">{if $type eq {_T string="fee" domain="routes"}}{_T string="Details of membership fee"}{else}{_T string="Details of donation"}{/if}</legend>
                 <p>
                     <label class="bline" for="montant_cotis">{_T string="Amount:"}</label>
-                    <input type="text" name="montant_cotis" id="montant_cotis" value="{$contribution->amount}" maxlength="10"{if $required.montant_cotis eq 1} required{/if}/>
+                    <input type="text" name="montant_cotis" id="montant_cotis" value="{$contribution->amount}" maxlength="10"{if $required.montant_cotis eq 1} required="required"{/if}/>
                 </p>
                 <p>
                     <label class="bline" for="type_paiement_cotis">{_T string="Payment type:"}</label>
                     <select name="type_paiement_cotis" id="type_paiement_cotis">
-                        <option value="{php}echo Galette\Entity\Contribution::PAYMENT_CASH;{/php}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_CASH')} selected="selected"{/if}>{_T string="Cash"}</option>
-                        <option value="{php}echo Galette\Entity\Contribution::PAYMENT_CREDITCARD;{/php}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_CREDITCARD')} selected="selected"{/if}>{_T string="Credit card"}</option>
-                        <option value="{php}echo Galette\Entity\Contribution::PAYMENT_CHECK;{/php}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_CHECK')} selected="selected"{/if}>{_T string="Check"}</option>
-                        <option value="{php}echo Galette\Entity\Contribution::PAYMENT_TRANSFER;{/php}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_TRANSFER')} selected="selected"{/if}>{_T string="Transfer"}</option>
-                        <option value="{php}echo Galette\Entity\Contribution::PAYMENT_PAYPAL;{/php}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_PAYPAL')} selected="selected"{/if}>{_T string="Paypal"}</option>
-                        <option value="{php}echo Galette\Entity\Contribution::PAYMENT_OTHER;{/php}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_OTHER')} selected="selected"{/if}>{_T string="Other"}</option>
+                        <option value="{Galette\Entity\Contribution::PAYMENT_CASH}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_CASH')} selected="selected"{/if}>{_T string="Cash"}</option>
+                        <option value="{Galette\Entity\Contribution::PAYMENT_CREDITCARD}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_CREDITCARD')} selected="selected"{/if}>{_T string="Credit card"}</option>
+                        <option value="{Galette\Entity\Contribution::PAYMENT_CHECK}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_CHECK')} selected="selected"{/if}>{_T string="Check"}</option>
+                        <option value="{Galette\Entity\Contribution::PAYMENT_TRANSFER}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_TRANSFER')} selected="selected"{/if}>{_T string="Transfer"}</option>
+                        <option value="{Galette\Entity\Contribution::PAYMENT_PAYPAL}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_PAYPAL')} selected="selected"{/if}>{_T string="Paypal"}</option>
+                        <option value="{Galette\Entity\Contribution::PAYMENT_OTHER}"{if $contribution->payment_type eq constant('Galette\Entity\Contribution::PAYMENT_OTHER')} selected="selected"{/if}>{_T string="Other"}</option>
                     </select>
                 </p>
                 <p>
                     <label class="bline" for="date_enreg">
                         {_T string="Record date:"}
                     </label>
-                    <input class="past-date-pick" type="text" name="date_enreg" id="date_enreg" value="{$contribution->date}" maxlength="10"{if $required.date_enreg eq 1} required{/if}/>
+                    <input class="past-date-pick" type="text" name="date_enreg" id="date_enreg" value="{$contribution->date}" maxlength="10"{if $required.date_enreg eq 1} required="required"{/if}/>
                     <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
                 </p>
 
                 <p>
                     <label class="bline" for="date_debut_cotis">
-                        {if $contribution->isCotis()}
+                        {if $type eq {_T string="fee" domain="routes"}}
                             {_T string="Start date of membership:"}
                         {else}
                             {_T string="Date of contribution:"}
                         {/if}
                     </label>
-                    <input class="past-date-pick" type="text" name="date_debut_cotis" id="date_debut_cotis" value="{$contribution->begin_date}" maxlength="10"{if $required.date_debut_cotis eq 1} required{/if}/>
+                    <input class="past-date-pick" type="text" name="date_debut_cotis" id="date_debut_cotis" value="{$contribution->begin_date}" maxlength="10"{if $required.date_debut_cotis eq 1} required="required"{/if}/>
                     <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
                 </p>
-        {if $contribution->isCotis()}
+        {if $type eq {_T string="fee" domain="routes"}}
                 <p>
             {if $pref_membership_ext != ""}
                     <label class="bline" for="duree_mois_cotis">{_T string="Membership extension:"}</label>
-                    <input type="text" name="duree_mois_cotis" id="duree_mois_cotis" value="{$contribution->duration}" maxlength="3"{if $required.date_fin_cotis eq 1} required{/if}/>
+                    <input type="text" name="duree_mois_cotis" id="duree_mois_cotis" value="{$contribution->duration}" maxlength="3"{if $required.date_fin_cotis eq 1} required="required"{/if}/>
                     <span class="exemple">{_T string="months"}</span>
             {else}
                     <label class="bline" for="date_fin_cotis">{_T string="End date of membership:"}</label>
-                    <input type="text" name="date_fin_cotis" id="date_fin_cotis" value="{$contribution->end_date}" maxlength="10"{if $required.date_fin_cotis eq 1} required{/if}/>
+                    <input type="text" name="date_fin_cotis" id="date_fin_cotis" value="{$contribution->end_date}" maxlength="10"{if $required.date_fin_cotis eq 1} required="required"{/if}/>
                     <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
             {/if}
                 </p>
         {/if}
                 <p>
                     <label class="bline" for="info_cotis">{_T string="Comments:"}</label>
-                    <textarea name="info_cotis" id="info_cotis" cols="61" rows="6"{if isset($required.info_cotis) and $required.info_cotis eq 1} required{/if}>{$contribution->info}</textarea>
+                    <textarea name="info_cotis" id="info_cotis" cols="61" rows="6"{if isset($required.info_cotis) and $required.info_cotis eq 1} required="required"{/if}>{$contribution->info}</textarea>
                 </p>
             </fieldset>
-        {include file="edit_dynamic_fields.tpl"}
-    {/if} {* $type_selected eq 1 *}
+        {include file="edit_dynamic_fields.tpl" object=$contribution}
     {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
             <p>
                 <label for="mail_confirm">{_T string="Notify member"}</label>
@@ -134,19 +130,10 @@
     {/if}
         </div>
         <div class="button-container">
-    {if $type_selected eq 1}
             <input type="submit" id="btnsave" value="{_T string="Save"}"/>
             <input type="hidden" name="id_cotis" value="{$contribution->id}"/>
-            {* Second step validator *}
             <input type="hidden" name="valid" value="1"/>
-    {else} {* $type_selected ne 1 *}
-            <input type="submit" value="{_T string="Continue"}"/>
-            {* At creation time, we can get an amount, that will be hidden on the first step *}
-            <input type="hidden" name="montant_cotis" value="{$contribution->amount}"/>
-    {/if} {* $type_selected eq 1 *}
             <input type="hidden" name="trans_id" value="{if $contribution->transaction neq NULL}{$contribution->transaction->id}{/if}"/>
-            {* First step validator *}
-            <input type="hidden" name="type_selected" value="1"/>
         </div>
         </form>
     <script type="text/javascript">
@@ -156,7 +143,7 @@
                 changeMonth: true,
                 changeYear: true,
                 showOn: 'button',
-                buttonImage: '{$template_subdir}images/calendar.png',
+                buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
                 buttonImageOnly: true,
                 buttonText: '{_T string="Select a date" escape="js"}'
             });
@@ -168,8 +155,8 @@
         <p>
             {_T string="Unfortunately, there is no member in your database yet,"}
             <br/>
-            <a href="ajouter_adherent.php">{_T string="please create a member"}</a>
+            <a href="{path_for name="editmember" data=["action" => {_T string="add" domain="routes"}]}">{_T string="please create a member"}</a>
         </p>
     </div>
 {/if}
-{/if}
+{/block}

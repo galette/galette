@@ -43,6 +43,7 @@ use Galette\Repository\Members;
 use Galette\Entity\Adherent;
 use Galette\Entity\Status;
 use Analog\Analog;
+use RKA\Session;
 
 /**
  * Default authentication class for galette
@@ -61,76 +62,48 @@ class Login extends Authentication
     const TABLE = Adherent::TABLE;
     const PK = 'login_adh';
 
-    private $_zdb;
-    private $_i18n;
-    private $_session;
+    private $zdb;
+    private $i18n;
+    private $session;
+    private $impersonated = false;
 
     /**
      * Instanciate object
      *
-     * @param Db    $zdb     Database instance
-     * @param I18n  $i18n    I18n instance
-     * @param array $session Current session
+     * @param Db      $zdb     Database instance
+     * @param I18n    $i18n    I18n instance
+     * @param Session $session Current session
      */
-    public function __construct(Db $zdb, I18n $i18n, array &$session)
+    public function __construct(Db $zdb, I18n $i18n, Session $session)
     {
-        $this->setDb($zdb);
-        $this->_i18n = $i18n;
-        $this->_session = $session;
+        $this->zdb = $zdb;
+        $this->i18n = $i18n;
+        $this->session = $session;
     }
 
     /**
-     * Set database instance
-     *
-     * @param Db $zdb Database instance
-     *
-     * @return void
-     */
-    public function setDb(Db $zdb)
+    * Login for the superuser
+    *
+    * @param string      $login       name
+    * @param Preferences $preferences Preferences instance
+    *
+    * @return void
+    */
+    public function logAdmin($login, Preferences $preferences)
     {
-        $this->_zdb = $zdb;
+        parent::logAdmin($login, $preferences);
+        $this->impersonated = false;
     }
 
     /**
-     * Method to run on serialize()
-     *
-     * @return string
-     */
-    public function serialize()
+    * Log out user and unset variables
+    *
+    * @return void
+    */
+    public function logOut()
     {
-        $this->_zdb = null;
-
-        $vars = parent::getObjectVars();
-        $vars = array_merge(
-            $vars,
-            get_object_vars($this)
-        );
-
-        return base64_encode(
-            serialize($vars)
-        );
-    }
-
-    /**
-     * Method to run on unserialize()
-     *
-     * @param string $serialized Serialized data
-     *
-     * @return void
-     */
-    public function unserialize($serialized)
-    {
-        $serialized = unserialize(
-            base64_decode($serialized)
-        );
-
-        $locals = array_keys(get_object_vars($this));
-        foreach ($serialized as $key => $value) {
-            if (!in_array($key, $locals)) {
-                $key = substr($key, 1);
-            }
-            $this->$key = $value;
-        }
+        parent::logOut();
+        $this->impersonated = false;
     }
 
     /**
@@ -145,12 +118,26 @@ class Login extends Authentication
     {
         try {
             $select = $this->select();
-            $select->where(array(self::PK => $user));
+            $select->where(
+                [
+                    self::PK => $user,
+                    'email_adh' => $user
+                ],
+                \Zend\Db\Sql\Predicate\PredicateSet::OP_OR
+            );
 
-            $results = $this->_zdb->execute($select);
+            $results = $this->zdb->execute($select);
+            $log_suffix = '';
+            if (isset($_SERVER['REMOTE_ADDR'])) {
+                $log_suffix = $log_suffix . ' Client ' . $_SERVER['REMOTE_ADDR'];
+            }
+            if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                $log_suffix = $log_suffix . ' X-Forwarded-For ' . $_SERVER['HTTP_X_FORWARDED_FOR'];
+            }
+
             if ($results->count() == 0) {
                 Analog::log(
-                    'No entry found for login `' . $user . '`',
+                    'No entry found for login `' . $user . '`' . $log_suffix,
                     Analog::WARNING
                 );
                 return false;
@@ -161,13 +148,13 @@ class Login extends Authentication
                 $active = $row->activite_adh;
                 if (!$row->activite_adh == true) {
                     Analog::log(
-                        'Member `' . $user .' is inactive!`',
+                        'Member `' . $user .' is inactive!`' . $log_suffix,
                         Analog::WARNING
                     );
                     return false;
                 }
 
-                //check if pawwsord matches
+                //check if passwords matches
                 $pw_checked = password_verify($passe, $row->mdp_adh);
                 if (!$pw_checked) {
                     //if password did not match, we try old md5 method
@@ -177,7 +164,7 @@ class Login extends Authentication
                 if ($pw_checked === false) {
                     //Passwords mismatch. Log and return.
                     Analog::log(
-                        'Passwords mismatch for login `' . $user . '`',
+                        'Passwords mismatch for login `' . $user . '`' . $log_suffix,
                         Analog::WARNING
                     );
                     return false;
@@ -210,7 +197,7 @@ class Login extends Authentication
      */
     private function select()
     {
-        $select = $this->_zdb->select(self::TABLE, 'a');
+        $select = $this->zdb->select(self::TABLE, 'a');
         $select->columns(
             array(
                 'id_adh',
@@ -249,8 +236,7 @@ class Login extends Authentication
         $this->name = $row->nom_adh;
         $this->surname = $row->prenom_adh;
         $this->lang = $row->pref_lang;
-        $this->_i18n->changeLanguage($this->lang);
-        $this->_session['lang'] = serialize($this->_i18n);
+        $this->i18n->changeLanguage($this->lang);
         $this->active = $row->activite_adh;
         $this->logged = true;
         if ($row->priorite_statut < Members::NON_STAFF_MEMBERS) {
@@ -285,6 +271,57 @@ class Login extends Authentication
     }
 
     /**
+     * Impersonate user
+     *
+     * @param int $id Member ID
+     *
+     * @return boolean
+     */
+    public function impersonate($id)
+    {
+        if (!$this->isSuperAdmin()) {
+            throw new \RuntimeException(
+                'Only superadmin can impersonate!'
+            );
+        }
+
+        Analog::log('Impersonating `' . $id . '`...', Analog::INFO);
+        try {
+            $select = $this->select();
+            $select->where(array(Adherent::PK => $id));
+
+            $results = $this->zdb->execute($select);
+            if ($results->count() == 0) {
+                Analog::log(
+                    'No entry found for id `' . $id . '`',
+                    Analog::WARNING
+                );
+                return false;
+            } else {
+                $this->impersonated = true;
+                $this->superadmin = false;
+                $row = $results->current();
+                $this->logUser($row);
+                return true;
+            }
+        } catch (AdapterException $e) {
+            Analog::log(
+                'An error occured: ' . $e->getChainedException()->getMessage(),
+                Analog::WARNING
+            );
+            Analog::log($e->getTrace(), Analog::ERROR);
+            return false;
+        } catch (\Exception $e) {
+            Analog::log(
+                'An error occured: ' . $e->getMessage(),
+                Analog::WARNING
+            );
+            Analog::log($e->getTraceAsString(), Analog::ERROR);
+            return false;
+        }
+    }
+
+    /**
      * Does this login already exists ?
      * These function should be used for setting admin login into Preferences
      *
@@ -295,9 +332,9 @@ class Login extends Authentication
     public function loginExists($user)
     {
         try {
-            $select = $this->_zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE);
             $select->where(array(self::PK => $user));
-            $results = $this->_zdb->execute($select);
+            $results = $this->zdb->execute($select);
 
             if ($results->count() > 0) {
                 /* We got results, user already exists */
@@ -316,4 +353,13 @@ class Login extends Authentication
         }
     }
 
+    /**
+     * Is impersonated
+     *
+     * @return boolean
+     */
+    public function isImpersonated()
+    {
+        return $this->impersonated;
+    }
 }

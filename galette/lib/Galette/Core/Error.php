@@ -68,86 +68,93 @@ class Error
     {
         $str = 'PHP %type: %str in %file on line %line';
         $patterns = array('%type', '%str', '%file', '%line');
+        $throw = false;
 
         switch ($errno) {
-        case E_STRICT:
-            Analog::log(
-                str_replace(
-                    $patterns,
-                    array('Strict standards', $errstr, $errfile, $errline),
-                    $str
-                ),
-                Analog::NOTICE
-            );
-            break;
-        case E_DEPRECATED:
-        case E_USER_DEPRECATED:
-            Analog::log(
-                str_replace(
-                    $patterns,
-                    array('Deprecated', $errstr, $errfile, $errline),
-                    $str
-                ),
-                Analog::NOTICE
-            );
-            break;
-        case E_NOTICE:
-        case E_USER_NOTICE:
-            //do not log smarty's annonying 'undefined index' notices
-            if ( !preg_match('/^Undefined index/', $errstr)
-                && !preg_match('/\.tpl\.php$/', $errfile)
-            ) {
+            case E_STRICT:
+                $type = 'Strict standards';
                 Analog::log(
                     str_replace(
                         $patterns,
-                        array('Notice', $errstr, $errfile, $errline),
+                        array($type, $errstr, $errfile, $errline),
                         $str
                     ),
                     Analog::NOTICE
                 );
-            }
-            break;
-        case E_WARNING:
-        case E_USER_WARNING:
-            Analog::log(
-                str_replace(
-                    $patterns,
-                    array('Warning', $errstr, $errfile, $errline),
-                    $str
-                ),
-                Analog::WARNING
-            );
-            break;
-        case E_ERROR:
-        case E_USER_ERROR:
-            Analog::log(
-                str_replace(
-                    $patterns,
-                    array('Fatal', $errstr, $errfile, $errline),
-                    $str
-                ),
-                Analog::ERROR
-            );
-            throw new \ErrorException(
-                'Fatal error: ' . $errstr,
-                $errno,
-                1,
-                $errfile,
-                $errline
-            );
+                break;
+            case E_DEPRECATED:
+            case E_USER_DEPRECATED:
+                $type = 'Deprecated';
+                Analog::log(
+                    str_replace(
+                        $patterns,
+                        array($type, $errstr, $errfile, $errline),
+                        $str
+                    ),
+                    Analog::NOTICE
+                );
+                break;
+            case E_NOTICE:
+            case E_USER_NOTICE:
+                //do not log smarty's annonying 'undefined index' notices
+                if (!preg_match('/^Undefined index/', $errstr)
+                    && !preg_match('/\.tpl\.php$/', $errfile)
+                ) {
+                    $type = 'Notice';
+                    Analog::log(
+                        str_replace(
+                            $patterns,
+                            array($type, $errstr, $errfile, $errline),
+                            $str
+                        ),
+                        Analog::NOTICE
+                    );
+                } else {
+                    $throw = null;
+                }
+                break;
+            case E_WARNING:
+            case E_USER_WARNING:
+                $type = 'Warning';
+                Analog::log(
+                    str_replace(
+                        $patterns,
+                        array($type, $errstr, $errfile, $errline),
+                        $str
+                    ),
+                    Analog::WARNING
+                );
+                break;
+            case E_ERROR:
+            case E_USER_ERROR:
+                $type = 'Fatal';
+                Analog::log(
+                    str_replace(
+                        $patterns,
+                        array($type, $errstr, $errfile, $errline),
+                        $str
+                    ),
+                    Analog::ERROR
+                );
+                $throw = true;
+                break;
+            default:
+                $type = 'Unknown';
+                Analog::log(
+                    str_replace(
+                        $patterns,
+                        array($type, $errstr, $errfile, $errline),
+                        $str
+                    ),
+                    Analog::ERROR
+                );
+                $throw = true;
+                break;
+        }
 
-            exit("FATAL error $errstr at $errfile:$errline");
-        default:
-            Analog::log(
-                str_replace(
-                    $patterns,
-                    array('Unknown', $errstr, $errfile, $errline),
-                    $str
-                ),
-                Analog::ERROR
-            );
+        if ($throw === true || GALETTE_MODE == 'DEV' && $throw !== null) {
             throw new \ErrorException(
-                'Unknown error: ' . $errstr,
+                $type . ': ' . $errstr,
                 $errno,
                 1,
                 $errfile,

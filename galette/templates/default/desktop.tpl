@@ -1,19 +1,21 @@
+{extends file="page.tpl"}
+{block name="content"}
         <section id="desktop">
             <header class="ui-state-default ui-state-active">
                 {_T string="Activities"}
             </header>
             <div>
-                <a id="members" href="{$galette_base_path}gestion_adherents.php" title="{_T string="View, search into and filter member's list"}">{_T string="Members"}</a>
-                <a id="groups" href="{$galette_base_path}gestion_groupes.php" title="{_T string="View and manage groups"}">{_T string="Groups"}</a>
+                <a id="members" href="{path_for name="members"}" title="{_T string="View, search into and filter member's list"}">{_T string="Members"}</a>
+                <a id="groups" href="{path_for name="groups"}" title="{_T string="View and manage groups"}">{_T string="Groups"}</a>
 {if $login->isAdmin() or $login->isStaff()}
-                <a id="contribs" href="{$galette_base_path}gestion_contributions.php?id_adh=all" title="{_T string="View and filter contributions"}">{_T string="Contributions"}</a>
-                <a id="transactions" href="{$galette_base_path}gestion_transactions.php" title="{_T string="View and filter transactions"}">{_T string="Transactions"}</a>
-                <a id="mailings" href="{$galette_base_path}gestion_mailings.php" title="{_T string="Manage mailings that has been sent"}">{_T string="Mailings"}</a>
-                <a id="reminder" href="{$galette_base_path}reminder.php" title="{_T string="Send reminders to late members"}">{_T string="Reminders"}</a>
+                <a id="contribs" href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}]}" title="{_T string="View and filter contributions"}">{_T string="Contributions"}</a><br/>
+                <a id="transactions" href="{path_for name="contributions" data=["type" => {_T string="transactions" domain="routes"}]}" title="{_T string="View and filter transactions"}">{_T string="Transactions"}</a>
+                <a id="mailings" href="{path_for name="mailings"}" title="{_T string="Manage mailings that has been sent"}">{_T string="Mailings"}</a>
+                <a id="reminder" href="{path_for name="reminders"}" title="{_T string="Send reminders to late members"}">{_T string="Reminders"}</a>
 {/if}
 {if $login->isAdmin()}
-                <a id="prefs" href="{$galette_base_path}preferences.php" title="{_T string="Set applications preferences (address, website, member's cards configuration, ...)"}">{_T string="Settings"}</a>
-                <a id="plugins" href="{$galette_base_path}plugins.php" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a>
+                <a id="prefs" href="{path_for name="preferences"}" title="{_T string="Set applications preferences (address, website, member's cards configuration, ...)"}">{_T string="Settings"}</a>
+                <a id="plugins" href="{path_for name="plugins"}" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a>
 {/if}
             </div>
         </section>
@@ -35,6 +37,9 @@
             <input type="checkbox" name="show_dashboard" id="show_dashboard" value="1"{if $show_dashboard} checked="checked"{/if}/>
             <label for="show_dashboard">{_T string="Show dashboard on login"}</label>
         </p>
+{/block}
+
+{block name="javascripts"}
         <script>
             $(function() {
                 $('#show_dashboard').change(function(){
@@ -45,14 +50,10 @@
                         { expires: 365 }
                     );
                     if ( !_checked ) {
-                        var _url = window.location.href;
-                        window.location.replace(
-                            _url.replace(
-                                /\/desktop\.php.*/,
-                                '/gestion_adherents.php'
-                            )
-                        );
+                        var _url = '{path_for name="members"}';
+                        window.location.replace(_url);
                     }
                 });
             });
         </script>
+{/block}

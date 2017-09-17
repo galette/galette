@@ -40,6 +40,8 @@ namespace Galette\Entity;
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
+use Galette\Core\Db;
+use Galette\Core\Login;
 use Galette\DynamicFieldsTypes\Separator;
 use Galette\DynamicFieldsTypes\Text;
 use Galette\DynamicFieldsTypes\Line;
@@ -48,6 +50,7 @@ use Galette\DynamicFieldsTypes\Date;
 use Galette\DynamicFieldsTypes\Boolean;
 use Galette\DynamicFieldsTypes\File;
 use Galette\DynamicFieldsTypes\DynamicFieldType;
+use Galette\Repository\DynamicFieldsTypes;
 
 /**
  * Dynamic fields handler for Galette
@@ -66,311 +69,107 @@ class DynamicFields
 {
     const TABLE = 'dynamic_fields';
 
-    /** Separator field */
-    const SEPARATOR = 0;
-    /** Simple text field */
-    const TEXT = 1;
-    /** Line field */
-    const LINE = 2;
-    /** Choice field (listbox) */
-    const CHOICE = 3;
-    /** Date field */
-    const DATE = 4;
-    /** Boolean field (checkbox) */
-    const BOOLEAN = 5;
-    /** File field (upload) */
-    const FILE = 6;
+    private $dynamic_fields = [];
+    private $current_values = [];
+    private $form_name;
+    private $item_id;
 
-    const PERM_ALL = 0;
-    const PERM_STAFF = 2;
-    const PERM_ADM = 1;
+    private $errors = array();
 
-    const DEFAULT_MAX_FILE_SIZE = 1024;
+    private $zdb;
 
-    private $_id;
-    private $_index;
-    private $_name;
-    private $_permissions;
-    private $_type;
-    private $_type_name;
-    private $_required;
-
-    private $_fields_types_names;
-    private $_perms_names;
-    private $_forms_names;
-
-    private $_errors = array();
+    private $insert_stmt;
+    private $update_stmt;
+    private $delete_stmt;
 
     /**
      * Default constructor
      *
-     * @param null|int|ResultSet $args Either a ResultSet row, its id or its
-     *                                 login or its mail for to load
-     *                                 a specific member, or null to just
-     *                                 instanciate object
+     * @param Db    $zdb      Database instance
+     * @param Login $login    Login instance
+     * @param mixed $instance Object instance
      */
-    public function __construct($args = null)
+    public function __construct(Db $zdb, Login $login, $instance = null)
     {
-        //Fields types names
-        $this->_fields_types_names = array(
-            self::SEPARATOR => _T("separator"),
-            self::TEXT      => _T("free text"),
-            self::LINE      => _T("single line"),
-            self::CHOICE    => _T("choice"),
-            self::DATE      => _T("date"),
-            self::BOOLEAN   => _T("boolean"),
-            self::FILE      => _T("file")
-        );
-
-        //Permissions names
-        $this->_perms_names = array (
-            self::PERM_ALL      => _T("all"),
-            self::PERM_STAFF    => _T("staff"),
-            self::PERM_ADM      => _T("admin")
-        );
-
-        //Forms names
-        $this->_forms_names = array(
-            'adh'       => _T("Members"),
-            'contrib'   => _T("Contributions"),
-            'trans'     => _T("Transactions")
-        );
-    }
-
-    /**
-     * Retrieve fixed values table name
-     *
-     * @param integer $id       Field's id
-     * @param boolean $prefixed Whether table name should be prefixed
-     *
-     * @return string
-     */
-    public static function getFixedValuesTableName($id, $prefixed = false)
-    {
-        $name = 'field_contents_' . $id;
-        if ( $prefixed === true ) {
-            $name = PREFIX_DB . $name;
-        }
-        return $name;
-    }
-
-    /**
-     * Returns an array of fixed valued for a field of type 'choice'.
-     *
-     * @param string $field_id field id
-     *
-     * @return array
-     */
-    public function getFixedValues($field_id)
-    {
-        global $zdb;
-
-        try {
-            $select = $zdb->select(self::getFixedValuesTableName($field_id));
-            $select->columns(
-                array('val')
-            )->order('id');
-
-            $results = $zdb->execute($select);
-
-            $fixed_values = array();
-            if ( $results ) {
-                foreach ( $results as $val ) {
-                    $fixed_values[] = $val->val;
-                }
-            }
-            return $fixed_values;
-        } catch (\Exception $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
+        $this->zdb = $zdb;
+        $this->login = $login;
+        if ($instance !== null) {
+            $this->load($instance);
         }
     }
 
     /**
-     * Retrieve permissions names for display
+     * Load dynaic fields values for specified object
      *
-     * @return array
+     * @param mixed $object Object instance
+     *
+     * @return array|false
      */
-    public function getPermsNames()
+    public function load($object)
     {
-        return $this->_perms_names;
-    }
-
-    /**
-     * Get permission name
-     *
-     * @param int $i Array index
-     *
-     * @return string
-     */
-    public function getPermName($i)
-    {
-        return $this->_perms_names[$i];
-    }
-
-    /**
-     * Retrieve forms names
-     *
-     * @return array
-     */
-    public function getFormsNames()
-    {
-        return $this->_forms_names;
-    }
-
-    /**
-     * Retrieve fields types names
-     *
-     * @return array
-     */
-    public function getFieldsTypesNames()
-    {
-        return $this->_fields_types_names;
-    }
-
-    /**
-     * Get dynamic fields for one entry
-     * It returns an 2d-array with field id as first key
-     * and value index as second key.
-     *
-     * @param string  $form_name Form name in $all_forms
-     * @param string  $item_id   Key to find entry values
-     * @param boolean $quote     If true, values are quoted for HTML output
-     *
-     * @return 2d-array with field id as first key and value index as second key.
-     */
-    public function getFields($form_name, $item_id, $quote)
-    {
-        global $zdb;
+        switch (get_class($object)) {
+            case 'Galette\Entity\Adherent':
+                $this->form_name = 'adh';
+                break;
+            case 'Galette\Entity\Contribution':
+                $this->form_name = 'contrib';
+                break;
+            case 'Galette\Entity\Transaction':
+                $this->form_name = 'trans';
+                break;
+            default:
+                throw new \RuntimeException('Class ' . get_class($object) . ' does not handle dynamic fields!');
+                break;
+        }
 
         try {
-            $select = $zdb->select(self::TABLE, 'a');
+            $this->item_id = $object->id;
+            $fields = new DynamicFieldsTypes($this->zdb);
+            $this->dynamic_fields = $fields->getList($this->form_name, $this->login);
 
+            $select = $this->zdb->select(self::TABLE, 'd');
             $select->join(
-                array('b' => PREFIX_DB . DynamicFieldType::TABLE),
-                'a.' . DynamicFieldType::PK . '=b.' . DynamicFieldType::PK,
-                array('field_type')
+                array('t' => PREFIX_DB . DynamicFieldType::TABLE),
+                'd.' . DynamicFieldType::PK . '=t.' . DynamicFieldType::PK,
+                array('field_id')
             )->where(
                 array(
-                    'item_id'       => $item_id,
-                    'a.field_form'  => $form_name
+                    'item_id'       => $this->item_id,
+                    'd.field_form'  => $this->form_name
                 )
             );
 
-            $results = $zdb->execute($select);
+            if (count($this->dynamic_fields)) {
+                $select->where->in('d.' . DynamicFieldType::PK, array_keys($this->dynamic_fields));
+            }
 
-            if ( $results->count() > 0 ) {
+            $results = $this->zdb->execute($select);
+            if ($results->count() > 0) {
                 $dfields = array();
 
                 foreach ($results as $f) {
-                    $df = $this->getFieldType($f->field_type);
-
-                    $value = $f->field_val;
-                    if ( $quote ) {
-                        if ( $df->hasFixedValues() ) {
-                            $choices = $this->getFixedValues($f->field_id);
-                            $value = $choices[$value];
+                    if (isset($this->dynamic_fields[$f->{DynamicFieldType::PK}])) {
+                        $field = $this->dynamic_fields[$f->{DynamicFieldType::PK}];
+                        if ($field->hasFixedValues()) {
+                            $choices = $field->getValues();
+                            $f['text_val'] = $choices[$f->field_val];
                         }
-                    }
-                    $array_index = 1;
-                    if ( isset($dfields[$f->field_id]) ) {
-                        $array_index = count($dfields[$f->field_id]) + 1;
-                    }
-                    $dfields[$f->field_id][$array_index] = $value;
-                }
-                return $dfields;
-            } else {
-                return false;
-            }
-        } catch (\Exception $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
-            return false;
-        }
-    }
-
-    /**
-     * Returns an array of all kind of fields to display.
-     *
-     * @param string  $form_name  Form name in $all_forms
-     * @param array   $all_values Values as returned by
-     *                            self::extractPosted
-     * @param array   $disabled   Array that will be filled with fields
-     *                            that are discarded as key
-     * @param boolean $edit       Must be true if prepared for edition
-     *
-     * @return array
-     */
-    public function prepareForDisplay(
-        $form_name, $all_values, $disabled, $edit
-    ) {
-        global $zdb, $login;
-
-        try {
-            $select = $zdb->select(DynamicFieldType::TABLE);
-
-            $select
-                ->where(array('field_form' => $form_name))
-                ->order('field_index');
-
-            $results = $zdb->execute($select);
-
-            $dfields = array();
-            if ( $results ) {
-                $extra = $edit ? 1 : 0;
-
-                foreach ( $results as $r ) {
-                    $df = $this->getFieldType($r['field_type']);
-                    if ( (int)$r['field_type'] === self::CHOICE
-                        || (int)$r['field_type'] === self::TEXT
-                        || (int)$r['field_type'] === self::DATE
-                        || (int)$r['field_type'] === self::BOOLEAN
-                        || (int)$r['field_type'] === self::FILE
-                    ) {
-                        $r['field_repeat'] = 1;
-                    }
-                    $field_id = $r['field_id'];
-                    $r['field_name'] = _T($r['field_name']);
-                    //store field repetition config as field_repeat may change
-                    $r['config_field_repeat'] = $r['field_repeat'];
-
-                    if ( $df->isMultiValued() ) {
-                         // Infinite multi-valued field
-                        if ( $r['field_repeat'] == 0 ) {
-                            if ( isset($all_values[$r['field_id']]) ) {
-                                $nb_values = count($all_values[$r['field_id']]);
-                            } else {
-                                $nb_values = 0;
-                            }
-                            if ( isset($all_values) ) {
-                                $r['field_repeat'] = $nb_values + $extra;
-                            } else {
-                                $r['field_repeat'] = 1 + $extra;
-                            }
-                        }
+                        $this->current_values[$f->{DynamicFieldType::PK}][] = array_filter(
+                            (array)$f,
+                            function ($k) {
+                                return $k != DynamicFieldType::PK;
+                            },
+                            ARRAY_FILTER_USE_KEY
+                        );
                     } else {
-                        $r['field_repeat'] = 1;
-                        if ( $df->hasFixedValues() ) {
-                            $r['choices'] = $this->getFixedValues($field_id);
-                        }
+                        Analog::log(
+                            'Dynamic values found for ' . get_class($object) . ' #' . $this->item_id .
+                            '; but no dynamic field configured!',
+                            Analog::WARNING
+                        );
                     }
-
-                    //Disable field depending on ACLs
-                    if ( !$login->isAdmin()
-                        && !$login->isStaff()
-                        && ($r['field_perm'] == self::PERM_ADM
-                        || $r['field_perm'] == self::PERM_STAFF)
-                    ) {
-                        $disabled[$field_id] = 'disabled';
-                    }
-
-                    $dfields[] = $r;
                 }
-                return $dfields;
+                return true;
             } else {
                 return false;
             }
@@ -381,408 +180,6 @@ class DynamicFields
             );
             return false;
         }
-    }
-
-    /**
-     * Get fields descriptions
-     *
-     * @param string $form_name Form name
-     *
-     * @return array
-     */
-    public function getFieldsDescription($form_name)
-    {
-        global $zdb;
-
-        try {
-            $select = $zdb->select(DynamicFieldType::TABLE);
-            $select
-                ->where(array('field_form' => $form_name))
-                ->order('field_id');
-
-            $results = $zdb->execute($select);
-
-            $dfields = array();
-            if ( $results ) {
-                foreach ( $results as $r ) {
-                    $dfields[$r['field_id']] = $r;
-                }
-                return $dfields;
-            } else {
-                return false;
-            }
-        } catch (\Exception $e) {
-            Analog::log(
-                __METHOD__ . ' | ' . $e->getMessage(),
-                Analog::WARNING
-            );
-        }
-    }
-
-    /**
-     * Extract posted values for dynamic fields
-     *
-     * @param array $post     Array containing the posted values
-     * @param array $files    Array containing the posted files
-     * @param array $disabled Array with fields that are discarded as key
-     *
-     * @return array
-     */
-    public function extractPosted($post, $files, $disabled, $member_id)
-    {
-        if ( $post != null ) {
-            $dfields = array();
-
-            // initialize all boolean fields to 0
-            $descriptions = $this->getFieldsDescription('adh');
-            while (list ($field_id, $description) = each($descriptions)) {
-                if ((int) $description['field_type'] == self::BOOLEAN) {
-                    $dfields[$field_id][1] = 0;
-                }
-            }
-
-            while ( list($key, $value) = each($post) ) {
-                // if the field is enabled, check it
-                if ( !isset($disabled[$key]) ) {
-                    if (substr($key, 0, 11) == 'info_field_') {
-                        list($field_id, $val_index) = explode('_', substr($key, 11));
-                        if ( is_numeric($field_id)
-                            && is_numeric($val_index)
-                        ) {
-                            if ((int) $descriptions[$field_id]['field_type'] == self::FILE) {
-                                # delete checkbox
-                                $filename = sprintf(
-                                    'member_%d_field_%d_value_%d',
-                                    $member_id,
-                                    $field_id,
-                                    $val_index
-                                );
-                                unlink(GALETTE_FILES_PATH . $filename);
-                                $dfields[$field_id][$val_index] = '';
-                            } else {
-                                # actual field value
-                                $dfields[$field_id][$val_index] = $value;
-                            }
-                        }
-                    }
-                }
-            }
-
-            while ( list($key, $value) = each($files) ) {
-                // if the field is disabled, skip it
-                if (isset($disabled[$key]) ) {
-                    continue;
-                }
-
-                if (substr($key, 0, 11) != 'info_field_') {
-                    continue;
-                }
-
-                list($field_id, $val_index) = explode('_', substr($key, 11));
-                if (! is_numeric($field_id) || ! is_numeric($val_index)) {
-                    continue;
-                }
-
-                if ($files[$key]['error'] !== UPLOAD_ERR_OK ) {
-                    Analog::log("file upload error", Analog::ERROR);
-                    continue;
-                }
-
-                $tmp_filename = $files[$key]['tmp_name'];
-                if ( $tmp_filename == '' ) {
-                    Analog::log("empty temporary filename", Analog::ERROR);
-                    continue;
-                }
-
-                if (! is_uploaded_file($tmp_filename) ) {
-                    Analog::log("not an uploaded file", Analog::ERROR);
-                    continue;
-                }
-
-                $max_size =
-                    $descriptions[$field_id]['field_size'] === 'NULL' ?
-                    self::DEFAULT_MAX_FILE_SIZE            * 1024:
-                    $descriptions[$field_id]['field_size'] * 1024;
-                if ($files[$key]['size'] > $max_size ) {
-                    Analog::log(
-                        "file too large: " . $files[$key]['size'] . " Ko, vs $max_size Ko allowed",
-                        Analog::ERROR
-                    );
-                    $this->_errors[] = preg_replace(
-                        '|%d|',
-                        $max_size,
-                        _T("File is too big. Maximum allowed size is %dKo")
-                    );
-                    continue;
-                }
-
-                $new_filename = sprintf(
-                    'member_%d_field_%d_value_%d',
-                    $member_id,
-                    $field_id,
-                    $val_index
-                );
-                Analog::log("new file: $new_filename", Analog::DEBUG);
-
-                move_uploaded_file(
-                    $tmp_filename,
-                    GALETTE_FILES_PATH . $new_filename
-                );
-                $dfields[$field_id][$val_index] = $files[$key]['name'];
-            }
-
-            return $dfields;
-        }
-    }
-
-    /**
-     * Set dynamic fields for a given entry
-     *
-     * @param string $form_name Form name in $all_forms
-     * @param string $item_id   Key to find entry values
-     * @param string $field_id  Id assign to the field on creation
-     * @param string $val_index For multi-valued fields, it is the rank
-     *                          of this particular value
-     * @param string $field_val The value itself
-     *
-     * @return boolean
-     */
-    private function _setField(
-        $form_name, $item_id, $field_id, $val_index, $field_val
-    ) {
-        global $zdb;
-        $ret = false;
-
-        try {
-            $zdb->connection->beginTransaction();
-
-            $select = $zdb->select(self::TABLE);
-            $select->columns(
-                array('cnt' => new Expression('COUNT(*)'))
-            )->where(
-                array(
-                    'item_id'       => $item_id,
-                    'field_form'    => $form_name,
-                    'field_id'      => $field_id,
-                    'val_index'     => $val_index
-                )
-            );
-
-            $results = $zdb->execute($select);
-            $result = $results->current();
-            $count = $result->cnt;
-
-            if ( $count > 0 ) {
-                $where = $select->where;
-
-                if ( trim($field_val) == '' ) {
-                    Analog::log(
-                        'Field ' . $field_id . ' is empty (index:' .
-                        $val_index . ')',
-                        Analog::DEBUG
-                    );
-
-                    $delete = $zdb->delete(self::TABLE);
-                    $delete->where($where);
-                    $zdb->execute($delete);
-                } else {
-                    Analog::log(
-                        'Field ' . $field_id . ' will be set to value: ' .
-                        $field_val . ' (index: ' . $val_index . ')',
-                        Analog::DEBUG
-                    );
-
-                    $update = $zdb->update(self::TABLE);
-                    $update->set(
-                        array('field_val' => $field_val)
-                    )->where($where);
-                    $zdb->execute($update);
-                }
-            } else {
-                if ( $field_val !== '' ) {
-                    $values = array(
-                        'item_id'    => $item_id,
-                        'field_form' => $form_name,
-                        'field_id'   => $field_id,
-                        'val_index'  => $val_index,
-                        'field_val'  => $field_val
-                    );
-
-                    $insert = $zdb->insert(self::TABLE);
-                    $insert->values($values);
-                    $zdb->execute($insert);
-                }
-            }
-
-            $zdb->connection->commit();
-            return true;
-        } catch (\Exception $e) {
-            $zdb->connection->rollBack();
-            Analog::log(
-                'An error occured storing dynamic field. Form name: ' . $form_name .
-                '; item_id:' . $item_id . '; field_id: ' . $field_id .
-                '; val_index: ' . $val_index . '; field_val:' . $field_val .
-                ' | Error was: ' . $e->getMessage(),
-                Analog::ERROR
-            );
-            return false;
-        }
-    }
-
-    /**
-     * Set all dynamic fields for a given entry
-     *
-     * @param string $form_name  Form name in $all_forms
-     * @param string $item_id    Key to find entry values
-     * @param array  $all_values Values as returned by
-     *                           self::extractPosted.
-     *
-     * @return boolean
-     */
-    public function setAllFields($form_name, $item_id, $all_values)
-    {
-        $ret = true;
-        while ( list($field_id, $contents) = each($all_values) ) {
-            while ( list($val_index, $field_val) = each($contents) ) {
-                $res = $this->_setField(
-                    $form_name,
-                    $item_id,
-                    $field_id,
-                    $val_index,
-                    $field_val
-                );
-                if ( !$res ) {
-                    $ret = false;
-                }
-            }
-        }
-        return $ret;
-    }
-
-    /**
-     * Get correct field type instance
-     *
-     * @param int $t  field type
-     * @param int $id optionnal dynamic field id (ot laod data)
-     *
-     * @return DynamicFieldType
-     */
-    public function getFieldType($t, $id = null)
-    {
-        $df = null;
-        switch ( $t ) {
-        case self::SEPARATOR:
-            $df = new \Galette\DynamicFieldsTypes\Separator($id);
-            break;
-        case self::TEXT:
-            $df = new \Galette\DynamicFieldsTypes\Text($id);
-            break;
-        case self::LINE:
-            $df = new \Galette\DynamicFieldsTypes\Line($id);
-            break;
-        case self::CHOICE:
-            $df = new \Galette\DynamicFieldsTypes\Choice($id);
-            break;
-        case self::DATE:
-            $df = new \Galette\DynamicFieldsTypes\Date($id);
-            break;
-        case self::BOOLEAN:
-            $df = new \Galette\DynamicFieldsTypes\Boolean($id);
-            break;
-        case self::FILE:
-            $df = new \Galette\DynamicFieldsTypes\File($id);
-            break;
-        default:
-            throw new \Exception('Unknown field type ' . $t . '!');
-            break;
-        }
-        return $df;
-    }
-
-    /**
-     * Load field from its id
-     *
-     * @param int $id field id
-     *
-     * @return DynamicFieldType or false
-     */
-    public function loadFieldType($id)
-    {
-        global $zdb;
-
-        try {
-            $select = $zdb->select(DynamicFieldType::TABLE);
-            $select->columns(
-                array('field_type')
-            )->where('field_id = ' . $id);
-
-            $results = $zdb->execute($select);
-            $result = $results->current();
-            $field_type = $result->field_type;
-            if ( $field_type !== false ) {
-                return $this->getFieldType($field_type, $id);
-            } else {
-                return false;
-            }
-        } catch (\Exception $e) {
-            Analog::log(
-                __METHOD__ . ' | Unable to retrieve field `' . $id .
-                '` informations | ' . $e->getMessage(),
-                Analog::ERROR
-            );
-            return false;
-        }
-    }
-
-    /**
-     * Is field duplicated?
-     *
-     * @param Db     $zdb        Database instance
-     * @param string $form_name  Form name
-     * @param string $field_name Field name
-     * @param string $field_id   Field ID
-     *
-     * @return boolean
-     */
-    public function isDuplicate($zdb, $form_name, $field_name, $field_id = null)
-    {
-        //let's consider field is duplicated, in case of future errors
-        $duplicated = true;
-        try {
-            $select = $zdb->select(DynamicFieldType::TABLE);
-            $select->columns(
-                array(
-                    'cnt' => new Expression('COUNT(field_id)')
-                )
-            )->where(
-                array(
-                    'field_form' => $form_name,
-                    'field_name' => $field_name
-                )
-            );
-
-            if ( $field_id !== null ) {
-                $select->where->addPredicate(
-                    new PredicateExpression(
-                        'field_id NOT IN (?)',
-                        array($field_id)
-                    )
-                );
-            }
-
-            $results = $zdb->execute($select);
-            $result = $results->current();
-            $dup = $result->cnt;
-            if ( !$dup > 0 ) {
-                $duplicated = false;
-            }
-        } catch (\Exception $e) {
-            Analog::log(
-                'An error occured checking field duplicity' . $e->getMessage(),
-                Analog::ERROR
-            );
-        }
-        return $duplicated;
     }
 
     /**
@@ -792,6 +189,233 @@ class DynamicFields
      */
     public function getErrors()
     {
-        return $this->_errors;
+        return $this->errors;
+    }
+
+    /**
+     * Get fields
+     *
+     * @return array
+     */
+    public function getFields()
+    {
+        return $this->dynamic_fields;
+    }
+
+    /**
+     * Get values
+     *
+     * @param integer $field Field ID
+     *
+     * @return array
+     */
+    public function getValues($field)
+    {
+        if (isset($this->current_values[$field])) {
+            return $this->current_values[$field];
+        } else {
+            $this->current_values[$field][] = [
+                'item_id'       => '',
+                'field_form'    => $this->dynamic_fields[$field]->getForm(),
+                'val_index'     => '',
+                'field_val'     => '',
+                'is_new'        => true
+            ];
+        }
+    }
+
+    /**
+     * Set field value
+     *
+     * @param integer $item  Item ID
+     * @param integer $field Field ID
+     * @param integer $index Value index
+     * @param mixed   $value Value
+     *
+     * @return void
+     */
+    public function setValue($item, $field, $index, $value)
+    {
+        $idx = $index - 1;
+        if (isset($this->current_values[$field][$idx])) {
+            $this->current_values[$field][$idx]['field_val'] = $value;
+        } else {
+            $this->current_values[$field][$idx] = [
+                'item_id'       => $item,
+                'field_form'    => $this->dynamic_fields[$field]->getForm(),
+                'val_index'     => $index,
+                'field_val'     => $value,
+                'is_new'        => true
+            ];
+        }
+    }
+
+    /**
+     * Unset field value
+     *
+     * @param integer $item  Item ID
+     * @param integer $field Field ID
+     * @param integer $index Value index
+     *
+     * @return void
+     */
+    public function unsetValue($item, $field, $index)
+    {
+        $idx = $index - 1;
+        if (isset($this->current_values[$field][$idx])) {
+            unset($this->current_values[$field][$idx]);
+        }
+    }
+
+    /**
+     * Store values
+     *
+     * @return boolean
+     */
+    public function storeValues()
+    {
+        try {
+            $this->zdb->connection->beginTransaction();
+
+            $this->handleRemovals();
+
+            foreach ($this->current_values as $field_id => $values) {
+                foreach ($values as $value) {
+                    $value[DynamicFieldType::PK] = $field_id;
+                    if (isset($value['is_new'])) {
+                        if ($this->insert_stmt === null) {
+                            $insert = $this->zdb->insert(self::TABLE);
+                            $insert->values([
+                                'item_id'       => ':item_id',
+                                'field_id'      => ':field_id',
+                                'field_form'    => ':field_form',
+                                'val_index'     => ':val_index',
+                                'field_val'     => ':field_val'
+                            ]);
+                            $this->insert_stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
+                        }
+                        unset($value['is_new']);
+                        $this->insert_stmt->execute($value);
+                    } else {
+                        if ($this->update_stmt === null) {
+                            $update = $this->zdb->update(self::TABLE);
+                            $update->set([
+                                'field_val'     => ':field_val',
+                                'val_index'     => ':val_index'
+                            ])->where([
+                                'item_id'       => ':item_id',
+                                'field_id'      => ':field_id',
+                                'field_form'    => ':field_form',
+                                'val_index'     => ':val_index'
+                            ]);
+                            $this->update_stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
+                        }
+                        $params = [
+                            'field_val' => $value['field_val'],
+                            'val_index' => $value['val_index'],
+                            'where1'    => $value['item_id'],
+                            'where2'    => $value['field_id'],
+                            'where3'    => $value['field_form'],
+                            'where4'    => isset($value['old_val_index']) ?
+                                $value['old_val_index'] :
+                                $value['val_index']
+                        ];
+                        $this->update_stmt->execute($params);
+                    }
+                }
+            }
+
+            $this->zdb->connection->commit();
+            return true;
+        } catch (\Exception $e) {
+            $this->zdb->connection->rollBack();
+            Analog::log(
+                'An error occured storing dynamic field. Form name: ' . $this->form_name .
+                ' | Error was: ' . $e->getMessage(),
+                Analog::ERROR
+            );
+            return false;
+        }
+    }
+
+    /**
+     * Handle values that have been removed
+     *
+     * @return boolean
+     */
+    private function handleRemovals()
+    {
+        $fields = new DynamicFieldsTypes($this->zdb);
+        $this->dynamic_fields = $fields->getList($this->form_name, $this->login);
+
+        $select = $this->zdb->select(self::TABLE, 'd');
+        $select->join(
+            array('t' => PREFIX_DB . DynamicFieldType::TABLE),
+            'd.' . DynamicFieldType::PK . '=t.' . DynamicFieldType::PK,
+            array('field_id')
+        )->where(
+            array(
+                'item_id'       => $this->item_id,
+                'd.field_form'  => $this->form_name
+            )
+        );
+
+        $fromdb = [];
+        $results = $this->zdb->execute($select);
+        if ($results->count() > 0) {
+            foreach ($results as $result) {
+                $fromdb[$result->field_id . '_' . $result->val_index] = [
+                    'where1'    => $this->item_id,
+                    'where2'    => $this->form_name,
+                    'where3'    => $result->field_id,
+                    'where4'    => $result->val_index
+                ];
+            }
+        }
+
+        if (!count($fromdb)) {
+            //no entry in database, nothing to do.
+            return;
+        }
+
+        foreach ($this->current_values as $field_id => $values) {
+            foreach ($values as $value) {
+                $key = $field_id . '_' . $value['val_index'];
+                var_dump($key);
+                if (isset($fromdb[$key])) {
+                    unset($fromdb[$key]);
+                }
+            }
+        }
+
+        if (count($fromdb)) {
+            foreach ($fromdb as $entry) {
+                if ($this->delete_stmt === null) {
+                    $delete = $this->zdb->delete(self::TABLE);
+                    $delete->where([
+                        'item_id'       => ':item_id',
+                        'field_form'    => ':field_form',
+                        'field_id'      => ':field_id',
+                        'val_index'     => ':val_index'
+                    ]);
+                    $this->delete_stmt = $this->zdb->sql->prepareStatementForSqlObject($delete);
+                }
+                $this->delete_stmt->execute($entry);
+                //update val index
+                $field_id = $entry['where3'];
+                if (isset($this->current_values[$field_id])
+                    && count($this->current_values[$field_id])
+                ) {
+                    $val_index = (int)$entry['where4'];
+                    foreach ($this->current_values[$field_id] as &$current) {
+                        if ((int)$current['val_index'] === $val_index + 1) {
+                            $current['val_index'] = $val_index;
+                            ++$val_index;
+                            $current['old_val_index'] = $val_index;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

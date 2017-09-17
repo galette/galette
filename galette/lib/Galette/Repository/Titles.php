@@ -63,7 +63,7 @@ class Titles
     const MRS = 2;
     const MISS = 3;
 
-    private static $_defaults = array(
+    private static $defaults = array(
         array(
             'id_title'      => 1,
             'short_label'   => 'Mr.',
@@ -87,7 +87,7 @@ class Titles
     {
         $otitles = self::getList($zdb);
         $titles = array();
-        foreach ( $otitles as $t ) {
+        foreach ($otitles as $t) {
             $titles[$t->id] = $t->short;
         }
         return $titles;
@@ -108,7 +108,7 @@ class Titles
         $results = $zdb->execute($select);
 
         $pols = array();
-        foreach ( $results as $r ) {
+        foreach ($results as $r) {
             $pk = self::PK;
             $pols[$r->$pk] = new Title($r);
         }
@@ -140,10 +140,10 @@ class Titles
             );
             $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
-            foreach ( self::$_defaults as $d ) {
+            foreach (self::$defaults as $d) {
                 $short = _T($d['short_label']);
                 $long = null;
-                if ( $d['long_label'] !== null ) {
+                if ($d['long_label'] !== null) {
                     $long = _T($d['long_label']);
                 } else {
                     $long = 'NULL';

@@ -50,22 +50,27 @@ namespace Galette\Core;
  * @since     Available since 0.7dev - 2009-02-28
  */
 
-abstract class Authentication implements \Serializable
+abstract class Authentication
 {
-    private $_login;
-    private $_passe;
-    private $_name;
-    private $_surname;
-    private $_admin = false;
-    private $_id;
-    private $_lang;
-    private $_logged = false;
-    private $_active = false;
-    private $_superadmin = false;
-    private $_staff = false;
-    private $_uptodate = false;
-    private $_managed_groups;
-    private $_cron = false;
+    const ACCESS_USER = 0;
+    const ACCESS_MANAGER = 1;
+    const ACCESS_STAFF = 2;
+    const ACCESS_ADMIN = 3;
+    const ACCESS_SUPERADMIN = 4;
+
+    private $login;
+    private $name;
+    private $surname;
+    private $admin = false;
+    private $id;
+    private $lang;
+    private $logged = false;
+    private $active = false;
+    private $superadmin = false;
+    private $staff = false;
+    private $uptodate = false;
+    private $managed_groups = [];
+    private $cron = false;
 
     /**
     * Logs in user.
@@ -90,23 +95,24 @@ abstract class Authentication implements \Serializable
     /**
     * Login for the superuser
     *
-    * @param string $login name
+    * @param string      $login       name
+    * @param Preferences $preferences Preferences instance
     *
     * @return void
     */
     public function logAdmin($login, Preferences $preferences)
     {
-        $this->_logged = true;
-        $this->_name = 'Admin';
-        $this->_login = $login;
-        $this->_admin = true;
-        $this->_active = true;
-        $this->_staff = false;
-        $this->_uptodate = false;
-        $this->_id = 0;
-        $this->_lang = $preferences->pref_lang;
+        $this->logged = true;
+        $this->name = 'Admin';
+        $this->login = $login;
+        $this->admin = true;
+        $this->active = true;
+        $this->staff = false;
+        $this->uptodate = false;
+        $this->id = 0;
+        $this->lang = $preferences->pref_lang;
         //a flag for super admin only, since it's not a regular user
-        $this->_superadmin = true;
+        $this->superadmin = true;
     }
 
     /**
@@ -121,12 +127,12 @@ abstract class Authentication implements \Serializable
         //known cronable files
         $ok = array('reminder');
 
-        if ( in_array($name, $ok) ) {
-            $this->_logged = true;
-            $this->_cron = true;
+        if (in_array($name, $ok)) {
+            $this->logged = true;
+            $this->cron = true;
             $this->login = 'cron';
         } else {
-            die('Not authorized!');
+            trigger_error('Not authorized!', E_USER_ERROR);
         }
     }
 
@@ -137,15 +143,15 @@ abstract class Authentication implements \Serializable
     */
     public function logOut()
     {
-        $this->_id = null;
-        $this->_logged = false;
-        $this->_name = null;
-        $this->_login = null;
-        $this->_admin = false;
-        $this->_active = false;
-        $this->_superadmin = false;
-        $this->_staff = false;
-        $this->_uptodate = false;
+        $this->id = null;
+        $this->logged = false;
+        $this->name = null;
+        $this->login = null;
+        $this->admin = false;
+        $this->active = false;
+        $this->superadmin = false;
+        $this->staff = false;
+        $this->uptodate = false;
     }
 
     /**
@@ -155,7 +161,7 @@ abstract class Authentication implements \Serializable
     */
     public function isLogged()
     {
-        return $this->_logged;
+        return $this->logged;
     }
 
     /**
@@ -165,7 +171,7 @@ abstract class Authentication implements \Serializable
     */
     public function isAdmin()
     {
-        return $this->_admin;
+        return $this->admin;
     }
 
     /**
@@ -175,7 +181,7 @@ abstract class Authentication implements \Serializable
     */
     public function isSuperAdmin()
     {
-        return $this->_superadmin;
+        return $this->superadmin;
     }
 
     /**
@@ -185,7 +191,7 @@ abstract class Authentication implements \Serializable
     */
     public function isActive()
     {
-        return $this->_active;
+        return $this->active;
     }
 
     /**
@@ -195,7 +201,7 @@ abstract class Authentication implements \Serializable
      */
     public function isStaff()
     {
-        return $this->_staff;
+        return $this->staff;
     }
 
     /**
@@ -205,7 +211,7 @@ abstract class Authentication implements \Serializable
      */
     public function isCron()
     {
-        return $this->_cron;
+        return $this->cron;
     }
 
     /**
@@ -213,21 +219,30 @@ abstract class Authentication implements \Serializable
      * If no group id is specified, check if user is manager for at
      * least one group.
      *
-     * @param int $id_group Group identifier
+     * @param array|int $id_group Group(s) identifier(s)
      *
      * @return boolean
      */
     public function isGroupManager($id_group = null)
     {
-        if ( $this->isAdmin() || $this->isStaff() ) {
+        $manager = false;
+        if ($this->isAdmin() || $this->isStaff()) {
             return true;
         } else {
-            if ( $id_group === null ) {
-                return count($this->_managed_groups) > 0;
+            if ($id_group === null) {
+                $manager = count($this->managed_groups) > 0;
             } else {
-                return in_array($id_group, $this->_managed_groups);
+                $groups = (array)$id_group;
+
+                foreach ($groups as $group) {
+                    if (in_array($group, $this->managed_groups)) {
+                        $manager = true;
+                        break;
+                    }
+                }
             }
         }
+        return $manager;
     }
 
     /**
@@ -239,7 +254,7 @@ abstract class Authentication implements \Serializable
      */
     public function isUp2Date()
     {
-        return $this->_uptodate;
+        return $this->uptodate;
     }
 
     /**
@@ -249,10 +264,10 @@ abstract class Authentication implements \Serializable
      *
      * @return String
      */
-    public function loggedInAs($only_name=false)
+    public function loggedInAs($only_name = false)
     {
-        $n = $this->_name . ' ' . $this->_surname . ' (' . $this->_login . ')';
-        if ( $only_name === false ) {
+        $n = $this->name . ' ' . $this->surname . ' (' . $this->login . ')';
+        if ($only_name === false) {
             return str_replace(
                 '%login',
                 $n,
@@ -273,9 +288,8 @@ abstract class Authentication implements \Serializable
     public function __get($name)
     {
         $forbidden = array('logged', 'admin', 'active');
-        $rname = '_' . $name;
-        if ( !in_array($name, $forbidden) && isset($this->$rname) ) {
-            return $this->$rname;
+        if (!in_array($name, $forbidden) && isset($this->$name)) {
+            return $this->$name;
         } else {
             return false;
         }
@@ -291,17 +305,27 @@ abstract class Authentication implements \Serializable
     */
     public function __set($name, $value)
     {
-        $name = '_' . $name;
         $this->$name = $value;
     }
 
     /**
-     * Apply get_object_vars to get private properties
+     * get user access level
      *
-     * @return array
+     * @return integer
      */
-    protected function getObjectVars()
+    public function getAccessLevel()
     {
-        return get_object_vars($this);
+
+        if ($this->isSuperAdmin()) {
+            return self::ACCESS_SUPERADMIN;
+        } elseif ($this->isAdmin()) {
+            return self::ACCESS_ADMIN;
+        } elseif ($this->isStaff()) {
+            return self::ACCESS_STAFF;
+        } elseif ($this->isGroupManager()) {
+            return self::ACCESS_MANAGER;
+        } else {
+            return self::ACCESS_USER;
+        }
     }
 }

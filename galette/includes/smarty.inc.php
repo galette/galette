@@ -41,20 +41,8 @@ if (!defined('GALETTE_ROOT')) {
        die("Sorry. You can't access directly to this file");
 }
 
-if ( !defined('GALETTE_TPL_SUBDIR') ) {
-    define('GALETTE_TPL_SUBDIR', 'templates/' . $preferences->pref_theme . '/');
-}
-$tpl = new Galette\Core\Smarty(
-    $plugins,
-    $i18n,
-    $preferences,
-    $logo,
-    $login,
-    $session
-);
-$tpl->muteExpectedErrors();
-
-$tpl->registerClass('GaletteMail', '\Galette\Core\GaletteMail');
+$smarty->muteExpectedErrors();
+$smarty->registerClass('GaletteMail', '\Galette\Core\GaletteMail');
 
 /**
  * Return member name. Smarty cannot directly use static functions
@@ -66,16 +54,17 @@ $tpl->registerClass('GaletteMail', '\Galette\Core\GaletteMail');
  */
 function getMemberName($params)
 {
+    global $container;
     extract($params);
-    return Galette\Entity\Adherent::getSName($id);
+    return Galette\Entity\Adherent::getSName($container->get('zdb'), $id);
 }
-$tpl->registerPlugin(
+$smarty->registerPlugin(
     'function',
     'memberName',
     'getMemberName'
 );
 
-$s = new Galette\Entity\Status();
+$s = new Galette\Entity\Status($container->get('zdb'));
 $statuses_list = $s->getList();
 
 /**
@@ -91,9 +80,8 @@ function getStatusLabel($params)
     global $statuses_list;
     return $statuses_list[$id];
 }
-$tpl->registerPlugin(
+$smarty->registerPlugin(
     'function',
     'statusLabel',
     'getStatusLabel'
 );
-

@@ -18,21 +18,29 @@
         </thead>
         <tfoot>
             <tr>
-                <td>&nbsp;</td>
-                <td class="left">
-                    <input size="40" type="text" name="{$fields.$class.name}"/>
+                <td data-scope="row">
+                    <span class="row-title">
+{if $class eq 'Status'}
+                        {_T string="New status"}
+{else}
+                        {_T string="New contribution type"}
+{/if}
+                    </span>
                 </td>
-                <td class="left">
+                <td class="left" data-title="{_T string="Name"}">
+                    <input size="40" type="text" name="{$fields.libelle}"/>
+                </td>
+                <td class="left" data-title="{if $class == 'ContributionsTypes'}{_T string="Extends membership?"}{else}{_T string="Priority"}{/if}">
 {if $class == 'ContributionsTypes'}
-                    <select name="{$fields.$class.field}">
+                    <select name="{$fields.third}">
                         <option value="0" selected="selected">{_T string="No"}</option>
                         <option value="1">{_T string="Yes"}</option>
                     </select>
 {elseif $class == 'Status'}
-                    <input size="4" type="text" name="{$fields.$class.field}" value="99" />
+                    <input size="4" type="text" name="{$fields.third}" value="99" />
 {/if}
                 </td>
-                <td class="center">
+                <td class="center actions_row">
                     <input type="hidden" name="new" value="1" />
                     <input type="hidden" name="class" value="{$class}" />
                     <input type="submit" name="valid" id="btnadd" value="{_T string="Add"}"/>
@@ -42,8 +50,15 @@
         <tbody>
 {foreach from=$entries item=entry key=eid name=allentries}
             <tr class="{if $smarty.foreach.allentries.iteration % 2 eq 0}even{else}odd{/if}">
-                <td>{$eid}</td>
-                <td class="left">
+                <td data-scope="row">
+                    {$eid}
+                    <span class="row-title">
+                        <a href="{path_for name="editEntitled" data=["class" => $url_class, "action" => {_T string="edit" domain="routes"}, "id" => $eid]}">
+                            {_T string="%s field" pattern="/%s/" replace=$entry.name}
+                        </a>
+                    </span>
+                </td>
+                <td class="left" data-title="{_T string="Name"}">
 
                     {if $class == 'Status'}
                         {if $entry.extra < 30}
@@ -54,7 +69,7 @@
                     {/if}
                     {$entry.name|escape}
                 </td>
-                <td>
+                <td data-title="{if $class == 'ContributionsTypes'}{_T string="Extends membership?"}{else}{_T string="Priority"}{/if}">
     {if $class == 'ContributionsTypes'}
                     {if $entry.extra eq 1}
                         {_T string="Yes"}
@@ -66,10 +81,10 @@
     {/if}
                 </td>
                 <td class="center actions_row">
-                    <a href="gestion_intitules.php?class={$class}&amp;id={$eid}">
+                    <a href="{path_for name="editEntitled" data=["class" => $url_class, "action" => {_T string="edit" domain="routes"}, "id" => $eid]}">
                         <img src="{$template_subdir}images/icon-edit.png" alt="{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name}" title="{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name}" width="16" height="16"/>
                     </a>
-                    <a onclick="return confirm('{_T string="Do you really want to delete this entry?"|escape:"javascript"}')" href="gestion_intitules.php?class={$class}&amp;del={$eid}">
+                    <a class="delete" href="{path_for name="removeEntitled" data=["class" => $url_class, "id" => $eid]}">
                         <img src="{$template_subdir}images/icon-trash.png" alt="{_T string="Delete '%s' field" pattern="/%s/" replace=$entry.name}" title="{_T string="Delete '%s' field" pattern="/%s/" replace=$entry.name}" width="16" height="16" />
                     </a>
                 </td>

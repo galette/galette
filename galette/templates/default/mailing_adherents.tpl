@@ -1,41 +1,21 @@
+{extends file="page.tpl"}
+{block name="content"}
 {if $pref_mail_method == constant('Galette\Core\Mailing::METHOD_DISABLED') and $GALETTE_MODE neq 'DEMO'}
         <div id="errorbox">
             <h1>{_T string="- ERROR -"}</h1>
             <p>{_T string="Email sent is disabled in the preferences. Ask galette admin"}</p>
         </div>
 {elseif !isset($mailing_saved)}
-        <form action="mailing_adherents.php#mail_preview" id="listform" method="post" enctype="multipart/form-data">
+        <form action="{path_for name="doMailing"}" id="listform" method="post" enctype="multipart/form-data">
         <div class="mailing">
             <section class="mailing_infos">
                 <header class="ui-state-default ui-state-active">{_T string="Mailing informations"}</header>
-    {assign var='count' value=$mailing->recipients|@count}
-    {assign var='count_unreachables' value=$mailing->unreachables|@count}
-    {if $count > 0}
-        {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_SENT')}
-                <p>{_T string="Your message has been sent to <strong>%s members</strong>" pattern="/%s/" replace=$count}</p>
-        {else}
-                <p id="recipients_count">{_T string="You are about to send an e-mail to <strong>%s members</strong>" pattern="/%s/" replace=$count}</p>
-        {/if}
-    {else}
-        {if $count_unreachables > 0}
-                <p id="recipients_count"><strong>{_T string="None of the selected members has an email address."}</strong></p>
-         {else}
-                <p id="recipients_count"><strong>{_T string="No member selected (yet)."}</strong></p>
-         {/if}
-    {/if}
-    {if $count_unreachables > 0}
-                <p id="unreachables_count">
-                    <strong>{$count_unreachables} {if $count_unreachables != 1}{_T string="unreachable members:"}{else}{_T string="unreachable member:"}{/if}</strong><br/>
-                    {_T string="Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail."}
-                    <br/><a id="btnlabels" class="button" href="etiquettes_adherents.php?from=mailing">{_T string="Generate labels"}</a>
-                </p>
-    {/if}
-
+                    {include file="mailing_recipients.tpl"}
                 <div class="center">
     {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_SENT')}
-                    <a class="button" id="btnusers" href="gestion_adherents.php">{_T string="Go back to members list"}</a>
+                    <a class="button" id="btnusers" href="{path_for name="members"}">{_T string="Go back to members list"}</a>
     {else}
-                    <a class="button" id="btnusers" href="gestion_adherents.php?nbshow=0&showChecked=true">{_T string="Manage selected members"}</a>
+                    <a class="button" id="btnusers" href="#">{_T string="Manage selected members"}</a>
     {/if}
                 </div>
             </section>
@@ -50,7 +30,7 @@
                             {foreach item=attachment from=$attachments}
                             <li>
                                 <a href="?remove_attachment={$attachment->getFileName()}" class="rm_attachement">
-                                    <img alt="{_T string="Remove attachment"}" src="./templates/default/images/delete.png">
+                                    <img alt="{_T string="Remove attachment"}" src="{base_url}/{$template_subdir}images/delete.png">
                                 </a>
                                 {$attachment->getFileName()}
                             </li>
@@ -113,6 +93,11 @@
             </section>
         </div>
         </form>
+{/if}
+{/block}
+
+{block name="javascripts"}
+{if ($pref_mail_method != constant('Galette\Core\Mailing::METHOD_DISABLED') or $GALETTE_MODE eq 'DEMO') and !isset($mailing_saved)}
     {if $mailing->current_step neq constant('Galette\Core\Mailing::STEP_SENT')}
 <script type="text/javascript">
     $(function() {
@@ -126,10 +111,9 @@
                 _attachments[_attachments.length] = $(this).text();
             });
             $.ajax({
-                url: 'ajax_mailing_preview.php',
+                url: '{path_for name="mailingPreview"}',
                 type: "POST",
                 data: {
-                    ajax: true,
                     subject: _subject,
                     body: _body,
                     html: _html,
@@ -163,10 +147,10 @@
         {* Members popup *}
         $('#btnusers').click(function(){
             $.ajax({
-                url: 'ajax_members.php',
+                url: '{path_for name="ajaxMembers"}',
                 type: "POST",
                 data: {
-                    ajax: true
+                    multiple: true
                 },
                 {include file="js_loader.tpl"},
                 success: function(res){
@@ -206,7 +190,7 @@
                     _recipients[_recipients.length] = this.id.substring(7, this.id.length);
                 });
                 $.ajax({
-                    url: 'ajax_recipients.php',
+                    url: '{path_for name="mailingRecipients"}',
                     type: "POST",
                     data: {
                         recipients: _recipients
@@ -231,8 +215,9 @@
                     $('#selected_members ul').append(_none);
                 }
             });
-            $('#listing tbody a').click(function(){
-                var _mid = this.href.substring(this.href.indexOf('?')+8);
+            $('#listing tbody a').click(function(e){
+                e.preventDefault();
+                var _mid = this.href.match(/.*\/(\d+)$/)[1];
                 var _mname = $(this).text();
                 $('#none_selected').remove()
                 if ( $('#member_' + _mid).length == 0 ) {
@@ -249,19 +234,24 @@
             });
 
             $('#members_list .pages a').click(function(){
-                var _page = this.href.substring(this.href.indexOf('?')+6);
                 var _members = new Array();
+                var _unreach = new Array();
                 $('li[id^="member_"]').each(function(){
-                    _members[_members.length] = this.id.substring(7, this.id.length);
+                    var _mid = this.id.substring(7, this.id.length);
+                    if ($(this).hasClass('unreachables')) {
+                        _unreach[_unreach.length] = _mid;
+                    } else {
+                        _members[_members.length] = _mid;
+                    }
                 });
 
                 $.ajax({
-                    url: 'ajax_members.php',
+                    url: this.href,
                     type: "POST",
                     data: {
-                        ajax: true,
+                        multiple: true,
                         members: _members,
-                        page: _page
+                        unreachables: _unreach
                     },
                     {include file="js_loader.tpl"},
                     success: function(res){
@@ -286,7 +276,7 @@
                     Ok: function() {
                         var _this = $(this);
                         _this.dialog( "close" );
-                        window.location.href = 'mailing_adherents.php' + _link.attr('href');
+                        window.location.href = '{path_for name="mailing"}' + _link.attr('href');
                     },
                     {_T string="Cancel"}: function() {
                          $(this).dialog( "close" );
@@ -302,3 +292,4 @@
 </script>
     {/if}
 {/if}
+{/block}

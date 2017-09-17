@@ -41,7 +41,6 @@
 namespace Galette\Core;
 
 use Analog\Analog;
-use Zend\Db\Adapter\Exception as AdapterException;
 use Galette\Entity\Adherent;
 
 /**
@@ -59,53 +58,25 @@ use Galette\Entity\Adherent;
  * @since     Available since 0.7dev - 2011-06-16
  */
 
-class Password
+class Password extends AbstractPassword
 {
-
     const TABLE = 'tmppasswds';
     const PK = Adherent::PK;
 
-    /** Default password size */
-    private $_size = 8;
-    private $_chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
-    private $_hash = null;
-    private $_new_password;
+    private $zdb;
 
     /**
      * Default constructor
      *
+     * @param Db      $zdb   Database instance:
      * @param boolean $clean Whether we should clean expired passwords in database
      */
-    public function __construct($clean = true)
+    public function __construct(Db $zdb, $clean = true)
     {
-        if ( $clean === true ) {
+        $this->zdb = $zdb;
+        if ($clean === true) {
             $this->cleanExpired();
         }
-    }
-
-    /**
-     * Generates a random passord based on default salt
-     *
-     * @param int $size Password size (optionnal)
-     *
-     * @return string random password
-     */
-    public function makeRandomPassword($size = null)
-    {
-        if ( $size === null 
-            || trim($size) == ''
-            || !is_int($size)
-        ) {
-            $size = $this->_size;
-        }
-        $pass = '';
-        $i = 0;
-        while ( $i <= $size-1 ) {
-            $num = mt_rand(0, 32) % 33;
-            $pass .= substr($this->_chars, $num, 1);
-            $i++;
-        }
-        return $pass;
     }
 
     /**
@@ -115,16 +86,14 @@ class Password
      *
      * @return boolean
      */
-    private function _removeOldEntries($id_adh)
+    private function removeOldEntries($id_adh)
     {
-        global $zdb;
-
         try {
-            $delete = $zdb->delete(self::TABLE);
+            $delete = $this->zdb->delete(self::TABLE);
             $delete->where(self::PK . ' = ' . $id_adh);
 
-            $del = $zdb->execute($delete);
-            if ( $del ) {
+            $del = $this->zdb->execute($delete);
+            if ($del) {
                 Analog::log(
                     'Temporary passwords for `' . $id_adh . '` has been removed.',
                     Analog::DEBUG
@@ -149,10 +118,8 @@ class Password
      */
     public function generateNewPassword($id_adh)
     {
-        global $zdb;
-
         //first of all, we'll remove all existant entries for specified id
-        $this->_removeOldEntries($id_adh);
+        $this->removeOldEntries($id_adh);
 
         //second, generate a new password and store it in the database
         $password = $this->makeRandomPassword();
@@ -165,28 +132,21 @@ class Password
                 'date_crea_tmp_passwd' => date('Y-m-d H:i:s')
             );
 
-            $insert = $zdb->insert(self::TABLE);
+            $insert = $this->zdb->insert(self::TABLE);
             $insert->values($values);
 
-            $add = $zdb->execute($insert);
-            if ( $add ) {
+            $add = $this->zdb->execute($insert);
+            if ($add) {
                 Analog::log(
                     'New passwords temporary set for `' . $id_adh . '`.',
                     Analog::DEBUG
                 );
-                $this->_new_password = $password;
-                $this->_hash = $hash;
+                $this->setPassword($password);
+                $this->setHash($hash);
                 return true;
             } else {
                 return false;
             }
-        } catch (AdapterException $e) {
-            Analog::log(
-                'Unable to add add new password entry into database.' .
-                $e->getMessage(),
-                Analog::WARNING
-            );
-            return false;
         } catch (\Exception $e) {
             Analog::log(
                 "An error occured trying to add temporary password entry. " .
@@ -204,19 +164,17 @@ class Password
      */
     protected function cleanExpired()
     {
-        global $zdb;
-
         $date = new \DateTime();
         $date->sub(new \DateInterval('PT24H'));
 
         try {
-            $delete = $zdb->delete(self::TABLE);
+            $delete = $this->zdb->delete(self::TABLE);
             $delete->where->lessThan(
                 'date_crea_tmp_passwd',
                 $date->format('Y-m-d H:i:s')
             );
-            $del = $zdb->execute($delete);
-            if ( $del ) {
+            $del = $this->zdb->execute($delete);
+            if ($del) {
                 Analog::log(
                     'Old Temporary passwords has been deleted.',
                     Analog::DEBUG
@@ -241,19 +199,21 @@ class Password
      */
     public function isHashValid($hash)
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE);
             $select->columns(
                 array(self::PK)
             )->where(array('tmp_passwd' => $hash));
 
-            $results = $zdb->execute($select);
-            $result = $results->current();
+            $results = $this->zdb->execute($select);
 
-            $pk = self::PK;
-            return $result->$pk;
+            if ($results->count() > 0) {
+                $result = $results->current();
+                $pk = self::PK;
+                return $result->$pk;
+            } else {
+                return false;
+            }
         } catch (\Exception $e) {
             Analog::log(
                 'An error occured getting requested hash. ' . $e->getMessage(),
@@ -272,16 +232,14 @@ class Password
      */
     public function removeHash($hash)
     {
-        global $zdb;
-
         try {
-            $delete = $zdb->delete(self::TABLE);
+            $delete = $this->zdb->delete(self::TABLE);
             $delete->where(
                 array('tmp_passwd' => $hash)
             );
 
-            $del = $zdb->execute($delete);
-            if ( $del ) {
+            $del = $this->zdb->execute($delete);
+            if ($del) {
                 Analog::log(
                     'Used hash has been successfully remove',
                     Analog::DEBUG
@@ -296,49 +254,5 @@ class Password
             );
             return false;
         }
-    }
-
-    /**
-     * Retrieve new pasword for sending it to the user
-     *
-     * @return string the new password
-     */
-    public function getNewPassword()
-    {
-        return $this->_new_password;
-    }
-
-    /**
-     * Retrieve new hash
-     *
-     * @return string hash
-     */
-    public function getHash()
-    {
-        return $this->_hash;
-    }
-
-    /**
-     * Set password
-     *
-     * @param string $password Password
-     *
-     * @return void
-     */
-    protected function setPassword($password)
-    {
-        $this->_new_password = $password;
-    }
-
-    /**
-     * Set hash
-     *
-     * @param string $hash Hash
-     *
-     * @return void
-     */
-    protected function setHash($hash)
-    {
-        $this->_hash = $hash;
     }
 }

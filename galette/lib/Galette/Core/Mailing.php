@@ -64,16 +64,16 @@ class Mailing extends GaletteMail
     const MIME_TEXT = 'text/plain';
     const MIME_DEFAULT = self::MIME_TEXT;
 
-    private $_id;
+    private $id;
 
-    private $_unreachables;
-    private $_mrecipients;
-    private $_current_step;
+    private $unreachables;
+    private $mrecipients;
+    private $current_step;
 
-    private $_mime_type;
+    private $mime_type;
 
-    private $_tmp_path;
-    private $_history_id;
+    private $tmp_path;
+    private $history_id;
 
     /**
      * Default constructor
@@ -83,20 +83,20 @@ class Mailing extends GaletteMail
      */
     public function __construct($members, $id = null)
     {
-        if ( $id !== null ) {
-            $this->_id = $id;
+        if ($id !== null) {
+            $this->id = $id;
         } else {
-            $this->_generateNewId();
+            $this->generateNewId();
         }
-        $this->_current_step = self::STEP_START;
-        $this->_mime_type = self::MIME_DEFAULT;
+        $this->current_step = self::STEP_START;
+        $this->mime_type = self::MIME_DEFAULT;
         /** TODO: add a preference that propose default mime-type to use,
             then init it here */
-        if ( $members !== null) {
+        if ($members !== null) {
             //Check which members have a valid email address and which have not
             $this->setRecipients($members);
         }
-        $this->_loadAttachments();
+        $this->loadAttachments();
     }
 
     /**
@@ -104,11 +104,13 @@ class Mailing extends GaletteMail
      *
      * @return void
      */
-    private function _generateNewId()
+    private function generateNewId()
     {
-        $pass = new Password();
-        $this->_id = $pass->makeRandomPassword(30);
-        $this->_generateTmpPath($this->_id);
+        global $zdb;
+
+        $pass = new Password($zdb);
+        $this->id = $pass->makeRandomPassword(30);
+        $this->generateTmpPath($this->id);
     }
 
     /**
@@ -118,13 +120,15 @@ class Mailing extends GaletteMail
      *
      * @return void
      */
-    private function _generateTmpPath($id = null)
+    private function generateTmpPath($id = null)
     {
-        if ( $id === null ) {
-            $pass = new Password();
+        if ($id === null) {
+            global $zdb;
+
+            $pass = new Password($zdb);
             $id = $pass->makeRandomPassword(30);
         }
-        $this->_tmp_path = GALETTE_ATTACHMENTS_PATH . '/' . $id;
+        $this->tmp_path = GALETTE_ATTACHMENTS_PATH . '/' . $id;
     }
 
     /**
@@ -132,19 +136,19 @@ class Mailing extends GaletteMail
      *
      * @return void
      */
-    private function _loadAttachments()
+    private function loadAttachments()
     {
         $dir = '';
-        if ( isset($this->_tmp_path)
-            && trim($this->_tmp_path) !== ''
+        if (isset($this->tmp_path)
+            && trim($this->tmp_path) !== ''
         ) {
-            $dir = $this->_tmp_path;
+            $dir = $this->tmp_path;
         } else {
-            $dir = GALETTE_ATTACHMENTS_PATH . $this->_id . '/';
+            $dir = GALETTE_ATTACHMENTS_PATH . $this->id . '/';
         }
 
         $files = glob($dir . '*.*');
-        foreach ( $files as $file ) {
+        foreach ($files as $file) {
             $f = new File($dir);
             $f->setFileName(str_replace($dir, '', $file));
             $this->attachments[] = $f;
@@ -162,28 +166,30 @@ class Mailing extends GaletteMail
      */
     public function loadFromHistory($rs, $new = true)
     {
+        global $zdb;
+
         $orig_recipients = unserialize($rs->mailing_recipients);
 
         $_recipients = array();
         $mdeps = ['parent' => true];
-        foreach ( $orig_recipients as $k=>$v ) {
-            $m = new Adherent($k, $mdeps);
+        foreach ($orig_recipients as $k => $v) {
+            $m = new Adherent($zdb, $k, $mdeps);
             $_recipients[] = $m;
         }
         $this->setRecipients($_recipients);
         $this->subject = $rs->mailing_subject;
         $this->message = $rs->mailing_body;
         //if mailing has already been sent, generate a new id and copy attachments
-        if ( $rs->mailing_sent && $new ) {
-            $this->_generateNewId();
-            $this->_copyAttachments($rs->mailing_id);
+        if ($rs->mailing_sent && $new) {
+            $this->generateNewId();
+            $this->copyAttachments($rs->mailing_id);
         } else {
-            $this->_tmp_path = null;
-            $this->_id = $rs->mailing_id;
-            if ( !$this->attachments ) {
-                $this->_loadAttachments();
+            $this->tmp_path = null;
+            $this->id = $rs->mailing_id;
+            if (!$this->attachments) {
+                $this->loadAttachments();
             }
-            $this->_history_id = $rs->mailing_id;
+            $this->history_id = $rs->mailing_id;
         }
     }
 
@@ -194,17 +200,17 @@ class Mailing extends GaletteMail
      *
      * @return void
      */
-    private function _copyAttachments($id)
+    private function copyAttachments($id)
     {
         $source_dir = GALETTE_ATTACHMENTS_PATH . $id . '/';
-        $dest_dir = GALETTE_ATTACHMENTS_PATH . $this->_id . '/';
+        $dest_dir = GALETTE_ATTACHMENTS_PATH . $this->id . '/';
 
-        if ( file_exists($source_dir) ) {
-            if ( file_exists($dest_dir) ) {
+        if (file_exists($source_dir)) {
+            if (file_exists($dest_dir)) {
                 throw new \RuntimeException(
                     str_replace(
                         '%s',
-                        $this->_id,
+                        $this->id,
                         'Attachments directory already exists for mailing %s!'
                     )
                 );
@@ -214,7 +220,7 @@ class Mailing extends GaletteMail
                 //copy attachments from source mailing and populate attachments
                 $this->attachments = array();
                 $files = glob($source_dir . '*.*');
-                foreach ( $files as $file ) {
+                foreach ($files as $file) {
                     $f = new File($source_dir);
                     $f->setFileName(str_replace($source_dir, '', $file));
                     $f->copyTo($dest_dir);
@@ -237,7 +243,7 @@ class Mailing extends GaletteMail
     public function send()
     {
         $m = array();
-        foreach ($this->_mrecipients as $member) {
+        foreach ($this->mrecipients as $member) {
             $email = $member->getEmail();
             $m[$email] = $member->sname;
         }
@@ -255,20 +261,20 @@ class Mailing extends GaletteMail
     public function setRecipients($members)
     {
         $m = array();
-        $this->_mrecipients = array();
-        $this->_unreachables = array();
+        $this->mrecipients = array();
+        $this->unreachables = array();
 
         foreach ($members as $member) {
             $email = $member->getEmail();
 
-            if ( trim($email) != '' && self::isValidEmail($email) ) {
-                if ( !in_array($member, $this->_mrecipients) ) {
-                    $this->_mrecipients[] = $member;
+            if (trim($email) != '' && self::isValidEmail($email)) {
+                if (!in_array($member, $this->mrecipients)) {
+                    $this->mrecipients[] = $member;
                 }
                 $m[$email] = $member->sname;
             } else {
-                if ( !in_array($member, $this->_unreachables) ) {
-                    $this->_unreachables[] = $member;
+                if (!in_array($member, $this->unreachables)) {
+                    $this->unreachables[] = $member;
                 }
             }
         }
@@ -284,25 +290,25 @@ class Mailing extends GaletteMail
      */
     public function store($files)
     {
-        if ( $this->_tmp_path === null ) {
-            $this->_generateTmpPath();
+        if ($this->tmp_path === null) {
+            $this->generateTmpPath();
         }
 
-        if ( !file_exists($this->_tmp_path) ) {
+        if (!file_exists($this->tmp_path)) {
             //directory does not exists, create it
-            mkdir($this->_tmp_path);
+            mkdir($this->tmp_path);
         }
 
-        if ( !is_dir($this->_tmp_path) ) {
+        if (!is_dir($this->tmp_path)) {
             throw new \RuntimeException(
-                $this->_tmp_path . ' should be a directory!'
+                $this->tmp_path . ' should be a directory!'
             );
         }
 
         //store files
-        $attachment = new File($this->_tmp_path);
+        $attachment = new File($this->tmp_path);
         $res = $attachment->store($files);
-        if ( $res < 0 ) {
+        if ($res < 0) {
             return $res;
         } else {
             $this->attachments[] = $attachment;
@@ -320,24 +326,24 @@ class Mailing extends GaletteMail
      */
     public function moveAttachments($id)
     {
-        if ( isset($this->_tmp_path)
-            && trim($this->_tmp_path) !== ''
+        if (isset($this->tmp_path)
+            && trim($this->tmp_path) !== ''
             && count($this->attachments) > 0
         ) {
-            foreach ( $this->attachments as &$attachment ) {
+            foreach ($this->attachments as &$attachment) {
                 $old_path = $attachment->getDestDir() . $attachment->getFileName();
-                $new_path = GALETTE_ATTACHMENTS_PATH . $this->_id .'/' .
+                $new_path = GALETTE_ATTACHMENTS_PATH . $this->id .'/' .
                     $attachment->getFileName();
-                if ( !file_exists(GALETTE_ATTACHMENTS_PATH . $this->_id) ) {
-                    mkdir(GALETTE_ATTACHMENTS_PATH . $this->_id);
+                if (!file_exists(GALETTE_ATTACHMENTS_PATH . $this->id)) {
+                    mkdir(GALETTE_ATTACHMENTS_PATH . $this->id);
                 }
                 $moved = rename($old_path, $new_path);
-                if ( $moved ) {
+                if ($moved) {
                     $attachment->setDestDir(GALETTE_ATTACHMENTS_PATH);
                 }
             }
-            rmdir($this->_tmp_path);
-            $this->_tmp_path = null;
+            rmdir($this->tmp_path);
+            $this->tmp_path = null;
         }
     }
 
@@ -351,26 +357,26 @@ class Mailing extends GaletteMail
     public function removeAttachment($name)
     {
         $to_remove = null;
-        if ( isset($this->_tmp_path)
-            && trim($this->_tmp_path) !== ''
-            && file_exists($this->_tmp_path)
+        if (isset($this->tmp_path)
+            && trim($this->tmp_path) !== ''
+            && file_exists($this->tmp_path)
         ) {
-            $to_remove = $this->_tmp_path;
-        } else if ( file_exists(GALETTE_ATTACHMENTS_PATH . $this->_id) ) {
-            $to_remove = GALETTE_ATTACHMENTS_PATH . $this->_id;
+            $to_remove = $this->tmp_path;
+        } elseif (file_exists(GALETTE_ATTACHMENTS_PATH . $this->id)) {
+            $to_remove = GALETTE_ATTACHMENTS_PATH . $this->id;
         }
 
-        if ( $to_remove !== null ) {
+        if ($to_remove !== null) {
             $to_remove .= '/' . $name;
 
-            if ( !$this->attachments ) {
-                $this->_loadAttachments();
+            if (!$this->attachments) {
+                $this->loadAttachments();
             }
 
-            if ( file_exists($to_remove) ) {
+            if (file_exists($to_remove)) {
                 $i = 0;
-                foreach ( $this->attachments as $att ) {
-                    if ( $att->getFileName() == $name ) {
+                foreach ($this->attachments as $att) {
+                    if ($att->getFileName() == $name) {
                         unset($this->attachments[$i]);
                         unlink($to_remove);
                         break;
@@ -405,19 +411,19 @@ class Mailing extends GaletteMail
     public function removeAttachments($temp = false)
     {
         $to_remove = null;
-        if ( isset($this->_tmp_path)
-            && trim($this->_tmp_path) !== ''
-            && file_exists($this->_tmp_path)
+        if (isset($this->tmp_path)
+            && trim($this->tmp_path) !== ''
+            && file_exists($this->tmp_path)
         ) {
-            $to_remove = $this->_tmp_path;
-        } else if ( file_exists(GALETTE_ATTACHMENTS_PATH . $this->_id) ) {
-            if ( $temp === true ) {
+            $to_remove = $this->tmp_path;
+        } elseif (file_exists(GALETTE_ATTACHMENTS_PATH . $this->id)) {
+            if ($temp === true) {
                 return false;
             }
-            $to_remove = GALETTE_ATTACHMENTS_PATH . $this->_id;
+            $to_remove = GALETTE_ATTACHMENTS_PATH . $this->id;
         }
 
-        if ( $to_remove !== null ) {
+        if ($to_remove !== null) {
             $rdi = new \RecursiveDirectoryIterator(
                 $to_remove,
                 \FilesystemIterator::SKIP_DOTS
@@ -426,8 +432,8 @@ class Mailing extends GaletteMail
                 $rdi,
                 \RecursiveIteratorIterator::CHILD_FIRST
             );
-            foreach ( $contents as $path) {
-                if ( $path->isFile() ) {
+            foreach ($contents as $path) {
+                if ($path->isFile()) {
                     unlink($path->getPathname());
                 } else {
                     rmdir($path->getPathname());
@@ -446,7 +452,7 @@ class Mailing extends GaletteMail
      */
     public function getAttachmentErrorMessage($code)
     {
-        $f = new File($this->_tmp_path);
+        $f = new File($this->tmp_path);
         return $f->getErrorMessage($code);
     }
 
@@ -457,7 +463,7 @@ class Mailing extends GaletteMail
      */
     public function existsInHistory()
     {
-        return isset($this->_history_id);
+        return isset($this->history_id);
     }
 
     /**
@@ -470,61 +476,58 @@ class Mailing extends GaletteMail
     public function __get($name)
     {
         $forbidden = array('ordered');
-        if ( !in_array($name, $forbidden) ) {
-            switch($name) {
-            case 'alt_message':
-                return $this->cleanedHtml();
-                break;
-            case 'step':
-                return $this->current_step;
-                break;
-            case 'subject':
-                return $this->getSubject();
-                break;
-            case 'message':
-                return $this->getMessage();
-                break;
-            case 'wrapped_message':
-                return $this->getWrappedMessage();
-                break;
-            case 'html':
-                return $this->isHTML();
-                break;
-            case 'mail':
-            case '_mail':
-                return $this->getPhpMailer();
-                break;
-            case 'errors':
-                return $this->getErrors();
-                break;
-            case 'recipients':
-                return $this->_mrecipients;
-                break;
-            case 'tmp_path':
-                if ( isset($this->_tmp_path) && trim($this->_tmp_path) !== '') {
-                    return $this->_tmp_path;
-                } else {
-                    //no attachments
-                    return false;
-                }
-                break;
-            case 'attachments':
-                return $this->attachments;
-                break;
-            default:
-                $rname = '_' . $name;
-                Analog::log(
-                    '[' . get_class($this) . 'Trying to get ' . $name .
-                    ' renamed: ' . $rname,
-                    Analog::DEBUG
-                );
-                return $this->$rname;
-                break;
+        if (!in_array($name, $forbidden)) {
+            switch ($name) {
+                case 'alt_message':
+                    return $this->cleanedHtml();
+                    break;
+                case 'step':
+                    return $this->current_step;
+                    break;
+                case 'subject':
+                    return $this->getSubject();
+                    break;
+                case 'message':
+                    return $this->getMessage();
+                    break;
+                case 'wrapped_message':
+                    return $this->getWrappedMessage();
+                    break;
+                case 'html':
+                    return $this->isHTML();
+                    break;
+                case 'mail':
+                case '_mail':
+                    return $this->getPhpMailer();
+                    break;
+                case 'errors':
+                    return $this->getErrors();
+                    break;
+                case 'recipients':
+                    return $this->mrecipients;
+                    break;
+                case 'tmp_path':
+                    if (isset($this->tmp_path) && trim($this->tmp_path) !== '') {
+                        return $this->tmp_path;
+                    } else {
+                        //no attachments
+                        return false;
+                    }
+                    break;
+                case 'attachments':
+                    return $this->attachments;
+                    break;
+                default:
+                    Analog::log(
+                        '[' . get_class($this) . 'Trying to get ' . $name,
+                        Analog::DEBUG
+                    );
+                    return $this->$name;
+                    break;
             }
         } else {
             Analog::log(
-                '[' . get_class($this) . 'Unable to get ' . $name .
-                ' renamed: ' . $rname,
+                '[' . get_class($this) . 'Unable to get ' . $name,
                 Analog::ERROR
             );
             return false;
@@ -541,54 +544,52 @@ class Mailing extends GaletteMail
      */
     public function __set($name, $value)
     {
-        $rname = '_' . $name;
-
-        switch( $name ) {
-        case 'subject':
-            $this->setSubject($value);
-            break;
-        case 'message':
-            $this->setMessage($value);
-            break;
-        case 'html':
-            if ( is_bool($value) ) {
-                $this->isHTML($value);
-            } else {
+        switch ($name) {
+            case 'subject':
+                $this->setSubject($value);
+                break;
+            case 'message':
+                $this->setMessage($value);
+                break;
+            case 'html':
+                if (is_bool($value)) {
+                    $this->isHTML($value);
+                } else {
+                    Analog::log(
+                        '[' . get_class($this) . '] Value for field `' . $name .
+                        '` should be boolean - (' . gettype($value) . ')' .
+                        $value . ' given',
+                        Analog::WARNING
+                    );
+                }
+                break;
+            case 'current_step':
+                if (is_int($value)
+                    && (   $value == self::STEP_START
+                    || $value == self::STEP_PREVIEW
+                    || $value == self::STEP_SEND
+                    || $value == self::STEP_SENT )
+                ) {
+                    $this->current_step = (int)$value;
+                } else {
+                    Analog::log(
+                        '[' . get_class($this) . '] Value for field `' . $name .
+                        '` should be integer and know - (' . gettype($value) . ')' .
+                        $value . ' given',
+                        Analog::WARNING
+                    );
+                }
+                break;
+            case 'id':
+                $this->id = $value;
+                break;
+            default:
                 Analog::log(
-                    '[' . get_class($this) . '] Value for field `' . $name .
-                    '` should be boolean - (' . gettype($value) . ')' .
-                    $value . ' given',
+                    '[' . get_class($this) . '] Unable to set proprety `' . $name . '`',
                     Analog::WARNING
                 );
-            }
-            break;
-        case 'current_step':
-            if ( is_int($value)
-                && (   $value == self::STEP_START
-                || $value == self::STEP_PREVIEW
-                || $value == self::STEP_SEND
-                || $value == self::STEP_SENT )
-            ) {
-                $this->_current_step = (int)$value;
-            } else {
-                Analog::log(
-                    '[' . get_class($this) . '] Value for field `' . $name .
-                    '` should be integer and know - (' . gettype($value) . ')' .
-                    $value . ' given',
-                    Analog::WARNING
-                );
-            }
-            break;
-        case 'id':
-            $this->_id = $value;
-            break;
-        default:
-            Analog::log(
-                '[' . get_class($this) . '] Unable to set proprety `' . $name . '`',
-                Analog::WARNING
-            );
-            return false;
-            break;
+                return false;
+                break;
         }
     }
 }

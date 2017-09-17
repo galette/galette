@@ -1,11 +1,14 @@
+{extends file="$parent_tpl"}
+
+{block name="content"}
 {if isset($navigate) and $navigate|@count != 0}
     <nav>
-        <a id="prev" href="{if isset($navigate.prev)}?id_adh={$navigate.prev}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">{_T string="Previous"}</a>
+        <a id="prev" href="{if isset($navigate.prev)}{path_for name="editmember" data=["action" => {_T string="edit" domain="routes"}, "id" => $navigate.prev]}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">{_T string="Previous"}</a>
         {$navigate.pos}/{$navigate.count}
-        <a id="next" href="{if isset($navigate.next)}?id_adh={$navigate.next}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">{_T string="Next"}</a>
+        <a id="next" href="{if isset($navigate.next)}{path_for name="editmember" data=["action" => {_T string="edit" domain="routes"}, "id" => $navigate.next]}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">{_T string="Next"}</a>
     </nav>
 {/if}
-        <form action="{if $login->isLogged()}ajouter_adherent.php{else}self_adherent.php{/if}" method="post" enctype="multipart/form-data" id="form">
+        <form action="{if $self_adh}{path_for name="storemembers" data=["self" => {_T string="subscribe" domain="routes"}]}{else}{path_for name="storemembers"}{/if}" method="post" enctype="multipart/form-data" id="form">
         <div class="bigtable">
 {if $self_adh and $head_redirect}
             <div id="infobox">
@@ -25,7 +28,7 @@
             <div>
         {if $member->hasParent()}
                 <strong>{_T string="Attached to:"}
-                <a href="voir_adherent.php?id_adh={$member->parent->id}">{$member->parent->sfullname}</a></strong><br/>
+                <a href="{path_for name="member" data=["id" => $member->parent->id]}">{$member->parent->sfullname}</a></strong><br/>
             {if $login->isAdmin() or $login->isStaff() or $login->id eq $member->parent->id}
                 <label for="detach_parent">{_T string="Detach?"}</label>
                 <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
@@ -59,6 +62,7 @@
                         {/if}
                         {if $entry->field_id eq 'titre_adh'}
                             {assign var="template" value="titles.tpl"}
+                            {assign var="value" value=$member->title}
                         {/if}
                         {if $entry->field_id eq 'pref_lang'}
                             {assign var="template" value="lang.tpl"}
@@ -114,7 +118,7 @@
                         {/if}
                         {if $entry->field_id eq 'bool_display_info'}
                             {assign var="title" value={_T string="Do member want to appear publically?"}}
-                            {assign var="tip" value={_T string="If you check this box (and if you are up to date with your contributions), your full name, website address ad other informations will be publically visilbe on the members list.<br/>If you've uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case."}}
+                            {assign var="tip" value={_T string="If you check this box (and if you are up to date with your contributions), your full name, website address ad other informations will be publically visible on the members list.<br/>If you've uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case."}}
                             {assign var="checked" value=$member->appearsInMembersList()}
                         {/if}
                         {if $entry->field_id eq 'login_adh'}
@@ -142,6 +146,8 @@
                             id=$entry->field_id
                             value=$value
                             required=$entry->required
+                            readonly=$entry->readonly
+                            disabled=$entry->disabled
                             label=$entry->label
                             title=$title
                             size=$size
@@ -158,8 +164,8 @@
             </fieldset>
             {/foreach}
 
-    {include file="edit_dynamic_fields.tpl"}
-    {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') and (!$self_adh and ($login->isAdmin() or $login->isStaff())) and (!isset($disabled.send_mail) or !$disabled.send_mail)}
+    {include file="edit_dynamic_fields.tpl" object=$member}
+    {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') and (!$self_adh and ($login->isAdmin() or $login->isStaff()))}
                     <p>
                         <label for="mail_confirm">
         {if $member->id}
@@ -200,7 +206,7 @@
                     {assign var="checked" value=null}
                     {assign var="example" value=null}
 
-                    {if $value neq ''}
+                    {if $value neq '' or $entry->field_id eq 'parent_id'}
                         {include
                             file="forms_types/hidden.tpl"
                             name=$entry->field_id
@@ -213,6 +219,11 @@
             <a href="#" id="back2top">{_T string="Back to top"}</a>
         </div>
         </form>
+{/if}
+{/block}
+
+{block name="javascripts"}
+{if !$self_adh and !$head_redirect}
         <script type="text/javascript">
             $(function() {
                 $('#is_company').change(function(){
@@ -226,7 +237,7 @@
                     changeMonth: true,
                     changeYear: true,
                     showOn: 'button',
-                    buttonImage: '{$template_subdir}images/calendar.png',
+                    buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
                     buttonImageOnly: true,
                     maxDate: '-0d',
                     yearRange: 'c-100:c+0',
@@ -236,7 +247,7 @@
                     changeMonth: true,
                     changeYear: true,
                     showOn: 'button',
-                    buttonImage: '{$template_subdir}images/calendar.png',
+                    buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
                     buttonImageOnly: true,
                     maxDate: '-0d',
                     yearRange: 'c-10:c+0',
@@ -259,7 +270,7 @@
                         };
                     });
                     $.ajax({
-                        url: 'ajax_groups.php',
+                        url: '{path_for name="ajax_groups"}',
                         type: "POST",
                         data: {
                             ajax: true,
@@ -290,6 +301,14 @@
                         height: 500,
                         close: function(event, ui){
                             _el.remove();
+                        },
+                        create: function (event, ui) {
+                            if ($(window ).width() < 767) {
+                                $(this).dialog('option', {
+                                        'width': '95%',
+                                        'draggable': false
+                                });
+                            }
                         }
                     });
                     _groups_ajax_mapper(res, _groups, _managed);
@@ -302,7 +321,14 @@
                         var _form = (_managed) ? 'managed' : 'user';
                         $('#' + _form + 'groups_form').empty();
                         var _groups = new Array();
-                        var _groups_str = '';
+                        var _groups_str = '<br/><strong>';
+                        if ( _managed ) {
+                            _groups_str += '{_T string="Manager for:" escape="js"}';
+                        } else {
+                            _groups_str += '{_T string="Member of:" escape="js"}';
+                        }
+                        _groups_str += '</strong> ';
+
                         $('li[id^="group_"]').each(function(){
                             //get group values
                             _gid = this.id.substring(6, this.id.length);
@@ -314,14 +340,10 @@
                                 _gid + '|' + _gname + '|' +
                                 '" name="' + _iname + '[]">'
                             );
-                            if ( _groups_str != '' ) {
+                            if ( _groups.length > 1 ) {
                                 _groups_str += ', ';
                             }
-                            if ( _managed ) {
-                                _groups_str += '{_T string="Manager for '%groupname'" escape="js"}'.replace(/%groupname/, _gname);
-                            } else {
-                                _groups_str += '{_T string="Member of '%groupname'" escape="js"}'.replace(/%groupname/, _gname);
-                            }
+                            _groups_str += _gname;
                         });
                         $('#' + _form + 'groups').html(_groups_str);
                         $('#ajax_groups_list').dialog("close");
@@ -337,8 +359,9 @@
                             $('#selected_groups ul').append(_none);
                         }
                     });
-                    $('#listing a').click(function(){
-                        var _gid = this.href.substring(this.href.indexOf('?')+10);
+                    $('#listing a').click(function(e){
+                        e.preventDefault();
+                        var _gid = this.href.match(/.*\/(\d+)$/)[1];
                         var _gname = $(this).text();
                         $('#none_selected').remove()
                         if ( $('#group_' + _gid).length == 0 ) {
@@ -365,11 +388,9 @@
                             return $(this).val();
                         }).get();
                         $.ajax({
-                            url: 'ajax_members.php',
+                            url: '{path_for name="ajaxMembers"}',
                             type: "POST",
                             data: {
-                                ajax: true,
-                                multiple: false,
                                 from: 'attach',
                                 id_adh: {if isset($member->id) and $member->id neq ''}{$member->id}{else}'new'{/if}
                             },
@@ -396,6 +417,14 @@
                         height: 400,
                         close: function(event, ui){
                             _el.remove();
+                        },
+                        create: function (event, ui) {
+                            if ($(window ).width() < 767) {
+                                $(this).dialog('option', {
+                                        'width': '95%',
+                                        'draggable': false
+                                });
+                            }
                         }
                     });
                     _members_ajax_mapper(res);
@@ -407,7 +436,7 @@
 
                     $('#members_list tbody').find('a').each(function(){
                         $(this).click(function(){
-                            var _id = this.href.substring(this.href.indexOf('id_adh=') + 7, this.href.length);
+                            var _id = this.href.match(/.*\/(\d+)$/)[1];
                             $('#parent_id').attr('value', _id);
                             var _parent_name;
                             if ($('#parent_name').length > 0) {
@@ -419,7 +448,16 @@
                             _parent_name.html($(this).html());
 
                             //remove required attribute on address and mail fields if member has a parent
-                            $('#adresse_adh,#adresse2_adh,#cp_adh,#ville_adh,#email_adh').removeAttr('required');
+                            var _parentfields = '';
+        {if $parent_fields|@count gt 0}
+            {foreach item=req from=$parent_fields}
+                            _parentfields += '#{$req}';
+                {if !$req@last}
+                            _parentfields += ',';
+                {/if}
+            {/foreach}
+        {/if}
+                            $(_parentfields).removeAttr('required');
 
                             $('#members_list').dialog('close');
                             return false;
@@ -427,18 +465,14 @@
                     });
                     //Remap links
                     $('#members_list .pages a').click(function(){
-                        var _page = this.href.substring(this.href.indexOf('?')+6);
                         var gid = $('#the_id').val();
 
                         $.ajax({
-                            url: 'ajax_members.php',
+                            url: this.href,
                             type: "POST",
                             data: {
-                                ajax: true,
                                 from: 'attach',
-                                multiple: false,
-                                id_adh: {if isset($member->id) and $member->id neq ''}{$member->id}{else}'new'{/if},
-                                page: _page,
+                                id_adh: {if isset($member->id) and $member->id neq ''}{$member->id}{else}'new'{/if}
                             },
                             {include file="js_loader.tpl"},
                             success: function(res){
@@ -455,11 +489,11 @@
     {/if}
 
     {if !$self_adh and $member->hasParent()}
-        {if isset($no_parent_required) and $no_parent_required|@count gt 0}
+        {if $parent_fields|@count gt 0}
                 $('#detach_parent').on('change', function(){
                     var _checked = $(this).is(':checked');
                     var _changes = '';
-            {foreach item=req from=$no_parent_required}
+            {foreach item=req from=$parent_fields}
                     _changes += '#{$req}';
                 {if !$req@last}
                     _changes += ',';
@@ -475,6 +509,26 @@
     {/if}
                 {include file="photo_dnd.tpl"}
 
+                $('#ddn_adh').on('blur', function() {
+                    var _bdate = $(this).val();
+                    if ('{_T string="Y-m-d"}' === 'Y-m-d') {
+                        _bdate = new Date(_bdate);
+                    } else {
+                        //try for dd/mm/yyyy
+                        var _dparts = _bdate.split("/");
+                        _bdate = new Date(_dparts[2], _dparts[1] - 1, _dparts[0]);
+                    }
+
+                    if (! isNaN(_bdate.getTime())) {
+                        var _today = new Date();
+                        var _age = Math.floor((_today-_bdate) / (365.25 * 24 * 60 * 60 * 1000));
+                        $('#member_age').html('{_T string=" (%age years old)"}'.replace(/%age/, _age))
+                    } else {
+                        $('#member_age').html('');
+                    }
+                });
+
             });
         </script>
 {/if}
+{/block}

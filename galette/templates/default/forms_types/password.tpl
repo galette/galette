@@ -4,6 +4,7 @@
     name=$entry->field_id
     id=$entry->field_id
     required=$entry->required
+    disabled=$entry->disabled
     label=$entry->label
     autocomplete="off"
     example={_T string="(at least %i characters)" pattern="/%i/" replace=6}
@@ -15,6 +16,7 @@
     name="mdp_adh2"
     id="mdp_adh2"
     required=$entry->required
+    disabled=$entry->disabled
     label={_T string="Password confirmation:"}
     autocomplete="off"
     example={_T string="(Confirmation)"}

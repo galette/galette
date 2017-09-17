@@ -1,15 +1,20 @@
-        <form class="form" action="export.php" method="post" enctype="multipart/form-data">
+{extends file="page.tpl"}
+
+{block name="content"}
+        <form class="form" action="{path_for name="doExport"}" method="post" enctype="multipart/form-data">
         <p>{_T string="Each selected export will be stored into a separate file in the exports directory."}</p>
-{if $written|@count gt 0}
+
+{if $flash->getMessage('written_exports')|@count > 0}
         <div id="successbox">
             <p>{_T string="The following files have been written on disk:"}</p>
             <ul>
-{foreach item=ex from=$written}
-                <li><a href="get_export.php?file={$ex.name}">{$ex.name} ({$ex.file})</a></li>
-{/foreach}
+    {foreach from=$flash->getMessage('written_exports') item=ex}
+                <li>{$ex}</li>
+    {/foreach}
             </ul>
         </div>
 {/if}
+
 {if $existing|@count gt 0}
             <fieldset>
                 <legend class="ui-state-active ui-corner-top">{_T string="Existing exports"}</legend>
@@ -18,6 +23,7 @@
                     <table class="listing">
                         <thead>
                             <tr>
+                                <th class="id_row">#</th>
                                 <th>{_T string="Name"}</th>
                                 <th>{_T string="Date"}</th>
                                 <th>{_T string="Size"}</th>
@@ -25,19 +31,22 @@
                             </tr>
                         </thead>
                         <tbody>
-    {foreach item=export from=$existing name=existing_list}
+    {foreach item=export from=$existing name=existing_list name=eachexport}
                             <tr class="{if $smarty.foreach.existing_list.iteration % 2 eq 0}even{else}odd{/if}">
-                                <td >
-                                    <a href="get_export.php?file={$export.name}">{$export.name}</a>
+                                <td data-scope="id">
+                                    {$smarty.foreach.eachexport.iteration}
                                 </td>
-                                <td>
+                                <td data-scope="row">
+                                    <a href="{path_for name="getCsv" data=["type" => {_T string="export" domain="routes"}, "file" => $export.name]}">{$export.name}</a>
+                                </td>
+                                <td data-title="{_T string="Date"}">
                                     {$export.date}
                                 </td>
-                                <td>
+                                <td data-title="{_T string="Size"}">
                                     {$export.size}
                                 </td>
                                 <td class="actions_row">
-                                    <a href="export.php?sup={$export.name}" title="{_T string="Remove '%file' from disk" pattern="/%file/" replace=$export.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
+                                    <a class="delete" href="{path_for name="removeCsv" data=["type" => {_T string="export" domain="routes"}, "file" => $export.name]}" title="{_T string="Remove '%file' from disk" pattern="/%file/" replace=$export.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
                                 </td>
                             </tr>
     {/foreach}
@@ -54,22 +63,22 @@
                     <table class="listing">
                         <thead>
                             <tr>
+                                <th class="small_head"/>
                                 <th>{_T string="Name"}</th>
                                 <th>{_T string="Description"}</th>
-                                <th class="small_head"/>
                             </tr>
                         </thead>
                         <tbody>
     {foreach item=param from=$parameted name=parameted_list}
                             <tr class="{if $smarty.foreach.parameted_list.iteration % 2 eq 0}even{else}odd{/if}">
-                                <td>
+                                <td data-scope="id">
+                                    <input type="checkbox" name="export_parameted[]" id="{$param.id}" value="{$param.id}"/>
+                                </td>
+                                <td data-scope="row">
                                     <label for="{$param.id}">{$param.name}</label>
                                 </td>
-                                <td>
+                                <td data-title="{_T string="Description"}">
                                     <label for="{$param.id}">{$param.description}</label>
-                                </td>
-                                <td>
-                                    <input type="checkbox" name="export_parameted[]" id="{$param.id}" value="{$param.id}"/>
                                 </td>
                             </tr>
 {/foreach}
@@ -85,7 +94,7 @@
                 <legend class="ui-state-active ui-corner-top">{_T string="Galette tables exports"}</legend>
                 <div>
                     <p>{_T string="Additionnaly, which table(s) do you want to export?"}</p>
-                    <table class="listing">
+                    <table class="listing same">
                         <thead>
                             <tr>
                                 <th>{_T string="Table name"}</th>
@@ -110,9 +119,13 @@
                 <input type="submit" name="valid" value="{_T string="Continue"}"/>
             </div>
         </form>
+{/block}
 
+{block name="javascripts"}
         <script type="text/javascript">
             $(function() {
                 _collapsibleFieldsets();
+                {include file="js_removal.tpl"}
             });
         </script>
+{/block}

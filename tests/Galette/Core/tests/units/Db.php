@@ -53,7 +53,7 @@ use \atoum;
  */
 class Db extends atoum
 {
-    private $_db;
+    private $db;
 
     /**
      * Set up tests
@@ -64,7 +64,20 @@ class Db extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $this->_db = new \Galette\Core\Db();
+        $this->db = new \Galette\Core\Db();
+    }
+
+    /**
+     * Cleanup after tests
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        $this->db = new \Galette\Core\Db();
+        $delete = $this->db->delete(\Galette\Entity\Title::TABLE);
+        $delete->where([\Galette\Entity\Title::PK => '150']);
+        $this->db->execute($delete);
     }
 
     /**
@@ -93,18 +106,18 @@ class Db extends atoum
         $type = $db->type_db;
 
         switch (TYPE_DB) {
-        case 'pgsql':
-            $this->boolean($is_pg)
-                ->isTrue();
-            $this->string($type)
-                ->isIdenticalTo(\Galette\Core\Db::PGSQL);
-            break;
-        case \Galette\Core\Db::MYSQL:
-            $this->boolean($is_pg)
-                ->isFalse();
-            $this->string($type)
-                ->isIdenticalTo(\Galette\Core\Db::MYSQL);
-            break;
+            case 'pgsql':
+                $this->boolean($is_pg)
+                    ->isTrue();
+                $this->string($type)
+                    ->isIdenticalTo(\Galette\Core\Db::PGSQL);
+                break;
+            case \Galette\Core\Db::MYSQL:
+                $this->boolean($is_pg)
+                    ->isFalse();
+                $this->string($type)
+                    ->isIdenticalTo(\Galette\Core\Db::MYSQL);
+                break;
         }
 
         $this->exception(
@@ -122,7 +135,7 @@ class Db extends atoum
      */
     public function testConnectivity()
     {
-        $res = $this->_db->testConnectivity(
+        $res = $this->db->testConnectivity(
             TYPE_DB,
             USER_DB,
             PWD_DB,
@@ -140,7 +153,7 @@ class Db extends atoum
      */
     public function testGrant()
     {
-        $result = $this->_db->dropTestTable();
+        $result = $this->db->dropTestTable();
 
         $expected = array(
             'create' => true,
@@ -150,19 +163,114 @@ class Db extends atoum
             'delete' => true,
             'drop'   => true
         );
-        $result = $this->_db->grantCheck();
+        $result = $this->db->grantCheck();
 
         $this->array($result)
             ->hasSize(6)
             ->isIdenticalTo($expected);
 
         //in update mode, we need alter
-        $result = $this->_db->grantCheck('u');
+        $result = $this->db->grantCheck('u');
 
         $expected['alter'] = true;
         $this->array($result)
             ->hasSize(7)
             ->isIdenticalTo($expected);
+    }
+
+    /**
+     * Test database grants that throws an exception
+     *
+     * @return void
+     */
+    public function testGrantWException()
+    {
+        $atoum = $this;
+
+        //test insert failing
+        $this->db = new \mock\Galette\Core\Db();
+        $this->calling($this->db)->execute = function ($o) {
+            if ($o instanceof \Zend\Db\Sql\Insert) {
+                throw new \LogicException('Error executing query!', 123);
+            }
+        };
+
+        $result = $this->db->grantCheck('u');
+
+        $this->array($result)
+            ->boolean['create']->isTrue()
+            ->boolean['alter']->isTrue()
+            ->object['insert']->isInstanceOf('\LogicException')
+            ->boolean['update']->isFalse()
+            ->boolean['select']->isFalse()
+            ->boolean['delete']->isFalse()
+            ->boolean['drop']->isTrue();
+
+        //test select failing
+        $this->calling($this->db)->execute = function ($o) use ($atoum) {
+            if ($o instanceof \Zend\Db\Sql\Select) {
+                throw new \LogicException('Error executing query!', 123);
+            } else {
+                $rs = new \mock\Zend\Db\ResultSet();
+                $atoum->calling($rs)->count = 1;
+                return $rs;
+            }
+        };
+
+        $result = $this->db->grantCheck('u');
+
+        $this->array($result)
+            ->boolean['create']->isTrue()
+            ->boolean['alter']->isTrue()
+            ->boolean['insert']->isTrue()
+            ->boolean['update']->isTrue()
+            ->object['select']->isInstanceOf('\LogicException')
+            ->boolean['delete']->isTrue()
+            ->boolean['drop']->isTrue();
+
+        //test update failing
+        $this->calling($this->db)->execute = function ($o) use ($atoum) {
+            if ($o instanceof \Zend\Db\Sql\Update) {
+                throw new \LogicException('Error executing query!', 123);
+            } else {
+                $rs = new \mock\Zend\Db\ResultSet();
+                $atoum->calling($rs)->count = 1;
+                return $rs;
+            }
+        };
+
+        $result = $this->db->grantCheck('u');
+
+        $this->array($result)
+            ->boolean['create']->isTrue()
+            ->boolean['alter']->isTrue()
+            ->boolean['insert']->isTrue()
+            ->object['update']->isInstanceOf('\LogicException')
+            ->boolean['select']->isTrue()
+            ->boolean['delete']->isTrue()
+            ->boolean['drop']->isTrue();
+
+        //test delete failing
+        $this->calling($this->db)->execute = function ($o) use ($atoum) {
+            if ($o instanceof \Zend\Db\Sql\Delete) {
+                throw new \LogicException('Error executing query!', 123);
+            } else {
+                $rs = new \mock\Zend\Db\ResultSet();
+                $atoum->calling($rs)->count = 1;
+                return $rs;
+            }
+        };
+
+        $result = $this->db->grantCheck('u');
+
+        $this->array($result)
+            ->boolean['create']->isTrue()
+            ->boolean['alter']->isTrue()
+            ->boolean['insert']->isTrue()
+            ->boolean['update']->isTrue()
+            ->boolean['select']->isTrue()
+            ->object['delete']->isInstanceOf('\LogicException')
+            ->boolean['drop']->isTrue();
     }
 
     /**
@@ -172,17 +280,17 @@ class Db extends atoum
      */
     public function testIsPostgres()
     {
-        $is_pg = $this->_db->isPostgres();
+        $is_pg = $this->db->isPostgres();
 
         switch (TYPE_DB) {
-        case 'pgsql':
-            $this->boolean($is_pg)
-                ->isTrue();
-            break;
-        default:
-            $this->boolean($is_pg)
-                ->isFalse();
-            break;
+            case 'pgsql':
+                $this->boolean($is_pg)
+                    ->isTrue();
+                break;
+            default:
+                $this->boolean($is_pg)
+                    ->isFalse();
+                break;
         }
     }
 
@@ -193,32 +301,32 @@ class Db extends atoum
      */
     public function testGetters()
     {
-        switch(TYPE_DB) {
-        case 'pgsql':
-            $type = $this->_db->type_db;
-            $this->string($type)
-                ->isIdenticalTo('pgsql');
-            break;
-        case 'mysql':
-            $type = $this->_db->type_db;
-            $this->string($type)
-                ->isIdenticalTo('mysql');
-            break;
+        switch (TYPE_DB) {
+            case 'pgsql':
+                $type = $this->db->type_db;
+                $this->string($type)
+                    ->isIdenticalTo('pgsql');
+                break;
+            case 'mysql':
+                $type = $this->db->type_db;
+                $this->string($type)
+                    ->isIdenticalTo('mysql');
+                break;
         }
 
-        $db = $this->_db->db;
-        $this->object($db)->IsInstanceOf('Zend\Db\Adapter\Adapter');
+        $db = $this->db->db;
+        $this->object($db)->isInstanceOf('Zend\Db\Adapter\Adapter');
 
-        $sql = $this->_db->sql;
-        $this->object($sql)->IsInstanceOf('Zend\Db\Sql\Sql');
+        $sql = $this->db->sql;
+        $this->object($sql)->isInstanceOf('Zend\Db\Sql\Sql');
 
-        $connection = $this->_db->connection;
+        $connection = $this->db->connection;
         $this->object($connection)
-            ->IsInstanceOf('Zend\Db\Adapter\Driver\Pdo\Connection');
+            ->isInstanceOf('Zend\Db\Adapter\Driver\Pdo\Connection');
 
-        $driver = $this->_db->driver;
+        $driver = $this->db->driver;
         $this->object($driver)
-            ->IsInstanceOf('Zend\Db\Adapter\Driver\Pdo\Pdo');
+            ->isInstanceOf('Zend\Db\Adapter\Driver\Pdo\Pdo');
     }
 
     /**
@@ -228,20 +336,117 @@ class Db extends atoum
      */
     public function testSelect()
     {
-        $select = $this->_db->select('preferences', 'p');
+        $select = $this->db->select('preferences', 'p');
         $select->where(array('p.nom_pref' => 'pref_nom'));
-        $results = $this->_db->execute($select);
-        $query = $this->_db->query_string;
+
+        $results = $this->db->execute($select);
+
+        $query = $this->db->query_string;
 
         $expected = 'SELECT "p".* FROM "galette_preferences" AS "p" ' .
             'WHERE "p"."nom_pref" = \'pref_nom\'';
 
-        if ( TYPE_DB === 'mysql' ) {
+        if (TYPE_DB === 'mysql') {
             $expected = 'SELECT `p`.* FROM `galette_preferences` AS `p` ' .
                 'WHERE `p`.`nom_pref` = \'pref_nom\'';
         }
 
         $this->string($query)->isIdenticalTo($expected);
+    }
+
+    /**
+     * Test selectAll
+     *
+     * @return void
+     */
+    public function testSelectAll()
+    {
+        $all = $this->db->selectAll('preferences');
+        $this->object($all)->isInstanceOf('Zend\Db\ResultSet\ResultSet');
+    }
+
+    /**
+     * Test insert
+     *
+     * @return void
+     */
+    public function testInsert()
+    {
+        $insert = $this->db->insert('titles');
+        $data = [
+            'id_title'      => '150',
+            'short_label'   => 'Dr',
+            'long_label'    => 'Doctor'
+        ];
+        $insert->values($data);
+        $res = $this->db->execute($insert);
+
+        $select = $this->db->select('titles', 't');
+        $select->where(['t.id_title' => $data['id_title']]);
+
+        $results = $this->db->execute($select);
+        $this->integer($results->count())->isIdenticalTo(1);
+
+        if (TYPE_DB === 'pgsql') {
+            $data['id_title'] = (int)$data['id_title'];
+        }
+        $this->array((array)$results->current())->isIdenticalTo($data);
+    }
+
+    /**
+     * Test update
+     *
+     * @return void
+     */
+    public function testUpdate()
+    {
+        $update = $this->db->update('titles');
+        $data = [
+            'long_label'    => 'DoctorS'
+        ];
+        $where = ['id_title' => 150];
+
+        $select = $this->db->select('titles', 't');
+        $select->columns(['long_label']);
+        $select->where($where);
+        $results = $this->db->execute($select);
+
+        $long_label = $results->current()->long_label;
+        $this->string($long_label)->isIdenticalTo('Doctor');
+
+        $update->set($data);
+        $update->where($where);
+        $res = $this->db->execute($update);
+        $this->integer($res->count())->isIdenticalTo(1);
+
+        $results = $this->db->execute($select);
+        $this->integer($results->count())->isIdenticalTo(1);
+
+        $long_label = $results->current()->long_label;
+        $this->string($long_label)->isIdenticalTo('DoctorS');
+    }
+
+    /**
+     * Test delete
+     *
+     * @return void
+     */
+    public function testDelete()
+    {
+        $delete = $this->db->delete('titles');
+        $where = ['id_title' => 150];
+
+        $select = $this->db->select('titles', 't');
+        $select->where($where);
+        $results = $this->db->execute($select);
+        $this->integer($results->count())->isIdenticalTo(1);
+
+        $delete->where($where);
+        $res = $this->db->execute($delete);
+        $this->integer($res->count())->isIdenticalTo(1);
+
+        $results = $this->db->execute($select);
+        $this->integer($results->count())->isIdenticalTo(0);
     }
 
     /**
@@ -251,11 +456,34 @@ class Db extends atoum
      */
     public function testDbVersion()
     {
-        $db_version = $this->_db->getDbVersion();
+        $db_version = $this->db->getDbVersion();
         $this->variable($db_version)->isIdenticalTo(GALETTE_DB_VERSION);
 
-        $res = $this->_db->checkDbVersion();
+        $res = $this->db->checkDbVersion();
         $this->boolean($res)->isTrue();
+    }
+
+    /**
+     * Test database version that throws an exception
+     *
+     * @return void
+     */
+    public function testDbVersionWException()
+    {
+        $this->db = new \mock\Galette\Core\Db();
+        $this->calling($this->db)->execute = function ($o) {
+            throw new \LogicException('Error executing query!', 123);
+        };
+
+        $db = $this->db;
+        $this
+            ->exception(
+                function () use ($db) {
+                    $db->getDbVersion();
+                }
+            )->isInstanceOf('\LogicException');
+
+        $this->boolean($db->checkDbVersion())->isFalse();
     }
 
     /**
@@ -265,12 +493,12 @@ class Db extends atoum
      */
     public function testGetColumns()
     {
-        $cols = $this->_db->getColumns('preferences');
+        $cols = $this->db->getColumns('preferences');
 
         $this->array($cols)->hasSize(3);
 
         $columns = array();
-        foreach ( $cols as $c ) {
+        foreach ($cols as $c) {
             $columns[] = $c->getName();
         }
 
@@ -320,11 +548,11 @@ class Db extends atoum
             'galette_preferences',
         );
 
-        $tables = $this->_db->getTables();
+        $tables = $this->db->getTables();
 
         //tables created in grantCheck il sometimes
         //presnet here... :(
-        if ( in_array('galette_test', $tables) ) {
+        if (in_array('galette_test', $tables)) {
             unset($tables[array_search('galette_test', $tables)]);
         }
 
@@ -343,10 +571,65 @@ class Db extends atoum
      */
     public function testConvertToUtf()
     {
-        if ( TYPE_DB === \Galette\Core\Db::MYSQL ) {
-            $convert = $this->_db->convertToUTF();
+        if (TYPE_DB === \Galette\Core\Db::MYSQL) {
+            $convert = $this->db->convertToUTF();
 
             $this->variable($convert)->isNull();
         }
+    }
+
+    /**
+     * Test get platform
+     *
+     * @return void
+     */
+    public function testGetPlatform()
+    {
+        $quoted = $this->db->platform->quoteValue('somethin\' to "quote"');
+
+        $expected = ($this->db->isPostgres()) ?
+            "'somethin'' to \"quote\"'" :
+            "'somethin\\' to \\\"quote\\\"'";
+
+        $this->string($quoted)
+            ->isIdenticalTo($expected);
+    }
+
+    /**
+     * Test execute Method
+     *
+     * @return void
+     */
+    public function testExecute()
+    {
+        $select = $this->db->select('preferences', 'p');
+        $select->where(['p.nom_pref' => 'azerty']);
+        $results = $this->db->execute($select);
+
+        $this->object($results)
+            ->isInstanceOf('\Zend\Db\ResultSet\ResultSet');
+
+        $this->exception(
+            function () use ($select) {
+                $select->where(['p.notknown' => 'azerty']);
+                $results = $this->db->execute($select);
+            }
+        )->isInstanceOf('\PDOException');
+    }
+
+    /**
+     * Test serialization
+     *
+     * @return void
+     */
+    public function testSerialization()
+    {
+        $db = $this->db;
+        $serialized = serialize($db);
+        $this->string($serialized)
+            ->isNotNull();
+
+        $unserialized = unserialize($serialized);
+        $this->object($unserialized)->isInstanceOf('Galette\Core\Db');
     }
 }

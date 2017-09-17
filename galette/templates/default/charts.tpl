@@ -1,16 +1,21 @@
-        <div id="{php}echo \Galette\IO\Charts::MEMBERS_STATUS_PIE;{/php}">
+{extends file="page.tpl"}
+{block name="content"}
+        <div id="{\Galette\IO\Charts::MEMBERS_STATUS_PIE}">
         </div>
-        <div id="{php}echo \Galette\IO\Charts::MEMBERS_STATEDUE_PIE;{/php}">
+        <div id="{\Galette\IO\Charts::MEMBERS_STATEDUE_PIE}">
         </div>
-        <div id="{php}echo \Galette\IO\Charts::CONTRIBS_TYPES_PIE;{/php}">
+        <div id="{\Galette\IO\Charts::CONTRIBS_TYPES_PIE}">
         </div>
-        <div id="{php}echo \Galette\IO\Charts::COMPANIES_OR_NOT;{/php}">
+        <div id="{\Galette\IO\Charts::COMPANIES_OR_NOT}">
         </div>
-        <div id="{php}echo \Galette\IO\Charts::CONTRIBS_ALLTIME;{/php}">
+        <div id="{\Galette\IO\Charts::CONTRIBS_ALLTIME}">
         </div>
+{/block}
+
+{block name="javascripts"}
         <script type="text/javascript">
             $(function(){
-                var _members_status_pie = jQuery.jqplot ('{php}echo \Galette\IO\Charts::MEMBERS_STATUS_PIE;{/php}', [{$charts.MembersStatusPie}],
+                var _members_status_pie = jQuery.jqplot ('{\Galette\IO\Charts::MEMBERS_STATUS_PIE}', [{$charts.MembersStatusPie}],
                     {
                         title: '{_T string="Members by status" escape="js"}',
                         seriesDefaults: {
@@ -23,7 +28,7 @@
                     }
                 );
 
-                var _members_statedue_pie = jQuery.jqplot ('{php}echo \Galette\IO\Charts::MEMBERS_STATEDUE_PIE;{/php}', [{$charts.MembersStateDuePie}],
+                var _members_statedue_pie = jQuery.jqplot ('{\Galette\IO\Charts::MEMBERS_STATEDUE_PIE}', [{$charts.MembersStateDuePie}],
                     {
                         title: '{_T string="Members by state of dues" escape="js"}',
                         seriesDefaults: {
@@ -36,7 +41,7 @@
                     }
                 );
 
-                var _contribs_types_pie = jQuery.jqplot ('{php}echo \Galette\IO\Charts::CONTRIBS_TYPES_PIE;{/php}', [{$charts.ContribsTypesPie}],
+                var _contribs_types_pie = jQuery.jqplot ('{\Galette\IO\Charts::CONTRIBS_TYPES_PIE}', [{$charts.ContribsTypesPie}],
                     {
                         title: '{_T string="Contributions types repartition" escape="js"}',
                         seriesDefaults: {
@@ -49,7 +54,7 @@
                     }
                 );
 
-                var _companies_individuals = jQuery.jqplot ('{php}echo \Galette\IO\Charts::COMPANIES_OR_NOT;{/php}', [{$charts.CompaniesOrNot}],
+                var _companies_individuals = jQuery.jqplot ('{\Galette\IO\Charts::COMPANIES_OR_NOT}', [{$charts.CompaniesOrNot}],
                     {
                         title: '{_T string="Individuals and Companies" escape="js"}',
                         seriesDefaults: {
@@ -62,7 +67,7 @@
                     }
                 );
 
-                var _contribs_alltime = jQuery.jqplot ('{php}echo \Galette\IO\Charts::CONTRIBS_ALLTIME;{/php}', [{$charts.ContribsAllTime}],
+                var _contribs_alltime = jQuery.jqplot ('{\Galette\IO\Charts::CONTRIBS_ALLTIME}', [{$charts.ContribsAllTime}],
                     {
                         title: '{_T string="Contributions over time" escape="js"}',
                         seriesDefaults: {
@@ -85,3 +90,5 @@
                 );
             });
         </script>
+
+{/block}

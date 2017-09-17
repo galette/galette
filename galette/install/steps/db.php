@@ -41,19 +41,23 @@ use Galette\Core\Db as GaletteDb;
                 <h2><?php echo _T("Database"); ?></h2>
                 <p>
 <?php
-if ( $install->getMode() === GaletteInstall::INSTALL ) {
+if ($install->getMode() === GaletteInstall::INSTALL) {
     echo _T("If it hadn't been made, create a database and a user for Galette.");
 }
-if ( $install->isUpgrade() ) {
+if ($install->isUpgrade()) {
     echo _T("Enter connection data for the existing database.");
     $install->loadExistingConfig($_POST, $error_detected);
+} else {
+    if (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
+        echo '<div id="warningbox">' . _T("It seems that you have already installed Galette once.<br/>All existing data will be removed if you keep going on using existing database!") . "</div>";
+    }
 }
 
 //define default database port
 $default_dbport = GaletteDb::MYSQL_DEFAULT_PORT;
-if ( !isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql' ) {
+if (!isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql') {
     $default_dbport = GaletteDb::MYSQL_DEFAULT_PORT;
-} else if ( $_POST['install_dbtype'] == 'pgsql' ) {
+} elseif ($_POST['install_dbtype'] == 'pgsql') {
     $default_dbport = GaletteDb::PGSQL_DEFAULT_PORT;
 }
 ?><br />
@@ -94,7 +98,7 @@ if ( !isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql' ) {
                             <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo ($install->getTablesPrefix() !== null)?$install->getTablesPrefix():'galette_'; ?>" required/>
                         </p>
 <?php
-if ( $install->isUpgrade() ) {
+if ($install->isUpgrade()) {
     echo '<div id="warningbox">' .
         _T("(Indicate the CURRENT prefix of your Galette tables)") .
         '</div>';

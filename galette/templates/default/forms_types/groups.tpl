@@ -26,9 +26,9 @@
     <span id="usergroups">
     {foreach from=$groups item=group name=groupsiterate}
         {if $member->isGroupMember($group->getName())}
-            {if isset($isnotfirst)}, {/if}
+            {if isset($isnotfirst)}, {else}<strong>{_T string="Member of:"}</strong>{/if}
             {assign var=isnotfirst value=true}
-            {_T string="Member of '%groupname'" pattern="/%groupname/" replace=$group->getName()}
+            {$group->getName()}
         {/if}
     {/foreach}
     </span>
@@ -36,9 +36,9 @@
     <span id="managedgroups">
     {foreach from=$groups item=group name=groupsmiterate}
         {if $member->isGroupManager($group->getName())}
-            {if isset($isnotfirstm)}, {/if}
+            {if isset($isnotfirstm)}, {else}<strong>{_T string="Manager for:"}</strong>{/if}
             {assign var=isnotfirstm value=true}
-            {_T string="Manager for '%groupname'" pattern="/%groupname/" replace=$group->getName()}
+            {$group->getName()}
         {/if}
     {/foreach}
     </span>

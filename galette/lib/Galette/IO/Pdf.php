@@ -77,8 +77,8 @@ class Pdf extends \TCPDF
     const FONT_SIZE = 10;
 
     protected $preferences;
-    private $_model;
-    private $_paginated = false;
+    private $model;
+    private $paginated = false;
 
     /**
      * Main constructor, set creator and author
@@ -103,10 +103,10 @@ class Pdf extends \TCPDF
             'and TCPDF ' . TCPDF_VERSION . ')'
         );
 
-        if ( $model !== null ) {
-            if ( $model instanceof PdfModel ) {
-                $this->_model = $model;
-                $this->SetTitle($this->_model->htitle);
+        if ($model !== null) {
+            if ($model instanceof PdfModel) {
+                $this->model = $model;
+                $this->SetTitle($this->model->htitle);
             } else {
                 throw new \UnexpectedValueException(
                     'Provided model must be an instance of PdfModel!'
@@ -122,7 +122,7 @@ class Pdf extends \TCPDF
      */
     public function showPagination()
     {
-        $this->_paginated = true;
+        $this->paginated = true;
     }
 
     /**
@@ -141,6 +141,7 @@ class Pdf extends \TCPDF
      * document would probably be invalid.
      * 2004-06-11 :: Nicola Asuni : changed bold tag with strong
      * 2007-07-21 :: John Perr : changed function to return error to session
+     * 2017-02-14 :: Johan Cwiklinski : use slim's flash message; do not rely on session for redirect
      *
      * @param string $msg The error message
      *
@@ -150,15 +151,22 @@ class Pdf extends \TCPDF
      */
     public function Error($msg)
     {
-        global $session;
-        /** FIXME: I do not really like this, we should find sthing better */
-        $session['pdf_error'] = true;
-        $session['pdf_error_msg'] = $msg;
+        global $container;
+
         Analog::log(
             'PDF error: ' .$msg,
             Analog::ERROR
         );
-        header("location:" . $session['caller']);
+
+        $container->get('flash')->addMessage(
+            'error_detected',
+            $msg
+        );
+
+        $redirect = (isset($_SERVER['HTTP_REFERER']) ?
+            $_SERVER['HTTP_REFERER'] :
+            $container->get('router')->pathFor('slash'));
+        header('Location: ' . $redirect);
         die();
     }
 
@@ -193,22 +201,22 @@ class Pdf extends \TCPDF
     protected function parsegif($file)
     {
         $a=GetImageSize($file);
-        if ( empty($a) ) {
+        if (empty($a)) {
             $this->Error(_T("Missing or incorrect image file ") . $file);
         }
-        if ( $a[2]!=1 ) {
+        if ($a[2]!=1) {
             $this->Error(_T("Not a GIF file ") . $file);
         }
 
         // Tentative d'ouverture du fichier
-        if ( function_exists('gd_info') ) {
+        if (function_exists('gd_info')) {
             $data = @imagecreatefromgif($file);
 
             // Test d'échec & Affichage d'un message d'erreur
             if (!$data) {
                     $this->Error(_T("Error loading ").$file);
             }
-            if (Imagepng($data, GALETTE_ROOT . 'tempimages/gif2png.png') ) {
+            if (imagepng($data, GALETTE_ROOT . 'tempimages/gif2png.png')) {
                 return $this->_parsepng(GALETTE_ROOT . 'tempimages/gif2png.png');
             } else {
                 $this->Error(_T("Error creating temporary png file from ").$file);
@@ -236,12 +244,12 @@ class Pdf extends \TCPDF
     function Footer()
     {
         $this->SetY(-20);
-        if ( isset($this->_model) ) {
+        if (isset($this->model)) {
             $hfooter = '';
-            if ( trim($this->_model->hstyles) !== '' ) {
-                $hfooter .= "<style>\n" . $this->_model->hstyles . "\n</style>\n\n";
+            if (trim($this->model->hstyles) !== '') {
+                $hfooter .= "<style>\n" . $this->model->hstyles . "\n</style>\n\n";
             }
-            $hfooter .= $this->_model->hfooter;
+            $hfooter .= $this->model->hfooter;
             $this->writeHtml($hfooter);
         } else {
             $this->SetFont(self::FONT, '', self::FONT_SIZE);
@@ -256,7 +264,7 @@ class Pdf extends \TCPDF
             /** FIXME: get configured postal address */
             $coordonnees_line1 = $name . ' - ' . $this->preferences->pref_adresse;
             /** FIXME: pref_adresse2 should be removed */
-            if ( trim($this->preferences->pref_adresse2) != '' ) {
+            if (trim($this->preferences->pref_adresse2) != '') {
                 $coordonnees_line1 .= ', ' . $this->preferences->pref_adresse2;
             }
             $coordonnees_line2 = $this->preferences->pref_cp . ' ' .
@@ -283,7 +291,7 @@ class Pdf extends \TCPDF
                 $this->preferences->pref_website
             );
 
-            if ( $this->_paginated ) {
+            if ($this->paginated) {
                 $this->SetFont(self::FONT, '', self::FONT_SIZE - 3);
                 $this->Ln();
                 $this->Cell(
@@ -308,60 +316,58 @@ class Pdf extends \TCPDF
      */
     function PageHeader($title = null)
     {
-        if ( isset($this->_model) ) {
+        if (isset($this->model)) {
             $html = null;
-            if ( trim($this->_model->hstyles) !== '' ) {
-                $html .= "<style>\n" . $this->_model->hstyles . "\n</style>\n\n";
+            if (trim($this->model->hstyles) !== '') {
+                $html .= "<style>\n" . $this->model->hstyles . "\n</style>\n\n";
             }
-            $html .= $this->_model->hheader;
+            $html .= $this->model->hheader;
             $this->writeHtml($html, true, false, true, false, '');
-            if ( trim($this->_model->title) !== '' ) {
+            if (trim($this->model->title) !== '') {
                 $htitle = '';
-                if ( trim($this->_model->hstyles) !== '' ) {
-                    $htitle .= "<style>\n" . $this->_model->hstyles .
+                if (trim($this->model->hstyles) !== '') {
+                    $htitle .= "<style>\n" . $this->model->hstyles .
                         "\n</style>\n\n";
                 }
-                $htitle .= '<div id="pdf_title">' . $this->_model->htitle . '</div>';
+                $htitle .= '<div id="pdf_title">' . $this->model->htitle . '</div>';
                 $this->writeHtml($htitle);
             }
-            if ( trim($this->_model->subtitle) !== '' ) {
+            if (trim($this->model->subtitle) !== '') {
                 $hsubtitle = '';
-                if ( trim($this->_model->hstyles) !== '' ) {
-                    $hsubtitle .= "<style>\n" . $this->_model->hstyles .
+                if (trim($this->model->hstyles) !== '') {
+                    $hsubtitle .= "<style>\n" . $this->model->hstyles .
                         "\n</style>\n\n";
                 }
-                $hsubtitle .= '<div id="pdf_subtitle">' . $this->_model->hsubtitle .
+                $hsubtitle .= '<div id="pdf_subtitle">' . $this->model->hsubtitle .
                     '</div>';
                 $this->writeHtml($hsubtitle);
             }
-            if ( trim($this->_model->title) !== ''
-                || trim($this->_model->subtitle) !== ''
+            if (trim($this->model->title) !== ''
+                || trim($this->model->subtitle) !== ''
             ) {
                 $this->Ln(5);
             }
         } else {
             //default header
             $print_logo = new \Galette\Core\PrintLogo();
-            if ( $print_logo->hasPicture() ) {
-                $logofile = $print_logo->getPath();
+            $logofile = $print_logo->getPath();
 
-                // Set logo size to max width 30 mm or max height 25 mm
-                $ratio = $print_logo->getWidth()/$print_logo->getHeight();
-                if ( $ratio < 1 ) {
-                    if ( $print_logo->getHeight() > 16 ) {
-                        $hlogo = 25;
-                    } else {
-                        $hlogo = $print_logo->getHeight();
-                    }
-                    $wlogo = round($hlogo*$ratio);
+            // Set logo size to max width 30 mm or max height 25 mm
+            $ratio = $print_logo->getWidth()/$print_logo->getHeight();
+            if ($ratio < 1) {
+                if ($print_logo->getHeight() > 16) {
+                    $hlogo = 25;
                 } else {
-                    if ( $print_logo->getWidth() > 16 ) {
-                        $wlogo = 30;
-                    } else {
-                        $wlogo = $print_logo->getWidth();
-                    }
-                    $hlogo = round($wlogo/$ratio);
+                    $hlogo = $print_logo->getHeight();
                 }
+                $wlogo = round($hlogo*$ratio);
+            } else {
+                if ($print_logo->getWidth() > 16) {
+                    $wlogo = 30;
+                } else {
+                    $wlogo = $print_logo->getWidth();
+                }
+                $hlogo = round($wlogo/$ratio);
             }
 
             $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 4);
@@ -383,7 +389,7 @@ class Pdf extends \TCPDF
             );
             $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
 
-            if ( $title !== null ) {
+            if ($title !== null) {
                 $this->Cell(0, 6, $title, 0, 1, 'L', 0);
             }
             $yend = $this->getY();//store position at the end of the text
@@ -394,7 +400,7 @@ class Pdf extends \TCPDF
             $this->y += $hlogo + 3;
             //if position after logo is < than position after text,
             //we have to change y
-            if ( $this->getY() < $yend ) {
+            if ($this->getY() < $yend) {
                 $this->setY($yend);
             }
         }
@@ -408,10 +414,10 @@ class Pdf extends \TCPDF
     public function PageBody()
     {
         $hbody = '';
-        if ( trim($this->_model->hstyles) !== '' ) {
-            $hbody .= "<style>\n" . $this->_model->hstyles . "\n</style>\n\n";
+        if (trim($this->model->hstyles) !== '') {
+            $hbody .= "<style>\n" . $this->model->hstyles . "\n</style>\n\n";
         }
-        $hbody .= $this->_model->hbody;
+        $hbody .= $this->model->hbody;
         $this->writeHtml($hbody);
     }
 }

@@ -57,8 +57,7 @@ class L10n
     /**
      * Default constructor.
      */
-    function __construct()
+    public function __construct()
     {
     }
-
 }

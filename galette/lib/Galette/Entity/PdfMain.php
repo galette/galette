@@ -65,5 +65,4 @@ class PdfMain extends PdfModel
     {
         parent::__construct($zdb, $preferences, self::MAIN_MODEL, $args);
     }
-
 }

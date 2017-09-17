@@ -1,6 +1,8 @@
+{extends file="public_page.tpl"}
+{block name="content"}
 {if $members|@count > 0}
         <p>{_T string="This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'"}</p>
-        <form action="liste_membres.php" method="get" id="filtre">
+        <form action="{path_for name="filterPublicMemberslist"}" method="POST" id="filtre">
         <table class="infoline">
             <tr>
                 <td class="left">{$nb_members} {if $nb_members != 1}{_T string="members"}{else}{_T string="member"}{/if}</td>
@@ -19,7 +21,7 @@
 
                 <tr>
                     <th class="left">
-                        <a href="?tri={php}echo Galette\Repository\Members::ORDERBY_NAME;{/php}" class="listing">
+                        <a href="{path_for name="publicMembers" data=["option" => {_T string="order" domain="routes"}, "value" => {Galette\Repository\Members::ORDERBY_NAME}]}" class="listing">
                             {_T string="Name"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -31,7 +33,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="?tri={php}echo Galette\Repository\Members::ORDERBY_NICKNAME;{/php}" class="listing">
+                        <a href="{path_for name="publicMembers" data=["option" => {_T string="order" domain="routes"}, "value" => {Galette\Repository\Members::ORDERBY_NICKNAME}]}" class="listing">
                             {_T string="Nickname"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NICKNAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -48,22 +50,14 @@
                     </th>
                     {/if}
                     <th class="left">
-                        <a href="?tri=infos" class="listing">{_T string="Informations"}</a>
+                        {_T string="Informations"}
                     </th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <td colspan="7" class="center">
-                        {_T string="Pages:"}<br/>
-                        <ul class="pages">{$pagination}</ul>
-                    </td>
-                </tr>
-            </tfoot>
             <tbody>
     {foreach from=$members item=member name=allmembers}
                 <tr class="{if $smarty.foreach.allmembers.iteration % 2 eq 0}even{else}odd{/if}">
-                    <td class="{$member->getRowClass(true)} nowrap username_row">
+                    <td class="{$member->getRowClass(true)} nowrap username_row" data-scope="row">
                     {if $member->isCompany()}
                         <img src="{$template_subdir}images/icon-company.png" alt="" width="16" height="16"/>
                     {elseif $member->isMan()}
@@ -80,16 +74,26 @@
                         {$member->sfullname}
                     {/if}
                     </td>
-                    <td class="{$member->getRowClass(true)} nowrap">{$member->nickname|htmlspecialchars}</td>
+                    <td class="{$member->getRowClass(true)} nowrap" data-title="{_T string="Nickname"}">{$member->nickname|htmlspecialchars}</td>
                     {if $login->isLogged()}
-                    <td class="{$member->getRowClass(true)} nowrap"><a href="mailto:{$member->email}">{$member->email}</a></td>
+                    <td class="{$member->getRowClass(true)} nowrap" data-title="{_T string="Email"}"><a href="mailto:{$member->email}">{$member->email}</a></td>
                     {/if}
-                    <td class="{$member->getRowClass(true)} nowrap">{$member->others_infos}</td>
+                    <td class="{$member->getRowClass(true)} nowrap" data-title="{_T string="Informations"}">{$member->others_infos}</td>
                 </tr>
     {/foreach}
             </tbody>
         </table>
+        <div class="center cright">
+            {_T string="Pages:"}<br/>
+            <ul class="pages">{$pagination}</ul>
+        </div>
+{else}
+    <div id="infobox">{_T string="No member to show"}</div>
+{/if}
+{/block}
 
+{block name="javascripts"}
+    {if $members|@count > 0}
         <script type="text/javascript">
             $(function(){
                 $('#nbshow').change(function() {
@@ -97,6 +101,5 @@
                 });
             });
         </script>
-{else}
-    <div id="infobox">{_T string="No member to show"}</div>
-{/if}
+    {/if}
+{/block}

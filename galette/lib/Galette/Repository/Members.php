@@ -37,6 +37,7 @@
 
 namespace Galette\Repository;
 
+use Galette\DynamicFieldsTypes\DynamicFieldType;
 use Galette\Entity\DynamicFields;
 
 use Analog\Analog;
@@ -53,6 +54,7 @@ use Galette\Core\Picture;
 use Galette\Entity\Group;
 use Galette\Repository\Groups;
 use Galette\Entity\Status;
+use Galette\Core\Db;
 
 /**
  * Members class for galette
@@ -114,9 +116,9 @@ class Members
 
     const NON_STAFF_MEMBERS = 30;
 
-    private $_filters = false;
-    private $_count = null;
-    private $_errors = array();
+    private $filters = false;
+    private $count = null;
+    private $errors = array();
 
     /**
      * Default constructor
@@ -125,10 +127,10 @@ class Members
      */
     public function __construct($filters = null)
     {
-        if ( $filters === null ) {
-            $this->_filters = new MembersList();
+        if ($filters === null) {
+            $this->filters = new MembersList();
         } else {
-            $this->_filters = $filters;
+            $this->filters = $filters;
         }
     }
 
@@ -136,17 +138,20 @@ class Members
      * Get staff members list
      *
      * @param bool    $as_members return the results as an array of
-     *                               Member object.
+     *                            Member object.
      * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                               an array. If null, all fields will be
-     *                               returned
+     *                            an array. If null, all fields will be
+     *                            returned
      * @param boolean $count      true if we want to count members
      * @param boolean $limit      true to LIMIT query
      *
      * @return Adherent[]|ResultSet
      */
     public function getStaffMembersList(
-        $as_members=false, $fields=null, $count=true, $limit=true
+        $as_members = false,
+        $fields = null,
+        $count = true,
+        $limit = true
     ) {
         return $this->getMembersList(
             $as_members,
@@ -162,17 +167,20 @@ class Members
      * Get managed members list (for groups managers)
      *
      * @param bool    $as_members return the results as an array of
-     *                               Member object.
+     *                            Member object.
      * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                               an array. If null, all fields will be
-     *                               returned
+     *                            an array. If null, all fields will be
+     *                            returned
      * @param boolean $count      true if we want to count members
      * @param boolean $limit      true to LIMIT query
      *
      * @return Adherent[]|ResultSet
      */
     public function getManagedMembersList(
-        $as_members=false, $fields=null, $count=true, $limit=true
+        $as_members = false,
+        $fields = null,
+        $count = true,
+        $limit = true
     ) {
         return $this->getMembersList(
             $as_members,
@@ -187,10 +195,10 @@ class Members
      * Get members list
      *
      * @param bool    $as_members return the results as an array of
-     *                               Member object.
+     *                            Member object.
      * @param array   $fields     field(s) name(s) to get. Should be a string or
-     *                               an array. If null, all fields will be
-     *                               returned
+     *                            an array. If null, all fields will be
+     *                            returned
      * @param boolean $count      true if we want to count members
      * @param boolean $staff      true if we want only staff members
      * @param boolean $managed    true if we want only managed groups
@@ -200,48 +208,51 @@ class Members
      * @return Adherent[]|ResultSet
      */
     public function getMembersList(
-        $as_members=false,
-        $fields=null,
-        $count=true,
-        $staff=false,
-        $managed=false,
-        $limit=true,
-        $export=false
+        $as_members = false,
+        $fields = null,
+        $count = true,
+        $staff = false,
+        $managed = false,
+        $limit = true,
+        $export = false
     ) {
         global $zdb;
 
         try {
             $_mode = self::SHOW_LIST;
-            if ( $staff !== false ) {
+            if ($staff !== false) {
                 $_mode = self::SHOW_STAFF;
             }
-            if ( $managed !== false ) {
+            if ($managed !== false) {
                 $_mode = self::SHOW_MANAGED;
             }
-            if ( $export !== false ) {
+            if ($export !== false) {
                 $_mode = self::SHOW_EXPORT;
             }
 
-            $select = $this->_buildSelect(
-                $_mode, $fields, false, $count
+            $select = $this->buildSelect(
+                $_mode,
+                $fields,
+                false,
+                $count
             );
 
             //add limits to retrieve only relavant rows
-            if ( $limit === true ) {
-                $this->_filters->setLimit($select);
+            if ($limit === true) {
+                $this->filters->setLimit($select);
             }
 
             $rows = $zdb->execute($select);
-            $this->_filters->query = $zdb->query_string;
+            $this->filters->query = $zdb->query_string;
 
             $members = array();
-            if ( $as_members ) {
+            if ($as_members) {
                 $deps = array(
                     'picture'   => false,
                     'groups'    => false
                 );
-                foreach ( $rows as $row ) {
-                    $members[] = new Adherent($row, $deps);
+                foreach ($rows as $row) {
+                    $members[] = new Adherent($zdb, $row, $deps);
                 }
             } else {
                 $members = $rows;
@@ -267,14 +278,14 @@ class Members
         global $zdb, $hist;
 
         $list = array();
-        if ( is_numeric($ids) ) {
+        if (is_numeric($ids)) {
             //we've got only one identifier
             $list[] = $ids;
         } else {
             $list = $ids;
         }
 
-        if ( is_array($list) ) {
+        if (is_array($list)) {
             try {
                 $zdb->connection->beginTransaction();
 
@@ -287,14 +298,14 @@ class Members
                 $results = $zdb->execute($select);
 
                 $infos = null;
-                foreach ($results as $member ) {
+                foreach ($results as $member) {
                     $str_adh = $member->id_adh . ' (' . $member->nom_adh . ' ' .
                         $member->prenom_adh . ')';
                     $infos .=  $str_adh . "\n";
 
                     $p = new Picture($member->id_adh);
-                    if ( $p->hasPicture() ) {
-                        if ( !$p->delete(false) ) {
+                    if ($p->hasPicture()) {
+                        if (!$p->delete(false)) {
                             Analog::log(
                                 'Unable to delete picture for member ' . $str_adh,
                                 Analog::ERROR
@@ -315,7 +326,8 @@ class Members
                 //delete contributions
                 $del_qry = $zdb->delete(Contribution::TABLE);
                 $del_qry->where->in(
-                    self::PK, $list
+                    self::PK,
+                    $list
                 );
                 $del = $zdb->execute($del_qry);
 
@@ -330,14 +342,16 @@ class Members
                 //delete reminders
                 $del_qry = $zdb->delete(Reminder::TABLE);
                 $del_qry->where->in(
-                    'reminder_dest', $list
+                    'reminder_dest',
+                    $list
                 );
                 $del = $zdb->execute($del_qry);
 
                 //delete members
                 $del_qry = $zdb->delete(self::TABLE);
                 $del_qry->where->in(
-                    self::PK, $list
+                    self::PK,
+                    $list
                 );
                 $del = $zdb->execute($del_qry);
 
@@ -353,7 +367,7 @@ class Members
                 return true;
             } catch (\Exception $e) {
                 $zdb->connection->rollBack();
-                if ( $e instanceof \Zend_Db_Statement_Exception
+                if ($e instanceof \Zend_Db_Statement_Exception
                     && $e->getCode() == 23000
                 ) {
                     Analog::log(
@@ -363,7 +377,7 @@ class Members
                         'to remove him.',
                         Analog::ERROR
                     );
-                    $this->_errors[] = _T("Cannot remove a member who still have dependencies (mailings, ...)");
+                    $this->errors[] = _T("Cannot remove a member who still have dependencies (mailings, ...)");
                 } else {
                     Analog::log(
                         'Unable to delete selected member(s) |' .
@@ -377,7 +391,7 @@ class Members
             //not numeric and not an array: incorrect.
             Analog::log(
                 'Asking to remove members, but without providing an array or a single numeric value.',
-                Analog::WARNING
+                Analog::ERROR
             );
             return false;
         }
@@ -394,7 +408,7 @@ class Members
      *
      * @return Adherent[]|ResultSet
      */
-    public function getList($as_members=false, $fields=null)
+    public function getList($as_members = false, $fields = null)
     {
         return $this->getMembersList(
             $as_members,
@@ -411,37 +425,38 @@ class Members
      * Get members list with public informations available
      *
      * @param boolean $with_photos get only members which have uploaded a
-     *                                photo (for trombinoscope)
-     * @param array   $fields      fields list
+     *                             photo (for trombinoscope)
      *
      * @return Adherent[]
      */
-    public function getPublicList($with_photos, $fields)
+    public function getPublicList($with_photos)
     {
         global $zdb;
 
         try {
-            $select = $this->_buildSelect(
-                self::SHOW_PUBLIC_LIST, $fields, $with_photos
+            $select = $this->buildSelect(
+                self::SHOW_PUBLIC_LIST,
+                null,
+                $with_photos
             );
 
-            if ( $this->_filters ) {
-                $select->order($this->_buildOrderClause($fields));
+            if ($this->filters) {
+                $select->order($this->buildOrderClause(null));
             }
 
-            $this->_proceedCount($select);
+            $this->proceedCount($select);
 
-            $this->_filters->setLimit($select);
+            $this->filters->setLimit($select);
 
             $results = $zdb->execute($select);
             $members = array();
-            foreach ( $results as $row ) {
+            foreach ($results as $row) {
                 $deps = array(
                     'groups'    => false,
                     'dues'      => false,
                     'picture'   => $with_photos
                 );
-                $members[] = new Adherent($row, $deps);
+                $members[] = new Adherent($zdb, $row, $deps);
             }
             return $members;
         } catch (\Exception $e) {
@@ -468,30 +483,38 @@ class Members
      *
      * @return Adherent[]
      */
-    public function getArrayList($ids, $orderby = null, $with_photos = false, $as_members = true, $fields = null, $export = false, $dues = false, $parent = false)
-    {
+    public function getArrayList(
+        $ids,
+        $orderby = null,
+        $with_photos = false,
+        $as_members = true,
+        $fields = null,
+        $export = false,
+        $dues = false,
+        $parent = false
+    ) {
         global $zdb;
 
-        if ( !is_array($ids) || count($ids) < 1 ) {
+        if (!is_array($ids) || count($ids) < 1) {
             Analog::log('No member selected for labels.', Analog::INFO);
             return false;
         }
 
         try {
             $damode = self::SHOW_ARRAY_LIST;
-            if ( $export === true ) {
+            if ($export === true) {
                 $damode = self::SHOW_EXPORT;
             }
-            $select = $this->_buildSelect(
+            $select = $this->buildSelect(
                 $damode,
                 $fields,
                 false,
                 false
             );
             $select->where->in('a.' . self::PK, $ids);
-            if ( $orderby != null && count($orderby) > 0 ) {
+            if ($orderby != null && count($orderby) > 0) {
                 if (is_array($orderby)) {
-                    foreach ( $orderby as $o ) {
+                    foreach ($orderby as $o) {
                         $select->order($o);
                     }
                 } else {
@@ -502,15 +525,15 @@ class Members
             $results = $zdb->execute($select);
 
             $members = array();
-            foreach ( $results as $o ) {
+            foreach ($results as $o) {
                 $deps = array(
                     'picture'   => $with_photos,
                     'groups'    => false,
                     'dues'      => $dues,
                     'parent'    => $parent
                 );
-                if ( $as_members === true ) {
-                    $members[] = new Adherent($o, $deps);
+                if ($as_members === true) {
+                    $members[] = new Adherent($zdb, $o, $deps);
                 } else {
                     $members[] = $o;
                 }
@@ -535,64 +558,69 @@ class Members
      *
      * @return Select SELECT statement
      */
-    private function _buildSelect($mode, $fields, $photos, $count = false)
+    private function buildSelect($mode, $fields, $photos, $count = false)
     {
         global $zdb, $login;
 
         try {
+            if ($fields != null && is_array($fields) && !in_array('id_adh', $fields)) {
+                $fields[] = 'id_adh';
+            }
             $fieldsList = ( $fields != null )
                             ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
                             : $fields) : (array)'*';
 
             $select = $zdb->select(self::TABLE, 'a');
+
             $select->columns($fieldsList);
 
             $select->quantifier('DISTINCT');
 
-            switch($mode) {
-            case self::SHOW_STAFF:
-            case self::SHOW_LIST:
-            case self::SHOW_ARRAY_LIST:
-                $select->join(
-                    array('p' => PREFIX_DB . Status::TABLE),
-                    'a.' . Status::PK . '=p.' . Status::PK,
-                    array()
-                );
-                break;
-            case self::SHOW_EXPORT:
-                //basically the same as above, but without any fields
-                $select->join(
-                    array('p' => PREFIX_DB . Status::TABLE),
-                    'a.' . Status::PK . '=p.' . Status::PK,
-                    array()
-                );
-                break;
-            case self::SHOW_MANAGED:
-                $select->join(
-                    array('p' => PREFIX_DB . Status::TABLE),
-                    'a.' . Status::PK . '=p.' . Status::PK
-                )->join(
-                    array('gr' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
-                    'a.' . Adherent::PK . '=gr.' . Adherent::PK,
-                    array()
-                )->join(
-                    array('m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
-                    'gr.' . Group::PK . '=m.' . Group::PK,
-                    array()
-                )->where('m.' . Adherent::PK . ' = ' . $login->id);
-            case self::SHOW_PUBLIC_LIST:
-                if ( $photos ) {
+            switch ($mode) {
+                case self::SHOW_STAFF:
+                case self::SHOW_LIST:
+                case self::SHOW_ARRAY_LIST:
                     $select->join(
-                        array('p' => PREFIX_DB . Picture::TABLE),
-                        'a.' . self::PK . '= p.' . self::PK
+                        array('p' => PREFIX_DB . Status::TABLE),
+                        'a.' . Status::PK . '=p.' . Status::PK,
+                        array()
                     );
-                }
-                break;
+                    break;
+                case self::SHOW_EXPORT:
+                    //basically the same as above, but without any fields
+                    $select->join(
+                        array('p' => PREFIX_DB . Status::TABLE),
+                        'a.' . Status::PK . '=p.' . Status::PK,
+                        array()
+                    );
+                    break;
+                case self::SHOW_MANAGED:
+                    $select->join(
+                        array('p' => PREFIX_DB . Status::TABLE),
+                        'a.' . Status::PK . '=p.' . Status::PK
+                    )->join(
+                        array('gr' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+                        'a.' . Adherent::PK . '=gr.' . Adherent::PK,
+                        array()
+                    )->join(
+                        array('m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
+                        'gr.' . Group::PK . '=m.' . Group::PK,
+                        array()
+                    )->where('m.' . Adherent::PK . ' = ' . $login->id);
+                    break;
+                case self::SHOW_PUBLIC_LIST:
+                    if ($photos) {
+                        $select->join(
+                            array('p' => PREFIX_DB . Picture::TABLE),
+                            'a.' . self::PK . '= p.' . self::PK
+                        );
+                    }
+                    break;
             }
 
             //check for contributions filtering
-            if ( $this->_filters instanceof AdvancedMembersList
-                && $this->_filters->withinContributions()
+            if ($this->filters instanceof AdvancedMembersList
+                && $this->filters->withinContributions()
             ) {
                 $select->join(
                     array('ct' => PREFIX_DB . Contribution::TABLE),
@@ -604,26 +632,19 @@ class Members
 
             //check if there are dynamic fields in filter
             $hasDf = false;
-            $hasCdf = false;
             $dfs = array();
-            $cdfs = array();
 
-            if ( $this->_filters instanceof AdvancedMembersList
-                && $this->_filters->free_search
-                && count($this->_filters->free_search) > 0
-                && !isset($this->_filters->free_search['empty'])
+            if ($this->filters instanceof AdvancedMembersList
+                && $this->filters->free_search
+                && count($this->filters->free_search) > 0
+                && !isset($this->filters->free_search['empty'])
             ) {
-                $free_searches = $this->_filters->free_search;
-                foreach ( $free_searches as $fs ) {
-                    if ( strpos($fs['field'], 'dyn_') === 0 ) {
+                $free_searches = $this->filters->free_search;
+                foreach ($free_searches as $fs) {
+                    if (strpos($fs['field'], 'dyn_') === 0) {
                         // simple dynamic fields
                         $hasDf = true;
                         $dfs[] = str_replace('dyn_', '', $fs['field']);
-                    }
-                    if ( strpos($fs['field'], 'dync_') === 0 ) {
-                        // choice dynamic fields
-                        $hasCdf = true;
-                        $cdfs[] = str_replace('dync_', '', $fs['field']);
                     }
                 }
             }
@@ -633,27 +654,26 @@ class Members
             $hasCdfc = false;
             $cdfcs = array();
 
-            if ( $this->_filters instanceof AdvancedMembersList
-                && $this->_filters->withinContributions()
+            if ($this->filters instanceof AdvancedMembersList
+                && $this->filters->withinContributions()
             ) {
-                if ( $this->_filters->contrib_dynamic
-                    && count($this->_filters->contrib_dynamic) > 0
-                    && !isset($this->_filters->contrib_dynamic['empty'])
+                if ($this->filters->contrib_dynamic
+                    && count($this->filters->contrib_dynamic) > 0
+                    && !isset($this->filters->contrib_dynamic['empty'])
                 ) {
                     $hasDfc = true;
 
                     //check if there are dynamic fields in the filter
-                    foreach ( $this->_filters->contrib_dynamic as $k=>$cd ) {
-                        if ( is_array($cd) ) {
+                    foreach ($this->filters->contrib_dynamic as $k => $cd) {
+                        if (is_array($cd)) {
                             $hasCdfc = true;
                             $cdfcs[] = $k;
                         }
                     }
                 }
-
             }
 
-            if ( $hasDfc === true || $hasCdfc === true ) {
+            if ($hasDfc === true || $hasCdfc === true) {
                 $select->join(
                     array('dfc' => PREFIX_DB . DynamicFields::TABLE),
                     'dfc.item_id=ct.' . Contribution::PK,
@@ -663,11 +683,14 @@ class Members
             }
 
             // simple dynamic fields
-            if ( $hasDf === true ) {
-                foreach ( $dfs as $df ) {
+            if ($hasDf === true) {
+                foreach ($dfs as $df) {
                     $subselect = $zdb->select(DynamicFields::TABLE, 'df');
-                    $subselect->columns(array(
-                        'item_id' => 'item_id', 'val' => 'field_val')
+                    $subselect->columns(
+                        [
+                            'item_id'   => 'item_id',
+                            'val'       => 'field_val'
+                        ]
                     );
                     $subselect->where('df.field_form = \'adh\'');
                     $subselect->where('df.field_id = ' . $df);
@@ -681,42 +704,24 @@ class Members
             }
 
             // choice dynamic fields
-            if ( $hasCdf === true || $hasCdfc === true ) {
+            if ($hasCdfc === true) {
                 $cdf_field = 'cdf.id';
-                if ( TYPE_DB === 'pgsql' ) {
+                if (TYPE_DB === 'pgsql') {
                     $cdf_field .= '::text';
-                }
-                foreach ( $cdfs as $cdf ) {
-                    $subselect = $zdb->select(DynamicFields::TABLE, 'df');
-                    $subselect->columns(array('item_id'));
-                    $subselect->join(
-                        array('dfc' . $cdf  => DynamicFields::getFixedValuesTableName($cdf, true)),
-                        "df.field_val=id",
-                        array('val'),
-                        $select::JOIN_LEFT
-                    );
-                    $subselect->where('df.field_form = \'adh\'');
-                    $subselect->where('df.field_id = ' . $cdf);
-                    $select->join(
-                        array('df' . $cdf => $subselect),
-                        'a.id_adh = df' . $cdf . '.item_id',
-                        array(),
-                        $select::JOIN_LEFT
-                    );
                 }
 
                 $cdf_field = 'cdfc.id';
-                if ( TYPE_DB === 'pgsql' ) {
+                if (TYPE_DB === 'pgsql') {
                     $cdf_field .= '::text';
                 }
-                foreach ( $cdfcs as $cdf ) {
+                foreach ($cdfcs as $cdf) {
                     $rcdf_field = str_replace(
                         'cdfc.',
                         'cdfc' . $cdf . '.',
                         $cdf_field
                     );
                     $select->join(
-                        array('cdfc' . $cdf => DynamicFields::getFixedValuesTableName($cdf, true)),
+                        array('cdfc' . $cdf => DynamicFieldType::getFixedValuesTableName($cdf, true)),
                         $rcdf_field . '=dfc.field_val',
                         array(),
                         $select::JOIN_LEFT
@@ -724,12 +729,12 @@ class Members
                 }
             }
 
-            if ( $mode == self::SHOW_LIST || $mode == self::SHOW_MANAGED ) {
-                if ( $this->_filters !== false ) {
-                    $this->_buildWhereClause($select);
+            if ($mode == self::SHOW_LIST || $mode == self::SHOW_MANAGED) {
+                if ($this->filters !== false) {
+                    $this->buildWhereClause($select);
                 }
-                $select->order($this->_buildOrderClause($fields));
-            } else if ( $mode == self::SHOW_PUBLIC_LIST ) {
+                $select->order($this->buildOrderClause($fields));
+            } elseif ($mode == self::SHOW_PUBLIC_LIST) {
                 $select->where(
                     array(
                         new PredicateSet(
@@ -766,19 +771,16 @@ class Members
                 );
             }
 
-            if ( $mode === self::SHOW_STAFF ) {
+            if ($mode === self::SHOW_STAFF) {
                 $select->where->lessThan(
                     'p.priorite_statut',
                     self::NON_STAFF_MEMBERS
                 );
             }
 
-            if ( $count ) {
-                $this->_proceedCount($select);
+            if ($count) {
+                $this->proceedCount($select);
             }
-
-            //Fix for #687, but only for MySQL (break on PostgreSQL)
-            //$select->group('a.' . Adherent::PK);
 
             return $select;
         } catch (\Exception $e) {
@@ -797,7 +799,7 @@ class Members
      *
      * @return void
      */
-    private function _proceedCount($select)
+    private function proceedCount($select)
     {
         global $zdb;
 
@@ -813,17 +815,17 @@ class Members
             );
 
             $have = $select->having;
-            if ( $have->count() > 0 ) {
-                foreach ( $have->getPredicates() as $h ) {
+            if ($have->count() > 0) {
+                foreach ($have->getPredicates() as $h) {
                     $countSelect->where($h);
                 }
             }
 
             $results = $zdb->execute($countSelect);
 
-            $this->_count = $results->current()->count;
-            if ( isset($this->_filters) && $this->_count > 0 ) {
-                $this->_filters->setCounter($this->_count);
+            $this->count = $results->current()->count;
+            if (isset($this->filters) && $this->count > 0) {
+                $this->filters->setCounter($this->count);
             }
         } catch (\Exception $e) {
             Analog::log(
@@ -842,48 +844,48 @@ class Members
      *
      * @return string SQL ORDER clause
      */
-    private function _buildOrderClause($fields = null)
+    private function buildOrderClause($fields = null)
     {
         $order = array();
 
-        switch($this->_filters->orderby) {
-        case self::ORDERBY_NICKNAME:
-            if ( $this->_canOrderBy('pseudo_adh', $fields) ) {
-                $order[] = 'pseudo_adh ' . $this->_filters->getDirection();
-            }
-            break;
-        case self::ORDERBY_STATUS:
-            if ( $this->_canOrderBy('priorite_statut', $fields) ) {
-                $order[] = 'priorite_statut ' . $this->_filters->getDirection();
-            }
-            break;
-        case self::ORDERBY_MODIFDATE:
-            if ( $this->_canOrderBy('date_modif_adh', $fields) ) {
-                $order[] = 'date_modif_adh ' . $this->_filters->getDirection();
-            }
-            break;
-        case self::ORDERBY_FEE_STATUS:
-            if ( $this->_canOrderBy('bool_exempt_adh', $fields) ) {
-                $order[] = 'bool_exempt_adh ' . $this->_filters->getDirection();
-            }
+        switch ($this->filters->orderby) {
+            case self::ORDERBY_NICKNAME:
+                if ($this->canOrderBy('pseudo_adh', $fields)) {
+                    $order[] = 'pseudo_adh ' . $this->filters->getDirection();
+                }
+                break;
+            case self::ORDERBY_STATUS:
+                if ($this->canOrderBy('priorite_statut', $fields)) {
+                    $order[] = 'priorite_statut ' . $this->filters->getDirection();
+                }
+                break;
+            case self::ORDERBY_MODIFDATE:
+                if ($this->canOrderBy('date_modif_adh', $fields)) {
+                    $order[] = 'date_modif_adh ' . $this->filters->getDirection();
+                }
+                break;
+            case self::ORDERBY_FEE_STATUS:
+                if ($this->canOrderBy('bool_exempt_adh', $fields)) {
+                    $order[] = 'bool_exempt_adh ' . $this->filters->getDirection();
+                }
 
-            if ( $this->_canOrderBy('date_echeance', $fields) ) {
-                $order[] = 'date_echeance ' . $this->_filters->getDirection();
-            }
-            break;
-        case self::ORDERBY_ID:
-            if ( $this->_canOrderBy('id_adh', $fields) ) {
-                $order[] = 'id_adh ' . $this->_filters->getDirection();
-            }
-            break;
+                if ($this->canOrderBy('date_echeance', $fields)) {
+                    $order[] = 'date_echeance ' . $this->filters->getDirection();
+                }
+                break;
+            case self::ORDERBY_ID:
+                if ($this->canOrderBy('id_adh', $fields)) {
+                    $order[] = 'id_adh ' . $this->filters->getDirection();
+                }
+                break;
         }
 
         //anyways, we want to order by firstname, lastname
-        if ( $this->_canOrderBy('nom_adh', $fields) ) {
-            $order[] = 'nom_adh ' . $this->_filters->getDirection();
+        if ($this->canOrderBy('nom_adh', $fields)) {
+            $order[] = 'nom_adh ' . $this->filters->getDirection();
         }
-        if ( $this->_canOrderBy('prenom_adh', $fields) ) {
-            $order[] = 'prenom_adh ' . $this->_filters->getDirection();
+        if ($this->canOrderBy('prenom_adh', $fields)) {
+            $order[] = 'prenom_adh ' . $this->filters->getDirection();
         }
         return $order;
     }
@@ -897,11 +899,11 @@ class Members
      *
      * @return boolean
      */
-    private function _canOrderBy($field_name, $fields)
+    private function canOrderBy($field_name, $fields)
     {
-        if ( !is_array($fields) ) {
+        if (!is_array($fields)) {
             return true;
-        } else if ( in_array($field_name, $fields) ) {
+        } elseif (in_array($field_name, $fields)) {
             return true;
         } else {
             Analog::log(
@@ -920,194 +922,194 @@ class Members
      *
      * @return string SQL WHERE clause
      */
-    private function _buildWhereClause($select)
+    private function buildWhereClause($select)
     {
         global $zdb, $login;
 
         try {
-            if ( $this->_filters->email_filter == self::FILTER_W_EMAIL) {
+            if ($this->filters->email_filter == self::FILTER_W_EMAIL) {
                 $select->where('email_adh != \'\'');
             }
-            if ( $this->_filters->email_filter == self::FILTER_WO_EMAIL) {
+            if ($this->filters->email_filter == self::FILTER_WO_EMAIL) {
                 $select->where('(email_adh = \'\' OR email_adh IS NULL)');
             }
 
-            if ( $this->_filters->filter_str != '' ) {
+            if ($this->filters->filter_str != '') {
                 $token = $zdb->platform->quoteValue(
-                    '%' . strtolower($this->_filters->filter_str) . '%'
+                    '%' . strtolower($this->filters->filter_str) . '%'
                 );
-                switch( $this->_filters->field_filter ) {
-                case self::FILTER_NAME:
-                    if ( TYPE_DB === 'pgsql' ) {
-                        $sep = " || ' ' || ";
-                        $pre = '';
-                        $post = '';
-                    } else {
-                        $sep = ', " ", ';
-                        $pre = 'CONCAT(';
-                        $post=')';
-                    }
-                    //$sep = ( TYPE_DB === 'pgsql' ) ? " || ' ' || " : ', " ", ';
-                    $select->where(
-                        '(' .
-                        $pre . 'LOWER(nom_adh)' . $sep .
-                        'LOWER(prenom_adh)' . $sep .
-                        'LOWER(pseudo_adh)' . $post  . ' LIKE ' .
-                        $token
-                        . ' OR ' .
-                        $pre . 'LOWER(prenom_adh)' . $sep .
-                        'LOWER(nom_adh)' . $sep .
-                        'LOWER(pseudo_adh)' . $post  . ' LIKE ' .
-                        $token
-                        . ')'
-                    );
-                    break;
-                case self::FILTER_COMPANY_NAME:
-                    $select->where(
-                        'LOWER(societe_adh) LIKE ' .
-                        $token
-                    );
-                    break;
-                case self::FILTER_ADDRESS:
-                    $select->where(
-                        '(' .
-                        'LOWER(adresse_adh) LIKE ' . $token
-                        . ' OR ' .
-                        'LOWER(adresse2_adh) LIKE ' . $token
-                        . ' OR ' .
-                        'cp_adh LIKE ' . $token
-                        . ' OR ' .
-                        'LOWER(ville_adh) LIKE ' . $token
-                        . ' OR ' .
-                        'LOWER(pays_adh) LIKE ' . $token
-                        . ')'
-                    );
-                    break;
-                case self::FILTER_MAIL:
-                    $select->where(
-                        '(' .
-                        'LOWER(email_adh) LIKE ' . $token
-                        . ' OR ' .
-                        'LOWER(url_adh) LIKE ' . $token
-                        . ' OR ' .
-                        'LOWER(msn_adh) LIKE ' . $token
-                        . ' OR ' .
-                        'LOWER(icq_adh) LIKE ' . $token
-                        . ' OR ' .
-                        'LOWER(jabber_adh) LIKE ' . $token
-                        . ')'
-                    );
-                    break;
-                case self::FILTER_JOB:
-                    $select->where(
-                        'LOWER(prof_adh) LIKE ' . $token
-                    );
-                    break;
-                case self::FILTER_INFOS:
-                    $more = '';
-                    if ( $login->isAdmin() || $login->isStaff() ) {
-                        $more = ' OR LOWER(info_adh) LIKE ' . $token;
-                    }
-                    $select->where(
-                        '(LOWER(info_public_adh) LIKE ' .
-                        $token . $more . ')'
-                    );
-                    break;
-                case self::FILTER_NUMBER:
-                    $select->where->equalTo('a.id_adh', $this->_filters->filter_str);
-                    break;
-                }
-            }
-
-            if ( $this->_filters->membership_filter ) {
-                switch($this->_filters->membership_filter) {
-                case self::MEMBERSHIP_NEARLY:
-                    $now = new \DateTime();
-                    $duedate = new \DateTime();
-                    $duedate->modify('+1 month');
-                    $select->where
-                        ->greaterThan(
-                            'date_echeance',
-                            $now->format('Y-m-d')
-                        )->lessThan(
-                            'date_echeance',
-                            $duedate->format('Y-m-d')
+                switch ($this->filters->field_filter) {
+                    case self::FILTER_NAME:
+                        if (TYPE_DB === 'pgsql') {
+                            $sep = " || ' ' || ";
+                            $pre = '';
+                            $post = '';
+                        } else {
+                            $sep = ', " ", ';
+                            $pre = 'CONCAT(';
+                            $post=')';
+                        }
+                        //$sep = ( TYPE_DB === 'pgsql' ) ? " || ' ' || " : ', " ", ';
+                        $select->where(
+                            '(' .
+                            $pre . 'LOWER(nom_adh)' . $sep .
+                            'LOWER(prenom_adh)' . $sep .
+                            'LOWER(pseudo_adh)' . $post  . ' LIKE ' .
+                            $token
+                            . ' OR ' .
+                            $pre . 'LOWER(prenom_adh)' . $sep .
+                            'LOWER(nom_adh)' . $sep .
+                            'LOWER(pseudo_adh)' . $post  . ' LIKE ' .
+                            $token
+                            . ')'
                         );
-                    break;
-                case self::MEMBERSHIP_LATE:
-                    $select->where
-                        ->lessThan(
-                            'date_echeance',
-                            date('Y-m-d', time())
-                        )->equalTo('bool_exempt_adh', new Expression('false'));
-                    break;
-                case self::MEMBERSHIP_UP2DATE:
-                    $select->where(
-                        '(' . 'date_echeance > \'' . date('Y-m-d', time())
-                        . '\' OR bool_exempt_adh=true)'
-                    );
-                    break;
-                case self::MEMBERSHIP_NEVER:
-                    $select->where('date_echeance IS NULL')
-                        ->where('bool_exempt_adh = false');
-                    break;
-                case self::MEMBERSHIP_STAFF:
-                    $select->where->lessThan(
-                        'p.priorite_statut',
-                        self::NON_STAFF_MEMBERS
-                    );
-                    break;
-                case self::MEMBERSHIP_ADMIN:
-                    $select->where->equalTo('bool_admin_adh', true);
-                    break;
-                case self::MEMBERSHIP_NONE:
-                    $select->where->equalTo('a.id_statut', Status::DEFAULT_STATUS);
-                    break;
+                        break;
+                    case self::FILTER_COMPANY_NAME:
+                        $select->where(
+                            'LOWER(societe_adh) LIKE ' .
+                            $token
+                        );
+                        break;
+                    case self::FILTER_ADDRESS:
+                        $select->where(
+                            '(' .
+                            'LOWER(adresse_adh) LIKE ' . $token
+                            . ' OR ' .
+                            'LOWER(adresse2_adh) LIKE ' . $token
+                            . ' OR ' .
+                            'cp_adh LIKE ' . $token
+                            . ' OR ' .
+                            'LOWER(ville_adh) LIKE ' . $token
+                            . ' OR ' .
+                            'LOWER(pays_adh) LIKE ' . $token
+                            . ')'
+                        );
+                        break;
+                    case self::FILTER_MAIL:
+                        $select->where(
+                            '(' .
+                            'LOWER(email_adh) LIKE ' . $token
+                            . ' OR ' .
+                            'LOWER(url_adh) LIKE ' . $token
+                            . ' OR ' .
+                            'LOWER(msn_adh) LIKE ' . $token
+                            . ' OR ' .
+                            'LOWER(icq_adh) LIKE ' . $token
+                            . ' OR ' .
+                            'LOWER(jabber_adh) LIKE ' . $token
+                            . ')'
+                        );
+                        break;
+                    case self::FILTER_JOB:
+                        $select->where(
+                            'LOWER(prof_adh) LIKE ' . $token
+                        );
+                        break;
+                    case self::FILTER_INFOS:
+                        $more = '';
+                        if ($login->isAdmin() || $login->isStaff()) {
+                            $more = ' OR LOWER(info_adh) LIKE ' . $token;
+                        }
+                        $select->where(
+                            '(LOWER(info_public_adh) LIKE ' .
+                            $token . $more . ')'
+                        );
+                        break;
+                    case self::FILTER_NUMBER:
+                        $select->where->equalTo('a.id_adh', $this->filters->filter_str);
+                        break;
                 }
             }
 
-            if ( $this->_filters->account_status_filter ) {
-                switch($this->_filters->account_status_filter) {
-                case self::ACTIVE_ACCOUNT:
-                    $select->where('activite_adh=true');
-                    break;
-                case self::INACTIVE_ACCOUNT:
-                    $select->where('activite_adh=false');
-                    break;
+            if ($this->filters->membership_filter) {
+                switch ($this->filters->membership_filter) {
+                    case self::MEMBERSHIP_NEARLY:
+                        $now = new \DateTime();
+                        $duedate = new \DateTime();
+                        $duedate->modify('+1 month');
+                        $select->where
+                            ->greaterThan(
+                                'date_echeance',
+                                $now->format('Y-m-d')
+                            )->lessThan(
+                                'date_echeance',
+                                $duedate->format('Y-m-d')
+                            );
+                        break;
+                    case self::MEMBERSHIP_LATE:
+                        $select->where
+                            ->lessThan(
+                                'date_echeance',
+                                date('Y-m-d', time())
+                            )->equalTo('bool_exempt_adh', new Expression('false'));
+                        break;
+                    case self::MEMBERSHIP_UP2DATE:
+                        $select->where(
+                            '(' . 'date_echeance > \'' . date('Y-m-d', time())
+                            . '\' OR bool_exempt_adh=true)'
+                        );
+                        break;
+                    case self::MEMBERSHIP_NEVER:
+                        $select->where('date_echeance IS NULL')
+                            ->where('bool_exempt_adh = false');
+                        break;
+                    case self::MEMBERSHIP_STAFF:
+                        $select->where->lessThan(
+                            'p.priorite_statut',
+                            self::NON_STAFF_MEMBERS
+                        );
+                        break;
+                    case self::MEMBERSHIP_ADMIN:
+                        $select->where->equalTo('bool_admin_adh', true);
+                        break;
+                    case self::MEMBERSHIP_NONE:
+                        $select->where->equalTo('a.id_statut', Status::DEFAULT_STATUS);
+                        break;
                 }
             }
 
-            if ( $this->_filters->group_filter ) {
+            if ($this->filters->account_status_filter) {
+                switch ($this->filters->account_status_filter) {
+                    case self::ACTIVE_ACCOUNT:
+                        $select->where('activite_adh=true');
+                        break;
+                    case self::INACTIVE_ACCOUNT:
+                        $select->where('activite_adh=false');
+                        break;
+                }
+            }
+
+            if ($this->filters->group_filter) {
                 $select->join(
                     array('g' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
                     'a.' . Adherent::PK . '=g.' . Adherent::PK,
-                    array('*'),
+                    array(),
                     $select::JOIN_LEFT
                 )->join(
                     array('gs' => PREFIX_DB . Group::TABLE),
                     'gs.' . Group::PK . '=g.' . Group::PK,
-                    array('*'),
+                    array(),
                     $select::JOIN_LEFT
                 )->where(
-                    '(g.' . Group::PK . ' = ' . $this->_filters->group_filter .
+                    '(g.' . Group::PK . ' = ' . $this->filters->group_filter .
                     ' OR gs.parent_group = NULL OR gs.parent_group = ' .
-                    $this->_filters->group_filter . ')'
+                    $this->filters->group_filter . ')'
                 );
             }
 
-            if ( $this->_filters instanceof AdvancedMembersList ) {
-                if ( $this->_filters->rbirth_date_begin
-                    || $this->_filters->rbirth_date_end
+            if ($this->filters instanceof AdvancedMembersList) {
+                if ($this->filters->rbirth_date_begin
+                    || $this->filters->rbirth_date_end
                 ) {
-                    if ( $this->_filters->rbirth_date_begin ) {
-                        $d = new \DateTime($this->_filters->rbirth_date_begin);
+                    if ($this->filters->rbirth_date_begin) {
+                        $d = new \DateTime($this->filters->rbirth_date_begin);
                         $select->where->greaterThanOrEqualTo(
                             'ddn_adh',
                             $d->format('Y-m-d')
                         );
                     }
-                    if ( $this->_filters->rbirth_date_end ) {
-                        $d = new \DateTime($this->_filters->rbirth_date_end);
+                    if ($this->filters->rbirth_date_end) {
+                        $d = new \DateTime($this->filters->rbirth_date_end);
                         $select->where->lessThanOrEqualTo(
                             'ddn_adh',
                             $d->format('Y-m-d')
@@ -1115,18 +1117,18 @@ class Members
                     }
                 }
 
-                if ( $this->_filters->rcreation_date_begin
-                    || $this->_filters->rcreation_date_end
+                if ($this->filters->rcreation_date_begin
+                    || $this->filters->rcreation_date_end
                 ) {
-                    if ( $this->_filters->rcreation_date_begin ) {
-                        $d = new \DateTime($this->_filters->rcreation_date_begin);
+                    if ($this->filters->rcreation_date_begin) {
+                        $d = new \DateTime($this->filters->rcreation_date_begin);
                         $select->where->greaterThanOrEqualTo(
                             'date_crea_adh',
                             $d->format('Y-m-d')
                         );
                     }
-                    if ( $this->_filters->rcreation_date_end ) {
-                        $d = new \DateTime($this->_filters->rcreation_date_end);
+                    if ($this->filters->rcreation_date_end) {
+                        $d = new \DateTime($this->filters->rcreation_date_end);
                         $select->where->lessThanOrEqualTo(
                             'date_crea_adh',
                             $d->format('Y-m-d')
@@ -1134,18 +1136,18 @@ class Members
                     }
                 }
 
-                if ( $this->_filters->rmodif_date_begin
-                    || $this->_filters->rmodif_date_end
+                if ($this->filters->rmodif_date_begin
+                    || $this->filters->rmodif_date_end
                 ) {
-                    if ( $this->_filters->rmodif_date_begin ) {
-                        $d = new \DateTime($this->_filters->rmodif_date_begin);
+                    if ($this->filters->rmodif_date_begin) {
+                        $d = new \DateTime($this->filters->rmodif_date_begin);
                         $select->where->greaterThanOrEqualTo(
                             'date_modif_adh',
                             $d->format('Y-m-d')
                         );
                     }
-                    if ( $this->_filters->rmodif_date_end ) {
-                        $d = new \DateTime($this->_filters->rmodif_date_end);
+                    if ($this->filters->rmodif_date_end) {
+                        $d = new \DateTime($this->filters->rmodif_date_end);
                         $select->where->lessThanOrEqualTo(
                             'date_modif_adh',
                             $d->format('Y-m-d')
@@ -1153,18 +1155,18 @@ class Members
                     }
                 }
 
-                if ( $this->_filters->rdue_date_begin
-                    || $this->_filters->rdue_date_end
+                if ($this->filters->rdue_date_begin
+                    || $this->filters->rdue_date_end
                 ) {
-                    if ( $this->_filters->rdue_date_begin ) {
-                        $d = new \DateTime($this->_filters->rdue_date_begin);
+                    if ($this->filters->rdue_date_begin) {
+                        $d = new \DateTime($this->filters->rdue_date_begin);
                         $select->where->greaterThanOrEqualTo(
                             'date_echeance',
                             $d->format('Y-m-d')
                         );
                     }
-                    if ( $this->_filters->rdue_date_end ) {
-                        $d = new \DateTime($this->_filters->rdue_date_end);
+                    if ($this->filters->rdue_date_end) {
+                        $d = new \DateTime($this->filters->rdue_date_end);
                         $select->where->lessThanOrEqualTo(
                             'date_echeance',
                             $d->format('Y-m-d')
@@ -1172,41 +1174,42 @@ class Members
                     }
                 }
 
-                if ( $this->_filters->show_public_infos ) {
-                    switch ( $this->_filters->show_public_infos ) {
-                    case self::FILTER_W_PUBINFOS:
-                        $select->where('bool_display_info = true');
-                        break;
-                    case self::FILTER_WO_PUBINFOS:
-                        $select->where('bool_display_info = false');
-                        break;
-                    case self::FILTER_DC_PUBINFOS:
-                        //nothing to do here.
-                        break;
+                if ($this->filters->show_public_infos) {
+                    switch ($this->filters->show_public_infos) {
+                        case self::FILTER_W_PUBINFOS:
+                            $select->where('bool_display_info = true');
+                            break;
+                        case self::FILTER_WO_PUBINFOS:
+                            $select->where('bool_display_info = false');
+                            break;
+                        case self::FILTER_DC_PUBINFOS:
+                            //nothing to do here.
+                            break;
                     }
                 }
 
-                if ( $this->_filters->status ) {
+                if ($this->filters->status) {
                     $select->where->in(
-                        'a.id_statut', $this->_filters->status
+                        'a.id_statut',
+                        $this->filters->status
                     );
                 }
 
-                if ( $this->_filters->rcontrib_creation_date_begin
-                    || $this->_filters->rcontrib_creation_date_end
+                if ($this->filters->rcontrib_creation_date_begin
+                    || $this->filters->rcontrib_creation_date_end
                 ) {
-                    if ( $this->_filters->rcontrib_creation_date_begin ) {
+                    if ($this->filters->rcontrib_creation_date_begin) {
                         $d = new \DateTime(
-                            $this->_filters->rcontrib_creation_date_begin
+                            $this->filters->rcontrib_creation_date_begin
                         );
                         $select->where->greaterThanOrEqualTo(
                             'ct.date_enreg',
                             $d->format('Y-m-d')
                         );
                     }
-                    if ( $this->_filters->rcontrib_creation_date_end ) {
+                    if ($this->filters->rcontrib_creation_date_end) {
                         $d = new \DateTime(
-                            $this->_filters->rcontrib_creation_date_end
+                            $this->filters->rcontrib_creation_date_end
                         );
                         $select->where->lessThanOrEqualTo(
                             'ct.date_enreg',
@@ -1215,21 +1218,21 @@ class Members
                     }
                 }
 
-                if ( $this->_filters->rcontrib_begin_date_begin
-                    || $this->_filters->rcontrib_begin_date_end
+                if ($this->filters->rcontrib_begin_date_begin
+                    || $this->filters->rcontrib_begin_date_end
                 ) {
-                    if ( $this->_filters->rcontrib_begin_date_begin ) {
+                    if ($this->filters->rcontrib_begin_date_begin) {
                         $d = new \DateTime(
-                            $this->_filters->rcontrib_begin_date_begin
+                            $this->filters->rcontrib_begin_date_begin
                         );
                         $select->where->greaterThanOrEqualTo(
                             'ct.date_debut_cotis',
                             $d->format('Y-m-d')
                         );
                     }
-                    if ( $this->_filters->rcontrib_begin_date_end ) {
+                    if ($this->filters->rcontrib_begin_date_end) {
                         $d = new \DateTime(
-                            $this->_filters->rcontrib_begin_date_end
+                            $this->filters->rcontrib_begin_date_end
                         );
                         $select->where->lessThanOrEqualTo(
                             'ct.date_debut_cotis',
@@ -1238,21 +1241,21 @@ class Members
                     }
                 }
 
-                if ( $this->_filters->rcontrib_end_date_begin
-                    || $this->_filters->rcontrib_end_date_end
+                if ($this->filters->rcontrib_end_date_begin
+                    || $this->filters->rcontrib_end_date_end
                 ) {
-                    if ( $this->_filters->rcontrib_end_date_begin ) {
+                    if ($this->filters->rcontrib_end_date_begin) {
                         $d = new \DateTime(
-                            $this->_filters->rcontrib_end_date_begin
+                            $this->filters->rcontrib_end_date_begin
                         );
                         $select->where->greaterThanOrEqualTo(
                             'ct.date_fin_cotis',
                             $d->format('Y-m-d')
                         );
                     }
-                    if ( $this->_filters->rcontrib_end_date_end ) {
+                    if ($this->filters->rcontrib_end_date_end) {
                         $d = new \DateTime(
-                            $this->_filters->rcontrib_end_date_end
+                            $this->filters->rcontrib_end_date_end
                         );
                         $select->where->lessThanOrEqualTo(
                             'ct.date_fin_cotis',
@@ -1261,63 +1264,59 @@ class Members
                     }
                 }
 
-                if ( $this->_filters->contrib_min_amount
-                    || $this->_filters->contrib_max_amount
+                if ($this->filters->contrib_min_amount
+                    || $this->filters->contrib_max_amount
                 ) {
-                    if ( $this->_filters->contrib_min_amount ) {
+                    if ($this->filters->contrib_min_amount) {
                         $select->where->greaterThanOrEqualTo(
                             'ct.montant_cotis',
-                            $this->_filters->contrib_min_amount
+                            $this->filters->contrib_min_amount
                         );
                     }
-                    if ( $this->_filters->contrib_max_amount ) {
+                    if ($this->filters->contrib_max_amount) {
                         $select->where->lessThanOrEqualTo(
                             'ct.montant_cotis',
-                            $this->_filters->contrib_max_amount
+                            $this->filters->contrib_max_amount
                         );
                     }
                 }
 
-                if ( $this->_filters->contributions_types ) {
+                if ($this->filters->contributions_types) {
                     $select->where->in(
                         'ct.id_type_cotis',
-                        $this->_filters->contributions_types
+                        $this->filters->contributions_types
                     );
                 }
 
-                if ( $this->_filters->payments_types ) {
+                if ($this->filters->payments_types) {
                     $select->where->in(
                         'ct.type_paiement_cotis',
-                        $this->_filters->payments_types
+                        $this->filters->payments_types
                     );
                 }
 
-                if ( count($this->_filters->contrib_dynamic) > 0
-                    && !isset($this->_filters->contrib_dynamic['empty'])
+                if (count($this->filters->contrib_dynamic) > 0
+                    && !isset($this->filters->contrib_dynamic['empty'])
                 ) {
-                    foreach ( $this->_filters->contrib_dynamic as $k=>$cd ) {
+                    foreach ($this->filters->contrib_dynamic as $k => $cd) {
                         $qry = '';
                         $prefix = 'a.';
                         $field = null;
                         $qop = ' LIKE ';
 
-                        if ( is_array($cd) ) {
+                        if (is_array($cd)) {
                             //dynamic choice spotted!
                             $prefix = 'cdfc' . $k . '.';
                             $qry = 'dfc.field_form = \'contrib\' AND ' .
                                 'dfc.field_id = ' . $k . ' AND ';
                             $field = 'id';
+                            $select->where->in($prefix . $field, $cd);
                         } else {
                             //dynamic field spotted!
                             $prefix = 'dfc.';
                             $qry = 'dfc.field_form = \'contrib\' AND ' .
                                 'dfc.field_id = ' . $k . ' AND ';
                             $field = 'field_val';
-                        }
-
-                        if ( is_array($cd) ) {
-                            $select->where->in($prefix . $field, $cd);
-                        } else {
                             $qry .= 'LOWER(' . $prefix . $field . ') ' .
                                 $qop  . ' ' ;
                             $select->where($qry . '%' .strtolower($cd) . '%');
@@ -1325,62 +1324,85 @@ class Members
                     }
                 }
 
-                if ( count($this->_filters->free_search) > 0
-                    && !isset($this->_filters->free_search['empty'])
+                if (count($this->filters->free_search) > 0
+                    && !isset($this->filters->free_search['empty'])
                 ) {
-                    foreach ( $this->_filters->free_search as $fs ) {
+                    foreach ($this->filters->free_search as $fs) {
                         $fs['search'] = mb_strtolower($fs['search']);
                         $qop = null;
-                        switch ( $fs['qry_op'] ) {
-                        case AdvancedMembersList::OP_EQUALS:
-                            $qop = '=';
-                            break;
-                        case AdvancedMembersList::OP_CONTAINS:
-                            $qop = 'LIKE';
-                            $fs['search'] = '%' . $fs['search'] . '%';
-                            break;
-                        case AdvancedMembersList::OP_NOT_EQUALS:
-                            $qop = '!=';
-                            break;
-                        case AdvancedMembersList::OP_NOT_CONTAINS:
-                            $qop = 'NOT LIKE';
-                            $fs['search'] = '%' . $fs['search'] . '%';
-                            break;
-                        case AdvancedMembersList::OP_STARTS_WITH:
-                            $qop = 'LIKE';
-                            $fs['search'] = $fs['search'] . '%';
-                            break;
-                        case AdvancedMembersList::OP_ENDS_WITH:
-                            $qop = 'LIKE';
-                            $fs['search'] = '%' . $fs['search'];
-                            break;
-                        default:
-                            Analog::log(
-                                'Unknown query operator: ' . $fs['qry_op'] .
-                                ' (will fallback to equals)',
-                                Analog::WARNING
-                            );
-                            $qop = '=';
-                            break;
+                        switch ($fs['qry_op']) {
+                            case AdvancedMembersList::OP_EQUALS:
+                                $qop = '=';
+                                break;
+                            case AdvancedMembersList::OP_CONTAINS:
+                                $qop = 'LIKE';
+                                $fs['search'] = '%' . $fs['search'] . '%';
+                                break;
+                            case AdvancedMembersList::OP_NOT_EQUALS:
+                                $qop = '!=';
+                                break;
+                            case AdvancedMembersList::OP_NOT_CONTAINS:
+                                $qop = 'NOT LIKE';
+                                $fs['search'] = '%' . $fs['search'] . '%';
+                                break;
+                            case AdvancedMembersList::OP_STARTS_WITH:
+                                $qop = 'LIKE';
+                                $fs['search'] = $fs['search'] . '%';
+                                break;
+                            case AdvancedMembersList::OP_ENDS_WITH:
+                                $qop = 'LIKE';
+                                $fs['search'] = '%' . $fs['search'];
+                                break;
+                            case AdvancedMembersList::OP_BEFORE:
+                                $qop = '<';
+                                break;
+                            case AdvancedMembersList::OP_AFTER:
+                                $qop = '>';
+                                break;
+                            default:
+                                Analog::log(
+                                    'Unknown query operator: ' . $fs['qry_op'] .
+                                    ' (will fallback to equals)',
+                                    Analog::WARNING
+                                );
+                                $qop = '=';
+                                break;
                         }
 
                         $qry = '';
                         $prefix = 'a.';
-                        if ( strpos($fs['field'], 'dync_') === 0 ) {
-                            // choice dynamic choice spotted!
-                            $index = str_replace('dync_', '', $fs['field']);
-                            $prefix = 'df' . $index . '.';
-                            $fs['field'] = 'val';
-                        } elseif ( strpos($fs['field'], 'dyn_') === 0 ) {
+                        if (strpos($fs['field'], 'dyn_') === 0) {
                             // simple dynamic field spotted!
                             $index = str_replace('dyn_', '', $fs['field']);
                             $prefix = 'df' . $index . '.';
                             $fs['field'] = 'val';
                         }
 
-                        if ( !strncmp($fs['field'], 'bool_', strlen('bool_')) ) {
+                        if (!strncmp($fs['field'], 'bool_', strlen('bool_'))) {
                             $qry .= $prefix . $fs['field'] . $qop  . ' ' .
                                 $fs['search'] ;
+                        } elseif ($fs['qry_op'] === AdvancedMembersList::OP_BEFORE
+                            || $fs['qry_op'] === AdvancedMembersList::OP_AFTER
+                        ) {
+                            if ($prefix === 'a.') {
+                                //dates are OK in the main fields. no cast, just query!
+                                $qry .= $prefix . $fs['field'] . $qop  . ' ' .
+                                    $zdb->platform->quoteValue($fs['search']);
+                            } else {
+                                //dynamic dates are stored in their localized format :/
+                                //use current lang format to query for now
+                                if ($zdb->isPostgres()) {
+                                    $fs['search'] = "to_date('" . $fs['search'] . "', 'YYYY-MM-DD')";
+                                    $store_fmt = __("Y-m-d") === 'Y-m-d' ? 'YYYY-MM-DD' : 'DD/MM/YYYY';
+                                    $qry .= "to_date('" . $prefix . $fs['field'] . "', '$store_fmt')";
+                                } else {
+                                    $fs['search'] = "STR_TO_DATE('" . $fs['search'] . "', '%Y-%m-%d')";
+                                    $store_fmt = __("Y-m-d") === 'Y-m-d' ? '%Y-%m-%d' : '%d/%m/%Y';
+                                    $qry .= 'STR_TO_DATE(' . $prefix . $fs['field'] . ', \'' . $store_fmt . '\') ';
+                                }
+
+                                $qry .= $qop  . ' ' .  $fs['search'] ;
+                            }
                         } else {
                             $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' .
                                 $qop  . ' ' . $zdb->platform->quoteValue(
@@ -1388,10 +1410,10 @@ class Members
                                 );
                         }
 
-                        if ( $fs['log_op'] === AdvancedMembersList::OP_AND ) {
+                        if ($fs['log_op'] === AdvancedMembersList::OP_AND) {
                             $select->where($qry);
-                        } elseif ( $fs['log_op'] === AdvancedMembersList::OP_OR ) {
-                            $select->orWhere($qry);
+                        } elseif ($fs['log_op'] === AdvancedMembersList::OP_OR) {
+                            $select->where($qry, PredicateSet::OP_OR);
                         }
                     }
                 }
@@ -1434,7 +1456,7 @@ class Members
             $results = $zdb->execute($select);
 
             $processed = 0;
-            if ( $results->count() > 0 ) {
+            if ($results->count() > 0) {
                 $update = $zdb->update(Adherent::TABLE);
                 $update->set(
                     array(
@@ -1445,7 +1467,7 @@ class Members
 
                 $stmt = $zdb->sql->prepareStatementForSqlObject($update);
 
-                $p = new \Galette\Core\Password();
+                $p = new \Galette\Core\Password($zdb);
 
                 foreach ($results as $m) {
                     $dirty = false;
@@ -1469,7 +1491,7 @@ class Members
                         $dirty = true;
                     }
 
-                    if ( $dirty === true ) {
+                    if ($dirty === true) {
                         /** Why where parameter is named where1 ?? */
                         $stmt->execute(
                             array(
@@ -1483,9 +1505,9 @@ class Members
                 }
             }
             $zdb->connection->commit();
-            $this->_count = $processed;
+            $this->count = $processed;
             return true;
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
             $zdb->connection->rollBack();
             Analog::log(
                 'An error occured trying to retrieve members with ' .
@@ -1574,7 +1596,7 @@ class Members
      */
     public function getCount()
     {
-        return $this->_count;
+        return $this->count;
     }
 
     /**
@@ -1584,6 +1606,29 @@ class Members
      */
     public function getErrors()
     {
-        return $this->_errors;
+        return $this->errors;
+    }
+
+    /**
+     * Get all existing emails
+     *
+     * @param Db $zdb Database instance
+     *
+     * @return array ['email' => 'id_adh']
+     */
+    public static function getEmails(Db $zdb)
+    {
+        $emails = [];
+        $select = $zdb->select(self::TABLE);
+        $select->columns([
+            self::PK,
+            'email_adh'
+        ]);
+        $select->where('email_adh != \'\' AND email_adh IS NOT NULL');
+        $rows = $zdb->execute($select);
+        foreach ($rows as $row) {
+            $emails[$row->email_adh] = $row->{self::PK};
+        }
+        return $emails;
     }
 }

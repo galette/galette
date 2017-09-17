@@ -83,8 +83,8 @@ abstract class Csv
         "'"
     );
 
-    private $_errors = array();
-    private $_default_directory;
+    private $errors = array();
+    private $default_directory;
 
     /**
      * Default constructor
@@ -93,7 +93,7 @@ abstract class Csv
      */
     public function __construct($default_dir)
     {
-        $this->_default_directory = $default_dir;
+        $this->default_directory = $default_dir;
     }
 
     /**
@@ -105,30 +105,30 @@ abstract class Csv
     {
         $csv_files = array();
         $files = glob(
-            $this->_default_directory . '*.{' .
+            $this->default_directory . '*.{' .
             implode(',', $this->extensions) . '}',
             GLOB_BRACE
         );
-        foreach ( $files as $file ) {
-            if ( $file === $this->_default_directory . 'readme.txt' ) {
+        foreach ($files as $file) {
+            if ($file === $this->default_directory . 'readme.txt') {
                 continue;
             }
-            $mdate = date(_T("Y-m-d H:i:s"), filemtime($file));
+            $mdate = date(__("Y-m-d H:i:s"), filemtime($file));
 
             $raw_size = filesize($file);
             $size = 0;
             if ($raw_size >= 1024*1024*1024) { // Go
                 $size = round(($raw_size / 1024)/1024/1024, 2) . ' Go';
-            } elseif ( $raw_size >= 1024*1024) { // Mo
+            } elseif ($raw_size >= 1024*1024) { // Mo
                 $size = round(($raw_size / 1024)/1024, 2) . ' Mo';
-            } elseif ( $raw_size >= 1024) { // ko
+            } elseif ($raw_size >= 1024) { // ko
                 $size = round(($raw_size / 1024), 2) . ' Ko';
             } else { // octets
                 $size = $raw_size . ' octets';
             }
 
             $csv_files[] = array(
-                'name'  => str_replace($this->_default_directory, '', $file),
+                'name'  => str_replace($this->default_directory, '', $file),
                 'size'  => $size,
                 'date'  => $mdate
             );
@@ -147,9 +147,9 @@ abstract class Csv
     {
         //let's ensure we do not have a path here
         $name = basename($name);
-        $filename=$this->_default_directory . $name;
+        $filename=$this->default_directory . $name;
 
-        if ( file_exists($filename) ) {
+        if (file_exists($filename)) {
             $removed = unlink($filename);
             return $removed;
         } else {
@@ -160,7 +160,6 @@ abstract class Csv
             );
             return false;
         }
-
     }
 
     /**
@@ -197,7 +196,7 @@ abstract class Csv
             '[' . $class  . '] ' . $msg,
             Analog::ERROR
         );
-        $this->_errors[] = $msg;
+        $this->errors[] = $msg;
     }
 
     /**
@@ -207,6 +206,6 @@ abstract class Csv
      */
     public function getErrors()
     {
-        return $this->_errors;
+        return $this->errors;
     }
 }

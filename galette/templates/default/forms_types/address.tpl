@@ -5,6 +5,7 @@
     id=$entry->field_id
     value=$member->address|escape
     required=$entry->required
+    disabled=$entry->disabled
     label=$entry->label
     notag=true
     elt_class="large"
@@ -17,6 +18,7 @@
     id=$address2->field_id
     value=$member->address_continuation|escape
     required=$address2->required
+    disabled=$address2->disabled
     label=$address2->label
     notag=true
     elt_class="large"

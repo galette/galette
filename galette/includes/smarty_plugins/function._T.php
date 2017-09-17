@@ -38,24 +38,35 @@
 /**
  * Smarty translations for Galette
  *
- * @param array  $params  An array that can contains:
- *                        string: the string to translate
- *                        pattern: A pattern (optional - required if replace present)
- *                        replace: Replacement for pattern (optional - required
- *                        if pattern present)
- * @param Smarty &$smarty Smarty
+ * @param array  $params An array that can contains:
+ *                       string: the string to translate
+ *                       domain: a translation domain name
+ *                       notrans: do not indicate not translated strings
+ *                       pattern: A pattern (optional - required if replace present)
+ *                       replace: Replacement for pattern (optional - required
+ *                       if pattern present)
+ * @param Smarty $smarty Smarty
  *
  * @return translated string
  */
 function smarty_function__T($params, &$smarty)
 {
     extract($params);
-    if ( isset($pattern) && isset($replace) ) {
-        $ret = preg_replace($pattern, $replace, _T($string));
-    } else {
-        $ret = _T($string);
+
+    if (!isset($domain)) {
+        $domain = 'galette';
     }
-    if ( isset($escape) ) {
+
+    if (!isset($notrans)) {
+        $notrans = true;
+    }
+
+    if (isset($pattern) && isset($replace)) {
+        $ret = preg_replace($pattern, $replace, _T($string, $domain, $notrans));
+    } else {
+        $ret = _T($string, $domain, $notrans);
+    }
+    if (isset($escape)) {
         //replace insecable spaces
         $ret = str_replace('&nbsp;', ' ', $ret);
         //for the moment, only 'js' type is know

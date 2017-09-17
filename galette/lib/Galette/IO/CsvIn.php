@@ -39,10 +39,14 @@ namespace Galette\IO;
 
 use Analog\Analog;
 use Galette\Core\Db;
+use Galette\Core\Preferences;
+use Galette\Core\History;
 use Galette\Entity\Adherent;
 use Galette\Entity\ImportModel;
 use Galette\Entity\FieldsConfig;
+use Galette\Entity\Status;
 use Galette\IO\FileTrait;
+use Galette\Repository\Members;
 
 /**
  * CSV imports
@@ -94,13 +98,20 @@ class CsvIn extends Csv implements FileInterface
     private $_members_fields;
     private $_members_fields_cats;
     private $_required;
+    private $statuses;
+    private $emails;
     private $zdb;
+    private $preferences;
+    private $history;
 
     /**
      * Default constructor
+     *
+     * @param Db $zdb Database
      */
-    public function __construct()
+    public function __construct(Db $zdb)
     {
+        $this->zdb = $zdb;
         $this->init(
             self::DEFAULT_DIRECTORY,
             $this->extensions,
@@ -119,14 +130,14 @@ class CsvIn extends Csv implements FileInterface
      *
      * @return void
      */
-    private function _loadFields()
+    private function loadFields()
     {
         //at last, we got the defaults
         $this->_fields = $this->_default_fields;
 
         $model = new ImportModel();
         //we go with default fields if model cannot be loaded
-        if ( $model->load() ) {
+        if ($model->load()) {
             $this->_fields = $model->getFields();
         }
     }
@@ -144,17 +155,26 @@ class CsvIn extends Csv implements FileInterface
     /**
      * Import members from CSV file
      *
-     * @param Db      $zdb                 Database instance
-     * @param string  $filename            CSV filename
-     * @param array   $members_fields      Members fields
-     * @param array   $members_fields_cats Members fields categories
-     * @param boolean $dryrun              Run in dry run mode (do not store in database)
+     * @param Db          $zdb                 Database instance
+     * @param Preferences $preferences         Preferences instance
+     * @param History     $history             History instance
+     * @param string      $filename            CSV filename
+     * @param array       $members_fields      Members fields
+     * @param array       $members_fields_cats Members fields categories
+     * @param boolean     $dryrun              Run in dry run mode (do not store in database)
      *
      * @return boolean
      */
-    public function import(Db $zdb, $filename, $members_fields, $members_fields_cats, $dryrun)
-    {
-        if ( !file_exists(self::DEFAULT_DIRECTORY . '/' . $filename)
+    public function import(
+        Db $zdb,
+        Preferences $preferences,
+        History $history,
+        $filename,
+        array $members_fields,
+        array $members_fields_cats,
+        $dryrun
+    ) {
+        if (!file_exists(self::DEFAULT_DIRECTORY . '/' . $filename)
             || !is_readable(self::DEFAULT_DIRECTORY . '/' . $filename)
         ) {
             Analog::log(
@@ -165,19 +185,21 @@ class CsvIn extends Csv implements FileInterface
         }
 
         $this->zdb = $zdb;
-        if ( $dryrun === false ) {
+        $this->preferences = $preferences;
+        $this->history = $history;
+        if ($dryrun === false) {
             $this->_dryrun = false;
         }
 
-        $this->_loadFields();
+        $this->loadFields();
         $this->_members_fields = $members_fields;
         $this->_members_fields_cats = $members_fields_cats;
 
-        if ( !$this->_check($filename) ) {
+        if (!$this->check($filename)) {
             return self::INVALID_FILE;
         }
 
-        if ( !$this->_storeMembers($filename) ) {
+        if (!$this->storeMembers($filename)) {
             return self::DATA_IMPORT_ERROR;
         }
 
@@ -191,7 +213,7 @@ class CsvIn extends Csv implements FileInterface
      *
      * @return boolean
      */
-    private function _check($filename)
+    private function check($filename)
     {
         //deal with mac e-o-l encoding -- see if needed
         //@ini_set('auto_detect_line_endings', true);
@@ -211,8 +233,7 @@ class CsvIn extends Csv implements FileInterface
             return false;
         }
 
-        if ( $handle !== false ) {
-
+        if ($handle !== false) {
             $cnt_fields = count($this->_fields);
 
             //check required fields
@@ -225,23 +246,22 @@ class CsvIn extends Csv implements FileInterface
             $config_required = $fc->getRequired();
             $this->_required = array();
 
-            foreach ( array_keys($config_required) as $field ) {
-                if ( in_array($field, $this->_fields) ) {
+            foreach (array_keys($config_required) as $field) {
+                if (in_array($field, $this->_fields)) {
                     $this->_required[$field] = $field;
                 }
             }
 
             $row = 0;
-            while ( ($data = fgetcsv(
+            while (($data = fgetcsv(
                 $handle,
                 1000,
                 self::DEFAULT_SEPARATOR,
                 self::DEFAULT_QUOTE
             )) !== false) {
-
                 //check fields count
                 $count = count($data);
-                if ( $count != $cnt_fields ) {
+                if ($count != $cnt_fields) {
                     $this->addError(
                         str_replace(
                             array('%should_count', '%count', '%row'),
@@ -252,12 +272,12 @@ class CsvIn extends Csv implements FileInterface
                     return false;
                 }
 
-                //check required fields
-                if ( $row > 0 ) {
+                if ($row > 0) {
                     //header line is the first one. Here comes data
                     $col = 0;
-                    foreach ( $data as $column ) {
-                        if ( in_array($this->_fields[$col], $this->_required)
+                    foreach ($data as $column) {
+                        //check required fields
+                        if (in_array($this->_fields[$col], $this->_required)
                             && trim($column) == ''
                         ) {
                             $this->addError(
@@ -269,6 +289,56 @@ class CsvIn extends Csv implements FileInterface
                             );
                             return false;
                         }
+
+                        //check for statuses
+                        //if missing, set default one; if not check it does exists
+                        if ($this->_fields[$col] == Status::PK) {
+                            if (empty(trim($column))) {
+                                $column = Status::DEFAULT_STATUS;
+                            } else {
+                                if ($this->statuses === null) {
+                                    //load existing status
+                                    $status = new Status($this->zdb);
+                                    $this->statuses = $status->getList();
+                                }
+                                if (!isset($this->statuses[$column])) {
+                                    $this->addError(
+                                        str_replace(
+                                            '%status',
+                                            $column,
+                                            _T("Status %status does not exists!")
+                                        )
+                                    );
+                                    return false;
+                                }
+                            }
+                        }
+
+                        //check for email unicity
+                        if ($this->_fields[$col] == 'email_adh' && !empty($column)) {
+                            if ($this->emails === null) {
+                                //load existing emails
+                                $this->emails = Members::getEmails($this->zdb);
+                            }
+                            if (isset($this->emails[$column])) {
+                                $existing = $this->emails[$column];
+                                $extra = ($existing == -1 ?
+                                    _T("from another member in import") :
+                                    str_replace('%id_adh', $existing, _T("from member %id_adh"))
+                                );
+                                $this->addError(
+                                    str_replace(
+                                        ['%address', '%extra'],
+                                        [$column, $extra],
+                                        _T("Email address %address is already used! (%extra)")
+                                    )
+                                );
+                                return false;
+                            } else {
+                                //add email to list
+                                $this->emails[$column] = -1;
+                            }
+                        }
                         $col++;
                     }
                 }
@@ -277,7 +347,7 @@ class CsvIn extends Csv implements FileInterface
             }
             fclose($handle);
 
-            if ( !($row > 1) ) {
+            if (!($row > 1)) {
                 //no data in file, just headers line
                 $this->addError(
                     _T("File is empty!")
@@ -298,23 +368,24 @@ class CsvIn extends Csv implements FileInterface
      *
      * @return boolean
      */
-    private function _storeMembers($filename)
+    private function storeMembers($filename)
     {
         $handle = fopen(self::DEFAULT_DIRECTORY . '/' . $filename, 'r');
 
         $row = 0;
 
         try {
-            while ( ($data = fgetcsv(
+            $this->zdb->connection->beginTransaction();
+            while (($data = fgetcsv(
                 $handle,
                 1000,
                 self::DEFAULT_SEPARATOR,
                 self::DEFAULT_QUOTE
             )) !== false) {
-                if ( $row > 0 ) {
+                if ($row > 0) {
                     $col = 0;
                     $values = array();
-                    foreach ( $data as $column ) {
+                    foreach ($data as $column) {
                         $values[$this->_fields[$col]] = $column;
                         if ($this->_fields[$col] === 'societe_adh') {
                             $values['is_company'] = true;
@@ -322,16 +393,21 @@ class CsvIn extends Csv implements FileInterface
                         $col++;
                     }
                     //import member itself
-                    $member = new Adherent();
+                    $member = new Adherent($this->zdb);
+                    $member->setDependencies(
+                        $this->preferences,
+                        $this->_members_fields,
+                        $this->history
+                    );
                     //check for empty creation date
-                    if ( isset($values['date_crea_adh']) && trim($values['date_crea_adh']) === '' ) {
+                    if (isset($values['date_crea_adh']) && trim($values['date_crea_adh']) === '') {
                         unset($values['date_crea_adh']);
                     }
                     $valid = $member->check($values, $this->_required, null);
-                    if ( $valid === true ) {
-                        if ( $this->_dryrun === false ) {
+                    if ($valid === true) {
+                        if ($this->_dryrun === false) {
                             $store = $member->store();
-                            if ( $store !== true ) {
+                            if ($store !== true) {
                                 $this->addError(
                                     str_replace(
                                         array('%row', '%name'),
@@ -350,8 +426,8 @@ class CsvIn extends Csv implements FileInterface
                                 _T("An error occured storing member at row %row (%name):")
                             )
                         );
-                        if ( is_array($valid) ) {
-                            foreach ( $valid as $e ) {
+                        if (is_array($valid)) {
+                            foreach ($valid as $e) {
                                 $this->addError($e);
                             }
                         }
@@ -360,8 +436,10 @@ class CsvIn extends Csv implements FileInterface
                 }
                 $row++;
             }
+            $this->zdb->connection->commit();
             return true;
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
+            $this->zdb->connection->rollBack();
             $this->addError($e->getMessage());
         }
 
@@ -378,13 +456,13 @@ class CsvIn extends Csv implements FileInterface
     public function getErrorMessage($code)
     {
         $error = null;
-        switch( $code ) {
-        case self::DATA_IMPORT_ERROR:
-            $error = _T("An error occured while importing members");
-            break;
+        switch ($code) {
+            case self::DATA_IMPORT_ERROR:
+                $error = _T("An error occured while importing members");
+                break;
         }
 
-        if ( $error === null ) {
+        if ($error === null) {
             $error = $this->getErrorMessageFromCode($code);
         }
 

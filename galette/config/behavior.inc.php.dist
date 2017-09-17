@@ -1,0 +1,54 @@
+<?php
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
+/**
+ * Behavior override file
+ *
+ * PHP version 5
+ *
+ * Copyright © 2017 The Galette Team
+ *
+ * This file is part of Galette (http://galette.eu).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @category  Main
+ * @package   Galette
+ *
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2017 The Galette Team
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @link      http://galette.eu
+ */
+
+//change this *ONLY* for debug purposes!
+//define('GALETTE_DISPLAY_ERRORS', true);
+
+/* Uncomment and tune to read user IP addresses from the X-Forwarded-For header
+ *
+ * This is for applications sitting behind one or several proxies.
+ *
+ * Don't uncomment if the application doesn't sit behind a proxy, as it would
+ * allow potential attackers to replace their IP addresses with anything,
+ * increasing a bit their stealth (IP address don't mean that much anyway)
+ *
+ *  Typically each proxy will append its client's IP address to this header
+ *  The value is used the index of the IP address to consider, from the end
+ *  of the header values, starting with 1.
+ *
+ * Hence the provided example is the simplest suitable for being behind
+ *  a single reverse proxy
+ */
+//define('GALETTE_X_FORWARDED_FOR_INDEX', 1);

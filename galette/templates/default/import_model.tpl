@@ -1,3 +1,6 @@
+{extends file="page.tpl"}
+
+{block name="content"}
 <div id="model_tabs" class="tabbed">
     <ul>
         <li><a href="#current">{_T string="Current model"}</a></li>
@@ -25,14 +28,14 @@
         {/foreach}
         </table>
         <div class="button-container">
-            <a id="memberslist" class="button" href="import_model.php?generate=true">{_T string="Generate empty CSV file"}</a>
+            <a id="memberslist" class="button" href="{path_for name="getImportModel"}">{_T string="Generate empty CSV file"}</a>
             {if !$defaults_loaded}
-            <a id="delete" class="button" href="import_model.php?remove=true">{_T string="Remove model and back to defaults"}</a>
+            <a id="delete" class="button" href="{path_for name="importModel"}?remove=true">{_T string="Remove model and back to defaults"}</a>
             {/if}
         </div>
     </div>
     <div id="change">
-        <form action="import_model.php" method="POST">
+        <form action="{path_for name="storeImportModel"}" method="POST">
         <table class="listing">
             <thead>
                 <tr>
@@ -59,9 +62,11 @@
     </div>
 </div>
 <p class="center">
-    <a class="button" id="btnback" href="import.php">{_T string="Go back to import page"}</a>
+    <a class="button" id="btnback" href="{path_for name="import"}">{_T string="Go back to import page"}</a>
 </p>
+{/block}
 
+{block name="javascripts"}
 <script type="text/javascript">
     $(function(){
         $('#model_tabs').tabs();
@@ -86,3 +91,4 @@
         });
     });
 </script>
+{/block}

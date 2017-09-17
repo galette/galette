@@ -40,7 +40,7 @@ namespace Galette\Core;
 use Analog\Analog;
 
 /**
-i * Logs
+ * Logs
  *
  * @category  Core
  * @name      Logs
@@ -67,8 +67,8 @@ class Logs
             GLOB_BRACE
         );
 
-        foreach ( $match as $logfile ) {
-            if ( filemtime($logfile) <= $interval ) {
+        foreach ($match as $logfile) {
+            if (filemtime($logfile) <= $interval) {
                 unlink($logfile);
             }
         }

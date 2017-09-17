@@ -37,6 +37,7 @@
 
 namespace Galette\Entity;
 
+use Galette\Core\Login;
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
 
@@ -63,15 +64,15 @@ class Group
     const MEMBER_TYPE = 0;
     const MANAGER_TYPE = 1;
 
-    private $_id;
-    private $_group_name;
-    private $_parent_group;
-    private $_managers;
-    private $_members;
-    private $_groups;
-    private $_creation_date;
-    private $_count_members;
-    private $_empty;
+    private $id;
+    private $group_name;
+    private $parent_group;
+    private $managers;
+    private $members;
+    private $groups;
+    private $creation_date;
+    private $count_members;
+    private $isempty;
 
     /**
      * Default constructor
@@ -82,12 +83,12 @@ class Group
      */
     public function __construct($args = null)
     {
-        if ( $args == null || is_int($args) ) {
-            if ( is_int($args) && $args > 0 ) {
+        if ($args == null || is_int($args)) {
+            if (is_int($args) && $args > 0) {
                 $this->load($args);
             }
-        } elseif ( is_object($args) ) {
-            $this->_loadFromRS($args);
+        } elseif (is_object($args)) {
+            $this->loadFromRS($args);
         }
     }
 
@@ -108,8 +109,8 @@ class Group
 
             $results = $zdb->execute($select);
 
-            if ( $results->count() > 0 ) {
-                $this->_loadFromRS($results->current());
+            if ($results->count() > 0) {
+                $this->loadFromRS($results->current());
                 return true;
             } else {
                 return false;
@@ -130,23 +131,23 @@ class Group
      *
      * @return void
      */
-    private function _loadFromRS($r)
+    private function loadFromRS($r)
     {
-        $this->_id = $r->id_group;
-        $this->_group_name = $r->group_name;
-        $this->_creation_date = $r->creation_date;
-        if ( $r->parent_group ) {
-            $this->_parent_group = new Group((int)$r->parent_group);
+        $this->id = $r->id_group;
+        $this->group_name = $r->group_name;
+        $this->creation_date = $r->creation_date;
+        if ($r->parent_group) {
+            $this->parent_group = new Group((int)$r->parent_group);
         }
         $adhpk = Adherent::PK;
-        if ( isset($r->members) ) {
+        if (isset($r->members)) {
             //we're from a list, we just want members count
-            $this->_count_members = $r->members;
+            $this->count_members = $r->members;
         } else {
             //we're probably from a single group, let's load sub entities
-            //$this->_loadPersons(self::MEMBER_TYPE);
-            //$this->_loadPersons(self::MANAGER_TYPE);
-            //$this->_loadSubGroups();
+            //$this->loadPersons(self::MEMBER_TYPE);
+            //$this->loadPersons(self::MANAGER_TYPE);
+            //$this->loadSubGroups();
         }
     }
 
@@ -157,20 +158,20 @@ class Group
      *
      * @return void
      */
-    private function _loadPersons($type)
+    private function loadPersons($type)
     {
         global $zdb;
 
-        if ( $this->_id ) {
+        if ($this->id) {
             try {
                 $join = null;
-                switch ( $type ) {
-                case self::MEMBER_TYPE:
-                    $join = PREFIX_DB . self::GROUPSUSERS_TABLE;
-                    break;
-                case self::MANAGER_TYPE:
-                    $join = PREFIX_DB . self::GROUPSMANAGERS_TABLE;
-                    break;
+                switch ($type) {
+                    case self::MEMBER_TYPE:
+                        $join = PREFIX_DB . self::GROUPSUSERS_TABLE;
+                        break;
+                    case self::MANAGER_TYPE:
+                        $join = PREFIX_DB . self::GROUPSMANAGERS_TABLE;
+                        break;
                 }
 
                 $select = $zdb->select(Adherent::TABLE, 'a');
@@ -179,7 +180,7 @@ class Group
                     'g.' . Adherent::PK . '=a.' . Adherent::PK,
                     array()
                 )->where(
-                    'g.' . self::PK . ' = ' . $this->_id
+                    'g.' . self::PK . ' = ' . $this->id
                 )->order(
                     'nom_adh ASC',
                     'prenom_adh ASC'
@@ -195,14 +196,14 @@ class Group
                     'dues'      => false
                 );
 
-                foreach ( $results as $m ) {
-                    $members[] = new Adherent($m, $deps);
+                foreach ($results as $m) {
+                    $members[] = new Adherent($zdb, $m, $deps);
                 }
 
-                if ( $type === self::MEMBER_TYPE) {
-                    $this->_members = $members;
+                if ($type === self::MEMBER_TYPE) {
+                    $this->members = $members;
                 } else {
-                    $this->_managers = $members;
+                    $this->managers = $members;
                 }
             } catch (\Exception $e) {
                 Analog::log(
@@ -218,35 +219,37 @@ class Group
      *
      * @return void
      */
-    private function _loadSubGroups()
+    private function loadSubGroups()
     {
-        global $zdb, $login;
+        global $zdb;
 
         try {
             $select = $zdb->select(self::TABLE, 'a');
 
-            if ( !$login->isAdmin() && !$login->isStaff() ) {
+            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
                 $select->join(
                     array('b' => PREFIX_DB . self::GROUPSMANAGERS_TABLE),
                     'a.' . self::PK . '=b.' . self::PK,
                     array()
-                )->where('b.' . Adherent::PK . ' = ' . $login->id);
+                )->where('b.' . Adherent::PK . ' = ' . $this->login->id);
             }
 
-            $select->where('parent_group = ' . $this->_id)
+            $select->where('parent_group = ' . $this->id)
                 ->order('group_name ASC');
 
             $results = $zdb->execute($select);
             $groups = array();
             $grppk = self::PK;
-            foreach ( $results as $m ) {
-                $groups[] = new Group((int)$m->$grppk);
+            foreach ($results as $m) {
+                $group = new Group((int)$m->$grppk);
+                $group->setLogin($this->login);
+                $groups[] = $group;
             }
-            $this->_groups = $groups;
-        } catch ( \Exception $e ) {
+            $this->groups = $groups;
+        } catch (\Exception $e) {
             Analog::log(
-                'Cannot get subgroup for group ' . $this->_group_name .
-                ' (' . $this->_id . ')| ' . $e->getMessage(),
+                'Cannot get subgroup for group ' . $this->group_name .
+                ' (' . $this->id . ')| ' . $e->getMessage(),
                 Analog::WARNING
             );
         }
@@ -262,13 +265,29 @@ class Group
     public function remove($cascade = false)
     {
         global $zdb;
+        $transaction = false;
 
         try {
-            $zdb->connection->beginTransaction();
+            if (!$zdb->connection->inTransaction()) {
+                $zdb->connection->beginTransaction();
+                $transaction = true;
+            }
 
-            if ( $cascade === true ) {
+            if ($cascade === true) {
+                $subgroups = $this->getGroups();
+                if (count($subgroups) > 0) {
+                    Analog::log(
+                        'Cascading remove ' . $this->group_name .
+                        '. Subgroups, their members and managers will be detached.',
+                        Analog::INFO
+                    );
+                    foreach ($subgroups as $subgroup) {
+                        $subgroup->remove(true);
+                    }
+                }
+
                 Analog::log(
-                    'Cascading remove ' . $this->_group_name .
+                    'Cascading remove ' . $this->group_name .
                     '. Members and managers will be detached.',
                     Analog::INFO
                 );
@@ -276,14 +295,14 @@ class Group
                 //delete members
                 $delete = $zdb->delete(self::GROUPSUSERS_TABLE);
                 $delete->where(
-                    self::PK . ' = ' . $this->_id
+                    self::PK . ' = ' . $this->id
                 );
                 $zdb->execute($delete);
 
-                //delete_managers
+                //delete managers
                 $delete = $zdb->delete(self::GROUPSMANAGERS_TABLE);
                 $delete->where(
-                    self::PK . ' = ' . $this->_id
+                    self::PK . ' = ' . $this->id
                 );
                 $zdb->execute($delete);
             }
@@ -291,30 +310,34 @@ class Group
             //delete group itself
             $delete = $zdb->delete(self::TABLE);
             $delete->where(
-                self::PK . ' = ' . $this->_id
+                self::PK . ' = ' . $this->id
             );
             $zdb->execute($delete);
 
             //commit all changes
-            $zdb->connection->commit();
+            if ($transaction) {
+                $zdb->connection->commit();
+            }
 
             return true;
         } catch (\Exception $e) {
-            $zdb->connection->rollBack();
+            if ($transaction) {
+                $zdb->connection->rollBack();
+            }
             if ($e->getCode() == 23000) {
                 Analog::log(
                     str_replace(
                         '%group',
-                        $this->_group_name,
+                        $this->group_name,
                         'Group "%group" still have members!'
                     ),
                     Analog::WARNING
                 );
-                $this->_empty = false;
+                $this->isempty = false;
             } else {
                 Analog::log(
-                    'Unable to delete group ' . $this->_group_name .
-                    ' (' . $this->_id  . ') |' . $e->getMessage(),
+                    'Unable to delete group ' . $this->group_name .
+                    ' (' . $this->id  . ') |' . $e->getMessage(),
                     Analog::ERROR
                 );
             }
@@ -329,7 +352,7 @@ class Group
      */
     public function isEmpty()
     {
-        return $this->_empty;
+        return $this->isempty;
     }
 
     /**
@@ -346,26 +369,26 @@ class Group
             $update->set(
                 array('parent_group' => new Expression('NULL'))
             )->where(
-                self::PK . ' = ' . $this->_id
+                self::PK . ' = ' . $this->id
             );
 
             $edit = $zdb->execute($update);
 
             //edit == 0 does not mean there were an error, but that there
             //were nothing to change
-            if ( $edit->count() > 0 ) {
-                $this->_parent_group = null;
+            if ($edit->count() > 0) {
+                $this->parent_group = null;
                 $hist->add(
                     _T("Group has been detached from its parent"),
-                    strtoupper($this->_group_name)
+                    strtoupper($this->group_name)
                 );
             }
 
             return true;
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
             Analog::log(
-                'Something went wrong detaching group `' . $this->_group_name .
-                '` (' . $this->_id . ') from its parent:\'( | ' .
+                'Something went wrong detaching group `' . $this->group_name .
+                '` (' . $this->id . ') from its parent:\'( | ' .
                 $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
                 Analog::ERROR
@@ -385,36 +408,36 @@ class Group
 
         try {
             $values = array(
-                self::PK     => $this->_id,
-                'group_name' => $this->_group_name
+                self::PK     => $this->id,
+                'group_name' => $this->group_name
             );
 
-            if ( $this->_parent_group ) {
-                $values['parent_group'] = $this->_parent_group->getId();
+            if ($this->parent_group) {
+                $values['parent_group'] = $this->parent_group->getId();
             }
 
-            if ( !isset($this->_id) || $this->_id == '') {
+            if (!isset($this->id) || $this->id == '') {
                 //we're inserting a new group
                 unset($values[self::PK]);
-                $this->_creation_date = date("Y-m-d H:i:s");
-                $values['creation_date'] = $this->_creation_date;
+                $this->creation_date = date("Y-m-d H:i:s");
+                $values['creation_date'] = $this->creation_date;
 
                 $insert = $zdb->insert(self::TABLE);
                 $insert->values($values);
-                $add = $zdb->execute($insert);;
-                if ( $add->count() > 0) {
-                    if ( $zdb->isPostgres() ) {
-                        $this->_id = $zdb->driver->getLastGeneratedValue(
+                $add = $zdb->execute($insert);
+                if ($add->count() > 0) {
+                    if ($zdb->isPostgres()) {
+                        $this->id = $zdb->driver->getLastGeneratedValue(
                             PREFIX_DB . 'groups_id_seq'
                         );
                     } else {
-                        $this->_id = $zdb->driver->getLastGeneratedValue();
+                        $this->id = $zdb->driver->getLastGeneratedValue();
                     }
 
                     // logging
                     $hist->add(
                         _T("Group added"),
-                        $this->_group_name
+                        $this->group_name
                     );
                     return true;
                 } else {
@@ -428,16 +451,16 @@ class Group
                 $update = $zdb->update(self::TABLE);
                 $update
                     ->set($values)
-                    ->where(self::PK . '=' . $this->_id);
+                    ->where(self::PK . '=' . $this->id);
 
                 $edit = $zdb->execute($update);
 
                 //edit == 0 does not mean there were an error, but that there
                 //were nothing to change
-                if ( $edit->count() > 0 ) {
+                if ($edit->count() > 0) {
                     $hist->add(
                         _T("Group updated"),
-                        strtoupper($this->_group_name)
+                        strtoupper($this->group_name)
                     );
                 }
                 return true;
@@ -456,18 +479,19 @@ class Group
     /**
      * Is current loggedin user manager of the group?
      *
+     * @param Login $login Login instance
+     *
      * @return boolean
      */
-    public function isManager()
+    public function isManager(Login $login)
     {
-        global $login;
-        if ( $login->isAdmin() || $login->isStaff() ) {
+        if ($login->isAdmin() || $login->isStaff()) {
             //admins as well as staff members are managers for all groups!
             return true;
         } else {
             //let's check if current loggedin user is part of group managers
-            foreach ($this->_managers as $manager) {
-                if ( $login->login == $manager->login ) {
+            foreach ($this->managers as $manager) {
+                if ($login->login == $manager->login) {
                     return true;
                     break;
                 }
@@ -483,7 +507,7 @@ class Group
      */
     public function getId()
     {
-        return $this->_id;
+        return $this->id;
     }
 
     /**
@@ -493,8 +517,8 @@ class Group
      */
     public function getLevel()
     {
-        if ( $this->_parent_group ) {
-            return $this->_parent_group->getLevel()+1;
+        if ($this->parent_group) {
+            return $this->parent_group->getLevel()+1;
         }
         return 0;
     }
@@ -506,10 +530,10 @@ class Group
      */
     public function getFullName()
     {
-        if ( $this->_parent_group ) {
-            return $this->_parent_group->getFullName().' / '.$this->_group_name;
+        if ($this->parent_group) {
+            return $this->parent_group->getFullName().' / '.$this->group_name;
         }
-        return $this->_group_name;
+        return $this->group_name;
     }
 
     /**
@@ -520,9 +544,9 @@ class Group
     public function getIndentName()
     {
         if (($level = $this->getLevel())) {
-            return str_repeat("&nbsp;", 3*$level).'&raquo; '.$this->_group_name;
+            return str_repeat("&nbsp;", 3*$level).'&raquo; '.$this->group_name;
         }
-        return $this->_group_name;
+        return $this->group_name;
     }
 
     /**
@@ -532,7 +556,7 @@ class Group
      */
     public function getName()
     {
-        return $this->_group_name;
+        return $this->group_name;
     }
 
     /**
@@ -542,10 +566,10 @@ class Group
      */
     public function getMembers()
     {
-        if ( !is_array($this->_members) ) {
-            $this->_loadPersons(self::MEMBER_TYPE);
+        if (!is_array($this->members)) {
+            $this->loadPersons(self::MEMBER_TYPE);
         }
-        return $this->_members;
+        return $this->members;
     }
 
     /**
@@ -555,10 +579,10 @@ class Group
      */
     public function getManagers()
     {
-        if ( !is_array($this->_managers) ) {
-            $this->_loadPersons(self::MANAGER_TYPE);
+        if (!is_array($this->managers)) {
+            $this->loadPersons(self::MANAGER_TYPE);
         }
-        return $this->_managers;
+        return $this->managers;
     }
 
     /**
@@ -568,10 +592,10 @@ class Group
      */
     public function getGroups()
     {
-        if ( !is_array($this->_groups) ) {
-            $this->_loadSubGroups();
+        if (!is_array($this->groups)) {
+            $this->loadSubGroups();
         }
-        return $this->_groups;
+        return $this->groups;
     }
 
     /**
@@ -581,7 +605,7 @@ class Group
      */
     public function getParentGroup()
     {
-        return $this->_parent_group;
+        return $this->parent_group;
     }
 
     /**
@@ -593,11 +617,11 @@ class Group
      */
     public function getCreationDate($formatted = true)
     {
-        if ( $formatted === true ) {
-            $date = new \DateTime($this->_creation_date);
-            return $date->format(_T("Y-m-d"));
+        if ($formatted === true) {
+            $date = new \DateTime($this->creation_date);
+            return $date->format(__("Y-m-d"));
         } else {
-            return $this->_creation_date;
+            return $this->creation_date;
         }
     }
 
@@ -610,12 +634,12 @@ class Group
      */
     public function getMemberCount($force = false)
     {
-        if (isset($this->_members) && is_array($this->_members) ) {
-            return count($this->_members);
-        } else if ( isset($this->_count_members) ) {
-            return $this->_count_members;
+        if (isset($this->members) && is_array($this->members)) {
+            return count($this->members);
+        } elseif (isset($this->count_members)) {
+            return $this->count_members;
         } else {
-            if ( $force === true ) {
+            if ($force === true) {
                 return count($this->getMembers());
             } else {
                 return 0;
@@ -632,7 +656,7 @@ class Group
      */
     public function setName($name)
     {
-        $this->_group_name = $name;
+        $this->group_name = $name;
     }
 
     /**
@@ -644,23 +668,23 @@ class Group
      */
     public function setSubgroups($groups)
     {
-        $this->_groups = $groups;
+        $this->groups = $groups;
     }
 
     /**
      * check if can Set parent group
      *
-     * @param Group    $group    Parent group
+     * @param Group $group Parent group
      *
      * @return boolean
      */
     public function canSetParentGroup(Group $group)
     {
         do {
-            if ( $group->getId() == $this->getId() ) {
+            if ($group->getId() == $this->getId()) {
                 return false;
             }
-        } while ( $group = $group->getParentGroup() );
+        } while ($group = $group->getParentGroup());
 
         return true;
     }
@@ -677,7 +701,7 @@ class Group
         $group = new Group((int)$id);
         $tmpname = $group->getName();
 
-        if ( ! $this->canSetParentGroup($group) ) {
+        if (!$this->canSetParentGroup($group)) {
             throw new \Exception(
                 sprintf(
                     _T("Group `%1$s` is a child of `%2$s`, cannot be set as parent!"),
@@ -687,7 +711,7 @@ class Group
             );
         }
 
-        $this->_parent_group = $group;
+        $this->parent_group = $group;
     }
 
     /**
@@ -707,12 +731,12 @@ class Group
             //first, remove current groups members
             $delete = $zdb->delete(self::GROUPSUSERS_TABLE);
             $delete->where(
-                self::PK . ' = ' . $this->_id
+                self::PK . ' = ' . $this->id
             );
             $zdb->execute($delete);
 
             Analog::log(
-                'Group members has been removed for `' . $this->_group_name .
+                'Group members has been removed for `' . $this->group_name .
                 '`, we can now store new ones.',
                 Analog::INFO
             );
@@ -727,31 +751,31 @@ class Group
 
             $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
-            if ( is_array($members) ) {
-                foreach ( $members as $m ) {
+            if (is_array($members)) {
+                foreach ($members as $m) {
                     $result = $stmt->execute(
                         array(
-                            self::PK        => $this->_id,
+                            self::PK        => $this->id,
                             Adherent::PK    => $m->id
                         )
                     );
 
-                    if ( $result ) {
+                    if ($result) {
                         Analog::log(
                             'Member `' . $m->sname . '` attached to group `' .
-                            $this->_group_name . '`.',
+                            $this->group_name . '`.',
                             Analog::DEBUG
                         );
                     } else {
                         Analog::log(
                             'An error occured trying to attach member `' .
-                            $m->sname . '` to group `' . $this->_group_name .
-                            '` ('  . $this->_id . ').',
+                            $m->sname . '` to group `' . $this->group_name .
+                            '` ('  . $this->id . ').',
                             Analog::ERROR
                         );
                         throw new \Exception(
                             'Unable to attach `' . $m->sname . '` ' .
-                            'to ' . $this->_group_name . '(' . $this->_id . ')'
+                            'to ' . $this->group_name . '(' . $this->id . ')'
                         );
                     }
                 }
@@ -772,8 +796,8 @@ class Group
                 $messages[] = $e->getMessage();
             } while ($e = $e->getPrevious());
             Analog::log(
-                'Unable to attach members to group `' . $this->_group_name .
-                '` (' . $this->_id . ')|' . implode("\n", $messages),
+                'Unable to attach members to group `' . $this->group_name .
+                '` (' . $this->id . ')|' . implode("\n", $messages),
                 Analog::ERROR
             );
             return false;
@@ -797,12 +821,12 @@ class Group
             //first, remove current groups managers
             $delete = $zdb->delete(self::GROUPSMANAGERS_TABLE);
             $delete->where(
-                self::PK . ' = ' . $this->_id
+                self::PK . ' = ' . $this->id
             );
             $zdb->execute($delete);
 
             Analog::log(
-                'Group managers has been removed for `' . $this->_group_name .
+                'Group managers has been removed for `' . $this->group_name .
                 '`, we can now store new ones.',
                 Analog::INFO
             );
@@ -817,32 +841,31 @@ class Group
 
             $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
-            if ( is_array($members) ) {
-                foreach ( $members as $m ) {
-
+            if (is_array($members)) {
+                foreach ($members as $m) {
                     $result = $stmt->execute(
                         array(
-                            Group::PK       => $this->_id,
+                            Group::PK       => $this->id,
                             Adherent::PK    => $m->id
                         )
                     );
 
-                    if ( $result ) {
+                    if ($result) {
                         Analog::log(
                             'Manager `' . $m->sname . '` attached to group `' .
-                            $this->_group_name . '`.',
+                            $this->group_name . '`.',
                             Analog::DEBUG
                         );
                     } else {
                         Analog::log(
                             'An error occured trying to attach manager `' .
-                            $m->sname . '` to group `' . $this->_group_name .
-                            '` ('  . $this->_id . ').',
+                            $m->sname . '` to group `' . $this->group_name .
+                            '` ('  . $this->id . ').',
                             Analog::ERROR
                         );
                         throw new \Exception(
                             'Unable to attach `' . $m->sname . '` ' .
-                            'to ' . $this->_group_name . '(' . $this->_id . ')'
+                            'to ' . $this->group_name . '(' . $this->id . ')'
                         );
                     }
                 }
@@ -863,11 +886,24 @@ class Group
                 $messages[] = $e->getMessage();
             } while ($e = $e->getPrevious());
             Analog::log(
-                'Unable to attach managers to group `' . $this->_group_name .
-                '` (' . $this->_id . ')|' . implode("\n", $messages),
+                'Unable to attach managers to group `' . $this->group_name .
+                '` (' . $this->id . ')|' . implode("\n", $messages),
                 Analog::ERROR
             );
             return false;
         }
+    }
+
+    /**
+     * Set login instance
+     *
+     * @param Login $login Login instance
+     *
+     * @return Group
+     */
+    public function setLogin(Login $login)
+    {
+        $this->login = $login;
+        return $this;
     }
 }

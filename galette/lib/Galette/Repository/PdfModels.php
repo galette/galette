@@ -71,7 +71,7 @@ class PdfModels extends Repository
 
             $models = array();
             $results = $this->zdb->execute($select);
-            foreach ( $results as $row ) {
+            foreach ($results as $row) {
                 $class = PdfModel::getTypeClass($row->model_type);
                 $models[] = new $class($this->zdb, $this->preferences, $row);
             }
@@ -99,7 +99,7 @@ class PdfModels extends Repository
             //first of all, let's check if data seem to have already
             //been initialized
             $proceed = false;
-            if ( $check_first === true ) {
+            if ($check_first === true) {
                 $select = $this->zdb->select(PdfModel::TABLE);
                 $select->columns(
                     array(
@@ -110,12 +110,12 @@ class PdfModels extends Repository
                 $results = $this->zdb->execute($select);
                 $result = $results->current();
                 $count = $result->counter;
-                if ( $count == 0 ) {
+                if ($count == 0) {
                     //if we got no values in texts table, let's proceed
                     $proceed = true;
                 } else {
-                    if ( $count < count($pdfmodels_fields) ) {
-                        return $this->_checkUpdate($pdfmodels_fields);
+                    if ($count < count($pdfmodels_fields)) {
+                        return $this->checkUpdate($pdfmodels_fields);
                     }
                     return false;
                 }
@@ -123,13 +123,13 @@ class PdfModels extends Repository
                 $proceed = true;
             }
 
-            if ( $proceed === true ) {
+            if ($proceed === true) {
                 $this->zdb->connection->beginTransaction();
 
                 //first, we drop all values
                 $delete = $this->zdb->delete($ent::TABLE);
                 $this->zdb->execute($delete);
-                $this->_insert($ent::TABLE, $pdfmodels_fields);
+                $this->insert($ent::TABLE, $pdfmodels_fields);
 
                 $this->zdb->connection->commit();
                 return true;
@@ -147,7 +147,7 @@ class PdfModels extends Repository
      *
      * @return boolean
      */
-    private function _checkUpdate($defaults)
+    private function checkUpdate($defaults)
     {
         try {
             $ent = $this->entity;
@@ -155,24 +155,24 @@ class PdfModels extends Repository
             $list = $this->zdb->execute($select);
 
             $missing = array();
-            foreach ( $defaults as $default ) {
+            foreach ($defaults as $default) {
                 $exists = false;
-                foreach ( $list as $model ) {
-                    if ( $model->model_id == $default['model_id'] ) {
+                foreach ($list as $model) {
+                    if ($model->model_id == $default['model_id']) {
                         $exists = true;
                         break;
                     }
                 }
 
-                if ( $exists === false ) {
+                if ($exists === false) {
                     //model does not exists in database, insert it.
                     $missing[] = $default;
                 }
             }
 
-            if ( count($missing) >0 ) {
+            if (count($missing) >0) {
                 $this->zdb->connection->beginTransaction();
-                $this->_insert($ent::TABLE, $missing);
+                $this->insert($ent::TABLE, $missing);
                 Analog::log(
                     'Missing texts were successfully stored into database.',
                     Analog::INFO
@@ -194,7 +194,7 @@ class PdfModels extends Repository
      *
      * @return void
      */
-    private function _insert($table, $values)
+    private function insert($table, $values)
     {
         $insert = $this->zdb->insert($table);
         $insert->values(
@@ -212,9 +212,8 @@ class PdfModels extends Repository
         );
         $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
-        foreach ( $values as $value ) {
+        foreach ($values as $value) {
             $stmt->execute($value);
         }
     }
 }
-

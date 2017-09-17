@@ -53,8 +53,19 @@ use Galette\Entity\Adherent;
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.3.1 - 2012-01-03
  */
-class PasswordImage extends Password
+class PasswordImage extends AbstractPassword
 {
+    /**
+     * Default constructor
+     *
+     * @param boolean $clean Whether we should clean expired passwords in database
+     */
+    public function __construct($clean = true)
+    {
+        if ($clean === true) {
+            $this->cleanExpired();
+        }
+    }
 
     /**
      * Cleans any password image file older than 1 minute
@@ -64,7 +75,7 @@ class PasswordImage extends Password
     protected function cleanExpired()
     {
         $dh = @opendir(GALETTE_TEMPIMAGES_PATH);
-        while ( $file=readdir($dh) ) {
+        while ($file=readdir($dh)) {
             if (substr($file, 0, 3) == 'pw_'
                 && time() - filemtime(GALETTE_TEMPIMAGES_PATH . '/' . $file) > 60
             ) {
@@ -112,15 +123,15 @@ class PasswordImage extends Password
     {
         $file = GALETTE_TEMPIMAGES_PATH . '/' . $this->getImageName();
         $image_type = false;
-        if ( function_exists('exif_imagetype') ) {
+        if (function_exists('exif_imagetype')) {
             $image_type = exif_imagetype($file);
         } else {
             $image_size = getimagesize($file);
-            if ( is_array($image_size) && isset($image_size[2]) ) {
+            if (is_array($image_size) && isset($image_size[2])) {
                 $image_type = $image_size[2];
             }
         }
-        if ( $image_type ) {
+        if ($image_type) {
             /*return str_replace(GALETTE_ROOT, '', $file);*/
             $filetype = pathinfo($file, PATHINFO_EXTENSION);
             $imgbinary = @file_get_contents($file);
@@ -161,10 +172,10 @@ class PasswordImage extends Password
      * @param string $crypt Crypted password
      *
      * @return boolean
+     * @deprecated Seems no longer used
      */
     public function check($pass, $crypt)
     {
         return crypt($pass, $crypt) == $crypt;
     }
-
 }

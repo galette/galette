@@ -77,23 +77,23 @@ class XHProf
     const XHPROF_PATH = '/usr/share/xhprof/xhprof_lib';
     const XHPROF_URL  = '/xhprof';
 
-    static private $_run = false;
+    static private $run = false;
 
     /**
      * Default constructor
      *
      * @param string $msg Message(default '')
      */
-    function __construct($msg='')
+    public function __construct($msg = '')
     {
         $this->start($msg);
     }
 
 
     /**
-     * Destrcut the object
+     * Destruct the object
      */
-    function __destruct()
+    public function __destruct()
     {
         $this->stop();
     }
@@ -106,9 +106,9 @@ class XHProf
      *
      * @return void
      */
-    public function start($msg='')
+    public function start($msg = '')
     {
-        if (!self::$_run
+        if (!self::$run
             && function_exists('xhprof_enable')
         ) {
             xhprof_enable(
@@ -120,7 +120,7 @@ class XHProf
                 'Start profiling with XHProf ' . $msg,
                 Analog::INFO
             );
-            self::$_run = true;
+            self::$run = true;
         }
     }
 
@@ -131,7 +131,7 @@ class XHProf
      */
     public function stop()
     {
-        if (self::$_run) {
+        if (self::$run) {
             $data = xhprof_disable();
 
             $incl = (defined('XHPROF_PATH') ? XHPROF_PATH : self::XHPROF_PATH);
@@ -150,7 +150,7 @@ class XHProf
                 Analog::INFO
             );
 
-            self::$_run = false;
+            self::$run = false;
         }
     }
 }

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2014 The Galette Team
+ * Copyright © 2009-2017 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,19 +28,19 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2017 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7-dev - 2007-10-07
  */
 
-if ( !defined('GALETTE_PHP_MIN') ) {
-    define('GALETTE_PHP_MIN', '5.4');
+if (!defined('GALETTE_PHP_MIN')) {
+    define('GALETTE_PHP_MIN', '5.6');
 }
 
 // check required PHP version...
-if ( version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') ) {
+if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
     echo 'Galette is NOT compliant with your current PHP version. ' .
         'Galette requires PHP ' . GALETTE_PHP_MIN  .
         ' minimum and current version is ' . phpversion();
@@ -51,12 +51,12 @@ $time_start = microtime(true);
 $cron = (PHP_SAPI === 'cli');
 
 //define galette's root directory
-if ( !defined('GALETTE_ROOT') ) {
+if (!defined('GALETTE_ROOT')) {
     define('GALETTE_ROOT', __DIR__ . '/../');
 }
 
 // define relative base path templating can use
-if ( !defined('GALETTE_BASE_PATH') ) {
+if (!defined('GALETTE_BASE_PATH')) {
     define('GALETTE_BASE_PATH', './');
 }
 
@@ -64,46 +64,40 @@ require_once GALETTE_ROOT . 'config/versions.inc.php';
 require_once GALETTE_ROOT . 'config/paths.inc.php';
 
 //we'll only include relevant parts if we work from installer
-if ( !isset($installer) ) {
+if (!isset($installer)) {
     $installer = false;
 }
 // test if galette is already installed or if we're form installer
 // and redirect to install page if not
 $installed = file_exists(GALETTE_CONFIG_PATH . 'config.inc.php');
-if ( !$installed && !$installer ) {
-    header('location: install/index.php');
+if (!$installed && !$installer) {
+    header('location: ./installer.php');
     die();
 }
 
-if ( file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php')
+if (file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php')
     && !defined('GALETTE_TESTS') && !$cron
 ) {
     include_once GALETTE_CONFIG_PATH . 'behavior.inc.php';
 }
 
-if ( isset($installer) && $installer !== true ) {
+if (isset($installer) && $installer !== true) {
     //If we're not working from installer
     include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 }
 
-if ( !function_exists('password_hash') ) {
-    include_once GALETTE_PASSWORD_COMPAT_PATH . '/password.php';
-}
-
-use Galette\Common\ClassLoader;
 use Analog\Analog;
 use Galette\Core;
-require_once GALETTE_ROOT . 'lib/Galette/Common/ClassLoader.php';
-$galetteLoader = new ClassLoader('Galette', GALETTE_ROOT . 'lib');
-$zendLoader = new ClassLoader('Zend', GALETTE_ZEND_PATH);
-$analogLoader = new ClassLoader('Analog', GALETTE_ANALOG_PATH);
-$smartyLoader = new ClassLoader(null, GALETTE_SMARTY_PATH);
-$smartyLoader->setFileExtension('.class.php');
-//register loaders
-$galetteLoader->register();
-$zendLoader->register();
-$analogLoader->register();
-$smartyLoader->register();
+
+/*
+BREAKS as of Galette 0.9-dev
+// To help the built-in PHP dev server, check if the request was actually for
+// something which should probably be served as a static file
+if (PHP_SAPI === 'cli-server' && $_SERVER['SCRIPT_FILENAME'] !== __FILE__) {
+    return false;
+}*/
+
+require GALETTE_ROOT . '/vendor/autoload.php';
 
 //start profiling
 if (defined('GALETTE_XHPROF_PATH')
@@ -114,17 +108,14 @@ if (defined('GALETTE_XHPROF_PATH')
     $profiler->start();
 }
 
-//we start a php session
-session_start();
-
-define('GALETTE_VERSION', 'v0.8.3.3');
-define('GALETTE_COMPAT_VERSION', '0.8');
+define('GALETTE_VERSION', 'v0.9rc1');
+define('GALETTE_COMPAT_VERSION', '0.9');
 define('GALETTE_DB_VERSION', '0.820');
-if ( !defined('GALETTE_MODE') ) {
+if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD, MAINT or DEMO
 }
 
-if ( !isset($_COOKIE['show_galette_dashboard']) ) {
+if (!isset($_COOKIE['show_galette_dashboard'])) {
     setcookie(
         'show_galette_dashboard',
         true,
@@ -132,10 +123,14 @@ if ( !isset($_COOKIE['show_galette_dashboard']) ) {
     );
 }
 
-if ( !defined('GALETTE_DISPLAY_ERRORS') ) {
-    define('GALETTE_DISPLAY_ERRORS', 0);
+if (!defined('GALETTE_DISPLAY_ERRORS')) {
+    if (GALETTE_MODE === 'DEV') {
+        define('GALETTE_DISPLAY_ERRORS', 1);
+    } else {
+        define('GALETTE_DISPLAY_ERRORS', 0);
+    }
 }
-ini_set('display_errors', GALETTE_DISPLAY_ERRORS);
+ini_set('display_errors', 0);
 
 set_include_path(
     GALETTE_ZEND_PATH . PATH_SEPARATOR .
@@ -147,9 +142,7 @@ set_include_path(
 /*------------------------------------------------------------------------------
 Logger stuff
 ------------------------------------------------------------------------------*/
-if ( !$cron && (!defined('GALETTE_HANDLE_ERRORS')
-    || GALETTE_HANDLE_ERRORS === true)
-) {
+if (!$cron && !defined('GALETTE_TESTS')) {
     //set custom error handler
     set_error_handler(
         array(
@@ -160,45 +153,43 @@ if ( !$cron && (!defined('GALETTE_HANDLE_ERRORS')
 }
 
 $galette_run_log = null;
-$galette_null_log = \Analog\Handler\Ignore::init();
-$galette_debug_log = $galette_null_log;
+$galette_debug_log = \Analog\Handler\Ignore::init();
 
-//Log level cannot be <= 3, would be ignored.
-if ( !defined('GALETTE_LOG_LVL') ) {
-    if ( GALETTE_MODE === 'DEV' ) {
-        define('GALETTE_LOG_LVL', 10);
+if (!defined('GALETTE_LOG_LVL')) {
+    if (GALETTE_MODE === 'DEV') {
+        define('GALETTE_LOG_LVL', \Analog\Analog::DEBUG);
+    } elseif (defined('GALETTE_TESTS')) {
+        define('GALETTE_LOG_LVL', \Analog\Analog::ERROR);
     } else {
-        define('GALETTE_LOG_LVL', 5);
+        define('GALETTE_LOG_LVL', \Analog\Analog::WARNING);
     }
 }
 
-if ( defined('GALETTE_TESTS') ) {
-    $galette_run_log = \Analog\Handler\Ignore::init();
-
+if (defined('GALETTE_TESTS')) {
+    $log_path = GALETTE_LOGS_PATH . 'tests.log';
+    $galette_run_log = \Analog\Handler\File::init($log_path);
 } else {
-    if ( !$installer && !$cron ) {
+    if ((!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) && !$cron) {
         $now = new \DateTime();
         $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
             $now->format('Y-m-d')  . '.log';
         $galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
     }
-    $galette_run_log = null;
     $galette_log_var = null;
 
-    if ( GALETTE_MODE === 'DEV' || $cron
+    if (GALETTE_MODE === 'DEV' || $cron
         || ( defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true )
     ) {
-        //logs everything in PHP logs (per chance /var/log/http/error_log)
+        //logs everything in PHP logs (per chance /var/log/http/error_log or /var/log/php-fpm/error.log)
         $galette_run_log = \Analog\Handler\Stderr::init();
     } else {
-        if ( !$installer || ($installer && defined('GALETTE_LOGGER_CHECKED')) ) {
+        if (!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) {
             //logs everything in galette log file
-            if ( !isset($logfile) ) {
-                //if no filename has been setetd (ie. from install), set default one
+            if (!isset($logfile)) {
+                //if no filename has been setted (ie. from install), set default one
                 $logfile = 'galette_run';
             }
-            $log_path = GALETTE_LOGS_PATH . $logfile . '_' .
-                $now->format('Y-m-d')  . '.log';
+            $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
             $galette_run_log = \Analog\Handler\File::init($log_path);
         } else {
             $galette_run_log = \Analog\Handler\Variable::init($galette_log_var);
@@ -210,76 +201,18 @@ if ( defined('GALETTE_TESTS') ) {
 Analog::handler(
     \Analog\Handler\Multi::init(
         array (
-            Analog::URGENT      => $galette_run_log,
-            Analog::ALERT       => $galette_run_log,
-            Analog::CRITICAL    => $galette_run_log,
-            Analog::ERROR       => $galette_run_log,
-            Analog::WARNING     => (GALETTE_LOG_LVL >= Analog::WARNING)
-                                        ? $galette_run_log : $galette_null_log,
-            Analog::NOTICE      => (GALETTE_LOG_LVL >= Analog::NOTICE)
-                                        ? $galette_run_log : $galette_null_log,
-            Analog::INFO        => (GALETTE_LOG_LVL >= Analog::INFO)
-                                        ? $galette_run_log : $galette_null_log,
-            Analog::DEBUG       => (GALETTE_LOG_LVL >= Analog::DEBUG)
-                                        ? $galette_debug_log : $galette_null_log
+            Analog::NOTICE  => \Analog\Handler\Threshold::init(
+                $galette_run_log,
+                GALETTE_LOG_LVL
+            ),
+            Analog::DEBUG   => $galette_debug_log
         )
     )
 );
 
 require_once GALETTE_ROOT . 'includes/functions.inc.php';
 
-$session_name = null;
-//since PREFIX_DB and NAME_DB are required to properly instanciate sessions,
-// we have to check here if they're assigned
-if ( $installer || !defined('PREFIX_DB') || !defined('NAME_DB') ) {
-    $session_name = 'galette_install';
-} else {
-    $session_name = PREFIX_DB . '_' . NAME_DB;
-}
-$session = &$_SESSION['galette'][$session_name];
-
-/**
- * Language instantiation
- */
-if ( isset($session['lang']) ) {
-    $i18n = unserialize($session['lang']);
-} else {
-    $i18n = new Core\I18n();
-}
-
-if ( isset($_POST['pref_lang'])
-    && (strpos($_SERVER['PHP_SELF'], 'self_adherent.php') !== false
-    || strpos($_SERVER['PHP_SELF'], 'install/index.php') !== false)
-) {
-    $_GET['pref_lang'] = $_POST['pref_lang'];
-}
-if ( isset($_GET['pref_lang']) ) {
-    $i18n->changeLanguage($_GET['pref_lang']);
-}
-$session['lang'] = serialize($i18n);
-require_once GALETTE_ROOT . 'includes/i18n.inc.php';
-
-// initialize messages arrays
-$error_detected = array();
-$warning_detected = array();
-$success_detected = array();
-/**
- * "Flash" messages management
- */
-if ( isset($session['error_detected']) ) {
-    $error_detected = unserialize($session['error_detected']);
-    unset($session['error_detected']);
-}
-if ( isset($session['warning_detected']) ) {
-    $warning_detected = unserialize($session['warning_detected']);
-    unset($session['warning_detected']);
-}
-if ( isset($session['success_detected']) ) {
-    $success_detected = unserialize($session['success_detected']);
-    unset($session['success_detected']);
-}
-
-if ( !$installer and !defined('GALETTE_TESTS') ) {
+if (!$installer and !defined('GALETTE_TESTS')) {
     //If we're not working from installer nor from tests
     include_once GALETTE_CONFIG_PATH . 'config.inc.php';
 
@@ -288,9 +221,7 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
      */
     $zdb = new Core\Db();
 
-    if ( $zdb->checkDbVersion()
-        || strpos($_SERVER['PHP_SELF'], 'picture.php') !== false
-    ) {
+    if ($zdb->checkDbVersion()) {
 
         /**
          * Load preferences
@@ -301,85 +232,29 @@ if ( !$installer and !defined('GALETTE_TESTS') ) {
          * Set the path to the current theme templates
          */
         define(
-            '_CURRENT_TEMPLATE_PATH',
-            GALETTE_TEMPLATES_PATH . $preferences->pref_theme . '/'
+            '_CURRENT_THEME_PATH',
+            GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
         );
 
-        /**
-         * Authentication
-         */
-        if ( isset($session['login']) ) {
-            $login = unserialize(
-                $session['login']
+        if (!defined('GALETTE_TPL_SUBDIR')) {
+            define(
+                'GALETTE_TPL_SUBDIR',
+                'templates/' . $preferences->pref_theme . '/'
             );
-            $login->setDb($zdb);
-        } else {
-            $login = new Core\Login($zdb, $i18n, $session);
         }
 
-        if (GALETTE_MODE === 'MAINT' && !$login->isSuperAdmin() ) {
-            if ( $login->isLogged() ) {
-                //force logout
-                $login->logOut();
-                $session['login'] = null;
-                unset($session['login']);
-                $session['history'] = null;
-                unset($session['history']);
-            }
-            //redirect, if needed
-            if ( basename($_SERVER['SCRIPT_NAME']) !== 'maintenance.php' ) {
-                header('location: maintenance.php');
-            }
+        if (!defined('GALETTE_THEME')) {
+            define(
+                'GALETTE_THEME',
+                GALETTE_BASE_PATH . 'themes/' . $preferences->pref_theme . '/'
+            );
         }
 
-        if ( $cron ) {
+        /** TODO: login is now handled in dependencies.php; the cron case should be aswell */
+        if ($cron) {
             $login->logCron(basename($argv[0], '.php'));
         }
-
-        /**
-         * Plugins
-         */
-        $plugins = new Core\Plugins($preferences);
-        $plugins->loadModules(GALETTE_PLUGINS_PATH, $i18n->getFileName());
-
-        /**
-         * Instanciate history object
-         */
-        if ( isset($session['history'])
-            && !GALETTE_MODE == 'DEV'
-        ) {
-            $hist = unserialize(
-                $session['history']
-            );
-        } else {
-            $hist = new Core\History();
-        }
-
-        /**
-         * Logo
-         */
-        if ( isset($session['logo'])
-            && !GALETTE_MODE == 'DEV'
-        ) {
-            $logo = unserialize(
-                $session['logo']
-            );
-        } else {
-            $logo = new Core\Logo();
-        }
-
-        /**
-         * Now that all objects are correctly setted,
-         * we can include files that need it
-         */
-        include_once GALETTE_ROOT . 'includes/session.inc.php';
-        include_once GALETTE_ROOT . 'includes/smarty.inc.php';
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
-        include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
-        include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
     } else {
-        header('location: needs_update.php');
-        die();
+        $needs_update = true;
     }
 }

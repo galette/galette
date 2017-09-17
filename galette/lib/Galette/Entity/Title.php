@@ -57,9 +57,9 @@ class Title
     const TABLE = 'titles';
     const PK = 'id_title';
 
-    private $_id;
-    private $_short;
-    private $_long;
+    private $id;
+    private $short;
+    private $long;
 
     const MR = 1;
     const MRS = 2;
@@ -72,10 +72,10 @@ class Title
      */
     public function __construct($args = null)
     {
-        if ( is_int($args) ) {
-            $this->_load($args);
-        } else if ( $args !== null && is_object($args) ) {
-            $this->_loadFromRs($args);
+        if (is_int($args)) {
+            $this->load($args);
+        } elseif ($args !== null && is_object($args)) {
+            $this->loadFromRs($args);
         }
     }
 
@@ -86,7 +86,7 @@ class Title
      *
      * @return void
      */
-    private function _load($id)
+    private function load($id)
     {
         global $zdb;
         try {
@@ -96,10 +96,10 @@ class Title
             $results = $zdb->execute($select);
             $res = $results->current();
 
-            $this->_id = $id;
-            $this->_short = $res->short_label;
-            $this->_long = $res->long_label;
-        } catch ( \Exception $e ) {
+            $this->id = $id;
+            $this->short = $res->short_label;
+            $this->long = $res->long_label;
+        } catch (\Exception $e) {
             Analog::log(
                 'An error occured loading title #' . $id . "Message:\n" .
                 $e->getMessage(),
@@ -115,16 +115,16 @@ class Title
      *
      * @return void
      */
-    private function _loadFromRs($rs)
+    private function loadFromRs($rs)
     {
         $pk = self::PK;
-        $this->_id = $rs->$pk;
-        $this->_short = $rs->short_label;
-        if ( $rs->long_label === 'NULL' ) {
+        $this->id = $rs->$pk;
+        $this->short = $rs->short_label;
+        if ($rs->long_label === 'NULL') {
             //mysql's null...
-            $this->_long = null;
+            $this->long = null;
         } else {
-            $this->_long = $rs->long_label;
+            $this->long = $rs->long_label;
         }
     }
 
@@ -138,27 +138,27 @@ class Title
     public function store($zdb)
     {
         $data = array(
-            'short_label'   => $this->_short,
-            'long_label'    => $this->_long
+            'short_label'   => $this->short,
+            'long_label'    => $this->long
         );
         try {
-            if ( $this->_id !== null && $this->_id > 0 ) {
+            if ($this->id !== null && $this->id > 0) {
                 $update = $zdb->update(self::TABLE);
                 $update->set($data)->where(
-                    self::PK . '=' . $this->_id
+                    self::PK . '=' . $this->id
                 );
                 $zdb->execute($update);
             } else {
                 $insert = $zdb->insert(self::TABLE);
                 $insert->values($data);
                 $add = $zdb->execute($insert);
-                if ( !$add->count() > 0 ) {
+                if (!$add->count() > 0) {
                     Analog::log('Not stored!', Analog::ERROR);
                     return false;
                 }
             }
             return true;
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
             Analog::log(
                 'An error occured storing title: ' . $e->getMessage() .
                 "\n" . print_r($data, true),
@@ -177,8 +177,8 @@ class Title
      */
     public function remove($zdb)
     {
-        $id = (int)$this->_id;
-        if ( $id === self::MR || $id === self::MRS ) {
+        $id = (int)$this->id;
+        if ($id === self::MR || $id === self::MRS) {
             throw new \RuntimeException(_T("You cannot delete Mr. or Mrs. titles!"));
         }
 
@@ -189,7 +189,7 @@ class Title
             );
             $zdb->execute($delete);
             Analog::log(
-                'Title #' . $id . ' (' . $this->_short
+                'Title #' . $id . ' (' . $this->short
                 . ') deleted successfully.',
                 Analog::INFO
             );
@@ -216,45 +216,44 @@ class Title
     {
         global $lang;
 
-        $rname = '_' . $name;
-        switch ( $name ) {
-        case 'id':
-            return $this->$rname;
-            break;
-        case 'short':
-        case 'long':
-            if ( $name === 'long'
-                && ($this->_long == null || trim($this->_long) === '')
-            ) {
-                $rname = '_short';
-            }
-            return $this->$rname;
-            break;
-        case 'tshort':
-        case 'tlong':
-            $rname = null;
-            if ( $name === 'tshort' ) {
-                $rname = '_short';
-            } else {
-                if ( $this->_long !== null && trim($this->_long) !== '' ) {
-                    $rname = '_long';
-                } else {
-                    //switch back to short version if long does not exists
-                    $rname = '_short';
+        switch ($name) {
+            case 'id':
+                return $this->$name;
+                break;
+            case 'short':
+            case 'long':
+                if ($name === 'long'
+                    && ($this->long == null || trim($this->long) === '')
+                ) {
+                    $name = 'short';
                 }
-            }
-            if ( isset($lang) && isset($lang[$this->$rname])) {
-                return _T($this->$rname);
-            } else {
-                return $this->$rname;
-            }
-            break;
-        default:
-            Analog::log(
-                'Unable to get Title property ' . $name,
-                Analog::WARNING
-            );
-            break;
+                return $this->$name;
+                break;
+            case 'tshort':
+            case 'tlong':
+                $rname = null;
+                if ($name === 'tshort') {
+                    $rname = 'short';
+                } else {
+                    if ($this->long !== null && trim($this->long) !== '') {
+                        $rname = 'long';
+                    } else {
+                        //switch back to short version if long does not exists
+                        $rname = 'short';
+                    }
+                }
+                if (isset($lang) && isset($lang[$this->$rname])) {
+                    return _T($this->$rname);
+                } else {
+                    return $this->$rname;
+                }
+                break;
+            default:
+                Analog::log(
+                    'Unable to get Title property ' . $name,
+                    Analog::WARNING
+                );
+                break;
         }
     }
 
@@ -268,25 +267,24 @@ class Title
      */
     public function __set($name, $value)
     {
-        $rname = '_' . $name;
-        switch ( $name ) {
-        case 'short':
-        case 'long':
-            if ( trim($value) === '' ) {
+        switch ($name) {
+            case 'short':
+            case 'long':
+                if (trim($value) === '') {
+                    Analog::log(
+                        'Trying to set empty value for title' . $name,
+                        Analog::WARNING
+                    );
+                } else {
+                    $this->$name = $value;
+                }
+                break;
+            default:
                 Analog::log(
-                    'Trying to set empty value for title' . $name,
+                    'Unable to set property ' .$name,
                     Analog::WARNING
                 );
-            } else {
-                $this->$rname = $value;
-            }
-            break;
-        default:
-            Analog::log(
-                'Unable to set property ' .$name,
-                Analog::WARNING
-            );
-            break;
+                break;
         }
     }
 }

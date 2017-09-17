@@ -248,7 +248,7 @@ td#pdf_logo {
         <td class="input">{COUNTRY_ADH}</td>
     </tr>
     <tr>
-        <td class="label">_T("Email adress")</td>
+        <td class="label">_T("Email address")</td>
         <td class="input">{EMAIL_ADH}</td>
     </tr>
     <tr>

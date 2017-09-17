@@ -1,6 +1,58 @@
 Changes
 -------
 
+0.8.3.4 -> 0.9
+
+News
+^^^^
+
+- Two steps removal everywhere; with a real confirmation required (not just a JS event)
+- Cascade removal of group children
+- Change all URLs, translate those ones
+- Superadmin can impersonate without know identifiers
+- "Responsive" design
+- Manage logout delay
+- Tets emails parameters from preferences
+- Check duplicate emails importing with dry-run mode
+- Check status importing with dry-run mode
+- Preview attached files from mailing preview
+- Select all and invert selection on both begining and end of lists
+- Status are no longer uniques
+- Login with email address
+- Handle reverse proxies for logs
+- Autocomplete towns, zipcodes, countries and places of birth
+- An example behavior file is provided in config directory
+- Display a warning if app is configured to display errors
+- Allow "unsecure" SMTP connections (self-signed certificates, ...)
+- Set 5.6 as minimal PHP version
+- Possibility to only expose "webroot" directory
+
+Bugfixes
+^^^^^^^^
+
+- Better handle PDF errors
+- Add version number to sessions
+- iMissing translation in emails headers
+- Duplicate members in list when searching on a group
+- Bug in cotisation end date on some cases
+- Parent group dropped when child edited from a group manager account
+- Drop parent field from fields configuration
+- Error sending remaining emails
+
+Under the hood
+^^^^^^^^^^^^^^
+
+- Update third party libraries
+- Use Slim Framework to manage routing
+- Use Composer dependency management to handle third party libraries
+- Use PSR2 for coding standards (with comments from PEAR)
+
+0.8.3.3 -> 0.8.3.4
+
+- Fix member card PDF url
+- Send images with a one character name
+- Fix mailings storage
+
 0.8.3.2 -> 0.8.3.3
 
 - Fix member storage

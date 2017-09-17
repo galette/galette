@@ -69,7 +69,7 @@ class Install
     const UPDATE = 'u';
 
     //db version/galette version mapper
-    private $_versions_mapper = array(
+    private $versions_mapper = array(
         '0.700' => '0.70',
         '0.701' => '0.71',
         '0.702' => '0.74',
@@ -117,37 +117,37 @@ class Install
     public function getStepTitle()
     {
         $step_title = null;
-        switch ( $this->_step ) {
-        case self::STEP_CHECK:
-            $step_title = _T("Checks");
-            break;
-        case self::STEP_TYPE:
-            $step_title = _T("Installation mode");
-            break;
-        case self::STEP_DB:
-            $step_title = _T("Database");
-            break;
-        case self::STEP_DB_CHECKS:
-            $step_title = _T("Database access and permissions");
-            break;
-        case self::STEP_VERSION:
-            $step_title = _T("Previous version selection");
-            break;
-        case self::STEP_DB_UPGRADE:
-            $step_title = _T("Datapase upgrade");
-            break;
-        case self::STEP_DB_INSTALL:
-            $step_title = _T("Tables Creation");
-            break;
-        case self::STEP_ADMIN:
-            $step_title = _T("Admin parameters");
-            break;
-        case self::STEP_GALETTE_INIT:
-            $step_title = _T("Galette initialization");
-            break;
-        case self::STEP_END:
-            $step_title = _T("End!");
-            break;
+        switch ($this->_step) {
+            case self::STEP_CHECK:
+                $step_title = _T("Checks");
+                break;
+            case self::STEP_TYPE:
+                $step_title = _T("Installation mode");
+                break;
+            case self::STEP_DB:
+                $step_title = _T("Database");
+                break;
+            case self::STEP_DB_CHECKS:
+                $step_title = _T("Database access and permissions");
+                break;
+            case self::STEP_VERSION:
+                $step_title = _T("Previous version selection");
+                break;
+            case self::STEP_DB_UPGRADE:
+                $step_title = _T("Datapase upgrade");
+                break;
+            case self::STEP_DB_INSTALL:
+                $step_title = _T("Tables Creation");
+                break;
+            case self::STEP_ADMIN:
+                $step_title = _T("Admin parameters");
+                break;
+            case self::STEP_GALETTE_INIT:
+                $step_title = _T("Galette initialization");
+                break;
+            case self::STEP_END:
+                $step_title = _T("End!");
+                break;
         }
         return $step_title;
     }
@@ -207,7 +207,7 @@ class Install
      */
     public function setMode($mode)
     {
-        if ( $mode === self::INSTALL || $mode === self::UPDATE ) {
+        if ($mode === self::INSTALL || $mode === self::UPDATE) {
             $this->_mode = $mode;
         } else {
             throw new \UnexpectedValueException('Unknown mode "' . $mode . '"');
@@ -221,21 +221,21 @@ class Install
      */
     public function atPreviousStep()
     {
-        if ( $this->_step > 0 ) {
-            if ( $this->_step -1 !== self::STEP_DB_INSTALL
+        if ($this->_step > 0) {
+            if ($this->_step -1 !== self::STEP_DB_INSTALL
                 && $this->_step !== self::STEP_END
             ) {
-                if ( $this->_step === self::STEP_DB_INSTALL ) {
+                if ($this->_step === self::STEP_DB_INSTALL) {
                     $this->_step = self::STEP_DB_CHECKS;
                 } else {
-                    if ( $this->_step === self::STEP_DB_UPGRADE ) {
+                    if ($this->_step === self::STEP_DB_UPGRADE) {
                         $this->setInstalledVersion(null);
                     }
                     $this->_step = $this->_step -1;
                 }
             } else {
                 $msg = null;
-                if ( $this->_step === self::STEP_END ) {
+                if ($this->_step === self::STEP_END) {
                     $msg = 'Ok man, install is finished already!';
                 } else {
                     $msg = 'It is forbidden to rerun database install!';
@@ -308,20 +308,20 @@ class Install
     /**
      * Set database type
      *
-     * @param string $type  Database type
-     * @param array  &$errs Errors array
+     * @param string $type Database type
+     * @param array  $errs Errors array
      *
      * @return boolean
      */
     public function setDbType($type, &$errs)
     {
-        switch ( $type ) {
-        case Db::MYSQL:
-        case Db::PGSQL:
-            $this->_db_type = $type;
-            break;
-        default:
-            $errs[] = _T("Database type unknown");
+        switch ($type) {
+            case Db::MYSQL:
+            case Db::PGSQL:
+                $this->_db_type = $type;
+                break;
+            default:
+                $errs[] = _T("Database type unknown");
         }
     }
 
@@ -539,15 +539,18 @@ class Install
     /**
      * Install/Update SQL scripts
      *
-     * @param string $path Path to scripts (defaults to '.')
+     * @param string $path Path to scripts (defaults to core scripts)
      *
      * @return array
      */
-    public function getScripts($path = '.')
+    public function getScripts($path = null)
     {
+        if ($path === null) {
+            $path = GALETTE_ROOT . '/install';
+        }
         $update_scripts = array();
 
-        if ( $this->isUpgrade() ) {
+        if ($this->isUpgrade()) {
             $update_scripts = self::getUpdateScripts(
                 $path,
                 $this->_db_type,
@@ -572,31 +575,34 @@ class Install
      *               If no previous version is provided, that will return all
      *               updates versions known.
      */
-    public static function getUpdateScripts($path, $db_type = 'mysql',
+    public static function getUpdateScripts(
+        $path,
+        $db_type = 'mysql',
         $version = null
     ) {
         $dh = opendir($path . '/scripts');
         $php_update_scripts = array();
         $sql_update_scripts = array();
-        if ( $dh !== false ) {
-            while ( ($file = readdir($dh)) !== false ) {
-                if ( preg_match("/upgrade-to-(.*).php/", $file, $ver) ) {
-                    if ( $version === null ) {
+        if ($dh !== false) {
+            while (($file = readdir($dh)) !== false) {
+                if (preg_match("/upgrade-to-(.*).php/", $file, $ver)) {
+                    if ($version === null) {
                         $php_update_scripts[$ver[1]] = $ver[1];
                     } else {
-                        if ( $version <= $ver[1] ) {
+                        if ($version <= $ver[1]) {
                             $php_update_scripts[$ver[1]] = $file;
                         }
                     }
                 }
-                if ( preg_match(
-                    "/upgrade-to-(.*)-" . $db_type . ".sql/", $file,
+                if (preg_match(
+                    "/upgrade-to-(.*)-" . $db_type . ".sql/",
+                    $file,
                     $ver
                 ) ) {
-                    if ( $version === null ) {
+                    if ($version === null) {
                         $sql_update_scripts[$ver[1]] = $ver[1];
                     } else {
-                        if ( $version <= $ver[1] ) {
+                        if ($version <= $ver[1]) {
                             $sql_update_scripts[$ver[1]] = $file;
                         }
                     }
@@ -623,17 +629,26 @@ class Install
         $update_scripts = $this->getScripts();
         $sql_query = '';
         $this->_report = array();
+        $scripts_path = GALETTE_ROOT . '/install/scripts/';
 
-        while (list($key, $val) = each($update_scripts) ) {
-            if ( substr($val, -strlen('.sql')) === '.sql' ) {
+        foreach ($update_scripts as $key => $val) {
+            if (substr($val, -strlen('.sql')) === '.sql') {
                 //just a SQL script, run it
+                $script = fopen($scripts_path . $val, 'r');
+
+                if ($script === false) {
+                    throw new \RuntimeException(
+                        'Unable to read SQL script from ' . $scripts_path . $val
+                    );
+                }
+
                 $sql_query .= @fread(
-                    @fopen('scripts/' . $val, 'r'),
-                    @filesize('scripts/' . $val)
+                    $script,
+                    @filesize($scripts_path . $val)
                 ) . "\n";
             } else {
                 //we got an update class
-                include_once 'scripts/' . $val;
+                include_once $scripts_path . $val;
                 $className = '\Galette\Updates\UpgradeTo' .
                     str_replace('.', '', $key);
                 $ret = array(
@@ -642,7 +657,7 @@ class Install
                 );
                 try {
                     $updater = new $className();
-                    if ( $updater instanceof \Galette\Updater\AbstractUpdater ) {
+                    if ($updater instanceof \Galette\Updater\AbstractUpdater) {
                         $updater->run($zdb, $this);
                         $ret = $updater->getReport();
                         $this->_report = array_merge($this->_report, $ret);
@@ -661,7 +676,7 @@ class Install
                     );
                     $ret['res'] = true;
                     $this->_report[] = $ret;
-                } catch ( \RuntimeException $e ) {
+                } catch (\RuntimeException $e) {
                     Analog::log(
                         $e->getMessage(),
                         Analog::ERROR
@@ -677,7 +692,7 @@ class Install
             }
         }
 
-        if ( $sql_query !== '' ) {
+        if ($sql_query !== '') {
             $sql_res = $this->executeSql($zdb, $sql_query);
             $fatal_error = !$sql_res;
         }
@@ -707,9 +722,9 @@ class Install
 
         $zdb->connection->beginTransaction();
 
-        for ( $i = 0; $i < sizeof($sql_query); $i++ ) {
+        for ($i = 0; $i < sizeof($sql_query); $i++) {
             $query = trim($sql_query[$i]);
-            if ( $query != '' && $query[0] != '-' ) {
+            if ($query != '' && $query[0] != '-') {
                 //some output infos
                 @list($w1, $w2, $w3, $extra) = explode(' ', $query, 4);
                 if ($extra != '') {
@@ -730,7 +745,7 @@ class Install
                 } catch (\Exception $e) {
                     $log_lvl = Analog::WARNING;
                     //if error are on drop, DROP, rename or RENAME we can continue
-                    if ( (strcasecmp(trim($w1), 'drop') != 0)
+                    if ((strcasecmp(trim($w1), 'drop') != 0)
                         && (strcasecmp(trim($w1), 'rename') != 0)
                     ) {
                         $log_lvl = Analog::ERROR;
@@ -751,7 +766,7 @@ class Install
             }
         }
 
-        if ( $fatal_error ) {
+        if ($fatal_error) {
             $zdb->connection->rollBack();
         } else {
             $zdb->connection->commit();
@@ -858,21 +873,21 @@ class Install
     /**
      * Load existing config
      *
-     * @param array $post_data       Data posted
-     * @param array &$error_detected Errors array
+     * @param array $post_data      Data posted
+     * @param array $error_detected Errors array
      *
      * @return void
      */
     public function loadExistingConfig($post_data, &$error_detected)
     {
-        if ( file_exists(GALETTE_CONFIG_PATH . 'config.inc.php') ) {
-            $existing = $this->_loadExistingConfigFile($post_data);
+        if (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
+            $existing = $this->loadExistingConfigFile($post_data);
 
-            if ( $existing['db_type'] !== null ) {
+            if ($existing['db_type'] !== null) {
                 $this->setDbType($existing['db_type'], $error_detected);
             }
 
-            if ( $existing['db_host'] !== null
+            if ($existing['db_host'] !== null
                 || $existing['db_user'] !== null
                 || $existing['db_name'] !== null
             ) {
@@ -885,7 +900,7 @@ class Install
                 );
             }
 
-            if ( $existing['prefix'] !== null ) {
+            if ($existing['prefix'] !== null) {
                 $this->setTablesPrefix(
                     $existing['prefix']
                 );
@@ -901,7 +916,7 @@ class Install
      *
      * @return array
      */
-    private function _loadExistingConfigFile($post_data = array(), $pass = false)
+    private function loadExistingConfigFile($post_data = array(), $pass = false)
     {
         $existing = array(
             'db_type'   => null,
@@ -912,79 +927,79 @@ class Install
             'prefix'    => null
         );
 
-        if ( file_exists(GALETTE_CONFIG_PATH . 'config.inc.php') ) {
+        if (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
             $conf = file_get_contents(GALETTE_CONFIG_PATH . 'config.inc.php');
-            if ( $conf !== false ) {
-                if ( !isset($post_data['install_dbtype']) ) {
+            if ($conf !== false) {
+                if (!isset($post_data['install_dbtype'])) {
                     $res = preg_match(
                         '/TYPE_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( isset($matches[1]) ) {
+                    if (isset($matches[1])) {
                         $existing['db_type'] = $matches[1];
                     }
                 }
-                if ( !isset($post_data['install_dbhost']) ) {
+                if (!isset($post_data['install_dbhost'])) {
                     $res = preg_match(
                         '/HOST_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( isset($matches[1]) ) {
+                    if (isset($matches[1])) {
                         $existing['db_host'] = $matches[1];
                     }
                 }
-                if ( !isset($post_data['install_dbport']) ) {
+                if (!isset($post_data['install_dbport'])) {
                     $res = preg_match(
                         '/PORT_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( isset($matches[1]) ) {
+                    if (isset($matches[1])) {
                         $existing['db_port'] = $matches[1];
                     }
                 }
-                if ( !isset($post_data['install_dbuser']) ) {
+                if (!isset($post_data['install_dbuser'])) {
                     $res = preg_match(
                         '/USER_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( isset($matches[1]) ) {
+                    if (isset($matches[1])) {
                         $existing['db_user'] = $matches[1];
                     }
                 }
-                if ( !isset($post_data['install_dbname']) ) {
+                if (!isset($post_data['install_dbname'])) {
                     $res = preg_match(
                         '/NAME_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( isset($matches[1]) ) {
+                    if (isset($matches[1])) {
                         $existing['db_name'] = $matches[1];
                     }
                 }
 
 
-                if ( !isset($post_data['install_dbprefix']) ) {
+                if (!isset($post_data['install_dbprefix'])) {
                     $res = preg_match(
                         '/PREFIX_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( isset($matches[1]) ) {
+                    if (isset($matches[1])) {
                         $existing['prefix'] = $matches[1];
                     }
                 }
 
-                if ( $pass === true ) {
+                if ($pass === true) {
                     $res = preg_match(
                         '/PWD_DB["\'], ["\'](.*)["\']\);/',
                         $conf,
                         $matches
                     );
-                    if ( isset($matches[1]) ) {
+                    if (isset($matches[1])) {
                         $existing['pwd_db'] = $matches[1];
                     }
                 }
@@ -1008,9 +1023,9 @@ class Install
         );
 
         //if config file is already up-to-date, nothing to write
-        $existing = $this->_loadExistingConfigFile(array(), true);
+        $existing = $this->loadExistingConfigFile(array(), true);
 
-        if ( isset($existing['db_type'])
+        if (isset($existing['db_type'])
             && $existing['db_type'] == $this->_db_type
             && isset($existing['db_host'])
             && $existing['db_host'] == $this->_db_host
@@ -1037,7 +1052,7 @@ class Install
             return true;
         }
 
-        if ( $fd = @fopen(GALETTE_CONFIG_PATH . 'config.inc.php', 'w') ) {
+        if ($fd = @fopen(GALETTE_CONFIG_PATH . 'config.inc.php', 'w')) {
                 $data = "<?php
 define('TYPE_DB', '" . $this->_db_type . "');
 define('HOST_DB', '" . $this->_db_host . "');
@@ -1068,17 +1083,18 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
     /**
      * Initialize Galette relevant objects
      *
-     * @param I18n $i18n I18n
-     * @param Db   $zdb  Database instance
+     * @param I18n  $i18n  I18n
+     * @param Db    $zdb   Database instance
+     * @param Login $login Loged in instance
      *
      * @return boolean
      */
-    public function initObjects($i18n, $zdb)
+    public function initObjects(I18n $i18n, Db $zdb, Login $login)
     {
-        if ( $this->isInstall() ) {
+        if ($this->isInstall()) {
             $preferences = new Preferences($zdb, false);
-            $ct = new \Galette\Entity\ContributionsTypes();
-            $status = new \Galette\Entity\Status();
+            $ct = new \Galette\Entity\ContributionsTypes($zdb);
+            $status = new \Galette\Entity\Status($zdb);
             include_once '../includes/fields_defs/members_fields.php';
             include_once '../includes/fields_defs/members_fields_cats.php';
             $fc = new \Galette\Entity\FieldsConfig(
@@ -1093,7 +1109,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $texts = new \Galette\Entity\Texts($texts_fields, $preferences);
             $titles = new \Galette\Repository\Titles();
 
-            $models = new \Galette\Repository\PdfModels($zdb, $preferences);
+            $models = new \Galette\Repository\PdfModels($zdb, $preferences, $login);
 
             $this->_error = false;
 
@@ -1103,41 +1119,41 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
                 $this->getAdminLogin(),
                 $this->getAdminPass()
             );
-            $this->_proceedReport(_T("Preferences"), $res);
+            $this->proceedReport(_T("Preferences"), $res);
 
             //Install contributions types
             $res = $ct->installInit();
-            $this->_proceedReport(_T("Contributions types"), $res);
+            $this->proceedReport(_T("Contributions types"), $res);
 
             //Install statuses
             $res = $status->installInit();
-            $this->_proceedReport(_T("Status"), $res);
+            $this->proceedReport(_T("Status"), $res);
 
             //Install fields configuration and categories
             $res = $fc->installInit();
-            $this->_proceedReport(_T("Fields config and categories"), $res);
+            $this->proceedReport(_T("Fields config and categories"), $res);
 
             //Install texts
             $res = $texts->installInit(false);
-            $this->_proceedReport(_T("Mails texts"), $res);
+            $this->proceedReport(_T("Mails texts"), $res);
 
             //Install titles
             $res = $titles->installInit($zdb);
-            $this->_proceedReport(_T("Titles"), $res);
+            $this->proceedReport(_T("Titles"), $res);
 
             //Install PDF models
             $res = $models->installInit(false);
-            $this->_proceedReport(_T("PDF Models"), $res);
+            $this->proceedReport(_T("PDF Models"), $res);
 
             return !$this->_error;
-        } else if ( $this->isUpgrade() ) {
+        } elseif ($this->isUpgrade()) {
             $preferences = new Preferences($zdb);
             $preferences->store();
-            $this->_proceedReport(_T("Update preferences"), true);
+            $this->proceedReport(_T("Update preferences"), true);
 
-            $models = new \Galette\Repository\PdfModels($zdb, $preferences);
+            $models = new \Galette\Repository\PdfModels($zdb, $preferences, new Login($zdb, $i18n, new \RKA\Session()));
             $res = $models->installInit(true);
-            $this->_proceedReport(_T("Update models"), true);
+            $this->proceedReport(_T("Update models"), true);
             return true;
         }
     }
@@ -1150,14 +1166,14 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
      *
      * @return void
      */
-    private function _proceedReport($msg, $res)
+    private function proceedReport($msg, $res)
     {
         $ret = array(
             'message'   => $msg,
             'res'       => false
         );
 
-        if ( $res instanceof \Exception ) {
+        if ($res instanceof \Exception) {
             $ret['debug'] = $res->getMessage();
             $this->_error = true;
         } else {
@@ -1196,7 +1212,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
     }
 
     /**
-     * Set instaleld version if we're upgrading
+     * Set installed version if we're upgrading
      *
      * @param string $version Installed version
      *
@@ -1218,13 +1234,25 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
     {
         try {
             $db_ver = $zdb->getDbVersion();
-            if ( isset($this->_versions_mapper[$db_ver]) ) {
-                return $this->_versions_mapper[$db_ver];
+            if (isset($this->versions_mapper[$db_ver])) {
+                return $this->versions_mapper[$db_ver];
             } else {
                 return $db_ver;
             }
-        } catch ( \LogicException $e ) {
+        } catch (\LogicException $e) {
             return false;
         }
+    }
+
+    /**
+     * Check if step is passed
+     *
+     * @param int $step Step
+     *
+     * @return boolean
+     */
+    public function isStepPassed($step)
+    {
+        return $this->_step > $step;
     }
 }

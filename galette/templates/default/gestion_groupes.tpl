@@ -1,3 +1,5 @@
+{extends file="page.tpl"}
+{block name="content"}
 <div class="panels">
     <aside id="groups_list">
         <header class="ui-state-default ui-state-active">
@@ -12,7 +14,7 @@
         </div>
 {if $login->isAdmin() or $login->isStaff()}
         <div class="center">
-            <a href="gestion_groupes.php?new" id="btnadd" class="button">{_T string="New group"}</a>
+            <a href="{path_for name="add_group" data=["name" => NAME]}" id="btnadd" class="button">{_T string="New group"}</a>
         </div>
 {/if}
     </aside>
@@ -25,11 +27,12 @@
         </div>
     </section>
 </div>
-<form action="gestion_groupes.php" method="POST">
-    <div class="button-container">
-        <input type="submit" name="pdf" value="{_T string="Export as PDF"}" title="{_T string="Export all groups and their members as PDF"}"/>
-    </div>
-</form>
+<div class="button-container">
+    <a href="{path_for name="pdf_groups"}" class="button btn_pdf" title="{_T string="Export all groups and their members as PDF"}">{_T string="Export as PDF"}</a>
+</div>
+{/block}
+
+{block name="javascripts"}
 <script type="text/javascript">
     $(function() {
         var _mode;
@@ -41,7 +44,7 @@
             },
 {/if}
             'themes': {
-                'url': '{$template_subdir}/jstree/style.css'
+                'url': '{base_url}/{$template_subdir}/jstree/style.css'
             },
             'unique' : {
                 'error_callback': function (n, p, f) {
@@ -57,19 +60,17 @@
             var _gid = data.rslt.o.attr('id').substring(6);
             var _to = data.rslt.np.attr('id').substring(6);
             $.ajax({
-                url: 'ajax_group.php',
+                url: '{path_for name="ajax_groups_reorder"}',
                 type: "POST",
                 data: {
                     id_group: _gid,
-                    ajax: true,
                     reorder: true,
                     to: _to
                 },
                 datatype: 'json',
                 {include file="js_loader.tpl"},
                 success: function(res){
-                    var _res = jQuery.parseJSON(res);
-                    if ( _res.success == false ) {
+                    if (res.success == false) {
                         alert("{_T string="Missing destination group" escape="js"}");
                         {* TODO: revert preceding move so the tree is ok with database *}
                     }
@@ -90,7 +91,7 @@
                 if ( $(this).attr('href') != '#' ) {
                     var _gid = $(this).parent('li').attr('id').substring(6);
                     $.ajax({
-                        url: 'ajax_group.php',
+                        url: '{path_for name="ajax_group"}',
                         type: "POST",
                         data: {
                             id_group: _gid,
@@ -123,7 +124,7 @@
                         if ( _name != '' ) {
                             //check uniqueness
                             $.ajax({
-                                url: 'ajax_unique_group.php',
+                                url: '{path_for name="ajax_groupname_unique"}',
                                 type: "POST",
                                 data: {
                                     ajax: true,
@@ -133,9 +134,13 @@
                                 success: function(res){
                                     var _res = jQuery.parseJSON(res);
                                     if ( _res.success == false ) {
-                                        alert('{_T string="The group name you have requested already exits in the database."}');
+                                        if (_res.message) {
+                                            alert(_res.message)
+                                        } else {
+                                            alert('{_T string="The group name you have requested already exits in the database."}');
+                                            }
                                     } else {
-                                        $(location).attr('href', _href + '&group_name=' + _name);
+                                        $(location).attr('href', _href.replace('NAME', _name));
                                     }
                                 },
                                 error: function() {
@@ -162,10 +167,9 @@
                     return $(this).val();
                 }).get();
                 $.ajax({
-                    url: 'ajax_members.php',
+                    url: '{path_for name="ajaxMembers"}',
                     type: "POST",
                     data: {
-                        ajax: true,
                         multiple: true,
                         from: 'groups',
                         gid: $('#id_group').val(),
@@ -225,7 +229,7 @@
                 $('#members_list').dialog("close");
 
                 $.ajax({
-                    url: 'ajax_group_members.php',
+                    url: '{path_for name="ajaxGroupMembers"}',
                     type: "POST",
                     data: {
                         persons: _persons,
@@ -249,8 +253,9 @@
                     $('#selected_members ul').append(_none);
                 }
             });
-            $('#members_list #listing tbody a').click(function(){
-                var _mid = this.href.substring(this.href.indexOf('?')+8);
+            $('#members_list #listing tbody a').click(function(e){
+                e.preventDefault();
+                var _mid = this.href.match(/.*\/(\d+)$/)[1];
                 var _mname = $(this).text();
                 $('#none_selected').remove()
                 if ( $('#member_' + _mid).length == 0 ) {
@@ -267,7 +272,6 @@
             });
 
             $('#members_list .pages a').click(function(){
-                var _page = this.href.substring(this.href.indexOf('?')+6);
                 var gid = $('#the_id').val();
                 var _members = new Array();
                 $('li[id^="member_"]').each(function(){
@@ -275,15 +279,14 @@
                 });
 
                 $.ajax({
-                    url: 'ajax_members.php',
+                    url: this.href,
                     type: "POST",
                     data: {
-                        ajax: true,
                         from: 'groups',
                         gid: gid,
                         members: _members,
-                        page: _page,
-                        mode: _mode
+                        mode: _mode,
+                        multiple: true
                     },
                     {include file="js_loader.tpl"},
                     success: function(res){
@@ -299,3 +302,4 @@
         }
     });
 </script>
+{/block}

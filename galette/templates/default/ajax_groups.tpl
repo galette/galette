@@ -17,7 +17,7 @@
                 <tr>
                     <td class="right">{$group->getId()}</td>
                     <td class="nowrap username_row">
-                        <a href="voir_groupe.php?id_group={$group->getId()}">{$group->getName()}</a>
+                        <a href="{path_for name="groups" data=["id" => $group->getId()]}">{$group->getName()}</a>
                     </td>
                     <td class="nowrap username_row">
     {foreach from=$managers item=manager name="managersiterate"}

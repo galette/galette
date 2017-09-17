@@ -65,5 +65,4 @@ class PdfInvoice extends PdfModel
     {
         parent::__construct($zdb, $preferences, self::INVOICE_MODEL, $args);
     }
-
 }

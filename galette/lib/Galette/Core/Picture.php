@@ -77,18 +77,18 @@ class Picture implements FileInterface
     protected $file_path;
     protected $format;
     protected $mime;
-    protected $has_picture = true;
+    protected $has_picture = false;
     protected $store_path = GALETTE_PHOTOS_PATH;
     protected $max_width = 200;
     protected $max_height = 200;
-    private $_insert_stmt;
+    private $insert_stmt;
 
     /**
      * Default constructor.
      *
      * @param int $id_adh the id of the member
      */
-    public function __construct( $id_adh='' )
+    public function __construct($id_adh = '')
     {
 
         $this->init(
@@ -102,26 +102,30 @@ class Picture implements FileInterface
         );
 
         // '!==' needed, otherwise ''==0
-        if ( $id_adh !== '' ) {
+        if ($id_adh !== '' && $id_adh !== null) {
             $this->id = $id_adh;
-            if ( !isset ($this->db_id) ) {
+            if (!isset($this->db_id)) {
                 $this->db_id = $id_adh;
             }
 
             //if file does not exists on the FileSystem, check for it in the database
-            if ( !$this->_checkFileOnFS() ) {
-                $this->_checkFileInDB();
+            if (!$this->checkFileOnFS()) {
+                if ($this->checkFileInDB()) {
+                    $this->has_picture = true;
+                }
+            } else {
+                $this->has_picture = true;
             }
         }
 
         // if we still have no picture, take the default one
-        if ( $this->file_path == '' ) {
+        if (empty($this->file_path)) {
             $this->getDefaultPicture();
         }
 
         //we should not have an empty file_path, but...
-        if ( $this->file_path !== '' ) {
-            $this->_setSizes();
+        if (!empty($this->file_path)) {
+            $this->setSizes();
         }
     }
 
@@ -134,20 +138,22 @@ class Picture implements FileInterface
     {
         //if file has been deleted since we store our object in the session,
         //we try to retrieve it
-        if ( !$this->_checkFileOnFS() ) {
+        if (!$this->checkFileOnFS()) {
             //if file does not exists on the FileSystem,
             //check for it in the database
-            //$this->_checkFileInDB();
+            //$this->checkFileInDB();
+        } else {
+            $this->has_picture = false;
         }
 
         // if we still have no picture, take the default one
-        if ( $this->file_path=='' ) {
+        if (empty($this->file_path)) {
             $this->getDefaultPicture();
         }
 
         //we should not have an empty file_path, but...
-        if ( $this->file_path !== '' ) {
-            $this->_setSizes();
+        if (!empty($this->file_path)) {
+            $this->setSizes();
         }
     }
 
@@ -156,21 +162,21 @@ class Picture implements FileInterface
      *
      * @return boolean true if file is present on FS, false otherwise
      */
-    private function _checkFileOnFS()
+    private function checkFileOnFS()
     {
         $file_wo_ext = $this->store_path . $this->id;
-        if ( file_exists($file_wo_ext . '.jpg') ) {
-            $this->file_path = $file_wo_ext . '.jpg';
+        if (file_exists($file_wo_ext . '.jpg')) {
+            $this->file_path = realpath($file_wo_ext . '.jpg');
             $this->format = 'jpg';
             $this->mime = 'image/jpeg';
             return true;
-        } elseif ( file_exists($file_wo_ext . '.png') ) {
-            $this->file_path = $file_wo_ext . '.png';
+        } elseif (file_exists($file_wo_ext . '.png')) {
+            $this->file_path = realpath($file_wo_ext . '.png');
             $this->format = 'png';
             $this->mime = 'image/png';
             return true;
-        } elseif ( file_exists($file_wo_ext . '.gif') ) {
-            $this->file_path = $file_wo_ext . '.gif';
+        } elseif (file_exists($file_wo_ext . '.gif')) {
+            $this->file_path = realpath($file_wo_ext . '.gif');
             $this->format = 'gif';
             $this->mime = 'image/gif';
             return true;
@@ -184,7 +190,7 @@ class Picture implements FileInterface
      *
      * @return boolean true if file is present in the DB, false otherwise
      */
-    private function _checkFileInDB()
+    private function checkFileInDB()
     {
         global $zdb;
 
@@ -192,8 +198,8 @@ class Picture implements FileInterface
             $select = $this->getCheckFileQuery();
             $results = $zdb->execute($select);
             $pic = $results->current();
-            //what's $pic if no result?
-            if ( $pic ) {
+
+            if ($pic) {
                 // we must regenerate the picture file
                 $file_wo_ext = $this->store_path . $this->id;
                 file_put_contents(
@@ -202,18 +208,18 @@ class Picture implements FileInterface
                 );
 
                 $this->format = $pic->format;
-                switch($this->format) {
-                case 'jpg':
-                    $this->mime = 'image/jpeg';
-                    break;
-                case 'png':
-                    $this->mime = 'image/png';
-                    break;
-                case 'gif':
-                    $this->mime = 'image/gif';
-                    break;
+                switch ($this->format) {
+                    case 'jpg':
+                        $this->mime = 'image/jpeg';
+                        break;
+                    case 'png':
+                        $this->mime = 'image/png';
+                        break;
+                    case 'gif':
+                        $this->mime = 'image/gif';
+                        break;
                 }
-                $this->file_path = $file_wo_ext . '.' . $this->format;
+                $this->file_path = realpath($file_wo_ext . '.' . $this->format);
                 return true;
             }
         } catch (\Exception $e) {
@@ -249,7 +255,7 @@ class Picture implements FileInterface
      */
     protected function getDefaultPicture()
     {
-        $this->file_path = _CURRENT_TEMPLATE_PATH . 'images/default.png';
+        $this->file_path = realpath(_CURRENT_THEME_PATH . 'images/default.png');
         $this->format = 'png';
         $this->mime = 'image/png';
         $this->has_picture = false;
@@ -260,7 +266,7 @@ class Picture implements FileInterface
      *
      * @return void
      */
-    private function _setSizes()
+    private function setSizes()
     {
         list($width, $height) = getimagesize($this->file_path);
         $this->height = $height;
@@ -310,7 +316,7 @@ class Picture implements FileInterface
         $class = get_class($this);
 
         try {
-            if ( $transaction === true ) {
+            if ($transaction === true) {
                 $zdb->connection->beginTransaction();
             }
 
@@ -320,7 +326,7 @@ class Picture implements FileInterface
             );
             $del = $zdb->execute($delete);
 
-            if ( !$del->count() > 0 ) {
+            if (!$del->count() > 0) {
                 Analog::log(
                     'Unable to remove picture database entry for ' . $this->db_id,
                     Analog::ERROR
@@ -334,27 +340,27 @@ class Picture implements FileInterface
             // take back default picture
             $this->getDefaultPicture();
             // fix sizes
-            $this->_setSizes();
+            $this->setSizes();
 
             $success = false;
             $_file = null;
-            if ( file_exists($file_wo_ext . '.jpg') ) {
+            if (file_exists($file_wo_ext . '.jpg')) {
                 //return unlink($file_wo_ext . '.jpg');
                 $_file = $file_wo_ext . '.jpg';
                 $success = unlink($_file);
-            } elseif ( file_exists($file_wo_ext . '.png') ) {
+            } elseif (file_exists($file_wo_ext . '.png')) {
                 //return unlink($file_wo_ext . '.png');
                 $_file = $file_wo_ext . '.png';
                 $success = unlink($_file);
-            } elseif ( file_exists($file_wo_ext . '.gif') ) {
+            } elseif (file_exists($file_wo_ext . '.gif')) {
                 //return unlink($file_wo_ext . '.gif');
                 $_file = $file_wo_ext . '.gif';
                 $success = unlink($_file);
             }
 
-            if ( $_file !== null && $success !== true ) {
+            if ($_file !== null && $success !== true) {
                 //unable to remove file that exists!
-                if ( $transaction === true ) {
+                if ($transaction === true) {
                     $zdb->connection->rollBack();
                 }
                 Analog::log(
@@ -364,13 +370,14 @@ class Picture implements FileInterface
                 );
                 return false;
             } else {
-                if ( $transaction === true ) {
+                if ($transaction === true) {
                     $zdb->connection->commit();
                 }
+                $this->has_picture = false;
                 return true;
             }
         } catch (\Exception $e) {
-            if ( $transaction === true ) {
+            if ($transaction === true) {
                 $zdb->connection->rollBack();
             }
             Analog::log(
@@ -403,13 +410,13 @@ class Picture implements FileInterface
         //First, does the file have a valid name?
         $reg = "/^([^" . implode('', $this->bad_chars) . "]+)\.(" .
             implode('|', $this->allowed_extensions) . ")$/i";
-        if ( preg_match($reg, $name, $matches) ) {
+        if (preg_match($reg, $name, $matches)) {
             Analog::log(
                 '[' . $class . '] Filename and extension are OK, proceed.',
                 Analog::DEBUG
             );
             $extension = strtolower($matches[2]);
-            if ( $extension == 'jpeg' ) {
+            if ($extension == 'jpeg') {
                 //jpeg is an allowed extension,
                 //but we change it to jpg to reduce further tests :)
                 $extension = 'jpg';
@@ -419,7 +426,7 @@ class Picture implements FileInterface
             $m = preg_match($erreg, $name, $errmatches);
 
             $err_msg = '[' . $class . '] ';
-            if ( $m == 1 ) {
+            if ($m == 1) {
                 //ok, we got a good filename and an extension. Extension is bad :)
                 $err_msg .= 'Invalid extension for file ' . $name . '.';
                 $ret = self::INVALID_EXTENSION;
@@ -441,7 +448,7 @@ class Picture implements FileInterface
         }
 
         //Second, let's check file size
-        if ( $file['size'] > ( $this->maxlenght * 1024 ) ) {
+        if ($file['size'] > ( $this->maxlenght * 1024 )) {
             Analog::log(
                 '[' . $class . '] File is too big (' . ( $file['size'] * 1024 ) .
                 'Ko for maximum authorized ' . ( $this->maxlenght * 1024 ) .
@@ -455,7 +462,7 @@ class Picture implements FileInterface
 
         $current = getimagesize($tmpfile);
 
-        if ( !in_array($current['mime'], $this->allowed_mimes) ) {
+        if (!in_array($current['mime'], $this->allowed_mimes)) {
             Analog::log(
                 '[' . $class . '] Mimetype `' . $current['mime'] . '` not allowed',
                 Analog::ERROR
@@ -472,20 +479,20 @@ class Picture implements FileInterface
 
         $new_file = $this->store_path .
             $this->id . '.' . $extension;
-        if ( $ajax === true ) {
+        if ($ajax === true) {
             rename($tmpfile, $new_file);
         } else {
             move_uploaded_file($tmpfile, $new_file);
         }
 
         // current[0] gives width ; current[1] gives height
-        if ( $current[0] > $this->max_width || $current[1] > $this->max_height ) {
+        if ($current[0] > $this->max_width || $current[1] > $this->max_height) {
             /** FIXME: what if image cannot be resized?
                 Should'nt we want to stop the process here? */
-            $this->_resizeImage($new_file, $extension);
+            $this->resizeImage($new_file, $extension);
         }
 
-        return $this->_storeInDb($zdb, $this->db_id, $new_file, $extension);
+        return $this->storeInDb($zdb, $this->db_id, $new_file, $extension);
     }
 
     /**
@@ -498,11 +505,11 @@ class Picture implements FileInterface
      *
      * @return boolean
      */
-    private function _storeInDb(Db $zdb, $id, $file, $ext)
+    private function storeInDb(Db $zdb, $id, $file, $ext)
     {
         $f = fopen($file, 'r');
         $picture = '';
-        while ( $r=fread($f, 8192) ) {
+        while ($r=fread($f, 8192)) {
             $picture .= $r;
         }
         fclose($f);
@@ -511,8 +518,8 @@ class Picture implements FileInterface
 
         try {
             $zdb->connection->beginTransaction();
-            $stmt = $this->_insert_stmt;
-            if ( $stmt == null ) {
+            $stmt = $this->insert_stmt;
+            if ($stmt == null) {
                 $insert = $zdb->insert($this->tbl_prefix . $class::TABLE);
                 $insert->values(
                     array(
@@ -537,7 +544,7 @@ class Picture implements FileInterface
                     ':format'
                 );
                 $stmt->setParameterContainer($container);
-                $this->_insert_stmt = $stmt;
+                $this->insert_stmt = $stmt;
             }
 
             $stmt->execute(
@@ -548,6 +555,7 @@ class Picture implements FileInterface
                 )
             );
             $zdb->connection->commit();
+            $this->has_picture = true;
         } catch (\Exception $e) {
             $zdb->connection->rollBack();
             Analog::log(
@@ -559,7 +567,6 @@ class Picture implements FileInterface
         }
 
         return true;
-
     }
 
     /**
@@ -574,14 +581,14 @@ class Picture implements FileInterface
         $existing_disk = array();
 
         //retrieve files on disk
-        if ( $handle = opendir($this->store_path) ) {
+        if ($handle = opendir($this->store_path)) {
             while (false !== ($entry = readdir($handle))) {
                 $reg = "/^(\d+)\.(" .
                     implode('|', $this->allowed_extensions) . ")$/i";
-                if ( preg_match($reg, $entry, $matches) ) {
+                if (preg_match($reg, $entry, $matches)) {
                     $id = $matches[1];
                     $extension = strtolower($matches[2]);
-                    if ( $extension == 'jpeg' ) {
+                    if ($extension == 'jpeg') {
                         //jpeg is an allowed extension,
                         //but we change it to jpg to reduce further tests :)
                         $extension = 'jpg';
@@ -592,11 +599,10 @@ class Picture implements FileInterface
                         'ext'   => $extension
                     );
                 }
-
             }
             closedir($handle);
 
-            if ( count($existing_disk) === 0 ) {
+            if (count($existing_disk) === 0) {
                 //no image on disk, nothing to do :)
                 return;
             }
@@ -605,13 +611,13 @@ class Picture implements FileInterface
             $class = get_class($this);
             $select = $zdb->select($this->tbl_prefix . $class::TABLE);
             $select
-                ->columns(array(self::PK))
-                ->where->in(self::PK, array_keys($existing_disk));
+                ->columns(array($class::PK))
+                ->where->in($class::PK, array_keys($existing_disk));
 
             $results = $zdb->execute($select);
 
             $existing_db = array();
-            foreach ( $results as $result ) {
+            foreach ($results as $result) {
                 $existing_db[] = (int)$result[self::PK];
             }
 
@@ -627,9 +633,9 @@ class Picture implements FileInterface
                 array(self::PK)
             );
 
-            foreach ( $valids as $valid ) {
+            foreach ($valids as $valid) {
                 $file = $existing_disk[$valid->id_adh];
-                $this->_storeInDb(
+                $this->storeInDb(
                     $zdb,
                     $file['id'],
                     $this->store_path . $file['id'] . '.' . $file['ext'],
@@ -655,7 +661,7 @@ class Picture implements FileInterface
      *
      * @return void
      */
-    private function _resizeImage($source, $ext, $dest = null)
+    private function resizeImage($source, $ext, $dest = null)
     {
         $class = get_class($this);
 
@@ -663,43 +669,43 @@ class Picture implements FileInterface
             $gdinfo = gd_info();
             $h = $this->max_height;
             $w = $this->max_width;
-            if ( $dest == null ) {
+            if ($dest == null) {
                 $dest = $source;
             }
 
-            switch(strtolower($ext)) {
-            case 'jpg':
-                if (!$gdinfo['JPEG Support']) {
-                    Analog::log(
-                        '[' . $class . '] GD has no JPEG Support - ' .
-                        'pictures could not be resized!',
-                        Analog::ERROR
-                    );
+            switch (strtolower($ext)) {
+                case 'jpg':
+                    if (!$gdinfo['JPEG Support']) {
+                        Analog::log(
+                            '[' . $class . '] GD has no JPEG Support - ' .
+                            'pictures could not be resized!',
+                            Analog::ERROR
+                        );
+                        return false;
+                    }
+                    break;
+                case 'png':
+                    if (!$gdinfo['PNG Support']) {
+                        Analog::log(
+                            '[' . $class . '] GD has no PNG Support - ' .
+                            'pictures could not be resized!',
+                            Analog::ERROR
+                        );
+                        return false;
+                    }
+                    break;
+                case 'gif':
+                    if (!$gdinfo['GIF Create Support']) {
+                        Analog::log(
+                            '[' . $class . '] GD has no GIF Support - ' .
+                            'pictures could not be resized!',
+                            Analog::ERROR
+                        );
+                        return false;
+                    }
+                    break;
+                default:
                     return false;
-                }
-                break;
-            case 'png':
-                if (!$gdinfo['PNG Support']) {
-                    Analog::log(
-                        '[' . $class . '] GD has no PNG Support - ' .
-                        'pictures could not be resized!',
-                        Analog::ERROR
-                    );
-                    return false;
-                }
-                break;
-            case 'gif':
-                if (!$gdinfo['GIF Create Support']) {
-                    Analog::log(
-                        '[' . $class . '] GD has no GIF Support - ' .
-                        'pictures could not be resized!',
-                        Analog::ERROR
-                    );
-                    return false;
-                }
-                break;
-            default:
-                return false;
             }
 
             list($cur_width, $cur_height, $cur_type, $curattr)
@@ -715,34 +721,28 @@ class Picture implements FileInterface
             }
 
             $thumb = imagecreatetruecolor($w, $h);
-            switch($ext) {
-            case 'jpg':
-                $image = ImageCreateFromJpeg($source);
-                imagecopyresampled(
-                    $thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height
-                );
-                imagejpeg($thumb, $dest);
-                break;
-            case 'png':
-                $image = ImageCreateFromPng($source);
-                // Turn off alpha blending and set alpha flag. That prevent alpha
-                // transparency to be saved as an arbitrary color (black in my tests)
-                imagealphablending($thumb, false);
-                imagealphablending($image, false);
-                imagesavealpha($thumb, true);
-                imagesavealpha($image, true);
-                imagecopyresampled(
-                    $thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height
-                );
-                imagepng($thumb, $dest);
-                break;
-            case 'gif':
-                $image = ImageCreateFromGif($source);
-                imagecopyresampled(
-                    $thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height
-                );
-                imagegif($thumb, $dest);
-                break;
+            switch ($ext) {
+                case 'jpg':
+                    $image = ImageCreateFromJpeg($source);
+                    imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+                    imagejpeg($thumb, $dest);
+                    break;
+                case 'png':
+                    $image = ImageCreateFromPng($source);
+                    // Turn off alpha blending and set alpha flag. That prevent alpha
+                    // transparency to be saved as an arbitrary color (black in my tests)
+                    imagealphablending($thumb, false);
+                    imagealphablending($image, false);
+                    imagesavealpha($thumb, true);
+                    imagesavealpha($image, true);
+                    imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+                    imagepng($thumb, $dest);
+                    break;
+                case 'gif':
+                    $image = ImageCreateFromGif($source);
+                    imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
+                    imagegif($thumb, $dest);
+                    break;
             }
         } else {
             Analog::log(
@@ -760,7 +760,7 @@ class Picture implements FileInterface
      */
     public function getOptimalHeight()
     {
-        return round($this->optimal_height);
+        return (int)round($this->optimal_height, 1);
     }
 
     /**
@@ -780,7 +780,7 @@ class Picture implements FileInterface
      */
     public function getOptimalWidth()
     {
-        return $this->optimal_width;
+        return (int)round($this->optimal_width, 1);
     }
 
     /**
@@ -843,14 +843,14 @@ class Picture implements FileInterface
     public function getErrorMessage($code)
     {
         $error = null;
-        switch( $code ) {
-        case self::SQL_ERROR:
-        case self::SQL_BLOB_ERROR:
-            $error = _T("An SQL error has occured.");
-            break;
+        switch ($code) {
+            case self::SQL_ERROR:
+            case self::SQL_BLOB_ERROR:
+                $error = _T("An SQL error has occured.");
+                break;
         }
 
-        if ( $error === null ) {
+        if ($error === null) {
             $error = $this->getErrorMessageFromCode($code);
         }
 

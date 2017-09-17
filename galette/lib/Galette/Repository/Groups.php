@@ -42,6 +42,8 @@ use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate\PredicateSet;
 use Galette\Entity\Group;
 use Galette\Entity\Adherent;
+use Galette\Core\Login;
+use Galette\Core\Db;
 
 /**
  * Groups entitiy
@@ -59,6 +61,18 @@ class Groups
 {
 
     /**
+     * Constructor
+     *
+     * @param Db    $zdb   Database instance
+     * @param Login $login Login instance
+     */
+    public function __construct(Db $zdb, Login $login)
+    {
+        $this->zdb = $zdb;
+        $this->login = $login;
+    }
+
+    /**
      * Get simple groups list (only id and names)
      *
      * @param boolean $as_groups Retrieve Group[]
@@ -71,7 +85,7 @@ class Groups
 
         try {
             $select = $zdb->select(Group::TABLE);
-            if ( $as_groups === false ) {
+            if ($as_groups === false) {
                 $select->columns(
                     array(Group::PK, 'group_name')
                 );
@@ -81,8 +95,8 @@ class Groups
 
             $results = $zdb->execute($select);
 
-            foreach ( $results as $row ) {
-                if ( $as_groups === false ) {
+            foreach ($results as $row) {
+                if ($as_groups === false) {
                     $groups[$row->$gpk] = $row->group_name;
                 } else {
                     $groups[$row->$gpk] = new Group($row);
@@ -105,11 +119,10 @@ class Groups
      *
      * @return Group[]
      */
-    public function getList($full = true, $id=null)
+    public function getList($full = true, $id = null)
     {
-        global $zdb, $login;
         try {
-            $select = $zdb->select(Group::TABLE, 'a');
+            $select = $this->zdb->select(Group::TABLE, 'a');
             $select->join(
                 array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
                 'a.' . Group::PK . '=b.' . Group::PK,
@@ -117,19 +130,19 @@ class Groups
                 $select::JOIN_LEFT
             );
 
-            if ( !$login->isAdmin() && !$login->isStaff() && $full === true ) {
+            if (!$this->login->isAdmin() && !$this->login->isStaff() && $full === true) {
                 $select->join(
                     array('c' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE),
                     'a.' . Group::PK . '=c.' . Group::PK,
                     array()
-                )->where('c.' . Adherent::PK . ' = ' . $login->id);
+                )->where('c.' . Adherent::PK . ' = ' . $this->login->id);
             }
 
-            if ( $full !== true ) {
+            if ($full !== true) {
                 $select->where('parent_group IS NULL');
             }
 
-            if ( $id !== null ) {
+            if ($id !== null) {
                 $select->where(
                     array(
                         'a.' . Group::PK => $id,
@@ -147,17 +160,18 @@ class Groups
 
             $groups = array();
 
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
 
-            foreach ( $results as $row ) {
-                $group = new Group($row);;
+            foreach ($results as $row) {
+                $group = new Group($row);
+                $group->setLogin($this->login);
                 $groups[$group->getFullName()] = $group;
             }
-            if ( $full ) { // Order by tree name instead of name
+            if ($full) { // Order by tree name instead of name
                 ksort($groups);
                 Analog::log(
-                    'SORTED:' . print_r(array_keys($groups), true),
-                    Analog::WARNING
+                    'Groups SORTED: ' . print_r(array_keys($groups), true),
+                    Analog::DEBUG
                 );
             }
             return $groups;
@@ -211,8 +225,8 @@ class Groups
             $results = $zdb->execute($select);
 
             $groups = array();
-            foreach ( $results as $r ) {
-                if ( $as_group === true ) {
+            foreach ($results as $r) {
+                if ($as_group === true) {
                     $groups[] = new Group($r);
                 } else {
                     $gpk = Group::PK;
@@ -235,11 +249,11 @@ class Groups
      *
      * @param Adherent $adh         Member
      * @param array    $groups      Groups Groups list. Each entry must contain
-     *                                the group id, name each value separated
-     *                                by a pipe.
+     *                              the group id, name each value separated
+     *                              by a pipe.
      * @param boolean  $manager     Add member as manager, defaults to false
      * @param boolean  $transaction Does a SQL transaction already exists? Defaults
-     *                                 to false.
+     *                              to false.
      *
      * @return boolean
      */
@@ -247,12 +261,12 @@ class Groups
     {
         global $zdb;
         try {
-            if ( $transaction === false) {
+            if ($transaction === false) {
                 $zdb->connection->beginTransaction();
             }
 
             $table = null;
-            if ( $manager === true ) {
+            if ($manager === true) {
                 $table = Group::GROUPSMANAGERS_TABLE;
             } else {
                 $table = Group::GROUPSUSERS_TABLE;
@@ -266,7 +280,7 @@ class Groups
             $zdb->execute($delete);
 
             $msg = null;
-            if ( $manager === true ) {
+            if ($manager === true) {
                 $msg = 'Member `' . $adh->sname . '` has been detached from groups he manages';
             } else {
                 $msg = 'Member `' . $adh->sname . '` has been detached of its groups';
@@ -277,7 +291,7 @@ class Groups
             );
 
             //we proceed, if groups has been specified
-            if ( is_array($groups) ) {
+            if (is_array($groups)) {
                 $insert = $zdb->insert($table);
                 $insert->values(
                     array(
@@ -287,7 +301,7 @@ class Groups
                 );
                 $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
-                foreach ( $groups as $group ) {
+                foreach ($groups as $group) {
                     list($gid, $gname) = explode('|', $group);
 
                     $result = $stmt->execute(
@@ -297,10 +311,10 @@ class Groups
                         )
                     );
 
-                    if ( $result ) {
+                    if ($result) {
                         $msg = 'Member `' . $adh->sname . '` attached to group `' .
                             $gname . '` (' . $gid . ')';
-                        if ( $manager === true ) {
+                        if ($manager === true) {
                             $msg .= ' as a manager';
                         }
                         Analog::log(
@@ -311,7 +325,7 @@ class Groups
                         $msg = 'Unable to attach member `' .
                             $adh->sname . '` (' . $adh->id . ') to group `' .
                             $gname . '` (' . $gid . ').';
-                        if ( $manager === true ) {
+                        if ($manager === true) {
                             $msg .= ' as a manager';
                         }
                         Analog::log(
@@ -322,18 +336,18 @@ class Groups
                     }
                 }
             }
-            if ( $transaction === false) {
+            if ($transaction === false) {
                 //commit all changes
                 $zdb->connection->commit();
             }
             return true;
         } catch (\Exception $e) {
-            if ( $transaction === false) {
+            if ($transaction === false) {
                 $zdb->connection->rollBack();
             }
             $msg = 'Unable to add member `' . $adh->sname . '` (' . $adh->id .
                 ') to specified groups ' . print_r($groups, true);
-            if ( $manager === true ) {
+            if ($manager === true) {
                 $msg .= ' as a manager';
             }
             do {
@@ -371,7 +385,7 @@ class Groups
                 Adherent::PK . ' = ' . $id
             );
             $zdb->execute($del_qry);
-        } catch ( \Exception $e) {
+        } catch (\Exception $e) {
             Analog::log(
                 'Unable to remove member #' . $id . ' from his groups: ' .
                 $e->getMessage(),
@@ -384,14 +398,13 @@ class Groups
     /**
      * Check if groupname is unique
      *
+     * @param Db     $zdb  Database instance
      * @param string $name Requested name
      *
      * @return boolean
      */
-    public static function isUnique($name)
+    public static function isUnique(Db $zdb, $name)
     {
-        global $zdb;
-
         try {
             $select = $zdb->select(Group::TABLE);
             $select->columns(
@@ -407,4 +420,3 @@ class Groups
         }
     }
 }
-

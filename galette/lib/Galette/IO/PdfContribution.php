@@ -58,11 +58,11 @@ use Analog\Analog;
 
 class PdfContribution
 {
-    private $_contrib;
-    private $_pdf;
-    private $_model;
-    private $_filename;
-    private $_path;
+    private $contrib;
+    private $pdf;
+    private $model;
+    private $filename;
+    private $path;
 
     /**
      * Main constructor
@@ -73,14 +73,14 @@ class PdfContribution
      */
     public function __construct(Contribution $contrib, $zdb, $prefs)
     {
-        $this->_contrib = $contrib;
+        $this->contrib = $contrib;
 
-        $class = PdfModel::getTypeClass($this->_contrib->model);
-        $this->_model = new $class($zdb, $prefs, $this->_contrib->model);
+        $class = PdfModel::getTypeClass($this->contrib->model);
+        $this->model = new $class($zdb, $prefs, $this->contrib->model);
 
-        $member = new Adherent($this->_contrib->member);
+        $member = new Adherent($zdb, $this->contrib->member);
 
-        $this->_model->setPatterns(
+        $this->model->setPatterns(
             array(
                 'adh_name'          => '/{NAME_ADH}/',
                 'adh_address'       => '/{ADDRESS_ADH}/',
@@ -101,24 +101,24 @@ class PdfContribution
             )
         );
 
-        $address = $member->getAdress();
-        if ( $member->getAdressContinuation() != '' ) {
-            $address .= '<br/>' . $member->getAdressContinuation();
+        $address = $member->getAddress();
+        if ($member->getAddressContinuation() != '') {
+            $address .= '<br/>' . $member->getAddressContinuation();
         }
 
         $member_groups = $member->groups;
         $main_group = _T("None");
         $group_list = _T("None");
-        if ( count($member_groups) > 0 ) {
+        if (count($member_groups) > 0) {
             $main_group = $member_groups[0]->getName();
             $group_list = '<ul>';
-            foreach ( $member_groups as $group ) {
+            foreach ($member_groups as $group) {
                 $group_list .= '<li>' . $group->getName()  . '</li>';
             }
             $group_list .= '</ul>';
         }
 
-        $this->_model->setReplacements(
+        $this->model->setReplacements(
             array(
                 'adh_name'          => $member->sfullname,
                 'adh_address'       => $address,
@@ -127,35 +127,35 @@ class PdfContribution
                 'adh_main_group'    => $main_group,
                 'adh_groups'        => $group_list,
                 'adh_company'       => $member->company_name,
-                'contrib_label'     => $this->_contrib->type->libelle,
-                'contrib_amount'    => $this->_contrib->amount,
-                'contrib_date'      => $this->_contrib->date,
-                'contrib_year'      => $this->_contrib->raw_date->format('Y'),
-                'contrib_comment'   => $this->_contrib->info,
-                'contrib_bdate'     => $this->_contrib->begin_date,
-                'contrib_edate'     => $this->_contrib->end_date,
-                'contrib_id'        => $this->_contrib->id,
-                'contrib_payment'   => $this->_contrib->spayment_type
+                'contrib_label'     => $this->contrib->type->libelle,
+                'contrib_amount'    => $this->contrib->amount,
+                'contrib_date'      => $this->contrib->date,
+                'contrib_year'      => $this->contrib->raw_date->format('Y'),
+                'contrib_comment'   => $this->contrib->info,
+                'contrib_bdate'     => $this->contrib->begin_date,
+                'contrib_edate'     => $this->contrib->end_date,
+                'contrib_id'        => $this->contrib->id,
+                'contrib_payment'   => $this->contrib->spayment_type
             )
         );
 
-        $this->_filename = _T("contribution");
-        $this->_filename .= '_' . $this->_contrib->id . '_';
+        $this->filename = _T("contribution");
+        $this->filename .= '_' . $this->contrib->id . '_';
 
-        if ( $this->_model->type === PdfModel::RECEIPT_MODEL ) {
-            $this->_filename .= _T("receipt");
+        if ($this->model->type === PdfModel::RECEIPT_MODEL) {
+            $this->filename .= _T("receipt");
         } else {
-            $this->_filename .= _T("invoice");
+            $this->filename .= _T("invoice");
         }
-        $this->_filename .= '.pdf';
+        $this->filename .= '.pdf';
 
-        $this->_pdf = new Pdf($prefs, $this->_model);
+        $this->pdf = new Pdf($prefs, $this->model);
 
-        $this->_pdf->Open();
+        $this->pdf->Open();
 
-        $this->_pdf->AddPage();
-        $this->_pdf->PageHeader();
-        $this->_pdf->PageBody();
+        $this->pdf->AddPage();
+        $this->pdf->PageHeader();
+        $this->pdf->PageBody();
     }
 
     /**
@@ -165,7 +165,7 @@ class PdfContribution
      */
     public function download()
     {
-        $this->_pdf->Output($this->_filename, 'D');
+        $this->pdf->Output($this->filename, 'D');
     }
 
     /**
@@ -177,13 +177,13 @@ class PdfContribution
      */
     public function store($path)
     {
-        if ( file_exists($path) && is_dir($path) && is_writeable($path) ) {
-            $this->_path = $path . '/' . $this->_filename;
-            $this->_pdf->Output($this->_path, 'F');
+        if (file_exists($path) && is_dir($path) && is_writeable($path)) {
+            $this->path = $path . '/' . $this->filename;
+            $this->pdf->Output($this->path, 'F');
             return true;
         } else {
             Analog::log(
-                __METHOD__ . ' ' . $path . 
+                __METHOD__ . ' ' . $path .
                 ' does not exists or is not a directory or is not writeable.',
                 Analog::ERROR
             );
@@ -198,6 +198,6 @@ class PdfContribution
      */
     public function getPath()
     {
-        return realpath($this->_path);
+        return realpath($this->path);
     }
 }

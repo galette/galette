@@ -31,7 +31,7 @@
                             $.ajax({
                                     type: 'POST',
                                     dataType: 'json',
-                                    url : 'ajax_photo.php',
+                                    url : '{path_for name="photoDnd"}',
                                     data: {
                                         member_id: {$member->id},
                                         filename: file.name,
@@ -44,11 +44,17 @@
                                             d = new Date();
                                             var _photo = $('#photo_adh');
                                             _photo.removeAttr('width').removeAttr('height');
-                                            _photo.attr('src', $('#photo_adh')[0].src + '&' + d.getTime());
-                                            alert("{_T string="Member photo has been changed." escape="js"}");
-                                        } else {
-                                            alert(res.message);
+                                            _photo.attr('src', $('#photo_adh')[0].src + '?' + d.getTime());
                                         }
+
+                                        //display message
+                                        $.ajax({
+                                            url: '{path_for name="ajaxMessages"}',
+                                            method: "GET",
+                                            success: function (message) {
+                                                $('#asso_name').after(message);
+                                            }
+                                        });
                                     },
                                 error: function() {
                                     alert("{_T string="An error occured sending photo :(" escape="js"}");
