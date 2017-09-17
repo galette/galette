@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import os, sys, argparse, re, git, httplib, subprocess
-import urlgrabber.progress, tarfile, shutil, gitdb, time
+import urlgrabber.progress, tarfile, shutil, gitdb, time, fnmatch
 from datetime import datetime
 from termcolor import colored
 from urlparse import urlparse
@@ -294,18 +294,6 @@ def add_libs(rel_name, galette_archive):
     """
     Add external libraries to the archive
     """
-    url = "http://download.tuxfamily.org/galette/dev/galette_dev_includes.tar.bz2"
-    file_name = url.split('/')[-1]
-    libs_archive = os.path.join(local_dl_repo, file_name)
-
-    if not os.path.exists(libs_archive):
-        prog = urlgrabber.progress.text_progress_meter()
-        urlgrabber.urlgrab(
-            url,
-            os.path.join(local_dl_repo, file_name),
-            progress_obj=prog
-        )
-
     galette = tarfile.open(galette_archive, 'r|bz2')
     src_dir = os.path.join(local_dl_repo, 'src')
     if not os.path.exists(src_dir):
@@ -313,13 +301,61 @@ def add_libs(rel_name, galette_archive):
     galette.extractall(path=src_dir)
     galette.close()
 
-    libs = tarfile.open(libs_archive, 'r|bz2')
-    vendor_dir = os.path.join(local_dl_repo, 'vendor')
-    #create directory if it does not exists
-    if not os.path.exists(vendor_dir):
-        os.makedirs(vendor_dir)
-    libs.extractall(path=vendor_dir)
-    libs.close()
+    composer_cmd = 'composer install --no-dev'
+    composer_dir = os.path.join(src_dir, rel_name, 'galette')
+    print composer_dir
+    p1 = subprocess.Popen(composer_cmd, shell=True, cwd=composer_dir)
+    p1.wait()
+
+    #cleanup vendors
+    for root, dirnames, filenames in os.walk(os.path.join(composer_dir, 'vendor')):
+        #remove git directories
+        for dirname in fnmatch.filter(dirnames, '.git*'):
+            remove_dir = os.path.join(composer_dir, root, dirname)
+            shutil.rmtree(remove_dir)
+        #remove test directories
+        for dirname in fnmatch.filter(dirnames, 'test?'):
+            remove_dir = os.path.join(composer_dir, root, dirname)
+            shutil.rmtree(remove_dir)
+        #remove examples directories
+        for dirname in fnmatch.filter(dirnames, 'example?'):
+            remove_dir = os.path.join(composer_dir, root, dirname)
+            shutil.rmtree(remove_dir)
+        #remove composer stuff
+        for filename in fnmatch.filter(filenames, 'composer*'):
+            remove_file = os.path.join(composer_dir, root, filename)
+            os.remove(remove_file)
+
+        for dirname in dirnames:
+            #remove Faker useless languages
+            if root.endswith('src/Faker/Provider'):
+                if dirname not in ['en_US', 'fr_FR']:
+                    shutil.rmtree(os.path.join(root, dirname))
+            #begin to remove tcpdf not used fonts
+            if root.endswith('tcpdf/fonts'):
+                if dirname != 'dejavu-fonts-ttf-2.34':
+                    shutil.rmtree(os.path.join(root, dirname))
+
+        for filename in filenames:
+            #remove tcpdf not used fonts
+            if root.endswith('tcpdf/fonts'):
+                if filename not in [
+                        'dejavusansbi.ctg.z',
+                        'dejavusansbi.z',
+                        'dejavusansb.z',
+                        'dejavusansi.ctg.z',
+                        'dejavusansi.z',
+                        'dejavusans.z',
+                        'zapfdingbats.php',
+                        'dejavusansb.ctg.z',
+                        'dejavusansbi.php',
+                        'dejavusansb.php',
+                        'dejavusans.ctg.z',
+                        'dejavusansi.php',
+                        'dejavusans.php',
+                        'helvetica.php'
+                ]:
+                    os.remove(os.path.join(root, filename))
 
     galette = tarfile.open(galette_archive, 'w|bz2')
 
@@ -329,15 +365,8 @@ def add_libs(rel_name, galette_archive):
             arcname=rel_name
         )
 
-    for lib in os.listdir(vendor_dir):
-        galette.add(
-            os.path.join(vendor_dir, lib),
-            arcname=os.path.join(rel_name, 'galette', 'includes', lib)
-        )
-
     galette.close()
     shutil.rmtree(src_dir)
-    shutil.rmtree(vendor_dir)
 
 def valid_commit(repo, c):
     """
