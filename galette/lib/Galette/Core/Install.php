@@ -539,12 +539,15 @@ class Install
     /**
      * Install/Update SQL scripts
      *
-     * @param string $path Path to scripts (defaults to '.')
+     * @param string $path Path to scripts (defaults to core scripts)
      *
      * @return array
      */
-    public function getScripts($path = '.')
+    public function getScripts($path = null)
     {
+        if ($path === null) {
+            $path = GALETTE_ROOT . '/install';
+        }
         $update_scripts = array();
 
         if ($this->isUpgrade()) {
