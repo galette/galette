@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2014 The Galette Team
+ * Copyright © 2009-2017 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2017 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -89,22 +89,6 @@ if (isset($installer) && $installer !== true) {
 use Analog\Analog;
 use Galette\Core;
 
-/*require_once GALETTE_ROOT . 'lib/Galette/Common/ClassLoader.php';
-require_once GALETTE_SLIM_PATH . 'Slim/Slim.php';
-
-$galetteLoader = new ClassLoader('Galette', GALETTE_ROOT . 'lib');
-$zendLoader = new ClassLoader('Zend', GALETTE_ZEND_PATH);
-$analogLoader = new ClassLoader('Analog', GALETTE_ANALOG_PATH);
-$smartyLoader = new ClassLoader(null, GALETTE_SMARTY_PATH);
-$smartyLoader->setFileExtension('.class.php');
-//register loaders
-$galetteLoader->register();
-$zendLoader->register();
-$analogLoader->register();
-$smartyLoader->register();
-
-\Slim\Slim::registerAutoloader();
-require_once GALETTE_SLIM_VIEWS_PATH . 'Smarty.php';*/
 /*
 BREAKS as of Galette 0.9-dev
 // To help the built-in PHP dev server, check if the request was actually for
@@ -124,7 +108,7 @@ if (defined('GALETTE_XHPROF_PATH')
     $profiler->start();
 }
 
-define('GALETTE_VERSION', 'v0.9dev');
+define('GALETTE_VERSION', 'v0.9rc1');
 define('GALETTE_COMPAT_VERSION', '0.9');
 define('GALETTE_DB_VERSION', '0.820');
 if (!defined('GALETTE_MODE')) {
