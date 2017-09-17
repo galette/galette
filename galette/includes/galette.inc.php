@@ -124,7 +124,7 @@ if (defined('GALETTE_XHPROF_PATH')
     $profiler->start();
 }
 
-define('GALETTE_VERSION', 'v0.9dev');
+define('GALETTE_VERSION', 'v0.9rc1');
 define('GALETTE_COMPAT_VERSION', '0.9');
 define('GALETTE_DB_VERSION', '0.820');
 if (!defined('GALETTE_MODE')) {
