@@ -215,7 +215,7 @@ class MailingHistory extends History
      *
      * @return string SQL ORDER clause
      */
-    private function buildOrderClause()
+    protected function buildOrderClause()
     {
         $order = array();
 
