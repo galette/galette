@@ -47,7 +47,6 @@ use Galette\Core\Preferences;
 use Galette\Core\History;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
-use Galette\Repository\DynamicFieldsTypes;
 
 /**
  * Member class for galette

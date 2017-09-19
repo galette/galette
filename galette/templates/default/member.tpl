@@ -196,12 +196,12 @@
                     {assign var="propname" value=$entry->propname}
                     {if $entry->field_id eq 'parent_id' }
                         {if $member->$propname}
-                            {assign var="value" value=$member->$propname->id|escape}
+                            {assign var="value" value=$member->$propname->id}
                         {else}
                             {assign var="value" value=""}
                         {/if}
                     {else}
-                        {assign var="value" value=$member->$propname|escape}
+                        {assign var="value" value=$member->$propname}
                     {/if}
                     {assign var="checked" value=null}
                     {assign var="example" value=null}
