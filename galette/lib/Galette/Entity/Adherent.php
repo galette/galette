@@ -1131,7 +1131,7 @@ class Adherent
 
             if (!isset($disabled[$key])) {
                 $mandatory_missing = false;
-                if (!isset($this->$prop)) {
+                if (!isset($this->$prop) || $this->$prop == '') {
                     $mandatory_missing = true;
                 } elseif ($key === 'titre_adh' && $this->$prop == '-1') {
                     $mandatory_missing = true;
