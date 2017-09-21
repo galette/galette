@@ -549,7 +549,7 @@ $app->post(
                                             array($adh->sname, $adh->getEmail()),
                                             _T("A problem happened while sending to admin post contribution notification for user %name (%email) contribution")
                                         );
-                                        $this->hist->add($txt);
+                                        $this->history->add($txt);
                                         $error_detected[] = $txt;
                                         //Mails are disabled... We log (not safe, but)...
                                         Analog::log(
@@ -620,7 +620,7 @@ $app->post(
                         $sent = $mail->send();
 
                         if ($sent) {
-                            $this->hist->add(
+                            $this->history->add(
                                 preg_replace(
                                     array('/%name/', '/%email/'),
                                     array($adh->sname, $adh->getEmail()),
@@ -633,7 +633,7 @@ $app->post(
                                 array($adh->sname, $adh->getEmail()),
                                 _T("A problem happened while sending contribution receipt to user %name (%email)")
                             );
-                            $this->hist->add($txt);
+                            $this->history->add($txt);
                             $error_detected[] = $txt;
                         }
                     } else {
@@ -642,7 +642,7 @@ $app->post(
                             array($adh->sname, $adh->getEmail()),
                             _T("Trying to send a mail to a member (%name) with an invalid address: %email")
                         );
-                        $this->hist->add($txt);
+                        $this->history->add($txt);
                         $warning_detected[] = $txt;
                     }
                 }
@@ -676,7 +676,7 @@ $app->post(
                     $sent = $mail->send();
 
                     if ($sent) {
-                        $this->hist->add(
+                        $this->history->add(
                             preg_replace(
                                 array('/%name/', '/%email/'),
                                 array($adh->sname, $adh->getEmail()),
@@ -689,7 +689,7 @@ $app->post(
                             array($adh->sname, $adh->getEmail()),
                             _T("A problem happened while sending to admin notification for user %name (%email) contribution")
                         );
-                        $this->hist->add($txt);
+                        $this->history->add($txt);
                         $error_detected[] = $txt;
                     }
                 }
