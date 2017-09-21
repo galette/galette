@@ -89,6 +89,9 @@
         });
     </script>
 {/if}
+{if $require_mass}
+    <script type="text/javascript" src="{base_url}/{$scripts_dir}mass_changes.js"></script>
+{/if}
 {* If some additionnals headers should be added from plugins, we load the relevant template file
 We have to use a template file, so Smarty will do its work (like replacing variables). *}
 {if $headers|@count != 0}

@@ -364,6 +364,7 @@ $app->get(
                 'page_title'            => _T("Members management"),
                 'require_dialog'        => true,
                 'require_calendar'      => true,
+                'require_mass'          => true,
                 'members'               => $members_list,
                 'filter_groups_options' => $groups_list,
                 'nb_members'            => $members->getCount(),
@@ -1585,6 +1586,11 @@ $app->post(
                     ->withHeader('Location', $this->router->pathFor('removeMembers'));
             }
 
+            if (isset($post['masschange'])) {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('masschangeMembers'));
+            }
         } else {
             $this->flash->addMessage(
                 'error_detected',
@@ -2761,3 +2767,244 @@ $app->get(
         }
     }
 )->setName('getDynamicFile')->add($authenticate);
+
+$app->get(
+    __('/members', 'routes') . __('/mass-change', 'routes'),
+    function ($request, $response) {
+        $filters =  $this->session->filter_members;
+
+        $data = [
+            'id'            => $filters->selected,
+            'redirect_uri'  => $this->router->pathFor('members')
+        ];
+
+        $fc = $this->fields_config;
+        $form_elements = $fc->getMassiveFormElements($this->members_fields, $this->login);
+
+        //dynamic fields
+        $deps = array(
+            'picture'   => false,
+            'groups'    => false,
+            'dues'      => false,
+            'parent'    => false,
+            'children'  => false,
+            'dynamics'  => false
+        );
+        $member = new Adherent($this->zdb, null, $deps);
+
+        //Status
+        $statuts = new Status($this->zdb);
+
+        // display page
+        $this->view->render(
+            $response,
+            'mass_change_members.tpl',
+            array(
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => str_replace(
+                    '%count',
+                    count($data['id']),
+                    _T('Mass change %count members')
+                ),
+                'form_url'      => $this->router->pathFor('masschangeMembersReview'),
+                'cancel_uri'    => $this->router->pathFor('members'),
+                'data'          => $data,
+                'member'        => $member,
+                'fieldsets'     => $form_elements['fieldsets'],
+                'titles_list'   => Titles::getList($this->zdb),
+                'statuts'       => $statuts->getList(),
+                'require_mass'  => true
+            )
+        );
+        return $response;
+    }
+)->setName('masschangeMembers')->add($authenticate);
+
+$app->post(
+    __('/members', 'routes') . __('/mass-change', 'routes') . __('/validate', 'routes'),
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+
+        if (!isset($post['confirm'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Mass changes has not been confirmed!")
+            );
+        } else {
+            //we want only visibles fields
+            $fc = $this->fields_config;
+            $form_elements = $fc->getMassiveFormElements($this->members_fields, $this->login);
+
+            $changes = [];
+            foreach ($form_elements['fieldsets'] as $form_element) {
+                foreach ($form_element->elements as $field) {
+                    if (isset($post[$field->field_id]) && isset($post['mass_' . $field->field_id])) {
+                        $changes[$field->field_id] = [
+                            'label' => $field->label,
+                            'value' => $post[$field->field_id]
+                        ];
+                    }
+                }
+            }
+        }
+
+        $filters =  $this->session->filter_members;
+        $data = [
+            'id'            => $filters->selected,
+            'redirect_uri'  => $this->router->pathFor('members')
+        ];
+
+        //Status
+        $statuts = new Status($this->zdb);
+
+        // display page
+        $this->view->render(
+            $response,
+            'mass_change_members.tpl',
+            array(
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => str_replace(
+                    '%count',
+                    count($data['id']),
+                    _T('Review mass change %count members')
+                ),
+                'form_url'      => $this->router->pathFor('massstoremembers'),
+                'cancel_uri'    => $this->router->pathFor('members'),
+                'data'          => $data,
+                'titles_list'   => Titles::getList($this->zdb),
+                'statuts'       => $statuts->getList(),
+                'changes'       => $changes
+            )
+        );
+        return $response;
+    }
+)->setName('masschangeMembersReview')->add($authenticate);
+
+$app->post(
+    __('/members', 'routes') . __('/mass-change', 'routes'),
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+        $redirect_url = $post['redirect_uri'];
+        $error_detected = [];
+        $mass = 0;
+
+        unset($post['redirect_uri']);
+        if (!isset($post['confirm'])) {
+            $error_detected[] = _T("Mass changes has not been confirmed!");
+        } else {
+            unset($post['confirm']);
+            $ids = $post['id'];
+            unset($post['id']);
+
+            $fc = $this->fields_config;
+            $form_elements = $fc->getMassiveFormElements($this->members_fields, $this->login);
+            $disabled = $this->members_fields;
+            foreach (array_keys($post) as $key) {
+                $found = false;
+                foreach ($form_elements['fieldsets'] as $fieldset) {
+                    if (isset($fieldset->elements[$key])) {
+                        $found = true;
+                        continue;
+                    }
+                }
+                if (!$found) {
+                    Analog::log(
+                        'Permission issue mass editing field ' . $key,
+                        Analog::WARNING
+                    );
+                    unset($post[$key]);
+                } else {
+                    unset($disabled[$key]);
+                }
+            }
+
+            if (!count($post)) {
+                $error_detected[] = _T("Nothing to do!");
+            } else {
+                $is_manager = !$this->login->isAdmin() && !$this->login->isStaff() && $this->login->isGroupManager();
+                foreach ($ids as $id) {
+                    $deps = array(
+                        'picture'   => false,
+                        'groups'    => $is_manager,
+                        'dues'      => false,
+                        'parent'    => false,
+                        'children'  => false,
+                        'dynamics'  => false
+                    );
+                    $member = new Adherent($this->zdb, (int)$id, $deps);
+                    $member->setDependencies(
+                        $this->preferences,
+                        $this->members_fields,
+                        $this->history
+                    );
+
+                    if ($is_manager) {
+                        $groups = $member->groups;
+                        $is_managed = false;
+                        foreach ($groups as $g) {
+                            if ($this->login->isGroupManager($g->getId())) {
+                                $is_managed = true;
+                                break;
+                            }
+                        }
+                        if (!$is_managed) {
+                            Analog::log(
+                                'Trying to edit member #' . $id . ' without appropriate ACLs',
+                                Analog::WARNING
+                            );
+                            $error_detected[] = _T('No permission to edit member');
+                            continue;
+                        }
+                    }
+
+                    $valid = $member->check($post, [], $disabled);
+                    if ($valid === true) {
+                        $done = $member->store();
+                        if (!$done) {
+                            $error_detected[] = _T("An error occured while storing the member.");
+                        } else {
+                            ++$mass;
+                        }
+                    } else {
+                        $error_detected = array_merge($error_detected, $valid);
+                    }
+
+                }
+            }
+        }
+
+        if ($mass == 0 && !count($error_detected)) {
+            $error_detected[] = _T('Something went wront during mass edition!');
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                str_replace(
+                    '%count',
+                    $mass,
+                    _T('%count members has been changed successfully!')
+                )
+            );
+        }
+
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
+            }
+        }
+
+        if (!$request->isXhr()) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $redirect_url);
+        } else {
+            return $response->withJson(
+                [
+                    'success'   => count($error_detected) === 0
+                ]
+            );
+        }
+    }
+)->setName('massstoremembers')->add($authenticate);
