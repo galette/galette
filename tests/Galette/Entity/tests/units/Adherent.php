@@ -536,9 +536,10 @@ class Adherent extends atoum
 
         $data = [
             'login_adh' => '',
-            'mdp_adh'   => 'short'
+            'mdp_adh'   => 'short',
+            'mdp_adh2'  => 'short'
         ];
-        $expected = ['- The password must be of at least 6 characters!'];
+        $expected = ['Too short (6 characters minimum, 5 found)'];
         $check = $adh->check($data, [], []);
         $this->array($check)->isIdenticalTo($expected);
 

@@ -7,7 +7,6 @@
     disabled=$entry->disabled
     label=$entry->label
     autocomplete="off"
-    example={_T string="(at least %i characters)" pattern="/%i/" replace=6}
     value=null
 }
 {include
@@ -19,7 +18,11 @@
     disabled=$entry->disabled
     label={_T string="Password confirmation:"}
     autocomplete="off"
-    example={_T string="(Confirmation)"}
     elt_class="labelalign"
     value=null
 }
+<script type="text/javascript">
+    $(function() {
+        {include file="js_pwdcheck.tpl" selector="{'#'}{$entry->field_id}"}
+    });
+</script>

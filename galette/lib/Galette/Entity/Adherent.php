@@ -1261,15 +1261,7 @@ class Adherent
                 }
                 break;
             case 'mdp_adh':
-                /** TODO: check password complexity, set by a preference */
-                /** TODO: add a preference for password lenght */
-                if (strlen($value) < 6) {
-                    $this->errors[] = str_replace(
-                        '%i',
-                        6,
-                        _T("- The password must be of at least %i characters!")
-                    );
-                } elseif ($this->_self_adh !== true
+                if ($this->_self_adh !== true
                     && (!isset($values['mdp_adh2'])
                     || $values['mdp_adh2'] != $value)
                 ) {
@@ -1286,6 +1278,15 @@ class Adherent
                             $value,
                             PASSWORD_BCRYPT
                         );
+
+                        $pwcheck = new \Galette\Util\Password($preferences);
+                        $pwcheck->setAdherent($this);
+                        if (!$pwcheck->isValid($value)) {
+                            $this->errors = array_merge(
+                                $this->errors,
+                                $pwcheck->getErrors()
+                            );
+                        }
                     }
                 }
                 break;
@@ -1534,7 +1535,8 @@ class Adherent
 
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
-            'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass', 'saddress'
+            'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass', 'saddress',
+            'rbirthdate'
         );
 
         if (in_array($name, $forbidden)) {
@@ -1605,6 +1607,9 @@ class Adherent
                         break;
                     case 'sname':
                         return $this->getNameWithCase($this->_name, $this->_surname);
+                        break;
+                    case 'rbirthdate':
+                        return $this->_birthdate;
                         break;
                 }
             } else {

@@ -80,6 +80,17 @@ class Preferences
     const LOG_DISABLED = 0;
     const LOG_ENABLED = 1;
 
+    /** No password strength */
+    const PWD_NONE = 0;
+    /** Weak password strength */
+    const PWD_WEAK = 1;
+    /** Medium password strength */
+    const PWD_MEDIUM = 2;
+    /** Strong password strength */
+    const PWD_STRONG = 3;
+    /** Very strong password strength */
+    const PWD_VERY_STRONG = 4;
+
     private static $fields = array(
         'nom_pref',
         'val_pref'
@@ -168,7 +179,11 @@ class Preferences
         'pref_footer' => '',
         'pref_filter_account' => Members::ALL_ACCOUNTS,
         'pref_galette_url' => '',
-        'pref_redirect_on_create' => Adherent::AFTER_ADD_DEFAULT
+        'pref_redirect_on_create' => Adherent::AFTER_ADD_DEFAULT,
+        /* Security related */
+        'pref_password_length' => 6,
+        'pref_password_blacklist' => false,
+        'pref_password_strength' => self::PWD_NONE
     );
 
     // flagging required fields
@@ -449,8 +464,13 @@ class Preferences
                                 Analog::WARNING
                             );
                         } else {
-                            if (strlen($value) < 4) {
-                                $this->errors[] = _T("- The password must be of at least 4 characters!");
+                            $pwcheck = new \Galette\Util\Password($this);
+                            $pwcheck->addPersonalInformation(['pref_admin_login' => $this->pref_admin_login]);
+                            if (!$pwcheck->isValid($value)) {
+                                $this->errors = array_merge(
+                                    $this->errors,
+                                    $pwcheck->getErrors()
+                                );
                             }
                         }
                         break;

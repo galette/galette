@@ -305,4 +305,36 @@ $app->group('/ajax', function () use ($authenticate) {
             ]);
         }
     )->setName('contributionMembers')->add($authenticate);
+
+    $this->post(
+        __('/password', 'routes') . __('/strength', 'routes'),
+        function ($request, $response) {
+            //post params may be passed from security tab test password
+            $post = $request->getParsedBody();
+
+            if (isset($post['pref_password_length'])) {
+                $this->preferences->pref_password_length = $post['pref_password_length'];
+            }
+
+            if (isset($post['pref_password_strength'])) {
+                $this->preferences->pref_password_strength = $post['pref_password_strength'];
+            }
+
+            if (isset($post['pref_password_blacklist'])) {
+                $this->preferences->pref_password_blacklist = $post['pref_password_blacklist'];
+            }
+
+            $pass = new \Galette\Util\Password($this->preferences);
+            $valid = $pass->isValid($post['value']);
+
+            return $response->withJson(
+                [
+                    'valid'     => $valid,
+                    'score'     => $pass->getStrenght(),
+                    'errors'    => $pass->getErrors(),
+                    'warnings'  => ($valid ? $pass->getStrenghtErrors() : null)
+                ]
+            );
+        }
+    )->setName('checkPassword');
 });

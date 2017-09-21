@@ -74,6 +74,7 @@ $app->post(
     function ($request, $response) use ($app, $baseRedirect) {
         $nick = $request->getParsedBody()['login'];
         $password = $request->getParsedBody()['password'];
+        $checkpass = new Galette\Util\Password($this->preferences);
 
         if (trim($nick) == '' || trim($password) == '') {
             $this->flash->addMessage(
@@ -103,6 +104,14 @@ $app->post(
         }
 
         if ($this->login->isLogged()) {
+            if (!$checkpass->isValid($password)) {
+                //password is no longer valid with current rules, must be changed
+                $this->flash->addMessage(
+                    'warning_detected',
+                    _T("Your password is too weak! Please consider updating it.") .
+                    '<br/> -' . implode('<br/>', $checkpass->getErrors())
+                );
+            }
             $this->session->login = $this->login;
             $this->history->add(_T("Login"));
             return $baseRedirect($request, $response, []);
