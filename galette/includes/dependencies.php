@@ -139,6 +139,7 @@ $container['view'] = function ($c) {
     $smarty->assign('require_tree', null);
     $smarty->assign('html_editor', null);
     $smarty->assign('require_charts', null);
+    $smarty->assign('require_mass', null);
     if ($c->login->isAdmin() && $c->preferences->pref_telemetry_date) {
         $now = new \DateTime();
         $sent = new \DateTime($c->preferences->pref_telemetry_date);
@@ -326,7 +327,10 @@ $container['acls'] = function ($c) {
         'doAdminTools'              => 'superadmin',
         'telemetryInfos'            => 'admin',
         'telemetrySend'             => 'admin',
-        'setRegistered'             => 'admin'
+        'setRegistered'             => 'admin',
+        'masschangeMembers'         => 'groupmanager',
+        'massstoremembers'          => 'groupmanager',
+        'masschangeMembersReview'   => 'groupmanager'
     ];
 
     foreach ($c['plugins']->getModules() as $plugin) {

@@ -649,6 +649,14 @@ h1 #sendmail .ui-button-text {
     background-image:url(images/icon-trash.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
+#masschange {
+    background-image: url(images/icon-edit.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#masschange.ui-state-hover {
+    background-image:url(images/icon-edit.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+
 #subscribe {
     background-image:url(images/subscribe.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
