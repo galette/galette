@@ -132,6 +132,7 @@ $app->get(
 
         $class = '\\Galette\\Repository\\' . ucwords($raw_type);
         $contrib = new $class($this->zdb, $this->login, $filters);
+        $contribs_list = $contrib->getList(true);
 
         //store filters into session
         if ($ajax === false) {
@@ -148,7 +149,7 @@ $app->get(
             'require_dialog'    => true,
             'require_calendar'  => true,
             'contribs'          => $contrib,
-            'list'              => $contrib->getList(true),
+            'list'              => $contribs_list,
             'nb'                => $contrib->getCount(),
             'filters'           => $filters,
             'mode'              => ($ajax === true ? 'ajax' : 'std')
