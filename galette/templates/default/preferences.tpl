@@ -249,11 +249,11 @@
                     </p>
                     <p>
                         <label for="pref_mail_smtp_auth" class="bline tooltip" title="{_T string="Do you want to use SMTP authentication?"}">{_T string="Use SMTP authentication?"}</label>
-                        <span class="tip">{_T string="Would emailing use any SMTP authentication? You'll have to provide username and passwrod below. For GMail, authentication will always be on."}</span>
+                        <span class="tip">{_T string="Would emailing use any SMTP authentication? You'll have to provide username and password below. For GMail, authentication will always be on."}</span>
                         <input type="checkbox" name="pref_mail_smtp_auth" id="pref_mail_smtp_auth" value="1" {if $pref.pref_mail_smtp_auth eq 1}checked="checked"{/if}{if isset($required.pref_mail_smtp_auth) and $required.pref_mail_smtp_auth eq 1} required="required"{/if}/>
                     </p>
                     <p>
-                        <label for="pref_mail_smtp_secure" class="bline tooltip" title="{_T string="Do you want to use SMTP authentication?"}">{_T string="Use TLS for SMTP?"}</label>
+                        <label for="pref_mail_smtp_secure" class="bline tooltip" title="{_T string="Do you want to use server's TLS capabilities?"}">{_T string="Use TLS for SMTP?"}</label>
                         <span class="tip">{_T string="Do you want to use server's TLS capabilities?<br/>For GMail, this will always be on."}</span>
                         <input type="checkbox" name="pref_mail_smtp_secure" id="pref_mail_smtp_secure" value="1" {if $pref.pref_mail_smtp_secure eq 1}checked="checked"{/if}{if isset($required.pref_mail_smtp_secure) and $required.pref_mail_smtp_secure eq 1} required="required"{/if}/>
                     </p>
