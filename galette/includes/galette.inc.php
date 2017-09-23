@@ -195,7 +195,9 @@ if (defined('GALETTE_TESTS')) {
             $galette_run_log = \Analog\Handler\Variable::init($galette_log_var);
         }
     }
-    Core\Logs::cleanup();
+    if (!$installer) {
+        Core\Logs::cleanup();
+    }
 }
 
 Analog::handler(
