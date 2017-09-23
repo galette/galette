@@ -726,13 +726,8 @@ class Install
             $query = trim($sql_query[$i]);
             if ($query != '' && $query[0] != '-') {
                 //some output infos
-                @list($w1, $w2, $w3, $extra) = explode(' ', $query, 4);
-                if ($extra != '') {
-                    $extra = '...';
-                }
-
                 $ret = array(
-                    'message'   => $w1 . ' ' . $w2 . ' ' . $w3 . ' ' . $extra,
+                    'message'   => $query,
                     'res'       => false
                 );
 
@@ -745,8 +740,9 @@ class Install
                 } catch (\Exception $e) {
                     $log_lvl = Analog::WARNING;
                     //if error are on drop, DROP, rename or RENAME we can continue
-                    if ((strcasecmp(trim($w1), 'drop') != 0)
-                        && (strcasecmp(trim($w1), 'rename') != 0)
+                    $parts = explode(' ', $query, 1);
+                    if ((strcasecmp(trim($parts[0]), 'drop') != 0)
+                        && (strcasecmp(trim($parts[0]), 'rename') != 0)
                     ) {
                         $log_lvl = Analog::ERROR;
                         $ret['debug'] = $e->getMessage();
@@ -1052,7 +1048,7 @@ class Install
             return true;
         }
 
-        if ($fd = @fopen(GALETTE_CONFIG_PATH . 'config.inc.php', 'w')) {
+        if (is_writable(GALETTE_CONFIG_PATH . 'config.inc.php') && $fd = @fopen(GALETTE_CONFIG_PATH . 'config.inc.php', 'w')) {
                 $data = "<?php
 define('TYPE_DB', '" . $this->_db_type . "');
 define('HOST_DB', '" . $this->_db_host . "');
