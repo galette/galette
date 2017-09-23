@@ -260,17 +260,4 @@ class ContributionsList extends Pagination
             }
         }
     }
-
-    /**
-     * Set counter
-     *
-     * @param int $c Count
-     *
-     * @return void
-     */
-    public function setCounter($c)
-    {
-        $this->counter = (int)$c;
-        $this->countPages();
-    }
 }
