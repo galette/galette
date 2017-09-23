@@ -235,18 +235,6 @@ class TransactionsList extends Pagination
     }
 
     /**
-     * Add SQL limit
-     *
-     * @param Select $select Original select
-     *
-     * @return <type>
-     */
-    public function setLimit($select)
-    {
-        return $this->setLimits($select);
-    }
-
-    /**
      * Set counter
      *
      * @param int $c Count

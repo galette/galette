@@ -170,7 +170,7 @@ abstract class Pagination
      *
      * @return void
      */
-    protected function setLimits($select)
+    public function setLimits($select)
     {
         if ($this->show !== 0) {
             $select->limit($this->show);

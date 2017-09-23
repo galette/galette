@@ -201,7 +201,7 @@ class History
             }
             $this->proceedCount($select);
             //add limits to retrieve only relavant rows
-            $this->filters->setLimit($select);
+            $this->filters->setLimits($select);
             $results = $this->zdb->execute($select);
             return $results;
         } catch (\Exception $e) {
