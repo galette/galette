@@ -244,7 +244,7 @@ abstract class AbstractUpdater
      */
     private function getSqlScripts($version)
     {
-        $dh = opendir('./scripts/sql');
+        $dh = opendir(GALETTE_ROOT . '/install/scripts/sql');
         $scripts = array();
 
         if ($dh !== false) {
