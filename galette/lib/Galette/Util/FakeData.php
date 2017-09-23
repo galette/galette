@@ -24,13 +24,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  Core
+ * @category  Util
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2017 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   0.7
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9
  */
@@ -54,15 +53,15 @@ use Galette\Entity\Transaction;
 /**
  * Generate random data
  *
- * @category  Core
+ * @category  Util
  * @name      FakeData
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2017 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @link      http://framework.zend.com/apidoc/2.2/namespaces/Zend.Db.html
+ * @link      http://galette.tuxfamily.org
  * @see       https://github.com/fzaninotto/Faker
- * @since     Available since 0.7dev - 2011-07-27
+ * @since     Available since 0.9dev - 2017-02-20
  */
 class FakeData
 {
