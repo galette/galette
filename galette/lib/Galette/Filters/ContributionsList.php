@@ -122,11 +122,9 @@ class ContributionsList extends Pagination
         $this->end_date_filter = null;
         $this->payment_type_filter = null;
         $this->filtre_transactions = null;
-        $this->_count = null;
         $this->filtre_cotis_adh = null;
         $this->from_transaction = false;
         $this->max_amount = null;
-        $this->_sum = null;
     }
 
     /**
