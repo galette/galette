@@ -239,18 +239,19 @@ nav a{
  * == Desktop
  */
 
-#desktop {
-    border-spacing:3em 1em;
-    text-align: center;
+#desktop, #news {
     width: 50%;
-    min-width: 30em;
+    min-width: 40em;
     margin: 0 auto;
 }
 
+#desktop {
+    border-spacing:3em 1em;
+    text-align: center;
+}
+
 #news {
-    width: 50%;
-    min-width: 30em;
-    margin: 1em auto 0;
+    margin-top: 1em;
 }
 
 #news > div {
