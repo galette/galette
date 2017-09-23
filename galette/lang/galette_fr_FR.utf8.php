@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sat Sep  9 05:20:21 2017 (GMT)
+// This file was automatically generated on Sat Sep 23 05:22:20 2017 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -48,7 +48,7 @@ $lang['galette']['Notify member'] = 'Notifier l\'adhérent';
 // ../templates/default/preferences.tpl:54 
 $lang['galette']['Use either the address setted below or select user status to retrieve another address.'] = 'Utiliser soit l\'adresse renseignée ci-dessus, soit celle d\'un membre du bureau.';
 
-// ../includes/routes/members.routes.php:1126 
+// ../includes/routes/members.routes.php:1127 
 $lang['galette']['You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.'] = 'Vous avez demandé à Galette d\'envoyer une confirmation par mail à l\'adhérent, mais l\'envoi de mail a été désactivé dans les préférences.';
 
 // ../templates/default/advanced_search.tpl:225 
@@ -108,9 +108,6 @@ $lang['galette']['Dynamic fields'] = 'Champs dynamiques';
 // ../templates/default/traduire_libelles.tpl:41 
 $lang['galette']['No fields to translate.'] = 'Aucun libellé à traduire';
 
-// ../templates/default/preferences.tpl:252 
-$lang['galette']['Would emailing use any SMTP authentication? You\'ll have to provide username and passwrod below. For GMail, authentication will always be on.'] = 'Est-ce que l\'envoi de mails utilisera l\'authentification SMTP&nbsp;:? Vous devrez fournir un nom d\'utilisateur et un mot de passe ci-dessous. Pour GMail, l\'authentification sera toujours activée.';
-
 // ../includes/routes/management.routes.php:2764 
 $lang['galette']['An error occured saving label `%label` for language `%lang`'] = 'Une erreur est survenue lors de l\'enregistrement de l\'étiquette « %label » pour la langue « %lang »';
 
@@ -129,7 +126,7 @@ $lang['galette']['Lost your password?'] = 'Mot de passe perdu&nbsp;?';
 // ../templates/default/group.tpl:26 ../templates/default/group.tpl:34 
 $lang['galette']['Parent group:'] = 'Groupe parent&nbsp;:';
 
-// ../includes/routes/members.routes.php:2253 
+// ../includes/routes/members.routes.php:2252 
 $lang['galette']['There are no member to proceed.'] = 'Il n\'y a aucun adhérent à traiter.';
 
 // ../install/old.index.php:484 ../install/steps/check.php:142 
@@ -180,7 +177,7 @@ $lang['galette']['Website:'] = 'Site Web&nbsp;:';
 // ../install/steps/check.php:71 
 $lang['galette']['Temporary images'] = 'Images temporaires';
 
-// ../includes/routes/members.routes.php:1108 
+// ../includes/routes/members.routes.php:1109 
 $lang['galette']['New account mail sent to \'%s\'.'] = 'Courriel de nouveau compte envoyé à « %s ».';
 
 // ../templates/default/page.tpl:181 
@@ -231,7 +228,7 @@ $lang['galette']['Website URL'] = 'URL du site web';
 // ../templates/default/advanced_search.tpl:58 ../templates/default/advanced_search.tpl:99 
 $lang['galette']['Creation date'] = 'Date de création';
 
-// ../includes/routes/members.routes.php:1786 ../includes/routes/members.routes.php:1790 ../includes/routes/members.routes.php:1909 ../includes/routes/members.routes.php:1911 
+// ../includes/routes/members.routes.php:1785 ../includes/routes/members.routes.php:1789 ../includes/routes/members.routes.php:1908 ../includes/routes/members.routes.php:1910 
 $lang['galette']['Trying to load mailing while mail is disabled in preferences.'] = 'Tentative de chargement du mailing alors que l\'envoi de mails est désactivé dans les préférences.';
 
 // ../templates/default/trombinoscope.tpl:10 ../templates/default/liste_membres.tpl:91 
@@ -240,7 +237,7 @@ $lang['galette']['No member to show'] = 'Aucun adhérent à afficher';
 // ../templates/default/gestion_groupes.tpl:151 
 $lang['galette']['Pleade provide a group name'] = 'Veuillez spécifier un nom de groupe';
 
-// ../lib/Galette/Entity/Contribution.php:1177 ../includes/routes/members.routes.php:1504 ../templates/default/gestion_contributions.tpl:24 ../templates/default/ajouter_contribution.tpl:79 
+// ../lib/Galette/Entity/Contribution.php:1177 ../includes/routes/members.routes.php:1503 ../templates/default/gestion_contributions.tpl:24 ../templates/default/ajouter_contribution.tpl:79 
 $lang['galette']['Credit card'] = 'Carte de crédit';
 
 // ../templates/default/footer.tpl:17 
@@ -285,7 +282,7 @@ $lang['galette']['Cannot remove \'%export\' from disk :/'] = 'Impossible de supp
 // ../lib/Galette/Entity/Reminder.php:281 
 $lang['galette']['A problem happened while sending impending membership mail'] = 'Un problème est survenu lors de l\'envoi du courriel d\'adhésion à échéance proche';
 
-// ../lib/Galette/Core/Install.php:1149 
+// ../lib/Galette/Core/Install.php:1152 
 $lang['galette']['Update preferences'] = 'Mise à jour des préférences';
 
 // ../templates/default/gestion_mailings.tpl:15 
@@ -309,7 +306,7 @@ $lang['galette']['Customize fields order, set which are required, and for who th
 // ../templates/default/advanced_search.tpl:210 
 $lang['galette']['after'] = 'après';
 
-// ../includes/routes/members.routes.php:2191 ../templates/default/desktop.tpl:14 ../templates/default/page.tpl:148 
+// ../includes/routes/members.routes.php:2190 ../templates/default/desktop.tpl:14 ../templates/default/page.tpl:148 
 $lang['galette']['Reminders'] = 'Rappels';
 
 // ../templates/default/advanced_search.tpl:37 
@@ -342,7 +339,7 @@ $lang['galette']['New contribution type'] = 'Nouveau type de contribution';
 // ../includes/routes/main.routes.php:127 ../templates/default/footer.tpl:4 
 $lang['galette']['System informations'] = 'Informations système';
 
-// ../includes/routes/members.routes.php:1055 
+// ../includes/routes/members.routes.php:1056 
 $lang['galette']['- You can\'t send a confirmation by email if the member hasn\'t got an address!'] = '- Vous ne pouvez pas envoyer de confirmation par courriel si l\'adhérent n\'a pas d\'adresse&nbsp;!';
 
 // ../includes/routes/management.routes.php:2946 
@@ -393,7 +390,7 @@ $lang['galette']['Files permissions'] = 'Permissions de fichiers';
 // ../includes/routes/authentication.routes.php:378 
 $lang['galette']['Password changed for member \'%s\'.'] = 'Mot de passe changé pour l\'adhérent « %s ».';
 
-// ../lib/Galette/IO/PdfMembersCards.php:100 ../includes/routes/members.routes.php:1665 ../templates/default/preferences.tpl:11 
+// ../lib/Galette/IO/PdfMembersCards.php:100 ../includes/routes/members.routes.php:1664 ../templates/default/preferences.tpl:11 
 $lang['galette']['Cards'] = 'Cartes';
 
 // ../templates/default/mailing_adherents.tpl:41 
@@ -408,7 +405,7 @@ $lang['galette']['Member\'s address'] = 'Adresse de l\'adhérent';
 // ../includes/routes/management.routes.php:2858 
 $lang['galette']['An error occured while storing fields configuration :('] = 'Une erreur est survenue lors de l\'enregistrement de la configuration des champs :(';
 
-// ../lib/Galette/Entity/Contribution.php:1180 ../includes/routes/members.routes.php:1505 ../templates/default/gestion_contributions.tpl:25 ../templates/default/ajouter_contribution.tpl:80 
+// ../lib/Galette/Entity/Contribution.php:1180 ../includes/routes/members.routes.php:1504 ../templates/default/gestion_contributions.tpl:25 ../templates/default/ajouter_contribution.tpl:80 
 $lang['galette']['Check'] = 'Chèque';
 
 // ../includes/routes/management.routes.php:1317 
@@ -444,7 +441,7 @@ $lang['galette']['Contributor:'] = 'Contributeur&nbsp;:';
 // ../templates/default/preferences.tpl:62 
 $lang['galette']['-- Choose a staff member --'] = '-- Choisissez un membre du bureau --';
 
-// ../lib/Galette/Entity/Adherent.php:989 ../includes/routes/management.routes.php:232 
+// ../lib/Galette/Entity/Adherent.php:988 ../includes/routes/management.routes.php:232 
 $lang['galette']['- Non-valid E-Mail address!'] = '- Adresse courriel non valide&nbsp;!';
 
 // ../templates/default/gestion_mailings.tpl:172 
@@ -543,13 +540,13 @@ $lang['galette']['body should not be empty!'] = 'le corps ne peut être vide !';
 // ../templates/default/desktop.tpl:8 ../templates/default/page.tpl:137 
 $lang['galette']['View, search into and filter member\'s list'] = 'Consulter, rechercher dans et filtrer la liste des membres';
 
-// ../lib/Galette/Entity/Adherent.php:1409 ../templates/default/gestion_contributions.tpl:42 ../templates/default/forms_types/account.tpl:6 
+// ../lib/Galette/Entity/Adherent.php:1408 ../templates/default/gestion_contributions.tpl:42 ../templates/default/forms_types/account.tpl:6 
 $lang['galette']['Inactive'] = 'Inactif';
 
 // ../includes/routes/management.routes.php:2002 
 $lang['galette']['Model has not been stored :('] = 'Le modèle n\'a pas été enregistré :(';
 
-// ../lib/Galette/Entity/Adherent.php:700 
+// ../lib/Galette/Entity/Adherent.php:699 
 $lang['galette']['Late of %days days (since %date)'] = 'En retard de %days jours (depuis le %date)';
 
 // ../install/steps/type.php:49 
@@ -576,10 +573,10 @@ $lang['galette']['Maximum file size, in Ko.'] = 'Taille maximale du fichier, en 
 // ../lib/Galette/IO/PdfAdhesionForm.php:252 ../lib/Galette/IO/PdfAdhesionForm.php:253 
 $lang['galette']['adherent_form'] = 'formulaire_adhesion';
 
-// ../includes/routes/members.routes.php:1165 
+// ../includes/routes/members.routes.php:1166 
 $lang['galette']['An error occured while storing the member.'] = 'Une erreur est survenue lors de l\'enregistrement de l\'adhérent.';
 
-// ../lib/Galette/Entity/Adherent.php:1265 
+// ../lib/Galette/Entity/Adherent.php:1264 
 $lang['galette']['Member card added'] = 'Fiche adhérent ajoutée';
 
 // ../templates/default/plugins.tpl:32 
@@ -639,7 +636,7 @@ $lang['galette']['Select a file:'] = 'Sélectionnez un fichier :';
 // ../includes/routes/contributions.routes.php:303 
 $lang['galette']['Unable to load contribution #%id!'] = 'Impossible de charger la contribution #%id !';
 
-// ../includes/routes/members.routes.php:2387 ../includes/routes/members.routes.php:2406 
+// ../includes/routes/members.routes.php:2386 ../includes/routes/members.routes.php:2405 
 $lang['galette']['No member selected to generate attendance sheet'] = 'Aucun adhérent sélectionné pour générer la liste d\'émargement';
 
 // ../lib/Galette/Core/CheckModules.php:84 ../lib/Galette/Core/CheckModules.php:89 ../lib/Galette/Core/CheckModules.php:95 ../lib/Galette/Core/CheckModules.php:97 ../lib/Galette/Core/CheckModules.php:111 ../lib/Galette/Core/CheckModules.php:113 ../lib/Galette/Core/CheckModules.php:118 ../lib/Galette/Core/CheckModules.php:120 ../lib/Galette/Core/CheckModules.php:125 ../lib/Galette/Core/CheckModules.php:130 ../lib/Galette/Core/CheckModules.php:135 ../lib/Galette/Core/CheckModules.php:140 ../lib/Galette/Core/CheckModules.php:152 ../lib/Galette/Core/CheckModules.php:157 
@@ -654,7 +651,7 @@ $lang['galette']['Adhesion form'] = 'Formulaire d\'adhésion';
 // ../templates/default/gestion_groupes.tpl:17 
 $lang['galette']['New group'] = 'Nouveau groupe';
 
-// ../lib/Galette/Util/FakeData.php:345 
+// ../lib/Galette/Util/FakeData.php:344 
 $lang['galette']['%count members created'] = '%count adhérents créés';
 
 // ../templates/default/group.tpl:66 
@@ -696,7 +693,7 @@ $lang['galette']['Please chose the parameters of the admin account on Galette'] 
 // ../templates/default/preferences.tpl:427 
 $lang['galette']['Admin account (independant of members)'] = 'Compte administrateur (indépendant des adhérents)';
 
-// ../includes/routes/members.routes.php:2357 
+// ../includes/routes/members.routes.php:2356 
 $lang['galette']['Attendance sheet configuration'] = 'Configuration de la liste d\'émargement';
 
 // ../templates/default/preferences.tpl:125 
@@ -759,7 +756,7 @@ $lang['galette']['- You must indicate a sender name for emails!'] = '- Vous deve
 // ../templates/default/footer.tpl:8 
 $lang['galette']['The project: '] = 'Le projet&nbsp;:';
 
-// ../lib/Galette/Entity/Adherent.php:1006 
+// ../lib/Galette/Entity/Adherent.php:1005 
 $lang['galette']['- This E-Mail address is already used by another member!'] = '- Cette adresse de courriel est déjà utilisée par un autre adhérent&nbsp;!';
 
 // ../includes/fields_defs/members_fields.php:51 
@@ -786,7 +783,7 @@ $lang['galette']['(Confirmation)'] = '(Confirmation)';
 // ../lib/Galette/IO/PdfContribution.php:142 ../includes/routes/contributions.routes.php:1082 ../templates/default/gestion_contributions.tpl:50 
 $lang['galette']['contribution'] = 'contribution';
 
-// ../templates/default/preferences.tpl:251 ../templates/default/preferences.tpl:256 
+// ../templates/default/preferences.tpl:251 
 $lang['galette']['Do you want to use SMTP authentication?'] = 'Voulez vous utiliser l\'authentification SMTP&nbsp;?';
 
 // ../install/old.index.php:822 ../install/steps/db_checks.php:116 
@@ -828,7 +825,7 @@ $lang['galette']['Public pages'] = 'Pages publiques';
 // ../templates/default/preferences.tpl:19 
 $lang['galette']['Name of the association:'] = 'Nom de l\'association&nbsp;:';
 
-// ../includes/routes/members.routes.php:985 
+// ../includes/routes/members.routes.php:986 
 $lang['galette']['New member has been successfully added.'] = 'Le nouvel adhérent a été ajouté avec succès.';
 
 // ../includes/i18n.inc.php:363 
@@ -843,7 +840,7 @@ $lang['galette']['Member will receive a notification by email, if he has an addr
 // ../templates/default/preferences.tpl:158 
 $lang['galette']['Enter a script URI that would be called after adding a new contribution.<br/>Script URI must be prefixed by one of \'<em>galette://</em>\' for Galette internal call. \'<em>file://</em>\' for a direct file call, \'<em>get://</em>\' or \'<em>post://</em>\' for HTTP calls (prefix will be replaced by http:// in those cases).'] = 'Entrez l\'URL d\'un script qui sera appelé après l\'ajout d\'une nouvelle contribution.<br/>L\'URI doit être préfixée de \'<em>galette://</em>\' pour un appel interne à galette, \'<em>file://</em>\' pour l\'appel direct d\'un fichier, \'<em>get://</em>\' ou \'<em>post://</em>\' pour un appel HTTP (le préfixe sera remplacé par http:// dans ces deux cas).';
 
-// ../includes/routes/members.routes.php:1730 
+// ../includes/routes/members.routes.php:1729 
 $lang['galette']['labels_print_filename'] = 'Etiquettes';
 
 // ../includes/routes/contributions.routes.php:990 
@@ -906,7 +903,7 @@ $lang['galette']['Y'] = 'Y';
 // ../templates/default/page.tpl:155 
 $lang['galette']['My contributions'] = 'Mes contributions';
 
-// ../lib/Galette/Entity/Adherent.php:1619 ../templates/default/member.tpl:525 
+// ../lib/Galette/Entity/Adherent.php:1618 ../templates/default/member.tpl:525 
 $lang['galette'][' (%age years old)'] = ' (%age ans)';
 
 // ../templates/default/preferences.tpl:342 
@@ -939,7 +936,7 @@ $lang['galette']['Photos'] = 'Photos';
 // ../templates/default/preferences.tpl:382 
 $lang['galette']['(Show or not title in front of name)'] = '(Afficher le titre devant le nom)';
 
-// ../lib/Galette/Core/Install.php:1143 
+// ../lib/Galette/Core/Install.php:1146 
 $lang['galette']['PDF Models'] = 'Modèles PDF';
 
 // ../templates/default/page.tpl:144 
@@ -948,7 +945,7 @@ $lang['galette']['Add a member'] = 'Ajouter un adhérent';
 // ../lib/Galette/Entity/Group.php:707 
 $lang['galette']['Group `%1$s` is a child of `%2$s`, cannot be set as parent!'] = 'Le groupe `%1$s` est un enfant de `%2$s`, il ne peut être défini comme parent&nbsp;!';
 
-// ../lib/Galette/Entity/Adherent.php:1078 ../includes/routes/authentication.routes.php:361 
+// ../lib/Galette/Entity/Adherent.php:1077 ../includes/routes/authentication.routes.php:361 
 $lang['galette']['- The passwords don\'t match!'] = '- Les mots de passe ne correspondent pas&nbsp;!';
 
 // ../templates/default/desktop.tpl:25 
@@ -1074,13 +1071,13 @@ $lang['galette']['DROP operation not allowed'] = 'Opération DROP non autorisée
 // ../templates/default/gestion_adherents.tpl:229 ../templates/default/mailing_recipients.tpl:20 
 $lang['galette']['Generate labels'] = 'Générer les étiquettes';
 
-// ../lib/Galette/Util/FakeData.php:284 
+// ../lib/Galette/Util/FakeData.php:283 
 $lang['galette']['%count groups requested, and %done created'] = '%count groupes demandés et %done créés';
 
 // ../templates/default/preferences.tpl:251 
 $lang['galette']['Use SMTP authentication?'] = 'Utiliser l\'authentification SMTP&nbsp;?';
 
-// ../includes/routes/members.routes.php:1869 
+// ../includes/routes/members.routes.php:1868 
 $lang['galette']['Mailing'] = 'Mailing';
 
 // ../templates/default/gestion_textes.tpl:58 ../templates/default/gestion_textes.tpl:60 ../templates/default/gestion_textes.tpl:64 ../templates/default/gestion_textes.tpl:66 ../templates/default/gestion_textes.tpl:70 ../templates/default/gestion_pdf.tpl:42 ../templates/default/gestion_pdf.tpl:44 ../templates/default/gestion_pdf.tpl:48 ../templates/default/gestion_pdf.tpl:50 ../templates/default/gestion_pdf.tpl:54 ../templates/default/gestion_pdf.tpl:56 ../templates/default/gestion_pdf.tpl:66 ../templates/default/gestion_pdf.tpl:68 ../templates/default/gestion_pdf.tpl:72 ../templates/default/gestion_pdf.tpl:74 ../templates/default/gestion_pdf.tpl:78 ../templates/default/gestion_pdf.tpl:80 ../templates/default/gestion_pdf.tpl:84 ../templates/default/gestion_pdf.tpl:86 ../templates/default/gestion_pdf.tpl:90 
@@ -1092,7 +1089,7 @@ $lang['galette']['Manager(s)'] = 'Responsable(s)';
 // ../templates/default/ajouter_contribution.tpl:110 
 $lang['galette']['months'] = 'mois';
 
-// ../includes/routes/members.routes.php:2267 
+// ../includes/routes/members.routes.php:2266 
 $lang['galette']['Sent reminders:'] = 'Rappels envoyés :';
 
 // ../templates/default/preferences.tpl:213 
@@ -1170,7 +1167,7 @@ $lang['galette']['[pdf]'] = '[pdf]';
 // ../templates/default/editer_champ.tpl:66 
 $lang['galette']['Choice list (one entry per line).'] = 'Liste de choix (une entrée par ligne).';
 
-// ../lib/Galette/Core/Install.php:1046 
+// ../lib/Galette/Core/Install.php:1049 
 $lang['galette']['Config file already exists and is up to date'] = 'Le fichier de configuration existe déjà et est à jour';
 
 // ../templates/default/import.tpl:46 
@@ -1194,7 +1191,7 @@ $lang['galette']['Due free'] = 'Exempt de cotisation';
 // ../templates/default/advanced_search.tpl:164 
 $lang['galette']['Free search'] = 'Recherche libre';
 
-// ../lib/Galette/Entity/Adherent.php:1271 
+// ../lib/Galette/Entity/Adherent.php:1270 
 $lang['galette']['Fail to add new member.'] = 'Échec de l\'ajout d\'un nouvel adhérent.';
 
 // ../templates/default/advanced_search.tpl:231 
@@ -1257,7 +1254,7 @@ $lang['galette']['Move down \'%s\' field'] = 'Faire descendre le champ « %s »'
 // ../includes/fields_defs/members_fields.php:268 
 $lang['galette']['Account:'] = 'Compte&nbsp;:';
 
-// ../includes/routes/members.routes.php:1396 
+// ../includes/routes/members.routes.php:1395 
 $lang['galette']['An error occured trying to remove member %name :/'] = 'Une erreur est survenue lors de la suppression de l\'adhérent « %name » :/';
 
 // ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:1048 
@@ -1347,7 +1344,7 @@ $lang['galette']['- ERROR -'] = '- ERREUR -';
 // ../includes/routes/contributions.routes.php:1140 
 $lang['galette']['Transactions(s) has been removed!'] = 'Transaction(s) supprimée(s) !';
 
-// ../lib/Galette/Util/FakeData.php:515 
+// ../lib/Galette/Util/FakeData.php:514 
 $lang['galette']['%count transactions created'] = '%count transactions créées';
 
 // ../lib/Galette/Entity/Group.php:382 
@@ -1356,7 +1353,7 @@ $lang['galette']['Group has been detached from its parent'] = 'Le groupe a été
 // ../install/steps/check.php:90 
 $lang['galette']['Galette requirements are met :)'] = 'Les prérequis de Galette sont respectés :)';
 
-// ../includes/routes/members.routes.php:1308 ../includes/routes/members.routes.php:1340 ../templates/default/ajouter_transaction.tpl:60 ../templates/default/history.tpl:14 ../templates/default/gestion_contributions.tpl:104 ../templates/default/gestion_contributions.tpl:200 ../templates/default/ajouter_contribution.tpl:28 
+// ../includes/routes/members.routes.php:1309 ../includes/routes/members.routes.php:1339 ../templates/default/ajouter_transaction.tpl:60 ../templates/default/history.tpl:14 ../templates/default/gestion_contributions.tpl:104 ../templates/default/gestion_contributions.tpl:200 ../templates/default/ajouter_contribution.tpl:28 
 $lang['galette']['Member'] = 'Adhérent';
 
 // ../includes/routes/contributions.routes.php:1152 
@@ -1419,7 +1416,7 @@ $lang['galette']['Active account'] = 'Compte actif';
 // ../templates/default/voir_adherent.tpl:52 
 $lang['galette']['Family'] = 'Famille';
 
-// ../includes/routes/members.routes.php:1590 ../includes/routes/members.routes.php:1623 ../includes/routes/members.routes.php:1697 
+// ../includes/routes/members.routes.php:1589 ../includes/routes/members.routes.php:1622 ../includes/routes/members.routes.php:1696 
 $lang['galette']['No member was selected, please check at least one name.'] = 'Veuillez sélectionner au moins un adhérent.';
 
 // ../includes/routes/management.routes.php:2590 
@@ -1452,6 +1449,9 @@ $lang['galette']['from a staff user'] = 'depuis un membre du bureau';
 // ../templates/default/gestion_adherents.tpl:275 
 $lang['galette']['Membership will expire soon (&lt;30d)'] = 'Adhésion à échéance (&lt;30j)';
 
+// ../includes/routes/members.routes.php:1110 
+$lang['galette']['Account modification mail sent to \'%s\'.'] = 'Courriel de modification de compte envoyé à « %s ».';
+
 // ../install/old.index.php:693 
 $lang['galette']['Check the parameters and the existence of the database'] = 'Vérification des paramètres et de l\'existence de la base';
 
@@ -1464,13 +1464,13 @@ $lang['galette']['Galette is currently under maintenance!'] = 'Galette est actue
 // ../templates/default/gestion_groupes.tpl:147 
 $lang['galette']['An error occured checking name uniqueness :('] = 'Une erreur est survenue lors de la vérification de l\'unicité du nom :(';
 
-// ../includes/routes/members.routes.php:1417 
+// ../includes/routes/members.routes.php:1416 
 $lang['galette']['%count members have been successfully deleted.'] = '%count adhérents ont été supprimés avec succès.';
 
 // ../templates/default/group.tpl:67 
 $lang['galette']['Manage managers'] = 'Gestion des responsables';
 
-// ../lib/Galette/Core/Install.php:1070 ../install/old.index.php:1230 
+// ../lib/Galette/Core/Install.php:1073 ../install/old.index.php:1230 
 $lang['galette']['Unable to create configuration file (%path)'] = 'Impossible de créer le fichier de configuration (%path)';
 
 // ../includes/i18n.inc.php:349 
@@ -1623,10 +1623,10 @@ $lang['galette']['Preview your mailing'] = 'Aperçu de votre E-Mailing';
 // ../templates/default/gestion_contributions.tpl:14 
 $lang['galette']['Record'] = 'Enregistrement';
 
-// ../lib/Galette/Entity/Adherent.php:1103 
+// ../lib/Galette/Entity/Adherent.php:1102 
 $lang['galette']['Status #%id does not exists in database.'] = 'Le statut #%id n\'existe pas dans la base de données.';
 
-// ../lib/Galette/Entity/Adherent.php:670 
+// ../lib/Galette/Entity/Adherent.php:669 
 $lang['galette']['Freed of dues'] = 'Exempt de cotisation';
 
 // ../templates/default/gestion_adherents.tpl:51 ../templates/default/gestion_mailings.tpl:43 ../templates/default/history.tpl:42 ../templates/default/gestion_contributions.tpl:56 ../templates/default/gestion_transactions.tpl:29 ../templates/default/liste_membres.tpl:10 
@@ -1746,7 +1746,7 @@ $lang['galette']['Main'] = 'Global';
 // ../templates/default/preferences.tpl:322 
 $lang['galette']['Number of label lines:'] = 'Nombre de lignes d\'étiquettes&nbsp;:';
 
-// ../includes/routes/members.routes.php:1655 ../includes/routes/members.routes.php:1720 
+// ../includes/routes/members.routes.php:1654 ../includes/routes/members.routes.php:1719 
 $lang['galette']['Unable to get members list.'] = 'Impossible d\'obtenir la liste des membres';
 
 // ../install/old.index.php:724 ../install/steps/db_checks.php:202 
@@ -1758,7 +1758,7 @@ $lang['galette']['Generate Member Card'] = 'Générer la carte de membre';
 // ../includes/routes/management.routes.php:382 
 $lang['galette']['- You must indicate the SMTP server you want to use!'] = '- Vous devez indiquer le serveur SMTP à utiliser&nbsp;!';
 
-// ../lib/Galette/IO/PdfAttendanceSheet.php:84 ../lib/Galette/IO/PdfAttendanceSheet.php:150 ../lib/Galette/Util/FakeData.php:402 ../lib/Galette/Util/FakeData.php:414 ../lib/Galette/Util/FakeData.php:497 ../lib/Galette/Util/FakeData.php:630 ../lib/Galette/Util/FakeData.php:631 ../lib/Galette/Util/FakeData.php:632 ../lib/Galette/Filters/ContributionsList.php:213 ../lib/Galette/Filters/ContributionsList.php:222 ../lib/Galette/Filters/ContributionsList.php:251 ../lib/Galette/Filters/AdvancedMembersList.php:291 ../lib/Galette/Filters/AdvancedMembersList.php:372 ../lib/Galette/Filters/AdvancedMembersList.php:516 ../lib/Galette/Filters/MailingsList.php:144 ../lib/Galette/Filters/MailingsList.php:221 ../lib/Galette/Filters/MailingsList.php:230 ../lib/Galette/Filters/MailingsList.php:259 ../lib/Galette/Filters/HistoryList.php:150 ../lib/Galette/Filters/HistoryList.php:227 ../lib/Galette/Filters/HistoryList.php:236 ../lib/Galette/Filters/HistoryList.php:265 ../lib/Galette/Filters/TransactionsList.php:186 ../lib/Galette/Filters/TransactionsList.php:195 ../lib/Galette/Filters/TransactionsList.php:224 ../lib/Galette/Repository/Members.php:1396 ../lib/Galette/Repository/Members.php:1400 ../lib/Galette/Entity/Transaction.php:274 ../lib/Galette/Entity/Transaction.php:283 ../lib/Galette/Entity/Transaction.php:292 ../lib/Galette/Entity/Transaction.php:537 ../lib/Galette/Entity/Adherent.php:676 ../lib/Galette/Entity/Adherent.php:694 ../lib/Galette/Entity/Adherent.php:710 ../lib/Galette/Entity/Adherent.php:946 ../lib/Galette/Entity/Adherent.php:959 ../lib/Galette/Entity/Adherent.php:968 ../lib/Galette/Entity/Adherent.php:1461 ../lib/Galette/Entity/Contribution.php:358 ../lib/Galette/Entity/Contribution.php:367 ../lib/Galette/Entity/Contribution.php:376 ../lib/Galette/Entity/Contribution.php:526 ../lib/Galette/Entity/Contribution.php:1143 ../lib/Galette/Entity/Contribution.php:1262 ../lib/Galette/Entity/Contribution.php:1271 ../lib/Galette/Entity/Contribution.php:1280 ../lib/Galette/Entity/ImportModel.php:212 ../lib/Galette/Entity/Group.php:622 ../lib/Galette/Core/Plugins.php:234 ../includes/routes/members.routes.php:201 ../includes/routes/members.routes.php:212 ../includes/routes/members.routes.php:223 ../includes/routes/members.routes.php:234 ../includes/routes/members.routes.php:2431 ../templates/default/member.tpl:514 ../templates/default/advanced_search.tpl:212 
+// ../lib/Galette/IO/PdfAttendanceSheet.php:84 ../lib/Galette/IO/PdfAttendanceSheet.php:150 ../lib/Galette/Util/FakeData.php:401 ../lib/Galette/Util/FakeData.php:413 ../lib/Galette/Util/FakeData.php:496 ../lib/Galette/Util/FakeData.php:629 ../lib/Galette/Util/FakeData.php:630 ../lib/Galette/Util/FakeData.php:631 ../lib/Galette/Filters/ContributionsList.php:213 ../lib/Galette/Filters/ContributionsList.php:222 ../lib/Galette/Filters/ContributionsList.php:251 ../lib/Galette/Filters/AdvancedMembersList.php:291 ../lib/Galette/Filters/AdvancedMembersList.php:372 ../lib/Galette/Filters/AdvancedMembersList.php:516 ../lib/Galette/Filters/MailingsList.php:144 ../lib/Galette/Filters/MailingsList.php:221 ../lib/Galette/Filters/MailingsList.php:230 ../lib/Galette/Filters/MailingsList.php:259 ../lib/Galette/Filters/HistoryList.php:150 ../lib/Galette/Filters/HistoryList.php:227 ../lib/Galette/Filters/HistoryList.php:236 ../lib/Galette/Filters/HistoryList.php:265 ../lib/Galette/Filters/TransactionsList.php:186 ../lib/Galette/Filters/TransactionsList.php:195 ../lib/Galette/Filters/TransactionsList.php:224 ../lib/Galette/Repository/Members.php:1396 ../lib/Galette/Repository/Members.php:1400 ../lib/Galette/Entity/Transaction.php:274 ../lib/Galette/Entity/Transaction.php:283 ../lib/Galette/Entity/Transaction.php:292 ../lib/Galette/Entity/Transaction.php:537 ../lib/Galette/Entity/Adherent.php:675 ../lib/Galette/Entity/Adherent.php:693 ../lib/Galette/Entity/Adherent.php:709 ../lib/Galette/Entity/Adherent.php:945 ../lib/Galette/Entity/Adherent.php:958 ../lib/Galette/Entity/Adherent.php:967 ../lib/Galette/Entity/Adherent.php:1460 ../lib/Galette/Entity/Contribution.php:358 ../lib/Galette/Entity/Contribution.php:367 ../lib/Galette/Entity/Contribution.php:376 ../lib/Galette/Entity/Contribution.php:526 ../lib/Galette/Entity/Contribution.php:1143 ../lib/Galette/Entity/Contribution.php:1262 ../lib/Galette/Entity/Contribution.php:1271 ../lib/Galette/Entity/Contribution.php:1280 ../lib/Galette/Entity/ImportModel.php:212 ../lib/Galette/Entity/Group.php:622 ../lib/Galette/Core/Plugins.php:234 ../includes/routes/members.routes.php:201 ../includes/routes/members.routes.php:212 ../includes/routes/members.routes.php:223 ../includes/routes/members.routes.php:234 ../includes/routes/members.routes.php:2430 ../templates/default/member.tpl:514 ../templates/default/advanced_search.tpl:212 
 $lang['galette']['Y-m-d'] = 'd/m/Y';
 
 // ../includes/routes/contributions.routes.php:146 
@@ -1866,8 +1866,8 @@ $lang['galette']['Translate labels'] = 'Traduction de libellés';
 // ../templates/default/ajouter_contribution.tpl:10 
 $lang['galette']['Related transaction informations'] = 'Informations sur la transaction liée';
 
-// ../includes/routes/members.routes.php:1109 
-$lang['galette']['Account modification mail sent to \'%s\'.'] = 'Courriel de modification de compte envoyé à « %s ».';
+// ../templates/default/preferences.tpl:256 
+$lang['galette']['Do you want to use server\'s TLS capabilities?'] = 'Souhaitez-vous utiliser les capacités TLS du serveur&nbsp;?';
 
 // ../includes/routes/management.routes.php:1667 
 $lang['galette']['CSV members import'] = 'Import CSV de membres';
@@ -1950,7 +1950,7 @@ $lang['galette']['Sheet type'] = 'Type de liste';
 // ../templates/default/gestion_adherents.tpl:177 ../templates/default/gestion_adherents.tpl:266 ../templates/default/gestion_intitule_content.tpl:65 ../templates/default/group_persons.tpl:29 ../templates/default/ajax_members.tpl:40 
 $lang['galette']['[staff]'] = '[staff]';
 
-// ../lib/Galette/Util/FakeData.php:463 
+// ../lib/Galette/Util/FakeData.php:462 
 $lang['galette']['Photo has not been stored!'] = 'La photo n\'a pas été enregistrée&nbsp;!';
 
 // ../templates/default/preferences.tpl:197 ../templates/default/preferences.tpl:198 
@@ -1962,10 +1962,10 @@ $lang['galette']['You are not part of managers for the requested group.'] = 'Vou
 // ../templates/default/preferences.tpl:307 
 $lang['galette']['Label width:'] = 'Largeur étiquette&nbsp;:';
 
-// ../lib/Galette/Entity/Adherent.php:715 
+// ../lib/Galette/Entity/Adherent.php:714 
 $lang['galette']['%days days remaining (ending on %date)'] = '%days jours restants (fin le %date)';
 
-// ../includes/routes/members.routes.php:978 
+// ../includes/routes/members.routes.php:979 
 $lang['galette']['Your account has been created!'] = 'Votre compte a été créé&nbsp;!';
 
 // ../templates/default/gestion_textes.tpl:60 
@@ -1983,7 +1983,7 @@ $lang['galette']['Select an user'] = 'Sélectionnez un utilisateur';
 // ../includes/fields_defs/members_fields.php:115 ../templates/default/preferences.tpl:36 ../templates/default/preferences.tpl:38 
 $lang['galette']['Address:'] = 'Adresse&nbsp;:';
 
-// ../lib/Galette/Util/FakeData.php:581 
+// ../lib/Galette/Util/FakeData.php:580 
 $lang['galette']['No contribution created!'] = 'Aucune contribution créée&nbsp;!';
 
 // ../templates/default/preferences.tpl:31 ../templates/default/preferences.tpl:370 ../templates/default/forms_types/picture.tpl:10 
@@ -2034,7 +2034,7 @@ $lang['galette']['Informations about available plugins'] = 'Informations sur les
 // ../templates/default/preferences.tpl:257 
 $lang['galette']['Do you want to use server\'s TLS capabilities?<br/>For GMail, this will always be on.'] = 'Souhaitez-vous utiliser les capacités TLS du serveur&nbsp;?<br/>Pour GMail, cette fonctionnalité sera toujours active.';
 
-// ../includes/routes/members.routes.php:1048 
+// ../includes/routes/members.routes.php:1049 
 $lang['galette']['Member account has been modified.'] = 'Le compte de l\'adhérent a été modifié avec succès.';
 
 // ../templates/default/preferences.tpl:184 
@@ -2052,10 +2052,13 @@ $lang['galette']['Additionnaly, which table(s) do you want to export?'] = 'Aditi
 // ../lib/Galette/Entity/Reminder.php:272 
 $lang['galette']['Sent reminder mail for impending membership'] = 'Courriel de rappel envoyé pour l\' adhésion à échéance proche';
 
+// ../templates/default/preferences.tpl:252 
+$lang['galette']['Would emailing use any SMTP authentication? You\'ll have to provide username and password below. For GMail, authentication will always be on.'] = 'Est-ce que l\'envoi de mails utilisera l\'authentification SMTP&nbsp;:? Vous devrez fournir un nom d\'utilisateur et un mot de passe ci-dessous. Pour GMail, l\'authentification sera toujours activée.';
+
 // ../templates/default/page.tpl:211 
 $lang['galette']['A mailing exists in the current session. Click here if you want to resume or cancel it.'] = 'Un E-Mailing existe dans la session courante. Cliquez ici si vous souhaitez le reprendre ou l\'annuler.';
 
-// ../lib/Galette/Entity/Contribution.php:1183 ../includes/routes/members.routes.php:1506 ../templates/default/gestion_contributions.tpl:26 ../templates/default/ajouter_contribution.tpl:81 
+// ../lib/Galette/Entity/Contribution.php:1183 ../includes/routes/members.routes.php:1505 ../templates/default/gestion_contributions.tpl:26 ../templates/default/ajouter_contribution.tpl:81 
 $lang['galette']['Transfer'] = 'Virement';
 
 // ../includes/routes/contributions.routes.php:643 
@@ -2094,7 +2097,7 @@ $lang['galette']['Dynamic fields configuration'] = 'Configuration des champs dyn
 // ../templates/default/preferences.tpl:93 
 $lang['galette']['Viadeo'] = 'Viadeo';
 
-// ../lib/Galette/IO/PdfAttendanceSheet.php:108 ../includes/routes/members.routes.php:2414 ../templates/default/gestion_adherents.tpl:227 ../templates/default/attendance_sheet_details.tpl:13 
+// ../lib/Galette/IO/PdfAttendanceSheet.php:108 ../includes/routes/members.routes.php:2413 ../templates/default/gestion_adherents.tpl:227 ../templates/default/attendance_sheet_details.tpl:13 
 $lang['galette']['Attendance sheet'] = 'Liste d\'émargement';
 
 // ../includes/routes/contributions.routes.php:1081 
@@ -2106,7 +2109,7 @@ $lang['galette']['Long form'] = 'Forme longue';
 // ../install/old.index.php:1133 
 $lang['galette']['The tables has been correctly updated.'] = 'Les tables ont été correctement mises à jour.';
 
-// ../lib/Galette/Util/FakeData.php:577 
+// ../lib/Galette/Util/FakeData.php:576 
 $lang['galette']['%count contributions created'] = '%count contributions créées';
 
 // ../templates/default/configurer_fiche_content.tpl:49 
@@ -2124,7 +2127,7 @@ $lang['galette']['Print an invoice or a receipt (depending on contribution type)
 // ../templates/default/forms_types/company.tpl:6 
 $lang['galette']['Is company?'] = 'Est une personne morale&nbsp;?';
 
-// ../lib/Galette/Entity/Adherent.php:1053 
+// ../lib/Galette/Entity/Adherent.php:1052 
 $lang['galette']['- This username is already in use, please choose another one!'] = '- Cet identifiant est déjà utilisé, veuillez en choisir un autre&nbsp;!';
 
 // ../install/old.index.php:487 ../install/steps/check.php:146 
@@ -2226,7 +2229,7 @@ $lang['galette']['Display member number in member related windows'] = 'Afficher 
 // ../lib/Galette/IO/PdfAttendanceSheet.php:160 ../includes/fields_defs/pdfmodels_fields.php:266 
 $lang['galette']['Signature'] = 'Signature';
 
-// ../lib/Galette/Entity/Adherent.php:1303 
+// ../lib/Galette/Entity/Adherent.php:1302 
 $lang['galette']['Member card updated'] = 'Fiche adhérent mise à jour';
 
 // ../lib/Galette/Entity/PdfModel.php:565 
@@ -2256,7 +2259,7 @@ $lang['galette']['Emailing disabled'] = 'Envoi de courriel désactivé';
 // ../includes/routes/contributions.routes.php:1150 
 $lang['galette']['An error occured trying to remove contributions(s) :('] = 'Une erreur est survenue lors de la suppression de(s) la contribution(s) :(';
 
-// ../includes/routes/members.routes.php:2628 
+// ../includes/routes/members.routes.php:2627 
 $lang['galette']['The file does not exists or cannot be read :('] = 'Le fichier n\'existe pas ou ne peut être lu :(';
 
 // ../install/old.index.php:537 ../install/steps/db.php:48 
@@ -2280,7 +2283,7 @@ $lang['galette']['Transaction %id'] = 'Transaction %s';
 // ../install/old.index.php:602 ../install/steps/db.php:64 
 $lang['galette']['The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT.'] = 'Les droits nécessaires sont CREATE, DROP, DELETE, UPDATE, SELECT et INSERT.';
 
-// ../lib/Galette/Entity/Adherent.php:1406 ../includes/routes/members.routes.php:258 ../includes/routes/members.routes.php:262 ../includes/routes/members.routes.php:266 ../includes/routes/members.routes.php:270 ../templates/default/gestion_mailings.tpl:34 ../templates/default/gestion_intitule_content.tpl:36 ../templates/default/gestion_intitule_content.tpl:77 ../templates/default/config_fields.tpl:35 ../templates/default/editer_champ.tpl:27 ../templates/default/editer_champ.tpl:109 ../templates/default/configurer_fiche_content.tpl:21 ../templates/default/display_dynamic_fields.tpl:27 ../templates/default/advanced_search.tpl:85 ../templates/default/advanced_search.tpl:218 ../templates/default/advanced_search.tpl:371 
+// ../lib/Galette/Entity/Adherent.php:1405 ../includes/routes/members.routes.php:258 ../includes/routes/members.routes.php:262 ../includes/routes/members.routes.php:266 ../includes/routes/members.routes.php:270 ../templates/default/gestion_mailings.tpl:34 ../templates/default/gestion_intitule_content.tpl:36 ../templates/default/gestion_intitule_content.tpl:77 ../templates/default/config_fields.tpl:35 ../templates/default/editer_champ.tpl:27 ../templates/default/editer_champ.tpl:109 ../templates/default/configurer_fiche_content.tpl:21 ../templates/default/display_dynamic_fields.tpl:27 ../templates/default/advanced_search.tpl:85 ../templates/default/advanced_search.tpl:218 ../templates/default/advanced_search.tpl:371 
 $lang['galette']['No'] = 'Non';
 
 // ../templates/default/gestion_intitule_content.tpl:46 ../templates/default/editer_champ.tpl:114 ../templates/default/configurer_fiches.tpl:5 ../templates/default/advanced_search.tpl:164 ../templates/default/gestion_titres.tpl:29 
@@ -2370,7 +2373,7 @@ $lang['galette']['LinkedIn'] = 'LinkedIn';
 // ../includes/fields_defs/members_fields.php:260 
 $lang['galette']['Modification date:'] = 'Date de modification&nbsp;:';
 
-// ../lib/Galette/Util/FakeData.php:522 
+// ../lib/Galette/Util/FakeData.php:521 
 $lang['galette']['%count transactions requested, and %done created'] = '%count transactions demandées et %done créées';
 
 // ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:1051 
@@ -2508,7 +2511,7 @@ $lang['galette']['Labels'] = 'Étiquettes';
 // ../templates/default/page.tpl:151 
 $lang['galette']['Export some data in various formats'] = 'Exporte des données dans divers formats';
 
-// ../includes/routes/members.routes.php:1022 ../includes/routes/management.routes.php:596 
+// ../includes/routes/members.routes.php:1023 ../includes/routes/management.routes.php:596 
 $lang['galette']['Galette admin'] = 'Administrateur Galette';
 
 // ../includes/routes/contributions.routes.php:824 
@@ -2703,7 +2706,7 @@ $lang['galette']['History entry %id'] = 'Entrée d\'historique %id';
 // ../install/old.index.php:743 ../install/steps/db_checks.php:207 
 $lang['galette']['Database exists and connection parameters are OK.'] = 'La base existe et les paramètres de connexion sont corrects.';
 
-// ../lib/Galette/Core/Install.php:1153 
+// ../lib/Galette/Core/Install.php:1156 
 $lang['galette']['Update models'] = 'Mise à jour des modèles';
 
 // ../includes/routes/groups.routes.php:164 
@@ -2751,7 +2754,7 @@ $lang['galette']['Picture'] = 'Image';
 // ../templates/default/preferences.tpl:399 
 $lang['galette']['Year:'] = 'Année&nbsp;:';
 
-// ../lib/Galette/Entity/Transaction.php:295 ../lib/Galette/Entity/Adherent.php:971 ../lib/Galette/Entity/Contribution.php:379 ../lib/Galette/Entity/Contribution.php:1283 
+// ../lib/Galette/Entity/Transaction.php:295 ../lib/Galette/Entity/Adherent.php:970 ../lib/Galette/Entity/Contribution.php:379 ../lib/Galette/Entity/Contribution.php:1283 
 $lang['galette']['- Wrong date format (%date_format) for %field!'] = '- Format de date incorrect (%date_format) pour %field&nbsp;!';
 
 // ../templates/default/gestion_mailings.tpl:6 ../templates/default/history.tpl:6 ../templates/default/gestion_contributions.tpl:16 
@@ -2775,13 +2778,13 @@ $lang['galette']['%s title'] = 'titre %s';
 // ../templates/default/member.tpl:121 
 $lang['galette']['If you check this box (and if you are up to date with your contributions), your full name, website address ad other informations will be publically visible on the members list.<br/>If you\'ve uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case.'] = 'Si vous cochez cette case (et que vous êtes à jour de vos cotisations), votre nom complet, l\'adresse de votre site web et les autres informations seront visibles publiquement dans la liste des membres.<br/>Si vous avez envoyé une photo, elle sera affichée sur la page trombinoscope.<br/>Notez que les administrateurs peuvent désactiver les pages publiques ; dans ce cas, ce paramètre n\'aura aucun effet.';
 
-// ../lib/Galette/Util/FakeData.php:277 
+// ../lib/Galette/Util/FakeData.php:276 
 $lang['galette']['%count groups created'] = '%count groupes créés';
 
 // ../templates/default/gestion_adherents.tpl:49 ../templates/default/liste_membres.tpl:8 
 $lang['galette']['members'] = 'adhérents';
 
-// ../lib/Galette/Entity/Adherent.php:1112 
+// ../lib/Galette/Entity/Adherent.php:1111 
 $lang['galette']['An error has occured while looking if status does exists.'] = 'Une erreur est survenue lors de la vérification de l\'existance du statut.';
 
 // ../install/old.index.php:1507 ../install/steps/end.php:49 
@@ -2805,7 +2808,7 @@ $lang['galette']['Database access and permissions'] = 'Accès et permissions de 
 // ../templates/default/change_passwd.tpl:5 
 $lang['galette']['Your password has been changed. Please click on the \'home\' button to go to the login page.'] = 'Votre mot de passe a été changé. Veuillez cliquer sur le bouton « accueil » pour accéder à la page de connexion.';
 
-// ../includes/routes/members.routes.php:2046 
+// ../includes/routes/members.routes.php:2045 
 $lang['galette']['Mailing has been successfully saved.'] = 'L\'E-Mailing a été enregistré avec succès.';
 
 // ../templates/default/forms_types/company.tpl:7 
@@ -2856,7 +2859,7 @@ $lang['galette']['An error occured displaying preview :('] = 'Une erreur est sur
 // ../includes/i18n.inc.php:354 
 $lang['galette']['Partnership'] = 'Partenariat';
 
-// ../lib/Galette/Entity/Adherent.php:1082 
+// ../lib/Galette/Entity/Adherent.php:1081 
 $lang['galette']['Password misrepeated: '] = 'Erreur en recopiant le mot de passe&nbsp;: ';
 
 // ../templates/default/configurer_fiches.tpl:70 ../templates/default/gestion_pdf.tpl:129 ../templates/default/js_loader.tpl:2 
@@ -2874,7 +2877,7 @@ $lang['galette']['All accounts'] = 'Tous  les comptes';
 // ../install/old.index.php:487 ../install/steps/check.php:146 
 $lang['galette']['file_name'] = 'nom_fichier';
 
-// ../lib/Galette/IO/Charts.php:245 ../lib/Galette/Entity/Adherent.php:703 ../templates/default/reminder.tpl:18 
+// ../lib/Galette/IO/Charts.php:245 ../lib/Galette/Entity/Adherent.php:702 ../templates/default/reminder.tpl:18 
 $lang['galette']['Late'] = 'En retard';
 
 // ../install/old.index.php:314 
@@ -2892,7 +2895,7 @@ $lang['galette']['Number of label columns:'] = 'Nombre de colonnes d\'étiquette
 // ../templates/default/gestion_contributions.tpl:160 
 $lang['galette']['Found contributions total %f'] = 'Total des contributions trouvées&nbsp;: %f';
 
-// ../lib/Galette/Entity/Adherent.php:1260 
+// ../lib/Galette/Entity/Adherent.php:1259 
 $lang['galette']['Self_subscription as a member: '] = 'Enregistrement en ligne';
 
 // ../templates/default/gestion_adherents.tpl:33 ../templates/default/advanced_search.tpl:41 
@@ -2913,7 +2916,7 @@ $lang['galette']['The uploaded file exceeds the MAX_FILE_SIZE directive that was
 // ../lib/Galette/Entity/Entitled.php:518 
 $lang['galette']['Cannot delete this label: it\'s still used'] = 'Impossible de supprimer cet intitulé&nbsp;: il est toujours utilisé';
 
-// ../lib/Galette/Entity/Adherent.php:1030 
+// ../lib/Galette/Entity/Adherent.php:1029 
 $lang['galette']['- The username must be composed of at least %i characters!'] = '- L\'identifiant doit être composé d\'au moins %i caractères&nbsp;!';
 
 // ../includes/i18n.inc.php:359 
@@ -2979,7 +2982,7 @@ $lang['galette']['Generate'] = 'Générer';
 // ../templates/default/ajouter_contribution.tpl:70 
 $lang['galette']['Details of membership fee'] = 'Détails de la cotisation';
 
-// ../lib/Galette/Util/FakeData.php:468 
+// ../lib/Galette/Util/FakeData.php:467 
 $lang['galette']['Photo has not been copied!'] = 'La photo n\'a pas été copiée&nbsp;!';
 
 // ../templates/default/advanced_search.tpl:243 
@@ -2997,7 +3000,7 @@ $lang['galette']['Subtitle'] = 'Sous-titre';
 // ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:518 
 $lang['galette']['User, read/write'] = 'Utilisateur, lecture/écriture';
 
-// ../includes/routes/members.routes.php:1342 
+// ../includes/routes/members.routes.php:1341 
 $lang['galette']['Remove members'] = 'Suppression membres';
 
 // ../templates/default/gestion_textes.tpl:6 
@@ -3072,10 +3075,10 @@ $lang['galette']['Completely dispatched transaction'] = 'Transaction entièremen
 // ../includes/routes/ajax.routes.php:65 
 $lang['galette']['Required argument not present!'] = 'Argument requis non présent !';
 
-// ../lib/Galette/Entity/Adherent.php:1406 ../includes/routes/members.routes.php:258 ../includes/routes/members.routes.php:262 ../includes/routes/members.routes.php:266 ../includes/routes/members.routes.php:270 ../templates/default/gestion_mailings.tpl:32 ../templates/default/gestion_intitule_content.tpl:37 ../templates/default/gestion_intitule_content.tpl:75 ../templates/default/config_fields.tpl:33 ../templates/default/editer_champ.tpl:28 ../templates/default/editer_champ.tpl:110 ../templates/default/configurer_fiche_content.tpl:21 ../templates/default/display_dynamic_fields.tpl:25 ../templates/default/advanced_search.tpl:83 ../templates/default/advanced_search.tpl:218 ../templates/default/advanced_search.tpl:371 
+// ../lib/Galette/Entity/Adherent.php:1405 ../includes/routes/members.routes.php:258 ../includes/routes/members.routes.php:262 ../includes/routes/members.routes.php:266 ../includes/routes/members.routes.php:270 ../templates/default/gestion_mailings.tpl:32 ../templates/default/gestion_intitule_content.tpl:37 ../templates/default/gestion_intitule_content.tpl:75 ../templates/default/config_fields.tpl:33 ../templates/default/editer_champ.tpl:28 ../templates/default/editer_champ.tpl:110 ../templates/default/configurer_fiche_content.tpl:21 ../templates/default/display_dynamic_fields.tpl:25 ../templates/default/advanced_search.tpl:83 ../templates/default/advanced_search.tpl:218 ../templates/default/advanced_search.tpl:371 
 $lang['galette']['Yes'] = 'Oui';
 
-// ../includes/routes/members.routes.php:1195 ../includes/routes/management.routes.php:523 ../includes/routes/management.routes.php:564 
+// ../includes/routes/members.routes.php:1196 ../includes/routes/management.routes.php:523 ../includes/routes/management.routes.php:564 
 $lang['galette']['Delete failed'] = 'La suppression a échoué';
 
 // ../templates/default/preferences.tpl:133 
@@ -3132,7 +3135,7 @@ $lang['galette']['Allow members to print card ?'] = 'Permettre aux membres d\'im
 // ../templates/default/mailing_recipients.tpl:18 
 $lang['galette']['unreachable members:'] = 'membres qui n\'ont pu être joints&nbsp;:';
 
-// ../lib/Galette/Entity/Adherent.php:1035 
+// ../lib/Galette/Entity/Adherent.php:1034 
 $lang['galette']['- The username cannot contain the @ character'] = '- L\'identifiant ne peut pas contenir le caractère @&nbsp;!';
 
 // ../install/steps/check.php:76 ../templates/default/gestion_mailings.tpl:97 ../templates/default/gestion_mailings.tpl:128 ../templates/default/mailing_adherents.tpl:24 
@@ -3150,13 +3153,13 @@ $lang['galette']['Payment type:'] = 'Type de paiement&nbsp;:';
 // ../includes/fields_defs/pdfmodels_fields.php:243 
 $lang['galette']['City'] = 'Ville';
 
-// ../includes/routes/members.routes.php:1946 
+// ../includes/routes/members.routes.php:1945 
 $lang['galette']['Please type an object for the message.'] = 'Veuillez indiquer un objet pour le message.';
 
 // ../templates/default/500.tpl:29 
 $lang['galette']['Line:'] = 'Ligne :';
 
-// ../lib/Galette/Entity/Adherent.php:682 
+// ../lib/Galette/Entity/Adherent.php:681 
 $lang['galette']['Never contributed: Registered %days days ago (since %date)'] = 'N\'a jamais cotisé&nbsp;: Inscrit depuis %days jours (depuis le %date)';
 
 // ../install/steps/db.php:52 
@@ -3207,7 +3210,7 @@ $lang['galette']['Address (continuation)'] = 'Adresse (suite)';
 // ../templates/default/gestion_textes.tpl:54 ../templates/default/gestion_pdf.tpl:26 
 $lang['galette']['Your organisation slogan'] = 'Le slogan de votre association';
 
-// ../lib/Galette/Entity/Transaction.php:331 ../lib/Galette/Entity/Adherent.php:1145 ../lib/Galette/Entity/Contribution.php:447 ../includes/routes/management.routes.php:429 
+// ../lib/Galette/Entity/Transaction.php:331 ../lib/Galette/Entity/Adherent.php:1144 ../lib/Galette/Entity/Contribution.php:447 ../includes/routes/management.routes.php:429 
 $lang['galette']['- Mandatory field %field empty.'] = '- Champ obligatoire %field vide.';
 
 // ../templates/default/preferences.tpl:127 
@@ -3273,7 +3276,7 @@ $lang['galette']['No member selected'] = 'Aucun adhérent sélectionné';
 // ../templates/default/desktop.tpl:9 ../templates/default/page.tpl:139 
 $lang['galette']['View and manage groups'] = 'Afficher et gérer les groupes';
 
-// ../lib/Galette/Entity/Adherent.php:1021 
+// ../lib/Galette/Entity/Adherent.php:1020 
 $lang['galette']['- Non-valid Website address! Maybe you\'ve skipped the http://?'] = '- Adresse web non valide&nbsp;! Peut-être avez vous oublié le http://&nbsp;?';
 
 // ../includes/fields_defs/members_fields.php:107 
@@ -3468,7 +3471,7 @@ $lang['galette']['Missing required form!'] = 'Formulaire requis manquant !';
 // ../lib/Galette/IO/PdfAdhesionForm.php:130 ../includes/routes/members.routes.php:244 ../templates/default/gestion_adherents.tpl:249 ../templates/default/forms_types/gender.tpl:13 
 $lang['galette']['Man'] = 'Homme';
 
-// ../lib/Galette/Entity/Contribution.php:1174 ../includes/routes/members.routes.php:1503 ../templates/default/gestion_contributions.tpl:23 ../templates/default/ajouter_contribution.tpl:78 
+// ../lib/Galette/Entity/Contribution.php:1174 ../includes/routes/members.routes.php:1502 ../templates/default/gestion_contributions.tpl:23 ../templates/default/ajouter_contribution.tpl:78 
 $lang['galette']['Cash'] = 'Espèces';
 
 // ../includes/routes/management.routes.php:3067 
@@ -3555,7 +3558,7 @@ $lang['galette']['Staff member'] = 'Membre du bureau';
 // ../templates/default/gestion_contributions.tpl:44 ../templates/default/gestion_transactions.tpl:21 
 $lang['galette']['See member profile'] = 'Voir la fiche adhérent';
 
-// ../includes/routes/members.routes.php:1040 
+// ../includes/routes/members.routes.php:1041 
 $lang['galette']['A problem happened while sending email to admin for account \'%s\'.'] = 'Un problème est survenu dans l\'envoi du mot de passe à l\'administrateur pour le compte « %s »';
 
 // ../install/old.index.php:1225 ../install/steps/galette.php:54 
@@ -3573,7 +3576,7 @@ $lang['galette']['Ascendent'] = 'Croissant';
 // ../templates/default/advanced_search.tpl:106 
 $lang['galette']['Begin date'] = 'Date de début';
 
-// ../lib/Galette/Core/Install.php:1131 
+// ../lib/Galette/Core/Install.php:1134 
 $lang['galette']['Fields config and categories'] = 'Configuration des champs et des catégories';
 
 // ../install/steps/check.php:99 
@@ -3639,7 +3642,7 @@ $lang['galette']['boolean'] = 'booléen';
 // ../includes/routes/management.routes.php:1583 
 $lang['galette']['An error occured running parameted export \'%export\'. Please check the logs.'] = 'Une erreur est survenue lors de l\'exécution de l\'export paramétré « %export ». Veuillez vérifier les logs.';
 
-// ../lib/Galette/Core/Install.php:1127 ../templates/default/gestion_adherents.tpl:105 ../templates/default/gestion_adherents.tpl:185 
+// ../lib/Galette/Core/Install.php:1130 ../templates/default/gestion_adherents.tpl:105 ../templates/default/gestion_adherents.tpl:185 
 $lang['galette']['Status'] = 'Statut';
 
 // ../templates/default/import.tpl:46 
@@ -3654,13 +3657,13 @@ $lang['galette']['Add new category'] = 'Ajouter une catégorie';
 // ../lib/Galette/Entity/Contribution.php:1037 
 $lang['galette']['Membership'] = 'Cotisations';
 
-// ../includes/routes/members.routes.php:1346 
+// ../includes/routes/members.routes.php:1345 
 $lang['galette']['You are about to remove %count members.'] = 'Vous êtes sur le point de supprimer %count adhérents.';
 
 // ../lib/Galette/Entity/Transaction.php:396 
 $lang['galette']['Transaction added'] = 'Transaction ajoutée';
 
-// ../lib/Galette/Core/Install.php:684 
+// ../lib/Galette/Core/Install.php:687 
 $lang['galette']['Unable to run %version update script :('] = 'Impossible de lancer le script de mise à jour %version :(';
 
 // ../lib/Galette/Core/Plugins.php:717 
@@ -3684,7 +3687,7 @@ $lang['galette']['No host'] = 'Aucun hôte';
 // ../includes/main.inc.php:445 
 $lang['galette']['Routes \'%routes\' are missing in ACLs!'] = 'Les routes %routes ne sont pas enregistrées dans les ACL !';
 
-// ../includes/routes/members.routes.php:1311 
+// ../includes/routes/members.routes.php:1312 
 $lang['galette']['Remove member %1$s'] = 'Supprimer l\'adhérent %1$s';
 
 // ../templates/default/advanced_search.tpl:201 ../templates/default/advanced_search.tpl:223 
@@ -3699,13 +3702,13 @@ $lang['galette']['Edit field'] = 'Édition de champ';
 // ../templates/default/member.tpl:30 ../templates/default/voir_adherent.tpl:55 
 $lang['galette']['Attached to:'] = 'Attaché à&nbsp;:';
 
-// ../includes/routes/members.routes.php:1411 
+// ../includes/routes/members.routes.php:1410 
 $lang['galette']['Member %name has been successfully deleted.'] = 'L\'adhérent %name » a été supprimé avec succès.';
 
 // ../install/old.index.php:1331 
 $lang['galette']['Mr.'] = 'M.';
 
-// ../lib/Galette/Entity/Adherent.php:1013 ../lib/Galette/Entity/Adherent.php:1060 
+// ../lib/Galette/Entity/Adherent.php:1012 ../lib/Galette/Entity/Adherent.php:1059 
 $lang['galette']['An error has occured while looking if login already exists.'] = 'Une erreur est survenue lors de la vérification d\'unicité de l\'identifiant.';
 
 // ../templates/default/500.tpl:11 
@@ -3762,7 +3765,7 @@ $lang['galette']['(10 characters max)'] = '(10 caractères max)';
 // ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:285 ../install/old.index.php:205 ../install/old.index.php:310 ../install/old.index.php:1525 ../install/steps/type.php:40 ../templates/default/plugin_initdb.tpl:131 
 $lang['galette']['Installation mode'] = 'Type d\'installation';
 
-// ../includes/routes/members.routes.php:2227 
+// ../includes/routes/members.routes.php:2226 
 $lang['galette']['No reminder to send for now.'] = 'Aucun rappel à envoyer pour le moment.';
 
 // ../install/old.index.php:620 ../install/steps/db.php:81 
@@ -3783,7 +3786,7 @@ $lang['galette']['- Membership period overlaps period starting at '] = '- La pé
 // ../templates/default/mailing_recipients.tpl:5 
 $lang['galette']['Your message has been sent to <strong>%s members</strong>'] = 'Votre courriel a été envoyé à <strong>%s membres</strong>';
 
-// ../includes/routes/members.routes.php:1952 
+// ../includes/routes/members.routes.php:1951 
 $lang['galette']['Please enter a message.'] = 'Veuillez saisir un message.';
 
 // ../includes/routes/groups.routes.php:237 
@@ -3800,6 +3803,9 @@ $lang['galette']['Choose language'] = 'Choisissez la langue';
 
 // ../templates/default/preferences.tpl:247 
 $lang['galette']['SMTP port:'] = 'Port SMTP&nbsp;:';
+
+// ../templates/default/config_fields.tpl:14 
+$lang['galette']['$catname'] = '$catname';
 
 // ../templates/default/advanced_search.tpl:29 
 $lang['galette']['Member of group'] = 'Membre du groupe';
@@ -3834,7 +3840,7 @@ $lang['galette']['Member\'s last name'] = 'Nom de l\'adhérent';
 // ../templates/default/member.tpl:6 ../templates/default/voir_adherent.tpl:6 
 $lang['galette']['Previous'] = 'Précédent';
 
-// ../lib/Galette/Core/Install.php:1119 
+// ../lib/Galette/Core/Install.php:1122 
 $lang['galette']['Preferences'] = 'Préférences';
 
 // ../templates/default/export.tpl:62 
@@ -3903,7 +3909,7 @@ $lang['galette']['Confirmation:'] = 'Confirmation :';
 // ../install/old.index.php:832 ../install/steps/db_checks.php:130 
 $lang['galette']['DELETE operation allowed'] = 'Opération DELETE autorisée';
 
-// ../lib/Galette/Core/Install.php:1018 
+// ../lib/Galette/Core/Install.php:1021 
 $lang['galette']['Write configuration file'] = 'Écriture du fichier de configuration';
 
 // ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:618 
@@ -3912,7 +3918,7 @@ $lang['galette']['Missing required field permissions!'] = 'Permissions du champ 
 // ../templates/default/gestion_adherents.tpl:291 ../templates/default/gestion_contributions.tpl:259 
 $lang['galette']['Deletion'] = 'Suppression';
 
-// ../lib/Galette/Filters/MembersList.php:316 ../lib/Galette/Entity/Adherent.php:685 ../templates/default/gestion_adherents.tpl:263 
+// ../lib/Galette/Filters/MembersList.php:316 ../lib/Galette/Entity/Adherent.php:684 ../templates/default/gestion_adherents.tpl:263 
 $lang['galette']['Never contributed'] = 'N\'a jamais cotisé';
 
 // ../templates/default/configurer_fiche_content.tpl:26 
@@ -3978,7 +3984,7 @@ $lang['galette']['Transactions management'] = 'Gestion des transactions';
 // ../install/scripts/upgrade-to-0.8.php:203 
 $lang['galette']['Directory %dir has been moved!'] = 'Le répertoire %dir n\'a pas été déplacé&nbsp;!';
 
-// ../lib/Galette/Entity/Contribution.php:1171 ../includes/routes/members.routes.php:1502 ../templates/default/gestion_contributions.tpl:28 ../templates/default/ajouter_contribution.tpl:83 
+// ../lib/Galette/Entity/Contribution.php:1171 ../includes/routes/members.routes.php:1501 ../templates/default/gestion_contributions.tpl:28 ../templates/default/ajouter_contribution.tpl:83 
 $lang['galette']['Other'] = 'Autre';
 
 // ../templates/default/forms_types/groups.tpl:7 
@@ -3996,7 +4002,7 @@ $lang['galette']['Administrator'] = 'Administrateur';
 // ../templates/default/desktop.tpl:12 ../templates/default/page.tpl:143 
 $lang['galette']['View and filter transactions'] = 'Consulter et filtrer les transactions';
 
-// ../lib/Galette/Entity/Contribution.php:1186 ../includes/routes/members.routes.php:1507 ../templates/default/gestion_contributions.tpl:27 ../templates/default/ajouter_contribution.tpl:82 
+// ../lib/Galette/Entity/Contribution.php:1186 ../includes/routes/members.routes.php:1506 ../templates/default/gestion_contributions.tpl:27 ../templates/default/ajouter_contribution.tpl:82 
 $lang['galette']['Paypal'] = 'Paypal';
 
 // ../install/steps/admin.php:68 
@@ -4026,7 +4032,7 @@ $lang['galette']['Without'] = 'Sans';
 // ../install/old.index.php:1420 
 $lang['galette']['PDF models cannot be initialized.'] = 'Les modèles PDF n\'ont pas été initialisés.';
 
-// ../includes/routes/members.routes.php:2103 ../templates/default/gestion_mailings.tpl:214 ../templates/default/mailing_adherents.tpl:134 
+// ../includes/routes/members.routes.php:2102 ../templates/default/gestion_mailings.tpl:214 ../templates/default/mailing_adherents.tpl:134 
 $lang['galette']['Mailing preview'] = 'Prévisualisation de l\'E-Mailing';
 
 // ../templates/default/gestion_adherents.tpl:141 ../templates/default/gestion_intitule_content.tpl:16 ../templates/default/gestion_contributions.tpl:152 ../templates/default/configurer_fiche_content.tpl:9 ../templates/default/gestion_transactions.tpl:79 ../templates/default/gestion_titres.tpl:11 
@@ -4047,7 +4053,7 @@ $lang['galette']['Transaction: %s'] = 'Transaction&nbsp;: %s';
 // ../templates/default/ajouter_transaction.tpl:49 
 $lang['galette']['Select an existing contribution in the database, and attach it to the current transaction'] = 'Sélectionner une contribution existante et l\'attacher à la transaction courante';
 
-// ../includes/routes/members.routes.php:1517 ../templates/default/advanced_search.tpl:48 ../templates/default/page.tpl:138 
+// ../includes/routes/members.routes.php:1516 ../templates/default/advanced_search.tpl:48 ../templates/default/page.tpl:138 
 $lang['galette']['Advanced search'] = 'Recherche avancée';
 
 // ../templates/default/export.tpl:9 
@@ -4068,7 +4074,7 @@ $lang['galette']['The uploaded file was only partially uploaded'] = 'Le fichier 
 // ../includes/fields_defs/pdfmodels_fields.php:201 ../includes/i18n.inc.php:345 
 $lang['galette']['Benefactor member'] = 'Membre bienfaiteur';
 
-// ../includes/routes/members.routes.php:2260 
+// ../includes/routes/members.routes.php:2259 
 $lang['galette']['Reminder has not been sent:'] = 'Le rappel n\'a pas été envoyé :';
 
 // ../webroot/installer.php:306 
@@ -4086,7 +4092,7 @@ $lang['galette']['Fields count mismatch... There should be %should_count fields 
 // ../includes/routes/contributions.routes.php:940 
 $lang['galette']['Transaction ID cannot ben set while adding!'] = 'L\'identifiant de la transaction ne peut être défini lors d\'un ajout !';
 
-// ../includes/routes/members.routes.php:1146 
+// ../includes/routes/members.routes.php:1147 
 $lang['galette']['An error occured adding member to its groups.'] = 'Une erreur est survenue lors de l\'ajout des groupes du membre.';
 
 // ../templates/default/mailing_adherents.tpl:63 ../templates/default/mailing_adherents.tpl:85 ../templates/default/reminder.tpl:31 ../templates/default/preferences.tpl:523 
@@ -4134,7 +4140,7 @@ $lang['galette']['No email sent to %email'] = 'Aucun email envoyé à %email';
 // ../includes/routes/contributions.routes.php:468 
 $lang['galette']['Contribution ID must be null calling add route!'] = 'L\'identifiant de contribution ne doit pas être renseigné pour un ajout !';
 
-// ../includes/routes/members.routes.php:1117 
+// ../includes/routes/members.routes.php:1118 
 $lang['galette']['A problem happened while sending account mail to \'%s\''] = 'Un problème est survenu lors de l\'envoi du courriel pour le compte « %s »';
 
 // ../templates/default/preferences.tpl:345 ../templates/default/preferences.tpl:346 ../templates/default/preferences.tpl:351 ../templates/default/preferences.tpl:352 ../templates/default/preferences.tpl:356 ../templates/default/preferences.tpl:357 ../templates/default/preferences.tpl:361 ../templates/default/preferences.tpl:362 
@@ -4161,7 +4167,7 @@ $lang['galette']['Contribution has been successfully attached to current transac
 // ../templates/default/gestion_adherents.tpl:193 
 $lang['galette']['%membername: contributions'] = '%membername&nbsp;: contributions';
 
-// ../lib/Galette/Core/Install.php:1139 ../templates/default/page.tpl:183 
+// ../lib/Galette/Core/Install.php:1142 ../templates/default/page.tpl:183 
 $lang['galette']['Titles'] = 'Titres';
 
 // ../lib/Galette/Core/Pagination.php:276 
@@ -4185,7 +4191,7 @@ $lang['galette']['Size:'] = 'Taille&nbsp;:';
 // ../webroot/installer.php:282 ../install/old.index.php:1522 ../templates/default/plugin_initdb.tpl:129 
 $lang['galette']['Steps:'] = 'Étapes&nbsp;:';
 
-// ../includes/routes/members.routes.php:1033 
+// ../includes/routes/members.routes.php:1034 
 $lang['galette']['New account mail sent to admin for \'%s\'.'] = 'Courriel de nouveau compte envoyé à l\'administrateur pour « %s ».';
 
 // ../templates/default/plugin_info.tpl:38 
@@ -4212,7 +4218,7 @@ $lang['galette']['Unable to create main datadir in %path!'] = 'Impossible de cr�
 // ../templates/default/gestion_pdf.tpl:50 
 $lang['galette']['Member\'s town'] = 'Ville de l\'adhérent';
 
-// ../lib/Galette/Entity/Adherent.php:1409 ../templates/default/forms_types/account.tpl:5 
+// ../lib/Galette/Entity/Adherent.php:1408 ../templates/default/forms_types/account.tpl:5 
 $lang['galette']['Active'] = 'Actif';
 
 // ../templates/default/reminder.tpl:65 
@@ -4287,7 +4293,7 @@ $lang['galette']['Your account (%s) do not contain any valid mail address'] = 'V
 // ../templates/default/gestion_adherents.tpl:49 ../templates/default/liste_membres.tpl:8 
 $lang['galette']['member'] = 'adhérent';
 
-// ../includes/routes/members.routes.php:1371 ../includes/routes/management.routes.php:1120 ../includes/routes/management.routes.php:1346 ../includes/routes/management.routes.php:1465 ../includes/routes/management.routes.php:2118 ../includes/routes/management.routes.php:2555 ../includes/routes/management.routes.php:2995 ../includes/routes/groups.routes.php:225 ../includes/routes/contributions.routes.php:1129 
+// ../includes/routes/members.routes.php:1370 ../includes/routes/management.routes.php:1120 ../includes/routes/management.routes.php:1346 ../includes/routes/management.routes.php:1465 ../includes/routes/management.routes.php:2118 ../includes/routes/management.routes.php:2555 ../includes/routes/management.routes.php:2995 ../includes/routes/groups.routes.php:225 ../includes/routes/contributions.routes.php:1129 
 $lang['galette']['Removal has not been confirmed!'] = 'La suppression n\'a pas été confirmée !';
 
 // ../templates/default/config_fields.tpl:32 
@@ -4329,7 +4335,7 @@ $lang['galette']['Perform advanced search into members list'] = 'Effectuer une r
 // ../install/steps/db_select_version.php:55 
 $lang['galette']['It seems you already use latest Galette version!'] = 'Il semble que vous utilisiez déjà la dernière version de Galette&nbsp;!';
 
-// ../lib/Galette/Entity/Adherent.php:1072 
+// ../lib/Galette/Entity/Adherent.php:1071 
 $lang['galette']['- The password must be of at least %i characters!'] = '- Le mot de passe doit être composé d\'au moins %i caractères&nbsp;!';
 
 // ../templates/default/gestion_contributions.tpl:39 
@@ -4377,7 +4383,7 @@ $lang['galette']['Update complete !'] = 'Fin de la mise à jour';
 // ../lib/Galette/Entity/Group.php:462 
 $lang['galette']['Group updated'] = 'Groupe mis à jour';
 
-// ../includes/routes/members.routes.php:2443 
+// ../includes/routes/members.routes.php:2442 
 $lang['galette']['attendance_sheet'] = 'liste_emargement';
 
 // ../lib/Galette/IO/CsvIn.php:309 
@@ -4470,7 +4476,7 @@ $lang['galette']['Installation mode unknown'] = 'Type d\'installation inconnu';
 // ../includes/fields_defs/members_fields.php:148 ../templates/default/preferences.tpl:50 
 $lang['galette']['Country:'] = 'Pays&nbsp;:';
 
-// ../lib/Galette/Core/Install.php:1135 
+// ../lib/Galette/Core/Install.php:1138 
 $lang['galette']['Mails texts'] = 'Textes courriels';
 
 // ../templates/default/ajouter_transaction.tpl:146 
@@ -4521,7 +4527,7 @@ $lang['galette']['Tables Creation'] = 'Création des tables';
 // ../templates/default/mailing_recipients.tpl:19 
 $lang['galette']['Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail.'] = 'Certains des membres que vous avez sélectionnés n\'ont pas d\'adresse de courriel. Cependant vous pouvez produire des étiquettes d\'enveloppes pour les contacter par courrier postal.';
 
-// ../includes/routes/members.routes.php:1399 
+// ../includes/routes/members.routes.php:1398 
 $lang['galette']['An error occured trying to remove members :/'] = 'Une erreur est survenue lors de la suppression des adhérents :/';
 
 // ../includes/routes/management.routes.php:2471 
@@ -4533,7 +4539,7 @@ $lang['galette']['Field has been successfully deleted!'] = 'Le champ a été sup
 // ../lib/Galette/IO/PdfContribution.php:146 
 $lang['galette']['receipt'] = 'recu';
 
-// ../lib/Galette/Core/Install.php:672 
+// ../lib/Galette/Core/Install.php:675 
 $lang['galette']['%version script has been successfully executed :)'] = 'Le script %version a été exécuté avec succès :)';
 
 // ../templates/default/page.tpl:136 
@@ -4551,10 +4557,10 @@ $lang['galette']['E-Mail:'] = 'Courriel&nbsp;:';
 // ../templates/default/advanced_search.tpl:52 ../templates/default/advanced_search.tpl:59 ../templates/default/advanced_search.tpl:66 ../templates/default/advanced_search.tpl:73 ../templates/default/advanced_search.tpl:100 ../templates/default/advanced_search.tpl:107 ../templates/default/advanced_search.tpl:114 ../templates/default/advanced_search.tpl:121 
 $lang['galette']['beetween'] = 'entre';
 
-// ../includes/routes/members.routes.php:1161 
+// ../includes/routes/members.routes.php:1162 
 $lang['galette']['An error occured adding member to its groups as manager.'] = 'Une erreur est survenue lors de l\'ajout des groupes gérés par l\'adhérent.';
 
-// ../includes/routes/members.routes.php:2024 
+// ../includes/routes/members.routes.php:2023 
 $lang['galette']['Mailing has been successfully sent!'] = 'Le mailing a été envoyé avec succès !';
 
 // ../templates/default/500.tpl:6 
@@ -4578,13 +4584,13 @@ $lang['galette']['Modification date'] = 'Date de modification';
 // ../install/old.index.php:410 ../install/steps/check.php:103 
 $lang['galette']['Date settings'] = 'Paramètres de date';
 
-// ../lib/Galette/Core/Install.php:1123 ../templates/default/page.tpl:181 
+// ../lib/Galette/Core/Install.php:1126 ../templates/default/page.tpl:181 
 $lang['galette']['Contributions types'] = 'Types de contribution';
 
-// ../lib/Galette/Entity/Adherent.php:688 
+// ../lib/Galette/Entity/Adherent.php:687 
 $lang['galette']['Last day!'] = 'Dernier jour&nbsp;!';
 
-// ../lib/Galette/Util/FakeData.php:352 
+// ../lib/Galette/Util/FakeData.php:351 
 $lang['galette']['%count members requested, and %done created'] = '%count adhérents demandés et %done créés';
 
 // ../install/old.index.php:324 ../install/steps/type.php:61 ../templates/default/plugin_initdb.tpl:42 ../templates/default/import.tpl:11 
@@ -4593,7 +4599,7 @@ $lang['galette']['Warning: Don\'t forget to backup your current database.'] = 'A
 // ../templates/default/ajouter_transaction.tpl:114 ../templates/default/ajouter_contribution.tpl:156 
 $lang['galette']['Unfortunately, there is no member in your database yet,'] = 'Malheureusement, il n\'y a pas d\'adhérent dans la base actuellement,';
 
-// ../includes/routes/members.routes.php:982 
+// ../includes/routes/members.routes.php:983 
 $lang['galette']['An email has been sent to you, check your inbox.'] = 'Un courriel vous a été été envoyé, vérifier votre boite de réception.';
 
 // ../lib/Galette/IO/Pdf.php:99 ../lib/Galette/IO/Pdf.php:261 
