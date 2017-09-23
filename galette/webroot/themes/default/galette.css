@@ -1065,7 +1065,7 @@ legend #btnadd_small {
 }
 .public_page #langs {
     display: block;
-    margin:0;
+    margin:.2em 0;
 }
 
 .public_page section {
