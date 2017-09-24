@@ -459,9 +459,11 @@ $app->post(
                 }
             }
 
-            if (count($this->flash->getMessage('error_detected')) == 0) {
+            if (!is_array($this->flash->getMessage('error_detected'))
+                || count($this->flash->getMessage('error_detected')) == 0
+            ) {
                 // update preferences
-                foreach ($insert_values as $champ=>$valeur) {
+                foreach ($insert_values as $champ => $valeur) {
                     if ($this->login->isSuperAdmin()
                         || (!$this->login->isSuperAdmin()
                         && ($champ != 'pref_admin_pass' && $champ != 'pref_admin_login'))

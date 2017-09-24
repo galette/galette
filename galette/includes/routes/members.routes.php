@@ -785,7 +785,7 @@ $app->get(
             $filters = new MembersList();
         }
 
-        if (($this->login->isAdmin() || $this->login->isStaff()) && count($filters) > 0) {
+        if (($this->login->isAdmin() || $this->login->isStaff())) {
             $m = new Members();
             $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
             $ids = $ids->toArray();
