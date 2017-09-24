@@ -2300,13 +2300,9 @@ $app->post(
         $texts = new Texts($this->texts_fields, $this->preferences, $this->router);
 
         //set the language
-        if (isset($post['sel_lang'])) {
-            $cur_lang = $post['sel_lang'];
-        }
+        $cur_lang = $post['sel_lang'];
         //set the text entry
-        if (isset($post['sel_ref'])) {
-            $cur_ref = $post['sel_ref'];
-        }
+        $cur_ref = $post['cur_ref'];
 
         $mtxt = $texts->getTexts($cur_ref, $cur_lang, $this->router);
         $res = $texts->setTexts(
