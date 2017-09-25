@@ -63,8 +63,9 @@ CREATE TABLE galette_cotisations (
   date_fin_cotis date NOT NULL default '1901-01-01',
   trans_id int(10) unsigned default NULL,
   PRIMARY KEY (id_cotis),
-  FOREIGN KEY (id_type_cotis) REFERENCES galette_types_cotisation (id_type_cotis),
-  FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh)
+  FOREIGN KEY (id_type_cotis) REFERENCES galette_types_cotisation (id_type_cotis) ON DELETE RESTRICT,
+  FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT,
+  FOREIGN KEY (trans_id) REFERENCES galette_transactions (trans_id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_transactions;
