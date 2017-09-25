@@ -13,5 +13,12 @@ ALTER TABLE galette_adherents CHANGE gpgid gpgid TEXT;
 -- Clean possible buggy data from RC
 DELETE FROM galette_dynamic_fields WHERE item_id = 0;
 
+-- Fix DB relations
+UPDATE galette_cotisations
+    LEFT JOIN galette_transactions ON galette_cotisations.trans_id = galette_transactions.trans_id
+    SET galette_cotisations.trans_id=null
+    WHERE galette_cotisations.trans_id IS NOT NULL AND galette_transactions.trans_id IS NULL;
+ALTER TABLE galette_cotisations ADD FOREIGN KEY (trans_id) REFERENCES galette_transactions(trans_id) ON DELETE RESTRICT ON UPDATE CASCADE;
+
 UPDATE galette_database SET version = 0.91;
 SET FOREIGN_KEY_CHECKS=1;
