@@ -331,10 +331,30 @@ class Members
                 );
                 $del = $zdb->execute($del_qry);
 
-                //delete transactions
-                $del_qry = $zdb->delete(Transaction::TABLE);
-                $del_qry->where->in(self::PK, $list);
-                $del = $zdb->execute($del_qry);
+                //get transactions
+                $select = $zdb->select(Transaction::TABLE);
+                $select->where->in(self::PK, $list);
+                $results = $zdb->execute($select);
+
+                //if members has transactions;
+                //reset link with other contributions
+                //and remove them
+                if ($results->count() > 0) {
+                    foreach ($results as $transaction) {
+                        $update = $zdb->update(Contribution::TABLE);
+                        $update->set([
+                            Transaction::PK => new Expression('NULL')
+                        ])->where([
+                            Transaction::PK => $transaction[Transaction::PK]
+                        ]);
+                        $zdb->execute($update);
+                    }
+
+                    //delete transactions
+                    $del_qry = $zdb->delete(Transaction::TABLE);
+                    $del_qry->where->in(self::PK, $list);
+                    $del = $zdb->execute($del_qry);
+                }
 
                 //delete groups membership/mamagmentship
                 $del = Groups::removeMemberFromGroups((int)$member->id_adh);
