@@ -1462,6 +1462,9 @@ $app->get(
         $visibles = $fc->getVisibilities();
         $access_level = $this->login->getAccessLevel();
 
+        //remove not searchable fields
+        unset($fields['mdp_adh']);
+
         foreach ($fields as $k => $f) {
             if ($visibles[$k] == FieldsConfig::NOBODY ||
                 ($visibles[$k] == FieldsConfig::ADMIN &&
