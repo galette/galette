@@ -1475,6 +1475,13 @@ $app->get(
             }
         }
 
+        //add status label search
+        if ($pos = array_search(Status::PK, array_keys($fields))) {
+            $fields = array_slice($fields, 0, $pos, true) +
+                ['status_label'  => ['label' => _T('Status label')]] +
+                array_slice($fields, $pos, count($fields) -1, true);
+        }
+
         //dynamic fields
         $deps = array(
             'picture'   => false,

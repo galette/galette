@@ -1403,6 +1403,23 @@ class Members
 
                                 $qry .= $qop  . ' ' .  $fs['search'] ;
                             }
+                        } elseif ($fs['field'] == 'status_label') {
+                            $qry_pattern = '%p%field %op %value';
+                            $qry .= str_replace(
+                                [
+                                    '%p',
+                                    '%field',
+                                    '%op',
+                                    '%value'
+                                ],
+                                [
+                                    'p.',
+                                    'libelle_statut',
+                                    $qop,
+                                    $zdb->platform->quoteValue($fs['search'])
+                                ],
+                                $qry_pattern
+                            );
                         } else {
                             $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' .
                                 $qop  . ' ' . $zdb->platform->quoteValue(
