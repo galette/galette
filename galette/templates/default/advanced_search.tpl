@@ -178,6 +178,9 @@
             {else if $field@key === {Galette\Entity\Status::PK}}
                 {assign var=type value=constant('Galette\DynamicFieldsTypes\DynamicFieldType::CHOICE')}
                 {assign var=fvalues value=$statuts}
+            {else if $field@key === 'sexe_adh'}
+                {assign var=type value=constant('Galette\DynamicFieldsTypes\DynamicFieldType::CHOICE')}
+                {assign var=fvalues value=[Galette\Entity\Adherent::NC => {_T string="Unspecified"}, Galette\Entity\Adherent::MAN => {_T string="Man"}, Galette\Entity\Adherent::WOMAN => {_T string="Woman"}]}
             {else}
                 {assign var=type value=constant('Galette\DynamicFieldsTypes\DynamicFieldType::LINE')}
             {/if}
@@ -282,6 +285,9 @@
     {else if $field@key === {Galette\Entity\Status::PK}}
         {assign var=type value=constant('Galette\DynamicFieldsTypes\DynamicFieldType::CHOICE')}
         {assign var=fvalues value=$statuts}
+    {else if $field@key === 'sexe_adh'}
+        {assign var=type value=constant('Galette\DynamicFieldsTypes\DynamicFieldType::CHOICE')}
+        {assign var=fvalues value=[Galette\Entity\Adherent::NC => {_T string="Unspecified"}, Galette\Entity\Adherent::MAN => {_T string="Man"}, Galette\Entity\Adherent::WOMAN => {_T string="Woman"}]}
     {else}
         {assign var=type value=constant('Galette\DynamicFieldsTypes\DynamicFieldType::LINE')}
     {/if}
