@@ -397,8 +397,8 @@
                 </p>
                 <p>
                     <label for="pref_card_year" class="bline">{_T string="Year:"}</label>
-                    <input type="text" name="pref_card_year" id="pref_card_year" value="{$pref.pref_card_year}" maxlength="4"{if isset($required.pref_card_year) and $required.pref_card_year eq 1} required="required"{/if}/>
-                    <span class="exemple">{_T string="(Integer)"}</span>
+                    <input type="text" name="pref_card_year" id="pref_card_year" value="{$pref.pref_card_year}" maxlength="9"{if isset($required.pref_card_year) and $required.pref_card_year eq 1} required="required"{/if}/>
+                    <span class="exemple">{_T string="(Enter a year or two years with a separator)"}</span>
                 </p>
                 <p>
                     <label for="pref_card_marges_v" class="bline">{_T string="Vertical margins:"}</label>
