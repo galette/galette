@@ -89,7 +89,6 @@ $app->get(
 $app->get(
     __('/preferences', 'routes'),
     function ($request, $response) {
-        $print_logo = new PrintLogo();
 
         // flagging required fields
         $required = array(
@@ -157,7 +156,7 @@ $app->get(
                     50 => '50',
                     100 => '100'
                 ),
-                'print_logo'            => $print_logo,
+                'print_logo'            => $this->print_logo,
                 'required'              => $required,
                 'languages'             => $this->i18n->getList(),
                 'themes'                => $themes,
@@ -534,25 +533,25 @@ $app->post(
                     if ($_FILES['card_logo']['error'] === UPLOAD_ERR_OK) {
                         if ($_FILES['card_logo']['tmp_name'] !='') {
                             if (is_uploaded_file($_FILES['card_logo']['tmp_name'])) {
-                                $res = $print_logo->store($_FILES['card_logo']);
+                                $res = $this->print_logo->store($_FILES['card_logo']);
                                 if ($res < 0) {
                                     $this->flash->addMessage(
                                         'error_detected',
-                                        $print_logo->getErrorMessage($res)
+                                        $this->print_logo->getErrorMessage($res)
                                     );
                                 } else {
-                                    $print_logo = new PrintLogo();
+                                    $this->print_logo = new PrintLogo();
                                 }
                             }
                         }
                     } elseif ($_FILES['card_logo']['error'] !== UPLOAD_ERR_NO_FILE) {
                         Analog::log(
-                            $print_logo->getPhpErrorMessage($_FILES['card_logo']['error']),
+                            $this->print_logo->getPhpErrorMessage($_FILES['card_logo']['error']),
                             Analog::WARNING
                         );
                         $this->flash->addMessage(
                             'error_detected',
-                            $print_logo->getPhpErrorMessage(
+                            $this->print_logo->getPhpErrorMessage(
                                 $_FILES['card_logo']['error']
                             )
                         );
@@ -560,13 +559,13 @@ $app->post(
                 }
 
                 if (GALETTE_MODE !== 'DEMO' && isset($_POST['del_card_logo'])) {
-                    if (!$print_logo->delete()) {
+                    if (!$this->print_logo->delete()) {
                         $this->flash->addMessage(
                             'error_detected',
                             _T("Delete failed")
                         );
                     } else {
-                        $print_logo = new PrintLogo();
+                        $this->print_logo = new PrintLogo();
                     }
                 }
             }
