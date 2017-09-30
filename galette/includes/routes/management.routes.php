@@ -117,11 +117,15 @@ $app->get(
             $required['pref_admin_login'] = 1;
         }
 
-        $prefs_fields = $this->preferences->getFieldsNames();
-
-        // collect data
-        foreach ($prefs_fields as $fieldname) {
-            $pref[$fieldname] = $this->preferences->$fieldname;
+        if ($this->session->entered_preferences) {
+            $pref = $this->session->entered_preferences;
+            $this->session->entered_preferences = null;
+        } else {
+            $prefs_fields = $this->preferences->getFieldsNames();
+            // collect data
+            foreach ($prefs_fields as $fieldname) {
+                $pref[$fieldname] = $this->preferences->$fieldname;
+            }
         }
 
         //List available themes
@@ -173,6 +177,8 @@ $app->get(
 $app->post(
     __('/preferences', 'routes'),
     function ($request, $response) {
+        $error_detected = [];
+
         // Validation
         if (isset($_POST['valid']) && $_POST['valid'] == '1') {
             // verification de champs
@@ -226,10 +232,7 @@ $app->post(
                                 );
                             } else {
                                 if (!GaletteMail::isValidEmail($value)) {
-                                    $this->flash->addMessage(
-                                        'error_detected',
-                                        _T("- Non-valid E-Mail address!")
-                                    );
+                                    $error_detected[] = _T("- Non-valid E-Mail address!");
                                 }
                             }
                             break;
@@ -241,27 +244,18 @@ $app->post(
                                 );
                             } else {
                                 if (strlen($value) < 4) {
-                                    $this->flash->addMessage(
-                                        'error_detected',
-                                        _T("- The username must be composed of at least 4 characters!")
-                                    );
+                                    $error_detected[] = _T("- The username must be composed of at least 4 characters!");
                                 } else {
                                     //check if login is already taken
                                     if ($this->login->loginExists($value)) {
-                                        $this->flash->addMessage(
-                                            'error_detected',
-                                            _T("- This username is already used by another member !")
-                                        );
+                                        $error_detected[] = _T("- This username is already used by another member !");
                                     }
                                 }
                             }
                             break;
                         case 'pref_numrows':
                             if (!is_numeric($value) || $value < 0) {
-                                $this->flash->addMessage(
-                                    'error_detected',
-                                    _T("- The numbers and measures have to be integers!")
-                                );
+                                $error_detected[] = _T("- The numbers and measures have to be integers!");
                             }
                             break;
                         case 'pref_etiq_marges_h':
@@ -282,10 +276,7 @@ $app->post(
                                 $value = '10';
                             }
                             if (!is_numeric($value) || $value < 0) {
-                                $this->flash->addMessage(
-                                    'error_detected',
-                                    _T("- The numbers and measures have to be integers!")
-                                );
+                                $error_detected[] = _T("- The numbers and measures have to be integers!");
                             }
                             break;
                         case 'pref_card_tcol':
@@ -310,35 +301,23 @@ $app->post(
                                 );
                             } else {
                                 if (strlen($value) < 4) {
-                                    $this->flash->addMessage(
-                                        'error_detected',
-                                        _T("- The password must be of at least 4 characters!")
-                                    );
+                                    $error_detected[] = _T("- The password must be of at least 4 characters!");
                                 }
                             }
                             break;
                         case 'pref_membership_ext':
                             if (!is_numeric($value) || $value < 0) {
-                                $this->flash->addMessage(
-                                    'error_detected',
-                                    _T("- Invalid number of months of membership extension.")
-                                );
+                                $error_detected[] = _T("- Invalid number of months of membership extension.");
                             }
                             break;
                         case 'pref_beg_membership':
                             $beg_membership = explode("/", $value);
                             if (count($beg_membership) != 2) {
-                                $this->flash->addMessage(
-                                    'error_detected',
-                                    _T("- Invalid format of beginning of membership.")
-                                );
+                                $error_detected[] = _T("- Invalid format of beginning of membership.");
                             } else {
                                 $now = getdate();
                                 if (!checkdate($beg_membership[1], $beg_membership[0], $now['year'])) {
-                                    $this->flash->addMessage(
-                                        'error_detected',
-                                        _T("- Invalid date for beginning of membership.")
-                                    );
+                                    $error_detected[] = _T("- Invalid date for beginning of membership.");
                                 }
                             }
                             break;
@@ -359,27 +338,18 @@ $app->post(
                     if (!isset($insert_values['pref_email_nom'])
                         || $insert_values['pref_email_nom'] == ''
                     ) {
-                        $this->flash->addMessage(
-                            'error_detected',
-                            _T("- You must indicate a sender name for emails!")
-                        );
+                        $error_detected[] = _T("- You must indicate a sender name for emails!");
                     }
                     if (!isset($insert_values['pref_email'])
                         || $insert_values['pref_email'] == ''
                     ) {
-                        $this->flash->addMessage(
-                            'error_detected',
-                            _T("- You must indicate an email address Galette should use to send emails!")
-                        );
+                        $error_detected[] = _T("- You must indicate an email address Galette should use to send emails!");
                     }
                     if ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP) {
                         if (!isset($insert_values['pref_mail_smtp_host'])
                             || $insert_values['pref_mail_smtp_host'] == ''
                         ) {
-                            $this->flash->addMessage(
-                                'error_detected',
-                                _T("- You must indicate the SMTP server you want to use!")
-                            );
+                            $error_detected[] = _T("- You must indicate the SMTP server you want to use!");
                         }
                     }
                     if ($insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
@@ -389,18 +359,12 @@ $app->post(
                         if (!isset($insert_values['pref_mail_smtp_user'])
                             || trim($insert_values['pref_mail_smtp_user']) == ''
                         ) {
-                            $this->flash->addMessage(
-                                'error_detected',
-                                _T("- You must provide a login for SMTP authentication.")
-                            );
+                            $error_detected[] = _T("- You must provide a login for SMTP authentication.");
                         }
                         if (!isset($insert_values['pref_mail_smtp_password'])
                             || ($insert_values['pref_mail_smtp_password']) == ''
                         ) {
-                            $this->flash->addMessage(
-                                'error_detected',
-                                _T("- You must provide a password for SMTP authentication.")
-                            );
+                            $error_detected[] = _T("- You must provide a password for SMTP authentication.");
                         }
                     }
                 }
@@ -411,22 +375,16 @@ $app->post(
                 && isset($insert_values['pref_membership_ext'])
                 && $insert_values['pref_membership_ext'] != ''
             ) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("- Default membership extention and beginning of membership are mutually exclusive.")
-                );
+                $error_detected[] =_T("- Default membership extention and beginning of membership are mutually exclusive.");
             }
 
             // missing required fields?
             foreach ($required as $key => $val) {
                 if (!isset($pref[$key]) || isset($pref[$key]) && trim($pref[$key]) == '') {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        str_replace(
-                            '%field',
-                            $key,
-                            _T("- Mandatory field %field empty.")
-                        )
+                    $error_detected[] = str_replace(
+                        '%field',
+                        $key,
+                        _T("- Mandatory field %field empty.")
                     );
                 }
             }
@@ -434,10 +392,7 @@ $app->post(
             if (GALETTE_MODE !== 'DEMO') {
                 // Check passwords. MD5 hash will be done into the Preferences class
                 if (strcmp($insert_values['pref_admin_pass'], $_POST['pref_admin_pass_check']) != 0) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        _T("Passwords mismatch")
-                    );
+                    $error_detected[] = _T("Passwords mismatch");
                 }
             }
 
@@ -450,17 +405,12 @@ $app->post(
                     }
                 } elseif ($value == Preferences::POSTAL_ADDRESS_FROM_STAFF) {
                     if (!isset($value) || $value < 1) {
-                        $this->flash->addMessage(
-                            'error_detected',
-                            _T("You have to select a staff member")
-                        );
+                        $error_detected[] = _T("You have to select a staff member");
                     }
                 }
             }
 
-            if (!is_array($this->flash->getMessage('error_detected'))
-                || count($this->flash->getMessage('error_detected')) == 0
-            ) {
+            if (count($error_detected) == 0) {
                 // update preferences
                 foreach ($insert_values as $champ => $valeur) {
                     if ($this->login->isSuperAdmin()
@@ -476,10 +426,7 @@ $app->post(
                 }
                 //once all values has been updated, we can store them
                 if (!$this->preferences->store()) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        _T("An SQL error has occured while storing preferences. Please try again, and contact the administrator if the problem persists.")
-                    );
+                    $error_detected[] = _T("An SQL error has occured while storing preferences. Please try again, and contact the administrator if the problem persists.");
                 } else {
                     $this->flash->addMessage(
                         'success_detected',
@@ -494,10 +441,7 @@ $app->post(
                             if (is_uploaded_file($_FILES['logo']['tmp_name'])) {
                                 $res = $this->logo->store($_FILES['logo']);
                                 if ($res < 0) {
-                                    $this->flash->addMessage(
-                                        'error_detected',
-                                        $this->logo->getErrorMessage($res)
-                                    );
+                                    $error_detected[] = $this->logo->getErrorMessage($res);
                                 } else {
                                     $this->logo = new Logo();
                                 }
@@ -508,21 +452,15 @@ $app->post(
                             $this->logo->getPhpErrorMessage($_FILES['logo']['error']),
                             Analog::WARNING
                         );
-                        $this->flash->addMessage(
-                            'error_detected',
-                            $this->logo->getPhpErrorMessage(
-                                $_FILES['logo']['error']
-                            )
+                        $error_detected[] = $this->logo->getPhpErrorMessage(
+                            $_FILES['logo']['error']
                         );
                     }
                 }
 
                 if (GALETTE_MODE !== 'DEMO' && isset($_POST['del_logo'])) {
                     if (!$this->logo->delete()) {
-                        $this->flash->addMessage(
-                            'error_detected',
-                            _T("Delete failed")
-                        );
+                        $error_detected[] = _T("Delete failed");
                     } else {
                         $this->logo = new Logo(); //get default Logo
                     }
@@ -535,10 +473,7 @@ $app->post(
                             if (is_uploaded_file($_FILES['card_logo']['tmp_name'])) {
                                 $res = $this->print_logo->store($_FILES['card_logo']);
                                 if ($res < 0) {
-                                    $this->flash->addMessage(
-                                        'error_detected',
-                                        $this->print_logo->getErrorMessage($res)
-                                    );
+                                    $error_detected[] = $this->print_logo->getErrorMessage($res);
                                 } else {
                                     $this->print_logo = new PrintLogo();
                                 }
@@ -549,24 +484,29 @@ $app->post(
                             $this->print_logo->getPhpErrorMessage($_FILES['card_logo']['error']),
                             Analog::WARNING
                         );
-                        $this->flash->addMessage(
-                            'error_detected',
-                            $this->print_logo->getPhpErrorMessage(
-                                $_FILES['card_logo']['error']
-                            )
+                        $error_detected[] = $this->print_logo->getPhpErrorMessage(
+                            $_FILES['card_logo']['error']
                         );
                     }
                 }
 
                 if (GALETTE_MODE !== 'DEMO' && isset($_POST['del_card_logo'])) {
                     if (!$this->print_logo->delete()) {
-                        $this->flash->addMessage(
-                            'error_detected',
-                            _T("Delete failed")
-                        );
+                        $error_detected[] = _T("Delete failed");
                     } else {
                         $this->print_logo = new PrintLogo();
                     }
+                }
+            }
+
+            if (count($error_detected) > 0) {
+                $this->session->entered_preferences = $pref;
+                //report errors
+                foreach ($error_detected as $error) {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        $error
+                    );
                 }
             }
 
