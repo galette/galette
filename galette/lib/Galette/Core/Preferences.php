@@ -419,13 +419,13 @@ class Preferences
                 array('/%name/', '/%status/'),
                 array($this->prefs['pref_nom'], $adh->sstatus),
                 _T("%name association's %status")
-            );
+            ) . "\n";
             $_address = $adh->address;
             if ($adh->address_continuation && $adh->address_continuation != '') {
                 $_address .= "\n" . $adh->address_continuation;
             }
             $replacements = array(
-                $adh->sfullname,
+                $adh->sfullname . "\n",
                 $_complement,
                 $_address,
                 $adh->zipcode,
@@ -443,7 +443,7 @@ class Preferences
         $r = preg_replace(
             $regs,
             $replacements,
-            "%name\n%complement\n%address\n%zip %town - %country"
+            "%name%complement%address\n%zip %town - %country"
         );
         return $r;
     }
