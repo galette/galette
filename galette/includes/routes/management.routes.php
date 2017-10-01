@@ -3218,3 +3218,110 @@ $app->post(
             ->withHeader('Location', $this->router->pathFor('slash'));
     }
 )->setName('doFakeData')->add($authenticate);
+
+$app->get(
+    __('/admin-tools', 'routes'),
+    function ($request, $response) {
+        $params = [
+            'page_title'        => _T('Administration tools'),
+            'require_dialog'    => true
+        ];
+
+        $cm = new Galette\Core\CheckModules();
+        $modules_ok = $cm->isValid();
+        if (!$modules_ok) {
+            $this->flash->addMessage(
+                _T("Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation.")
+            );
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            'admintools.tpl',
+            $params
+        );
+        return $response;
+    }
+)->setName('adminTools')->add($authenticate);
+
+$app->post(
+    __('/admin-tools', 'routes'),
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+
+        $error_detected = [];
+        $success_detected = [];
+
+        if (isset($post['inittexts'])) {
+            //proceed mails texts reinitialization
+            $texts = new Texts($this->texts_fields, $this->preferences);
+            $res = $texts->installInit(false);
+            if ($res === true) {
+                $success_detected[] = _T("Texts has been successfully reinitialized.");
+            } else {
+                $error_detected[] = _T("An error occured reinitializing texts :(");
+            }
+        }
+
+        if (isset($post['initfields'])) {
+            //proceed fields configuration reinitialization
+            $fc = $this->fields_config;
+            $res = $fc->installInit();
+            if ($res === true) {
+                $success_detected[] = _T("Fields configuration has been successfully reinitialized.");
+            } else {
+                $error_detected[] = _T("An error occured reinitializing fields configuration :(");
+            }
+        }
+
+        if (isset($post['initpdfmodels'])) {
+            //proceed mails texts reinitialization
+            $models = new PdfModels($this->zdb, $this->preferences, $this->login);
+            $res = $models->installInit($this->pdfmodels_fields, false);
+            if ($res === true) {
+                $success_detected[] = _T("PDF models has been successfully reinitialized.");
+            } else {
+                $error_detected[] = _T("An error occured reinitializing PDF models :(");
+            }
+        }
+
+        if (isset($post['emptylogins'])) {
+            //proceed empty logins and passwords
+            //those ones cannot be null
+            $members = new Members();
+            $res = $members->emptylogins();
+            if ($res === true) {
+                $success_detected[] = str_replace(
+                    '%i',
+                    $members->getCount(),
+                    _T("Logins and passwords has been successfully filled (%i processed).")
+                );
+            } else {
+                $error_detected[] = _T("An error occured filling empty logins and passwords :(");
+            }
+        }
+
+        //flash messages
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
+            }
+        }
+        if (count($success_detected) > 0) {
+            foreach ($success_detected as $success) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    $success
+                );
+            }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('adminTools'));
+    }
+)->setName('doAdminTools')->add($authenticate);
