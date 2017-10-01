@@ -4,7 +4,8 @@
         <form class="form" action="{path_for name="doExport"}" method="post" enctype="multipart/form-data">
         <p>{_T string="Each selected export will be stored into a separate file in the exports directory."}</p>
 
-{if $flash->getMessage('written_exports')|@count > 0}
+{assign var="written_exports" value=$flash->getMessage('written_exports')}
+{if is_array($written_exports) && $written_exports|@count > 0}
         <div id="successbox">
             <p>{_T string="The following files have been written on disk:"}</p>
             <ul>

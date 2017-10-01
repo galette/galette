@@ -108,7 +108,7 @@ if (defined('GALETTE_XHPROF_PATH')
     $profiler->start();
 }
 
-define('GALETTE_VERSION', 'v0.9rc1');
+define('GALETTE_VERSION', 'v0.9rc2');
 define('GALETTE_COMPAT_VERSION', '0.9');
 define('GALETTE_DB_VERSION', '0.820');
 if (!defined('GALETTE_MODE')) {
@@ -195,7 +195,9 @@ if (defined('GALETTE_TESTS')) {
             $galette_run_log = \Analog\Handler\Variable::init($galette_log_var);
         }
     }
-    Core\Logs::cleanup();
+    if (!$installer) {
+        Core\Logs::cleanup();
+    }
 }
 
 Analog::handler(

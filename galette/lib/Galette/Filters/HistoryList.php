@@ -274,29 +274,4 @@ class HistoryList extends Pagination
             }
         }
     }
-
-    /**
-     * Add SQL limit
-     *
-     * @param Select $select Original select
-     *
-     * @return <type>
-     */
-    public function setLimit($select)
-    {
-        return $this->setLimits($select);
-    }
-
-    /**
-     * Set counter
-     *
-     * @param int $c Count
-     *
-     * @return void
-     */
-    public function setCounter($c)
-    {
-        $this->counter = (int)$c;
-        $this->countPages();
-    }
 }

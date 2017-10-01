@@ -102,7 +102,7 @@ class Transactions
     {
         try {
             $select = $this->buildSelect($fields, $count);
-            $this->filters->setLimit($select);
+            $this->filters->setLimits($select);
 
             $transactions = array();
             $results = $this->zdb->execute($select);

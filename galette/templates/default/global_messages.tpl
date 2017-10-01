@@ -1,5 +1,6 @@
     {* Let's see if there are error messages to show *}
-    {if $flash->getMessage('error_detected')|@count > 0}
+    {assign var="error_detected" value=$flash->getMessage('error_detected')}
+    {if is_array($error_detected) && $error_detected|@count > 0}
             <div id="errorbox">
                 <h1>{_T string="- ERROR -"}</h1>
                 <ul>
@@ -11,7 +12,8 @@
     {/if}
 
     {* Let's see if there are warning messages to show *}
-    {if $flash->getMessage('warning_detected')|@count > 0}
+    {assign var="warning_detected" value=$flash->getMessage('warning_detected')}
+    {if is_array($warning_detected) && $warning_detected|@count > 0}
             <div id="warningbox">
                 <h1>{_T string="- WARNING -"}</h1>
                 <ul>
@@ -31,7 +33,8 @@
     {/if}
 
     {* Let's see if there are success messages to show *}
-    {if $flash->getMessage('success_detected')|@count > 0}
+    {assign var="success_detected" value=$flash->getMessage('success_detected')}
+    {if is_array($success_detected) && $success_detected|@count > 0}
         <div id="successbox">
                 <ul>
         {foreach from=$flash->getMessage('success_detected') item=success}

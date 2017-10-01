@@ -785,7 +785,7 @@ $app->get(
             $filters = new MembersList();
         }
 
-        if (($this->login->isAdmin() || $this->login->isStaff()) && count($filters) > 0) {
+        if (($this->login->isAdmin() || $this->login->isStaff())) {
             $m = new Members();
             $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
             $ids = $ids->toArray();
@@ -857,6 +857,7 @@ $app->post(
                 ->withHeader('Location', $this->router->pathFor('slash'));
         }
 
+        $post = $request->getParsedBody();
         $deps = array(
             'picture'   => true,
             'groups'    => true,
@@ -956,9 +957,9 @@ $app->post(
         $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
         // Validation
-        if (isset($_POST[array_shift($real_requireds)])) {
+        if (isset($post[array_shift($real_requireds)])) {
             // regular fields
-            $valid = $member->check($_POST, $required, $disabled);
+            $valid = $member->check($post, $required, $disabled);
             if ($valid !== true) {
                 $error_detected = array_merge($error_detected, $valid);
             }
@@ -1049,7 +1050,7 @@ $app->post(
                     }
 
                     // send mail to member
-                    if (isset($args['self']) || isset($_POST['mail_confirm']) && $_POST['mail_confirm'] == '1') {
+                    if (isset($args['self']) || isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
                         if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
                             if ($member->getEmail() == '' && !isset($args['self'])) {
                                 $error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
@@ -1077,13 +1078,13 @@ $app->post(
                                             $member->login
                                         ),
                                         'password_adh'  => custom_html_entity_decode(
-                                            $_POST['mdp_adh']
+                                            $post['mdp_adh']
                                         )
                                     )
                                 );
                                 $mlang = $this->preferences->pref_lang;
-                                if (isset($_POST['pref_lang'])) {
-                                    $mlang = $_POST['pref_lang'];
+                                if (isset($post['pref_lang'])) {
+                                    $mlang = $post['pref_lang'];
                                 }
                                 $mtxt = $texts->getTexts(
                                     (($new) ? 'sub' : 'accountedited'),
@@ -1134,8 +1135,8 @@ $app->post(
                     $managed_groups_adh = null;
 
                     //add/remove user from groups
-                    if (isset($_POST['groups_adh'])) {
-                        $groups_adh = $_POST['groups_adh'];
+                    if (isset($post['groups_adh'])) {
+                        $groups_adh = $post['groups_adh'];
                     }
                     $add_groups = Groups::addMemberToGroups(
                         $member,
@@ -1147,8 +1148,8 @@ $app->post(
                     }
 
                     //add/remove manager from groups
-                    if (isset($_POST['groups_managed_adh'])) {
-                        $managed_groups_adh = $_POST['groups_managed_adh'];
+                    if (isset($post['groups_managed_adh'])) {
+                        $managed_groups_adh = $post['groups_managed_adh'];
                     }
                     $add_groups = Groups::addMemberToGroups(
                         $member,
@@ -1190,7 +1191,7 @@ $app->post(
                     }
                 }
 
-                if (isset($_POST['del_photo'])) {
+                if (isset($post['del_photo'])) {
                     if (!$member->picture->delete($member->id)) {
                         $error_detected[] = _T("Delete failed");
                         $str_adh = $member->id . ' (' . $member->sname  . ' ' . ')';
@@ -1238,7 +1239,7 @@ $app->post(
             }
 
             if (count($error_detected) == 0) {
-                if (!isset($_POST['id_adh']) && !$member->isDueFree() && !isset($args['self'])) {
+                if (!isset($post['id_adh']) && !$member->isDueFree() && !isset($args['self'])) {
                     return $response
                         ->withStatus(301)
                         ->withHeader(
@@ -1323,8 +1324,6 @@ $app->get(
 $app->get(
     __('/members/remove', 'routes'),
     function ($request, $response) {
-        $post = $request->getParsedBody();
-
         $filters =  $this->session->filter_members;
 
         $data = [
@@ -1463,6 +1462,9 @@ $app->get(
         $visibles = $fc->getVisibilities();
         $access_level = $this->login->getAccessLevel();
 
+        //remove not searchable fields
+        unset($fields['mdp_adh']);
+
         foreach ($fields as $k => $f) {
             if ($visibles[$k] == FieldsConfig::NOBODY ||
                 ($visibles[$k] == FieldsConfig::ADMIN &&
@@ -1474,6 +1476,13 @@ $app->get(
             ) {
                 unset($fields[$k]);
             }
+        }
+
+        //add status label search
+        if ($pos = array_search(Status::PK, array_keys($fields))) {
+            $fields = array_slice($fields, 0, $pos, true) +
+                ['status_label'  => ['label' => _T('Status label')]] +
+                array_slice($fields, $pos, count($fields) -1, true);
         }
 
         //dynamic fields
@@ -1945,7 +1954,7 @@ $app->post(
                 if (trim($post['mailing_objet']) == '') {
                     $error_detected[] = _T("Please type an object for the message.");
                 } else {
-                    $mailing->subject = $_POST['mailing_objet'];
+                    $mailing->subject = $post['mailing_objet'];
                 }
 
                 if (trim($post['mailing_corps']) == '') {
@@ -1986,8 +1995,8 @@ $app->post(
                 }
 
                 if (count($error_detected) == 0
-                    && !isset($_POST['mailing_reset'])
-                    && !isset($_POST['mailing_save'])
+                    && !isset($post['mailing_reset'])
+                    && !isset($post['mailing_save'])
                 ) {
                     $mailing->current_step = Mailing::STEP_PREVIEW;
                 } else {
@@ -1995,7 +2004,7 @@ $app->post(
                 }
             }
 
-            if (isset($_POST['mailing_confirm']) && count($error_detected) == 0) {
+            if (isset($post['mailing_confirm']) && count($error_detected) == 0) {
                 $mailing->current_step = Mailing::STEP_SEND;
                 //ok... let's go for fun
                 $sent = $mailing->send();
@@ -2425,7 +2434,7 @@ $app->post(
             $pdf->sheet_title = $post['sheet_title'];
         }
         if (isset($post['sheet_sub_title']) && trim($post['sheet_sub_title']) != '') {
-            $pdf->sheet_sub_title = $_POST['sheet_sub_title'];
+            $pdf->sheet_sub_title = $post['sheet_sub_title'];
         }
         if (isset($post['sheet_date']) && trim($post['sheet_date']) != '') {
             $dformat = __("Y-m-d");

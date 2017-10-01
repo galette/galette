@@ -39,7 +39,6 @@ namespace Galette\Repository;
 
 use Galette\Entity\Title;
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
 
 /**
  * Titles repository management
@@ -145,8 +144,6 @@ class Titles
                 $long = null;
                 if ($d['long_label'] !== null) {
                     $long = _T($d['long_label']);
-                } else {
-                    $long = 'NULL';
                 }
                 $stmt->execute(
                     array(

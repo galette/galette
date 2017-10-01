@@ -170,7 +170,7 @@ abstract class Pagination
      *
      * @return void
      */
-    protected function setLimits($select)
+    public function setLimits($select)
     {
         if ($this->show !== 0) {
             $select->limit($this->show);
@@ -178,6 +178,19 @@ abstract class Pagination
                 ($this->current_page - 1) * $this->show
             );
         }
+    }
+
+    /**
+     * Set counter
+     *
+     * @param int $c Count
+     *
+     * @return void
+     */
+    public function setCounter($c)
+    {
+        $this->counter = (int)$c;
+        $this->countPages();
     }
 
     /**

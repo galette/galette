@@ -39,6 +39,7 @@ namespace Galette\DynamicFieldsTypes;
 
 use Analog\Analog;
 use Galette\Core\Db;
+use Galette\Entity\DynamicFields;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
 
@@ -988,7 +989,7 @@ abstract class DynamicFieldType
             $this->zdb->execute($update);
 
             //remove associated values
-            $delete = $this->zdb->delete(self::TABLE);
+            $delete = $this->zdb->delete(DynamicFields::TABLE);
             $delete->where(
                 array(
                     'field_id'      => $this->id,
@@ -1009,7 +1010,7 @@ abstract class DynamicFieldType
                 )
             );
             $result = $this->zdb->execute($delete);
-            if ($result->count() == 0) {
+            if (!$result) {
                 throw new \RuntimeException('Unable to remove field ' . $this->id . '!');
             }
 

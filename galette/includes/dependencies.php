@@ -305,7 +305,9 @@ $container['acls'] = function ($c) {
         'ajaxGroupMembers'          => 'staff',
         'getDynamicFile'            => 'staff',
         'fakeData'                  => 'superadmin',
-        'doFakeData'                => 'superadmin'
+        'doFakeData'                => 'superadmin',
+        'adminTools'                => 'superadmin',
+        'doAdminTools'              => 'superadmin'
     ];
 
     foreach ($c['plugins']->getModules() as $plugin) {

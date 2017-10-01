@@ -249,11 +249,11 @@
                     </p>
                     <p>
                         <label for="pref_mail_smtp_auth" class="bline tooltip" title="{_T string="Do you want to use SMTP authentication?"}">{_T string="Use SMTP authentication?"}</label>
-                        <span class="tip">{_T string="Would emailing use any SMTP authentication? You'll have to provide username and passwrod below. For GMail, authentication will always be on."}</span>
+                        <span class="tip">{_T string="Would emailing use any SMTP authentication? You'll have to provide username and password below. For GMail, authentication will always be on."}</span>
                         <input type="checkbox" name="pref_mail_smtp_auth" id="pref_mail_smtp_auth" value="1" {if $pref.pref_mail_smtp_auth eq 1}checked="checked"{/if}{if isset($required.pref_mail_smtp_auth) and $required.pref_mail_smtp_auth eq 1} required="required"{/if}/>
                     </p>
                     <p>
-                        <label for="pref_mail_smtp_secure" class="bline tooltip" title="{_T string="Do you want to use SMTP authentication?"}">{_T string="Use TLS for SMTP?"}</label>
+                        <label for="pref_mail_smtp_secure" class="bline tooltip" title="{_T string="Do you want to use server's TLS capabilities?"}">{_T string="Use TLS for SMTP?"}</label>
                         <span class="tip">{_T string="Do you want to use server's TLS capabilities?<br/>For GMail, this will always be on."}</span>
                         <input type="checkbox" name="pref_mail_smtp_secure" id="pref_mail_smtp_secure" value="1" {if $pref.pref_mail_smtp_secure eq 1}checked="checked"{/if}{if isset($required.pref_mail_smtp_secure) and $required.pref_mail_smtp_secure eq 1} required="required"{/if}/>
                     </p>
@@ -397,8 +397,8 @@
                 </p>
                 <p>
                     <label for="pref_card_year" class="bline">{_T string="Year:"}</label>
-                    <input type="text" name="pref_card_year" id="pref_card_year" value="{$pref.pref_card_year}" maxlength="4"{if isset($required.pref_card_year) and $required.pref_card_year eq 1} required="required"{/if}/>
-                    <span class="exemple">{_T string="(Integer)"}</span>
+                    <input type="text" name="pref_card_year" id="pref_card_year" value="{$pref.pref_card_year}" maxlength="9"{if isset($required.pref_card_year) and $required.pref_card_year eq 1} required="required"{/if}/>
+                    <span class="exemple">{_T string="(Enter a year or two years with a separator)"}</span>
                 </p>
                 <p>
                     <label for="pref_card_marges_v" class="bline">{_T string="Vertical margins:"}</label>

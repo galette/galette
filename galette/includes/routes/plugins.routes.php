@@ -68,7 +68,7 @@ $app->group(
                     $body->write(file_get_contents($file));
                     return $response;
                 } else {
-                    $app->halt(
+                    $this->halt(
                         500,
                         _T("Invalid extension!")
                     );

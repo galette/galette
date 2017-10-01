@@ -63,38 +63,48 @@
     <div>
     {assign var=access_level value=$login->getAccessLevel()}
     {foreach from=$object->getDynamicFields()->getFields() item=field}
-	{assign var=perm value=$field->getPerm()}
-	{if $field|is_a:'Galette\DynamicFieldsTypes\Separator'}
+        {assign var=perm value=$field->getPerm()}
+        {if $field|is_a:'Galette\DynamicFieldsTypes\Separator'}
         <div class="separator">{$field->getName()|escape}</div>
-	{else}
+        {else}
         <p{if $field->isRepeatable()} class="repetable"{/if}>
-	    {assign var=disabled value=false}
-	    {if $perm eq constant('Galette\DynamicFieldsTypes\DynamicFieldType::PERM_USER_READ') && $access_level eq constant('Galette\Core\Authentication::ACCESS_USER')}
-		{assign var=disabled value=true}
-	    {/if}
-	    {assign var=values value=$object->getDynamicFields()->getValues($field->getId())}
-	    {assign var=can_add value=false}
-	    {if $field->getRepeat() === 0 || $values|@count < $field->getRepeat() || $values|@count === 0}
-		{assign var=can_add value=true}
-	    {/if}
-	    {foreach from=$values item=field_data}
-		{if not $field_data@first}<br/>{/if}
-		{draw_field field=$field field_data=$field_data disabled=$disabled loop=$field_data@iteration}
-	    {/foreach}
-	    {if $values|@count === 0}
-		{$field_data = ['field_val' => '']}
-		{draw_field field=$field field_data=$field_data disabled=$disabled loop=$values@count + 1}
-	    {/if}
+            {assign var=disabled value=false}
+            {if $perm eq constant('Galette\DynamicFieldsTypes\DynamicFieldType::PERM_USER_READ') && $access_level eq constant('Galette\Core\Authentication::ACCESS_USER')}
+                {assign var=disabled value=true}
+            {/if}
+            {assign var=values value=$object->getDynamicFields()->getValues($field->getId())}
+            {assign var=can_add value=false}
+            {if $field->getRepeat() === 0 || !is_array($values) || $values|@count < $field->getRepeat() || $values|@count === 0}
+                {assign var=can_add value=true}
+            {/if}
+            {foreach from=$values item=field_data}
+                {if not $field_data@first}<br/>{/if}
+                {draw_field field=$field field_data=$field_data disabled=$disabled loop=$field_data@iteration}
+            {/foreach}
+            {if !is_array($values) || $values|@count === 0}
+                {$field_data = ['field_val' => '']}
+                {if (is_array($values))}
+                    {assign var="current_count" value=$values@count}
+                {else}
+                    {assign var="current_count" value=0}
+                {/if}
+                {draw_field field=$field field_data=$field_data disabled=$disabled loop=$current_count + 1}
+            {/if}
         </p>
-	    {if $field->isRepeatable()}
-		{if $field->getRepeat() === 0}
+            {if $field->isRepeatable()}
+                {if $field->getRepeat() === 0}
         <p class="exemple" id="repeat_msg">{_T string="Enter as many occurences you want."}</p>
-		{elseif $values|@count < $field->getRepeat() || $values|@count === 0}
-		    {assign var=remaining value=$field->getRepeat() - $values|@count}
+                {elseif !is_array($values) || $values|@count < $field->getRepeat() || $values|@count === 0}
+                    {if (is_array($values))}
+                        {assign var="current_count" value=$values@count}
+                    {else}
+                        {assign var="current_count" value=1}
+                    {/if}
+                    {assign var=remaining value=$field->getRepeat() - $current_count}
         <p class="exemple" id="repeat_msg">{_T string="Enter up to %count more occurences." pattern="/%count/" replace=$remaining}</p>
-		{/if}
-	    {/if}
-	{/if}
+                {/if}
+            {/if}
+        {/if}
     {/foreach}
     </div>
 </fieldset>

@@ -175,6 +175,12 @@
         {if $fs.field eq $field@key}
             {if $field@key|strpos:'date_' === 0 or $field@key eq 'ddn_adh'}
                 {assign var=type value=constant('Galette\DynamicFieldsTypes\DynamicFieldType::DATE')}
+            {else if $field@key === {Galette\Entity\Status::PK}}
+                {assign var=type value=constant('Galette\DynamicFieldsTypes\DynamicFieldType::CHOICE')}
+                {assign var=fvalues value=$statuts}
+            {else if $field@key === 'sexe_adh'}
+                {assign var=type value=constant('Galette\DynamicFieldsTypes\DynamicFieldType::CHOICE')}
+                {assign var=fvalues value=[Galette\Entity\Adherent::NC => {_T string="Unspecified"}, Galette\Entity\Adherent::MAN => {_T string="Man"}, Galette\Entity\Adherent::WOMAN => {_T string="Woman"}]}
             {else}
                 {assign var=type value=constant('Galette\DynamicFieldsTypes\DynamicFieldType::LINE')}
             {/if}
@@ -195,13 +201,17 @@
                         </select>
                         <span>
                             <input type="hidden" name="free_type[]" value="{if isset($cur_field)}{$cur_field->getType()}{/if}"/>
-    {if $cur_field|is_a:'Galette\DynamicFieldsTypes\Choice'}
+    {if $cur_field|is_a:'Galette\DynamicFieldsTypes\Choice' || $type eq constant('Galette\DynamicFieldsTypes\DynamicFieldType::CHOICE')}
                         <select name="free_query_operator[]">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
                             <option value="{Galette\Filters\AdvancedMembersList::OP_NOT_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_NOT_EQUALS')} selected="selected"{/if}>{_T string="is not"}</option>
                         </select>
                         <select name="free_text[]">
+        {if $cur_field|is_a:'Galette\DynamicFieldsTypes\Choice'}
                         {html_options options=$cur_field->getValues() selected=$fs.search}
+        {else}
+                        {html_options options=$fvalues selected=$fs.search}
+        {/if}
                         </select>
     {elseif $cur_field|is_a:'Galette\DynamicFieldsTypes\Date'}
                         <select name="free_query_operator[]">
@@ -272,10 +282,16 @@
 {foreach $search_fields as $field}
     {if $field@key|strpos:'date_' === 0 or $field@key eq 'ddn_adh'}
         {assign var=type value=constant('Galette\DynamicFieldsTypes\DynamicFieldType::DATE')}
+    {else if $field@key === {Galette\Entity\Status::PK}}
+        {assign var=type value=constant('Galette\DynamicFieldsTypes\DynamicFieldType::CHOICE')}
+        {assign var=fvalues value=$statuts}
+    {else if $field@key === 'sexe_adh'}
+        {assign var=type value=constant('Galette\DynamicFieldsTypes\DynamicFieldType::CHOICE')}
+        {assign var=fvalues value=[Galette\Entity\Adherent::NC => {_T string="Unspecified"}, Galette\Entity\Adherent::MAN => {_T string="Man"}, Galette\Entity\Adherent::WOMAN => {_T string="Woman"}]}
     {else}
         {assign var=type value=constant('Galette\DynamicFieldsTypes\DynamicFieldType::LINE')}
     {/if}
-                {$field@key}: { type:'{$type}' },
+                {$field@key}: { type:'{$type}'{if isset($fvalues)}, values: {$fvalues|@json_encode}{/if} },
 {/foreach}
 {foreach $adh_dynamics as $field}
     {if $field|is_a:'Galette\DynamicFieldsTypes\Separator'}
@@ -373,8 +389,14 @@
                         case '{constant('Galette\DynamicFieldsTypes\DynamicFieldType::CHOICE')}':
                             _html = _getOperatorSelector(['op_equals', 'op_not_equals']);
                             var _options = '';
-                            for (var i = 0; i < _field.values.length; i++) {
-                                _options += '<option value="' + i + '">' + _field.values[i] + '</option>';
+                            if (Array.isArray(_field.values)) {
+                                for (var i = 0; i < _field.values.length; i++) {
+                                    _options += '<option value="' + i + '">' + _field.values[i] + '</option>';
+                                }
+                            } else {
+                                for (key in _field.values) {
+                                    _options += '<option value="' + key + '">' + _field.values[key] + '</option>';
+                                }
                             }
                             _html += '<select name="free_text[]">' + _options + '</select>';
                             break;

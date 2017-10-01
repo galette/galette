@@ -119,7 +119,7 @@ class MailingHistory extends History
             $this->buildLists($select);
             $this->proceedCount($select);
             //add limits to retrieve only relavant rows
-            $this->filters->setLimit($select);
+            $this->filters->setLimits($select);
             $results = $this->zdb->execute($select);
 
             $ret = array();
@@ -215,7 +215,7 @@ class MailingHistory extends History
      *
      * @return string SQL ORDER clause
      */
-    private function buildOrderClause()
+    protected function buildOrderClause()
     {
         $order = array();
 

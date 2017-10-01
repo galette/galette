@@ -205,8 +205,15 @@ ul.leaders li:before {
 }
 
 ul.leaders span:first-child {
+    display: inline-block;
+    padding-top: .1em;
+    padding-bottom: .1em;
     padding-right: 0.33em;
-    background: white
+    background: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 30em;
 }
 
 ul.leaders span + span {

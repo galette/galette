@@ -239,7 +239,7 @@ class Members
 
             //add limits to retrieve only relavant rows
             if ($limit === true) {
-                $this->filters->setLimit($select);
+                $this->filters->setLimits($select);
             }
 
             $rows = $zdb->execute($select);
@@ -446,7 +446,7 @@ class Members
 
             $this->proceedCount($select);
 
-            $this->filters->setLimit($select);
+            $this->filters->setLimits($select);
 
             $results = $zdb->execute($select);
             $members = array();
@@ -1403,6 +1403,23 @@ class Members
 
                                 $qry .= $qop  . ' ' .  $fs['search'] ;
                             }
+                        } elseif ($fs['field'] == 'status_label') {
+                            $qry_pattern = '%p%field %op %value';
+                            $qry .= str_replace(
+                                [
+                                    '%p',
+                                    '%field',
+                                    '%op',
+                                    '%value'
+                                ],
+                                [
+                                    'p.',
+                                    'libelle_statut',
+                                    $qop,
+                                    $zdb->platform->quoteValue($fs['search'])
+                                ],
+                                $qry_pattern
+                            );
                         } else {
                             $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' .
                                 $qop  . ' ' . $zdb->platform->quoteValue(

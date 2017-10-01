@@ -239,18 +239,19 @@ nav a{
  * == Desktop
  */
 
-#desktop {
-    border-spacing:3em 1em;
-    text-align: center;
+#desktop, #news {
     width: 50%;
-    min-width: 30em;
+    min-width: 40em;
     margin: 0 auto;
 }
 
+#desktop {
+    border-spacing:3em 1em;
+    text-align: center;
+}
+
 #news {
-    width: 50%;
-    min-width: 30em;
-    margin: 1em auto 0;
+    margin-top: 1em;
 }
 
 #news > div {
@@ -1065,7 +1066,7 @@ legend #btnadd_small {
 }
 .public_page #langs {
     display: block;
-    margin:0;
+    margin:.2em 0;
 }
 
 .public_page section {
@@ -1627,7 +1628,7 @@ table.listing.single {
     padding-right: 20px;
 }
 
-#errorbox {
+#errorbox, .errorbox {
     text-align:center;
     color:black;
     border : 2px solid #c00;
@@ -1868,7 +1869,7 @@ legend {
 
 /* no border on the first 'p' child */
 .cssform p:nth-child(2), #addfield p:first-child, .cssform legend+p/*, .cssform div.p:nth-child(2), .cssform div p:nth-child(1)*/
-.galette_form p:nth-child(2), .galette_form+p {
+.galette_form p:nth-child(2), .galette_form+p, .galette_form legend+p {
     border-top:none;
 }
 /* If there is a div, the preceding rules does not apply to the correct element :( */

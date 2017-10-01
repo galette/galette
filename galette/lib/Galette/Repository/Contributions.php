@@ -118,7 +118,7 @@ class Contributions
         try {
             $select = $this->buildSelect($fields, $count);
 
-            $this->filters->setLimit($select);
+            $this->filters->setLimits($select);
 
             $contributions = array();
             $results = $this->zdb->execute($select);
