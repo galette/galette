@@ -239,15 +239,19 @@ nav a{
  * == Desktop
  */
 
-#desktop, #news {
+#desktop, #news, #share {
     width: 50%;
     min-width: 40em;
     margin: 0 auto;
 }
 
-#desktop {
+#desktop, #share {
     border-spacing:3em 1em;
     text-align: center;
+}
+
+#share {
+    margin-bottom: 1em;
 }
 
 #news {
@@ -275,6 +279,7 @@ nav a{
 
 #desktop,
 #news,
+#share,
 .plugin,
 #groups_list,
 #group_infos {
@@ -306,6 +311,7 @@ nav a{
 
 #desktop header,
 #news header,
+#share header,
 .plugin header,
 #groups_list header,
 #group_infos header {
@@ -314,7 +320,7 @@ nav a{
     border-radius: 10px 10px 0 0;
 }
 
-#desktop a {
+#desktop a, #share a {
     border: 1px solid #d3d3d3;
     background-color: #e6e6e6;
     color: #555555;
@@ -331,7 +337,7 @@ nav a{
     border-radius: 10px;
 }
 
-#desktop a:hover {
+#desktop a:hover, #share a:hover {
     border: 1px solid #999999;
     background-color: #ffb619;
     font-weight: normal; color: #212121;
@@ -393,6 +399,33 @@ nav a{
     background-image: url(images/desktop/plugins.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
 }
 /* =/ Desktop */
+
+#share p {
+    margin-bottom: 0;
+}
+
+#telemetry_panel {
+    display: none; /* Start hidden */
+}
+#telemetry_panel h3 strong {
+    color: #ffb619;
+}
+
+#share #telemetry {
+    background-image: url(images/desktop/telemetry.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
+}
+#share #telemetry:hover {
+    background-image: url(images/desktop/telemetry.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
+}
+
+#share #register {
+    background-image: url(images/desktop/register.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
+}
+#share #register:hover {
+    background-image: url(images/desktop/register.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
+}
+
+/* =/ Share */
 
 /*
  * == Footer
@@ -856,6 +889,34 @@ legend #btnadd_small {
 }
 #btntools.ui-state-hover {
     background-image: url(images/icon-tool.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
+}
+
+#btnregister {
+    background-image: url(images/icon-identity.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
+}
+#btnregister.ui-state-hover {
+    background-image: url(images/icon-identity.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
+}
+
+#btntelemetry {
+    background-image: url(images/icon-telemetry.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
+}
+#btntelemetry.ui-state-hover {
+    background-image: url(images/icon-telemetry.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
+}
+
+#telemetry.button {
+    background-image:url(images/icon-telemetry.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#telemetry.button.ui-state-hover{
+   background-image:url(images/icon-telemetry.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#register.button {
+    background-image:url(images/icon-identity.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+}
+#register.button.ui-state-hover{
+   background-image:url(images/icon-identity.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 .left {
@@ -1549,6 +1610,7 @@ table.listing.single {
 
 #desktop header,
 #news header,
+#share header,
 .plugin header,
 .mailing header,
 #selected_members header,
@@ -1675,7 +1737,7 @@ table.listing.single {
     border: none;
 }
 
-#infobox, #successbox {
+#infobox, #successbox, #renewbox {
     text-align:center;
     color:black;
     border : 2px solid #04CC65;
@@ -1683,6 +1745,15 @@ table.listing.single {
     background : white url(images/ok.png) no-repeat 5px 50%;
     width: 80%;
     margin:0 auto 0.8em auto;
+}
+
+#renewbox {
+    width: 40em;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    background : white url(images/desktop/telemetry.png) no-repeat 5px 50%;
+    padding-left: 50px;
 }
 
 #infobox h1 {
@@ -2412,8 +2483,9 @@ td.photo img{
     }
 
     /** Dashboard */
-    #desktop, #news {
+    #desktop, #news, #share {
         width: 100%;
+        min-width: inherit;
     }
 
     /** Forms */
@@ -2560,6 +2632,10 @@ td.photo img{
         display: block;
         width: auto;
         text-align: left;
+    }
+
+    #renewbox {
+        width: auto;
     }
 }
 @media screen and (max-width:767px) and (orientation: landscape) {

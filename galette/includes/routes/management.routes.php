@@ -68,17 +68,36 @@ $app->get(
     function ($request, $response, $args = []) {
         $news = new News($this->preferences->pref_rss_url);
 
+        $params = [
+            'page_title'        => _T("Dashboard"),
+            'contentcls'        => 'desktop',
+            'news'              => $news->getPosts(),
+            'show_dashboard'    => $_COOKIE['show_galette_dashboard'],
+            'require_cookie'    => true,
+            'require_dialog'    => true,
+        ];
+
+        $hide_telemetry = true;
+        if ($this->login->isAdmin()) {
+            $telemetry = new \Galette\Util\Telemetry(
+                $this->zdb,
+                $this->preferences,
+                $this->plugins
+            );
+            $params['reguuid'] = $telemetry->getRegistrationUuid();
+            $params['telemetry_sent'] = $telemetry->isSent();
+            $params['registered'] = $telemetry->isRegistered();
+
+            $hide_telemetry = $telemetry->isSent() && $telemetry->isRegistered()
+                || $_COOKIE['hide_galette_telemetry'];
+        }
+        $params['hide_telemetry'] = $hide_telemetry;
+
         // display page
         $this->view->render(
             $response,
             'desktop.tpl',
-            array(
-                'page_title'        => _T("Dashboard"),
-                'contentcls'        => 'desktop',
-                'news'              => $news->getPosts(),
-                'show_dashboard'    => $_COOKIE['show_galette_dashboard'],
-                'require_cookie'    => true
-            )
+            $params
         );
         return $response;
     }

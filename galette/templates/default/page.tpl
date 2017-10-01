@@ -30,9 +30,7 @@
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.dialog.min.js"></script>
 {/if}
 {* /JQuery UI related *}
-{if $require_cookie}
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery.cookie.js"></script>
-{/if}
 {if $require_charts}
         <link rel="stylesheet" type="text/css" href="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.css" />
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.min.js"></script>
@@ -222,5 +220,12 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     </div>
     {include file="footer.tpl"}
     {block name="javascripts"}{/block}
+    {if isset($renew_telemetry)}
+        <script type="text/javascript">
+            $(function(){
+        {include file="telemetry.tpl" part="jsdialog"}
+            });
+        </script>
+    {/if}
 </body>
 </html>

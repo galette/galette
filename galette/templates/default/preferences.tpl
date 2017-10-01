@@ -69,6 +69,33 @@
                     <label for="pref_website" class="bline">{_T string="Website:"}</label>
                     <input{if isset($required.pref_website) and $required.pref_website eq 1} required="required"{/if} type="text" name="pref_website" id="pref_website" value="{$pref.pref_website}" maxlength="100"/>
                 </p>
+                <div class="p">
+                    <span class="bline tooltip" title="{_T string="Last telemetry sent date."}">{_T string="Telemetry date:"}</span>
+                    <span class="tip">{_T string="Last telemetry sent date."}</span>
+                    <span>
+                        {if $pref.pref_telemetry_date}
+                            {$pref.pref_telemetry_date|date_format:"%a %d/%m/%Y - %R"}
+                        {else}
+                            {_T string="Never"}
+                        {/if}
+                        - <a href="#" id="telemetry" class="button">{_T string="send"}</a>
+                    </span>
+                </div>
+                <div class="p">
+                    <span class="bline tooltip" title="{_T string="Date on which you registered your Galette instance."}">{_T string="Registration date:"}</span>
+                    <span class="tip">{_T string="Date on which you registered your Galette instance."}</span>
+                    <span>
+                        {if $pref.pref_registration_date}
+                            {assign var="regtxt" value={_T string="Update your informations"}}
+                            {$pref.pref_registration_date|date_format:"%a %d/%m/%Y - %R"}
+                        {else}
+                            {assign var="regtxt" value={_T string="Register"}}
+                            {_T string="Not registered"}
+                        {/if}
+                        - <a href="{$smarty.const.GALETTE_TELEMETRY_URI}reference?showmodal&uuid={$pref.pref_registration_uuid}" id="register" target="_blank" class="button">{$regtxt}</a>
+                    </span>
+                </div>
+
             </fieldset>
 
             <fieldset class="cssform" id="social">
@@ -451,6 +478,8 @@
         </div>
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
         </form>
+
+        {include file="telemetry.tpl" part="dialog"}
 {/block}
 
 {block name="javascripts"}
@@ -547,6 +576,10 @@
                         }
                     });
                 });
+
+            {include file="telemetry.tpl" part="jsdialog"}
+            {include file="telemetry.tpl" part="jsregister"}
+
             });
 
             //color pickers setup (sets bg color of inputs)

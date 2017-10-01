@@ -37,7 +37,7 @@
 
 use Galette\Entity\Adherent;
 
-$app->group(__('/ajax', 'routes'), function () {
+$app->group(__('/ajax', 'routes'), function () use ($authenticate) {
     $this->get(
         __('/messages', 'routes'),
         function ($request, $response) {
@@ -186,4 +186,52 @@ $app->group(__('/ajax', 'routes'), function () {
             return $response->withJson($ret);
         }
     )->setName('suggestCountry');
+
+    $this->get(
+        __('/telemetry', 'routes') . __('/infos'),
+        function ($request, $response) {
+            $telemetry = new \Galette\Util\Telemetry(
+                $this->zdb,
+                $this->preferences,
+                $this->plugins
+            );
+            $body = $response->getBody();
+            $body->write('<pre>' . json_encode($telemetry->getTelemetryInfos(), JSON_PRETTY_PRINT)  . '</pre>');
+            return $response;
+        }
+    )->setName('telemetryInfos')->add($authenticate);
+
+    $this->post(
+        __('/telemetry', 'routes') . __('/send', 'routes'),
+        function ($request, $response) {
+            $telemetry = new \Galette\Util\Telemetry(
+                $this->zdb,
+                $this->preferences,
+                $this->plugins
+            );
+            try {
+                $result = $telemetry->send();
+                $message = _T('Telemetry informations has been sent. Thank you!');
+                $result = [
+                    'success'   => true,
+                    'message'   => $message
+                ];
+            } catch (\Exception $e) {
+                $result = [
+                    'success'   => false,
+                    'message'   => $e->getMessage()
+                ];
+            }
+            return $response->withJson($result);
+        }
+    )->setName('telemetrySend')->add($authenticate);
+
+    $this->get(
+        __('/telemetry', 'routes') . __('/registered'),
+        function ($request, $response) {
+            $this->preferences->pref_registration_date = date('Y-m-d H:i:s');
+            $this->preferences->store();
+            return $response->withJson(['message' => _T('Thank you for registering!')]);
+        }
+    )->setName('setRegistered')->add($authenticate);
 });

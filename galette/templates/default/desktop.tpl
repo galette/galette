@@ -1,5 +1,26 @@
 {extends file="page.tpl"}
 {block name="content"}
+    {if not $hide_telemetry}
+        <section id="share">
+            <header class="ui-state-default ui-state-active">
+                {_T string="Help us know about you!"}
+            </header>
+            <div>
+                <p>
+                    {_T string="Take a moment to share some informations with us so we can know better Galette's uses."}<br/>
+                </p>
+        {if not $telemetry_sent}
+                    <a id="telemetry" href="#" title="{_T string="Send anonymous and imprecise data about your Galette instance"}">{_T string="Telemetry"}</a>
+        {/if}
+        {if not $registered}
+                    <a id="register" href="{$smarty.const.GALETTE_TELEMETRY_URI}reference?showmodal&uuid={$reguuid}" title="{_T string="Register your organization as a Galette user"}" target="_blank">{_T string="Register"}</a>
+        {/if}
+            <p class="center" title="{_T string="The panel will be automatically hidden once you have registered and send telemetry data. Check the box if you want to hide it anyways."}">
+                <input type="checkbox" name="hide_telemetry" id="hide_telemetry" value="1"{if $hide_telemetry} checked="checked"{/if}/>
+                <label for="hide_telemetry">{_T string="Hide this panel"}</label>
+            </p>
+        </section>
+    {/if}
         <section id="desktop">
             <header class="ui-state-default ui-state-active">
                 {_T string="Activities"}
@@ -37,6 +58,10 @@
             <input type="checkbox" name="show_dashboard" id="show_dashboard" value="1"{if $show_dashboard} checked="checked"{/if}/>
             <label for="show_dashboard">{_T string="Show dashboard on login"}</label>
         </p>
+
+    {if not $hide_telemetry and not $telemetry_sent}
+        {include file="telemetry.tpl" part="dialog"}
+    {/if}
 {/block}
 
 {block name="javascripts"}
@@ -54,6 +79,26 @@
                         window.location.replace(_url);
                     }
                 });
+
+    {if not $hide_telemetry}
+                $('#hide_telemetry').change(function(){
+                    var _checked = $(this).is(':checked');
+                    $.cookie(
+                        'hide_galette_telemetry',
+                        (_checked ? 1 : 0),
+                        { expires: 365 }
+                    );
+                    var _url = '{path_for name="dashboard"}';
+                    window.location.replace(_url);
+                });
+
+        {if not $telemetry_sent}
+            {include file="telemetry.tpl" part="jsdialog" orig="desktop"}
+        {/if}
+        {if not $registered}
+            {include file="telemetry.tpl" part="jsregister" orig="desktop"}
+        {/if}
+    {/if}
             });
         </script>
 {/block}

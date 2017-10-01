@@ -138,6 +138,14 @@ $container['view'] = function ($c) {
     $smarty->assign('require_tree', null);
     $smarty->assign('html_editor', null);
     $smarty->assign('require_charts', null);
+    if ($c->preferences->pref_telemetry_date) {
+        $now = new \DateTime();
+        $sent = new \DateTime($c->preferences->pref_telemetry_date);
+        $sent->add(new \DateInterval('P1Y'));// ask to resend telemetry after one year
+        if ($now > $sent && !$_COOKIE['renew_telemetry']) {
+            $smarty->assign('renew_telemetry', true);
+        }
+    }
 
     return $view;
 };
@@ -307,7 +315,10 @@ $container['acls'] = function ($c) {
         'fakeData'                  => 'superadmin',
         'doFakeData'                => 'superadmin',
         'adminTools'                => 'superadmin',
-        'doAdminTools'              => 'superadmin'
+        'doAdminTools'              => 'superadmin',
+        'telemetryInfos'            => 'admin',
+        'telemetrySend'             => 'admin',
+        'setRegistered'             => 'admin'
     ];
 
     foreach ($c['plugins']->getModules() as $plugin) {
