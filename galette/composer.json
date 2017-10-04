@@ -38,7 +38,8 @@
         "fzaninotto/Faker": "dev-master"
     },
     "require-dev": {
-        "atoum/atoum": "^3"
+        "atoum/atoum": "^3",
+        "atoum/telemetry-extension": "^1.0"
     },
     "config": {
         "optimize-autoloader": true
