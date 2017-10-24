@@ -1117,7 +1117,7 @@ $app->get(
 
         $value = null;
         if (isset($args['value'])) {
-            $option = $args['value'];
+            $value = $args['value'];
         }
 
         if (isset($this->session->filter_mailings)) {
