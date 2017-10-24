@@ -44,7 +44,6 @@ use Galette\Filters\HistoryList;
 use Galette\Core\MailingHistory;
 use Galette\Filters\MailingsList;
 use Galette\Entity\FieldsCategories;
-use Galette\Entity\DynamicFields;
 use Galette\DynamicFieldsTypes\DynamicFieldType;
 use Galette\Repository\Members;
 use Galette\IO\News;

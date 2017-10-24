@@ -408,11 +408,12 @@ class FieldsConfig
      * Retrieve form elements
      *
      * @param Login   $login Login instance
+     * @param boolean $new   True when adding a new member
      * @param boolean $selfs True if we're called from self subscirption page
      *
      * @return array
      */
-    public function getFormElements(Login $login, $selfs = false)
+    public function getFormElements(Login $login, $new, $selfs = false)
     {
         global $preferences;
 
@@ -451,7 +452,7 @@ class FieldsConfig
 
                     if ($o->field_id == 'id_adh') {
                         // ignore access control, as member ID is always needed
-                        if (!$preferences->pref_show_id) {
+                        if (!$preferences->pref_show_id || $new === true) {
                             $hidden_elements[] = $o;
                         } else {
                             $o->type = self::TYPE_STR;
