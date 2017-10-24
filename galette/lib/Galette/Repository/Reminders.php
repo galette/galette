@@ -112,7 +112,7 @@ class Reminders
             $now = new \DateTime();
             $duedate = new \DateTime();
             $duedate->modify('+1 month');
-            $select->where->greaterThan(
+            $select->where->greaterThanOrEqualTo(
                 'date_echeance',
                 $now->format('Y-m-d')
             )->lessThan(
