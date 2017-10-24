@@ -1048,7 +1048,7 @@ class Members
                         $duedate = new \DateTime();
                         $duedate->modify('+1 month');
                         $select->where
-                            ->greaterThan(
+                            ->greaterThanOrEqualTo(
                                 'date_echeance',
                                 $now->format('Y-m-d')
                             )->lessThan(
@@ -1065,7 +1065,7 @@ class Members
                         break;
                     case self::MEMBERSHIP_UP2DATE:
                         $select->where(
-                            '(' . 'date_echeance > \'' . date('Y-m-d', time())
+                            '(' . 'date_echeance >= \'' . date('Y-m-d', time())
                             . '\' OR bool_exempt_adh=true)'
                         );
                         break;
