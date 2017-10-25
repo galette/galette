@@ -783,31 +783,27 @@ abstract class DynamicFieldType
         if (count($this->errors) === 0 && $this->hasFixedValues()) {
             $contents_table = self::getFixedValuesTableName($this->id, true);
 
-            if ($this->id === null || $this->old_size !== null && $this->size != $this->old_size) {
-                try {
-                    if ($this->id !== null) {
-                        $this->zdb->connection->beginTransaction();
-                        $this->zdb->db->query(
-                            'DROP TABLE IF EXISTS ' . $contents_table,
-                            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-                        );
-                    }
-                    $this->zdb->db->query(
-                        'CREATE TABLE ' . $contents_table .
-                        ' (id INTEGER NOT NULL,val varchar(' . $this->size .
-                        ') NOT NULL)',
-                        \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-                    );
-                    $this->zdb->connection->commit();
-                } catch (\Exception $e) {
-                    $this->zdb->connection->rollBack();
-                    Analog::log(
-                        'Unable to manage fields values table ' .
-                        $contents_table . ' | ' . $e->getMessage(),
-                        Analog::ERROR
-                    );
-                    $this->errors[] = _T("An error occured creating field values table");
-                }
+            try {
+                $this->zdb->connection->beginTransaction();
+                $this->zdb->db->query(
+                    'DROP TABLE IF EXISTS ' . $contents_table,
+                    \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+                );
+                $this->zdb->db->query(
+                    'CREATE TABLE ' . $contents_table .
+                    ' (id INTEGER NOT NULL,val varchar(' . $this->size .
+                    ') NOT NULL)',
+                    \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+                );
+                $this->zdb->connection->commit();
+            } catch (\Exception $e) {
+                $this->zdb->connection->rollBack();
+                Analog::log(
+                    'Unable to manage fields values table ' .
+                    $contents_table . ' | ' . $e->getMessage(),
+                    Analog::ERROR
+                );
+                $this->errors[] = _T("An error occured creating field values table");
             }
 
             if (count($this->errors) == 0) {
