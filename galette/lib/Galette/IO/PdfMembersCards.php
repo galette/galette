@@ -151,10 +151,8 @@ class PdfMembersCards extends Pdf
 
 
         // Get fixed data from preferences
-        $this->an_cot = '<strong>' . $this->preferences->pref_card_year .
-            '</strong>';
-        $this->abrev = '<strong>' . $this->preferences->pref_card_abrev .
-            '</strong>';
+        $this->an_cot = $this->preferences->pref_card_year;
+        $this->abrev = $this->preferences->pref_card_abrev;
 
         $print_logo = new PrintLogo();
         $this->logofile = $print_logo->getPath();
@@ -264,28 +262,30 @@ class PdfMembersCards extends Pdf
             // Color=#8C8C8C: Shadow of the year
             $this->SetTextColor(140);
             $this->SetFontSize($this->year_font_size);
-            $this->SetXY($x0 + 65, $y0 + $this->hlogo);
-            $this->writeHTML($this->an_cot, false, 0);
+            $xan_cot = $x0 + $this->wi - $this->GetStringWidth($this->an_cot, self::FONT, 'B', $this->year_font_size) - 0.2;
+            $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);
+            $this->writeHTML('<strong>' . $this->an_cot . '</strong>', false, 0);
 
             // Colored Text (Big label, id, year)
             $this->SetTextColor($fcol['R'], $fcol['G'], $fcol['B']);
 
             $this->SetFontSize(8);
-            $this->SetXY($x0 + 69, $y0 + 28);
+            $this->SetXY($x0 + 68.8, $y0 + 28);
             $this->writeHTML($id, false, 0);
             $this->SetFontSize($this->year_font_size);
-            $this->SetXY($x0 + 64.7, $y0 + $this->hlogo - 0.3);
-            $this->writeHTML($this->an_cot, false, 0);
+            $xan_cot = $xan_cot - 0.3;
+            $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);
+            $this->writeHTML('<strong>' . $this->an_cot . '</strong>', false, 0);
 
             // Abbrev: Adapt font size to text length
             $fontsz = 12;
             $this->SetFontSize($fontsz);
-            while ($this->GetStringWidth($this->abrev) > $this->max_text_size) {
+            while ($this->GetStringWidth($this->abrev, self::FONT, 'B', $fontsz) > $this->max_text_size) {
                 $fontsz--;
                 $this->SetFontSize($fontsz);
             }
             $this->SetXY($x0 + 27, $y0 + 12);
-            $this->writeHTML($this->abrev, true, 0);
+            $this->writeHTML('<strong>' . $this->abrev . '</strong>', true, 0);
 
             // Name: Adapt font size to text length
             $this->SetTextColor(0);
