@@ -188,7 +188,7 @@ $app->group(__('/ajax', 'routes'), function () use ($authenticate) {
     )->setName('suggestCountry');
 
     $this->get(
-        __('/telemetry', 'routes') . __('/infos'),
+        __('/telemetry', 'routes') . __('/infos', 'routes'),
         function ($request, $response) {
             $telemetry = new \Galette\Util\Telemetry(
                 $this->zdb,
@@ -227,7 +227,7 @@ $app->group(__('/ajax', 'routes'), function () use ($authenticate) {
     )->setName('telemetrySend')->add($authenticate);
 
     $this->get(
-        __('/telemetry', 'routes') . __('/registered'),
+        __('/telemetry', 'routes') . __('/registered', 'routes'),
         function ($request, $response) {
             $this->preferences->pref_registration_date = date('Y-m-d H:i:s');
             $this->preferences->store();
