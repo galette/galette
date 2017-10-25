@@ -609,7 +609,7 @@ abstract class DynamicFieldType
         ) {
             $this->errors[] = _T('Missing required field name!');
         } else {
-            if ($this->old_name === null && $this->name !== null && $this->name != $values['name']) {
+            if ($this->old_name === null && $this->name !== null && $this->name != $values['field_name']) {
                 $this->old_name = $this->name;
             }
             $this->name = $values['field_name'];
@@ -704,21 +704,21 @@ abstract class DynamicFieldType
         }
 
         if ($this->old_name !== null) {
-            $added = \addDynamicTranslation($this->name);
-            if ($added === false) {
-                $this->warnings[] = str_replace(
-                    '%field',
-                    $this->name,
-                    _T('Unable to add dynamic translation for %field :(')
-                );
-            }
-
             $deleted = \deleteDynamicTranslation($this->old_name);
             if ($deleted === false) {
                 $this->warnings[] = str_replace(
                     '%field',
                     $this->old_name,
                     _T('Unable to remove old dynamic translation for %field :(')
+                );
+            }
+
+            $added = \addDynamicTranslation($this->name);
+            if ($added === false) {
+                $this->warnings[] = str_replace(
+                    '%field',
+                    $this->name,
+                    _T('Unable to add dynamic translation for %field :(')
                 );
             }
         }
