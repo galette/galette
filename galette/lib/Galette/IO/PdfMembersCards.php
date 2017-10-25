@@ -161,7 +161,7 @@ class PdfMembersCards extends Pdf
         $ratio = $print_logo->getWidth()/$print_logo->getHeight();
         if ($ratio < 1) {
             if ($print_logo->getHeight() > 16) {
-                $this->hlogo = 25;
+                $this->hlogo = 20;
             } else {
                 $this->hlogo = $print_logo->getHeight();
             }
