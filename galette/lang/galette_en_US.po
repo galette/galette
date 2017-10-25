@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2017-10-25 09:01+0200\n"
+"PO-Revision-Date: 2017-10-25 16:43+0200\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -2844,10 +2844,6 @@ msgstr "Table name"
 msgid "Missing required form!"
 msgstr "Missing required form!"
 
-#: ../templates/default/global_messages.tpl:51
-msgid "It's been over a year since you sent Telemetry data."
-msgstr "It's been over a year since you sent Telemetry data."
-
 #: ../includes/routes/management.routes.php:581
 msgid "No email sent to %email"
 msgstr "No email sent to %email"
@@ -3843,6 +3839,10 @@ msgstr "Manager(s)"
 #: ../includes/routes/members.routes.php:361
 msgid "Members management"
 msgstr "Members management"
+
+#: ../templates/default/global_messages.tpl:51
+msgid "Your telemetry data are more than one year old."
+msgstr "Your telemetry data are more than one year old."
 
 #: ../lib/Galette/IO/CsvIn.php:326
 msgid "from another member in import"
@@ -7549,6 +7549,9 @@ msgstr "Mails texts"
 #: ../templates/default/plugins.tpl:52
 msgid "Enable plugin"
 msgstr "Enable plugin"
+
+#~ msgid "It's been over a year since you sent Telemetry data."
+#~ msgstr "It's been over a year since you sent Telemetry data."
 
 #~ msgid "/registered"
 #~ msgstr "/registered"

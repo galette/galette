@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Wed Oct 25 07:01:44 2017 (GMT)
+// This file was automatically generated on Wed Oct 25 14:43:56 2017 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -814,7 +814,7 @@ $lang['galette']['(Confirmation)'] = '(Confirmation)';
 $lang['galette']['contribution'] = 'contribution';
 
 // ../templates/default/preferences.tpl:278 
-$lang['galette']['Do you want to use SMTP authentication?'] = 'Voulez vous utiliser l\'authentification SMTP&nbsp;?';
+$lang['galette']['Do you want to use SMTP authentication?'] = 'Voulez-vous utiliser l\'authentification SMTP&nbsp;?';
 
 // ../install/old.index.php:822 ../install/steps/db_checks.php:116 
 $lang['galette']['SELECT operation allowed'] = 'Opération SELECT autorisée';
@@ -824,6 +824,9 @@ $lang['galette']['No member has been found'] = 'Aucun membre n\'a été trouvé'
 
 // ../templates/default/fake_data.tpl:22 
 $lang['galette']['Number of transactions:'] = 'Nombre de transactions&nbsp;:';
+
+// ../templates/default/global_messages.tpl:51 
+$lang['galette']['Your telemetry data are more than one year old.'] = 'Vos informations de télémétrie datent de plus d\'un an.';
 
 // ../templates/default/preferences.tpl:316 ../templates/default/preferences.tpl:321 ../templates/default/preferences.tpl:326 ../templates/default/preferences.tpl:331 ../templates/default/preferences.tpl:336 ../templates/default/preferences.tpl:341 ../templates/default/preferences.tpl:346 ../templates/default/preferences.tpl:355 ../templates/default/preferences.tpl:433 ../templates/default/preferences.tpl:438 ../templates/default/preferences.tpl:443 ../templates/default/preferences.tpl:448 
 $lang['galette']['(Integer)'] = '(Entier)';
@@ -1354,7 +1357,7 @@ $lang['galette']['Label'] = 'Libellé';
 $lang['galette']['Existing attachments:'] = 'Pièces jointes existantes :';
 
 // ../templates/default/preferences.tpl:288 
-$lang['galette']['Do you want to allow unsecure SMTP authentication?'] = 'Voulez vous autoriser les connexions SMTP non sécurisées&nbsp;?';
+$lang['galette']['Do you want to allow unsecure SMTP authentication?'] = 'Voulez-vous autoriser les connexions SMTP non sécurisées&nbsp;?';
 
 // ../templates/default/plugins.tpl:11 ../templates/default/plugins.tpl:25 
 $lang['galette']['Release date'] = 'Date de sortie';
@@ -1612,7 +1615,7 @@ $lang['galette']['Galette tables exports'] = 'Export des tables Galette';
 $lang['galette']['Transactions'] = 'Transactions';
 
 // ../templates/default/global_messages.tpl:52 
-$lang['galette']['Do you want to send it again?'] = 'Voulez vous les envoyer à nouveau ?';
+$lang['galette']['Do you want to send it again?'] = 'Voulez-vous les envoyer à nouveau ?';
 
 // ../includes/fields_defs/pdfmodels_fields.php:221 
 $lang['galette']['First name'] = 'Prénom';
@@ -1840,7 +1843,7 @@ $lang['galette']['Show title ?'] = 'Afficher le titre&nbsp;?';
 $lang['galette']['Name'] = 'Nom';
 
 // ../templates/default/gestion_contributions.tpl:244 
-$lang['galette']['Do you really want to delete all selected contributions?'] = 'Voulez vous réellement effacer toutes les contributions sélectionnées&nbsp;?';
+$lang['galette']['Do you really want to delete all selected contributions?'] = 'Voulez-vous réellement effacer toutes les contributions sélectionnées&nbsp;?';
 
 // ../lib/Galette/Core/Install.php:324 ../install/old.index.php:93 
 $lang['galette']['Database type unknown'] = 'Type de base inconnu';
@@ -2255,9 +2258,6 @@ $lang['galette']['Version:'] = 'Version&nbsp;:';
 
 // ../templates/default/forms_types/titles.tpl:6 
 $lang['galette']['Not supplied'] = 'Non renseigné';
-
-// ../templates/default/gestion_adherents.tpl:193 
-$lang['galette']['[$]'] = '[$]';
 
 // ../includes/routes/management.routes.php:2318 
 $lang['galette']['User statuses'] = 'Statuts des utilisateurs';
@@ -2841,8 +2841,8 @@ $lang['galette']['Retry'] = 'Réessayer';
 // ../templates/default/gestion_mailings.tpl:125 ../templates/default/page.tpl:122 
 $lang['galette']['Superadmin'] = 'Superadmin';
 
-// ../templates/default/global_messages.tpl:51 
-$lang['galette']['It\'s been over a year since you sent Telemetry data.'] = 'Cela fait plus d\'un an que vous avez envoyé vos informations de télémétrie.';
+// ../templates/default/gestion_adherents.tpl:193 
+$lang['galette']['[$]'] = '[$]';
 
 // ../includes/routes/management.routes.php:1537 
 $lang['galette']['An error occured running parameted export \'%export\'.'] = 'Une erreur est survenue durant l\'exécution de l\'export paramétré « %export ».';
@@ -4312,7 +4312,7 @@ $lang['galette']['Next page (%i)'] = 'Page suivante (%i)';
 $lang['galette']['Unable to impersonate as %id'] = 'Impossible d\'effectuer une imposture en tant que %id';
 
 // ../templates/default/mailing_adherents.tpl:271 
-$lang['galette']['Are you sure you want to remove this attachment?'] = 'Voulez vous vraiment effacer cette pièce jointe&nbsp;?';
+$lang['galette']['Are you sure you want to remove this attachment?'] = 'Voulez-vous vraiment effacer cette pièce jointe&nbsp;?';
 
 // ../templates/default/display_dynamic_fields.tpl:22 
 $lang['galette']['Open \'%s\' in a new window'] = 'Ouvrir « %s » dans une nouvelle fenêtre';

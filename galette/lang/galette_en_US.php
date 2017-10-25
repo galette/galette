@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Wed Oct 25 07:01:44 2017 (GMT)
+// This file was automatically generated on Wed Oct 25 14:43:56 2017 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -824,6 +824,9 @@ $lang['galette']['No member has been found'] = 'No member has been found';
 
 // ../templates/default/fake_data.tpl:22 
 $lang['galette']['Number of transactions:'] = 'Number of transactions:';
+
+// ../templates/default/global_messages.tpl:51 
+$lang['galette']['Your telemetry data are more than one year old.'] = 'Your telemetry data are more than one year old.';
 
 // ../templates/default/preferences.tpl:316 ../templates/default/preferences.tpl:321 ../templates/default/preferences.tpl:326 ../templates/default/preferences.tpl:331 ../templates/default/preferences.tpl:336 ../templates/default/preferences.tpl:341 ../templates/default/preferences.tpl:346 ../templates/default/preferences.tpl:355 ../templates/default/preferences.tpl:433 ../templates/default/preferences.tpl:438 ../templates/default/preferences.tpl:443 ../templates/default/preferences.tpl:448 
 $lang['galette']['(Integer)'] = '(Integer)';
@@ -2256,9 +2259,6 @@ $lang['galette']['Version:'] = 'Version:';
 // ../templates/default/forms_types/titles.tpl:6 
 $lang['galette']['Not supplied'] = 'Not supplied';
 
-// ../templates/default/gestion_adherents.tpl:193 
-$lang['galette']['[$]'] = '[$]';
-
 // ../includes/routes/management.routes.php:2318 
 $lang['galette']['User statuses'] = 'User statuses';
 
@@ -2841,8 +2841,8 @@ $lang['galette']['Retry'] = 'Retry';
 // ../templates/default/gestion_mailings.tpl:125 ../templates/default/page.tpl:122 
 $lang['galette']['Superadmin'] = 'Superadmin';
 
-// ../templates/default/global_messages.tpl:51 
-$lang['galette']['It\'s been over a year since you sent Telemetry data.'] = 'It\'s been over a year since you sent Telemetry data.';
+// ../templates/default/gestion_adherents.tpl:193 
+$lang['galette']['[$]'] = '[$]';
 
 // ../includes/routes/management.routes.php:1537 
 $lang['galette']['An error occured running parameted export \'%export\'.'] = 'An error occured running parameted export \'%export\'.';

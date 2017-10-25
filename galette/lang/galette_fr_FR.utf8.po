@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2017-10-25 09:01+0200\n"
+"PO-Revision-Date: 2017-10-25 16:43+0200\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -372,7 +372,7 @@ msgstr "L'extension de fichier n'est pas autorisée, seules %s le sont."
 
 #: ../templates/default/mailing_adherents.tpl:271
 msgid "Are you sure you want to remove this attachment?"
-msgstr "Voulez vous vraiment effacer cette pièce jointe&nbsp;?"
+msgstr "Voulez-vous vraiment effacer cette pièce jointe&nbsp;?"
 
 #: ../templates/default/plugin_initdb.tpl:95
 msgid "Plugin '%name' has been successfully installed!"
@@ -579,7 +579,7 @@ msgstr "Date de dernier envoi de la télémétrie."
 
 #: ../templates/default/preferences.tpl:278
 msgid "Do you want to use SMTP authentication?"
-msgstr "Voulez vous utiliser l'authentification SMTP&nbsp;?"
+msgstr "Voulez-vous utiliser l'authentification SMTP&nbsp;?"
 
 #: ../lib/Galette/IO/Charts.php:178
 msgid "Due free"
@@ -1699,7 +1699,7 @@ msgstr "(Entrez une année ou deux années avec un séparateur)"
 
 #: ../templates/default/preferences.tpl:288
 msgid "Do you want to allow unsecure SMTP authentication?"
-msgstr "Voulez vous autoriser les connexions SMTP non sécurisées&nbsp;?"
+msgstr "Voulez-vous autoriser les connexions SMTP non sécurisées&nbsp;?"
 
 #: ../templates/default/page.tpl:183
 msgid "Download empty adhesion form"
@@ -2249,7 +2249,7 @@ msgstr "- Les nombres et mesures doivent être des entiers&nbsp;!"
 
 #: ../templates/default/global_messages.tpl:52
 msgid "Do you want to send it again?"
-msgstr "Voulez vous les envoyer à nouveau ?"
+msgstr "Voulez-vous les envoyer à nouveau ?"
 
 #: ../install/old.index.php:1400
 msgid "Default texts cannot be initialized."
@@ -2890,11 +2890,6 @@ msgstr "Nom de la table"
 #: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:630
 msgid "Missing required form!"
 msgstr "Formulaire requis manquant !"
-
-#: ../templates/default/global_messages.tpl:51
-msgid "It's been over a year since you sent Telemetry data."
-msgstr ""
-"Cela fait plus d'un an que vous avez envoyé vos informations de télémétrie."
 
 #: ../includes/routes/management.routes.php:581
 msgid "No email sent to %email"
@@ -3906,6 +3901,10 @@ msgstr "Responsable(s)"
 #: ../includes/routes/members.routes.php:361
 msgid "Members management"
 msgstr "Gestion des membres"
+
+#: ../templates/default/global_messages.tpl:51
+msgid "Your telemetry data are more than one year old."
+msgstr "Vos informations de télémétrie datent de plus d'un an."
 
 #: ../lib/Galette/IO/CsvIn.php:326
 msgid "from another member in import"
@@ -5854,7 +5853,7 @@ msgstr "Date"
 #: ../templates/default/gestion_contributions.tpl:244
 msgid "Do you really want to delete all selected contributions?"
 msgstr ""
-"Voulez vous réellement effacer toutes les contributions sélectionnées&nbsp;?"
+"Voulez-vous réellement effacer toutes les contributions sélectionnées&nbsp;?"
 
 #: ../includes/routes/management.routes.php:2017
 msgid "Title '%s' has not been added!"
@@ -7680,6 +7679,11 @@ msgstr "Textes courriels"
 #: ../templates/default/plugins.tpl:52
 msgid "Enable plugin"
 msgstr "Activer le plugin"
+
+#~ msgid "It's been over a year since you sent Telemetry data."
+#~ msgstr ""
+#~ "Cela fait plus d'un an que vous avez envoyé vos informations de "
+#~ "télémétrie."
 
 #, fuzzy
 #~ msgid "/registered"

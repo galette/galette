@@ -2552,10 +2552,6 @@ msgstr ""
 msgid "Missing required form!"
 msgstr ""
 
-#: ../templates/default/global_messages.tpl:51
-msgid "It's been over a year since you sent Telemetry data."
-msgstr ""
-
 #: ../includes/routes/management.routes.php:581
 msgid "No email sent to %email"
 msgstr ""
@@ -3427,6 +3423,10 @@ msgstr ""
 
 #: ../includes/routes/members.routes.php:361
 msgid "Members management"
+msgstr ""
+
+#: ../templates/default/global_messages.tpl:51
+msgid "Your telemetry data are more than one year old."
 msgstr ""
 
 #: ../lib/Galette/IO/CsvIn.php:326
