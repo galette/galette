@@ -37,6 +37,7 @@
 namespace Galette\Handlers;
 
 use Slim\Handlers\Error as SlimError;
+use Slim\Http\Body;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Analog\Analog;
@@ -72,7 +73,8 @@ class Error extends SlimError
         $response = parent::__invoke($request, $response, $exception);
 
         if ($response->getHeaderLine('Content-Type') == 'text/html') {
-            $response->getBody()->rewind();
+            $body = new Body(fopen('php://temp', 'r+'));
+            $response = $response->withBody($body);
 
             $this->view->render(
                 $response,
