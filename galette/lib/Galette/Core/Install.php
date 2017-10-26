@@ -1048,7 +1048,11 @@ class Install
             return true;
         }
 
-        if (is_writable(GALETTE_CONFIG_PATH . 'config.inc.php') && $fd = @fopen(GALETTE_CONFIG_PATH . 'config.inc.php', 'w')) {
+        $conffile = GALETTE_CONFIG_PATH . 'config.inc.php';
+        if (is_writable(GALETTE_CONFIG_PATH)
+            && (!file_exists($conffile) || file_exists($conffile) && is_writable($conffile))
+            && $fd = @fopen($conffile, 'w')
+        ) {
                 $data = "<?php
 define('TYPE_DB', '" . $this->_db_type . "');
 define('HOST_DB', '" . $this->_db_host . "');
@@ -1065,7 +1069,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
         } else {
             $str = str_replace(
                 '%path',
-                GALETTE_CONFIG_PATH . 'config.inc.php',
+                $conffile,
                 _T("Unable to create configuration file (%path)")
             );
             Analog::log($str, Analog::WARNING);
