@@ -2636,6 +2636,11 @@ td.photo img{
 
     #renewbox {
         width: auto;
+        position: initial;
+    }
+
+    #details_menu li {
+        width: 8em;
     }
 }
 @media screen and (max-width:767px) and (orientation: landscape) {
