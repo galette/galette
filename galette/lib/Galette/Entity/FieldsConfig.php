@@ -186,7 +186,8 @@ class FieldsConfig
                     'category'  => (int)$k->id_field_category,
                     'visible'   => (int)$k->visible,
                     'required'  => (boolean)$k->required,
-                    'propname'  => $this->defaults[$k->field_id]['propname']
+                    'propname'  => $this->defaults[$k->field_id]['propname'],
+                    'disabled'  => false
                 );
                 $this->categorized_fields[$k->id_field_category][] = $f;
 
