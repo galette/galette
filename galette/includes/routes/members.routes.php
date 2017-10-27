@@ -74,7 +74,10 @@ $app->get(
             $member = $this->session->member;
             $this->session->member = null;
         } else {
-            $member = new Adherent($this->zdb);
+            $deps = [
+                'dynamics'  => true
+            ];
+            $member = new Adherent($this->zdb, null, $deps);
         }
 
         //mark as self membership
