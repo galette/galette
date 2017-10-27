@@ -381,7 +381,6 @@ class DynamicFields
         foreach ($this->current_values as $field_id => $values) {
             foreach ($values as $value) {
                 $key = $field_id . '_' . $value['val_index'];
-                var_dump($key);
                 if (isset($fromdb[$key])) {
                     unset($fromdb[$key]);
                 }
