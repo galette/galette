@@ -30,7 +30,8 @@ News
 - Improve fields acces control adding new roles (thanks to Guillaume R.)
 - Merge admintools plugins features
 - Free search on statuses labels
-- Better management of fields in free advenced search (thanks to Guillaume R.)
+- Better management of fields in free advanced search (thanks to Guillaume R.)
+- Send telemetry data and register on website
 
 Bugfixes
 ^^^^^^^^
