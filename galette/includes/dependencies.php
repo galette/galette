@@ -138,7 +138,7 @@ $container['view'] = function ($c) {
     $smarty->assign('require_tree', null);
     $smarty->assign('html_editor', null);
     $smarty->assign('require_charts', null);
-    if ($c->preferences->pref_telemetry_date) {
+    if ($c->login->isAdmin() && $c->preferences->pref_telemetry_date) {
         $now = new \DateTime();
         $sent = new \DateTime($c->preferences->pref_telemetry_date);
         $sent->add(new \DateInterval('P1Y'));// ask to resend telemetry after one year
