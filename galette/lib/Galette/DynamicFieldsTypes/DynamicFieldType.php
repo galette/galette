@@ -927,7 +927,7 @@ abstract class DynamicFieldType
 
             $old_rank = $this->index;
 
-            $direction = $action == __('up') ? 1: -1;
+            $direction = $action == __('up') ? -1: 1;
             $new_rank = $old_rank + $direction;
             $update = $this->zdb->update(self::TABLE);
             $update->set([
