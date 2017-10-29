@@ -789,9 +789,10 @@ abstract class DynamicFieldType
                     'DROP TABLE IF EXISTS ' . $contents_table,
                     \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
                 );
+                $field_size = ((int)$this->size > 0) ? $this->size : 1;
                 $this->zdb->db->query(
                     'CREATE TABLE ' . $contents_table .
-                    ' (id INTEGER NOT NULL,val varchar(' . $this->size .
+                    ' (id INTEGER NOT NULL,val varchar(' . $field_size .
                     ') NOT NULL)',
                     \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
                 );
