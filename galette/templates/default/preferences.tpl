@@ -474,6 +474,10 @@
         <div class="button-container">
             <input type="hidden" name="valid" value="1"/>
             <input type="hidden" name="pref_theme" value="default"/>
+            <input type="hidden" name="pref_telemetry_date" value="{$pref.pref_telemetry_date}"/>
+            <input type="hidden" name="pref_instance_uuid" value="{$pref.pref_instance_uuid}"/>
+            <input type="hidden" name="pref_registration_date" value="{$pref.pref_registration_date}"/>
+            <input type="hidden" name="pref_registration_uuid" value="{$pref.pref_registration_uuid}"/>
             <input type="submit" id="btnsave" value="{_T string="Save"}"/>
         </div>
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
