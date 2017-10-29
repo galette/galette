@@ -270,11 +270,16 @@ class DynamicFields
     /**
      * Store values
      *
+     * @param integer $item_id Curent item id to use (will be used if current item_id is 0)
+     *
      * @return boolean
      */
-    public function storeValues()
+    public function storeValues($item_id = null)
     {
         try {
+            if ($item_id !== null && ($this->item_id == null || $this->item_id == 0)) {
+                $this->item_id = $item_id;
+            }
             $this->zdb->connection->beginTransaction();
 
             $this->handleRemovals();
@@ -282,6 +287,10 @@ class DynamicFields
             foreach ($this->current_values as $field_id => $values) {
                 foreach ($values as $value) {
                     $value[DynamicFieldType::PK] = $field_id;
+                    if ($value['item_id'] == 0) {
+                        $value['item_id'] = $this->item_id;
+                    }
+
                     if (isset($value['is_new'])) {
                         if ($this->insert_stmt === null) {
                             $insert = $this->zdb->insert(self::TABLE);
@@ -381,7 +390,6 @@ class DynamicFields
         foreach ($this->current_values as $field_id => $values) {
             foreach ($values as $value) {
                 $key = $field_id . '_' . $value['val_index'];
-                var_dump($key);
                 if (isset($fromdb[$key])) {
                     unset($fromdb[$key]);
                 }

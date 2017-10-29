@@ -609,7 +609,7 @@ abstract class DynamicFieldType
         ) {
             $this->errors[] = _T('Missing required field name!');
         } else {
-            if ($this->old_name === null && $this->name !== null && $this->name != $values['name']) {
+            if ($this->old_name === null && $this->name !== null && $this->name != $values['field_name']) {
                 $this->old_name = $this->name;
             }
             $this->name = $values['field_name'];
@@ -704,21 +704,21 @@ abstract class DynamicFieldType
         }
 
         if ($this->old_name !== null) {
-            $added = \addDynamicTranslation($this->name);
-            if ($added === false) {
-                $this->warnings[] = str_replace(
-                    '%field',
-                    $this->name,
-                    _T('Unable to add dynamic translation for %field :(')
-                );
-            }
-
             $deleted = \deleteDynamicTranslation($this->old_name);
             if ($deleted === false) {
                 $this->warnings[] = str_replace(
                     '%field',
                     $this->old_name,
                     _T('Unable to remove old dynamic translation for %field :(')
+                );
+            }
+
+            $added = \addDynamicTranslation($this->name);
+            if ($added === false) {
+                $this->warnings[] = str_replace(
+                    '%field',
+                    $this->name,
+                    _T('Unable to add dynamic translation for %field :(')
                 );
             }
         }
@@ -783,31 +783,27 @@ abstract class DynamicFieldType
         if (count($this->errors) === 0 && $this->hasFixedValues()) {
             $contents_table = self::getFixedValuesTableName($this->id, true);
 
-            if ($this->id === null || $this->old_size !== null && $this->size != $this->old_size) {
-                try {
-                    if ($this->id !== null) {
-                        $this->zdb->connection->beginTransaction();
-                        $this->zdb->db->query(
-                            'DROP TABLE IF EXISTS ' . $contents_table,
-                            \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-                        );
-                    }
-                    $this->zdb->db->query(
-                        'CREATE TABLE ' . $contents_table .
-                        ' (id INTEGER NOT NULL,val varchar(' . $this->size .
-                        ') NOT NULL)',
-                        \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-                    );
-                    $this->zdb->connection->commit();
-                } catch (\Exception $e) {
-                    $this->zdb->connection->rollBack();
-                    Analog::log(
-                        'Unable to manage fields values table ' .
-                        $contents_table . ' | ' . $e->getMessage(),
-                        Analog::ERROR
-                    );
-                    $this->errors[] = _T("An error occured creating field values table");
-                }
+            try {
+                $this->zdb->connection->beginTransaction();
+                $this->zdb->db->query(
+                    'DROP TABLE IF EXISTS ' . $contents_table,
+                    \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+                );
+                $this->zdb->db->query(
+                    'CREATE TABLE ' . $contents_table .
+                    ' (id INTEGER NOT NULL,val varchar(' . $this->size .
+                    ') NOT NULL)',
+                    \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+                );
+                $this->zdb->connection->commit();
+            } catch (\Exception $e) {
+                $this->zdb->connection->rollBack();
+                Analog::log(
+                    'Unable to manage fields values table ' .
+                    $contents_table . ' | ' . $e->getMessage(),
+                    Analog::ERROR
+                );
+                $this->errors[] = _T("An error occured creating field values table");
             }
 
             if (count($this->errors) == 0) {
@@ -931,7 +927,7 @@ abstract class DynamicFieldType
 
             $old_rank = $this->index;
 
-            $direction = $action == __('up') ? 1: -1;
+            $direction = $action == __('up') ? -1: 1;
             $new_rank = $old_rank + $direction;
             $update = $this->zdb->update(self::TABLE);
             $update->set([

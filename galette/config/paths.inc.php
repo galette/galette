@@ -118,3 +118,6 @@ if (!defined('GALETTE_FILES_PATH')) {
 if (!defined('GALETTE_TEMPIMAGES_PATH')) {
     define('GALETTE_TEMPIMAGES_PATH', GALETTE_DATA_PATH . 'tempimages/');
 }
+if (!defined('GALETTE_TELEMETRY_URI')) {
+    define('GALETTE_TELEMETRY_URI', 'https://telemetry.galette.eu/');
+}

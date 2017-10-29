@@ -43,3 +43,15 @@
                 </ul>
         </div>
     {/if}
+
+    {* Renew telemetry *}
+    {if $renew_telemetry}
+        {include file="telemetry.tpl" part="dialog"}
+        <div id="renewbox">
+            {_T string="Your telemetry data are more than one year old."}<br/>
+            {_T string="Do you want to send it again?"}<br/>
+            <a href="#" id="telemetry">{_T string="Yes"}</a>
+            - <a href="#" id="norenew">{_T string="No"}</a>
+            - <a href="#" id="renewlater">{_T string="Later"}</a>
+        </div>
+    {/if}

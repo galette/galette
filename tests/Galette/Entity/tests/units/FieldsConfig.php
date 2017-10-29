@@ -427,7 +427,7 @@ class FieldsConfig extends atoum
         );
         $this->calling($admin_login)->isAdmin = true;
 
-        $elements = $fields_config->getFormElements($admin_login);
+        $elements = $fields_config->getFormElements($admin_login, false);
         $this->array($elements)
             ->hasSize(2)
             ->hasKeys(['fieldsets', 'hiddens']);
@@ -459,7 +459,7 @@ class FieldsConfig extends atoum
         );
         $this->calling($user_login)->isUp2Date = true;
 
-        $elements = $fields_config->getFormElements($user_login);
+        $elements = $fields_config->getFormElements($user_login, false);
         $this->array($elements)
             ->hasSize(2)
             ->hasKeys(['fieldsets', 'hiddens']);

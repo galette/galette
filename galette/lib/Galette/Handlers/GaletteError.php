@@ -90,6 +90,22 @@ trait GaletteError
     }
 
     /**
+     * Wraps the error_log function so that this can be easily tested
+     *
+     * @param string $message Error Message
+     *
+     * @return void
+     */
+    protected function logError($message)
+    {
+        parent::logError($message);
+        Analog::log(
+            $message,
+            Analog::ERROR
+        );
+    }
+
+    /**
      * Determine which content type we know about is wanted using Accept header
      *
      * Note: This method is a bare-bones implementation designed specifically for

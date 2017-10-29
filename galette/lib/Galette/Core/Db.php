@@ -803,4 +803,53 @@ class Db
                 break;
         }
     }
+
+    /**
+     * Get database informations
+     *
+     * @return array
+     */
+    public function getInfos()
+    {
+        $infos = [
+            'engine'    => null,
+            'version'   => null,
+            'size'      => null,
+            'log_size'  => null,
+            'sql_mode'  => null
+        ];
+
+        if ($this->isPostgres()) {
+            $infos['engine'] = 'PostgreSQL';
+            $sql = 'SHOW server_version';
+            $result = $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE)
+                ->current();
+            $infos['version'] = $result['server_version'];
+
+            $total_size = 0;
+            $db_size    = 0;
+
+            $sql = 'SELECT pg_database_size(\'' . NAME_DB . '\')';
+            $result = $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE)
+                ->current();
+            $infos['size']          = round($result['pg_database_size'] / 1024 / 1024, 1);
+        } else {
+            $sql = 'SELECT @@sql_mode as mode, @@version AS version, @@version_comment AS version_comment';
+            $result = $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE)
+                ->current();
+
+            $infos['engine']    = $result['version_comment'];
+            $infos['version']   = $result['version'];
+            $infos['sql_mode']  = $result['mode'];
+
+            $size_sql = 'SELECT ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) AS dbsize' .
+                ' FROM information_schema.tables WHERE table_schema="' . NAME_DB .'"';
+            $result = $this->db->query($size_sql, Adapter::QUERY_MODE_EXECUTE)
+                ->current();
+
+            $infos['size']      = $result['dbsize'];
+        }
+
+        return $infos;
+    }
 }

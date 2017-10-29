@@ -74,7 +74,10 @@ $app->get(
             $member = $this->session->member;
             $this->session->member = null;
         } else {
-            $member = new Adherent($this->zdb);
+            $deps = [
+                'dynamics'  => true
+            ];
+            $member = new Adherent($this->zdb, null, $deps);
         }
 
         //mark as self membership
@@ -82,7 +85,7 @@ $app->get(
 
         // flagging required fields
         $fc = $this->fields_config;
-        $form_elements = $fc->getFormElements($this->login, true);
+        $form_elements = $fc->getFormElements($this->login, true, true);
 
         //image to defeat mass filling forms
         $spam = new PasswordImage();
@@ -814,7 +817,10 @@ $app->get(
         $groups = new Groups($this->zdb, $this->login);
         $groups_list = $groups->getSimpleList(true);
 
-        $form_elements = $fc->getFormElements($this->login);
+        $form_elements = $fc->getFormElements(
+            $this->login,
+            $member->id == ''
+        );
 
         // display page
         $this->view->render(
@@ -938,7 +944,11 @@ $app->post(
             $fc->setNotRequired('id_statut');
         }
 
-        $form_elements = $fc->getFormElements($this->login, true);
+        $form_elements = $fc->getFormElements(
+            $this->login,
+            $member->id == '',
+            isset($args['self'])
+        );
         $fieldsets     = $form_elements['fieldsets'];
         $required      = array();
         $disabled      = array();

@@ -596,7 +596,7 @@ abstract class Entitled
     public function __get($name)
     {
         $forbidden = array();
-        $virtuals = array('extension');
+        $virtuals = array('extension', 'libelle');
         if (in_array($name, $virtuals)
             || !in_array($name, $forbidden)
             && isset($this->$name)
