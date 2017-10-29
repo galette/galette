@@ -1011,7 +1011,7 @@ $app->post(
                                         $member->surname
                                     ),
                                     'lastname_adh'  => custom_html_entity_decode(
-                                        $member->setName
+                                        $member->name
                                     ),
                                     'mail_adh'      => custom_html_entity_decode(
                                         $member->email
@@ -1079,7 +1079,7 @@ $app->post(
                                             $member->surname
                                         ),
                                         'lastname_adh'  => custom_html_entity_decode(
-                                            $member->setName
+                                            $member->name
                                         ),
                                         'mail_adh'      => custom_html_entity_decode(
                                             $member->getEmail()
