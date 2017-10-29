@@ -2615,6 +2615,76 @@ $app->post(
 $app->get(
     __('/member', 'routes') . '/{id:\d+}' . __('/file', 'routes') . '/{fid:\d+}/{pos:\d+}/{name}',
     function ($request, $response, $args) {
+        $denied = false;
+        $id = (int)$args['id'];
+        if ($this->login->id != $args['id']
+            && !$this->login->isAdmin()
+            && !$this->login->isStaff()
+            && !$this->login->isGroupManager()
+        ) {
+            $denied = true;
+        }
+
+        $deps = array(
+            'picture'   => false,
+            'groups'    => false,
+            'dues'      => false,
+            'parent'    => false,
+            'children'  => false,
+            'dynamics'  => true
+        );
+        $member = new Adherent($this->zdb, $id, $deps);
+
+        if (!$denied && $this->login->id != $args['id']
+            && $this->login->isGroupManager()
+            && !$this->login->isStaff()
+            && !$this->login->isAdmin()
+        ) {
+            //check if current logged in user can manage loaded member
+            $groups = $member->groups;
+            $can_manage = false;
+            foreach ($groups as $group) {
+                if ($this->login->isGroupManager($group->getId())) {
+                    $can_manage = true;
+                    break;
+                }
+            }
+            if ($can_manage !== true) {
+                Analog::log(
+                    'Logged in member ' . $this->login->login .
+                    ' has tried to load member #' . $member->id .
+                    ' but do not manage any groups he belongs to.',
+                    Analog::WARNING
+                );
+                $denied = true;
+            }
+        }
+
+        if ($denied === false) {
+            $fields = $member->getDynamicFields()->getFields();
+            if (!isset($fields[$args['fid']])) {
+                //field does not exists or access is forbidden
+                $denied = true;
+            }
+        }
+
+        if ($denied === true) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("You do not have permission for requested URL.")
+            );
+
+            return $response
+                ->withStatus(403)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor(
+                        'member',
+                        ['id' => $id]
+                    )
+                );
+        }
+
         $filename = str_replace(
             [
                 '%mid',
