@@ -227,6 +227,6 @@ trait DynamicsTrait
             );
             $this->loadDynamicFields();
         }
-        return $this->dynamics->storeValues();
+        return $this->dynamics->storeValues($this->id);
     }
 }
