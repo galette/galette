@@ -104,6 +104,33 @@ function initDbConstants($install)
 
 if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     define('GALETTE_LOGGER_CHECKED', true);
+
+    $now = new \DateTime();
+    $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
+        $now->format('Y-m-d')  . '.log';
+    $galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
+
+    if (GALETTE_MODE === 'DEV') {
+        //logs everything in PHP logs (per chance /var/log/http/error_log or /var/log/php-fpm/error.log)
+        $galette_run_log = \Analog\Handler\Stderr::init();
+    } else {
+        $logfile = 'galette_install';
+        $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
+        var_dump($log_path);
+        $galette_run_log = \Analog\Handler\File::init($log_path);
+    }
+
+    Analog::handler(
+        \Analog\Handler\Multi::init(
+            array (
+                Analog::NOTICE  => \Analog\Handler\Threshold::init(
+                    $galette_run_log,
+                    GALETTE_LOG_LVL
+                ),
+                Analog::DEBUG   => $galette_debug_log
+            )
+        )
+    );
 }
 
 if (isset($_POST['stepback_btn'])) {
