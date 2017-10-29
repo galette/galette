@@ -59,8 +59,12 @@ if (isset($session['lang'])) {
     }
 } else {
     $i18n = new Galette\Core\I18n();
-    $session['lang'] = serialize($i18n);
 }
+
+if (isset($_GET['pref_lang'])) {
+    $i18n->changeLanguage($_GET['pref_lang']);
+}
+$session['lang'] = serialize($i18n);
 
 require_once '../includes/i18n.inc.php';
 
