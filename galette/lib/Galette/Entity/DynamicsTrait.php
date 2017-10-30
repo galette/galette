@@ -85,7 +85,7 @@ trait DynamicsTrait
     /**
      * Extract posted values for dynamic fields
      *
-     * @param array $post  Posted values
+     * @param array $post Posted values
      *
      * @return boolean
      */
