@@ -1178,27 +1178,9 @@ $app->post(
             }
 
             if (count($error_detected) == 0) {
-                // picture upload
-                if (isset($_FILES['photo'])) {
-                    if ($_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-                        if ($_FILES['photo']['tmp_name'] !='') {
-                            if (is_uploaded_file($_FILES['photo']['tmp_name'])) {
-                                $res = $member->picture->store($_FILES['photo']);
-                                if ($res < 0) {
-                                    $error_detected[]
-                                        = $member->picture->getErrorMessage($res);
-                                }
-                            }
-                        }
-                    } elseif ($_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
-                        Analog::log(
-                            $member->picture->getPhpErrorMessage($_FILES['photo']['error']),
-                            Analog::WARNING
-                        );
-                        $error_detected[] = $member->picture->getPhpErrorMessage(
-                            $_FILES['photo']['error']
-                        );
-                    }
+                $files_res = $member->handleFiles($_FILES);
+                if (is_array($files_res)) {
+                    $error_detected = array_merge($error_detected, $files_res);
                 }
 
                 if (isset($post['del_photo'])) {

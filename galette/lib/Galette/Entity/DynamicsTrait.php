@@ -86,11 +86,10 @@ trait DynamicsTrait
      * Extract posted values for dynamic fields
      *
      * @param array $post  Posted values
-     * @param array $files Posted files
      *
      * @return boolean
      */
-    protected function dynamicsCheck($post, $files)
+    protected function dynamicsCheck($post)
     {
         if ($this->dynamics === null) {
             Analog::log(
@@ -141,74 +140,6 @@ trait DynamicsTrait
                 }
             }
 
-            foreach ($files as $key => $file) {
-                // if the field is disabled, skip it
-                if (isset($disabled[$key])) {
-                    continue;
-                }
-
-                if (substr($key, 0, 11) != 'info_field_') {
-                    continue;
-                }
-
-                list($field_id, $val_index) = explode('_', substr($key, 11));
-                if (! is_numeric($field_id) || ! is_numeric($val_index)) {
-                    continue;
-                }
-
-                if ($file['error'] == UPLOAD_ERR_NO_FILE
-                    && $file['name'] == ''
-                    && $file['tmp_name'] == '') {
-                    //not upload atempt.
-                    continue;
-                } elseif ($file['error'] !== UPLOAD_ERR_OK) {
-                    Analog::log("file upload error", Analog::ERROR);
-                    continue;
-                }
-
-                $tmp_filename = $file['tmp_name'];
-                if ($tmp_filename == '') {
-                    Analog::log("empty temporary filename", Analog::ERROR);
-                    continue;
-                }
-
-                if (!is_uploaded_file($tmp_filename)) {
-                    Analog::log("not an uploaded file", Analog::ERROR);
-                    continue;
-                }
-
-                $max_size =
-                    $fields[$field_id]->getSize() ?
-                    $fields[$field_id]->getSize() * 1024 :
-                    File::DEFAULT_MAX_FILE_SIZE * 1024;
-                if ($file['size'] > $max_size) {
-                    Analog::log(
-                        "file too large: " . $file['size'] . " Ko, vs $max_size Ko allowed",
-                        Analog::ERROR
-                    );
-                    $this->errors[] = preg_replace(
-                        '|%d|',
-                        $max_size,
-                        _T("File is too big. Maximum allowed size is %dKo")
-                    );
-                    continue;
-                }
-
-                $new_filename = sprintf(
-                    'member_%d_field_%d_value_%d',
-                    $this->id,
-                    $field_id,
-                    $val_index
-                );
-                Analog::log("new file: $new_filename", Analog::DEBUG);
-
-                move_uploaded_file(
-                    $tmp_filename,
-                    GALETTE_FILES_PATH . $new_filename
-                );
-                $this->dynamics->setValue($this->id, $field_id, $val_index, $file['name']);
-            }
-
             return true;
         }
     }
@@ -228,5 +159,108 @@ trait DynamicsTrait
             $this->loadDynamicFields();
         }
         return $this->dynamics->storeValues($this->id);
+    }
+
+    /**
+     * Store dynamic Files
+     *
+     * @param array $files Posted files
+     *
+     * @return void
+     */
+    protected function dynamicsFiles($files)
+    {
+        if ($this->dynamics === null) {
+            Analog::log(
+                'Dynamics fields have not been loaded, cannot be checked. (from: ' . __METHOD__ . ')',
+                Analog::WARNING
+            );
+            $this->loadDynamicFields();
+        }
+        $fields = $this->dynamics->getFields();
+        $store = false;
+
+        foreach ($files as $key => $file) {
+            // if the field is disabled, skip it
+            if (isset($disabled[$key])) {
+                continue;
+            }
+
+            if (substr($key, 0, 11) != 'info_field_') {
+                continue;
+            }
+
+            list($field_id, $val_index) = explode('_', substr($key, 11));
+            if (! is_numeric($field_id) || ! is_numeric($val_index)) {
+                continue;
+            }
+
+            if ($file['error'] == UPLOAD_ERR_NO_FILE
+                && $file['name'] == ''
+                && $file['tmp_name'] == '') {
+                //not upload atempt.
+                continue;
+            } elseif ($file['error'] !== UPLOAD_ERR_OK) {
+                Analog::log("file upload error", Analog::ERROR);
+                continue;
+            }
+
+            $tmp_filename = $file['tmp_name'];
+            if ($tmp_filename == '') {
+                Analog::log("empty temporary filename", Analog::ERROR);
+                continue;
+            }
+
+            if (!is_uploaded_file($tmp_filename)) {
+                Analog::log("not an uploaded file", Analog::ERROR);
+                continue;
+            }
+
+            $max_size =
+                $fields[$field_id]->getSize() ?
+                $fields[$field_id]->getSize() * 1024 :
+                File::DEFAULT_MAX_FILE_SIZE * 1024;
+            if ($file['size'] > $max_size) {
+                Analog::log(
+                    "file too large: " . $file['size'] . " Ko, vs $max_size Ko allowed",
+                    Analog::ERROR
+                );
+                $this->errors[] = preg_replace(
+                    '|%d|',
+                    $max_size,
+                    _T("File is too big. Maximum allowed size is %dKo")
+                );
+                continue;
+            }
+
+            $new_filename = sprintf(
+                'member_%d_field_%d_value_%d',
+                $this->id,
+                $field_id,
+                $val_index
+            );
+            Analog::log("new file: $new_filename", Analog::DEBUG);
+
+            move_uploaded_file(
+                $tmp_filename,
+                GALETTE_FILES_PATH . $new_filename
+            );
+            $this->dynamics->setValue($this->id, $field_id, $val_index, $file['name']);
+            $store = true;
+        }
+
+        if ($store === true) {
+            $this->dynamicsStore();
+        }
+    }
+
+    /**
+     * Get errors
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }
