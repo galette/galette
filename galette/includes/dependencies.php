@@ -101,6 +101,7 @@ $container['view'] = function ($c) {
     $smarty->assign('GALETTE_VERSION', GALETTE_VERSION);
     $smarty->assign('GALETTE_MODE', GALETTE_MODE);
     $smarty->assign('GALETTE_DISPLAY_ERRORS', GALETTE_DISPLAY_ERRORS);
+    $smarty->assign('_CURRENT_THEME_PATH', _CURRENT_THEME_PATH);
 
     /*if ($this->parserConfigDir) {
         $instance->setConfigDir($this->parserConfigDir);
