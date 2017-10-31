@@ -31,7 +31,7 @@ Just put a {include file='common_header.tpl'} into the head tag.
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.tooltip.min.js"></script>
         {assign var="localjstracking" value="`$_CURRENT_THEME_PATH`tracking.js"}
         {if file_exists($localjstracking)}
-            <script type="text/javascript" src="{base_url}{$template_subdir}/tracking.js"></script>
+            <script type="text/javascript" src="{base_url}/{$template_subdir}/tracking.js"></script>
         {/if}
         <meta name="viewport" content="width=device-width" />
         {* UI accordion is used for main menu ; we need the CSS *}
