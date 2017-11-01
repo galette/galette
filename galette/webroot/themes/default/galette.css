@@ -58,13 +58,23 @@ input, textarea, select {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     border:1px solid #bbb;
-    padding: .2em;
     margin:0px;
     -webkit-transition: all 0.30s ease-in-out;
     -moz-transition: all 0.30s ease-in-out;
     -ms-transition: all 0.30s ease-in-out;
     -o-transition: all 0.30s ease-in-out;
     outline: none;
+    vertical-align: middle;
+}
+
+input[type="checkbox"], input[type="radio"] {
+   display: inline-block;
+   vertical-align: middle;
+}
+
+.galette_form input[type="radio"] + label {
+    vertical-align: text-top;
+    padding: 0 1em 0 0!important;
 }
 
 input:focus,
@@ -1994,6 +2004,7 @@ th.bline, td.bline{
 }
 
 .cssform .bline, .galette_form label, .galette_form .bline {
+    vertical-align: middle;
     display: inline-block;
     margin: 0 0 0 -22em;
     width: 19.9em;
@@ -2002,10 +2013,10 @@ th.bline, td.bline{
 
 .galette_form .radios label,
 .galette_form label.labelalign {
-    display: inline;
     width: auto;
     background: none;
     margin: 0;
+    padding: 0;
     font-weight: normal;
 }
 
@@ -2378,6 +2389,10 @@ td.photo img{
 .error {
     max-width: 100em;
     margin: 0 auto;
+}
+
+.vtop {
+    vertical-align: top!important;
 }
 
 /** Mobile devices */

@@ -12,26 +12,26 @@
                 </p>
 {/if}
                 <p>
-                    <label class="bline" for="header_{$model->id}">{_T string="Header"}</label>
+                    <label class="bline vtop" for="header_{$model->id}">{_T string="Header"}</label>
                     <textarea name="model_header" id="header_{$model->id}">{$model->header}</textarea>
                 </p>
                 <p>
-                    <label class="bline" for="footer_{$model->id}">{_T string="Footer"}</label>
+                    <label class="bline vtop" for="footer_{$model->id}">{_T string="Footer"}</label>
                     <textarea name="model_footer" id="footer_{$model->id}">{$model->footer}</textarea>
                 </p>
 {if $model->id neq 1}
                 <p>
-                    <label class="bline" for="body_{$model->id}">{_T string="Body"}</label>
+                    <label class="bline vtop" for="body_{$model->id}">{_T string="Body"}</label>
                     <textarea name="model_body" id="body_{$model->id}">{$model->body}</textarea>
                 </p>
 {/if}
                 <p>
-                    <label class="bline" for="styles_{$model->id}">{_T string="CSS styles"}</label>
+                    <label class="bline vtop" for="styles_{$model->id}">{_T string="CSS styles"}</label>
                     <textarea name="model_styles" id="styles_{$model->id}">{$model->styles}</textarea>
                 </p>
 {if $model->id gt 4}
                 <p>
-                    <label class="bline" for="type_{$model->id}">{_T string="Type"}</label>
+                    <label class="bline vtop" for="type_{$model->id}">{_T string="Type"}</label>
                     <select name="model_type" id="type_{$model->id}" required>
                         <option value="">{_T string="Select"}</option>
                         <option value="{Galette\Entity\PdfModel::INVOICE_MODEL}">{_T string="Invoice"}</option>

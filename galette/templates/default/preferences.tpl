@@ -242,7 +242,7 @@
                     <input type="checkbox" name="pref_editor_enabled" id="pref_editor_enabled" value="1" {if $pref.pref_editor_enabled eq 1}checked="checked"{/if}{if isset($required.pref_editor_enabled) and $required.pref_editor_enabled eq 1} required="required"{/if}/>
                 </p>
                 <div class="p">
-                    <span class="bline"{if isset($required.pref_mail_method) and $required.pref_mail_method eq 1} required="required"{/if}>{_T string="Emailing method:"}</span>
+                    <span class="bline vtop"{if isset($required.pref_mail_method) and $required.pref_mail_method eq 1} required="required"{/if}>{_T string="Emailing method:"}</span>
                     <ul>
                         <li>
                             <input type="radio" name="pref_mail_method" id="no" value="{Galette\Core\GaletteMail::METHOD_DISABLED}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}checked="checked"{/if}/><label for="no">{_T string="Emailing disabled"}</label>
@@ -301,7 +301,7 @@
                     </p>
                 </div>
                 <p>
-                    <label for="pref_mail_sign" class="bline tooltip" title="{_T string="Enter here the text that will be automatically set as signature for all outgoing emails."}">{_T string="Mail signature"}</label>
+                    <label for="pref_mail_sign" class="bline tooltip vtop" title="{_T string="Enter here the text that will be automatically set as signature for all outgoing emails."}">{_T string="Mail signature"}</label>
                     <span class="tip">{_T string="The text that will be automatically set as signature for all outgoing emails.<br/>Variables are quoted with braces, are upper case, and will be replaced automatically.<br/>Refer to the doc to know what variables ara available. "}</span>
                     <textarea name="pref_mail_sign" id="pref_mail_sign">{$pref.pref_mail_sign}</textarea>
                 </p>

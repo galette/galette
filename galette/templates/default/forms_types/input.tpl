@@ -2,7 +2,11 @@
 {if not isset($notag)}
 <p{if isset($component_id)} id="{$component_id}"{/if}{if isset($component_class)} class="{$component_class}"{/if}>
 {/if}
-    {block name="label"}<label for="{$id}"{if isset($title)} title="{$title}"{/if}{if isset($tip)} class="tooltip"{/if}>{$label}</label>{/block}
+    {block name="label"}
+        <label for="{$id}"{if isset($title)} title="{$title}"{/if}{if isset($tip) or isset($labelclass)} class="{if isset($tip)}tooltip{/if} {if isset($labelclass)}{$labelclass}{/if}"{/if}>
+            {$label}
+        </label>
+    {/block}
     {if isset($tip)}<span class="tip">{$tip}</span>{/if}
     {block name="element"}<input
         type="{$type}"

@@ -1,5 +1,10 @@
 {extends file="forms_types/input.tpl"}
 
+{block name="label"}
+    {assign var="labelclass" value="vtop"}
+    {$smarty.block.parent}
+{/block}
+
 {block name="element"}
     <textarea
         name="{$name}"

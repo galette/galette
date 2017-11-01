@@ -1,5 +1,5 @@
 <p>
-    <span class="bline">{_T string="Picture:"}</span>
+    <span class="bline vtop">{_T string="Picture:"}</span>
     {if $member->id}
         {assign var="photo_id" value=$member->id}
     {else}
