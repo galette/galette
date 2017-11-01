@@ -132,6 +132,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                         width="{$member->picture->getOptimalWidth()}"
                         height="{$member->picture->getOptimalHeight()}"
                         alt="{_T string="Picture"}"
+                        {if $login->isAdmin() or $login->isStaff() or $login->login eq $member->login} title="{_T string="You can drop new image here to get photo changed"}" class="tooltip"{/if}
                         id="photo_adh"/>
                 </td>
         {/if}
