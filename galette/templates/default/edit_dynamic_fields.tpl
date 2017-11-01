@@ -2,7 +2,11 @@
 
 {function name=draw_field}
     {assign var=valuedata value=$field_data.field_val|escape}
+    {if $field|is_a:'Galette\DynamicFieldsTypes\File'}
+    <span class="bline libelle">{$field->getName()|escape}</span>
+    {else}
     <label class="bline libelle" for="info_field_{$field->getId()}_{$loop}">{$field->getName()|escape}</label>
+    {/if}
     {if $field|is_a:'Galette\DynamicFieldsTypes\Text'}
         <textarea name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}"
             cols="{if $field->getWidth() > 0}{$field->getWidth()}{else}61{/if}"
@@ -45,20 +49,20 @@
             {if $disabled} disabled="disabled"{/if}
         />
     {elseif $field|is_a:'Galette\DynamicFieldsTypes\File'}
-        {_T string="new"}: <input type="file" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_new"
+        <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_new">{_T string="new"}</label> <input type="file" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_new"
             {if $field->isRequired()} required="required"{/if}
             {if $disabled} disabled="disabled"{/if}
         />
-        {_T string="current"}: <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_current" disabled="disabled"
+        <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_current">{_T string="current"}</label> <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_current" disabled="disabled"
             value="{$valuedata}"
         />
-        <label for="info_field_{$field->getId()}_{$loop}_delete">{_T string="delete"}:</label> <input type="checkbox" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_delete"
+        <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_delete">{_T string="delete"}</label> <input type="checkbox" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_delete"
             onclick="this.form.info_field_{$field->getId()}_{$loop}_new.disabled = this.checked;"
         />
     {/if}
 {/function}
 
-<fieldset class="cssform">
+<fieldset class="galette_form">
     <legend class="ui-state-active ui-corner-top">{_T string="Additionnal fields:"}</legend>
     <div>
     {assign var=access_level value=$login->getAccessLevel()}
