@@ -56,6 +56,10 @@ use Galette\Core\Preferences;
 
 class Plugins
 {
+    const DISABLED_COMPAT   = 0;
+    const DISABLED_MISS     = 1;
+    const DISABLED_EXPLICIT = 2;
+
     protected $path;
     protected $modules = array();
     protected $disabled = array();
@@ -103,15 +107,20 @@ class Plugins
 
             while (($entry = $d->read()) !== false) {
                 $full_entry = realpath($root . $entry);
-
-                if ($entry != '.' && $entry != '..' && is_dir($full_entry)
-                    && file_exists($full_entry . '/_define.php')
-                ) {
-                    if (!file_exists($full_entry.'/_disabled')
-                        && file_exists($full_entry . '/_routes.php')
+                if ($entry != '.' && $entry != '..' && is_dir($full_entry)) {
+                    $this->id = $entry;
+                    $this->mroot = $full_entry;
+                    if (!file_exists($full_entry . '/_define.php')
+                        || !file_exists($full_entry . '/_routes.php')
                     ) {
-                        $this->id = $entry;
-                        $this->mroot = $full_entry;
+                        //plugin is not compatible with that version of galette.
+                        Analog::log(
+                            'Plugin ' . $entry . ' is missing a _define.php and/or _routes.php ' .
+                            'files that are required.',
+                            Analog::WARNING
+                        );
+                        $this->setDisabled(self::DISABLED_MISS);
+                    } elseif (!file_exists($full_entry.'/_disabled')) {
                         include $full_entry . '/_define.php';
                         $this->id = null;
                         $this->mroot = null;
@@ -127,10 +136,12 @@ class Plugins
                             }
                         }
                     } else {
-                        $this->disabled[$entry] = array(
-                            'root' => $full_entry,
-                            'root_writable' => is_writable($full_entry)
+                        //plugin is not compatible with that version of galette.
+                        Analog::log(
+                            'Plugin ' . $entry . ' is explicitely disabled',
+                            Analog::INFO
                         );
+                        $this->setDisabled(self::DISABLED_EXPLICIT);
                     }
                 }
             }
@@ -208,10 +219,7 @@ class Plugins
                 'compatiblity informations. Please contact the author.',
                 Analog::ERROR
             );
-            $this->disabled[$this->id] = array(
-                'root' => $this->mroot,
-                'root_writable' => is_writable($this->mroot)
-            );
+            $this->setDisabled(self::DISABLED_COMPAT);
         } elseif (version_compare($compver, GALETTE_COMPAT_VERSION, '<')) {
             //plugin is not compatible with that version of galette.
             Analog::log(
@@ -220,10 +228,7 @@ class Plugins
                 'plugin compatible with at least ' . GALETTE_COMPAT_VERSION,
                 Analog::WARNING
             );
-            $this->disabled[$this->id] = array(
-                'root' => $this->mroot,
-                'root_writable' => is_writable($this->mroot)
-            );
+            $this->setDisabled(self::DISABLED_COMPAT);
         } else {
             if ($this->id) {
                 $release_date = $date;
@@ -719,5 +724,23 @@ class Plugins
         } else {
             throw new \Exception(_T("Module does not exists!"));
         }
+    }
+
+    /**
+     * Set a module as disabled
+     *
+     * @param integer $cause Cause (one of Plugins::DISABLED_* constants)
+     *
+     * @return void
+     */
+    private function setDisabled($cause)
+    {
+        $this->disabled[$this->id] = array(
+            'root'          => $this->mroot,
+            'root_writable' => is_writable($this->mroot),
+            'cause'         => $cause
+        );
+        $this->id = null;
+        $this->mroot = null;
     }
 }
