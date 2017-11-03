@@ -44,10 +44,28 @@
             <tr>
                 <th colspan="5" class="bgfree center"><strong>{_T string="Inactive plugins"}</strong></th>
             </tr>
+            <thead>
+            <tr>
+                <th class="listing">{_T string="Name"}</th>
+                <th class="listing" colspan="4">{_T string="Cause"}</th>
+                <th class="listing actions_row"></th>
+            </tr>
+            </thead>
 {foreach from=$plugins_disabled_list key=name item=plugin}
-            <tr class="same">
-                <td colspan="5">{$name}</td>
-                <td>
+            <tr>
+                <td data-scope="row">{$name}</td>
+                <td data-title="{_T string="Cause"}" colspan="4">
+                    {if $plugin.cause eq constant('Galette\Core\Plugins::DISABLED_MISS')}
+                        {_T string="A required file is missing"}
+                    {elseif $plugin.cause eq constant('Galette\Core\Plugins::DISABLED_COMPAT')}
+                        {_T string="Incompatible with current version"}
+                    {elseif $plugin.cause eq constant('Galette\Core\Plugins::DISABLED_EXPLICIT')}
+                        {_T string="Explicitely disabled"}
+                    {else}
+                        {_T string="Unknown"}
+                    {/if}
+                </td>
+                <td class="nowrap center actions_row">
                     <a class="toggleActivation" href="{path_for name="pluginsActivation" data=["action" => {_T string="activate" domain="routes"}, "module_id" => $name]}" title="{_T string="Click here to activate plugin '%name'" pattern="/%name/" replace=$name}">
                         <img src="{base_url}/{$template_subdir}images/icon-off.png" alt="{_T string="Enable plugin"}"/>
                     </a>

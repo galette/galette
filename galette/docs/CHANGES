@@ -31,6 +31,7 @@ News
 - Merge admintools plugins features
 - Free search on statuses labels
 - Better management of fields in free advanced search (thanks to Guillaume R.)
+- Display inactive plugins cause
 - Send telemetry data and register on website
 
 Bugfixes
