@@ -246,7 +246,6 @@ class PdfMembersCards extends Pdf
                     $fcol = $this->scol;
             }
 
-            $id = '<strong>' . $member->id . '</strong>';
             $nom_adh_ext = '<strong>';
             if ($this->preferences->pref_bool_display_title) {
                 $nom_adh_ext .= $member->stitle;
@@ -270,8 +269,10 @@ class PdfMembersCards extends Pdf
             $this->SetTextColor($fcol['R'], $fcol['G'], $fcol['B']);
 
             $this->SetFontSize(8);
-            $this->SetXY($x0 + 68.8, $y0 + 28);
-            $this->writeHTML($id, false, 0);
+
+            $xid = $x0 + $this->wi - $this->GetStringWidth($member->id, self::FONT, 'B', 8) - 0.2;
+            $this->SetXY($xid, $y0 + 28);
+            $this->writeHTML('<strong>' . $member->id  . '</strong>', false, 0);
             $this->SetFontSize($this->year_font_size);
             $xan_cot = $xan_cot - 0.3;
             $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);
