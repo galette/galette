@@ -499,7 +499,7 @@ class FakeData
                 'trans_desc'    => $faker->realText($maxNbChars = 150)
             ];
 
-            $transaction = new Transaction($this->zdb);
+            $transaction = new Transaction($this->zdb, $this->login);
             if ($transaction->check($data, [], [])) {
                 if ($transaction->store($this->history)) {
                     $this->transactions[] = $transaction;
