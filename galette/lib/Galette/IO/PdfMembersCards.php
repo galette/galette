@@ -205,7 +205,7 @@ class PdfMembersCards extends Pdf
             // Logo X position
             $xl = round($x0 + $this->wi - $this->wlogo);
             // Get data
-            $email = '<strong>';
+            $email = '';
             switch ($this->preferences->pref_card_address) {
                 case 0:
                     $email .= $member->email;
@@ -232,7 +232,6 @@ class PdfMembersCards extends Pdf
                     $email .= $member->job;
                     break;
             }
-            $email .= '</strong>';
 
             // Select strip color according to status
             switch ($member->status) {
@@ -250,11 +249,11 @@ class PdfMembersCards extends Pdf
                     $fcol = $this->scol;
             }
 
-            $nom_adh_ext = '<strong>';
+            $nom_adh_ext = '';
             if ($this->preferences->pref_bool_display_title) {
                 $nom_adh_ext .= $member->stitle;
             }
-            $nom_adh_ext .= $member->sname . '</strong>';
+            $nom_adh_ext .= $member->sname;
             $photo = $member->picture;
             $photofile = $photo->getPath();
 
@@ -283,36 +282,36 @@ class PdfMembersCards extends Pdf
             $this->writeHTML('<strong>' . $this->an_cot . '</strong>', false, 0);
 
             // Abbrev: Adapt font size to text length
-            $fontsz = 12;
-            $this->SetFontSize($fontsz);
-            while ($this->GetStringWidth($this->abrev, self::FONT, 'B', $fontsz) > $this->max_text_size) {
-                $fontsz--;
-                $this->SetFontSize($fontsz);
-            }
+            $this->fixSize(
+                $this->abrev,
+                $this->max_text_size,
+                12,
+                'B'
+            );
             $this->SetXY($x0 + 27, $y0 + 12);
             $this->writeHTML('<strong>' . $this->abrev . '</strong>', true, 0);
 
             // Name: Adapt font size to text length
             $this->SetTextColor(0);
-            $fontsz = 8;
-            $this->SetFontSize($fontsz);
-            while ($this->GetStringWidth($nom_adh_ext) > $this->max_text_size) {
-                $fontsz--;
-                $this->SetFontSize($fontsz);
-            }
+            $this->fixSize(
+                $nom_adh_ext,
+                $this->max_text_size,
+                8,
+                'B'
+            );
             $this->SetXY($x0 + 27, $this->getY() + 4);
             //$this->setX($x0 + 27);
-            $this->writeHTML($nom_adh_ext, true, 0);
+            $this->writeHTML('<strong>' . $nom_adh_ext . '</strong>', true, 0);
 
             // Email (adapt too)
-            $fontsz = 6;
-            $this->SetFontSize($fontsz);
-            while ($this->GetStringWidth($email) > $this->max_text_size) {
-                $fontsz--;
-                $this->SetFontSize($fontsz);
-            }
+            $this->fixSize(
+                $email,
+                $this->max_text_size,
+                6,
+                'B'
+            );
             $this->setX($x0 + 27);
-            $this->writeHTML($email, false, 0);
+            $this->writeHTML('<strong>' . $email . '</strong>', false, 0);
 
             // Lower colored strip with long text
             $this->SetFillColor($fcol['R'], $fcol['G'], $fcol['B']);
