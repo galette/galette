@@ -420,4 +420,26 @@ class Pdf extends \TCPDF
         $hbody .= $this->model->hbody;
         $this->writeHtml($hbody);
     }
+
+    /**
+     * Fix text size
+     *
+     * @param string $text Text content
+     * @param integer $maxsize Maximal size
+     * @param string $fontstyle Font style (defaults to '')
+     * @param string $fontname Font name (defaults to static::FONT)
+     *
+     * @return void
+     */
+    protected function fixSize($text, $maxsize, $fontsize, $fontstyle = '', $fontname = null)
+    {
+        if ($fontname === null) {
+            $fontname = static::FONT;
+        }
+        $this->SetFontSize($fontsize);
+        while ($this->GetStringWidth($text, $fontname, $fontstyle, $fontsize) > $maxsize) {
+            $fontsize--;
+            $this->SetFontSize($fontsize);
+        }
+    }
 }
