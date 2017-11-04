@@ -57,6 +57,11 @@ use Analog\Analog;
 
 class PdfMembersCards extends Pdf
 {
+    const WIDTH = 75;
+    const HEIGHT = 40;
+    const COLS = 2;
+    const ROWS = 6;
+
     private $tcol;
     private $scol;
     private $bcol;
@@ -134,13 +139,13 @@ class PdfMembersCards extends Pdf
         $this->yorigin = $this->preferences->pref_card_marges_v;
 
         // Card width
-        $this->wi = 75;
+        $this->wi = self::getWidth();
         // Card heigth
-        $this->he = 40;
+        $this->he = self::getHeight();
         // Number of colons
-        $this->nbcol=2;
+        $this->nbcol = self::getCols();
         // Number of rows
-        $this->nbrow=6;
+        $this->nbrow = self::getRows();
         // Spacing betweeen cards
         $this->hspacing = $this->preferences->pref_card_hspace;
         $this->vspacing = $this->preferences->pref_card_vspace;
@@ -148,7 +153,6 @@ class PdfMembersCards extends Pdf
         //maximum size for visible text. May vary with fonts.
         $this->max_text_size = 80;
         $this->year_font_size = 8;
-
 
         // Get fixed data from preferences
         $this->an_cot = $this->preferences->pref_card_year;
@@ -333,5 +337,45 @@ class PdfMembersCards extends Pdf
             $this->Rect($x0, $y0, $this->wi, $this->he);
             $nb_card++;
         }
+    }
+
+    /**
+     * Get card width
+     *
+     * @return integer
+     */
+    public static function getWidth()
+    {
+        return defined('GALETTE_CARD_WIDTH') ? GALETTE_CARD_WIDTH : self::WIDTH;
+    }
+
+    /**
+     * Get card height
+     *
+     * @return integer
+     */
+    public static function getHeight()
+    {
+        return defined('GALETTE_CARD_HEIGHT') ? GALETTE_CARD_HEIGHT : self::HEIGHT;
+    }
+
+    /**
+     * Get number of columns
+     *
+     * @return integer
+     */
+    public static function getCols()
+    {
+        return defined('GALETTE_CARD_COLS') ? GALETTE_CARD_COLS : self::COLS;
+    }
+
+    /**
+     * Get number of rows
+     *
+     * @return integer
+     */
+    public static function getRows()
+    {
+        return defined('GALETTE_CARD_ROWS') ? GALETTE_CARD_ROWS : self::ROWS;
     }
 }

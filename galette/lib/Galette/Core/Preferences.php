@@ -40,6 +40,7 @@ namespace Galette\Core;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Core\Db;
+use Galette\IO\PdfMembersCards;
 
 /**
  * Preferences for galette
@@ -600,5 +601,40 @@ class Preferences
         $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
         $uri = $scheme . '://' . $_SERVER['SERVER_NAME'];
         return $uri;
+    }
+
+    /**
+     * Check member cards sizes
+     * Always a A4/portrait
+     *
+     * @return array
+     */
+    public function checkCardsSizes()
+    {
+        $warning_detected = [];
+        //check page width
+        $max = 210;
+        //margins
+        $size = $this->pref_card_marges_h * 2;
+        //cards
+        $size += PdfMembersCards::getWidth() * PdfMembersCards::getCols();
+        //spacing
+        $size += $this->pref_card_hspace * (PdfMembersCards::getCols() - 1);
+        if ($size > $max) {
+            $warning_detected[] = _T('Current cards configuration may exceed page width!');
+        }
+
+        $max = 297;
+        //margins
+        $size = $this->pref_card_marges_v * 2;
+        //cards
+        $size += PdfMembersCards::getHeight() * PdfMembersCards::getRows();
+        //spacing
+        $size += $this->pref_card_vspace * (PdfMembersCards::getRows() - 1);
+        if ($size > $max) {
+            $warning_detected[] = _T('Current cards configuration may exceed page height!');
+        }
+
+        return $warning_detected;
     }
 }

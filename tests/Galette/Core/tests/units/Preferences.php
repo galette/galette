@@ -282,4 +282,74 @@ class Preferences extends atoum
         $visible = $this->preferences->showPublicPages($user_login);
         $this->boolean($visible)->isFalse();
     }
+
+    /**
+     * Data provider for cards sizes tests
+     *
+     * @return array
+     */
+    protected function sizesProvider()
+    {
+        return [
+            [//defaults
+                15, //vertical margin
+                20, //horizontal margin
+                5,  //vertical spacing
+                10, //horizontal spacing
+                0   //expected number of warnings
+            ], [ //OK
+                0,  //vertical margin
+                20, //horizontal margin
+                11, //vertical spacing
+                10, //horizontal spacing
+                0   //expected number of warnings
+            ], [ //vertical overflow
+                0,  //vertical margin
+                20, //horizontal margin
+                12, //vertical spacing
+                10, //horizontal spacing
+                1   //expected number of warnings
+            ], [//horizontal overflow
+                15, //vertical margin
+                20, //horizontal margin
+                5,  //vertical spacing
+                61, //horizontal spacing
+                1   //expected number of warnings
+            ], [//vertical and horizontal overflow
+                0,  //vertical margin
+                20, //horizontal margin
+                12, //vertical spacing
+                61, //horizontal spacing
+                2   //expected number of warnings
+            ], [//vertical overflow
+                17, //vertical margin
+                20, //horizontal margin
+                5,  //vertical spacing
+                10, //horizontal spacing
+                1   //expected number of warnings
+            ]
+        ];
+    }
+
+    /**
+     * Test checkCardsSizes
+     *
+     * @dataProvider sizesProvider
+     *
+     * @param integer $vm    Vertical margin
+     * @param integer $hm    Horizontal margin
+     * @param integer $vs    Vertical spacing
+     * @param integer $hs    Horizontal spacing
+     * @param integer $count Number of expected errors
+     *
+     * @return void
+     */
+    public function testCheckCardsSizes($vm, $hm, $vs, $hs, $count)
+    {
+        $this->preferences->pref_card_marges_v = $vm;
+        $this->preferences->pref_card_marges_h = $hm;
+        $this->preferences->pref_card_vspace = $vs;
+        $this->preferences->pref_card_hspace = $hs;
+        $this->array($this->preferences->checkCardsSizes())->hasSize($count);
+    }
 }
