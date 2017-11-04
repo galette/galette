@@ -196,6 +196,7 @@ $app->post(
     __('/preferences', 'routes'),
     function ($request, $response) {
         $error_detected = [];
+        $warning_detected = [];
 
         // Validation
         if (isset($_POST['valid']) && $_POST['valid'] == '1') {
@@ -456,6 +457,7 @@ $app->post(
                         _T("Preferences has been saved.")
                     );
                 }
+                $warning_detected = array_merge($warning_detected, $this->preferences->checkCardsSizes());
 
                 // picture upload
                 if (GALETTE_MODE !== 'DEMO' &&  isset($_FILES['logo'])) {
@@ -532,6 +534,17 @@ $app->post(
                     );
                 }
             }
+
+            if (count($warning_detected) > 0) {
+                //report warnings
+                foreach ($warning_detected as $warning) {
+                    $this->flash->addMessage(
+                        'warning_detected',
+                        $warning
+                    );
+                }
+            }
+
 
             return $response
                 ->withStatus(301)
