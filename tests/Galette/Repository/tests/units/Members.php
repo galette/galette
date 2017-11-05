@@ -141,6 +141,7 @@ class Members extends atoum
         $fakedata
             ->setSeed($this->seed)
             ->setNbMembers(10)
+            ->setWithPhotos(true)
             ->setNbGroups(0)
             ->setNbTransactions(0)
             ->setMaxContribs(0)
@@ -155,7 +156,7 @@ class Members extends atoum
 
         $report = $fakedata->getReport();
 
-        $this->array($report['success'])->hasSize(1);
+        $this->array($report['success'])->hasSize(2);
         $this->array($report['errors'])->hasSize(0);
         $this->array($report['warnings'])->hasSize(0);
 

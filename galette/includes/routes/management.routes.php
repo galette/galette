@@ -3173,7 +3173,8 @@ $app->get(
             'number_members'        => \Galette\Util\FakeData::DEFAULT_NB_MEMBERS,
             'number_contrib'        => \Galette\Util\FakeData::DEFAULT_NB_CONTRIB,
             'number_groups'         => \Galette\Util\FakeData::DEFAULT_NB_GROUPS,
-            'number_transactions'   => \Galette\Util\FakeData::DEFAULT_NB_TRANSACTIONS
+            'number_transactions'   => \Galette\Util\FakeData::DEFAULT_NB_TRANSACTIONS,
+            'photos'                => \Galette\Util\FakeData::DEFAULT_PHOTOS
         ];
 
         // display page
@@ -3204,7 +3205,8 @@ $app->post(
             ->setNbMembers($post['number_members'])
             ->setNbGroups($post['number_groups'])
             ->setNbTransactions($post['number_transactions'])
-            ->setMaxContribs($post['number_contrib']);
+            ->setMaxContribs($post['number_contrib'])
+            ->setWithPhotos(isset($post['photos']));
 
         $fakedata->generate();
 
