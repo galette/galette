@@ -61,6 +61,7 @@ use Galette\Entity\Texts;
 use Galette\Core\Install;
 use Zend\Db\Adapter\Adapter;
 use Galette\Core\PluginInstall;
+use Galette\Entity\Status;
 
 //galette's dashboard
 $app->get(
@@ -114,6 +115,7 @@ $app->get(
             'pref_lang'             => 1,
             'pref_numrows'          => 1,
             'pref_log'              => 1,
+            'pref_statut'           => 1,
             'pref_etiq_marges_v'    => 1,
             'pref_etiq_marges_h'    => 1,
             'pref_etiq_hspace'      => 1,
@@ -162,6 +164,7 @@ $app->get(
         $d->close();
 
         $m = new Members();
+        $s = new Status($this->zdb);
 
         // display page
         $this->view->render(
@@ -182,6 +185,7 @@ $app->get(
                 'required'              => $required,
                 'languages'             => $this->i18n->getList(),
                 'themes'                => $themes,
+                'statuts'               => $s->getList(),
                 'require_tabs'          => true,
                 'color_picker'          => true,
                 'require_dialog'        => true

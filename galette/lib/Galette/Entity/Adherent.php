@@ -181,7 +181,7 @@ class Adherent
                 $this->_active = true;
                 $this->_language = $i18n->getID();
                 $this->_creation_date = date("Y-m-d");
-                $this->_status = Status::DEFAULT_STATUS;
+                $this->_status = $this->getDefaultStatus();
                 $this->_title = null;
                 $this->_gender = self::NC;
                 $gp = new Password($this->zdb);
@@ -430,6 +430,26 @@ class Adherent
     {
         $this->_groups = Groups::loadGroups($this->_id);
         $this->_managed_groups = Groups::loadManagedGroups($this->_id);
+    }
+
+    /**
+     * Retrieve status from preferences
+     *
+     * @return pref_statut
+     *
+     */
+    private function getDefaultStatus()
+    {
+        global $preferences;
+        if ($preferences->pref_statut != '') {
+            return $preferences->pref_statut;
+        } else {
+            Analog::log(
+                'Unable to get pref_statut; is it defined in preferences?',
+                Analog::ERROR
+            );
+            return Status::DEFAULT_STATUS;
+        }
     }
 
     /**
