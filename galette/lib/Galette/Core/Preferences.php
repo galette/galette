@@ -39,6 +39,7 @@ namespace Galette\Core;
 
 use Analog\Analog;
 use Galette\Entity\Adherent;
+use Galette\Entity\Status;
 use Galette\Core\Db;
 use Galette\IO\PdfMembersCards;
 
@@ -95,6 +96,7 @@ class Preferences
         'pref_lang'        =>    I18n::DEFAULT_LANG,
         'pref_numrows'        =>    30,
         'pref_log'        =>    2,
+        'pref_statut'        =>    Status::DEFAULT_STATUS,
         /* Preferences for mails */
         'pref_email_nom'    =>    'Galette',
         'pref_email'        =>    'mail@domain.com',

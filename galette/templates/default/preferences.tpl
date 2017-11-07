@@ -155,6 +155,12 @@
                     </select>
                 </p>
                 <p>
+                    <label for="pref_statut" class="bline">{_T string="Default membership status:"}</label>
+                    <select name="pref_statut" id="pref_statut">
+                        {html_options options=$statuts selected=$pref.pref_statut}
+                    </select>
+                </p>
+                <p>
                     <label for="pref_membership_ext" class="bline">{_T string="Default membership extension:"}</label>
                     <input type="text" name="pref_membership_ext" id="pref_membership_ext" value="{$pref.pref_membership_ext}" maxlength="2"{if isset($required.pref_membership_ext) and $required.pref_membership_ext eq 1} required="required"{/if}/>
                     <span class="exemple">{_T string="(Months)"}</span>

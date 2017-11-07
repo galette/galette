@@ -118,6 +118,7 @@ $container['view'] = function ($c) {
     $smarty->assign('preferences', $c->preferences);
     $smarty->assign('pref_slogan', $c->preferences->pref_slogan);
     $smarty->assign('pref_theme', $c->preferences->pref_theme);
+    $smarty->assign('pref_statut', $c->preferences->pref_statut);
     $smarty->assign(
         'pref_editor_enabled',
         $c->preferences->pref_editor_enabled
