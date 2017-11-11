@@ -148,6 +148,12 @@ $container['view'] = function ($c) {
         }
     }
 
+    foreach ($c->get('plugins')->getModules() as $module_id => $module) {
+        $smarty->addTemplateDir(
+            $module['root'] . '/templates/' . $c->get('preferences')->pref_theme,
+            $module['route']
+        );
+    }
     return $view;
 };
 
