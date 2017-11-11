@@ -599,7 +599,7 @@ class Preferences
     public function getDefaultURL()
     {
         $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
-        $uri = $scheme . '://' . $_SERVER['SERVER_NAME'];
+        $uri = $scheme . '://' . $_SERVER['HTTP_HOST'];
         return $uri;
     }
 
