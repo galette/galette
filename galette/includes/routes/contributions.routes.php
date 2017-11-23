@@ -262,8 +262,8 @@ $app->post(
 
 $app->get(
     __('/contribution', 'routes') .
-        '/{type:' . __('fee') . '|' . __('donation') . '}/{action:' .
-        __('add') . '|' . __('edit') .'}[/{id:\d+}]',
+        '/{type:' . __('fee', 'routes') . '|' . __('donation', 'routes') . '}/{action:' .
+        __('add', 'routes') . '|' . __('edit', 'routes') .'}[/{id:\d+}]',
     function ($request, $response, $args) {
         $action = $args['action'];
         $get = $request->getQueryParams();
@@ -444,8 +444,8 @@ $app->get(
 
 $app->post(
     __('/contribution', 'routes') .
-        '/{type:' . __('fee') . '|' . __('donation') . '}/{action:' .
-        __('add') . '|' . __('edit') .'}[/{id:\d+}]',
+        '/{type:' . __('fee', 'routes') . '|' . __('donation', 'routes') . '}/{action:' .
+        __('add', 'routes') . '|' . __('edit', 'routes') .'}[/{id:\d+}]',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
         $error_detected = [];
@@ -770,7 +770,7 @@ $app->post(
 
 $app->get(
     __('/transaction', 'routes') .
-        '/{action:' . __('add') . '|' . __('edit') .'}[/{id:\d+}]',
+        '/{action:' . __('add', 'routes') . '|' . __('edit', 'routes') .'}[/{id:\d+}]',
     function ($request, $response, $args) {
         $trans = null;
 
@@ -921,7 +921,7 @@ $app->get(
 
 $app->post(
     __('/transaction', 'routes') .
-        '/{action:' . __('add') . '|' . __('edit') .'}[/{id:\d+}]',
+        '/{action:' . __('add', 'routes') . '|' . __('edit', 'routes') .'}[/{id:\d+}]',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
         $trans = new Transaction($this->zdb, $this->login);
