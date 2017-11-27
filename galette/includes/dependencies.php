@@ -281,6 +281,7 @@ $container['acls'] = function ($c) {
         'transaction'       => 'staff',
         'doEditTransaction' => 'staff',
         'contribution'      => 'staff',
+        'contributionDates' => 'staff',
         'attendance_sheet_details'  => 'groupmanager',
         'attendance_sheet'  => 'groupmanager',
         'entitleds'         => 'staff',

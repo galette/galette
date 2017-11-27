@@ -64,6 +64,13 @@
                         {html_options options=$type_cotis_options selected=$selectedid}
                     </select>
                 </p>
+    {if $type eq {_T string="fee" domain="routes"}}
+                <noscript>
+                    <div class="button-container" id="reloadcont">
+                        <input type="submit" id="btnreload" name="btnreload" value="{_T string="Reload"}" title="{_T string="Reload date informations according to selected member and contribution type"}"/>
+                    </div>
+                </noscript>
+    {/if}
             </fieldset>
 
             <fieldset class="cssform">
@@ -138,15 +145,6 @@
         </form>
     <script type="text/javascript">
         $(function(){
-            $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
-            $('#date_debut_cotis, #date_fin_cotis, #date_enreg').datepicker({
-                changeMonth: true,
-                changeYear: true,
-                showOn: 'button',
-                buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
-                buttonImageOnly: true,
-                buttonText: '{_T string="Select a date" escape="js"}'
-            });
         });
     </script>
 {else} {* No members *}
@@ -159,4 +157,47 @@
         </p>
     </div>
 {/if}
+{/block}
+
+{block name="javascripts"}
+<script type="text/javascript">
+    $(function() {
+        $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
+        $('#date_debut_cotis, #date_fin_cotis, #date_enreg').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showOn: 'button',
+            buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
+            buttonImageOnly: true,
+            buttonText: '{_T string="Select a date" escape="js"}'
+        });
+
+    {if $type eq {_T string="fee" domain="routes"} and !$contribution->id}
+        $('#id_adh, #id_type_cotis').on('change', function() {
+            var _this = $(this);
+            var _member = $('#id_adh').val();
+            var _fee    = $('#id_type_cotis').val();
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url : '{path_for name="contributionDates"}',
+                data: {
+                    member_id: _member,
+                    fee_id: _fee
+                },
+                {include file="js_loader.tpl"},
+                success: function(res){
+                    $('#date_debut_cotis').val(res.date_debut_cotis);
+                    $('#date_fin_cotis').val(res.date_fin_cotis);
+                },
+                error: function() {
+                    alert("{_T string="An error occured retrieving dates :(" escape="js"}");
+                }
+            });
+
+        });
+    {/if}
+    });
+</script>
 {/block}

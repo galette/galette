@@ -312,6 +312,13 @@ $app->get(
                         ));
                 }
             } else {
+                $id_type_cotis = 0;
+                if (isset($get[ContributionsTypes::PK])
+                    && $get[ContributionsTypes::PK]
+                    && $action === __('add', 'routes')
+                ) {
+                    $id_type_cotis = $get[ContributionsTypes::PK];
+                }
                 $cparams = ['type' => __(array_keys($contributions_types)[0], 'routes')];
 
                 //member id
@@ -332,6 +339,10 @@ $app->get(
                     $this->login,
                     (count($cparams) > 0 ? $cparams : null)
                 );
+
+                if (isset($get['montant_cotis']) && $get['montant_cotis'] > 0 && $action === __('add', 'routes')) {
+                    $contrib->amount = $get['montant_cotis'];
+                }
 
                 if ($contrib->isTransactionPart()) {
                     $id_adh = $contrib->member;
@@ -448,6 +459,17 @@ $app->post(
         __('add', 'routes') . '|' . __('edit', 'routes') .'}[/{id:\d+}]',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
+
+        if (isset($post['btnreload'])) {
+            $reditect_url = $this->router->pathFor('contribution', $args);
+            $reditect_url .= '?' . Adherent::PK . '=' . $post[Adherent::PK] . '&' .
+                ContributionsTypes::PK . '=' . $post[ContributionsTypes::PK] . '&' .
+                'montant_cotis=' . $post['montant_cotis'];
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $reditect_url);
+        }
+
         $error_detected = [];
         $warning_detected = [];
         $reditect_url = null;

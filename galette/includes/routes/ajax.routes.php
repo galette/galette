@@ -36,6 +36,8 @@
  */
 
 use Galette\Entity\Adherent;
+use Galette\Entity\Contribution;
+use Galette\Entity\ContributionsTypes;
 
 $app->group(__('/ajax', 'routes'), function () use ($authenticate) {
     $this->get(
@@ -234,4 +236,30 @@ $app->group(__('/ajax', 'routes'), function () use ($authenticate) {
             return $response->withJson(['message' => _T('Thank you for registering!')]);
         }
     )->setName('setRegistered')->add($authenticate);
+
+    $this->post(
+        __('/contribution', 'routes') . __('/dates', 'routes'),
+        function ($request, $response) {
+            $post = $request->getParsedBody();
+
+            // contribution types
+            $ct = new ContributionsTypes($this->zdb);
+            $contributions_types = $ct->getList(true);
+
+            $contrib = new Contribution(
+                $this->zdb,
+                $this->login,
+                [
+                    'type'  => __(array_keys($contributions_types)[$post['fee_id']], 'routes'),
+                    'adh'   => (int)$post['member_id']
+                ]
+            );
+            $contribution['duree_mois_cotis'] = $this->preferences->pref_membership_ext;
+
+            return $response->withJson([
+                'date_debut_cotis'  => $contrib->begin_date,
+                'date_fin_cotis'    => $contrib->end_date
+            ]);
+        }
+    )->setName('contributionDates')->add($authenticate);
 });
