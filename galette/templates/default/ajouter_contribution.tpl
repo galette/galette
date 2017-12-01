@@ -127,6 +127,18 @@
                     <textarea name="info_cotis" id="info_cotis" cols="61" rows="6"{if isset($required.info_cotis) and $required.info_cotis eq 1} required="required"{/if}>{$contribution->info}</textarea>
                 </p>
             </fieldset>
+
+    {if $contribution->isTransactionPart() && $contribution->transaction->getMissingAmount()}
+            <fieldset class="cssform" id="transaction_related">
+                <legend class="ui-state-active ui-corner-top">{_T string="Transaction related"}</legend>
+                <p>
+                    <span class="bline tooltip" title="{_T string="Select a contribution type to create for dispatch transaction"}">{_T string="Dispatch type:"}</span>
+                    <span class="tip">{_T string="Select a contribution type to create for dispatch transaction"}</span>
+                    <input type="radio" name="contrib_type" id="contrib_type_fee" value="{_T string="fee" domain="routes"}" checked="checked"/> <label for="contrib_type_fee">{_T string="Membership fee"}</label>
+                    <input type="radio" name="contrib_type" id="contrib_type_donation" value="{_T string="donation" domain="routes"}"/> <label for="contrib_type_donation">{_T string="Donation"}</label>
+                </p>
+            </fieldset>
+    {/if}
         {include file="edit_dynamic_fields.tpl" object=$contribution}
     {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
             <p>
@@ -196,6 +208,21 @@
                 }
             });
 
+        });
+    {/if}
+
+    {if $contribution->isTransactionPart() && $contribution->transaction->getMissingAmount()}
+        $('#transaction_related').hide();
+        $('#montant_cotis').on('keyup', function() {
+            var _amount = {$contribution->transaction->getMissingAmount()};
+            var _current = $(this).val();
+            if (_current < _amount) {
+                $('#transaction_related').show();
+            } else if (_current > _amount) {
+                alert('{_T string="Contribution amount should be greater than %max" pattern="/%max/" replace=$contribution->transaction->getMissingAmount() escape="js"}');
+            } else {
+                $('#transaction_related').hide();
+            }
         });
     {/if}
     });

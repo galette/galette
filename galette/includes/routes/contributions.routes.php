@@ -461,18 +461,18 @@ $app->post(
         $post = $request->getParsedBody();
 
         if (isset($post['btnreload'])) {
-            $reditect_url = $this->router->pathFor('contribution', $args);
-            $reditect_url .= '?' . Adherent::PK . '=' . $post[Adherent::PK] . '&' .
+            $redirect_url = $this->router->pathFor('contribution', $args);
+            $redirect_url .= '?' . Adherent::PK . '=' . $post[Adherent::PK] . '&' .
                 ContributionsTypes::PK . '=' . $post[ContributionsTypes::PK] . '&' .
                 'montant_cotis=' . $post['montant_cotis'];
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $reditect_url);
+                ->withHeader('Location', $redirect_url);
         }
 
         $error_detected = [];
         $warning_detected = [];
-        $reditect_url = null;
+        $redirect_url = null;
 
         $action = $args['action'];
         $id_cotis = null;
@@ -728,23 +728,32 @@ $app->post(
             }
 
             if (count($error_detected) == 0) {
-                if ($contrib->isTransactionPart()
-                    && $contrib->transaction->getMissingAmount() > 0
-                ) {
-                    $reditect_url = $this->router->pathFor(
-                        'contribution',
-                        [
-                            'type'      => $args['type'],
-                            'action'    => __('add', 'routes')
-                        ]
-                    ) . '?trans_id=' . $contrib->transaction->id . '&id_adh=' . $contrib->member;
+                if ($contrib->isTransactionPart()) {
+                    if ($contrib->transaction->getMissingAmount() > 0) {
+                        $redirect_url = $this->router->pathFor(
+                            'contribution',
+                            [
+                                'action'    => __('add', 'routes'),
+                                'type'      => $post['contrib_type']
+                            ]
+                        ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
+                        '&' . Adherent::PK . '=' . $contrib->member;
+                    } else {
+                        $redirect_url = $this->router->pathFor(
+                            'transaction',
+                            [
+                                'action'    => __('edit', 'routes'),
+                                'id'        => $contrib->transaction->id
+                            ]
+                        );
+                    }
                 } else {
-                    $reditect_url = $this->router->pathFor(
+                    $redirect_url = $this->router->pathFor(
                         'contributions',
                         [
                             'type'      => __('contributions', 'routes')
                         ]
-                    ) . '?id_adh=' . $contrib->member;
+                    ) . '?' . Adherent::PK . '=' . $contrib->member;
                 }
             }
         }
@@ -767,7 +776,7 @@ $app->post(
             //something went wrong.
             //store entity in session
             $this->session->contribution = $contrib;
-            $reditect_url = $this->router->pathFor('contribution', $args);
+            $redirect_url = $this->router->pathFor('contribution', $args);
 
             //report errors
             foreach ($error_detected as $error) {
@@ -778,15 +787,15 @@ $app->post(
             }
         } else {
             $this->session->contribution = null;
-            if ($reditect_url === null) {
-                $reditect_url = $this->router->pathFor('contributions', ['type' => $args['type']]);
+            if ($redirect_url === null) {
+                $redirect_url = $this->router->pathFor('contributions', ['type' => $args['type']]);
             }
         }
 
         //redirect to calling action
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $reditect_url);
+            ->withHeader('Location', $redirect_url);
     }
 )->setName('contribution')->add($authenticate);
 
@@ -1018,7 +1027,7 @@ $app->post(
             if ($trans->getMissingAmount() > 0) {
                 $rparams = [
                     'action'    => __('add', 'routes'),
-                    'trans_id'  => $trans->id
+                    'type'      => $post['contrib_type']
                 ];
 
                 if (isset($trans->member)) {
@@ -1032,7 +1041,8 @@ $app->post(
                         $this->router->pathFor(
                             'contribution',
                             $rparams
-                        )
+                        ) . '?' . Transaction::PK . '=' . $trans->id .
+                            '&' . Adherent::PK . '=' . $trans->member
                     );
             } else {
                 //report success
@@ -1046,7 +1056,7 @@ $app->post(
                     ->withStatus(301)
                     ->withHeader(
                         'Location',
-                        $this->router->pathFor('transactions')
+                        $this->router->pathFor('contributions', ['type' => __('transactions', 'routes')])
                     );
             }
         } else {
