@@ -346,23 +346,6 @@ $app->get(
 
                 if ($contrib->isTransactionPart()) {
                     $id_adh = $contrib->member;
-
-                    //check if mmber has children to populate members list
-                    $deps = [
-                        'picture'   => false,
-                        'groups'    => false,
-                        'dues'      => false,
-                        'parent'    => false,
-                        'children'  => true
-                    ];
-                    $tmember = new Adherent($this->zdb, $id_adh, $deps);
-                    $members = [$tmember->id => $tmember->sname];
-
-                    if ($tmember->hasChildren()) {
-                        foreach ($tmember->children as $member) {
-                            $members[$member->id] = $member->sname;
-                        }
-                    }
                 }
             }
         }
@@ -412,23 +395,21 @@ $app->get(
         $params['type_cotis_options'] = $contributions_types;
 
         // members
-        if (!isset($members)) {
-            $members = [];
-            $m = new Members();
-            $required_fields = array(
-                'id_adh',
-                'nom_adh',
-                'prenom_adh'
-            );
-            $list_members = $m->getList(false, $required_fields);
+        $members = [];
+        $m = new Members();
+        $required_fields = array(
+            'id_adh',
+            'nom_adh',
+            'prenom_adh'
+        );
+        $list_members = $m->getList(false, $required_fields);
 
-            if (count($list_members) > 0) {
-                foreach ($list_members as $member) {
-                    $pk = Adherent::PK;
-                    $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
-                        ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
-                    $members[$member->$pk] = $sname;
-                }
+        if (count($list_members) > 0) {
+            foreach ($list_members as $member) {
+                $pk = Adherent::PK;
+                $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
+                    ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
+                $members[$member->$pk] = $sname;
             }
         }
 
