@@ -1738,11 +1738,47 @@ $app->get(
     function ($request, $response, $args) {
         $id_adh = (int)$args[Adherent::PK];
 
-        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-            $id_adh = (int)$this->login->id;
+        $denied = false;
+        if ($this->login->id != $args['id']
+            && !$this->login->isAdmin()
+            && !$this->login->isStaff()
+            && !$this->login->isGroupManager()
+        ) {
+            $denied = true;
         }
 
-        $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
+        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+            if ($this->login->isGroupManager()) {
+                $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
+                //check if current logged in user can manage loaded member
+                $groups = $adh->groups;
+                $can_manage = false;
+                foreach ($groups as $group) {
+                    if ($this->login->isGroupManager($group->getId())) {
+                        $can_manage = true;
+                        break;
+                    }
+                }
+                if ($can_manage !== true) {
+                    Analog::log(
+                        'Logged in member ' . $this->login->login .
+                        ' has tried to load member #' . $ad->id .
+                        ' but do not manage any groups he belongs to.',
+                        Analog::WARNING
+                    );
+                    $denied = true;
+                }
+            } else {
+                $denied = true;
+            }
+        }
+
+        if ($denied) {
+            //requested member cannot be managed. Load logged in user
+            $id_adh = (int)$this->login->id;
+            $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
+        }
+
         $form = $this->preferences->pref_adhesion_form;
         $pdf = new $form($adh, $this->zdb, $this->preferences);
         $pdf->download();
