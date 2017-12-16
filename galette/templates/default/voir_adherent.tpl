@@ -1,7 +1,7 @@
 {extends file="page.tpl"}
 
 {block name="content"}
-{if $navigate|@count != 0}
+{if isset($navigate) and $navigate|@count != 0}
     <nav>
         <a id="prev" href="{if isset($navigate.prev)}{path_for name="member" data=["id" => $navigate.prev]}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">{_T string="Previous"}</a>
         {$navigate.pos}/{$navigate.count}
