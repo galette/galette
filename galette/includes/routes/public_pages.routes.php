@@ -87,7 +87,7 @@ $app->group(__('/public', 'routes'), function () {
                 }
             }
 
-            $m = new Members();
+            $m = new Members($filters);
             $members = $m->getPublicList(false);
 
             $this->session->public_filter_members = $filters;
