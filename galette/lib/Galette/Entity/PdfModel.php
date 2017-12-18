@@ -163,7 +163,7 @@ abstract class PdfModel
             $count = $results->count();
             if ($count === 0) {
                 if ($init === true) {
-                    $models = new PdfModels($this->zdb, $preferences);
+                    $models = new PdfModels($this->zdb, $preferences, $this->login);
                     $models->installInit();
                     $this->load($id, $preferences, false);
                 } else {
