@@ -2503,7 +2503,24 @@ $app->post(
         }
 
         $members = new Members($filters);
-        $members_list = $members->getMembersList(true);
+        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+            if ($this->login->isGroupManager()) {
+                $members_list = $members->getManagedMembersList(true);
+            } else {
+                Analog::log(
+                    str_replace(
+                        ['%id', '%login'],
+                        [$this->login->id, $this->login->login],
+                        'Trying to list group members without access from #%id (%login)'
+                    ),
+                    Analog::ERROR
+                );
+                throw new Exception('Access denied.');
+                exit(0);
+            }
+        } else {
+            $members_list = $members->getMembersList(true);
+        }
 
         //assign pagination variables to the template and add pagination links
         $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
