@@ -2275,7 +2275,7 @@ $app->post(
         $texts = new Texts($this->texts_fields, $this->preferences, $this->router);
 
         //set the language
-        $cur_lang = $post['sel_lang'];
+        $cur_lang = $post['cur_lang'];
         //set the text entry
         $cur_ref = $post['cur_ref'];
 
