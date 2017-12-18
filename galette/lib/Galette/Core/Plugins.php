@@ -495,6 +495,48 @@ class Plugins
     }
 
     /**
+     * Get plugins dashboard entries.
+     *
+     * @param Smarty $tpl Smarty template
+     *
+     * @return void
+     */
+    public function getDashboard($tpl)
+    {
+        $modules = $this->getModules();
+        foreach (array_keys($this->getModules()) as $r) {
+            $dash_path = $this->getTemplatesPath($r) . '/dashboard.tpl';
+            if ($tpl->templateExists($dash_path)) {
+                $name2path = strtolower(
+                    str_replace(' ', '_', $modules[$r]['name'])
+                );
+                $tpl->display($dash_path);
+            }
+        }
+    }
+
+    /**
+     * Get plugins single member dashboard entries.
+     *
+     * @param Smarty $tpl Smarty template
+     *
+     * @return void
+     */
+    public function getMemberDashboard($tpl)
+    {
+        $modules = $this->getModules();
+        foreach (array_keys($this->getModules()) as $r) {
+            $dash_path = $this->getTemplatesPath($r) . '/dashboard_member.tpl';
+            if ($tpl->templateExists($dash_path)) {
+                $name2path = strtolower(
+                    str_replace(' ', '_', $modules[$r]['name'])
+                );
+                $tpl->display($dash_path);
+            }
+        }
+    }
+
+    /**
      * Sort modules
      *
      * @param array $a A module
