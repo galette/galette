@@ -1747,7 +1747,7 @@ $app->get(
             $denied = true;
         }
 
-        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+        if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->login->id != $args['id']) {
             if ($this->login->isGroupManager()) {
                 $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
                 //check if current logged in user can manage loaded member
@@ -1762,7 +1762,7 @@ $app->get(
                 if ($can_manage !== true) {
                     Analog::log(
                         'Logged in member ' . $this->login->login .
-                        ' has tried to load member #' . $ad->id .
+                        ' has tried to load member #' . $adh->id .
                         ' but do not manage any groups he belongs to.',
                         Analog::WARNING
                     );
