@@ -1776,8 +1776,8 @@ $app->get(
         if ($denied) {
             //requested member cannot be managed. Load logged in user
             $id_adh = (int)$this->login->id;
-            $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
         }
+        $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
 
         $form = $this->preferences->pref_adhesion_form;
         $pdf = new $form($adh, $this->zdb, $this->preferences);
