@@ -57,6 +57,11 @@ use Analog\Analog;
 
 class PdfMembersCards extends Pdf
 {
+    const WIDTH = 75;
+    const HEIGHT = 40;
+    const COLS = 2;
+    const ROWS = 6;
+
     private $tcol;
     private $scol;
     private $bcol;
@@ -134,13 +139,13 @@ class PdfMembersCards extends Pdf
         $this->yorigin = $this->preferences->pref_card_marges_v;
 
         // Card width
-        $this->wi = 75;
+        $this->wi = self::getWidth();
         // Card heigth
-        $this->he = 40;
+        $this->he = self::getHeight();
         // Number of colons
-        $this->nbcol=2;
+        $this->nbcol = self::getCols();
         // Number of rows
-        $this->nbrow=6;
+        $this->nbrow = self::getRows();
         // Spacing betweeen cards
         $this->hspacing = $this->preferences->pref_card_hspace;
         $this->vspacing = $this->preferences->pref_card_vspace;
@@ -148,7 +153,6 @@ class PdfMembersCards extends Pdf
         //maximum size for visible text. May vary with fonts.
         $this->max_text_size = 80;
         $this->year_font_size = 8;
-
 
         // Get fixed data from preferences
         $this->an_cot = $this->preferences->pref_card_year;
@@ -201,7 +205,7 @@ class PdfMembersCards extends Pdf
             // Logo X position
             $xl = round($x0 + $this->wi - $this->wlogo);
             // Get data
-            $email = '<strong>';
+            $email = '';
             switch ($this->preferences->pref_card_address) {
                 case 0:
                     $email .= $member->email;
@@ -228,7 +232,6 @@ class PdfMembersCards extends Pdf
                     $email .= $member->job;
                     break;
             }
-            $email .= '</strong>';
 
             // Select strip color according to status
             switch ($member->status) {
@@ -246,12 +249,11 @@ class PdfMembersCards extends Pdf
                     $fcol = $this->scol;
             }
 
-            $id = '<strong>' . $member->id . '</strong>';
-            $nom_adh_ext = '<strong>';
+            $nom_adh_ext = '';
             if ($this->preferences->pref_bool_display_title) {
                 $nom_adh_ext .= $member->stitle;
             }
-            $nom_adh_ext .= $member->sname . '</strong>';
+            $nom_adh_ext .= $member->sname;
             $photo = $member->picture;
             $photofile = $photo->getPath();
 
@@ -270,44 +272,46 @@ class PdfMembersCards extends Pdf
             $this->SetTextColor($fcol['R'], $fcol['G'], $fcol['B']);
 
             $this->SetFontSize(8);
-            $this->SetXY($x0 + 68.8, $y0 + 28);
-            $this->writeHTML($id, false, 0);
+
+            $xid = $x0 + $this->wi - $this->GetStringWidth($member->id, self::FONT, 'B', 8) - 0.2;
+            $this->SetXY($xid, $y0 + 28);
+            $this->writeHTML('<strong>' . $member->id  . '</strong>', false, 0);
             $this->SetFontSize($this->year_font_size);
             $xan_cot = $xan_cot - 0.3;
             $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);
             $this->writeHTML('<strong>' . $this->an_cot . '</strong>', false, 0);
 
             // Abbrev: Adapt font size to text length
-            $fontsz = 12;
-            $this->SetFontSize($fontsz);
-            while ($this->GetStringWidth($this->abrev, self::FONT, 'B', $fontsz) > $this->max_text_size) {
-                $fontsz--;
-                $this->SetFontSize($fontsz);
-            }
+            $this->fixSize(
+                $this->abrev,
+                $this->max_text_size,
+                12,
+                'B'
+            );
             $this->SetXY($x0 + 27, $y0 + 12);
             $this->writeHTML('<strong>' . $this->abrev . '</strong>', true, 0);
 
             // Name: Adapt font size to text length
             $this->SetTextColor(0);
-            $fontsz = 8;
-            $this->SetFontSize($fontsz);
-            while ($this->GetStringWidth($nom_adh_ext) > $this->max_text_size) {
-                $fontsz--;
-                $this->SetFontSize($fontsz);
-            }
+            $this->fixSize(
+                $nom_adh_ext,
+                $this->max_text_size,
+                8,
+                'B'
+            );
             $this->SetXY($x0 + 27, $this->getY() + 4);
             //$this->setX($x0 + 27);
-            $this->writeHTML($nom_adh_ext, true, 0);
+            $this->writeHTML('<strong>' . $nom_adh_ext . '</strong>', true, 0);
 
             // Email (adapt too)
-            $fontsz = 6;
-            $this->SetFontSize($fontsz);
-            while ($this->GetStringWidth($email) > $this->max_text_size) {
-                $fontsz--;
-                $this->SetFontSize($fontsz);
-            }
+            $this->fixSize(
+                $email,
+                $this->max_text_size,
+                6,
+                'B'
+            );
             $this->setX($x0 + 27);
-            $this->writeHTML($email, false, 0);
+            $this->writeHTML('<strong>' . $email . '</strong>', false, 0);
 
             // Lower colored strip with long text
             $this->SetFillColor($fcol['R'], $fcol['G'], $fcol['B']);
@@ -332,5 +336,45 @@ class PdfMembersCards extends Pdf
             $this->Rect($x0, $y0, $this->wi, $this->he);
             $nb_card++;
         }
+    }
+
+    /**
+     * Get card width
+     *
+     * @return integer
+     */
+    public static function getWidth()
+    {
+        return defined('GALETTE_CARD_WIDTH') ? GALETTE_CARD_WIDTH : self::WIDTH;
+    }
+
+    /**
+     * Get card height
+     *
+     * @return integer
+     */
+    public static function getHeight()
+    {
+        return defined('GALETTE_CARD_HEIGHT') ? GALETTE_CARD_HEIGHT : self::HEIGHT;
+    }
+
+    /**
+     * Get number of columns
+     *
+     * @return integer
+     */
+    public static function getCols()
+    {
+        return defined('GALETTE_CARD_COLS') ? GALETTE_CARD_COLS : self::COLS;
+    }
+
+    /**
+     * Get number of rows
+     *
+     * @return integer
+     */
+    public static function getRows()
+    {
+        return defined('GALETTE_CARD_ROWS') ? GALETTE_CARD_ROWS : self::ROWS;
     }
 }

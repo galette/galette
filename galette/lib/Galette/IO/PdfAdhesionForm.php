@@ -110,7 +110,9 @@ class PdfAdhesionForm
                 'adh_phone'         => '/{PHONE_ADH}/',
                 'adh_mobile'        => '/{MOBILE_ADH}/',
                 'adh_email'         => '/{EMAIL_ADH}/',
-                'adh_login'         => '/{LOGIN_ADH}/'
+                'adh_login'         => '/{LOGIN_ADH}/',
+                'adh_main_group'    => '/{GROUP_ADH}/',
+                'adh_groups'        => '/{GROUPS_ADH}/'
             )
         );
 
@@ -135,6 +137,18 @@ class PdfAdhesionForm
             }
         }
 
+        $member_groups = $adh->groups;
+        $main_group = _T("None");
+        $group_list = _T("None");
+        if (count($member_groups) > 0) {
+            $main_group = $member_groups[0]->getName();
+            $group_list = '<ul>';
+            foreach ($member_groups as $group) {
+                $group_list .= '<li>' . $group->getName()  . '</li>';
+            }
+            $group_list .= '</ul>';
+        }
+
         $model->setReplacements(
             array(
                 'adh_title'         => $adh->stitle,
@@ -154,7 +168,9 @@ class PdfAdhesionForm
                 'adh_phone'         => $adh->phone,
                 'adh_mobile'        => $adh->gsm,
                 'adh_email'         => $adh->email,
-                'adh_login'         => $adh->login
+                'adh_login'         => $adh->login,
+                'adh_main_group'    => $main_group,
+                'adh_groups'        => $group_list
             )
         );
 

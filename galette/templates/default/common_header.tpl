@@ -7,9 +7,9 @@ Just put a {include file='common_header.tpl'} into the head tag.
         <meta charset="UTF-8" />
         <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}galette.css" />
         {* Let's see if a local CSS exists and include it *}
-        {assign var="localstylesheet" value="`$galette_base_path``$template_subdir`galette_local.css"}
+        {assign var="localstylesheet" value="`$_CURRENT_THEME_PATH`galette_local.css"}
         {if file_exists($localstylesheet)}
-            <link rel="stylesheet" type="text/css" href="{base_url}/{$localstylesheet}" />
+            <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}/galette_local.css" />
         {/if}
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-{$jquery_version}.min.js"></script>
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-migrate-{$jquery_migrate_version}.min.js"></script>
@@ -29,12 +29,16 @@ Just put a {include file='common_header.tpl'} into the head tag.
         {* Tooltips can be used everywhere *}
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.position.min.js"></script>
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.tooltip.min.js"></script>
+        {assign var="localjstracking" value="`$_CURRENT_THEME_PATH`tracking.js"}
+        {if file_exists($localjstracking)}
+            <script type="text/javascript" src="{base_url}/{$template_subdir}/tracking.js"></script>
+        {/if}
         <meta name="viewport" content="width=device-width" />
         {* UI accordion is used for main menu ; we need the CSS *}
         <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}jquery-ui/jquery-ui-{$jquery_ui_version}.custom.css" />
         <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}galette_print.css" media="print" />
-        {assign var="localprintstylesheet" value="`$galette_base_path``$template_subdir`galette_print_local.css"}
+        {assign var="localprintstylesheet" value="`$_CURRENT_THEME_PATH`galette_print_local.css"}
         {if file_exists($localprintstylesheet)}
-            <link rel="stylesheet" type="text/css" href="{$localprintstylesheet}" media="print" />
+            <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}/galette_print_local.css" media="print" />
         {/if}
         <link rel="shortcut icon" href="{base_url}/{$template_subdir}images/favicon.png" />

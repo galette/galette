@@ -1,7 +1,7 @@
 {extends file="page.tpl"}
 
 {block name="content"}
-{if $navigate|@count != 0}
+{if isset($navigate) and $navigate|@count != 0}
     <nav>
         <a id="prev" href="{if isset($navigate.prev)}{path_for name="member" data=["id" => $navigate.prev]}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">{_T string="Previous"}</a>
         {$navigate.pos}/{$navigate.count}
@@ -132,6 +132,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                         width="{$member->picture->getOptimalWidth()}"
                         height="{$member->picture->getOptimalHeight()}"
                         alt="{_T string="Picture"}"
+                        {if $login->isAdmin() or $login->isStaff() or $login->login eq $member->login} title="{_T string="You can drop new image here to get photo changed"}" class="tooltip"{/if}
                         id="photo_adh"/>
                 </td>
         {/if}

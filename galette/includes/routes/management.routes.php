@@ -196,6 +196,7 @@ $app->post(
     __('/preferences', 'routes'),
     function ($request, $response) {
         $error_detected = [];
+        $warning_detected = [];
 
         // Validation
         if (isset($_POST['valid']) && $_POST['valid'] == '1') {
@@ -456,6 +457,7 @@ $app->post(
                         _T("Preferences has been saved.")
                     );
                 }
+                $warning_detected = array_merge($warning_detected, $this->preferences->checkCardsSizes());
 
                 // picture upload
                 if (GALETTE_MODE !== 'DEMO' &&  isset($_FILES['logo'])) {
@@ -532,6 +534,17 @@ $app->post(
                     );
                 }
             }
+
+            if (count($warning_detected) > 0) {
+                //report warnings
+                foreach ($warning_detected as $warning) {
+                    $this->flash->addMessage(
+                        'warning_detected',
+                        $warning
+                    );
+                }
+            }
+
 
             return $response
                 ->withStatus(301)
@@ -2262,7 +2275,7 @@ $app->post(
         $texts = new Texts($this->texts_fields, $this->preferences, $this->router);
 
         //set the language
-        $cur_lang = $post['sel_lang'];
+        $cur_lang = $post['cur_lang'];
         //set the text entry
         $cur_ref = $post['cur_ref'];
 
@@ -3173,7 +3186,8 @@ $app->get(
             'number_members'        => \Galette\Util\FakeData::DEFAULT_NB_MEMBERS,
             'number_contrib'        => \Galette\Util\FakeData::DEFAULT_NB_CONTRIB,
             'number_groups'         => \Galette\Util\FakeData::DEFAULT_NB_GROUPS,
-            'number_transactions'   => \Galette\Util\FakeData::DEFAULT_NB_TRANSACTIONS
+            'number_transactions'   => \Galette\Util\FakeData::DEFAULT_NB_TRANSACTIONS,
+            'photos'                => \Galette\Util\FakeData::DEFAULT_PHOTOS
         ];
 
         // display page
@@ -3204,7 +3218,8 @@ $app->post(
             ->setNbMembers($post['number_members'])
             ->setNbGroups($post['number_groups'])
             ->setNbTransactions($post['number_transactions'])
-            ->setMaxContribs($post['number_contrib']);
+            ->setMaxContribs($post['number_contrib'])
+            ->setWithPhotos(isset($post['photos']));
 
         $fakedata->generate();
 

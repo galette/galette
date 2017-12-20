@@ -130,18 +130,18 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {if $login->isLogged()}
         <h1 class="nojs">{_T string="Navigation"}</h1>
         <ul>
-  {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}
             <li{if $cur_route eq "dashboard"} class="selected"{/if}><a href="{path_for name="dashboard"}" title="{_T string="Go to Galette's dashboard"}">{_T string="Dashboard"}</a></li>
+  {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}
             <li{if $cur_route eq "members"} class="selected"{/if}><a href="{path_for name="members"}" title="{_T string="View, search into and filter member's list"}">{_T string="List of members"}</a></li>
             <li{if $cur_route eq "advanced-search"} class="selected"{/if}><a href="{path_for name="advanced-search"}" title="{_T string="Perform advanced search into members list"}">{_T string="Advanced search"}</a></li>
             <li{if $cur_route eq "groups"} class="selected"{/if}><a href="{path_for name="groups"}" title="{_T string="View and manage groups"}">{_T string="Manage groups"}</a></li>
   {/if}
   {if $login->isAdmin() or $login->isStaff()}
-            <li{if $cur_route eq "contributions" and $cur_subroute eq "contributions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}]}" title="{_T string="View and filter contributions"}">{_T string="List of contributions"}</a></li>
-            <li{if $cur_route eq "contributions" and $cur_subroute eq "transactions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => {_T string="transactions" domain="routes"}]}" title="{_T string="View and filter transactions"}">{_T string="List of transactions"}</a></li>
+            <li{if $cur_route eq "contributions" and $cur_subroute eq {_T string="contributions" domain="routes"}} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}]}" title="{_T string="View and filter contributions"}">{_T string="List of contributions"}</a></li>
+            <li{if $cur_route eq "contributions" and $cur_subroute eq {_T string="transactions" domain="routes"}} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => {_T string="transactions" domain="routes"}]}" title="{_T string="View and filter transactions"}">{_T string="List of transactions"}</a></li>
             <li{if $cur_route eq "editmember"} class="selected"{/if}><a href="{path_for name="editmember" data=["action" => {_T string="add" domain="routes"}]}" title="{_T string="Add new member in database"}">{_T string="Add a member"}</a></li>
-            <li{if $cur_route eq "contribution" and $cur_subroute eq "fee"} class="selected"{/if}><a href="{path_for name="contribution" data=["type" => {_T string="fee" domain="routes"}, "action" => {_T string="add" domain="routes"}]}" title="{_T string="Add new membership fee in database"}">{_T string="Add a membership fee"}</a></li>
-            <li{if $cur_route eq "contribution" and $cur_subroute eq "donation"} class="selected"{/if}><a href="{path_for name="contribution" data=["type" => {_T string="donation" domain="routes"}, "action" => {_T string="add" domain="routes"}]}" title="{_T string="Add new donation in database"}">{_T string="Add a donation"}</a></li>
+            <li{if $cur_route eq "contribution" and $cur_subroute eq {_T string="fee" domain="routes"}} class="selected"{/if}><a href="{path_for name="contribution" data=["type" => {_T string="fee" domain="routes"}, "action" => {_T string="add" domain="routes"}]}" title="{_T string="Add new membership fee in database"}">{_T string="Add a membership fee"}</a></li>
+            <li{if $cur_route eq "contribution" and $cur_subroute eq {_T string="donation" domain="routes"}} class="selected"{/if}><a href="{path_for name="contribution" data=["type" => {_T string="donation" domain="routes"}, "action" => {_T string="add" domain="routes"}]}" title="{_T string="Add new donation in database"}">{_T string="Add a donation"}</a></li>
             <li{if $cur_route eq "transaction"} class="selected"{/if}><a href="{path_for name="transaction" data=["action" => {_T string="add" domain="routes"}]}" title="{_T string="Add new transaction in database"}">{_T string="Add a transaction"}</a></li>
             <li{if $cur_route eq "reminders"} class="selected"{/if}><a href="{path_for name="reminders"}" title="{_T string="Send reminders to late members"}">{_T string="Reminders"}</a></li>
             <li{if $cur_route eq "history"} class="selected"{/if}><a href="{path_for name="history"}" title="{_T string="View application's logs"}">{_T string="Logs"}</a></li>
@@ -150,8 +150,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $cur_route eq "import" or $cur_route eq "importModel"} class="selected"{/if}><a href="{path_for name="import"}" title="{_T string="Import members from CSV files"}">{_T string="Imports"}</a></li>
             <li class="mnu_last{if $cur_route eq "charts"} selected{/if}"><a href="{path_for name="charts"}" title="{_T string="Various charts"}">{_T string="Charts"}</a></li>
   {else}
-            <li{if $cur_route eq "contributions" and $cur_subroute eq "contributions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}]}" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
-            <li{if $cur_route eq "contributions" and $cur_subroute eq "transactions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => {_T string="transactions" domain="routes"}]}" title="{_T string="View and filter all my transactions"}">{_T string="My transactions"}</a></li>
+            <li{if $cur_route eq "contributions" and $cur_subroute eq {_T string="contributions" domain="routes"}} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}]}" title="{_T string="View and filter all my contributions"}">{_T string="My contributions"}</a></li>
+            <li{if $cur_route eq "contributions" and $cur_subroute eq {_T string="transactions" domain="routes"}} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => {_T string="transactions" domain="routes"}]}" title="{_T string="View and filter all my transactions"}">{_T string="My transactions"}</a></li>
   {/if}
   {if !$login->isSuperAdmin()}
             <li{if $cur_route eq "me" or $cur_route eq "member"} class="selected"{/if}><a href="{path_for name="me"}" title="{_T string="View my member card"}">{_T string="My information"}</a></li>

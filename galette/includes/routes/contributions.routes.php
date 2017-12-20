@@ -262,8 +262,8 @@ $app->post(
 
 $app->get(
     __('/contribution', 'routes') .
-        '/{type:' . __('fee') . '|' . __('donation') . '}/{action:' .
-        __('add') . '|' . __('edit') .'}[/{id:\d+}]',
+        '/{type:' . __('fee', 'routes') . '|' . __('donation', 'routes') . '}/{action:' .
+        __('add', 'routes') . '|' . __('edit', 'routes') .'}[/{id:\d+}]',
     function ($request, $response, $args) {
         $action = $args['action'];
         $get = $request->getQueryParams();
@@ -312,6 +312,13 @@ $app->get(
                         ));
                 }
             } else {
+                $id_type_cotis = 0;
+                if (isset($get[ContributionsTypes::PK])
+                    && $get[ContributionsTypes::PK]
+                    && $action === __('add', 'routes')
+                ) {
+                    $id_type_cotis = $get[ContributionsTypes::PK];
+                }
                 $cparams = ['type' => __(array_keys($contributions_types)[0], 'routes')];
 
                 //member id
@@ -333,25 +340,12 @@ $app->get(
                     (count($cparams) > 0 ? $cparams : null)
                 );
 
+                if (isset($get['montant_cotis']) && $get['montant_cotis'] > 0 && $action === __('add', 'routes')) {
+                    $contrib->amount = $get['montant_cotis'];
+                }
+
                 if ($contrib->isTransactionPart()) {
                     $id_adh = $contrib->member;
-
-                    //check if mmber has children to populate members list
-                    $deps = [
-                        'picture'   => false,
-                        'groups'    => false,
-                        'dues'      => false,
-                        'parent'    => false,
-                        'children'  => true
-                    ];
-                    $tmember = new Adherent($this->zdb, $id_adh, $deps);
-                    $members = [$tmember->id => $tmember->sname];
-
-                    if ($tmember->hasChildren()) {
-                        foreach ($tmember->children as $member) {
-                            $members[$member->id] = $member->sname;
-                        }
-                    }
                 }
             }
         }
@@ -401,23 +395,21 @@ $app->get(
         $params['type_cotis_options'] = $contributions_types;
 
         // members
-        if (!isset($members)) {
-            $members = [];
-            $m = new Members();
-            $required_fields = array(
-                'id_adh',
-                'nom_adh',
-                'prenom_adh'
-            );
-            $list_members = $m->getList(false, $required_fields);
+        $members = [];
+        $m = new Members();
+        $required_fields = array(
+            'id_adh',
+            'nom_adh',
+            'prenom_adh'
+        );
+        $list_members = $m->getList(false, $required_fields);
 
-            if (count($list_members) > 0) {
-                foreach ($list_members as $member) {
-                    $pk = Adherent::PK;
-                    $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
-                        ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
-                    $members[$member->$pk] = $sname;
-                }
+        if (count($list_members) > 0) {
+            foreach ($list_members as $member) {
+                $pk = Adherent::PK;
+                $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
+                    ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
+                $members[$member->$pk] = $sname;
             }
         }
 
@@ -444,13 +436,24 @@ $app->get(
 
 $app->post(
     __('/contribution', 'routes') .
-        '/{type:' . __('fee') . '|' . __('donation') . '}/{action:' .
-        __('add') . '|' . __('edit') .'}[/{id:\d+}]',
+        '/{type:' . __('fee', 'routes') . '|' . __('donation', 'routes') . '}/{action:' .
+        __('add', 'routes') . '|' . __('edit', 'routes') .'}[/{id:\d+}]',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
+
+        if (isset($post['btnreload'])) {
+            $redirect_url = $this->router->pathFor('contribution', $args);
+            $redirect_url .= '?' . Adherent::PK . '=' . $post[Adherent::PK] . '&' .
+                ContributionsTypes::PK . '=' . $post[ContributionsTypes::PK] . '&' .
+                'montant_cotis=' . $post['montant_cotis'];
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $redirect_url);
+        }
+
         $error_detected = [];
         $warning_detected = [];
-        $reditect_url = null;
+        $redirect_url = null;
 
         $action = $args['action'];
         $id_cotis = null;
@@ -706,23 +709,32 @@ $app->post(
             }
 
             if (count($error_detected) == 0) {
-                if ($contrib->isTransactionPart()
-                    && $contrib->transaction->getMissingAmount() > 0
-                ) {
-                    $reditect_url = $this->router->pathFor(
-                        'contribution',
-                        [
-                            'type'      => $args['type'],
-                            'action'    => __('add', 'routes')
-                        ]
-                    ) . '?trans_id=' . $contrib->transaction->id . '&id_adh=' . $contrib->member;
+                if ($contrib->isTransactionPart()) {
+                    if ($contrib->transaction->getMissingAmount() > 0) {
+                        $redirect_url = $this->router->pathFor(
+                            'contribution',
+                            [
+                                'action'    => __('add', 'routes'),
+                                'type'      => $post['contrib_type']
+                            ]
+                        ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
+                        '&' . Adherent::PK . '=' . $contrib->member;
+                    } else {
+                        $redirect_url = $this->router->pathFor(
+                            'transaction',
+                            [
+                                'action'    => __('edit', 'routes'),
+                                'id'        => $contrib->transaction->id
+                            ]
+                        );
+                    }
                 } else {
-                    $reditect_url = $this->router->pathFor(
+                    $redirect_url = $this->router->pathFor(
                         'contributions',
                         [
                             'type'      => __('contributions', 'routes')
                         ]
-                    ) . '?id_adh=' . $contrib->member;
+                    ) . '?' . Adherent::PK . '=' . $contrib->member;
                 }
             }
         }
@@ -745,7 +757,7 @@ $app->post(
             //something went wrong.
             //store entity in session
             $this->session->contribution = $contrib;
-            $reditect_url = $this->router->pathFor('contribution', $args);
+            $redirect_url = $this->router->pathFor('contribution', $args);
 
             //report errors
             foreach ($error_detected as $error) {
@@ -756,21 +768,21 @@ $app->post(
             }
         } else {
             $this->session->contribution = null;
-            if ($reditect_url === null) {
-                $reditect_url = $this->router->pathFor('contributions', ['type' => $args['type']]);
+            if ($redirect_url === null) {
+                $redirect_url = $this->router->pathFor('contributions', ['type' => $args['type']]);
             }
         }
 
         //redirect to calling action
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $reditect_url);
+            ->withHeader('Location', $redirect_url);
     }
 )->setName('contribution')->add($authenticate);
 
 $app->get(
     __('/transaction', 'routes') .
-        '/{action:' . __('add') . '|' . __('edit') .'}[/{id:\d+}]',
+        '/{action:' . __('add', 'routes') . '|' . __('edit', 'routes') .'}[/{id:\d+}]',
     function ($request, $response, $args) {
         $trans = null;
 
@@ -921,7 +933,7 @@ $app->get(
 
 $app->post(
     __('/transaction', 'routes') .
-        '/{action:' . __('add') . '|' . __('edit') .'}[/{id:\d+}]',
+        '/{action:' . __('add', 'routes') . '|' . __('edit', 'routes') .'}[/{id:\d+}]',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
         $trans = new Transaction($this->zdb, $this->login);
@@ -996,7 +1008,7 @@ $app->post(
             if ($trans->getMissingAmount() > 0) {
                 $rparams = [
                     'action'    => __('add', 'routes'),
-                    'trans_id'  => $trans->id
+                    'type'      => $post['contrib_type']
                 ];
 
                 if (isset($trans->member)) {
@@ -1010,7 +1022,8 @@ $app->post(
                         $this->router->pathFor(
                             'contribution',
                             $rparams
-                        )
+                        ) . '?' . Transaction::PK . '=' . $trans->id .
+                            '&' . Adherent::PK . '=' . $trans->member
                     );
             } else {
                 //report success
@@ -1024,7 +1037,7 @@ $app->post(
                     ->withStatus(301)
                     ->withHeader(
                         'Location',
-                        $this->router->pathFor('transactions')
+                        $this->router->pathFor('contributions', ['type' => __('transactions', 'routes')])
                     );
             }
         } else {

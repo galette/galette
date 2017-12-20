@@ -51,7 +51,7 @@ $members_fields = array(
         'label'    => _T("Status:"),
         'propname' => 'status',
         'required' => false,
-        'visible'  => FieldsConfig::USER_WRITE,
+        'visible'  => FieldsConfig::STAFF,
         'position' => 27,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
@@ -212,7 +212,7 @@ $members_fields = array(
         'label'    => _T("Other informations (admin):"),
         'propname' => 'others_infos_admin',
         'required' => false,
-        'visible'  => FieldsConfig::ADMIN,
+        'visible'  => FieldsConfig::STAFF,
         'position' => 33,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
@@ -252,7 +252,7 @@ $members_fields = array(
         'label'    => _T("Creation date:"),
         'propname' => 'creation_date',
         'required' => false,
-        'visible'  => FieldsConfig::USER_WRITE,
+        'visible'  => FieldsConfig::STAFF,
         'position' => 32,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
@@ -268,7 +268,7 @@ $members_fields = array(
         'label'    => _T("Account:"),
         'propname' => 'active',
         'required' => false,
-        'visible'  => FieldsConfig::USER_WRITE,
+        'visible'  => FieldsConfig::STAFF,
         'position' => 26,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
@@ -276,7 +276,7 @@ $members_fields = array(
         'label'    => _T("Galette Admin:"),
         'propname' => 'admin',
         'required' => false,
-        'visible'  => FieldsConfig::USER_WRITE,
+        'visible'  => FieldsConfig::ADMIN,
         'position' => 28,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
@@ -284,7 +284,7 @@ $members_fields = array(
         'label'    => _T("Freed of dues:"),
         'propname' => 'due_free',
         'required' => false,
-        'visible'  => FieldsConfig::USER_WRITE,
+        'visible'  => FieldsConfig::STAFF,
         'position' => 29,
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
@@ -300,7 +300,7 @@ $members_fields = array(
         'label'    => _T("Due date:"),
         'propname' => 'due_date',
         'required' => false,
-        'visible'  => FieldsConfig::USER_WRITE,
+        'visible'  => FieldsConfig::STAFF,
         'position' => 36,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
     ),

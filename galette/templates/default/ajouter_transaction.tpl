@@ -29,6 +29,14 @@
                     <label for="trans_amount" class="bline">{_T string="Amount:"}</label>
                     <input type="text" name="trans_amount" id="trans_amount" value="{$transaction->amount}" maxlength="10"{if $required.trans_amount eq 1} required="required"{/if}/>
                 </p>
+    {if $transaction->id eq null}
+                <p>
+                    <span class="bline tooltip" title="{_T string="Select a contribution type to create for dispatch transaction"}">{_T string="Dispatch type:"}</span>
+                    <span class="tip">{_T string="Select a contribution type to create for dispatch transaction"}</span>
+                    <input type="radio" name="contrib_type" id="contrib_type_fee" value="{_T string="fee" domain="routes"}"/> <label for="contrib_type_fee">{_T string="Membership fee"}</label>
+                    <input type="radio" name="contrib_type" id="contrib_type_donation" value="{_T string="donation" domain="routes"}"/> <label for="contrib_type_donation">{_T string="Donation"}</label>
+                </p>
+    {/if}
             </fieldset>
         </div>
     {include file="edit_dynamic_fields.tpl" object=$transaction}

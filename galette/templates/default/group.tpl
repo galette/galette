@@ -69,7 +69,9 @@
       </div>
         <div class="button-container">
             <input type="submit" name="valid" id="btnsave" value="{_T string="Save"}"/>
+{if $login->isAdmin() or $login->isStaff()}
             <a class="button delete" id="delete" href="{path_for name="removeGroup" data=["id" => $group->getId()]}">{_T string="Delete"}</a>
+{/if}
             <a href="{path_for name="pdf_groups" data=["id" => $group->getId()]}" class="button btn_pdf" title="{_T string="Export all groups and their members as PDF"}">{_T string="Export as PDF"}</a>
             <input type="hidden" name="id_group" id="id_group" value="{$group->getId()}"/>
         </div>

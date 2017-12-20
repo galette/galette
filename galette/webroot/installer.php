@@ -116,7 +116,6 @@ if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     } else {
         $logfile = 'galette_install';
         $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
-        var_dump($log_path);
         $galette_run_log = \Analog\Handler\File::init($log_path);
     }
 

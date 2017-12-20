@@ -10,19 +10,19 @@
                 <label for="inittexts" class="tooltip" title="{_T string="Reset all emails contents to their default values"}">{_T string="Reset emails contents"}</label>
                 <span class="tip">{_T string="Reset all emails contents to their default values"}</span>
                 <input type="checkbox" name="inittexts" id="inittexts"/>
-                <span class="exemple">(all existing values will be removed)</span>
+                <span class="exemple">{_T string="(all existing values will be removed)"}</span>
             </p>
             <p>
                 <label for="initfields" class="tooltip" title="{_T string="Reset all emails contents to their default values"}">{_T string="Reset fields configuration"}</label>
                 <span class="tip"> {_T string="Reset all emails contents to their default values"}<br/>{_T string="This includes fields positions, order, visibility, access levels and mandatory marks."}</span>
                 <input type="checkbox" name="initfields" id="initfields"/>
-                    <span class="exemple">(all existing values will be removed)</span>
+                    <span class="exemple">{_T string="(all existing values will be removed)"}</span>
             </p>
             <p>
                 <label for="initpdfmodels" class="tooltip" title="{_T string="Reset all PDF models to their default values"}">{_T string="Reinitialize PDF models"}</label>
                 <span class="tip">{_T string="Reset all PDF models to their default values"}</span>
                 <input type="checkbox" name="initpdfmodels" id="initpdfmodels"/>
-                    <span class="exemple">(all existing values will be removed)</span>
+                    <span class="exemple">{_T string="(all existing values will be removed)"}</span>
             </p>
             <p>
                 <label for="emptylogins" class="tooltip" title="{_T string="Fill all empty login and passwords"}">{_T string="Generate empty logins and passwords"}</label>

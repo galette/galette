@@ -32,7 +32,7 @@
                     <input type="text" name="text_subject" id="tsubject" value="{$mtxt->tsubject}" maxlength="255" size="32"/> <span class="exemple">{_T string="(Max 255 characters)"}</span>
                 </p>
                 <p>
-                    <label id="body_label" for="text_body" class="bline">{_T string="Email Body:"}</label>
+                    <label id="body_label" for="text_body" class="bline vtop">{_T string="Email Body:"}</label>
                     <textarea name="text_body" id="text_body" cols="64" rows="15">{$mtxt->tbody}</textarea>
                 </p>
             </fieldset>

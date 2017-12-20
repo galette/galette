@@ -419,4 +419,39 @@ class Groups
             );
         }
     }
+
+    /**
+     * Get managed users id list
+     *
+     * @param array $groups List of managed groups.
+     *                      If empty, Groups::loadManagedGroups() will be called
+     *
+     * @return array|false
+     */
+    public function getManagerUsers(array $groups = [])
+    {
+        if (!$this->login->isGroupManager()) {
+            return false;
+        }
+        if (!count($groups)) {
+            $groups = self::loadManagedGroups($this->login->id, false);
+        }
+
+        $select = $this->zdb->select(Adherent::TABLE, 'a');
+        $select->columns(
+            [Adherent::PK]
+        )->join(
+            array('b' => PREFIX_DB . Group::GROUPSUSERS_TABLE),
+            'a.' . Adherent::PK . '=b.' . Adherent::PK,
+            []
+        )->where->in('b.' . Group::PK, $groups);
+
+        $results = $this->zdb->execute($select);
+
+        $ids_adh = array();
+        foreach ($results as $r) {
+            $ids_adh[] = $r->id_adh;
+        }
+        return $ids_adh;
+    }
 }

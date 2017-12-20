@@ -223,7 +223,6 @@
 {/block}
 
 {block name="javascripts"}
-{if !$self_adh and !$head_redirect}
         <script type="text/javascript">
             $(function() {
                 $('#is_company').change(function(){
@@ -254,6 +253,7 @@
                     buttonText: '{_T string="Select a date" escape="js"}'
                 });
 
+{if !$self_adh and !$head_redirect}
                 {* Groups popup *}
                 $('#btngroups, #btnmanagedgroups').click(function(){
                     var _managed = false;
@@ -527,8 +527,7 @@
                         $('#member_age').html('');
                     }
                 });
-
+{/if}
             });
         </script>
-{/if}
 {/block}

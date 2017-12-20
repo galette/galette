@@ -10,6 +10,11 @@
                     <input type="number" name="number_members" id="number_members" value="{$number_members}" min="0" max="100"/>
                 </p>
                 <p>
+                    <label for="photos" class="tooltip" title="{_T string="Add photos for members."} {_T string="Each photos mays take a long time to be retrieved. Use this only with a few members!"}">{_T string="Add members photos"}</label>
+                    <span class="tip">{_T string="Add photos for members."}<br/><strong>{_T string="Each photos mays take a long time to be retrieved. Use this only with a few members!"}</strong></span>
+                    <input type="checkbox" name="photos" id="photos"{if $photos} checked="checked"{/if}/>
+                </p>
+                <p>
                     <label for="number_groups">{_T string="Number of groups:"}</label>
                     <input type="number" name="number_groups" id="number_groups" value="{$number_groups}" min="0" max="10"/>
                 </p>

@@ -60,7 +60,7 @@ $app->group(__('/public', 'routes'), function () {
     //public members list
     $this->get(
         __('/members', 'routes') . '[/{option:' . __('page', 'routes') . '|' . __('order', 'routes') . '}/{value:\d+}]',
-        function ($request, $response) {
+        function ($request, $response, $args) {
             $option = null;
             if (isset($args['option'])) {
                 $option = $args['option'];
@@ -87,7 +87,7 @@ $app->group(__('/public', 'routes'), function () {
                 }
             }
 
-            $m = new Members();
+            $m = new Members($filters);
             $members = $m->getPublicList(false);
 
             $this->session->public_filter_members = $filters;

@@ -242,7 +242,7 @@
                     <input type="checkbox" name="pref_editor_enabled" id="pref_editor_enabled" value="1" {if $pref.pref_editor_enabled eq 1}checked="checked"{/if}{if isset($required.pref_editor_enabled) and $required.pref_editor_enabled eq 1} required="required"{/if}/>
                 </p>
                 <div class="p">
-                    <span class="bline"{if isset($required.pref_mail_method) and $required.pref_mail_method eq 1} required="required"{/if}>{_T string="Emailing method:"}</span>
+                    <span class="bline vtop"{if isset($required.pref_mail_method) and $required.pref_mail_method eq 1} required="required"{/if}>{_T string="Emailing method:"}</span>
                     <ul>
                         <li>
                             <input type="radio" name="pref_mail_method" id="no" value="{Galette\Core\GaletteMail::METHOD_DISABLED}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}checked="checked"{/if}/><label for="no">{_T string="Emailing disabled"}</label>
@@ -301,7 +301,7 @@
                     </p>
                 </div>
                 <p>
-                    <label for="pref_mail_sign" class="bline tooltip" title="{_T string="Enter here the text that will be automatically set as signature for all outgoing emails."}">{_T string="Mail signature"}</label>
+                    <label for="pref_mail_sign" class="bline tooltip vtop" title="{_T string="Enter here the text that will be automatically set as signature for all outgoing emails."}">{_T string="Mail signature"}</label>
                     <span class="tip">{_T string="The text that will be automatically set as signature for all outgoing emails.<br/>Variables are quoted with braces, are upper case, and will be replaced automatically.<br/>Refer to the doc to know what variables ara available. "}</span>
                     <textarea name="pref_mail_sign" id="pref_mail_sign">{$pref.pref_mail_sign}</textarea>
                 </p>
@@ -427,6 +427,7 @@
                     <input type="text" name="pref_card_year" id="pref_card_year" value="{$pref.pref_card_year}" maxlength="9"{if isset($required.pref_card_year) and $required.pref_card_year eq 1} required="required"{/if}/>
                     <span class="exemple">{_T string="(Enter a year or two years with a separator)"}</span>
                 </p>
+                <div class="subtitle center">{_T string="Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 rows.<br/>Double check margins and spacings ;)"}</div>
                 <p>
                     <label for="pref_card_marges_v" class="bline">{_T string="Vertical margins:"}</label>
                     <input type="text" name="pref_card_marges_v" id="pref_card_marges_v" value="{$pref.pref_card_marges_v}" maxlength="4"{if isset($required.pref_card_marges_v) and $required.pref_card_marges_v eq 1} required="required"{/if}/> mm
@@ -474,6 +475,10 @@
         <div class="button-container">
             <input type="hidden" name="valid" value="1"/>
             <input type="hidden" name="pref_theme" value="default"/>
+            <input type="hidden" name="pref_telemetry_date" value="{$pref.pref_telemetry_date}"/>
+            <input type="hidden" name="pref_instance_uuid" value="{$pref.pref_instance_uuid}"/>
+            <input type="hidden" name="pref_registration_date" value="{$pref.pref_registration_date}"/>
+            <input type="hidden" name="pref_registration_uuid" value="{$pref.pref_registration_uuid}"/>
             <input type="submit" id="btnsave" value="{_T string="Save"}"/>
         </div>
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>

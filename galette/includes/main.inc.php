@@ -299,7 +299,7 @@ $baseRedirect = function ($request, $response, $args = []) use ($app, $container
                 return $response
                     ->withStatus(301)
                     //Do not use "$router->pathFor('me'))" to prevent translation issues when login
-                    ->withHeader('Location', $request->getUri()->getBaseUrl() . __('/member/me', 'routes'));
+                    ->withHeader('Location', $request->getUri()->getBaseUrl() . __('/dashboard', 'routes'));
             }
         }
     } else {

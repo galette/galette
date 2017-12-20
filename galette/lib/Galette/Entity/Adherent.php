@@ -1152,7 +1152,7 @@ class Adherent
             $this->_parent = null;
         }
 
-        $this->dynamicsCheck($values, $_FILES);
+        $this->dynamicsCheck($values);
 
         if (count($this->errors) > 0) {
             Analog::log(
@@ -1627,5 +1627,51 @@ class Adherent
     public function getParentFields()
     {
         return $this->parent_fields;
+    }
+
+    /**
+     * Handle files (phot and dynamics files
+     *
+     * @param array $files Files sent
+     *
+     * @return array|true
+     */
+    public function handleFiles($files)
+    {
+        $this->errors = [];
+        // picture upload
+        if (isset($files['photo'])) {
+            if ($files['photo']['error'] === UPLOAD_ERR_OK) {
+                if ($files['photo']['tmp_name'] !='') {
+                    if (is_uploaded_file($files['photo']['tmp_name'])) {
+                        $res = $member->picture->store($files['photo']);
+                        if ($res < 0) {
+                            $this->errors[]
+                                = $member->picture->getErrorMessage($res);
+                        }
+                    }
+                }
+            } elseif ($files['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
+                Analog::log(
+                    $member->picture->getPhpErrorMessage($files['photo']['error']),
+                    Analog::WARNING
+                );
+                $this->errors[] = $member->picture->getPhpErrorMessage(
+                    $files['photo']['error']
+                );
+            }
+        }
+        $this->dynamicsFiles($_FILES);
+
+        if (count($this->errors) > 0) {
+            Analog::log(
+                'Some errors has been throwed attempting to edit/store a member files' . "\n" .
+                print_r($this->errors, true),
+                Analog::ERROR
+            );
+            return $this->errors;
+        } else {
+            return true;
+        }
     }
 }

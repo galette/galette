@@ -69,6 +69,7 @@ class FakeData
     const DEFAULT_NB_CONTRIB       = 5;
     const DEFAULT_NB_GROUPS        = 5;
     const DEFAULT_NB_TRANSACTIONS  = 2;
+    const DEFAULT_PHOTOS           = false;
 
     protected $preferences;
     protected $member_fields;
@@ -96,6 +97,12 @@ class FakeData
      * Number of members to generate
      */
     protected $nbmembers = self::DEFAULT_NB_MEMBERS;
+
+    /**
+     * @var boolean
+     * With members photos
+     */
+    protected $with_photos = self::DEFAULT_PHOTOS;
 
     /**
      * @var integer
@@ -206,6 +213,19 @@ class FakeData
     }
 
     /**
+     * Set with members photos or not
+     *
+     * @param boolean $with With photos
+     *
+     * @return FakeData
+     */
+    public function setWithPhotos($with)
+    {
+        $this->with_photos = $with;
+        return $this;
+    }
+
+    /**
      * Get (and create if needed) Faker instance
      *
      * @return \Faker\Factory
@@ -298,6 +318,7 @@ class FakeData
     {
         $faker = $this->getFaker();
         $done = 0;
+        $photos_done = 0;
 
         if ($count === null) {
             $count = $this->nbmembers;
@@ -316,7 +337,11 @@ class FakeData
                 if ($member->store()) {
                     $this->mids[] = $member->id;
                     ++$done;
-                    $this->addPhoto($member);
+                    if ($this->with_photos && $faker->boolean($chanceOfGettingTrue = 70)) {
+                        if ($this->addPhoto($member)) {
+                            ++$photos_done;
+                        }
+                    }
                 }
 
                 //add to a group?
@@ -350,6 +375,17 @@ class FakeData
                         [$count, $done],
                         _T("%count members requested, and %done created")
                     )
+                );
+            }
+        }
+        if ($this->with_photos === true) {
+            if ($photos_done > 0) {
+                $this->addSuccess(
+                    str_replace('%count', $count, _T("%count photos created"))
+                );
+            } else {
+                $this->addWarning(
+                    _T("No photo has been created")
                 );
             }
         }
@@ -428,7 +464,7 @@ class FakeData
      *
      * @param Adherent $member Member instance
      *
-     * @return void
+     * @return boolean
      */
     public function addPhoto(Adherent $member)
     {
@@ -461,12 +497,15 @@ class FakeData
                 $this->addError(
                     _T("Photo has not been stored!")
                 );
+            } else {
+                return true;
             }
         } else {
             $this->addError(
                 _T("Photo has not been copied!")
             );
         }
+        return false;
     }
 
     /**
@@ -499,7 +538,7 @@ class FakeData
                 'trans_desc'    => $faker->realText($maxNbChars = 150)
             ];
 
-            $transaction = new Transaction($this->zdb);
+            $transaction = new Transaction($this->zdb, $this->login);
             if ($transaction->check($data, [], [])) {
                 if ($transaction->store($this->history)) {
                     $this->transactions[] = $transaction;

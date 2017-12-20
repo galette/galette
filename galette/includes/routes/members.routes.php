@@ -1011,7 +1011,7 @@ $app->post(
                                         $member->surname
                                     ),
                                     'lastname_adh'  => custom_html_entity_decode(
-                                        $member->setName
+                                        $member->name
                                     ),
                                     'mail_adh'      => custom_html_entity_decode(
                                         $member->email
@@ -1079,7 +1079,7 @@ $app->post(
                                             $member->surname
                                         ),
                                         'lastname_adh'  => custom_html_entity_decode(
-                                            $member->setName
+                                            $member->name
                                         ),
                                         'mail_adh'      => custom_html_entity_decode(
                                             $member->getEmail()
@@ -1178,27 +1178,9 @@ $app->post(
             }
 
             if (count($error_detected) == 0) {
-                // picture upload
-                if (isset($_FILES['photo'])) {
-                    if ($_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-                        if ($_FILES['photo']['tmp_name'] !='') {
-                            if (is_uploaded_file($_FILES['photo']['tmp_name'])) {
-                                $res = $member->picture->store($_FILES['photo']);
-                                if ($res < 0) {
-                                    $error_detected[]
-                                        = $member->picture->getErrorMessage($res);
-                                }
-                            }
-                        }
-                    } elseif ($_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
-                        Analog::log(
-                            $member->picture->getPhpErrorMessage($_FILES['photo']['error']),
-                            Analog::WARNING
-                        );
-                        $error_detected[] = $member->picture->getPhpErrorMessage(
-                            $_FILES['photo']['error']
-                        );
-                    }
+                $files_res = $member->handleFiles($_FILES);
+                if (is_array($files_res)) {
+                    $error_detected = array_merge($error_detected, $files_res);
                 }
 
                 if (isset($post['del_photo'])) {
@@ -1756,11 +1738,47 @@ $app->get(
     function ($request, $response, $args) {
         $id_adh = (int)$args[Adherent::PK];
 
-        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-            $id_adh = (int)$this->login->id;
+        $denied = false;
+        if ($this->login->id != $args['id']
+            && !$this->login->isAdmin()
+            && !$this->login->isStaff()
+            && !$this->login->isGroupManager()
+        ) {
+            $denied = true;
         }
 
+        if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->login->id != $args['id']) {
+            if ($this->login->isGroupManager()) {
+                $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
+                //check if current logged in user can manage loaded member
+                $groups = $adh->groups;
+                $can_manage = false;
+                foreach ($groups as $group) {
+                    if ($this->login->isGroupManager($group->getId())) {
+                        $can_manage = true;
+                        break;
+                    }
+                }
+                if ($can_manage !== true) {
+                    Analog::log(
+                        'Logged in member ' . $this->login->login .
+                        ' has tried to load member #' . $adh->id .
+                        ' but do not manage any groups he belongs to.',
+                        Analog::WARNING
+                    );
+                    $denied = true;
+                }
+            } else {
+                $denied = true;
+            }
+        }
+
+        if ($denied) {
+            //requested member cannot be managed. Load logged in user
+            $id_adh = (int)$this->login->id;
+        }
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
+
         $form = $this->preferences->pref_adhesion_form;
         $pdf = new $form($adh, $this->zdb, $this->preferences);
         $pdf->download();
@@ -2485,7 +2503,24 @@ $app->post(
         }
 
         $members = new Members($filters);
-        $members_list = $members->getMembersList(true);
+        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+            if ($this->login->isGroupManager()) {
+                $members_list = $members->getManagedMembersList(true);
+            } else {
+                Analog::log(
+                    str_replace(
+                        ['%id', '%login'],
+                        [$this->login->id, $this->login->login],
+                        'Trying to list group members without access from #%id (%login)'
+                    ),
+                    Analog::ERROR
+                );
+                throw new Exception('Access denied.');
+                exit(0);
+            }
+        } else {
+            $members_list = $members->getMembersList(true);
+        }
 
         //assign pagination variables to the template and add pagination links
         $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
@@ -2615,6 +2650,76 @@ $app->post(
 $app->get(
     __('/member', 'routes') . '/{id:\d+}' . __('/file', 'routes') . '/{fid:\d+}/{pos:\d+}/{name}',
     function ($request, $response, $args) {
+        $denied = false;
+        $id = (int)$args['id'];
+        if ($this->login->id != $args['id']
+            && !$this->login->isAdmin()
+            && !$this->login->isStaff()
+            && !$this->login->isGroupManager()
+        ) {
+            $denied = true;
+        }
+
+        $deps = array(
+            'picture'   => false,
+            'groups'    => false,
+            'dues'      => false,
+            'parent'    => false,
+            'children'  => false,
+            'dynamics'  => true
+        );
+        $member = new Adherent($this->zdb, $id, $deps);
+
+        if (!$denied && $this->login->id != $args['id']
+            && $this->login->isGroupManager()
+            && !$this->login->isStaff()
+            && !$this->login->isAdmin()
+        ) {
+            //check if current logged in user can manage loaded member
+            $groups = $member->groups;
+            $can_manage = false;
+            foreach ($groups as $group) {
+                if ($this->login->isGroupManager($group->getId())) {
+                    $can_manage = true;
+                    break;
+                }
+            }
+            if ($can_manage !== true) {
+                Analog::log(
+                    'Logged in member ' . $this->login->login .
+                    ' has tried to load member #' . $member->id .
+                    ' but do not manage any groups he belongs to.',
+                    Analog::WARNING
+                );
+                $denied = true;
+            }
+        }
+
+        if ($denied === false) {
+            $fields = $member->getDynamicFields()->getFields();
+            if (!isset($fields[$args['fid']])) {
+                //field does not exists or access is forbidden
+                $denied = true;
+            }
+        }
+
+        if ($denied === true) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("You do not have permission for requested URL.")
+            );
+
+            return $response
+                ->withStatus(403)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor(
+                        'member',
+                        ['id' => $id]
+                    )
+                );
+        }
+
         $filename = str_replace(
             [
                 '%mid',

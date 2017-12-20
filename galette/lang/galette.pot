@@ -14,7 +14,7 @@ msgstr ""
 msgid "The following files have been written on disk:"
 msgstr ""
 
-#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:806
+#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:807
 msgid "An error occured creating field values table"
 msgstr ""
 
@@ -26,7 +26,7 @@ msgstr ""
 msgid "Permissions:"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1991
+#: ../includes/routes/management.routes.php:2004
 msgid "Titles management"
 msgstr ""
 
@@ -34,19 +34,24 @@ msgstr ""
 msgid "Back to plugins managment page"
 msgstr ""
 
+#: ../templates/default/plugins.tpl:59
+msgid "A required file is missing"
+msgstr ""
+
 #: ../templates/default/plugin_initdb.tpl:52
 msgid "You current %name version is..."
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:154 ../templates/default/ajouter_contribution.tpl:112
+#: ../lib/Galette/Entity/Contribution.php:154 ../templates/default/ajouter_contribution.tpl:119
+#: ../templates/default/dispatch_type.tpl:119
 msgid "End date of membership:"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1281
+#: ../includes/routes/management.routes.php:1294
 msgid "Remove mailing #%1$s"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:369
+#: ../includes/routes/management.routes.php:370
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
 
@@ -58,7 +63,7 @@ msgstr ""
 msgid "Not registered"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2283
+#: ../includes/routes/members.routes.php:2304
 msgid "Sent reminders:"
 msgstr ""
 
@@ -78,7 +83,7 @@ msgstr ""
 msgid "Complete the following form and send it with your funds, in order to complete your subscription."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:3172 ../templates/default/page.tpl:185
+#: ../includes/routes/management.routes.php:3185 ../templates/default/page.tpl:185
 msgid "Generate fake data"
 msgstr ""
 
@@ -94,11 +99,15 @@ msgstr ""
 msgid "On .......... / .......... / .......... "
 msgstr ""
 
+#: ../lib/Galette/Core/Preferences.php:624
+msgid "Current cards configuration may exceed page width!"
+msgstr ""
+
 #: ../includes/main.inc.php:232
 msgid "Route '%name' is not registered in ACLs!"
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:445
+#: ../lib/Galette/Core/Preferences.php:446
 msgid "%name\n%complement\n%address\n%zip %town - %country"
 msgstr ""
 
@@ -118,8 +127,9 @@ msgstr ""
 msgid "Is company?"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:1180 ../includes/routes/members.routes.php:1521
-#: ../templates/default/gestion_contributions.tpl:25 ../templates/default/ajouter_contribution.tpl:80
+#: ../lib/Galette/Entity/Contribution.php:1180 ../includes/routes/members.routes.php:1506
+#: ../templates/default/gestion_contributions.tpl:25 ../templates/default/ajouter_contribution.tpl:87
+#: ../templates/default/dispatch_type.tpl:87
 msgid "Check"
 msgstr ""
 
@@ -142,7 +152,7 @@ msgstr ""
 msgid "Is member a company?"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:3252 ../install/old.index.php:440
+#: ../includes/routes/management.routes.php:3267 ../install/old.index.php:440
 #: ../install/steps/check.php:111
 msgid "Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation."
 msgstr ""
@@ -169,11 +179,11 @@ msgstr ""
 msgid "Your current Galette version is"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:324 ../templates/default/preferences.tpl:446
+#: ../templates/default/preferences.tpl:324 ../templates/default/preferences.tpl:447
 msgid "Horizontal spacing:"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2540
+#: ../includes/routes/management.routes.php:2553
 msgid "%type '%label' was successfully removed"
 msgstr ""
 
@@ -185,11 +195,11 @@ msgstr ""
 msgid "Membership"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2053
+#: ../includes/routes/management.routes.php:2066
 msgid "Remove title %1$s"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2370
+#: ../includes/routes/management.routes.php:2383
 msgid "Edit contribution type"
 msgstr ""
 
@@ -205,12 +215,12 @@ msgstr ""
 msgid "Default status were successfully stored."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:3303
+#: ../includes/routes/management.routes.php:3318
 msgid "An error occured reinitializing PDF models :("
 msgstr ""
 
 #: ../includes/routes/groups.routes.php:87 ../templates/default/gestion_groupes.tpl:6
-#: ../templates/default/desktop.tpl:30
+#: ../templates/default/desktop.tpl:31
 msgid "Groups"
 msgstr ""
 
@@ -230,7 +240,7 @@ msgstr ""
 msgid "Write configuration file"
 msgstr ""
 
-#: ../templates/default/desktop.tpl:39 ../templates/default/page.tpl:174
+#: ../templates/default/desktop.tpl:40 ../templates/default/page.tpl:174
 msgid "Informations about available plugins"
 msgstr ""
 
@@ -247,7 +257,7 @@ msgstr ""
 msgid "Payment type"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2431
+#: ../includes/routes/management.routes.php:2444
 msgid "%type #%id has not been updated"
 msgstr ""
 
@@ -255,7 +265,7 @@ msgstr ""
 msgid "The following files seems ready to import on the disk:"
 msgstr ""
 
-#: ../includes/routes/ajax.routes.php:234
+#: ../includes/routes/ajax.routes.php:236
 msgid "Thank you for registering!"
 msgstr ""
 
@@ -271,7 +281,7 @@ msgstr ""
 msgid "UPDATE operation not allowed"
 msgstr ""
 
-#: ../webroot/installer.php:287
+#: ../webroot/installer.php:317
 msgid "Database access/permissions"
 msgstr ""
 
@@ -288,8 +298,8 @@ msgstr ""
 msgid "until"
 msgstr ""
 
-#: ../templates/default/gestion_mailings.tpl:28
-msgid "Sent mailings:"
+#: ../templates/default/gestion_contributions.tpl:39 ../templates/default/gestion_contributions.tpl:39
+msgid "Show all members contributions"
 msgstr ""
 
 #: ../install/old.index.php:314
@@ -312,7 +322,7 @@ msgstr ""
 msgid "ICQ:"
 msgstr ""
 
-#: ../templates/default/plugins.tpl:59
+#: ../templates/default/plugins.tpl:77
 msgid "No inactive plugin."
 msgstr ""
 
@@ -341,7 +351,7 @@ msgstr ""
 msgid "Sorry, the page you are looking for could not be found."
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:47
+#: ../templates/default/ajouter_transaction.tpl:55
 msgid "New attached fee"
 msgstr ""
 
@@ -349,7 +359,7 @@ msgstr ""
 msgid "Transaction added"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1966
+#: ../includes/routes/management.routes.php:1979
 msgid "Model has not been stored :("
 msgstr ""
 
@@ -365,7 +375,7 @@ msgstr ""
 msgid "Unable to remove old dynamic translation for %field :("
 msgstr ""
 
-#: ../lib/Galette/Util/FakeData.php:514
+#: ../lib/Galette/Util/FakeData.php:553
 msgid "%count transactions created"
 msgstr ""
 
@@ -377,7 +387,7 @@ msgstr ""
 msgid "Interpret HTML"
 msgstr ""
 
-#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:1045
+#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:1046
 msgid "choice"
 msgstr ""
 
@@ -409,8 +419,8 @@ msgstr ""
 msgid "Public page content"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1802 ../includes/routes/members.routes.php:1806
-#: ../includes/routes/members.routes.php:1925 ../includes/routes/members.routes.php:1927
+#: ../includes/routes/members.routes.php:1823 ../includes/routes/members.routes.php:1827
+#: ../includes/routes/members.routes.php:1946 ../includes/routes/members.routes.php:1948
 msgid "Trying to load mailing while mail is disabled in preferences."
 msgstr ""
 
@@ -450,8 +460,8 @@ msgstr ""
 msgid "annual fee"
 msgstr ""
 
-#: ../templates/default/advanced_search.tpl:29
-msgid "Member of group"
+#: ../templates/default/preferences.tpl:430
+msgid "Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 rows.<br/>Double check margins and spacings ;)"
 msgstr ""
 
 #: ../templates/default/gestion_intitule_content.tpl:24
@@ -470,7 +480,7 @@ msgstr ""
 msgid "receipt"
 msgstr ""
 
-#: ../webroot/installer.php:128 ../install/old.index.php:110
+#: ../webroot/installer.php:158 ../install/old.index.php:110
 msgid "No database name"
 msgstr ""
 
@@ -506,7 +516,7 @@ msgstr ""
 msgid "Due free"
 msgstr ""
 
-#: ../webroot/installer.php:176 ../includes/routes/management.routes.php:418
+#: ../webroot/installer.php:206 ../includes/routes/management.routes.php:419
 #: ../install/old.index.php:173
 msgid "Passwords mismatch"
 msgstr ""
@@ -528,11 +538,11 @@ msgstr ""
 msgid "- This username is already in use, please choose another one!"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:572
+#: ../includes/routes/management.routes.php:585
 msgid "An email has been sent to %email"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:941
+#: ../includes/routes/contributions.routes.php:953
 msgid "Transaction ID cannot ben set while adding!"
 msgstr ""
 
@@ -544,7 +554,7 @@ msgstr ""
 msgid "Member's password"
 msgstr ""
 
-#: ../includes/routes/authentication.routes.php:364 ../includes/routes/management.routes.php:322
+#: ../includes/routes/authentication.routes.php:364 ../includes/routes/management.routes.php:323
 msgid "- The password must be of at least 4 characters!"
 msgstr ""
 
@@ -588,7 +598,7 @@ msgstr ""
 msgid "- Field name already used."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2969
+#: ../includes/routes/management.routes.php:2982
 msgid "An error occured trying to delete field :("
 msgstr ""
 
@@ -600,8 +610,8 @@ msgstr ""
 msgid "Use upload form below to send a new file on server, or copy it directly in the imports directory."
 msgstr ""
 
-#: ../includes/routes/members.routes.php:547 ../includes/routes/members.routes.php:664
-#: ../includes/routes/members.routes.php:773
+#: ../includes/routes/members.routes.php:550 ../includes/routes/members.routes.php:667
+#: ../includes/routes/members.routes.php:776
 msgid "Member Profile"
 msgstr ""
 
@@ -631,6 +641,7 @@ msgid "Title"
 msgstr ""
 
 #: ../templates/default/ajouter_transaction.tpl:17 ../templates/default/ajouter_contribution.tpl:49
+#: ../templates/default/dispatch_type.tpl:49
 msgid "-- select a name --"
 msgstr ""
 
@@ -671,14 +682,15 @@ msgid "(Confirmation)"
 msgstr ""
 
 #: ../includes/fields_defs/pdfmodels_fields.php:111 ../includes/fields_defs/pdfmodels_fields.php:156
-#: ../includes/fields_defs/pdfmodels_fields.php:262 ../templates/default/ajouter_transaction.tpl:63
+#: ../includes/fields_defs/pdfmodels_fields.php:262 ../templates/default/ajouter_transaction.tpl:71
 #: ../templates/default/gestion_contributions.tpl:127 ../templates/default/gestion_contributions.tpl:209
-#: ../templates/default/ajouter_contribution.tpl:29 ../templates/default/gestion_transactions.tpl:68
-#: ../templates/default/gestion_transactions.tpl:111 ../templates/default/advanced_search.tpl:120
+#: ../templates/default/ajouter_contribution.tpl:29 ../templates/default/dispatch_type.tpl:29
+#: ../templates/default/gestion_transactions.tpl:68 ../templates/default/gestion_transactions.tpl:111
+#: ../templates/default/advanced_search.tpl:120
 msgid "Amount"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1396
+#: ../includes/routes/management.routes.php:1409
 msgid "Remove %1$s file %2$s"
 msgstr ""
 
@@ -691,7 +703,7 @@ msgstr ""
 msgid "- The amount must be an integer!"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:991
+#: ../includes/routes/contributions.routes.php:1003
 msgid "An error occured while storing the transaction."
 msgstr ""
 
@@ -727,7 +739,7 @@ msgstr ""
 msgid "Imports"
 msgstr ""
 
-#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:1047
+#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:1048
 msgid "boolean"
 msgstr ""
 
@@ -739,11 +751,11 @@ msgstr ""
 msgid "Enter here the text that will be automatically set as signature for all outgoing emails."
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:1083 ../templates/default/gestion_transactions.tpl:26
+#: ../includes/routes/contributions.routes.php:1096 ../templates/default/gestion_transactions.tpl:26
 msgid "transaction"
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:717
+#: ../lib/Galette/Core/Plugins.php:764
 msgid "File not found!"
 msgstr ""
 
@@ -779,7 +791,7 @@ msgstr ""
 msgid "Old-timer"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2179
+#: ../includes/routes/management.routes.php:2192
 msgid "Title '%s' has not been modified!"
 msgstr ""
 
@@ -791,15 +803,19 @@ msgstr ""
 msgid "File is empty!"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1962
+#: ../includes/routes/members.routes.php:1983
 msgid "Please type an object for the message."
+msgstr ""
+
+#: ../templates/default/plugins.tpl:63
+msgid "Explicitely disabled"
 msgstr ""
 
 #: ../install/old.index.php:489 ../install/steps/check.php:148
 msgid "Under Windows, check these directories are not in Read-Only mode in their property panel."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:3316
+#: ../includes/routes/management.routes.php:3331
 msgid "Logins and passwords has been successfully filled (%i processed)."
 msgstr ""
 
@@ -807,7 +823,7 @@ msgstr ""
 msgid "An mail has been sent to the member."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2564
+#: ../includes/routes/management.routes.php:2577
 msgid "Requested label does not exists!"
 msgstr ""
 
@@ -826,7 +842,7 @@ msgstr ""
 msgid "Galette has been successfully installed!"
 msgstr ""
 
-#: ../templates/default/gestion_pdf_content.tpl:34 ../templates/default/ajouter_transaction.tpl:62
+#: ../templates/default/gestion_pdf_content.tpl:34 ../templates/default/ajouter_transaction.tpl:70
 #: ../templates/default/gestion_contributions.tpl:116 ../templates/default/gestion_contributions.tpl:208
 #: ../templates/default/editer_champ.tpl:97 ../templates/default/configurer_fiche_content.tpl:7
 #: ../templates/default/advanced_search.tpl:127
@@ -843,7 +859,7 @@ msgstr ""
 
 #: ../lib/Galette/Filters/ContributionsList.php:228 ../lib/Galette/Filters/MailingsList.php:238
 #: ../lib/Galette/Filters/HistoryList.php:244 ../lib/Galette/Filters/TransactionsList.php:203
-#: ../includes/routes/management.routes.php:1010 ../includes/routes/management.routes.php:1224
+#: ../includes/routes/management.routes.php:1023 ../includes/routes/management.routes.php:1237
 #: ../includes/routes/contributions.routes.php:217
 msgid "end date filter"
 msgstr ""
@@ -860,7 +876,7 @@ msgstr ""
 msgid "Members by groups"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:181 ../templates/default/ajouter_transaction.tpl:203
+#: ../templates/default/ajouter_transaction.tpl:189 ../templates/default/ajouter_transaction.tpl:211
 msgid "An error occured displaying contributions :("
 msgstr ""
 
@@ -868,11 +884,11 @@ msgstr ""
 msgid "No reminder selected"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1108
+#: ../includes/routes/management.routes.php:1121
 msgid "An error occured trying to flush logs :("
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1961
+#: ../includes/routes/management.routes.php:1974
 msgid "Model has been successfully stored!"
 msgstr ""
 
@@ -880,7 +896,7 @@ msgstr ""
 msgid "PDF models were successfully stored."
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:885
+#: ../includes/routes/contributions.routes.php:897
 msgid "Contribution has been successfully attached to current transaction"
 msgstr ""
 
@@ -888,7 +904,7 @@ msgstr ""
 msgid "Association's short description:"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:970 ../install/steps/check.php:75
+#: ../includes/routes/management.routes.php:983 ../install/steps/check.php:75
 #: ../templates/default/page.tpl:147
 msgid "Logs"
 msgstr ""
@@ -897,7 +913,7 @@ msgstr ""
 msgid "The project: "
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1319
+#: ../includes/routes/management.routes.php:1332
 msgid "Mailing has been successfully deleted!"
 msgstr ""
 
@@ -935,7 +951,7 @@ msgstr ""
 msgid "Unknown date format for %field.<br/>Know formats are: %formats"
 msgstr ""
 
-#: ../webroot/installer.php:227 ../install/old.index.php:279
+#: ../webroot/installer.php:257 ../install/old.index.php:279
 msgid "Galette installation"
 msgstr ""
 
@@ -943,13 +959,13 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: ../templates/default/plugins.tpl:71 ../templates/default/preferences.tpl:208
-#: ../templates/default/preferences.tpl:456
+#: ../templates/default/plugins.tpl:89 ../templates/default/preferences.tpl:208
+#: ../templates/default/preferences.tpl:457
 msgid "Application runs under demo mode. This functionnality is not enabled, sorry."
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:904
-msgid "Unable to detach contribution from transaction"
+#: ../templates/default/gestion_textes.tpl:76
+msgid "available only from self subscribe page"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:229
@@ -979,11 +995,11 @@ msgstr ""
 msgid "No manager attached"
 msgstr ""
 
-#: ../webroot/installer.php:206 ../install/old.index.php:245
+#: ../webroot/installer.php:236 ../install/old.index.php:245
 msgid "Galette Installation"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:97
+#: ../includes/routes/members.routes.php:100
 msgid "Subscription"
 msgstr ""
 
@@ -1011,7 +1027,11 @@ msgstr ""
 msgid "Add a new category"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:364
+#: ../templates/default/import_model.tpl:33
+msgid "Remove model and back to defaults"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:365
 msgid "- You must indicate a sender name for emails!"
 msgstr ""
 
@@ -1023,7 +1043,7 @@ msgstr ""
 msgid "after"
 msgstr ""
 
-#: ../lib/Galette/Repository/Members.php:383
+#: ../lib/Galette/Repository/Members.php:384
 msgid "Delete members cards, transactions and dues"
 msgstr ""
 
@@ -1051,12 +1071,13 @@ msgstr ""
 msgid "By %name"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:1174 ../includes/routes/members.routes.php:1519
-#: ../templates/default/gestion_contributions.tpl:23 ../templates/default/ajouter_contribution.tpl:78
+#: ../lib/Galette/Entity/Contribution.php:1174 ../includes/routes/members.routes.php:1504
+#: ../templates/default/gestion_contributions.tpl:23 ../templates/default/ajouter_contribution.tpl:85
+#: ../templates/default/dispatch_type.tpl:85
 msgid "Cash"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2364
+#: ../includes/routes/management.routes.php:2377
 msgid "Edit status"
 msgstr ""
 
@@ -1106,11 +1127,11 @@ msgstr ""
 msgid "An error occured displaying attendance sheet details interface :("
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1352
+#: ../includes/routes/members.routes.php:1337
 msgid "You are about to remove %count members."
 msgstr ""
 
-#: ../lib/Galette/Util/FakeData.php:580
+#: ../lib/Galette/Util/FakeData.php:619
 msgid "No contribution created!"
 msgstr ""
 
@@ -1118,7 +1139,7 @@ msgstr ""
 msgid "on"
 msgstr ""
 
-#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:930
+#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:931
 msgid "up"
 msgstr ""
 
@@ -1147,7 +1168,7 @@ msgstr ""
 msgid "- WARNING -"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2644
+#: ../includes/routes/members.routes.php:2752
 msgid "The file does not exists or cannot be read :("
 msgstr ""
 
@@ -1163,16 +1184,16 @@ msgstr ""
 msgid "Change search criterias"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:284
+#: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:314
 #: ../install/old.index.php:209 ../install/old.index.php:1526
 msgid "Checks"
 msgstr ""
 
-#: ../templates/default/gestion_groupes.tpl:31 ../templates/default/group.tpl:73
+#: ../templates/default/gestion_groupes.tpl:31 ../templates/default/group.tpl:75
 msgid "Export as PDF"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:3244
+#: ../includes/routes/management.routes.php:3259
 msgid "Administration tools"
 msgstr ""
 
@@ -1196,7 +1217,7 @@ msgstr ""
 msgid "Parameted exports"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1319
+#: ../includes/routes/members.routes.php:1304
 msgid "Remove member %1$s"
 msgstr ""
 
@@ -1204,15 +1225,15 @@ msgstr ""
 msgid "Member's zipcode"
 msgstr ""
 
-#: ../templates/default/desktop.tpl:59
+#: ../templates/default/desktop.tpl:69
 msgid "Show dashboard on login"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1848
+#: ../includes/routes/management.routes.php:1861
 msgid "Import model has been successfully stored :)"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:535
+#: ../templates/default/preferences.tpl:540
 msgid "Enter the email adress"
 msgstr ""
 
@@ -1220,11 +1241,11 @@ msgstr ""
 msgid "To work as excpected, Galette needs write permission on files listed above."
 msgstr ""
 
-#: ../templates/default/gestion_textes.tpl:82
-msgid "Link validity"
+#: ../templates/default/admintools.tpl:5
+msgid "Make sure you've done a backup of the database before using any of the following tools!"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2643
+#: ../includes/routes/management.routes.php:2656
 msgid "No translation for '%s'!<br/>Please fill and submit above form to create it."
 msgstr ""
 
@@ -1236,7 +1257,7 @@ msgstr ""
 msgid "Detailed"
 msgstr ""
 
-#: ../webroot/installer.php:122 ../webroot/installer.php:162
+#: ../webroot/installer.php:152 ../webroot/installer.php:192
 #: ../install/old.index.php:104 ../install/old.index.php:156
 msgid "No user name"
 msgstr ""
@@ -1253,7 +1274,7 @@ msgstr ""
 msgid "Members administrator's Email:"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2430
+#: ../includes/routes/management.routes.php:2443
 msgid "%type has not been added :("
 msgstr ""
 
@@ -1278,7 +1299,7 @@ msgid "Show all members transactions"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:221 ../templates/default/gestion_adherents.tpl:290
-#: ../templates/default/group.tpl:72 ../templates/default/gestion_contributions.tpl:244
+#: ../templates/default/group.tpl:73 ../templates/default/gestion_contributions.tpl:244
 #: ../templates/default/export.tpl:50 ../templates/default/import.tpl:39
 msgid "Delete"
 msgstr ""
@@ -1287,11 +1308,11 @@ msgstr ""
 msgid "Version:"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2104
+#: ../includes/routes/management.routes.php:2117
 msgid "An error occured removing title '%name' :("
 msgstr ""
 
-#: ../includes/routes/members.routes.php:993
+#: ../includes/routes/members.routes.php:996
 msgid "New member has been successfully added."
 msgstr ""
 
@@ -1307,7 +1328,7 @@ msgstr ""
 msgid "Active plugins"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:99
+#: ../templates/default/ajouter_transaction.tpl:107
 msgid "Detach contribution from this transaction"
 msgstr ""
 
@@ -1327,7 +1348,7 @@ msgstr ""
 msgid "Picture:"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2754
+#: ../includes/routes/management.routes.php:2767
 msgid "Fields configuration"
 msgstr ""
 
@@ -1348,6 +1369,10 @@ msgstr ""
 msgid "Description:"
 msgstr ""
 
+#: ../templates/default/gestion_textes.tpl:82
+msgid "Link validity"
+msgstr ""
+
 #: ../templates/default/mailing_preview.tpl:37
 msgid "Mail body"
 msgstr ""
@@ -1356,7 +1381,7 @@ msgstr ""
 msgid "Group added"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:149 ../webroot/installer.php:307
+#: ../lib/Galette/Core/Install.php:149 ../webroot/installer.php:337
 #: ../install/old.index.php:237 ../install/old.index.php:1533
 #: ../templates/default/plugin_initdb.tpl:138
 msgid "End!"
@@ -1366,7 +1391,7 @@ msgstr ""
 msgid "Generate labels"
 msgstr ""
 
-#: ../templates/default/ajouter_contribution.tpl:44
+#: ../templates/default/ajouter_contribution.tpl:44 ../templates/default/dispatch_type.tpl:44
 msgid "Select contributor and membership fee type"
 msgstr ""
 
@@ -1374,8 +1399,9 @@ msgstr ""
 msgid "Member will receive his username and password by email, if he has an address."
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:1171 ../includes/routes/members.routes.php:1518
-#: ../templates/default/gestion_contributions.tpl:28 ../templates/default/ajouter_contribution.tpl:83
+#: ../lib/Galette/Entity/Contribution.php:1171 ../includes/routes/members.routes.php:1503
+#: ../templates/default/gestion_contributions.tpl:28 ../templates/default/ajouter_contribution.tpl:90
+#: ../templates/default/dispatch_type.tpl:90
 msgid "Other"
 msgstr ""
 
@@ -1395,7 +1421,7 @@ msgstr ""
 msgid "Original text: '%s'"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:539
+#: ../includes/routes/contributions.routes.php:542
 msgid "The configured post contribution script has failed."
 msgstr ""
 
@@ -1404,8 +1430,8 @@ msgid "Admin tools"
 msgstr ""
 
 #: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:535 ../templates/default/group.tpl:6
-#: ../templates/default/group.tpl:57 ../templates/default/fake_data.tpl:32
-#: ../templates/default/desktop.tpl:29
+#: ../templates/default/group.tpl:57 ../templates/default/fake_data.tpl:37
+#: ../templates/default/desktop.tpl:30
 msgid "Members"
 msgstr ""
 
@@ -1437,7 +1463,7 @@ msgstr ""
 msgid "Do you manage a non profit organization, or a company? If you do so, check the box, and then enter its name in the field that will appear."
 msgstr ""
 
-#: ../lib/Galette/Util/FakeData.php:576
+#: ../lib/Galette/Util/FakeData.php:615
 msgid "%count contributions created"
 msgstr ""
 
@@ -1473,7 +1499,7 @@ msgstr ""
 msgid "Manage additional fields for various forms"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1829
+#: ../includes/routes/management.routes.php:1842
 msgid "galette_import_model.csv"
 msgstr ""
 
@@ -1509,7 +1535,7 @@ msgstr ""
 msgid "Compilation"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:694
+#: ../includes/routes/management.routes.php:707
 msgid "Plugin %name has been disabled"
 msgstr ""
 
@@ -1521,7 +1547,7 @@ msgstr ""
 msgid "Current logo"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1631
+#: ../includes/routes/management.routes.php:1644
 msgid "CSV members import"
 msgstr ""
 
@@ -1537,11 +1563,12 @@ msgstr ""
 msgid "Enter a value"
 msgstr ""
 
-#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:1048
+#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:1049
 msgid "file"
 msgstr ""
 
 #: ../lib/Galette/IO/PdfContribution.php:110 ../lib/Galette/IO/PdfContribution.php:111
+#: ../lib/Galette/IO/PdfAdhesionForm.php:141 ../lib/Galette/IO/PdfAdhesionForm.php:142
 #: ../templates/default/group.tpl:36
 msgid "None"
 msgstr ""
@@ -1560,7 +1587,7 @@ msgstr ""
 msgid "Short form"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1367
+#: ../includes/routes/management.routes.php:1380
 msgid "CVS database Export"
 msgstr ""
 
@@ -1584,7 +1611,7 @@ msgstr ""
 msgid "Titles cannot be initialized."
 msgstr ""
 
-#: ../templates/default/plugins.tpl:76
+#: ../templates/default/plugins.tpl:94
 msgid "Plugin database initialization: %name"
 msgstr ""
 
@@ -1596,16 +1623,11 @@ msgstr ""
 msgid "Mark '%field' as (not) required"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:266 ../includes/routes/contributions.routes.php:448
-#: ../includes/routes/contributions.routes.php:773 ../includes/routes/contributions.routes.php:924
-msgid "add"
-msgstr ""
-
 #: ../install/scripts/upgrade-to-0.8.php:215
 msgid "Directory %dir has not been moved :("
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:1019
+#: ../includes/routes/contributions.routes.php:1032
 msgid "Transaction has been successfully stored"
 msgstr ""
 
@@ -1629,7 +1651,7 @@ msgstr ""
 msgid "Configuration"
 msgstr ""
 
-#: ../templates/default/ajouter_contribution.tpl:44
+#: ../templates/default/ajouter_contribution.tpl:44 ../templates/default/dispatch_type.tpl:44
 msgid "Select contributor and donation type"
 msgstr ""
 
@@ -1641,7 +1663,7 @@ msgstr ""
 msgid "View your member card"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:469
+#: ../includes/routes/contributions.routes.php:472
 msgid "Contribution ID must be null calling add route!"
 msgstr ""
 
@@ -1661,11 +1683,11 @@ msgstr ""
 msgid "A mail has been sent to your address.<br/>Please check your inbox and follow the instructions."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2906
+#: ../includes/routes/management.routes.php:2919
 msgid "Requested field does not exists!"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1537
+#: ../includes/routes/management.routes.php:1550
 msgid "An error occured running parameted export '%export'."
 msgstr ""
 
@@ -1677,7 +1699,7 @@ msgstr ""
 msgid "entry"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2026
+#: ../includes/routes/management.routes.php:2039
 msgid "Title '%s' has been successfully added."
 msgstr ""
 
@@ -1697,8 +1719,8 @@ msgstr ""
 msgid "Leave empty to use Sender Email as reply address"
 msgstr ""
 
-#: ../templates/default/page.tpl:134
-msgid "Go to Galette's dashboard"
+#: ../lib/Galette/Util/FakeData.php:388
+msgid "No photo has been created"
 msgstr ""
 
 #: ../templates/default/mailing_preview.tpl:13
@@ -1709,7 +1731,7 @@ msgstr ""
 msgid "body should not be empty!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:839
+#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:840
 msgid "An error occured storing dynamic field values :("
 msgstr ""
 
@@ -1717,12 +1739,12 @@ msgstr ""
 msgid "Not supplied"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:626 ../templates/default/page.tpl:151
+#: ../includes/routes/management.routes.php:639 ../templates/default/page.tpl:151
 msgid "Charts"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1203 ../includes/routes/management.routes.php:486
-#: ../includes/routes/management.routes.php:518
+#: ../includes/routes/members.routes.php:1188 ../includes/routes/management.routes.php:488
+#: ../includes/routes/management.routes.php:520
 msgid "Delete failed"
 msgstr ""
 
@@ -1764,7 +1786,7 @@ msgstr ""
 msgid "Jabber"
 msgstr ""
 
-#: ../lib/Galette/IO/PdfContribution.php:142 ../includes/routes/contributions.routes.php:1083
+#: ../lib/Galette/IO/PdfContribution.php:142 ../includes/routes/contributions.routes.php:1096
 #: ../templates/default/gestion_contributions.tpl:50
 msgid "contribution"
 msgstr ""
@@ -1777,7 +1799,7 @@ msgstr ""
 msgid "Member's main group"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:375
+#: ../includes/routes/management.routes.php:376
 msgid "- You must indicate the SMTP server you want to use!"
 msgstr ""
 
@@ -1785,7 +1807,7 @@ msgstr ""
 msgid "Zip Code:"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:319 ../templates/default/preferences.tpl:436
+#: ../templates/default/preferences.tpl:319 ../templates/default/preferences.tpl:437
 msgid "Horizontal margins:"
 msgstr ""
 
@@ -1809,11 +1831,11 @@ msgstr ""
 msgid "Email Body:"
 msgstr ""
 
-#: ../templates/default/fake_data.tpl:13
+#: ../templates/default/fake_data.tpl:18
 msgid "Number of groups:"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:329 ../templates/default/preferences.tpl:441
+#: ../templates/default/preferences.tpl:329 ../templates/default/preferences.tpl:442
 msgid "Vertical spacing:"
 msgstr ""
 
@@ -1825,7 +1847,7 @@ msgstr ""
 msgid "No file to upload"
 msgstr ""
 
-#: ../webroot/installer.php:244 ../install/old.index.php:526
+#: ../webroot/installer.php:274 ../install/old.index.php:526
 #: ../install/old.index.php:1162 ../install/old.index.php:1463
 #: ../templates/default/mailing_adherents.tpl:5 ../templates/default/global_messages.tpl:5
 msgid "- ERROR -"
@@ -1842,14 +1864,14 @@ msgstr ""
 #: ../templates/default/member.tpl:189 ../templates/default/gestion_pdf_content.tpl:50
 #: ../templates/default/editer_intitule.tpl:38 ../templates/default/traduire_libelles.tpl:37
 #: ../templates/default/mailing_adherents.tpl:62 ../templates/default/edit_title.tpl:18
-#: ../templates/default/ajouter_transaction.tpl:36 ../templates/default/group.tpl:71
-#: ../templates/default/config_fields.tpl:56 ../templates/default/preferences.tpl:477
-#: ../templates/default/editer_champ.tpl:70 ../templates/default/ajouter_contribution.tpl:133
-#: ../templates/default/gestion_textes.tpl:44
+#: ../templates/default/ajouter_transaction.tpl:44 ../templates/default/group.tpl:71
+#: ../templates/default/config_fields.tpl:56 ../templates/default/preferences.tpl:482
+#: ../templates/default/editer_champ.tpl:70 ../templates/default/ajouter_contribution.tpl:152
+#: ../templates/default/dispatch_type.tpl:140 ../templates/default/gestion_textes.tpl:44
 msgid "Save"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:338
+#: ../includes/routes/management.routes.php:339
 msgid "- Invalid date for beginning of membership."
 msgstr ""
 
@@ -1897,15 +1919,15 @@ msgstr ""
 msgid "With"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1491
+#: ../includes/routes/members.routes.php:1476
 msgid "Status label"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1152
+#: ../lib/Galette/Core/Install.php:1156
 msgid "Update models"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:48
+#: ../templates/default/ajouter_transaction.tpl:56
 msgid "Create a new donation that will be attached to the current transaction"
 msgstr ""
 
@@ -1929,7 +1951,8 @@ msgstr ""
 msgid "SELECT operation not allowed"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:112 ../templates/default/ajouter_contribution.tpl:154
+#: ../templates/default/ajouter_transaction.tpl:120 ../templates/default/ajouter_contribution.tpl:164
+#: ../templates/default/dispatch_type.tpl:152
 msgid "No member registered!"
 msgstr ""
 
@@ -1937,7 +1960,8 @@ msgstr ""
 msgid "DROP operation not allowed"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:164 ../templates/default/ajouter_contribution.tpl:108
+#: ../lib/Galette/Entity/Contribution.php:164 ../templates/default/ajouter_contribution.tpl:115
+#: ../templates/default/dispatch_type.tpl:115
 msgid "Membership extension:"
 msgstr ""
 
@@ -1946,11 +1970,11 @@ msgstr ""
 msgid "Currently loading..."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2883
+#: ../includes/routes/management.routes.php:2896
 msgid "Field has been successfully moved"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2207 ../templates/default/desktop.tpl:35
+#: ../includes/routes/members.routes.php:2228 ../templates/default/desktop.tpl:36
 #: ../templates/default/page.tpl:146
 msgid "Reminders"
 msgstr ""
@@ -1979,7 +2003,7 @@ msgstr ""
 msgid "Unknown type %type!"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:276 ../includes/routes/management.routes.php:297
+#: ../includes/routes/management.routes.php:277 ../includes/routes/management.routes.php:298
 msgid "- The numbers and measures have to be integers!"
 msgstr ""
 
@@ -2003,15 +2027,15 @@ msgstr ""
 msgid "you already have installed Galette, and you want to upgrade to the latest version"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1746
+#: ../includes/routes/members.routes.php:1731
 msgid "labels_print_filename"
 msgstr ""
 
-#: ../templates/default/500.tpl:11
-msgid "Details"
+#: ../templates/default/fake_data.tpl:13
+msgid "Add members photos"
 msgstr ""
 
-#: ../lib/Galette/Util/FakeData.php:283
+#: ../lib/Galette/Util/FakeData.php:303
 msgid "%count groups requested, and %done created"
 msgstr ""
 
@@ -2019,7 +2043,7 @@ msgstr ""
 msgid "City:"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2922
+#: ../includes/routes/management.routes.php:2935
 msgid "Dynamic field"
 msgstr ""
 
@@ -2043,7 +2067,7 @@ msgstr ""
 msgid "Note: members with a status priority lower than %priority are staff members."
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1122 ../templates/default/page.tpl:179
+#: ../lib/Galette/Core/Install.php:1126 ../templates/default/page.tpl:179
 msgid "Contributions types"
 msgstr ""
 
@@ -2051,11 +2075,11 @@ msgstr ""
 msgid "Deletion"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:557
+#: ../includes/routes/management.routes.php:570
 msgid "Test message"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1060 ../templates/default/history.tpl:39
+#: ../includes/routes/management.routes.php:1073 ../templates/default/history.tpl:39
 msgid "Flush the logs"
 msgstr ""
 
@@ -2083,7 +2107,7 @@ msgstr ""
 msgid "Transactions management"
 msgstr ""
 
-#: ../lib/Galette/IO/PdfAdhesionForm.php:132 ../includes/routes/members.routes.php:247
+#: ../lib/Galette/IO/PdfAdhesionForm.php:134 ../includes/routes/members.routes.php:250
 #: ../templates/default/gestion_adherents.tpl:255 ../templates/default/advanced_search.tpl:183
 #: ../templates/default/advanced_search.tpl:290 ../templates/default/forms_types/gender.tpl:15
 msgid "Woman"
@@ -2105,7 +2129,7 @@ msgstr ""
 msgid "%membername: edit informations"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:649 ../templates/default/desktop.tpl:39
+#: ../includes/routes/management.routes.php:662 ../templates/default/desktop.tpl:40
 #: ../templates/default/page.tpl:174
 msgid "Plugins"
 msgstr ""
@@ -2130,7 +2154,7 @@ msgstr ""
 msgid "Long form:"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:534 ../includes/routes/contributions.routes.php:671
+#: ../includes/routes/contributions.routes.php:537 ../includes/routes/contributions.routes.php:674
 msgid "%asso Galette's admin"
 msgstr ""
 
@@ -2156,7 +2180,7 @@ msgstr ""
 msgid "see"
 msgstr ""
 
-#: ../templates/default/ajouter_contribution.tpl:110
+#: ../templates/default/ajouter_contribution.tpl:117 ../templates/default/dispatch_type.tpl:117
 msgid "months"
 msgstr ""
 
@@ -2168,7 +2192,7 @@ msgstr ""
 msgid "Change '%field' permissions"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2600 ../templates/default/page.tpl:177
+#: ../includes/routes/management.routes.php:2613 ../templates/default/page.tpl:177
 msgid "Translate labels"
 msgstr ""
 
@@ -2214,12 +2238,16 @@ msgstr ""
 msgid "Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail."
 msgstr ""
 
-#: ../templates/default/desktop.tpl:34 ../templates/default/page.tpl:148
+#: ../templates/default/desktop.tpl:35 ../templates/default/page.tpl:148
 msgid "Manage mailings that has been sent"
 msgstr ""
 
-#: ../lib/Galette/Util/FakeData.php:344
+#: ../lib/Galette/Util/FakeData.php:369
 msgid "%count members created"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:20
+msgid "Hide this panel"
 msgstr ""
 
 #: ../install/steps/galette.php:55
@@ -2230,7 +2258,7 @@ msgstr ""
 msgid "** Galette identifier, if applicable"
 msgstr ""
 
-#: ../lib/Galette/Util/FakeData.php:276
+#: ../lib/Galette/Util/FakeData.php:296
 msgid "%count groups created"
 msgstr ""
 
@@ -2286,7 +2314,7 @@ msgstr ""
 msgid "Nickname:"
 msgstr ""
 
-#: ../webroot/installer.php:292 ../templates/default/plugin_initdb.tpl:137
+#: ../webroot/installer.php:322 ../templates/default/plugin_initdb.tpl:137
 msgid "Database upgrade"
 msgstr ""
 
@@ -2311,11 +2339,15 @@ msgstr ""
 msgid "Are you sure you want to proceed?"
 msgstr ""
 
+#: ../lib/Galette/Util/FakeData.php:384
+msgid "%count photos created"
+msgstr ""
+
 #: ../templates/default/page.tpl:175
 msgid "Customize fields order, set which are required, and for who they're visibles"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:48
+#: ../templates/default/ajouter_transaction.tpl:56
 msgid "New attached donation"
 msgstr ""
 
@@ -2339,7 +2371,7 @@ msgstr ""
 msgid "Parent of:"
 msgstr ""
 
-#: ../includes/main.inc.php:221
+#: ../includes/routes/members.routes.php:2709 ../includes/main.inc.php:221
 msgid "You do not have permission for requested URL."
 msgstr ""
 
@@ -2375,7 +2407,7 @@ msgstr ""
 msgid "available only for new password request"
 msgstr ""
 
-#: ../templates/default/edit_dynamic_fields.tpl:52
+#: ../templates/default/edit_dynamic_fields.tpl:56
 msgid "current"
 msgstr ""
 
@@ -2387,11 +2419,12 @@ msgstr ""
 msgid "Member's Labels"
 msgstr ""
 
-#: ../templates/default/import_model.tpl:33
-msgid "Remove model and back to defaults"
+#: ../templates/default/admintools.tpl:13 ../templates/default/admintools.tpl:19
+#: ../templates/default/admintools.tpl:25
+msgid "(all existing values will be removed)"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:456
+#: ../includes/routes/management.routes.php:457
 msgid "Preferences has been saved."
 msgstr ""
 
@@ -2411,7 +2444,7 @@ msgstr ""
 msgid "(Un)Check all"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1069 ../install/old.index.php:1230
+#: ../lib/Galette/Core/Install.php:1073 ../install/old.index.php:1230
 msgid "Unable to create configuration file (%path)"
 msgstr ""
 
@@ -2419,7 +2452,7 @@ msgstr ""
 msgid "Impersonating as %login"
 msgstr ""
 
-#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:1042
+#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:1043
 msgid "separator"
 msgstr ""
 
@@ -2427,7 +2460,7 @@ msgstr ""
 msgid "Missing required field permissions!"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2040
+#: ../includes/routes/members.routes.php:2061
 msgid "Mailing has been successfully sent!"
 msgstr ""
 
@@ -2435,11 +2468,11 @@ msgstr ""
 msgid "File %filename cannot be open!"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2813
+#: ../includes/routes/management.routes.php:2826
 msgid "Fields configuration has been successfully stored"
 msgstr ""
 
-#: ../templates/default/desktop.tpl:33 ../templates/default/page.tpl:141
+#: ../templates/default/desktop.tpl:34 ../templates/default/page.tpl:141
 msgid "View and filter transactions"
 msgstr ""
 
@@ -2494,15 +2527,16 @@ msgstr ""
 msgid "You'll be redirected to the login page in a few seconds"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:45
+#: ../templates/default/ajouter_transaction.tpl:53
 msgid "Attached contributions"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:149 ../templates/default/ajouter_contribution.tpl:99
+#: ../lib/Galette/Entity/Contribution.php:149 ../templates/default/ajouter_contribution.tpl:106
+#: ../templates/default/dispatch_type.tpl:106
 msgid "Date of contribution:"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:171 ../templates/default/desktop.tpl:38
+#: ../includes/routes/management.routes.php:171 ../templates/default/desktop.tpl:39
 #: ../templates/default/page.tpl:173
 msgid "Settings"
 msgstr ""
@@ -2515,11 +2549,13 @@ msgstr ""
 msgid "contributions"
 msgstr ""
 
-#: ../templates/default/edit_dynamic_fields.tpl:39 ../templates/default/ajouter_transaction.tpl:26
-#: ../templates/default/ajouter_contribution.tpl:91 ../templates/default/ajouter_contribution.tpl:103
-#: ../templates/default/ajouter_contribution.tpl:114 ../templates/default/attendance_sheet_details.tpl:26
-#: ../templates/default/advanced_search.tpl:223 ../templates/default/advanced_search.tpl:406
-#: ../templates/default/forms_types/date.tpl:5 ../templates/default/forms_types/date.tpl:7
+#: ../templates/default/edit_dynamic_fields.tpl:43 ../templates/default/ajouter_transaction.tpl:26
+#: ../templates/default/ajouter_contribution.tpl:98 ../templates/default/ajouter_contribution.tpl:110
+#: ../templates/default/ajouter_contribution.tpl:121 ../templates/default/dispatch_type.tpl:98
+#: ../templates/default/dispatch_type.tpl:110 ../templates/default/dispatch_type.tpl:121
+#: ../templates/default/attendance_sheet_details.tpl:26 ../templates/default/advanced_search.tpl:223
+#: ../templates/default/advanced_search.tpl:406 ../templates/default/forms_types/date.tpl:5
+#: ../templates/default/forms_types/date.tpl:7
 msgid "(yyyy-mm-dd format)"
 msgstr ""
 
@@ -2531,16 +2567,16 @@ msgstr ""
 msgid "Error creating temporary png file from "
 msgstr ""
 
-#: ../includes/routes/members.routes.php:777 ../includes/routes/contributions.routes.php:377
-#: ../includes/routes/contributions.routes.php:829
+#: ../includes/routes/members.routes.php:780 ../includes/routes/contributions.routes.php:371
+#: ../includes/routes/contributions.routes.php:841
 msgid "creation"
 msgstr ""
 
-#: ../templates/default/voir_adherent.tpl:151
+#: ../templates/default/voir_adherent.tpl:152
 msgid "[manager]"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:314 ../templates/default/preferences.tpl:431
+#: ../templates/default/preferences.tpl:314 ../templates/default/preferences.tpl:432
 msgid "Vertical margins:"
 msgstr ""
 
@@ -2552,7 +2588,7 @@ msgstr ""
 msgid "Missing required form!"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:581
+#: ../includes/routes/management.routes.php:594
 msgid "No email sent to %email"
 msgstr ""
 
@@ -2560,7 +2596,7 @@ msgstr ""
 msgid "Notify member his account has been modified"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2403 ../includes/routes/members.routes.php:2422
+#: ../includes/routes/members.routes.php:2424 ../includes/routes/members.routes.php:2443
 msgid "No member selected to generate attendance sheet"
 msgstr ""
 
@@ -2581,7 +2617,7 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: ../templates/default/ajouter_contribution.tpl:128
+#: ../templates/default/ajouter_contribution.tpl:147 ../templates/default/dispatch_type.tpl:135
 msgid "Member will receive a notification by email, if he has an address."
 msgstr ""
 
@@ -2589,7 +2625,7 @@ msgstr ""
 msgid "Transaction details"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:452
+#: ../includes/routes/management.routes.php:453
 msgid "An SQL error has occured while storing preferences. Please try again, and contact the administrator if the problem persists."
 msgstr ""
 
@@ -2597,11 +2633,11 @@ msgstr ""
 msgid "If you check this box (and if you are up to date with your contributions), your full name, website address ad other informations will be publically visible on the members list.<br/>If you've uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:3301
+#: ../includes/routes/management.routes.php:3316
 msgid "PDF models has been successfully reinitialized."
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1134
+#: ../includes/routes/members.routes.php:1137
 msgid "You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences."
 msgstr ""
 
@@ -2618,12 +2654,12 @@ msgid "Connection to database successfull"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:236 ../install/old.index.php:1170
-#: ../install/steps/admin.php:46 ../templates/default/preferences.tpl:459
+#: ../install/steps/admin.php:46 ../templates/default/preferences.tpl:460
 #: ../templates/default/index.tpl:10
 msgid "Username:"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2436
+#: ../includes/routes/management.routes.php:2449
 msgid "%type #%id has been successfully updated!"
 msgstr ""
 
@@ -2636,6 +2672,7 @@ msgid "%membercount members"
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:125 ../templates/default/ajouter_contribution.tpl:46
+#: ../templates/default/dispatch_type.tpl:46
 msgid "Contributor:"
 msgstr ""
 
@@ -2643,8 +2680,8 @@ msgstr ""
 msgid "Contribution payment type"
 msgstr ""
 
-#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:537 ../includes/routes/contributions.routes.php:1079
-#: ../templates/default/fake_data.tpl:40 ../templates/default/desktop.tpl:33
+#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:537 ../includes/routes/contributions.routes.php:1092
+#: ../templates/default/fake_data.tpl:45 ../templates/default/desktop.tpl:34
 msgid "Transactions"
 msgstr ""
 
@@ -2672,11 +2709,11 @@ msgstr ""
 msgid "The panel will be automatically hidden once you have registered and send telemetry data. Check the box if you want to hide it anyways."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2734
+#: ../includes/routes/management.routes.php:2747
 msgid "Labels has been sucessfully translated!"
 msgstr ""
 
-#: ../templates/default/plugins.tpl:123 ../templates/default/plugins.tpl:141
+#: ../templates/default/plugins.tpl:141 ../templates/default/plugins.tpl:159
 msgid "An error occured displaying plugin database initialization interface :("
 msgstr ""
 
@@ -2684,7 +2721,8 @@ msgstr ""
 msgid "Demonstration"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:369
+#: ../includes/routes/contributions.routes.php:363 ../templates/default/ajouter_transaction.tpl:36
+#: ../templates/default/ajouter_contribution.tpl:137
 msgid "Membership fee"
 msgstr ""
 
@@ -2692,11 +2730,11 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2459
+#: ../includes/routes/members.routes.php:2480
 msgid "attendance_sheet"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1348
+#: ../includes/routes/members.routes.php:1333
 msgid "Remove members"
 msgstr ""
 
@@ -2736,7 +2774,7 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: ../templates/default/page.tpl:157
+#: ../templates/default/desktop.tpl:46 ../templates/default/page.tpl:157
 msgid "My information"
 msgstr ""
 
@@ -2793,11 +2831,11 @@ msgstr ""
 msgid "Update of the tables"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1117
+#: ../includes/routes/members.routes.php:1120
 msgid "Account modification mail sent to '%s'."
 msgstr ""
 
-#: ../templates/default/voir_adherent.tpl:148
+#: ../templates/default/voir_adherent.tpl:149
 msgid "[member]"
 msgstr ""
 
@@ -2809,7 +2847,7 @@ msgstr ""
 msgid "ACLs"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:105 ../templates/default/gestion_contributions.tpl:232
+#: ../templates/default/ajouter_transaction.tpl:113 ../templates/default/gestion_contributions.tpl:232
 msgid "no contribution"
 msgstr ""
 
@@ -2842,11 +2880,15 @@ msgstr ""
 msgid "None of the selected members has an email address."
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1056
+#: ../templates/default/voir_adherent.tpl:135
+msgid "You can drop new image here to get photo changed"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1059
 msgid "Member account has been modified."
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:523
+#: ../includes/routes/contributions.routes.php:526
 msgid "Post contribution script failed"
 msgstr ""
 
@@ -2858,7 +2900,7 @@ msgstr ""
 msgid "Translate '%s' field"
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:660 ../lib/Galette/Core/Plugins.php:720
+#: ../lib/Galette/Core/Plugins.php:707 ../lib/Galette/Core/Plugins.php:767
 msgid "Module does not exists!"
 msgstr ""
 
@@ -2866,7 +2908,7 @@ msgstr ""
 msgid "Member's address"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1674
+#: ../includes/routes/management.routes.php:1687
 msgid "An error occured importing the file :("
 msgstr ""
 
@@ -2875,9 +2917,9 @@ msgid "directory_name"
 msgstr ""
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:84 ../lib/Galette/IO/PdfAttendanceSheet.php:150
-#: ../lib/Galette/Util/FakeData.php:401 ../lib/Galette/Util/FakeData.php:413
-#: ../lib/Galette/Util/FakeData.php:496 ../lib/Galette/Util/FakeData.php:629
-#: ../lib/Galette/Util/FakeData.php:630 ../lib/Galette/Util/FakeData.php:631
+#: ../lib/Galette/Util/FakeData.php:437 ../lib/Galette/Util/FakeData.php:449
+#: ../lib/Galette/Util/FakeData.php:535 ../lib/Galette/Util/FakeData.php:668
+#: ../lib/Galette/Util/FakeData.php:669 ../lib/Galette/Util/FakeData.php:670
 #: ../lib/Galette/Filters/ContributionsList.php:211 ../lib/Galette/Filters/ContributionsList.php:220
 #: ../lib/Galette/Filters/ContributionsList.php:249 ../lib/Galette/Filters/AdvancedMembersList.php:291
 #: ../lib/Galette/Filters/AdvancedMembersList.php:372 ../lib/Galette/Filters/AdvancedMembersList.php:516
@@ -2886,8 +2928,8 @@ msgstr ""
 #: ../lib/Galette/Filters/HistoryList.php:150 ../lib/Galette/Filters/HistoryList.php:227
 #: ../lib/Galette/Filters/HistoryList.php:236 ../lib/Galette/Filters/HistoryList.php:265
 #: ../lib/Galette/Filters/TransactionsList.php:186 ../lib/Galette/Filters/TransactionsList.php:195
-#: ../lib/Galette/Filters/TransactionsList.php:224 ../lib/Galette/Repository/Members.php:1416
-#: ../lib/Galette/Repository/Members.php:1420 ../lib/Galette/Entity/Transaction.php:274
+#: ../lib/Galette/Filters/TransactionsList.php:224 ../lib/Galette/Repository/Members.php:1417
+#: ../lib/Galette/Repository/Members.php:1421 ../lib/Galette/Entity/Transaction.php:274
 #: ../lib/Galette/Entity/Transaction.php:283 ../lib/Galette/Entity/Transaction.php:292
 #: ../lib/Galette/Entity/Transaction.php:537 ../lib/Galette/Entity/Adherent.php:675
 #: ../lib/Galette/Entity/Adherent.php:693 ../lib/Galette/Entity/Adherent.php:709
@@ -2898,14 +2940,14 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:1143 ../lib/Galette/Entity/Contribution.php:1262
 #: ../lib/Galette/Entity/Contribution.php:1271 ../lib/Galette/Entity/Contribution.php:1280
 #: ../lib/Galette/Entity/ImportModel.php:212 ../lib/Galette/Entity/Group.php:622
-#: ../lib/Galette/Core/Plugins.php:234 ../includes/routes/members.routes.php:201
-#: ../includes/routes/members.routes.php:212 ../includes/routes/members.routes.php:223
-#: ../includes/routes/members.routes.php:234 ../includes/routes/members.routes.php:2447
+#: ../lib/Galette/Core/Plugins.php:239 ../includes/routes/members.routes.php:204
+#: ../includes/routes/members.routes.php:215 ../includes/routes/members.routes.php:226
+#: ../includes/routes/members.routes.php:237 ../includes/routes/members.routes.php:2468
 #: ../templates/default/member.tpl:514 ../templates/default/advanced_search.tpl:222
 msgid "Y-m-d"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2373
+#: ../includes/routes/members.routes.php:2394
 msgid "Attendance sheet configuration"
 msgstr ""
 
@@ -2921,11 +2963,15 @@ msgstr ""
 msgid "Using Sendmail server"
 msgstr ""
 
+#: ../templates/default/gestion_pdf.tpl:56
+msgid "Member's groups (as list)"
+msgstr ""
+
 #: ../includes/main.inc.php:156
 msgid "Login required"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:269
+#: ../includes/routes/management.routes.php:270
 msgid "- This username is already used by another member !"
 msgstr ""
 
@@ -2949,7 +2995,7 @@ msgstr ""
 msgid "PHP mail() function"
 msgstr ""
 
-#: ../lib/Galette/IO/PdfAdhesionForm.php:252 ../lib/Galette/IO/PdfAdhesionForm.php:253
+#: ../lib/Galette/IO/PdfAdhesionForm.php:268 ../lib/Galette/IO/PdfAdhesionForm.php:269
 msgid "adherent_form"
 msgstr ""
 
@@ -2961,13 +3007,14 @@ msgstr ""
 msgid "Manage emails texts and subjects"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:1186 ../includes/routes/members.routes.php:1523
-#: ../templates/default/gestion_contributions.tpl:27 ../templates/default/ajouter_contribution.tpl:82
+#: ../lib/Galette/Entity/Contribution.php:1186 ../includes/routes/members.routes.php:1508
+#: ../templates/default/gestion_contributions.tpl:27 ../templates/default/ajouter_contribution.tpl:89
+#: ../templates/default/dispatch_type.tpl:89
 msgid "Paypal"
 msgstr ""
 
 #: ../lib/Galette/Entity/Transaction.php:331 ../lib/Galette/Entity/Adherent.php:1144
-#: ../lib/Galette/Entity/Contribution.php:447 ../includes/routes/management.routes.php:410
+#: ../lib/Galette/Entity/Contribution.php:447 ../includes/routes/management.routes.php:411
 msgid "- Mandatory field %field empty."
 msgstr ""
 
@@ -2975,11 +3022,11 @@ msgstr ""
 msgid "Modified"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1402
+#: ../includes/routes/members.routes.php:1387
 msgid "An error occured trying to remove member %name :/"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:431
+#: ../includes/routes/management.routes.php:432
 msgid "You have to select a staff member"
 msgstr ""
 
@@ -2987,25 +3034,29 @@ msgstr ""
 msgid "Delete the contribution"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:3292
+#: ../includes/routes/management.routes.php:3307
 msgid "An error occured reinitializing fields configuration :("
 msgstr ""
 
-#: ../templates/default/desktop.tpl:35 ../templates/default/page.tpl:146
+#: ../templates/default/desktop.tpl:36 ../templates/default/page.tpl:146
 msgid "Send reminders to late members"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2119 ../templates/default/gestion_mailings.tpl:214
+#: ../includes/routes/members.routes.php:2140 ../templates/default/gestion_mailings.tpl:214
 #: ../templates/default/mailing_adherents.tpl:134
 msgid "Mailing preview"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1423
+#: ../includes/routes/members.routes.php:1408
 msgid "%count members have been successfully deleted."
 msgstr ""
 
 #: ../templates/default/telemetry.tpl:4
 msgid "Also note tha all data is sent over a <strong>HTTPS secured connection</strong>."
+msgstr ""
+
+#: ../install/old.index.php:925
+msgid "Update Report"
 msgstr ""
 
 #: ../lib/Galette/Entity/Group.php:444
@@ -3041,7 +3092,7 @@ msgstr ""
 msgid "LinkedIn"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:550
+#: ../includes/routes/management.routes.php:563
 msgid "You asked Galette to send a test email, but mail has been disabled in the preferences."
 msgstr ""
 
@@ -3069,6 +3120,10 @@ msgstr ""
 msgid "Account:"
 msgstr ""
 
+#: ../templates/default/advanced_search.tpl:29
+msgid "Member of group"
+msgstr ""
+
 #: ../lib/Galette/Core/Pagination.php:289
 msgid "Next page (%i)"
 msgstr ""
@@ -3081,9 +3136,9 @@ msgstr ""
 msgid "Create new mailing"
 msgstr ""
 
-#: ../templates/default/member.tpl:26 ../templates/default/ajouter_transaction.tpl:40
-#: ../templates/default/group.tpl:76 ../templates/default/preferences.tpl:479
-#: ../templates/default/ajouter_contribution.tpl:42
+#: ../templates/default/member.tpl:26 ../templates/default/ajouter_transaction.tpl:48
+#: ../templates/default/group.tpl:78 ../templates/default/preferences.tpl:484
+#: ../templates/default/ajouter_contribution.tpl:42 ../templates/default/dispatch_type.tpl:42
 msgid "red"
 msgstr ""
 
@@ -3118,13 +3173,13 @@ msgstr ""
 msgid "Name:"
 msgstr ""
 
-#: ../lib/Galette/IO/PdfAdhesionForm.php:134 ../includes/routes/members.routes.php:250
+#: ../lib/Galette/IO/PdfAdhesionForm.php:136 ../includes/routes/members.routes.php:253
 #: ../templates/default/advanced_search.tpl:183 ../templates/default/advanced_search.tpl:290
 #: ../templates/default/forms_types/gender.tpl:11
 msgid "Unspecified"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:1139
+#: ../includes/routes/contributions.routes.php:1152
 msgid "Contributions(s) has been removed!"
 msgstr ""
 
@@ -3137,7 +3192,7 @@ msgstr ""
 msgid "Warning: Don't forget to backup your current database."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2435
+#: ../includes/routes/management.routes.php:2448
 msgid "%type has been successfully added!"
 msgstr ""
 
@@ -3150,7 +3205,7 @@ msgstr ""
 msgid "Receipt"
 msgstr ""
 
-#: ../webroot/installer.php:116 ../install/old.index.php:98
+#: ../webroot/installer.php:146 ../install/old.index.php:98
 msgid "No host"
 msgstr ""
 
@@ -3168,7 +3223,7 @@ msgstr ""
 msgid "Legend"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2550
+#: ../includes/routes/management.routes.php:2563
 msgid "An error occured trying to remove %type #%id"
 msgstr ""
 
@@ -3188,7 +3243,7 @@ msgstr ""
 msgid "no group"
 msgstr ""
 
-#: ../templates/default/ajouter_contribution.tpl:10
+#: ../templates/default/ajouter_contribution.tpl:10 ../templates/default/dispatch_type.tpl:10
 msgid "Related transaction informations"
 msgstr ""
 
@@ -3220,7 +3275,7 @@ msgstr ""
 msgid "Address (continuation)"
 msgstr ""
 
-#: ../templates/default/desktop.tpl:46
+#: ../templates/default/desktop.tpl:56
 msgid "News"
 msgstr ""
 
@@ -3244,7 +3299,7 @@ msgstr ""
 msgid "Due date:"
 msgstr ""
 
-#: ../templates/default/fake_data.tpl:17 ../templates/default/fake_data.tpl:18
+#: ../templates/default/fake_data.tpl:22 ../templates/default/fake_data.tpl:23
 msgid "Maximum number of contributions to generate for reach member"
 msgstr ""
 
@@ -3252,16 +3307,16 @@ msgstr ""
 msgid "Not sent"
 msgstr ""
 
-#: ../lib/Galette/IO/PdfMembersLabels.php:84 ../lib/Galette/IO/PdfMembersCards.php:99
+#: ../lib/Galette/IO/PdfMembersLabels.php:84 ../lib/Galette/IO/PdfMembersCards.php:104
 #: ../lib/Galette/IO/PdfGroups.php:109 ../lib/Galette/IO/PdfAttendanceSheet.php:107
 msgid "Generated by Galette"
 msgstr ""
 
-#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:1044
+#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:1045
 msgid "single line"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:575
+#: ../includes/routes/contributions.routes.php:578
 msgid "An error occured while storing the contribution."
 msgstr ""
 
@@ -3285,7 +3340,7 @@ msgstr ""
 msgid "Member's first and last name"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:56 ../templates/default/gestion_contributions.tpl:12
+#: ../templates/default/ajouter_transaction.tpl:64 ../templates/default/gestion_contributions.tpl:12
 #: ../templates/default/gestion_contributions.tpl:81 ../templates/default/gestion_contributions.tpl:197
 msgid "Begin"
 msgstr ""
@@ -3331,7 +3386,7 @@ msgstr ""
 msgid "%A, %B %#d%O %Y"
 msgstr ""
 
-#: ../lib/Galette/Handlers/PhpError.php:81 ../lib/Galette/Handlers/Error.php:81
+#: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
 msgstr ""
 
@@ -3339,7 +3394,7 @@ msgstr ""
 msgid "Select attachments"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1126 ../templates/default/gestion_adherents.tpl:105
+#: ../lib/Galette/Core/Install.php:1130 ../templates/default/gestion_adherents.tpl:105
 #: ../templates/default/gestion_adherents.tpl:185
 msgid "Status"
 msgstr ""
@@ -3360,7 +3415,7 @@ msgstr ""
 msgid "Everyone"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:986
+#: ../includes/routes/members.routes.php:989
 msgid "Your account has been created!"
 msgstr ""
 
@@ -3372,15 +3427,15 @@ msgstr ""
 msgid "User, read/write"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:909
+#: ../includes/routes/contributions.routes.php:921
 msgid "Contribution has been successfully detached from current transaction"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1096
+#: ../includes/routes/management.routes.php:1109
 msgid "Logs have been flushed!"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1184 ../templates/default/desktop.tpl:34
+#: ../includes/routes/management.routes.php:1197 ../templates/default/desktop.tpl:35
 msgid "Mailings"
 msgstr ""
 
@@ -3390,14 +3445,15 @@ msgstr ""
 #: ../templates/default/gestion_adherents.tpl:250 ../templates/default/gestion_adherents.tpl:256
 #: ../templates/default/ajax_groups.tpl:6 ../templates/default/gestion_intitule_content.tpl:10
 #: ../templates/default/gestion_intitule_content.tpl:30 ../templates/default/gestion_intitule_content.tpl:61
-#: ../templates/default/plugins.tpl:7 ../templates/default/group_persons.tpl:5
-#: ../templates/default/export.tpl:28 ../templates/default/export.tpl:68
-#: ../templates/default/ajax_members.tpl:6 ../templates/default/configurer_fiche_content.tpl:5
-#: ../templates/default/import.tpl:19 ../templates/default/liste_membres.tpl:25
+#: ../templates/default/plugins.tpl:7 ../templates/default/plugins.tpl:49
+#: ../templates/default/group_persons.tpl:5 ../templates/default/export.tpl:28
+#: ../templates/default/export.tpl:68 ../templates/default/ajax_members.tpl:6
+#: ../templates/default/configurer_fiche_content.tpl:5 ../templates/default/import.tpl:19
+#: ../templates/default/liste_membres.tpl:25
 msgid "Name"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2112
+#: ../includes/routes/management.routes.php:2125
 msgid "That title is still in use, you cannot delete it!"
 msgstr ""
 
@@ -3421,7 +3477,7 @@ msgstr ""
 msgid "Manager(s)"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:361
+#: ../includes/routes/members.routes.php:364
 msgid "Members management"
 msgstr ""
 
@@ -3449,7 +3505,7 @@ msgstr ""
 msgid "Use TLS for SMTP?"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1118
+#: ../lib/Galette/Core/Install.php:1122
 msgid "Preferences"
 msgstr ""
 
@@ -3460,7 +3516,7 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:244 ../install/old.index.php:628
 #: ../install/old.index.php:1174 ../install/steps/admin.php:50
-#: ../install/steps/db.php:89 ../templates/default/preferences.tpl:463
+#: ../install/steps/db.php:89 ../templates/default/preferences.tpl:464
 #: ../templates/default/index.tpl:14
 msgid "Password:"
 msgstr ""
@@ -3469,7 +3525,7 @@ msgstr ""
 msgid "Status %status does not exists!"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:1082
+#: ../includes/routes/contributions.routes.php:1095
 msgid "Remove %1$s #%2$s"
 msgstr ""
 
@@ -3485,7 +3541,7 @@ msgstr ""
 msgid "Unknown permission!"
 msgstr ""
 
-#: ../templates/default/voir_adherent.tpl:174
+#: ../templates/default/voir_adherent.tpl:175
 msgid "You are not part of managers for the requested group."
 msgstr ""
 
@@ -3502,6 +3558,10 @@ msgstr ""
 #: ../templates/default/gestion_contributions.tpl:226 ../templates/default/gestion_contributions.tpl:258
 #: ../templates/default/gestion_transactions.tpl:118
 msgid "[del]"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:222
+msgid "Contribution amount should be greater than %max"
 msgstr ""
 
 #: ../templates/default/import.tpl:100
@@ -3524,7 +3584,7 @@ msgstr ""
 msgid "Group managers selection"
 msgstr ""
 
-#: ../webroot/installer.php:291 ../templates/default/plugin_initdb.tpl:134
+#: ../webroot/installer.php:321 ../templates/default/plugin_initdb.tpl:134
 msgid "Version selection"
 msgstr ""
 
@@ -3540,7 +3600,7 @@ msgstr ""
 msgid "Beginning of membership:"
 msgstr ""
 
-#: ../lib/Galette/Util/FakeData.php:521
+#: ../lib/Galette/Util/FakeData.php:560
 msgid "%count transactions requested, and %done created"
 msgstr ""
 
@@ -3552,7 +3612,7 @@ msgstr ""
 msgid "Default status cannot be initialized."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1331
+#: ../includes/routes/management.routes.php:1344
 msgid "An error occured trying to delete mailing :("
 msgstr ""
 
@@ -3561,11 +3621,11 @@ msgstr ""
 msgid "Permissions"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1901 ../templates/default/page.tpl:182
+#: ../includes/routes/management.routes.php:1914 ../templates/default/page.tpl:182
 msgid "PDF models"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:628
+#: ../includes/routes/contributions.routes.php:631
 msgid "Mail sent to user %name (%email)"
 msgstr ""
 
@@ -3573,7 +3633,7 @@ msgstr ""
 msgid "View and filter all my transactions"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:691
+#: ../includes/routes/contributions.routes.php:694
 msgid "A problem happened while sending to admin notification for user %name (%email) contribution"
 msgstr ""
 
@@ -3585,7 +3645,7 @@ msgstr ""
 msgid "Mailing entry %id"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1142
+#: ../lib/Galette/Core/Install.php:1146
 msgid "PDF Models"
 msgstr ""
 
@@ -3620,7 +3680,7 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2888
+#: ../includes/routes/management.routes.php:2901
 msgid "An error occured moving field :("
 msgstr ""
 
@@ -3644,6 +3704,10 @@ msgstr ""
 msgid "Number of label columns:"
 msgstr ""
 
+#: ../templates/default/ajouter_contribution.tpl:70 ../templates/default/dispatch_type.tpl:70
+msgid "Reload"
+msgstr ""
+
 #: ../templates/default/gestion_pdf.tpl:30
 msgid "Your organisation address"
 msgstr ""
@@ -3652,7 +3716,7 @@ msgstr ""
 msgid "No fields to translate."
 msgstr ""
 
-#: ../lib/Galette/IO/PdfMembersCards.php:100 ../includes/routes/members.routes.php:1681
+#: ../lib/Galette/IO/PdfMembersCards.php:105 ../includes/routes/members.routes.php:1666
 #: ../templates/default/preferences.tpl:11
 msgid "Cards"
 msgstr ""
@@ -3661,7 +3725,7 @@ msgstr ""
 msgid "Default membership extension:"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:676
+#: ../includes/routes/management.routes.php:689
 msgid "Plugin %name has been enabled"
 msgstr ""
 
@@ -3677,7 +3741,7 @@ msgstr ""
 msgid "ALTER Operation allowed"
 msgstr ""
 
-#: ../webroot/installer.php:125 ../webroot/installer.php:168
+#: ../webroot/installer.php:155 ../webroot/installer.php:198
 #: ../includes/routes/authentication.routes.php:358 ../install/old.index.php:107
 #: ../install/old.index.php:164
 msgid "No password"
@@ -3710,15 +3774,11 @@ msgstr ""
 msgid "INSERT operation allowed"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2292
+#: ../includes/routes/management.routes.php:2305
 msgid "Email: '%s' has been successfully modified."
 msgstr ""
 
-#: ../templates/default/admintools.tpl:5
-msgid "Make sure you've done a backup of the database before using any of the following tools!"
-msgstr ""
-
-#: ../includes/routes/management.routes.php:344
+#: ../includes/routes/management.routes.php:345
 msgid "- Invalid year for cards."
 msgstr ""
 
@@ -3750,6 +3810,10 @@ msgstr ""
 msgid "Code:"
 msgstr ""
 
+#: ../templates/default/page.tpl:133
+msgid "Go to Galette's dashboard"
+msgstr ""
+
 #: ../lib/Galette/Entity/Adherent.php:1071
 msgid "- The password must be of at least %i characters!"
 msgstr ""
@@ -3762,11 +3826,11 @@ msgstr ""
 msgid "Files permissions are not OK!"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:385
+#: ../includes/routes/management.routes.php:386
 msgid "- You must provide a login for SMTP authentication."
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:281 ../lib/Galette/Core/Plugins.php:303
+#: ../lib/Galette/Core/Plugins.php:286 ../lib/Galette/Core/Plugins.php:308
 msgid "No such module."
 msgstr ""
 
@@ -3818,7 +3882,7 @@ msgstr ""
 msgid "Postal address:"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2724
+#: ../includes/routes/management.routes.php:2737
 msgid "An error occured saving label `%label` for language `%lang`"
 msgstr ""
 
@@ -3844,7 +3908,7 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2283
+#: ../includes/routes/management.routes.php:2296
 msgid "Email: '%s' has not been modified!"
 msgstr ""
 
@@ -3868,8 +3932,8 @@ msgstr ""
 msgid "Show existing variables"
 msgstr ""
 
-#: ../install/old.index.php:925
-msgid "Update Report"
+#: ../templates/default/ajouter_contribution.tpl:133
+msgid "Transaction related"
 msgstr ""
 
 #: ../includes/fields_defs/pdfmodels_fields.php:247
@@ -3880,7 +3944,7 @@ msgstr ""
 msgid "View application's logs"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2226
+#: ../includes/routes/management.routes.php:2239
 msgid "Automatic emails texts edition"
 msgstr ""
 
@@ -3896,8 +3960,9 @@ msgstr ""
 msgid "The group name you have requested already exits in the database."
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:1183 ../includes/routes/members.routes.php:1522
-#: ../templates/default/gestion_contributions.tpl:26 ../templates/default/ajouter_contribution.tpl:81
+#: ../lib/Galette/Entity/Contribution.php:1183 ../includes/routes/members.routes.php:1507
+#: ../templates/default/gestion_contributions.tpl:26 ../templates/default/ajouter_contribution.tpl:88
+#: ../templates/default/dispatch_type.tpl:88
 msgid "Transfer"
 msgstr ""
 
@@ -3923,7 +3988,7 @@ msgstr ""
 msgid "Homepage"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:1153
+#: ../includes/routes/contributions.routes.php:1166
 msgid "An error occured trying to remove transaction(s) :("
 msgstr ""
 
@@ -3947,7 +4012,7 @@ msgstr ""
 msgid "Password misrepeated: "
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1154
+#: ../includes/routes/members.routes.php:1157
 msgid "An error occured adding member to its groups."
 msgstr ""
 
@@ -3971,7 +4036,7 @@ msgstr ""
 msgid "Select installation mode to launch"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1786
+#: ../includes/routes/management.routes.php:1799
 msgid "CSV import model"
 msgstr ""
 
@@ -3983,7 +4048,7 @@ msgstr ""
 #: ../templates/default/mailing_adherents.tpl:160 ../templates/default/mailing_adherents.tpl:206
 #: ../templates/default/mailing_adherents.tpl:262 ../templates/default/gestion_groupes.tpl:184
 #: ../templates/default/gestion_groupes.tpl:244 ../templates/default/gestion_groupes.tpl:297
-#: ../templates/default/ajouter_transaction.tpl:139
+#: ../templates/default/ajouter_transaction.tpl:147
 msgid "An error occured displaying members interface :("
 msgstr ""
 
@@ -4000,7 +4065,7 @@ msgstr ""
 msgid "Your current Galette version is comprised between"
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:425
+#: ../lib/Galette/Core/Preferences.php:426
 msgid "%name association's %status"
 msgstr ""
 
@@ -4044,11 +4109,6 @@ msgstr ""
 msgid "Please correct above warnings to continue."
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:266 ../includes/routes/contributions.routes.php:448
-#: ../includes/routes/contributions.routes.php:773 ../includes/routes/contributions.routes.php:924
-msgid "edit"
-msgstr ""
-
 #: ../templates/default/telemetry.tpl:4
 msgid "Nothing is automated in the process; it's up to you to send (or resend) data."
 msgstr ""
@@ -4057,8 +4117,8 @@ msgstr ""
 msgid "PDF models cannot be initialized."
 msgstr ""
 
-#: ../templates/default/gestion_pdf.tpl:56
-msgid "Member's groups (as list)"
+#: ../install/steps/db.php:52
+msgid "It seems that you have already installed Galette once.<br/>All existing data will be removed if you keep going on using existing database!"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:234
@@ -4079,15 +4139,16 @@ msgstr ""
 msgid "Trombinoscope"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2963
+#: ../includes/routes/management.routes.php:2976
 msgid "Field has been successfully deleted!"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:116 ../templates/default/ajouter_contribution.tpl:158
+#: ../templates/default/ajouter_transaction.tpl:124 ../templates/default/ajouter_contribution.tpl:168
+#: ../templates/default/dispatch_type.tpl:156
 msgid "please create a member"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:540
+#: ../includes/routes/contributions.routes.php:543
 msgid "You can find contribution information and script output below."
 msgstr ""
 
@@ -4095,9 +4156,9 @@ msgstr ""
 msgid "Configure import model"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1405 ../includes/routes/members.routes.php:258
-#: ../includes/routes/members.routes.php:262 ../includes/routes/members.routes.php:266
-#: ../includes/routes/members.routes.php:270 ../templates/default/gestion_mailings.tpl:34
+#: ../lib/Galette/Entity/Adherent.php:1405 ../includes/routes/members.routes.php:261
+#: ../includes/routes/members.routes.php:265 ../includes/routes/members.routes.php:269
+#: ../includes/routes/members.routes.php:273 ../templates/default/gestion_mailings.tpl:34
 #: ../templates/default/gestion_intitule_content.tpl:36 ../templates/default/gestion_intitule_content.tpl:77
 #: ../templates/default/config_fields.tpl:35 ../templates/default/editer_champ.tpl:27
 #: ../templates/default/editer_champ.tpl:109 ../templates/default/configurer_fiche_content.tpl:21
@@ -4111,7 +4172,7 @@ msgstr ""
 msgid "Select a group"
 msgstr ""
 
-#: ../templates/default/edit_dynamic_fields.tpl:113
+#: ../templates/default/edit_dynamic_fields.tpl:117
 msgid "New occurence"
 msgstr ""
 
@@ -4155,11 +4216,11 @@ msgstr ""
 msgid "Enter here a short description for your association, it will be displayed on the index page and into pages' title."
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1041
+#: ../includes/routes/members.routes.php:1044
 msgid "New account mail sent to admin for '%s'."
 msgstr ""
 
-#: ../lib/Galette/Util/FakeData.php:467
+#: ../lib/Galette/Util/FakeData.php:505
 msgid "Photo has not been copied!"
 msgstr ""
 
@@ -4171,7 +4232,11 @@ msgstr ""
 msgid "Up to date"
 msgstr ""
 
-#: ../templates/default/desktop.tpl:38 ../templates/default/page.tpl:173
+#: ../lib/Galette/Core/Preferences.php:635
+msgid "Current cards configuration may exceed page height!"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:39 ../templates/default/page.tpl:173
 msgid "Set applications preferences (address, website, member's cards configuration, ...)"
 msgstr ""
 
@@ -4209,7 +4274,7 @@ msgstr ""
 msgid "from member %id_adh"
 msgstr ""
 
-#: ../lib/Galette/Entity/DynamicsTrait.php:117
+#: ../lib/Galette/Entity/DynamicsTrait.php:116
 msgid "Missing required field %field"
 msgstr ""
 
@@ -4229,7 +4294,7 @@ msgstr ""
 msgid "you already have installed %name, and you want to upgrade to the latest version"
 msgstr ""
 
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:108 ../includes/routes/members.routes.php:2430
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:108 ../includes/routes/members.routes.php:2451
 #: ../templates/default/gestion_adherents.tpl:227 ../templates/default/attendance_sheet_details.tpl:13
 msgid "Attendance sheet"
 msgstr ""
@@ -4246,7 +4311,7 @@ msgstr ""
 msgid "In order to be updated, Galette needs write permission on files listed above."
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:792 ../includes/routes/contributions.routes.php:937
+#: ../includes/routes/contributions.routes.php:804 ../includes/routes/contributions.routes.php:949
 msgid "Transaction ID cannot ben null calling edit route!"
 msgstr ""
 
@@ -4266,10 +4331,10 @@ msgstr ""
 msgid "Registration date:"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1316 ../includes/routes/members.routes.php:1346
-#: ../templates/default/ajouter_transaction.tpl:60 ../templates/default/history.tpl:14
+#: ../includes/routes/members.routes.php:1301 ../includes/routes/members.routes.php:1331
+#: ../templates/default/ajouter_transaction.tpl:68 ../templates/default/history.tpl:14
 #: ../templates/default/gestion_contributions.tpl:104 ../templates/default/gestion_contributions.tpl:200
-#: ../templates/default/ajouter_contribution.tpl:28
+#: ../templates/default/ajouter_contribution.tpl:28 ../templates/default/dispatch_type.tpl:28
 msgid "Member"
 msgstr ""
 
@@ -4285,6 +4350,10 @@ msgstr ""
 msgid "This link is no longer valid. You should ask to retrieve your password again."
 msgstr ""
 
+#: ../templates/default/plugins.tpl:61
+msgid "Incompatible with current version"
+msgstr ""
+
 #: ../includes/fields_defs/pdfmodels_fields.php:118 ../includes/fields_defs/pdfmodels_fields.php:163
 msgid "to"
 msgstr ""
@@ -4293,7 +4362,7 @@ msgstr ""
 msgid "Reset all PDF models to their default values"
 msgstr ""
 
-#: ../templates/default/gestion_groupes.tpl:31 ../templates/default/group.tpl:73
+#: ../templates/default/gestion_groupes.tpl:31 ../templates/default/group.tpl:75
 msgid "Export all groups and their members as PDF"
 msgstr ""
 
@@ -4305,7 +4374,7 @@ msgstr ""
 msgid "Main"
 msgstr ""
 
-#: ../templates/default/plugins.tpl:51
+#: ../templates/default/plugins.tpl:69
 msgid "Click here to activate plugin '%name'"
 msgstr ""
 
@@ -4321,7 +4390,7 @@ msgstr ""
 msgid "GALETTE hasn't got enough permissions on the database to continue the update."
 msgstr ""
 
-#: ../templates/default/fake_data.tpl:22
+#: ../templates/default/fake_data.tpl:27
 msgid "Number of transactions:"
 msgstr ""
 
@@ -4342,7 +4411,7 @@ msgstr ""
 msgid "Status:"
 msgstr ""
 
-#: ../webroot/installer.php:296 ../templates/default/plugin_initdb.tpl:137
+#: ../webroot/installer.php:326 ../templates/default/plugin_initdb.tpl:137
 msgid "Database installation"
 msgstr ""
 
@@ -4351,7 +4420,7 @@ msgstr ""
 msgid "Access permissions to database"
 msgstr ""
 
-#: ../webroot/installer.php:282 ../install/old.index.php:1522
+#: ../webroot/installer.php:312 ../install/old.index.php:1522
 #: ../templates/default/plugin_initdb.tpl:129
 msgid "Steps:"
 msgstr ""
@@ -4390,7 +4459,7 @@ msgstr ""
 msgid "Contribution informations"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:47
+#: ../templates/default/ajouter_transaction.tpl:55
 msgid "Create a new fee that will be attached to the current transaction"
 msgstr ""
 
@@ -4402,12 +4471,12 @@ msgstr ""
 msgid "Line:"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:775 ../includes/routes/contributions.routes.php:375
-#: ../includes/routes/contributions.routes.php:827
+#: ../includes/routes/members.routes.php:778 ../includes/routes/contributions.routes.php:369
+#: ../includes/routes/contributions.routes.php:839
 msgid "modification"
 msgstr ""
 
-#: ../lib/Galette/Util/FakeData.php:462
+#: ../lib/Galette/Util/FakeData.php:498
 msgid "Photo has not been stored!"
 msgstr ""
 
@@ -4417,6 +4486,11 @@ msgstr ""
 
 #: ../templates/default/plugins.tpl:45
 msgid "Inactive plugins"
+msgstr ""
+
+#: ../templates/default/ajouter_transaction.tpl:34 ../templates/default/ajouter_transaction.tpl:35
+#: ../templates/default/ajouter_contribution.tpl:135 ../templates/default/ajouter_contribution.tpl:136
+msgid "Select a contribution type to create for dispatch transaction"
 msgstr ""
 
 #: ../templates/default/plugins.tpl:28
@@ -4436,13 +4510,13 @@ msgstr ""
 msgid "Reset all emails contents to their default values"
 msgstr ""
 
-#: ../lib/Galette/IO/PdfAdhesionForm.php:130 ../includes/routes/members.routes.php:244
+#: ../lib/Galette/IO/PdfAdhesionForm.php:132 ../includes/routes/members.routes.php:247
 #: ../templates/default/gestion_adherents.tpl:249 ../templates/default/advanced_search.tpl:183
 #: ../templates/default/advanced_search.tpl:290 ../templates/default/forms_types/gender.tpl:13
 msgid "Man"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:266 ../templates/default/preferences.tpl:535
+#: ../templates/default/preferences.tpl:266 ../templates/default/preferences.tpl:540
 msgid "Test mail settings"
 msgstr ""
 
@@ -4454,8 +4528,8 @@ msgstr ""
 #: ../templates/default/preferences.tpl:326 ../templates/default/preferences.tpl:331
 #: ../templates/default/preferences.tpl:336 ../templates/default/preferences.tpl:341
 #: ../templates/default/preferences.tpl:346 ../templates/default/preferences.tpl:355
-#: ../templates/default/preferences.tpl:433 ../templates/default/preferences.tpl:438
-#: ../templates/default/preferences.tpl:443 ../templates/default/preferences.tpl:448
+#: ../templates/default/preferences.tpl:434 ../templates/default/preferences.tpl:439
+#: ../templates/default/preferences.tpl:444 ../templates/default/preferences.tpl:449
 msgid "(Integer)"
 msgstr ""
 
@@ -4507,7 +4581,7 @@ msgstr ""
 msgid "Mrs"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2925
+#: ../includes/routes/management.routes.php:2938
 msgid "Remove dynamic field %1$s"
 msgstr ""
 
@@ -4527,11 +4601,11 @@ msgstr ""
 msgid "Your subscription has been registered."
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1885
+#: ../includes/routes/members.routes.php:1906
 msgid "Mailing"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2243
+#: ../includes/routes/members.routes.php:2264
 msgid "No reminder to send for now."
 msgstr ""
 
@@ -4543,7 +4617,7 @@ msgstr ""
 msgid "Select your previous Galette version below, and then click next."
 msgstr ""
 
-#: ../templates/default/fake_data.tpl:28 ../templates/default/page.tpl:176
+#: ../templates/default/fake_data.tpl:33 ../templates/default/page.tpl:176
 msgid "Dynamic fields"
 msgstr ""
 
@@ -4561,11 +4635,11 @@ msgstr ""
 msgid "Show title ?"
 msgstr ""
 
-#: ../webroot/installer.php:165 ../install/old.index.php:160
+#: ../webroot/installer.php:195 ../install/old.index.php:160
 msgid "The username cannot contain the @ character"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1671 ../includes/routes/members.routes.php:1736
+#: ../includes/routes/members.routes.php:1656 ../includes/routes/members.routes.php:1721
 msgid "Unable to get members list."
 msgstr ""
 
@@ -4598,20 +4672,20 @@ msgid "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSER
 msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:63 ../templates/default/mailing_adherents.tpl:85
-#: ../templates/default/reminder.tpl:31 ../templates/default/preferences.tpl:552
+#: ../templates/default/reminder.tpl:31 ../templates/default/preferences.tpl:557
 #: ../templates/default/telemetry.tpl:13
 msgid "Send"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:644
+#: ../includes/routes/contributions.routes.php:647
 msgid "Trying to send a mail to a member (%name) with an invalid address: %email"
 msgstr ""
 
-#: ../webroot/installer.php:119 ../install/old.index.php:101
+#: ../webroot/installer.php:149 ../install/old.index.php:101
 msgid "No port"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1169
+#: ../includes/routes/members.routes.php:1172
 msgid "An error occured adding member to its groups as manager."
 msgstr ""
 
@@ -4636,7 +4710,7 @@ msgstr ""
 msgid "Non-member"
 msgstr ""
 
-#: ../templates/default/fake_data.tpl:30
+#: ../templates/default/fake_data.tpl:35
 msgid "Generate some predefined dynamic fields"
 msgstr ""
 
@@ -4647,16 +4721,16 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1606 ../includes/routes/members.routes.php:1639
-#: ../includes/routes/members.routes.php:1713
+#: ../includes/routes/members.routes.php:1591 ../includes/routes/members.routes.php:1624
+#: ../includes/routes/members.routes.php:1698
 msgid "No member was selected, please check at least one name."
 msgstr ""
 
-#: ../templates/default/gestion_textes.tpl:76
-msgid "available only from self subscribe page"
+#: ../includes/routes/contributions.routes.php:916
+msgid "Unable to detach contribution from transaction"
 msgstr ""
 
-#: ../webroot/installer.php:306
+#: ../webroot/installer.php:336
 msgid "Galette initialisation"
 msgstr ""
 
@@ -4664,7 +4738,7 @@ msgstr ""
 msgid "Social networks"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2094
+#: ../includes/routes/management.routes.php:2107
 msgid "Title '%name' has been successfully deleted."
 msgstr ""
 
@@ -4672,7 +4746,8 @@ msgstr ""
 msgid "Update complete !"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:114 ../templates/default/ajouter_contribution.tpl:156
+#: ../templates/default/ajouter_transaction.tpl:122 ../templates/default/ajouter_contribution.tpl:166
+#: ../templates/default/dispatch_type.tpl:154
 msgid "Unfortunately, there is no member in your database yet,"
 msgstr ""
 
@@ -4688,7 +4763,7 @@ msgstr ""
 msgid "Core data"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:71
+#: ../templates/default/ajouter_transaction.tpl:79
 msgid "Dispatched amount:"
 msgstr ""
 
@@ -4698,7 +4773,7 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: ../templates/default/ajouter_contribution.tpl:70
+#: ../templates/default/ajouter_contribution.tpl:77 ../templates/default/dispatch_type.tpl:77
 msgid "Details of donation"
 msgstr ""
 
@@ -4710,7 +4785,7 @@ msgstr ""
 msgid "no transaction"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:146
+#: ../templates/default/ajouter_transaction.tpl:154
 msgid "Contributions selection"
 msgstr ""
 
@@ -4730,7 +4805,7 @@ msgstr ""
 msgid "New mailing from %s"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1173
+#: ../includes/routes/members.routes.php:1176
 msgid "An error occured while storing the member."
 msgstr ""
 
@@ -4750,7 +4825,7 @@ msgstr ""
 msgid "Trace"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2483
+#: ../includes/routes/management.routes.php:2496
 msgid "Remove %type '%label'"
 msgstr ""
 
@@ -4790,11 +4865,11 @@ msgstr ""
 msgid "You cannot delete default status!"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:75
+#: ../templates/default/ajouter_transaction.tpl:83
 msgid "Not dispatched amount:"
 msgstr ""
 
-#: ../templates/default/edit_dynamic_fields.tpl:48
+#: ../templates/default/edit_dynamic_fields.tpl:52
 msgid "new"
 msgstr ""
 
@@ -4802,7 +4877,7 @@ msgstr ""
 msgid "(Strip color will change according to member's status)"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:3279
+#: ../includes/routes/management.routes.php:3294
 msgid "Texts has been successfully reinitialized."
 msgstr ""
 
@@ -4822,7 +4897,7 @@ msgstr ""
 msgid "Membership in order"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1688
+#: ../includes/routes/management.routes.php:1701
 msgid "File '%filename%' has been successfully imported :)"
 msgstr ""
 
@@ -4834,7 +4909,7 @@ msgstr ""
 msgid "Error loading "
 msgstr ""
 
-#: ../templates/default/voir_adherent.tpl:174
+#: ../templates/default/voir_adherent.tpl:175
 msgid "Not managed group"
 msgstr ""
 
@@ -4854,10 +4929,6 @@ msgstr ""
 msgid "Automatically wrap text mails before sending"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:265 ../includes/routes/contributions.routes.php:447
-msgid "fee"
-msgstr ""
-
 #: ../install/old.index.php:914
 msgid "Creation of the tables"
 msgstr ""
@@ -4875,13 +4946,13 @@ msgstr ""
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:990
+#: ../includes/routes/members.routes.php:993
 msgid "An email has been sent to you, check your inbox."
 msgstr ""
 
-#: ../templates/default/member.tpl:26 ../templates/default/ajouter_transaction.tpl:40
-#: ../templates/default/group.tpl:76 ../templates/default/preferences.tpl:479
-#: ../templates/default/ajouter_contribution.tpl:42
+#: ../templates/default/member.tpl:26 ../templates/default/ajouter_transaction.tpl:48
+#: ../templates/default/group.tpl:78 ../templates/default/preferences.tpl:484
+#: ../templates/default/ajouter_contribution.tpl:42 ../templates/default/dispatch_type.tpl:42
 msgid "NB : The mandatory fields are in"
 msgstr ""
 
@@ -4889,11 +4960,11 @@ msgstr ""
 msgid "Generate empty CSV file"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1547
+#: ../includes/routes/management.routes.php:1560
 msgid "An error occured running parameted export '%export'. Please check the logs."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:3319
+#: ../includes/routes/management.routes.php:3334
 msgid "An error occured filling empty logins and passwords :("
 msgstr ""
 
@@ -4913,7 +4984,7 @@ msgstr ""
 msgid "Fail to add new contribution."
 msgstr ""
 
-#: ../templates/default/ajouter_contribution.tpl:88
+#: ../templates/default/ajouter_contribution.tpl:95 ../templates/default/dispatch_type.tpl:95
 msgid "Record date:"
 msgstr ""
 
@@ -4950,7 +5021,7 @@ msgstr ""
 msgid "Choose wich reminder(s) you want to send:"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:563
+#: ../includes/routes/management.routes.php:576
 msgid "Test message."
 msgstr ""
 
@@ -4960,6 +5031,10 @@ msgstr ""
 
 #: ../templates/default/mailing_preview.tpl:26
 msgid "Attachments:"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:207 ../templates/default/dispatch_type.tpl:195
+msgid "An error occured retrieving dates :("
 msgstr ""
 
 #: ../templates/default/500.tpl:13
@@ -4986,11 +5061,11 @@ msgstr ""
 msgid "Active account"
 msgstr ""
 
-#: ../templates/default/member.tpl:219 ../templates/default/voir_adherent.tpl:164
+#: ../templates/default/member.tpl:219 ../templates/default/voir_adherent.tpl:165
 msgid "Back to top"
 msgstr ""
 
-#: ../templates/default/edit_dynamic_fields.tpl:62 ../templates/default/display_dynamic_fields.tpl:3
+#: ../templates/default/edit_dynamic_fields.tpl:66 ../templates/default/display_dynamic_fields.tpl:3
 msgid "Additionnal fields:"
 msgstr ""
 
@@ -5002,12 +5077,14 @@ msgstr ""
 msgid "Default contributions types were successfully stored."
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:1039 ../includes/routes/contributions.routes.php:371
-#: ../includes/fields_defs/pdfmodels_fields.php:202
+#: ../lib/Galette/Entity/Contribution.php:1039 ../includes/routes/contributions.routes.php:365
+#: ../includes/fields_defs/pdfmodels_fields.php:202 ../templates/default/ajouter_transaction.tpl:37
+#: ../templates/default/ajouter_contribution.tpl:138
 msgid "Donation"
 msgstr ""
 
-#: ../templates/default/desktop.tpl:29 ../templates/default/page.tpl:135
+#: ../templates/default/desktop.tpl:30 ../templates/default/desktop.tpl:46
+#: ../templates/default/page.tpl:135
 msgid "View, search into and filter member's list"
 msgstr ""
 
@@ -5015,7 +5092,7 @@ msgstr ""
 msgid "The uploaded file was only partially uploaded"
 msgstr ""
 
-#: ../templates/default/fake_data.tpl:17
+#: ../templates/default/fake_data.tpl:22
 msgid "Number of contributions:"
 msgstr ""
 
@@ -5035,7 +5112,7 @@ msgstr ""
 msgid "Would emailing use any SMTP authentication? You'll have to provide username and password below. For GMail, authentication will always be on."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2148
+#: ../includes/routes/management.routes.php:2161
 msgid "Edit title"
 msgstr ""
 
@@ -5067,11 +5144,11 @@ msgstr ""
 msgid "SMTP port:"
 msgstr ""
 
-#: ../templates/default/edit_dynamic_fields.tpl:29
+#: ../templates/default/edit_dynamic_fields.tpl:33
 msgid "Select an option"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:3036
+#: ../includes/routes/management.routes.php:3049
 msgid "Edit field"
 msgstr ""
 
@@ -5079,7 +5156,7 @@ msgstr ""
 msgid "Temporary images"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:988 ../includes/routes/management.routes.php:253
+#: ../lib/Galette/Entity/Adherent.php:988 ../includes/routes/management.routes.php:254
 msgid "- Non-valid E-Mail address!"
 msgstr ""
 
@@ -5095,7 +5172,7 @@ msgstr ""
 msgid "Group name is missing!"
 msgstr ""
 
-#: ../templates/default/preferences.tpl:572
+#: ../templates/default/preferences.tpl:577
 msgid "An error occured sending test email :("
 msgstr ""
 
@@ -5108,7 +5185,7 @@ msgstr ""
 msgid "Required"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1417
+#: ../includes/routes/members.routes.php:1402
 msgid "Member %name has been successfully deleted."
 msgstr ""
 
@@ -5116,18 +5193,22 @@ msgstr ""
 msgid "Admin settings"
 msgstr ""
 
+#: ../templates/default/fake_data.tpl:13 ../templates/default/fake_data.tpl:14
+msgid "Each photos mays take a long time to be retrieved. Use this only with a few members!"
+msgstr ""
+
 #: ../install/old.index.php:1496
 msgid "Installation complete !"
 msgstr ""
 
 #: ../templates/default/gestion_mailings.tpl:60 ../templates/default/gestion_mailings.tpl:124
-#: ../templates/default/ajouter_transaction.tpl:55 ../templates/default/history.tpl:57
+#: ../templates/default/ajouter_transaction.tpl:63 ../templates/default/history.tpl:57
 #: ../templates/default/history.tpl:120 ../templates/default/gestion_contributions.tpl:70
 #: ../templates/default/gestion_contributions.tpl:196 ../templates/default/ajouter_contribution.tpl:27
 #: ../templates/default/export.tpl:29 ../templates/default/export.tpl:43
-#: ../templates/default/attendance_sheet_details.tpl:24 ../templates/default/gestion_transactions.tpl:43
-#: ../templates/default/gestion_transactions.tpl:96 ../templates/default/import.tpl:20
-#: ../templates/default/import.tpl:32
+#: ../templates/default/dispatch_type.tpl:27 ../templates/default/attendance_sheet_details.tpl:24
+#: ../templates/default/gestion_transactions.tpl:43 ../templates/default/gestion_transactions.tpl:96
+#: ../templates/default/import.tpl:20 ../templates/default/import.tpl:32
 msgid "Date"
 msgstr ""
 
@@ -5135,23 +5216,24 @@ msgstr ""
 msgid "Do you really want to delete all selected contributions?"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2017
+#: ../includes/routes/management.routes.php:2030
 msgid "Title '%s' has not been added!"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2062
+#: ../includes/routes/members.routes.php:2083
 msgid "Mailing has been successfully saved."
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:129 ../templates/default/ajouter_contribution.tpl:57
+#: ../templates/default/dispatch_type.tpl:57
 msgid "Contribution type:"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1030 ../includes/routes/management.routes.php:560
+#: ../includes/routes/members.routes.php:1033 ../includes/routes/management.routes.php:573
 msgid "Galette admin"
 msgstr ""
 
-#: ../templates/default/edit_dynamic_fields.tpl:104 ../templates/default/edit_dynamic_fields.tpl:143
+#: ../templates/default/edit_dynamic_fields.tpl:108 ../templates/default/edit_dynamic_fields.tpl:147
 msgid "Enter up to %count more occurences."
 msgstr ""
 
@@ -5183,7 +5265,7 @@ msgstr ""
 msgid "Default preferences were successfully stored."
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1116
+#: ../includes/routes/members.routes.php:1119
 msgid "New account mail sent to '%s'."
 msgstr ""
 
@@ -5214,10 +5296,6 @@ msgstr ""
 msgid "Label width:"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:265 ../includes/routes/contributions.routes.php:447
-msgid "donation"
-msgstr ""
-
 #: ../templates/default/preferences.tpl:289
 msgid "Do you want to allow 'unsecure' connections? This may be usefull if you server uses a self-signed certificate, and on some other cases."
 msgstr ""
@@ -5243,7 +5321,7 @@ msgstr ""
 msgid "History entry %id"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1740
+#: ../includes/routes/management.routes.php:1753
 msgid "No files has been uploaded!"
 msgstr ""
 
@@ -5251,11 +5329,11 @@ msgstr ""
 msgid "Password recovery"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1377 ../includes/routes/management.routes.php:1084
-#: ../includes/routes/management.routes.php:1310 ../includes/routes/management.routes.php:1429
-#: ../includes/routes/management.routes.php:2082 ../includes/routes/management.routes.php:2515
-#: ../includes/routes/management.routes.php:2955 ../includes/routes/groups.routes.php:225
-#: ../includes/routes/contributions.routes.php:1130
+#: ../includes/routes/members.routes.php:1362 ../includes/routes/management.routes.php:1097
+#: ../includes/routes/management.routes.php:1323 ../includes/routes/management.routes.php:1442
+#: ../includes/routes/management.routes.php:2095 ../includes/routes/management.routes.php:2528
+#: ../includes/routes/management.routes.php:2968 ../includes/routes/groups.routes.php:225
+#: ../includes/routes/contributions.routes.php:1143
 msgid "Removal has not been confirmed!"
 msgstr ""
 
@@ -5267,7 +5345,7 @@ msgstr ""
 msgid "ALTER operation not allowed"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:588
+#: ../includes/routes/management.routes.php:601
 msgid "Invalid email adress!"
 msgstr ""
 
@@ -5275,11 +5353,11 @@ msgstr ""
 msgid "General information"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1063
+#: ../includes/routes/members.routes.php:1066
 msgid "- You can't send a confirmation by email if the member hasn't got an address!"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:825
+#: ../includes/routes/contributions.routes.php:837
 msgid "Transaction"
 msgstr ""
 
@@ -5291,15 +5369,15 @@ msgstr ""
 msgid "RSS feed URL"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:390
+#: ../includes/routes/management.routes.php:391
 msgid "- You must provide a password for SMTP authentication."
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:635
+#: ../includes/routes/contributions.routes.php:638
 msgid "A problem happened while sending contribution receipt to user %name (%email)"
 msgstr ""
 
-#: ../templates/default/ajouter_contribution.tpl:30
+#: ../templates/default/ajouter_contribution.tpl:30 ../templates/default/dispatch_type.tpl:30
 msgid "Not dispatched amount"
 msgstr ""
 
@@ -5315,7 +5393,7 @@ msgstr ""
 msgid "No log found"
 msgstr ""
 
-#: ../lib/Galette/Util/FakeData.php:351
+#: ../lib/Galette/Util/FakeData.php:376
 msgid "%count members requested, and %done created"
 msgstr ""
 
@@ -5327,16 +5405,17 @@ msgstr ""
 msgid "Fill all empty login and passwords"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1130
+#: ../lib/Galette/Core/Install.php:1134
 msgid "Fields config and categories"
 msgstr ""
 
 #: ../lib/Galette/Entity/Transaction.php:114 ../lib/Galette/Entity/Contribution.php:133
-#: ../templates/default/ajouter_transaction.tpl:29 ../templates/default/ajouter_contribution.tpl:72
+#: ../templates/default/ajouter_transaction.tpl:29 ../templates/default/ajouter_contribution.tpl:79
+#: ../templates/default/dispatch_type.tpl:79
 msgid "Amount:"
 msgstr ""
 
-#: ../lib/Galette/IO/PdfMembersCards.php:98
+#: ../lib/Galette/IO/PdfMembersCards.php:103
 msgid "Member's Cards"
 msgstr ""
 
@@ -5352,7 +5431,7 @@ msgstr ""
 msgid "Your Galette database is not present, or not up to date."
 msgstr ""
 
-#: ../lib/Galette/IO/FileTrait.php:493 ../lib/Galette/Entity/DynamicsTrait.php:192
+#: ../lib/Galette/IO/FileTrait.php:493 ../lib/Galette/Entity/DynamicsTrait.php:231
 msgid "File is too big. Maximum allowed size is %dKo"
 msgstr ""
 
@@ -5360,11 +5439,15 @@ msgstr ""
 msgid "transactions"
 msgstr ""
 
+#: ../templates/default/fake_data.tpl:13 ../templates/default/fake_data.tpl:14
+msgid "Add photos for members."
+msgstr ""
+
 #: ../templates/default/editer_champ.tpl:51
 msgid "Maximum number of characters."
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:49
+#: ../templates/default/ajouter_transaction.tpl:57
 msgid "Select an existing contribution in the database, and attach it to the current transaction"
 msgstr ""
 
@@ -5377,7 +5460,7 @@ msgstr ""
 msgid "Address:"
 msgstr ""
 
-#: ../includes/routes/ajax.routes.php:65
+#: ../includes/routes/ajax.routes.php:67
 msgid "Required argument not present!"
 msgstr ""
 
@@ -5385,7 +5468,7 @@ msgstr ""
 msgid " (continuation)"
 msgstr ""
 
-#: ../templates/default/voir_adherent.tpl:141 ../templates/default/forms_types/groups.tpl:2
+#: ../templates/default/voir_adherent.tpl:142 ../templates/default/forms_types/groups.tpl:2
 msgid "Groups:"
 msgstr ""
 
@@ -5405,6 +5488,10 @@ msgstr ""
 msgid "View contributions"
 msgstr ""
 
+#: ../templates/default/ajouter_transaction.tpl:34 ../templates/default/ajouter_contribution.tpl:135
+msgid "Dispatch type:"
+msgstr ""
+
 #: ../templates/default/lostpasswd.tpl:9
 msgid "Recover password"
 msgstr ""
@@ -5415,9 +5502,9 @@ msgstr ""
 msgid "An error occured :("
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1405 ../includes/routes/members.routes.php:258
-#: ../includes/routes/members.routes.php:262 ../includes/routes/members.routes.php:266
-#: ../includes/routes/members.routes.php:270 ../templates/default/gestion_mailings.tpl:32
+#: ../lib/Galette/Entity/Adherent.php:1405 ../includes/routes/members.routes.php:261
+#: ../includes/routes/members.routes.php:265 ../includes/routes/members.routes.php:269
+#: ../includes/routes/members.routes.php:273 ../templates/default/gestion_mailings.tpl:32
 #: ../templates/default/gestion_intitule_content.tpl:37 ../templates/default/gestion_intitule_content.tpl:75
 #: ../templates/default/config_fields.tpl:33 ../templates/default/editer_champ.tpl:28
 #: ../templates/default/editer_champ.tpl:110 ../templates/default/configurer_fiche_content.tpl:21
@@ -5431,7 +5518,7 @@ msgstr ""
 msgid "Unable to create main datadir in %path!"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:49
+#: ../templates/default/ajouter_transaction.tpl:57
 msgid "Select existing contribution"
 msgstr ""
 
@@ -5452,7 +5539,7 @@ msgstr ""
 msgid "is"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2999
+#: ../includes/routes/management.routes.php:3012
 msgid "Dynamic field ID cannot ben null calling edit route!"
 msgstr ""
 
@@ -5460,7 +5547,7 @@ msgstr ""
 msgid "ends with"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:285
+#: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:315
 #: ../install/old.index.php:205 ../install/old.index.php:310
 #: ../install/old.index.php:1525 ../install/steps/type.php:40
 #: ../templates/default/plugin_initdb.tpl:131
@@ -5500,7 +5587,7 @@ msgstr ""
 msgid "Unauthorized"
 msgstr ""
 
-#: ../templates/default/ajouter_contribution.tpl:15
+#: ../templates/default/ajouter_contribution.tpl:15 ../templates/default/dispatch_type.tpl:15
 msgid "View transaction"
 msgstr ""
 
@@ -5508,7 +5595,7 @@ msgstr ""
 msgid "Headers"
 msgstr ""
 
-#: ../includes/routes/ajax.routes.php:105
+#: ../includes/routes/ajax.routes.php:107
 msgid "Member photo has been changed."
 msgstr ""
 
@@ -5524,7 +5611,7 @@ msgstr ""
 msgid "from"
 msgstr ""
 
-#: ../templates/default/edit_dynamic_fields.tpl:96
+#: ../templates/default/edit_dynamic_fields.tpl:100
 msgid "Enter as many occurences you want."
 msgstr ""
 
@@ -5532,8 +5619,8 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#: ../templates/default/desktop.tpl:20
-msgid "Hide this panel"
+#: ../templates/default/500.tpl:11
+msgid "Details"
 msgstr ""
 
 #: ../templates/default/gestion_groupes.tpl:147
@@ -5544,7 +5631,7 @@ msgstr ""
 msgid "Cards generation parameters"
 msgstr ""
 
-#: ../templates/default/ajouter_contribution.tpl:70
+#: ../templates/default/ajouter_contribution.tpl:77 ../templates/default/dispatch_type.tpl:77
 msgid "Details of membership fee"
 msgstr ""
 
@@ -5556,7 +5643,7 @@ msgstr ""
 msgid "- Empty transaction description!"
 msgstr ""
 
-#: ../templates/default/desktop.tpl:32 ../templates/default/page.tpl:140
+#: ../templates/default/desktop.tpl:33 ../templates/default/page.tpl:140
 msgid "View and filter contributions"
 msgstr ""
 
@@ -5572,7 +5659,7 @@ msgstr ""
 msgid "Secretary"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:3027
+#: ../includes/routes/management.routes.php:3040
 msgid "Unable to retrieve field informations."
 msgstr ""
 
@@ -5595,7 +5682,7 @@ msgstr ""
 msgid "No active plugin."
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2276
+#: ../includes/routes/members.routes.php:2297
 msgid "Reminder has not been sent:"
 msgstr ""
 
@@ -5607,7 +5694,7 @@ msgstr ""
 msgid "Various charts"
 msgstr ""
 
-#: ../templates/default/page.tpl:153
+#: ../templates/default/desktop.tpl:47 ../templates/default/page.tpl:153
 msgid "My contributions"
 msgstr ""
 
@@ -5631,7 +5718,8 @@ msgstr ""
 msgid "Cancel mailing"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:150 ../templates/default/ajouter_contribution.tpl:97
+#: ../lib/Galette/Entity/Contribution.php:150 ../templates/default/ajouter_contribution.tpl:104
+#: ../templates/default/dispatch_type.tpl:104
 msgid "Start date of membership:"
 msgstr ""
 
@@ -5639,8 +5727,8 @@ msgstr ""
 msgid "PHP version"
 msgstr ""
 
-#: ../templates/default/gestion_contributions.tpl:39 ../templates/default/gestion_contributions.tpl:39
-msgid "Show all members contributions"
+#: ../templates/default/gestion_mailings.tpl:28
+msgid "Sent mailings:"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:219 ../templates/default/gestion_contributions.tpl:243
@@ -5663,11 +5751,11 @@ msgstr ""
 msgid "New dynamic field"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1968
+#: ../includes/routes/members.routes.php:1989
 msgid "Please enter a message."
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1148
+#: ../lib/Galette/Core/Install.php:1152
 msgid "Update preferences"
 msgstr ""
 
@@ -5680,6 +5768,7 @@ msgid "Initialize database"
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:185 ../templates/default/ajouter_contribution.tpl:17
+#: ../templates/default/dispatch_type.tpl:17
 msgid "[view]"
 msgstr ""
 
@@ -5687,23 +5776,24 @@ msgstr ""
 msgid "This can come from the permissions on the configuration file or the impossibility to make an INSERT into the database."
 msgstr ""
 
-#: ../includes/routes/members.routes.php:611
+#: ../includes/routes/members.routes.php:614
 msgid "No member #%id."
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:141 ../templates/default/ajouter_contribution.tpl:119
+#: ../lib/Galette/Entity/Contribution.php:141 ../templates/default/ajouter_contribution.tpl:126
+#: ../templates/default/dispatch_type.tpl:126
 msgid "Comments:"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:3281
+#: ../includes/routes/management.routes.php:3296
 msgid "An error occured reinitializing texts :("
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:307 ../lib/Galette/Core/Plugins.php:311
+#: ../lib/Galette/Core/Plugins.php:312 ../lib/Galette/Core/Plugins.php:316
 msgid "Cannot activate plugin."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2818
+#: ../includes/routes/management.routes.php:2831
 msgid "An error occured while storing fields configuration :("
 msgstr ""
 
@@ -5712,7 +5802,7 @@ msgid "Fail to add new member."
 msgstr ""
 
 #: ../install/old.index.php:1178 ../install/steps/admin.php:54
-#: ../templates/default/preferences.tpl:467
+#: ../templates/default/preferences.tpl:468
 msgid "Retype password:"
 msgstr ""
 
@@ -5748,7 +5838,7 @@ msgstr ""
 msgid "Notify member his account has been created"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:278 ../includes/routes/contributions.routes.php:465
+#: ../includes/routes/contributions.routes.php:278 ../includes/routes/contributions.routes.php:468
 msgid "Contribution ID cannot ben null calling edit route!"
 msgstr ""
 
@@ -5769,7 +5859,7 @@ msgstr ""
 msgid "Subtitle"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:3290
+#: ../includes/routes/management.routes.php:3305
 msgid "Fields configuration has been successfully reinitialized."
 msgstr ""
 
@@ -5782,11 +5872,11 @@ msgstr ""
 msgid "Informations"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1734
+#: ../includes/routes/management.routes.php:1747
 msgid "No files has been seleted for upload!"
 msgstr ""
 
-#: ../templates/default/edit_dynamic_fields.tpl:55
+#: ../templates/default/edit_dynamic_fields.tpl:59
 msgid "delete"
 msgstr ""
 
@@ -5798,12 +5888,13 @@ msgstr ""
 msgid "Activities"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:432 ../templates/default/member.tpl:244
-#: ../templates/default/member.tpl:254 ../templates/default/gestion_mailings.tpl:191
-#: ../templates/default/edit_dynamic_fields.tpl:182 ../templates/default/ajouter_transaction.tpl:224
+#: ../templates/default/gestion_adherents.tpl:432 ../templates/default/member.tpl:243
+#: ../templates/default/member.tpl:253 ../templates/default/gestion_mailings.tpl:191
+#: ../templates/default/edit_dynamic_fields.tpl:186 ../templates/default/ajouter_transaction.tpl:232
 #: ../templates/default/history.tpl:167 ../templates/default/gestion_contributions.tpl:295
-#: ../templates/default/ajouter_contribution.tpl:148 ../templates/default/gestion_transactions.tpl:171
-#: ../templates/default/advanced_search.tpl:345 ../templates/default/advanced_search.tpl:354
+#: ../templates/default/ajouter_contribution.tpl:184 ../templates/default/dispatch_type.tpl:172
+#: ../templates/default/gestion_transactions.tpl:171 ../templates/default/advanced_search.tpl:345
+#: ../templates/default/advanced_search.tpl:354
 msgid "Select a date"
 msgstr ""
 
@@ -5843,7 +5934,7 @@ msgstr ""
 msgid "Using a SMTP server (slower)"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2192
+#: ../includes/routes/management.routes.php:2205
 msgid "Title '%s' has been successfully modified."
 msgstr ""
 
@@ -5852,7 +5943,7 @@ msgid "Table prefix:"
 msgstr ""
 
 #: ../lib/Galette/Core/CheckModules.php:189 ../lib/Galette/Core/Install.php:166
-#: ../templates/default/voir_adherent.tpl:178
+#: ../templates/default/voir_adherent.tpl:179
 msgid "Ok"
 msgstr ""
 
@@ -5872,7 +5963,8 @@ msgstr ""
 msgid "[Mail]"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:137 ../templates/default/ajouter_contribution.tpl:76
+#: ../lib/Galette/Entity/Contribution.php:137 ../templates/default/ajouter_contribution.tpl:83
+#: ../templates/default/dispatch_type.tpl:83
 msgid "Payment type:"
 msgstr ""
 
@@ -5936,7 +6028,7 @@ msgstr ""
 msgid "An error occured displaying preview :("
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2846
+#: ../includes/routes/management.routes.php:2859
 msgid "Dynamic fields configuration"
 msgstr ""
 
@@ -5944,11 +6036,11 @@ msgstr ""
 msgid "french"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1443
+#: ../includes/routes/management.routes.php:1456
 msgid "'%export' file has been removed from disk."
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:286
+#: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:316
 #: ../install/old.index.php:213 ../install/old.index.php:521
 #: ../install/old.index.php:605 ../install/old.index.php:1527
 #: ../install/steps/db.php:41 ../install/steps/db.php:67
@@ -5957,7 +6049,7 @@ msgstr ""
 
 #: ../lib/Galette/Filters/ContributionsList.php:225 ../lib/Galette/Filters/MailingsList.php:235
 #: ../lib/Galette/Filters/HistoryList.php:241 ../lib/Galette/Filters/TransactionsList.php:200
-#: ../includes/routes/management.routes.php:1006 ../includes/routes/management.routes.php:1220
+#: ../includes/routes/management.routes.php:1019 ../includes/routes/management.routes.php:1233
 #: ../includes/routes/contributions.routes.php:213
 msgid "start date filter"
 msgstr ""
@@ -5982,11 +6074,11 @@ msgstr ""
 msgid "Footer"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1138 ../templates/default/page.tpl:181
+#: ../lib/Galette/Core/Install.php:1142 ../templates/default/page.tpl:181
 msgid "Titles"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:3095
+#: ../includes/routes/management.routes.php:3108
 msgid "An error occured adding dynamic field :("
 msgstr ""
 
@@ -5994,7 +6086,7 @@ msgstr ""
 msgid "Default fields configuration cannot be initialized."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2324
+#: ../includes/routes/management.routes.php:2337
 msgid "Contribution types"
 msgstr ""
 
@@ -6002,7 +6094,7 @@ msgstr ""
 msgid "Inactive account"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1405
+#: ../includes/routes/members.routes.php:1390
 msgid "An error occured trying to remove members :/"
 msgstr ""
 
@@ -6022,7 +6114,7 @@ msgstr ""
 msgid "Initialize '%name' database"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:99
+#: ../templates/default/ajouter_transaction.tpl:107
 msgid "Detach"
 msgstr ""
 
@@ -6042,16 +6134,17 @@ msgstr ""
 msgid "Application error"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:691
+#: ../includes/routes/members.routes.php:694
 msgid "Member ID cannot ben null calling edit route!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:1177 ../includes/routes/members.routes.php:1520
-#: ../templates/default/gestion_contributions.tpl:24 ../templates/default/ajouter_contribution.tpl:79
+#: ../lib/Galette/Entity/Contribution.php:1177 ../includes/routes/members.routes.php:1505
+#: ../templates/default/gestion_contributions.tpl:24 ../templates/default/ajouter_contribution.tpl:86
+#: ../templates/default/dispatch_type.tpl:86
 msgid "Credit card"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:57 ../templates/default/gestion_contributions.tpl:13
+#: ../templates/default/ajouter_transaction.tpl:65 ../templates/default/gestion_contributions.tpl:13
 #: ../templates/default/gestion_contributions.tpl:92 ../templates/default/gestion_contributions.tpl:198
 msgid "End"
 msgstr ""
@@ -6087,7 +6180,7 @@ msgstr ""
 msgid "Account registered!"
 msgstr ""
 
-#: ../templates/default/fake_data.tpl:47 ../templates/default/attendance_sheet_details.tpl:38
+#: ../templates/default/fake_data.tpl:52 ../templates/default/attendance_sheet_details.tpl:38
 msgid "Generate"
 msgstr ""
 
@@ -6124,7 +6217,7 @@ msgstr ""
 msgid "Originator:"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:401
+#: ../includes/routes/management.routes.php:402
 msgid "- Default membership extention and beginning of membership are mutually exclusive."
 msgstr ""
 
@@ -6132,7 +6225,7 @@ msgstr ""
 msgid "(Indicate the CURRENT prefix of your Galette tables)"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:684
+#: ../includes/routes/contributions.routes.php:687
 msgid "Mail sent to admin for user %name (%email)"
 msgstr ""
 
@@ -6144,7 +6237,7 @@ msgstr ""
 msgid "Open '%s' in a new window"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:1141
+#: ../includes/routes/contributions.routes.php:1154
 msgid "Transactions(s) has been removed!"
 msgstr ""
 
@@ -6152,7 +6245,7 @@ msgstr ""
 msgid "Lateness in fee"
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:285 ../lib/Galette/Core/Plugins.php:289
+#: ../lib/Galette/Core/Plugins.php:290 ../lib/Galette/Core/Plugins.php:294
 msgid "Cannot deactivate plugin."
 msgstr ""
 
@@ -6165,7 +6258,7 @@ msgstr ""
 msgid "Don't care"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1715
+#: ../includes/routes/management.routes.php:1728
 msgid "Your file has been successfully uploaded!"
 msgstr ""
 
@@ -6230,7 +6323,7 @@ msgstr ""
 msgid "Unable to create datadir in %dir!"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:3109
+#: ../includes/routes/management.routes.php:3122
 msgid "Dynamic field has been successfully stored!"
 msgstr ""
 
@@ -6254,15 +6347,15 @@ msgstr ""
 msgid "Missing or incorrect image file "
 msgstr ""
 
-#: ../lib/Galette/Repository/Members.php:400
+#: ../lib/Galette/Repository/Members.php:401
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:334
+#: ../includes/routes/management.routes.php:335
 msgid "- Invalid format of beginning of membership."
 msgstr ""
 
-#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:1043
+#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:1044
 msgid "free text"
 msgstr ""
 
@@ -6276,6 +6369,10 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:359
 msgid "annual fee (to be paid)"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:70 ../templates/default/dispatch_type.tpl:70
+msgid "Reload date informations according to selected member and contribution type"
 msgstr ""
 
 #: ../templates/default/gestion_pdf_content.tpl:24
@@ -6294,7 +6391,7 @@ msgstr ""
 msgid "- Unknown payment type!"
 msgstr ""
 
-#: ../includes/routes/ajax.routes.php:214
+#: ../includes/routes/ajax.routes.php:216
 msgid "Telemetry informations has been sent. Thank you!"
 msgstr ""
 
@@ -6306,11 +6403,11 @@ msgstr ""
 msgid "Search:"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:1151
+#: ../includes/routes/contributions.routes.php:1164
 msgid "An error occured trying to remove contributions(s) :("
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1048
+#: ../includes/routes/members.routes.php:1051
 msgid "A problem happened while sending email to admin for account '%s'."
 msgstr ""
 
@@ -6322,12 +6419,12 @@ msgstr ""
 msgid "You must provide both login and password."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:265
+#: ../includes/routes/management.routes.php:266
 msgid "- The username must be composed of at least 4 characters!"
 msgstr ""
 
-#: ../install/steps/db.php:52
-msgid "It seems that you have already installed Galette once.<br/>All existing data will be removed if you keep going on using existing database!"
+#: ../templates/default/plugins.tpl:50 ../templates/default/plugins.tpl:57
+msgid "Cause"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:232
@@ -6346,7 +6443,7 @@ msgstr ""
 msgid "Manage PDF models"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1533 ../templates/default/advanced_search.tpl:48
+#: ../includes/routes/members.routes.php:1518 ../templates/default/advanced_search.tpl:48
 #: ../templates/default/page.tpl:136
 msgid "Advanced search"
 msgstr ""
@@ -6391,7 +6488,7 @@ msgstr ""
 msgid "Statuts"
 msgstr ""
 
-#: ../lib/Galette/Repository/Members.php:319
+#: ../lib/Galette/Repository/Members.php:320
 msgid "Member Picture deleted"
 msgstr ""
 
@@ -6411,7 +6508,7 @@ msgstr ""
 msgid "Mail sent to '%s' for password recovery."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1509
+#: ../includes/routes/management.routes.php:1522
 msgid "Table %table is empty, and has not been exported."
 msgstr ""
 
@@ -6461,6 +6558,10 @@ msgstr ""
 msgid "Existing variables"
 msgstr ""
 
+#: ../templates/default/plugins.tpl:65
+msgid "Unknown"
+msgstr ""
+
 #: ../lib/Galette/Entity/Entitled.php:518
 msgid "Cannot delete this label: it's still used"
 msgstr ""
@@ -6477,15 +6578,15 @@ msgstr ""
 msgid "Read only"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1527
+#: ../includes/routes/management.routes.php:1540
 msgid "Export file could not be write on disk for '%export'. Make sure web server can write in the exports directory."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:72 ../templates/default/page.tpl:134
+#: ../includes/routes/management.routes.php:72 ../templates/default/page.tpl:133
 msgid "Dashboard"
 msgstr ""
 
-#: ../templates/default/desktop.tpl:30 ../templates/default/page.tpl:137
+#: ../templates/default/desktop.tpl:31 ../templates/default/page.tpl:137
 msgid "View and manage groups"
 msgstr ""
 
@@ -6509,12 +6610,12 @@ msgstr ""
 msgid "company fee"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:58 ../templates/default/gestion_contributions.tpl:149
+#: ../templates/default/ajouter_transaction.tpl:66 ../templates/default/gestion_contributions.tpl:149
 #: ../templates/default/gestion_contributions.tpl:211
 msgid "Duration"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2269
+#: ../includes/routes/members.routes.php:2290
 msgid "There are no member to proceed."
 msgstr ""
 
@@ -6525,7 +6626,7 @@ msgstr ""
 msgid "Y"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1853
+#: ../includes/routes/management.routes.php:1866
 msgid "Import model has not been stored :("
 msgstr ""
 
@@ -6570,11 +6671,11 @@ msgstr ""
 msgid "The tables has been correctly updated."
 msgstr ""
 
-#: ../includes/routes/management.routes.php:2318
+#: ../includes/routes/management.routes.php:2331
 msgid "User statuses"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:328
+#: ../includes/routes/management.routes.php:329
 msgid "- Invalid number of months of membership extension."
 msgstr ""
 
@@ -6586,7 +6687,7 @@ msgstr ""
 msgid "- The username cannot contain the @ character"
 msgstr ""
 
-#: ../templates/default/ajouter_contribution.tpl:126
+#: ../templates/default/ajouter_contribution.tpl:145 ../templates/default/dispatch_type.tpl:133
 msgid "Notify member"
 msgstr ""
 
@@ -6598,7 +6699,7 @@ msgstr ""
 msgid "Account activity"
 msgstr ""
 
-#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:1046
+#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:1047
 msgid "date"
 msgstr ""
 
@@ -6606,11 +6707,11 @@ msgstr ""
 msgid "No members has been selected yet."
 msgstr ""
 
-#: ../templates/default/preferences.tpl:454
+#: ../templates/default/preferences.tpl:455
 msgid "Admin account (independant of members)"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:143 ../webroot/installer.php:302
+#: ../lib/Galette/Core/Install.php:143 ../webroot/installer.php:332
 #: ../install/old.index.php:229 ../install/old.index.php:1531
 msgid "Admin parameters"
 msgstr ""
@@ -6619,7 +6720,7 @@ msgstr ""
 msgid "Label height:"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1453
+#: ../includes/routes/management.routes.php:1466
 msgid "Cannot remove '%export' from disk :/"
 msgstr ""
 
@@ -6666,11 +6767,11 @@ msgstr ""
 msgid "[staff]"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:551
+#: ../includes/routes/contributions.routes.php:554
 msgid "A problem happened while sending to admin post contribution notification for user %name (%email) contribution"
 msgstr ""
 
-#: ../templates/default/ajouter_transaction.tpl:214
+#: ../templates/default/ajouter_transaction.tpl:222
 msgid "Click on a contribution row to attach it to the current transaction"
 msgstr ""
 
@@ -6682,13 +6783,13 @@ msgstr ""
 msgid "Save the parameters"
 msgstr ""
 
-#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:536 ../includes/routes/contributions.routes.php:1079
-#: ../templates/default/gestion_adherents.tpl:285 ../templates/default/fake_data.tpl:36
-#: ../templates/default/desktop.tpl:32
+#: ../lib/Galette/DynamicFieldsTypes/DynamicFieldType.php:536 ../includes/routes/contributions.routes.php:1092
+#: ../templates/default/gestion_adherents.tpl:285 ../templates/default/fake_data.tpl:41
+#: ../templates/default/desktop.tpl:33 ../templates/default/desktop.tpl:47
 msgid "Contributions"
 msgstr ""
 
-#: ../includes/routes/management.routes.php:1931
+#: ../includes/routes/management.routes.php:1944
 msgid "Missing PDF model type!"
 msgstr ""
 
@@ -6697,7 +6798,7 @@ msgstr ""
 msgid "Show legend"
 msgstr ""
 
-#: ../includes/routes/contributions.routes.php:880
+#: ../includes/routes/contributions.routes.php:892
 msgid "Unable to attach contribution to transaction"
 msgstr ""
 
@@ -6709,7 +6810,7 @@ msgstr ""
 msgid "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1125
+#: ../includes/routes/members.routes.php:1128
 msgid "A problem happened while sending account mail to '%s'"
 msgstr ""
 
@@ -6730,11 +6831,11 @@ msgstr ""
 msgid "Remove '%file' from disk"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1134
+#: ../lib/Galette/Core/Install.php:1138
 msgid "Mails texts"
 msgstr ""
 
-#: ../templates/default/plugins.tpl:52
+#: ../templates/default/plugins.tpl:70
 msgid "Enable plugin"
 msgstr ""
 

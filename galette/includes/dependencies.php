@@ -101,6 +101,7 @@ $container['view'] = function ($c) {
     $smarty->assign('GALETTE_VERSION', GALETTE_VERSION);
     $smarty->assign('GALETTE_MODE', GALETTE_MODE);
     $smarty->assign('GALETTE_DISPLAY_ERRORS', GALETTE_DISPLAY_ERRORS);
+    $smarty->assign('_CURRENT_THEME_PATH', _CURRENT_THEME_PATH);
 
     /*if ($this->parserConfigDir) {
         $instance->setConfigDir($this->parserConfigDir);
@@ -147,6 +148,12 @@ $container['view'] = function ($c) {
         }
     }
 
+    foreach ($c->get('plugins')->getModules() as $module_id => $module) {
+        $smarty->addTemplateDir(
+            $module['root'] . '/templates/' . $c->get('preferences')->pref_theme,
+            $module['route']
+        );
+    }
     return $view;
 };
 
@@ -215,7 +222,7 @@ $container['acls'] = function ($c) {
         'preferences'       => 'admin',
         'store-preferences' => 'admin',
         'testEmail'         => 'admin',
-        'dashboard'         => 'groupmanager',
+        'dashboard'         => 'member',
         'sysinfos'          => 'staff',
         'charts'            => 'staff',
         'plugins'           => 'admin',
@@ -274,6 +281,7 @@ $container['acls'] = function ($c) {
         'transaction'       => 'staff',
         'doEditTransaction' => 'staff',
         'contribution'      => 'staff',
+        'contributionDates' => 'staff',
         'attendance_sheet_details'  => 'groupmanager',
         'attendance_sheet'  => 'groupmanager',
         'entitleds'         => 'staff',
@@ -311,7 +319,7 @@ $container['acls'] = function ($c) {
         'photoDnd'                  => 'staff',
         'ajaxMembers'               => 'groupmanager',
         'ajaxGroupMembers'          => 'staff',
-        'getDynamicFile'            => 'staff',
+        'getDynamicFile'            => 'member',
         'fakeData'                  => 'superadmin',
         'doFakeData'                => 'superadmin',
         'adminTools'                => 'superadmin',

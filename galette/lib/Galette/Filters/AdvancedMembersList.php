@@ -416,7 +416,7 @@ class AdvancedMembersList extends MembersList
                     foreach ($value as $v) {
                         if (is_numeric($v)) {
                             //check status existence
-                            $s = new Status();
+                            $s = new Status($zdb);
                             $res = $s->get($v);
                             if ($res !== false) {
                                 $this->_status[] = $v;
