@@ -216,7 +216,7 @@ class FieldsConfig extends atoum
         $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::NOBODY);
 
         $visible = $this->fields_config->getVisibility('info_adh');
-        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::ADMIN);
+        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::STAFF);
     }
 
     /**
@@ -405,7 +405,7 @@ class FieldsConfig extends atoum
         $this->object($elements[2])->isInstanceOf('\stdClass');
         $this->integer($elements[2]->id)->isIdenticalTo(2);
         $this->array($elements[2]->elements)
-            ->hasSize(9)
+            ->hasSize(4)
             ->notHasKey('info_adh');
     }
 
@@ -478,7 +478,7 @@ class FieldsConfig extends atoum
         $this->object($elements['fieldsets'][2])->isInstanceOf('\stdClass');
         $this->integer($elements['fieldsets'][2]->id)->isIdenticalTo(2);
         $this->array($elements['fieldsets'][2]->elements)
-            ->hasSize(9)
+            ->hasSize(4)
             ->notHasKey('info_adh');
 
         $this->array($elements['hiddens'])
