@@ -9,6 +9,11 @@ News
 - Massive changes of members
 - Define a default status for new members in preferences
 
+Bugfixes
+^^^^^^^^
+
+- Ensure all PDF models configured are installed
+
 0.8.3.4 -> 0.9
 
 News
