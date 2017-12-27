@@ -61,6 +61,7 @@ abstract class Repository
     protected $entity;
     protected $login;
     protected $filters;
+    protected $defaults = [];
 
     /**
      * Main constructor
@@ -102,6 +103,18 @@ abstract class Repository
             throw new \RuntimeException(
                 'Entity class ' . $entity . ' cannot be found!'
             );
+        }
+
+        if (method_exists($this, 'checkUpdate')) {
+            $this->loadDefaults();
+            if (count($this->defaults)) {
+                $this->checkUpdate();
+            } else {
+                Analog::log(
+                    'No defaults loaded!',
+                    Analog::ERROR
+                );
+            }
         }
     }
 
@@ -157,4 +170,11 @@ abstract class Repository
     {
         $this->filters = $filters;
     }
+
+    /**
+     * Load and get default values for current repository
+     *
+     * @return array
+     */
+    abstract protected function loadDefaults();
 }
