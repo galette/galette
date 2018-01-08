@@ -12,4 +12,10 @@
 		<flag>english.gif</flag>
 		<filename>english</filename>
 	</lang>
+	<lang id="de_DE" long="de_DE.utf8" alter="deutsch">
+		<shortname>de</shortname>
+		<longname>deutsch</longname>
+		<flag>german.png</flag>
+		<filename>german</filename>
+	</lang>
 </translations>
