@@ -1664,19 +1664,19 @@ class Adherent
             if ($files['photo']['error'] === UPLOAD_ERR_OK) {
                 if ($files['photo']['tmp_name'] !='') {
                     if (is_uploaded_file($files['photo']['tmp_name'])) {
-                        $res = $member->picture->store($files['photo']);
+                        $res = $this->picture->store($files['photo']);
                         if ($res < 0) {
                             $this->errors[]
-                                = $member->picture->getErrorMessage($res);
+                                = $this->picture->getErrorMessage($res);
                         }
                     }
                 }
             } elseif ($files['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
                 Analog::log(
-                    $member->picture->getPhpErrorMessage($files['photo']['error']),
+                    $this->picture->getPhpErrorMessage($files['photo']['error']),
                     Analog::WARNING
                 );
-                $this->errors[] = $member->picture->getPhpErrorMessage(
+                $this->errors[] = $this->picture->getPhpErrorMessage(
                     $files['photo']['error']
                 );
             }
