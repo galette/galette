@@ -1268,29 +1268,44 @@ $app->post(
             }
 
             if (count($error_detected) == 0) {
-                if (!isset($post['id_adh']) && !$member->isDueFree() && !isset($args['self'])) {
-                    return $response
-                        ->withStatus(301)
-                        ->withHeader(
-                            'Location',
-                            $this->router->pathFor(
-                                'contribution',
-                                [
-                                    'type'      => 'fee',
-                                    'action'    => 'add',
-                                ]
-                            ) . '?id_adh=' . $member->id
-                        );
-                } else {
-                    if (isset($args['self'])) {
-                        $redirect_url = $this->router->pathFor('login');
-                    } else {
-                        $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
+                $redirect_url = null;
+                if (isset($args['self'])) {
+                    $redirect_url = $this->router->pathFor('login');
+                } elseif (isset($post['redirect_on_create'])
+                    && $post['redirect_on_create'] > Adherent::AFTER_ADD_DEFAULT
+                ) {
+                    switch ($post['redirect_on_create']) {
+                        case Adherent::AFTER_ADD_TRANS:
+                            $redirect_url = $this->router->pathFor('transaction', ['action' => 'add']);
+                            break;
+                        case Adherent::AFTER_ADD_NEW:
+                            $redirect_url = $this->router->pathFor('editmember', ['action' => 'add']);
+                            break;
+                        case Adherent::AFTER_ADD_SHOW:
+                            $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
+                            break;
+                        case Adherent::AFTER_ADD_LIST:
+                            $redirect_url = $this->router->pathFor('members');
+                            break;
+                        case Adherent::AFTER_ADD_HOME:
+                            $redirect_url = $this->router->pathFor('slash');
+                            break;
                     }
-                    return $response
-                        ->withStatus(301)
-                        ->withHeader('Location', $redirect_url);
+                } elseif (!isset($post['id_adh']) && !$member->isDueFree()) {
+                    $redirect_url = $this->router->pathFor(
+                        'contribution',
+                        [
+                            'type'      => 'fee',
+                            'action'    => 'add',
+                        ]
+                    ) . '?id_adh=' . $member->id;
+                } else {
+                    $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
                 }
+
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $redirect_url);
             } else {
                 //store entity in session
                 $this->session->member = $member;

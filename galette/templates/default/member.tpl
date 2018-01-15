@@ -80,9 +80,22 @@
     {/if}
         </div>
         <div class="button-container">
+            {if !$member->id && !$self_adh }
+               <label for="redirect_on_create">{_T string="After member creation:"}</label>
+               <select name="redirect_on_create" id="redirect_on_create">
+                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')}">{_T string="execute default action"}</option>
+                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')}">{_T string="create a new transaction"}</option>
+                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_NEW')}">{_T string="create another new member"}</option>
+                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')}">{_T string="show member"}</option>
+                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_LIST')}">{_T string="go to members list"}</option>
+                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_HOME')}">{_T string="go to main page"}</option>
+               </select>
+               <br/>
+            {/if}
             <button type="submit" name="valid" class="action">
                 <i class="fas fa-save fa-fw"></i> {_T string="Save"}
             </button>
+
 
             {foreach item=entry from=$hidden_elements}
                 {if $entry->field_id neq 'mdp_adh'}
@@ -114,6 +127,7 @@
                     {/if}
                 {/if}
             {/foreach}
+
             <a href="#" id="back2top">{_T string="Back to top"}</a>
         </div>
         </form>

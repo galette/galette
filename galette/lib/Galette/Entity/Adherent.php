@@ -71,6 +71,13 @@ class Adherent
     const MAN = 1;
     const WOMAN = 2;
 
+    const AFTER_ADD_DEFAULT = 0;
+    const AFTER_ADD_TRANS = 1;
+    const AFTER_ADD_NEW = 2;
+    const AFTER_ADD_SHOW = 3;
+    const AFTER_ADD_LIST = 4;
+    const AFTER_ADD_HOME = 5;
+
     private $_id;
     //Identity
     private $_title;

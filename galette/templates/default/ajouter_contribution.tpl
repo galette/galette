@@ -41,7 +41,20 @@
     {/if}
             <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
             <fieldset class="cssform">
-                <legend class="ui-state-active ui-corner-top">{if $type eq "fee"}{_T string="Select contributor and membership fee type"}{else}{_T string="Select contributor and donation type"}{/if}</legend>
+                <legend class="ui-state-active ui-corner-top">
+    {if $type eq {_T string="fee" domain="routes"}}
+                    {_T string="Select contributor and membership fee type"}
+                    <a href="{path_for name="contribution" data=["type" => {_T string="fee" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?trans_id={$transaction->id}" class="button notext fright" id="btnadd" title="{_T string="Create a new fee that will be attached to the current transaction"}">{_T string="New attached fee"}</a>
+    {else}
+        {_T string="Select contributor and donation type"}
+
+                    <a href="{path_for name="contribution" data=["type" => {_T string="donation" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?trans_id={$transaction->id}" class="button notext fright" id="btnadddon" title="{_T string="Create a new donation that will be attached to the current transaction"}">{_T string="New attached donation"}</a>
+    {/if}
+
+</legend>
+                <p>
+                     {_T string="Create a new %type instead" pattern="/%type/ replace=$type"}
+                </p>
                 <p>
                     <label for="id_adh" class="bline">{_T string="Contributor:"}</label>
                     <select name="id_adh" id="id_adh" class="nochosen"{if isset($disabled.id_adh)} {$disabled.id_adh}{/if}>
