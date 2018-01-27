@@ -270,17 +270,20 @@ class DynamicFields
     /**
      * Store values
      *
-     * @param integer $item_id Curent item id to use (will be used if current item_id is 0)
+     * @param integer $item_id     Curent item id to use (will be used if current item_id is 0)
+     * @param boolean $transaction True if a transaction already exists
      *
      * @return boolean
      */
-    public function storeValues($item_id = null)
+    public function storeValues($item_id = null, $transaction = false)
     {
         try {
             if ($item_id !== null && ($this->item_id == null || $this->item_id == 0)) {
                 $this->item_id = $item_id;
             }
-            $this->zdb->connection->beginTransaction();
+            if (!$transaction) {
+                $this->zdb->connection->beginTransaction();
+            }
 
             $this->handleRemovals();
 
@@ -334,10 +337,16 @@ class DynamicFields
                 }
             }
 
-            $this->zdb->connection->commit();
+            if (!$transaction) {
+                $this->zdb->connection->commit();
+            }
             return true;
         } catch (\Exception $e) {
-            $this->zdb->connection->rollBack();
+            if (!$transaction) {
+                $this->zdb->connection->rollBack();
+            } else {
+                throw $e;
+            }
             Analog::log(
                 'An error occured storing dynamic field. Form name: ' . $this->form_name .
                 ' | Error was: ' . $e->getMessage(),

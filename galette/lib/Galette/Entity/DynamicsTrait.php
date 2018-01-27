@@ -147,9 +147,11 @@ trait DynamicsTrait
     /**
      * Stores dynamic fields
      *
+     * @param boolean $transaction True if a transaction already exists
+     *
      * @return boolean
      */
-    protected function dynamicsStore()
+    protected function dynamicsStore($transaction = false)
     {
         if ($this->dynamics === null) {
             Analog::log(
@@ -158,7 +160,7 @@ trait DynamicsTrait
             );
             $this->loadDynamicFields();
         }
-        return $this->dynamics->storeValues($this->id);
+        return $this->dynamics->storeValues($this->id, $transaction);
     }
 
     /**
