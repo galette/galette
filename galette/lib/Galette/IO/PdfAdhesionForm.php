@@ -81,10 +81,6 @@ class PdfAdhesionForm
         $this->adh = $adh;
         $this->prefs = $prefs;
 
-        if ($adh !== null) {
-            $dyn_fields = $adh->getDynamicFields()->getFields();
-        }
-
         $model = new PdfAdhesionFormModel($zdb, $prefs, PdfModel::ADHESION_FORM_MODEL);
         Analog::log("model id: " . $model->id, Analog::DEBUG);
         Analog::log("model title: " . $model->title, Analog::DEBUG);
@@ -175,8 +171,10 @@ class PdfAdhesionForm
         );
 
         $dyn_values = [];
-        $df = $adh->getDynamicFields();
-        $fields = $df->getFields();
+        if ($adh !== null) {
+            $dyn_fields = $adh->getDynamicFields()->getFields();
+        }
+
         foreach ($dynamic_patterns as $pattern) {
             $key   = strtolower($pattern);
             $value = '';
@@ -199,8 +197,8 @@ class PdfAdhesionForm
                 if (!isset($dyn_values[$field_id])) {
                     $dyn_values[$field_id] = $df->getValues($field_id);
                 }
-                $field_name  = $fields[$field_id]->getName();
-                $field_type  = $fields[$field_id]->getType();
+                $field_name  = $dyn_fields[$field_id]->getName();
+                $field_type  = $dyn_fields[$field_id]->getType();
                 $value = '';
                 foreach ($dyn_values[$field_id] as $dyn_field) {
                     $field_value = $dyn_field['field_val'];
