@@ -278,9 +278,18 @@ $app->get(
                 _T("Contribution ID cannot ben null calling edit route!")
             );
         } elseif ($action === __('add', 'routes') && $id_cotis !== null) {
-             return $response
+            return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('contribution', ['action' => __('add', 'routes')]));
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor(
+                        'contribution',
+                        [
+                            'type'      => $args['type'],
+                            'action'    => __('add', 'routes')
+                        ]
+                    )
+                );
         }
 
         // contribution types
@@ -709,25 +718,15 @@ $app->post(
             }
 
             if (count($error_detected) == 0) {
-                if ($contrib->isTransactionPart()) {
-                    if ($contrib->transaction->getMissingAmount() > 0) {
-                        $redirect_url = $this->router->pathFor(
-                            'contribution',
-                            [
-                                'action'    => __('add', 'routes'),
-                                'type'      => $post['contrib_type']
-                            ]
-                        ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
-                        '&' . Adherent::PK . '=' . $contrib->member;
-                    } else {
-                        $redirect_url = $this->router->pathFor(
-                            'transaction',
-                            [
-                                'action'    => __('edit', 'routes'),
-                                'id'        => $contrib->transaction->id
-                            ]
-                        );
-                    }
+                if ($contrib->isTransactionPart() && $contrib->transaction->getMissingAmount() > 0) {
+                    $redirect_url = $this->router->pathFor(
+                        'contribution',
+                        [
+                            'action'    => __('add', 'routes'),
+                            'type'      => $post['contrib_type']
+                        ]
+                    ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
+                    '&' . Adherent::PK . '=' . $contrib->member;
                 } else {
                     $redirect_url = $this->router->pathFor(
                         'contributions',
@@ -1008,7 +1007,7 @@ $app->post(
             if ($trans->getMissingAmount() > 0) {
                 $rparams = [
                     'action'    => __('add', 'routes'),
-                    'type'      => $post['contrib_type']
+                    'type'      => __('fee', 'routes')
                 ];
 
                 if (isset($trans->member)) {
