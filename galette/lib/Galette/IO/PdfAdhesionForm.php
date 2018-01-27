@@ -118,12 +118,12 @@ class PdfAdhesionForm
             Analog::log("adding dynamic pattern $key => {" . $pattern . "}", Analog::DEBUG);
         }
 
-        $address = $adh->address;
-        if ($adh->address_continuation != '') {
-            $address .= '<br/>' . $adh->adress_continuation;
-        }
-
         if ($adh !== null) {
+            $address = $adh->address;
+            if ($adh->address_continuation != '') {
+                $address .= '<br/>' . $adh->adress_continuation;
+            }
+
             if ($adh->isMan()) {
                 $gender = _T("Man");
             } elseif ($adh->isWoman()) {
@@ -131,49 +131,48 @@ class PdfAdhesionForm
             } else {
                 $gender = _T("Unspecified");
             }
-        }
 
-        $member_groups = $adh->groups;
-        $main_group = _T("None");
-        $group_list = _T("None");
-        if (count($member_groups) > 0) {
-            $main_group = $member_groups[0]->getName();
-            $group_list = '<ul>';
-            foreach ($member_groups as $group) {
-                $group_list .= '<li>' . $group->getName()  . '</li>';
+            $member_groups = $adh->groups;
+            $main_group = _T("None");
+            $group_list = _T("None");
+            if (count($member_groups) > 0) {
+                $main_group = $member_groups[0]->getName();
+                $group_list = '<ul>';
+                foreach ($member_groups as $group) {
+                    $group_list .= '<li>' . $group->getName()  . '</li>';
+                }
+                $group_list .= '</ul>';
             }
-            $group_list .= '</ul>';
-        }
 
-        $model->setReplacements(
-            array(
-                'adh_title'         => $adh->stitle,
-                'adh_name'          => $adh->sfullname,
-                'adh_last_name'     => $adh->surname,
-                'adh_first_name'    => $adh->name,
-                'adh_nickname'      => $adh->nickname,
-                'adh_gender'        => $gender,
-                'adh_birth_date'    => $adh->birthdate,
-                'adh_birth_place'   => $adh->birth_place,
-                'adh_profession'    => $adh->job,
-                'adh_company_name'  => $adh->company_name,
-                'adh_address'       => $address,
-                'adh_zip'           => $adh->zipcode,
-                'adh_town'          => $adh->town,
-                'adh_country'       => $adh->country,
-                'adh_phone'         => $adh->phone,
-                'adh_mobile'        => $adh->gsm,
-                'adh_email'         => $adh->email,
-                'adh_login'         => $adh->login,
-                'adh_main_group'    => $main_group,
-                'adh_groups'        => $group_list
-            )
-        );
+            $model->setReplacements(
+                array(
+                    'adh_title'         => $adh->stitle,
+                    'adh_name'          => $adh->sfullname,
+                    'adh_last_name'     => $adh->surname,
+                    'adh_first_name'    => $adh->name,
+                    'adh_nickname'      => $adh->nickname,
+                    'adh_gender'        => $gender,
+                    'adh_birth_date'    => $adh->birthdate,
+                    'adh_birth_place'   => $adh->birth_place,
+                    'adh_profession'    => $adh->job,
+                    'adh_company_name'  => $adh->company_name,
+                    'adh_address'       => $address,
+                    'adh_zip'           => $adh->zipcode,
+                    'adh_town'          => $adh->town,
+                    'adh_country'       => $adh->country,
+                    'adh_phone'         => $adh->phone,
+                    'adh_mobile'        => $adh->gsm,
+                    'adh_email'         => $adh->email,
+                    'adh_login'         => $adh->login,
+                    'adh_main_group'    => $main_group,
+                    'adh_groups'        => $group_list
+                )
+            );
 
-        $dyn_values = [];
-        if ($adh !== null) {
             $dyn_fields = $adh->getDynamicFields()->getFields();
         }
+
+        $dyn_values = [];
 
         foreach ($dynamic_patterns as $pattern) {
             $key   = strtolower($pattern);
