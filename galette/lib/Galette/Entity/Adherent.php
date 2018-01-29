@@ -162,16 +162,24 @@ class Adherent
 
         $this->zdb = $zdb;
 
-        if ($deps !== null && is_array($deps)) {
-            $this->_deps = array_merge(
-                $this->_deps,
-                $deps
-            );
-        } elseif ($deps !== null) {
-            Analog::log(
-                '$deps shoud be an array, ' . gettype($deps) . ' given!',
-                Analog::WARNING
-            );
+        if ($deps !== null) {
+            if (is_array($deps)) {
+                $this->_deps = array_merge(
+                    $this->_deps,
+                    $deps
+                );
+            } elseif ($deps === false) {
+                //no dependencies
+                $this->deps = array_fill_keys(
+                    array_keys($this->deps),
+                    false
+                );
+            } else {
+                Analog::log(
+                    '$deps shoud be an array, ' . gettype($deps) . ' given!',
+                    Analog::WARNING
+                );
+            }
         }
 
         if ($args == null || is_int($args)) {

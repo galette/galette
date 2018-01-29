@@ -530,7 +530,7 @@ $app->post(
                             if ($res !== true) {
                                 //send admin a mail with all details
                                 if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
-                                    $mail = new GaletteMail();
+                                    $mail = new GaletteMail($this->preferences);
                                     $mail->setSubject(
                                         _T("Post contribution script failed")
                                     );
@@ -621,7 +621,7 @@ $app->post(
                         }
                         $mtxt = $texts->getTexts($text, $adh->language);
 
-                        $mail = new GaletteMail();
+                        $mail = new GaletteMail($this->preferences);
                         $mail->setSubject($texts->getSubject());
                         $mail->setRecipients(
                             array(
@@ -669,7 +669,7 @@ $app->post(
                     }
                     $mtxt = $texts->getTexts($text, $this->preferences->pref_lang);
 
-                    $mail = new GaletteMail();
+                    $mail = new GaletteMail($this->preferences);
                     $mail->setSubject($texts->getSubject());
                     /** TODO: only super-admin is contacted here. We should send
                     *  a message to all admins, or propose them a chekbox if

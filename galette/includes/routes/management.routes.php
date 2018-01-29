@@ -570,7 +570,7 @@ $app->get(
             $get = $request->getQueryParams();
             $dest = (isset($get['adress']) ? $get['adress'] : $this->preferences->pref_email_newadh);
             if (GaletteMail::isValidEmail($dest)) {
-                $mail = new GaletteMail();
+                $mail = new GaletteMail($this->preferences);
                 $mail->setSubject(_T('Test message'));
                 $mail->setRecipients(
                     array(

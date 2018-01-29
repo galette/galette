@@ -226,6 +226,8 @@ CREATE TABLE galette_mailing_history (
   mailing_date datetime NOT NULL,
   mailing_recipients text NOT NULL,
   mailing_sent tinyint(1) NOT NULL,
+  mailing_sender_name varchar(100) DEFAULT NULL,
+  mailing_sender_address varchar(255) DEFAULT NULL,
   PRIMARY KEY (mailing_id),
   FOREIGN KEY (mailing_sender) REFERENCES galette_adherents (id_adh)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -306,6 +308,6 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-INSERT INTO galette_database(version) VALUES(0.82);
+INSERT INTO galette_database(version) VALUES(0.91);
 
 SET FOREIGN_KEY_CHECKS=1;

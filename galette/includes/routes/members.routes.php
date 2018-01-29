@@ -1027,7 +1027,7 @@ $app->post(
                                 $this->preferences->pref_lang
                             );
 
-                            $mail = new GaletteMail();
+                            $mail = new GaletteMail($this->preferences);
                             $mail->setSubject($texts->getSubject());
                             $mail->setRecipients(
                                 array(
@@ -1102,7 +1102,7 @@ $app->post(
                                     $mlang
                                 );
 
-                                $mail = new GaletteMail();
+                                $mail = new GaletteMail($this->preferences);
                                 $mail->setSubject($texts->getSubject());
                                 $mail->setRecipients(
                                     array(
@@ -1848,7 +1848,7 @@ $app->get(
             ) {
                 $mailing = $this->session->mailing;
             } elseif (isset($get['from']) && is_numeric($get['from'])) {
-                $mailing = new Mailing(null, $get['from']);
+                $mailing = new Mailing($this->preferences, null, $get['from']);
                 MailingHistory::loadFrom($this->zdb, (int)$get['from'], $mailing);
             } elseif (isset($get['reminder'])) {
                 //FIXME: use a constant!
@@ -1857,7 +1857,7 @@ $app->get(
                 $filters->account_status_filter = Members::ACTIVE_ACCOUNT;
                 $m = new Members($filters);
                 $members = $m->getList(true);
-                $mailing = new Mailing(($members !== false) ? $members : null);
+                $mailing = new Mailing($this->preferences, ($members !== false) ? $members : null);
             } else {
                 if (count($filters->selected) == 0
                     && !isset($get['mailing_new'])
@@ -1878,7 +1878,7 @@ $app->get(
                 }
                 $m = new Members();
                 $members = $m->getArrayList($filters->selected);
-                $mailing = new Mailing(($members !== false) ? $members : null);
+                $mailing = new Mailing($this->preferences, ($members !== false) ? $members : null);
             }
 
             if (isset($get['remove_attachment'])) {
@@ -1891,6 +1891,14 @@ $app->get(
 
             /** TODO: replace that... */
             $this->session->labels = $mailing->unreachables;
+
+            if (!$this->login->isSuperAdmin()) {
+                $member = new Adherent($this->zdb, (int)$this->login->id, false);
+                $params['sender_current'] = [
+                    'name'  => $member->sname,
+                    'email' => $member->getEmail()
+                ];
+            }
 
             $params = array_merge(
                 $params,
@@ -1977,7 +1985,7 @@ $app->post(
                 }
                 $m = new Members();
                 $members = $m->getArrayList($filters->selected);
-                $mailing = new Mailing(($members !== false) ? $members : null);
+                $mailing = new Mailing($this->preferences, ($members !== false) ? $members : null);
             }
 
             if (isset($post['mailing_go'])
@@ -1995,6 +2003,26 @@ $app->post(
                     $error_detected[] = _T("Please enter a message.");
                 } else {
                     $mailing->message = $post['mailing_corps'];
+                }
+
+                switch ($post['sender']) {
+                    case GaletteMail::SENDER_CURRENT:
+                        $member = new Adherent($this->zdb, (int)$this->login->id, false);
+                        $mailing->setSender(
+                            $member->sname,
+                            $member->getEmail()
+                        );
+                        break;
+                    case GaletteMail::SENDER_OTHER:
+                        $mailing->setSender(
+                            $post['sender_name'],
+                            $post['sender_address']
+                        );
+                        break;
+                    case GaletteMail::SENDER_PREFS:
+                    default:
+                        //nothing to do; this is the default :)
+                        break;
                 }
 
                 $mailing->html = (isset($post['mailing_html'])) ? true : false;
@@ -2126,7 +2154,7 @@ $app->map(
 
         $mailing = null;
         if (isset($args['id'])) {
-            $mailing = new Mailing(null);
+            $mailing = new Mailing($this->preferences, null);
             MailingHistory::loadFrom($this->zdb, (int)$args['id'], $mailing, false);
             $attachments = $mailing->attachments;
         } else {
@@ -2161,7 +2189,7 @@ $app->map(
 $app->get(
     __('/mailing', 'routes') . __('/preview', 'routes') . '/{id:\d+}' . __('/attachment', 'routes') . '/{pos:\d+}',
     function ($request, $response, $args) {
-        $mailing = new Mailing(null);
+        $mailing = new Mailing($this->preferences, null);
         MailingHistory::loadFrom($this->zdb, (int)$args['id'], $mailing, false);
         $attachments = $mailing->attachments;
         $attachment = $attachments[$args['pos']];

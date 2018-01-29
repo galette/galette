@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2014 The Galette Team
+ * Copyright © 2009-2018 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2014 The Galette Team
+ * @copyright 2011-2018 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -51,7 +51,7 @@ use Zend\Db\Sql\Expression;
  * @name      MailingHistory
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2011-2014 The Galette Team
+ * @copyright 2011-2018 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-08-27
@@ -72,6 +72,8 @@ class MailingHistory extends History
     private $message;
     private $recipients;
     private $sender;
+    private $sender_name;
+    private $sender_address;
     private $sent = false;
 
     private $senders;
@@ -124,7 +126,7 @@ class MailingHistory extends History
 
             $ret = array();
             foreach ($results as $r) {
-                if ($r['mailing_sender'] !== null) {
+                if ($r['mailing_sender'] !== null && $r['mailing_sender_name'] === null) {
                     $r['mailing_sender_name']
                         = Adherent::getSName($this->zdb, $r['mailing_sender']);
                 }
@@ -196,10 +198,12 @@ class MailingHistory extends History
             $this->senders = [];
             foreach ($results as $result) {
                 $sender = $result->mailing_sender;
-                if ($sender == null) {
-                    $this->senders[-1] = _('Superadmin');
-                } else {
+                if ($sender != null) {
                     $this->senders[$sender] = Adherent::getSName($this->zdb, (int)$sender);
+                } elseif ($result->mailing_sender_name != null || $result->mailing_sender_address != null) {
+                    $this->senders[$result->mailing_sender_address] = $result->mailing_sender_name;
+                } else {
+                    $this->senders[-1] = _('Superadmin');
                 }
             }
         } catch (\Exception $e) {
@@ -384,6 +388,10 @@ class MailingHistory extends History
     public function storeMailing($sent = false)
     {
         if ($this->mailing instanceof Mailing) {
+            if ($this->mailing->sender_name != null) {
+                $this->sender_name = $this->mailing->sender_name;
+                $this->sender_address = $this->mailing->sender_address;
+            }
             $this->sender = $this->login->id;
             $this->subject = $this->mailing->subject;
             $this->message = $this->mailing->message;
@@ -430,14 +438,22 @@ class MailingHistory extends History
             $sender = ($this->sender === 0) ?
                 new Expression('NULL') :
                 $this->sender;
+            $sender_name = ($this->sender_name === null) ?
+                new Expression('NULL') :
+                $this->sender_name;
+            $sender_address = ($this->sender_address === null) ?
+                new Expression('NULL') :
+                $this->sender_name;
 
             $values = array(
-                'mailing_sender' => $sender,
-                'mailing_subject' => $this->subject,
-                'mailing_body' => $this->message,
-                'mailing_date' => $this->date,
-                'mailing_recipients' => serialize($_recipients),
-                'mailing_sent' => ($this->sent) ?
+                'mailing_sender'            => $sender,
+                'mailing_sender_name'       => $sender_name,
+                'mailing_sender_address'    => $sender_address,
+                'mailing_subject'           => $this->subject,
+                'mailing_body'              => $this->message,
+                'mailing_date'              => $this->date,
+                'mailing_recipients'        => serialize($_recipients),
+                'mailing_sent'              => ($this->sent) ?
                     true :
                     ($this->zdb->isPostgres() ? 'false' : 0)
             );
@@ -477,14 +493,22 @@ class MailingHistory extends History
             } else {
                 $sender = $this->sender;
             }
+            $sender_name = ($this->sender_name === null) ?
+                new Expression('NULL') :
+                $this->sender_name;
+            $sender_address = ($this->sender_address === null) ?
+                new Expression('NULL') :
+                $this->sender_name;
 
             $values = array(
-                'mailing_sender' => $sender,
-                'mailing_subject' => $this->subject,
-                'mailing_body' => $this->message,
-                'mailing_date' => $this->date,
-                'mailing_recipients' => serialize($_recipients),
-                'mailing_sent' => ($this->sent) ?
+                'mailing_sender'            => $sender,
+                'mailing_sender_name'       => $sender_name,
+                'mailing_sender_address'    => $sender_address,
+                'mailing_subject'           => $this->subject,
+                'mailing_body'              => $this->message,
+                'mailing_date'              => $this->date,
+                'mailing_recipients'        => serialize($_recipients),
+                'mailing_sent'              => ($this->sent) ?
                     true :
                     ($this->zdb->isPostgres() ? 'false' : 0)
             );
@@ -519,7 +543,7 @@ class MailingHistory extends History
      */
     public function removeEntries($ids)
     {
-        global $hist;
+        global $hist, $preferences;
 
         $list = array();
         if (is_numeric($ids)) {
@@ -532,7 +556,7 @@ class MailingHistory extends History
         if (is_array($list)) {
             try {
                 foreach ($list as $id) {
-                    $mailing = new Mailing(null, $id);
+                    $mailing = new Mailing($preferences, null, $id);
                     $mailing->removeAttachments();
                 }
 
