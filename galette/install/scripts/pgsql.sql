@@ -175,7 +175,7 @@ CREATE TABLE galette_adherents (
     date_echeance date,
     pref_lang character varying(20) DEFAULT 'fr_FR',
     lieu_naissance text DEFAULT '',
-    gpgid character varying(8) DEFAULT NULL,
+    gpgid text DEFAULT NULL,
     fingerprint character varying(50) DEFAULT NULL,
     parent_id integer DEFAULT NULL REFERENCES galette_adherents(id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (id_adh)

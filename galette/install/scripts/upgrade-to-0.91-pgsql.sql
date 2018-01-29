@@ -5,4 +5,7 @@ ALTER TABLE galette_mailing_history ADD COLUMN mailing_sender_address character 
 -- fix email field size
 ALTER TABLE galette_adherents ALTER COLUMN email_adh TYPE varchar(255);
 
+-- fix gpg field size
+ALTER TABLE galette_adherents ALTER COLUMN gpgid TYPE text;
+
 UPDATE galette_database SET version = 0.91;
