@@ -40,7 +40,7 @@ CREATE TABLE galette_adherents (
   date_echeance date default NULL,
   pref_lang varchar(20) default 'fr_FR',
   lieu_naissance text,
-  gpgid varchar(8) DEFAULT NULL,
+  gpgid text DEFAULT NULL,
   fingerprint varchar(50) DEFAULT NULL,
   parent_id int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (id_adh),
