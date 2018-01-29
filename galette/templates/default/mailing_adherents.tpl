@@ -47,6 +47,22 @@
             <section class="mailing_write">
                 <header class="ui-state-default ui-state-active">{_T string="Write your mailing"}</header>
                 <div>
+                    <label for="sender" class="bline">{_T string="Sender"}</label>
+                    <select name="sender" id="sender">
+                        <option value="{Galette\Core\GaletteMail::SENDER_PREFS}">{_T string="from preferences"}</option>
+    {if !$login->isSuperAdmin()}
+                        <option value="{Galette\Core\GaletteMail::SENDER_CURRENT}">{_T string="current logged in user"}</option>
+    {/if}
+                        <option value="{Galette\Core\GaletteMail::SENDER_OTHER}">{_T string="other"}</option>
+                    </select>
+                    <span class="disabled">
+                        <label for="sender_name">{_T string="Name"}</label>
+                        <input type="text" name="sender_name" id="sender_name" value="{$preferences->pref_email_nom}" disabled="disabled"/>
+                        <label for="sender_address">{_T string="Address"}</label>
+                        <input type="text" name="sender_address" id="sender_address" value="{$preferences->pref_email}" disabled="disabled"/>
+                    </span>
+                </div>
+                <div>
                     <label for="mailing_objet" class="bline">{_T string="Object:"}</label>
                     <input type="text" name="mailing_objet" id="mailing_objet" value="{$mailing->subject}" size="80" required/>
                 </div>
@@ -287,6 +303,39 @@
                 }
             });
             return false;
+        });
+
+        $('#sender').on('change', function() {
+            var _this = $(this);
+            var _sender_name = $('#sender_name');
+            var _sender_address = $('#sender_address');
+            var _editable = false;
+            var _val = _this.val();
+            switch (_val) {
+                case '{Galette\Core\GaletteMail::SENDER_PREFS}':
+                    _sender_name.val('{$preferences->pref_email_nom}');
+                    _sender_address.val('{$preferences->pref_email}');
+                    break;
+                case '{Galette\Core\GaletteMail::SENDER_CURRENT}':
+                    _sender_name.val('{$sender_current['name']}');
+                    _sender_address.val('{$sender_current['email']}');
+                    break;
+                case '{Galette\Core\GaletteMail::SENDER_OTHER}':
+                    _sender_name.val('');
+                    _sender_address.val('');
+                    _editable = true;
+                    break;
+            }
+
+            if (_editable) {
+                _sender_name.removeAttr('disabled');
+                _sender_address.removeAttr('disabled');
+                $('#sender + span').removeClass('disabled');
+            } else {
+                _sender_name.attr('disabled', 'disabled');
+                _sender_address.attr('disabled', 'disabled');
+                $('#sender + span').addClass('disabled');
+            }
         });
     });
 </script>

@@ -208,7 +208,7 @@ $app->map(
                     );
                     $mtxt = $texts->getTexts('pwd', $adh->language);
 
-                    $mail = new GaletteMail();
+                    $mail = new GaletteMail($this->preferences);
                     $mail->setSubject($texts->getSubject());
                     $mail->setRecipients(
                         array(

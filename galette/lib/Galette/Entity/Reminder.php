@@ -226,6 +226,8 @@ class Reminder
      */
     public function send(Texts $texts, History $hist, Db $zdb)
     {
+        global $preferences;
+
         $type_name = 'late';
         if ($this->type === self::IMPENDING) {
             $type_name = 'impending';
@@ -239,7 +241,7 @@ class Reminder
                 $this->dest->language
             );
 
-            $mail = new GaletteMail();
+            $mail = new GaletteMail($preferences);
             $mail->setSubject($texts->getSubject());
             $mail->setRecipients(
                 array(

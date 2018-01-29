@@ -78,11 +78,13 @@ class Mailing extends GaletteMail
     /**
      * Default constructor
      *
-     * @param array $members An array of members
-     * @param int   $id      Identifier, defaults to null
+     * @param Preferences $preferences Preferences instance
+     * @param array       $members     An array of members
+     * @param int         $id          Identifier, defaults to null
      */
-    public function __construct($members, $id = null)
+    public function __construct(Preferences $preferences, $members, $id = null)
     {
+        parent::__construct($preferences);
         if ($id !== null) {
             $this->id = $id;
         } else {
@@ -179,6 +181,12 @@ class Mailing extends GaletteMail
         $this->setRecipients($_recipients);
         $this->subject = $rs->mailing_subject;
         $this->message = $rs->mailing_body;
+        if ($rs->mailing_sender_name !== null || $rs->mailing_sender_address !== null) {
+            $this->setSender(
+                $rs->mailing_sender_name,
+                $rs->mailing_sender_address
+            );
+        }
         //if mailing has already been sent, generate a new id and copy attachments
         if ($rs->mailing_sent && $new) {
             $this->generateNewId();
@@ -516,6 +524,12 @@ class Mailing extends GaletteMail
                     break;
                 case 'attachments':
                     return $this->attachments;
+                    break;
+                case 'sender_name':
+                    return $this->getSenderName();
+                    break;
+                case 'sender_address':
+                    return $this->getSenderAddress();
                     break;
                 default:
                     Analog::log(
