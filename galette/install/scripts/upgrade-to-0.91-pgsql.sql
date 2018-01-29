@@ -8,4 +8,7 @@ ALTER TABLE galette_adherents ALTER COLUMN email_adh TYPE varchar(255);
 -- fix gpg field size
 ALTER TABLE galette_adherents ALTER COLUMN gpgid TYPE text;
 
+-- Clean possible buggy data from RC
+DELETE FROM galette_dynamic_fields WHERE item_id = 0;
+
 UPDATE galette_database SET version = 0.91;
