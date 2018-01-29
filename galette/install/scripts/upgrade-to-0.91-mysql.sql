@@ -10,5 +10,8 @@ ALTER TABLE galette_adherents CHANGE email_adh email_adh VARCHAR(255) DEFAULT NU
 -- fix gpg field size
 ALTER TABLE galette_adherents CHANGE gpgid gpgid TEXT;
 
+-- Clean possible buggy data from RC
+DELETE FROM galette_dynamic_fields WHERE item_id = 0;
+
 UPDATE galette_database SET version = 0.91;
 SET FOREIGN_KEY_CHECKS=1;
