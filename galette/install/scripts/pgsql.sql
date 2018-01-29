@@ -156,7 +156,7 @@ CREATE TABLE galette_adherents (
     pays_adh character varying(50) DEFAULT NULL,
     tel_adh character varying(20),
     gsm_adh character varying(20),
-    email_adh character varying(150),
+    email_adh character varying(255),
     url_adh character varying(200),
     icq_adh character varying(20),
     msn_adh character varying(150),

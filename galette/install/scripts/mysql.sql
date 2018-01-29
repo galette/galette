@@ -21,7 +21,7 @@ CREATE TABLE galette_adherents (
   pays_adh varchar(50) default NULL,
   tel_adh varchar(20) default NULL,
   gsm_adh varchar(20) default NULL,
-  email_adh varchar(150) default NULL,
+  email_adh varchar(255) default NULL,
   url_adh varchar(200) default NULL,
   icq_adh varchar(20) default NULL,
   msn_adh varchar(150) default NULL,
