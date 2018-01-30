@@ -37,6 +37,7 @@
 
 use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
+use Analog\Analog;
 
 //set a flag saying we work from installer
 //that way, in galette.inc.php, we'll only include relevant parts
