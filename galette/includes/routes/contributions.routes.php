@@ -432,7 +432,6 @@ $app->get(
         }
         $params['pref_membership_ext'] = $ext_membership;
 
-
         // display page
         $this->view->render(
             $response,

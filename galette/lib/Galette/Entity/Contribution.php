@@ -204,9 +204,7 @@ class Contribution
             $this->loadFromRS($args);
         }
 
-        if ($this->id !== null) {
-            $this->loadDynamicFields();
-        }
+        $this->loadDynamicFields();
     }
 
     /**

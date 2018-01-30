@@ -133,9 +133,7 @@ class Transaction
             $this->loadFromRS($args);
         }
 
-        if ($this->id !== null) {
-            $this->loadDynamicFields();
-        }
+        $this->loadDynamicFields();
     }
 
     /**
