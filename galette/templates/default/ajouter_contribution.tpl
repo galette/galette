@@ -155,10 +155,6 @@
             <input type="hidden" name="trans_id" value="{if $contribution->transaction neq NULL}{$contribution->transaction->id}{/if}"/>
         </div>
         </form>
-    <script type="text/javascript">
-        $(function(){
-        });
-    </script>
 {else} {* No members *}
     <div class="center" id="warningbox">
         <h3>{_T string="No member registered!"}</h3>
