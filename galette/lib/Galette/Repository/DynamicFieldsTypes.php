@@ -39,8 +39,6 @@ namespace Galette\Repository;
 
 use Analog\Analog;
 use Galette\Core\Db;
-use Galette\Core\Login;
-use Galette\Core\Authentication;
 use Galette\DynamicFieldsTypes\DynamicFieldType;
 
 /**
@@ -74,39 +72,13 @@ class DynamicFieldsTypes
      * Get fields list for one form
      *
      * @param string $form_name Form name
-     * @param Login  $login     Login instance
      *
      * @return DynamicFieldType[]
      */
-    public function getList($form_name, Login $login)
+    public function getList($form_name)
     {
         $select = $this->zdb->select(DynamicFieldType::TABLE);
         $where = ['field_form' => $form_name];
-        $access_level = $login->getAccessLevel();
-
-        switch ($access_level) {
-            case Authentication::ACCESS_STAFF:
-                $where['field_perm'] = [
-                    DynamicFieldType::PERM_STAFF,
-                    DynamicFieldType::PERM_MANAGER,
-                    DynamicFieldType::PERM_USER_READ,
-                    DynamicFieldType::PERM_USER_WRITE
-                ];
-                break;
-            case Authentication::ACCESS_MANAGER:
-                $where['field_perm'] = [
-                    DynamicFieldType::PERM_MANAGER,
-                    DynamicFieldType::PERM_USER_READ,
-                    DynamicFieldType::PERM_USER_WRITE
-                ];
-                break;
-            case Authentication::ACCESS_USER:
-                $where['field_perm'] = [
-                    DynamicFieldType::PERM_USER_READ,
-                    DynamicFieldType::PERM_USER_WRITE
-                ];
-                break;
-        }
 
         $select
             ->where($where)
