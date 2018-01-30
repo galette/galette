@@ -42,6 +42,7 @@ use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
 use Galette\Core\Db;
 use Galette\Core\Login;
+use Galette\Core\Authentication;
 use Galette\DynamicFieldsTypes\Separator;
 use Galette\DynamicFieldsTypes\Text;
 use Galette\DynamicFieldsTypes\Line;
@@ -125,7 +126,7 @@ class DynamicFields
         try {
             $this->item_id = $object->id;
             $fields = new DynamicFieldsTypes($this->zdb);
-            $this->dynamic_fields = $fields->getList($this->form_name, $this->login);
+            $this->dynamic_fields = $fields->getList($this->form_name);
 
             $select = $this->zdb->select(self::TABLE, 'd');
             $select->join(
@@ -139,8 +140,27 @@ class DynamicFields
                 )
             );
 
-            if (count($this->dynamic_fields)) {
-                $select->where->in('d.' . DynamicFieldType::PK, array_keys($this->dynamic_fields));
+            /** only load values for accessible fields*/
+            $accessible_fields = [];
+            $access_level = $this->login->getAccessLevel();
+
+            foreach ($this->dynamic_fields as $field) {
+                $perm = $field->getPerm();
+                if (
+                    ($perm == DynamicFieldType::PERM_MANAGER &&
+                        $access_level < Authentication::ACCESS_MANAGER) ||
+                    ($perm == DynamicFieldType::PERM_STAFF &&
+                         $access_level < Authentication::ACCESS_STAFF)   ||
+                    ($perm == DynamicFieldType::PERM_ADMIN &&
+                        $access_level < Authentication::ACCESS_ADMIN)
+                ) {
+                    continue;
+                }
+                $accessible_fields[] = $field->getId();
+            }
+
+            if (count($accessible_fields)) {
+                $select->where->in('d.' . DynamicFieldType::PK, $accessible_fields);
             }
 
             $results = $this->zdb->execute($select);

@@ -169,91 +169,88 @@ class PdfAdhesionForm
                 )
             );
 
-            $dyn_fields = $adh->getDynamicFields()->getFields();
         }
 
-        $dyn_values = [];
+        /** the list of all dynamic fields */
+        $fields =
+            new \Galette\Repository\DynamicFieldsTypes($zdb);
+        $dynamic_fields = $fields->getList('adh');
 
         foreach ($dynamic_patterns as $pattern) {
             $key   = strtolower($pattern);
             $value = '';
             if (preg_match('/^DYNFIELD_([0-9]+)_ADH$/', $pattern, $match)) {
+                /** dynamic field first value */
                 $field_id = $match[1];
-                if (!isset($dyn_values[$field_id])) {
-                    $dyn_values[$field_id] = $df->getValues($field_id);
+                if ($adh !== null) {
+                    $values = $adh->getDynamicFields()->getValues($field_id);
+                    $value  = $values[1];
                 }
-                $value    = $dyn_values[$field_id][1];
             }
             if (preg_match('/^LABEL_DYNFIELD_([0-9]+)_ADH$/', $pattern, $match)) {
+                /** dynamic field label */
                 $field_id = $match[1];
-                if (!isset($dyn_values[$field_id])) {
-                    $dyn_values[$field_id] = $df->getValues($field_id);
-                }
-                $value    = $dyn_fields[$field_id]->getName();
+                $value    = $dynamic_fields[$field_id]->getName();
             }
             if (preg_match('/^INPUT_DYNFIELD_([0-9]+)_ADH$/', $pattern, $match)) {
+                /** dynamic field input form element */
                 $field_id    = $match[1];
-                if (!isset($dyn_values[$field_id])) {
-                    $dyn_values[$field_id] = $df->getValues($field_id);
+                $field_name  = $dynamic_fields[$field_id]->getName();
+                $field_type  = $dynamic_fields[$field_id]->getType();
+                $field_value = '';
+                if ($adh !== null) {
+                    $field_values = $adh->getDynamicFields()->getValues($field_id);
+                    $field_value  = $field_values[1];
                 }
-                $field_name  = $dyn_fields[$field_id]->getName();
-                $field_type  = $dyn_fields[$field_id]->getType();
-                $value = '';
-                foreach ($dyn_values[$field_id] as $dyn_field) {
-                    $field_value = $dyn_field['field_val'];
-                    if ($value !== null) {
-                        $value .= ' ';
-                    }
-                    switch ($field_type) {
-                        case DynamicFieldType::TEXT:
-                            $value .= '<textarea' .
-                                ' id="'    . $field_name  . '"' .
-                                ' name="'  . $field_name  . '"' .
-                                ' value="' . $field_value . '"' .
-                                '/>';
-                            break;
-                        case DynamicFieldType::LINE:
-                            $value .= '<input type="text"' .
-                                ' id="'    . $field_name  . '"' .
-                                ' name="'  . $field_name  . '"' .
-                                ' value="' . $field_value . '"' .
-                                ' size="20" maxlength="30"/>';
-                            break;
-                        case DynamicFieldType::CHOICE:
-                            $choice_values = $dyn_fields->getFixedValues($field_id);
-                            foreach ($choice_values as $choice_value) {
-                                $value .= '<input type="radio"' .
-                                    ' id="'    . $field_name . '"' .
-                                    ' name="'  . $field_name . '"' .
-                                    ' value="' . $choice_value . '"';
-                                if ($field_value == $choice_value) {
-                                    $value .= ' checked="checked"';
-                                }
-                                $value .= '/>';
-                                $value .= $choice_value;
-                                $value .= '&nbsp;';
-                            }
-                            break;
-                        case DynamicFieldType::DATE:
-                            $value .= '<input type="text" name="' .
-                                $field_name  . '" value="' .
-                                $field_value . '" />';
-                            break;
-                        case DynamicFieldType::BOOLEAN:
-                            $value .= '<input type="checkbox"' .
-                                ' name="' .  $field_name . '"' .
-                                ' value="1"';
-                            if ($field_value == 1) {
+                switch ($field_type) {
+                    case DynamicFieldType::TEXT:
+                        $value .= '<textarea' .
+                            ' id="'    . $field_name  . '"' .
+                            ' name="'  . $field_name  . '"' .
+                            ' value="' . $field_value . '"' .
+                            '/>';
+                        break;
+                    case DynamicFieldType::LINE:
+                        $value .= '<input type="text"' .
+                            ' id="'    . $field_name  . '"' .
+                            ' name="'  . $field_name  . '"' .
+                            ' value="' . $field_value . '"' .
+                            ' size="20" maxlength="30"/>';
+                        break;
+                    case DynamicFieldType::CHOICE:
+                        $choice_values = $dyn_fields->getFixedValues($field_id);
+                        foreach ($choice_values as $choice_value) {
+                            $value .= '<input type="radio"' .
+                                ' id="'    . $field_name . '"' .
+                                ' name="'  . $field_name . '"' .
+                                ' value="' . $choice_value . '"';
+                            if ($field_value == $choice_value) {
                                 $value .= ' checked="checked"';
                             }
                             $value .= '/>';
-                            break;
-                        case DynamicFieldType::FILE:
-                            $value .= '<input type="text" name="' .
-                                $field_name  . '" value="' .
-                                $field_value . '" />';
-                            break;
-                    }
+                            $value .= $choice_value;
+                            $value .= '&nbsp;';
+                        }
+                        break;
+                    case DynamicFieldType::DATE:
+                        $value .= '<input type="text" name="' .
+                            $field_name  . '" value="' .
+                            $field_value . '" />';
+                        break;
+                    case DynamicFieldType::BOOLEAN:
+                        $value .= '<input type="checkbox"' .
+                            ' name="' .  $field_name . '"' .
+                            ' value="1"';
+                        if ($field_value == 1) {
+                            $value .= ' checked="checked"';
+                        }
+                        $value .= '/>';
+                        break;
+                    case DynamicFieldType::FILE:
+                        $value .= '<input type="text" name="' .
+                            $field_name  . '" value="' .
+                            $field_value . '" />';
+                        break;
                 }
             }
 
