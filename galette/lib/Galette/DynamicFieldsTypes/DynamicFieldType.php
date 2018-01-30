@@ -656,7 +656,7 @@ abstract class DynamicFieldType
                 $this->size = $values['field_size'];
             }
 
-            if (isset($values['field_repeat'])) {
+            if (isset($values['field_repeat']) && trim($values['field_repeat']) != '') {
                 $this->repeat = $values['field_repeat'];
             }
 
