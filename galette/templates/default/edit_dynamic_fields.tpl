@@ -1,4 +1,4 @@
-{if !empty($object->getDynamicFields())}
+{if !empty($object->getDynamicFields()->getFields())}
 
 {function name=draw_field}
     {assign var=valuedata value=$field_data.field_val|escape}
