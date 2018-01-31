@@ -199,7 +199,7 @@ class Groups
     /**
      * Loads groups for specific member
      *
-     * @param int     $id       Memebr id
+     * @param int     $id       Member id
      * @param boolean $managed  Retrieve managed groups (defaults to false)
      * @param boolean $as_group Retrieve Group[] or int[]
      *

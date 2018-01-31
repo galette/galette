@@ -745,7 +745,6 @@ $app->map(
         }
 
         $params = [];
-        $success_detected = [];
         $warning_detected = [];
         $error_detected = [];
 
@@ -923,7 +922,8 @@ $app->map(
             'istep'         => $istep,
             'plugid'        => $plugid,
             'plugin'        => $plugin,
-            'mode'          => ($request->isXhr() ? 'ajax' : '')
+            'mode'          => ($request->isXhr() ? 'ajax' : ''),
+            'error_detected' => $error_detected
         ];
 
         // display page
