@@ -1,5 +1,8 @@
+{if !isset($classname)}
+    {assign var="classname" value="bline"}
+{/if}
 <p>
-    <label class="bline" for="{$varname}">{_T string="Payment type:"}</label>
+    <label class="{$classname}" for="{$varname}">{_T string="Payment type:"}</label>
     <select name="{$varname}" id="{$varname}">
         <option value="{Galette\Entity\Contribution::PAYMENT_CASH}"{if $current eq constant('Galette\Entity\Contribution::PAYMENT_CASH')} selected="selected"{/if}>{_T string="Cash"}</option>
         <option value="{Galette\Entity\Contribution::PAYMENT_CREDITCARD}"{if $current eq constant('Galette\Entity\Contribution::PAYMENT_CREDITCARD')} selected="selected"{/if}>{_T string="Credit card"}</option>
