@@ -1870,6 +1870,11 @@ $app->get(
                         Analog::WARNING
                     );
 
+                    $this->flash->addMessage(
+                        'error_detected',
+                        _T('No member selected for mailing!')
+                    );
+
                     if (isset($profiler)) {
                         $profiler->stop();
                     }
