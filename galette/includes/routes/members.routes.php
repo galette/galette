@@ -1879,13 +1879,13 @@ $app->get(
                         $profiler->stop();
                     }
 
-                    $path = ($this->session->redirect_mailing !== null) ?
+                    $redirect_url = ($this->session->redirect_mailing !== null) ?
                         $this->session->redirect_mailing :
                         $this->router->pathFor('members');
 
                     return $response
                         ->withStatus(301)
-                        ->withHeader('Location', $path);
+                        ->withHeader('Location', $redirect_url);
                 }
                 $m = new Members();
                 $members = $m->getArrayList($filters->selected);
@@ -1946,6 +1946,9 @@ $app->post(
         $success_detected = [];
 
         $goto = $this->router->pathFor('mailings');
+        $redirect_url = ($this->session->redirect_mailing !== null) ?
+            $this->session->redirect_mailing :
+            $this->router->pathFor('members');
 
         //We're done :-)
         if (isset($post['mailing_done'])
@@ -1957,9 +1960,10 @@ $app->post(
                 $m->removeAttachments(true);
             }
             $this->session->mailing = null;
+
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
+                ->withHeader('Location', $redirect_url);
         }
 
         $params = array();
@@ -1990,9 +1994,14 @@ $app->post(
                         Analog::WARNING
                     );
 
+                    $this->flash->addMessage(
+                        'error_detected',
+                        _T('No member selected for mailing!')
+                    );
+
                     return $response
                         ->withStatus(301)
-                        ->withHeader('Location', $this->router->pathFor('members'));
+                        ->withHeader('Location', $redirect_url);
                 }
                 $m = new Members();
                 $members = $m->getArrayList($filters->selected);
@@ -2104,7 +2113,7 @@ $app->post(
                     $this->session->filter_members = $filters;
                     $this->session->mailing = null;
                     $success_detected[] = _T("Mailing has been successfully sent!");
-                    $goto = $this->router->pathFor('members');
+                    $goto = $redirect_url;
                 }
             }
 
