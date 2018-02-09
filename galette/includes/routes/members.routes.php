@@ -1836,7 +1836,9 @@ $app->get(
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('slash'));
         } else {
-            if (isset($this->session->filter_members)) {
+            if (isset($this->session->filter_mailing)) {
+                $filters = $this->session->filter_mailing;
+            } elseif (isset($this->session->filter_members)) {
                 $filters =  $this->session->filter_members;
             } else {
                 $filters = new MembersList();
@@ -1872,9 +1874,13 @@ $app->get(
                         $profiler->stop();
                     }
 
+                    $path = ($this->session->redirect_mailing !== null) ?
+                        $this->session->redirect_mailing :
+                        $this->router->pathFor('members');
+
                     return $response
                         ->withStatus(301)
-                        ->withHeader('Location', $this->router->pathFor('members'));
+                        ->withHeader('Location', $path);
                 }
                 $m = new Members();
                 $members = $m->getArrayList($filters->selected);
