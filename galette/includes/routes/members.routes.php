@@ -1960,6 +1960,11 @@ $app->post(
                 $m->removeAttachments(true);
             }
             $this->session->mailing = null;
+            if (isset($this->session->filter_mailing)) {
+                $filters = $this->session->filter_mailing;
+                $filters->selected = [];
+                $this->session->filter_mailing = $filters;
+            }
 
             return $response
                 ->withStatus(301)
