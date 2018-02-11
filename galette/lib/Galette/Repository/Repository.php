@@ -62,6 +62,7 @@ abstract class Repository
     protected $login;
     protected $filters;
     protected $defaults = [];
+    protected $prefix;
 
     /**
      * Main constructor
@@ -71,12 +72,20 @@ abstract class Repository
      * @param Login       $login       Logged in instance
      * @param string      $entity      Related entity class name
      * @param string      $ns          Related entity namespace
+     * @param string      $prefix      Prefix (for plugins)
      */
-    public function __construct(Db $zdb, Preferences $preferences, Login $login, $entity = null, $ns = null)
-    {
+    public function __construct(
+        Db $zdb,
+        Preferences $preferences,
+        Login $login,
+        $entity = null,
+        $ns = null,
+        $prefix = ''
+    ) {
         $this->zdb = $zdb;
         $this->preferences = $preferences;
         $this->login = $login;
+        $this->prefix = $prefix;
 
         if ($entity === null) {
             //no entity class name provided. Take Repository
@@ -172,9 +181,36 @@ abstract class Repository
     }
 
     /**
-     * Load and get default values for current repository
+     * Load and get default values
      *
      * @return array
      */
-    abstract protected function loadDefaults();
+    protected function loadDefaults()
+    {
+        return $this->defaults;
+    }
+    /**
+     * Is field allowed to order? it shoulsd be present in
+     * provided fields list (those that are SELECT'ed).
+     *
+     * @param string $field_name Field name to order by
+     * @param array  $fields     SELECTE'ed fields
+     *
+     * @return boolean
+     */
+    protected function canOrderBy($field_name, $fields)
+    {
+        if (!is_array($fields)) {
+            return true;
+        } elseif (in_array($field_name, $fields)) {
+            return true;
+        } else {
+            Analog::log(
+                'Trying to order by ' . $field_name  . ' while it is not in ' .
+                'selected fields.',
+                Analog::WARNING
+            );
+            return false;
+        }
+    }
 }

@@ -225,6 +225,6 @@ class PdfModels extends Repository
             include GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
             $this->defaults = $pdfmodels_fields;
         }
-        return $this->defaults;
+        return parent::loadDefaults();
     }
 }
