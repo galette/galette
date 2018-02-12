@@ -76,7 +76,7 @@ class PdfAdhesionForm
      * @param Db          $zdb   Database instance
      * @param Preferences $prefs Preferences instance
      */
-    public function __construct(Adherent $adh, Db $zdb, Preferences $prefs)
+    public function __construct(Adherent $adh  = null, Db $zdb, Preferences $prefs)
     {
         $this->adh = $adh;
         $this->prefs = $prefs;
