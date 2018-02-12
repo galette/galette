@@ -1850,9 +1850,8 @@ $app->get(
 $app->get(
     __('/members', 'routes') . __('/empty-adhesion-form', 'routes'),
     function ($request, $response) {
-        $adh = new Adherent($this->zdb, null, ['dynamics' => true]);
         $form = $this->preferences->pref_adhesion_form;
-        $pdf = new $form($adh, $this->zdb, $this->preferences);
+        $pdf = new $form(null, $this->zdb, $this->preferences);
         $pdf->download();
     }
 )->setName('emptyAdhesionForm');
