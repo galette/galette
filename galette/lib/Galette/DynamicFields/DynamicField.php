@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Abstract dynamic field type
+ * Abstract dynamic field
  *
  * PHP version 5
  *
@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  DynamicFieldsTypes
+ * @category  DynamicFields
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -35,19 +35,19 @@
  * @since     Available since 0.7.1dev - 2012-07-28
  */
 
-namespace Galette\DynamicFieldsTypes;
+namespace Galette\DynamicFields;
 
 use Analog\Analog;
 use Galette\Core\Db;
-use Galette\Entity\DynamicFields;
+use Galette\Entity\DynamicFieldsHandle;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
 
 /**
- * Abstrac dynamic field type
+ * Abstract dynamic field
  *
- * @name      DynamicFieldType
- * @category  DynamicFieldsTypes
+ * @name      DynamicField
+ * @category  DynamicFields
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -56,7 +56,7 @@ use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
  * @link      http://galette.tuxfamily.org
  */
 
-abstract class DynamicFieldType
+abstract class DynamicField
 {
     const TABLE = 'field_types';
     const PK = 'field_id';
@@ -135,7 +135,7 @@ abstract class DynamicFieldType
      * @param Db  $zdb Database instance
      * @param int $id  Field id
      *
-     * @return DynamicFieldType|false
+     * @return DynamicField|false
      */
     public static function loadFieldType(Db $zdb, $id)
     {
@@ -167,9 +167,9 @@ abstract class DynamicFieldType
      *
      * @param Db  $zdb Database instance
      * @param int $t   Field type
-     * @param int $id  Optionnal dynamic field id (to load data)
+     * @param int $id  Optional dynamic field id (to load data)
      *
-     * @return DynamicFieldType
+     * @return DynamicField
      */
     public static function getFieldType(Db $zdb, $t, $id = null)
     {
@@ -605,7 +605,7 @@ abstract class DynamicFieldType
         $this->warnings = [];
 
         if ((!isset($values['field_name']) || $values['field_name'] == '')
-            && get_class($this) != '\Galette\DynamicFieldsTypes\Separator'
+            && get_class($this) != '\Galette\DynamicField\Separator'
         ) {
             $this->errors[] = _T('Missing required field name!');
         } else {
@@ -986,7 +986,7 @@ abstract class DynamicFieldType
             $this->zdb->execute($update);
 
             //remove associated values
-            $delete = $this->zdb->delete(DynamicFields::TABLE);
+            $delete = $this->zdb->delete(DynamicFieldsHandle::TABLE);
             $delete->where(
                 array(
                     'field_id'      => $this->id,
