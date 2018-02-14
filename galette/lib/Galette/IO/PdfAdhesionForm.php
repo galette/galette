@@ -42,8 +42,8 @@ use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
 use Galette\Entity\PdfModel;
 use Galette\Entity\PdfAdhesionFormModel;
-use Galette\Entity\DynamicFields;
 use Galette\DynamicFieldsTypes\DynamicFieldType;
+use Galette\Entity\DynamicFieldsHandle;
 use Galette\IO\Pdf;
 use Analog\Analog;
 

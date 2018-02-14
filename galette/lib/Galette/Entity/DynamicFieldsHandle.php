@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Dynamic fields handler
+ * Dynamic fields handle, aggregating field descriptors and values
  *
  * PHP version 5
  *
@@ -54,9 +54,9 @@ use Galette\DynamicFieldsTypes\DynamicFieldType;
 use Galette\Repository\DynamicFieldsTypes;
 
 /**
- * Dynamic fields handler for Galette
+ * Dynamic fields handle, aggregating field descriptors and values
  *
- * @name DynamicFields
+ * @name DynamicFieldsHandle
  * @category  Entity
  * @package   Galette
  *
@@ -66,7 +66,7 @@ use Galette\Repository\DynamicFieldsTypes;
  * @link      http://galette.tuxfamily.org
  */
 
-class DynamicFields
+class DynamicFieldsHandle
 {
     const TABLE = 'dynamic_fields';
 
@@ -100,7 +100,7 @@ class DynamicFields
     }
 
     /**
-     * Load dynaic fields values for specified object
+     * Load dynamic fields values for specified object
      *
      * @param mixed $object Object instance
      *
