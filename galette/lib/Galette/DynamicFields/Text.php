@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Choice field type
+ * Text dynamic field
  *
  * PHP version 5
  *
@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  DynamicFieldsTypes
+ * @category  DynamicFields
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -35,16 +35,16 @@
  * @since     Available since 0.7.1dev - 2012-07-28
  */
 
-namespace Galette\DynamicFieldsTypes;
+namespace Galette\DynamicFields;
 
 use Analog\Analog;
 use Galette\Core\Db;
 
 /**
- * Choice field type
+ * Text dynamic field
  *
- * @name      Separator
- * @category  DynamicFieldsTypes
+ * @name      Text
+ * @category  DynamicFields
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -53,7 +53,7 @@ use Galette\Core\Db;
  * @link      http://galette.tuxfamily.org
  */
 
-class Choice extends DynamicFieldType
+class Text extends DynamicField
 {
     /**
      * Default constructor
@@ -65,7 +65,9 @@ class Choice extends DynamicFieldType
     {
         parent::__construct($zdb, $id);
         $this->has_data = true;
-        $this->fixed_values = true;
+        $this->has_width = true;
+        $this->has_height = true;
+        $this->repeat = 1;
     }
 
     /**
@@ -75,6 +77,6 @@ class Choice extends DynamicFieldType
      */
     public function getType()
     {
-        return self::CHOICE;
+        return self::TEXT;
     }
 }
