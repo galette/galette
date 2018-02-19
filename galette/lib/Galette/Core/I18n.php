@@ -247,8 +247,16 @@ class I18n
     {
         $xml = simplexml_load_file($this->file);
         $current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
-        $sxe = $current[0];
-        return (string)$sxe->longname;
+        if (count($current)) {
+            $sxe = $current[0];
+            return (string)$sxe->longname;
+        } else {
+            return str_replace(
+                '%lang',
+                $id,
+                _T('Unknown lang (%lang)')
+            );
+        }
     }
 
     /**
@@ -262,13 +270,24 @@ class I18n
     {
         $xml = simplexml_load_file($this->file);
         $current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
-        $sxe = $current[0];
 
         $path = null;
-        if (defined('GALETTE_THEME_DIR')) {
-            $path = GALETTE_THEME_DIR . 'images/' . $sxe->flag;
+        if (count($current)) {
+            $sxe = $current[0];
+            if (defined('GALETTE_THEME_DIR')) {
+                $path = GALETTE_THEME_DIR . 'images/' . $sxe->flag;
+            } else {
+                $path = GALETTE_THEME . 'images/' . $sxe->flag;
+            }
         } else {
-            $path = GALETTE_THEME . 'images/' . $sxe->flag;
+            Analog::log(
+                str_replace(
+                    '%lang',
+                    $id,
+                    _T('Unknown lang (%lang)')
+                ),
+                Analog::INFO
+            );
         }
 
         return $path;
