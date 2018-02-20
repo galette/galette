@@ -250,8 +250,8 @@ abstract class AbstractUpdater
         if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
                 if (preg_match('/upgrade-to-(.*)-(.+)\.sql/', $file, $ver)) {
-                    if ($ver[1] === $version) {
-                        $scripts[$ver[2]] = realpath('./scripts/sql/' . $file);
+                    if ($ver[1] == $version) {
+                        $scripts[$ver[2]] = GALETTE_ROOT . '/install/scripts/sql/' . $file;
                     }
                 }
             }

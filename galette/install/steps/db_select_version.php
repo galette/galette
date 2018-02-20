@@ -40,6 +40,7 @@ use Galette\Core\Db as GaletteDb;
 
 $versions = $install->getScripts();
 $current = $install->getCurrentVersion($zdb);
+$raw_current = $zdb->getDbVersion(true);
 $last = '0.00';
 ?>
             <h2><?php echo _T("Previous version selection"); ?></h2>
@@ -50,7 +51,7 @@ if (count($versions) == 0) {
     ?>
             <p id="errorbox"><?php echo _T("No update script found!"); ?></p>
 <?php
-    if ($zdb->getDbVersion() === GALETTE_DB_VERSION) {
+    if ($raw_current === GALETTE_DB_VERSION) {
         ?>
             <p id="warningbox"><?php echo _T("It seems you already use latest Galette version!"); ?></p>
         <?php
@@ -64,12 +65,18 @@ if (count($versions) == 0) {
 <?php
 } else {
     if ($current !== false) {
-    ?>
+        if ($current < 0.70) {
+        ?>
+            <p id="warningbox"><?php echo _T("Previous version is older than 0.7. <strong>Make sure you select the right version</strong>."); ?></p>
+        <?php
+        } else {
+        ?>
             <p id="successbox"><?php echo _T("Your previous version should be selected and <strong>displayed in bold</strong>."); ?></p>
-    <?php
+        <?php
+        }
     }
 
-    if ($zdb->getDbVersion() === GALETTE_DB_VERSION) {
+    if ($raw_current === GALETTE_DB_VERSION) {
         ?>
             <p id="warningbox"><?php echo _T("It seems you already use latest Galette version!<br/>Are you sure you want to upgrade?"); ?></p>
         <?php
