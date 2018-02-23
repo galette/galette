@@ -1,10 +1,13 @@
 <?php
-// This file was automatically generated on Tue Feb  6 07:21:01 2018 (GMT)
+// This file was automatically generated on Fri Feb 23 08:22:54 2018 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
 // ../includes/routes/main.routes.php:60 
 $lang['routes']['/print-logo'] = '/print-logo';
+
+// ../includes/routes/management.routes.php:1371 ../includes/routes/management.routes.php:1491 ../includes/routes/members.routes.php:123 
+$lang['routes']['/export'] = '/export';
 
 // ../includes/main.inc.php:309 ../includes/routes/authentication.routes.php:45 ../includes/routes/authentication.routes.php:73 
 $lang['routes']['/login'] = '/connexion';
@@ -12,11 +15,11 @@ $lang['routes']['/login'] = '/connexion';
 // ../includes/routes/ajax.routes.php:55 
 $lang['routes']['photo'] = 'photo';
 
-// ../includes/routes/members.routes.php:567 ../includes/routes/members.routes.php:685 ../includes/routes/members.routes.php:2685 
-$lang['routes']['/member'] = '/adherent';
+// ../includes/routes/members.routes.php:2678 
+$lang['routes']['/group'] = '/groupe';
 
-// ../includes/routes/members.routes.php:2209 
-$lang['routes']['/set-recipients'] = '/definir-destinataires';
+// ../includes/routes/members.routes.php:524 ../includes/routes/members.routes.php:567 ../includes/routes/members.routes.php:685 ../includes/routes/members.routes.php:2710 
+$lang['routes']['/member'] = '/adherent';
 
 // ../includes/routes/members.routes.php:859 
 $lang['routes']['/member/store'] = '/adherent/enregistrer';
@@ -24,16 +27,16 @@ $lang['routes']['/member/store'] = '/adherent/enregistrer';
 // ../includes/routes/management.routes.php:1881 ../includes/routes/management.routes.php:1937 
 $lang['routes']['/models/pdf'] = '/modeles/pdf';
 
+// ../includes/routes/members.routes.php:123 
+$lang['routes']['/csv'] = '/csv';
+
 // ../includes/routes/contributions.routes.php:50 ../includes/routes/contributions.routes.php:77 ../includes/routes/contributions.routes.php:175 ../includes/routes/contributions.routes.php:182 ../includes/routes/contributions.routes.php:320 ../includes/routes/contributions.routes.php:733 ../includes/routes/contributions.routes.php:1067 ../includes/routes/contributions.routes.php:1075 ../includes/routes/contributions.routes.php:1110 ../includes/routes/contributions.routes.php:1129 ../templates/default/gestion_contributions.tpl:8 ../templates/default/gestion_contributions.tpl:39 ../templates/default/gestion_contributions.tpl:70 ../templates/default/gestion_contributions.tpl:81 ../templates/default/gestion_contributions.tpl:92 ../templates/default/gestion_contributions.tpl:104 ../templates/default/gestion_contributions.tpl:116 ../templates/default/gestion_contributions.tpl:127 ../templates/default/gestion_contributions.tpl:138 ../templates/default/gestion_contributions.tpl:202 ../templates/default/gestion_contributions.tpl:225 ../templates/default/page.tpl:143 ../templates/default/page.tpl:156 ../templates/default/desktop.tpl:33 ../templates/default/desktop.tpl:47 ../templates/default/ajouter_transaction.tpl:136 ../templates/default/ajouter_transaction.tpl:203 ../templates/default/gestion_adherents.tpl:193 ../templates/default/voir_adherent.tpl:32 
 $lang['routes']['contributions'] = 'contributions';
 
-// ../includes/main.inc.php:296 ../includes/routes/members.routes.php:313 ../includes/routes/members.routes.php:1539 ../includes/routes/members.routes.php:2800 ../includes/routes/members.routes.php:2852 ../includes/routes/members.routes.php:2912 ../includes/routes/public_pages.routes.php:62 
+// ../includes/main.inc.php:296 ../includes/routes/members.routes.php:123 ../includes/routes/members.routes.php:313 ../includes/routes/members.routes.php:383 ../includes/routes/members.routes.php:1318 ../includes/routes/members.routes.php:1539 ../includes/routes/members.routes.php:1609 ../includes/routes/members.routes.php:1678 ../includes/routes/members.routes.php:1743 ../includes/routes/members.routes.php:1796 ../includes/routes/members.routes.php:2392 ../includes/routes/members.routes.php:2544 ../includes/routes/members.routes.php:2678 ../includes/routes/members.routes.php:2825 ../includes/routes/members.routes.php:2877 ../includes/routes/members.routes.php:2937 ../includes/routes/public_pages.routes.php:62 
 $lang['routes']['/members'] = '/adherents';
 
-// ../includes/routes/members.routes.php:2519 
-$lang['routes']['/ajax/members'] = '/ajax//adherents';
-
-// ../includes/routes/members.routes.php:383 ../includes/routes/public_pages.routes.php:115 
+// ../includes/routes/public_pages.routes.php:115 
 $lang['routes']['/members/filter'] = '/adherents/filtre';
 
 // ../includes/routes/main.routes.php:52 
@@ -45,17 +48,14 @@ $lang['routes']['/logout'] = '/deconnexion';
 // ../includes/routes/management.routes.php:3185 ../includes/routes/management.routes.php:3208 
 $lang['routes']['/generate-data'] = '/generer-donnees';
 
-// ../includes/routes/members.routes.php:2368 ../templates/default/reminder.tpl:20 ../templates/default/reminder.tpl:21 
+// ../includes/routes/members.routes.php:2393 ../templates/default/reminder.tpl:20 ../templates/default/reminder.tpl:21 
 $lang['routes']['late'] = 'en-retard';
 
-// ../includes/routes/members.routes.php:1609 
-$lang['routes']['/members/cards'] = '/adherent/fiche';
+// ../includes/routes/management.routes.php:2368 ../includes/routes/management.routes.php:2410 ../includes/routes/management.routes.php:2428 ../includes/routes/management.routes.php:2446 ../includes/routes/management.routes.php:2451 ../includes/routes/management.routes.php:3004 ../includes/routes/management.routes.php:3018 ../includes/routes/management.routes.php:3026 ../includes/routes/management.routes.php:3063 ../includes/routes/management.routes.php:3079 ../includes/routes/management.routes.php:3087 ../includes/routes/management.routes.php:3154 ../includes/routes/contributions.routes.php:266 ../includes/routes/contributions.routes.php:280 ../includes/routes/contributions.routes.php:289 ../includes/routes/contributions.routes.php:327 ../includes/routes/contributions.routes.php:335 ../includes/routes/contributions.routes.php:352 ../includes/routes/contributions.routes.php:448 ../includes/routes/contributions.routes.php:478 ../includes/routes/contributions.routes.php:724 ../includes/routes/contributions.routes.php:783 ../includes/routes/contributions.routes.php:804 ../includes/routes/contributions.routes.php:807 ../includes/routes/contributions.routes.php:934 ../includes/routes/contributions.routes.php:949 ../includes/routes/contributions.routes.php:1008 ../includes/routes/members.routes.php:685 ../includes/routes/members.routes.php:697 ../includes/routes/members.routes.php:700 ../includes/routes/members.routes.php:1244 ../includes/routes/members.routes.php:1271 ../templates/default/editer_champ.tpl:74 ../templates/default/editer_champ.tpl:75 ../templates/default/gestion_contributions.tpl:45 ../templates/default/gestion_contributions.tpl:46 ../templates/default/page.tpl:145 ../templates/default/page.tpl:146 ../templates/default/page.tpl:147 ../templates/default/page.tpl:148 ../templates/default/ajouter_transaction.tpl:5 ../templates/default/ajouter_transaction.tpl:55 ../templates/default/ajouter_transaction.tpl:56 ../templates/default/ajouter_transaction.tpl:124 ../templates/default/gestion_transactions.tpl:22 ../templates/default/ajouter_contribution.tpl:5 ../templates/default/ajouter_contribution.tpl:155 ../templates/default/voir_adherent.tpl:35 ../templates/default/voir_adherent.tpl:38 ../templates/default/configurer_fiches.tpl:5 ../templates/default/configurer_fiches.tpl:27 ../templates/default/gestion_intitules.tpl:4 
+$lang['routes']['add'] = 'ajouter';
 
-// ../includes/routes/members.routes.php:1807 ../includes/routes/members.routes.php:1931 ../includes/routes/members.routes.php:2143 ../includes/routes/members.routes.php:2190 ../includes/routes/members.routes.php:2209 
+// ../includes/routes/members.routes.php:1807 ../includes/routes/members.routes.php:1942 ../includes/routes/members.routes.php:2168 ../includes/routes/members.routes.php:2215 ../includes/routes/members.routes.php:2234 
 $lang['routes']['/mailing'] = '/mailing';
-
-// ../includes/routes/members.routes.php:123 
-$lang['routes']['/members/export/csv'] = '/adherents/export/csv';
 
 // ../includes/routes/groups.routes.php:306 
 $lang['routes']['/ajax/group'] = '/ajax/groupe';
@@ -66,11 +66,14 @@ $lang['routes']['/logs'] = '/journaux';
 // ../includes/routes/management.routes.php:1146 ../includes/routes/management.routes.php:1215 ../includes/routes/management.routes.php:1284 ../includes/routes/management.routes.php:1314 
 $lang['routes']['/mailings'] = '/mailings';
 
+// ../includes/routes/members.routes.php:1609 
+$lang['routes']['/cards'] = '/fiches';
+
 // ../includes/routes/authentication.routes.php:132 
 $lang['routes']['/password-lost'] = '/mot-de-passe-perdu';
 
-// ../includes/routes/members.routes.php:65 
-$lang['routes']['/subscribe'] = '/inscription';
+// ../includes/routes/contributions.routes.php:885 
+$lang['routes']['/attach'] = '/attacher';
 
 // ../includes/routes/contributions.routes.php:782 ../includes/routes/contributions.routes.php:885 ../includes/routes/contributions.routes.php:909 ../includes/routes/contributions.routes.php:933 
 $lang['routes']['/transaction'] = '/transaction';
@@ -78,7 +81,7 @@ $lang['routes']['/transaction'] = '/transaction';
 // ../includes/routes/management.routes.php:654 ../includes/routes/management.routes.php:678 ../includes/routes/management.routes.php:737 ../includes/routes/plugins.routes.php:39 
 $lang['routes']['/plugins'] = '/plugins';
 
-// ../includes/routes/members.routes.php:2369 ../templates/default/reminder.tpl:14 ../templates/default/reminder.tpl:21 
+// ../includes/routes/members.routes.php:2394 ../templates/default/reminder.tpl:14 ../templates/default/reminder.tpl:21 
 $lang['routes']['withoutmail'] = 'sanscourriel';
 
 // ../includes/routes/management.routes.php:561 
@@ -90,19 +93,19 @@ $lang['routes']['/change'] = '/changer';
 // ../includes/routes/management.routes.php:1596 
 $lang['routes']['/get'] = '/obtenir';
 
-// ../includes/routes/contributions.routes.php:885 
-$lang['routes']['/attach'] = '/attacher';
+// ../includes/routes/members.routes.php:65 
+$lang['routes']['/subscribe'] = '/inscription';
 
 // ../includes/routes/members.routes.php:1438 
 $lang['routes']['/advanced-search'] = '/recherche-avancee';
 
+// ../includes/routes/members.routes.php:859 ../templates/default/member.tpl:11 
+$lang['routes']['subscribe'] = 'inscription';
+
 // ../includes/routes/management.routes.php:2368 ../includes/routes/management.routes.php:2410 ../includes/routes/management.routes.php:3004 ../includes/routes/management.routes.php:3014 ../includes/routes/management.routes.php:3039 ../includes/routes/management.routes.php:3079 ../includes/routes/management.routes.php:3099 ../includes/routes/management.routes.php:3163 ../includes/routes/contributions.routes.php:266 ../includes/routes/contributions.routes.php:276 ../includes/routes/contributions.routes.php:303 ../includes/routes/contributions.routes.php:448 ../includes/routes/contributions.routes.php:474 ../includes/routes/contributions.routes.php:783 ../includes/routes/contributions.routes.php:800 ../includes/routes/contributions.routes.php:825 ../includes/routes/contributions.routes.php:836 ../includes/routes/contributions.routes.php:903 ../includes/routes/contributions.routes.php:927 ../includes/routes/contributions.routes.php:934 ../includes/routes/contributions.routes.php:945 ../includes/routes/contributions.routes.php:970 ../includes/routes/members.routes.php:685 ../includes/routes/members.routes.php:693 ../includes/routes/members.routes.php:1268 ../templates/default/member.tpl:6 ../templates/default/member.tpl:8 ../templates/default/editer_champ.tpl:9 ../templates/default/gestion_contributions.tpl:178 ../templates/default/gestion_contributions.tpl:183 ../templates/default/gestion_contributions.tpl:222 ../templates/default/editer_intitule.tpl:8 ../templates/default/configurer_fiche_content.tpl:25 ../templates/default/gestion_intitule_content.tpl:56 ../templates/default/gestion_intitule_content.tpl:84 ../templates/default/ajouter_transaction.tpl:5 ../templates/default/gestion_transactions.tpl:91 ../templates/default/gestion_transactions.tpl:114 ../templates/default/gestion_adherents.tpl:191 ../templates/default/ajouter_contribution.tpl:5 ../templates/default/ajouter_contribution.tpl:15 ../templates/default/voir_adherent.tpl:28 
 $lang['routes']['edit'] = 'modifier';
 
-// ../includes/routes/ajax.routes.php:42 ../includes/routes/members.routes.php:2209 
-$lang['routes']['/ajax'] = '/ajax';
-
-// ../includes/routes/members.routes.php:2369 ../includes/routes/members.routes.php:2380 ../templates/default/reminder.tpl:13 ../templates/default/reminder.tpl:20 
+// ../includes/routes/members.routes.php:2394 ../includes/routes/members.routes.php:2405 ../templates/default/reminder.tpl:13 ../templates/default/reminder.tpl:20 
 $lang['routes']['withmail'] = 'aveccourriel';
 
 // ../includes/routes/public_pages.routes.php:144 
@@ -117,17 +120,17 @@ $lang['routes']['/texts'] = '/textes';
 // ../includes/routes/management.routes.php:2766 ../includes/routes/management.routes.php:2791 
 $lang['routes']['/core'] = '/coeur';
 
-// ../includes/routes/management.routes.php:941 ../includes/routes/management.routes.php:965 ../includes/routes/management.routes.php:1146 ../includes/routes/management.routes.php:1173 ../includes/routes/contributions.routes.php:51 ../includes/routes/contributions.routes.php:109 ../includes/routes/members.routes.php:313 ../includes/routes/members.routes.php:332 ../includes/routes/members.routes.php:2520 ../includes/routes/members.routes.php:2530 ../includes/routes/public_pages.routes.php:62 ../includes/routes/public_pages.routes.php:81 
+// ../includes/routes/management.routes.php:941 ../includes/routes/management.routes.php:965 ../includes/routes/management.routes.php:1146 ../includes/routes/management.routes.php:1173 ../includes/routes/contributions.routes.php:51 ../includes/routes/contributions.routes.php:109 ../includes/routes/members.routes.php:313 ../includes/routes/members.routes.php:332 ../includes/routes/members.routes.php:2545 ../includes/routes/members.routes.php:2555 ../includes/routes/public_pages.routes.php:62 ../includes/routes/public_pages.routes.php:81 
 $lang['routes']['page'] = 'page';
 
-// ../includes/routes/management.routes.php:1284 ../includes/routes/management.routes.php:1314 ../includes/routes/management.routes.php:1399 ../includes/routes/management.routes.php:1433 ../includes/routes/management.routes.php:2055 ../includes/routes/management.routes.php:2086 ../includes/routes/management.routes.php:2473 ../includes/routes/management.routes.php:2519 ../includes/routes/management.routes.php:2917 ../includes/routes/management.routes.php:2959 ../includes/routes/contributions.routes.php:1068 ../includes/routes/contributions.routes.php:1111 
+// ../includes/routes/management.routes.php:1284 ../includes/routes/management.routes.php:1314 ../includes/routes/management.routes.php:1399 ../includes/routes/management.routes.php:1433 ../includes/routes/management.routes.php:2055 ../includes/routes/management.routes.php:2086 ../includes/routes/management.routes.php:2473 ../includes/routes/management.routes.php:2519 ../includes/routes/management.routes.php:2917 ../includes/routes/management.routes.php:2959 ../includes/routes/contributions.routes.php:1068 ../includes/routes/contributions.routes.php:1111 ../includes/routes/members.routes.php:1318 
 $lang['routes']['/remove'] = '/supprimer';
 
 // ../includes/routes/management.routes.php:679 ../includes/routes/management.routes.php:685 ../templates/default/plugins.tpl:69 
 $lang['routes']['activate'] = 'activer';
 
-// ../includes/routes/members.routes.php:2367 
-$lang['routes']['/members/reminder-filter'] = '/adherents/filtre-rappel';
+// ../includes/routes/members.routes.php:524 
+$lang['routes']['/me'] = '/moi';
 
 // ../includes/routes/contributions.routes.php:909 
 $lang['routes']['/detach'] = '/detacher';
@@ -137,9 +140,6 @@ $lang['routes']['/dashboard'] = '/tableau-de-bord';
 
 // ../includes/routes/groups.routes.php:101 
 $lang['routes']['/group/add'] = '/groupe/ajouter';
-
-// ../includes/routes/members.routes.php:1743 
-$lang['routes']['/members/adhesion-form'] = '/adherents/formulaire-adhesion';
 
 // ../includes/routes/management.routes.php:1399 ../includes/routes/management.routes.php:1433 ../includes/routes/management.routes.php:1449 ../includes/routes/management.routes.php:1581 ../includes/routes/management.routes.php:1596 ../includes/routes/management.routes.php:1603 ../templates/default/export.tpl:41 ../templates/default/export.tpl:50 
 $lang['routes']['export'] = 'export';
@@ -162,11 +162,8 @@ $lang['routes']['/towns'] = '/villes';
 // ../includes/routes/contributions.routes.php:264 ../includes/routes/contributions.routes.php:446 ../includes/routes/contributions.routes.php:1189 ../includes/routes/ajax.routes.php:241 
 $lang['routes']['/contribution'] = '/contribution';
 
-// ../includes/routes/members.routes.php:2653 
-$lang['routes']['/ajax/group/members'] = '/ajax/groupes/adherents';
-
-// ../includes/routes/management.routes.php:1371 ../includes/routes/management.routes.php:1491 
-$lang['routes']['/export'] = '/export';
+// ../includes/routes/members.routes.php:2234 
+$lang['routes']['/set-recipients'] = '/definir-destinataires';
 
 // ../includes/routes/main.routes.php:175 
 $lang['routes']['/unimpersonate'] = '/stopper_imposture';
@@ -174,23 +171,17 @@ $lang['routes']['/unimpersonate'] = '/stopper_imposture';
 // ../includes/routes/management.routes.php:1399 ../includes/routes/management.routes.php:1433 ../includes/routes/management.routes.php:1596 ../templates/default/import.tpl:30 ../templates/default/import.tpl:39 
 $lang['routes']['import'] = 'import';
 
-// ../includes/routes/members.routes.php:524 
-$lang['routes']['/member/me'] = '/adherent/moi';
+// ../includes/routes/ajax.routes.php:42 ../includes/routes/members.routes.php:2234 ../includes/routes/members.routes.php:2544 ../includes/routes/members.routes.php:2678 
+$lang['routes']['/ajax'] = '/ajax';
 
 // ../includes/routes/groups.routes.php:366 
 $lang['routes']['/ajax/groups/reorder'] = '/ajax/groupes/reordonner';
 
-// ../includes/routes/members.routes.php:1796 
-$lang['routes']['/members/empty-adhesion-form'] = '/adherents/formulaire-adhesion-vierge';
-
 // ../includes/routes/ajax.routes.php:44 
 $lang['routes']['/messages'] = '/messages';
 
-// ../includes/routes/members.routes.php:2395 
+// ../includes/routes/members.routes.php:2420 
 $lang['routes']['/attendance-sheet/details'] = '/liste-emargement/details';
-
-// ../includes/routes/members.routes.php:1678 
-$lang['routes']['/members/labels'] = '/adherent/etiquettes';
 
 // ../includes/routes/management.routes.php:1998 ../includes/routes/management.routes.php:2018 ../includes/routes/management.routes.php:2055 ../includes/routes/management.routes.php:2086 
 $lang['routes']['/titles'] = '/titres';
@@ -198,19 +189,19 @@ $lang['routes']['/titles'] = '/titres';
 // ../includes/routes/ajax.routes.php:193 
 $lang['routes']['/infos'] = '/infos';
 
-// ../includes/routes/members.routes.php:2685 
+// ../includes/routes/members.routes.php:2710 
 $lang['routes']['/file'] = '/fichier';
 
 // ../includes/routes/management.routes.php:3260 ../includes/routes/management.routes.php:3286 
 $lang['routes']['/admin-tools'] = '/outils-administration';
 
-// ../includes/routes/members.routes.php:2800 ../includes/routes/members.routes.php:2852 ../includes/routes/members.routes.php:2912 
+// ../includes/routes/members.routes.php:2825 ../includes/routes/members.routes.php:2877 ../includes/routes/members.routes.php:2937 
 $lang['routes']['/mass-change'] = '/modif-masse';
 
 // ../includes/routes/groups.routes.php:329 
 $lang['routes']['/ajax/unique_groupname'] = '/ajax/nom-groupe-unique';
 
-// ../includes/routes/members.routes.php:2190 
+// ../includes/routes/members.routes.php:2215 
 $lang['routes']['/attachment'] = '/piece-jointe';
 
 // ../includes/routes/groups.routes.php:272 
@@ -219,8 +210,8 @@ $lang['routes']['/pdf/groups'] = '/pdf/groupes';
 // ../includes/routes/main.routes.php:137 
 $lang['routes']['/impersonate'] = '/imposture';
 
-// ../includes/routes/members.routes.php:1318 
-$lang['routes']['/members/remove'] = '/adherents/supprimer';
+// ../includes/routes/members.routes.php:1743 
+$lang['routes']['/adhesion-form'] = '/formulaire-adhesion';
 
 // ../includes/routes/management.routes.php:1065 ../includes/routes/management.routes.php:1088 
 $lang['routes']['/flush'] = '/nettoyer';
@@ -231,23 +222,23 @@ $lang['routes']['/import'] = '/import';
 // ../includes/routes/groups.routes.php:181 ../includes/routes/groups.routes.php:212 
 $lang['routes']['/group/remove'] = '/groupe/supprimer';
 
+// ../includes/routes/members.routes.php:2392 
+$lang['routes']['/reminder-filter'] = '/filtre-rappel';
+
 // ../includes/routes/main.routes.php:68 
 $lang['routes']['/photo'] = '/photo';
 
 // ../includes/routes/management.routes.php:2891 ../templates/default/configurer_fiche_content.tpl:40 
 $lang['routes']['down'] = 'descendre';
 
-// ../includes/routes/members.routes.php:859 ../templates/default/member.tpl:11 
-$lang['routes']['subscribe'] = 'inscription';
+// ../includes/routes/members.routes.php:1678 
+$lang['routes']['/labels'] = '/etiquettes';
 
-// ../includes/routes/members.routes.php:2245 ../includes/routes/members.routes.php:2276 
+// ../includes/routes/members.routes.php:2270 ../includes/routes/members.routes.php:2301 
 $lang['routes']['/reminders'] = '/rappels';
 
 // ../includes/routes/contributions.routes.php:265 ../includes/routes/contributions.routes.php:297 ../includes/routes/contributions.routes.php:371 ../includes/routes/contributions.routes.php:430 ../includes/routes/contributions.routes.php:447 ../includes/routes/contributions.routes.php:502 ../includes/routes/contributions.routes.php:1009 ../includes/routes/members.routes.php:1243 ../templates/default/gestion_contributions.tpl:45 ../templates/default/gestion_contributions.tpl:218 ../templates/default/page.tpl:146 ../templates/default/ajouter_transaction.tpl:36 ../templates/default/ajouter_transaction.tpl:55 ../templates/default/ajouter_contribution.tpl:44 ../templates/default/ajouter_contribution.tpl:67 ../templates/default/ajouter_contribution.tpl:77 ../templates/default/ajouter_contribution.tpl:94 ../templates/default/ajouter_contribution.tpl:103 ../templates/default/ajouter_contribution.tpl:128 ../templates/default/ajouter_contribution.tpl:174 ../templates/default/voir_adherent.tpl:35 
 $lang['routes']['fee'] = 'cotisation';
-
-// ../includes/routes/management.routes.php:2368 ../includes/routes/management.routes.php:2410 ../includes/routes/management.routes.php:2428 ../includes/routes/management.routes.php:2446 ../includes/routes/management.routes.php:2451 ../includes/routes/management.routes.php:3004 ../includes/routes/management.routes.php:3018 ../includes/routes/management.routes.php:3026 ../includes/routes/management.routes.php:3063 ../includes/routes/management.routes.php:3079 ../includes/routes/management.routes.php:3087 ../includes/routes/management.routes.php:3154 ../includes/routes/contributions.routes.php:266 ../includes/routes/contributions.routes.php:280 ../includes/routes/contributions.routes.php:289 ../includes/routes/contributions.routes.php:327 ../includes/routes/contributions.routes.php:335 ../includes/routes/contributions.routes.php:352 ../includes/routes/contributions.routes.php:448 ../includes/routes/contributions.routes.php:478 ../includes/routes/contributions.routes.php:724 ../includes/routes/contributions.routes.php:783 ../includes/routes/contributions.routes.php:804 ../includes/routes/contributions.routes.php:807 ../includes/routes/contributions.routes.php:934 ../includes/routes/contributions.routes.php:949 ../includes/routes/contributions.routes.php:1008 ../includes/routes/members.routes.php:685 ../includes/routes/members.routes.php:697 ../includes/routes/members.routes.php:700 ../includes/routes/members.routes.php:1244 ../includes/routes/members.routes.php:1271 ../templates/default/editer_champ.tpl:74 ../templates/default/editer_champ.tpl:75 ../templates/default/gestion_contributions.tpl:45 ../templates/default/gestion_contributions.tpl:46 ../templates/default/page.tpl:145 ../templates/default/page.tpl:146 ../templates/default/page.tpl:147 ../templates/default/page.tpl:148 ../templates/default/ajouter_transaction.tpl:5 ../templates/default/ajouter_transaction.tpl:55 ../templates/default/ajouter_transaction.tpl:56 ../templates/default/ajouter_transaction.tpl:124 ../templates/default/gestion_transactions.tpl:22 ../templates/default/ajouter_contribution.tpl:5 ../templates/default/ajouter_contribution.tpl:155 ../templates/default/voir_adherent.tpl:35 ../templates/default/voir_adherent.tpl:38 ../templates/default/configurer_fiches.tpl:5 ../templates/default/configurer_fiches.tpl:27 ../templates/default/gestion_intitules.tpl:4 
-$lang['routes']['add'] = 'ajouter';
 
 // ../includes/routes/members.routes.php:1539 
 $lang['routes']['/batch'] = '/actions-en-masse';
@@ -258,7 +249,7 @@ $lang['routes']['/send'] = '/envoyer';
 // ../includes/routes/members.routes.php:1288 ../includes/routes/members.routes.php:1350 
 $lang['routes']['/member/remove'] = '/adherent/supprimer';
 
-// ../includes/routes/members.routes.php:2438 
+// ../includes/routes/members.routes.php:2463 
 $lang['routes']['/attendance-sheet'] = '/liste-emargement';
 
 // ../includes/routes/management.routes.php:2766 ../includes/routes/management.routes.php:2791 ../includes/routes/management.routes.php:2846 
@@ -294,16 +285,19 @@ $lang['routes']['/countries'] = '/pays';
 // ../includes/routes/authentication.routes.php:149 
 $lang['routes']['/retrieve-pass'] = '/recupere-mot-de-passe';
 
-// ../includes/routes/management.routes.php:1001 ../includes/routes/management.routes.php:1215 ../includes/routes/contributions.routes.php:175 
+// ../includes/routes/management.routes.php:1001 ../includes/routes/management.routes.php:1215 ../includes/routes/contributions.routes.php:175 ../includes/routes/members.routes.php:383 
 $lang['routes']['/filter'] = '/filtre';
 
 // ../includes/routes/ajax.routes.php:241 
 $lang['routes']['/dates'] = '/dates';
 
-// ../includes/routes/members.routes.php:2852 
+// ../includes/routes/members.routes.php:1796 
+$lang['routes']['/empty-adhesion-form'] = '/formulaire-adhesion-vierge';
+
+// ../includes/routes/members.routes.php:2877 
 $lang['routes']['/validate'] = '/valider';
 
-// ../includes/routes/members.routes.php:2143 ../includes/routes/members.routes.php:2190 
+// ../includes/routes/members.routes.php:2168 ../includes/routes/members.routes.php:2215 
 $lang['routes']['/preview'] = '/previsualisation';
 
 // ../includes/routes/groups.routes.php:345 
@@ -357,9 +351,9 @@ $lang['routes']['deactivate'] = 'desactiver';
 // ../includes/routes/ajax.routes.php:232 
 $lang['routes']['/registered'] = '/enregistre';
 
-// ../includes/routes/management.routes.php:942 ../includes/routes/management.routes.php:968 ../includes/routes/management.routes.php:1147 ../includes/routes/management.routes.php:1176 ../includes/routes/contributions.routes.php:51 ../includes/routes/contributions.routes.php:112 ../includes/routes/members.routes.php:313 ../includes/routes/members.routes.php:335 ../includes/routes/members.routes.php:2520 ../includes/routes/public_pages.routes.php:62 ../includes/routes/public_pages.routes.php:84 ../templates/default/gestion_contributions.tpl:70 ../templates/default/gestion_contributions.tpl:81 ../templates/default/gestion_contributions.tpl:92 ../templates/default/gestion_contributions.tpl:104 ../templates/default/gestion_contributions.tpl:116 ../templates/default/gestion_contributions.tpl:127 ../templates/default/gestion_contributions.tpl:138 ../templates/default/gestion_transactions.tpl:43 ../templates/default/gestion_transactions.tpl:56 ../templates/default/gestion_transactions.tpl:68 ../templates/default/gestion_mailings.tpl:59 ../templates/default/gestion_mailings.tpl:71 ../templates/default/gestion_mailings.tpl:86 ../templates/default/gestion_mailings.tpl:101 ../templates/default/liste_membres.tpl:24 ../templates/default/liste_membres.tpl:36 ../templates/default/history.tpl:56 ../templates/default/history.tpl:68 ../templates/default/history.tpl:80 ../templates/default/history.tpl:92 
+// ../includes/routes/management.routes.php:942 ../includes/routes/management.routes.php:968 ../includes/routes/management.routes.php:1147 ../includes/routes/management.routes.php:1176 ../includes/routes/contributions.routes.php:51 ../includes/routes/contributions.routes.php:112 ../includes/routes/members.routes.php:313 ../includes/routes/members.routes.php:335 ../includes/routes/members.routes.php:2545 ../includes/routes/public_pages.routes.php:62 ../includes/routes/public_pages.routes.php:84 ../templates/default/gestion_contributions.tpl:70 ../templates/default/gestion_contributions.tpl:81 ../templates/default/gestion_contributions.tpl:92 ../templates/default/gestion_contributions.tpl:104 ../templates/default/gestion_contributions.tpl:116 ../templates/default/gestion_contributions.tpl:127 ../templates/default/gestion_contributions.tpl:138 ../templates/default/gestion_transactions.tpl:43 ../templates/default/gestion_transactions.tpl:56 ../templates/default/gestion_transactions.tpl:68 ../templates/default/gestion_mailings.tpl:59 ../templates/default/gestion_mailings.tpl:71 ../templates/default/gestion_mailings.tpl:86 ../templates/default/gestion_mailings.tpl:101 ../templates/default/liste_membres.tpl:24 ../templates/default/liste_membres.tpl:36 ../templates/default/history.tpl:56 ../templates/default/history.tpl:68 ../templates/default/history.tpl:80 ../templates/default/history.tpl:92 
 $lang['routes']['order'] = 'ordre';
 
-// ../includes/routes/members.routes.php:2368 ../includes/routes/members.routes.php:2375 ../templates/default/reminder.tpl:13 ../templates/default/reminder.tpl:14 
+// ../includes/routes/members.routes.php:2393 ../includes/routes/members.routes.php:2400 ../templates/default/reminder.tpl:13 ../templates/default/reminder.tpl:14 
 $lang['routes']['nearly'] = 'echeance-proche';
 

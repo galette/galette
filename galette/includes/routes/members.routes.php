@@ -120,7 +120,7 @@ $app->get(
 
 //members list CSV export
 $app->get(
-    __('/members/export/csv', 'routes'),
+    __('/members', 'routes') . __('/export', 'routes') . __('/csv', 'routes'),
     function ($request, $response) {
         $csv = new CsvOut();
 
@@ -380,7 +380,7 @@ $app->get(
 
 //members list filtering
 $app->post(
-    __('/members/filter', 'routes'),
+    __('/members', 'routes') . __('/filter', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
         if (isset($this->session->filter_members)) {
@@ -521,7 +521,7 @@ $app->post(
 
 //members self card
 $app->get(
-    __('/member/me', 'routes'),
+    __('/member', 'routes') . __('/me', 'routes'),
     function ($request, $response) {
         if ($this->login->isSuperAdmin()) {
             return $response
@@ -1315,7 +1315,7 @@ $app->get(
 )->setName('removeMember')->add($authenticate);
 
 $app->get(
-    __('/members/remove', 'routes'),
+    __('/members', 'routes') . __('/remove', 'routes'),
     function ($request, $response) {
         $filters =  $this->session->filter_members;
 
@@ -1606,7 +1606,7 @@ $app->post(
 
 //PDF members cards
 $app->get(
-    __('/members/cards', 'routes') . '[/{' . Adherent::PK . ':\d+}]',
+    __('/members', 'routes') . __('/cards', 'routes') . '[/{' . Adherent::PK . ':\d+}]',
     function ($request, $response, $args) {
         if ($this->session->filter_members) {
             $filters =  $this->session->filter_members;
@@ -1675,7 +1675,7 @@ $app->get(
 
 //PDF members labels
 $app->get(
-    __('/members/labels', 'routes'),
+    __('/members', 'routes') . __('/labels', 'routes'),
     function ($request, $response) {
         $get = $request->getQueryParams();
 
@@ -1740,7 +1740,7 @@ $app->get(
 
 //PDF adhesion form
 $app->get(
-    __('/members/adhesion-form', 'routes') . '/{' . Adherent::PK . ':\d+}',
+    __('/members', 'routes') . __('/adhesion-form', 'routes') . '/{' . Adherent::PK . ':\d+}',
     function ($request, $response, $args) {
         $id_adh = (int)$args[Adherent::PK];
 
@@ -1793,7 +1793,7 @@ $app->get(
 
 //Empty PDF adhesion form
 $app->get(
-    __('/members/empty-adhesion-form', 'routes'),
+    __('/members', 'routes') . __('/empty-adhesion-form', 'routes'),
     function ($request, $response) {
         $adh = new Adherent($this->zdb, null, ['dynamics' => true]);
         $form = $this->preferences->pref_adhesion_form;
@@ -2389,7 +2389,7 @@ $app->post(
 )->setName('doReminders')->add($authenticate);
 
 $app->get(
-    __('/members/reminder-filter', 'routes') .
+    __('/members', 'routes') . __('/reminder-filter', 'routes') .
         '/{membership:' . __('nearly', 'routes') . '|' . __('late', 'routes')  . '}' .
         '/{mail:' . __('withmail', 'routes'). '|' . __('withoutmail', 'routes') . '}',
     function ($request, $response, $args) {
@@ -2541,7 +2541,7 @@ $app->post(
 )->setName('attendance_sheet')->add($authenticate);
 
 $app->post(
-    __('/ajax/members', 'routes') .
+    __('/ajax', 'routes') . __('/members', 'routes') .
     '[/{option:' . __('page', 'routes') . '|' . __('order', 'routes') . '}/{value:\d+}]',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
@@ -2675,7 +2675,7 @@ $app->post(
 )->setName('ajaxMembers')->add($authenticate);
 
 $app->post(
-    __('/ajax/group/members', 'routes'),
+    __('/ajax', 'routes') . __('/group', 'routes') . __('/members', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
 
