@@ -62,7 +62,7 @@ msgstr ""
 msgid "Not registered"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2338
+#: ../includes/routes/members.routes.php:2363
 msgid "Sent reminders:"
 msgstr ""
 
@@ -131,7 +131,7 @@ msgid "Is company?"
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:1192 ../includes/routes/members.routes.php:1507
-#: ../templates/default/gestion_contributions.tpl:25 ../templates/default/forms_types/payment_types.tpl:9
+#: ../templates/default/gestion_contributions.tpl:25 ../templates/default/forms_types/payment_types.tpl:12
 msgid "Check"
 msgstr ""
 
@@ -155,7 +155,7 @@ msgstr ""
 msgid "Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation."
 msgstr ""
 
-#: ../install/steps/db_select_version.php:60 ../templates/default/confirm_removal.tpl:21
+#: ../install/steps/db_select_version.php:61 ../templates/default/confirm_removal.tpl:21
 #: ../templates/default/telemetry.tpl:43 ../templates/default/mass_change_members.tpl:48
 #: ../templates/default/edit_title.tpl:19 ../templates/default/mailing_adherents.tpl:297
 msgid "Cancel"
@@ -418,7 +418,7 @@ msgid "Public page content"
 msgstr ""
 
 #: ../includes/routes/members.routes.php:1829 ../includes/routes/members.routes.php:1833
-#: ../includes/routes/members.routes.php:1960 ../includes/routes/members.routes.php:1962
+#: ../includes/routes/members.routes.php:1980 ../includes/routes/members.routes.php:1982
 msgid "Trying to load mailing while mail is disabled in preferences."
 msgstr ""
 
@@ -724,7 +724,7 @@ msgid "Impending due date"
 msgstr ""
 
 #: ../install/steps/db.php:111 ../install/steps/db_install.php:83
-#: ../install/steps/db_checks.php:242 ../install/steps/db_select_version.php:128
+#: ../install/steps/db_checks.php:242 ../install/steps/db_select_version.php:135
 #: ../install/steps/admin.php:59 ../install/steps/check.php:166
 #: ../install/steps/galette.php:82 ../install/steps/type.php:66
 #: ../install/old.index.php:304 ../install/old.index.php:350
@@ -803,7 +803,7 @@ msgstr ""
 msgid "File is empty!"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1997
+#: ../includes/routes/members.routes.php:2022
 msgid "Please type an object for the message."
 msgstr ""
 
@@ -849,7 +849,7 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: ../install/steps/db_select_version.php:74
+#: ../install/steps/db_select_version.php:81
 msgid "It seems you already use latest Galette version!<br/>Are you sure you want to upgrade?"
 msgstr ""
 
@@ -1014,6 +1014,10 @@ msgstr ""
 msgid "Galette Installation"
 msgstr ""
 
+#: ../includes/routes/members.routes.php:1875 ../includes/routes/members.routes.php:2004
+msgid "No member selected for mailing!"
+msgstr ""
+
 #: ../includes/routes/members.routes.php:100
 msgid "Subscription"
 msgstr ""
@@ -1087,7 +1091,7 @@ msgid "By %name"
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:1186 ../includes/routes/members.routes.php:1505
-#: ../templates/default/gestion_contributions.tpl:23 ../templates/default/forms_types/payment_types.tpl:7
+#: ../templates/default/gestion_contributions.tpl:23 ../templates/default/forms_types/payment_types.tpl:10
 msgid "Cash"
 msgstr ""
 
@@ -1183,7 +1187,7 @@ msgstr ""
 msgid "Reinitialize PDF models"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2786
+#: ../includes/routes/members.routes.php:2811
 msgid "The file does not exists or cannot be read :("
 msgstr ""
 
@@ -1415,7 +1419,7 @@ msgid "Member will receive his username and password by email, if he has an addr
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:1183 ../includes/routes/members.routes.php:1504
-#: ../templates/default/gestion_contributions.tpl:28 ../templates/default/forms_types/payment_types.tpl:12
+#: ../templates/default/gestion_contributions.tpl:28 ../templates/default/forms_types/payment_types.tpl:15
 msgid "Other"
 msgstr ""
 
@@ -1459,6 +1463,10 @@ msgstr ""
 
 #: ../templates/default/gestion_textes.tpl:72
 msgid "Galette's login URI"
+msgstr ""
+
+#: ../install/steps/db_select_version.php:70
+msgid "Previous version is older than 0.7. <strong>Make sure you select the right version</strong>."
 msgstr ""
 
 #: ../lib/Galette/Core/CheckModules.php:104 ../lib/Galette/Core/CheckModules.php:106
@@ -1825,7 +1833,7 @@ msgstr ""
 msgid "Horizontal margins:"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:134 ../install/steps/db_select_version.php:45
+#: ../lib/Galette/Core/Install.php:134 ../install/steps/db_select_version.php:46
 msgid "Previous version selection"
 msgstr ""
 
@@ -1925,7 +1933,7 @@ msgstr ""
 msgid "Treasurer"
 msgstr ""
 
-#: ../install/steps/db_select_version.php:79
+#: ../install/steps/db_select_version.php:86
 msgid "Your current Galette version is..."
 msgstr ""
 
@@ -1986,7 +1994,7 @@ msgstr ""
 msgid "Field has been successfully moved"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2262 ../templates/default/page.tpl:149
+#: ../includes/routes/members.routes.php:2287 ../templates/default/page.tpl:149
 #: ../templates/default/desktop.tpl:36
 msgid "Reminders"
 msgstr ""
@@ -2381,7 +2389,7 @@ msgstr ""
 msgid "Parent of:"
 msgstr ""
 
-#: ../includes/main.inc.php:221 ../includes/routes/members.routes.php:2743
+#: ../includes/main.inc.php:221 ../includes/routes/members.routes.php:2768
 msgid "You do not have permission for requested URL."
 msgstr ""
 
@@ -2409,7 +2417,7 @@ msgstr ""
 msgid "New password:"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2950
+#: ../includes/routes/members.routes.php:2975
 msgid "Nothing to do!"
 msgstr ""
 
@@ -2474,7 +2482,7 @@ msgstr ""
 msgid "Missing required field permissions!"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2095
+#: ../includes/routes/members.routes.php:2120
 msgid "Mailing has been successfully sent!"
 msgstr ""
 
@@ -2611,7 +2619,7 @@ msgstr ""
 msgid "Notify member his account has been modified"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2458 ../includes/routes/members.routes.php:2477
+#: ../includes/routes/members.routes.php:2483 ../includes/routes/members.routes.php:2502
 msgid "No member selected to generate attendance sheet"
 msgstr ""
 
@@ -2747,7 +2755,7 @@ msgstr ""
 msgid "Statuts"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2514
+#: ../includes/routes/members.routes.php:2539
 msgid "attendance_sheet"
 msgstr ""
 
@@ -2755,7 +2763,7 @@ msgstr ""
 msgid "Remove members"
 msgstr ""
 
-#: ../install/steps/db_select_version.php:55
+#: ../install/steps/db_select_version.php:56
 msgid "It seems you already use latest Galette version!"
 msgstr ""
 
@@ -2861,7 +2869,7 @@ msgstr ""
 msgid "[member]"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2835
+#: ../includes/routes/members.routes.php:2860
 msgid "Mass change %count members"
 msgstr ""
 
@@ -2902,7 +2910,7 @@ msgstr ""
 msgid "Do you want to use server's TLS capabilities?"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:3005
+#: ../includes/routes/members.routes.php:3030
 msgid "Something went wront during mass edition!"
 msgstr ""
 
@@ -2968,12 +2976,12 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:1292 ../lib/Galette/Repository/Members.php:1417
 #: ../lib/Galette/Repository/Members.php:1421 ../includes/routes/members.routes.php:204
 #: ../includes/routes/members.routes.php:215 ../includes/routes/members.routes.php:226
-#: ../includes/routes/members.routes.php:237 ../includes/routes/members.routes.php:2502
+#: ../includes/routes/members.routes.php:237 ../includes/routes/members.routes.php:2527
 #: ../templates/default/member.tpl:393 ../templates/default/advanced_search.tpl:222
 msgid "Y-m-d"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2428
+#: ../includes/routes/members.routes.php:2453
 msgid "Attendance sheet configuration"
 msgstr ""
 
@@ -3038,7 +3046,7 @@ msgid "Manage emails texts and subjects"
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:1198 ../includes/routes/members.routes.php:1509
-#: ../templates/default/gestion_contributions.tpl:27 ../templates/default/forms_types/payment_types.tpl:11
+#: ../templates/default/gestion_contributions.tpl:27 ../templates/default/forms_types/payment_types.tpl:14
 msgid "Paypal"
 msgstr ""
 
@@ -3071,7 +3079,7 @@ msgstr ""
 msgid "Send reminders to late members"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2174 ../templates/default/gestion_mailings.tpl:214
+#: ../includes/routes/members.routes.php:2199 ../templates/default/gestion_mailings.tpl:214
 #: ../templates/default/mailing_adherents.tpl:150
 msgid "Mailing preview"
 msgstr ""
@@ -3179,7 +3187,7 @@ msgstr ""
 msgid "Selected members"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2897
+#: ../includes/routes/members.routes.php:2922
 msgid "Review mass change %count members"
 msgstr ""
 
@@ -3707,8 +3715,8 @@ msgid "Contribution %id"
 msgstr ""
 
 #: ../install/steps/db.php:112 ../install/steps/db_install.php:94
-#: ../install/steps/db_checks.php:251 ../install/steps/db_select_version.php:61
-#: ../install/steps/db_select_version.php:129 ../install/steps/galette.php:93
+#: ../install/steps/db_checks.php:251 ../install/steps/db_select_version.php:62
+#: ../install/steps/db_select_version.php:136 ../install/steps/galette.php:93
 #: ../install/steps/type.php:67
 msgid "Back"
 msgstr ""
@@ -3994,7 +4002,7 @@ msgid "The group name you have requested already exits in the database."
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:1195 ../includes/routes/members.routes.php:1508
-#: ../templates/default/gestion_contributions.tpl:26 ../templates/default/forms_types/payment_types.tpl:10
+#: ../templates/default/gestion_contributions.tpl:26 ../templates/default/forms_types/payment_types.tpl:13
 msgid "Transfer"
 msgstr ""
 
@@ -4072,7 +4080,7 @@ msgstr ""
 msgid "CSV import model"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:3012
+#: ../includes/routes/members.routes.php:3037
 msgid "%count members has been changed successfully!"
 msgstr ""
 
@@ -4301,7 +4309,7 @@ msgstr ""
 msgid "Missing required field %field"
 msgstr ""
 
-#: ../install/steps/db_select_version.php:68
+#: ../install/steps/db_select_version.php:74
 msgid "Your previous version should be selected and <strong>displayed in bold</strong>."
 msgstr ""
 
@@ -4317,7 +4325,7 @@ msgstr ""
 msgid "Administrator"
 msgstr ""
 
-#: ../lib/Galette/IO/PdfAttendanceSheet.php:108 ../includes/routes/members.routes.php:2485
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:108 ../includes/routes/members.routes.php:2510
 #: ../templates/default/attendance_sheet_details.tpl:13 ../templates/default/gestion_adherents.tpl:228
 msgid "Attendance sheet"
 msgstr ""
@@ -4625,11 +4633,11 @@ msgstr ""
 msgid "Your subscription has been registered."
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1920
+#: ../includes/routes/members.routes.php:1931
 msgid "Mailing"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2298
+#: ../includes/routes/members.routes.php:2323
 msgid "No reminder to send for now."
 msgstr ""
 
@@ -4637,7 +4645,7 @@ msgstr ""
 msgid "Write your mailing"
 msgstr ""
 
-#: ../install/steps/db_select_version.php:46
+#: ../install/steps/db_select_version.php:47
 msgid "Select your previous Galette version below, and then click next."
 msgstr ""
 
@@ -4717,7 +4725,7 @@ msgstr ""
 msgid "An error occured adding member to its groups as manager."
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2983
+#: ../includes/routes/members.routes.php:3008
 msgid "No permission to edit member"
 msgstr ""
 
@@ -4845,7 +4853,7 @@ msgstr ""
 msgid "New mailing from %s"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1177 ../includes/routes/members.routes.php:2992
+#: ../includes/routes/members.routes.php:1177 ../includes/routes/members.routes.php:3017
 msgid "An error occured while storing the member."
 msgstr ""
 
@@ -4931,6 +4939,10 @@ msgstr ""
 
 #: ../includes/routes/authentication.routes.php:165 ../templates/default/mailing_adherents.tpl:6
 msgid "Email sent is disabled in the preferences. Ask galette admin"
+msgstr ""
+
+#: ../lib/Galette/Core/I18n.php:257 ../lib/Galette/Core/I18n.php:287
+msgid "Unknown lang (%lang)"
 msgstr ""
 
 #: ../lib/Galette/Entity/Reminder.php:265
@@ -5263,7 +5275,7 @@ msgstr ""
 msgid "Title '%s' has not been added!"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2117
+#: ../includes/routes/members.routes.php:2142
 msgid "Mailing has been successfully saved."
 msgstr ""
 
@@ -5720,7 +5732,7 @@ msgstr ""
 msgid "No active plugin."
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2331
+#: ../includes/routes/members.routes.php:2356
 msgid "Reminder has not been sent:"
 msgstr ""
 
@@ -5788,7 +5800,7 @@ msgstr ""
 msgid "New dynamic field"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2003
+#: ../includes/routes/members.routes.php:2028
 msgid "Please enter a message."
 msgstr ""
 
@@ -6091,7 +6103,7 @@ msgstr ""
 msgid "Twitter"
 msgstr ""
 
-#: ../install/steps/db_select_version.php:99 ../templates/default/plugin_initdb.tpl:61
+#: ../install/steps/db_select_version.php:106 ../templates/default/plugin_initdb.tpl:61
 msgid "older than %version"
 msgstr ""
 
@@ -6135,7 +6147,7 @@ msgstr ""
 msgid "- The username must be composed of at least %i characters!"
 msgstr ""
 
-#: ../install/steps/db_select_version.php:51
+#: ../install/steps/db_select_version.php:52
 msgid "No update script found!"
 msgstr ""
 
@@ -6168,7 +6180,7 @@ msgid "Member ID cannot ben null calling edit route!"
 msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:1189 ../includes/routes/members.routes.php:1506
-#: ../templates/default/gestion_contributions.tpl:24 ../templates/default/forms_types/payment_types.tpl:8
+#: ../templates/default/gestion_contributions.tpl:24 ../templates/default/forms_types/payment_types.tpl:11
 msgid "Credit card"
 msgstr ""
 
@@ -6544,7 +6556,7 @@ msgstr ""
 msgid "Check of the database"
 msgstr ""
 
-#: ../install/steps/db_select_version.php:103 ../install/old.index.php:334
+#: ../install/steps/db_select_version.php:110 ../install/old.index.php:334
 #: ../templates/default/advanced_search.tpl:54 ../templates/default/advanced_search.tpl:61
 #: ../templates/default/advanced_search.tpl:68 ../templates/default/advanced_search.tpl:75
 #: ../templates/default/advanced_search.tpl:102 ../templates/default/advanced_search.tpl:109
@@ -6647,7 +6659,7 @@ msgstr ""
 msgid "Duration"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2324
+#: ../includes/routes/members.routes.php:2349
 msgid "There are no member to proceed."
 msgstr ""
 
@@ -6695,7 +6707,7 @@ msgstr ""
 msgid "New installation"
 msgstr ""
 
-#: ../install/steps/db_select_version.php:102 ../templates/default/plugin_initdb.tpl:63
+#: ../install/steps/db_select_version.php:109 ../templates/default/plugin_initdb.tpl:63
 msgid "comprised between"
 msgstr ""
 
@@ -6752,7 +6764,7 @@ msgstr ""
 msgid "Label height:"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2859 ../includes/routes/members.routes.php:2921
+#: ../includes/routes/members.routes.php:2884 ../includes/routes/members.routes.php:2946
 msgid "Mass changes has not been confirmed!"
 msgstr ""
 

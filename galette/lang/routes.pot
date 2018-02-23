@@ -31,13 +31,13 @@ msgstr ""
 msgid "/contribution"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:524
-msgid "/member/me"
-msgstr ""
-
-#: ../includes/routes/members.routes.php:2368 ../templates/default/reminder.tpl:20
+#: ../includes/routes/members.routes.php:2393 ../templates/default/reminder.tpl:20
 #: ../templates/default/reminder.tpl:21
 msgid "late"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1678
+msgid "/labels"
 msgstr ""
 
 #: ../includes/routes/ajax.routes.php:193
@@ -60,10 +60,6 @@ msgstr ""
 
 #: ../includes/routes/main.routes.php:52
 msgid "/logo"
-msgstr ""
-
-#: ../includes/routes/members.routes.php:123
-msgid "/members/export/csv"
 msgstr ""
 
 #: ../includes/routes/management.routes.php:2766 ../includes/routes/management.routes.php:2791
@@ -93,6 +89,14 @@ msgstr ""
 msgid "/photo"
 msgstr ""
 
+#: ../includes/routes/members.routes.php:2215
+msgid "/attachment"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2392
+msgid "/reminder-filter"
+msgstr ""
+
 #: ../includes/routes/management.routes.php:3260 ../includes/routes/management.routes.php:3286
 msgid "/admin-tools"
 msgstr ""
@@ -119,7 +123,7 @@ msgstr ""
 msgid "/configure"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2245 ../includes/routes/members.routes.php:2276
+#: ../includes/routes/members.routes.php:2270 ../includes/routes/members.routes.php:2301
 msgid "/reminders"
 msgstr ""
 
@@ -139,19 +143,28 @@ msgstr ""
 msgid "down"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2852
+#: ../includes/routes/members.routes.php:2877
 msgid "/validate"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2143 ../includes/routes/members.routes.php:2190
+#: ../includes/routes/members.routes.php:2168 ../includes/routes/members.routes.php:2215
 msgid "/preview"
 msgstr ""
 
-#: ../includes/main.inc.php:296 ../includes/routes/members.routes.php:313
-#: ../includes/routes/members.routes.php:1539 ../includes/routes/members.routes.php:2800
-#: ../includes/routes/members.routes.php:2852 ../includes/routes/members.routes.php:2912
+#: ../includes/main.inc.php:296 ../includes/routes/members.routes.php:123
+#: ../includes/routes/members.routes.php:313 ../includes/routes/members.routes.php:383
+#: ../includes/routes/members.routes.php:1318 ../includes/routes/members.routes.php:1539
+#: ../includes/routes/members.routes.php:1609 ../includes/routes/members.routes.php:1678
+#: ../includes/routes/members.routes.php:1743 ../includes/routes/members.routes.php:1796
+#: ../includes/routes/members.routes.php:2392 ../includes/routes/members.routes.php:2544
+#: ../includes/routes/members.routes.php:2678 ../includes/routes/members.routes.php:2825
+#: ../includes/routes/members.routes.php:2877 ../includes/routes/members.routes.php:2937
 #: ../includes/routes/public_pages.routes.php:62
 msgid "/members"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2678
+msgid "/group"
 msgstr ""
 
 #: ../includes/routes/members.routes.php:1438
@@ -175,7 +188,7 @@ msgstr ""
 msgid "/attach"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:383 ../includes/routes/public_pages.routes.php:115
+#: ../includes/routes/public_pages.routes.php:115
 msgid "/members/filter"
 msgstr ""
 
@@ -183,8 +196,8 @@ msgstr ""
 msgid "/ajax/groups/reorder"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2190
-msgid "/attachment"
+#: ../includes/routes/members.routes.php:1796
+msgid "/empty-adhesion-form"
 msgstr ""
 
 #: ../includes/main.inc.php:291 ../includes/main.inc.php:302
@@ -200,17 +213,13 @@ msgstr ""
 #: ../includes/routes/management.routes.php:1146 ../includes/routes/management.routes.php:1173
 #: ../includes/routes/contributions.routes.php:51 ../includes/routes/contributions.routes.php:109
 #: ../includes/routes/members.routes.php:313 ../includes/routes/members.routes.php:332
-#: ../includes/routes/members.routes.php:2520 ../includes/routes/members.routes.php:2530
+#: ../includes/routes/members.routes.php:2545 ../includes/routes/members.routes.php:2555
 #: ../includes/routes/public_pages.routes.php:62 ../includes/routes/public_pages.routes.php:81
 msgid "page"
 msgstr ""
 
 #: ../includes/routes/management.routes.php:109 ../includes/routes/management.routes.php:200
 msgid "/preferences"
-msgstr ""
-
-#: ../includes/routes/members.routes.php:1796
-msgid "/members/empty-adhesion-form"
 msgstr ""
 
 #: ../includes/routes/members.routes.php:859
@@ -237,8 +246,8 @@ msgstr ""
 msgid "/dates"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:567 ../includes/routes/members.routes.php:685
-#: ../includes/routes/members.routes.php:2685
+#: ../includes/routes/members.routes.php:524 ../includes/routes/members.routes.php:567
+#: ../includes/routes/members.routes.php:685 ../includes/routes/members.routes.php:2710
 msgid "/member"
 msgstr ""
 
@@ -246,13 +255,17 @@ msgstr ""
 msgid "/titles/edit"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1609
-msgid "/members/cards"
+#: ../includes/routes/members.routes.php:2710
+msgid "/file"
 msgstr ""
 
 #: ../includes/routes/management.routes.php:654 ../includes/routes/management.routes.php:678
 #: ../includes/routes/management.routes.php:737 ../includes/routes/plugins.routes.php:39
 msgid "/plugins"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:524
+msgid "/me"
 msgstr ""
 
 #: ../includes/routes/management.routes.php:1768
@@ -263,17 +276,13 @@ msgstr ""
 msgid "photo"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2368 ../includes/routes/members.routes.php:2375
+#: ../includes/routes/members.routes.php:2393 ../includes/routes/members.routes.php:2400
 #: ../templates/default/reminder.tpl:13 ../templates/default/reminder.tpl:14
 msgid "nearly"
 msgstr ""
 
 #: ../includes/routes/public_pages.routes.php:144
 msgid "/trombinoscope"
-msgstr ""
-
-#: ../includes/routes/members.routes.php:1743
-msgid "/members/adhesion-form"
 msgstr ""
 
 #: ../includes/routes/members.routes.php:1539
@@ -289,12 +298,8 @@ msgstr ""
 msgid "/telemetry"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2519
-msgid "/ajax/members"
-msgstr ""
-
-#: ../includes/routes/members.routes.php:2800 ../includes/routes/members.routes.php:2852
-#: ../includes/routes/members.routes.php:2912
+#: ../includes/routes/members.routes.php:2825 ../includes/routes/members.routes.php:2877
+#: ../includes/routes/members.routes.php:2937
 msgid "/mass-change"
 msgstr ""
 
@@ -302,9 +307,9 @@ msgstr ""
 msgid "/models/pdf"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1807 ../includes/routes/members.routes.php:1931
-#: ../includes/routes/members.routes.php:2143 ../includes/routes/members.routes.php:2190
-#: ../includes/routes/members.routes.php:2209
+#: ../includes/routes/members.routes.php:1807 ../includes/routes/members.routes.php:1942
+#: ../includes/routes/members.routes.php:2168 ../includes/routes/members.routes.php:2215
+#: ../includes/routes/members.routes.php:2234
 msgid "/mailing"
 msgstr ""
 
@@ -326,17 +331,21 @@ msgstr ""
 msgid "fee"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2438
+#: ../includes/routes/members.routes.php:2463
 msgid "/attendance-sheet"
 msgstr ""
 
 #: ../includes/routes/management.routes.php:1001 ../includes/routes/management.routes.php:1215
-#: ../includes/routes/contributions.routes.php:175
+#: ../includes/routes/contributions.routes.php:175 ../includes/routes/members.routes.php:383
 msgid "/filter"
 msgstr ""
 
 #: ../includes/routes/management.routes.php:737
 msgid "/initialize-database"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:123
+msgid "/csv"
 msgstr ""
 
 #: ../includes/routes/management.routes.php:561
@@ -379,10 +388,6 @@ msgstr ""
 msgid "/messages"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1678
-msgid "/members/labels"
-msgstr ""
-
 #: ../includes/routes/management.routes.php:941 ../includes/routes/management.routes.php:1001
 #: ../includes/routes/management.routes.php:1065 ../includes/routes/management.routes.php:1088
 msgid "/logs"
@@ -408,10 +413,6 @@ msgstr ""
 
 #: ../includes/routes/management.routes.php:2891 ../templates/default/configurer_fiche_content.tpl:33
 msgid "up"
-msgstr ""
-
-#: ../includes/routes/members.routes.php:2367
-msgid "/members/reminder-filter"
 msgstr ""
 
 #: ../includes/routes/contributions.routes.php:50 ../includes/routes/contributions.routes.php:74
@@ -472,7 +473,8 @@ msgstr ""
 msgid "export"
 msgstr ""
 
-#: ../includes/routes/ajax.routes.php:42 ../includes/routes/members.routes.php:2209
+#: ../includes/routes/ajax.routes.php:42 ../includes/routes/members.routes.php:2234
+#: ../includes/routes/members.routes.php:2544 ../includes/routes/members.routes.php:2678
 msgid "/ajax"
 msgstr ""
 
@@ -481,13 +483,13 @@ msgstr ""
 msgid "deactivate"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2369 ../templates/default/reminder.tpl:14
+#: ../includes/routes/members.routes.php:2394 ../templates/default/reminder.tpl:14
 #: ../templates/default/reminder.tpl:21
 msgid "withoutmail"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2685
-msgid "/file"
+#: ../includes/routes/members.routes.php:1609
+msgid "/cards"
 msgstr ""
 
 #: ../includes/routes/management.routes.php:2607 ../includes/routes/management.routes.php:2705
@@ -509,7 +511,7 @@ msgstr ""
 #: ../includes/routes/management.routes.php:1147 ../includes/routes/management.routes.php:1176
 #: ../includes/routes/contributions.routes.php:51 ../includes/routes/contributions.routes.php:112
 #: ../includes/routes/members.routes.php:313 ../includes/routes/members.routes.php:335
-#: ../includes/routes/members.routes.php:2520 ../includes/routes/public_pages.routes.php:62
+#: ../includes/routes/members.routes.php:2545 ../includes/routes/public_pages.routes.php:62
 #: ../includes/routes/public_pages.routes.php:84 ../templates/default/gestion_contributions.tpl:70
 #: ../templates/default/gestion_contributions.tpl:81 ../templates/default/gestion_contributions.tpl:92
 #: ../templates/default/gestion_contributions.tpl:104 ../templates/default/gestion_contributions.tpl:116
@@ -524,24 +526,24 @@ msgstr ""
 msgid "order"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:1318
-msgid "/members/remove"
-msgstr ""
-
 #: ../includes/routes/ajax.routes.php:232
 msgid "/registered"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2234
+msgid "/set-recipients"
 msgstr ""
 
 #: ../includes/routes/groups.routes.php:329
 msgid "/ajax/unique_groupname"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2369 ../includes/routes/members.routes.php:2380
+#: ../includes/routes/members.routes.php:2394 ../includes/routes/members.routes.php:2405
 #: ../templates/default/reminder.tpl:13 ../templates/default/reminder.tpl:20
 msgid "withmail"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2395
+#: ../includes/routes/members.routes.php:2420
 msgid "/attendance-sheet/details"
 msgstr ""
 
@@ -587,6 +589,7 @@ msgid "/send"
 msgstr ""
 
 #: ../includes/routes/management.routes.php:1371 ../includes/routes/management.routes.php:1491
+#: ../includes/routes/members.routes.php:123
 msgid "/export"
 msgstr ""
 
@@ -614,16 +617,12 @@ msgstr ""
 msgid "/import"
 msgstr ""
 
-#: ../includes/routes/members.routes.php:2209
-msgid "/set-recipients"
+#: ../includes/routes/members.routes.php:1743
+msgid "/adhesion-form"
 msgstr ""
 
 #: ../includes/routes/members.routes.php:1288 ../includes/routes/members.routes.php:1350
 msgid "/member/remove"
-msgstr ""
-
-#: ../includes/routes/members.routes.php:2653
-msgid "/ajax/group/members"
 msgstr ""
 
 #: ../includes/routes/management.routes.php:1284 ../includes/routes/management.routes.php:1314
@@ -632,6 +631,7 @@ msgstr ""
 #: ../includes/routes/management.routes.php:2473 ../includes/routes/management.routes.php:2519
 #: ../includes/routes/management.routes.php:2917 ../includes/routes/management.routes.php:2959
 #: ../includes/routes/contributions.routes.php:1068 ../includes/routes/contributions.routes.php:1111
+#: ../includes/routes/members.routes.php:1318
 msgid "/remove"
 msgstr ""
 
