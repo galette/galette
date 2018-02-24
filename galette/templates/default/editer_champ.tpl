@@ -12,7 +12,7 @@
             <legend class="ui-state-active ui-corner-top">{_T string="Edit field %field" pattern="/%field/" replace=$df->getName()}</legend>
             <p>
                 <label for="field_name" class="bline">{_T string="Name:"}</label>
-                <input type="text" name="field_name" id="field_name" value="{$df->getName(false)}"{if not $df|is_a:'Galette\DynamicFieldsTypes\Separator'} required="required"{/if}/>
+                <input type="text" name="field_name" id="field_name" value="{$df->getName(false)}"{if not $df|is_a:'Galette\DynamicFields\Separator'} required="required"{/if}/>
             </p>
             <p>
                 <label for="field_perm" class="bline">{_T string="Permissions:"}</label>
@@ -45,7 +45,7 @@
             <p>
                 <label for="field_size" class="bline">{_T string="Size:"}</label>
                 <input type="text" name="field_size" id="field_size" value="{$df->getSize()}" size="3"/>
-        {if $df|is_a:'Galette\DynamicFieldsTypes\File'}
+        {if $df|is_a:'Galette\DynamicFields\File'}
                 <span class="exemple">{_T string="Maximum file size, in Ko."}</span>
         {else}
                 <span class="exemple">{_T string="Maximum number of characters."}</span>

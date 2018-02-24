@@ -35,7 +35,7 @@
  * @since     0.8.2dev 2014-11-27
  */
 
-use Galette\Entity\DynamicFields;
+use Galette\Entity\DynamicFieldsHandle;
 use Galette\Core\PasswordImage;
 use Galette\Core\Mailing;
 use Galette\Core\GaletteMail;
@@ -1488,10 +1488,10 @@ $app->get(
             'dynamics'  => false
         );
         $member = new Adherent($this->zdb, $this->login->login, $deps);
-        $adh_dynamics = new DynamicFields($this->zdb, $this->login, $member);
+        $adh_dynamics = new DynamicFieldsHandle($this->zdb, $this->login, $member);
 
         $contrib = new Contribution($this->zdb, $this->login);
-        $contrib_dynamics = new DynamicFields($this->zdb, $this->login, $contrib);
+        $contrib_dynamics = new DynamicFieldsHandle($this->zdb, $this->login, $contrib);
 
         //Status
         $statuts = new Status($this->zdb);
@@ -1795,9 +1795,8 @@ $app->get(
 $app->get(
     __('/members', 'routes') . __('/empty-adhesion-form', 'routes'),
     function ($request, $response) {
-        $adh = new Adherent($this->zdb, null, ['dynamics' => true]);
         $form = $this->preferences->pref_adhesion_form;
-        $pdf = new $form($adh, $this->zdb, $this->preferences);
+        $pdf = new $form(null, $this->zdb, $this->preferences);
         $pdf->download();
     }
 )->setName('emptyAdhesionForm');

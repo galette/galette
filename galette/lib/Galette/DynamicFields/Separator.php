@@ -3,11 +3,11 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * File field type
+ * Separator dynamic field
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2012-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -24,36 +24,36 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  DynamicFieldsTypes
+ * @category  DynamicFields
  * @package   Galette
  *
- * @author    Guillaume Rousse <guillomovitch@gmail.com>
- * @copyright 2013-2014 The Galette Team
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.8 - 2013-07-27
+ * @since     Available since 0.7.1dev - 2012-07-28
  */
 
-namespace Galette\DynamicFieldsTypes;
+namespace Galette\DynamicFields;
 
 use Analog\Analog;
 use Galette\Core\Db;
 
 /**
- * File field type
+ * Separator field type
  *
- * @name      File
- * @category  DynamicFieldsTypes
+ * @name      Separator
+ * @category  DynamicFields
  * @package   Galette
  *
- * @author    Guillaume Rousse <guillomovitch@gmail.com>
- * @copyright 2013-2014 The Galette Team
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
 
-class File extends DynamicFieldType
+class Separator extends DynamicField
 {
     /**
      * Default constructor
@@ -64,8 +64,7 @@ class File extends DynamicFieldType
     public function __construct(Db $zdb, $id = null)
     {
         parent::__construct($zdb, $id);
-        $this->has_data = true;
-        $this->has_size = true;
+        $this->has_permissions = false;
     }
 
     /**
@@ -75,6 +74,6 @@ class File extends DynamicFieldType
      */
     public function getType()
     {
-        return self::FILE;
+        return self::SEPARATOR;
     }
 }

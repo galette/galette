@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Dynamic fields types repository management
+ * Dynamic field descriptors set
  *
  * PHP version 5
  *
@@ -39,15 +39,13 @@ namespace Galette\Repository;
 
 use Analog\Analog;
 use Galette\Core\Db;
-use Galette\Core\Login;
-use Galette\Core\Authentication;
-use Galette\DynamicFieldsTypes\DynamicFieldType;
+use Galette\DynamicFields\DynamicField;
 
 /**
- * Dynamic fields types repository management
+ * Dynamic field descriptors set
  *
  * @category  Repository
- * @name      DynamicFieldsTypes
+ * @name      DynamicFieldsSet
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2017 The Galette Team
@@ -56,7 +54,7 @@ use Galette\DynamicFieldsTypes\DynamicFieldType;
  * @since     Available since 0.9dev - 2017-05-20
  */
 
-class DynamicFieldsTypes
+class DynamicFieldsSet
 {
     private $zdb;
 
@@ -76,37 +74,12 @@ class DynamicFieldsTypes
      * @param string $form_name Form name
      * @param Login  $login     Login instance
      *
-     * @return DynamicFieldType[]
+     * @return DynamicField[]
      */
-    public function getList($form_name, Login $login)
+    public function getList($form_name)
     {
-        $select = $this->zdb->select(DynamicFieldType::TABLE);
+        $select = $this->zdb->select(DynamicField::TABLE);
         $where = ['field_form' => $form_name];
-        $access_level = $login->getAccessLevel();
-
-        switch ($access_level) {
-            case Authentication::ACCESS_STAFF:
-                $where['field_perm'] = [
-                    DynamicFieldType::PERM_STAFF,
-                    DynamicFieldType::PERM_MANAGER,
-                    DynamicFieldType::PERM_USER_READ,
-                    DynamicFieldType::PERM_USER_WRITE
-                ];
-                break;
-            case Authentication::ACCESS_MANAGER:
-                $where['field_perm'] = [
-                    DynamicFieldType::PERM_MANAGER,
-                    DynamicFieldType::PERM_USER_READ,
-                    DynamicFieldType::PERM_USER_WRITE
-                ];
-                break;
-            case Authentication::ACCESS_USER:
-                $where['field_perm'] = [
-                    DynamicFieldType::PERM_USER_READ,
-                    DynamicFieldType::PERM_USER_WRITE
-                ];
-                break;
-        }
 
         $select
             ->where($where)
@@ -117,9 +90,9 @@ class DynamicFieldsTypes
         $fields = [];
         if ($results) {
             foreach ($results as $r) {
-                $df = DynamicFieldType::getFieldType($this->zdb, $r['field_type']);
+                $df = DynamicField::getFieldType($this->zdb, $r['field_type']);
                 $df->loadFromRs($r);
-                $fields[$r[DynamicFieldType::PK]] = $df;
+                $fields[$r[DynamicField::PK]] = $df;
             }
         }
         return $fields;
