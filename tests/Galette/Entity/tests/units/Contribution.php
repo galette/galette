@@ -535,7 +535,7 @@ class Contribution extends atoum
                     }
                     break;
                 default:
-                    $this->variable($contrib->$property)->isEqualTo($value);
+                    $this->variable($contrib->$property)->isEqualTo($value, $property);
                     break;
             }
         }
