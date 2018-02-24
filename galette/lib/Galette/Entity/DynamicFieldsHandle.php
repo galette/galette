@@ -51,7 +51,7 @@ use Galette\DynamicFields\Date;
 use Galette\DynamicFields\Boolean;
 use Galette\DynamicFields\File;
 use Galette\DynamicFields\DynamicField;
-use Galette\Repository\DynamicFieldsTypes;
+use Galette\Repository\DynamicFieldsSet;
 
 /**
  * Dynamic fields handle, aggregating field descriptors and values
@@ -125,7 +125,7 @@ class DynamicFieldsHandle
 
         try {
             $this->item_id = $object->id;
-            $fields = new DynamicFieldsTypes($this->zdb);
+            $fields = new DynamicFieldsSet($this->zdb);
             $this->dynamic_fields = $fields->getList($this->form_name);
 
             $select = $this->zdb->select(self::TABLE, 'd');
@@ -383,7 +383,7 @@ class DynamicFieldsHandle
      */
     private function handleRemovals()
     {
-        $fields = new DynamicFieldsTypes($this->zdb);
+        $fields = new DynamicFieldsSet($this->zdb);
         $this->dynamic_fields = $fields->getList($this->form_name, $this->login);
 
         $select = $this->zdb->select(self::TABLE, 'd');

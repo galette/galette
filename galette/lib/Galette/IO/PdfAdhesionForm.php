@@ -173,7 +173,7 @@ class PdfAdhesionForm
 
         /** the list of all dynamic fields */
         $fields =
-            new \Galette\Repository\DynamicFieldsTypes($zdb);
+            new \Galette\Repository\DynamicFieldsSet($zdb);
         $dynamic_fields = $fields->getList('adh');
 
         foreach ($dynamic_patterns as $pattern) {

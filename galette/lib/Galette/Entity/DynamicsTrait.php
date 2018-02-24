@@ -69,7 +69,7 @@ trait DynamicsTrait
         } else {
             $login = $this->login;
         }
-        $this->dynamics = new DynamicFields($this->zdb, $login, $this);
+        $this->dynamics = new DynamicFieldsHandle($this->zdb, $login, $this);
     }
 
     /**

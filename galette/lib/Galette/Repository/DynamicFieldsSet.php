@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Dynamic fields types repository management
+ * Dynamic field descriptors set
  *
  * PHP version 5
  *
@@ -42,10 +42,10 @@ use Galette\Core\Db;
 use Galette\DynamicFields\DynamicField;
 
 /**
- * Dynamic fields types repository management
+ * Dynamic field descriptors set
  *
  * @category  Repository
- * @name      DynamicFieldsTypes
+ * @name      DynamicFieldsSet
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2017 The Galette Team
@@ -54,7 +54,7 @@ use Galette\DynamicFields\DynamicField;
  * @since     Available since 0.9dev - 2017-05-20
  */
 
-class DynamicFieldsTypes
+class DynamicFieldsSet
 {
     private $zdb;
 

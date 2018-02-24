@@ -2849,7 +2849,7 @@ $app->get(
         if (isset($_POST['form']) && trim($_POST['form']) != '') {
             $form_name = $_POST['form'];
         }
-        $fields = new \Galette\Repository\DynamicFieldsTypes($this->zdb);
+        $fields = new \Galette\Repository\DynamicFieldsSet($this->zdb);
         $fields_list = $fields->getList($form_name, $this->login);
 
         $field_type_names = DynamicField::getFieldsTypesNames();
