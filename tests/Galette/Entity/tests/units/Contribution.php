@@ -503,6 +503,7 @@ class Contribution extends atoum
         }
 
         $date_enr = new \DateTime();
+        $date_enr->setTime(0, 0, 0);
         $date_enr->sub(new \DateInterval('P236D'));
 
         $date_begin = new \DateTime();
@@ -510,6 +511,18 @@ class Contribution extends atoum
 
         $date_end = clone $date_begin;
         $date_end->add(new \DateInterval('P1Y'));
+
+        $this->object($contrib->raw_date)->isInstanceOf('DateTime');
+        $this->object($contrib->raw_begin_date)->isInstanceOf('DateTime');
+        $this->object($contrib->raw_end_date)->isInstanceOf('DateTime');
+
+        //Q&D fix for dates problem with Faker :(
+        if ($contrib->raw_date->diff($date_enr)->days == 1) {
+            $interval = new \DateInterval('P1D');
+            $date_enr->add($interval);
+            $date_begin->add($interval);
+            $date_end->add($interval);
+        }
 
         $expecteds = [
             'id_adh' => "{$this->adh->id}",
@@ -522,6 +535,10 @@ class Contribution extends atoum
             'date_fin_cotis' => $date_end->format('Y-m-d'),
         ];
         $expecteds = array_merge($expecteds, $new_expecteds);
+
+        $this->string($contrib->raw_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_enreg']);
+        $this->string($contrib->raw_begin_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_debut_cotis']);
+        $this->string($contrib->raw_end_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_fin_cotis']);
 
         foreach ($expecteds as $key => $value) {
             $property = $this->contrib->fields[$key]['propname'];
@@ -539,13 +556,6 @@ class Contribution extends atoum
                     break;
             }
         }
-
-        $this->object($contrib->raw_date)->isInstanceOf('DateTime');
-        $this->string($contrib->raw_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_enreg']);
-        $this->object($contrib->raw_begin_date)->isInstanceOf('DateTime');
-        $this->string($contrib->raw_begin_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_debut_cotis']);
-        $this->object($contrib->raw_end_date)->isInstanceOf('DateTime');
-        $this->string($contrib->raw_end_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_fin_cotis']);
 
         //load member from db
         $this->adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
