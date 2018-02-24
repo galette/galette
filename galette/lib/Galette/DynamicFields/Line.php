@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Separator field type
+ * Line dynamic field
  *
  * PHP version 5
  *
@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  DynamicFieldsTypes
+ * @category  DynamicFields
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -35,16 +35,16 @@
  * @since     Available since 0.7.1dev - 2012-07-28
  */
 
-namespace Galette\DynamicFieldsTypes;
+namespace Galette\DynamicFields;
 
 use Analog\Analog;
 use Galette\Core\Db;
 
 /**
- * Separator field type
+ * Line field type
  *
- * @name      Separator
- * @category  DynamicFieldsTypes
+ * @name      Line
+ * @category  DynamicFields
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -53,7 +53,7 @@ use Galette\Core\Db;
  * @link      http://galette.tuxfamily.org
  */
 
-class Text extends DynamicFieldType
+class Line extends DynamicField
 {
     /**
      * Default constructor
@@ -66,8 +66,8 @@ class Text extends DynamicFieldType
         parent::__construct($zdb, $id);
         $this->has_data = true;
         $this->has_width = true;
-        $this->has_height = true;
-        $this->repeat = 1;
+        $this->has_size = true;
+        $this->multi_valued = true;
     }
 
     /**
@@ -77,6 +77,6 @@ class Text extends DynamicFieldType
      */
     public function getType()
     {
-        return self::TEXT;
+        return self::LINE;
     }
 }

@@ -37,7 +37,7 @@
 
 namespace Galette\Repository;
 
-use Galette\DynamicFieldsTypes\DynamicFieldType;
+use Galette\DynamicFields\DynamicField;
 use Galette\Entity\DynamicFieldsHandle;
 
 use Analog\Analog;
@@ -742,7 +742,7 @@ class Members
                         $cdf_field
                     );
                     $select->join(
-                        array('cdfc' . $cdf => DynamicFieldType::getFixedValuesTableName($cdf, true)),
+                        array('cdfc' . $cdf => DynamicField::getFixedValuesTableName($cdf, true)),
                         $rcdf_field . '=dfc.field_val',
                         array(),
                         $select::JOIN_LEFT

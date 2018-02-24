@@ -38,7 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Galette\DynamicFieldsTypes\File;
+use Galette\DynamicFields\File;
 
 /**
  * Files

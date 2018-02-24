@@ -39,7 +39,7 @@ namespace Galette\Repository;
 
 use Analog\Analog;
 use Galette\Core\Db;
-use Galette\DynamicFieldsTypes\DynamicFieldType;
+use Galette\DynamicFields\DynamicField;
 
 /**
  * Dynamic fields types repository management
@@ -74,11 +74,11 @@ class DynamicFieldsTypes
      * @param string $form_name Form name
      * @param Login  $login     Login instance
      *
-     * @return DynamicFieldType[]
+     * @return DynamicField[]
      */
     public function getList($form_name)
     {
-        $select = $this->zdb->select(DynamicFieldType::TABLE);
+        $select = $this->zdb->select(DynamicField::TABLE);
         $where = ['field_form' => $form_name];
 
         $select
@@ -90,9 +90,9 @@ class DynamicFieldsTypes
         $fields = [];
         if ($results) {
             foreach ($results as $r) {
-                $df = DynamicFieldType::getFieldType($this->zdb, $r['field_type']);
+                $df = DynamicField::getFieldType($this->zdb, $r['field_type']);
                 $df->loadFromRs($r);
-                $fields[$r[DynamicFieldType::PK]] = $df;
+                $fields[$r[DynamicField::PK]] = $df;
             }
         }
         return $fields;

@@ -3,19 +3,19 @@
 
 {function name=draw_field}
     {assign var=valuedata value=$field_data.field_val|escape}
-    {if $field|is_a:'Galette\DynamicFieldsTypes\File'}
+    {if $field|is_a:'Galette\DynamicFields\File'}
     <span class="bline libelle">{$field->getName()|escape}</span>
     {else}
     <label class="bline libelle" for="info_field_{$field->getId()}_{$loop}">{$field->getName()|escape}</label>
     {/if}
-    {if $field|is_a:'Galette\DynamicFieldsTypes\Text'}
+    {if $field|is_a:'Galette\DynamicFields\Text'}
         <textarea name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}"
             cols="{if $field->getWidth() > 0}{$field->getWidth()}{else}61{/if}"
             rows="{if $field->getHeight() > 0}{$field->getHeight()}{else}6{/if}"
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
             {if $field->isRequired()} required="required"{/if}
             {if $disabled} disabled="disabled"{/if}>{$valuedata}</textarea>
-    {elseif $field|is_a:'Galette\DynamicFieldsTypes\Line'}
+    {elseif $field|is_a:'Galette\DynamicFields\Line'}
         <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}"
             {if $field->getWidth() > 0}size="{$field->getWidth()}"{/if}
             {if $field->getSize() > 0}maxlength="{$field->getSize()}"{/if}
@@ -24,7 +24,7 @@
             {if $disabled} disabled="disabled"{/if}
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
         />
-    {elseif $field|is_a:'Galette\DynamicFieldsTypes\Choice'}
+    {elseif $field|is_a:'Galette\DynamicFields\Choice'}
         <select name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}"
             {if $field->isRequired()} required="required"{/if}
             {if $disabled} disabled="disabled"{/if}
@@ -34,7 +34,7 @@
             <option value="">{if $field->isRequired()}{_T string="Select an option"}{/if}</option>
             {html_options options=$field->getValues() selected=$valuedata}
         </select>
-    {elseif $field|is_a:'Galette\DynamicFieldsTypes\Date'}
+    {elseif $field|is_a:'Galette\DynamicFields\Date'}
         <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}" maxlength="10"
             value="{$valuedata}" class="dynamic_date"
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
@@ -42,14 +42,14 @@
             {if $disabled} disabled="disabled"{/if}
         />
         <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
-    {elseif $field|is_a:'Galette\DynamicFieldsTypes\Boolean'}
+    {elseif $field|is_a:'Galette\DynamicFields\Boolean'}
         <input type="checkbox" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}" value="1"
             {if $valuedata eq 1} checked="checked"{/if}
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
             {if $field->isRequired()} required="required"{/if}
             {if $disabled} disabled="disabled"{/if}
         />
-    {elseif $field|is_a:'Galette\DynamicFieldsTypes\File'}
+    {elseif $field|is_a:'Galette\DynamicFields\File'}
         <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_new">{_T string="new"}</label> <input type="file" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_new"
             {if $field->isRequired()} required="required"{/if}
             {if $disabled} disabled="disabled"{/if}
@@ -69,12 +69,12 @@
     {assign var=access_level value=$login->getAccessLevel()}
     {foreach from=$object->getDynamicFields()->getFields() item=field}
         {assign var=perm value=$field->getPerm()}
-        {if $field|is_a:'Galette\DynamicFieldsTypes\Separator'}
+        {if $field|is_a:'Galette\DynamicFields\Separator'}
         <div class="separator">{$field->getName()|escape}</div>
         {else}
         <p{if $field->isRepeatable()} class="repetable"{/if}>
             {assign var=disabled value=false}
-            {if $perm eq constant('Galette\DynamicFieldsTypes\DynamicFieldType::PERM_USER_READ') && $access_level eq constant('Galette\Core\Authentication::ACCESS_USER')}
+            {if $perm eq constant('Galette\DynamicFields\DynamicField::PERM_USER_READ') && $access_level eq constant('Galette\Core\Authentication::ACCESS_USER')}
                 {assign var=disabled value=true}
             {/if}
             {assign var=values value=$object->getDynamicFields()->getValues($field->getId())}

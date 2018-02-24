@@ -39,10 +39,10 @@ namespace Galette\IO;
 
 use Galette\Core\Db;
 use Galette\Core\Preferences;
+use Galette\DynamicFields\DynamicField;
 use Galette\Entity\Adherent;
 use Galette\Entity\PdfModel;
 use Galette\Entity\PdfAdhesionFormModel;
-use Galette\DynamicFieldsTypes\DynamicFieldType;
 use Galette\Entity\DynamicFieldsHandle;
 use Galette\IO\Pdf;
 use Analog\Analog;
@@ -203,21 +203,21 @@ class PdfAdhesionForm
                     $field_value  = $field_values[1];
                 }
                 switch ($field_type) {
-                    case DynamicFieldType::TEXT:
+                    case DynamicField::TEXT:
                         $value .= '<textarea' .
                             ' id="'    . $field_name  . '"' .
                             ' name="'  . $field_name  . '"' .
                             ' value="' . $field_value . '"' .
                             '/>';
                         break;
-                    case DynamicFieldType::LINE:
+                    case DynamicField::LINE:
                         $value .= '<input type="text"' .
                             ' id="'    . $field_name  . '"' .
                             ' name="'  . $field_name  . '"' .
                             ' value="' . $field_value . '"' .
                             ' size="20" maxlength="30"/>';
                         break;
-                    case DynamicFieldType::CHOICE:
+                    case DynamicField::CHOICE:
                         $choice_values = $dyn_fields->getFixedValues($field_id);
                         foreach ($choice_values as $choice_value) {
                             $value .= '<input type="radio"' .
@@ -232,12 +232,12 @@ class PdfAdhesionForm
                             $value .= '&nbsp;';
                         }
                         break;
-                    case DynamicFieldType::DATE:
+                    case DynamicField::DATE:
                         $value .= '<input type="text" name="' .
                             $field_name  . '" value="' .
                             $field_value . '" />';
                         break;
-                    case DynamicFieldType::BOOLEAN:
+                    case DynamicField::BOOLEAN:
                         $value .= '<input type="checkbox"' .
                             ' name="' .  $field_name . '"' .
                             ' value="1"';
@@ -246,7 +246,7 @@ class PdfAdhesionForm
                         }
                         $value .= '/>';
                         break;
-                    case DynamicFieldType::FILE:
+                    case DynamicField::FILE:
                         $value .= '<input type="text" name="' .
                             $field_name  . '" value="' .
                             $field_value . '" />';
