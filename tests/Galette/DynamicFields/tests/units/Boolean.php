@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Dynamic separator tests
+ * Dynamic booleans tests
  *
  * PHP version 5
  *
@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  DynamicFieldsTypes
+ * @category  DynamicFields
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -32,29 +32,29 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     2013-01-14
+ * @since     2013-10-18
  */
 
-namespace Galette\DynamicFieldsTypes\test\units;
+namespace Galette\DynamicFields\test\units;
 
 use \atoum;
 
 /**
- * Dynamic separator test
+ * Dynamic booleans test
  *
- * @category  DynamicFieldsTypes
+ * @category  DynamicFields
  * @name      Separator
  * @package   GaletteTests
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
- * @since     2013-01-14
+ * @since     2013-10-18
  */
-class Separator extends atoum
+class Boolean extends atoum
 {
     private $zdb;
-    private $separator;
+    private $bool;
 
     /**
      * Set up tests
@@ -66,7 +66,7 @@ class Separator extends atoum
     public function beforeTestMethod($testMethod)
     {
         $this->zdb = new \Galette\Core\Db();
-        $this->separator = new \Galette\DynamicFieldsTypes\Separator($this->zdb);
+        $this->bool = new \Galette\DynamicFields\Boolean($this->zdb);
     }
 
     /**
@@ -76,9 +76,9 @@ class Separator extends atoum
      */
     public function testConstructor()
     {
-        $o = new \Galette\DynamicFieldsTypes\Separator($this->zdb, 10);
+        $o = new \Galette\DynamicFields\Boolean($this->zdb, 10);
         $this->variable($o->getId())
-            ->isIdenticalTo(null);
+            ->isNull();
     }
 
     /**
@@ -88,8 +88,8 @@ class Separator extends atoum
      */
     public function testGetTypeName()
     {
-        $this->variable($this->separator->getTypeName())
-            ->isIdenticalTo(_T('separator'));
+        $this->variable($this->bool->getTypeName())
+            ->isIdenticalTo(_T('boolean'));
     }
 
     /**
@@ -99,47 +99,47 @@ class Separator extends atoum
      */
     public function testBaseProperties()
     {
-        $muliple = $this->separator->isMultiValued();
+        $muliple = $this->bool->isMultiValued();
         $this->boolean($muliple)->isFalse();
 
-        $required = $this->separator->isRequired();
+        $required = $this->bool->isRequired();
         //should'nt that one be false?
         $this->variable($required)->isNull();
 
-        $name = $this->separator->getName();
+        $name = $this->bool->getName();
         $this->variable($name)->isNull();
 
-        $has_fixed_values = $this->separator->hasFixedValues();
+        $has_fixed_values = $this->bool->hasFixedValues();
         $this->boolean($has_fixed_values)->isFalse();
 
-        $has_data = $this->separator->hasData();
-        $this->boolean($has_data)->isFalse();
+        $has_data = $this->bool->hasData();
+        $this->boolean($has_data)->isTrue();
 
-        $has_w = $this->separator->hasWidth();
+        $has_w = $this->bool->hasWidth();
         $this->boolean($has_w)->isFalse();
 
-        $has_h = $this->separator->hasHeight();
+        $has_h = $this->bool->hasHeight();
         $this->boolean($has_h)->isFalse();
 
-        $has_s = $this->separator->hasSize();
+        $has_s = $this->bool->hasSize();
         $this->boolean($has_s)->isFalse();
 
-        $perms = $this->separator->getPerm();
+        $perms = $this->bool->getPerm();
         $this->variable($perms)->isNull();
 
-        $width = $this->separator->getWidth();
+        $width = $this->bool->getWidth();
         $this->variable($width)->isNull();
 
-        $height = $this->separator->getHeight();
+        $height = $this->bool->getHeight();
         $this->variable($height)->isNull();
 
-        $repeat = $this->separator->getRepeat();
+        $repeat = $this->bool->getRepeat();
         $this->variable($repeat)->isNull();
 
-        $size = $this->separator->getSize();
+        $size = $this->bool->getSize();
         $this->variable($size)->isNull();
 
-        $values = $this->separator->getValues();
+        $values = $this->bool->getValues();
         $this->boolean($values)->isFalse();
     }
 }
