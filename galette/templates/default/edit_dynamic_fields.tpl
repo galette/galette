@@ -51,7 +51,7 @@
         />
     {elseif $field|is_a:'Galette\DynamicFieldsTypes\File'}
         <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_new">{_T string="new"}</label> <input type="file" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_new"
-            {if $field->isRequired()} required="required"{/if}
+            {if $field->isRequired() and $valuedata eq ''} required="required"{/if}
             {if $disabled} disabled="disabled"{/if}
         />
         <label class="labelalign" for="info_field_{$field->getId()}_{$loop}_current">{_T string="current"}</label> <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}_current" disabled="disabled"
