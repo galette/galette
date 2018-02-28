@@ -341,7 +341,8 @@ class GaletteMail
                 $this->errors[] = $this->mail->ErrorInfo;
                 Analog::log(
                     'An error occured sending mail to: ' .
-                    implode(', ', array_keys($this->recipients)),
+                    implode(', ', array_keys($this->recipients)) .
+                    "\n" . $this->mail->ErrorInfo,
                     Analog::INFO
                 );
                 $this->mail = null;
