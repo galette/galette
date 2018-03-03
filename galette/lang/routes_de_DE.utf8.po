@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2018-02-19 21:13+0100\n"
+"PO-Revision-Date: 2018-03-03 15:21+0100\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Eazy Po 0.9.5.3\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: ../includes/routes/contributions.routes.php:50
 #: ../includes/routes/contributions.routes.php:77
@@ -71,7 +71,6 @@ msgid "late"
 msgstr "verspaetet"
 
 #: ../includes/routes/members.routes.php:1678
-#, fuzzy
 msgid "/labels"
 msgstr "/mitglieder/beschriftungen"
 
@@ -134,7 +133,6 @@ msgid "/attachment"
 msgstr "/anhang"
 
 #: ../includes/routes/members.routes.php:2392
-#, fuzzy
 msgid "/reminder-filter"
 msgstr "/mitglieder/filter-erinnerungen"
 
@@ -223,7 +221,6 @@ msgid "/members"
 msgstr "/mitglieder"
 
 #: ../includes/routes/members.routes.php:2678
-#, fuzzy
 msgid "/group"
 msgstr "/gruppen"
 
@@ -259,7 +256,6 @@ msgid "/ajax/groups/reorder"
 msgstr "/ajax/gruppen/sortieren"
 
 #: ../includes/routes/members.routes.php:1796
-#, fuzzy
 msgid "/empty-adhesion-form"
 msgstr "/mitglieder/leeres-adhesion-formular"
 
@@ -345,7 +341,6 @@ msgid "/plugins"
 msgstr "/plugins"
 
 #: ../includes/routes/members.routes.php:524
-#, fuzzy
 msgid "/me"
 msgstr "/verschieben"
 
@@ -446,7 +441,7 @@ msgstr "/datenbank-initialisieren"
 
 #: ../includes/routes/members.routes.php:123
 msgid "/csv"
-msgstr ""
+msgstr "/csv"
 
 #: ../includes/routes/management.routes.php:561
 msgid "/test/email"
@@ -498,7 +493,7 @@ msgstr "editieren"
 #: ../includes/routes/authentication.routes.php:310
 #: ../includes/routes/authentication.routes.php:341
 msgid "/password-recovery"
-msgstr "/password-recovery"
+msgstr "/password-wiederfinden"
 
 #: ../includes/routes/authentication.routes.php:132
 msgid "/password-lost"
@@ -640,7 +635,6 @@ msgid "withoutmail"
 msgstr "ohnemail"
 
 #: ../includes/routes/members.routes.php:1609
-#, fuzzy
 msgid "/cards"
 msgstr "/mitglieder/karten"
 
@@ -816,7 +810,6 @@ msgid "/import"
 msgstr "/import"
 
 #: ../includes/routes/members.routes.php:1743
-#, fuzzy
 msgid "/adhesion-form"
 msgstr "/mitglieder/adhesion-formular"
 
