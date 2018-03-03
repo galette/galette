@@ -113,7 +113,7 @@ class I18n extends atoum
         $list = $this->i18n->getList();
 
         $this->array($list)
-            ->hasSize(2);
+            ->hasSize(3);
 
         foreach ($list as $elt) {
             $this->object($elt)
@@ -132,7 +132,8 @@ class I18n extends atoum
 
         $expected = [
             'fr_FR' => 'Français',
-            'en_US' => 'English'
+            'en_US' => 'English',
+            'de_DE' => 'Deutsch'
         ];
 
         $this->array($list)
@@ -207,7 +208,7 @@ class I18n extends atoum
      */
     public function testChangeUnknownLanguage()
     {
-        $this->i18n->changeLanguage('de_DE');
+        $this->i18n->changeLanguage('un_KN');
         $id = $this->i18n->getID();
 
         $this->variable($id)
