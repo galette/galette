@@ -340,7 +340,7 @@ class Adherent extends atoum
             'url_adh' => 'http://bouchet.com/',
             'activite_adh' => true,
             'id_statut' => 9,
-            'pref_lang' => 'fr_FR',
+            'pref_lang' => 'en_US',
             'fingerprint' => 'FAKER95842354',
             'societe_adh' => ''
         ];
@@ -371,7 +371,7 @@ class Adherent extends atoum
                     $this->string($adh->getAge())->isIdenticalTo(' (82 years old)');
                     break;
                 default:
-                    $this->variable($adh->$property)->isIdenticalTo($value);
+                    $this->variable($adh->$property)->isIdenticalTo($value, $property);
                     break;
             }
         }
