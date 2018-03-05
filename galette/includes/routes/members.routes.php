@@ -1617,8 +1617,63 @@ $app->get(
         if (isset($args[Adherent::PK])
             && $args[Adherent::PK] > 0
         ) {
+            $id_adh = $args[Adherent::PK];
+            $denied = false;
+            if ($this->login->id != $id_adh
+                && !$this->login->isAdmin()
+                && !$this->login->isStaff()
+                && !$this->login->isGroupManager()
+            ) {
+                $denied = true;
+            }
+
+            if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->login->id != $id_adh) {
+                if ($this->login->isGroupManager()) {
+                    $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
+                    //check if current logged in user can manage loaded member
+                    $groups = $adh->groups;
+                    $can_manage = false;
+                    foreach ($groups as $group) {
+                        if ($this->login->isGroupManager($group->getId())) {
+                            $can_manage = true;
+                            break;
+                        }
+                    }
+                    if ($can_manage !== true) {
+                        Analog::log(
+                            'Logged in member ' . $this->login->login .
+                            ' has tried to load member #' . $adh->id .
+                            ' but do not manage any groups he belongs to.',
+                            Analog::WARNING
+                        );
+                        $denied = true;
+                    }
+                } else {
+                    $denied = true;
+                }
+            }
+
+            if ($denied) {
+                //requested member cannot be managed. Load logged in user
+                $id_adh = (int)$this->login->id;
+            }
+
+            //check if member is up to date
+            if ($this->login->id == $id_adh) {
+                $adh = new Adherent($this->zdb, $id_adh, ['dues' => true]);
+                if (!$adh->isUp2Date()) {
+                    Analog::log(
+                        'Member ' . $id_adh . ' is not up to date; cannot get his PDF member card',
+                        Analog::WARNING
+                    );
+                    return $response
+                        ->withStatus(301)
+                        ->withHeader('Location', $this->router->pathFor('slash'));
+                }
+            }
+
             // If we are called from a member's card, get unique id value
-            $unique = $args[Adherent::PK];
+            $unique = $id_adh;
         } else {
             if (count($filters->selected) == 0) {
                 Analog::log(
