@@ -17,7 +17,7 @@
                     <td class="left">{$field->getPermName()}</td>
                     <td class="left">{$field->getTypeName()}</td>
                     <td>
-    {if not $field|is_a:'Galette\DynamicFieldsTypes\Separator'}
+    {if not $field|is_a:'Galette\DynamicFields\Separator'}
         {if $field->isRequired()}{_T string="Yes"}{else}{_T string="No"}{/if}
     {/if}
                     </td>

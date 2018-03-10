@@ -2,7 +2,7 @@
 <table class="details">
     <caption class="ui-state-active ui-corner-top">{_T string="Additionnal fields:"}</caption>
     {foreach from=$object->getDynamicFields()->getFields() item=field}
-	{if $field|is_a:'Galette\DynamicFieldsTypes\Separator'}
+	{if $field|is_a:'Galette\DynamicFields\Separator'}
     <tr>
         <th class="separator" colspan="2">{$field->getName()|escape}</th>
     </tr>
@@ -12,7 +12,7 @@
         <td>
     {foreach from=$object->getDynamicFields()->getValues($field->getId()) item=field_data}
         {assign var=value value=$field_data.field_val}
-        {if $field|is_a:'Galette\DynamicFieldsTypes\Choice'}
+        {if $field|is_a:'Galette\DynamicFields\Choice'}
             {assign var=value value=$field_data.text_val}
         {/if}
         {if not $field_data@first}<br />{/if}
@@ -20,13 +20,13 @@
             <a href="mailto:{$value}">{$value}</a>
         {else if GaletteMail::isUrl($value)}
             <a href="{$value}" target="_blank" title="{_T string="Open '%s' in a new window" replace=$value pattern="/%s/"}">{$value}</a>
-        {else if $field|is_a:'Galette\DynamicFieldsTypes\Boolean'}
+        {else if $field|is_a:'Galette\DynamicFields\Boolean'}
             {if $value}
             {_T string="Yes"}
             {else}
             {_T string="No"}
             {/if}
-        {else if $field|is_a:'Galette\DynamicFieldsTypes\File'}
+        {else if $field|is_a:'Galette\DynamicFields\File'}
             <a href="{path_for name="getDynamicFile" data=["id" => $object->id, "fid" => $field->getId(), "pos" => $field_data@iteration, "name" => $value]}">{$value}</a>
         {else}
             {$value|nl2br|default:"&nbsp;"}

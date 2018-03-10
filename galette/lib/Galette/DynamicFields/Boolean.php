@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Date field type
+ * Boolean dynamic field
  *
  * PHP version 5
  *
@@ -24,7 +24,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  DynamicFieldsTypes
+ * @category  DynamicFields
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
@@ -35,25 +35,25 @@
  * @since     Available since 0.7.1dev - 2012-07-28
  */
 
-namespace Galette\DynamicFieldsTypes;
+namespace Galette\DynamicFields;
 
 use Analog\Analog;
 use Galette\Core\Db;
 
 /**
- * Date field type
+ * Boolean dynamic field
  *
- * @name      Date
- * @category  DynamicFieldsTypes
+ * @name      Boolean
+ * @category  DynamicFields
  * @package   Galette
  *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @author    Guillaume Rousse <guillomovitch@gmail.com>
  * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
 
-class Date extends DynamicFieldType
+class Boolean extends DynamicField
 {
     /**
      * Default constructor
@@ -74,6 +74,6 @@ class Date extends DynamicFieldType
      */
     public function getType()
     {
-        return self::DATE;
+        return self::BOOLEAN;
     }
 }

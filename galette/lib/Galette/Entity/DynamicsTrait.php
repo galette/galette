@@ -38,7 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Galette\DynamicFieldsTypes\File;
+use Galette\DynamicFields\File;
 
 /**
  * Files
@@ -69,7 +69,7 @@ trait DynamicsTrait
         } else {
             $login = $this->login;
         }
-        $this->dynamics = new DynamicFields($this->zdb, $login, $this);
+        $this->dynamics = new DynamicFieldsHandle($this->zdb, $login, $this);
     }
 
     /**
