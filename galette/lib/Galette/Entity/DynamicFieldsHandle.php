@@ -146,8 +146,7 @@ class DynamicFieldsHandle
 
             foreach ($this->dynamic_fields as $field) {
                 $perm = $field->getPerm();
-                if (
-                    ($perm == DynamicField::PERM_MANAGER &&
+                if (($perm == DynamicField::PERM_MANAGER &&
                         $access_level < Authentication::ACCESS_MANAGER) ||
                     ($perm == DynamicField::PERM_STAFF &&
                          $access_level < Authentication::ACCESS_STAFF)   ||
