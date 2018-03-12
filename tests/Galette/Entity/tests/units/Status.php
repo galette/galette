@@ -208,13 +208,14 @@ class Status extends atoum
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $this->integer($result->last_value)->isGreaterThanOrEqualTo(10, 'Incorrect status sequence');
+
+            $this->zdb->db->query(
+                'SELECT setval(\'' . PREFIX_DB . $status::TABLE . '_id_seq\', 1)',
+                Adapter::QUERY_MODE_EXECUTE
+            );
         }
 
         //reinstall status
-        $this->zdb->db->query(
-            'SELECT setval(\'' . PREFIX_DB . $status::TABLE . '_id_seq\', 1)',
-            Adapter::QUERY_MODE_EXECUTE
-        );
         $status->installInit();
 
         $list = $status->getList();
