@@ -2427,18 +2427,9 @@ $app->post(
         $ret = null;
         if ($args['action'] === __('add', 'routes')) {
             $ret = $class->add($label, $field);
-            if ($ret === true) {
-                addDynamicTranslation($label);
-            }
         } else {
             $oldlabel = $class->getLabel($args['id'], false);
             $ret = $class->update($args['id'], $label, $field);
-            if ($ret === true) {
-                if (isset($label) && ($oldlabel != $label)) {
-                    deleteDynamicTranslation($oldlabel);
-                    addDynamicTranslation($label);
-                }
-            }
         }
 
         if ($ret !== true) {
@@ -2548,7 +2539,6 @@ $app->post(
                     $ret = $class->delete((int)$args['id']);
 
                     if ($ret === true) {
-                        deleteDynamicTranslation($label);
                         $this->flash->addMessage(
                             'success_detected',
                             str_replace(

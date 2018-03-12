@@ -733,7 +733,7 @@ class Db
      *
      * @param string $table Table name, without prefix
      *
-     * @return Insert
+     * @return Update
      */
     public function update($table)
     {

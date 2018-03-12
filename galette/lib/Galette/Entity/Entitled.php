@@ -39,6 +39,7 @@ namespace Galette\Entity;
 
 use Analog\Analog;
 use Zend\Db\Sql\Expression;
+use Zend\Db\Adapter\Adapter;
 use Galette\Core\Db;
 
 /**
@@ -59,6 +60,8 @@ use Galette\Core\Db;
 
 abstract class Entitled
 {
+    use I18nTrait;
+
     const ID_NOT_EXITS = -1;
 
     private $zdb;
@@ -178,6 +181,24 @@ abstract class Entitled
             $insert = $this->zdb->insert($this->table);
             $insert->values($values);
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
+
+            if ($this->zdb->isPostgres()) {
+                //check for Postgres sequence
+                //see https://bugs.galette.eu/issues/1158
+                $expected = count(static::$defaults);
+                $seq = $this->table . '_id_seq';
+
+                $select = $this->zdb->select($seq);
+                $select->columns(['last_value']);
+                $results = $this->zdb->execute($select);
+                $result = $results->current();
+                if ($result->last_value < $expected) {
+                    $this->zdb->db->query(
+                        'SELECT setval(\'' . PREFIX_DB . $seq . '\', ' . $expected . ')',
+                        Adapter::QUERY_MODE_EXECUTE
+                    );
+                }
+            }
 
             $fnames = array_keys($values);
             foreach ($class::$defaults as $d) {
@@ -421,6 +442,7 @@ abstract class Entitled
         }
 
         try {
+            $this->zdb->connection->beginTransaction();
             $values = array(
                 $this->flabel  => $label,
                 $this->fthird  => $extra
@@ -437,17 +459,29 @@ abstract class Entitled
                     '` added successfully.',
                     Analog::INFO
                 );
+
+                if ($this->zdb->isPostgres()) {
+                    $this->id = $this->zdb->driver->getLastGeneratedValue(
+                        PREFIX_DB . $this->table . '_id_seq'
+                    );
+                } else {
+                    $this->id = $this->zdb->driver->getLastGeneratedValue();
+                }
+
+                $this->addTranslation($label);
                 return true;
             } else {
                 throw new \Exception('New ' . $this->getType() .' not added.');
             }
+            $this->zdb->connection->commit();
         } catch (\Exception $e) {
+            $this->zdb->connection->rollBack();
             Analog::log(
                 'Unable to add new entry `' . $label . '` | ' .
                 $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -459,7 +493,7 @@ abstract class Entitled
      * @param integer $extra Extra values (priority for statuses,
      *                       extension for contributions types, ...)
      *
-     * @return integer -2 : ID does not exist ; -1 : DB error ; 0 : success.
+     * @return ID_NOT_EXITS|boolean
      */
     public function update($id, $label, $extra)
     {
@@ -472,6 +506,8 @@ abstract class Entitled
         $class = get_class($this);
 
         try {
+            $oldlabel = $ret->{$this->flabel};
+            $this->zdb->connection->beginTransaction();
             $values = array(
                 $this->flabel  => $label,
                 $this->fthird  => $extra
@@ -483,18 +519,25 @@ abstract class Entitled
 
             $ret = $this->zdb->execute($update);
 
+            if ($oldlabel != $label) {
+                $this->deleteTranslation($oldlabel);
+                $this->addTranslation($label);
+            }
+
             Analog::log(
                 $this->getType() . ' #' . $id . ' updated successfully.',
                 Analog::INFO
             );
+            $this->zdb->connection->commit();
             return true;
         } catch (\Exception $e) {
+            $this->zdb->connection->rollBack();
             Analog::log(
                 'Unable to update ' . $this->getType() . ' #' . $id  . ' | ' .
                 $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -503,7 +546,7 @@ abstract class Entitled
      *
      * @param integer $id Entry ID
      *
-     * @return integer -2 : ID does not exist ; -1 : DB error ; 0 : success.
+     * @return ID_NOT_EXITS|boolean
      */
     public function delete($id)
     {
@@ -513,30 +556,34 @@ abstract class Entitled
             return self::ID_NOT_EXITS;
         }
 
-        $ret = $this->isUsed($id);
-        if ($ret === true) {
+        if ($this->isUsed($id)) {
             $this->errors[] = _T("Cannot delete this label: it's still used");
             return false;
         }
 
         try {
+            $this->zdb->connection->beginTransaction();
             $delete = $this->zdb->delete($this->table);
             $delete->where($this->fpk . ' = ' . $id);
 
             $this->zdb->execute($delete);
+            $this->deleteTranslation($ret->{$this->flabel});
 
             Analog::log(
                 $this->getType() . ' ' . $id . ' deleted successfully.',
                 Analog::INFO
             );
+
+            $this->zdb->connection->commit();
             return true;
         } catch (\Exception $e) {
+            $this->zdb->connection->rollBack();
             Analog::log(
                 'Unable to delete ' . $this->getType()  . ' ' . $id .
                 ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            return false;
+            throw $e;
         }
     }
 
