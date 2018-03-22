@@ -350,7 +350,7 @@ abstract class Pagination
     protected function getHref($page)
     {
         $args = [
-            'option'    => 'page',
+            'option'    => __('page', 'routes'),
             'value'     => $page
         ];
 
