@@ -161,7 +161,6 @@
 {block name="javascripts"}
 <script type="text/javascript">
     $(function() {
-        $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
         $('#date_debut_cotis, #date_fin_cotis, #date_enreg').datepicker({
             changeMonth: true,
             changeYear: true,

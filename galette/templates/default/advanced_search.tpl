@@ -333,7 +333,6 @@
             }
 
             var _datePickers = function() {
-                $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
                 $('.modif_date').datepicker({
                     changeMonth: true,
                     changeYear: true,

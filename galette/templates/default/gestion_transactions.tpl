@@ -161,7 +161,6 @@
 
                 _bind_legend();
 
-                $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
                 $('#start_date_filter, #end_date_filter').datepicker({
                     changeMonth: true,
                     changeYear: true,
