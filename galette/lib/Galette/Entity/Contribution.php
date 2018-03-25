@@ -227,7 +227,9 @@ class Contribution
             $this->_end_date = $edate->format('Y-m-d');
         } elseif ($preferences->pref_membership_ext != '') {
             //case membership extension
-            $this->_extension = $preferences->pref_membership_ext;
+            if ($this->_extension == null) {
+                $this->_extension = $preferences->pref_membership_ext;
+            }
             $dext = new \DateInterval('P' . $this->_extension . 'M');
             $edate = $bdate->add($dext);
             $this->_end_date = $edate->format('Y-m-d');
