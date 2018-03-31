@@ -930,7 +930,7 @@ class Adherent
                 if ($value !== true && $value !== false) {
                     $value = trim($value);
                 }
-            } else {
+            } elseif (isset($this->_id) && $this->_id == '') {
                 switch ($key) {
                     case 'bool_admin_adh':
                     case 'bool_exempt_adh':
@@ -953,6 +953,9 @@ class Adherent
                     default:
                         $value = '';
                 }
+            } else {
+                //keep stored value on update
+                $value = $this->$prop;
             }
 
             // if the field is enabled, check it
