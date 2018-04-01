@@ -248,7 +248,7 @@ if (!$installer and !defined('GALETTE_TESTS')) {
         if (!defined('GALETTE_THEME')) {
             define(
                 'GALETTE_THEME',
-                GALETTE_BASE_PATH . 'themes/' . $preferences->pref_theme . '/'
+                'themes/' . $preferences->pref_theme . '/'
             );
         }
 

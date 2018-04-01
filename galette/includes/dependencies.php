@@ -69,7 +69,12 @@ $container['view'] = function ($c) {
     );
 
     // Add Slim specific plugins
-    $view->addSlimPlugins($c['router'], $c['request']->getUri());
+    $basepath = str_replace(
+        'index.php',
+        '',
+        $c['request']->getUri()->getBasePath()
+    );
+    $view->addSlimPlugins($c['router'], $basepath);
 
     $smarty = $view->getSmarty();
     $smarty->inheritance_merge_compiled_includes = false;
@@ -89,13 +94,13 @@ $container['view'] = function ($c) {
         'plugin_detailled_actions',
         $c->plugins->getTplAdhDetailledActions()
     );
-    $smarty->assign('jquery_dir', GALETTE_BASE_PATH . 'js/jquery/');
+    $smarty->assign('scripts_dir', 'js/');
+    $smarty->assign('jquery_dir', 'js/jquery/');
     $smarty->assign('jquery_version', JQUERY_VERSION);
     $smarty->assign('jquery_migrate_version', JQUERY_MIGRATE_VERSION);
     $smarty->assign('jquery_ui_version', JQUERY_UI_VERSION);
     $smarty->assign('jquery_markitup_version', JQUERY_MARKITUP_VERSION);
     $smarty->assign('jquery_jqplot_version', JQUERY_JQPLOT_VERSION);
-    $smarty->assign('scripts_dir', GALETTE_BASE_PATH . 'js/');
     $smarty->assign('PAGENAME', basename($_SERVER['SCRIPT_NAME']));
     $smarty->assign('galette_base_path', './');
     $smarty->assign('GALETTE_VERSION', GALETTE_VERSION);
