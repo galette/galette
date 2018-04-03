@@ -342,7 +342,7 @@ class Adherent extends atoum
             'id_statut' => 9,
             'pref_lang' => 'en_US',
             'fingerprint' => 'FAKER95842354',
-            'societe_adh' => ''
+            'societe_adh' => null
         ];
         $expecteds = array_merge($expecteds, $new_expecteds);
 
@@ -396,7 +396,7 @@ class Adherent extends atoum
         $this->string($adh->sname)->isIdenticalTo('DURAND René');
 
         $this->string($adh->getAddress())->isIdenticalTo($expecteds['adresse_adh']);
-        $this->string($adh->getAddressContinuation())->isIdenticalTo('');
+        $this->variable($adh->getAddressContinuation())->isNull();
         $this->string($adh->getZipcode())->isIdenticalTo($expecteds['cp_adh']);
         $this->string($adh->getTown())->isIdenticalTo($expecteds['ville_adh']);
         $this->string($adh->getCountry())->isIdenticalTo($expecteds['pays_adh']);
@@ -492,7 +492,10 @@ class Adherent extends atoum
         $check = $adh->check($data, [], []);
         $this->array($check)->isIdenticalTo($expected);
 
-        $data = ['date_crea_adh' => 'not a date'];
+        $data = [
+            'ddn_adh'       => '',
+            'date_crea_adh' => 'not a date'
+        ];
         $expected = ['- Wrong date format (Y-m-d) for Creation date!'];
         $check = $adh->check($data, [], []);
         $this->array($check)->isIdenticalTo($expected);
@@ -507,7 +510,10 @@ class Adherent extends atoum
         $check = $adh->check($data, [], []);
         $this->array($check)->isIdenticalTo($expected);
 
-        $data = ['url_adh' => 'mywebsite'];
+        $data = [
+            'email_adh' => '',
+            'url_adh'   => 'mywebsite'
+        ];
         $expected = ['- Non-valid Website address! Maybe you\'ve skipped the http://?'];
         $check = $adh->check($data, [], []);
         $this->array($check)->isIdenticalTo($expected);
@@ -528,7 +534,10 @@ class Adherent extends atoum
         $check = $adh->check($data, [], []);
         $this->array($check)->isIdenticalTo($expected);
 
-        $data = ['mdp_adh' => 'short'];
+        $data = [
+            'login_adh' => '',
+            'mdp_adh'   => 'short'
+        ];
         $expected = ['- The password must be of at least 6 characters!'];
         $check = $adh->check($data, [], []);
         $this->array($check)->isIdenticalTo($expected);

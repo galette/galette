@@ -930,7 +930,7 @@ class Adherent
                 if ($value !== true && $value !== false) {
                     $value = trim($value);
                 }
-            } elseif (isset($this->_id) && $this->_id == '') {
+            } elseif ($this->_id != '' && $this->_id != null) {
                 switch ($key) {
                     case 'bool_admin_adh':
                     case 'bool_exempt_adh':
@@ -955,7 +955,11 @@ class Adherent
                 }
             } else {
                 //keep stored value on update
-                $value = $this->$prop;
+                if ($prop != '_password' || isset($values['mdp_adh']) && isset($values['mdp_adh2'])) {
+                    $value = $this->$prop;
+                } else {
+                    $value = null;
+                }
             }
 
             // if the field is enabled, check it
@@ -1459,7 +1463,7 @@ class Adherent
                         break;
                     case 'saddress':
                         $address = $this->_address;
-                        if ($this->_address_continuation !== '') {
+                        if ($this->_address_continuation !== '' && $this->_address_continuation !== null) {
                             $address .= "\n" . $this->_address_continuation;
                         }
                         return $address;
