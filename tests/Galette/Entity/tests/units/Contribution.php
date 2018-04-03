@@ -425,7 +425,7 @@ class Contribution extends atoum
             'id_statut' => 9,
             'pref_lang' => 'en_US',
             'fingerprint' => 'FAKER' . $this->seed,
-            'societe_adh' => ''
+            'societe_adh' => null
         ];
         $expecteds = array_merge($expecteds, $new_expecteds);
 
@@ -479,7 +479,7 @@ class Contribution extends atoum
         $this->string($adh->sname)->isIdenticalTo('DURAND René');
 
         $this->string($adh->getAddress())->isIdenticalTo($expecteds['adresse_adh']);
-        $this->string($adh->getAddressContinuation())->isIdenticalTo('');
+        $this->variable($adh->getAddressContinuation())->isNull();
         $this->string($adh->getZipcode())->isIdenticalTo($expecteds['cp_adh']);
         $this->string($adh->getTown())->isIdenticalTo($expecteds['ville_adh']);
         $this->string($adh->getCountry())->isIdenticalTo($expecteds['pays_adh']);
