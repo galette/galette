@@ -1268,6 +1268,20 @@ class Adherent
                 $values['parent_id'] = new Expression('NULL');
             }
 
+            //fields that cannot be null
+            $notnull = [
+                '_surname'  => 'prenom_adh',
+                '_nickname' => 'pseudo_adh',
+                '_address'  => 'adresse_adh',
+                '_zipcode'  => 'cp_adh',
+                '_town'     => 'ville_adh'
+            ];
+            foreach ($notnull as $prop => $field) {
+                if ($this->$prop === null) {
+                    $values[$field] = '';
+                }
+            }
+
             $success = false;
             if (!isset($this->_id) || $this->_id == '') {
                 //we're inserting a new member
