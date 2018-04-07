@@ -342,7 +342,7 @@ class Adherent extends atoum
             'id_statut' => 9,
             'pref_lang' => 'en_US',
             'fingerprint' => 'FAKER95842354',
-            'societe_adh' => null
+            'societe_adh' => ''
         ];
         $expecteds = array_merge($expecteds, $new_expecteds);
 
@@ -396,7 +396,7 @@ class Adherent extends atoum
         $this->string($adh->sname)->isIdenticalTo('DURAND René');
 
         $this->string($adh->getAddress())->isIdenticalTo($expecteds['adresse_adh']);
-        $this->variable($adh->getAddressContinuation())->isNull();
+        $this->string($adh->getAddressContinuation())->isEmpty();
         $this->string($adh->getZipcode())->isIdenticalTo($expecteds['cp_adh']);
         $this->string($adh->getTown())->isIdenticalTo($expecteds['ville_adh']);
         $this->string($adh->getCountry())->isIdenticalTo($expecteds['pays_adh']);
