@@ -930,7 +930,7 @@ class Adherent
                 if ($value !== true && $value !== false) {
                     $value = trim($value);
                 }
-            } elseif ($this->_id != '' && $this->_id != null) {
+            } elseif ($this->_id == '' || $this->_id == null) {
                 switch ($key) {
                     case 'bool_admin_adh':
                     case 'bool_exempt_adh':
