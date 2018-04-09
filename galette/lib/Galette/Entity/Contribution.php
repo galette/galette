@@ -204,9 +204,7 @@ class Contribution
             $this->loadFromRS($args);
         }
 
-        if ($this->id !== null) {
-            $this->loadDynamicFields();
-        }
+        $this->loadDynamicFields();
     }
 
     /**
@@ -229,7 +227,9 @@ class Contribution
             $this->_end_date = $edate->format('Y-m-d');
         } elseif ($preferences->pref_membership_ext != '') {
             //case membership extension
-            $this->_extension = $preferences->pref_membership_ext;
+            if ($this->_extension == null) {
+                $this->_extension = $preferences->pref_membership_ext;
+            }
             $dext = new \DateInterval('P' . $this->_extension . 'M');
             $edate = $bdate->add($dext);
             $this->_end_date = $edate->format('Y-m-d');
@@ -314,6 +314,7 @@ class Contribution
         }
 
         $this->type = (int)$r->id_type_cotis;
+        $this->loadDynamicFields();
     }
 
     /**
@@ -471,6 +472,8 @@ class Contribution
             }
         }
 
+        $this->dynamicsCheck($values);
+
         if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been throwed attempting to edit/store a contribution' .
@@ -576,6 +579,7 @@ class Contribution
                 unset($values['date_fin_cotis']);
             }
 
+            $success = false;
             if (!isset($this->_id) || $this->_id == '') {
                 //we're inserting a new contribution
                 unset($values[self::PK]);
@@ -598,6 +602,7 @@ class Contribution
                         _T("Contribution added"),
                         Adherent::getSName($this->zdb, $this->_member)
                     );
+                    $success = true;
                 } else {
                     $hist->add(_T("Fail to add new contribution."));
                     throw new \Exception(
@@ -619,11 +624,14 @@ class Contribution
                         _T("Contribution updated"),
                         Adherent::getSName($this->zdb, $this->_member)
                     );
-                } elseif ($edit === false) {
+                }
+
+                if ($edit === false) {
                     throw new \Exception(
                         'An error occured updating contribution # ' . $this->_id . '!'
                     );
                 }
+                $success = true;
             }
             //update deadline
             if ($this->isCotis()) {
@@ -633,6 +641,12 @@ class Contribution
                     throw new \Exception('An error occured updating member\'s deadline');
                 }
             }
+
+            //dynamic fields
+            if ($success) {
+                $success = $this->dynamicsStore(true);
+            }
+
             $this->zdb->connection->commit();
             $this->_orig_amount = $this->_amount;
             return true;

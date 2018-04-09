@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Dynamic fields handler
+ * Dynamic fields handle, aggregating field descriptors and values
  *
  * PHP version 5
  *
@@ -42,20 +42,21 @@ use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
 use Galette\Core\Db;
 use Galette\Core\Login;
-use Galette\DynamicFieldsTypes\Separator;
-use Galette\DynamicFieldsTypes\Text;
-use Galette\DynamicFieldsTypes\Line;
-use Galette\DynamicFieldsTypes\Choice;
-use Galette\DynamicFieldsTypes\Date;
-use Galette\DynamicFieldsTypes\Boolean;
-use Galette\DynamicFieldsTypes\File;
-use Galette\DynamicFieldsTypes\DynamicFieldType;
-use Galette\Repository\DynamicFieldsTypes;
+use Galette\Core\Authentication;
+use Galette\DynamicFields\Separator;
+use Galette\DynamicFields\Text;
+use Galette\DynamicFields\Line;
+use Galette\DynamicFields\Choice;
+use Galette\DynamicFields\Date;
+use Galette\DynamicFields\Boolean;
+use Galette\DynamicFields\File;
+use Galette\DynamicFields\DynamicField;
+use Galette\Repository\DynamicFieldsSet;
 
 /**
- * Dynamic fields handler for Galette
+ * Dynamic fields handle, aggregating field descriptors and values
  *
- * @name DynamicFields
+ * @name DynamicFieldsHandle
  * @category  Entity
  * @package   Galette
  *
@@ -65,7 +66,7 @@ use Galette\Repository\DynamicFieldsTypes;
  * @link      http://galette.tuxfamily.org
  */
 
-class DynamicFields
+class DynamicFieldsHandle
 {
     const TABLE = 'dynamic_fields';
 
@@ -81,6 +82,8 @@ class DynamicFields
     private $insert_stmt;
     private $update_stmt;
     private $delete_stmt;
+
+    private $has_changed = false;
 
     /**
      * Default constructor
@@ -99,7 +102,7 @@ class DynamicFields
     }
 
     /**
-     * Load dynaic fields values for specified object
+     * Load dynamic fields values for specified object
      *
      * @param mixed $object Object instance
      *
@@ -124,13 +127,13 @@ class DynamicFields
 
         try {
             $this->item_id = $object->id;
-            $fields = new DynamicFieldsTypes($this->zdb);
-            $this->dynamic_fields = $fields->getList($this->form_name, $this->login);
+            $fields = new DynamicFieldsSet($this->zdb);
+            $this->dynamic_fields = $fields->getList($this->form_name);
 
             $select = $this->zdb->select(self::TABLE, 'd');
             $select->join(
-                array('t' => PREFIX_DB . DynamicFieldType::TABLE),
-                'd.' . DynamicFieldType::PK . '=t.' . DynamicFieldType::PK,
+                array('t' => PREFIX_DB . DynamicField::TABLE),
+                'd.' . DynamicField::PK . '=t.' . DynamicField::PK,
                 array('field_id')
             )->where(
                 array(
@@ -139,8 +142,26 @@ class DynamicFields
                 )
             );
 
-            if (count($this->dynamic_fields)) {
-                $select->where->in('d.' . DynamicFieldType::PK, array_keys($this->dynamic_fields));
+            /** only load values for accessible fields*/
+            $accessible_fields = [];
+            $access_level = $this->login->getAccessLevel();
+
+            foreach ($this->dynamic_fields as $field) {
+                $perm = $field->getPerm();
+                if (($perm == DynamicField::PERM_MANAGER &&
+                        $access_level < Authentication::ACCESS_MANAGER) ||
+                    ($perm == DynamicField::PERM_STAFF &&
+                         $access_level < Authentication::ACCESS_STAFF)   ||
+                    ($perm == DynamicField::PERM_ADMIN &&
+                        $access_level < Authentication::ACCESS_ADMIN)
+                ) {
+                    continue;
+                }
+                $accessible_fields[] = $field->getId();
+            }
+
+            if (count($accessible_fields)) {
+                $select->where->in('d.' . DynamicField::PK, $accessible_fields);
             }
 
             $results = $this->zdb->execute($select);
@@ -148,16 +169,16 @@ class DynamicFields
                 $dfields = array();
 
                 foreach ($results as $f) {
-                    if (isset($this->dynamic_fields[$f->{DynamicFieldType::PK}])) {
-                        $field = $this->dynamic_fields[$f->{DynamicFieldType::PK}];
+                    if (isset($this->dynamic_fields[$f->{DynamicField::PK}])) {
+                        $field = $this->dynamic_fields[$f->{DynamicField::PK}];
                         if ($field->hasFixedValues()) {
                             $choices = $field->getValues();
                             $f['text_val'] = $choices[$f->field_val];
                         }
-                        $this->current_values[$f->{DynamicFieldType::PK}][] = array_filter(
+                        $this->current_values[$f->{DynamicField::PK}][] = array_filter(
                             (array)$f,
                             function ($k) {
-                                return $k != DynamicFieldType::PK;
+                                return $k != DynamicField::PK;
                             },
                             ARRAY_FILTER_USE_KEY
                         );
@@ -270,23 +291,26 @@ class DynamicFields
     /**
      * Store values
      *
-     * @param integer $item_id Curent item id to use (will be used if current item_id is 0)
+     * @param integer $item_id     Curent item id to use (will be used if current item_id is 0)
+     * @param boolean $transaction True if a transaction already exists
      *
      * @return boolean
      */
-    public function storeValues($item_id = null)
+    public function storeValues($item_id = null, $transaction = false)
     {
         try {
             if ($item_id !== null && ($this->item_id == null || $this->item_id == 0)) {
                 $this->item_id = $item_id;
             }
-            $this->zdb->connection->beginTransaction();
+            if (!$transaction) {
+                $this->zdb->connection->beginTransaction();
+            }
 
             $this->handleRemovals();
 
             foreach ($this->current_values as $field_id => $values) {
                 foreach ($values as $value) {
-                    $value[DynamicFieldType::PK] = $field_id;
+                    $value[DynamicField::PK] = $field_id;
                     if ($value['item_id'] == 0) {
                         $value['item_id'] = $this->item_id;
                     }
@@ -305,6 +329,7 @@ class DynamicFields
                         }
                         unset($value['is_new']);
                         $this->insert_stmt->execute($value);
+                        $this->has_changed = true;
                     } else {
                         if ($this->update_stmt === null) {
                             $update = $this->zdb->update(self::TABLE);
@@ -330,14 +355,21 @@ class DynamicFields
                                 $value['val_index']
                         ];
                         $this->update_stmt->execute($params);
+                        $this->has_changed = true;
                     }
                 }
             }
 
-            $this->zdb->connection->commit();
+            if (!$transaction) {
+                $this->zdb->connection->commit();
+            }
             return true;
         } catch (\Exception $e) {
-            $this->zdb->connection->rollBack();
+            if (!$transaction) {
+                $this->zdb->connection->rollBack();
+            } else {
+                throw $e;
+            }
             Analog::log(
                 'An error occured storing dynamic field. Form name: ' . $this->form_name .
                 ' | Error was: ' . $e->getMessage(),
@@ -354,13 +386,13 @@ class DynamicFields
      */
     private function handleRemovals()
     {
-        $fields = new DynamicFieldsTypes($this->zdb);
+        $fields = new DynamicFieldsSet($this->zdb);
         $this->dynamic_fields = $fields->getList($this->form_name, $this->login);
 
         $select = $this->zdb->select(self::TABLE, 'd');
         $select->join(
-            array('t' => PREFIX_DB . DynamicFieldType::TABLE),
-            'd.' . DynamicFieldType::PK . '=t.' . DynamicFieldType::PK,
+            array('t' => PREFIX_DB . DynamicField::TABLE),
+            'd.' . DynamicField::PK . '=t.' . DynamicField::PK,
             array('field_id')
         )->where(
             array(
@@ -424,6 +456,17 @@ class DynamicFields
                     }
                 }
             }
+            $this->has_changed = true;
         }
+    }
+
+    /**
+     * Is there any change in dynamic filelds?
+     *
+     * @return boolean
+     */
+    public function hasChanged()
+    {
+        return $this->has_changed;
     }
 }

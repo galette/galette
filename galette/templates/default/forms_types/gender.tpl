@@ -3,7 +3,13 @@
 {block name="component"}
     <p class="radios">
         {block name="label"}
-            <span class="bline">{$label}</span>
+            <span class="bline">
+            {if $masschange}
+                {* Add a checkbox for fields to change on mass edition *}
+                <input type="checkbox" name="mass_{$entry->field_id}" class="mass_checkbox"/>
+            {/if}
+                {$label}
+            </span>
         {/block}
 
         {block name="element"}

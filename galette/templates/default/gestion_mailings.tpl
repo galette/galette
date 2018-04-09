@@ -181,7 +181,6 @@
 
             {include file="js_removal.tpl"}
 
-            $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
             $('#start_date_filter, #end_date_filter').datepicker({
                 changeMonth: true,
                 changeYear: true,

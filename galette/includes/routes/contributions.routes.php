@@ -278,9 +278,18 @@ $app->get(
                 _T("Contribution ID cannot ben null calling edit route!")
             );
         } elseif ($action === __('add', 'routes') && $id_cotis !== null) {
-             return $response
+            return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('contribution', ['action' => __('add', 'routes')]));
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor(
+                        'contribution',
+                        [
+                            'type'      => $args['type'],
+                            'action'    => __('add', 'routes')
+                        ]
+                    )
+                );
         }
 
         // contribution types
@@ -423,7 +432,6 @@ $app->get(
         }
         $params['pref_membership_ext'] = $ext_membership;
 
-
         // display page
         $this->view->render(
             $response,
@@ -521,7 +529,7 @@ $app->post(
                             if ($res !== true) {
                                 //send admin a mail with all details
                                 if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
-                                    $mail = new GaletteMail();
+                                    $mail = new GaletteMail($this->preferences);
                                     $mail->setSubject(
                                         _T("Post contribution script failed")
                                     );
@@ -612,7 +620,7 @@ $app->post(
                         }
                         $mtxt = $texts->getTexts($text, $adh->language);
 
-                        $mail = new GaletteMail();
+                        $mail = new GaletteMail($this->preferences);
                         $mail->setSubject($texts->getSubject());
                         $mail->setRecipients(
                             array(
@@ -660,7 +668,7 @@ $app->post(
                     }
                     $mtxt = $texts->getTexts($text, $this->preferences->pref_lang);
 
-                    $mail = new GaletteMail();
+                    $mail = new GaletteMail($this->preferences);
                     $mail->setSubject($texts->getSubject());
                     /** TODO: only super-admin is contacted here. We should send
                     *  a message to all admins, or propose them a chekbox if
@@ -709,25 +717,15 @@ $app->post(
             }
 
             if (count($error_detected) == 0) {
-                if ($contrib->isTransactionPart()) {
-                    if ($contrib->transaction->getMissingAmount() > 0) {
-                        $redirect_url = $this->router->pathFor(
-                            'contribution',
-                            [
-                                'action'    => __('add', 'routes'),
-                                'type'      => $post['contrib_type']
-                            ]
-                        ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
-                        '&' . Adherent::PK . '=' . $contrib->member;
-                    } else {
-                        $redirect_url = $this->router->pathFor(
-                            'transaction',
-                            [
-                                'action'    => __('edit', 'routes'),
-                                'id'        => $contrib->transaction->id
-                            ]
-                        );
-                    }
+                if ($contrib->isTransactionPart() && $contrib->transaction->getMissingAmount() > 0) {
+                    $redirect_url = $this->router->pathFor(
+                        'contribution',
+                        [
+                            'action'    => __('add', 'routes'),
+                            'type'      => $post['contrib_type']
+                        ]
+                    ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
+                    '&' . Adherent::PK . '=' . $contrib->member;
                 } else {
                     $redirect_url = $this->router->pathFor(
                         'contributions',
@@ -1008,7 +1006,7 @@ $app->post(
             if ($trans->getMissingAmount() > 0) {
                 $rparams = [
                     'action'    => __('add', 'routes'),
-                    'type'      => $post['contrib_type']
+                    'type'      => __('fee', 'routes')
                 ];
 
                 if (isset($trans->member)) {

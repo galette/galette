@@ -21,6 +21,14 @@
     <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.autocomplete.min.js"></script>
     <script type="text/javascript">
         $(function() {
+    {if $require_calendar}
+            $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
+        {if $galette_lang eq 'en'}
+                $.datepicker.setDefaults({
+                    dateFormat: 'yy-mm-dd'
+                });
+        {/if}
+    {/if}
             $('#ville_adh, #lieu_naissance').autocomplete({
                 source: function (request, response) {
                     $.post('{path_for name="suggestTown"}', request, response);

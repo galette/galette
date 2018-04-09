@@ -1233,7 +1233,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
     public function getCurrentVersion($zdb)
     {
         try {
-            $db_ver = $zdb->getDbVersion();
+            $db_ver = $zdb->getDbVersion(true);
             if (isset($this->versions_mapper[$db_ver])) {
                 return $this->versions_mapper[$db_ver];
             } else {

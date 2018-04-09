@@ -89,6 +89,9 @@
         });
     </script>
 {/if}
+{if $require_mass}
+    <script type="text/javascript" src="{base_url}/{$scripts_dir}mass_changes.js"></script>
+{/if}
 {* If some additionnals headers should be added from plugins, we load the relevant template file
 We have to use a template file, so Smarty will do its work (like replacing variables). *}
 {if $headers|@count != 0}
@@ -220,12 +223,20 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     </div>
     {include file="footer.tpl"}
     {block name="javascripts"}{/block}
-    {if isset($renew_telemetry)}
         <script type="text/javascript">
             $(function(){
+    {if $require_calendar}
+                $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
+        {if $galette_lang eq 'en'}
+                $.datepicker.setDefaults({
+                    dateFormat: 'yy-mm-dd'
+                });
+        {/if}
+    {/if}
+    {if isset($renew_telemetry)}
         {include file="telemetry.tpl" part="jsdialog"}
+    {/if}
             });
         </script>
-    {/if}
 </body>
 </html>

@@ -3,11 +3,11 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Line field type
+ * File dynamic field
  *
  * PHP version 5
  *
- * Copyright © 2012-2014 The Galette Team
+ * Copyright © 2013-2014 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -24,36 +24,36 @@
  * You should have received a copy of the GNU General Public License
  * along with Galette. If not, see <http://www.gnu.org/licenses/>.
  *
- * @category  DynamicFieldsTypes
+ * @category  DynamicFields
  * @package   Galette
  *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
+ * @author    Guillaume Rousse <guillomovitch@gmail.com>
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
- * @since     Available since 0.7.1dev - 2012-07-28
+ * @since     Available since 0.8 - 2013-07-27
  */
 
-namespace Galette\DynamicFieldsTypes;
+namespace Galette\DynamicFields;
 
 use Analog\Analog;
 use Galette\Core\Db;
 
 /**
- * Line field type
+ * File dynamic field
  *
- * @name      Line
- * @category  DynamicFieldsTypes
+ * @name      File
+ * @category  DynamicFields
  * @package   Galette
  *
- * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2012-2014 The Galette Team
+ * @author    Guillaume Rousse <guillomovitch@gmail.com>
+ * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  */
 
-class Line extends DynamicFieldType
+class File extends DynamicField
 {
     /**
      * Default constructor
@@ -65,9 +65,7 @@ class Line extends DynamicFieldType
     {
         parent::__construct($zdb, $id);
         $this->has_data = true;
-        $this->has_width = true;
         $this->has_size = true;
-        $this->multi_valued = true;
     }
 
     /**
@@ -77,6 +75,6 @@ class Line extends DynamicFieldType
      */
     public function getType()
     {
-        return self::LINE;
+        return self::FILE;
     }
 }

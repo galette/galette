@@ -66,6 +66,12 @@ class GaletteMail
     const METHOD_GMAIL = 4;
     const METHOD_SENDMAIL = 5;
 
+    const SENDER_PREFS = 0;
+    const SENDER_CURRENT = 1;
+    const SENDER_OTHER = 2;
+
+    private $sender_name;
+    private $sender_address;
     private $subject;
     private $message;
     private $html;
@@ -77,6 +83,22 @@ class GaletteMail
     private $mail = null;
     protected $attachments = array();
 
+    private $preferences;
+
+    /**
+     * Constructor
+     *
+     * @param Preferences $preferences Preferences instance
+     */
+    public function __construct(Preferences $preferences)
+    {
+        $this->preferences = $preferences;
+        $this->setSender(
+            $preferences->pref_email_nom,
+            $preferences->pref_email
+        );
+    }
+
     /**
      * Initialize PHPMailer
      *
@@ -84,11 +106,11 @@ class GaletteMail
      */
     private function initMailer()
     {
-        global $preferences, $i18n;
+        global $i18n;
 
         $this->mail = new \PHPMailer();
 
-        switch ($preferences->pref_mail_method) {
+        switch ($this->preferences->pref_mail_method) {
             case self::METHOD_SMTP:
             case self::METHOD_GMAIL:
                 //if we want to send mails using a smtp server
@@ -96,7 +118,7 @@ class GaletteMail
                 // enables SMTP debug information (for testing)
                 /*$this->mail->SMTPDebug = 2;*/
 
-                if ($preferences->pref_mail_method == self::METHOD_GMAIL) {
+                if ($this->preferences->pref_mail_method == self::METHOD_GMAIL) {
                     // sets GMAIL as the SMTP server
                     $this->mail->Host = "smtp.gmail.com";
                     // enable SMTP authentication
@@ -106,11 +128,11 @@ class GaletteMail
                     // set the SMTP port for the GMAIL server
                     $this->mail->Port = 587;
                 } else {
-                    $this->mail->Host = $preferences->pref_mail_smtp_host;
-                    $this->mail->SMTPAuth   = $preferences->pref_mail_smtp_auth;
-                    $this->mail->SMTPSecure = $preferences->pref_mail_smtp_secure;
+                    $this->mail->Host = $this->preferences->pref_mail_smtp_host;
+                    $this->mail->SMTPAuth   = $this->preferences->pref_mail_smtp_auth;
+                    $this->mail->SMTPSecure = $this->preferences->pref_mail_smtp_secure;
 
-                    if (!$preferences->pref_mail_smtp_secure || $preferences->pref_mail_allow_unsecure) {
+                    if (!$this->preferences->pref_mail_smtp_secure || $this->preferences->pref_mail_allow_unsecure) {
                         //Allow "unsecure" SMTP connections if user has asked fot it or
                         //if user did not request TLS explicitely
                         $this->mail->SMTPOptions = array(
@@ -122,11 +144,11 @@ class GaletteMail
                         );
                     }
 
-                    if ($preferences->pref_mail_smtp_port
-                        && $preferences->pref_mail_smtp_port != ''
+                    if ($this->preferences->pref_mail_smtp_port
+                        && $this->preferences->pref_mail_smtp_port != ''
                     ) {
                         // set the SMTP port for the SMTP server
-                        $this->mail->Port = $preferences->pref_mail_smtp_port;
+                        $this->mail->Port = $this->preferences->pref_mail_smtp_port;
                     } else {
                         Analog::log(
                             '[' . get_class($this) .
@@ -138,9 +160,9 @@ class GaletteMail
                 }
 
                 // SMTP account username
-                $this->mail->Username   = $preferences->pref_mail_smtp_user;
+                $this->mail->Username   = $this->preferences->pref_mail_smtp_user;
                 // SMTP account password
-                $this->mail->Password   = $preferences->pref_mail_smtp_password;
+                $this->mail->Password   = $this->preferences->pref_mail_smtp_password;
                 break;
             case self::METHOD_SENDMAIL:
                 // telling the class to use Sendmail transport
@@ -153,20 +175,20 @@ class GaletteMail
         }
 
         $this->mail->SetFrom(
-            $preferences->pref_email,
-            $preferences->pref_email_nom
+            $this->getSenderAddress(),
+            $this->getSenderName()
         );
         // Add a Reply-To field in the mail headers.
         // Fix bug #6654.
-        if ($preferences->pref_email_reply_to) {
-            $this->mail->AddReplyTo($preferences->pref_email_reply_to);
+        if ($this->preferences->pref_email_reply_to) {
+            $this->mail->AddReplyTo($this->preferences->pref_email_reply_to);
         } else {
-            $this->mail->AddReplyTo($preferences->pref_email);
+            $this->mail->AddReplyTo($this->getSenderAddress());
         }
         $this->mail->CharSet = 'UTF-8';
         $this->mail->SetLanguage($i18n->getAbbrev());
 
-        if ($preferences->pref_bool_wrap_mails) {
+        if ($this->preferences->pref_bool_wrap_mails) {
             $this->mail->WordWrap = $this->word_wrap;
         } else {
             $this->word_wrap = 0;
@@ -220,10 +242,14 @@ class GaletteMail
      */
     public function send()
     {
-        global $preferences;
-
         if ($this->mail === null) {
             $this->initMailer();
+        } else {
+            //set sender, it may have changed
+            $this->mail->SetFrom(
+                $this->getSenderAddress(),
+                $this->getSenderName()
+            );
         }
 
         if ($this->html) {
@@ -250,12 +276,12 @@ class GaletteMail
         } else {
             //we're sending a mailing. Set main recipient to sender
             $this->mail->AddAddress(
-                $preferences->pref_email,
-                $preferences->pref_email_nom
+                $this->getSenderAddress(),
+                $this->getSenderName()
             );
         }
 
-        if (trim($preferences->pref_mail_sign) != '') {
+        if (trim($this->preferences->pref_mail_sign) != '') {
             $patterns = array(
                 '/{NAME}/',
                 '/{WEBSITE}/',
@@ -267,19 +293,19 @@ class GaletteMail
             );
 
             $replaces = array(
-                $preferences->pref_nom,
-                $preferences->pref_website,
-                $preferences->pref_facebook,
-                $preferences->pref_googleplus,
-                $preferences->pref_twitter,
-                $preferences->pref_linkedin,
-                $preferences->pref_viadeo
+                $this->preferences->pref_nom,
+                $this->preferences->pref_website,
+                $this->preferences->pref_facebook,
+                $this->preferences->pref_googleplus,
+                $this->preferences->pref_twitter,
+                $this->preferences->pref_linkedin,
+                $this->preferences->pref_viadeo
             );
 
             $sign = preg_replace(
                 $patterns,
                 $replaces,
-                $preferences->pref_mail_sign
+                $this->preferences->pref_mail_sign
             );
 
             if ($this->html) {
@@ -315,7 +341,8 @@ class GaletteMail
                 $this->errors[] = $this->mail->ErrorInfo;
                 Analog::log(
                     'An error occured sending mail to: ' .
-                    implode(', ', array_keys($this->recipients)),
+                    implode(', ', array_keys($this->recipients)) .
+                    "\n" . $this->mail->ErrorInfo,
                     Analog::INFO
                 );
                 $this->mail = null;
@@ -422,6 +449,26 @@ class GaletteMail
     }
 
     /**
+     * Get sender name
+     *
+     * @return string
+     */
+    public function getSenderName()
+    {
+        return $this->sender_name;
+    }
+
+    /**
+     * Get sender address
+     *
+     * @return string
+     */
+    public function getSenderAddress()
+    {
+        return $this->sender_address;
+    }
+
+    /**
      * Get the subject
      *
      * @return string The subject
@@ -477,11 +524,12 @@ class GaletteMail
      *
      * @param string $subject The subject
      *
-     * @return void
+     * @return GaletteMail
      */
     public function setSubject($subject)
     {
         $this->subject = $subject;
+        return $this;
     }
 
     /**
@@ -489,10 +537,26 @@ class GaletteMail
      *
      * @param string $message The message
      *
-     * @return void
+     * @return GaletteMail
      */
     public function setMessage($message)
     {
         $this->message = $message;
+        return $this;
+    }
+
+    /**
+     * Sets the sender
+     *
+     * @param string $name    Sender name
+     * @param string $address Sender address
+     *
+     * @return GaletteMail
+     */
+    public function setSender($name, $address)
+    {
+        $this->sender_name = $name;
+        $this->sender_address = $address;
+        return $this;
     }
 }

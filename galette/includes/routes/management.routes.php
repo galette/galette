@@ -44,7 +44,7 @@ use Galette\Filters\HistoryList;
 use Galette\Core\MailingHistory;
 use Galette\Filters\MailingsList;
 use Galette\Entity\FieldsCategories;
-use Galette\DynamicFieldsTypes\DynamicFieldType;
+use Galette\DynamicFields\DynamicField;
 use Galette\Repository\Members;
 use Galette\IO\News;
 use Galette\IO\Charts;
@@ -61,6 +61,7 @@ use Galette\Entity\Texts;
 use Galette\Core\Install;
 use Zend\Db\Adapter\Adapter;
 use Galette\Core\PluginInstall;
+use Galette\Entity\Status;
 
 //galette's dashboard
 $app->get(
@@ -114,6 +115,7 @@ $app->get(
             'pref_lang'             => 1,
             'pref_numrows'          => 1,
             'pref_log'              => 1,
+            'pref_statut'           => 1,
             'pref_etiq_marges_v'    => 1,
             'pref_etiq_marges_h'    => 1,
             'pref_etiq_hspace'      => 1,
@@ -162,6 +164,7 @@ $app->get(
         $d->close();
 
         $m = new Members();
+        $s = new Status($this->zdb);
 
         // display page
         $this->view->render(
@@ -182,6 +185,7 @@ $app->get(
                 'required'              => $required,
                 'languages'             => $this->i18n->getList(),
                 'themes'                => $themes,
+                'statuts'               => $s->getList(),
                 'require_tabs'          => true,
                 'color_picker'          => true,
                 'require_dialog'        => true
@@ -566,7 +570,7 @@ $app->get(
             $get = $request->getQueryParams();
             $dest = (isset($get['adress']) ? $get['adress'] : $this->preferences->pref_email_newadh);
             if (GaletteMail::isValidEmail($dest)) {
-                $mail = new GaletteMail();
+                $mail = new GaletteMail($this->preferences);
                 $mail->setSubject(_T('Test message'));
                 $mail->setRecipients(
                     array(
@@ -741,7 +745,6 @@ $app->map(
         }
 
         $params = [];
-        $success_detected = [];
         $warning_detected = [];
         $error_detected = [];
 
@@ -919,7 +922,8 @@ $app->map(
             'istep'         => $istep,
             'plugid'        => $plugid,
             'plugin'        => $plugin,
-            'mode'          => ($request->isXhr() ? 'ajax' : '')
+            'mode'          => ($request->isXhr() ? 'ajax' : ''),
+            'error_detected' => $error_detected
         ];
 
         // display page
@@ -2423,18 +2427,9 @@ $app->post(
         $ret = null;
         if ($args['action'] === __('add', 'routes')) {
             $ret = $class->add($label, $field);
-            if ($ret === true) {
-                addDynamicTranslation($label);
-            }
         } else {
             $oldlabel = $class->getLabel($args['id'], false);
             $ret = $class->update($args['id'], $label, $field);
-            if ($ret === true) {
-                if (isset($label) && ($oldlabel != $label)) {
-                    deleteDynamicTranslation($oldlabel);
-                    addDynamicTranslation($label);
-                }
-            }
         }
 
         if ($ret !== true) {
@@ -2544,7 +2539,6 @@ $app->post(
                     $ret = $class->delete((int)$args['id']);
 
                     if ($ret === true) {
-                        deleteDynamicTranslation($label);
                         $this->flash->addMessage(
                             'success_detected',
                             str_replace(
@@ -2845,17 +2839,17 @@ $app->get(
         if (isset($_POST['form']) && trim($_POST['form']) != '') {
             $form_name = $_POST['form'];
         }
-        $fields = new \Galette\Repository\DynamicFieldsTypes($this->zdb);
+        $fields = new \Galette\Repository\DynamicFieldsSet($this->zdb);
         $fields_list = $fields->getList($form_name, $this->login);
 
-        $field_type_names = DynamicFieldType::getFieldsTypesNames();
+        $field_type_names = DynamicField::getFieldsTypesNames();
 
         $params = [
             'require_tabs'      => true,
             'require_dialog'    => true,
             'fields_list'       => $fields_list,
             'form_name'         => $form_name,
-            'form_title'        => DynamicFieldType::getFormTitle($form_name),
+            'form_title'        => DynamicField::getFormTitle($form_name),
             'page_title'        => _T("Dynamic fields configuration")
         ];
 
@@ -2868,7 +2862,7 @@ $app->get(
         ) {
             $tpl = 'configurer_fiche_content.tpl';
         } else {
-            $all_forms = DynamicFieldType::getFormsNames();
+            $all_forms = DynamicField::getFormsNames();
             $params['all_forms'] = $all_forms;
         }
 
@@ -2889,7 +2883,7 @@ $app->get(
         $field_id = (int)$args['id'];
         $form_name = $args['form'];
 
-        $field = DynamicFieldType::loadFieldType($this->zdb, $field_id);
+        $field = DynamicField::loadFieldType($this->zdb, $field_id);
         if ($field->move($args['direction'])) {
             $this->flash->addMessage(
                 'success_detected',
@@ -2912,7 +2906,7 @@ $app->get(
     __('/fields', 'routes') . __('/dynamic', 'routes') .
         __('/remove', 'routes') . '/{form:adh|contrib|trans}/{id:\d+}',
     function ($request, $response, $args) {
-        $field = DynamicFieldType::loadFieldType($this->zdb, (int)$args['id']);
+        $field = DynamicField::loadFieldType($this->zdb, (int)$args['id']);
         if ($field === false) {
             $this->flash->addMessage(
                 'error_detected',
@@ -2969,7 +2963,7 @@ $app->post(
             );
         } else {
             $field_id = (int)$args['id'];
-            $field = DynamicFieldType::loadFieldType($this->zdb, $field_id);
+            $field = DynamicField::loadFieldType($this->zdb, $field_id);
             if ($field->remove()) {
                 $this->flash->addMessage(
                     'success_detected',
@@ -3033,7 +3027,7 @@ $app->get(
             $df = $this->session->dynamicfieldtype;
             $this->session->dynamicfieldtype = null;
         } elseif ($action === __('edit', 'routes')) {
-            $df = DynamicFieldType::loadFieldType($this->zdb, $id_dynf);
+            $df = DynamicField::loadFieldType($this->zdb, $id_dynf);
             if ($df === false) {
                 $this->flash->addMessage(
                     'error_detected',
@@ -3049,7 +3043,7 @@ $app->get(
             'page_title'    => _T("Edit field"),
             'action'        => $action,
             'form_name'     => $form_name,
-            'perm_names'    => DynamicFieldType::getPermsNames(),
+            'perm_names'    => DynamicField::getPermsNames(),
             'mode'          => ($request->isXhr() ? 'ajax' : '')
         ];
 
@@ -3057,7 +3051,7 @@ $app->get(
             $params['df'] = $df;
         }
         if ($action === __('add', 'routes')) {
-            $params['field_type_names'] = DynamicFieldType::getFieldsTypesNames();
+            $params['field_type_names'] = DynamicField::getFieldsTypesNames();
         }
 
         // display page
@@ -3081,10 +3075,10 @@ $app->post(
         $warning_detected = [];
 
         if ($args['action'] === __('add', 'routes')) {
-            $df = DynamicFieldType::getFieldType($this->zdb, $post['field_type']);
+            $df = DynamicField::getFieldType($this->zdb, $post['field_type']);
         } else {
             $field_id = (int)$args['id'];
-            $df = DynamicFieldType::loadFieldType($this->zdb, $field_id);
+            $df = DynamicField::loadFieldType($this->zdb, $field_id);
         }
 
         try {
@@ -3146,7 +3140,7 @@ $app->post(
                     )
                 );
         } else {
-            if (!$df instanceof \Galette\DynamicFieldsTypes\Separator
+            if (!$df instanceof \Galette\DynamicFields\Separator
                 && $args['action'] == __('add', 'routes')
             ) {
                 return $response

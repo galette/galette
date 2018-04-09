@@ -61,8 +61,8 @@ abstract class Pagination
     private $show;
     private $pages = 1;
     private $counter = null;
-    private $view;
-    private $router;
+    protected $view;
+    protected $router;
 
     const ORDER_ASC = 'ASC';
     const ORDER_DESC = 'DESC';
@@ -347,10 +347,10 @@ abstract class Pagination
      *
      * @return string
      */
-    private function getHref($page)
+    protected function getHref($page)
     {
         $args = [
-            'option'    => 'page',
+            'option'    => __('page', 'routes'),
             'value'     => $page
         ];
 

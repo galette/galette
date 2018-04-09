@@ -1,5 +1,5 @@
 INSTALLDIR = .
-LANGUAGES = en_US fr_FR.utf8
+LANGUAGES = en_US fr_FR.utf8 de_DE.utf8
 DOMAINS = galette routes
 MKLANG = ./make_lang_l12n.py
 PHP_SOURCES = $(shell find ../ -maxdepth 1 -name \*.php) \

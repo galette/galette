@@ -93,7 +93,6 @@ class PdfModels extends Repository
      */
     public function installInit($check_first = true)
     {
-        include GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
         try {
             $ent = $this->entity;
             //first of all, let's check if data seem to have already
@@ -114,8 +113,8 @@ class PdfModels extends Repository
                     //if we got no values in texts table, let's proceed
                     $proceed = true;
                 } else {
-                    if ($count < count($pdfmodels_fields)) {
-                        return $this->checkUpdate($pdfmodels_fields);
+                    if ($count < count($this->defaults)) {
+                        return $this->checkUpdate();
                     }
                     return false;
                 }
@@ -129,7 +128,7 @@ class PdfModels extends Repository
                 //first, we drop all values
                 $delete = $this->zdb->delete($ent::TABLE);
                 $this->zdb->execute($delete);
-                $this->insert($ent::TABLE, $pdfmodels_fields);
+                $this->insert($ent::TABLE, $this->defaults);
 
                 $this->zdb->connection->commit();
                 return true;
@@ -143,11 +142,9 @@ class PdfModels extends Repository
     /**
      * Checks for missing texts in the database
      *
-     * @param array $defaults Fields definition defaults
-     *
      * @return boolean
      */
-    private function checkUpdate($defaults)
+    protected function checkUpdate()
     {
         try {
             $ent = $this->entity;
@@ -155,7 +152,7 @@ class PdfModels extends Repository
             $list = $this->zdb->execute($select);
 
             $missing = array();
-            foreach ($defaults as $default) {
+            foreach ($this->defaults as $default) {
                 $exists = false;
                 foreach ($list as $model) {
                     if ($model->model_id == $default['model_id']) {
@@ -215,5 +212,19 @@ class PdfModels extends Repository
         foreach ($values as $value) {
             $stmt->execute($value);
         }
+    }
+
+    /**
+     * Load and get default PDF models
+     *
+     * @return array
+     */
+    protected function loadDefaults()
+    {
+        if (!count($this->defaults)) {
+            include GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
+            $this->defaults = $pdfmodels_fields;
+        }
+        return parent::loadDefaults();
     }
 }

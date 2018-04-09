@@ -25,6 +25,11 @@
                     <input{if isset($required.pref_slogan) and $required.pref_slogan eq 1} required="required"{/if} type="text" class="large" name="pref_slogan" id="pref_slogan" value="{$pref.pref_slogan}"/>
                 </p>
                 <p>
+                    <label for="pref_footer" class="bline tooltip" title="{_T string="Enter a text (HTML allowed) that will be displayed in the footer of every page"}">{_T string="Footer text:"}</label>
+                    <span class="tip">{_T string="Enter a text (HTML allowed) that will be displayed in the footer of every page"}</span>
+                    <input{if isset($required.pref_footer) and $required.pref_footer eq 1} required="required"{/if} type="text" class="large" name="pref_footer" id="pref_footer" value="{$pref.pref_footer|escape}"/>
+                </p>
+                <p>
                     <label for="logo_picture" class="bline">{_T string="Logo:"}</label>
 {if $logo->isCustom()}
                     <img src="{path_for name="logo"}" class="picture" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="{_T string="Current logo"}"/><br/>
@@ -149,9 +154,14 @@
                 <p>
                     <label for="pref_log" class="bline">{_T string="Logging level:"}</label>
                     <select name="pref_log" id="pref_log">
-                        <option value="0" {if $pref.pref_log eq 0}selected="selected"{/if}>{_T string="Disabled"}</option>
-                        <option value="1" {if $pref.pref_log eq 1}selected="selected"{/if}>{_T string="Normal"}</option>
-                        <option value="2" {if $pref.pref_log eq 2}selected="selected"{/if}>{_T string="Detailed"}</option>
+                        <option value="{Galette\Core\Preferences::LOG_DISABLED}" {if $pref.pref_log eq constant('Galette\Core\Preferences::LOG_DISABLED')}selected="selected"{/if}>{_T string="Disabled"}</option>
+                        <option value="{Galette\Core\Preferences::LOG_ENABLED}" {if $pref.pref_log eq constant('Galette\Core\Preferences::LOG_ENABLED')}selected="selected"{/if}>{_T string="Enabled"}</option>
+                    </select>
+                </p>
+                <p>
+                    <label for="pref_statut" class="bline">{_T string="Default membership status:"}</label>
+                    <select name="pref_statut" id="pref_statut">
+                        {html_options options=$statuts selected=$pref.pref_statut}
                     </select>
                 </p>
                 <p>

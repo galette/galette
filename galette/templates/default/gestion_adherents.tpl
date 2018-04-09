@@ -219,6 +219,7 @@
             <li>{_T string="For the selection:"}</li>
     {if $login->isAdmin() or $login->isStaff()}
             <li><input type="submit" id="delete" name="delete" value="{_T string="Delete"}"/></li>
+            <li><input type="submit" id="masschange" class="button" name="masschange" value="{_T string="Mass change"}"/></li>
         {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
             <li><input type="submit" id="sendmail" name="mailing" value="{_T string="Mail"}"/></li>
         {/if}
@@ -388,6 +389,120 @@
 {if $nb_members != 0}
         {include file="js_removal.tpl"}
         {include file="js_removal.tpl" selector="#delete" deleteurl="'{path_for name="batch-memberslist"}'" extra_check="if (!_checkselection()) {ldelim}return false;{rdelim}" extra_data="delete: true, member_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()" method="POST"}
+
+        var _bindmassres = function(res) {
+            res.find('#btncancel')
+                .button()
+                .on('click', function(e) {
+                    e.preventDefault();
+                    res.dialog('close');
+                });
+
+            res.find('input[type=submit]')
+                .button();
+        }
+
+        $('#masschange').off('click').on('click', function(event) {
+            event.preventDefault();
+            var _this = $(this);
+
+            if (!_checkselection()) {
+                return false;
+            }
+            $.ajax({
+                url: '{path_for name="batch-memberslist"}',
+                type: "POST",
+                data: {
+                    ajax: true,
+                    masschange: true,
+                    member_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){
+                        return $(this).val();
+                    }).get()
+                },
+                datatype: 'json',
+                {include file="js_loader.tpl"},
+                success: function(res){
+                    var _res = $(res);
+                    _bindmassres(_res);
+
+                    _res.find('form').on('submit', function(e) {
+                        e.preventDefault();
+                        var _form = $(this);
+                        var _data = _form.serialize();
+                        $.ajax({
+                            url: _form.attr('action'),
+                            type: "POST",
+                            data: _data,
+                            datatype: 'json',
+                            {include file="js_loader.tpl"},
+                            success: function(html) {
+                                var _html = $(html);
+                                _bindmassres(_html);
+
+                                $('#mass_change').remove();
+                                $('body').append(_html);
+
+                                _initTooltips('#mass_change');
+                                //_massCheckboxes('#mass_change');
+
+                                _html.dialog({
+                                    width: 'auto',
+                                    modal: true,
+                                    close: function(event, ui){
+                                        $(this).dialog('destroy').remove()
+                                    }
+                                });
+
+                                _html.find('form').on('submit', function(e) {
+                                    e.preventDefault();
+                                    var _form = $(this);
+                                    var _data = _form.serialize();
+                                    $.ajax({
+                                        url: _form.attr('action'),
+                                        type: "POST",
+                                        data: _data,
+                                        datatype: 'json',
+                                        {include file="js_loader.tpl"},
+                                        success: function(res) {
+                                            if (res.success) {
+                                                window.location.href = _form.find('input[name=redirect_uri]').val();
+                                            } else {
+                                                $.ajax({
+                                                    url: '{path_for name="ajaxMessages"}',
+                                                    method: "GET",
+                                                    success: function (message) {
+                                                        $('#asso_name').after(message);
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+                                });
+                            },
+                            error: function() {
+                                alert("{_T string="An error occured :(" escape="js"}");
+                            }
+                        });
+                    });
+
+                    $('body').append(_res);
+
+                    _initTooltips('#mass_change');
+                    _massCheckboxes('#mass_change');
+
+                    _res.dialog({
+                        width: 'auto',
+                        modal: true,
+                        close: function(event, ui){
+                            $(this).dialog('destroy').remove()
+                        }
+                    });
+                },
+                error: function() {
+                    alert("{_T string="An error occured :(" escape="js"}");
+                }
+            });
+        });
 
         var _attendance_sheet_details = function(){
             var _selecteds = [];

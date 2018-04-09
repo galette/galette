@@ -222,7 +222,6 @@
                 }).css('cursor', 'pointer').attr('title', '{_T string="Click on a contribution row to attach it to the current transaction" escape="js"}');
             }
 {/if}
-            $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
             $('#trans_date').datepicker({
                 changeMonth: true,
                 changeYear: true,

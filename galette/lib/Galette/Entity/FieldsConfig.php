@@ -890,4 +890,61 @@ class FieldsConfig
             )
         );
     }
+
+    /**
+     * Get fields for massive changes
+     * @see FieldsConfig::getFormElements
+     *
+     * @param array $fields Member fields
+     * @param Login $login  Login instance
+     *
+     * @return array
+     */
+    public function getMassiveFormElements(array $fields, Login $login)
+    {
+        $visibles = $this->getVisibilities();
+        $access_level = $login->getAccessLevel();
+
+        //remove not searchable fields
+        unset($fields['mdp_adh']);
+
+        foreach ($fields as $k => $f) {
+            if ($visibles[$k] == FieldsConfig::NOBODY ||
+                ($visibles[$k] == FieldsConfig::ADMIN &&
+                    $access_level < Authentication::ACCESS_ADMIN) ||
+                ($visibles[$k] == FieldsConfig::STAFF &&
+                    $access_level < Authentication::ACCESS_STAFF) ||
+                ($visibles[$k] == FieldsConfig::MANAGER &&
+                    $access_level < Authentication::ACCESS_MANAGER)
+            ) {
+                unset($fields[$k]);
+            }
+        }
+
+        $mass_fields = [
+            'titre_adh',
+            'sexe_adh',
+            'pref_lang',
+            'cp_adh',
+            'ville_adh',
+            'pays_adh',
+            'bool_display_info',
+            'activite_adh',
+            Status::PK,
+            'bool_admin_adh',
+            'bool_exempt_adh',
+        ];
+        $mass_fields = array_intersect(array_keys($fields), $mass_fields);
+
+        foreach ($mass_fields as $mass_field) {
+            $this->setNotRequired($mass_field);
+        }
+        $form_elements = $this->getFormElements($login, false);
+        unset($form_elements['hiddens']);
+
+        foreach ($form_elements['fieldsets'] as &$form_element) {
+            $form_element->elements = array_intersect_key($form_element->elements, array_flip($mass_fields));
+        }
+        return $form_elements;
+    }
 }

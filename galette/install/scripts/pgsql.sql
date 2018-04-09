@@ -156,7 +156,7 @@ CREATE TABLE galette_adherents (
     pays_adh character varying(50) DEFAULT NULL,
     tel_adh character varying(20),
     gsm_adh character varying(20),
-    email_adh character varying(150),
+    email_adh character varying(255),
     url_adh character varying(200),
     icq_adh character varying(20),
     msn_adh character varying(150),
@@ -175,7 +175,7 @@ CREATE TABLE galette_adherents (
     date_echeance date,
     pref_lang character varying(20) DEFAULT 'fr_FR',
     lieu_naissance text DEFAULT '',
-    gpgid character varying(8) DEFAULT NULL,
+    gpgid text DEFAULT NULL,
     fingerprint character varying(50) DEFAULT NULL,
     parent_id integer DEFAULT NULL REFERENCES galette_adherents(id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (id_adh)
@@ -339,6 +339,8 @@ CREATE TABLE galette_mailing_history (
   mailing_date timestamp NOT NULL,
   mailing_recipients text NOT NULL,
   mailing_sent boolean DEFAULT FALSE,
+  mailing_sender_name character varying(100) DEFAULT NULL,
+  mailing_sender_address character varying(255) DEFAULT NULL,
   PRIMARY KEY (mailing_id)
 );
 
@@ -410,4 +412,4 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(0.82);
+INSERT INTO galette_database (version) VALUES(0.91);

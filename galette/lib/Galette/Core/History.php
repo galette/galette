@@ -41,6 +41,7 @@ use Analog\Analog;
 use Galette\Filters\HistoryList;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Adapter\Adapter;
+use Galette\Core\Preferences;
 
 /**
  * History management
@@ -121,6 +122,13 @@ class History
      */
     public function add($action, $argument = '', $query = '')
     {
+        global $preferences;
+
+        if ($preferences->pref_log == Preferences::LOG_DISABLED) {
+            //logs are disabled
+            return true;
+        }
+
         $ip = null;
         if (PHP_SAPI === 'cli') {
             $ip = '127.0.0.1';

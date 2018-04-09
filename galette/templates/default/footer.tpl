@@ -18,5 +18,8 @@
                     </li>
                 </ul>
             </nav>
+{* Display footer line, if it does exists *}
+{if $preferences->pref_footer neq ''}
+    {$preferences->pref_footer}
+{/if}
         </footer>
-

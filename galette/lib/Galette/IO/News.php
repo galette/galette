@@ -189,8 +189,19 @@ class News
                     'allow_url_fopen is set to false; cannot load news.'
                 );
             }
-            $xml = simplexml_load_file($this->feed_url);
 
+            $opts = [
+                'http' => [
+                    'timeout' => 5
+                ]
+            ];
+            $context = stream_context_create($opts);
+            $data = file_get_contents($this->feed_url, false, $context);
+            if (!$data) {
+                throw new \Exception();
+            }
+
+            $xml = simplexml_load_string($data);
             if (!$xml) {
                 throw new \Exception();
             }

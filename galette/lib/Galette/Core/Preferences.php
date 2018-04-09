@@ -39,6 +39,7 @@ namespace Galette\Core;
 
 use Analog\Analog;
 use Galette\Entity\Adherent;
+use Galette\Entity\Status;
 use Galette\Core\Db;
 use Galette\IO\PdfMembersCards;
 
@@ -75,6 +76,9 @@ class Preferences
     /** Public pages are visibles for admin and staff members only */
     const PUBLIC_PAGES_VISIBILITY_PRIVATE = 2;
 
+    const LOG_DISABLED = 0;
+    const LOG_ENABLED = 1;
+
     private static $fields = array(
         'nom_pref',
         'val_pref'
@@ -94,7 +98,8 @@ class Preferences
         'pref_postal_staff_member' => '',
         'pref_lang'        =>    I18n::DEFAULT_LANG,
         'pref_numrows'        =>    30,
-        'pref_log'        =>    2,
+        'pref_log'        =>    self::LOG_ENABLED,
+        'pref_statut'        =>    Status::DEFAULT_STATUS,
         /* Preferences for mails */
         'pref_email_nom'    =>    'Galette',
         'pref_email'        =>    'mail@domain.com',
@@ -158,7 +163,8 @@ class Preferences
         'pref_instance_uuid' => '',
         'pref_registration_uuid' => '',
         'pref_telemetry_date' => '',
-        'pref_registration_date' => ''
+        'pref_registration_date' => '',
+        'pref_footer' => ''
     );
 
     /**

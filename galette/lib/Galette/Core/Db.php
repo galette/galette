@@ -165,26 +165,38 @@ class Db
     /**
      * Retrieve current database version
      *
+     * @param boolean $check_table Check if table exists, defaults to false
+     *
      * @return float
      *
      * @throw LogicException
      */
-    public function getDbVersion()
+    public function getDbVersion($check_table = false)
     {
         try {
-            $select = $this->select('database');
-            $select->columns(
-                array('version')
-            )->limit(1);
+            if ($check_table === true) {
+                $exists = count($this->getTables(PREFIX_DB . 'database'));
+            } else {
+                $exists = true;
+            }
 
-            $results = $this->execute($select);
-            $result = $results->current();
-            return number_format(
-                $result->version,
-                3,
-                '.',
-                ''
-            );
+            if ($exists === true) {
+                $select = $this->select('database');
+                $select->columns(
+                    array('version')
+                )->limit(1);
+
+                $results = $this->execute($select);
+                $result = $results->current();
+                return number_format(
+                    $result->version,
+                    3,
+                    '.',
+                    ''
+                );
+            } else {
+                return 0.63;
+            }
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot check database version: ' . $e->getMessage(),
@@ -522,6 +534,13 @@ class Db
      */
     public function convertToUTF($prefix = null, $content_only = false)
     {
+        if ($this->isPostgres()) {
+            Analog::log(
+                'Cannot change encoding on PostgreSQL database',
+                Analog::INFO
+            );
+            return;
+        }
         if ($prefix === null) {
             $prefix = PREFIX_DB;
         }
@@ -714,7 +733,7 @@ class Db
      *
      * @param string $table Table name, without prefix
      *
-     * @return Insert
+     * @return Update
      */
     public function update($table)
     {

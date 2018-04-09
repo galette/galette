@@ -1,6 +1,37 @@
 Changes
 -------
 
+0.9 -> 0.9.1
+
+News
+^^^^
+
+- Massive changes of members
+- Define a default status for new members in preferences
+- Add footer text
+- Add German language (many thanks to Arnold W.)
+- Sender can now be choosed when sending an email
+
+Bugfixes
+^^^^^^^^
+
+- Ensure all PDF models configured are installed
+- Take care of history preferences
+- Update of dynamic fields now set member modification date
+- GPG field was too short
+- Fix schema differences beetween MySQL and PostgreSQL
+- Clean extra data from 0.9rc
+- Change mail field size to be compliant with standards
+- Fix upgrade issues
+- Fix contributions end date
+- Fix rdirection after contribution creation
+- Fix dynamic fields on transactions and contributions
+- Fix asset paths on some configurations
+- Fix admin fields update while modifying member from a non admin account
+- Fix dynamic file required when updating a member
+- Fix security on member PDF card generation
+- Set timeout on RSS feeds to prevent hangs
+
 0.8.3.4 -> 0.9
 
 News

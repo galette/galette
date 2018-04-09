@@ -162,16 +162,24 @@ class Adherent
 
         $this->zdb = $zdb;
 
-        if ($deps !== null && is_array($deps)) {
-            $this->_deps = array_merge(
-                $this->_deps,
-                $deps
-            );
-        } elseif ($deps !== null) {
-            Analog::log(
-                '$deps shoud be an array, ' . gettype($deps) . ' given!',
-                Analog::WARNING
-            );
+        if ($deps !== null) {
+            if (is_array($deps)) {
+                $this->_deps = array_merge(
+                    $this->_deps,
+                    $deps
+                );
+            } elseif ($deps === false) {
+                //no dependencies
+                $this->deps = array_fill_keys(
+                    array_keys($this->deps),
+                    false
+                );
+            } else {
+                Analog::log(
+                    '$deps shoud be an array, ' . gettype($deps) . ' given!',
+                    Analog::WARNING
+                );
+            }
         }
 
         if ($args == null || is_int($args)) {
@@ -181,7 +189,7 @@ class Adherent
                 $this->_active = true;
                 $this->_language = $i18n->getID();
                 $this->_creation_date = date("Y-m-d");
-                $this->_status = Status::DEFAULT_STATUS;
+                $this->_status = $this->getDefaultStatus();
                 $this->_title = null;
                 $this->_gender = self::NC;
                 $gp = new Password($this->zdb);
@@ -430,6 +438,26 @@ class Adherent
     {
         $this->_groups = Groups::loadGroups($this->_id);
         $this->_managed_groups = Groups::loadManagedGroups($this->_id);
+    }
+
+    /**
+     * Retrieve status from preferences
+     *
+     * @return pref_statut
+     *
+     */
+    private function getDefaultStatus()
+    {
+        global $preferences;
+        if ($preferences->pref_statut != '') {
+            return $preferences->pref_statut;
+        } else {
+            Analog::log(
+                'Unable to get pref_statut; is it defined in preferences?',
+                Analog::ERROR
+            );
+            return Status::DEFAULT_STATUS;
+        }
     }
 
     /**
@@ -902,7 +930,7 @@ class Adherent
                 if ($value !== true && $value !== false) {
                     $value = trim($value);
                 }
-            } else {
+            } elseif ($this->_id == '' || $this->_id == null) {
                 switch ($key) {
                     case 'bool_admin_adh':
                     case 'bool_exempt_adh':
@@ -924,6 +952,13 @@ class Adherent
                         break;
                     default:
                         $value = '';
+                }
+            } else {
+                //keep stored value on update
+                if ($prop != '_password' || isset($values['mdp_adh']) && isset($values['mdp_adh2'])) {
+                    $value = $this->$prop;
+                } else {
+                    $value = null;
                 }
             }
 
@@ -1233,6 +1268,20 @@ class Adherent
                 $values['parent_id'] = new Expression('NULL');
             }
 
+            //fields that cannot be null
+            $notnull = [
+                '_surname'  => 'prenom_adh',
+                '_nickname' => 'pseudo_adh',
+                '_address'  => 'adresse_adh',
+                '_zipcode'  => 'cp_adh',
+                '_town'     => 'ville_adh'
+            ];
+            foreach ($notnull as $prop => $field) {
+                if ($this->$prop === null) {
+                    $values[$field] = '';
+                }
+            }
+
             $success = false;
             if (!isset($this->_id) || $this->_id == '') {
                 //we're inserting a new member
@@ -1428,7 +1477,7 @@ class Adherent
                         break;
                     case 'saddress':
                         $address = $this->_address;
-                        if ($this->_address_continuation !== '') {
+                        if ($this->_address_continuation !== '' && $this->_address_continuation !== null) {
                             $address .= "\n" . $this->_address_continuation;
                         }
                         return $address;
@@ -1644,19 +1693,19 @@ class Adherent
             if ($files['photo']['error'] === UPLOAD_ERR_OK) {
                 if ($files['photo']['tmp_name'] !='') {
                     if (is_uploaded_file($files['photo']['tmp_name'])) {
-                        $res = $member->picture->store($files['photo']);
+                        $res = $this->picture->store($files['photo']);
                         if ($res < 0) {
                             $this->errors[]
-                                = $member->picture->getErrorMessage($res);
+                                = $this->picture->getErrorMessage($res);
                         }
                     }
                 }
             } elseif ($files['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
                 Analog::log(
-                    $member->picture->getPhpErrorMessage($files['photo']['error']),
+                    $this->picture->getPhpErrorMessage($files['photo']['error']),
                     Analog::WARNING
                 );
-                $this->errors[] = $member->picture->getPhpErrorMessage(
+                $this->errors[] = $this->picture->getPhpErrorMessage(
                     $files['photo']['error']
                 );
             }

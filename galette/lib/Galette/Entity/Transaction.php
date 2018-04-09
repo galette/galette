@@ -133,9 +133,7 @@ class Transaction
             $this->loadFromRS($args);
         }
 
-        if ($this->id !== null) {
-            $this->loadDynamicFields();
-        }
+        $this->loadDynamicFields();
     }
 
     /**
@@ -235,6 +233,8 @@ class Transaction
         $this->_description = $r->trans_desc;
         $adhpk = Adherent::PK;
         $this->_member = (int)$r->$adhpk;
+
+        $this->loadDynamicFields();
     }
 
     /**
@@ -341,6 +341,8 @@ class Transaction
             }
         }
 
+        $this->dynamicsCheck($values);
+
         if (count($this->errors) > 0) {
             Analog::log(
                 'Some errors has been throwed attempting to edit/store a transaction' .
@@ -376,6 +378,7 @@ class Transaction
                 $values[$field] = $this->$prop;
             }
 
+            $success = false;
             if (!isset($this->_id) || $this->_id == '') {
                 //we're inserting a new transaction
                 unset($values[self::PK]);
@@ -396,6 +399,7 @@ class Transaction
                         _T("Transaction added"),
                         Adherent::getSName($this->zdb, $this->_member)
                     );
+                    $success = true;
                 } else {
                     $hist->add(_T("Fail to add new transaction."));
                     throw new \Exception(
@@ -417,7 +421,14 @@ class Transaction
                         Adherent::getSName($this->zdb, $this->_member)
                     );
                 }
+                $success = true;
             }
+
+            //dynamic fields
+            if ($success) {
+                $success = $this->dynamicsStore(true);
+            }
+
             $this->zdb->connection->commit();
             return true;
         } catch (\Exception $e) {
