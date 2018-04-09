@@ -163,7 +163,8 @@ class Preferences
         'pref_instance_uuid' => '',
         'pref_registration_uuid' => '',
         'pref_telemetry_date' => '',
-        'pref_registration_date' => ''
+        'pref_registration_date' => '',
+        'pref_footer' => ''
     );
 
     /**
