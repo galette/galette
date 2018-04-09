@@ -20,5 +20,8 @@ UPDATE galette_cotisations
     WHERE galette_cotisations.trans_id IS NOT NULL AND galette_transactions.trans_id IS NULL;
 ALTER TABLE galette_cotisations ADD FOREIGN KEY (trans_id) REFERENCES galette_transactions(trans_id) ON DELETE RESTRICT ON UPDATE CASCADE;
 
+-- Detailled log history has ben dropped
+UPDATE galette_preferences SET val_pref = 1 WHERE nom_pref = 'pref_log' AND val_pref = 2;
+
 UPDATE galette_database SET version = 0.91;
 SET FOREIGN_KEY_CHECKS=1;

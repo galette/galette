@@ -149,9 +149,8 @@
                 <p>
                     <label for="pref_log" class="bline">{_T string="Logging level:"}</label>
                     <select name="pref_log" id="pref_log">
-                        <option value="0" {if $pref.pref_log eq 0}selected="selected"{/if}>{_T string="Disabled"}</option>
-                        <option value="1" {if $pref.pref_log eq 1}selected="selected"{/if}>{_T string="Normal"}</option>
-                        <option value="2" {if $pref.pref_log eq 2}selected="selected"{/if}>{_T string="Detailed"}</option>
+                        <option value="{Galette\Core\Preferences::LOG_DISABLED}" {if $pref.pref_log eq constant('Galette\Core\Preferences::LOG_DISABLED')}selected="selected"{/if}>{_T string="Disabled"}</option>
+                        <option value="{Galette\Core\Preferences::LOG_ENABLED}" {if $pref.pref_log eq constant('Galette\Core\Preferences::LOG_ENABLED')}selected="selected"{/if}>{_T string="Enabled"}</option>
                     </select>
                 </p>
                 <p>
