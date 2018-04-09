@@ -83,6 +83,8 @@ class DynamicFieldsHandle
     private $update_stmt;
     private $delete_stmt;
 
+    private $has_changed = false;
+
     /**
      * Default constructor
      *
@@ -327,6 +329,7 @@ class DynamicFieldsHandle
                         }
                         unset($value['is_new']);
                         $this->insert_stmt->execute($value);
+                        $this->has_changed = true;
                     } else {
                         if ($this->update_stmt === null) {
                             $update = $this->zdb->update(self::TABLE);
@@ -352,6 +355,7 @@ class DynamicFieldsHandle
                                 $value['val_index']
                         ];
                         $this->update_stmt->execute($params);
+                        $this->has_changed = true;
                     }
                 }
             }
@@ -452,6 +456,17 @@ class DynamicFieldsHandle
                     }
                 }
             }
+            $this->has_changed = true;
         }
+    }
+
+    /**
+     * Is there any change in dynamic filelds?
+     *
+     * @return boolean
+     */
+    public function hasChanged()
+    {
+        return $this->has_changed;
     }
 }

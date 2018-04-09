@@ -160,7 +160,11 @@ trait DynamicsTrait
             );
             $this->loadDynamicFields();
         }
-        return $this->dynamics->storeValues($this->id, $transaction);
+        $return = $this->dynamics->storeValues($this->id, $transaction);
+        if (method_exists($this, 'updateModificationDate') && $this->dynamics->hasChanged()) {
+            $this->updateModificationDate();
+        }
+        return $return;
     }
 
     /**
