@@ -752,6 +752,10 @@ msgstr "Afficher les pages publiques pour"
 msgid "Continue"
 msgstr "Continuer"
 
+#: ../includes/i18n.inc.php:368
+msgid "Mr."
+msgstr "M."
+
 #: ../templates/default/public_page.tpl:61 ../templates/default/page.tpl:109
 msgid ""
 "Galette is configured to display errors. This must be avoided in production "
@@ -4729,6 +4733,10 @@ msgstr "Courriel de nouveau compte envoyé à l'administrateur pour « %s »."
 msgid "Photo has not been copied!"
 msgstr "La photo n'a pas été copiée&nbsp;!"
 
+#: ../includes/i18n.inc.php:369
+msgid "Mrs."
+msgstr "Mme."
+
 #: ../lib/Galette/IO/Charts.php:230
 msgid "Up to date"
 msgstr "À jour"
@@ -4904,7 +4912,7 @@ msgstr "Cliquez ici pour activer le plugin « %name »"
 msgid "Add title"
 msgstr "Ajouter un titre"
 
-#: ../templates/default/gestion_adherents.tpl:255
+#: ../includes/i18n.inc.php:370 ../templates/default/gestion_adherents.tpl:255
 msgid "Miss"
 msgstr "Mlle"
 
@@ -7635,9 +7643,6 @@ msgstr "Adhésion souhaitée :"
 #~ msgid "Language"
 #~ msgstr "Langue"
 
-#~ msgid "Mr."
-#~ msgstr "M."
-
 #~ msgid "PDF models were successfully stored."
 #~ msgstr "Les modèles PDF ont été enregistrés avec succès."
 
@@ -7710,9 +7715,6 @@ msgstr "Adhésion souhaitée :"
 
 #~ msgid "PDF models cannot be initialized."
 #~ msgstr "Les modèles PDF n'ont pas été initialisés."
-
-#~ msgid "Mrs."
-#~ msgstr "Mme."
 
 #~ msgid "Check above errors to know what went wrong."
 #~ msgstr "Consultez les erreurs ci-dessous pour savoir ce qui n'a pas été."

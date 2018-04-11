@@ -738,6 +738,10 @@ msgstr "Show public pages for"
 msgid "Continue"
 msgstr "Continue"
 
+#: ../includes/i18n.inc.php:368
+msgid "Mr."
+msgstr "Mr."
+
 #: ../templates/default/public_page.tpl:61 ../templates/default/page.tpl:109
 msgid ""
 "Galette is configured to display errors. This must be avoided in production "
@@ -4651,6 +4655,10 @@ msgstr "New account mail sent to admin for '%s'."
 msgid "Photo has not been copied!"
 msgstr "Photo has not been copied!"
 
+#: ../includes/i18n.inc.php:369
+msgid "Mrs."
+msgstr "Mrs."
+
 #: ../lib/Galette/IO/Charts.php:230
 msgid "Up to date"
 msgstr "Up to date"
@@ -4820,7 +4828,7 @@ msgstr "Click here to activate plugin '%name'"
 msgid "Add title"
 msgstr "Add title"
 
-#: ../templates/default/gestion_adherents.tpl:255
+#: ../includes/i18n.inc.php:370 ../templates/default/gestion_adherents.tpl:255
 msgid "Miss"
 msgstr "Miss"
 
@@ -7499,9 +7507,6 @@ msgstr "Required membership:"
 #~ msgid "Language"
 #~ msgstr "Language"
 
-#~ msgid "Mr."
-#~ msgstr "Mr."
-
 #~ msgid "PDF models were successfully stored."
 #~ msgstr "PDF models were successfully stored."
 
@@ -7573,9 +7578,6 @@ msgstr "Required membership:"
 
 #~ msgid "PDF models cannot be initialized."
 #~ msgstr "PDF models cannot be initialized."
-
-#~ msgid "Mrs."
-#~ msgstr "Mrs."
 
 #~ msgid "Check above errors to know what went wrong."
 #~ msgstr "Check above errors to know what went wrong."

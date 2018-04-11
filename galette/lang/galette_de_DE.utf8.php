@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Mon Apr  9 05:51:56 2018 (GMT)
+// This file was automatically generated on Wed Apr 11 04:38:08 2018 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -3225,7 +3225,7 @@ $lang['galette']['Attachments'] = 'Anhänge';
 // ../templates/default/forms_types.tpl:80 
 $lang['galette']['Do member want to appear publically?'] = 'Sollen ihre Angaben in der öffentlichen Liste enthalten sein?';
 
-// ../templates/default/gestion_adherents.tpl:255 
+// ../includes/i18n.inc.php:370 ../templates/default/gestion_adherents.tpl:255 
 $lang['galette']['Miss'] = 'Fräulein';
 
 // ../lib/Galette/Entity/Contribution.php:137 ../templates/default/forms_types/payment_types.tpl:5 
@@ -3615,6 +3615,9 @@ $lang['galette']['On .......... / .......... / .......... '] = 'Am .......... / 
 // ../templates/default/reminder.tpl:25 
 $lang['galette']['Generate labels for late members without mail address'] = 'Adressaufkleber für überfällige Mitgliedsbeiträge erstellen';
 
+// ../includes/i18n.inc.php:369 
+$lang['galette']['Mrs.'] = 'Frau';
+
 // ../webroot/installer.php:258 
 $lang['galette']['Galette installation'] = 'Galette Installation';
 
@@ -3791,6 +3794,9 @@ $lang['galette']['Attached to:'] = 'Verbunden mit:';
 
 // ../includes/routes/members.routes.php:1403 
 $lang['galette']['Member %name has been successfully deleted.'] = 'Das Mitglied %name wurde gelöscht.';
+
+// ../includes/i18n.inc.php:368 
+$lang['galette']['Mr.'] = 'Herr';
 
 // ../lib/Galette/Entity/Adherent.php:1047 ../lib/Galette/Entity/Adherent.php:1094 
 $lang['galette']['An error has occured while looking if login already exists.'] = 'Beim Prüfen ob der Login schon existiert ist ein Fehler aufgetreten.';

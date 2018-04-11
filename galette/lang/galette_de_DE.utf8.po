@@ -748,6 +748,10 @@ msgstr "Öffentliche Seiten zeigen für"
 msgid "Continue"
 msgstr "Weiter"
 
+#: ../includes/i18n.inc.php:368
+msgid "Mr."
+msgstr "Herr"
+
 #: ../templates/default/public_page.tpl:61 ../templates/default/page.tpl:109
 msgid ""
 "Galette is configured to display errors. This must be avoided in production "
@@ -4687,6 +4691,10 @@ msgstr "Benachrichtigung über neues Konto '%s' an Administrator versandt."
 msgid "Photo has not been copied!"
 msgstr "Das Foto wurde nicht kopiert!"
 
+#: ../includes/i18n.inc.php:369
+msgid "Mrs."
+msgstr "Frau"
+
 #: ../lib/Galette/IO/Charts.php:230
 msgid "Up to date"
 msgstr "Aktuell"
@@ -4858,7 +4866,7 @@ msgstr "Hier klicken um das Plugin '%name' zu aktivieren"
 msgid "Add title"
 msgstr "Anrede hinzufügen"
 
-#: ../templates/default/gestion_adherents.tpl:255
+#: ../includes/i18n.inc.php:370 ../templates/default/gestion_adherents.tpl:255
 msgid "Miss"
 msgstr "Fräulein"
 
@@ -7563,9 +7571,6 @@ msgstr "Benötigte Mitgliedschaft:"
 #~ msgid "Language"
 #~ msgstr "Sprache"
 
-#~ msgid "Mr."
-#~ msgstr "Herr"
-
 #~ msgid "PDF models were successfully stored."
 #~ msgstr "PDF Modelle wurden erfolgreich gespeichert."
 
@@ -7637,9 +7642,6 @@ msgstr "Benötigte Mitgliedschaft:"
 
 #~ msgid "PDF models cannot be initialized."
 #~ msgstr "PDF Modell konnte nicht initialisiert werden."
-
-#~ msgid "Mrs."
-#~ msgstr "Frau"
 
 #~ msgid "Check above errors to know what went wrong."
 #~ msgstr "Prüfen Sie die oben dargestellten Fehler."
