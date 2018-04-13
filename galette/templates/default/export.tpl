@@ -47,7 +47,7 @@
                                     {$export.size}
                                 </td>
                                 <td class="actions_row">
-                                    <a class="delete" href="{path_for name="removeCsv" data=["type" => {_T string="export" domain="routes"}, "file" => $export.name]}" title="{_T string="Remove '%file' from disk" pattern="/%file/" replace=$export.name}"><img src="{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
+                                    <a class="delete" href="{path_for name="removeCsv" data=["type" => {_T string="export" domain="routes"}, "file" => $export.name]}" title="{_T string="Remove '%file' from disk" pattern="/%file/" replace=$export.name}"><img src="{base_url}/{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
                                 </td>
                             </tr>
     {/foreach}
