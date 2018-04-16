@@ -10,7 +10,7 @@ PHP_SOURCES = $(shell find ../ -maxdepth 1 -name \*.php) \
               $(shell find ../templates -name \*.tpl)
 
 
-all : messages.po po mo lang check
+all : messages.po mo lang check
 
 po :
 	@echo "Generating PO files:"
