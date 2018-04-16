@@ -1627,7 +1627,7 @@ table.listing.single {
 #selected_groups {
     width: 60%;
     margin:0 auto;
-    min-width: 50em;
+    min-width: 60em;
     background-image: url(images/mailing_bg.jpg);
     background-repeat: no-repeat;
     background-position: center 1.5em;
