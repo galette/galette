@@ -10,7 +10,7 @@ PHP_SOURCES = $(shell find ../ -maxdepth 1 -name \*.php) \
               $(shell find ../templates -name \*.tpl)
 
 
-all : messages.po mo lang check
+all : extract mo php check
 
 po :
 	@echo "Generating PO files:"
@@ -43,7 +43,7 @@ mo :
 	  done \
 	done
 
-lang :
+php :
 	@echo "Generating PHP lang files:"
 	@for l in ${LANGUAGES}; do \
 	  for d in ${DOMAINS}; do \
@@ -62,7 +62,7 @@ lang :
 	  done \
 	done
 
-messages.po : ${PHP_SOURCES} Makefile xgettext.py
+extract : ${PHP_SOURCES} Makefile xgettext.py
 	./xgettext.py ${PHP_SOURCES}
 
 check:
