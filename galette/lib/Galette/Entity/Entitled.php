@@ -469,11 +469,11 @@ abstract class Entitled
                 }
 
                 $this->addTranslation($label);
-                return true;
             } else {
                 throw new \Exception('New ' . $this->getType() .' not added.');
             }
             $this->zdb->connection->commit();
+            return true;
         } catch (\Exception $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
