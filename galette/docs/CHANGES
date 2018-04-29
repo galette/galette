@@ -24,7 +24,7 @@ Bugfixes
 - Change mail field size to be compliant with standards
 - Fix upgrade issues
 - Fix contributions end date
-- Fix rdirection after contribution creation
+- Fix redirection after contribution creation
 - Fix dynamic fields on transactions and contributions
 - Fix asset paths on some configurations
 - Fix admin fields update while modifying member from a non admin account
