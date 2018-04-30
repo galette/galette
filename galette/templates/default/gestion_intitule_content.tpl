@@ -62,9 +62,9 @@
 
                     {if $class == 'Status'}
                         {if $entry.extra < 30}
-                            <img src="{$template_subdir}images/icon-staff.png" alt="{_T string="[staff]"}" width="16" height="16"/>
+                            <img src="{base_url}/{$template_subdir}images/icon-staff.png" alt="{_T string="[staff]"}" width="16" height="16"/>
                         {else}
-                            <img src="{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
+                            <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
                         {/if}
                     {/if}
                     {$entry.name|escape}
@@ -82,10 +82,10 @@
                 </td>
                 <td class="center actions_row">
                     <a href="{path_for name="editEntitled" data=["class" => $url_class, "action" => {_T string="edit" domain="routes"}, "id" => $eid]}">
-                        <img src="{$template_subdir}images/icon-edit.png" alt="{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name}" title="{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name}" width="16" height="16"/>
+                        <img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name}" title="{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name}" width="16" height="16"/>
                     </a>
                     <a class="delete" href="{path_for name="removeEntitled" data=["class" => $url_class, "id" => $eid]}">
-                        <img src="{$template_subdir}images/icon-trash.png" alt="{_T string="Delete '%s' field" pattern="/%s/" replace=$entry.name}" title="{_T string="Delete '%s' field" pattern="/%s/" replace=$entry.name}" width="16" height="16" />
+                        <img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="Delete '%s' field" pattern="/%s/" replace=$entry.name}" title="{_T string="Delete '%s' field" pattern="/%s/" replace=$entry.name}" width="16" height="16" />
                     </a>
                 </td>
             </tr>

@@ -39,6 +39,7 @@ namespace Galette\Entity;
 
 use Analog\Analog;
 use Galette\Core\L10n;
+use Zend\Db\Sql\Expression;
 
 /**
  * Files

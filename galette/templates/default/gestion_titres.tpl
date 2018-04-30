@@ -46,13 +46,13 @@
                             <td class="center actions_row">
 
                                 <a href="{path_for name="editTitle" data=["id" => $title->id]}">
-                                    <img src="{$template_subdir}images/icon-edit.png" alt="{_T string="Edit '%s' title" pattern="/%s/" replace=$title->short}" title="{_T string="Edit '%s' title" pattern="/%s/" replace=$title->short}" width="16" height="16"/>
+                                    <img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="Edit '%s' title" pattern="/%s/" replace=$title->short}" title="{_T string="Edit '%s' title" pattern="/%s/" replace=$title->short}" width="16" height="16"/>
                                 </a>
                 {if $title->id eq 1 or $title->id eq 2}
-                                <img src="{$template_subdir}images/icon-empty.png" alt="" width="16px" height="16px"/>
+                                <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16px" height="16px"/>
                 {else}
                                 <a class="delete" href="{path_for name="removeTitle" data=["id" => $title->id]}">
-                                    <img src="{$template_subdir}images/icon-trash.png" alt="{_T string="Delete '%s' title" pattern="/%s/" replace=$title->short}" title="{_T string="Delete '%s' title" pattern="/%s/" replace=$title->short}" width="16" height="16" />
+                                    <img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="Delete '%s' title" pattern="/%s/" replace=$title->short}" title="{_T string="Delete '%s' title" pattern="/%s/" replace=$title->short}" width="16" height="16" />
                                 </a>
                 {/if}
                             </td>

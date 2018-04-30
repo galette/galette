@@ -1,5 +1,5 @@
 INSTALLDIR = .
-LANGUAGES = en_US fr_FR.utf8 de_DE.utf8
+LANGUAGES = `find ./ -name "galette_*.po" -print | sed 's|^\./galette_\(.*\).po|\1|'`
 DOMAINS = galette routes
 MKLANG = ./make_lang_l12n.py
 PHP_SOURCES = $(shell find ../ -maxdepth 1 -name \*.php) \
@@ -7,11 +7,12 @@ PHP_SOURCES = $(shell find ../ -maxdepth 1 -name \*.php) \
               $(shell find ../webroot -name \*.php) \
               $(shell find ../includes -name \*.php) \
               $(shell find ../install -name \*.php) \
-              $(shell find ../public -name \*.php) \
               $(shell find ../templates -name \*.tpl)
 
 
-all : messages.po lang check
+all : extract mo php check
+
+po :
 	@echo "Generating PO files:"
 	@for l in ${LANGUAGES}; do \
 	  for d in ${DOMAINS}; do \
@@ -22,6 +23,13 @@ all : messages.po lang check
 	      echo "  Creating of $${d}_$${l}.po"; \
 	      msginit -o $${d}_$${l}.po -i $$d.pot >/dev/null ; \
 	    fi; \
+	  done \
+	done
+
+mo :
+	@echo "Generating MO files:"
+	@for l in ${LANGUAGES}; do \
+	  for d in ${DOMAINS}; do \
 	    mkdir -p ${INSTALLDIR}/$${l}/LC_MESSAGES; \
 	    echo "    formatting ${INSTALLDIR}/$${l}/LC_MESSAGES/$${d}.mo."; \
 	    msgfmt $${d}_$${l}.po -o ${INSTALLDIR}/$${l}/LC_MESSAGES/$${d}.mo.new; \
@@ -35,8 +43,7 @@ all : messages.po lang check
 	  done \
 	done
 
-
-lang :
+php :
 	@echo "Generating PHP lang files:"
 	@for l in ${LANGUAGES}; do \
 	  for d in ${DOMAINS}; do \
@@ -55,7 +62,7 @@ lang :
 	  done \
 	done
 
-messages.po : ${PHP_SOURCES} Makefile xgettext.py
+extract : ${PHP_SOURCES} Makefile xgettext.py
 	./xgettext.py ${PHP_SOURCES}
 
 check:

@@ -89,3 +89,4 @@ apidocs/
 #Working stuff
 dbs/
 dist/
+.zanata-cache/

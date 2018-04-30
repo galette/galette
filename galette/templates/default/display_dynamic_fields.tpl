@@ -2,11 +2,11 @@
 <table class="details">
     <caption class="ui-state-active ui-corner-top">{_T string="Additionnal fields:"}</caption>
     {foreach from=$object->getDynamicFields()->getFields() item=field}
-	{if $field|is_a:'Galette\DynamicFields\Separator'}
+    {if $field|is_a:'Galette\DynamicFields\Separator'}
     <tr>
         <th class="separator" colspan="2">{$field->getName()|escape}</th>
     </tr>
-	{else}
+    {else}
     <tr>
         <th>{$field->getName()|escape}</th>
         <td>

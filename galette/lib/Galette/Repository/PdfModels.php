@@ -134,7 +134,9 @@ class PdfModels extends Repository
                 return true;
             }
         } catch (\Exception $e) {
-            $this->zdb->connection->rollBack();
+            if ($this->zdb->connection->inTransaction()) {
+                $this->zdb->connection->rollBack();
+            }
             return $e;
         }
     }
@@ -150,6 +152,7 @@ class PdfModels extends Repository
             $ent = $this->entity;
             $select = $this->zdb->select($ent::TABLE);
             $list = $this->zdb->execute($select);
+            $list->buffer();
 
             $missing = array();
             foreach ($this->defaults as $default) {
@@ -178,7 +181,9 @@ class PdfModels extends Repository
                 return true;
             }
         } catch (\Exception $e) {
-            $this->zdb->connection->rollBack();
+            if ($this->zdb->connection->inTransaction()) {
+                $this->zdb->connection->rollBack();
+            }
             throw $e;
         }
     }

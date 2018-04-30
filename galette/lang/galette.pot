@@ -644,6 +644,10 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
+#: ../includes/i18n.inc.php:368
+msgid "Mr."
+msgstr ""
+
 #: ../templates/default/public_page.tpl:61 ../templates/default/page.tpl:109
 msgid "Galette is configured to display errors. This must be avoided in production environments."
 msgstr ""
@@ -4134,6 +4138,10 @@ msgstr ""
 msgid "Photo has not been copied!"
 msgstr ""
 
+#: ../includes/i18n.inc.php:369
+msgid "Mrs."
+msgstr ""
+
 #: ../lib/Galette/IO/Charts.php:230
 msgid "Up to date"
 msgstr ""
@@ -4275,7 +4283,7 @@ msgstr ""
 msgid "Add title"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:255
+#: ../includes/i18n.inc.php:370 ../templates/default/gestion_adherents.tpl:255
 msgid "Miss"
 msgstr ""
 

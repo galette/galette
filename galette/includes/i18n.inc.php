@@ -365,3 +365,6 @@ $foo = _T("reduced annual fee");
 $foo = _T("Identity");
 $foo = _T("Galette-related data");
 $foo = _T("Contact information");
+$foo = _T("Mr.");
+$foo = _T("Mrs.");
+$foo = _T("Miss");
