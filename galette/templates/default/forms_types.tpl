@@ -122,7 +122,7 @@
                         }
                     {/if}
                 {/foreach}
-                {if isset($groups) and $groups|@count != 0 and $fieldset@last and !isset($masschange)}
+                {if isset($groups) and $groups|@count != 0 and $fieldset@last and (!isset($masschange) or $masschange == false)}
                     {include file="forms_types/groups.tpl"}
                 {/if}
                 </div>
