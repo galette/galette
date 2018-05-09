@@ -45,6 +45,8 @@ use Galette\Entity\Adherent;
 use Galette\Entity\ImportModel;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Status;
+use Galette\Entity\Title;
+use Galette\Repository\Titles;
 use Galette\IO\FileTrait;
 use Galette\Repository\Members;
 
@@ -99,6 +101,7 @@ class CsvIn extends Csv implements FileInterface
     private $_members_fields_cats;
     private $_required;
     private $statuses;
+    private $titles;
     private $emails;
     private $zdb;
     private $preferences;
@@ -311,6 +314,24 @@ class CsvIn extends Csv implements FileInterface
                                     );
                                     return false;
                                 }
+                            }
+                        }
+
+                        //check for title
+                        if ($this->_fields[$col] == 'titre_adh') {
+                            if ($this->titles === null) {
+                                //load existing titles
+                                $this->titles = Titles::getList($this->zdb);
+                            }
+                            if (!isset($this->titles[$column])) {
+                                $this->addError(
+                                    str_replace(
+                                        '%title',
+                                        $column,
+                                        _T("Title %title does not exists!")
+                                    )
+                                );
+                                return false;
                             }
                         }
 
