@@ -102,6 +102,7 @@ class CsvIn extends Csv implements FileInterface
     private $_required;
     private $statuses;
     private $titles;
+    private $genders;
     private $emails;
     private $zdb;
     private $preferences;
@@ -329,6 +330,28 @@ class CsvIn extends Csv implements FileInterface
                                         '%title',
                                         $column,
                                         _T("Title %title does not exists!")
+                                    )
+                                );
+                                return false;
+                            }
+                        }
+
+                        //check for gender
+                        if ($this->_fields[$col] == 'sexe_adh') {
+                            if ($this->genders === null) {
+                                //load existing titles
+                                $this->genders = [
+                                    Adherent::NC,
+                                    Adherent::MAN,
+                                    Adherent::WOMAN
+                                ];
+                            }
+                            if (!isset($this->genders[$column])) {
+                                $this->addError(
+                                    str_replace(
+                                        '%gender',
+                                        $column,
+                                        _T("Gender %gender does not exists!")
                                     )
                                 );
                                 return false;
