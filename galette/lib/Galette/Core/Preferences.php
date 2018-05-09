@@ -590,7 +590,7 @@ class Preferences
     {
         $url = null;
         if (isset($this->prefs['pref_galette_url']) && !empty($this->prefs['pref_galette_url'])) {
-            $url = $this->prefs['url'];
+            $url = $this->prefs['pref_galette_url'];
         } else {
             $url = $this->getDefaultURL();
         }

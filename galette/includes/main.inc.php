@@ -155,7 +155,6 @@ $authenticate = function ($request, $response, $next) use ($container) {
         );
         $this->flash->addMessage('error_detected', _T("Login required"));
         return $response
-            ->withStatus(403)
             ->withHeader('Location', $this->router->pathFor('slash'));
     } else {
         //check for ACLs
@@ -221,7 +220,6 @@ $authenticate = function ($request, $response, $next) use ($container) {
                     _T("You do not have permission for requested URL.")
                 );
                 return $response
-                    ->withStatus(403)
                     ->withHeader('Location', $this->router->pathFor('slash'));
             }
         } else {

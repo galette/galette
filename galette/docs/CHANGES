@@ -1,6 +1,12 @@
 Changes
 -------
 
+0.9.1 -> 0.9.1.1
+
+- Fix reverse proxy URL
+- Fix not logged redirection
+- Fix member groups removed on update
+
 0.9 -> 0.9.1
 
 News
