@@ -336,7 +336,8 @@ $container['acls'] = function ($c) {
         'setRegistered'             => 'admin',
         'masschangeMembers'         => 'groupmanager',
         'massstoremembers'          => 'groupmanager',
-        'masschangeMembersReview'   => 'groupmanager'
+        'masschangeMembersReview'   => 'groupmanager',
+        'duplicateMember'           => 'staff'
     ];
 
     foreach ($c['plugins']->getModules() as $plugin) {

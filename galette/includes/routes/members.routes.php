@@ -3140,3 +3140,20 @@ $app->post(
         }
     }
 )->setName('massstoremembers')->add($authenticate);
+
+//Duplicate member
+$app->get(
+    __('/members', 'routes') . __('/duplicate', 'routes') . '/{' . Adherent::PK . ':\d+}',
+    function ($request, $response, $args) {
+        $id_adh = (int)$args[Adherent::PK];
+        $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
+        $adh->setDuplicate();
+
+        //store entity in session
+        $this->session->member = $adh;
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('editmember', ['action' => __('add', 'routes')]));
+    }
+)->setName('duplicateMember')->add($authenticate);

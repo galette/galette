@@ -37,6 +37,9 @@
             <li>
                 <a class="button" id="btn_addcontrib" href="{path_for name="contribution" data=["type" => {_T string="donation" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?id_adh={$member->id}">{_T string="Add a donation"}</a>
             </li>
+            <li>
+                <a class="button" href="{path_for name="duplicateMember" data=["id_adh" => $member->id]}" id="btn_duplicate" title="{_T string="Create a new member with %name information." pattern="/%name/" replace=$member->sname}">{_T string="Duplicate"}</a>
+            </li>
 {/if}
 {* If some additionnals actions should be added from plugins, we load the relevant template file
 We have to use a template file, so Smarty will do its work (like replacing variables). *}

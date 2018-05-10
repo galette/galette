@@ -1723,4 +1723,27 @@ class Adherent
             return true;
         }
     }
+
+    /**
+     * Set member as duplicate
+     *
+     * @return void
+     */
+    public function setDuplicate()
+    {
+        //mark as duplicated
+        $infos = $this->_others_infos_admin;
+        $this->_others_infos_admin = str_replace(
+            ['%name', '%id'],
+            [$this->sname, $this->_id],
+            _T('Duplicated from %name (%id)')
+        );
+        if (!empty($infos)) {
+            $this->_others_infos_admin .= "\n" . $infos;
+        }
+        //drop id_adh
+        $this->_id = null;
+        //drop mail, must be unique
+        $this->_email = null;
+    }
 }
