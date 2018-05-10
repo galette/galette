@@ -165,6 +165,12 @@
                     </select>
                 </p>
                 <p>
+                    <label for="pref_filter_account" class="bline">{_T string="Default account filter:"}</label>
+                    <select name="pref_filter_account" id="pref_filter_account">
+                        {html_options options=$accounts_options selected=$pref.pref_filter_account}
+                    </select>
+                </p>
+                <p>
                     <label for="pref_membership_ext" class="bline">{_T string="Default membership extension:"}</label>
                     <input type="text" name="pref_membership_ext" id="pref_membership_ext" value="{$pref.pref_membership_ext}" maxlength="2"{if isset($required.pref_membership_ext) and $required.pref_membership_ext eq 1} required="required"{/if}/>
                     <span class="exemple">{_T string="(Months)"}</span>

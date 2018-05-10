@@ -42,6 +42,7 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Status;
 use Galette\Core\Db;
 use Galette\IO\PdfMembersCards;
+use Galette\Repository\Members;
 
 /**
  * Preferences for galette
@@ -164,7 +165,8 @@ class Preferences
         'pref_registration_uuid' => '',
         'pref_telemetry_date' => '',
         'pref_registration_date' => '',
-        'pref_footer' => ''
+        'pref_footer' => '',
+        'pref_filter_account' => Members::ALL_ACCOUNTS
     );
 
     /**

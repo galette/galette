@@ -188,7 +188,12 @@ $app->get(
                 'statuts'               => $s->getList(),
                 'require_tabs'          => true,
                 'color_picker'          => true,
-                'require_dialog'        => true
+                'require_dialog'        => true,
+                'accounts_options'      => array(
+                    Members::ALL_ACCOUNTS       => _T("All accounts"),
+                    Members::ACTIVE_ACCOUNT     => _T("Active accounts"),
+                    Members::INACTIVE_ACCOUNT   => _T("Inactive accounts")
+                )
             )
         );
         return $response;
