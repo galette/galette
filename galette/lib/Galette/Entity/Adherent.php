@@ -985,6 +985,27 @@ class Adherent
                                         throw new \Exception('Incorrect format');
                                     }
                                 }
+
+                                if ($key === 'ddn_adh') {
+                                    $now = new \DateTime();
+                                    $now->setTime(0, 0, 0);
+                                    $d->setTime(0, 0, 0);
+
+                                    $diff = $now->diff($d);
+                                    $days = (integer)$diff->format('%R%a');
+                                    if ($days >= 0) {
+                                        $this->errors[] =_T('- Birthdate must be set in the past!');
+                                    }
+
+                                    $years = (integer)$diff->format('%R%Y');
+                                    if ($years <= -200) {
+                                        $this->errors[] = str_replace(
+                                            '%years',
+                                            $years * -1,
+                                            _T('- Members must be less than 200 years old (currently %years)!')
+                                        );
+                                    }
+                                }
                                 $this->$prop = $d->format('Y-m-d');
                             } catch (\Exception $e) {
                                 Analog::log(
