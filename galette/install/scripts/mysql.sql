@@ -110,7 +110,7 @@ CREATE TABLE galette_preferences (
   val_pref varchar(200) NOT NULL default '',
   PRIMARY KEY (id_pref),
   UNIQUE (nom_pref)
-) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_logs;
 CREATE TABLE galette_logs (
@@ -122,7 +122,7 @@ CREATE TABLE galette_logs (
   action_log text,
   sql_log text,
   PRIMARY KEY (id_log)
-) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- Table for dynamic fields description;
 DROP TABLE IF EXISTS galette_field_types;
@@ -172,7 +172,7 @@ CREATE TABLE galette_l10n (
     text_nref int(10) NOT NULL default '1',
     text_trans varchar(100) NOT NULL default '',
     PRIMARY KEY (text_orig, text_locale)
-) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- new table for temporary passwords 2006-02-18;
 DROP TABLE IF EXISTS galette_tmppasswds;
@@ -194,7 +194,7 @@ CREATE TABLE galette_texts (
   tlang varchar(16) NOT NULL,
   tcomment varchar(64) NOT NULL,
   PRIMARY KEY (tid)
-) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_fields_categories;
 CREATE TABLE galette_fields_categories (
@@ -308,7 +308,7 @@ CREATE TABLE galette_import_model (
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 INSERT INTO galette_database(version) VALUES(0.92);
 
 SET FOREIGN_KEY_CHECKS=1;

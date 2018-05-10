@@ -5,5 +5,12 @@ UPDATE galette_texts SET tbody = 'Hello,\r\n\r\nYou\'ve just been subscribed on 
 
 UPDATE galette_texts SET tbody = 'Bonjour,\r\n\r\nVous venez d\'adhérer à {ASSO_NAME}.\r\n\r\nVous pouvez désormais suivre en temps réel l\'état de vos souscriptions et mettre à jour vos coordonnées depuis l\'interface web.\r\n\r\nConnectez vous à cette adresse pour valider le nouveau mot de passe :\r\n{CHG_PWD_URI}\r\n\r\nIdentifiant : {LOGIN}\r\nLe lien ci-dessus sera valide jusqu\'au {LINK_VALIDITY}.\r\n\r\nA bientôt!\r\n\r\n(Ce courriel est un envoi automatique)' WHERE tref = 'sub' AND tlang = 'fr_FR';
 
+-- switch engine
+ALTER TABLE galette_preferences ENGINE=InnoDB;
+ALTER TABLE galette_logs ENGINE=InnoDB;
+ALTER TABLE galette_l10n ENGINE=InnoDB;
+ALTER TABLE galette_texts ENGINE=InnoDB;
+ALTER TABLE galette_database ENGINE=InnoDB;
+
 UPDATE galette_database SET version = 0.92;
 SET FOREIGN_KEY_CHECKS=1;
