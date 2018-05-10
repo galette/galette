@@ -175,7 +175,7 @@ class Db
     {
         try {
             if ($check_table === true) {
-                $exists = count($this->getTables(PREFIX_DB . 'database'));
+                $exists = count($this->getTables(PREFIX_DB . 'database')) === 1;
             } else {
                 $exists = true;
             }
