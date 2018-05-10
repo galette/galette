@@ -122,10 +122,10 @@ class Install extends atoum
             '0.8'  => 'upgrade-to-0.8.php',
             '0.81' => 'upgrade-to-0.81-pgsql.sql',
             '0.82' => 'upgrade-to-0.82-pgsql.sql',
-            '0.91' => 'upgrade-to-0.91-pgsql.sql'
+            '0.91' => 'upgrade-to-0.91-pgsql.sql',
+            '0.92' => 'upgrade-to-0.92-pgsql.sql'
         );
 
-        //as of 0.8, we got 10 update scripts total
         $this->array($update_scripts)
             ->hasSize(count($knowns))
             ->isIdenticalTo($knowns);

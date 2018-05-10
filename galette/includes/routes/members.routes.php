@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014 The Galette Team
+ * Copyright © 2014-2018 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
+ * @copyright 2014-2018 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -36,6 +36,7 @@
  */
 
 use Galette\Entity\DynamicFieldsHandle;
+use Galette\Core\Password;
 use Galette\Core\PasswordImage;
 use Galette\Core\Mailing;
 use Galette\Core\GaletteMail;
@@ -1066,32 +1067,56 @@ $app->post(
                             if ($member->getEmail() == '' && !isset($args['self'])) {
                                 $error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
                             } else {
+                                $mreplaces = [
+                                    'name_adh'      => custom_html_entity_decode(
+                                        $member->sname
+                                    ),
+                                    'firstname_adh' => custom_html_entity_decode(
+                                        $member->surname
+                                    ),
+                                    'lastname_adh'  => custom_html_entity_decode(
+                                        $member->name
+                                    ),
+                                    'mail_adh'      => custom_html_entity_decode(
+                                        $member->getEmail()
+                                    ),
+                                    'login_adh'     => custom_html_entity_decode(
+                                        $member->login
+                                    )
+                                ];
+                                if ($new) {
+                                    $password = new Password($this->zdb);
+                                    $res = $password->generateNewPassword($member->id);
+                                    if ($res == true) {
+                                        $link_validity = new DateTime();
+                                        $link_validity->add(new DateInterval('PT24H'));
+                                        $mreplaces['change_pass_uri'] = $this->preferences->getURL() .
+                                            $this->router->pathFor(
+                                                'password-recovery',
+                                                ['hash' => base64_encode($password->getHash())]
+                                            );
+                                        $mreplaces['link_validity'] = $link_validity->format(_T("Y-m-d H:i:s"));
+                                    } else {
+                                        $str = str_replace(
+                                            '%s',
+                                            $login_adh,
+                                            _T("An error occured storing temporary password for %s. Please inform an admin.")
+                                        );
+                                        $this->history->add($str);
+                                        $this->flash->addMessage(
+                                            'error_detected',
+                                            $str
+                                        );
+                                    }
+                                }
+
                                 //send mail to member
                                 // Get email text in database
                                 $texts = new Texts(
                                     $this->texts_fields,
                                     $this->preferences,
                                     $this->router,
-                                    array(
-                                        'name_adh'      => custom_html_entity_decode(
-                                            $member->sname
-                                        ),
-                                        'firstname_adh' => custom_html_entity_decode(
-                                            $member->surname
-                                        ),
-                                        'lastname_adh'  => custom_html_entity_decode(
-                                            $member->name
-                                        ),
-                                        'mail_adh'      => custom_html_entity_decode(
-                                            $member->getEmail()
-                                        ),
-                                        'login_adh'     => custom_html_entity_decode(
-                                            $member->login
-                                        ),
-                                        'password_adh'  => custom_html_entity_decode(
-                                            $post['mdp_adh']
-                                        )
-                                    )
+                                    $mreplaces
                                 );
                                 $mlang = $this->preferences->pref_lang;
                                 if (isset($post['pref_lang'])) {

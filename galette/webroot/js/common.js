@@ -148,10 +148,11 @@ var _initTooltips = function(selector) {
     //first, we hide tooltips in the page
     $(selector + '.tip').hide();
     //and then, we show them on rollover
-    $(selector + '.tooltip').tooltip({
+    $(document).tooltip({
+        items: selector + ".tooltip",
         content: function(event, ui) {
             var _this = $(this);
-            var _next = _this.next();
+            var _next = _this.nextAll('.tip');
             if (_next.length > 0) {
                 return _next.html();
             } else {
