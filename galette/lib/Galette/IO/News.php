@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014 The Galette Team
+ * Copyright © 2014-2018 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
+ * @copyright 2014-2018 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -38,6 +38,7 @@
 namespace Galette\IO;
 
 use Analog\Analog;
+use Galette\Core\Cache;
 
 /**
  * News class from rss feed for galette
@@ -51,14 +52,12 @@ use Analog\Analog;
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-11-11
  */
-class News
+class News extends Cache
 {
     private $cache_filename = '%feed.cache';
     private $show = 10;
-    //number of hours until cache will be invalid
-    private $cache_timeout = 24;
     private $feed_url = null;
-    private $posts = [];
+    protected $posts = [];
 
     /**
      * Default constructor
@@ -69,97 +68,7 @@ class News
     public function __construct($url, $nocache = false)
     {
         $this->feed_url = $url;
-
-        //only if cache should be used
-        if ($nocache === false && GALETTE_MODE !== 'DEV') {
-            if (!$this->checkCache()) {
-                $this->makeCache();
-            } else {
-                $this->loadCache();
-            }
-        } else {
-            $this->parseFeed();
-        }
-    }
-
-    /**
-     * Check if cache is valid
-     *
-     * @return boolean
-     */
-    private function checkCache()
-    {
-        $cfile = $this->getCacheFilename();
-        if (file_exists($cfile)) {
-            try {
-                $dformat = 'Y-m-d H:i:s';
-                $mdate = \DateTime::createFromFormat(
-                    $dformat,
-                    date(
-                        $dformat,
-                        filemtime($cfile)
-                    )
-                );
-                $expire = $mdate->add(
-                    new \DateInterval('PT' . $this->cache_timeout . 'H')
-                );
-                $now = new \DateTime();
-                $has_expired = $now > $expire;
-                return !$has_expired;
-            } catch (\Exception $e) {
-                Analog::log(
-                    'Unable check cache expiracy. Are you sure you have ' .
-                    'properly configured PHP timezone settings on your server?',
-                    Analog::WARNING
-                );
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Creates/update the cache
-     *
-     * @return boolean
-     */
-    private function makeCache()
-    {
-        $this->parseFeed();
-        $cfile = $this->getCacheFilename();
-        $stream = fopen($cfile, 'w+');
-        fwrite(
-            $stream,
-            serialize(
-                $this->posts
-            )
-        );
-        fclose($stream);
-        return false;
-    }
-
-    /**
-     * Loads entries from cache
-     *
-     * @return void
-     */
-    private function loadCache()
-    {
-        $cfile = $this->getCacheFilename();
-        $data = unserialize(file_get_contents($cfile));
-
-        $refresh_cache = false;
-        $this->posts = $data;
-        //check if posts were cached
-        if (!is_array($this->posts) || count($this->posts) == 0) {
-            $this->parseFeed();
-            $refresh_cache = true;
-        }
-
-        if ($refresh_cache === true) {
-            $this->makeCache(false);
-        }
+        parent::__construct($nocache);
     }
 
     /**
@@ -167,7 +76,7 @@ class News
      *
      * @return string
      */
-    private function getCacheFilename()
+    protected function getCacheFilename()
     {
         return GALETTE_CACHE_DIR .str_replace(
             '%feed',
@@ -181,7 +90,7 @@ class News
      *
      * @return void
      */
-    private function parseFeed()
+    protected function loadData()
     {
         try {
             if (!ini_get('allow_url_fopen')) {
@@ -256,5 +165,15 @@ class News
     public function getPosts()
     {
         return $this->posts;
+    }
+
+    /**
+     * Attribute name to store data
+     *
+     * @return string
+     */
+    protected function getAttributeName()
+    {
+        return 'posts';
     }
 }
