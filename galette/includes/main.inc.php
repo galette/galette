@@ -395,6 +395,70 @@ $app->add(function ($request, $response, $next) use ($i18n, $lang) {
     return $next($request, $response);
 });
 
+//Telemetry update middleware
+$app->add(function ($request, $response, $next) {
+    $telemetry = new \Galette\Util\Telemetry(
+        $this->zdb,
+        $this->preferences,
+        $this->plugins
+    );
+    if ($telemetry->isSent()) {
+        try {
+            $dformat = 'Y-m-d H:i:s';
+            $mdate = \DateTime::createFromFormat(
+                $dformat,
+                $telemetry->getSentDate()
+            );
+            $expire = $mdate->add(
+                new \DateInterval('P7D')
+            );
+            $now = new \DateTime();
+            $has_expired = $now > $expire;
+
+            if ($has_expired) {
+                $cfile = GALETTE_CACHE_DIR . 'telemetry.cache';
+                if (file_exists($cfile)) {
+                    $mdate = \DateTime::createFromFormat(
+                        $dformat,
+                        date(
+                            $dformat,
+                            filemtime($cfile)
+                        )
+                    );
+                    $expire = $mdate->add(
+                        new \DateInterval('P7D')
+                    );
+                    $now = new \DateTime();
+                    $has_expired = $now > $expire;
+                }
+
+                if ($has_expired) {
+                    //create/update cache file
+                    $stream = fopen($cfile, 'w+');
+                    fwrite(
+                        $stream,
+                        $telemetry->getSentDate()
+                    );
+                    fclose($stream);
+
+                    //send telemetry data
+                    try {
+                        $result = $telemetry->send();
+                    } catch (\Exception $e) {
+                        Analog::log(
+                            $e->getMessage(),
+                            Analog::INFO
+                        );
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            //empty catch
+        }
+    }
+    return $next($request, $response);
+});
+
 /**
  * This is important this one to be the last, so it'll be executed first.
  */
