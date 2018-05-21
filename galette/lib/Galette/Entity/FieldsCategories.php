@@ -99,7 +99,7 @@ class FieldsCategories
             return $categories;
         } catch (\Exception $e) {
             Analog::log(
-                '[' . get_class($this) . '] Cannot get fields categories list | ' .
+                '[' . static::class . '] Cannot get fields categories list | ' .
                 $e->getMessage(),
                 Analog::WARNING
             );
