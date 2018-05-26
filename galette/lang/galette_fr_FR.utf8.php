@@ -1,5 +1,5 @@
 <?php
-// This file was automatically generated on Sat Apr 28 07:17:44 2018 (GMT)
+// This file was automatically generated on Sat May 26 16:38:03 2018 (GMT)
 // Don't modify it by hand, rather use the target lang from the Makefile.
 
 
@@ -4156,7 +4156,7 @@ $lang['galette']['Select an existing contribution in the database, and attach it
 $lang['galette']['Advanced search'] = 'Recherche avancée';
 
 // ../templates/default/export.tpl:10 
-$lang['galette']['The following files have been written on disk:'] = 'Les fichiers suivants ont été écrits sur le disque&nbsp;:';
+$lang['galette']['The following files have been written on disk:'] = 'Les fichiers suivants ont été écrits sur le disque :';
 
 // ../templates/default/gestion_adherents.tpl:279 
 $lang['galette']['Modify'] = 'Modifier';
