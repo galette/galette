@@ -962,6 +962,15 @@ $app->post(
                 }
                 if ($field->disabled == true) {
                     $disabled[$field->field_id] = true;
+                } elseif (!isset($post[$field->field_id])) {
+                    switch ($field->field_id) {
+                        //uncheckd booleans are not sent from form
+                        case 'bool_admin_adh':
+                        case 'bool_exempt_adh':
+                        case 'bool_display_info':
+                            $post[$field->field_id] = 0;
+                            break;
+                    }
                 }
             }
         }

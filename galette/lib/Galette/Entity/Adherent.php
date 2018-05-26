@@ -1031,7 +1031,7 @@ class Adherent
                             if ($value !== null && $value !== '') {
                                 if ($value == '-1') {
                                     $this->$prop = null;
-                                } else {
+                                } elseif (!$value instanceof Title) {
                                     $this->$prop = new Title((int)$value);
                                 }
                             } else {
