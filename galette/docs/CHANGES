@@ -1,6 +1,11 @@
 Changes
 -------
 
+0.9.1.1 -> 0.9.1.2
+
+- Fix uncheck member boolean fields
+- Fix member storage when titles are hidden
+
 0.9.1 -> 0.9.1.1
 
 - Fix reverse proxy URL
