@@ -473,7 +473,7 @@ trait FileTrait
      */
     protected function getErrorMessageFromCode($code)
     {
-        $error = _T("An error occued.");
+        $error = _T("An error occured.");
 
         switch ($code) {
             case self::INVALID_FILENAME:
