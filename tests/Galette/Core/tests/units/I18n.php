@@ -131,9 +131,9 @@ class I18n extends atoum
         $list = $this->i18n->getArrayList();
 
         $expected = [
-            'fr_FR' => 'Français',
+            'de_DE' => 'Deutsch',
             'en_US' => 'English',
-            'de_DE' => 'Deutsch'
+            'fr_FR' => 'Français'
         ];
 
         $this->array($list)
@@ -150,7 +150,7 @@ class I18n extends atoum
         $lang = $this->i18n->getNameFromId('en_US');
 
         $this->variable($lang)
-            ->isIdenticalTo('english');
+            ->isIdenticalTo('English');
     }
 
     /**
@@ -164,7 +164,7 @@ class I18n extends atoum
 
         $this->variable($flag)
             ->isIdenticalTo(
-                GALETTE_THEME. 'images/english.gif'
+                GALETTE_THEME. 'images/flags/en_US.svg'
             );
     }
 
@@ -177,28 +177,22 @@ class I18n extends atoum
     {
         $id = $this->i18n->getID();
         $longid = $this->i18n->getLongID();
-        $alt = $this->i18n->getAlternate();
         $name = $this->i18n->getName();
         $abbrev = $this->i18n->getAbbrev();
         $flag = $this->i18n->getFlag();
-        $file = $this->i18n->getFileName();
 
         $this->variable($id)
             ->isIdenticalTo('fr_FR');
         $this->variable($longid)
             ->isIdenticalTo('fr_FR.utf8');
-        $this->variable($alt)
-            ->isIdenticalTo('fra');
         $this->variable($name)
             ->isIdenticalTo('français');
         $this->variable($abbrev)
             ->isIdenticalTo('fr');
         $this->variable($flag)
             ->isIdenticalTo(
-                GALETTE_THEME . 'images/french.gif'
+                GALETTE_THEME . 'images/flags/fr_FR.svg'
             );
-        $this->variable($file)
-            ->isIdenticalTo('french');
     }
 
     /**

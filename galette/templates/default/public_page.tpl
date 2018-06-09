@@ -72,7 +72,11 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
             <ul id="langs">
 {foreach item=langue from=$languages}
-                <li><a href="?pref_lang={$langue->getID()}"><img src="{base_url}/{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
+                <li>
+                    <a href="?pref_lang={$langue->getID()}" title="{_T string="Switch locale to '%locale'" pattern="/%locale/" replace=$langue->getName()}" class="flag">
+                        <img src="{base_url}/{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}"/>
+                    </a>
+                </li>
 {/foreach}
             </ul>
 {if $login->isLogged()}

@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2014 The Galette Team
+ * Copyright © 2007-2018 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2018 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -59,14 +59,11 @@ class I18n
     private $name;
     private $abbrev;
     private $flag;
-    private $filename;
-    private $alternate;
 
     const DEFAULT_LANG = 'fr_FR';
 
     private $dir = 'lang/';
     private $path;
-    private $file = 'languages.xml';
 
     /**
      * Default constructor.
@@ -79,7 +76,7 @@ class I18n
     public function __construct($lang = false)
     {
         $this->path = GALETTE_ROOT . $this->dir;
-        $this->file = $this->path . $this->file;
+        $this->guessLangs();
 
         if (!$lang) {
             //try to determine user language
@@ -101,38 +98,16 @@ class I18n
     }
 
     /**
-     * Load language parameters from the XML file
+     * Load language parameters
      *
-     * @param string $id Identifier forv requested language
+     * @param string $id Identifier for requested language
      *
      * @return void
      */
     public function changeLanguage($id)
     {
         Analog::log('Trying to set locale to ' . $id, Analog::DEBUG);
-
-        $xml = simplexml_load_file($this->file);
-        $xpath = '/translations/lang[@id=\'' . $id . '\'][not(@inactive)]';
-        $current = $xml->xpath($xpath);
-
-        //if no match, switch to default
-        if (!isset($current[0])) {
-            $msg = $id . ' does not exist in XML file, switching to default.';
-            Analog::log($msg, Analog::WARNING);
-            $id = self::DEFAULT_LANG;
-            //do not forget to reload informations from the xml file
-            $current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
-        }
-
-        $sxe = $current[0];
-        $this->id = $id;
-        $this->longid = ( isset($sxe['long']) )?(string)$sxe['long']:$id;
-        $this->name = (string)$sxe->longname;
-        $this->abbrev = (string)$sxe->shortname;
-        $this->flag = (string)$sxe->flag;
-        $this->filename = (string)$sxe->filename;
-        $this->alternate = (string)$sxe['alter'];
-
+        $this->load($id);
         $this->updateEnv();
     }
 
@@ -146,7 +121,7 @@ class I18n
     {
         global $disable_gettext;
 
-        setlocale(LC_ALL, $this->getLongID(), $this->getAlternate());
+        setlocale(LC_ALL, $this->getLongID());
 
         if (putenv("LANG=" . $this->getLongID())
             or putenv("LANGUAGE=" . $this->getLongID())
@@ -191,16 +166,17 @@ class I18n
      */
     private function load($id)
     {
-        $xml = simplexml_load_file($this->file);
-        $current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
-        $sxe = $current[0];
-        $this->id = $id;
-        $this->longid = ( isset($sxe['long']) )?(string)$sxe['long']:$id;
-        $this->name = (string)$sxe->longname;
-        $this->abbrev = (string)$sxe->shortname;
-        $this->flag = (string)$sxe->flag;
-        $this->filename = (string)$sxe->filename;
-        $this->alternate = (string)$sxe['alter'];
+        if (!isset($this->langs[$id])) {
+            $msg = 'Lang ' . $id . ' does not exist, switching to default.';
+            Analog::log($msg, Analog::WARNING);
+            $id = self::DEFAULT_LANG;
+        }
+        $lang = $this->langs[$id];
+        $this->id       = $id;
+        $this->longid   = $lang['long'];
+        $this->name     = $lang['longname'];
+        $this->abbrev   = $lang['shortname'];
+        $this->flag     = $lang['flag'];
     }
 
     /**
@@ -211,11 +187,8 @@ class I18n
     public function getList()
     {
         $result = array();
-        $xml = simplexml_load_file($this->file);
-        foreach ($xml->lang as $lang) {
-            if (!$lang['inactive']) {
-                $result[] = new I18n((string)$lang['id']);
-            }
+        foreach (array_keys($this->langs) as $id) {
+            $result[] = new I18n((string)$id);
         }
 
         return $result;
@@ -231,6 +204,11 @@ class I18n
         $list = $this->getList();
         $al = array();
         foreach ($list as $l) {
+            //FIXME: shoudl use mb with sthing like:
+            //$strlen = mb_strlen($string, $encoding);
+            //$firstChar = mb_substr($string, 0, 1, $encoding);
+            //$then = mb_substr($string, 1, $strlen - 1, $encoding);
+            //return mb_strtoupper($firstChar, $encoding) . $then;
             $al[$l->getID()] = ucfirst($l->getName());
         }
         return $al;
@@ -245,11 +223,8 @@ class I18n
      */
     public function getNameFromId($id)
     {
-        $xml = simplexml_load_file($this->file);
-        $current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
-        if (count($current)) {
-            $sxe = $current[0];
-            return (string)$sxe->longname;
+        if (isset($this->langs[$id])) {
+            return $this->langs[$id]['longname'];
         } else {
             return str_replace(
                 '%lang',
@@ -268,18 +243,8 @@ class I18n
      */
     public function getFlagFromId($id)
     {
-        $xml = simplexml_load_file($this->file);
-        $current = $xml->xpath('/translations/lang[@id=\'' . $id . '\']');
-
         $path = null;
-        if (count($current)) {
-            $sxe = $current[0];
-            if (defined('GALETTE_THEME_DIR')) {
-                $path = GALETTE_THEME_DIR . 'images/' . $sxe->flag;
-            } else {
-                $path = GALETTE_THEME . 'images/' . $sxe->flag;
-            }
-        } else {
+        if (!isset($this->langs[$id])) {
             Analog::log(
                 str_replace(
                     '%lang',
@@ -288,8 +253,13 @@ class I18n
                 ),
                 Analog::INFO
             );
+        } else {
+            if (defined('GALETTE_THEME_DIR')) {
+                $path = GALETTE_THEME_DIR . 'images/flags/' . $this->langs['id']['flag'];
+            } else {
+                $path = GALETTE_THEME . 'images/flags/' . $this->langs[$id]['flag'];
+            }
         }
-
         return $path;
     }
 
@@ -311,16 +281,6 @@ class I18n
     public function getLongID()
     {
         return $this->longid;
-    }
-
-    /**
-     * Return alternative identifier (mostly to fix Wind/Mac bugs!
-     *
-     * @return string current language alternative identifier
-     */
-    public function getAlternate()
-    {
-        return $this->alternate;
     }
 
     /**
@@ -351,20 +311,10 @@ class I18n
     public function getFlag()
     {
         if (defined('GALETTE_THEME_DIR')) {
-            return GALETTE_THEME_DIR . 'images/' . $this->flag;
+            return GALETTE_THEME_DIR . 'images/flags/' . $this->flag;
         } else {
-            return GALETTE_THEME . 'images/' . $this->flag;
+            return GALETTE_THEME . 'images/flags/' . $this->flag;
         }
-    }
-
-    /**
-     * Get current filename
-     *
-     * @return string current filename
-     */
-    public function getFileName()
-    {
-        return $this->filename;
     }
 
     /**
@@ -377,5 +327,42 @@ class I18n
     public static function seemUtf8($str)
     {
         return mb_check_encoding($str, 'UTF-8');
+    }
+
+    /**
+     * Guess available languages from directories
+     * that are present in the lang directory.
+     *
+     * Will store foud langs in class langs variable and return it.
+     *
+     * @return array
+     */
+    public function guessLangs()
+    {
+        $dir = new \DirectoryIterator($this->path);
+        $flags_dir = GALETTE_ROOT . 'webroot/themes/default/images/flags/';
+        $langs = [];
+        foreach ($dir as $fileinfo) {
+            if ($fileinfo->isDir() && !$fileinfo->isDot()) {
+                $lang = $fileinfo->getFilename();
+                $real_lang = str_replace('.utf8', '', $lang);
+                $parsed_lang = \Locale::parseLocale($lang);
+                $flag = (file_exists($flags_dir . $real_lang . '.svg') ?
+                    $real_lang . '.svg' :
+                    'default.svg');
+
+                $langs[$real_lang] = [
+                    'long'      => $lang,
+                    'shortname' => $parsed_lang['language'],
+                    'longname'  => \Locale::getDisplayLanguage(
+                        $lang,
+                        $lang
+                    ),
+                    'flag'      => $flag
+                ];
+            }
+        }
+        $this->langs = $langs;
+        return $this->langs;
     }
 }

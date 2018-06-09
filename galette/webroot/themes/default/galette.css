@@ -1878,9 +1878,14 @@ td img, a img {
     text-align: center;
 }
 
-.flag
+#langs li a.flag:hover {
+    text-decoration: none;
+}
+
+.flag img
 {
-    border: 1px solid black;
+    width: 22px;
+    height: 16px;
 }
 
 .bigtable
