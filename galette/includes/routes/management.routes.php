@@ -727,7 +727,7 @@ $app->get(
 
             //If some plugins have been (de)activated, we have to reload
             if ($reload_plugins === true) {
-                $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH, $this->i18n->getFileName());
+                $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH, $this->i18n->getLongID());
             }
         }
 
