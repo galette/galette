@@ -1694,7 +1694,7 @@ $app->get(
 
             //check if member is up to date
             if ($this->login->id == $id_adh) {
-                $adh = new Adherent($this->zdb, $id_adh, ['dues' => true]);
+                $adh = new Adherent($this->zdb, (int)$id_adh, ['dues' => true]);
                 if (!$adh->isUp2Date()) {
                     Analog::log(
                         'Member ' . $id_adh . ' is not up to date; cannot get his PDF member card',
