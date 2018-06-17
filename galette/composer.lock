@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7753e0e0b38d0bf54dd0fe05f21a38b4",
+    "content-hash": "73ba6abed8027c06e703e49fd32280db",
     "packages": [
         {
             "name": "akrabat/rka-slim-session-middleware",
@@ -138,12 +138,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "28e848bc077a202c6a17ecc8e8f299d629c188f7"
+                "reference": "c3f82846fdfd1760b277767ac21426ca030f795e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/28e848bc077a202c6a17ecc8e8f299d629c188f7",
-                "reference": "28e848bc077a202c6a17ecc8e8f299d629c188f7",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/c3f82846fdfd1760b277767ac21426ca030f795e",
+                "reference": "c3f82846fdfd1760b277767ac21426ca030f795e",
                 "shasum": ""
             },
             "require": {
@@ -180,7 +180,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2018-06-15T07:14:11+00:00"
+            "time": "2017-08-30T09:14:20+00:00"
         },
         {
             "name": "mathmarques/smarty-view",
