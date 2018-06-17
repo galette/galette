@@ -395,10 +395,62 @@ $container['fields_config'] = function ($c) {
     return $fc;
 };
 
+$container['cache'] = function ($c) {
+    $adapter  = null;
+    if (function_exists('apcu_fetch')) {
+        $adapter = (version_compare(PHP_VERSION, '7.0.0') >= 0) ? 'apcu' : 'apc';
+    } elseif (function_exists('wincache_ucache_add')) {
+        //since APCu is not known to work on windows
+        $adapter = 'wincache';
+    }
+    if ($adapter !== null) {
+        $cache = Zend\Cache\StorageFactory::factory([
+            'adapter'   => $adapter,
+            'options'   => [
+                'namespace' => str_replace(
+                    ['%version', '%uuid'],
+                    [GALETTE_VERSION, $c->get('preferences')->pref_instance_uuid],
+                    'galette_%version_%uuid'
+                )
+            ]
+        ]);
+        return $cache;
+    }
+    return null;
+};
+
+$container['translator'] = function ($c) {
+    $translator = new Galette\Core\Translator();
+
+    $domains = ['galette', 'routes'];
+    foreach ($domains as $domain) {
+        //load translation file for domain
+        $translator->addTranslationFilePattern(
+            'gettext',
+            GALETTE_ROOT . '/lang/',
+            '/%s/LC_MESSAGES/' . $domain . '.mo',
+            $domain
+        );
+
+        //check if a local lang file exists and load it
+        $translator->addTranslationFilePattern(
+            'phparray',
+            GALETTE_ROOT . '/lang/',
+            $domain . '_%s_local.php',
+            $domain
+        );
+    }
+
+    $translator->setLocale($c->get('i18n')->getLongID());
+    $translator->setCache($c->get('cache'));
+    return $translator;
+};
+
 //For bad existing globals can be used...
 $hist = $container['history'];
 $login = $container['login'];
 $zdb = $container['zdb'];
 $i18n = $container['i18n'];
+$translator = $container['translator'];
 
 require_once GALETTE_ROOT . 'includes/i18n.inc.php';

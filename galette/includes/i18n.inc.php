@@ -45,8 +45,6 @@ use Analog\Analog;
 use Zend\Db\Sql\Expression;
 use Galette\Core\L10n;
 
-$disable_gettext = true;
-
 $i18n->updateEnv();
 $language = $i18n->getLongID();
 
@@ -277,42 +275,32 @@ function getDynamicTranslation($text_orig, $text_locale)
  */
 function _T($string, $domain = 'galette', $nt = true)
 {
-    global $language, $disable_gettext, $installer;
+    global $language, $installer, $translator;
 
     if ($domain == 'routes') {
         $nt = false;
     }
 
-    if ($disable_gettext === true && isset($GLOBALS['lang'])) {
-        if (isset($GLOBALS['lang'][$domain][$string])
-            && $GLOBALS['lang'][$domain][$string] != ''
-        ) {
-            $trans = $GLOBALS['lang'][$domain][$string];
-        } else {
-            $trans = false;
-            if (!isset($installer) || $installer !== true) {
-                $trans = getDynamicTranslation(
-                    $string,
-                    $language
-                );
-            }
-            if ($trans) {
-                $GLOBALS['lang'][$domain][$string] = $trans;
-            } else {
-                $trans = $string;
-                if ($nt === true) {
-                    $trans .= ' (not translated)';
-                }
-            }
-        }
-        return $trans;
-    } else {
-        if ($domain === null) {
-            return _($chaine);
-        } else {
-            return dgettext($string, $domain);
-        }
+    if ($translator->translationExists($string, $domain)) {
+        return $translator->translate($string, $domain);
     }
+
+    $trans = false;
+    if (!isset($installer) || $installer !== true) {
+        $trans = getDynamicTranslation(
+            $string,
+            $language
+        );
+    }
+
+    if (!$trans) {
+        $trans = $string;
+    }
+
+    if ($nt === true) {
+        $trans .= ' (not translated)';
+    }
+    return $trans;
 }
 
 /**

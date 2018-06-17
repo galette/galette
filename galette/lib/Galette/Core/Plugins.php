@@ -329,22 +329,32 @@ class Plugins
      */
     public function loadModuleL10N($id, $language)
     {
+        global $translator;
+
         if (!$language || !isset($this->modules[$id])) {
             return;
         }
 
-        //main plugin translations
-        $f = $this->modules[$id]['root'] . '/lang/' . $this->modules[$id]['route'] . '_' . $language . '.php';
-        if (file_exists($f)) {
-            $lang = &$GLOBALS['lang'];
-            include_once $f;
-        }
+        $domains = [
+            $this->modules[$id]['route'],
+            $this->modules[$id]['route'] . '_routes'
+        ];
+        foreach ($domains as $domain) {
+            //load translation file for domain
+            $translator->addTranslationFilePattern(
+                'gettext',
+                $this->modules[$id]['root'] . '/lang/',
+                '/%s/LC_MESSAGES/' . $domain . '.mo',
+                $domain
+            );
 
-        //plugin routes translations
-        $f = $this->modules[$id]['root'] . '/lang/' . $this->modules[$id]['route'] . '_routes_' . $language . '.php';
-        if (file_exists($f)) {
-            $lang = &$GLOBALS['lang'];
-            include_once $f;
+            //check if a local lang file exists and load it
+            $translator->addTranslationFilePattern(
+                'phparray',
+                $this->modules[$id]['root'] . '/lang/',
+                $domain . '_%s_local.php',
+                $domain
+            );
         }
     }
 
