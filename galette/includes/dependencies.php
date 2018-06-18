@@ -395,14 +395,6 @@ $container['fields_config'] = function ($c) {
     return $fc;
 };
 
-// -----------------------------------------------------------------------------
-// Action factories
-// -----------------------------------------------------------------------------
-
-$container['App\Action\HomeAction'] = function ($c) {
-    return new App\Action\HomeAction($c->get('view'), $c->get('logger'));
-};
-
 //For bad existing globals can be used...
 $hist = $container['history'];
 $login = $container['login'];
