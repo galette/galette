@@ -1882,7 +1882,7 @@ td img, a img {
     text-decoration: none;
 }
 
-.flag img
+.flag img, img.flag
 {
     width: 22px;
     height: 16px;
