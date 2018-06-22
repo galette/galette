@@ -32,7 +32,7 @@
         "zendframework/zend-db": "2.9.2",
         "zendframework/zend-stdlib": "3.0.*",
         "analog/analog": "^1.0",
-        "phpmailer/phpmailer": "^5.2",
+        "phpmailer/phpmailer": "^6",
         "tecnickcom/tcpdf": "^6.2",
         "akrabat/rka-slim-session-middleware": "dev-master@dev",
         "fzaninotto/Faker": "dev-master#c3f82846fdfd1760b277767ac21426ca030f795e",

@@ -38,6 +38,7 @@
 namespace Galette\Core;
 
 use Analog\Analog;
+use PHPMailer\PHPMailer\PHPMailer;
 
 /** @ignore */
 require_once GALETTE_ROOT . 'includes/html2text.php';
@@ -108,7 +109,7 @@ class GaletteMail
     {
         global $i18n;
 
-        $this->mail = new \PHPMailer();
+        $this->mail = new PHPMailer();
 
         switch ($this->preferences->pref_mail_method) {
             case self::METHOD_SMTP:
@@ -379,7 +380,7 @@ class GaletteMail
      */
     public static function isValidEmail($address)
     {
-        $valid = \PHPMailer::ValidateAddress($address);
+        $valid = PHPMailer::ValidateAddress($address);
         if (!$valid) {
             Analog::log(
                 '[GaletteMail] Address `' . $address . '` is not valid ',
