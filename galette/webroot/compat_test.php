@@ -39,9 +39,12 @@ $modules = array();
 $modules['SimpleXML'] = (extension_loaded('SimpleXML')) ? 'Ok' : 'Missing';
 $modules['gd'] = (extension_loaded('SimpleXML')) ? 'Ok' : 'Missing';
 $modules['sql'] = (extension_loaded('pdo_mysql') || $extension_loaded('pdo_pgsql')) ? 'Ok' : 'Missing';
-$modules['mbstring'] = (extension_loaded('SimpleXML')) ? 'Ok' : 'Missing';
+$modules['curl'] = (extension_loaded('curl')) ? 'Ok' : 'Missing';
+$modules['mbstring'] = (extension_loaded('mbstring')) ? 'Ok' : 'Missing';
+$modules['fileinfo'] = (extension_loaded('fileinfo')) ? 'Ok' : 'Missing';
+$modules['intl'] = (extension_loaded('intl')) ? 'Ok' : 'Missing';
 
-$phpok = !version_compare(PHP_VERSION, '5.5', '<');
+$phpok = !version_compare(PHP_VERSION, '5.6', '<');
 ?>
 <html>
     <head>
@@ -83,11 +86,8 @@ $phpok = !version_compare(PHP_VERSION, '5.5', '<');
             <br/>Compatibility tests
         </h1>
 <?php
-if ( !$phpok
-    || $modules['SimpleXML'] === 'Missing'
-    || $modules['gd'] === 'Missing'
-    || $modules['sql'] === 'Missing'
-    || $modules['mbstring'] === 'Missing'
+if (!$phpok
+    || in_array('Missing', $modules)
 ) {
             echo '<h2 class="Missing">Something is wrong :(</h2>';
 } else {
@@ -98,7 +98,7 @@ if ( !$phpok
             <ul>
                 <li>PHP version: <span class="<?php echo ($phpok) ? 'Ok' : 'Missing'; ?>"><?php echo PHP_VERSION; ?></span></li>
 <?php
-foreach ( $modules as $mod=>$present ) {
+foreach ($modules as $mod => $present) {
     ?>
                 <li>
                     <?php echo $mod . ': <span class="' . $present . '">' . $present . '</span>'; ?>
