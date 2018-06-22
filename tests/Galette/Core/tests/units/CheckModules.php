@@ -113,6 +113,6 @@ class CheckModules extends atoum
         $html = $checks->toHtml();
         $this->string($html)
             ->notContains('icon-invalid.png')
-            ->hasLength(908);
+            ->length->isGreaterThanOrEqualTo(908);
     }
 }
