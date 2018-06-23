@@ -389,8 +389,8 @@ class MailingHistory extends History
     {
         if ($this->mailing instanceof Mailing) {
             if ($this->mailing->sender_name != null) {
-                $this->sender_name = $this->mailing->sender_name;
-                $this->sender_address = $this->mailing->sender_address;
+                $this->sender_name = $this->mailing->getSenderName();
+                $this->sender_address = $this->mailing->getSenderAddress();
             }
             $this->sender = $this->login->id;
             $this->subject = $this->mailing->subject;
@@ -443,7 +443,7 @@ class MailingHistory extends History
                 $this->sender_name;
             $sender_address = ($this->sender_address === null) ?
                 new Expression('NULL') :
-                $this->sender_name;
+                $this->sender_address;
 
             $values = array(
                 'mailing_sender'            => $sender,
@@ -498,7 +498,7 @@ class MailingHistory extends History
                 $this->sender_name;
             $sender_address = ($this->sender_address === null) ?
                 new Expression('NULL') :
-                $this->sender_name;
+                $this->sender_address;
 
             $values = array(
                 'mailing_sender'            => $sender,
