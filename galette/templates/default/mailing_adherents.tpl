@@ -119,6 +119,9 @@
     $(function() {
         {* Preview popup *}
         $('#btnpreview').click(function(){
+            var _sender = $('#sender').val();
+            var _sender_name = $('#sender_name').val();
+            var _sender_address = $('#sender_address').val();
             var _subject = $('#mailing_objet').val();
             var _body = $('#mailing_corps').val();
             var _html = $('#mailing_html').is(':checked');
@@ -130,6 +133,9 @@
                 url: '{path_for name="mailingPreview"}',
                 type: "POST",
                 data: {
+                    sender: _sender,
+                    sender_name: _sender_name,
+                    sender_address: _sender_address,
                     subject: _subject,
                     body: _body,
                     html: _html,

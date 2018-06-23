@@ -2273,6 +2273,26 @@ $app->map(
         } else {
             $mailing = $this->session->mailing;
 
+            switch ($post['sender']) {
+                case GaletteMail::SENDER_CURRENT:
+                    $member = new Adherent($this->zdb, (int)$this->login->id, false);
+                    $mailing->setSender(
+                        $member->sname,
+                        $member->getEmail()
+                    );
+                    break;
+                case GaletteMail::SENDER_OTHER:
+                    $mailing->setSender(
+                        $post['sender_name'],
+                        $post['sender_address']
+                    );
+                    break;
+                case GaletteMail::SENDER_PREFS:
+                default:
+                    //nothing to do; this is the default :)
+                    break;
+            }
+
             $mailing->subject = $post['subject'];
             $mailing->message = $post['body'];
             $mailing->html = ($post['html'] === 'true');
