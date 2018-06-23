@@ -91,6 +91,11 @@ class ContributionsList extends Pagination
         'max_amount'
     );
 
+    protected $virtuals_list_fields = array(
+        'rstart_date_filter',
+        'rend_date_filter'
+    );
+
     /**
      * Default constructor
      */
@@ -144,8 +149,33 @@ class ContributionsList extends Pagination
         if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
         } else {
-            if (in_array($name, $this->list_fields)) {
-                return $this->$name;
+            if (in_array($name, $this->list_fields) || in_array($name, $this->virtuals_list_fields)) {
+                switch ($name) {
+                    case 'start_date_filter':
+                    case 'end_date_filter':
+                        try {
+                            if ($this->$name !== null) {
+                                $d = new \DateTime($this->$name);
+                                return $d->format(__("Y-m-d"));
+                            }
+                        } catch (\Exception $e) {
+                            //oops, we've got a bad date :/
+                            Analog::log(
+                                'Bad date (' . $this->$name . ') | ' .
+                                $e->getMessage(),
+                                Analog::INFO
+                            );
+                            return $this->$name;
+                        }
+                        break;
+                    case 'rstart_date_filter':
+                    case 'rend_date_filter':
+                        //same as above, but raw format
+                        $rname = substr($name, 1);
+                        return $this->$rname;
+                    default:
+                        return $this->$name;
+                }
             } else {
                 Analog::log(
                     '[ContributionsList] Unable to get proprety `' .$name . '`',
