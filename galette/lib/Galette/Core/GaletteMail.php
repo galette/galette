@@ -175,17 +175,6 @@ class GaletteMail
                 break;
         }
 
-        $this->mail->SetFrom(
-            $this->getSenderAddress(),
-            $this->getSenderName()
-        );
-        // Add a Reply-To field in the mail headers.
-        // Fix bug #6654.
-        if ($this->preferences->pref_email_reply_to) {
-            $this->mail->AddReplyTo($this->preferences->pref_email_reply_to);
-        } else {
-            $this->mail->AddReplyTo($this->getSenderAddress());
-        }
         $this->mail->CharSet = 'UTF-8';
         $this->mail->SetLanguage($i18n->getAbbrev());
 
@@ -245,13 +234,17 @@ class GaletteMail
     {
         if ($this->mail === null) {
             $this->initMailer();
-        } else {
-            //set sender, it may have changed
-            $this->mail->SetFrom(
-                $this->getSenderAddress(),
-                $this->getSenderName()
-            );
         }
+
+        //set sender
+        $this->mail->SetFrom(
+            $this->getSenderAddress(),
+            $this->getSenderName()
+        );
+        // Add a Reply-To field in the mail headers.
+        // Fix bug #6654.
+        $this->mail->AddReplyTo($this->getSenderAddress());
+
 
         if ($this->html) {
             //the mail is html :(

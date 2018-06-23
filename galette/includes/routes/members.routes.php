@@ -2289,8 +2289,8 @@ $app->map(
                 'mode'          => ($ajax ? 'ajax' : ''),
                 'mailing'       => $mailing,
                 'recipients'    => $mailing->recipients,
-                'sender'        => $this->preferences->pref_email_nom . ' &lt;' .
-                    $this->preferences->pref_email . '&gt;',
+                'sender'        => $mailing->getSenderName() . ' &lt;' .
+                    $mailing->getSenderAddress() . '&gt;',
                 'attachments'   => $attachments
 
             ]
