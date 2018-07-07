@@ -295,10 +295,10 @@ function _T($string, $domain = 'galette', $nt = true)
 
     if (!$trans) {
         $trans = $string;
-    }
 
-    if ($nt === true) {
-        $trans .= ' (not translated)';
+        if ($nt === true) {
+            $trans .= ' (not translated)';
+        }
     }
     return $trans;
 }
