@@ -310,7 +310,7 @@ $baseRedirect = function ($request, $response, $args = []) use ($container) {
     if ($login->isLogged()) {
         $urlRedirect = null;
         if ($session->urlRedirect !== null) {
-            $urlRedirect = $request->getUri()->getBaseUrl() . $session->urlRedirect;
+            $urlRedirect = getGaletteBaseUrl($request) . $session->urlRedirect;
             $session->urlRedirect = null;
         }
 
@@ -329,27 +329,43 @@ $baseRedirect = function ($request, $response, $args = []) use ($container) {
                     return $response
                         ->withStatus(301)
                         //Do not use "$router->pathFor('dashboard'))" to prevent translation issues when login
-                        ->withHeader('Location', $request->getUri()->getBaseUrl() . __('/dashboard', 'routes'));
+                        ->withHeader('Location', getGaletteBaseUrl($request) . __('/dashboard', 'routes'));
                 } else {
                     return $response
                         ->withStatus(301)
                         //Do not use "$router->pathFor('members'))" to prevent translation issues when login
-                        ->withHeader('Location', $request->getUri()->getBaseUrl() . __('/members', 'routes'));
+                        ->withHeader('Location', getGaletteBaseUrl($request) . __('/members', 'routes'));
                 }
             } else {
                 return $response
                     ->withStatus(301)
                     //Do not use "$router->pathFor('me'))" to prevent translation issues when login
-                    ->withHeader('Location', $request->getUri()->getBaseUrl() . __('/dashboard', 'routes'));
+                    ->withHeader('Location', getGaletteBaseUrl($request) . __('/dashboard', 'routes'));
             }
         }
     } else {
         return $response
             ->withStatus(301)
             //Do not use "$router->pathFor('login'))" to prevent translation issues when login
-            ->withHeader('Location', $request->getUri()->getBaseUrl() . __('/login', 'routes'));
+            ->withHeader('Location', getGaletteBaseUrl($request) . __('/login', 'routes'));
     }
 };
+
+/**
+ * Get base URL fixed for proxies
+ *
+ * @param Request $request request to work on
+ *
+ * @return string
+ */
+function getGaletteBaseUrl(\Slim\Http\Request $request)
+{
+    return str_replace(
+        ['index.php', $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']],
+        ['', ''],
+        $request->getUri()->getBaseUrl()
+    );
+}
 
 /**
  * Get current URI
