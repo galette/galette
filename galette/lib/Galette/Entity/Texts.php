@@ -294,7 +294,12 @@ class Texts
                 array('tref', 'tcomment')
             )->where(array('tlang' => $lang));
 
-            return $zdb->execute($select);
+            $refs = [];
+            $results = $zdb->execute($select);
+            foreach ($results as $result) {
+                $refs[] = $result;
+            }
+            return $refs;
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot get refs for lang `' . $lang . '` | ' .
