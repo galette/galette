@@ -583,7 +583,7 @@ $app->post(
                     }
                 } else {
                     //something went wrong :'(
-                    $error_detected[] = _T("An error occured while storing the contribution.");
+                    $error_detected[] = _T("An error occurred while storing the contribution.");
                 }
             }
         }
@@ -998,7 +998,7 @@ $app->post(
                 }
             } else {
                 //something went wrong :'(
-                $error_detected[] = _T("An error occured while storing the transaction.");
+                $error_detected[] = _T("An error occurred while storing the transaction.");
             }
         }
 
@@ -1159,9 +1159,9 @@ $app->post(
             } else {
                 $msg = null;
                 if ($raw_type === 'contributions') {
-                    $msg = _T("An error occured trying to remove contributions(s) :(");
+                    $msg = _T("An error occurred trying to remove contributions(s) :(");
                 } else {
-                    $msg = _T("An error occured trying to remove transaction(s) :(");
+                    $msg = _T("An error occurred trying to remove transaction(s) :(");
                 }
                 $this->flash->addMessage(
                     'error_detected',

@@ -116,7 +116,7 @@ function addDynamicTranslation($text_orig)
         return true;
     } catch (\Exception $e) {
         Analog::log(
-            'An error occured adding dynamic translation for `' .
+            'An error occurred adding dynamic translation for `' .
             $text_orig . '` | ' . $e->getMessage(),
             Analog::ERROR
         );
@@ -155,7 +155,7 @@ function deleteDynamicTranslation($text_orig)
         return true;
     } catch (Exception $e) {
         Analog::log(
-            'An error occured deleting dynamic translation for `' .
+            'An error occurred deleting dynamic translation for `' .
             $text_orig . '` (lang `' . $lang->getLongID() . '`) | ' .
             $e->getMessage(),
             Analog::ERROR
@@ -218,7 +218,7 @@ function updateDynamicTranslation($text_orig, $text_locale, $text_trans)
         return true;
     } catch (Exception $e) {
         Analog::log(
-            'An error occured updating dynamic translation for `' .
+            'An error occurred updating dynamic translation for `' .
             $text_orig . '` | ' . $e->getMessage(),
             Analog::ERROR
         );
@@ -256,7 +256,7 @@ function getDynamicTranslation($text_orig, $text_locale)
         }
     } catch (Exception $e) {
         Analog::log(
-            'An error occured retrieving l10n entry. text_orig=' . $text_orig .
+            'An error occurred retrieving l10n entry. text_orig=' . $text_orig .
             ', text_locale=' . $text_locale . ' | ' . $e->getMessage(),
             Analog::WARNING
         );

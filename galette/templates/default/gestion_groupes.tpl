@@ -77,7 +77,7 @@
                 },
                 error: function() {
                     {* TODO: revert preceding move so the tree is ok with database *}
-                    alert("{_T string="An error occured reordering groups :(" escape="js"}");
+                    alert("{_T string="An error occurred reordering groups :(" escape="js"}");
                 }
             });
         }).delegate(
@@ -104,7 +104,7 @@
                             _btnuser_mapping();
                         },
                         error: function() {
-                            alert("{_T string="An error occured loading selected group :(" escape="js"}");
+                            alert("{_T string="An error occurred loading selected group :(" escape="js"}");
                         }
                     });
                 }
@@ -144,7 +144,7 @@
                                     }
                                 },
                                 error: function() {
-                                    alert("{_T string="An error occured checking name uniqueness :(" escape="js"}");
+                                    alert("{_T string="An error occurred checking name uniqueness :(" escape="js"}");
                                 }
                             });
                         } else {
@@ -181,7 +181,7 @@
                         _members_dialog(res, _mode);
                     },
                     error: function() {
-                        alert("{_T string="An error occured displaying members interface :(" escape="js"}");
+                        alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
                     }
                 });
                 return false;
@@ -241,7 +241,7 @@
                         _container.children('div').append(res);
                     },
                     error: function() {
-                        alert("{_T string="An error occured displaying members interface :(" escape="js"}");
+                        alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
                     }
                 });
             });
@@ -294,7 +294,7 @@
                         _members_ajax_mapper(res, gid, _mode);
                     },
                     error: function() {
-                        alert("{_T string="An error occured displaying members interface :(" escape="js"}");
+                        alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
                     }
                 });
                 return false;

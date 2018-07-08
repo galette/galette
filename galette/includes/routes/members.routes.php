@@ -1109,7 +1109,7 @@ $app->post(
                                         $str = str_replace(
                                             '%s',
                                             $login_adh,
-                                            _T("An error occured storing temporary password for %s. Please inform an admin.")
+                                            _T("An error occurred storing temporary password for %s. Please inform an admin.")
                                         );
                                         $this->history->add($str);
                                         $this->flash->addMessage(
@@ -1189,7 +1189,7 @@ $app->post(
                     );
 
                     if ($add_groups === false) {
-                        $error_detected[] = _T("An error occured adding member to its groups.");
+                        $error_detected[] = _T("An error occurred adding member to its groups.");
                     }
 
                     //add/remove manager from groups
@@ -1204,11 +1204,11 @@ $app->post(
                     $member->loadGroups();
 
                     if ($add_groups === false) {
-                        $error_detected[] = _T("An error occured adding member to its groups as manager.");
+                        $error_detected[] = _T("An error occurred adding member to its groups as manager.");
                     }
                 } else {
                     //something went wrong :'(
-                    $error_detected[] = _T("An error occured while storing the member.");
+                    $error_detected[] = _T("An error occurred while storing the member.");
                 }
             }
 
@@ -1419,10 +1419,10 @@ $app->post(
                     $error_detected = str_replace(
                         '%name',
                         $adh->sname,
-                        _T("An error occured trying to remove member %name :/")
+                        _T("An error occurred trying to remove member %name :/")
                     );
                 } else {
-                    $error_detected = _T("An error occured trying to remove members :/");
+                    $error_detected = _T("An error occurred trying to remove members :/");
                 }
 
                 $this->flash->addMessage(
@@ -1742,7 +1742,7 @@ $app->get(
 
         if (!is_array($members) || count($members) < 1) {
             Analog::log(
-                'An error has occured, unable to get members list.',
+                'An error has occurred, unable to get members list.',
                 Analog::ERROR
             );
 
@@ -1807,7 +1807,7 @@ $app->get(
 
         if (!is_array($members) || count($members) < 1) {
             Analog::log(
-                'An error has occured, unable to get members list.',
+                'An error has occurred, unable to get members list.',
                 Analog::ERROR
             );
 
@@ -3122,7 +3122,7 @@ $app->post(
                     if ($valid === true) {
                         $done = $member->store();
                         if (!$done) {
-                            $error_detected[] = _T("An error occured while storing the member.");
+                            $error_detected[] = _T("An error occurred while storing the member.");
                         } else {
                             ++$mass;
                         }

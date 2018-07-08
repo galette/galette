@@ -146,7 +146,7 @@
                     _preview_dialog(res);
                 },
                 error: function() {
-                    alert("{_T string="An error occured displaying preview :(" escape="js"}");
+                    alert("{_T string="An error occurred displaying preview :(" escape="js"}");
                 }
             });
             return false;
@@ -179,7 +179,7 @@
                     _members_dialog(res);
                 },
                 error: function() {
-                    alert("{_T string="An error occured displaying members interface :(" escape="js"}");
+                    alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
                 }
             });
             return false;
@@ -225,7 +225,7 @@
                         $('#members_list').dialog("close");
                     },
                     error: function() {
-                        alert("{_T string="An error occured displaying members interface :(" escape="js"}");
+                        alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
                     }
                 });
             });
@@ -281,7 +281,7 @@
                         _members_ajax_mapper(res);
                     },
                     error: function() {
-                        alert("{_T string="An error occured displaying members interface :(" escape="js"}");
+                        alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
                     }
                 });
                 return false;

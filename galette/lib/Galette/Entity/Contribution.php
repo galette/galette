@@ -269,7 +269,7 @@ class Contribution
             }
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured attempting to load contribution #' . $id .
+                'An error occurred attempting to load contribution #' . $id .
                 $e->getMessage(),
                 Analog::ERROR
             );
@@ -464,7 +464,7 @@ class Contribution
             $overlap = $this->checkOverlap();
             if ($overlap !== true) {
                 if ($overlap === false) {
-                    $this->errors[] = _T("An error occured checking overlaping fees :(");
+                    $this->errors[] = _T("An error occurred checking overlaping fees :(");
                 } else {
                     //method directly return error message
                     $this->errors[] = $overlap;
@@ -531,7 +531,7 @@ class Contribution
             return true;
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured checking overlaping fee. ' . $e->getMessage(),
+                'An error occurred checking overlaping fee. ' . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -606,7 +606,7 @@ class Contribution
                 } else {
                     $hist->add(_T("Fail to add new contribution."));
                     throw new \Exception(
-                        'An error occured inserting new contribution!'
+                        'An error occurred inserting new contribution!'
                     );
                 }
             } else {
@@ -628,7 +628,7 @@ class Contribution
 
                 if ($edit === false) {
                     throw new \Exception(
-                        'An error occured updating contribution # ' . $this->_id . '!'
+                        'An error occurred updating contribution # ' . $this->_id . '!'
                     );
                 }
                 $success = true;
@@ -638,7 +638,7 @@ class Contribution
                 $deadline = $this->updateDeadline();
                 if ($deadline !== true) {
                     //if something went wrong, we rollback transaction
-                    throw new \Exception('An error occured updating member\'s deadline');
+                    throw new \Exception('An error occurred updating member\'s deadline');
                 }
             }
 
@@ -687,7 +687,7 @@ class Contribution
             return true;
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured updating member ' . $this->_member .
+                'An error occurred updating member ' . $this->_member .
                 '\'s deadline |' .
                 $e->getMessage(),
                 Analog::ERROR
@@ -729,7 +729,7 @@ class Contribution
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occured trying to remove contribution #' .
+                'An error occurred trying to remove contribution #' .
                 $this->_id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -823,7 +823,7 @@ class Contribution
             return $due_date;
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured trying to retrieve member\'s due date',
+                'An error occurred trying to retrieve member\'s due date',
                 Analog::ERROR
             );
             return false;
@@ -1014,7 +1014,7 @@ class Contribution
 
         if ($res !== true) {
             Analog::log(
-                'An error occured calling post contribution ' .
+                'An error occurred calling post contribution ' .
                 "script:\n" . $es->getOutput(),
                 Analog::ERROR
             );

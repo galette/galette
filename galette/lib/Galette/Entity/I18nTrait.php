@@ -124,7 +124,7 @@ trait I18nTrait
             return true;
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured adding dynamic translation for `' .
+                'An error occurred adding dynamic translation for `' .
                 $text_orig . '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -184,7 +184,7 @@ trait I18nTrait
             return true;
         } catch (Exception $e) {
             Analog::log(
-                'An error occured updating dynamic translation for `' .
+                'An error occurred updating dynamic translation for `' .
                 $text_orig . '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -223,7 +223,7 @@ trait I18nTrait
             return true;
         } catch (Exception $e) {
             Analog::log(
-                'An error occured deleting dynamic translation for `' .
+                'An error occurred deleting dynamic translation for `' .
                 $text_orig . '` (lang `' . $lang->getLongID() . '`) | ' .
                 $e->getMessage(),
                 Analog::ERROR

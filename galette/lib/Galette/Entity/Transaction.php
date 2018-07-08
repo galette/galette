@@ -209,7 +209,7 @@ class Transaction
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occured trying to remove transaction #' .
+                'An error occurred trying to remove transaction #' .
                 $this->_id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -403,7 +403,7 @@ class Transaction
                 } else {
                     $hist->add(_T("Fail to add new transaction."));
                     throw new \Exception(
-                        'An error occured inserting new transaction!'
+                        'An error occurred inserting new transaction!'
                     );
                 }
             } else {
@@ -463,7 +463,7 @@ class Transaction
             return (double)$dispatched_amount;
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured retrieving dispatched amounts | ' .
+                'An error occurred retrieving dispatched amounts | ' .
                 $e->getMessage(),
                 Analog::ERROR
             );
@@ -491,7 +491,7 @@ class Transaction
             return (double)$this->_amount - (double)$dispatched_amount;
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured retrieving missing amounts | ' .
+                'An error occurred retrieving missing amounts | ' .
                 $e->getMessage(),
                 Analog::ERROR
             );

@@ -590,7 +590,7 @@
                                         });
                                     },
                                     error: function () {
-                                        alert('{_T string="An error occured sending test email :(" escape="js"}');
+                                        alert('{_T string="An error occurred sending test email :(" escape="js"}');
                                     }
                                 });
                             }

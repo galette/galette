@@ -330,7 +330,7 @@ class Transactions
             } catch (\Exception $e) {
                 $this->zdb->connection->rollBack();
                 Analog::log(
-                    'An error occured trying to remove transactions | ' .
+                    'An error occurred trying to remove transactions | ' .
                     $e->getMessage(),
                     Analog::ERROR
                 );

@@ -143,7 +143,7 @@
                             $('#loading').remove();
                         },
                         error: function( xhr, status, index, anchor ) {
-                            alert('{_T string="An error occured :("|escape:"js"}');
+                            alert('{_T string="An error occurred :("|escape:"js"}');
                         }
                     }
                 });

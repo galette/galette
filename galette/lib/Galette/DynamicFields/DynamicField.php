@@ -774,10 +774,10 @@ abstract class DynamicField
             }
         } catch (Exception $e) {
             Analog::log(
-                'An error occured storing field | ' . $e->getMessage(),
+                'An error occurred storing field | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            $this->errors[] = _T("An error occured storing the field.");
+            $this->errors[] = _T("An error occurred storing the field.");
         }
 
         if (count($this->errors) === 0 && $this->hasFixedValues()) {
@@ -804,7 +804,7 @@ abstract class DynamicField
                     $contents_table . ' | ' . $e->getMessage(),
                     Analog::ERROR
                 );
-                $this->errors[] = _T("An error occured creating field values table");
+                $this->errors[] = _T("An error occurred creating field values table");
             }
 
             if (count($this->errors) == 0) {
@@ -837,7 +837,7 @@ abstract class DynamicField
                         $e->getMessage() . ')',
                         Analog::ERROR
                     );
-                    $this->warnings[] = _T('An error occured storing dynamic field values :(');
+                    $this->warnings[] = _T('An error occurred storing dynamic field values :(');
                 }
             }
         }
@@ -908,7 +908,7 @@ abstract class DynamicField
             }
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured checking field duplicity' . $e->getMessage(),
+                'An error occurred checking field duplicity' . $e->getMessage(),
                 Analog::ERROR
             );
         }
@@ -1025,7 +1025,7 @@ abstract class DynamicField
         } catch (\Exception $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'An error occured deleting field | ' . $e->getMessage(),
+                'An error occurred deleting field | ' . $e->getMessage(),
                 Analog::ERROR
             );
             return false;

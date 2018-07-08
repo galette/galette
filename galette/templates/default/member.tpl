@@ -161,7 +161,7 @@
                             _groups_dialog(res, _groups, _managed);
                         },
                         error: function() {
-                            alert("{_T string="An error occured displaying groups interface :(" escape="js"}");
+                            alert("{_T string="An error occurred displaying groups interface :(" escape="js"}");
                         }
                     });
                     return false;
@@ -278,7 +278,7 @@
                                 _members_dialog(res, _mode);
                             },
                             error: function() {
-                                alert("{_T string="An error occured displaying members interface :(" escape="js"}");
+                                alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
                             }
                         });
                         return false;
@@ -359,7 +359,7 @@
                                 _members_ajax_mapper(res);
                             },
                             error: function() {
-                                alert("{_T string="An error occured displaying members interface :(" escape="js"}");
+                                alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
                             }
                         });
                         return false;

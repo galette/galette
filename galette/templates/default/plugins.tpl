@@ -138,7 +138,7 @@
                             _initdb_bindings(res);
                         },
                         error: function() {
-                            alert("{_T string="An error occured displaying plugin database initialization interface :(" escape="js"}");
+                            alert("{_T string="An error occurred displaying plugin database initialization interface :(" escape="js"}");
                         }
                     });
                 });
@@ -156,7 +156,7 @@
                         _initdb_dialog(res, _plugin);
                     },
                     error: function() {
-                        alert("{_T string="An error occured displaying plugin database initialization interface :(" escape="js"}");
+                        alert("{_T string="An error occurred displaying plugin database initialization interface :(" escape="js"}");
                     }
                 });
                 return false;

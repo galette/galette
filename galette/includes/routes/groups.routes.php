@@ -161,7 +161,7 @@ $app->post(
                 //something went wrong :'(
                 $this->flash->addMessage(
                     'error_detected',
-                    _T("An error occured while storing the group.")
+                    _T("An error occurred while storing the group.")
                 );
             }
         } catch (Exception $e) {
@@ -234,7 +234,7 @@ $app->post(
                 if ($group->isEmpty() === false) {
                     $error_detected = _T("Group is not empty, it cannot be deleted. Use cascade delete instead.");
                 } else {
-                    $error_detected = _T("An error occured trying to remove group :/");
+                    $error_detected = _T("An error occurred trying to remove group :/");
                 }
 
                 $this->flash->addMessage(
@@ -282,7 +282,7 @@ $app->get(
 
         if (!is_array($groups_list) || count($groups_list) < 1) {
             Analog::log(
-                'An error has occured, unable to get groups list.',
+                'An error has occurred, unable to get groups list.',
                 Analog::ERROR
             );
 

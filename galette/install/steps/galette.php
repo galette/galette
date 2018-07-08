@@ -54,7 +54,7 @@ if ( $config_file_ok === true && $objects_ok === true ) {
     echo '<p id="infobox">' . _T("Configuration file created!") .
         '<br/>' . _T("Data initialized.") . '</p>';
 } else {
-    echo '<p id="errorbox">' . _T("An error occured :(") . '</p>';
+    echo '<p id="errorbox">' . _T("An error occurred :(") . '</p>';
 }
 ?>
                 <ul class="leaders">

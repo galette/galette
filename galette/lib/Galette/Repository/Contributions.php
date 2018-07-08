@@ -454,7 +454,7 @@ class Contributions
                     $this->zdb->connection->rollBack();
                 }
                 Analog::log(
-                    'An error occured trying to remove contributions | ' .
+                    'An error occurred trying to remove contributions | ' .
                     $e->getMessage(),
                     Analog::ERROR
                 );

@@ -480,7 +480,7 @@
                                 });
                             },
                             error: function() {
-                                alert("{_T string="An error occured :(" escape="js"}");
+                                alert("{_T string="An error occurred :(" escape="js"}");
                             }
                         });
                     });
@@ -499,7 +499,7 @@
                     });
                 },
                 error: function() {
-                    alert("{_T string="An error occured :(" escape="js"}");
+                    alert("{_T string="An error occurred :(" escape="js"}");
                 }
             });
         });
@@ -548,7 +548,7 @@
                     });
                 },
                 error: function() {
-                    alert("{_T string="An error occured displaying attendance sheet details interface :(" escape="js"}");
+                    alert("{_T string="An error occurred displaying attendance sheet details interface :(" escape="js"}");
                 }
             });
         }

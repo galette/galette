@@ -269,7 +269,7 @@ class Texts
             return true;
         } catch (\Exception $e) {
             Analog::log(
-                'An error has occured while storing mail text. | ' .
+                'An error has occurred while storing mail text. | ' .
                 $e->getMessage(),
                 Analog::ERROR
             );
@@ -432,7 +432,7 @@ class Texts
             }
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured checking missing texts.' . $e->getMessage(),
+                'An error occurred checking missing texts.' . $e->getMessage(),
                 Analog::WARNING
             );
             return $e;

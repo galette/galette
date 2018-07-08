@@ -144,7 +144,7 @@
                         _contribs_dialog(res);
                     },
                     error: function() {
-                        alert("{_T string="An error occured displaying members interface :("}");
+                        alert("{_T string="An error occurred displaying members interface :("}");
                     }
                 });
                 return false;
@@ -186,7 +186,7 @@
                             _contribs_ajax_mapper(res);
                         },
                         error: function() {
-                            alert("{_T string="An error occured displaying contributions :("}");
+                            alert("{_T string="An error occurred displaying contributions :("}");
                         }
                     });
                     return false;
@@ -208,7 +208,7 @@
                                 _contribs_ajax_mapper(res);
                             },
                             error: function() {
-                                alert("{_T string="An error occured displaying contributions :("}");
+                                alert("{_T string="An error occurred displaying contributions :("}");
                             },
                         });
                         return false;

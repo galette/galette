@@ -459,7 +459,7 @@ $app->post(
                 }
                 //once all values has been updated, we can store them
                 if (!$this->preferences->store()) {
-                    $error_detected[] = _T("An SQL error has occured while storing preferences. Please try again, and contact the administrator if the problem persists.");
+                    $error_detected[] = _T("An SQL error has occurred while storing preferences. Please try again, and contact the administrator if the problem persists.");
                 } else {
                     $this->flash->addMessage(
                         'success_detected',
@@ -1121,13 +1121,13 @@ $app->post(
             } catch (\Exception $e) {
                 $this->zdb->connection->rollBack();
                 Analog::log(
-                    'An error occured flushing logs | ' . $e->getMessage(),
+                    'An error occurred flushing logs | ' . $e->getMessage(),
                     Analog::ERROR
                 );
 
                 $this->flash->addMessage(
                     'error_detected',
-                    _T('An error occured trying to flush logs :(')
+                    _T('An error occurred trying to flush logs :(')
                 );
             }
         }
@@ -1344,13 +1344,13 @@ $app->post(
             } catch (\Exception $e) {
                 $this->zdb->connection->rollBack();
                 Analog::log(
-                    'An error occured deleting mailing | ' . $e->getMessage(),
+                    'An error occurred deleting mailing | ' . $e->getMessage(),
                     Analog::ERROR
                 );
 
                 $this->flash->addMessage(
                     'error_detected',
-                    _T('An error occured trying to delete mailing :(')
+                    _T('An error occurred trying to delete mailing :(')
                 );
 
                 $success = false;
@@ -1556,7 +1556,7 @@ $app->post(
                             str_replace(
                                 '%export',
                                 $pn,
-                                _T("An error occured running parameted export '%export'.")
+                                _T("An error occurred running parameted export '%export'.")
                             )
                         );
                         break;
@@ -1566,7 +1566,7 @@ $app->post(
                             str_replace(
                                 '%export',
                                 $pn,
-                                _T("An error occured running parameted export '%export'. Please check the logs.")
+                                _T("An error occurred running parameted export '%export'. Please check the logs.")
                             )
                         );
                         break;
@@ -1693,7 +1693,7 @@ $app->post(
             } else {
                 $this->flash->addMessage(
                     'error_detected',
-                    _T("An error occured importing the file :(")
+                    _T("An error occurred importing the file :(")
                 );
             }
 
@@ -2123,7 +2123,7 @@ $app->post(
                         str_replace(
                             '%name',
                             $title->short,
-                            _T("An error occured removing title '%name' :(")
+                            _T("An error occurred removing title '%name' :(")
                         )
                     );
                 }
@@ -2559,7 +2559,7 @@ $app->post(
                             $errors[] = str_replace(
                                 ['%type', '%id'],
                                 [$class->getI18nType(), $args['id']],
-                                _T("An error occured trying to remove %type #%id")
+                                _T("An error occurred trying to remove %type #%id")
                             );
                         }
 
@@ -2623,7 +2623,7 @@ $app->get(
             $nb_fields = $result->nb;
         } catch (Exception $e) {
             Analog::log(
-                'An error occured counting l10n entries | ' .
+                'An error occurred counting l10n entries | ' .
                 $e->getMessage(),
                 Analog::WARNING
             );
@@ -2677,7 +2677,7 @@ $app->get(
                 $params['trans'] = $trans;
             } catch (\Exception $e) {
                 Analog::log(
-                    'An error occured retrieving l10n entries | ' .
+                    'An error occurred retrieving l10n entries | ' .
                     $e->getMessage(),
                     Analog::WARNING
                 );
@@ -2733,7 +2733,7 @@ $app->post(
                                     $post['text_orig'],
                                     $trans_lang
                                 ),
-                                _T("An error occured saving label `%label` for language `%lang`")
+                                _T("An error occurred saving label `%label` for language `%lang`")
                             )
                         );
                     }
@@ -2827,7 +2827,7 @@ $app->post(
         } else {
             $this->flash->addMessage(
                 'error_detected',
-                _T("An error occured while storing fields configuration :(")
+                _T("An error occurred while storing fields configuration :(")
             );
         }
 
@@ -2897,7 +2897,7 @@ $app->get(
         } else {
             $this->flash->addMessage(
                 'error_detected',
-                _T("An error occured moving field :(")
+                _T("An error occurred moving field :(")
             );
         }
 
@@ -2978,7 +2978,7 @@ $app->post(
             } else {
                 $this->flash->addMessage(
                     'error_detected',
-                    _T('An error occured trying to delete field :(')
+                    _T('An error occurred trying to delete field :(')
                 );
                 $success = false;
             }
@@ -3092,9 +3092,9 @@ $app->post(
             $warning_detected = $df->getWarnings();
         } catch (\Exception $e) {
             if ($args['action'] === __('edit', 'routes')) {
-                $msg = 'An error occured storing dynamic field ' . $df->getId() . '.';
+                $msg = 'An error occurred storing dynamic field ' . $df->getId() . '.';
             } else {
-                $msg = 'An error occured adding new dynamic field.';
+                $msg = 'An error occurred adding new dynamic field.';
             }
             Analog::log(
                 $msg . ' | ' .
@@ -3104,7 +3104,7 @@ $app->post(
             if (GALETTE_MODE == 'DEV') {
                 throw $e;
             }
-            $error_detected[] = _T('An error occured adding dynamic field :(');
+            $error_detected[] = _T('An error occurred adding dynamic field :(');
         }
 
         //flash messages
@@ -3292,7 +3292,7 @@ $app->post(
             if ($res === true) {
                 $success_detected[] = _T("Texts has been successfully reinitialized.");
             } else {
-                $error_detected[] = _T("An error occured reinitializing texts :(");
+                $error_detected[] = _T("An error occurred reinitializing texts :(");
             }
         }
 
@@ -3303,7 +3303,7 @@ $app->post(
             if ($res === true) {
                 $success_detected[] = _T("Fields configuration has been successfully reinitialized.");
             } else {
-                $error_detected[] = _T("An error occured reinitializing fields configuration :(");
+                $error_detected[] = _T("An error occurred reinitializing fields configuration :(");
             }
         }
 
@@ -3314,7 +3314,7 @@ $app->post(
             if ($res === true) {
                 $success_detected[] = _T("PDF models has been successfully reinitialized.");
             } else {
-                $error_detected[] = _T("An error occured reinitializing PDF models :(");
+                $error_detected[] = _T("An error occurred reinitializing PDF models :(");
             }
         }
 
@@ -3330,7 +3330,7 @@ $app->post(
                     _T("Logins and passwords has been successfully filled (%i processed).")
                 );
             } else {
-                $error_detected[] = _T("An error occured filling empty logins and passwords :(");
+                $error_detected[] = _T("An error occurred filling empty logins and passwords :(");
             }
         }
 

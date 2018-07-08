@@ -49,7 +49,7 @@
                         });
                     },
                     error: function() {
-                        alert("{_T string="An error occured :(" escape="js"}");
+                        alert("{_T string="An error occurred :(" escape="js"}");
                     }
                 });
             });
@@ -75,7 +75,7 @@
                     });
 
                     ui.jqXHR.error(function(){
-                        alert('{_T string="An error occured :("|escape:"js"}');
+                        alert('{_T string="An error occurred :("|escape:"js"}');
                     });
                 }
             });

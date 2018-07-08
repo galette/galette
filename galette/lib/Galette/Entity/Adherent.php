@@ -799,7 +799,7 @@ class Adherent
             return true;
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured while updating password for `' . $id_adh .
+                'An error occurred while updating password for `' . $id_adh .
                 '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -1062,10 +1062,10 @@ class Adherent
                                     }
                                 } catch (\Exception $e) {
                                     Analog::log(
-                                        'An error occured checking member email unicity.',
+                                        'An error occurred checking member email unicity.',
                                         Analog::ERROR
                                     );
-                                    $this->errors[] = _T("An error has occured while looking if login already exists.");
+                                    $this->errors[] = _T("An error has occurred while looking if login already exists.");
                                 }
                             }
                             break;
@@ -1109,10 +1109,10 @@ class Adherent
                                         }
                                     } catch (\Exception $e) {
                                         Analog::log(
-                                            'An error occured checking member login unicity.',
+                                            'An error occurred checking member login unicity.',
                                             Analog::ERROR
                                         );
-                                        $this->errors[] = _T("An error has occured while looking if login already exists.");
+                                        $this->errors[] = _T("An error has occurred while looking if login already exists.");
                                     }
                                 }
                             }
@@ -1161,10 +1161,10 @@ class Adherent
                                 }
                             } catch (\Exception $e) {
                                 Analog::log(
-                                    'An error occured checking status existance: ' . $e->getMessage(),
+                                    'An error occurred checking status existance: ' . $e->getMessage(),
                                     Analog::ERROR
                                 );
-                                $this->errors[] = _T("An error has occured while looking if status does exists.");
+                                $this->errors[] = _T("An error has occurred while looking if status does exists.");
                             }
                             break;
                         case 'sexe_adh':
@@ -1339,7 +1339,7 @@ class Adherent
                 } else {
                     $hist->add(_T("Fail to add new member."));
                     throw new \Exception(
-                        'An error occured inserting new member!'
+                        'An error occurred inserting new member!'
                     );
                 }
             } else {

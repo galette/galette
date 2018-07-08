@@ -371,7 +371,7 @@ class DynamicFieldsHandle
                 throw $e;
             }
             Analog::log(
-                'An error occured storing dynamic field. Form name: ' . $this->form_name .
+                'An error occurred storing dynamic field. Form name: ' . $this->form_name .
                 ' | Error was: ' . $e->getMessage(),
                 Analog::ERROR
             );

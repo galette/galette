@@ -456,7 +456,7 @@ class CsvIn extends Csv implements FileInterface
                                     str_replace(
                                         array('%row', '%name'),
                                         array($row, $member->sname),
-                                        _T("An error occured storing member at row %row (%name):")
+                                        _T("An error occurred storing member at row %row (%name):")
                                     )
                                 );
                                 return false;
@@ -467,7 +467,7 @@ class CsvIn extends Csv implements FileInterface
                             str_replace(
                                 array('%row', '%name'),
                                 array($row, $member->sname),
-                                _T("An error occured storing member at row %row (%name):")
+                                _T("An error occurred storing member at row %row (%name):")
                             )
                         );
                         if (is_array($valid)) {
@@ -502,7 +502,7 @@ class CsvIn extends Csv implements FileInterface
         $error = null;
         switch ($code) {
             case self::DATA_IMPORT_ERROR:
-                $error = _T("An error occured while importing members");
+                $error = _T("An error occurred while importing members");
                 break;
         }
 

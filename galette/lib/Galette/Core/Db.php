@@ -578,7 +578,7 @@ class Db
         } catch (\Exception $e) {
             $this->connection->rollBack();
             Analog::log(
-                'An error occured while converting to utf table ' .
+                'An error occurred while converting to utf table ' .
                 $table . ' (' . $e->getMessage() . ')',
                 Analog::ERROR
             );
@@ -674,7 +674,7 @@ class Db
             }
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured while converting contents to UTF-8 for table ' .
+                'An error occurred while converting contents to UTF-8 for table ' .
                 $table . ' (' . $e->getMessage() . ')',
                 Analog::ERROR
             );

@@ -1557,7 +1557,7 @@ class Members
         } catch (\Exception $e) {
             $zdb->connection->rollBack();
             Analog::log(
-                'An error occured trying to retrieve members with ' .
+                'An error occurred trying to retrieve members with ' .
                 'empty logins/passwords (' . $e->getMessage(),
                 Analog::ERROR
             );

@@ -190,7 +190,7 @@
                     $('#date_fin_cotis').val(res.date_fin_cotis);
                 },
                 error: function() {
-                    alert("{_T string="An error occured retrieving dates :(" escape="js"}");
+                    alert("{_T string="An error occurred retrieving dates :(" escape="js"}");
                 }
             });
 

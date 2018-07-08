@@ -203,7 +203,7 @@
                         _preview_dialog(res);
                     },
                     error: function() {
-                        alert("{_T string="An error occured displaying preview :(" escape="js"}");
+                        alert("{_T string="An error occurred displaying preview :(" escape="js"}");
                     }
                 });
                 return false;

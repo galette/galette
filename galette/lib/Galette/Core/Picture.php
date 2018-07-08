@@ -381,7 +381,7 @@ class Picture implements FileInterface
                 $zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occured attempting to delete picture ' . $this->db_id .
+                'An error occurred attempting to delete picture ' . $this->db_id .
                 'from database | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -559,7 +559,7 @@ class Picture implements FileInterface
         } catch (\Exception $e) {
             $zdb->connection->rollBack();
             Analog::log(
-                'An error occured storing picture in database: ' .
+                'An error occurred storing picture in database: ' .
                 $e->getMessage(),
                 Analog::ERROR
             );
@@ -846,7 +846,7 @@ class Picture implements FileInterface
         switch ($code) {
             case self::SQL_ERROR:
             case self::SQL_BLOB_ERROR:
-                $error = _T("An SQL error has occured.");
+                $error = _T("An SQL error has occurred.");
                 break;
         }
 

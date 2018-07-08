@@ -256,7 +256,7 @@ $app->map(
                     $str = str_replace(
                         '%s',
                         $login_adh,
-                        _T("An error occured storing temporary password for %s. Please inform an admin.")
+                        _T("An error occurred storing temporary password for %s. Please inform an admin.")
                     );
                     $this->history->add($str);
                     $this->flash->addMessage(
@@ -369,7 +369,7 @@ $app->post(
                         $post['mdp_adh']
                     );
                     if ($res !== true) {
-                        $error = _T("An error occured while updating your password.");
+                        $error = _T("An error occurred while updating your password.");
                     } else {
                         $this->history->add(
                             str_replace(
