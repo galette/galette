@@ -45,20 +45,24 @@
                 </div>
             </fieldset>
             <fieldset class="cssform" id="group_managers">
-                <legend>{_T string="Managers"}</legend>
+                {assign var="managers" value=$group->getManagers()}
+                <legend>
+                    {_T string="Managers"} ({$managers|@count})
+                </legend>
                 <div>
                     {if $group}
-                        {include file="group_persons.tpl" person_mode="managers" persons=$group->getManagers()}
+                        {include file="group_persons.tpl" person_mode="managers" persons=$managers}
                     {/if}
                 </div>
            </fieldset>
             <fieldset class="cssform" id="group_members">
+                {assign var="members" value=$group->getMembers()}
                 <legend>
-                    {_T string="Members"}
+                    {_T string="Members"} ({$members|@count})
                </legend>
                 <div>
                     {if $group}
-                        {include file="group_persons.tpl" person_mode="members" persons=$group->getMembers()}
+                        {include file="group_persons.tpl" person_mode="members" persons=$members}
                     {/if}
                 </div>
             </fieldset>
