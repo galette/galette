@@ -1392,14 +1392,23 @@ class Members
 
                         $qry = '';
                         $prefix = 'a.';
+                        $dyn_field = false;
                         if (strpos($fs['field'], 'dyn_') === 0) {
                             // simple dynamic field spotted!
                             $index = str_replace('dyn_', '', $fs['field']);
+                            $dyn_field = DynamicField::loadFieldType($zdb, (int)$index);
                             $prefix = 'df' . $index . '.';
                             $fs['field'] = 'val';
                         }
 
-                        if (!strncmp($fs['field'], 'bool_', strlen('bool_'))) {
+                        if ($dyn_field && $dyn_field instanceof \Galette\DynamicFields\Boolean) {
+                            if ($fs['search'] != 0) {
+                                $qry .= $prefix . $fs['field'] . $qop  . ' ' .
+                                    $fs['search'] ;
+                            } else {
+                                $qry .= $prefix . $fs['field'] . ' IS NULL';
+                            }
+                        } elseif (!strncmp($fs['field'], 'bool_', strlen('bool_'))) {
                             $qry .= $prefix . $fs['field'] . $qop  . ' ' .
                                 $fs['search'] ;
                         } elseif ($fs['qry_op'] === AdvancedMembersList::OP_BEFORE
