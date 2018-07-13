@@ -373,7 +373,7 @@ $app->add(function ($request, $response, $next) {
 /**
  * Change language middleware
  */
-$app->add(function ($request, $response, $next) use ($i18n, $lang) {
+$app->add(function ($request, $response, $next) use ($i18n) {
     $get = $request->getQueryParams();
 
     if (isset($get['pref_lang'])) {
