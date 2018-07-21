@@ -370,7 +370,7 @@ class Members
 
                 //delete dynamic fields values
                 $del_qry = $zdb->delete(DynamicFieldsHandle::TABLE);
-                $del_qry->where('field_form', 'adh');
+                $del_qry->where(['field_form' => 'adh']);
                 $del_qry->where->in('item_id', $list);
                 $del = $zdb->execute($del_qry);
 
