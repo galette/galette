@@ -506,23 +506,33 @@ class Contribution extends atoum
         $date_enr->setTime(0, 0, 0);
         $date_enr->sub(new \DateInterval('P236D'));
 
-        $date_begin = new \DateTime();
-        $date_begin->sub(new \DateInterval('P150D'));
+        //Q&D fix for dates problem with Faker :(
+        $fix_interval = new \DateInterval('P1D');
+        $qd_fixed = false;
+        if ($contrib->raw_date->diff($date_enr)->days == 1) {
+            $date_enr->add($fix_interval);
+            $qd_fixed = true;
+        }
+
+        $date_begin = clone $date_enr;
+        $date_begin->add(new \DateInterval('P86D'));
+
+        if (!$qd_fixed && $contrib->raw_begin_date->diff($date_begin)->days == 1) {
+            $date_begin->add($fix_interval);
+            $qd_fixed = true;
+        }
 
         $date_end = clone $date_begin;
         $date_end->add(new \DateInterval('P1Y'));
 
+        if (!$qd_fixed && $contrib->raw_end_date->diff($date_end)->days == 1) {
+            $date_end->add($fix_interval);
+            $qd_fixed = true;
+        }
+
         $this->object($contrib->raw_date)->isInstanceOf('DateTime');
         $this->object($contrib->raw_begin_date)->isInstanceOf('DateTime');
         $this->object($contrib->raw_end_date)->isInstanceOf('DateTime');
-
-        //Q&D fix for dates problem with Faker :(
-        if ($contrib->raw_date->diff($date_enr)->days == 1) {
-            $interval = new \DateInterval('P1D');
-            $date_enr->add($interval);
-            $date_begin->add($interval);
-            $date_end->add($interval);
-        }
 
         $expecteds = [
             'id_adh' => "{$this->adh->id}",
