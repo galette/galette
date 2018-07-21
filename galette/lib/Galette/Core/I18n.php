@@ -362,6 +362,7 @@ class I18n
                 ];
             }
         }
+        ksort($langs);
         $this->langs = $langs;
         return $this->langs;
     }
