@@ -715,6 +715,7 @@ class Contribution
             $del = $this->zdb->execute($delete);
             if ($del->count() > 0) {
                 $this->updateDeadline();
+                $this->dynamicsRemove(true);
             } else {
                 throw new \RuntimeException(
                     'Contribution has not been removed!'

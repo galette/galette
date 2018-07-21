@@ -200,6 +200,8 @@ class Transaction
             );
             $this->zdb->execute($delete);
 
+            $this->dynamicsRemove(true);
+
             if ($transaction) {
                 $this->zdb->connection->commit();
             }

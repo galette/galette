@@ -469,4 +469,50 @@ class DynamicFieldsHandle
     {
         return $this->has_changed;
     }
+
+    /**
+     * Remove values
+     *
+     * @param integer $item_id     Curent item id to use (will be used if current item_id is 0)
+     * @param boolean $transaction True if a transaction already exists
+     *
+     * @return boolean
+     */
+    public function removeValues($item_id = null, $transaction = false)
+    {
+        try {
+            if ($item_id !== null && ($this->item_id == null || $this->item_id == 0)) {
+                $this->item_id = $item_id;
+            }
+            if (!$transaction) {
+                $this->zdb->connection->beginTransaction();
+            }
+
+            $delete = $this->zdb->delete(self::TABLE);
+            $delete->where(
+                array(
+                    'item_id'       => $this->item_id,
+                    'field_form'    => $this->form_name
+                )
+            );
+            $this->zdb->execute($delete);
+
+            if (!$transaction) {
+                $this->zdb->connection->commit();
+            }
+            return true;
+        } catch (\Exception $e) {
+            if (!$transaction) {
+                $this->zdb->connection->rollBack();
+            } else {
+                throw $e;
+            }
+            Analog::log(
+                'An error occurred removing dynamic field. Form name: ' . $this->form_name .
+                ' | Error was: ' . $e->getMessage(),
+                Analog::ERROR
+            );
+            return false;
+        }
+    }
 }

@@ -155,7 +155,7 @@ trait DynamicsTrait
     {
         if ($this->dynamics === null) {
             Analog::log(
-                'Dynamics fields have not been loaded, cannot be checked. (from: ' . __METHOD__ . ')',
+                'Dynamics fields have not been loaded, cannot be stored. (from: ' . __METHOD__ . ')',
                 Analog::WARNING
             );
             $this->loadDynamicFields();
@@ -178,7 +178,7 @@ trait DynamicsTrait
     {
         if ($this->dynamics === null) {
             Analog::log(
-                'Dynamics fields have not been loaded, cannot be checked. (from: ' . __METHOD__ . ')',
+                'Dynamics fields have not been loaded, cannot be stored. (from: ' . __METHOD__ . ')',
                 Analog::WARNING
             );
             $this->loadDynamicFields();
@@ -259,6 +259,28 @@ trait DynamicsTrait
             $this->dynamicsStore();
         }
     }
+
+    /**
+     * Remove dynamic fields values
+     *
+     * @param boolean $transaction True if a transaction already exists
+     *
+     * @return boolean
+     */
+    protected function dynamicsRemove($transaction = false)
+    {
+        if ($this->dynamics === null) {
+            Analog::log(
+                'Dynamics fields have not been loaded, cannot be removed. (from: ' . __METHOD__ . ')',
+                Analog::WARNING
+            );
+            $this->loadDynamicFields();
+        }
+        $return = $this->dynamics->removeValues($this->id, $transaction);
+        return $return;
+    }
+
+
 
     /**
      * Get errors
