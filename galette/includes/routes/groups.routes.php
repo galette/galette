@@ -98,7 +98,7 @@ $app->get(
 )->setName('groups')->add($authenticate);
 
 $app->get(
-    __('/group/add', 'routes') . '/{name}',
+    __('/group', 'routes') . __('/add', 'routes') . '/{name}',
     function ($request, $response, $args) {
         $group = new Group();
         $group->setLogin($this->login);
@@ -116,7 +116,7 @@ $app->get(
 )->setName('add_group')->add($authenticate);
 
 $app->post(
-    __('/group/edit', 'routes') . '/{id:\d+}',
+    __('/group', 'routes') . __('/edit', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
         $group = new Group((int)$args['id']);
@@ -178,7 +178,7 @@ $app->post(
 )->setName('doEditGroup')->add($authenticate);
 
 $app->get(
-    __('/group/remove', 'routes') . '/{id:\d+}',
+    __('/group', 'routes') . __('/remove', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $group = new Group((int)$args['id']);
 
@@ -209,7 +209,7 @@ $app->get(
 )->setName('removeGroup')->add($authenticate);
 
 $app->post(
-    __('/group/remove', 'routes') . '/{id:\d+}',
+    __('/group', 'routes') . __('/remove', 'routes') . '/{id:\d+}',
     function ($request, $response) {
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
@@ -269,7 +269,7 @@ $app->post(
 )->setName('doRemoveGroup')->add($authenticate);
 
 $app->get(
-    __('/pdf/groups', 'routes') . '[/{id:\d+}]',
+    __('/pdf', 'routes') . __('/groups', 'routes') . '[/{id:\d+}]',
     function ($request, $response, $args) {
         $groups = new Groups($this->zdb, $this->login);
 
@@ -303,7 +303,7 @@ $app->get(
 )->setName('pdf_groups')->add($authenticate);
 
 $app->post(
-    __('/ajax/group', 'routes'),
+    __('/ajax', 'routes') . __('/group', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
         $id = $post['id_group'];
@@ -326,7 +326,7 @@ $app->post(
 )->setName('ajax_group')->add($authenticate);
 
 $app->post(
-    __('/ajax/unique_groupname', 'routes'),
+    __('/ajax', 'routes') . __('/unique-groupname', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
         if (!isset($post['gname']) || $post['gname'] == '') {
@@ -342,7 +342,7 @@ $app->post(
 )->setName('ajax_groupname_unique')->add($authenticate);
 
 $app->post(
-    __('/ajax/groups', 'routes'),
+    __('/ajax', 'routes') . __('/groups', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
 

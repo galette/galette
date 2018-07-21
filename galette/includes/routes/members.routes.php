@@ -857,7 +857,7 @@ $app->get(
 )->add($authenticate);
 
 $app->post(
-    __('/member/store', 'routes') . '[/{self:' . __('subscribe', 'routes') . '}]',
+    __('/member', 'routes') . __('/store', 'routes') . '[/{self:' . __('subscribe', 'routes') . '}]',
     function ($request, $response, $args) {
         if (!$this->preferences->pref_bool_selfsubscribe && !$this->login->isLogged()) {
             return $response
@@ -1319,7 +1319,7 @@ $app->post(
 )->setName('storemembers');
 
 $app->get(
-    __('/member/remove', 'routes') . '/{id:\d+}',
+    __('/member', 'routes') . __('/remove', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $adh = new Adherent($this->zdb, (int)$args['id']);
 
@@ -1381,7 +1381,7 @@ $app->get(
 )->setName('removeMembers')->add($authenticate);
 
 $app->post(
-    __('/member/remove', 'routes') . '[/{id:\d+}]',
+    __('/member', 'routes') . __('/remove', 'routes') . '[/{id:\d+}]',
     function ($request, $response) {
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
@@ -2525,7 +2525,7 @@ $app->get(
 
 $app->map(
     ['GET', 'POST'],
-    __('/attendance-sheet/details', 'routes'),
+    __('/attendance-sheet', 'routes') . __('/details', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
 
@@ -3129,7 +3129,6 @@ $app->post(
                     } else {
                         $error_detected = array_merge($error_detected, $valid);
                     }
-
                 }
             }
         }

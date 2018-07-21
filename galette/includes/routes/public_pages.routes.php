@@ -112,7 +112,7 @@ $app->group(__('/public', 'routes'), function () {
 
     //members list filtering
     $this->post(
-        __('/members/filter', 'routes') . '[/{from}]',
+        __('/members', 'routes') . __('/filter', 'routes') . '[/{from}]',
         function ($request, $response, $args) {
             $post = $request->getParsedBody();
             if (isset($this->session->public_filter_members)) {

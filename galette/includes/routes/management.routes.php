@@ -1718,7 +1718,7 @@ $app->post(
 )->setName('doImport')->add($authenticate);
 
 $app->post(
-    __('/import/upload', 'routes'),
+    __('/import', 'routes') . __('/upload', 'routes'),
     function ($request, $response) {
         $csv = new CsvIn($this->zdb);
         if (isset($_FILES['new_file'])) {
@@ -1770,7 +1770,7 @@ $app->post(
 )->setname('uploadImportFile')->add($authenticate);
 
 $app->get(
-    __('/import/model', 'routes'),
+    __('/import', 'routes') . __('/model', 'routes'),
     function ($request, $response) {
         $model = new ImportModel();
         $model->load();
@@ -1820,7 +1820,7 @@ $app->get(
 )->setName('importModel')->add($authenticate);
 
 $app->get(
-    __('/import/model/get', 'routes'),
+    __('/import', 'routes') . __('/model', 'routes') . __('/get', 'routes'),
     function ($request, $response) {
         $model = new ImportModel();
         $model->load();
@@ -1857,7 +1857,7 @@ $app->get(
 )->setName('getImportModel')->add($authenticate);
 
 $app->post(
-    __('/import/model/store', 'routes'),
+    __('/import', 'routes') . __('/model', 'routes') . __('/store', 'routes'),
     function ($request, $response) {
         $model = new ImportModel();
         $model->load();
@@ -1883,7 +1883,7 @@ $app->post(
 )->setName('storeImportModel')->add($authenticate);
 
 $app->get(
-    __('/models/pdf', 'routes'),
+    __('/models', 'routes') . __('/pdf', 'routes'),
     function ($request, $response) {
         $id = 1;
         if (isset($_GET['id'])) {
@@ -1939,7 +1939,7 @@ $app->get(
 )->setName('pdfModels')->add($authenticate);
 
 $app->post(
-    __('/models/pdf', 'routes'),
+    __('/models', 'routes') . __('/pdf', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
         $type = null;
@@ -2157,7 +2157,7 @@ $app->post(
 )->setName('doRemoveTitle')->add($authenticate);
 
 $app->get(
-    __('/titles/edit', 'routes') . '/{id:\d+}',
+    __('/titles', 'routes') . __('/edit', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $id = $args['id'];
         $title = new Title((int)$id);
@@ -2176,7 +2176,7 @@ $app->get(
 )->setname('editTitle')->add($authenticate);
 
 $app->post(
-    __('/titles/edit', 'routes') . '/{id:\d+}',
+    __('/titles', 'routes') . __('/edit', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $id = $args['id'];
         $post = $request->getParsedBody();
