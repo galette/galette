@@ -1354,7 +1354,7 @@ $app->get(
         $filters =  $this->session->filter_members;
 
         $data = [
-            'id'           => $filters->selected,
+            'id'            => $filters->selected,
             'redirect_uri'  => $this->router->pathFor('members')
         ];
 

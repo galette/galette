@@ -222,7 +222,7 @@
                         <a href="{path_for name="contribution" data=["type" => $ctype, "action" => {_T string="edit" domain="routes"}, "id" => $contribution->id]}">
                             <img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="Edit the contribution"}"/>
                         </a>
-                        <a class="delete" href="{path_for name="removeContributions" data=["type" => {_T string="contributions" domain="routes"}, "id" => $contribution->id]}">
+                        <a class="delete" href="{path_for name="removeContribution" data=["type" => {_T string="contributions" domain="routes"}, "id" => $contribution->id]}">
                             <img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="Delete the contribution"}"/>
                         </a>
                     </td>
@@ -241,7 +241,7 @@
     {if ($login->isAdmin() or $login->isStaff()) && $mode neq 'ajax'}
         <ul class="selection_menu">
             <li>{_T string="For the selection:"}</li>
-            <li><input type="submit" id="delete" onclick="return confirm('{_T string="Do you really want to delete all selected contributions?"|escape:"javascript"}');" name="delete" value="{_T string="Delete"}"/></li>
+            <li><input type="submit" id="delete" name="delete" value="{_T string="Delete"}"/></li>
         </ul>
     {/if}
 {/if}
@@ -273,6 +273,25 @@
 
 {block name="javascripts"}
         <script type="text/javascript">
+        var _checkselection = function() {
+            var _checkeds = $('table.listing').find('input[type=checkbox]:checked').length;
+            if ( _checkeds == 0 ) {
+                var _el = $('<div id="pleaseselect" title="{_T string="No contribution selected" escape="js"}">{_T string="Please make sure to select at least one contribution from the list to perform this action." escape="js"}</div>');
+                _el.appendTo('body').dialog({
+                    modal: true,
+                    buttons: {
+                        Ok: function() {
+                            $(this).dialog( "close" );
+                        }
+                    },
+                    close: function(event, ui){
+                        _el.remove();
+                    }
+                });
+                return false;
+            }
+            return true;
+        }
             $(function(){
                 var _init_contribs_page = function(res){
                     $('#nbshow').change(function() {
@@ -297,6 +316,7 @@
                 _init_contribs_page();
 
                 {include file="js_removal.tpl"}
+                {include file="js_removal.tpl" selector="#delete" deleteurl="'{path_for name="removeContributions" data=["type" => {_T string="contributions" domain="routes"}]}'" extra_check="if (!_checkselection()) {ldelim}return false;{rdelim}" extra_data="delete: true, contrib_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()" method="POST"}
             });
         </script>
 {/block}

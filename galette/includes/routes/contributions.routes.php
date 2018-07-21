@@ -1104,6 +1104,57 @@ $app->get(
         );
         return $response;
     }
+)->setName('removeContribution')->add($authenticate);
+
+$app->post(
+    '/{type:' . __('contributions', 'routes') .'|' . __('transactions', 'routes') .'}' .
+        __('/batch', 'routes') . __('/remove', 'routes'),
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+
+        $raw_type = null;
+        switch ($args['type']) {
+            case __('transactions', 'routes'):
+                $raw_type = 'transactions';
+                break;
+            case __('contributions', 'routes'):
+                $raw_type = 'contributions';
+                break;
+        }
+
+        $data = [
+            'id'            => $post['contrib_sel'],
+            'redirect_uri'  => $this->router->pathFor('contributions', ['type' => $args['type']])
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'type'          => ($raw_type === 'contributions') ? _T('Contributions') : _T('Transactions'),
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => sprintf(
+                    _T('Remove %1$s'),
+                    ($raw_type === 'contributions') ? _T('contributions') : _T('transactions')
+                ),
+                'message'       => str_replace(
+                    '%count',
+                    count($data['id']),
+                    ($raw_type === 'contributions' ?
+                        _T('You are about to remove %count contributions.') :
+                        _T('You are about to remove %count transactions.'))
+                ),
+                'form_url'      => $this->router->pathFor(
+                    'doRemoveContribution',
+                    ['type' => $args['type']]
+                ),
+                'cancel_uri'    => $data['redirect_uri'],
+                'data'          => $data
+            )
+        );
+        return $response;
+    }
 )->setName('removeContributions')->add($authenticate);
 
 $app->post(
@@ -1115,10 +1166,10 @@ $app->post(
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
         $success = false;
 
-        if (isset($post['contrib_sel'])) {
-            $ids = $post['contrib_sel'];
-        } elseif (isset($post['id'])) {
-            $ids = [$post['id']];
+        if (!is_array($post['id'])) {
+            $ids = (array)$post['id'];
+        } else {
+            $ids = $post['id'];
         }
 
         $raw_type = null;

@@ -300,6 +300,7 @@ $container['acls'] = function ($c) {
         'printContribution'         => 'staff',
         'attach_contribution'       => 'staff',
         'detach_contribution'       => 'staff',
+        'removeContribution'        => 'staff',
         'removeContributions'       => 'staff',
         'pdf_groups'                => 'groupmanager',
         'ajax_group'                => 'groupmanager',

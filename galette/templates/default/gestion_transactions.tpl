@@ -114,7 +114,7 @@
                         <a href="{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $transaction->id]}">
                             <img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/>
                         </a>
-                        <a class="delete" href="{path_for name="removeContributions" data=["type" => {_T string="transactions" domain="routes"}, "id" => $transaction->id]}">
+                        <a class="delete" href="{path_for name="removeContribution" data=["type" => {_T string="transactions" domain="routes"}, "id" => $transaction->id]}">
                             <img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/>
                         </a>
                     </td>
