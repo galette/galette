@@ -211,7 +211,13 @@ class History
             //add limits to retrieve only relavant rows
             $this->filters->setLimits($select);
             $results = $this->zdb->execute($select);
-            return $results;
+
+            $entries = [];
+            foreach ($results as $result) {
+                $entries[] = $result;
+            }
+
+            return $entries;
         } catch (\Exception $e) {
             Analog::log(
                 'Unable to get history. | ' . $e->getMessage(),
