@@ -443,14 +443,18 @@ $container['translator'] = function ($c) {
     }
 
     $translator->setLocale($c->get('i18n')->getLongID());
-    $translator->setCache($c->get('cache'));
+    if (!isset($container['mode']) || $c->get('mode') !== 'INSTALL' && $c->get('mode') !== 'NEED_UPDATE') {
+        $translator->setCache($c->get('cache'));
+    }
     return $translator;
 };
 
 //For bad existing globals can be used...
-$hist = $container['history'];
-$login = $container['login'];
-$zdb = $container['zdb'];
+if (!isset($container['mode']) || $container['mode'] !== 'INSTALL' && $container['mode'] !== 'NEED_UPDATE') {
+    $hist = $container['history'];
+    $login = $container['login'];
+    $zdb = $container['zdb'];
+}
 $i18n = $container['i18n'];
 $translator = $container['translator'];
 

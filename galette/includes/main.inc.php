@@ -70,8 +70,7 @@ if ($needs_update) {
         'themes/default/'
     );
 
-    $i18n = new Galette\Core\I18n();
-    require_once __DIR__ . '/i18n.inc.php';
+    require_once '../includes/dependencies.php';
 
     $app->add(
         new Galette\Core\Middleware(
