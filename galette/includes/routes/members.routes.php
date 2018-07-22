@@ -624,39 +624,6 @@ $app->get(
                 );
         }
 
-        $navigate = array();
-
-        if (isset($this->session->filter_members)) {
-            $filters =  $this->session->filter_members;
-        } else {
-            $filters = new MembersList();
-        }
-
-        if ($this->login->isAdmin()
-            || $this->login->isStaff()
-            || $this->login->isGroupManager()
-        ) {
-            $m = new Members($filters);
-            $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
-            $ids = $ids->toArray();
-            foreach ($ids as $k => $m) {
-                if ($m['id_adh'] == $member->id) {
-                    $navigate = array(
-                        'cur'  => $m['id_adh'],
-                        'count' => count($ids),
-                        'pos' => $k+1
-                    );
-                    if ($k > 0) {
-                        $navigate['prev'] = $ids[$k-1]['id_adh'];
-                    }
-                    if ($k < count($ids)-1) {
-                        $navigate['next'] = $ids[$k+1]['id_adh'];
-                    }
-                    break;
-                }
-            }
-        }
-
         // flagging fields visibility
         $fc = $this->fields_config;
         $display_elements = $fc->getDisplayElements($this->login);
@@ -669,7 +636,6 @@ $app->get(
                 'page_title'        => _T("Member Profile"),
                 'require_dialog'    => true,
                 'member'            => $member,
-                'navigate'          => $navigate,
                 'pref_lang_img'     => $this->i18n->getFlagFromId($member->language),
                 'pref_lang'         => ucfirst($this->i18n->getNameFromId($member->language)),
                 'pref_card_self'    => $this->preferences->pref_card_self,
@@ -680,7 +646,7 @@ $app->get(
         );
         return $response;
     }
-)->setName('member')->add($authenticate);
+)->setName('member')->add($authenticate)->add($navMiddleware);
 
 $app->get(
     __('/member', 'routes') . '/{action:' . __('edit', 'routes') . '|' . __('add', 'routes') . '}[/{id:\d+}]',
@@ -782,36 +748,6 @@ $app->get(
             $title .= ' (' . _T("creation") . ')';
         }
 
-        $navigate = array();
-
-        if (isset($this->session->filter_members)) {
-            $filters =  $this->session->filter_members;
-        } else {
-            $filters = new MembersList();
-        }
-
-        if (($this->login->isAdmin() || $this->login->isStaff())) {
-            $m = new Members();
-            $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
-            $ids = $ids->toArray();
-            foreach ($ids as $k => $m) {
-                if ($m['id_adh'] == $member->id) {
-                    $navigate = array(
-                        'cur'  => $m['id_adh'],
-                        'count' => count($ids),
-                        'pos' => $k+1
-                    );
-                    if ($k > 0) {
-                        $navigate['prev'] = $ids[$k-1]['id_adh'];
-                    }
-                    if ($k < count($ids)-1) {
-                        $navigate['next'] = $ids[$k+1]['id_adh'];
-                    }
-                    break;
-                }
-            }
-        }
-
         //Status
         $statuts = new Status($this->zdb);
 
@@ -832,7 +768,6 @@ $app->get(
                 $route_params,
                 array(
                     'parent_tpl'        => 'page.tpl',
-                    'navigate'          => $navigate,
                     'require_dialog'    => true,
                     'autocomplete'      => true,
                     'page_title'        => $title,
@@ -854,7 +789,7 @@ $app->get(
     }
 )->setName(
     'editmember'
-)->add($authenticate);
+)->add($authenticate)->add($navMiddleware);
 
 $app->post(
     __('/member', 'routes') . __('/store', 'routes') . '[/{self:' . __('subscribe', 'routes') . '}]',
