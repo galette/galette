@@ -111,7 +111,7 @@
                         {/if}
                         </a>
                     </th>
-{if ($login->isAdmin() or $login->isStaff()) and !isset($member)}
+{if (($login->isAdmin() or $login->isStaff()) and !isset($member)) or isset($pmember)}
                     <th class="left">
                         <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_MEMBER"|constant]}">{_T string="Member"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_MEMBER')}
@@ -230,7 +230,7 @@
                     <td class="{$cclass} nowrap" data-title="{_T string="Date"}">{$contribution->date}</td>
                     <td class="{$cclass} nowrap" data-title="{_T string="Begin"}">{$contribution->begin_date}</td>
                     <td class="{$cclass} nowrap" data-title="{_T string="End"}">{$contribution->end_date}</td>
-    {if ($login->isAdmin() or $login->isStaff()) && !isset($member)}
+    {if (($login->isAdmin() or $login->isStaff()) && !isset($member)) or isset($pmember)}
                     <td class="{$cclass}" data-title="{_T string="Member"}">
         {if isset($member)}
             {assign var="mname" value=$member->sname}

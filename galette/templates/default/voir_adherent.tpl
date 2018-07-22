@@ -61,7 +61,7 @@
                     {_T string="Modification"}
                 </a>
             </li>
-{if $login->isAdmin() or $login->isStaff()}
+{if $login->isAdmin() or $login->isStaff() || $login->id eq $member->id || ($member->hasParent() and $member->parent->id eq $login->id)}
             <li>
                 <a
                     href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}"
@@ -72,6 +72,8 @@
                     {_T string="View contributions"}
                 </a>
             </li>
+{/if}
+{if $login->isAdmin() or $login->isStaff()}
             <li>
                 <a
                     href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?id_adh={$member->id}"

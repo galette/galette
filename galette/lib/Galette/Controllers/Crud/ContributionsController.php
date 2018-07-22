@@ -37,6 +37,7 @@
 namespace Galette\Controllers\Crud;
 
 use Throwable;
+use Analog\Analog;
 use Galette\Controllers\CrudController;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -426,22 +427,39 @@ class ContributionsController extends CrudController
                     $filters->orderby = $value;
                     break;
                 case 'member':
-                    if (
-                        ($this->login->isAdmin()
-                        || $this->login->isStaff())
-                    ) {
-                        if ($value == 'all') {
-                            $filters->filtre_cotis_adh = null;
-                        } else {
-                            $filters->filtre_cotis_adh = $value;
-                        }
-                    }
+                    $filters->filtre_cotis_adh = ($value === 'all' ? null : $value);
                     break;
             }
         }
 
-        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-            $filters->filtre_cotis_adh = $this->login->id;
+        if (!$this->login->isAdmin() && !$this->login->isStaff() && $value != $this->login->id) {
+            if ($value == 'all') {
+                $value = null;
+                $filters->filtre_cotis_children = $this->login->id;
+            } else {
+                $member = new Adherent(
+                    $this->zdb,
+                    (int)$value,
+                    [
+                        'picture' => false,
+                        'groups' => false,
+                        'dues' => false,
+                        'parent' => true
+                    ]
+                );
+                if (
+                    !$member->hasParent() ||
+                    $member->hasParent() && $member->parent->id != $this->login->id
+                ) {
+                    $value = $this->login->id;
+                    Analog::log(
+                        'Trying to display contributions for member #' . $value .
+                        ' without appropriate ACLs',
+                        Analog::WARNING
+                    );
+                }
+            }
+            $filters->filtre_cotis_children = $value;
         }
 
         $class = '\\Galette\\Repository\\' . ucwords($raw_type);
@@ -470,6 +488,20 @@ class ContributionsController extends CrudController
             $member = new Adherent($this->zdb);
             $member->load($filters->filtre_cotis_adh);
             $tpl_vars['member'] = $member;
+        }
+
+        if ($filters->filtre_cotis_children != false) {
+            $member = new Adherent(
+                $this->zdb,
+                $filters->filtre_cotis_children,
+                [
+                    'picture'   => false,
+                    'groups'    => false,
+                    'dues'      => false,
+                    'parent'    => true
+                ]
+            );
+            $tpl_vars['pmember'] = $member;
         }
 
         // display page

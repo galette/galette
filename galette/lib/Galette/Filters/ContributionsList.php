@@ -75,6 +75,7 @@ class ContributionsList extends Pagination
     private $end_date_filter = null;
     private $payment_type_filter = null;
     private $filtre_cotis_adh = null;
+    private $filtre_cotis_children = false;
     private $filtre_transactions = null;
 
     private $from_transaction = false;
@@ -84,6 +85,7 @@ class ContributionsList extends Pagination
         'start_date_filter',
         'end_date_filter',
         'filtre_cotis_adh',
+        'filtre_cotis_children',
         'date_field',
         'payment_type_filter',
         'filtre_transactions',
@@ -128,6 +130,7 @@ class ContributionsList extends Pagination
         $this->payment_type_filter = null;
         $this->filtre_transactions = null;
         $this->filtre_cotis_adh = null;
+        $this->filtre_cotis_children = false;
         $this->from_transaction = false;
         $this->max_amount = null;
     }

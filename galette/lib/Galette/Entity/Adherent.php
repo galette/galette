@@ -46,6 +46,7 @@ use Galette\Core\Password;
 use Galette\Core\Preferences;
 use Galette\Core\History;
 use Galette\Repository\Groups;
+use Galette\Core\Login;
 use Galette\Repository\Members;
 
 /**
@@ -1429,8 +1430,12 @@ class Adherent
      */
     public function store()
     {
-        global $hist, $emitter;
+        global $hist, $emitter, $login;
         $event = null;
+
+        if (!$login->isAdmin() && !$login->isStaff() && !$login->isGroupManager() && $this->id == '') {
+            $this->_parent = $login->id;
+        }
 
         try {
             $values = array();
@@ -1567,7 +1572,6 @@ class Adherent
                     );
                 }
                 $success = true;
-
                 $event = 'member.edit';
             }
 
@@ -1756,6 +1760,9 @@ class Adherent
                                 return $this->$rname;
                             }
                         }
+                        break;
+                    case 'parent_id':
+                        return ($this->_parent instanceof Adherent) ? (int)$this->_parent->id : (int)$this->_parent;
                         break;
                     default:
                         if (!property_exists($this, $rname)) {
@@ -2038,13 +2045,19 @@ class Adherent
      *
      * @return boolean
      */
-    public function canEdit($login)
+    public function canEdit(Login $login)
     {
+        //admin and staff users can edit, as well as member itself
         if ($this->id && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
             return true;
         }
 
-        //check if requested member is part of managed groups
+        //parent can edit their child cards
+        if ($this->hasParent() && $this->parent_id === $login->id) {
+            return true;
+        }
+
+        //group managers can edit members of groups they manage
         if ($login->isGroupManager()) {
             foreach ($this->getGroups() as $g) {
                 if ($login->isGroupManager($g->getId())) {
@@ -2054,6 +2067,18 @@ class Adherent
         }
 
         return false;
+    }
+
+    /**
+     * Can current logged in user display member
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canShow(Login $login)
+    {
+        return $this->canEdit($login);
     }
 
     /**

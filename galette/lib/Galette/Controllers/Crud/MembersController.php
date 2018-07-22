@@ -244,7 +244,7 @@ class MembersController extends CrudController
         );
         $member = new Adherent($this->zdb, $id, $deps);
 
-        if (!$member->canEdit($this->login)) {
+        if (!$member->canShow($this->login)) {
             $this->flash->addMessage(
                 'error_detected',
                 _T("You do not have permission for requested URL.")
@@ -440,7 +440,7 @@ class MembersController extends CrudController
         $member = new Adherent($this->zdb, $id, $deps);
 
         $denied = null;
-        if (!$member->canEdit($this->login)) {
+        if (!$member->canShow($this->login)) {
             $fields = $member->getDynamicFields()->getFields();
             if (!isset($fields[$fid])) {
                 //field does not exists or access is forbidden
@@ -1560,22 +1560,22 @@ class MembersController extends CrudController
         }
 
         // new or edit
-        if ($this->login->isAdmin() || $this->login->isStaff() || $this->login->isGroupManager()) {
-            if (isset($post['id_adh'])) {
-                $member->load((int)$post['id_adh']);
-                if (!$member->canEdit($this->login)) {
-                    //redirection should have been done before. Just throw an Exception.
-                    throw new \RuntimeException(
-                        str_replace(
-                            '%id',
-                            $member->id,
-                            'No right to store member #%id'
-                        )
-                    );
-                }
+        if (isset($post['id_adh'])) {
+            $member->load((int)$post['id_adh']);
+            if (!$member->canEdit($this->login)) {
+                //redirection should have been done before. Just throw an Exception.
+                throw new \RuntimeException(
+                    str_replace(
+                        '%id',
+                        $member->id,
+                        'No right to store member #%id'
+                    )
+                );
             }
         } else {
-            $member->load($this->login->id);
+            if ($member->id != '') {
+                $member->load($this->login->id);
+            }
         }
 
         // flagging required fields

@@ -272,11 +272,32 @@ class Contribution
     public function load($id)
     {
         try {
-            $select = $this->zdb->select(self::TABLE);
-            $select->where(self::PK . ' = ' . $id);
+            $select = $this->zdb->select(self::TABLE, 'c');
+            $select->join(
+                array('a' => PREFIX_DB . Adherent::TABLE),
+                'c.' . Adherent::PK . '=a.' . Adherent::PK,
+                array()
+            );
             //restrict query on current member id if he's not admin nor staff member
             if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                $select->where(Adherent::PK . ' = ' . $this->login->id);
+                if (!$this->login->isGroupManager()) {
+                    $select->where
+                        ->nest()
+                            ->equalTo('a.' . Adherent::PK, $this->login->id)
+                            ->or
+                            ->equalTo('a.parent_id', $this->login->id)
+                        ->unnest()
+                        ->and
+                        ->equalTo('c.' . self::PK, $id)
+                    ;
+                } else {
+                    $select->where([
+                        Adherent::PK    => $this->login->id,
+                        self::PK        => $id
+                    ]);
+                }
+            } else {
+                $select->where->equalTo(self::PK, $id);
             }
 
             $results = $this->zdb->execute($select);
