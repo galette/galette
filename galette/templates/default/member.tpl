@@ -314,6 +314,7 @@
     {/if}
 
     {if !$self_adh}
+        {assign var="parent_fields" value=$member->getParentFields()}
         {if $parent_fields|@count gt 0}
                 $('#detach_parent').on('change', function(){
                     var _checked = $(this).is(':checked');

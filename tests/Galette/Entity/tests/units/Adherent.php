@@ -589,4 +589,43 @@ class Adherent extends atoum
 
         $this->boolean($this->adh->hasPicture())->isTrue();
     }
+
+    /**
+     * Test canEdit
+     *
+     * @return void
+     */
+    public function testCanEdit()
+    {
+        $adh = new \Galette\Entity\Adherent($this->zdb);
+
+        //non authorized
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->boolean($adh->canEdit($login))->isFalse();
+
+        //admin => authorized
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->calling($login)->isAdmin = true;
+        $this->boolean($adh->canEdit($login))->isTrue();
+
+        //staff => authorized
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->calling($login)->isStaff = true;
+        $this->boolean($adh->canEdit($login))->isTrue();
+
+        //group managers
+        $adh = new \mock\Galette\Entity\Adherent($this->zdb);
+
+        $g1 = new \mock\Galette\Entity\Group();
+        $this->calling($g1)->getId = 1;
+        $g2 = new \mock\Galette\Entity\Group();
+        $this->calling($g1)->getId = 2;
+
+        $this->calling($adh)->getGroups = [$g1, $g2];
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->boolean($adh->canEdit($login))->isFalse();
+
+        $this->calling($login)->isGroupManager = true;
+        $this->boolean($adh->canEdit($login))->isTrue();
+    }
 }

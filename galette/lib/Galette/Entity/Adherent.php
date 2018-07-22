@@ -1881,4 +1881,49 @@ class Adherent
     {
         return $this->errors;
     }
+
+    /**
+     * Get user groups
+     *
+     * @return array
+     */
+    public function getGroups()
+    {
+        return $this->_groups;
+    }
+
+    /**
+     * Get user managed groups
+     *
+     * @return array
+     */
+    public function getManagedGroups()
+    {
+        return $this->_managed_groups;
+    }
+
+    /**
+     * Can current logged in user edit member
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canEdit($login)
+    {
+        if ($this->id && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        //check if requested member is part of managed groups
+        if ($login->isGroupManager()) {
+            foreach ($this->getGroups() as $g) {
+                if ($login->isGroupManager($g->getId())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }

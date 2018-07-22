@@ -611,34 +611,18 @@ $app->get(
         );
         $member = new Adherent($this->zdb, (int)$id, $deps);
 
-        if ($this->login->id != $id && !$this->login->isAdmin() && !$this->login->isStaff()) {
-            //check if requested member is part of managed groups
-            $groups = $member->groups;
-            $is_managed = false;
-            foreach ($groups as $g) {
-                if ($this->login->isGroupManager($g->getId())) {
-                    $is_managed = true;
-                    break;
-                }
-            }
-            if ($is_managed !== true) {
-                //requested member is not part of managed groups,
-                //fall back to logged in member
-                Analog::log(
-                    'Trying to display member #' . $id . ' without appropriate ACLs',
-                    Analog::WARNING
-                );
+        if (!$member->canEdit($this->login)) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("You do not have permission for requested URL.")
+            );
 
-                return $response
-                    ->withStatus(403)
-                    ->withHeader(
-                        'Location',
-                        $this->router->pathFor(
-                            'member',
-                            ['id' => $this->login->id]
-                        )
-                    );
-            }
+            return $response
+                ->withStatus(403)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor('me')
+                );
         }
 
         if ($member->id == null) {
@@ -684,7 +668,7 @@ $app->get(
         $action = $args['action'];
         $id = null;
         if (isset($args['id'])) {
-            $id = $args['id'];
+            $id = (int)$args['id'];
         }
 
         if ($action === 'edit' && $id === null) {
@@ -704,40 +688,27 @@ $app->get(
             'children'  => true,
             'dynamics'  => true
         );
-        $route_params = [];
 
         if ($this->session->member !== null) {
             $member = $this->session->member;
             $this->session->member = null;
         } else {
-            $member = new Adherent($this->zdb, null, $deps);
+            $member = new Adherent($this->zdb, $id, $deps);
         }
 
-        if ($this->login->isAdmin() || $this->login->isStaff() || $this->login->isGroupManager()) {
-            if ($id !== null) {
-                if ($member->id != $id) {
-                    $member->load($id);
-                }
-                if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->login->isGroupManager()) {
-                    //check if current logged in user can manage loaded member
-                    $groups = $member->groups;
-                    $can_manage = false;
-                    foreach ($groups as $group) {
-                        if ($this->login->isGroupManager($group->getId())) {
-                            $can_manage = true;
-                            break;
-                        }
-                    }
-                    if ($can_manage !== true) {
-                        Analog::log(
-                            'Logged in member ' . $this->login->login .
-                            ' has tried to load member #' . $member->id .
-                            ' but do not manage any groups he belongs to.',
-                            Analog::WARNING
-                        );
-                        $member->load($this->login->id);
-                    }
-                }
+        if ($id !== null) {
+            if (!$member->canEdit($this->login)) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("You do not have permission for requested URL.")
+                );
+
+                return $response
+                    ->withStatus(403)
+                    ->withHeader(
+                        'Location',
+                        $this->router->pathFor('me')
+                    );
             }
         } else {
             if ($member->id != $id) {
@@ -754,15 +725,14 @@ $app->get(
         }
 
         //handle requirements for parent fields
-        $parent_fields = $member->getParentFields();
-        foreach ($parent_fields as $key => $field) {
-            if ($fc->isRequired($field) && $member->hasParent()) {
-                $fc->setNotRequired($field);
-            } elseif (!$fc->isRequired($field)) {
-                unset($parent_fields[$key]);
+        if ($member->hasParent()) {
+            $parent_fields = $member->getParentFields();
+            foreach ($parent_fields as $field) {
+                if ($fc->isRequired($field)) {
+                    $fc->setNotRequired($field);
+                }
             }
         }
-        $route_params['parent_fields'] = $parent_fields;
 
         // flagging required fields invisible to members
         if ($this->login->isAdmin() || $this->login->isStaff()) {
@@ -810,22 +780,19 @@ $app->get(
         $this->view->render(
             $response,
             'member.tpl',
-            array_merge(
-                $route_params,
-                array(
-                    'parent_tpl'        => 'page.tpl',
-                    'autocomplete'      => true,
-                    'page_title'        => $title,
-                    'member'            => $member,
-                    'self_adh'          => false,
-                    // pseudo random int
-                    'time'              => time(),
-                    'titles_list'       => Titles::getList($this->zdb),
-                    'statuts'           => $statuts->getList(),
-                    'groups'            => $groups_list,
-                    'fieldsets'         => $form_elements['fieldsets'],
-                    'hidden_elements'   => $form_elements['hiddens']
-                )
+            array(
+                'parent_tpl'        => 'page.tpl',
+                'autocomplete'      => true,
+                'page_title'        => $title,
+                'member'            => $member,
+                'self_adh'          => false,
+                // pseudo random int
+                'time'              => time(),
+                'titles_list'       => Titles::getList($this->zdb),
+                'statuts'           => $statuts->getList(),
+                'groups'            => $groups_list,
+                'fieldsets'         => $form_elements['fieldsets'],
+                'hidden_elements'   => $form_elements['hiddens']
             )
         );
         return $response;
@@ -869,30 +836,17 @@ $app->post(
 
         // new or edit
         $adherent['id_adh'] = get_numeric_form_value('id_adh', '');
-
-        if ($this->login->isAdmin() || $this->login->isStaff() || $this->login->isGroupManager()) {
-            if ($adherent['id_adh']) {
-                $member->load($adherent['id_adh']);
-                if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->login->isGroupManager()) {
-                    //check if current logged in user can manage loaded member
-                    $groups = $member->groups;
-                    $can_manage = false;
-                    foreach ($groups as $group) {
-                        if ($this->login->isGroupManager($group->getId())) {
-                            $can_manage = true;
-                            break;
-                        }
-                    }
-                    if ($can_manage !== true) {
-                        Analog::log(
-                            'Logged in member ' . $this->login->login .
-                            ' has tried to load member #' . $member->id .
-                            ' but do not manage any groups he belongs to.',
-                            Analog::WARNING
-                        );
-                        $member->load($this->login->id);
-                    }
-                }
+        if ($adherent['id_adh']) {
+            $member->load((int)$adherent['id_adh']);
+            if (!$member->canEdit($this->login)) {
+                //redirection should have been done before. Just throw an Exception.
+                throw new \RuntimeException(
+                    str_replace(
+                        '%id',
+                        $member->id,
+                        'No right to store member #%id'
+                    )
+                );
             }
         } else {
             $member->load($this->login->id);
@@ -1703,49 +1657,31 @@ $app->get(
             && $args[Adherent::PK] > 0
         ) {
             $id_adh = $args[Adherent::PK];
-            $denied = false;
-            if ($this->login->id != $id_adh
-                && !$this->login->isAdmin()
-                && !$this->login->isStaff()
-                && !$this->login->isGroupManager()
-            ) {
-                $denied = true;
+            $deps = ['dynamics' => true];
+            if ($this->login->id == $id_adh) {
+                $deps['dues'] = true;
             }
+            $adh = new Adherent(
+                $this->zdb,
+                $id_adh,
+                $deps
+            );
+            if (!$adh->canEdit($login)) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("You do not have permission for requested URL.")
+                );
 
-            if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->login->id != $id_adh) {
-                if ($this->login->isGroupManager()) {
-                    $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
-                    //check if current logged in user can manage loaded member
-                    $groups = $adh->groups;
-                    $can_manage = false;
-                    foreach ($groups as $group) {
-                        if ($this->login->isGroupManager($group->getId())) {
-                            $can_manage = true;
-                            break;
-                        }
-                    }
-                    if ($can_manage !== true) {
-                        Analog::log(
-                            'Logged in member ' . $this->login->login .
-                            ' has tried to load member #' . $adh->id .
-                            ' but do not manage any groups he belongs to.',
-                            Analog::WARNING
-                        );
-                        $denied = true;
-                    }
-                } else {
-                    $denied = true;
-                }
-            }
-
-            if ($denied) {
-                //requested member cannot be managed. Load logged in user
-                $id_adh = (int)$this->login->id;
+                return $response
+                    ->withStatus(403)
+                    ->withHeader(
+                        'Location',
+                        $this->router->pathFor('me')
+                    );
             }
 
             //check if member is up to date
             if ($this->login->id == $id_adh) {
-                $adh = new Adherent($this->zdb, (int)$id_adh, ['dues' => true]);
                 if (!$adh->isUp2Date()) {
                     Analog::log(
                         'Member ' . $id_adh . ' is not up to date; cannot get his PDF member card',
@@ -1890,47 +1826,21 @@ $app->get(
     '/members/adhesion-form/{' . Adherent::PK . ':\d+}',
     function ($request, $response, $args) {
         $id_adh = (int)$args[Adherent::PK];
-
-        $denied = false;
-        if ($this->login->id != $args['id']
-            && !$this->login->isAdmin()
-            && !$this->login->isStaff()
-            && !$this->login->isGroupManager()
-        ) {
-            $denied = true;
-        }
-
-        if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->login->id != $args['id']) {
-            if ($this->login->isGroupManager()) {
-                $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
-                //check if current logged in user can manage loaded member
-                $groups = $adh->groups;
-                $can_manage = false;
-                foreach ($groups as $group) {
-                    if ($this->login->isGroupManager($group->getId())) {
-                        $can_manage = true;
-                        break;
-                    }
-                }
-                if ($can_manage !== true) {
-                    Analog::log(
-                        'Logged in member ' . $this->login->login .
-                        ' has tried to load member #' . $adh->id .
-                        ' but do not manage any groups he belongs to.',
-                        Analog::WARNING
-                    );
-                    $denied = true;
-                }
-            } else {
-                $denied = true;
-            }
-        }
-
-        if ($denied) {
-            //requested member cannot be managed. Load logged in user
-            $id_adh = (int)$this->login->id;
-        }
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
+
+        if (!$adh->canEdit($login)) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("You do not have permission for requested URL.")
+            );
+
+            return $response
+                ->withStatus(403)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor('me')
+                );
+        }
 
         $form = $this->preferences->pref_adhesion_form;
         $pdf = new $form($adh, $this->zdb, $this->preferences);
@@ -2734,7 +2644,6 @@ $app->post(
                     Analog::ERROR
                 );
                 throw new Exception('Access denied.');
-                exit(0);
             }
         } else {
             $members_list = $members->getMembersList(true);
@@ -2868,16 +2777,7 @@ $app->post(
 $app->get(
     '/member/{id:\d+}/file/{fid:\d+}/{pos:\d+}/{name}',
     function ($request, $response, $args) {
-        $denied = false;
         $id = (int)$args['id'];
-        if ($this->login->id != $args['id']
-            && !$this->login->isAdmin()
-            && !$this->login->isStaff()
-            && !$this->login->isGroupManager()
-        ) {
-            $denied = true;
-        }
-
         $deps = array(
             'picture'   => false,
             'groups'    => false,
@@ -2888,36 +2788,14 @@ $app->get(
         );
         $member = new Adherent($this->zdb, $id, $deps);
 
-        if (!$denied && $this->login->id != $args['id']
-            && $this->login->isGroupManager()
-            && !$this->login->isStaff()
-            && !$this->login->isAdmin()
-        ) {
-            //check if current logged in user can manage loaded member
-            $groups = $member->groups;
-            $can_manage = false;
-            foreach ($groups as $group) {
-                if ($this->login->isGroupManager($group->getId())) {
-                    $can_manage = true;
-                    break;
-                }
-            }
-            if ($can_manage !== true) {
-                Analog::log(
-                    'Logged in member ' . $this->login->login .
-                    ' has tried to load member #' . $member->id .
-                    ' but do not manage any groups he belongs to.',
-                    Analog::WARNING
-                );
-                $denied = true;
-            }
-        }
-
-        if ($denied === false) {
+        $denied = null;
+        if (!$member->canEdit($this->login)) {
             $fields = $member->getDynamicFields()->getFields();
             if (!isset($fields[$args['fid']])) {
                 //field does not exists or access is forbidden
                 $denied = true;
+            } else {
+                $denied = false;
             }
         }
 
@@ -3135,7 +3013,6 @@ $app->post(
             if (!count($post)) {
                 $error_detected[] = _T("Nothing to do!");
             } else {
-                $is_manager = !$this->login->isAdmin() && !$this->login->isStaff() && $this->login->isGroupManager();
                 foreach ($ids as $id) {
                     $deps = array(
                         'picture'   => false,
@@ -3151,24 +3028,8 @@ $app->post(
                         $this->members_fields,
                         $this->history
                     );
-
-                    if ($is_manager) {
-                        $groups = $member->groups;
-                        $is_managed = false;
-                        foreach ($groups as $g) {
-                            if ($this->login->isGroupManager($g->getId())) {
-                                $is_managed = true;
-                                break;
-                            }
-                        }
-                        if (!$is_managed) {
-                            Analog::log(
-                                'Trying to edit member #' . $id . ' without appropriate ACLs',
-                                Analog::WARNING
-                            );
-                            $error_detected[] = _T('No permission to edit member');
-                            continue;
-                        }
+                    if (!$member->canEdit($login)) {
+                        continue;
                     }
 
                     $valid = $member->check($post, [], $disabled);

@@ -88,27 +88,10 @@ $app->get(
 
         $adh = new Adherent($this->zdb, (int)$id, $deps);
 
-        $is_manager = false;
-        if (!$this->login->isAdmin()
-            && !$this->login->isStaff()
-            && $this->login->isGroupManager()
-        ) {
-            $groups = $adh->groups;
-            foreach ($groups as $group) {
-                if ($this->login->isGroupManager($group->getId())) {
-                    $is_manager = true;
-                    break;
-                }
-            }
-        }
-
         $picture = null;
-        if ($this->login->isAdmin()
-            || $this->login->isStaff()
+        if ($adh->canEdit($this->login)
             || $this->preferences->showPublicPages($this->login)
             && $adh->appearsInMembersList()
-            || $this->login->login == $adh->login
-            || $is_manager
         ) {
             $picture = $adh->picture;
         } else {
