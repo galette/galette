@@ -40,9 +40,6 @@ namespace Galette\Core;
 use Analog\Analog;
 use PHPMailer\PHPMailer\PHPMailer;
 
-/** @ignore */
-require_once GALETTE_ROOT . 'includes/html2text.php';
-
 /**
  * Generic mail for Galette
  *
@@ -413,7 +410,7 @@ class GaletteMail
     protected function cleanedHtml()
     {
         $html = $this->message;
-        $txt = convert_html_to_text($html);
+        $txt = \Html2Text\Html2Text::convert($html);
         return $txt;
     }
 
