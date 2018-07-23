@@ -17,7 +17,6 @@
             <input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$filters->start_date_filter}"/>
             <label for="end_date_filter">{_T string="until"}</label>&nbsp;
             <input type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$filters->end_date_filter}"/>
-{$filters->payment_type_filter}
             {include file="forms_types/payment_types.tpl"
                 current=$filters->payment_type_filter varname="payment_type_filter"
                 show_inline=""
