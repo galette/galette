@@ -339,7 +339,7 @@ class Contributions
                 );
             }
 
-            if ($this->filters->payment_type_filter != null) {
+            if ($this->filters->payment_type_filter !== null) {
                 $select->where->equalTo(
                     'type_paiement_cotis',
                     $this->filters->payment_type_filter
