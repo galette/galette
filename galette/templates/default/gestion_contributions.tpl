@@ -17,16 +17,13 @@
             <input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$filters->start_date_filter}"/>
             <label for="end_date_filter">{_T string="until"}</label>&nbsp;
             <input type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$filters->end_date_filter}"/>
-            <label for="payment_type_filter">{_T string="Payment type"}</label>
-            <select name="payment_type_filter" id="payment_type_filter">
-                <option value="-1">{_T string="Select"}</option>
-                <option value="{Galette\Entity\Contribution::PAYMENT_CASH}"{if $filters->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_CASH')} selected="selected"{/if}>{_T string="Cash"}</option>
-                <option value="{Galette\Entity\Contribution::PAYMENT_CREDITCARD}"{if $filters->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_CREDITCARD')} selected="selected"{/if}>{_T string="Credit card"}</option>
-                <option value="{Galette\Entity\Contribution::PAYMENT_CHECK}"{if $filters->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_CHECK')} selected="selected"{/if}>{_T string="Check"}</option>
-                <option value="{Galette\Entity\Contribution::PAYMENT_TRANSFER}"{if $filters->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_TRANSFER')} selected="selected"{/if}>{_T string="Transfer"}</option>
-                <option value="{Galette\Entity\Contribution::PAYMENT_PAYPAL}"{if $filters->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_PAYPAL')} selected="selected"{/if}>{_T string="Paypal"}</option>
-                <option value="{Galette\Entity\Contribution::PAYMENT_OTHER}"{if $filters->payment_type_filter === constant('Galette\Entity\Contribution::PAYMENT_OTHER')} selected="selected"{/if}>{_T string="Other"}</option>
-            </select>
+{$filters->payment_type_filter}
+            {include file="forms_types/payment_types.tpl"
+                current=$filters->payment_type_filter varname="payment_type_filter"
+                show_inline=""
+                classname=""
+                empty=['value' => -1, 'label' => {_T string="Select"}]
+            }
             <input type="submit" class="inline" value="{_T string="Filter"}"/>
             <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
         </div>
