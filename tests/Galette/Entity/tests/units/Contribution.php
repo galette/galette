@@ -315,28 +315,28 @@ class Contribution extends atoum
         $contrib->not_a_property = 'abcde';
         $this->boolean(property_exists($contrib, 'not_a_property'))->isFalse();
 
-        $contrib->payment_type = \Galette\Entity\Contribution::PAYMENT_CASH;
-        $this->string($contrib->getPaymentType())->isIdenticalTo('cash');
+        $contrib->payment_type = \Galette\Entity\PaymentType::CASH;
+        $this->string($contrib->getPaymentType())->isIdenticalTo('Cash');
         $this->string($contrib->spayment_type)->isIdenticalTo('Cash');
 
-        $contrib->payment_type = \Galette\Entity\Contribution::PAYMENT_CHECK;
-        $this->string($contrib->getPaymentType())->isIdenticalTo('check');
+        $contrib->payment_type = \Galette\Entity\PaymentType::CHECK;
+        $this->string($contrib->getPaymentType())->isIdenticalTo('Check');
         $this->string($contrib->spayment_type)->isIdenticalTo('Check');
 
-        $contrib->payment_type = \Galette\Entity\Contribution::PAYMENT_OTHER;
-        $this->string($contrib->getPaymentType())->isIdenticalTo('other');
+        $contrib->payment_type = \Galette\Entity\PaymentType::OTHER;
+        $this->string($contrib->getPaymentType())->isIdenticalTo('Other');
         $this->string($contrib->spayment_type)->isIdenticalTo('Other');
 
-        $contrib->payment_type = \Galette\Entity\Contribution::PAYMENT_CREDITCARD;
-        $this->string($contrib->getPaymentType())->isIdenticalTo('credit_card');
+        $contrib->payment_type = \Galette\Entity\PaymentType::CREDITCARD;
+        $this->string($contrib->getPaymentType())->isIdenticalTo('Credit card');
         $this->string($contrib->spayment_type)->isIdenticalTo('Credit card');
 
-        $contrib->payment_type = \Galette\Entity\Contribution::PAYMENT_TRANSFER;
-        $this->string($contrib->getPaymentType())->isIdenticalTo('transfer');
+        $contrib->payment_type = \Galette\Entity\PaymentType::TRANSFER;
+        $this->string($contrib->getPaymentType())->isIdenticalTo('Transfer');
         $this->string($contrib->spayment_type)->isIdenticalTo('Transfer');
 
-        $contrib->payment_type = \Galette\Entity\Contribution::PAYMENT_PAYPAL;
-        $this->string($contrib->getPaymentType())->isIdenticalTo('paypal');
+        $contrib->payment_type = \Galette\Entity\PaymentType::PAYPAL;
+        $this->string($contrib->getPaymentType())->isIdenticalTo('Paypal');
         $this->string($contrib->spayment_type)->isIdenticalTo('Paypal');
     }
 
@@ -686,7 +686,7 @@ class Contribution extends atoum
             \Galette\Entity\Adherent::PK            => $adh->id,
             \Galette\Entity\ContributionsTypes::PK  => 1, //anual fee
             'montant_cotis'                         => 20,
-            'type_paiement_cotis'                   => \Galette\Entity\Contribution::PAYMENT_CHECK,
+            'type_paiement_cotis'                   => \Galette\Entity\PaymentType::CHECK,
             'date_enreg'                            => $now->format(_T("Y-m-d")),
             'date_debut_cotis'                      => $now->format(_T("Y-m-d")),
             'date_fin_cotis'                        => $end_date->format(_T("Y-m-d")),
@@ -715,7 +715,7 @@ class Contribution extends atoum
             \Galette\Entity\Adherent::PK            => $adh->id,
             \Galette\Entity\ContributionsTypes::PK  => 1, //anual fee
             'montant_cotis'                         => 20,
-            'type_paiement_cotis'                   => \Galette\Entity\Contribution::PAYMENT_CHECK,
+            'type_paiement_cotis'                   => \Galette\Entity\PaymentType::CHECK,
             'date_enreg'                            => $now->format(_T("Y-m-d")),
             'date_debut_cotis'                      => $begin->format(_T("Y-m-d")),
             'date_fin_cotis'                        => $end_date->format(_T("Y-m-d")),

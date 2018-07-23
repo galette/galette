@@ -526,6 +526,7 @@ class Db extends atoum
             'galette_transactions',
             'galette_titles',
             'galette_types_cotisation',
+            'galette_paymenttypes',
             'galette_database',
             'galette_statuts',
             'galette_texts',
@@ -560,7 +561,7 @@ class Db extends atoum
         sort($expected);
 
         $this->array($tables)
-            ->hasSize(24)
+            ->hasSize(25)
             ->isIdenticalTo($expected);
     }
 

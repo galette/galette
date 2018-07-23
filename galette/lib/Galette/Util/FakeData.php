@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2017 The Galette Team
+ * Copyright © 2017-2018 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2018 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9
@@ -49,6 +49,7 @@ use Galette\Entity\Status;
 use Galette\Entity\ContributionsTypes;
 use Galette\Entity\Group;
 use Galette\Entity\Transaction;
+use Galette\Entity\PaymentType;
 
 /**
  * Generate random data
@@ -654,12 +655,12 @@ class FakeData
             'montant_cotis'         => $faker->numberBetween($min = 5, $max = 200),
             'type_paiement_cotis'   => $faker->randomElement(
                 [
-                    Contribution::PAYMENT_OTHER,
-                    Contribution::PAYMENT_CASH,
-                    Contribution::PAYMENT_CREDITCARD,
-                    Contribution::PAYMENT_CHECK,
-                    Contribution::PAYMENT_TRANSFER,
-                    Contribution::PAYMENT_PAYPAL
+                    PaymentType::OTHER,
+                    PaymentType::CASH,
+                    PaymentType::CREDITCARD,
+                    PaymentType::CHECK,
+                    PaymentType::TRANSFER,
+                    PaymentType::PAYPAL
                 ]
             ),
             'info_cotis'            => ($this->seed !== null ?

@@ -61,6 +61,7 @@ use Galette\Core\MailingHistory;
 use Galette\Entity\Group;
 use Galette\IO\File;
 use Galette\Core\Authentication;
+use Galette\Repository\PaymentTypes;
 
 //self subscription
 $app->get(
@@ -1470,14 +1471,12 @@ $app->get(
         $ct = new Galette\Entity\ContributionsTypes($this->zdb);
 
         //Payments types
-        $pt = array(
-            Contribution::PAYMENT_OTHER         => _T("Other"),
-            Contribution::PAYMENT_CASH          => _T("Cash"),
-            Contribution::PAYMENT_CREDITCARD    => _T("Credit card"),
-            Contribution::PAYMENT_CHECK         => _T("Check"),
-            Contribution::PAYMENT_TRANSFER      => _T("Transfer"),
-            Contribution::PAYMENT_PAYPAL        => _T("Paypal")
+        $ptypes = new PaymentTypes(
+            $this->zdb,
+            $this->preferences,
+            $this->login
         );
+        $ptlist = $ptypes->getList();
 
         $filters->setViewCommonsFilters($this->preferences, $this->view->getSmarty());
 
@@ -1497,7 +1496,7 @@ $app->get(
                 'statuts'               => $statuts->getList(),
                 'contributions_types'   => $ct->getList(),
                 'filters'               => $filters,
-                'payments_types'        => $pt
+                'payments_types'        => $ptlist
             )
         );
         return $response;

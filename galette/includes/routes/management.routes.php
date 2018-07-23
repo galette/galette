@@ -57,11 +57,13 @@ use Galette\Entity\PdfModel;
 use Galette\Repository\PdfModels;
 use Galette\Entity\Title;
 use Galette\Repository\Titles;
+use Galette\Repository\PaymentTypes;
 use Galette\Entity\Texts;
 use Galette\Core\Install;
 use Zend\Db\Adapter\Adapter;
 use Galette\Core\PluginInstall;
 use Galette\Entity\Status;
+use Galette\Entity\PaymentType;
 
 //galette's dashboard
 $app->get(
@@ -3357,3 +3359,227 @@ $app->post(
             ->withHeader('Location', $this->router->pathFor('adminTools'));
     }
 )->setName('doAdminTools')->add($authenticate);
+
+$app->get(
+    __('/payment-types', 'routes'),
+    function ($request, $response) {
+        $ptypes = new PaymentTypes(
+            $this->zdb,
+            $this->preferences,
+            $this->login
+        );
+        $list = $ptypes->getList();
+
+        // display page
+        $this->view->render(
+            $response,
+            'gestion_paymentstypes.tpl',
+            [
+                'page_title'        => _T("Payment types management"),
+                'list'              => $list,
+                'require_dialog'    => true
+            ]
+        );
+        return $response;
+    }
+)->setName('paymentTypes')->add($authenticate);
+
+$app->post(
+    __('/payment-types', 'routes'),
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        $ptype = new PaymentType($this->zdb);
+
+        $ptype->name = $post['name'];
+        $res = $ptype->store($post);
+
+        if (!$res) {
+            $this->flash->addMessage(
+                'error_detected',
+                preg_replace(
+                    '(%s)',
+                    $ptype->name,
+                    _T("Payment type '%s' has not been added!")
+                )
+            );
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                preg_replace(
+                    '(%s)',
+                    $ptype->name,
+                    _T("Payment type '%s' has been successfully added.")
+                )
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('paymentTypes'));
+    }
+)->setName('paymentTypes')->add($authenticate);
+
+$app->get(
+    __('/payment-type', 'routes') . __('/remove', 'routes') . '/{id:\d+}',
+    function ($request, $response, $args) {
+        $data = [
+            'id'            => $args['id'],
+            'redirect_uri'  => $this->router->pathFor('paymentTypes')
+        ];
+        $ptype = new PaymentType($this->zdb, (int)$args['id']);
+
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => sprintf(
+                    _T('Remove payment type %1$s'),
+                    $ptype->getName()
+                ),
+                'form_url'      => $this->router->pathFor(
+                    'doRemovePaymentType',
+                    ['id' => $args['id']]
+                ),
+                'cancel_uri'    => $data['redirect_uri'],
+                'data'          => $data
+            )
+        );
+        return $response;
+    }
+)->setName('removePaymentType')->add($authenticate);
+
+$app->post(
+    __('/payment-type', 'routes') . __('/remove', 'routes') . '/{id:\d+}',
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
+        $success = false;
+
+        $uri = isset($post['redirect_uri']) ?
+            $post['redirect_uri'] :
+            $this->router->pathFor('slash');
+
+        if (!isset($post['confirm'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Removal has not been confirmed!")
+            );
+        } else {
+            $ptype = new PaymentType($this->zdb, (int)$args['id']);
+            try {
+                $res = $ptype->remove();
+                if ($res === true) {
+                    $this->flash->addMessage(
+                        'success_detected',
+                        str_replace(
+                            '%name',
+                            $ptype->name,
+                            _T("Payment type '%name' has been successfully deleted.")
+                        )
+                    );
+                    $success = true;
+                } else {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        str_replace(
+                            '%name',
+                            $ptype->getName(),
+                            _T("An error occurred removing payment type '%name' :(")
+                        )
+                    );
+                }
+            } catch (\Exception $e) {
+                if ($e->getCode() == 23000) {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        _T("That payment type is still in use, you cannot delete it!")
+                    );
+                } else {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        $e->getMessage()
+                    );
+                }
+            }
+        }
+
+        if (!$ajax) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $uri);
+        } else {
+            return $response->withJson(
+                [
+                    'success'   => $success
+                ]
+            );
+        }
+    }
+)->setName('doRemovePaymentType')->add($authenticate);
+
+$app->get(
+    __('/payment-type', 'routes') . __('/edit', 'routes') . '/{id:\d+}',
+    function ($request, $response, $args) {
+        $id = $args['id'];
+        $ptype = new PaymentType($this->zdb, (int)$id);
+
+        // display page
+        $this->view->render(
+            $response,
+            'edit_paymenttype.tpl',
+            [
+                'page_title'    => _T("Edit payment type"),
+                'ptype'         => $ptype
+            ]
+        );
+        return $response;
+    }
+)->setname('editPaymentType')->add($authenticate);
+
+$app->post(
+    __('/payment-type', 'routes') . __('/edit', 'routes') . '/{id:\d+}',
+    function ($request, $response, $args) {
+        $id = $args['id'];
+        $post = $request->getParsedBody();
+
+        if (isset($post['cancel'])) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('paymentTypes'));
+        }
+
+        $ptype = new PaymentType($this->zdb, (int)$id);
+        $ptype->name = $post['name'];
+        $res = $ptype->store();
+
+        if (!$res) {
+            $this->flash->addMessage(
+                'error_detected',
+                preg_replace(
+                    '(%s)',
+                    $ptype->name,
+                    _T("Title '%s' has not been modified!")
+                )
+            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('editPaymentType', ['id' => $id]));
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                preg_replace(
+                    '(%s)',
+                    $ptype->name,
+                    _T("Payment type '%s' has been successfully modified.")
+                )
+            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('paymentTypes'));
+        }
+    }
+)->setname('editPaymentType')->add($authenticate);

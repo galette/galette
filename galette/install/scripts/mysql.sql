@@ -56,7 +56,7 @@ CREATE TABLE galette_cotisations (
   id_adh int(10) unsigned NOT NULL default '0',
   id_type_cotis int(10) unsigned NOT NULL default '0',
   montant_cotis decimal(15, 2) unsigned default '0',
-  type_paiement_cotis tinyint(3) unsigned NOT NULL default '0',
+  type_paiement_cotis int(10) unsigned NOT NULL,
   info_cotis text,
   date_enreg date NOT NULL default '1901-01-01',
   date_debut_cotis date NOT NULL default '1901-01-01',
@@ -65,7 +65,8 @@ CREATE TABLE galette_cotisations (
   PRIMARY KEY (id_cotis),
   FOREIGN KEY (id_type_cotis) REFERENCES galette_types_cotisation (id_type_cotis) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
-  FOREIGN KEY (trans_id) REFERENCES galette_transactions (trans_id) ON DELETE RESTRICT ON UPDATE CASCADE
+  FOREIGN KEY (trans_id) REFERENCES galette_transactions (trans_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  FOREIGN KEY (type_paiement_cotis) REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_transactions;
@@ -302,6 +303,14 @@ CREATE TABLE galette_import_model (
   model_fields text,
   model_creation_date datetime NOT NULL,
   PRIMARY KEY (model_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Table for payment types
+DROP TABLE IF EXISTS galette_paymenttypes;
+CREATE TABLE galette_paymenttypes (
+  type_id int(10) unsigned NOT NULL auto_increment,
+  type_name varchar(255) NOT NULL,
+  PRIMARY KEY (type_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- table for database version

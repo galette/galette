@@ -120,6 +120,24 @@ CREATE SEQUENCE galette_import_model_id_seq
     MINVALUE 1
     CACHE 1;
 
+-- Table for payment types
+DROP TABLE IF EXISTS galette_paymenttypes;
+CREATE TABLE galette_paymenttypes (
+  type_id integer DEFAULT nextval('galette_paymenttypes_id_seq'::text) NOT NULL,
+  type_name character varying(50) NOT NULL,
+  PRIMARY KEY (type_id)
+);
+
+-- sequence for payment types
+DROP SEQUENCE IF EXISTS galette_paymenttypes_id_seq;
+CREATE SEQUENCE galette_paymenttypes_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
+
 -- Schema
 -- REMINDER: Create order IS important, dependencies first !!
 DROP TABLE IF EXISTS galette_statuts CASCADE;
@@ -207,7 +225,7 @@ CREATE TABLE galette_cotisations (
     id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE RESTRICT ON UPDATE CASCADE,
     id_type_cotis integer REFERENCES galette_types_cotisation (id_type_cotis) ON DELETE RESTRICT ON UPDATE CASCADE,
     montant_cotis real DEFAULT '0',
-    type_paiement_cotis smallint DEFAULT '0' NOT NULL,
+    type_paiement_cotis integer REFERENCES galette_paymenttypes (type_id) ON DELETE RESTRICT ON UPDATE CASCADE NOT NULL,
     info_cotis text,
     date_enreg date DEFAULT '19010101' NOT NULL,
     date_debut_cotis date DEFAULT '19010101' NOT NULL,

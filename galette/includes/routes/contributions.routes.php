@@ -45,6 +45,7 @@ use Galette\Entity\ContributionsTypes;
 use Galette\Core\GaletteMail;
 use Galette\Entity\Texts;
 use Galette\IO\PdfContribution;
+use Galette\Repository\PaymentTypes;
 
 $app->get(
     '/{type:' . __('transactions', 'routes') .'|'. __('contributions', 'routes') .
@@ -224,13 +225,13 @@ $app->post(
 
             if (isset($post['payment_type_filter'])) {
                 $ptf = (int)$post['payment_type_filter'];
-                if ($ptf == Contribution::PAYMENT_OTHER
-                    || $ptf == Contribution::PAYMENT_CASH
-                    || $ptf == Contribution::PAYMENT_CREDITCARD
-                    || $ptf == Contribution::PAYMENT_CHECK
-                    || $ptf == Contribution::PAYMENT_TRANSFER
-                    || $ptf == Contribution::PAYMENT_PAYPAL
-                ) {
+                $ptypes = new PaymentTypes(
+                    $this->zdb,
+                    $this->preferences,
+                    $this->login
+                );
+                $ptlist = $ptypes->getList();
+                if (isset($ptlist[$ptf])) {
                     $filters->payment_type_filter = $ptf;
                 } elseif ($ptf == -1) {
                     $filters->payment_type_filter = null;

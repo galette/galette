@@ -40,6 +40,7 @@ namespace Galette\DynamicFields;
 use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Entity\DynamicFieldsHandle;
+use Galette\Entity\TranslatableTrait;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
 
@@ -58,6 +59,8 @@ use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
 
 abstract class DynamicField
 {
+    use TranslatableTrait;
+
     const TABLE = 'field_types';
     const PK = 'field_id';
 
@@ -94,8 +97,6 @@ abstract class DynamicField
     protected $has_permissions = true;
 
     protected $id;
-    protected $name;
-    protected $old_name;
     protected $index;
     protected $perm;
     protected $required;
@@ -409,22 +410,6 @@ abstract class DynamicField
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get field name
-     *
-     * @param boolean $translated Get translated or raw name
-     *
-     * @return String
-     */
-    public function getName($translated = true)
-    {
-        if ($translated === true) {
-            return _T($this->name);
-        } else {
-            return $this->name;
-        }
     }
 
     /**
@@ -1018,7 +1003,7 @@ abstract class DynamicField
                     \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
                 );
             }
-            deleteDynamicTranslation($this->name);
+            \deleteDynamicTranslation($this->name);
 
             $this->zdb->connection->commit();
             return true;
