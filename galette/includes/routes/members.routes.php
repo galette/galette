@@ -35,6 +35,7 @@
  * @since     0.8.2dev 2014-11-27
  */
 
+use Analog\Analog;
 use Galette\Entity\DynamicFieldsHandle;
 use Galette\Core\Password;
 use Galette\Core\PasswordImage;
