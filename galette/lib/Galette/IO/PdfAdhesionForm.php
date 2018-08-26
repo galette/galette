@@ -206,15 +206,15 @@ class PdfAdhesionForm
                         $value .= '<textarea' .
                             ' id="'    . $field_name  . '"' .
                             ' name="'  . $field_name  . '"' .
-                            '/>';
                             ' value="' . $field_value['field_val'] . '"' .
+                            '/>';
                         break;
                     case DynamicField::LINE:
                         $value .= '<input type="text"' .
                             ' id="'    . $field_name  . '"' .
                             ' name="'  . $field_name  . '"' .
-                            ' size="20" maxlength="30"/>';
                             ' value="' . $field_value['field_val'] . '"' .
+                            ' size="20" maxlength="30"/>';
                         break;
                     case DynamicField::CHOICE:
                         $choice_values = $dynamic_fields[$field_id]->getValues();
