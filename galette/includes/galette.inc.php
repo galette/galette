@@ -170,10 +170,14 @@ if (defined('GALETTE_TESTS')) {
     $galette_run_log = \Analog\Handler\File::init($log_path);
 } else {
     if ((!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) && !$cron) {
-        $now = new \DateTime();
-        $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
-            $now->format('Y-m-d')  . '.log';
-        $galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
+        if (GALETTE_LOG_LVL >= \Analog\Analog::INFO) {
+            $now = new \DateTime();
+            $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
+                $now->format('Y-m-d')  . '.log';
+            $galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
+        } else {
+            $galette_debug_log = \Analog\Handler\Ignore::init();
+        }
     }
     $galette_log_var = null;
 
