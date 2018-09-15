@@ -223,7 +223,7 @@ td#pdf_logo {
     </tr>
     <tr>
         <td class="label">_T("Company name") *</td>
-        <td class="input">{COMPANY_NAME_ADH}</td>
+        <td class="input">{COMPANY_ADH}</td>
     </tr>
     <tr>
         <td class="label">_T("Address")</td>
