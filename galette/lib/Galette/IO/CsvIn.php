@@ -102,7 +102,7 @@ class CsvIn extends Csv implements FileInterface
     private $_required;
     private $statuses;
     private $titles;
-    private $genders;
+    private $langs;
     private $emails;
     private $zdb;
     private $preferences;
@@ -256,6 +256,8 @@ class CsvIn extends Csv implements FileInterface
                 }
             }
 
+            $member = new Adherent($this->zdb);
+
             $row = 0;
             while (($data = fgetcsv(
                 $handle,
@@ -291,6 +293,14 @@ class CsvIn extends Csv implements FileInterface
                                     _T("Field %field is required, but missing in row %row")
                                 )
                             );
+                            return false;
+                        }
+
+                        $member->validate($this->_fields[$col], $column, $this->_fields);
+                        if (count($member->errors)) {
+                            foreach ($member->errors as $error) {
+                                $this->addError($error);
+                            }
                             return false;
                         }
 
@@ -336,28 +346,6 @@ class CsvIn extends Csv implements FileInterface
                             }
                         }
 
-                        //check for gender
-                        if ($this->_fields[$col] == 'sexe_adh') {
-                            if ($this->genders === null) {
-                                //load existing titles
-                                $this->genders = [
-                                    Adherent::NC,
-                                    Adherent::MAN,
-                                    Adherent::WOMAN
-                                ];
-                            }
-                            if (!isset($this->genders[$column])) {
-                                $this->addError(
-                                    str_replace(
-                                        '%gender',
-                                        $column,
-                                        _T("Gender %gender does not exists!")
-                                    )
-                                );
-                                return false;
-                            }
-                        }
-
                         //check for email unicity
                         if ($this->_fields[$col] == 'email_adh' && !empty($column)) {
                             if ($this->emails === null) {
@@ -383,6 +371,27 @@ class CsvIn extends Csv implements FileInterface
                                 $this->emails[$column] = -1;
                             }
                         }
+
+                        //check for language
+                        if ($this->_fields[$col] == 'pref_lang') {
+                            if ($this->langs === null) {
+                                //load existing titles
+                                global $i18n;
+                                $this->langs = $i18n->getArrayList();
+                            }
+                            if (!isset($this->langs[$column])) {
+                                $this->addError(
+                                    str_replace(
+                                        '%title',
+                                        $column,
+                                        _T("Lang %lang does not exists!")
+                                    )
+                                );
+                                return false;
+                            }
+                        }
+
+
                         $col++;
                     }
                 }
