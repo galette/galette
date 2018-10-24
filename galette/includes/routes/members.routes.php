@@ -395,10 +395,7 @@ $app->post(
 
         //reintialize filters
         if (isset($post['clear_filter'])) {
-            $filters->reinit();
-            if ($filters instanceof AdvancedMembersList) {
-                $filters = new MembersList();
-            }
+            $filters = new MembersList();
         } elseif (isset($post['clear_adv_filter'])) {
             $this->session->filter_members = null;
             unset($this->session->filter_members);
