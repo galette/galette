@@ -143,6 +143,13 @@ $app->get(
         // fields visibility
         $fc = $this->fields_config;
         $visibles = $fc->getVisibilities();
+        //hack for id_adh and parent_id
+        $hacks = ['id_adh', 'parent_id'];
+        foreach ($hacks as $hack) {
+            if ($visibles[$hack] == FieldsConfig::NOBODY) {
+                $visibles[$hack] = FieldsConfig::MANAGER;
+            }
+        }
         $access_level = $this->login->getAccessLevel();
         $fields = array();
         $labels = array();
@@ -150,7 +157,7 @@ $app->get(
             // skip fields blacklisted for export
             if ($k === 'mdp_adh' ||
                 ($export_fields !== null &&
-                    (is_array($export_fields) && in_array($k, $export_fields)))
+                    (is_array($export_fields) && !in_array($k, $export_fields)))
             ) {
                 continue;
             }
