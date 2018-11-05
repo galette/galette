@@ -39,6 +39,8 @@ namespace Galette\Repository;
 
 use Analog\Analog;
 use Galette\Core\Db;
+use Galette\Core\Authentication;
+use Galette\Core\Login;
 use Galette\DynamicFields\DynamicField;
 
 /**
@@ -57,15 +59,18 @@ use Galette\DynamicFields\DynamicField;
 class DynamicFieldsSet
 {
     private $zdb;
+    private $login;
 
     /**
      * Main constructor
      *
-     * @param Db $zdb Database instance
+     * @param Db    $zdb   Database instance
+     * @param Login $login Login instance
      */
-    public function __construct(Db $zdb)
+    public function __construct(Db $zdb, Login $login)
     {
         $this->zdb = $zdb;
+        $this->login = $login;
     }
 
     /**
@@ -85,10 +90,21 @@ class DynamicFieldsSet
             ->order('field_index');
 
         $results = $this->zdb->execute($select);
+        $access_level = $this->login->getAccessLevel();
 
         $fields = [];
         if ($results) {
             foreach ($results as $r) {
+                $perm = $r['field_perm'];
+                if (($perm == DynamicField::PERM_MANAGER &&
+                        $access_level < Authentication::ACCESS_MANAGER) ||
+                    ($perm == DynamicField::PERM_STAFF &&
+                         $access_level < Authentication::ACCESS_STAFF)   ||
+                    ($perm == DynamicField::PERM_ADMIN &&
+                        $access_level < Authentication::ACCESS_ADMIN)
+                ) {
+                    continue;
+                }
                 $df = DynamicField::getFieldType($this->zdb, $r['field_type']);
                 $df->loadFromRs($r);
                 $fields[$r[DynamicField::PK]] = $df;

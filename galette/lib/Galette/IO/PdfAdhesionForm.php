@@ -78,6 +78,8 @@ class PdfAdhesionForm
      */
     public function __construct(Adherent $adh = null, Db $zdb, Preferences $prefs)
     {
+        global $login;
+
         $this->adh = $adh;
         $this->prefs = $prefs;
 
@@ -172,7 +174,7 @@ class PdfAdhesionForm
 
         /** the list of all dynamic fields */
         $fields =
-            new \Galette\Repository\DynamicFieldsSet($zdb);
+            new \Galette\Repository\DynamicFieldsSet($zdb, $login);
         $dynamic_fields = $fields->getList('adh');
 
         foreach ($dynamic_patterns as $pattern) {

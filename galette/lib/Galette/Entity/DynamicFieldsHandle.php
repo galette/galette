@@ -127,44 +127,11 @@ class DynamicFieldsHandle
 
         try {
             $this->item_id = $object->id;
-            $fields = new DynamicFieldsSet($this->zdb);
+            $fields = new DynamicFieldsSet($this->zdb, $this->login);
             $this->dynamic_fields = $fields->getList($this->form_name);
 
-            $select = $this->zdb->select(self::TABLE, 'd');
-            $select->join(
-                array('t' => PREFIX_DB . DynamicField::TABLE),
-                'd.' . DynamicField::PK . '=t.' . DynamicField::PK,
-                array('field_id')
-            )->where(
-                array(
-                    'item_id'       => $this->item_id,
-                    'd.field_form'  => $this->form_name
-                )
-            );
+            $results = $this->getCurrentFields();
 
-            /** only load values for accessible fields*/
-            $accessible_fields = [];
-            $access_level = $this->login->getAccessLevel();
-
-            foreach ($this->dynamic_fields as $field) {
-                $perm = $field->getPerm();
-                if (($perm == DynamicField::PERM_MANAGER &&
-                        $access_level < Authentication::ACCESS_MANAGER) ||
-                    ($perm == DynamicField::PERM_STAFF &&
-                         $access_level < Authentication::ACCESS_STAFF)   ||
-                    ($perm == DynamicField::PERM_ADMIN &&
-                        $access_level < Authentication::ACCESS_ADMIN)
-                ) {
-                    continue;
-                }
-                $accessible_fields[] = $field->getId();
-            }
-
-            if (count($accessible_fields)) {
-                $select->where->in('d.' . DynamicField::PK, $accessible_fields);
-            }
-
-            $results = $this->zdb->execute($select);
             if ($results->count() > 0) {
                 $dfields = array();
 
@@ -386,23 +353,12 @@ class DynamicFieldsHandle
      */
     private function handleRemovals()
     {
-        $fields = new DynamicFieldsSet($this->zdb);
+        $fields = new DynamicFieldsSet($this->zdb, $this->login);
         $this->dynamic_fields = $fields->getList($this->form_name, $this->login);
 
-        $select = $this->zdb->select(self::TABLE, 'd');
-        $select->join(
-            array('t' => PREFIX_DB . DynamicField::TABLE),
-            'd.' . DynamicField::PK . '=t.' . DynamicField::PK,
-            array('field_id')
-        )->where(
-            array(
-                'item_id'       => $this->item_id,
-                'd.field_form'  => $this->form_name
-            )
-        );
+        $results = $this->getCurrentFields();
 
         $fromdb = [];
-        $results = $this->zdb->execute($select);
         if ($results->count() > 0) {
             foreach ($results as $result) {
                 $fromdb[$result->field_id . '_' . $result->val_index] = [
@@ -514,5 +470,50 @@ class DynamicFieldsHandle
             );
             return false;
         }
+    }
+
+    /**
+     * Get current fields resultset
+     *
+     * @return ResulSet
+     */
+    protected function getCurrentFields()
+    {
+        $select = $this->zdb->select(self::TABLE, 'd');
+        $select->join(
+            array('t' => PREFIX_DB . DynamicField::TABLE),
+            'd.' . DynamicField::PK . '=t.' . DynamicField::PK,
+            array('field_id')
+        )->where(
+            array(
+                'item_id'       => $this->item_id,
+                'd.field_form'  => $this->form_name
+            )
+        );
+
+        /** only load values for accessible fields*/
+        $accessible_fields = [];
+        $access_level = $this->login->getAccessLevel();
+
+        foreach ($this->dynamic_fields as $field) {
+            $perm = $field->getPerm();
+            if (($perm == DynamicField::PERM_MANAGER &&
+                    $access_level < Authentication::ACCESS_MANAGER) ||
+                ($perm == DynamicField::PERM_STAFF &&
+                        $access_level < Authentication::ACCESS_STAFF)   ||
+                ($perm == DynamicField::PERM_ADMIN &&
+                    $access_level < Authentication::ACCESS_ADMIN)
+            ) {
+                continue;
+            }
+            $accessible_fields[] = $field->getId();
+        }
+
+        if (count($accessible_fields)) {
+            $select->where->in('d.' . DynamicField::PK, $accessible_fields);
+        }
+
+        $results = $this->zdb->execute($select);
+        return $results;
     }
 }
