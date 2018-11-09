@@ -360,11 +360,15 @@ $baseRedirect = function ($request, $response, $args = []) use ($container) {
  */
 function getGaletteBaseUrl(\Slim\Http\Request $request)
 {
-    return str_replace(
+    $base_url = str_replace(
         ['index.php', $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']],
         ['', ''],
         $request->getUri()->getBaseUrl()
     );
+    if (strlen($base_url) && substr($base_url, -1) !== '/') {
+        $base_url .= '/';
+    }
+    return $base_url;
 }
 
 /**
