@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"PO-Revision-Date: 2018-04-25 03:35+0000\n"
-"Last-Translator: Arnold Warhonowicz <arnold@warhonowicz.de>\n"
+"PO-Revision-Date: 2018-11-09 06:19+0000\n"
+"Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -181,7 +181,7 @@ msgstr "/erweiterte-suche"
 #: ../includes/routes/groups.routes.php:45 ../includes/routes/groups.routes.php:272
 #: ../includes/routes/groups.routes.php:345
 msgid "/groups"
-msgstr "/gruppen"
+msgstr ""
 
 #: ../includes/routes/management.routes.php:1154 ../includes/routes/management.routes.php:1186
 msgid "reset"
