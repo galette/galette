@@ -38,7 +38,7 @@
 $modules = array();
 $modules['SimpleXML'] = (extension_loaded('SimpleXML')) ? 'Ok' : 'Missing';
 $modules['gd'] = (extension_loaded('gd')) ? 'Ok' : 'Missing';
-$modules['sql'] = (extension_loaded('pdo_mysql') || $extension_loaded('pdo_pgsql')) ? 'Ok' : 'Missing';
+$modules['sql'] = (extension_loaded('pdo_mysql') || extension_loaded('pdo_pgsql')) ? 'Ok' : 'Missing';
 $modules['curl'] = (extension_loaded('curl')) ? 'Ok' : 'Missing';
 $modules['mbstring'] = (extension_loaded('mbstring')) ? 'Ok' : 'Missing';
 $modules['fileinfo'] = (extension_loaded('fileinfo')) ? 'Ok' : 'Missing';
