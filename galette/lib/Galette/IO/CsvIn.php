@@ -447,6 +447,9 @@ class CsvIn extends Csv implements FileInterface
                     if (isset($values['date_crea_adh']) && trim($values['date_crea_adh']) === '') {
                         unset($values['date_crea_adh']);
                     }
+                    if (isset($values['mdp_adh'])) {
+                        $values['mdp_adh2'] = $values['mdp_adh'];
+                    }
                     $valid = $member->check($values, $this->_required, null);
                     if ($valid === true) {
                         if ($this->_dryrun === false) {
