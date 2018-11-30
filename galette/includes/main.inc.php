@@ -368,10 +368,10 @@ function getGaletteBaseUrl(\Slim\Http\Request $request)
         ['', ''],
         $request->getUri()->getBaseUrl()
     );
-    if (strlen($base_url) && substr($base_url, -1) !== '/') {
-        $base_url .= '/';
+    if (strlen($url) && substr($url, -1) !== '/') {
+        $url .= '/';
     }
-    return $base_url;
+    return $url;
 }
 
 /**
