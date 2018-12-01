@@ -1564,6 +1564,8 @@ $app->post(
                     ->withStatus(301)
                     ->withHeader('Location', $this->router->pathFor('masschangeMembers'));
             }
+
+            throw new \RuntimeException('Does not know what to batch :(');
         } else {
             $this->flash->addMessage(
                 'error_detected',
