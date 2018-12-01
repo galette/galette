@@ -424,10 +424,11 @@ class Pdf extends \TCPDF
     /**
      * Fix text size
      *
-     * @param string $text Text content
-     * @param integer $maxsize Maximal size
-     * @param string $fontstyle Font style (defaults to '')
-     * @param string $fontname Font name (defaults to static::FONT)
+     * @param string  $text      Text content
+     * @param integer $maxsize   Maximal size
+     * @param integer $fontsize  Font size
+     * @param string  $fontstyle Font style (defaults to '')
+     * @param string  $fontname  Font name (defaults to static::FONT)
      *
      * @return void
      */
@@ -441,5 +442,45 @@ class Pdf extends \TCPDF
             $fontsize--;
             $this->SetFontSize($fontsize);
         }
+    }
+
+    /**
+     * Cut a string
+     *
+     * @param string  $str    Original string
+     * @param integer $length Max length
+     *
+     * @return string
+     */
+    protected function cut($str, $length)
+    {
+        $length = $length -2; //keep a margin
+        if ($this->GetStringWidth($str) > $length) {
+            while ($this->GetStringWidth($str . '...') > $length) {
+                $str = mb_substr($str, 0, -1, 'UTF-8');
+            }
+            $str .= '...';
+        }
+        return $str;
+    }
+
+    /**
+     * Stretch a header string
+     *
+     * @param string  $str    Original string
+     * @param integer $length Max length
+     *
+     * @return string
+     */
+    protected function stretchHead($str, $length)
+    {
+        $this->SetFont(self::FONT, 'B', self::LIST_FONT);
+        $stretch = 100;
+        if ($this->GetStringWidth($str) > $length) {
+            while ($this->GetStringWidth($str) > $length) {
+                $this->setFontStretching(--$stretch);
+            }
+        }
+        return $str;
     }
 }
