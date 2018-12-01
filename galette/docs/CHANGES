@@ -6,6 +6,7 @@ Changes
 News
 ^^^^
 
+- Use FontAwesome for icons
 - Manage payment types
 - Do not send password in mails
 - Member duplication

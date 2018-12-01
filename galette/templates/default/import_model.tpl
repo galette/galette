@@ -28,9 +28,20 @@
         {/foreach}
         </table>
         <div class="button-container">
-            <a id="memberslist" class="button" href="{path_for name="getImportModel"}">{_T string="Generate empty CSV file"}</a>
+            <a class="button" href="{path_for name="getImportModel"}">
+                <i class="fas fa-file-csv" aria-hidden="true"></i>
+                {_T string="Generate empty CSV file"}
+            </a>
             {if !$defaults_loaded}
-            <a id="delete" class="button" href="{path_for name="importModel"}?remove=true">{_T string="Remove model and back to defaults"}</a>
+            <a
+                id="delete"
+                class="button delete tooltip"
+                href="{path_for name="importModel"}?remove=true"
+                title="{_T string="Remove model and back to defaults"}"
+            >
+                <i class="fas fa-trash" aria-hiden="true"></i>
+                {_T string="Remove model"}
+            </a>
             {/if}
         </div>
     </div>
@@ -56,13 +67,22 @@
         {/foreach}
         </table>
         <div class="button-container">
-            <input type="submit" name="upload" value="{_T string="Store new model"}"/>
+            <button type="submit" name="upload" class="action">
+                <i class="fas fa-save" aria-hidden="true"></i>
+                {_T string="Store new model"}
+            </button>
         </div>
         </form>
     </div>
 </div>
 <p class="center">
-    <a class="button" id="btnback" href="{path_for name="import"}">{_T string="Go back to import page"}</a>
+    <a
+        class="button"
+        href="{path_for name="import"}"
+    >
+        <i class="fas fa-backward" aria-hidden="true"></i>
+        {_T string="Go back to import page"}
+    </a>
 </p>
 {/block}
 

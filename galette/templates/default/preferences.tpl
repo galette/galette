@@ -83,7 +83,7 @@
                         {else}
                             {_T string="Never"}
                         {/if}
-                        - <a href="#" id="telemetry" class="button">{_T string="send"}</a>
+                        - <a href="#" id="telemetry" class="button"><i class="fas fa-chart-bar" aria-hidden="true"></i> {_T string="send"}</a>
                     </span>
                 </div>
                 <div class="p">
@@ -97,7 +97,7 @@
                             {assign var="regtxt" value={_T string="Register"}}
                             {_T string="Not registered"}
                         {/if}
-                        - <a href="{$smarty.const.GALETTE_TELEMETRY_URI}reference?showmodal&uuid={$pref.pref_registration_uuid}" id="register" target="_blank" class="button">{$regtxt}</a>
+                        - <a href="{$smarty.const.GALETTE_TELEMETRY_URI}reference?showmodal&uuid={$pref.pref_registration_uuid}" id="register" target="_blank" class="button"><i class="fas fa-marker"></i>{$regtxt}</a>
                     </span>
                 </div>
 
@@ -279,7 +279,15 @@
                             <input type="radio" name="pref_mail_method" id="qmail" value="{Galette\Core\GaletteMail::METHOD_QMAIL}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_QMAIL')}checked="checked"{/if}/><label for="qmail">{_T string="Using QMAIL server"}</label>
                         </li>
                     </ul>
-                    <br/><a href="{path_for name="testEmail"}#mail" id="btnmail" class="button">{_T string="Test mail settings"}</a>
+                    <br/>
+                    <a
+                        href="{path_for name="testEmail"}#mail"
+                        id="btnmail"
+                        class="button"
+                    >
+                        <i class="fas fa-rocket" aria-hidden="true"></i>
+                        {_T string="Test mail settings"}
+                    </a>
                 </div>
                 <div id="smtp_parameters"{if $pref.pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_SMTP')} style="display: none;"{/if}>
                     <p>
@@ -495,7 +503,9 @@
             <input type="hidden" name="pref_instance_uuid" value="{$pref.pref_instance_uuid}"/>
             <input type="hidden" name="pref_registration_date" value="{$pref.pref_registration_date}"/>
             <input type="hidden" name="pref_registration_uuid" value="{$pref.pref_registration_uuid}"/>
-            <input type="submit" id="btnsave" value="{_T string="Save"}"/>
+            <button type="submit" class="action">
+                <i class="fas fa-save fa-fw"></i> {_T string="Save"}
+            </button>
         </div>
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
         </form>

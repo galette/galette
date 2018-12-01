@@ -13,10 +13,20 @@
                     {include file="mailing_recipients.tpl"}
                 <div class="center">
     {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_SENT')}
-                    <a class="button" id="btnusers" href="{path_for name="members"}">{_T string="Go back to members list"}</a>
+        {assign var="path" value={path_for name="members"}}
+        {assign var="text" value={_T string="Go back to members list"}}
     {else}
-                    <a class="button" id="btnusers" href="#">{_T string="Manage selected members"}</a>
+        {assign var="path" value='#'}
+        {assign var="text" value={_T string="Manage selected members"}}
     {/if}
+                <a
+                    id="btnusers"
+                    href="{$path}"
+                    class="button"
+                >
+                    <i class="fas fa-users"></i>
+                    {$text}
+                </a>
                 </div>
             </section>
         {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_START')}
@@ -74,10 +84,22 @@
                 </div>
                 <div class="center">
                     <input type="checkbox" name="mailing_html" id="mailing_html" value="1" {if $mailing->html eq 1 or $pref_editor_enabled eq 1}checked="checked"{/if}/><label for="mailing_html">{_T string="Interpret HTML"}</label><br/>
-                    <input type="submit" id="btnpreview" name="mailing_go" value="{_T string="Preview"}"/>
-                    <input type="submit" id="btnsave" name="mailing_save" value="{_T string="Save"}"/>
-                    <input type="submit" id="btnsend" name="mailing_confirm" value="{_T string="Send"}"{if $GALETTE_MODE eq 'DEMO'} class="disabled" disabled="disabled"{/if}/>
-                    <input type="submit" id="btncancel" name="mailing_cancel" value="{_T string="Cancel mailing"}" formnovalidate/>
+                    <button type="submit" name="mailing_go" id="btnpreview">
+                        <i class="fas fa-eye" arai-hidden="true"></i>
+                        {_T string="Preview"}
+                    </button>
+                    <button type="submit" name="mailing_save" class="action">
+                        <i class="fas fa-save" aria-hidden="true"></i>
+                        {_T string="Save"}
+                    </button>
+                    <button type="submit" name="mailing_confirm"{if $GALETTE_MODE eq 'DEMO'} class="disabled" disabled="disabled"{/if}>
+                        <i class="fas fa-rocket" aria-hidden="true"></i>
+                        {_T string="Send"}
+                    </button>
+                    <button type="submit" name="mailing_cancel" formnovalidate>
+                        <i class="fas fa-trash" aria-hidden="true"></i>
+                        {_T string="Cancel mailing"}
+                    </button>
                 </div>
             </section>
         {/if}

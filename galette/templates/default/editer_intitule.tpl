@@ -35,7 +35,10 @@
     <input type="hidden" name="class" value="{$class}" />
 
     <div class="button-container">
-        <input type="submit" value="{_T string="Save"}" />
+        <button type="submit" class="action">
+            <i class="fas fa-save"></i>
+            {_T string="Save"}
+        </button>
     </div>
     </div>
 </form>

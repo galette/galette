@@ -67,16 +67,24 @@
                 </div>
             </fieldset>
 {if $login->isAdmin() or $login->isStaff()}
-            <a href="#" class="button notext hidden" id="btnusers_small">{_T string="Manage members"}</a>
-            <a href="#" class="button notext hidden" id="btnmanagers_small">{_T string="Manage managers"}</a>
+            <a href="#" class="button tab-button hidden tooltip" id="btnusers_small"><i class="fas fa-user" aria-hidden="true"></i> <span class="sr-only">{_T string="Manage members"}</span></a>
+            <a href="#" class="button tab-button hidden tooltip" id="btnmanagers_small"><i class="fas fa-user-shield" aria-hidden="true"></i> <span class="sr-only">{_T string="Manage managers"}</span></a>
 {/if}
       </div>
         <div class="button-container">
-            <input type="submit" name="valid" id="btnsave" value="{_T string="Save"}"/>
+            <button type="submit" name="valid" class="action">
+                <i class="fas fa-save fa-fw"></i> {_T string="Save"}
+            </button>
 {if $login->isAdmin() or $login->isStaff()}
-            <a class="button delete" id="delete" href="{path_for name="removeGroup" data=["id" => $group->getId()]}">{_T string="Delete"}</a>
+            <a class="button delete" id="delete" href="{path_for name="removeGroup" data=["id" => $group->getId()]}">
+                <i class="fas fa-trash-alt fa-fw"></i>
+                {_T string="Delete"}
+            </a>
 {/if}
-            <a href="{path_for name="pdf_groups" data=["id" => $group->getId()]}" class="button btn_pdf" title="{_T string="Export all groups and their members as PDF"}">{_T string="Export as PDF"}</a>
+            <a href="{path_for name="pdf_groups" data=["id" => $group->getId()]}" class="button tooltip" title="{_T string="Current group (and attached people) as PDF"}">
+                <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                {_T string="Group PDF"}
+            </a>
             <input type="hidden" name="id_group" id="id_group" value="{$group->getId()}"/>
         </div>
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>

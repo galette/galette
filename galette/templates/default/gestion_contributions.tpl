@@ -32,7 +32,13 @@
         <div class="infoline">
 {if isset($member) && $mode neq 'ajax'}
     {if $login->isAdmin() or $login->isStaff()}
-            <a id="clearfilter" href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="member" domain="routes"}, "value" => "all"]}" title="{_T string="Show all members contributions"}">{_T string="Show all members contributions"}</a>
+            <a
+                href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="member" domain="routes"}, "value" => "all"]}"
+                class="tooltip"
+            >
+                <i class="fas fa-eraser"></i>
+                <span class="sr-only">{_T string="Show all members contributions"}</span>
+            </a>
     {/if}
             <strong>{$member->sname}</strong>
     {if not $member->isActive() } ({_T string="Inactive"}){/if}
@@ -176,11 +182,12 @@
                             </a>
                         </span>
         {if $contribution->isTransactionPart() }
-                        <a href="{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $contribution->transaction->id]}" title="{_T string="Transaction: %s" pattern="/%s/" replace=$contribution->transaction->description}">
-                            <img src="{base_url}/{$template_subdir}images/icon-money.png"
-                                alt="{_T string="[view]"}"
-                                width="16"
-                                height="16"/>
+                        <a
+                            href="{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $contribution->transaction->id]}"
+                            class="tooltip"
+                        >
+                            <i class="fas fa-link"></i>
+                            <span class="sr-only">{_T string="Transaction: %s" pattern="/%s/" replace=$contribution->transaction->description}</span>
                         </a>
         {else}
                         <img src="{base_url}/{$template_subdir}images/icon-empty.png"
@@ -207,19 +214,31 @@
                     <td class="{$cclass} nowrap" data-title="{_T string="Duration"}">{$contribution->duration}</td>
     {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
                     <td class="{$cclass} center nowrap">
-                        <a href="{path_for name="printContribution" data=["id" => $contribution->id]}">
-                            <img src="{base_url}/{$template_subdir}images/icon-pdf.png" alt="{_T string="[pdf]"}" width="16" height="16" title="{_T string="Print an invoice or a receipt (depending on contribution type)"}"/>
+                        <a
+                            href="{path_for name="printContribution" data=["id" => $contribution->id]}"
+                            class="tooltip"
+                        >
+                            <i class="fas fa-file-pdf"></i>
+                            <span class="sr-only">{_T string="Print an invoice or a receipt (depending on contribution type)"}</span>
                         </a>
                         {if $contribution->isCotis()}
                             {assign var="ctype" value={_T string="fee" domain="routes"}}
                         {else}
                             {assign var="ctype" value={_T string="donation" domain="routes"}}
                         {/if}
-                        <a href="{path_for name="contribution" data=["type" => $ctype, "action" => {_T string="edit" domain="routes"}, "id" => $contribution->id]}">
-                            <img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="Edit the contribution"}"/>
+                        <a
+                            href="{path_for name="contribution" data=["type" => $ctype, "action" => {_T string="edit" domain="routes"}, "id" => $contribution->id]}"
+                            class="tooltip action"
+                        >
+                            <i class="fas fa-edit"></i>
+                            <span class="sr-only">{_T string="Edit the contribution"}</span>
                         </a>
-                        <a class="delete" href="{path_for name="removeContribution" data=["type" => {_T string="contributions" domain="routes"}, "id" => $contribution->id]}">
-                            <img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="Delete the contribution"}"/>
+                        <a
+                            href="{path_for name="removeContribution" data=["type" => {_T string="contributions" domain="routes"}, "id" => $contribution->id]}"
+                            class="tooltip delete"
+                        >
+                            <i class="fas fa-trash"></i>
+                            <span class="sr-only">{_T string="Delete the contribution"}</span>
                         </a>
                     </td>
     {/if}
@@ -237,7 +256,11 @@
     {if ($login->isAdmin() or $login->isStaff()) && $mode neq 'ajax'}
         <ul class="selection_menu">
             <li>{_T string="For the selection:"}</li>
-            <li><input type="submit" id="delete" name="delete" value="{_T string="Delete"}"/></li>
+            <li>
+                <button type="submit" id="delete" name="delete">
+                    <i class="fas fa-trash fa-fw"></i> {_T string="Delete"}
+                </button>
+            </li>
         </ul>
     {/if}
 {/if}
@@ -247,11 +270,15 @@
             <table>
 {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
                 <tr>
-                    <th class="back"><img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></th>
+                    <th class="action">
+                        <i class="fas fa-edit fa-fw"></i>
+                    </th>
                     <td class="back">{_T string="Modification"}</td>
                 </tr>
                 <tr>
-                    <th class="back"><img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/></th>
+                    <th class="delete">
+                        <i class="fas fa-trash fa-fw"></i>
+                    </th>
                     <td class="back">{_T string="Deletion"}</td>
                 </tr>
 {/if}
@@ -304,9 +331,7 @@
                         changeMonth: true,
                         changeYear: true,
                         showOn: 'button',
-                        buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
-                        buttonImageOnly: true,
-                        buttonText: '{_T string="Select a date" escape="js"}'
+                        buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
                     });
                 }
                 _init_contribs_page();

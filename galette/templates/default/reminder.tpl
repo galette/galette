@@ -28,7 +28,10 @@
                 </div>
             </fieldset>
             <div class="button-container">
-                <input id="btnsend" type="submit" name="valid" value="{_T string="Send"}"/>
+                <button type="submit" name="valid">
+                    <i class="fas fa-rocket" aria-hidden="true"></i>
+                    {_T string="Send"}
+                </button>
             </div>
         </form>
 {foreach from=$previews key=key item=preview}

@@ -81,8 +81,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             </ul>
 {if $login->isLogged()}
             <div id="user">
-                <a id="userlink" title="{_T string="View your member card"}" href="{if $login->isSuperAdmin()}{path_for name="slash"}{else}{path_for name="me"}{/if}">{$login->loggedInAs(true)}</a>
-                <a id="{if $login->isImpersonated()}unimpersonate{else}logout{/if}" href="{if $login->isImpersonated()}{path_for name="unimpersonate"}{else}{path_for name="logout"}{/if}">{_T string="Log off"}</a>
+                <a id="userlink" class="tooltip" title="{_T string="View your member card"}" href="{if $login->isSuperAdmin()}{path_for name="slash"}{else}{path_for name="me"}{/if}">{$login->loggedInAs(true)}</a>
+                <a id="logout_10" class="tooltip" href="{if $login->isImpersonated()}{path_for name="unimpersonate"}{else}{path_for name="logout"}{/if}"><i class="fas fa-{if $login->isImpersonated()}user-secret{else}sign-out-alt{/if}"></i><span class="sr-only">{_T string="Log off"}</span></a>
             </div>
 {/if}
 {if $GALETTE_MODE eq 'DEMO'}
@@ -94,18 +94,50 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <h1 id="titre">{$page_title}</h1>
         <p id="asso_name">{$preferences->pref_nom}{if $preferences->pref_slogan}&nbsp;: {$preferences->pref_slogan}{/if}</p>
         <nav>
-            <a id="backhome" class="button{if $cur_route eq "slash" or $cur_route eq 'login'} selected{/if}" href="{path_for name="slash"}">{_T string="Home"}</a>
+            <a
+                href="{path_for name="slash"}"
+                class="button{if $cur_route eq "slash" or $cur_route eq 'login'} selected{/if}"
+            >
+                <i class="fas fa-home"></i>
+                {_T string="Home"}
+            </a>
     {if !$login->isLogged()}
         {if $preferences->pref_bool_selfsubscribe eq true}
-            <a id="subscribe" class="button{if $cur_route eq "/subscribe"} selected{/if}" href="{path_for name="subscribe"}">{_T string="Subscribe"}</a>
+            <a
+                id="subscribe"
+                href="{path_for name="subscribe"}"
+                class="button{if $cur_route eq "subscribe"} selected{/if}"
+            >
+                <i class="fas fa-user-graduate" aria-hidden="true"></i>
+                {_T string="Subscribe"}
+            </a>
         {/if}
         {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
-            <a id="lostpassword" class="button{if $cur_route eq "password-lost"} selected{/if}" href="{path_for name="password-lost"}">{_T string="Lost your password?"}</a>
+            <a
+                id="lostpassword"
+                href="{path_for name="password-lost"}"
+                class="button{if $cur_route eq "password-lost"} selected{/if}"
+            >
+                <i class="fas fa-unlock-alt" aria-hidden="true"></i>
+                {_T string="Lost your password?"}
+            </a>
         {/if}
     {/if}
     {if $preferences->showPublicPages($login) eq true}
-            <a id="memberslist" class="button{if $cur_route eq "publicMembers"} selected{/if}" href="{path_for name="publicMembers"}" title="{_T string="Members list"}">{_T string="Members list"}</a>
-            <a id="trombino" class="button{if $cur_route eq "publicTrombinoscope"} selected{/if}" href="{path_for name="publicTrombinoscope"}" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a>
+            <a
+                href="{path_for name="publicMembers"}" title="{_T string="Members list"}"
+                class="button{if $cur_route eq "publicMembers"} selected{/if}"
+            >
+                <i class="fas fa-address-book"></i>
+                {_T string="Members list"}
+            </a>
+            <a
+                class="button{if $cur_route eq "publicTrombinoscope"} selected{/if}"
+                href="{path_for name="publicTrombinoscope"}" title="{_T string="Trombinoscope"}"
+            >
+                <i class="fas fa-user-friends"></i>
+                {_T string="Trombinoscope"}
+            </a>
             {* Include plugins menu entries *}
             {$plugins->getPublicMenus($tpl, true)}
     {/if}

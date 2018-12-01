@@ -140,7 +140,9 @@
     {/if}
         </div>
         <div class="button-container">
-            <input type="submit" id="btnsave" value="{_T string="Save"}"/>
+            <button type="submit" name="valid" class="action">
+                <i class="fas fa-save fa-fw"></i> {_T string="Save"}
+            </button>
             <input type="hidden" name="id_cotis" value="{$contribution->id}"/>
             <input type="hidden" name="valid" value="1"/>
             <input type="hidden" name="trans_id" value="{if $contribution->transaction neq NULL}{$contribution->transaction->id}{/if}"/>
@@ -165,9 +167,7 @@
             changeMonth: true,
             changeYear: true,
             showOn: 'button',
-            buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
-            buttonImageOnly: true,
-            buttonText: '{_T string="Select a date" escape="js"}'
+            buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
         });
 
     {if $type eq {_T string="fee" domain="routes"} and !$contribution->id}

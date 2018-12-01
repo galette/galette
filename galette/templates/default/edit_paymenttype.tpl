@@ -11,7 +11,9 @@
             </p>
         </div>
         <div class="button-container">
-            <input type="submit" value="{_T string="Save"}" />
+            <button type="submit" class="action">
+                <i class="fas fa-save fa-fw"></i> {_T string="Save"}
+            </button>
             <input type="submit" name="cancel" value="{_T string="Cancel"}"/>
             <input type="hidden" name="id" id="id" value="{$ptype->id}"/>
         </div>

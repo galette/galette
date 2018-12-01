@@ -53,7 +53,9 @@
 {/foreach}
     </div>
         <div class="button-container">
-            <input type="submit" value="{_T string="Save"}"/>
+            <button type="submit" class="action">
+                <i class="fas fa-save fa-fw"></i> {_T string="Save"}
+            </button>
         </div>
     </form>
 {/block}

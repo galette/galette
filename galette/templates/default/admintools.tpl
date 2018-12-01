@@ -31,7 +31,10 @@
             </p>
         </fieldset>
         <div class="button-container">
-            <input type="submit" name="go" id="btntools" class="button" value="{_T string="Go"}"/>
+            <button ype="submit" class="action">
+                <i class="fas fa-database" aria-hidden="true"></i>
+                {_T string="Go"}
+            </button>
         </div>
     </form>
 {/block}

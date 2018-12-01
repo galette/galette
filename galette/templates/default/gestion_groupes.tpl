@@ -14,7 +14,10 @@
         </div>
 {if $login->isAdmin() or $login->isStaff()}
         <div class="center">
-            <a href="{path_for name="add_group" data=["name" => NAME]}" id="btnadd" class="button">{_T string="New group"}</a>
+            <a href="{path_for name="add_group" data=["name" => NAME]}" id="newgroup" class="button">
+                <i class="fas fa-plus" aria-hiddent="true"></i>
+                {_T string="New group"}
+            </a>
         </div>
 {/if}
     </aside>
@@ -28,7 +31,9 @@
     </section>
 </div>
 <div class="button-container">
-    <a href="{path_for name="pdf_groups"}" class="button btn_pdf" title="{_T string="Export all groups and their members as PDF"}">{_T string="Export as PDF"}</a>
+    <a href="{path_for name="pdf_groups"}" class="button tooltip" title="{_T string="Export all groups and their members as PDF"}">
+        <i class="fas fa-file-pdf"></i> {_T string="All groups PDF"}
+    </a>
 </div>
 {/block}
 
@@ -112,7 +117,7 @@
         );
 
         {* New group *}
-        $('#btnadd').click(function(){
+        $('#newgroup').click(function(){
         var _href = $(this).attr('href');
             var _el = $('<div id="add_group" class="center" title="{_T string="Add a new group"}"><label for="new_group_name">{_T string="Name:"}</label><input type="text" name="new_group_name" id="new_group_name" required/></div>');
             _el.appendTo('body').dialog({
@@ -259,7 +264,7 @@
                 var _mname = $(this).text();
                 $('#none_selected').remove()
                 if ( $('#member_' + _mid).length == 0 ) {
-                    var _li = '<li id="member_' + _mid + '">' + _mname + '</li>';
+                    var _li = '<li id="member_' + _mid + '"><i class="fas fa-user-minus"></i> ' + _mname + '</li>';
                     $('#selected_members ul').append(_li);
                     $('#member_' + _mid).click(function(){
                         $(this).remove();

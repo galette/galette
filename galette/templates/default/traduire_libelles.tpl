@@ -34,7 +34,9 @@
                 </fieldset>
             </div>
             <div class="button-container">
-                <input type="submit" name="trans" value="{_T string="Save"}"/>
+                <button type="submit" name="trans" class="action">
+                    <i class="fas fa-save fa-fw"></i> {_T string="Save"}
+                </button>
             </div>
         </form>
 {else}

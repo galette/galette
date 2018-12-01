@@ -24,12 +24,21 @@
                 <td data-title="{_T string="Version"}">{$plugin.version}</td>
                 <td data-title="{_T string="Release date"}">{$plugin.date}</td>
                 <td class="nowrap center actions_row">
-                    <a class="toggleActivation" href="{path_for name="pluginsActivation" data=["action" => {_T string="deactivate" domain="routes"}, "module_id" => $name]}" title="{_T string="Click here to deactivate plugin '%name'" pattern="/%name/" replace=$plugin.name}">
-                        <img src="{base_url}/{$template_subdir}images/icon-on.png" alt="{_T string="Disable plugin"}"/>
+                    <a
+                        href="{path_for name="pluginsActivation" data=["action" => {_T string="deactivate" domain="routes"}, "module_id" => $name]}"
+                        class="toggleActivation tooltip use"
+                    >
+                        <i class="fas fa-toggle-on fa-fw"></i>
+                        <span class="sr-only">{_T string="Click here to deactivate plugin '%name'" pattern="/%name/" replace=$plugin.name}</span>
                     </a>
     {if $plugins->needsDatabase($name)}
-                    <a href="{path_for name="pluginInitDb" data=["id" => $name]}" class="initdb" id="initdb_{$name}" title="{_T string="Initialize '%name' database" pattern="/%name/" replace=$plugin.name}">
-                        <img src="{base_url}/{$template_subdir}images/icon-db.png" alt="{_T string="Initialize database"}" width="16" height="16"/>
+                    <a
+                        href="{path_for name="pluginInitDb" data=["id" => $name]}"
+                        id="initdb_{$name}"
+                        class="initdb action tooltip"
+                    >
+                        <i class="fas fa-database fa-fw"></i>
+                        <span class="sr-only">{_T string="Initialize '%name' database" pattern="/%name/" replace=$plugin.name}</span>
                     </a>
     {else}
                     <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
@@ -66,10 +75,14 @@
                     {/if}
                 </td>
                 <td class="nowrap center actions_row">
-                    <a class="toggleActivation" href="{path_for name="pluginsActivation" data=["action" => {_T string="activate" domain="routes"}, "module_id" => $name]}" title="{_T string="Click here to activate plugin '%name'" pattern="/%name/" replace=$name}">
-                        <img src="{base_url}/{$template_subdir}images/icon-off.png" alt="{_T string="Enable plugin"}"/>
+                    <a
+                        href="{path_for name="pluginsActivation" data=["action" => {_T string="activate" domain="routes"}, "module_id" => $name]}"
+                        class="toggleActivation tooltip delete"
+                    >
+                        <i class="fas fa-toggle-on"></i>
+                        <span class="sr-only">{_T string="Activate plugin '%name'" pattern="/%name/" replace=$name}</span>
                     </a>
-                    <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
+                    <i class="fas fa-fw">&nbsp;</i>
                 </td>
             </tr>
 {foreachelse}

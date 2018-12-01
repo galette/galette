@@ -206,7 +206,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         </ul>
 {if $login->isLogged()}
         <div>{$login->loggedInAs()}</div>
-        <a id="{if $login->isImpersonated()}unimpersonate{else}logout{/if}" class="button" href="{if $login->isImpersonated()}{path_for name="unimpersonate"}{else}{path_for name="logout"}{/if}">{_T string="Log off"}</a>
+        <a id="logout_10" class="button" href="{if $login->isImpersonated()}{path_for name="unimpersonate"}{else}{path_for name="logout"}{/if}"><i class="fas fa-{if $login->isImpersonated()}user-secret{else}sign-out-alt{/if}"></i>{_T string="Log off"}</a>
 {/if}
     </div>
     <div id="content"{if $contentcls} class="{$contentcls}"{/if}>
@@ -215,8 +215,14 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <a href="#" class="nav-button-close" aria-label="close navigation"></a>
             {$page_title}
             {if $cur_route neq 'mailing' and $existing_mailing eq true}
-                <a class="button" id="sendmail" href="{path_for name="mailing"}" title="{_T string="A mailing exists in the current session. Click here if you want to resume or cancel it."}">
-                    {_T string="Existing mailing"}
+                <a
+                    id="recup_mailing"
+                    href="{path_for name="mailing"}"
+                    class="tooltip"
+                    title="{_T string="A mailing exists in the current session. Click here if you want to resume or cancel it."}"
+                >
+                    <i class="fas fa-mail-bulk"></i>
+                    <span class="sr-only">{_T string="Existing mailing"}</span>
                 </a>
             {/if}
         </h1>

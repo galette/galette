@@ -153,28 +153,49 @@
                     <td class="{$rclass} nowrap username_row" data-scope="row">
                         <input type="checkbox" name="member_sel[]" value="{$member->id}"/>
                     {if $member->isCompany()}
-                        <img src="{base_url}/{$template_subdir}images/icon-company.png" alt="{_T string="[W]"}" width="16" height="16"/>
+                        <span class="tooltip">
+                            <img src="{base_url}/{$template_subdir}images/icon-company.png" alt="" width="16" height="16"/>
+                            <span class="sr-only">{_T string="Is a company"}</span>
+                        </span>
                     {elseif $member->isMan()}
-                        <img src="{base_url}/{$template_subdir}images/icon-male.png" alt="{_T string="[M]"}" width="16" height="16"/>
+                        <span class="tooltip">
+                            <img src="{base_url}/{$template_subdir}images/icon-male.png" alt="" width="16" height="16"/>
+                            <span class="sr-only">{_T string="Is a man"}</span>
+                        </span>
                     {elseif $member->isWoman()}
-                        <img src="{base_url}/{$template_subdir}images/icon-female.png" alt="{_T string="[W]"}" width="16" height="16"/>
+                        <span class="tooltip">
+                            <img src="{base_url}/{$template_subdir}images/icon-female.png" alt="" width="16" height="16"/>
+                            <span class="sr-only">{_T string="Is a women"}</span>
+                        </span>
                     {else}
                         <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
                     {/if}
                     {if $member->email != ''}
-                        <a href="mailto:{$member->email}"><img src="{base_url}/{$template_subdir}images/icon-mail.png" alt="{_T string="[Mail]"}" width="16" height="16"/></a>
+                        <a href="mailto:{$member->email}" class="tooltip">
+                            <img src="{base_url}/{$template_subdir}images/icon-mail.png" alt="" width="16" height="16"/>
+                            <span class="sr-only">{_T string="Mail"}</span>
+                        </a>
                     {else}
                         <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
                     {/if}
                     {if $member->website != ''}
-                        <a href="{$member->website}"><img src="{base_url}/{$template_subdir}images/icon-website.png" alt="{_T string="[Website]"}" width="16" height="16"/></a>
+                        <a href="{$member->website}" class="tooltip">
+                            <img src="{base_url}/{$template_subdir}images/icon-website.png" alt="" width="16" height="16"/>
+                            <span class="sr-only">{_T string="Website"}<span>
+                        </a>
                     {else}
                         <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
                     {/if}
                     {if $member->isAdmin()}
-                        <img src="{base_url}/{$template_subdir}images/icon-star.png" alt="{_T string="[admin]"}" width="16" height="16"/>
+                        <span class="tooltip">
+                            <img src="{base_url}/{$template_subdir}images/icon-star.png" alt="" width="16" height="16"/>
+                            <span class="sr-only">{_T string="Admin"}</span>
+                        </span>
                     {elseif $member->isStaff()}
-                        <img src="{base_url}/{$template_subdir}images/icon-staff.png" alt="{_T string="[staff]"}" width="16" height="16"/>
+                        <span class="tooltip">
+                            <img src="{base_url}/{$template_subdir}images/icon-staff.png" alt="" width="16" height="16"/>
+                            <span class="sr-only">{_T string="Staff member"}</span>
+                        </span>
                     {else}
                         <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
                     {/if}
@@ -188,13 +209,37 @@
                     <td class="{$rclass}" data-title="{_T string="Modified"}">{$member->modification_date}</td>
 {/if}
                     <td class="{$rclass} center nowrap actions_row">
-                        <a href="{path_for name="editmember" data=["action" => {_T string="edit" domain="routes"}, "id" => $mid]}"><img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="%membername: edit informations" pattern="/%membername/" replace=$member->sname}"/></a>
+                        <a
+                            href="{path_for name="editmember" data=["action" => {_T string="edit" domain="routes"}, "id" => $mid]}"
+                            class="tooltip action"
+                        >
+                            <i class="fas fa-user-edit fa-fw" aria-hidden="true"></i>
+                            <span class="sr-only">{_T string="%membername: edit informations" pattern="/%membername/" replace=$member->sname}</span>
+                        </a>
 {if $login->isAdmin() or $login->isStaff()}
-                        <a href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="member" domain="routes"}, "value" => $member->id]}"><img src="{base_url}/{$template_subdir}images/icon-money.png" alt="{_T string="[$]"}" width="16" height="16" title="{_T string="%membername: contributions" pattern="/%membername/" replace=$member->sname}"/></a>
-                        <a class="delete" href="{path_for name="removeMember" data=["id" => $member->id]}"><img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="%membername: remove from database" pattern="/%membername/" replace=$member->sname}"/></a>
+                        <a
+                            href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="member" domain="routes"}, "value" => $member->id]}"
+                            class="tooltip"
+                        >
+                            <i class="fas fa-cookie fa-fw" aria-hidden="true"></i>
+                            <span class="sr-only">{_T string="%membername: contributions" pattern="/%membername/" replace=$member->sname}</span>
+                        </a>
+                        <a
+                            href="{path_for name="removeMember" data=["id" => $member->id]}"
+                            class="delete tooltip"
+                        >
+                            <i class="fas fa-user-times fa-fw" aria-hidden="true"></i>
+                            <span class="sr-only">{_T string="%membername: remove from database" pattern="/%membername/" replace=$member->sname}</span>
+                        </a>
 {/if}
 {if $login->isSuperAdmin()}
-                        <a href="{path_for name="impersonate" data=["id" => $mid]}"><img src="{base_url}/{$template_subdir}images/icon-impersonate.png" alt="{_T string="Impersonate"}" width="16" height="16" title="{_T string="Log in in as %membername" pattern="/%membername/" replace=$member->sname}"/></a>
+                        <a
+                            href="{path_for name="impersonate" data=["id" => $mid]}"
+                            class="tooltip"
+                        >
+                            <i class="fas fa-user-secret fa-fw" aria-hidden="true"></i>
+                            <span class="sr-only">{_T string="Log in in as %membername" pattern="/%membername/" replace=$member->sname}</span>
+                        </a>
 {/if}
             {* If some additionnals actions should be added from plugins, we load the relevant template file
             We have to use a template file, so Smarty will do its work (like replacing variables). *}
@@ -218,19 +263,45 @@
         <ul class="selection_menu">
             <li>{_T string="For the selection:"}</li>
     {if $login->isAdmin() or $login->isStaff()}
-            <li><input type="submit" id="delete" name="delete" value="{_T string="Delete"}"/></li>
-            <li><input type="submit" id="masschange" class="button" name="masschange" value="{_T string="Mass change"}"/></li>
+            <li>
+                <button type="submit" id="delete" name="delete">
+                    <i class="fas fa-user-times fa-fw"></i> {_T string="Delete"}
+                </button>
+            </li>
+            <li>
+                <button type="submit" id="masschange" name="masschange" class="action">
+                    <i class="fas fa-user-edit fa-fw"></i> {_T string="Mass change"}
+                </button>
+            </li>
         {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
-            <li><input type="submit" id="sendmail" name="mailing" value="{_T string="Mail"}"/></li>
+            <li>
+                <button type="submit" id="sendmail" name="mailing">
+                    <i class="fas fa-mail-bulk fa-fw"></i> {_T string="Mail"}
+                </button>
+            </li>
         {/if}
     {/if}
             <li>
-                <input type="submit" id="attendance_sheet" name="attendance_sheet" value="{_T string="Attendance sheet"}"/>
+                <button type="submit" id="attendance_sheet" name="attendance_sheet">
+                    <i class="fas fa-file-alt fa-fw"></i> {_T string="Attendance sheet"}
+                </button>
             </li>
-            <li><input type="submit" name="labels" value="{_T string="Generate labels"}"/></li>
-            <li><input type="submit" name="cards" value="{_T string="Generate Member Cards"}"/></li>
+            <li>
+                <button type="submit" id="labels" name="labels">
+                    <i class="far fa-address-card fa-fw"></i> {_T string="Generate labels"}
+                </button>
+            </li>
+            <li>
+                <button type="submit" id="cards" name="cards">
+                    <i class="fas fa-id-badge fa-fw"></i> {_T string="Generate Member Cards"}
+                </button>
+            </li>
     {if $login->isAdmin() or $login->isStaff()}
-            <li><input type="submit" name="csv" value="{_T string="Export as CSV"}"/></li>
+            <li>
+                <button type="submit" id="csv" name="csv">
+                    <i class="fas fa-file-csv fa-fw"></i> {_T string="Export as CSV"}
+                </button>
+            </li>
     {/if}
     {if $plugin_batch_actions|@count != 0}
         {foreach from=$plugin_batch_actions key=plugin_name item=action}
@@ -245,54 +316,79 @@
         <div id="legende" title="{_T string="Legend"}">
             <h1>{_T string="Legend"}</h1>
             <table>
-                <tr>
-                    <th><img src="{base_url}/{$template_subdir}images/icon-male.png" alt="{_T string="Mister"}" width="16" height="16"/></th>
-                    <td class="back">{_T string="Man"}</td>
-                    <th class="back">{_T string="Name"}</th>
-                    <td class="back">{_T string="Active account"}</td>
-                </tr>
-                <tr>
-                    <th><img src="{base_url}/{$template_subdir}images/icon-female.png" alt="{_T string="Miss"} / {_T string="Mrs"}" width="16" height="16"/></th>
-                    <td class="back">{_T string="Woman"}</td>
-                    <th class="inactif back">{_T string="Name"}</th>
-                    <td class="back">{_T string="Inactive account"}</td>
-                </tr>
-                <tr>
-                    <th><img src="{base_url}/{$template_subdir}images/icon-company.png" alt="{_T string="Society"}" width="16" height="16"/></th>
-                    <td class="back">{_T string="Society"}</td>
-                    <th class="cotis-never color-sample">&nbsp;</th>
-                    <td class="back">{_T string="Never contributed"}</td>
-                </tr>
-                <tr>
-                    <th><img src="{base_url}/{$template_subdir}images/icon-staff.png" alt="{_T string="[staff]"}" width="16" height="16"/></th>
-                    <td class="back">{_T string="Staff member"}</td>
-                    <th class="cotis-ok color-sample">&nbsp;</th>
-                    <td class="back">{_T string="Membership in order"}</td>
-                </tr>
-                <tr>
-                    <th><img src="{base_url}/{$template_subdir}images/icon-star.png" alt="{_T string="Admin"}" width="16" height="16"/></th>
-                    <td class="back">{_T string="Admin"}</td>
-                    <th class="cotis-soon color-sample">&nbsp;</th>
-                    <td class="back">{_T string="Membership will expire soon (&lt;30d)"}</td>
-                </tr>
-                <tr>
-                    <th><img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="Modify"}" width="16" height="16"/></th>
-                    <td class="back">{_T string="Modification"}</td>
-                    <th class="cotis-late color-sample">&nbsp;</th>
-                    <td class="back">{_T string="Lateness in fee"}</td>
-                </tr>
-                <tr>
-                    <th><img src="{base_url}/{$template_subdir}images/icon-money.png" alt="{_T string="Contribution"}" width="16" height="16"/></th>
-                    <td class="back">{_T string="Contributions"}</td>
-                    <th><img src="{base_url}/{$template_subdir}images/icon-mail.png" alt="{_T string="E-mail"}" width="16" height="16"/></th>
-                    <td class="back">{_T string="Send a mail"}</td>
-                </tr>
-                <tr>
-                    <th><img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="Delete"}" width="16" height="16"/></th>
-                    <td class="back">{_T string="Deletion"}</td>
-                    <th><img src="{base_url}/{$template_subdir}images/icon-website.png" alt="{_T string="Website"}" width="16" height="16"/></th>
-                    <td class="back">{_T string="Website URL"}</td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <th class="" colspan="4">{_T string="Reading the list"}</th>
+                    </tr>
+                    <tr>
+                        <th class="back">{_T string="Name"}</th>
+                        <td class="back">{_T string="Active account"}</td>
+                        <th class="inactif back">{_T string="Name"}</th>
+                        <td class="back">{_T string="Inactive account"}</td>
+                    </tr>
+                    <tr>
+                        <th class="cotis-ok color-sample">&nbsp;</th>
+                        <td class="back">{_T string="Membership in order"}</td>
+                        <th class="cotis-soon color-sample">&nbsp;</th>
+                        <td class="back">{_T string="Membership will expire soon (&lt;30d)"}</td>
+                    </tr>
+                    <tr>
+                        <th class="cotis-never color-sample">&nbsp;</th>
+                        <td class="back">{_T string="Never contributed"}</td>
+                        <th class="cotis-late color-sample">&nbsp;</th>
+                        <td class="back">{_T string="Lateness in fee"}</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <th class="" colspan="4">{_T string="Actions"}</th>
+                    </tr>
+                    <tr>
+                        <th class="action">
+                            <i class="fas fa-user-edit fa-fw"></i>
+                        </th>
+                        <td class="back">{_T string="Modification"}</td>
+                        <th>
+                            <i class="fas fa-cookie fa-fw"></i>
+                        </th>
+                        <td class="back">{_T string="Contributions"}</td>
+                    </tr>
+                    <tr>
+                        <th class="delete">
+                            <i class="fas fa-user-times fa-fw"></i>
+                        </th>
+                        <td class="back">{_T string="Deletion"}</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <th colspan="4">{_T string="User status/interactions"}</th>
+                    </tr>
+                    <tr>
+                        <th><img src="{base_url}/{$template_subdir}images/icon-mail.png" alt="{_T string="Mail"}" width="16" height="16"/></th>
+                        <td class="back">{_T string="Send a mail"}</td>
+                        <th><img src="{base_url}/{$template_subdir}images/icon-website.png" alt="{_T string="Website"}" width="16" height="16"/></th>
+                        <td class="back">{_T string="Visit website"}</td>
+                    </tr>
+
+                    <tr>
+                        <th><img src="{base_url}/{$template_subdir}images/icon-male.png" alt="{_T string="Is a man"}" width="16" height="16"/></th>
+                        <td class="back">{_T string="Is a man"}</td>
+                        <th><img src="{base_url}/{$template_subdir}images/icon-female.png" alt="{_T string="Is a woman"}" width="16" height="16"/></th>
+                        <td class="back">{_T string="Is a woman"}</td>
+                    </tr>
+                    <tr>
+                        <th><img src="{base_url}/{$template_subdir}images/icon-company.png" alt="{_T string="Is a company"}" width="16" height="16"/></th>
+                        <td class="back">{_T string="Is a company"}</td>
+                    </tr>
+                    <tr>
+                        <th><img src="{base_url}/{$template_subdir}images/icon-star.png" alt="{_T string="Admin"}" width="16" height="16"/></th>
+                        <td class="back">{_T string="Admin"}</td>
+                        <th><img src="{base_url}/{$template_subdir}images/icon-staff.png" alt="{_T string="Staff member"}" width="16" height="16"/></th>
+                        <td class="back">{_T string="Staff member"}</td>
+
+                    </tr>
+                </tbody>
             </table>
         </div>
 {/if}
@@ -323,8 +419,10 @@
 {/if}
         {* Use of Javascript to draw specific elements that are not relevant is JS is inactive *}
         $(function(){
+
+            _initTooltips('#listform');
 {if $nb_members != 0}
-            var _checklinks = '<div class="checkboxes"><span class="fleft"><a href="#" class="checkall">{_T string="(Un)Check all"}</a> | <a href="#" class="checkinvert">{_T string="Invert selection"}</a></span><a href="#" class="show_legend fright">{_T string="Show legend"}</a></div>';
+            var _checklinks = '<div class="checkboxes"><span class="fleft"><a href="#" class="checkall tooltip"><i class="fas fa-check-square"></i> {_T string="(Un)Check all"}</a> | <a href="#" class="checkinvert tooltip"><i class="fas fa-exchange-alt"></i> {_T string="Invert selection"}</a></span><a href="#" class="show_legend fright">{_T string="Show legend"}</a></div>';
             $('.listing').before(_checklinks);
             $('.listing').after(_checklinks);
             _bind_check();
@@ -541,10 +639,8 @@
                         changeMonth: true,
                         changeYear: true,
                         showOn: 'button',
-                        buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
-                        buttonImageOnly: true,
                         yearRange: 'c:c+5',
-                        buttonText: '{_T string="Select a date" escape="js"}'
+                        buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
                     });
                 },
                 error: function() {

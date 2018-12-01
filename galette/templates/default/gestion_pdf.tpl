@@ -107,7 +107,7 @@
 
 {block name="javascripts"}
         <script type="text/javascript">
-            $('#tabs').append('<a class="button notext" id="btninfo_small" title="{_T string="Show existing variables"}">{_T string="Show existing variables"}</a>');
+            $('#tabs').append('<a class="tab-button tooltip action" title="{_T string="Show existing variables"}"><i class="fas fa-info-circle fa-2x"></i> <span class="sr-only">{_T string="Show existing variables" escape="js"}</span></a>');
             $(function(){
                 $('#legende h1').remove();
                 $('#legende').dialog({

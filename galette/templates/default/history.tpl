@@ -36,7 +36,13 @@
             <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
         </div>
         <div class="infoline">
-            <a id="histreset" class="button delete" href="{path_for name="flushHistory"}">{_T string="Flush the logs"}</a>
+            <a
+                class="button delete"
+                href="{path_for name="flushHistory"}"
+            >
+                <i class="fas fa-trash"></i>
+                {_T string="Flush the logs"}
+            </a>
             {$history->getCount()} {if $history->getCount() != 1}{_T string="entries"}{else}{_T string="entry"}{/if}
             <div class="fright">
                 <label for="nbshow">{_T string="Records per page:"}</label>
@@ -161,9 +167,7 @@
                 changeMonth: true,
                 changeYear: true,
                 showOn: 'button',
-                buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
-                buttonImageOnly: true,
-                buttonText: '{_T string="Select a date" escape="js"}'
+                buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
             });
         </script>
 {/block}
