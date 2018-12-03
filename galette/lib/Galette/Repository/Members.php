@@ -219,6 +219,11 @@ class Members
     ) {
         global $zdb;
 
+        if ($limit === true) {
+            //force count if limit is active
+            $count = true;
+        }
+
         try {
             $_mode = self::SHOW_LIST;
             if ($staff !== false) {
@@ -427,15 +432,16 @@ class Members
     /**
      * Get members list
      *
-     * @param bool  $as_members return the results as an array of
-     *                          Member object.
-     * @param array $fields     field(s) name(s) to get. Should be a string or
-     *                          an array. If null, all fields will be
-     *                          returned
+     * @param boolean $as_members return the results as an array of
+     *                            Member object.
+     * @param array   $fields     field(s) name(s) to get. Should be a string or
+     *                            an array. If null, all fields will be
+     *                            returned
+     * @param boolean $full       Whether to return full list
      *
      * @return Adherent[]|ResultSet
      */
-    public function getList($as_members = false, $fields = null)
+    public function getList($as_members = false, $fields = null, $full = true)
     {
         return $this->getMembersList(
             $as_members,
@@ -443,7 +449,7 @@ class Members
             false,
             false,
             false,
-            false,
+            true,
             false
         );
     }
@@ -1641,7 +1647,6 @@ class Members
         return $reminders;
     }
 
-
     /**
      * Get count for current query
      *
@@ -1683,5 +1688,15 @@ class Members
             $emails[$row->email_adh] = $row->{self::PK};
         }
         return $emails;
+    }
+
+    /**
+     * Get current filters
+     *
+     * @return MembersList
+     */
+    public function getFilters()
+    {
+        return $this->filters;
     }
 }

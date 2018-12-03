@@ -412,19 +412,35 @@ $app->get(
             'nom_adh',
             'prenom_adh'
         );
-        $list_members = $m->getList(false, $required_fields);
+        $list_members = $m->getList(false, $required_fields, true);
 
         if (count($list_members) > 0) {
             foreach ($list_members as $member) {
                 $pk = Adherent::PK;
                 $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
-                    ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
+                    ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8')) .
+                    ' (' . $member->id_adh . ')';
                 $members[$member->$pk] = $sname;
             }
         }
 
-        if (isset($members) && is_array($members)) {
-            $params['adh_options'] = $members;
+        $params['members'] = [
+            'filters'   => $m->getFilters(),
+            'count'     => $m->getCount()
+        ];
+
+        //check if current attached member is part of the list
+        if (isset($contrib) && $contrib->member > 0) {
+            if (!isset($members[$contrib->member])) {
+                $members = array_merge(
+                    [$contrib->member => Adherent::getSName($this->zdb, $contrib->member, true)],
+                    $members
+                );
+            }
+        }
+
+        if (count($members)) {
+            $params['members']['list'] = $members;
         }
 
         $ext_membership = '';
@@ -432,6 +448,7 @@ $app->get(
             $ext_membership = $this->preferences->pref_membership_ext;
         }
         $params['pref_membership_ext'] = $ext_membership;
+        $params['autocomplete'] = true;
 
         // display page
         $this->view->render(
@@ -855,21 +872,43 @@ $app->get(
         }
 
         // members
+        $members = [];
         $m = new Members();
         $required_fields = array(
             'id_adh',
             'nom_adh',
             'prenom_adh'
         );
-        $members = $m->getList(false, $required_fields);
-        if (count($members) > 0) {
-            foreach ($members as $member) {
+        $list_members = $m->getList(false, $required_fields, true);
+
+        if (count($list_members) > 0) {
+            foreach ($list_members as $member) {
                 $pk = Adherent::PK;
                 $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
-                    ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
-                $adh_options[$member->$pk] = $sname;
+                    ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8')) .
+                    ' (' . $member->id_adh . ')';
+                $members[$member->$pk] = $sname;
             }
-            $params['adh_options'] = $adh_options;
+        }
+
+        $params['members'] = [
+            'filters'   => $m->getFilters(),
+            'count'     => $m->getCount()
+        ];
+        $params['autocomplete'] = true;
+
+        //check if current attached member is part of the list
+        if (isset($trans) && $trans->member > 0) {
+            if (!isset($members[$trans->member])) {
+                $members = array_merge(
+                    [$trans->member => Adherent::getSName($this->zdb, $trans->member, true)],
+                    $members
+                );
+            }
+        }
+
+        if (count($members)) {
+            $params['members']['list'] = $members;
         }
 
         // display page

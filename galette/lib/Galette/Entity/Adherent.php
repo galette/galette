@@ -748,12 +748,13 @@ class Adherent
     /**
      * Retrieve Full name and surname for the specified member id
      *
-     * @param Db  $zdb Database instance
-     * @param int $id  member id
+     * @param Db      $zdb Database instance
+     * @param integer $id  member id
+     * @param boolean $wid Add member id
      *
      * @return string formatted Name and Surname
      */
-    public static function getSName($zdb, $id)
+    public static function getSName($zdb, $id, $wid = false)
     {
         try {
             $select = $zdb->select(self::TABLE);
@@ -761,8 +762,12 @@ class Adherent
 
             $results = $zdb->execute($select);
             $row = $results->current();
-            return mb_strtoupper($row->nom_adh, 'UTF-8') . ' ' .
+            $str = mb_strtoupper($row->nom_adh, 'UTF-8') . ' ' .
                 ucfirst(mb_strtolower($row->prenom_adh, 'UTF-8'));
+            if ($wid === true) {
+                $str .= ' (' . $row->id_adh . ')';
+            }
+            return $str;
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot get formatted name for member form id `' . $id . '` | ' .

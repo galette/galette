@@ -49,11 +49,11 @@ label, input[type="button"], input[type="submit"], input[type="reset"], button {
 }
 
 /* == Forms elements */
-input, button, select {
+input, button {
     font-size:100%;
 }
 
-input, textarea, select {
+input, textarea {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -78,8 +78,7 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 input:focus,
-textarea:focus,
-select:focus {
+textarea:focus {
     border-color: #FFB619;
 }
 
@@ -491,6 +490,9 @@ footer li {
     border-radius: 10px 10px 10px 10px;
 }
 
+.chosen-container {
+    text-align: left!important;
+}
 #listfilter input[type="text"]{
     padding:0;
 }
@@ -1846,11 +1848,11 @@ legend {
 }
 
 .cssform, .galette_form { background-color:white; }
-.cssform ul, .galette_form ul{
-    display: inline-block;
+.cssform ul, .galette_form ul {
+    /*display: inline-block;*/
     padding:0;
 }
-.cssform li, .galette_form li{
+.cssform li, .galette_form li {
     clear:none;
 }
 .cssform p, .cssform div.p,
@@ -2077,7 +2079,7 @@ td.photo img{
     width: 100%;
 }
 
-.tabbed div {
+.tabbed > div {
     margin-bottom: 1em;
 }
 
@@ -2315,6 +2317,13 @@ label:hover > i, span.bline:hover > i {
 
 .vtop {
     vertical-align: top!important;
+}
+
+/** Adapt chosen background color */
+.chosen-container-single .chosen-single {
+  background-color: #e6e6e6!important;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(20%, #f4f4f4), color-stop(50%, #f6f6f6), color-stop(52%, #eee), to(#e6e6e6))!important;
+  background: linear-gradient(#f4f4f4 20%, #f6f6f6 50%, #eee 52%, #e6e6e6 100%)!important;
 }
 
 /** Mobile devices */

@@ -1,7 +1,7 @@
 {extends file="page.tpl"}
 
 {block name="content"}
-{if isset($adh_options)}
+{if isset($members.list)}
         <form action="{if $transaction->id}{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $transaction->id]}{else}{path_for name="transaction" data=["action" => {_T string="add" domain="routes"}]}{/if}" method="post">
         <div class="bigtable">
             <fieldset class="cssform">
@@ -12,11 +12,11 @@
                 </p>
                 <p>
                     <label for="id_adh" class="bline" >{_T string="Originator:"}</label>
-                    <select name="id_adh" id="id_adh"{if $required.id_adh eq 1} required="required"{/if}>
+                    <select name="id_adh" id="id_adh" class="nochosen"{if $required.id_adh eq 1} required="required"{/if}>
     {if !$transaction->member}
                         <option>{_T string="-- select a name --"}</option>
     {/if}
-    {foreach $adh_options as $k=>$v}
+    {foreach $members.list as $k=>$v}
                             <option value="{$k}"{if $transaction->member == $k} selected="selected"{/if}>{$v}</option>
     {/foreach}
                     </select>
@@ -156,6 +156,7 @@
 
 {block name="javascripts"}
     <script type="text/javascript">
+    {include file="js_chosen_adh.tpl"}
         $(function(){
 {if $transaction->id}
             $('#contribslist').click(function(){

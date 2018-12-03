@@ -184,6 +184,9 @@ $(function() {
     $('#login').focus();
 
     _initTooltips();
+    $('select:not(.nochosen)').chosen({
+        disable_search: true
+    });
 
     $('.nojs').removeClass('nojs');
     $('#menu h1').each(function(){

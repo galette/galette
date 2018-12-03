@@ -7,6 +7,7 @@ Just put a {include file='common_header.tpl'} into the head tag.
         <meta charset="UTF-8" />
         <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}galette.css" />
         <link rel="stylesheet" type="text/css" href="{base_url}/fontawesome-free-5.5.0/css/all.min.css" />
+        <link rel="stylesheet" type="text/css" href="{base_url}/js/chosen-1.8.7/chosen.min.css" />
         {* Let's see if a local CSS exists and include it *}
         {assign var="localstylesheet" value="`$_CURRENT_THEME_PATH`galette_local.css"}
         {if file_exists($localstylesheet)}
@@ -14,6 +15,7 @@ Just put a {include file='common_header.tpl'} into the head tag.
         {/if}
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-{$jquery_version}.min.js"></script>
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-migrate-{$jquery_migrate_version}.min.js"></script>
+        <script type="text/javascript" src="{base_url}/js/chosen-1.8.7/chosen.jquery.min.js"></script>
         {* IE8 doe not know html5 tags *}
         <!--[if lte IE 9]>
             <script type="text/javascript" src="{base_url}/{$scripts_dir}html5-ie.js"></script>

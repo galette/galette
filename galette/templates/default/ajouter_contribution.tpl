@@ -1,7 +1,7 @@
 {extends file="page.tpl"}
 
 {block name="content"}
-{if isset($adh_options)}
+{if isset($members.list)}
         <form action="{if $contribution->id}{path_for name="contribution" data=["type" => $type, "action" => {_T string="edit" domain="routes"}, "id" => $contribution->id]}{else}{path_for name="contribution" data=["type" => $type, "action" => {_T string="add" domain="routes"}]}{/if}" method="post">
         <div class="bigtable">
     {if $contribution->isTransactionPart()}
@@ -44,11 +44,11 @@
                 <legend class="ui-state-active ui-corner-top">{if $type eq {_T string="fee" domain="routes"}}{_T string="Select contributor and membership fee type"}{else}{_T string="Select contributor and donation type"}{/if}</legend>
                 <p>
                     <label for="id_adh" class="bline">{_T string="Contributor:"}</label>
-                    <select name="id_adh" id="id_adh"{if isset($disabled.id_adh)} {$disabled.id_adh}{/if}>
+                    <select name="id_adh" id="id_adh" class="nochosen"{if isset($disabled.id_adh)} {$disabled.id_adh}{/if}>
                         {if $adh_selected eq 0}
                         <option value="">{_T string="-- select a name --"}</option>
                         {/if}
-                        {foreach $adh_options as $k=>$v}
+                        {foreach $members.list as $k=>$v}
                             <option value="{$k}"{if $contribution->member == $k} selected="selected"{/if}>{$v}</option>
                         {/foreach}
                     </select>
@@ -162,6 +162,8 @@
 
 {block name="javascripts"}
 <script type="text/javascript">
+    {include file="js_chosen_adh.tpl"},
+
     $(function() {
         $('#date_debut_cotis, #date_fin_cotis, #date_enreg').datepicker({
             changeMonth: true,
