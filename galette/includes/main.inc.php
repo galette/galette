@@ -363,7 +363,7 @@ function getGaletteBaseUrl(\Slim\Http\Request $request)
     $url = preg_replace(
         [
             '|index\.php|',
-            '|'.$_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '(:\d+)?' . '|'
+            '|https?://' . $_SERVER['HTTP_HOST'] . '(:\d+)?' . '|'
         ],
         ['', ''],
         $request->getUri()->getBaseUrl()
