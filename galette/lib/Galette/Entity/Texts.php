@@ -81,6 +81,7 @@ class Texts
         $this->patterns = array(
             'asso_name'         => '/{ASSO_NAME}/',
             'asso_slogan'       => '/{ASSO_SLOGAN}/',
+            'id_adh'            => '/{ID_ADH}/',
             'name_adh'          => '/{NAME_ADH}/',
             'lastname_adh'      => '/{LASTNAME_ADH}/',
             'firstname_adh'     => '/{FIRSTNAME_ADH}/',
@@ -105,6 +106,7 @@ class Texts
         $this->replaces = array(
             'asso_name'         => $preferences->pref_nom,
             'asso_slogan'       => $preferences->pref_slogan,
+            'id_adh'            => null,
             'name_adh'          => null,
             'lastname_adh'      => null,
             'firstname_adh'     => null,

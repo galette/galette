@@ -92,6 +92,7 @@ class PdfAdhesionForm
         $model->setPatterns(
             array(
                 'adh_title'         => '/{TITLE_ADH}/',
+                'adh_id'            => '/{ID_ADH}/',
                 'adh_name'          => '/{NAME_ADH}/',
                 'adh_last_name'     => '/{LAST_NAME_ADH}/',
                 'adh_first_name'    => '/{FIRST_NAME_ADH}/',
@@ -149,6 +150,7 @@ class PdfAdhesionForm
             $model->setReplacements(
                 array(
                     'adh_title'         => $adh->stitle,
+                    'adh_id'            => $adh->id,
                     'adh_name'          => $adh->sfullname,
                     'adh_last_name'     => $adh->surname,
                     'adh_first_name'    => $adh->name,
