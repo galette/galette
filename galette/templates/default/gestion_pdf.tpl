@@ -38,7 +38,7 @@
                 </tr>
                 <tr>
                     <th><tt>{ldelim}ASSO_LOGO{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation logo"}<br/><span>({_T string="globally available"})</span></td>
+                    <td class="back">{_T string="Your organisation logo"}</td>
                     <th></th>
                     <td></td>
                 </tr>
@@ -56,15 +56,15 @@
                 </tr>
                 <tr>
                     <th><tt>{ldelim}GROUP_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's main group"}></td>
+                    <td class="back">{_T string="Member's main group"}</td>
                     <th><tt>{ldelim}GROUPS_ADH{rdelim}</tt></th>
                     <td class="back">{_T string="Member's groups (as list)"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}COMPANY_ADH{rdelim}</tt></th>
                     <td class="back">{_T string="Company name"}</td>
-                    <th>&nbsp;</th>
-                    <td class="back">&nbsp;</td>
+                    <th><tt>{ldelim}ID_ADH{rdelim}</tt></th>
+                    <td class="back">{_T string="Member's ID"}</td>
                 </tr>
                 <tr>
                     <th colspan="4">
@@ -107,7 +107,7 @@
 
 {block name="javascripts"}
         <script type="text/javascript">
-            $('#tabs').append('<a class="tab-button tooltip action" title="{_T string="Show existing variables"}"><i class="fas fa-info-circle fa-2x"></i> <span class="sr-only">{_T string="Show existing variables" escape="js"}</span></a>');
+            $('#tabs').append('<a id="btnlegend" class="tab-button tooltip action" title="{_T string="Show existing variables"}"><i class="fas fa-info-circle fa-2x"></i> <span class="sr-only">{_T string="Show existing variables" escape="js"}</span></a>');
             $(function(){
                 $('#legende h1').remove();
                 $('#legende').dialog({
@@ -117,7 +117,7 @@
                     width: '60em'
                 }).dialog('close');
 
-                $('#btninfo_small').click(function(){
+                $('#btnlegend').click(function(){
                     $('#legende').dialog('open');
                         return false;
                 });

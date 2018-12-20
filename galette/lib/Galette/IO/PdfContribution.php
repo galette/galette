@@ -82,6 +82,7 @@ class PdfContribution
 
         $this->model->setPatterns(
             array(
+                'adh_id'            => '/{ID_ADH}/',
                 'adh_name'          => '/{NAME_ADH}/',
                 'adh_address'       => '/{ADDRESS_ADH}/',
                 'adh_zip'           => '/{ZIP_ADH}/',
@@ -120,6 +121,7 @@ class PdfContribution
 
         $this->model->setReplacements(
             array(
+                'adh_id'            => $this->contrib->member,
                 'adh_name'          => $member->sfullname,
                 'adh_address'       => $address,
                 'adh_zip'           => $member->getZipcode(),
