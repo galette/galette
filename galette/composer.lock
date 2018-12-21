@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "832c2474ebae67f35a98cfce974226de",
+    "content-hash": "2f5a40443bab7df32ae90144b8e2a64d",
     "packages": [
         {
             "name": "akrabat/rka-slim-session-middleware",
@@ -54,21 +54,24 @@
         },
         {
             "name": "analog/analog",
-            "version": "1.0.10-stable",
+            "version": "1.0.11-stable",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jbroadway/analog.git",
-                "reference": "65dce6b5aff8c77307c783e607c04a35df8259d6"
+                "reference": "f04906be5a740794959ecceaaae307792cfe3b58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jbroadway/analog/zipball/65dce6b5aff8c77307c783e607c04a35df8259d6",
-                "reference": "65dce6b5aff8c77307c783e607c04a35df8259d6",
+                "url": "https://api.github.com/repos/jbroadway/analog/zipball/f04906be5a740794959ecceaaae307792cfe3b58",
+                "reference": "f04906be5a740794959ecceaaae307792cfe3b58",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
                 "psr/log": "1.*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.36 || ^5.7 || ^6.5"
             },
             "type": "library",
             "autoload": {
@@ -99,7 +102,7 @@
                 "logging",
                 "syslog"
             ],
-            "time": "2017-09-17T02:30:30+00:00"
+            "time": "2018-12-08T15:36:38+00:00"
         },
         {
             "name": "container-interop/container-interop",
@@ -234,16 +237,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.23.0",
+            "version": "1.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4"
+                "reference": "bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
-                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266",
+                "reference": "bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266",
                 "shasum": ""
             },
             "require": {
@@ -308,7 +311,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-06-19T01:22:40+00:00"
+            "time": "2018-11-05T09:00:11+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -357,66 +360,17 @@
             "time": "2018-02-13T20:26:39+00:00"
         },
         {
-            "name": "paragonie/random_compat",
-            "version": "v2.0.15",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "10bcb46e8f3d365170f6de9d05245aa066b81f09"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/10bcb46e8f3d365170f6de9d05245aa066b81f09",
-                "reference": "10bcb46e8f3d365170f6de9d05245aa066b81f09",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.*|5.*"
-            },
-            "suggest": {
-                "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "lib/random.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Paragon Initiative Enterprises",
-                    "email": "security@paragonie.com",
-                    "homepage": "https://paragonie.com"
-                }
-            ],
-            "description": "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
-            "keywords": [
-                "csprng",
-                "polyfill",
-                "pseudorandom",
-                "random"
-            ],
-            "time": "2018-06-08T15:26:40+00:00"
-        },
-        {
             "name": "phpmailer/phpmailer",
-            "version": "v6.0.5",
+            "version": "v6.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "cb3ea134d4d3729e7857737d5f320cce9caf4d32"
+                "reference": "8190d73eb5def11a43cfb020b7f36db65330698c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/cb3ea134d4d3729e7857737d5f320cce9caf4d32",
-                "reference": "cb3ea134d4d3729e7857737d5f320cce9caf4d32",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/8190d73eb5def11a43cfb020b7f36db65330698c",
+                "reference": "8190d73eb5def11a43cfb020b7f36db65330698c",
                 "shasum": ""
             },
             "require": {
@@ -469,7 +423,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2018-03-27T13:49:45+00:00"
+            "time": "2018-11-16T00:41:32+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -668,16 +622,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
+                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
-                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
+                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
                 "shasum": ""
             },
             "require": {
@@ -711,7 +665,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10T12:19:37+00:00"
+            "time": "2018-11-20T15:27:04+00:00"
         },
         {
             "name": "psr/simple-cache",
@@ -808,16 +762,16 @@
         },
         {
             "name": "slim/slim",
-            "version": "3.10.0",
+            "version": "3.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "d8aabeacc3688b25e2f2dd2db91df91ec6fdd748"
+                "reference": "d378e70431e78ee92ee32ddde61ecc72edf5dc0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/d8aabeacc3688b25e2f2dd2db91df91ec6fdd748",
-                "reference": "d8aabeacc3688b25e2f2dd2db91df91ec6fdd748",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/d378e70431e78ee92ee32ddde61ecc72edf5dc0a",
+                "reference": "d378e70431e78ee92ee32ddde61ecc72edf5dc0a",
                 "shasum": ""
             },
             "require": {
@@ -875,20 +829,20 @@
                 "micro",
                 "router"
             ],
-            "time": "2018-04-19T19:29:08+00:00"
+            "time": "2018-09-16T10:54:21+00:00"
         },
         {
             "name": "smarty/smarty",
-            "version": "v3.1.32",
+            "version": "v3.1.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smarty-php/smarty.git",
-                "reference": "ac9d4b587e5bf53381e21881820a9830765cb459"
+                "reference": "dd55b23121e55a3b4f1af90a707a6c4e5969530f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/ac9d4b587e5bf53381e21881820a9830765cb459",
-                "reference": "ac9d4b587e5bf53381e21881820a9830765cb459",
+                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/dd55b23121e55a3b4f1af90a707a6c4e5969530f",
+                "reference": "dd55b23121e55a3b4f1af90a707a6c4e5969530f",
                 "shasum": ""
             },
             "require": {
@@ -928,20 +882,20 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2018-04-24T14:53:33+00:00"
+            "time": "2018-09-12T20:54:16+00:00"
         },
         {
             "name": "tecnickcom/tcpdf",
-            "version": "6.2.17",
+            "version": "6.2.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "64fc19439863e1b1314487a72a74d9bfd0b55a53"
+                "reference": "367241059ca166e3a76490f4448c284e0a161f15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/64fc19439863e1b1314487a72a74d9bfd0b55a53",
-                "reference": "64fc19439863e1b1314487a72a74d9bfd0b55a53",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/367241059ca166e3a76490f4448c284e0a161f15",
+                "reference": "367241059ca166e3a76490f4448c284e0a161f15",
                 "shasum": ""
             },
             "require": {
@@ -990,7 +944,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2018-02-24T11:48:20+00:00"
+            "time": "2018-10-16T17:24:05+00:00"
         },
         {
             "name": "zendframework/zend-cache",
@@ -1325,16 +1279,16 @@
         },
         {
             "name": "zendframework/zend-stdlib",
-            "version": "3.2.0",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-stdlib.git",
-                "reference": "cd164b4a18b5d1aeb69be2c26db035b5ed6925ae"
+                "reference": "66536006722aff9e62d1b331025089b7ec71c065"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/cd164b4a18b5d1aeb69be2c26db035b5ed6925ae",
-                "reference": "cd164b4a18b5d1aeb69be2c26db035b5ed6925ae",
+                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/66536006722aff9e62d1b331025089b7ec71c065",
+                "reference": "66536006722aff9e62d1b331025089b7ec71c065",
                 "shasum": ""
             },
             "require": {
@@ -1367,7 +1321,7 @@
                 "stdlib",
                 "zf"
             ],
-            "time": "2018-04-30T13:50:40+00:00"
+            "time": "2018-08-28T21:34:05+00:00"
         }
     ],
     "packages-dev": [
@@ -1525,7 +1479,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.6.0"
+        "php": ">=7.1.0"
     },
     "platform-dev": []
 }

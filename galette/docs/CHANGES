@@ -6,6 +6,7 @@ Changes
 News
 ^^^^
 
+- PHP 7.1 or above required
 - Use FontAwesome for icons
 - Manage payment types
 - Do not send password in mails

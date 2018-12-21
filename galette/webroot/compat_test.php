@@ -44,7 +44,7 @@ $modules['mbstring'] = (extension_loaded('mbstring')) ? 'Ok' : 'Missing';
 $modules['fileinfo'] = (extension_loaded('fileinfo')) ? 'Ok' : 'Missing';
 $modules['intl'] = (extension_loaded('intl')) ? 'Ok' : 'Missing';
 
-$phpok = !version_compare(PHP_VERSION, '5.6', '<');
+$phpok = !version_compare(PHP_VERSION, '7.1', '<');
 ?>
 <html>
     <head>

@@ -24,7 +24,7 @@
         }
     },
     "require": {
-        "php": ">=5.6.0",
+        "php": ">=7.1.0",
         "slim/slim": "^3.0",
         "slim/flash": "^0.1.0",
         "monolog/monolog": "^1.13",
@@ -36,7 +36,6 @@
         "tecnickcom/tcpdf": "^6.2",
         "akrabat/rka-slim-session-middleware": "dev-master@dev",
         "fzaninotto/Faker": "dev-master#c3f82846fdfd1760b277767ac21426ca030f795e",
-        "paragonie/random_compat": "^2.0",
         "zendframework/zend-i18n": "^2.9",
         "zendframework/zend-cache": "^2.8"
     },
