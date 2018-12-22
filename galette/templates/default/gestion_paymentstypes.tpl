@@ -33,7 +33,11 @@
             {foreach from=$list item=ptype name=alltypes}
                         <tr class="{if $smarty.foreach.alltypes.iteration % 2 eq 0}even{else}odd{/if}">
                             <td data-scope="row">
+    {if $preferences->pref_show_id}
                                 {$ptype->id}
+    {else}
+                                {$smarty.foreach.alltypes.iteration}
+    {/if}
                                 <span class="row-title">
                                     <a href="{path_for name="editPaymentType" data=["id" => $ptype->id]}">
                                         {_T string="%s payment type" pattern="/%s/" replace=$ptype->getName()}

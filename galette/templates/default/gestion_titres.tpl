@@ -37,7 +37,11 @@
             {foreach from=$titles_list item=title name=alltitles}
                         <tr class="{if $smarty.foreach.alltitles.iteration % 2 eq 0}even{else}odd{/if}">
                             <td data-scope="row">
+    {if $preferences->pref_show_id}
                                 {$title->id}
+    {else}
+                                {$smarty.foreach.alltitles.iteration}
+    {/if}
                                 <span class="row-title">
                                     <a href="{path_for name="editTitle" data=["id" => $title->id]}">
                                         {_T string="%s title" pattern="/%s/" replace=$title->short}

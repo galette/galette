@@ -92,7 +92,11 @@
     {assign var="cclass" value=$transaction->getRowClass()}
                 <tr>
                     <td class="{$cclass} nowrap" data-scope="row">
+    {if $preferences->pref_show_id}
                         {$transaction->id}
+    {else}
+                        {$ordre+1+($filters->current_page - 1)*$numrows}
+    {/if}
                         <span class="row-title">
                             <a href="{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $transaction->id]}">
                                 {_T string="Transaction %id" pattern="/%id/" replace=$transaction->id}

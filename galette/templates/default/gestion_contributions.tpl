@@ -175,7 +175,11 @@
                         {else}
                             <input type="hidden" name="contrib_id" value="{$contribution->id}"/>
                         {/if}
+    {if $preferences->pref_show_id}
+                        {$contribution->id}
+    {else}
                         {$ordre+1+($filters->current_page - 1)*$numrows}
+    {/if}
                         <span class="row-title">
                             <a href="{path_for name="contribution" data=["type" => $ctype, "action" => {_T string="edit" domain="routes"}, "id" => $contribution->id]}">
                                 {_T string="Contribution %id" pattern="/%id/" replace=$contribution->id}

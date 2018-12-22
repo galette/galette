@@ -116,9 +116,13 @@
 {foreach from=$logs item=log name=eachlog}
                 <tr class="{if $smarty.foreach.eachlog.iteration % 2 eq 0}even{else}odd{/if}">
                     <td data-scope="row">
+    {if $preferences->pref_show_id}
+                        {$log.mailing_id}
+    {else}
                         {$smarty.foreach.eachlog.iteration}
+    {/if}
                         <span class="row-title">
-                            {_T string="Mailing entry %id" pattern="/%id/" replace=$smarty.foreach.eachlog.iteration}
+                            {_T string="Mailing entry %id" pattern="/%id/" replace=$log.mailing.mailing_id}
                         </span>
                     </td>
                     <td class="nowrap" data-title="{_T string="Date"}">{$log.mailing_date|date_format:"%a %d/%m/%Y - %R"}</td>

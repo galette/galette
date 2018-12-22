@@ -212,8 +212,8 @@
                     <input type="text" name="pref_galette_url" id="pref_galette_url" placeholder="{$preferences->getDefaultURL()}" value="{$pref.pref_galette_url}"{if isset($required.pref_galette_url) and $required.pref_galette_url eq 1} required="required"{/if}/>
                 </p>
                 <p>
-                    <label for="pref_show_id" class="bline tooltip" title="{_T string="Display member number in member related windows"}">{_T string="Show member number"}</label>
-                    <span class="tip">{_T string="Display member number in member related windows"}</span>
+                    <label for="pref_show_id" class="bline tooltip">{_T string="Show identifiers"}</label>
+                    <span class="tip">{_T string="Display database identifiers in related windows"}</span>
                     <input type="checkbox" name="pref_show_id" id="pref_show_id" value="1" {if $pref.pref_show_id} checked="checked"{/if}{if isset($required.pref_show_id) and $required.pref_show_id eq 1} required="required"{/if}/>
                 </p>
             </fieldset>
