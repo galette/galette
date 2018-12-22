@@ -148,7 +148,7 @@ var _initTooltips = function(selector) {
     //for tootltips
     //first, we hide tooltips in the page
     $(selector + '.tip').hide();
-    $(selector + ' label.tooltip').each(function() {
+    $(selector + ' label.tooltip, ' + selector + ' span.bline.tooltip').each(function() {
         var __i = $('<i class="fas fa-exclamation-circle"></i>')
         $(this).append(__i);
     });
