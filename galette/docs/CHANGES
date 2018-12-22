@@ -6,6 +6,8 @@ Changes
 News
 ^^^^
 
+- Rework icons
+- Search (name, mail, id, ...) in list selecting member in transactions and contribution
 - PHP 7.1 or above required
 - Use FontAwesome for icons
 - Manage payment types
