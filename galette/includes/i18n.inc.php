@@ -277,8 +277,12 @@ function _T($string, $domain = 'galette', $nt = true)
 {
     global $language, $installer, $translator;
 
-    if ($domain == 'routes') {
-        $nt = false;
+    if (strpos($domain, 'route') !== false) {
+        Analog::log(
+            'Routes are no longer translated, return string.',
+            Analog::DEBUG
+        );
+        return $string;
     }
 
     if ($translator->translationExists($string, $domain)) {

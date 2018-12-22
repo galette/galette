@@ -444,19 +444,20 @@ $app->add(function ($request, $response, $next) use ($i18n) {
 
     if (isset($get['pref_lang'])) {
         $route = $request->getAttribute('route');
-        $uri = $request->getUri();
 
         $route_name = $route->getName();
         $arguments = $route->getArguments();
 
         $this->i18n->changeLanguage($get['pref_lang']);
         $this->session->i18n = $this->i18n;
-        $this->session->changelang_route = [
-            'name'      => $route_name,
-            'arguments' => $arguments
-        ];
 
-        return $response->withRedirect($this->router->pathFor('changeLanguage'), 301);
+        return $response->withRedirect(
+            $this->router->pathFor(
+                $route_name,
+                $arguments
+            ),
+            301
+        );
     }
     return $next($request, $response);
 });
