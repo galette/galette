@@ -90,10 +90,16 @@ class FieldsCategories
         try {
             $select = $zdb->select(self::TABLE);
             $select->order('position');
-            return $zdb->execute($select);
+
+            $categories = [];
+            $results = $zdb->execute($select);
+            foreach ($results as $result) {
+                $categories[] = $result;
+            }
+            return $categories;
         } catch (\Exception $e) {
             Analog::log(
-                '[' . get_class($this) . '] Cannot get fields categories list | ' .
+                '[' . static::class . '] Cannot get fields categories list | ' .
                 $e->getMessage(),
                 Analog::WARNING
             );

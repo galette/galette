@@ -49,11 +49,11 @@ label, input[type="button"], input[type="submit"], input[type="reset"], button {
 }
 
 /* == Forms elements */
-input, button, select {
+input, button {
     font-size:100%;
 }
 
-input, textarea, select {
+input, textarea {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -78,8 +78,7 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 input:focus,
-textarea:focus,
-select:focus {
+textarea:focus {
     border-color: #FFB619;
 }
 
@@ -491,6 +490,9 @@ footer li {
     border-radius: 10px 10px 10px 10px;
 }
 
+.chosen-container {
+    text-align: left!important;
+}
 #listfilter input[type="text"]{
     padding:0;
 }
@@ -589,15 +591,59 @@ footer li {
 }
 
 /* == Buttons */
-#delete, #delete_cascade, #sendmail, #btnsave, #btnvalid, #btnadd, #btncancel, #btnsend, #btnpreview, #btnusers, #btnback, .button {
+#btnvalid, #btnadd, #btncancel, #btnsend, #btnback {
     padding-left: 1.4em!important;
     background-position: 10px 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
 }
 
 
-input#delete, input#delete_cascade, input#sendmail, input#btnsave, input#btnvalid, input#btnadd, input#btncancel, input#btnsend, input#btnpreview, input#btnusers, input#btnback, button.button, input.button {
+input#btnvalid, input#btnadd, input#btncancel, input#btnsend, input#btnback {
     padding-left:2.4em!important;
+}
+
+a > i {
+    color: rgb(102, 102, 102);
+}
+
+a:hover i {
+    color: rgba(0, 0, 0, 1);
+}
+
+.use > i, button.use i {
+    color: rgba(0, 128, 0, .5);
+}
+
+
+.use:hover > i, button.use:hover i {
+    color: rgba(0, 128, 0, 1);
+}
+
+.action > i, button.action i {
+    color: rgba(0, 0, 255, .5);
+}
+
+.action:hover > i, button.action:hover i {
+    color: rgba(0, 0, 255, 1);
+}
+
+.info > i, button.info i {
+    color: rgba(0, 0, 255, .5);
+}
+
+.info:hover > i, button.info:hover i {
+    color: rgba(0, 0, 255, 1);
+}
+.button i {
+    padding-right: .3em;
+}
+
+.delete i, #delete i, .actions_row .delete i {
+    color: rgba(255, 0, 0, .5);
+}
+
+.delete:hover i, #delete:hover i, .actions_row .delete:hover i {
+    color: rgba(255, 0, 0, 1);
 }
 
 .button.small {
@@ -623,11 +669,16 @@ input#delete, input#delete_cascade, input#sendmail, input#btnsave, input#btnvali
     background-repeat: repeat!important;
 }
 
-#sendmail{
+/*#sendmail{
     background-image:url(images/icon-mail.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
 #sendmail.ui-state-hover {
     background-image:url(images/icon-mail.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}*/
+
+#recup_mailing {
+    position: absolute;
+    right: .5em;
 }
 
 h1 #sendmail {
@@ -646,60 +697,15 @@ h1 #sendmail .ui-button-text {
     display: none;
 }
 
-#delete, #delete_cascade{
-    background-image: url(images/icon-trash.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#delete.ui-state-hover, #delete_cascade.ui-state-hover {
-    background-image:url(images/icon-trash.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#masschange {
-    background-image: url(images/icon-edit.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#masschange.ui-state-hover {
-    background-image:url(images/icon-edit.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-
-#subscribe {
-    background-image:url(images/subscribe.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#subscribe.ui-state-hover {
-    background-image:url(images/subscribe.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#lostpassword {
-    background-image:url(images/icon-lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btn_lostpassword {
-    background-image:url(images/lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-
-#lostpassword.ui-state-hover {
-    background-image:url(images/icon-lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-#btn_lostpassword.ui-state-hover {
-    background-image:url(images/lost_pass.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-#memberslist {
-    background-image:url(images/members-list.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#memberslist.ui-state-hover {
-    background-image:url(images/members-list.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#trombino {
-    background-image:url(images/trombino.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#trombino.ui-state-hover {
-    background-image:url(images/trombino.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
 #backhome {
     background:url(images/home.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
 #backhome.ui-state-hover {
     background-image:url(images/home.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
+}
+
+#logout_10 i {
+    color: rgba(255, 0, 0, 0.6);
 }
 
 #logout {
@@ -709,12 +715,6 @@ h1 #sendmail .ui-button-text {
     background-image:url(images/icon-quit.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#unimpersonate {
-    background-image:url(images/icon-impersonate.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#unimpersonate.ui-state-hover {
-    background-image:url(images/icon-impersonate.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
 #btnadd, #btnadd_small, .btnadd_small {
     background-image:url(images/icon-add.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png")!important;
 }
@@ -732,13 +732,6 @@ input.button.btnremove_small, input.button.btnadd_small {
    background-image:url(images/delete.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png")!important;
 }
 
-#btnadddon {
-    background-image:url(images/icon-add-donation.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btnadddon.ui-state-hover {
-   background-image:url(images/icon-add-donation.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
 #btninfo_small {
     background-image:url(images/icon-info.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
@@ -746,19 +739,16 @@ input.button.btnremove_small, input.button.btnadd_small {
    background-image:url(images/icon-info.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#btnmail {
-    background-image:url(images/icon-mailing.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btnmail.ui-state-hover {
-    background-image:url(images/icon-mailing.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#btnadd_small, #btnusers_small, #btnmanagers_small, #btninfo_small {
-    position: absolute;
-    top: .5em;
+.tab-button, #btnadd_small, #btninfo_small {
+    position: absolute!important; /* used along with .button */
     right: .5em;
 }
-legend #btnadd_small {
+
+.ui-tabs .tab-button , #group .tab-button{
+    top: .5em;
+}
+
+legend .tab-button {
     right: 2.5em;
 }
 
@@ -767,13 +757,6 @@ legend #btnadd_small {
 }
 #btncancel.ui-state-hover {
     background-image:url(images/icon-cancel.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#btnsave {
-    background-image:url(images/icon-save.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btnsave.ui-state-hover {
-    background-image:url(images/icon-save.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 #btnvalid {
@@ -790,13 +773,6 @@ legend #btnadd_small {
     background-image:url(images/prev.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#btnpreview {
-    background-image:url(images/icon-preview.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btnpreview.ui-state-hover {
-    background-image:url(images/icon-preview.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
 #btnsend {
     background-image:url(images/icon-mail-send.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
@@ -804,36 +780,8 @@ legend #btnadd_small {
     background-image:url(images/icon-mail-send.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#btnusers, #btnusers_small, #btnattach {
-    background-image:url(images/icon-user.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btnusers.ui-state-hover, #btnusers_small.ui-state-hover, #btnattach.ui-state-hover {
-    background-image:url(images/icon-user.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
 #btnattach {
     margin-bottom: .5em;
-}
-
-#btnmanagers, #btnmanagers_small {
-    background-image:url(images/icon-star.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btnmanagers.ui-state-hover, #btnmanagers_small.ui-state-hover {
-    background-image:url(images/icon-star.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#btngroups, #btnmanagedgroups {
-    background-image:url(images/icon-user.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btngroups.ui-state-hover, #btnmanagedgroups.ui-state-hover  {
-    background-image:url(images/icon-user.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#histreset {
-    background-image:url(images/delete.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#histreset.ui-state-hover {
-    background-image:url(images/delete.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 #preferences {
@@ -843,37 +791,29 @@ legend #btnadd_small {
     background-image:url(images/icon-prefs.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#next, #installpage input[type="submit"] {
+#installpage input[type="submit"] {
     background-image:url(images/next.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
     padding-left: 0.4em!important;
     padding-right: 2em!important;
     background-position: 95% 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
 }
-#next.ui-state-hover, #installpage input[type="submit"]:hover {
+#installpage input[type="submit"]:hover {
     background-image:url(images/next.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#prev {
-    background-image:url(images/prev.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#prev.ui-state-hover {
-    background-image:url(images/prev.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#btnlabels {
-    background-image:url(images/printer.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btnlabels.ui-state-hover {
-    background-image:url(images/printer.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#btn_membercard, #btn_edit, #btn_contrib, #btn_addcontrib, #btn_lostpassword, #btn_adhesionform {
+.bigbutton, #btn_membercard, #btn_contrib {
     padding-top:30px!important;
     padding-left: 0!important;
     display: block;
-    background-position: 50% 5px, 50% 50%!important;
-    background-repeat: no-repeat, repeat!important;
+    text-align: center;
+}
+.bigbutton i {
+    display: block;
+    width: 100%;
+    position:absolute;
+    top: .2em;
+    left: 0;
 }
 #btn_membercard {
     background-image:url(images/member_card.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
@@ -881,32 +821,12 @@ legend #btnadd_small {
 #btn_membercard.ui-state-hover {
     background-image: url(images/member_card.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
-#btn_adhesionform {
-    background-image:url(images/adhesion_form.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btn_adhesionform.ui-state-hover {
-    background-image: url(images/adhesion_form.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#btn_edit {
-    background-image:url(images/edit.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btn_edit.ui-state-hover {
-    background-image: url(images/edit.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
 
 #btn_contrib {
     background-image:url(images/contribution.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
 #btn_contrib.ui-state-hover {
     background-image: url(images/contribution.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#btn_addcontrib {
-    background-image:url(images/add_contribution.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btn_addcontrib.ui-state-hover {
-    background-image: url(images/add_contribution.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 .ui-state-default.btn_pdf {
@@ -935,20 +855,6 @@ legend #btnadd_small {
 }
 #btntelemetry.ui-state-hover {
     background-image: url(images/icon-telemetry.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
-}
-
-#telemetry.button {
-    background-image:url(images/icon-telemetry.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#telemetry.button.ui-state-hover{
-   background-image:url(images/icon-telemetry.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#register.button {
-    background-image:url(images/icon-identity.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#register.button.ui-state-hover{
-   background-image:url(images/icon-identity.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 .left {
@@ -1022,16 +928,6 @@ legend #btnadd_small {
     background-color: transparent;
 }
 
-#clearfilter, .clearfilter {
-    background: url(images/clearfilter.png) 0 50% no-repeat;
-    display:inline-block;
-    width:16px;
-    height:16px;
-    overflow: hidden;
-    text-indent: 20px;
-    vertical-align: bottom;
-}
-
 .debuginfos span{
     display: block;
     font-family: monospace;
@@ -1098,15 +994,18 @@ legend #btnadd_small {
 #selected_members ul,
 #selected_groups ul {
     text-align: left;
-    list-style-image: url(images/clearfilter.png);
+    list-style-type: none;
     cursor: pointer;
     overflow: auto;
 }
 
+#selected_members ul i,
+#selected_groups ul i {
+    margin-right: .2em;
+}
+
 #selected_members ul #none_selected,
 #selected_groups ul #none_selected {
-    list-style-type: none;
-    list-style-image: none;
     cursor: auto;
 }
 
@@ -1201,18 +1100,10 @@ legend #btnadd_small {
     color: #eea423;
 }
 
-.public_page #logout,
-.public_page #unimpersonate {
-    background-repeat: no-repeat;
-    text-indent: 25px;
-    width:16px;
-    height:16px;
+.public_page #logout_10 {
     margin: 0 .5em .2em;
-    overflow: hidden;
-    display: inline-block;
-    vertical-align: bottom;
-    white-space: nowrap;
 }
+
 /* =/ Public pages */
 
 /*
@@ -1562,7 +1453,6 @@ a.listing:hover {
 }
 #legende td, #legende th {
     padding-left: 2px;
-    background-color: #EEEEEE;
 }
 
 .ui-dialog > #legende {
@@ -1662,7 +1552,7 @@ table.listing.single {
     padding-top:0em;
 }
 
-.mailing_write div,
+.mailing_write > div,
 .mailing_preview,
 .mailing_attachments div{
     margin:.5em 1em;
@@ -1871,9 +1761,14 @@ td img, a img {
     text-align: center;
 }
 
-.flag
+#langs li a.flag:hover {
+    text-decoration: none;
+}
+
+.flag img, img.flag
 {
-    border: 1px solid black;
+    width: 22px;
+    height: 16px;
 }
 
 .bigtable
@@ -1953,11 +1848,11 @@ legend {
 }
 
 .cssform, .galette_form { background-color:white; }
-.cssform ul, .galette_form ul{
-    display: inline-block;
+.cssform ul, .galette_form ul {
+    /*display: inline-block;*/
     padding:0;
 }
-.cssform li, .galette_form li{
+.cssform li, .galette_form li {
     clear:none;
 }
 .cssform p, .cssform div.p,
@@ -2030,7 +1925,6 @@ th.bline, td.bline{
     display: inline-block;
     margin: 0 0 0 -22em;
     width: 19.9em;
-    padding-right: 20px;
 }
 
 .galette_form .radios label,
@@ -2174,6 +2068,7 @@ td.photo img{
 
 #details_menu li a {
     height: calc(100% - 32px);
+    width: 100%;
 }
 
 /*** /Voir adhérent ***/
@@ -2184,7 +2079,7 @@ td.photo img{
     width: 100%;
 }
 
-.tabbed div {
+.tabbed > div {
     margin-bottom: 1em;
 }
 
@@ -2228,11 +2123,16 @@ td.photo img{
     width:20em;
 }
 
-.tooltip{
-    background-image:url(images/info.png);
-    background-position:right 50%;
-    background-repeat:no-repeat;
+label > i, span.bline > i {
+    float: right;
+    font-size: 1.1em;
+    color: rgba(0, 0, 255, .5);
 }
+
+label:hover > i, span.bline:hover > i {
+    color: rgba(0, 0, 255, 1);
+}
+
 /*** /Tooltips ***/
 
 .trombino{
@@ -2340,6 +2240,8 @@ td.photo img{
 .ui-datepicker-trigger{
     cursor:pointer;
     vertical-align: middle;
+    border:none;
+    background:none;
 }
 
 /** PAGINATION */
@@ -2415,6 +2317,13 @@ td.photo img{
 
 .vtop {
     vertical-align: top!important;
+}
+
+/** Adapt chosen background color */
+.chosen-container-single .chosen-single {
+  background-color: #e6e6e6!important;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(20%, #f4f4f4), color-stop(50%, #f6f6f6), color-stop(52%, #eee), to(#e6e6e6))!important;
+  background: linear-gradient(#f4f4f4 20%, #f6f6f6 50%, #eee 52%, #e6e6e6 100%)!important;
 }
 
 /** Mobile devices */

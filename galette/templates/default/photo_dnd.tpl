@@ -57,7 +57,7 @@
                                         });
                                     },
                                 error: function() {
-                                    alert("{_T string="An error occured sending photo :(" escape="js"}");
+                                    alert("{_T string="An error occurred sending photo :(" escape="js"}");
                                 }
                             });
                         }

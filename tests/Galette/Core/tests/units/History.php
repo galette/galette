@@ -95,7 +95,7 @@ class History extends atoum
     {
         //nothing in the logs at the begining
         $list = $this->history->getHistory();
-        $this->integer($list->count())->isIdenticalTo(0);
+        $this->array($list)->hasSize(0);
 
         //add some entries
         $add = $this->history->add(
@@ -119,7 +119,7 @@ class History extends atoum
 
         //check what has been stored
         $list = $this->history->getHistory();
-        $this->integer($list->count())->isIdenticalTo(3);
+        $this->array($list)->hasSize(3);
 
         $actions = $this->history->getActionsList();
         $this->array($actions)
@@ -130,19 +130,19 @@ class History extends atoum
         //some filtering
         $this->history->filters->action_filter = 'Test';
         $list = $this->history->getHistory();
-        $this->integer($list->count())->isIdenticalTo(2);
+        $this->array($list)->hasSize(2);
 
         $this->history->filters->start_date_filter = date('Y-m-d');
         $this->history->filters->end_date_filter = date('Y-m-d');
         $list = $this->history->getHistory();
-        $this->integer($list->count())->isIdenticalTo(2);
+        $this->array($list)->hasSize(2);
 
         //let's clean now
         $cleaned = $this->history->clean();
         $this->boolean($cleaned)->isTrue();
 
         $list = $this->history->getHistory();
-        $this->integer($list->count())->isIdenticalTo(1);
+        $this->array($list)->hasSize(1);
 
         $this->zdb->db->query(
             'TRUNCATE TABLE ' . PREFIX_DB . \Galette\Core\History::TABLE,

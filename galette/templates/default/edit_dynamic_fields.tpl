@@ -182,9 +182,7 @@
             changeMonth: true,
             changeYear: true,
             showOn: 'button',
-            buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
-            buttonImageOnly: true,
-            buttonText: '{_T string="Select a date" escape="js"}'
+            buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
         });
     });
 </script>

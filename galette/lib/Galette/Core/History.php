@@ -151,7 +151,7 @@ class History
             $this->zdb->execute($insert);
         } catch (\Exception $e) {
             Analog::log(
-                "An error occured trying to add log entry. " . $e->getMessage(),
+                "An error occurred trying to add log entry. " . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -175,7 +175,7 @@ class History
 
             if (!$result) {
                 Analog::log(
-                    'An error occured cleaning history. ',
+                    'An error occurred cleaning history. ',
                     Analog::WARNING
                 );
                 $this->add('Error flushing logs');
@@ -211,7 +211,13 @@ class History
             //add limits to retrieve only relavant rows
             $this->filters->setLimits($select);
             $results = $this->zdb->execute($select);
-            return $results;
+
+            $entries = [];
+            foreach ($results as $result) {
+                $entries[] = $result;
+            }
+
+            return $entries;
         } catch (\Exception $e) {
             Analog::log(
                 'Unable to get history. | ' . $e->getMessage(),

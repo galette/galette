@@ -47,6 +47,8 @@
 {if $model->id lte 4}
                 <input type="hidden" name="model_type" value="{$model->type}"/>
 {/if}
-                <input type="submit" id="btnsave" value="{_T string="Save"}"/>
+                <button type="submit" class="action">
+                    <i class="fas fa-save fa-fw"></i> {_T string="Save"}
+                </button>
             </div>
         </form>

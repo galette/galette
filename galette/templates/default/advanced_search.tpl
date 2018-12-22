@@ -161,7 +161,17 @@
                 </div>
             </fieldset>
             <fieldset class="cssform large">
-                <legend class="ui-state-active ui-corner-top">{_T string="Free search"}<a class="clearfilter" href="#" title="{_T string="Add new free search criteria"}" id="btnadd_small">{_T string="Add"}</a></legend>
+                <legend class="ui-state-active ui-corner-top">
+                    {_T string="Free search"}
+                    <a
+                        href="#"
+                        id="addbutton"
+                        class="tab-button tooltip"
+                    >
+                        <i class="fas fa-plus-square"></i>
+                        <span class="sr-only">{_T string="Add new free search criteria"}</span>
+                    </a>
+                </legend>
                 <ul id="fs_sortable" class="fields_list connectedSortable">
 {foreach from=$filters->free_search item=fs}
                     <li>
@@ -225,7 +235,8 @@
                         <select name="free_query_operator[]">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
                         </select>
-                        <input type="radio" name="free_text[]" id="free_text_yes" value="1"{if $fs.search eq 1} checked="checked"{/if}/><label for="free_text_yes">{_T string="Yes"}</label><input type="radio" name="free_text[]" id="free_text_no" value="0"{if $fs.search eq 0} checked="checked"{/if}/><label for="free_text_no">{_T string="No"}</label>
+                        <input type="radio" name="free_text[]" id="free_text_yes" value="1"{if $fs.search eq 1} checked="checked"{/if}/><label for="free_text_yes">{_T string="Yes"}</label>
+                        <input type="radio" name="free_text[]" id="free_text_no" value="0"{if $fs.search eq 0} checked="checked"{/if}/><label for="free_text_no">{_T string="No"}</label>
     {else}
                         <select name="free_query_operator[]">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
@@ -238,7 +249,13 @@
                         <input type="text" name="free_text[]" value="{$fs.search}"{if $cur_field|is_a:'Galette\DynamicFields\Text'} class="large"{/if}/>
     {/if}
             </span>
-                        <a class="fright clearfilter" href="#" title="{_T string="Remove criteria"}">{_T string="Remove criteria"}</a>
+                        <a
+                            href="#"
+                            class="fright tooltip delete delcriteria"
+                        >
+                            <i class="fas fa-trash-alt"></i>
+                            <span class="sr-only">{_T string="Remove criteria"}</span>
+                        </a>
                     </li>
 {/foreach}
                 </ul>
@@ -313,7 +330,7 @@
                 if ( !elt ) {
                     elt = $('li');
                 }
-                elt.find('.clearfilter').click(function(){
+                elt.find('.delcriteria').click(function(){
                     var _this = $(this);
                     if ( _this.parents('ul').find('li').length > 1 ) {
                         _this.parent('li').remove();
@@ -337,20 +354,16 @@
                     changeMonth: true,
                     changeYear: true,
                     showOn: 'button',
-                    buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
-                    buttonImageOnly: true,
                     maxDate: '-0d',
                     yearRange: 'c-10:c+0',
-                    buttonText: '{_T string="Select a date" escape="js"}'
+                    buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
                 });
                 $('.due_date').datepicker({
                     changeMonth: true,
                     changeYear: true,
                     showOn: 'button',
-                    buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
-                    buttonImageOnly: true,
                     yearRange: 'c-10:c+5',
-                    buttonText: '{_T string="Select a date" escape="js"}'
+                    buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
                 });
             }
 
@@ -359,7 +372,7 @@
                 _initSortable();
                 _datePickers();
 
-                $('#btnadd_small').click(function(){
+                $('#addbutton').click(function(){
                     var _ul = $('#fs_sortable');
                     var _new = _ul.find('li').last().clone(true);
                     _newFilter(_new);

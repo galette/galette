@@ -49,7 +49,10 @@
         </fieldset-->
         </div>
         <div class="button-container">
-            <input type="submit" name="generate" id="btntools" class="button" value="{_T string="Generate"}"/>
+            <button ype="submit" class="action">
+                <i class="fas fa-play" aria-hidden="true"></i>
+                {_T string="Generate"}
+            </button>
         </div>
     </form>
 {/block}

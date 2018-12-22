@@ -322,7 +322,7 @@ class FieldsConfig
             }
         } catch (\Exception $e) {
             Analog::log(
-                '[' . $class . '] An error occured while checking update for ' .
+                '[' . $class . '] An error occurred while checking update for ' .
                 'fields configuration for table `' . $this->table . '`. ' .
                 $e->getMessage(),
                 Analog::ERROR
@@ -530,7 +530,7 @@ class FieldsConfig
             );
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured getting form elements',
+                'An error occurred getting form elements',
                 Analog::ERROR
             );
             throw $e;
@@ -613,7 +613,7 @@ class FieldsConfig
             return $display_elements;
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured getting display elements',
+                'An error occurred getting display elements',
                 Analog::ERROR
             );
             throw $e;
@@ -742,7 +742,7 @@ class FieldsConfig
         } catch (\Exception $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                '[' . $class . '] An error occured while storing fields ' .
+                '[' . $class . '] An error occurred while storing fields ' .
                 'configuration for table `' . $this->table . '`.' .
                 $e->getMessage(),
                 Analog::ERROR
@@ -830,7 +830,7 @@ class FieldsConfig
         } catch (\Exception $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'An error occured migrating old required fields. | ' .
+                'An error occurred migrating old required fields. | ' .
                 $e->getMessage(),
                 Analog::ERROR
             );

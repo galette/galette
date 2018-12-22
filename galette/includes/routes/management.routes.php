@@ -57,11 +57,13 @@ use Galette\Entity\PdfModel;
 use Galette\Repository\PdfModels;
 use Galette\Entity\Title;
 use Galette\Repository\Titles;
+use Galette\Repository\PaymentTypes;
 use Galette\Entity\Texts;
 use Galette\Core\Install;
 use Zend\Db\Adapter\Adapter;
 use Galette\Core\PluginInstall;
 use Galette\Entity\Status;
+use Galette\Entity\PaymentType;
 
 //galette's dashboard
 $app->get(
@@ -188,7 +190,12 @@ $app->get(
                 'statuts'               => $s->getList(),
                 'require_tabs'          => true,
                 'color_picker'          => true,
-                'require_dialog'        => true
+                'require_dialog'        => true,
+                'accounts_options'      => array(
+                    Members::ALL_ACCOUNTS       => _T("All accounts"),
+                    Members::ACTIVE_ACCOUNT     => _T("Active accounts"),
+                    Members::INACTIVE_ACCOUNT   => _T("Inactive accounts")
+                )
             )
         );
         return $response;
@@ -454,7 +461,7 @@ $app->post(
                 }
                 //once all values has been updated, we can store them
                 if (!$this->preferences->store()) {
-                    $error_detected[] = _T("An SQL error has occured while storing preferences. Please try again, and contact the administrator if the problem persists.");
+                    $error_detected[] = _T("An SQL error has occurred while storing preferences. Please try again, and contact the administrator if the problem persists.");
                 } else {
                     $this->flash->addMessage(
                         'success_detected',
@@ -722,7 +729,7 @@ $app->get(
 
             //If some plugins have been (de)activated, we have to reload
             if ($reload_plugins === true) {
-                $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH, $this->i18n->getFileName());
+                $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH, $this->i18n->getLongID());
             }
         }
 
@@ -1116,13 +1123,13 @@ $app->post(
             } catch (\Exception $e) {
                 $this->zdb->connection->rollBack();
                 Analog::log(
-                    'An error occured flushing logs | ' . $e->getMessage(),
+                    'An error occurred flushing logs | ' . $e->getMessage(),
                     Analog::ERROR
                 );
 
                 $this->flash->addMessage(
                     'error_detected',
-                    _T('An error occured trying to flush logs :(')
+                    _T('An error occurred trying to flush logs :(')
                 );
             }
         }
@@ -1339,13 +1346,13 @@ $app->post(
             } catch (\Exception $e) {
                 $this->zdb->connection->rollBack();
                 Analog::log(
-                    'An error occured deleting mailing | ' . $e->getMessage(),
+                    'An error occurred deleting mailing | ' . $e->getMessage(),
                     Analog::ERROR
                 );
 
                 $this->flash->addMessage(
                     'error_detected',
-                    _T('An error occured trying to delete mailing :(')
+                    _T('An error occurred trying to delete mailing :(')
                 );
 
                 $success = false;
@@ -1551,7 +1558,7 @@ $app->post(
                             str_replace(
                                 '%export',
                                 $pn,
-                                _T("An error occured running parameted export '%export'.")
+                                _T("An error occurred running parameted export '%export'.")
                             )
                         );
                         break;
@@ -1561,7 +1568,7 @@ $app->post(
                             str_replace(
                                 '%export',
                                 $pn,
-                                _T("An error occured running parameted export '%export'. Please check the logs.")
+                                _T("An error occurred running parameted export '%export'. Please check the logs.")
                             )
                         );
                         break;
@@ -1688,7 +1695,7 @@ $app->post(
             } else {
                 $this->flash->addMessage(
                     'error_detected',
-                    _T("An error occured importing the file :(")
+                    _T("An error occurred importing the file :(")
                 );
             }
 
@@ -1713,7 +1720,7 @@ $app->post(
 )->setName('doImport')->add($authenticate);
 
 $app->post(
-    __('/import/upload', 'routes'),
+    __('/import', 'routes') . __('/upload', 'routes'),
     function ($request, $response) {
         $csv = new CsvIn($this->zdb);
         if (isset($_FILES['new_file'])) {
@@ -1765,7 +1772,7 @@ $app->post(
 )->setname('uploadImportFile')->add($authenticate);
 
 $app->get(
-    __('/import/model', 'routes'),
+    __('/import', 'routes') . __('/model', 'routes'),
     function ($request, $response) {
         $model = new ImportModel();
         $model->load();
@@ -1815,7 +1822,7 @@ $app->get(
 )->setName('importModel')->add($authenticate);
 
 $app->get(
-    __('/import/model/get', 'routes'),
+    __('/import', 'routes') . __('/model', 'routes') . __('/get', 'routes'),
     function ($request, $response) {
         $model = new ImportModel();
         $model->load();
@@ -1852,7 +1859,7 @@ $app->get(
 )->setName('getImportModel')->add($authenticate);
 
 $app->post(
-    __('/import/model/store', 'routes'),
+    __('/import', 'routes') . __('/model', 'routes') . __('/store', 'routes'),
     function ($request, $response) {
         $model = new ImportModel();
         $model->load();
@@ -1878,7 +1885,7 @@ $app->post(
 )->setName('storeImportModel')->add($authenticate);
 
 $app->get(
-    __('/models/pdf', 'routes'),
+    __('/models', 'routes') . __('/pdf', 'routes'),
     function ($request, $response) {
         $id = 1;
         if (isset($_GET['id'])) {
@@ -1934,7 +1941,7 @@ $app->get(
 )->setName('pdfModels')->add($authenticate);
 
 $app->post(
-    __('/models/pdf', 'routes'),
+    __('/models', 'routes') . __('/pdf', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
         $type = null;
@@ -2118,7 +2125,7 @@ $app->post(
                         str_replace(
                             '%name',
                             $title->short,
-                            _T("An error occured removing title '%name' :(")
+                            _T("An error occurred removing title '%name' :(")
                         )
                     );
                 }
@@ -2152,7 +2159,7 @@ $app->post(
 )->setName('doRemoveTitle')->add($authenticate);
 
 $app->get(
-    __('/titles/edit', 'routes') . '/{id:\d+}',
+    __('/titles', 'routes') . __('/edit', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $id = $args['id'];
         $title = new Title((int)$id);
@@ -2171,7 +2178,7 @@ $app->get(
 )->setname('editTitle')->add($authenticate);
 
 $app->post(
-    __('/titles/edit', 'routes') . '/{id:\d+}',
+    __('/titles', 'routes') . __('/edit', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $id = $args['id'];
         $post = $request->getParsedBody();
@@ -2554,7 +2561,7 @@ $app->post(
                             $errors[] = str_replace(
                                 ['%type', '%id'],
                                 [$class->getI18nType(), $args['id']],
-                                _T("An error occured trying to remove %type #%id")
+                                _T("An error occurred trying to remove %type #%id")
                             );
                         }
 
@@ -2618,7 +2625,7 @@ $app->get(
             $nb_fields = $result->nb;
         } catch (Exception $e) {
             Analog::log(
-                'An error occured counting l10n entries | ' .
+                'An error occurred counting l10n entries | ' .
                 $e->getMessage(),
                 Analog::WARNING
             );
@@ -2672,7 +2679,7 @@ $app->get(
                 $params['trans'] = $trans;
             } catch (\Exception $e) {
                 Analog::log(
-                    'An error occured retrieving l10n entries | ' .
+                    'An error occurred retrieving l10n entries | ' .
                     $e->getMessage(),
                     Analog::WARNING
                 );
@@ -2728,7 +2735,7 @@ $app->post(
                                     $post['text_orig'],
                                     $trans_lang
                                 ),
-                                _T("An error occured saving label `%label` for language `%lang`")
+                                _T("An error occurred saving label `%label` for language `%lang`")
                             )
                         );
                     }
@@ -2822,7 +2829,7 @@ $app->post(
         } else {
             $this->flash->addMessage(
                 'error_detected',
-                _T("An error occured while storing fields configuration :(")
+                _T("An error occurred while storing fields configuration :(")
             );
         }
 
@@ -2839,7 +2846,7 @@ $app->get(
         if (isset($_POST['form']) && trim($_POST['form']) != '') {
             $form_name = $_POST['form'];
         }
-        $fields = new \Galette\Repository\DynamicFieldsSet($this->zdb);
+        $fields = new \Galette\Repository\DynamicFieldsSet($this->zdb, $this->login);
         $fields_list = $fields->getList($form_name, $this->login);
 
         $field_type_names = DynamicField::getFieldsTypesNames();
@@ -2892,7 +2899,7 @@ $app->get(
         } else {
             $this->flash->addMessage(
                 'error_detected',
-                _T("An error occured moving field :(")
+                _T("An error occurred moving field :(")
             );
         }
 
@@ -2973,7 +2980,7 @@ $app->post(
             } else {
                 $this->flash->addMessage(
                     'error_detected',
-                    _T('An error occured trying to delete field :(')
+                    _T('An error occurred trying to delete field :(')
                 );
                 $success = false;
             }
@@ -3087,9 +3094,9 @@ $app->post(
             $warning_detected = $df->getWarnings();
         } catch (\Exception $e) {
             if ($args['action'] === __('edit', 'routes')) {
-                $msg = 'An error occured storing dynamic field ' . $df->getId() . '.';
+                $msg = 'An error occurred storing dynamic field ' . $df->getId() . '.';
             } else {
-                $msg = 'An error occured adding new dynamic field.';
+                $msg = 'An error occurred adding new dynamic field.';
             }
             Analog::log(
                 $msg . ' | ' .
@@ -3099,7 +3106,7 @@ $app->post(
             if (GALETTE_MODE == 'DEV') {
                 throw $e;
             }
-            $error_detected[] = _T('An error occured adding dynamic field :(');
+            $error_detected[] = _T('An error occurred adding dynamic field :(');
         }
 
         //flash messages
@@ -3287,7 +3294,7 @@ $app->post(
             if ($res === true) {
                 $success_detected[] = _T("Texts has been successfully reinitialized.");
             } else {
-                $error_detected[] = _T("An error occured reinitializing texts :(");
+                $error_detected[] = _T("An error occurred reinitializing texts :(");
             }
         }
 
@@ -3298,7 +3305,7 @@ $app->post(
             if ($res === true) {
                 $success_detected[] = _T("Fields configuration has been successfully reinitialized.");
             } else {
-                $error_detected[] = _T("An error occured reinitializing fields configuration :(");
+                $error_detected[] = _T("An error occurred reinitializing fields configuration :(");
             }
         }
 
@@ -3309,7 +3316,7 @@ $app->post(
             if ($res === true) {
                 $success_detected[] = _T("PDF models has been successfully reinitialized.");
             } else {
-                $error_detected[] = _T("An error occured reinitializing PDF models :(");
+                $error_detected[] = _T("An error occurred reinitializing PDF models :(");
             }
         }
 
@@ -3325,7 +3332,7 @@ $app->post(
                     _T("Logins and passwords has been successfully filled (%i processed).")
                 );
             } else {
-                $error_detected[] = _T("An error occured filling empty logins and passwords :(");
+                $error_detected[] = _T("An error occurred filling empty logins and passwords :(");
             }
         }
 
@@ -3352,3 +3359,227 @@ $app->post(
             ->withHeader('Location', $this->router->pathFor('adminTools'));
     }
 )->setName('doAdminTools')->add($authenticate);
+
+$app->get(
+    __('/payment-types', 'routes'),
+    function ($request, $response) {
+        $ptypes = new PaymentTypes(
+            $this->zdb,
+            $this->preferences,
+            $this->login
+        );
+        $list = $ptypes->getList();
+
+        // display page
+        $this->view->render(
+            $response,
+            'gestion_paymentstypes.tpl',
+            [
+                'page_title'        => _T("Payment types management"),
+                'list'              => $list,
+                'require_dialog'    => true
+            ]
+        );
+        return $response;
+    }
+)->setName('paymentTypes')->add($authenticate);
+
+$app->post(
+    __('/payment-types', 'routes'),
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        $ptype = new PaymentType($this->zdb);
+
+        $ptype->name = $post['name'];
+        $res = $ptype->store($post);
+
+        if (!$res) {
+            $this->flash->addMessage(
+                'error_detected',
+                preg_replace(
+                    '(%s)',
+                    $ptype->name,
+                    _T("Payment type '%s' has not been added!")
+                )
+            );
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                preg_replace(
+                    '(%s)',
+                    $ptype->name,
+                    _T("Payment type '%s' has been successfully added.")
+                )
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('paymentTypes'));
+    }
+)->setName('paymentTypes')->add($authenticate);
+
+$app->get(
+    __('/payment-type', 'routes') . __('/remove', 'routes') . '/{id:\d+}',
+    function ($request, $response, $args) {
+        $data = [
+            'id'            => $args['id'],
+            'redirect_uri'  => $this->router->pathFor('paymentTypes')
+        ];
+        $ptype = new PaymentType($this->zdb, (int)$args['id']);
+
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => sprintf(
+                    _T('Remove payment type %1$s'),
+                    $ptype->getName()
+                ),
+                'form_url'      => $this->router->pathFor(
+                    'doRemovePaymentType',
+                    ['id' => $args['id']]
+                ),
+                'cancel_uri'    => $data['redirect_uri'],
+                'data'          => $data
+            )
+        );
+        return $response;
+    }
+)->setName('removePaymentType')->add($authenticate);
+
+$app->post(
+    __('/payment-type', 'routes') . __('/remove', 'routes') . '/{id:\d+}',
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
+        $success = false;
+
+        $uri = isset($post['redirect_uri']) ?
+            $post['redirect_uri'] :
+            $this->router->pathFor('slash');
+
+        if (!isset($post['confirm'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Removal has not been confirmed!")
+            );
+        } else {
+            $ptype = new PaymentType($this->zdb, (int)$args['id']);
+            try {
+                $res = $ptype->remove();
+                if ($res === true) {
+                    $this->flash->addMessage(
+                        'success_detected',
+                        str_replace(
+                            '%name',
+                            $ptype->name,
+                            _T("Payment type '%name' has been successfully deleted.")
+                        )
+                    );
+                    $success = true;
+                } else {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        str_replace(
+                            '%name',
+                            $ptype->getName(),
+                            _T("An error occurred removing payment type '%name' :(")
+                        )
+                    );
+                }
+            } catch (\Exception $e) {
+                if ($e->getCode() == 23000) {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        _T("That payment type is still in use, you cannot delete it!")
+                    );
+                } else {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        $e->getMessage()
+                    );
+                }
+            }
+        }
+
+        if (!$ajax) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $uri);
+        } else {
+            return $response->withJson(
+                [
+                    'success'   => $success
+                ]
+            );
+        }
+    }
+)->setName('doRemovePaymentType')->add($authenticate);
+
+$app->get(
+    __('/payment-type', 'routes') . __('/edit', 'routes') . '/{id:\d+}',
+    function ($request, $response, $args) {
+        $id = $args['id'];
+        $ptype = new PaymentType($this->zdb, (int)$id);
+
+        // display page
+        $this->view->render(
+            $response,
+            'edit_paymenttype.tpl',
+            [
+                'page_title'    => _T("Edit payment type"),
+                'ptype'         => $ptype
+            ]
+        );
+        return $response;
+    }
+)->setname('editPaymentType')->add($authenticate);
+
+$app->post(
+    __('/payment-type', 'routes') . __('/edit', 'routes') . '/{id:\d+}',
+    function ($request, $response, $args) {
+        $id = $args['id'];
+        $post = $request->getParsedBody();
+
+        if (isset($post['cancel'])) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('paymentTypes'));
+        }
+
+        $ptype = new PaymentType($this->zdb, (int)$id);
+        $ptype->name = $post['name'];
+        $res = $ptype->store();
+
+        if (!$res) {
+            $this->flash->addMessage(
+                'error_detected',
+                preg_replace(
+                    '(%s)',
+                    $ptype->name,
+                    _T("Title '%s' has not been modified!")
+                )
+            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('editPaymentType', ['id' => $id]));
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                preg_replace(
+                    '(%s)',
+                    $ptype->name,
+                    _T("Payment type '%s' has been successfully modified.")
+                )
+            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('paymentTypes'));
+        }
+    }
+)->setname('editPaymentType')->add($authenticate);

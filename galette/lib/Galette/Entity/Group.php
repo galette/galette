@@ -443,7 +443,7 @@ class Group
                 } else {
                     $hist->add(_T("Fail to add new group."));
                     throw new \Exception(
-                        'An error occured inserting new group!'
+                        'An error occurred inserting new group!'
                     );
                 }
             } else {
@@ -768,7 +768,7 @@ class Group
                         );
                     } else {
                         Analog::log(
-                            'An error occured trying to attach member `' .
+                            'An error occurred trying to attach member `' .
                             $m->sname . '` to group `' . $this->group_name .
                             '` ('  . $this->id . ').',
                             Analog::ERROR
@@ -858,7 +858,7 @@ class Group
                         );
                     } else {
                         Analog::log(
-                            'An error occured trying to attach manager `' .
+                            'An error occurred trying to attach manager `' .
                             $m->sname . '` to group `' . $this->group_name .
                             '` ('  . $this->id . ').',
                             Analog::ERROR

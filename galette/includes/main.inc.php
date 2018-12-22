@@ -70,8 +70,7 @@ if ($needs_update) {
         'themes/default/'
     );
 
-    $i18n = new Galette\Core\I18n();
-    require_once __DIR__ . '/i18n.inc.php';
+    require_once '../includes/dependencies.php';
 
     $app->add(
         new Galette\Core\Middleware(
@@ -236,6 +235,50 @@ $authenticate = function ($request, $response, $next) use ($container) {
     return $next($request, $response);
 };
 
+/**
+ * Cards navigation middleware
+ */
+$navMiddleware = function ($request, $response, $next) use ($container) {
+    $navigate = array();
+    $route = $request->getAttribute('route');
+    //$uri = $request->getUri();
+    //$route_name = $route->getName();
+    $args = $route->getArguments();
+
+    if (isset($this->session->filter_members)) {
+        $filters =  $this->session->filter_members;
+    } else {
+        $filters = new Galette\Filters\MembersList();
+    }
+
+    if ($this->login->isAdmin()
+        || $this->login->isStaff()
+        || $this->login->isGroupManager()
+    ) {
+        $m = new Galette\Repository\Members($filters);
+        $ids = $m->getList(false, array(Galette\Entity\Adherent::PK, 'nom_adh', 'prenom_adh'));
+        $ids = $ids->toArray();
+        foreach ($ids as $k => $m) {
+            if ($m['id_adh'] == $args['id']) {
+                $navigate = array(
+                    'cur'  => $m['id_adh'],
+                    'count' => count($ids),
+                    'pos' => $k+1
+                );
+                if ($k > 0) {
+                    $navigate['prev'] = $ids[$k-1]['id_adh'];
+                }
+                if ($k < count($ids)-1) {
+                    $navigate['next'] = $ids[$k+1]['id_adh'];
+                }
+                break;
+            }
+        }
+    }
+    $this->view->getSmarty()->assign('navigate', $navigate);
+
+    return $next($request, $response);
+};
 
 //Maintainance middleware
 if ('MAINT' === GALETTE_MODE && !$container->get('login')->isSuperAdmin()) {
@@ -252,7 +295,7 @@ if ('MAINT' === GALETTE_MODE && !$container->get('login')->isSuperAdmin()) {
  * Redirection middleware.
  * Each user sill have a default homepage varying on it status (logged in or not, its credentials, etc.
  */
-$baseRedirect = function ($request, $response, $args = []) use ($app, $container) {
+$baseRedirect = function ($request, $response, $args = []) use ($container) {
     $login = $container->get('login');
     $router = $container->get('router');
     $session = $container->get('session');
@@ -267,7 +310,7 @@ $baseRedirect = function ($request, $response, $args = []) use ($app, $container
     if ($login->isLogged()) {
         $urlRedirect = null;
         if ($session->urlRedirect !== null) {
-            $urlRedirect = $request->getUri()->getBaseUrl() . $session->urlRedirect;
+            $urlRedirect = getGaletteBaseUrl($request) . $session->urlRedirect;
             $session->urlRedirect = null;
         }
 
@@ -286,27 +329,50 @@ $baseRedirect = function ($request, $response, $args = []) use ($app, $container
                     return $response
                         ->withStatus(301)
                         //Do not use "$router->pathFor('dashboard'))" to prevent translation issues when login
-                        ->withHeader('Location', $request->getUri()->getBaseUrl() . __('/dashboard', 'routes'));
+                        ->withHeader('Location', getGaletteBaseUrl($request) . __('/dashboard', 'routes'));
                 } else {
                     return $response
                         ->withStatus(301)
                         //Do not use "$router->pathFor('members'))" to prevent translation issues when login
-                        ->withHeader('Location', $request->getUri()->getBaseUrl() . __('/members', 'routes'));
+                        ->withHeader('Location', getGaletteBaseUrl($request) . __('/members', 'routes'));
                 }
             } else {
                 return $response
                     ->withStatus(301)
                     //Do not use "$router->pathFor('me'))" to prevent translation issues when login
-                    ->withHeader('Location', $request->getUri()->getBaseUrl() . __('/dashboard', 'routes'));
+                    ->withHeader('Location', getGaletteBaseUrl($request) . __('/dashboard', 'routes'));
             }
         }
     } else {
         return $response
             ->withStatus(301)
             //Do not use "$router->pathFor('login'))" to prevent translation issues when login
-            ->withHeader('Location', $request->getUri()->getBaseUrl() . __('/login', 'routes'));
+            ->withHeader('Location', getGaletteBaseUrl($request) . __('/login', 'routes'));
     }
 };
+
+/**
+ * Get base URL fixed for proxies
+ *
+ * @param Request $request request to work on
+ *
+ * @return string
+ */
+function getGaletteBaseUrl(\Slim\Http\Request $request)
+{
+    $url = preg_replace(
+        [
+            '|index\.php|',
+            '|'.$_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '(:\d+)?' . '|'
+        ],
+        ['', ''],
+        $request->getUri()->getBaseUrl()
+    );
+    if (strlen($url) && substr($url, -1) !== '/') {
+        $url .= '/';
+    }
+    return $url;
+}
 
 /**
  * Get current URI
@@ -373,24 +439,89 @@ $app->add(function ($request, $response, $next) {
 /**
  * Change language middleware
  */
-$app->add(function ($request, $response, $next) use ($i18n, $lang) {
+$app->add(function ($request, $response, $next) use ($i18n) {
     $get = $request->getQueryParams();
 
     if (isset($get['pref_lang'])) {
         $route = $request->getAttribute('route');
-        $uri = $request->getUri();
 
         $route_name = $route->getName();
         $arguments = $route->getArguments();
 
         $this->i18n->changeLanguage($get['pref_lang']);
         $this->session->i18n = $this->i18n;
-        $this->session->changelang_route = [
-            'name'      => $route_name,
-            'arguments' => $arguments
-        ];
 
-        return $response->withRedirect($this->router->pathFor('changeLanguage'), 301);
+        return $response->withRedirect(
+            $this->router->pathFor(
+                $route_name,
+                $arguments
+            ),
+            301
+        );
+    }
+    return $next($request, $response);
+});
+
+//Telemetry update middleware
+$app->add(function ($request, $response, $next) {
+    $telemetry = new \Galette\Util\Telemetry(
+        $this->zdb,
+        $this->preferences,
+        $this->plugins
+    );
+    if ($telemetry->isSent()) {
+        try {
+            $dformat = 'Y-m-d H:i:s';
+            $mdate = \DateTime::createFromFormat(
+                $dformat,
+                $telemetry->getSentDate()
+            );
+            $expire = $mdate->add(
+                new \DateInterval('P7D')
+            );
+            $now = new \DateTime();
+            $has_expired = $now > $expire;
+
+            if ($has_expired) {
+                $cfile = GALETTE_CACHE_DIR . 'telemetry.cache';
+                if (file_exists($cfile)) {
+                    $mdate = \DateTime::createFromFormat(
+                        $dformat,
+                        date(
+                            $dformat,
+                            filemtime($cfile)
+                        )
+                    );
+                    $expire = $mdate->add(
+                        new \DateInterval('P7D')
+                    );
+                    $now = new \DateTime();
+                    $has_expired = $now > $expire;
+                }
+
+                if ($has_expired) {
+                    //create/update cache file
+                    $stream = fopen($cfile, 'w+');
+                    fwrite(
+                        $stream,
+                        $telemetry->getSentDate()
+                    );
+                    fclose($stream);
+
+                    //send telemetry data
+                    try {
+                        $result = $telemetry->send();
+                    } catch (\Exception $e) {
+                        Analog::log(
+                            $e->getMessage(),
+                            Analog::INFO
+                        );
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            //empty catch
+        }
     }
     return $next($request, $response);
 });

@@ -3,8 +3,8 @@
 {block name="content"}
         <div id="listfilter">
         <form action="{path_for name="changeText"}" method="post" enctype="multipart/form-data">
-            <p><strong>{_T string="Choose an entry"}</strong></p>
             <p>
+                <strong>{_T string="Choose an entry"}</strong><br/>
                 <label for="sel_lang">{_T string="Language:"}</label>
                 <select name="sel_lang" id="sel_lang" class="lang">
                     {foreach item=langue from=$langlist}
@@ -41,67 +41,94 @@
             <input type="hidden" name="cur_lang"  value="{$cur_lang}"/>
             <input type="hidden" name="cur_ref" value="{$cur_ref}"/>
             <input type="hidden" name="valid" id="valid" value="1"/>
-            <input type="submit" value="{_T string="Save"}"/>
+            <button type="submit" class="action">
+                <i class="fas fa-save fa-fw"></i> {_T string="Save"}
+            </button>
         </div>
         </form>
         <div id="legende" class="texts_legend" title="{_T string="Existing variables"}">
             <h1>{_T string="Existing variables"}</h1>
             <table>
                 <tr>
+                    <th colspan="4">
+                        {_T string="Globally available"}
+                    </th>
+                </tr>
+                <tr>
                     <th><tt>{ldelim}ASSO_NAME{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation name"}<br/><span>({_T string="globally available"})</span></td>
+                    <td class="back">{_T string="Your organisation name"}</td>
                     <th class="back"><tt>{ldelim}ASSO_SLOGAN{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation slogan"}<br/><span>({_T string="globally available"})</span></td>
+                    <td class="back">{_T string="Your organisation slogan"}</td>
+                </tr>
+                <tr>
+                    <th><tt>{ldelim}LOGIN_URI{rdelim}</tt></th>
+                    <td class="back">{_T string="Galette's login URI"}</td>
+                    <th></th>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th colspan="4">
+                        {_T string="Available with reservations"}
+                    </th>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}NAME_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's first and last name"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Member's first and last name"}</td>
                     <th class="back"><tt>{ldelim}MAIL_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's email address"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Member's email address"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}LASTNAME_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's last name"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Member's last name"}</td>
                     <th><tt>{ldelim}FIRSTNAME_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's first name"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Member's first name"}</td>
                 </tr>
                 <tr>
+                    <th><tt>{ldelim}ID_ADH{rdelim}</tt></th>
+                    <td class="back">{_T string="Member's ID"}</td>
                     <th><tt>{ldelim}LOGIN{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's login"}<br/><span>({_T string="available with reservations"})</span></td>
-                    <th><tt>{ldelim}LOGIN_URI{rdelim}</tt></th>
-                    <td class="back">{_T string="Galette's login URI"}<br/><span>({_T string="globally available"})</span></td>
+                    <td class="back">{_T string="Member's login"}></td>
                 </tr>
                 <tr>
-                    <th><tt>{ldelim}PASSWORD{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's password"}<br/><span>({_T string="available only from self subscribe page"})</span></td>
+                    <th colspan="4">
+                        {_T string="Available only for new password request"}
+                    </th>
+                </tr>
+                <tr>
                     <th><tt>{ldelim}CHG_PWD_URI{rdelim}</tt></th>
-                    <td class="back">{_T string="Galette's change password URI"}<br/><span>({_T string="available only for new password request"})</span></td>
-                </tr>
-                <tr>
+                    <td class="back">{_T string="Galette's change password URI"}</td>
                     <th><tt>{ldelim}LINK_VALIDITY{rdelim}</tt></th>
-                    <td class="back">{_T string="Link validity"}<br/><span>({_T string="available only for new password request"})</span></td>
+                    <td class="back">{_T string="Link validity"}</td>
+                </tr>
+                <tr>
+                    <th colspan="4">
+                        {_T string="Available only for new contributions"}
+                    </th>
+                </tr>
+                <tr>
                     <th><tt>{ldelim}DEADLINE{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's deadline"}<br/><span>({_T string="available only for new contributions"})</span></td>
-                </tr>
-                <tr>
+                    <td class="back">{_T string="Member's deadline"}</td>
                     <th><tt>{ldelim}CONTRIB_INFO{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution informations"}<br/><span>({_T string="available only for new contributions"})</span></td>
+                    <td class="back">{_T string="Contribution informations"}</td>
+                </tr>
+                <tr>
                     <th><tt>{ldelim}CONTRIB_AMOUNT{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution amount"}<br/><span>({_T string="available only for new contributions"})</span></td>
-                </tr>
-                <tr>
+                    <td class="back">{_T string="Contribution amount"}</td>
                     <th><tt>{ldelim}CONTRIB_TYPE{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution type"}<br/><span>({_T string="available only for new contributions"})</span></td>
-                    <th><tt>{ldelim}DAYS_REMAINING{rdelim}</tt></th>
-                    <td class="back">{_T string="Membership remaining days"}<br/><span>({_T string="available only for reminders"})</span></td>
+                    <td class="back">{_T string="Contribution type"}</td>
                 </tr>
                 <tr>
-                    <th><tt>{ldelim}DAYS_EXPIRED{rdelim}</tt></th>
-                    <td class="back">{_T string="Membership expired since"}<br/><span>({_T string="available only for reminders"})</span></td>
-                    <th>&nbsp;</th>
-                    <td class="back">&nbsp;</td>
+                    <th colspan="4">
+                        {_T string="Available only for reminders"}
+                    </th>
                 </tr>
-        </table>
+                <tr>
+                    <th><tt>{ldelim}DAYS_REMAINING{rdelim}</tt></th>
+                    <td class="back">{_T string="Membership remaining days"}</td>
+                    <th><tt>{ldelim}DAYS_EXPIRED{rdelim}</tt></th>
+                    <td class="back">{_T string="Membership expired since"}</td>
+                </tr>
+            </table>
         </div>
 {/block}
 
@@ -115,7 +142,8 @@
                     this.form.submit();
                 });
 
-                $('#body_label').prepend('<a href="#" id="show_legend" class="help fright" title="{_T string="Show existing variables"}"></a>');
+
+                $('fieldset').prepend('<a id="btnlegend" class="tab-button tooltip action" title="{_T string="Show existing variables"}"><i class="fas fa-info-circle fa-2x"></i> <span class="sr-only">{_T string="Show existing variables" escape="js"}</span></a>');
                 $('#legende h1').remove();
                 $('#legende').dialog({
                     autoOpen: false,
@@ -132,7 +160,7 @@
                     }
                 }).dialog('close');
 
-                $('#show_legend').click(function(){
+                $('#btnlegend').click(function(){
                     $('#legende').dialog('open');
                         return false;
                 });

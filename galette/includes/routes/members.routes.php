@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014 The Galette Team
+ * Copyright © 2014-2018 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,14 +28,16 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
+ * @copyright 2014-2018 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     0.8.2dev 2014-11-27
  */
 
+use Analog\Analog;
 use Galette\Entity\DynamicFieldsHandle;
+use Galette\Core\Password;
 use Galette\Core\PasswordImage;
 use Galette\Core\Mailing;
 use Galette\Core\GaletteMail;
@@ -59,6 +61,7 @@ use Galette\Core\MailingHistory;
 use Galette\Entity\Group;
 use Galette\IO\File;
 use Galette\Core\Authentication;
+use Galette\Repository\PaymentTypes;
 
 //self subscription
 $app->get(
@@ -140,6 +143,13 @@ $app->get(
         // fields visibility
         $fc = $this->fields_config;
         $visibles = $fc->getVisibilities();
+        //hack for id_adh and parent_id
+        $hacks = ['id_adh', 'parent_id'];
+        foreach ($hacks as $hack) {
+            if ($visibles[$hack] == FieldsConfig::NOBODY) {
+                $visibles[$hack] = FieldsConfig::MANAGER;
+            }
+        }
         $access_level = $this->login->getAccessLevel();
         $fields = array();
         $labels = array();
@@ -147,7 +157,7 @@ $app->get(
             // skip fields blacklisted for export
             if ($k === 'mdp_adh' ||
                 ($export_fields !== null &&
-                    (is_array($export_fields) && in_array($k, $export_fields)))
+                    (is_array($export_fields) && !in_array($k, $export_fields)))
             ) {
                 continue;
             }
@@ -392,10 +402,7 @@ $app->post(
 
         //reintialize filters
         if (isset($post['clear_filter'])) {
-            $filters->reinit();
-            if ($filters instanceof AdvancedMembersList) {
-                $filters = new MembersList();
-            }
+            $filters = new MembersList();
         } elseif (isset($post['clear_adv_filter'])) {
             $this->session->filter_members = null;
             unset($this->session->filter_members);
@@ -623,39 +630,6 @@ $app->get(
                 );
         }
 
-        $navigate = array();
-
-        if (isset($this->session->filter_members)) {
-            $filters =  $this->session->filter_members;
-        } else {
-            $filters = new MembersList();
-        }
-
-        if ($this->login->isAdmin()
-            || $this->login->isStaff()
-            || $this->login->isGroupManager()
-        ) {
-            $m = new Members($filters);
-            $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
-            $ids = $ids->toArray();
-            foreach ($ids as $k => $m) {
-                if ($m['id_adh'] == $member->id) {
-                    $navigate = array(
-                        'cur'  => $m['id_adh'],
-                        'count' => count($ids),
-                        'pos' => $k+1
-                    );
-                    if ($k > 0) {
-                        $navigate['prev'] = $ids[$k-1]['id_adh'];
-                    }
-                    if ($k < count($ids)-1) {
-                        $navigate['next'] = $ids[$k+1]['id_adh'];
-                    }
-                    break;
-                }
-            }
-        }
-
         // flagging fields visibility
         $fc = $this->fields_config;
         $display_elements = $fc->getDisplayElements($this->login);
@@ -668,7 +642,6 @@ $app->get(
                 'page_title'        => _T("Member Profile"),
                 'require_dialog'    => true,
                 'member'            => $member,
-                'navigate'          => $navigate,
                 'pref_lang_img'     => $this->i18n->getFlagFromId($member->language),
                 'pref_lang'         => ucfirst($this->i18n->getNameFromId($member->language)),
                 'pref_card_self'    => $this->preferences->pref_card_self,
@@ -679,7 +652,7 @@ $app->get(
         );
         return $response;
     }
-)->setName('member')->add($authenticate);
+)->setName('member')->add($authenticate)->add($navMiddleware);
 
 $app->get(
     __('/member', 'routes') . '/{action:' . __('edit', 'routes') . '|' . __('add', 'routes') . '}[/{id:\d+}]',
@@ -781,36 +754,6 @@ $app->get(
             $title .= ' (' . _T("creation") . ')';
         }
 
-        $navigate = array();
-
-        if (isset($this->session->filter_members)) {
-            $filters =  $this->session->filter_members;
-        } else {
-            $filters = new MembersList();
-        }
-
-        if (($this->login->isAdmin() || $this->login->isStaff())) {
-            $m = new Members();
-            $ids = $m->getList(false, array(Adherent::PK, 'nom_adh', 'prenom_adh'));
-            $ids = $ids->toArray();
-            foreach ($ids as $k => $m) {
-                if ($m['id_adh'] == $member->id) {
-                    $navigate = array(
-                        'cur'  => $m['id_adh'],
-                        'count' => count($ids),
-                        'pos' => $k+1
-                    );
-                    if ($k > 0) {
-                        $navigate['prev'] = $ids[$k-1]['id_adh'];
-                    }
-                    if ($k < count($ids)-1) {
-                        $navigate['next'] = $ids[$k+1]['id_adh'];
-                    }
-                    break;
-                }
-            }
-        }
-
         //Status
         $statuts = new Status($this->zdb);
 
@@ -831,7 +774,6 @@ $app->get(
                 $route_params,
                 array(
                     'parent_tpl'        => 'page.tpl',
-                    'navigate'          => $navigate,
                     'require_dialog'    => true,
                     'autocomplete'      => true,
                     'page_title'        => $title,
@@ -853,10 +795,10 @@ $app->get(
     }
 )->setName(
     'editmember'
-)->add($authenticate);
+)->add($authenticate)->add($navMiddleware);
 
 $app->post(
-    __('/member/store', 'routes') . '[/{self:' . __('subscribe', 'routes') . '}]',
+    __('/member', 'routes') . __('/store', 'routes') . '[/{self:' . __('subscribe', 'routes') . '}]',
     function ($request, $response, $args) {
         if (!$this->preferences->pref_bool_selfsubscribe && !$this->login->isLogged()) {
             return $response
@@ -1075,32 +1017,56 @@ $app->post(
                             if ($member->getEmail() == '' && !isset($args['self'])) {
                                 $error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
                             } else {
+                                $mreplaces = [
+                                    'name_adh'      => custom_html_entity_decode(
+                                        $member->sname
+                                    ),
+                                    'firstname_adh' => custom_html_entity_decode(
+                                        $member->surname
+                                    ),
+                                    'lastname_adh'  => custom_html_entity_decode(
+                                        $member->name
+                                    ),
+                                    'mail_adh'      => custom_html_entity_decode(
+                                        $member->getEmail()
+                                    ),
+                                    'login_adh'     => custom_html_entity_decode(
+                                        $member->login
+                                    )
+                                ];
+                                if ($new) {
+                                    $password = new Password($this->zdb);
+                                    $res = $password->generateNewPassword($member->id);
+                                    if ($res == true) {
+                                        $link_validity = new DateTime();
+                                        $link_validity->add(new DateInterval('PT24H'));
+                                        $mreplaces['change_pass_uri'] = $this->preferences->getURL() .
+                                            $this->router->pathFor(
+                                                'password-recovery',
+                                                ['hash' => base64_encode($password->getHash())]
+                                            );
+                                        $mreplaces['link_validity'] = $link_validity->format(_T("Y-m-d H:i:s"));
+                                    } else {
+                                        $str = str_replace(
+                                            '%s',
+                                            $login_adh,
+                                            _T("An error occurred storing temporary password for %s. Please inform an admin.")
+                                        );
+                                        $this->history->add($str);
+                                        $this->flash->addMessage(
+                                            'error_detected',
+                                            $str
+                                        );
+                                    }
+                                }
+
                                 //send mail to member
                                 // Get email text in database
                                 $texts = new Texts(
                                     $this->texts_fields,
                                     $this->preferences,
                                     $this->router,
-                                    array(
-                                        'name_adh'      => custom_html_entity_decode(
-                                            $member->sname
-                                        ),
-                                        'firstname_adh' => custom_html_entity_decode(
-                                            $member->surname
-                                        ),
-                                        'lastname_adh'  => custom_html_entity_decode(
-                                            $member->name
-                                        ),
-                                        'mail_adh'      => custom_html_entity_decode(
-                                            $member->getEmail()
-                                        ),
-                                        'login_adh'     => custom_html_entity_decode(
-                                            $member->login
-                                        ),
-                                        'password_adh'  => custom_html_entity_decode(
-                                            $post['mdp_adh']
-                                        )
-                                    )
+                                    $mreplaces
                                 );
                                 $mlang = $this->preferences->pref_lang;
                                 if (isset($post['pref_lang'])) {
@@ -1164,7 +1130,7 @@ $app->post(
                     );
 
                     if ($add_groups === false) {
-                        $error_detected[] = _T("An error occured adding member to its groups.");
+                        $error_detected[] = _T("An error occurred adding member to its groups.");
                     }
 
                     //add/remove manager from groups
@@ -1179,11 +1145,11 @@ $app->post(
                     $member->loadGroups();
 
                     if ($add_groups === false) {
-                        $error_detected[] = _T("An error occured adding member to its groups as manager.");
+                        $error_detected[] = _T("An error occurred adding member to its groups as manager.");
                     }
                 } else {
                     //something went wrong :'(
-                    $error_detected[] = _T("An error occured while storing the member.");
+                    $error_detected[] = _T("An error occurred while storing the member.");
                 }
             }
 
@@ -1294,7 +1260,7 @@ $app->post(
 )->setName('storemembers');
 
 $app->get(
-    __('/member/remove', 'routes') . '/{id:\d+}',
+    __('/member', 'routes') . __('/remove', 'routes') . '/{id:\d+}',
     function ($request, $response, $args) {
         $adh = new Adherent($this->zdb, (int)$args['id']);
 
@@ -1329,7 +1295,7 @@ $app->get(
         $filters =  $this->session->filter_members;
 
         $data = [
-            'id'           => $filters->selected,
+            'id'            => $filters->selected,
             'redirect_uri'  => $this->router->pathFor('members')
         ];
 
@@ -1356,7 +1322,7 @@ $app->get(
 )->setName('removeMembers')->add($authenticate);
 
 $app->post(
-    __('/member/remove', 'routes') . '[/{id:\d+}]',
+    __('/member', 'routes') . __('/remove', 'routes') . '[/{id:\d+}]',
     function ($request, $response) {
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
@@ -1394,10 +1360,10 @@ $app->post(
                     $error_detected = str_replace(
                         '%name',
                         $adh->sname,
-                        _T("An error occured trying to remove member %name :/")
+                        _T("An error occurred trying to remove member %name :/")
                     );
                 } else {
-                    $error_detected = _T("An error occured trying to remove members :/");
+                    $error_detected = _T("An error occurred trying to remove members :/");
                 }
 
                 $this->flash->addMessage(
@@ -1509,14 +1475,12 @@ $app->get(
         $ct = new Galette\Entity\ContributionsTypes($this->zdb);
 
         //Payments types
-        $pt = array(
-            Contribution::PAYMENT_OTHER         => _T("Other"),
-            Contribution::PAYMENT_CASH          => _T("Cash"),
-            Contribution::PAYMENT_CREDITCARD    => _T("Credit card"),
-            Contribution::PAYMENT_CHECK         => _T("Check"),
-            Contribution::PAYMENT_TRANSFER      => _T("Transfer"),
-            Contribution::PAYMENT_PAYPAL        => _T("Paypal")
+        $ptypes = new PaymentTypes(
+            $this->zdb,
+            $this->preferences,
+            $this->login
         );
+        $ptlist = $ptypes->getList();
 
         $filters->setViewCommonsFilters($this->preferences, $this->view->getSmarty());
 
@@ -1536,7 +1500,7 @@ $app->get(
                 'statuts'               => $statuts->getList(),
                 'contributions_types'   => $ct->getList(),
                 'filters'               => $filters,
-                'payments_types'        => $pt
+                'payments_types'        => $ptlist
             )
         );
         return $response;
@@ -1600,6 +1564,8 @@ $app->post(
                     ->withStatus(301)
                     ->withHeader('Location', $this->router->pathFor('masschangeMembers'));
             }
+
+            throw new \RuntimeException('Does not know what to batch :(');
         } else {
             $this->flash->addMessage(
                 'error_detected',
@@ -1669,7 +1635,7 @@ $app->get(
 
             //check if member is up to date
             if ($this->login->id == $id_adh) {
-                $adh = new Adherent($this->zdb, $id_adh, ['dues' => true]);
+                $adh = new Adherent($this->zdb, (int)$id_adh, ['dues' => true]);
                 if (!$adh->isUp2Date()) {
                     Analog::log(
                         'Member ' . $id_adh . ' is not up to date; cannot get his PDF member card',
@@ -1717,7 +1683,7 @@ $app->get(
 
         if (!is_array($members) || count($members) < 1) {
             Analog::log(
-                'An error has occured, unable to get members list.',
+                'An error has occurred, unable to get members list.',
                 Analog::ERROR
             );
 
@@ -1782,7 +1748,7 @@ $app->get(
 
         if (!is_array($members) || count($members) < 1) {
             Analog::log(
-                'An error has occured, unable to get members list.',
+                'An error has occurred, unable to get members list.',
                 Analog::ERROR
             );
 
@@ -2248,6 +2214,26 @@ $app->map(
         } else {
             $mailing = $this->session->mailing;
 
+            switch ($post['sender']) {
+                case GaletteMail::SENDER_CURRENT:
+                    $member = new Adherent($this->zdb, (int)$this->login->id, false);
+                    $mailing->setSender(
+                        $member->sname,
+                        $member->getEmail()
+                    );
+                    break;
+                case GaletteMail::SENDER_OTHER:
+                    $mailing->setSender(
+                        $post['sender_name'],
+                        $post['sender_address']
+                    );
+                    break;
+                case GaletteMail::SENDER_PREFS:
+                default:
+                    //nothing to do; this is the default :)
+                    break;
+            }
+
             $mailing->subject = $post['subject'];
             $mailing->message = $post['body'];
             $mailing->html = ($post['html'] === 'true');
@@ -2264,8 +2250,8 @@ $app->map(
                 'mode'          => ($ajax ? 'ajax' : ''),
                 'mailing'       => $mailing,
                 'recipients'    => $mailing->recipients,
-                'sender'        => $this->preferences->pref_email_nom . ' &lt;' .
-                    $this->preferences->pref_email . '&gt;',
+                'sender'        => $mailing->getSenderName() . ' &lt;' .
+                    $mailing->getSenderAddress() . '&gt;',
                 'attachments'   => $attachments
 
             ]
@@ -2480,7 +2466,7 @@ $app->get(
 
 $app->map(
     ['GET', 'POST'],
-    __('/attendance-sheet/details', 'routes'),
+    __('/attendance-sheet', 'routes') . __('/details', 'routes'),
     function ($request, $response) {
         $post = $request->getParsedBody();
 
@@ -3077,14 +3063,13 @@ $app->post(
                     if ($valid === true) {
                         $done = $member->store();
                         if (!$done) {
-                            $error_detected[] = _T("An error occured while storing the member.");
+                            $error_detected[] = _T("An error occurred while storing the member.");
                         } else {
                             ++$mass;
                         }
                     } else {
                         $error_detected = array_merge($error_detected, $valid);
                     }
-
                 }
             }
         }
@@ -3124,3 +3109,20 @@ $app->post(
         }
     }
 )->setName('massstoremembers')->add($authenticate);
+
+//Duplicate member
+$app->get(
+    __('/members', 'routes') . __('/duplicate', 'routes') . '/{' . Adherent::PK . ':\d+}',
+    function ($request, $response, $args) {
+        $id_adh = (int)$args[Adherent::PK];
+        $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
+        $adh->setDuplicate();
+
+        //store entity in session
+        $this->session->member = $adh;
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('editmember', ['action' => __('add', 'routes')]));
+    }
+)->setName('duplicateMember')->add($authenticate);

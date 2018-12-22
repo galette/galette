@@ -36,7 +36,7 @@
  */
 
 if (!defined('GALETTE_PHP_MIN')) {
-    define('GALETTE_PHP_MIN', '5.6');
+    define('GALETTE_PHP_MIN', '7.1');
 }
 
 // check required PHP version...
@@ -108,9 +108,9 @@ if (defined('GALETTE_XHPROF_PATH')
     $profiler->start();
 }
 
-define('GALETTE_VERSION', 'v0.9.1.2');
-define('GALETTE_COMPAT_VERSION', '0.9');
-define('GALETTE_DB_VERSION', '0.910');
+define('GALETTE_VERSION', 'v0.9.2');
+define('GALETTE_COMPAT_VERSION', '0.9.2');
+define('GALETTE_DB_VERSION', '0.920');
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD, MAINT or DEMO
 }
@@ -170,10 +170,14 @@ if (defined('GALETTE_TESTS')) {
     $galette_run_log = \Analog\Handler\File::init($log_path);
 } else {
     if ((!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) && !$cron) {
-        $now = new \DateTime();
-        $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
-            $now->format('Y-m-d')  . '.log';
-        $galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
+        if (GALETTE_LOG_LVL >= \Analog\Analog::INFO) {
+            $now = new \DateTime();
+            $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
+                $now->format('Y-m-d')  . '.log';
+            $galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
+        } else {
+            $galette_debug_log = \Analog\Handler\Ignore::init();
+        }
     }
     $galette_log_var = null;
 

@@ -167,7 +167,7 @@ class ImportModel
                     return true;
                 } else {
                     throw new \Exception(
-                        'An error occured inserting new import model!'
+                        'An error occurred inserting new import model!'
                     );
                 }
             } else {

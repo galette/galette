@@ -175,14 +175,14 @@ class Login extends Authentication
             }
         } catch (AdapterException $e) {
             Analog::log(
-                'An error occured: ' . $e->getChainedException()->getMessage(),
+                'An error occurred: ' . $e->getChainedException()->getMessage(),
                 Analog::WARNING
             );
             Analog::log($e->getTrace(), Analog::ERROR);
             return false;
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured: ' . $e->getMessage(),
+                'An error occurred: ' . $e->getMessage(),
                 Analog::WARNING
             );
             Analog::log($e->getTrace(), Analog::ERROR);
@@ -306,14 +306,14 @@ class Login extends Authentication
             }
         } catch (AdapterException $e) {
             Analog::log(
-                'An error occured: ' . $e->getChainedException()->getMessage(),
+                'An error occurred: ' . $e->getChainedException()->getMessage(),
                 Analog::WARNING
             );
             Analog::log($e->getTrace(), Analog::ERROR);
             return false;
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured: ' . $e->getMessage(),
+                'An error occurred: ' . $e->getMessage(),
                 Analog::WARNING
             );
             Analog::log($e->getTraceAsString(), Analog::ERROR);

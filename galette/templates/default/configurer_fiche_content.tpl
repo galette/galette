@@ -22,23 +22,47 @@
     {/if}
                     </td>
                     <td class="center actions_row">
-                        <a href="{path_for name="editDynamicField" data=["action" => {_T string="edit" domain="routes"}, "form" => $form_name, "id" => $field->getId()]}"><img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="Edit '%s' field" pattern="/%s/" replace=$field->getName()}" title="{_T string="Edit '%s' field" pattern="/%s/" replace=$field->getName()}" width="16" height="16"/></a>
-                        <a href="{path_for name="dynamicTranslations" data=["text_orig" => {$field->getName(false)|escape}]}"><img src="{base_url}/{$template_subdir}images/icon-i18n.png" alt="{_T string="Edit '%s' field" pattern="/%s/" replace=$field->getName()}" title="{_T string="Translate '%s' field" pattern="/%s/" replace=$field->getName()}" width="16" height="16"/></a>
-                        <a href="{path_for name="removeDynamicField" data=["form" => $form_name, "id" => $field->getId()]}" class="delete">
-                            <img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="Delete '%s' field" pattern="/%s/" replace=$field->getName()}" title="{_T string="Delete '%s' field" pattern="/%s/" replace=$field->getName()}" width="16" height="16"/>
+                        <a
+                            href="{path_for name="editDynamicField" data=["action" => {_T string="edit" domain="routes"}, "form" => $form_name, "id" => $field->getId()]}"
+                            class="tooltip action"
+                        >
+                            <i class="fas fa-user-edit fa-fw" aria-hidden="true"></i>
+                            <span class="sr-only">{_T string="Edit '%s' field" pattern="/%s/" replace=$field->getName()}</span>
+                        </a>
+                        <a
+                            href="{path_for name="dynamicTranslations" data=["text_orig" => {$field->getName(false)|escape}]}"
+                            class="tooltip"
+                        >
+                            <i class="fas fa-language fa-fw" aria-hidden="true"></i>
+                            <span class="sr-only">{_T string="Translate '%s' field" pattern="/%s/" replace=$field->getName()}</span>
+                        </a>
+                        <a
+                            href="{path_for name="removeDynamicField" data=["form" => $form_name, "id" => $field->getId()]}"
+                            class="delete tooltip"
+                        >
+                            <i class="fas fa-trash" aria-hidden="true"></i>
+                            <span class="sr-only">{_T string="Delete '%s' field" pattern="/%s/" replace=$field->getName()}</span>
                         </a>
     {if $field->getIndex() eq 1}
-                        <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="9" height="8"/>
+                        <i class="fas fa-fw">&nbsp;</i>
     {else}
-                        <a href="{path_for name="moveDynamicField" data=["form" => $form_name, "direction" => {_T string="up" domain="routes"}, "id" => $field->getId()]}">
-                            <img src="{base_url}/{$template_subdir}images/icon-up.png" alt="{_T string="Move up '%s' field" pattern="/%s/" replace=$field->getName()}" title="{_T string="Move up '%s' field" pattern="/%s/" replace=$field->getName()}" width="9" height="8"/>
+                        <a
+                            href="{path_for name="moveDynamicField" data=["form" => $form_name, "direction" => {_T string="up" domain="routes"}, "id" => $field->getId()]}"
+                            class="tooltip action"
+                        >
+                            <i class="fas fa-caret-up fa-fw"></i>
+                            <span class="sr-only">{_T string="Move up '%s' field" pattern="/%s/" replace=$field->getName()}</span>
                         </a>
     {/if}
     {if $field->getIndex() eq $fields_list|@count}
-                        <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="9" height="8"/>
+                        <i class="fas fa-fw">&nbsp;</i>
     {else}
-                        <a href="{path_for name="moveDynamicField" data=["form" => $form_name, "direction" => {_T string="down" domain="routes"}, "id" => $field->getId()]}">
-                            <img src="{base_url}/{$template_subdir}images/icon-down.png" alt="{_T string="Move down '%s' field" pattern="/%s/" replace=$field->getName()}" title="{_T string="Move down '%s' field" pattern="/%s/" replace=$field->getName()}" width="9" height="8"/>
+                        <a
+                            href="{path_for name="moveDynamicField" data=["form" => $form_name, "direction" => {_T string="down" domain="routes"}, "id" => $field->getId()]}"
+                            class="tooltip"
+                        >
+                            <i class="fas fa-caret-down fa-fw"></i>
+                            <span class="sr-only">{_T string="Move down '%s' field" pattern="/%s/" replace=$field->getName()}</span>
                         </a>
     {/if}
                     </td>

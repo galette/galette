@@ -2,7 +2,14 @@
 {block name="content"}
     <section class="tabbed">
         <div id="configfiches_tabs">
-            <a class="button notext" id="btnadd_small" href="{path_for name="editDynamicField" data=["form" => $form_name, "action" => {_T string="add" domain="routes"}]}">{_T string="Add"}</a>
+            <a
+                id="addfield"
+                href="{path_for name="editDynamicField" data=["form" => $form_name, "action" => {_T string="add" domain="routes"}]}"
+                class="tab-button tooltip use"
+            >
+                <i class="fas fa-plus-square fa-2x"></i>
+                <span class="sr-only">{_T string="Add"}</span>
+            </a>
             <ul>
 {foreach from=$all_forms key=key item=form name=formseach}
     {if $form_name eq $key}
@@ -21,7 +28,7 @@
 {block name="javascripts"}
         <script type="text/javascript">
             var _form_name;
-            $('#btnadd_small').click(function(e){
+            $('#addfield').click(function(e){
                 e.preventDefault();
                 var _this = $(this);
                 var _href = '{path_for name="editDynamicField" data=["form" => "FORM", "action" => {_T string="add" domain="routes"}]}'.replace(/FORM/, _form_name)
@@ -49,7 +56,7 @@
                         });
                     },
                     error: function() {
-                        alert("{_T string="An error occured :(" escape="js"}");
+                        alert("{_T string="An error occurred :(" escape="js"}");
                     }
                 });
             });
@@ -75,7 +82,7 @@
                     });
 
                     ui.jqXHR.error(function(){
-                        alert('{_T string="An error occured :("|escape:"js"}');
+                        alert('{_T string="An error occurred :("|escape:"js"}');
                     });
                 }
             });

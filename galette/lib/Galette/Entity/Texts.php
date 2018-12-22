@@ -81,13 +81,13 @@ class Texts
         $this->patterns = array(
             'asso_name'         => '/{ASSO_NAME}/',
             'asso_slogan'       => '/{ASSO_SLOGAN}/',
+            'id_adh'            => '/{ID_ADH}/',
             'name_adh'          => '/{NAME_ADH}/',
             'lastname_adh'      => '/{LASTNAME_ADH}/',
             'firstname_adh'     => '/{FIRSTNAME_ADH}/',
             'login_adh'         => '/{LOGIN}/',
             'mail_adh'          => '/{MAIL_ADH}/',
             'login_uri'         => '/{LOGIN_URI}/',
-            'password_adh'      => '/{PASSWORD}/',
             'change_pass_uri'   => '/{CHG_PWD_URI}/',
             'link_validity'     => '/{LINK_VALIDITY}/',
             'deadline'          => '/{DEADLINE}/',
@@ -106,13 +106,13 @@ class Texts
         $this->replaces = array(
             'asso_name'         => $preferences->pref_nom,
             'asso_slogan'       => $preferences->pref_slogan,
+            'id_adh'            => null,
             'name_adh'          => null,
             'lastname_adh'      => null,
             'firstname_adh'     => null,
             'login_adh'         => null,
             'mail_adh'          => null,
             'login_uri'         => $login_uri,
-            'password_adh'      => null,
             'change_pass_uri'   => null,
             'link_validity'     => null,
             'deadline'          => null,
@@ -271,7 +271,7 @@ class Texts
             return true;
         } catch (\Exception $e) {
             Analog::log(
-                'An error has occured while storing mail text. | ' .
+                'An error has occurred while storing mail text. | ' .
                 $e->getMessage(),
                 Analog::ERROR
             );
@@ -296,7 +296,12 @@ class Texts
                 array('tref', 'tcomment')
             )->where(array('tlang' => $lang));
 
-            return $zdb->execute($select);
+            $refs = [];
+            $results = $zdb->execute($select);
+            foreach ($results as $result) {
+                $refs[] = $result;
+            }
+            return $refs;
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot get refs for lang `' . $lang . '` | ' .
@@ -429,7 +434,7 @@ class Texts
             }
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured checking missing texts.' . $e->getMessage(),
+                'An error occurred checking missing texts.' . $e->getMessage(),
                 Analog::WARNING
             );
             return $e;

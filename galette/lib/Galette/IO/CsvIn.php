@@ -45,6 +45,8 @@ use Galette\Entity\Adherent;
 use Galette\Entity\ImportModel;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Status;
+use Galette\Entity\Title;
+use Galette\Repository\Titles;
 use Galette\IO\FileTrait;
 use Galette\Repository\Members;
 
@@ -99,6 +101,8 @@ class CsvIn extends Csv implements FileInterface
     private $_members_fields_cats;
     private $_required;
     private $statuses;
+    private $titles;
+    private $langs;
     private $emails;
     private $zdb;
     private $preferences;
@@ -252,6 +256,8 @@ class CsvIn extends Csv implements FileInterface
                 }
             }
 
+            $member = new Adherent($this->zdb);
+
             $row = 0;
             while (($data = fgetcsv(
                 $handle,
@@ -290,6 +296,14 @@ class CsvIn extends Csv implements FileInterface
                             return false;
                         }
 
+                        $member->validate($this->_fields[$col], $column, $this->_fields);
+                        if (count($member->errors)) {
+                            foreach ($member->errors as $error) {
+                                $this->addError($error);
+                            }
+                            return false;
+                        }
+
                         //check for statuses
                         //if missing, set default one; if not check it does exists
                         if ($this->_fields[$col] == Status::PK) {
@@ -311,6 +325,24 @@ class CsvIn extends Csv implements FileInterface
                                     );
                                     return false;
                                 }
+                            }
+                        }
+
+                        //check for title
+                        if ($this->_fields[$col] == 'titre_adh') {
+                            if ($this->titles === null) {
+                                //load existing titles
+                                $this->titles = Titles::getList($this->zdb);
+                            }
+                            if (!isset($this->titles[$column])) {
+                                $this->addError(
+                                    str_replace(
+                                        '%title',
+                                        $column,
+                                        _T("Title %title does not exists!")
+                                    )
+                                );
+                                return false;
                             }
                         }
 
@@ -339,6 +371,27 @@ class CsvIn extends Csv implements FileInterface
                                 $this->emails[$column] = -1;
                             }
                         }
+
+                        //check for language
+                        if ($this->_fields[$col] == 'pref_lang') {
+                            if ($this->langs === null) {
+                                //load existing titles
+                                global $i18n;
+                                $this->langs = $i18n->getArrayList();
+                            }
+                            if (!isset($this->langs[$column])) {
+                                $this->addError(
+                                    str_replace(
+                                        '%title',
+                                        $column,
+                                        _T("Lang %lang does not exists!")
+                                    )
+                                );
+                                return false;
+                            }
+                        }
+
+
                         $col++;
                     }
                 }
@@ -403,6 +456,9 @@ class CsvIn extends Csv implements FileInterface
                     if (isset($values['date_crea_adh']) && trim($values['date_crea_adh']) === '') {
                         unset($values['date_crea_adh']);
                     }
+                    if (isset($values['mdp_adh'])) {
+                        $values['mdp_adh2'] = $values['mdp_adh'];
+                    }
                     $valid = $member->check($values, $this->_required, null);
                     if ($valid === true) {
                         if ($this->_dryrun === false) {
@@ -412,7 +468,7 @@ class CsvIn extends Csv implements FileInterface
                                     str_replace(
                                         array('%row', '%name'),
                                         array($row, $member->sname),
-                                        _T("An error occured storing member at row %row (%name):")
+                                        _T("An error occurred storing member at row %row (%name):")
                                     )
                                 );
                                 return false;
@@ -423,7 +479,7 @@ class CsvIn extends Csv implements FileInterface
                             str_replace(
                                 array('%row', '%name'),
                                 array($row, $member->sname),
-                                _T("An error occured storing member at row %row (%name):")
+                                _T("An error occurred storing member at row %row (%name):")
                             )
                         );
                         if (is_array($valid)) {
@@ -458,7 +514,7 @@ class CsvIn extends Csv implements FileInterface
         $error = null;
         switch ($code) {
             case self::DATA_IMPORT_ERROR:
-                $error = _T("An error occured while importing members");
+                $error = _T("An error occurred while importing members");
                 break;
         }
 

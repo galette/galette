@@ -1,10 +1,16 @@
 <p>
     <span class="bline">{_T string="Groups:"}</span>
     {if $login->isGroupManager()}
-    <a class="button" id="btngroups">{_T string="Manage user's groups"}</a>
+    <a class="button" id="btngroups">
+        <i class="fas fa-user-tag" aria-hidden="true"></i>
+        {_T string="Manage user's groups"}
+    </a>
     {/if}
     {if $login->isAdmin() or $login->isStaff()}
-    <a class="button" id="btnmanagedgroups">{_T string="Manage user's managed groups"}</a>
+    <a class="button" id="btnmanagedgroups">
+        <i class="fas fa-user-shield" aria-hidden="true"></i>
+        {_T string="Manage user's managed groups"}
+    </a>
     {/if}
     <span id="usergroups_form">
     {foreach from=$groups item=group}

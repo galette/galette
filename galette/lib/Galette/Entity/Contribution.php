@@ -43,6 +43,7 @@ use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\IO\ExternalScript;
 use Galette\IO\PdfContribution;
+use Galette\Repository\PaymentTypes;
 
 /**
  * Contribution class for galette
@@ -62,13 +63,6 @@ class Contribution
 
     const TABLE = 'cotisations';
     const PK = 'id_cotis';
-
-    const PAYMENT_OTHER = 0;
-    const PAYMENT_CASH = 1;
-    const PAYMENT_CREDITCARD = 2;
-    const PAYMENT_CHECK = 3;
-    const PAYMENT_TRANSFER = 4;
-    const PAYMENT_PAYPAL = 5;
 
     private $_id;
     private $_date;
@@ -269,7 +263,7 @@ class Contribution
             }
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured attempting to load contribution #' . $id .
+                'An error occurred attempting to load contribution #' . $id .
                 $e->getMessage(),
                 Analog::ERROR
             );
@@ -329,6 +323,7 @@ class Contribution
      */
     public function check($values, $required, $disabled)
     {
+        global $preferences;
         $this->errors = array();
 
         $fields = array_keys($this->_fields);
@@ -400,13 +395,13 @@ class Contribution
                         }
                         break;
                     case 'type_paiement_cotis':
-                        if ($value == self::PAYMENT_OTHER
-                            || $value == self::PAYMENT_CASH
-                            || $value == self::PAYMENT_CREDITCARD
-                            || $value == self::PAYMENT_CHECK
-                            || $value == self::PAYMENT_TRANSFER
-                            || $value == self::PAYMENT_PAYPAL
-                        ) {
+                        $ptypes = new PaymentTypes(
+                            $this->zdb,
+                            $preferences,
+                            $this->login
+                        );
+                        $ptlist = $ptypes->getList();
+                        if (isset($ptlist[$value])) {
                             $this->_payment_type = $value;
                         } else {
                             $this->errors[] = _T("- Unknown payment type");
@@ -464,7 +459,7 @@ class Contribution
             $overlap = $this->checkOverlap();
             if ($overlap !== true) {
                 if ($overlap === false) {
-                    $this->errors[] = _T("An error occured checking overlaping fees :(");
+                    $this->errors[] = _T("An error occurred checking overlaping fees :(");
                 } else {
                     //method directly return error message
                     $this->errors[] = $overlap;
@@ -531,7 +526,7 @@ class Contribution
             return true;
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured checking overlaping fee. ' . $e->getMessage(),
+                'An error occurred checking overlaping fee. ' . $e->getMessage(),
                 Analog::ERROR
             );
             return false;
@@ -606,7 +601,7 @@ class Contribution
                 } else {
                     $hist->add(_T("Fail to add new contribution."));
                     throw new \Exception(
-                        'An error occured inserting new contribution!'
+                        'An error occurred inserting new contribution!'
                     );
                 }
             } else {
@@ -628,7 +623,7 @@ class Contribution
 
                 if ($edit === false) {
                     throw new \Exception(
-                        'An error occured updating contribution # ' . $this->_id . '!'
+                        'An error occurred updating contribution # ' . $this->_id . '!'
                     );
                 }
                 $success = true;
@@ -638,7 +633,7 @@ class Contribution
                 $deadline = $this->updateDeadline();
                 if ($deadline !== true) {
                     //if something went wrong, we rollback transaction
-                    throw new \Exception('An error occured updating member\'s deadline');
+                    throw new \Exception('An error occurred updating member\'s deadline');
                 }
             }
 
@@ -687,7 +682,7 @@ class Contribution
             return true;
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured updating member ' . $this->_member .
+                'An error occurred updating member ' . $this->_member .
                 '\'s deadline |' .
                 $e->getMessage(),
                 Analog::ERROR
@@ -715,6 +710,7 @@ class Contribution
             $del = $this->zdb->execute($delete);
             if ($del->count() > 0) {
                 $this->updateDeadline();
+                $this->dynamicsRemove(true);
             } else {
                 throw new \RuntimeException(
                     'Contribution has not been removed!'
@@ -729,7 +725,7 @@ class Contribution
                 $this->zdb->connection->rollBack();
             }
             Analog::log(
-                'An error occured trying to remove contribution #' .
+                'An error occurred trying to remove contribution #' .
                 $this->_id . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -823,7 +819,7 @@ class Contribution
             return $due_date;
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured trying to retrieve member\'s due date',
+                'An error occurred trying to retrieve member\'s due date',
                 Analog::ERROR
             );
             return false;
@@ -1014,7 +1010,7 @@ class Contribution
 
         if ($res !== true) {
             Analog::log(
-                'An error occured calling post contribution ' .
+                'An error occurred calling post contribution ' .
                 "script:\n" . $es->getOutput(),
                 Analog::ERROR
             );
@@ -1055,7 +1051,7 @@ class Contribution
     }
 
     /**
-     * Get payent type label
+     * Get payment type label
      *
      * @return string
      */
@@ -1065,34 +1061,8 @@ class Contribution
             return '-';
         }
 
-        switch ($this->payment_type) {
-            case Contribution::PAYMENT_CASH:
-                return 'cash';
-                break;
-            case Contribution::PAYMENT_CREDITCARD:
-                return 'credit_card';
-                break;
-            case Contribution::PAYMENT_CHECK:
-                return 'check';
-                break;
-            case Contribution::PAYMENT_TRANSFER:
-                return 'transfer';
-                break;
-            case Contribution::PAYMENT_PAYPAL:
-                return 'paypal';
-                break;
-            case Contribution::PAYMENT_OTHER:
-                return 'other';
-                break;
-            default:
-                Analog::log(
-                    __METHOD__ . ' Unknonw payment type ' . $this->payment_type,
-                    Analog::ERROR
-                );
-                throw new \RuntimeException(
-                    'Unknonw payment type ' . $this->payment_type
-                );
-        }
+        $ptype = new PaymentType($this->zdb, (int)$this->payment_type);
+        return $ptype->getName(false);
     }
 
     /**
@@ -1180,33 +1150,10 @@ class Contribution
                     if ($this->_payment_type === null) {
                         return '-';
                     }
-                    switch ($this->_payment_type) {
-                        case self::PAYMENT_OTHER:
-                            return _T("Other");
-                            break;
-                        case self::PAYMENT_CASH:
-                            return _T("Cash");
-                            break;
-                        case self::PAYMENT_CREDITCARD:
-                            return _T("Credit card");
-                            break;
-                        case self::PAYMENT_CHECK:
-                            return _T("Check");
-                            break;
-                        case self::PAYMENT_TRANSFER:
-                            return _T("Transfer");
-                            break;
-                        case self::PAYMENT_PAYPAL:
-                            return _T("Paypal");
-                            break;
-                        default:
-                            Analog::log(
-                                'Unknown payment type ' . $this->_payment_type,
-                                Analog::WARNING
-                            );
-                            return '-';
-                            break;
-                    }
+
+                    $ptype = new PaymentType($this->zdb, (int)$this->payment_type);
+                    return $ptype->getName();
+
                     break;
                 case 'model':
                     if ($this->_is_cotis === null) {
@@ -1239,6 +1186,8 @@ class Contribution
      */
     public function __set($name, $value)
     {
+        global $preferences;
+
         $forbidden = array('fields', 'is_cotis', 'end_date');
 
         if (!in_array($name, $forbidden)) {
@@ -1316,13 +1265,13 @@ class Contribution
                     }
                     break;
                 case 'payment_type':
-                    if ($value == self::PAYMENT_OTHER
-                        || $value == self::PAYMENT_CASH
-                        || $value == self::PAYMENT_CREDITCARD
-                        || $value == self::PAYMENT_CHECK
-                        || $value == self::PAYMENT_TRANSFER
-                        || $value == self::PAYMENT_PAYPAL
-                    ) {
+                    $ptypes = new PaymentTypes(
+                        $this->zdb,
+                        $preferences,
+                        $this->login
+                    );
+                    $list = $ptypes->getList();
+                    if (isset($list[$value])) {
                         $this->_payment_type = $value;
                     } else {
                         Analog::log(

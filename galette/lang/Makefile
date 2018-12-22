@@ -1,7 +1,6 @@
 INSTALLDIR = .
 LANGUAGES = `find ./ -name "galette_*.po" -print | sed 's|^\./galette_\(.*\).po|\1|'`
 DOMAINS = galette routes
-MKLANG = ./make_lang_l12n.py
 PHP_SOURCES = $(shell find ../ -maxdepth 1 -name \*.php) \
               $(shell find ../lib/Galette -name \*.php) \
               $(shell find ../webroot -name \*.php) \
@@ -10,7 +9,7 @@ PHP_SOURCES = $(shell find ../ -maxdepth 1 -name \*.php) \
               $(shell find ../templates -name \*.tpl)
 
 
-all : extract mo php check
+all : extract mo
 
 po :
 	@echo "Generating PO files:"
@@ -43,29 +42,5 @@ mo :
 	  done \
 	done
 
-php :
-	@echo "Generating PHP lang files:"
-	@for l in ${LANGUAGES}; do \
-	  for d in ${DOMAINS}; do \
-	    echo "    extracting $${d} $${l} strings..."; \
-	    if [ ! -f $${d}_$${l}.php ]; then \
-	      touch $${d}_$${l}.php; \
-	    fi; \
-	    ${MKLANG} $${d}_$${l}.po $${d}_$${l}.php.new $${d}; \
-	    if diff -qI 'This file was automatically generated.*' $${d}_$${l}.php $${d}_$${l}.php.new > /dev/null; then \
-	      echo "    $${d}_$${l}.php NOT updated."; \
-	      rm $${d}_$${l}.php.new; \
-	    else \
-	      echo "    $${d}_$${l}.php UPDATED."; \
-	      mv $${d}_$${l}.php.new $${d}_$${l}.php; \
-	    fi; \
-	  done \
-	done
-
 extract : ${PHP_SOURCES} Makefile xgettext.py
 	./xgettext.py ${PHP_SOURCES}
-
-check:
-	@for NFILE in ./*.php; do \
-		php -l $$NFILE; \
-	done

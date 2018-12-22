@@ -219,6 +219,11 @@ class Members
     ) {
         global $zdb;
 
+        if ($limit === true) {
+            //force count if limit is active
+            $count = true;
+        }
+
         try {
             $_mode = self::SHOW_LIST;
             if ($staff !== false) {
@@ -368,6 +373,12 @@ class Members
                 );
                 $del = $zdb->execute($del_qry);
 
+                //delete dynamic fields values
+                $del_qry = $zdb->delete(DynamicFieldsHandle::TABLE);
+                $del_qry->where(['field_form' => 'adh']);
+                $del_qry->where->in('item_id', $list);
+                $del = $zdb->execute($del_qry);
+
                 //delete members
                 $del_qry = $zdb->delete(self::TABLE);
                 $del_qry->where->in(
@@ -421,15 +432,16 @@ class Members
     /**
      * Get members list
      *
-     * @param bool  $as_members return the results as an array of
-     *                          Member object.
-     * @param array $fields     field(s) name(s) to get. Should be a string or
-     *                          an array. If null, all fields will be
-     *                          returned
+     * @param boolean $as_members return the results as an array of
+     *                            Member object.
+     * @param array   $fields     field(s) name(s) to get. Should be a string or
+     *                            an array. If null, all fields will be
+     *                            returned
+     * @param boolean $full       Whether to return full list
      *
      * @return Adherent[]|ResultSet
      */
-    public function getList($as_members = false, $fields = null)
+    public function getList($as_members = false, $fields = null, $full = true)
     {
         return $this->getMembersList(
             $as_members,
@@ -437,7 +449,7 @@ class Members
             false,
             false,
             false,
-            false,
+            true,
             false
         );
     }
@@ -1392,14 +1404,23 @@ class Members
 
                         $qry = '';
                         $prefix = 'a.';
+                        $dyn_field = false;
                         if (strpos($fs['field'], 'dyn_') === 0) {
                             // simple dynamic field spotted!
                             $index = str_replace('dyn_', '', $fs['field']);
+                            $dyn_field = DynamicField::loadFieldType($zdb, (int)$index);
                             $prefix = 'df' . $index . '.';
                             $fs['field'] = 'val';
                         }
 
-                        if (!strncmp($fs['field'], 'bool_', strlen('bool_'))) {
+                        if ($dyn_field && $dyn_field instanceof \Galette\DynamicFields\Boolean) {
+                            if ($fs['search'] != 0) {
+                                $qry .= $prefix . $fs['field'] . $qop  . ' ' .
+                                    $fs['search'] ;
+                            } else {
+                                $qry .= $prefix . $fs['field'] . ' IS NULL';
+                            }
+                        } elseif (!strncmp($fs['field'], 'bool_', strlen('bool_'))) {
                             $qry .= $prefix . $fs['field'] . $qop  . ' ' .
                                 $fs['search'] ;
                         } elseif ($fs['qry_op'] === AdvancedMembersList::OP_BEFORE
@@ -1548,7 +1569,7 @@ class Members
         } catch (\Exception $e) {
             $zdb->connection->rollBack();
             Analog::log(
-                'An error occured trying to retrieve members with ' .
+                'An error occurred trying to retrieve members with ' .
                 'empty logins/passwords (' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -1626,7 +1647,6 @@ class Members
         return $reminders;
     }
 
-
     /**
      * Get count for current query
      *
@@ -1668,5 +1688,15 @@ class Members
             $emails[$row->email_adh] = $row->{self::PK};
         }
         return $emails;
+    }
+
+    /**
+     * Get current filters
+     *
+     * @return MembersList
+     */
+    public function getFilters()
+    {
+        return $this->filters;
     }
 }

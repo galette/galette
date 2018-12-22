@@ -8,7 +8,7 @@
  * PHP version 5
  *
  * Copyright © 2017 GLPI and Contributors
- * Copyright © 2017 The Galette Team
+ * Copyright © 2017-2018 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -30,7 +30,7 @@
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2017 GLPI and Contributors
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2018 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9
@@ -51,7 +51,7 @@ use Galette\Core\Plugins;
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2017 GLPI and Contributors
- * @copyright 2017 The Galette Team
+ * @copyright 2017-2018 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9
@@ -61,6 +61,7 @@ class Telemetry
     private $zdb;
     private $prefs;
     private $plugins;
+    private $quick = false;
 
     /**
      * Constructor
@@ -281,6 +282,12 @@ class Telemetry
             CURLOPT_POSTFIELDS      => $infos,
             CURLOPT_HTTPHEADER      => ['Content-Type:application/json']
         ];
+        if ($this->quick === true) {
+            //set entire curl call timeout
+            $opts[CURLOPT_TIMEOUT] = 3;
+            //set curl connection timeout
+            $opts[CURLOPT_CONNECTTIMEOUT] = 2;
+        }
 
         curl_setopt_array($ch, $opts);
         $content = json_decode(curl_exec($ch));
@@ -446,5 +453,17 @@ class Telemetry
             $str .= $keyspace[random_int(0, $max)];
         }
         return $str;
+    }
+
+    /**
+     * Set quick mode
+     * Will set a short timeout on curl calls
+     *
+     * @return Telemetry
+     */
+    public function setQuick()
+    {
+        $this->quick = true;
+        return $this;
     }
 }

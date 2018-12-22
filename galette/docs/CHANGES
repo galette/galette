@@ -1,6 +1,53 @@
 Changes
 -------
 
+0.9.1.2 -> 0.9.2
+
+News
+^^^^
+
+- Rework icons
+- Search (name, mail, id, ...) in list selecting member in transactions and contribution
+- PHP 7.1 or above required
+- Use FontAwesome for icons
+- Manage payment types
+- Do not send password in mails
+- Member duplication
+- Add a parameter for default account filter
+- Translation system has been reworked, and now requires intl PHP extension
+- Display managers/members count in groups
+
+Bugfixes
+^^^^^^^^
+
+- CSV import dry-run checks have been entirely reworked to fix several problems
+- Fix version detection on upgrade
+- Better explanations for PDF models variables
+- Can add more than 100 years old members
+- Fix date range limitation on Birthdate components
+- Add birthdate checks on member storage
+- Fix date filtering in contributions lists
+- Use selected sender informations on mailing preview
+- Fix sender storage in mail history
+- Fix not translated mark on dynamic translations
+- Fix 'false' search on dynamic boolean fields
+- Mass removal of contributions did not work
+- Remove dynamic fields values when dynamic field is dropped
+- Fix PostgreSQL update script
+- Fix several redirection issues (caused by proxies)
+- Make dynamic fields works on PDF form (thanks to Jérôme B.)
+- Fix CSV fields configuration
+- FIx ACLs inconsistency on dynamic fields
+
+Under the hood
+^^^^^^^^^^^^^^
+
+- Use InnoDB everywhere
+- Automatic re-send of Telemetry data
+- Use Zanata for translations
+- Use ZendTranslator
+- Update third party libraries
+
 0.9.1.1 -> 0.9.1.2
 
 - Fix uncheck member boolean fields

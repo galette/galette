@@ -107,11 +107,13 @@ class MembersList extends Pagination
      */
     public function reinit()
     {
+        global $preferences;
+
         parent::reinit();
         $this->_filter_str = null;
         $this->_field_filter = null;
         $this->_membership_filter = null;
-        $this->_account_status_filter = null;
+        $this->_account_status_filter = $preferences->pref_filter_account;
         $this->_email_filter = Members::FILTER_DC_EMAIL;
         $this->_group_filter = null;
         $this->_selected = array();

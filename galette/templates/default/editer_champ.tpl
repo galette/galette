@@ -66,10 +66,13 @@
                 <br/><span class="exemple">{_T string="Choice list (one entry per line)."}</span>
             </p>
 {/if}
-            <div class="button-container">
-                <input type="submit" name="valid" value="{_T string="Save"}" id="btnsave"/>
-            </div>
         </fieldset>
+            <div class="button-container">
+                <button type="submit" class="action">
+                    <i class="fas fa-save fa-fw"></i> {_T string="Save"}
+                </button>
+            </div>
+
      </form>
 {elseif $action == {_T string="add" domain="routes"}}
     <form action="{path_for name="doEditDynamicField" data=["form" => $form_name, "action" => {_T string="add" domain="routes"}]}" method="post" enctype="multipart/form-data" title="{_T string="New dynamic field"}">

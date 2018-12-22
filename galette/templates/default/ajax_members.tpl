@@ -56,13 +56,19 @@
             <header class="ui-state-default ui-state-active"><h3>{_T string="Selected members"}</h3></header>
             <ul>
     {foreach from=$selected_members item=recipient}
-                <li id="member_{$recipient->id}">{$recipient->sfullname}</li>
+                <li id="member_{$recipient->id}">
+                    <i class="fas fa-user-minus" aria-hidden="true"></i>
+                    {$recipient->sfullname}
+                </li>
     {foreachelse}
                 <li id="none_selected">{_T string="No members has been selected yet."}</li>
     {/foreach}
     {if isset($unreachables_members) and $unreachables_members|@count gt 0}
         {foreach from=$unreachables_members item=recipient}
-                <li id="member_{$recipient->id}" class="unreachables">{$recipient->sfullname}</li>
+                <li id="member_{$recipient->id}" class="unreachables">
+                    <i class="fas fa-user-minus" aria-hidden="true"></i>
+                    {$recipient->sfullname}
+                </li>
         {/foreach}
     {/if}
             </ul>

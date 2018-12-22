@@ -1,10 +1,15 @@
     {* Let's see if there are error messages to show *}
-    {assign var="error_detected" value=$flash->getMessage('error_detected')}
-    {if is_array($error_detected) && $error_detected|@count > 0}
+    {assign var="errors" value=$flash->getMessage('error_detected')}
+    {if isset($error_detected) && is_array($error_detected)}
+        {foreach from=$error_detected item=e}
+            {$errors[] = $e}
+        {/foreach}
+    {/if}
+    {if is_array($errors) && $errors|@count > 0}
             <div id="errorbox">
                 <h1>{_T string="- ERROR -"}</h1>
                 <ul>
-        {foreach from=$flash->getMessage('error_detected') item=error}
+        {foreach from=$errors item=error}
                     <li>{$error}</li>
         {/foreach}
                 </ul>
@@ -12,12 +17,17 @@
     {/if}
 
     {* Let's see if there are warning messages to show *}
-    {assign var="warning_detected" value=$flash->getMessage('warning_detected')}
-    {if is_array($warning_detected) && $warning_detected|@count > 0}
+    {assign var="warnings" value=$flash->getMessage('warning_detected')}
+    {if isset($warning_detected) && is_array($warning_detected)}
+        {foreach from=$warning_detected item=w}
+            {$warnings[] = $w}
+        {/foreach}
+    {/if}
+    {if is_array($warnings) && $warnings|@count > 0}
             <div id="warningbox">
                 <h1>{_T string="- WARNING -"}</h1>
                 <ul>
-        {foreach from=$flash->getMessage('warning_detected') item=warning}
+        {foreach from=$warnings item=warning}
                     <li>{$warning}</li>
         {/foreach}
                 </ul>
@@ -33,11 +43,16 @@
     {/if}
 
     {* Let's see if there are success messages to show *}
-    {assign var="success_detected" value=$flash->getMessage('success_detected')}
-    {if is_array($success_detected) && $success_detected|@count > 0}
+    {assign var="successs" value=$flash->getMessage('success_detected')}
+    {if isset($success_detected) && is_array($success_detected)}
+        {foreach from=$success_detected item=s}
+            {$successs[] = $s}
+        {/foreach}
+    {/if}
+    {if is_array($successs) && $successs|@count > 0}
         <div id="successbox">
                 <ul>
-        {foreach from=$flash->getMessage('success_detected') item=success}
+        {foreach from=$successs item=success}
                     <li>{$success}</li>
         {/foreach}
                 </ul>

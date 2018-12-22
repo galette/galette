@@ -38,6 +38,8 @@
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\ContributionsTypes;
+use Galette\Repository\Members;
+use Galette\Filters\MembersList;
 
 $app->group(__('/ajax', 'routes'), function () use ($authenticate) {
     $this->get(
@@ -262,4 +264,56 @@ $app->group(__('/ajax', 'routes'), function () use ($authenticate) {
             ]);
         }
     )->setName('contributionDates')->add($authenticate);
+
+    $this->post(
+        __('/contribution', 'routes') . __('/members', 'routes') .
+        '[/{' . __('page', 'routes') . ':\d+}[/{' . __('search', 'routes') . '}]]',
+        function ($request, $response, $args) {
+            $post = $request->getParsedBody();
+            $filters = new MembersList();
+            if (isset($post['page'])) {
+                $filters->current_page = (int)$post['page'];
+            } elseif (isset($args[__('page', 'routes')])) {
+                $filters->current_page = (int)$args[__('page', 'routes')];
+            }
+
+            $term = null;
+            if (isset($args[__('search', 'routes')])) {
+                $term = $args[__('search', 'routes')];
+            }
+            if (isset($post['search'])) {
+                $term = $post['search'];
+            }
+            if ($term !== null) {
+                $filters->filter_str = $term;
+                if (is_numeric($term)) {
+                    $filters->field_filter = Members::FILTER_NUMBER;
+                }
+            }
+
+            $m = new Members($filters);
+            $required_fields = array(
+                'id_adh',
+                'nom_adh',
+                'prenom_adh'
+            );
+            $list_members = $m->getList(false, $required_fields, true);
+
+            $members = [];
+            if (count($list_members) > 0) {
+                foreach ($list_members as $member) {
+                    $pk = Adherent::PK;
+                    $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
+                        ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8')) .
+                        ' (' . $member->id_adh . ')';
+                    $members[$member->$pk] = $sname;
+                }
+            }
+
+            return $response->withJson([
+                'members'   => $members,
+                'count'     => count($members)
+            ]);
+        }
+    )->setName('contributionMembers')->add($authenticate);
 });

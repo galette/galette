@@ -115,7 +115,7 @@ class Reminder
             $this->loadFromRs($results->current());
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured loading reminder #' . $id . "Message:\n" .
+                'An error occurred loading reminder #' . $id . "Message:\n" .
                 $e->getMessage(),
                 Analog::ERROR
             );
@@ -187,7 +187,7 @@ class Reminder
             return true;
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured storing reminder: ' . $e->getMessage() .
+                'An error occurred storing reminder: ' . $e->getMessage() .
                 "\n" . print_r($data, true),
                 Analog::ERROR
             );

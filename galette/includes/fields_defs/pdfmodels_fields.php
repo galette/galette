@@ -197,9 +197,9 @@ td#pdf_logo {
     <tr>
         <td>_T("Required membership:")
             <form action="none">
-                <input type="checkbox" class="box" name="cotisation1" value="none">_T("Active member")
-                <input type="checkbox" class="box" name="cotisation2" value="none">_T("Benefactor member")
-                <input type="checkbox" class="box" name="cotisation3" value="none">_T("Donation")
+                <input type="radio" class="box" name="cotisation" value="none1">_T("Active member")
+                <input type="radio" class="box" name="cotisation" value="none2">_T("Benefactor member")
+                <input type="radio" class="box" name="cotisation" value="none3">_T("Donation")
                 <div class="infos">_T("The minimum contribution for each type of membership are defined on the website of the association. The amount of donations are free to be decided by the generous donor.")  </div>
             </form>
         </td>
@@ -223,7 +223,7 @@ td#pdf_logo {
     </tr>
     <tr>
         <td class="label">_T("Company name") *</td>
-        <td class="input">{COMPANY_NAME_ADH}</td>
+        <td class="input">{COMPANY_ADH}</td>
     </tr>
     <tr>
         <td class="label">_T("Address")</td>

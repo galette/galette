@@ -17,16 +17,12 @@
             <input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$filters->start_date_filter}"/>
             <label for="end_date_filter">{_T string="until"}</label>&nbsp;
             <input type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$filters->end_date_filter}"/>
-            <label for="payment_type_filter">{_T string="Payment type"}</label>
-            <select name="payment_type_filter" id="payment_type_filter">
-                <option value="-1">{_T string="Select"}</option>
-                <option value="{Galette\Entity\Contribution::PAYMENT_CASH}"{if $filters->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_CASH')} selected="selected"{/if}>{_T string="Cash"}</option>
-                <option value="{Galette\Entity\Contribution::PAYMENT_CREDITCARD}"{if $filters->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_CREDITCARD')} selected="selected"{/if}>{_T string="Credit card"}</option>
-                <option value="{Galette\Entity\Contribution::PAYMENT_CHECK}"{if $filters->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_CHECK')} selected="selected"{/if}>{_T string="Check"}</option>
-                <option value="{Galette\Entity\Contribution::PAYMENT_TRANSFER}"{if $filters->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_TRANSFER')} selected="selected"{/if}>{_T string="Transfer"}</option>
-                <option value="{Galette\Entity\Contribution::PAYMENT_PAYPAL}"{if $filters->payment_type_filter eq constant('Galette\Entity\Contribution::PAYMENT_PAYPAL')} selected="selected"{/if}>{_T string="Paypal"}</option>
-                <option value="{Galette\Entity\Contribution::PAYMENT_OTHER}"{if $filters->payment_type_filter === constant('Galette\Entity\Contribution::PAYMENT_OTHER')} selected="selected"{/if}>{_T string="Other"}</option>
-            </select>
+            {include file="forms_types/payment_types.tpl"
+                current=$filters->payment_type_filter varname="payment_type_filter"
+                show_inline=""
+                classname=""
+                empty=['value' => -1, 'label' => {_T string="Select"}]
+            }
             <input type="submit" class="inline" value="{_T string="Filter"}"/>
             <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
         </div>
@@ -36,7 +32,13 @@
         <div class="infoline">
 {if isset($member) && $mode neq 'ajax'}
     {if $login->isAdmin() or $login->isStaff()}
-            <a id="clearfilter" href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="member" domain="routes"}, "value" => "all"]}" title="{_T string="Show all members contributions"}">{_T string="Show all members contributions"}</a>
+            <a
+                href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="member" domain="routes"}, "value" => "all"]}"
+                class="tooltip"
+            >
+                <i class="fas fa-eraser"></i>
+                <span class="sr-only">{_T string="Show all members contributions"}</span>
+            </a>
     {/if}
             <strong>{$member->sname}</strong>
     {if not $member->isActive() } ({_T string="Inactive"}){/if}
@@ -173,18 +175,23 @@
                         {else}
                             <input type="hidden" name="contrib_id" value="{$contribution->id}"/>
                         {/if}
+    {if $preferences->pref_show_id}
+                        {$contribution->id}
+    {else}
                         {$ordre+1+($filters->current_page - 1)*$numrows}
+    {/if}
                         <span class="row-title">
                             <a href="{path_for name="contribution" data=["type" => $ctype, "action" => {_T string="edit" domain="routes"}, "id" => $contribution->id]}">
                                 {_T string="Contribution %id" pattern="/%id/" replace=$contribution->id}
                             </a>
                         </span>
         {if $contribution->isTransactionPart() }
-                        <a href="{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $contribution->transaction->id]}" title="{_T string="Transaction: %s" pattern="/%s/" replace=$contribution->transaction->description}">
-                            <img src="{base_url}/{$template_subdir}images/icon-money.png"
-                                alt="{_T string="[view]"}"
-                                width="16"
-                                height="16"/>
+                        <a
+                            href="{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $contribution->transaction->id]}"
+                            class="tooltip"
+                        >
+                            <i class="fas fa-link"></i>
+                            <span class="sr-only">{_T string="Transaction: %s" pattern="/%s/" replace=$contribution->transaction->description}</span>
                         </a>
         {else}
                         <img src="{base_url}/{$template_subdir}images/icon-empty.png"
@@ -211,19 +218,31 @@
                     <td class="{$cclass} nowrap" data-title="{_T string="Duration"}">{$contribution->duration}</td>
     {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
                     <td class="{$cclass} center nowrap">
-                        <a href="{path_for name="printContribution" data=["id" => $contribution->id]}">
-                            <img src="{base_url}/{$template_subdir}images/icon-pdf.png" alt="{_T string="[pdf]"}" width="16" height="16" title="{_T string="Print an invoice or a receipt (depending on contribution type)"}"/>
+                        <a
+                            href="{path_for name="printContribution" data=["id" => $contribution->id]}"
+                            class="tooltip"
+                        >
+                            <i class="fas fa-file-pdf"></i>
+                            <span class="sr-only">{_T string="Print an invoice or a receipt (depending on contribution type)"}</span>
                         </a>
                         {if $contribution->isCotis()}
                             {assign var="ctype" value={_T string="fee" domain="routes"}}
                         {else}
                             {assign var="ctype" value={_T string="donation" domain="routes"}}
                         {/if}
-                        <a href="{path_for name="contribution" data=["type" => $ctype, "action" => {_T string="edit" domain="routes"}, "id" => $contribution->id]}">
-                            <img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16" title="{_T string="Edit the contribution"}"/>
+                        <a
+                            href="{path_for name="contribution" data=["type" => $ctype, "action" => {_T string="edit" domain="routes"}, "id" => $contribution->id]}"
+                            class="tooltip action"
+                        >
+                            <i class="fas fa-edit"></i>
+                            <span class="sr-only">{_T string="Edit the contribution"}</span>
                         </a>
-                        <a class="delete" href="{path_for name="removeContributions" data=["type" => {_T string="contributions" domain="routes"}, "id" => $contribution->id]}">
-                            <img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16" title="{_T string="Delete the contribution"}"/>
+                        <a
+                            href="{path_for name="removeContribution" data=["type" => {_T string="contributions" domain="routes"}, "id" => $contribution->id]}"
+                            class="tooltip delete"
+                        >
+                            <i class="fas fa-trash"></i>
+                            <span class="sr-only">{_T string="Delete the contribution"}</span>
                         </a>
                     </td>
     {/if}
@@ -241,7 +260,11 @@
     {if ($login->isAdmin() or $login->isStaff()) && $mode neq 'ajax'}
         <ul class="selection_menu">
             <li>{_T string="For the selection:"}</li>
-            <li><input type="submit" id="delete" onclick="return confirm('{_T string="Do you really want to delete all selected contributions?"|escape:"javascript"}');" name="delete" value="{_T string="Delete"}"/></li>
+            <li>
+                <button type="submit" id="delete" name="delete">
+                    <i class="fas fa-trash fa-fw"></i> {_T string="Delete"}
+                </button>
+            </li>
         </ul>
     {/if}
 {/if}
@@ -251,11 +274,15 @@
             <table>
 {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
                 <tr>
-                    <th class="back"><img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/></th>
+                    <th class="action">
+                        <i class="fas fa-edit fa-fw"></i>
+                    </th>
                     <td class="back">{_T string="Modification"}</td>
                 </tr>
                 <tr>
-                    <th class="back"><img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/></th>
+                    <th class="delete">
+                        <i class="fas fa-trash fa-fw"></i>
+                    </th>
                     <td class="back">{_T string="Deletion"}</td>
                 </tr>
 {/if}
@@ -273,6 +300,25 @@
 
 {block name="javascripts"}
         <script type="text/javascript">
+        var _checkselection = function() {
+            var _checkeds = $('table.listing').find('input[type=checkbox]:checked').length;
+            if ( _checkeds == 0 ) {
+                var _el = $('<div id="pleaseselect" title="{_T string="No contribution selected" escape="js"}">{_T string="Please make sure to select at least one contribution from the list to perform this action." escape="js"}</div>');
+                _el.appendTo('body').dialog({
+                    modal: true,
+                    buttons: {
+                        Ok: function() {
+                            $(this).dialog( "close" );
+                        }
+                    },
+                    close: function(event, ui){
+                        _el.remove();
+                    }
+                });
+                return false;
+            }
+            return true;
+        }
             $(function(){
                 var _init_contribs_page = function(res){
                     $('#nbshow').change(function() {
@@ -289,14 +335,13 @@
                         changeMonth: true,
                         changeYear: true,
                         showOn: 'button',
-                        buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
-                        buttonImageOnly: true,
-                        buttonText: '{_T string="Select a date" escape="js"}'
+                        buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
                     });
                 }
                 _init_contribs_page();
 
                 {include file="js_removal.tpl"}
+                {include file="js_removal.tpl" selector="#delete" deleteurl="'{path_for name="removeContributions" data=["type" => {_T string="contributions" domain="routes"}]}'" extra_check="if (!_checkselection()) {ldelim}return false;{rdelim}" extra_data="delete: true, contrib_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()" method="POST"}
             });
         </script>
 {/block}

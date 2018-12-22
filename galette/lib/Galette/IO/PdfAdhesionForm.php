@@ -78,6 +78,8 @@ class PdfAdhesionForm
      */
     public function __construct(Adherent $adh = null, Db $zdb, Preferences $prefs)
     {
+        global $login;
+
         $this->adh = $adh;
         $this->prefs = $prefs;
 
@@ -90,6 +92,7 @@ class PdfAdhesionForm
         $model->setPatterns(
             array(
                 'adh_title'         => '/{TITLE_ADH}/',
+                'adh_id'            => '/{ID_ADH}/',
                 'adh_name'          => '/{NAME_ADH}/',
                 'adh_last_name'     => '/{LAST_NAME_ADH}/',
                 'adh_first_name'    => '/{FIRST_NAME_ADH}/',
@@ -98,7 +101,7 @@ class PdfAdhesionForm
                 'adh_birth_date'    => '/{ADH_BIRTH_DATE}/',
                 'adh_birth_place'   => '/{ADH_BIRTH_PLACE}/',
                 'adh_profession'    => '/{PROFESSION_ADH}/',
-                'adh_company_name'  => '/{COMPANY_NAME_ADH}/',
+                'adh_company'       => '/{COMPANY_ADH}/',
                 'adh_address'       => '/{ADDRESS_ADH}/',
                 'adh_zip'           => '/{ZIP_ADH}/',
                 'adh_town'          => '/{TOWN_ADH}/',
@@ -147,6 +150,7 @@ class PdfAdhesionForm
             $model->setReplacements(
                 array(
                     'adh_title'         => $adh->stitle,
+                    'adh_id'            => $adh->id,
                     'adh_name'          => $adh->sfullname,
                     'adh_last_name'     => $adh->surname,
                     'adh_first_name'    => $adh->name,
@@ -155,7 +159,7 @@ class PdfAdhesionForm
                     'adh_birth_date'    => $adh->birthdate,
                     'adh_birth_place'   => $adh->birth_place,
                     'adh_profession'    => $adh->job,
-                    'adh_company_name'  => $adh->company_name,
+                    'adh_company'       => $adh->company_name,
                     'adh_address'       => $address,
                     'adh_zip'           => $adh->zipcode,
                     'adh_town'          => $adh->town,
@@ -172,7 +176,7 @@ class PdfAdhesionForm
 
         /** the list of all dynamic fields */
         $fields =
-            new \Galette\Repository\DynamicFieldsSet($zdb);
+            new \Galette\Repository\DynamicFieldsSet($zdb, $login);
         $dynamic_fields = $fields->getList('adh');
 
         foreach ($dynamic_patterns as $pattern) {
@@ -199,31 +203,31 @@ class PdfAdhesionForm
                 $field_value = '';
                 if ($adh !== null) {
                     $field_values = $adh->getDynamicFields()->getValues($field_id);
-                    $field_value  = $field_values[1];
+                    $field_value  = $field_values[0];
                 }
                 switch ($field_type) {
                     case DynamicField::TEXT:
                         $value .= '<textarea' .
                             ' id="'    . $field_name  . '"' .
                             ' name="'  . $field_name  . '"' .
-                            ' value="' . $field_value . '"' .
+                            ' value="' . $field_value['field_val'] . '"' .
                             '/>';
                         break;
                     case DynamicField::LINE:
                         $value .= '<input type="text"' .
                             ' id="'    . $field_name  . '"' .
                             ' name="'  . $field_name  . '"' .
-                            ' value="' . $field_value . '"' .
+                            ' value="' . $field_value['field_val'] . '"' .
                             ' size="20" maxlength="30"/>';
                         break;
                     case DynamicField::CHOICE:
-                        $choice_values = $dyn_fields->getFixedValues($field_id);
-                        foreach ($choice_values as $choice_value) {
+                        $choice_values = $dynamic_fields[$field_id]->getValues();
+                        foreach ($choice_values as $choice_idx => $choice_value) {
                             $value .= '<input type="radio"' .
                                 ' id="'    . $field_name . '"' .
                                 ' name="'  . $field_name . '"' .
                                 ' value="' . $choice_value . '"';
-                            if ($field_value == $choice_value) {
+                            if ($choice_idx == $field_values[0]['field_val']) {
                                 $value .= ' checked="checked"';
                             }
                             $value .= '/>';
@@ -240,7 +244,7 @@ class PdfAdhesionForm
                         $value .= '<input type="checkbox"' .
                             ' name="' .  $field_name . '"' .
                             ' value="1"';
-                        if ($field_value == 1) {
+                        if ($field_value['field_val'] == 1) {
                             $value .= ' checked="checked"';
                         }
                         $value .= '/>';
@@ -248,7 +252,7 @@ class PdfAdhesionForm
                     case DynamicField::FILE:
                         $value .= '<input type="text" name="' .
                             $field_name  . '" value="' .
-                            $field_value . '" />';
+                            $field_value['field_val'] . '" />';
                         break;
                 }
             }

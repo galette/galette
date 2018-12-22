@@ -157,6 +157,16 @@ class CheckModules
                 _T("'%s' module")
             );
         }
+
+        if (!extension_loaded('intl')) {
+            $this->missing[] = str_replace('%s', 'intl', _T("'%s' module"));
+        } else {
+            $this->good['intl'] = str_replace(
+                '%s',
+                'intl',
+                _T("'%s' module")
+            );
+        }
     }
 
     /**

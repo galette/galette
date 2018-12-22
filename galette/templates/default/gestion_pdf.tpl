@@ -20,74 +20,84 @@
             <h1>{_T string="Existing variables"}</h1>
             <table>
                 <tr>
+                    <th colspan="4">
+                        {_T string="Globally available"}
+                    </th>
+                </tr>
+                <tr>
                     <th><tt>{ldelim}ASSO_NAME{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation name"}<br/><span>({_T string="globally available"})</span></td>
+                    <td class="back">{_T string="Your organisation name"}</td>
                     <th><tt>{ldelim}ASSO_SLOGAN{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation slogan"}<br/><span>({_T string="globally available"})</span></td>
+                    <td class="back">{_T string="Your organisation slogan"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}ASSO_ADDRESS{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation address"}<br/><span>({_T string="globally available"})</span></td>
+                    <td class="back">{_T string="Your organisation address"}</td>
                     <th><tt>{ldelim}ASSO_WEBSITE{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation website"}<br/><span>({_T string="globally available"})</span></td>
+                    <td class="back">{_T string="Your organisation website"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}ASSO_LOGO{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation logo"}<br/><span>({_T string="globally available"})</span></td>
+                    <td class="back">{_T string="Your organisation logo"}</td>
                     <th></th>
                     <td></td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}NAME_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's name"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Member's name"}</td>
                     <th><tt>{ldelim}ADDRESS_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's address"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Member's address"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}ZIP_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's zipcode"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Member's zipcode"}</td>
                     <th><tt>{ldelim}TOWN_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's town"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Member's town"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}GROUP_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's main group"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Member's main group"}</td>
                     <th><tt>{ldelim}GROUPS_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's groups (as list)"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Member's groups (as list)"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}COMPANY_ADH{rdelim}</tt></th>
                     <td class="back">{_T string="Company name"}</td>
-                    <th>&nbsp;</th>
-                    <td class="back">&nbsp;</td>
+                    <th><tt>{ldelim}ID_ADH{rdelim}</tt></th>
+                    <td class="back">{_T string="Member's ID"}</td>
+                </tr>
+                <tr>
+                    <th colspan="4">
+                        {_T string="Available for invoices and receipts only"}
+                    </th>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}CONTRIBUTION_LABEL{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution label"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Contribution label"}</td>
                     <th><tt>{ldelim}CONTRIBUTION_AMOUNT{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution amount"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Contribution amount"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}CONTRIBUTION_DATE{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution full date"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Contribution full date"}</td>
                     <th><tt>{ldelim}CONTRIBUTION_YEAR{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution year"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Contribution year"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}CONTRIBUTION_COMMENT{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution comment"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Contribution comment"}</td>
                     <th><tt>{ldelim}CONTRIBUTION_BEGIN_DATE{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution begin date"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Contribution begin date"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}CONTRIBUTION_END_DATE{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution end date"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Contribution end date"}</td>
                     <th><tt>{ldelim}CONTRIBUTION_ID{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution id"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Contribution id"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}CONTRIBUTION_PAYMENT_TYPE{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution payment type"}<br/><span>({_T string="available with reservations"})</span></td>
+                    <td class="back">{_T string="Contribution payment type"}</td>
                     <th>&nbsp;</th>
                     <td class="back">&nbsp;</td>
                 </tr>
@@ -97,7 +107,7 @@
 
 {block name="javascripts"}
         <script type="text/javascript">
-            $('#tabs').append('<a class="button notext" id="btninfo_small" title="{_T string="Show existing variables"}">{_T string="Show existing variables"}</a>');
+            $('#tabs').append('<a id="btnlegend" class="tab-button tooltip action" title="{_T string="Show existing variables"}"><i class="fas fa-info-circle fa-2x"></i> <span class="sr-only">{_T string="Show existing variables" escape="js"}</span></a>');
             $(function(){
                 $('#legende h1').remove();
                 $('#legende').dialog({
@@ -107,7 +117,7 @@
                     width: '60em'
                 }).dialog('close');
 
-                $('#btninfo_small').click(function(){
+                $('#btnlegend').click(function(){
                     $('#legende').dialog('open');
                         return false;
                 });
@@ -133,7 +143,7 @@
                             $('#loading').remove();
                         },
                         error: function( xhr, status, index, anchor ) {
-                            alert('{_T string="An error occured :("|escape:"js"}');
+                            alert('{_T string="An error occurred :("|escape:"js"}');
                         }
                     }
                 });

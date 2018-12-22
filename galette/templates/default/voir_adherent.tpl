@@ -3,9 +3,15 @@
 {block name="content"}
 {if isset($navigate) and $navigate|@count != 0}
     <nav>
-        <a id="prev" href="{if isset($navigate.prev)}{path_for name="member" data=["id" => $navigate.prev]}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">{_T string="Previous"}</a>
+        <a href="{if isset($navigate.prev)}{path_for name="member" data=["id" => $navigate.prev]}{else}#{/if}" class="button{if !isset($navigate.prev)} disabled{/if}">
+            <i class="fas fa-step-backward"></i>
+            {_T string="Previous"}
+        </a>
         {$navigate.pos}/{$navigate.count}
-        <a id="next" href="{if isset($navigate.next)}{path_for name="member" data=["id" => $navigate.next]}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">{_T string="Next"}</a>
+        <a href="{if isset($navigate.next)}{path_for name="member" data=["id" => $navigate.next]}{else}#{/if}" class="button{if !isset($navigate.next)} disabled{/if}">
+            {_T string="Next"}
+            <i class="fas fa-step-forward"></i>
+        </a>
     </nav>
 {/if}
     <div class="bigtable">
@@ -13,29 +19,86 @@
         <ul id="details_menu">
 {if ($pref_card_self eq 1) or ($login->isAdmin() or $login->isStaff())}
             <li>
-                <a class="button{if !$member->isUp2Date()} disabled{/if}" href="{if $member->isUp2Date()}{path_for name="pdf-members-cards" data=['id_adh' => $member->id]}{else}#{/if}" id="btn_membercard">{_T string="Generate Member Card"}</a>
+                <a
+                    href="{if $member->isUp2Date()}{path_for name="pdf-members-cards" data=['id_adh' => $member->id]}{else}#{/if}"
+                    title="{_T string="Generate members's card"}"
+                    class="button bigbutton{if !$member->isUp2Date()} disabled{/if} tooltip"
+                >
+                    <i class="fas fa-id-badge fa-fw fa-2x"></i>
+                    {_T string="Generate Member Card"}
+                </a>
             </li>
             <li>
-                <a class="button" href="{path_for name="adhesionForm" data=["id_adh" => $member->id]}" id="btn_adhesionform">{_T string="Adhesion form"}</a>
+                <a
+                    href="{path_for name="adhesionForm" data=["id_adh" => $member->id]}"
+                    class="button bigbutton tooltip"
+                >
+                    <i class="fas fa-id-card fa-fw fa-2x"></i>
+                    {_T string="Adhesion form"}
+                </a>
             </li>
     {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') && ($login->isAdmin() || $login->isStaff())}
             <li>
-                <a class="button" href="{path_for name="retrieve-pass" data=["id_adh" => $member->id]}" id="btn_lostpassword" title="{_T string="Send member a link to generate a new passord, as if had used the 'lost password' functionnality."}">{_T string="New password"}</a>
+                <a
+                    href="{path_for name="retrieve-pass" data=["id_adh" => $member->id]}"
+                    id="btn_lostpassword"
+                    title="{_T string="Send member a link to generate a new passord, as if had used the 'lost password' functionnality."}"
+                    class="button bigbutton tooltip"
+                >
+                    <i class="fas fa-unlock fa-fw fa-2x"></i>
+                    {_T string="New password"}
+                </a>
             </li>
     {/if}
 {/if}
             <li>
-                <a class="button" href="{path_for name="editmember" data=["action" => {_T string="edit" domain="routes"}, "id" => $member->id]}" id="btn_edit">{_T string="Modification"}</a>
+                <a
+                    href="{path_for name="editmember" data=["action" => {_T string="edit" domain="routes"}, "id" => $member->id]}"
+                    class="button bigbutton tooltip"
+                    title="{_T string="Edit member"}"
+                >
+                    <i class="fas fa-user-edit fa-fw fa-2x"></i>
+                    {_T string="Modification"}
+                </a>
             </li>
 {if $login->isAdmin() or $login->isStaff()}
             <li>
-                <a class="button" href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="member" domain="routes"}, "value" => $member->id]}" id="btn_contrib">{_T string="View contributions"}</a>
+                <a
+                    href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="member" domain="routes"}, "value" => $member->id]}"
+                    title="{_T string="View member's contributions"}"
+                    class="button bigbutton tooltip"
+                >
+                    <i class="fas fa-cookie fa-fw fa-2x"></i>
+                    {_T string="View contributions"}
+                </a>
             </li>
             <li>
-                <a class="button" id="btn_addcontrib" href="{path_for name="contribution" data=["type" => {_T string="fee" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a>
+                <a
+                    href="{path_for name="contribution" data=["type" => {_T string="fee" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?id_adh={$member->id}"
+                    class="button bigbutton tooltip"
+                >
+                    <i class="fas fa-user-check fa-fw fa-2x"></i>
+                    {_T string="Add a membership fee"}
+                </a>
             </li>
             <li>
-                <a class="button" id="btn_addcontrib" href="{path_for name="contribution" data=["type" => {_T string="donation" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?id_adh={$member->id}">{_T string="Add a donation"}</a>
+                <a
+                    href="{path_for name="contribution" data=["type" => {_T string="donation" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?id_adh={$member->id}"
+                    class="button bigbutton tooltip"
+                >
+                    <i class="fas fa-gift fa-fw fa-2x"></i>
+                    {_T string="Add a donation"}
+                </a>
+            </li>
+            <li>
+                <a
+                    href="{path_for name="duplicateMember" data=["id_adh" => $member->id]}"
+                    title="{_T string="Create a new member with %name information." pattern="/%name/" replace=$member->sname}"
+                    class="button bigbutton tooltip"
+                >
+                    <i class="fas fa-clone fa-fw fa-2x" aria-hidden="true"></i>
+                    {_T string="Duplicate"}
+                </a>
             </li>
 {/if}
 {* If some additionnals actions should be added from plugins, we load the relevant template file
@@ -103,26 +166,26 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <tr>
                 <th>{$element->label}</th>
                 <td>
-                    {if $element->field_id eq 'nom_adh'}
-                        {if $member->isCompany()}
-                        <img src="{base_url}/{$template_subdir}images/icon-company.png" alt="{_T string="[C]"}" width="16" height="16"/>
-                        {elseif $member->isMan()}
-                        <img src="{base_url}/{$template_subdir}images/icon-male.png" alt="{_T string="[M]"}" width="16" height="16"/>
-                        {elseif $member->isWoman()}
-                        <img src="{base_url}/{$template_subdir}images/icon-female.png" alt="{_T string="[W]"}" width="16" height="16"/>
-                        {/if}
-                    {elseif $element->field_id eq 'pref_lang'}
-                        <img src="{base_url}/{$pref_lang_img}" alt=""/>
-                    {/if}
-                    {if $element->field_id eq 'email_adh' or $element->field_id eq 'msn_adh'}
+        {if $element->field_id eq 'nom_adh'}
+            {if $member->isCompany()}
+                    <i class="fas fa-industry fa-fw"></i>
+            {elseif $member->isMan()}
+                    <i class="fas fa-mars fa-fw"></i>
+            {elseif $member->isWoman()}
+                    <i class="fas fa-venus fa-fw"></i>
+            {/if}
+        {elseif $element->field_id eq 'pref_lang'}
+                    <img src="{base_url}/{$pref_lang_img}" alt="" class="flag"/>
+        {/if}
+        {if $element->field_id eq 'email_adh' or $element->field_id eq 'msn_adh'}
                         <a href="mailto:{$value}">{$value}</a>
-                    {elseif $element->field_id eq 'url_adh'}
+        {elseif $element->field_id eq 'url_adh'}
                         <a href="{$value}">{$value}</a>
-                    {elseif $element->field_id eq 'ddn_adh'}
+        {elseif $element->field_id eq 'ddn_adh'}
                         {$value} {$member->getAge()}
-                    {else}
+        {else}
                         {$value}
-                    {/if}
+        {/if}
                 </td>
         {if $display_element@first and $element@first}
             {assign var="mid" value=$member->id}
@@ -149,7 +212,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                         <img src="{base_url}/{$template_subdir}images/icon-user.png" alt="{_T string="[member]"}" width="16" height="16"/>
             {/if}
             {if $member->isGroupManager($group)}
-                        <img src="{base_url}/{$template_subdir}images/icon-star.png" alt="{_T string="[manager]"}" width="16" height="16"/>
+                        <i class="fas fa-user-astronaut fa-w"></i>
             {/if}
                     </a>
         {/if}

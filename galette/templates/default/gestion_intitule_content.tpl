@@ -43,7 +43,10 @@
                 <td class="center actions_row">
                     <input type="hidden" name="new" value="1" />
                     <input type="hidden" name="class" value="{$class}" />
-                    <input type="submit" name="valid" id="btnadd" value="{_T string="Add"}"/>
+                    <button type="submit" name="valid">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
+                        {_T string="Add"}
+                    </button>
                 </td>
             </tr>
         </tfoot>
@@ -81,11 +84,19 @@
     {/if}
                 </td>
                 <td class="center actions_row">
-                    <a href="{path_for name="editEntitled" data=["class" => $url_class, "action" => {_T string="edit" domain="routes"}, "id" => $eid]}">
-                        <img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name}" title="{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name}" width="16" height="16"/>
+                    <a
+                        href="{path_for name="editEntitled" data=["class" => $url_class, "action" => {_T string="edit" domain="routes"}, "id" => $eid]}"
+                        class="action tooltip"
+                    >
+                        <i class="fas fa-edit fa-fw"></i>
+                        <span class="sr-only">{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name}</span>
                     </a>
-                    <a class="delete" href="{path_for name="removeEntitled" data=["class" => $url_class, "id" => $eid]}">
-                        <img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="Delete '%s' field" pattern="/%s/" replace=$entry.name}" title="{_T string="Delete '%s' field" pattern="/%s/" replace=$entry.name}" width="16" height="16" />
+                    <a
+                        href="{path_for name="removeEntitled" data=["class" => $url_class, "id" => $eid]}"
+                        class="delete tooltip"
+                    >
+                        <i class="fas fa-trash fa-fw"></i>
+                        <span class="sr-only">{_T string="Delete '%s' field" pattern="/%s/" replace=$entry.name}</span>
                     </a>
                 </td>
             </tr>

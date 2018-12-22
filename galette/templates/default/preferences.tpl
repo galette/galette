@@ -20,12 +20,12 @@
                     <input{if $required.pref_nom eq 1} required="required"{/if} type="text" name="pref_nom" id="pref_nom" value="{$pref.pref_nom}" maxlength="190"/>
                 </p>
                 <p>
-                    <label for="pref_slogan" class="bline tooltip" title="{_T string="Enter here a short description for your association, it will be displayed on the index page and into pages' title."}">{_T string="Association's short description:"}</label>
+                    <label for="pref_slogan" class="bline tooltip">{_T string="Association's short description:"}</label>
                     <span class="tip">{_T string="Enter here a short description for your association, it will be displayed on the index page and into pages' title."}</span>
                     <input{if isset($required.pref_slogan) and $required.pref_slogan eq 1} required="required"{/if} type="text" class="large" name="pref_slogan" id="pref_slogan" value="{$pref.pref_slogan}"/>
                 </p>
                 <p>
-                    <label for="pref_footer" class="bline tooltip" title="{_T string="Enter a text (HTML allowed) that will be displayed in the footer of every page"}">{_T string="Footer text:"}</label>
+                    <label for="pref_footer" class="bline tooltip">{_T string="Footer text:"}</label>
                     <span class="tip">{_T string="Enter a text (HTML allowed) that will be displayed in the footer of every page"}</span>
                     <input{if isset($required.pref_footer) and $required.pref_footer eq 1} required="required"{/if} type="text" class="large" name="pref_footer" id="pref_footer" value="{$pref.pref_footer|escape}"/>
                 </p>
@@ -56,7 +56,7 @@
                     <input{if isset($required.pref_pays) and $required.pref_pays eq 1} required="required"{/if} type="text" name="pref_pays" id="pref_pays" value="{$pref.pref_pays}" maxlength="50"/>
                 </p>
         <div class="p">
-          <span class="bline tooltip" title="{_T string="Use either the address setted below or select user status to retrieve another address."}">{_T string="Postal address:"}</span>
+          <span class="bline tooltip">{_T string="Postal address:"}</span>
           <span class="tip">{_T string="Use either the address setted below or select a staff member to retrieve he's address."}</span>
           <label for="pref_postal_adress_0">{_T string="from preferences"}</label>
           <input type="radio" name="pref_postal_adress" id="pref_postal_adress_0" value="{Galette\Core\Preferences::POSTAL_ADDRESS_FROM_PREFS}" {if $pref.pref_postal_adress eq constant('Galette\Core\Preferences::POSTAL_ADDRESS_FROM_PREFS')}checked="checked"{/if}/>
@@ -75,7 +75,7 @@
                     <input{if isset($required.pref_website) and $required.pref_website eq 1} required="required"{/if} type="text" name="pref_website" id="pref_website" value="{$pref.pref_website}" maxlength="100"/>
                 </p>
                 <div class="p">
-                    <span class="bline tooltip" title="{_T string="Last telemetry sent date."}">{_T string="Telemetry date:"}</span>
+                    <span class="bline tooltip">{_T string="Telemetry date:"}</span>
                     <span class="tip">{_T string="Last telemetry sent date."}</span>
                     <span>
                         {if $pref.pref_telemetry_date}
@@ -83,11 +83,11 @@
                         {else}
                             {_T string="Never"}
                         {/if}
-                        - <a href="#" id="telemetry" class="button">{_T string="send"}</a>
+                        - <a href="#" id="telemetry" class="button"><i class="fas fa-chart-bar" aria-hidden="true"></i> {_T string="send"}</a>
                     </span>
                 </div>
                 <div class="p">
-                    <span class="bline tooltip" title="{_T string="Date on which you registered your Galette instance."}">{_T string="Registration date:"}</span>
+                    <span class="bline tooltip">{_T string="Registration date:"}</span>
                     <span class="tip">{_T string="Date on which you registered your Galette instance."}</span>
                     <span>
                         {if $pref.pref_registration_date}
@@ -97,7 +97,7 @@
                             {assign var="regtxt" value={_T string="Register"}}
                             {_T string="Not registered"}
                         {/if}
-                        - <a href="{$smarty.const.GALETTE_TELEMETRY_URI}reference?showmodal&uuid={$pref.pref_registration_uuid}" id="register" target="_blank" class="button">{$regtxt}</a>
+                        - <a href="{$smarty.const.GALETTE_TELEMETRY_URI}reference?showmodal&uuid={$pref.pref_registration_uuid}" id="register" target="_blank" class="button"><i class="fas fa-marker"></i>{$regtxt}</a>
                     </span>
                 </div>
 
@@ -131,7 +131,7 @@
                 <legend>{_T string="Galette's parameters"}</legend>
                 <p>
                     <label for="pref_lang" class="bline">{_T string="Default language:"}</label>
-                    <select name="pref_lang" id="pref_lang" class="lang">
+                    <select name="pref_lang" id="pref_lang" class="lang nochosen">
 {foreach item=langue from=$languages}
                         <option value="{$langue->getID()}" {if $pref.pref_lang eq $langue->getID()}selected="selected"{/if} style="background-image: url({base_url}/{$langue->getFlag()});">{$langue->getName()|ucfirst}</option>
 {/foreach}
@@ -139,7 +139,7 @@
                 </p>
                 {*<p>
                     <label for="pref_theme" class="bline">{_T string="Default theme:"}</label>
-                    <select name="pref_theme" id="pref_theme">
+                    <select name="pref_theme" id="pref_theme" class="nochosen">
 {foreach item=theme from=$themes}
                         <option value="{$theme}" {if $pref.pref_theme eq $theme}selected="selected"{/if}>{$theme|ucfirst}</option>
 {/foreach}
@@ -147,21 +147,27 @@
                 </p>*}
                 <p>
                     <label for="pref_numrows" class="bline">{_T string="Lines / Page:"}</label>
-                    <select name="pref_numrows" id="pref_numrows">
+                    <select name="pref_numrows" id="pref_numrows" class="nochosen">
                         {html_options options=$pref_numrows_options selected=$pref.pref_numrows}
                     </select>
                 </p>
                 <p>
                     <label for="pref_log" class="bline">{_T string="Logging level:"}</label>
-                    <select name="pref_log" id="pref_log">
+                    <select name="pref_log" id="pref_log" class="nochosen">
                         <option value="{Galette\Core\Preferences::LOG_DISABLED}" {if $pref.pref_log eq constant('Galette\Core\Preferences::LOG_DISABLED')}selected="selected"{/if}>{_T string="Disabled"}</option>
                         <option value="{Galette\Core\Preferences::LOG_ENABLED}" {if $pref.pref_log eq constant('Galette\Core\Preferences::LOG_ENABLED')}selected="selected"{/if}>{_T string="Enabled"}</option>
                     </select>
                 </p>
                 <p>
                     <label for="pref_statut" class="bline">{_T string="Default membership status:"}</label>
-                    <select name="pref_statut" id="pref_statut">
+                    <select name="pref_statut" id="pref_statut" class="nochosen">
                         {html_options options=$statuts selected=$pref.pref_statut}
+                    </select>
+                </p>
+                <p>
+                    <label for="pref_filter_account" class="bline">{_T string="Default account filter:"}</label>
+                    <select name="pref_filter_account" id="pref_filter_account" class="nochosen">
+                        {html_options options=$accounts_options selected=$pref.pref_filter_account}
                     </select>
                 </p>
                 <p>
@@ -180,7 +186,7 @@
                 </p>
                 <p id="publicpages_visibility"{if !$pref.pref_bool_publicpages} class="hidden"{/if}>
                     <label for="pref_publicpages_visibility" class="bline">{_T string="Show public pages for"}</label>
-                    <select name="pref_publicpages_visibility" id="pref_publicpages_visibility">
+                    <select name="pref_publicpages_visibility" id="pref_publicpages_visibility" class="nochosen">
                         <option value="{Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC}"{if $pref.pref_publicpages_visibility eq constant('Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC')} selected="selected"{/if}>{_T string="Everyone"}</option>
                         <option value="{Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED}"{if $pref.pref_publicpages_visibility eq constant('Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED')} selected="selected"{/if}>{_T string="Up to date members"}</option>
                         <option value="{Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE}"{if $pref.pref_publicpages_visibility eq constant('Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE')} selected="selected"{/if}>{_T string="Admin and staff only"}</option>
@@ -191,23 +197,23 @@
                     <input type="checkbox" name="pref_bool_selfsubscribe" id="pref_bool_selfsubscribe" value="1"{if $pref.pref_bool_selfsubscribe} checked="checked"{/if} {if isset($required.pref_bool_selfsubscribe) and $required.pref_bool_selfsubscribe eq 1} required="required"{/if}/>
                 </p>
                 <p>
-                    <label for="pref_new_contrib_script" class="bline tooltip" title="{_T string="Enter a script URI that would be called after adding a new contribution."}">{_T string="Post new contribution script URI"}</label>
+                    <label for="pref_new_contrib_script" class="bline tooltip">{_T string="Post new contribution script URI"}</label>
                     <span class="tip">{_T string="Enter a script URI that would be called after adding a new contribution.<br/>Script URI must be prefixed by one of '<em>galette://</em>' for Galette internal call. '<em>file://</em>' for a direct file call, '<em>get://</em>' or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in those cases)."}</span>
                     <input type="text" name="pref_new_contrib_script" id="pref_new_contrib_script" value="{$pref.pref_new_contrib_script}"{if isset($required.pref_new_contrib_script) and $required.pref_new_contrib_script eq 1} required="required"{/if}/>
                 </p>
                 <p>
-                    <label for="pref_rss_url" class="bline tooltip" title="{_T string="URL to the RSS feed."}">{_T string="RSS feed URL"}</label>
+                    <label for="pref_rss_url" class="bline tooltip">{_T string="RSS feed URL"}</label>
                     <span class="tip">{_T string="Enter the full URL to the RSS feed. It will be displayed on Galette desktop."}</span>
                     <input type="text" name="pref_rss_url" id="pref_rss_url" value="{$pref.pref_rss_url}"{if isset($required.pref_rss_url) and $required.pref_rss_url eq 1} required="required"{/if}/>
                 </p>
                 <p>
-                    <label for="pref_galette_url" class="bline tooltip" title="{_T string="Galette base URL"}">{_T string="Galette base URL"}</label>
+                    <label for="pref_galette_url" class="bline tooltip">{_T string="Galette base URL"}</label>
                     <span class="tip">{_T string="Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%galette_url" pattern="/%galette_url/" replace=$preferences->getDefaultURL()|cat:{path_for name="preferences"}}</span>
                     <input type="text" name="pref_galette_url" id="pref_galette_url" placeholder="{$preferences->getDefaultURL()}" value="{$pref.pref_galette_url}"{if isset($required.pref_galette_url) and $required.pref_galette_url eq 1} required="required"{/if}/>
                 </p>
                 <p>
-                    <label for="pref_show_id" class="bline tooltip" title="{_T string="Display member number in member related windows"}">{_T string="Show member number"}</label>
-                    <span class="tip">{_T string="Display member number in member related windows"}</span>
+                    <label for="pref_show_id" class="bline tooltip">{_T string="Show identifiers"}</label>
+                    <span class="tip">{_T string="Display database identifiers in related windows"}</span>
                     <input type="checkbox" name="pref_show_id" id="pref_show_id" value="1" {if $pref.pref_show_id} checked="checked"{/if}{if isset($required.pref_show_id) and $required.pref_show_id eq 1} required="required"{/if}/>
                 </p>
             </fieldset>
@@ -226,28 +232,28 @@
                     <input type="text" name="pref_email" id="pref_email" value="{$pref.pref_email}" maxlength="100" size="30"{if isset($required.pref_email) and $required.pref_email eq 1} required="required"{/if}/>
                 </p>
                 <p>
-                    <label for="pref_email_reply_to" class="bline tooltip" title="{_T string="Leave empty to use Sender Email as reply address"}">{_T string="Reply-To Email:"}</label>
+                    <label for="pref_email_reply_to" class="bline tooltip">{_T string="Reply-To Email:"}</label>
                     <span class="tip">{_T string="Leave empty to use Sender Email as reply address"}</span>
                     <input type="text" name="pref_email_reply_to" id="pref_email_reply_to" value="{$pref.pref_email_reply_to}" maxlength="100" size="30"{if isset($required.pref_email_reply_to) and $required.pref_email_reply_to eq 1} required="required"{/if}/>
                 </p>
                 <p>
-                    <label for="pref_email_newadh" class="bline tooltip" title="{_T string="Recipient of new online registation emails"}">{_T string="Members administrator's Email:"}</label>
+                    <label for="pref_email_newadh" class="bline tooltip">{_T string="Members administrator's Email:"}</label>
                     <span class="tip">{_T string="Recipient of new online registation emails"}</span>
                     <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{$pref.pref_email_newadh}" maxlength="100" size="30"{if isset($required.pref_email_newadh) and $required.pref_email_newadh eq 1} required="required"{/if}/>
                 </p>
                 <p>
-                    <label for="pref_bool_mailadh" class="bline tooltip" title="{_T string="Sends an email each time a new member registers online"}">{_T string="Send email to administrators?"}</label>
+                    <label for="pref_bool_mailadh" class="bline tooltip">{_T string="Send email to administrators?"}</label>
                     <span class="tip">{_T string="Sends an email each time a new member registers online"}</span>
                     <input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" value="1" {if $pref.pref_bool_mailadh eq 1}checked="checked"{/if}{if isset($required.pref_bool_mailadh) and $required.pref_bool_mailadh eq 1} required="required"{/if}/>
                 </p>
                 <p>
-                    <label for="pref_bool_wrap_mails" class="bline tooltip" title="{_T string="Automatically wrap text mails before sending"}">{_T string="Wrap text mails?"}</label>
+                    <label for="pref_bool_wrap_mails" class="bline tooltip">{_T string="Wrap text mails?"}</label>
                     <span class="tip">{_T string="Automatically wrap text mails before sending. Make sure to wrap yourself if you disable that. Please note that current editing mailing will not be affected by a change."}</span>
                     <input type="checkbox" name="pref_bool_wrap_mails" id="pref_bool_wrap_mails" value="1" {if $pref.pref_bool_wrap_mails eq 1}checked="checked"{/if}{if isset($required.pref_bool_wrap_mails) and $required.pref_bool_wrap_mails eq 1} required="required"{/if}/>
                 </p>
 
                 <p>
-                    <label for="pref_editor_enabled" class="bline tooltip" title="{_T string="Should HTML editor be activated on page load ?"}">{_T string="Activate HTML editor?"}</label>
+                    <label for="pref_editor_enabled" class="bline tooltip">{_T string="Activate HTML editor?"}</label>
                     <span class="tip">{_T string="Should HTML editor be activated on page load ?"}</span>
                     <input type="checkbox" name="pref_editor_enabled" id="pref_editor_enabled" value="1" {if $pref.pref_editor_enabled eq 1}checked="checked"{/if}{if isset($required.pref_editor_enabled) and $required.pref_editor_enabled eq 1} required="required"{/if}/>
                 </p>
@@ -273,7 +279,15 @@
                             <input type="radio" name="pref_mail_method" id="qmail" value="{Galette\Core\GaletteMail::METHOD_QMAIL}" {if $pref.pref_mail_method eq constant('Galette\Core\GaletteMail::METHOD_QMAIL')}checked="checked"{/if}/><label for="qmail">{_T string="Using QMAIL server"}</label>
                         </li>
                     </ul>
-                    <br/><a href="{path_for name="testEmail"}#mail" id="btnmail" class="button">{_T string="Test mail settings"}</a>
+                    <br/>
+                    <a
+                        href="{path_for name="testEmail"}#mail"
+                        id="btnmail"
+                        class="button"
+                    >
+                        <i class="fas fa-rocket" aria-hidden="true"></i>
+                        {_T string="Test mail settings"}
+                    </a>
                 </div>
                 <div id="smtp_parameters"{if $pref.pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_SMTP')} style="display: none;"{/if}>
                     <p>
@@ -285,17 +299,17 @@
                         <input type="text" name="pref_mail_smtp_port" id="pref_mail_smtp_port" value="{$pref.pref_mail_smtp_port}" size="10"{if isset($required.pref_mail_smtp_port) and $required.pref_mail_smtp_port eq 1} required="required"{/if}/>
                     </p>
                     <p>
-                        <label for="pref_mail_smtp_auth" class="bline tooltip" title="{_T string="Do you want to use SMTP authentication?"}">{_T string="Use SMTP authentication?"}</label>
+                        <label for="pref_mail_smtp_auth" class="bline tooltip">{_T string="Use SMTP authentication?"}</label>
                         <span class="tip">{_T string="Would emailing use any SMTP authentication? You'll have to provide username and password below. For GMail, authentication will always be on."}</span>
                         <input type="checkbox" name="pref_mail_smtp_auth" id="pref_mail_smtp_auth" value="1" {if $pref.pref_mail_smtp_auth eq 1}checked="checked"{/if}{if isset($required.pref_mail_smtp_auth) and $required.pref_mail_smtp_auth eq 1} required="required"{/if}/>
                     </p>
                     <p>
-                        <label for="pref_mail_smtp_secure" class="bline tooltip" title="{_T string="Do you want to use server's TLS capabilities?"}">{_T string="Use TLS for SMTP?"}</label>
+                        <label for="pref_mail_smtp_secure" class="bline tooltip">{_T string="Use TLS for SMTP?"}</label>
                         <span class="tip">{_T string="Do you want to use server's TLS capabilities?<br/>For GMail, this will always be on."}</span>
                         <input type="checkbox" name="pref_mail_smtp_secure" id="pref_mail_smtp_secure" value="1" {if $pref.pref_mail_smtp_secure eq 1}checked="checked"{/if}{if isset($required.pref_mail_smtp_secure) and $required.pref_mail_smtp_secure eq 1} required="required"{/if}/>
                     </p>
                     <p>
-                        <label for="pref_mail_allow_unsecure" class="bline tooltip" title="{_T string="Do you want to allow unsecure SMTP authentication?"}">{_T string="Allow unsecure TLS?"}</label>
+                        <label for="pref_mail_allow_unsecure" class="bline tooltip">{_T string="Allow unsecure TLS?"}</label>
                         <span class="tip">{_T string="Do you want to allow 'unsecure' connections? This may be usefull if you server uses a self-signed certificate, and on some other cases."}</span>
                         <input type="checkbox" name="pref_mail_allow_unsecure" id="pref_mail_allow_unsecure" value="1" {if $pref.pref_mail_allow_unsecure eq 1}checked="checked"{/if}{if isset($required.pref_mail_allow_unsecure) and $required.pref_mail_allow_unsecure eq 1} required="required"{/if}/>
                     </p>
@@ -311,7 +325,7 @@
                     </p>
                 </div>
                 <p>
-                    <label for="pref_mail_sign" class="bline tooltip vtop" title="{_T string="Enter here the text that will be automatically set as signature for all outgoing emails."}">{_T string="Mail signature"}</label>
+                    <label for="pref_mail_sign" class="bline tooltip vtop">{_T string="Mail signature"}</label>
                     <span class="tip">{_T string="The text that will be automatically set as signature for all outgoing emails.<br/>Variables are quoted with braces, are upper case, and will be replaced automatically.<br/>Refer to the doc to know what variables ara available. "}</span>
                     <textarea name="pref_mail_sign" id="pref_mail_sign">{$pref.pref_mail_sign}</textarea>
                 </p>
@@ -379,23 +393,23 @@
                     <span class="exemple">{_T string="(65 characters max)"}</span>
                 </p>
                 <p>
-                    <label for="pref_card_tcol" class="bline tooltip" title="{_T string="Hexadecimal color notation: #RRGGBB"}">{_T string="Strip Text Color:"}</label>
+                    <label for="pref_card_tcol" class="bline tooltip">{_T string="Strip Text Color:"}</label>
                     <span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
                     <input type="text" name="pref_card_tcol" id="pref_card_tcol" value="{$pref.pref_card_tcol}" size="7" maxlength="7" class="hex"{if isset($required.pref_card_tcol) and $required.pref_card_tcol eq 1} required="required"{/if}/>
                 </p>
                 <div class="subtitle">{_T string="Strip Background colors:"} <span class="exemple">{_T string="(Strip color will change according to member's status)"}</span></div>
                 <p>
-                    <label for="pref_card_scol" class="bline tooltip" title="{_T string="Hexadecimal color notation: #RRGGBB"}">{_T string="Active Member Color:"}</label>
+                    <label for="pref_card_scol" class="bline tooltip">{_T string="Active Member Color:"}</label>
                     <span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
                     <input type="text" name="pref_card_scol" id="pref_card_scol" value="{$pref.pref_card_scol}" size="7" maxlength="7" class="hex"{if isset($required.pref_card_scol) and $required.pref_card_scol eq 1} required="required"{/if}/>
                 </p>
                 <p>
-                    <label for="pref_card_bcol" class="bline tooltip" title="{_T string="Hexadecimal color notation: #RRGGBB"}">{_T string="Board Members Color:"}</label>
+                    <label for="pref_card_bcol" class="bline tooltip">{_T string="Board Members Color:"}</label>
                     <span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
                     <input type="text" name="pref_card_bcol" id="pref_card_bcol" value="{$pref.pref_card_bcol}" size="7" maxlength="7" class="hex"{if isset($required.pref_card_bcol) and $required.pref_card_bcol eq 1} required="required"{/if}/>
                 </p>
                 <p>
-                    <label for="pref_card_hcol" class="bline tooltip" title="{_T string="Hexadecimal color notation: #RRGGBB"}">{_T string="Honor Members Color:"}</label>
+                    <label for="pref_card_hcol" class="bline tooltip">{_T string="Honor Members Color:"}</label>
                     <span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
                     <input type="text" name="pref_card_hcol" id="pref_card_hcol" value="{$pref.pref_card_hcol}" size="7" maxlength="7" class="hex"{if isset($required.pref_card_hcol) and $required.pref_card_hcol eq 1} required="required"{/if}/>
                 </p>
@@ -420,7 +434,7 @@
                 </p>
                 <p>
                     <label for="pref_card_address" class="bline">{_T string="Address type:"}</label>
-                    <select name="pref_card_address" id="pref_card_address">
+                    <select name="pref_card_address" id="pref_card_address" class="nochosen">
                         <option value="0" {if $pref.pref_card_address eq 0}selected="selected"{/if}>{_T string="Email"}</option>
                         <option value="1" {if $pref.pref_card_address eq 1}selected="selected"{/if}>{_T string="MSN"}</option>
                         <option value="2" {if $pref.pref_card_address eq 2}selected="selected"{/if}>{_T string="Jabber"}</option>
@@ -489,7 +503,9 @@
             <input type="hidden" name="pref_instance_uuid" value="{$pref.pref_instance_uuid}"/>
             <input type="hidden" name="pref_registration_date" value="{$pref.pref_registration_date}"/>
             <input type="hidden" name="pref_registration_uuid" value="{$pref.pref_registration_uuid}"/>
-            <input type="submit" id="btnsave" value="{_T string="Save"}"/>
+            <button type="submit" class="action">
+                <i class="fas fa-save fa-fw"></i> {_T string="Save"}
+            </button>
         </div>
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
         </form>
@@ -499,7 +515,13 @@
 
 {block name="javascripts"}
         <script type="text/javascript">
-            $('#prefs_tabs').tabs();
+            $('#prefs_tabs').tabs({
+                activate: function(event, ui) {
+                    $(ui.newPanel.selector + ' select').chosen({
+                        disable_search: true
+                    });
+                }
+            });
 
             $('#no,#php,#qmail').click(function(){
                 $('#smtp_parameters,#smtp_auth').hide();
@@ -584,7 +606,7 @@
                                         });
                                     },
                                     error: function () {
-                                        alert('{_T string="An error occured sending test email :(" escape="js"}');
+                                        alert('{_T string="An error occurred sending test email :(" escape="js"}');
                                     }
                                 });
                             }

@@ -748,12 +748,13 @@ class Adherent
     /**
      * Retrieve Full name and surname for the specified member id
      *
-     * @param Db  $zdb Database instance
-     * @param int $id  member id
+     * @param Db      $zdb Database instance
+     * @param integer $id  member id
+     * @param boolean $wid Add member id
      *
      * @return string formatted Name and Surname
      */
-    public static function getSName($zdb, $id)
+    public static function getSName($zdb, $id, $wid = false)
     {
         try {
             $select = $zdb->select(self::TABLE);
@@ -761,8 +762,12 @@ class Adherent
 
             $results = $zdb->execute($select);
             $row = $results->current();
-            return mb_strtoupper($row->nom_adh, 'UTF-8') . ' ' .
+            $str = mb_strtoupper($row->nom_adh, 'UTF-8') . ' ' .
                 ucfirst(mb_strtolower($row->prenom_adh, 'UTF-8'));
+            if ($wid === true) {
+                $str .= ' (' . $row->id_adh . ')';
+            }
+            return $str;
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot get formatted name for member form id `' . $id . '` | ' .
@@ -799,7 +804,7 @@ class Adherent
             return true;
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured while updating password for `' . $id_adh .
+                'An error occurred while updating password for `' . $id_adh .
                 '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -909,7 +914,6 @@ class Adherent
      */
     public function check($values, $required, $disabled)
     {
-        global $preferences;
         $this->errors = array();
 
         $fields = self::getDbFields($this->zdb);
@@ -972,184 +976,7 @@ class Adherent
 
                 // now, check validity
                 if ($value !== null && $value != '') {
-                    switch ($key) {
-                        // dates
-                        case 'date_crea_adh':
-                        case 'ddn_adh':
-                            try {
-                                $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
-                                if ($d === false) {
-                                    //try with non localized date
-                                    $d = \DateTime::createFromFormat("Y-m-d", $value);
-                                    if ($d === false) {
-                                        throw new \Exception('Incorrect format');
-                                    }
-                                }
-                                $this->$prop = $d->format('Y-m-d');
-                            } catch (\Exception $e) {
-                                Analog::log(
-                                    'Wrong date format. field: ' . $key .
-                                    ', value: ' . $value . ', expected fmt: ' .
-                                    __("Y-m-d") . ' | ' . $e->getMessage(),
-                                    Analog::INFO
-                                );
-                                $this->errors[] = str_replace(
-                                    array(
-                                        '%date_format',
-                                        '%field'
-                                    ),
-                                    array(
-                                        __("Y-m-d"),
-                                        $this->getFieldLabel($key)
-                                    ),
-                                    _T("- Wrong date format (%date_format) for %field!")
-                                );
-                            }
-                            break;
-                        case 'titre_adh':
-                            if ($value !== null && $value !== '') {
-                                if ($value == '-1') {
-                                    $this->$prop = null;
-                                } elseif (!$value instanceof Title) {
-                                    $this->$prop = new Title((int)$value);
-                                }
-                            } else {
-                                $this->$prop = null;
-                            }
-                            break;
-                        case 'email_adh':
-                        case 'msn_adh':
-                            if (!GaletteMail::isValidEmail($value)) {
-                                $this->errors[] = _T("- Non-valid E-Mail address!") .
-                                    ' (' . $this->getFieldLabel($key) . ')';
-                            }
-                            if ($key == 'email_adh') {
-                                try {
-                                    $select = $this->zdb->select(self::TABLE);
-                                    $select->columns(
-                                        array(self::PK)
-                                    )->where(array('email_adh' => $value));
-                                    if ($this->_id != '' && $this->_id != null) {
-                                        $select->where(
-                                            self::PK . ' != ' . $this->_id
-                                        );
-                                    }
-
-                                    $results = $this->zdb->execute($select);
-                                    if ($results->count() !==  0) {
-                                        $this->errors[] = _T("- This E-Mail address is already used by another member!");
-                                    }
-                                } catch (\Exception $e) {
-                                    Analog::log(
-                                        'An error occured checking member email unicity.',
-                                        Analog::ERROR
-                                    );
-                                    $this->errors[] = _T("An error has occured while looking if login already exists.");
-                                }
-                            }
-                            break;
-                        case 'url_adh':
-                            if ($value == 'http://') {
-                                $this->$prop = '';
-                            } elseif (!isValidWebUrl($value)) {
-                                $this->errors[] = _T("- Non-valid Website address! Maybe you've skipped the http://?");
-                            }
-                            break;
-                        case 'login_adh':
-                            /** FIXME: add a preference for login lenght */
-                            if (strlen($value) < 2) {
-                                $this->errors[] = str_replace(
-                                    '%i',
-                                    2,
-                                    _T("- The username must be composed of at least %i characters!")
-                                );
-                            } else {
-                                //check if login does not contain the @ character
-                                if (strpos($value, '@') != false) {
-                                    $this->errors[] = _T("- The username cannot contain the @ character");
-                                } else {
-                                    //check if login is already taken
-                                    try {
-                                        $select = $this->zdb->select(self::TABLE);
-                                        $select->columns(
-                                            array(self::PK)
-                                        )->where(array('login_adh' => $value));
-                                        if ($this->_id != '' && $this->_id != null) {
-                                            $select->where(
-                                                self::PK . ' != ' . $this->_id
-                                            );
-                                        }
-
-                                        $results = $this->zdb->execute($select);
-                                        if ($results->count() !==  0
-                                            || $value == $preferences->pref_admin_login
-                                        ) {
-                                            $this->errors[] = _T("- This username is already in use, please choose another one!");
-                                        }
-                                    } catch (\Exception $e) {
-                                        Analog::log(
-                                            'An error occured checking member login unicity.',
-                                            Analog::ERROR
-                                        );
-                                        $this->errors[] = _T("An error has occured while looking if login already exists.");
-                                    }
-                                }
-                            }
-                            break;
-                        case 'mdp_adh':
-                            /** TODO: check password complexity, set by a preference */
-                            /** TODO: add a preference for password lenght */
-                            if (strlen($value) < 6) {
-                                $this->errors[] = str_replace(
-                                    '%i',
-                                    6,
-                                    _T("- The password must be of at least %i characters!")
-                                );
-                            } elseif ($this->_self_adh !== true
-                                && (!isset($values['mdp_adh2'])
-                                || $values['mdp_adh2'] != $value)
-                            ) {
-                                $this->errors[] = _T("- The passwords don't match!");
-                            } elseif ($this->_self_adh === true
-                                && !crypt($value, $values['mdp_crypt'])==$values['mdp_crypt']
-                            ) {
-                                $this->errors[] = _T("Password misrepeated: ");
-                            } else {
-                                $this->$prop = password_hash(
-                                    $value,
-                                    PASSWORD_BCRYPT
-                                );
-                            }
-                            break;
-                        case 'id_statut':
-                            try {
-                                $this->$prop = (int)$value;
-                                //check if status exists
-                                $select = $this->zdb->select(Status::TABLE);
-                                $select->where(Status::PK . '= ' . $value);
-
-                                $results = $this->zdb->execute($select);
-                                $result = $results->current();
-                                if (!$result) {
-                                    $this->errors[] = str_replace(
-                                        '%id',
-                                        $value,
-                                        _T("Status #%id does not exists in database.")
-                                    );
-                                    break;
-                                }
-                            } catch (\Exception $e) {
-                                Analog::log(
-                                    'An error occured checking status existance: ' . $e->getMessage(),
-                                    Analog::ERROR
-                                );
-                                $this->errors[] = _T("An error has occured while looking if status does exists.");
-                            }
-                            break;
-                        case 'sexe_adh':
-                            $this->$prop = (int)$value;
-                            break;
-                    }
+                    $this->validate($key, $value, $values);
                 } elseif (($key == 'login_adh' && !isset($required['login_adh']))
                     || ($key == 'mdp_adh' && !isset($required['mdp_adh']))
                     && !isset($this->_id)
@@ -1204,6 +1031,229 @@ class Adherent
                 Analog::DEBUG
             );
             return true;
+        }
+    }
+
+    /**
+     * Validate data for given key
+     * Set valid data in current object, also resets errors list
+     *
+     * @param string $field  Field name
+     * @param mixed  $value  Value we want to set
+     * @param array  $values All values, for some references
+     *
+     * @return void
+     */
+    public function validate($field, $value, $values)
+    {
+        global $preferences;
+
+        $prop = '_' . $this->fields[$field]['propname'];
+
+        switch ($field) {
+            // dates
+            case 'date_crea_adh':
+            case 'date_modif_adh_':
+            case 'ddn_adh':
+            case 'date_echeance':
+                try {
+                    $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
+                    if ($d === false) {
+                        //try with non localized date
+                        $d = \DateTime::createFromFormat("Y-m-d", $value);
+                        if ($d === false) {
+                            throw new \Exception('Incorrect format');
+                        }
+                    }
+
+                    if ($field === 'ddn_adh') {
+                        $now = new \DateTime();
+                        $now->setTime(0, 0, 0);
+                        $d->setTime(0, 0, 0);
+
+                        $diff = $now->diff($d);
+                        $days = (integer)$diff->format('%R%a');
+                        if ($days >= 0) {
+                            $this->errors[] =_T('- Birthdate must be set in the past!');
+                        }
+
+                        $years = (integer)$diff->format('%R%Y');
+                        if ($years <= -200) {
+                            $this->errors[] = str_replace(
+                                '%years',
+                                $years * -1,
+                                _T('- Members must be less than 200 years old (currently %years)!')
+                            );
+                        }
+                    }
+                    $this->$prop = $d->format('Y-m-d');
+                } catch (\Exception $e) {
+                    Analog::log(
+                        'Wrong date format. field: ' . $field .
+                        ', value: ' . $value . ', expected fmt: ' .
+                        __("Y-m-d") . ' | ' . $e->getMessage(),
+                        Analog::INFO
+                    );
+                    $this->errors[] = str_replace(
+                        array(
+                            '%date_format',
+                            '%field'
+                        ),
+                        array(
+                            __("Y-m-d"),
+                            $this->getFieldLabel($field)
+                        ),
+                        _T("- Wrong date format (%date_format) for %field!")
+                    );
+                }
+                break;
+            case 'titre_adh':
+                if ($value !== null && $value !== '') {
+                    if ($value == '-1') {
+                        $this->$prop = null;
+                    } elseif (!$value instanceof Title) {
+                        $this->$prop = new Title((int)$value);
+                    }
+                } else {
+                    $this->$prop = null;
+                }
+                break;
+            case 'email_adh':
+            case 'msn_adh':
+                if (!GaletteMail::isValidEmail($value)) {
+                    $this->errors[] = _T("- Non-valid E-Mail address!") .
+                        ' (' . $this->getFieldLabel($field) . ')';
+                }
+                if ($field == 'email_adh') {
+                    try {
+                        $select = $this->zdb->select(self::TABLE);
+                        $select->columns(
+                            array(self::PK)
+                        )->where(array('email_adh' => $value));
+                        if ($this->_id != '' && $this->_id != null) {
+                            $select->where(
+                                self::PK . ' != ' . $this->_id
+                            );
+                        }
+
+                        $results = $this->zdb->execute($select);
+                        if ($results->count() !==  0) {
+                            $this->errors[] = _T("- This E-Mail address is already used by another member!");
+                        }
+                    } catch (\Exception $e) {
+                        Analog::log(
+                            'An error occurred checking member email unicity.',
+                            Analog::ERROR
+                        );
+                        $this->errors[] = _T("An error has occurred while looking if login already exists.");
+                    }
+                }
+                break;
+            case 'url_adh':
+                if ($value == 'http://') {
+                    $this->$prop = '';
+                } elseif (!isValidWebUrl($value)) {
+                    $this->errors[] = _T("- Non-valid Website address! Maybe you've skipped the http://?");
+                }
+                break;
+            case 'login_adh':
+                /** FIXME: add a preference for login lenght */
+                if (strlen($value) < 2) {
+                    $this->errors[] = str_replace(
+                        '%i',
+                        2,
+                        _T("- The username must be composed of at least %i characters!")
+                    );
+                } else {
+                    //check if login does not contain the @ character
+                    if (strpos($value, '@') != false) {
+                        $this->errors[] = _T("- The username cannot contain the @ character");
+                    } else {
+                        //check if login is already taken
+                        try {
+                            $select = $this->zdb->select(self::TABLE);
+                            $select->columns(
+                                array(self::PK)
+                            )->where(array('login_adh' => $value));
+                            if ($this->_id != '' && $this->_id != null) {
+                                $select->where(
+                                    self::PK . ' != ' . $this->_id
+                                );
+                            }
+
+                            $results = $this->zdb->execute($select);
+                            if ($results->count() !==  0
+                                || $value == $preferences->pref_admin_login
+                            ) {
+                                $this->errors[] = _T("- This username is already in use, please choose another one!");
+                            }
+                        } catch (\Exception $e) {
+                            Analog::log(
+                                'An error occurred checking member login unicity.',
+                                Analog::ERROR
+                            );
+                            $this->errors[] = _T("An error has occurred while looking if login already exists.");
+                        }
+                    }
+                }
+                break;
+            case 'mdp_adh':
+                /** TODO: check password complexity, set by a preference */
+                /** TODO: add a preference for password lenght */
+                if (strlen($value) < 6) {
+                    $this->errors[] = str_replace(
+                        '%i',
+                        6,
+                        _T("- The password must be of at least %i characters!")
+                    );
+                } elseif ($this->_self_adh !== true
+                    && (!isset($values['mdp_adh2'])
+                    || $values['mdp_adh2'] != $value)
+                ) {
+                    $this->errors[] = _T("- The passwords don't match!");
+                } elseif ($this->_self_adh === true
+                    && !crypt($value, $values['mdp_crypt'])==$values['mdp_crypt']
+                ) {
+                    $this->errors[] = _T("Password misrepeated: ");
+                } else {
+                    $this->$prop = password_hash(
+                        $value,
+                        PASSWORD_BCRYPT
+                    );
+                }
+                break;
+            case 'id_statut':
+                try {
+                    $this->$prop = (int)$value;
+                    //check if status exists
+                    $select = $this->zdb->select(Status::TABLE);
+                    $select->where(Status::PK . '= ' . $value);
+
+                    $results = $this->zdb->execute($select);
+                    $result = $results->current();
+                    if (!$result) {
+                        $this->errors[] = str_replace(
+                            '%id',
+                            $value,
+                            _T("Status #%id does not exists in database.")
+                        );
+                        break;
+                    }
+                } catch (\Exception $e) {
+                    Analog::log(
+                        'An error occurred checking status existance: ' . $e->getMessage(),
+                        Analog::ERROR
+                    );
+                    $this->errors[] = _T("An error has occurred while looking if status does exists.");
+                }
+                break;
+            case 'sexe_adh':
+                if (in_array($value, [self::NC, self::MAN, self::WOMAN])) {
+                    $this->$prop = (int)$value;
+                } else {
+                    $this->errors[] = _T("Gender %gender does not exists!");
+                }
+                break;
         }
     }
 
@@ -1318,7 +1368,7 @@ class Adherent
                 } else {
                     $hist->add(_T("Fail to add new member."));
                     throw new \Exception(
-                        'An error occured inserting new member!'
+                        'An error occurred inserting new member!'
                     );
                 }
             } else {
@@ -1722,5 +1772,28 @@ class Adherent
         } else {
             return true;
         }
+    }
+
+    /**
+     * Set member as duplicate
+     *
+     * @return void
+     */
+    public function setDuplicate()
+    {
+        //mark as duplicated
+        $infos = $this->_others_infos_admin;
+        $this->_others_infos_admin = str_replace(
+            ['%name', '%id'],
+            [$this->sname, $this->_id],
+            _T('Duplicated from %name (%id)')
+        );
+        if (!empty($infos)) {
+            $this->_others_infos_admin .= "\n" . $infos;
+        }
+        //drop id_adh
+        $this->_id = null;
+        //drop mail, must be unique
+        $this->_email = null;
     }
 }

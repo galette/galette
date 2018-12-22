@@ -4,7 +4,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2003-2014 The Galette Team
+ * Copyright © 2003-2018 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -27,9 +27,8 @@
  * @author    Frédéric Jaqcuot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2003-2014 The Galette Team
+ * @copyright 2003-2018 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  */
 
@@ -289,6 +288,7 @@ $container['acls'] = function ($c) {
         'doEditTransaction' => 'staff',
         'contribution'      => 'staff',
         'contributionDates' => 'staff',
+        'contributionMembers'       => 'staff',
         'attendance_sheet_details'  => 'groupmanager',
         'attendance_sheet'  => 'groupmanager',
         'entitleds'         => 'staff',
@@ -300,6 +300,7 @@ $container['acls'] = function ($c) {
         'printContribution'         => 'staff',
         'attach_contribution'       => 'staff',
         'detach_contribution'       => 'staff',
+        'removeContribution'        => 'staff',
         'removeContributions'       => 'staff',
         'pdf_groups'                => 'groupmanager',
         'ajax_group'                => 'groupmanager',
@@ -336,7 +337,12 @@ $container['acls'] = function ($c) {
         'setRegistered'             => 'admin',
         'masschangeMembers'         => 'groupmanager',
         'massstoremembers'          => 'groupmanager',
-        'masschangeMembersReview'   => 'groupmanager'
+        'masschangeMembersReview'   => 'groupmanager',
+        'duplicateMember'           => 'staff',
+        'paymentTypes'              => 'staff',
+        'removePaymentType'         => 'staff',
+        'doRemovePaymentType'       => 'staff',
+        'editPaymentType'           => 'staff'
     ];
 
     foreach ($c['plugins']->getModules() as $plugin) {
@@ -394,18 +400,66 @@ $container['fields_config'] = function ($c) {
     return $fc;
 };
 
-// -----------------------------------------------------------------------------
-// Action factories
-// -----------------------------------------------------------------------------
+$container['cache'] = function ($c) {
+    $adapter  = null;
+    if (function_exists('apcu_fetch')) {
+        $adapter = (version_compare(PHP_VERSION, '7.0.0') >= 0) ? 'apcu' : 'apc';
+    } elseif (function_exists('wincache_ucache_add')) {
+        //since APCu is not known to work on windows
+        $adapter = 'wincache';
+    }
+    if ($adapter !== null) {
+        $cache = Zend\Cache\StorageFactory::factory([
+            'adapter'   => $adapter,
+            'options'   => [
+                'namespace' => str_replace(
+                    ['%version', '%uuid'],
+                    [GALETTE_VERSION, $c->get('preferences')->pref_instance_uuid],
+                    'galette_%version_%uuid'
+                )
+            ]
+        ]);
+        return $cache;
+    }
+    return null;
+};
 
-$container['App\Action\HomeAction'] = function ($c) {
-    return new App\Action\HomeAction($c->get('view'), $c->get('logger'));
+$container['translator'] = function ($c) {
+    $translator = new Galette\Core\Translator();
+
+    $domains = ['galette', 'routes'];
+    foreach ($domains as $domain) {
+        //load translation file for domain
+        $translator->addTranslationFilePattern(
+            'gettext',
+            GALETTE_ROOT . '/lang/',
+            '/%s/LC_MESSAGES/' . $domain . '.mo',
+            $domain
+        );
+
+        //check if a local lang file exists and load it
+        $translator->addTranslationFilePattern(
+            'phparray',
+            GALETTE_ROOT . '/lang/',
+            $domain . '_%s_local.php',
+            $domain
+        );
+    }
+
+    $translator->setLocale($c->get('i18n')->getLongID());
+    if (!isset($container['mode']) || $c->get('mode') !== 'INSTALL' && $c->get('mode') !== 'NEED_UPDATE') {
+        $translator->setCache($c->get('cache'));
+    }
+    return $translator;
 };
 
 //For bad existing globals can be used...
-$hist = $container['history'];
-$login = $container['login'];
-$zdb = $container['zdb'];
+if (!isset($container['mode']) || $container['mode'] !== 'INSTALL' && $container['mode'] !== 'NEED_UPDATE') {
+    $hist = $container['history'];
+    $login = $container['login'];
+    $zdb = $container['zdb'];
+}
 $i18n = $container['i18n'];
+$translator = $container['translator'];
 
 require_once GALETTE_ROOT . 'includes/i18n.inc.php';

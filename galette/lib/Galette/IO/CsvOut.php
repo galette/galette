@@ -281,7 +281,7 @@ class CsvOut extends Csv
             return $export['filename'];
         } catch (\Exception $e) {
             Analog::log(
-                'An error occured while exporting | ' . $e->getMessage(),
+                'An error occurred while exporting | ' . $e->getMessage(),
                 Analog::ERROR
             );
             return self::DB_ERROR;

@@ -234,8 +234,8 @@ class Picture extends atoum
         $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::CANT_WRITE))
             ->isIdenticalTo('Unable to write file or temporary file');
         $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::SQL_ERROR))
-            ->isIdenticalTo('An SQL error has occured.');
+            ->isIdenticalTo('An SQL error has occurred.');
         $this->string($this->picture->getErrorMessage(\Galette\Core\Picture::SQL_BLOB_ERROR))
-            ->isIdenticalTo('An SQL error has occured.');
+            ->isIdenticalTo('An SQL error has occurred.');
     }
 }

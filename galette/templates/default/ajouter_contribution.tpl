@@ -1,7 +1,7 @@
 {extends file="page.tpl"}
 
 {block name="content"}
-{if isset($adh_options)}
+{if isset($members.list)}
         <form action="{if $contribution->id}{path_for name="contribution" data=["type" => $type, "action" => {_T string="edit" domain="routes"}, "id" => $contribution->id]}{else}{path_for name="contribution" data=["type" => $type, "action" => {_T string="add" domain="routes"}]}{/if}" method="post">
         <div class="bigtable">
     {if $contribution->isTransactionPart()}
@@ -44,11 +44,11 @@
                 <legend class="ui-state-active ui-corner-top">{if $type eq {_T string="fee" domain="routes"}}{_T string="Select contributor and membership fee type"}{else}{_T string="Select contributor and donation type"}{/if}</legend>
                 <p>
                     <label for="id_adh" class="bline">{_T string="Contributor:"}</label>
-                    <select name="id_adh" id="id_adh"{if isset($disabled.id_adh)} {$disabled.id_adh}{/if}>
+                    <select name="id_adh" id="id_adh" class="nochosen"{if isset($disabled.id_adh)} {$disabled.id_adh}{/if}>
                         {if $adh_selected eq 0}
                         <option value="">{_T string="-- select a name --"}</option>
                         {/if}
-                        {foreach $adh_options as $k=>$v}
+                        {foreach $members.list as $k=>$v}
                             <option value="{$k}"{if $contribution->member == $k} selected="selected"{/if}>{$v}</option>
                         {/foreach}
                     </select>
@@ -140,7 +140,9 @@
     {/if}
         </div>
         <div class="button-container">
-            <input type="submit" id="btnsave" value="{_T string="Save"}"/>
+            <button type="submit" name="valid" class="action">
+                <i class="fas fa-save fa-fw"></i> {_T string="Save"}
+            </button>
             <input type="hidden" name="id_cotis" value="{$contribution->id}"/>
             <input type="hidden" name="valid" value="1"/>
             <input type="hidden" name="trans_id" value="{if $contribution->transaction neq NULL}{$contribution->transaction->id}{/if}"/>
@@ -160,14 +162,14 @@
 
 {block name="javascripts"}
 <script type="text/javascript">
+    {include file="js_chosen_adh.tpl"},
+
     $(function() {
         $('#date_debut_cotis, #date_fin_cotis, #date_enreg').datepicker({
             changeMonth: true,
             changeYear: true,
             showOn: 'button',
-            buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
-            buttonImageOnly: true,
-            buttonText: '{_T string="Select a date" escape="js"}'
+            buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
         });
 
     {if $type eq {_T string="fee" domain="routes"} and !$contribution->id}
@@ -190,7 +192,7 @@
                     $('#date_fin_cotis').val(res.date_fin_cotis);
                 },
                 error: function() {
-                    alert("{_T string="An error occured retrieving dates :(" escape="js"}");
+                    alert("{_T string="An error occurred retrieving dates :(" escape="js"}");
                 }
             });
 

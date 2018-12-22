@@ -35,7 +35,8 @@ $.fn.spinDown = function() {
         var $this = $(this);
 
         $this.parent('legend').next().slideToggle(100);
-        $this.toggleClass('ui-icon-circle-arrow-e').toggleClass('ui-icon-circle-arrow-s');
+        var __i = $this.find('i');
+        __i.toggleClass('fa-arrow-alt-circle-down').toggleClass('fa-arrow-alt-circle-right');
 
         return false;
     });
@@ -46,7 +47,7 @@ $.fn.spinDown = function() {
 //The function will 'hide'
 var _collapsibleFieldsets = function(){
     $('legend').each(function(){
-        var _collapse = $('<a href="#" class="ui-icon ui-icon-circle-arrow-s collapsible">Collapse/Expand</a>');
+        var _collapse = $('<a href="#" class="collapsible tooltip"><i class="fas fa-arrow-alt-circle-down"></i> <span class="sr-only">Collapse/Expand</span></a>');
         $(this).prepend(_collapse);
         _collapse.spinDown();
     });
@@ -147,15 +148,25 @@ var _initTooltips = function(selector) {
     //for tootltips
     //first, we hide tooltips in the page
     $(selector + '.tip').hide();
+    $(selector + ' label.tooltip, ' + selector + ' span.bline.tooltip').each(function() {
+        var __i = $('<i class="fas fa-exclamation-circle"></i>')
+        $(this).append(__i);
+    });
     //and then, we show them on rollover
-    $(selector + '.tooltip').tooltip({
+    $(document).tooltip({
+        items: selector + ".tooltip",
         content: function(event, ui) {
             var _this = $(this);
-            var _next = _this.next();
-            if (_next.length > 0) {
-                return _next.html();
-            } else {
+
+            var _next = _this.nextAll('.tip');
+            if (_next.length == 0) {
+                _next = _this.find('.sr-only');
+            }
+
+            if (_next.length == 0) {
                 return _this.attr('title');
+            } else {
+                return _next.html();
             }
         }
     });
@@ -173,6 +184,9 @@ $(function() {
     $('#login').focus();
 
     _initTooltips();
+    $('select:not(.nochosen)').chosen({
+        disable_search: true
+    });
 
     $('.nojs').removeClass('nojs');
     $('#menu h1').each(function(){
@@ -182,10 +196,6 @@ $(function() {
     if( $('#menu').size() > 0 ) {
         $('#menu').accordion({
             header: 'h1:not(#logo)',
-            icons: {
-                header: "ui-icon-circle-arrow-e",
-                activeHeader: "ui-icon-circle-arrow-s"
-            },
             heightStyle: 'content',
             active: $('#menu ul li[class*="selected"]').parent('ul').prevAll('ul').size()
         });

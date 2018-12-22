@@ -36,7 +36,10 @@
             <header class="ui-state-default ui-state-active"><h3>{_T string="Selected groups"}</h3></header>
             <ul>
 {foreach from=$selected_groups item=group}
-                <li id="group_{$group.id}">{$group.name}</li>
+                <li id="group_{$group.id}">
+                    <i class="fas fa-user-minus" aria-hidden="true"></i>
+                    {$group.name}
+                </li>
 {foreachelse}
                 <li id="none_selected">{_T string="No groups has been selected yet."}</li>
 {/foreach}

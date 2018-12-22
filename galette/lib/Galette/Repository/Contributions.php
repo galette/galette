@@ -339,7 +339,7 @@ class Contributions
                 );
             }
 
-            if ($this->filters->payment_type_filter != null) {
+            if ($this->filters->payment_type_filter !== null) {
                 $select->where->equalTo(
                     'type_paiement_cotis',
                     $this->filters->payment_type_filter
@@ -454,7 +454,7 @@ class Contributions
                     $this->zdb->connection->rollBack();
                 }
                 Analog::log(
-                    'An error occured trying to remove contributions | ' .
+                    'An error occurred trying to remove contributions | ' .
                     $e->getMessage(),
                     Analog::ERROR
                 );

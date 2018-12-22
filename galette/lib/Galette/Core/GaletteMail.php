@@ -38,6 +38,7 @@
 namespace Galette\Core;
 
 use Analog\Analog;
+use PHPMailer\PHPMailer\PHPMailer;
 
 /** @ignore */
 require_once GALETTE_ROOT . 'includes/html2text.php';
@@ -108,7 +109,7 @@ class GaletteMail
     {
         global $i18n;
 
-        $this->mail = new \PHPMailer();
+        $this->mail = new PHPMailer();
 
         switch ($this->preferences->pref_mail_method) {
             case self::METHOD_SMTP:
@@ -174,17 +175,6 @@ class GaletteMail
                 break;
         }
 
-        $this->mail->SetFrom(
-            $this->getSenderAddress(),
-            $this->getSenderName()
-        );
-        // Add a Reply-To field in the mail headers.
-        // Fix bug #6654.
-        if ($this->preferences->pref_email_reply_to) {
-            $this->mail->AddReplyTo($this->preferences->pref_email_reply_to);
-        } else {
-            $this->mail->AddReplyTo($this->getSenderAddress());
-        }
         $this->mail->CharSet = 'UTF-8';
         $this->mail->SetLanguage($i18n->getAbbrev());
 
@@ -244,13 +234,17 @@ class GaletteMail
     {
         if ($this->mail === null) {
             $this->initMailer();
-        } else {
-            //set sender, it may have changed
-            $this->mail->SetFrom(
-                $this->getSenderAddress(),
-                $this->getSenderName()
-            );
         }
+
+        //set sender
+        $this->mail->SetFrom(
+            $this->getSenderAddress(),
+            $this->getSenderName()
+        );
+        // Add a Reply-To field in the mail headers.
+        // Fix bug #6654.
+        $this->mail->AddReplyTo($this->getSenderAddress());
+
 
         if ($this->html) {
             //the mail is html :(
@@ -340,7 +334,7 @@ class GaletteMail
             if (!$this->mail->Send()) {
                 $this->errors[] = $this->mail->ErrorInfo;
                 Analog::log(
-                    'An error occured sending mail to: ' .
+                    'An error occurred sending mail to: ' .
                     implode(', ', array_keys($this->recipients)) .
                     "\n" . $this->mail->ErrorInfo,
                     Analog::INFO
@@ -379,7 +373,7 @@ class GaletteMail
      */
     public static function isValidEmail($address)
     {
-        $valid = \PHPMailer::ValidateAddress($address);
+        $valid = PHPMailer::ValidateAddress($address);
         if (!$valid) {
             Analog::log(
                 '[GaletteMail] Address `' . $address . '` is not valid ',

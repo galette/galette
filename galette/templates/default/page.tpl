@@ -183,6 +183,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $cur_route eq "texts"} class="selected"{/if}><a href="{path_for name="texts"}" title="{_T string="Manage emails texts and subjects"}">{_T string="Emails content"}</a></li>
             <li{if $cur_route eq "titles"} class="selected"{/if}><a href="{path_for name="titles"}" title="{_T string="Manage titles"}">{_T string="Titles"}</a></li>
             <li{if $cur_route eq "pdfModels"} class="selected"{/if}><a href="{path_for name="pdfModels"}" title="{_T string="Manage PDF models"}">{_T string="PDF models"}</a></li>
+            <li{if $cur_route eq "paymentTypes"} class="selected"{/if}><a href="{path_for name="paymentTypes"}" title="{_T string="Manage payment types"}">{_T string="Payment types"}</a></li>
             <li><a href="{path_for name="emptyAdhesionForm"}" title="{_T string="Download empty adhesion form"}">{_T string="Empty adhesion form"}</a></li>
     {if $login->isSuperAdmin()}
             <li{if $cur_route eq "fakeData"} class="selected"{/if}><a href="{path_for name="fakeData"}">{_T string="Generate fake data"}</a></li>
@@ -196,12 +197,16 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 
         <ul id="langs">
 {foreach item=langue from=$languages}
-            <li><a href="?pref_lang={$langue->getID()}"><img src="{base_url}/{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}" class="flag"/></a></li>
+            <li>
+                <a href="?pref_lang={$langue->getID()}" title="{_T string="Switch locale to '%locale'" pattern="/%locale/" replace=$langue->getName()}" class="flag">
+                    <img src="{base_url}/{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}"/>
+                </a>
+            </li>
 {/foreach}
         </ul>
 {if $login->isLogged()}
         <div>{$login->loggedInAs()}</div>
-        <a id="{if $login->isImpersonated()}unimpersonate{else}logout{/if}" class="button" href="{if $login->isImpersonated()}{path_for name="unimpersonate"}{else}{path_for name="logout"}{/if}">{_T string="Log off"}</a>
+        <a id="logout_10" class="button" href="{if $login->isImpersonated()}{path_for name="unimpersonate"}{else}{path_for name="logout"}{/if}"><i class="fas fa-{if $login->isImpersonated()}user-secret{else}sign-out-alt{/if}"></i>{_T string="Log off"}</a>
 {/if}
     </div>
     <div id="content"{if $contentcls} class="{$contentcls}"{/if}>
@@ -210,8 +215,14 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <a href="#" class="nav-button-close" aria-label="close navigation"></a>
             {$page_title}
             {if $cur_route neq 'mailing' and $existing_mailing eq true}
-                <a class="button" id="sendmail" href="{path_for name="mailing"}" title="{_T string="A mailing exists in the current session. Click here if you want to resume or cancel it."}">
-                    {_T string="Existing mailing"}
+                <a
+                    id="recup_mailing"
+                    href="{path_for name="mailing"}"
+                    class="tooltip"
+                    title="{_T string="A mailing exists in the current session. Click here if you want to resume or cancel it."}"
+                >
+                    <i class="fas fa-mail-bulk"></i>
+                    <span class="sr-only">{_T string="Existing mailing"}</span>
                 </a>
             {/if}
         </h1>

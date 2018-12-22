@@ -2,7 +2,13 @@
 
 {block name="content"}
         <p class="center">
-            <a class="button" id="preferences" href="{path_for name="importModel"}">{_T string="Configure import model"}</a>
+            <a
+                href="{path_for name="importModel"}"
+                class="button"
+            >
+                <i class="fas fa-cogs" aria-hidden="true"></i>
+                {_T string="Configure import model"}
+            </a>
         </p>
         <form class="form" action="{path_for name="doImport"}" method="post">
             <fieldset>
@@ -36,7 +42,13 @@
                                     {$import.size}
                                 </td>
                                 <td class="actions_row">
-                                    <a class="delete" href="{path_for name="removeCsv" data=["type" => {_T string="import" domain="routes"}, "file" => $import.name]}" title="{_T string="Remove '%file' from disk" pattern="/%file/" replace=$import.name}"><img src="{base_url}/{$template_subdir}images/delete.png" alt="{_T string="Delete"}"/></a>
+                                    <a
+                                        href="{path_for name="removeCsv" data=["type" => {_T string="import" domain="routes"}, "file" => $import.name]}"
+                                        class="delete tooltip"
+                                    >
+                                        <i class="fas fa-trash"></i>
+                                        <span class="sr-only">{_T string="Remove '%file' from disk" pattern="/%file/" replace=$import.name}</span>
+                                    </a>
                                 </td>
                             </tr>
     {/foreach}
@@ -44,8 +56,11 @@
                     </table>
                     <div class="button-container">
                         <label for="dryrun" title="{_T string="Run the import process, but do *not* store anything in the database"}">{_T string="Dry run"}</label>
-                        <input type="checkbox" name="dryrun" id="dryrun" value="1"{if isset($dryrun) and $dryrun eq true} checked="checked"{/if}/><br/>
-                        <input type="submit" name="import" id="import" value="{_T string="Import"}"/>
+                        <input type="checkbox" name="dryrun" id="dryrun" value="1"{if isset($dryrun) and $dryrun eq true} checked="checked"{/if}/>
+                        <button type="submit" name="import" id="import">
+                            <i class="fas fa-file-import"></i>
+                            {_T string="Import"}
+                        </button>
                     </div>
 {else}
                     <p>{_T string="No import file actually exists."}<br/>{_T string="Use upload form below to send a new file on server, or copy it directly in the imports directory."}</p>
@@ -62,7 +77,10 @@
                         <input class="labelalign" type="file" name="new_file" accept="text/csv" id="new_file"/>
                     </p>
                     <div class="button-container">
-                        <input type="submit" name="upload" value="{_T string="Upload file"}" id="upload"/>
+                        <button type="submit" name="upload" id="upload">
+                            <i class="fas fa-upload" aria-hidd="true"></i>
+                            {_T string="Upload file"}
+                        </button>
                     </div>
                 </div>
             </fieldset>

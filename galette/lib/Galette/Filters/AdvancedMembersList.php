@@ -43,6 +43,7 @@ use Galette\Entity\ContributionsTypes;
 use Galette\Entity\Contribution;
 use Galette\Repository\Members;
 use Galette\DynamicFields\DynamicField;
+use Galette\Repository\PaymentTypes;
 
 /**
  * Members list filters and paginator
@@ -338,7 +339,7 @@ class AdvancedMembersList extends MembersList
      */
     public function __set($name, $value)
     {
-        global $zdb;
+        global $zdb, $preferences, $login;
 
         if (in_array($name, $this->pagination_fields)
             || in_array($name, $this->memberslist_fields)
@@ -468,15 +469,16 @@ class AdvancedMembersList extends MembersList
                         $value = array($value);
                     }
                     $this->_payments_types = array();
+                    $ptypes = new PaymentTypes(
+                        $zdb,
+                        $preferences,
+                        $login
+                    );
+                    $ptlist = $ptypes->getList();
+
                     foreach ($value as $v) {
                         if (is_numeric($v)) {
-                            if ($v == Contribution::PAYMENT_OTHER
-                                || $v == Contribution::PAYMENT_CASH
-                                || $v == Contribution::PAYMENT_CREDITCARD
-                                || $v == Contribution::PAYMENT_CHECK
-                                || $v == Contribution::PAYMENT_TRANSFER
-                                || $v == Contribution::PAYMENT_PAYPAL
-                            ) {
+                            if (isset($ptlist[$v])) {
                                 $this->_payments_types[] = $v;
                             } else {
                                 Analog::log(

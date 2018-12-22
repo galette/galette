@@ -36,7 +36,7 @@
                                     alert(data.message);
                                 },
                                 error: function() {
-                                    alert("{_T string="An error occured sending telemetry informations :(" escape="js"}");
+                                    alert("{_T string="An error occurred sending telemetry informations :(" escape="js"}");
                                 }
                             });
                         },

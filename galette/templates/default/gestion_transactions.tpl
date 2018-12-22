@@ -14,7 +14,13 @@
                 <td class="left nowrap">
 {if isset($member)}
     {if $login->isAdmin() or $login->isStaff()}
-                    <a id="clearfilter" href="{path_for name="contributions" data=["type" => {_T string="transactions" domain="routes"}, "option" => {_T string="member" domain="routes"}, "value" => "all"]}" title="{_T string="Show all members transactions"}">{_T string="Show all members transactions"}</a>
+                    <a
+                        href="{path_for name="contributions" data=["type" => {_T string="transactions" domain="routes"}, "option" => {_T string="member" domain="routes"}, "value" => "all"]}"
+                        class="tooltip"
+                    >
+                        <i class="fas fa-eraser"></i>
+                        <span class="sr-only">{_T string="Show all members transactions"}</span>
+                    </a>
     {/if}
                     <strong>{$member->sname}</strong>
     {if $login->isAdmin() or $login->isStaff()}
@@ -86,7 +92,11 @@
     {assign var="cclass" value=$transaction->getRowClass()}
                 <tr>
                     <td class="{$cclass} nowrap" data-scope="row">
+    {if $preferences->pref_show_id}
                         {$transaction->id}
+    {else}
+                        {$ordre+1+($filters->current_page - 1)*$numrows}
+    {/if}
                         <span class="row-title">
                             <a href="{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $transaction->id]}">
                                 {_T string="Transaction %id" pattern="/%id/" replace=$transaction->id}
@@ -111,11 +121,19 @@
                     <td class="{$cclass} nowrap" data-title="{_T string="Amount"}">{$transaction->amount}</td>
 {if $login->isAdmin() or $login->isStaff()}
                     <td class="{$cclass} center nowrap">
-                        <a href="{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $transaction->id]}">
-                            <img src="{base_url}/{$template_subdir}images/icon-edit.png" alt="{_T string="[mod]"}" width="16" height="16"/>
+                        <a
+                            href="{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $transaction->id]}"
+                            class="tooltip action"
+                        >
+                            <i class="fas fa-edit"></i>
+                            <span class="sr-only">{_T string="Edit transaction #%id" pattern="/%id/" replace=$transaction->id}</span>
                         </a>
-                        <a class="delete" href="{path_for name="removeContributions" data=["type" => {_T string="transactions" domain="routes"}, "id" => $transaction->id]}">
-                            <img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/>
+                        <a
+                            href="{path_for name="removeContribution" data=["type" => {_T string="transactions" domain="routes"}, "id" => $transaction->id]}"
+                            class="delete tooltip"
+                        >
+                            <i class="fas fa-trash"></i>
+                            <span class="sr-only">{_T string="Remove transaction #%id" pattern="/%id/" replace=$transaction->id}</span>
                         </a>
                     </td>
 {/if}
@@ -165,9 +183,7 @@
                     changeMonth: true,
                     changeYear: true,
                     showOn: 'button',
-                    buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
-                    buttonImageOnly: true,
-                    buttonText: '{_T string="Select a date" escape="js"}'
+                    buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
                 });
 
                 {include file="js_removal.tpl"}

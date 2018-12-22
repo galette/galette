@@ -20,7 +20,10 @@
             </div>
             <p class="center">{_T string="Sorry, the page you are looking for could not be found."}</p>
             <nav>
-                <a id="backhome" class="button{if $cur_route eq "slash" or $cur_route eq 'login'} selected{/if}" href="{path_for name="slash"}">{_T string="Home"}</a>
+                <a href="{path_for name="slash"}" class="button">
+                    <i class="fas fa-home"></i>
+                    {_T string="Home"}
+                </a>
             </nav>
         </div>
 

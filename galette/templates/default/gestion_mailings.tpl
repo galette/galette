@@ -116,9 +116,13 @@
 {foreach from=$logs item=log name=eachlog}
                 <tr class="{if $smarty.foreach.eachlog.iteration % 2 eq 0}even{else}odd{/if}">
                     <td data-scope="row">
+    {if $preferences->pref_show_id}
+                        {$log.mailing_id}
+    {else}
                         {$smarty.foreach.eachlog.iteration}
+    {/if}
                         <span class="row-title">
-                            {_T string="Mailing entry %id" pattern="/%id/" replace=$smarty.foreach.eachlog.iteration}
+                            {_T string="Mailing entry %id" pattern="/%id/" replace=$log.mailing.mailing_id}
                         </span>
                     </td>
                     <td class="nowrap" data-title="{_T string="Date"}">{$log.mailing_date|date_format:"%a %d/%m/%Y - %R"}</td>
@@ -126,36 +130,34 @@
                     <td data-title="{_T string="Recipients"}">{$log.mailing_recipients|unserialize|@count}</td>
                     <td data-title="{_T string="Subject"}">{$log.mailing_subject}</td>
                     <td class="center" data-title="{_T string="Attachments"}">{$log.attachments}</td>
-                    <td class="center" data-title="{_T string="Sent"}">
+                    <td class="center {if $log.mailing_sent == 1}use{else}delete{/if}" data-title="{_T string="Sent"}">
                         {if $log.mailing_sent == 1}
-                            <img src="{base_url}/{$template_subdir}images/icon-on.png" alt="{_T string="Sent"}" title="{_T string="Mailing has been sent"}"/>
+                            <i class="fas fa-thumbs-up"></i>
                         {else}
-                            <img src="{base_url}/{$template_subdir}images/icon-off.png" alt="{_T string="Not sent"}" title="{_T string="Mailing has not been sent yet"}"/>
+                            <i class="fas fa-thumbs-down"></i>
                         {/if}
                     </td>
                     <td class="center nowrap actions_row">
-                        <a class="showdetails" href="{path_for name="mailingPreview" data=["id" => $log.mailing_id]}">
-                            <img
-                                src="{base_url}/{$template_subdir}images/icon-preview.png"
-                                alt="{_T string="Show mailing %s details" pattern="/%s/" replace=$log.mailing_id}"
-                                width="16"
-                                height="16"
-                                title="{_T string="Display mailing '%subject' details in preview window" pattern="/%subject/" replace=$log.mailing_subject}"
-                                />
+                        <a
+                            href="{path_for name="mailingPreview" data=["id" => $log.mailing_id]}"
+                            class="showdetails tooltip"
+                        >
+                            <i class="fas fa-eye"></i>
+                            <span class="sr-only">{_T string="Display mailing '%subject' details in preview window" pattern="/%subject/" replace=$log.mailing_subject}</span>
                         </a>
-                        <a href="{path_for name="mailing"}?from={$log.mailing_id}">
-                            <img
-                                src="{base_url}/{$template_subdir}images/icon-mail.png"
-                                alt="{_T string="New mailing from %s" pattern="/%s/" replace=$log.mailing_id}"
-                                width="16"
-                                height="16"
-                                title="{_T string="Use mailing '%subject' as a template for a new one" pattern="/%subject/" replace=$log.mailing_subject}"
-                                />
+                        <a
+                            href="{path_for name="mailing"}?from={$log.mailing_id}"
+                            class="tooltip"
+                        >
+                            <i class="fas fa-clone"></i>
+                            <span class="sr-only">{_T string="Use mailing '%subject' as a template for a new one" pattern="/%subject/" replace=$log.mailing_subject}</span>
                         </a>
-                        <a class="delete"
-                            title="{_T string="Delete mailing '%subject'" pattern="/%subject/" replace=$log.mailing_subject}"
-                            href="{path_for name="removeMailing" data=["id" => $log.mailing_id]}">
-                            <img src="{base_url}/{$template_subdir}images/icon-trash.png" alt="{_T string="[del]"}" width="16" height="16"/>
+                        <a
+                            href="{path_for name="removeMailing" data=["id" => $log.mailing_id]}"
+                            class="delete tooltip"
+                        >
+                            <i class="fas fa-trash"></i>
+                            <span class="sr-only">{_T string="Delete mailing '%subject'" pattern="/%subject/" replace=$log.mailing_subject}</span>
                         </a>
                     </td>
                 </tr>
@@ -169,7 +171,13 @@
             <ul class="pages">{$pagination}</ul>
         </div>
         <div class="center">
-            <a class="button" id="btnadd" href="{path_for name="mailing"}?mailing_new=true">{_T string="Create new mailing"}</a>
+            <a
+                class="button use"
+                href="{path_for name="mailing"}?mailing_new=true"
+            >
+                <i class="fas fa-plus-square"></i>
+                {_T string="Create new mailing"}
+            </a>
         </div>
 {/block}
 
@@ -185,9 +193,7 @@
                 changeMonth: true,
                 changeYear: true,
                 showOn: 'button',
-                buttonImage: '{base_url}/{$template_subdir}images/calendar.png',
-                buttonImageOnly: true,
-                buttonText: '{_T string="Select a date" escape="js"}'
+                buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
             });
 
             {* Preview popup *}
@@ -203,7 +209,7 @@
                         _preview_dialog(res);
                     },
                     error: function() {
-                        alert("{_T string="An error occured displaying preview :(" escape="js"}");
+                        alert("{_T string="An error occurred displaying preview :(" escape="js"}");
                     }
                 });
                 return false;

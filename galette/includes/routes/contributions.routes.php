@@ -45,6 +45,7 @@ use Galette\Entity\ContributionsTypes;
 use Galette\Core\GaletteMail;
 use Galette\Entity\Texts;
 use Galette\IO\PdfContribution;
+use Galette\Repository\PaymentTypes;
 
 $app->get(
     '/{type:' . __('transactions', 'routes') .'|'. __('contributions', 'routes') .
@@ -224,13 +225,13 @@ $app->post(
 
             if (isset($post['payment_type_filter'])) {
                 $ptf = (int)$post['payment_type_filter'];
-                if ($ptf == Contribution::PAYMENT_OTHER
-                    || $ptf == Contribution::PAYMENT_CASH
-                    || $ptf == Contribution::PAYMENT_CREDITCARD
-                    || $ptf == Contribution::PAYMENT_CHECK
-                    || $ptf == Contribution::PAYMENT_TRANSFER
-                    || $ptf == Contribution::PAYMENT_PAYPAL
-                ) {
+                $ptypes = new PaymentTypes(
+                    $this->zdb,
+                    $this->preferences,
+                    $this->login
+                );
+                $ptlist = $ptypes->getList();
+                if (isset($ptlist[$ptf])) {
                     $filters->payment_type_filter = $ptf;
                 } elseif ($ptf == -1) {
                     $filters->payment_type_filter = null;
@@ -411,19 +412,35 @@ $app->get(
             'nom_adh',
             'prenom_adh'
         );
-        $list_members = $m->getList(false, $required_fields);
+        $list_members = $m->getList(false, $required_fields, true);
 
         if (count($list_members) > 0) {
             foreach ($list_members as $member) {
                 $pk = Adherent::PK;
                 $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
-                    ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
+                    ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8')) .
+                    ' (' . $member->id_adh . ')';
                 $members[$member->$pk] = $sname;
             }
         }
 
-        if (isset($members) && is_array($members)) {
-            $params['adh_options'] = $members;
+        $params['members'] = [
+            'filters'   => $m->getFilters(),
+            'count'     => $m->getCount()
+        ];
+
+        //check if current attached member is part of the list
+        if (isset($contrib) && $contrib->member > 0) {
+            if (!isset($members[$contrib->member])) {
+                $members = array_merge(
+                    [$contrib->member => Adherent::getSName($this->zdb, $contrib->member, true)],
+                    $members
+                );
+            }
+        }
+
+        if (count($members)) {
+            $params['members']['list'] = $members;
         }
 
         $ext_membership = '';
@@ -431,6 +448,7 @@ $app->get(
             $ext_membership = $this->preferences->pref_membership_ext;
         }
         $params['pref_membership_ext'] = $ext_membership;
+        $params['autocomplete'] = true;
 
         // display page
         $this->view->render(
@@ -583,7 +601,7 @@ $app->post(
                     }
                 } else {
                     //something went wrong :'(
-                    $error_detected[] = _T("An error occured while storing the contribution.");
+                    $error_detected[] = _T("An error occurred while storing the contribution.");
                 }
             }
         }
@@ -854,21 +872,43 @@ $app->get(
         }
 
         // members
+        $members = [];
         $m = new Members();
         $required_fields = array(
             'id_adh',
             'nom_adh',
             'prenom_adh'
         );
-        $members = $m->getList(false, $required_fields);
-        if (count($members) > 0) {
-            foreach ($members as $member) {
+        $list_members = $m->getList(false, $required_fields, true);
+
+        if (count($list_members) > 0) {
+            foreach ($list_members as $member) {
                 $pk = Adherent::PK;
                 $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
-                    ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8'));
-                $adh_options[$member->$pk] = $sname;
+                    ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8')) .
+                    ' (' . $member->id_adh . ')';
+                $members[$member->$pk] = $sname;
             }
-            $params['adh_options'] = $adh_options;
+        }
+
+        $params['members'] = [
+            'filters'   => $m->getFilters(),
+            'count'     => $m->getCount()
+        ];
+        $params['autocomplete'] = true;
+
+        //check if current attached member is part of the list
+        if (isset($trans) && $trans->member > 0) {
+            if (!isset($members[$trans->member])) {
+                $members = array_merge(
+                    [$trans->member => Adherent::getSName($this->zdb, $trans->member, true)],
+                    $members
+                );
+            }
+        }
+
+        if (count($members)) {
+            $params['members']['list'] = $members;
         }
 
         // display page
@@ -998,7 +1038,7 @@ $app->post(
                 }
             } else {
                 //something went wrong :'(
-                $error_detected[] = _T("An error occured while storing the transaction.");
+                $error_detected[] = _T("An error occurred while storing the transaction.");
             }
         }
 
@@ -1104,6 +1144,57 @@ $app->get(
         );
         return $response;
     }
+)->setName('removeContribution')->add($authenticate);
+
+$app->post(
+    '/{type:' . __('contributions', 'routes') .'|' . __('transactions', 'routes') .'}' .
+        __('/batch', 'routes') . __('/remove', 'routes'),
+    function ($request, $response, $args) {
+        $post = $request->getParsedBody();
+
+        $raw_type = null;
+        switch ($args['type']) {
+            case __('transactions', 'routes'):
+                $raw_type = 'transactions';
+                break;
+            case __('contributions', 'routes'):
+                $raw_type = 'contributions';
+                break;
+        }
+
+        $data = [
+            'id'            => $post['contrib_sel'],
+            'redirect_uri'  => $this->router->pathFor('contributions', ['type' => $args['type']])
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'type'          => ($raw_type === 'contributions') ? _T('Contributions') : _T('Transactions'),
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => sprintf(
+                    _T('Remove %1$s'),
+                    ($raw_type === 'contributions') ? _T('contributions') : _T('transactions')
+                ),
+                'message'       => str_replace(
+                    '%count',
+                    count($data['id']),
+                    ($raw_type === 'contributions' ?
+                        _T('You are about to remove %count contributions.') :
+                        _T('You are about to remove %count transactions.'))
+                ),
+                'form_url'      => $this->router->pathFor(
+                    'doRemoveContribution',
+                    ['type' => $args['type']]
+                ),
+                'cancel_uri'    => $data['redirect_uri'],
+                'data'          => $data
+            )
+        );
+        return $response;
+    }
 )->setName('removeContributions')->add($authenticate);
 
 $app->post(
@@ -1115,10 +1206,10 @@ $app->post(
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
         $success = false;
 
-        if (isset($post['contrib_sel'])) {
-            $ids = $post['contrib_sel'];
-        } elseif (isset($post['id'])) {
-            $ids = [$post['id']];
+        if (!is_array($post['id'])) {
+            $ids = (array)$post['id'];
+        } else {
+            $ids = $post['id'];
         }
 
         $raw_type = null;
@@ -1159,9 +1250,9 @@ $app->post(
             } else {
                 $msg = null;
                 if ($raw_type === 'contributions') {
-                    $msg = _T("An error occured trying to remove contributions(s) :(");
+                    $msg = _T("An error occurred trying to remove contributions(s) :(");
                 } else {
-                    $msg = _T("An error occured trying to remove transaction(s) :(");
+                    $msg = _T("An error occurred trying to remove transaction(s) :(");
                 }
                 $this->flash->addMessage(
                     'error_detected',

@@ -77,7 +77,7 @@ class XHProf
     const XHPROF_PATH = '/usr/share/xhprof/xhprof_lib';
     const XHPROF_URL  = '/xhprof';
 
-    static private $run = false;
+    private static $run = false;
 
     /**
      * Default constructor

@@ -333,7 +333,7 @@ def add_libs(rel_name, galette_archive):
         for dirname in dirnames:
             #remove Faker useless languages
             if root.endswith('src/Faker/Provider'):
-                if dirname not in ['en_US', 'fr_FR']:
+                if dirname not in ['en_US', 'fr_FR', 'de_DE']:
                     shutil.rmtree(os.path.join(root, dirname))
             #begin to remove tcpdf not used fonts
             if root.endswith('tcpdf/fonts'):
