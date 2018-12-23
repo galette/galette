@@ -67,7 +67,7 @@
             source: function( request, response ) {
                 $.ajax({
                     type: 'POST',
-                    url: '{path_for name="contributionMembers" data=[{_T string="page" domain="routes"} => 1, {_T string="search" domain="routes"} => "PLACEBO"]}'.replace(/PLACEBO/, request.term),
+                    url: '{path_for name="contributionMembers" data=["page" => 1, "search" => "PLACEBO"]}'.replace(/PLACEBO/, request.term),
                     dataType: "json",
                     success: function (res) {
                         if (res.count > 0) {

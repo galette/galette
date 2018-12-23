@@ -53,7 +53,7 @@
 {/if}
             <li>
                 <a
-                    href="{path_for name="editmember" data=["action" => {_T string="edit" domain="routes"}, "id" => $member->id]}"
+                    href="{path_for name="editmember" data=["action" => "edit", "id" => $member->id]}"
                     class="button bigbutton tooltip"
                     title="{_T string="Edit member"}"
                 >
@@ -64,7 +64,7 @@
 {if $login->isAdmin() or $login->isStaff()}
             <li>
                 <a
-                    href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="member" domain="routes"}, "value" => $member->id]}"
+                    href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}"
                     title="{_T string="View member's contributions"}"
                     class="button bigbutton tooltip"
                 >
@@ -74,7 +74,7 @@
             </li>
             <li>
                 <a
-                    href="{path_for name="contribution" data=["type" => {_T string="fee" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?id_adh={$member->id}"
+                    href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?id_adh={$member->id}"
                     class="button bigbutton tooltip"
                 >
                     <i class="fas fa-user-check fa-fw fa-2x"></i>
@@ -83,7 +83,7 @@
             </li>
             <li>
                 <a
-                    href="{path_for name="contribution" data=["type" => {_T string="donation" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?id_adh={$member->id}"
+                    href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?id_adh={$member->id}"
                     class="button bigbutton tooltip"
                 >
                     <i class="fas fa-gift fa-fw fa-2x"></i>

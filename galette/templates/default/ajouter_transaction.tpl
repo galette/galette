@@ -2,7 +2,7 @@
 
 {block name="content"}
 {if isset($members.list)}
-        <form action="{if $transaction->id}{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $transaction->id]}{else}{path_for name="transaction" data=["action" => {_T string="add" domain="routes"}]}{/if}" method="post">
+        <form action="{if $transaction->id}{path_for name="transaction" data=["action" => "edit", "id" => $transaction->id]}{else}{path_for name="transaction" data=["action" => "add"]}{/if}" method="post">
         <div class="bigtable">
             <fieldset class="cssform">
                 <legend class="ui-state-active ui-corner-top">{_T string="Transaction details"}</legend>
@@ -33,8 +33,8 @@
                 <p>
                     <span class="bline tooltip" title="{_T string="Select a contribution type to create for dispatch transaction"}">{_T string="Dispatch type:"}</span>
                     <span class="tip">{_T string="Select a contribution type to create for dispatch transaction"}</span>
-                    <input type="radio" name="contrib_type" id="contrib_type_fee" value="{_T string="fee" domain="routes"}"/> <label for="contrib_type_fee">{_T string="Membership fee"}</label>
-                    <input type="radio" name="contrib_type" id="contrib_type_donation" value="{_T string="donation" domain="routes"}"/> <label for="contrib_type_donation">{_T string="Donation"}</label>
+                    <input type="radio" name="contrib_type" id="contrib_type_fee" value="fee"/> <label for="contrib_type_fee">{_T string="Membership fee"}</label>
+                    <input type="radio" name="contrib_type" id="contrib_type_donation" value="donation"/> <label for="contrib_type_donation">{_T string="Donation"}</label>
                 </p>
     {/if}
             </fieldset>
@@ -55,14 +55,14 @@
                 {_T string="Attached contributions"}
                 {if $transaction->getMissingAmount() > 0}
                     <a
-                        href="{path_for name="contribution" data=["type" => {_T string="fee" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?trans_id={$transaction->id}"
+                        href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?trans_id={$transaction->id}"
                         class="button fright tooltip"
                     >
                         <i class="fas fa-user-check"></i>
                         <span class="sr-only">{_T string="Create a new fee that will be attached to the current transaction"}</span>
                     </a>
                     <a
-                        href="{path_for name="contribution" data=["type" => {_T string="donation" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?trans_id={$transaction->id}"
+                        href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?trans_id={$transaction->id}"
                         class="button fright tooltip"
                     >
                         <i class="fas fa-gift"></i>
@@ -148,7 +148,7 @@
         <p>
             {_T string="Unfortunately, there is no member in your database yet,"}
             <br/>
-            <a href="{path_for name="editmember" data=["action" => {_T string="add" domain="routes"}]}">{_T string="please create a member"}</a>
+            <a href="{path_for name="editmember" data=["action" => "add"]}">{_T string="please create a member"}</a>
         </p>
     </div>
 {/if}
@@ -161,7 +161,7 @@
 {if $transaction->id}
             $('#contribslist').click(function(){
                 $.ajax({
-                    url: '{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}]}',
+                    url: '{path_for name="contributions" data=["type" => "contributions"]}',
                     type: "GET",
                     data: {
                         ajax: true,
@@ -228,7 +228,7 @@
                 $('.pages a').bind({
                     click: function(){
                         $.ajax({
-                            url: '{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}]}' + this.href.substring(this.href.indexOf('?')) + "&ajax=true",
+                            url: '{path_for name="contributions" data=["type" => "contributions"]}' + this.href.substring(this.href.indexOf('?')) + "&ajax=true",
                             type: "GET",
                             {include file="js_loader.tpl"},
                             success: function(res){

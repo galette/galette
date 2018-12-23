@@ -56,7 +56,7 @@
                 <tr>
                     <th class="small_head">#</th>
                     <th class="left date_row">
-                        <a href="{path_for name="mailings" data=["option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\MailingsList::ORDERBY_DATE"|constant]}">
+                        <a href="{path_for name="mailings" data=["option" => "order", "value" => "Galette\Filters\MailingsList::ORDERBY_DATE"|constant]}">
                             {_T string="Date"}
                             {if $history->filters->orderby eq constant('Galette\Filters\MailingsList::ORDERBY_DATE')}
                                 {if $history->filters->ordered eq constant('Galette\Filters\MailingsList::ORDER_ASC')}
@@ -68,7 +68,7 @@
                         </a>
                     </th>
                     <th class="left username_row">
-                        <a href="{path_for name="mailings" data=["option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\MailingsList::ORDERBY_SENDER"|constant]}">
+                        <a href="{path_for name="mailings" data=["option" => "order", "value" => "Galette\Filters\MailingsList::ORDERBY_SENDER"|constant]}">
                             {_T string="Sender"}
                             {if $history->filters->orderby eq constant('Galette\Filters\MailingsList::ORDERBY_SENDER')}
                                 {if $history->filters->ordered eq constant('Galette\Filters\MailingsList::ORDER_ASC')}
@@ -83,7 +83,7 @@
                         {_T string="Recipients"}
                     </th>
                     <th class="left">
-                        <a href="{path_for name="mailings" data=["option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\MailingsList::ORDERBY_SUBJECT"|constant]}">
+                        <a href="{path_for name="mailings" data=["option" => "order", "value" => "Galette\Filters\MailingsList::ORDERBY_SUBJECT"|constant]}">
                             {_T string="Subject"}
                             {if $history->filters->orderby eq constant('Galette\Filters\MailingsList::ORDERBY_SUBJECT')}
                                 {if $history->filters->ordered eq constant('Galette\Filters\MailingsList::ORDER_ASC')}
@@ -98,7 +98,7 @@
                         {_T string="Att."}
                     </th>
                     <th class="left right small_head">
-                        <a href="{path_for name="mailings" data=["option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\MailingsList::ORDERBY_SENT"|constant]}">
+                        <a href="{path_for name="mailings" data=["option" => "order", "value" => "Galette\Filters\MailingsList::ORDERBY_SENT"|constant]}">
                             {_T string="Sent"}
                             {if $history->filters->orderby eq constant('Galette\Filters\MailingsList::ORDERBY_SENT')}
                                 {if $history->filters->ordered eq constant('Galette\Filters\MailingsList::ORDER_ASC')}

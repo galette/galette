@@ -23,7 +23,7 @@
                     </td>
                     <td class="center actions_row">
                         <a
-                            href="{path_for name="editDynamicField" data=["action" => {_T string="edit" domain="routes"}, "form" => $form_name, "id" => $field->getId()]}"
+                            href="{path_for name="editDynamicField" data=["action" => "edit", "form" => $form_name, "id" => $field->getId()]}"
                             class="tooltip action"
                         >
                             <i class="fas fa-user-edit fa-fw" aria-hidden="true"></i>
@@ -47,7 +47,7 @@
                         <i class="fas fa-fw">&nbsp;</i>
     {else}
                         <a
-                            href="{path_for name="moveDynamicField" data=["form" => $form_name, "direction" => {_T string="up" domain="routes"}, "id" => $field->getId()]}"
+                            href="{path_for name="moveDynamicField" data=["form" => $form_name, "direction" => "up", "id" => $field->getId()]}"
                             class="tooltip action"
                         >
                             <i class="fas fa-caret-up fa-fw"></i>
@@ -58,7 +58,7 @@
                         <i class="fas fa-fw">&nbsp;</i>
     {else}
                         <a
-                            href="{path_for name="moveDynamicField" data=["form" => $form_name, "direction" => {_T string="down" domain="routes"}, "id" => $field->getId()]}"
+                            href="{path_for name="moveDynamicField" data=["form" => $form_name, "direction" => "down", "id" => $field->getId()]}"
                             class="tooltip"
                         >
                             <i class="fas fa-caret-down fa-fw"></i>
