@@ -49,7 +49,7 @@ $app->get(
 
 //logo route
 $app->get(
-    __('/logo', 'routes'),
+    '/logo',
     function ($request, $response, $args) {
         $this->logo->display();
     }
@@ -57,7 +57,7 @@ $app->get(
 
 //print logo route
 $app->get(
-    __('/print-logo', 'routes'),
+    '/print-logo',
     function ($request, $response, $args) {
         $this->print_logo->display();
     }
@@ -65,7 +65,7 @@ $app->get(
 
 //photo route
 $app->get(
-    __('/photo', 'routes') . '/{id:\d+}',
+    '/photo/{id:\d+}',
     function ($request, $response, $args) {
         $id = $args['id'];
 
@@ -114,7 +114,7 @@ $app->get(
 
 //system informations
 $app->get(
-    __('/system-informations', 'routes'),
+    '/system-informations',
     function ($request, $response, $args = []) {
         $sysinfos = new SysInfos();
         $sysinfos->grab();
@@ -134,7 +134,7 @@ $app->get(
 
 //impersonating
 $app->get(
-    __('/impersonate', 'routes') . '/{id:\d+}',
+    '/impersonate/{id:\d+}',
     function ($request, $response, $args) {
         $original_login = $this->login->login;
         $success = $this->login->impersonate($args['id']);
@@ -172,7 +172,7 @@ $app->get(
 )->setName('impersonate')->add($authenticate);
 
 $app->get(
-    __('/unimpersonate', 'routes'),
+    '/unimpersonate',
     function ($request, $response, $args) {
         $login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
         $login->logAdmin($this->preferences->pref_admin_login, $this->preferences);
