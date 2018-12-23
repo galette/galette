@@ -4,7 +4,7 @@
         <div id="configfiches_tabs">
             <a
                 id="addfield"
-                href="{path_for name="editDynamicField" data=["form" => $form_name, "action" => {_T string="add" domain="routes"}]}"
+                href="{path_for name="editDynamicField" data=["form" => $form_name, "action" => "add"]}"
                 class="tab-button tooltip use"
             >
                 <i class="fas fa-plus-square fa-2x"></i>
@@ -31,7 +31,7 @@
             $('#addfield').click(function(e){
                 e.preventDefault();
                 var _this = $(this);
-                var _href = '{path_for name="editDynamicField" data=["form" => "FORM", "action" => {_T string="add" domain="routes"}]}'.replace(/FORM/, _form_name)
+                var _href = '{path_for name="editDynamicField" data=["form" => "FORM", "action" => "add"]}'.replace(/FORM/, _form_name)
 
                 $.ajax({
                     url: _href,

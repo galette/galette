@@ -427,7 +427,7 @@ $container['cache'] = function ($c) {
 $container['translator'] = function ($c) {
     $translator = new Galette\Core\Translator();
 
-    $domains = ['galette', 'routes'];
+    $domains = ['galette'];
     foreach ($domains as $domain) {
         //load translation file for domain
         $translator->addTranslationFilePattern(

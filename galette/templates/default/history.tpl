@@ -59,7 +59,7 @@
                 <tr>
                     <th class="small_head">#</th>
                     <th class="left date_row">
-                        <a href="{path_for name="history" data=["option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\HistoryList::ORDERBY_DATE"|constant]}">
+                        <a href="{path_for name="history" data=["option" => "order", "value" => "Galette\Filters\HistoryList::ORDERBY_DATE"|constant]}">
                             {_T string="Date"}
                             {if $history->filters->orderby eq constant('Galette\Filters\HistoryList::ORDERBY_DATE')}
                                 {if $history->filters->ordered eq constant('Galette\Filters\HistoryList::ORDER_ASC')}
@@ -71,7 +71,7 @@
                         </a>
                     </th>
                     <th class="left date_row">
-                        <a href="{path_for name="history" data=["option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\HistoryList::ORDERBY_IP"|constant]}">
+                        <a href="{path_for name="history" data=["option" => "order", "value" => "Galette\Filters\HistoryList::ORDERBY_IP"|constant]}">
                             {_T string="IP"}
                             {if $history->filters->orderby eq constant('Galette\Filters\HistoryList::ORDERBY_IP')}
                                 {if $history->filters->ordered eq constant('Galette\Filters\HistoryList::ORDER_ASC')}
@@ -83,7 +83,7 @@
                         </a>
                     </th>
                     <th class="left date_row">
-                        <a href="{path_for name="history" data=["option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\HistoryList::ORDERBY_USER"|constant]}">
+                        <a href="{path_for name="history" data=["option" => "order", "value" => "Galette\Filters\HistoryList::ORDERBY_USER"|constant]}">
                             {_T string="User"}
                             {if $history->filters->orderby eq constant('Galette\Filters\HistoryList::ORDERBY_USER')}
                                 {if $history->filters->ordered eq constant('Galette\Filters\HistoryList::ORDER_ASC')}
@@ -95,7 +95,7 @@
                         </a>
                     </th>
                     <th class="left username_row">
-                        <a href="{path_for name="history" data=["option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\HistoryList::ORDERBY_ACTION"|constant]}">
+                        <a href="{path_for name="history" data=["option" => "order", "value" => "Galette\Filters\HistoryList::ORDERBY_ACTION"|constant]}">
                             {_T string="Action"}
                             {if $history->filters->orderby eq constant('Galette\Filters\HistoryList::ORDERBY_ACTION')}
                                 {if $history->filters->ordered eq constant('Galette\Filters\HistoryList::ORDER_ASC')}

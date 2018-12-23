@@ -41,9 +41,9 @@ use Galette\Entity\ContributionsTypes;
 use Galette\Repository\Members;
 use Galette\Filters\MembersList;
 
-$app->group(__('/ajax', 'routes'), function () use ($authenticate) {
+$app->group('/ajax', function () use ($authenticate) {
     $this->get(
-        __('/messages', 'routes'),
+        '/messages',
         function ($request, $response) {
             $this->view->render(
                 $response,
@@ -54,7 +54,7 @@ $app->group(__('/ajax', 'routes'), function () use ($authenticate) {
     )->setName('ajaxMessages');
 
     $this->post(
-        __('photo', 'routes'),
+        'photo',
         function ($request, $response) {
             $post = $request->getParsedBody();
             $ret = ['result' => false];
@@ -115,7 +115,7 @@ $app->group(__('/ajax', 'routes'), function () use ($authenticate) {
     )->setName('photoDnd');
 
     $this->post(
-        __('/suggest', 'routes') . __('/towns', 'routes'),
+        '/suggest/towns',
         function ($request, $response) {
             $post = $request->getParsedBody();
 
@@ -158,7 +158,7 @@ $app->group(__('/ajax', 'routes'), function () use ($authenticate) {
     )->setName('suggestTown');
 
     $this->post(
-        __('/suggest', 'routes') . __('/countries', 'routes'),
+        '/suggest/countries',
         function ($request, $response) {
             $post = $request->getParsedBody();
 
@@ -192,7 +192,7 @@ $app->group(__('/ajax', 'routes'), function () use ($authenticate) {
     )->setName('suggestCountry');
 
     $this->get(
-        __('/telemetry', 'routes') . __('/infos', 'routes'),
+        '/telemetry/infos',
         function ($request, $response) {
             $telemetry = new \Galette\Util\Telemetry(
                 $this->zdb,
@@ -206,7 +206,7 @@ $app->group(__('/ajax', 'routes'), function () use ($authenticate) {
     )->setName('telemetryInfos')->add($authenticate);
 
     $this->post(
-        __('/telemetry', 'routes') . __('/send', 'routes'),
+        '/telemetry/send',
         function ($request, $response) {
             $telemetry = new \Galette\Util\Telemetry(
                 $this->zdb,
@@ -231,7 +231,7 @@ $app->group(__('/ajax', 'routes'), function () use ($authenticate) {
     )->setName('telemetrySend')->add($authenticate);
 
     $this->get(
-        __('/telemetry', 'routes') . __('/registered', 'routes'),
+        '/telemetry/registered',
         function ($request, $response) {
             $this->preferences->pref_registration_date = date('Y-m-d H:i:s');
             $this->preferences->store();
@@ -240,7 +240,7 @@ $app->group(__('/ajax', 'routes'), function () use ($authenticate) {
     )->setName('setRegistered')->add($authenticate);
 
     $this->post(
-        __('/contribution', 'routes') . __('/dates', 'routes'),
+        '/contribution/dates',
         function ($request, $response) {
             $post = $request->getParsedBody();
 
@@ -252,7 +252,7 @@ $app->group(__('/ajax', 'routes'), function () use ($authenticate) {
                 $this->zdb,
                 $this->login,
                 [
-                    'type'  => __(array_keys($contributions_types)[$post['fee_id']], 'routes'),
+                    'type'  => array_keys($contributions_types)[$post['fee_id']],
                     'adh'   => (int)$post['member_id']
                 ]
             );
@@ -266,20 +266,19 @@ $app->group(__('/ajax', 'routes'), function () use ($authenticate) {
     )->setName('contributionDates')->add($authenticate);
 
     $this->post(
-        __('/contribution', 'routes') . __('/members', 'routes') .
-        '[/{' . __('page', 'routes') . ':\d+}[/{' . __('search', 'routes') . '}]]',
+        '/contribution/members[/{page:\d+}[/{search}]]',
         function ($request, $response, $args) {
             $post = $request->getParsedBody();
             $filters = new MembersList();
             if (isset($post['page'])) {
                 $filters->current_page = (int)$post['page'];
-            } elseif (isset($args[__('page', 'routes')])) {
-                $filters->current_page = (int)$args[__('page', 'routes')];
+            } elseif (isset($args['page'])) {
+                $filters->current_page = (int)$args['page'];
             }
 
             $term = null;
-            if (isset($args[__('search', 'routes')])) {
-                $term = $args[__('search', 'routes')];
+            if (isset($args['search'])) {
+                $term = $args['search'];
             }
             if (isset($post['search'])) {
                 $term = $post['search'];

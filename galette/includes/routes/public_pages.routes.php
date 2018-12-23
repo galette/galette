@@ -56,10 +56,10 @@ $showPublicPages = function ($request, $response, $next) use ($container) {
     return $next($request, $response);
 };
 
-$app->group(__('/public', 'routes'), function () {
+$app->group('/public', function () {
     //public members list
     $this->get(
-        __('/members', 'routes') . '[/{option:' . __('page', 'routes') . '|' . __('order', 'routes') . '}/{value:\d+}]',
+        '/members[/{option:page|order}/{value:\d+}]',
         function ($request, $response, $args) {
             $option = null;
             if (isset($args['option'])) {
@@ -78,10 +78,10 @@ $app->group(__('/public', 'routes'), function () {
 
             if ($option !== null) {
                 switch ($option) {
-                    case __('page', 'routes'):
+                    case 'page':
                         $filters->current_page = (int)$value;
                         break;
-                    case __('order', 'routes'):
+                    case 'order':
                         $filters->orderby = $value;
                         break;
                 }
@@ -112,7 +112,7 @@ $app->group(__('/public', 'routes'), function () {
 
     //members list filtering
     $this->post(
-        __('/members', 'routes') . __('/filter', 'routes') . '[/{from}]',
+        '/members/filter[/{from}]',
         function ($request, $response, $args) {
             $post = $request->getParsedBody();
             if (isset($this->session->public_filter_members)) {
@@ -141,7 +141,7 @@ $app->group(__('/public', 'routes'), function () {
 
     //public trombinoscope
     $this->get(
-        __('/trombinoscope', 'routes'),
+        '/trombinoscope',
         function ($request, $response) {
             $m = new Members();
             $members = $m->getPublicList(true);

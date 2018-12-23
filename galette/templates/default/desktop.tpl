@@ -30,8 +30,8 @@
                 <a id="members" href="{path_for name="members"}" title="{_T string="View, search into and filter member's list"}">{_T string="Members"}</a>
                 <a id="groups" href="{path_for name="groups"}" title="{_T string="View and manage groups"}">{_T string="Groups"}</a>
     {if $login->isAdmin() or $login->isStaff()}
-                <a id="contribs" href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}]}" title="{_T string="View and filter contributions"}">{_T string="Contributions"}</a><br/>
-                <a id="transactions" href="{path_for name="contributions" data=["type" => {_T string="transactions" domain="routes"}]}" title="{_T string="View and filter transactions"}">{_T string="Transactions"}</a>
+                <a id="contribs" href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter contributions"}">{_T string="Contributions"}</a><br/>
+                <a id="transactions" href="{path_for name="contributions" data=["type" => "transactions"]}" title="{_T string="View and filter transactions"}">{_T string="Transactions"}</a>
                 <a id="mailings" href="{path_for name="mailings"}" title="{_T string="Manage mailings that has been sent"}">{_T string="Mailings"}</a>
                 <a id="reminder" href="{path_for name="reminders"}" title="{_T string="Send reminders to late members"}">{_T string="Reminders"}</a>
     {/if}
@@ -44,7 +44,7 @@
 {else}
                 {* Single member *}
                 <a id="members" href="{path_for name="me"}" title="{_T string="View, search into and filter member's list"}">{_T string="My information"}</a>
-                <a id="contribs" href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}]}" title="{_T string="My contributions"}">{_T string="Contributions"}</a>
+                <a id="contribs" href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="My contributions"}">{_T string="Contributions"}</a>
                 {* Include plugins user dashboard *}
                 {$plugins->getMemberDashboard($tpl)}
 {/if}

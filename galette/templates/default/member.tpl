@@ -3,18 +3,18 @@
 {block name="content"}
 {if isset($navigate) and $navigate|@count != 0}
     <nav>
-        <a href="{if isset($navigate.prev)}{path_for name="editmember" data=["action" => {_T string="edit" domain="routes"}, "id" => $navigate.prev]}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">
+        <a href="{if isset($navigate.prev)}{path_for name="editmember" data=["action" => "edit", "id" => $navigate.prev]}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">
             <i class="fas fa-step-backward"></i>
             {_T string="Previous"}
         </a>
         {$navigate.pos}/{$navigate.count}
-        <a href="{if isset($navigate.next)}{path_for name="editmember" data=["action" => {_T string="edit" domain="routes"}, "id" => $navigate.next]}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">
+        <a href="{if isset($navigate.next)}{path_for name="editmember" data=["action" => "edit", "id" => $navigate.next]}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">
             {_T string="Next"}
             <i class="fas fa-step-forward"></i>
         </a>
     </nav>
 {/if}
-        <form action="{if $self_adh}{path_for name="storemembers" data=["self" => {_T string="subscribe" domain="routes"}]}{else}{path_for name="storemembers"}{/if}" method="post" enctype="multipart/form-data" id="form">
+        <form action="{if $self_adh}{path_for name="storemembers" data=["self" => "subscribe"]}{else}{path_for name="storemembers"}{/if}" method="post" enctype="multipart/form-data" id="form">
         <div class="bigtable">
 {if $self_adh and $head_redirect}
             <div id="infobox">

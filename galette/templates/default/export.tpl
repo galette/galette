@@ -38,7 +38,7 @@
                                     {$smarty.foreach.eachexport.iteration}
                                 </td>
                                 <td data-scope="row">
-                                    <a href="{path_for name="getCsv" data=["type" => {_T string="export" domain="routes"}, "file" => $export.name]}">{$export.name}</a>
+                                    <a href="{path_for name="getCsv" data=["type" => "export", "file" => $export.name]}">{$export.name}</a>
                                 </td>
                                 <td data-title="{_T string="Date"}">
                                     {$export.date}
@@ -48,7 +48,7 @@
                                 </td>
                                 <td class="actions_row">
                                     <a
-                                        href="{path_for name="removeCsv" data=["type" => {_T string="export" domain="routes"}, "file" => $export.name]}"
+                                        href="{path_for name="removeCsv" data=["type" => "export", "file" => $export.name]}"
                                         class="delete tooltip"
                                     >
                                         <i class="fas fa-trash"></i>

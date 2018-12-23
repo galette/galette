@@ -329,25 +329,25 @@ $baseRedirect = function ($request, $response, $args = []) use ($container) {
                     return $response
                         ->withStatus(301)
                         //Do not use "$router->pathFor('dashboard'))" to prevent translation issues when login
-                        ->withHeader('Location', getGaletteBaseUrl($request) . __('/dashboard', 'routes'));
+                        ->withHeader('Location', getGaletteBaseUrl($request) . '/dashboard');
                 } else {
                     return $response
                         ->withStatus(301)
                         //Do not use "$router->pathFor('members'))" to prevent translation issues when login
-                        ->withHeader('Location', getGaletteBaseUrl($request) . __('/members', 'routes'));
+                        ->withHeader('Location', getGaletteBaseUrl($request) . '/members');
                 }
             } else {
                 return $response
                     ->withStatus(301)
                     //Do not use "$router->pathFor('me'))" to prevent translation issues when login
-                    ->withHeader('Location', getGaletteBaseUrl($request) . __('/dashboard', 'routes'));
+                    ->withHeader('Location', getGaletteBaseUrl($request) . '/dashboard');
             }
         }
     } else {
         return $response
             ->withStatus(301)
             //Do not use "$router->pathFor('login'))" to prevent translation issues when login
-            ->withHeader('Location', getGaletteBaseUrl($request) . __('/login', 'routes'));
+            ->withHeader('Location', getGaletteBaseUrl($request) . '/login');
     }
 };
 

@@ -56,7 +56,7 @@
                 <td data-scope="row">
                     {$eid}
                     <span class="row-title">
-                        <a href="{path_for name="editEntitled" data=["class" => $url_class, "action" => {_T string="edit" domain="routes"}, "id" => $eid]}">
+                        <a href="{path_for name="editEntitled" data=["class" => $url_class, "action" => "edit", "id" => $eid]}">
                             {_T string="%s field" pattern="/%s/" replace=$entry.name}
                         </a>
                     </span>
@@ -85,7 +85,7 @@
                 </td>
                 <td class="center actions_row">
                     <a
-                        href="{path_for name="editEntitled" data=["class" => $url_class, "action" => {_T string="edit" domain="routes"}, "id" => $eid]}"
+                        href="{path_for name="editEntitled" data=["class" => $url_class, "action" => "edit", "id" => $eid]}"
                         class="action tooltip"
                     >
                         <i class="fas fa-edit fa-fw"></i>

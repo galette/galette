@@ -1,6 +1,6 @@
 {extends file="page.tpl"}
 {block name="content"}
-        <form action="{path_for name="payments_filter" data=["type" => {_T string="transactions" domain="routes"}]}" method="post" id="filtre">
+        <form action="{path_for name="payments_filter" data=["type" => "transactions"]}" method="post" id="filtre">
         <div id="listfilter">
             <label for="start_date_filter">{_T string="Show transactions since"}</label>&nbsp;
             <input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$filters->start_date_filter}"/>
@@ -15,7 +15,7 @@
 {if isset($member)}
     {if $login->isAdmin() or $login->isStaff()}
                     <a
-                        href="{path_for name="contributions" data=["type" => {_T string="transactions" domain="routes"}, "option" => {_T string="member" domain="routes"}, "value" => "all"]}"
+                        href="{path_for name="contributions" data=["type" => "transactions", "option" => "member", "value" => "all"]}"
                         class="tooltip"
                     >
                         <i class="fas fa-eraser"></i>
@@ -25,7 +25,7 @@
                     <strong>{$member->sname}</strong>
     {if $login->isAdmin() or $login->isStaff()}
                     (<a href="{path_for name="member" data=["id" => $member->id]}">{_T string="See member profile"}</a> -
-                    <a href="{path_for name="transaction" data=["action" => {_T string="add" domain="routes"}]}?id_adh={$member->id}">{_T string="Add a transaction"}</a>)
+                    <a href="{path_for name="transaction" data=["action" => "add"]}?id_adh={$member->id}">{_T string="Add a transaction"}</a>)
     {/if}
                     &nbsp;:
 {/if}
@@ -46,7 +46,7 @@
                 <tr>
                     <th class="id_row">#</th>
                     <th class="left date_row">
-                        <a href="{path_for name="contributions" data=["type" => {_T string="transactions" domain="routes"}, "option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\TransactionsList::ORDERBY_DATE"|constant]}">{_T string="Date"}
+                        <a href="{path_for name="contributions" data=["type" => "transactions", "option" => "order", "value" => "Galette\Filters\TransactionsList::ORDERBY_DATE"|constant]}">{_T string="Date"}
                         {if $filters->orderby eq constant('Galette\Filters\TransactionsList::ORDERBY_DATE')}
                             {if $filters->ordered eq constant('Galette\Filters\TransactionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -59,7 +59,7 @@
                     <th class="left">{_T string="Description"}</th>
 {if $login->isAdmin() or $login->isStaff()}
                     <th class="left">
-                        <a href="{path_for name="contributions" data=["type" => {_T string="transactions" domain="routes"}, "option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\TransactionsList::ORDERBY_MEMBER"|constant]}">{_T string="Originator"}
+                        <a href="{path_for name="contributions" data=["type" => "transactions", "option" => "order", "value" => "Galette\Filters\TransactionsList::ORDERBY_MEMBER"|constant]}">{_T string="Originator"}
                         {if $filters->orderby eq constant('Galette\Filters\TransactionsList::ORDERBY_MEMBER')}
                             {if $filters->ordered eq constant('Galette\Filters\TransactionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -71,7 +71,7 @@
                     </th>
 {/if}
                     <th class="left">
-                        <a href="{path_for name="contributions" data=["type" => {_T string="transactions" domain="routes"}, "option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\TransactionsList::ORDERBY_AMOUNT"|constant]}">{_T string="Amount"}
+                        <a href="{path_for name="contributions" data=["type" => "transactions", "option" => "order", "value" => "Galette\Filters\TransactionsList::ORDERBY_AMOUNT"|constant]}">{_T string="Amount"}
                         {if $filters->orderby eq constant('Galette\Filters\TransactionsList::ORDERBY_AMOUNT')}
                             {if $filters->ordered eq constant('Galette\Filters\TransactionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -98,7 +98,7 @@
                         {$ordre+1+($filters->current_page - 1)*$numrows}
     {/if}
                         <span class="row-title">
-                            <a href="{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $transaction->id]}">
+                            <a href="{path_for name="transaction" data=["action" => "edit", "id" => $transaction->id]}">
                                 {_T string="Transaction %id" pattern="/%id/" replace=$transaction->id}
                             </a>
                         </span>
@@ -108,7 +108,7 @@
 {if $login->isAdmin() or $login->isStaff()}
                     <td class="{$cclass}" data-title="{_T string="Originator"}">
     {if $filters->filtre_cotis_adh eq ""}
-                        <a href="{path_for name="contributions" data=["type" => {_T string="transactions" domain="routes"}, "option" => {_T string="member" domain="routes"}, "value" => $mid]}">
+                        <a href="{path_for name="contributions" data=["type" => "transactions", "option" => "member", "value" => $mid]}">
                             {if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}
                         </a>
     {else}
@@ -122,14 +122,14 @@
 {if $login->isAdmin() or $login->isStaff()}
                     <td class="{$cclass} center nowrap">
                         <a
-                            href="{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $transaction->id]}"
+                            href="{path_for name="transaction" data=["action" => "edit", "id" => $transaction->id]}"
                             class="tooltip action"
                         >
                             <i class="fas fa-edit"></i>
                             <span class="sr-only">{_T string="Edit transaction #%id" pattern="/%id/" replace=$transaction->id}</span>
                         </a>
                         <a
-                            href="{path_for name="removeContribution" data=["type" => {_T string="transactions" domain="routes"}, "id" => $transaction->id]}"
+                            href="{path_for name="removeContribution" data=["type" => "transactions", "id" => $transaction->id]}"
                             class="delete tooltip"
                         >
                             <i class="fas fa-trash"></i>
