@@ -89,7 +89,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="{path_for name="members" data=["option" => "order"}, "value" => "Galette\Repository\Members::ORDERBY_NICKNAME"|constant]}">
+                        <a href="{path_for name="members" data=["option" => "order", "value" => "Galette\Repository\Members::ORDERBY_NICKNAME"|constant]}">
                             {_T string="Nickname"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NICKNAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
