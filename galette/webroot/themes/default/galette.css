@@ -1956,18 +1956,11 @@ label.simplelabel {
     padding: .1em 1em;
 }
 
-.galette_form #pref_lang option {
+.galette_form #pref_lang option, #pref_lang_chosen li {
+    background-size: 16px;
     background-repeat: no-repeat;
-    padding-left: 30px;
+    padding-left: 20px;
     background-position: 0 50%;
-}
-
-.galette_form #pref_lang option[value='fr_FR'] {
-    background-image: url(images/french.gif);
-}
-
-.galette_form #pref_lang option[value='en_US'] {
-    background-image: url(images/english.gif);
 }
 
 .galette_form img.mdp_img {
