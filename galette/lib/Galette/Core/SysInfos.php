@@ -95,11 +95,6 @@ class SysInfos
             $str .= '    ' . stripslashes($g) . "\n";
         }
 
-        $str .= '  May:' . "\n";
-        foreach ($mods->getMays() as $m) {
-            $str .= '    ' . stripslashes($m) . "\n";
-        }
-
         $str .= '  Should:' . "\n";
         foreach ($mods->getShoulds() as $s) {
             $str .= '    ' . stripslashes($s) . "\n";

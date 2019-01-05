@@ -52,9 +52,22 @@ namespace Galette\Core;
 class CheckModules
 {
     private $good = array();
-    private $may = array();
     private $should = array();
     private $missing = array();
+
+    private $modules = [
+        //name      => required
+        'SimpleXML' => true,
+        'gd'        => true,
+        'pdo'       => true,
+        'curl'      => false,
+        'tidy'      => false,
+        'gettext'   => false,
+        'mbstring'  => true,
+        'openssl'   => false,
+        'intl'      => true
+    ];
+
 
     /**
      * Constructor
@@ -75,106 +88,50 @@ class CheckModules
      * - should: modules that should be present but are not,
      * - missing: required modules that are missing
      *
+     * @param boolean $translated Use translations (default to true)
+     *
      * @return void
      */
-    public function doCheck()
+    public function doCheck($translated = true)
     {
-        //simplexml module is mandatory
-        if (!extension_loaded('SimpleXML')) {
-            $this->missing[] = str_replace('%s', 'SimpleXML', _T("'%s' module"));
-        } else {
-            /*$this->good['SimpleXML'] = str_replace(
-                '%s',
-                 'SimpleXML',
-                _T("'%s' module")
-            );*/
-        }
-
-        //gd module is required
-        if (!extension_loaded('gd')) {
-            $this->missing[] = str_replace('%s', 'gd', _T("'%s' module"));
-        } else {
-            $this->good['gd'] = str_replace('%s', 'gd', _T("'%s' module"));
-        }
-
-        //one of mysql or pgsql driver must be present
-        if (!extension_loaded('pdo_mysql')
-            && !extension_loaded('pdo_pgsql')
-        ) {
-            $this->missing[] = _T("either 'mysql' or 'pgsql' PDO driver");
-        } else {
-            $this->good['pdo_driver'] = _T("either 'mysql' or 'pgsql' PDO driver");
-        }
-
-        //curl module is optionnal
-        if (!extension_loaded('curl')) {
-            $this->should[] = str_replace('%s', 'curl', _T("'%s' module"));
-        } else {
-            $this->good['curl'] = str_replace('%s', 'curl', _T("'%s' module"));
-        }
-
-        //tidy module is optionnal
-        if (!extension_loaded('tidy')) {
-            $this->may[] = str_replace('%s', 'tidy', _T("'%s' module"));
-        } else {
-            $this->good['tidy'] = str_replace('%s', 'tidy', _T("'%s' module"));
-        }
-
-        //gettext module is optionnal
-        if (!extension_loaded('gettext')) {
-            $this->may[] = str_replace('%s', 'gettext', _T("'%s' module"));
-        } else {
-            $this->good['gettext'] = str_replace(
-                '%s',
-                'gettext',
-                _T("'%s' module")
-            );
-        }
-
-        if (!extension_loaded('mbstring')) {
-            $this->missing[] = str_replace('%s', 'mbstring', _T("'%s' module"));
-        } else {
-            $this->good['mbstring'] = str_replace(
-                '%s',
-                'mbstring',
-                _T("'%s' module")
-            );
-        }
-
-        //ssl support is optionnal
-        if (!extension_loaded('openssl')) {
-            $this->should[] = _T("'openssl' support");
-        } else {
-            $this->good['ssl'] = _T("'openssl' support");
-        }
-
-        if (!extension_loaded('fileinfo')) {
-            $this->missing[] = str_replace('%s', 'fileinfo', _T("'%s' module"));
-        } else {
-            $this->good['fileinfo'] = str_replace(
-                '%s',
-                'fileinfo',
-                _T("'%s' module")
-            );
-        }
-
-        if (!extension_loaded('intl')) {
-            $this->missing[] = str_replace('%s', 'intl', _T("'%s' module"));
-        } else {
-            $this->good['intl'] = str_replace(
-                '%s',
-                'intl',
-                _T("'%s' module")
-            );
+        $string = ($translated ? _T("'%s' module") : "'%s' module");
+        foreach ($this->modules as $name => $required) {
+            if ($name == 'pdo') {
+                //one of mysql or pgsql driver must be present
+                $mstring = "either 'mysql' or 'pgsql' PDO driver";
+                if ($translated) {
+                    $mstring = _T("either 'mysql' or 'pgsql' PDO driver");
+                }
+                if (!extension_loaded('pdo_mysql')
+                    && !extension_loaded('pdo_pgsql')
+                ) {
+                    $this->missing[] = $mstring;
+                } else {
+                    $this->good[$name] = $mstring;
+                }
+            } else {
+                $mstring = str_replace('%s', $name, $string);
+                if (!extension_loaded($name)) {
+                    if ($required) {
+                        $this->missing[] = $mstring;
+                    } else {
+                        $this->should[] = $mstring;
+                    }
+                } else {
+                    $this->good[$name] = str_replace('%s', $name, $string);
+                }
+            }
         }
     }
 
     /**
      * HTML formatted results for checks
      *
+     * @param boolean $translated Use translations (default to true)
+     *
      * @return string
      */
-    public function toHtml()
+    public function toHtml($translated = true)
     {
         $html = null;
         $img_dir = null;
@@ -185,18 +142,20 @@ class CheckModules
         }
 
         if (count($this->missing) > 0) {
+            $ko = ($translated ? _T('Ko') : 'Ko');
             foreach ($this->missing as $m) {
                 $html .= '<li><span>' . $m  . '</span><span><img src="' .
                     $img_dir  . 'icon-invalid.png" alt="' .
-                    _T("Ko") . '"/></span></li>';
+                    $ko . '"/></span></li>';
             }
         }
 
         if (count($this->good) > 0) {
+            $ok = ($translated ? _T('Ok') : 'Ok');
             foreach ($this->good as $m) {
                 $html .= '<li><span>' . $m  . '</span><span><img src="' .
                     $img_dir  . 'icon-valid.png" alt="' .
-                    _T("Ok") . '"/></span></li>';
+                    $ok . '"/></span></li>';
             }
         }
 
@@ -241,16 +200,6 @@ class CheckModules
     public function getGoods()
     {
         return $this->good;
-    }
-
-    /**
-     * Retrieve may modules
-     *
-     * @return array
-     */
-    public function getMays()
-    {
-        return $this->may;
     }
 
     /**
