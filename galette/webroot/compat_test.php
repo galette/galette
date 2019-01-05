@@ -35,6 +35,7 @@
  * @since     Available since 0.7.4dev - 2013-02-03
  */
 
+
 $modules = array();
 $modules['SimpleXML'] = (extension_loaded('SimpleXML')) ? 'Ok' : 'Missing';
 $modules['gd'] = (extension_loaded('gd')) ? 'Ok' : 'Missing';
@@ -44,7 +45,17 @@ $modules['mbstring'] = (extension_loaded('mbstring')) ? 'Ok' : 'Missing';
 $modules['fileinfo'] = (extension_loaded('fileinfo')) ? 'Ok' : 'Missing';
 $modules['intl'] = (extension_loaded('intl')) ? 'Ok' : 'Missing';
 
-$phpok = !version_compare(PHP_VERSION, '7.1', '<');
+
+// check PHP modules
+define('GALETTE_ROOT', __DIR__ . '/../');
+define('GALETTE_THEME_DIR', './themes/default/');
+require_once GALETTE_ROOT . '/vendor/autoload.php';
+require_once GALETTE_ROOT . 'config/versions.inc.php';
+require_once GALETTE_ROOT . 'config/paths.inc.php';
+
+$phpok = !version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<');
+$cm = new Galette\Core\CheckModules(false);
+$cm->doCheck(false); //do not load with translations!
 ?>
 <html>
     <head>
@@ -68,7 +79,12 @@ $phpok = !version_compare(PHP_VERSION, '7.1', '<');
                 margin: 0;
                 padding: 0;
             }
-            span.Missing, span.Ok {
+            li {
+                clear: right;
+                border-bottom: .1em dotted;
+                padding: .2em 0;
+            }
+            li img, span.Missing, span.Ok {
                 font-weight: bold;
                 float: right;
             }
@@ -79,33 +95,38 @@ $phpok = !version_compare(PHP_VERSION, '7.1', '<');
                 color: green;
             }
         </style>
+        <link rel="shortcut icon" href="./themes/default/images/favicon.png" />
     </head>
     <body>
         <h1>
             <img src="themes/default/images/galette.png"/>
             <br/>Compatibility tests
         </h1>
-<?php
-if (!$phpok
-    || in_array('Missing', $modules)
-) {
-            echo '<h2 class="Missing">Something is wrong :(</h2>';
-} else {
-            echo '<h2 class="Ok">Everything is OK :)</h2>';
-}
-?>
+    <?php
+    if (!$phpok
+        || in_array('Missing', $modules)
+    ) {
+                echo '<h2 class="Missing">Something is wrong :(</h2>';
+    } else {
+                echo '<h2 class="Ok">Everything is OK :)</h2>';
+    }
+    ?>
         <div>
             <ul>
-                <li>PHP version: <span class="<?php echo ($phpok) ? 'Ok' : 'Missing'; ?>"><?php echo PHP_VERSION; ?></span></li>
-<?php
-foreach ($modules as $mod => $present) {
-    ?>
+                <li>
+                    PHP version:
+                    <span class="<?php echo ($phpok) ? 'Ok' : 'Missing'; ?>"><?php echo PHP_VERSION; ?></span>
+                </li>
+    <?php
+    echo $cm->toHtml(false);
+    /*foreach ($modules as $mod => $present) {
+        ?>
                 <li>
                     <?php echo $mod . ': <span class="' . $present . '">' . $present . '</span>'; ?>
                 </li>
-    <?php
-}
-?>
+        <?php
+    }*/
+    ?>
             </ul>
         </div>
     </body>

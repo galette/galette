@@ -42,6 +42,20 @@ use Analog\Analog;
 //set a flag saying we work from installer
 //that way, in galette.inc.php, we'll only include relevant parts
 $installer = true;
+define('GALETTE_ROOT', __DIR__ . '/../');
+
+// check PHP modules
+require_once GALETTE_ROOT . '/vendor/autoload.php';
+require_once GALETTE_ROOT . 'config/versions.inc.php';
+
+$cm = new Galette\Core\CheckModules(false);
+$cm->doCheck(false); //do not load with translations!
+
+if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') || !$cm->isValid()) {
+    header('location: compat_test.php');
+    die(1);
+}
+
 //specific logfile for installer
 $logfile = 'galette_install';
 define('GALETTE_BASE_PATH', '../');
