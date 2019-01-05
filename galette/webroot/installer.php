@@ -48,10 +48,7 @@ define('GALETTE_ROOT', __DIR__ . '/../');
 require_once GALETTE_ROOT . '/vendor/autoload.php';
 require_once GALETTE_ROOT . 'config/versions.inc.php';
 
-$cm = new Galette\Core\CheckModules(false);
-$cm->doCheck(false); //do not load with translations!
-
-if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') || !$cm->isValid()) {
+if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') || !extension_loaded('intl')) {
     header('location: compat_test.php');
     die(1);
 }
