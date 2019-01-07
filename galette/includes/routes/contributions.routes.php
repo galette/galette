@@ -1038,7 +1038,7 @@ $app->post(
             if ($trans->getMissingAmount() > 0) {
                 $rparams = [
                     'action'    => 'add',
-                    'type'      => 'fee'
+                    'type'      => $post['contrib_type']
                 ];
 
                 if (isset($trans->member)) {

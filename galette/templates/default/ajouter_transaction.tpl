@@ -33,7 +33,7 @@
                 <p>
                     <span class="bline tooltip" title="{_T string="Select a contribution type to create for dispatch transaction"}">{_T string="Dispatch type:"}</span>
                     <span class="tip">{_T string="Select a contribution type to create for dispatch transaction"}</span>
-                    <input type="radio" name="contrib_type" id="contrib_type_fee" value="fee"/> <label for="contrib_type_fee">{_T string="Membership fee"}</label>
+                    <input type="radio" name="contrib_type" id="contrib_type_fee" value="fee" checked="checked"/> <label for="contrib_type_fee">{_T string="Membership fee"}</label>
                     <input type="radio" name="contrib_type" id="contrib_type_donation" value="donation"/> <label for="contrib_type_donation">{_T string="Donation"}</label>
                 </p>
     {/if}
