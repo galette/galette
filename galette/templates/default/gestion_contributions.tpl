@@ -126,7 +126,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order"}, "value" => "Galette\Filters\ContributionsList::ORDERBY_AMOUNT"|constant]}">{_T string="Amount"}
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_AMOUNT"|constant]}">{_T string="Amount"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_AMOUNT')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>

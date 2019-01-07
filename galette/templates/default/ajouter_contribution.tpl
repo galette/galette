@@ -12,7 +12,7 @@
                     <tr>
                         <td colspan="5">
                             {$contribution->transaction->description}
-                            <a href="{path_for name="transaction" data=["action" => edit", "id" => $contribution->transaction->id]}" title="{_T string="View transaction"}">
+                            <a href="{path_for name="transaction" data=["action" => "edit", "id" => $contribution->transaction->id]}" title="{_T string="View transaction"}">
                                 <img src="{base_url}/{$template_subdir}images/icon-money.png"
                                     alt="{_T string="[view]"}"
                                     width="16"

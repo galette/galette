@@ -430,8 +430,7 @@
             $('#nbshow').change(function() {
                 this.form.submit();
             });
-            $('.selection_menu input[type="submit"], .selection_menu input[type="button"]').click(function(){
-
+            $('.selection_menu *[type="submit"], .selection_menu *[type="button"]').click(function(){
                 if ( this.id == 'delete' ) {
                     //mass removal is handled from 2 steps removal
                     return;

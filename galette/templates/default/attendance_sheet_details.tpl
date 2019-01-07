@@ -35,7 +35,10 @@
         </fieldset>
 {if not $ajax}
         <div class="button-container">
-            <input class="button btn_pdf" type="submit" value="{_T string="Generate"}"/>
+            <button class="active" type="submit">
+                <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                {_T string="Generate"}
+            </button>
         </div>
 {/if}
 
