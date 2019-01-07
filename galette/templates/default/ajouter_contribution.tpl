@@ -162,7 +162,7 @@
 
 {block name="javascripts"}
 <script type="text/javascript">
-    {include file="js_chosen_adh.tpl"},
+    {include file="js_chosen_adh.tpl"}
 
     $(function() {
         $('#date_debut_cotis, #date_fin_cotis, #date_enreg').datepicker({
