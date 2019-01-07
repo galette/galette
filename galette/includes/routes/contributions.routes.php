@@ -428,10 +428,10 @@ $app->get(
         //check if current attached member is part of the list
         if (isset($contrib) && $contrib->member > 0) {
             if (!isset($members[$contrib->member])) {
-                $members = array_merge(
-                    [$contrib->member => Adherent::getSName($this->zdb, $contrib->member, true)],
+                $members =
+                    [$contrib->member => Adherent::getSName($this->zdb, $contrib->member, true)] +
                     $members
-                );
+                ;
             }
         }
 
@@ -893,10 +893,10 @@ $app->get(
         //check if current attached member is part of the list
         if (isset($trans) && $trans->member > 0) {
             if (!isset($members[$trans->member])) {
-                $members = array_merge(
-                    [$trans->member => Adherent::getSName($this->zdb, $trans->member, true)],
+                $members =
+                    [$trans->member => Adherent::getSName($this->zdb, $trans->member, true)] +
                     $members
-                );
+                ;
             }
         }
 
