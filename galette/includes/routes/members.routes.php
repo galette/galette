@@ -734,7 +734,7 @@ $app->get(
         foreach ($parent_fields as $key => $field) {
             if ($fc->isRequired($field) && $member->hasParent()) {
                 $fc->setNotRequired($field);
-            } else {
+            } elseif ($member->id != '' || !$fc->isRequired($field)) {
                 unset($parent_fields[$key]);
             }
         }
