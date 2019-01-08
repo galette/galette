@@ -734,7 +734,7 @@ $app->get(
         foreach ($parent_fields as $key => $field) {
             if ($fc->isRequired($field) && $member->hasParent()) {
                 $fc->setNotRequired($field);
-            } elseif ($member->id != '' || !$fc->isRequired($field)) {
+            } elseif (!$fc->isRequired($field)) {
                 unset($parent_fields[$key]);
             }
         }
@@ -871,7 +871,7 @@ $app->post(
         }
 
         if ($member->hasParent() && !isset($post['detach_parent'])
-            || isset($post['parent']) && !empty($post['parent'])
+            || isset($post['parent_id']) && !empty($post['parent_id'])
         ) {
             $parent_fields = $member->getParentFields();
             foreach ($parent_fields as $field) {

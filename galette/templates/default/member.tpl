@@ -44,6 +44,12 @@
                 <i class="fas fa-link"></i>
                 {_T string="Attach member"}
             </a>
+        {else if $member->hasChildren()}
+            <strong>{_T string="Parent of:"}</strong>
+            {foreach from=$member->children item=child}
+                <a href="{path_for name="member" data=["id" => $child->id]}">{$child->sfullname}</a>{if not $child@last}, {/if}
+            {/foreach}
+            </tr>
         {/if}
             </div>
     {/if}

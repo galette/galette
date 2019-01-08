@@ -132,6 +132,17 @@ p#required {
     margin:0;
 }
 
+select:invalid {
+  height: 0px !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  display: flex !important;
+}
+
+select:invalid[multiple] {
+  margin-top: 15px !important;
+}
+
 select.lang option {
     padding-left: 30px;
     background-repeat: no-repeat;
