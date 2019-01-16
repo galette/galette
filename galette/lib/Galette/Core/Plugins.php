@@ -336,8 +336,7 @@ class Plugins
         }
 
         $domains = [
-            $this->modules[$id]['route'],
-            $this->modules[$id]['route'] . '_routes'
+            $this->modules[$id]['route']
         ];
         foreach ($domains as $domain) {
             //load translation file for domain
