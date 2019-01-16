@@ -441,7 +441,7 @@ $container['translator'] = function ($c) {
         $translator->addTranslationFilePattern(
             'phparray',
             GALETTE_ROOT . '/lang/',
-            $domain . '_%s_local.php',
+            $domain . '_%s_local_lang.php',
             $domain
         );
     }

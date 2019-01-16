@@ -351,7 +351,7 @@ class Plugins
             $translator->addTranslationFilePattern(
                 'phparray',
                 $this->modules[$id]['root'] . '/lang/',
-                $domain . '_%s_local.php',
+                $domain . '_%s_local_langl.php',
                 $domain
             );
         }
