@@ -63,8 +63,9 @@
             disable_search: false
         });
 
-        $('.chosen-search input').autocomplete({
+        $('#id_adh_chosen .chosen-search input').autocomplete({
             source: function( request, response ) {
+                var _this = $(this);
                 $.ajax({
                     type: 'POST',
                     url: '{path_for name="contributionMembers" data=["page" => 1, "search" => "PLACEBO"]}'.replace(/PLACEBO/, request.term),
@@ -74,7 +75,7 @@
                             var _elt = $('#id_adh')
                             _elt.empty();
                             _membersLoaded(res.members);
-                            $('.chosen-search input').val(request.term);
+                            _this.val(request.term);
                         }
                     }
                 });
