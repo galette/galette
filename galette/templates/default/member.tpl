@@ -40,10 +40,18 @@
                 <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
             {/if}
         {else if ($login->isAdmin() or $login->isStaff()) and !$member->hasChildren()}
-            <a href="#" class="button" id="btnattach">
-                <i class="fas fa-link"></i>
-                {_T string="Attach member"}
-            </a>
+            <input type="checkbox" name="attach" id="attach" value="1"/>
+            <label for="attach"><i class="fas fa-link"></i> {_T string="Attach member"}<label>
+            <span id="parent_id_elt" class="sr-only">
+                <select name="parent_id" id="parent_id" class="nochosen">
+                    {if $adh_selected eq 0}
+                    <option value="">{_T string="-- select a name --"}</option>
+                    {/if}
+                    {foreach $members.list as $k=>$v}
+                        <option value="{$k}"{if $contribution->member == $k} selected="selected"{/if}>{$v}</option>
+                    {/foreach}
+                </select>
+            </span>
         {else if $member->hasChildren()}
             <strong>{_T string="Parent of:"}</strong>
             {foreach from=$member->children item=child}
@@ -104,13 +112,7 @@
                     {assign var="tip" value=null}
                     {assign var="size" value=null}
                     {assign var="propname" value=$entry->propname}
-                    {if $entry->field_id eq 'parent_id' }
-                        {if $member->$propname}
-                            {assign var="value" value=$member->$propname->id}
-                        {else}
-                            {assign var="value" value=""}
-                        {/if}
-                    {elseif $entry->field_id eq 'activite_adh'}
+                    {if $entry->field_id eq 'activite_adh'}
                         {assign var="value" value=$member->isActive()}
                     {else}
                         {assign var="value" value=$member->$propname}
@@ -118,7 +120,7 @@
                     {assign var="checked" value=null}
                     {assign var="example" value=null}
 
-                    {if $value neq '' or $entry->field_id eq 'parent_id'}
+                    {if $value neq '' and $entry->field_id neq 'parent_id'}
                         {include
                             file="forms_types/hidden.tpl"
                             name=$entry->field_id
@@ -137,6 +139,7 @@
 
 {block name="javascripts"}
         <script type="text/javascript">
+            {include file="js_chosen_adh.tpl" js_chosen_id="#parent_id"}
             $(function() {
                 $('#is_company').change(function(){
                     //console.log(this.checked);
@@ -303,112 +306,12 @@
                 }
 
     {if !$self_adh and !$member->hasChildren()}
-                {* Members popup *}
-                var _btnattach_mapping = function(){
-                    $('#btnattach').click(function(){
-                        _mode = ($(this).attr('id') == 'btnusers_small') ? 'members' : 'managers';
-                        var _persons = $('input[name="' + _mode + '[]"]').map(function() {
-                            return $(this).val();
-                        }).get();
-                        $.ajax({
-                            url: '{path_for name="ajaxMembers"}',
-                            type: "POST",
-                            data: {
-                                from: 'attach',
-                                id_adh: {if isset($member->id) and $member->id neq ''}{$member->id}{else}'new'{/if}
-                            },
-                            {include file="js_loader.tpl"},
-                            success: function(res){
-                                _members_dialog(res, _mode);
-                            },
-                            error: function() {
-                                alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
-                            }
-                        });
-                        return false;
-                    });
-                }
-                _btnattach_mapping();
-
-                var _members_dialog = function(res, mode){
-                    var _title = '{_T string="Attached member selection" escape="js"}';
-                    var _el = $('<div id="members_list" title="' + _title  + '"> </div>');
-                    _el.appendTo('body').dialog({
-                        modal: true,
-                        hide: 'fold',
-                        width: '60%',
-                        height: 400,
-                        close: function(event, ui){
-                            _el.remove();
-                        },
-                        create: function (event, ui) {
-                            if ($(window ).width() < 767) {
-                                $(this).dialog('option', {
-                                        'width': '95%',
-                                        'draggable': false
-                                });
-                            }
-                        }
-                    });
-                    _members_ajax_mapper(res);
-                }
-
-                var _members_ajax_mapper = function(res){
-                    $('#members_list').append(res);
-
-
-                    $('#members_list tbody').find('a').each(function(){
-                        $(this).click(function(){
-                            var _id = this.href.match(/.*\/(\d+)$/)[1];
-                            $('#parent_id').attr('value', _id);
-                            var _parent_name;
-                            if ($('#parent_name').length > 0) {
-                                _parent_name = $('#parent_name');
-                            } else {
-                                _parent_name = $('<div id="parent_name"/>');
-                                $('#btnattach').after(_parent_name);
-                            }
-                            _parent_name.html($(this).html());
-
-                            //remove required attribute on address and mail fields if member has a parent
-                            var _parentfields = '';
-        {if $parent_fields|@count gt 0}
-            {foreach item=req from=$parent_fields}
-                            _parentfields += '#{$req}';
-                {if !$req@last}
-                            _parentfields += ',';
-                {/if}
-            {/foreach}
-        {/if}
-                            $(_parentfields).removeAttr('required');
-
-                            $('#members_list').dialog('close');
-                            return false;
-                        }).attr('title', '{_T string="Click to choose this member as parent"}');
-                    });
-                    //Remap links
-                    $('#members_list .pages a').click(function(){
-                        var gid = $('#the_id').val();
-
-                        $.ajax({
-                            url: this.href,
-                            type: "POST",
-                            data: {
-                                from: 'attach',
-                                id_adh: {if isset($member->id) and $member->id neq ''}{$member->id}{else}'new'{/if}
-                            },
-                            {include file="js_loader.tpl"},
-                            success: function(res){
-                                $('#members_list').empty();
-                                _members_ajax_mapper(res);
-                            },
-                            error: function() {
-                                alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
-                            }
-                        });
-                        return false;
-                    });
-                }
+                {* Parent selection *}
+                $('#parent_id_elt').hide().removeClass('sr-only');
+                $('#attach').on('click', function() {
+                    var _checked = $(this).is(':checked');
+                    $('#parent_id_elt').toggle();
+                });
     {/if}
 
     {if !$self_adh and $member->hasParent()}

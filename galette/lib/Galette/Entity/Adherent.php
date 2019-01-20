@@ -958,6 +958,14 @@ class Adherent
             $values['societe_adh'] = '';
         }
 
+        //no parent if checkbox was unchecked
+        if (!isset($values['attach'])
+            && empty($this->_id)
+            && isset($values['parent_id'])
+        ) {
+            unset($values['parent_id']);
+        }
+
         foreach ($fields as $key) {
             //first of all, let's sanitize values
             $key = strtolower($key);

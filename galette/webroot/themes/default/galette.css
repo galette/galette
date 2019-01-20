@@ -2148,7 +2148,7 @@ td.photo img{
     width:20em;
 }
 
-label > i, span.bline > i {
+.galette_form label > i, label.bline > i, span.bline > i {
     float: right;
     font-size: 1.1em;
     color: rgba(0, 0, 255, .5);
