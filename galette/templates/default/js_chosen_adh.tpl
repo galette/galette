@@ -1,17 +1,21 @@
+{if !isset($js_chosen_id)}
+    {assign var="js_chosen_id" value="#id_adh"}
+{/if}
+console.log('{$js_chosen_id}');
     var _current_page = {$members.filters->current_page};
     var _membersLoaded = function(members) {
         for (var id in members) {
             var member = members[id];
-            $('#id_adh').append($('<option value="' + id + '">' + member + '</option>'));
+            $('{$js_chosen_id}').append($('<option value="' + id + '">' + member + '</option>'));
         }
-        $('#id_adh').trigger('chosen:updated');
+        $('{$js_chosen_id}').trigger('chosen:updated');
         _chosenPages();
     }
 
     var _chosenPages = function(event) {
     {if $members.filters->pages > $members.filters->current_page}
         if ($('#nextpage').length == 0 && _current_page < {$members.filters->pages}) {
-            if ($('#id_adh option').length < {$members.filters->show}) {
+            if ($('{$js_chosen_id} option').length < {$members.filters->show}) {
                 //not enough entries
                 return;
             }
@@ -41,7 +45,7 @@
                     }
                 });
             });
-            $('#id_adh_chosen .chosen-results').append(_next);
+            $('{$js_chosen_id}_chosen .chosen-results').append(_next);
         }
     {/if}
     {if $members.filters->current_page > 1}
@@ -50,20 +54,20 @@
             _prev.on('click', function (event) {
                 event.preventDefault();
             });
-            $('#id_adh_chosen .chosen-results').prepend(_prev);
+            $('{$js_chosen_id}_chosen .chosen-results').prepend(_prev);
         }
     {/if}
     }
 
     $(function() {
-        $('#id_adh').on('chosen:showing_dropdown', _chosenPages);
+        $('{$js_chosen_id}').on('chosen:showing_dropdown', _chosenPages);
 
-        $('#id_adh').chosen({
+        $('{$js_chosen_id}').chosen({
             allow_single_deselect: true,
             disable_search: false
         });
 
-        $('#id_adh_chosen .chosen-search input').autocomplete({
+        $('{$js_chosen_id}_chosen .chosen-search input').autocomplete({
             source: function( request, response ) {
                 var _this = $(this);
                 $.ajax({
@@ -72,7 +76,7 @@
                     dataType: "json",
                     success: function (res) {
                         if (res.count > 0) {
-                            var _elt = $('#id_adh')
+                            var _elt = $('{$js_chosen_id}')
                             _elt.empty();
                             _membersLoaded(res.members);
                             _this.val(request.term);
