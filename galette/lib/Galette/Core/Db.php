@@ -97,7 +97,7 @@ class Db
             } elseif ($_type_db === self::PGSQL) {
                 $_type = 'Pdo_Pgsql';
             } else {
-                throw new \Exception;
+                throw new \Exception("Type $_type_db not known (dsn: $_user_db@$_host_db(:$_port_db)/$_name_db)");
             }
 
             $this->type_db = $_type_db;
