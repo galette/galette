@@ -96,6 +96,8 @@
                         {else}
                             {assign var="value" value=""}
                         {/if}
+                    {elseif $entry->field_id eq 'activite_adh'}
+                        {assign var="value" value=$member->isActive()}
                     {else}
                         {assign var="value" value=$member->$propname}
                     {/if}
