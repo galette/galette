@@ -184,8 +184,8 @@ $(function() {
     $('#login').focus();
 
     _initTooltips();
-    $('select:not(.nochosen)').chosen({
-        disable_search: true
+    $('select:not(.nochosen)').selectize({
+        maxItems: 1
     });
 
     $('.nojs').removeClass('nojs');

@@ -501,9 +501,28 @@ footer li {
     border-radius: 10px 10px 10px 10px;
 }
 
-.chosen-container {
-    text-align: left!important;
+.selectize-control {
+    display: inline-block;
+    min-width: 25em;
 }
+
+#galette_body .selectize-input {
+    margin-right: 2em;
+    padding: .1em 0 .1em 8px;
+    overflow: unset;
+}
+
+#galette_body .selectize-dropdown .option {
+    cursor: pointer;
+}
+
+#galette_body .selectize-dropdown .active {
+    background-color: #DDDDFF;
+}
+#galette_body .selectize-dropdown .option, #galette_body .selectize-dropdown .optgroup-header {
+    padding: .2em .5em;
+}
+
 #listfilter input[type="text"]{
     padding:0;
 }
@@ -1814,7 +1833,7 @@ td img, a img {
     border-top:1px solid;
 }
 
-.required{
+:not(.selectize-input).required{
     color:#FF0000;
     font-weight:bold;
 }
@@ -1960,7 +1979,7 @@ label.simplelabel {
     padding: .1em 1em;
 }
 
-.galette_form #pref_lang option, #pref_lang_chosen li {
+.galette_form #pref_lang option {
     background-size: 16px;
     background-repeat: no-repeat;
     padding-left: 20px;
@@ -2314,13 +2333,6 @@ label:hover > i, span.bline:hover > i {
 
 .vtop {
     vertical-align: top!important;
-}
-
-/** Adapt chosen background color */
-.chosen-container-single .chosen-single {
-  background-color: #e6e6e6!important;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(20%, #f4f4f4), color-stop(50%, #f6f6f6), color-stop(52%, #eee), to(#e6e6e6))!important;
-  background: linear-gradient(#f4f4f4 20%, #f6f6f6 50%, #eee 52%, #e6e6e6 100%)!important;
 }
 
 /** Mobile devices */
