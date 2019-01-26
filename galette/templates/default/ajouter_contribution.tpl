@@ -46,7 +46,7 @@
                     <label for="id_adh" class="bline">{_T string="Contributor:"}</label>
                     <select name="id_adh" id="id_adh" class="nochosen"{if isset($disabled.id_adh)} {$disabled.id_adh}{/if}>
                         {if $adh_selected eq 0}
-                        <option value="">{_T string="-- select a name --"}</option>
+                        <option value="">{_T string="Search for name or ID and pick member"}</option>
                         {/if}
                         {foreach $members.list as $k=>$v}
                             <option value="{$k}"{if $contribution->member == $k} selected="selected"{/if}>{$v}</option>
