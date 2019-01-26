@@ -1,7 +1,6 @@
 {if !isset($js_chosen_id)}
     {assign var="js_chosen_id" value="#id_adh"}
 {/if}
-console.log('{$js_chosen_id}');
     var _current_page = {$members.filters->current_page};
     var _membersLoaded = function(members) {
         for (var id in members) {
