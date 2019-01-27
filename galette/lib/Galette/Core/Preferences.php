@@ -166,7 +166,8 @@ class Preferences
         'pref_telemetry_date' => '',
         'pref_registration_date' => '',
         'pref_footer' => '',
-        'pref_filter_account' => Members::ALL_ACCOUNTS
+        'pref_filter_account' => Members::ALL_ACCOUNTS,
+        'pref_galette_url' => ''
     );
 
     /**
