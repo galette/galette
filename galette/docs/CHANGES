@@ -1,6 +1,20 @@
 Changes
 -------
 
+0.9.2 -> 0.9.2.1
+
+- remove all routes translations
+- fix saving Galette URL in preferences
+- fix dynamic menus in contributions
+- rename locale file to prevent fatal error
+- fix required fields editing member
+- fix member id in new members dropdowns
+- fix use of selected contribution adding a transaction
+- fix wrong redirection
+- rework installer required extensions and php version detection from installer
+- php dependencies are now checked frequently
+- fix member search in new members dropdowns
+
 0.9.1.2 -> 0.9.2
 
 News
