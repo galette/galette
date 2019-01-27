@@ -25,7 +25,7 @@
                 <td data-title="{_T string="Release date"}">{$plugin.date}</td>
                 <td class="nowrap center actions_row">
                     <a
-                        href="{path_for name="pluginsActivation" data=["action" => {_T string="deactivate" domain="routes"}, "module_id" => $name]}"
+                        href="{path_for name="pluginsActivation" data=["action" => "deactivate", "module_id" => $name]}"
                         class="toggleActivation tooltip use"
                     >
                         <i class="fas fa-toggle-on fa-fw"></i>
@@ -76,7 +76,7 @@
                 </td>
                 <td class="nowrap center actions_row">
                     <a
-                        href="{path_for name="pluginsActivation" data=["action" => {_T string="activate" domain="routes"}, "module_id" => $name]}"
+                        href="{path_for name="pluginsActivation" data=["action" => "activate", "module_id" => $name]}"
                         class="toggleActivation tooltip delete"
                     >
                         <i class="fas fa-toggle-on"></i>

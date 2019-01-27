@@ -5,7 +5,7 @@
 {/if}
 {extends file=$extend}
 {block name="content"}
-        <form action="{path_for name="payments_filter" data=["type" => {_T string="contributions" domain="routes"}]}" method="post" id="filtre">
+        <form action="{path_for name="payments_filter" data=["type" => "contributions"]}" method="post" id="filtre">
         <div id="listfilter">
             <label for="date_field_filter">{_T string="Show contributions by"}</label>&nbsp;
             <select name="date_field_filter" id="date_field_filter">
@@ -33,7 +33,7 @@
 {if isset($member) && $mode neq 'ajax'}
     {if $login->isAdmin() or $login->isStaff()}
             <a
-                href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="member" domain="routes"}, "value" => "all"]}"
+                href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => "all"]}"
                 class="tooltip"
             >
                 <i class="fas fa-eraser"></i>
@@ -44,8 +44,8 @@
     {if not $member->isActive() } ({_T string="Inactive"}){/if}
     {if $login->isAdmin() or $login->isStaff()}
             (<a href="{path_for name="member" data=["id" => $member->id]}">{_T string="See member profile"}</a> -
-            <a href="{path_for name="contribution" data=["type" => {_T string="fee" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a> -
-            <a href="{path_for name="contribution" data=["type" => {_T string="donation" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?id_adh={$member->id}">{_T string="Add a donation"}</a>)
+            <a href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a> -
+            <a href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?id_adh={$member->id}">{_T string="Add a donation"}</a>)
     {/if}
             &nbsp;:
 {/if}
@@ -69,7 +69,7 @@
                 <tr>
                     <th class="id_row">#</th>
                     <th class="left date_row">
-                        <a href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\ContributionsList::ORDERBY_DATE"|constant]}">{_T string="Date"}
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_DATE"|constant]}">{_T string="Date"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_DATE')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -80,7 +80,7 @@
                         </a>
                     </th>
                     <th class="left date_row">
-                        <a href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\ContributionsList::ORDERBY_BEGIN_DATE"|constant]}">{_T string="Begin"}
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_BEGIN_DATE"|constant]}">{_T string="Begin"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_BEGIN_DATE')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -91,7 +91,7 @@
                         </a>
                     </th>
                     <th class="left date_row">
-                        <a href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\ContributionsList::ORDERBY_END_DATE"|constant]}">{_T string="End"}
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_END_DATE"|constant]}">{_T string="End"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_END_DATE')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -103,7 +103,7 @@
                     </th>
 {if ($login->isAdmin() or $login->isStaff()) and !isset($member)}
                     <th class="left">
-                        <a href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\ContributionsList::ORDERBY_MEMBER"|constant]}">{_T string="Member"}
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_MEMBER"|constant]}">{_T string="Member"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_MEMBER')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -115,7 +115,7 @@
                     </th>
 {/if}
                     <th class="left">
-                        <a href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\ContributionsList::ORDERBY_TYPE"|constant]}">{_T string="Type"}
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_TYPE"|constant]}">{_T string="Type"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_TYPE')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -126,7 +126,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\ContributionsList::ORDERBY_AMOUNT"|constant]}">{_T string="Amount"}
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_AMOUNT"|constant]}">{_T string="Amount"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_AMOUNT')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -137,7 +137,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="order" domain="routes"}, "value" => "Galette\Filters\ContributionsList::ORDERBY_PAYMENT_TYPE"|constant]}">{_T string="Payment type"}
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "order", "value" => "Galette\Filters\ContributionsList::ORDERBY_PAYMENT_TYPE"|constant]}">{_T string="Payment type"}
                         {if $filters->orderby eq constant('Galette\Filters\ContributionsList::ORDERBY_PAYMENT_TYPE')}
                             {if $filters->ordered eq constant('Galette\Filters\ContributionsList::ORDER_ASC')}
                         <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
@@ -181,13 +181,13 @@
                         {$ordre+1+($filters->current_page - 1)*$numrows}
     {/if}
                         <span class="row-title">
-                            <a href="{path_for name="contribution" data=["type" => $ctype, "action" => {_T string="edit" domain="routes"}, "id" => $contribution->id]}">
+                            <a href="{path_for name="contribution" data=["type" => $ctype, "action" => "edit", "id" => $contribution->id]}">
                                 {_T string="Contribution %id" pattern="/%id/" replace=$contribution->id}
                             </a>
                         </span>
         {if $contribution->isTransactionPart() }
                         <a
-                            href="{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $contribution->transaction->id]}"
+                            href="{path_for name="transaction" data=["action" => "edit", "id" => $contribution->transaction->id]}"
                             class="tooltip"
                         >
                             <i class="fas fa-link"></i>
@@ -206,7 +206,7 @@
     {if ($login->isAdmin() or $login->isStaff()) && !isset($member)}
                     <td class="{$cclass}" data-title="{_T string="Member"}">
         {if $contribution->filtre_cotis_adh eq ""}
-                        <a href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="member" domain="routes"}, "value" => $mid]}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
+                        <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $mid]}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
         {else}
                         <a href="{path_for name="member" data=["id" => $mid]}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
         {/if}
@@ -226,19 +226,19 @@
                             <span class="sr-only">{_T string="Print an invoice or a receipt (depending on contribution type)"}</span>
                         </a>
                         {if $contribution->isCotis()}
-                            {assign var="ctype" value={_T string="fee" domain="routes"}}
+                            {assign var="ctype" value="fee"}
                         {else}
-                            {assign var="ctype" value={_T string="donation" domain="routes"}}
+                            {assign var="ctype" value="donation"}
                         {/if}
                         <a
-                            href="{path_for name="contribution" data=["type" => $ctype, "action" => {_T string="edit" domain="routes"}, "id" => $contribution->id]}"
+                            href="{path_for name="contribution" data=["type" => $ctype, "action" => "edit", "id" => $contribution->id]}"
                             class="tooltip action"
                         >
                             <i class="fas fa-edit"></i>
                             <span class="sr-only">{_T string="Edit the contribution"}</span>
                         </a>
                         <a
-                            href="{path_for name="removeContribution" data=["type" => {_T string="contributions" domain="routes"}, "id" => $contribution->id]}"
+                            href="{path_for name="removeContribution" data=["type" => "contributions", "id" => $contribution->id]}"
                             class="tooltip delete"
                         >
                             <i class="fas fa-trash"></i>
@@ -341,7 +341,7 @@
                 _init_contribs_page();
 
                 {include file="js_removal.tpl"}
-                {include file="js_removal.tpl" selector="#delete" deleteurl="'{path_for name="removeContributions" data=["type" => {_T string="contributions" domain="routes"}]}'" extra_check="if (!_checkselection()) {ldelim}return false;{rdelim}" extra_data="delete: true, contrib_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()" method="POST"}
+                {include file="js_removal.tpl" selector="#delete" deleteurl="'{path_for name="removeContributions" data=["type" => "contributions"]}'" extra_check="if (!_checkselection()) {ldelim}return false;{rdelim}" extra_data="delete: true, contrib_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){ return $(this).val(); }).get()" method="POST"}
             });
         </script>
 {/block}

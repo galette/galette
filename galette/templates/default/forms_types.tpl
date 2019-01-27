@@ -94,6 +94,9 @@
                         {if $entry->field_id eq 'parent_id'}
                             {assign var="value" value=$member->parent->id}
                         {/if}
+                        {if $entry->field_id eq 'activite_adh'}
+                            {assign var="value" value=$member->isActive()}
+                        {/if}
 
                         {* If value has not been set, take the generic value *}
                         {if !$value}

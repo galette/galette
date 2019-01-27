@@ -132,6 +132,17 @@ p#required {
     margin:0;
 }
 
+select:invalid {
+  height: 0px !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  display: flex !important;
+}
+
+select:invalid[multiple] {
+  margin-top: 15px !important;
+}
+
 select.lang option {
     padding-left: 30px;
     background-repeat: no-repeat;
@@ -827,13 +838,6 @@ legend .tab-button {
 }
 #btn_contrib.ui-state-hover {
     background-image: url(images/contribution.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-.ui-state-default.btn_pdf {
-    background-image: url(images/icon-pdf.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-.btn_pdf.ui-state-hover {
-    background-image: url(images/icon-pdf.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 #btntools {
@@ -1956,18 +1960,11 @@ label.simplelabel {
     padding: .1em 1em;
 }
 
-.galette_form #pref_lang option {
+.galette_form #pref_lang option, #pref_lang_chosen li {
+    background-size: 16px;
     background-repeat: no-repeat;
-    padding-left: 30px;
+    padding-left: 20px;
     background-position: 0 50%;
-}
-
-.galette_form #pref_lang option[value='fr_FR'] {
-    background-image: url(images/french.gif);
-}
-
-.galette_form #pref_lang option[value='en_US'] {
-    background-image: url(images/english.gif);
 }
 
 .galette_form img.mdp_img {

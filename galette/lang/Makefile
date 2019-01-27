@@ -1,6 +1,6 @@
 INSTALLDIR = .
 LANGUAGES = `find ./ -name "galette_*.po" -print | sed 's|^\./galette_\(.*\).po|\1|'`
-DOMAINS = galette routes
+DOMAINS = galette
 PHP_SOURCES = $(shell find ../ -maxdepth 1 -name \*.php) \
               $(shell find ../lib/Galette -name \*.php) \
               $(shell find ../webroot -name \*.php) \

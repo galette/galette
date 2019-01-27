@@ -336,8 +336,7 @@ class Plugins
         }
 
         $domains = [
-            $this->modules[$id]['route'],
-            $this->modules[$id]['route'] . '_routes'
+            $this->modules[$id]['route']
         ];
         foreach ($domains as $domain) {
             //load translation file for domain
@@ -352,7 +351,7 @@ class Plugins
             $translator->addTranslationFilePattern(
                 'phparray',
                 $this->modules[$id]['root'] . '/lang/',
-                $domain . '_%s_local.php',
+                $domain . '_%s_local_langl.php',
                 $domain
             );
         }

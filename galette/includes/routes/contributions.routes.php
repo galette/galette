@@ -48,9 +48,7 @@ use Galette\IO\PdfContribution;
 use Galette\Repository\PaymentTypes;
 
 $app->get(
-    '/{type:' . __('transactions', 'routes') .'|'. __('contributions', 'routes') .
-        '}[/{option:' . __('page', 'routes') .'|'. __('order', 'routes') .'|' .
-        __('member', 'routes') .'}/{value:\d+|all}]',
+    '/{type:transactions|contributions}[/{option:page|order|member}/{value:\d+|all}]',
     function ($request, $response, $args) {
         $ajax = false;
         if ($request->isXhr()
@@ -72,10 +70,10 @@ $app->get(
 
         $raw_type = null;
         switch ($args['type']) {
-            case __('transactions', 'routes'):
+            case 'transactions':
                 $raw_type = 'transactions';
                 break;
-            case __('contributions', 'routes'):
+            case 'contributions':
                 $raw_type = 'contributions';
                 break;
         }
@@ -107,13 +105,13 @@ $app->get(
 
         if ($option !== null) {
             switch ($option) {
-                case __('page', 'routes'):
+                case 'page':
                     $filters->current_page = (int)$value;
                     break;
-                case __('order', 'routes'):
+                case 'order':
                     $filters->orderby = $value;
                     break;
-                case __('member', 'routes'):
+                case 'member':
                     if (($this->login->isAdmin()
                         || $this->login->isStaff())
                     ) {
@@ -173,14 +171,14 @@ $app->get(
 )->setName('contributions')->add($authenticate);
 
 $app->post(
-    '/{type:' . __('contributions', 'routes') .'|' . __('transactions', 'routes') .'}' . __('/filter', 'routes'),
+    '/{type:contributions|transactions}/filter',
     function ($request, $response, $args) {
         $raw_type = null;
         switch ($args['type']) {
-            case __('transactions', 'routes'):
+            case 'transactions':
                 $raw_type = 'transactions';
                 break;
-            case __('contributions', 'routes'):
+            case 'contributions':
                 $raw_type = 'contributions';
                 break;
         }
@@ -262,9 +260,7 @@ $app->post(
 )->add($authenticate);
 
 $app->get(
-    __('/contribution', 'routes') .
-        '/{type:' . __('fee', 'routes') . '|' . __('donation', 'routes') . '}/{action:' .
-        __('add', 'routes') . '|' . __('edit', 'routes') .'}[/{id:\d+}]',
+    '/contribution/{type:fee|donation}/{action:add|edit}[/{id:\d+}]',
     function ($request, $response, $args) {
         $action = $args['action'];
         $get = $request->getQueryParams();
@@ -274,11 +270,11 @@ $app->get(
             $id_cotis = $args['id'];
         }
 
-        if ($action === __('edit', 'routes') && $id_cotis === null) {
+        if ($action === 'edit' && $id_cotis === null) {
             throw new \RuntimeException(
                 _T("Contribution ID cannot ben null calling edit route!")
             );
-        } elseif ($action === __('add', 'routes') && $id_cotis !== null) {
+        } elseif ($action === 'add' && $id_cotis !== null) {
             return $response
                 ->withStatus(301)
                 ->withHeader(
@@ -287,7 +283,7 @@ $app->get(
                         'contribution',
                         [
                             'type'      => $args['type'],
-                            'action'    => __('add', 'routes')
+                            'action'    => 'add'
                         ]
                     )
                 );
@@ -295,13 +291,13 @@ $app->get(
 
         // contribution types
         $ct = new ContributionsTypes($this->zdb);
-        $contributions_types = $ct->getList($args['type'] === __('fee', 'routes'));
+        $contributions_types = $ct->getList($args['type'] === 'fee');
 
         if ($this->session->contribution !== null) {
             $contrib = $this->session->contribution;
             $this->session->contribution = null;
         } else {
-            if ($args['action'] === __('edit', 'routes')) {
+            if ($args['action'] === 'edit') {
                 $contrib = new Contribution($this->zdb, $this->login, (int)$id_cotis);
                 $id_adh = $contrib->member;
                 if ($contrib->id == '') {
@@ -318,22 +314,22 @@ $app->get(
                         ->withStatus(301)
                         ->withHeader('Location', $this->router->pathFor(
                             'contributions',
-                            ['type' => __('contributions', 'routes')]
+                            ['type' => 'contributions']
                         ));
                 }
             } else {
                 $id_type_cotis = 0;
                 if (isset($get[ContributionsTypes::PK])
                     && $get[ContributionsTypes::PK]
-                    && $action === __('add', 'routes')
+                    && $action === 'add'
                 ) {
                     $id_type_cotis = $get[ContributionsTypes::PK];
                 }
-                $cparams = ['type' => __(array_keys($contributions_types)[0], 'routes')];
+                $cparams = ['type' => array_keys($contributions_types)[0]];
 
                 //member id
                 $id_adh = null;
-                if (isset($get[Adherent::PK]) && $get[Adherent::PK] > 0 && $action === __('add', 'routes')) {
+                if (isset($get[Adherent::PK]) && $get[Adherent::PK] > 0 && $action === 'add') {
                     $id_adh = (int)$get[Adherent::PK];
                     $cparams['adh'] = $id_adh;
                 }
@@ -350,7 +346,7 @@ $app->get(
                     (count($cparams) > 0 ? $cparams : null)
                 );
 
-                if (isset($get['montant_cotis']) && $get['montant_cotis'] > 0 && $action === __('add', 'routes')) {
+                if (isset($get['montant_cotis']) && $get['montant_cotis'] > 0 && $action === 'add') {
                     $contrib->amount = $get['montant_cotis'];
                 }
 
@@ -369,7 +365,7 @@ $app->get(
 
         // template variable declaration
         $title = null;
-        if ($args['type'] === __('fee', 'routes')) {
+        if ($args['type'] === 'fee') {
             $title = _T("Membership fee");
         } else {
             $title = _T("Donation");
@@ -432,10 +428,10 @@ $app->get(
         //check if current attached member is part of the list
         if (isset($contrib) && $contrib->member > 0) {
             if (!isset($members[$contrib->member])) {
-                $members = array_merge(
-                    [$contrib->member => Adherent::getSName($this->zdb, $contrib->member, true)],
+                $members =
+                    [$contrib->member => Adherent::getSName($this->zdb, $contrib->member, true)] +
                     $members
-                );
+                ;
             }
         }
 
@@ -444,7 +440,7 @@ $app->get(
         }
 
         $ext_membership = '';
-        if (isset($contrib) && $contrib->isCotis() || !isset($contrib) && $args['type'] === __('fee', 'routes')) {
+        if (isset($contrib) && $contrib->isCotis() || !isset($contrib) && $args['type'] === 'fee') {
             $ext_membership = $this->preferences->pref_membership_ext;
         }
         $params['pref_membership_ext'] = $ext_membership;
@@ -461,9 +457,7 @@ $app->get(
 )->setName('contribution')->add($authenticate);
 
 $app->post(
-    __('/contribution', 'routes') .
-        '/{type:' . __('fee', 'routes') . '|' . __('donation', 'routes') . '}/{action:' .
-        __('add', 'routes') . '|' . __('edit', 'routes') .'}[/{id:\d+}]',
+    '/contribution/{type:fee|donation}/{action:add|edit}[/{id:\d+}]',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
 
@@ -489,11 +483,11 @@ $app->post(
 
         $id_adh = $post['id_adh'];
 
-        if ($action === __('edit', 'routes') && $id_cotis === null) {
+        if ($action === 'edit' && $id_cotis === null) {
             throw new \RuntimeException(
                 _T("Contribution ID cannot ben null calling edit route!")
             );
-        } elseif ($action === __('add', 'routes') && $id_cotis !== null) {
+        } elseif ($action === 'add' && $id_cotis !== null) {
             throw new \RuntimeException(
                 _T("Contribution ID must be null calling add route!")
             );
@@ -517,7 +511,7 @@ $app->post(
             'date_enreg'        => 1,
             'montant_cotis'     => 1, //TODO: not always required, see #196
             'date_debut_cotis'  => 1,
-            'date_fin_cotis'    => ($args['type'] === __('fee', 'routes'))
+            'date_fin_cotis'    => ($args['type'] === 'fee')
         ];
         $disabled = [];
 
@@ -739,7 +733,7 @@ $app->post(
                     $redirect_url = $this->router->pathFor(
                         'contribution',
                         [
-                            'action'    => __('add', 'routes'),
+                            'action'    => 'add',
                             'type'      => $post['contrib_type']
                         ]
                     ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
@@ -748,7 +742,7 @@ $app->post(
                     $redirect_url = $this->router->pathFor(
                         'contributions',
                         [
-                            'type'      => __('contributions', 'routes')
+                            'type'      => 'contributions'
                         ]
                     ) . '?' . Adherent::PK . '=' . $contrib->member;
                 }
@@ -797,8 +791,7 @@ $app->post(
 )->setName('contribution')->add($authenticate);
 
 $app->get(
-    __('/transaction', 'routes') .
-        '/{action:' . __('add', 'routes') . '|' . __('edit', 'routes') .'}[/{id:\d+}]',
+    '/transaction/{action:add|edit}[/{id:\d+}]',
     function ($request, $response, $args) {
         $trans = null;
 
@@ -815,14 +808,14 @@ $app->get(
             $trans_id = $args['id'];
         }
 
-        if ($action === __('edit', 'routes') && $trans_id === null) {
+        if ($action === 'edit' && $trans_id === null) {
             throw new \RuntimeException(
                 _T("Transaction ID cannot ben null calling edit route!")
             );
-        } elseif ($action === __('add', 'routes') && $trans_id !== null) {
+        } elseif ($action === 'add' && $trans_id !== null) {
              return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('transaction', ['action' => __('add', 'routes')]));
+                ->withHeader('Location', $this->router->pathFor('transaction', ['action' => 'add']));
         }
 
         $transaction['trans_id'] = $trans_id;
@@ -840,7 +833,7 @@ $app->get(
         );
         $disabled = array();
 
-        if ($action === __('edit', 'routes')) {
+        if ($action === 'edit') {
             // initialize transactions structure with database values
             $trans->load($trans_id);
             if ($trans->id == '') {
@@ -851,7 +844,7 @@ $app->get(
 
         // template variable declaration
         $title = _T("Transaction");
-        if ($action === __('edit', 'routes')) {
+        if ($action === 'edit') {
             $title .= ' (' . _T("modification") . ')';
         } else {
             $title .= ' (' . _T("creation") . ')';
@@ -900,10 +893,10 @@ $app->get(
         //check if current attached member is part of the list
         if (isset($trans) && $trans->member > 0) {
             if (!isset($members[$trans->member])) {
-                $members = array_merge(
-                    [$trans->member => Adherent::getSName($this->zdb, $trans->member, true)],
+                $members =
+                    [$trans->member => Adherent::getSName($this->zdb, $trans->member, true)] +
                     $members
-                );
+                ;
             }
         }
 
@@ -922,7 +915,7 @@ $app->get(
 )->setName('transaction')->add($authenticate);
 
 $app->get(
-    __('/transaction', 'routes') . '/{id}' . __('/attach', 'routes') . '/{cid}',
+    '/transaction/{id}/attach/{cid}',
     function ($request, $response, $args) {
         if (!Contribution::setTransactionPart($this->zdb, $args['id'], $args['cid'])) {
             $this->flash->addMessage(
@@ -940,13 +933,13 @@ $app->get(
             ->withStatus(301)
             ->withHeader('Location', $this->router->pathFor(
                 'transaction',
-                ['action' => __('edit', 'routes'), 'id' => $args['id']]
+                ['action' => 'edit', 'id' => $args['id']]
             ));
     }
 )->setName('attach_contribution')->add($authenticate);
 
 $app->get(
-    __('/transaction', 'routes') . '/{id}' . __('/detach', 'routes') . '/{cid}',
+    '/transaction/{id}/detach/{cid}',
     function ($request, $response, $args) {
         if (!Contribution::unsetTransactionPart($this->zdb, $this->login, $args['id'], $args['cid'])) {
             $this->flash->addMessage(
@@ -964,14 +957,13 @@ $app->get(
             ->withStatus(301)
             ->withHeader('Location', $this->router->pathFor(
                 'transaction',
-                ['action' => __('edit', 'routes'), 'id' => $args['id']]
+                ['action' => 'edit', 'id' => $args['id']]
             ));
     }
 )->setName('detach_contribution')->add($authenticate);
 
 $app->post(
-    __('/transaction', 'routes') .
-        '/{action:' . __('add', 'routes') . '|' . __('edit', 'routes') .'}[/{id:\d+}]',
+    '/transaction/{action:add|edit}[/{id:\d+}]',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
         $trans = new Transaction($this->zdb, $this->login);
@@ -982,11 +974,11 @@ $app->post(
             $trans_id = $args['id'];
         }
 
-        if ($action === __('edit', 'routes') && $trans_id === null) {
+        if ($action === 'edit' && $trans_id === null) {
             throw new \RuntimeException(
                 _T("Transaction ID cannot ben null calling edit route!")
             );
-        } elseif ($action === __('add', 'routes') && $trans_id !== null) {
+        } elseif ($action === 'add' && $trans_id !== null) {
             throw new \RuntimeException(
                 _T("Transaction ID cannot ben set while adding!")
             );
@@ -1007,7 +999,7 @@ $app->post(
         );
         $disabled = array();
 
-        if ($action === __('edit', 'routes')) {
+        if ($action === 'edit') {
             // initialize transactions structure with database values
             $trans->load($trans_id);
             if ($trans->id == '') {
@@ -1045,8 +1037,8 @@ $app->post(
         if (count($error_detected) == 0) {
             if ($trans->getMissingAmount() > 0) {
                 $rparams = [
-                    'action'    => __('add', 'routes'),
-                    'type'      => __('fee', 'routes')
+                    'action'    => 'add',
+                    'type'      => $post['contrib_type']
                 ];
 
                 if (isset($trans->member)) {
@@ -1075,7 +1067,7 @@ $app->post(
                     ->withStatus(301)
                     ->withHeader(
                         'Location',
-                        $this->router->pathFor('contributions', ['type' => __('transactions', 'routes')])
+                        $this->router->pathFor('contributions', ['type' => 'transactions'])
                     );
             }
         } else {
@@ -1099,20 +1091,19 @@ $app->post(
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('contributions', ['type' => __('transactions', 'routes')]));
+            ->withHeader('Location', $this->router->pathFor('contributions', ['type' => 'transactions']));
     }
 )->setName('doEditTransaction')->add($authenticate);
 
 $app->get(
-    '/{type:' . __('contributions', 'routes') .'|' . __('transactions', 'routes') .'}' .
-        __('/remove', 'routes') .'/{id:\d+}',
+    '/{type:contributions|transactions}/remove' .'/{id:\d+}',
     function ($request, $response, $args) {
         $raw_type = null;
         switch ($args['type']) {
-            case __('transactions', 'routes'):
+            case 'transactions':
                 $raw_type = 'transactions';
                 break;
-            case __('contributions', 'routes'):
+            case 'contributions':
                 $raw_type = 'contributions';
                 break;
         }
@@ -1147,17 +1138,16 @@ $app->get(
 )->setName('removeContribution')->add($authenticate);
 
 $app->post(
-    '/{type:' . __('contributions', 'routes') .'|' . __('transactions', 'routes') .'}' .
-        __('/batch', 'routes') . __('/remove', 'routes'),
+    '/{type:contributions|transactions}/batch/remove',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
 
         $raw_type = null;
         switch ($args['type']) {
-            case __('transactions', 'routes'):
+            case 'transactions':
                 $raw_type = 'transactions';
                 break;
-            case __('contributions', 'routes'):
+            case 'contributions':
                 $raw_type = 'contributions';
                 break;
         }
@@ -1198,8 +1188,7 @@ $app->post(
 )->setName('removeContributions')->add($authenticate);
 
 $app->post(
-    '/{type:' . __('contributions', 'routes') .'|' . __('transactions', 'routes') .'}' .
-        __('/remove', 'routes') .'[/{id}]',
+    '/{type:contributions|transactions}/remove[/{id}]',
     function ($request, $response, $args) {
         $ids = null;
         $post = $request->getParsedBody();
@@ -1214,10 +1203,10 @@ $app->post(
 
         $raw_type = null;
         switch ($args['type']) {
-            case __('transactions', 'routes'):
+            case 'transactions':
                 $raw_type = 'transactions';
                 break;
-            case __('contributions', 'routes'):
+            case 'contributions':
                 $raw_type = 'contributions';
                 break;
         }
@@ -1277,7 +1266,7 @@ $app->post(
 
 //Contribution PDF
 $app->get(
-    __('/contribution', 'routes') . __('/print', 'routes') . '/{id:\d+}',
+    '/contribution/print/{id:\d+}',
     function ($request, $response, $args) {
         $contribution = new Contribution($this->zdb, $this->login, (int)$args['id']);
         $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);

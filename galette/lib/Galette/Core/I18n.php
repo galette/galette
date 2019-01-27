@@ -119,8 +119,6 @@ class I18n
      */
     public function updateEnv()
     {
-        global $disable_gettext;
-
         setlocale(LC_ALL, $this->getLongID());
 
         if (putenv("LANG=" . $this->getLongID())
@@ -131,29 +129,9 @@ class I18n
             //main translation domain
             $domain = 'galette';
             bindtextdomain($domain, $textdomain);
-            //routes translation domain
-            $routes_domain = 'routes';
-            bindtextdomain($routes_domain, $textdomain);
             //set default translation domain and encoding
             textdomain($domain);
             bind_textdomain_codeset($domain, 'UTF-8');
-            bind_textdomain_codeset($routes_domain, 'UTF-8');
-        }
-
-        if ($disable_gettext) {
-            /*if (isset($GLOBALS['lang'])) {
-                unset($GLOBALS['lang']);
-            }*/
-            $domains = ['galette', 'routes'];
-            foreach ($domains as $domain) {
-                include GALETTE_ROOT . 'lang/' . $domain . '_' . $this->getLongID() . '.php';
-                //check if a local lang file exists and load it
-                $locfile = GALETTE_ROOT . 'lang/' . $domain . '_' . $this->getLongID() . '_local.php';
-                if (file_exists($locfile)) {
-                    include $locfile;
-                }
-                $GLOBALS['lang'] = $lang;
-            }
         }
     }
 

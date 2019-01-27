@@ -65,7 +65,7 @@ use Galette\Repository\PaymentTypes;
 
 //self subscription
 $app->get(
-    __('/subscribe', 'routes'),
+    '/subscribe',
     function ($request, $response) {
         if (!$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged()) {
             return $response
@@ -123,7 +123,7 @@ $app->get(
 
 //members list CSV export
 $app->get(
-    __('/members', 'routes') . __('/export', 'routes') . __('/csv', 'routes'),
+    '/members/export/csv',
     function ($request, $response) {
         $csv = new CsvOut();
 
@@ -320,7 +320,7 @@ $app->get(
 
 //members list
 $app->get(
-    __('/members', 'routes') . '[/{option:' . __('page', 'routes') . '|' . __('order', 'routes') . '}/{value:\d+}]',
+    '/members[/{option:page|order}/{value:\d+}]',
     function ($request, $response, $args = []) {
         $option = null;
         if (isset($args['option'])) {
@@ -339,10 +339,10 @@ $app->get(
 
         if ($option !== null) {
             switch ($option) {
-                case __('page', 'routes'):
+                case 'page':
                     $filters->current_page = (int)$value;
                     break;
-                case __('order', 'routes'):
+                case 'order':
                     $filters->orderby = $value;
                     break;
             }
@@ -390,7 +390,7 @@ $app->get(
 
 //members list filtering
 $app->post(
-    __('/members', 'routes') . __('/filter', 'routes'),
+    '/members/filter',
     function ($request, $response) {
         $post = $request->getParsedBody();
         if (isset($this->session->filter_members)) {
@@ -528,7 +528,7 @@ $app->post(
 
 //members self card
 $app->get(
-    __('/member', 'routes') . __('/me', 'routes'),
+    '/member/me',
     function ($request, $response) {
         if ($this->login->isSuperAdmin()) {
             return $response
@@ -571,7 +571,7 @@ $app->get(
 
 //members card
 $app->get(
-    __('/member', 'routes') . '/{id:\d+}',
+    '/member/{id:\d+}',
     function ($request, $response, $args) {
         $id = $args['id'];
 
@@ -655,7 +655,7 @@ $app->get(
 )->setName('member')->add($authenticate)->add($navMiddleware);
 
 $app->get(
-    __('/member', 'routes') . '/{action:' . __('edit', 'routes') . '|' . __('add', 'routes') . '}[/{id:\d+}]',
+    '/member/{action:edit|add}[/{id:\d+}]',
     function ($request, $response, $args) {
         $action = $args['action'];
         $id = null;
@@ -663,14 +663,14 @@ $app->get(
             $id = $args['id'];
         }
 
-        if ($action === __('edit', 'routes') && $id === null) {
+        if ($action === 'edit' && $id === null) {
             throw new \RuntimeException(
                 _T("Member ID cannot ben null calling edit route!")
             );
-        } elseif ($action === __('add', 'routes') && $id !== null) {
+        } elseif ($action === 'add' && $id !== null) {
              return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('editmember', ['action' => __('add', 'routes')]));
+                ->withHeader('Location', $this->router->pathFor('editmember', ['action' => 'add']));
         }
         $deps = array(
             'picture'   => true,
@@ -734,7 +734,7 @@ $app->get(
         foreach ($parent_fields as $key => $field) {
             if ($fc->isRequired($field) && $member->hasParent()) {
                 $fc->setNotRequired($field);
-            } else {
+            } elseif (!$fc->isRequired($field)) {
                 unset($parent_fields[$key]);
             }
         }
@@ -798,7 +798,7 @@ $app->get(
 )->add($authenticate)->add($navMiddleware);
 
 $app->post(
-    __('/member', 'routes') . __('/store', 'routes') . '[/{self:' . __('subscribe', 'routes') . '}]',
+    '/member/store[/{self:subscribe}]',
     function ($request, $response, $args) {
         if (!$this->preferences->pref_bool_selfsubscribe && !$this->login->isLogged()) {
             return $response
@@ -871,7 +871,7 @@ $app->post(
         }
 
         if ($member->hasParent() && !isset($post['detach_parent'])
-            || isset($post['parent']) && !empty($post['parent'])
+            || isset($post['parent_id']) && !empty($post['parent_id'])
         ) {
             $parent_fields = $member->getParentFields();
             foreach ($parent_fields as $field) {
@@ -1215,8 +1215,8 @@ $app->post(
                             $this->router->pathFor(
                                 'contribution',
                                 [
-                                    'type'      => __('fee', 'routes'),
-                                    'action'    => __('add', 'routes'),
+                                    'type'      => 'fee',
+                                    'action'    => 'add',
                                 ]
                             ) . '?id_adh=' . $member->id
                         );
@@ -1240,10 +1240,10 @@ $app->post(
                     if ($member->id) {
                         $rparams = [
                             'id'    => $member->id,
-                            'action'    => __('edit', 'routes')
+                            'action'    => 'edit'
                         ];
                     } else {
-                        $rparams = ['action' => __('add', 'routes')];
+                        $rparams = ['action' => 'add'];
                     }
                     $redirect_url = $this->router->pathFor(
                         'editmember',
@@ -1260,7 +1260,7 @@ $app->post(
 )->setName('storemembers');
 
 $app->get(
-    __('/member', 'routes') . __('/remove', 'routes') . '/{id:\d+}',
+    '/member/remove/{id:\d+}',
     function ($request, $response, $args) {
         $adh = new Adherent($this->zdb, (int)$args['id']);
 
@@ -1290,7 +1290,7 @@ $app->get(
 )->setName('removeMember')->add($authenticate);
 
 $app->get(
-    __('/members', 'routes') . __('/remove', 'routes'),
+    '/members/remove',
     function ($request, $response) {
         $filters =  $this->session->filter_members;
 
@@ -1322,7 +1322,7 @@ $app->get(
 )->setName('removeMembers')->add($authenticate);
 
 $app->post(
-    __('/member', 'routes') . __('/remove', 'routes') . '[/{id:\d+}]',
+    '/member/remove' . '[/{id:\d+}]',
     function ($request, $response) {
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
@@ -1410,7 +1410,7 @@ $app->post(
 
 //advanced search page
 $app->get(
-    __('/advanced-search', 'routes'),
+    '/advanced-search',
     function ($request, $response) {
         if (isset($this->session->filter_members)) {
             $filters = $this->session->filter_members;
@@ -1509,7 +1509,7 @@ $app->get(
 
 //Batch actions on members list
 $app->post(
-    __('/members', 'routes') . __('/batch', 'routes'),
+    '/members/batch',
     function ($request, $response) {
         $post = $request->getParsedBody();
 
@@ -1581,7 +1581,7 @@ $app->post(
 
 //PDF members cards
 $app->get(
-    __('/members', 'routes') . __('/cards', 'routes') . '[/{' . Adherent::PK . ':\d+}]',
+    '/members/cards[/{' . Adherent::PK . ':\d+}]',
     function ($request, $response, $args) {
         if ($this->session->filter_members) {
             $filters =  $this->session->filter_members;
@@ -1705,7 +1705,7 @@ $app->get(
 
 //PDF members labels
 $app->get(
-    __('/members', 'routes') . __('/labels', 'routes'),
+    '/members/labels',
     function ($request, $response) {
         $get = $request->getQueryParams();
 
@@ -1770,7 +1770,7 @@ $app->get(
 
 //PDF adhesion form
 $app->get(
-    __('/members', 'routes') . __('/adhesion-form', 'routes') . '/{' . Adherent::PK . ':\d+}',
+    '/members/adhesion-form/{' . Adherent::PK . ':\d+}',
     function ($request, $response, $args) {
         $id_adh = (int)$args[Adherent::PK];
 
@@ -1823,7 +1823,7 @@ $app->get(
 
 //Empty PDF adhesion form
 $app->get(
-    __('/members', 'routes') . __('/empty-adhesion-form', 'routes'),
+    '/members/empty-adhesion-form',
     function ($request, $response) {
         $form = $this->preferences->pref_adhesion_form;
         $pdf = new $form(null, $this->zdb, $this->preferences);
@@ -1833,7 +1833,7 @@ $app->get(
 
 //mailing
 $app->get(
-    __('/mailing', 'routes'),
+    '/mailing',
     function ($request, $response) {
         $get = $request->getQueryParams();
 
@@ -1968,7 +1968,7 @@ $app->get(
 )->setName('mailing')->add($authenticate);
 
 $app->post(
-    __('/mailing', 'routes'),
+    '/mailing',
     function ($request, $response) {
         $post = $request->getParsedBody();
         $error_detected = [];
@@ -2194,7 +2194,7 @@ $app->post(
 
 $app->map(
     ['GET', 'POST'],
-    __('/mailing', 'routes') . __('/preview', 'routes') . '[/{id:\d+}]',
+    '/mailing/preview[/{id:\d+}]',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
         // check for ajax mode
@@ -2261,7 +2261,7 @@ $app->map(
 )->setName('mailingPreview')->add($authenticate);
 
 $app->get(
-    __('/mailing', 'routes') . __('/preview', 'routes') . '/{id:\d+}' . __('/attachment', 'routes') . '/{pos:\d+}',
+    '/mailing/preview/{id:\d+}/attachment/{pos:\d+}',
     function ($request, $response, $args) {
         $mailing = new Mailing($this->preferences, null);
         MailingHistory::loadFrom($this->zdb, (int)$args['id'], $mailing, false);
@@ -2280,7 +2280,7 @@ $app->get(
 )->setName('previewAttachment')->add($authenticate);
 
 $app->post(
-    __('/ajax', 'routes') . __('/mailing', 'routes') . __('/set-recipients', 'routes'),
+    '/ajax/mailing/set-recipients',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
         $mailing = $this->session->mailing;
@@ -2316,7 +2316,7 @@ $app->post(
 
 //reminders
 $app->get(
-    __('/reminders', 'routes'),
+    '/reminders',
     function ($request, $response) {
         $texts = new Texts($this->texts_fields, $this->preferences, $this->router);
 
@@ -2347,7 +2347,7 @@ $app->get(
 )->setName('reminders')->add($authenticate);
 
 $app->post(
-    __('/reminders', 'routes'),
+    '/reminders',
     function ($request, $response) {
         $error_detected = [];
         $warning_detected = [];
@@ -2438,20 +2438,18 @@ $app->post(
 )->setName('doReminders')->add($authenticate);
 
 $app->get(
-    __('/members', 'routes') . __('/reminder-filter', 'routes') .
-        '/{membership:' . __('nearly', 'routes') . '|' . __('late', 'routes')  . '}' .
-        '/{mail:' . __('withmail', 'routes'). '|' . __('withoutmail', 'routes') . '}',
+    '/members/reminder-filter/{membership:nearly|late}/{mail:withmail|withoutmail}',
     function ($request, $response, $args) {
         //always reset filters
         $filters = new MembersList();
         $filters->account_status_filter = Members::ACTIVE_ACCOUNT;
 
-        $membership = ($args['membership'] === __('nearly', 'routes') ?
+        $membership = ($args['membership'] === 'nearly' ?
             Members::MEMBERSHIP_NEARLY :
             Members::MEMBERSHIP_LATE);
         $filters->membership_filter = $membership;
 
-        $mail = ($args['mail'] === __('withmail', 'routes') ?
+        $mail = ($args['mail'] === 'withmail' ?
             Members::FILTER_W_EMAIL :
             Members::FILTER_WO_EMAIL);
         $filters->email_filter = $mail;
@@ -2466,7 +2464,7 @@ $app->get(
 
 $app->map(
     ['GET', 'POST'],
-    __('/attendance-sheet', 'routes') . __('/details', 'routes'),
+    '/attendance-sheet/details',
     function ($request, $response) {
         $post = $request->getParsedBody();
 
@@ -2509,7 +2507,7 @@ $app->map(
 )->setName('attendance_sheet_details')->add($authenticate);
 
 $app->post(
-    __('/attendance-sheet', 'routes'),
+    '/attendance-sheet',
     function ($request, $response) {
         $post = $request->getParsedBody();
 
@@ -2590,8 +2588,7 @@ $app->post(
 )->setName('attendance_sheet')->add($authenticate);
 
 $app->post(
-    __('/ajax', 'routes') . __('/members', 'routes') .
-    '[/{option:' . __('page', 'routes') . '|' . __('order', 'routes') . '}/{value:\d+}]',
+    '/ajax/members[/{option:page|order}/{value:\d+}]',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
 
@@ -2601,7 +2598,7 @@ $app->post(
             $filters = new MembersList();
         }
 
-        if (isset($args['option']) && $args['option'] == __('page', 'routes')) {
+        if (isset($args['option']) && $args['option'] == 'page') {
             $filters->current_page = (int)$args['value'];
         }
 
@@ -2724,7 +2721,7 @@ $app->post(
 )->setName('ajaxMembers')->add($authenticate);
 
 $app->post(
-    __('/ajax', 'routes') . __('/group', 'routes') . __('/members', 'routes'),
+    '/ajax/group/members',
     function ($request, $response) {
         $post = $request->getParsedBody();
 
@@ -2756,7 +2753,7 @@ $app->post(
 )->setName('ajaxGroupMembers')->add($authenticate);
 
 $app->get(
-    __('/member', 'routes') . '/{id:\d+}' . __('/file', 'routes') . '/{fid:\d+}/{pos:\d+}/{name}',
+    '/member/{id:\d+}/file/{fid:\d+}/{pos:\d+}/{name}',
     function ($request, $response, $args) {
         $denied = false;
         $id = (int)$args['id'];
@@ -2871,7 +2868,7 @@ $app->get(
 )->setName('getDynamicFile')->add($authenticate);
 
 $app->get(
-    __('/members', 'routes') . __('/mass-change', 'routes'),
+    '/members/mass-change',
     function ($request, $response) {
         $filters =  $this->session->filter_members;
 
@@ -2923,7 +2920,7 @@ $app->get(
 )->setName('masschangeMembers')->add($authenticate);
 
 $app->post(
-    __('/members', 'routes') . __('/mass-change', 'routes') . __('/validate', 'routes'),
+    '/members/mass-change/validate',
     function ($request, $response) {
         $post = $request->getParsedBody();
 
@@ -2983,7 +2980,7 @@ $app->post(
 )->setName('masschangeMembersReview')->add($authenticate);
 
 $app->post(
-    __('/members', 'routes') . __('/mass-change', 'routes'),
+    '/members/mass-change',
     function ($request, $response, $args) {
         $post = $request->getParsedBody();
         $redirect_url = $post['redirect_uri'];
@@ -3112,7 +3109,7 @@ $app->post(
 
 //Duplicate member
 $app->get(
-    __('/members', 'routes') . __('/duplicate', 'routes') . '/{' . Adherent::PK . ':\d+}',
+    '/members/duplicate/{' . Adherent::PK . ':\d+}',
     function ($request, $response, $args) {
         $id_adh = (int)$args[Adherent::PK];
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
@@ -3123,6 +3120,6 @@ $app->get(
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('editmember', ['action' => __('add', 'routes')]));
+            ->withHeader('Location', $this->router->pathFor('editmember', ['action' => 'add']));
     }
 )->setName('duplicateMember')->add($authenticate);

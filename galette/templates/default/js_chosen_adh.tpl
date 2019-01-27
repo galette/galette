@@ -1,17 +1,20 @@
+{if !isset($js_chosen_id)}
+    {assign var="js_chosen_id" value="#id_adh"}
+{/if}
     var _current_page = {$members.filters->current_page};
     var _membersLoaded = function(members) {
         for (var id in members) {
             var member = members[id];
-            $('#id_adh').append($('<option value="' + id + '">' + member + '</option>'));
+            $('{$js_chosen_id}').append($('<option value="' + id + '">' + member + '</option>'));
         }
-        $('#id_adh').trigger('chosen:updated');
+        $('{$js_chosen_id}').trigger('chosen:updated');
         _chosenPages();
     }
 
     var _chosenPages = function(event) {
     {if $members.filters->pages > $members.filters->current_page}
         if ($('#nextpage').length == 0 && _current_page < {$members.filters->pages}) {
-            if ($('#id_adh option').length < {$members.filters->show}) {
+            if ($('{$js_chosen_id} option').length < {$members.filters->show}) {
                 //not enough entries
                 return;
             }
@@ -41,7 +44,7 @@
                     }
                 });
             });
-            $('#id_adh_chosen .chosen-results').append(_next);
+            $('{$js_chosen_id}_chosen .chosen-results').append(_next);
         }
     {/if}
     {if $members.filters->current_page > 1}
@@ -50,31 +53,32 @@
             _prev.on('click', function (event) {
                 event.preventDefault();
             });
-            $('#id_adh_chosen .chosen-results').prepend(_prev);
+            $('{$js_chosen_id}_chosen .chosen-results').prepend(_prev);
         }
     {/if}
     }
 
     $(function() {
-        $('#id_adh').on('chosen:showing_dropdown', _chosenPages);
+        $('{$js_chosen_id}').on('chosen:showing_dropdown', _chosenPages);
 
-        $('#id_adh').chosen({
+        $('{$js_chosen_id}').chosen({
             allow_single_deselect: true,
             disable_search: false
         });
 
-        $('.chosen-search input').autocomplete({
+        $('{$js_chosen_id}_chosen .chosen-search input').autocomplete({
             source: function( request, response ) {
+                var _this = $(this);
                 $.ajax({
                     type: 'POST',
-                    url: '{path_for name="contributionMembers" data=[{_T string="page" domain="routes"} => 1, {_T string="search" domain="routes"} => "PLACEBO"]}'.replace(/PLACEBO/, request.term),
+                    url: '{path_for name="contributionMembers" data=["page" => 1, "search" => "PLACEBO"]}'.replace(/PLACEBO/, request.term),
                     dataType: "json",
                     success: function (res) {
                         if (res.count > 0) {
-                            var _elt = $('#id_adh')
+                            var _elt = $('{$js_chosen_id}')
                             _elt.empty();
                             _membersLoaded(res.members);
-                            $('.chosen-search input').val(request.term);
+                            _this.val(request.term);
                         }
                     }
                 });

@@ -62,7 +62,7 @@
                 <tr>
 {if $preferences->pref_show_id}
                     <th class="id_row">
-                        <a href="{path_for name="members" data=["option" => {_T string='order' domain="routes"}, "value" => "Galette\Repository\Members::ORDERBY_ID"|constant]}">
+                        <a href="{path_for name="members" data=["option" => "order", "value" => "Galette\Repository\Members::ORDERBY_ID"|constant]}">
                             {_T string="Mbr num"}
                             {if $filters->orderby eq constant('galette\Repository\Members::ORDERBY_ID')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -77,7 +77,7 @@
                     <th class="id_row">#</th>
 {/if}
                     <th class="left">
-                        <a href="{path_for name="members" data=["option" => {_T string='order' domain="routes"}, "value" => "Galette\Repository\Members::ORDERBY_NAME"|constant]}">
+                        <a href="{path_for name="members" data=["option" => "order", "value" => "Galette\Repository\Members::ORDERBY_NAME"|constant]}">
                             {_T string="Name"}
                             {if $filters->orderby eq constant('galette\Repository\Members::ORDERBY_NAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -89,7 +89,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="{path_for name="members" data=["option" => {_T string='order' domain="routes"}, "value" => "Galette\Repository\Members::ORDERBY_NICKNAME"|constant]}">
+                        <a href="{path_for name="members" data=["option" => "order", "value" => "Galette\Repository\Members::ORDERBY_NICKNAME"|constant]}">
                             {_T string="Nickname"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NICKNAME')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -101,7 +101,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="{path_for name="members" data=["option" => {_T string='order' domain="routes"}, "value" => "Galette\Repository\Members::ORDERBY_STATUS"|constant]}">
+                        <a href="{path_for name="members" data=["option" => "order", "value" => "Galette\Repository\Members::ORDERBY_STATUS"|constant]}">
                             {_T string="Status"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_STATUS')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -114,7 +114,7 @@
                     </th>
 {if $login->isAdmin() or $login->isStaff()}
                     <th class="left">
-                        <a href="{path_for name="members" data=["option" => {_T string='order' domain="routes"}, "value" => "Galette\Repository\Members::ORDERBY_FEE_STATUS"|constant]}">
+                        <a href="{path_for name="members" data=["option" => "order", "value" => "Galette\Repository\Members::ORDERBY_FEE_STATUS"|constant]}">
                             {_T string="State of dues"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_FEE_STATUS')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -126,7 +126,7 @@
                         </a>
                     </th>
                     <th class="left">
-                        <a href="{path_for name="members" data=["option" => {_T string='order' domain="routes"}, "value" => "Galette\Repository\Members::ORDERBY_MODIFDATE"|constant]}">
+                        <a href="{path_for name="members" data=["option" => "order", "value" => "Galette\Repository\Members::ORDERBY_MODIFDATE"|constant]}">
                             {_T string="Modified"}
                             {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_MODIFDATE')}
                                 {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
@@ -210,7 +210,7 @@
 {/if}
                     <td class="{$rclass} center nowrap actions_row">
                         <a
-                            href="{path_for name="editmember" data=["action" => {_T string="edit" domain="routes"}, "id" => $mid]}"
+                            href="{path_for name="editmember" data=["action" => "edit", "id" => $mid]}"
                             class="tooltip action"
                         >
                             <i class="fas fa-user-edit fa-fw" aria-hidden="true"></i>
@@ -218,7 +218,7 @@
                         </a>
 {if $login->isAdmin() or $login->isStaff()}
                         <a
-                            href="{path_for name="contributions" data=["type" => {_T string="contributions" domain="routes"}, "option" => {_T string="member" domain="routes"}, "value" => $member->id]}"
+                            href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $member->id]}"
                             class="tooltip"
                         >
                             <i class="fas fa-cookie fa-fw" aria-hidden="true"></i>
@@ -430,8 +430,7 @@
             $('#nbshow').change(function() {
                 this.form.submit();
             });
-            $('.selection_menu input[type="submit"], .selection_menu input[type="button"]').click(function(){
-
+            $('.selection_menu *[type="submit"], .selection_menu *[type="button"]').click(function(){
                 if ( this.id == 'delete' ) {
                     //mass removal is handled from 2 steps removal
                     return;

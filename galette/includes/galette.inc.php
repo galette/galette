@@ -35,9 +35,13 @@
  * @since     Available since 0.7-dev - 2007-10-07
  */
 
-if (!defined('GALETTE_PHP_MIN')) {
-    define('GALETTE_PHP_MIN', '7.1');
+//define galette's root directory
+if (!defined('GALETTE_ROOT')) {
+    define('GALETTE_ROOT', __DIR__ . '/../');
 }
+
+require_once GALETTE_ROOT . 'config/versions.inc.php';
+require_once GALETTE_ROOT . 'config/paths.inc.php';
 
 // check required PHP version...
 if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
@@ -50,18 +54,10 @@ if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
 $time_start = microtime(true);
 $cron = (PHP_SAPI === 'cli');
 
-//define galette's root directory
-if (!defined('GALETTE_ROOT')) {
-    define('GALETTE_ROOT', __DIR__ . '/../');
-}
-
 // define relative base path templating can use
 if (!defined('GALETTE_BASE_PATH')) {
     define('GALETTE_BASE_PATH', './');
 }
-
-require_once GALETTE_ROOT . 'config/versions.inc.php';
-require_once GALETTE_ROOT . 'config/paths.inc.php';
 
 //we'll only include relevant parts if we work from installer
 if (!isset($installer)) {
@@ -108,7 +104,7 @@ if (defined('GALETTE_XHPROF_PATH')
     $profiler->start();
 }
 
-define('GALETTE_VERSION', 'v0.9.2');
+define('GALETTE_VERSION', 'v0.9.2.1');
 define('GALETTE_COMPAT_VERSION', '0.9.2');
 define('GALETTE_DB_VERSION', '0.920');
 if (!defined('GALETTE_MODE')) {

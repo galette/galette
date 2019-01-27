@@ -2,7 +2,7 @@
 
 {block name="content"}
 {if isset($members.list)}
-        <form action="{if $contribution->id}{path_for name="contribution" data=["type" => $type, "action" => {_T string="edit" domain="routes"}, "id" => $contribution->id]}{else}{path_for name="contribution" data=["type" => $type, "action" => {_T string="add" domain="routes"}]}{/if}" method="post">
+        <form action="{if $contribution->id}{path_for name="contribution" data=["type" => $type, "action" => "edit", "id" => $contribution->id]}{else}{path_for name="contribution" data=["type" => $type, "action" => "add"]}{/if}" method="post">
         <div class="bigtable">
     {if $contribution->isTransactionPart()}
         {assign var="mid" value=$contribution->transaction->member}
@@ -12,7 +12,7 @@
                     <tr>
                         <td colspan="5">
                             {$contribution->transaction->description}
-                            <a href="{path_for name="transaction" data=["action" => {_T string="edit" domain="routes"}, "id" => $contribution->transaction->id]}" title="{_T string="View transaction"}">
+                            <a href="{path_for name="transaction" data=["action" => "edit", "id" => $contribution->transaction->id]}" title="{_T string="View transaction"}">
                                 <img src="{base_url}/{$template_subdir}images/icon-money.png"
                                     alt="{_T string="[view]"}"
                                     width="16"
@@ -41,7 +41,7 @@
     {/if}
             <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
             <fieldset class="cssform">
-                <legend class="ui-state-active ui-corner-top">{if $type eq {_T string="fee" domain="routes"}}{_T string="Select contributor and membership fee type"}{else}{_T string="Select contributor and donation type"}{/if}</legend>
+                <legend class="ui-state-active ui-corner-top">{if $type eq "fee"}{_T string="Select contributor and membership fee type"}{else}{_T string="Select contributor and donation type"}{/if}</legend>
                 <p>
                     <label for="id_adh" class="bline">{_T string="Contributor:"}</label>
                     <select name="id_adh" id="id_adh" class="nochosen"{if isset($disabled.id_adh)} {$disabled.id_adh}{/if}>
@@ -64,7 +64,7 @@
                         {html_options options=$type_cotis_options selected=$selectedid}
                     </select>
                 </p>
-    {if $type eq {_T string="fee" domain="routes"}}
+    {if $type eq "fee"}
                 <noscript>
                     <div class="button-container" id="reloadcont">
                         <input type="submit" id="btnreload" name="btnreload" value="{_T string="Reload"}" title="{_T string="Reload date informations according to selected member and contribution type"}"/>
@@ -74,7 +74,7 @@
             </fieldset>
 
             <fieldset class="cssform">
-                <legend class="ui-state-active ui-corner-top">{if $type eq {_T string="fee" domain="routes"}}{_T string="Details of membership fee"}{else}{_T string="Details of donation"}{/if}</legend>
+                <legend class="ui-state-active ui-corner-top">{if $type eq "fee"}{_T string="Details of membership fee"}{else}{_T string="Details of donation"}{/if}</legend>
                 <p>
                     <label class="bline" for="montant_cotis">{_T string="Amount:"}</label>
                     <input type="text" name="montant_cotis" id="montant_cotis" value="{$contribution->amount}" maxlength="10"{if $required.montant_cotis eq 1} required="required"{/if}/>
@@ -91,7 +91,7 @@
 
                 <p>
                     <label class="bline" for="date_debut_cotis">
-                        {if $type eq {_T string="fee" domain="routes"}}
+                        {if $type eq "fee"}
                             {_T string="Start date of membership:"}
                         {else}
                             {_T string="Date of contribution:"}
@@ -100,7 +100,7 @@
                     <input class="past-date-pick" type="text" name="date_debut_cotis" id="date_debut_cotis" value="{$contribution->begin_date}" maxlength="10"{if $required.date_debut_cotis eq 1} required="required"{/if}/>
                     <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
                 </p>
-        {if $type eq {_T string="fee" domain="routes"}}
+        {if $type eq "fee"}
                 <p>
             {if $pref_membership_ext != ""}
                     <label class="bline" for="duree_mois_cotis">{_T string="Membership extension:"}</label>
@@ -125,8 +125,8 @@
                 <p>
                     <span class="bline tooltip" title="{_T string="Select a contribution type to create for dispatch transaction"}">{_T string="Dispatch type:"}</span>
                     <span class="tip">{_T string="Select a contribution type to create for dispatch transaction"}</span>
-                    <input type="radio" name="contrib_type" id="contrib_type_fee" value="{_T string="fee" domain="routes"}" checked="checked"/> <label for="contrib_type_fee">{_T string="Membership fee"}</label>
-                    <input type="radio" name="contrib_type" id="contrib_type_donation" value="{_T string="donation" domain="routes"}"/> <label for="contrib_type_donation">{_T string="Donation"}</label>
+                    <input type="radio" name="contrib_type" id="contrib_type_fee" value="fee" checked="checked"/> <label for="contrib_type_fee">{_T string="Membership fee"}</label>
+                    <input type="radio" name="contrib_type" id="contrib_type_donation" value="donation"/> <label for="contrib_type_donation">{_T string="Donation"}</label>
                 </p>
             </fieldset>
     {/if}
@@ -154,7 +154,7 @@
         <p>
             {_T string="Unfortunately, there is no member in your database yet,"}
             <br/>
-            <a href="{path_for name="editmember" data=["action" => {_T string="add" domain="routes"}]}">{_T string="please create a member"}</a>
+            <a href="{path_for name="editmember" data=["action" => "add"]}">{_T string="please create a member"}</a>
         </p>
     </div>
 {/if}
@@ -162,7 +162,7 @@
 
 {block name="javascripts"}
 <script type="text/javascript">
-    {include file="js_chosen_adh.tpl"},
+    {include file="js_chosen_adh.tpl"}
 
     $(function() {
         $('#date_debut_cotis, #date_fin_cotis, #date_enreg').datepicker({
@@ -172,7 +172,7 @@
             buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
         });
 
-    {if $type eq {_T string="fee" domain="routes"} and !$contribution->id}
+    {if $type eq "fee" and !$contribution->id}
         $('#id_adh, #id_type_cotis').on('change', function() {
             var _this = $(this);
             var _member = $('#id_adh').val();
