@@ -20,6 +20,7 @@ commit = None
 extra = None
 sign = True
 assume_yes = False
+nightly = False
 
 def print_err(msg):
     """
@@ -148,6 +149,8 @@ def get_rel_name(buildver):
             now.strftime('%Y%m%d'),
             commit
         )
+    elif nightly:
+        archive_name = 'galette-dev'
     else:
         archive_name = 'galette-%s' % buildver
 
@@ -226,7 +229,7 @@ def _do_build(ver):
         print 'Building %s...' % rel_name
 
         archive_cmd_pattern = 'git archive --prefix=%s/ %s | bzip2 > %s'
-        if commit and extra:
+        if commit and extra or nightly:
             archive_cmd = archive_cmd_pattern % (
                 rel_name,
                 commit,
@@ -407,7 +410,7 @@ def main():
     """
     Main method
     """
-    global verbose, tagrefs, force, extra, assume_yes
+    global verbose, tagrefs, force, extra, assume_yes, nightly, sign
 
     parser = argparse.ArgumentParser(description='Release Galette')
     group = parser.add_mutually_exclusive_group()
@@ -444,6 +447,12 @@ def main():
         help='Be more verbose',
         action="store_true"
     )
+    parser.add_argument(
+        '-n',
+        '--nightly',
+        help='Build nightly',
+        action="store_true"
+    )
     parser.add_argument('-f', action='store_true')
     args = parser.parse_args()
 
@@ -464,7 +473,18 @@ def main():
 
     build = False
     buildver = None
-    if (args.extra or args.commit) and (not args.extra or not args.commit or not args.version):
+    if args.nightly:
+        nightly = True
+        buildver = 'dev'
+        args.commit = repo.commit('develop')
+        if valid_commit(repo, args.commit):
+            force = True
+            build = True
+            sign = False
+            assume_yes = True
+        else:
+            print_err('Invalid commit ref %s' % args.commit)
+    elif (args.extra or args.commit) and (not args.extra or not args.commit or not args.version):
         print_err('You have to specify --version --commit and --extra all together')
         sys.exit(1)
     elif args.commit and args.version and args.extra:
