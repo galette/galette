@@ -21,6 +21,7 @@ extra = None
 sign = True
 assume_yes = False
 nightly = False
+ssh_key = False
 
 def print_err(msg):
     """
@@ -285,11 +286,17 @@ def do_sign(archive):
     p1.communicate()
 
 def do_scp(archive):
+    global ssh_key
+
     path = 'galette/galette-repository/'
     if extra:
         path += 'dev/'
 
-    scp_cmd = 'scp -r %s* ssh.tuxfamily.org:%s' % (archive, path)
+    if ssh_key:
+        scp_cmd = 'scp -i %s %s* ssh.tuxfamily.org:%s' % (ssh_key, archive, path)
+    else:
+        scp_cmd = 'scp -r %s* ssh.tuxfamily.org:%s' % (archive, path)
+    print scp_cmd
     p1 = subprocess.Popen(scp_cmd, shell=True)
     p1.communicate()
 
@@ -410,7 +417,7 @@ def main():
     """
     Main method
     """
-    global verbose, tagrefs, force, extra, assume_yes, nightly, sign
+    global verbose, tagrefs, force, extra, assume_yes, nightly, sign, ssh_key
 
     parser = argparse.ArgumentParser(description='Release Galette')
     group = parser.add_mutually_exclusive_group()
@@ -453,6 +460,11 @@ def main():
         help='Build nightly',
         action="store_true"
     )
+    parser.add_argument(
+        '-k',
+        '--ssh-key',
+        help='SSH key to be used for uploading',
+    )
     parser.add_argument('-f', action='store_true')
     args = parser.parse_args()
 
@@ -470,6 +482,9 @@ def main():
             'Are you *REALLY* sure you mean -f when you typed -f? [yes/No] '
         )
     assume_yes=args.assume_yes
+
+    if args.ssh_key:
+        ssh_key = args.ssh_key
 
     build = False
     buildver = None
