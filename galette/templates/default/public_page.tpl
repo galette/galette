@@ -125,15 +125,15 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     {/if}
     {if $preferences->showPublicPages($login) eq true}
             <a
-                href="{path_for name="publicMembers"}" title="{_T string="Members list"}"
-                class="button{if $cur_route eq "publicMembers"} selected{/if}"
+                href="{path_for name="publicList" data=["type" => "list"]}" title="{_T string="Members list"}"
+                class="button{if $cur_route eq "publicList" and $cur_subroute eq "list"} selected{/if}"
             >
                 <i class="fas fa-address-book"></i>
                 {_T string="Members list"}
             </a>
             <a
-                class="button{if $cur_route eq "publicTrombinoscope"} selected{/if}"
-                href="{path_for name="publicTrombinoscope"}" title="{_T string="Trombinoscope"}"
+                class="button{if $cur_route eq "publicList" and $cur_subroute eq "trombi"} selected{/if}"
+                href="{path_for name="publicList" data=["type" => "trombi"]}" title="{_T string="Trombinoscope"}"
             >
                 <i class="fas fa-user-friends"></i>
                 {_T string="Trombinoscope"}

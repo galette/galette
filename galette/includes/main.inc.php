@@ -548,9 +548,8 @@ $app->add(function ($request, $response, $next) {
 
         $missing_acls = [];
         $excluded_names = [
-            'publicMembers',
-            'filterPublicMemberslist',
-            'publicTrombinoscope'
+            'publicList',
+            'filterPublicList'
         ];
         foreach ($routes as $route) {
             $name = $route->getName();

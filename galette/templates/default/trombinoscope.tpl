@@ -1,5 +1,20 @@
 {extends file="public_page.tpl"}
+
 {block name="content"}
+<form action="{path_for name="filterPublicList" data=["type" => "trombi"]}" method="POST" id="filtre">
+    <table class="infoline">
+        <tr>
+            <td class="left">{$nb_members} {if $nb_members != 1}{_T string="members"}{else}{_T string="member"}{/if}</td>
+            <td class="right">
+                <label for="nbshow">{_T string="Records per page:"}</label>
+                <select name="nbshow" id="nbshow">
+                    {html_options options=$nbshow_options selected=$numrows}
+                </select>
+                <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+            </td>
+        </tr>
+    </table>
+</form>
 {foreach from=$members item=member}
         <div class="trombino">
             {assign var="mid" value=$member->id}
@@ -9,4 +24,21 @@
 {foreachelse}
         <div id="infobox">{_T string="No member to show"}</div>
 {/foreach}
+
+<div class="center cright">
+    {_T string="Pages:"}<br/>
+    <ul class="pages">{$pagination}</ul>
+</div>
+{/block}
+
+{block name="javascripts"}
+    {if $members|@count > 0}
+        <script type="text/javascript">
+            $(function(){
+                $('#nbshow').change(function() {
+                    this.form.submit();
+                });
+            });
+        </script>
+    {/if}
 {/block}
