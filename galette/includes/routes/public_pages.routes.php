@@ -145,4 +145,24 @@ $app->group('/public', function () {
                 ->withHeader('Location', $this->router->pathFor('publicList', ['type' => $type]));
         }
     )->setName('filterPublicList');
+
+    $this->get(
+        '/members[/{option:page|order}/{value:\d+}]',
+        function ($request, $response, $args = []) {
+            $args['type'] = 'list';
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('publicList', $args));
+        }
+    );
+
+    $this->get(
+        '/trombinoscope',
+        function ($request, $response, $args = []) {
+            $args['type'] = 'trombi';
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('publicList', $args));
+        }
+    );
 })->add($showPublicPages);
