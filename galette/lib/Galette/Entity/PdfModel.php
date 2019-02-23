@@ -92,6 +92,9 @@ abstract class PdfModel
      */
     public function __construct(Db $zdb, $preferences, $type, $args = null)
     {
+        global $container;
+        $router = $container->get('router');
+
         if (!$zdb) {
             throw new \RuntimeException(
                 get_class($this) . ' Database instance required!'
@@ -127,7 +130,7 @@ abstract class PdfModel
 
         $logo = new Core\Logo();
         $logo_elt = '<img' .
-            ' src="'    . $logo->getPath()          . '"' .
+            ' src="'    . $preferences->getURL() . $router->pathFor('logo')  . '"' .
             ' width="'  . $logo->getOptimalWidth()  . '"' .
             ' height="' . $logo->getOptimalHeight() . '"' .
             '/>';
