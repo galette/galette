@@ -238,12 +238,12 @@
                 </p>
                 <p>
                     <label for="pref_email_newadh" class="bline tooltip">{_T string="Members administrator's Email:"}</label>
-                    <span class="tip">{_T string="Recipient of new online registation emails"}</span>
+                    <span class="tip">{_T string="Recipient of new online registation and edition emails"}</span>
                     <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{$pref.pref_email_newadh}" maxlength="100" size="30"{if isset($required.pref_email_newadh) and $required.pref_email_newadh eq 1} required="required"{/if}/>
                 </p>
                 <p>
                     <label for="pref_bool_mailadh" class="bline tooltip">{_T string="Send email to administrators?"}</label>
-                    <span class="tip">{_T string="Sends an email each time a new member registers online"}</span>
+                    <span class="tip">{_T string="Sends an email each time a new member registers online or edit his/her account"}</span>
                     <input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" value="1" {if $pref.pref_bool_mailadh eq 1}checked="checked"{/if}{if isset($required.pref_bool_mailadh) and $required.pref_bool_mailadh eq 1} required="required"{/if}/>
                 </p>
                 <p>

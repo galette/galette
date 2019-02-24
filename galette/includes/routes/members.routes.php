@@ -982,7 +982,7 @@ $app->post(
                             $mail->setSubject($texts->getSubject());
                             $mail->setRecipients(
                                 array(
-                                    $this->preferences->pref_email_newadh => _T("Galette admin")
+                                    $this->preferences->pref_email_newadh => $this->preferences->pref_email_nom
                                 )
                             );
                             $mail->setMessage($texts->getBody());
@@ -1112,6 +1112,66 @@ $app->post(
                             //we do not throw an error, just a simple warning that will be show later
                             $msg = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
                             $warning_detected[] = $msg;
+                        }
+                    }
+
+                    // send mail to admin
+                    if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+                        && $this->preferences->pref_bool_mailadh
+                        && !$new
+                        && $member->id == $this->login->id
+                    ) {
+                        $mreplaces = [
+                            'name_adh'      => custom_html_entity_decode(
+                                $member->sname
+                            ),
+                            'firstname_adh' => custom_html_entity_decode(
+                                $member->surname
+                            ),
+                            'lastname_adh'  => custom_html_entity_decode(
+                                $member->name
+                            ),
+                            'mail_adh'      => custom_html_entity_decode(
+                                $member->getEmail()
+                            ),
+                            'login_adh'     => custom_html_entity_decode(
+                                $member->login
+                            )
+                        ];
+
+                        //send mail to member
+                        // Get email text in database
+                        $texts = new Texts(
+                            $this->texts_fields,
+                            $this->preferences,
+                            $this->router,
+                            $mreplaces
+                        );
+                        $mlang = $this->preferences->pref_lang;
+
+                        $mtxt = $texts->getTexts(
+                            'admaccountedited',
+                            $mlang
+                        );
+
+                        $mail = new GaletteMail($this->preferences);
+                        $mail->setSubject($texts->getSubject());
+                        $mail->setRecipients(
+                            array(
+                                $this->preferences->pref_email_newadh => $this->preferences->pref_email_nom
+                            )
+                        );
+                        $mail->setMessage($texts->getBody());
+                        $sent = $mail->send();
+
+                        if ($sent == GaletteMail::MAIL_SENT) {
+                            $msg = _T("Account modification mail sent to admin.");
+                            $this->history->add($msg);
+                            $success_detected[] = $msg;
+                        } else {
+                            $str = _T("A problem happened while sending account mail to admin");
+                            $this->history->add($str);
+                            $error_detected[] = $str;
                         }
                     }
 
