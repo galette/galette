@@ -342,11 +342,11 @@
             switch (_val) {
                 case '{Galette\Core\GaletteMail::SENDER_PREFS}':
                     _sender_name.val('{$preferences->pref_email_nom}');
-                    _sender_address.val('{$preferences->pref_email}');
+                    _sender_address.val('{$preferences->pref_email|escape:"js"}');
                     break;
                 case '{Galette\Core\GaletteMail::SENDER_CURRENT}':
                     _sender_name.val('{$sender_current['name']}');
-                    _sender_address.val('{$sender_current['email']}');
+                    _sender_address.val('{$sender_current['email']|escape:"js"}');
                     break;
                 case '{Galette\Core\GaletteMail::SENDER_OTHER}':
                     _sender_name.val('');
