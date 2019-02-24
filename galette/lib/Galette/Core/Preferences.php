@@ -60,6 +60,7 @@ class Preferences
 {
     private $zdb;
     private $prefs;
+    private $errors = [];
 
     const TABLE = 'preferences';
     const PK = 'nom_pref';
@@ -168,6 +169,29 @@ class Preferences
         'pref_footer' => '',
         'pref_filter_account' => Members::ALL_ACCOUNTS,
         'pref_galette_url' => ''
+    );
+
+    // flagging required fields
+    private $required = array(
+        'pref_nom',
+        'pref_lang',
+        'pref_numrows',
+        'pref_log',
+        'pref_etiq_marges_v',
+        'pref_etiq_marges_h',
+        'pref_etiq_hspace',
+        'pref_etiq_vspace',
+        'pref_etiq_hsize',
+        'pref_etiq_vsize',
+        'pref_etiq_cols',
+        'pref_etiq_rows',
+        'pref_etiq_corps',
+        'pref_card_abrev',
+        'pref_card_strip',
+        'pref_card_marges_v',
+        'pref_card_marges_h',
+        'pref_card_hspace',
+        'pref_card_vspace'
     );
 
     /**
@@ -333,6 +357,225 @@ class Preferences
     public function getFieldsNames()
     {
         return array_keys($this->prefs);
+    }
+
+    /**
+     * Check values
+     *
+     * @param array $values Values
+     * @param Login $login  Logged in user
+     *
+     * @return boolean
+     */
+    public function check(array $values, Login $login)
+    {
+        $insert_values = array();
+        if ($login->isSuperAdmin() && GALETTE_MODE !== 'DEMO') {
+            $this->required[] = 'pref_admin_login';
+        }
+
+        // obtain fields
+        foreach ($this->getFieldsNames() as $fieldname) {
+            if (isset($values[$fieldname])) {
+                $value = trim($values[$fieldname]);
+            } else {
+                $value="";
+            }
+
+            // now, check validity
+            if ($value != '') {
+                switch ($fieldname) {
+                    case 'pref_admin_login':
+                        if (GALETTE_MODE === 'DEMO') {
+                            Analog::log(
+                                'Trying to set superadmin login while in DEMO.',
+                                Analog::WARNING
+                            );
+                        } else {
+                            if (strlen($value) < 4) {
+                                $this->errors[] = _T("- The username must be composed of at least 4 characters!");
+                            } else {
+                                //check if login is already taken
+                                if ($login->loginExists($value)) {
+                                    $this->errors[] = _T("- This username is already used by another member !");
+                                }
+                            }
+                        }
+                        break;
+                    case 'pref_numrows':
+                        if (!is_numeric($value) || $value < 0) {
+                            $this->errors[] = _T("- The numbers and measures have to be integers!");
+                        }
+                        break;
+                    case 'pref_etiq_marges_h':
+                    case 'pref_etiq_marges_v':
+                    case 'pref_etiq_hspace':
+                    case 'pref_etiq_vspace':
+                    case 'pref_etiq_hsize':
+                    case 'pref_etiq_vsize':
+                    case 'pref_etiq_cols':
+                    case 'pref_etiq_rows':
+                    case 'pref_etiq_corps':
+                    case 'pref_card_marges_v':
+                    case 'pref_card_marges_h':
+                    case 'pref_card_hspace':
+                    case 'pref_card_vspace':
+                        // prevent division by zero
+                        if ($fieldname=='pref_numrows' && $value=='0') {
+                            $value = '10';
+                        }
+                        if (!is_numeric($value) || $value < 0) {
+                            $this->errors[] = _T("- The numbers and measures have to be integers!");
+                        }
+                        break;
+                    case 'pref_card_tcol':
+                        // Set strip text color to white
+                        if (! preg_match("/#([0-9A-F]{6})/i", $value)) {
+                            $value = '#FFFFFF';
+                        }
+                        break;
+                    case 'pref_card_scol':
+                    case 'pref_card_bcol':
+                    case 'pref_card_hcol':
+                        // Set strip background colors to black
+                        if (!preg_match("/#([0-9A-F]{6})/i", $value)) {
+                            $value = '#000000';
+                        }
+                        break;
+                    case 'pref_admin_pass':
+                        if (GALETTE_MODE == 'DEMO') {
+                            Analog::log(
+                                'Trying to set superadmin pass while in DEMO.',
+                                Analog::WARNING
+                            );
+                        } else {
+                            if (strlen($value) < 4) {
+                                $this->errors[] = _T("- The password must be of at least 4 characters!");
+                            }
+                        }
+                        break;
+                    case 'pref_membership_ext':
+                        if (!is_numeric($value) || $value < 0) {
+                            $this->errors[] = _T("- Invalid number of months of membership extension.");
+                        }
+                        break;
+                    case 'pref_beg_membership':
+                        $beg_membership = explode("/", $value);
+                        if (count($beg_membership) != 2) {
+                            $this->errors[] = _T("- Invalid format of beginning of membership.");
+                        } else {
+                            $now = getdate();
+                            if (!checkdate($beg_membership[1], $beg_membership[0], $now['year'])) {
+                                $this->errors[] = _T("- Invalid date for beginning of membership.");
+                            }
+                        }
+                        break;
+                    case 'pref_card_year':
+                        if (!preg_match('/^(?:\d{4}|\d{2})(\D?)(?:\d{4}|\d{2})$/', $value)) {
+                            $this->errors[] = _T("- Invalid year for cards.");
+                        }
+                        break;
+                }
+            }
+
+            $insert_values[$fieldname] = $value;
+        }
+
+        // missing relations
+        if (GALETTE_MODE !== 'DEMO'
+            && isset($insert_values['pref_mail_method'])
+        ) {
+            if ($insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED) {
+                if (!isset($insert_values['pref_email_nom'])
+                    || $insert_values['pref_email_nom'] == ''
+                ) {
+                    $this->errors[] = _T("- You must indicate a sender name for emails!");
+                }
+                if (!isset($insert_values['pref_email'])
+                    || $insert_values['pref_email'] == ''
+                ) {
+                    $this->errors[] = _T("- You must indicate an email address Galette should use to send emails!");
+                }
+                if ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP) {
+                    if (!isset($insert_values['pref_mail_smtp_host'])
+                        || $insert_values['pref_mail_smtp_host'] == ''
+                    ) {
+                        $this->errors[] = _T("- You must indicate the SMTP server you want to use!");
+                    }
+                }
+                if ($insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
+                    || ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP
+                    && $insert_values['pref_mail_smtp_auth'])
+                ) {
+                    if (!isset($insert_values['pref_mail_smtp_user'])
+                        || trim($insert_values['pref_mail_smtp_user']) == ''
+                    ) {
+                        $this->errors[] = _T("- You must provide a login for SMTP authentication.");
+                    }
+                    if (!isset($insert_values['pref_mail_smtp_password'])
+                        || ($insert_values['pref_mail_smtp_password']) == ''
+                    ) {
+                        $this->errors[] = _T("- You must provide a password for SMTP authentication.");
+                    }
+                }
+            }
+        }
+
+        if (isset($insert_values['pref_beg_membership'])
+            && $insert_values['pref_beg_membership'] != ''
+            && isset($insert_values['pref_membership_ext'])
+            && $insert_values['pref_membership_ext'] != ''
+        ) {
+            $this->errors[] =_T("- Default membership extention and beginning of membership are mutually exclusive.");
+        }
+
+        // missing required fields?
+        foreach ($this->required as $val) {
+            if (!isset($values[$val]) || isset($values[$val]) && trim($values[$val]) == '') {
+                $this->errors[] = str_replace(
+                    '%field',
+                    $val,
+                    _T("- Mandatory field %field empty.")
+                );
+            }
+        }
+
+        if (GALETTE_MODE !== 'DEMO') {
+            // Check passwords. Hash will be done into the Preferences class
+            if (strcmp($insert_values['pref_admin_pass'], $values['pref_admin_pass_check']) != 0) {
+                $this->errors[] = _T("Passwords mismatch");
+            }
+        }
+
+        //postal address
+        if (isset($insert_values['pref_postal_adress'])) {
+            $value = $insert_values['pref_postal_adress'];
+            if ($value == Preferences::POSTAL_ADDRESS_FROM_PREFS) {
+                if (isset($insert_values['pref_postal_staff_member'])) {
+                    unset($insert_values['pref_postal_staff_member']);
+                }
+            } elseif ($value == Preferences::POSTAL_ADDRESS_FROM_STAFF) {
+                if (!isset($value) || $value < 1) {
+                    $this->errors[] = _T("You have to select a staff member");
+                }
+            }
+        }
+
+        // update preferences
+        foreach ($insert_values as $champ => $valeur) {
+            if ($login->isSuperAdmin()
+                || (!$login->isSuperAdmin()
+                && ($champ != 'pref_admin_pass' && $champ != 'pref_admin_login'))
+            ) {
+                if (($champ == "pref_admin_pass" && $_POST['pref_admin_pass'] !=  '')
+                    || ($champ != "pref_admin_pass")
+                ) {
+                    $this->$champ = $valeur;
+                }
+            }
+        }
+
+        return 0 === count($this->errors);
     }
 
     /**
@@ -518,6 +761,7 @@ class Preferences
     public function __get($name)
     {
         $forbidden = array('logged', 'admin', 'active', 'defaults');
+        $virtuals = array('vpref_email', 'vpref_email_newadh');
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
             if (GALETTE_MODE === 'DEMO'
@@ -534,8 +778,17 @@ class Preferences
                         $value = false;
                     }
                 }
+
+                if (in_array($name, ['pref_email', 'pref_email_newadh'])) {
+                    $values = explode(',', $value);
+                    $value = $values[0]; //take first as default
+                }
+
                 return $value;
             }
+        } elseif (in_array($name, $virtuals)) {
+            $virtual = str_replace('vpref_', 'pref_');
+            return explode(',', $this->$virtual);
         } else {
             Analog::log(
                 'Preference `' . $name . '` is not set or is forbidden',
@@ -573,6 +826,38 @@ class Preferences
                 Analog::WARNING
             );
             return false;
+        }
+
+        if ($name == 'pref_email'
+            || $name == 'pref_email_newadh'
+            || $name == 'pref_email_reply_to'
+        ) {
+            if (GALETTE_MODE === 'DEMO') {
+                Analog::log(
+                    'Trying to set pref_email while in DEMO.',
+                    Analog::WARNING
+                );
+                return;
+            }
+
+            //check emails validity
+            //may be a comma separated list of valid mails identifiers:
+            //"The Name <mail@domain.com>,The Other <other@mail.com>" expect for reply_to.
+            $addresses = [];
+            if (trim($value) != '') {
+                if ($name == 'pref_email_reply_to') {
+                    $addresses = [$value];
+                } else {
+                    $addresses = explode(',', $value);
+                }
+            }
+            foreach ($addresses as $address) {
+                if (!GaletteMail::isValidEmail($address)) {
+                    $msg =  str_replace('%s', $address, _T("Invalid E-Mail address: %s"));
+                    Analog::log($msg, Analog::WARNING);
+                    $this->errors[] = $msg;
+                }
+            }
         }
 
         //some values need to be changed (eg. passwords)
@@ -645,5 +930,15 @@ class Preferences
         }
 
         return $warning_detected;
+    }
+
+    /**
+     * Get errors
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }

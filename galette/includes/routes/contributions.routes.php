@@ -545,19 +545,12 @@ $app->post(
                                     $mail->setSubject(
                                         _T("Post contribution script failed")
                                     );
-                                    /** TODO: only super-admin is contacted here. We should send
-                                    *  a message to all admins, or propose them a chekbox if
-                                    *  they don't want to get bored
-                                    */
-                                    $mail->setRecipients(
-                                        array(
-                                            $this->preferences->pref_email_newadh => str_replace(
-                                                '%asso',
-                                                $this->preferences->pref_name,
-                                                _T("%asso Galette's admin")
-                                            )
-                                        )
-                                    );
+
+                                    $recipients = [];
+                                    foreach ($this->preferences->vpref_email_newadh as $pref_email) {
+                                        $recipients[$pref_email] = $this->preferences->pref_email_nom;
+                                    }
+                                    $mail->setRecipients($recipients);
 
                                     $message = _T("The configured post contribution script has failed.");
                                     $message .= "\n" . _T("You can find contribution information and script output below.");
@@ -682,19 +675,12 @@ $app->post(
 
                     $mail = new GaletteMail($this->preferences);
                     $mail->setSubject($texts->getSubject());
-                    /** TODO: only super-admin is contacted here. We should send
-                    *  a message to all admins, or propose them a chekbox if
-                    *  they don't want to get bored
-                    */
-                    $mail->setRecipients(
-                        array(
-                            $this->preferences->pref_email_newadh => str_replace(
-                                '%asso',
-                                $this->preferences->pref_name,
-                                _T("%asso Galette's admin")
-                            )
-                        )
-                    );
+
+                    $recipients = [];
+                    foreach ($this->preferences->vpref_email_newadh as $pref_email) {
+                        $recipients[$pref_email] = $this->preferences->pref_email_nom;
+                    }
+                    $mail->setRecipients($recipients);
 
                     $mail->setMessage($texts->getBody());
                     $sent = $mail->send();
