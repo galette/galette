@@ -335,7 +335,7 @@ class Members
                     self::PK,
                     $list
                 );
-                $del = $zdb->execute($del_qry);
+                $zdb->execute($del_qry);
 
                 //get transactions
                 $select = $zdb->select(Transaction::TABLE);
@@ -346,24 +346,28 @@ class Members
                 //reset link with other contributions
                 //and remove them
                 if ($results->count() > 0) {
+                    $transactions = [];
                     foreach ($results as $transaction) {
-                        $update = $zdb->update(Contribution::TABLE);
-                        $update->set([
-                            Transaction::PK => new Expression('NULL')
-                        ])->where([
-                            Transaction::PK => $transaction[Transaction::PK]
-                        ]);
-                        $zdb->execute($update);
+                        $transactions[] = $transaction[Transaction::PK];
                     }
 
-                    //delete transactions
-                    $del_qry = $zdb->delete(Transaction::TABLE);
-                    $del_qry->where->in(self::PK, $list);
-                    $del = $zdb->execute($del_qry);
+                    $update = $zdb->update(Contribution::TABLE);
+                    $update->set([
+                        Transaction::PK => new Expression('NULL')
+                    ])->where->in(
+                        Transaction::PK,
+                        $transactions
+                    );
+                    $zdb->execute($update);
                 }
 
+                //delete transactions
+                $del_qry = $zdb->delete(Transaction::TABLE);
+                $del_qry->where->in(self::PK, $list);
+                $zdb->execute($del_qry);
+
                 //delete groups membership/mamagmentship
-                $del = Groups::removeMemberFromGroups((int)$member->id_adh);
+                Groups::removeMembersFromGroups($list);
 
                 //delete reminders
                 $del_qry = $zdb->delete(Reminder::TABLE);
@@ -371,13 +375,13 @@ class Members
                     'reminder_dest',
                     $list
                 );
-                $del = $zdb->execute($del_qry);
+                $zdb->execute($del_qry);
 
                 //delete dynamic fields values
                 $del_qry = $zdb->delete(DynamicFieldsHandle::TABLE);
                 $del_qry->where(['field_form' => 'adh']);
                 $del_qry->where->in('item_id', $list);
-                $del = $zdb->execute($del_qry);
+                $zdb->execute($del_qry);
 
                 //delete members
                 $del_qry = $zdb->delete(self::TABLE);
@@ -385,7 +389,7 @@ class Members
                     self::PK,
                     $list
                 );
-                $del = $zdb->execute($del_qry);
+                $zdb->execute($del_qry);
 
                 //commit all changes
                 $zdb->connection->commit();
