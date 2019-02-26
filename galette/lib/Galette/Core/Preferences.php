@@ -787,7 +787,7 @@ class Preferences
                 return $value;
             }
         } elseif (in_array($name, $virtuals)) {
-            $virtual = str_replace('vpref_', 'pref_');
+            $virtual = str_replace('vpref_', 'pref_', $name);
             return explode(',', $this->$virtual);
         } else {
             Analog::log(
