@@ -11,8 +11,8 @@ You'll find a [detailled description on Galette's website](http://galette.eu/dc/
 * website: https://galette.eu
 * bugs and features: http://bugs.galette.eu/projects/galette
 * mailing lists:
- * users: https://listengine.tuxfamily.org/lists.galette.eu/users/
- * developpers: https://listengine.tuxfamily.org/lists.galette.eu/devel/
+  * users: https://listengine.tuxfamily.org/lists.galette.eu/users/
+  * developpers: https://listengine.tuxfamily.org/lists.galette.eu/devel/
 * documentation (french only): http://galette.eu/documentation
 * translation: https://translate.zanata.org/project/view/galette
 
@@ -23,7 +23,7 @@ Vous trouverez une [description détaillée sur le site web de Galette](http://g
 * site web : https://galette.eu
 * bogues et fonctionnalités : http://bugs.galette.eu/projects/galette
 * liste de diffusion :
- * utilisateurs : https://listengine.tuxfamily.org/lists.galette.eu/users/
- * développeurs : https://listengine.tuxfamily.org/lists.galette.eu/devel/
+  * utilisateurs : https://listengine.tuxfamily.org/lists.galette.eu/users/
+  * développeurs : https://listengine.tuxfamily.org/lists.galette.eu/devel/
 * documentation : http://galette.eu/documentation
 * traduction : https://translate.zanata.org/project/view/galette
