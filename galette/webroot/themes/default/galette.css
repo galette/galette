@@ -504,6 +504,12 @@ footer li {
 .selectize-control {
     display: inline-block;
     min-width: 25em;
+    text-align: left;
+}
+
+
+#listfilter .selectize-control {
+    min-width: 10em;
 }
 
 #galette_body .selectize-input {
