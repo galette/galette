@@ -2,7 +2,7 @@
     {assign var="js_chosen_id" value="#id_adh"}
 {/if}
     var _adhselect;
-    var _current_page = {$members.filters->current_page};
+    var _current_page = {$members.filters->current_page|default:1};
     var _membersLoaded = function(members) {
         var _element = $('{$js_chosen_id}').next('.selectize-control');
         for (var id in members) {

@@ -426,13 +426,11 @@ $app->get(
         ];
 
         //check if current attached member is part of the list
-        if (isset($contrib) && $contrib->member > 0) {
-            if (!isset($members[$contrib->member])) {
-                $members =
-                    [$contrib->member => Adherent::getSName($this->zdb, $contrib->member, true)] +
-                    $members
-                ;
-            }
+        if (isset($contrib)
+            && $contrib->member > 0
+            && !isset($members[$contrib->member])
+        ) {
+            $members[$contrib->member] = Adherent::getSName($this->zdb, $contrib->member, true);
         }
 
         if (count($members)) {
