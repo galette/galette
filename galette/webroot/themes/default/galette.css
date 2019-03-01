@@ -503,17 +503,17 @@ footer li {
 
 .selectize-control {
     display: inline-block;
-    min-width: 25em;
+    min-width: 10em;
     text-align: left;
 }
 
 
-#listfilter .selectize-control {
-    min-width: 10em;
+.cssform .selectize-input {
+    margin-right: 2em;
+    min-width: 25em;
 }
 
 #galette_body .selectize-input {
-    margin-right: 2em;
     padding: .1em 0 .1em 8px;
     overflow: unset;
 }
