@@ -129,7 +129,7 @@ trait DynamicsTrait
                                     unlink(GALETTE_FILES_PATH . $filename);
                                     $this->dynamics->setValue($this->id, $field_id, $val_index, '');
                                 } else {
-                                    if ($fields[$field_id] instanceof Date) {
+                                    if ($fields[$field_id] instanceof Date && !empty(trim($value))) {
                                         //check date format
                                         try {
                                             $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
