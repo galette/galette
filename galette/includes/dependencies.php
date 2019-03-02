@@ -406,7 +406,7 @@ $container['cache'] = function ($c) {
         //since APCu is not known to work on windows
         $adapter = 'wincache';
     } elseif (function_exists('apcu_fetch')) {
-        $adapter = (version_compare(PHP_VERSION, '7.0.0') >= 0) ? 'apcu' : 'apc';
+        $adapter = 'apcu';
     }
     if ($adapter !== null) {
         $uuid = $c->get('mode') !== 'INSTALL' ? $c->get('preferences')->pref_instance_uuid : '_install';
