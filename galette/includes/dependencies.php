@@ -402,19 +402,20 @@ $container['fields_config'] = function ($c) {
 
 $container['cache'] = function ($c) {
     $adapter  = null;
-    if (function_exists('apcu_fetch')) {
-        $adapter = (version_compare(PHP_VERSION, '7.0.0') >= 0) ? 'apcu' : 'apc';
-    } elseif (function_exists('wincache_ucache_add')) {
+    if (function_exists('wincache_ucache_add')) {
         //since APCu is not known to work on windows
         $adapter = 'wincache';
+    } elseif (function_exists('apcu_fetch')) {
+        $adapter = (version_compare(PHP_VERSION, '7.0.0') >= 0) ? 'apcu' : 'apc';
     }
     if ($adapter !== null) {
+        $uuid = $c->get('mode') !== 'INSTALL' ? $c->get('preferences')->pref_instance_uuid : '_install';
         $cache = Zend\Cache\StorageFactory::factory([
             'adapter'   => $adapter,
             'options'   => [
                 'namespace' => str_replace(
                     ['%version', '%uuid'],
-                    [GALETTE_VERSION, $c->get('preferences')->pref_instance_uuid],
+                    [GALETTE_VERSION, $uuid],
                     'galette_%version_%uuid'
                 )
             ]
