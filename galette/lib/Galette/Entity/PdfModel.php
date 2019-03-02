@@ -116,7 +116,8 @@ abstract class PdfModel
             'asso_address'       => '/{ASSO_ADDRESS}/',
             'asso_address_multi' => '/{ASSO_ADDRESS_MULTI}/',
             'asso_website'       => '/{ASSO_WEBSITE}/',
-            'asso_logo'          => '/{ASSO_LOGO}/'
+            'asso_logo'          => '/{ASSO_LOGO}/',
+            'date_now'           => '/{DATE_NOW}/'
         );
 
         $address = $preferences->getPostalAddress();
@@ -141,7 +142,8 @@ abstract class PdfModel
             'asso_address'       => $address,
             'asso_address_multi' => $address_multi,
             'asso_website'       => $website,
-            'asso_logo'          => $logo_elt
+            'asso_logo'          => $logo_elt,
+            'date_now'           => date(_T('Y-m-d'))
         );
     }
 

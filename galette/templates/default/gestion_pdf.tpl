@@ -39,8 +39,8 @@
                 <tr>
                     <th><tt>{ldelim}ASSO_LOGO{rdelim}</tt></th>
                     <td class="back">{_T string="Your organisation logo"}</td>
-                    <th></th>
-                    <td></td>
+                    <th><tt>{ldelim}DATE_NOW{rdelim}</tt></th>
+                    <td class=back">{_T string="Current date (Y-m-d)"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}NAME_ADH{rdelim}</tt></th>
