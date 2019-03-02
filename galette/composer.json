@@ -35,7 +35,7 @@
         "phpmailer/phpmailer": "^6",
         "tecnickcom/tcpdf": "^6.2",
         "akrabat/rka-slim-session-middleware": "dev-master@dev",
-        "fzaninotto/Faker": "dev-master#c3f82846fdfd1760b277767ac21426ca030f795e",
+        "fzaninotto/faker": "dev-master#c3f82846fdfd1760b277767ac21426ca030f795e",
         "zendframework/zend-i18n": "^2.9",
         "zendframework/zend-cache": "^2.8",
         "soundasleep/html2text": "^0.5.0"
