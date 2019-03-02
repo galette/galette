@@ -38,6 +38,7 @@ namespace Galette\Entity;
 
 use Analog\Analog;
 use Galette\DynamicFields\File;
+use Galette\DynamicFields\Date;
 
 /**
  * Dynamics fields trait
@@ -97,7 +98,9 @@ trait DynamicsTrait
             );
             $this->loadDynamicFields();
         }
+
         if ($post != null) {
+            $valid = true;
             $fields = $this->dynamics->getFields();
 
             foreach ($post as $key => $value) {
@@ -126,6 +129,38 @@ trait DynamicsTrait
                                     unlink(GALETTE_FILES_PATH . $filename);
                                     $this->dynamics->setValue($this->id, $field_id, $val_index, '');
                                 } else {
+                                    if ($fields[$field_id] instanceof Date) {
+                                        //check date format
+                                        try {
+                                            $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
+                                            if ($d === false) {
+                                                //try with non localized date
+                                                $d = \DateTime::createFromFormat("Y-m-d", $value);
+                                                if ($d === false) {
+                                                    throw new \Exception('Incorrect format');
+                                                }
+                                            }
+                                        } catch (\Exception $e) {
+                                            $valid = false;
+                                            Analog::log(
+                                                'Wrong date format. field: ' . $field_id .
+                                                ', value: ' . $value . ', expected fmt: ' .
+                                                __("Y-m-d") . ' | ' . $e->getMessage(),
+                                                Analog::INFO
+                                            );
+                                            $this->errors[] = str_replace(
+                                                array(
+                                                    '%date_format',
+                                                    '%field'
+                                                ),
+                                                array(
+                                                    __("Y-m-d"),
+                                                    $fields[$field_id]->getName()
+                                                ),
+                                                _T("- Wrong date format (%date_format) for %field!")
+                                            );
+                                        }
+                                    }
                                     //actual field value
                                     if ($value !== null && trim($value) !== '') {
                                         $this->dynamics->setValue($this->id, $field_id, $val_index, $value);
@@ -139,7 +174,7 @@ trait DynamicsTrait
                 }
             }
 
-            return true;
+            return $valid;
         }
     }
 
