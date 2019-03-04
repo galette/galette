@@ -6,7 +6,7 @@ Just put a {include file='common_header.tpl'} into the head tag.
 <title>{if $pref_slogan ne ""}{$pref_slogan} - {/if}{if $page_title ne ""}{$page_title} - {/if}Galette {$GALETTE_VERSION}</title>
         <meta charset="UTF-8" />
         <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}galette.css" />
-        <link rel="stylesheet" type="text/css" href="{base_url}/fontawesome-free-5.5.0/css/all.min.css" />
+        <link rel="stylesheet" type="text/css" href="{base_url}/fontawesome-free-5.7.2/css/all.min.css" />
         <link rel="stylesheet" type="text/css" href="{base_url}/js/selectize-0.12.6/css/selectize.css" />
         <link rel="stylesheet" type="text/css" href="{base_url}/js/selectize-0.12.6/css/selectize.default.css" />
         {* Let's see if a local CSS exists and include it *}
