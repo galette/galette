@@ -473,13 +473,8 @@ footer li {
     margin:0 .2em;
 }
 
-#copyright {
-    color: #CCCCCC;
-    font-style: italic;
-}
-
-#copyright:hover {
-    color: #FF0000;
+footer a:hover {
+    color: #000;
 }
 /* =/ Footer */
 
@@ -638,7 +633,7 @@ input#btnvalid, input#btnadd, input#btncancel, input#btnsend, input#btnback {
     padding-left:2.4em!important;
 }
 
-a > i {
+footer a, a > i {
     color: rgb(102, 102, 102);
 }
 
