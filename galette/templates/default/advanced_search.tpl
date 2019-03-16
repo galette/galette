@@ -175,11 +175,11 @@
                 <ul id="fs_sortable" class="fields_list connectedSortable">
 {foreach from=$filters->free_search item=fs}
                     <li>
-                        <select name="free_logical_operator[]" class="operator_selector">
+                        <select name="free_logical_operator[]" class="operator_selector nochosen">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_AND}"{if $fs.log_op eq constant('Galette\Filters\AdvancedMembersList::OP_AND')} selected="selected"{/if}>{_T string="and"}</option>
                             <option value="{Galette\Filters\AdvancedMembersList::OP_OR}"{if $fs.log_op eq constant('Galette\Filters\AdvancedMembersList::OP_OR')} selected="selected"{/if}>{_T string="or"}</option>
                         </select>
-                        <select name="free_field[]" class="field_selector">
+                        <select name="free_field[]" class="field_selector nochosen">
                             <option value="">{_T string="Select a field"}</option>
     {foreach $search_fields as $field}
         {if $fs.field eq $field@key}
@@ -212,11 +212,11 @@
                         <span>
                             <input type="hidden" name="free_type[]" value="{if isset($cur_field)}{$cur_field->getType()}{/if}"/>
     {if $cur_field|is_a:'Galette\DynamicFields\Choice' || $type eq constant('Galette\DynamicFields\DynamicField::CHOICE')}
-                        <select name="free_query_operator[]">
+                        <select name="free_query_operator[]" class="nochosen">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
                             <option value="{Galette\Filters\AdvancedMembersList::OP_NOT_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_NOT_EQUALS')} selected="selected"{/if}>{_T string="is not"}</option>
                         </select>
-                        <select name="free_text[]">
+                        <select name="free_text[]" class="nochosen">
         {if $cur_field|is_a:'Galette\DynamicFields\Choice'}
                         {html_options options=$cur_field->getValues() selected=$fs.search}
         {else}
@@ -224,7 +224,7 @@
         {/if}
                         </select>
     {elseif $cur_field|is_a:'Galette\DynamicFields\Date'}
-                        <select name="free_query_operator[]">
+                        <select name="free_query_operator[]" class="nochosen">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
                             <option value="{Galette\Filters\AdvancedMembersList::OP_BEFORE}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_BEFORE')} selected="selected"{/if}>{_T string="before"}</option>
                             <option value="{Galette\Filters\AdvancedMembersList::OP_AFTER}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_AFTER')} selected="selected"{/if}>{_T string="after"}</option>
@@ -232,13 +232,13 @@
                         <input type="text" name="free_text[]" value="{$fs.search|date_format:{_T string="Y-m-d"}}" class="modif_date" maxlength="10" size="10"/>
                         <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
     {elseif $cur_field|is_a:'Galette\DynamicFields\Boolean'}
-                        <select name="free_query_operator[]">
+                        <select name="free_query_operator[]" class="nochosen">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
                         </select>
                         <input type="radio" name="free_text[]" id="free_text_yes" value="1"{if $fs.search eq 1} checked="checked"{/if}/><label for="free_text_yes">{_T string="Yes"}</label>
                         <input type="radio" name="free_text[]" id="free_text_no" value="0"{if $fs.search eq 0} checked="checked"{/if}/><label for="free_text_no">{_T string="No"}</label>
     {else}
-                        <select name="free_query_operator[]">
+                        <select name="free_query_operator[]" class="nochosen">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
                             <option value="{Galette\Filters\AdvancedMembersList::OP_CONTAINS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_CONTAINS')} selected="selected"{/if}>{_T string="contains"}</option>
                             <option value="{Galette\Filters\AdvancedMembersList::OP_NOT_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_NOT_EQUALS')} selected="selected"{/if}>{_T string="is not"}</option>
