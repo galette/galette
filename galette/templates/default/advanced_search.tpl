@@ -25,6 +25,7 @@
                             {html_options options=$filter_accounts_options selected=$filters->account_status_filter}
                         </select>
                     </p>
+{** modification for multiple groups search : no needs for a single group search
                     <p>
                         <label class="bline" for="group_filter">{_T string="Member of group"}</label>
                         <select name="group_filter">
@@ -33,6 +34,7 @@
                             <option value="{$group->getId()}"{if $filters->group_filter eq $group->getId()} selected="selected"{/if}>{$group->getName()}</option>
 {/foreach}
                         </select>
+*}
                     <p>
                         <span class="bline">{_T string="With mail:"}</span>
                         <input type="radio" name="email_filter" id="filter_dc_email" value="{Galette\Repository\Members::FILTER_DC_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_DC_EMAIL')} checked="checked"{/if}>
@@ -44,6 +46,44 @@
                     </p>
                 </div>
             </fieldset>
+{** modification for multiple groups search *}
+            <fieldset class="cssform large">
+                <legend class="ui-state-active ui-corner-top">{_T string="Groups search"}
+                    <a
+                        href="#"
+                        id="addbutton_g"
+                        class="tab-button tooltip"
+                    >
+                        <i class="fas fa-plus-square"></i>
+                        <span class="sr-only">{_T string="Add new group search criteria"}</span>
+                    </a>
+                </legend>
+                <select name="groups_logical_operator" class="operator_selector nochosen">
+                  <option value="{Galette\Filters\AdvancedMembersList::OP_AND}"{if $filters->groups_search_log_op eq constant('Galette\Filters\AdvancedMembersList::OP_AND')} selected="selected"{/if}>{_T string="Dans TOUS ces groupes"}</option>
+                  <option value="{Galette\Filters\AdvancedMembersList::OP_OR}"{if $filters->groups_search_log_op eq constant('Galette\Filters\AdvancedMembersList::OP_OR')} selected="selected"{/if}>{_T string="Dans au moins un de ces groupes"}</option>
+                </select>
+                <ul id="gs_sortable" class="fields_list connectedSortable">
+                {foreach from=$filters->groups_search item=gs}
+                         <li>
+                                <select name="groups_search[]" class="nochosen">
+                                        <option value="">{_T string="Select a group"}</option>
+                                        {foreach from=$filter_groups_options item=group}
+                                        <option value="{$group->getId()}"{if $gs.group eq $group->getId()} selected="selected"{/if}>{$group->getName()}</option>
+                                        {/foreach}
+                                </select>
+                        <a
+                            href="#"
+                            class="fright tooltip delete delcriteria"
+                        >
+                            <i class="fas fa-trash-alt"></i>
+                            <span class="sr-only">{_T string="Remove criteria"}</span>
+                        </a>
+                        </li>
+                 {/foreach}
+                 </ul>
+
+            </fieldset>	
+{** end multiple groups search *}
             <fieldset class="cssform large">
                 <legend class="ui-state-active ui-corner-top">{_T string="Advanced search"}</legend>
                 <div>
@@ -381,6 +421,18 @@
                     _fieldsInSortable();
                     return false;
                 });
+
+{** modification for multiple groups search *}
+               $('#addbutton_g').click(function(){
+                    var _ul = $('#gs_sortable');
+                    var _new = _ul.find('li').last().clone(true);
+                    _newFilter(_new);
+                    _rmFilter(_new);
+                    _ul.append(_new);
+                    _fieldsInSortable();
+                    return false;
+                });
+{** end of modification for multiple groups search *}
 
                 $('.field_selector').change(function () {
                     var _field_id = $(this).val();

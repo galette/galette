@@ -492,6 +492,23 @@ $app->post(
                             }
                             $freed = true;
                         }
+/** modification for multiple groups search*/
+                    }  else if ( strpos($k, 'groups_', 0) === 0 ) {
+                        if ( !$grouped ) {
+                              $i = 0; $filters->groups_search_log_op = (int)$post['groups_logical_operator'];
+                              foreach ( $post['groups_search'] as $g ) {
+                                if ( trim($g) !== '') {
+                                  $gs = array(      
+                                  'idx'       => $i,
+                                  'group'     => $g
+                                  );
+                                $filters->groups_search = $gs;
+                                }
+                                $i++;
+                              }
+                              $grouped = true;
+                        }
+/** end of modification for multiple group search */
                     } else {
                         switch ($k) {
                             case 'filter_field':

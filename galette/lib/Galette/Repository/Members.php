@@ -41,6 +41,7 @@ use Galette\DynamicFields\DynamicField;
 use Galette\Entity\DynamicFieldsHandle;
 
 use Analog\Analog;
+use Zend\Db\Adapter\Adapter; //modification for multiple groups search
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate\PredicateSet;
 use Zend\Db\Sql\Predicate\Operator;
@@ -1135,6 +1136,59 @@ class Members
             }
 
             if ($this->filters instanceof AdvancedMembersList) {
+/** modification for multiple groups search
+Recherche d'un membre appartenant à un groupe parmi une liste (OR) ou à tous les groupes d'une liste (AND)
+
+L'idée de base est de faire la liste des adhérents des groupes de la liste, que l'on pourra ensuite injecter dans la requête pour la pris en compte des autres paramètres. 
+À cette fin, on crée une table (temporaire pour ne pas impacter la base pour d'autres instances de 
+galette) que l'on remplit avec les id_adh de galettes.groups.members pour chaque groupe inclus dans la liste, 
+l'un après l'autre.
+Si on fait un "OR", ça suffit, on a récupéré les adhérent; Si on fait un "AND", on va imposer que l'adhérent soit présent dans la liste autant de fois qu'il y a de groupes recherchés (count de sql); 
+Jusque là, c'est simple. Mais quand un adhérent est dans un groupe recherché ET un de ses sous-groupes, ou dans
+ 2 sous-groupes du groupe recherché, il apparait 2 fois pour le même groupe recherché et ça fausse le compte.
+Pour contourner l'obstacle, on sépare la recherche pour chaqe groupe en limitant les résultats à 1.
+On pourrait sans doute faire ça en une seule requête, mais c'est plus lisible en séparant les étapes.
+Surtout que mysql ne supporte pas "WITH" !!!
+Et comme je ne connais pas bien l'interface Zend, je fais sûrement trop de choses à la main
+Je n'ai pas compris le cas "gs.parent_group=NULL" utilisé danns la recherche simple, donc je l'ai enlevé.
+NOTA : on a la même limitation à un seul niveau d'imbrication que dans la recherche simple. Il faudrait dans les deux cas introduire une forme de récursivité pour descendre la chaîne des gs.parent_group, mais ce sera pour une autre fois ... ou pas :-)
+*/
+              if ( count($this->filters->groups_search) > 0
+                    && !isset($this->filters->groups_search['empty'])
+                ) {
+           $tmpres= $zdb->db->query ('CREATE TEMPORARY TABLE '.PREFIX_DB.'groupsearch (id_adh INT);',Adapter::QUERY_MODE_EXECUTE); // first, build a temporary table which count how many selected groups an adh is member
+           unset($tmpres);
+           $grpAnded=0;
+           foreach ( $this->filters->groups_search as $gs ) { // then add a row for each ig/searched group pair
+           $tmpres = $zdb->db->query ('INSERT INTO '.PREFIX_DB.'groupsearch SELECT ggm.id_adh'
+                     . ' FROM '. PREFIX_DB . Group::GROUPSUSERS_TABLE . ' AS ggm '
+                     . ' LEFT JOIN '. PREFIX_DB . Group::TABLE .' AS gg ON ggm.id_group=gg.id_group'
+                     . ' WHERE gg.id_group = '. $gs['group'] .' OR gg.parent_group = '.$gs['group'] . ' group by ggm.id_adh;'
+                   ,Adapter::QUERY_MODE_EXECUTE);
+           unset($tmpres);
+           $grpAnded++;
+           }
+           // now extract adherent Ids from this temporary table
+           $tmpselect = $zdb->select('groupsearch');
+           $tmpselect->columns(array('id_adh'));
+           $tmpselect->group('id_adh');
+           // if "ORing" groups, we are done. If "ANDing", we have to select only those with max count.*/
+           if ($this->filters->groups_search_log_op == AdvancedMembersList::OP_AND) {
+             $tmpselect->having('COUNT(id_adh)='.$grpAnded);
+           }
+           $grpcount=$zdb->execute($tmpselect)->toArray(); // get list of adherent ids
+// error -> exception changes in Zenddb ?
+           // now we got appropriate id_adhs, inject these in select
+           $in = 'a.'.Adherent::PK. ' IN ('; $firstAdh=True;
+           foreach($grpcount as $ad_id) {
+             if (!$firstAdh) {$in.=',';}
+             $in.= $ad_id['id_adh'];$firstAdh=False;
+           }
+           $in.=')';
+           $select->where($in);
+        }
+/** end modification for multiple groups search */
+
                 if ($this->filters->rbirth_date_begin
                     || $this->filters->rbirth_date_end
                 ) {
