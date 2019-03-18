@@ -41,6 +41,7 @@ use Galette\DynamicFields\DynamicField;
 use Galette\Entity\DynamicFieldsHandle;
 
 use Analog\Analog;
+use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\PredicateSet;
 use Laminas\Db\Sql\Predicate\Operator;
@@ -1140,6 +1141,85 @@ class Members
             }
 
             if ($this->filters instanceof AdvancedMembersList) {
+                // Search members who belong to any (OR) or all (AND) listed groups.
+                // Idea is to build an array of members ID that fits groups selection
+                // we will use in the final query.
+                // The OR case is quite simple, AND is a bit more complex; since we must
+                // check each member do belongs to all listed groups.
+                if (count($this->filters->groups_search) > 0
+                    && !isset($this->filters->groups_search['empty'])
+                ) {
+                    $groups_adh = [];
+                    $wheregroups = [];
+
+                    foreach ($this->filters->groups_search as $gs) { // then add a row for each group
+                        $wheregroups[] = $gs['group'];
+                    }
+
+                    $gselect = $zdb->select(Group::GROUPSUSERS_TABLE, 'gu');
+                    $gselect->columns(
+                        array('id_adh')
+                    )->join(
+                        array('g' => PREFIX_DB . Group::TABLE),
+                        'gu.id_group=g.' . Group::PK,
+                        array(),
+                        $select::JOIN_LEFT
+                    )->where(
+                        array(
+                            'g.id_group'        => ':group',
+                            'g.parent_group'    => ':pgroup'
+                        ),
+                        PredicateSet::OP_OR
+                    );
+                    $gselect->group(['gu.id_adh']);
+
+                    $stmt = $zdb->sql->prepareStatementForSqlObject($gselect);
+
+                    $mids = [];
+                    $ids = [];
+                    foreach ($this->filters->groups_search as $gs) { // then add a row for each ig/searched group pair
+                        /** Why where parameter is named where1 ?? */
+                        $gresults = $stmt->execute(
+                            array(
+                                'where1'    => $gs['group'],
+                                'where2'    => $gs['group']
+                            )
+                        );
+
+                        switch ($this->filters->groups_search_log_op) {
+                            case AdvancedMembersList::OP_AND:
+                                foreach ($gresults as $gresult) {
+                                    if (!isset($ids[$gresult['id_adh']])) {
+                                        $ids[$gresult['id_adh']] = 0;
+                                    }
+                                    $ids[$gresult['id_adh']] += 1;
+                                }
+                                break;
+                            case AdvancedMembersList::OP_OR:
+                                foreach ($gresults as $gresult) {
+                                    $mids[$gresult['id_adh']] = $gresult['id_adh'];
+                                }
+                                break;
+                        }
+                    }
+
+                    if (count($ids)) {
+                        foreach ($ids as $id_adh => $count) {
+                            if ($count == count($wheregroups)) {
+                                $mids[$id_adh] = $id_adh;
+                            }
+                        }
+                    }
+
+                    if (count($mids)) {
+                        //limit on found members
+                        $select->where->in('a.id_adh', $mids);
+                    } else {
+                        //no match in groups, end of game.
+                        $select->where('false = true');
+                    }
+                }
+
                 if ($this->filters->rbirth_date_begin
                     || $this->filters->rbirth_date_end
                 ) {

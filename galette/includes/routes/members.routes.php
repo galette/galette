@@ -359,6 +359,19 @@ $app->post(
                             }
                             $freed = true;
                         }
+                    } elseif ($k == 'groups_search') {
+                        $i = 0;
+                        $filters->groups_search_log_op = (int)$post['groups_logical_operator'];
+                        foreach ($post['groups_search'] as $g) {
+                            if (trim($g) !== '') {
+                                $gs = array(
+                                    'idx'       => $i,
+                                    'group'     => $g
+                                );
+                                $filters->groups_search = $gs;
+                            }
+                            $i++;
+                        }
                     } else {
                         switch ($k) {
                             case 'contrib_min_amount':

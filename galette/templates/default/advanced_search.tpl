@@ -33,6 +33,7 @@
                             <option value="{$group->getId()}"{if $filters->group_filter eq $group->getId()} selected="selected"{/if}>{$group->getIndentName()}</option>
 {/foreach}
                         </select>
+                    </p>
                     <p>
                         <span class="bline">{_T string="With email:"}</span>
                         <input type="radio" name="email_filter" id="filter_dc_email" value="{Galette\Repository\Members::FILTER_DC_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_DC_EMAIL')} checked="checked"{/if}>
@@ -92,6 +93,42 @@
                     </p>
                 </div>
             </fieldset>
+            <fieldset class="cssform large">
+                <legend class="ui-state-active ui-corner-top">{_T string="Advanced groups search"} ({_T string="Experimental"})
+                    <a
+                        href="#"
+                        id="addbutton_g"
+                        class="tab-button tooltip"
+                    >
+                        <i class="fas fa-plus-square"></i>
+                        <span class="sr-only">{_T string="Add new group search criteria"}</span>
+                    </a>
+                </legend>
+                <select name="groups_logical_operator" class="operator_selector nochosen">
+                  <option value="{Galette\Filters\AdvancedMembersList::OP_AND}"{if $filters->groups_search_log_op eq constant('Galette\Filters\AdvancedMembersList::OP_AND')} selected="selected"{/if}>{_T string="In all selected groups"}</option>
+                  <option value="{Galette\Filters\AdvancedMembersList::OP_OR}"{if $filters->groups_search_log_op eq constant('Galette\Filters\AdvancedMembersList::OP_OR')} selected="selected"{/if}>{_T string="In any of selected groups"}</option>
+                </select>
+                <ul id="groups_search_list" class="fields_list">
+                {foreach from=$filters->groups_search item=gs}
+                         <li>
+                            <select name="groups_search[]" class="group_selector nochosen">
+                                    <option value="">{_T string="Select a group"}</option>
+                                    {foreach from=$filter_groups_options item=group}
+                                    <option value="{$group->getId()}"{if $gs.group eq $group->getId()} selected="selected"{/if}>{$group->getName()}</option>
+                                    {/foreach}
+                            </select>
+                            <a
+                                href="#"
+                                class="fright tooltip delete delcriteria"
+                            >
+                                <i class="fas fa-trash-alt"></i>
+                                <span class="sr-only">{_T string="Remove criteria"}</span>
+                            </a>
+                        </li>
+                 {/foreach}
+                 </ul>
+            </fieldset>
+
             <fieldset class="cssform large">
                 <legend class="ui-state-active ui-corner-top">{_T string="Within contributions"}</legend>
                 <div>
@@ -369,13 +406,12 @@
 
             var _selectize = function(selector) {
                 if ( !selector ) {
-                    selector = '.operator_selector,.field_selector,.free_operator,.free_text';
+                    selector = '.operator_selector,.field_selector,.free_operator,.free_text,.group_selector';
                 }
 
                 $(selector).selectize({
                     maxItems: 1
                 });
-
             }
 
             var _initFieldSelector = function(parent) {
@@ -442,6 +478,22 @@
                 _initSortable();
                 _datePickers();
                 _selectize();
+
+               $('#addbutton_g').click(function(){
+                    $('.operator_selector,.group_selector').each(function(){ // do this for every select with the 'combobox' class
+                        if ($(this)[0].selectize) { // requires [0] to select the proper object
+                            var value = $(this).val(); // store the current value of the select/input
+                            $(this)[0].selectize.destroy(); // destroys selectize()
+                            $(this).val(value);  // set back the value of the select/input
+                        }
+                    });
+
+                    $('#groups_search_list li:first')
+                            .clone() // copy
+                            .insertAfter('#groups_search_list li:last'); // where
+                    _selectize();
+                    return false;
+                });
 
                 $('#addbutton').click(function(){
                     $('.operator_selector,.field_selector,.free_operator').each(function(){ // do this for every select with the 'combobox' class

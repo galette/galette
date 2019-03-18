@@ -116,7 +116,9 @@ class AdvancedMembersList extends MembersList
         'contrib_min_amount',
         'contrib_max_amount',
         'contrib_dynamic',
-        'free_search'
+        'free_search',
+        'groups_search',
+        'groups_search_log_op'
     );
 
     protected $virtuals_advancedmemberslist_fields = array(
@@ -146,6 +148,17 @@ class AdvancedMembersList extends MembersList
             'qry_op'    => self::OP_EQUALS
         )
     );
+
+    //an empty group search criteria to begin
+    private $_groups_search = array(
+        'empty' => array(
+            'group'    => '',
+        )
+    );
+
+    //defaults to 'OR' for group search
+    private $_groups_search_log_op = self::OP_OR;
+
 
     //an empty contributions dynamic field criteria to begin
     private $_contrib_dynamic = array();
@@ -232,6 +245,14 @@ class AdvancedMembersList extends MembersList
         );
 
         $this->_contrib_dynamic = array();
+
+        $this->_groups_search = array(
+            'empty' => array(
+                'group'     => '',
+            )
+        );
+
+        $this->_groups_search_log_op = self::OP_OR;
     }
 
     /**
@@ -544,6 +565,42 @@ class AdvancedMembersList extends MembersList
                         Analog::log(
                             '[AdvancedMembersList] Value for dynamic contribution fields filter should be an '
                             .'array (' . gettype($value) . ' given',
+                            Analog::WARNING
+                        );
+                    }
+                    break;
+                case 'groups_search':
+                    if (isset($this->_groups_search['empty'])) {
+                        unset($this->_groups_search['empty']);
+                    }
+                    if (is_array($value)) {
+                        if (isset($value['group'])
+                           && isset($value['idx'])
+                        ) {
+                            $id = $value['idx'];
+                            unset($value['idx']);
+                            $this->_groups_search[$id] = $value;
+                        } else {
+                            Analog::log(
+                                '[AdvancedMembersList] bad construct for group filter',
+                                Analog::WARNING
+                            );
+                        }
+                    } else {
+                        Analog::log(
+                            '[AdvancedMembersList] Value for group filter should be an '
+                            .'array (' . gettype($value) . ' given',
+                            Analog::WARNING
+                        );
+                    }
+                    break;
+                case 'groups_search_log_op':
+                    if ($value == self::OP_AND || $value == self::OP_OR) {
+                        $this->_groups_search_log_op = $value;
+                    } else {
+                        Analog::log(
+                            '[AdvancedMembersList] Value for group filter logical operator should be '
+                            .' in [0,1] (' . gettype($value) . '-> '.$value.' given )',
                             Analog::WARNING
                         );
                     }
