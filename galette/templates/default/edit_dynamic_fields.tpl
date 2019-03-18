@@ -36,7 +36,7 @@
         </select>
     {elseif $field|is_a:'Galette\DynamicFields\Date'}
         <input type="text" name="info_field_{$field->getId()}_{$loop}" id="info_field_{$field->getId()}_{$loop}" maxlength="10"
-            value="{$valuedata}" class="dynamic_date"
+            value="{$valuedata}" class="dynamic_date modif_date"
             {if $field->isRepeatable()} data-maxrepeat="{$field->getRepeat()}"{/if}
             {if $field->isRequired()} required="required"{/if}
             {if $disabled} disabled="disabled"{/if}

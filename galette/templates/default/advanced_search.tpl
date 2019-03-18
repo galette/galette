@@ -223,7 +223,7 @@
                         {html_options options=$fvalues selected=$fs.search}
         {/if}
                         </select>
-    {elseif $cur_field|is_a:'Galette\DynamicFields\Date'}
+    {elseif $cur_field|is_a:'Galette\DynamicFields\Date' || $type == constant('Galette\DynamicFields\DynamicField::DATE')}
                         <select name="free_query_operator[]" class="nochosen">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
                             <option value="{Galette\Filters\AdvancedMembersList::OP_BEFORE}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_BEFORE')} selected="selected"{/if}>{_T string="before"}</option>
@@ -231,7 +231,7 @@
                         </select>
                         <input type="text" name="free_text[]" value="{$fs.search|date_format:{_T string="Y-m-d"}}" class="modif_date" maxlength="10" size="10"/>
                         <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
-    {elseif $cur_field|is_a:'Galette\DynamicFields\Boolean'}
+    {elseif $cur_field|is_a:'Galette\DynamicFields\Boolean' || $type == constant('Galette\DynamicFields\DynamicField::BOOLEAN')}
                         <select name="free_query_operator[]" class="nochosen">
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
                         </select>
