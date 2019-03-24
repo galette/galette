@@ -154,7 +154,7 @@ var _initTooltips = function(selector) {
     });
     //and then, we show them on rollover
     $(document).tooltip({
-        items: selector + ".tooltip",
+        items: selector + ".tooltip, a[title]",
         content: function(event, ui) {
             var _this = $(this);
 
