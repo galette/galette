@@ -133,7 +133,8 @@ class AdvancedMembersList extends MembersList
         'rcontrib_begin_date_begin',
         'rcontrib_begin_date_end',
         'rcontrib_end_date_begin',
-        'rcontrib_end_date_end'
+        'rcontrib_end_date_end',
+        'search_fields'
     );
 
     //an empty free search criteria to begin
@@ -318,6 +319,15 @@ class AdvancedMembersList extends MembersList
                         //same as above, but raw format
                         $rname = '_' . substr($name, 1);
                         return $this->$rname;
+                    case 'search_fields':
+                        $search_fields = array_merge($this->memberslist_fields, $this->advancedmemberslist_fields);
+                        $key = array_search('selected', $search_fields);
+                        unset($search_fields[$key]);
+                        $key = array_search('unreachable', $search_fields);
+                        unset($search_fields[$key]);
+                        $key = array_search('query', $search_fields);
+                        unset($search_fields[$key]);
+                        return $search_fields;
                 }
                 return $this->$rname;
             } else {

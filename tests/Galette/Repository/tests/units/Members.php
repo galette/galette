@@ -215,7 +215,7 @@ class Members extends atoum
 
         //Filter on active accounts
         $filters = new \Galette\Filters\MembersList;
-        $filters->account_status_filter = \Galette\Repository\Members::ACTIVE_ACCOUNT;
+        $filters->filter_account = \Galette\Repository\Members::ACTIVE_ACCOUNT;
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
@@ -223,7 +223,7 @@ class Members extends atoum
 
         //Filter on inactive accounts
         $filters = new \Galette\Filters\MembersList;
-        $filters->account_status_filter = \Galette\Repository\Members::INACTIVE_ACCOUNT;
+        $filters->filter_account = \Galette\Repository\Members::INACTIVE_ACCOUNT;
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 

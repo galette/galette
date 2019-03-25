@@ -9,20 +9,20 @@
                         <label class="bline" for="filter_str">{_T string="Search:"}</label>
                         <input type="text" name="filter_str" id="filter_str" value="{$filters->filter_str}" type="search" placeholder="{_T string="Enter a value"}"/>&nbsp;
                         {_T string="in:"}&nbsp;
-                        <select name="filter_field">
-                            {html_options options=$filter_field_options selected=$filters->field_filter}
+                        <select name="field_filter">
+                            {html_options options=$field_filter_options selected=$filters->field_filter}
                         </select>
                     </p>
                     <p>
-                        <label class="bline" for="filter_membership">{_T string="Membership status"}</label>
-                        <select id="filter_membership" name="filter_membership">
-                            {html_options options=$filter_membership_options selected=$filters->membership_filter}
+                        <label class="bline" for="membership_filter">{_T string="Membership status"}</label>
+                        <select id="membership_filter" name="membership_filter">
+                            {html_options options=$membership_filter_options selected=$filters->membership_filter}
                         </select>
                     </p>
                     <p>
                         <label class="bline" for="filter_account">{_T string="Account activity"}</label>
                         <select id="filter_account" name="filter_account">
-                            {html_options options=$filter_accounts_options selected=$filters->account_status_filter}
+                            {html_options options=$filter_accounts_options selected=$filters->filter_account}
                         </select>
                     </p>
                     <p>

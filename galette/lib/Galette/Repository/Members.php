@@ -1105,8 +1105,8 @@ class Members
                 }
             }
 
-            if ($this->filters->account_status_filter) {
-                switch ($this->filters->account_status_filter) {
+            if ($this->filters->filter_account) {
+                switch ($this->filters->filter_account) {
                     case self::ACTIVE_ACCOUNT:
                         $select->where('activite_adh=true');
                         break;

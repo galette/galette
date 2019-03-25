@@ -342,7 +342,12 @@ $container['acls'] = function ($c) {
         'paymentTypes'              => 'staff',
         'removePaymentType'         => 'staff',
         'doRemovePaymentType'       => 'staff',
-        'editPaymentType'           => 'staff'
+        'editPaymentType'           => 'staff',
+        'searches'                  => 'member',
+        'removeSearch'              => 'member',
+        'removeSearches'            => 'member',
+        'doRemoveSearch'            => 'member',
+        'loadSearch'                => 'member'
     ];
 
     foreach ($c['plugins']->getModules() as $plugin) {

@@ -123,7 +123,8 @@ class Install extends atoum
             '0.81' => 'upgrade-to-0.81-pgsql.sql',
             '0.82' => 'upgrade-to-0.82-pgsql.sql',
             '0.91' => 'upgrade-to-0.91-pgsql.sql',
-            '0.92' => 'upgrade-to-0.92-pgsql.sql'
+            '0.92' => 'upgrade-to-0.92-pgsql.sql',
+            '0.93' => 'upgrade-to-0.93-pgsql.sql'
         );
 
         $this->array($update_scripts)
