@@ -302,10 +302,12 @@ $app->get(
         }
 
         if (file_exists(CsvOut::DEFAULT_DIRECTORY . $filename)) {
-            header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="' . $filename . '";');
-            header('Pragma: no-cache');
-            echo readfile(CsvOut::DEFAULT_DIRECTORY . $filename);
+            $response = $this->response->withHeader('Content-Description', 'File Transfer')
+                ->withHeader('Content-Type', 'text/csv')
+                ->withHeader('Content-Disposition', 'attachment;filename="' . $filename . '"')
+                ->withHeader('Pragma', 'no-cache');
+            $response->write(readfile(CsvOut::DEFAULT_DIRECTORY . $filename));
+            return $response;
         } else {
             Analog::log(
                 'A request has been made to get an exported file named `' .
@@ -1775,7 +1777,10 @@ $app->get(
 
         $pdf = new PdfMembersCards($this->preferences);
         $pdf->drawCards($members);
-        $pdf->Output(_T("Cards") . '.pdf', 'D');
+
+        $response = $this->response->withHeader('Content-type', 'application/pdf');
+        $response->write($pdf->Output(_T("Cards") . '.pdf', 'D'));
+        return $response;
     }
 )->setName('pdf-members-cards')->add($authenticate);
 
@@ -1840,7 +1845,10 @@ $app->get(
 
         $pdf = new PdfMembersLabels($this->preferences);
         $pdf->drawLabels($members);
-        $pdf->Output(_T("labels_print_filename") . '.pdf', 'D');
+        $response = $this->response->withHeader('Content-type', 'application/pdf');
+        $response->write($pdf->Output(_T("labels_print_filename") . '.pdf', 'D'));
+        return $response;
+
     }
 )->setName('pdf-members-labels')->add($authenticate);
 
@@ -1893,7 +1901,9 @@ $app->get(
 
         $form = $this->preferences->pref_adhesion_form;
         $pdf = new $form($adh, $this->zdb, $this->preferences);
-        $pdf->download();
+        $response = $this->response->withHeader('Content-type', 'application/pdf');
+        $response->write($pdf->download());
+        return $response;
     }
 )->setName('adhesionForm')->add($authenticate);
 
@@ -1903,7 +1913,9 @@ $app->get(
     function ($request, $response) {
         $form = $this->preferences->pref_adhesion_form;
         $pdf = new $form(null, $this->zdb, $this->preferences);
-        $pdf->download();
+        $response = $this->response->withHeader('Content-type', 'application/pdf');
+        $response->write($pdf->download());
+        return $response;
     }
 )->setName('emptyAdhesionForm');
 
@@ -2468,8 +2480,9 @@ $app->post(
                     $labels_filters = new MembersList();
                     $labels_filters->selected = $labels_members;
                     $this->session->filters_reminders_labels = $labels_filters;
-                    header('location: etiquettes_adherents.php');
-                    die();
+                    return $response
+                        ->withStatus(301)
+                        ->withHeader('Location', $this->router->pathFor('pdf-member-labels'));
                 } else {
                     $error_detected[] = _T("There are no member to proceed.");
                 }
@@ -2660,7 +2673,10 @@ $app->post(
             $pdf->withImages();
         }
         $pdf->drawSheet($members, $doc_title);
-        $pdf->Output(_T("attendance_sheet") . '.pdf', 'D');
+        $response = $this->response->withHeader('Content-type', 'application/pdf');
+        $response->write($pdf->Output(_T("attendance_sheet") . '.pdf', 'D'));
+        return $response;
+
     }
 )->setName('attendance_sheet')->add($authenticate);
 
@@ -2918,10 +2934,12 @@ $app->get(
 
         if (file_exists(GALETTE_FILES_PATH . $filename)) {
             $type = File::getMimeType(GALETTE_FILES_PATH . $filename);
-            header('Content-Type: ' . $type);
-            header('Content-Disposition: attachment; filename="' . $args['name'] . '";');
-            header('Pragma: no-cache');
-            echo readfile(GALETTE_FILES_PATH . $filename);
+            $response = $this->response
+                ->withHeader('Content-Type', $type)
+                ->withHeader('Content-Disposition', 'attachment;filename="' . $args['name'] . '"')
+                ->withHeader('Pragma', 'no-cache');
+            $response->write(readfile(GALETTE_FILES_PATH . $filename));
+            return $response;
         } else {
             Analog::log(
                 'A request has been made to get an exported file named `' .

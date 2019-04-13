@@ -298,7 +298,9 @@ $app->get(
 
         $pdf = new PdfGroups($this->preferences);
         $pdf->draw($groups_list, $this->login);
-        $pdf->Output(_T("groups_list") . '.pdf', 'D');
+        $response = $this->response->withHeader('Content-type', 'application/pdf');
+        $response->write($pdf->Output(_T("groups_list") . '.pdf', 'D'));
+        return $response;
     }
 )->setName('pdf_groups')->add($authenticate);
 

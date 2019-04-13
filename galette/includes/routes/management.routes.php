@@ -1363,10 +1363,12 @@ $app->get(
                 CsvIn::DEFAULT_DIRECTORY;
             $filepath .= $filename;
             if (file_exists($filepath)) {
-                header('Content-Type: text/csv');
-                header('Content-Disposition: attachment; filename="' . $filename . '";');
-                header('Pragma: no-cache');
-                readfile($filepath);
+                $response = $this->response->withHeader('Content-Description', 'File Transfer')
+                    ->withHeader('Content-Type', 'text/csv')
+                    ->withHeader('Content-Disposition', 'attachment;filename="' . $filename . '"')
+                    ->withHeader('Pragma', 'no-cache');
+                $response->write(readfile($filepath));
+                return $response;
             } else {
                 Analog::log(
                     'A request has been made to get an ' . $args['type'] . ' file named `' .
@@ -1602,10 +1604,13 @@ $app->get(
             $fields
         );
         $filename = _T("galette_import_model.csv");
-        header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename="' . $filename . '";');
-        header('Pragma: no-cache');
-        echo $res;
+
+        $response = $this->response->withHeader('Content-Description', 'File Transfer')
+            ->withHeader('Content-Type', 'text/csv')
+            ->withHeader('Content-Disposition', 'attachment;filename="' . $filename . '"')
+            ->withHeader('Pragma', 'no-cache');
+        $response->write($res);
+        return $response;
     }
 )->setName('getImportModel')->add($authenticate);
 
