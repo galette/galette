@@ -509,7 +509,7 @@ footer a:hover {
 }
 
 #galette_body .selectize-input {
-    padding: .1em 0 .1em 8px;
+    padding: .1em 20px .1em 8px;
     overflow: unset;
 }
 
@@ -2334,6 +2334,10 @@ label:hover > i, span.bline:hover > i {
 
 .vtop {
     vertical-align: top!important;
+}
+
+.selectize-control.single .selectize-input::after {
+    right: 10px!important;
 }
 
 /** Mobile devices */
