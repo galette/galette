@@ -79,6 +79,7 @@ class Pdf extends \TCPDF
     protected $preferences;
     private $model;
     private $paginated = false;
+    private $filename;
 
     /**
      * Main constructor, set creator and author
@@ -482,5 +483,25 @@ class Pdf extends \TCPDF
             }
         }
         return $str;
+    }
+
+    /**
+     * Get filename
+     *
+     * @return string
+     */
+    public function getFilename()
+    {
+        return $this->filename;
+    }
+
+    /**
+     * Download PDF from browser
+     *
+     * @return void
+     */
+    public function download()
+    {
+        $this->Output($this->filename, 'D');
     }
 }

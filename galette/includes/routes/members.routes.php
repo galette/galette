@@ -317,6 +317,7 @@ $app->get(
             $notFound = $this->notFoundHandler;
             return $notFound($request, $response);
         }
+        return $response;
     }
 )->setName('csv-memberslist')->add($authenticate);
 
@@ -1778,8 +1779,9 @@ $app->get(
         $pdf = new PdfMembersCards($this->preferences);
         $pdf->drawCards($members);
 
-        $response = $this->response->withHeader('Content-type', 'application/pdf');
-        $response->write($pdf->Output(_T("Cards") . '.pdf', 'D'));
+        $response = $this->response->withHeader('Content-type', 'application/pdf')
+                ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
+        $response->write($pdf->download());
         return $response;
     }
 )->setName('pdf-members-cards')->add($authenticate);
@@ -1845,10 +1847,10 @@ $app->get(
 
         $pdf = new PdfMembersLabels($this->preferences);
         $pdf->drawLabels($members);
-        $response = $this->response->withHeader('Content-type', 'application/pdf');
-        $response->write($pdf->Output(_T("labels_print_filename") . '.pdf', 'D'));
+        $response = $this->response->withHeader('Content-type', 'application/pdf')
+                ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
+        $response->write($pdf->download());
         return $response;
-
     }
 )->setName('pdf-members-labels')->add($authenticate);
 
@@ -1901,7 +1903,8 @@ $app->get(
 
         $form = $this->preferences->pref_adhesion_form;
         $pdf = new $form($adh, $this->zdb, $this->preferences);
-        $response = $this->response->withHeader('Content-type', 'application/pdf');
+        $response = $this->response->withHeader('Content-type', 'application/pdf')
+            ->withHeader('Content-Disposition', 'attachment; filename="' . $pdf->getFileName() . '"');
         $response->write($pdf->download());
         return $response;
     }
@@ -1913,7 +1916,8 @@ $app->get(
     function ($request, $response) {
         $form = $this->preferences->pref_adhesion_form;
         $pdf = new $form(null, $this->zdb, $this->preferences);
-        $response = $this->response->withHeader('Content-type', 'application/pdf');
+        $response = $this->response->withHeader('Content-type', 'application/pdf')
+            ->withHeader('Content-Disposition', 'attachment; filename="' . $pdf->getFileName() . '"');
         $response->write($pdf->download());
         return $response;
     }
@@ -2676,7 +2680,6 @@ $app->post(
         $response = $this->response->withHeader('Content-type', 'application/pdf');
         $response->write($pdf->Output(_T("attendance_sheet") . '.pdf', 'D'));
         return $response;
-
     }
 )->setName('attendance_sheet')->add($authenticate);
 

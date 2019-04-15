@@ -202,4 +202,14 @@ class PdfContribution
     {
         return realpath($this->path);
     }
+
+    /**
+     * Get filename
+     *
+     * @return string
+     */
+    public function getFilename()
+    {
+        return $this->filename;
+    }
 }
