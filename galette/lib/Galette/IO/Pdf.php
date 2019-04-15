@@ -150,7 +150,7 @@ class Pdf extends \TCPDF
      * @access public
      * @since 1.0
      */
-    public function Error($msg)
+    public function Error($msg) // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         global $container;
 
@@ -232,7 +232,7 @@ class Pdf extends \TCPDF
      *
      * @return void
      */
-    function Header()
+    public function Header() // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         //just ovverride default header to prevent black line at top
     }
@@ -242,7 +242,7 @@ class Pdf extends \TCPDF
      *
      * @return void
      */
-    function Footer()
+    public function Footer() // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         $this->SetY(-20);
         if (isset($this->model)) {
@@ -315,7 +315,7 @@ class Pdf extends \TCPDF
      *
      * @return void
      */
-    function PageHeader($title = null)
+    public function PageHeader($title = null) // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         if (isset($this->model)) {
             $html = null;
@@ -412,7 +412,7 @@ class Pdf extends \TCPDF
      *
      * @return void
      */
-    public function PageBody()
+    public function PageBody() // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         $hbody = '';
         if (trim($this->model->hstyles) !== '') {

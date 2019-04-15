@@ -265,7 +265,12 @@ class PdfMembersCards extends Pdf
             // Color=#8C8C8C: Shadow of the year
             $this->SetTextColor(140);
             $this->SetFontSize($this->year_font_size);
-            $xan_cot = $x0 + $this->wi - $this->GetStringWidth($this->an_cot, self::FONT, 'B', $this->year_font_size) - 0.2;
+            $xan_cot = $x0 + $this->wi - $this->GetStringWidth(
+                $this->an_cot,
+                self::FONT,
+                'B',
+                $this->year_font_size
+            ) - 0.2;
             $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);
             $this->writeHTML('<strong>' . $this->an_cot . '</strong>', false, 0);
 

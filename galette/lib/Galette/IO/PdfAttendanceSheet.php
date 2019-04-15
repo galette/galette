@@ -70,7 +70,7 @@ class PdfAttendanceSheet extends Pdf
      *
      * @return void
      */
-    public function Header()
+    public function Header() // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         $this->SetFont(Pdf::FONT, '', self::SHEET_FONT);
         $head_title = $this->doc_title;
