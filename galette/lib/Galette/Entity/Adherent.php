@@ -953,9 +953,9 @@ class Adherent
         $fields = self::getDbFields($this->zdb);
 
         //reset company name if needeed
-        if (!isset($values['is_company']) || $values['is_company'] != 1) {
+        if (!isset($values['is_company'])) {
             unset($values['is_company']);
-            unset($values['societe_adh']);
+            $values['societe_adh'] = '';
         }
 
         foreach ($fields as $key) {
