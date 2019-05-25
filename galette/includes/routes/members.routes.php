@@ -2192,10 +2192,10 @@ $app->post(
                             }
                         } elseif ($_FILES['files']['error'][$i] !== UPLOAD_ERR_NO_FILE) {
                             Analog::log(
-                                $mailing->getPhpErrorMessage($_FILES['files']['error'][$i]),
+                                $this->logo->getPhpErrorMessage($_FILES['files']['error'][$i]),
                                 Analog::WARNING
                             );
-                            $error_detected[] = $mailing->getPhpErrorMessage(
+                            $error_detected[] = $this->logo->getPhpErrorMessage(
                                 $_FILES['files']['error'][$i]
                             );
                         }
