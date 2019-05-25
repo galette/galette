@@ -76,7 +76,7 @@ class GaletteMail
     private $word_wrap = 70;
 
     private $errors = array();
-    private $recipients;
+    private $recipients = array();
 
     private $mail = null;
     protected $attachments = array();
