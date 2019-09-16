@@ -124,7 +124,7 @@ class PdfAdhesionForm
         if ($adh !== null) {
             $address = $adh->address;
             if ($adh->address_continuation != '') {
-                $address .= '<br/>' . $adh->adress_continuation;
+                $address .= '<br/>' . $adh->address_continuation;
             }
 
             if ($adh->isMan()) {
