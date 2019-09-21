@@ -82,7 +82,7 @@
                     });
 
                     ui.jqXHR.error(function(){
-                        alert('{_T string="An error occurred :("|escape:"js"}');
+                        alert('{_T string="An error occurred :(" escape="js"}');
                     });
                 }
             });
