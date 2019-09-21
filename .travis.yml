@@ -13,7 +13,7 @@ before_script:
 
 script:
   - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" && $DB == "mysql" ]]; then galette/vendor/bin/phpcs -n -p --ignore=galette_tcpdf_config.php --standard=phpcs-rules.xml galette/lib/ tests/ galette/webroot/index.php galette/includes/fields_defs/ galette/includes/smarty_plugins/ galette/includes/functions.inc.php galette/includes/galette.inc.php galette/includes/dependencies.php galette/includes/main.inc.php; fi
-  - php galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php -c tests/telemetry.php -d tests/Galette/
+  - php galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php -d tests/Galette/
 
 language: php
 

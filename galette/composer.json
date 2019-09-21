@@ -41,8 +41,7 @@
         "soundasleep/html2text": "^0.5.0"
     },
     "require-dev": {
-        "atoum/atoum": "^3",
-        "atoum/telemetry-extension": "^1.0"
+        "atoum/atoum": "dev-master"
     },
     "config": {
         "optimize-autoloader": true
