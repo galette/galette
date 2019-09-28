@@ -27,7 +27,7 @@
                     </p>
                     <p>
                         <label class="bline" for="group_filter">{_T string="Member of group"}</label>
-                        <select name="group_filter">
+                        <select name="group_filter" id="group_filter">
                             <option value="0">{_T string="Select a group"}</option>
 {foreach from=$filter_groups_options item=group}
                             <option value="{$group->getId()}"{if $filters->group_filter eq $group->getId()} selected="selected"{/if}>{$group->getName()}</option>
