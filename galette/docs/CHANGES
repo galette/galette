@@ -1,6 +1,26 @@
 Changes
 -------
 
+0.9.2.1 -> 0.9.3
+- save searches
+- ability to use several admins email addresses from preferences
+- send a mail to admins when a member edit his card
+- flexible redirect after member creation.
+- fix dynamic date fields check
+- add current date variable (DATE_NOW) in PDF models
+- fix blank page at install on some environments
+- fix javascript escaping on mailings
+- fix groups members removal error
+- fix pagination on trombinoscope
+- fix logo path on some web server configurations
+- dynamic fields order was not stored
+- add missing date fields changes on mysql
+- missing date selectors on advanced search and dynamic fields
+- fix PDF extension and content type
+- fix upper case removal from composed names
+- remove company name when checkbox is unchecked
+- fix call from wrong object in maailing
+
 0.9.2 -> 0.9.2.1
 
 - remove all routes translations
