@@ -8,8 +8,8 @@
         for (var id in members) {
             var member = members[id];
             _adhselect[0].selectize.addOption({
-                value: id,
-                text: member
+                value: member.value,
+                text: member.text
             });
         }
         _adhselect[0].selectize.refreshOptions();
