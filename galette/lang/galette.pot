@@ -2029,7 +2029,7 @@ msgstr ""
 msgid "Change model"
 msgstr ""
 
-#: ../templates/default/js_chosen_adh.tpl:61
+#: ../templates/default/js_chosen_adh.tpl:77
 msgid "Load previous members..."
 msgstr ""
 
@@ -2370,10 +2370,6 @@ msgstr ""
 
 #: ../templates/default/charts.tpl:72
 msgid "Contributions over time"
-msgstr ""
-
-#: ../templates/default/config_fields.tpl:40
-msgid "Nobody"
 msgstr ""
 
 #: ../includes/i18n.inc.php:359
@@ -4471,7 +4467,7 @@ msgstr ""
 msgid "Database installation"
 msgstr ""
 
-#: ../templates/default/js_chosen_adh.tpl:45 ../templates/default/js_chosen_adh.tpl:79
+#: ../templates/default/js_chosen_adh.tpl:55 ../templates/default/js_chosen_adh.tpl:95
 msgid "An error occurred retrieving members :("
 msgstr ""
 
@@ -5716,6 +5712,10 @@ msgstr ""
 msgid "Unable to retrieve field informations."
 msgstr ""
 
+#: ../templates/default/config_fields.tpl:40
+msgid "Inaccessible"
+msgstr ""
+
 #: ../lib/Galette/Core/Middleware.php:143 ../lib/Galette/Core/Middleware.php:192
 msgid "Galette needs update!"
 msgstr ""
@@ -5935,6 +5935,7 @@ msgstr ""
 #: ../templates/default/edit_dynamic_fields.tpl:185 ../templates/default/ajouter_transaction.tpl:257
 #: ../templates/default/gestion_mailings.tpl:196 ../templates/default/history.tpl:170
 #: ../templates/default/advanced_search.tpl:359 ../templates/default/advanced_search.tpl:366
+#: ../templates/default/advanced_search.tpl:472
 msgid "Select a date"
 msgstr ""
 
@@ -6397,7 +6398,7 @@ msgstr ""
 msgid "SQL query"
 msgstr ""
 
-#: ../templates/default/js_chosen_adh.tpl:27
+#: ../templates/default/js_chosen_adh.tpl:37
 msgid "Load following members..."
 msgstr ""
 

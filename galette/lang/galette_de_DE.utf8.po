@@ -4,10 +4,11 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # Arnold Warhonowicz <arnold@warhonowicz.de>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2018. #zanata
+# Johan Cwiklinski <johan@x-tnd.be>, 2019. #zanata
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2018-04-26 02:40+0000\n"
-"Last-Translator: Arnold Warhonowicz <arnold@warhonowicz.de>\n"
+"PO-Revision-Date: 2019-09-28 06:04+0000\n"
+"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Arnold Warhonowicz\n"
 "Language: de_DE\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2276,7 +2277,7 @@ msgstr "Erinnerungen"
 msgid "Change model"
 msgstr "Modell ändern"
 
-#: ../templates/default/js_chosen_adh.tpl:61
+#: ../templates/default/js_chosen_adh.tpl:77
 msgid "Load previous members..."
 msgstr ""
 
@@ -2664,10 +2665,6 @@ msgstr ""
 #: ../templates/default/charts.tpl:72
 msgid "Contributions over time"
 msgstr "Beiträge im Zeitverlauf"
-
-#: ../templates/default/config_fields.tpl:40
-msgid "Nobody"
-msgstr "Niemand"
 
 #: ../includes/i18n.inc.php:359
 msgid "Contact information"
@@ -5053,8 +5050,8 @@ msgstr "Anfangsdatum"
 msgid "Database installation"
 msgstr "Datenbank Installation"
 
-#: ../templates/default/js_chosen_adh.tpl:45
-#: ../templates/default/js_chosen_adh.tpl:79
+#: ../templates/default/js_chosen_adh.tpl:55
+#: ../templates/default/js_chosen_adh.tpl:95
 msgid "An error occurred retrieving members :("
 msgstr ""
 
@@ -6472,6 +6469,10 @@ msgstr ""
 msgid "Unable to retrieve field informations."
 msgstr "Die Feldinformationen können nicht abgerufen werden."
 
+#: ../templates/default/config_fields.tpl:40
+msgid "Inaccessible"
+msgstr ""
+
 #: ../lib/Galette/Core/Middleware.php:143
 #: ../lib/Galette/Core/Middleware.php:192
 msgid "Galette needs update!"
@@ -6717,6 +6718,7 @@ msgstr "Aktivitäten"
 #: ../templates/default/history.tpl:170
 #: ../templates/default/advanced_search.tpl:359
 #: ../templates/default/advanced_search.tpl:366
+#: ../templates/default/advanced_search.tpl:472
 msgid "Select a date"
 msgstr "Wählen Sie ein Datum"
 
@@ -7213,7 +7215,7 @@ msgstr "Dateiberechtigungen"
 msgid "SQL query"
 msgstr "SQL Abfrage"
 
-#: ../templates/default/js_chosen_adh.tpl:27
+#: ../templates/default/js_chosen_adh.tpl:37
 msgid "Load following members..."
 msgstr ""
 

@@ -8,7 +8,7 @@
 # Johan Cwiklinski <johan@x-tnd.be>, 2019. #zanata
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-09-28 20:01+0200\n"
+"PO-Revision-Date: 2019-09-29 18:52+0200\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
@@ -2311,7 +2311,7 @@ msgstr "Rappels"
 msgid "Change model"
 msgstr "Changer le modèle"
 
-#: ../templates/default/js_chosen_adh.tpl:61
+#: ../templates/default/js_chosen_adh.tpl:77
 msgid "Load previous members..."
 msgstr "Charger les adhérents précédents"
 
@@ -2715,10 +2715,6 @@ msgstr ""
 #: ../templates/default/charts.tpl:72
 msgid "Contributions over time"
 msgstr "Contributions de par les âges"
-
-#: ../templates/default/config_fields.tpl:40
-msgid "Nobody"
-msgstr "Personne"
 
 #: ../includes/i18n.inc.php:359
 msgid "Contact information"
@@ -5128,8 +5124,8 @@ msgstr "Date de début"
 msgid "Database installation"
 msgstr "Installation de la base de données"
 
-#: ../templates/default/js_chosen_adh.tpl:45
-#: ../templates/default/js_chosen_adh.tpl:79
+#: ../templates/default/js_chosen_adh.tpl:55
+#: ../templates/default/js_chosen_adh.tpl:95
 msgid "An error occurred retrieving members :("
 msgstr "Une erreur est survenue lors de la récupération des adhérents :("
 
@@ -6562,6 +6558,10 @@ msgstr "Une erreur est survenue lors de la récupération des dates :("
 msgid "Unable to retrieve field informations."
 msgstr "Impossible de récupérer les informations du champ."
 
+#: ../templates/default/config_fields.tpl:40
+msgid "Inaccessible"
+msgstr "Inaccessible"
+
 #: ../lib/Galette/Core/Middleware.php:143
 #: ../lib/Galette/Core/Middleware.php:192
 msgid "Galette needs update!"
@@ -6809,6 +6809,7 @@ msgstr "Activités"
 #: ../templates/default/history.tpl:170
 #: ../templates/default/advanced_search.tpl:359
 #: ../templates/default/advanced_search.tpl:366
+#: ../templates/default/advanced_search.tpl:472
 msgid "Select a date"
 msgstr "Sélectionnez une date"
 
@@ -7312,7 +7313,7 @@ msgstr "Permissions de fichiers"
 msgid "SQL query"
 msgstr "Requête SQL"
 
-#: ../templates/default/js_chosen_adh.tpl:27
+#: ../templates/default/js_chosen_adh.tpl:37
 msgid "Load following members..."
 msgstr "Charger les adhérents suivants..."
 

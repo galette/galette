@@ -6,7 +6,7 @@
 # Johan Cwiklinski <johan@x-tnd.be>, 2019. #zanata
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-09-28 19:55+0200\n"
+"PO-Revision-Date: 2019-09-29 18:51+0200\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: en\n"
@@ -2266,7 +2266,7 @@ msgstr "Reminders"
 msgid "Change model"
 msgstr "Change model"
 
-#: ../templates/default/js_chosen_adh.tpl:61
+#: ../templates/default/js_chosen_adh.tpl:77
 msgid "Load previous members..."
 msgstr "Load previous members..."
 
@@ -2657,10 +2657,6 @@ msgstr "Group is not empty, it cannot be deleted. Use cascade delete instead."
 #: ../templates/default/charts.tpl:72
 msgid "Contributions over time"
 msgstr "Contributions over time"
-
-#: ../templates/default/config_fields.tpl:40
-msgid "Nobody"
-msgstr "Nobody"
 
 #: ../includes/i18n.inc.php:359
 msgid "Contact information"
@@ -5036,8 +5032,8 @@ msgstr "Begin date"
 msgid "Database installation"
 msgstr "Database installation"
 
-#: ../templates/default/js_chosen_adh.tpl:45
-#: ../templates/default/js_chosen_adh.tpl:79
+#: ../templates/default/js_chosen_adh.tpl:55
+#: ../templates/default/js_chosen_adh.tpl:95
 msgid "An error occurred retrieving members :("
 msgstr "An error occurred retrieving members :("
 
@@ -6444,6 +6440,10 @@ msgstr "An error occurred retrieving dates :("
 msgid "Unable to retrieve field informations."
 msgstr "Unable to retrieve field informations."
 
+#: ../templates/default/config_fields.tpl:40
+msgid "Inaccessible"
+msgstr "Inaccessible"
+
 #: ../lib/Galette/Core/Middleware.php:143
 #: ../lib/Galette/Core/Middleware.php:192
 msgid "Galette needs update!"
@@ -6686,6 +6686,7 @@ msgstr "Activities"
 #: ../templates/default/history.tpl:170
 #: ../templates/default/advanced_search.tpl:359
 #: ../templates/default/advanced_search.tpl:366
+#: ../templates/default/advanced_search.tpl:472
 msgid "Select a date"
 msgstr "Select a date"
 
@@ -7178,7 +7179,7 @@ msgstr "Files permissions"
 msgid "SQL query"
 msgstr "SQL query"
 
-#: ../templates/default/js_chosen_adh.tpl:27
+#: ../templates/default/js_chosen_adh.tpl:37
 msgid "Load following members..."
 msgstr "Load following members..."
 
