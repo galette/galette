@@ -37,7 +37,7 @@
                     </span>
                     <span data-title="{_T string="Permissions"}" class="access" title="{_T string="Change '%field' permissions" pattern="/%field/" replace=$field.label}">
                         <select name="{$fid}_visible" id="{$fid}_visible">
-                            <option value="{Galette\Entity\FieldsConfig::NOBODY}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::NOBODY')} selected="selected"{/if}>{_T string="Nobody"}</option>
+                            <option value="{Galette\Entity\FieldsConfig::NOBODY}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::NOBODY')} selected="selected"{/if}>{_T string="Inaccessible"}</option>
                             <option value="{Galette\Entity\FieldsConfig::ADMIN}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::ADMIN')} selected="selected"{/if}>{_T string="Administrator"}</option>
                             <option value="{Galette\Entity\FieldsConfig::STAFF}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::STAFF')} selected="selected"{/if}>{_T string="Staff member"}</option>
                             <option value="{Galette\Entity\FieldsConfig::MANAGER}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::MANAGER')} selected="selected"{/if}>{_T string="Group manager"}</option>
