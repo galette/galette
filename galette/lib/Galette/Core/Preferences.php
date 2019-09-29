@@ -168,7 +168,8 @@ class Preferences
         'pref_registration_date' => '',
         'pref_footer' => '',
         'pref_filter_account' => Members::ALL_ACCOUNTS,
-        'pref_galette_url' => ''
+        'pref_galette_url' => '',
+        'pref_redirect_on_create' => Adherent::AFTER_ADD_DEFAULT
     );
 
     // flagging required fields

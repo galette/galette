@@ -152,6 +152,17 @@
                     </select>
                 </p>
                 <p>
+                    <label for="pref_redirect_on_create" class="bline">{_T string="After member creation:"}</label>
+                    <select name="pref_redirect_on_create" id="pref_redirect_on_create">
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')} selected="selected"{/if}>{_T string="execute default action"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')} selected="selected"{/if}>{_T string="create a new transaction"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_NEW')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_NEW')} selected="selected"{/if}>{_T string="create another new member"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')} selected="selected"{/if}>{_T string="show member"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_LIST')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_LIST')} selected="selected"{/if}>{_T string="go to members list"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_HOME')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_HOME')} selected="selected"{/if}>{_T string="go to main page"}</option>
+                    </select>
+                </p>
+                <p>
                     <label for="pref_log" class="bline">{_T string="Logging level:"}</label>
                     <select name="pref_log" id="pref_log" class="nochosen">
                         <option value="{Galette\Core\Preferences::LOG_DISABLED}" {if $pref.pref_log eq constant('Galette\Core\Preferences::LOG_DISABLED')}selected="selected"{/if}>{_T string="Disabled"}</option>
