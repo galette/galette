@@ -50,9 +50,9 @@
                      <p>
                         <span class="bline">{_T string="Birth date"}</span>
                         <label for="birth_date_begin">{_T string="beetween"}</label>
-                        <input id="birth_date_begin" name="birth_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->birth_date_begin}"/>
+                        <input id="birth_date_begin" name="birth_date_begin" type="text" class="birth_date" maxlength="10" size="10" value="{$filters->birth_date_begin}"/>
                         <label for="birth_date_end">{_T string="and"}</label>
-                        <input id="birth_date_end" name="birth_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->birth_date_end}"/>
+                        <input id="birth_date_end" name="birth_date_end" type="text" class="birth_date" maxlength="10" size="10" value="{$filters->birth_date_end}"/>
                     </p>
                     <p>
                         <span class="bline">{_T string="Creation date"}</span>
@@ -462,6 +462,15 @@
                 });
 
                 _initFieldSelector();
+
+                $('.birth_date').datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    showOn: 'button',
+                    maxDate: '-0d',
+                    yearRange: '-200:+0',
+                    buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
+                });
             });
         </script>
 {/block}
