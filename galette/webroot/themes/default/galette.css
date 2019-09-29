@@ -2236,6 +2236,10 @@ label:hover > i, span.bline:hover > i {
     text-align:center;
 }
 
+.fields_list .selectize-input {
+    min-width: auto;
+}
+
 #add_category{
     float:right;
 }
