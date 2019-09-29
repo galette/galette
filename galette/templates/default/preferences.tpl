@@ -131,7 +131,7 @@
                 <legend>{_T string="Galette's parameters"}</legend>
                 <p>
                     <label for="pref_lang" class="bline">{_T string="Default language:"}</label>
-                    <select name="pref_lang" id="pref_lang" class="lang nochosen">
+                    <select name="pref_lang" id="pref_lang" class="lang">
 {foreach item=langue from=$languages}
                         <option value="{$langue->getID()}" {if $pref.pref_lang eq $langue->getID()}selected="selected"{/if} style="background-image: url({base_url}/{$langue->getFlag()});">{$langue->getName()|ucfirst}</option>
 {/foreach}
@@ -139,7 +139,7 @@
                 </p>
                 {*<p>
                     <label for="pref_theme" class="bline">{_T string="Default theme:"}</label>
-                    <select name="pref_theme" id="pref_theme" class="nochosen">
+                    <select name="pref_theme" id="pref_theme">
 {foreach item=theme from=$themes}
                         <option value="{$theme}" {if $pref.pref_theme eq $theme}selected="selected"{/if}>{$theme|ucfirst}</option>
 {/foreach}
@@ -147,11 +147,12 @@
                 </p>*}
                 <p>
                     <label for="pref_numrows" class="bline">{_T string="Lines / Page:"}</label>
-                    <select name="pref_numrows" id="pref_numrows" class="nochosen">
+                    <select name="pref_numrows" id="pref_numrows">
                         {html_options options=$pref_numrows_options selected=$pref.pref_numrows}
                     </select>
                 </p>
                 <p>
+
                     <label for="pref_redirect_on_create" class="bline">{_T string="After member creation:"}</label>
                     <select name="pref_redirect_on_create" id="pref_redirect_on_create">
                         <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')} selected="selected"{/if}>{_T string="execute default action"}</option>
@@ -164,20 +165,20 @@
                 </p>
                 <p>
                     <label for="pref_log" class="bline">{_T string="Logging level:"}</label>
-                    <select name="pref_log" id="pref_log" class="nochosen">
+                    <select name="pref_log" id="pref_log">
                         <option value="{Galette\Core\Preferences::LOG_DISABLED}" {if $pref.pref_log eq constant('Galette\Core\Preferences::LOG_DISABLED')}selected="selected"{/if}>{_T string="Disabled"}</option>
                         <option value="{Galette\Core\Preferences::LOG_ENABLED}" {if $pref.pref_log eq constant('Galette\Core\Preferences::LOG_ENABLED')}selected="selected"{/if}>{_T string="Enabled"}</option>
                     </select>
                 </p>
                 <p>
                     <label for="pref_statut" class="bline">{_T string="Default membership status:"}</label>
-                    <select name="pref_statut" id="pref_statut" class="nochosen">
+                    <select name="pref_statut" id="pref_statut">
                         {html_options options=$statuts selected=$pref.pref_statut}
                     </select>
                 </p>
                 <p>
                     <label for="pref_filter_account" class="bline">{_T string="Default account filter:"}</label>
-                    <select name="pref_filter_account" id="pref_filter_account" class="nochosen">
+                    <select name="pref_filter_account" id="pref_filter_account">
                         {html_options options=$accounts_options selected=$pref.pref_filter_account}
                     </select>
                 </p>
@@ -197,7 +198,7 @@
                 </p>
                 <p id="publicpages_visibility"{if !$pref.pref_bool_publicpages} class="hidden"{/if}>
                     <label for="pref_publicpages_visibility" class="bline">{_T string="Show public pages for"}</label>
-                    <select name="pref_publicpages_visibility" id="pref_publicpages_visibility" class="nochosen">
+                    <select name="pref_publicpages_visibility" id="pref_publicpages_visibility">
                         <option value="{Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC}"{if $pref.pref_publicpages_visibility eq constant('Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC')} selected="selected"{/if}>{_T string="Everyone"}</option>
                         <option value="{Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED}"{if $pref.pref_publicpages_visibility eq constant('Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED')} selected="selected"{/if}>{_T string="Up to date members"}</option>
                         <option value="{Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE}"{if $pref.pref_publicpages_visibility eq constant('Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE')} selected="selected"{/if}>{_T string="Admin and staff only"}</option>
@@ -447,7 +448,7 @@
                 </p>
                 <p>
                     <label for="pref_card_address" class="bline">{_T string="Address type:"}</label>
-                    <select name="pref_card_address" id="pref_card_address" class="nochosen">
+                    <select name="pref_card_address" id="pref_card_address">
                         <option value="0" {if $pref.pref_card_address eq 0}selected="selected"{/if}>{_T string="Email"}</option>
                         <option value="1" {if $pref.pref_card_address eq 1}selected="selected"{/if}>{_T string="MSN"}</option>
                         <option value="2" {if $pref.pref_card_address eq 2}selected="selected"{/if}>{_T string="Jabber"}</option>
@@ -528,13 +529,7 @@
 
 {block name="javascripts"}
         <script type="text/javascript">
-            $('#prefs_tabs').tabs({
-                activate: function(event, ui) {
-                    $(ui.newPanel.selector + ' select').chosen({
-                        disable_search: true
-                    });
-                }
-            });
+            $('#prefs_tabs').tabs();
 
             $('#no,#php,#qmail').click(function(){
                 $('#smtp_parameters,#smtp_auth').hide();
