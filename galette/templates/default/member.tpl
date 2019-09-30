@@ -59,9 +59,22 @@
     {* Dynamic entries *}
     {include file="edit_dynamic_fields.tpl" object=$member}
 
-    {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') and (!$self_adh and ($login->isAdmin() or $login->isStaff()))}
                     <p>
-                        <label for="mail_confirm">
+            {if !$member->id && !$self_adh }
+               <label for="redirect_on_create">{_T string="After member creation:"}</label>
+               <select name="redirect_on_create" id="redirect_on_create">
+                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')} selected="selected"{/if}>{_T string="execute default action"}</option>
+                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')} selected="selected"{/if}>{_T string="create a new transaction"}</option>
+                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_NEW')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_NEW')} selected="selected"{/if}>{_T string="create another new member"}</option>
+                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')} selected="selected"{/if}>{_T string="show member"}</option>
+                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_LIST')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_LIST')} selected="selected"{/if}>{_T string="go to members list"}</option>
+                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_HOME')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_HOME')} selected="selected"{/if}>{_T string="go to main page"}</option>
+               </select>
+               <br/>
+            {/if}
+
+    {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') and (!$self_adh and ($login->isAdmin() or $login->isStaff()))}
+                        <br/><label for="mail_confirm">
         {if $member->id}
                             {_T string="Notify member his account has been modified"}
         {else}
@@ -76,22 +89,10 @@
                             {_T string="Member will receive his username and password by email, if he has an address."}
         {/if}
                         </span>
-                    </p>
     {/if}
+                    </p>
         </div>
         <div class="button-container">
-            {if !$member->id && !$self_adh }
-               <label for="redirect_on_create">{_T string="After member creation:"}</label>
-               <select name="redirect_on_create" id="redirect_on_create">
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')} selected="selected"{/if}>{_T string="execute default action"}</option>
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')} selected="selected"{/if}>{_T string="create a new transaction"}</option>
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_NEW')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_NEW')} selected="selected"{/if}>{_T string="create another new member"}</option>
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')} selected="selected"{/if}>{_T string="show member"}</option>
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_LIST')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_LIST')} selected="selected"{/if}>{_T string="go to members list"}</option>
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_HOME')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_HOME')} selected="selected"{/if}>{_T string="go to main page"}</option>
-               </select>
-               <br/>
-            {/if}
             <button type="submit" name="valid" class="action">
                 <i class="fas fa-save fa-fw"></i> {_T string="Save"}
             </button>
