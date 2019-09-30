@@ -1,0 +1,62 @@
+/*
+ * == Summary
+ *
+ * == Layout
+ * == Elements
+ * == Media queries
+ */
+
+/*
+ * == Layout
+ */
+.clearfix::after {
+    display: inline-block;
+    content: '';
+    width: 0;
+    height: 0;
+    clear: both;
+}
+.gg.columns {
+    display: flex;
+}
+.gg.stacked.columns {
+    flex-direction: column;
+}
+.gg.column {
+}
+.gg.row {
+    display: flex;
+}
+/* =/ Layout */
+
+/* 
+ * = Elements
+ */
+.gg.top-navbar .top-logo {
+    float: left;
+}
+
+.gg.top-navbar .top-name {
+    float: left;
+}
+
+.gg.top-navbar .user-nav > .menu-ng {
+    float:left
+}
+
+ul.menu-ng {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+ul.menu-ng.horizontal > .item {
+    display: inline-block;
+}
+ul.menu-ng .item.dropdown ul {
+    display: none;
+}
+ul.menu-ng .item.dropdown:hover ul {
+    display: block;
+}
+    
+/* =/ Elements */
