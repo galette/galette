@@ -5,16 +5,14 @@
 {assign var='id' value=$fields.id}
 {assign var='field' value=$fields.third}
 
-<form action="{path_for name="editEntitled" data=["class" => $url_class, "action" => "edit", "id" => $entry->$id]}" method="post">
-    <div class="bigtable">
-    <fieldset class="cssform" id="general">
-        <div>
-        <p>
-            <label for="{$name}" class="bline">{_T string="Name:"}</label>
+<form action="{path_for name="editEntitled" data=["class" => $url_class, "action" => "edit", "id" => $entry->$id]}" method="post" class="ui form">
+    <div class="ui segment">
+        <div class="field inline">
+            <label for="{$name}">{_T string="Name:"}</label>
             <input type="text" name="{$name}" id="{$name}" value="{$entry->$name}" />
-        </p>
-        <p>
-            <label for="{$field}" class="bline">
+        </div>
+        <div class="field inline">
+            <label for="{$field}">
 {if $class == 'Status'}
                 {_T string="Priority:"}
 {elseif $class == 'ContributionsTypes'}
@@ -27,20 +25,18 @@
 {elseif $class == 'ContributionsTypes'}
             <input type="checkbox" name="{$field}" id="{$field}" value="1"{if $entry->$field == 1} checked="checked"{/if} />
 {/if}
-        </p>
         </div>
-    </fieldset>
+    </div>
 
     <input type="hidden" name="mod" id="mod" value="{$entry->$id}"/>
     <input type="hidden" name="class" value="{$class}" />
 
     <div class="button-container">
-        <button type="submit" class="action">
-            <i class="fas fa-save"></i>
+        <button type="submit" class="ui labeled icon button action">
+            <i class="save icon"></i>
             {_T string="Save"}
         </button>
         {include file="forms_types/csrf.tpl"}
-    </div>
     </div>
 </form>
 {/block}

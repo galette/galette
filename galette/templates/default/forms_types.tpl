@@ -1,7 +1,10 @@
             {foreach item=fieldset from=$fieldsets}
-            <fieldset class="galette_form">
-                <legend>{_T string=$fieldset->label}</legend>
-                <div>
+            <div class="galetteform ui styled fluid accordion field">
+                <div class="active title">
+                    <i class="icon dropdown"></i>
+                    {_T string=$fieldset->label}
+                </div>
+                <div class="active content field">
                 {if !isset($masschange) && !$self_adh and $fieldset@first}
                     {include file="forms_types/picture.tpl"}
                 {/if}
@@ -125,5 +128,5 @@
                     {include file="forms_types/groups.tpl"}
                 {/if}
                 </div>
-            </fieldset>
+            </div>
             {/foreach}

@@ -1,25 +1,34 @@
 {extends file="public_page.tpl"}
+
 {block name="content"}
 {if $members|@count > 0}
-        <p>{_T string="This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'"}</p>
-        <form action="{path_for name="filterPublicList" data=["type" => "list"]}" method="POST" id="filtre">
-        <table class="infoline">
-            <tr>
-                <td class="left">{_T string="%count member" plural="%count members" count=$nb_members pattern="/%count/" replace=$nb_members}</td>
-                <td class="right">
-                    <label for="nbshow">{_T string="Records per page:"}</label>
-                    <select name="nbshow" id="nbshow">
-                        {html_options options=$nbshow_options selected=$numrows}
-                    </select>
-                    <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
-                    {include file="forms_types/csrf.tpl"}
-                </td>
-            </tr>
-        </table>
+        <div class="ui icon yellow small message">
+            <i class="info circle icon"></i>
+            <div class="content">
+                {_T string="This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'"}
+            </div>
+        </div>
+        <form action="{path_for name="filterPublicList" data=["type" => "list"]}" method="POST" id="filtre" class="ui form">
+            <div class="infoline">
+                <div class="ui basic horizontal segments">
+                    <div class="ui basic fitted segment">
+                        <div class="ui label">{_T string="%count member" plural="%count members" count=$nb_members pattern="/%count/" replace=$nb_members}</div>
+                    </div>
+                    <div class="ui basic right aligned fitted segment">
+                        <div class="inline field">
+                            <label for="nbshow">{_T string="Records per page:"}</label>
+                            <select name="nbshow" id="nbshow" class="ui dropdown nochosen">
+                                {html_options options=$nbshow_options selected=$numrows}
+                            </select>
+                            <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+                            {include file="forms_types/csrf.tpl"}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
-        <table class="listing">
+        <table class="ui celled table">
             <thead>
-
                 <tr>
                     <th class="left">
                         <a href="{path_for name="publicList" data=["type" => "list", "option" => "order", "value" => {Galette\Repository\Members::ORDERBY_NAME}]}" class="listing">
@@ -84,11 +93,22 @@
     {/foreach}
             </tbody>
         </table>
-        <div class="center cright">
-            {_T string="Pages:"}<br/>
-            <ul class="pages">{$pagination}</ul>
+        <div class="ui basic center aligned fitted segment">
+            <div class="ui pagination menu">
+                <div class="header item">
+                    {_T string="Pages:"}
+                </div>
+                {$pagination}
+            </div>
         </div>
 {else}
-    <div id="infobox">{_T string="No member to show"}</div>
+    <div class="ui icon info small message">
+        <i class="info icon"></i>
+        <div class="content">
+            <div class="header">
+                {_T string="No member to show"}
+            </div>
+        </div>
+    </div>
 {/if}
 {/block}

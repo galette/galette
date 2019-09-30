@@ -34,7 +34,7 @@
                 //not enough entries
                 return;
             }
-            _next = $('<div class="option pagination" id="nextpage">{_T string="Load following members..." escape="js"}&nbsp;<i class="fas fa-forward"></i></div>');
+            _next = $('<div class="option pagination" id="nextpage">{_T string="Load following members..." escape="js"}&nbsp;<i class="ui forward icon"></i></div>');
             _next.on('click', function (event) {
                 event.preventDefault();
 
@@ -74,7 +74,7 @@
                 //not enough entries
                 return;
             }
-            _prev = $('<div class="option pagination" id="prevpage">{_T string="Load previous members..." escape="js"}&nbsp;<i class="fas fa-backward"></i></div>');
+            _prev = $('<div class="option pagination" id="prevpage">{_T string="Load previous members..." escape="js"}&nbsp;<i class="ui backward icon"></i></div>');
             _prev.on('click', function (event) {
                 event.preventDefault();
 

@@ -1,3 +1,5 @@
+        <script type="text/javascript">
+
     {* Let's see if there are error messages to show *}
     {assign var="errors" value=$flash->getMessage('error_detected')}
     {if isset($error_detected) && is_array($error_detected)}
@@ -6,14 +8,18 @@
         {/foreach}
     {/if}
     {if is_array($errors) && $errors|@count > 0}
-            <div id="errorbox">
-                <h1>{_T string="- ERROR -"}</h1>
-                <ul>
         {foreach from=$errors item=error}
-                    <li>{$error}</li>
+            var error_msg = '<li>{$error}</li>';
         {/foreach}
-                </ul>
-            </div>
+            $('#main')
+                .toast({
+                    displayTime: 0,
+                    closeIcon: true,
+                    title: '{_T string="- ERROR -"}',
+                    message: '<ul>' + error_msg + '</ul>',
+                    class: 'red'
+                })
+            ;
     {/if}
 
     {* Let's see if there are warning messages to show *}
@@ -24,14 +30,18 @@
         {/foreach}
     {/if}
     {if is_array($warnings) && $warnings|@count > 0}
-            <div class="ui warning message" id="warningbox">
-                <h1>{_T string="- WARNING -"}</h1>
-                <ul>
         {foreach from=$warnings item=warning}
-                    <li>{$warning}</li>
+            var warning_msg = '<li>{$warning}</li>';
         {/foreach}
-                </ul>
-            </div>
+            $('#main')
+                .toast({
+                    displayTime: 0,
+                    closeIcon: true,
+                    title: '{_T string="- WARNING -"}',
+                    message: '<ul>' + warning_msg + '</ul>',
+                    class: 'orange'
+                })
+            ;
     {/if}
 
     {* Let's see if there are success messages to show *}
@@ -42,13 +52,15 @@
         {/foreach}
     {/if}
     {if is_array($successs) && $successs|@count > 0}
-        <div class="ui success message" id="successbox">
-                <ul>
         {foreach from=$successs item=success}
-                    <li>{$success}</li>
+            var success_msg = '<li>{$success}</li>';
         {/foreach}
-                </ul>
-        </div>
+            $('#main')
+                .toast({
+                    message: '<ul>' + success_msg + '</ul>',
+                    class: 'green'
+                })
+            ;
     {/if}
 
     {* Renew telemetry *}
@@ -62,3 +74,5 @@
             - <a href="#" id="renewlater">{_T string="Later"}</a>
         </div>
     {/if}
+
+        </script>

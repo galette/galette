@@ -2,7 +2,7 @@
 
 {block name="content"}
         <form action="{path_for name="searches"}" method="post" enctype="multipart/form-data">
-                <table class="listing">
+                <table class="listing ui celled table">
                     <thead>
                         <tr>
                             <th class="id_row">#</th>
@@ -26,7 +26,7 @@
                             <td class="left" data-title="{_T string="Creation date"}">{$search->name|default:"-"}</td>
                             <td class="left" data-title="{_T string="Search parameters"}">
                                 <a href="#" class="searchparams" title="{_T string="Show parameters"}">
-                                    <i class="fa fa-info-circle"></i>
+                                    <i class="ui info circle blue icon"></i>
                                     <span class="sr-only">
         {foreach $search->sparameters key=key item=parameter name=listparameters}
                                     <strong>{$key}:</strong> {$parameter}{if not $parameter@last}<br />{/if}
@@ -39,7 +39,7 @@
                                     href="{path_for name="loadSearch" data=["id" => $search->id]}"
                                     class="tooltip"
                                 >
-                                    <i class="fa fa-search fa-fw"></i>
+                                    <i class="ui search icon"></i>
                                     <span class="sr-only">{_T string="Load saved search"}</span>
                                 </a>
 
@@ -47,7 +47,7 @@
                                     href="{path_for name="removeSearch" data=["id" => $search->id]}"
                                     class="delete tooltip"
                                 >
-                                    <i class="fa fa-trash fa-fw"></i>
+                                    <i class="ui trash red icon"></i>
                                     <span class="sr-only">{_T string="Delete saved search"}</span>
                                 </a>
                             </td>
@@ -57,7 +57,7 @@
 {/foreach}
                     </tbody>
                 </table>
-            {include file="forms_types/csrf.tpl"}
+                {include file="forms_types/csrf.tpl"}
         </form>
 {/block}
 

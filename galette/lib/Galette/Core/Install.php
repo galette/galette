@@ -161,10 +161,9 @@ class Install
      */
     public function getValidationImage($arg)
     {
-        $img_name = ($arg === true) ? 'valid' : 'invalid';
-        $src = GALETTE_THEME_DIR . 'images/icon-' . $img_name . '.png';
+        $img_name = ($arg === true) ? 'green check' : 'red times';
         $alt = ($arg === true) ? _T("Ok") : _T("Ko");
-        $img = '<img src="' . $src . '" alt="' . $alt . '"/>';
+        $img = '<i class="ui ' . $img_name . ' icon"></i><span class="sr-only">' . $alt . '</span>';
         return $img;
     }
 

@@ -1,6 +1,6 @@
 {extends file="page.tpl"}
 {block name="content"}
-    <table class="listing">
+    <table class="listing ui celled table">
         <!--<caption>{_T string="Active plugins"}</caption>-->
         <thead>
             <tr>
@@ -28,7 +28,7 @@
                         href="{path_for name="pluginsActivation" data=["action" => "deactivate", "module_id" => $name]}"
                         class="toggleActivation tooltip use"
                     >
-                        <i class="fas fa-toggle-on fa-fw"></i>
+                        <i class="ui toggle on red icon"></i>
                         <span class="sr-only">{_T string="Click here to deactivate plugin '%name'" pattern="/%name/" replace=$plugin.name}</span>
                     </a>
     {if $plugins->needsDatabase($name)}
@@ -37,7 +37,7 @@
                         id="initdb_{$name}"
                         class="initdb action tooltip"
                     >
-                        <i class="fas fa-database fa-fw"></i>
+                        <i class="ui database icon"></i>
                         <span class="sr-only">{_T string="Initialize '%name' database" pattern="/%name/" replace=$plugin.name}</span>
                     </a>
     {else}
@@ -79,10 +79,10 @@
                         href="{path_for name="pluginsActivation" data=["action" => "activate", "module_id" => $name]}"
                         class="toggleActivation tooltip delete"
                     >
-                        <i class="fas fa-toggle-on"></i>
+                        <i class="ui toggle on icon"></i>
                         <span class="sr-only">{_T string="Activate plugin '%name'" pattern="/%name/" replace=$name}</span>
                     </a>
-                    <i class="fas fa-fw">&nbsp;</i>
+                    <i class="ui icon">&nbsp;</i>
                 </td>
             </tr>
 {foreachelse}

@@ -193,7 +193,7 @@ ul.leaders li:before {
  ". . . . . . . . . . . . . . . . . . . . "
 }
 
-ul.leaders span:first-child {
+ul.leaders span:first-child:not(.sr-only) {
     display: inline-block;
     padding-top: .1em;
     padding-bottom: .1em;
@@ -234,4 +234,7 @@ ul.leaders span + span {
 
 #plang_selector {
     width: 15em;
+}
+.sr-only {
+  display: none;
 }

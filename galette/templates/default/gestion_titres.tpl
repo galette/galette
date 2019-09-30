@@ -1,8 +1,8 @@
 {extends file="page.tpl"}
 
 {block name="content"}
-        <form action="{path_for name="titles"}" method="post" enctype="multipart/form-data">
-                <table class="listing">
+        <form action="{path_for name="titles"}" method="post" enctype="multipart/form-data" class="ui form">
+                <table class="listing ui celled table">
                     <thead>
                         <tr>
                             <th class="id_row">#</th>
@@ -26,8 +26,8 @@
                             </td>
                             <td class="center actions_row">
                                 <input type="hidden" name="new" value="1" />
-                                <button type="submit" name="valid">
-                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                <button type="submit" name="valid" class="ui labeled icon button">
+                                    <i class="plus icon" aria-hidden="true"></i>
                                     {_T string="Add"}
                                 </button>
                             </td>
@@ -55,7 +55,7 @@
                                     href="{path_for name="editTitle" data=["id" => $title->id]}"
                                     class="tooltip action"
                                 >
-                                    <i class="fas fa-edit fa-fw"></i>
+                                    <i class="ui edit blue icon"></i>
                                     <span class="sr-only">{_T string="Edit '%s' title" pattern="/%s/" replace=$title->short|escape}</span>
                                 </a>
                 {if $title->id eq 1 or $title->id eq 2}
@@ -65,7 +65,7 @@
                                     href="{path_for name="removeTitle" data=["id" => $title->id]}"
                                     class="delete tooltip"
                                 >
-                                    <i class="fa fa-trash fa-fw"></i>
+                                    <i class="ui trash red icon"></i>
                                     <span class="sr-only">{_T string="Delete '%s' title" pattern="/%s/" replace=$title->short|escape}</span>
                                 </a>
                 {/if}

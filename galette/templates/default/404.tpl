@@ -11,17 +11,19 @@
             <p>{_T string="Please update your browser or use an alternative one, like Mozilla Firefox (http://mozilla.org)."}</p>
         </div>
         <![endif]-->
-        <div class="error">
+        <div class="ui container">
             <header>
                 <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
             </header>
-            <div id="errorbox">
-                <h2>{_T string="Page not found"}</h2>
+            <div class="ui red message">
+                <h2 class="ui center aligned header">{_T string="Page not found"}</h2>
             </div>
-            <p class="center">{_T string="Sorry, the page you are looking for could not be found."}</p>
+            <div class="ui basic center aligned segment">
+                <p class="ui large text">{_T string="Sorry, the page you are looking for could not be found."}</p>
+            </div>
             <nav>
-                <a href="{path_for name="slash"}" class="button">
-                    <i class="fas fa-home"></i>
+                <a href="{path_for name="slash"}" class="ui labeled icon button">
+                    <i class="home icon"></i>
                     {_T string="Home"}
                 </a>
             </nav>

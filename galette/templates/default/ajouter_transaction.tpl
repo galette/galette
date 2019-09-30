@@ -2,150 +2,168 @@
 
 {block name="content"}
 {if isset($members.list)}
-        <form action="{if $transaction->id}{path_for name="editTransaction" data=["id" => $transaction->id]}{else}{path_for name="addTransaction"}{/if}" enctype="multipart/form-data" method="post">
-        <div class="bigtable">
-            <fieldset class="cssform">
-                <legend class="ui-state-active ui-corner-top">{_T string="Transaction details"}</legend>
-                <p>
-                    <label for="trans_desc" class="bline">{_T string="Description:"}</label>
+        <div class="ui fitted small red message">{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></div>
+        <form action="{if $transaction->id}{path_for name="editTransaction" data=["id" => $transaction->id]}{else}{path_for name="addTransaction"}{/if}" enctype="multipart/form-data" method="post" class="ui form">
+        <div class="ui segment">
+            <div class="ui tiny header">
+                {_T string="Transaction details"}
+            </div>
+            <div class="active content field">
+                <div class="field inline">
+                    <label for="trans_desc">{_T string="Description:"}</label>
                     <input type="text" name="trans_desc" id="trans_desc" value="{$transaction->description}" maxlength="150" size="30"{if $required.trans_desc eq 1} required="required"{/if}/>
-                </p>
-                <p>
-                    <label for="id_adh" class="bline" >{_T string="Originator:"}</label>
+                </div>
+                <div class="field inline">
+                    <label for="id_adh" >{_T string="Originator:"}</label>
                     <select name="id_adh" id="id_adh" class="nochosen"{if $required.id_adh eq 1} required="required"{/if}>
     {if !$transaction->member}
                         <option value="">{_T string="-- select a name --"}</option>
     {/if}
     {foreach $members.list as $k=>$v}
-                            <option value="{$k}"{if $transaction->member == $k} selected="selected"{/if}>{$v}</option>
+                        <option value="{$k}"{if $transaction->member == $k} selected="selected"{/if}>{$v}</option>
     {/foreach}
                     </select>
-                </p>
-                <p>
-                    <label for="trans_date" class="bline">{_T string="Date:"}</label>
-                    <input type="text" class="date-pick" name="trans_date" id="trans_date" value="{$transaction->date}" maxlength="10"{if $required.trans_date eq 1} required="required"{/if}/> <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
-                </p>
-                <p>
-                    <label for="trans_amount" class="bline">{_T string="Amount:"}</label>
+                </div>
+                <div class="field inline">
+                    <label for="trans_date">{_T string="Date:"}</label>
+                    <div class="ui calendar" id="transaction-rangestart">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" class="date-pick" name="trans_date" id="trans_date" value="{$transaction->date}" maxlength="10"{if $required.trans_date eq 1} required="required"{/if}/>
+                        </div>
+                    </div>
+                    <span class="exemple">{_T string="(yyyy-mm-dd format)"}</span>
+                </div>
+                <div class="field inline">
+                    <label for="trans_amount">{_T string="Amount:"}</label>
                     <input type="text" name="trans_amount" id="trans_amount" value="{$transaction->amount}" maxlength="10"{if $required.trans_amount eq 1} required="required"{/if}/>
-                </p>
+                </div>
     {if $transaction->id eq null or $transaction->getMissingAmount() > 0}
-                <p>
-                    <span class="bline tooltip" title="{_T string="Select a contribution type to create for dispatch transaction"}">{_T string="Dispatch type:"}</span>
-                    <span class="tip">{_T string="Select a contribution type to create for dispatch transaction"}</span>
-                    <input type="radio" name="contrib_type" id="contrib_type_fee" value="{constant('Galette\Entity\Contribution::TYPE_FEE')}" checked="checked"/> <label for="contrib_type_fee">{_T string="Membership fee"}</label>
-                    <input type="radio" name="contrib_type" id="contrib_type_donation" value="{constant('Galette\Entity\Contribution::TYPE_DONATION')}"/> <label for="contrib_type_donation">{_T string="Donation"}</label>
-                </p>
+                <div class="field inline">
+                    <label class="inline" title="{_T string="Select a contribution type to create for dispatch transaction"}">{_T string="Dispatch type:"}</label>
+                    <i class="circular inverted primary small icon info tooltip" data-html="{_T string="Select a contribution type to create for dispatch transaction"}"></i>
+                    <div class="field inline">
+                        <input type="radio" name="contrib_type" id="contrib_type_fee" value="{constant('Galette\Entity\Contribution::TYPE_FEE')}"/> <label for="contrib_type_fee">{_T string="Membership fee"}</label>
+                    </div>
+                    <div class="field inline">
+                        <input type="radio" name="contrib_type" id="contrib_type_donation" value="{constant('Galette\Entity\Contribution::TYPE_DONATION')}"/> <label for="contrib_type_donation">{_T string="Donation"}</label>
+                    </div>
+                </div>
     {/if}
-            </fieldset>
+            </div>
         </div>
     {include file="edit_dynamic_fields.tpl" object=$transaction}
         <div class="button-container">
-            <button type="submit" name="valid" class="action">
-                <i class="fas fa-save fa-fw"></i> {_T string="Save"}
+            <button type="submit" name="valid" class="ui labeled icon button action">
+                <i class="save icon"></i> {_T string="Save"}
             </button>
             <input type="hidden" name="trans_id" value="{$transaction->id}"/>
             <input type="hidden" name="valid" value="1"/>
             {include file="forms_types/csrf.tpl"}
         </div>
-        <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
         </form>
 
     {if $transaction->id}
-        <table class="listing">
-            <caption>
+        <div class="ui segment">
+            <div class="ui tiny header">
                 {_T string="Attached contributions"}
-                {if $transaction->getMissingAmount() > 0}
-                    <a
-                        href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?trans_id={$transaction->id}"
-                        class="button fright tooltip"
-                    >
-                        <i class="fas fa-user-check"></i>
-                        <span class="sr-only">{_T string="Create a new fee that will be attached to the current transaction"}</span>
-                    </a>
-                    <a
-                        href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}?trans_id={$transaction->id}"
-                        class="button fright tooltip"
-                    >
-                        <i class="fas fa-gift"></i>
-                        <span class="sr-only">{_T string="Create a new donation that will be attached to the current transaction"}</span>
-                    </a>
-                    <a
-                        href="#"
-                        class="button fright tooltip"
-                        id="contribslist"
-                    >
-                        <i class="fas fa-cookie"></i>
-                        <span class="sr-only">{_T string="Select an existing contribution in the database, and attach it to the current transaction"}</span>
-                    </a>
-                {/if}
-            </caption>
-            <thead>
-                <tr>
-                    <th class="id_row">#</th>
-                    <th class="left date_row">{_T string="Date"}</th>
-                    <th class="left date_row">{_T string="Begin"}</th>
-                    <th class="left date_row">{_T string="End"}</th>
-                    <th class="left">{_T string="Duration"}</th>
-        {if $login->isAdmin() or $login->isStaff()}
-                    <th class="left">{_T string="Member"}</th>
-        {/if}
-                    <th class="left">{_T string="Type"}</th>
-                    <th class="left">{_T string="Amount"}</th>
-        {if $login->isAdmin() or $login->isStaff()}
-                    <th class="actions_row"></th>
-        {/if}
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <th class="right bgfree" colspan="{if $login->isAdmin() or $login->isStaff()}7{else}5{/if}">{_T string="Dispatched amount:"}</th>
-                    <th class="right bgfree">{$transaction->getDispatchedAmount()}</th>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th class="right bgfree" colspan="{if $login->isAdmin() or $login->isStaff()}7{else}5{/if}">{_T string="Not dispatched amount:"}</th>
-                    <th class="right bgfree">{$transaction->getMissingAmount()}</th>
-                    <td></td>
-                </tr>
-            </tfoot>
-            <tbody>
-        {foreach from=$contribs item=contrib key=ordre}
-            {assign var="mid" value=$contrib->member}
-            {assign var="cclass" value=$contrib->getRowClass()}
-                <tr>
-                    <td class="{$cclass} center nowrap">
-                        {$ordre+1}
-                    </td>
-                    <td class="{$cclass} center nowrap">{$contrib->date}</td>
-                    <td class="{$cclass} center nowrap">{$contrib->begin_date}</td>
-                    <td class="{$cclass} center nowrap">{$contrib->end_date}</td>
-                    <td class="{$cclass} nowrap">{$contrib->duration}</td>
-            {if $login->isAdmin() or $login->isStaff()}
-                    <td class="{$cclass}">{memberName id="$mid"}</td>
-            {/if}
-                    <td class="{$cclass}">{$contrib->type->libelle}</td>
-                    <td class="{$cclass} nowrap right">{$contrib->amount}</td>
-            {if $login->isAdmin() or $login->isStaff()}
-                    <td class="{$cclass} actions_row">
+            </div>
+            <div class="active content field">
+                <div class="ui basic fitted right aligned segment">
+                    {if $transaction->getMissingAmount() > 0}
                         <a
-                            href="{path_for name="detach_contribution" data=["id" => $transaction->id, "cid" => $contrib->id]}"
-                            class="delete tooltip"
+                            href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?trans_id={$transaction->id}"
+                            class="ui icon button tooltip"
                         >
-                            <i class="fas fa-trash"></i>
-                            <span class="sr-only">{_T string="Detach contribution from this transaction"}</span>
+                            <i class="user check icon"></i>
+                            <span class="sr-only">{_T string="Create a new fee that will be attached to the current transaction"}</span>
                         </a>
-                    </td>
-            {/if}
-                </tr>
-        {foreachelse}
-                <tr><td colspan="{if $login->isAdmin() or $login->isStaff()}9{else}7{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
-        {/foreach}
-            </tbody>
-        </table>
+                        <a
+                            href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}?trans_id={$transaction->id}"
+                            class="ui icon button tooltip"
+                        >
+                            <i class="gift icon"></i>
+                            <span class="sr-only">{_T string="Create a new donation that will be attached to the current transaction"}</span>
+                        </a>
+                        <a
+                            href="#"
+                            class="ui icon button tooltip"
+                            id="contribslist"
+                        >
+                            <i class="cookie icon"></i>
+                            <span class="sr-only">{_T string="Select an existing contribution in the database, and attach it to the current transaction"}</span>
+                        </a>
+                    {/if}
+                </div>
+                <table class="listing ui celled table">
+                    <thead>
+                        <tr>
+                            <th class="id_row">#</th>
+                            <th class="left date_row">{_T string="Date"}</th>
+                            <th class="left date_row">{_T string="Begin"}</th>
+                            <th class="left date_row">{_T string="End"}</th>
+                            <th class="left">{_T string="Duration"}</th>
+                {if $login->isAdmin() or $login->isStaff()}
+                            <th class="left">{_T string="Member"}</th>
+                {/if}
+                            <th class="left">{_T string="Type"}</th>
+                            <th class="left">{_T string="Amount"}</th>
+                {if $login->isAdmin() or $login->isStaff()}
+                            <th class="actions_row"></th>
+                {/if}
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th class="right bgfree" colspan="{if $login->isAdmin() or $login->isStaff()}7{else}5{/if}">{_T string="Dispatched amount:"}</th>
+                            <th class="right bgfree">{$transaction->getDispatchedAmount()}</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th class="right bgfree" colspan="{if $login->isAdmin() or $login->isStaff()}7{else}5{/if}">{_T string="Not dispatched amount:"}</th>
+                            <th class="right bgfree">{$transaction->getMissingAmount()}</th>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                {foreach from=$contribs item=contrib key=ordre}
+                    {assign var="mid" value=$contrib->member}
+                    {assign var="cclass" value=$contrib->getRowClass()}
+                        <tr>
+                            <td class="{$cclass} center nowrap">
+                                {$ordre+1}
+                            </td>
+                            <td class="{$cclass} center nowrap">{$contrib->date}</td>
+                            <td class="{$cclass} center nowrap">{$contrib->begin_date}</td>
+                            <td class="{$cclass} center nowrap">{$contrib->end_date}</td>
+                            <td class="{$cclass} nowrap">{$contrib->duration}</td>
+                    {if $login->isAdmin() or $login->isStaff()}
+                            <td class="{$cclass}">{memberName id="$mid"}</td>
+                    {/if}
+                            <td class="{$cclass}">{$contrib->type->libelle}</td>
+                            <td class="{$cclass} nowrap right">{$contrib->amount}</td>
+                    {if $login->isAdmin() or $login->isStaff()}
+                            <td class="{$cclass} actions_row">
+                                <a
+                                    href="{path_for name="detach_contribution" data=["id" => $transaction->id, "cid" => $contrib->id]}"
+                                    class="delete tooltip"
+                                >
+                                    <i class="ui red trash icon"></i>
+                                    <span class="sr-only">{_T string="Detach contribution from this transaction"}</span>
+                                </a>
+                            </td>
+                    {/if}
+                        </tr>
+                {foreachelse}
+                        <tr><td colspan="{if $login->isAdmin() or $login->isStaff()}9{else}7{/if}" class="emptylist">{_T string="no contribution"}</td></tr>
+                {/foreach}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     {/if}
 {else} {* No members *}
-    <div class="center" id="warningbox">
+    <div class="ui warning message" id="warningbox">
         <h3>{_T string="No member registered!"}</h3>
         <p>
             {_T string="Unfortunately, there is no member in your database yet,"}
@@ -249,12 +267,12 @@
                 }).css('cursor', 'pointer').attr('title', '{_T string="Click on a contribution row to attach it to the current transaction" escape="js"}');
             }
 {/if}
-            $('#trans_date').datepicker({
+            /*$('#trans_date').datepicker({
                 changeMonth: true,
                 changeYear: true,
                 showOn: 'button',
-                buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
-            });
+                buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
+            });*/
         });
     </script>
 {/block}

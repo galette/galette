@@ -109,7 +109,7 @@ class CheckModules extends atoum
                             ->hasSize(6)
                         ->string($checks->toHtml())
                             ->notContains('icon-valid.png')
-                            ->hasLength(1032);
+                            ->hasLength(1002);
     }
 
     /**

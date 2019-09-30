@@ -1,4 +1,5 @@
-<p>
+<div class="grouped fields">
+    <div class="field required">
 {include
     file="forms_types/textarea.tpl"
     name=$entry->field_id
@@ -10,4 +11,5 @@
     notag=true
     elt_class="large"
 }
-</p>
+    </div>
+</div>

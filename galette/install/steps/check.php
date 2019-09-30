@@ -35,7 +35,6 @@
  */
 
 ?>
-                <h2><?php echo _T("Welcome to the Galette Install!"); ?></h2>
 <?php
 $php_ok = true;
 $class = 'install-';
@@ -85,13 +84,19 @@ foreach ($files_need_rw as $label => $file) {
         $perms_ok = false;
     }
 }
+?>
 
+    <div class="ui segment">
+        <div class="active content field">
+            <div class="ui text container">
+                <h2 class="ui center aligned header"><?php echo _T("Welcome to the Galette Install!"); ?></h2>
+<?php
 if ($perms_ok && $modules_ok && $php_ok && $date_ok) {
-    echo '<p id="infobox">' . _T("Galette requirements are met :)") . '</p>';
+    echo '<p class="ui green message">' . _T("Galette requirements are met :)") . '</p>';
 }
 
 if (!$date_ok) {
-    echo '<p class="error">' . _T("Your PHP date settings are not correct. Maybe you've missed the timezone settings that is mandatory since PHP 5.3?") . '</p>';
+    echo '<p class="ui red message">' . _T("Your PHP date settings are not correct. Maybe you've missed the timezone settings that is mandatory since PHP 5.3?") . '</p>';
 }
 ?>
                 <ul class="leaders">
@@ -108,7 +113,7 @@ if (!$date_ok) {
                 <h3><?php echo _T("PHP Modules"); ?></h3>
 <?php
 if (!$modules_ok) {
-    echo '<p class="error">' . _T("Some PHP modules are missing. Please install them or contact your support.<br/>More information on required modules may be found in the documentation.") . '</p>';
+    echo '<p class="ui red message">' . _T("Some PHP modules are missing. Please install them or contact your support.<br/>More information on required modules may be found in the documentation.") . '</p>';
 }
 ?>
                 <ul class="leaders">
@@ -132,40 +137,45 @@ foreach ($files_need_rw as $label => $file) {
 <?php
 if (!$perms_ok) {
     ?>
-        <article id="files_perms" class="<?php echo $files_perms_class; ?>">
-            <div>
-        <h4 class="error"><?php echo _T("Files permissions are not OK!"); ?></h4>
-        <p><?php
+                <article id="files_perms" class="ui orange message <?php echo $files_perms_class; ?>">
+                    <p class="ui small header"><?php echo _T("Files permissions are not OK!"); ?></p>
+                    <p>
+    <?php
     if ($install->isInstall()) {
         echo _T("To work as excpected, Galette needs write permission on files listed above.");
     } else if ($install->isUpgrade()) {
         echo _T("In order to be updated, Galette needs write permission on files listed above.");
     }
-        ?></p>
-        <p><?php echo _T("Under UNIX/Linux, you can give the permissions using those commands"); ?><br />
-            <code>chown <em><?php echo _T("apache_user"); ?></em> <em><?php echo _T("file_name"); ?></em><br />chmod 700 <em><?php echo _T("directory_name"); ?></em></code>
-        </p>
-        <p><?php echo _T("Under Windows, check these directories are not in Read-Only mode in their property panel."); ?></p>
-            </div>
-        </article>
+    ?>
+                    </p>
+                    <p><?php echo _T("Under UNIX/Linux, you can give the permissions using those commands"); ?><br />
+                        <code>chown <em><?php echo _T("apache_user"); ?></em> <em><?php echo _T("file_name"); ?></em><br />chmod 700 <em><?php echo _T("directory_name"); ?></em></code>
+                    </p>
+                    <p><?php echo _T("Under Windows, check these directories are not in Read-Only mode in their property panel."); ?></p>
+                </article>
     <?php
 }
-
+    ?>
+            </div>
+        </div>
+    </div>
+    <div class="ui mobile tablet computer reversed equal width grid">
+        <div class="right aligned column">
+    <?php
 if (!$perms_ok || !$modules_ok || !$php_ok || !$date_ok) {
     ?>
-                <form action="installer.php" method="post">
-                    <p id="btn_box">
-                        <button type="submit"><?php echo _T("Retry"); ?> <i class="fas fa-sync-alt"></i></button>
-                    </p>
-                </form>
+        <form action="installer.php" method="post" class="ui form">
+            <button type="submit" class="ui right labeled icon button"><i class="sync alt icon"></i> <?php echo _T("Retry"); ?></button>
+        </form>
     <?php
 } else {
     ?>
-        <form action="installer.php" method="POST">
-            <p id="btn_box">
-                <button type="submit"><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
-                <input type="hidden" name="install_permsok" value="1"/>
-            </p>
+        <form action="installer.php" method="POST" class="ui form">
+            <button type="submit" class="ui right labeled icon button"><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
+            <input type="hidden" name="install_permsok" value="1"/>
         </form>
     <?php
 }
+    ?>
+        </div>
+    </div>

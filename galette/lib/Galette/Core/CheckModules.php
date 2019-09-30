@@ -134,36 +134,26 @@ class CheckModules
     public function toHtml($translated = true)
     {
         $html = null;
-        $img_dir = null;
-        if (defined('GALETTE_THEME_DIR')) {
-            $img_dir = GALETTE_THEME_DIR . 'images/';
-        } else {
-            $img_dir = GALETTE_TPL_SUBDIR . 'images/';
-        }
 
         if (count($this->missing) > 0) {
             $ko = ($translated ? _T('Ko') : 'Ko');
             foreach ($this->missing as $m) {
-                $html .= '<li><span>' . $m . '</span><span><img src="' .
-                    $img_dir . 'icon-invalid.png" alt="' .
-                    $ko . '"/></span></li>';
+                $html .= '<li><span>' . $m . '</span><span><i class="ui red times icon"><span class="sr-only">' .
+                    $ko . '</span></i></span></li>';
             }
         }
 
         if (count($this->good) > 0) {
             $ok = ($translated ? _T('Ok') : 'Ok');
             foreach ($this->good as $m) {
-                $html .= '<li><span>' . $m . '</span><span><img src="' .
-                    $img_dir . 'icon-valid.png" alt="' .
-                    $ok . '"/></span></li>';
+                $html .= '<li><span>' . $m . '</span><span><i class="ui green check icon"><span class="sr-only">' .
+                    $ok . '</span></i></span></li>';
             }
         }
 
         if (count($this->should) > 0) {
             foreach ($this->should as $m) {
-                $html .= '<li><span>' . $m . '</span><span><img src="' .
-                    $img_dir . 'icon-warning.png" alt=""' .
-                    '/></span></li>';
+                $html .= '<li><span>' . $m . '</span><span><i class="ui yellow exclamation circle icon"></i></span></li>';
             }
         }
 

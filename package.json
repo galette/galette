@@ -34,7 +34,7 @@
     "uglify-js": "^3.9.1"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.13.0",
+    "fomantic-ui": "^2.8.8",
     "jquery": "^3.5.0",
     "jquery-ui": "^1.12.1",
     "jquery-ui-dist": "^1.12.1",

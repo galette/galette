@@ -2,41 +2,49 @@
 
 {block name="content"}
 {if isset($trans) && $trans|@count > 0}
-            <div clasis="bigtable">
     {if $exists}
-                <form action="{path_for name="dynamicTranslations"}" method="get" enctype="multipart/form-data" id="select_orig">
-                    <p class="right">
-                        <label for="text_orig">{_T string="Choose label to translate"}</label>
-                        <select name="text_orig" id="text_orig">
-                            {html_options values=$orig output=$orig selected=$text_orig}
-                        </select>
-                        <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
-                        {include file="forms_types/csrf.tpl"}
-                    </p>
-                </form>
+        <form action="{path_for name="dynamicTranslations"}" method="get" enctype="multipart/form-data" id="select_orig" class="ui form">
+            <div class="ui basic compact segment">
+                <div class="field inline">
+                    <label for="text_orig">{_T string="Choose label to translate"}</label>
+                    <select name="text_orig" id="text_orig" class="ui dropdown nochosen">
+                        {html_options values=$orig output=$orig selected=$text_orig}
+                    </select>
+                    <noscript> <span><input type="submit" value="{_T string="Change"}" class="ui button" /></span></noscript>
+                    {include file="forms_types/csrf.tpl"}
+                </div>
+            </div>
+        </form>
     {/if}
 
-                <form action="{path_for name="editDynamicTranslation"}" method="post" enctype="multipart/form-data">
+        <form action="{path_for name="editDynamicTranslation"}" method="post" enctype="multipart/form-data" class="ui equal width form">
     {if not $exists}
-                <p class="right">
-                    <span>{_T string="Original text: '%s'" pattern='/%s/' replace=$text_orig|escape}</span>
-                    <input type="hidden" name="new" value="true"/>
-                </p>
+            <div class="field">
+                <label>{_T string="Original text: '%s'" pattern='/%s/' replace=$text_orig|escape}</label>
+                <input type="hidden" name="new" value="true"/>
+            </div>
     {/if}
-                <fieldset class="cssform">
-                    <legend class="ui-state-active ui-corner-top">{_T string="Translation of '%s' label" pattern="/%s/" replace=$text_orig|escape}</legend>
+            <div class="ui segment">
+                <div class="ui tiny header">
+                    {_T string="Translation of '%s' label" pattern="/%s/" replace=$text_orig|escape}
+                </div>
+                <div class="active content field">
+                    <table class="ui striped table">
 {section name="lang" loop=$trans}
-                    <p>
-                        <label for="text_trans_{$trans[lang].key}" class="bline">{$trans[lang].name}</label>
-                        <input type="text" name="text_trans_{$trans[lang].key}" id="text_trans_{$trans[lang].key}" value="{if $trans[lang].text}{$trans[lang].text|escape}{/if}"/>
-                        <input type=hidden name="text_orig" value="{$text_orig|escape}"/>
-                    </p>
+                        <tr>
+                            <td class="three wide"><label for="text_trans_{$trans[lang].key}">{$trans[lang].name}</label></td>
+                            <td class="thirteen wide">
+                                <input type="text" name="text_trans_{$trans[lang].key}" id="text_trans_{$trans[lang].key}" value="{if $trans[lang].text}{$trans[lang].text|escape}{/if}"/>
+                                <input type=hidden name="text_orig" value="{$text_orig|escape}"/>
+                            </td>
+                        </tr>
 {/section}
-                </fieldset>
+                    </table>
+                </div>
             </div>
             <div class="button-container">
-                <button type="submit" name="trans" class="action">
-                    <i class="fas fa-save fa-fw"></i> {_T string="Save"}
+                <button type="submit" name="trans" class="ui labeled icon button action">
+                    <i class="save icon"></i> {_T string="Save"}
                 </button>
                 {include file="forms_types/csrf.tpl"}
             </div>

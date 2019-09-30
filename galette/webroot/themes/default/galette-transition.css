@@ -1,0 +1,54 @@
+body::before {
+  content: '';
+  display: none;
+}
+#menu {
+  background-color: transparent;
+  padding: O;
+  margin: O;
+  border-radius: 6px;
+  width: auto;
+  float: none;
+}
+#superadmin,
+#demo {
+  margin: 0 0 .5em;
+  border-radius: 50px;
+}
+#content {
+  margin-top: 0;
+  padding-top: 0;
+  min-height: auto;
+}
+#titre,
+#listfilter {
+  margin: 0 0 1.5rem;
+  border-radius: 6px;
+}
+#desktop,
+#news,
+#share {
+  width: auto;
+  min-width: auto;
+  margin: 0 0 1rem;
+}
+#desktop,
+#news,
+#share,
+.plugin,
+#groups_list,
+#group_infos {
+  border-radius: 6px;
+}
+#desktop header,
+#news header,
+#share header,
+.plugin header,
+#groups_list header,
+#group_infos header {
+  border-radius: 6px 6px 0 0;
+}
+aside .menu,
+.sidebar .menu {
+  text-align: left;
+}

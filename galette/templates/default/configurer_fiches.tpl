@@ -5,9 +5,10 @@
             <a
                 id="addfield"
                 href="{path_for name="addDynamicField" data=["form_name" => $form_name]}"
-                class="tab-button tooltip"
+                class="ui compact icon button tab-button tooltip"
+                data-html="{_T string="Add" escape="js"}"
             >
-                <i class="fas fa-plus-square fa-2x"></i>
+                <i class="plus square icon"></i>
                 <span class="sr-only">{_T string="Add"}</span>
             </a>
             <ul>
@@ -87,11 +88,11 @@
                         return false; //avoid reloading first tab onload
                     }
 
-                    var _img = $('<figure id="loading"><p><img src="{base_url}/{$template_subdir}images/loading.png" alt="{_T string="Loading..."}"/><br/>{_T string="Currently loading..."}</p></figure>');
-                    $('body').append(_img);
+                    var _dimmer = $('<div id="jsloader" class="ui active page dimmer"><div class="ui text loader">{_T string="Currently loading..."}</div><p></p></div>');
+                    $('body').append(_dimmer);
 
                     ui.jqXHR.always(function(){
-                        $('#loading').remove();
+                        $('#jsloader').remove();
                     });
 
                     ui.jqXHR.fail(function(){

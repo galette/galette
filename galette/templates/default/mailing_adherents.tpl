@@ -1,17 +1,20 @@
 {extends file="page.tpl"}
 {block name="content"}
 {if $pref_mail_method == constant('Galette\Core\Mailing::METHOD_DISABLED') and $GALETTE_MODE neq 'DEMO'}
-        <div id="errorbox">
+        <div id="errorbox" class="ui red message">
             <h1>{_T string="- ERROR -"}</h1>
             <p>{_T string="Email sent is disabled in the preferences. Ask galette admin"}</p>
         </div>
 {elseif !isset($mailing_saved)}
-        <form action="{path_for name="doMailing"}" id="listform" method="post" enctype="multipart/form-data">
-        <div class="mailing">
-            <section class="mailing_infos">
-                <header class="ui-state-default ui-state-active">{_T string="Mailing information"}</header>
-                    {include file="mailing_recipients.tpl"}
-                <div class="center">
+        <form action="{path_for name="doMailing"}" id="listform" method="post" enctype="multipart/form-data" class="ui form">
+            <div class="ui basic fitted segment">
+                <div class="ui styled fluid accordion row">
+                    <div class="active title">
+                        <i class="icon dropdown"></i>
+                        {_T string="Mailing information"}
+                    </div>
+                    <div class="active content field">
+                        {include file="mailing_recipients.tpl"}
     {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_SENT')}
         {assign var="path" value={path_for name="members"}}
         {assign var="text" value={_T string="Go back to members list"}}
@@ -19,96 +22,117 @@
         {assign var="path" value='#'}
         {assign var="text" value={_T string="Manage selected members"}}
     {/if}
-                <a
-                    id="btnusers"
-                    href="{$path}"
-                    class="button"
-                >
-                    <i class="fas fa-users"></i>
-                    {$text}
-                </a>
+                        <a
+                            id="btnusers"
+                            href="{$path}"
+                            class="ui labeled icon button"
+                        >
+                            <i class="users icon"></i>
+                            {$text}
+                        </a>
+                    </div>
                 </div>
-            </section>
+            </div>
         {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_START')}
-            <section class="mailing_attachments">
-                <header class="ui-state-default ui-state-active">{_T string="Attachments"}</header>
-                <div>
-                    {if $attachments|@count gt 0}
-                    <p class="bline">
-                        {_T string="Existing attachments:"}
-                        <ul id="existing_attachments">
-                            {foreach item=attachment from=$attachments}
-                            <li>
+            <div class="ui basic fitted segment">
+                <div class="ui styled fluid accordion row">
+                    <div class="active title">
+                        <i class="icon dropdown"></i>
+                        {_T string="Attachments"}
+                    </div>
+                    <div class="active content field">
+                        {if $attachments|@count gt 0}
+                            <label>
+                                {_T string="Existing attachments:"}
+                            </label>
+                            <ul id="existing_attachments">
+                                {foreach item=attachment from=$attachments}
+                                <li>
+                                    <a
+                                        href="?remove_attachment={$attachment->getFileName()}"
+                                        class="rm_attachement tooltip delete"
+                                    >
+                                        <i class="ui trash alt red icon"></i>
+                                        <span class="sr-only">{_T string="Remove attachment"}</span>
+                                    </a>
+                                    {$attachment->getFileName()}
+                                </li>
+                                {/foreach}
+                            </ul>
+                        {/if}
+                        <label for="attachment" title="{_T string="Select attachments"}">{_T string="Add attachment"}</label>
+                        <div class="ui right corner labeled input">
+                            <div class="ui corner label">
+                                <i class="circular inverted primary link icon info tooltip" data-html="{_T string="Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers."}"></i>
+                            </div>
+                            <input type="file" name="attachment[]" id="attachment" multiple="multiple">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                                <a
-                                    href="?remove_attachment={$attachment->getFileName()}"
-                                    class="rm_attachement tooltip delete"
-                                >
-                                    <i class="fas fa-trash-alt"></i>
-                                    <span class="sr-only">{_T string="Remove attachment"}</span>
-                                </a>
-                                {$attachment->getFileName()}
-                            </li>
-                            {/foreach}
-                        </ul>
-                    </p>
-                    {/if}
-                    <label for="attachment" class="bline tooltip" title="{_T string="Select attachments"}">{_T string="Add attachment"}</label>
-                    <span class="tip">{_T string="Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers."}</span>
-                    <input type="file" name="attachment[]" id="attachment" multiple="multiple">
+            <div class="ui basic fitted segment">
+                <div class="ui styled fluid accordion row">
+                    <div class="active title">
+                        <i class="icon dropdown"></i>
+                        {_T string="Write your mailing"}
+                    </div>
+                    <div class="active content field">
+                        <div class="inline field">
+                            <label for="sender">{_T string="Sender"}</label>
+                            <select name="sender" id="sender" class="ui dropdown nochosen">
+                                <option value="{Galette\Core\GaletteMail::SENDER_PREFS}">{_T string="from preferences"}</option>
+            {if !$login->isSuperAdmin()}
+                                <option value="{Galette\Core\GaletteMail::SENDER_CURRENT}">{_T string="current logged in user"}</option>
+            {/if}
+                                <option value="{Galette\Core\GaletteMail::SENDER_OTHER}">{_T string="other"}</option>
+                            </select>
+                        </div>
+                        <div class="field required">
+                            <label for="sender_name">{_T string="Name"}</label>
+                            <input type="text" name="sender_name" id="sender_name" value="{$preferences->pref_email_nom}" disabled="disabled"/>
+                        </div>
+                        <div class="field required">
+                            <label for="sender_address">{_T string="Address"}</label>
+                            <input type="text" name="sender_address" id="sender_address" value="{$preferences->pref_email}" disabled="disabled"/>
+                        </div>
+                        <div class="field required">
+                            <label for="mailing_objet">{_T string="Object:"}</label>
+                            <input type="text" name="mailing_objet" id="mailing_objet" value="{$mailing->subject}" size="80" required/>
+                        </div>
+                        <div class="field required">
+                            <label for="mailing_corps">{_T string="Message:"}</label>
+                            <textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15" required>{if $mailing->message}{$mailing->message|escape}{/if}</textarea>
+                            <input type="hidden" name="html_editor_active" id="html_editor_active" value="{if $html_editor_active}1{else}0{/if}"/>
+                        </div>
+                        <div id="summernote_toggler" class="ui basic right aligned fitted segment">
+                            <a class="ui blue tertiary button" href="javascript:activateMailingEditor('mailing_corps');" id="activate_editor">{_T string="Activate HTML editor"}</a>
+                        </div>
+                        <div class="inline field">
+                            <input type="checkbox" name="mailing_html" id="mailing_html" value="1" {if $mailing->html eq 1 or $pref_editor_enabled eq 1}checked="checked"{/if}/><label for="mailing_html">{_T string="Interpret HTML"}</label>
+                        </div>
+                    </div>
                 </div>
-            </section>
+            </div>
 
-            <section class="mailing_write">
-                <header class="ui-state-default ui-state-active">{_T string="Write your mailing"}</header>
-                <div>
-                    <label for="sender" class="bline">{_T string="Sender"}</label>
-                    <select name="sender" id="sender">
-                        <option value="{Galette\Core\GaletteMail::SENDER_PREFS}">{_T string="from preferences"}</option>
-    {if !$login->isSuperAdmin()}
-                        <option value="{Galette\Core\GaletteMail::SENDER_CURRENT}">{_T string="current logged in user"}</option>
-    {/if}
-                        <option value="{Galette\Core\GaletteMail::SENDER_OTHER}">{_T string="other"}</option>
-                    </select>
-                    <span class="disabled">
-                        <label for="sender_name">{_T string="Name"}</label>
-                        <input type="text" name="sender_name" id="sender_name" value="{$preferences->pref_email_nom}" disabled="disabled"/>
-                        <label for="sender_address">{_T string="Address"}</label>
-                        <input type="text" name="sender_address" id="sender_address" value="{$preferences->pref_email}" disabled="disabled"/>
-                    </span>
-                </div>
-                <div>
-                    <label for="mailing_objet" class="bline">{_T string="Object:"}</label>
-                    <input type="text" name="mailing_objet" id="mailing_objet" value="{$mailing->subject}" size="80" required/>
-                </div>
-                <div>
-                    <span id="summernote_toggler" class="fright">
-                        <a href="javascript:activateMailingEditor('mailing_corps');" id="activate_editor">{_T string="Activate HTML editor"}</a>
-                    </span>
-                    <label for="mailing_corps" class="bline">{_T string="Message:"}</label>
-                    <textarea name="mailing_corps" id="mailing_corps" cols="80" rows="15" required>{if $mailing->message}{$mailing->message|escape}{/if}</textarea>
-                    <input type="hidden" name="html_editor_active" id="html_editor_active" value="{if $html_editor_active}1{else}0{/if}"/>
-                </div>
-                <div class="center">
-                    <input type="checkbox" name="mailing_html" id="mailing_html" value="1" {if $mailing->html eq 1 or $pref_editor_enabled eq 1}checked="checked"{/if}/><label for="mailing_html">{_T string="Interpret HTML"}</label><br/>
-                    <button type="submit" name="mailing_go" id="btnpreview">
-                        <i class="fas fa-eye" arai-hidden="true"></i>
-                        {_T string="Preview"}
-                    </button>
-                    <button type="submit" name="mailing_save" class="action">
-                        <i class="fas fa-save" aria-hidden="true"></i>
-                        {_T string="Save"}
-                    </button>
-                    <button type="submit" name="mailing_confirm"{if $GALETTE_MODE eq 'DEMO'} class="disabled" disabled="disabled"{/if}>
-                        <i class="fas fa-rocket" aria-hidden="true"></i>
-                        {_T string="Send"}
-                    </button>
-                    <button type="submit" name="mailing_cancel" formnovalidate>
-                        <i class="fas fa-trash" aria-hidden="true"></i>
-                        {_T string="Cancel mailing"}
-                    </button>
-                </div>
-            </section>
+            <div class="button-container">
+                <button type="submit" name="mailing_go" id="btnpreview" class="ui labeled icon button">
+                    <i class="eye icon" aria-hidden="true"></i>
+                    {_T string="Preview"}
+                </button>
+                <button type="submit" name="mailing_save" class="ui labeled icon button action">
+                    <i class="save icon" aria-hidden="true"></i>
+                    {_T string="Save"}
+                </button>
+                <button type="submit" name="mailing_confirm" class="ui labeled icon button {if $GALETTE_MODE eq 'DEMO'} disabled" disabled="disabled{/if}">
+                    <i class="rocket icon" aria-hidden="true"></i>
+                    {_T string="Send"}
+                </button>
+                <button type="submit" name="mailing_cancel" formnovalidate class="ui labeled icon button">
+                    <i class="trash icon" aria-hidden="true"></i>
+                    {_T string="Cancel mailing"}
+                </button>
+            </div>
         {/if}
         {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_PREVIEW')}
             <section class="mailing_write" id="mail_preview">
@@ -126,16 +150,16 @@
                 </div>
                 <div>
                     <p>
-                        <button type="submit" name="mailing_reset">
-                            <i class="fas fa-backward"></i>
+                        <button type="submit" name="mailing_reset" class="ui labeled icon button">
+                            <i class="backward icon"></i>
                             {_T string="Modifiy mailing"}
                         </button>
-                        <button type="submit" name="mailing_confirm"{if $GALETTE_MODE eq 'DEMO'} class="disabled" disabled="disabled"{/if}>
-                            <i class="fas fa-rocket" aria-hidden="true"></i>
+                        <button type="submit" name="mailing_confirm"{if $GALETTE_MODE eq 'DEMO'} class="ui labeled icon button disabled" disabled="disabled"{else} class="ui labeled icon button"{/if}>
+                            <i class="rocket icon" aria-hidden="true"></i>
                             {_T string="Send"}
                         </button>
-                        <button type="submit" name="mailing_cancel" formnovalidate>
-                            <i class="fas fa-trash" aria-hidden="true"></i>
+                        <button type="submit" name="mailing_cancel" formnovalidate class="ui labeled icon button">
+                            <i class="trash red icon" aria-hidden="true"></i>
                             {_T string="Cancel mailing"}
                         </button>
 
@@ -143,10 +167,9 @@
                         <input type="hidden" name="mailing_corps" value="{if $mailing->message}{$mailing->message|escape}{/if}"/>
                     </p>
                 </div>
-        {/if}
             {include file="forms_types/csrf.tpl"}
             </section>
-        </div>
+        {/if}
         </form>
 {/if}
 {/block}

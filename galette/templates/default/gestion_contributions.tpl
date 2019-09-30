@@ -5,67 +5,110 @@
 {/if}
 {extends file=$extend}
 {block name="content"}
-        <form action="{path_for name="payments_filter" data=["type" => "contributions"]}" method="post" id="filtre">
-        <div id="listfilter">
-            <label for="date_field_filter">{_T string="Show contributions by"}</label>&nbsp;
-            <select name="date_field_filter" id="date_field_filter">
-                <option value="{Galette\Filters\ContributionsList::DATE_BEGIN}"{if $filters->date_field eq constant('Galette\Filters\ContributionsList::DATE_BEGIN')} selected="selected"{/if}>{_T string="Begin"}</option>
-                <option value="{Galette\Filters\ContributionsList::DATE_END}"{if $filters->date_field eq constant('Galette\Filters\ContributionsList::DATE_END')} selected="selected"{/if}>{_T string="End"}</option>
-                <option value="{Galette\Filters\ContributionsList::DATE_RECORD}"{if $filters->date_field eq constant('Galette\Filters\ContributionsList::DATE_RECORD')} selected="selected"{/if}>{_T string="Record"}</option>
-            </select>
-            <label for="start_date_filter">{_T string="since"}</label>&nbsp;
-            <input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$filters->start_date_filter}"/>
-            <label for="end_date_filter">{_T string="until"}</label>&nbsp;
-            <input type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$filters->end_date_filter}"/>
-            {include file="forms_types/payment_types.tpl"
-                current=$filters->payment_type_filter varname="payment_type_filter"
-                show_inline=""
-                classname=""
-                empty=['value' => -1, 'label' => {_T string="Select"}]
-            }
-            <input type="submit" class="inline" value="{_T string="Filter"}"/>
-            <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
+        <form action="{path_for name="payments_filter" data=["type" => "contributions"]}" method="post" id="filtre" class="ui form">
+        <div class="ui segment">
+            <div class="four fields">
+                <div class="field">
+                    <label for="date_field_filter">{_T string="Show contributions by"}</label>
+                    <select name="date_field_filter" id="date_field_filter" class="ui search dropdown nochosen">
+                        <option value="{Galette\Filters\ContributionsList::DATE_BEGIN}"{if $filters->date_field eq constant('Galette\Filters\ContributionsList::DATE_BEGIN')} selected="selected"{/if}>{_T string="Begin"}</option>
+                        <option value="{Galette\Filters\ContributionsList::DATE_END}"{if $filters->date_field eq constant('Galette\Filters\ContributionsList::DATE_END')} selected="selected"{/if}>{_T string="End"}</option>
+                        <option value="{Galette\Filters\ContributionsList::DATE_RECORD}"{if $filters->date_field eq constant('Galette\Filters\ContributionsList::DATE_RECORD')} selected="selected"{/if}>{_T string="Record"}</option>
+                    </select>
+                </div>
+                <div class="two fields">
+                    <div class="field">
+                        <label for="start_date_filter">{_T string="since"}</label>
+                        <div class="ui calendar" id="contrib-rangestart">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input placeholder="{_T string="(yyyy-mm-dd format)"}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$filters->start_date_filter}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="end_date_filter">{_T string="until"}</label>
+                        <div class="ui calendar" id="contrib-rangeend">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input placeholder="{_T string="(yyyy-mm-dd format)"}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$filters->end_date_filter}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    {include file="forms_types/payment_types.tpl"
+                        current=$filters->payment_type_filter varname="payment_type_filter"
+                        show_inline=""
+                        classname=""
+                        empty=['value' => -1, 'label' => {_T string="Select"}]
+                    }
+                </div>
+                <div class="flexend center aligned field">
+                    <input type="submit" class="ui blue button" value="{_T string="Filter"}"/>
+                    <input type="submit" name="clear_filter" class="ui button" value="{_T string="Clear filter"}"/>
+                </div>
+            </div>
         </div>
 {if isset($member)}
-        <div id="member_stateofdue" class="{$member->getRowClass()}{if not $member->isActive()} inactive{/if}">{$member->getDues()}</div>
+        <div class="{$member->getRowClass()}{if not $member->isActive()} inactive{/if} ui center aligned segment ">
+            {$member->getDues()}
+        </div>
 {/if}
-        <div class="infoline">
 {if isset($member) && $mode neq 'ajax'}
     {if $login->isAdmin() or $login->isStaff() or $member->canShow($login)}
-            <a
-                href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => "all"]}"
-                class="tooltip"
-            >
-                <i class="fas fa-eraser"></i>
-                <span class="sr-only">{_T string="Show all members contributions"}</span>
-            </a>
+        <div class="ui compact vertically fitted segment">
+            <div class="ui horizontal list">
+                <span class="ui blue ribbon label">
+                    <a
+                        href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => "all"]}"
+                        class="tooltip"
+                    >
+                        <i class="icon eraser"></i>
+                        <span class="hidden">{_T string="Show all members contributions"}</span>
+                    </a>
     {/if}
-            <strong>{$member->sname}</strong>
-    {if not $member->isActive() } ({_T string="Inactive"}){/if}
+                    {$member->sname}{if not $member->isActive() } ({_T string="Inactive"}){/if}
+                </span>
     {if $login->isAdmin() or $login->isStaff()}
-            (<a href="{path_for name="member" data=["id" => $member->id]}">{_T string="See member profile"}</a> -
-            <a href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a> -
-            <a href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}?id_adh={$member->id}">{_T string="Add a donation"}</a>)
+                <div class="item">
+                    <a href="{path_for name="member" data=["id" => $member->id]}" class="ui tiny button">{_T string="See member profile"}</a>
+                </div>
+                <div class="item">
+                    <a href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_FEE')]}?id_adh={$member->id}" class="ui tiny button">{_T string="Add a membership fee"}</a>
+                </div>
+                <div class="item">
+                    <a href="{path_for name="addContribution" data=["type" => constant('Galette\Entity\Contribution::TYPE_DONATION')]}?id_adh={$member->id}" class="ui tiny button">{_T string="Add a donation"}</a>
+                </div>
     {/if}
-            -
-{/if}
-            {_T string="%count contribution" plural="%count contributions" count=$nb pattern="/%count/" replace=$nb}
-            <div class="fright">
-{if $mode eq 'ajax'}
-                <input type="hidden" name="ajax" value="true"/>
-                <input type="hidden" name="max_amount" value="{$filters->max_amount}"/>
-{/if}
-                <label for="nbshow">{_T string="Records per page:"}</label>
-                <select name="nbshow" id="nbshow">
-                    {html_options options=$nbshow_options selected=$numrows}
-                </select>
-                <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
             </div>
-            {include file="forms_types/csrf.tpl"}
+        </div>
+{/if}
+        <div class="infoline">
+            <div class="ui basic horizontal segments">
+                <div class="ui basic fitted segment">
+                    <div class="ui label">{_T string="%count contribution" plural="%count contributions" count=$nb pattern="/%count/" replace=$nb}</div>
+                </div>
+                <div class="ui basic right aligned fitted segment">
+                    <div class="inline field">
+{if $mode eq 'ajax'}
+                        <input type="hidden" name="ajax" value="true"/>
+                        <input type="hidden" name="max_amount" value="{$filters->max_amount}"/>
+{/if}
+                        <label for="nbshow">{_T string="Records per page:"}</label>
+                        <select name="nbshow" id="nbshow" class="ui dropdown nochosen">
+                            {html_options options=$nbshow_options selected=$numrows}
+                        </select>
+                        <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+                    </div>
+                    {include file="forms_types/csrf.tpl"}
+                </div>
+            </div>
         </div>
         </form>
-        <form action="{path_for name="batch-contributionslist" data=["type" => "contributions"]}" method="post" id="listform">
-        <table class="listing">
+        <form action="{path_for name="batch-contributionslist" data=["type" => "contributions"]}" method="post" id="listform" class="ui form">
+        <div class="ui basic fitted segment">
+        <table class="listing ui celled table">
             <thead>
                 <tr>
                     <th class="id_row">
@@ -208,7 +251,7 @@
                             href="{path_for name="editTransaction" data=["id" => $contribution->transaction->id]}"
                             class="tooltip"
                         >
-                            <i class="fas fa-link"></i>
+                            <i class="ui link icon"></i>
                             <span class="sr-only">{_T string="Transaction: %s" pattern="/%s/" replace=$contribution->transaction->description}</span>
                         </a>
         {/if}
@@ -217,7 +260,7 @@
                             {_T string="Contribution %id" pattern="/%id/" replace=$contribution->id}
                         </span>
         {if $contribution->isTransactionPart() }
-                        <i class="fas fa-link"></i>
+                        <i class="ui link icon"></i>
                         <span class="sr-only">{_T string="Transaction: %s" pattern="/%s/" replace=$contribution->transaction->description}</span>
         {/if}
     {/if}
@@ -264,7 +307,7 @@
                             href="{path_for name="printContribution" data=["id" => $contribution->id]}"
                             class="tooltip"
                         >
-                            <i class="fas fa-file-pdf"></i>
+                            <i class="ui file pdf icon"></i>
                             <span class="sr-only">{_T string="Print an invoice or a receipt (depending on contribution type)"}</span>
                         </a>
         {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
@@ -272,14 +315,14 @@
                             href="{path_for name="editContribution" data=["type" => $ctype, "id" => $contribution->id]}"
                             class="tooltip action"
                         >
-                            <i class="fas fa-edit"></i>
+                            <i class="ui edit blue icon"></i>
                             <span class="sr-only">{_T string="Edit the contribution"}</span>
                         </a>
                         <a
                             href="{path_for name="removeContribution" data=["type" => "contributions", "id" => $contribution->id]}"
                             class="tooltip delete"
                         >
-                            <i class="fas fa-trash"></i>
+                            <i class="ui trash red icon"></i>
                             <span class="sr-only">{_T string="Delete the contribution"}</span>
                         </a>
         {/if}
@@ -291,55 +334,65 @@
 {/foreach}
             </tbody>
         </table>
-{if $nb != 0}
-        <div class="center cright">
-            {_T string="Pages:"}<br/>
-            <ul class="pages">{$pagination}</ul>
         </div>
+{if $nb != 0}
     {if ($login->isAdmin() or $login->isStaff()) && $mode neq 'ajax'}
-        <ul class="selection_menu">
-            <li>{_T string="For the selection:"}</li>
-            <li>
-                <button type="submit" id="delete" name="delete">
-                    <i class="fas fa-trash fa-fw"></i> {_T string="Delete"}
-                </button>
-            </li>
-            <li>
-                <button type="submit" id="csv" name="csv">
-                    <i class="fas fa-file-csv fa-fw"></i> {_T string="Export as CSV"}
-                </button>
+        <div class="ui bottom attached segment">
+            <div class="ui horizontal list">
+                <span class="ui blue ribbon label">{_T string="For the selection:"}</span>
+                <div class="item">
+                    <button type="submit" id="delete" name="delete" class="ui labeled icon tiny button">
+                        <i class="trash icon"></i> {_T string="Delete"}
+                    </button>
+                </div>
+                <div class="item">
+                    <button type="submit" id="csv" name="csv" class="ui labeled icon tiny button">
+                        <i class="file excel icon"></i> {_T string="Export as CSV"}
+                    </button>
+                </div>
                 {include file="forms_types/csrf.tpl"}
-            </li>
-        </ul>
+            </div>
+        </div>
     {/if}
+        <div class="ui basic center aligned fitted segment">
+            <div class="ui pagination menu">
+                <div class="header item">
+                    {_T string="Pages:"}
+                </div>
+                {$pagination}
+            </div>
+        </div>
 {/if}
         </form>
-        <div id="legende" title="{_T string="Legend"}">
-            <h1>{_T string="Legend"}</h1>
-            <table>
+        <div id="legende" title="{_T string="Legend"}" class="ui modal">
+            <div class="header">{_T string="Legend"}</div>
+            <div class="content">
+                <table class="ui stripped table">
 {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
-                <tr>
-                    <th class="action">
-                        <i class="fas fa-edit fa-fw"></i>
-                    </th>
-                    <td class="back">{_T string="Modification"}</td>
-                </tr>
-                <tr>
-                    <th class="delete">
-                        <i class="fas fa-trash fa-fw"></i>
-                    </th>
-                    <td class="back">{_T string="Deletion"}</td>
-                </tr>
-{/if}
-                <tr>
-                    <th class="cotis-normal color-sample">&nbsp;</th>
-                    <td class="back">{_T string="Contribution"}</td>
-                </tr>
-                <tr>
-                    <th class="cotis-give color-sample">&nbsp;</th>
-                    <td class="back">{_T string="Gift"}</td>
-                </tr>
-            </table>
+                    <tr>
+                        <th class="action">
+                            <i class="ui edit blue icon"></i>
+                        </th>
+                        <td class="back">{_T string="Modification"}</td>
+                    </tr>
+                    <tr>
+                        <th class="delete">
+                            <i class="ui trash red icon"></i>
+                        </th>
+                        <td class="back">{_T string="Deletion"}</td>
+                    </tr>
+    {/if}
+                    <tr>
+                        <th class="cotis-normal color-sample">&nbsp;</th>
+                        <td class="back">{_T string="Contribution"}</td>
+                    </tr>
+                    <tr>
+                        <th class="cotis-give color-sample">&nbsp;</th>
+                        <td class="back">{_T string="Gift"}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="actions"><div class="ui labeled icon deny button"><i class="times icon"></i> {_T string="Close"}</div></div>
         </div>
 {/block}
 
@@ -367,7 +420,7 @@
             $(function(){
                 var _init_contribs_page = function(res){
     {if ($login->isAdmin() or $login->isStaff())}
-                    var _checklinks = '<div class="checkboxes"><span class="fleft"><a href="#" class="checkall tooltip"><i class="fas fa-check-square"></i> {_T string="(Un)Check all" escape="js"}</a> | <a href="#" class="checkinvert tooltip"><i class="fas fa-exchange-alt"></i> {_T string="Invert selection" escape="js"}</a></span><a href="#" class="show_legend fright">{_T string="Show legend" escape="js"}</a></div>';
+                    var _checklinks = '<div class="checkboxes ui basic horizontal segments"><div class="ui basic fitted segment"><a href="#" class="checkall ui blue tertiary button">{_T string="(Un)Check all" escape="js"}</a> | <a href="#" class="checkinvert ui blue tertiary button">{_T string="Invert selection" escape="js"}</a></div><div class="ui basic right aligned fitted segment"><a href="#" class="show_legend ui blue tertiary button">{_T string="Show legend" escape="js"}</a></div></div>';
 
                     $('.listing').before(_checklinks);
                     $('.listing').after(_checklinks);
@@ -375,12 +428,12 @@
     {/if}
                     _bind_legend();
 
-                    $('#start_date_filter, #end_date_filter').datepicker({
+                    /*$('#start_date_filter, #end_date_filter').datepicker({
                         changeMonth: true,
                         changeYear: true,
                         showOn: 'button',
-                        buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
-                    });
+                        buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
+                    });*/
                 }
                 _init_contribs_page();
 

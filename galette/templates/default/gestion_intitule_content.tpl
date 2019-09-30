@@ -1,9 +1,7 @@
-    <table class="listing">
 {if $class eq 'Status'}
-        <caption>
-            {_T string="Note: members with a status priority lower than %priority are staff members." pattern="/%priority/" replace=$non_staff_priority}
-        </caption>
+    <div class="ui blue message">{_T string="Note: members with a status priority lower than %priority are staff members." pattern="/%priority/" replace=$non_staff_priority}</div>
 {/if}
+    <table class="listing ui celled table">
         <thead>
             <tr>
                 <th class="id_row">#</th>
@@ -32,7 +30,7 @@
                 </td>
                 <td class="left" data-title="{if $class == 'ContributionsTypes'}{_T string="Extends membership?"}{else}{_T string="Priority"}{/if}">
 {if $class == 'ContributionsTypes'}
-                    <select name="{$fields.third}">
+                    <select name="{$fields.third}" class="ui dropdown nochosen">
                         <option value="0" selected="selected">{_T string="No"}</option>
                         <option value="1">{_T string="Yes"}</option>
                     </select>
@@ -43,8 +41,8 @@
                 <td class="center actions_row">
                     <input type="hidden" name="new" value="1" />
                     <input type="hidden" name="class" value="{$class}" />
-                    <button type="submit" name="valid">
-                        <i class="fas fa-plus" aria-hidden="true"></i>
+                    <button type="submit" name="valid" class="ui labeled icon button">
+                        <i class="plus icon" aria-hidden="true"></i>
                         {_T string="Add"}
                     </button>
                 </td>
@@ -88,14 +86,14 @@
                         href="{path_for name="editEntitled" data=["class" => $url_class, "action" => "edit", "id" => $eid]}"
                         class="action tooltip"
                     >
-                        <i class="fas fa-edit fa-fw"></i>
+                        <i class="ui edit blue icon"></i>
                         <span class="sr-only">{_T string="Edit '%s' field" pattern="/%s/" replace=$entry.name|escape}</span>
                     </a>
                     <a
                         href="{path_for name="removeEntitled" data=["class" => $url_class, "id" => $eid]}"
                         class="delete tooltip"
                     >
-                        <i class="fas fa-trash fa-fw"></i>
+                        <i class="ui trash red icon"></i>
                         <span class="sr-only">{_T string="Delete '%s' field" pattern="/%s/" replace=$entry.name|escape}</span>
                     </a>
                 </td>

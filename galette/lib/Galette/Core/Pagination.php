@@ -272,7 +272,7 @@ abstract class Pagination
         for ($i = $idepart; $i <= $ifin; $i++) {
             if ($i == $this->current_page) {
                 $paginate .= $this->getLink(
-                    "-&nbsp;$i&nbsp;-",
+                    "$i",
                     $this->getHref($this->current_page),
                     preg_replace(
                         "(%i)",
@@ -338,12 +338,13 @@ abstract class Pagination
     private function getLink($content, $url, $title, $current = false)
     {
         $tabs = "\t\t\t\t\t\t";
-        $link = $tabs . "<li";
         if ($current === true) {
-            $link .= " class=\"current\" ";
+            $active = "active ";
+        } else {
+            $active = "";
         }
-        $link .= "><a href=\"" . $url . "\" " .
-            "title=\"" . $title . "\">" . $content . "</a></li>\n";
+        $link = "<a href=\"" . $url . "\" " .
+            "title=\"" . $title . "\" class=\"" . $active . "item\">" . $content . "</a>\n";
         return $link;
     }
 

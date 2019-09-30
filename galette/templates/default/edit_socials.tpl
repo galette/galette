@@ -1,9 +1,7 @@
-<fieldset class="{if isset($social_fieldset_class)}{$social_fieldset_class}{else}cssform{/if}" id="social">
-    <legend{if isset($social_fieldset_legend_class)} class="{$social_fieldset_legend_class}"{/if}>{_T string="Social networks"}</legend>
-    <div>
+<div class="ui bottom attached tab segment" data-tab="social">
     {foreach item=social from=$socials}
-        <p>
-            <label for="social_{$social->id}" class="bline">{$social->getSystemType($social->type)}</label>
+        <div class="field">
+            <label for="social_{$social->id}">{$social->getSystemType($social->type)}</label>
             <span>
                 <input type="text" name="social_{$social->id}" id="social_{$social->id}" value="{$social->url}" class="large"/>
                 <a href="#" class="fright tooltip delete delsocial">
@@ -11,10 +9,10 @@
                     <span class="sr-only">{_T string="Remove %type" pattern="/%type/" replace=$social->getSystemType($social->type)}</span>
                 </a>
             </span>
-        </p>
+        </div>
     {/foreach}
-    <p>
-        <span class="bline">{_T string="Add new social network"}</span>
+    <div class="field">
+        <span>{_T string="Add new social network"}</span>
         <span>
             <select name="social_new_type_1" id="social_new_type_1" class="nochosen socials_selector">
                 <option value="">{_T string="Choose or enter your own..."}</option>
@@ -78,6 +76,5 @@
             _rmFilter();
             _selectize();
         </script>
-    </p>
     </div>
-</fieldset>
+</div>

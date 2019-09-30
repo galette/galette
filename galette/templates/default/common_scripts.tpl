@@ -64,7 +64,7 @@
 
                 $('input#html_editor_active').attr('value', '1');
                 $('#activate_editor').remove();
-                $('#summernote_toggler').html('<a href="javascript:deactivateMailingEditor(\'mailing_corps\');" id="deactivate_editor">{_T string="Deactivate HTML editor"}</a>');
+                $('#summernote_toggler').html('<a class="ui blue tertiary button" href="javascript:deactivateMailingEditor(\'mailing_corps\');" id="deactivate_editor">{_T string="Deactivate HTML editor"}</a>');
 
                 $('#mailing_corps').summernote({
                     lang: '{$i18n->getID()|replace:'_':'-'}',
@@ -85,12 +85,12 @@
             function deactivateMailingEditor(id) {
                 $('#mailing_corps').summernote('destroy');
                 $('#deactivate_editor').remove();
-                $('#summernote_toggler').html('<a href="javascript:activateMailingEditor(\'mailing_corps\');" id="activate_editor">{_T string="Activate HTML editor"}</a>');
+                $('#summernote_toggler').html('<a class="ui blue tertiary button" href="javascript:activateMailingEditor(\'mailing_corps\');" id="activate_editor">{_T string="Activate HTML editor"}</a>');
             }
         {if $html_editor_active eq 1}
             $(function(){
                 $('#activate_editor').remove();
-                $('#summernote_toggler').html('<a href="javascript:deactivateMailingEditor(\'mailing_corps\');" id="deactivate_editor">{_T string="Deactivate HTML editor"}</a>');
+                $('#summernote_toggler').html('<a class="ui blue tertiary button" href="javascript:deactivateMailingEditor(\'mailing_corps\');" id="deactivate_editor">{_T string="Deactivate HTML editor"}</a>');
 
                 $('#mailing_corps').summernote({
                     height: 240,

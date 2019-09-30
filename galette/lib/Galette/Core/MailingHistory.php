@@ -354,6 +354,7 @@ class MailingHistory extends History
                 '] Mailing should be an instance of Mailing',
                 Analog::ERROR
             );
+            return false;
         }
     }
 

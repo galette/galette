@@ -1,35 +1,35 @@
 {extends file="page.tpl"}
 
 {block name="content"}
-        <form class="form" id="send_reminders" action="{path_for name="doReminders"}" method="post" enctype="multipart/form-data">
-            <fieldset>
-                <legend class="ui-state-active ui-corner-top">{_T string="Choose wich reminder(s) you want to send:"}</legend>
-                <div>
-                    <ul>
-                        <li{if $count_impending eq 0 and $count_impending_nomail eq 0} class="disabled"{/if}>
-                            <input type="checkbox" name="reminders[]" id="reminder_impending" value="{\Galette\Entity\Reminder::IMPENDING}"{if $count_impending eq 0 and $count_impending_nomail eq 0} disabled="disabled"{/if}/>
-                            <label for="reminder_impending">{_T string="Impending due date"}</label>
-                            <a class="show_previews" id="impending" href="#impending_preview">({_T string="preview"})</a> -
-                            <a href="{path_for name="reminders-filter" data=["membership" => "nearly", "mail" => "withmail"]}">{_T string="%s members with an email address" pattern="/%s/" replace=$count_impending}</a>
-                            <a href="{path_for name="reminders-filter" data=["membership" => "nearly", "mail" => "withoutmail"]}">{_T string="%s members without email address" pattern="/%s/" replace=$count_impending_nomail}</a>
-                        </li>
-                        <li{if $count_late eq 0 and $count_late_nomail eq 0} class="disabled"{/if}>
-                            <input type="checkbox" name="reminders[]" id="reminder_late" value="{\Galette\Entity\Reminder::LATE}"{if $count_late eq 0 and $count_late_nomail eq 0} disabled="disabled"{/if}/>
-                            <label for="reminder_late">{_T string="Late"}</label>
-                            <a class="show_previews" id="late" href="#impending_preview">({_T string="preview"})</a> -
-                            <a href="{path_for name="reminders-filter" data=["membership" => "late", "mail" => "withmail"]}">{_T string="%s members with an email address" pattern="/%s/" replace=$count_late}</a>
-                            <a href="{path_for name="reminders-filter" data=["membership" => "late", "mail" => "withoutmail"]}">{_T string="%s members without email address" pattern="/%s/" replace=$count_late_nomail}</a>
-                        </li>
-                        <li{if $count_impending_nomail eq 0 and $count_late_nomail eq 0} class="disabled"{/if}>
-                            <input type="checkbox" name="reminder_wo_mail" id="reminder_wo_mail" value="1"{if $count_impending_nomail eq 0 and $count_late_nomail eq 0} disabled="disabled"{/if}/>
-                            <label for="reminder_wo_mail">{_T string="Generate labels for members without email address"}</label>
-                        </li>
-                    </ul>
+        <form id="send_reminders" action="{path_for name="doReminders"}" method="post" enctype="multipart/form-data" class="ui form">
+            <div class="ui segment">
+                <div class="ui tiny header">
+                    {_T string="Choose wich reminder(s) you want to send:"}
                 </div>
-            </fieldset>
+                <div class="active content field">
+                    <div class="inline field{if $count_impending eq 0 and $count_impending_nomail eq 0} disabled{/if}">
+                        <input type="checkbox" name="reminders[]" id="reminder_impending" value="{\Galette\Entity\Reminder::IMPENDING}"{if $count_impending eq 0 and $count_impending_nomail eq 0} disabled="disabled"{/if}/>
+                        <label for="reminder_impending">{_T string="Impending due date"}</label>
+                        <a class="show_previews" id="impending" href="#impending_preview">({_T string="preview"})</a> -
+                        <a href="{path_for name="reminders-filter" data=["membership" => "nearly", "mail" => "withmail"]}">{_T string="%s members with an email address" pattern="/%s/" replace=$count_impending}</a>
+                        <a href="{path_for name="reminders-filter" data=["membership" => "nearly", "mail" => "withoutmail"]}">{_T string="%s members without email address" pattern="/%s/" replace=$count_impending_nomail}</a>
+                    </div>
+                    <div class="inline field{if $count_late eq 0 and $count_late_nomail eq 0} disabled{/if}">
+                        <input type="checkbox" name="reminders[]" id="reminder_late" value="{\Galette\Entity\Reminder::LATE}"{if $count_late eq 0 and $count_late_nomail eq 0} disabled="disabled"{/if}/>
+                        <label for="reminder_late">{_T string="Late"}</label>
+                        <a class="show_previews" id="late" href="#impending_preview">({_T string="preview"})</a> -
+                        <a href="{path_for name="reminders-filter" data=["membership" => "late", "mail" => "withmail"]}">{_T string="%s members with an email address" pattern="/%s/" replace=$count_late}</a>
+                        <a href="{path_for name="reminders-filter" data=["membership" => "late", "mail" => "withoutmail"]}">{_T string="%s members without email address" pattern="/%s/" replace=$count_late_nomail}</a>
+                    </div>
+                    <div class="inline field{if $count_impending_nomail eq 0 and $count_late_nomail eq 0} disabled{/if}">
+                        <input type="checkbox" name="reminder_wo_mail" id="reminder_wo_mail" value="1"{if $count_impending_nomail eq 0 and $count_late_nomail eq 0} disabled="disabled"{/if}/>
+                        <label for="reminder_wo_mail">{_T string="Generate labels for members without email address"}</label>
+                    </div>
+                </div>
+            </div>
             <div class="button-container">
-                <button type="submit" name="valid">
-                    <i class="fas fa-rocket" aria-hidden="true"></i>
+                <button type="submit" name="valid" class="ui labeled icon button">
+                    <i class="rocket icon" aria-hidden="true"></i>
                     {_T string="Send"}
                 </button>
                 {include file="forms_types/csrf.tpl"}

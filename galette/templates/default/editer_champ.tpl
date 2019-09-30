@@ -7,131 +7,136 @@
 
 {block name="content"}
 {if $action == "edit"}
-    <form action="{path_for name="doEditDynamicField" data=["form_name" => $form_name, "id" => $df->getId()]}" method="post">
-        <fieldset class="cssform">
-            <legend class="ui-state-active ui-corner-top">{_T string="Edit field %field" pattern="/%field/" replace=$df->getName()}</legend>
-            <p>
-                <label for="field_name" class="bline">{_T string="Name:"}</label>
-                <input type="text" name="field_name" id="field_name" value="{$df->getName(false)}"{if not $df|is_a:'Galette\DynamicFields\Separator'} required="required"{/if}/>
-            </p>
-            <p>
-                <label for="field_perm" class="bline">{_T string="Permissions:"}</label>
-                <select name="field_perm" id="field_perm">
-                    {html_options options=$perm_names selected=$df->getPerm()}
-                </select>
-            </p>
+    <form action="{path_for name="doEditDynamicField" data=["form_name" => $form_name, "id" => $df->getId()]}" method="post" class="ui form">
+        <div class="ui segment">
+            <div class="ui tiny header">
+                {_T string="Edit field %field" pattern="/%field/" replace=$df->getName()}
+            </div>
+            <div class="active content field">
+                <div class="inline field">
+                    <label for="field_name">{_T string="Name:"}</label>
+                    <input type="text" name="field_name" id="field_name" value="{$df->getName(false)}"{if not $df|is_a:'Galette\DynamicFields\Separator'} required="required"{/if}/>
+                </div>
+                <div class="inline field">
+                    <label for="field_perm">{_T string="Permissions:"}</label>
+                    <select name="field_perm" id="field_perm" class="ui dropdown nochosen">
+                        {html_options options=$perm_names selected=$df->getPerm()}
+                    </select>
+                </div>
 {if $df->hasData()}
-            <p>
-                <label for="field_required" class="bline">{_T string="Required:"}</label>
-                <select name="field_required" id="field_required">
-                    <option value="0" {if !$df->isRequired()}selected="selected"{/if}>{_T string="No"}</option>
-                    <option value="1" {if $df->isRequired()}selected="selected"{/if}>{_T string="Yes"}</option>
-                </select>
-            </p>
+                <div class="inline field">
+                    <label for="field_required">{_T string="Required:"}</label>
+                    <select name="field_required" id="field_required" class="ui dropdown nochosen">
+                        <option value="0" {if !$df->isRequired()}selected="selected"{/if}>{_T string="No"}</option>
+                        <option value="1" {if $df->isRequired()}selected="selected"{/if}>{_T string="Yes"}</option>
+                    </select>
+                </div>
 {/if}
 {if $df->hasWidth()}
-            <p>
-                <label for="field_width" class="bline">{_T string="Width:"}</label>
-                <input type="text" name="field_width" id="field_width" value="{$df->getWidth()}" size="3"/>
-            </p>
+                <div class="inline field">
+                    <label for="field_width">{_T string="Width:"}</label>
+                    <input type="text" name="field_width" id="field_width" value="{$df->getWidth()}" size="3"/>
+                </div>
 {/if}
 {if $df->hasHeight()}
-            <p>
-                <label for="field_height" class="bline">{_T string="Height:"}</label>
-                <input type="text" name="field_height" id="field_height" value="{$df->getHeight()}" size="3"/>
-            </p>
+                <div class="inline field">
+                    <label for="field_height">{_T string="Height:"}</label>
+                    <input type="text" name="field_height" id="field_height" value="{$df->getHeight()}" size="3"/>
+                </div>
 {/if}
 {if $df->hasSize()}
-            <p>
-                <label for="field_size" class="bline">{_T string="Size:"}</label>
-                <input type="text" name="field_size" id="field_size" value="{$df->getSize()}" size="3"/>
-        {if $df|is_a:'Galette\DynamicFields\File'}
-                <span class="exemple">{_T string="Maximum file size, in Ko."}</span>
-        {else}
-                <span class="exemple">{_T string="Maximum number of characters."}</span>
-        {/if}
-            </p>
+                <div class="inline field">
+                    <label for="field_size">{_T string="Size:"}</label>
+                    <input type="text" name="field_size" id="field_size" value="{$df->getSize()}" size="3"/>
+    {if $df|is_a:'Galette\DynamicFields\File'}
+                    <span class="exemple">{_T string="Maximum file size, in Ko."}</span>
+    {else}
+                    <span class="exemple">{_T string="Maximum number of characters."}</span>
+    {/if}
+                </div>
 {/if}
 {if $df->isMultiValued()}
-            <p>
-                <label for="field_repeat" class="bline">{_T string="Repeat:"}</label>
-                <input type="text" name="field_repeat" id="field_repeat" value="{$df->getRepeat()}" size="3"/>
-                <span class="exemple">{_T string="Number of values or zero if infinite."}</span>
-            </p>
+                <div class="inline field">
+                    <label for="field_repeat">{_T string="Repeat:"}</label>
+                    <input type="text" name="field_repeat" id="field_repeat" value="{$df->getRepeat()}" size="3"/>
+                    <span class="exemple">{_T string="Number of values or zero if infinite."}</span>
+                </div>
 {/if}
 {if $df->hasFixedValues()}
-            <p>
-                <label for="fixed_values" class="bline">{_T string="Values:"}</label>
-                <textarea name="fixed_values" id="fixed_values" cols="20" rows="6">{$df->getValues(true)}</textarea>
-                <br/><span class="exemple">{_T string="Choice list (one entry per line)."}</span>
-            </p>
+                <div class="inline field">
+                    <label for="fixed_values">{_T string="Values:"}</label>
+                    <textarea name="fixed_values" id="fixed_values" cols="20" rows="6">{$df->getValues(true)}</textarea>
+                    <br/><span class="exemple">{_T string="Choice list (one entry per line)."}</span>
+                </div>
 {/if}
-            <p>
-                <label for="field_information" class="bline tooltip">{_T string="Information:"}</label>
-                <span class="tip">{_T string="Extra information displayed along with dynamic field."}</span>
-                <textarea name="field_information" id="field_information" cols="20" rows="6">{$df->getInformation()}</textarea>
-            </p>
-        </fieldset>
-            <div class="button-container">
-                <button type="submit" class="action">
-                    <i class="fas fa-save fa-fw"></i> {_T string="Save"}
-                </button>
-                {include file="forms_types/csrf.tpl"}
+                <div>
+                    <label for="field_information">{_T string="Information:"}</label>
+                    <span class="tip">{_T string="Extra information displayed along with dynamic field."}</span>
+                    <textarea name="field_information" id="field_information" cols="20" rows="6">{$df->getInformation()}</textarea>
+                </div>
             </div>
+        </div>
 
+        <div class="button-container">
+            <button type="submit" class="ui labeled icon button action">
+                <i class="save icon"></i> {_T string="Save"}
+            </button>
+            {include file="forms_types/csrf.tpl"}
+        </div>
      </form>
 {elseif $action == "add"}
-    <form action="{path_for name="doAddDynamicField" data=["form_name" => $form_name]}" method="post" enctype="multipart/form-data" title="{_T string="New dynamic field"}">
+    <form action="{path_for name="doAddDynamicField" data=["form_name" => $form_name]}" method="post" enctype="multipart/form-data" title="{_T string="New dynamic field"}" class="ui form">
     {if $mode neq 'ajax'}
-        <fieldset class="cssform">
-            <legend class="ui-state-active ui-corner-top">{_T string="New dynamic field"}</legend>
+        <div class="ui segment">
+            <div class="ui tiny header">
+                {_T string="New dynamic field"}
+            </div>
+            <div class="active content field">
     {else}
         <div class="cssform">
     {/if}
-            <p>
-                <label for="field_name" class="bline">{_T string="Field name"}</label>
-                <input size="40" type="text" name="field_name" id="field_name" value="{if isset($df)}{$df->getName()}{/if}"/>
-            </p>
-            <p>
-                <label for="field_perm" class="bline">{_T string="Visibility"}</label>
-                <select name="field_perm" id="field_perm">
-                    {assign var="perm" value=0}
-                    {if isset($df)}
-                        {assign var="perm" value=$df->getPerm()}
-                    {/if}
-                    {html_options options=$perm_names selected=$perm}
-                </select>
-            </p>
-            <p>
-                <label for="field_type" class="bline">{_T string="Type"}</label>
-                <select name="field_type" id="field_type">
-                    {assign var="type" value=0}
-                    {if isset($df)}
-                        {assign var="type" value=$df->getType()}
-                    {/if}
-                    {html_options options=$field_type_names selected=$type}
-                </select>
-            </p>
-            <p>
-                <label for="field_required" class="bline">{_T string="Required"}</label>
-                <select name="field_required" id="field_required">
-                    <option value="0"{if not isset($df) or not $df->isRequired()} selected="selected"{/if}>{_T string="No"}</option>
-                    <option value="1"{if isset($df) and $df->isRequired()} selected="selected"{/if}>{_T string="Yes"}</option>
-                </select>
-            </p>
-            <div class="center">
-                <button type="submit" name="valid">
-                    <i class="fas fa-plus"></i>
-                    {_T string="Add"}
-                </button>
-                <input type="hidden" name="form_name" id="form_name" value="{$form_name}"/>
-                {include file="forms_types/csrf.tpl"}
-            </div>
+                <div class="inline field">
+                    <label for="field_name">{_T string="Field name"}</label>
+                    <input size="40" type="text" name="field_name" id="field_name" value="{if isset($df)}{$df->getName()}{/if}"/>
+                </div>
+                <div class="inline field">
+                    <label for="field_perm">{_T string="Visibility"}</label>
+                    <select name="field_perm" id="field_perm" class="ui dropdown nochosen">
+                        {assign var="perm" value=0}
+                        {if isset($df)}
+                            {assign var="perm" value=$df->getPerm()}
+                        {/if}
+                        {html_options options=$perm_names selected=$perm}
+                    </select>
+                </div>
+                <div class="inline field">
+                    <label for="field_type">{_T string="Type"}</label>
+                    <select name="field_type" id="field_type" class="ui dropdown nochosen">
+                        {assign var="type" value=0}
+                        {if isset($df)}
+                            {assign var="type" value=$df->getType()}
+                        {/if}
+                        {html_options options=$field_type_names selected=$type}
+                    </select>
+                </div>
+                <div class="inline field">
+                    <label for="field_required">{_T string="Required"}</label>
+                    <select name="field_required" id="field_required" class="ui dropdown nochosen">
+                        <option value="0"{if not isset($df) or not $df->isRequired()} selected="selected"{/if}>{_T string="No"}</option>
+                        <option value="1"{if isset($df) and $df->isRequired()} selected="selected"{/if}>{_T string="Yes"}</option>
+                    </select>
+                    {include file="forms_types/csrf.tpl"}
+                </div>
     {if $mode neq 'ajax'}
-        </fieldset>
-    {else}
-        </div>
+            </div>
     {/if}
+        </div>
+        <div class="button-container">
+            <button type="submit" name="valid" class="ui labeled icon button action">
+                <i class="plus icon"></i> {_T string="Add"}
+            </button>
+            <input type="hidden" name="form_name" id="form_name" value="{$form_name}"/>
+        </div>
     </form>
 {/if}
 {/block}

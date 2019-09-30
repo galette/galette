@@ -1,5 +1,5 @@
-<p>
-    <span class="bline vtop">{_T string="Picture:"}</span>
+<div class="field">
+    <label>{_T string="Picture:"}</label>
     {if $member->id}
         {assign var="photo_id" value=$member->id}
     {else}
@@ -10,4 +10,4 @@
     <label for="del_photo" class="labelalign">{_T string="Delete image"}</label> <input type="checkbox" name="del_photo" id="del_photo" value="1"/><br/>
 {/if}
     <input class="labelalign" type="file" name="photo"/>
-</p>
+</div>

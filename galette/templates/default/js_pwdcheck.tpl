@@ -27,10 +27,10 @@ $('{$selector}').on('keyup', function() {
             _meter.attr('title', '');
 
             if (res.valid) {
-                _txt.append($('<i class="fas fa-check-circle"></i> <span>{_T string="Password is valid :)" escape="js"}</span>'));
+                _txt.append($('<i class="ui check circle green icon"></i> <span>{_T string="Password is valid :)" escape="js"}</span>'));
                 _txt.addClass('use');
             } else {
-                _txt.append($('<i class="fas fa-times-circle"></i> <span>{_T string="Password is not valid!" escape="js"}</span>'));
+                _txt.append($('<i class="ui times circle red icon"></i> <span>{_T string="Password is not valid!" escape="js"}</span>'));
 
                 _txt.append(' (');
                 for (i = 0; i < res.errors.length; i++) {

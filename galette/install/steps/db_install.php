@@ -40,59 +40,68 @@ use Galette\Core\Db as GaletteDb;
 //ok, let's run the scripts!
 $db_installed = $install->executeScripts($zdb);
 ?>
-                <h2><?php echo $install->getStepTitle(); ?></h2>
+                <div class="ui segment">
+                    <div class="content field">
+                        <div class="ui text container">
 <?php
 if ($db_installed === false) {
     $msg = _T("Database has not been installed!");
     if ($install->isUpgrade()) {
         $msg = _T("Database has not been upgraded!");
     }
-    echo '<p id="errorbox">' . $msg . '</p>';
+    echo '<p class="ui red message">' . $msg . '</p>';
 } else {
     $msg = _T("Database has been installed :)");
     if ($install->isUpgrade()) {
         $msg = _T("Database has been upgraded :)");
     }
-    echo '<p id="infobox">' . $msg . '</p>';
+    echo '<p class="ui green message">' . $msg . '</p>';
 }
 ?>
-                <ul class="leaders">
+                            <ul class="leaders">
 <?php
 foreach ($install->getDbInstallReport() as $r) {
     ?>
-                    <li>
-                        <span><?php echo $r['message']; ?></span>
-                        <span><?php echo $install->getValidationImage($r['res']); ?></span>
-                    </li>
+                                <li>
+                                    <span><?php echo $r['message']; ?></span>
+                                    <span><?php echo $install->getValidationImage($r['res']); ?></span>
+                                </li>
     <?php
 }
 ?>
-                </ul>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
-                <form action="installer.php" method="POST">
-                    <p id="btn_box">
+                <form action="installer.php" method="POST" class="ui form">
+                    <div class="ui mobile tablet computer reversed equal width grid">
+                        <div class="right aligned column">
 <?php
 if (!$db_installed) {
-    ?>
-                        <input type="submit" id="retry_btn" value="<?php echo _T("Retry"); ?>"/>
-    <?php
+?>
+                            <button type="submit" class="ui right labeled icon button"><i class="redo alternate double right icon"></i> <?php echo _T("Retry"); ?></button>
+<?php
 }
 ?>
-
-                        <button type="submit"<?php if (!$db_installed) { echo ' disabled="disabled"'; } ?>><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
+                            <button type="submit" class="ui right labeled icon button"<?php if (!$db_installed) { echo ' disabled="disabled"'; } ?>><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
 <?php
 if ($db_installed) {
-    ?>
-                        <input type="hidden" name="install_dbwrite_ok" value="1"/>
-    <?php
-}
-
-if (!$db_installed) {
-    //once DB is installed, that does not make sense to go back
-    ?>
-                        <button type="submit" id="btnback" name="stepback_btn" formnovalidate><i class="fas fa-backward"></i> <?php echo _T("Back"); ?></button>
-    <?php
+?>
+                            <input type="hidden" name="install_dbwrite_ok" value="1"/>
+<?php
 }
 ?>
-                    </p>
+                        </div>
+                        <div class="left aligned column">
+<?php
+if (!$db_installed) {
+    //once DB is installed, that does not make sense to go back
+?>
+                            <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double left icon"></i> <?php echo _T("Back"); ?></button>
+<?php
+}
+?>
+                        </div>
+                    </div>
                 </form>

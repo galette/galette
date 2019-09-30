@@ -1,9 +1,9 @@
 {block component}
 {if not isset($notag)}
-<p{if isset($component_id)} id="{$component_id}"{/if}{if isset($component_class)} class="{$component_class}"{/if}>
+<div{if isset($component_id)} id="{$component_id}"{/if}{if isset($component_class)} class="{$component_class}"{/if}>
 {/if}
     {block name="label"}
-        <label for="{$id}"{if isset($title)} title="{$title}"{/if}{if isset($tip) or isset($labelclass)} class="{if isset($tip)}tooltip{/if} {if isset($labelclass)}{$labelclass}{/if}"{/if}>
+        <label for="{$id}"{if isset($title)} title="{$title}"{/if}{if isset($tip) or isset($labelclass)} class="{if isset($labelclass)}{$labelclass}{/if}"{/if}>
         {if $masschange}
             {* Add a checkbox for fields to change on mass edition *}
             <input type="checkbox" name="mass_{$entry->field_id}" class="mass_checkbox"/>
@@ -11,7 +11,6 @@
             {$label}
         </label>
     {/block}
-    {if isset($tip)}<span class="tip">{$tip}</span>{/if}
     {block name="element"}<input
         type="{$type}"
         name="{$name}"
@@ -28,8 +27,9 @@
         {if isset($checked) and $checked eq true} checked="checked"{/if}
         />
     {/block}
+    {if isset($tip)}<i class="circular inverted primary small icon info tooltip" data-html="{$tip}"></i>{/if}
     {if isset($example)}<span class="exemple">{$example}</span>{/if}
 {if not isset($notag)}
-</p>
+</div>
 {/if}
 {/block}

@@ -1,6 +1,7 @@
-<div id="legende{$cur_ref}" class="texts_legend" title="{_T string="Existing variables"}">
-    <h1>{_T string="Existing variables"}</h1>
-    <table>
+<div id="legende{$cur_ref}" class="texts_legend ui modal" title="{_T string="Existing variables"}">
+    <div class="header">{_T string="Existing variables"}</div>
+    <div class="content">
+        <table class="ui very basic table">
     {foreach from=$legends item=legend}
         <tr>
             <th colspan="4">
@@ -20,7 +21,9 @@
             {/if}
         {/foreach}
     {/foreach}
-    </table>
+        </table>
+    </div>
+    <div class="actions"><div class="ui labeled icon deny button"><i class="times icon"></i> {_T string="Close"}</div></div>
 </div>
 <script type="text/javascript">
 

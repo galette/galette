@@ -46,52 +46,62 @@ $install->reinitReport();
 $config_file_ok = $install->writeConfFile();
 $objects_ok = $install->initObjects($i18n, $zdb, new Login($zdb, $i18n));
 ?>
-                <h2><?php echo $install->getStepTitle(); ?></h2>
-<?php
 
+                <div class="ui segment">
+                    <div class="content field">
+                        <div class="ui text container">
+<?php
 if ($config_file_ok === true && $objects_ok === true) {
-    echo '<p id="infobox">' . _T("Configuration file created!") .
+    echo '<p class="ui green message">' . _T("Configuration file created!") .
         '<br/>' . _T("Data initialized.") . '</p>';
 } else {
-    echo '<p id="errorbox">' . _T("An error occurred :(") . '</p>';
+    echo '<p class="ui red message">' . _T("An error occurred :(") . '</p>';
 }
 ?>
-                <ul class="leaders">
+                            <ul class="leaders">
 <?php
 foreach ($install->getInitializationReport() as $r) {
     ?>
-                    <li>
-                        <span><?php echo $r['message']; ?></span>
-                        <span><?php echo $install->getValidationImage($r['res']); ?></span>
-                    </li>
+                                <li>
+                                    <span><?php echo $r['message']; ?></span>
+                                    <span><?php echo $install->getValidationImage($r['res']); ?></span>
+                                </li>
     <?php
 }
 ?>
-                </ul>
-                <form action="installer.php" method="POST">
-                    <p id="btn_box">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <form action="installer.php" method="POST" class="ui form">
+                    <div class="ui mobile tablet computer reversed equal width grid">
+                        <div class="right aligned column">
 <?php
 if (!$config_file_ok || !$objects_ok) {
-    ?>
-                        <button type="submit"><?php echo _T("Retry"); ?> <i class="fas fa-sync-alt"></i></button>
-    <?php
+?>
+                            <button type="submit" class="ui right labeled icon button"><i class="redo alternate double right icon"></i> <?php echo _T("Retry"); ?></button>
+<?php
 }
 ?>
-
-                        <button type="submit"<?php if (!$config_file_ok || !$objects_ok) { echo ' disabled="disabled"'; } ?>><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
+                            <button type="submit" class="ui right labeled icon button"<?php if (!$config_file_ok || !$objects_ok) { echo ' disabled="disabled"'; } ?>><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
 <?php
 if ($config_file_ok && $objects_ok) {
-    ?>
+?>
                         <input type="hidden" name="install_prefs_ok" value="1"/>
-    <?php
-}
-
-if (!$config_file_ok || !$objects_ok) {
-    //once DB is installed, that does not make sense to go back
-    ?>
-                        <button type="submit" id="btnback" name="stepback_btn" formnovalidate><i class="fas fa-backward"></i> <?php echo _T("Back"); ?></button>
-    <?php
+<?php
 }
 ?>
-                    </p>
+                        </div>
+                        <div class="left aligned column">
+<?php
+if (!$config_file_ok || !$objects_ok) {
+    //once DB is installed, that does not make sense to go back
+?>
+                            <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double left icon"></i> <?php echo _T("Back"); ?></button>
+<?php
+}
+?>
+                        </div>
+                    </div>
                 </form>

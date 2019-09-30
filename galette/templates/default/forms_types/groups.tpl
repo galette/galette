@@ -1,14 +1,14 @@
-<p>
-    <span class="bline">{_T string="Groups:"}</span>
+<div class="field">
+    <label>{_T string="Groups:"}</label>
     {if $login->isGroupManager()}
-    <a class="button" id="btngroups">
-        <i class="fas fa-user-tag" aria-hidden="true"></i>
+    <a class="ui icon button" id="btngroups">
+        <i class="user tag icon" aria-hidden="true"></i>
         {_T string="Manage user's groups"}
     </a>
     {/if}
     {if $login->isAdmin() or $login->isStaff()}
-    <a class="button" id="btnmanagedgroups">
-        <i class="fas fa-user-shield" aria-hidden="true"></i>
+    <a class="ui icon button" id="btnmanagedgroups">
+        <i class="user shield icon" aria-hidden="true"></i>
         {_T string="Manage user's managed groups"}
     </a>
     {/if}
@@ -56,4 +56,4 @@
         {/foreach}
     {/if}
     </span>
-</p>
+</div>

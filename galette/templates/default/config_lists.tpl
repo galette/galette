@@ -1,9 +1,10 @@
 {extends file="page.tpl"}
 {block name="content"}
-    <form action="{path_for name="storeListFields" data=["table" => $table]}" method="post" id="config_fields_form">
-    <div id="members_tab" class="cssform">
+    <form action="{path_for name="storeListFields" data=["table" => $table]}" method="post" id="config_fields_form" class="ui form">
+    <div class="ui segment">
+    <div id="members_tab" class="cssform ui two column centered padded grid">
         <ul id="listed_fields" class="fields_list notype connectedSortable">
-            <li class="listing center">
+            <li class="ui block header listing">
                 {_T string="Fields in list"}
                 {*<span class="label">{_T string="Field name"}</span>
                 <span class="access">{_T string="Permissions"}</span>*}
@@ -27,7 +28,7 @@
     {/foreach}
         </ul>
         <ul id="remaining_fields" class="fields_list notype connectedSortable">
-            <li class="listing center">
+            <li class="ui block header listing">
                 {_T string="Available fields"}
                 {*<span class="label">{_T string="Field name"}</span>
                 <span class="access">{_T string="Permissions"}</span>*}
@@ -52,9 +53,10 @@
         </ul>
 
     </div>
-        <div class="button-container">
-            <button type="submit" class="action">
-                <i class="fas fa-save fa-fw"></i> {_T string="Save"}
+    </div>
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon button action">
+                <i class="save icon"></i> {_T string="Save"}
             </button>
         </div>
         {include file="forms_types/csrf.tpl"}

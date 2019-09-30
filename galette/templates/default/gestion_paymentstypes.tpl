@@ -1,8 +1,8 @@
 {extends file="page.tpl"}
 
 {block name="content"}
-        <form action="{path_for name="paymentTypes"}" method="post" enctype="multipart/form-data">
-                <table class="listing">
+        <form action="{path_for name="paymentTypes"}" method="post" enctype="multipart/form-data" class="ui form">
+                <table class="listing ui celled table">
                     <thead>
                         <tr>
                             <th class="id_row">#</th>
@@ -22,8 +22,8 @@
                             </td>
                             <td class="center actions_row">
                                 <input type="hidden" name="new" value="1" />
-                                <button type="submit" name="valid">
-                                    <i class="fas fa-plus" aria-disabled="true"></i>
+                                <button type="submit" name="valid" class="ui labeled icon button">
+                                    <i class="plus icon" aria-disabled="true"></i>
                                     {_T string="Add"}
                                 </button>
                             </td>
@@ -50,25 +50,25 @@
                                     href="{path_for name="editPaymentType" data=["id" => $ptype->id]}"
                                     class="tooltip action"
                                 >
-                                    <i class="fas fa-edit"></i>
+                                    <i class="ui edit blue icon"></i>
                                     <span class="sr-only">{_T string="Edit '%s' payment type" pattern="/%s/" replace=$ptype->getName()}</span>
                                 </a>
                                 <a
                                     href="{path_for name="dynamicTranslations" data=["text_orig" => {$ptype->getName(false)|escape}]}"
                                     class="tooltip"
                                 >
-                                    <i class="fas fa-language"></i>
+                                    <i class="ui language icon"></i>
                                     <span class="sr-only">{_T string="Translate '%s'" pattern="/%s/" replace=$ptype->getName()}</span>
                                 </a>
                                 </a>
                 {if $ptype->isSystemType()}
-                                <i class="fas fa-fw">&nbsp;</i>
+                                <i class="ui icon">&nbsp;</i>
                 {else}
                                 <a
                                     href="{path_for name="removePaymentType" data=["id" => $ptype->id]}"
                                     class="delete tooltip"
                                 >
-                                    <i class="fa fa-trash fa-fw"></i>
+                                    <i class="ui trash red icon"></i>
                                     <span class="sr-only">{_T string="Delete '%s' payment type" pattern="/%s/" replace=$ptype->getName()}</span>
                                 </a>
                 {/if}

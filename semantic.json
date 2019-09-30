@@ -1,0 +1,23 @@
+{
+  "base": "semantic/",
+  "paths": {
+    "source": {
+      "config": "src/theme.config",
+      "definitions": "src/definitions/",
+      "site": "src/site/",
+      "themes": "src/themes/"
+    },
+    "output": {
+      "packaged": "../galette/webroot/assets/semantic/",
+      "uncompressed": "dist/components/",
+      "compressed": "dist/components/",
+      "themes": "../galette/webroot/assets/semantic/themes/"
+    },
+    "clean": "dist/"
+  },
+  "permission": "644",
+  "autoInstall": true,
+  "rtl": "both",
+  "components": ["reset", "site", "button", "container", "header", "icon", "input", "label", "list", "loader", "segment", "step", "form", "grid", "menu", "message", "table", "card", "item", "accordion", "checkbox", "dimmer", "dropdown", "popup", "sidebar", "tab", "transition", "text", "calendar", "toast", "modal"],
+  "version": "2.8.8"
+}

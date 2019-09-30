@@ -17,6 +17,6 @@
                 <p id="unreachables_count">
                     <strong>{$count_unreachables} {if $count_unreachables != 1}{_T string="unreachable members:"}{else}{_T string="unreachable member:"}{/if}</strong><br/>
                     {_T string="Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail."}
-                    <br/><a class="button" href="{path_for name="pdf-members-labels"}?from=mailing"><i class="far fa-address-card"></i> {_T string="Generate labels"}</a>
+                    <br/><a class="ui labeled icon button" href="{path_for name="pdf-members-labels"}?from=mailing"><i class="address card icon"></i> {_T string="Generate labels"}</a>
                 </p>
     {/if}

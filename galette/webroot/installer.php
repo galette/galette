@@ -214,54 +214,63 @@ header('Content-Type: text/html; charset=UTF-8');
     <head>
         <title><?php echo _T("Galette Installation") . ' - ' . $install->getStepTitle(); ?></title>
         <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width" />
         <link rel="stylesheet" type="text/css" href="./assets/css/galette-main.bundle.min.css" />
         <link rel="stylesheet" type="text/css" href="./themes/default/install.css"/>
+        <link rel="stylesheet" type="text/css" href="/assets/semantic/semantic.min.css" />
+        <link rel="stylesheet" type="text/css" href="/themes/default/galette-ng.css" />
         <script type="text/javascript" src="./assets/js/galette-main.bundle.min.js"></script>
+        <script type="text/javascript" src="/assets/semantic/semantic.min.js"></script>
+        <script type="text/javascript" src="/js/common-ng.js"></script>
         <link rel="shortcut icon" href="./themes/default/images/favicon.png" />
     </head>
-    <body>
-        <section>
-            <header>
-                <h1 id="titre">
-                    <?php echo _T("Galette installation") . ' - ' . $install->getStepTitle(); ?>
-                </h1>
-                <nav id="plang_selector" class="onhover">
-                    <a href="#plang_selector" class="tooltip" aria-expanded="false" aria-controls="lang_selector" title="<?php echo _T("Change language"); ?>">
-                        <i class="fas fa-language"></i>
-                        <?php echo $i18n->getName(); ?>
-                    </a>
-                    <ul id="lang_selector">
+    <body class="pushable">
+        <header id="top-navbar" class="ui fixed menu bgcolor">
+            <div class="ui container">
+                <div class="header item">
+                    <!-- <img src="/logo" width="129" height="60" alt="[ Galette ]" class="logo" /> -->
+                    <span><?php echo _T("Galette installation") ?></span>
+                </div>
+                <div class="language ui dropdown right item">
+                    <i class="icon language" aria-hidden="true"></i>
+                    <span><?php echo $i18n->getAbbrev(); ?></span>
+                    <i class="icon dropdown" aria-hidden="true"></i>
+                    <div class="menu">
 <?php
 foreach ($i18n->getList() as $langue) {
-    ?>
-                        <li <?php if ($i18n->getAbbrev() == $langue->getAbbrev()) { echo ' selected="selected"'; } ?>>
-                            <a href="?ui_pref_lang=<?php echo $langue->getID(); ?>" lang="<?php echo $langue->getAbbrev(); ?>"><?php echo $langue->getName(); ?></a>
-                        </li>
-    <?php
+?>
+                        <a href="?ui_pref_lang=<?php echo $langue->getID(); ?>" lang="<?php echo $langue->getAbbrev(); ?>" class="item"><?php echo $langue->getName(); ?> <span>(<?php echo $langue->getAbbrev(); ?>)</span></a>
+<?php
 }
 ?>
-                    </ul>
-                </nav>
-            </header>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="pusher">
+            <div id="main" class="ui container">
+                <div class="ui basic segment">
 <?php
 if (count($error_detected) > 0) {
     ?>
-            <div id="errorbox">
-                <h1><?php echo _T("- ERROR -"); ?></h1>
-                <ul>
+                    <div id="errorbox" class="ui red message">
+                        <h1><?php echo _T("- ERROR -"); ?></h1>
+                        <ul>
     <?php
     foreach ($error_detected as $error) {
         ?>
-                    <li><?php echo $error; ?></li>
+                            <li><?php echo $error; ?></li>
         <?php
     }
     ?>
-                </ul>
-            </div>
+                        </ul>
+                    </div>
     <?php
 }
 ?>
-            <div>
+                    <h1 class="ui block center aligned header">
+                        <?php echo $install->getStepTitle(); ?>
+                    </h1>
 <?php
 if ($install->isCheckStep()) {
     include_once __DIR__ . '/../install/steps/check.php';
@@ -283,38 +292,114 @@ if ($install->isCheckStep()) {
     include_once __DIR__ . '/../install/steps/end.php';
 }
 ?>
-            </div>
-            <footer>
-                <p><?php echo _T("Steps:"); ?></p>
-                <ol>
-                    <li<?php if ($install->isCheckStep()) echo ' class="current"'; ?>><?php echo _T("Checks"); ?> - </li>
-                    <li<?php if ($install->isTypeStep()) echo ' class="current"'; ?>><?php echo _T("Installation mode"); ?> - </li>
-                    <li<?php if ($install->isDbStep()) echo ' class="current"'; ?>><?php echo _T("Database"); ?> - </li>
-                    <li<?php if ($install->isDbCheckStep()) echo ' class="current"'; ?>><?php echo _T("Database access/permissions"); ?> - </li>
+                <div class="ui tablet stackable mini eight steps">
+                    <div class="step<?php if ($install->isCheckStep()) echo ' active'; ?>">
+                        <i class="tasks icon"></i>
+                        <div class="content">
+                            <div class="title"><?php echo _T("Checks"); ?></div>
+                        </div>
+                    </div>
+                    <div class="step<?php if ($install->isTypeStep()) echo ' active'; ?>">
+                        <i class="check double icon"></i>
+                        <div class="content">
+                            <div class="title"><?php echo _T("Installation mode"); ?></div>
+                        </div>
+                    </div>
+                    <div class="step<?php if ($install->isDbStep()) echo ' active'; ?>">
+                        <i class="database icon"></i>
+                        <div class="content">
+                            <div class="title"><?php echo _T("Database"); ?></div>
+                        </div>
+                    </div>
+                    <div class="step<?php if ($install->isDbCheckStep()) echo ' active'; ?>">
+                        <i class="shield alt icon"></i>
+                        <div class="content">
+                            <div class="title"><?php echo _T("Database access/permissions"); ?></div>
+                        </div>
+                    </div>
 <?php
 if ($install->isUpgrade()) {
     ?>
-                    <li<?php if ($install->isVersionSelectionStep()) echo ' class="current"'; ?>><?php echo _T("Version selection"); ?> - </li>
-                    <li<?php if ($install->isDbUpgradeStep()) echo ' class="current"'; ?>><?php echo _T("Database upgrade"); ?> - </li>
+                    <div class="step<?php if ($install->isVersionSelectionStep()) echo ' active'; ?>">
+                        <i class="tag icon"></i>
+                        <div class="content">
+                            <div class="title"><?php echo _T("Version selection"); ?></div>
+                        </div>
+                    </div>
+                    <div class="step<?php if ($install->isDbUpgradeStep()) echo ' active'; ?>">
+                        <i class="sync alt icon"></i>
+                        <div class="content">
+                            <div class="title"><?php echo _T("Database upgrade"); ?></div>
+                        </div>
+                    </div>
     <?php
 } else {
     ?>
-                    <li<?php if ($install->isDbinstallStep()) echo ' class="current"'; ?>><?php echo _T("Database installation"); ?> - </li>
+                    <div class="step<?php if ($install->isDbinstallStep()) echo ' active'; ?>">
+                        <i class="spinner icon"></i>
+                        <div class="content">
+                            <div class="title"><?php echo _T("Database installation"); ?></div>
+                        </div>
+                    </div>
     <?php
 }
 
 if (!$install->isUpgrade()) {
     ?>
-                    <li<?php if ($install->isAdminStep()) echo ' class="current"'; ?>><?php echo _T("Admin parameters"); ?> - </li>
+                    <div class="step<?php if ($install->isAdminStep()) echo ' active'; ?>">
+                        <i class="user icon"></i>
+                        <div class="content">
+                            <div class="title"><?php echo _T("Admin parameters"); ?></div>
+                        </div>
+                    </div>
     <?php
 }
 ?>
-                    <li<?php if ($install->isGaletteInitStep()) echo ' class="current"'; ?>><?php echo _T("Galette initialisation"); ?> - </li>
-                    <li<?php if ($install->isEndStep()) echo ' class="current"'; ?>><?php echo _T("End!"); ?></li>
-                </ol>
+                    <div class="step<?php if ($install->isGaletteInitStep()) echo ' active'; ?>">
+                        <i class="cogs icon"></i>
+                        <div class="content">
+                            <div class="title"><?php echo _T("Galette initialisation"); ?></div>
+                        </div>
+                    </div>
+                    <div class="step<?php if ($install->isEndStep()) echo ' active'; ?>">
+                        <i class="flag checkered icon"></i>
+                        <div class="content">
+                            <div class="title"><?php echo _T("End!"); ?></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="ui basic center aligned segment">
+                <div class="row">
+                    <nav class="ui horizontal bulleted link list">
+                        <a href="https://galette.eu" class="item">
+                            <i class="icon globe europe"></i>
+                            <?php echo _T("Website"); ?>
+                        </a>
+                        <a href="https://doc.galette.eu" class="item">
+                            <i class="icon book"></i>
+                           <?php echo _T("Documentation"); ?>
+                        </a>
+                        <a href="https://twitter.com/galette_soft" class="item">
+                            <i class="icon twitter"></i>
+                            @galette_soft
+                        </a>
+                        <a href="https://framapiaf.org/@galette" class="item">
+                            <i class="icon mastodon"></i>
+                            @galette
+                        </a>
+                    </nav>
+                </div>
+                <div class="row">
+                    <nav class="ui horizontal bulleted link list">
+                        <a id="copyright" href="https://galette.eu/" class="item">
+                            <i class="icon cookie bite"></i>
+                            Galette <?php echo GALETTE_DISPLAY_VERSION; ?>
+                        </a>
+                    </nav>
+                </div>
             </footer>
-        </section>
-        <a id="copyright" href="http://galette.eu/">Galette <?php echo GALETTE_VERSION; ?></a>
+        </div>
     </body>
 </html>
 <?php

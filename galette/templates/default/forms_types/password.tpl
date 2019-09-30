@@ -8,6 +8,7 @@
     label=$entry->label
     autocomplete="off"
     value=null
+    component_class="field"
 }
 {include
     file="forms_types/input.tpl"
@@ -20,6 +21,7 @@
     autocomplete="off"
     elt_class="labelalign"
     value=null
+    component_class="field"
 }
 <script type="text/javascript">
     $(function() {

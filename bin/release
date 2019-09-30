@@ -335,6 +335,7 @@ def add_libs(rel_name, galette_archive):
 
     #node modules are no longer needed
     shutil.rmtree(os.path.join(npm_dir, 'node_modules'))
+    shutil.rmtree(os.path.join(npm_dir, 'semantic'))
 
     #install php dependencies
     composer_cmd = 'composer install --no-dev'
@@ -352,6 +353,7 @@ def add_libs(rel_name, galette_archive):
         'package-lock.json',
         'phpcs-rules.xml',
         'composer.lock',
+        'semantic.json',
         os.path.join('galette', 'composer.json'),
         os.path.join('galette', 'composer.lock'),
         os.path.join('galette', 'post_contribution_test.php')

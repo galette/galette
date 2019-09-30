@@ -1,7 +1,7 @@
 {extends file="page.tpl"}
 
 {block name="content"}
-<form action="{path_for name="doAddEntitled" data=["class" => $url_class]}" method="post" class="tabbed">
+<form action="{path_for name="doAddEntitled" data=["class" => $url_class]}" method="post" class="tabbed ui form">
 <div id="intitules_tabs">
     {include file="gestion_intitule_content.tpl"}
     {include file="forms_types/csrf.tpl"}

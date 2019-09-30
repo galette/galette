@@ -36,21 +36,6 @@
 
 use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
-?>
-                <h2><?php echo _T("Database"); ?></h2>
-                <p>
-<?php
-if ($install->getMode() === GaletteInstall::INSTALL) {
-    echo _T("If it hadn't been made, create a database and a user for Galette.");
-}
-if ($install->isUpgrade()) {
-    echo _T("Enter connection data for the existing database.");
-    $install->loadExistingConfig($_POST, $error_detected);
-} else {
-    if (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
-        echo '<div id="warningbox">' . _T("It seems that you have already installed Galette once.<br/>All existing data will be removed if you keep going on using existing database!") . "</div>";
-    }
-}
 
 //define default database port
 $default_dbport = GaletteDb::MYSQL_DEFAULT_PORT;
@@ -59,57 +44,77 @@ if (!isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql') {
 } elseif ($_POST['install_dbtype'] == 'pgsql') {
     $default_dbport = GaletteDb::PGSQL_DEFAULT_PORT;
 }
-?><br />
-            <?php echo _T("The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."); ?></p>
-            <form action="installer.php" method="post">
-                <fieldset class="cssform">
-                    <legend class="ui-state-active ui-corner-top"><?php echo _T("Database"); ?></legend>
-                    <p>
-                        <label class="bline" for="install_dbtype"><?php echo _T("Database type:"); ?></label>
-                        <select name="install_dbtype" id="install_dbtype">
-                            <option value="mysql"<?php if ($install->getDbType() === GaletteDb::MYSQL) {echo ' selected="selected"'; } ?>>Mysql</option>
-                            <option value="pgsql"<?php if ($install->getDbType() === GaletteDb::PGSQL) {echo ' selected="selected"'; } ?>>Postgresql</option>
-                        </select>
-                    </p>
-                    <div id="install_dbconfig">
-                        <p>
-                            <label class="bline" for="install_dbhost"><?php echo _T("Host:"); ?></label>
-                            <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo ($install->getDbHost() !== null) ? $install->getDbHost() : 'localhost'; ?>" required/>
-                        </p>
-                        <p>
-                            <label class="bline" for="install_dbport"><?php echo _T("Port:"); ?></label>
-                            <input type="text" name="install_dbport" id="install_dbport" value="<?php echo ($install->getDbPort() !== null) ? $install->getDbPort() : $default_dbport; ?>" required/>
-                        </p>
-                        <p>
-                            <label class="bline" for="install_dbuser"><?php echo _T("User:"); ?></label>
-                            <input type="text" name="install_dbuser" id="install_dbuser" value="<?php echo $install->getDbUser(); ?>" required/>
-                        </p>
-                        <p>
-                            <label class="bline" for="install_dbpass"><?php echo _T("Password:"); ?></label>
-                            <input type="password" name="install_dbpass" id="install_dbpass" value="" required/>
-                        </p>
-                        <p>
-                            <label class="bline" for="install_dbname"><?php echo _T("Database:"); ?></label>
-                            <input type="text" name="install_dbname" id="install_dbname" value="<?php echo $install->getDbName(); ?>" required/>
-                        </p>
-                        <p>
-                            <label class="bline" for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
-                            <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo ($install->getTablesPrefix() !== null) ? $install->getTablesPrefix() : 'galette_'; ?>" required/>
-                        </p>
+?>
+            <form action="installer.php" method="post" class="ui form">
+                <div class="ui segment">
+                    <div class="content field">
+                        <div class="ui text container">
+<?php
+if ($install->getMode() === GaletteInstall::INSTALL) {
+    echo '<div class="ui blue message"><p>' . _T("If it hadn't been made, create a database and a user for Galette.") . '</p></div>';
+}
+if ($install->isUpgrade()) {
+    echo '<div class="ui orange message"><p>' . _T("Enter connection data for the existing database.") . '</p></div>';
+    $install->loadExistingConfig($_POST, $error_detected);
+} else {
+    if (file_exists(GALETTE_CONFIG_PATH . 'config.inc.php')) {
+        echo '<div class="ui orange message"><p>' . _T("It seems that you have already installed Galette once.<br/>All existing data will be removed if you keep going on using existing database!") . '</p></div>';
+    }
+}
+echo '<div class="ui blue message"><p>' . _T("The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT.") . '</p></div>';
+?>
+                            <div class="inline field">
+                                <label for="install_dbtype"><?php echo _T("Database type:"); ?></label>
+                                <select name="install_dbtype" id="install_dbtype" class="ui dropdown nochosen">
+                                    <option value="mysql"<?php if ($install->getDbType() === GaletteDb::MYSQL) {echo ' selected="selected"'; } ?>>Mysql</option>
+                                    <option value="pgsql"<?php if ($install->getDbType() === GaletteDb::PGSQL) {echo ' selected="selected"'; } ?>>Postgresql</option>
+                                </select>
+                            </div>
+                            <div id="install_dbconfig">
+                                <div class="inline field">
+                                    <label for="install_dbhost"><?php echo _T("Host:"); ?></label>
+                                    <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo ($install->getDbHost() !== null) ? $install->getDbHost() : 'localhost'; ?>" required/>
+                                </div>
+                                <div class="inline field">
+                                    <label for="install_dbport"><?php echo _T("Port:"); ?></label>
+                                    <input type="text" name="install_dbport" id="install_dbport" value="<?php echo ($install->getDbPort() !== null) ? $install->getDbPort() : $default_dbport; ?>" required/>
+                                </div>
+                                <div class="inline field">
+                                    <label for="install_dbuser"><?php echo _T("User:"); ?></label>
+                                    <input type="text" name="install_dbuser" id="install_dbuser" value="<?php echo $install->getDbUser(); ?>" required/>
+                                </div>
+                                <div class="inline field">
+                                    <label for="install_dbpass"><?php echo _T("Password:"); ?></label>
+                                    <input type="password" name="install_dbpass" id="install_dbpass" value="" required/>
+                                </div>
+                                <div class="inline field">
+                                    <label for="install_dbname"><?php echo _T("Database:"); ?></label>
+                                    <input type="text" name="install_dbname" id="install_dbname" value="<?php echo $install->getDbName(); ?>" required/>
+                                </div>
+                                <div class="inline field">
+                                    <label for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
+                                    <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo ($install->getTablesPrefix() !== null) ? $install->getTablesPrefix() : 'galette_'; ?>" required/>
+                                </div>
 <?php
 if ($install->isUpgrade()) {
-    echo '<div id="warningbox">' .
+    echo '<div class="ui orange message"><p>' .
         _T("(Indicate the CURRENT prefix of your Galette tables)") .
-        '</div>';
+        '</p></div>';
 }
 ?>
-
+                            </div>
+                        </div>
                     </div>
-                </fieldset>
-                <p id="btn_box">
-                    <button type="submit"><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
-                    <button type="submit" id="btnback" name="stepback_btn" formnovalidate><i class="fas fa-backward"></i> <?php echo _T("Back"); ?></button>
-                </p>
+                </div>
+
+                <div class="ui mobile tablet computer reversed equal width grid">
+                    <div class="right aligned column">
+                        <button type="submit" class="ui right labeled icon button"><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
+                    </div>
+                    <div class="left aligned column">
+                        <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double left icon"></i> <?php echo _T("Back"); ?></button>
+                    </div>
+                </div>
             </form>
             <script type="text/javascript">
                 $(function(){

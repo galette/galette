@@ -57,7 +57,7 @@
             <ul>
     {foreach from=$selected_members item=recipient}
                 <li id="member_{$recipient->id}">
-                    <i class="fas fa-user-minus" aria-hidden="true"></i>
+                    <i class="ui user minus icon" aria-hidden="true"></i>
                     {$recipient->sfullname}
                 </li>
     {foreachelse}
@@ -66,7 +66,7 @@
     {if isset($unreachables_members) and $unreachables_members|@count gt 0}
         {foreach from=$unreachables_members item=recipient}
                 <li id="member_{$recipient->id}" class="unreachables">
-                    <i class="fas fa-user-minus" aria-hidden="true"></i>
+                    <i class="ui user minus icon" aria-hidden="true"></i>
                     {$recipient->sfullname}
                 </li>
         {/foreach}

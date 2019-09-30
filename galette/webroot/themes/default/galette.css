@@ -16,11 +16,11 @@
  */
 a {
     text-decoration: none;
-    color: #0000FF;
+    /*color: #0000FF;
 }
 
 a:hover {
-    color: #eea423;
+    color: #eea423;*/
 }
 
 .ui-button:hover {
@@ -260,11 +260,11 @@ nav a{
  * == Desktop
  */
 
-#desktop, #news, #share {
+/*#desktop, #news, #share {
     width: 50%;
     min-width: 40em;
     margin: 0 auto;
-}
+}*/
 
 #desktop, #share {
     border-spacing:3em 1em;
@@ -275,9 +275,9 @@ nav a{
     margin-bottom: 1em;
 }
 
-#news {
+/*#news {
     margin-top: 1em;
-}
+}*/
 
 #news > div {
     text-align: left;
@@ -567,21 +567,28 @@ footer a:hover {
 }
 /* loading animation */
 #loading {
-    position:absolute;
-    top:0;
+    position:fixed;
+    /*top:0;
     bottom:0;
     left: 0;
-    right: 0;
+    right: 0;*/
+    top:0;
+    left: 0;
     margin: 0;
+    height: 100%;
+    width: 100%;
     text-align: center;
     background-color:rgba(0, 0, 0, 0.5);
     z-index: 100000;
 }
 #loading p {
-    position: absolute;
-    top:40%;
+    position: fixed;
+    top:45%;
+    left: 50%;
+    transform: translateY(-50%);
+    transform: translateX(-50%);
     width: 20%;
-    margin-left: 40%;
+    /*margin-left: 40%;*/
     background-color: rgba(255,255,255,.8);
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
@@ -667,9 +674,9 @@ a:hover i {
 .info:hover > i, button.info:hover i {
     color: rgba(0, 0, 255, 1);
 }
-.button i {
+/*.button i {
     padding-right: .3em;
-}
+}*/
 
 .delete i, #delete i, .actions_row .delete i {
     color: rgba(255, 0, 0, .5);
@@ -679,14 +686,14 @@ a:hover i {
     color: rgba(255, 0, 0, 1);
 }
 
-.button.small {
+/*.button.small {
     padding-left: inherit!important;
     background-repeat: repeat!important;
 }
 .button.small span {
     padding: 0 .5em;
     font-size: .7em;
-}
+}*/
 
 .button.notext {
     width: 1.3em;
@@ -696,10 +703,10 @@ a:hover i {
     display: none;
 }
 
-#recup_mailing {
+/*#recup_mailing {
     float: right;
     margin-right: .5em;
-}
+}*/
 
 h1 #sendmail {
     display: inline-block;
@@ -757,7 +764,7 @@ legend .tab-button {
     padding-right: 0;
 }
 
-.left {
+/*.left {
     text-align: left!important;
 }
 
@@ -767,7 +774,7 @@ legend .tab-button {
 
 .center {
     text-align: center!important;
-}
+}*/
 
 .center_table {
     margin:0 auto;
@@ -947,7 +954,7 @@ p#mail_sign {
     margin: 1em auto .5em;
 }
 
-.public_page section {
+/*.public_page section {
     text-align: center;
 }
 
@@ -957,7 +964,7 @@ p#mail_sign {
 
 .public_page form {
     text-align: center;
-}
+}*/
 
 .public_page .exemple {
     margin-top:0;
@@ -1532,7 +1539,7 @@ table.listing.single {
     border : 2px solid #c00;
     padding : 0.5em 0.5em 0.5em 40px;
     background : white url(images/error.png) no-repeat 5px 50%;
-    width: 80%;
+    /*width: 80%;*/
     margin:0 auto 0.8em auto;
 }
 
@@ -1554,7 +1561,7 @@ table.listing.single {
     color:black;
     padding : 0.5em 0.5em 0.5em 40px;
     background : white url(images/warning.png) no-repeat 5px 50%;
-    width: 80%;
+    /*width: 80%;*/
     margin:0 auto 0.8em auto;
     display:block;
     border:2px solid #FFB619;
@@ -1579,7 +1586,7 @@ table.listing.single {
     border : 2px solid #04CC65;
     padding : 0.5em 0.5em 0.5em 40px;
     background : white url(images/ok.png) no-repeat 5px 50%;
-    width: 80%;
+    /*width: 80%;*/
     margin:0 auto 0.8em auto;
 }
 
@@ -1741,7 +1748,7 @@ fieldset li{
     clear:left;
 }
 
-legend {
+/*legend {
     border: 1px solid #BBBBBB;
     font-weight:bold;
     padding:0.3em;
@@ -1749,7 +1756,7 @@ legend {
     margin-left:1%;
     margin-bottom: 1em;
     background-color:white;
-}
+}*/
 
 .cssform, .galette_form { background-color:white; }
 .cssform ul, .galette_form ul {
@@ -1888,7 +1895,7 @@ label.simplelabel {
     padding:0.3em 20px 0.3em 0;
 }
 
-.inline{ display:inline!important; }
+/*.inline{ display:inline!important; }*/
 
 .nowrap{ white-space:nowrap; }
 
@@ -1904,9 +1911,9 @@ label.simplelabel {
 .clear{clear: both;}
 .cright{clear: right;}
 
-input.large, span.large {
+/*input.large, span.large {
     width:90%!important;
-}
+}*/
 
 .picker{
     padding:0 1em;
@@ -1983,12 +1990,12 @@ td.photo img{
     border: none;
 }
 
-.tabbed legend, .tabbed h3 {
+/*.tabbed legend, .tabbed h3 {
     border: none;
     margin: 0;
     text-align: center;
     font-size: 1.2em;
-}
+}*/
 
 #tabs > div {
     margin: 0;
@@ -2029,7 +2036,7 @@ label:hover > i, span.bline:hover > i {
 
 /*** /Tooltips ***/
 
-.trombino{
+/*.trombino{
     margin:.5em 0 0 .5em;
     background-color: #DDDDFF;
     padding-bottom:.2em;
@@ -2049,7 +2056,7 @@ label:hover > i, span.bline:hover > i {
 
 .trombinoscope {
     text-align: center;
-}
+}*/
 
 .tbl_line_even,
 .even > td {
@@ -2128,7 +2135,7 @@ label:hover > i, span.bline:hover > i {
     float:right;
 }
 
-#expand, #collapse{
+/*#expand, #collapse{
     padding: 0.4em 1em;
     position:relative;
 }
@@ -2136,7 +2143,7 @@ label:hover > i, span.bline:hover > i {
 #expand span.ui-icon, #collapse span.ui-icon{
     float:left;
     margin-right: .2em;
-}
+}*/
 
 .collapsible{
     float:left;

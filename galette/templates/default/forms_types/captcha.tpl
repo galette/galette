@@ -8,6 +8,7 @@
     {assign var="value" value=null}
     {assign var="example" value={_T string="(numbers only)"}}
     {assign var="tip" value={_T string="This field is required trying to avoid registration spam. We are sorry for the inconvennience."}}
+    {assign var="component_class" value="field required"}
     {$smarty.block.parent}
 {/block}
 

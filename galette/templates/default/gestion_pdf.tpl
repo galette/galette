@@ -17,7 +17,7 @@
         </div>
         </div>
 {/block}
-
+<i class="circular inverted primary link icon info tooltip" data-html="{_T string="Enter here a short description for your association, it will be displayed on the index page and into pages' title."}"></i>
 {block name="javascripts"}
         <script type="text/javascript">
             _addLegenButton('#tabs');
@@ -46,11 +46,11 @@
                             return false; //avoid reloading first tab onload
                         }
 
-                        var _img = $('<figure id="loading"><p><img src="{base_url}/{$template_subdir}images/loading.png" alt="{_T string="Loading..."}"/><br/>{_T string="Currently loading..."}</p></figure>');
-                        $('body').append(_img);
+                        var _dimmer = $('<div id="jsloader" class="ui active page dimmer"><div class="ui text loader">{_T string="Currently loading..."}</div><p></p></div>');
+                        $('body').append(_dimmer);
 
                         ui.jqXHR.always(function(){
-                            $('#loading').remove();
+                            $('#jsloader').remove();
                         });
 
                         ui.jqXHR.fail(function(){

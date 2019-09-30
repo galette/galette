@@ -34,8 +34,7 @@ $.fn.spinDown = function() {
         var $this = $(this);
 
         $this.parent('legend').next().slideToggle(100);
-        var __i = $this.find('i');
-        __i.toggleClass('fa-arrow-alt-circle-down').toggleClass('fa-arrow-alt-circle-right');
+        $this.toggleClass('down').toggleClass('right');
 
         return false;
     });
@@ -46,7 +45,7 @@ $.fn.spinDown = function() {
 //The function will 'hide'
 var _collapsibleFieldsets = function(){
     $('legend').each(function(){
-        var _collapse = $('<a href="#" class="collapsible tooltip"><i class="fas fa-arrow-alt-circle-down"></i> <span class="sr-only">Collapse/Expand</span></a>');
+        var _collapse = $('<i class="ui caret down icon"><span class="sr-only">Collapse/Expand</span></i>');
         $(this).prepend(_collapse);
         _collapse.spinDown();
     });
@@ -71,7 +70,7 @@ var _initSortable = function(){
     _fieldsInSortable();
 
     $('#members_tab').sortable({
-        items: 'fieldset'
+        items: '.accordion'
     });
 }
 
@@ -113,7 +112,7 @@ var _bind_check = function(boxelt){
     });
 };
 
-var _bind_legend = function() {
+/*var _bind_legend = function() {
     $('#legende h1').remove();
     $('#legende').dialog({
         autoOpen: false,
@@ -134,10 +133,10 @@ var _bind_legend = function() {
         e.preventDefault();
         $('#legende').dialog('open');
     });
-}
+}*/
 
 
-var _initTooltips = function(selector) {
+/*$var _initTooltips = function(selector) {
     if (typeof(selector) == 'undefined') {
         selector = '';
     } else {
@@ -183,7 +182,7 @@ var _initTooltips = function(selector) {
             return _content;
         }
     });
-}
+}*/
 
 var _bindNbshow = function(selector) {
     if (typeof(selector) == 'undefined') {
@@ -208,14 +207,14 @@ $(function() {
 
     $('#login').focus();
 
-    _initTooltips();
+    /*_initTooltips();*/
     $('select:not(.nochosen)').selectize({
         maxItems: 1
     });
 
     _bindNbshow();
     $('.nojs').removeClass('nojs');
-    $('#menu h1').each(function(){
+    /*$('#menu h1').each(function(){
         $(this).html('<a href="#">' + $(this).text() + '</a>');
     });
 
@@ -233,7 +232,7 @@ $(function() {
                 $(event.target).button('disable');
             }
         }
-    });
+    });*/
 
     if ( $('#back2top').length > 0 ) {
         if (!$('#wrapper').scrollTop() && !$('html').scrollTop() ) {
@@ -248,15 +247,15 @@ $(function() {
         });
     }
 
-    $('select#lang_selector').change(function() {
+    /*$('select#lang_selector').change(function() {
         this.form.submit();
-    });
+    });*/
 
     /* Language selector.
      * Works per default with CSS only, use javascript to replace with a click event,
      * which is required because of the current way the menu is hidden on mobile devices.
      */
-    $('#plang_selector').removeClass('onhover');
+    /*$('#plang_selector').removeClass('onhover');
     var _langs = $('#plang_selector ul');
     _langs.hide();
 
@@ -266,5 +265,5 @@ $(function() {
         var _open = _this.attr('aria-expanded');
         _this.attr('aria-expanded', !_open);
         _langs.toggle();
-    });
+    });*/
 });

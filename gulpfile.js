@@ -15,7 +15,6 @@ var galette = {
 
 var main_styles = [
     './galette/webroot/themes/default/galette.css',
-    './node_modules/@fortawesome/fontawesome-free/css/all.css',
     './node_modules/jquery-ui-dist/jquery-ui.css',
     './galette/webroot/themes/default/jquery-ui/jquery-ui-1.12.1.custom.css',
     './node_modules/selectize/dist/css/selectize.default.css',
@@ -37,17 +36,14 @@ var main_scripts = [
 
 var main_assets = [
     {
-        'src': './node_modules/@fortawesome/fontawesome-free/webfonts/*',
-        'dest': '/webfonts/'
+        'src': './node_modules/jquery-ui-dist/images/*',
+        'dest': '/images/'
     }, {
         'src': './node_modules/summernote/dist/font/*',
         'dest': '/webfonts/'
     }, {
         'src': './node_modules/summernote/dist/lang/*.min.js',
         'dest': '/js/lang/'
-    }, {
-        'src': './node_modules/jquery-ui-dist/images/*',
-        'dest': '/images/'
     }, {
         'src': './galette/webroot/themes/default/jquery-ui/images/*',
         'dest': '/images/'

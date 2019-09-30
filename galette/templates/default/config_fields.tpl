@@ -1,18 +1,20 @@
 {extends file="page.tpl"}
 {block name="content"}
-    <p id="collapse" class="ui-state-default ui-corner-all">
-        <span class="ui-icon ui-icon-circle-arrow-s"></span>
-        {_T string="Collapse all"}
-    </p>
-    <form action="{path_for name="configureCoreFields"}" method="post" id="config_fields_form">
+    <div class="ui basic segment">
+        <button id="collapse" class="ui labeled icon button">
+            <i class="angle double up icon"></i>
+            {_T string="Collapse all"}
+        </button>
+    </div>
+    <form action="{path_for name="configureCoreFields"}" method="post" id="config_fields_form" class="ui form">
     <div id="members_tab">
 {foreach item=category from=$categories name=categories_list}
         <fieldset class="cssform large" id="cat_{$smarty.foreach.categories_list.iteration}">
     {assign var='catname' value=$category->category}
             <input type="hidden" name="categories[]" id="category{$smarty.foreach.categories_list.iteration}" value="{$category->id_field_category}"/>
-            <legend class="ui-state-active ui-corner-top">{_T string=$catname}</legend>
+            <legend class="ui basic small header segment">{_T string=$catname}</legend>
             <ul id="sortable_{$smarty.foreach.categories_list.iteration}" class="fields_list connectedSortable">
-                <li class="listing ">
+                <li class="ui block header listing">
                     <span class="label">{_T string="Field name"}</span>
                     <span class="yesno">{_T string="Required"}</span>
                     <span class="access">{_T string="Permissions"}</span>
@@ -35,7 +37,7 @@
                         <input type="radio" name="{$fid}_required" id="{$fid}_required_no" value="0"{if !$field.required} checked="checked"{/if}{if in_array($fid, $non_required)} disabled="disabled"{/if}/>
                     </span>
                     <span data-title="{_T string="Permissions"}" class="access" title="{_T string="Change '%field' permissions" pattern="/%field/" replace=$field.label}">
-                        <select name="{$fid}_visible" id="{$fid}_visible">
+                        <select name="{$fid}_visible" id="{$fid}_visible" class="ui dropdown nochosen">
                             <option value="{Galette\Entity\FieldsConfig::NOBODY}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::NOBODY')} selected="selected"{/if}>{_T string="Inaccessible"}</option>
                             <option value="{Galette\Entity\FieldsConfig::ADMIN}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::ADMIN')} selected="selected"{/if}>{_T string="Administrator"}</option>
                             <option value="{Galette\Entity\FieldsConfig::STAFF}"{if $field.visible eq constant('Galette\Entity\FieldsConfig::STAFF')} selected="selected"{/if}>{_T string="Staff member"}</option>
@@ -51,9 +53,9 @@
         </fieldset>
 {/foreach}
     </div>
-        <div class="button-container">
-            <button type="submit" class="action">
-                <i class="fas fa-save fa-fw"></i> {_T string="Save"}
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon button action">
+                <i class="save icon"></i> {_T string="Save"}
             </button>
             {include file="forms_types/csrf.tpl"}
         </div>
@@ -85,12 +87,12 @@
                 var _expandTxt = '{_T string="Expand all"}';
                 var _collapseTxt = '{_T string="Collapse all"}';
 
-                var _span = _this.children('span');
+                var _span = _this.children('i');
                 var _isExpand = false;
 
-                var _child = _this.children('.ui-icon');
+                var _child = _this.children('.icon');
 
-                if( _child.is('.ui-icon-circle-arrow-e') ) {
+                if( _child.is('.down') ) {
                     _this.html(_collapseTxt);
                 } else {
                     _isExpand = true;
@@ -98,9 +100,9 @@
                 }
                 _this.prepend(_span);
 
-                _child.toggleClass('ui-icon-circle-arrow-e').toggleClass('ui-icon-circle-arrow-s');
+                _child.toggleClass('down').toggleClass('up');
 
-                $('legend a').each(function(){
+                $('legend i').each(function(){
                     var _visible = $(this).parent('legend').parent('fieldset').children('ul').is(':visible');
                     if( _isExpand && _visible ) {
                         $(this).click();

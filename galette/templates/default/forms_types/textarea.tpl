@@ -1,7 +1,12 @@
 {extends file="forms_types/input.tpl"}
 
+{block name="component"}
+    {assign var="component_class" value="field"}
+    {$smarty.block.parent}
+{/block}
+
 {block name="label"}
-    {assign var="labelclass" value="vtop"}
+    {*assign var="labelclass" value="vtop"*}
     {$smarty.block.parent}
 {/block}
 

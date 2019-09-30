@@ -1,14 +1,21 @@
 {extends file="page.tpl"}
 {block name="content"}
-        <div id="{\Galette\IO\Charts::MEMBERS_STATUS_PIE}">
-        </div>
-        <div id="{\Galette\IO\Charts::MEMBERS_STATEDUE_PIE}">
-        </div>
-        <div id="{\Galette\IO\Charts::CONTRIBS_TYPES_PIE}">
-        </div>
-        <div id="{\Galette\IO\Charts::COMPANIES_OR_NOT}">
-        </div>
-        <div id="{\Galette\IO\Charts::CONTRIBS_ALLTIME}">
+        <div class="ui grid">
+                <div class="sixteen wide mobile eight wide computer five wide widescreen column">
+                        <div id="{\Galette\IO\Charts::MEMBERS_STATUS_PIE}"></div>
+                </div>
+                <div class="sixteen wide mobile eight wide computer five wide widescreen column">
+                        <div id="{\Galette\IO\Charts::MEMBERS_STATEDUE_PIE}"></div>
+                </div>
+                <div class="sixteen wide mobile eight wide computer five wide widescreen column">
+                        <div id="{\Galette\IO\Charts::CONTRIBS_TYPES_PIE}"></div>
+                </div>
+                <div class="sixteen wide mobile eight wide computer five wide widescreen column">
+                        <div id="{\Galette\IO\Charts::COMPANIES_OR_NOT}"></div>
+                </div>
+                <div class="sixteen wide mobile eleven wide widescreen column">
+                        <div id="{\Galette\IO\Charts::CONTRIBS_ALLTIME}"></div>
+                </div>
         </div>
 {/block}
 

@@ -9,9 +9,9 @@
 {function name=draw_field}
     {assign var=valuedata value=$field_data.field_val|escape}
     {if $field|is_a:'Galette\DynamicFields\File'}
-    <span class="bline libelle">{$field->getName()|escape}</span>
+    <label>{$field->getName()|escape}</label>
     {else}
-    <label class="bline libelle" for="info_field_{$field->getId()}_{$loop}">
+    <label for="info_field_{$field->getId()}_{$loop}">
         {if $masschange}
             {* Add a checkbox for fields to change on mass edition *}
             <input type="checkbox" name="mass_info_field_{$field->getId()}" class="mass_checkbox"/>
@@ -99,9 +99,12 @@
     {/if}
 {/function}
 
-<fieldset class="galette_form">
-    <legend class="ui-state-active ui-corner-top">{_T string="Additionnal fields:"}</legend>
-    <div>
+<div class="ui styled fluid accordion field">
+    <div class="active title">
+        <i class="icon dropdown"></i>
+        {_T string="Additionnal fields:"}
+    </div>
+    <div class="active content field">
     {assign var=access_level value=$login->getAccessLevel()}
     {foreach from=$fields item=field}
         {if $field->getInformation()}
@@ -114,7 +117,7 @@
         {elseif ($field|is_a:'Galette\DynamicFields\File' || $field->isRepeatable())  && $masschange}
             <!-- File and repeatable fields not shown in mass changes form -->
         {else}
-        <p{if $field->isRepeatable()} class="repetable"{/if}>
+        <div class="field{if $field->isRepeatable()} repetable{/if}">
             {assign var=disabled value=false}
             {if $perm eq constant('Galette\DynamicFields\DynamicField::PERM_USER_READ') && $access_level eq constant('Galette\Core\Authentication::ACCESS_USER')}
                 {assign var=disabled value=true}
@@ -137,7 +140,7 @@
                 {/if}
                 {draw_field field=$field field_data=$field_data disabled=$disabled loop=$current_count + 1}
             {/if}
-        </p>
+        </div>
             {if $field->isRepeatable()}
                 {if $field->getRepeat() === 0}
         <p class="exemple" id="repeat_msg">{_T string="Enter as many occurences you want."}</p>
@@ -154,11 +157,11 @@
         {/if}
     {/foreach}
     </div>
-</fieldset>
+</div>
 <script type="text/javascript">
     {if !$masschange}
     var _addLnk = function(){
-        return $('<a class="button" href="#"><i class="fas fa-plus" title="{_T string="New occurence"}"></i> <span class="sr-only">{_T string="New occurence"}"</span></a>');
+        return $('<a class="ui small compact icon button" href="#"><i class="plus icon" title="{_T string="New occurence"}"></i> <span class="sr-only">{_T string="New occurence"}"</span></a>');
     };
 
     var _lnkEvent = function(_a, _input, _parent) {
@@ -224,12 +227,12 @@
             }
         });
     {/if}
-        $('.dynamic_date').datepicker({
+        /*$('.dynamic_date').datepicker({
             changeMonth: true,
             changeYear: true,
             showOn: 'button',
-            buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
-        });
+            buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
+        });*/
     });
 </script>
     {/if}

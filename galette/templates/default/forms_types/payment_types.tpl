@@ -1,11 +1,10 @@
-{if !isset($classname)}
-    {assign var="classname" value="bline"}
-{/if}
 {if !isset($show_inline)}
-<p>
+<div class="field">
+{else}
+<div class="field inline">
 {/if}
-    <label class="{$classname}" for="{$varname}">{if isset($label)}{$label}{else}{_T string="Payment type:"}{/if}</label>
-    <select name="{$varname}" id="{$varname}">
+    <label for="{$varname}">{if isset($label)}{$label}{else}{_T string="Payment type:"}{/if}</label>
+    <select name="{$varname}" id="{$varname}" class="ui search dropdown nochosen">
 {if isset($empty)}
         <option value="{$empty.value}">{$empty.label}</option>
 {/if}
@@ -14,6 +13,4 @@
         <option value="{$ptype->id}"{if $current eq $ptype->id} selected="selected"{/if}>{$ptype->getName()}</option>
 {/foreach}
     </select>
-{if !isset($show_inline)}
-</p>
-{/if}
+</div>

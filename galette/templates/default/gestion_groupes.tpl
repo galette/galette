@@ -1,46 +1,44 @@
 {extends file="page.tpl"}
 {block name="content"}
-<div class="panels">
-    <aside id="groups_list">
-        <header class="ui-state-default ui-state-active">
-            {_T string="Groups"}
-        </header>
-        <div id="groups_tree">
-            <ul>
+
+<div class="ui grid">
+{if $login->isGroupManager() && $preferences->pref_bool_groupsmanagers_exports || $login->isAdmin() || $login->isStaff()}
+    <div class="sixteen wide column">
+            <a href="{path_for name="pdf_groups"}" class="ui icon button tooltip" title="{_T string="Export all groups and their members as PDF"}">
+                <i class="icon file pdf"></i> {_T string="All groups PDF"}
+            </a>
+    </div>
+{/if}
+    <div class="four wide column treemenu boxed">
+        <div class="ui segment">
+            <div class="ui tiny header">
+                {_T string="Groups"}
+            </div>
+                <div id="groups_tree">
+                    <ul>
 {foreach item=g from=$groups_root}
     {include file="group_tree_item.tpl" item=$g}
 {/foreach}
-            </ul>
-        </div>
+                    </ul>
+                </div>
 {if $login->isAdmin() or $login->isStaff()}
-        <div class="center">
-            <a href="{path_for name="add_group" data=["name" => NAME]}" id="newgroup" class="button">
-                <i class="fas fa-plus" aria-hiddent="true"></i>
+            <a href="{path_for name="add_group" data=["name" => NAME]}" id="newgroup" class="ui fluid button">
+                <i class="icon plus" aria-hiddent="true"></i>
                 {_T string="New group"}
             </a>
-        </div>
 {/if}
-    </aside>
-    <section id="group_infos">
-        <header class="ui-state-default ui-state-active">
-            {_T string="Group information"}
-        </header>
+        </div>{* /segment *}
+    </div>{* /treemenu boxed column *}
+    <div class="twelve wide column">
         <div id="group_infos_wrapper">
 {if $group->getId()}
             {include file="group.tpl" group=$group groups=$groups}
 {else}
             {_T string="no group"}
 {/if}
-        </div>
-    </section>
-</div>
-<div class="button-container">
-{if $login->isGroupManager() && $preferences->pref_bool_groupsmanagers_exports || $login->isAdmin() || $login->isStaff()}
-    <a href="{path_for name="pdf_groups"}" class="button tooltip" title="{_T string="Export all groups and their members as PDF"}">
-        <i class="fas fa-file-pdf"></i> {_T string="All groups PDF"}
-    </a>
-{/if}
-</div>
+		</div>
+    </div>
+</div>{* /grid *}
 {/block}
 
 {block name="javascripts"}
@@ -115,7 +113,7 @@
                             $('#group_infos_wrapper input:submit, #group_infos_wrapper .button').button();
                             _btnuser_mapping();
 
-                            $('#parent_group').each(function(){ //redo selectize on parent dropdown
+                            /*$('#parent_group').each(function(){ //redo selectize on parent dropdown
                                 var _this = $(this);
                                 if (_this[0].selectize) { // requires [0] to select the proper object
                                     var value = _this.val(); // store the current value of the select/input
@@ -123,7 +121,7 @@
                                     _this.val(value);  // set back the value of the select/input
                                 }
                                 _this.selectize();
-                            });
+                            });*/
                         },
                         error: function() {
                             alert("{_T string="An error occurred loading selected group :(" escape="js"}");
@@ -280,7 +278,7 @@
                 var _mname = $(this).text();
                 $('#none_selected').remove()
                 if ( $('#member_' + _mid).length == 0 ) {
-                    var _li = '<li id="member_' + _mid + '"><i class="fas fa-user-minus"></i> ' + _mname + '</li>';
+                    var _li = '<li id="member_' + _mid + '"><i class="ui user minus icon"></i> ' + _mname + '</li>';
                     $('#selected_members ul').append(_li);
                     $('#member_' + _mid).click(function(){
                         $(this).remove();

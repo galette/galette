@@ -42,62 +42,57 @@ $current = $install->getCurrentVersion($zdb);
 $raw_current = $zdb->getDbVersion(true);
 $last = '0.00';
 ?>
-            <h2><?php echo _T("Previous version selection"); ?></h2>
-            <p><?php echo _T("Select your previous Galette version below, and then click next."); ?></p>
-            <form action="installer.php" method="post">
+            <form action="installer.php" method="post" class="ui form">
+                <div class="ui segment">
+                    <div class="content field">
+                        <div class="ui text container">
+                            <p class="ui blue message"><?php echo _T("Select your previous Galette version below, and then click next."); ?></p>
 <?php
 if (count($versions) == 0) {
     ?>
-            <p id="errorbox"><?php echo _T("No update script found!"); ?></p>
+                            <p class="ui red message"><?php echo _T("No update script found!"); ?></p>
 <?php
     if ($raw_current === GALETTE_DB_VERSION) {
         ?>
-            <p id="warningbox"><?php echo _T("It seems you already use latest Galette version!"); ?></p>
+                            <p class="ui orange message"><?php echo _T("It seems you already use latest Galette version!"); ?></p>
         <?php
     }
-?>
-                <p id="btn_box">
-                    <input type="submit" name="abort_btn" value="<?php echo _T("Cancel"); ?>"/>
-                    <button type="submit" id="btnback" name="stepback_btn" formnovalidate><i class="fas fa-backward"></i> <?php echo _T("Back"); ?></button>
-                </p>
 
-<?php
 } else {
     if ($current !== false) {
         if ($current < 0.70) {
         ?>
-            <p id="warningbox"><?php echo _T("Previous version is older than 0.7. <strong>Make sure you select the right version</strong>."); ?></p>
+                            <p class="ui orange message"><?php echo _T("Previous version is older than 0.7. <strong>Make sure you select the right version</strong>."); ?></p>
         <?php
         } else {
         ?>
-            <p id="successbox"><?php echo _T("Your previous version should be selected and <strong>displayed in bold</strong>."); ?></p>
+                            <p class="ui green message"><?php echo _T("Your previous version should be selected and <strong>displayed in bold</strong>."); ?></p>
         <?php
         }
     }
 
     if ($raw_current === GALETTE_DB_VERSION) {
         ?>
-            <p id="warningbox"><?php echo _T("It seems you already use latest Galette version!<br/>Are you sure you want to upgrade?"); ?></p>
+                            <p class="ui orange message"><?php echo _T("It seems you already use latest Galette version!<br/>Are you sure you want to upgrade?"); ?></p>
         <?php
     }
     ?>
-                <fieldset class="cssform">
-                    <legend class="ui-state-active ui-corner-top"><?php echo _T("Your current Galette version is..."); ?></legend>
+                            <h2><?php echo _T("Your current Galette version is..."); ?></h2>
 
-                    <ul class="leaders">
+                            <ul class="leaders">
     <?php
     $is_current = false;
     $previous = null;
     foreach ($versions as $version) {
         ?>
-                    <li>
+                                <li>
         <?php
         if ($is_current) {
             echo '<strong>';
         }
         ?>
-                        <span>
-                            <label for="upgrade-<?php echo $version; ?>">
+                                    <span>
+                                        <label for="upgrade-<?php echo $version; ?>">
         <?php
         if ($last === '0.00') {
             echo str_replace(
@@ -113,11 +108,11 @@ if (count($versions) == 0) {
         }
         $last = $version;
         ?>
-                            </label>
-                        </span>
-                        <span>
-                        <input type="radio" name="previous_version" value="<?php echo $previous ?? $version; ?>" id="upgrade-<?php echo $version; ?>"<?php if ($is_current) { echo ' checked="checked"'; }; ?> required/>
-                        </span>
+                                        </label>
+                                    </span>
+                                    <span>
+                                    <input type="radio" name="previous_version" value="<?php echo $previous ?? $version; ?>" id="upgrade-<?php echo $version; ?>"<?php if ($is_current) { echo ' checked="checked"'; }; ?> required/>
+                                    </span>
         <?php
         if ($is_current) {
             echo '</strong>';
@@ -125,18 +120,42 @@ if (count($versions) == 0) {
         $is_current = $current == $version;
         ?>
 
-                    </li>
+                                </li>
     <?php
         $previous = $version;
     }
     ?>
-                    </ul>
-                </fieldset>
-                <p id="btn_box">
-                    <button type="submit"><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
-                    <button type="submit" id="btnback" name="stepback_btn" formnovalidate><i class="fas fa-backward"></i> <?php echo _T("Back"); ?></button>
-                </p>
+                            </ul>
     <?php
 }
 ?>
+                        </div>
+                    </div>
+                </div>
+<?php
+if (count($versions) == 0) {
+?>
+                <div class="ui mobile tablet computer reversed equal width grid">
+                    <div class="right aligned column">
+                        <input type="submit" class="ui icon button" name="abort_btn" value="<?php echo _T("Cancel"); ?>"/>
+                        <button type="submit" class="ui right labeled icon button"><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
+                    </div>
+                    <div class="left aligned column">
+                        <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double left icon"></i> <?php echo _T("Back"); ?></button>
+                    </div>
+                </div>
+<?php
+} else {
+?>
+                <div class="ui mobile tablet computer reversed equal width grid">
+                    <div class="right aligned column">
+                        <button type="submit" class="ui right labeled icon button"><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
+                    </div>
+                    <div class="left aligned column">
+                        <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double left icon"></i> <?php echo _T("Back"); ?></button>
+                    </div>
+                </div>
             </form>
+<?php
+}
+?>

@@ -6,7 +6,7 @@
 {extends file=$extend}
 {block name="content"}
     <div id="mass_change"{if $mode neq 'ajax'} class="center"{else} title="{$page_title}"{/if}>
-    <form action="{$form_url}" method="post">
+    <form action="{$form_url}" method="post" class="ui form">
         {if $mode neq 'ajax'}<h2>{$page_title}</h2>{/if}
     {if !isset($changes)}
         <p>{_T string="Only checked fields will be updated."}</p>
@@ -39,15 +39,15 @@
         {/foreach}
         </ul>
     {/if}
-        <div class="button-container">
     {if !isset($changes)}
         {* Form entries*}
         {include file="forms_types.tpl" masschange=true}
         {* Dynamic entries *}
         {include file="edit_dynamic_fields.tpl" object=$member masschange=true}
     {/if}
-            <input type="submit" id="masschange" class="button" value="{if !isset($changes)}{_T string="Edit"}{else}{_T string="OK"}{/if}"/>
-            <a href="{$cancel_uri}" class="button" id="btncancel">{_T string="Cancel"}</a>
+        <div class="button-container">
+            <input type="submit" id="masschange" class="ui button" value="{if !isset($changes)}{_T string="Edit"}{else}{_T string="OK"}{/if}"/>
+            <a href="{$cancel_uri}" class="ui button" id="btncancel">{_T string="Cancel"}</a>
             <input type="hidden" name="confirm" value="1"/>
             {if $mode eq 'ajax'}<input type="hidden" name="ajax" value="true"/>{/if}
             {foreach $data as $key=>$value}

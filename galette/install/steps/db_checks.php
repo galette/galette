@@ -165,31 +165,31 @@ if ($db_connected === true) {
         $permsdb_ok = false;
     }
 }
-
-if (!isset($install_plugin)) {
 ?>
-                <h2><?php echo $install->getStepTitle() ?></h2>
-<?php
-}
+    <div class="ui segment">
+        <div class="content field">
+            <div class="ui text container">
 
+
+<?php
 if ($db_connected === true && $permsdb_ok === true) {
     if (!isset($install_plugin)) {
-        echo '<p id="infobox">' . _T("Connection to database successfull") .
+        echo '<p class="ui green message">' . _T("Connection to database successfull") .
             '<br/>' . _T("Permissions to database are OK.") . '</p>';
     } else {
-         echo '<p id="infobox">' . _T("Permissions to database are OK.") . '</p>';
+         echo '<p class="ui green message">' . _T("Permissions to database are OK.") . '</p>';
     }
 }
 
 if (!isset($install_plugin)) {
 ?>
-                <h3><?php echo _T("Check of the database"); ?></h3>
+                <h2><?php echo _T("Check of the database"); ?></h2>
 <?php
 }
 
 if ($db_connected !== true) {
     $conndb_ok = false;
-    echo '<div id="errorbox">';
+    echo '<div class="ui red message">';
     echo '<h1>' . _T("Unable to connect to the database") . '</h1>';
     echo '<p class="debuginfos">' . $db_connected->getMessage() . '<span>' .
         $db_connected->getTraceAsString() . '</span></p>';
@@ -204,11 +204,11 @@ if (!$conndb_ok) {
     if (!isset($install_plugin)) {
     ?>
                 <p><?php echo _T("Database exists and connection parameters are OK."); ?></p>
-                <h3><?php echo _T("Permissions on the base"); ?></h3>
+                <h2><?php echo _T("Permissions on the base"); ?></h2>
     <?php
     }
     if (!$permsdb_ok) {
-        echo '<div id="errorbox">';
+        echo '<div class="ui red message">';
         echo '<h1>';
         if ($install->isInstall()) {
             echo _T("GALETTE hasn't got enough permissions on the database to continue the installation.");
@@ -219,37 +219,44 @@ if (!$conndb_ok) {
         echo '</div>';
     }
     ?>
-            <ul class="leaders">
+                <ul class="leaders">
         <?php
         foreach ($result as $r) {
         ?>
-                <li>
-                    <span><?php echo $r['message'] ?></span>
-                    <span><?php echo $install->getValidationImage($r['res']); ?></span>
-                </li>
+                    <li>
+                        <span><?php echo $r['message'] ?></span>
+                        <span><?php echo $install->getValidationImage($r['res']); ?></span>
+                    </li>
         <?php
         }
         ?>
-            </ul>
+                </ul>
+            </div>
+        </div>
+    </div>
         <?php
 }
 
 if (!isset($install_plugin)) {
 ?>
-            <form action="installer.php" method="POST">
-                <p id="btn_box">
-                    <button type="submit"<?php if (!$conndb_ok || !$permsdb_ok) { echo ' disabled="disabled"'; } ?>><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
+    <form action="installer.php" method="POST" class="ui form">
+        <div class="ui mobile tablet computer reversed equal width grid">
+            <div class="right aligned column">
+                <button type="submit"<?php if (!$conndb_ok || !$permsdb_ok) { echo ' disabled="disabled"'; } ?> class="ui right labeled icon button"><i class="angle double right icon"></i> <?php echo _T("Next step"); ?></button>
 <?php
 if ($conndb_ok && $permsdb_ok) {
-    ?>
+?>
 
-                    <input type="hidden" name="install_dbperms_ok" value="1"/>
-    <?php
+                <input type="hidden" name="install_dbperms_ok" value="1"/>
+<?php
 }
 ?>
-                    <button type="submit" id="btnback" name="stepback_btn" formnovalidate><i class="fas fa-backward"></i> <?php echo _T("Back"); ?></button>
-                </p>
-            </form>
+            </div>
+            <div class="left aligned column">
+                <button type="submit" id="btnback" name="stepback_btn" formnovalidate class="ui labeled icon button"><i class="angle double left icon"></i> <?php echo _T("Back"); ?></button>
+            </div>
+        </div>
+    </form>
 <?php
 }
 ?>

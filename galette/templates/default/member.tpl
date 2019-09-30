@@ -2,36 +2,41 @@
 
 {block name="content"}
 {if isset($navigate) and $navigate|@count != 0}
-    <nav>
-        <a href="{if isset($navigate.prev)}{path_for name="editMember" data=["id" => $navigate.prev]}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">
-            <i class="fas fa-step-backward"></i>
-            {_T string="Previous"}
-        </a>
-        {$navigate.pos}/{$navigate.count}
-        <a href="{if isset($navigate.next)}{path_for name="editMember" data=["id" => $navigate.next]}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">
-            {_T string="Next"}
-            <i class="fas fa-step-forward"></i>
-        </a>
-    </nav>
+        <nav>
+            <a href="{if isset($navigate.prev)}{path_for name="editMember" data=["id" => $navigate.prev]}{else}#{/if}" class="ui labeled icon button{if !isset($navigate.prev)} disabled{/if}">
+                <i class="step backward icon"></i>
+                {_T string="Previous"}
+            </a>
+            <div class="ui label">{$navigate.pos} / {$navigate.count}</div>
+            <a href="{if isset($navigate.next)}{path_for name="editMember" data=["id" => $navigate.next]}{else}#{/if}" class="ui right labeled icon button{if !isset($navigate.next)} disabled{/if}">
+                {_T string="Next"}
+                <i class="step forward icon"></i>
+            </a>
+        </nav>
 {/if}
-        <form action="{if $self_adh}{path_for name="storeselfmembers"}{elseif !$member->id}{path_for name="doAddMember"}{else}{path_for name="doEditMember" data=["id" => $member->id]}{/if}" method="post" enctype="multipart/form-data" id="form">
-        <div class="bigtable">
-            <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
+        <div class="ui small red message">{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></div>
+        <form action="{if $self_adh}{path_for name="storeselfmembers"}{elseif !$member->id}{path_for name="doAddMember"}{else}{path_for name="doEditMember" data=["id" => $member->id]}{/if}" method="post" enctype="multipart/form-data" id="form" class="ui form">
     {if !$self_adh}
-            <div>
+            <div class="ui compact segment">
         {if $member->hasParent() && !$member->isDuplicate()}
-                <strong>{_T string="Attached to:"}
-                <a href="{path_for name="member" data=["id" => $member->parent->id]}">{$member->parent->sfullname}</a></strong>
+                <div class="inline field">
+                    <span class="ui blue ribbon label">{_T string="Attached to:"}</span>
+                    <a href="{path_for name="member" data=["id" => $member->parent->id]}" class="ui label">{$member->parent->sfullname}</a>
             {if !$member->id}
-                <input type="hidden" name="parent_id" value="{$member->parent->id}"/>
+                    <input type="hidden" name="parent_id" value="{$member->parent->id}"/>
             {/if}
+                </div>
             {if $login->isAdmin() or $login->isStaff() && (!isset($addchild) || !$addchild)}
-                <br/><label for="detach_parent">{_T string="Detach?"}</label>
-                <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
+                <div class="inline field">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
+                        <label for="detach_parent">{_T string="Detach?"}</label>
+                    </div>
+                </div>
             {/if}
         {else if ($login->isAdmin() or $login->isStaff()) and !$member->hasChildren() and isset($members.list)}
             <input type="checkbox" name="attach" id="attach" value="1"{if $member->isDuplicate()} checked="checked"{/if}/>
-            <label for="attach"><i class="fas fa-link"></i> {_T string="Attach member"}</label>
+            <label for="attach"><i class="linkify icon"></i> {_T string="Attach member"}<label>
             <span id="parent_id_elt" class="sr-only">
                 <select name="parent_id" id="parent_id" class="nochosen">
                     <option value="">{_T string="-- select a name --"}</option>
@@ -44,33 +49,36 @@
                 <input type="hidden" name="duplicate" value="1" />
             {/if}
         {else if $member->hasChildren()}
-            <strong>{_T string="Parent of:"}</strong>
+                <div class="inline field">
+                    <span class="ui blue ribbon label">{_T string="Parent of:"}</span>
             {foreach from=$member->children item=child}
-                <a href="{path_for name="member" data=["id" => $child->id]}">{$child->sfullname}</a>{if not $child@last}, {/if}
+                    <a href="{path_for name="member" data=["id" => $child->id]}" class="ui label">{$child->sfullname}</a>{if not $child@last}, {/if}
             {/foreach}
+                </div>
         {/if}
+            </div>
     {/if}
+            {* Main form entries*}
+            {include file="forms_types.tpl"}
+            {* Dynamic entries *}
+            {include file="edit_dynamic_fields.tpl" object=$member}
+            {include file="edit_socials.tpl" socials=$member->socials social_fieldset_class="galette_form" social_fieldset_legend_class="ui-state-active ui-corner-top"}
 
-    {* Main form entries*}
-    {include file="forms_types.tpl"}
-    {* Dynamic entries *}
-    {include file="edit_dynamic_fields.tpl" object=$member}
-
-    {include file="edit_socials.tpl" socials=$member->socials social_fieldset_class="galette_form" social_fieldset_legend_class="ui-state-active ui-corner-top"}
-
-                    <p>
     {if !$member->id && !$self_adh}
         {if ($login->isAdmin() or $login->isStaff())}
-               <label for="redirect_on_create">{_T string="After member creation:"}</label>
-               <select name="redirect_on_create" id="redirect_on_create">
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')} selected="selected"{/if}>{_T string="create a new contribution (default action)"}</option>
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')} selected="selected"{/if}>{_T string="create a new transaction"}</option>
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_NEW')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_NEW')} selected="selected"{/if}>{_T string="create another new member"}</option>
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')} selected="selected"{/if}>{_T string="show member"}</option>
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_LIST')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_LIST')} selected="selected"{/if}>{_T string="go to members list"}</option>
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_HOME')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_HOME')} selected="selected"{/if}>{_T string="go to main page"}</option>
-               </select>
-               <br/>
+            <div class="ui center aligned segment">
+                <div class="inline field">
+                    <label for="redirect_on_create">{_T string="After member creation:"}</label>
+                    <select name="redirect_on_create" id="redirect_on_create"i class="ui search dropdown nochosen">
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')} selected="selected"{/if}>{_T string="create a new contribution (default action)"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')} selected="selected"{/if}>{_T string="create a new transaction"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_NEW')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_NEW')} selected="selected"{/if}>{_T string="create another new member"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')} selected="selected"{/if}>{_T string="show member"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_LIST')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_LIST')} selected="selected"{/if}>{_T string="go to members list"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_HOME')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_HOME')} selected="selected"{/if}>{_T string="go to main page"}</option>
+                    </select>
+                </div>
+            </div>
         {else}
             <input type="hidden" name="redirect_on_create" value="{constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')}"/>
         {/if}
@@ -78,32 +86,34 @@
             <input type="hidden" name="addchild" value="true"/>
         {/if}
     {/if}
-
-    {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') and (!$self_adh and ($login->isAdmin() or $login->isStaff()))}
-                        <br/><label for="mail_confirm">
-        {if $member->id}
+        {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') and (!$self_adh and ($login->isAdmin() or $login->isStaff()))}
+            <div class="ui center aligned segment">
+                <div class="inline field">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
+                        <label for="mail_confirm">
+            {if $member->id}
                             {_T string="Notify member his account has been modified"}
-        {else}
+            {else}
                             {_T string="Notify member his account has been created"}
-        {/if}
+            {/if}
                         </label>
-                        <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if $preferences->pref_bool_mailowner || isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
-                        <br/><span class="exemple">
-        {if $member->id}
+                        <br/>
+                        <span class="exemple">
+            {if $member->id}
                             {_T string="Member will be notified by email his account has been modified."}
-        {else}
+            {else}
                             {_T string="Member will receive his username and password by email, if he has an address."}
-        {/if}
+            {/if}
                         </span>
-    {/if}
-                    </p>
-        </div>
-        <div class="button-container">
-            <button type="submit" name="valid" class="action">
-                <i class="fas fa-save fa-fw"></i> {_T string="Save"}
-            </button>
-
-
+                    </div>
+                </div>
+            </div>
+        {/if}
+            <div class="ui basic center aligned fitted segment">
+                <button type="submit" name="valid" class="action ui labeled icon big button">
+                    <i class="save icon"></i> {_T string="Save"}
+                </button>
             {foreach item=entry from=$hidden_elements}
                 {if $entry->field_id neq 'mdp_adh'}
                     {assign var="title" value=null}
@@ -129,8 +139,7 @@
                 {/if}
             {/foreach}
             {include file="forms_types/csrf.tpl"}
-            <a href="#" id="back2top">{_T string="Back to top"}</a>
-        </div>
+            </div>
         </form>
 {/block}
 
@@ -158,13 +167,13 @@
 
                 _collapsibleFieldsets();
 
-                $('#ddn_adh').datepicker({
+                /*$('#ddn_adh').datepicker({
                     changeMonth: true,
                     changeYear: true,
                     showOn: 'button',
                     maxDate: '-0d',
                     yearRange: '-200:+0',
-                    buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
+                    buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
                 });
                 $('#date_crea_adh').datepicker({
                     changeMonth: true,
@@ -172,8 +181,8 @@
                     showOn: 'button',
                     maxDate: '-0d',
                     yearRange: 'c-10:c+0',
-                    buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
-                });
+                    buttonText: '<i class="ui calendar alt icon"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
+                });*/
 
 {if !$self_adh}
                 {* Groups popup *}
@@ -287,7 +296,7 @@
                         var _gname = $(this).text();
                         $('#none_selected').remove()
                         if ( $('#group_' + _gid).length == 0 ) {
-                            var _li = '<li id="group_' + _gid + '"><i class="fas fa-user-minus"></i> ' + _gname + '</li>';
+                            var _li = '<li id="group_' + _gid + '"><i class="ui user minus icon"></i> ' + _gname + '</li>';
                             $('#selected_groups ul').append(_li);
                             $('#group_' + _gid).click(function(){
                                 $(this).remove();

@@ -37,7 +37,7 @@
             <ul>
 {foreach from=$selected_groups item=group}
                 <li id="group_{$group.id}">
-                    <i class="fas fa-user-minus" aria-hidden="true"></i>
+                    <i class="ui user minus icon" aria-hidden="true"></i>
                     {$group.name}
                 </li>
 {foreachelse}
