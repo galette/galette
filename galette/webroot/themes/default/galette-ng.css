@@ -1,4 +1,104 @@
-nav {
-  margin: 0;
-  text-align: inherit;
+html {
+  font-size: 14px;
+}
+
+body {
+  font-size: 1rem;
+}
+
+body.pushable {
+  background: #636b70;
+}
+
+.ui.bg-color {
+  background-color: #ddddff;
+}
+
+.ui.pointing.menu.bg-color .item.active,
+.ui.pointing.menu.bg-color .active.item::after {
+  background-color: #d3d3f5;
+}
+
+#top-navbar.ui.menu {
+  border: 0;
+  border-radius: 0;
+}
+
+#top-navbar.ui.menu .item img.logo {
+  margin-right: 1.5rem;
+  max-height: 2.5rem;
+  width: auto;
+}
+
+.ui.menu .header.item {
+  text-align: left;
+  font-weight: 700;
+}
+
+.ui.menu:not(.vertical) .item > .button,
+.ui.menu .item > .button {
+  padding: 0;
+}
+
+.ui.menu .language.dropdown.item .menu {
+  right: 0;
+  left: auto;
+}
+.ui.menu .ui.dropdown.language .menu > .item {
+  text-transform: capitalize !important;
+}
+
+.language span {
+  text-transform: uppercase;
+}
+
+.ui.fixed.menu + .pusher {
+  padding-top: 4.85rem;
+}
+
+.ui.grid > aside.column:not(.row) {
+  background-color: #f8ebd2;
+  padding-bottom: 2rem;
+}
+
+.password-lost {
+  color: rgb(102, 102, 102);
+  font-size: .9rem;
+  margin: .5rem 0 1rem;
+  display: inline-block;
+}
+
+.password-lost:hover {
+  color: #000;
+}
+
+footer,
+footer .ui.horizontal.list .list > .item,
+footer .ui.horizontal.list > .item{
+  font-size: .95rem;
+}
+
+@media only screen and (max-width: 767px) {
+  .sidebar.uncover + .fixed.menu .toc i::before {
+    content: '\f00d';
+  }
+  #top-navbar.ui.menu .item img.logo {
+    margin-right: 1rem;
+  }
+  .ui.menu .header.item {
+    padding-left: .5rem;
+    padding-right: .5rem;
+  }
+}
+@media only screen and (max-width: 991px) {
+  .ui.top.menu:not(.vertical) .item:not(.header):not(.toc),
+  .main .column:first-child {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .ui.top.menu:not(.vertical) .item.toc {
+    display: none;
+  }
 }
