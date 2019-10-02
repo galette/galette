@@ -79,6 +79,7 @@ galette/includes/Zend*
 galette/includes/Analog*
 galette/password_compat*
 galette/vendor/
+galette/node_modules/
 
 # API documentation
 apidocs/
@@ -90,3 +91,4 @@ apidocs/
 dbs/
 dist/
 .zanata-cache/
+galette/webroot/themes/default/semantic/

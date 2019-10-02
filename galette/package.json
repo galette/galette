@@ -1,0 +1,21 @@
+{
+  "name": "galette",
+  "version": "0.9.3-dev",
+  "description": "Fomantic UI dependencies for Galette",
+  "main": "common-ng.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/galette/galette.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Johan Cwiklinski",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "fomantic-ui": "^2.7.8"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.0"
+  }
+}

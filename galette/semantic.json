@@ -1,0 +1,23 @@
+{
+  "base": "semantic/",
+  "paths": {
+    "source": {
+      "config": "src/theme.config",
+      "definitions": "src/definitions/",
+      "site": "src/site/",
+      "themes": "src/themes/"
+    },
+    "output": {
+      "packaged": "../webroot/themes/default/semantic/",
+      "uncompressed": "../webroot/themes/default/semantic/components/",
+      "compressed": "../webroot/themes/default/semantic/components/",
+      "themes": "../webroot/themes/default/semantic/themes/"
+    },
+    "clean": "dist/"
+  },
+  "permission": "644",
+  "autoInstall": false,
+  "rtl": "both",
+  "components": ["reset", "container", "icon", "list", "grid", "menu", "dimmer", "dropdown", "sidebar"],
+  "version": "2.7.8"
+}
