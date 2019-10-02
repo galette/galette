@@ -5,8 +5,9 @@ Just put a {include file='common_header.tpl'} into the head tag.
 *}
 <title>{if $pref_slogan ne ""}{$pref_slogan} - {/if}{if $page_title ne ""}{$page_title} - {/if}Galette {$GALETTE_VERSION}</title>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
         <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}galette.css" />
-        <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}galette-gui.css" />
+        <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}semantic/semantic.min.css" />
         <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}galette-ng.css" />
         <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}galette-transition.css" />
         <link rel="stylesheet" type="text/css" href="{base_url}/fontawesome-free-5.7.2/css/all.min.css" />
@@ -18,6 +19,9 @@ Just put a {include file='common_header.tpl'} into the head tag.
             <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}/galette_local.css" />
         {/if}
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-{$jquery_version}.min.js"></script>
+        <script type="text/javascript" src="{base_url}/{$scripts_dir}common.js"></script>
+        <script type="text/javascript" src="{base_url}/{$template_subdir}semantic/semantic.min.js"></script>
+        <script type="text/javascript" src="{base_url}/{$scripts_dir}common-ng.js"></script>
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-migrate-{$jquery_migrate_version}.min.js"></script>
         <script type="text/javascript" src="{base_url}/js/selectize-0.12.6/js/standalone/selectize.min.js"></script>
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery.bgFade.js"></script>
@@ -27,7 +31,6 @@ Just put a {include file='common_header.tpl'} into the head tag.
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.accordion.min.js"></script>
         {* Buttons can be used everywhere *}
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.button.min.js"></script>
-        <script type="text/javascript" src="{base_url}/{$scripts_dir}common.js"></script>
         {* Tooltips can be used everywhere *}
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.position.min.js"></script>
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.tooltip.min.js"></script>
@@ -35,7 +38,6 @@ Just put a {include file='common_header.tpl'} into the head tag.
         {if file_exists($localjstracking)}
             <script type="text/javascript" src="{base_url}/{$template_subdir}/tracking.js"></script>
         {/if}
-        <meta name="viewport" content="width=device-width" />
         {* UI accordion is used for main menu ; we need the CSS *}
         <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}jquery-ui/jquery-ui-{$jquery_ui_version}.custom.css" />
         <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}galette_print.css" media="print" />
