@@ -122,7 +122,7 @@
                     <a href="{path_for name="publicList" data=["type" => "list"]}" title="{_T string="Members list"}" class="{if $cur_route eq "publicList" and $cur_subroute eq "list"}active {/if}item">{_T string="Members list"}</a>
                     <a href="{path_for name="publicList" data=["type" => "trombi"]}" title="{_T string="Trombinoscope"}" class="{if $cur_route eq "publicList" and $cur_subroute eq "trombi"}active {/if}item">{_T string="Trombinoscope"}</a>
                     {* Include plugins menu entries *}
-                    {$plugins->getPublicMenus($tpl)}
+                    {$plugins->getPublicMenus($tpl, true)}
                 </div>
             </div>
     {/if}
@@ -174,6 +174,10 @@
                 {_T string="Trombinoscope"}
             </a>
     {/if}
+
+            {* Include plugins menu entries *}
+            {$plugins->getPublicMenus($tpl, true)}
+
             <div class="item">
     {if $preferences->pref_bool_selfsubscribe eq true and $cur_route neq "subscribe"}
                 <a href="{path_for name="subscribe"}" class="button" title="{_T string="Subscribe"}">

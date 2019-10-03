@@ -228,6 +228,10 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 {_T string="Trombinoscope"}
             </a>
     {/if}
+
+            {* Include plugins menu entries *}
+            {$plugins->getPublicMenus($tpl, true)}
+
             <div class="item">
     {if $preferences->pref_bool_selfsubscribe eq true and $cur_route neq "subscribe"}
                 <a href="{path_for name="subscribe"}" class="button" title="{_T string="Subscribe"}">
