@@ -167,10 +167,16 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     {_T string="Public pages"}
                 </div>
                 <div class="menu">
-                    <a href="{path_for name="publicList" data=["type" => "list"]}" title="{_T string="Members list"}" class="{if $cur_route eq "publicList" and $cur_subroute eq "list"}active {/if}item">{_T string="Members list"}</a>
-                    <a href="{path_for name="publicList" data=["type" => "trombi"]}" title="{_T string="Trombinoscope"}" class="{if $cur_route eq "publicList" and $cur_subroute eq "trombi"}active {/if}item">{_T string="Trombinoscope"}</a>
+                    <a href="{path_for name="publicList" data=["type" => "list"]}" title="{_T string="Members list"}" class="{if $cur_route eq "publicList" and $cur_subroute eq "list"}active {/if}item">
+                        {_T string="Members list"}
+                        <i class="icon address book" aria-hidden="true"></i>
+                    </a>
+                    <a href="{path_for name="publicList" data=["type" => "trombi"]}" title="{_T string="Trombinoscope"}" class="{if $cur_route eq "publicList" and $cur_subroute eq "trombi"}active {/if}item">
+                        {_T string="Trombinoscope"}
+                        <i class="icon user friends" aria-hidden="true"></i>
+                    </a>
                     {* Include plugins menu entries *}
-                    {$plugins->getPublicMenus($tpl)}
+                    {$plugins->getPublicMenus($tpl, true)}
                 </div>
             </div>
     {/if}
