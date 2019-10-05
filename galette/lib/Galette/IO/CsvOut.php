@@ -110,7 +110,7 @@ class CsvOut extends Csv
         $this->current_line = 0;
 
         $fields = array();
-        if ($titles && !count($titles)>1) {
+        if ($titles && !is_array($titles)) {
             foreach (array_key($this->rs) as $field) {
                 $fields[] = $this->quote . str_replace(
                     $this->quote,

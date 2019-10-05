@@ -303,13 +303,23 @@ $app->get(
             );
         }
 
-        if (file_exists(CsvOut::DEFAULT_DIRECTORY . $filename)) {
+        $filepath = CsvOut::DEFAULT_DIRECTORY . $filename;
+        if (file_exists($filepath)) {
             $response = $this->response->withHeader('Content-Description', 'File Transfer')
                 ->withHeader('Content-Type', 'text/csv')
                 ->withHeader('Content-Disposition', 'attachment;filename="' . $filename . '"')
-                ->withHeader('Pragma', 'no-cache');
-            $response->write(readfile(CsvOut::DEFAULT_DIRECTORY . $filename));
-            return $response;
+                ->withHeader('Pragma', 'no-cache')
+                ->withHeader('Content-Transfer-Encoding', 'binary')
+                ->withHeader('Expires', '0')
+                ->withHeader('Cache-Control', 'must-revalidate')
+                ->withHeader('Pragma', 'public')
+                ->withHeader('Content-Length', filesize($filepath));
+
+            $stream = fopen('php://memory', 'r+');
+            fwrite($stream, file_get_contents($filepath));
+            rewind($stream);
+
+            return $response->withBody(new \Slim\Http\Stream($stream));
         } else {
             Analog::log(
                 'A request has been made to get an exported file named `' .
