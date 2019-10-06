@@ -789,7 +789,7 @@ class Preferences
             }
         } elseif (in_array($name, $virtuals)) {
             $virtual = str_replace('vpref_', 'pref_', $name);
-            return explode(',', $this->$virtual);
+            return explode(',', $this->prefs[$virtual]);
         } else {
             Analog::log(
                 'Preference `' . $name . '` is not set or is forbidden',

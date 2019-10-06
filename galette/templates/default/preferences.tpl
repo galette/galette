@@ -241,7 +241,15 @@
                 </p>
                 <p>
                     <label for="pref_email" class="bline">{_T string="Sender Email:"}</label>
-                    <input type="text" name="pref_email" id="pref_email" value="{$pref.pref_email}" maxlength="100" size="30"{if isset($required.pref_email) and $required.pref_email eq 1} required="required"{/if}/>
+        {assign var="pref_email" value=""}
+        {foreach from=$preferences->vpref_email item=vmail}
+            {if $vmail@first }
+                {assign var="pref_email" value=$vmail}
+            {else}
+                {assign var="pref_email" value=$pref_email|cat:",{$vmail}"}
+            {/if}
+        {/foreach}
+                    <input type="text" name="pref_email" id="pref_email" value="{$pref_email}" maxlength="100" size="30"{if isset($required.pref_email) and $required.pref_email eq 1} required="required"{/if}/>
                     <span class="exemple">{_T string="(You can enter several emails separated with a comma. First address will be the default one.)"}</span>
                 </p>
                 <p>
@@ -250,9 +258,18 @@
                     <input type="text" name="pref_email_reply_to" id="pref_email_reply_to" value="{$pref.pref_email_reply_to}" maxlength="100" size="30"{if isset($required.pref_email_reply_to) and $required.pref_email_reply_to eq 1} required="required"{/if}/>
                 </p>
                 <p>
+        {assign var="pref_email_newadh" value=""}
+        {foreach from=$preferences->vpref_email_newadh item=vmail_newadh}
+            {if $vmail_newadh@first }
+                {assign var="pref_email_newadh" value=$vmail_newadh}
+            {else}
+                {assign var="pref_email_newadh" value=$pref_email_newadh|cat:",{$vmail_newadh}"}
+            {/if}
+        {/foreach}
+
                     <label for="pref_email_newadh" class="bline tooltip">{_T string="Members administrator's Email:"}</label>
                     <span class="tip">{_T string="Recipient of new online registation and edition emails"}</span>
-                    <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{$pref.pref_email_newadh}" maxlength="100" size="30"{if isset($required.pref_email_newadh) and $required.pref_email_newadh eq 1} required="required"{/if}/>
+                    <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{$pref_email_newadh}" maxlength="100" size="30"{if isset($required.pref_email_newadh) and $required.pref_email_newadh eq 1} required="required"{/if}/>
                     <span class="exemple">{_T string="(You can enter several emails separated with a comma. First address will be the default one.)"}</span>
                 </p>
                 <p>
