@@ -89,7 +89,11 @@
                     <input type="text" name="montant_cotis" id="montant_cotis" value="{$contribution->amount}" maxlength="10"{if $required.montant_cotis eq 1} required="required"{/if}/>
                 </p>
                 {* payment type *}
-                {include file="forms_types/payment_types.tpl" current=$contribution->payment_type varname="type_paiement_cotis"}
+                {assign var="ptype" value=$contribution->payment_type}
+                {if $ptype == null}
+                    {assign var="ptype" value=constant('Galette\Entity\PaymentType::CHECK')}
+                {/if}
+                {include file="forms_types/payment_types.tpl" current=$ptype varname="type_paiement_cotis"}
                 <p>
                     <label class="bline" for="date_enreg">
                         {_T string="Record date:"}
