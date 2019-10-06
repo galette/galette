@@ -99,7 +99,6 @@ class Contribution
     {
         $this->zdb = $zdb;
         $this->login = $login;
-        $this->payment_type = PaymentType::CHECK;
 
         /*
          * Fields configuration. Each field is an array and must reflect:
