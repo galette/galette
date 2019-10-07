@@ -111,13 +111,15 @@ class CsvOut extends Csv
 
         $fields = array();
         if ($titles && !is_array($titles)) {
-            foreach (array_keys($this->rs) as $field) {
+            $row = $this->rs->current();
+            foreach (array_keys((array)$row) as $field) {
                 $fields[] = $this->quote . str_replace(
                     $this->quote,
                     $this->escaped,
                     $field
                 ) . $this->quote;
             }
+            $this->rs->rewind();
             $this->result .= implode($this->separator, $fields) . self::NEWLINE;
         } elseif ($titles && is_array($titles) && count($titles)>1) {
             foreach ($titles as $field) {
