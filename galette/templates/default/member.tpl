@@ -141,6 +141,20 @@
                 $('#is_company').change(function(){
                     //console.log(this.checked);
                     $('#company_field').toggleClass('hidden');
+                    $('#company_field').backgroundFade(
+                        {
+                            sColor:'#ffffff',
+                            eColor:'#DDDDFF',
+                            steps:10
+                        },
+                        function() {
+                            $(this).backgroundFade(
+                                {
+                                    sColor:'#DDDDFF',
+                                    eColor:'#ffffff'
+                                }
+                            );
+                        });
                 });
 
                 _collapsibleFieldsets();
