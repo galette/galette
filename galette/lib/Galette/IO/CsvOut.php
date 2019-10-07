@@ -74,7 +74,7 @@ class CsvOut extends Csv
     /**
      * Export Array result set to CSV
      *
-     * @param aray   $rs        Results as an array
+     * @param array   $rs       Results as an array
      * @param string $separator The CSV separator (either '\t', ';' or ','
      *                          are accepted)
      * @param char   $quote     how does fields should be quoted
@@ -111,7 +111,7 @@ class CsvOut extends Csv
 
         $fields = array();
         if ($titles && !is_array($titles)) {
-            foreach (array_key($this->rs) as $field) {
+            foreach (array_keys($this->rs) as $field) {
                 $fields[] = $this->quote . str_replace(
                     $this->quote,
                     $this->escaped,
