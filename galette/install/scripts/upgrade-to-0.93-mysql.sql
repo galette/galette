@@ -21,7 +21,7 @@ ALTER TABLE galette_cotisations CHANGE date_debut_cotis date_debut_cotis date NO
 ALTER TABLE galette_cotisations CHANGE date_fin_cotis date_fin_cotis date NOT NULL default '1901-01-01';
 ALTER TABLE galette_transactions CHANGE trans_date trans_date date NOT NULL default '1901-01-01';
 
-UPDATE galette_fields_categories SET category = 'Indentity:' WHERE id_field_category = 1;
+UPDATE galette_fields_categories SET category = 'Identity:' WHERE id_field_category = 1;
 UPDATE galette_fields_categories SET category = 'Galette-related data:' WHERE id_field_category = 2;
 UPDATE galette_fields_categories SET category = 'Contact information:' WHERE id_field_category = 3;
 

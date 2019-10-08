@@ -22,7 +22,7 @@ CREATE TABLE galette_searches (
 -- add unicity on searches
 CREATE INDEX galette_searches_idx ON galette_searches (form, parameters_sum, id_adh);
 
-UPDATE galette_fields_categories SET category = 'Indentity:' WHERE id_field_category = 1;
+UPDATE galette_fields_categories SET category = 'Identity:' WHERE id_field_category = 1;
 UPDATE galette_fields_categories SET category = 'Galette-related data:' WHERE id_field_category = 2;
 UPDATE galette_fields_categories SET category = 'Contact information:' WHERE id_field_category = 3;
 
