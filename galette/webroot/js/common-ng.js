@@ -33,4 +33,13 @@ $(function() {
     $('.ui.dropdown')
         .dropdown()
     ;
+
+    /* Tooltips position on right aligned dropdowns */
+    $(".ui.dropdown.right-aligned").tooltip({
+        items: "a.item",
+        position: { 
+          my: "left-100% center", 
+          at: "left center" 
+        },
+    });
 });
