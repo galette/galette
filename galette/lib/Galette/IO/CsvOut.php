@@ -100,8 +100,11 @@ class CsvOut extends Csv
         }
 
         $this->result = '';
-        $this->rs = $rs;
-        $this->max = count($this->rs);
+        $results = [];
+        foreach ($rs as $row) {
+            $results[] = $row;
+        }
+        $this->max = count($results);
         $this->separator = $separator;
         $this->quote = $quote;
         //dubbing quote for escaping
@@ -111,7 +114,7 @@ class CsvOut extends Csv
 
         $fields = array();
         if ($titles && !is_array($titles)) {
-            $row = $this->rs->current();
+            $row = $results[0];
             foreach (array_keys((array)$row) as $field) {
                 $fields[] = $this->quote . str_replace(
                     $this->quote,
@@ -119,7 +122,6 @@ class CsvOut extends Csv
                     $field
                 ) . $this->quote;
             }
-            $this->rs->rewind();
             $this->result .= implode($this->separator, $fields) . self::NEWLINE;
         } elseif ($titles && is_array($titles) && count($titles)>1) {
             foreach ($titles as $field) {
@@ -137,11 +139,11 @@ class CsvOut extends Csv
             $this->result .= implode($this->separator, $fields) . self::NEWLINE;
         }
 
-        foreach ($this->rs as $row) {
+        foreach ($results as $row) {
             $elts = array();
 
             if (is_array($row) || is_object($row)) {
-                foreach ($row as $k => $v) {
+                foreach ($row as $v) {
                     $elts[] = $this->quote . str_replace(
                         $this->quote,
                         $this->escaped,
