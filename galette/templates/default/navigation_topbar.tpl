@@ -8,14 +8,25 @@
                     <span>{$preferences->pref_nom}{if $preferences->pref_slogan}<br>{$preferences->pref_slogan}{/if}</span>
                 </a>
 {if $cur_route neq "login"}
+    {if $login->isLogged()}
                 <a
-                    href="{path_for name="slash"}"
-                    title="{if $login->isLogged()}{_T string="Dashboard"}{else}{_T string="Go back to Galette homepage"}{/if}"
-                    class="{if $cur_route eq "slash" or $cur_route eq 'dashboard'}active {/if}item home-link"
+                    href="{path_for name="dashboard"}"
+                    title="{_T string="Go to Galette's dashboard"}"
+                    class="{if $cur_route eq 'dashboard'}active {/if}item"
                 >
-                    <i class="icon {if $login->islogged()}compass{else}home{/if}" aria-hidden="true"></i>
-                    {if $login->isLogged()}{_T string="Dashboard"}{else}{_t string="Home"}{/if}
+                    <i class="icon compass" aria-hidden="true"></i>
+                    {_T string="Dashboard"}
                 </a>
+    {else}
+        <a
+                    href="{path_for name="slash"}"
+                    title="{_T string="Go back to Galette homepage"}"
+                    class="{if $cur_route eq "slash"}active {/if}item"
+                >
+                    <i class="icon home" aria-hidden="true"></i>
+                    {_T string="Home"}
+                </a>
+    {/if}
 {/if}
 {if !$login->isLogged()}
     {if $preferences->showPublicPages($login) eq true}
@@ -70,7 +81,6 @@
                         <a href="{path_for name="me"}" title="{_T string="View my member card"}" class="{if $cur_route eq "me" or $cur_route eq "member"}active {/if}item">{_T string="My information"}</a>
                         <a href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter all my contributions"}" class="{if $cur_route eq "contributions" and $cur_subroute eq "contributions"}active {/if}item">{_T string="My contributions"}</a>
                         <a href="{path_for name="contributions" data=["type" => "transactions"]}" title="{_T string="View and filter all my transactions"}" class="{if $cur_route eq "contributions" and $cur_subroute eq "transactions"}active {/if}item">{_T string="My transactions"}</a>
-                        <a href="{path_for name="dashboard"}" title="{_T string="Go to Galette's dashboard"}" class="{if $cur_route eq "dashboard"}active {/if}item">{_T string="Dashboard"}</a>
     {/if}
                         <div class="item">
                             <a class="ui fluid item button" href="{if $login->isImpersonated()}{path_for name="unimpersonate"}{else}{path_for name="logout"}{/if}"><i class="icon {if $login->isImpersonated()}user secret{else}sign out alt{/if}"></i>{_T string="Log off"}</a>
