@@ -193,13 +193,13 @@ $(function() {
         $(this).html('<a href="#">' + $(this).text() + '</a>');
     });
 
-    if( $('#menu').size() > 0 ) {
+    /*if( $('#menu').size() > 0 ) {
         $('#menu').accordion({
             header: 'h1:not(#logo)',
             heightStyle: 'content',
             active: $('#menu ul li[class*="selected"]').parent('ul').prevAll('ul').size()
         });
-    }
+    }*/
 
     $('input:submit, .button, input:reset, button:submit' ).button({
         create: function(event, ui) {

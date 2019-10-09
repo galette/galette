@@ -28,7 +28,7 @@ Just put a {include file='common_header.tpl'} into the head tag.
         {* UI accordion is used for main menu ; we have to require it and UI core *}
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.core.min.js"></script>
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.widget.min.js"></script>
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.accordion.min.js"></script>
+        {*<script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.accordion.min.js"></script>*}
         {* Buttons can be used everywhere *}
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.button.min.js"></script>
         {* Tooltips can be used everywhere *}

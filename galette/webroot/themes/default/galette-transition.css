@@ -48,6 +48,7 @@ body::before {
 #group_infos header {
   border-radius: 6px 6px 0 0;
 }
+aside .menu,
 .sidebar .menu {
   text-align: left;
 }

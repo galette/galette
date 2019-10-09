@@ -30,9 +30,8 @@
 $(function() {
     /* Fomantic UI components */
     $(".ui.sidebar").sidebar("attach events", ".toc.item");
-    $('.ui.dropdown')
-        .dropdown()
-    ;
+    $('.ui.dropdown').dropdown();
+    $('.ui.accordion').accordion();
 
     /* Tooltips position on right aligned dropdowns */
     $(".ui.dropdown.right-aligned").tooltip({

@@ -1,4 +1,4 @@
-        <div class="ui left vertical menu sidebar">
+        <div class="ui left vertical accordion menu sidebar">
 {if $login->isLogged()}
             <div class="item">
                 <a class="button" title="{_T string="View your member card"}" href="{if $login->isSuperAdmin()}{path_for name="slash"}{else}{path_for name="me"}{/if}">{$login->loggedInAs(true)}</a>
@@ -11,8 +11,9 @@
                 <div class="image header title">
                     <i class="icon compass outline" aria-hidden="true"></i>
                     {_T string="Navigation"}
+                    <i class="dropdown icon"></i>
                 </div>
-                <div class="menu">
+                <div class="content">
                     <a href="{path_for name="dashboard"}" title="{_T string="Go to Galette's dashboard"}" class="{if $cur_route eq "dashboard"}active {/if}item">{_T string="Dashboard"}</a>
     {if $login->isAdmin() or $login->isStaff()}
                     <a href="{path_for name="members"}" title="{_T string="View, search into and filter member's list"}" class="{if $cur_route eq "members"}active {/if}item">{_T string="List of members"}</a>
@@ -47,22 +48,26 @@
                 <div class="image header title">
                     <i class="icon eye outline" aria-hidden="true"></i>
                     {_T string="Public pages"}
+                    <i class="dropdown icon"></i>
                 </div>
-                <div class="menu">
+                <div class="content">
                     <a href="{path_for name="publicList" data=["type" => "list"]}" title="{_T string="Members list"}" class="{if $cur_route eq "publicList" and $cur_subroute eq "list"}active {/if}item">{_T string="Members list"}</a>
                     <a href="{path_for name="publicList" data=["type" => "trombi"]}" title="{_T string="Trombinoscope"}" class="{if $cur_route eq "publicList" and $cur_subroute eq "trombi"}active {/if}item">{_T string="Trombinoscope"}</a>
                     {* Include plugins menu entries *}
-                    {$plugins->getPublicMenus($tpl, true)}
+                    {$plugins->getPublicMenus($tpl)}
                 </div>
             </div>
     {/if}
+            {* Include plugins menu entries *}
+            {$plugins->getMenus($tpl)}
     {if $login->isAdmin()}
             <div class="item" title="{_T string="Configuration"}">
                 <div class="image header title">
                     <i class="icon tools" aria-hidden="true"></i>
                     {_T string="Configuration"}
+                    <i class="dropdown icon"></i>
                 </div>
-                <div class="menu">
+                <div class="content">
                         <a href="{path_for name="preferences"}" title="{_T string="Set applications preferences (address, website, member's cards configuration, ...)"}" class="{if $cur_route eq "preferences"}active {/if}item">{_T string="Settings"}</a>
                         <a href="{path_for name="plugins"}" title="{_T string="Informations about available plugins"}" class="{if $cur_route eq "plugins"}active {/if}item">{_T string="Plugins"}</a>
                         <a href="{path_for name="configureCoreFields"}" title="{_T string="Customize fields order, set which are required, and for who they're visibles"}" class="{if $cur_route eq "configureCoreFields"}active {/if}item">{_T string="Core fields"}</a>
@@ -80,8 +85,6 @@
                         <a href="{path_for name="adminTools"}" title="{_T string="Various administrative tools"}" class="{if $cur_route eq "adminTools"}active {/if}item">{_T string="Admin tools"}</a>
         {/if}
                 </div>
-                {* Include plugins menu entries *}
-                {$plugins->getMenus($tpl)}
             </div>
     {/if}
 {else}
@@ -124,9 +127,12 @@
             </div>
 {/if}
             <div class="language item" title="{_T string="Choose your language"}">
-                <i class="icon language" aria-hidden="true"></i>
-                <span>{$galette_lang}</span>
-                <div class="menu">
+                <div class="image header title">
+                    <i class="icon language" aria-hidden="true"></i>
+                    <span>{$galette_lang}</span>
+                    <i class="dropdown icon"></i>
+                </div>
+                <div class="content">
     {foreach item=langue from=$languages}
         {if $langue->getAbbrev() neq $galette_lang}
                     <a href="?pref_lang={$langue->getID()}" class="item">
