@@ -144,7 +144,7 @@ class PaymentTypes extends Repository
             if ($this->zdb->connection->inTransaction()) {
                 $this->zdb->connection->rollBack();
             }
-            return $e;
+            throw $e;
         }
     }
 
@@ -232,7 +232,7 @@ class PaymentTypes extends Repository
     {
         if (!count($this->defaults)) {
             $paytype = new PaymentType($this->zdb);
-            $this->defaults = $paytype->getSystemTypes();
+            $this->defaults = $paytype->getSystemTypes(false);
         }
         return parent::loadDefaults();
     }
