@@ -1,4 +1,11 @@
                 <aside class="three wide computer only column">
+					<div class="ui center aligned icon header">
+						<img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="{$preferences->pref_nom}" class="icon"/>
+                        <div class="content">
+                            {$preferences->pref_nom}
+                            <div class="sub header">{if $preferences->pref_slogan}{$preferences->pref_slogan}{/if}</div>
+                        </div>
+					</div>
 {if $GALETTE_MODE eq 'DEMO'}
                     <div id="demo" title="{_T string="This application runs under DEMO mode, all features may not be available."}">
                         {_T string="Demonstration"}
@@ -6,13 +13,16 @@
 {/if}
                     <div class="ui vertical accordion menu">
 {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}
+{* Dirty trick to set active accordion fold using in_array tests on title and
+content divs. Would be better to assign this array from model *}
+{$management_routes = ['members', 'advanced-search', 'searches', 'groups', 'contribution', 'editmember', 'transaction', 'reminders', 'history', 'mailings', 'export', 'import', 'charts']}
                         <div class="item">
-                            <a class="image header title">
+                            <div class="image header title{if $cur_route|in_array:$management_routes} active{/if}">
                                 <i class="dharmachakra icon"></i>
                                 {_T string="Management"}
                                 <i class="dropdown icon"></i>
-                            </a>
-                            <div class="content">
+                            </div>
+                            <div class="content{if $cur_route|in_array:$management_routes} active{/if}">
                                 <a href="{path_for name="members"}" class="{if $cur_route eq "members"}active {/if}item" title="{_T string="View, search into and filter member's list"}">{_T string="List of members"}</a>
                                 <a href="{path_for name="advanced-search"}" class="{if $cur_route eq "advanced-search"}active {/if}item" title="{_T string="Perform advanced search into members list"}">{_T string="Advanced search"}</a>
                                 <a href="{path_for name="searches"}" class="{if $cur_route eq "searches"}active {/if}item" title="{_T string="Saved searches"}">{_T string="Saved searches"}</a>
@@ -35,13 +45,17 @@
                         </div>
 {/if}
 {if $preferences->showPublicPages($login) eq true}
+{* Dirty trick to set active accordion fold using in_array tests on title and
+content divs. Would be better to assign this array from model.
+Need to find a way to let plugins declare their own routes *}
+{$public_routes = ['publicList', 'map']}
                         <div class="item">
-                            <a class="image header title">
+                            <div class="image header title{if $cur_route|in_array:$public_routes} active{/if}">
                                 <i class="eye outline icon"></i>
                                 {_T string="Public pages"}
                                 <i class="dropdown icon"></i>
-                            </a>
-                            <div class="content">
+                            </div>
+                            <div class="content{if $cur_route|in_array:$public_routes} active{/if}">
                             <a href="{path_for name="publicList" data=["type" => "list"]}" class="{if $cur_route eq "publicList" and $cur_subroute eq "list"}active {/if}item" title="{_T string="Members list"}">{_T string="Members list"}</a>
                             <a href="{path_for name="publicList" data=["type" => "trombi"]}" class="{if $cur_route eq "publicList" and $cur_subroute eq "trombi"}active {/if}item" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a>
                             {* Include plugins menu entries *}

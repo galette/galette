@@ -1,26 +1,44 @@
         <div class="ui left vertical accordion menu sidebar">
 {if $login->isLogged()}
             <div class="item">
-                <a class="button" title="{_T string="View your member card"}" href="{if $login->isSuperAdmin()}{path_for name="slash"}{else}{path_for name="me"}{/if}">{$login->loggedInAs(true)}</a>
-                <a class="button" href="{if $login->isImpersonated()}{path_for name="unimpersonate"}{else}{path_for name="logout"}{/if}">
-                    <i class="icon {if $login->isImpersonated()}user secret{else}sign out alt{/if}"></i>
-                    <span class="sr-only">{_T string="Log off"}</span>
-                </a>
-            </div>
-            <div class="item" title="{_T string="Navigation"}">
                 <div class="image header title">
-                    <i class="icon compass outline" aria-hidden="true"></i>
-                    {_T string="Navigation"}
+                    <i class="icon {if !$login->isSuperAdmin()}user circle outline{else}superpowers{/if}" aria-hidden="true"></i>
+                    <span>{$login->loggedInAs(true)}</span>
+                    <i class="icon dropdown" aria-hidden="true"></i>
+                </div>
+                <div class="content">
+    {if !$login->isSuperAdmin()}
+                    <a href="{path_for name="me"}" title="{_T string="View my member card"}" class="{if $cur_route eq "me" or $cur_route eq "member"}active {/if}item">{_T string="My information"}</a>
+                    <a href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter all my contributions"}" class="{if $cur_route eq "contributions" and $cur_subroute eq "contributions"}active {/if}item">{_T string="My contributions"}</a>
+                    <a href="{path_for name="contributions" data=["type" => "transactions"]}" title="{_T string="View and filter all my transactions"}" class="{if $cur_route eq "contributions" and $cur_subroute eq "transactions"}active {/if}item">{_T string="My transactions"}</a>
+    {/if}
+                    <div class="item">
+                        <a class="ui fluid item button" href="{if $login->isImpersonated()}{path_for name="unimpersonate"}{else}{path_for name="logout"}{/if}"><i class="icon {if $login->isImpersonated()}user secret{else}sign out alt{/if}"></i>{_T string="Log off"}</a>
+                    </div>
+                </div>
+            </div>
+			<a href="{path_for name="dashboard"}"
+                title="{_T string="Go to Galette's dashboard"}"
+                class="{if $cur_route eq "dashboard"}active {/if}item"
+            >
+                <div class="image header title">
+					<i class="compass icon" aria-hidden="true"></i>
+					{_T string="Dashboard"}
+                </div>
+            </a>
+	{if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}
+            <div class="item">
+                <div class="image header title">
+                    <i class="dharmachakra icon" aria-hidden="true"></i>
+                    {_T string="Management"}
                     <i class="dropdown icon"></i>
                 </div>
                 <div class="content">
-                    <a href="{path_for name="dashboard"}" title="{_T string="Go to Galette's dashboard"}" class="{if $cur_route eq "dashboard"}active {/if}item">{_T string="Dashboard"}</a>
-    {if $login->isAdmin() or $login->isStaff()}
                     <a href="{path_for name="members"}" title="{_T string="View, search into and filter member's list"}" class="{if $cur_route eq "members"}active {/if}item">{_T string="List of members"}</a>
                     <a href="{path_for name="advanced-search"}" title="{_T string="Perform advanced search into members list"}" class="{if $cur_route eq "advanced-search"}active {/if}item">{_T string="Advanced search"}</a>
                     <a href="{path_for name="searches"}" title="{_T string="Saved searches"}" class="{if $cur_route eq "searches"}active {/if}item">{_T string="Saved searches"}</a>
                     <a href="{path_for name="groups"}" title="{_T string="View and manage groups"}" class="{if $cur_route eq "groups"}active {/if}item">{_T string="Manage groups"}</a>
-        {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}
+        {if $login->isAdmin() or $login->isStaff()}
                     <a href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter contributions"}" class="{if $cur_route eq "contributions" and $cur_subroute eq "contributions"}active {/if}item">{_T string="List of contributions"}</a>
                     <a href="{path_for name="contributions" data=["type" => "transactions"]}" title="{_T string="View and filter transactions"}" class="{if $cur_route eq "contributions" and $cur_subroute eq "transactions"}active {/if}item">{_T string="List of transactions"}</a>
                     <a href="{path_for name="editmember" data=["action" => "add"]}" title="{_T string="Add new member in database"}" class="{if $cur_route eq "editmember"}active {/if}item">{_T string="Add a member"}</a>
@@ -33,16 +51,10 @@
                     <a href="{path_for name="export"}" title="{_T string="Export some data in various formats"}" class="{if $cur_route eq "export"}active {/if}item">{_T string="Exports"}</a>
                     <a href="{path_for name="import"}" title="{_T string="Import members from CSV files"}" class="{if $cur_route eq "import" or $cur_route eq "importModel"}active {/if}item">{_T string="Imports"}</a>
                     <a href="{path_for name="charts"}" title="{_T string="Various charts"}" class="{if $cur_route eq "charts"} active{/if}item">{_T string="Charts"}</a>
-        {else}
-                    <a href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter all my contributions"}" class="{if $cur_route eq "contributions" and $cur_subroute eq "contributions"}active {/if}item">{_T string="My contributions"}</a>
-                    <a href="{path_for name="contributions" data=["type" => "transactions"]}" title="{_T string="View and filter all my transactions"}" class="{if $cur_route eq "contributions" and $cur_subroute eq "transactions"}active {/if}item">{_T string="My transactions"}</a>
         {/if}
-    {/if}
-    {if not $login->isSuperAdmin()}
-                    <a href="{path_for name="me"}" title="{_T string="View my member card"}" class="{if $cur_route eq "me" or $cur_route eq "member"}active {/if}item">{_T string="My information"}</a>
-    {/if}
                 </div>
             </div>
+    {/if}
     {if $preferences->showPublicPages($login) eq true}
             <div class="item" title="{_T string="Public pages"}">
                 <div class="image header title">
@@ -90,10 +102,10 @@
 {else}
     {if $cur_route neq "login"}
             <a href="{path_for name="slash"}"
-               title="{if $login->isLogged()}{_T string="Dashboard"}{else}{_T string="Go back to Galette homepage"}{/if}"
-               class="{if $cur_route eq "dashboard" or $cur_route eq "login"}active {/if}item"
+               title="{_T string="Go back to Galette homepage"}"
+               class="{if $cur_route eq "login"}active {/if}item"
             >
-                <i class="icon {if $login->islogged()}compass{else}home{/if}" aria-hidden="true"></i>
+                <i class="icon home" aria-hidden="true"></i>
                 {if $login->isLogged()}{_T string="Dashboard"}{else}{_T string="Home"}{/if}
             </a>
     {/if}
@@ -113,13 +125,13 @@
 
             <div class="item">
     {if $preferences->pref_bool_selfsubscribe eq true and $cur_route neq "subscribe"}
-                <a href="{path_for name="subscribe"}" class="button" title="{_T string="Subscribe"}">
+                <a href="{path_for name="subscribe"}" class="ui fluid item button" title="{_T string="Subscribe"}">
                     <i class="icon add user" aria-hidden="true"></i>
                     {_T string="Subscribe"}
                 </a>
     {/if}
     {if $cur_route neq "login"}
-                <a href="{path_for name="slash"}" class="button" title="{_T string="Login"}">
+                <a href="{path_for name="slash"}" class="ui fluid item button" title="{_T string="Login"}">
                     <i class="icon sign in alt" aria-hidden="true"></i>
                     {_T string="Login"}
                 </a>
