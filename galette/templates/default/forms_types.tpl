@@ -1,6 +1,6 @@
             {foreach item=fieldset from=$fieldsets}
             <fieldset class="galette_form">
-                <legend>{$fieldset->label}</legend>
+                <legend>{_T string=$fieldset->label}</legend>
                 <div>
                 {if !$self_adh and $fieldset@first && !isset($masschange)}
                     {include file="forms_types/picture.tpl"}
