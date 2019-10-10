@@ -1,12 +1,12 @@
 {if $mode eq 'ajax'}
     {assign var="extend" value='ajax.tpl'}
 {else}
-    {assign var="extend" value='page.tpl'}
+    {assign var="extend" value='page-ng.tpl'}
 {/if}
 {extends file=$extend}
 {block name="content"}
-        <form action="{path_for name="payments_filter" data=["type" => "contributions"]}" method="post" id="filtre">
-        <div id="listfilter">
+        <form action="{path_for name="payments_filter" data=["type" => "contributions"]}" method="post" id="filtre" class="ui form">
+        <div class="ui segment">
             <label for="date_field_filter">{_T string="Show contributions by"}</label>&nbsp;
             <select name="date_field_filter" id="date_field_filter">
                 <option value="{Galette\Filters\ContributionsList::DATE_BEGIN}"{if $filters->date_field eq constant('Galette\Filters\ContributionsList::DATE_BEGIN')} selected="selected"{/if}>{_T string="Begin"}</option>

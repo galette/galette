@@ -1,12 +1,16 @@
-{extends file="page.tpl"}
+{extends file="page-ng.tpl"}
 
 {block name="content"}
-        <form action="{path_for name="filter-memberslist"}" method="post" id="filtre">
-            <fieldset class="cssform large">
-                <legend class="ui-state-active ui-corner-top">{_T string="Simple search"}</legend>
-                <div>
+        <form action="{path_for name="filter-memberslist"}" method="post" id="filtre" class="ui form">
+            <div class="ui segment">
+            <div class="ui fluid accordion">
+                <div class="active title">
+                    <i class="dropdown icon"></i>
+                    {_T string="Simple search"}
+                </div>
+                <div class="active content">
                     <p>
-                        <label class="bline" for="filter_str">{_T string="Search:"}</label>
+                        <label for="filter_str">{_T string="Search:"}</label>
                         <input type="text" name="filter_str" id="filter_str" value="{$filters->filter_str}" type="search" placeholder="{_T string="Enter a value"}"/>&nbsp;
                         {_T string="in:"}&nbsp;
                         <select name="field_filter">
@@ -14,19 +18,19 @@
                         </select>
                     </p>
                     <p>
-                        <label class="bline" for="membership_filter">{_T string="Membership status"}</label>
+                        <label for="membership_filter">{_T string="Membership status"}</label>
                         <select id="membership_filter" name="membership_filter">
                             {html_options options=$membership_filter_options selected=$filters->membership_filter}
                         </select>
                     </p>
                     <p>
-                        <label class="bline" for="filter_account">{_T string="Account activity"}</label>
+                        <label for="filter_account">{_T string="Account activity"}</label>
                         <select id="filter_account" name="filter_account">
                             {html_options options=$filter_accounts_options selected=$filters->filter_account}
                         </select>
                     </p>
                     <p>
-                        <label class="bline" for="group_filter">{_T string="Member of group"}</label>
+                        <label for="group_filter">{_T string="Member of group"}</label>
                         <select name="group_filter" id="group_filter">
                             <option value="0">{_T string="Select a group"}</option>
 {foreach from=$filter_groups_options item=group}
@@ -34,7 +38,7 @@
 {/foreach}
                         </select>
                     <p>
-                        <span class="bline">{_T string="With mail:"}</span>
+                        <span>{_T string="With mail:"}</span>
                         <input type="radio" name="email_filter" id="filter_dc_email" value="{Galette\Repository\Members::FILTER_DC_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_DC_EMAIL')} checked="checked"{/if}>
                         <label for="filter_dc_email" >{_T string="Don't care"}</label>
                         <input type="radio" name="email_filter" id="filter_with_email" value="{Galette\Repository\Members::FILTER_W_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_W_EMAIL')} checked="checked"{/if}>
@@ -43,40 +47,45 @@
                         <label for="filter_without_email" >{_T string="Without"}</label>
                     </p>
                 </div>
-            </fieldset>
-            <fieldset class="cssform large">
-                <legend class="ui-state-active ui-corner-top">{_T string="Advanced search"}</legend>
-                <div>
+            </div>
+            </div>
+            <div class="ui segment">
+            <div class="ui fluid accordion">
+                <div class="active title">
+                    <i class="dropdown icon"></i>
+                    {_T string="Advanced search"}
+                </div>
+                <div class="active content">
                      <p>
-                        <span class="bline">{_T string="Birth date"}</span>
+                        <span>{_T string="Birth date"}</span>
                         <label for="birth_date_begin">{_T string="beetween"}</label>
                         <input id="birth_date_begin" name="birth_date_begin" type="text" class="birth_date" maxlength="10" size="10" value="{$filters->birth_date_begin}"/>
                         <label for="birth_date_end">{_T string="and"}</label>
                         <input id="birth_date_end" name="birth_date_end" type="text" class="birth_date" maxlength="10" size="10" value="{$filters->birth_date_end}"/>
                     </p>
                     <p>
-                        <span class="bline">{_T string="Creation date"}</span>
+                        <span>{_T string="Creation date"}</span>
                         <label for="creation_date_begin">{_T string="beetween"}</label>
                         <input id="creation_date_begin" name="creation_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->creation_date_begin}"/>
                         <label for="creation_date_end">{_T string="and"}</label>
                         <input id="creation_date_end" name="creation_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->creation_date_end}"/>
                     </p>
                     <p>
-                        <span class="bline">{_T string="Modification date"}</span>
+                        <span>{_T string="Modification date"}</span>
                         <label for="modif_date_begin">{_T string="beetween"}</label>
                         <input id="modif_date_begin" name="modif_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->modif_date_begin}"/>
                         <label for="modif_date_end">{_T string="and"}</label>
                         <input id="modif_date_end" name="modif_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->modif_date_end}"/>
                     </p>
                     <p>
-                        <span class="bline">{_T string="Due date"}</span>
+                        <span>{_T string="Due date"}</span>
                         <label for="due_date_begin">{_T string="beetween"}</label>
                         <input id="due_date_begin" name="due_date_begin" type="text" class="due_date" maxlength="10" size="10" value="{$filters->due_date_begin}"/>
                         <label for="due_date_end">{_T string="and"}</label>
                         <input id="due_date_end" name="due_date_end" type="text" class="due_date" maxlength="10" size="10" value="{$filters->due_date_end}"/>
                     </p>
                     <p>
-                        <span class="bline">{_T string="Show public infos"}</span>
+                        <span>{_T string="Show public infos"}</span>
                         <input type="radio" name="show_public_infos" id="show_public_infos_dc" value="{Galette\Repository\Members::FILTER_DC_PUBINFOS}"{if $filters->show_public_infos eq constant('Galette\Repository\Members::FILTER_DC_PUBINFOS')} checked="checked"{/if}>
                         <label for="show_public_infos_dc" >{_T string="Don't care"}</label>
                         <input type="radio" name="show_public_infos" id="show_public_infos_yes" value="{Galette\Repository\Members::FILTER_W_PUBINFOS}"{if $filters->show_public_infos eq constant('Galette\Repository\Members::FILTER_W_PUBINFOS')} checked="checked"{/if}>
@@ -85,52 +94,57 @@
                         <label for="show_public_infos_no" >{_T string="No"}</label>
                     </p>
                     <p>
-                        <label class="bline" for="status">{_T string="Statuts"}</label>
+                        <label for="status">{_T string="Statuts"}</label>
                         <select name="status[]" id="status" multiple="multiple">
                             {html_options options=$statuts selected=$filters->status}
                         </select>
                     </p>
                 </div>
-            </fieldset>
-            <fieldset class="cssform large">
-                <legend class="ui-state-active ui-corner-top">{_T string="Within contributions"}</legend>
-                <div>
+            </div>
+            </div>
+            <div class="ui segment">
+            <div class="ui fluid accordion">
+                <div class="active title">
+                    <i class="dropdown icon"></i>
+                    {_T string="Within contributions"}
+                </div>
+                <div class="active content">
                     <p>
-                        <span class="bline">{_T string="Creation date"}</span>
+                        <span>{_T string="Creation date"}</span>
                         <label for="contrib_creation_date_begin">{_T string="beetween"}</label>
                         <input id="contrib_creation_date_begin" name="contrib_creation_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->contrib_creation_date_begin}"/>
                         <label for="contrib_creation_date_end">{_T string="and"}</label>
                         <input id="contrib_creation_date_end" name="contrib_creation_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->contrib_creation_date_end}"/>
                     </p>
                     <p>
-                        <span class="bline">{_T string="Begin date"}</span>
+                        <span>{_T string="Begin date"}</span>
                         <label for="contrib_begin_date_begin">{_T string="beetween"}</label>
                         <input id="contrib_begin_date_begin" name="contrib_begin_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->contrib_begin_date_begin}"/>
                         <label for="contrib_begin_date_end">{_T string="and"}</label>
                         <input id="contrib_begin_date_end" name="contrib_begin_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->contrib_begin_date_end}"/>
                     </p>
                     <p>
-                        <span class="bline">{_T string="End date"}</span>
+                        <span>{_T string="End date"}</span>
                         <label for="contrib_end_date_begin">{_T string="beetween"}</label>
                         <input id="contrib_end_date_begin" name="contrib_end_date_begin" type="text" class="due_date" maxlength="10" size="10" value="{$filters->contrib_end_date_begin}"/>
                         <label for="contrib_end_date_end">{_T string="and"}</label>
                         <input id="contrib_end_date_end" name="contrib_end_date_end" type="text" class="due_date" maxlength="10" size="10" value="{$filters->contrib_end_date_end}"/>
                     </p>
                     <p>
-                        <span class="bline">{_T string="Amount"}</span>
+                        <span>{_T string="Amount"}</span>
                         <label for="contrib_min_amount">{_T string="beetween"}</label>
                         <input id="contrib_min_amount" name="contrib_min_amount" type="text" maxlength="10" size="10" value="{$filters->contrib_min_amount}"/>
                         <label for="contrib_max_amount">{_T string="and"}</label>
                         <input id="contrib_max_amount" name="contrib_max_amount" type="text" maxlength="10" size="10" value="{$filters->contrib_max_amount}"/>
                     </p>
                     <p>
-                        <label class="bline" for="contributions_types">{_T string="Type"}</label>
+                        <label for="contributions_types">{_T string="Type"}</label>
                         <select name="contributions_types[]" id="contributions_types" multiple="multiple">
                             {html_options options=$contributions_types selected=$filters->contributions_types}
                         </select>
                     </p>
                     <p>
-                        <label class="bline" for="payments_types">{_T string="Payment type"}</label>
+                        <label for="payments_types">{_T string="Payment type"}</label>
                         <select name="payments_types[]" id="payments_types" multiple="multiple">
                             {html_options options=$payments_types selected=$filters->payments_types}
                         </select>
@@ -143,7 +157,7 @@
         {assign var=rid value="cds_$fid"}
     {/if}
                     <p>
-                        <label class="bline" for="cds{if $field|is_a:'Galette\DynamicFields\Choice'}c{/if}_{$field->getId()}">{$field->getName()}</label>
+                        <label for="cds{if $field|is_a:'Galette\DynamicFields\Choice'}c{/if}_{$field->getId()}">{$field->getName()}</label>
     {if $field|is_a:'Galette\DynamicFields\Line'}
                         <input type="text" name="cds_{$field->getId()}" id="cds_{$field->getId()}" value="{if isset($filters->contrib_dynamic.$rid)}{$filters->contrib_dynamic.$rid}{/if}" />
     {elseif $field|is_a:'Galette\DynamicFields\Text'}
@@ -159,9 +173,12 @@
                     </p>
 {/foreach}
                 </div>
-            </fieldset>
-            <fieldset class="cssform large">
-                <legend class="ui-state-active ui-corner-top">
+            </div>
+            </div>
+            <div class="ui segment">
+            <div class="ui fluid accordion">
+                <div class="active title">
+                    <i class="dropdown icon"></i>
                     {_T string="Free search"}
                     <a
                         href="#"
@@ -171,7 +188,8 @@
                         <i class="fas fa-plus-square"></i>
                         <span class="sr-only">{_T string="Add new free search criteria"}</span>
                     </a>
-                </legend>
+                </div>
+                <div class="active content">
                 <ul id="fs_sortable" class="fields_list connectedSortable">
 {foreach from=$filters->free_search item=fs}
                     <li>
@@ -259,20 +277,27 @@
                     </li>
 {/foreach}
                 </ul>
-            </fieldset>
+                </div>
+            </div>
+            </div>
 {* This one will be available later
 {if $login->isAdmin()}
-            <fieldset class="cssform large">
-                <legend class="ui-state-active ui-corner-top">{_T string="Expert search"}</legend>
-                <div>
-                    <p id="warningbox"><strong>{_T string="Be extremely careful when using this one!"}</strong><br/>{_T string="If the following is not empty, all others filters will be ignored."}</p>
-                    <p>
-                        <label class="bline" for="sql_where">{_T string="SQL query"}</label>
-                        <textarea name="sql" id="sql"></textarea><br/>
-                        <span class="exemple">{_T string="If your query does not begin with a 'SELECT' statement, it will automatically be added."}</span>
-                    </p>
+            <div class="ui segment">
+                <div class="ui fluid accordion">
+                    <div class="active title">
+                        <i class="dropdown icon"></i>
+                        {_T string="Expert search"}
+                    </div>
+                    <div class="active content">
+                        <p id="warningbox"><strong>{_T string="Be extremely careful when using this one!"}</strong><br/>{_T string="If the following is not empty, all others filters will be ignored."}</p>
+                        <p>
+                            <label for="sql_where">{_T string="SQL query"}</label>
+                            <textarea name="sql" id="sql"></textarea><br/>
+                            <span class="exemple">{_T string="If your query does not begin with a 'SELECT' statement, it will automatically be added."}</span>
+                        </p>
+                    </div>
                 </div>
-            </fieldset>
+            </div>
 {/if}*}
             <div class="center">
                 <input type="hidden" name="advanced_filtering" value="true" />
