@@ -18,6 +18,6 @@
   "permission": "644",
   "autoInstall": false,
   "rtl": "both",
-  "components": ["reset", "container", "icon", "list", "grid", "menu", "dimmer", "dropdown", "sidebar", "accordion"],
+  "components": ["reset", "container", "icon", "list", "grid", "menu", "dropdown", "sidebar", "accordion", "header", "table", "segment", "form", "calendar"],
   "version": "2.7.8"
 }
