@@ -48,7 +48,7 @@ content divs. Would be better to assign this array from model *}
 {* Dirty trick to set active accordion fold using in_array tests on title and
 content divs. Would be better to assign this array from model.
 Need to find a way to let plugins declare their own routes *}
-{$public_routes = ['publicList', 'map']}
+{$public_routes = ['publicList', 'maps_map']}
                         <div class="item">
                             <div class="image header title{if $cur_route|in_array:$public_routes} active{/if}">
                                 <i class="eye outline icon"></i>

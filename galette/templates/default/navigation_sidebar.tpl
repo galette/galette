@@ -27,13 +27,16 @@
                 </div>
             </a>
 	{if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}
+{* Dirty trick to set active accordion fold using in_array tests on title and
+content divs. Would be better to assign this array from model *}
+{$management_routes = ['members', 'advanced-search', 'searches', 'groups', 'contribution', 'editmember', 'transaction', 'reminders', 'history', 'mailings', 'export', 'import', 'charts']}
             <div class="item">
-                <div class="image header title">
+                <div class="image header title{if $cur_route|in_array:$management_routes} active{/if}">
                     <i class="dharmachakra icon" aria-hidden="true"></i>
                     {_T string="Management"}
                     <i class="dropdown icon"></i>
                 </div>
-                <div class="content">
+                <div class="content{if $cur_route|in_array:$management_routes} active{/if}">
                     <a href="{path_for name="members"}" title="{_T string="View, search into and filter member's list"}" class="{if $cur_route eq "members"}active {/if}item">{_T string="List of members"}</a>
                     <a href="{path_for name="advanced-search"}" title="{_T string="Perform advanced search into members list"}" class="{if $cur_route eq "advanced-search"}active {/if}item">{_T string="Advanced search"}</a>
                     <a href="{path_for name="searches"}" title="{_T string="Saved searches"}" class="{if $cur_route eq "searches"}active {/if}item">{_T string="Saved searches"}</a>
@@ -56,13 +59,17 @@
             </div>
     {/if}
     {if $preferences->showPublicPages($login) eq true}
+{* Dirty trick to set active accordion fold using in_array tests on title and
+content divs. Would be better to assign this array from model.
+Need to find a way to let plugins declare their own routes *}
+{$public_routes = ['publicList', 'maps_map']}
             <div class="item" title="{_T string="Public pages"}">
-                <div class="image header title">
+                <div class="image header title{if $cur_route|in_array:$public_routes} active{/if}">
                     <i class="icon eye outline" aria-hidden="true"></i>
                     {_T string="Public pages"}
                     <i class="dropdown icon"></i>
                 </div>
-                <div class="content">
+                <div class="content{if $cur_route|in_array:$public_routes} active{/if}">
                     <a href="{path_for name="publicList" data=["type" => "list"]}" title="{_T string="Members list"}" class="{if $cur_route eq "publicList" and $cur_subroute eq "list"}active {/if}item">{_T string="Members list"}</a>
                     <a href="{path_for name="publicList" data=["type" => "trombi"]}" title="{_T string="Trombinoscope"}" class="{if $cur_route eq "publicList" and $cur_subroute eq "trombi"}active {/if}item">{_T string="Trombinoscope"}</a>
                     {* Include plugins menu entries *}
@@ -72,14 +79,17 @@
     {/if}
             {* Include plugins menu entries *}
             {$plugins->getMenus($tpl)}
+{* Dirty trick to set active accordion fold using in_array tests on title and
+content divs. Would be better to assign this array from model *}
+{$configuration_routes = ['preferences', 'plugins', 'configureCoreFields', 'editDynamicField', 'dynamicTranslations', 'entitleds', 'texts', 'titles', 'pdfModels', 'paymentTypes', 'emptyAdhesionForm', 'fakeData', 'adminTools']}
     {if $login->isAdmin()}
             <div class="item" title="{_T string="Configuration"}">
-                <div class="image header title">
+                <div class="image header title{if $cur_route|in_array:$configuration_routes} active{/if}">
                     <i class="icon tools" aria-hidden="true"></i>
                     {_T string="Configuration"}
                     <i class="dropdown icon"></i>
                 </div>
-                <div class="content">
+                <div class="content{if $cur_route|in_array:$configuration_routes} active{/if}">
                         <a href="{path_for name="preferences"}" title="{_T string="Set applications preferences (address, website, member's cards configuration, ...)"}" class="{if $cur_route eq "preferences"}active {/if}item">{_T string="Settings"}</a>
                         <a href="{path_for name="plugins"}" title="{_T string="Informations about available plugins"}" class="{if $cur_route eq "plugins"}active {/if}item">{_T string="Plugins"}</a>
                         <a href="{path_for name="configureCoreFields"}" title="{_T string="Customize fields order, set which are required, and for who they're visibles"}" class="{if $cur_route eq "configureCoreFields"}active {/if}item">{_T string="Core fields"}</a>
