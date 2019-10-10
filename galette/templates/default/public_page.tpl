@@ -56,34 +56,54 @@
 {/if}
     </head>
     <body>
-{if isset($GALETTE_DISPLAY_ERRORS) && $GALETTE_DISPLAY_ERRORS && $GALETTE_MODE != 'DEV'}
-        <div id="oldie">
-            <p>{_T string="Galette is configured to display errors. This must be avoided in production environments."}</p>
-        </div>
-{/if}
-        {* IE8 and above are no longer supported *}
-        <!--[if lte IE 8]>
-        <div id="oldie">
-            <p>{_T string="Your browser version is way too old and no longer supported in Galette for a while."}</p>
-            <p>{_T string="Please update your browser or use an alternative one, like Mozilla Firefox (http://mozilla.org)."}</p>
-        </div>
-        <![endif]-->
         {include file='navigation_sidebar.tpl' page='public'}
         {include file='navigation_topbar.tpl'}
         <div class="pusher">
             <div id="main" class="ui column horizontally padded grid">
-                <section class="column">
-    {if $GALETTE_MODE eq 'DEMO'}
-                    <div id="demo" title="{_T string="This application runs under DEMO mode, all features may not be available."}">
+{if $login->isLogged()}
+                {include file="navigation_aside.tpl"}
+{/if}
+                <section class="ui sixteen wide {if $login->isLogged()}mobile thirteen wide computer{/if} column">
+
+{if !$login->isLogged()}
+            <div class="ui container">
+{/if}
+
+{if isset($GALETTE_DISPLAY_ERRORS) && $GALETTE_DISPLAY_ERRORS && $GALETTE_MODE != 'DEV'}
+                        <div id="oldie">
+                            <p>{_T string="Galette is configured to display errors. This must be avoided in production environments."}</p>
+                        </div>
+{/if}
+                        {* IE8 and above are no longer supported *}
+                        <!--[if lte IE 8]>
+                        <div id="oldie">
+                            <p>{_T string="Your browser version is way too old and no longer supported in Galette for a while."}</p>
+                            <p>{_T string="Please update your browser or use an alternative one, like Mozilla Firefox (http://mozilla.org)."}</p>
+                        </div>
+                        <![endif]-->
+{if $GALETTE_MODE eq 'DEMO'}
+                        <div id="demo" title="{_T string="This application runs under DEMO mode, all features may not be available."}">
                         {_T string="Demonstration"}
-                    </div>
-    {/if}
-                    <h1 id="titre">{$page_title}</h1>
-                    {include file="global_messages.tpl"}
-                    {block name="content"}{_T string="Public page content"}{/block}
+                        </div>
+{/if}
+{if !$login->isLogged()}
+                        <div class="ui center aligned icon header">
+                            <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" class="icon" />
+                            <div class="content">
+                               {$preferences->pref_nom}
+                                <div class="sub header">{if $preferences->pref_slogan}{$preferences->pref_slogan}{/if}</div>
+                            </div>
+                        </div>
+{/if}
+                        <h1 id="titre">{$page_title}</h1>
+                        {include file="global_messages.tpl"}
+                        {block name="content"}{_T string="Public page content"}{/block}
+                        {include file="footer.tpl"}
+{if !$login->isLogged()}
+                </div>
+{/if}
                 </section>
             </div>
-            {include file="footer.tpl"}
         </div>
         {block name="javascripts"}{/block}
     </body>

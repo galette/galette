@@ -104,44 +104,61 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/if}
     </head>
     <body id="galette_body">
-{if isset($GALETTE_DISPLAY_ERRORS) && $GALETTE_DISPLAY_ERRORS && $GALETTE_MODE != 'DEV'}
-        <div id="oldie">
-            <p>{_T string="Galette is configured to display errors. This must be avoided in production environments."}</p>
-        </div>
-{/if}
-        {* IE8 and above are no longer supported *}
-        <!--[if lte IE 8]>
-        <div id="oldie">
-            <p>{_T string="Your browser version is way too old and no longer supported in Galette for a while."}</p>
-            <p>{_T string="Please update your browser or use an alternative one, like Mozilla Firefox (http://mozilla.org)."}</p>
-        </div>
-        <![endif]-->
         {include file="navigation_sidebar.tpl"}
         {include file="navigation_topbar.tpl"}
         <div class="pusher">
             <div id="main" class="ui main column horizontally padded grid">
+{if $login->isLogged()}
                 {include file="navigation_aside.tpl"}
-                <section class="ui sixteen wide mobile thirteen wide computer column {if $contentcls}{$contentcls}{/if}">
-                    <h1 id="titre">
-                        {$page_title}
+{/if}
+                <section class="ui sixteen wide {if $login->isLogged()}mobile thirteen wide computer{/if} column {if $contentcls}{$contentcls}{/if}">
+{if !$login->isLogged()}
+                    <div class="ui container">
+{/if}
+{if isset($GALETTE_DISPLAY_ERRORS) && $GALETTE_DISPLAY_ERRORS && $GALETTE_MODE != 'DEV'}
+                        <div id="oldie">
+                            <p>{_T string="Galette is configured to display errors. This must be avoided in production environments."}</p>
+                        </div>
+{/if}
+                        {* IE8 and above are no longer supported *}
+                        <!--[if lte IE 8]>
+                        <div id="oldie">
+                            <p>{_T string="Your browser version is way too old and no longer supported in Galette for a while."}</p>
+                            <p>{_T string="Please update your browser or use an alternative one, like Mozilla Firefox (http://mozilla.org)."}</p>
+                        </div>
+                        <![endif]-->
+{if !$login->isLogged()}
+                        <div class="ui center aligned icon header">
+                            <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" class="icon" />
+                            <div class="content">
+                               {$preferences->pref_nom}
+                                <div class="sub header">{if $preferences->pref_slogan}{$preferences->pref_slogan}{/if}</div>
+                            </div>
+                        </div>
+{/if}
+                        <h1 id="titre">
+                            {$page_title}
 {if $cur_route neq 'mailing' and $existing_mailing eq true}
-                            <a
-                                id="recup_mailing"
-                                href="{path_for name="mailing"}"
-                                class="tooltip"
-                                title="{_T string="A mailing exists in the current session. Click here if you want to resume or cancel it."}"
-                            >
-                                <i class="fas fa-mail-bulk"></i>
-                                <span class="sr-only">{_T string="Existing mailing"}</span>
-                            </a>
+                                <a
+                                    id="recup_mailing"
+                                    href="{path_for name="mailing"}"
+                                    class="tooltip"
+                                    title="{_T string="A mailing exists in the current session. Click here if you want to resume or cancel it."}"
+                                >
+                                    <i class="fas fa-mail-bulk"></i>
+                                    <span class="sr-only">{_T string="Existing mailing"}</span>
+                                </a>
     {/if}
-                    </h1>
-                    {include file="global_messages.tpl"}
-                    {*$content*}
-                    {block name="content"}{_T string="Page content"}{/block}
-                    {include file="footer.tpl"}
+                        </h1>
+                        {include file="global_messages.tpl"}
+                        {*$content*}
+                        {block name="content"}{_T string="Page content"}{/block}
+                        {include file="footer.tpl"}
+                    </div>
                 </section>
+{if !$login->isLogged()}
             </div>
+{/if}
         </div>
         {block name="javascripts"}{/block}
         <script type="text/javascript">

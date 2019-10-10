@@ -58,6 +58,10 @@ body.pushable {
   width: auto;
 }
 
+#top-navbar div.item a.button:not(:first-child) {
+  margin-left: .5rem;
+}
+
 .ui.menu .header.item {
   text-align: left;
   font-weight: 700;
@@ -81,7 +85,7 @@ body.pushable {
 }
 
 .ui.fixed.menu + .pusher {
-  padding-top: 4.85rem;
+  padding-top: 3.85rem;
 }
 
 .ui.grid > aside.column:not(.row) {
@@ -103,6 +107,11 @@ body.pushable {
 aside .ui.vertical.menu {
   width: auto;
   max-width: 100%;
+}
+
+.ui.vertical.menu .item.button {
+  border: 1px solid #d3d3d3;
+  margin: .2rem 0;
 }
 
 footer,
@@ -131,6 +140,7 @@ footer .ui.horizontal.list > .item{
 }
 
 @media only screen and (min-width: 992px) {
+  .ui.top.menu:not(.vertical) .item.header,
   .ui.top.menu:not(.vertical) .item.toc {
     display: none;
   }

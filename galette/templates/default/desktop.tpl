@@ -52,6 +52,8 @@
 {/if}
                 </div>
             </section>
+            <input type="checkbox" name="show_dashboard" id="show_dashboard" value="1"{if $show_dashboard} checked="checked"{/if}/>
+            <label for="show_dashboard">{_T string="Show dashboard on login"}</label>
         </div>
 {if $news|@count > 0}
         <div class="four wide column">
@@ -69,12 +71,6 @@
             </section>
         </div>
 {/if}
-    </div>
-    <div class="ui one column grid">
-        <div class="column">
-            <input type="checkbox" name="show_dashboard" id="show_dashboard" value="1"{if $show_dashboard} checked="checked"{/if}/>
-            <label for="show_dashboard">{_T string="Show dashboard on login"}</label>
-        </div>
     </div>
 
 {if not $hide_telemetry and not $telemetry_sent}

@@ -38,11 +38,7 @@
             <div class="row">
                 <div class="ui padded grid">
                     <div class="ui sixteen wide column">
-                        <div class="ui stacked segment">
-                            <div class="ui container">
-                                {$preferences->pref_footer}
-                            </div>
-                        </div>
+                        {$preferences->pref_footer}
                     </div>
                 </div>
             </div>

@@ -3,10 +3,10 @@
                 <a class="toc item">
                     <i class="sidebar icon"></i>
                 </a>
-                <a href="{path_for name="slash"}" title="{_T string="Go back to Galette homepage"}" class="header {if $cur_route eq "slash" or $cur_route eq 'login'}active {/if}item">
+                <div class="header item">
                     <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" class="logo" />
                     <span>{$preferences->pref_nom}{if $preferences->pref_slogan}<br>{$preferences->pref_slogan}{/if}</span>
-                </a>
+                </div>
 {if $cur_route neq "login"}
     {if $login->isLogged()}
                 <a
@@ -47,8 +47,6 @@
                 {* Include plugins menu entries *}
                 {$plugins->getPublicMenus($tpl, true)}
     {/if}
-{/if}
-{if !$login->isLogged()}
                 <div class="right item">
     {if $preferences->pref_bool_selfsubscribe eq true and $cur_route neq "subscribe"}
                     <a
@@ -89,7 +87,7 @@
                 </div>
     {if $login->isAdmin()}
                 <div class="ui simple dropdown right-aligned item{if $login->isAdmin()} is-admin{elseif $login->isStaff()} is-staff{/if}">
-                    <i class="icon cogs" aria-hidden="true"></i>
+                    <i class="icon tools" aria-hidden="true"></i>
                     <span class="hidden">{_T string="Configuration"}</span>
                     <i class="icon dropdown" aria-hidden="true"></i>
                     <div class="menu">
