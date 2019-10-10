@@ -1,6 +1,6 @@
 {extends file="page.tpl"}
 {block name="content"}
-    <table class="listing">
+    <table class="listing ui celled table">
         <!--<caption>{_T string="Active plugins"}</caption>-->
         <thead>
             <tr>

@@ -1,4 +1,4 @@
-        <table class="listing">
+        <table class="listing ui celled table">
             <thead>
                 <tr>
                     <th class="id_row">#</th>

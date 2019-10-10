@@ -16,7 +16,7 @@
             </tr>
         </table>
         </form>
-        <table class="listing">
+        <table class="ui celled table">
             <thead>
 
                 <tr>

@@ -21,7 +21,7 @@
                 <legend class="ui-state-active ui-corner-top">{_T string="Existing exports"}</legend>
                 <div>
                     <p>{_T string="The following exports already seems to exist on the disk:"}</p>
-                    <table class="listing">
+                    <table class="listing ui celled table">
                         <thead>
                             <tr>
                                 <th class="id_row">#</th>
@@ -67,7 +67,7 @@
                 <div>
 {if $parameted|@count gt 0}
                     <p>{_T string="Which parameted export(s) do you want to run?"}</p>
-                    <table class="listing">
+                    <table class="listing ui celled table">
                         <thead>
                             <tr>
                                 <th class="small_head"/>
@@ -101,7 +101,7 @@
                 <legend class="ui-state-active ui-corner-top">{_T string="Galette tables exports"}</legend>
                 <div>
                     <p>{_T string="Additionnaly, which table(s) do you want to export?"}</p>
-                    <table class="listing same">
+                    <table class="listing same ui celled table">
                         <thead>
                             <tr>
                                 <th>{_T string="Table name"}</th>

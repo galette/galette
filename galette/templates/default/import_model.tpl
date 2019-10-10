@@ -7,7 +7,7 @@
         <li><a href="#change">{_T string="Change model"}</a></li>
     </ul>
     <div id="current">
-        <table class="listing">
+        <table class="listing ui celled table">
             <caption>
                 {if $defaults_loaded}
                     {_T string="Default fields"}
@@ -47,7 +47,7 @@
     </div>
     <div id="change">
         <form action="{path_for name="storeImportModel"}" method="POST">
-        <table class="listing">
+        <table class="listing ui celled table">
             <thead>
                 <tr>
                     <th></th>

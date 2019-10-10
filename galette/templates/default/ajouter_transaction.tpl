@@ -50,7 +50,7 @@
         <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
     {if $transaction->id}
         </form>
-        <table class="listing">
+        <table class="listing ui celled table">
             <caption>
                 {_T string="Attached contributions"}
                 {if $transaction->getMissingAmount() > 0}

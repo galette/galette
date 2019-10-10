@@ -72,7 +72,7 @@
         </div>
         </form>
         <form action="{path_for name="batch-memberslist"}" method="post" id="listform">
-        <table class="listing">
+        <table class="listing ui celled table">
             <thead>
                 <tr>
 {if $preferences->pref_show_id}

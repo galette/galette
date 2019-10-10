@@ -19,7 +19,7 @@
                 <div>
 {if $existing|@count gt 0}
                     <p>{_T string="The following files seems ready to import on the disk:"}</p>
-                    <table class="listing">
+                    <table class="listing ui celled table">
                         <thead>
                             <tr>
                                 <th>{_T string="Name"}</th>

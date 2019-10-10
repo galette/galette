@@ -2,7 +2,7 @@
 
 {block name="content"}
         <form action="{path_for name="searches"}" method="post" enctype="multipart/form-data">
-                <table class="listing">
+                <table class="listing ui celled table">
                     <thead>
                         <tr>
                             <th class="id_row">#</th>

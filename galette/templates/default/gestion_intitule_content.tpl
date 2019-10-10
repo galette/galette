@@ -1,4 +1,4 @@
-    <table class="listing">
+    <table class="listing ui celled table">
 {if $class eq 'Status'}
         <caption>
             {_T string="Note: members with a status priority lower than %priority are staff members." pattern="/%priority/" replace=$non_staff_priority}

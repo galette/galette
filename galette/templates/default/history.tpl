@@ -54,7 +54,7 @@
         </div>
     </form>
 
-        <table class="listing">
+        <table class="listing ui celled table">
             <thead>
                 <tr>
                     <th class="small_head">#</th>
