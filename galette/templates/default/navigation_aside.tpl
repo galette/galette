@@ -15,7 +15,7 @@
 {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}
 {* Dirty trick to set active accordion fold using in_array tests on title and
 content divs. Would be better to assign this array from model *}
-{$management_routes = ['members', 'advanced-search', 'searches', 'groups', 'contribution', 'editmember', 'transaction', 'reminders', 'history', 'mailings', 'export', 'import', 'charts']}
+{$management_routes = ['members', 'advanced-search', 'searches', 'groups', 'contributions', 'contribution', 'editmember', 'transaction', 'reminders', 'history', 'mailings', 'export', 'import', 'charts']}
                         <div class="item">
                             <div class="image header title{if $cur_route|in_array:$management_routes} active{/if}">
                                 <i class="dharmachakra icon"></i>
