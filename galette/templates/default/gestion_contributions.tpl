@@ -1,69 +1,113 @@
 {if $mode eq 'ajax'}
     {assign var="extend" value='ajax.tpl'}
 {else}
-    {assign var="extend" value='page-ng.tpl'}
+    {assign var="extend" value='page.tpl'}
 {/if}
 {extends file=$extend}
 {block name="content"}
         <form action="{path_for name="payments_filter" data=["type" => "contributions"]}" method="post" id="filtre" class="ui form">
         <div class="ui segment">
-            <label for="date_field_filter">{_T string="Show contributions by"}</label>&nbsp;
-            <select name="date_field_filter" id="date_field_filter">
-                <option value="{Galette\Filters\ContributionsList::DATE_BEGIN}"{if $filters->date_field eq constant('Galette\Filters\ContributionsList::DATE_BEGIN')} selected="selected"{/if}>{_T string="Begin"}</option>
-                <option value="{Galette\Filters\ContributionsList::DATE_END}"{if $filters->date_field eq constant('Galette\Filters\ContributionsList::DATE_END')} selected="selected"{/if}>{_T string="End"}</option>
-                <option value="{Galette\Filters\ContributionsList::DATE_RECORD}"{if $filters->date_field eq constant('Galette\Filters\ContributionsList::DATE_RECORD')} selected="selected"{/if}>{_T string="Record"}</option>
-            </select>
-            <label for="start_date_filter">{_T string="since"}</label>&nbsp;
-            <input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$filters->start_date_filter}"/>
-            <label for="end_date_filter">{_T string="until"}</label>&nbsp;
-            <input type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$filters->end_date_filter}"/>
-            {include file="forms_types/payment_types.tpl"
-                current=$filters->payment_type_filter varname="payment_type_filter"
-                show_inline=""
-                classname=""
-                empty=['value' => -1, 'label' => {_T string="Select"}]
-            }
-            <input type="submit" class="inline" value="{_T string="Filter"}"/>
-            <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
+            <div class="four fields">
+                <div class="field">
+                    <label for="date_field_filter">{_T string="Show contributions by"}</label>
+                    <select name="date_field_filter" id="date_field_filter" class="ui search dropdown">
+                        <option value="{Galette\Filters\ContributionsList::DATE_BEGIN}"{if $filters->date_field eq constant('Galette\Filters\ContributionsList::DATE_BEGIN')} selected="selected"{/if}>{_T string="Begin"}</option>
+                        <option value="{Galette\Filters\ContributionsList::DATE_END}"{if $filters->date_field eq constant('Galette\Filters\ContributionsList::DATE_END')} selected="selected"{/if}>{_T string="End"}</option>
+                        <option value="{Galette\Filters\ContributionsList::DATE_RECORD}"{if $filters->date_field eq constant('Galette\Filters\ContributionsList::DATE_RECORD')} selected="selected"{/if}>{_T string="Record"}</option>
+                    </select>
+                </div>
+                <div class="two fields">
+                    <div class="field">
+                        <label for="start_date_filter">{_T string="since"}</label>
+                        <div class="ui calendar" id="contrib-rangestart">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input placeholder="{_T string="jj/mm/yyyy"}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$filters->start_date_filter}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="end_date_filter">{_T string="until"}</label>
+                        <div class="ui calendar" id="contrib-rangeend">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input placeholder="{_T string="jj/mm/yyyy"}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$filters->end_date_filter}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    {include file="forms_types/payment_types.tpl"
+                        current=$filters->payment_type_filter varname="payment_type_filter"
+                        show_inline=""
+                        classname=""
+                        empty=['value' => -1, 'label' => {_T string="Select"}]
+                    }
+                </div>
+                <div class="actions center aligned field">
+                    <input type="submit" class="ui button" value="{_T string="Filter"}"/>
+                    <input type="submit" name="clear_filter" class="ui button" value="{_T string="Clear filter"}"/>
+                </div>
+            </div>
         </div>
 {if isset($member)}
-        <div id="member_stateofdue" class="{$member->getRowClass()}{if not $member->isActive()} inactive{/if}">{$member->getDues()}</div>
+        <div class="{$member->getRowClass()}{if not $member->isActive()} inactive{/if} ui center aligned segment ">
+            {$member->getDues()}
+        </div>
 {/if}
-        <div class="infoline">
 {if isset($member) && $mode neq 'ajax'}
+        <div class="ui basic left aligned fitted segment">
+            <div class="ui borderless stackable menu">
+                <div class="header item">
     {if $login->isAdmin() or $login->isStaff()}
-            <a
-                href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => "all"]}"
-                class="tooltip"
-            >
-                <i class="fas fa-eraser"></i>
-                <span class="sr-only">{_T string="Show all members contributions"}</span>
-            </a>
+                <div class="ui image large label">
+                    <a
+                        href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => "all"]}"
+                        class="tooltip"
+                    >
+                        <i class="icon eraser"></i>
+                        <span class="sr-only">{_T string="Show all members contributions"}</span>
+                    </a>
     {/if}
-            <strong>{$member->sname}</strong>
+                    {$member->sname}
+                </div>
+                </div>
     {if not $member->isActive() } ({_T string="Inactive"}){/if}
     {if $login->isAdmin() or $login->isStaff()}
-            (<a href="{path_for name="member" data=["id" => $member->id]}">{_T string="See member profile"}</a> -
-            <a href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a> -
-            <a href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?id_adh={$member->id}">{_T string="Add a donation"}</a>)
+                <div class="item">
+                    <a href="{path_for name="member" data=["id" => $member->id]}" class="ui button">{_T string="See member profile"}</a>
+                </div>
+                <div class="item">
+                    <a href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?id_adh={$member->id}" class="ui button">{_T string="Add a membership fee"}</a>
+                </div>
+                <div class="item">
+                    <a href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?id_adh={$member->id}" class="ui button">{_T string="Add a donation"}</a>
+                </div>
     {/if}
-            &nbsp;:
+        </div>
 {/if}
-            {$nb} {if $nb != 1}{_T string="contributions"}{else}{_T string="contribution"}{/if}
-            <div class="fright">
+        <div class="infoline">
+            <div class="ui basic horizontal segments">
+                <div class="ui basic fitted segment">
+                    <div class="ui label">{$nb} {if $nb != 1}{_T string="contributions"}{else}{_T string="contribution"}{/if}</div>
+                </div>
+                <div class="ui basic right aligned fitted segment">
+                    <div class="inline field">
 {if $mode eq 'ajax'}
-                <input type="hidden" name="ajax" value="true"/>
-                <input type="hidden" name="max_amount" value="{$filters->max_amount}"/>
+                        <input type="hidden" name="ajax" value="true"/>
+                        <input type="hidden" name="max_amount" value="{$filters->max_amount}"/>
 {/if}
-                <label for="nbshow">{_T string="Records per page:"}</label>
-                <select name="nbshow" id="nbshow">
-                    {html_options options=$nbshow_options selected=$numrows}
-                </select>
-                <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+                        <label for="nbshow">{_T string="Records per page:"}</label>
+                        <select name="nbshow" id="nbshow" class="ui dropdown">
+                            {html_options options=$nbshow_options selected=$numrows}
+                        </select>
+                        <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+                    </div>
+                </div>
             </div>
         </div>
         </form>
-        <form action="" method="post" id="listform">
+        <form action="" method="post" id="listform" class="ui form">
         <table class="listing ui celled table">
             <thead>
                 <tr>
@@ -253,19 +297,27 @@
             </tbody>
         </table>
 {if $nb != 0}
-        <div class="center cright">
-            {_T string="Pages:"}<br/>
-            <ul class="pages">{$pagination}</ul>
+        <div class="ui basic center aligned fitted segment">
+            <div class="ui pagination menu">
+                <div class="header item">
+                    {_T string="Pages:"}
+                </div>
+                {$pagination}
+            </div>
         </div>
     {if ($login->isAdmin() or $login->isStaff()) && $mode neq 'ajax'}
-        <ul class="selection_menu">
-            <li>{_T string="For the selection:"}</li>
-            <li>
-                <button type="submit" id="delete" name="delete">
-                    <i class="fas fa-trash fa-fw"></i> {_T string="Delete"}
-                </button>
-            </li>
-        </ul>
+        <div class="ui basic left aligned fitted segment">
+            <div class="ui compact borderless stackable menu">
+                <div class="header item">
+                    {_T string="For the selection:"}
+                </div>
+                <div class="item">
+                    <button type="submit" id="delete" name="delete" class="ui labeled icon button">
+                        <i class="trash icon"></i> {_T string="Delete"}
+                    </button>
+                </div>
+            </div>
+        </div>
     {/if}
 {/if}
         </form>
@@ -325,18 +377,18 @@
                         this.form.submit();
                     });
 
-                    var _checklinks = '<div class="checkboxes"><span class="fleft"><a href="#" class="checkall">{_T string="(Un)Check all"}</a> | <a href="#" class="checkinvert">{_T string="Invert selection"}</a></span><a href="#" class="show_legend fright">{_T string="Show legend"}</a></div>';
+                    var _checklinks = '<div class="checkboxes ui basic horizontal segments"><div class="ui basic fitted segment"><a href="#" class="checkall ui blue tertiary button">{_T string="(Un)Check all"}</a> | <a href="#" class="checkinvert ui blue tertiary button">{_T string="Invert selection"}</a></div><div class="ui basic right aligned fitted segment"><a href="#" class="show_legend ui blue tertiary button">{_T string="Show legend"}</a></div></div>';
                     $('.listing').before(_checklinks);
                     $('.listing').after(_checklinks);
                     _bind_check('contrib_sel');
                     _bind_legend();
 
-                    $('#start_date_filter, #end_date_filter').datepicker({
+                    /*$('#start_date_filter, #end_date_filter').datepicker({
                         changeMonth: true,
                         changeYear: true,
                         showOn: 'button',
                         buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
-                    });
+                    });*/
                 }
                 _init_contribs_page();
 

@@ -32,6 +32,34 @@ $(function() {
     $('.ui.sidebar').sidebar('attach events', '.toc.item');
     $('.ui.dropdown').dropdown();
     $('.ui.accordion').accordion();
+    $('#contrib-rangestart').calendar({
+      monthFirst: false,
+      type: 'date',
+      formatter: {
+        date: function (date, settings) {
+          if (!date) return '';
+          var day = date.getDate();
+          var month = date.getMonth() + 1;
+          var year = date.getFullYear();
+          return day + '/' + month + '/' + year;
+        }
+      },
+      endCalendar: $('#contrib-rangeend')
+    });
+    $('#contrib-rangeend').calendar({
+      monthFirst: false,
+      type: 'date',
+      formatter: {
+        date: function (date, settings) {
+          if (!date) return '';
+          var day = date.getDate();
+          var month = date.getMonth() + 1;
+          var year = date.getFullYear();
+          return day + '/' + month + '/' + year;
+        }
+      },
+      startCalendar: $('#contrib-rangestart')
+    });
 
     /* Tooltips position on right aligned dropdowns */
     $('.ui.dropdown.right-aligned').tooltip({

@@ -5,7 +5,7 @@
 <p>
 {/if}
     <label class="{$classname}" for="{$varname}">{_T string="Payment type:"}</label>
-    <select name="{$varname}" id="{$varname}">
+    <select name="{$varname}" id="{$varname}" class="ui search dropdown">
 {if isset($empty)}
         <option value="{$empty.value}">{$empty.label}</option>
 {/if}
