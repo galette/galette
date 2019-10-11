@@ -51,7 +51,7 @@
     {if $preferences->pref_bool_selfsubscribe eq true and $cur_route neq "subscribe"}
                     <a
                         href="{path_for name="subscribe"}"
-                        class="button"
+                        class="ui basic button"
                         title="{_T string="Subscribe"}"
                     >
                         <i class="icon add user" aria-hidden="true"></i>
@@ -61,7 +61,7 @@
     {if $cur_route neq "login"}
                     <a
                         href="{path_for name="slash"}"
-                        class="button"
+                        class="ui primary button"
                         title="{_T string="Login"}"
                     >
                         <i class="icon sign in alt" aria-hidden="true"></i>

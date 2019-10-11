@@ -136,7 +136,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                             </div>
                         </div>
 {/if}
-                        <h1 id="titre">
+                        <h1 class="ui block center aligned header">
                             {$page_title}
 {if $cur_route neq 'mailing' and $existing_mailing eq true}
                                 <a

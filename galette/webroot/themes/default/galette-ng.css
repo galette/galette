@@ -50,6 +50,7 @@ body.pushable {
 #top-navbar.ui.menu {
   border: 0;
   border-radius: 0;
+  min-height: 3.5rem;
 }
 
 #top-navbar.ui.menu .item img.logo {
@@ -62,14 +63,14 @@ body.pushable {
   margin-left: .5rem;
 }
 
+a.ui.button i.icon,
+a.ui.button:hover i.icon {
+  color: inherit;
+}
+
 .ui.menu .header.item {
   text-align: left;
   font-weight: 700;
-}
-
-.ui.menu:not(.vertical) .item > .button,
-.ui.menu .item > .button {
-  padding: 0;
 }
 
 .ui.menu .dropdown.right-aligned.item .menu {
@@ -85,7 +86,7 @@ body.pushable {
 }
 
 .ui.fixed.menu + .pusher {
-  padding-top: 3.85rem;
+  padding-top: 4.5rem;
 }
 
 .ui.grid > aside.column:not(.row) {
@@ -109,9 +110,38 @@ aside .ui.vertical.menu {
   max-width: 100%;
 }
 
+.ui.dropdown .item.button,
 .ui.vertical.menu .item.button {
   border: 1px solid #d3d3d3;
   margin: .2rem 0;
+}
+
+.ui .fields:first-child:last-child {
+  margin-bottom: 0;
+}
+
+#filtre .fields .fields {
+  margin: 0;
+}
+
+#filtre .fields .field.actions {
+  display: flex;
+}
+
+.ui.menu .item.header > .label:not(.floating) {
+  margin: 0;
+}
+
+.ui.menu .header .label > a.tooltip {
+  opacity: 1;
+  padding-right: .4rem;
+}
+
+.ui.menu .header .label a.tooltip i {
+  color: #fff;
+}
+.ui.menu .header .label a.tooltip:hover i {
+  color: #000;
 }
 
 footer,
