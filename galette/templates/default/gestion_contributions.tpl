@@ -22,7 +22,7 @@
                         <div class="ui calendar" id="contrib-rangestart">
                             <div class="ui input left icon">
                                 <i class="calendar icon"></i>
-                                <input placeholder="{_T string="jj/mm/yyyy"}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$filters->start_date_filter}"/>
+                                <input placeholder="{_T string="jj/mm/aaaa"}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$filters->start_date_filter}"/>
                             </div>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                         <div class="ui calendar" id="contrib-rangeend">
                             <div class="ui input left icon">
                                 <i class="calendar icon"></i>
-                                <input placeholder="{_T string="jj/mm/yyyy"}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$filters->end_date_filter}"/>
+                                <input placeholder="{_T string="jj/mm/aaaa"}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$filters->end_date_filter}"/>
                             </div>
                         </div>
                     </div>
@@ -44,8 +44,8 @@
                         empty=['value' => -1, 'label' => {_T string="Select"}]
                     }
                 </div>
-                <div class="actions center aligned field">
-                    <input type="submit" class="ui button" value="{_T string="Filter"}"/>
+                <div class="flexend center aligned field">
+                    <input type="submit" class="ui blue button" value="{_T string="Filter"}"/>
                     <input type="submit" name="clear_filter" class="ui button" value="{_T string="Clear filter"}"/>
                 </div>
             </div>
@@ -56,34 +56,32 @@
         </div>
 {/if}
 {if isset($member) && $mode neq 'ajax'}
-        <div class="ui basic left aligned fitted segment">
-            <div class="ui borderless stackable menu">
-                <div class="header item">
+        <div class="ui compact vertically fitted segment">
+            <div class="ui horizontal list">
+                <span class="ui blue ribbon label">
     {if $login->isAdmin() or $login->isStaff()}
-                <div class="ui image large label">
                     <a
                         href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => "all"]}"
                         class="tooltip"
                     >
                         <i class="icon eraser"></i>
-                        <span class="sr-only">{_T string="Show all members contributions"}</span>
+                        <span class="hidden">{_T string="Show all members contributions"}</span>
                     </a>
     {/if}
-                    {$member->sname}
-                </div>
-                </div>
-    {if not $member->isActive() } ({_T string="Inactive"}){/if}
+                    {$member->sname}{if not $member->isActive() } ({_T string="Inactive"}){/if}
+                </span>
     {if $login->isAdmin() or $login->isStaff()}
                 <div class="item">
-                    <a href="{path_for name="member" data=["id" => $member->id]}" class="ui button">{_T string="See member profile"}</a>
+                    <a href="{path_for name="member" data=["id" => $member->id]}" class="ui tiny button">{_T string="See member profile"}</a>
                 </div>
                 <div class="item">
-                    <a href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?id_adh={$member->id}" class="ui button">{_T string="Add a membership fee"}</a>
+                    <a href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?id_adh={$member->id}" class="ui tiny button">{_T string="Add a membership fee"}</a>
                 </div>
                 <div class="item">
-                    <a href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?id_adh={$member->id}" class="ui button">{_T string="Add a donation"}</a>
+                    <a href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?id_adh={$member->id}" class="ui tiny button">{_T string="Add a donation"}</a>
                 </div>
     {/if}
+            </div>
         </div>
 {/if}
         <div class="infoline">
@@ -306,13 +304,11 @@
             </div>
         </div>
     {if ($login->isAdmin() or $login->isStaff()) && $mode neq 'ajax'}
-        <div class="ui basic left aligned fitted segment">
-            <div class="ui compact borderless stackable menu">
-                <div class="header item">
-                    {_T string="For the selection:"}
-                </div>
+        <div class="ui compact vertically fitted segment">
+            <div class="ui horizontal list">
+                <span class="ui blue ribbon label">{_T string="For the selection:"}</span>
                 <div class="item">
-                    <button type="submit" id="delete" name="delete" class="ui labeled icon button">
+                    <button type="submit" id="delete" name="delete" class="ui labeled icon tiny button">
                         <i class="trash icon"></i> {_T string="Delete"}
                     </button>
                 </div>
