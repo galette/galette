@@ -63,6 +63,11 @@ body.pushable {
   margin-left: .5rem;
 }
 
+#top-navbar.ui.menu .item.tray .ui.label > .icon,
+#top-navbar.ui.menu .item.tray > .label:not(.floating) {
+  margin: 0;
+}
+
 a.ui.button i.icon,
 a.ui.button:hover i.icon {
   color: inherit;
@@ -124,23 +129,20 @@ aside .ui.vertical.menu {
   margin: 0;
 }
 
-#filtre .fields .field.actions {
+#filtre .fields .field.flexend {
   display: flex;
+  align-items: end;
 }
 
-.ui.menu .item.header > .label:not(.floating) {
-  margin: 0;
-}
-
-.ui.menu .header .label > a.tooltip {
+.ui.list .label > a.tooltip {
   opacity: 1;
   padding-right: .4rem;
 }
 
-.ui.menu .header .label a.tooltip i {
+.ui.list .label a.tooltip i {
   color: #fff;
 }
-.ui.menu .header .label a.tooltip:hover i {
+.ui.list .label a.tooltip:hover i {
   color: #000;
 }
 
@@ -160,6 +162,11 @@ footer .ui.horizontal.list > .item{
   .ui.menu .header.item {
     padding-left: .5rem;
     padding-right: .5rem;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .fields_list span{
+    width: 50%;
   }
 }
 @media only screen and (max-width: 991px) {
