@@ -1,77 +1,123 @@
 {extends file="page.tpl"}
 
 {block name="content"}
-        <form action="{path_for name="filter-memberslist"}" method="post" id="filtre">
-        <div id="listfilter">
+        <form action="{path_for name="filter-memberslist"}" method="post" id="filtre" class="ui form">
+            <div class="ui segment">
 {if !isset($adv_filters) || !$adv_filters}
-            <label for="filter_str">{_T string="Search:"}&nbsp;</label>
-            <input type="text" name="filter_str" id="filter_str" value="{$filters->filter_str}" type="search" placeholder="{_T string="Enter a value"}"/>&nbsp;
-             {_T string="in:"}&nbsp;
-            <select name="field_filter">
-                {html_options options=$field_filter_options selected=$filters->field_filter}
-            </select>
-             {_T string="among:"}&nbsp;
-            <select name="membership_filter" onchange="form.submit()">
-                {html_options options=$membership_filter_options selected=$filters->membership_filter}
-            </select>
-            <select name="filter_account" onchange="form.submit()">
-                {html_options options=$filter_accounts_options selected=$filters->filter_account}
-            </select>
-            <select name="group_filter" onchange="form.submit()">
-                <option value="0">{_T string="Select a group"}</option>
+            <div class="five fields">
+                <div class="field">
+                    <label for="filter_str">{_T string="Search:"}</label>
+                    <input type="text" name="filter_str" id="filter_str" value="{$filters->filter_str}" type="search" placeholder="{_T string="Enter a value"}"/>
+                </div>
+                <div class="field">
+                    <label for="filter_str">{_T string="in:"}</label>
+                    <select name="field_filter" class="ui search dropdown">
+                        {html_options options=$field_filter_options selected=$filters->field_filter}
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="filter_str">{_T string="among:"}</label>
+                    <select name="membership_filter" onchange="form.submit()" class="ui search dropdown">
+                        {html_options options=$membership_filter_options selected=$filters->membership_filter}
+                    </select>
+                </div>
+                <div class="flexend field">
+                    <label for="filter_account" class="hidden">{_T string="among:"}</label>
+                    <select name="filter_account" onchange="form.submit()" class="ui search dropdown">
+                        {html_options options=$filter_accounts_options selected=$filters->filter_account}
+                    </select>
+                </div>
+                <div class="flexend field">
+                    <label for="group_filter" class="hidden">{_T string="among:"}</label>
+                    <select name="group_filter" onchange="form.submit()" class="ui search dropdown">
+                        <option value="0">{_T string="Select a group"}</option>
     {foreach from=$filter_groups_options item=group}
-                <option value="{$group->getId()}"{if $filters->group_filter eq $group->getId()} selected="selected"{/if}>{$group->getIndentName()}</option>
+                        <option value="{$group->getId()}"{if $filters->group_filter eq $group->getId()} selected="selected"{/if}>{$group->getIndentName()}</option>
     {/foreach}
-            </select>
-            <button type="submit"  class="tooltip action" title="{_T string="Apply filters"}" name="filter">
-                <i class="fa fa-search"></i>
-                {_T string="Filter"}
-            </button>
-            <button type="submit"  class="tooltip action" title="{_T string="Save selected criteria"}" name="savesearch" id="savesearch">
-                <i class="fa fa-fw fa-save"></i>
-                {_T string="Save"}
-            </button>
-            <input type="submit" name="clear_filter" class="inline tooltip" value="{_T string="Clear filter"}" title="{_T string="Reset all filters to defaults"}"/>
-            <div>
-                {_T string="Members that have an email address:"}
-                <input type="radio" name="email_filter" id="filter_dc_email" value="{Galette\Repository\Members::FILTER_DC_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_DC_EMAIL')} checked="checked"{/if}>
-                <label for="filter_dc_email" >{_T string="Don't care"}</label>
-                <input type="radio" name="email_filter" id="filter_with_email" value="{Galette\Repository\Members::FILTER_W_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_W_EMAIL')} checked="checked"{/if}>
-                <label for="filter_with_email" >{_T string="With"}</label>
-                <input type="radio" name="email_filter" id="filter_without_email" value="{Galette\Repository\Members::FILTER_WO_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_WO_EMAIL')} checked="checked"{/if}>
-                <label for="filter_without_email" >{_T string="Without"}</label>
+                    </select>
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <div class="inline fields">
+                        <label for="email_filter">{_T string="Members that have an email address:"}</label>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="email_filter" id="filter_dc_email" value="{Galette\Repository\Members::FILTER_DC_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_DC_EMAIL')} checked="checked"{/if}>
+                                <label for="filter_dc_email">{_T string="Don't care"}</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="email_filter" id="filter_with_email" value="{Galette\Repository\Members::FILTER_W_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_W_EMAIL')} checked="checked"{/if}>
+                                <label for="filter_with_email">{_T string="With"}</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="email_filter" id="filter_without_email" value="{Galette\Repository\Members::FILTER_WO_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_WO_EMAIL')} checked="checked"{/if}>
+                                <label for="filter_without_email">{_T string="Without"}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="right aligned field">
+                    <button type="submit"  class="tooltip action ui button" title="{_T string="Apply filters"}" name="filter">
+                        <i class="search icon"></i>
+                        {_T string="Filter"}
+                    </button>
+                    <button type="submit"  class="tooltip action ui button" title="{_T string="Save selected criteria"}" name="savesearch" id="savesearch">
+                        <i class="save icon"></i>
+                        {_T string="Save"}
+                    </button>
+                    <input type="submit" name="clear_filter" class="tooltip ui button" value="{_T string="Clear filter"}" title="{_T string="Reset all filters to defaults"}"/>
+                </div>
             </div>
 {else}
-            <p>
-                <strong>{_T string="Advanced search mode"}</strong>
-                <button type="submit" class="tooltip action" title="{_T string="Change search criteria"}" name="adv_criteria">
+            <div class="field">
+                <span class="ui blue ribbon label">{_T string="Advanced search mode"}</span>
+                <button type="submit" class="tooltip action ui button" title="{_T string="Change search criteria"}" name="adv_criteria">
                     <i class="fa fa-edit"></i>
                     {_T string="Change criteria"}
                 </button>
-                <button type="submit"  class="tooltip action" title="{_T string="Save current advanced search criteria"}" name="savesearch" id="savesearch">
+                <button type="submit"  class="tooltip action ui button" title="{_T string="Save current advanced search criteria"}" name="savesearch" id="savesearch">
                     <i class="fa fa-fw fa-save"></i>
                     {_T string="Save"}
                 </button>
-                <input type="hidden" name="advanced_search" value="1"/>
-                <input type="submit" name="clear_filter" class="inline tooltip" value="{_T string="Clear filter"}" title="{_T string="Reset all filters to defaults"}"/>
-                <br/>
-                <a href="#" id="showhideqry">{_T string="Show/hide query"}</a>
-            </p>
-            <pre id="sql_qry" class="hidden">{$filters->query}</pre>
+                <input type="hidden" name="advanced_search" value="1" class="ui button"/>
+                <input type="submit" name="clear_filter" class="tooltip ui button" value="{_T string="Clear filter"}" title="{_T string="Reset all filters to defaults"}"/>
+                <div class="ui basic fluid accordion">
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+                        {_T string="Show/hide query"}
+                    </div>
+                    <div class="content">
+                        <pre id="sql_qry" class="hidden">{$filters->query}</pre>
+                    </div>
+                </div>
+            </div>
 {/if}
         </div>
+
+
         <div class="infoline">
-            {$nb_members} {if $nb_members != 1}{_T string="members"}{else}{_T string="member"}{/if}
-            <div class="fright">
-                <label for="nbshow">{_T string="Records per page:"}</label>
-                <select name="nbshow" id="nbshow">
-                    {html_options options=$nbshow_options selected=$numrows}
-                </select>
-                <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+            <div class="ui basic horizontal segments">
+                <div class="ui basic fitted segment">
+                    <div class="ui label">{$nb_members} {if $nb_members != 1}{_T string="members"}{else}{_T string="member"}{/if}</div>
+                </div>
+                <div class="ui basic right aligned fitted segment">
+                    <div class="inline field">
+                        <label for="nbshow">{_T string="Records per page:"}</label>
+                        <select name="nbshow" id="nbshow" class="ui dropdown">
+                            {html_options options=$nbshow_options selected=$numrows}
+                        </select>
+                        <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+                    </div>
+                </div>
             </div>
         </div>
         </form>
-        <form action="{path_for name="batch-memberslist"}" method="post" id="listform">
+        <form action="{path_for name="batch-memberslist"}" method="post" id="listform" class="ui form">
         <table class="listing ui celled table">
             <thead>
                 <tr>
@@ -271,59 +317,65 @@
             </tbody>
         </table>
 {if $nb_members != 0}
-        <div class="center cright">
-            {_T string="Pages:"}<br/>
-            <ul class="pages">{$pagination}</ul>
+        <div class="ui basic center aligned fitted segment">
+            <div class="ui pagination menu">
+                <div class="header item">
+                    {_T string="Pages:"}
+                </div>
+                {$pagination}
+            </div>
         </div>
-        <ul class="selection_menu">
-            <li>{_T string="For the selection:"}</li>
+        <div class="ui compact vertically fitted segment">
+            <div class="ui horizontal list">
+                <span class="ui blue ribbon label">{_T string="For the selection:"}</span>
     {if $login->isAdmin() or $login->isStaff()}
-            <li>
-                <button type="submit" id="delete" name="delete">
-                    <i class="fas fa-user-times fa-fw"></i> {_T string="Delete"}
-                </button>
-            </li>
-            <li>
-                <button type="submit" id="masschange" name="masschange" class="action">
-                    <i class="fas fa-user-edit fa-fw"></i> {_T string="Mass change"}
-                </button>
-            </li>
+                <div class="item">
+                    <button type="submit" id="delete" name="delete" class="ui labeled icon tiny button">
+                        <i class="user times icon"></i> {_T string="Delete"}
+                    </button>
+                </div>
+                <div class="item">
+                    <button type="submit" id="masschange" name="masschange" class="action ui labeled icon tiny button">
+                        <i class="user edit icon"></i> {_T string="Mass change"}
+                    </button>
+                </div>
         {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
-            <li>
-                <button type="submit" id="sendmail" name="mailing">
-                    <i class="fas fa-mail-bulk fa-fw"></i> {_T string="Mail"}
-                </button>
-            </li>
+                <div class="item">
+                    <button type="submit" id="sendmail" name="mailing" class="ui labeled icon tiny button">
+                        <i class="mail bulk icon"></i> {_T string="Mail"}
+                    </button>
+                </div>
         {/if}
     {/if}
-            <li>
-                <button type="submit" id="attendance_sheet" name="attendance_sheet">
-                    <i class="fas fa-file-alt fa-fw"></i> {_T string="Attendance sheet"}
-                </button>
-            </li>
-            <li>
-                <button type="submit" id="labels" name="labels">
-                    <i class="far fa-address-card fa-fw"></i> {_T string="Generate labels"}
-                </button>
-            </li>
-            <li>
-                <button type="submit" id="cards" name="cards">
-                    <i class="fas fa-id-badge fa-fw"></i> {_T string="Generate Member Cards"}
-                </button>
-            </li>
+                <div class="item">
+                    <button type="submit" id="attendance_sheet" name="attendance_sheet" class="ui labeled icon tiny button">
+                        <i class="file alternate icon"></i> {_T string="Attendance sheet"}
+                    </button>
+                </div>
+                <div class="item">
+                    <button type="submit" id="labels" name="labels" class="ui labeled icon tiny button">
+                        <i class="address card icon"></i> {_T string="Generate labels"}
+                    </button>
+                </div>
+                <div class="item">
+                    <button type="submit" id="cards" name="cards" class="ui labeled icon tiny button">
+                        <i class="id badge icon"></i> {_T string="Generate Member Cards"}
+                    </button>
+                </div>
     {if $login->isAdmin() or $login->isStaff()}
-            <li>
-                <button type="submit" id="csv" name="csv">
-                    <i class="fas fa-file-csv fa-fw"></i> {_T string="Export as CSV"}
-                </button>
-            </li>
+                <div class="item">
+                    <button type="submit" id="csv" name="csv" class="ui labeled icon tiny button">
+                        <i class="file csv icon"></i> {_T string="Export as CSV"}
+                    </button>
+                </div>
     {/if}
     {if $plugin_batch_actions|@count != 0}
         {foreach from=$plugin_batch_actions key=plugin_name item=action}
             {include file=$action module_id=$plugin_name|replace:'batch_action_':''}
         {/foreach}
     {/if}
-        </ul>
+            </div>
+        </div>
 {/if}
 
         </form>
@@ -435,7 +487,7 @@
         {* Use of Javascript to draw specific elements that are not relevant is JS is inactive *}
         $(function(){
 {if $nb_members != 0}
-            var _checklinks = '<div class="checkboxes"><span class="fleft"><a href="#" class="checkall tooltip"><i class="fas fa-check-square"></i> {_T string="(Un)Check all"}</a> | <a href="#" class="checkinvert tooltip"><i class="fas fa-exchange-alt"></i> {_T string="Invert selection"}</a></span><a href="#" class="show_legend fright">{_T string="Show legend"}</a></div>';
+                    var _checklinks = '<div class="checkboxes ui basic horizontal segments"><div class="ui basic fitted segment"><a href="#" class="checkall ui blue tertiary button">{_T string="(Un)Check all"}</a> | <a href="#" class="checkinvert ui blue tertiary button">{_T string="Invert selection"}</a></div><div class="ui basic right aligned fitted segment"><a href="#" class="show_legend ui blue tertiary button">{_T string="Show legend"}</a></div></div>';
             $('.listing').before(_checklinks);
             $('.listing').after(_checklinks);
             _bind_check();
@@ -489,12 +541,12 @@
                 }
             });
 {/if}
-            if ( _shq = $('#showhideqry') ) {
+            /*if ( _shq = $('#showhideqry') ) {
                 _shq.click(function(){
                     $('#sql_qry').toggleClass('hidden');
                     return false;
                 });
-            }
+            }*/
 
             $('#savesearch').on('click', function(e) {
                 e.preventDefault();
