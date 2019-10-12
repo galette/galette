@@ -66,7 +66,7 @@ var _fieldsInSortable = function(){
 
 var _initSortable = function(){
     $('.fields_list').sortable({
-        items: 'li:not(.listing)'
+        items: '.item'
     }).disableSelection();
 
     _fieldsInSortable();

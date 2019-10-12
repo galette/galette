@@ -32,7 +32,8 @@ $(function() {
     $('.ui.sidebar').sidebar('attach events', '.toc.item');
     $('.ui.dropdown').dropdown();
     $('.ui.accordion').accordion();
-    $('#contrib-rangestart').calendar({
+    $('.ui.radio.checkbox').checkbox();
+    $('[id$="rangestart"]').calendar({
       monthFirst: false,
       type: 'date',
       formatter: {
@@ -46,7 +47,7 @@ $(function() {
       },
       endCalendar: $('#contrib-rangeend')
     });
-    $('#contrib-rangeend').calendar({
+    $('[id$="rangeend"]').calendar({
       monthFirst: false,
       type: 'date',
       formatter: {
