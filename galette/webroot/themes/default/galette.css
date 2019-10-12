@@ -874,7 +874,7 @@ legend .tab-button {
     background-image: url(images/icon-telemetry.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
 }
 
-.left {
+/*.left {
     text-align: left!important;
 }
 
@@ -884,7 +884,7 @@ legend .tab-button {
 
 .center {
     text-align: center!important;
-}
+}*/
 
 .center_table {
     margin:0 auto;
@@ -1074,7 +1074,7 @@ legend .tab-button {
     margin: 1em auto .5em;
 }
 
-.public_page section {
+/*.public_page section {
     text-align: center;
 }
 
@@ -1084,7 +1084,7 @@ legend .tab-button {
 
 .public_page form {
     text-align: center;
-}
+}*/
 
 .public_page .exemple {
     margin-top:0;
@@ -1999,9 +1999,9 @@ label.simplelabel {
 .clear{clear: both;}
 .cright{clear: right;}
 
-input.large, span.large {
+/*input.large, span.large {
     width:90%!important;
-}
+}*/
 
 .picker{
     padding:0 1em;
@@ -2125,7 +2125,7 @@ label:hover > i, span.bline:hover > i {
 
 /*** /Tooltips ***/
 
-.trombino{
+/*.trombino{
     margin:.5em 0 0 .5em;
     background-color: #DDDDFF;
     padding-bottom:.2em;
@@ -2145,7 +2145,7 @@ label:hover > i, span.bline:hover > i {
 
 .trombinoscope {
     text-align: center;
-}
+}*/
 
 .tbl_line_even,
 .even > td {

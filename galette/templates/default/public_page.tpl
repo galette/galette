@@ -55,7 +55,7 @@
     <meta http-equiv="refresh" content="{$head_redirect.timeout};url={$head_redirect.url}" />
 {/if}
     </head>
-    <body>
+    <body{if $body_class eq "front_page"} class="front-page"{/if}>
         {include file='navigation_sidebar.tpl' page='public'}
         {include file='navigation_topbar.tpl'}
         <div class="pusher">

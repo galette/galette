@@ -10,6 +10,14 @@ body.pushable {
   background: #636b70;
 }
 
+body.front-page .ui.ui.ui.container:not(.fluid) {
+  width: 600px;
+}
+
+body.front-page .ui.message {
+  text-align: center;
+}
+
 .ui.bg-color {
   background-color: #ddddff;
 }
