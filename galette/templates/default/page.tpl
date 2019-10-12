@@ -138,17 +138,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/if}
                         <h1 class="ui block center aligned header">
                             {$page_title}
-{if $cur_route neq 'mailing' and $existing_mailing eq true}
-                                <a
-                                    id="recup_mailing"
-                                    href="{path_for name="mailing"}"
-                                    class="tooltip"
-                                    title="{_T string="A mailing exists in the current session. Click here if you want to resume or cancel it."}"
-                                >
-                                    <i class="fas fa-mail-bulk"></i>
-                                    <span class="sr-only">{_T string="Existing mailing"}</span>
-                                </a>
-    {/if}
                         </h1>
                         {include file="global_messages.tpl"}
                         {*$content*}

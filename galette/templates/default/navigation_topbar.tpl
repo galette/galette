@@ -70,7 +70,19 @@
     {/if}
                 </div>
 {else}
-                <div class="right ui simple dropdown right-aligned item{if $login->isAdmin()} is-admin{elseif $login->isStaff()} is-staff{/if}">
+    {if $cur_route neq 'mailing' and $existing_mailing eq true}
+                <div class="tray right item">
+                    <a
+                        href="{path_for name="mailing"}"
+                        class="tooltip ui yellow circular large label"
+                        title="{_T string="A mailing exists in the current session. Click here if you want to resume or cancel it."}"
+                    >
+                        <i class="mail bulk icon"></i>
+                        <span class="hidden">{_T string="Existing mailing"}</span>
+                    </a>
+                </div>
+    {/if}
+                <div class="{if $cur_route eq 'mailing' or ($cur_route neq 'mailing' and $existing_mailing eq false)}right {/if}ui simple dropdown right-aligned item{if $login->isAdmin()} is-admin{elseif $login->isStaff()} is-staff{/if}">
                     <i class="icon {if !$login->isSuperAdmin()}user circle outline{else}superpowers{/if}" aria-hidden="true"></i>
                     <span>{$login->loggedInAs(true)}</span>
                     <i class="icon dropdown" aria-hidden="true"></i>
