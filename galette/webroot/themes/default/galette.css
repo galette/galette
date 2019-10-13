@@ -971,7 +971,7 @@ legend .tab-button {
 }
 
 #group_infos{
-    min-width: 85%;
+    width: 100%;
     margin-left: 1em;
     vertical-align: top;
 }
