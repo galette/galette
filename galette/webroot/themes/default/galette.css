@@ -90,6 +90,14 @@ input:required:valid {
     border-color:green;
 }
 
+#galette_body .selectize-input.required {
+    border-color:green;
+}
+
+#galette_body .selectize-input.required.invalid {
+    border:1px red solid;
+}
+
 input[readonly] {
     color: #555;
     background-color: #e6e6e6;
