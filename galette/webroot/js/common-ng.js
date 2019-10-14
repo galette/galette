@@ -32,7 +32,7 @@ $(function() {
     $('.ui.sidebar').sidebar('attach events', '.toc.item');
     $('.ui.dropdown').dropdown();
     $('.ui.accordion').accordion();
-    $('.ui.radio.checkbox').checkbox();
+    $('.ui.checkbox, .ui.radio.checkbox').checkbox();
     $('[id$="rangestart"]').calendar({
       monthFirst: false,
       type: 'date',

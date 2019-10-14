@@ -2,23 +2,23 @@
 
 {block name="content"}
 {if isset($navigate) and $navigate|@count != 0}
-    <nav>
-        <a href="{if isset($navigate.prev)}{path_for name="editmember" data=["action" => "edit", "id" => $navigate.prev]}{else}#{/if}" class="button{if !isset($navigate.prev)} selected{/if}">
-            <i class="fas fa-step-backward"></i>
-            {_T string="Previous"}
-        </a>
-        {$navigate.pos}/{$navigate.count}
-        <a href="{if isset($navigate.next)}{path_for name="editmember" data=["action" => "edit", "id" => $navigate.next]}{else}#{/if}" class="button{if !isset($navigate.next)} selected{/if}">
-            {_T string="Next"}
-            <i class="fas fa-step-forward"></i>
-        </a>
-    </nav>
+        <nav>
+            <a href="{if isset($navigate.prev)}{path_for name="editmember" data=["action" => "edit", "id" => $navigate.prev]}{else}#{/if}" class="ui labeled icon button{if !isset($navigate.prev)} disabled{/if}">
+                <i class="step backward icon"></i>
+                {_T string="Previous"}
+            </a>
+            <div class="ui label">{$navigate.pos} / {$navigate.count}</div>
+            <a href="{if isset($navigate.next)}{path_for name="editmember" data=["action" => "edit", "id" => $navigate.next]}{else}#{/if}" class="ui right labeled icon button{if !isset($navigate.next)} disabled{/if}">
+                {_T string="Next"}
+                <i class="step forward icon"></i>
+            </a>
+        </nav>
 {/if}
-        <form action="{if $self_adh}{path_for name="storemembers" data=["self" => "subscribe"]}{else}{path_for name="storemembers"}{/if}" method="post" enctype="multipart/form-data" id="form">
-        <div class="bigtable">
 {if $self_adh and $head_redirect}
-            <div id="infobox">
-                <h1>{_T string="Account registered!"}</h1>
+        <div class="ui icon success message">
+            <i class="check circle outline icon"></i>
+            <div class="content">
+                <div class="header">{_T string="Account registered!"}</div>
                 <p>
     {if $pref_mail_method == constant('Galette\Core\GaletteMail::METHOD_DISABLED') or $member->email eq ""}
                     {_T string="Your subscription has been registered."}
@@ -28,20 +28,37 @@
                     <br/>{_T string="You'll be redirected to the login page in a few seconds"}
                 </p>
             </div>
+        </div>
 {else}
-            <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
+        <div class="ui basic center aligned fitted segment">
+            <div class="ui icon red compact tiny message">
+                <i class="exclamation icon"></i>
+                <div class="content">
+                    <div class="header">
+                        {_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form action="{if $self_adh}{path_for name="storemembers" data=["self" => "subscribe"]}{else}{path_for name="storemembers"}{/if}" method="post" enctype="multipart/form-data" id="form" class="ui form">
     {if !$self_adh}
-            <div>
+            <div class="ui compact segment">
         {if $member->hasParent()}
-                <strong>{_T string="Attached to:"}
-                <a href="{path_for name="member" data=["id" => $member->parent->id]}">{$member->parent->sfullname}</a></strong><br/>
+                <div class="inline field">
+                    <span class="ui blue ribbon label">{_T string="Attached to:"}</span>
+                    <a href="{path_for name="member" data=["id" => $member->parent->id]}" class="ui label">{$member->parent->sfullname}</a>
+                </div>
             {if $login->isAdmin() or $login->isStaff() or $login->id eq $member->parent->id}
-                <label for="detach_parent">{_T string="Detach?"}</label>
-                <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
+                <div class="inline field">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
+                        <label for="detach_parent">{_T string="Detach?"}</label>
+                    </div>
+                </div>
             {/if}
         {else if ($login->isAdmin() or $login->isStaff()) and !$member->hasChildren()}
             <input type="checkbox" name="attach" id="attach" value="1"/>
-            <label for="attach"><i class="fas fa-link"></i> {_T string="Attach member"}<label>
+            <label for="attach"><i class="linkify icon"></i> {_T string="Attach member"}<label>
             <span id="parent_id_elt" class="sr-only">
                 <select name="parent_id" id="parent_id" class="nochosen">
                     {if $adh_selected eq 0}
@@ -53,59 +70,62 @@
                 </select>
             </span>
         {else if $member->hasChildren()}
-            <strong>{_T string="Parent of:"}</strong>
+                <div class="inline field">
+                    <span class="ui blue ribbon label">{_T string="Parent of:"}</span>
             {foreach from=$member->children item=child}
-                <a href="{path_for name="member" data=["id" => $child->id]}">{$child->sfullname}</a>{if not $child@last}, {/if}
+                    <a href="{path_for name="member" data=["id" => $child->id]}" class="ui label">{$child->sfullname}</a>{if not $child@last}, {/if}
             {/foreach}
-            </tr>
+                </div>
         {/if}
             </div>
     {/if}
-
-    {* Main form entries*}
-    {include file="forms_types.tpl"}
-    {* Dynamic entries *}
-    {include file="edit_dynamic_fields.tpl" object=$member}
-
-                    <p>
-            {if !$member->id && !$self_adh }
-               <label for="redirect_on_create">{_T string="After member creation:"}</label>
-               <select name="redirect_on_create" id="redirect_on_create">
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')} selected="selected"{/if}>{_T string="create a new contribution (default action)"}</option>
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')} selected="selected"{/if}>{_T string="create a new transaction"}</option>
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_NEW')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_NEW')} selected="selected"{/if}>{_T string="create another new member"}</option>
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')} selected="selected"{/if}>{_T string="show member"}</option>
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_LIST')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_LIST')} selected="selected"{/if}>{_T string="go to members list"}</option>
-                  <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_HOME')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_HOME')} selected="selected"{/if}>{_T string="go to main page"}</option>
-               </select>
-               <br/>
-            {/if}
-
-    {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') and (!$self_adh and ($login->isAdmin() or $login->isStaff()))}
-                        <br/><label for="mail_confirm">
-        {if $member->id}
-                            {_T string="Notify member his account has been modified"}
-        {else}
-                            {_T string="Notify member his account has been created"}
+            {* Main form entries*}
+            {include file="forms_types.tpl"}
+            {* Dynamic entries *}
+            {include file="edit_dynamic_fields.tpl" object=$member}
+        {if !$member->id && !$self_adh }
+            <div class="ui center aligned segment">
+                <div class="inline field">
+                    <label for="redirect_on_create">{_T string="After member creation:"}</label>
+                    <select name="redirect_on_create" id="redirect_on_create"i class="ui search dropdown">
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')} selected="selected"{/if}>{_T string="create a new contribution (default action)"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')} selected="selected"{/if}>{_T string="create a new transaction"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_NEW')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_NEW')} selected="selected"{/if}>{_T string="create another new member"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')} selected="selected"{/if}>{_T string="show member"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_LIST')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_LIST')} selected="selected"{/if}>{_T string="go to members list"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_HOME')}"{if $preferences->pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_HOME')} selected="selected"{/if}>{_T string="go to main page"}</option>
+                    </select>
+                </div>
+            </div>
         {/if}
-                        </label>
+        {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED') and (!$self_adh and ($login->isAdmin() or $login->isStaff()))}
+            <div class="ui center aligned segment">
+                <div class="inline field">
+                    <div class="ui toggle checkbox">
                         <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
-                        <br/><span class="exemple">
-        {if $member->id}
+                        <label for="mail_confirm">
+            {if $member->id}
+                            {_T string="Notify member his account has been modified"}
+            {else}
+                            {_T string="Notify member his account has been created"}
+            {/if}
+                        </label>
+                        <br/>
+                        <span class="exemple">
+            {if $member->id}
                             {_T string="Member will be notified by mail his account has been modified."}
-        {else}
+            {else}
                             {_T string="Member will receive his username and password by email, if he has an address."}
-        {/if}
+            {/if}
                         </span>
-    {/if}
-                    </p>
-        </div>
-        <div class="button-container">
-            <button type="submit" name="valid" class="action">
-                <i class="fas fa-save fa-fw"></i> {_T string="Save"}
-            </button>
-
-
+                    </div>
+                </div>
+            </div>
+        {/if}
+            <div class="ui basic center aligned fitted segment">
+                <button type="submit" name="valid" class="action ui labeled icon big button">
+                    <i class="save icon"></i> {_T string="Save"}
+                </button>
             {foreach item=entry from=$hidden_elements}
                 {if $entry->field_id neq 'mdp_adh'}
                     {assign var="title" value=null}
@@ -130,9 +150,7 @@
                     {/if}
                 {/if}
             {/foreach}
-
-            <a href="#" id="back2top">{_T string="Back to top"}</a>
-        </div>
+            </div>
         </form>
 {/if}
 {/block}
