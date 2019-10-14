@@ -2,7 +2,7 @@
 {assign var=body_class value="front_page"}
 {block name="content"}
     {if isset($smarty.session['slim.flash']['loginfault'])}
-                <div id="errorbox">{$smarty.session['slim.flash']['loginfault']}</div>
+                <div class="ui error tiny message">{$smarty.session['slim.flash']['loginfault']}</div>
     {/if}
                 <form action="{path_for name="dologin"}" method="post" class="ui form">
                     <div class="ui stacked segment">
