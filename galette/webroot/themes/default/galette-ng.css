@@ -154,6 +154,10 @@ aside .ui.vertical.menu {
   color: #000;
 }
 
+#back2top {
+  z-index: 2;
+}
+
 footer,
 footer .ui.horizontal.list .list > .item,
 footer .ui.horizontal.list > .item{
