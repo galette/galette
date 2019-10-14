@@ -105,6 +105,11 @@
                 </section>
             </div>
         </div>
+        <a href="#" id="back2top" class="ui basic icon button">
+            <i class="arrow up icon"></i>
+            {_T string="Back to top"}
+        </a>
+
         {block name="javascripts"}{/block}
     </body>
 </html>
