@@ -4,30 +4,35 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-17 08:02+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2019-10-17 06:07+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
+"es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 2.4.0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.9\n"
 
 #: ../templates/default/gestion_adherents.tpl:13
+#, fuzzy
 msgid "among:"
-msgstr ""
+msgstr "entre:"
 
 #: ../install/steps/db_checks.php:116
+#, fuzzy
 msgid "SELECT operation allowed"
-msgstr ""
+msgstr "SELECT operación permitida"
 
 #: ../templates/default/export.tpl:10
 msgid "The following files have been written on disk:"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:156
+#, fuzzy
 msgid "Phone:"
-msgstr ""
+msgstr "Teléfono:"
 
 #: ../templates/default/editer_champ.tpl:18
 msgid "Permissions:"
@@ -98,12 +103,14 @@ msgid "Select contributor and donation type"
 msgstr ""
 
 #: ../templates/default/public_page.tpl:122
+#, fuzzy
 msgid "Lost your password?"
-msgstr ""
+msgstr "Contraseña olvidada?"
 
 #: ../templates/default/forms_types/password.tpl:10 ../templates/default/forms_types.tpl:85
+#, fuzzy
 msgid "(at least %i characters)"
-msgstr ""
+msgstr "(al menos %i caracteres)"
 
 #: ../includes/fields_defs/pdfmodels_fields.php:266 ../includes/dependencies.php:610
 msgid "On .......... / .......... / .......... "
@@ -167,12 +174,14 @@ msgstr ""
 #: ../templates/default/confirm_removal.tpl:21 ../templates/default/mailing_adherents.tpl:325
 #: ../templates/default/edit_title.tpl:21 ../templates/default/mass_change_members.tpl:48
 #: ../templates/default/edit_paymenttype.tpl:17 ../templates/default/telemetry.tpl:43
+#, fuzzy
 msgid "Cancel"
-msgstr ""
+msgstr "Anular"
 
 #: ../templates/default/gestion_textes.tpl:31
+#, fuzzy
 msgid "Email Subject"
-msgstr ""
+msgstr "Asunto del Correo electrónico"
 
 #: ../templates/default/page.tpl:152
 msgid "Manage mailings"
@@ -220,16 +229,18 @@ msgstr ""
 
 #: ../includes/routes/groups.routes.php:87 ../templates/default/gestion_groupes.tpl:6
 #: ../templates/default/desktop.tpl:31
+#, fuzzy
 msgid "Groups"
-msgstr ""
+msgstr "Grupos"
 
 #: ../templates/default/voir_adherent.tpl:68
 msgid "View member's contributions"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:308 ../templates/default/gestion_textes.tpl:8
+#, fuzzy
 msgid "Language:"
-msgstr ""
+msgstr "Lengua:"
 
 #: ../lib/Galette/Core/Install.php:1017
 msgid "Write configuration file"
@@ -294,8 +305,9 @@ msgid "Database access/permissions"
 msgstr ""
 
 #: ../templates/default/voir_adherent.tpl:49
+#, fuzzy
 msgid "New password"
-msgstr ""
+msgstr "Nueva contraseña"
 
 #: ../lib/Galette/IO/CsvIn.php:275
 msgid "Fields count mismatch... There should be %should_count fields and there are %count (row %row)"
@@ -303,8 +315,9 @@ msgstr ""
 
 #: ../templates/default/gestion_transactions.tpl:7 ../templates/default/gestion_contributions.tpl:18
 #: ../templates/default/gestion_mailings.tpl:8 ../templates/default/history.tpl:8
+#, fuzzy
 msgid "until"
-msgstr ""
+msgstr "hasta"
 
 #: ../templates/default/gestion_contributions.tpl:306
 msgid "No contribution selected"
@@ -331,8 +344,9 @@ msgid "Plugin '%name' has been successfully installed!"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:188
+#, fuzzy
 msgid "ICQ:"
-msgstr ""
+msgstr "ICQ:"
 
 #: ../templates/default/plugins.tpl:90
 msgid "No inactive plugin."
@@ -352,8 +366,9 @@ msgid "An SQL error has occurred while storing preferences. Please try again, an
 msgstr ""
 
 #: ../templates/default/ajax_groups.tpl:47 ../templates/default/ajax_members.tpl:75
+#, fuzzy
 msgid "Validate"
-msgstr ""
+msgstr "Validar"
 
 #: ../templates/default/404.tpl:21
 msgid "Sorry, the page you are looking for could not be found."
@@ -439,8 +454,9 @@ msgid "Go back to import page"
 msgstr ""
 
 #: ../templates/default/editer_champ.tpl:40
+#, fuzzy
 msgid "Height:"
-msgstr ""
+msgstr "Altura:"
 
 #: ../templates/default/gestion_groupes.tpl:156
 msgid "Pleade provide a group name"
@@ -527,16 +543,18 @@ msgid "apache_user"
 msgstr ""
 
 #: ../includes/i18n.inc.php:330
+#, fuzzy
 msgid "President"
-msgstr ""
+msgstr "Presidente"
 
 #: ../templates/default/preferences.tpl:79
 msgid "Last telemetry sent date."
 msgstr ""
 
 #: ../lib/Galette/IO/Charts.php:178
+#, fuzzy
 msgid "Due free"
-msgstr ""
+msgstr "Cotización gratis"
 
 #: ../includes/routes/management.routes.php:1106
 msgid "An error occurred trying to delete mailing :("
@@ -548,8 +566,9 @@ msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:81 ../templates/default/mailing_adherents.tpl:112
 #: ../templates/default/500.tpl:21 ../templates/default/reminder.tpl:45
+#, fuzzy
 msgid "Message:"
-msgstr ""
+msgstr "Correo:"
 
 #: ../templates/default/config_fields.tpl:32
 msgid "Field '%field' cannot be set as required."
@@ -597,8 +616,9 @@ msgid "Label does not exist"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:473
+#, fuzzy
 msgid "ICQ"
-msgstr ""
+msgstr "ICQ"
 
 #: ../templates/default/gestion_pdf.tpl:47
 msgid "Member's name"
@@ -617,8 +637,9 @@ msgid "Mime-Type not allowed"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:188
+#, fuzzy
 msgid "(Months)"
-msgstr ""
+msgstr "(Meses)"
 
 #: ../templates/default/preferences.tpl:464
 msgid "(Show or not title in front of name)"
@@ -629,8 +650,9 @@ msgid "- Field name already used."
 msgstr ""
 
 #: ../templates/default/footer.tpl:8
+#, fuzzy
 msgid "Documentation"
-msgstr ""
+msgstr "Documentación"
 
 #: ../templates/default/import.tpl:66
 msgid "Use upload form below to send a new file on server, or copy it directly in the imports directory."
@@ -667,8 +689,9 @@ msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:553 ../templates/default/gestion_pdf_content.tpl:6
 #: ../templates/default/attendance_sheet_details.tpl:16
+#, fuzzy
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: ../templates/default/ajouter_transaction.tpl:17
 msgid "-- select a name --"
@@ -699,16 +722,18 @@ msgid "Show public pages for"
 msgstr ""
 
 #: ../templates/default/export.tpl:126
+#, fuzzy
 msgid "Continue"
-msgstr ""
+msgstr "Continuar"
 
 #: ../templates/default/gestion_adherents.tpl:502
 msgid "Search title"
 msgstr ""
 
 #: ../includes/i18n.inc.php:360
+#, fuzzy
 msgid "Mr."
-msgstr ""
+msgstr "señor"
 
 #: ../templates/default/page.tpl:109 ../templates/default/public_page.tpl:61
 msgid "Galette is configured to display errors. This must be avoided in production environments."
@@ -733,8 +758,9 @@ msgstr ""
 #: ../templates/default/ajouter_contribution.tpl:29 ../templates/default/gestion_contributions.tpl:129
 #: ../templates/default/gestion_contributions.tpl:216 ../templates/default/ajouter_transaction.tpl:92
 #: ../templates/default/advanced_search.tpl:120
+#, fuzzy
 msgid "Amount"
-msgstr ""
+msgstr "Monto"
 
 #: ../includes/routes/management.routes.php:1171
 msgid "Remove %1$s file %2$s"
@@ -763,8 +789,9 @@ msgid "Name cannot be empty!"
 msgstr ""
 
 #: ../includes/routes/groups.routes.php:195
+#, fuzzy
 msgid "Group"
-msgstr ""
+msgstr "Grupo"
 
 #: ../templates/default/reminder.tpl:11
 msgid "Impending due date"
@@ -779,12 +806,14 @@ msgid "Next step"
 msgstr ""
 
 #: ../install/steps/check.php:74 ../templates/default/page.tpl:154
+#, fuzzy
 msgid "Imports"
-msgstr ""
+msgstr "Importaciones"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1033
+#, fuzzy
 msgid "boolean"
-msgstr ""
+msgstr "booleano"
 
 #: ../templates/default/gestion_textes.tpl:82
 msgid "Member's last name"
@@ -827,8 +856,9 @@ msgid "%s payment type"
 msgstr ""
 
 #: ../templates/default/gestion_mailings.tpl:129 ../templates/default/page.tpl:125
+#, fuzzy
 msgid "Superadmin"
-msgstr ""
+msgstr "Superadmin"
 
 #: ../templates/default/forms_types/password.tpl:20
 msgid "Password confirmation:"
@@ -851,8 +881,9 @@ msgid "Donation in kind"
 msgstr ""
 
 #: ../lib/Galette/IO/CsvIn.php:406
+#, fuzzy
 msgid "File is empty!"
-msgstr ""
+msgstr "Fichero está vacío!"
 
 #: ../includes/routes/members.routes.php:2157
 msgid "Please type an object for the message."
@@ -891,8 +922,9 @@ msgid "An error occurred while storing the contribution."
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:220
+#, fuzzy
 msgid "Other informations:"
-msgstr ""
+msgstr "Otras informaciones:"
 
 #: ../templates/default/preferences.tpl:428 ../templates/default/preferences.tpl:434
 #: ../templates/default/preferences.tpl:439 ../templates/default/preferences.tpl:444
@@ -950,8 +982,9 @@ msgid "Model has been successfully stored!"
 msgstr ""
 
 #: ../templates/default/mass_change_members.tpl:47
+#, fuzzy
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: ../templates/default/admintools.tpl:5
 msgid "Make sure you've done a backup of the database before using any of the following tools!"
@@ -967,8 +1000,9 @@ msgstr ""
 
 #: ../includes/routes/management.routes.php:746 ../install/steps/check.php:75
 #: ../templates/default/page.tpl:151
+#, fuzzy
 msgid "Logs"
-msgstr ""
+msgstr "Logs"
 
 #: ../templates/default/page.tpl:139
 msgid "Perform advanced search into members list"
@@ -988,8 +1022,9 @@ msgid "Extends membership?"
 msgstr ""
 
 #: ../templates/default/member.tpl:251 ../templates/default/forms_types/groups.tpl:35
+#, fuzzy
 msgid "Member of:"
-msgstr ""
+msgstr "Miembro del:"
 
 #: ../templates/default/advanced_search.tpl:272
 msgid "If your query does not begin with a 'SELECT' statement, it will automatically be added."
@@ -1009,8 +1044,9 @@ msgid "Galette installation"
 msgstr ""
 
 #: ../templates/default/import.tpl:62
+#, fuzzy
 msgid "Import"
-msgstr ""
+msgstr "Importación"
 
 #: ../templates/default/preferences.tpl:236 ../templates/default/preferences.tpl:512
 #: ../templates/default/plugins.tpl:102
@@ -1122,8 +1158,9 @@ msgid "By %name"
 msgstr ""
 
 #: ../lib/Galette/Entity/PaymentType.php:301
+#, fuzzy
 msgid "Cash"
-msgstr ""
+msgstr "Dinero"
 
 #: ../includes/routes/management.routes.php:2160
 msgid "Edit status"
@@ -1135,8 +1172,9 @@ msgstr ""
 
 #: ../templates/default/gestion_intitule_content.tpl:14 ../templates/default/gestion_intitule_content.tpl:33
 #: ../templates/default/gestion_intitule_content.tpl:75
+#, fuzzy
 msgid "Priority"
-msgstr ""
+msgstr "Prioridad"
 
 #: ../templates/default/page.tpl:138
 msgid "List of members"
@@ -1182,16 +1220,19 @@ msgstr ""
 
 #: ../lib/Galette/Filters/MembersList.php:271 ../includes/fields_defs/pdfmodels_fields.php:229
 #: ../includes/dependencies.php:573 ../templates/default/mailing_adherents.tpl:71
+#, fuzzy
 msgid "Address"
-msgstr ""
+msgstr "Dirección"
 
 #: ../templates/default/gestion_groupes.tpl:127
+#, fuzzy
 msgid "Create"
-msgstr ""
+msgstr "Crear"
 
 #: ../templates/default/global_messages.tpl:28
+#, fuzzy
 msgid "- WARNING -"
-msgstr ""
+msgstr "- ADVERTENCIA -"
 
 #: ../includes/routes/members.routes.php:2969
 msgid "The file does not exists or cannot be read :("
@@ -1202,8 +1243,9 @@ msgid "%plugin plugin installation"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:94
+#, fuzzy
 msgid "Update your informations"
-msgstr ""
+msgstr "Actualizar sus datos"
 
 #: ../templates/default/gestion_transactions.tpl:28 ../templates/default/page.tpl:149
 msgid "Add a transaction"
@@ -1222,16 +1264,18 @@ msgid "Administration tools"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:75
+#, fuzzy
 msgid "Company:"
-msgstr ""
+msgstr "Empresa:"
 
 #: ../includes/routes/authentication.routes.php:378
 msgid "Password changed for member '%s'."
 msgstr ""
 
 #: ../templates/default/preferences.tpl:113
+#, fuzzy
 msgid "Facebook"
-msgstr ""
+msgstr "Facebook"
 
 #: ../lib/Galette/Entity/Contribution.php:619
 msgid "Contribution updated"
@@ -1286,8 +1330,9 @@ msgid "No translation for '%s'!<br/>Please fill and submit above form to create 
 msgstr ""
 
 #: ../lib/Galette/IO/PdfGroups.php:182
+#, fuzzy
 msgid "GSM"
-msgstr ""
+msgstr "GSM"
 
 #: ../webroot/installer.php:160 ../webroot/installer.php:200
 msgid "No user name"
@@ -1314,16 +1359,18 @@ msgid "Members selection"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:470
+#, fuzzy
 msgid "MSN"
-msgstr ""
+msgstr "MSN"
 
 #: ../install/steps/db.php:45
 msgid "If it hadn't been made, create a database and a user for Galette."
 msgstr ""
 
 #: ../templates/default/page.tpl:146
+#, fuzzy
 msgid "Add a member"
-msgstr ""
+msgstr "Agregar un miembro"
 
 #: ../templates/default/gestion_transactions.tpl:22
 msgid "Show all members transactions"
@@ -1335,8 +1382,9 @@ msgid "Delete"
 msgstr ""
 
 #: ../templates/default/plugin_info.tpl:15
+#, fuzzy
 msgid "Version:"
-msgstr ""
+msgstr "Versión:"
 
 #: ../templates/default/gestion_textes.tpl:118
 msgid "Contribution type"
@@ -1371,20 +1419,23 @@ msgid "An error occurred adding member to its groups as manager."
 msgstr ""
 
 #: ../templates/default/config_fields.tpl:5 ../templates/default/config_fields.tpl:86
+#, fuzzy
 msgid "Collapse all"
-msgstr ""
+msgstr "Contraer todo"
 
 #: ../templates/default/forms_types/picture.tpl:2
+#, fuzzy
 msgid "Picture:"
-msgstr ""
+msgstr "Foto:"
 
 #: ../includes/routes/management.routes.php:2537
 msgid "Fields configuration"
 msgstr ""
 
 #: ../lib/Galette/Filters/MembersList.php:294 ../lib/Galette/IO/Charts.php:142
+#, fuzzy
 msgid "Staff members"
-msgstr ""
+msgstr "Funcionarios"
 
 #: ../templates/default/gestion_pdf.tpl:84
 msgid "Contribution year"
@@ -1396,12 +1447,14 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Transaction.php:118 ../templates/default/ajouter_transaction.tpl:10
 #: ../templates/default/plugin_info.tpl:13
+#, fuzzy
 msgid "Description:"
-msgstr ""
+msgstr "Descripción:"
 
 #: ../templates/default/mailing_preview.tpl:37
+#, fuzzy
 msgid "Mail body"
-msgstr ""
+msgstr "Cuerpo del mensaje"
 
 #: ../lib/Galette/Entity/Group.php:439
 msgid "Group added"
@@ -1409,8 +1462,9 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:149 ../webroot/installer.php:345
 #: ../templates/default/plugin_initdb.tpl:138
+#, fuzzy
 msgid "End!"
-msgstr ""
+msgstr "Fin!"
 
 #: ../templates/default/gestion_adherents.tpl:707
 msgid "An error occurred displaying attendance sheet details interface :("
@@ -1438,8 +1492,9 @@ msgstr ""
 
 #: ../webroot/installer.php:282 ../templates/default/mailing_adherents.tpl:5
 #: ../templates/default/global_messages.tpl:10
+#, fuzzy
 msgid "- ERROR -"
-msgstr ""
+msgstr "- ERROR -"
 
 #: ../templates/default/traduire_libelles.tpl:21
 msgid "Original text: '%s'"
@@ -1464,8 +1519,9 @@ msgid "Mailing entry %id"
 msgstr ""
 
 #: ../includes/fields_defs/pdfmodels_fields.php:221 ../includes/dependencies.php:565
+#, fuzzy
 msgid "First name"
-msgstr ""
+msgstr "Nombre"
 
 #: ../templates/default/gestion_textes.tpl:65
 msgid "Galette's login URI"
@@ -1512,8 +1568,9 @@ msgid "An error occurred trying to remove searches :/"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:109
+#, fuzzy
 msgid "Google+"
-msgstr ""
+msgstr "Google+"
 
 #: ../lib/Galette/Entity/Reminder.php:274
 msgid "Sent reminder mail for impending membership"
@@ -1592,16 +1649,18 @@ msgid "Remove criteria"
 msgstr ""
 
 #: ../templates/default/change_passwd.tpl:13
+#, fuzzy
 msgid "Confirmation:"
-msgstr ""
+msgstr "Confirmación:"
 
 #: ../templates/default/gestion_adherents.tpl:8 ../templates/default/advanced_search.tpl:10
 msgid "Enter a value"
 msgstr ""
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1034
+#, fuzzy
 msgid "file"
-msgstr ""
+msgstr "archivo"
 
 #: ../includes/routes/contributions.routes.php:1226
 msgid "An error occurred trying to remove contributions(s) :("
@@ -1676,8 +1735,9 @@ msgid "Transaction has been successfully stored"
 msgstr ""
 
 #: ../templates/default/history.tpl:87 ../templates/default/history.tpl:128
+#, fuzzy
 msgid "User"
-msgstr ""
+msgstr "Usuario"
 
 #: ../templates/default/plugin_info.tpl:21
 msgid "Path:"
@@ -1784,8 +1844,9 @@ msgid "No photo has been created"
 msgstr ""
 
 #: ../templates/default/mailing_preview.tpl:13
+#, fuzzy
 msgid "To:"
-msgstr ""
+msgstr "A:"
 
 #: ../lib/Galette/Entity/PdfModel.php:574
 msgid "body should not be empty!"
@@ -1817,20 +1878,23 @@ msgid "Contribution begin date"
 msgstr ""
 
 #: ../templates/default/ajax_members.tpl:38 ../templates/default/group_persons.tpl:27
+#, fuzzy
 msgid "[admin]"
-msgstr ""
+msgstr "[admin]"
 
 #: ../includes/fields_defs/members_fields.php:180 ../templates/default/preferences.tpl:74
+#, fuzzy
 msgid "Website:"
-msgstr ""
+msgstr "Sitio web:"
 
 #: ../templates/default/preferences.tpl:467
 msgid "Address type:"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:471
+#, fuzzy
 msgid "Jabber"
-msgstr ""
+msgstr "Jabber"
 
 #: ../lib/Galette/IO/PdfContribution.php:144 ../includes/routes/contributions.routes.php:1109
 #: ../templates/default/gestion_contributions.tpl:52
@@ -1850,8 +1914,9 @@ msgid "- You must indicate the SMTP server you want to use!"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:132 ../templates/default/preferences.tpl:47
+#, fuzzy
 msgid "Zip Code:"
-msgstr ""
+msgstr "Código postal:"
 
 #: ../templates/default/preferences.tpl:374 ../templates/default/preferences.tpl:492
 msgid "Horizontal margins:"
@@ -1910,8 +1975,9 @@ msgid "Home"
 msgstr ""
 
 #: ../install/steps/db_checks.php:67
+#, fuzzy
 msgid "CREATE operation not allowed"
-msgstr ""
+msgstr "CREATE operación prohibido"
 
 #: ../includes/main.inc.php:574
 msgid "Routes '%routes' are missing in ACLs!"
@@ -1929,8 +1995,9 @@ msgstr ""
 #: ../templates/default/ajouter_transaction.tpl:45 ../templates/default/preferences.tpl:538
 #: ../templates/default/group.tpl:76 ../templates/default/config_fields.tpl:57
 #: ../templates/default/editer_champ.tpl:72 ../templates/default/edit_paymenttype.tpl:15
+#, fuzzy
 msgid "Save"
-msgstr ""
+msgstr "Registrar"
 
 #: ../lib/Galette/Core/Preferences.php:470
 msgid "- Invalid date for beginning of membership."
@@ -1953,8 +2020,9 @@ msgid "Id GNUpg (GPG):"
 msgstr ""
 
 #: ../includes/i18n.inc.php:331
+#, fuzzy
 msgid "Vice-president"
-msgstr ""
+msgstr "Vicepresidente"
 
 #: ../includes/i18n.inc.php:353
 msgid "donation in kind"
@@ -1965,20 +2033,23 @@ msgid "Database can't be reached. Please go back to enter the connection paramet
 msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1541 ../templates/default/forms_types/account.tpl:5
+#, fuzzy
 msgid "Active"
-msgstr ""
+msgstr "Activo"
 
 #: ../includes/i18n.inc.php:332
+#, fuzzy
 msgid "Treasurer"
-msgstr ""
+msgstr "Tesorero"
 
 #: ../install/steps/db_select_version.php:86
 msgid "Your current Galette version is..."
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:40 ../templates/default/advanced_search.tpl:41
+#, fuzzy
 msgid "With"
-msgstr ""
+msgstr "Con"
 
 #: ../includes/routes/members.routes.php:1545
 msgid "Status label"
@@ -2006,24 +2077,27 @@ msgid "- Transaction description must be 150 characters long maximum."
 msgstr ""
 
 #: ../templates/default/advanced_search.tpl:266
+#, fuzzy
 msgid "Expert search"
-msgstr ""
+msgstr "Buscador avanzado"
 
 #: ../lib/Galette/Entity/Contribution.php:523
 msgid "- Membership period overlaps period starting at "
 msgstr ""
 
 #: ../install/steps/db_checks.php:109
+#, fuzzy
 msgid "SELECT operation not allowed"
-msgstr ""
+msgstr "SELECT operación prohibido"
 
 #: ../templates/default/ajouter_contribution.tpl:166 ../templates/default/ajouter_transaction.tpl:147
 msgid "No member registered!"
 msgstr ""
 
 #: ../install/steps/db_checks.php:137
+#, fuzzy
 msgid "DROP operation not allowed"
-msgstr ""
+msgstr "DROP operación prohibido"
 
 #: ../lib/Galette/Entity/Contribution.php:158 ../templates/default/ajouter_contribution.tpl:119
 msgid "Membership extension:"
@@ -2040,8 +2114,9 @@ msgstr ""
 
 #: ../includes/routes/members.routes.php:2442 ../templates/default/desktop.tpl:36
 #: ../templates/default/page.tpl:150
+#, fuzzy
 msgid "Reminders"
-msgstr ""
+msgstr "Recordatorios"
 
 #: ../templates/default/import_model.tpl:7
 msgid "Change model"
@@ -2132,8 +2207,9 @@ msgid "%count groups requested, and %done created"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:140 ../templates/default/preferences.tpl:51
+#, fuzzy
 msgid "City:"
-msgstr ""
+msgstr "Ciudad:"
 
 #: ../includes/routes/management.routes.php:2704
 msgid "Dynamic field"
@@ -2144,16 +2220,18 @@ msgid "Member card updated"
 msgstr ""
 
 #: ../includes/fields_defs/pdfmodels_fields.php:251 ../includes/dependencies.php:595
+#, fuzzy
 msgid "Email address"
-msgstr ""
+msgstr "Correo electrónico"
 
 #: ../templates/default/page.tpl:146
 msgid "Add new member in database"
 msgstr ""
 
 #: ../lib/Galette/Filters/MembersList.php:273
+#, fuzzy
 msgid "Job"
-msgstr ""
+msgstr "Trabajo"
 
 #: ../templates/default/editer_intitule.tpl:26 ../templates/default/gestion_intitule_content.tpl:4
 msgid "Note: members with a status priority lower than %priority are staff members."
@@ -2180,8 +2258,9 @@ msgid "Flush the logs"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:472
+#, fuzzy
 msgid "Web Site"
-msgstr ""
+msgstr "Sitio Web"
 
 #: ../templates/default/mailing_recipients.tpl:13
 msgid "No member selected (yet)."
@@ -2233,13 +2312,15 @@ msgstr ""
 
 #: ../includes/routes/management.routes.php:427 ../templates/default/desktop.tpl:40
 #: ../templates/default/page.tpl:178
+#, fuzzy
 msgid "Plugins"
-msgstr ""
+msgstr "Plugins"
 
 #: ../templates/default/gestion_adherents.tpl:199 ../templates/default/gestion_adherents.tpl:385
 #: ../templates/default/footer.tpl:5
+#, fuzzy
 msgid "Website"
-msgstr ""
+msgstr "Sitio web"
 
 #: ../lib/Galette/Entity/Group.php:707
 msgid "Group `%1$s` is a child of `%2$s`, cannot be set as parent!"
@@ -2290,8 +2371,9 @@ msgid "An error occurred storing temporary password for %s. Please inform an adm
 msgstr ""
 
 #: ../templates/default/ajouter_contribution.tpl:121
+#, fuzzy
 msgid "months"
-msgstr ""
+msgstr "meses"
 
 #: ../templates/default/export.tpl:101
 msgid "Galette tables exports"
@@ -2311,8 +2393,9 @@ msgstr ""
 
 #: ../templates/default/config_fields.tpl:17 ../templates/default/config_fields.tpl:26
 #: ../templates/default/editer_champ.tpl:86
+#, fuzzy
 msgid "Field name"
-msgstr ""
+msgstr "Nombre del campo"
 
 #: ../templates/default/desktop.tpl:13
 msgid "Send anonymous and imprecise data about your Galette instance"
@@ -2391,8 +2474,9 @@ msgid "Contributions over time"
 msgstr ""
 
 #: ../includes/i18n.inc.php:359
+#, fuzzy
 msgid "Contact information"
-msgstr ""
+msgstr "Información de contacto"
 
 #: ../templates/default/advanced_search.tpl:268
 msgid "If the following is not empty, all others filters will be ignored."
@@ -2403,21 +2487,25 @@ msgid "Send telemetry informations"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:83
+#, fuzzy
 msgid "Nickname:"
-msgstr ""
+msgstr "Apodo:"
 
 #: ../webroot/installer.php:330 ../templates/default/plugin_initdb.tpl:137
+#, fuzzy
 msgid "Database upgrade"
-msgstr ""
+msgstr "Actualización de Base de Datos"
 
 #: ../install/steps/check.php:69
+#, fuzzy
 msgid "Photos"
-msgstr ""
+msgstr "Fotos"
 
 #: ../install/steps/check.php:76 ../templates/default/mailing_adherents.tpl:34
 #: ../templates/default/gestion_mailings.tpl:97 ../templates/default/gestion_mailings.tpl:132
+#, fuzzy
 msgid "Attachments"
-msgstr ""
+msgstr "Adjuntos"
 
 #: ../templates/default/advanced_search.tpl:79
 msgid "Show public infos"
@@ -2456,24 +2544,27 @@ msgid "You can review below the raw data that would be send if you press the 'Se
 msgstr ""
 
 #: ../templates/default/preferences.tpl:28
+#, fuzzy
 msgid "Footer text:"
-msgstr ""
+msgstr "Contenido para el pié de página"
 
 #: ../templates/default/mailing_adherents.tpl:17
 msgid "Go back to members list"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:196
+#, fuzzy
 msgid "MSN:"
-msgstr ""
+msgstr "MSN:"
 
 #: ../templates/default/mailing_adherents.tpl:64
 msgid "current logged in user"
 msgstr ""
 
 #: ../templates/default/member.tpl:48 ../templates/default/voir_adherent.tpl:124
+#, fuzzy
 msgid "Parent of:"
-msgstr ""
+msgstr "ID de padre"
 
 #: ../includes/routes/members.routes.php:2924 ../includes/main.inc.php:220
 msgid "You do not have permission for requested URL."
@@ -2484,8 +2575,9 @@ msgid "Add attachment"
 msgstr ""
 
 #: ../lib/Galette/Filters/MembersList.php:295
+#, fuzzy
 msgid "Administrators"
-msgstr ""
+msgstr "Administradores"
 
 #: ../templates/default/preferences.tpl:417
 msgid "Short Text (Card Center):"
@@ -2496,16 +2588,18 @@ msgid "you wish to erase an older version of Galette without keeping your data"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:340
+#, fuzzy
 msgid "Parent:"
-msgstr ""
+msgstr "Padre"
 
 #: ../templates/default/change_passwd.tpl:9
 msgid "New password:"
 msgstr ""
 
 #: ../includes/routes/members.routes.php:3133
+#, fuzzy
 msgid "Nothing to do!"
-msgstr ""
+msgstr "Nada que mostrar!"
 
 #: ../templates/default/group.tpl:26 ../templates/default/group.tpl:34
 msgid "Parent group:"
@@ -4488,8 +4582,9 @@ msgid "Enter a text (HTML allowed) that will be displayed in the footer of every
 msgstr ""
 
 #: ../templates/default/advanced_search.tpl:106
+#, fuzzy
 msgid "Begin date"
-msgstr ""
+msgstr "Fecha de inicio"
 
 #: ../webroot/installer.php:334 ../templates/default/plugin_initdb.tpl:137
 msgid "Database installation"
@@ -4832,8 +4927,9 @@ msgstr ""
 #: ../templates/default/gestion_transactions.tpl:59 ../templates/default/gestion_transactions.tpl:107
 #: ../templates/default/plugins.tpl:8 ../templates/default/plugins.tpl:22
 #: ../templates/default/history.tpl:110 ../templates/default/history.tpl:130
+#, fuzzy
 msgid "Description"
-msgstr ""
+msgstr "Descripción"
 
 #: ../includes/routes/members.routes.php:1665 ../includes/routes/members.routes.php:1753
 #: ../includes/routes/members.routes.php:1831
@@ -5694,8 +5790,9 @@ msgid "Warning"
 msgstr ""
 
 #: ../templates/default/500.tpl:11
+#, fuzzy
 msgid "Details"
-msgstr ""
+msgstr "Detalles"
 
 #: ../templates/default/preferences.tpl:415
 msgid "Cards generation parameters"
@@ -6130,8 +6227,9 @@ msgid "Adhesion Form"
 msgstr ""
 
 #: ../templates/default/gestion_pdf_content.tpl:19
+#, fuzzy
 msgid "Footer"
-msgstr ""
+msgstr "Pié de página"
 
 #: ../lib/Galette/Core/Install.php:1142 ../templates/default/page.tpl:185
 msgid "Titles"
@@ -6144,8 +6242,9 @@ msgstr ""
 #: ../lib/Galette/IO/PdfAdhesionForm.php:133 ../includes/routes/members.routes.php:262
 #: ../templates/default/forms_types/gender.tpl:21 ../templates/default/mass_change_members.tpl:29
 #: ../templates/default/advanced_search.tpl:193 ../templates/default/advanced_search.tpl:307
+#, fuzzy
 msgid "Woman"
-msgstr ""
+msgstr "Mujer"
 
 #: ../templates/default/gestion_adherents.tpl:342
 msgid "Inactive account"
