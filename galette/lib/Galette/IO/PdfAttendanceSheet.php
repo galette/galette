@@ -131,10 +131,10 @@ class PdfAttendanceSheet extends Pdf
         $this->PageHeader($doc_title);
 
         if ($this->sheet_title !== null) {
-            $this->Cell(190, 7, $post['sheet_title'], 0, 1, 'C');
+            $this->Cell(190, 7, $this->sheet_title, 0, 1, 'C');
         }
         if ($this->sheet_sub_title) {
-            $this->Cell(190, 7, $post['sheet_sub_title'], 0, 1, 'C');
+            $this->Cell(190, 7, $this->sheet_sub_title, 0, 1, 'C');
         }
         if ($this->sheet_date) {
             $date_fmt = null;
