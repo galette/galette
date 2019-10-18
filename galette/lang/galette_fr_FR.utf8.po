@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2019-10-18 05:28+0000\n"
+"PO-Revision-Date: 2019-10-18 05:33+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -1197,8 +1197,8 @@ msgid ""
 "Telemetry data are <strong>anonymous</strong>; nothing about your "
 "organization or its members will be sent."
 msgstr ""
-"Les données de télémétrie sont <strong>anonymes</strong>; rien de ce qui "
-"concerne votre association ou vos membres de sera envoyé."
+"Les données de télémétrie sont <strong>anonymes</strong>&nbsp;; rien de ce "
+"qui concerne votre association ou vos membres de sera envoyé."
 
 #: ../templates/default/group_persons.tpl:43
 msgid "No manager attached"
@@ -1449,7 +1449,7 @@ msgstr "Entrez l’adresse email"
 msgid "A problem happened while sending account mail to admin"
 msgstr ""
 "Un problème est survenu lors de l’envoi du courriel pour le compte à "
-"l'administrateur."
+"l'administrateur"
 
 #: ../install/steps/check.php:140
 msgid ""
@@ -1863,7 +1863,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/Pdf.php:226
 msgid "Unable to convert GIF file "
-msgstr "Impossible de convertir le fichier GIF"
+msgstr "Impossible de convertir le fichier GIF "
 
 #: ../install/steps/db_checks.php:130
 msgid "DELETE operation allowed"
@@ -2319,7 +2319,7 @@ msgstr "Changer le modèle"
 
 #: ../templates/default/js_chosen_adh.tpl:77
 msgid "Load previous members..."
-msgstr "Charger les adhérents précédents"
+msgstr "Charger les adhérents précédents..."
 
 #: ../templates/default/admintools.tpl:8
 msgid "Select actions(s)"
@@ -5919,7 +5919,7 @@ msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
 "and password below. For GMail, authentication will always be on."
 msgstr ""
-"Est-ce que l’envoi de mails utilisera l’authentification SMTP&nbsp;:? Vous "
+"Est-ce que l’envoi de mails utilisera l’authentification SMTP&nbsp;? Vous "
 "devrez fournir un nom d’utilisateur et un mot de passe ci-dessous. Pour "
 "GMail, l’authentification sera toujours activée."
 
@@ -6898,7 +6898,7 @@ msgstr "Entreprises"
 
 #: ../lib/Galette/IO/Pdf.php:209
 msgid "Not a GIF file "
-msgstr "Pas un fichier GIF"
+msgstr "Pas un fichier GIF "
 
 #: ../lib/Galette/Entity/Adherent.php:1175
 msgid "- This E-Mail address is already used by another member!"
