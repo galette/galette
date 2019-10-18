@@ -1,24 +1,25 @@
 # Header entry was created by Lokalize.
-#
 # Alexandrine "Maman" Cwiklinski, 2012, 2013, 2014, 2015.
 # Johan Cwiklinski <johan@x-tnd.be>, 2017. #zanata
 # Amaury Froment <trinitrotoluene76@gmail.com>, 2018. #zanata
 # Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2019. #zanata
+# Johan Cwiklinski <trasher@x-tnd.be>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2019-10-17 08:46+0200\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: French <kde-i18n-doc@kde.org>\n"
-"Language: fr\n"
+"PO-Revision-Date: 2019-10-18 05:28+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
+"fr/>\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.2.4\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 3.9.1-dev\n"
 
 #: ../templates/default/gestion_adherents.tpl:13
 msgid "among:"
@@ -1438,7 +1439,7 @@ msgstr "Afficher le tableau de bord à la connexion"
 
 #: ../includes/routes/management.routes.php:1645
 msgid "Import model has been successfully stored :)"
-msgstr "Le modèle d’import a été enregistré avec succès !"
+msgstr "Le modèle d’import a été enregistré avec succès :)"
 
 #: ../templates/default/preferences.tpl:597
 msgid "Enter the email adress"
@@ -5427,7 +5428,7 @@ msgstr "Afficher le titre&nbsp;?"
 
 #: ../webroot/installer.php:203
 msgid "The username cannot contain the @ character"
-msgstr "L’identifiant ne peut pas contenir le caractère @&nbsp;!"
+msgstr "L’identifiant ne peut pas contenir le caractère @"
 
 #: ../includes/routes/members.routes.php:1785
 #: ../includes/routes/members.routes.php:1854
@@ -5507,7 +5508,7 @@ msgstr "Aucune permission pour modifier l’adhérent"
 #: ../lib/Galette/Entity/DynamicsTrait.php:118
 #: ../lib/Galette/Entity/I18nTrait.php:291
 msgid "Missing required field %field"
-msgstr "Champ requis %field manquant !"
+msgstr "Champ requis %field manquant"
 
 #: ../includes/fields_defs/pdfmodels_fields.php:266
 #: ../includes/dependencies.php:610
@@ -7698,7 +7699,7 @@ msgstr "- Durée d’extension d’adhésion invalide"
 
 #: ../lib/Galette/Entity/Adherent.php:1204
 msgid "- The username cannot contain the @ character"
-msgstr "- L’identifiant ne peut pas contenir le caractère @&nbsp;!"
+msgstr "- L’identifiant ne peut pas contenir le caractère @"
 
 #: ../templates/default/ajouter_contribution.tpl:149
 msgid "Notify member"
