@@ -1064,14 +1064,13 @@ class Members
                         $now = new \DateTime();
                         $duedate = new \DateTime();
                         $duedate->modify('+1 month');
-                        $select->where
-                            ->greaterThanOrEqualTo(
-                                'date_echeance',
-                                $now->format('Y-m-d')
-                            )->lessThan(
-                                'date_echeance',
-                                $duedate->format('Y-m-d')
-                            );
+                        $select->where->greaterThanOrEqualTo(
+                            'date_echeance',
+                            $now->format('Y-m-d')
+                        )->lessThan(
+                            'date_echeance',
+                            $duedate->format('Y-m-d')
+                        );
                         break;
                     case self::MEMBERSHIP_LATE:
                         $select->where
@@ -1468,9 +1467,7 @@ class Members
                             );
                         } else {
                             $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' .
-                                $qop  . ' ' . $zdb->platform->quoteValue(
-                                    $fs['search']
-                                );
+                                $qop  . ' ' . $zdb->platform->quoteValue($fs['search']);
                         }
 
                         if ($fs['log_op'] === AdvancedMembersList::OP_AND) {
