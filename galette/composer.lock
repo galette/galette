@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1cc099037e416cedb09249f42d5bb716",
+    "content-hash": "bac9c836bffe059cef05247173b8bdfc",
     "packages": [
         {
             "name": "akrabat/rka-slim-session-middleware",
@@ -141,12 +141,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "c3f82846fdfd1760b277767ac21426ca030f795e"
+                "reference": "674d89ac0dd42a03cca42523a0f72bdea90b2725"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/c3f82846fdfd1760b277767ac21426ca030f795e",
-                "reference": "c3f82846fdfd1760b277767ac21426ca030f795e",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/674d89ac0dd42a03cca42523a0f72bdea90b2725",
+                "reference": "674d89ac0dd42a03cca42523a0f72bdea90b2725",
                 "shasum": ""
             },
             "require": {
@@ -155,12 +155,12 @@
             "require-dev": {
                 "ext-intl": "*",
                 "phpunit/phpunit": "^4.8.35 || ^5.7",
-                "squizlabs/php_codesniffer": "^1.5"
+                "squizlabs/php_codesniffer": "^2.9.2"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.8-dev"
+                    "dev-master": "1.9-dev"
                 }
             },
             "autoload": {
@@ -183,7 +183,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2017-08-30T09:14:20+00:00"
+            "time": "2019-10-17T13:03:13+00:00"
         },
         {
             "name": "mathmarques/smarty-view",
@@ -1196,16 +1196,16 @@
         },
         {
             "name": "zendframework/zend-i18n",
-            "version": "2.9.1",
+            "version": "2.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-i18n.git",
-                "reference": "9233ee8553564a6e45e8311a7173734ba4e5db9b"
+                "reference": "e17a54b3aee333ab156958f570cde630acee8b07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-i18n/zipball/9233ee8553564a6e45e8311a7173734ba4e5db9b",
-                "reference": "9233ee8553564a6e45e8311a7173734ba4e5db9b",
+                "url": "https://api.github.com/repos/zendframework/zend-i18n/zipball/e17a54b3aee333ab156958f570cde630acee8b07",
+                "reference": "e17a54b3aee333ab156958f570cde630acee8b07",
                 "shasum": ""
             },
             "require": {
@@ -1260,7 +1260,7 @@
                 "i18n",
                 "zf"
             ],
-            "time": "2019-09-26T11:54:57+00:00"
+            "time": "2019-09-30T12:04:37+00:00"
         },
         {
             "name": "zendframework/zend-servicemanager",
