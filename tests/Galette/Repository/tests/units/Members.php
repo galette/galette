@@ -262,7 +262,7 @@ class Members extends atoum
         //Get staff
         $members = new \Galette\Repository\Members();
         $list = $members->getStaffMembersList();
-        $this->integer($list->count())->isIdenticalTo(2);
+        $this->integer($list->count())->isIdenticalTo(1);
 
         //Remove 2 members
         $torm = [];
