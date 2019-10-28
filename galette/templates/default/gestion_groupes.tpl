@@ -52,9 +52,6 @@
                 'initially_open': [{foreach item=g from=$groups}'group_{$g->getId()}',{/foreach}]
             },
 {/if}
-            'themes': {
-                'url': '{base_url}/{$template_subdir}/jstree/style.css'
-            },
             'unique' : {
                 'error_callback': function (n, p, f) {
                     alert("Duplicate node `" + n + "` with function `" + f + "`!");

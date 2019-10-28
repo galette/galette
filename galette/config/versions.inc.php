@@ -42,7 +42,7 @@ define('ANALOG_VERSION', '1.0.7');
 define('TCPDF_VERSION', '6.2.6');
 define('JQUERY_VERSION', '1.10.2');
 define('JQUERY_MIGRATE_VERSION', '1.2.1');
-define('JQUERY_UI_VERSION', '1.10.3');
+define('JQUERY_UI_VERSION', '1.12.1');
 define('JQUERY_MARKITUP_VERSION', '1.1.14');
 define('JQUERY_JQPLOT_VERSION', '1.0.8r1250');
 define('PHP_MAILER_VERSION', '5.2.9');

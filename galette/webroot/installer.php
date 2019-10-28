@@ -239,19 +239,9 @@ header('Content-Type: text/html; charset=UTF-8');
     <head>
         <title><?php echo _T("Galette Installation") . ' - ' . $install->getStepTitle(); ?></title>
         <meta charset="UTF-8"/>
-        <link rel="stylesheet" type="text/css" href="./themes/default/galette.css"/>
+        <link rel="stylesheet" type="text/css" href="./assets/css/galette-main.bundle.min.css" />
         <link rel="stylesheet" type="text/css" href="./themes/default/install.css"/>
-        <link rel="stylesheet" type="text/css" href="./themes/default/jquery-ui/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>.custom.css"/>
-        <link rel="stylesheet" type="text/css" href="./js/selectize-0.12.6/css/selectize.css" />
-        <link rel="stylesheet" type="text/css" href="./js/selectize-0.12.6/css/selectize.default.css" />
-        <script type="text/javascript" src="./js/jquery/jquery-<?php echo JQUERY_VERSION; ?>.min.js"></script>
-        <script type="text/javascript" src="./js/jquery/jquery-migrate-<?php echo JQUERY_MIGRATE_VERSION; ?>.min.js"></script>
-        <script type="text/javascript" src="./js/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
-        <script type="text/javascript" src="./js//jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.button.min.js"></script>
-        <script type="text/javascript" src="./js/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.tooltip.min.js"></script>
-        <script type="text/javascript" src="./js/selectize-0.12.6/js/standalone/selectize.min.js"></script>
-        <script type="text/javascript" src="./js/jquery/jquery.bgFade.js"></script>
-        <script type="text/javascript" src="./js/common.js"></script>
+        <script type="text/javascript" src="./assets/js/galette-main.bundle.min.js"></script>
         <link rel="shortcut icon" href="./themes/default/images/favicon.png" />
     </head>
     <body>

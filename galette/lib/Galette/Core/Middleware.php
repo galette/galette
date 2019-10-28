@@ -143,15 +143,6 @@ class Middleware
         <title>" . _T("Galette needs update!") . "</title>
         <meta charset=\"UTF-8\"/>
         <link rel=\"stylesheet\" type=\"text/css\" href=\"" . $css_path . "galette.css\"/>
-        <link rel=\"stylesheet\" type=\"text/css\" href=\"" . $css_path . "jquery-ui/jquery-ui-" . JQUERY_UI_VERSION . ".custom.css\"/>
-        <script type=\"text/javascript\" src=\"" . $path . "js/jquery/jquery-" . JQUERY_VERSION . ".min.js\"></script>
-        <script type=\"text/javascript\" src=\"" . $path . "js/jquery/jquery-migrate-" . JQUERY_MIGRATE_VERSION . ".min.js\"></script>
-        <script type=\"text/javascript\" src=\"" . $path . "js/jquery/jquery-ui-" . JQUERY_UI_VERSION . "/jquery.ui.widget.min.js\"></script>
-        <script type=\"text/javascript\" src=\"" . $path . "js/jquery/jquery-ui-" . JQUERY_UI_VERSION . "/jquery.ui.button.min.js\"></script>
-        <script type=\"text/javascript\" src=\"" . $path . "js/jquery/jquery-ui-" . JQUERY_UI_VERSION . "/jquery.ui.position.min.js\"></script>
-        <script type=\"text/javascript\" src=\"" . $path . "js/jquery/jquery-ui-" . JQUERY_UI_VERSION . "/jquery.ui.tooltip.min.js\"></script>
-        <script type=\"text/javascript\" src=\"" . $path . "js/jquery/jquery.bgFade.js\"></script>
-        <script type=\"text/javascript\" src=\"" . $path . "js/common.js\"></script>
     </head>
     <body class=\"notup2date\">
         <p class=\"center\">

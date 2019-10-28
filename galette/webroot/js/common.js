@@ -207,11 +207,11 @@ $(function() {
         $(this).html('<a href="#">' + $(this).text() + '</a>');
     });
 
-    if( $('#menu').size() > 0 ) {
+    if( $('#menu').length > 0 ) {
         $('#menu').accordion({
             header: 'h1:not(#logo)',
             heightStyle: 'content',
-            active: $('#menu ul li[class*="selected"]').parent('ul').prevAll('ul').size()
+            active: $('#menu ul li[class*="selected"]').parent('ul').prevAll('ul').length
         });
     }
 

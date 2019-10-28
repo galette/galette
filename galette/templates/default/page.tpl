@@ -3,41 +3,12 @@
     <head>
         {include file='common_header.tpl'}
 {if $color_picker}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}farbtastic.js"></script>
-        <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}farbtastic.css"/>
+        <script type="text/javascript" src="{base_url}/assets/js/galette-farbtastic.bundle.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="{base_url}/assets/css/galette-farbtastic.bundle.min.css"/>
 {/if}
-{* JQuery UI related *}
-{if $require_sorter or $require_dialog}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.mouse.min.js"></script>
-{/if}
-{if $require_sorter}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.sortable.min.js"></script>
-{/if}
-{if $require_calendar}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
-    {if $galette_lang ne 'en'}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.min.js"></script>
-    {/if}
-{/if}
-{if $require_tabs}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.tabs.min.js"></script>
-{/if}
-{if $require_dialog}
-        {* Drag component, only used for Dialog for the moment *}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.draggable.min.js"></script>
-        {* So the dialog could be aligned in the middle of the screen *}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.position.min.js"></script>
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.dialog.min.js"></script>
-{/if}
-{* /JQuery UI related *}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery.cookie.js"></script>
 {if $require_charts}
-        <link rel="stylesheet" type="text/css" href="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.css" />
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.min.js"></script>
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.pieRenderer.min.js"></script>
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.barRenderer.min.js"></script>
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.pointLabels.min.js"></script>
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="{base_url}/assets/css//galette-jqplot.bundle.min.css" />
+        <script type="text/javascript" src="{base_url}/assets/js/galette-jqplot.bundle.min.js"></script>
 {/if}
 {if $html_editor}
     {if !isset($plugged_html_editor)}
@@ -67,11 +38,10 @@
     {/if}
 {/if}
 {if $require_tree}
-    <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery.jstree.js"></script>
+    <script type="text/javascript" src="{base_url}/assets/js/galette-jstree.bundle.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{base_url}/assets/css/galette-jstree.bundle.min.css"/>
 {/if}
 {if $autocomplete}
-    <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.menu.min.js"></script>
-    <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.autocomplete.min.js"></script>
     <script type="text/javascript">
         $(function() {
             $('#ville_adh, #lieu_naissance').autocomplete({
