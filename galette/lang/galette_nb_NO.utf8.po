@@ -1,17 +1,20 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2019.
+# Allan Nordhøy <epost@anotheragency.no>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-18 07:12+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2019-11-02 10:03+0000\n"
+"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/galette/"
+"galette/nb_NO/>\n"
 "Language: nb_NO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 2.4.0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.10-dev\n"
 
 #: ../templates/default/gestion_adherents.tpl:13
 msgid "among:"
@@ -27,11 +30,11 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:156
 msgid "Phone:"
-msgstr ""
+msgstr "Telefon:"
 
 #: ../templates/default/editer_champ.tpl:18
 msgid "Permissions:"
-msgstr ""
+msgstr "Tilganger:"
 
 #: ../includes/routes/management.routes.php:1788
 msgid "Titles management"
@@ -46,12 +49,13 @@ msgid "A required file is missing"
 msgstr ""
 
 #: ../templates/default/plugin_initdb.tpl:52
+#, fuzzy
 msgid "You current %name version is..."
-msgstr ""
+msgstr "Din nåværende %name-versjon er…"
 
 #: ../lib/Galette/Entity/Contribution.php:148 ../templates/default/ajouter_contribution.tpl:123
 msgid "End date of membership:"
-msgstr ""
+msgstr "Sluttdato for medlemskap:"
 
 #: ../includes/routes/management.routes.php:1056
 msgid "Remove mailing #%1$s"
@@ -63,11 +67,11 @@ msgstr ""
 
 #: ../includes/fields_defs/pdfmodels_fields.php:198 ../includes/dependencies.php:542
 msgid "Required membership:"
-msgstr ""
+msgstr "Påkrevd medlemskap:"
 
 #: ../templates/default/preferences.tpl:98
 msgid "Not registered"
-msgstr ""
+msgstr "Ikke registrert"
 
 #: ../includes/routes/members.routes.php:2519
 msgid "Sent reminders:"
@@ -79,7 +83,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:67
 msgid "-- Choose a staff member --"
-msgstr ""
+msgstr "-- Velg et stabsmedlem --"
 
 #: ../includes/routes/management.routes.php:2750
 msgid "An error occurred trying to delete field :("
@@ -168,7 +172,7 @@ msgstr ""
 #: ../templates/default/edit_title.tpl:21 ../templates/default/mass_change_members.tpl:48
 #: ../templates/default/edit_paymenttype.tpl:17 ../templates/default/telemetry.tpl:43
 msgid "Cancel"
-msgstr ""
+msgstr "Avbryt"
 
 #: ../templates/default/gestion_textes.tpl:31
 msgid "Email Subject"
@@ -180,7 +184,7 @@ msgstr ""
 
 #: ../templates/default/group.tpl:70
 msgid "Manage members"
-msgstr ""
+msgstr "Håndter medlemmer"
 
 #: ../templates/default/preferences.tpl:379 ../templates/default/preferences.tpl:502
 msgid "Horizontal spacing:"
@@ -200,19 +204,20 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:1047
 msgid "Membership"
-msgstr ""
+msgstr "Medlemskap"
 
 #: ../includes/routes/management.routes.php:1850
+#, fuzzy
 msgid "Remove title %1$s"
-msgstr ""
+msgstr "Fjern tittel %1$s"
 
 #: ../includes/routes/management.routes.php:2166
 msgid "Edit contribution type"
-msgstr ""
+msgstr "Rediger bidragstype"
 
 #: ../templates/default/page.tpl:144
 msgid "List of contributions"
-msgstr ""
+msgstr "Liste over bidrag"
 
 #: ../templates/default/forms_types/groups.tpl:6
 msgid "Manage user's groups"
@@ -229,7 +234,7 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:308 ../templates/default/gestion_textes.tpl:8
 msgid "Language:"
-msgstr ""
+msgstr "Språk:"
 
 #: ../lib/Galette/Core/Install.php:1017
 msgid "Write configuration file"
@@ -254,12 +259,12 @@ msgstr ""
 
 #: ../templates/default/fake_data.tpl:33 ../templates/default/page.tpl:180
 msgid "Dynamic fields"
-msgstr ""
+msgstr "Dynamiske felter"
 
 #: ../templates/default/gestion_contributions.tpl:140 ../templates/default/gestion_contributions.tpl:217
 #: ../templates/default/advanced_search.tpl:133
 msgid "Payment type"
-msgstr ""
+msgstr "Betalingstype"
 
 #: ../lib/Galette/Entity/SavedSearch.php:153
 msgid "Form is mandatory!"
@@ -295,7 +300,7 @@ msgstr ""
 
 #: ../templates/default/voir_adherent.tpl:49
 msgid "New password"
-msgstr ""
+msgstr "Nytt passord"
 
 #: ../lib/Galette/IO/CsvIn.php:275
 msgid "Fields count mismatch... There should be %should_count fields and there are %count (row %row)"
@@ -316,7 +321,7 @@ msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:380
 msgid "User status/interactions"
-msgstr ""
+msgstr "Brukerstatus/interaksjoner"
 
 #: ../lib/Galette/IO/FileTrait.php:486
 msgid "File extension is not allowed, only %s files are."
@@ -332,7 +337,7 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:188
 msgid "ICQ:"
-msgstr ""
+msgstr "ICQ:"
 
 #: ../templates/default/plugins.tpl:90
 msgid "No inactive plugin."
@@ -440,15 +445,15 @@ msgstr ""
 
 #: ../templates/default/editer_champ.tpl:40
 msgid "Height:"
-msgstr ""
+msgstr "Høyde:"
 
 #: ../templates/default/gestion_groupes.tpl:156
 msgid "Pleade provide a group name"
-msgstr ""
+msgstr "Angi et gruppenavn"
 
 #: ../includes/routes/main.routes.php:127 ../templates/default/footer.tpl:24
 msgid "System informations"
-msgstr ""
+msgstr "Systeminfo"
 
 #: ../templates/default/preferences.tpl:243
 msgid "Sender Email:"
