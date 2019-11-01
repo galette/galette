@@ -7,15 +7,15 @@
 # Allan Nordhøy <epost@anotheragency.no>, 2019.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-10-30 19:03+0000\n"
+"PO-Revision-Date: 2019-11-02 10:03+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
 "Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.10-dev\n"
-"Content-Transfer-Encoding: 8bit\n"
 
 #: ../templates/default/gestion_adherents.tpl:13
 msgid "among:"
@@ -210,7 +210,7 @@ msgstr "Abbrechen"
 
 #: ../templates/default/gestion_textes.tpl:31
 msgid "Email Subject"
-msgstr "Email Betreff"
+msgstr "E-mail Betreff"
 
 #: ../templates/default/page.tpl:152
 msgid "Manage mailings"
@@ -517,8 +517,9 @@ msgid "System informations"
 msgstr "Systeminformationen"
 
 #: ../templates/default/preferences.tpl:243
+#, fuzzy
 msgid "Sender Email:"
-msgstr "Email Absender:"
+msgstr "E-mail Absender:"
 
 #: ../includes/i18n.inc.php:340
 msgid "Legal entity"
