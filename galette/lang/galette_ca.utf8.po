@@ -1,0 +1,6895 @@
+# Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-03 04:37+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 2.4.0\n"
+
+#: ../templates/default/gestion_adherents.tpl:13
+msgid "among:"
+msgstr ""
+
+#: ../install/steps/db_checks.php:116
+msgid "SELECT operation allowed"
+msgstr ""
+
+#: ../templates/default/export.tpl:10
+msgid "The following files have been written on disk:"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:156
+msgid "Phone:"
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:18
+msgid "Permissions:"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1788
+msgid "Titles management"
+msgstr ""
+
+#: ../templates/default/plugin_initdb.tpl:122
+msgid "Back to plugins managment page"
+msgstr ""
+
+#: ../templates/default/plugins.tpl:68
+msgid "A required file is missing"
+msgstr ""
+
+#: ../templates/default/plugin_initdb.tpl:52
+msgid "You current %name version is..."
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:148 ../templates/default/ajouter_contribution.tpl:123
+msgid "End date of membership:"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1056
+msgid "Remove mailing #%1$s"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:498
+msgid "- You must indicate an email address Galette should use to send emails!"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:198 ../includes/dependencies.php:542
+msgid "Required membership:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:98
+msgid "Not registered"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2519
+msgid "Sent reminders:"
+msgstr ""
+
+#: ../templates/default/plugin_initdb.tpl:87
+msgid "Your database is maybe not usable, try to restore the older version."
+msgstr ""
+
+#: ../templates/default/preferences.tpl:67
+msgid "-- Choose a staff member --"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2750
+msgid "An error occurred trying to delete field :("
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:185 ../includes/dependencies.php:529
+msgid "Complete the following form and send it with your funds, in order to complete your subscription."
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2949 ../templates/default/page.tpl:190
+msgid "Generate fake data"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:49
+msgid "Select contributor and donation type"
+msgstr ""
+
+#: ../templates/default/public_page.tpl:122
+msgid "Lost your password?"
+msgstr ""
+
+#: ../templates/default/forms_types/password.tpl:10 ../templates/default/forms_types.tpl:85
+msgid "(at least %i characters)"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:266 ../includes/dependencies.php:610
+msgid "On .......... / .......... / .......... "
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:919
+msgid "Current cards configuration may exceed page width!"
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:476
+msgid "An error occurred."
+msgstr ""
+
+#: ../templates/default/gestion_groupes.tpl:35
+msgid "All groups PDF"
+msgstr ""
+
+#: ../includes/main.inc.php:230
+msgid "Route '%name' is not registered in ACLs!"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:699
+msgid "%name\n%complement\n%address\n%zip %town - %country"
+msgstr ""
+
+#: ../includes/i18n.inc.php:365
+msgid "Contact information:"
+msgstr ""
+
+#: ../lib/Galette/Entity/Reminder.php:307
+msgid "%name (#%id - %days days)"
+msgstr ""
+
+#: ../includes/i18n.inc.php:343
+msgid "Company cotisation"
+msgstr ""
+
+#: ../templates/default/forms_types/company.tpl:6
+msgid "Is company?"
+msgstr ""
+
+#: ../lib/Galette/Entity/PaymentType.php:303
+msgid "Check"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:28
+msgid "Generate Member Card"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:28 ../templates/default/gestion_transactions.tpl:9
+#: ../templates/default/gestion_contributions.tpl:26 ../templates/default/gestion_mailings.tpl:22
+#: ../templates/default/history.tpl:35 ../templates/default/advanced_search.tpl:279
+msgid "Filter"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3031 ../install/steps/check.php:111
+msgid "Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation."
+msgstr ""
+
+#: ../install/steps/db_select_version.php:61 ../templates/default/gestion_adherents.tpl:539
+#: ../templates/default/confirm_removal.tpl:21 ../templates/default/mailing_adherents.tpl:325
+#: ../templates/default/edit_title.tpl:21 ../templates/default/mass_change_members.tpl:48
+#: ../templates/default/edit_paymenttype.tpl:17 ../templates/default/telemetry.tpl:43
+msgid "Cancel"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:31
+msgid "Email Subject"
+msgstr ""
+
+#: ../templates/default/page.tpl:152
+msgid "Manage mailings"
+msgstr ""
+
+#: ../templates/default/group.tpl:70
+msgid "Manage members"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:379 ../templates/default/preferences.tpl:502
+msgid "Horizontal spacing:"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2323
+msgid "%type '%label' was successfully removed"
+msgstr ""
+
+#: ../templates/default/saved_searches.tpl:28
+msgid "Show parameters"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:41
+msgid "Your organisation logo"
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:1047
+msgid "Membership"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1850
+msgid "Remove title %1$s"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2166
+msgid "Edit contribution type"
+msgstr ""
+
+#: ../templates/default/page.tpl:144
+msgid "List of contributions"
+msgstr ""
+
+#: ../templates/default/forms_types/groups.tpl:6
+msgid "Manage user's groups"
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:87 ../templates/default/gestion_groupes.tpl:6
+#: ../templates/default/desktop.tpl:31
+msgid "Groups"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:68
+msgid "View member's contributions"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:308 ../templates/default/gestion_textes.tpl:8
+msgid "Language:"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:1017
+msgid "Write configuration file"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:40 ../templates/default/page.tpl:178
+msgid "Informations about available plugins"
+msgstr ""
+
+#: ../templates/default/page.tpl:116 ../templates/default/404.tpl:11
+#: ../templates/default/public_page.tpl:68
+msgid "Please update your browser or use an alternative one, like Mozilla Firefox (http://mozilla.org)."
+msgstr ""
+
+#: ../lib/Galette/Entity/PdfModel.php:570
+msgid "header and footer should not be empty!"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:122
+msgid "Available only for reminders"
+msgstr ""
+
+#: ../templates/default/fake_data.tpl:33 ../templates/default/page.tpl:180
+msgid "Dynamic fields"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:140 ../templates/default/gestion_contributions.tpl:217
+#: ../templates/default/advanced_search.tpl:133
+msgid "Payment type"
+msgstr ""
+
+#: ../lib/Galette/Entity/SavedSearch.php:153
+msgid "Form is mandatory!"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2217
+msgid "%type #%id has not been updated"
+msgstr ""
+
+#: ../templates/default/import.tpl:21
+msgid "The following files seems ready to import on the disk:"
+msgstr ""
+
+#: ../includes/routes/ajax.routes.php:238
+msgid "Thank you for registering!"
+msgstr ""
+
+#: ../templates/default/admintools.tpl:17
+msgid "This includes fields positions, order, visibility, access levels and mandatory marks."
+msgstr ""
+
+#: ../templates/default/plugins.tpl:11 ../templates/default/plugins.tpl:25
+msgid "Release date"
+msgstr ""
+
+#: ../install/steps/db_checks.php:95
+msgid "UPDATE operation not allowed"
+msgstr ""
+
+#: ../webroot/installer.php:325
+msgid "Database access/permissions"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:49
+msgid "New password"
+msgstr ""
+
+#: ../lib/Galette/IO/CsvIn.php:275
+msgid "Fields count mismatch... There should be %should_count fields and there are %count (row %row)"
+msgstr ""
+
+#: ../templates/default/gestion_transactions.tpl:7 ../templates/default/gestion_contributions.tpl:18
+#: ../templates/default/gestion_mailings.tpl:8 ../templates/default/history.tpl:8
+msgid "until"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:306
+msgid "No contribution selected"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:40
+msgid "Show all members contributions"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:380
+msgid "User status/interactions"
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:486
+msgid "File extension is not allowed, only %s files are."
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:315
+msgid "Are you sure you want to remove this attachment?"
+msgstr ""
+
+#: ../templates/default/plugin_initdb.tpl:95
+msgid "Plugin '%name' has been successfully installed!"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:188
+msgid "ICQ:"
+msgstr ""
+
+#: ../templates/default/plugins.tpl:90
+msgid "No inactive plugin."
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1541 ../templates/default/gestion_contributions.tpl:44
+#: ../templates/default/forms_types/account.tpl:6
+msgid "Inactive"
+msgstr ""
+
+#: ../templates/default/admintools.tpl:10
+msgid "Reset emails contents"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:217
+msgid "An SQL error has occurred while storing preferences. Please try again, and contact the administrator if the problem persists."
+msgstr ""
+
+#: ../templates/default/ajax_groups.tpl:47 ../templates/default/ajax_members.tpl:75
+msgid "Validate"
+msgstr ""
+
+#: ../templates/default/404.tpl:21
+msgid "Sorry, the page you are looking for could not be found."
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:47
+msgid "New attached fee"
+msgstr ""
+
+#: ../lib/Galette/Entity/Transaction.php:401
+msgid "Transaction added"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1763
+msgid "Model has not been stored :("
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:140
+msgid "Tables Creation"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:1017
+msgid "An error occurred while storing the transaction."
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:133 ../templates/default/gestion_adherents.tpl:223
+msgid "State of dues"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:697
+msgid "Unable to remove old dynamic translation for %field :("
+msgstr ""
+
+#: ../lib/Galette/Util/FakeData.php:554
+msgid "%count transactions created"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:86
+msgid "Interpret HTML"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:522 ../includes/routes/contributions.routes.php:1105
+#: ../includes/routes/contributions.routes.php:1149 ../templates/default/desktop.tpl:34
+#: ../templates/default/fake_data.tpl:45
+msgid "Transactions"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:86
+msgid "send"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:6
+msgid "Help us know about you!"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:122
+msgid "Modifiy mailing"
+msgstr ""
+
+#: ../templates/default/member.tpl:334
+msgid "Attached member selection"
+msgstr ""
+
+#: ../templates/default/import.tpl:66
+msgid "No import file actually exists."
+msgstr ""
+
+#: ../templates/default/desktop.tpl:16
+msgid "Register your organization as a Galette user"
+msgstr ""
+
+#: ../templates/default/public_page.tpl:146
+msgid "Public page content"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1964 ../includes/routes/members.routes.php:1968
+#: ../includes/routes/members.routes.php:2115 ../includes/routes/members.routes.php:2117
+msgid "Trying to load mailing while mail is disabled in preferences."
+msgstr ""
+
+#: ../templates/default/import_model.tpl:84
+msgid "Go back to import page"
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:40
+msgid "Height:"
+msgstr ""
+
+#: ../templates/default/gestion_groupes.tpl:156
+msgid "Pleade provide a group name"
+msgstr ""
+
+#: ../includes/routes/main.routes.php:127 ../templates/default/footer.tpl:24
+msgid "System informations"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:243
+msgid "Sender Email:"
+msgstr ""
+
+#: ../includes/i18n.inc.php:340
+msgid "Legal entity"
+msgstr ""
+
+#: ../templates/default/configurer_fiche_content.tpl:54
+msgid "Move up '%s' field"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:247
+msgid "%membername: remove from database"
+msgstr ""
+
+#: ../includes/i18n.inc.php:350
+msgid "annual fee"
+msgstr ""
+
+#: ../templates/default/telemetry.tpl:39
+msgid "An error occurred sending telemetry informations :("
+msgstr ""
+
+#: ../templates/default/preferences.tpl:485
+msgid "Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 rows.<br/>Double check margins and spacings ;)"
+msgstr ""
+
+#: ../templates/default/gestion_intitule_content.tpl:24
+msgid "New status"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1111
+msgid "- Birthdate must be set in the past!"
+msgstr ""
+
+#: ../templates/default/mailing_recipients.tpl:18
+msgid "unreachable member:"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:217 ../templates/default/advanced_search.tpl:244
+msgid "is not"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfContribution.php:148
+msgid "receipt"
+msgstr ""
+
+#: ../install/steps/db.php:64
+msgid "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
+msgstr ""
+
+#: ../webroot/installer.php:166
+msgid "No database name"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:66
+msgid "other"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:110
+msgid "Member's deadline"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:457
+msgid "Allow members to print card ?"
+msgstr ""
+
+#: ../templates/default/charts.tpl:33
+msgid "Members by state of dues"
+msgstr ""
+
+#: ../install/steps/check.php:146
+msgid "apache_user"
+msgstr ""
+
+#: ../includes/i18n.inc.php:330
+msgid "President"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:79
+msgid "Last telemetry sent date."
+msgstr ""
+
+#: ../lib/Galette/IO/Charts.php:178
+msgid "Due free"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1106
+msgid "An error occurred trying to delete mailing :("
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:547 ../webroot/installer.php:214
+msgid "Passwords mismatch"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:81 ../templates/default/mailing_adherents.tpl:112
+#: ../templates/default/500.tpl:21 ../templates/default/reminder.tpl:45
+msgid "Message:"
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:32
+msgid "Field '%field' cannot be set as required."
+msgstr ""
+
+#: ../templates/default/ajouter_transaction.tpl:217 ../templates/default/ajouter_transaction.tpl:239
+msgid "An error occurred displaying contributions :("
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1272
+msgid "Status #%id does not exists in database."
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1222
+msgid "- This username is already in use, please choose another one!"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:350
+msgid "An email has been sent to %email"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:967
+msgid "Transaction ID cannot ben set while adding!"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:178 ../templates/default/gestion_adherents.tpl:390
+#: ../templates/default/gestion_adherents.tpl:391
+msgid "Is a man"
+msgstr ""
+
+#: ../templates/default/page.tpl:145
+msgid "List of transactions"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:454 ../includes/routes/authentication.routes.php:364
+msgid "- The password must be of at least 4 characters!"
+msgstr ""
+
+#: ../templates/default/export.tpl:103
+msgid "Additionnaly, which table(s) do you want to export?"
+msgstr ""
+
+#: ../lib/Galette/Entity/Entitled.php:356
+msgid "Label does not exist"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:473
+msgid "ICQ"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:47
+msgid "Member's name"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:42 ../templates/default/advanced_search.tpl:43
+msgid "Without"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:734
+msgid "Late of %days days (since %date)"
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:498
+msgid "Mime-Type not allowed"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:188
+msgid "(Months)"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:464
+msgid "(Show or not title in front of name)"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:628
+msgid "- Field name already used."
+msgstr ""
+
+#: ../templates/default/footer.tpl:8
+msgid "Documentation"
+msgstr ""
+
+#: ../templates/default/import.tpl:66
+msgid "Use upload form below to send a new file on server, or copy it directly in the imports directory."
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1182 ../lib/Galette/Entity/Adherent.php:1229
+msgid "An error has occurred while looking if login already exists."
+msgstr ""
+
+#: ../includes/routes/members.routes.php:575 ../includes/routes/members.routes.php:659
+#: ../includes/routes/members.routes.php:767
+msgid "Member Profile"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1397
+msgid "Member card added"
+msgstr ""
+
+#: ../install/steps/db_checks.php:144
+msgid "DROP operation allowed"
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:165
+msgid "No sent mailing has been stored in the database yet."
+msgstr ""
+
+#: ../templates/default/preferences.tpl:433
+msgid "Active Member Color:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:304
+msgid "Using GMAIL as SMTP server (slower)"
+msgstr ""
+
+#: ../lib/Galette/Entity/PdfModel.php:553 ../templates/default/gestion_pdf_content.tpl:6
+#: ../templates/default/attendance_sheet_details.tpl:16
+msgid "Title"
+msgstr ""
+
+#: ../templates/default/ajouter_transaction.tpl:17
+msgid "-- select a name --"
+msgstr ""
+
+#: ../lib/Galette/Core/Picture.php:849
+msgid "An SQL error has occurred."
+msgstr ""
+
+#: ../lib/Galette/Entity/PaymentType.php:150
+msgid "Unable to remove old translation for %type :("
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:1045
+msgid "Config file already exists and is up to date"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:457 ../templates/default/page.tpl:226
+msgid "Existing mailing"
+msgstr ""
+
+#: ../templates/default/member.tpl:208
+msgid "An error occurred displaying groups interface :("
+msgstr ""
+
+#: ../templates/default/preferences.tpl:200
+msgid "Show public pages for"
+msgstr ""
+
+#: ../templates/default/export.tpl:126
+msgid "Continue"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:502
+msgid "Search title"
+msgstr ""
+
+#: ../includes/i18n.inc.php:360
+msgid "Mr."
+msgstr ""
+
+#: ../templates/default/page.tpl:109 ../templates/default/public_page.tpl:61
+msgid "Galette is configured to display errors. This must be avoided in production environments."
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3060
+msgid "An error occurred reinitializing texts :("
+msgstr ""
+
+#: ../templates/default/page.tpl:158
+msgid "My transactions"
+msgstr ""
+
+#: ../templates/default/forms_types/password.tpl:22
+msgid "(Confirmation)"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:111 ../includes/fields_defs/pdfmodels_fields.php:156
+#: ../includes/fields_defs/pdfmodels_fields.php:262 ../includes/dependencies.php:455
+#: ../includes/dependencies.php:500 ../includes/dependencies.php:606
+#: ../templates/default/gestion_transactions.tpl:74 ../templates/default/gestion_transactions.tpl:121
+#: ../templates/default/ajouter_contribution.tpl:29 ../templates/default/gestion_contributions.tpl:129
+#: ../templates/default/gestion_contributions.tpl:216 ../templates/default/ajouter_transaction.tpl:92
+#: ../templates/default/advanced_search.tpl:120
+msgid "Amount"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1171
+msgid "Remove %1$s file %2$s"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:505 ../templates/default/gestion_adherents.tpl:212
+#: ../templates/default/gestion_adherents.tpl:402 ../templates/default/gestion_adherents.tpl:403
+#: ../templates/default/preferences.tpl:65 ../templates/default/config_fields.tpl:42
+msgid "Staff member"
+msgstr ""
+
+#: ../lib/Galette/Entity/Transaction.php:308 ../lib/Galette/Entity/Contribution.php:394
+msgid "- The amount must be an integer!"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:295
+msgid "Gift"
+msgstr ""
+
+#: ../includes/i18n.inc.php:342
+msgid "Reduced annual contribution"
+msgstr ""
+
+#: ../lib/Galette/Entity/SavedSearch.php:360
+msgid "Name cannot be empty!"
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:195
+msgid "Group"
+msgstr ""
+
+#: ../templates/default/reminder.tpl:11
+msgid "Impending due date"
+msgstr ""
+
+#: ../install/steps/db.php:111 ../install/steps/db_checks.php:242
+#: ../install/steps/check.php:166 ../install/steps/admin.php:59
+#: ../install/steps/galette.php:82 ../install/steps/type.php:66
+#: ../install/steps/db_select_version.php:135 ../install/steps/db_install.php:83
+#: ../templates/default/plugin_initdb.tpl:116
+msgid "Next step"
+msgstr ""
+
+#: ../install/steps/check.php:74 ../templates/default/page.tpl:154
+msgid "Imports"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:1033
+msgid "boolean"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:82
+msgid "Member's last name"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1186
+msgid "Account modification mail sent to admin."
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:1109 ../templates/default/gestion_transactions.tpl:32
+msgid "transaction"
+msgstr ""
+
+#: ../lib/Galette/Core/Plugins.php:773
+msgid "File not found!"
+msgstr ""
+
+#: ../templates/default/saved_searches.tpl:27
+msgid "Search parameters"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfMembersLabels.php:86 ../templates/default/preferences.tpl:10
+msgid "Labels"
+msgstr ""
+
+#: ../templates/default/liste_membres.tpl:91 ../templates/default/trombinoscope.tpl:25
+msgid "No member to show"
+msgstr ""
+
+#: ../templates/default/member.tpl:215
+msgid "Groups selection"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:162
+msgid "Found contributions total %f"
+msgstr ""
+
+#: ../templates/default/gestion_paymentstypes.tpl:43
+msgid "%s payment type"
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:129 ../templates/default/page.tpl:125
+msgid "Superadmin"
+msgstr ""
+
+#: ../templates/default/forms_types/password.tpl:20
+msgid "Password confirmation:"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:310
+msgid "Unable to load contribution #%id!"
+msgstr ""
+
+#: ../includes/i18n.inc.php:339
+msgid "Old-timer"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1976 ../includes/routes/management.routes.php:3326
+msgid "Title '%s' has not been modified!"
+msgstr ""
+
+#: ../includes/i18n.inc.php:344
+msgid "Donation in kind"
+msgstr ""
+
+#: ../lib/Galette/IO/CsvIn.php:406
+msgid "File is empty!"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2157
+msgid "Please type an object for the message."
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3278 ../includes/routes/members.routes.php:3501
+msgid "An SQL error has occurred while storing search."
+msgstr ""
+
+#: ../templates/default/plugins.tpl:72
+msgid "Explicitely disabled"
+msgstr ""
+
+#: ../install/steps/check.php:148
+msgid "Under Windows, check these directories are not in Read-Only mode in their property panel."
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:1152
+msgid "Remove %1$s"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3095
+msgid "Logins and passwords has been successfully filled (%i processed)."
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:234
+msgid "An mail has been sent to the member."
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2347
+msgid "Requested label does not exists!"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:589
+msgid "An error occurred while storing the contribution."
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:220
+msgid "Other informations:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:428 ../templates/default/preferences.tpl:434
+#: ../templates/default/preferences.tpl:439 ../templates/default/preferences.tpl:444
+msgid "Hexadecimal color notation: #RRGGBB"
+msgstr ""
+
+#: ../install/steps/end.php:46
+msgid "Galette has been successfully installed!"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:118 ../templates/default/gestion_contributions.tpl:215
+#: ../templates/default/gestion_pdf_content.tpl:34 ../templates/default/ajouter_transaction.tpl:91
+#: ../templates/default/editer_champ.tpl:100 ../templates/default/configurer_fiche_content.tpl:7
+#: ../templates/default/advanced_search.tpl:127
+msgid "Type"
+msgstr ""
+
+#: ../install/steps/db_select_version.php:81
+msgid "It seems you already use latest Galette version!<br/>Are you sure you want to upgrade?"
+msgstr ""
+
+#: ../templates/default/page.tpl:161
+msgid "View my member card"
+msgstr ""
+
+#: ../lib/Galette/Filters/ContributionsList.php:258 ../lib/Galette/Filters/MailingsList.php:238
+#: ../lib/Galette/Filters/HistoryList.php:244 ../lib/Galette/Filters/TransactionsList.php:233
+#: ../includes/routes/management.routes.php:786 ../includes/routes/management.routes.php:999
+#: ../includes/routes/contributions.routes.php:216
+msgid "end date filter"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1392
+msgid "Self_subscription as a member: "
+msgstr ""
+
+#: ../templates/default/gestion_transactions.tpl:27 ../templates/default/gestion_contributions.tpl:46
+msgid "See member profile"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfGroups.php:86 ../lib/Galette/IO/PdfGroups.php:107
+msgid "Members by groups"
+msgstr ""
+
+#: ../templates/default/mass_change_members.tpl:47
+msgid "OK"
+msgstr ""
+
+#: ../templates/default/reminder.tpl:68
+msgid "No reminder selected"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1758
+msgid "Model has been successfully stored!"
+msgstr ""
+
+#: ../templates/default/mass_change_members.tpl:47
+msgid "Edit"
+msgstr ""
+
+#: ../templates/default/admintools.tpl:5
+msgid "Make sure you've done a backup of the database before using any of the following tools!"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:912
+msgid "Contribution has been successfully attached to current transaction"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:23
+msgid "Association's short description:"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:746 ../install/steps/check.php:75
+#: ../templates/default/page.tpl:151
+msgid "Logs"
+msgstr ""
+
+#: ../templates/default/page.tpl:139
+msgid "Perform advanced search into members list"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1094
+msgid "Mailing has been successfully deleted!"
+msgstr ""
+
+#: ../lib/Galette/Entity/Entitled.php:344
+msgid "ID must be an integer!"
+msgstr ""
+
+#: ../templates/default/editer_intitule.tpl:21 ../templates/default/gestion_intitule_content.tpl:12
+#: ../templates/default/gestion_intitule_content.tpl:33 ../templates/default/gestion_intitule_content.tpl:75
+msgid "Extends membership?"
+msgstr ""
+
+#: ../templates/default/member.tpl:251 ../templates/default/forms_types/groups.tpl:35
+msgid "Member of:"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:272
+msgid "If your query does not begin with a 'SELECT' statement, it will automatically be added."
+msgstr ""
+
+#: ../templates/default/page.tpl:185
+msgid "Manage titles"
+msgstr ""
+
+#: ../lib/Galette/Filters/ContributionsList.php:268 ../lib/Galette/Filters/MailingsList.php:248
+#: ../lib/Galette/Filters/HistoryList.php:254 ../lib/Galette/Filters/TransactionsList.php:243
+msgid "Unknown date format for %field.<br/>Know formats are: %formats"
+msgstr ""
+
+#: ../webroot/installer.php:265
+msgid "Galette installation"
+msgstr ""
+
+#: ../templates/default/import.tpl:62
+msgid "Import"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:236 ../templates/default/preferences.tpl:512
+#: ../templates/default/plugins.tpl:102
+msgid "Application runs under demo mode. This functionnality is not enabled, sorry."
+msgstr ""
+
+#: ../templates/default/preferences.tpl:276
+msgid "Send email to administrators?"
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:63 ../templates/default/gestion_mailings.tpl:75
+#: ../templates/default/gestion_mailings.tpl:90 ../templates/default/gestion_mailings.tpl:105
+#: ../templates/default/history.tpl:66 ../templates/default/history.tpl:78
+#: ../templates/default/history.tpl:90 ../templates/default/history.tpl:102
+msgid "Ascendent"
+msgstr ""
+
+#: ../templates/default/export.tpl:21
+msgid "Existing exports"
+msgstr ""
+
+#: ../templates/default/member.tpl:45
+msgid "Attach member"
+msgstr ""
+
+#: ../templates/default/telemetry.tpl:3
+msgid "Telemetry data are <strong>anonymous</strong>; nothing about your organization or its members will be sent."
+msgstr ""
+
+#: ../templates/default/group_persons.tpl:43
+msgid "No manager attached"
+msgstr ""
+
+#: ../webroot/installer.php:244
+msgid "Galette Installation"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2010 ../includes/routes/members.routes.php:2139
+msgid "No member selected for mailing!"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:105
+msgid "Subscription"
+msgstr ""
+
+#: ../lib/Galette/IO/Pdf.php:100 ../lib/Galette/IO/Pdf.php:262
+msgid "Association %s"
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:57
+msgid "Repeat:"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:71
+msgid "Available with reservations"
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:163
+msgid "Some warnings has been thrown:"
+msgstr ""
+
+#: ../templates/default/group.tpl:86
+msgid "Group PDF"
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:9
+msgid "Add a new category"
+msgstr ""
+
+#: ../templates/default/admintools.tpl:13 ../templates/default/admintools.tpl:19
+#: ../templates/default/admintools.tpl:25
+msgid "(all existing values will be removed)"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:493
+msgid "- You must indicate a sender name for emails!"
+msgstr ""
+
+#: ../lib/Galette/Filters/MembersList.php:292
+msgid "Latecomers"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3071
+msgid "An error occurred reinitializing fields configuration :("
+msgstr ""
+
+#: ../lib/Galette/Repository/Members.php:399
+msgid "Delete members cards, transactions and dues"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:222
+msgid "Galette base URL"
+msgstr ""
+
+#: ../templates/default/ajax_groups.tpl:44
+msgid "No groups has been selected yet."
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:267 ../includes/dependencies.php:611
+msgid "* Only for compagnies"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:256
+msgid "Log in in as %membername"
+msgstr ""
+
+#: ../templates/default/plugin_info.tpl:6
+msgid "By %name"
+msgstr ""
+
+#: ../lib/Galette/Entity/PaymentType.php:301
+msgid "Cash"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2160
+msgid "Edit status"
+msgstr ""
+
+#: ../templates/default/export.tpl:69
+msgid "Which parameted export(s) do you want to run?"
+msgstr ""
+
+#: ../templates/default/gestion_intitule_content.tpl:14 ../templates/default/gestion_intitule_content.tpl:33
+#: ../templates/default/gestion_intitule_content.tpl:75
+msgid "Priority"
+msgstr ""
+
+#: ../templates/default/page.tpl:138
+msgid "List of members"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:266 ../includes/dependencies.php:610
+msgid "Hereby, I agree to comply to %s association statutes and its rules."
+msgstr ""
+
+#: ../templates/default/import.tpl:99
+msgid "Please make sure to select one file to import."
+msgstr ""
+
+#: ../templates/default/import_model.tpl:6
+msgid "Current model"
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:597
+msgid "Contribution added"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1406
+msgid "You are about to remove %count members."
+msgstr ""
+
+#: ../lib/Galette/Util/FakeData.php:620
+msgid "No contribution created!"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:117 ../includes/fields_defs/pdfmodels_fields.php:162
+#: ../includes/dependencies.php:461 ../includes/dependencies.php:506
+msgid "on"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:208
+msgid "Self subscription enabled?"
+msgstr ""
+
+#: ../templates/default/forms_types/picture.tpl:10 ../templates/default/preferences.tpl:36
+#: ../templates/default/preferences.tpl:452
+msgid "Delete image"
+msgstr ""
+
+#: ../lib/Galette/Filters/MembersList.php:271 ../includes/fields_defs/pdfmodels_fields.php:229
+#: ../includes/dependencies.php:573 ../templates/default/mailing_adherents.tpl:71
+msgid "Address"
+msgstr ""
+
+#: ../templates/default/gestion_groupes.tpl:127
+msgid "Create"
+msgstr ""
+
+#: ../templates/default/global_messages.tpl:28
+msgid "- WARNING -"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2969
+msgid "The file does not exists or cannot be read :("
+msgstr ""
+
+#: ../templates/default/plugin_initdb.tpl:10
+msgid "%plugin plugin installation"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:94
+msgid "Update your informations"
+msgstr ""
+
+#: ../templates/default/gestion_transactions.tpl:28 ../templates/default/page.tpl:149
+msgid "Add a transaction"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:322
+msgid "Checks"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3260
+msgid "That payment type is still in use, you cannot delete it!"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3023
+msgid "Administration tools"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:75
+msgid "Company:"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:378
+msgid "Password changed for member '%s'."
+msgstr ""
+
+#: ../templates/default/preferences.tpl:113
+msgid "Facebook"
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:619
+msgid "Contribution updated"
+msgstr ""
+
+#: ../templates/default/page.tpl:187
+msgid "Manage payment types"
+msgstr ""
+
+#: ../templates/default/export.tpl:66
+msgid "Parameted exports"
+msgstr ""
+
+#: ../templates/default/fake_data.tpl:13
+msgid "Add members photos"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1373
+msgid "Remove member %1$s"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:53
+msgid "Member's zipcode"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:69
+msgid "Show dashboard on login"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1645
+msgid "Import model has been successfully stored :)"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:597
+msgid "Enter the email adress"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1190
+msgid "A problem happened while sending account mail to admin"
+msgstr ""
+
+#: ../install/steps/check.php:140
+msgid "To work as excpected, Galette needs write permission on files listed above."
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:101
+msgid "Link validity"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2426
+msgid "No translation for '%s'!<br/>Please fill and submit above form to create it."
+msgstr ""
+
+#: ../lib/Galette/IO/PdfGroups.php:182
+msgid "GSM"
+msgstr ""
+
+#: ../webroot/installer.php:160 ../webroot/installer.php:200
+msgid "No user name"
+msgstr ""
+
+#: ../install/steps/db.php:81
+msgid "Port:"
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:15
+msgid "Select a sender"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:270
+msgid "Members administrator's Email:"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2216
+msgid "%type has not been added :("
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:211
+msgid "Members selection"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:470
+msgid "MSN"
+msgstr ""
+
+#: ../install/steps/db.php:45
+msgid "If it hadn't been made, create a database and a user for Galette."
+msgstr ""
+
+#: ../templates/default/page.tpl:146
+msgid "Add a member"
+msgstr ""
+
+#: ../templates/default/gestion_transactions.tpl:22
+msgid "Show all members transactions"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:283 ../templates/default/gestion_contributions.tpl:265
+#: ../templates/default/group.tpl:81
+msgid "Delete"
+msgstr ""
+
+#: ../templates/default/plugin_info.tpl:15
+msgid "Version:"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:118
+msgid "Contribution type"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:965
+msgid "New member has been successfully added."
+msgstr ""
+
+#: ../lib/Galette/IO/PdfContribution.php:150
+msgid "invoice"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:10
+msgid "Show contributions by"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1230 ../includes/routes/members.routes.php:3175
+msgid "An error occurred while storing the member."
+msgstr ""
+
+#: ../templates/default/plugins.tpl:4 ../templates/default/plugins.tpl:17
+msgid "Active plugins"
+msgstr ""
+
+#: ../templates/default/ajouter_transaction.tpl:134
+msgid "Detach contribution from this transaction"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1226
+msgid "An error occurred adding member to its groups as manager."
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:5 ../templates/default/config_fields.tpl:86
+msgid "Collapse all"
+msgstr ""
+
+#: ../templates/default/forms_types/picture.tpl:2
+msgid "Picture:"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2537
+msgid "Fields configuration"
+msgstr ""
+
+#: ../lib/Galette/Filters/MembersList.php:294 ../lib/Galette/IO/Charts.php:142
+msgid "Staff members"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:84
+msgid "Contribution year"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:427
+msgid "Strip Text Color:"
+msgstr ""
+
+#: ../lib/Galette/Entity/Transaction.php:118 ../templates/default/ajouter_transaction.tpl:10
+#: ../templates/default/plugin_info.tpl:13
+msgid "Description:"
+msgstr ""
+
+#: ../templates/default/mailing_preview.tpl:37
+msgid "Mail body"
+msgstr ""
+
+#: ../lib/Galette/Entity/Group.php:439
+msgid "Group added"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:149 ../webroot/installer.php:345
+#: ../templates/default/plugin_initdb.tpl:138
+msgid "End!"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:707
+msgid "An error occurred displaying attendance sheet details interface :("
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:46
+msgid "Select contributor and membership fee type"
+msgstr ""
+
+#: ../templates/default/member.tpl:89
+msgid "Member will receive his username and password by email, if he has an address."
+msgstr ""
+
+#: ../lib/Galette/Entity/PaymentType.php:300
+msgid "Other"
+msgstr ""
+
+#: ../lib/Galette/Core/Pagination.php:295
+msgid "Last page (%i)"
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:198
+msgid "Remove group %1$s"
+msgstr ""
+
+#: ../webroot/installer.php:282 ../templates/default/mailing_adherents.tpl:5
+#: ../templates/default/global_messages.tpl:10
+msgid "- ERROR -"
+msgstr ""
+
+#: ../templates/default/traduire_libelles.tpl:21
+msgid "Original text: '%s'"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:553
+msgid "The configured post contribution script has failed."
+msgstr ""
+
+#: ../templates/default/page.tpl:191
+msgid "Admin tools"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:520 ../templates/default/desktop.tpl:30
+#: ../templates/default/group.tpl:6 ../templates/default/group.tpl:61
+#: ../templates/default/fake_data.tpl:37
+msgid "Members"
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:125
+msgid "Mailing entry %id"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:221 ../includes/dependencies.php:565
+msgid "First name"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:65
+msgid "Galette's login URI"
+msgstr ""
+
+#: ../install/steps/db_select_version.php:70
+msgid "Previous version is older than 0.7. <strong>Make sure you select the right version</strong>."
+msgstr ""
+
+#: ../lib/Galette/Core/CheckModules.php:103
+msgid "either 'mysql' or 'pgsql' PDO driver"
+msgstr ""
+
+#: ../templates/default/plugin_initdb.tpl:83
+msgid "The tables are not totally created, it may be a permission problem."
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:825
+msgid "An error occurred storing dynamic field values :("
+msgstr ""
+
+#: ../install/steps/db_install.php:49
+msgid "Database has not been upgraded!"
+msgstr ""
+
+#: ../templates/default/forms_types/company.tpl:8
+msgid "Do you manage a non profit organization, or a company? If you do so, check the box, and then enter its name in the field that will appear."
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:392 ../templates/default/gestion_adherents.tpl:393
+msgid "Is a woman"
+msgstr ""
+
+#: ../lib/Galette/Util/FakeData.php:616
+msgid "%count contributions created"
+msgstr ""
+
+#: ../includes/i18n.inc.php:346
+msgid "Partnership"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3453
+msgid "An error occurred trying to remove searches :/"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:109
+msgid "Google+"
+msgstr ""
+
+#: ../lib/Galette/Entity/Reminder.php:274
+msgid "Sent reminder mail for impending membership"
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:549
+msgid "File upload stopped by extension"
+msgstr ""
+
+#: ../lib/Galette/IO/CsvIn.php:359
+msgid "from member %id_adh"
+msgstr ""
+
+#: ../install/steps/db.php:77
+msgid "Host:"
+msgstr ""
+
+#: ../templates/default/page.tpl:180
+msgid "Manage additional fields for various forms"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1615
+msgid "galette_import_model.csv"
+msgstr ""
+
+#: ../templates/default/plugin_info.tpl:44
+msgid "Raw informations"
+msgstr ""
+
+#: ../templates/default/confirm_removal.tpl:14
+msgid "Delete all associated data"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:451
+msgid "Current logo for printing"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:483
+msgid "(Enter a year or two years with a separator)"
+msgstr ""
+
+#: ../templates/default/group.tpl:84
+msgid "Current group (and attached people) as PDF"
+msgstr ""
+
+#: ../templates/default/page.tpl:188
+msgid "Download empty adhesion form"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:256
+msgid "Reply-To Email:"
+msgstr ""
+
+#: ../install/steps/check.php:68
+msgid "Compilation"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:471
+msgid "Plugin %name has been disabled"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:213 ../includes/dependencies.php:557
+msgid "Politeness"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:35
+msgid "Current logo"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1417
+msgid "CSV members import"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:257
+msgid "Remove criteria"
+msgstr ""
+
+#: ../templates/default/change_passwd.tpl:13
+msgid "Confirmation:"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:8 ../templates/default/advanced_search.tpl:10
+msgid "Enter a value"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:1034
+msgid "file"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:1226
+msgid "An error occurred trying to remove contributions(s) :("
+msgstr ""
+
+#: ../templates/default/preferences.tpl:174
+msgid "Default membership status:"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfAdhesionForm.php:139 ../lib/Galette/IO/PdfAdhesionForm.php:140
+#: ../lib/Galette/IO/PdfContribution.php:111 ../lib/Galette/IO/PdfContribution.php:112
+#: ../templates/default/group.tpl:36
+msgid "None"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:365 ../templates/default/voir_adherent.tpl:61
+#: ../templates/default/gestion_contributions.tpl:280
+msgid "Modification"
+msgstr ""
+
+#: ../templates/default/gestion_titres.tpl:9 ../templates/default/gestion_titres.tpl:21
+#: ../templates/default/gestion_titres.tpl:51
+msgid "Short form"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1142
+msgid "CVS database Export"
+msgstr ""
+
+#: ../templates/default/import.tpl:99
+msgid "No file selected"
+msgstr ""
+
+#: ../templates/default/page.tpl:223
+msgid "A mailing exists in the current session. Click here if you want to resume or cancel it."
+msgstr ""
+
+#: ../lib/Galette/IO/Pdf.php:226
+msgid "Unable to convert GIF file "
+msgstr ""
+
+#: ../install/steps/db_checks.php:130
+msgid "DELETE operation allowed"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:183
+msgid "Is a women"
+msgstr ""
+
+#: ../templates/default/plugins.tpl:107
+msgid "Plugin database initialization: %name"
+msgstr ""
+
+#: ../templates/default/gestion_groupes.tpl:152
+msgid "An error occurred checking name uniqueness :("
+msgstr ""
+
+#: ../templates/default/member.tpl:249 ../templates/default/forms_types/groups.tpl:45
+msgid "Manager for:"
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:32
+msgid "Mark '%field' as (not) required"
+msgstr ""
+
+#: ../install/scripts/upgrade-to-0.8.php:215
+msgid "Directory %dir has not been moved :("
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:1046
+msgid "Transaction has been successfully stored"
+msgstr ""
+
+#: ../templates/default/history.tpl:87 ../templates/default/history.tpl:128
+msgid "User"
+msgstr ""
+
+#: ../templates/default/plugin_info.tpl:21
+msgid "Path:"
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:504
+msgid "File does not comply with requirements."
+msgstr ""
+
+#: ../templates/default/mass_change_members.tpl:14
+msgid "You are about to proceed following changes for selected members:"
+msgstr ""
+
+#: ../templates/default/gestion_intitule_content.tpl:60
+msgid "%s field"
+msgstr ""
+
+#: ../install/steps/check.php:72 ../templates/default/page.tpl:175
+msgid "Configuration"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:78
+msgid "Telemetry date:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:227
+msgid "Show identifiers"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:116 ../templates/default/gestion_pdf.tpl:78
+msgid "Contribution amount"
+msgstr ""
+
+#: ../templates/default/public_page.tpl:84
+msgid "View your member card"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:490
+msgid "Contribution ID must be null calling add route!"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:291
+msgid "Login %s does not exist"
+msgstr ""
+
+#: ../install/steps/check.php:90
+msgid "Galette requirements are met :)"
+msgstr ""
+
+#: ../templates/default/charts.tpl:46
+msgid "Contributions types repartition"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:231
+msgid "A mail has been sent to your address.<br/>Please check your inbox and follow the instructions."
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2688
+msgid "Requested field does not exists!"
+msgstr ""
+
+#: ../templates/default/global_messages.tpl:66
+msgid "Your telemetry data are more than one year old."
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:40 ../templates/default/history.tpl:46
+msgid "entry"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1823
+msgid "Title '%s' has been successfully added."
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:71
+msgid "Available for invoices and receipts only"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:306 ../templates/default/mailing_recipients.tpl:20
+msgid "Generate labels"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:196
+msgid "Public pages enabled?"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:131
+msgid "Database access and permissions"
+msgstr ""
+
+#: ../install/steps/db_checks.php:208
+msgid "Permissions on the base"
+msgstr ""
+
+#: ../lib/Galette/IO/CsvIn.php:293
+msgid "Field %field is required, but missing in row %row"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:257
+msgid "Leave empty to use Sender Email as reply address"
+msgstr ""
+
+#: ../lib/Galette/Util/FakeData.php:389
+msgid "No photo has been created"
+msgstr ""
+
+#: ../templates/default/mailing_preview.tpl:13
+msgid "To:"
+msgstr ""
+
+#: ../lib/Galette/Entity/PdfModel.php:574
+msgid "body should not be empty!"
+msgstr ""
+
+#: ../templates/default/member.tpl:67 ../templates/default/preferences.tpl:159
+msgid "create a new transaction"
+msgstr ""
+
+#: ../templates/default/forms_types/titles.tpl:6
+msgid "Not supplied"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:404 ../templates/default/page.tpl:155
+msgid "Charts"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:252 ../includes/routes/management.routes.php:284
+#: ../includes/routes/members.routes.php:1242
+msgid "Delete failed"
+msgstr ""
+
+#: ../templates/default/reminder.tpl:14 ../templates/default/reminder.tpl:21
+msgid "%s members without mail"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:90
+msgid "Contribution begin date"
+msgstr ""
+
+#: ../templates/default/ajax_members.tpl:38 ../templates/default/group_persons.tpl:27
+msgid "[admin]"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:180 ../templates/default/preferences.tpl:74
+msgid "Website:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:467
+msgid "Address type:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:471
+msgid "Jabber"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfContribution.php:144 ../includes/routes/contributions.routes.php:1109
+#: ../templates/default/gestion_contributions.tpl:52
+msgid "contribution"
+msgstr ""
+
+#: ../install/steps/check.php:70
+msgid "Cache"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:59
+msgid "Member's main group"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:504
+msgid "- You must indicate the SMTP server you want to use!"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:132 ../templates/default/preferences.tpl:47
+msgid "Zip Code:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:374 ../templates/default/preferences.tpl:492
+msgid "Horizontal margins:"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:134 ../install/steps/db_select_version.php:46
+msgid "Previous version selection"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:76
+msgid "Contribution label"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:129
+msgid "Membership expired since"
+msgstr ""
+
+#: ../templates/default/history.tpl:159
+msgid "Show associated query"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:35
+msgid "Email Body:"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3409
+msgid "You are about to remove %count searches."
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3496
+msgid "Saved search loaded"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:142
+msgid "%A, %B %#d%O %Y"
+msgstr ""
+
+#: ../templates/default/fake_data.tpl:18
+msgid "Number of groups:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:384 ../templates/default/preferences.tpl:497
+msgid "Vertical spacing:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:287
+msgid "Activate HTML editor?"
+msgstr ""
+
+#: ../templates/default/import.tpl:118
+msgid "No file to upload"
+msgstr ""
+
+#: ../templates/default/404.tpl:25 ../templates/default/public_page.tpl:102
+msgid "Home"
+msgstr ""
+
+#: ../install/steps/db_checks.php:67
+msgid "CREATE operation not allowed"
+msgstr ""
+
+#: ../includes/main.inc.php:574
+msgid "Routes '%routes' are missing in ACLs!"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:372
+msgid "An error occurred while updating your password."
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:32 ../templates/default/gestion_adherents.tpl:53
+#: ../templates/default/member.tpl:97 ../templates/default/ajouter_contribution.tpl:157
+#: ../templates/default/gestion_textes.tpl:45 ../templates/default/traduire_libelles.tpl:38
+#: ../templates/default/mailing_adherents.tpl:93 ../templates/default/editer_intitule.tpl:40
+#: ../templates/default/gestion_pdf_content.tpl:51 ../templates/default/edit_title.tpl:19
+#: ../templates/default/ajouter_transaction.tpl:45 ../templates/default/preferences.tpl:538
+#: ../templates/default/group.tpl:76 ../templates/default/config_fields.tpl:57
+#: ../templates/default/editer_champ.tpl:72 ../templates/default/edit_paymenttype.tpl:15
+msgid "Save"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:470
+msgid "- Invalid date for beginning of membership."
+msgstr ""
+
+#: ../templates/default/mailing_recipients.tpl:7
+msgid "You are about to send an e-mail to <strong>%s members</strong>"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:45
+msgid "Send member a link to generate a new passord, as if had used the 'lost password' functionnality."
+msgstr ""
+
+#: ../templates/default/forms_types/captcha.tpl:6
+msgid "Please repeat in the field the password shown in the image."
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:324
+msgid "Id GNUpg (GPG):"
+msgstr ""
+
+#: ../includes/i18n.inc.php:331
+msgid "Vice-president"
+msgstr ""
+
+#: ../includes/i18n.inc.php:353
+msgid "donation in kind"
+msgstr ""
+
+#: ../install/steps/db_checks.php:202
+msgid "Database can't be reached. Please go back to enter the connection parameters again."
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1541 ../templates/default/forms_types/account.tpl:5
+msgid "Active"
+msgstr ""
+
+#: ../includes/i18n.inc.php:332
+msgid "Treasurer"
+msgstr ""
+
+#: ../install/steps/db_select_version.php:86
+msgid "Your current Galette version is..."
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:40 ../templates/default/advanced_search.tpl:41
+msgid "With"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1545
+msgid "Status label"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:771 ../includes/routes/contributions.routes.php:377
+#: ../includes/routes/contributions.routes.php:834
+msgid "creation"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:1156
+msgid "Update models"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:51 ../templates/default/ajouter_transaction.tpl:69
+msgid "Create a new donation that will be attached to the current transaction"
+msgstr ""
+
+#: ../lib/Galette/Core/Middleware.php:179
+msgid "The Galette instance you are requesting is currently under maintenance. Please come back later."
+msgstr ""
+
+#: ../lib/Galette/Entity/Transaction.php:317
+msgid "- Transaction description must be 150 characters long maximum."
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:266
+msgid "Expert search"
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:523
+msgid "- Membership period overlaps period starting at "
+msgstr ""
+
+#: ../install/steps/db_checks.php:109
+msgid "SELECT operation not allowed"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:166 ../templates/default/ajouter_transaction.tpl:147
+msgid "No member registered!"
+msgstr ""
+
+#: ../install/steps/db_checks.php:137
+msgid "DROP operation not allowed"
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:158 ../templates/default/ajouter_contribution.tpl:119
+msgid "Membership extension:"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:30 ../templates/default/desktop.tpl:46
+#: ../templates/default/page.tpl:138
+msgid "View, search into and filter member's list"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2666
+msgid "Field has been successfully moved"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2442 ../templates/default/desktop.tpl:36
+#: ../templates/default/page.tpl:150
+msgid "Reminders"
+msgstr ""
+
+#: ../templates/default/import_model.tpl:7
+msgid "Change model"
+msgstr ""
+
+#: ../templates/default/js_chosen_adh.tpl:77
+msgid "Load previous members..."
+msgstr ""
+
+#: ../templates/default/admintools.tpl:8
+msgid "Select actions(s)"
+msgstr ""
+
+#: ../templates/default/gestion_transactions.tpl:157
+msgid "Completely dispatched transaction"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:90
+msgid "Member's login"
+msgstr ""
+
+#: ../lib/Galette/Entity/PdfModel.php:537
+msgid "Unknown type %type!"
+msgstr ""
+
+#: ../templates/default/saved_searches.tpl:43
+msgid "Load saved search"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:408 ../lib/Galette/Core/Preferences.php:429
+msgid "- The numbers and measures have to be integers!"
+msgstr ""
+
+#: ../templates/default/global_messages.tpl:67
+msgid "Do you want to send it again?"
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:547
+msgid "Failed to write file to disk"
+msgstr ""
+
+#: ../lib/Galette/IO/CsvIn.php:517
+msgid "An error occurred while importing members"
+msgstr ""
+
+#: ../templates/default/reminder.tpl:68
+msgid "Please make sure to select at least one reminder."
+msgstr ""
+
+#: ../includes/routes/management.routes.php:359
+msgid "No email sent to %email"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:634
+msgid "An error occurred sending test email :("
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:246
+msgid "starts with"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:1160
+msgid "You are about to remove %count transactions."
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1322
+msgid "An error occurred running parameted export '%export'. Please check the logs."
+msgstr ""
+
+#: ../install/steps/type.php:59
+msgid "you already have installed Galette, and you want to upgrade to the latest version"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3252
+msgid "An error occurred removing payment type '%name' :("
+msgstr ""
+
+#: ../lib/Galette/IO/PdfMembersLabels.php:73
+msgid "labels_print_filename"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:20
+msgid "Hide this panel"
+msgstr ""
+
+#: ../lib/Galette/Util/FakeData.php:304
+msgid "%count groups requested, and %done created"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:140 ../templates/default/preferences.tpl:51
+msgid "City:"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2704
+msgid "Dynamic field"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1435
+msgid "Member card updated"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:251 ../includes/dependencies.php:595
+msgid "Email address"
+msgstr ""
+
+#: ../templates/default/page.tpl:146
+msgid "Add new member in database"
+msgstr ""
+
+#: ../lib/Galette/Filters/MembersList.php:273
+msgid "Job"
+msgstr ""
+
+#: ../templates/default/editer_intitule.tpl:26 ../templates/default/gestion_intitule_content.tpl:4
+msgid "Note: members with a status priority lower than %priority are staff members."
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:1126 ../templates/default/page.tpl:183
+msgid "Contributions types"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:375 ../templates/default/gestion_contributions.tpl:286
+msgid "Deletion"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3082
+msgid "An error occurred reinitializing PDF models :("
+msgstr ""
+
+#: ../includes/routes/management.routes.php:335
+msgid "Test message"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:836 ../templates/default/history.tpl:44
+msgid "Flush the logs"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:472
+msgid "Web Site"
+msgstr ""
+
+#: ../templates/default/mailing_recipients.tpl:13
+msgid "No member selected (yet)."
+msgstr ""
+
+#: ../templates/default/member.tpl:26
+msgid "Your subscription has been registered, you will receive a recapitulative email soon (remember to check your spam box ;) )."
+msgstr ""
+
+#: ../templates/default/history.tpl:27
+msgid "Select an action"
+msgstr ""
+
+#: ../install/steps/check.php:103
+msgid "Date settings"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:147
+msgid "Transactions management"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3339
+msgid "Payment type '%s' has been successfully modified."
+msgstr ""
+
+#: ../install/steps/db_checks.php:215
+msgid "GALETTE hasn't got enough permissions on the database to continue the installation."
+msgstr ""
+
+#: ../includes/i18n.inc.php:345
+msgid "Donation in money"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:180
+msgid "or"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:253 ../templates/default/preferences.tpl:273
+msgid "(You can enter several emails separated with a comma. First address will be the default one.)"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:232
+msgid "%membername: edit informations"
+msgstr ""
+
+#: ../lib/Galette/Entity/SavedSearch.php:345
+msgid "Unknown form %form!"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:427 ../templates/default/desktop.tpl:40
+#: ../templates/default/page.tpl:178
+msgid "Plugins"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:199 ../templates/default/gestion_adherents.tpl:385
+#: ../templates/default/footer.tpl:5
+msgid "Website"
+msgstr ""
+
+#: ../lib/Galette/Entity/Group.php:707
+msgid "Group `%1$s` is a child of `%2$s`, cannot be set as parent!"
+msgstr ""
+
+#: ../templates/default/gestion_transactions.tpl:102
+msgid "Transaction %id"
+msgstr ""
+
+#: ../includes/main.inc.php:208
+msgid "Unknown ACL rule '%acl'!"
+msgstr ""
+
+#: ../templates/default/edit_title.tpl:12
+msgid "Long form:"
+msgstr ""
+
+#: ../templates/default/gestion_groupes.tpl:79
+msgid "Missing destination group"
+msgstr ""
+
+#: ../install/steps/db_install.php:53
+msgid "Database has been installed :)"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:223
+msgid "Enter the base URL to your Galette instance. You should only change this parameter if the current page URL is not:<br/>%galette_url"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1119
+msgid "- Members must be less than 200 years old (currently %years)!"
+msgstr ""
+
+#: ../templates/default/gestion_intitule_content.tpl:92 ../templates/default/configurer_fiche_content.tpl:30
+msgid "Edit '%s' field"
+msgstr ""
+
+#: ../templates/default/import.tpl:36
+msgid "see"
+msgstr ""
+
+#: ../templates/default/gestion_transactions.tpl:129
+msgid "Edit transaction #%id"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1070 ../includes/routes/authentication.routes.php:259
+msgid "An error occurred storing temporary password for %s. Please inform an admin."
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:121
+msgid "months"
+msgstr ""
+
+#: ../templates/default/export.tpl:101
+msgid "Galette tables exports"
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:38
+msgid "Change '%field' permissions"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2383 ../templates/default/page.tpl:181
+msgid "Translate labels"
+msgstr ""
+
+#: ../templates/default/import_model.tpl:97
+msgid "Please make sure to select at least one field from the list to perform this action."
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:17 ../templates/default/config_fields.tpl:26
+#: ../templates/default/editer_champ.tpl:86
+msgid "Field name"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:13
+msgid "Send anonymous and imprecise data about your Galette instance"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:521 ../includes/routes/contributions.routes.php:1105
+#: ../includes/routes/contributions.routes.php:1149 ../templates/default/gestion_adherents.tpl:369
+#: ../templates/default/desktop.tpl:33 ../templates/default/desktop.tpl:47
+#: ../templates/default/fake_data.tpl:41
+msgid "Contributions"
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:9
+msgid "Add new category"
+msgstr ""
+
+#: ../lib/Galette/Entity/Transaction.php:114 ../lib/Galette/Entity/Contribution.php:127
+#: ../templates/default/ajouter_contribution.tpl:88 ../templates/default/ajouter_transaction.tpl:29
+msgid "Amount:"
+msgstr ""
+
+#: ../templates/default/mailing_recipients.tpl:19
+msgid "Some members you have selected have no e-mail address. However, you can generate envelope labels to contact them by snail mail."
+msgstr ""
+
+#: ../templates/default/desktop.tpl:35 ../templates/default/page.tpl:152
+msgid "Manage mailings that has been sent"
+msgstr ""
+
+#: ../lib/Galette/Util/FakeData.php:370
+msgid "%count members created"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:336
+msgid "Reading the list"
+msgstr ""
+
+#: ../install/steps/galette.php:55
+msgid "Data initialized."
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:267 ../includes/dependencies.php:611
+msgid "** Galette identifier, if applicable"
+msgstr ""
+
+#: ../lib/Galette/Util/FakeData.php:297
+msgid "%count groups created"
+msgstr ""
+
+#: ../install/steps/galette.php:54
+msgid "Configuration file created!"
+msgstr ""
+
+#: ../install/steps/check.php:38
+msgid "Welcome to the Galette Install!"
+msgstr ""
+
+#: ../install/steps/db_checks.php:159
+msgid "ALTER operation allowed"
+msgstr ""
+
+#: ../includes/i18n.inc.php:328
+msgid "Graphics:"
+msgstr ""
+
+#: ../lib/Galette/IO/Charts.php:193
+msgid "Never contribute"
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:235
+msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
+msgstr ""
+
+#: ../templates/default/charts.tpl:72
+msgid "Contributions over time"
+msgstr ""
+
+#: ../includes/i18n.inc.php:359
+msgid "Contact information"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:268
+msgid "If the following is not empty, all others filters will be ignored."
+msgstr ""
+
+#: ../templates/default/telemetry.tpl:11
+msgid "Send telemetry informations"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:83
+msgid "Nickname:"
+msgstr ""
+
+#: ../webroot/installer.php:330 ../templates/default/plugin_initdb.tpl:137
+msgid "Database upgrade"
+msgstr ""
+
+#: ../install/steps/check.php:69
+msgid "Photos"
+msgstr ""
+
+#: ../install/steps/check.php:76 ../templates/default/mailing_adherents.tpl:34
+#: ../templates/default/gestion_mailings.tpl:97 ../templates/default/gestion_mailings.tpl:132
+msgid "Attachments"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:79
+msgid "Show public infos"
+msgstr ""
+
+#: ../lib/Galette/Core/Middleware.php:178
+msgid "Galette is currently under maintenance!"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1199
+msgid "- The username must be composed of at least %i characters!"
+msgstr ""
+
+#: ../lib/Galette/Util/FakeData.php:385
+msgid "%count photos created"
+msgstr ""
+
+#: ../templates/default/page.tpl:179
+msgid "Customize fields order, set which are required, and for who they're visibles"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:51
+msgid "New attached donation"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:37
+msgid "Your organisation website"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3289
+msgid "Search has been saved."
+msgstr ""
+
+#: ../templates/default/telemetry.tpl:4
+msgid "You can review below the raw data that would be send if you press the 'Send' button."
+msgstr ""
+
+#: ../templates/default/preferences.tpl:28
+msgid "Footer text:"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:17
+msgid "Go back to members list"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:196
+msgid "MSN:"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:64
+msgid "current logged in user"
+msgstr ""
+
+#: ../templates/default/member.tpl:48 ../templates/default/voir_adherent.tpl:124
+msgid "Parent of:"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2924 ../includes/main.inc.php:220
+msgid "You do not have permission for requested URL."
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:51
+msgid "Add attachment"
+msgstr ""
+
+#: ../lib/Galette/Filters/MembersList.php:295
+msgid "Administrators"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:417
+msgid "Short Text (Card Center):"
+msgstr ""
+
+#: ../install/steps/type.php:50
+msgid "you wish to erase an older version of Galette without keeping your data"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:340
+msgid "Parent:"
+msgstr ""
+
+#: ../templates/default/change_passwd.tpl:9
+msgid "New password:"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3133
+msgid "Nothing to do!"
+msgstr ""
+
+#: ../templates/default/group.tpl:26 ../templates/default/group.tpl:34
+msgid "Parent group:"
+msgstr ""
+
+#: ../templates/default/edit_dynamic_fields.tpl:57
+msgid "current"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:171 ../templates/default/gestion_mailings.tpl:212
+msgid "An error occurred displaying preview :("
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:285
+msgid "Mails address %s does not exist"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfMembersLabels.php:84
+msgid "Member's Labels"
+msgstr ""
+
+#: ../templates/default/import_model.tpl:40
+msgid "Remove model and back to defaults"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:221
+msgid "Preferences has been saved."
+msgstr ""
+
+#: ../templates/default/member.tpl:12 ../templates/default/voir_adherent.tpl:12
+msgid "Next"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:212
+msgid "Post new contribution script URI"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:343
+msgid "Allow unsecure TLS?"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:438 ../templates/default/gestion_contributions.tpl:328
+msgid "(Un)Check all"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:1073
+msgid "Unable to create configuration file (%path)"
+msgstr ""
+
+#: ../includes/routes/main.routes.php:147
+msgid "Impersonating as %login"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:1028
+msgid "separator"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:604
+msgid "Missing required field permissions!"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2255
+msgid "Mailing has been successfully sent!"
+msgstr ""
+
+#: ../lib/Galette/IO/CsvIn.php:234
+msgid "File %filename cannot be open!"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2596
+msgid "Fields configuration has been successfully stored"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:34 ../templates/default/page.tpl:145
+msgid "View and filter transactions"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:359
+msgid "Mail signature"
+msgstr ""
+
+#: ../templates/default/import_model.tpl:33
+msgid "Generate empty CSV file"
+msgstr ""
+
+#: ../templates/default/ajax_members.tpl:29 ../templates/default/ajax_members.tpl:33
+#: ../templates/default/group_persons.tpl:18 ../templates/default/group_persons.tpl:22
+msgid "[W]"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:32
+msgid "(Max 255 characters)"
+msgstr ""
+
+#: ../templates/default/charts.tpl:20
+msgid "Members by status"
+msgstr ""
+
+#: ../templates/default/admintools.tpl:28
+msgid "Generate empty logins and passwords"
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:1019
+msgid "Script output"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:19
+msgid "Name of the association:"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:276
+msgid "Galette Admin:"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:88
+msgid "Contribution comment"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:149
+msgid "Lines / Page:"
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:49
+msgid "Maximum file size, in Ko."
+msgstr ""
+
+#: ../templates/default/member.tpl:28
+msgid "You'll be redirected to the login page in a few seconds"
+msgstr ""
+
+#: ../templates/default/ajouter_transaction.tpl:55
+msgid "Attached contributions"
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:143 ../templates/default/ajouter_contribution.tpl:110
+msgid "Date of contribution:"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:176 ../templates/default/desktop.tpl:39
+#: ../templates/default/page.tpl:177
+msgid "Settings"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:315
+msgid "This will immediately remove attachment from disk and cannot be undo."
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:1153 ../templates/default/gestion_contributions.tpl:52
+msgid "contributions"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:54 ../templates/default/gestion_pdf.tpl:24
+msgid "Globally available"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:102 ../templates/default/ajouter_contribution.tpl:114
+#: ../templates/default/ajouter_contribution.tpl:125 ../templates/default/edit_dynamic_fields.tpl:44
+#: ../templates/default/ajouter_transaction.tpl:26 ../templates/default/forms_types/date.tpl:5
+#: ../templates/default/forms_types/date.tpl:7 ../templates/default/attendance_sheet_details.tpl:26
+#: ../templates/default/advanced_search.tpl:233 ../templates/default/advanced_search.tpl:418
+msgid "(yyyy-mm-dd format)"
+msgstr ""
+
+#: ../templates/default/import_model.tpl:15
+msgid "Model parameted on %date"
+msgstr ""
+
+#: ../lib/Galette/IO/Pdf.php:223
+msgid "Error creating temporary png file from "
+msgstr ""
+
+#: ../templates/default/gestion_groupes.tpl:85
+msgid "An error occurred reordering groups :("
+msgstr ""
+
+#: ../templates/default/preferences.tpl:369 ../templates/default/preferences.tpl:487
+msgid "Vertical margins:"
+msgstr ""
+
+#: ../templates/default/export.tpl:107
+msgid "Table name"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:615
+msgid "Missing required form!"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3174
+msgid "Payment type '%s' has been successfully added."
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:792
+msgid "An error occurred creating field values table"
+msgstr ""
+
+#: ../templates/default/member.tpl:79
+msgid "Notify member his account has been modified"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2638 ../includes/routes/members.routes.php:2657
+msgid "No member selected to generate attendance sheet"
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:157
+msgid "Group `%groupname` has been successfully saved."
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:1228
+msgid "An error occurred trying to remove transaction(s) :("
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:316
+msgid "Birthplace:"
+msgstr ""
+
+#: ../templates/default/history.tpl:25 ../templates/default/history.tpl:99
+#: ../templates/default/history.tpl:129
+msgid "Action"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:16 ../templates/default/preferences.tpl:97
+msgid "Register"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:151
+msgid "Member will receive a notification by email, if he has an address."
+msgstr ""
+
+#: ../templates/default/ajouter_transaction.tpl:8
+msgid "Transaction details"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:716
+msgid "Never contributed: Registered %days days ago (since %date)"
+msgstr ""
+
+#: ../templates/default/forms_types.tpl:81
+msgid "If you check this box (and if you are up to date with your contributions), your full name, website address ad other informations will be publically visible on the members list.<br/>If you've uploaded a photo, it will be displayed on the trombinoscope page.<br/>Note that administrators can disabled public pages, this setting will have no effect in that case."
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3080
+msgid "PDF models has been successfully reinitialized."
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1130
+msgid "You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences."
+msgstr ""
+
+#: ../templates/default/admintools.tpl:36
+msgid "Go"
+msgstr ""
+
+#: ../templates/default/public_page.tpl:112
+msgid "Subscribe"
+msgstr ""
+
+#: ../install/steps/db_checks.php:178
+msgid "Connection to database successfull"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:236 ../install/steps/admin.php:46
+#: ../templates/default/preferences.tpl:515 ../templates/default/index.tpl:10
+msgid "Username:"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2222
+msgid "%type #%id has been successfully updated!"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:15
+msgid "Reference:"
+msgstr ""
+
+#: ../templates/default/ajax_groups.tpl:28
+msgid "%membercount members"
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:119 ../templates/default/ajouter_contribution.tpl:55
+msgid "Contributor:"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:100
+msgid "Contribution payment type"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:179 ../includes/fields_defs/pdfmodels_fields.php:180
+#: ../includes/dependencies.php:523 ../includes/dependencies.php:524
+#: ../templates/default/voir_adherent.tpl:37
+msgid "Adhesion form"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:1031
+msgid "choice"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:443
+msgid "Honor Members Color:"
+msgstr ""
+
+#: ../includes/i18n.inc.php:335
+msgid "Vice-secretary"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:47
+msgid "Change search criteria"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:255 ../includes/dependencies.php:599
+msgid "Username"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:722
+msgid "Last day!"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:94
+msgid "Available only for new password request"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2517
+msgid "Labels has been sucessfully translated!"
+msgstr ""
+
+#: ../templates/default/page.tpl:130 ../templates/default/public_page.tpl:90
+msgid "Demonstration"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:369 ../templates/default/ajouter_contribution.tpl:141
+#: ../templates/default/ajouter_transaction.tpl:36
+msgid "Membership fee"
+msgstr ""
+
+#: ../templates/default/plugins.tpl:10 ../templates/default/plugins.tpl:24
+msgid "Version"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2695
+msgid "attendance_sheet"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:18
+msgid "The panel will be automatically hidden once you have registered and send telemetry data. Check the box if you want to hide it anyways."
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1402
+msgid "Remove members"
+msgstr ""
+
+#: ../install/steps/db_select_version.php:56
+msgid "It seems you already use latest Galette version!"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:63
+msgid "from a staff user"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:108 ../templates/default/gestion_adherents.tpl:220
+#: ../templates/default/liste_membres.tpl:37 ../templates/default/liste_membres.tpl:77
+#: ../templates/default/group_persons.tpl:8 ../templates/default/preferences.tpl:475
+msgid "Nickname"
+msgstr ""
+
+#: ../lib/Galette/Core/MailingHistory.php:575
+msgid "Delete mailing entries"
+msgstr ""
+
+#: ../templates/default/change_passwd.tpl:5
+msgid "Your password has been changed. Please click on the 'home' button to go to the login page."
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:16 ../templates/default/gestion_mailings.tpl:6
+#: ../templates/default/history.tpl:6
+msgid "since"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:61 ../includes/routes/authentication.routes.php:107
+#: ../templates/default/index.tpl:18
+msgid "Login"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:719 ../lib/Galette/Filters/MembersList.php:293
+#: ../templates/default/gestion_adherents.tpl:352
+msgid "Never contributed"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:350
+msgid "SMTP (or GMail) user:"
+msgstr ""
+
+#: ../templates/default/member.tpl:66 ../templates/default/preferences.tpl:158
+msgid "create a new contribution (default action)"
+msgstr ""
+
+#: ../lib/Galette/Filters/MembersList.php:305 ../includes/routes/management.routes.php:197
+msgid "Inactive accounts"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:13
+msgid "Telemetry"
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:26 ../templates/default/gestion_mailings.tpl:87
+#: ../templates/default/gestion_mailings.tpl:131
+msgid "Subject"
+msgstr ""
+
+#: ../install/steps/check.php:108
+msgid "PHP Modules"
+msgstr ""
+
+#: ../templates/default/member.tpl:71 ../templates/default/preferences.tpl:163
+msgid "go to main page"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:360
+msgid "The text that will be automatically set as signature for all outgoing emails.<br/>Variables are quoted with braces, are upper case, and will be replaced automatically.<br/>Refer to the doc to know what variables ara available. "
+msgstr ""
+
+#: ../templates/default/preferences.tpl:170
+msgid "Enabled"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:418
+msgid "No member selected"
+msgstr ""
+
+#: ../templates/default/plugins.tpl:32
+msgid "Click here to deactivate plugin '%name'"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:595
+msgid "Missing required field name!"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1113
+msgid "Account modification mail sent to '%s'."
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:51
+msgid "Save current advanced search criteria"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:212
+msgid "[member]"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3018
+msgid "Mass change %count members"
+msgstr ""
+
+#: ../templates/default/page.tpl:158
+msgid "View and filter all my transactions"
+msgstr ""
+
+#: ../templates/default/global_messages.tpl:40
+msgid "You will be redirected in %timeout seconds. If not, please click on the following link:"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:251 ../templates/default/ajouter_transaction.tpl:140
+msgid "no contribution"
+msgstr ""
+
+#: ../templates/default/forms_types.tpl:80
+msgid "Do member want to appear publically?"
+msgstr ""
+
+#: ../lib/Galette/Entity/Reminder.php:294
+msgid "Unable to send %membership reminder (no mail address)."
+msgstr ""
+
+#: ../templates/default/export.tpl:30 ../templates/default/export.tpl:46
+#: ../templates/default/import.tpl:27 ../templates/default/import.tpl:41
+msgid "Size"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1901
+msgid "An error occurred removing title '%name' :("
+msgstr ""
+
+#: ../templates/default/reminder.tpl:13 ../templates/default/reminder.tpl:20
+msgid "%s members with mail"
+msgstr ""
+
+#: ../includes/i18n.inc.php:357
+msgid "Identity"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3296
+msgid "Edit payment type"
+msgstr ""
+
+#: ../templates/default/member.tpl:69 ../templates/default/preferences.tpl:161
+msgid "show member"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3187
+msgid "Something went wront during mass edition!"
+msgstr ""
+
+#: ../templates/default/mailing_recipients.tpl:11
+msgid "None of the selected members has an email address."
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:198
+msgid "You can drop new image here to get photo changed"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1028
+msgid "Member account has been modified."
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:544
+msgid "Post contribution script failed"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:52
+msgid "Select files to add as attachments.<br/>Multiple file selection using 'ctrl' or 'shift' keys are only available on compatible browsers."
+msgstr ""
+
+#: ../templates/default/configurer_fiche_content.tpl:37
+msgid "Translate '%s' field"
+msgstr ""
+
+#: ../lib/Galette/Core/Plugins.php:716 ../lib/Galette/Core/Plugins.php:776
+msgid "Module does not exists!"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:49
+msgid "Member's address"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:228
+msgid "Display database identifiers in related windows"
+msgstr ""
+
+#: ../install/steps/check.php:146
+msgid "directory_name"
+msgstr ""
+
+#: ../lib/Galette/Entity/PdfModel.php:146 ../lib/Galette/Entity/DynamicsTrait.php:135
+#: ../lib/Galette/Entity/DynamicsTrait.php:148 ../lib/Galette/Entity/DynamicsTrait.php:157
+#: ../lib/Galette/Entity/Transaction.php:276 ../lib/Galette/Entity/Transaction.php:285
+#: ../lib/Galette/Entity/Transaction.php:294 ../lib/Galette/Entity/Transaction.php:550
+#: ../lib/Galette/Entity/Group.php:622 ../lib/Galette/Entity/Contribution.php:354
+#: ../lib/Galette/Entity/Contribution.php:363 ../lib/Galette/Entity/Contribution.php:372
+#: ../lib/Galette/Entity/Contribution.php:524 ../lib/Galette/Entity/Contribution.php:1127
+#: ../lib/Galette/Entity/Contribution.php:1225 ../lib/Galette/Entity/Contribution.php:1234
+#: ../lib/Galette/Entity/Contribution.php:1243 ../lib/Galette/Entity/SavedSearch.php:291
+#: ../lib/Galette/Entity/ImportModel.php:212 ../lib/Galette/Entity/Adherent.php:710
+#: ../lib/Galette/Entity/Adherent.php:728 ../lib/Galette/Entity/Adherent.php:744
+#: ../lib/Galette/Entity/Adherent.php:1094 ../lib/Galette/Entity/Adherent.php:1128
+#: ../lib/Galette/Entity/Adherent.php:1137 ../lib/Galette/Entity/Adherent.php:1591
+#: ../lib/Galette/Repository/Members.php:1442 ../lib/Galette/Repository/Members.php:1446
+#: ../lib/Galette/Core/Plugins.php:239 ../lib/Galette/Filters/AdvancedMembersList.php:293
+#: ../lib/Galette/Filters/AdvancedMembersList.php:383 ../lib/Galette/Filters/AdvancedMembersList.php:528
+#: ../lib/Galette/Filters/ContributionsList.php:159 ../lib/Galette/Filters/ContributionsList.php:241
+#: ../lib/Galette/Filters/ContributionsList.php:250 ../lib/Galette/Filters/ContributionsList.php:279
+#: ../lib/Galette/Filters/MailingsList.php:144 ../lib/Galette/Filters/MailingsList.php:221
+#: ../lib/Galette/Filters/MailingsList.php:230 ../lib/Galette/Filters/MailingsList.php:259
+#: ../lib/Galette/Filters/HistoryList.php:150 ../lib/Galette/Filters/HistoryList.php:227
+#: ../lib/Galette/Filters/HistoryList.php:236 ../lib/Galette/Filters/HistoryList.php:265
+#: ../lib/Galette/Filters/TransactionsList.php:134 ../lib/Galette/Filters/TransactionsList.php:216
+#: ../lib/Galette/Filters/TransactionsList.php:225 ../lib/Galette/Filters/TransactionsList.php:254
+#: ../lib/Galette/Util/FakeData.php:438 ../lib/Galette/Util/FakeData.php:450
+#: ../lib/Galette/Util/FakeData.php:536 ../lib/Galette/Util/FakeData.php:669
+#: ../lib/Galette/Util/FakeData.php:670 ../lib/Galette/Util/FakeData.php:671
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:84 ../lib/Galette/IO/PdfAttendanceSheet.php:150
+#: ../includes/routes/members.routes.php:216 ../includes/routes/members.routes.php:227
+#: ../includes/routes/members.routes.php:238 ../includes/routes/members.routes.php:249
+#: ../includes/routes/members.routes.php:2682 ../templates/default/member.tpl:437
+#: ../templates/default/advanced_search.tpl:232
+msgid "Y-m-d"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2608
+msgid "Attendance sheet configuration"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:133
+msgid "Default language:"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:67
+msgid "First name:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:307
+msgid "Using Sendmail server"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:61
+msgid "Member's groups (as list)"
+msgstr ""
+
+#: ../includes/main.inc.php:156
+msgid "Login required"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:401
+msgid "- This username is already used by another member !"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:167
+msgid "Logging level:"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:107
+msgid "Gender:"
+msgstr ""
+
+#: ../templates/default/attendance_sheet_details.tpl:29
+msgid "With photos?"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:298
+msgid "PHP mail() function"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfAdhesionForm.php:265 ../lib/Galette/IO/PdfAdhesionForm.php:266
+msgid "adherent_form"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:367
+msgid "Label generation parameters"
+msgstr ""
+
+#: ../templates/default/page.tpl:184
+msgid "Manage emails texts and subjects"
+msgstr ""
+
+#: ../lib/Galette/Entity/PaymentType.php:305
+msgid "Paypal"
+msgstr ""
+
+#: ../lib/Galette/Entity/Transaction.php:333 ../lib/Galette/Entity/Contribution.php:443
+#: ../lib/Galette/Entity/Adherent.php:1040 ../lib/Galette/Core/Preferences.php:539
+msgid "- Mandatory field %field empty."
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:145 ../templates/default/gestion_adherents.tpl:224
+msgid "Modified"
+msgstr ""
+
+#: ../lib/Galette/Entity/Status.php:133
+msgid "You cannot delete default status!"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:245
+msgid "Delete the contribution"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:36 ../templates/default/page.tpl:150
+msgid "Send reminders to late members"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2354 ../templates/default/mailing_adherents.tpl:178
+#: ../templates/default/gestion_mailings.tpl:219
+msgid "Mailing preview"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1477
+msgid "%count members have been successfully deleted."
+msgstr ""
+
+#: ../templates/default/telemetry.tpl:4
+msgid "Also note tha all data is sent over a <strong>HTTPS secured connection</strong>."
+msgstr ""
+
+#: ../lib/Galette/Entity/Group.php:444
+msgid "Fail to add new group."
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:332
+msgid "fingerprint:"
+msgstr ""
+
+#: ../lib/Galette/Handlers/NotFound.php:80 ../templates/default/404.tpl:19
+msgid "Page not found"
+msgstr ""
+
+#: ../lib/Galette/Core/History.php:414 ../lib/Galette/IO/Csv.php:116
+#: ../includes/routes/members.routes.php:1065 ../includes/routes/authentication.routes.php:193
+#: ../includes/routes/authentication.routes.php:205
+msgid "Y-m-d H:i:s"
+msgstr ""
+
+#: ../templates/default/attendance_sheet_details.tpl:10
+msgid "%s attendees"
+msgstr ""
+
+#: ../templates/default/import.tpl:73
+msgid "Upload new file"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:121
+msgid "LinkedIn"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:328
+msgid "You asked Galette to send a test email, but mail has been disabled in the preferences."
+msgstr ""
+
+#: ../templates/default/forms_types/groups.tpl:12
+msgid "Manage user's managed groups"
+msgstr ""
+
+#: ../templates/default/reminder.tpl:25
+msgid "Generate labels for late members without mail address"
+msgstr ""
+
+#: ../templates/default/member.tpl:87
+msgid "Member will be notified by mail his account has been modified."
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:245
+msgid "A problem happened while sending password for account '%s'"
+msgstr ""
+
+#: ../templates/default/plugin_initdb.tpl:79
+msgid "(Errors on DROP and RENAME operations can be ignored)"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:268
+msgid "Account:"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:29
+msgid "Member of group"
+msgstr ""
+
+#: ../lib/Galette/Core/Pagination.php:289
+msgid "Next page (%i)"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:203 ../includes/dependencies.php:547
+msgid "The minimum contribution for each type of membership are defined on the website of the association. The amount of donations are free to be decided by the generous donor."
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:179
+msgid "Create new mailing"
+msgstr ""
+
+#: ../templates/default/member.tpl:32 ../templates/default/ajouter_contribution.tpl:42
+#: ../templates/default/ajouter_transaction.tpl:50 ../templates/default/preferences.tpl:541
+#: ../templates/default/group.tpl:90
+msgid "red"
+msgstr ""
+
+#: ../install/steps/db_checks.php:74
+msgid "CREATE operation allowed"
+msgstr ""
+
+#: ../templates/default/ajax_members.tpl:56
+msgid "Selected members"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3080
+msgid "Review mass change %count members"
+msgstr ""
+
+#: ../includes/i18n.inc.php:338
+msgid "Founder member"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:207 ../templates/default/gestion_adherents.tpl:400
+#: ../templates/default/gestion_adherents.tpl:401 ../templates/default/preferences.tpl:13
+msgid "Admin"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:88 ../templates/default/gestion_pdf.tpl:67
+msgid "Member's ID"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:110 ../includes/fields_defs/pdfmodels_fields.php:155
+#: ../includes/dependencies.php:454 ../includes/dependencies.php:499
+#: ../templates/default/gestion_paymentstypes.tpl:20
+msgid "Label"
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:507
+msgid "Unable to write file or temporary file"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:59 ../templates/default/gestion_groupes.tpl:122
+#: ../templates/default/editer_intitule.tpl:13 ../templates/default/group.tpl:18
+#: ../templates/default/editer_champ.tpl:14 ../templates/default/plugin_info.tpl:11
+#: ../templates/default/edit_paymenttype.tpl:8
+msgid "Name:"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfAdhesionForm.php:135 ../includes/routes/members.routes.php:265
+#: ../templates/default/forms_types/gender.tpl:17 ../templates/default/mass_change_members.tpl:26
+#: ../templates/default/advanced_search.tpl:193 ../templates/default/advanced_search.tpl:307
+msgid "Unspecified"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:1214
+msgid "Contributions(s) has been removed!"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:8 ../templates/default/saved_searches.tpl:11
+msgid "Parameters"
+msgstr ""
+
+#: ../install/steps/type.php:61 ../templates/default/plugin_initdb.tpl:42
+#: ../templates/default/import.tpl:17
+msgid "Warning: Don't forget to backup your current database."
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2221
+msgid "%type has been successfully added!"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:193
+msgid "(dd/mm)"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:134 ../includes/fields_defs/pdfmodels_fields.php:135
+#: ../includes/dependencies.php:478 ../includes/dependencies.php:479
+#: ../templates/default/gestion_pdf_content.tpl:38
+msgid "Receipt"
+msgstr ""
+
+#: ../webroot/installer.php:154
+msgid "No host"
+msgstr ""
+
+#: ../templates/default/plugins.tpl:154 ../templates/default/plugins.tpl:172
+msgid "An error occurred displaying plugin database initialization interface :("
+msgstr ""
+
+#: ../templates/default/mailing_recipients.tpl:5
+msgid "Your message has been sent to <strong>%s members</strong>"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:201 ../includes/i18n.inc.php:337
+#: ../includes/dependencies.php:545
+msgid "Benefactor member"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:331 ../templates/default/gestion_adherents.tpl:332
+#: ../templates/default/gestion_transactions.tpl:152 ../templates/default/gestion_transactions.tpl:153
+#: ../templates/default/gestion_contributions.tpl:272 ../templates/default/gestion_contributions.tpl:273
+msgid "Legend"
+msgstr ""
+
+#: ../templates/default/gestion_titres.tpl:66 ../templates/default/gestion_titres.tpl:66
+msgid "Delete '%s' title"
+msgstr ""
+
+#: ../lib/Galette/Core/Pagination.php:273
+msgid "Current page (%i)"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:33 ../templates/default/preferences.tpl:449
+msgid "Logo:"
+msgstr ""
+
+#: ../templates/default/ajax_groups.tpl:31
+msgid "no group"
+msgstr ""
+
+#: ../templates/default/forms_types/company.tpl:7
+msgid "Is member a company?"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:84
+msgid "Never"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:94
+msgid "Contribution end date"
+msgstr ""
+
+#: ../templates/default/ajax_members.tpl:9 ../templates/default/preferences.tpl:474
+msgid "Zip - Town"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:124
+msgid "Address (continuation)"
+msgstr ""
+
+#: ../templates/default/member.tpl:325 ../templates/default/member.tpl:406
+#: ../templates/default/gestion_groupes.tpl:189 ../templates/default/gestion_groupes.tpl:249
+#: ../templates/default/gestion_groupes.tpl:302 ../templates/default/mailing_adherents.tpl:204
+#: ../templates/default/mailing_adherents.tpl:250 ../templates/default/mailing_adherents.tpl:306
+#: ../templates/default/ajouter_transaction.tpl:175
+msgid "An error occurred displaying members interface :("
+msgstr ""
+
+#: ../templates/default/desktop.tpl:56
+msgid "News"
+msgstr ""
+
+#: ../templates/default/page.tpl:149
+msgid "Add new transaction in database"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:64 ../templates/default/liste_membres.tpl:8
+#: ../templates/default/trombinoscope.tpl:7
+msgid "member"
+msgstr ""
+
+#: ../templates/default/mass_change_members.tpl:12
+msgid "Only checked fields will be updated."
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:300
+msgid "Due date:"
+msgstr ""
+
+#: ../templates/default/fake_data.tpl:22 ../templates/default/fake_data.tpl:23
+msgid "Maximum number of contributions to generate for reach member"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfGroups.php:109 ../lib/Galette/IO/PdfMembersCards.php:105
+#: ../lib/Galette/IO/PdfMembersLabels.php:85 ../lib/Galette/IO/PdfAttendanceSheet.php:107
+msgid "Generated by Galette"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:1030
+msgid "single line"
+msgstr ""
+
+#: ../templates/default/group.tpl:5 ../templates/default/group.tpl:50
+msgid "Managers"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:108
+msgid "Preview your mailing"
+msgstr ""
+
+#: ../lib/Galette/Core/Authentication.php:274
+msgid "Logged in as:<br/>%login"
+msgstr ""
+
+#: ../templates/default/plugins.tpl:83
+msgid "Activate plugin '%name'"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:76
+msgid "Member's first and last name"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:12 ../templates/default/gestion_contributions.tpl:83
+#: ../templates/default/gestion_contributions.tpl:204 ../templates/default/ajouter_transaction.tpl:85
+msgid "Begin"
+msgstr ""
+
+#: ../templates/default/import_model.tpl:72
+msgid "Store new model"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:749
+msgid "%days days remaining (ending on %date)"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:508
+msgid "User, read only"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:408
+msgid "Font size:"
+msgstr ""
+
+#: ../lib/Galette/Entity/Group.php:462
+msgid "Group updated"
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:90
+msgid "Visibility"
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:12
+msgid "Edit field %field"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:90 ../templates/default/gestion_contributions.tpl:48
+#: ../templates/default/page.tpl:148
+msgid "Add a donation"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:271
+msgid "Your account (%s) do not contain any valid mail address"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3378
+msgid "Remove saved search"
+msgstr ""
+
+#: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
+msgid "Galette error"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:51
+msgid "Select attachments"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:1130 ../templates/default/gestion_adherents.tpl:120
+#: ../templates/default/gestion_adherents.tpl:221
+msgid "Status"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:62 ../templates/default/preferences.tpl:61
+msgid "from preferences"
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:153
+msgid "Use mailing '%subject' as a template for a new one"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:386
+msgid "Visit website"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:6
+msgid "Simple search"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:202
+msgid "Everyone"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:958
+msgid "Your account has been created!"
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:98
+msgid "Att."
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:504
+msgid "User, read/write"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:936
+msgid "Contribution has been successfully detached from current transaction"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:872
+msgid "Logs have been flushed!"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:959 ../templates/default/desktop.tpl:35
+msgid "Mailings"
+msgstr ""
+
+#: ../lib/Galette/Entity/PdfModel.php:544 ../lib/Galette/Filters/MembersList.php:269
+#: ../lib/Galette/IO/PdfGroups.php:179 ../lib/Galette/IO/PdfAttendanceSheet.php:159
+#: ../includes/fields_defs/pdfmodels_fields.php:217 ../includes/dependencies.php:561
+#: ../templates/default/gestion_adherents.tpl:96 ../templates/default/gestion_adherents.tpl:339
+#: ../templates/default/gestion_adherents.tpl:341 ../templates/default/export.tpl:28
+#: ../templates/default/export.tpl:74 ../templates/default/liste_membres.tpl:25
+#: ../templates/default/ajax_groups.tpl:6 ../templates/default/mailing_adherents.tpl:69
+#: ../templates/default/ajax_members.tpl:6 ../templates/default/gestion_intitule_content.tpl:10
+#: ../templates/default/gestion_intitule_content.tpl:30 ../templates/default/gestion_intitule_content.tpl:64
+#: ../templates/default/group_persons.tpl:5 ../templates/default/gestion_paymentstypes.tpl:9
+#: ../templates/default/gestion_paymentstypes.tpl:47 ../templates/default/configurer_fiche_content.tpl:5
+#: ../templates/default/plugins.tpl:7 ../templates/default/plugins.tpl:58
+#: ../templates/default/import.tpl:25 ../templates/default/saved_searches.tpl:10
+msgid "Name"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1909
+msgid "That title is still in use, you cannot delete it!"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:58
+msgid "Search for name or ID and pick member"
+msgstr ""
+
+#: ../lib/Galette/Core/Pagination.php:261
+msgid "Previous page (%i)"
+msgstr ""
+
+#: ../templates/default/forms_types/captcha.tpl:7
+msgid "A link will be sent to you if you have provided an email address. Otherwise, you can use this password to login, and we recommend you to change it as soon as possible."
+msgstr ""
+
+#: ../install/steps/db_checks.php:102
+msgid "UPDATE operation allowed"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:204
+msgid "Admin and staff only"
+msgstr ""
+
+#: ../templates/default/ajax_groups.tpl:9
+msgid "Manager(s)"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:389
+msgid "Members management"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:82
+msgid "Contribution full date"
+msgstr ""
+
+#: ../lib/Galette/IO/CsvIn.php:358
+msgid "from another member in import"
+msgstr ""
+
+#: ../includes/i18n.inc.php:348
+msgid "english"
+msgstr ""
+
+#: ../templates/default/import_model.tpl:43
+msgid "Remove model"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:438
+msgid "Board Members Color:"
+msgstr ""
+
+#: ../templates/default/import_model.tpl:13
+msgid "Default fields"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:338
+msgid "Use TLS for SMTP?"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:1122
+msgid "Preferences"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:89 ../includes/fields_defs/pdfmodels_fields.php:90
+#: ../includes/dependencies.php:433 ../includes/dependencies.php:434
+#: ../templates/default/gestion_pdf_content.tpl:37
+msgid "Invoice"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:244 ../install/steps/db.php:89
+#: ../install/steps/admin.php:50 ../templates/default/preferences.tpl:519
+#: ../templates/default/index.tpl:14
+msgid "Password:"
+msgstr ""
+
+#: ../lib/Galette/IO/CsvIn.php:323
+msgid "Status %status does not exists!"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:1108
+msgid "Remove %1$s #%2$s"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:213
+msgid "Enter a script URI that would be called after adding a new contribution.<br/>Script URI must be prefixed by one of '<em>galette://</em>' for Galette internal call. '<em>file://</em>' for a direct file call, '<em>get://</em>' or '<em>post://</em>' for HTTP calls (prefix will be replaced by http:// in those cases)."
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:127
+msgid "Membership remaining days"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:609
+msgid "Unknown permission!"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:238
+msgid "You are not part of managers for the requested group."
+msgstr ""
+
+#: ../lib/Galette/Entity/DynamicsTrait.php:160 ../lib/Galette/Entity/Transaction.php:297
+#: ../lib/Galette/Entity/Contribution.php:375 ../lib/Galette/Entity/Contribution.php:1246
+#: ../lib/Galette/Entity/Adherent.php:1140
+msgid "- Wrong date format (%date_format) for %field!"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:431
+msgid "Strip Background colors:"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:223
+msgid "Contribution amount should be greater than %max"
+msgstr ""
+
+#: ../templates/default/import.tpl:118
+msgid "Please make sure to select one file to upload."
+msgstr ""
+
+#: ../lib/Galette/Entity/Group.php:382
+msgid "Group has been detached from its parent"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:292
+msgid "Emailing method:"
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:291
+msgid "Unable to get groups list."
+msgstr ""
+
+#: ../templates/default/gestion_groupes.tpl:200
+msgid "Group managers selection"
+msgstr ""
+
+#: ../webroot/installer.php:329 ../templates/default/plugin_initdb.tpl:134
+msgid "Version selection"
+msgstr ""
+
+#: ../lib/Galette/Filters/MembersList.php:272
+msgid "Email,URL,IM"
+msgstr ""
+
+#: ../lib/Galette/Entity/Transaction.php:406
+msgid "Fail to add new transaction."
+msgstr ""
+
+#: ../templates/default/preferences.tpl:191
+msgid "Beginning of membership:"
+msgstr ""
+
+#: ../lib/Galette/Util/FakeData.php:561
+msgid "%count transactions requested, and %done created"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2507
+msgid "An error occurred saving label `%label` for language `%lang`"
+msgstr ""
+
+#: ../templates/default/page.tpl:188
+msgid "Empty adhesion form"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:91
+msgid "Date on which you registered your Galette instance."
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1251
+msgid "Password misrepeated: "
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:19 ../templates/default/config_fields.tpl:38
+#: ../templates/default/configurer_fiche_content.tpl:6
+msgid "Permissions"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1698 ../templates/default/page.tpl:186
+msgid "PDF models"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:642
+msgid "Mail sent to user %name (%email)"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:698
+msgid "A problem happened while sending to admin notification for user %name (%email) contribution"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:84
+msgid "Member's first name"
+msgstr ""
+
+#: ../templates/default/forms_types/captcha.tpl:14
+msgid "Password image"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:1146
+msgid "PDF Models"
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:66
+msgid "Choice list (one entry per line)."
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:243
+msgid "contains"
+msgstr ""
+
+#: ../templates/default/history.tpl:75 ../templates/default/history.tpl:127
+msgid "IP"
+msgstr ""
+
+#: ../install/steps/db_install.php:47
+msgid "Database has not been installed!"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:387
+msgid "Your password has been changed!"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:185
+msgid "Contribution %id"
+msgstr ""
+
+#: ../install/steps/db.php:112 ../install/steps/db_checks.php:251
+#: ../install/steps/galette.php:93 ../install/steps/type.php:67
+#: ../install/steps/db_select_version.php:62 ../install/steps/db_select_version.php:136
+#: ../install/steps/db_install.php:94
+msgid "Back"
+msgstr ""
+
+#: ../templates/default/plugin_info.tpl:25
+msgid "ACLs"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:306
+msgid "Please make sure to select at least one contribution from the list to perform this action."
+msgstr ""
+
+#: ../install/scripts/upgrade-to-0.8.php:203
+msgid "Directory %dir has been moved!"
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:85
+msgid "Expand all"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:399
+msgid "Number of label columns:"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:79
+msgid "Reload"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:35
+msgid "Your organisation address"
+msgstr ""
+
+#: ../templates/default/traduire_libelles.tpl:43
+msgid "No fields to translate."
+msgstr ""
+
+#: ../lib/Galette/IO/PdfMembersCards.php:93 ../lib/Galette/IO/PdfMembersCards.php:106
+#: ../templates/default/preferences.tpl:11
+msgid "Cards"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:186
+msgid "Default membership extension:"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:453
+msgid "Plugin %name has been enabled"
+msgstr ""
+
+#: ../templates/default/edit_title.tpl:8
+msgid "Short form:"
+msgstr ""
+
+#: ../lib/Galette/Filters/MembersList.php:278
+msgid "Member number"
+msgstr ""
+
+#: ../templates/default/gestion_groupes.tpl:112
+msgid "An error occurred loading selected group :("
+msgstr ""
+
+#: ../webroot/installer.php:163 ../webroot/installer.php:206
+#: ../includes/routes/authentication.routes.php:358
+msgid "No password"
+msgstr ""
+
+#: ../templates/default/plugin_info.tpl:19
+msgid "Author:"
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:65 ../templates/default/gestion_mailings.tpl:77
+#: ../templates/default/gestion_mailings.tpl:92 ../templates/default/gestion_mailings.tpl:107
+#: ../templates/default/history.tpl:68 ../templates/default/history.tpl:80
+#: ../templates/default/history.tpl:92 ../templates/default/history.tpl:104
+msgid "Descendant"
+msgstr ""
+
+#: ../templates/default/charts.tpl:59
+msgid "Individuals and Companies"
+msgstr ""
+
+#: ../templates/default/plugin_info.tpl:38
+msgid "No ACLs!"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:43
+msgid "Member number:"
+msgstr ""
+
+#: ../install/steps/db_checks.php:88
+msgid "INSERT operation allowed"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2089
+msgid "Email: '%s' has been successfully modified."
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:476
+msgid "- Invalid year for cards."
+msgstr ""
+
+#: ../lib/Galette/Filters/ContributionsList.php:227 ../lib/Galette/Filters/ContributionsList.php:249
+#: ../lib/Galette/Filters/MailingsList.php:207 ../lib/Galette/Filters/MailingsList.php:229
+#: ../lib/Galette/Filters/HistoryList.php:213 ../lib/Galette/Filters/HistoryList.php:235
+#: ../lib/Galette/Filters/TransactionsList.php:202 ../lib/Galette/Filters/TransactionsList.php:224
+msgid "Y-m"
+msgstr ""
+
+#: ../templates/default/gestion_transactions.tpl:136
+msgid "Remove transaction #%id"
+msgstr ""
+
+#: ../templates/default/page.tpl:129 ../templates/default/public_page.tpl:89
+msgid "This application runs under DEMO mode, all features may not be available."
+msgstr ""
+
+#: ../templates/default/gestion_titres.tpl:47
+msgid "%s title"
+msgstr ""
+
+#: ../templates/default/500.tpl:17
+msgid "Code:"
+msgstr ""
+
+#: ../templates/default/page.tpl:136
+msgid "Go to Galette's dashboard"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1241
+msgid "- The password must be of at least %i characters!"
+msgstr ""
+
+#: ../install/steps/db.php:69
+msgid "Database type:"
+msgstr ""
+
+#: ../install/steps/check.php:137
+msgid "Files permissions are not OK!"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:514
+msgid "- You must provide a login for SMTP authentication."
+msgstr ""
+
+#: ../lib/Galette/Core/Plugins.php:286 ../lib/Galette/Core/Plugins.php:308
+msgid "No such module."
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:229
+msgid "before"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:339
+msgid "Do you want to use server's TLS capabilities?<br/>For GMail, this will always be on."
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:268
+msgid "Be extremely careful when using this one!"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1312
+msgid "An error occurred running parameted export '%export'."
+msgstr ""
+
+#: ../templates/default/preferences.tpl:310
+msgid "Using QMAIL server"
+msgstr ""
+
+#: ../templates/default/page.tpl:202 ../templates/default/public_page.tpl:76
+msgid "Switch locale to '%locale'"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:165
+msgid "Free search"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:115
+msgid "Family"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:146
+msgid "Galette initialization"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3141
+msgid "Payment types management"
+msgstr ""
+
+#: ../templates/default/lostpasswd.tpl:6
+msgid "Username or email:"
+msgstr ""
+
+#: ../includes/i18n.inc.php:327
+msgid "Realization:"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:884
+msgid "An error occurred trying to flush logs :("
+msgstr ""
+
+#: ../install/steps/db.php:85
+msgid "User:"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1281
+msgid "An error has occurred while looking if status does exists."
+msgstr ""
+
+#: ../templates/default/preferences.tpl:59
+msgid "Postal address:"
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:83 ../templates/default/gestion_mailings.tpl:130
+msgid "Recipients"
+msgstr ""
+
+#: ../install/steps/check.php:145
+msgid "Under UNIX/Linux, you can give the permissions using those commands"
+msgstr ""
+
+#: ../lib/Galette/Entity/PaymentType.php:206
+msgid "You cannot delete system payment types!"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3194
+msgid "%count members has been changed successfully!"
+msgstr ""
+
+#: ../templates/default/gestion_intitule_content.tpl:26
+msgid "New contribution type"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:14
+msgid "Record"
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:46
+msgid "Size:"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:156 ../templates/default/gestion_adherents.tpl:359
+#: ../templates/default/gestion_transactions.tpl:85 ../templates/default/gestion_contributions.tpl:154
+#: ../templates/default/gestion_intitule_content.tpl:16 ../templates/default/gestion_titres.tpl:11
+#: ../templates/default/gestion_paymentstypes.tpl:10 ../templates/default/configurer_fiche_content.tpl:9
+#: ../templates/default/saved_searches.tpl:12
+msgid "Actions"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2080
+msgid "Email: '%s' has not been modified!"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:239
+msgid "Sender name:"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:146 ../templates/default/gestion_textes.tpl:146
+#: ../templates/default/gestion_pdf.tpl:110 ../templates/default/gestion_pdf.tpl:110
+msgid "Show existing variables"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:137
+msgid "Transaction related"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:247 ../includes/dependencies.php:591
+msgid "Country"
+msgstr ""
+
+#: ../templates/default/page.tpl:151
+msgid "View application's logs"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2023
+msgid "Automatic emails texts edition"
+msgstr ""
+
+#: ../install/scripts/upgrade-to-0.8.php:224
+msgid "Directory %dir is not in its original path and will not be moved."
+msgstr ""
+
+#: ../templates/default/gestion_groupes.tpl:145
+msgid "The group name you have requested already exits in the database."
+msgstr ""
+
+#: ../lib/Galette/Entity/PaymentType.php:304
+msgid "Transfer"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:481
+msgid "Year:"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1471
+msgid "Member %name has been successfully deleted."
+msgstr ""
+
+#: ../templates/default/preferences.tpl:404
+msgid "Number of label lines:"
+msgstr ""
+
+#: ../install/steps/end.php:55
+msgid "Homepage"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:64 ../templates/default/liste_membres.tpl:8
+#: ../templates/default/trombinoscope.tpl:7
+msgid "members"
+msgstr ""
+
+#: ../templates/default/ajax.tpl:1
+msgid "Ajax page content"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:419
+msgid "(10 characters max)"
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:250
+msgid "Group %groupname has been successfully deleted."
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:148 ../templates/default/preferences.tpl:55
+msgid "Country:"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3283
+msgid "This search is already saved."
+msgstr ""
+
+#: ../templates/default/gestion_groupes.tpl:198
+msgid "Group members selection"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:36
+msgid "Members that have an email address:"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:37
+msgid "With mail:"
+msgstr ""
+
+#: ../lib/Galette/IO/CsvIn.php:365
+msgid "Email address %address is already used! (%extra)"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1572
+msgid "CSV import model"
+msgstr ""
+
+#: ../templates/default/gestion_transactions.tpl:62 ../templates/default/gestion_transactions.tpl:109
+msgid "Originator"
+msgstr ""
+
+#: ../lib/Galette/Core/Plugins.php:312 ../lib/Galette/Core/Plugins.php:316
+msgid "Cannot activate plugin."
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:99
+msgid "Galette's change password URI"
+msgstr ""
+
+#: ../lib/Galette/Entity/Transaction.php:110 ../templates/default/ajouter_transaction.tpl:25
+#: ../templates/default/plugin_info.tpl:17
+msgid "Date:"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:679
+msgid "%name association's %status"
+msgstr ""
+
+#: ../install/steps/db_checks.php:81
+msgid "INSERT operation not allowed"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:111
+msgid "Authentication failed"
+msgstr ""
+
+#: ../includes/i18n.inc.php:355
+msgid "partnership"
+msgstr ""
+
+#: ../templates/default/page.tpl:179
+msgid "Core fields"
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:34
+msgid "Width:"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:243 ../includes/dependencies.php:587
+msgid "City"
+msgstr ""
+
+#: ../templates/default/page.tpl:154
+msgid "Import members from CSV files"
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:163
+msgid "Please correct above warnings to continue."
+msgstr ""
+
+#: ../templates/default/telemetry.tpl:4
+msgid "Nothing is automated in the process; it's up to you to send (or resend) data."
+msgstr ""
+
+#: ../templates/default/plugins.tpl:59 ../templates/default/plugins.tpl:66
+msgid "Cause"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:281
+msgid "Wrap text mails?"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1821
+msgid "Duplicated from %name (%id)"
+msgstr ""
+
+#: ../install/steps/db_checks.php:194
+msgid "Unable to connect to the database"
+msgstr ""
+
+#: ../includes/routes/public_pages.routes.php:105 ../templates/default/page.tpl:169
+#: ../templates/default/page.tpl:169 ../templates/default/public_page.tpl:136
+#: ../templates/default/public_page.tpl:139
+msgid "Trombinoscope"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2744
+msgid "Field has been successfully deleted!"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:170 ../templates/default/ajouter_transaction.tpl:151
+msgid "please create a member"
+msgstr ""
+
+#: ../lib/Galette/IO/CsvIn.php:342
+msgid "Title %title does not exists!"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:554
+msgid "You can find contribution information and script output below."
+msgstr ""
+
+#: ../templates/default/import.tpl:10
+msgid "Configure import model"
+msgstr ""
+
+#: ../webroot/installer.php:157
+msgid "No port"
+msgstr ""
+
+#: ../templates/default/saved_searches.tpl:56
+msgid "no search"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:21 ../templates/default/advanced_search.tpl:31
+msgid "Select a group"
+msgstr ""
+
+#: ../templates/default/edit_dynamic_fields.tpl:118
+msgid "New occurence"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:438 ../templates/default/gestion_contributions.tpl:328
+msgid "Invert selection"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:234
+msgid "Mail settings"
+msgstr ""
+
+#: ../templates/default/admintools.tpl:16
+msgid "Reset fields configuration"
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:25
+msgid "Required:"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:269
+msgid "No member has been found"
+msgstr ""
+
+#: ../templates/default/member.tpl:387
+msgid "Click to choose this member as parent"
+msgstr ""
+
+#: ../templates/default/liste_membres.tpl:4
+msgid "This page shows only members who have choosen to be visible on the public lists and are up-to-date within their contributions. If you want your account to be visible here, edit your profile and check 'Be visible in the members list'"
+msgstr ""
+
+#: ../templates/default/page.tpl:210 ../templates/default/public_page.tpl:85
+msgid "Log off"
+msgstr ""
+
+#: ../templates/default/export.tpl:95
+msgid "No parameted exports are available."
+msgstr ""
+
+#: ../templates/default/preferences.tpl:24
+msgid "Enter here a short description for your association, it will be displayed on the index page and into pages' title."
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1013
+msgid "New account mail sent to admin for '%s'."
+msgstr ""
+
+#: ../lib/Galette/Util/FakeData.php:506
+msgid "Photo has not been copied!"
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:164
+msgid "An error occurred while storing the group."
+msgstr ""
+
+#: ../includes/i18n.inc.php:361
+msgid "Mrs."
+msgstr ""
+
+#: ../lib/Galette/IO/Charts.php:230
+msgid "Up to date"
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:237
+msgid "An error occurred trying to remove group :/"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:930
+msgid "Current cards configuration may exceed page height!"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:39 ../templates/default/page.tpl:177
+msgid "Set applications preferences (address, website, member's cards configuration, ...)"
+msgstr ""
+
+#: ../lib/Galette/Filters/MembersList.php:296
+msgid "Non members"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:197 ../templates/default/forms_types/picture.tpl:8
+msgid "Picture"
+msgstr ""
+
+#: ../lib/Galette/Filters/MembersList.php:270 ../includes/fields_defs/pdfmodels_fields.php:225
+#: ../includes/dependencies.php:569 ../templates/default/gestion_pdf.tpl:65
+msgid "Company name"
+msgstr ""
+
+#: ../install/steps/db_install.php:55
+msgid "Database has been upgraded :)"
+msgstr ""
+
+#: ../install/steps/db_checks.php:179 ../install/steps/db_checks.php:181
+msgid "Permissions to database are OK."
+msgstr ""
+
+#: ../install/steps/db_select_version.php:74
+msgid "Your previous version should be selected and <strong>displayed in bold</strong>."
+msgstr ""
+
+#: ../templates/default/page.tpl:191
+msgid "Various administrative tools"
+msgstr ""
+
+#: ../templates/default/traduire_libelles.tpl:26
+msgid "Translation of '%s' label"
+msgstr ""
+
+#: ../templates/default/plugin_initdb.tpl:40
+msgid "you already have installed %name, and you want to upgrade to the latest version"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:108 ../includes/routes/members.routes.php:2665
+#: ../templates/default/gestion_adherents.tpl:301 ../templates/default/attendance_sheet_details.tpl:13
+msgid "Attendance sheet"
+msgstr ""
+
+#: ../templates/default/plugin_info.tpl:30
+msgid "ACL"
+msgstr ""
+
+#: ../includes/routes/plugins.routes.php:73
+msgid "Invalid extension!"
+msgstr ""
+
+#: ../install/steps/check.php:142
+msgid "In order to be updated, Galette needs write permission on files listed above."
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:797 ../includes/routes/contributions.routes.php:963
+msgid "Transaction ID cannot ben null calling edit route!"
+msgstr ""
+
+#: ../templates/default/plugin_info.tpl:29
+msgid "Route"
+msgstr ""
+
+#: ../templates/default/plugin_initdb.tpl:85
+msgid "The tables have not been totally created, it may be a permission problem."
+msgstr ""
+
+#: ../templates/default/history.tpl:138
+msgid "logs are empty"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:90
+msgid "Registration date:"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1370 ../includes/routes/members.routes.php:1400
+#: ../templates/default/ajouter_contribution.tpl:28 ../templates/default/gestion_contributions.tpl:106
+#: ../templates/default/gestion_contributions.tpl:207 ../templates/default/ajouter_transaction.tpl:89
+#: ../templates/default/history.tpl:14
+msgid "Member"
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:421
+msgid "- The duration must be a positive integer!"
+msgstr ""
+
+#: ../templates/default/gestion_transactions.tpl:5
+msgid "Show transactions since"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:316
+msgid "This link is no longer valid. You should ask to retrieve your password again."
+msgstr ""
+
+#: ../templates/default/plugins.tpl:70
+msgid "Incompatible with current version"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:118 ../includes/fields_defs/pdfmodels_fields.php:163
+#: ../includes/dependencies.php:462 ../includes/dependencies.php:507
+msgid "to"
+msgstr ""
+
+#: ../templates/default/admintools.tpl:22 ../templates/default/admintools.tpl:23
+msgid "Reset all PDF models to their default values"
+msgstr ""
+
+#: ../templates/default/gestion_groupes.tpl:34
+msgid "Export all groups and their members as PDF"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:6
+msgid "General"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:43 ../includes/dependencies.php:387
+msgid "Main"
+msgstr ""
+
+#: ../templates/default/gestion_titres.tpl:18
+msgid "Add title"
+msgstr ""
+
+#: ../includes/i18n.inc.php:362
+msgid "Miss"
+msgstr ""
+
+#: ../install/steps/db_checks.php:217
+msgid "GALETTE hasn't got enough permissions on the database to continue the update."
+msgstr ""
+
+#: ../templates/default/saved_searches.tpl:51
+msgid "Delete saved search"
+msgstr ""
+
+#: ../templates/default/fake_data.tpl:27
+msgid "Number of transactions:"
+msgstr ""
+
+#: ../templates/default/js_loader.tpl:2 ../templates/default/gestion_pdf.tpl:139
+#: ../templates/default/configurer_fiches.tpl:77
+msgid "Loading..."
+msgstr ""
+
+#: ../templates/default/preferences.tpl:9
+msgid "E-Mail"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:245
+msgid "do not contains"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:29
+msgid "Enter a text (HTML allowed) that will be displayed in the footer of every page"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:106
+msgid "Begin date"
+msgstr ""
+
+#: ../webroot/installer.php:334 ../templates/default/plugin_initdb.tpl:137
+msgid "Database installation"
+msgstr ""
+
+#: ../templates/default/js_chosen_adh.tpl:55 ../templates/default/js_chosen_adh.tpl:95
+msgid "An error occurred retrieving members :("
+msgstr ""
+
+#: ../templates/default/plugin_initdb.tpl:132
+msgid "Access permissions to database"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3242
+msgid "Payment type '%name' has been successfully deleted."
+msgstr ""
+
+#: ../webroot/installer.php:320 ../templates/default/plugin_initdb.tpl:129
+msgid "Steps:"
+msgstr ""
+
+#: ../templates/default/import.tpl:58
+msgid "Dry run"
+msgstr ""
+
+#: ../lib/Galette/Entity/ContributionsTypes.php:118
+msgid "contribution type"
+msgstr ""
+
+#: ../templates/default/import.tpl:76
+msgid "Select a file:"
+msgstr ""
+
+#: ../templates/default/confirm_removal.tpl:13
+msgid "Cascade delete"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:530
+msgid "- Default membership extention and beginning of membership are mutually exclusive."
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:66 ../templates/default/liste_membres.tpl:10
+#: ../templates/default/gestion_transactions.tpl:35 ../templates/default/gestion_contributions.tpl:58
+#: ../templates/default/gestion_mailings.tpl:43 ../templates/default/trombinoscope.tpl:9
+#: ../templates/default/history.tpl:48
+msgid "Records per page:"
+msgstr ""
+
+#: ../templates/default/gestion_groupes.tpl:122
+msgid "Add a new group"
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:1017 ../templates/default/gestion_textes.tpl:112
+msgid "Contribution informations"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:47 ../templates/default/ajouter_transaction.tpl:62
+msgid "Create a new fee that will be attached to the current transaction"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:89
+msgid "Preview"
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:462
+msgid "An error occurred checking overlaping fees :("
+msgstr ""
+
+#: ../templates/default/500.tpl:29
+msgid "Line:"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:769 ../includes/routes/contributions.routes.php:375
+#: ../includes/routes/contributions.routes.php:832
+msgid "modification"
+msgstr ""
+
+#: ../lib/Galette/Util/FakeData.php:499
+msgid "Photo has not been stored!"
+msgstr ""
+
+#: ../templates/default/export.tpl:23
+msgid "The following exports already seems to exist on the disk:"
+msgstr ""
+
+#: ../templates/default/plugins.tpl:54
+msgid "Inactive plugins"
+msgstr ""
+
+#: ../templates/default/photo_dnd.tpl:60
+msgid "An error occurred sending photo :("
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:139 ../templates/default/ajouter_contribution.tpl:140
+#: ../templates/default/ajouter_transaction.tpl:34 ../templates/default/ajouter_transaction.tpl:35
+msgid "Select a contribution type to create for dispatch transaction"
+msgstr ""
+
+#: ../lib/Galette/Filters/MembersList.php:274
+msgid "Infos"
+msgstr ""
+
+#: ../templates/default/admintools.tpl:10 ../templates/default/admintools.tpl:11
+#: ../templates/default/admintools.tpl:16 ../templates/default/admintools.tpl:17
+msgid "Reset all emails contents to their default values"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfAdhesionForm.php:131 ../includes/routes/members.routes.php:259
+#: ../templates/default/forms_types/gender.tpl:19 ../templates/default/mass_change_members.tpl:32
+#: ../templates/default/advanced_search.tpl:193 ../templates/default/advanced_search.tpl:307
+msgid "Man"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:320 ../templates/default/preferences.tpl:597
+msgid "Test mail settings"
+msgstr ""
+
+#: ../templates/default/page.tpl:183
+msgid "Manage contributions types"
+msgstr ""
+
+#: ../templates/default/reminder.tpl:12 ../templates/default/reminder.tpl:19
+msgid "preview"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:105
+msgid "Available only for new contributions"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:371 ../templates/default/preferences.tpl:376
+#: ../templates/default/preferences.tpl:381 ../templates/default/preferences.tpl:386
+#: ../templates/default/preferences.tpl:391 ../templates/default/preferences.tpl:396
+#: ../templates/default/preferences.tpl:401 ../templates/default/preferences.tpl:410
+#: ../templates/default/preferences.tpl:489 ../templates/default/preferences.tpl:494
+#: ../templates/default/preferences.tpl:499 ../templates/default/preferences.tpl:504
+msgid "(Integer)"
+msgstr ""
+
+#: ../templates/default/attendance_sheet_details.tpl:10
+msgid "Some details about your attendance sheet..."
+msgstr ""
+
+#: ../templates/default/preferences.tpl:180
+msgid "Default account filter:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:282
+msgid "Automatically wrap text mails before sending. Make sure to wrap yourself if you disable that. Please note that current editing mailing will not be affected by a change."
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2601
+msgid "An error occurred while storing fields configuration :("
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:675
+msgid "%version script has been successfully executed :)"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:55
+msgid "Member's town"
+msgstr ""
+
+#: ../templates/default/gestion_transactions.tpl:161
+msgid "Uncomplete dispatched transaction"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1456
+msgid "An error occurred trying to remove member %name :/"
+msgstr ""
+
+#: ../templates/default/export.tpl:5
+msgid "Each selected export will be stored into a separate file in the exports directory."
+msgstr ""
+
+#: ../templates/default/preferences.tpl:125
+msgid "Viadeo"
+msgstr ""
+
+#: ../install/steps/check.php:94
+msgid "Your PHP date settings are not correct. Maybe you've missed the timezone settings that is mandatory since PHP 5.3?"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:49
+msgid "Change criteria"
+msgstr ""
+
+#: ../lib/Galette/Core/Pagination.php:281
+msgid "Page %i"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:53 ../includes/dependencies.php:397
+msgid "Association"
+msgstr ""
+
+#: ../lib/Galette/Repository/Contributions.php:448
+msgid "Contributions deleted (%list)"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2707
+msgid "Remove dynamic field %1$s"
+msgstr ""
+
+#: ../templates/default/attendance_sheet_details.tpl:12
+msgid "Sheet type"
+msgstr ""
+
+#: ../lib/Galette/Entity/Status.php:120
+msgid "status"
+msgstr ""
+
+#: ../templates/default/ajax_members.tpl:50
+msgid "no member"
+msgstr ""
+
+#: ../templates/default/member.tpl:24
+msgid "Your subscription has been registered."
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:172
+msgid "E-Mail:"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2478
+msgid "No reminder to send for now."
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:58
+msgid "Write your mailing"
+msgstr ""
+
+#: ../install/steps/db_select_version.php:47
+msgid "Select your previous Galette version below, and then click next."
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:173 ../templates/default/gestion_adherents.tpl:396
+#: ../templates/default/gestion_adherents.tpl:397
+msgid "Is a company"
+msgstr ""
+
+#: ../lib/Galette/Core/CheckModules.php:97
+msgid "'%s' module"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:462
+msgid "Show title ?"
+msgstr ""
+
+#: ../webroot/installer.php:203
+msgid "The username cannot contain the @ character"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1785 ../includes/routes/members.routes.php:1854
+msgid "Unable to get members list."
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:38
+msgid "Existing attachments:"
+msgstr ""
+
+#: ../templates/default/history.tpl:16
+msgid "Select an user"
+msgstr ""
+
+#: ../install/steps/db_checks.php:123
+msgid "DELETE operation not allowed"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:60
+msgid "Use either the address setted below or select a staff member to retrieve he's address."
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:687
+msgid "Unable to run %version update script :("
+msgstr ""
+
+#: ../install/steps/check.php:146
+msgid "file_name"
+msgstr ""
+
+#: ../templates/default/plugin_initdb.tpl:97
+msgid "Plugin '%name' has been successfully updated!"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:97 ../templates/default/mailing_adherents.tpl:123
+#: ../templates/default/preferences.tpl:614 ../templates/default/reminder.tpl:33
+#: ../templates/default/telemetry.tpl:13
+msgid "Send"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:658
+msgid "Trying to send a mail to a member (%name) with an invalid address: %email"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1538 ../includes/routes/members.routes.php:273
+#: ../includes/routes/members.routes.php:277 ../includes/routes/members.routes.php:281
+#: ../includes/routes/members.routes.php:285 ../templates/default/display_dynamic_fields.tpl:27
+#: ../templates/default/gestion_intitule_content.tpl:36 ../templates/default/gestion_intitule_content.tpl:80
+#: ../templates/default/gestion_mailings.tpl:34 ../templates/default/config_fields.tpl:35
+#: ../templates/default/editer_champ.tpl:27 ../templates/default/editer_champ.tpl:112
+#: ../templates/default/global_messages.tpl:69 ../templates/default/configurer_fiche_content.tpl:21
+#: ../templates/default/advanced_search.tpl:85 ../templates/default/advanced_search.tpl:239
+#: ../templates/default/advanced_search.tpl:399
+msgid "No"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3166
+msgid "No permission to edit member"
+msgstr ""
+
+#: ../lib/Galette/Entity/DynamicsTrait.php:118 ../lib/Galette/Entity/I18nTrait.php:291
+msgid "Missing required field %field"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:266 ../includes/dependencies.php:610
+msgid "At ................................................"
+msgstr ""
+
+#: ../includes/i18n.inc.php:354
+msgid "donation in money"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:737 ../lib/Galette/IO/Charts.php:245
+#: ../templates/default/reminder.tpl:18
+msgid "Late"
+msgstr ""
+
+#: ../lib/Galette/Filters/MembersList.php:303 ../includes/routes/management.routes.php:195
+msgid "All accounts"
+msgstr ""
+
+#: ../includes/i18n.inc.php:341
+msgid "Non-member"
+msgstr ""
+
+#: ../templates/default/fake_data.tpl:35
+msgid "Generate some predefined dynamic fields"
+msgstr ""
+
+#: ../templates/default/export.tpl:75 ../templates/default/export.tpl:87
+#: ../templates/default/gestion_transactions.tpl:59 ../templates/default/gestion_transactions.tpl:107
+#: ../templates/default/plugins.tpl:8 ../templates/default/plugins.tpl:22
+#: ../templates/default/history.tpl:110 ../templates/default/history.tpl:130
+msgid "Description"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1665 ../includes/routes/members.routes.php:1753
+#: ../includes/routes/members.routes.php:1831
+msgid "No member was selected, please check at least one name."
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:931
+msgid "Unable to detach contribution from transaction"
+msgstr ""
+
+#: ../webroot/installer.php:344
+msgid "Galette initialisation"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:7 ../templates/default/preferences.tpl:107
+msgid "Social networks"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1891
+msgid "Title '%name' has been successfully deleted."
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:168 ../templates/default/ajouter_transaction.tpl:149
+msgid "Unfortunately, there is no member in your database yet,"
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:160
+msgid "Delete mailing '%subject'"
+msgstr ""
+
+#: ../templates/default/fake_data.tpl:6
+msgid "Core data"
+msgstr ""
+
+#: ../templates/default/gestion_paymentstypes.tpl:61
+msgid "Translate '%s'"
+msgstr ""
+
+#: ../templates/default/ajouter_transaction.tpl:100
+msgid "Dispatched amount:"
+msgstr ""
+
+#: ../templates/default/gestion_intitule_content.tpl:48 ../templates/default/gestion_titres.tpl:31
+#: ../templates/default/gestion_paymentstypes.tpl:27 ../templates/default/editer_champ.tpl:117
+#: ../templates/default/configurer_fiches.tpl:11
+msgid "Add"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:86
+msgid "Details of donation"
+msgstr ""
+
+#: ../install/scripts/upgrade-to-0.8.php:190
+msgid "File %file has not been moved :-/"
+msgstr ""
+
+#: ../templates/default/gestion_transactions.tpl:142
+msgid "no transaction"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:10
+msgid "Related transaction informations"
+msgstr ""
+
+#: ../templates/default/ajouter_transaction.tpl:182
+msgid "Contributions selection"
+msgstr ""
+
+#: ../templates/default/group.tpl:71
+msgid "Manage managers"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:43 ../templates/default/mailing_adherents.tpl:315
+msgid "Remove attachment"
+msgstr ""
+
+#: ../templates/default/member.tpl:36 ../templates/default/voir_adherent.tpl:118
+msgid "Attached to:"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:96
+msgid "Within contributions"
+msgstr ""
+
+#: ../templates/default/traduire_libelles.tpl:9
+msgid "Choose label to translate"
+msgstr ""
+
+#: ../templates/default/import_model.tpl:20 ../templates/default/import_model.tpl:54
+msgid "Field"
+msgstr ""
+
+#: ../templates/default/500.tpl:34
+msgid "Trace"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2671
+msgid "An error occurred moving field :("
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2268
+msgid "Remove %type '%label'"
+msgstr ""
+
+#: ../templates/default/page.tpl:166
+msgid "Public pages"
+msgstr ""
+
+#: ../templates/default/gestion_paymentstypes.tpl:54
+msgid "Edit '%s' payment type"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:72
+msgid "Due date"
+msgstr ""
+
+#: ../lib/Galette/Filters/MembersList.php:290 ../templates/default/preferences.tpl:203
+msgid "Up to date members"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:212
+msgid "Other informations (admin):"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:34 ../templates/default/gestion_adherents.tpl:56
+msgid "Reset all filters to defaults"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:100
+msgid "Duplicate"
+msgstr ""
+
+#: ../templates/default/confirm_removal.tpl:20
+msgid "Remove"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:422
+msgid "Long Text (Bottom Line):"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:560
+msgid "You have to select a staff member"
+msgstr ""
+
+#: ../templates/default/ajouter_transaction.tpl:105
+msgid "Not dispatched amount:"
+msgstr ""
+
+#: ../templates/default/edit_dynamic_fields.tpl:53
+msgid "new"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:431
+msgid "(Strip color will change according to member's status)"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3058
+msgid "Texts has been successfully reinitialized."
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:172
+msgid "Add new free search criteria"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:165 ../templates/default/mailing_adherents.tpl:6
+msgid "Email sent is disabled in the preferences. Ask galette admin"
+msgstr ""
+
+#: ../lib/Galette/Core/I18n.php:210 ../lib/Galette/Core/I18n.php:230
+msgid "Unknown lang (%lang)"
+msgstr ""
+
+#: ../lib/Galette/Entity/Reminder.php:265
+msgid "%name <%mail> (%days days)"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:346
+msgid "Membership in order"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1474
+msgid "File '%filename%' has been successfully imported :)"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfGroups.php:181
+msgid "Phone"
+msgstr ""
+
+#: ../lib/Galette/IO/Pdf.php:218
+msgid "Error loading "
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:238
+msgid "Not managed group"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1211
+msgid "An error occurred adding member to its groups."
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:14
+msgid "$catname"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:238
+msgid "Edit the contribution"
+msgstr ""
+
+#: ../templates/default/ajax_members.tpl:31 ../templates/default/group_persons.tpl:20
+msgid "[M]"
+msgstr ""
+
+#: ../install/steps/admin.php:44
+msgid "Please chose the parameters of the admin account on Galette"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:962
+msgid "An email has been sent to you, check your inbox."
+msgstr ""
+
+#: ../templates/default/member.tpl:32 ../templates/default/ajouter_contribution.tpl:42
+#: ../templates/default/ajouter_transaction.tpl:50 ../templates/default/preferences.tpl:541
+#: ../templates/default/group.tpl:90
+msgid "NB : The mandatory fields are in"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:1159
+msgid "You are about to remove %count contributions."
+msgstr ""
+
+#: ../includes/i18n.inc.php:349
+msgid "spanish"
+msgstr ""
+
+#: ../install/steps/db_checks.php:207
+msgid "Database exists and connection parameters are OK."
+msgstr ""
+
+#: ../lib/Galette/Entity/PdfModel.php:354
+msgid "%field should not be empty!"
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:602
+msgid "Fail to add new contribution."
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:99
+msgid "Record date:"
+msgstr ""
+
+#: ../lib/Galette/Entity/PdfModel.php:344
+msgid "%field should be less than %chars characters long."
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:12
+msgid "Mailing informations"
+msgstr ""
+
+#: ../templates/default/page.tpl:148
+msgid "Add new donation in database"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:46 ../templates/default/page.tpl:161
+msgid "My information"
+msgstr ""
+
+#: ../templates/default/reminder.tpl:6
+msgid "Choose wich reminder(s) you want to send:"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:341
+msgid "Test message."
+msgstr ""
+
+#: ../install/steps/check.php:73 ../templates/default/page.tpl:153
+msgid "Exports"
+msgstr ""
+
+#: ../templates/default/mailing_preview.tpl:26
+msgid "Attachments:"
+msgstr ""
+
+#: ../templates/default/500.tpl:13
+msgid "Type:"
+msgstr ""
+
+#: ../templates/default/page.tpl:234
+msgid "Page content"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:226
+msgid "Print an invoice or a receipt (depending on contribution type)"
+msgstr ""
+
+#: ../templates/default/change_passwd.tpl:20
+msgid "Change my password"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:340
+msgid "Active account"
+msgstr ""
+
+#: ../templates/default/member.tpl:132 ../templates/default/voir_adherent.tpl:228
+msgid "Back to top"
+msgstr ""
+
+#: ../templates/default/display_dynamic_fields.tpl:3 ../templates/default/edit_dynamic_fields.tpl:67
+msgid "Additionnal fields:"
+msgstr ""
+
+#: ../templates/default/configurer_fiche_content.tpl:73
+msgid "There is not yet any dynamic field configured for '%formname'"
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:1049 ../includes/fields_defs/pdfmodels_fields.php:202
+#: ../includes/routes/contributions.routes.php:371 ../includes/dependencies.php:546
+#: ../templates/default/ajouter_contribution.tpl:142 ../templates/default/ajouter_transaction.tpl:37
+msgid "Donation"
+msgstr ""
+
+#: ../templates/default/edit_paymenttype.tpl:9
+msgid "Original string for name, that will be used for translations."
+msgstr ""
+
+#: ../templates/default/js_loader.tpl:2 ../templates/default/gestion_pdf.tpl:139
+#: ../templates/default/configurer_fiches.tpl:77
+msgid "Currently loading..."
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:541
+msgid "The uploaded file was only partially uploaded"
+msgstr ""
+
+#: ../templates/default/fake_data.tpl:22
+msgid "Number of contributions:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:478
+msgid "(Choose address printed below name)"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:260
+msgid "Modification date:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:295
+msgid "Emailing disabled"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:334
+msgid "Would emailing use any SMTP authentication? You'll have to provide username and password below. For GMail, authentication will always be on."
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1945
+msgid "Edit title"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfGroups.php:180 ../templates/default/liste_membres.tpl:49
+#: ../templates/default/liste_membres.tpl:79 ../templates/default/preferences.tpl:469
+msgid "Email"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3352 ../templates/default/page.tpl:140
+#: ../templates/default/page.tpl:140
+msgid "Saved searches"
+msgstr ""
+
+#: ../includes/routes/main.routes.php:179 ../includes/routes/main.routes.php:184
+msgid "Impersonating ended"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:52 ../templates/default/advanced_search.tpl:59
+#: ../templates/default/advanced_search.tpl:66 ../templates/default/advanced_search.tpl:73
+#: ../templates/default/advanced_search.tpl:100 ../templates/default/advanced_search.tpl:107
+#: ../templates/default/advanced_search.tpl:114 ../templates/default/advanced_search.tpl:121
+msgid "beetween"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1190
+msgid "- Non-valid Website address! Maybe you've skipped the http://?"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:329
+msgid "SMTP port:"
+msgstr ""
+
+#: ../templates/default/edit_dynamic_fields.tpl:34
+msgid "Select an option"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2815
+msgid "Edit field"
+msgstr ""
+
+#: ../install/steps/check.php:71
+msgid "Temporary images"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1158
+msgid "- Non-valid E-Mail address!"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:26
+msgid "Apply filters"
+msgstr ""
+
+#: ../templates/default/member.tpl:8 ../templates/default/voir_adherent.tpl:8
+msgid "Previous"
+msgstr ""
+
+#: ../lib/Galette/Entity/Transaction.php:422
+msgid "Transaction updated"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:96
+msgid "Create a new member with %name information."
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:339
+msgid "Group name is missing!"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:96
+msgid "Contribution id"
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:18 ../templates/default/config_fields.tpl:32
+#: ../templates/default/editer_champ.tpl:110 ../templates/default/configurer_fiche_content.tpl:8
+msgid "Required"
+msgstr ""
+
+#: ../includes/routes/public_pages.routes.php:105 ../templates/default/page.tpl:168
+#: ../templates/default/page.tpl:168 ../templates/default/public_page.tpl:128
+#: ../templates/default/public_page.tpl:132
+msgid "Members list"
+msgstr ""
+
+#: ../templates/default/fake_data.tpl:13 ../templates/default/fake_data.tpl:14
+msgid "Each photos mays take a long time to be retrieved. Use this only with a few members!"
+msgstr ""
+
+#: ../templates/default/export.tpl:29 ../templates/default/export.tpl:43
+#: ../templates/default/gestion_transactions.tpl:49 ../templates/default/gestion_transactions.tpl:106
+#: ../templates/default/ajouter_contribution.tpl:27 ../templates/default/gestion_contributions.tpl:72
+#: ../templates/default/gestion_contributions.tpl:203 ../templates/default/ajouter_transaction.tpl:84
+#: ../templates/default/gestion_mailings.tpl:60 ../templates/default/gestion_mailings.tpl:128
+#: ../templates/default/attendance_sheet_details.tpl:24 ../templates/default/history.tpl:63
+#: ../templates/default/history.tpl:126 ../templates/default/import.tpl:26
+#: ../templates/default/import.tpl:38
+msgid "Date"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1814
+msgid "Title '%s' has not been added!"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2277
+msgid "Mailing has been successfully saved."
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:123 ../templates/default/ajouter_contribution.tpl:66
+msgid "Contribution type:"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:338
+msgid "Galette admin"
+msgstr ""
+
+#: ../templates/default/edit_dynamic_fields.tpl:109 ../templates/default/edit_dynamic_fields.tpl:148
+msgid "Enter up to %count more occurences."
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:64
+msgid "Values:"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3201
+msgid "Remove payment type %1$s"
+msgstr ""
+
+#: ../templates/default/plugin_initdb.tpl:120
+msgid "Close"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:10
+msgid "Take a moment to share some informations with us so we can know better Galette's uses."
+msgstr ""
+
+#: ../lib/Galette/Core/Middleware.php:194
+msgid "Please run install or upgrade procedure (check the documentation)"
+msgstr ""
+
+#: ../lib/Galette/Entity/Reminder.php:281
+msgid "A problem happened while sending late membership mail"
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:551
+msgid "Unknown upload error"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1112
+msgid "New account mail sent to '%s'."
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:191 ../templates/default/gestion_adherents.tpl:294
+#: ../templates/default/gestion_adherents.tpl:383
+msgid "Mail"
+msgstr ""
+
+#: ../lib/Galette/Core/Middleware.php:193
+msgid "Your Galette database is not present, or not up to date."
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:76 ../templates/default/mailing_adherents.tpl:110
+msgid "Object:"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:70 ../templates/default/liste_membres.tpl:14
+#: ../templates/default/gestion_transactions.tpl:39 ../templates/default/gestion_textes.tpl:21
+#: ../templates/default/gestion_contributions.tpl:62 ../templates/default/traduire_libelles.tpl:13
+#: ../templates/default/gestion_mailings.tpl:47 ../templates/default/trombinoscope.tpl:13
+#: ../templates/default/history.tpl:52
+msgid "Change"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:704
+msgid "Freed of dues"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:277
+msgid "Sends an email each time a new member registers online or edit his/her account"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:389
+msgid "Label width:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:344
+msgid "Do you want to allow 'unsecure' connections? This may be usefull if you server uses a self-signed certificate, and on some other cases."
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:506 ../templates/default/config_fields.tpl:41
+msgid "Administrator"
+msgstr ""
+
+#: ../templates/default/gestion_intitule_content.tpl:99 ../templates/default/configurer_fiche_content.tpl:44
+msgid "Delete '%s' field"
+msgstr ""
+
+#: ../install/steps/admin.php:68
+msgid "Password mismatch!"
+msgstr ""
+
+#: ../templates/default/page.tpl:184
+msgid "Emails content"
+msgstr ""
+
+#: ../templates/default/history.tpl:123
+msgid "History entry %id"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1526
+msgid "No files has been uploaded!"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:139 ../includes/routes/authentication.routes.php:332
+msgid "Password recovery"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:860 ../includes/routes/management.routes.php:1085
+#: ../includes/routes/management.routes.php:1204 ../includes/routes/management.routes.php:1879
+#: ../includes/routes/management.routes.php:2299 ../includes/routes/management.routes.php:2736
+#: ../includes/routes/management.routes.php:3230 ../includes/routes/members.routes.php:1431
+#: ../includes/routes/members.routes.php:3434 ../includes/routes/contributions.routes.php:1205
+#: ../includes/routes/groups.routes.php:225
+msgid "Removal has not been confirmed!"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:857
+msgid "Invalid E-Mail address: %s"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2505
+msgid "There are no member to proceed."
+msgstr ""
+
+#: ../includes/routes/management.routes.php:366
+msgid "Invalid email adress!"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:17
+msgid "General information"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1035
+msgid "- You can't send a confirmation by email if the member hasn't got an address!"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:830
+msgid "Transaction"
+msgstr ""
+
+#: ../templates/default/page.tpl:181
+msgid "Translate additionnals fields labels"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:217
+msgid "RSS feed URL"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:519
+msgid "- You must provide a password for SMTP authentication."
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1460
+msgid "An error occurred importing the file :("
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:649
+msgid "A problem happened while sending contribution receipt to user %name (%email)"
+msgstr ""
+
+#: ../lib/Galette/IO/CsvIn.php:387
+msgid "Lang %lang does not exists!"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:30
+msgid "Save selected criteria"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3098
+msgid "An error occurred filling empty logins and passwords :("
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:30
+msgid "Not dispatched amount"
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:407
+msgid "- Unknown payment type"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:476
+msgid "Profession"
+msgstr ""
+
+#: ../templates/default/history.tpl:116
+msgid "No log found"
+msgstr ""
+
+#: ../lib/Galette/Util/FakeData.php:377
+msgid "%count members requested, and %done created"
+msgstr ""
+
+#: ../templates/default/admintools.tpl:28 ../templates/default/admintools.tpl:29
+msgid "Fill all empty login and passwords"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:1134
+msgid "Fields config and categories"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfMembersCards.php:104
+msgid "Member's Cards"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:81
+msgid "Mbr num"
+msgstr ""
+
+#: ../templates/default/member.tpl:39
+msgid "Detach?"
+msgstr ""
+
+#: ../lib/Galette/Entity/PaymentType.php:159 ../lib/Galette/Entity/PaymentType.php:182
+msgid "Unable to add translation for %type :("
+msgstr ""
+
+#: ../lib/Galette/Entity/DynamicsTrait.php:271 ../lib/Galette/Entity/I18nTrait.php:408
+#: ../lib/Galette/IO/FileTrait.php:493
+msgid "File is too big. Maximum allowed size is %dKo"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:1153 ../templates/default/gestion_transactions.tpl:32
+msgid "transactions"
+msgstr ""
+
+#: ../templates/default/fake_data.tpl:13 ../templates/default/fake_data.tpl:14
+msgid "Add photos for members."
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:51
+msgid "Maximum number of characters."
+msgstr ""
+
+#: ../templates/default/ajouter_transaction.tpl:77
+msgid "Select an existing contribution in the database, and attach it to the current transaction"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:115 ../templates/default/preferences.tpl:41
+#: ../templates/default/preferences.tpl:43
+msgid "Address:"
+msgstr ""
+
+#: ../includes/routes/ajax.routes.php:69
+msgid "Required argument not present!"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:43
+msgid " (continuation)"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:205 ../templates/default/forms_types/groups.tpl:2
+msgid "Groups:"
+msgstr ""
+
+#: ../templates/default/import_model.tpl:97
+msgid "No field selected"
+msgstr ""
+
+#: ../templates/default/plugin_initdb.tpl:30
+msgid "you wish to erase an older version of of %name without keeping your data"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:9 ../templates/default/advanced_search.tpl:11
+msgid "in:"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:72
+msgid "View contributions"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:139 ../templates/default/ajouter_transaction.tpl:34
+msgid "Dispatch type:"
+msgstr ""
+
+#: ../templates/default/lostpasswd.tpl:9
+msgid "Recover password"
+msgstr ""
+
+#: ../templates/default/member.tpl:68 ../templates/default/preferences.tpl:160
+msgid "create another new member"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1538 ../includes/routes/members.routes.php:273
+#: ../includes/routes/members.routes.php:277 ../includes/routes/members.routes.php:281
+#: ../includes/routes/members.routes.php:285 ../templates/default/display_dynamic_fields.tpl:25
+#: ../templates/default/gestion_intitule_content.tpl:37 ../templates/default/gestion_intitule_content.tpl:78
+#: ../templates/default/gestion_mailings.tpl:32 ../templates/default/config_fields.tpl:33
+#: ../templates/default/editer_champ.tpl:28 ../templates/default/editer_champ.tpl:113
+#: ../templates/default/global_messages.tpl:68 ../templates/default/configurer_fiche_content.tpl:21
+#: ../templates/default/advanced_search.tpl:83 ../templates/default/advanced_search.tpl:238
+#: ../templates/default/advanced_search.tpl:399
+msgid "Yes"
+msgstr ""
+
+#: ../install/scripts/upgrade-to-0.8.php:94
+msgid "Unable to create main datadir in %path!"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3405
+msgid "Remove saved searches"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:620
+msgid "Unknown form!"
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:59
+msgid "Number of values or zero if infinite."
+msgstr ""
+
+#: ../templates/default/configurer_fiche_content.tpl:65
+msgid "Move down '%s' field"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:216 ../templates/default/advanced_search.tpl:228
+#: ../templates/default/advanced_search.tpl:236 ../templates/default/advanced_search.tpl:242
+msgid "is"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2778
+msgid "Dynamic field ID cannot ben null calling edit route!"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:247
+msgid "ends with"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:323
+#: ../install/steps/type.php:40 ../templates/default/plugin_initdb.tpl:131
+msgid "Installation mode"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:34 ../templates/default/gestion_adherents.tpl:56
+#: ../templates/default/gestion_transactions.tpl:10 ../templates/default/gestion_contributions.tpl:27
+#: ../templates/default/gestion_mailings.tpl:23 ../templates/default/history.tpl:36
+#: ../templates/default/advanced_search.tpl:280
+msgid "Clear filter"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:679
+msgid "Attendance sheet details"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:60 ../templates/default/gestion_mailings.tpl:13
+#: ../templates/default/gestion_mailings.tpl:72 ../templates/default/gestion_mailings.tpl:129
+msgid "Sender"
+msgstr ""
+
+#: ../templates/default/member.tpl:217
+msgid "Managed groups selection"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:354
+msgid "SMTP (or GMail) password:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:424
+msgid "(65 characters max)"
+msgstr ""
+
+#: ../includes/routes/public_pages.routes.php:46
+msgid "Unauthorized"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:15
+msgid "View transaction"
+msgstr ""
+
+#: ../templates/default/mailing_preview.tpl:9
+msgid "Headers"
+msgstr ""
+
+#: ../includes/routes/ajax.routes.php:109
+msgid "Member photo has been changed."
+msgstr ""
+
+#: ../install/steps/type.php:46 ../templates/default/plugin_initdb.tpl:26
+msgid "New installation"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:99
+msgid "Birth date:"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:118 ../includes/fields_defs/pdfmodels_fields.php:163
+#: ../includes/dependencies.php:462 ../includes/dependencies.php:507
+msgid "from"
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:102 ../templates/default/gestion_mailings.tpl:133
+msgid "Sent"
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:163
+msgid "Warning"
+msgstr ""
+
+#: ../templates/default/500.tpl:11
+msgid "Details"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:415
+msgid "Cards generation parameters"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:86
+msgid "Details of membership fee"
+msgstr ""
+
+#: ../lib/Galette/Entity/Transaction.php:342 ../lib/Galette/Entity/Contribution.php:454
+msgid "- Sum of all contributions exceed corresponding transaction amount."
+msgstr ""
+
+#: ../lib/Galette/Entity/Transaction.php:315
+msgid "- Empty transaction description!"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:33 ../templates/default/page.tpl:144
+msgid "View and filter contributions"
+msgstr ""
+
+#: ../templates/default/mailing_preview.tpl:11
+msgid "From:"
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:545
+msgid "Missing a temporary folder"
+msgstr ""
+
+#: ../includes/i18n.inc.php:334
+msgid "Secretary"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3165
+msgid "Payment type '%s' has not been added!"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:208
+msgid "An error occurred retrieving dates :("
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2806
+msgid "Unable to retrieve field informations."
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:40
+msgid "Inaccessible"
+msgstr ""
+
+#: ../lib/Galette/Core/Middleware.php:143 ../lib/Galette/Core/Middleware.php:192
+msgid "Galette needs update!"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:275 ../templates/default/liste_membres.tpl:87
+#: ../templates/default/gestion_transactions.tpl:148 ../templates/default/gestion_contributions.tpl:257
+#: ../templates/default/ajax_members.tpl:16 ../templates/default/gestion_mailings.tpl:170
+#: ../templates/default/trombinoscope.tpl:29 ../templates/default/history.tpl:145
+msgid "Pages:"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:291
+msgid "Contribution"
+msgstr ""
+
+#: ../templates/default/plugins.tpl:50
+msgid "No active plugin."
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2512
+msgid "Reminder has not been sent:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:459
+msgid "(Members will be able to generate their own member card)"
+msgstr ""
+
+#: ../templates/default/page.tpl:155
+msgid "Various charts"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:47 ../templates/default/page.tpl:157
+msgid "My contributions"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:324
+msgid "Database type unknown"
+msgstr ""
+
+#: ../includes/i18n.inc.php:364
+msgid "Galette-related data:"
+msgstr ""
+
+#: ../templates/default/global_messages.tpl:70
+msgid "Later"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:101 ../templates/default/mailing_adherents.tpl:124
+msgid "Cancel mailing"
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:144 ../templates/default/ajouter_contribution.tpl:108
+msgid "Start date of membership:"
+msgstr ""
+
+#: ../install/steps/check.php:99
+msgid "PHP version"
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:28
+msgid "Sent mailings:"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:279 ../templates/default/gestion_contributions.tpl:262
+msgid "For the selection:"
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:480
+msgid "File name is invalid, it should not contain any special character or space."
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:183
+msgid "Select a field"
+msgstr ""
+
+#: ../lib/Galette/Core/Pagination.php:255
+msgid "First page"
+msgstr ""
+
+#: ../templates/default/editer_champ.tpl:78 ../templates/default/editer_champ.tpl:81
+msgid "New dynamic field"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2163
+msgid "Please enter a message."
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:1152
+msgid "Update preferences"
+msgstr ""
+
+#: ../install/steps/end.php:49
+msgid "Galette has been successfully updated!"
+msgstr ""
+
+#: ../templates/default/page.tpl:187
+msgid "Payment types"
+msgstr ""
+
+#: ../templates/default/member.tpl:70 ../templates/default/preferences.tpl:162
+msgid "go to members list"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:17
+msgid "[view]"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:639
+msgid "No member #%id."
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:135 ../templates/default/ajouter_contribution.tpl:130
+msgid "Comments:"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1403
+msgid "Fail to add new member."
+msgstr ""
+
+#: ../install/steps/admin.php:54 ../templates/default/preferences.tpl:523
+msgid "Retype password:"
+msgstr ""
+
+#: ../templates/default/forms_types.tpl:53
+msgid "This comment is only displayed for admins and staff members."
+msgstr ""
+
+#: ../templates/default/preferences.tpl:218
+msgid "Enter the full URL to the RSS feed. It will be displayed on Galette desktop."
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1247 ../includes/routes/authentication.routes.php:361
+msgid "- The passwords don't match!"
+msgstr ""
+
+#: ../install/steps/end.php:52
+msgid "To secure the system, please delete the install directory"
+msgstr ""
+
+#: ../lib/Galette/Repository/SavedSearches.php:266
+msgid "Searches deleted (%list)"
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:501
+msgid "A file with that name already exists!"
+msgstr ""
+
+#: ../templates/default/gestion_pdf_content.tpl:15
+msgid "Header"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:146
+msgid "Contributions management"
+msgstr ""
+
+#: ../templates/default/member.tpl:81
+msgid "Notify member his account has been created"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:275 ../includes/routes/contributions.routes.php:486
+msgid "Contribution ID cannot ben null calling edit route!"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:17
+msgid "Membership status"
+msgstr ""
+
+#: ../includes/i18n.inc.php:363
+msgid "Identity:"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:46
+msgid "Advanced search mode"
+msgstr ""
+
+#: ../lib/Galette/Entity/PdfModel.php:555 ../templates/default/gestion_pdf_content.tpl:10
+#: ../templates/default/attendance_sheet_details.tpl:20
+msgid "Subtitle"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:3069
+msgid "Fields configuration has been successfully reinitialized."
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:765
+msgid "An error occurred storing the field."
+msgstr ""
+
+#: ../templates/default/500.tpl:25
+msgid "File:"
+msgstr ""
+
+#: ../templates/default/liste_membres.tpl:53 ../templates/default/liste_membres.tpl:81
+#: ../templates/default/group.tpl:4 ../templates/default/group.tpl:9
+msgid "Informations"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1520
+msgid "No files has been seleted for upload!"
+msgstr ""
+
+#: ../templates/default/edit_dynamic_fields.tpl:60
+msgid "delete"
+msgstr ""
+
+#: ../install/steps/type.php:49
+msgid "you're installing Galette for the first time"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:26
+msgid "Activities"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:703 ../templates/default/member.tpl:168
+#: ../templates/default/member.tpl:176 ../templates/default/gestion_transactions.tpl:186
+#: ../templates/default/ajouter_contribution.tpl:185 ../templates/default/gestion_contributions.tpl:338
+#: ../templates/default/edit_dynamic_fields.tpl:185 ../templates/default/ajouter_transaction.tpl:257
+#: ../templates/default/gestion_mailings.tpl:196 ../templates/default/history.tpl:170
+#: ../templates/default/advanced_search.tpl:359 ../templates/default/advanced_search.tpl:366
+#: ../templates/default/advanced_search.tpl:472
+msgid "Select a date"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:467
+msgid "Resume"
+msgstr ""
+
+#: ../includes/i18n.inc.php:358
+msgid "Galette-related data"
+msgstr ""
+
+#: ../templates/default/global_messages.tpl:41
+msgid "Do not wait timeout and go to the next page now :)"
+msgstr ""
+
+#: ../lib/Galette/Filters/MembersList.php:291
+msgid "Close expiries"
+msgstr ""
+
+#: ../includes/routes/groups.routes.php:302
+msgid "groups_list"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:292
+msgid "Be visible in the members list:"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:194
+msgid "Transaction: %s"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:301
+msgid "Using a SMTP server (slower)"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1989
+msgid "Title '%s' has been successfully modified."
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1288
+msgid "Gender %gender does not exists!"
+msgstr ""
+
+#: ../install/steps/db.php:97
+msgid "Table prefix:"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:166 ../lib/Galette/Core/CheckModules.php:154
+#: ../templates/default/gestion_adherents.tpl:512 ../templates/default/voir_adherent.tpl:242
+msgid "Ok"
+msgstr ""
+
+#: ../templates/default/mailing_preview.tpl:24 ../templates/default/reminder.tpl:41
+msgid "Subject:"
+msgstr ""
+
+#: ../lib/Galette/IO/Charts.php:215
+msgid "Impending due dates"
+msgstr ""
+
+#: ../templates/default/admintools.tpl:22
+msgid "Reinitialize PDF models"
+msgstr ""
+
+#: ../lib/Galette/Entity/Contribution.php:131 ../templates/default/forms_types/payment_types.tpl:7
+msgid "Payment type:"
+msgstr ""
+
+#: ../lib/Galette/IO/Charts.php:304
+msgid "Companies"
+msgstr ""
+
+#: ../lib/Galette/IO/Pdf.php:209
+msgid "Not a GIF file "
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1175
+msgid "- This E-Mail address is already used by another member!"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1749 ../templates/default/member.tpl:448
+msgid " (%age years old)"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:471
+msgid "New"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3463
+msgid "%count searches have been successfully deleted."
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:51
+msgid "Birth date"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:51
+msgid "Status:"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:137
+msgid "Datapase upgrade"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:110
+msgid "Login failed."
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:59 ../templates/default/gestion_pdf.tpl:29
+msgid "Your organisation name"
+msgstr ""
+
+#: ../templates/default/page.tpl:124
+msgid "You are actually logged-in as superadmin. Some functionnalities may not be available since this is *not* a regular member."
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3376 ../includes/routes/members.routes.php:3403
+msgid "Saved search"
+msgstr ""
+
+#: ../install/steps/db.php:48
+msgid "Enter connection data for the existing database."
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2629
+msgid "Dynamic fields configuration"
+msgstr ""
+
+#: ../includes/i18n.inc.php:347
+msgid "french"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1218
+msgid "'%export' file has been removed from disk."
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:324
+#: ../install/steps/db.php:41 ../install/steps/db.php:67
+msgid "Database"
+msgstr ""
+
+#: ../lib/Galette/Filters/ContributionsList.php:255 ../lib/Galette/Filters/MailingsList.php:235
+#: ../lib/Galette/Filters/HistoryList.php:241 ../lib/Galette/Filters/TransactionsList.php:230
+#: ../includes/routes/management.routes.php:782 ../includes/routes/management.routes.php:995
+#: ../includes/routes/contributions.routes.php:212
+msgid "start date filter"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:166 ../lib/Galette/Core/CheckModules.php:145
+msgid "Ko"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:117
+msgid "Twitter"
+msgstr ""
+
+#: ../install/steps/db_select_version.php:106 ../templates/default/plugin_initdb.tpl:61
+msgid "older than %version"
+msgstr ""
+
+#: ../templates/default/gestion_pdf_content.tpl:39
+msgid "Adhesion Form"
+msgstr ""
+
+#: ../templates/default/gestion_pdf_content.tpl:19
+msgid "Footer"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:1142 ../templates/default/page.tpl:185
+msgid "Titles"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2121
+msgid "Contribution types"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfAdhesionForm.php:133 ../includes/routes/members.routes.php:262
+#: ../templates/default/forms_types/gender.tpl:21 ../templates/default/mass_change_members.tpl:29
+#: ../templates/default/advanced_search.tpl:193 ../templates/default/advanced_search.tpl:307
+msgid "Woman"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:342
+msgid "Inactive account"
+msgstr ""
+
+#: ../templates/default/gestion_groupes.tpl:26
+msgid "Group informations"
+msgstr ""
+
+#: ../templates/default/confirm_removal.tpl:18
+msgid "Are you sure you want to proceed?"
+msgstr ""
+
+#: ../install/steps/db_select_version.php:52
+msgid "No update script found!"
+msgstr ""
+
+#: ../templates/default/plugins.tpl:41
+msgid "Initialize '%name' database"
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:80
+msgid "(De)Activate HTML editor"
+msgstr ""
+
+#: ../templates/default/page.tpl:157
+msgid "View and filter all my contributions"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:348
+msgid "Membership will expire soon (&lt;30d)"
+msgstr ""
+
+#: ../templates/default/page.tpl:147
+msgid "Add new membership fee in database"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:271
+msgid "Recipient of new online registation and edition emails"
+msgstr ""
+
+#: ../templates/default/500.tpl:6
+msgid "Application error"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:685
+msgid "Member ID cannot ben null calling edit route!"
+msgstr ""
+
+#: ../lib/Galette/Entity/PaymentType.php:302
+msgid "Credit card"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:13 ../templates/default/gestion_contributions.tpl:94
+#: ../templates/default/gestion_contributions.tpl:205 ../templates/default/ajouter_transaction.tpl:86
+msgid "End"
+msgstr ""
+
+#: ../templates/default/gestion_pdf_content.tpl:29
+msgid "CSS styles"
+msgstr ""
+
+#: ../install/steps/check.php:158 ../install/steps/galette.php:77
+#: ../install/steps/db_install.php:78 ../templates/default/plugin_initdb.tpl:114
+msgid "Retry"
+msgstr ""
+
+#: ../install/steps/db.php:93
+msgid "Database:"
+msgstr ""
+
+#: ../install/steps/check.php:77
+msgid "Files"
+msgstr ""
+
+#: ../templates/default/confirm_removal.tpl:18
+msgid "This can't be undone."
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:91
+msgid "Title:"
+msgstr ""
+
+#: ../templates/default/member.tpl:21
+msgid "Account registered!"
+msgstr ""
+
+#: ../templates/default/fake_data.tpl:54 ../templates/default/attendance_sheet_details.tpl:40
+msgid "Generate"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:24 ../templates/default/gestion_pdf_content.tpl:36
+#: ../templates/default/advanced_search.tpl:153
+msgid "Select"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:169
+msgid "Disabled"
+msgstr ""
+
+#: ../lib/Galette/Entity/Group.php:396
+msgid "Unable to detach group :("
+msgstr ""
+
+#: ../templates/default/fake_data.tpl:9
+msgid "Number of members:"
+msgstr ""
+
+#: ../templates/default/import.tpl:15
+msgid "Existing files"
+msgstr ""
+
+#: ../lib/Galette/Entity/Transaction.php:122 ../templates/default/ajouter_transaction.tpl:14
+msgid "Originator:"
+msgstr ""
+
+#: ../install/steps/db.php:103
+msgid "(Indicate the CURRENT prefix of your Galette tables)"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:691
+msgid "Mail sent to admin for user %name (%email)"
+msgstr ""
+
+#: ../templates/default/gestion_groupes.tpl:19
+msgid "New group"
+msgstr ""
+
+#: ../templates/default/display_dynamic_fields.tpl:22
+msgid "Open '%s' in a new window"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:1216
+msgid "Transactions(s) has been removed!"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:354
+msgid "Lateness in fee"
+msgstr ""
+
+#: ../lib/Galette/Core/Plugins.php:290 ../lib/Galette/Core/Plugins.php:294
+msgid "Cannot deactivate plugin."
+msgstr ""
+
+#: ../templates/default/gestion_paymentstypes.tpl:17
+msgid "Add payment type"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:38 ../templates/default/gestion_mailings.tpl:30
+#: ../templates/default/advanced_search.tpl:39 ../templates/default/advanced_search.tpl:81
+msgid "Don't care"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1501
+msgid "Your file has been successfully uploaded!"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:706 ../lib/Galette/DynamicFields/DynamicField.php:755
+msgid "Unable to add dynamic translation for %field :("
+msgstr ""
+
+#: ../includes/i18n.inc.php:356
+msgid "reduced annual fee"
+msgstr ""
+
+#: ../includes/i18n.inc.php:333
+msgid "Vice-treasurer"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:58
+msgid "Show/hide query"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfAttendanceSheet.php:160 ../includes/fields_defs/pdfmodels_fields.php:266
+#: ../includes/dependencies.php:610
+msgid "Signature"
+msgstr ""
+
+#: ../templates/default/page.tpl:182 ../templates/default/page.tpl:182
+msgid "Manage statuses"
+msgstr ""
+
+#: ../templates/default/gestion_titres.tpl:60
+msgid "Edit '%s' title"
+msgstr ""
+
+#: ../templates/default/import.tpl:58
+msgid "Run the import process, but do *not* store anything in the database"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:113
+msgid "End date"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:131
+msgid "Galette's parameters"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:164
+msgid "Mobile phone:"
+msgstr ""
+
+#: ../lib/Galette/Entity/Title.php:182
+msgid "You cannot delete Mr. or Mrs. titles!"
+msgstr ""
+
+#: ../includes/i18n.inc.php:329
+msgid "Publisher:"
+msgstr ""
+
+#: ../templates/default/edit_dynamic_fields.tpl:101
+msgid "Enter as many occurences you want."
+msgstr ""
+
+#: ../install/scripts/upgrade-to-0.8.php:110
+msgid "Unable to create datadir in %dir!"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2886
+msgid "Dynamic field has been successfully stored!"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:333
+msgid "Use SMTP authentication?"
+msgstr ""
+
+#: ../templates/default/mailing_recipients.tpl:18
+msgid "unreachable members:"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:204
+msgid "Jabber:"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:141
+msgid "Default theme:"
+msgstr ""
+
+#: ../lib/Galette/IO/Pdf.php:206
+msgid "Missing or incorrect image file "
+msgstr ""
+
+#: ../lib/Galette/Repository/Members.php:416
+msgid "Cannot remove a member who still have dependencies (mailings, ...)"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:466
+msgid "- Invalid format of beginning of membership."
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:1029
+msgid "free text"
+msgstr ""
+
+#: ../templates/default/import.tpl:82
+msgid "Upload file"
+msgstr ""
+
+#: ../includes/i18n.inc.php:351
+msgid "annual fee (to be paid)"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:79
+msgid "Reload date informations according to selected member and contribution type"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2872
+msgid "An error occurred adding dynamic field :("
+msgstr ""
+
+#: ../templates/default/mailing_adherents.tpl:20
+msgid "Manage selected members"
+msgstr ""
+
+#: ../install/steps/check.php:118
+msgid "Files permissions"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:270
+msgid "SQL query"
+msgstr ""
+
+#: ../templates/default/js_chosen_adh.tpl:37
+msgid "Load following members..."
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:237
+msgid "- Unknown payment type!"
+msgstr ""
+
+#: ../includes/routes/ajax.routes.php:218
+msgid "Telemetry informations has been sent. Thank you!"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:325
+msgid "SMTP server:"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:7 ../templates/default/advanced_search.tpl:9
+msgid "Search:"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1020
+msgid "A problem happened while sending email to admin for account '%s'."
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:384
+msgid "Send a mail"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:81
+msgid "You must provide both login and password."
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:397
+msgid "- The username must be composed of at least 4 characters!"
+msgstr ""
+
+#: ../install/steps/db.php:52
+msgid "It seems that you have already installed Galette once.<br/>All existing data will be removed if you keep going on using existing database!"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:317
+msgid "Export as CSV"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:240
+msgid "%membername: contributions"
+msgstr ""
+
+#: ../lib/Galette/Filters/MembersList.php:289
+msgid "All members"
+msgstr ""
+
+#: ../templates/default/page.tpl:186
+msgid "Manage PDF models"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1585 ../templates/default/page.tpl:139
+#: ../templates/default/advanced_search.tpl:48
+msgid "Advanced search"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:58
+msgid "Edit member"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:200 ../includes/i18n.inc.php:336
+#: ../includes/dependencies.php:544
+msgid "Active member"
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:45
+msgid "Read/Write"
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:40 ../templates/default/history.tpl:46
+msgid "entries"
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:537
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+
+#: ../lib/Galette/IO/PdfGroups.php:169
+msgid "Managers:"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:78
+msgid "Member's email address"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:418
+msgid "Please make sure to select at least one member from the list to perform this action."
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:284
+msgid "Freed of dues:"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:252 ../templates/default/group.tpl:13
+msgid "Creation date:"
+msgstr ""
+
+#: ../lib/Galette/IO/Charts.php:300
+msgid "Individuals"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:88
+msgid "Statuts"
+msgstr ""
+
+#: ../lib/Galette/Repository/Members.php:325
+msgid "Member Picture deleted"
+msgstr ""
+
+#: ../templates/default/plugin_initdb.tpl:29
+msgid "you're installing %name for the first time"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:2066
+msgid "Mailing"
+msgstr ""
+
+#: ../includes/routes/authentication.routes.php:227
+msgid "Mail sent to '%s' for password recovery."
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1284
+msgid "Table %table is empty, and has not been exported."
+msgstr ""
+
+#: ../templates/default/group_persons.tpl:41
+msgid "No member attached"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:311
+msgid "Generate Member Cards"
+msgstr ""
+
+#: ../install/steps/db_checks.php:187
+msgid "Check of the database"
+msgstr ""
+
+#: ../install/steps/db_select_version.php:110 ../templates/default/plugin_initdb.tpl:63
+#: ../templates/default/advanced_search.tpl:54 ../templates/default/advanced_search.tpl:61
+#: ../templates/default/advanced_search.tpl:68 ../templates/default/advanced_search.tpl:75
+#: ../templates/default/advanced_search.tpl:102 ../templates/default/advanced_search.tpl:109
+#: ../templates/default/advanced_search.tpl:116 ../templates/default/advanced_search.tpl:123
+#: ../templates/default/advanced_search.tpl:179
+msgid "and"
+msgstr ""
+
+#: ../templates/default/gestion_paymentstypes.tpl:72
+msgid "Delete '%s' payment type"
+msgstr ""
+
+#: ../templates/default/page.tpl:153
+msgid "Export some data in various formats"
+msgstr ""
+
+#: ../templates/default/page.tpl:134
+msgid "Navigation"
+msgstr ""
+
+#: ../templates/default/saved_searches.tpl:9 ../templates/default/saved_searches.tpl:25
+#: ../templates/default/saved_searches.tpl:26 ../templates/default/advanced_search.tpl:58
+#: ../templates/default/advanced_search.tpl:99
+msgid "Creation date"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:49 ../templates/default/gestion_textes.tpl:50
+#: ../templates/default/gestion_pdf.tpl:19 ../templates/default/gestion_pdf.tpl:20
+msgid "Existing variables"
+msgstr ""
+
+#: ../templates/default/plugins.tpl:74
+msgid "Unknown"
+msgstr ""
+
+#: ../lib/Galette/Entity/Entitled.php:560
+msgid "Cannot delete this label: it's still used"
+msgstr ""
+
+#: ../includes/fields_defs/pdfmodels_fields.php:241 ../includes/dependencies.php:585
+msgid "Zip Code"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:288
+msgid "Mass change"
+msgstr ""
+
+#: ../templates/default/config_fields.tpl:44
+msgid "Read only"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:230
+msgid "after"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1302
+msgid "Export file could not be write on disk for '%export'. Make sure web server can write in the exports directory."
+msgstr ""
+
+#: ../includes/routes/management.routes.php:75 ../templates/default/page.tpl:136
+msgid "Dashboard"
+msgstr ""
+
+#: ../templates/default/desktop.tpl:31 ../templates/default/page.tpl:141
+msgid "View and manage groups"
+msgstr ""
+
+#: ../install/steps/galette.php:57 ../templates/default/gestion_adherents.tpl:641
+#: ../templates/default/gestion_adherents.tpl:660 ../templates/default/js_removal.tpl:65
+#: ../templates/default/js_removal.tpl:81 ../templates/default/gestion_pdf.tpl:146
+#: ../templates/default/configurer_fiches.tpl:59 ../templates/default/configurer_fiches.tpl:85
+msgid "An error occurred :("
+msgstr ""
+
+#: ../lib/Galette/Entity/Reminder.php:283
+msgid "A problem happened while sending impending membership mail"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:288
+msgid "Should HTML editor be activated on page load ?"
+msgstr ""
+
+#: ../includes/routes/main.routes.php:159
+msgid "Unable to impersonate as %id"
+msgstr ""
+
+#: ../templates/default/page.tpl:141
+msgid "Manage groups"
+msgstr ""
+
+#: ../includes/i18n.inc.php:352
+msgid "company fee"
+msgstr ""
+
+#: ../templates/default/gestion_contributions.tpl:151 ../templates/default/gestion_contributions.tpl:218
+#: ../templates/default/ajouter_transaction.tpl:87
+msgid "Duration"
+msgstr ""
+
+#: ../install/steps/db_checks.php:152
+msgid "ALTER operation not allowed"
+msgstr ""
+
+#: ../lib/Galette/Filters/ContributionsList.php:211 ../lib/Galette/Filters/ContributionsList.php:248
+#: ../lib/Galette/Filters/MailingsList.php:191 ../lib/Galette/Filters/MailingsList.php:228
+#: ../lib/Galette/Filters/HistoryList.php:197 ../lib/Galette/Filters/HistoryList.php:234
+#: ../lib/Galette/Filters/TransactionsList.php:186 ../lib/Galette/Filters/TransactionsList.php:223
+msgid "Y"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:24
+msgid "Generate members's card"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1650
+msgid "Import model has not been stored :("
+msgstr ""
+
+#: ../templates/default/member.tpl:64 ../templates/default/preferences.tpl:156
+msgid "After member creation:"
+msgstr ""
+
+#: ../templates/default/plugins.tpl:9 ../templates/default/plugins.tpl:23
+msgid "Author"
+msgstr ""
+
+#: ../templates/default/change_passwd.tpl:17
+msgid "(at least 4 characters)"
+msgstr ""
+
+#: ../templates/default/voir_adherent.tpl:81 ../templates/default/gestion_contributions.tpl:47
+#: ../templates/default/page.tpl:147
+msgid "Add a membership fee"
+msgstr ""
+
+#: ../templates/default/gestion_mailings.tpl:146
+msgid "Display mailing '%subject' details in preview window"
+msgstr ""
+
+#: ../templates/default/forms_types.tpl:56
+msgid "This comment is reserved to the member."
+msgstr ""
+
+#: ../install/steps/type.php:56 ../templates/default/plugin_initdb.tpl:37
+msgid "Update"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:65
+msgid "Modification date"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:457
+msgid "A mailing already exists. Do you want to create a new one or resume the existing?"
+msgstr ""
+
+#: ../install/steps/db_select_version.php:109 ../templates/default/plugin_initdb.tpl:63
+msgid "comprised between"
+msgstr ""
+
+#: ../templates/default/gestion_pdf.tpl:43
+msgid "Current date (Y-m-d)"
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:539
+msgid "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2115
+msgid "User statuses"
+msgstr ""
+
+#: ../lib/Galette/IO/CsvIn.php:471 ../lib/Galette/IO/CsvIn.php:482
+msgid "An error occurred storing member at row %row (%name):"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:460
+msgid "- Invalid number of months of membership extension."
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:1204
+msgid "- The username cannot contain the @ character"
+msgstr ""
+
+#: ../templates/default/ajouter_contribution.tpl:149
+msgid "Notify member"
+msgstr ""
+
+#: ../lib/Galette/Filters/MembersList.php:304 ../includes/routes/management.routes.php:196
+msgid "Active accounts"
+msgstr ""
+
+#: ../lib/Galette/IO/FileTrait.php:543
+msgid "No file was uploaded"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:23
+msgid "Account activity"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:1032
+msgid "date"
+msgstr ""
+
+#: ../templates/default/ajax_members.tpl:64
+msgid "No members has been selected yet."
+msgstr ""
+
+#: ../templates/default/preferences.tpl:510
+msgid "Admin account (independant of members)"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:143 ../webroot/installer.php:340
+msgid "Admin parameters"
+msgstr ""
+
+#: ../templates/default/preferences.tpl:394
+msgid "Label height:"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:3042 ../includes/routes/members.routes.php:3104
+msgid "Mass changes has not been confirmed!"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:2333
+msgid "An error occurred trying to remove %type #%id"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1228
+msgid "Cannot remove '%export' from disk :/"
+msgstr ""
+
+#: ../templates/default/ajax_groups.tpl:36
+msgid "Selected groups"
+msgstr ""
+
+#: ../templates/default/page.tpl:115 ../templates/default/404.tpl:10
+#: ../templates/default/public_page.tpl:67
+msgid "Your browser version is way too old and no longer supported in Galette for a while."
+msgstr ""
+
+#: ../lib/Galette/Core/Pagination.php:307
+msgid "All"
+msgstr ""
+
+#: ../lib/Galette/DynamicFields/DynamicField.php:507 ../templates/default/config_fields.tpl:43
+msgid "Group manager"
+msgstr ""
+
+#: ../templates/default/gestion_pdf_content.tpl:24
+msgid "Body"
+msgstr ""
+
+#: ../templates/default/ajax_members.tpl:40 ../templates/default/gestion_intitule_content.tpl:68
+#: ../templates/default/group_persons.tpl:29
+msgid "[staff]"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:565
+msgid "A problem happened while sending to admin post contribution notification for user %name (%email) contribution"
+msgstr ""
+
+#: ../templates/default/ajouter_transaction.tpl:250
+msgid "Click on a contribution row to attach it to the current transaction"
+msgstr ""
+
+#: ../includes/fields_defs/members_fields.php:228
+msgid "Profession:"
+msgstr ""
+
+#: ../templates/default/plugin_info.tpl:23
+msgid "Main route:"
+msgstr ""
+
+#: ../lib/Galette/Entity/Reminder.php:272
+msgid "Sent reminder mail for late membership"
+msgstr ""
+
+#: ../includes/routes/management.routes.php:1728
+msgid "Missing PDF model type!"
+msgstr ""
+
+#: ../templates/default/gestion_adherents.tpl:438 ../templates/default/gestion_transactions.tpl:174
+#: ../templates/default/gestion_transactions.tpl:178 ../templates/default/gestion_contributions.tpl:328
+msgid "Show legend"
+msgstr ""
+
+#: ../includes/routes/contributions.routes.php:907
+msgid "Unable to attach contribution to transaction"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:7
+msgid "Choose an entry"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1459
+msgid "An error occurred trying to remove members :/"
+msgstr ""
+
+#: ../includes/routes/members.routes.php:1121
+msgid "A problem happened while sending account mail to '%s'"
+msgstr ""
+
+#: ../templates/default/gestion_titres.tpl:10 ../templates/default/gestion_titres.tpl:24
+#: ../templates/default/gestion_titres.tpl:52
+msgid "Long form"
+msgstr ""
+
+#: ../templates/default/gestion_textes.tpl:61 ../templates/default/gestion_pdf.tpl:31
+msgid "Your organisation slogan"
+msgstr ""
+
+#: ../templates/default/editer_intitule.tpl:19
+msgid "Priority:"
+msgstr ""
+
+#: ../templates/default/export.tpl:55 ../templates/default/import.tpl:50
+msgid "Remove '%file' from disk"
+msgstr ""
+
+#: ../lib/Galette/Core/Install.php:1138
+msgid "Mails texts"
+msgstr ""
