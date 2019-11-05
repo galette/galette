@@ -222,4 +222,8 @@ $(function() {
             }
         });
     }
+
+    $('#lang_selector').change(function() {
+        this.form.submit();
+    });
 });

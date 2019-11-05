@@ -245,22 +245,6 @@ nav a{
 #menu li.selected a{
     background-color: #DDDDFF;
 }
-
-#langs{
-    list-style-type:none;
-    margin:1em 1em 0;
-    padding:0;
-    display:inline-block;
-}
-#langs li{
-    padding:0;
-    margin:0;
-    display:inline;
-    background-color:transparent;
-}
-#langs li a{
-    display:inline;
-}
 /* =/ Main menu */
 
 /*
@@ -516,19 +500,20 @@ footer a:hover {
     min-width: 25em;
 }
 
-#galette_body .selectize-input {
+#galette_body .selectize-input, .public_page .selectize-input {
     padding: .1em 20px .1em 8px;
     overflow: unset;
 }
 
-#galette_body .selectize-dropdown .option {
+#galette_body .selectize-dropdown .option, .public_page .selectize-dropdown .option {
     cursor: pointer;
 }
 
-#galette_body .selectize-dropdown .active {
+#galette_body .selectize-dropdown .active, .public_page .selectize-dropdown .active  {
     background-color: #DDDDFF;
 }
-#galette_body .selectize-dropdown .option, #galette_body .selectize-dropdown .optgroup-header {
+#galette_body .selectize-dropdown .option, #galette_body .selectize-dropdown .optgroup-header,
+.public_page .selectize-dropdown .option, .public_page .selectize-dropdown .optgroup-header {
     padding: .2em .5em;
 }
 
@@ -1088,10 +1073,6 @@ legend .tab-button {
 .public_page p {
     margin: 1em auto .5em;
 }
-.public_page #langs {
-    display: block;
-    margin:.2em 0;
-}
 
 .public_page section {
     text-align: center;
@@ -1111,14 +1092,9 @@ legend .tab-button {
 
 .public_page #user {
     position: absolute;
-    top:0;
+    top:3em;
     right:0;
     display:inline-block;
-    border-bottom:1px solid #DDDDFF;
-    border-left:1px solid #DDDDFF;
-    -moz-border-bottom-left-radius: 10px;
-    -webkit-border-bottom-left-radius: 10px;
-    border-bottom-left-radius: 10px;
 
 }
 .public_page #userlink {
@@ -1134,6 +1110,12 @@ legend .tab-button {
 
 .public_page #logout_10 {
     margin: 0 .5em .2em;
+}
+
+.public_page #plang_selector {
+    position: absolute;
+    right: .5em;
+    top: .5em;
 }
 
 /* =/ Public pages */
@@ -1793,16 +1775,6 @@ td img, a img {
     text-align: center;
 }
 
-#langs li a.flag:hover {
-    text-decoration: none;
-}
-
-.flag img, img.flag
-{
-    width: 22px;
-    height: 16px;
-}
-
 .bigtable
 {
     text-align: center;
@@ -1986,13 +1958,6 @@ label.simplelabel {
 
 .cssform .ui-button-text-only .ui-button-text {
     padding: .1em 1em;
-}
-
-.galette_form #pref_lang option {
-    background-size: 16px;
-    background-repeat: no-repeat;
-    padding-left: 20px;
-    background-position: 0 50%;
 }
 
 .galette_form img.mdp_img {
@@ -2354,15 +2319,6 @@ label:hover > i, span.bline:hover > i {
 
 /** Mobile devices */
 @media (max-width: 767px) {
-
-    body:before {
-        content: "- Galette Version mobile -";
-        display: block;
-        color: #777;
-        text-align: center;
-        font-style: italic;
-        padding-top: .2em;
-    }
 
     /* passer tous les éléments de largeur fixe en largeur automatique */
     body {

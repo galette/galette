@@ -174,8 +174,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {elseif $member->isWoman()}
                     <i class="fas fa-venus fa-fw"></i>
             {/if}
-        {elseif $element->field_id eq 'pref_lang'}
-                    <img src="{base_url}/{$pref_lang_img}" alt="" class="flag"/>
         {/if}
         {if $element->field_id eq 'email_adh' or $element->field_id eq 'msn_adh'}
                         <a href="mailto:{$value}">{$value}</a>

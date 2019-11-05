@@ -264,15 +264,21 @@ header('Content-Type: text/html; charset=UTF-8');
                 <h1 id="titre">
                     <?php echo _T("Galette installation") . ' - ' . $install->getStepTitle(); ?>
                 </h1>
-                <ul id="langs">
+
+                <form action="">
+                    <select id="lang_selector" name="ui_pref_lang">
 <?php
 foreach ($i18n->getList() as $langue) {
     ?>
-                    <li><a href="?pref_lang=<?php echo $langue->getID(); ?>"><img src="<?php echo $langue->getFlag(); ?>" alt="<?php echo $langue->getName(); ?>" lang="<?php echo $langue->getAbbrev(); ?>" class="flag"/></a></li>
+                        <option value="<?php echo $langue->getID(); ?>" lang="<?php echo $langue->getAbbrev(); ?>"<?php if ($galette_lang == $langue->getAbbrev()) { echo ' selected="selected"'; } ?>>{<?php echo $langue->getName(); ?></option>
     <?php
 }
 ?>
-                </ul>
+                    </select>
+                    <noscript>
+                        <input type="submit" name="{_T string="Change language"}" />
+                    </noscript>
+                </form>
             </header>
 <?php
 if (count($error_detected) > 0) {

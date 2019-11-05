@@ -443,13 +443,13 @@ $app->add(function ($request, $response, $next) {
 $app->add(function ($request, $response, $next) use ($i18n) {
     $get = $request->getQueryParams();
 
-    if (isset($get['pref_lang'])) {
+    if (isset($get['ui_pref_lang'])) {
         $route = $request->getAttribute('route');
 
         $route_name = $route->getName();
         $arguments = $route->getArguments();
 
-        $this->i18n->changeLanguage($get['pref_lang']);
+        $this->i18n->changeLanguage($get['ui_pref_lang']);
         $this->session->i18n = $this->i18n;
 
         return $response->withRedirect(

@@ -70,15 +70,16 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <![endif]-->
         <header>
             <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
-            <ul id="langs">
+            <form action="" id="plang_selector">
+                <select id="lang_selector" name="ui_pref_lang">
 {foreach item=langue from=$languages}
-                <li>
-                    <a href="?pref_lang={$langue->getID()}" title="{_T string="Switch locale to '%locale'" pattern="/%locale/" replace=$langue->getName()}" class="flag">
-                        <img src="{base_url}/{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}"/>
-                    </a>
-                </li>
+                    <option value="{$langue->getID()}" lang="{$langue->getAbbrev()}"{if $galette_lang eq $langue->getAbbrev()} selected="selected"{/if}>{$langue->getName()|ucfirst}</option>
 {/foreach}
-            </ul>
+                </select>
+                <noscript>
+                    <input type="submit" name="{_T string="Change language"}" />
+                </noscript>
+            </form>
 {if $login->isLogged()}
             <div id="user">
                 <a id="userlink" class="tooltip" title="{_T string="View your member card"}" href="{if $login->isSuperAdmin()}{path_for name="slash"}{else}{path_for name="me"}{/if}">{$login->loggedInAs(true)}</a>

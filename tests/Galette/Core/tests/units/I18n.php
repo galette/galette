@@ -113,7 +113,7 @@ class I18n extends atoum
         $list = $this->i18n->getList();
 
         $this->array($list)
-            ->hasSize(3);
+            ->size->isGreaterThan(3);
 
         foreach ($list as $elt) {
             $this->object($elt)
@@ -130,14 +130,8 @@ class I18n extends atoum
     {
         $list = $this->i18n->getArrayList();
 
-        $expected = [
-            'de_DE' => 'Deutsch',
-            'en_US' => 'English',
-            'fr_FR' => 'Français'
-        ];
-
         $this->array($list)
-            ->isIdenticalTo($expected);
+            ->size->isGreaterThan(3);
     }
 
     /**
@@ -154,21 +148,6 @@ class I18n extends atoum
     }
 
     /**
-     * Test getting flag from its ID
-     *
-     * @return void
-     */
-    public function testGetFlagFromid()
-    {
-        $flag = $this->i18n->getFlagFromId('en_US');
-
-        $this->variable($flag)
-            ->isIdenticalTo(
-                GALETTE_THEME. 'images/flags/en_US.svg'
-            );
-    }
-
-    /**
      * Test retrieving language informations
      *
      * @return void
@@ -179,7 +158,6 @@ class I18n extends atoum
         $longid = $this->i18n->getLongID();
         $name = $this->i18n->getName();
         $abbrev = $this->i18n->getAbbrev();
-        $flag = $this->i18n->getFlag();
 
         $this->variable($id)
             ->isIdenticalTo('fr_FR');
@@ -189,10 +167,6 @@ class I18n extends atoum
             ->isIdenticalTo('français');
         $this->variable($abbrev)
             ->isIdenticalTo('fr');
-        $this->variable($flag)
-            ->isIdenticalTo(
-                GALETTE_THEME . 'images/flags/fr_FR.svg'
-            );
     }
 
     /**

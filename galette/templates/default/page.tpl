@@ -196,15 +196,16 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {* Include plugins menu entries *}
 {$plugins->getMenus($tpl)}
 
-        <ul id="langs">
+        <form action="">
+            <select id="lang_selector" name="ui_pref_lang">
 {foreach item=langue from=$languages}
-            <li>
-                <a href="?pref_lang={$langue->getID()}" title="{_T string="Switch locale to '%locale'" pattern="/%locale/" replace=$langue->getName()}" class="flag">
-                    <img src="{base_url}/{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}"/>
-                </a>
-            </li>
+                <option value="{$langue->getID()}" lang="{$langue->getAbbrev()}"{if $galette_lang eq $langue->getAbbrev()} selected="selected"{/if}>{$langue->getName()|ucfirst}</option>
 {/foreach}
-        </ul>
+            </select>
+            <noscript>
+                <input type="submit" name="{_T string="Change language"}" />
+            </noscript>
+        </form>
 {if $login->isLogged()}
         <div>{$login->loggedInAs()}</div>
         <a id="logout_10" class="button" href="{if $login->isImpersonated()}{path_for name="unimpersonate"}{else}{path_for name="logout"}{/if}"><i class="fas fa-{if $login->isImpersonated()}user-secret{else}sign-out-alt{/if}"></i>{_T string="Log off"}</a>
