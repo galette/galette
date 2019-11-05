@@ -145,7 +145,6 @@ $app->get(
                 'parent_tpl'        => 'public_page.tpl',
                 'member'            => $member,
                 'self_adh'          => true,
-                'languages'         => $this->i18n->getList(),
                 'require_calendar'  => true,
                 'autocomplete'      => true,
                 // pseudo random int
@@ -874,7 +873,6 @@ $app->get(
                     'page_title'        => $title,
                     'member'            => $member,
                     'self_adh'          => false,
-                    'languages'         => $this->i18n->getList(),
                     'require_calendar'  => true,
                     // pseudo random int
                     'time'              => time(),

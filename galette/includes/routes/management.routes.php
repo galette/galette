@@ -185,7 +185,6 @@ $app->get(
                 ),
                 'print_logo'            => $this->print_logo,
                 'required'              => $required,
-                'languages'             => $this->i18n->getList(),
                 'themes'                => $themes,
                 'statuts'               => $s->getList(),
                 'require_tabs'          => true,
