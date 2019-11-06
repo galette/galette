@@ -1,7 +1,9 @@
 # Galette
 ## Gestionnaire d'Adhérents en Ligne Extrêmement Tarabiscoté mais Tellement Efficace
 
+[![GitHub license](https://img.shields.io/github/license/galette/galette.svg)](https://github.com/galette/galette/blob/master/galette/docs/COPYING)
 [![Build Status](https://travis-ci.org/galette/galette.svg?branch=develop)](https://travis-ci.org/galette/galette)
+[![Translation status](https://hosted.weblate.org/widgets/galette/-/galette/svg-badge.svg)](https://hosted.weblate.org/engage/galette/?utm_source=widget)
 
 ### English
 
