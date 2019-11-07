@@ -119,6 +119,7 @@ $container['view'] = function ($c) {
     }
     /** galette_lang should be removed and languages used instead */
     $smarty->assign('galette_lang', $c->i18n->getAbbrev());
+    $smarty->assign('galette_lang_name', $c->i18n->getName());
     $smarty->assign('languages', $c->i18n->getList());
     $smarty->assign('plugins', $c->plugins);
     $smarty->assign('preferences', $c->preferences);

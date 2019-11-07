@@ -233,7 +233,7 @@ nav a{
     border-bottom:none;
 }
 
-#menu li a{
+#menu li a, #plang_selector a {
     padding: .1em .3em;
     display:block;
     color: #212121;
@@ -693,16 +693,9 @@ a:hover i {
     background-repeat: repeat!important;
 }
 
-/*#sendmail{
-    background-image:url(images/icon-mail.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#sendmail.ui-state-hover {
-    background-image:url(images/icon-mail.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}*/
-
 #recup_mailing {
-    position: absolute;
-    right: .5em;
+    float: right;
+    margin-right: .5em;
 }
 
 h1 #sendmail {
@@ -1092,8 +1085,8 @@ legend .tab-button {
 
 .public_page #user {
     position: absolute;
-    top:3em;
-    right:0;
+    top:.4em;
+    right:.4em;
     display:inline-block;
 
 }
@@ -1109,13 +1102,54 @@ legend .tab-button {
 }
 
 .public_page #logout_10 {
-    margin: 0 .5em .2em;
+    margin: 0 0 .2em;
+}
+
+nav#plang_selector {
+    background: #fff;
+    text-align: left;
+    z-index: 100;
+}
+
+nav#plang_selector > ul {
+    margin: 0;
+    padding: 0;
+    background: white;
+}
+
+#plang_selector li {
+    margin:0.5em 0;
+    list-style-type:none;
+}
+
+#plang_selector li a:hover{
+    background-color: #DDDDFF;
+    text-decoration:underline;
+}
+
+nav#plang_selector a {
+    color: #666666;
+    display: block!important;
+}
+nav#plang_selector > a {
+    padding: .1em .3em;
+}
+#menu nav#plang_selector > a {
+    border-bottom:1px #DDDDFF solid;
+}
+
+nav#plang_selector.onhover > ul {
+    display: none;
+}
+
+nav#plang_selector.onhover:hover > ul {
+    display: block;
 }
 
 .public_page #plang_selector {
     position: absolute;
-    right: .5em;
-    top: .5em;
+    left: .4em;
+    top: .4em;
 }
 
 /* =/ Public pages */
@@ -1482,8 +1516,8 @@ a.listing:hover {
 
 #content {
     margin-left:17em;
-    margin-top: 10px;
-    padding: 0.5em;
+    margin-top: .4em;
+    padding: 0 .5em .5em;
     position: relative;
     min-height: 100vh;
 }
@@ -2324,7 +2358,7 @@ label:hover > i, span.bline:hover > i {
     body {
         width: auto !important;
         margin: auto !important;
-        padding: auto !important;
+        padding: .4em 0 0;
     }
 
     #details_menu, #member_stateofdue, .details {

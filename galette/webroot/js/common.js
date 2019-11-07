@@ -238,7 +238,24 @@ $(function() {
         });
     }
 
-    $('#lang_selector').change(function() {
+    $('select#lang_selector').change(function() {
         this.form.submit();
+    });
+
+    /* Language selector.
+     * Works per default with CSS only, use javascript to replace with a click event,
+     * which is required because of the current way the menu is hidden on mobile devices.
+     */
+    $('#plang_selector').removeClass('onhover');
+    var _langs = $('#plang_selector ul');
+    _langs.hide();
+
+    $('#plang_selector > a').on('click', function(event) {
+        event.preventDefault();
+        var _this = $(this);
+        var _open = _this.attr('aria-expanded');
+        _this.attr('aria-expanded', !open);
+        console.log(_open);
+        _langs.toggle();
     });
 });
