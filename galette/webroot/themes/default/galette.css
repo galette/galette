@@ -2371,6 +2371,7 @@ label:hover > i, span.bline:hover > i {
         transform: translateX(0) translateZ(0);
         transition: transform .2s;
         will-change: transform;
+        min-height: 100vh;
     }
 
     /* Button deco */
