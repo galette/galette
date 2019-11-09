@@ -96,7 +96,7 @@ class I18n extends atoum
             ->isIdenticalTo('en_US');
 
         //simulate unknown lang from browser
-        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'es_ES';
+        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'un_KN';
         $this->i18n = new \Galette\Core\I18n();
 
         $this->variable($this->i18n->getID())
@@ -164,7 +164,7 @@ class I18n extends atoum
         $this->variable($longid)
             ->isIdenticalTo('fr_FR.utf8');
         $this->variable($name)
-            ->isIdenticalTo('français');
+            ->isIdenticalTo('Français');
         $this->variable($abbrev)
             ->isIdenticalTo('fr');
     }
