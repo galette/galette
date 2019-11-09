@@ -8,7 +8,7 @@
                 <label for="sel_lang">{_T string="Language:"}</label>
                 <select name="sel_lang" id="sel_lang" class="lang">
                     {foreach item=langue from=$langlist}
-                        <option value="{$langue->getID()}" {if $cur_lang eq $langue->getID()}selected="selected"{/if}>{$langue->getName()|ucfirst}</option>
+                        <option value="{$langue->getID()}" {if $cur_lang eq $langue->getID()}selected="selected"{/if}>{$langue->getName()}</option>
                     {/foreach}
                 </select>
 

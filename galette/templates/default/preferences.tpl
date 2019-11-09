@@ -133,7 +133,7 @@
                     <label for="pref_lang" class="bline">{_T string="Default language:"}</label>
                     <select name="pref_lang" id="pref_lang" class="lang">
 {foreach item=langue from=$languages}
-                        <option value="{$langue->getID()}" {if $pref.pref_lang eq $langue->getID()}selected="selected"{/if}>{$langue->getName()|ucfirst}</option>
+                        <option value="{$langue->getID()}" {if $pref.pref_lang eq $langue->getID()}selected="selected"{/if}>{$langue->getName()}</option>
 {/foreach}
                     </select>
                 </p>

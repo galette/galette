@@ -73,7 +73,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <form action="" id="plang_selector">
                 <select id="lang_selector" name="ui_pref_lang">
 {foreach item=langue from=$languages}
-                    <option value="{$langue->getID()}" lang="{$langue->getAbbrev()}"{if $galette_lang eq $langue->getAbbrev()} selected="selected"{/if}>{$langue->getName()|ucfirst}</option>
+                    <option value="{$langue->getID()}" lang="{$langue->getAbbrev()}"{if $galette_lang eq $langue->getAbbrev()} selected="selected"{/if}>{$langue->getName()}</option>
 {/foreach}
                 </select>
                 <noscript>

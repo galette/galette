@@ -185,7 +185,7 @@ class I18n
             //$firstChar = mb_substr($string, 0, 1, $encoding);
             //$then = mb_substr($string, 1, $strlen - 1, $encoding);
             //return mb_strtoupper($firstChar, $encoding) . $then;
-            $al[$l->getID()] = ucfirst($l->getName());
+            $al[$l->getID()] = $l->getName();
         }
         return $al;
     }
@@ -283,9 +283,11 @@ class I18n
                 $langs[$real_lang] = [
                     'long'      => $lang,
                     'shortname' => $parsed_lang['language'],
-                    'longname'  => \Locale::getDisplayLanguage(
-                        $lang,
-                        $real_lang
+                    'longname'  => ucfirst(
+                        \Locale::getDisplayLanguage(
+                            $lang,
+                            $real_lang
+                        )
                     )
                 ];
             }
