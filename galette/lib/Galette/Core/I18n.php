@@ -285,7 +285,7 @@ class I18n
                     'shortname' => $parsed_lang['language'],
                     'longname'  => \Locale::getDisplayLanguage(
                         $lang,
-                        $lang
+                        $real_lang
                     )
                 ];
             }
