@@ -157,17 +157,32 @@ var _initTooltips = function(selector) {
         items: selector + ".tooltip, a[title]",
         content: function(event, ui) {
             var _this = $(this);
+            var _content;
 
+            //first, value from @class=tip element
             var _next = _this.nextAll('.tip');
-            if (_next.length == 0) {
-                _next = _this.find('.sr-only');
+            if (_next.length > 0) {
+                _content = _next.html();
             }
 
-            if (_next.length == 0) {
-                return _this.attr('title');
-            } else {
-                return _next.html();
+            //second, value from @title
+            if (typeof _content == 'undefined') {
+                var _title = _this.attr('title');
+                if (typeof _title != 'undefined') {
+                    _content = _title;
+                }
             }
+
+            //and finally, value from @class=sr-only element
+            if (typeof _content == 'undefined') {
+                var _sronly = _this.find('.sr-only');
+                console.log(_sronly);
+                if (_sronly.length > 0) {
+                    _content = _sronly.html();
+                }
+            }
+
+            return _content;
         }
     });
 }

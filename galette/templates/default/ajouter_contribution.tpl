@@ -42,13 +42,26 @@
             <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
             <fieldset class="cssform">
                 <legend class="ui-state-active ui-corner-top">
-    {if $type eq {_T string="fee" domain="routes"}}
+    {if $type eq "fee"}
                     {_T string="Select contributor and membership fee type"}
-                    <a href="{path_for name="contribution" data=["type" => {_T string="fee" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?trans_id={$transaction->id}" class="button notext fright" id="btnadd" title="{_T string="Create a new fee that will be attached to the current transaction"}">{_T string="New attached fee"}</a>
     {else}
-        {_T string="Select contributor and donation type"}
-
-                    <a href="{path_for name="contribution" data=["type" => {_T string="donation" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?trans_id={$transaction->id}" class="button notext fright" id="btnadddon" title="{_T string="Create a new donation that will be attached to the current transaction"}">{_T string="New attached donation"}</a>
+                    {_T string="Select contributor and donation type"}
+    {/if}
+    {if $contribution->id && $contribution->transaction->getMissingAmount() > 0}
+                    <a
+                        href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?trans_id={$contribution->transaction->id}"
+                        class="button fright tooltip"
+                        title="{_T string="Create a new fee that will be attached to the current transaction"}">
+                        <i class="fas fa-user-check"></i>
+                        <span class="sr-only">{_T string="New attached fee"}</span>
+                    </a>
+                    <a
+                        href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?trans_id={$contribution->transaction->id}"
+                        class="button fright tooltip"
+                        title="{_T string="Create a new donation that will be attached to the current transaction"}">
+                        <i class="fas fa-gift"></i>
+                        <span class="sr-only">{_T string="New attached donation"}</span>
+                    </a>
     {/if}
 </legend>
                 <p>
