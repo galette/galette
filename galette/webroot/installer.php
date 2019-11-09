@@ -254,9 +254,6 @@ header('Content-Type: text/html; charset=UTF-8');
         <script type="text/javascript" src="./js/jquery/jquery.bgFade.js"></script>
         <script type="text/javascript" src="./js/common.js"></script>
         <link rel="shortcut icon" href="./themes/default/images/favicon.png" />
-        <!--[if lt IE9]>
-            <script type="text/javascript" src="./js/html5-ie.js"></script>
-        <!endif]-->
     </head>
     <body>
         <section>

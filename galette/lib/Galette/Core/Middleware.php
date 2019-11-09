@@ -152,9 +152,6 @@ class Middleware
         <script type=\"text/javascript\" src=\"" . $path . "js/jquery/jquery-ui-" . JQUERY_UI_VERSION . "/jquery.ui.tooltip.min.js\"></script>
         <script type=\"text/javascript\" src=\"" . $path . "js/jquery/jquery.bgFade.js\"></script>
         <script type=\"text/javascript\" src=\"" . $path . "js/common.js\"></script>
-        <!--[if lte IE 9]>
-            <script type=\"text/javascript\" src=\"" . $path . "js/html5-ie.js\"></script>
-        <!endif]-->
     </head>
     <body class=\"notup2date\">
         <p class=\"center\">
