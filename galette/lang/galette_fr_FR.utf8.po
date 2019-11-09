@@ -9,8 +9,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2019-10-18 05:33+0000\n"
+"PO-Revision-Date: 2019-11-09 06:37+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -19,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.9.1-dev\n"
+"X-Generator: Weblate 3.10-dev\n"
 
 #: ../templates/default/gestion_adherents.tpl:13
 msgid "among:"
@@ -6634,10 +6635,8 @@ msgstr "Mailings envoyés&nbsp;:"
 
 #: ../webroot/installer.php:279 ../templates/default/page.tpl:206
 #: ../templates/default/public_page.tpl:80
-#, fuzzy
-#| msgid "Default language:"
 msgid "Change language"
-msgstr "Langue par défaut&nbsp;:"
+msgstr "Changer la langue"
 
 #: ../templates/default/gestion_adherents.tpl:279
 #: ../templates/default/gestion_contributions.tpl:262
