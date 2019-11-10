@@ -267,7 +267,7 @@ header('Content-Type: text/html; charset=UTF-8');
 <?php
 foreach ($i18n->getList() as $langue) {
     ?>
-                        <option value="<?php echo $langue->getID(); ?>" lang="<?php echo $langue->getAbbrev(); ?>"<?php if ($galette_lang == $langue->getAbbrev()) { echo ' selected="selected"'; } ?>>{<?php echo $langue->getName(); ?></option>
+                        <option value="<?php echo $langue->getID(); ?>" lang="<?php echo $langue->getAbbrev(); ?>"<?php if ($galette_lang == $langue->getAbbrev()) { echo ' selected="selected"'; } ?>><?php echo $langue->getName(); ?></option>
     <?php
 }
 ?>
