@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2019-11-09 06:37+0000\n"
+"PO-Revision-Date: 2019-11-10 20:41+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -3363,7 +3363,7 @@ msgstr "Modification en masse de %count adhérents"
 
 #: ../includes/i18n.inc.php:366
 msgid "Society"
-msgstr ""
+msgstr "Société"
 
 #: ../templates/default/global_messages.tpl:40
 msgid ""
