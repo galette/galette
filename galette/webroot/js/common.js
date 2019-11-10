@@ -176,7 +176,6 @@ var _initTooltips = function(selector) {
             //and finally, value from @class=sr-only element
             if (typeof _content == 'undefined') {
                 var _sronly = _this.find('.sr-only');
-                console.log(_sronly);
                 if (_sronly.length > 0) {
                     _content = _sronly.html();
                 }
