@@ -47,7 +47,7 @@
     {else}
                     {_T string="Select contributor and donation type"}
     {/if}
-    {if $contribution->id && $contribution->transaction->getMissingAmount() > 0}
+    {if $contribution->isTransactionPart() && $contribution->transaction->getMissingAmount() > 0}
                     <a
                         href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?trans_id={$contribution->transaction->id}"
                         class="button fright tooltip"
