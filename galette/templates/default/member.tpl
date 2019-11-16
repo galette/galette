@@ -142,7 +142,6 @@
             {include file="js_chosen_adh.tpl" js_chosen_id="#parent_id"}
             $(function() {
                 $('#is_company').change(function(){
-                    //console.log(this.checked);
                     $('#company_field').toggleClass('hidden');
                     $('#company_field').backgroundFade(
                         {

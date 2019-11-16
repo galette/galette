@@ -241,16 +241,7 @@
                 </p>
                 <p>
                     <label for="pref_email" class="bline">{_T string="Sender Email:"}</label>
-        {assign var="pref_email" value=""}
-        {foreach from=$preferences->vpref_email item=vmail}
-            {if $vmail@first }
-                {assign var="pref_email" value=$vmail}
-            {else}
-                {assign var="pref_email" value=$pref_email|cat:",{$vmail}"}
-            {/if}
-        {/foreach}
-                    <input type="text" name="pref_email" id="pref_email" value="{$pref_email}" maxlength="100" size="30"{if isset($required.pref_email) and $required.pref_email eq 1} required="required"{/if}/>
-                    <span class="exemple">{_T string="(You can enter several emails separated with a comma. First address will be the default one.)"}</span>
+                    <input type="text" name="pref_email" id="pref_email" value="{$pref.pref_email}" maxlength="100" size="30"{if isset($required.pref_email) and $required.pref_email eq 1} required="required"{/if}/>
                 </p>
                 <p>
                     <label for="pref_email_reply_to" class="bline tooltip">{_T string="Reply-To Email:"}</label>

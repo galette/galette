@@ -762,7 +762,7 @@ class Preferences
     public function __get($name)
     {
         $forbidden = array('logged', 'admin', 'active', 'defaults');
-        $virtuals = array('vpref_email', 'vpref_email_newadh');
+        $virtuals = array('vpref_email_newadh');
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
             if (GALETTE_MODE === 'DEMO'
@@ -780,7 +780,7 @@ class Preferences
                     }
                 }
 
-                if (in_array($name, ['pref_email', 'pref_email_newadh'])) {
+                if (in_array($name, ['pref_email_newadh'])) {
                     $values = explode(',', $value);
                     $value = $values[0]; //take first as default
                 }
@@ -846,10 +846,10 @@ class Preferences
             //"The Name <mail@domain.com>,The Other <other@mail.com>" expect for reply_to.
             $addresses = [];
             if (trim($value) != '') {
-                if ($name == 'pref_email_reply_to') {
-                    $addresses = [$value];
-                } else {
+                if ($name == 'pref_email_newadh') {
                     $addresses = explode(',', $value);
+                } else {
+                    $addresses = [$value];
                 }
             }
             foreach ($addresses as $address) {
