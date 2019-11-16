@@ -15,8 +15,9 @@ You'll find a [detailled description on Galette's website](http://galette.eu/dc/
 * mailing lists:
   * users: https://listengine.tuxfamily.org/lists.galette.eu/users/
   * developpers: https://listengine.tuxfamily.org/lists.galette.eu/devel/
-* documentation (french only): http://galette.eu/documentation
-* translation: https://translate.zanata.org/project/view/galette
+* documentation: https://doc.galette.eu/en/develop
+* translation: https://hosted.weblate.org/engage/galette/ - https://hosted.weblate.org/projects/galette/
+* translation (documentation) : https://translate.zanata.org/project/view/galettedoc
 
 ### Français
 
@@ -27,5 +28,6 @@ Vous trouverez une [description détaillée sur le site web de Galette](http://g
 * liste de diffusion :
   * utilisateurs : https://listengine.tuxfamily.org/lists.galette.eu/users/
   * développeurs : https://listengine.tuxfamily.org/lists.galette.eu/devel/
-* documentation : http://galette.eu/documentation
-* traduction : https://translate.zanata.org/project/view/galette
+* documentation : https://doc.galette.eu/fr/develop
+* traduction : https://hosted.weblate.org/engage/galette/ - https://hosted.weblate.org/projects/galette/
+* traduction (documentation) : https://translate.zanata.org/project/view/galettedoc
