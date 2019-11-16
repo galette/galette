@@ -1254,6 +1254,10 @@ $app->get(
     function ($request, $response, $args) {
         $contribution = new Contribution($this->zdb, $this->login, (int)$args['id']);
         $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
-        $pdf->download();
+
+        $response = $this->response->withHeader('Content-type', 'application/pdf')
+                ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
+        $response->write($pdf->download());
+        return $response;
     }
 )->setName('printContribution')->add($authenticate);
