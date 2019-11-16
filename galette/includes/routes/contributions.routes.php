@@ -546,7 +546,7 @@ $app->post(
 
                                     $recipients = [];
                                     foreach ($this->preferences->vpref_email_newadh as $pref_email) {
-                                        $recipients[$pref_email] = $this->preferences->pref_email_nom;
+                                        $recipients[$pref_email] = $pref_email;
                                     }
                                     $mail->setRecipients($recipients);
 
@@ -676,7 +676,7 @@ $app->post(
 
                     $recipients = [];
                     foreach ($this->preferences->vpref_email_newadh as $pref_email) {
-                        $recipients[$pref_email] = $this->preferences->pref_email_nom;
+                        $recipients[$pref_email] = $pref_email;
                     }
                     $mail->setRecipients($recipients);
 

@@ -1072,8 +1072,8 @@ $app->post(
                             $mail = new GaletteMail($this->preferences);
                             $mail->setSubject($texts->getSubject());
                             $recipients = [];
-                            foreach ($this->preferences->vpref_email as $pref_email) {
-                                $recipients[$pref_email] = $this->preferences->pref_email_nom;
+                            foreach ($this->preferences->vpref_email_newadh as $pref_email) {
+                                $recipients[$pref_email] = $pref_email;
                             }
                             $mail->setRecipients($recipients);
                             $mail->setMessage($texts->getBody());
@@ -1249,7 +1249,7 @@ $app->post(
                         $mail->setSubject($texts->getSubject());
                         $recipients = [];
                         foreach ($this->preferences->vpref_email_newadh as $pref_email) {
-                            $recipients[$pref_email] = $this->preferences->pref_email_nom;
+                            $recipients[$pref_email] = $pref_email;
                         }
                         $mail->setRecipients($recipients);
 
