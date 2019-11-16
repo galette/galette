@@ -79,7 +79,7 @@ class Pdf extends \TCPDF
     protected $preferences;
     private $model;
     private $paginated = false;
-    private $filename;
+    protected $filename;
 
     /**
      * Main constructor, set creator and author
