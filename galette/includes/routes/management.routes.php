@@ -1369,8 +1369,7 @@ $app->get(
                     ->withHeader('Content-Transfer-Encoding', 'binary')
                     ->withHeader('Expires', '0')
                     ->withHeader('Cache-Control', 'must-revalidate')
-                    ->withHeader('Pragma', 'public')
-                    ->withHeader('Content-Length', filesize($filepath));
+                    ->withHeader('Pragma', 'public');
 
                 $stream = fopen('php://memory', 'r+');
                 fwrite($stream, file_get_contents($filepath));
