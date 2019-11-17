@@ -2740,25 +2740,13 @@ $app->post(
             $doc_title = $post['sheet_type'];
         }
 
-        $pdf = new Galette\IO\PdfAttendanceSheet($this->preferences);
-        $pdf->doc_title = $doc_title;
-        // Set document information
-        $pdf->SetTitle($doc_title);
-
-        if (isset($post['sheet_title']) && trim($post['sheet_title']) != '') {
-            $pdf->sheet_title = $post['sheet_title'];
-        }
-        if (isset($post['sheet_sub_title']) && trim($post['sheet_sub_title']) != '') {
-            $pdf->sheet_sub_title = $post['sheet_sub_title'];
-        }
-        if (isset($post['sheet_date']) && trim($post['sheet_date']) != '') {
-            $dformat = __("Y-m-d");
-            $date = DateTime::createFromFormat(
-                $dformat,
-                $post['sheet_date']
-            );
-            $pdf->sheet_date = $date;
-        }
+        $data = [
+            'doc_title' => $doc_title,
+            'title'     => $post['sheet_title'] ?? null,
+            'subtitle'  => $post['sheet_sub_title'] ?? null,
+            'sheet_date'=> $post['sheet_date'] ?? null
+        ];
+        $pdf = new Galette\IO\PdfAttendanceSheet($this->zdb, $this->preferences, $data);
         //with or without images?
         if (isset($post['sheet_photos']) && $post['sheet_photos'] === '1') {
             $pdf->withImages();

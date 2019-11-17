@@ -663,8 +663,8 @@ class Preferences
                 $_address .= "\n" . $this->prefs['pref_adresse2'];
             }
             $replacements = array(
-                '',
-                '',
+                $this->prefs['pref_nom'],
+                "\n",
                 $_address,
                 $this->prefs['pref_cp'],
                 $this->prefs['pref_ville'],

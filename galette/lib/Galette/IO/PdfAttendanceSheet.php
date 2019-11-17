@@ -37,8 +37,10 @@
 
 namespace Galette\IO;
 
+use Galette\Core\Db;
 use Galette\Core\Preferences;
 use Galette\Core\PrintLogo;
+use Galette\Entity\PdfModel;
 use Analog\Analog;
 
 /**
@@ -72,28 +74,56 @@ class PdfAttendanceSheet extends Pdf
      */
     public function Header() // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
-        $this->SetFont(Pdf::FONT, '', self::SHEET_FONT);
-        $head_title = $this->doc_title;
-        if ($this->sheet_title !== null) {
-            $head_title .= ' - ' . $this->sheet_title;
+        if ($this->PageNo() > 1) {
+            $this->SetFont(Pdf::FONT, '', self::SHEET_FONT);
+            $head_title = $this->doc_title;
+            if ($this->sheet_title !== null) {
+                $head_title .= ' - ' . $this->sheet_title;
+            }
+            if ($this->sheet_sub_title !== null) {
+                $head_title .= ' - ' . $this->sheet_sub_title;
+            }
+            if ($this->sheet_date !== null) {
+                $head_title .= ' - ' . $this->sheet_date->format(__("Y-m-d"));
+            }
+            $this->Cell(0, 10, $head_title, 1, false, 'C', 0, '', 0, false, 'M', 'M');
         }
-        if ($this->sheet_sub_title !== null) {
-            $head_title .= ' - ' . $this->sheet_sub_title;
-        }
-        if ($this->sheet_date !== null) {
-            $head_title .= ' - ' . $this->sheet_date->format(__("Y-m-d"));
-        }
-        $this->Cell(0, 10, $head_title, 0, false, 'C', 0, '', 0, false, 'M', 'M');
     }
 
     /**
      * Main constructor, set creator and author
      *
+     * @param Db          $zdb   Database instance
      * @param Preferences $prefs Preferences
+     * @param array       $data  Data to set
      */
-    public function __construct(Preferences $prefs)
+    public function __construct(Db $zdb, Preferences $prefs, $data = [])
     {
-        parent::__construct($prefs);
+        $class = PdfModel::getTypeClass(__CLASS__);
+        $model = new $class($zdb, $prefs, PdfModel::MAIN_MODEL);
+
+        // Set document and model information
+        $this->doc_title = $data['doc_title'];
+        $this->SetTitle($data['doc_title']);
+
+        if (isset($data['title']) && trim($data['title']) != '') {
+            $this->sheet_title = $data['title'];
+            $model->title = $this->sheet_title;
+        }
+        if (isset($data['subtitle']) && trim($data['subtitle']) != '') {
+            $this->sheet_sub_title = $data['subtitle'];
+            $model->subtitle = $this->sheet_sub_title;
+        }
+        if (isset($data['sheet_date']) && trim($data['sheet_date']) != '') {
+            $dformat = __("Y-m-d");
+            $date = \DateTime::createFromFormat(
+                $dformat,
+                $data['sheet_date']
+            );
+            $this->sheet_date = $date;
+        }
+
+        parent::__construct($prefs, $model);
         $this->init();
     }
     /**
@@ -130,12 +160,6 @@ class PdfAttendanceSheet extends Pdf
         $this->AddPage();
         $this->PageHeader($doc_title);
 
-        if ($this->sheet_title !== null) {
-            $this->Cell(190, 7, $this->sheet_title, 0, 1, 'C');
-        }
-        if ($this->sheet_sub_title) {
-            $this->Cell(190, 7, $this->sheet_sub_title, 0, 1, 'C');
-        }
         if ($this->sheet_date) {
             $date_fmt = null;
             if (PHP_OS === 'Linux') {
