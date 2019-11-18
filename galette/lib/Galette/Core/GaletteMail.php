@@ -240,7 +240,11 @@ class GaletteMail
         );
         // Add a Reply-To field in the mail headers.
         // Fix bug #6654.
-        $this->mail->AddReplyTo($this->getSenderAddress());
+        if ($this->preferences->pref_email_reply_to) {
+            $this->mail->AddReplyTo($this->preferences->pref_email_reply_to);
+        } else {
+            $this->mail->AddReplyTo($this->getSenderAddress());
+        }
 
 
         if ($this->html) {
