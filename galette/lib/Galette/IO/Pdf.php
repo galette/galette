@@ -304,6 +304,11 @@ class Pdf extends \TCPDF
             }
             $html .= $this->model->hheader;
             $this->writeHtml($html, true, false, true, false, '');
+
+            if ($title !== null) {
+                $this->writeHtml('<h2 style="text-align:center;">' . $title . '</h2>');
+            }
+
             if (trim($this->model->title) !== '') {
                 $htitle = '';
                 if (trim($this->model->hstyles) !== '') {

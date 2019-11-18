@@ -2751,7 +2751,7 @@ $app->post(
         if (isset($post['sheet_photos']) && $post['sheet_photos'] === '1') {
             $pdf->withImages();
         }
-        $pdf->drawSheet($members, $doc_title);
+        $pdf->drawSheet($members);
         $response = $this->response->withHeader('Content-type', 'application/pdf');
         $response->write($pdf->Output(_T("attendance_sheet") . '.pdf', 'D'));
         return $response;

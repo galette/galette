@@ -75,6 +75,8 @@ class PdfAttendanceSheet extends Pdf
     public function Header() // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         if ($this->PageNo() > 1) {
+            $this->setTopMargin(15);
+            $this->setY(10);
             $this->SetFont(Pdf::FONT, '', self::SHEET_FONT);
             $head_title = $this->doc_title;
             if ($this->sheet_title !== null) {
@@ -86,7 +88,7 @@ class PdfAttendanceSheet extends Pdf
             if ($this->sheet_date !== null) {
                 $head_title .= ' - ' . $this->sheet_date->format(__("Y-m-d"));
             }
-            $this->Cell(0, 10, $head_title, 1, false, 'C', 0, '', 0, false, 'M', 'M');
+            $this->Cell(0, 10, $head_title, 0, false, 'C', 0, '', 0, false, 'M', 'M');
         }
     }
 
@@ -149,16 +151,15 @@ class PdfAttendanceSheet extends Pdf
     /**
      * Draw members cards
      *
-     * @param array  $members   Members
-     * @param string $doc_title Document title
+     * @param array $members Members
      *
      * @return void
      */
-    public function drawSheet($members, $doc_title)
+    public function drawSheet($members)
     {
         $this->Open();
         $this->AddPage();
-        $this->PageHeader($doc_title);
+        $this->PageHeader($this->doc_title);
 
         if ($this->sheet_date) {
             $date_fmt = null;
