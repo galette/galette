@@ -269,7 +269,7 @@ class Pdf extends \TCPDF
                 4,
                 $address,
                 0,
-                'C',
+                'C'
             );
 
             if ($this->paginated) {
