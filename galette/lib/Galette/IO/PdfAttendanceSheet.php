@@ -82,9 +82,10 @@ class PdfAttendanceSheet extends Pdf
             if ($this->sheet_title !== null) {
                 $head_title .= ' - ' . $this->sheet_title;
             }
-            if ($this->sheet_sub_title !== null) {
+            /* Remove to rpevent long lines */
+            /*if ($this->sheet_sub_title !== null) {
                 $head_title .= ' - ' . $this->sheet_sub_title;
-            }
+            }*/
             if ($this->sheet_date !== null) {
                 $head_title .= ' - ' . $this->sheet_date->format(__("Y-m-d"));
             }
