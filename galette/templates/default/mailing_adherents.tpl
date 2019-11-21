@@ -15,18 +15,15 @@
     {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_SENT')}
         {assign var="path" value={path_for name="members"}}
         {assign var="text" value={_T string="Go back to members list"}}
-    {else}
-        {assign var="path" value='#'}
-        {assign var="text" value={_T string="Manage selected members"}}
+                    <a
+                        id="btnusers"
+                        href="{$path}"
+                        class="button"
+                    >
+                        <i class="fas fa-users"></i>
+                        {$text}
+                    </a>
     {/if}
-                <a
-                    id="btnusers"
-                    href="{$path}"
-                    class="button"
-                >
-                    <i class="fas fa-users"></i>
-                    {$text}
-                </a>
                 </div>
             </section>
         {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_START')}
@@ -186,128 +183,6 @@
                 }
             });
             $('#ajax_preview').append( res );
-        }
-
-        {* Members popup *}
-        $('#btnusers').click(function(){
-            $.ajax({
-                url: '{path_for name="ajaxMembers"}',
-                type: "POST",
-                data: {
-                    multiple: true
-                },
-                {include file="js_loader.tpl"},
-                success: function(res){
-                    _members_dialog(res);
-                },
-                error: function() {
-                    alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
-                }
-            });
-            return false;
-        });
-
-        var _members_dialog = function(res){
-            var _el = $('<div id="members_list" title="{_T string="Members selection" escape="js"}"> </div>');
-            _el.appendTo('body').dialog({
-                modal: true,
-                hide: 'fold',
-                width: '80%',
-                height: 500,
-                close: function(event, ui){
-                    _el.remove();
-                }
-            });
-            _members_ajax_mapper(res);
-        }
-
-        var _members_ajax_mapper = function(res){
-            $('#members_list').append(res);
-            $('#selected_members ul').css(
-                'max-height',
-                $('#members_list').innerHeight() - $('#btnvalid').outerHeight() - $('#selected_members header').outerHeight() - 60 // -60 to fix display; do not know why
-            );
-            $('#btnvalid').button().click(function(){
-                //first, let's store new recipients in mailing object
-                var _recipients = new Array();
-                $('li[id^="member_"]').each(function(){
-                    _recipients[_recipients.length] = this.id.substring(7, this.id.length);
-                });
-                $.ajax({
-                    url: '{path_for name="mailingRecipients"}',
-                    type: "POST",
-                    data: {
-                        recipients: _recipients
-                    },
-                    {include file="js_loader.tpl"},
-                    success: function(res){
-                        $('#unreachables_count').remove();
-                        $('#recipients_count').replaceWith(res);
-                        $('.mailing_infos input:submit, .mailing_infos .button, .mailing_infos input:reset' ).button();
-                        $('#members_list').dialog("close");
-                    },
-                    error: function() {
-                        alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
-                    }
-                });
-            });
-            //Remap links
-            var _none = $('#none_selected').clone();
-            $('li[id^="member_"]').click(function(){
-                $(this).remove();
-                if ( $('#selected_members ul li').length == 0 ) {
-                    $('#selected_members ul').append(_none);
-                }
-            });
-            $('#listing tbody a').click(function(e){
-                e.preventDefault();
-                var _mid = this.href.match(/.*\/(\d+)$/)[1];
-                var _mname = $(this).text();
-                $('#none_selected').remove()
-                if ( $('#member_' + _mid).length == 0 ) {
-                    var _li = '<li id="member_' + _mid + '">' + _mname + '</li>';
-                    $('#selected_members ul').append(_li);
-                    $('#member_' + _mid).click(function(){
-                        $(this).remove();
-                        if ( $('#selected_members ul li').length == 0 ) {
-                            $('#selected_members ul').append(_none);
-                        }
-                    });
-                }
-                return false;
-            });
-
-            $('#members_list .pages a').click(function(){
-                var _members = new Array();
-                var _unreach = new Array();
-                $('li[id^="member_"]').each(function(){
-                    var _mid = this.id.substring(7, this.id.length);
-                    if ($(this).hasClass('unreachables')) {
-                        _unreach[_unreach.length] = _mid;
-                    } else {
-                        _members[_members.length] = _mid;
-                    }
-                });
-
-                $.ajax({
-                    url: this.href,
-                    type: "POST",
-                    data: {
-                        multiple: true,
-                        members: _members,
-                        unreachables: _unreach
-                    },
-                    {include file="js_loader.tpl"},
-                    success: function(res){
-                        $('#members_list').empty();
-                        _members_ajax_mapper(res);
-                    },
-                    error: function() {
-                        alert("{_T string="An error occurred displaying members interface :(" escape="js"}");
-                    }
-                });
-                return false;
-            });
         }
 
         $('.rm_attachement').click(function(){
