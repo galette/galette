@@ -170,15 +170,6 @@
             {_T string="Pages:"}<br/>
             <ul class="pages">{$pagination}</ul>
         </div>
-        <div class="center">
-            <a
-                class="button use"
-                href="{path_for name="mailing"}?mailing_new=true"
-            >
-                <i class="fas fa-plus-square"></i>
-                {_T string="Create new mailing"}
-            </a>
-        </div>
 {/block}
 
 {block name="javascripts"}

@@ -470,11 +470,7 @@
                                 },
                                 '{_T string="New"}': function() {
                                     $(this).dialog( "close" );
-                                    //add required controls to the form, change its action URI, and send it.
-                                    var _form = $('#listform');
-                                    _form.append($('<input type="hidden" name="mailing_new" value="true"/>'));
-                                    _form.append($('<input type="hidden" name="mailing" value="true"/>'));
-                                    _form.submit();
+                                    location.href = '{path_for name="mailing?mailing_new=true"}';
                                 }
                             }
                         });
