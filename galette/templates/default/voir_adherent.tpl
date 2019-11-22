@@ -223,7 +223,10 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/foreach}
 
 {include file="display_dynamic_fields.tpl" object=$member}
-        <a href="#" id="back2top">{_T string="Back to top"}</a>
+        <a href="#" id="back2top" class="ui basic icon button">
+            <i class="arrow up icon"></i>
+            {_T string="Back to top"}
+        </a>
     </div>
 {/block}
 {block name="javascripts"}

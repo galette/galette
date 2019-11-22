@@ -74,12 +74,9 @@ tests/coverage/
 tests/mageekguy.atoum.phar
 
 # Bundled libs
-galette/includes/tcpdf_*
-galette/includes/Zend*
-galette/includes/Analog*
-galette/password_compat*
 galette/vendor/
-galette/node_modules/
+node_modules/
+galette/webroot/assets/*
 
 # API documentation
 apidocs/
@@ -91,4 +88,3 @@ apidocs/
 dbs/
 dist/
 .zanata-cache/
-galette/webroot/themes/default/semantic/

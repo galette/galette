@@ -153,7 +153,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <i class="arrow up icon"></i>
             {_T string="Back to top"}
         </a>
-        
         {block name="javascripts"}{/block}
         <script type="text/javascript">
             $(function(){
