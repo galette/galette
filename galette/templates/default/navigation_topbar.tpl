@@ -130,7 +130,7 @@
                     <div class="menu">
 {foreach item=langue from=$languages}
     {if $langue->getAbbrev() neq $galette_lang}
-                        <a href="?pref_lang={$langue->getID()}" title="{_T string="Switch locale to '%locale'" pattern="/%locale/" replace=$langue->getName()}" class="item">
+                        <a href="?ui_pref_lang={$langue->getID()}" title="{_T string="Switch locale to '%locale'" pattern="/%locale/" replace=$langue->getName()}" class="item">
                             {$langue->getName()} <span>({$langue->getAbbrev()})<span>
                         </a>
     {/if}
