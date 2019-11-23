@@ -552,19 +552,31 @@
                 </div>
                 <div class="field">
                     <label for="pref_card_marges_v">{_T string="Vertical margins:"}</label>
-                    <input type="number" name="pref_card_marges_v" id="pref_card_marges_v" value="{$pref.pref_card_marges_v}" maxlength="4"{if isset($required.pref_card_marges_v) and $required.pref_card_marges_v eq 1} required="required"{/if}/> mm
+                    <div class="ui right labeled input">
+                        <input type="number" name="pref_card_marges_v" id="pref_card_marges_v" value="{$pref.pref_card_marges_v}" maxlength="4"{if isset($required.pref_card_marges_v) and $required.pref_card_marges_v eq 1} required="required"{/if}/>
+                        <div class="ui basic label">mm</div>
+                    </div>
                 </div>
                 <div class="field">
                     <label for="pref_card_marges_h">{_T string="Horizontal margins:"}</label>
-                    <input type="number" name="pref_card_marges_h" id="pref_card_marges_h" value="{$pref.pref_card_marges_h}" maxlength="4"{if isset($required.pref_card_marges_h) and $required.pref_card_marges_h eq 1} required="required"{/if}/> mm
+                    <div class="ui right labeled input">
+                        <input type="number" name="pref_card_marges_h" id="pref_card_marges_h" value="{$pref.pref_card_marges_h}" maxlength="4"{if isset($required.pref_card_marges_h) and $required.pref_card_marges_h eq 1} required="required"{/if}/>
+                        <div class="ui basic label">mm</div>
+                    </div>
                 </div>
                 <div class="field">
                     <label for="pref_card_vspace">{_T string="Vertical spacing:"}</label>
-                    <input type="number" name="pref_card_vspace" id="pref_card_vspace" value="{$pref.pref_card_vspace}" maxlength="4"{if isset($required.pref_card_vspace) and $required.pref_card_vspace eq 1} required="required"{/if}/> mm
+                    <div class="ui right labeled input">
+                        <input type="number" name="pref_card_vspace" id="pref_card_vspace" value="{$pref.pref_card_vspace}" maxlength="4"{if isset($required.pref_card_vspace) and $required.pref_card_vspace eq 1} required="required"{/if}/>
+                        <div class="ui basic label">mm</div>
+                    </div>
                 </div>
                 <div class="field">
                     <label for="pref_card_hspace">{_T string="Horizontal spacing:"}</label>
-                    <input type="number" name="pref_card_hspace" id="pref_card_hspace" value="{$pref.pref_card_hspace}" maxlength="4"{if isset($required.pref_card_hspace) and $required.pref_card_hspace eq 1} required="required"{/if}/> mm
+                    <div class="ui right labeled input">
+                        <input type="number" name="pref_card_hspace" id="pref_card_hspace" value="{$pref.pref_card_hspace}" maxlength="4"{if isset($required.pref_card_hspace) and $required.pref_card_hspace eq 1} required="required"{/if}/>
+                        <div class="ui basic label">mm</div>
+                    </div>
                 </div>
                 </div>{* /column *}
             </div>{* /column grid *}
