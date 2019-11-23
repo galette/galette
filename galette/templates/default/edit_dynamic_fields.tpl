@@ -63,9 +63,16 @@
     {/if}
 {/function}
 
-<fieldset class="galette_form">
-    <legend class="ui-state-active ui-corner-top">{_T string="Additionnal fields:"}</legend>
-    <div>
+<div class="ui segment">
+    <div class="ui fluid accordion">
+        <div class="active ui header title">
+            <i class="dropdown icon"></i>
+            {_T string="Additionnal fields:"}
+        </div>
+        <div class="active content">
+<!--<fieldset class="galette_form">
+    <legend class="ui-state-active ui-corner-top">{_T string="Additionnal fields:"}</legend>-->
+    <!--<div>-->
     {assign var=access_level value=$login->getAccessLevel()}
     {foreach from=$object->getDynamicFields()->getFields() item=field}
         {assign var=perm value=$field->getPerm()}
@@ -111,8 +118,11 @@
             {/if}
         {/if}
     {/foreach}
-    </div>
-</fieldset>
+
+        </div>{* /content *}
+    </div>{* /accordion*}
+</div>{* /segment *}
+
 <script type="text/javascript">
     var _addLnk = function(){
         return $('<a href="#"><img src="{base_url}/{$template_subdir}images/icon-add.png" alt="{_T string="New occurence"}"/></a>');
