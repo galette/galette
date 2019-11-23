@@ -1,7 +1,7 @@
 {extends file="page.tpl"}
 {block name="content"}
         <form action="{path_for name="store-preferences"}" method="post" enctype="multipart/form-data" class="ui form">
-        <div class="ui top attached tabular menu">
+        <div class="ui top attached tabular menu tabbed">
             <a class="item active" data-tab="general">{_T string="General"}</a>
             <a class="item" data-tab="social">{_T string="Social networks"}</a>
             <a class="item" data-tab="parameters">{_T string="Parameters"}</a>
@@ -613,8 +613,6 @@
         <script type="text/javascript">
 
             $(function(){
-                $('.menu .item').tab({});
-
                 $('#no,#php,#sendmail,#qmail').checkbox({
                     onChange: function(){
                         $('#smtp_parameters,#smtp_auth').hide();

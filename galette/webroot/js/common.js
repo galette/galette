@@ -184,9 +184,6 @@ $(function() {
     $('#login').focus();
 
     _initTooltips();
-    /*$('select:not(.nochosen)').selectize({
-        maxItems: 1
-    });*/
 
     $('.nojs').removeClass('nojs');
     /*$('#menu h1').each(function(){

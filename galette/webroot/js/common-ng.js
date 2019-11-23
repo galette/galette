@@ -19,8 +19,9 @@
  * @category  Javascript
  * @package   Galette
  *
+ * @author    Guillaume AGNIERAY
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2019 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -30,9 +31,10 @@
 $(function() {
     /* Fomantic UI components */
     $('.ui.sidebar').sidebar('attach events', '.toc.item');
-    $('.ui.dropdown').dropdown();
+    $('.ui.dropdown,select:not(.nochosen)').dropdown();
     $('.ui.accordion').accordion();
     $('.ui.checkbox, .ui.radio.checkbox').checkbox();
+    $('.ui.tabbed .item').tab({});
     $('[id$="rangestart"]').calendar({
       monthFirst: false,
       type: 'date',
@@ -65,9 +67,9 @@ $(function() {
     /* Tooltips position on right aligned dropdowns */
     $('.ui.dropdown.right-aligned').tooltip({
         items: 'a.item',
-        position: { 
-          my: 'left-100% center', 
-          at: 'left center' 
+        position: {
+          my: 'left-100% center',
+          at: 'left center'
         },
     });
 });
