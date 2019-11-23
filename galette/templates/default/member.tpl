@@ -3,12 +3,12 @@
 {block name="content"}
 {if isset($navigate) and $navigate|@count != 0}
         <nav>
-            <a href="{if isset($navigate.prev)}{path_for name="editmember" data=["action" => "edit", "id" => $navigate.prev]}{else}#{/if}" class="ui labeled icon button{if !isset($navigate.prev)} disabled{/if}">
+            <a href="{if isset($navigate.prev)}{path_for name="editmember" data=["action" => "edit", "id" => $navigate.prev]}{else}#{/if}" class="ui small labeled icon button{if !isset($navigate.prev)} disabled{/if}">
                 <i class="step backward icon"></i>
                 {_T string="Previous"}
             </a>
-            <div class="ui label">{$navigate.pos} / {$navigate.count}</div>
-            <a href="{if isset($navigate.next)}{path_for name="editmember" data=["action" => "edit", "id" => $navigate.next]}{else}#{/if}" class="ui right labeled icon button{if !isset($navigate.next)} disabled{/if}">
+            <span class="ui text">{$navigate.pos} / {$navigate.count}</span>
+            <a href="{if isset($navigate.next)}{path_for name="editmember" data=["action" => "edit", "id" => $navigate.next]}{else}#{/if}" class="ui small right labeled icon button{if !isset($navigate.next)} disabled{/if}">
                 {_T string="Next"}
                 <i class="step forward icon"></i>
             </a>
