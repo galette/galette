@@ -69,6 +69,14 @@ quick_gen_project_*
 !/galette/data/files/readme.txt
 !/galette/data/files/.htaccess
 
+# Semantic UI files
+semantic/dist/*
+semantic/src/definitions
+semantic/src/semantic.less
+semantic/src/theme.less
+semantic/src/themes
+semantic/tasks
+
 # Test stuff
 tests/coverage/
 tests/mageekguy.atoum.phar
