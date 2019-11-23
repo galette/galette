@@ -1,7 +1,11 @@
             {foreach item=fieldset from=$fieldsets}
-            <fieldset class="galette_form">
-                <legend>{_T string=$fieldset->label}</legend>
-                <div>
+            <div class="ui segment">
+                <div class="ui fluid accordion">
+                    <div class="active ui header title">
+                        <i class="dropdown icon"></i>
+                        {_T string=$fieldset->label}
+                    </div>
+                    <div class="active content">
                 {if !$self_adh and $fieldset@first && !isset($masschange)}
                     {include file="forms_types/picture.tpl"}
                 {/if}
@@ -128,6 +132,7 @@
                 {if isset($groups) and $groups|@count != 0 and $fieldset@last and (!isset($masschange) or $masschange == false)}
                     {include file="forms_types/groups.tpl"}
                 {/if}
-                </div>
-            </fieldset>
+                    </div>{* /content *}
+                </div>{* /accordion*}
+            </div>{* /segment *}
             {/foreach}

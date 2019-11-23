@@ -103,15 +103,14 @@
                 <div class="inline field">
                     <div class="ui toggle checkbox">
                         <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
-                        <label for="mail_confirm">
+                        <label for="mail_confirm" class="tooltip">
             {if $member->id}
                             {_T string="Notify member his account has been modified"}
             {else}
                             {_T string="Notify member his account has been created"}
             {/if}
                         </label>
-                        <br/>
-                        <span class="exemple">
+                        <span class="tip">
             {if $member->id}
                             {_T string="Member will be notified by mail his account has been modified."}
             {else}
@@ -123,7 +122,7 @@
             </div>
         {/if}
             <div class="ui basic center aligned fitted segment">
-                <button type="submit" name="valid" class="action ui labeled icon big button">
+                <button type="submit" name="valid" class="action ui labeled icon button">
                     <i class="save icon"></i> {_T string="Save"}
                 </button>
             {foreach item=entry from=$hidden_elements}
