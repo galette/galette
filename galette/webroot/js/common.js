@@ -152,21 +152,23 @@ var _initTooltips = function(selector) {
         var __i = $('<i class="fas fa-exclamation-circle"></i>')
         $(this).append(__i);
     });
-    //and then, we show them on rollover
-    $(document).tooltip({
-        items: selector + ".tooltip, a[title]",
-        content: function(event, ui) {
-            var _this = $(this);
 
-            var _next = _this.nextAll('.tip');
+    /** Reworked for SUI */
+    $(selector + '.tooltip, a[title]').popup({
+        onShow: function (el) {
+            //FIXME: when from a tab or a dropdown menu, 'this' is window object...
+            var popup = this;
+            var _el = $(el);
+
+            var _next = _el.nextAll('.tip');
             if (_next.length == 0) {
-                _next = _this.find('.sr-only');
+                _next = _el.find('.sr-only');
             }
 
             if (_next.length == 0) {
-                return _this.attr('title');
+                popup.html(_el.attr('title'));
             } else {
-                return _next.html();
+                popup.html(_next.html());
             }
         }
     });
