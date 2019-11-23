@@ -158,7 +158,7 @@ content divs. Would be better to assign this array from model *}
     {foreach item=langue from=$languages}
         {if $langue->getAbbrev() neq $galette_lang}
                     <a href="?ui_pref_lang={$langue->getID()}" class="item">
-                        {$langue->getName()} <span>({$langue->getAbbrev()})<span>
+                        {$langue->getName()} <span>({$langue->getAbbrev()})</span>
                     </a>
         {/if}
     {/foreach}
