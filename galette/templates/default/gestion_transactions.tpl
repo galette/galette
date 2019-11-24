@@ -1,46 +1,80 @@
 {extends file="page.tpl"}
 {block name="content"}
-        <form action="{path_for name="payments_filter" data=["type" => "transactions"]}" method="post" id="filtre">
-        <div id="listfilter">
-            <label for="start_date_filter">{_T string="Show transactions since"}</label>&nbsp;
-            <input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$filters->start_date_filter}"/>
-            <label for="end_date_filter">{_T string="until"}</label>&nbsp;
-            <input type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$filters->end_date_filter}"/>
-            <input type="submit" class="inline" value="{_T string="Filter"}"/>
-            <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
+        <form action="{path_for name="payments_filter" data=["type" => "transactions"]}" method="post" id="filtre" class="ui form">
+        <div class="ui segment">
+            <div class="four fields">
+                <div class="two fields">
+                    <div class="field">
+                        <label for="start_date_filter">{_T string="Show transactions since"}</label>
+                        <div class="ui calendar" id="contrib-rangestart">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input placeholder="{_T string="YYY-mm-dd"}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$filters->start_date_filter}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="end_date_filter">{_T string="until"}</label>
+                        <div class="ui calendar" id="contrib-rangeend">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input placeholder="{_T string="YYYY-mm-dd"}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$filters->end_date_filter}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flexend center aligned field">
+                    <input type="submit" class="ui blue button" value="{_T string="Filter"}"/>
+                    <input type="submit" name="clear_filter" class="ui button" value="{_T string="Clear filter"}"/>
+                </div>
+            </div>
         </div>
-        <table class="infoline">
-            <tr>
-                <td class="left nowrap">
+
 {if isset($member)}
+        <div class="ui compact vertically fitted segment">
+            <div class="ui horizontal list">
+                <span class="ui blue ribbon label">
     {if $login->isAdmin() or $login->isStaff()}
                     <a
                         href="{path_for name="contributions" data=["type" => "transactions", "option" => "member", "value" => "all"]}"
-                        class="tooltip"
+                        class="tooltip ui tiny button"
                     >
-                        <i class="fas fa-eraser"></i>
-                        <span class="sr-only">{_T string="Show all members transactions"}</span>
+                        <i class="icon eraser"></i>
+                        <span class="hidden">{_T string="Show all members transactions"}</span>
                     </a>
     {/if}
-                    <strong>{$member->sname}</strong>
+                    {$member->sname}
+                </span>
     {if $login->isAdmin() or $login->isStaff()}
-                    (<a href="{path_for name="member" data=["id" => $member->id]}">{_T string="See member profile"}</a> -
-                    <a href="{path_for name="transaction" data=["action" => "add"]}?id_adh={$member->id}">{_T string="Add a transaction"}</a>)
+                <div class="item">
+                    <a class="ui tiny button" href="{path_for name="member" data=["id" => $member->id]}">{_T string="See member profile"}</a>
+                </div>
+                <div class="item">
+                    <a class="ui tiny button" href="{path_for name="transaction" data=["action" => "add"]}?id_adh={$member->id}">{_T string="Add a transaction"}</a>
+                </div>
     {/if}
-                    &nbsp;:
+            </div>{* /horizontal list *}
+        </div>{* /flitted segment *}
 {/if}
-                    {$nb} {if $nb > 1}{_T string="transactions"}{else}{_T string="transaction"}{/if}
-                </td>
-                <td class="right">
-                    <label for="nbshow">{_T string="Records per page:"}</label>
-                    <select name="nbshow" id="nbshow">
-                        {html_options options=$nbshow_options selected=$numrows}
-                    </select>
-                    <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
-                </td>
-            </tr>
-        </table>
+
+        <div class="infoline">
+            <div class="ui basic horizontal segments">
+                <div class="ui basic fitted segment">
+                    <div class="ui label">{$nb} {if $nb > 1}{_T string="transactions"}{else}{_T string="transaction"}{/if}</div>
+                </div>
+                <div class="ui basic right aligned fitted segment">
+                    <div class="inline field">
+                        <label for="nbshow">{_T string="Records per page:"}</label>
+                        <select name="nbshow" id="nbshow" class="ui dropdown">
+                            {html_options options=$nbshow_options selected=$numrows}
+                        </select>
+                        <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+                    </div>
+                </div>
+            </div>{* /horizontal segment *}
+        </div>{* /infoline *}
         </form>
+        <form class="ui form">
         <table class="listing ui celled table">
             <thead>
                 <tr>
@@ -144,11 +178,16 @@
             </tbody>
         </table>
 {if $nb != 0}
-        <div class="center cright">
-            {_T string="Pages:"}<br/>
-            <ul class="pages">{$pagination}</ul>
+        <div class="ui basic center aligned fitted segment">
+            <div class="ui pagination menu">
+                <div class="header item">
+                    {_T string="Pages:"}
+                </div>
+                {$pagination}
+            </div>
         </div>
 {/if}
+        </form>
         <div id="legende" title="{_T string="Legend"}">
             <h1>{_T string="Legend"}</h1>
             <table>
@@ -171,11 +210,9 @@
                     this.form.submit();
                 });
 
-                var _checklinks = '<div class="checkboxes"><a href="#" class="show_legend fright">{_T string="Show legend"}</a></div>';
+                var _checklinks = '<div class="checkboxes ui basic horizontal segments"><div class="ui basic right aligned fitted segment"><a href="#" class="show_legend ui blue tertiary button">{_T string="Show legend"}</a></div></div>';
                 $('.listing').before(_checklinks);
                 $('.listing').after(_checklinks);
-
-                //$('#table_footer').parent().before('<td class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !isset($member)}9{elseif $login->isAdmin() or $login->isStaff()}8{else}7{/if}"><a href="#" class="show_legend">{_T string="Show legend"}</a></td>');
 
                 _bind_legend();
 
