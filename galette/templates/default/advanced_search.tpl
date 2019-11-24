@@ -82,7 +82,7 @@
                                         <div class="ui calendar" id="birth-rangestart">
                                             <div class="ui input left icon">
                                                 <i class="calendar icon"></i>
-                                                    <input id="birth_date_begin" name="birth_date_begin" type="text" class="birth_date" maxlength="10" size="10" value="{$filters->birth_date_begin}" placeholder="{_T string="jj/mm/aaaa"}" />
+                                                    <input id="birth_date_begin" name="birth_date_begin" type="text" class="birth_date" maxlength="10" size="10" value="{$filters->birth_date_begin}" placeholder="{_T string="yyyy-mm-dd"}" />
                                             </div>
                                         </div>
                                     </div>
@@ -91,7 +91,7 @@
                                         <div class="ui calendar" id="birth-rangeend">
                                             <div class="ui input left icon">
                                                 <i class="calendar icon"></i>
-                                                    <input id="birth_date_end" name="birth_date_end" type="text" class="birth_date" maxlength="10" size="10" value="{$filters->birth_date_end}" placeholder="{_T string="jj/mm/aaaa"}"/>
+                                                    <input id="birth_date_end" name="birth_date_end" type="text" class="birth_date" maxlength="10" size="10" value="{$filters->birth_date_end}" placeholder="{_T string="yyyy-mm-dd"}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -105,7 +105,7 @@
                                         <div class="ui calendar" id="creation-rangestart">
                                             <div class="ui input left icon">
                                                 <i class="calendar icon"></i>
-                                                    <input id="creation_date_begin" name="creation_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->creation_date_begin}" placeholder="{_T string="jj/mm/aaaa"}"/>
+                                                    <input id="creation_date_begin" name="creation_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->creation_date_begin}" placeholder="{_T string="yyyy-mm-dd"}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -114,7 +114,7 @@
                                         <div class="ui calendar" id="creation-rangeend">
                                             <div class="ui input left icon">
                                                 <i class="calendar icon"></i>
-                                                    <input id="creation_date_end" name="creation_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->creation_date_end}" placeholder="{_T string="jj/mm/aaaa"}"/>
+                                                    <input id="creation_date_end" name="creation_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->creation_date_end}" placeholder="{_T string="yyyy-mm-dd"}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -130,7 +130,7 @@
                                         <div class="ui calendar" id="modification-rangestart">
                                             <div class="ui input left icon">
                                                 <i class="calendar icon"></i>
-                                                    <input id="modif_date_begin" name="modif_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->modif_date_begin}" placeholder="{_T string="jj/mm/aaaa"}"/>
+                                                    <input id="modif_date_begin" name="modif_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->modif_date_begin}" placeholder="{_T string="yyyy-mm-dd"}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -139,7 +139,7 @@
                                         <div class="ui calendar" id="modification-rangeend">
                                             <div class="ui input left icon">
                                                 <i class="calendar icon"></i>
-                                                    <input id="modif_date_end" name="modif_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->modif_date_end}" placeholder="{_T string="jj/mm/aaaa"}"/>
+                                                    <input id="modif_date_end" name="modif_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->modif_date_end}" placeholder="{_T string="yyyy-mm-dd"}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -153,7 +153,7 @@
                                         <div class="ui calendar" id="due-rangestart">
                                             <div class="ui input left icon">
                                                 <i class="calendar icon"></i>
-                                                    <input id="due_date_begin" name="due_date_begin" type="text" class="due_date" maxlength="10" size="10" value="{$filters->due_date_begin}" placeholder="{_T string="jj/mm/aaaa"}"/>
+                                                    <input id="due_date_begin" name="due_date_begin" type="text" class="due_date" maxlength="10" size="10" value="{$filters->due_date_begin}" placeholder="{_T string="yyyy-mm-dd"}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -162,7 +162,7 @@
                                         <div class="ui calendar" id="due-rangeend">
                                             <div class="ui input left icon">
                                                 <i class="calendar icon"></i>
-                                                    <input id="due_date_end" name="due_date_end" type="text" class="due_date" maxlength="10" size="10" value="{$filters->due_date_end}" placeholder="{_T string="jj/mm/aaaa"}"/>
+                                                    <input id="due_date_end" name="due_date_end" type="text" class="due_date" maxlength="10" size="10" value="{$filters->due_date_end}" placeholder="{_T string="yyyy-mm-dd"}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -220,7 +220,7 @@
                                         <div class="ui calendar" id="contrib-creation-rangestart">
                                             <div class="ui input left icon">
                                                 <i class="calendar icon"></i>
-                                                <input id="contrib_creation_date_begin" name="contrib_creation_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->contrib_creation_date_begin}" placeholder="{_T string="jj/mm/aaaa"}"/>
+                                                <input id="contrib_creation_date_begin" name="contrib_creation_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->contrib_creation_date_begin}" placeholder="{_T string="yyyy-mm-dd"}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -229,7 +229,7 @@
                                         <div class="ui calendar" id="contrib-creation-rangeend">
                                             <div class="ui input left icon">
                                                 <i class="calendar icon"></i>
-                                                <input id="contrib_creation_date_end" name="contrib_creation_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->contrib_creation_date_end}" placeholder="{_T string="jj/mm/aaaa"}"/>
+                                                <input id="contrib_creation_date_end" name="contrib_creation_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->contrib_creation_date_end}" placeholder="{_T string="yyyy-mm-dd"}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -243,7 +243,7 @@
                                         <div class="ui calendar" id="contrib-begin-rangestart">
                                             <div class="ui input left icon">
                                                 <i class="calendar icon"></i>
-                                                <input id="contrib_begin_date_begin" name="contrib_begin_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->contrib_begin_date_begin}" placeholder="{_T string="jj/mm/aaaa"}"/>
+                                                <input id="contrib_begin_date_begin" name="contrib_begin_date_begin" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->contrib_begin_date_begin}" placeholder="{_T string="yyyy-mm-dd"}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -252,7 +252,7 @@
                                         <div class="ui calendar" id="contrib-begin-rangeend">
                                             <div class="ui input left icon">
                                                 <i class="calendar icon"></i>
-                                                <input id="contrib_begin_date_end" name="contrib_begin_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->contrib_begin_date_end}" placeholder="{_T string="jj/mm/aaaa"}"/>
+                                                <input id="contrib_begin_date_end" name="contrib_begin_date_end" type="text" class="modif_date" maxlength="10" size="10" value="{$filters->contrib_begin_date_end}" placeholder="{_T string="yyyy-mm-dd"}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -268,7 +268,7 @@
                                         <div class="ui calendar" id="contrib-end-rangestart">
                                             <div class="ui input left icon">
                                                 <i class="calendar icon"></i>
-                                                <input id="contrib_end_date_begin" name="contrib_end_date_begin" type="text" class="due_date" maxlength="10" size="10" value="{$filters->contrib_end_date_begin}" placeholder="{_T string="jj/mm/aaaa"}"/>
+                                                <input id="contrib_end_date_begin" name="contrib_end_date_begin" type="text" class="due_date" maxlength="10" size="10" value="{$filters->contrib_end_date_begin}" placeholder="{_T string="yyyy-mm-dd"}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -277,7 +277,7 @@
                                         <div class="ui calendar" id="contrib-end-rangeend">
                                             <div class="ui input left icon">
                                                 <i class="calendar icon"></i>
-                                                    <input id="contrib_end_date_end" name="contrib_end_date_end" type="text" class="due_date" maxlength="10" size="10" value="{$filters->contrib_end_date_end}" placeholder="{_T string="jj/mm/aaaa"}"/>
+                                                    <input id="contrib_end_date_end" name="contrib_end_date_end" type="text" class="due_date" maxlength="10" size="10" value="{$filters->contrib_end_date_end}" placeholder="{_T string="yyyy-mm-dd"}"/>
                                             </div>
                                         </div>
                                     </div>

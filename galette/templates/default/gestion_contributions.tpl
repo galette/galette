@@ -22,7 +22,7 @@
                         <div class="ui calendar" id="contrib-rangestart">
                             <div class="ui input left icon">
                                 <i class="calendar icon"></i>
-                                <input placeholder="{_T string="jj/mm/aaaa"}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$filters->start_date_filter}"/>
+                                <input placeholder="{_T string="yyyy-mm-dd"}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$filters->start_date_filter}"/>
                             </div>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                         <div class="ui calendar" id="contrib-rangeend">
                             <div class="ui input left icon">
                                 <i class="calendar icon"></i>
-                                <input placeholder="{_T string="jj/mm/aaaa"}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$filters->end_date_filter}"/>
+                                <input placeholder="{_T string="yyyy-mm-dd"}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$filters->end_date_filter}"/>
                             </div>
                         </div>
                     </div>
