@@ -8,3 +8,12 @@
     {/if}
     {$smarty.block.parent}
 {/block}
+
+{block name="element"}
+    <div class="ui calendar" id="birth-rangestart">
+        <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            {$smarty.block.parent}
+        </div>
+    </div>
+{/block}

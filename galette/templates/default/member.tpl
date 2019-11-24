@@ -161,7 +161,7 @@
                 $('#is_company').change(function(){
                     //console.log(this.checked);
                     $('#company_field').toggleClass('hidden');
-                    $('#company_field').backgroundFade(
+                    $('#company_field').parent('.field').backgroundFade(
                         {
                             sColor:'#ffffff',
                             eColor:'#DDDDFF',
@@ -176,8 +176,6 @@
                             );
                         });
                 });
-
-                _collapsibleFieldsets();
 
                 $('#ddn_adh').datepicker({
                     changeMonth: true,

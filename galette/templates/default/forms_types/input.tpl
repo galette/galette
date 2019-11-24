@@ -1,6 +1,6 @@
 {block component}
 {if not isset($notag)}
-<p{if isset($component_id)} id="{$component_id}"{/if}{if isset($component_class)} class="{$component_class}"{/if}>
+<div{if isset($component_id)} id="{$component_id}"{/if} class="field{if isset($inline) and $inline == true} inline{/if}{if isset($required) and $required == true} required{/if}{if isset($component_class)} {$component_class}{/if}">
 {/if}
     {block name="label"}
         <label for="{$id}"{if isset($title)} title="{$title}"{/if}{if isset($tip) or isset($labelclass)} class="{if isset($tip)}tooltip{/if} {if isset($labelclass)}{$labelclass}{/if}"{/if}>
@@ -30,6 +30,6 @@
     {/block}
     {if isset($example)}<span class="exemple">{$example}</span>{/if}
 {if not isset($notag)}
-</p>
+</div>
 {/if}
 {/block}

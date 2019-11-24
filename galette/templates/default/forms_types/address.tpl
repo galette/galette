@@ -1,4 +1,5 @@
-<p>
+<div class="grouped fields">
+    <div class="field">
 {include
     file="forms_types/text.tpl"
     name=$entry->field_id
@@ -10,7 +11,8 @@
     notag=true
     elt_class="large"
 }
-<br/>
+    </div>
+    <div class="field">
 {assign var="address2" value=$fieldset->elements['adresse2_adh']}
 {include
     file="forms_types/text.tpl"
@@ -23,4 +25,5 @@
     notag=true
     elt_class="large"
 }
-</p>
+    </div>
+</div>
