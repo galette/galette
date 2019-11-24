@@ -1,55 +1,81 @@
 {extends file="page.tpl"}
 
 {block name="content"}
-    <form action="{path_for name="history_filter"}" method="post" id="filtre">
-        <div id="listfilter">
-            <label for="start_date_filter">{_T string="since"}</label>&nbsp;
-            <input type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$history->filters->start_date_filter}"/>
-            <label for="end_date_filter">{_T string="until"}</label>&nbsp;
-            <input type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$history->filters->end_date_filter}"/>
-
-
+    <form action="{path_for name="history_filter"}" method="post" id="filtre" class="ui form">
+        <div class="ui segment">
+            <div class="four fields">
+                <div class="two fields">
+                    <div class="field">
+                        <label for="start_date_filter">{_T string="since"}</label>
+                        <div class="ui calendar" id="contrib-rangestart">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input placeholder="{_T string="yyyy-mm-dd"}" type="text" name="start_date_filter" id="start_date_filter" maxlength="10" size="10" value="{$history->filters->start_date_filter}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="end_date_filter">{_T string="until"}</label>
+                        <div class="ui calendar" id="contrib-rangeend">
+                            <div class="ui input left icon">
+                                <i class="calendar icon"></i>
+                                <input placeholder="{_T string="yyyy-mm-dd"}" type="text" name="end_date_filter" id="end_date_filter" maxlength="10" size="10" value="{$history->filters->end_date_filter}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
     {assign var="users" value=$history->getUsersList()}
     {if $users|@count gt 0}
-            <label for="user_filter">{_T string="Member"}</label>&nbsp;
-            <select name="user_filter" id="user_filter">
-                <option value="0"{if $history->filters->user_filter eq 0} selected="selected"{/if}>{_T string="Select an user"}</option>
+                <div class="field">
+                    <label for="user_filter">{_T string="Member"}</label>
+                    <select name="user_filter" id="user_filter">
+                        <option value="0"{if $history->filters->user_filter eq 0} selected="selected"{/if}>{_T string="Select an user"}</option>
         {foreach from=$users item=$user}
-                <option value="{$user}"{if $history->filters->user_filter === $user} selected="selected"{/if}>{$user}</option>
+                        <option value="{$user}"{if $history->filters->user_filter === $user} selected="selected"{/if}>{$user}</option>
         {/foreach}
-            </select>
+                    </select>
+                </div>
     {/if}
-
     {assign var="actions" value=$history->getActionsList()}
     {if $actions|@count gt 0}
-            <label for="action_filter">{_T string="Action"}</label>&nbsp;
-            <select name="action_filter" id="action_filter">
-                <option value="0">{_T string="Select an action"}</option>
+                <div class="field">
+                    <label for="action_filter">{_T string="Action"}</label>
+                    <select name="action_filter" id="action_filter">
+                        <option value="0">{_T string="Select an action"}</option>
         {foreach from=$actions item=$action}
-                <option value="{$action}"{if $history->filters->action_filter eq $action} selected="selected"{/if}>{$action}</option>
+                        <option value="{$action}"{if $history->filters->action_filter eq $action} selected="selected"{/if}>{$action}</option>
         {/foreach}
-            </select>
+                    </select>
     {/if}
-
-
-            <input type="submit" class="inline" value="{_T string="Filter"}"/>
-            <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
+                </div>
+                <div class="flexend center aligned field">
+                    <input type="submit" class="ui blue button" value="{_T string="Filter"}"/>
+                    <input type="submit" name="clear_filter" class="ui button" value="{_T string="Clear filter"}"/>
+                </div>
+            </div>
         </div>
+
         <div class="infoline">
-            <a
-                class="button delete"
-                href="{path_for name="flushHistory"}"
-            >
-                <i class="fas fa-trash"></i>
-                {_T string="Flush the logs"}
-            </a>
-            {$history->getCount()} {if $history->getCount() != 1}{_T string="entries"}{else}{_T string="entry"}{/if}
-            <div class="fright">
-                <label for="nbshow">{_T string="Records per page:"}</label>
-                <select name="nbshow" id="nbshow">
-                    {html_options options=$nbshow_options selected=$numrows}
-                </select>
-                <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+            <div class="ui basic horizontal segments">
+                <div class="ui basic fitted segment">
+                    <a
+                        class="negative ui button"
+                        href="{path_for name="flushHistory"}"
+                    >
+                        <i class="icon trash"></i>
+                        {_T string="Flush the logs"}
+                    </a>
+                    <div class="ui label">{$history->getCount()} {if $history->getCount() != 1}{_T string="entries"}{else}{_T string="entry"}{/if}</div>
+                </div>
+                <div class="ui basic right aligned fitted segment">
+                    <div class="inline field">
+                        <label for="nbshow">{_T string="Records per page:"}</label>
+                        <select name="nbshow" id="nbshow" class="ui dropdown">
+                            {html_options options=$nbshow_options selected=$numrows}
+                        </select>
+                        <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
@@ -141,9 +167,13 @@
             </tbody>
         </table>
 {if $logs|@count != 0}
-        <div class="center cright">
-            {_T string="Pages:"}<br/>
-            <ul class="pages">{$pagination}</ul>
+        <div class="ui basic center aligned fitted segment">
+            <div class="ui pagination menu">
+                <div class="header item">
+                    {_T string="Pages:"}
+                </div>
+                {$pagination}
+            </div>
         </div>
 {/if}
 {/block}
