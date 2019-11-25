@@ -313,7 +313,7 @@
                 });
     {/if}
 
-    {if !$self_adh and $member->hasParent()}
+    {if !$self_adh}
         {if $parent_fields|@count gt 0}
                 $('#detach_parent').on('change', function(){
                     var _checked = $(this).is(':checked');
@@ -328,6 +328,22 @@
                         $(_changes).attr('required', 'required');
                     } else {
                         $(_changes).removeAttr('required');
+                    }
+                });
+
+                $('#parent_id').on('change', function(){
+                    var _hasParent = $(this).attr('value') != '';
+                    var _changes = '';
+            {foreach item=req from=$parent_fields}
+                    _changes += '#{$req}';
+                {if !$req@last}
+                    _changes += ',';
+                {/if}
+            {/foreach}
+                    if (_hasParent) {
+                        $(_changes).removeAttr('required');
+                    } else {
+                        $(_changes).attr('required', 'required');
                     }
                 });
         {/if}
