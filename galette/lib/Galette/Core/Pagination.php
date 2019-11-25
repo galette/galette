@@ -330,11 +330,9 @@ abstract class Pagination
      */
     private function getLink($content, $url, $title, $current = false)
     {
-        $tabs = "\t\t\t\t\t\t";
         if ($current === true) {
             $active = "active ";
-        }
-        else {
+        } else {
             $active = "";
         }
         $link = "<a href=\"" . $url . "\" " .
