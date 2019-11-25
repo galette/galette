@@ -126,7 +126,7 @@ $app->get(
         if ($member->hasParent()) {
             if (!isset($members[$member->parent->id])) {
                 $members =
-                    [$member->parent->id => $member->parent->getSName()] +
+                    [$member->parent->id => Adherent::getSName($this->zdb, $member->parent->id)] +
                     $members
                 ;
             }
@@ -847,7 +847,7 @@ $app->get(
         if ($member->hasParent()) {
             if (!isset($members[$member->parent->id])) {
                 $members =
-                    [$member->parent->id => $member->parent->getSName()] +
+                    [$member->parent->id => Adherent::getSName($this->zdb, $member->parent->id)] +
                     $members
                 ;
             }
