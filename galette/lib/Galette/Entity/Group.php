@@ -243,7 +243,7 @@ class Group
             foreach ($results as $m) {
                 $group = new Group((int)$m->$grppk);
                 $group->setLogin($this->login);
-                $groups[] = $group;
+                $groups[$group->getId()] = $group;
             }
             $this->groups = $groups;
         } catch (\Exception $e) {
