@@ -5,10 +5,12 @@
 # Johan Cwiklinski <johan@x-tnd.be>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2019. #zanata
 # Allan Nordhøy <epost@anotheragency.no>, 2019.
+# Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2019.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-11-02 10:03+0000\n"
-"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
+"PO-Revision-Date: 2019-11-26 21:44+0000\n"
+"Last-Translator: Fredericos Tezorc <fredericos.tezorc@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -92,7 +94,7 @@ msgstr "-- Wählen Sie einen Mitarbeiter --"
 
 #: ../includes/routes/management.routes.php:2749
 msgid "An error occurred trying to delete field :("
-msgstr ""
+msgstr "Beim Löschen des Felds ist ein Fehler aufgetreten :("
 
 #: ../includes/fields_defs/pdfmodels_fields.php:185
 #: ../includes/dependencies.php:530
