@@ -165,19 +165,19 @@ var _initTooltips = function(selector) {
                 _content = _next.html();
             }
 
-            //second, value from @title
-            if (typeof _content == 'undefined') {
-                var _title = _this.attr('title');
-                if (typeof _title != 'undefined') {
-                    _content = _title;
-                }
-            }
-
             //and finally, value from @class=sr-only element
             if (typeof _content == 'undefined') {
                 var _sronly = _this.find('.sr-only');
                 if (_sronly.length > 0) {
                     _content = _sronly.html();
+                }
+            }
+
+            //second, value from @title
+            if (typeof _content == 'undefined') {
+                var _title = _this.attr('title');
+                if (typeof _title != 'undefined') {
+                    _content = _title;
                 }
             }
 
