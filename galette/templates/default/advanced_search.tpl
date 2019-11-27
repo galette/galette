@@ -7,7 +7,7 @@
                 <div>
                     <p>
                         <label class="bline" for="filter_str">{_T string="Search:"}</label>
-                        <input type="text" name="filter_str" id="filter_str" value="{$filters->filter_str}" type="search" placeholder="{_T string="Enter a value"}"/>&nbsp;
+                        <input type="text" name="filter_str" id="filter_str" value="{$filters->filter_str}" placeholder="{_T string="Enter a value"}"/>&nbsp;
                         {_T string="in:"}&nbsp;
                         <select name="field_filter">
                             {html_options options=$field_filter_options selected=$filters->field_filter}
