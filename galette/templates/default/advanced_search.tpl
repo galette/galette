@@ -209,7 +209,7 @@
                             <option value="dyn_{$field->getId()}"{if $fs.field eq $rid} selected="selected"{/if}>{$field->getName()}</option>
     {/foreach}
                         </select>
-                        <span>
+                        <span class="data">
                             <input type="hidden" name="free_type[]" value="{if isset($cur_field)}{$cur_field->getType()}{/if}"/>
     {if $cur_field|is_a:'Galette\DynamicFields\Choice' || $type eq constant('Galette\DynamicFields\DynamicField::CHOICE')}
                         <select name="free_query_operator[]" class="free_operator nochosen">
@@ -428,7 +428,7 @@
 
                     }
                     _html += '<input type="hidden" name="free_type[]" value="' + _type + '"/>';
-                    $(this).parent().find('span').html(_html);
+                    $(this).parent().find('span.data').html(_html);
                     _selectize('.newselectize');
                     $('.newselectize').removeClass('newselectize');
                     _datePickers();
