@@ -216,7 +216,7 @@
                             <option value="{Galette\Filters\AdvancedMembersList::OP_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_EQUALS')} selected="selected"{/if}>{_T string="is"}</option>
                             <option value="{Galette\Filters\AdvancedMembersList::OP_NOT_EQUALS}"{if $fs.qry_op eq constant('Galette\Filters\AdvancedMembersList::OP_NOT_EQUALS')} selected="selected"{/if}>{_T string="is not"}</option>
                         </select>
-                        <select name="free_text[]" class="nochosen">
+                        <select name="free_text[]" class="free_text nochosen">
         {if $cur_field|is_a:'Galette\DynamicFields\Choice'}
                         {html_options options=$cur_field->getValues() selected=$fs.search}
         {else}
@@ -369,7 +369,7 @@
 
             var _selectize = function(selector) {
                 if ( !selector ) {
-                    selector = '.operator_selector,.field_selector,.free_operator';
+                    selector = '.operator_selector,.field_selector,.free_operator,.free_text';
                 }
 
                 $(selector).selectize({
