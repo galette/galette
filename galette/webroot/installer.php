@@ -72,10 +72,6 @@ $app = new \Slim\App(
 );
 require_once '../includes/dependencies.php';
 
-if (isset($_GET['pref_lang'])) {
-    $i18n->changeLanguage($_GET['pref_lang']);
-}
-
 if (isset($_POST['abort_btn'])) {
     if (isset($session[md5(GALETTE_ROOT)])) {
         unset($session[md5(GALETTE_ROOT)]);
@@ -246,11 +242,14 @@ header('Content-Type: text/html; charset=UTF-8');
         <link rel="stylesheet" type="text/css" href="./themes/default/galette.css"/>
         <link rel="stylesheet" type="text/css" href="./themes/default/install.css"/>
         <link rel="stylesheet" type="text/css" href="./themes/default/jquery-ui/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>.custom.css"/>
+        <link rel="stylesheet" type="text/css" href="./js/selectize-0.12.6/css/selectize.css" />
+        <link rel="stylesheet" type="text/css" href="./js/selectize-0.12.6/css/selectize.default.css" />
         <script type="text/javascript" src="./js/jquery/jquery-<?php echo JQUERY_VERSION; ?>.min.js"></script>
         <script type="text/javascript" src="./js/jquery/jquery-migrate-<?php echo JQUERY_MIGRATE_VERSION; ?>.min.js"></script>
         <script type="text/javascript" src="./js/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
         <script type="text/javascript" src="./js//jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.button.min.js"></script>
         <script type="text/javascript" src="./js/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.tooltip.min.js"></script>
+        <script type="text/javascript" src="./js/selectize-0.12.6/js/standalone/selectize.min.js"></script>
         <script type="text/javascript" src="./js/jquery/jquery.bgFade.js"></script>
         <script type="text/javascript" src="./js/common.js"></script>
         <link rel="shortcut icon" href="./themes/default/images/favicon.png" />
@@ -267,7 +266,7 @@ header('Content-Type: text/html; charset=UTF-8');
 <?php
 foreach ($i18n->getList() as $langue) {
     ?>
-                        <option value="<?php echo $langue->getID(); ?>" lang="<?php echo $langue->getAbbrev(); ?>"<?php if ($galette_lang == $langue->getAbbrev()) { echo ' selected="selected"'; } ?>><?php echo $langue->getName(); ?></option>
+                        <option value="<?php echo $langue->getID(); ?>" lang="<?php echo $langue->getAbbrev(); ?>"<?php if ($i18n->getAbbrev() == $langue->getAbbrev()) { echo ' selected="selected"'; } ?>><?php echo $langue->getName(); ?></option>
     <?php
 }
 ?>

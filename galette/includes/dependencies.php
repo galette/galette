@@ -180,8 +180,8 @@ $container['plugins'] = function ($c) use ($app) {
 
 $container['i18n'] = function ($c) {
     $i18n = $c->get('session')->i18n;
-    if (!$i18n || !$i18n->getId()) {
-        $i18n = new Galette\Core\I18n();
+    if (!$i18n || !$i18n->getId() || $_GET['ui_pref_lang']) {
+        $i18n = new Galette\Core\I18n($_GET['ui_pref_lang'] ?? false);
         $c->get('session')->i18n = $i18n;
     }
     return $i18n;
