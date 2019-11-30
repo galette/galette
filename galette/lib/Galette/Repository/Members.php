@@ -1354,7 +1354,7 @@ class Members
                             $field = 'field_val';
                             $qry .= 'LOWER(' . $prefix . $field . ') ' .
                                 $qop  . ' ' ;
-                            $select->where($qry . '%' .strtolower($cd) . '%');
+                            $select->where($qry . $zdb->platform->quoteValue('%' .strtolower($cd) . '%'));
                         }
                     }
                 }
