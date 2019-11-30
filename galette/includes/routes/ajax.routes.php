@@ -296,7 +296,7 @@ $app->group('/ajax', function () use ($authenticate) {
                 'nom_adh',
                 'prenom_adh'
             );
-            $list_members = $m->getList(false, $required_fields, true);
+            $list_members = $m->getList(false, $required_fields);
 
             $members = [];
             if (count($list_members) > 0) {

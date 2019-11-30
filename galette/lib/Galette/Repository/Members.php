@@ -441,11 +441,10 @@ class Members
      * @param array   $fields     field(s) name(s) to get. Should be a string or
      *                            an array. If null, all fields will be
      *                            returned
-     * @param boolean $full       Whether to return full list
      *
      * @return Adherent[]|ResultSet
      */
-    public function getList($as_members = false, $fields = null, $full = true)
+    public function getList($as_members = false, $fields = null)
     {
         return $this->getMembersList(
             $as_members,
