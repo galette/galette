@@ -148,14 +148,7 @@ class AdvancedMembersList extends MembersList
     );
 
     //an empty contributions dynamic field criteria to begin
-    private $_contrib_dynamic = array(
-        'empty' => array(
-            'field'     => '',
-            'search'    => '',
-            'log_op'    => self::OP_AND,
-            'qry_op'    => self::OP_EQUALS
-        )
-    );
+    private $_contrib_dynamic = array();
 
     /**
      * Default constructor
@@ -238,14 +231,7 @@ class AdvancedMembersList extends MembersList
             )
         );
 
-        $this->_contrib_dynamic = array(
-            'empty' => array(
-                'field'     => '',
-                'search'    => '',
-                'log_op'    => self::OP_AND,
-                'qry_op'    => self::OP_EQUALS
-            )
-        );
+        $this->_contrib_dynamic = array();
     }
 
     /**
@@ -551,15 +537,22 @@ class AdvancedMembersList extends MembersList
                         }
                     }
                     break;
+                case 'contrib_dynamic':
+                    if (is_array($value)) {
+                        $this->_contrib_dynamic = $value;
+                    } else {
+                        Analog::log(
+                            '[AdvancedMembersList] Value for dynamic contribution fields filter should be an '
+                            .'array (' . gettype($v) . ' given',
+                            Analog::WARNING
+                        );
+                    }
+                    break;
                 default:
                     if (substr($name, 0, 4) === 'cds_'
                         || substr($name, 0, 5) === 'cdsc_'
                     ) {
                         if (is_array($value) || trim($value) !== '') {
-                            if (isset($this->_contrib_dynamic['empty'])) {
-                                unset($this->_contrib_dynamic['empty']);
-                            }
-
                             $id = null;
                             if (substr($name, 0, 5) === 'cdsc_') {
                                 $id = substr($name, 5, strlen($name));
