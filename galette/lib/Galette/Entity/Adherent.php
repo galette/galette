@@ -71,6 +71,13 @@ class Adherent
     const MAN = 1;
     const WOMAN = 2;
 
+    const AFTER_ADD_DEFAULT = 0;
+    const AFTER_ADD_TRANS = 1;
+    const AFTER_ADD_NEW = 2;
+    const AFTER_ADD_SHOW = 3;
+    const AFTER_ADD_LIST = 4;
+    const AFTER_ADD_HOME = 5;
+
     private $_id;
     //Identity
     private $_title;
@@ -762,12 +769,12 @@ class Adherent
 
             $results = $zdb->execute($select);
             $row = $results->current();
-            $str = mb_strtoupper($row->nom_adh, 'UTF-8') . ' ' .
-                ucfirst(mb_strtolower($row->prenom_adh, 'UTF-8'));
-            if ($wid === true) {
-                $str .= ' (' . $row->id_adh . ')';
-            }
-            return $str;
+            return self::getNameWithCase(
+                $row->nom_adh,
+                $row->prenom_adh,
+                false,
+                ($wid === true ? $row->id_adh : false)
+            );
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot get formatted name for member form id `' . $id . '` | ' .
@@ -776,6 +783,33 @@ class Adherent
             );
             return false;
         }
+    }
+
+    /**
+     * Get member name with correct case
+     *
+     * @param string        $name    Member name
+     * @param string        $surname Mmeber surname
+     * @param false|Title   $title   Member title to show or false
+     * @param false|integer $id      Member id to display or false
+     *
+     * @return string
+     */
+    public static function getNameWithCase($name, $surname, $title = false, $id = false)
+    {
+        $str = '';
+
+        if ($title !== false && $title instanceof Title) {
+            $str .= $title->tshort . ' ';
+        }
+
+        $str .= mb_strtoupper($name, 'UTF-8') . ' ' .
+            ucwords(mb_strtolower($surname, 'UTF-8'), " \t\r\n\f\v-_|");
+
+        if ($id !== false) {
+            $str .= ' (' . $id . ')';
+        }
+        return $str;
     }
 
     /**
@@ -919,9 +953,17 @@ class Adherent
         $fields = self::getDbFields($this->zdb);
 
         //reset company name if needeed
-        if (!isset($values['is_company']) || $values['is_company'] != 1) {
+        if (!isset($values['is_company'])) {
             unset($values['is_company']);
-            unset($values['societe_adh']);
+            $values['societe_adh'] = '';
+        }
+
+        //no parent if checkbox was unchecked
+        if (!isset($values['attach'])
+            && empty($this->_id)
+            && isset($values['parent_id'])
+        ) {
+            unset($values['parent_id']);
         }
 
         foreach ($fields as $key) {
@@ -1356,7 +1398,7 @@ class Adherent
                     if ($this->_self_adh) {
                         $hist->add(
                             _T("Self_subscription as a member: ") .
-                            strtoupper($this->_name) . ' ' . $this->_surname
+                            $this->getNameWithCase($this->_name, $this->_surname)
                         );
                     } else {
                         $hist->add(
@@ -1518,12 +1560,11 @@ class Adherent
                         return $status->getLabel($this->_status);
                         break;
                     case 'sfullname':
-                        $sfn = mb_strtoupper($this->_name, 'UTF-8') . ' ' .
-                            ucwords(mb_strtolower($this->_surname, 'UTF-8'));
-                        if (isset($this->_title)) {
-                            $sfn = $this->_title->tshort . ' ' . $sfn;
-                        }
-                        return $sfn;
+                        return $this->getNameWithCase(
+                            $this->_name,
+                            $this->_surname,
+                            (isset($this->_title) ? $this->title : false)
+                        );
                         break;
                     case 'saddress':
                         $address = $this->_address;
@@ -1533,8 +1574,7 @@ class Adherent
                         return $address;
                         break;
                     case 'sname':
-                        return mb_strtoupper($this->_name, 'UTF-8') .
-                            ' ' . ucwords(mb_strtolower($this->_surname, 'UTF-8'));
+                        return $this->getNameWithCase($this->_name, $this->_surname);
                         break;
                 }
             } else {

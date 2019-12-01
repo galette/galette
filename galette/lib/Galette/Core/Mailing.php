@@ -66,8 +66,8 @@ class Mailing extends GaletteMail
 
     private $id;
 
-    private $unreachables;
-    private $mrecipients;
+    private $unreachables = array();
+    private $mrecipients = array();
     private $current_step;
 
     private $mime_type;

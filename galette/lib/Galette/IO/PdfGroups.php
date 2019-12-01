@@ -78,7 +78,7 @@ class PdfGroups extends Pdf
      *
      * @return void
      */
-    function Header()
+    public function Header() // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         $this->Cell(
             0,

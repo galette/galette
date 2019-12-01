@@ -41,12 +41,34 @@
     {/if}
             <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
             <fieldset class="cssform">
-                <legend class="ui-state-active ui-corner-top">{if $type eq "fee"}{_T string="Select contributor and membership fee type"}{else}{_T string="Select contributor and donation type"}{/if}</legend>
+                <legend class="ui-state-active ui-corner-top">
+    {if $type eq "fee"}
+                    {_T string="Select contributor and membership fee type"}
+    {else}
+                    {_T string="Select contributor and donation type"}
+    {/if}
+    {if $contribution->isTransactionPart() && $contribution->transaction->getMissingAmount() > 0}
+                    <a
+                        href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?trans_id={$contribution->transaction->id}"
+                        class="button fright tooltip"
+                        title="{_T string="Create a new fee that will be attached to the current transaction"}">
+                        <i class="fas fa-user-check"></i>
+                        <span class="sr-only">{_T string="New attached fee"}</span>
+                    </a>
+                    <a
+                        href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?trans_id={$contribution->transaction->id}"
+                        class="button fright tooltip"
+                        title="{_T string="Create a new donation that will be attached to the current transaction"}">
+                        <i class="fas fa-gift"></i>
+                        <span class="sr-only">{_T string="New attached donation"}</span>
+                    </a>
+    {/if}
+</legend>
                 <p>
                     <label for="id_adh" class="bline">{_T string="Contributor:"}</label>
                     <select name="id_adh" id="id_adh" class="nochosen"{if isset($disabled.id_adh)} {$disabled.id_adh}{/if}>
                         {if $adh_selected eq 0}
-                        <option value="">{_T string="-- select a name --"}</option>
+                        <option value="">{_T string="Search for name or ID and pick member"}</option>
                         {/if}
                         {foreach $members.list as $k=>$v}
                             <option value="{$k}"{if $contribution->member == $k} selected="selected"{/if}>{$v}</option>
@@ -80,7 +102,11 @@
                     <input type="text" name="montant_cotis" id="montant_cotis" value="{$contribution->amount}" maxlength="10"{if $required.montant_cotis eq 1} required="required"{/if}/>
                 </p>
                 {* payment type *}
-                {include file="forms_types/payment_types.tpl" current=$contribution->payment_type varname="type_paiement_cotis"}
+                {assign var="ptype" value=$contribution->payment_type}
+                {if $ptype == null}
+                    {assign var="ptype" value=constant('Galette\Entity\PaymentType::CHECK')}
+                {/if}
+                {include file="forms_types/payment_types.tpl" current=$ptype varname="type_paiement_cotis"}
                 <p>
                     <label class="bline" for="date_enreg">
                         {_T string="Record date:"}

@@ -79,6 +79,7 @@ class Pdf extends \TCPDF
     protected $preferences;
     private $model;
     private $paginated = false;
+    protected $filename;
 
     /**
      * Main constructor, set creator and author
@@ -149,7 +150,7 @@ class Pdf extends \TCPDF
      * @access public
      * @since 1.0
      */
-    public function Error($msg)
+    public function Error($msg) // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         global $container;
 
@@ -231,7 +232,7 @@ class Pdf extends \TCPDF
      *
      * @return void
      */
-    function Header()
+    public function Header() // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         //just ovverride default header to prevent black line at top
     }
@@ -241,7 +242,7 @@ class Pdf extends \TCPDF
      *
      * @return void
      */
-    function Footer()
+    public function Footer() // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         $this->SetY(-20);
         if (isset($this->model)) {
@@ -252,7 +253,7 @@ class Pdf extends \TCPDF
             $hfooter .= $this->model->hfooter;
             $this->writeHtml($hfooter);
         } else {
-            $this->SetFont(self::FONT, '', self::FONT_SIZE);
+            $this->SetFont(self::FONT, '', self::FONT_SIZE - 2);
             $this->SetTextColor(0, 0, 0);
 
             $name = preg_replace(
@@ -261,34 +262,14 @@ class Pdf extends \TCPDF
                 _T("Association %s")
             );
 
-            /** FIXME: get configured postal address */
-            $coordonnees_line1 = $name . ' - ' . $this->preferences->pref_adresse;
-            /** FIXME: pref_adresse2 should be removed */
-            if (trim($this->preferences->pref_adresse2) != '') {
-                $coordonnees_line1 .= ', ' . $this->preferences->pref_adresse2;
-            }
-            $coordonnees_line2 = $this->preferences->pref_cp . ' ' .
-                $this->preferences->pref_ville;
+            $address = $this->preferences->getPostalAddress();
 
-            $this->Cell(
+            $this->MultiCell(
                 0,
                 4,
-                $coordonnees_line1,
+                $address,
                 0,
-                1,
-                'C',
-                0,
-                $this->preferences->pref_website
-            );
-            $this->Cell(
-                0,
-                4,
-                $coordonnees_line2,
-                0,
-                0,
-                'C',
-                0,
-                $this->preferences->pref_website
+                'C'
             );
 
             if ($this->paginated) {
@@ -314,7 +295,7 @@ class Pdf extends \TCPDF
      *
      * @return void
      */
-    function PageHeader($title = null)
+    public function PageHeader($title = null) // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         if (isset($this->model)) {
             $html = null;
@@ -323,6 +304,11 @@ class Pdf extends \TCPDF
             }
             $html .= $this->model->hheader;
             $this->writeHtml($html, true, false, true, false, '');
+
+            if ($title !== null) {
+                $this->writeHtml('<h2 style="text-align:center;">' . $title . '</h2>');
+            }
+
             if (trim($this->model->title) !== '') {
                 $htitle = '';
                 if (trim($this->model->hstyles) !== '') {
@@ -377,15 +363,12 @@ class Pdf extends \TCPDF
             $this->Ln(2);
             $ystart = $this->GetY();
 
-            $this->Cell(
-                0,
+            $this->MultiCell(
+                180 - $wlogo,
                 6,
                 $this->preferences->pref_nom,
                 0,
-                1,
-                'L',
-                0,
-                $this->preferences->pref_website
+                'L'
             );
             $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
 
@@ -411,7 +394,7 @@ class Pdf extends \TCPDF
      *
      * @return void
      */
-    public function PageBody()
+    public function PageBody() // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         $hbody = '';
         if (trim($this->model->hstyles) !== '') {
@@ -482,5 +465,25 @@ class Pdf extends \TCPDF
             }
         }
         return $str;
+    }
+
+    /**
+     * Get filename
+     *
+     * @return string
+     */
+    public function getFilename()
+    {
+        return $this->filename;
+    }
+
+    /**
+     * Download PDF from browser
+     *
+     * @return void
+     */
+    public function download()
+    {
+        $this->Output($this->filename, 'D');
     }
 }

@@ -32,6 +32,8 @@
  * @link      http://galette.tuxfamily.org
  */
 
+use Galette\Entity\PdfModel;
+
 $container = $app->getContainer();
 
 // -----------------------------------------------------------------------------
@@ -117,6 +119,7 @@ $container['view'] = function ($c) {
     }
     /** galette_lang should be removed and languages used instead */
     $smarty->assign('galette_lang', $c->i18n->getAbbrev());
+    $smarty->assign('galette_lang_name', $c->i18n->getName());
     $smarty->assign('languages', $c->i18n->getList());
     $smarty->assign('plugins', $c->plugins);
     $smarty->assign('preferences', $c->preferences);
@@ -177,8 +180,8 @@ $container['plugins'] = function ($c) use ($app) {
 
 $container['i18n'] = function ($c) {
     $i18n = $c->get('session')->i18n;
-    if (!$i18n || !$i18n->getId()) {
-        $i18n = new Galette\Core\I18n();
+    if (!$i18n || !$i18n->getId() || $_GET['ui_pref_lang']) {
+        $i18n = new Galette\Core\I18n($_GET['ui_pref_lang'] ?? false);
         $c->get('session')->i18n = $i18n;
     }
     return $i18n;
@@ -342,7 +345,12 @@ $container['acls'] = function ($c) {
         'paymentTypes'              => 'staff',
         'removePaymentType'         => 'staff',
         'doRemovePaymentType'       => 'staff',
-        'editPaymentType'           => 'staff'
+        'editPaymentType'           => 'staff',
+        'searches'                  => 'member',
+        'removeSearch'              => 'member',
+        'removeSearches'            => 'member',
+        'doRemoveSearch'            => 'member',
+        'loadSearch'                => 'member'
     ];
 
     foreach ($c['plugins']->getModules() as $plugin) {
@@ -373,7 +381,270 @@ $container['members_fields_cats'] = function ($c) {
 };
 
 $container['pdfmodels_fields'] = function ($c) {
-    include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
+    //include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
+    $pdfmodels_fields = array(
+        array(
+            'model_id'  => PdfModel::MAIN_MODEL,
+            'model_name'    => '_T("Main")',
+            'model_title'   => null,
+            'model_type'    => PdfModel::MAIN_MODEL,
+            'model_header'  => '<table>
+        <tr>
+            <td id="pdf_assoname"><strong id="asso_name">{ASSO_NAME}</strong><br/>{ASSO_SLOGAN}</td>
+            <td id="pdf_logo">{ASSO_LOGO}</td>
+        </tr>
+    </table>',
+            'model_footer'  => '<div id="pdf_footer">
+        _T("Association") {ASSO_NAME} - {ASSO_ADDRESS}<br/>
+        {ASSO_WEBSITE}
+    </div>',
+            'model_body'    => null,
+            'model_styles'  => 'div#pdf_title {
+        font-size: 1.4em;
+        font-wieght:bold;
+        text-align: center;
+    }
+
+    div#pdf_subtitle {
+        text-align: center;
+    }
+
+    div#pdf_footer {
+        text-align: center;
+        font-size: 0.7em;
+    }
+
+    td#pdf_assoname {
+        width: 75%;
+        font-size: 1.1em;
+    }
+
+    strong#asso_name {
+        font-size: 1.6em;
+    }
+
+    td#pdf_logo {
+        text-align: right;
+        width: 25%;
+    }',
+            'model_parent'  => null
+        ),
+        array(
+            'model_id'  => PdfModel::INVOICE_MODEL,
+            'model_name'    => '_T("Invoice")',
+            'model_title'   => '_T("Invoice") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}',
+            'model_type'    => PdfModel::INVOICE_MODEL,
+            'model_header'  => null,
+            'model_footer'  => null,
+            'model_body'    => '<table>
+        <tr>
+            <td width="300"></td>
+            <td><strong>{NAME_ADH}</strong><br/>
+                {ADDRESS_ADH}<br/>
+                <strong>{ZIP_ADH} {TOWN_ADH}</strong>
+            </td>
+        </tr>
+        <tr>
+            <td height="100"></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>_T("Label")</th>
+                            <th>_T("Amount")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                {CONTRIBUTION_LABEL} (_T("on") {CONTRIBUTION_DATE})<br/>
+                                _T("from") {CONTRIBUTION_BEGIN_DATE} _T("to") {CONTRIBUTION_END_DATE}<br/>
+                            {CONTRIBUTION_PAYMENT_TYPE}<br/>
+                            {CONTRIBUTION_COMMENT}
+                            </td>
+                            <td>{CONTRIBUTION_AMOUNT}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>',
+            'model_styles'  => null,
+            'model_parent'  => PdfModel::MAIN_MODEL
+        ),
+        array(
+            'model_id'  => PdfModel::RECEIPT_MODEL,
+            'model_name'    => '_T("Receipt")',
+            'model_title'   => '_T("Receipt") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}',
+            'model_type'    => PdfModel::RECEIPT_MODEL,
+            'model_header'  => null,
+            'model_footer'  => null,
+            'model_body'    => '<table>
+        <tr>
+            <td width="300"></td>
+            <td><strong>{NAME_ADH}</strong><br/>
+                {ADDRESS_ADH}<br/>
+                <strong>{ZIP_ADH} {TOWN_ADH}</strong>
+            </td>
+        </tr>
+        <tr>
+            <td height="100"></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>_T("Label")</th>
+                            <th>_T("Amount")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                {CONTRIBUTION_LABEL} (_T("on") {CONTRIBUTION_DATE})<br/>
+                                _T("from") {CONTRIBUTION_BEGIN_DATE} _T("to") {CONTRIBUTION_END_DATE}<br/>
+                            {CONTRIBUTION_PAYMENT_TYPE}<br/>
+                            {CONTRIBUTION_COMMENT}
+                            </td>
+                            <td>{CONTRIBUTION_AMOUNT}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>',
+            'model_styles'  => null,
+            'model_parent'  => PdfModel::MAIN_MODEL
+        ),
+        array(
+            'model_id'  => PdfModel::ADHESION_FORM_MODEL,
+            'model_name'    => '_T("Adhesion form")',
+            'model_title'   => '_T("Adhesion form")',
+            'model_type'    => PdfModel::ADHESION_FORM_MODEL,
+            'model_header'  => null,
+            'model_footer'  => null,
+            'model_body'    => '<hr/>
+    <div class="infos">_T("Complete the following form and send it with your funds, in order to complete your subscription.")</div>
+    <table>
+        <tr>
+            <td width="50%"></td>
+            <td width="50%">{ASSO_ADDRESS_MULTI}</td>
+        </tr>
+    </table>
+    <hr/>
+    <table>
+        <tr>
+            <td height="30"></td>
+        </tr>
+        <tr>
+            <td>_T("Required membership:")
+                <form action="none">
+                    <input type="radio" class="box" name="cotisation" value="none1">_T("Active member")
+                    <input type="radio" class="box" name="cotisation" value="none2">_T("Benefactor member")
+                    <input type="radio" class="box" name="cotisation" value="none3">_T("Donation")
+                    <div class="infos">_T("The minimum contribution for each type of membership are defined on the website of the association. The amount of donations are free to be decided by the generous donor.")  </div>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td height="30"></td>
+        </tr>
+    </table>
+    <table class="member">
+        <tr>
+            <td class="label">_T("Politeness")</td>
+            <td class="input">{TITLE_ADH}</td>
+        </tr>
+        <tr>
+            <td class="label">_T("Name")</td>
+            <td class="input">{LAST_NAME_ADH}</td>
+        </tr>
+        <tr>
+            <td class="label">_T("First name")</td>
+            <td class="input">{FIRST_NAME_ADH}</td>
+        </tr>
+        <tr>
+            <td class="label">_T("Company name") *</td>
+            <td class="input">{COMPANY_ADH}</td>
+        </tr>
+        <tr>
+            <td class="label">_T("Address")</td>
+            <td class="input">{ADDRESS_ADH}</td>
+        </tr>
+        <tr>
+            <td class="label"></td>
+            <td class="input"></td>
+        </tr>
+        <tr>
+            <td class="label"></td>
+            <td class="input"></td>
+        </tr>
+        <tr>
+            <td class="label">_T("Zip Code")</td>
+            <td class="cpinput">{ZIP_ADH}</td>
+            <td class="label">_T("City")</td>
+            <td class="towninput">{TOWN_ADH}</td>
+        </tr>
+        <tr>
+            <td class="label">_T("Country")</td>
+            <td class="input">{COUNTRY_ADH}</td>
+        </tr>
+        <tr>
+            <td class="label">_T("Email address")</td>
+            <td class="input">{EMAIL_ADH}</td>
+        </tr>
+        <tr>
+            <td class="label">_T("Username") **</td>
+            <td class="input">{LOGIN_ADH}</td>
+        </tr>
+        <tr>
+            <td colspan="2" height="10"></td>
+        </tr>
+        <tr>
+            <td class="label">_T("Amount")</td>
+            <td class="input"></td>
+        </tr>
+    </table>
+    <p>str_replace(\'%s\', \'{ASSO_NAME}\', \'_T("Hereby, I agree to comply to %s association statutes and its rules.")\')</p><p>_T("At ................................................")</p><p>_T("On .......... / .......... / .......... ")</p><p>_T("Signature")</p>
+    <p class="notes">_T("* Only for compagnies")<br/>_T("** Galette identifier, if applicable")</p>',
+            'model_styles'  => 'td.label {
+        width: 20%;
+        font-weight: bold;
+    }
+    td.input {
+        width: 80%;
+        border-bottom: 1px dotted black;
+    }
+
+    td.cpinput {
+        width: 10%;
+        border-bottom: 1px dotted black;
+    }
+
+    td.towninput {
+        width: 50%;
+        border-bottom: 1px dotted black;
+    }
+
+    div.infos {
+        font-size: .8em;
+    }
+
+    p.notes {
+        font-size: 0.6em;
+        text-align: right;
+    }
+
+    .member td {
+        line-height: 20px;
+        height: 20px;
+    }',
+            'model_parent'  => PdfModel::MAIN_MODEL
+        )
+    );
     return $pdfmodels_fields;
 };
 
@@ -402,19 +673,20 @@ $container['fields_config'] = function ($c) {
 
 $container['cache'] = function ($c) {
     $adapter  = null;
-    if (function_exists('apcu_fetch')) {
-        $adapter = (version_compare(PHP_VERSION, '7.0.0') >= 0) ? 'apcu' : 'apc';
-    } elseif (function_exists('wincache_ucache_add')) {
+    if (function_exists('wincache_ucache_add')) {
         //since APCu is not known to work on windows
         $adapter = 'wincache';
+    } elseif (function_exists('apcu_fetch')) {
+        $adapter = 'apcu';
     }
     if ($adapter !== null) {
+        $uuid = $c->get('mode') !== 'INSTALL' ? $c->get('preferences')->pref_instance_uuid : '_install';
         $cache = Zend\Cache\StorageFactory::factory([
             'adapter'   => $adapter,
             'options'   => [
                 'namespace' => str_replace(
                     ['%version', '%uuid'],
-                    [GALETTE_VERSION, $c->get('preferences')->pref_instance_uuid],
+                    [GALETTE_VERSION, $uuid],
                     'galette_%version_%uuid'
                 )
             ]

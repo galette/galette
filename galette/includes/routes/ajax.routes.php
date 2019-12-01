@@ -296,7 +296,7 @@ $app->group('/ajax', function () use ($authenticate) {
                 'nom_adh',
                 'prenom_adh'
             );
-            $list_members = $m->getList(false, $required_fields, true);
+            $list_members = $m->getList(false, $required_fields);
 
             $members = [];
             if (count($list_members) > 0) {
@@ -305,7 +305,10 @@ $app->group('/ajax', function () use ($authenticate) {
                     $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
                         ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8')) .
                         ' (' . $member->id_adh . ')';
-                    $members[$member->$pk] = $sname;
+                    $members[] = [
+                        'value' => $member->$pk,
+                        'text'  => $sname
+                    ];
                 }
             }
 

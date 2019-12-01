@@ -43,6 +43,7 @@ use Galette\Core\Mailing;
 use Galette\Core\GaletteMail;
 use Galette\Repository\Members;
 use Galette\Filters\MembersList;
+use Galette\Filters\SavedSearchesList;
 use Galette\Filters\AdvancedMembersList;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Contribution;
@@ -62,6 +63,7 @@ use Galette\Entity\Group;
 use Galette\IO\File;
 use Galette\Core\Authentication;
 use Galette\Repository\PaymentTypes;
+use Galette\Repository\SavedSearches;
 
 //self subscription
 $app->get(
@@ -95,6 +97,45 @@ $app->get(
         $spam_pass = $spam->newImage();
         $spam_img = $spam->getImage();
 
+        // members
+        $members = [];
+        $m = new Members();
+        $required_fields = array(
+            'id_adh',
+            'nom_adh',
+            'prenom_adh'
+        );
+        $list_members = $m->getList(false, $required_fields);
+
+        if (count($list_members) > 0) {
+            foreach ($list_members as $lmember) {
+                $pk = Adherent::PK;
+                $sname = mb_strtoupper($lmember->nom_adh, 'UTF-8') .
+                    ' ' . ucwords(mb_strtolower($lmember->prenom_adh, 'UTF-8')) .
+                    ' (' . $lmember->id_adh . ')';
+                $members[$lmember->$pk] = $sname;
+            }
+        }
+
+        $params['members'] = [
+            'filters'   => $m->getFilters(),
+            'count'     => $m->getCount()
+        ];
+
+        //check if current attached member is part of the list
+        if ($member->hasParent()) {
+            if (!isset($members[$member->parent->id])) {
+                $members =
+                    [$member->parent->id => Adherent::getSName($this->zdb, $member->parent->id)] +
+                    $members
+                ;
+            }
+        }
+
+        if (count($members)) {
+            $params['members']['list'] = $members;
+        }
+
         // display page
         $this->view->render(
             $response,
@@ -104,7 +145,6 @@ $app->get(
                 'parent_tpl'        => 'public_page.tpl',
                 'member'            => $member,
                 'self_adh'          => true,
-                'languages'         => $this->i18n->getList(),
                 'require_calendar'  => true,
                 'autocomplete'      => true,
                 // pseudo random int
@@ -115,7 +155,7 @@ $app->get(
                 'spam_img'          => $spam_img,
                 'fieldsets'         => $form_elements['fieldsets'],
                 'hidden_elements'   => $form_elements['hiddens']
-            )
+            ) + $params
         );
         return $response;
     }
@@ -301,11 +341,22 @@ $app->get(
             );
         }
 
-        if (file_exists(CsvOut::DEFAULT_DIRECTORY . $filename)) {
-            header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="' . $filename . '";');
-            header('Pragma: no-cache');
-            echo readfile(CsvOut::DEFAULT_DIRECTORY . $filename);
+        $filepath = CsvOut::DEFAULT_DIRECTORY . $filename;
+        if (file_exists($filepath)) {
+            $response = $this->response->withHeader('Content-Description', 'File Transfer')
+                ->withHeader('Content-Type', 'text/csv')
+                ->withHeader('Content-Disposition', 'attachment;filename="' . $filename . '"')
+                ->withHeader('Pragma', 'no-cache')
+                ->withHeader('Content-Transfer-Encoding', 'binary')
+                ->withHeader('Expires', '0')
+                ->withHeader('Cache-Control', 'must-revalidate')
+                ->withHeader('Pragma', 'public');
+
+            $stream = fopen('php://memory', 'r+');
+            fwrite($stream, file_get_contents($filepath));
+            rewind($stream);
+
+            return $response->withBody(new \Slim\Http\Stream($stream));
         } else {
             Analog::log(
                 'A request has been made to get an exported file named `' .
@@ -315,6 +366,7 @@ $app->get(
             $notFound = $this->notFoundHandler;
             return $notFound($request, $response);
         }
+        return $response;
     }
 )->setName('csv-memberslist')->add($authenticate);
 
@@ -410,7 +462,7 @@ $app->post(
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('advanced-search'));
-        } elseif (isset($post['adv_criterias'])) {
+        } elseif (isset($post['adv_criteria'])) {
             return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('advanced-search'));
@@ -422,23 +474,22 @@ $app->post(
                 );
             }
             //field to filter
-            if (isset($post['filter_field'])) {
-                if (is_numeric($post['filter_field'])) {
-                    $filters->field_filter = $post['filter_field'];
+            if (isset($post['field_filter'])) {
+                if (is_numeric($post['field_filter'])) {
+                    $filters->field_filter = $post['field_filter'];
                 }
             }
             //membership to filter
-            if (isset($post['filter_membership'])) {
-                if (is_numeric($post['filter_membership'])) {
+            if (isset($post['membership_filter'])) {
+                if (is_numeric($post['membership_filter'])) {
                     $filters->membership_filter
-                        = $post['filter_membership'];
+                        = $post['membership_filter'];
                 }
             }
             //account status to filter
             if (isset($post['filter_account'])) {
                 if (is_numeric($post['filter_account'])) {
-                    $filters->account_status_filter
-                        = $post['filter_account'];
+                    $filters->filter_account = $post['filter_account'];
                 }
             }
             //email filter
@@ -494,15 +545,6 @@ $app->post(
                         }
                     } else {
                         switch ($k) {
-                            case 'filter_field':
-                                $k = 'field_filter';
-                                break;
-                            case 'filter_membership':
-                                $k= 'membership_filter';
-                                break;
-                            case 'filter_account':
-                                $k = 'account_status_filter';
-                                break;
                             case 'contrib_min_amount':
                             case 'contrib_max_amount':
                                 if (trim($v) !== '') {
@@ -516,6 +558,18 @@ $app->post(
                     }
                 }
             }
+        }
+
+        if (isset($post['savesearch'])) {
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor(
+                        'saveSearch',
+                        $post
+                    )
+                );
         }
 
         $this->session->filter_members = $filters;
@@ -558,8 +612,7 @@ $app->get(
                 'page_title'        => _T("Member Profile"),
                 'require_dialog'    => true,
                 'member'            => $member,
-                'pref_lang_img'     => $this->i18n->getFlagFromId($member->language),
-                'pref_lang'         => ucfirst($this->i18n->getNameFromId($member->language)),
+                'pref_lang'         => $this->i18n->getNameFromId($member->language),
                 'pref_card_self'    => $this->preferences->pref_card_self,
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
@@ -642,8 +695,7 @@ $app->get(
                 'page_title'        => _T("Member Profile"),
                 'require_dialog'    => true,
                 'member'            => $member,
-                'pref_lang_img'     => $this->i18n->getFlagFromId($member->language),
-                'pref_lang'         => ucfirst($this->i18n->getNameFromId($member->language)),
+                'pref_lang'         => $this->i18n->getNameFromId($member->language),
                 'pref_card_self'    => $this->preferences->pref_card_self,
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
@@ -766,6 +818,45 @@ $app->get(
             $member->id == ''
         );
 
+        // members
+        $members = [];
+        $m = new Members();
+        $required_fields = array(
+            'id_adh',
+            'nom_adh',
+            'prenom_adh'
+        );
+        $list_members = $m->getList(false, $required_fields);
+
+        if (count($list_members) > 0) {
+            foreach ($list_members as $lmember) {
+                $pk = Adherent::PK;
+                $sname = mb_strtoupper($lmember->nom_adh, 'UTF-8') .
+                    ' ' . ucwords(mb_strtolower($lmember->prenom_adh, 'UTF-8')) .
+                    ' (' . $lmember->id_adh . ')';
+                $members[$lmember->$pk] = $sname;
+            }
+        }
+
+        $route_params['members'] = [
+            'filters'   => $m->getFilters(),
+            'count'     => $m->getCount()
+        ];
+
+        //check if current attached member is part of the list
+        if ($member->hasParent()) {
+            if (!isset($members[$member->parent->id])) {
+                $members =
+                    [$member->parent->id => Adherent::getSName($this->zdb, $member->parent->id)] +
+                    $members
+                ;
+            }
+        }
+
+        if (count($members)) {
+            $route_params['members']['list'] = $members;
+        }
+
         // display page
         $this->view->render(
             $response,
@@ -779,7 +870,6 @@ $app->get(
                     'page_title'        => $title,
                     'member'            => $member,
                     'self_adh'          => false,
-                    'languages'         => $this->i18n->getList(),
                     'require_calendar'  => true,
                     // pseudo random int
                     'time'              => time(),
@@ -905,7 +995,7 @@ $app->post(
                     $disabled[$field->field_id] = true;
                 } elseif (!isset($post[$field->field_id])) {
                     switch ($field->field_id) {
-                        //uncheckd booleans are not sent from form
+                        //unchecked booleans are not sent from form
                         case 'bool_admin_adh':
                         case 'bool_exempt_adh':
                         case 'bool_display_info':
@@ -980,11 +1070,11 @@ $app->post(
 
                             $mail = new GaletteMail($this->preferences);
                             $mail->setSubject($texts->getSubject());
-                            $mail->setRecipients(
-                                array(
-                                    $this->preferences->pref_email_newadh => _T("Galette admin")
-                                )
-                            );
+                            $recipients = [];
+                            foreach ($this->preferences->vpref_email_newadh as $pref_email) {
+                                $recipients[$pref_email] = $pref_email;
+                            }
+                            $mail->setRecipients($recipients);
                             $mail->setMessage($texts->getBody());
                             $sent = $mail->send();
 
@@ -1115,6 +1205,67 @@ $app->post(
                         }
                     }
 
+                    // send mail to admin
+                    if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+                        && $this->preferences->pref_bool_mailadh
+                        && !$new
+                        && $member->id == $this->login->id
+                    ) {
+                        $mreplaces = [
+                            'name_adh'      => custom_html_entity_decode(
+                                $member->sname
+                            ),
+                            'firstname_adh' => custom_html_entity_decode(
+                                $member->surname
+                            ),
+                            'lastname_adh'  => custom_html_entity_decode(
+                                $member->name
+                            ),
+                            'mail_adh'      => custom_html_entity_decode(
+                                $member->getEmail()
+                            ),
+                            'login_adh'     => custom_html_entity_decode(
+                                $member->login
+                            )
+                        ];
+
+                        //send mail to member
+                        // Get email text in database
+                        $texts = new Texts(
+                            $this->texts_fields,
+                            $this->preferences,
+                            $this->router,
+                            $mreplaces
+                        );
+                        $mlang = $this->preferences->pref_lang;
+
+                        $mtxt = $texts->getTexts(
+                            'admaccountedited',
+                            $mlang
+                        );
+
+                        $mail = new GaletteMail($this->preferences);
+                        $mail->setSubject($texts->getSubject());
+                        $recipients = [];
+                        foreach ($this->preferences->vpref_email_newadh as $pref_email) {
+                            $recipients[$pref_email] = $pref_email;
+                        }
+                        $mail->setRecipients($recipients);
+
+                        $mail->setMessage($texts->getBody());
+                        $sent = $mail->send();
+
+                        if ($sent == GaletteMail::MAIL_SENT) {
+                            $msg = _T("Account modification mail sent to admin.");
+                            $this->history->add($msg);
+                            $success_detected[] = $msg;
+                        } else {
+                            $str = _T("A problem happened while sending account mail to admin");
+                            $this->history->add($str);
+                            $error_detected[] = $str;
+                        }
+                    }
+
                     //store requested groups
                     $add_groups = null;
                     $groups_adh = null;
@@ -1207,29 +1358,44 @@ $app->post(
             }
 
             if (count($error_detected) == 0) {
-                if (!isset($post['id_adh']) && !$member->isDueFree() && !isset($args['self'])) {
-                    return $response
-                        ->withStatus(301)
-                        ->withHeader(
-                            'Location',
-                            $this->router->pathFor(
-                                'contribution',
-                                [
-                                    'type'      => 'fee',
-                                    'action'    => 'add',
-                                ]
-                            ) . '?id_adh=' . $member->id
-                        );
-                } else {
-                    if (isset($args['self'])) {
-                        $redirect_url = $this->router->pathFor('login');
-                    } else {
-                        $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
+                $redirect_url = null;
+                if (isset($args['self'])) {
+                    $redirect_url = $this->router->pathFor('login');
+                } elseif (isset($post['redirect_on_create'])
+                    && $post['redirect_on_create'] > Adherent::AFTER_ADD_DEFAULT
+                ) {
+                    switch ($post['redirect_on_create']) {
+                        case Adherent::AFTER_ADD_TRANS:
+                            $redirect_url = $this->router->pathFor('transaction', ['action' => 'add']);
+                            break;
+                        case Adherent::AFTER_ADD_NEW:
+                            $redirect_url = $this->router->pathFor('editmember', ['action' => 'add']);
+                            break;
+                        case Adherent::AFTER_ADD_SHOW:
+                            $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
+                            break;
+                        case Adherent::AFTER_ADD_LIST:
+                            $redirect_url = $this->router->pathFor('members');
+                            break;
+                        case Adherent::AFTER_ADD_HOME:
+                            $redirect_url = $this->router->pathFor('slash');
+                            break;
                     }
-                    return $response
-                        ->withStatus(301)
-                        ->withHeader('Location', $redirect_url);
+                } elseif (!isset($post['id_adh']) && !$member->isDueFree()) {
+                    $redirect_url = $this->router->pathFor(
+                        'contribution',
+                        [
+                            'type'      => 'fee',
+                            'action'    => 'add',
+                        ]
+                    ) . '?id_adh=' . $member->id;
+                } else {
+                    $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
                 }
+
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $redirect_url);
             } else {
                 //store entity in session
                 $this->session->member = $member;
@@ -1699,7 +1865,11 @@ $app->get(
 
         $pdf = new PdfMembersCards($this->preferences);
         $pdf->drawCards($members);
-        $pdf->Output(_T("Cards") . '.pdf', 'D');
+
+        $response = $this->response->withHeader('Content-type', 'application/pdf')
+                ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
+        $response->write($pdf->download());
+        return $response;
     }
 )->setName('pdf-members-cards')->add($authenticate);
 
@@ -1764,7 +1934,10 @@ $app->get(
 
         $pdf = new PdfMembersLabels($this->preferences);
         $pdf->drawLabels($members);
-        $pdf->Output(_T("labels_print_filename") . '.pdf', 'D');
+        $response = $this->response->withHeader('Content-type', 'application/pdf')
+                ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
+        $response->write($pdf->download());
+        return $response;
     }
 )->setName('pdf-members-labels')->add($authenticate);
 
@@ -1817,7 +1990,10 @@ $app->get(
 
         $form = $this->preferences->pref_adhesion_form;
         $pdf = new $form($adh, $this->zdb, $this->preferences);
-        $pdf->download();
+        $response = $this->response->withHeader('Content-type', 'application/pdf')
+            ->withHeader('Content-Disposition', 'attachment; filename="' . $pdf->getFileName() . '"');
+        $response->write($pdf->download());
+        return $response;
     }
 )->setName('adhesionForm')->add($authenticate);
 
@@ -1827,7 +2003,10 @@ $app->get(
     function ($request, $response) {
         $form = $this->preferences->pref_adhesion_form;
         $pdf = new $form(null, $this->zdb, $this->preferences);
-        $pdf->download();
+        $response = $this->response->withHeader('Content-type', 'application/pdf')
+            ->withHeader('Content-Disposition', 'attachment; filename="' . $pdf->getFileName() . '"');
+        $response->write($pdf->download());
+        return $response;
     }
 )->setName('emptyAdhesionForm');
 
@@ -1885,7 +2064,7 @@ $app->get(
                 //FIXME: use a constant!
                 $filters->reinit();
                 $filters->membership_filter = Members::MEMBERSHIP_LATE;
-                $filters->account_status_filter = Members::ACTIVE_ACCOUNT;
+                $filters->filter_account = Members::ACTIVE_ACCOUNT;
                 $m = new Members($filters);
                 $members = $m->getList(true);
                 $mailing = new Mailing($this->preferences, ($members !== false) ? $members : null);
@@ -2100,10 +2279,10 @@ $app->post(
                             }
                         } elseif ($_FILES['files']['error'][$i] !== UPLOAD_ERR_NO_FILE) {
                             Analog::log(
-                                $mailing->getPhpErrorMessage($_FILES['files']['error'][$i]),
+                                $this->logo->getPhpErrorMessage($_FILES['files']['error'][$i]),
                                 Analog::WARNING
                             );
-                            $error_detected[] = $mailing->getPhpErrorMessage(
+                            $error_detected[] = $this->logo->getPhpErrorMessage(
                                 $_FILES['files']['error'][$i]
                             );
                         }
@@ -2392,8 +2571,9 @@ $app->post(
                     $labels_filters = new MembersList();
                     $labels_filters->selected = $labels_members;
                     $this->session->filters_reminders_labels = $labels_filters;
-                    header('location: etiquettes_adherents.php');
-                    die();
+                    return $response
+                        ->withStatus(301)
+                        ->withHeader('Location', $this->router->pathFor('pdf-member-labels'));
                 } else {
                     $error_detected[] = _T("There are no member to proceed.");
                 }
@@ -2442,13 +2622,14 @@ $app->get(
     function ($request, $response, $args) {
         //always reset filters
         $filters = new MembersList();
-        $filters->account_status_filter = Members::ACTIVE_ACCOUNT;
+        $filters->filter_account = Members::ACTIVE_ACCOUNT;
 
         $membership = ($args['membership'] === 'nearly' ?
             Members::MEMBERSHIP_NEARLY :
             Members::MEMBERSHIP_LATE);
         $filters->membership_filter = $membership;
 
+        //TODO: filter on reminder may take care of parent email as well
         $mail = ($args['mail'] === 'withmail' ?
             Members::FILTER_W_EMAIL :
             Members::FILTER_WO_EMAIL);
@@ -2559,31 +2740,21 @@ $app->post(
             $doc_title = $post['sheet_type'];
         }
 
-        $pdf = new Galette\IO\PdfAttendanceSheet($this->preferences);
-        $pdf->doc_title = $doc_title;
-        // Set document information
-        $pdf->SetTitle($doc_title);
-
-        if (isset($post['sheet_title']) && trim($post['sheet_title']) != '') {
-            $pdf->sheet_title = $post['sheet_title'];
-        }
-        if (isset($post['sheet_sub_title']) && trim($post['sheet_sub_title']) != '') {
-            $pdf->sheet_sub_title = $post['sheet_sub_title'];
-        }
-        if (isset($post['sheet_date']) && trim($post['sheet_date']) != '') {
-            $dformat = __("Y-m-d");
-            $date = DateTime::createFromFormat(
-                $dformat,
-                $post['sheet_date']
-            );
-            $pdf->sheet_date = $date;
-        }
+        $data = [
+            'doc_title' => $doc_title,
+            'title'     => $post['sheet_title'] ?? null,
+            'subtitle'  => $post['sheet_sub_title'] ?? null,
+            'sheet_date'=> $post['sheet_date'] ?? null
+        ];
+        $pdf = new Galette\IO\PdfAttendanceSheet($this->zdb, $this->preferences, $data);
         //with or without images?
         if (isset($post['sheet_photos']) && $post['sheet_photos'] === '1') {
             $pdf->withImages();
         }
-        $pdf->drawSheet($members, $doc_title);
-        $pdf->Output(_T("attendance_sheet") . '.pdf', 'D');
+        $pdf->drawSheet($members);
+        $response = $this->response->withHeader('Content-type', 'application/pdf');
+        $response->write($pdf->Output(_T("attendance_sheet") . '.pdf', 'D'));
+        return $response;
     }
 )->setName('attendance_sheet')->add($authenticate);
 
@@ -2841,10 +3012,12 @@ $app->get(
 
         if (file_exists(GALETTE_FILES_PATH . $filename)) {
             $type = File::getMimeType(GALETTE_FILES_PATH . $filename);
-            header('Content-Type: ' . $type);
-            header('Content-Disposition: attachment; filename="' . $args['name'] . '";');
-            header('Pragma: no-cache');
-            echo readfile(GALETTE_FILES_PATH . $filename);
+            $response = $this->response
+                ->withHeader('Content-Type', $type)
+                ->withHeader('Content-Disposition', 'attachment;filename="' . $args['name'] . '"')
+                ->withHeader('Pragma', 'no-cache');
+            $response->write(readfile(GALETTE_FILES_PATH . $filename));
+            return $response;
         } else {
             Analog::log(
                 'A request has been made to get an exported file named `' .
@@ -3123,3 +3296,288 @@ $app->get(
             ->withHeader('Location', $this->router->pathFor('editmember', ['action' => 'add']));
     }
 )->setName('duplicateMember')->add($authenticate);
+
+//saved searches
+$app->map(
+    ['GET', 'POST'],
+    '/save-search',
+    function ($request, $response) {
+        if ($request->isPost()) {
+            $post = $request->getParsedBody();
+        } else {
+            $post = $request->getQueryParams();
+        }
+
+        $name = null;
+        if (isset($post['search_title'])) {
+            $name = $post['search_title'];
+            unset($post['search_title']);
+        }
+
+        //when using advanced search, no parameters are sent
+        if (isset($post['advanced_search'])) {
+            $post = [];
+            $filters = $this->session->filter_members;
+            foreach ($filters->search_fields as $field) {
+                $post[$field] = $filters->$field;
+            }
+        }
+
+        //reformat, add required infos
+        $post = [
+            'parameters'    => $post,
+            'form'          => 'Adherent',
+            'name'          => $name
+        ];
+
+        $sco = new Galette\Entity\SavedSearch($this->zdb, $this->login);
+        if ($check = $sco->check($post)) {
+            if (!$res = $sco->store()) {
+                if ($res === false) {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        _T("An SQL error has occurred while storing search.")
+                    );
+                } else {
+                    $this->flash->addMessage(
+                        'warning_detected',
+                        _T("This search is already saved.")
+                    );
+                }
+            } else {
+                $this->flash->addMessage(
+                    'success_detected',
+                    _T("Search has been saved.")
+                );
+            }
+        } else {
+            //report errors
+            foreach ($sco->getErrors() as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
+            }
+        }
+
+        if ($request->isGet()) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('members'));
+        }
+    }
+)->setName('saveSearch');
+
+$app->get(
+    '/saved-searches[/{option:page|order}/{value:\d+}]',
+    function ($request, $response, $args = []) {
+        $option = null;
+        if (isset($args['option'])) {
+            $option = $args['option'];
+        }
+        $value = null;
+        if (isset($args['value'])) {
+            $value = $args['value'];
+        }
+
+        if (isset($this->session->filter_savedsearch)) {
+            $filters = $this->session->filter_savedsearch;
+        } else {
+            $filters = new SavedSearchesList();
+        }
+
+        if ($option !== null) {
+            switch ($option) {
+                case 'page':
+                    $filters->current_page = (int)$value;
+                    break;
+                case 'order':
+                    $filters->orderby = $value;
+                    break;
+            }
+        }
+
+        $searches = new SavedSearches($this->zdb, $this->login, $filters);
+        $list = $searches->getList(true);
+
+        //assign pagination variables to the template and add pagination links
+        $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
+
+        $this->session->filter_savedsearch = $filters;
+
+        // display page
+        $this->view->render(
+            $response,
+            'saved_searches.tpl',
+            array(
+                'page_title'        => _T("Saved searches"),
+                'require_dialog'    => true,
+                'searches'          => $list,
+                'nb'                => $searches->getCount(),
+                'filters'           => $filters
+            )
+        );
+        return $response;
+    }
+)->setName('searches')->add($authenticate);
+
+$app->get(
+    '/search/remove/{id:\d+}',
+    function ($request, $response, $args) {
+        $data = [
+            'id'            => $args['id'],
+            'redirect_uri'  => $this->router->pathFor('searches')
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'type'          => _T("Saved search"),
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => _T('Remove saved search'),
+                'form_url'      => $this->router->pathFor('doRemoveSearch', ['id' => $args['id']]),
+                'cancel_uri'    => $this->router->pathFor('searches'),
+                'data'          => $data
+            )
+        );
+        return $response;
+    }
+)->setName('removeSearch')->add($authenticate);
+
+$app->get(
+    '/searches/remove',
+    function ($request, $response) {
+        $filters =  $this->session->filter_savedsearch;
+
+        $data = [
+            'id'            => $filters->selected,
+            'redirect_uri'  => $this->router->pathFor('searches')
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'type'          => _T("Saved search"),
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => _T('Remove saved searches'),
+                'message'       => str_replace(
+                    '%count',
+                    count($data['id']),
+                    _T('You are about to remove %count searches.')
+                ),
+                'form_url'      => $this->router->pathFor('doRemoveSearch'),
+                'cancel_uri'    => $this->router->pathFor('searches'),
+                'data'          => $data
+            )
+        );
+        return $response;
+    }
+)->setName('removeSearches')->add($authenticate);
+
+$app->post(
+    '/search/remove' . '[/{id:\d+}]',
+    function ($request, $response) {
+        $post = $request->getParsedBody();
+        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
+        $success = false;
+
+        $uri = isset($post['redirect_uri']) ?
+            $post['redirect_uri'] :
+            $this->router->pathFor('slash');
+
+        if (!isset($post['confirm'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Removal has not been confirmed!")
+            );
+        } else {
+            if (isset($this->session->filter_savedsearch)) {
+                $filters =  $this->session->filter_savedsearch;
+            } else {
+                $filters = new SavedSearchesList();
+            }
+            $searches = new SavedSearches($this->zdb, $this->login, $filters);
+
+            if (!is_array($post['id'])) {
+                $ids = (array)$post['id'];
+            } else {
+                $ids = $post['id'];
+            }
+
+            $del = $searches->remove($ids, $this->history);
+
+            if ($del !== true) {
+                $error_detected = _T("An error occurred trying to remove searches :/");
+
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error_detected
+                );
+            } else {
+                $success_detected = str_replace(
+                    '%count',
+                    count($ids),
+                    _T("%count searches have been successfully deleted.")
+                );
+
+                $this->flash->addMessage(
+                    'success_detected',
+                    $success_detected
+                );
+
+                $success = true;
+            }
+        }
+
+        if (!$ajax) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $uri);
+        } else {
+            return $response->withJson(
+                [
+                    'success'   => $success
+                ]
+            );
+        }
+    }
+)->setName('doRemoveSearch')->add($authenticate);
+
+$app->get(
+    '/save-search/{id}',
+    function ($request, $response, $args) {
+        try {
+            $sco = new Galette\Entity\SavedSearch($this->zdb, $this->login, (int)$args['id']);
+            $this->flash->addMessage(
+                'success_detected',
+                _T("Saved search loaded")
+            );
+        } catch (\Exception $e) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("An SQL error has occurred while storing search.")
+            );
+        }
+        $parameters = (array)$sco->parameters;
+
+        $filters = null;
+        if (isset($parameters['free_search'])) {
+            $filters = new AdvancedMembersList();
+        } else {
+            $filters = new MembersList();
+        }
+
+        foreach ($parameters as $key => $value) {
+            $filters->$key = $value;
+        }
+        $this->session->filter_members = $filters;
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('members'));
+    }
+)->setName('loadSearch');

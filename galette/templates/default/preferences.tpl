@@ -131,15 +131,15 @@
                 <legend>{_T string="Galette's parameters"}</legend>
                 <p>
                     <label for="pref_lang" class="bline">{_T string="Default language:"}</label>
-                    <select name="pref_lang" id="pref_lang" class="lang nochosen">
+                    <select name="pref_lang" id="pref_lang" class="lang">
 {foreach item=langue from=$languages}
-                        <option value="{$langue->getID()}" {if $pref.pref_lang eq $langue->getID()}selected="selected"{/if} style="background-image: url({base_url}/{$langue->getFlag()});">{$langue->getName()|ucfirst}</option>
+                        <option value="{$langue->getID()}" {if $pref.pref_lang eq $langue->getID()}selected="selected"{/if}>{$langue->getName()}</option>
 {/foreach}
                     </select>
                 </p>
                 {*<p>
                     <label for="pref_theme" class="bline">{_T string="Default theme:"}</label>
-                    <select name="pref_theme" id="pref_theme" class="nochosen">
+                    <select name="pref_theme" id="pref_theme">
 {foreach item=theme from=$themes}
                         <option value="{$theme}" {if $pref.pref_theme eq $theme}selected="selected"{/if}>{$theme|ucfirst}</option>
 {/foreach}
@@ -147,26 +147,38 @@
                 </p>*}
                 <p>
                     <label for="pref_numrows" class="bline">{_T string="Lines / Page:"}</label>
-                    <select name="pref_numrows" id="pref_numrows" class="nochosen">
+                    <select name="pref_numrows" id="pref_numrows">
                         {html_options options=$pref_numrows_options selected=$pref.pref_numrows}
                     </select>
                 </p>
                 <p>
+
+                    <label for="pref_redirect_on_create" class="bline">{_T string="After member creation:"}</label>
+                    <select name="pref_redirect_on_create" id="pref_redirect_on_create">
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')} selected="selected"{/if}>{_T string="create a new contribution (default action)"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')} selected="selected"{/if}>{_T string="create a new transaction"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_NEW')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_NEW')} selected="selected"{/if}>{_T string="create another new member"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')} selected="selected"{/if}>{_T string="show member"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_LIST')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_LIST')} selected="selected"{/if}>{_T string="go to members list"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_HOME')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_HOME')} selected="selected"{/if}>{_T string="go to main page"}</option>
+                    </select>
+                </p>
+                <p>
                     <label for="pref_log" class="bline">{_T string="Logging level:"}</label>
-                    <select name="pref_log" id="pref_log" class="nochosen">
+                    <select name="pref_log" id="pref_log">
                         <option value="{Galette\Core\Preferences::LOG_DISABLED}" {if $pref.pref_log eq constant('Galette\Core\Preferences::LOG_DISABLED')}selected="selected"{/if}>{_T string="Disabled"}</option>
                         <option value="{Galette\Core\Preferences::LOG_ENABLED}" {if $pref.pref_log eq constant('Galette\Core\Preferences::LOG_ENABLED')}selected="selected"{/if}>{_T string="Enabled"}</option>
                     </select>
                 </p>
                 <p>
                     <label for="pref_statut" class="bline">{_T string="Default membership status:"}</label>
-                    <select name="pref_statut" id="pref_statut" class="nochosen">
+                    <select name="pref_statut" id="pref_statut">
                         {html_options options=$statuts selected=$pref.pref_statut}
                     </select>
                 </p>
                 <p>
                     <label for="pref_filter_account" class="bline">{_T string="Default account filter:"}</label>
-                    <select name="pref_filter_account" id="pref_filter_account" class="nochosen">
+                    <select name="pref_filter_account" id="pref_filter_account">
                         {html_options options=$accounts_options selected=$pref.pref_filter_account}
                     </select>
                 </p>
@@ -186,7 +198,7 @@
                 </p>
                 <p id="publicpages_visibility"{if !$pref.pref_bool_publicpages} class="hidden"{/if}>
                     <label for="pref_publicpages_visibility" class="bline">{_T string="Show public pages for"}</label>
-                    <select name="pref_publicpages_visibility" id="pref_publicpages_visibility" class="nochosen">
+                    <select name="pref_publicpages_visibility" id="pref_publicpages_visibility">
                         <option value="{Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC}"{if $pref.pref_publicpages_visibility eq constant('Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC')} selected="selected"{/if}>{_T string="Everyone"}</option>
                         <option value="{Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED}"{if $pref.pref_publicpages_visibility eq constant('Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED')} selected="selected"{/if}>{_T string="Up to date members"}</option>
                         <option value="{Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE}"{if $pref.pref_publicpages_visibility eq constant('Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE')} selected="selected"{/if}>{_T string="Admin and staff only"}</option>
@@ -237,13 +249,23 @@
                     <input type="text" name="pref_email_reply_to" id="pref_email_reply_to" value="{$pref.pref_email_reply_to}" maxlength="100" size="30"{if isset($required.pref_email_reply_to) and $required.pref_email_reply_to eq 1} required="required"{/if}/>
                 </p>
                 <p>
+        {assign var="pref_email_newadh" value=""}
+        {foreach from=$preferences->vpref_email_newadh item=vmail_newadh}
+            {if $vmail_newadh@first }
+                {assign var="pref_email_newadh" value=$vmail_newadh}
+            {else}
+                {assign var="pref_email_newadh" value=$pref_email_newadh|cat:",{$vmail_newadh}"}
+            {/if}
+        {/foreach}
+
                     <label for="pref_email_newadh" class="bline tooltip">{_T string="Members administrator's Email:"}</label>
-                    <span class="tip">{_T string="Recipient of new online registation emails"}</span>
-                    <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{$pref.pref_email_newadh}" maxlength="100" size="30"{if isset($required.pref_email_newadh) and $required.pref_email_newadh eq 1} required="required"{/if}/>
+                    <span class="tip">{_T string="Recipient of new online registation and edition emails"}</span>
+                    <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{$pref_email_newadh}" maxlength="100" size="30"{if isset($required.pref_email_newadh) and $required.pref_email_newadh eq 1} required="required"{/if}/>
+                    <span class="exemple">{_T string="(You can enter several emails separated with a comma. First address will be the default one.)"}</span>
                 </p>
                 <p>
                     <label for="pref_bool_mailadh" class="bline tooltip">{_T string="Send email to administrators?"}</label>
-                    <span class="tip">{_T string="Sends an email each time a new member registers online"}</span>
+                    <span class="tip">{_T string="Sends an email each time a new member registers online or edit his/her account"}</span>
                     <input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" value="1" {if $pref.pref_bool_mailadh eq 1}checked="checked"{/if}{if isset($required.pref_bool_mailadh) and $required.pref_bool_mailadh eq 1} required="required"{/if}/>
                 </p>
                 <p>
@@ -434,7 +456,7 @@
                 </p>
                 <p>
                     <label for="pref_card_address" class="bline">{_T string="Address type:"}</label>
-                    <select name="pref_card_address" id="pref_card_address" class="nochosen">
+                    <select name="pref_card_address" id="pref_card_address">
                         <option value="0" {if $pref.pref_card_address eq 0}selected="selected"{/if}>{_T string="Email"}</option>
                         <option value="1" {if $pref.pref_card_address eq 1}selected="selected"{/if}>{_T string="MSN"}</option>
                         <option value="2" {if $pref.pref_card_address eq 2}selected="selected"{/if}>{_T string="Jabber"}</option>
@@ -515,13 +537,7 @@
 
 {block name="javascripts"}
         <script type="text/javascript">
-            $('#prefs_tabs').tabs({
-                activate: function(event, ui) {
-                    $(ui.newPanel.selector + ' select').chosen({
-                        disable_search: true
-                    });
-                }
-            });
+            $('#prefs_tabs').tabs();
 
             $('#no,#php,#qmail').click(function(){
                 $('#smtp_parameters,#smtp_auth').hide();

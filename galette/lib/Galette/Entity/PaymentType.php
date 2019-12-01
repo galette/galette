@@ -289,18 +289,31 @@ class PaymentType
     /**
      * Get system payment types
      *
+     * @param boolean $translated Return translated types (default) or not
+     *
      * @return array
      */
-    public function getSystemTypes()
+    public function getSystemTypes($translated = true)
     {
-        $systypes = [
-            self::OTHER         => _T("Other"),
-            self::CASH          => _T("Cash"),
-            self::CREDITCARD    => _T("Credit card"),
-            self::CHECK         => _T("Check"),
-            self::TRANSFER      => _T("Transfer"),
-            self::PAYPAL        => _T("Paypal")
-        ];
+        if ($translated) {
+            $systypes = [
+                self::OTHER         => _T("Other"),
+                self::CASH          => _T("Cash"),
+                self::CREDITCARD    => _T("Credit card"),
+                self::CHECK         => _T("Check"),
+                self::TRANSFER      => _T("Transfer"),
+                self::PAYPAL        => _T("Paypal")
+            ];
+        } else {
+            $systypes = [
+                self::OTHER         => "Other",
+                self::CASH          => "Cash",
+                self::CREDITCARD    => "Credit card",
+                self::CHECK         => "Check",
+                self::TRANSFER      => "Transfer",
+                self::PAYPAL        => "Paypal"
+            ];
+        }
         return $systypes;
     }
 

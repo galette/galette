@@ -134,7 +134,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {foreach from=$display_elements item=display_element}
     {assign var="elements" value=$display_element->elements}
         <table class="details">
-            <caption class="ui-state-active ui-corner-top">{$display_element->label}</caption>
+            <caption class="ui-state-active ui-corner-top">{_T string=$display_element->label}</caption>
     {foreach from=$elements item=element}
         {if $element->field_id eq 'parent_id'}
             {continue}
@@ -174,8 +174,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {elseif $member->isWoman()}
                     <i class="fas fa-venus fa-fw"></i>
             {/if}
-        {elseif $element->field_id eq 'pref_lang'}
-                    <img src="{base_url}/{$pref_lang_img}" alt="" class="flag"/>
         {/if}
         {if $element->field_id eq 'email_adh' or $element->field_id eq 'msn_adh'}
                         <a href="mailto:{$value}">{$value}</a>

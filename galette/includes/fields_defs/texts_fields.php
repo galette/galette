@@ -222,5 +222,22 @@ $texts_fields = array(
         'tbody'     => "Bonjour cher Administrateur,\r\n\r\nUn don de {NAME_ADH} a été enregistré\r\n{CONTRIB_INFO}\r\n\r\nBien sincèrement,\r\nGalette",
         'tlang'     => 'fr_FR',
         'tcomment'  => 'Nouveau don (envoyé a l\'admin)'
+    ),
+
+    array(
+        'tid'       => 33,
+        'tref'      => 'admaccountedited',
+        'tsubject'  => '[{ASSO_NAME}] Account {NAME_ADH} has been modified',
+        'tbody'     => "Hello!\r\n\r\n{NAME_ADH} has modified his/her account.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+        'tlang'     => 'en_US',
+        'tcomment'  => 'Informs admin a member edit his informations'
+    ),
+    array(
+        'tid'       => 34,
+        'tref'      => 'admaccountedited',
+        'tsubject'  => '[{ASSO_NAME}] Fiche {NAME_ADH} modifiée',
+        'tbody'     => "Bonjour !\r\n\r\n{NAME_ADH} a modifié sa fiche.\r\n\r\nÀ bientôt !\r\n\r\n(ce courriel est un envoi automatique)",
+        'tlang'     => 'fr_FR',
+        'tcomment'  => 'Informe l\'administrateur qu\'un adhérent a modifié sa fiche'
     )
 );

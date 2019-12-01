@@ -137,6 +137,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
   {if $login->isAdmin() or $login->isStaff() or $login->isGroupManager()}
             <li{if $cur_route eq "members"} class="selected"{/if}><a href="{path_for name="members"}" title="{_T string="View, search into and filter member's list"}">{_T string="List of members"}</a></li>
             <li{if $cur_route eq "advanced-search"} class="selected"{/if}><a href="{path_for name="advanced-search"}" title="{_T string="Perform advanced search into members list"}">{_T string="Advanced search"}</a></li>
+            <li{if $cur_route eq "searches"} class="selected"{/if}><a href="{path_for name="searches"}" title="{_T string="Saved searches"}">{_T string="Saved searches"}</a></li>
             <li{if $cur_route eq "groups"} class="selected"{/if}><a href="{path_for name="groups"}" title="{_T string="View and manage groups"}">{_T string="Manage groups"}</a></li>
   {/if}
   {if $login->isAdmin() or $login->isStaff()}
@@ -164,8 +165,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {if $preferences->showPublicPages($login) eq true}
         <h1 class="nojs">{_T string="Public pages"}</h1>
         <ul>
-            <li><a href="{path_for name="publicMembers"}" title="{_T string="Members list"}">{_T string="Members list"}</a></li>
-            <li><a href="{path_for name="publicTrombinoscope"}" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a></li>
+            <li><a href="{path_for name="publicList" data=["type" => "list"]}" title="{_T string="Members list"}">{_T string="Members list"}</a></li>
+            <li><a href="{path_for name="publicList" data=["type" => "trombi"]}" title="{_T string="Trombinoscope"}">{_T string="Trombinoscope"}</a></li>
             {* Include plugins menu entries *}
             {$plugins->getPublicMenus($tpl)}
         </ul>
@@ -195,15 +196,19 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {* Include plugins menu entries *}
 {$plugins->getMenus($tpl)}
 
-        <ul id="langs">
+        <nav id="plang_selector" class="onhover">
+            <a href="#plang_selector" class="tooltip" aria-expanded="false" aria-controls="lang_selector" title="{_T string="Change language"}">
+                <i class="fas fa-language"></i>
+                {$galette_lang_name}
+            </a>
+            <ul id="lang_selector">
 {foreach item=langue from=$languages}
-            <li>
-                <a href="?pref_lang={$langue->getID()}" title="{_T string="Switch locale to '%locale'" pattern="/%locale/" replace=$langue->getName()}" class="flag">
-                    <img src="{base_url}/{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}"/>
-                </a>
-            </li>
+                <li {if $galette_lang eq $langue->getAbbrev()} selected="selected"{/if}>
+                    <a href="?ui_pref_lang={$langue->getID()}" lang="{$langue->getAbbrev()}">{$langue->getName()}</a>
+                </li>
 {/foreach}
-        </ul>
+            </ul>
+        </nav>
 {if $login->isLogged()}
         <div>{$login->loggedInAs()}</div>
         <a id="logout_10" class="button" href="{if $login->isImpersonated()}{path_for name="unimpersonate"}{else}{path_for name="logout"}{/if}"><i class="fas fa-{if $login->isImpersonated()}user-secret{else}sign-out-alt{/if}"></i>{_T string="Log off"}</a>

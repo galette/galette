@@ -59,9 +59,10 @@ $showPublicPages = function ($request, $response, $next) use ($container) {
 $app->group('/public', function () {
     //public members list
     $this->get(
-        '/members[/{option:page|order}/{value:\d+}]',
+        '/{type:list|trombi}[/{option:page|order}/{value:\d+}]',
         function ($request, $response, $args) {
             $option = null;
+            $type = $args['type'];
             if (isset($args['option'])) {
                 $option = $args['option'];
             }
@@ -70,8 +71,9 @@ $app->group('/public', function () {
                 $value = $args['value'];
             }
 
-            if (isset($this->session->public_filter_members)) {
-                $filters = $this->session->public_filter_members;
+            $varname = 'public_filter_' . $type;
+            if (isset($this->session->$varname)) {
+                $filters = $this->session->$varname;
             } else {
                 $filters = new MembersList();
             }
@@ -88,9 +90,9 @@ $app->group('/public', function () {
             }
 
             $m = new Members($filters);
-            $members = $m->getPublicList(false);
+            $members = $m->getPublicList($type === 'trombi');
 
-            $this->session->public_filter_members = $filters;
+            $this->session->$varname = $filters;
 
             //assign pagination variables to the template and add pagination links
             $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
@@ -98,9 +100,11 @@ $app->group('/public', function () {
             // display page
             $this->view->render(
                 $response,
-                'liste_membres.tpl',
+                ($type === 'list' ? 'liste_membres' : 'trombinoscope') . '.tpl',
                 array(
-                    'page_title'    => _T("Members list"),
+                    'page_title'    => ($type === 'list' ? _T("Members list") : _T('Trombinoscope')),
+                    'additionnal_html_class'    => ($type === 'list' ? '' : 'trombinoscope'),
+                    'type'          => $type,
                     'members'       => $members,
                     'nb_members'    => $m->getCount(),
                     'filters'       => $filters
@@ -108,15 +112,18 @@ $app->group('/public', function () {
             );
             return $response;
         }
-    )->setName('publicMembers');
+    )->setName('publicList');
 
     //members list filtering
     $this->post(
-        '/members/filter[/{from}]',
+        '/{type:list|trombi}/filter[/{from}]',
         function ($request, $response, $args) {
+            $type = $args['type'];
             $post = $request->getParsedBody();
-            if (isset($this->session->public_filter_members)) {
-                $filters = $this->session->public_filter_members;
+
+            $varname = 'public_filter_' . $type;
+            if (isset($this->session->$varname)) {
+                $filters = $this->session->$varname;
             } else {
                 $filters = new MembersList();
             }
@@ -131,33 +138,31 @@ $app->group('/public', function () {
                 }
             }
 
-            $this->session->public_filter_members = $filters;
+            $this->session->$varname = $filters;
 
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('publicMembers'));
+                ->withHeader('Location', $this->router->pathFor('publicList', ['type' => $type]));
         }
-    )->setName('filterPublicMemberslist');
+    )->setName('filterPublicList');
 
-    //public trombinoscope
+    $this->get(
+        '/members[/{option:page|order}/{value:\d+}]',
+        function ($request, $response, $args = []) {
+            $args['type'] = 'list';
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('publicList', $args));
+        }
+    );
+
     $this->get(
         '/trombinoscope',
-        function ($request, $response) {
-            $m = new Members();
-            $members = $m->getPublicList(true);
-
-            // display page
-            $this->view->render(
-                $response,
-                'trombinoscope.tpl',
-                array(
-                    'page_title'                => _T("Trombinoscope"),
-                    'additionnal_html_class'    => 'trombinoscope',
-                    'members'                   => $members,
-                    'time'                      => time()
-                )
-            );
-            return $response;
+        function ($request, $response, $args = []) {
+            $args['type'] = 'trombi';
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('publicList', $args));
         }
-    )->setName('publicTrombinoscope');
+    );
 })->add($showPublicPages);

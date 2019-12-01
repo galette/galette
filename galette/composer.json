@@ -35,15 +35,20 @@
         "phpmailer/phpmailer": "^6",
         "tecnickcom/tcpdf": "^6.2",
         "akrabat/rka-slim-session-middleware": "dev-master@dev",
-        "fzaninotto/Faker": "dev-master#c3f82846fdfd1760b277767ac21426ca030f795e",
+        "fzaninotto/faker": "dev-master",
         "zendframework/zend-i18n": "^2.9",
-        "zendframework/zend-cache": "^2.8"
+        "zendframework/zend-cache": "^2.8",
+        "soundasleep/html2text": "^0.5.0"
     },
     "require-dev": {
-        "atoum/atoum": "^3",
-        "atoum/telemetry-extension": "^1.0"
+        "atoum/atoum": "dev-master"
     },
     "config": {
         "optimize-autoloader": true
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "patch -d vendor/fzaninotto/faker/ -p1 < ../patches/0001-Fix-PHP-7.4-array-syntax.patch"
+        ]
     }
 }

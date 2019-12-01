@@ -408,7 +408,7 @@ $app->get(
             'nom_adh',
             'prenom_adh'
         );
-        $list_members = $m->getList(false, $required_fields, true);
+        $list_members = $m->getList(false, $required_fields);
 
         if (count($list_members) > 0) {
             foreach ($list_members as $member) {
@@ -426,13 +426,11 @@ $app->get(
         ];
 
         //check if current attached member is part of the list
-        if (isset($contrib) && $contrib->member > 0) {
-            if (!isset($members[$contrib->member])) {
-                $members =
-                    [$contrib->member => Adherent::getSName($this->zdb, $contrib->member, true)] +
-                    $members
-                ;
-            }
+        if (isset($contrib)
+            && $contrib->member > 0
+            && !isset($members[$contrib->member])
+        ) {
+            $members[$contrib->member] = Adherent::getSName($this->zdb, $contrib->member, true);
         }
 
         if (count($members)) {
@@ -545,19 +543,12 @@ $app->post(
                                     $mail->setSubject(
                                         _T("Post contribution script failed")
                                     );
-                                    /** TODO: only super-admin is contacted here. We should send
-                                    *  a message to all admins, or propose them a chekbox if
-                                    *  they don't want to get bored
-                                    */
-                                    $mail->setRecipients(
-                                        array(
-                                            $this->preferences->pref_email_newadh => str_replace(
-                                                '%asso',
-                                                $this->preferences->pref_name,
-                                                _T("%asso Galette's admin")
-                                            )
-                                        )
-                                    );
+
+                                    $recipients = [];
+                                    foreach ($this->preferences->vpref_email_newadh as $pref_email) {
+                                        $recipients[$pref_email] = $pref_email;
+                                    }
+                                    $mail->setRecipients($recipients);
 
                                     $message = _T("The configured post contribution script has failed.");
                                     $message .= "\n" . _T("You can find contribution information and script output below.");
@@ -682,19 +673,12 @@ $app->post(
 
                     $mail = new GaletteMail($this->preferences);
                     $mail->setSubject($texts->getSubject());
-                    /** TODO: only super-admin is contacted here. We should send
-                    *  a message to all admins, or propose them a chekbox if
-                    *  they don't want to get bored
-                    */
-                    $mail->setRecipients(
-                        array(
-                            $this->preferences->pref_email_newadh => str_replace(
-                                '%asso',
-                                $this->preferences->pref_name,
-                                _T("%asso Galette's admin")
-                            )
-                        )
-                    );
+
+                    $recipients = [];
+                    foreach ($this->preferences->vpref_email_newadh as $pref_email) {
+                        $recipients[$pref_email] = $pref_email;
+                    }
+                    $mail->setRecipients($recipients);
 
                     $mail->setMessage($texts->getBody());
                     $sent = $mail->send();
@@ -872,7 +856,7 @@ $app->get(
             'nom_adh',
             'prenom_adh'
         );
-        $list_members = $m->getList(false, $required_fields, true);
+        $list_members = $m->getList(false, $required_fields);
 
         if (count($list_members) > 0) {
             foreach ($list_members as $member) {
@@ -1270,6 +1254,10 @@ $app->get(
     function ($request, $response, $args) {
         $contribution = new Contribution($this->zdb, $this->login, (int)$args['id']);
         $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
-        $pdf->download();
+
+        $response = $this->response->withHeader('Content-type', 'application/pdf')
+                ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
+        $response->write($pdf->download());
+        return $response;
     }
 )->setName('printContribution')->add($authenticate);

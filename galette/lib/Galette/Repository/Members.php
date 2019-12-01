@@ -335,7 +335,7 @@ class Members
                     self::PK,
                     $list
                 );
-                $del = $zdb->execute($del_qry);
+                $zdb->execute($del_qry);
 
                 //get transactions
                 $select = $zdb->select(Transaction::TABLE);
@@ -346,24 +346,28 @@ class Members
                 //reset link with other contributions
                 //and remove them
                 if ($results->count() > 0) {
+                    $transactions = [];
                     foreach ($results as $transaction) {
-                        $update = $zdb->update(Contribution::TABLE);
-                        $update->set([
-                            Transaction::PK => new Expression('NULL')
-                        ])->where([
-                            Transaction::PK => $transaction[Transaction::PK]
-                        ]);
-                        $zdb->execute($update);
+                        $transactions[] = $transaction[Transaction::PK];
                     }
 
-                    //delete transactions
-                    $del_qry = $zdb->delete(Transaction::TABLE);
-                    $del_qry->where->in(self::PK, $list);
-                    $del = $zdb->execute($del_qry);
+                    $update = $zdb->update(Contribution::TABLE);
+                    $update->set([
+                        Transaction::PK => new Expression('NULL')
+                    ])->where->in(
+                        Transaction::PK,
+                        $transactions
+                    );
+                    $zdb->execute($update);
                 }
 
+                //delete transactions
+                $del_qry = $zdb->delete(Transaction::TABLE);
+                $del_qry->where->in(self::PK, $list);
+                $zdb->execute($del_qry);
+
                 //delete groups membership/mamagmentship
-                $del = Groups::removeMemberFromGroups((int)$member->id_adh);
+                Groups::removeMembersFromGroups($list);
 
                 //delete reminders
                 $del_qry = $zdb->delete(Reminder::TABLE);
@@ -371,13 +375,13 @@ class Members
                     'reminder_dest',
                     $list
                 );
-                $del = $zdb->execute($del_qry);
+                $zdb->execute($del_qry);
 
                 //delete dynamic fields values
                 $del_qry = $zdb->delete(DynamicFieldsHandle::TABLE);
                 $del_qry->where(['field_form' => 'adh']);
                 $del_qry->where->in('item_id', $list);
-                $del = $zdb->execute($del_qry);
+                $zdb->execute($del_qry);
 
                 //delete members
                 $del_qry = $zdb->delete(self::TABLE);
@@ -385,7 +389,7 @@ class Members
                     self::PK,
                     $list
                 );
-                $del = $zdb->execute($del_qry);
+                $zdb->execute($del_qry);
 
                 //commit all changes
                 $zdb->connection->commit();
@@ -437,11 +441,10 @@ class Members
      * @param array   $fields     field(s) name(s) to get. Should be a string or
      *                            an array. If null, all fields will be
      *                            returned
-     * @param boolean $full       Whether to return full list
      *
      * @return Adherent[]|ResultSet
      */
-    public function getList($as_members = false, $fields = null, $full = true)
+    public function getList($as_members = false, $fields = null)
     {
         return $this->getMembersList(
             $as_members,
@@ -1060,14 +1063,13 @@ class Members
                         $now = new \DateTime();
                         $duedate = new \DateTime();
                         $duedate->modify('+1 month');
-                        $select->where
-                            ->greaterThanOrEqualTo(
-                                'date_echeance',
-                                $now->format('Y-m-d')
-                            )->lessThan(
-                                'date_echeance',
-                                $duedate->format('Y-m-d')
-                            );
+                        $select->where->greaterThanOrEqualTo(
+                            'date_echeance',
+                            $now->format('Y-m-d')
+                        )->lessThan(
+                            'date_echeance',
+                            $duedate->format('Y-m-d')
+                        );
                         break;
                     case self::MEMBERSHIP_LATE:
                         $select->where
@@ -1101,8 +1103,8 @@ class Members
                 }
             }
 
-            if ($this->filters->account_status_filter) {
-                switch ($this->filters->account_status_filter) {
+            if ($this->filters->filter_account) {
+                switch ($this->filters->filter_account) {
                     case self::ACTIVE_ACCOUNT:
                         $select->where('activite_adh=true');
                         break;
@@ -1352,7 +1354,7 @@ class Members
                             $field = 'field_val';
                             $qry .= 'LOWER(' . $prefix . $field . ') ' .
                                 $qop  . ' ' ;
-                            $select->where($qry . '%' .strtolower($cd) . '%');
+                            $select->where($qry . $zdb->platform->quoteValue('%' .strtolower($cd) . '%'));
                         }
                     }
                 }
@@ -1464,9 +1466,7 @@ class Members
                             );
                         } else {
                             $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' .
-                                $qop  . ' ' . $zdb->platform->quoteValue(
-                                    $fs['search']
-                                );
+                                $qop  . ' ' . $zdb->platform->quoteValue($fs['search']);
                         }
 
                         if ($fs['log_op'] === AdvancedMembersList::OP_AND) {
@@ -1589,7 +1589,7 @@ class Members
         $reminders = array();
 
         $soon_date = new \DateTime();
-        $soon_date->modify('+30 day');
+        $soon_date->modify('+1 month');
 
         $now = new \DateTime();
 
@@ -1599,17 +1599,25 @@ class Members
                 'cnt' => new Expression('count(a.' . Adherent::PK . ')')
             )
         );
+
+        $select->join(
+            array('p' => PREFIX_DB . self::TABLE),
+            'a.parent_id=p.' . self::PK,
+            array(),
+            $select::JOIN_LEFT
+        );
+
         $select->where
-            ->lessThan('date_echeance', $soon_date->format('Y-m-d'))
-            ->greaterThanOrEqualTo('date_echeance', $now->format('Y-m-d'));
+            ->lessThan('a.date_echeance', $soon_date->format('Y-m-d'))
+            ->greaterThanOrEqualTo('a.date_echeance', $now->format('Y-m-d'));
         $select
-            ->where('activite_adh=true')
-            ->where('bool_exempt_adh=false');
+            ->where('a.activite_adh=true')
+            ->where('a.bool_exempt_adh=false');
 
         $select_wo_mail = clone $select;
 
-        $select->where('email_adh != \'\'');
-        $select_wo_mail->where('email_adh = \'\'');
+        $select->where('(a.email_adh != \'\' OR p.email_adh != \'\')');
+        $select_wo_mail->where('a.email_adh = \'\' AND p.email_adh = \'\'');
 
         $results = $zdb->execute($select);
         $res = $results->current();
@@ -1625,16 +1633,24 @@ class Members
                 'cnt' => new Expression('count(a.' . Adherent::PK . ')')
             )
         );
+
+        $select->join(
+            array('p' => PREFIX_DB . self::TABLE),
+            'a.parent_id=p.' . self::PK,
+            array(),
+            $select::JOIN_LEFT
+        );
+
         $select->where
-            ->lessThan('date_echeance', $now->format('Y-m-d'));
+            ->lessThan('a.date_echeance', $now->format('Y-m-d'));
         $select
-            ->where('activite_adh=true')
-            ->where('bool_exempt_adh=false');
+            ->where('a.activite_adh=true')
+            ->where('a.bool_exempt_adh=false');
 
         $select_wo_mail = clone $select;
 
-        $select->where('email_adh != \'\'');
-        $select_wo_mail->where('email_adh = \'\'');
+        $select->where('(a.email_adh != \'\' OR p.email_adh != \'\')');
+        $select_wo_mail->where('a.email_adh = \'\' AND p.email_adh = \'\'');
 
         $results = $zdb->execute($select);
         $res = $results->current();

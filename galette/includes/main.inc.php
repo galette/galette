@@ -87,6 +87,7 @@ if ($needs_update) {
             'settings' => [
                 'determineRouteBeforeAppMiddleware' => true,
                 'displayErrorDetails' => (GALETTE_MODE === 'DEV'),
+                'addContentLengthHeader' => false,
                 // monolog settings
                 'logger' => [
                     'name'  => 'galette',
@@ -94,7 +95,8 @@ if ($needs_update) {
                     'path'  => GALETTE_LOGS_PATH . '/galette_slim.log',
                 ],
                 //'routerCacheFile' => (GALETTE_MODE === 'DEV') ? false : GALETTE_CACHE_DIR . '/fastroute.cache' //disabled until properly handled
-            ]
+            ],
+            'mode'      => 'PROD'
         ]
     );
 }
@@ -442,13 +444,13 @@ $app->add(function ($request, $response, $next) {
 $app->add(function ($request, $response, $next) use ($i18n) {
     $get = $request->getQueryParams();
 
-    if (isset($get['pref_lang'])) {
+    if (isset($get['ui_pref_lang'])) {
         $route = $request->getAttribute('route');
 
         $route_name = $route->getName();
         $arguments = $route->getArguments();
 
-        $this->i18n->changeLanguage($get['pref_lang']);
+        $this->i18n->changeLanguage($get['ui_pref_lang']);
         $this->session->i18n = $this->i18n;
 
         return $response->withRedirect(
@@ -548,9 +550,8 @@ $app->add(function ($request, $response, $next) {
 
         $missing_acls = [];
         $excluded_names = [
-            'publicMembers',
-            'filterPublicMemberslist',
-            'publicTrombinoscope'
+            'publicList',
+            'filterPublicList'
         ];
         foreach ($routes as $route) {
             $name = $route->getName();

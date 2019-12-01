@@ -40,9 +40,6 @@ namespace Galette\Core;
 use Analog\Analog;
 use PHPMailer\PHPMailer\PHPMailer;
 
-/** @ignore */
-require_once GALETTE_ROOT . 'includes/html2text.php';
-
 /**
  * Generic mail for Galette
  *
@@ -79,7 +76,7 @@ class GaletteMail
     private $word_wrap = 70;
 
     private $errors = array();
-    private $recipients;
+    private $recipients = array();
 
     private $mail = null;
     protected $attachments = array();
@@ -243,7 +240,11 @@ class GaletteMail
         );
         // Add a Reply-To field in the mail headers.
         // Fix bug #6654.
-        $this->mail->AddReplyTo($this->getSenderAddress());
+        if ($this->preferences->pref_email_reply_to) {
+            $this->mail->AddReplyTo($this->preferences->pref_email_reply_to);
+        } else {
+            $this->mail->AddReplyTo($this->getSenderAddress());
+        }
 
 
         if ($this->html) {
@@ -413,7 +414,7 @@ class GaletteMail
     protected function cleanedHtml()
     {
         $html = $this->message;
-        $txt = convert_html_to_text($html);
+        $txt = \Html2Text\Html2Text::convert($html);
         return $txt;
     }
 

@@ -137,6 +137,14 @@ CREATE SEQUENCE galette_paymenttypes_id_seq
     MINVALUE 1
     CACHE 1;
 
+-- sequence for searches
+DROP SEQUENCE IF EXISTS galette_searches_id_seq;
+CREATE SEQUENCE galette_searches_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
 
 -- Schema
 -- REMINDER: Create order IS important, dependencies first !!
@@ -425,9 +433,25 @@ CREATE TABLE galette_import_model (
   PRIMARY KEY (model_id)
 );
 
+-- Table for saved searches
+DROP TABLE IF EXISTS galette_searches;
+CREATE TABLE galette_searches (
+  search_id integer DEFAULT nextval('galette_searches_id_seq'::text) NOT NULL,
+  name character varying(100) DEFAULT NULL,
+  form character varying(50) NOT NULL,
+  parameters jsonb NOT NULL,
+  parameters_sum bytea NOT NULL,
+  id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE,
+  creation_date timestamp NOT NULL,
+  PRIMARY KEY (search_id)
+);
+-- add index on table to look for existing searches
+CREATE INDEX galette_searches_idx ON galette_searches (form, parameters_sum, id_adh);
+
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(0.92);
+INSERT INTO galette_database (version) VALUES(0.93);

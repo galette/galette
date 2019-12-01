@@ -547,6 +547,7 @@ class Db extends atoum
             'galette_mailing_history',
             'galette_pdfmodels',
             'galette_preferences',
+            'galette_searches',
         );
 
         $tables = $this->db->getTables();
@@ -561,7 +562,7 @@ class Db extends atoum
         sort($expected);
 
         $this->array($tables)
-            ->hasSize(25)
+            ->hasSize(26)
             ->isIdenticalTo($expected);
     }
 

@@ -26,7 +26,11 @@
             {_T string="Group informations"}
         </header>
         <div id="group_infos_wrapper">
+{if $group->getId()}
             {include file="group.tpl" group=$group groups=$groups}
+{else}
+            {_T string="no group"}
+{/if}
         </div>
     </section>
 </div>

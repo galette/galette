@@ -70,15 +70,19 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <![endif]-->
         <header>
             <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
-            <ul id="langs">
+            <nav id="plang_selector" class="onhover">
+                <a href="#plang_selector" class="tooltip" aria-expanded="false" aria-controls="lang_selector" title="{_T string="Change language"}">
+                    <i class="fas fa-language"></i>
+                    {$galette_lang_name}
+                </a>
+                <ul id="lang_selector">
 {foreach item=langue from=$languages}
-                <li>
-                    <a href="?pref_lang={$langue->getID()}" title="{_T string="Switch locale to '%locale'" pattern="/%locale/" replace=$langue->getName()}" class="flag">
-                        <img src="{base_url}/{$langue->getFlag()}" alt="{$langue->getName()}" lang="{$langue->getAbbrev()}"/>
-                    </a>
-                </li>
+                    <li {if $galette_lang eq $langue->getAbbrev()} selected="selected"{/if}>
+                        <a href="?ui_pref_lang={$langue->getID()}" lang="{$langue->getAbbrev()}">{$langue->getName()}</a>
+                    </li>
 {/foreach}
-            </ul>
+                </ul>
+            </nav>
 {if $login->isLogged()}
             <div id="user">
                 <a id="userlink" class="tooltip" title="{_T string="View your member card"}" href="{if $login->isSuperAdmin()}{path_for name="slash"}{else}{path_for name="me"}{/if}">{$login->loggedInAs(true)}</a>
@@ -125,15 +129,15 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     {/if}
     {if $preferences->showPublicPages($login) eq true}
             <a
-                href="{path_for name="publicMembers"}" title="{_T string="Members list"}"
-                class="button{if $cur_route eq "publicMembers"} selected{/if}"
+                href="{path_for name="publicList" data=["type" => "list"]}" title="{_T string="Members list"}"
+                class="button{if $cur_route eq "publicList" and $cur_subroute eq "list"} selected{/if}"
             >
                 <i class="fas fa-address-book"></i>
                 {_T string="Members list"}
             </a>
             <a
-                class="button{if $cur_route eq "publicTrombinoscope"} selected{/if}"
-                href="{path_for name="publicTrombinoscope"}" title="{_T string="Trombinoscope"}"
+                class="button{if $cur_route eq "publicList" and $cur_subroute eq "trombi"} selected{/if}"
+                href="{path_for name="publicList" data=["type" => "trombi"]}" title="{_T string="Trombinoscope"}"
             >
                 <i class="fas fa-user-friends"></i>
                 {_T string="Trombinoscope"}

@@ -7,24 +7,31 @@
             <label for="filter_str">{_T string="Search:"}&nbsp;</label>
             <input type="text" name="filter_str" id="filter_str" value="{$filters->filter_str}" type="search" placeholder="{_T string="Enter a value"}"/>&nbsp;
              {_T string="in:"}&nbsp;
-            <select name="filter_field">
-                {html_options options=$filter_field_options selected=$filters->field_filter}
+            <select name="field_filter">
+                {html_options options=$field_filter_options selected=$filters->field_filter}
             </select>
              {_T string="among:"}&nbsp;
-            <select name="filter_membership" onchange="form.submit()">
-                {html_options options=$filter_membership_options selected=$filters->membership_filter}
+            <select name="membership_filter" onchange="form.submit()">
+                {html_options options=$membership_filter_options selected=$filters->membership_filter}
             </select>
             <select name="filter_account" onchange="form.submit()">
-                {html_options options=$filter_accounts_options selected=$filters->account_status_filter}
+                {html_options options=$filter_accounts_options selected=$filters->filter_account}
             </select>
             <select name="group_filter" onchange="form.submit()">
                 <option value="0">{_T string="Select a group"}</option>
-{foreach from=$filter_groups_options item=group}
+    {foreach from=$filter_groups_options item=group}
                 <option value="{$group->getId()}"{if $filters->group_filter eq $group->getId()} selected="selected"{/if}>{$group->getIndentName()}</option>
-{/foreach}
+    {/foreach}
             </select>
-            <input type="submit" class="inline" value="{_T string="Filter"}"/>
-            <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
+            <button type="submit"  class="tooltip action" title="{_T string="Apply filters"}" name="filter">
+                <i class="fa fa-search"></i>
+                {_T string="Filter"}
+            </button>
+            <button type="submit"  class="tooltip action" title="{_T string="Save selected criteria"}" name="savesearch" id="savesearch">
+                <i class="fa fa-fw fa-save"></i>
+                {_T string="Save"}
+            </button>
+            <input type="submit" name="clear_filter" class="inline tooltip" value="{_T string="Clear filter"}" title="{_T string="Reset all filters to defaults"}"/>
             <div>
                 {_T string="Members that have an email address:"}
                 <input type="radio" name="email_filter" id="filter_dc_email" value="{Galette\Repository\Members::FILTER_DC_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_DC_EMAIL')} checked="checked"{/if}>
@@ -37,8 +44,16 @@
 {else}
             <p>
                 <strong>{_T string="Advanced search mode"}</strong>
-                <input type="submit" name="adv_criterias" class="inline" value="{_T string="Change search criterias"}"/>
-                <input type="submit" name="clear_filter" class="inline" value="{_T string="Clear filter"}"/>
+                <button type="submit" class="tooltip action" title="{_T string="Change search criteria"}" name="adv_criteria">
+                    <i class="fa fa-edit"></i>
+                    {_T string="Change criteria"}
+                </button>
+                <button type="submit"  class="tooltip action" title="{_T string="Save current advanced search criteria"}" name="savesearch" id="savesearch">
+                    <i class="fa fa-fw fa-save"></i>
+                    {_T string="Save"}
+                </button>
+                <input type="hidden" name="advanced_search" value="1"/>
+                <input type="submit" name="clear_filter" class="inline tooltip" value="{_T string="Clear filter"}" title="{_T string="Reset all filters to defaults"}"/>
                 <br/>
                 <a href="#" id="showhideqry">{_T string="Show/hide query"}</a>
             </p>
@@ -419,8 +434,6 @@
 {/if}
         {* Use of Javascript to draw specific elements that are not relevant is JS is inactive *}
         $(function(){
-
-            _initTooltips('#listform');
 {if $nb_members != 0}
             var _checklinks = '<div class="checkboxes"><span class="fleft"><a href="#" class="checkall tooltip"><i class="fas fa-check-square"></i> {_T string="(Un)Check all"}</a> | <a href="#" class="checkinvert tooltip"><i class="fas fa-exchange-alt"></i> {_T string="Invert selection"}</a></span><a href="#" class="show_legend fright">{_T string="Show legend"}</a></div>';
             $('.listing').before(_checklinks);
@@ -482,6 +495,54 @@
                     return false;
                 });
             }
+
+            $('#savesearch').on('click', function(e) {
+                e.preventDefault();
+
+                var _el = $('<div id="savedsearch_details" title="{_T string="Search title" escape="js"}"><input type="text" name="search_title" id="search_title"/></div>');
+                _el.appendTo('body').dialog({
+                    modal: true,
+                    hide: 'fold',
+                    width: '40%',
+                    height: 200,
+                    close: function(event, ui){
+                        _el.remove();
+                    },
+                    buttons: {
+                        '{_T string="Ok"}': function() {
+                            var _form = $('#filtre');
+                            var _data = _form.serialize();
+                            _data = _data + "&search_title=" + $('#search_title').val();
+                            $.ajax({
+                                url: '{path_for name="saveSearch"}',
+                                type: "POST",
+                                data: _data,
+                                datatype: 'json',
+                                {include file="js_loader.tpl"},
+                                success: function(res) {
+                                    if (res.success) {
+                                        alert('All done');
+                                    } else {
+                                        $.ajax({
+                                            url: '{path_for name="ajaxMessages"}',
+                                            method: "GET",
+                                            success: function (message) {
+                                                $('#asso_name').after(message);
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+
+                            $(this).dialog( "close" );
+                        },
+                        '{_T string="Cancel"}': function() {
+                            $(this).dialog( "close" );
+                        }
+                    }
+                }).append(res);
+            });
+
         });
 {if $nb_members != 0}
         {include file="js_removal.tpl"}

@@ -44,3 +44,7 @@ mo :
 
 extract : ${PHP_SOURCES} Makefile xgettext.py
 	./xgettext.py ${PHP_SOURCES}
+	@echo "Generating en_US:"
+	@for d in ${DOMAINS}; do \
+	  LANG=C msgen $$d.pot -o $${d}_en_US.po; \
+	done

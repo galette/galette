@@ -124,7 +124,7 @@ class PdfAdhesionForm
         if ($adh !== null) {
             $address = $adh->address;
             if ($adh->address_continuation != '') {
-                $address .= '<br/>' . $adh->adress_continuation;
+                $address .= '<br/>' . $adh->address_continuation;
             }
 
             if ($adh->isMan()) {
@@ -200,7 +200,7 @@ class PdfAdhesionForm
                 $field_id    = $match[1];
                 $field_name  = $dynamic_fields[$field_id]->getName();
                 $field_type  = $dynamic_fields[$field_id]->getType();
-                $field_value = '';
+                $field_value = ['field_val' => ''];
                 if ($adh !== null) {
                     $field_values = $adh->getDynamicFields()->getValues($field_id);
                     $field_value  = $field_values[0];
@@ -282,6 +282,16 @@ class PdfAdhesionForm
     public function download()
     {
         $this->pdf->Output($this->filename, 'D');
+    }
+
+    /**
+     * Get filename
+     *
+     * @return string
+     */
+    public function getFilename()
+    {
+        return $this->filename;
     }
 
     /**

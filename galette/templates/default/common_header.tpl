@@ -6,8 +6,9 @@ Just put a {include file='common_header.tpl'} into the head tag.
 <title>{if $pref_slogan ne ""}{$pref_slogan} - {/if}{if $page_title ne ""}{$page_title} - {/if}Galette {$GALETTE_VERSION}</title>
         <meta charset="UTF-8" />
         <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}galette.css" />
-        <link rel="stylesheet" type="text/css" href="{base_url}/fontawesome-free-5.5.0/css/all.min.css" />
-        <link rel="stylesheet" type="text/css" href="{base_url}/js/chosen-1.8.7/chosen.min.css" />
+        <link rel="stylesheet" type="text/css" href="{base_url}/fontawesome-free-5.7.2/css/all.min.css" />
+        <link rel="stylesheet" type="text/css" href="{base_url}/js/selectize-0.12.6/css/selectize.css" />
+        <link rel="stylesheet" type="text/css" href="{base_url}/js/selectize-0.12.6/css/selectize.default.css" />
         {* Let's see if a local CSS exists and include it *}
         {assign var="localstylesheet" value="`$_CURRENT_THEME_PATH`galette_local.css"}
         {if file_exists($localstylesheet)}
@@ -15,7 +16,7 @@ Just put a {include file='common_header.tpl'} into the head tag.
         {/if}
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-{$jquery_version}.min.js"></script>
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-migrate-{$jquery_migrate_version}.min.js"></script>
-        <script type="text/javascript" src="{base_url}/js/chosen-1.8.7/chosen.jquery.min.js"></script>
+        <script type="text/javascript" src="{base_url}/js/selectize-0.12.6/js/standalone/selectize.min.js"></script>
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery.bgFade.js"></script>
         {* UI accordion is used for main menu ; we have to require it and UI core *}
         <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.core.min.js"></script>

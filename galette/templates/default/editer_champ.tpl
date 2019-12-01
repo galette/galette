@@ -114,7 +114,10 @@
                 </select>
             </p>
             <div class="center">
-                <input type="submit" name="valid" id="btnadd" value="{_T string="Add"}"/>
+                <button type="submit" name="valid">
+                    <i class="fas fa-plus"></i>
+                    {_T string="Add"}
+                </button>
                 <input type="hidden" name="form" id="formname" value="{$form_name}"/>
             </div>
     {if $mode neq 'ajax'}

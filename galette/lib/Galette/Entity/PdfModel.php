@@ -92,6 +92,9 @@ abstract class PdfModel
      */
     public function __construct(Db $zdb, $preferences, $type, $args = null)
     {
+        global $container;
+        $router = $container->get('router');
+
         if (!$zdb) {
             throw new \RuntimeException(
                 get_class($this) . ' Database instance required!'
@@ -113,7 +116,8 @@ abstract class PdfModel
             'asso_address'       => '/{ASSO_ADDRESS}/',
             'asso_address_multi' => '/{ASSO_ADDRESS_MULTI}/',
             'asso_website'       => '/{ASSO_WEBSITE}/',
-            'asso_logo'          => '/{ASSO_LOGO}/'
+            'asso_logo'          => '/{ASSO_LOGO}/',
+            'date_now'           => '/{DATE_NOW}/'
         );
 
         $address = $preferences->getPostalAddress();
@@ -127,7 +131,7 @@ abstract class PdfModel
 
         $logo = new Core\Logo();
         $logo_elt = '<img' .
-            ' src="'    . $logo->getPath()          . '"' .
+            ' src="'    . $preferences->getURL() . $router->pathFor('logo')  . '"' .
             ' width="'  . $logo->getOptimalWidth()  . '"' .
             ' height="' . $logo->getOptimalHeight() . '"' .
             '/>';
@@ -138,7 +142,8 @@ abstract class PdfModel
             'asso_address'       => $address,
             'asso_address_multi' => $address_multi,
             'asso_website'       => $website,
-            'asso_logo'          => $logo_elt
+            'asso_logo'          => $logo_elt,
+            'date_now'           => date(_T('Y-m-d'))
         );
     }
 

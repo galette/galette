@@ -104,9 +104,9 @@ if (defined('GALETTE_XHPROF_PATH')
     $profiler->start();
 }
 
-define('GALETTE_VERSION', 'v0.9.2.1');
+define('GALETTE_VERSION', 'v0.9.3');
 define('GALETTE_COMPAT_VERSION', '0.9.2');
-define('GALETTE_DB_VERSION', '0.920');
+define('GALETTE_DB_VERSION', '0.930');
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD, MAINT or DEMO
 }

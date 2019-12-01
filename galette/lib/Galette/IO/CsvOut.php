@@ -74,7 +74,7 @@ class CsvOut extends Csv
     /**
      * Export Array result set to CSV
      *
-     * @param aray   $rs        Results as an array
+     * @param array  $rs        Results as an array
      * @param string $separator The CSV separator (either '\t', ';' or ','
      *                          are accepted)
      * @param char   $quote     how does fields should be quoted
@@ -100,8 +100,11 @@ class CsvOut extends Csv
         }
 
         $this->result = '';
-        $this->rs = $rs;
-        $this->max = count($this->rs);
+        $results = [];
+        foreach ($rs as $row) {
+            $results[] = $row;
+        }
+        $this->max = count($results);
         $this->separator = $separator;
         $this->quote = $quote;
         //dubbing quote for escaping
@@ -110,8 +113,9 @@ class CsvOut extends Csv
         $this->current_line = 0;
 
         $fields = array();
-        if ($titles && !count($titles)>1) {
-            foreach (array_key($this->rs) as $field) {
+        if ($titles && !is_array($titles)) {
+            $row = $results[0];
+            foreach (array_keys((array)$row) as $field) {
                 $fields[] = $this->quote . str_replace(
                     $this->quote,
                     $this->escaped,
@@ -135,11 +139,11 @@ class CsvOut extends Csv
             $this->result .= implode($this->separator, $fields) . self::NEWLINE;
         }
 
-        foreach ($this->rs as $row) {
+        foreach ($results as $row) {
             $elts = array();
 
             if (is_array($row) || is_object($row)) {
-                foreach ($row as $k => $v) {
+                foreach ($row as $v) {
                     $elts[] = $this->quote . str_replace(
                         $this->quote,
                         $this->escaped,

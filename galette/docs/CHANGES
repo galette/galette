@@ -1,6 +1,41 @@
 Changes
 -------
 
+0.9.2.1 -> 0.9.3
+
+News
+^^^^
+
+- new translations has been added!
+- galette translations (https://hosted.weblate.org/projects/galette) are now done on weblate platform
+- save searches
+- ability to use several admins email addresses from preferences
+- send a mail to admins when a member edit his card
+- flexible redirect after member creation.
+- add current date variable (DATE_NOW) in PDF models
+
+Bugfixes
+^^^^^^^^
+
+- fix translation issue on members page fieldsets
+- fix dynamic date fields check
+- fix blank page at install on some environments
+- fix javascript escaping on mailings
+- fix groups members removal error
+- fix pagination on trombinoscope
+- fix logo path on some web server configurations
+- dynamic fields order was not stored
+- various fixes related to new dropdowns
+- add missing date fields changes on mysql
+- missing date selectors on advanced search and dynamic fields
+- fix PDF extension and content type
+- fix upper case removal from composed names
+- remove company name when checkbox is unchecked
+- fix call from wrong object in mailing
+- reply-to in preferences was not used
+- fix issues with HTTP 2.0 servers
+- use PDF models header and footer on emargement lists
+
 0.9.2 -> 0.9.2.1
 
 - remove all routes translations

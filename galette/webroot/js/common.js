@@ -154,20 +154,34 @@ var _initTooltips = function(selector) {
     });
     //and then, we show them on rollover
     $(document).tooltip({
-        items: selector + ".tooltip",
+        items: selector + ".tooltip, a[title]",
         content: function(event, ui) {
             var _this = $(this);
+            var _content;
 
+            //first, value from @class=tip element
             var _next = _this.nextAll('.tip');
-            if (_next.length == 0) {
-                _next = _this.find('.sr-only');
+            if (_next.length > 0) {
+                _content = _next.html();
             }
 
-            if (_next.length == 0) {
-                return _this.attr('title');
-            } else {
-                return _next.html();
+            //and finally, value from @class=sr-only element
+            if (typeof _content == 'undefined') {
+                var _sronly = _this.find('.sr-only');
+                if (_sronly.length > 0) {
+                    _content = _sronly.html();
+                }
             }
+
+            //second, value from @title
+            if (typeof _content == 'undefined') {
+                var _title = _this.attr('title');
+                if (typeof _title != 'undefined') {
+                    _content = _title;
+                }
+            }
+
+            return _content;
         }
     });
 }
@@ -184,8 +198,8 @@ $(function() {
     $('#login').focus();
 
     _initTooltips();
-    $('select:not(.nochosen)').chosen({
-        disable_search: true
+    $('select:not(.nochosen)').selectize({
+        maxItems: 1
     });
 
     $('.nojs').removeClass('nojs');
@@ -222,4 +236,25 @@ $(function() {
             }
         });
     }
+
+    $('select#lang_selector').change(function() {
+        this.form.submit();
+    });
+
+    /* Language selector.
+     * Works per default with CSS only, use javascript to replace with a click event,
+     * which is required because of the current way the menu is hidden on mobile devices.
+     */
+    $('#plang_selector').removeClass('onhover');
+    var _langs = $('#plang_selector ul');
+    _langs.hide();
+
+    $('#plang_selector > a').on('click', function(event) {
+        event.preventDefault();
+        var _this = $(this);
+        var _open = _this.attr('aria-expanded');
+        _this.attr('aria-expanded', !open);
+        console.log(_open);
+        _langs.toggle();
+    });
 });

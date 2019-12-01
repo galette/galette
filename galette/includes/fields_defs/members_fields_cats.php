@@ -41,19 +41,19 @@ $members_fields_cats = array(
     array(
         'id'         => 1,
         'table_name' => Adherent::TABLE,
-        'category'   => _T("Identity:"),
+        'category'   => "Identity:",
         'position'   => 1
     ),
     array(
         'id'         => 2,
         'table_name' => Adherent::TABLE,
-        'category'   => _T("Galette-related data:"),
+        'category'   => "Galette-related data:",
         'position'   => 3
     ),
     array(
         'id'         => 3,
         'table_name' => Adherent::TABLE,
-        'category'   => _T("Contact information:"),
+        'category'   => "Contact information:",
         'position'   => 2
     )
 );

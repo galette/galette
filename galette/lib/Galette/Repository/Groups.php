@@ -362,28 +362,23 @@ class Groups
     }
 
     /**
-     * Remove member from all his groups
+     * Remove members from all their groups
      *
-     * @param int $id Member's id
+     * @param array $ids Members ids
      *
      * @return void
      */
-    public static function removeMemberFromGroups($id)
+    public static function removeMembersFromGroups(array $ids)
     {
         global $zdb;
+
         try {
-            //first, remove current groups members
             $del_qry = $zdb->delete(Group::GROUPSUSERS_TABLE);
-            $del_qry->where(
-                Adherent::PK . ' = ' . $id
-            );
+            $del_qry->where->in(Adherent::PK, $ids);
             $zdb->execute($del_qry);
 
-            //first, remove current groups members
             $del_qry = $zdb->delete(Group::GROUPSMANAGERS_TABLE);
-            $del_qry->where(
-                Adherent::PK . ' = ' . $id
-            );
+            $del_qry->where->in(Adherent::PK, $ids);
             $zdb->execute($del_qry);
         } catch (\Exception $e) {
             Analog::log(
@@ -393,6 +388,18 @@ class Groups
             );
             throw $e;
         }
+    }
+
+    /**
+     * Remove member from all his groups
+     *
+     * @param int $id Member's id
+     *
+     * @return void
+     */
+    public static function removeMemberFromGroups($id)
+    {
+        self::removeMembersFromGroups([$id]);
     }
 
     /**
