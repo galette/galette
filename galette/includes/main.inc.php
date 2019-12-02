@@ -355,6 +355,7 @@ $baseRedirect = function ($request, $response, $args = []) use ($container) {
 
 /**
  * Get base URL fixed for proxies
+ * TODO: remove, i'ts been migrated to AbstractController
  *
  * @param Request $request request to work on
  *
@@ -374,47 +375,6 @@ function getGaletteBaseUrl(\Slim\Http\Request $request)
         $url .= '/';
     }
     return $url;
-}
-
-/**
- * Get current URI
- *
- * @param app $app Slim application instance
- *
- * @return string
- */
-function getCurrentUri($app)
-{
-    $curUri = str_replace(
-        'index.php',
-        '',
-        $app->request()->getRootUri()
-    );
-
-    //add ending / if missing
-    if ($curUri === ''
-        || $curUri !== '/'
-        && substr($curUri, -1) !== '/'
-    ) {
-        $curUri .= '/';
-    }
-    return $curUri;
-};
-
-/**
- * Retrieve current route name
- *
- * @param app $app Slim application instance
- *
- * @return string
- */
-function getCurrentRoute($app)
-{
-    $cur_route = $app->router()->getMatchedRoutes(
-        'get',
-        $app->request()->getPathInfo()
-    )[0]->getName();
-    return $cur_route;
 }
 
 /**
@@ -440,6 +400,7 @@ $app->add(function ($request, $response, $next) {
 
 /**
  * Change language middleware
+ * TODO: lang is now changed directly at I18n construct
  */
 $app->add(function ($request, $response, $next) use ($i18n) {
     $get = $request->getQueryParams();
