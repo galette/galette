@@ -45,9 +45,7 @@ use Galette\Controllers\AuthController;
 //$app->get('/', GaletteController::class . ':slash')->setName('slash');
 $app->get(
     '/',
-    function ($request, $response, $args) use ($baseRedirect) {
-        return $baseRedirect($request, $response, $args);
-    }
+    GaletteController::class . ':slash'
 )->setName('slash');
 
 //logo route

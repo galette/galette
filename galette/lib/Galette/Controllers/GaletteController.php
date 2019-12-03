@@ -40,6 +40,7 @@ namespace Galette\Controllers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\SysInfos;
+use Galette\Core\GaletteMail;
 use Analog\Analog;
 
 /**
@@ -60,12 +61,16 @@ class GaletteController extends AbstractController
     /**
      * Main route
      *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
      * @return void
      */
-    /*public function slash(Request $request, Response $response)
+    public function slash(Request $request, Response $response, array $args = [])
     {
-        
-    }*/
+        return $this->galetteRedirect($request, $response, $args);
+    }
 
     /**
      * Logo route
@@ -113,6 +118,30 @@ class GaletteController extends AbstractController
             array(
                 'page_title'    => _T("System informations"),
                 'rawinfos'      => $sysinfos->getRawData($this->plugins)
+            )
+        );
+        return $response;
+    }
+
+    /**
+     * Lost password page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return void
+     */
+    public function lostpasswd(Request $request, Response $response)
+    {
+        if ($this->preferences->pref_mail_method === GaletteMail::METHOD_DISABLED) {
+            throw new \RuntimeException('Mailing disabled.');
+        }
+        // display page
+        $this->view->render(
+            $response,
+            'lostpasswd.tpl',
+            array(
+                'page_title'    => _T("Password recovery")
             )
         );
         return $response;
