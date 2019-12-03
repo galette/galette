@@ -94,6 +94,7 @@ abstract class AbstractController
 
     /**
      * Galette redirection workflow
+     * Each user have a default homepage depending on it status (logged in or not, its credentials, etc.
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
