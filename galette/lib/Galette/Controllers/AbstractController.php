@@ -69,6 +69,9 @@ abstract class AbstractController
     protected $i18n;
     protected $session;
     protected $flash;
+    protected $fields_config;
+    protected $members_fields;
+    protected $notFoundHandler;
 
     /**
      * Constructor
@@ -90,6 +93,9 @@ abstract class AbstractController
         $this->i18n = $container->get('i18n');
         $this->session = $container->get('session');
         $this->flash = $container->get('flash');
+        $this->fields_config = $container->get('fields_config');
+        $this->members_fields = $container->get('members_fields');
+        $this->notFoundHandler = $container->get('notFoundHandler');
     }
 
     /**
@@ -137,25 +143,29 @@ abstract class AbstractController
                     ) {
                         return $response
                             ->withStatus(301)
-                            //Do not use "$router->pathFor('dashboard'))" to prevent translation issues when login //FIXME: maybe no longer relevant
+                            //Do not use "$router->pathFor('dashboard'))" to prevent translation issues when login
+                            //FIXME: maybe no longer relevant
                             ->withHeader('Location', $this->getGaletteBaseUrl($request) . '/dashboard');
                     } else {
                         return $response
                             ->withStatus(301)
-                            //Do not use "$router->pathFor('members'))" to prevent translation issues when login //FIXME: maybe no longer relevant
+                            //Do not use "$router->pathFor('members'))" to prevent translation issues when login
+                            //FIXME: maybe no longer relevant
                             ->withHeader('Location', $this->getGaletteBaseUrl($request) . '/members');
                     }
                 } else {
                     return $response
                         ->withStatus(301)
-                        //Do not use "$router->pathFor('me'))" to prevent translation issues when login //FIXME: maybe no longer relevant
+                        //Do not use "$router->pathFor('me'))" to prevent translation issues when login
+                        //FIXME: maybe no longer relevant
                         ->withHeader('Location', $this->getGaletteBaseUrl($request) . '/dashboard');
                 }
             }
         } else {
             return $response
                 ->withStatus(301)
-                //Do not use "$router->pathFor('login'))" to prevent translation issues when login //FIXME: maybe no longer relevant
+                //Do not use "$router->pathFor('login'))" to prevent translation issues when login
+                //FIXME: maybe no longer relevant
                 ->withHeader('Location', $this->getGaletteBaseUrl($request) . '/login');
         }
     }
