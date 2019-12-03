@@ -229,7 +229,6 @@ if ($container->get('preferences')->pref_mail_method !== GaletteMail::METHOD_DIS
         }
     )->setName('retrieve-pass');
 
-
     //password recovery page
     $app->get(
         '/password-recovery/{hash}',

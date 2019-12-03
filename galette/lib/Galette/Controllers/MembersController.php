@@ -40,7 +40,10 @@ namespace Galette\Controllers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Analog\Analog;
+use Galette\Core\Picture;
 use Galette\Entity\Adherent;
+use Galette\Filters\MembersList;
+use Galette\IO\MembersCsv;
 
 /**
  * Galette members controller
@@ -58,7 +61,7 @@ use Galette\Entity\Adherent;
 class MembersController extends AbstractController
 {
     /**
-     * Photos route
+     * Photos
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
@@ -110,5 +113,61 @@ class MembersController extends AbstractController
             $picture = new Picture();
         }
         $picture->display();
+    }
+
+    /**
+     * CSV exports
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return void
+     */
+    public function csvExport(Request $request, Response $response)
+    {
+        if (isset($this->session->filter_members)) {
+            //CAUTION: this one may be simple or advanced, display must change
+            $filters = $this->session->filter_members;
+        } else {
+            $filters = new MembersList();
+        }
+
+        $csv = new MembersCsv(
+            $this->zdb,
+            $this->login,
+            $this->members_fields,
+            $this->fields_config
+        );
+        $csv->exportMembers($filters);
+
+        $filepath = $csv->getPath();
+        $filename = $csv->getFileName();
+
+        if (file_exists($filepath)) {
+            $response = $response->withHeader('Content-Description', 'File Transfer')
+                ->withHeader('Content-Type', 'text/csv')
+                ->withHeader('Content-Disposition', 'attachment;filename="' . $filename . '"')
+                ->withHeader('Pragma', 'no-cache')
+                ->withHeader('Content-Transfer-Encoding', 'binary')
+                ->withHeader('Expires', '0')
+                ->withHeader('Cache-Control', 'must-revalidate')
+                ->withHeader('Pragma', 'public');
+
+            $stream = fopen('php://memory', 'r+');
+            fwrite($stream, file_get_contents($filepath));
+            rewind($stream);
+
+            return $response->withBody(new \Slim\Http\Stream($stream));
+        } else {
+            Analog::log(
+                'A request has been made to get an exported file named `' .
+                $filename .'` that does not exists.',
+                Analog::WARNING
+            );
+            $notFound = $this->notFoundHandler;
+            return $notFound($request, $response);
+        }
+
+        return $response;
     }
 }
