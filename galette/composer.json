@@ -38,7 +38,8 @@
         "fzaninotto/faker": "dev-master",
         "zendframework/zend-i18n": "^2.9",
         "zendframework/zend-cache": "^2.8",
-        "soundasleep/html2text": "^0.5.0"
+        "soundasleep/html2text": "^0.5.0",
+        "php-di/slim-bridge": "2.0.0"
     },
     "require-dev": {
         "atoum/atoum": "dev-master"

@@ -39,7 +39,7 @@ $app->group(
     '/plugins',
     function () use ($authenticate, $app) {
         $container = $this->getContainer();
-        $modules = $container->plugins->getModules();
+        $modules = $container->get('plugins')->getModules();
 
         //Global route to access plugin resources (CSS, JS, images, ...)
         $this->get(
@@ -78,9 +78,9 @@ $app->group(
 
         //Declare configured routes for each plugin
         foreach ($modules as $module_id => $module) {
-            $container['Plugin ' . $module['name']] = function ($c) use ($module_id) {
+            $container->set('Plugin ' . $module['name'], \DI\value(function ($c) use ($module_id) {
                 return $module_id;
-            };
+            }));
 
             $this->group(
                 '/' . $module['route'],

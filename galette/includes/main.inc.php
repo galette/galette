@@ -82,7 +82,29 @@ if ($needs_update) {
     $app->run();
     die();
 } else {
-    $app = new \Slim\App(
+    //$app = \DI\Bridge\Slim\Bridge::create();
+    //$container = /* create your container */;
+    $builder = new DI\ContainerBuilder();
+    $builder->addDefinitions([
+        'settings' => [
+            'mode'                              => 'PROD', //Galette mode
+            'determineRouteBeforeAppMiddleware' => true, //required for ACLs to work
+            'displayErrorDetails'               => (GALETTE_MODE === 'DEV'),
+            'addContentLengthHeader'            => false,
+            // monolog settings
+            'logger'                            => [
+                'name'  => 'galette',
+                'level' => \Monolog\Logger::DEBUG,
+                'path'  => GALETTE_LOGS_PATH . '/galette_slim.log',
+            ],
+        ],
+        'mode'      => 'PROD'
+    ]);
+    $dicontainer = $builder->build();
+    $app =  new \Galette\Core\SlimApp();
+    //$app =  new \Slim\App($dicontainer);
+
+    /*$app = new \Slim\App(
         [
             'settings' => [
                 'determineRouteBeforeAppMiddleware' => true,
@@ -94,11 +116,10 @@ if ($needs_update) {
                     'level' => \Monolog\Logger::DEBUG,
                     'path'  => GALETTE_LOGS_PATH . '/galette_slim.log',
                 ],
-                //'routerCacheFile' => (GALETTE_MODE === 'DEV') ? false : GALETTE_CACHE_DIR . '/fastroute.cache' //disabled until properly handled
             ],
             'mode'      => 'PROD'
         ]
-    );
+    );*/
 }
 
 //Session duration
@@ -333,9 +354,9 @@ $app->add(function ($request, $response, $next) use ($i18n) {
 });
 
 //Telemetry update middleware
-$app->add(function ($request, $response, $next) {
+$app->add(function ($request, $response, $next, Db $zdb) {
     $telemetry = new \Galette\Util\Telemetry(
-        $this->zdb,
+        $zdb,
         $this->preferences,
         $this->plugins
     );
@@ -411,6 +432,8 @@ $app->add(function ($request, $response, $next) {
         }
     }
 
+    var_dump($this->get('acls'));
+    die;
     $acls = array_merge($this->get('acls'), $this->get('plugins')->getAcls());
 
     if (GALETTE_MODE === 'DEV') {
