@@ -45,26 +45,26 @@ use Galette\Entity\Texts;
 //login page
 $app->get(
     '/login',
-    AuthController::class . ':login'
+    AuthController::class . '::login'
 )->setName('login');
 
 //Authentication procedure
 $app->post(
     '/login',
-    AuthController::class . ':doLogin'
+    AuthController::class . '::doLogin'
 )->setName('dologin');
 
 //logout procedure
 $app->get(
     '/logout',
-    AuthController::class . ':logout'
+    AuthController::class . '::logout'
 )->setName('logout');
 
 //password lost page
 if ($container->get('preferences')->pref_mail_method !== GaletteMail::METHOD_DISABLED) {
     $app->get(
         '/password-lost',
-        GaletteController::class . ':lostpasswd'
+        GaletteController::class . '::lostpasswd'
     )->setName('password-lost');
 
     //retrieve password procedure
@@ -341,10 +341,10 @@ if ($container->get('preferences')->pref_mail_method !== GaletteMail::METHOD_DIS
 //impersonating
 $app->get(
     '/impersonate/{id:\d+}',
-    AuthController::class . ':impersonate'
+    AuthController::class . '::impersonate'
 )->setName('impersonate')->add($authenticate);
 
 $app->get(
     '/unimpersonate',
-    AuthController::class . ':unimpersonate'
+    AuthController::class . '::unimpersonate'
 )->setName('unimpersonate')->add($authenticate);

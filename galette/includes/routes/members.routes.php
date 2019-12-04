@@ -165,7 +165,7 @@ $app->get(
 //members list CSV export
 $app->get(
     '/members/export/csv',
-    MembersController::class . ':csvExport'
+    MembersController::class . '::csvExport'
 )->setName('csv-memberslist')->add($authenticate);
 
 //members list

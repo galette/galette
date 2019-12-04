@@ -112,7 +112,7 @@ class MembersController extends AbstractController
         } else {
             $picture = new Picture();
         }
-        $picture->display();
+        return $picture->display($response);
     }
 
     /**

@@ -225,7 +225,11 @@ $container->set('session', function ($c) {
     return $session;
 });
 
-$container->set('logo', function ($c) {
+$container->set(
+    'logo',
+    DI\get('Galette\Core\Logo')
+);
+$container->set('Galette\Core\Logo', function ($c) {
     return new Galette\Core\Logo();
 });
 
@@ -237,7 +241,7 @@ $container->set('history', function (ContainerInterface $c) {
     return new Galette\Core\History($c->get('zdb'), $c->get('login'));
 });
 
-$container->set('acls', \DI\value(function ($c) {
+$container->set('acls', function ($c) {
     $acls = [
         'preferences'       => 'admin',
         'store-preferences' => 'admin',
@@ -374,24 +378,24 @@ $container->set('acls', \DI\value(function ($c) {
     }
 
     return $acls;
-}));
+});
 
-$container->set('texts_fields', \DI\value(function ($c) {
+$container->set('texts_fields', function ($c) {
     include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
     return $texts_fields;
-}));
+});
 
-$container->set('members_fields', \DI\value(function ($c) {
+$container->set('members_fields', function ($c) {
     include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
     return $members_fields;
-}));
+});
 
-$container->set('members_fields_cats', \DI\value(function ($c) {
+$container->set('members_fields_cats', function ($c) {
     include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
     return $members_fields_cats;
-}));
+});
 
-$container->set('pdfmodels_fields', \DI\value(function ($c) {
+$container->set('pdfmodels_fields', function ($c) {
     //include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
     $pdfmodels_fields = array(
         array(
@@ -657,7 +661,7 @@ $container->set('pdfmodels_fields', \DI\value(function ($c) {
         )
     );
     return $pdfmodels_fields;
-}));
+});
 
 // -----------------------------------------------------------------------------
 // Service factories

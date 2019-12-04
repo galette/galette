@@ -84,7 +84,7 @@ if ($needs_update) {
 } else {
     //$app = \DI\Bridge\Slim\Bridge::create();
     //$container = /* create your container */;
-    $builder = new DI\ContainerBuilder();
+    /*$builder = new DI\ContainerBuilder();
     $builder->addDefinitions([
         'settings' => [
             'mode'                              => 'PROD', //Galette mode
@@ -100,7 +100,7 @@ if ($needs_update) {
         ],
         'mode'      => 'PROD'
     ]);
-    $dicontainer = $builder->build();
+    $dicontainer = $builder->build();*/
     $app =  new \Galette\Core\SlimApp();
     //$app =  new \Slim\App($dicontainer);
 
@@ -432,8 +432,6 @@ $app->add(function ($request, $response, $next) {
         }
     }
 
-    var_dump($this->get('acls'));
-    die;
     $acls = array_merge($this->get('acls'), $this->get('plugins')->getAcls());
 
     if (GALETTE_MODE === 'DEV') {

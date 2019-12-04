@@ -82,7 +82,7 @@ class GaletteController extends AbstractController
      */
     public function logo(Request $request, Response $response)
     {
-        $this->logo->display();
+        return $this->logo->display($response);
     }
 
     /**
@@ -95,7 +95,7 @@ class GaletteController extends AbstractController
      */
     public function printLogo(Request $request, Response $response)
     {
-        $this->print_logo->display();
+        return $this->print_logo->display($response);
     }
 
     /**

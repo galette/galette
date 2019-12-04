@@ -45,29 +45,29 @@ use Galette\Controllers\AuthController;
 //$app->get('/', GaletteController::class . ':slash')->setName('slash');
 $app->get(
     '/',
-    GaletteController::class . ':slash'
+    GaletteController::class . '::slash'
 )->setName('slash');
 
 //logo route
 $app->get(
     '/logo',
-    GaletteController::class . ':logo'
+    GaletteController::class . '::logo'
 )->setName('logo');
 
 //print logo route
 $app->get(
     '/print-logo',
-    GaletteController::class . ':printLogo'
+    GaletteController::class . '::printLogo'
 )->setName('printLogo');
 
 //photo route
 $app->get(
     '/photo/{id:\d+}',
-    MembersController::class . ':photo'
+    MembersController::class . '::photo'
 )->setName('photo');
 
 //system informations
 $app->get(
     '/system-informations',
-    GaletteController::class . ':sysinfos'
+    GaletteController::class . '::sysinfos'
 )->setName('sysinfos')->add($authenticate);
