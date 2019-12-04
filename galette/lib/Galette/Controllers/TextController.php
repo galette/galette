@@ -62,17 +62,18 @@ class TextController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments ['r']
+     * @param string   $lang     Language
+     * @param string   $ref      Ref code
      *
      * @return void
      */
-    public function list(Request $request, Response $response, array $args = [])
+    public function list(Request $request, Response $response, string $lang = null, string $ref = null)
     {
-        if (!isset($args['lang'])) {
-            $args['lang'] = $this->preferences->pref_lang;
+        if ($lang === null) {
+            $lang = $this->preferences->pref_lang;
         }
-        if (!isset($args['ref'])) {
-            $args['ref'] = Texts::DEFAULT_REF;
+        if ($ref === null) {
+            $ref = Texts::DEFAULT_REF;
         }
 
         $texts = new Texts(
@@ -80,7 +81,7 @@ class TextController extends AbstractController
             $this->router
         );
 
-        $mtxt = $texts->getTexts($args['ref'], $args['lang']);
+        $mtxt = $texts->getTexts($ref, $lang);
 
         // display page
         $this->view->render(
@@ -88,10 +89,10 @@ class TextController extends AbstractController
             'gestion_textes.tpl',
             [
                 'page_title'        => _T("Automatic emails texts edition"),
-                'reflist'           => $texts->getRefs($args['lang']),
+                'reflist'           => $texts->getRefs($lang),
                 'langlist'          => $this->i18n->getList(),
-                'cur_lang'          => $args['lang'],
-                'cur_ref'           => $args['ref'],
+                'cur_lang'          => $lang,
+                'cur_ref'           => $ref,
                 'mtxt'              => $mtxt,
             ]
         );
@@ -103,11 +104,10 @@ class TextController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments ['r']
      *
      * @return void
      */
-    public function change(Request $request, Response $response, array $args = [])
+    public function change(Request $request, Response $response)
     {
         $post = $request->getParsedBody();
         return $response
@@ -129,11 +129,10 @@ class TextController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments ['r']
      *
      * @return void
      */
-    public function edit(Request $request, Response $response, array $args = [])
+    public function edit(Request $request, Response $response)
     {
         $post = $request->getParsedBody();
         $texts = new Texts($this->preferences, $this->router);

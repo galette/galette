@@ -66,19 +66,19 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments ['r']
+     * @param string   $r        Redirect after login
      *
      * @return void
      */
-    public function login(Request $request, Response $response, array $args = [])
+    public function login(Request $request, Response $response, string $r = null)
     {
         //store redirect path if any
         if (
-            isset($args['r'])
-            && $args['r'] != '/logout'
-            && $args['r'] != '/login'
+            $r !== null
+            && $r != '/logout'
+            && $r != '/login'
         ) {
-            $this->session->urlRedirect = $args['r'];
+            $this->session->urlRedirect = $r;
         }
 
         if (!$this->login->isLogged()) {
@@ -92,7 +92,7 @@ class AuthController extends AbstractController
             );
             return $response;
         } else {
-            return $this->galetteRedirect($request, $response, $args);
+            return $this->galetteRedirect($request, $response);
         }
     }
 
@@ -148,7 +148,7 @@ class AuthController extends AbstractController
             }
             $this->session->login = $this->login;
             $this->history->add(_T("Login"));
-            return $this->galetteRedirect($request, $response, []);
+            return $this->galetteRedirect($request, $response);
         } else {
             $this->flash->addMessage('error_detected', _T("Login failed."));
             $this->history->add(_T("Authentication failed"), $nick);
@@ -179,13 +179,13 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments ['id']
+     * @param integer  $id       Member to impersonate
      *
      * @return void
      */
-    public function impersonate(Request $request, Response $response, array $args)
+    public function impersonate(Request $request, Response $response, int $id)
     {
-        $success = $this->login->impersonate((int)$args['id']);
+        $success = $this->login->impersonate($id);
 
         if ($success === true) {
             $this->session->login = $this->login;
@@ -203,7 +203,7 @@ class AuthController extends AbstractController
         } else {
             $msg = str_replace(
                 '%id',
-                $args['id'],
+                $id,
                 _T("Unable to impersonate as %id")
             );
             $this->flash->addMessage(
@@ -271,17 +271,17 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments ['id']
+     * @param integer  $id_adh   Member id
      *
      * @return Response
      */
-    public function retrievePassword(Request $request, Response $response, array $args): Response
+    public function retrievePassword(Request $request, Response $response, $id_adh = null): Response
     {
         $from_admin = false;
         $redirect_url = $this->router->pathFor('slash');
-        if ((($this->login->isAdmin() || $this->login->isStaff()) && isset($args[Adherent::PK]))) {
+        if ((($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null)) {
             $from_admin = true;
-            $redirect_url = $this->router->pathFor('member', ['id' => $args[Adherent::PK]]);
+            $redirect_url = $this->router->pathFor('member', ['id' => $id_adh]);
         }
 
         if (
@@ -302,8 +302,8 @@ class AuthController extends AbstractController
 
         $adh = null;
         $login_adh = null;
-        if (($this->login->isAdmin() || $this->login->isStaff()) && isset($args[Adherent::PK])) {
-            $adh = new Adherent($this->zdb, (int)$args[Adherent::PK]);
+        if (($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null) {
+            $adh = new Adherent($this->zdb, $id_adh);
             $login_adh = $adh->login;
         } else {
             $post = $request->getParsedBody();
@@ -434,14 +434,14 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $hash     Hash
      *
      * @return Response
      */
-    public function recoverPassword(Request $request, Response $response, array $args): Response
+    public function recoverPassword(Request $request, Response $response, string $hash): Response
     {
         $password = new Password($this->zdb);
-        if (!$password->isHashValid(base64_decode($args['hash']))) {
+        if (!$password->isHashValid(base64_decode($hash))) {
             $this->flash->addMessage(
                 'warning_detected',
                 _T("This link is no longer valid. You should ask to retrieve your password again.")
@@ -459,7 +459,7 @@ class AuthController extends AbstractController
             $response,
             'change_passwd.tpl',
             array(
-                'hash'          => $args['hash'],
+                'hash'          => $hash,
                 'page_title'    => _T("Password recovery")
             )
         );

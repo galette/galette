@@ -92,11 +92,11 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id_adh   Member id
      *
      * @return Response
      */
-    public function membersCards(Request $request, Response $response, array $args = []): Response
+    public function membersCards(Request $request, Response $response, int $id_adh = null): Response
     {
         if ($this->session->filter_members) {
             $filters = $this->session->filter_members;
@@ -104,11 +104,7 @@ class PdfController extends AbstractController
             $filters = new MembersList();
         }
 
-        if (
-            isset($args[Adherent::PK])
-            && $args[Adherent::PK] > 0
-        ) {
-            $id_adh = (int)$args[Adherent::PK];
+        if ($id_adh !== null && $id_adh > 0) {
             $deps = ['dynamics' => true];
             if ($this->login->id === $id_adh) {
                 $deps['dues'] = true;
@@ -278,13 +274,12 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id_adh   Member id
      *
      * @return Response
      */
-    public function adhesionForm(Request $request, Response $response, array $args = []): Response
+    public function adhesionForm(Request $request, Response $response, int $id_adh = null): Response
     {
-        $id_adh = isset($args[Adherent::PK]) ? (int)$args[Adherent::PK] : null;
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
 
         if ($id_adh !== null && !$adh->canEdit($this->login)) {
@@ -312,11 +307,10 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function attendanceSheetConfig(Request $request, Response $response, array $args = []): Response
+    public function attendanceSheetConfig(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
 
@@ -438,20 +432,20 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Contribution id
      *
      * @return Response
      */
-    public function contribution(Request $request, Response $response, array $args = []): Response
+    public function contribution(Request $request, Response $response, int $id): Response
     {
-        $contribution = new Contribution($this->zdb, $this->login, (int)$args['id']);
+        $contribution = new Contribution($this->zdb, $this->login, $id);
         if ($contribution->id == '') {
             //not possible to load contribution, exit
             $this->flash->addMessage(
                 'error_detected',
                 str_replace(
                     '%id',
-                    $args['id'],
+                    $id,
                     _T("Unable to load contribution #%id!")
                 )
             );
@@ -472,17 +466,17 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Group id
      *
      * @return Response
      */
-    public function group(Request $request, Response $response, array $args = []): Response
+    public function group(Request $request, Response $response, int $id = null): Response
     {
         $groups = new Groups($this->zdb, $this->login);
 
         $groups_list = null;
-        if (isset($args['id'])) {
-            $groups_list = $groups->getList(true, $args['id']);
+        if ($id !== null) {
+            $groups_list = $groups->getList(true, $id);
         } else {
             $groups_list = $groups->getList();
         }
@@ -514,17 +508,17 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Model id
      *
      * @return Response
      */
-    public function models(Request $request, Response $response, array $args = []): Response
+    public function models(Request $request, Response $response, int $id = null): Response
     {
-        $id = 1;
+        $mid = 1;
         if (isset($_POST[PdfModel::PK])) {
-            $id = (int)$_POST[PdfModel::PK];
-        } elseif (isset($args['id'])) {
-            $id = (int)$args['id'];
+            $mid = (int)$_POST[PdfModel::PK];
+        } elseif ($id !== null) {
+            $mid = $id;
         }
 
 
@@ -533,7 +527,7 @@ class PdfController extends AbstractController
 
         $model = null;
         foreach ($models as $m) {
-            if ($m->id === $id) {
+            if ($m->id === $mid) {
                 $model = $m;
                 break;
             }
@@ -572,11 +566,10 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function storeModels(Request $request, Response $response, array $args = []): Response
+    public function storeModels(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $error_detected = [];
@@ -643,13 +636,12 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $hash     Hash
      *
      * @return Response
      */
-    public function directlinkDocument(Request $request, Response $response, array $args = []): Response
+    public function directlinkDocument(Request $request, Response $response, string $hash): Response
     {
-        $hash = $args['hash'];
         $post = $request->getParsedBody();
         $email = $post['email'];
 
@@ -717,7 +709,7 @@ class PdfController extends AbstractController
                     'error_detected',
                     str_replace(
                         '%id',
-                        $args['id'],
+                        $id,
                         _T("Unable to load contribution #%id!")
                     )
                 );

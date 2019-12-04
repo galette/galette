@@ -61,23 +61,19 @@ class HistoryController extends AbstractController
     /**
      * History page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request        $request  PSR Request
+     * @param Response       $response PSR Response
+     * @param string         $option   One of 'page' or 'order'
+     * @param string|integer $value    Value of the option
      *
      * @return Response
      */
-    public function history(Request $request, Response $response, array $args = []): Response
-    {
-        $option = null;
-        if (isset($args['option'])) {
-            $option = $args['option'];
-        }
-        $value = null;
-        if (isset($args['value'])) {
-            $value = $args['value'];
-        }
-
+    public function list(
+        Request $request,
+        Response $response,
+        $option = null,
+        $value = null
+    ): Response {
         if (isset($this->session->filter_history)) {
             $filters = $this->session->filter_history;
         } else {

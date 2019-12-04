@@ -44,6 +44,7 @@ use Analog\Handler\LevelName;
 //that way, in galette.inc.php, we'll only include relevant parts
 $installer = true;
 define('GALETTE_ROOT', __DIR__ . '/../');
+define('GALETTE_MODE', 'INSTALL');
 
 // check PHP modules
 require_once GALETTE_ROOT . '/vendor/autoload.php';
@@ -65,12 +66,7 @@ session_start();
 $session_name = 'galette_install_' . str_replace('.', '_', GALETTE_VERSION);
 $session = &$_SESSION['galette'][$session_name];
 
-$app = new \Slim\App(
-    array(
-        'templates.path'    => GALETTE_ROOT . 'templates/default/',
-        'mode'              => 'INSTALL'
-    )
-);
+$app =  new \Galette\Core\SlimApp();
 require_once '../includes/dependencies.php';
 
 if (isset($_POST['abort_btn'])) {

@@ -225,7 +225,7 @@ abstract class Entitled
      * Get list in an array built as:
      * $array[id] = "translated label"
      *
-     * @param int $extent Filter on (non) cotisations types
+     * @param boolean $extent Filter on (non) cotisations types
      *
      * @return array|false
      */

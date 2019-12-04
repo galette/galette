@@ -90,26 +90,26 @@ class PluginsController extends AbstractController
     /**
      * Plugins activation/desactivaion
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request  $request   PSR Request
+     * @param Response $response  PSR Response
+     * @param string   $action    Action
+     * @param string   $module_id Module id
      *
      * @return Response
      */
-    public function togglePlugin(Request $request, Response $response, array $args = []): Response
+    public function togglePlugin(Request $request, Response $response, string $action, string $module_id): Response
     {
         if (GALETTE_MODE !== 'DEMO') {
             $plugins = $this->plugins;
-            $action = $args['action'];
             $reload_plugins = false;
             if ($action == 'activate') {
                 try {
-                    $plugins->activateModule($args['module_id']);
+                    $plugins->activateModule($module_id);
                     $this->flash->addMessage(
                         'success_detected',
                         str_replace(
                             '%name',
-                            $args['module_id'],
+                            $module_id,
                             _T("Plugin %name has been enabled")
                         )
                     );
@@ -120,14 +120,14 @@ class PluginsController extends AbstractController
                         $e->getMessage()
                     );
                 }
-            } elseif ($args['action'] == 'deactivate') {
+            } elseif ($action == 'deactivate') {
                 try {
-                    $plugins->deactivateModule($args['module_id']);
+                    $plugins->deactivateModule($module_id);
                     $this->flash->addMessage(
                         'success_detected',
                         str_replace(
                             '%name',
-                            $args['module_id'],
+                            $module_id,
                             _T("Plugin %name has been disabled")
                         )
                     );
@@ -156,11 +156,11 @@ class PluginsController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Plugin id
      *
      * @return Response
      */
-    public function initPluginDb(Request $request, Response $response, array $args = []): Response
+    public function initPluginDb(Request $request, Response $response, int $id): Response
     {
         if (GALETTE_MODE === 'DEMO') {
             Analog::log(
@@ -174,7 +174,7 @@ class PluginsController extends AbstractController
         $warning_detected = [];
         $error_detected = [];
 
-        $plugid = $args['id'];
+        $plugid = $id;
         $plugin = $this->plugins->getModules($plugid);
 
         if ($plugin === null) {

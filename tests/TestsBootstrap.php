@@ -72,15 +72,17 @@ foreach ($directories as $directory) {
 }
 
 $logfile = 'galette_tests';
-
 require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
-$app = new \Slim\App(
-    array(
-        'templates.path'    => GALETTE_ROOT . 'templates/default/',
-        'mode'              => 'CRON'
-    )
-);
-session_start();
+
+$session_name = 'galette_tests';
+$session = new \RKA\SessionMiddleware([
+    'name'      => $session_name,
+    'lifetime'  => 0
+]);
+$session->start();
+
+$app =  new \Galette\Core\SlimApp();
+$app->add($session);
 
 require_once GALETTE_BASE_PATH . '/includes/dependencies.php';
 //Globals... :(

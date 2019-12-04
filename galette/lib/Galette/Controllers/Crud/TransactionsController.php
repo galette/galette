@@ -69,14 +69,13 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $type     Contribution type
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []): Response
+    public function add(Request $request, Response $response, string $type = null): Response
     {
-        $args['action'] = 'add';
-        return $this->edit($request, $response, $args);
+        return $this->edit($request, $response, null, 'add');
     }
 
     /**
@@ -84,13 +83,13 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $type     Contribution type
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []): Response
+    public function doAdd(Request $request, Response $response, string $type = null): Response
     {
-        return $this->doEdit($request, $response, $args);
+        return $this->doEdit($request, $response, $type);
     }
 
     // /CRUD - Create
@@ -106,11 +105,12 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Transaction id
+     * @param string   $action   Action
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []): Response
+    public function edit(Request $request, Response $response, int $id = null, $action = 'edit'): Response
     {
         $trans = null;
 
@@ -121,10 +121,9 @@ class TransactionsController extends ContributionsController
             $trans = new Transaction($this->zdb, $this->login);
         }
 
-        $action = $args['action'] ?? 'edit';
         $trans_id = null;
-        if (isset($args['id'])) {
-            $trans_id = $args['id'];
+        if ($id !== null) {
+            $trans_id = $id;
         }
 
         $transaction['trans_id'] = $trans_id;
@@ -201,20 +200,21 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Transaction id
+     * @param string   $type     Transaction type
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []): Response
+    public function doEdit(Request $request, Response $response, int $id = null, $type = null): Response
     {
         $post = $request->getParsedBody();
         $trans = new Transaction($this->zdb, $this->login);
 
         $action = 'add';
         $trans_id = null;
-        if (isset($args['id'])) {
+        if ($id !== null) {
             $action = 'edit';
-            $trans_id = $args['id'];
+            $trans_id = $id;
         }
 
         $transaction['trans_id'] = $trans_id;
@@ -315,6 +315,10 @@ class TransactionsController extends ContributionsController
                 );
             }
 
+            $args = [];
+            if ($trans_id !== null) {
+                $args['id'] = $id;
+            }
             //redirect to calling action
             return $response
                 ->withStatus(301)
@@ -333,13 +337,14 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Transaction id
+     * @param integer  $cid      Contribution id
      *
      * @return Response
      */
-    public function attach(Request $request, Response $response, array $args = []): Response
+    public function attach(Request $request, Response $response, int $id = null, int $cid = null): Response
     {
-        if (!Contribution::setTransactionPart($this->zdb, $args['id'], $args['cid'])) {
+        if (!Contribution::setTransactionPart($this->zdb, $id, $cid)) {
             $this->flash->addMessage(
                 'error_detected',
                 _T("Unable to attach contribution to transaction")
@@ -355,7 +360,7 @@ class TransactionsController extends ContributionsController
             ->withStatus(301)
             ->withHeader('Location', $this->router->pathFor(
                 'editTransaction',
-                ['id' => $args['id']]
+                ['id' => $id]
             ));
     }
 
@@ -364,13 +369,14 @@ class TransactionsController extends ContributionsController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Transaction id
+     * @param integer  $cid      Contribution id
      *
      * @return Response
      */
-    public function detach(Request $request, Response $response, array $args = []): Response
+    public function detach(Request $request, Response $response, int $id = null, int $cid = null): Response
     {
-        if (!Contribution::unsetTransactionPart($this->zdb, $this->login, $args['id'], $args['cid'])) {
+        if (!Contribution::unsetTransactionPart($this->zdb, $this->login, $id, $cid)) {
             $this->flash->addMessage(
                 'error_detected',
                 _T("Unable to detach contribution from transaction")
@@ -386,7 +392,7 @@ class TransactionsController extends ContributionsController
             ->withStatus(301)
             ->withHeader('Location', $this->router->pathFor(
                 'editTransaction',
-                ['id' => $args['id']]
+                ['id' => $id]
             ));
     }
 

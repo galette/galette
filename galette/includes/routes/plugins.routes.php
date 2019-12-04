@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2015 The Galette Team
+ * Copyright © 2015-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,25 +28,26 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2015 The Galette Team
+ * @copyright 2015-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     0.9dev 2015-10-28
  */
 
+use Slim\Http\Request;
+use Slim\Http\Response;
+
 $app->group(
     '/plugins',
     function () use ($authenticate) {
         $container = $this->getContainer();
-        $modules = $container->plugins->getModules();
+        $modules = $container->get('plugins')->getModules();
 
         //Global route to access plugin resources (CSS, JS, images, ...)
         $this->get(
             '/{plugin}/res/{path:.*}',
-            function ($request, $response, $args) {
-                $plugin = $args['plugin'];
-                $path = $args['path'];
-                $ext = pathinfo($args['path'])['extension'];
+            function (Request $request, Response $response, $plugin, $path) {
+                $ext = pathinfo($path)['extension'];
                 $auth_ext = [
                     'js'    => 'text/javascript',
                     'css'   => 'text/css',
@@ -56,7 +57,7 @@ $app->group(
                     'gif'   => 'image/gif'
                 ];
                 if (strpos($path, '../') === false && isset($auth_ext[$ext])) {
-                    $file = $this->plugins->getFile(
+                    $file = $this->get('plugins')->getFile(
                         $plugin,
                         $path
                     );
@@ -77,9 +78,7 @@ $app->group(
 
         //Declare configured routes for each plugin
         foreach ($modules as $module_id => $module) {
-            $container['Plugin ' . $module['name']] = function () use ($module_id) {
-                return $module_id;
-            };
+            $container->set('Plugin ' . $module['name'], ['module' => $module, 'module_id' => $module_id]);
 
             $this->group(
                 '/' . $module['route'],
@@ -96,11 +95,11 @@ $app->group(
                                 'date'          => $module['date'],
                                 'author'        => $module['author']
                             ];
-                            if ($this->login->isAdmin()) {
+                            if ($this->get('login')->isAdmin()) {
                                 $params['module'] = $module;
                             }
                             // display page
-                            $this->view->render(
+                            $this->get('view')->render(
                                 $response,
                                 'plugin_info.tpl',
                                 $params

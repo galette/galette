@@ -179,8 +179,6 @@ class Transaction
     {
         global $emitter;
 
-        $event = null;
-
         try {
             if ($transaction) {
                 $this->zdb->connection->beginTransaction();
@@ -377,6 +375,8 @@ class Transaction
     public function store(History $hist)
     {
         global $emitter;
+
+        $event = null;
 
         try {
             $this->zdb->connection->beginTransaction();

@@ -222,3 +222,7 @@ if (!$installer and !defined('GALETTE_TESTS')) {
         $needs_update = true;
     }
 }
+
+$plugins = new Galette\Core\Plugins();
+//make sure plugins autoload is caleld before session start
+$plugins->autoload(GALETTE_PLUGINS_PATH);

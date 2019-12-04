@@ -33,6 +33,7 @@
  * @link      http://galette.tuxfamily.org
  */
 
+use Psr\Container\ContainerInterface;
 use Galette\Entity\PdfModel;
 use Slim\Event\SlimEventManager;
 use Slim\Views\SmartyPlugins;
@@ -43,24 +44,29 @@ $container = $app->getContainer();
 // Error handling
 // -----------------------------------------------------------------------------
 
-$container['errorHandler'] = function ($c) {
-    return new Galette\Handlers\Error($c['view'], true);
-};
+$container->set('errorHandler', function ($c) {
+    return new Galette\Handlers\Error($c->get('view'), true);
+});
 
-$container['phpErrorHandler'] = function ($c) {
-    return new Galette\Handlers\PhpError($c['view'], true);
-};
+$container->set('phpErrorHandler', function ($c) {
+    return new Galette\Handlers\PhpError($c->get('view'), true);
+});
 
-$container['notFoundHandler'] = function ($c) {
-    return new Galette\Handlers\NotFound($c['view']);
-};
+$container->set('notFoundHandler', function ($c) {
+    return new Galette\Handlers\NotFound($c->get('view'));
+});
 
 // -----------------------------------------------------------------------------
 // Service providers
 // -----------------------------------------------------------------------------
 
 // Register Smarty View helper
-$container['view'] = function ($c) {
+//TODO: old way - to drop
+$container->set(
+    'view',
+    DI\get('Slim\Views\Smarty')
+);
+$container->set('Slim\Views\Smarty', function (ContainerInterface $c) {
     $view = new \Slim\Views\Smarty(
         rtrim(GALETTE_ROOT . GALETTE_TPL_SUBDIR, DIRECTORY_SEPARATOR),
         [
@@ -78,7 +84,7 @@ $container['view'] = function ($c) {
         '',
         $c->get('request')->getUri()->getBasePath()
     );
-    $smartyPlugins = new SmartyPlugins($c['router'], $basepath);
+    $smartyPlugins = new SmartyPlugins($c->get('router'), $basepath);
     $view->registerPlugin('function', 'path_for', [$smartyPlugins, 'pathFor']);
     $view->registerPlugin('function', 'base_url', [$smartyPlugins, 'baseUrl']);
 
@@ -130,7 +136,7 @@ $container['view'] = function ($c) {
     $smarty->assign('pref_statut', $c->get('preferences')->pref_statut);
     $smarty->assign(
         'pref_editor_enabled',
-        $c->preferences->pref_editor_enabled
+        $c->get('preferences')->pref_editor_enabled
     );
     $smarty->assign('pref_mail_method', $c->get('preferences')->pref_mail_method);
     $smarty->assign('existing_mailing', $c->get('session')->mailing !== null);
@@ -161,47 +167,71 @@ $container['view'] = function ($c) {
         );
     }
     return $view;
-};
+});
 
 // Flash messages
-$container['flash'] = function ($c) {
-    return new \Slim\Flash\Messages();
-};
+//TODO: old way - to drop
+$container->set(
+    'flash',
+    DI\get('Slim\Flash\Messages')
+);
+$container->set('Slim\Flash\Messages', DI\autowire());
 
-$container['plugins'] = function ($c) {
-    $plugins = new Galette\Core\Plugins();
+//TODO: old way - to drop
+$container->set(
+    'plugins',
+    \DI\get(Galette\Core\Plugins::class)
+);
+
+$container->set(Galette\Core\Plugins::class, function (ContainerInterface $c) use ($plugins) {
     $i18n = $c->get('i18n');
     $plugins->loadModules($c->get('preferences'), GALETTE_PLUGINS_PATH, $i18n->getLongID());
     return $plugins;
-};
+});
 
-$container['i18n'] = function ($c) {
+//TODO: old way - to drop
+$container->set(
+    'i18n',
+    \DI\get('Galette\Core\I18n')
+);
+
+$container->set('Galette\Core\I18n', function (ContainerInterface $c) {
     $i18n = $c->get('session')->i18n;
     if (!$i18n || !$i18n->getId() || isset($_GET['ui_pref_lang']) && $_GET['ui_pref_lang']) {
         $i18n = new Galette\Core\I18n($_GET['ui_pref_lang'] ?? false);
         $c->get('session')->i18n = $i18n;
     }
     return $i18n;
-};
+});
 
-$container['l10n'] = function ($c) {
+$container->set('l10n', function (ContainerInterface $c) {
     $l10n = new Galette\Core\L10n(
         $c->get('zdb'),
         $c->get('i18n')
     );
     return $l10n;
-};
+});
 
-$container['zdb'] = function ($c) {
-    $zdb = new Galette\Core\Db();
-    return $zdb;
-};
+//TODO: old way - to drop
+$container->set(
+    'zdb',
+    DI\get('Galette\Core\Db')
+);
+$container->set('Galette\Core\Db', DI\autowire());
 
-$container['preferences'] = function ($c) {
-    return new Galette\Core\Preferences($c->get('zdb'));
-};
+//TODO: old way - to drop
+$container->set(
+    'preferences',
+    DI\get('Galette\Core\Preferences')
+);
+$container->set('Galette\Core\Preferences', DI\autowire());
 
-$container['login'] = function ($c) {
+//TODO: old way - to drop
+$container->set(
+    'login',
+    DI\get('Galette\Core\Login')
+);
+$container->set('Galette\Core\Login', function (ContainerInterface $c) {
     $login = $c->get('session')->login;
     if (!$login) {
         $login = new Galette\Core\Login(
@@ -210,27 +240,35 @@ $container['login'] = function ($c) {
         );
     }
     return $login;
-};
+});
 
-$container['session'] = function ($c) {
+/*$container->set('session', function (ContainerInterface $c) {
     $session = new \RKA\Session();
     return $session;
-};
+});*/
 
-$container['logo'] = function ($c) {
-    return new Galette\Core\Logo();
-};
+//TODO: old way - to drop
+$container->set(
+    'logo',
+    DI\get('Galette\Core\Logo')
+);
+$container->set('Galette\Core\Logo', DI\autowire());
 
-$container['print_logo'] = function ($c) {
-    return new Galette\Core\PrintLogo();
-};
+//TODO: old way - to drop
+$container->set(
+    'print_logo',
+    DI\get('Galette\Core\PrintLogo')
+);
+$container->set('Galette\Core\PrintLogo', DI\autowire());
 
+//TODO: old way - to drop
+$container->set(
+    'history',
+    DI\get('Galette\Core\History')
+);
+$container->set('Galette\Core\History', \DI\autowire());
 
-$container['history'] = function ($c) {
-    return new Galette\Core\History($c->get('zdb'), $c->get('login'), $c->get('preferences'));
-};
-
-$container['acls'] = function ($c) {
+$container->set('acls', function (ContainerInterface $c) {
     include_once GALETTE_ROOT . 'includes/core_acls.php';
     $acls = $core_acls;
 
@@ -248,14 +286,19 @@ $container['acls'] = function ($c) {
     }
 
     return $acls;
-};
+});
 
-$container['members_fields'] = function ($c) {
+$container->set('texts_fields', function (ContainerInterface $c) {
+    include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
+    return $texts_fields;
+});
+
+$container->set('members_fields', function (ContainerInterface $c) {
     include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
     return $members_fields;
-};
+});
 
-$container['members_form_fields'] = function ($c) {
+$container->set('members_form_fields', function (ContainerInterface $c) {
     $fields = $c->get('members_fields');
     foreach ($fields as $k => $field) {
         if ($field['position'] == -1) {
@@ -263,28 +306,32 @@ $container['members_form_fields'] = function ($c) {
         }
     }
     return $fields;
-};
+});
 
-
-$container['members_fields_cats'] = function ($c) {
+$container->set('members_fields_cats', function (ContainerInterface $c) {
     include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
     return $members_fields_cats;
-};
+});
 
 // -----------------------------------------------------------------------------
 // Service factories
 // -----------------------------------------------------------------------------
 
 // monolog
-$container['logger'] = function ($c) {
+$container->set('logger', function (ContainerInterface $c) {
     $settings = $c->get('settings');
     $logger = new \Monolog\Logger($settings['logger']['name']);
     $logger->pushProcessor(new \Monolog\Processor\UidProcessor());
     $logger->pushHandler(new \Monolog\Handler\StreamHandler($settings['logger']['path'], $settings['logger']['level']));
     return $logger;
-};
+});
 
-$container['fields_config'] = function ($c) {
+//TODO: old way - to drop
+$container->set(
+    'fields_config',
+    DI\get('Galette\Entity\FieldsConfig')
+);
+$container->set('Galette\Entity\FieldsConfig', function (ContainerInterface $c) {
     $fc = new Galette\Entity\FieldsConfig(
         $c->get('zdb'),
         Galette\Entity\Adherent::TABLE,
@@ -292,9 +339,14 @@ $container['fields_config'] = function ($c) {
         $c->get('members_fields_cats')
     );
     return $fc;
-};
+});
 
-$container['lists_config'] = function ($c) {
+//TODO: old way - to drop
+$container->set(
+    'lists_config',
+    DI\get('Galette\Entity\ListsConfig')
+);
+$container->set('Galette\Entity\ListsConfig', function (ContainerInterface $c) {
     $fc = new Galette\Entity\ListsConfig(
         $c->get('zdb'),
         Galette\Entity\Adherent::TABLE,
@@ -302,9 +354,9 @@ $container['lists_config'] = function ($c) {
         $c->get('members_fields_cats')
     );
     return $fc;
-};
+});
 
-$container['cache'] = function ($c) {
+$container->set('cache', function (ContainerInterface $c) {
     $adapter = null;
     if (function_exists('wincache_ucache_add')) {
         //since APCu is not known to work on windows
@@ -313,7 +365,7 @@ $container['cache'] = function ($c) {
         $adapter = 'apcu';
     }
     if ($adapter !== null) {
-        $uuid = $c->get('mode') !== 'INSTALL' ? $c->get('preferences')->pref_instance_uuid : '_install';
+        $uuid = $c->get('galette.mode') !== 'INSTALL' ? $c->get('preferences')->pref_instance_uuid : '_install';
         $cache = Laminas\Cache\StorageFactory::factory([
             'adapter'   => $adapter,
             'options'   => [
@@ -327,9 +379,14 @@ $container['cache'] = function ($c) {
         return $cache;
     }
     return null;
-};
+});
 
-$container['translator'] = function ($c) {
+//TODO: old way - to drop
+$container->set(
+    'translator',
+    DI\get('Galette\Core\Translator')
+);
+$container->set('Galette\Core\Translator', function (ContainerInterface $c) {
     $translator = new Galette\Core\Translator();
 
     $domains = ['galette'];
@@ -352,45 +409,37 @@ $container['translator'] = function ($c) {
     }
 
     $translator->setLocale($c->get('i18n')->getLongID());
-    if (!isset($container['mode']) || $c->get('mode') !== 'INSTALL' && $c->get('mode') !== 'NEED_UPDATE') {
+    if (
+        !$c->has('galette.mode')
+        || $c->get('galette.mode') !== 'INSTALL'
+        && $c->get('galette.mode') !== 'NEED_UPDATE'
+    ) {
         $translator->setCache($c->get('cache'));
     }
     return $translator;
-};
+});
 
 // Add Event manager to dependency.
-$container['event_manager'] = function ($c) {
-    $emitter = new SlimEventManager();
-
-    $emitter->useListenerProvider(
-        new Galette\Events\MemberListener(
-            $c->get('preferences'),
-            $c->get('router'),
-            $c->get('history'),
-            $c->get('flash'),
-            $c->get('login'),
-            $c->get('zdb')
+$container->set(
+    'event_manager',
+    DI\create('Slim\Event\SlimEventManager')
+        ->method(
+            'useListenerProvider',
+            DI\get('Galette\Events\MemberListener')
         )
-    );
-
-    $emitter->useListenerProvider(
-        new Galette\Events\ContribListener(
-            $c->get('preferences'),
-            $c->get('router'),
-            $c->get('history'),
-            $c->get('flash'),
-            $c->get('login'),
-            $c->get('zdb')
+        ->method(
+            'useListenerProvider',
+            DI\get('Galette\Events\ContribListener')
         )
-    );
-
-
-    return $emitter;
-};
+);
 
 //For bad existing globals can be used...
 global $translator, $i18n;
-if (!isset($container['mode']) || ($container['mode'] !== 'INSTALL' && $container['mode'] !== 'NEED_UPDATE')) {
+if (
+    !$container->has('galette.mode')
+    || $container->get('galette.mode') !== 'INSTALL'
+    && $container->get('galette.mode') !== 'NEED_UPDATE'
+) {
     global $zdb, $preferences, $login, $hist, $l10n, $emitter;
     $zdb = $container->get('zdb');
     $preferences = $container->get('preferences');
@@ -401,5 +450,4 @@ if (!isset($container['mode']) || ($container['mode'] !== 'INSTALL' && $containe
 }
 $i18n = $container->get('i18n');
 $translator = $container->get('translator');
-
 require_once GALETTE_ROOT . 'includes/i18n.inc.php';

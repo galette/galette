@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014 The Galette Team
+ * Copyright © 2014-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,66 +28,65 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014 The Galette Team
+ * @copyright 2014-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     0.8.2dev 2014-11-11
  */
 
 use Galette\Controllers\AuthController;
-
 use Galette\Entity\Adherent;
 
 //login page
 $app->get(
     '/login[/{r:.+}]',
-    AuthController::class . ':login'
+    [AuthController::class, 'login']
 )->setName('login');
 
 //Authentication procedure
 $app->post(
     '/login',
-    AuthController::class . ':dologin'
+    [AuthController::class, 'dologin']
 )->setName('dologin');
 
 //logout procedure
 $app->get(
     '/logout',
-    AuthController::class . ':logout'
+    [AuthController::class, 'logout']
 )->setName('logout');
 
 //impersonating
 $app->get(
     '/impersonate/{id:\d+}',
-    AuthController::class . ':impersonate'
+    [AuthController::class, 'impersonate']
 )->setName('impersonate')->add($authenticate);
 
 $app->get(
     '/unimpersonate',
-    AuthController::class . ':unimpersonate'
+    [AuthController::class, 'unimpersonate']
 )->setName('unimpersonate')->add($authenticate);
 
 //password lost page
 $app->get(
     '/password-lost',
-    AuthController::class . ':lostPassword'
+    [AuthController::class, 'lostPassword']
 )->setName('password-lost');
 
 //retrieve password procedure
 $app->map(
     ['GET', 'POST'],
     '/retrieve-pass' . '[/{' . Adherent::PK . ':\d+}]',
-    AuthController::class . ':retrievePassword'
+    [AuthController::class, 'retrievePassword']
 )->setName('retrieve-pass');
 
 //password recovery page
 $app->get(
     '/password-recovery/{hash}',
-    AuthController::class . ':recoverPassword'
+    [AuthController::class, 'recoverPassword']
 )->setName('password-recovery');
 
 //password recovery page
 $app->post(
     '/password-recovery',
-    AuthController::class . ':doRecoverPassword'
+    [AuthController::class, 'doRecoverPassword']
 )->setName('do-password-recovery');

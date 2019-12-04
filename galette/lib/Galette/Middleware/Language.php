@@ -39,6 +39,7 @@ namespace Galette\Middleware;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Analog\Analog;
+use DI\Container;
 
 /**
  * Galette Slim change language middleware
@@ -61,9 +62,9 @@ class Language
     /**
      * Constructor
      *
-     * @param Slim\Container $container Container instance
+     * @param Container $container Container instance
      */
-    public function __construct(\Slim\Container $container)
+    public function __construct(Container $container)
     {
         $this->i18n = $container->get('i18n');
         $this->session = $container->get('session');

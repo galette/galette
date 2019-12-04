@@ -146,7 +146,7 @@ class FieldsConfig
      * @param array   $cats_defaults default categories values
      * @param boolean $install       Are we calling from installer?
      */
-    public function __construct(Db $zdb, $table, $defaults, $cats_defaults, $install = false)
+    public function __construct(Db $zdb, string $table, array $defaults, array $cats_defaults, bool $install = false)
     {
         $this->zdb = $zdb;
         $this->table = $table;

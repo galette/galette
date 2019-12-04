@@ -60,11 +60,7 @@ class CsvIn extends atoum
     private $preferences;
     private $session;
     private $login;
-    private $view;
     private $history;
-    private $members_fields;
-    private $members_form_fields;
-    private $members_fields_cats;
     private $flash;
     private $flash_data;
     private $container;
@@ -87,28 +83,20 @@ class CsvIn extends atoum
         $this->calling($this->mocked_router)->pathFor = function ($name, $params) {
             return $name;
         };
-        $this->zdb = new \Galette\Core\Db();
-        $this->i18n = new \Galette\Core\I18n(
-            \Galette\Core\I18n::DEFAULT_LANG
-        );
-        $this->preferences = new \Galette\Core\Preferences(
-            $this->zdb
-        );
-        $this->session = new \RKA\Session();
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n);
-        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
         $flash_data = [];
         $this->flash_data = &$flash_data;
         $this->flash = new \Slim\Flash\Messages($flash_data);
 
-        global $zdb, $i18n, $login, $hist;
-        $zdb = $this->zdb;
-        $i18n = $this->i18n;
-        $login = $this->login;
-        $hist = $this->history;
-
-        $app = new \Slim\App(['router' => $this->mocked_router, 'flash' => $this->flash]);
+        $app =  new \Galette\Core\SlimApp();
+        $plugins = new \Galette\Core\Plugins();
+        require GALETTE_BASE_PATH . '/includes/dependencies.php';
         $container = $app->getContainer();
+
+        $container->set('flash', $this->flash);
+        $container->set(Slim\Flash\Messages::class, $this->flash);
+        $container->set('router', $this->mocked_router);
+        $container->set(Slim\Router::class, $this->mocked_router);
+
         /*$this->view = new \mock\Slim\Views\Smarty(
             rtrim(GALETTE_ROOT . GALETTE_TPL_SUBDIR, DIRECTORY_SEPARATOR),
             [
@@ -125,34 +113,21 @@ class CsvIn extends atoum
         };
 
         $this->view->addSlimPlugins($container->get('router'), '/');
-        //$container['view'] = $this->view;*/
-        $container['view'] = null;
-        $container['zdb'] = $zdb;
-        $container['login'] = $this->login;
-        $container['session'] = $this->session;
-        $container['preferences'] = $this->preferences;
-        $container['logo'] = null;
-        $container['print_logo'] = null;
-        $container['plugins'] = null;
-        $container['history'] = $this->history;
-        $container['i18n'] = null;
-        $container['fields_config'] = null;
-        $container['lists_config'] = null;
-        $container['l10n'] = null;
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
-        $this->members_fields = $members_fields;
-        $container['members_fields'] = $this->members_fields;
-        $members_form_fields = $members_fields;
-        foreach ($members_form_fields as $k => $field) {
-            if ($field['position'] == -1) {
-                unset($members_form_fields[$k]);
-            }
-        }
-        $this->members_form_fields = $members_form_fields;
-        $container['members_form_fields'] = $this->members_form_fields;
-        include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
-        $this->members_fields_cats = $members_fields_cats;
-        $container['members_fields_cats'] = $this->members_fields_cats;
+        $container->set('view', $this->view);*/
+
+        $this->zdb = $container->get('zdb');
+        $this->i18n = $container->get('i18n');
+        $this->preferences = $container->get('preferences');
+        $this->session = $container->get('session');
+        $this->login = $container->get('login');
+        $this->history = $container->get('history');
+
+        global $zdb, $i18n, $login, $hist;
+        $zdb = $this->zdb;
+        $i18n = $this->i18n;
+        $login = $this->login;
+        $hist = $this->history;
+
         $this->container = $container;
         $this->request = $container->get('request');
         $this->response = $container->get('response');
@@ -230,7 +205,7 @@ class CsvIn extends atoum
         //get csv model file to add data in
         $controller = new \Galette\Controllers\CsvController($this->container);
         $response = $controller->getImportModel($this->request, $this->response);
-        $csvin = new \galette\IO\CsvIn($this->zdb);
+        $csvin = new \Galette\IO\CsvIn($this->container->get('zdb'));
 
         $this->integer($response->getStatusCode())->isIdenticalTo(200);
         $this->array($response->getHeaders())
@@ -390,7 +365,7 @@ class CsvIn extends atoum
             $this->boolean(in_array(str_replace('.utf8', '', $result['text_locale']), $langs))->isTrue();
             $this->integer((int)$result['text_nref'])->isIdenticalTo(1);
             $this->string($result['text_trans'])->isIdenticalTo(
-                ($result['text_locale'] == 'fr_FR.utf8' ? $text_orig : '')
+                ($result['text_locale'] == 'en_US' ? $text_orig : '')
             );
         }
     }

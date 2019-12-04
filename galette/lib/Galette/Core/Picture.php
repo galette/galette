@@ -302,14 +302,23 @@ class Picture implements FileInterface
     /**
      * Set header and displays the picture.
      *
+     * @param Response $response Reponse
+     *
      * @return object the binary file
      */
-    public function display()
+    public function display(\Slim\Http\Response $response)
     {
-        header('Content-type: ' . $this->mime);
-        ob_clean();
-        flush();
-        $this->getContents();
+        $response = $response->withHeader('Content-Type', $this->mime)
+            ->withHeader('Content-Transfer-Encoding', 'binary')
+            ->withHeader('Expires', '0')
+            ->withHeader('Cache-Control', 'must-revalidate')
+            ->withHeader('Pragma', 'public');
+
+        $stream = fopen('php://memory', 'r+');
+        fwrite($stream, file_get_contents($this->file_path));
+        rewind($stream);
+
+        return $response->withBody(new \Slim\Http\Stream($stream));
     }
 
     /**

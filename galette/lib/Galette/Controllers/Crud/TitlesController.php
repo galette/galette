@@ -65,11 +65,10 @@ class TitlesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []): Response
+    public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
     }
@@ -79,14 +78,12 @@ class TitlesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []): Response
+    public function doAdd(Request $request, Response $response): Response
     {
-        $args['id'] = null;
-        return $this->store($request, $response, $args);
+        return $this->store($request, $response, null);
     }
 
     // /CRUD - Create
@@ -95,13 +92,14 @@ class TitlesController extends CrudController
     /**
      * Titles list page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request        $request  PSR Request
+     * @param Response       $response PSR Response
+     * @param string         $option   One of 'page' or 'order'
+     * @param string|integer $value    Value of the option
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []): Response
+    public function list(Request $request, Response $response, $option = null, $value = null): Response
     {
         $titles = Titles::getList($this->zdb);
 
@@ -138,13 +136,12 @@ class TitlesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Title id
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []): Response
+    public function edit(Request $request, Response $response, int $id): Response
     {
-        $id = (int)$args['id'];
         $title = new Title($id);
 
         // display page
@@ -164,13 +161,13 @@ class TitlesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Title id
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []): Response
+    public function doEdit(Request $request, Response $response, int $id): Response
     {
-        return $this->store($request, $response, $args);
+        return $this->store($request, $response, $id);
     }
 
     /**
@@ -178,26 +175,25 @@ class TitlesController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Title id
      *
      * @return Response
      */
-    public function store(Request $request, Response $response, array $args = []): Response
+    public function store(Request $request, Response $response, int $id = null): Response
     {
-        $id = $args['id'] ?? null;
         $post = $request->getParsedBody();
 
         if (isset($post['cancel'])) {
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->cancelUri());
+                ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
         }
 
         $title = new Title((int)$id);
         $title->short = $post['short_label'];
         $title->long = $post['long_label'];
         $res = $title->store($this->zdb);
-        $redirect_uri = $this->redirectUri();
+        $redirect_uri = $this->redirectUri($this->getArgs($request));
 
         if (!$res) {
             if ($id === null) {
@@ -257,7 +253,7 @@ class TitlesController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args = [])
+    public function redirectUri(array $args)
     {
         return $this->router->pathFor('titles');
     }
@@ -269,7 +265,7 @@ class TitlesController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args = [])
+    public function formUri(array $args)
     {
         return $this->router->pathFor(
             'doRemoveTitle',
@@ -284,7 +280,7 @@ class TitlesController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args = [])
+    public function confirmRemoveTitle(array $args)
     {
         $title = new Title((int)$args['id']);
         return sprintf(

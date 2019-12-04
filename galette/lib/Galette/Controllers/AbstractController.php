@@ -87,7 +87,7 @@ abstract class AbstractController
      */
     protected $print_logo;
     /**
-     * @Inject
+     * @Inject("plugins")
      * @var \Galette\Core\Plugins
      */
     protected $plugins;
@@ -131,17 +131,17 @@ abstract class AbstractController
      */
     protected $lists_config;
     /**
-     * @Inject
+     * @Inject("members_fields")
      * @var array
      */
     protected $members_fields;
     /**
-     * @Inject
+     * @Inject("members_form_fields")
      * @var array
      */
     protected $members_form_fields;
     /**
-     * @Inject
+     * @Inject("members_fields_cats")
      * @var array
      */
     protected $members_fields_cats;
@@ -167,7 +167,6 @@ abstract class AbstractController
         $this->view = $container->get('view');
         $this->logo = $container->get('logo');
         $this->print_logo = $container->get('print_logo');
-        $this->plugins = $container->get('plugins');
         $this->router = $container->get('router');
         $this->history = $container->get('history');
         $this->i18n = $container->get('i18n');
@@ -188,11 +187,10 @@ abstract class AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments ['r']
      *
-     * @return void
+     * @return Response
      */
-    protected function galetteRedirect(Request $request, Response $response, array $args = [])
+    protected function galetteRedirect(Request $request, Response $response)
     {
         //reinject flash messages so they're not lost
         $flashes = $this->flash->getMessages();
@@ -265,5 +263,20 @@ abstract class AbstractController
             $url .= '/';
         }
         return $url;
+    }
+
+    /**
+     * Get route arguments
+     * php-di bridge pass each variable, not an array of all arguments
+     *
+     * @param Request $request PSR Request
+     *
+     * @return array
+     */
+    protected function getArgs(Request $request): array
+    {
+        $route = $request->getAttribute('route');
+        $args = $route->getArguments();
+        return $args;
     }
 }

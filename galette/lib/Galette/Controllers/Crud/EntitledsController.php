@@ -66,11 +66,10 @@ class EntitledsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []): Response
+    public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
     }
@@ -80,57 +79,63 @@ class EntitledsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $class    Entitled class
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []): Response
+    public function doAdd(Request $request, Response $response, string $class = null): Response
     {
-        $args['id'] = null;
-        return $this->store($request, $response, $args);
+        return $this->store($request, $response, $class, null, 'add');
     }
 
     // /CRUD - Create
     // CRUD - Read
 
     /**
-     * Mailings history page
+     * List page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request        $request  PSR Request
+     * @param Response       $response PSR Response
+     * @param string         $option   One of 'page' or 'order'
+     * @param string|integer $value    Value of the option
+     * @param string         $class    Entitled class from url
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []): Response
-    {
+    public function list(
+        Request $request,
+        Response $response,
+        $option = null,
+        $value = null,
+        $class = null
+    ): Response {
         $className = null;
-        $class = null;
+        $entitled = null;
 
         $params = [];
-        switch ($args['class']) {
+        switch ($class) {
             case 'status':
                 $className = 'Status';
-                $class = new Status($this->zdb);
+                $entitled = new Status($this->zdb);
                 $params['page_title'] = _T("User statuses");
                 $params['non_staff_priority'] = Members::NON_STAFF_MEMBERS;
                 break;
             case 'contributions-types':
                 $className = 'ContributionsTypes';
-                $class = new ContributionsTypes($this->zdb);
+                $entitled = new ContributionsTypes($this->zdb);
                 $params['page_title'] = _T("Contribution types");
                 break;
         }
 
         $params['class'] = $className;
-        $params['url_class'] = $args['class'];
-        $params['fields'] = $class::$fields;
+        $params['url_class'] = $class;
+        $params['fields'] = $entitled::$fields;
 
-        $list = $class->getCompleteList();
+        $list = $entitled->getCompleteList();
         $params['entries'] = $list;
 
-        if (count($class->errors) > 0) {
-            foreach ($class->errors as $error) {
+        if (count($entitled->errors) > 0) {
+            foreach ($entitled->errors as $error) {
                 $this->flash->addMessage(
                     'error_detected',
                     $error
@@ -168,35 +173,36 @@ class EntitledsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Entitled id
+     * @param string   $class    Entitled class from url
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []): Response
+    public function edit(Request $request, Response $response, int $id, string $class = null): Response
     {
         $className = null;
-        $class = null;
+        $entitled = null;
 
         $params = [];
-        switch ($args['class']) {
+        switch ($class) {
             case 'status':
                 $className = 'Status';
-                $class = new Status($this->zdb);
+                $entitled = new Status($this->zdb);
                 $params['page_title'] = _T("Edit status");
                 $params['non_staff_priority'] = Members::NON_STAFF_MEMBERS;
                 break;
             case 'contributions-types':
                 $className = 'ContributionsTypes';
-                $class = new ContributionsTypes($this->zdb);
+                $entitled = new ContributionsTypes($this->zdb);
                 $params['page_title'] = _T("Edit contribution type");
                 break;
         }
 
         $params['class'] = $className;
-        $params['url_class'] = $args['class'];
-        $params['fields'] = $class::$fields;
+        $params['url_class'] = $class;
+        $params['fields'] = $entitled::$fields;
 
-        $entry = $class->get($args['id']);
+        $entry = $entitled->get($id);
         $params['entry'] = $entry;
 
         // display page
@@ -213,13 +219,14 @@ class EntitledsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Entitled id
+     * @param string   $class    Entitled class from url
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []): Response
+    public function doEdit(Request $request, Response $response, int $id, string $class = null): Response
     {
-        return $this->store($request, $response, $args);
+        return $this->store($request, $response, $class, $id);
     }
 
     /**
@@ -227,44 +234,42 @@ class EntitledsController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param string   $class    Entitled class from url
+     * @param integer  $id       Entitled id
+     * @param string   $action   Action
      *
      * @return Response
      */
-    public function store(Request $request, Response $response, array $args = []): Response
-    {
-        $id = (isset($args['id']) ? (int)$args['id'] : null);
-
+    public function store(
+        Request $request,
+        Response $response,
+        string $class = null,
+        int $id = null,
+        string $action = 'edit'
+    ): Response {
         $post = $request->getParsedBody();
-        $class = null;
 
-        switch ($args['class']) {
+        switch ($class) {
             case 'status':
-                $class = new Status($this->zdb);
+                $entitled = new Status($this->zdb);
                 break;
             case 'contributions-types':
-                $class = new ContributionsTypes($this->zdb);
+                $entitled = new ContributionsTypes($this->zdb);
                 break;
         }
 
-        $label = trim($post[$class::$fields['libelle']]);
-        $field = trim($post[$class::$fields['third']]);
+        $label = trim($post[$entitled::$fields['libelle']]);
+        $field = trim($post[$entitled::$fields['third']]);
 
-        $ret = null;
-        if ($args['action'] === 'add') {
-            $ret = $class->add($label, $field);
-        } else {
-            $oldlabel = $class->getLabel($id, false);
-            $ret = $class->update($id, $label, $field);
-        }
+        $ret = ($action === 'add' ? $entitled->add($label, $field) : $entitled->update($id, $label, $field));
 
         if ($ret !== true) {
             $msg_type = 'error_detected';
-            $msg = $args['action'] === 'add' ?
+            $msg = $action === 'add' ?
                 _T("%type has not been added :(") : _T("%type #%id has not been updated");
         } else {
             $msg_type = 'success_detected';
-            $msg = $args['action'] === 'add' ?
+            $msg = $action === 'add' ?
                 _T("%type has been successfully added!") : _T("%type #%id has been successfully updated!");
         }
 
@@ -272,7 +277,7 @@ class EntitledsController extends CrudController
             $msg_type,
             str_replace(
                 ['%type', '%id'],
-                [$class->getI18nType(), $id],
+                [$entitled->getI18nType(), $id],
                 $msg
             )
         );
@@ -283,7 +288,7 @@ class EntitledsController extends CrudController
                 'Location',
                 $this->router->pathFor(
                     'entitleds',
-                    ['class' => $args['class']]
+                    ['class' => $class]
                 )
             );
     }
@@ -299,7 +304,7 @@ class EntitledsController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args = [])
+    public function redirectUri(array $args)
     {
         return $this->router->pathFor('entitleds', ['class' => $args['class']]);
     }
@@ -311,7 +316,7 @@ class EntitledsController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args = [])
+    public function formUri(array $args)
     {
         return $this->router->pathFor(
             'doRemoveEntitled',
@@ -329,7 +334,7 @@ class EntitledsController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args = [])
+    public function confirmRemoveTitle(array $args)
     {
         $class = null;
         switch ($args['class']) {

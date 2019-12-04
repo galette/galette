@@ -64,13 +64,12 @@ class CheckAcls extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        $app = new \Slim\App();
+        $app =  new \Galette\Core\SlimApp();
         require GALETTE_ROOT . 'includes/core_acls.php';
         $container = $app->getContainer();
-        //$this->acls = $core_acls;
-        $container['acls'] = $core_acls;
-        $container['view'] = new \stdClass();
-        $container['flash'] = new \stdClass();
+        $container->set('acls', $core_acls);
+        $container->set('view', new \stdClass());
+        $container->set('flash', new \stdClass());
         $this->container = $container;
     }
 

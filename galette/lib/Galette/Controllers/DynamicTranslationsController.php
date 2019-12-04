@@ -60,18 +60,15 @@ class DynamicTranslationsController extends AbstractController
     /**
      * Dynamic fields translations
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request  $request   PSR Request
+     * @param Response $response  PSR Response
+     * @param string   $text_orig Original translatext
      *
      * @return Response
      */
-    public function dynamicTranslations(Request $request, Response $response, array $args = []): Response
+    public function dynamicTranslations(Request $request, Response $response, string $text_orig = null): Response
     {
-        $text_orig = '';
-        if (isset($args['text_orig'])) {
-            $text_orig = $args['text_orig'];
-        } elseif (isset($_GET['text_orig'])) {
+        if ($text_orig == null && isset($_GET['text_orig'])) {
             $text_orig = $_GET['text_orig'];
         }
 

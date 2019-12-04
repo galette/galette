@@ -65,11 +65,10 @@ class PaymentTypeController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []): Response
+    public function add(Request $request, Response $response): Response
     {
         //no new page (included on list), just to satisfy inheritance
     }
@@ -79,29 +78,28 @@ class PaymentTypeController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []): Response
+    public function doAdd(Request $request, Response $response): Response
     {
-        $args['id'] = null;
-        return $this->store($request, $response, $args);
+        return $this->store($request, $response, null);
     }
 
     // /CRUD - Create
     // CRUD - Read
 
     /**
-     * Mailings history page
+     * List page
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param Request        $request  PSR Request
+     * @param Response       $response PSR Response
+     * @param string         $option   One of 'page' or 'order'
+     * @param string|integer $value    Value of the option
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []): Response
+    public function list(Request $request, Response $response, $option = null, $value = null): Response
     {
         $ptypes = new PaymentTypes(
             $this->zdb,
@@ -143,13 +141,12 @@ class PaymentTypeController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Type id
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []): Response
+    public function edit(Request $request, Response $response, int $id): Response
     {
-        $id = (int)$args['id'];
         $ptype = new PaymentType($this->zdb, $id);
 
         // display page
@@ -169,13 +166,13 @@ class PaymentTypeController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Type id
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []): Response
+    public function doEdit(Request $request, Response $response, int $id): Response
     {
-        return $this->store($request, $response, $args);
+        return $this->store($request, $response, $id);
     }
 
     /**
@@ -183,25 +180,24 @@ class PaymentTypeController extends CrudController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
+     * @param integer  $id       Type id
      *
      * @return Response
      */
-    public function store(Request $request, Response $response, array $args = []): Response
+    public function store(Request $request, Response $response, int $id = null): Response
     {
-        $id = (isset($args['id']) ? (int)$args['id'] : null);
         $post = $request->getParsedBody();
 
         if (isset($post['cancel'])) {
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->cancelUri());
+                ->withHeader('Location', $this->cancelUri($this->getArgs($request)));
         }
 
         $ptype = new PaymentType($this->zdb, $id);
         $ptype->name = $post['name'];
         $res = $ptype->store();
-        $redirect_uri = $this->redirectUri();
+        $redirect_uri = $this->redirectUri($this->getArgs($request));
 
         if (!$res) {
             if ($id === null) {
@@ -273,7 +269,7 @@ class PaymentTypeController extends CrudController
      *
      * @return string
      */
-    public function redirectUri(array $args = [])
+    public function redirectUri(array $args)
     {
         return $this->router->pathFor('paymentTypes');
     }
@@ -285,7 +281,7 @@ class PaymentTypeController extends CrudController
      *
      * @return string
      */
-    public function formUri(array $args = [])
+    public function formUri(array $args)
     {
         return $this->router->pathFor(
             'doRemovePaymentType',
@@ -300,7 +296,7 @@ class PaymentTypeController extends CrudController
      *
      * @return string
      */
-    public function confirmRemoveTitle(array $args = [])
+    public function confirmRemoveTitle(array $args)
     {
         $ptype = new PaymentType($this->zdb, (int)$args['id']);
         return sprintf(

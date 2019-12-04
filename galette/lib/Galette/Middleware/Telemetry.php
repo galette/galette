@@ -40,6 +40,7 @@ use Throwable;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Analog\Analog;
+use DI\Container;
 
 /**
  * Galette Slim telemetry middleware
@@ -62,9 +63,9 @@ class Telemetry
     /**
      * Constructor
      *
-     * @param Slim\Container $container Container instance
+     * @param Container $container Container instance
      */
-    public function __construct(\Slim\Container $container)
+    public function __construct(Container $container)
     {
         $this->zdb = $container->get('zdb');
         $this->preferences = $container->get('preferences');

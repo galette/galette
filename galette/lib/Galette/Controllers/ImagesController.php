@@ -112,14 +112,12 @@ class ImagesController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments ['id']
+     * @param integer  $id       Member id
      *
      * @return Response
      */
-    public function photo(Request $request, Response $response, array $args): Response
+    public function photo(Request $request, Response $response, int $id): Response
     {
-        $id = (int)$args['id'];
-
         $deps = array(
             'groups'    => false,
             'dues'      => false

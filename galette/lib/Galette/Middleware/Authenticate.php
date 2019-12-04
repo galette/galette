@@ -42,6 +42,7 @@ use Galette\Entity\Adherent;
 use Galette\Filters\MembersList;
 use Galette\Repository\Members;
 use Analog\Analog;
+use DI\Container;
 
 /**
  * Galette Slim middleware for authentication
@@ -70,9 +71,9 @@ class Authenticate extends CheckAcls
     /**
      * Constructor
      *
-     * @param Slim\Container $container Container instance
+     * @param Container $container Container instance
      */
-    public function __construct(\Slim\Container $container)
+    public function __construct(Container $container)
     {
         parent::__construct($container);
         $this->login = $container->get('login');
