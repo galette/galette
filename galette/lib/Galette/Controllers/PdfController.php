@@ -63,11 +63,12 @@ class PdfController extends AbstractController
     /**
      * Send response
      *
-     * @param Pdf $pdf PDF to output
+     * @param Response $response PSR Response
+     * @param Pdf      $pdf      PDF to output
      *
      * @return Response
      */
-    protected function sendResponse(Pdf $pdf) :Response
+    protected function sendResponse(Response $response, Pdf $pdf) :Response
     {
         return $response
             ->withHeader('Content-type', 'application/pdf')
@@ -415,6 +416,64 @@ class PdfController extends AbstractController
         }
         $pdf->drawSheet($members);
 
-        return $this->sendResponse($pdf);
+        return $this->sendResponse($response, $pdf);
+    }
+
+    /**
+     * Contribution PDF
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function contribution(Request $request, Response $response, array $args = []) :Response
+    {
+        $contribution = new \Galette\Entity\Contribution($this->zdb, $this->login, (int)$args['id']);
+        $pdf = new \Galette\IO\PdfContribution($contribution, $this->zdb, $this->preferences);
+
+        return $this->sendResponse($response, $pdf);
+    }
+
+    /**
+     * Groups PDF
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function group(Request $request, Response $response, array $args = []) :Response
+    {
+        $groups = new \Galette\Repository\Groups($this->zdb, $this->login);
+
+        $groups_list = null;
+        if (isset($args['id'])) {
+            $groups_list = $groups->getList(true, $args['id']);
+        } else {
+            $groups_list = $groups->getList();
+        }
+
+        if (!is_array($groups_list) || count($groups_list) < 1) {
+            Analog::log(
+                'An error has occurred, unable to get groups list.',
+                Analog::ERROR
+            );
+
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Unable to get groups list.")
+            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('groups'));
+        }
+
+        $pdf = new \Galette\IO\PdfGroups($this->preferences);
+        $pdf->draw($groups_list, $this->login);
+        return $this->sendResponse($response, $pdf);
     }
 }

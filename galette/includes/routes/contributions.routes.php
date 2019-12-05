@@ -44,7 +44,6 @@ use Galette\Entity\Adherent;
 use Galette\Entity\ContributionsTypes;
 use Galette\Core\GaletteMail;
 use Galette\Entity\Texts;
-use Galette\IO\PdfContribution;
 use Galette\Repository\PaymentTypes;
 
 $app->get(
@@ -1251,13 +1250,5 @@ $app->post(
 //Contribution PDF
 $app->get(
     '/contribution/print/{id:\d+}',
-    function ($request, $response, $args) {
-        $contribution = new Contribution($this->zdb, $this->login, (int)$args['id']);
-        $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
-
-        $response = $this->response->withHeader('Content-type', 'application/pdf')
-                ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
-        $response->write($pdf->download());
-        return $response;
-    }
+    PdfController::class . '::contribution'
 )->setName('printContribution')->add($authenticate);
