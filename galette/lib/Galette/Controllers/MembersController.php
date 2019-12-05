@@ -44,6 +44,8 @@ use Galette\Core\Picture;
 use Galette\Entity\Adherent;
 use Galette\Filters\MembersList;
 use Galette\IO\MembersCsv;
+use Galette\Repository\Members;
+use Galette\Repository\Groups;
 
 /**
  * Galette members controller
@@ -121,6 +123,74 @@ class MembersController extends AbstractController
     }
 
     /**
+     * Members list
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return void
+     */
+    public function list(Request $request, Response $response, array $args = [])
+    {
+        $option = $args['option'] ?? null;
+        $value = $args['value'] ?? null;
+
+        if (isset($this->session->filter_members)) {
+            $filters = $this->session->filter_members;
+        } else {
+            $filters = new MembersList();
+        }
+
+        if ($option !== null) {
+            switch ($option) {
+                case 'page':
+                    $filters->current_page = (int)$value;
+                    break;
+                case 'order':
+                    $filters->orderby = $value;
+                    break;
+            }
+        }
+
+        $members = new Members($filters);
+
+        $members_list = array();
+        if ($this->login->isAdmin() || $this->login->isStaff()) {
+            $members_list = $members->getMembersList(true);
+        } else {
+            $members_list = $members->getManagedMembersList(true);
+        }
+
+        $groups = new Groups($this->zdb, $this->login);
+        $groups_list = $groups->getList();
+
+        //assign pagination variables to the template and add pagination links
+        $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
+        $filters->setViewCommonsFilters($this->preferences, $this->view->getSmarty());
+
+        $this->session->filter_members = $filters;
+
+        // display page
+        $this->view->render(
+            $response,
+            'gestion_adherents.tpl',
+            array(
+                'page_title'            => _T("Members management"),
+                'require_dialog'        => true,
+                'require_calendar'      => true,
+                'require_mass'          => true,
+                'members'               => $members_list,
+                'filter_groups_options' => $groups_list,
+                'nb_members'            => $members->getCount(),
+                'filters'               => $filters,
+                'adv_filters'           => $filters instanceof AdvancedMembersList
+            )
+        );
+        return $response;
+    }
+
+    /**
      * CSV exports
      *
      * @param Request  $request  PSR Request
@@ -174,5 +244,82 @@ class MembersController extends AbstractController
         }
 
         return $response;
+    }
+
+    /**
+     * Batch actions handler
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return void
+     */
+    public function handleBatch(Request $request, Response $response)
+    {
+        $post = $request->getParsedBody();
+
+        if (isset($post['member_sel'])) {
+            if (isset($this->session->filter_members)) {
+                $filters = $this->session->filter_members;
+            } else {
+                $filters = new MembersList();
+            }
+
+            $filters->selected = $post['member_sel'];
+            $this->session->filter_members = $filters;
+
+            if (isset($post['cards'])) {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('pdf-members-cards'));
+            }
+
+            if (isset($post['labels'])) {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('pdf-members-labels'));
+            }
+
+            if (isset($post['mailing'])) {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('mailing') . '?new=new');
+            }
+
+            if (isset($post['attendance_sheet'])) {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('attendance_sheet_details'));
+            }
+
+            if (isset($post['csv'])) {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('csv-memberslist'));
+            }
+
+            if (isset($post['delete'])) {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('removeMembers'));
+            }
+
+            if (isset($post['masschange'])) {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('masschangeMembers'));
+            }
+
+            throw new \RuntimeException('Does not know what to batch :(');
+        } else {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("No member was selected, please check at least one name.")
+            );
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('members'));
+        }
     }
 }

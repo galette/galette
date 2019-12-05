@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2014-2018 The Galette Team
+ * Copyright © 2014-2019 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2014-2018 The Galette Team
+ * @copyright 2014-2019 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -50,14 +50,11 @@ use Galette\Entity\Contribution;
 use Galette\Repository\Groups;
 use Galette\Repository\Reminders;
 use Galette\Entity\Adherent;
-use Galette\IO\PdfMembersCards;
-use Galette\IO\PdfMembersLabels;
 use Galette\IO\Csv;
 use Galette\IO\CsvOut;
 use Galette\Entity\Status;
 use Galette\Repository\Titles;
 use Galette\Entity\Texts;
-use Galette\IO\Pdf;
 use Galette\Core\MailingHistory;
 use Galette\Entity\Group;
 use Galette\IO\File;
@@ -171,72 +168,8 @@ $app->get(
 //members list
 $app->get(
     '/members[/{option:page|order}/{value:\d+}]',
-    function ($request, $response, $args = []) {
-        $option = null;
-        if (isset($args['option'])) {
-            $option = $args['option'];
-        }
-        $value = null;
-        if (isset($args['value'])) {
-            $value = $args['value'];
-        }
-
-        if (isset($this->session->filter_members)) {
-            $filters = $this->session->filter_members;
-        } else {
-            $filters = new MembersList();
-        }
-
-        if ($option !== null) {
-            switch ($option) {
-                case 'page':
-                    $filters->current_page = (int)$value;
-                    break;
-                case 'order':
-                    $filters->orderby = $value;
-                    break;
-            }
-        }
-
-        $members = new Members($filters);
-
-        $members_list = array();
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
-            $members_list = $members->getMembersList(true);
-        } else {
-            $members_list = $members->getManagedMembersList(true);
-        }
-
-        $groups = new Groups($this->zdb, $this->login);
-        $groups_list = $groups->getList();
-
-        //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
-        $filters->setViewCommonsFilters($this->preferences, $this->view->getSmarty());
-
-        $this->session->filter_members = $filters;
-
-        // display page
-        $this->view->render(
-            $response,
-            'gestion_adherents.tpl',
-            array(
-                'page_title'            => _T("Members management"),
-                'require_dialog'        => true,
-                'require_calendar'      => true,
-                'require_mass'          => true,
-                'members'               => $members_list,
-                'filter_groups_options' => $groups_list,
-                'nb_members'            => $members->getCount(),
-                'filters'               => $filters,
-                'adv_filters'           => $filters instanceof AdvancedMembersList
-            )
-        );
-        return $response;
-    }
-)->setName(
-    'members'
-)->add($authenticate);
+    MembersController::class . '::list'
+)->setName('members')->add($authenticate);
 
 //members list filtering
 $app->post(
@@ -1474,338 +1407,31 @@ $app->get(
 //Batch actions on members list
 $app->post(
     '/members/batch',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-
-        if (isset($post['member_sel'])) {
-            if (isset($this->session->filter_members)) {
-                $filters = $this->session->filter_members;
-            } else {
-                $filters = new MembersList();
-            }
-
-            $filters->selected = $post['member_sel'];
-            $this->session->filter_members = $filters;
-
-            if (isset($post['cards'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('pdf-members-cards'));
-            }
-
-            if (isset($post['labels'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('pdf-members-labels'));
-            }
-
-            if (isset($post['mailing'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('mailing') . '?new=new');
-            }
-
-            if (isset($post['attendance_sheet'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('attendance_sheet_details'));
-            }
-
-            if (isset($post['csv'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('csv-memberslist'));
-            }
-
-            if (isset($post['delete'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('removeMembers'));
-            }
-
-            if (isset($post['masschange'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('masschangeMembers'));
-            }
-
-            throw new \RuntimeException('Does not know what to batch :(');
-        } else {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("No member was selected, please check at least one name.")
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
-        }
-    }
+    MembersController::class . '::handleBatch'
 )->setName('batch-memberslist')->add($authenticate);
 
 //PDF members cards
 $app->get(
     '/members/cards[/{' . Adherent::PK . ':\d+}]',
-    function ($request, $response, $args) {
-        if ($this->session->filter_members) {
-            $filters =  $this->session->filter_members;
-        } else {
-            $filters = new MembersList();
-        }
-
-        if (isset($args[Adherent::PK])
-            && $args[Adherent::PK] > 0
-        ) {
-            $id_adh = $args[Adherent::PK];
-            $denied = false;
-            if ($this->login->id != $id_adh
-                && !$this->login->isAdmin()
-                && !$this->login->isStaff()
-                && !$this->login->isGroupManager()
-            ) {
-                $denied = true;
-            }
-
-            if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->login->id != $id_adh) {
-                if ($this->login->isGroupManager()) {
-                    $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
-                    //check if current logged in user can manage loaded member
-                    $groups = $adh->groups;
-                    $can_manage = false;
-                    foreach ($groups as $group) {
-                        if ($this->login->isGroupManager($group->getId())) {
-                            $can_manage = true;
-                            break;
-                        }
-                    }
-                    if ($can_manage !== true) {
-                        Analog::log(
-                            'Logged in member ' . $this->login->login .
-                            ' has tried to load member #' . $adh->id .
-                            ' but do not manage any groups he belongs to.',
-                            Analog::WARNING
-                        );
-                        $denied = true;
-                    }
-                } else {
-                    $denied = true;
-                }
-            }
-
-            if ($denied) {
-                //requested member cannot be managed. Load logged in user
-                $id_adh = (int)$this->login->id;
-            }
-
-            //check if member is up to date
-            if ($this->login->id == $id_adh) {
-                $adh = new Adherent($this->zdb, (int)$id_adh, ['dues' => true]);
-                if (!$adh->isUp2Date()) {
-                    Analog::log(
-                        'Member ' . $id_adh . ' is not up to date; cannot get his PDF member card',
-                        Analog::WARNING
-                    );
-                    return $response
-                        ->withStatus(301)
-                        ->withHeader('Location', $this->router->pathFor('slash'));
-                }
-            }
-
-            // If we are called from a member's card, get unique id value
-            $unique = $id_adh;
-        } else {
-            if (count($filters->selected) == 0) {
-                Analog::log(
-                    'No member selected to generate members cards',
-                    Analog::INFO
-                );
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("No member was selected, please check at least one name.")
-                );
-
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('members'));
-            }
-        }
-
-        // Fill array $selected with selected ids
-        $selected = array();
-        if (isset($unique) && $unique) {
-            $selected[] = $unique;
-        } else {
-            $selected = $filters->selected;
-        }
-
-        $m = new Members();
-        $members = $m->getArrayList(
-            $selected,
-            array('nom_adh', 'prenom_adh'),
-            true
-        );
-
-        if (!is_array($members) || count($members) < 1) {
-            Analog::log(
-                'An error has occurred, unable to get members list.',
-                Analog::ERROR
-            );
-
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Unable to get members list.")
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
-        }
-
-        $pdf = new PdfMembersCards($this->preferences);
-        $pdf->drawCards($members);
-
-        $response = $this->response->withHeader('Content-type', 'application/pdf')
-                ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
-        $response->write($pdf->download());
-        return $response;
-    }
+    PdfController::class . '::pdfCard'
 )->setName('pdf-members-cards')->add($authenticate);
 
 //PDF members labels
 $app->get(
     '/members/labels',
-    function ($request, $response) {
-        $get = $request->getQueryParams();
-
-        if ($this->session->filter_reminders_labels) {
-            $filters =  $this->session->filter_reminders_labels;
-            unset($this->session->filter_reminders_labels);
-        } elseif ($this->session->filter_members) {
-            $filters =  $this->session->filter_members;
-        } else {
-            $filters = new MembersList();
-        }
-
-        $members = null;
-        if (isset($get['from'])
-            && $get['from'] === 'mailing'
-        ) {
-            //if we're from mailing, we have to retrieve
-            //its unreachables members for labels
-            $mailing = $this->session->mailing;
-            $members = $mailing->unreachables;
-        } else {
-            if (count($filters->selected) == 0) {
-                Analog::log('No member selected to generate labels', Analog::INFO);
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("No member was selected, please check at least one name.")
-                );
-
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('members'));
-            }
-
-            $m = new Members();
-            $members = $m->getArrayList(
-                $filters->selected,
-                array('nom_adh', 'prenom_adh')
-            );
-        }
-
-        if (!is_array($members) || count($members) < 1) {
-            Analog::log(
-                'An error has occurred, unable to get members list.',
-                Analog::ERROR
-            );
-
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Unable to get members list.")
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
-        }
-
-        $pdf = new PdfMembersLabels($this->preferences);
-        $pdf->drawLabels($members);
-        $response = $this->response->withHeader('Content-type', 'application/pdf')
-                ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
-        $response->write($pdf->download());
-        return $response;
-    }
+    PdfController::class . '::pdfLabel'
 )->setName('pdf-members-labels')->add($authenticate);
 
 //PDF adhesion form
 $app->get(
     '/members/adhesion-form/{' . Adherent::PK . ':\d+}',
-    function ($request, $response, $args) {
-        $id_adh = (int)$args[Adherent::PK];
-
-        $denied = false;
-        if ($this->login->id != $args['id']
-            && !$this->login->isAdmin()
-            && !$this->login->isStaff()
-            && !$this->login->isGroupManager()
-        ) {
-            $denied = true;
-        }
-
-        if (!$this->login->isAdmin() && !$this->login->isStaff() && $this->login->id != $args['id']) {
-            if ($this->login->isGroupManager()) {
-                $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
-                //check if current logged in user can manage loaded member
-                $groups = $adh->groups;
-                $can_manage = false;
-                foreach ($groups as $group) {
-                    if ($this->login->isGroupManager($group->getId())) {
-                        $can_manage = true;
-                        break;
-                    }
-                }
-                if ($can_manage !== true) {
-                    Analog::log(
-                        'Logged in member ' . $this->login->login .
-                        ' has tried to load member #' . $adh->id .
-                        ' but do not manage any groups he belongs to.',
-                        Analog::WARNING
-                    );
-                    $denied = true;
-                }
-            } else {
-                $denied = true;
-            }
-        }
-
-        if ($denied) {
-            //requested member cannot be managed. Load logged in user
-            $id_adh = (int)$this->login->id;
-        }
-        $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
-
-        $form = $this->preferences->pref_adhesion_form;
-        $pdf = new $form($adh, $this->zdb, $this->preferences);
-        $response = $this->response->withHeader('Content-type', 'application/pdf')
-            ->withHeader('Content-Disposition', 'attachment; filename="' . $pdf->getFileName() . '"');
-        $response->write($pdf->download());
-        return $response;
-    }
+    PdfController::class . '::adhesionForm'
 )->setName('adhesionForm')->add($authenticate);
 
 //Empty PDF adhesion form
 $app->get(
     '/members/empty-adhesion-form',
-    function ($request, $response) {
-        $form = $this->preferences->pref_adhesion_form;
-        $pdf = new $form(null, $this->zdb, $this->preferences);
-        $response = $this->response->withHeader('Content-type', 'application/pdf')
-            ->withHeader('Content-Disposition', 'attachment; filename="' . $pdf->getFileName() . '"');
-        $response->write($pdf->download());
-        return $response;
-    }
+    PdfController::class . '::adhesionForm'
 )->setName('emptyAdhesionForm');
 
 //mailing
@@ -2487,73 +2113,7 @@ $app->map(
 
 $app->post(
     '/attendance-sheet',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-
-        if ($this->session->filter_members !== null) {
-            $filters = $this->session->filter_members;
-        } else {
-            $filters = new MembersList();
-        }
-
-        //retrieve selected members
-        $selection = (isset($post['selection']) ) ? $post['selection'] : array();
-
-        $filters->selected = $selection;
-        $this->session->filter_members = $filters;
-
-        if (count($filters->selected) == 0) {
-            Analog::log('No member selected to generate attendance sheet', Analog::INFO);
-            $this->flash->addMessage(
-                'error_detected',
-                _T("No member selected to generate attendance sheet")
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
-        }
-
-        $m = new Members();
-        $members = $m->getArrayList(
-            $filters->selected,
-            array('nom_adh', 'prenom_adh'),
-            true
-        );
-
-        if (!is_array($members) || count($members) < 1) {
-            Analog::log('No member selected to generate attendance sheet', Analog::INFO);
-            $this->flash->addMessage(
-                'error_detected',
-                _T("No member selected to generate attendance sheet")
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
-        }
-
-        $doc_title = _T("Attendance sheet");
-        if (isset($post['sheet_type']) && trim($post['sheet_type']) != '') {
-            $doc_title = $post['sheet_type'];
-        }
-
-        $data = [
-            'doc_title' => $doc_title,
-            'title'     => $post['sheet_title'] ?? null,
-            'subtitle'  => $post['sheet_sub_title'] ?? null,
-            'sheet_date'=> $post['sheet_date'] ?? null
-        ];
-        $pdf = new Galette\IO\PdfAttendanceSheet($this->zdb, $this->preferences, $data);
-        //with or without images?
-        if (isset($post['sheet_photos']) && $post['sheet_photos'] === '1') {
-            $pdf->withImages();
-        }
-        $pdf->drawSheet($members);
-        $response = $this->response->withHeader('Content-type', 'application/pdf');
-        $response->write($pdf->Output(_T("attendance_sheet") . '.pdf', 'D'));
-        return $response;
-    }
+    PdfController::class . '::attendanceSheet'
 )->setName('attendance_sheet')->add($authenticate);
 
 $app->post(

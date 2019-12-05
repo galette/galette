@@ -73,6 +73,7 @@ class PdfMembersLabels extends Pdf
         $this->filename = _T('labels_print_filename') . '.pdf';
         $this->init();
     }
+
     /**
      * Initialize PDF
      *
