@@ -57,46 +57,66 @@ use Slim\Http\Response;
 abstract class AbstractController
 {
     private $container;
+    /**
+     * @Inject
+     * @var Galette\Core\Db
+     */
     protected $zdb;
+    /**
+     * @Inject
+     * @var Galette\Core\Login
+     */
     protected $login;
+    /**
+     * @Inject
+     * @var Galette\Core\Preferences
+     */
     protected $preferences;
-    protected $logo;
-    protected $print_logo;
+    /**
+     * @Inject
+     * @var Slim\Views\Smarty
+     */
     protected $view;
+    /**
+     * @Inject
+     * @var Galette\Core\Plugins
+     */
     protected $plugins;
+    /**
+     * @Inject
+     * @var Slim\Router
+     */
     protected $router;
+    /**
+     * @Inject
+     * @var Galette\Core\History
+     */
     protected $history;
+    /**
+     * @Inject
+     * @var Galette\Core\I18n
+     */
     protected $i18n;
+    /**
+     * @Inject("session")
+     */
     protected $session;
+    /**
+     * @Inject
+     * @var Slim\Flash\Messages
+     */
     protected $flash;
+    /**
+     * @Inject
+     * @var Galette\Entity\FieldsConfig
+     */
     protected $fields_config;
-    protected $members_fields;
-    protected $notFoundHandler;
 
     /**
-     * Constructor
-     *
-     * @param ContainerInterface $container Dependencies container
+     * @Inject
+     * @var Galette\Handlers\NotFound
      */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-        $this->zdb = $container->get('zdb');
-        $this->login = $container->get('login');
-        $this->preferences = $container->get('preferences');
-        $this->logo = $container->get('logo');
-        $this->print_logo = $container->get('print_logo');
-        $this->view = $container->get('view');
-        $this->plugins = $container->get('plugins');
-        $this->router = $container->get('router');
-        $this->history = $container->get('history');
-        $this->i18n = $container->get('i18n');
-        $this->session = $container->get('session');
-        $this->flash = $container->get('flash');
-        $this->fields_config = $container->get('fields_config');
-        $this->members_fields = $container->get('members_fields');
-        $this->notFoundHandler = $container->get('notFoundHandler');
-    }
+    protected $notFoundHandler;
 
     /**
      * Galette redirection workflow
@@ -110,23 +130,19 @@ abstract class AbstractController
      */
     protected function galetteRedirect(Request $request, Response $response, array $args = [])
     {
-        $login = $this->container->get('login');
-        $router = $this->container->get('router');
-        $session = $this->container->get('session');
-
         //reinject flash messages so they're not lost
-        $flashes = $this->container->get('flash')->getMessages();
+        $flashes = $this->flash->getMessages();
         foreach ($flashes as $type => $messages) {
             foreach ($messages as $message) {
                 $this->container->get('flash')->addMessage($type, $message);
             }
         }
 
-        if ($login->isLogged()) {
+        if ($this->login->isLogged()) {
             $urlRedirect = null;
-            if ($session->urlRedirect !== null) {
-                $urlRedirect = $this->getGaletteBaseUrl($request) . $session->urlRedirect;
-                $session->urlRedirect = null;
+            if ($this->session->urlRedirect !== null) {
+                $urlRedirect = $this->getGaletteBaseUrl($request) . $this->session->urlRedirect;
+                $this->session->urlRedirect = null;
             }
 
             if ($urlRedirect !== null) {
@@ -134,29 +150,29 @@ abstract class AbstractController
                     ->withStatus(301)
                     ->withHeader('Location', $urlRedirect);
             } else {
-                if ($login->isSuperAdmin()
-                    || $login->isAdmin()
-                    || $login->isStaff()
+                if ($this->login->isSuperAdmin()
+                    || $this->login->isAdmin()
+                    || $this->login->isStaff()
                 ) {
                     if (!isset($_COOKIE['show_galette_dashboard'])
                         || $_COOKIE['show_galette_dashboard'] == 1
                     ) {
                         return $response
                             ->withStatus(301)
-                            //Do not use "$router->pathFor('dashboard'))" to prevent translation issues when login
+                            //Do not use "$this->router->pathFor('dashboard'))" to prevent translation issues when login
                             //FIXME: maybe no longer relevant
                             ->withHeader('Location', $this->getGaletteBaseUrl($request) . '/dashboard');
                     } else {
                         return $response
                             ->withStatus(301)
-                            //Do not use "$router->pathFor('members'))" to prevent translation issues when login
+                            //Do not use "$this->router->pathFor('members'))" to prevent translation issues when login
                             //FIXME: maybe no longer relevant
                             ->withHeader('Location', $this->getGaletteBaseUrl($request) . '/members');
                     }
                 } else {
                     return $response
                         ->withStatus(301)
-                        //Do not use "$router->pathFor('me'))" to prevent translation issues when login
+                        //Do not use "$this->router->pathFor('me'))" to prevent translation issues when login
                         //FIXME: maybe no longer relevant
                         ->withHeader('Location', $this->getGaletteBaseUrl($request) . '/dashboard');
                 }
@@ -164,7 +180,7 @@ abstract class AbstractController
         } else {
             return $response
                 ->withStatus(301)
-                //Do not use "$router->pathFor('login'))" to prevent translation issues when login
+                //Do not use "$this->router->pathFor('login'))" to prevent translation issues when login
                 //FIXME: maybe no longer relevant
                 ->withHeader('Location', $this->getGaletteBaseUrl($request) . '/login');
         }

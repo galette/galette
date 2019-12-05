@@ -63,7 +63,12 @@ $container->set('notFoundHandler', function ($c) {
 // -----------------------------------------------------------------------------
 
 // Register Smarty View helper
-$container->set('view', function (ContainerInterface $c) {
+//TODO: old way - to drop
+$container->set(
+    'view',
+    DI\get('Slim\Views\Smarty')
+);
+$container->set('Slim\Views\Smarty', function (ContainerInterface $c) {
     $view = new \Slim\Views\Smarty(
         rtrim(GALETTE_ROOT . GALETTE_TPL_SUBDIR, DIRECTORY_SEPARATOR),
         [
@@ -173,9 +178,12 @@ $container->set('view', function (ContainerInterface $c) {
 });
 
 // Flash messages
-$container->set('flash', function () {
-    return new \Slim\Flash\Messages;
-});
+//TODO: old way - to drop
+$container->set(
+    'flash',
+    DI\get('Slim\Flash\Messages')
+);
+$container->set('Slim\Flash\Messages', DI\autowire());
 
 $container->set('plugins', function (ContainerInterface $c) use ($app) {
     $plugins = new Galette\Core\Plugins();
@@ -186,8 +194,7 @@ $container->set('plugins', function (ContainerInterface $c) use ($app) {
 
 $container->set(
     'i18n',
-    \DI\create('Galette\Core\I18n')->constructor($_GET['ui_pref_lang'] ?? false)
-    //\DI\create('Galette\Core\I18n')->constructor('app.log', DI\get('log.level'), DI\get('FileWriter')),
+    \DI\autowire('Galette\Core\I18n')->constructor($_GET['ui_pref_lang'] ?? false)
 );
 
 /*$container->set('i18n', \DI\value(function ($c) {
@@ -199,16 +206,30 @@ $container->set(
     return $i18n;
 }));*/
 
-$container->set('zdb', function ($c) {
+//TODO: old way - to drop
+$container->set(
+    'zdb',
+    DI\get('Galette\Core\Db')
+);
+$container->set('Galette\Core\Db', DI\autowire());
+/*$container->set('zdb', function ($c) {
     $zdb = new Galette\Core\Db();
     return $zdb;
-});
+});*/
 
-$container->set('preferences', function (\Galette\Core\Db $zdb) {
-    return new Galette\Core\Preferences($zdb);
-});
+//TODO: old way - to drop
+$container->set(
+    'preferences',
+    DI\get('Galette\Core\Preferences')
+);
+$container->set('Galette\Core\Preferences', DI\autowire());
 
-$container->set('login', function (ContainerInterface $c) {
+//TODO: old way - to drop
+$container->set(
+    'login',
+    DI\get('Galette\Core\Login')
+);
+$container->set('Galette\Core\Login', function (ContainerInterface $c) {
     $login = $c->get('session')->login;
     if (!$login) {
         $login = new Galette\Core\Login(
@@ -225,21 +246,32 @@ $container->set('session', function ($c) {
     return $session;
 });
 
+//TODO: old way - to drop
 $container->set(
     'logo',
     DI\get('Galette\Core\Logo')
 );
-$container->set('Galette\Core\Logo', function ($c) {
+/*$container->set('Galette\Core\Logo', function ($c) {
     return new Galette\Core\Logo();
-});
+});*/
+$container->set('Galette\Core\Logo', DI\autowire());
 
-$container->set('print_logo', function ($c) {
-    return new Galette\Core\PrintLogo();
-});
+//TODO: old way - to drop
+$container->set(
+    'print_logo',
+    DI\get('Galette\Core\PrintLogo')
+);
+$container->set('Galette\Core\PrintLogo', DI\autowire());
 
-$container->set('history', function (ContainerInterface $c) {
+//TODO: old way - to drop
+$container->set(
+    'history',
+    DI\get('Galette\Core\History')
+);
+$container->set('Galette\Core\History', \DI\autowire());
+/*$container->set('Galette\Core\History', function (ContainerInterface $c) {
     return new Galette\Core\History($c->get('zdb'), $c->get('login'));
-});
+});*/
 
 $container->set('acls', function ($c) {
     $acls = [
@@ -676,7 +708,12 @@ $container->set('logger', function (ContainerInterface $c) {
     return $logger;
 });
 
-$container->set('fields_config', function (ContainerInterface $c) {
+//TODO: old way - to drop
+$container->set(
+    'fields_config',
+    DI\get('Galette\Entity\FieldsConfig')
+);
+$container->set('Galette\Entity\FieldsConfig', function (ContainerInterface $c) {
     $fc = new Galette\Entity\FieldsConfig(
         $c->get('zdb'),
         Galette\Entity\Adherent::TABLE,
@@ -711,7 +748,12 @@ $container->set('cache', function (ContainerInterface $c) {
     return null;
 });
 
-$container->set('translator', function (ContainerInterface $c) {
+//TODO: old way - to drop
+$container->set(
+    'translator',
+    DI\get('Galette\Core\Translator')
+);
+$container->set('Galette\Core\Translator', function (ContainerInterface $c) {
     $translator = new Galette\Core\Translator();
 
     $domains = ['galette'];

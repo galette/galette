@@ -61,6 +61,11 @@ use Galette\IO\MembersCsv;
 class MembersController extends AbstractController
 {
     /**
+     * @Inject("members_fields")
+     */
+    protected $members_fields;
+
+    /**
      * Photos
      *
      * @param Request  $request  PSR Request

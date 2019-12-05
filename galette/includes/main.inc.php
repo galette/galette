@@ -157,25 +157,25 @@ require_once GALETTE_ROOT . 'includes/smarty.inc.php';
  * Authentication middleware
  */
 $authenticate = function ($request, $response, $next) use ($container) {
-    $login = $container->session->login;
+    $login = $container->get('session')->login;
 
     if (!$login || !$login->isLogged()) {
         if ($request->isGet()) {
-            $this->session->urlRedirect = $request->getUri()->getPath();
+            $this->get('session')->urlRedirect = $request->getUri()->getPath();
         }
         Analog::log(
-            'Login required to access ' . $this->session->urlRedirect,
+            'Login required to access ' . $this->get('session')->urlRedirect,
             Analog::DEBUG
         );
-        $this->flash->addMessage('error_detected', _T("Login required"));
+        $this->get('flash')->addMessage('error_detected', _T("Login required"));
         return $response
-            ->withHeader('Location', $this->router->pathFor('slash'));
+            ->withHeader('Location', $this->get('router')->pathFor('slash'));
     } else {
         //check for ACLs
         $cur_route = $request->getAttribute('route')->getName();
 
         //ACLs for plugins
-        $acls = array_merge($container->acls, $container->plugins->getAcls());
+        $acls = array_merge($container->get('acls'), $container->get('plugins')->getAcls());
         if (isset($acls[$cur_route])) {
             $acl = $acls[$cur_route];
             $go = false;
@@ -229,12 +229,12 @@ $authenticate = function ($request, $response, $next) use ($container) {
                     'Permission denied for route ' . $cur_route . ' for user ' . $login->login,
                     Analog::DEBUG
                 );
-                $this->flash->addMessage(
+                $this->get('flash')->addMessage(
                     'error_detected',
                     _T("You do not have permission for requested URL.")
                 );
                 return $response
-                    ->withHeader('Location', $this->router->pathFor('slash'));
+                    ->withHeader('Location', $this->get('router')->pathFor('slash'));
             }
         } else {
             throw new \RuntimeException(
@@ -260,15 +260,15 @@ $navMiddleware = function ($request, $response, $next) use ($container) {
     //$route_name = $route->getName();
     $args = $route->getArguments();
 
-    if (isset($this->session->filter_members)) {
-        $filters =  $this->session->filter_members;
+    if (isset($this->get('session')->filter_members)) {
+        $filters =  $this->get('session')->filter_members;
     } else {
         $filters = new Galette\Filters\MembersList();
     }
 
-    if ($this->login->isAdmin()
-        || $this->login->isStaff()
-        || $this->login->isGroupManager()
+    if ($this->get('login')->isAdmin()
+        || $this->get('login')->isStaff()
+        || $this->get('login')->isGroupManager()
     ) {
         $m = new Galette\Repository\Members($filters);
         $ids = $m->getList(false, array(Galette\Entity\Adherent::PK, 'nom_adh', 'prenom_adh'));
@@ -290,7 +290,7 @@ $navMiddleware = function ($request, $response, $next) use ($container) {
             }
         }
     }
-    $this->view->getSmarty()->assign('navigate', $navigate);
+    $this->get('view')->getSmarty()->assign('navigate', $navigate);
 
     return $next($request, $response);
 };
@@ -339,11 +339,11 @@ $app->add(function ($request, $response, $next) use ($i18n) {
         $route_name = $route->getName();
         $arguments = $route->getArguments();
 
-        $this->i18n->changeLanguage($get['ui_pref_lang']);
-        $this->session->i18n = $this->i18n;
+        $this->get('i18n')->changeLanguage($get['ui_pref_lang']);
+        $this->get('session')->i18n = $this->get('i18n');
 
         return $response->withRedirect(
-            $this->router->pathFor(
+            $this->get('router')->pathFor(
                 $route_name,
                 $arguments
             ),
@@ -354,11 +354,11 @@ $app->add(function ($request, $response, $next) use ($i18n) {
 });
 
 //Telemetry update middleware
-$app->add(function ($request, $response, $next, Db $zdb) {
+$app->add(function ($request, $response, $next) {
     $telemetry = new \Galette\Util\Telemetry(
-        $zdb,
-        $this->preferences,
-        $this->plugins
+        $this->get('zdb'),
+        $this->get('preferences'),
+        $this->get('plugins')
     );
     if ($telemetry->isSent()) {
         try {
@@ -426,9 +426,9 @@ $app->add(function ($request, $response, $next) {
     $route_info = $request->getAttribute('routeInfo');
 
     if ($route != null) {
-        $this->view->getSmarty()->assign('cur_route', $route->getName());
+        $this->get('view')->getSmarty()->assign('cur_route', $route->getName());
         if ($route_info != null && is_array($route_info[2])) {
-            $this->view->getSmarty()->assign('cur_subroute', array_shift($route_info[2]));
+            $this->get('view')->getSmarty()->assign('cur_subroute', array_shift($route_info[2]));
         }
     }
 
@@ -467,7 +467,7 @@ $app->add(function ($request, $response, $next) {
             Analog::log($msg, Analog::ERROR);
             //FIXME: with flash(), message is only shown on the seconde round,
             //with flashNow(), thas just does not work :(
-            $this->flash->addMessage('error_detected', $msg);
+            $this->get('flash')->addMessage('error_detected', $msg);
         }
     }
 

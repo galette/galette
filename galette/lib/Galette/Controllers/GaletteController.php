@@ -77,25 +77,27 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
+     * @param Logo     $logo     Logo instance
      *
      * @return void
      */
-    public function logo(Request $request, Response $response)
+    public function logo(Request $request, Response $response, \galette\Core\Logo $logo)
     {
-        return $this->logo->display($response);
+        return $logo->display($response);
     }
 
     /**
      * Print logo route
      *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
+     * @param Request   $request  PSR Request
+     * @param Response  $response PSR Response
+     * @param PrintLogo $logo     Print logo instance
      *
      * @return void
      */
-    public function printLogo(Request $request, Response $response)
+    public function printLogo(Request $request, Response $response, \Galette\Core\PrintLogo $logo)
     {
-        return $this->print_logo->display($response);
+        return $logo->display($response);
     }
 
     /**
@@ -103,10 +105,11 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
+     * @param Plugins  $plugins  Plugins instance
      *
      * @return void
      */
-    public function sysInfos(Request $request, Response $response)
+    public function sysInfos(Request $request, Response $response, \Galette\Core\Plugins $plugins)
     {
         $sysinfos = new SysInfos();
         $sysinfos->grab();
