@@ -823,4 +823,1074 @@ class GaletteController extends AbstractController
         );
         return $response;
     }
+
+    /**
+     * Dynamic fields translations
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function dynamicTranslations(Request $request, Response $response, array $args = []) :Response
+    {
+        $text_orig = '';
+        if (isset($args['text_orig'])) {
+            $text_orig = $args['text_orig'];
+        } elseif (isset($_GET['text_orig'])) {
+            $text_orig = $_GET['text_orig'];
+        }
+
+        $params = [
+            'page_title'    => _T("Translate labels")
+        ];
+
+        $nb_fields = 0;
+        try {
+            $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
+            $select->columns(
+                array('nb' => new Zend\Db\Sql\Expression('COUNT(text_orig)'))
+            );
+            $results = $this->zdb->execute($select);
+            $result = $results->current();
+            $nb_fields = $result->nb;
+        } catch (Exception $e) {
+            Analog::log(
+                'An error occurred counting l10n entries | ' .
+                $e->getMessage(),
+                Analog::WARNING
+            );
+        }
+
+        if (is_numeric($nb_fields) && $nb_fields > 0) {
+            try {
+                $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
+                $select->quantifier('DISTINCT')->columns(
+                    array('text_orig')
+                )->order('text_orig');
+
+                $all_texts = $this->zdb->execute($select);
+
+                $orig = array();
+                foreach ($all_texts as $idx => $row) {
+                    $orig[] = $row->text_orig;
+                }
+                $exists = true;
+                if ($text_orig == '') {
+                    $text_orig = $orig[0];
+                } elseif (!in_array($text_orig, $orig)) {
+                    $exists = false;
+                    $this->flash->addMessage(
+                        'error_detected',
+                        str_replace(
+                            '%s',
+                            $text_orig,
+                            _T("No translation for '%s'!<br/>Please fill and submit above form to create it.")
+                        )
+                    );
+                }
+
+                $trans = array();
+                /**
+                * FIXME : it would be faster to get all translations at once
+                * for a specific string
+                */
+                foreach ($this->i18n->getList() as $l) {
+                    $text_trans = getDynamicTranslation($text_orig, $l->getLongID());
+                    $lang_name = $l->getName();
+                    $trans[] = array(
+                        'key'  => $l->getLongID(),
+                        'name' => ucwords($lang_name),
+                        'text' => $text_trans
+                    );
+                }
+
+                $params['exists'] = $exists;
+                $params['orig'] = $orig;
+                $params['trans'] = $trans;
+            } catch (\Exception $e) {
+                Analog::log(
+                    'An error occurred retrieving l10n entries | ' .
+                    $e->getMessage(),
+                    Analog::WARNING
+                );
+            }
+        }
+
+        $params['text_orig'] = $text_orig;
+
+        // display page
+        $this->view->render(
+            $response,
+            'traduire_libelles.tpl',
+            $params
+        );
+        return $response;
+    }
+
+    /**
+     * Do dynamic fields translations
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function doDynamicTranslations(Request $request, Response $response) :Response
+    {
+        $post = $request->getParsedBody();
+        $error_detected = false;
+
+        if (isset($post['trans']) && isset($post['text_orig'])) {
+            if (isset($_POST['new']) && $_POST['new'] == 'true') {
+                //create translation if it does not exists yet
+                $res = addDynamicTranslation(
+                    $post['text_orig']
+                );
+            }
+
+            // Validate form
+            foreach ($post as $key => $value) {
+                if (substr($key, 0, 11) == 'text_trans_') {
+                    $trans_lang = substr($key, 11);
+                    $trans_lang = str_replace('_utf8', '.utf8', $trans_lang);
+                    $res = updateDynamicTranslation(
+                        $post['text_orig'],
+                        $trans_lang,
+                        $value
+                    );
+                    if ($res !== true) {
+                        $error_detected = true;
+                        $this->flash->addMessage(
+                            'error_detected',
+                            preg_replace(
+                                array(
+                                    '/%label/',
+                                    '/%lang/'
+                                ),
+                                array(
+                                    $post['text_orig'],
+                                    $trans_lang
+                                ),
+                                _T("An error occurred saving label `%label` for language `%lang`")
+                            )
+                        );
+                    }
+                }
+            }
+
+            if ($error_detected === false) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    _T("Labels has been sucessfully translated!")
+                );
+            }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor(
+                'dynamicTranslations',
+                ['text_orig' => $post['text_orig']]
+            ));
+    }
+
+    /**
+     * Coe fields configuration page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function configureCoreFields(Request $request, Response $response) :Response
+    {
+        $fc = $this->fields_config;
+
+        $params = [
+            'page_title'            => _T("Fields configuration"),
+            'time'                  => time(),
+            'categories'            => FieldsCategories::getList($this->zdb),
+            'categorized_fields'    => $fc->getCategorizedFields(),
+            'non_required'          => $fc->getNonRequired(),
+            'require_dialog'        => true,
+            'require_sorter'        => true
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'config_fields.tpl',
+            $params
+        );
+        return $response;
+    }
+
+    /**
+     * Process core fields configuration
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function storeCoreFieldsConfig(Request $request, Response $response) :Response
+    {
+        $post = $request->getParsedBody();
+        $fc = $this->fields_config;
+
+        $pos = 0;
+        $current_cat = 0;
+        $res = array();
+        foreach ($post['fields'] as $abs_pos => $field) {
+            if ($current_cat != $post[$field . '_category']) {
+                //reset position when category has changed
+                $pos = 0;
+                //set new current category
+                $current_cat = $post[$field . '_category'];
+            }
+
+            $required = null;
+            if (isset($post[$field . '_required'])) {
+                $required = $post[$field . '_required'];
+            } else {
+                $required = false;
+            }
+
+            $res[$current_cat][] = array(
+                'field_id'  =>  $field,
+                'label'     =>  $post[$field . '_label'],
+                'category'  =>  $post[$field . '_category'],
+                'visible'   =>  $post[$field . '_visible'],
+                'required'  =>  $required
+            );
+            $pos++;
+        }
+        //okay, we've got the new array, we send it to the
+        //Object that will store it in the database
+        $success = $fc->setFields($res);
+        FieldsCategories::setCategories($this->zdb, $post['categories']);
+        if ($success === true) {
+            $this->flash->addMessage(
+                'success_detected',
+                _T("Fields configuration has been successfully stored")
+            );
+        } else {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("An error occurred while storing fields configuration :(")
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('configureCoreFields'));
+    }
+
+    /**
+     * Dynamic fields configuration page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function configureDynamicFields(Request $request, Response $response, array $args = []) :Response
+    {
+        $form_name = (isset($args['form'])) ? $args['form'] : 'adh';
+        if (isset($_POST['form']) && trim($_POST['form']) != '') {
+            $form_name = $_POST['form'];
+        }
+        $fields = new \Galette\Repository\DynamicFieldsSet($this->zdb, $this->login);
+        $fields_list = $fields->getList($form_name, $this->login);
+
+        $field_type_names = DynamicField::getFieldsTypesNames();
+
+        $params = [
+            'require_tabs'      => true,
+            'require_dialog'    => true,
+            'fields_list'       => $fields_list,
+            'form_name'         => $form_name,
+            'form_title'        => DynamicField::getFormTitle($form_name),
+            'page_title'        => _T("Dynamic fields configuration")
+        ];
+
+        $tpl = 'configurer_fiches.tpl';
+        //Render directly template if we called from ajax,
+        //render in a full page otherwise
+        if ($request->isXhr()
+            || isset($request->getQueryParams()['ajax'])
+            && $request->getQueryParams()['ajax'] == 'true'
+        ) {
+            $tpl = 'configurer_fiche_content.tpl';
+        } else {
+            $all_forms = DynamicField::getFormsNames();
+            $params['all_forms'] = $all_forms;
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            $tpl,
+            $params
+        );
+        return $response;
+    }
+
+    /**
+     * Move dynamic fields
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function moveDynamicField(Request $request, Response $response, array $args = []) :Response
+    {
+        $field_id = (int)$args['id'];
+        $form_name = $args['form'];
+
+        $field = DynamicField::loadFieldType($this->zdb, $field_id);
+        if ($field->move($args['direction'])) {
+            $this->flash->addMessage(
+                'success_detected',
+                _T("Field has been successfully moved")
+            );
+        } else {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("An error occurred moving field :(")
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('configureDynamicFields', ['form' => $form_name]));
+    }
+
+    /**
+     * Dynamic fields removal confirmation
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function removeDynamicField(Request $request, Response $response, array $args = []) :Response
+    {
+        $field = DynamicField::loadFieldType($this->zdb, (int)$args['id']);
+        if ($field === false) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Requested field does not exists!")
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('configureDynamicFields', ['form' => $args['form']]));
+        }
+        $data = [
+            'id'            => $args['id'],
+            'redirect_uri'  => $this->router->pathFor('configureDynamicFields', ['form' => $args['form']])
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'type'          => _T("Dynamic field"),
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => sprintf(
+                    _T('Remove dynamic field %1$s'),
+                    $field->getName()
+                ),
+                'form_url'      => $this->router->pathFor(
+                    'doRemoveDynamicField',
+                    ['form' => $args['form'], 'id' => $args['id']]
+                ),
+                'cancel_uri'    => $this->router->pathFor('configureDynamicFields', ['form' => $args['form']]),
+                'data'          => $data
+            )
+        );
+        return $response;
+    }
+
+    /**
+     * Process dynamic fields removal
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function doRemoveDynamicField(Request $request, Response $response, array $args = []) :Response
+    {
+        $post = $request->getParsedBody();
+        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
+        $success = false;
+
+        $uri = isset($post['redirect_uri']) ?
+            $post['redirect_uri'] :
+            $this->router->pathFor('slash');
+
+        if (!isset($post['confirm'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Removal has not been confirmed!")
+            );
+        } else {
+            $field_id = (int)$args['id'];
+            $field = DynamicField::loadFieldType($this->zdb, $field_id);
+            if ($field->remove()) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    _T('Field has been successfully deleted!')
+                );
+                $success = true;
+            } else {
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T('An error occurred trying to delete field :(')
+                );
+                $success = false;
+            }
+        }
+
+        if (!$ajax) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $uri);
+        } else {
+            return $response->withJson(['success'   => $success]);
+        }
+    }
+
+    /**
+     * Process dynamic fields removal
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function editDynamicField(Request $request, Response $response, array $args = []) :Response
+    {
+        $action = $args['action'];
+
+        $id_dynf = null;
+        if (isset($args['id'])) {
+            $id_dynf = $args['id'];
+        }
+
+        if ($action === 'edit' && $id_dynf === null) {
+            throw new \RuntimeException(
+                _T("Dynamic field ID cannot ben null calling edit route!")
+            );
+        } elseif ($action === 'add' && $id_dynf !== null) {
+             return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor(
+                        'editDynamicField',
+                        [
+                            'action'    => 'add',
+                            'form'      => $arg['form']
+                        ]
+                    )
+                );
+        }
+
+        $form_name = $args['form'];
+
+        $df = null;
+        if ($this->session->dynamicfieldtype) {
+            $df = $this->session->dynamicfieldtype;
+            $this->session->dynamicfieldtype = null;
+        } elseif ($action === 'edit') {
+            $df = DynamicField::loadFieldType($this->zdb, $id_dynf);
+            if ($df === false) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("Unable to retrieve field informations.")
+                );
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('configureDynamicFields'));
+            }
+        }
+
+        $params = [
+            'page_title'    => _T("Edit field"),
+            'action'        => $action,
+            'form_name'     => $form_name,
+            'perm_names'    => DynamicField::getPermsNames(),
+            'mode'          => ($request->isXhr() ? 'ajax' : '')
+        ];
+
+        if ($df !== null) {
+            $params['df'] = $df;
+        }
+        if ($action === 'add') {
+            $params['field_type_names'] = DynamicField::getFieldsTypesNames();
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            'editer_champ.tpl',
+            $params
+        );
+        return $response;
+    }
+
+    /**
+     * Process dynamic fields removal
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function doEditDynamicField(Request $request, Response $response, array $args = []) :Response
+    {
+        $post = $request->getParsedBody();
+
+        $error_detected = [];
+        $warning_detected = [];
+
+        if ($args['action'] === 'add') {
+            $df = DynamicField::getFieldType($this->zdb, $post['field_type']);
+        } else {
+            $field_id = (int)$args['id'];
+            $df = DynamicField::loadFieldType($this->zdb, $field_id);
+        }
+
+        try {
+            $df->store($post);
+            $error_detected = $df->getErrors();
+            $warning_detected = $df->getWarnings();
+        } catch (\Exception $e) {
+            if ($args['action'] === 'edit') {
+                $msg = 'An error occurred storing dynamic field ' . $df->getId() . '.';
+            } else {
+                $msg = 'An error occurred adding new dynamic field.';
+            }
+            Analog::log(
+                $msg . ' | ' .
+                $e->getMessage(),
+                Analog::ERROR
+            );
+            if (GALETTE_MODE == 'DEV') {
+                throw $e;
+            }
+            $error_detected[] = _T('An error occurred adding dynamic field :(');
+        }
+
+        //flash messages
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
+            }
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                _T('Dynamic field has been successfully stored!')
+            );
+        }
+
+        if (count($warning_detected) > 0) {
+            foreach ($warning_detected as $warning) {
+                $this->flash->addMessage(
+                    'warning_detected',
+                    $warning
+                );
+            }
+        }
+
+        //handle redirections
+        if (count($error_detected) > 0) {
+            //something went wrong :'(
+            $this->session->dynamicfieldtype = $df;
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor(
+                        'editDynamicField',
+                        $args
+                    )
+                );
+        } else {
+            if (!$df instanceof \Galette\DynamicFields\Separator
+                && $args['action'] == 'add'
+            ) {
+                return $response
+                    ->withStatus(301)
+                    ->withHeader(
+                        'Location',
+                        $this->router->pathFor(
+                            'editDynamicField',
+                            [
+                                'action'    => 'edit',
+                                'form'      => $args['form'],
+                                'id'        => $df->getId()
+                            ]
+                        )
+                    );
+            }
+
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor(
+                        'configureDynamicFields',
+                        ['form' => $args['form']]
+                    )
+                );
+        }
+    }
+
+    /**
+     * Process dynamic fields removal
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function fakeData(Request $request, Response $response) :Response
+    {
+        $params = [
+            'page_title'            => _T('Generate fake data'),
+            'number_members'        => \Galette\Util\FakeData::DEFAULT_NB_MEMBERS,
+            'number_contrib'        => \Galette\Util\FakeData::DEFAULT_NB_CONTRIB,
+            'number_groups'         => \Galette\Util\FakeData::DEFAULT_NB_GROUPS,
+            'number_transactions'   => \Galette\Util\FakeData::DEFAULT_NB_TRANSACTIONS,
+            'photos'                => \Galette\Util\FakeData::DEFAULT_PHOTOS
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'fake_data.tpl',
+            $params
+        );
+        return $response;
+    }
+
+    /**
+     * Process dynamic fields removal
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function doFakeData(Request $request, Response $response) :Response
+    {
+        $post = $request->getParsedBody();
+
+        $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
+
+        $fakedata->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history,
+            $this->login
+        );
+
+        $fakedata
+            ->setNbMembers($post['number_members'])
+            ->setNbGroups($post['number_groups'])
+            ->setNbTransactions($post['number_transactions'])
+            ->setMaxContribs($post['number_contrib'])
+            ->setWithPhotos(isset($post['photos']));
+
+        $fakedata->generate();
+
+        $report = $fakedata->getReport();
+
+        foreach ($report['success'] as $success) {
+            $this->flash->addMessage(
+                'success_detected',
+                $success
+            );
+        }
+
+        foreach ($report['errors'] as $error) {
+            $this->flash->addMessage(
+                'error_detected',
+                $error
+            );
+        }
+
+        foreach ($report['warnings'] as $warning) {
+            $this->flash->addMessage(
+                'warning_detected',
+                $warning
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('slash'));
+    }
+
+    /**
+     * Administraiton tools page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function adminTools(Request $request, Response $response) :Response
+    {
+        $params = [
+            'page_title'        => _T('Administration tools'),
+            'require_dialog'    => true
+        ];
+
+        $cm = new Galette\Core\CheckModules();
+        $modules_ok = $cm->isValid();
+        if (!$modules_ok) {
+            $this->flash->addMessage(
+                _T("Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation.")
+            );
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            'admintools.tpl',
+            $params
+        );
+        return $response;
+    }
+
+    /**
+     * Process Administration tools
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function doAdminTools(Request $request, Response $response) :Response
+    {
+        $post = $request->getParsedBody();
+
+        $error_detected = [];
+        $success_detected = [];
+
+        if (isset($post['inittexts'])) {
+            //proceed mails texts reinitialization
+            $texts = new Texts($this->texts_fields, $this->preferences);
+            $res = $texts->installInit(false);
+            if ($res === true) {
+                $success_detected[] = _T("Texts has been successfully reinitialized.");
+            } else {
+                $error_detected[] = _T("An error occurred reinitializing texts :(");
+            }
+        }
+
+        if (isset($post['initfields'])) {
+            //proceed fields configuration reinitialization
+            $fc = $this->fields_config;
+            $res = $fc->installInit();
+            if ($res === true) {
+                $success_detected[] = _T("Fields configuration has been successfully reinitialized.");
+            } else {
+                $error_detected[] = _T("An error occurred reinitializing fields configuration :(");
+            }
+        }
+
+        if (isset($post['initpdfmodels'])) {
+            //proceed mails texts reinitialization
+            $models = new PdfModels($this->zdb, $this->preferences, $this->login);
+            $res = $models->installInit($this->pdfmodels_fields, false);
+            if ($res === true) {
+                $success_detected[] = _T("PDF models has been successfully reinitialized.");
+            } else {
+                $error_detected[] = _T("An error occurred reinitializing PDF models :(");
+            }
+        }
+
+        if (isset($post['emptylogins'])) {
+            //proceed empty logins and passwords
+            //those ones cannot be null
+            $members = new Members();
+            $res = $members->emptylogins();
+            if ($res === true) {
+                $success_detected[] = str_replace(
+                    '%i',
+                    $members->getCount(),
+                    _T("Logins and passwords has been successfully filled (%i processed).")
+                );
+            } else {
+                $error_detected[] = _T("An error occurred filling empty logins and passwords :(");
+            }
+        }
+
+        //flash messages
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
+            }
+        }
+        if (count($success_detected) > 0) {
+            foreach ($success_detected as $success) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    $success
+                );
+            }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('adminTools'));
+    }
+
+    /**
+     * History page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function history(Request $request, Response $response, array $args = []) :Response
+    {
+        $option = null;
+        if (isset($args['option'])) {
+            $option = $args['option'];
+        }
+        $value = null;
+        if (isset($args['value'])) {
+            $value = $args['value'];
+        }
+
+        if (isset($this->session->filter_history)) {
+            $filters = $this->session->filter_history;
+        } else {
+            $filters = new HistoryList();
+        }
+
+        if (isset($request->getQueryParams()['nbshow'])) {
+            $filters->show = $request->getQueryParams()['nbshow'];
+        }
+
+        if ($option !== null) {
+            switch ($option) {
+                case 'page':
+                    $filters->current_page = (int)$value;
+                    break;
+                case 'order':
+                    $filters->orderby = $value;
+                    break;
+            }
+        }
+
+        $this->session->filter_history = $filters;
+
+        $this->history->setFilters($filters);
+        $logs = $this->history->getHistory();
+
+        //assign pagination variables to the template and add pagination links
+        $this->history->filters->setSmartyPagination($this->router, $this->view->getSmarty());
+
+        // display page
+        $this->view->render(
+            $response,
+            'history.tpl',
+            array(
+                'page_title'        => _T("Logs"),
+                'logs'              => $logs,
+                'history'           => $this->history,
+                'require_calendar'  => true,
+                'require_dialog'    => true
+            )
+        );
+        return $response;
+    }
+
+    /**
+     * History filtering
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function historyFilter(Request $request, Response $response, array $args = []) :Response
+    {
+        $post = $request->getParsedBody();
+        $error_detected = [];
+
+        if ($this->session->filter_history !== null) {
+            $filters = $this->session->filter_history;
+        } else {
+            $filters = new HistoryList();
+        }
+
+        if (isset($post['clear_filter'])) {
+            $filters->reinit();
+        } else {
+            if ((isset($post['nbshow']) && is_numeric($post['nbshow']))
+            ) {
+                $filters->show = $post['nbshow'];
+            }
+
+            if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
+                try {
+                    if (isset($post['start_date_filter'])) {
+                        $field = _T("start date filter");
+                        $filters->start_date_filter = $post['start_date_filter'];
+                    }
+                    if (isset($post['end_date_filter'])) {
+                        $field = _T("end date filter");
+                        $filters->end_date_filter = $post['end_date_filter'];
+                    }
+                } catch (Exception $e) {
+                    $error_detected[] = $e->getMessage();
+                }
+            }
+
+            if (isset($post['user_filter'])) {
+                $filters->user_filter = $post['user_filter'];
+            }
+
+            if (isset($post['action_filter'])) {
+                $filters->action_filter = $post['action_filter'];
+            }
+        }
+
+        $this->session->filter_history = $filters;
+
+        if (count($error_detected) > 0) {
+            //report errors
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
+            }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('history'));
+    }
+
+    /**
+     * History flush rconfirmation
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function confirmHistoryFlush(Request $request, Response $response, array $args = []) :Response
+    {
+        $data = [
+            'redirect_uri'  => $this->router->pathFor('history')
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'confirm_removal.tpl',
+            array(
+                'mode'          => $request->isXhr() ? 'ajax' : '',
+                'page_title'    => _T('Flush the logs'),
+                'form_url'      => $this->router->pathFor('doFlushHistory'),
+                'cancel_uri'    => $data['redirect_uri'],
+                'data'          => $data
+            )
+        );
+        return $response;
+    }
+
+    /**
+     * History flush
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function flushHistory(Request $request, Response $response, array $args = []) :Response
+    {
+        $post = $request->getParsedBody();
+        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
+        $success = false;
+
+        $uri = isset($post['redirect_uri']) ?
+            $post['redirect_uri'] :
+            $this->router->pathFor('slash');
+
+        if (!isset($post['confirm'])) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Removal has not been confirmed!")
+            );
+        } else {
+            try {
+                $this->history->clean();
+                //reinitialize object after flush
+                $this->history = new History($this->zdb, $this->login);
+                $filters = new HistoryList();
+                $this->session->filter_history = $filters;
+
+                $this->flash->addMessage(
+                    'success_detected',
+                    _T('Logs have been flushed!')
+                );
+                $success = true;
+            } catch (\Exception $e) {
+                $this->zdb->connection->rollBack();
+                Analog::log(
+                    'An error occurred flushing logs | ' . $e->getMessage(),
+                    Analog::ERROR
+                );
+
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T('An error occurred trying to flush logs :(')
+                );
+            }
+        }
+
+        if (!$ajax) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $uri);
+        } else {
+            return $response->withJson(
+                [
+                    'success'   => $success
+                ]
+            );
+        }
+    }
 }

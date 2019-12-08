@@ -110,6 +110,324 @@ class CsvController extends AbstractController
     }
 
     /**
+     * Proceed exports
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function doExport(Request $request, Response $response) :Response
+    {
+        $post = $request->getParsedBody();
+        $csv = new CsvOut();
+        $written = [];
+
+        if (isset($post['export_tables']) && $post['export_tables'] != '') {
+            foreach ($post['export_tables'] as $table) {
+                $select = $this->zdb->sql->select($table);
+                $results = $this->zdb->execute($select);
+
+                if ($results->count() > 0) {
+                    $filename = $table . '_full.csv';
+                    $filepath = CsvOut::DEFAULT_DIRECTORY . $filename;
+                    $fp = fopen($filepath, 'w');
+                    if ($fp) {
+                        $res = $csv->export(
+                            $results,
+                            Csv::DEFAULT_SEPARATOR,
+                            Csv::DEFAULT_QUOTE,
+                            true,
+                            $fp
+                        );
+                        fclose($fp);
+                        $written[] = [
+                            'name' => $table,
+                            'file' => $filename
+                        ];
+                    }
+                } else {
+                    $this->flash->addMessage(
+                        'warning_detected',
+                        str_replace(
+                            '%table',
+                            $table,
+                            _T("Table %table is empty, and has not been exported.")
+                        )
+                    );
+                }
+            }
+        }
+
+        if (isset($post['export_parameted']) && $post['export_parameted'] != '') {
+            foreach ($post['export_parameted'] as $p) {
+                $res = $csv->runParametedExport($p);
+                $pn = $csv->getParamedtedExportName($p);
+                switch ($res) {
+                    case Csv::FILE_NOT_WRITABLE:
+                        $this->flash->addMessage(
+                            'error_detected',
+                            str_replace(
+                                '%export',
+                                $pn,
+                                _T("Export file could not be write on disk for '%export'. Make sure web server can write in the exports directory.")
+                            )
+                        );
+                        break;
+                    case Csv::DB_ERROR:
+                        $this->flash->addMessage(
+                            'error_detected',
+                            str_replace(
+                                '%export',
+                                $pn,
+                                _T("An error occurred running parameted export '%export'.")
+                            )
+                        );
+                        break;
+                    case false:
+                        $this->flash->addMessage(
+                            'error_detected',
+                            str_replace(
+                                '%export',
+                                $pn,
+                                _T("An error occurred running parameted export '%export'. Please check the logs.")
+                            )
+                        );
+                        break;
+                    default:
+                        //no error, file has been writted to disk
+                        $written[] = [
+                            'name' => $pn,
+                            'file' => (string)$res
+                        ];
+                        break;
+                }
+            }
+        }
+
+        if (count($written)) {
+            foreach ($written as $ex) {
+                $path = $this->router->pathFor('getCsv', ['type' => 'export', 'file' => $ex['file']]);
+                $this->flash->addMessage(
+                    'written_exports',
+                    '<a href="' . $path . '">' . $ex['name'] . ' (' . $ex['file'] . ')</a>'
+                );
+            }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('export'));
+    }
+
+    /**
+     * Imports page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function import(Request $request, Response $response) :Response
+    {
+        $csv = new CsvIn($this->zdb);
+        $existing = $csv->getExisting();
+        $dryrun = true;
+
+        // display page
+        $this->view->render(
+            $response,
+            'import.tpl',
+            array(
+                'page_title'        => _T("CSV members import"),
+                'require_dialog'    => true,
+                'existing'          => $existing,
+                'dryrun'            => $dryrun,
+                'import_file'       => $this->flash->getMessage('import_file')[0]
+            )
+        );
+        return $response;
+    }
+
+    /**
+     * Proceed imports
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function doImports(Request $request, Response $response) :Response
+    {
+        $csv = new CsvIn($this->zdb);
+        $post = $request->getParsedBody();
+        $dryrun = isset($post['dryrun']);
+        $res = $csv->import(
+            $this->zdb,
+            $this->preferences,
+            $this->history,
+            $post['import_file'],
+            $this->members_fields,
+            $this->members_fields_cats,
+            $dryrun
+        );
+        if ($res !== true) {
+            if ($res < 0) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $csv->getErrorMessage($res)
+                );
+                if (count($csv->getErrors()) > 0) {
+                    foreach ($csv->getErrors() as $error) {
+                        $this->flash->addMessage(
+                            'error_detected',
+                            $error
+                        );
+                    }
+                }
+            } else {
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("An error occurred importing the file :(")
+                );
+            }
+
+            $this->flash->addMessage(
+                'import_file',
+                $post['import_file']
+            );
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                str_replace(
+                    '%filename%',
+                    $post['import_file'],
+                    _T("File '%filename%' has been successfully imported :)")
+                )
+            );
+        }
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('import'));
+    }
+
+    /**
+     * Get CSV file (imports or exports)
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function uploadImportFile(Request $request, Response $response) :Response
+    {
+        $csv = new CsvIn($this->zdb);
+        if (isset($_FILES['new_file'])) {
+            if ($_FILES['new_file']['error'] === UPLOAD_ERR_OK) {
+                if ($_FILES['new_file']['tmp_name'] !='') {
+                    if (is_uploaded_file($_FILES['new_file']['tmp_name'])) {
+                        $res = $csv->store($_FILES['new_file']);
+                        if ($res < 0) {
+                            $this->flash->addMessage(
+                                'error_detected',
+                                $csv->getErrorMessage($res)
+                            );
+                        } else {
+                            $this->flash->addMessage(
+                                'success_detected',
+                                _T("Your file has been successfully uploaded!")
+                            );
+                        }
+                    }
+                }
+            } elseif ($_FILES['new_file']['error'] !== UPLOAD_ERR_NO_FILE) {
+                Analog::log(
+                    $csv->getPhpErrorMessage($_FILES['new_file']['error']),
+                    Analog::WARNING
+                );
+                $this->flash->addMessage(
+                    'error_detected',
+                    $csv->getPhpErrorMessage(
+                        $_FILES['new_file']['error']
+                    )
+                );
+            } elseif (isset($_POST['upload'])) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("No files has been seleted for upload!")
+                );
+            }
+        } else {
+            $this->flash->addMessage(
+                'warning_detected',
+                _T("No files has been uploaded!")
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('import'));
+    }
+
+    /**
+     * Get CSV file (imports or exports)
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function getFile(Request $request, Response $response, array $args = []) :Response
+    {
+        $filename = $args['file'];
+
+        //Exports main contain user confidential data, they're accessible only for
+        //admins or staff members
+        if ($this->login->isAdmin() || $this->login->isStaff()) {
+            $filepath = $args['type'] === 'export' ?
+                CsvOut::DEFAULT_DIRECTORY :
+                CsvIn::DEFAULT_DIRECTORY;
+            $filepath .= $filename;
+            if (file_exists($filepath)) {
+                $response = $this->response->withHeader('Content-Description', 'File Transfer')
+                    ->withHeader('Content-Type', 'text/csv')
+                    ->withHeader('Content-Disposition', 'attachment;filename="' . $filename . '"')
+                    ->withHeader('Pragma', 'no-cache')
+                    ->withHeader('Content-Transfer-Encoding', 'binary')
+                    ->withHeader('Expires', '0')
+                    ->withHeader('Cache-Control', 'must-revalidate')
+                    ->withHeader('Pragma', 'public');
+
+                $stream = fopen('php://memory', 'r+');
+                fwrite($stream, file_get_contents($filepath));
+                rewind($stream);
+
+                return $response->withBody(new \Slim\Http\Stream($stream));
+            } else {
+                Analog::log(
+                    'A request has been made to get an ' . $args['type'] . ' file named `' .
+                    $filename .'` that does not exists.',
+                    Analog::WARNING
+                );
+                $notFound = $this->notFoundHandler;
+                return $notFound($request, $response);
+            }
+        } else {
+            Analog::log(
+                'A non authorized person asked to retrieve ' . $args['type'] . ' file named `' .
+                $filename . '`. Access has not been granted.',
+                Analog::WARNING
+            );
+            $error = $this->errorHandler;
+            return $error(
+                $request,
+                $response->withStatus(403)
+            );
+        }
+    }
+
+    /**
      * Remove CSV file confirmation (imports or exports)
      *
      * @param Request  $request  PSR Request
