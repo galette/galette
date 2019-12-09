@@ -209,4 +209,19 @@ abstract class AbstractController
         }
         return $url;
     }
+
+    /**
+     * Get route arguments (since not passed in method)
+     *
+     * @param Request $request PSR Request
+     *
+     * @return array
+     */
+    protected function getArgs(Request $request)
+    {
+        //since $args are not apssed :/
+        $route = $request->getAttribute('route');
+        $args = $route->getArguments();
+        return $args;
+    }
 }

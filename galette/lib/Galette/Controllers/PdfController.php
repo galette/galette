@@ -88,6 +88,7 @@ class PdfController extends AbstractController
      */
     public function pdfCard(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         if ($this->session->filter_members) {
             $filters =  $this->session->filter_members;
         } else {
@@ -290,6 +291,7 @@ class PdfController extends AbstractController
      */
     public function adhesionForm(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $id_adh = (int)$args[Adherent::PK] ?? null;
 
         $denied = false;
@@ -347,11 +349,10 @@ class PdfController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function attendanceSheet(Request $request, Response $response, array $args = []) :Response
+    public function attendanceSheet(Request $request, Response $response) :Response
     {
         $post = $request->getParsedBody();
 
@@ -430,6 +431,7 @@ class PdfController extends AbstractController
      */
     public function contribution(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $contribution = new \Galette\Entity\Contribution($this->zdb, $this->login, (int)$args['id']);
         $pdf = new \Galette\IO\PdfContribution($contribution, $this->zdb, $this->preferences);
 
@@ -447,6 +449,7 @@ class PdfController extends AbstractController
      */
     public function group(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $groups = new \Galette\Repository\Groups($this->zdb, $this->login);
 
         $groups_list = null;

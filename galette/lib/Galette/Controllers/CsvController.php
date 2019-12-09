@@ -380,6 +380,7 @@ class CsvController extends AbstractController
      */
     public function getFile(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $filename = $args['file'];
 
         //Exports main contain user confidential data, they're accessible only for
@@ -438,6 +439,7 @@ class CsvController extends AbstractController
      */
     public function confirmRemoveFile(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $data = [
             'id'            => $args['id'],
             'redirect_uri'  => $this->router->pathFor($args['type'])
@@ -479,6 +481,8 @@ class CsvController extends AbstractController
      */
     public function removeFile(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
+
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
         $success = false;
@@ -544,6 +548,8 @@ class CsvController extends AbstractController
      */
     public function pdfCard(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
+
         if ($this->session->filter_members) {
             $filters =  $this->session->filter_members;
         } else {
@@ -746,6 +752,7 @@ class CsvController extends AbstractController
      */
     public function adhesionForm(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $id_adh = (int)$args[Adherent::PK] ?? null;
 
         $denied = false;
@@ -803,11 +810,10 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function attendanceSheet(Request $request, Response $response, array $args = []) :Response
+    public function attendanceSheet(Request $request, Response $response) :Response
     {
         $post = $request->getParsedBody();
 
@@ -886,6 +892,7 @@ class CsvController extends AbstractController
      */
     public function contribution(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $contribution = new \Galette\Entity\Contribution($this->zdb, $this->login, (int)$args['id']);
         $pdf = new \Galette\IO\PdfContribution($contribution, $this->zdb, $this->preferences);
 
@@ -903,6 +910,7 @@ class CsvController extends AbstractController
      */
     public function group(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $groups = new \Galette\Repository\Groups($this->zdb, $this->login);
 
         $groups_list = null;

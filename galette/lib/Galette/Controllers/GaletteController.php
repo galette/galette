@@ -71,6 +71,7 @@ class GaletteController extends AbstractController
      */
     public function slash(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         return $this->galetteRedirect($request, $response, $args);
     }
 
@@ -561,6 +562,7 @@ class GaletteController extends AbstractController
      */
     public function togglePlugin(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         if (GALETTE_MODE !== 'DEMO') {
             $plugins = $this->plugins;
             $action = $args['action'];
@@ -625,6 +627,7 @@ class GaletteController extends AbstractController
      */
     public function initPluginDb(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         if (GALETTE_MODE === 'DEMO') {
             Analog::log(
                 'Trying to access plugin database initialization in DEMO mode.',
@@ -835,6 +838,7 @@ class GaletteController extends AbstractController
      */
     public function dynamicTranslations(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $text_orig = '';
         if (isset($args['text_orig'])) {
             $text_orig = $args['text_orig'];
@@ -1099,6 +1103,7 @@ class GaletteController extends AbstractController
      */
     public function configureDynamicFields(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $form_name = (isset($args['form'])) ? $args['form'] : 'adh';
         if (isset($_POST['form']) && trim($_POST['form']) != '') {
             $form_name = $_POST['form'];
@@ -1150,6 +1155,7 @@ class GaletteController extends AbstractController
      */
     public function moveDynamicField(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $field_id = (int)$args['id'];
         $form_name = $args['form'];
 
@@ -1182,6 +1188,7 @@ class GaletteController extends AbstractController
      */
     public function removeDynamicField(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $field = DynamicField::loadFieldType($this->zdb, (int)$args['id']);
         if ($field === false) {
             $this->flash->addMessage(
@@ -1230,6 +1237,7 @@ class GaletteController extends AbstractController
      */
     public function doRemoveDynamicField(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
         $success = false;
@@ -1281,6 +1289,7 @@ class GaletteController extends AbstractController
      */
     public function editDynamicField(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $action = $args['action'];
 
         $id_dynf = null;
@@ -1361,6 +1370,7 @@ class GaletteController extends AbstractController
      */
     public function doEditDynamicField(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $post = $request->getParsedBody();
 
         $error_detected = [];
@@ -1678,6 +1688,7 @@ class GaletteController extends AbstractController
      */
     public function history(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $option = null;
         if (isset($args['option'])) {
             $option = $args['option'];
@@ -1736,11 +1747,10 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function historyFilter(Request $request, Response $response, array $args = []) :Response
+    public function historyFilter(Request $request, Response $response) :Response
     {
         $post = $request->getParsedBody();
         $error_detected = [];
@@ -1805,11 +1815,10 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function confirmHistoryFlush(Request $request, Response $response, array $args = []) :Response
+    public function confirmHistoryFlush(Request $request, Response $response) :Response
     {
         $data = [
             'redirect_uri'  => $this->router->pathFor('history')
@@ -1835,11 +1844,10 @@ class GaletteController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function flushHistory(Request $request, Response $response, array $args = []) :Response
+    public function flushHistory(Request $request, Response $response) :Response
     {
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';

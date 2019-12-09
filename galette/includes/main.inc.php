@@ -328,7 +328,8 @@ $app->add(function ($request, $response, $next) {
 
 /**
  * Change language middleware
- * TODO: lang is now changed directly at I18n construct
+ *
+ * Require determineRouteBeforeAppMiddleware to be on.
  */
 $app->add(function ($request, $response, $next) use ($i18n) {
     $get = $request->getQueryParams();

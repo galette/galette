@@ -64,9 +64,9 @@ class SlimApp extends \DI\Bridge\Slim\App
     {
         $builder->useAnnotations(true);
         $builder->addDefinitions([
-            'determineRouteBeforeAppMiddleware' => true, //required for ACLs to work
-            'displayErrorDetails'               => (GALETTE_MODE === 'DEV'),
-            'addContentLengthHeader'            => false,
+            'settings.determineRouteBeforeAppMiddleware' => true, //required for ACLs to work
+            'settings.displayErrorDetails'               => (GALETTE_MODE === 'DEV'),
+            'settings.addContentLengthHeader'            => false,
             'galette'                           => [
                 'mode'  => GALETTE_MODE,
                 'logger'                            => [

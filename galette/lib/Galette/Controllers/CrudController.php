@@ -89,6 +89,7 @@ abstract class CrudController extends AbstractController
      */
     public function confirmDelete(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $data = [
             'id'            => $args['id'] ?? null,
             'redirect_uri'  => $this->redirectUri($args)
@@ -159,6 +160,7 @@ abstract class CrudController extends AbstractController
      */
     public function delete(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
         $success = false;

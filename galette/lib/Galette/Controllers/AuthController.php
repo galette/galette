@@ -69,6 +69,7 @@ class AuthController extends AbstractController
      */
     public function login(Request $request, Response $response, array $args = [])
     {
+        $args = $this->getArgs($request);
         //store redirect path if any
         if (isset($args['r'])
             && $args['r'] != '/logout'
@@ -172,6 +173,7 @@ class AuthController extends AbstractController
      */
     public function impersonate(Request $request, Response $response, array $args)
     {
+        $args = $this->getArgs($request);
         $id = (int)$args['id'];
         $success = $this->login->impersonate($id);
 
@@ -211,11 +213,10 @@ class AuthController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments ['id']
      *
      * @return void
      */
-    public function unimpersonate(Request $request, Response $response, array $args)
+    public function unimpersonate(Request $request, Response $response)
     {
         $login = new Login($this->zdb, $this->i18n, $this->session);
         $login->logAdmin($this->preferences->pref_admin_login, $this->preferences);

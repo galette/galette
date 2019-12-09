@@ -78,6 +78,7 @@ class MembersController extends AbstractController
      */
     public function photo(Request $request, Response $response, array $args)
     {
+        $args = $this->getArgs($request);
         $id = (int)$args['id'];
 
         $deps = array(
@@ -133,6 +134,7 @@ class MembersController extends AbstractController
      */
     public function list(Request $request, Response $response, array $args = [])
     {
+        $args = $this->getArgs($request);
         $option = $args['option'] ?? null;
         $value = $args['value'] ?? null;
 

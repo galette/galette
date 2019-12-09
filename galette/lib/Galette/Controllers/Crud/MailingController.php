@@ -42,7 +42,7 @@ use Galette\Controllers\CrudController;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Filters\MailingsList;
-use Galette\Entity\MailingHistory;
+use Galette\Core\MailingHistory;
 use Analog\Analog;
 
 /**
@@ -71,6 +71,7 @@ class MailingController extends CrudController
      */
     public function list(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $option = null;
         if (isset($args['option'])) {
             $option = $args['option'];

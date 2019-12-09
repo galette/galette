@@ -71,6 +71,7 @@ class TitleController extends CrudController
      */
     public function list(Request $request, Response $response, array $args = []) :Response
     {
+        $args = $this->getArgs($request);
         $titles = Titles::getList($this->zdb);
 
         // display page
