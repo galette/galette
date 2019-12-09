@@ -76,7 +76,8 @@ class SlimApp extends \DI\Bridge\Slim\App
                 ]
             ],
             'mode'              => GALETTE_MODE,//TODO: rely on galette.mode
-            'galette.mode'      => GALETTE_MODE
+            'galette.mode'      => GALETTE_MODE,
+            'session'           => \DI\autowire('\RKA\Session')
         ]);
     }
 }

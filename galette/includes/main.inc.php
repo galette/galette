@@ -56,8 +56,30 @@ $needs_update = false;
 /** @ignore */
 require_once GALETTE_ROOT . 'includes/galette.inc.php';
 
+//Session duration
+if (!defined('GALETTE_TIMEOUT')) {
+    //See php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime
+    define('GALETTE_TIMEOUT', 0);
+}
+
+$session_name = '';
+//since PREFIX_DB and NAME_DB are required to properly instanciate sessions,
+// we have to check here if they're assigned
+if ($installer || !defined('PREFIX_DB') || !defined('NAME_DB')) {
+    $session_name = 'install_' . str_replace('.', '_', GALETTE_VERSION);
+} else {
+    $session_name = PREFIX_DB . '_' . NAME_DB . '_' . str_replace('.', '_', GALETTE_VERSION);
+}
+$session_name = 'galette_' . $session_name;
+$session = new \RKA\SessionMiddleware([
+    'name'      => $session_name,
+    'lifetime'  => GALETTE_TIMEOUT
+]);
+$session->start();
+
 //Galette needs database update!
 if ($needs_update) {
+    //$app =  new \Galette\Core\SlimApp();
     $app = new \Slim\App(
         array(
             'templates.path'    => GALETTE_ROOT . 'templates/default/',
@@ -82,70 +104,13 @@ if ($needs_update) {
     $app->run();
     die();
 } else {
-    //$app = \DI\Bridge\Slim\Bridge::create();
-    //$container = /* create your container */;
-    /*$builder = new DI\ContainerBuilder();
-    $builder->addDefinitions([
-        'settings' => [
-            'mode'                              => 'PROD', //Galette mode
-            'determineRouteBeforeAppMiddleware' => true, //required for ACLs to work
-            'displayErrorDetails'               => (GALETTE_MODE === 'DEV'),
-            'addContentLengthHeader'            => false,
-            // monolog settings
-            'logger'                            => [
-                'name'  => 'galette',
-                'level' => \Monolog\Logger::DEBUG,
-                'path'  => GALETTE_LOGS_PATH . '/galette_slim.log',
-            ],
-        ],
-        'mode'      => 'PROD'
-    ]);
-    $dicontainer = $builder->build();*/
     $app =  new \Galette\Core\SlimApp();
-    //$app =  new \Slim\App($dicontainer);
-
-    /*$app = new \Slim\App(
-        [
-            'settings' => [
-                'determineRouteBeforeAppMiddleware' => true,
-                'displayErrorDetails' => (GALETTE_MODE === 'DEV'),
-                'addContentLengthHeader' => false,
-                // monolog settings
-                'logger' => [
-                    'name'  => 'galette',
-                    'level' => \Monolog\Logger::DEBUG,
-                    'path'  => GALETTE_LOGS_PATH . '/galette_slim.log',
-                ],
-            ],
-            'mode'      => 'PROD'
-        ]
-    );*/
 }
 
-//Session duration
-if (!defined('GALETTE_TIMEOUT')) {
-    //See php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime
-    define('GALETTE_TIMEOUT', 0);
-}
+$app->add($session);
 
 $plugins = new Galette\Core\Plugins();
 $plugins->autoload(GALETTE_PLUGINS_PATH);
-
-$session_name = '';
-//since PREFIX_DB and NAME_DB are required to properly instanciate sessions,
-// we have to check here if they're assigned
-if ($installer || !defined('PREFIX_DB') || !defined('NAME_DB')) {
-    $session_name = 'install_' . str_replace('.', '_', GALETTE_VERSION);
-} else {
-    $session_name = PREFIX_DB . '_' . NAME_DB . '_' . str_replace('.', '_', GALETTE_VERSION);
-}
-$session_name = 'galette_' . $session_name;
-$session = new \RKA\SessionMiddleware([
-    'name'      => $session_name,
-    'lifetime'  => GALETTE_TIMEOUT
-]);
-$app->add($session);
-$session->start();
 
 // Set up dependencies
 require GALETTE_ROOT . '/includes/dependencies.php';

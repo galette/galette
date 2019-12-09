@@ -197,14 +197,14 @@ $container->set(
     \DI\autowire('Galette\Core\I18n')->constructor($_GET['ui_pref_lang'] ?? false)
 );
 
-/*$container->set('i18n', \DI\value(function ($c) {
+$container->set('i18n', function ($c) {
     $i18n = $c->get('session')->i18n;
     if (!$i18n || !$i18n->getId() || $_GET['ui_pref_lang']) {
         $i18n = new Galette\Core\I18n($_GET['ui_pref_lang'] ?? false);
         $c->get('session')->i18n = $i18n;
     }
     return $i18n;
-}));*/
+});
 
 //TODO: old way - to drop
 $container->set(
@@ -241,10 +241,10 @@ $container->set('Galette\Core\Login', function (ContainerInterface $c) {
     return $login;
 });
 
-$container->set('session', function ($c) {
+/*$container->set('session', function ($c) {
     $session = new \RKA\Session();
     return $session;
-});
+});*/
 
 //TODO: old way - to drop
 $container->set(
