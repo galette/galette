@@ -35,7 +35,7 @@
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-13
  */
-define('GALETTE_PHP_MIN', '7.1');
+define('GALETTE_PHP_MIN', '7.2');
 define('SMARTY_VERSION', '3.1.21');
 define('ZEND_VERSION', '2.3.7');
 define('ANALOG_VERSION', '1.0.7');
