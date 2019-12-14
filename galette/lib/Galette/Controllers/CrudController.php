@@ -56,6 +56,32 @@ use Analog\Analog;
 
 abstract class CrudController extends AbstractController
 {
+    // CRUD - Create
+
+    /**
+     * Add page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    abstract public function add(Request $request, Response $response, array $args = []) :Response;
+
+    /**
+     * Add ation
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    abstract public function doAdd(Request $request, Response $response, array $args = []) :Response;
+
+    // /CRUD - Create
+    // CRUD - Read
 
     /**
      * List page
@@ -69,15 +95,17 @@ abstract class CrudController extends AbstractController
     abstract public function list(Request $request, Response $response, array $args = []) :Response;
 
     /**
-     * Add page
+     * List filtering
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    //abstract public function add(Request $request, Response $response, array $args = []) :Response;
+    abstract public function filter(Request $request, Response $response) :Response;
+
+    // /CRUD - Read
+    // CRUD - Update
 
     /**
      * Edit page
@@ -88,10 +116,10 @@ abstract class CrudController extends AbstractController
      *
      * @return Response
      */
-    //abstract public function edit(Request $request, Response $response, array $args = []) :Response;
+    abstract public function edit(Request $request, Response $response, array $args = []) :Response;
 
     /**
-     * Store
+     * Edit action
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
@@ -99,18 +127,10 @@ abstract class CrudController extends AbstractController
      *
      * @return Response
      */
-    //abstract public function store(Request $request, Response $response, array $args = []) :Response;
+    abstract public function doEdit(Request $request, Response $response, array $args = []) :Response;
 
-
-    /**
-     * List filtering
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     *
-     * @return Response
-     */
-    abstract public function filter(Request $request, Response $response) :Response;
+    // /CRUD - Update
+    // CRUD - Delete
 
     /**
      * Removal confirmation
@@ -217,6 +237,7 @@ abstract class CrudController extends AbstractController
                     );
                     $success = true;
                 }
+                $this->zdb->connection->commit();
             } catch (\Exception $e) {
                 $this->zdb->connection->rollBack();
                 Analog::log(
@@ -255,4 +276,5 @@ abstract class CrudController extends AbstractController
      * @return boolean
      */
     abstract protected function doDelete(array $args, array $post);
+    // /CRUD - Delete
 }

@@ -444,39 +444,7 @@ $app->get(
 
 $app->post(
     '/titles',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-        $title = new Title();
-
-        $title->short = $post['short_label'];
-        $title->long = $post['long_label'];
-
-        $res = $title->store($this->zdb);
-
-        if (!$res) {
-            $this->flash->addMessage(
-                'error_detected',
-                preg_replace(
-                    '(%s)',
-                    $title->short,
-                    _T("Title '%s' has not been added!")
-                )
-            );
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                preg_replace(
-                    '(%s)',
-                    $title->short,
-                    _T("Title '%s' has been successfully added.")
-                )
-            );
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('titles'));
-    }
+    Crud\TitleController::class . '::store'
 )->setName('titles')->add($authenticate);
 
 $app->get(
@@ -491,68 +459,12 @@ $app->post(
 
 $app->get(
     '/titles/edit/{id:\d+}',
-    function ($request, $response, $args) {
-        $id = $args['id'];
-        $title = new Title((int)$id);
-
-        // display page
-        $this->get('view')->render(
-            $response,
-            'edit_title.tpl',
-            [
-                'page_title'    => _T("Edit title"),
-                'title'         => $title
-            ]
-        );
-        return $response;
-    }
+    Crud\TitleController::class . '::edit'
 )->setname('editTitle')->add($authenticate);
 
 $app->post(
     '/titles/edit/{id:\d+}',
-    function ($request, $response, $args) {
-        $id = $args['id'];
-        $post = $request->getParsedBody();
-
-        if (isset($post['cancel'])) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('titles'));
-        }
-
-        $title = new Title((int)$id);
-        $title->short = $post['short_label'];
-        $title->long = $post['long_label'];
-        $res = $title->store($this->zdb);
-
-        if (!$res) {
-            $this->flash->addMessage(
-                'error_detected',
-                preg_replace(
-                    '(%s)',
-                    $title->short,
-                    _T("Title '%s' has not been modified!")
-                )
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('editTitle', ['id' => $id]));
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                preg_replace(
-                    '(%s)',
-                    $title->short,
-                    _T("Title '%s' has been successfully modified.")
-                )
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('titles'));
-        }
-    }
+    Crud\TitleController::class . '::store'
 )->setname('editTitle')->add($authenticate);
 
 $app->get(

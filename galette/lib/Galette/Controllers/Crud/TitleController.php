@@ -60,6 +60,40 @@ use Analog\Analog;
 
 class TitleController extends CrudController
 {
+    // CRUD - Create
+
+    /**
+     * Add page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function add(Request $request, Response $response, array $args = []) :Response
+    {
+        //no new page, just to satisfy inheritance
+    }
+
+    /**
+     * Add ation
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function doAdd(Request $request, Response $response, array $args = []) :Response
+    {
+        $args['id'] = null;
+        return $this->store($request, $response, $args);
+    }
+
+    // /CRUD - Create
+    // CRUD - Read
+
     /**
      * Titles list page
      *
@@ -97,8 +131,194 @@ class TitleController extends CrudController
      */
     public function filter(Request $request, Response $response) :Response
     {
-        //FIXME:
+        //no filtering
     }
+
+    // /CRUD - Read
+    // CRUD - Update
+
+    /**
+     * Edit page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function edit(Request $request, Response $response, array $args = []) :Response
+    {
+        $args = $this->getArgs($request);
+        $id = (int)$args['id'];
+        $title = new Title((int)$id);
+
+        // display page
+        $this->view->render(
+            $response,
+            'edit_title.tpl',
+            [
+                'page_title'    => _T("Edit title"),
+                'title'         => $title
+            ]
+        );
+        return $response;
+    }
+
+    /**
+     * Edit action
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function doEdit(Request $request, Response $response, array $args = []) :Response
+    {
+        return $this->store($request, $response, $args);
+    }
+
+    /**
+     * Store
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function store(Request $request, Response $response, array $args = []) :Response
+    {
+        $args = $this->getArgs($request);
+        $id = $args['id'] ?? null;
+        $post = $request->getParsedBody();
+
+        if (isset($post['cancel'])) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->cancelUri());
+        }
+
+        $title = new Title((int)$id);
+        $title->short = $post['short_label'];
+        $title->long = $post['long_label'];
+        $res = $title->store($this->zdb);
+
+        if (!$res) {
+            if ($id === null) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    preg_replace(
+                        '(%s)',
+                        $title->short,
+                        _T("Title '%s' has not been added!")
+                    )
+                );
+            } else {
+                $this->flash->addMessage(
+                    'error_detected',
+                    preg_replace(
+                        '(%s)',
+                        $title->short,
+                        _T("Title '%s' has not been modified!")
+                    )
+                );
+
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('editTitle', ['id' => $id]));
+            }
+        } else {
+            if ($id === null) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    preg_replace(
+                        '(%s)',
+                        $title->short,
+                        _T("Title '%s' has been successfully added.")
+                    )
+                );
+            } else {
+                $this->flash->addMessage(
+                    'success_detected',
+                    preg_replace(
+                        '(%s)',
+                        $title->short,
+                        _T("Title '%s' has been successfully modified.")
+                    )
+                );
+            }
+        }
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->redirectUri());
+
+
+
+
+
+
+
+
+        $ptype = new PaymentType($this->zdb, $id);
+        $ptype->name = $post['name'];
+        $res = $ptype->store();
+
+        if (!$res) {
+            if ($id === null) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    preg_replace(
+                        '(%s)',
+                        $ptype->name,
+                        _T("Payment type '%s' has not been added!")
+                    )
+                );
+            } else {
+                $this->flash->addMessage(
+                    'error_detected',
+                    preg_replace(
+                        '(%s)',
+                        $ptype->name,
+                        _T("Payment type '%s' has not been modified!")
+                    )
+                );
+
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('editPaymentType', ['id' => $id]));
+            }
+        } else {
+            if ($id === null) {
+                $this->flash->addMessage(
+                    'success_detected',
+                    preg_replace(
+                        '(%s)',
+                        $ptype->name,
+                        _T("Payment type '%s' has been successfully added.")
+                    )
+                );
+            } else {
+                $this->flash->addMessage(
+                    'success_detected',
+                    preg_replace(
+                        '(%s)',
+                        $ptype->name,
+                        _T("Payment type '%s' has been successfully modified.")
+                    )
+                );
+            }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->redirectUri());
+    }
+
+
+
+    // /CRUD - Update
+    // CRUD - Delete
 
     /**
      * Get redirection URI
@@ -156,4 +376,6 @@ class TitleController extends CrudController
         $title = new Title((int)$args['id']);
         return $title->remove($this->zdb);
     }
+
+    // /CRUD - Delete
 }

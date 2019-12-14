@@ -60,6 +60,40 @@ use Analog\Analog;
 
 class PaymentTypeController extends CrudController
 {
+    // CRUD - Create
+
+    /**
+     * Add page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function add(Request $request, Response $response, array $args = []) :Response
+    {
+        //no new page, just to satisfy inheritance
+    }
+
+    /**
+     * Add ation
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function doAdd(Request $request, Response $response, array $args = []) :Response
+    {
+        $args['id'] = null;
+        return $this->store($request, $response, $args);
+    }
+
+    // /CRUD - Create
+    // CRUD - Read
+
     /**
      * Mailings history page
      *
@@ -104,76 +138,8 @@ class PaymentTypeController extends CrudController
         //no filters
     }
 
-    /**
-     * Get redirection URI
-     *
-     * @param array $args Route arguments
-     *
-     * @return string
-     */
-    public function redirectUri(array $args = [])
-    {
-        return $this->router->pathFor('paymentTypes');
-    }
-
-    /**
-     * Get form URI
-     *
-     * @param array $args Route arguments
-     *
-     * @return string
-     */
-    public function formUri(array $args = [])
-    {
-        return $this->router->pathFor(
-            'doRemovePaymentType',
-            ['id' => $args['id'] ?? null]
-        );
-    }
-
-    /**
-     * Get confirmation removal page title
-     *
-     * @param array $args Route arguments
-     *
-     * @return string
-     */
-    public function confirmRemoveTitle(array $args = [])
-    {
-        $ptype = new PaymentType($this->zdb, (int)$args['id']);
-        return sprintf(
-            _T('Remove payment type %1$s'),
-            $ptype->getName()
-        );
-    }
-
-    /**
-     * Remove object
-     *
-     * @param array $args Route arguments
-     * @param array $post POST values
-     *
-     * @return boolean
-     */
-    protected function doDelete(array $args, array $post)
-    {
-        $ptype = new PaymentType($this->zdb, (int)$args['id']);
-        return $ptype->remove();
-    }
-
-    /**
-     * Add page
-     *
-     * @param Request  $request  PSR Request
-     * @param Response $response PSR Response
-     * @param array    $args     Request arguments
-     *
-     * @return Response
-     */
-    public function add(Request $request, Response $response, array $args = []) :Response
-    {
-        //FIXME: what to do? Payment types are added from list, there is no "new" page...
-    }
+    // /CRUD - Read
+    // CRUD - Update
 
     /**
      * Edit page
@@ -203,6 +169,20 @@ class PaymentTypeController extends CrudController
     }
 
     /**
+     * Edit action
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function doEdit(Request $request, Response $response, array $args = []) :Response
+    {
+        return $this->store($request, $response, $args);
+    }
+
+    /**
      * Store
      *
      * @param Request  $request  PSR Request
@@ -214,7 +194,7 @@ class PaymentTypeController extends CrudController
     public function store(Request $request, Response $response, array $args = []) :Response
     {
         $args = $this->getArgs($request);
-        $id = $args['id'] ?? null;
+        $id = (isset($args['id']) ? (int)$args['id'] : null);
         $post = $request->getParsedBody();
 
         if (isset($post['cancel'])) {
@@ -277,4 +257,67 @@ class PaymentTypeController extends CrudController
             ->withStatus(301)
             ->withHeader('Location', $this->redirectUri());
     }
+
+
+    // /CRUD - Update
+    // CRUD - Delete
+
+    /**
+     * Get redirection URI
+     *
+     * @param array $args Route arguments
+     *
+     * @return string
+     */
+    public function redirectUri(array $args = [])
+    {
+        return $this->router->pathFor('paymentTypes');
+    }
+
+    /**
+     * Get form URI
+     *
+     * @param array $args Route arguments
+     *
+     * @return string
+     */
+    public function formUri(array $args = [])
+    {
+        return $this->router->pathFor(
+            'doRemovePaymentType',
+            ['id' => $args['id'] ?? null]
+        );
+    }
+
+    /**
+     * Get confirmation removal page title
+     *
+     * @param array $args Route arguments
+     *
+     * @return string
+     */
+    public function confirmRemoveTitle(array $args = [])
+    {
+        $ptype = new PaymentType($this->zdb, (int)$args['id']);
+        return sprintf(
+            _T('Remove payment type %1$s'),
+            $ptype->getName()
+        );
+    }
+
+    /**
+     * Remove object
+     *
+     * @param array $args Route arguments
+     * @param array $post POST values
+     *
+     * @return boolean
+     */
+    protected function doDelete(array $args, array $post)
+    {
+        $ptype = new PaymentType($this->zdb, (int)$args['id']);
+        return $ptype->remove();
+    }
+
+    // CRUD - Delete
 }

@@ -60,6 +60,39 @@ use Analog\Analog;
 
 class MailingController extends CrudController
 {
+    // CRUD - Create
+
+    /**
+     * Add page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function add(Request $request, Response $response, array $args = []) :Response
+    {
+        //TODO
+    }
+
+    /**
+     * Add ation
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function doAdd(Request $request, Response $response, array $args = []) :Response
+    {
+        //TODO
+    }
+
+    // /CRUD - Create
+    // CRUD - Read
+
     /**
      * Mailings history page
      *
@@ -208,6 +241,37 @@ class MailingController extends CrudController
     }
 
     /**
+     * Edit page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function edit(Request $request, Response $response, array $args = []) :Response
+    {
+        //TODO
+    }
+
+    /**
+     * Edit action
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function doEdit(Request $request, Response $response, array $args = []) :Response
+    {
+        //TODO
+    }
+
+    // /CRUD - Update
+    // CRUD - Delete
+
+    /**
      * Get redirection URI
      *
      * @param array $args Route arguments
@@ -262,4 +326,5 @@ class MailingController extends CrudController
         $mailhist = new MailingHistory($this->zdb, $this->login);
         return $mailhist->removeEntries($args['id'], $this->history);
     }
+    // /CRUD - Delete
 }
