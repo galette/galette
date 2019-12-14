@@ -69,6 +69,40 @@ abstract class CrudController extends AbstractController
     abstract public function list(Request $request, Response $response, array $args = []) :Response;
 
     /**
+     * Add page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    //abstract public function add(Request $request, Response $response, array $args = []) :Response;
+
+    /**
+     * Edit page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    //abstract public function edit(Request $request, Response $response, array $args = []) :Response;
+
+    /**
+     * Store
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    //abstract public function store(Request $request, Response $response, array $args = []) :Response;
+
+
+    /**
      * List filtering
      *
      * @param Request  $request  PSR Request

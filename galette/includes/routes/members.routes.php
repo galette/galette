@@ -61,7 +61,7 @@ use Galette\IO\File;
 use Galette\Core\Authentication;
 use Galette\Repository\PaymentTypes;
 use Galette\Repository\SavedSearches;
-use Galette\Controllers\MembersController;
+use Galette\Controllers\Crud;
 
 //self subscription
 $app->get(
@@ -162,153 +162,19 @@ $app->get(
 //members list CSV export
 $app->get(
     '/members/export/csv',
-    MembersController::class . '::csvExport'
+    Crud\MembersController::class . '::csvExport'
 )->setName('csv-memberslist')->add($authenticate);
 
 //members list
 $app->get(
     '/members[/{option:page|order}/{value:\d+}]',
-    MembersController::class . '::list'
+    Crud\MembersController::class . '::list'
 )->setName('members')->add($authenticate);
 
 //members list filtering
 $app->post(
     '/members/filter',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-        if (isset($this->session->filter_members)) {
-            //CAUTION: this one may be simple or advanced, display must change
-            $filters = $this->session->filter_members;
-        } else {
-            $filters = new MembersList();
-        }
-
-        //reintialize filters
-        if (isset($post['clear_filter'])) {
-            $filters = new MembersList();
-        } elseif (isset($post['clear_adv_filter'])) {
-            $this->session->filter_members = null;
-            unset($this->session->filter_members);
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('advanced-search'));
-        } elseif (isset($post['adv_criteria'])) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('advanced-search'));
-        } else {
-            //string to filter
-            if (isset($post['filter_str'])) { //filter search string
-                $filters->filter_str = stripslashes(
-                    htmlspecialchars($post['filter_str'], ENT_QUOTES)
-                );
-            }
-            //field to filter
-            if (isset($post['field_filter'])) {
-                if (is_numeric($post['field_filter'])) {
-                    $filters->field_filter = $post['field_filter'];
-                }
-            }
-            //membership to filter
-            if (isset($post['membership_filter'])) {
-                if (is_numeric($post['membership_filter'])) {
-                    $filters->membership_filter
-                        = $post['membership_filter'];
-                }
-            }
-            //account status to filter
-            if (isset($post['filter_account'])) {
-                if (is_numeric($post['filter_account'])) {
-                    $filters->filter_account = $post['filter_account'];
-                }
-            }
-            //email filter
-            if (isset($post['email_filter'])) {
-                $filters->email_filter = (int)$post['email_filter'];
-            }
-            //group filter
-            if (isset($post['group_filter'])
-                && $post['group_filter'] > 0
-            ) {
-                $filters->group_filter = (int)$post['group_filter'];
-            }
-            //number of rows to show
-            if (isset($post['nbshow'])) {
-                $filters->show = $post['nbshow'];
-            }
-
-            if (isset($post['advanced_filtering'])) {
-                if (!$filters instanceof AdvancedMembersList) {
-                    $filters = new AdvancedMembersList($filters);
-                }
-                //Advanced filters
-                $filters->reinit();
-                unset($post['advanced_filtering']);
-                $freed = false;
-                foreach ($post as $k => $v) {
-                    if (strpos($k, 'free_', 0) === 0) {
-                        if (!$freed) {
-                            $i = 0;
-                            foreach ($post['free_field'] as $f) {
-                                if (trim($f) !== ''
-                                    && trim($post['free_text'][$i]) !== ''
-                                ) {
-                                    $fs_search = $post['free_text'][$i];
-                                    $log_op
-                                        = (int)$post['free_logical_operator'][$i];
-                                    $qry_op
-                                        = (int)$post['free_query_operator'][$i];
-                                    $type = (int)$post['free_type'][$i];
-                                    $fs = array(
-                                        'idx'       => $i,
-                                        'field'     => $f,
-                                        'type'      => $type,
-                                        'search'    => $fs_search,
-                                        'log_op'    => $log_op,
-                                        'qry_op'    => $qry_op
-                                    );
-                                    $filters->free_search = $fs;
-                                }
-                                $i++;
-                            }
-                            $freed = true;
-                        }
-                    } else {
-                        switch ($k) {
-                            case 'contrib_min_amount':
-                            case 'contrib_max_amount':
-                                if (trim($v) !== '') {
-                                    $v = (float)$v;
-                                } else {
-                                    $v = null;
-                                }
-                                break;
-                        }
-                        $filters->$k = $v;
-                    }
-                }
-            }
-        }
-
-        if (isset($post['savesearch'])) {
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->router->pathFor(
-                        'saveSearch',
-                        $post
-                    )
-                );
-        }
-
-        $this->session->filter_members = $filters;
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('members'));
-    }
+    Crud\MembersController::class . '::filter'
 )->setName('filter-memberslist')->add($authenticate);
 
 //members self card
@@ -1158,32 +1024,7 @@ $app->post(
 
 $app->get(
     '/member/remove/{id:\d+}',
-    function ($request, $response, $args) {
-        $adh = new Adherent($this->zdb, (int)$args['id']);
-
-        $data = [
-            'id'            => $args['id'],
-            'redirect_uri'  => $this->router->pathFor('members')
-        ];
-
-        // display page
-        $this->view->render(
-            $response,
-            'confirm_removal.tpl',
-            array(
-                'type'          => _T("Member"),
-                'mode'          => $request->isXhr() ? 'ajax' : '',
-                'page_title'    => sprintf(
-                    _T('Remove member %1$s'),
-                    $adh->sfullname
-                ),
-                'form_url'      => $this->router->pathFor('doRemoveMember', ['id' => $adh->id]),
-                'cancel_uri'    => $this->router->pathFor('members'),
-                'data'          => $data
-            )
-        );
-        return $response;
-    }
+    Crud\MembersController::class . '::confirmDelete'
 )->setName('removeMember')->add($authenticate);
 
 $app->get(
@@ -1407,7 +1248,7 @@ $app->get(
 //Batch actions on members list
 $app->post(
     '/members/batch',
-    MembersController::class . '::handleBatch'
+    Crud\MembersController::class . '::handleBatch'
 )->setName('batch-memberslist')->add($authenticate);
 
 //PDF members cards

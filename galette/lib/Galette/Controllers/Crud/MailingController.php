@@ -249,7 +249,6 @@ class MailingController extends CrudController
         );
     }
 
-
     /**
      * Remove object
      *

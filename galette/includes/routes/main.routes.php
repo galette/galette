@@ -38,7 +38,7 @@
 use Galette\Core\Picture;
 use Galette\Entity\Adherent;
 use Galette\Controllers\GaletteController;
-use Galette\Controllers\MembersController;
+use Galette\Controllers\Crud;
 use Galette\Controllers\AuthController;
 
 //main route
@@ -63,7 +63,7 @@ $app->get(
 //photo route
 $app->get(
     '/photo/{id:\d+}',
-    MembersController::class . '::photo'
+    Crud\MembersController::class . '::photo'
 )->setName('photo');
 
 //system informations

@@ -35,7 +35,9 @@
  * @since     Available since 0.9.4dev - 2019-12-02
  */
 
-namespace Galette\Controllers;
+namespace Galette\Controllers\Crud;
+
+use Galette\Controllers\CrudController;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -60,7 +62,7 @@ use Galette\Repository\Groups;
  * @since     Available since 0.9.4dev - 2019-12-02
  */
 
-class MembersController extends AbstractController
+class MembersController extends CrudController
 {
     /**
      * @Inject("members_fields")
@@ -74,9 +76,9 @@ class MembersController extends AbstractController
      * @param Response $response PSR Response
      * @param array    $args     Request arguments ['id']
      *
-     * @return void
+     * @return Response
      */
-    public function photo(Request $request, Response $response, array $args)
+    public function photo(Request $request, Response $response, array $args) :Response
     {
         $args = $this->getArgs($request);
         $id = (int)$args['id'];
@@ -130,9 +132,9 @@ class MembersController extends AbstractController
      * @param Response $response PSR Response
      * @param array    $args     Request arguments
      *
-     * @return void
+     * @return Response
      */
-    public function list(Request $request, Response $response, array $args = [])
+    public function list(Request $request, Response $response, array $args = []) :Response
     {
         $args = $this->getArgs($request);
         $option = $args['option'] ?? null;
@@ -193,14 +195,230 @@ class MembersController extends AbstractController
     }
 
     /**
+     * Members filtering
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function filter(Request $request, Response $response) :Response
+    {
+        $post = $request->getParsedBody();
+        if (isset($this->session->filter_members)) {
+            //CAUTION: this one may be simple or advanced, display must change
+            $filters = $this->session->filter_members;
+        } else {
+            $filters = new MembersList();
+        }
+
+        //reintialize filters
+        if (isset($post['clear_filter'])) {
+            $filters = new MembersList();
+        } elseif (isset($post['clear_adv_filter'])) {
+            $this->session->filter_members = null;
+            unset($this->session->filter_members);
+
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('advanced-search'));
+        } elseif (isset($post['adv_criteria'])) {
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('advanced-search'));
+        } else {
+            //string to filter
+            if (isset($post['filter_str'])) { //filter search string
+                $filters->filter_str = stripslashes(
+                    htmlspecialchars($post['filter_str'], ENT_QUOTES)
+                );
+            }
+            //field to filter
+            if (isset($post['field_filter'])) {
+                if (is_numeric($post['field_filter'])) {
+                    $filters->field_filter = $post['field_filter'];
+                }
+            }
+            //membership to filter
+            if (isset($post['membership_filter'])) {
+                if (is_numeric($post['membership_filter'])) {
+                    $filters->membership_filter
+                        = $post['membership_filter'];
+                }
+            }
+            //account status to filter
+            if (isset($post['filter_account'])) {
+                if (is_numeric($post['filter_account'])) {
+                    $filters->filter_account = $post['filter_account'];
+                }
+            }
+            //email filter
+            if (isset($post['email_filter'])) {
+                $filters->email_filter = (int)$post['email_filter'];
+            }
+            //group filter
+            if (isset($post['group_filter'])
+                && $post['group_filter'] > 0
+            ) {
+                $filters->group_filter = (int)$post['group_filter'];
+            }
+            //number of rows to show
+            if (isset($post['nbshow'])) {
+                $filters->show = $post['nbshow'];
+            }
+
+            if (isset($post['advanced_filtering'])) {
+                if (!$filters instanceof AdvancedMembersList) {
+                    $filters = new AdvancedMembersList($filters);
+                }
+                //Advanced filters
+                $filters->reinit();
+                unset($post['advanced_filtering']);
+                $freed = false;
+                foreach ($post as $k => $v) {
+                    if (strpos($k, 'free_', 0) === 0) {
+                        if (!$freed) {
+                            $i = 0;
+                            foreach ($post['free_field'] as $f) {
+                                if (trim($f) !== ''
+                                    && trim($post['free_text'][$i]) !== ''
+                                ) {
+                                    $fs_search = $post['free_text'][$i];
+                                    $log_op
+                                        = (int)$post['free_logical_operator'][$i];
+                                    $qry_op
+                                        = (int)$post['free_query_operator'][$i];
+                                    $type = (int)$post['free_type'][$i];
+                                    $fs = array(
+                                        'idx'       => $i,
+                                        'field'     => $f,
+                                        'type'      => $type,
+                                        'search'    => $fs_search,
+                                        'log_op'    => $log_op,
+                                        'qry_op'    => $qry_op
+                                    );
+                                    $filters->free_search = $fs;
+                                }
+                                $i++;
+                            }
+                            $freed = true;
+                        }
+                    } else {
+                        switch ($k) {
+                            case 'contrib_min_amount':
+                            case 'contrib_max_amount':
+                                if (trim($v) !== '') {
+                                    $v = (float)$v;
+                                } else {
+                                    $v = null;
+                                }
+                                break;
+                        }
+                        $filters->$k = $v;
+                    }
+                }
+            }
+        }
+
+        if (isset($post['savesearch'])) {
+            return $response
+                ->withStatus(301)
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor(
+                        'saveSearch',
+                        $post
+                    )
+                );
+        }
+
+        $this->session->filter_members = $filters;
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('members'));
+    }
+
+    /**
+     * Get redirection URI
+     *
+     * @param array $args Route arguments
+     *
+     * @return string
+     */
+    public function redirectUri(array $args = [])
+    {
+        return $this->router->pathFor('members');
+    }
+
+    /**
+     * Get form URI
+     *
+     * @param array $args Route arguments
+     *
+     * @return string
+     */
+    public function formUri(array $args = [])
+    {
+        return $this->router->pathFor(
+            'doRemoveMember',
+            ['id' => (int)$args['id']]
+        );
+    }
+
+    /**
+     * Get confirmation removal page title
+     *
+     * @param array $args Route arguments
+     *
+     * @return string
+     */
+    public function confirmRemoveTitle(array $args = [])
+    {
+        $adh = new Adherent($this->zdb, (int)$args['id']);
+        return sprintf(
+            _T('Remove member %1$s'),
+            $adh->sfullname
+        );
+    }
+
+    /**
+     * Remove object
+     *
+     * @param array $args Route arguments
+     * @param array $post POST values
+     *
+     * @return boolean
+     */
+    protected function doDelete(array $args, array $post)
+    {
+        if (isset($this->session->filter_members)) {
+            $filters =  $this->session->filter_members;
+        } else {
+            $filters = new MembersList();
+        }
+        $members = new Members($filters);
+
+        if (!is_array($post['id'])) {
+            //delete member
+            //$adh = new Adherent($this->zdb, (int)$post['id']);
+            $ids = (array)$post['id'];
+        } else {
+            $ids = $post['id'];
+        }
+
+        return $members->removeMembers($ids);
+    }
+
+    /**
      * CSV exports
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      *
-     * @return void
+     * @return Response
      */
-    public function csvExport(Request $request, Response $response)
+    public function csvExport(Request $request, Response $response) :Response
     {
         if (isset($this->session->filter_members)) {
             //CAUTION: this one may be simple or advanced, display must change
@@ -254,9 +472,9 @@ class MembersController extends AbstractController
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
      *
-     * @return void
+     * @return Response
      */
-    public function handleBatch(Request $request, Response $response)
+    public function handleBatch(Request $request, Response $response) :Response
     {
         $post = $request->getParsedBody();
 
