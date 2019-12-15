@@ -89,7 +89,7 @@ class FakeData
     protected $groups       = [];
     protected $mids         = [];
     protected $transactions = [];
-    protected $titles;
+    protected $titles       = [];
     protected $status;
     protected $contrib_types;
 
@@ -405,10 +405,6 @@ class FakeData
         }
         $creation_date = $faker->dateTimeBetween($startDate = '-3 years', $endDate = 'now');
         $mdp_adh = $faker->password();
-
-        if ($this->titles === null) {
-            $this->titles = Titles::getArrayList($this->zdb);
-        }
 
         if ($this->status === null) {
             $status = new Status($this->zdb);

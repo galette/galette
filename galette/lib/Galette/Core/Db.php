@@ -868,4 +868,40 @@ class Db
 
         return $infos;
     }
+
+    /**
+     * Handle sequence on PostgreSQL
+     *
+     * When inserting a value on a field with a sequence,
+     * this one is not incremented.
+     * This happens when installing system values (for status, titles, ...)
+     *
+     * @see https://bugs.galette.eu/issues/1158
+     * @see https://bugs.galette.eu/issues/1374
+     *
+     * @param sting  $table    Table name
+     * @param intger $expected Expected value
+     *
+     * @return void
+     */
+    public function handleSequence($table, $expected)
+    {
+        if ($this->isPostgres()) {
+            //check for Postgres sequence
+            //see https://bugs.galette.eu/issues/1158
+            //see https://bugs.galette.eu/issues/1374
+            $seq = $table . '_id_seq';
+
+            $select = $this->select($seq);
+            $select->columns(['last_value']);
+            $results = $this->execute($select);
+            $result = $results->current();
+            if ($result->last_value < $expected) {
+                $this->db->query(
+                    'SELECT setval(\'' . PREFIX_DB . $seq . '\', ' . $expected . ')',
+                    Adapter::QUERY_MODE_EXECUTE
+                );
+            }
+        }
+    }
 }
