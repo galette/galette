@@ -207,19 +207,10 @@ trait I18nTrait
             $delete = $this->zdb->delete(L10n::TABLE);
             $delete->where(
                 array(
-                    'text_orig'     => $text_orig,
-                    'text_locale'   => ':lang_id'
+                    'text_orig'     => $text_orig
                 )
             );
-            $stmt = $this->zdb->sql->prepareStatementForSqlObject($delete);
-
-            foreach ($i18n->getList() as $lang) {
-                $stmt->execute(
-                    array(
-                        'where2' => $lang->getLongID()
-                    )
-                );
-            }
+            $this->zdb->execute($delete);
             return true;
         } catch (Exception $e) {
             Analog::log(
