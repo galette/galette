@@ -2,20 +2,20 @@
 # Translators:
 # imed omri <omriimed@ymail.com>, 2014
 # Johan Cwiklinski <johan@x-tnd.be>, 2017. #zanata
-# ButterflyOfFire <ButterflyOfFire@protonmail.com>, 2019.
+# ButterflyOfFire <ButterflyOfFire@protonmail.com>, 2019, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
-"PO-Revision-Date: 2019-12-20 18:21+0000\n"
+"PO-Revision-Date: 2020-01-03 16:21+0000\n"
 "Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
 "Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "X-Generator: Weblate 3.10\n"
-"Content-Transfer-Encoding: 8bit\n"
 
 #: ../templates/default/gestion_adherents.tpl:13
 msgid "among:"
@@ -35,7 +35,7 @@ msgstr "هاتف"
 
 #: ../templates/default/editer_champ.tpl:18
 msgid "Permissions:"
-msgstr ""
+msgstr "التصريحات:"
 
 #: ../includes/routes/management.routes.php:1787
 msgid "Titles management"
@@ -47,7 +47,7 @@ msgstr "العودة إلى صفحة إدارة الإضافات"
 
 #: ../templates/default/plugins.tpl:68
 msgid "A required file is missing"
-msgstr ""
+msgstr "ملف مطلوب مفقود"
 
 #: ../templates/default/plugin_initdb.tpl:52
 msgid "You current %name version is..."
@@ -103,15 +103,15 @@ msgstr ""
 #: ../includes/routes/management.routes.php:2948
 #: ../templates/default/page.tpl:190
 msgid "Generate fake data"
-msgstr ""
+msgstr "توليد بيانات وهمية"
 
 #: ../templates/default/ajouter_contribution.tpl:48
 msgid "Select contributor and donation type"
-msgstr ""
+msgstr "اختر المساعم ونوع التبرّع"
 
 #: ../templates/default/public_page.tpl:126
 msgid "Lost your password?"
-msgstr ""
+msgstr "هل فقدت كلمتك السرية؟"
 
 #: ../templates/default/forms_types/password.tpl:10
 #: ../templates/default/forms_types.tpl:85
@@ -121,7 +121,7 @@ msgstr ""
 #: ../includes/fields_defs/pdfmodels_fields.php:266
 #: ../includes/dependencies.php:611
 msgid "On .......... / .......... / .......... "
-msgstr ""
+msgstr "بتاريخ .......... / .......... / .......... "
 
 #: ../lib/Galette/Core/Preferences.php:919
 msgid "Current cards configuration may exceed page width!"
@@ -129,7 +129,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/FileTrait.php:476
 msgid "An error occurred."
-msgstr ""
+msgstr "وقع هناك خطأ."
 
 #: ../templates/default/gestion_groupes.tpl:35
 msgid "All groups PDF"
@@ -149,7 +149,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:365
 msgid "Contact information:"
-msgstr ""
+msgstr "معلومات الإتصال:"
 
 #: ../lib/Galette/Entity/Reminder.php:307
 msgid "%name (#%id - %days days)"
@@ -157,19 +157,19 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:343
 msgid "Company cotisation"
-msgstr ""
+msgstr "تبرّع شخص معنوي"
 
 #: ../templates/default/forms_types/company.tpl:6
 msgid "Is company?"
-msgstr ""
+msgstr "شخص معنوي؟"
 
 #: ../lib/Galette/Entity/PaymentType.php:303
 msgid "Check"
-msgstr ""
+msgstr "شيك"
 
 #: ../templates/default/voir_adherent.tpl:28
 msgid "Generate Member Card"
-msgstr ""
+msgstr "توليد بطاقة العضو"
 
 #: ../templates/default/gestion_adherents.tpl:28
 #: ../templates/default/gestion_transactions.tpl:9
@@ -199,15 +199,15 @@ msgstr "إلغاء"
 
 #: ../templates/default/gestion_textes.tpl:31
 msgid "Email Subject"
-msgstr ""
+msgstr "موضوع الرسالة الإلكترونية"
 
 #: ../templates/default/page.tpl:152
 msgid "Manage mailings"
-msgstr ""
+msgstr "إدارة البريد الإلكتروني"
 
 #: ../templates/default/group.tpl:70
 msgid "Manage members"
-msgstr ""
+msgstr "إدارة الأعضاء"
 
 #: ../templates/default/preferences.tpl:379
 #: ../templates/default/preferences.tpl:502
@@ -220,15 +220,15 @@ msgstr ""
 
 #: ../templates/default/saved_searches.tpl:28
 msgid "Show parameters"
-msgstr ""
+msgstr "اظهر الخيارات"
 
 #: ../templates/default/gestion_pdf.tpl:41
 msgid "Your organisation logo"
-msgstr ""
+msgstr "شعار منظمتكم"
 
 #: ../lib/Galette/Entity/Contribution.php:1047
 msgid "Membership"
-msgstr ""
+msgstr "تبرّعات الأعضاء"
 
 #: ../includes/routes/management.routes.php:1849
 msgid "Remove title %1$s"
@@ -236,30 +236,30 @@ msgstr ""
 
 #: ../includes/routes/management.routes.php:2165
 msgid "Edit contribution type"
-msgstr ""
+msgstr "تغيير نوع المساهمة"
 
 #: ../templates/default/page.tpl:144
 msgid "List of contributions"
-msgstr ""
+msgstr "قائمة المتبرّعين"
 
 #: ../templates/default/forms_types/groups.tpl:6
 msgid "Manage user's groups"
-msgstr ""
+msgstr "إدارة فِرق المستخدِمين"
 
 #: ../includes/routes/groups.routes.php:87
 #: ../templates/default/gestion_groupes.tpl:6
 #: ../templates/default/desktop.tpl:31
 msgid "Groups"
-msgstr ""
+msgstr "الفِرَق"
 
 #: ../templates/default/voir_adherent.tpl:68
 msgid "View member's contributions"
-msgstr ""
+msgstr "اظهر تبرّعات العضو"
 
 #: ../includes/fields_defs/members_fields.php:308
 #: ../templates/default/gestion_textes.tpl:8
 msgid "Language:"
-msgstr ""
+msgstr "اللغة:"
 
 #: ../lib/Galette/Core/Install.php:1017
 msgid "Write configuration file"
@@ -286,13 +286,13 @@ msgstr ""
 
 #: ../templates/default/fake_data.tpl:33 ../templates/default/page.tpl:180
 msgid "Dynamic fields"
-msgstr ""
+msgstr "حقول ديناميكية"
 
 #: ../templates/default/gestion_contributions.tpl:140
 #: ../templates/default/gestion_contributions.tpl:217
 #: ../templates/default/advanced_search.tpl:133
 msgid "Payment type"
-msgstr ""
+msgstr "نوع السّداد"
 
 #: ../lib/Galette/Entity/SavedSearch.php:153
 msgid "Form is mandatory!"
@@ -330,7 +330,7 @@ msgstr ""
 
 #: ../templates/default/voir_adherent.tpl:49
 msgid "New password"
-msgstr ""
+msgstr "كلمة السر الجديدة"
 
 #: ../lib/Galette/IO/CsvIn.php:275
 msgid ""
@@ -343,15 +343,15 @@ msgstr ""
 #: ../templates/default/gestion_mailings.tpl:8
 #: ../templates/default/history.tpl:8
 msgid "until"
-msgstr ""
+msgstr "إلى غاية"
 
 #: ../templates/default/gestion_contributions.tpl:306
 msgid "No contribution selected"
-msgstr ""
+msgstr "–"
 
 #: ../templates/default/gestion_contributions.tpl:40
 msgid "Show all members contributions"
-msgstr ""
+msgstr "اظهار كافة تبرعات الأعضاء"
 
 #: ../templates/default/gestion_adherents.tpl:380
 msgid "User status/interactions"
@@ -381,7 +381,7 @@ msgstr ""
 #: ../templates/default/gestion_contributions.tpl:44
 #: ../templates/default/forms_types/account.tpl:6
 msgid "Inactive"
-msgstr ""
+msgstr "غير نَشِط"
 
 #: ../templates/default/admintools.tpl:10
 msgid "Reset emails contents"
@@ -396,7 +396,7 @@ msgstr ""
 #: ../templates/default/ajax_groups.tpl:47
 #: ../templates/default/ajax_members.tpl:75
 msgid "Validate"
-msgstr ""
+msgstr "تأكيد"
 
 #: ../templates/default/404.tpl:21
 msgid "Sorry, the page you are looking for could not be found."
@@ -416,7 +416,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:140
 msgid "Tables Creation"
-msgstr ""
+msgstr "إنشاء الجداول"
 
 #: ../includes/routes/contributions.routes.php:1017
 msgid "An error occurred while storing the transaction."
@@ -425,7 +425,7 @@ msgstr ""
 #: ../templates/default/gestion_adherents.tpl:133
 #: ../templates/default/gestion_adherents.tpl:223
 msgid "State of dues"
-msgstr ""
+msgstr "حالة المُستحقات"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:697
 msgid "Unable to remove old dynamic translation for %field :("
@@ -444,11 +444,11 @@ msgstr ""
 #: ../includes/routes/contributions.routes.php:1149
 #: ../templates/default/desktop.tpl:34 ../templates/default/fake_data.tpl:45
 msgid "Transactions"
-msgstr ""
+msgstr "التعاملات"
 
 #: ../templates/default/preferences.tpl:86
 msgid "send"
-msgstr ""
+msgstr "ارسل"
 
 #: ../templates/default/desktop.tpl:6
 msgid "Help us know about you!"
@@ -491,7 +491,7 @@ msgstr ""
 
 #: ../includes/routes/main.routes.php:127 ../templates/default/footer.tpl:24
 msgid "System informations"
-msgstr ""
+msgstr "معلومات عن النظام"
 
 #: ../templates/default/preferences.tpl:243
 msgid "Sender Email:"
@@ -499,7 +499,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:340
 msgid "Legal entity"
-msgstr ""
+msgstr "شص معنوي"
 
 #: ../templates/default/configurer_fiche_content.tpl:54
 msgid "Move up '%s' field"
@@ -538,11 +538,11 @@ msgstr ""
 #: ../templates/default/advanced_search.tpl:217
 #: ../templates/default/advanced_search.tpl:244
 msgid "is not"
-msgstr ""
+msgstr "ليس"
 
 #: ../lib/Galette/IO/PdfContribution.php:148
 msgid "receipt"
-msgstr ""
+msgstr "وَصْل"
 
 #: ../install/steps/db.php:64
 msgid ""
@@ -551,19 +551,19 @@ msgstr ""
 
 #: ../webroot/installer.php:166
 msgid "No database name"
-msgstr ""
+msgstr "اسم قاعدة البيانات غير مُحدَّد"
 
 #: ../templates/default/mailing_adherents.tpl:66
 msgid "other"
-msgstr ""
+msgstr "آخَر"
 
 #: ../templates/default/gestion_textes.tpl:110
 msgid "Member's deadline"
-msgstr ""
+msgstr "تاريخ انتهاء العضوية"
 
 #: ../templates/default/preferences.tpl:457
 msgid "Allow members to print card ?"
-msgstr ""
+msgstr "السماح للأعضاء بطباعة بطاقتهم؟"
 
 #: ../templates/default/charts.tpl:33
 msgid "Members by state of dues"
@@ -575,7 +575,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:330
 msgid "President"
-msgstr ""
+msgstr "االرئيس"
 
 #: ../templates/default/preferences.tpl:79
 msgid "Last telemetry sent date."
@@ -583,7 +583,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/Charts.php:178
 msgid "Due free"
-msgstr ""
+msgstr "معفيّ مِن المستحقّات"
 
 #: ../includes/routes/management.routes.php:1105
 msgid "An error occurred trying to delete mailing :("
@@ -591,13 +591,13 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:547 ../webroot/installer.php:214
 msgid "Passwords mismatch"
-msgstr ""
+msgstr "الكلمات السرية غير متطابِقة"
 
 #: ../templates/default/mailing_adherents.tpl:81
 #: ../templates/default/mailing_adherents.tpl:112
 #: ../templates/default/500.tpl:21 ../templates/default/reminder.tpl:45
 msgid "Message:"
-msgstr ""
+msgstr "الرسالة:"
 
 #: ../templates/default/config_fields.tpl:32
 msgid "Field '%field' cannot be set as required."
@@ -653,7 +653,7 @@ msgstr ""
 
 #: ../templates/default/gestion_pdf.tpl:47
 msgid "Member's name"
-msgstr ""
+msgstr "اسم العضو"
 
 #: ../templates/default/gestion_adherents.tpl:42
 #: ../templates/default/advanced_search.tpl:43
@@ -666,11 +666,11 @@ msgstr ""
 
 #: ../lib/Galette/IO/FileTrait.php:498
 msgid "Mime-Type not allowed"
-msgstr ""
+msgstr "Mime-Type not allowed"
 
 #: ../templates/default/preferences.tpl:188
 msgid "(Months)"
-msgstr ""
+msgstr "(Months)"
 
 #: ../templates/default/preferences.tpl:464
 msgid "(Show or not title in front of name)"
@@ -7518,11 +7518,11 @@ msgstr ""
 #: ../templates/default/gestion_textes.tpl:61
 #: ../templates/default/gestion_pdf.tpl:31
 msgid "Your organisation slogan"
-msgstr ""
+msgstr "شعار جمعيتكم"
 
 #: ../templates/default/editer_intitule.tpl:19
 msgid "Priority:"
-msgstr ""
+msgstr "الأولوية:"
 
 #: ../templates/default/export.tpl:55 ../templates/default/import.tpl:50
 msgid "Remove '%file' from disk"
