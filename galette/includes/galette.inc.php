@@ -106,7 +106,7 @@ if (defined('GALETTE_XHPROF_PATH')
 
 define('GALETTE_VERSION', 'v0.9.3');
 define('GALETTE_COMPAT_VERSION', '0.9.2');
-define('GALETTE_DB_VERSION', '0.930');
+define('GALETTE_DB_VERSION', '0.931');
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD, MAINT or DEMO
 }

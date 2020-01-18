@@ -146,6 +146,15 @@ CREATE SEQUENCE galette_searches_id_seq
     MINVALUE 1
     CACHE 1;
 
+-- sequence for texts
+DROP SEQUENCE IF EXISTS galette_texts_id_seq;
+CREATE SEQUENCE galette_texts_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
 -- Schema
 -- REMINDER: Create order IS important, dependencies first !!
 DROP TABLE IF EXISTS galette_statuts CASCADE;
@@ -454,4 +463,4 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(0.93);
+INSERT INTO galette_database (version) VALUES(0.931);
