@@ -1,6 +1,15 @@
 Changes
 -------
 
+0.9.3 -> 0.9.3.1
+
+- Use new icons in titles managmeent
+- Ensre PHP 7.4 is supported
+- Handle proprely and test sequences in PostgreSQL for titles, payment types, PDF models, texts and fields categories
+- Fix Telemetry from PostgreSQL instances
+- Fix dynamic translations removal
+- Check for session extension presence
+
 0.9.2.1 -> 0.9.3
 
 News
