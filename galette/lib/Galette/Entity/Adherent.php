@@ -816,7 +816,7 @@ class Adherent
             $str .= $nick;
         }
         if ($id !== false) {
-            if ($nick !== false) {
+            if ($nick !== false && !empty($nick)) {
                 $str .= ', ';
             }
             $str .= $id;
