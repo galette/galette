@@ -43,7 +43,16 @@ use Galette\Filters\MembersList;
 /** @ignore */
 require_once __DIR__ . '/../includes/galette.inc.php';
 
-if (!$login->isCron()) {
+$app = new \Slim\App(
+    array(
+        'templates.path'    => GALETTE_ROOT . 'templates/default/',
+        'mode'              => 'CRON'
+    )
+);
+session_start();
+require_once __DIR__ . '/../includes/dependencies.php';
+
+if (!$container->get('login')->isCron()) {
     die();
 }
 

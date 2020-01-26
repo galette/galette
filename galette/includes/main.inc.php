@@ -70,7 +70,7 @@ if ($needs_update) {
         'themes/default/'
     );
 
-    require_once '../includes/dependencies.php';
+    require_once GALETTE_ROOT . 'includes/dependencies.php';
 
     $app->add(
         new Galette\Core\Middleware(
