@@ -41,22 +41,24 @@ use Galette\Repository\Reminders;
 use Galette\Filters\MembersList;
 
 /** @ignore */
-require_once '../includes/galette.inc.php';
+require_once __DIR__ . '/../includes/galette.inc.php';
 
 if (!$login->isCron()) {
     die();
 }
 
-//FIXME: connect this script to the DI, or instanciate what is required.
-$texts = new Texts($texts_fields, $preferences);
+$texts = new Texts(
+    $container->get('texts_fields'),
+    $container->get('preferences')
+);
 $reminders = new Reminders();
 
 
-$list_reminders = $reminders->getList($zdb, false);
+$list_reminders = $reminders->getList($container->get('zdb'), false);
 if (count($list_reminders) > 0) {
     foreach ($list_reminders as $reminder) {
         //send reminders by mail
-        $sent = $reminder->send($texts, $hist, $zdb);
+        $sent = $reminder->send($texts, $container->get('hist'), $container->get('zdb'));
 
         if ($sent === true) {
             $success_detected[] = $reminder->getMessage();

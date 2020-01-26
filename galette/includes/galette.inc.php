@@ -254,7 +254,7 @@ if (!$installer and !defined('GALETTE_TESTS')) {
 
         /** TODO: login is now handled in dependencies.php; the cron case should be aswell */
         if ($cron) {
-            $login->logCron(basename($argv[0], '.php'));
+            $container->get('login')->logCron(basename($argv[0], '.php'));
         }
     } else {
         $needs_update = true;
