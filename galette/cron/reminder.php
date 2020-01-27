@@ -52,8 +52,18 @@ $app = new \Slim\App(
 session_start();
 require_once __DIR__ . '/../includes/dependencies.php';
 
+if (isset($needs_update) && $needs_update === true) {
+    echo _T("Your Galette database is not present, or not up to date.");
+    die(1);
+}
+
+/** TODO: login is now handled in dependencies.php; the cron case should be aswell */
+if ($cron) {
+    $container->get('login')->logCron(basename($argv[0], '.php'));
+}
+
 if (!$container->get('login')->isCron()) {
-    die();
+    die(1);
 }
 
 $texts = new Texts(
@@ -67,7 +77,7 @@ $list_reminders = $reminders->getList($container->get('zdb'), false);
 if (count($list_reminders) > 0) {
     foreach ($list_reminders as $reminder) {
         //send reminders by mail
-        $sent = $reminder->send($texts, $container->get('hist'), $container->get('zdb'));
+        $sent = $reminder->send($texts, $container->get('history'), $container->get('zdb'));
 
         if ($sent === true) {
             $success_detected[] = $reminder->getMessage();

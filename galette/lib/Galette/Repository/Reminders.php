@@ -70,7 +70,7 @@ class Reminders
      *
      * @param array $selected Selected types for sending
      */
-    public function __construct($selected)
+    public function __construct($selected = null)
     {
         if (isset($selected) && is_array($selected)) {
             $this->selected = array_map('intval', $selected);
