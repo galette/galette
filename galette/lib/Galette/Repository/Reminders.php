@@ -126,7 +126,7 @@ class Reminders
             );
         }
 
-        $select->group('a.id_adh')->group('r.reminder_type');
+        $select->group('a.id_adh')->group('r.reminder_type')->group('p.email_adh');
 
         $results = $zdb->execute($select);
 
