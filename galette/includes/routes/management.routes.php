@@ -3174,6 +3174,16 @@ $app->post(
             );
         }
 
+        $warning_detected = $ptype->getWarnings();
+        if (count($warning_detected)) {
+            foreach ($warning_detected as $warning) {
+                $this->flash->addMessage(
+                    'warning_detected',
+                    $warning
+                );
+            }
+        }
+
         return $response
             ->withStatus(301)
             ->withHeader('Location', $this->router->pathFor('paymentTypes'));
@@ -3263,6 +3273,16 @@ $app->post(
                         $e->getMessage()
                     );
                 }
+            } finally {
+                $warning_detected = $ptype->getWarnings();
+                if (count($warning_detected)) {
+                    foreach ($warning_detected as $warning) {
+                        $this->flash->addMessage(
+                            'warning_detected',
+                            $warning
+                        );
+                    }
+                }
             }
         }
 
@@ -3314,6 +3334,16 @@ $app->post(
         $ptype = new PaymentType($this->zdb, (int)$id);
         $ptype->name = $post['name'];
         $res = $ptype->store();
+
+        $warning_detected = $ptype->getWarnings();
+        if (count($warning_detected)) {
+            foreach ($warning_detected as $warning) {
+                $this->flash->addMessage(
+                    'warning_detected',
+                    $warning
+                );
+            }
+        }
 
         if (!$res) {
             $this->flash->addMessage(
