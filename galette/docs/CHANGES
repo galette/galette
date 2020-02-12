@@ -9,6 +9,7 @@ Changes
 - Fix Telemetry from PostgreSQL instances
 - Fix dynamic translations removal
 - Check for session extension presence
+- Redo multiple status selection in advanced search
 
 0.9.2.1 -> 0.9.3
 
