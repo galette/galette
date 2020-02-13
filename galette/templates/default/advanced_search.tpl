@@ -86,7 +86,7 @@
                     </p>
                     <p>
                         <label class="bline" for="status">{_T string="Statuts"}</label>
-                        <select name="status[]" id="status" multiple="multiple">
+                        <select name="status[]" id="status" multiple="multiple" class="nochosen">
                             {html_options options=$statuts selected=$filters->status}
                         </select>
                     </p>
