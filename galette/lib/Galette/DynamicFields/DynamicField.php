@@ -41,6 +41,7 @@ use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Entity\DynamicFieldsHandle;
 use Galette\Entity\TranslatableTrait;
+use Galette\Entity\I18nTrait;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
 
@@ -60,6 +61,7 @@ use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
 abstract class DynamicField
 {
     use TranslatableTrait;
+    use I18nTrait;
 
     const TABLE = 'field_types';
     const PK = 'field_id';
@@ -109,7 +111,6 @@ abstract class DynamicField
     protected $form;
 
     protected $errors;
-    protected $warnings;
 
     protected $zdb;
 
@@ -689,23 +690,8 @@ abstract class DynamicField
         }
 
         if ($this->old_name !== null) {
-            $deleted = \deleteDynamicTranslation($this->old_name);
-            if ($deleted === false) {
-                $this->warnings[] = str_replace(
-                    '%field',
-                    $this->old_name,
-                    _T('Unable to remove old dynamic translation for %field :(')
-                );
-            }
-
-            $added = \addDynamicTranslation($this->name);
-            if ($added === false) {
-                $this->warnings[] = str_replace(
-                    '%field',
-                    $this->name,
-                    _T('Unable to add dynamic translation for %field :(')
-                );
-            }
+            $this->deleteTranslation($this->old_name);
+            $this->addTranslation($this->name);
         }
 
         try {
@@ -747,14 +733,7 @@ abstract class DynamicField
                 }
 
                 if ($this->name != '') {
-                    $translated = \addDynamicTranslation($this->name);
-                    if (!$translated) {
-                        $this->warnings[] = str_replace(
-                            '%field',
-                            $this->name,
-                            _T('Unable to add dynamic translation for %field :(')
-                        );
-                    }
+                    $this->addTranslation($this->name);
                 }
             }
         } catch (Exception $e) {
@@ -1003,7 +982,7 @@ abstract class DynamicField
                     \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
                 );
             }
-            \deleteDynamicTranslation($this->name);
+            $this->deleteTranslation($this->name);
 
             $this->zdb->connection->commit();
             return true;

@@ -156,6 +156,10 @@ class Title
                     Analog::log('Not stored!', Analog::ERROR);
                     return false;
                 }
+
+                $this->id = (int)$zdb->driver->getLastGeneratedValue(
+                    PREFIX_DB . self::TABLE . '_id_seq'
+                );
             }
             return true;
         } catch (\Exception $e) {

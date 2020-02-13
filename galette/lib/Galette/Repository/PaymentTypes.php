@@ -37,6 +37,7 @@
 namespace Galette\Repository;
 
 use Analog\Analog;
+use Zend\Db\Sql\Expression;
 use Galette\Entity\PaymentType;
 
 /**
@@ -135,6 +136,11 @@ class PaymentTypes extends Repository
                 //first, we drop all values
                 $delete = $this->zdb->delete($ent::TABLE);
                 $this->zdb->execute($delete);
+
+                $this->zdb->handleSequence(
+                    $ent::TABLE,
+                    count($this->defaults)
+                );
                 $this->insert($ent::TABLE, $this->defaults);
 
                 $this->zdb->connection->commit();

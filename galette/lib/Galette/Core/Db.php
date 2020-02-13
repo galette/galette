@@ -835,7 +835,7 @@ class Db
             'version'   => null,
             'size'      => null,
             'log_size'  => null,
-            'sql_mode'  => null
+            'sql_mode'  => ''
         ];
 
         if ($this->isPostgres()) {
@@ -845,13 +845,10 @@ class Db
                 ->current();
             $infos['version'] = $result['server_version'];
 
-            $total_size = 0;
-            $db_size    = 0;
-
             $sql = 'SELECT pg_database_size(\'' . NAME_DB . '\')';
             $result = $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE)
                 ->current();
-            $infos['size']          = round($result['pg_database_size'] / 1024 / 1024, 1);
+            $infos['size']          = (string)round($result['pg_database_size'] / 1024 / 1024);
         } else {
             $sql = 'SELECT @@sql_mode as mode, @@version AS version, @@version_comment AS version_comment';
             $result = $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE)
@@ -870,5 +867,41 @@ class Db
         }
 
         return $infos;
+    }
+
+    /**
+     * Handle sequence on PostgreSQL
+     *
+     * When inserting a value on a field with a sequence,
+     * this one is not incremented.
+     * This happens when installing system values (for status, titles, ...)
+     *
+     * @see https://bugs.galette.eu/issues/1158
+     * @see https://bugs.galette.eu/issues/1374
+     *
+     * @param sting  $table    Table name
+     * @param intger $expected Expected value
+     *
+     * @return void
+     */
+    public function handleSequence($table, $expected)
+    {
+        if ($this->isPostgres()) {
+            //check for Postgres sequence
+            //see https://bugs.galette.eu/issues/1158
+            //see https://bugs.galette.eu/issues/1374
+            $seq = $table . '_id_seq';
+
+            $select = $this->select($seq);
+            $select->columns(['last_value']);
+            $results = $this->execute($select);
+            $result = $results->current();
+            if ($result->last_value < $expected) {
+                $this->db->query(
+                    'SELECT setval(\'' . PREFIX_DB . $seq . '\', ' . $expected . ')',
+                    Adapter::QUERY_MODE_EXECUTE
+                );
+            }
+        }
     }
 }
