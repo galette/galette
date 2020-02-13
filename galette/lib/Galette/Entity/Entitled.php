@@ -182,23 +182,10 @@ abstract class Entitled
             $insert->values($values);
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
-            if ($this->zdb->isPostgres()) {
-                //check for Postgres sequence
-                //see https://bugs.galette.eu/issues/1158
-                $expected = count(static::$defaults);
-                $seq = $this->table . '_id_seq';
-
-                $select = $this->zdb->select($seq);
-                $select->columns(['last_value']);
-                $results = $this->zdb->execute($select);
-                $result = $results->current();
-                if ($result->last_value < $expected) {
-                    $this->zdb->db->query(
-                        'SELECT setval(\'' . PREFIX_DB . $seq . '\', ' . $expected . ')',
-                        Adapter::QUERY_MODE_EXECUTE
-                    );
-                }
-            }
+            $this->zdb->handleSequence(
+                $this->table,
+                count(static::$defaults)
+            );
 
             $fnames = array_keys($values);
             foreach ($class::$defaults as $d) {

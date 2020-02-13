@@ -727,9 +727,10 @@ $container['translator'] = function ($c) {
 
 //For bad existing globals can be used...
 if (!isset($container['mode']) || $container['mode'] !== 'INSTALL' && $container['mode'] !== 'NEED_UPDATE') {
-    $hist = $container['history'];
-    $login = $container['login'];
     $zdb = $container['zdb'];
+    $preferences = $container['preferences'];
+    $login = $container['login'];
+    $hist = $container['history'];
 }
 $i18n = $container['i18n'];
 $translator = $container['translator'];

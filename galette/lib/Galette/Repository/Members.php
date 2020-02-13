@@ -1715,4 +1715,48 @@ class Members
     {
         return $this->filters;
     }
+
+    /**
+     * Get members list to instanciate dropdowns
+     *
+     * @param Db      $zdb     Database instance
+     * @param integer $current Current member
+     *
+     * @return array
+     */
+    public function getSelectizedMembers(Db $zdb, $current = null)
+    {
+        $members = [];
+        $required_fields = array(
+            'id_adh',
+            'nom_adh',
+            'prenom_adh',
+            'pseudo_adh'
+        );
+        $list_members = $this->getList(false, $required_fields);
+
+        if (count($list_members) > 0) {
+            foreach ($list_members as $member) {
+                $pk = Adherent::PK;
+
+                $members[$member->$pk] = Adherent::getNameWithCase(
+                    $member->nom_adh,
+                    $member->prenom_adh,
+                    false,
+                    $member->id_adh,
+                    $member->pseudo_adh
+                );
+            }
+        }
+
+        //check if current attached member is part of the list
+        if ($current !== null && !isset($members[$current])) {
+            $members =
+                [$current => Adherent::getSName($zdb, $current, true, true)] +
+                $members
+            ;
+        }
+
+        return $members;
+    }
 }

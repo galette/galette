@@ -48,7 +48,7 @@ if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
     echo 'Galette is NOT compliant with your current PHP version. ' .
         'Galette requires PHP ' . GALETTE_PHP_MIN  .
         ' minimum and current version is ' . phpversion();
-    die();
+    die(1);
 }
 
 $time_start = microtime(true);
@@ -104,9 +104,9 @@ if (defined('GALETTE_XHPROF_PATH')
     $profiler->start();
 }
 
-define('GALETTE_VERSION', 'v0.9.3');
+define('GALETTE_VERSION', 'v0.9.3.1');
 define('GALETTE_COMPAT_VERSION', '0.9.2');
-define('GALETTE_DB_VERSION', '0.930');
+define('GALETTE_DB_VERSION', '0.931');
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD, MAINT or DEMO
 }
@@ -250,11 +250,6 @@ if (!$installer and !defined('GALETTE_TESTS')) {
                 'GALETTE_THEME',
                 'themes/' . $preferences->pref_theme . '/'
             );
-        }
-
-        /** TODO: login is now handled in dependencies.php; the cron case should be aswell */
-        if ($cron) {
-            $login->logCron(basename($argv[0], '.php'));
         }
     } else {
         $needs_update = true;

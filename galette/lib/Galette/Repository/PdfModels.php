@@ -128,6 +128,12 @@ class PdfModels extends Repository
                 //first, we drop all values
                 $delete = $this->zdb->delete($ent::TABLE);
                 $this->zdb->execute($delete);
+
+                $this->zdb->handleSequence(
+                    $ent::TABLE,
+                    count($this->defaults)
+                );
+
                 $this->insert($ent::TABLE, $this->defaults);
 
                 $this->zdb->connection->commit();

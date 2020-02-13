@@ -58,6 +58,7 @@ use Zend\Db\Sql\Expression;
 class PaymentType
 {
     use TranslatableTrait;
+    use I18nTrait;
 
     const TABLE = 'paymenttypes';
     const PK = 'type_id';
@@ -142,23 +143,8 @@ class PaymentType
         try {
             if ($this->id !== null && $this->id > 0) {
                 if ($this->old_name !== null) {
-                    $deleted = \deleteDynamicTranslation($this->old_name);
-                    if ($deleted === false) {
-                        $this->warnings[] = str_replace(
-                            '%type',
-                            $this->old_name,
-                            _T('Unable to remove old translation for %type :(')
-                        );
-                    }
-
-                    $added = \addDynamicTranslation($this->name);
-                    if ($added === false) {
-                        $this->warnings[] = str_replace(
-                            '%type',
-                            $this->name,
-                            _T('Unable to add translation for %type :(')
-                        );
-                    }
+                    $this->deleteTranslation($this->old_name);
+                    $this->addTranslation($this->name);
                 }
 
                 $update = $this->zdb->update(self::TABLE);
@@ -174,14 +160,12 @@ class PaymentType
                     Analog::log('Not stored!', Analog::ERROR);
                     return false;
                 }
-                $added = \addDynamicTranslation($this->name);
-                if ($added === false) {
-                    $this->warnings[] = str_replace(
-                        '%type',
-                        $this->name,
-                        _T('Unable to add translation for %type :(')
-                    );
-                }
+
+                $this->id = (int)$this->zdb->driver->getLastGeneratedValue(
+                    PREFIX_DB . self::TABLE . '_id_seq'
+                );
+
+                $this->addTranslation($this->name);
             }
             return true;
         } catch (\Exception $e) {
@@ -212,15 +196,13 @@ class PaymentType
                 self::PK . ' = ' . $id
             );
             $this->zdb->execute($delete);
-            \deleteDynamicTranslation($this->name);
+            $this->deleteTranslation($this->name);
             Analog::log(
                 'Payment type #' . $id . ' (' . $this->name
                 . ') deleted successfully.',
                 Analog::INFO
             );
             return true;
-        } catch (\RuntimeException $re) {
-            throw $re;
         } catch (\Exception $e) {
             Analog::log(
                 'Unable to delete payment type ' . $id . ' | ' . $e->getMessage(),

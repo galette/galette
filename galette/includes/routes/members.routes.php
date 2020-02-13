@@ -98,39 +98,16 @@ $app->get(
         $spam_img = $spam->getImage();
 
         // members
-        $members = [];
         $m = new Members();
-        $required_fields = array(
-            'id_adh',
-            'nom_adh',
-            'prenom_adh'
+        $members = $m->getSelectizedMembers(
+            $this->zdb,
+            $member->hasParent() ? $member->parent->id : null
         );
-        $list_members = $m->getList(false, $required_fields);
-
-        if (count($list_members) > 0) {
-            foreach ($list_members as $lmember) {
-                $pk = Adherent::PK;
-                $sname = mb_strtoupper($lmember->nom_adh, 'UTF-8') .
-                    ' ' . ucwords(mb_strtolower($lmember->prenom_adh, 'UTF-8')) .
-                    ' (' . $lmember->id_adh . ')';
-                $members[$lmember->$pk] = $sname;
-            }
-        }
 
         $params['members'] = [
             'filters'   => $m->getFilters(),
             'count'     => $m->getCount()
         ];
-
-        //check if current attached member is part of the list
-        if ($member->hasParent()) {
-            if (!isset($members[$member->parent->id])) {
-                $members =
-                    [$member->parent->id => Adherent::getSName($this->zdb, $member->parent->id)] +
-                    $members
-                ;
-            }
-        }
 
         if (count($members)) {
             $params['members']['list'] = $members;
@@ -819,39 +796,16 @@ $app->get(
         );
 
         // members
-        $members = [];
         $m = new Members();
-        $required_fields = array(
-            'id_adh',
-            'nom_adh',
-            'prenom_adh'
+        $members = $m->getSelectizedMembers(
+            $this->zdb,
+            $member->hasParent() ? $member->parent->id : null
         );
-        $list_members = $m->getList(false, $required_fields);
-
-        if (count($list_members) > 0) {
-            foreach ($list_members as $lmember) {
-                $pk = Adherent::PK;
-                $sname = mb_strtoupper($lmember->nom_adh, 'UTF-8') .
-                    ' ' . ucwords(mb_strtolower($lmember->prenom_adh, 'UTF-8')) .
-                    ' (' . $lmember->id_adh . ')';
-                $members[$lmember->$pk] = $sname;
-            }
-        }
 
         $route_params['members'] = [
             'filters'   => $m->getFilters(),
             'count'     => $m->getCount()
         ];
-
-        //check if current attached member is part of the list
-        if ($member->hasParent()) {
-            if (!isset($members[$member->parent->id])) {
-                $members =
-                    [$member->parent->id => Adherent::getSName($this->zdb, $member->parent->id)] +
-                    $members
-                ;
-            }
-        }
 
         if (count($members)) {
             $route_params['members']['list'] = $members;

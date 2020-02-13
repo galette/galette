@@ -598,7 +598,7 @@ class Install
                     "/upgrade-to-(.*)-" . $db_type . ".sql/",
                     $file,
                     $ver
-                ) ) {
+                )) {
                     if ($version === null) {
                         $sql_update_scripts[$ver[1]] = $ver[1];
                     } else {

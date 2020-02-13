@@ -401,37 +401,16 @@ $app->get(
         $params['type_cotis_options'] = $contributions_types;
 
         // members
-        $members = [];
         $m = new Members();
-        $required_fields = array(
-            'id_adh',
-            'nom_adh',
-            'prenom_adh'
+        $members = $m->getSelectizedMembers(
+            $this->zdb,
+            isset($contrib) && $contrib->member > 0 ? $contrib->member : null
         );
-        $list_members = $m->getList(false, $required_fields);
-
-        if (count($list_members) > 0) {
-            foreach ($list_members as $member) {
-                $pk = Adherent::PK;
-                $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
-                    ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8')) .
-                    ' (' . $member->id_adh . ')';
-                $members[$member->$pk] = $sname;
-            }
-        }
 
         $params['members'] = [
             'filters'   => $m->getFilters(),
             'count'     => $m->getCount()
         ];
-
-        //check if current attached member is part of the list
-        if (isset($contrib)
-            && $contrib->member > 0
-            && !isset($members[$contrib->member])
-        ) {
-            $members[$contrib->member] = Adherent::getSName($this->zdb, $contrib->member, true);
-        }
 
         if (count($members)) {
             $params['members']['list'] = $members;
@@ -849,40 +828,17 @@ $app->get(
         }
 
         // members
-        $members = [];
         $m = new Members();
-        $required_fields = array(
-            'id_adh',
-            'nom_adh',
-            'prenom_adh'
+        $members = $m->getSelectizedMembers(
+            $this->zdb,
+            $trans->member > 0 ? $trans->member : null
         );
-        $list_members = $m->getList(false, $required_fields);
-
-        if (count($list_members) > 0) {
-            foreach ($list_members as $member) {
-                $pk = Adherent::PK;
-                $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
-                    ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8')) .
-                    ' (' . $member->id_adh . ')';
-                $members[$member->$pk] = $sname;
-            }
-        }
 
         $params['members'] = [
             'filters'   => $m->getFilters(),
             'count'     => $m->getCount()
         ];
         $params['autocomplete'] = true;
-
-        //check if current attached member is part of the list
-        if (isset($trans) && $trans->member > 0) {
-            if (!isset($members[$trans->member])) {
-                $members =
-                    [$trans->member => Adherent::getSName($this->zdb, $trans->member, true)] +
-                    $members
-                ;
-            }
-        }
 
         if (count($members)) {
             $params['members']['list'] = $members;
