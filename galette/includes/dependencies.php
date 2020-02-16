@@ -33,6 +33,7 @@
  */
 
 use Galette\Entity\PdfModel;
+use Slim\Event\SlimEventManager;
 
 $container = $app->getContainer();
 
@@ -725,6 +726,12 @@ $container['translator'] = function ($c) {
     return $translator;
 };
 
+// Add Event manager to dependency.
+$container['event_manager'] = function ($c) {
+    $emitter = new SlimEventManager();
+    return $emitter;
+};
+
 //For bad existing globals can be used...
 if (!isset($container['mode']) || $container['mode'] !== 'INSTALL' && $container['mode'] !== 'NEED_UPDATE') {
     $zdb = $container['zdb'];
@@ -734,5 +741,6 @@ if (!isset($container['mode']) || $container['mode'] !== 'INSTALL' && $container
 }
 $i18n = $container['i18n'];
 $translator = $container['translator'];
+$emitter = $container['event_manager'];
 
 require_once GALETTE_ROOT . 'includes/i18n.inc.php';

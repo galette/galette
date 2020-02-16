@@ -540,7 +540,7 @@ class Contribution
      */
     public function store()
     {
-        global $hist;
+        global $hist, $emitter;
 
         if (count($this->errors) > 0) {
             throw new \RuntimeException(
@@ -598,6 +598,8 @@ class Contribution
                         Adherent::getSName($this->zdb, $this->_member)
                     );
                     $success = true;
+
+                    $emitter->emit('contribution.add', $this);
                 } else {
                     $hist->add(_T("Fail to add new contribution."));
                     throw new \Exception(
@@ -627,6 +629,8 @@ class Contribution
                     );
                 }
                 $success = true;
+
+                $emitter->emit('contribution.edit', $this);
             }
             //update deadline
             if ($this->isCotis()) {
@@ -700,6 +704,8 @@ class Contribution
      */
     public function remove($transaction = true)
     {
+        global $emitter;
+
         try {
             if ($transaction) {
                 $this->zdb->connection->beginTransaction();
@@ -719,6 +725,7 @@ class Contribution
             if ($transaction) {
                 $this->zdb->connection->commit();
             }
+            $emitter->emit('contribution.remove', $this);
             return true;
         } catch (\Exception $e) {
             if ($transaction) {
