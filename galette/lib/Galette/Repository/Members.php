@@ -281,7 +281,7 @@ class Members
      */
     public function removeMembers($ids)
     {
-        global $zdb, $hist;
+        global $zdb, $hist, $emitter;
 
         $list = array();
         if (is_numeric($ids)) {
@@ -298,7 +298,7 @@ class Members
                 //Retrieve some informations
                 $select = $zdb->select(self::TABLE);
                 $select->columns(
-                    array(self::PK, 'nom_adh', 'prenom_adh')
+                    array(self::PK, 'nom_adh', 'prenom_adh', 'email_adh')
                 )->where->in(self::PK, $list);
 
                 $results = $zdb->execute($select);
@@ -327,6 +327,13 @@ class Members
                             );
                         }
                     }
+
+                    $emitter->emit('member.remove', [
+                        'id_adh' => $member->id_adh,
+                        'nom_adh' => $member->nom_adh,
+                        'prenom_adh' => $member->prenom_adh,
+                        'email_adh' => $member->email_adh
+                    ]);
                 }
 
                 //delete contributions

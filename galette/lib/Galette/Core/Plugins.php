@@ -129,7 +129,7 @@ class Plugins
                             if (file_exists($full_entry . '/lib') && isset($this->modules[$entry])) {
                                 $varname = $entry . 'Loader';
                                 $$varname = new ClassLoader(
-                                    str_replace(' ', '', $this->modules[$entry]['name']),
+                                    $this->getNamespace($entry),
                                     $full_entry . '/lib'
                                 );
                                 $$varname->register();
@@ -174,6 +174,7 @@ class Plugins
         foreach ($this->modules as $id => $m) {
             $this->loadModuleL10N($id, $lang);
             $this->loadSmarties($id);
+            $this->loadEventProviders($id);
             $this->overridePrefs($id);
         }
     }
@@ -372,6 +373,25 @@ class Plugins
             if (isset($_tpl_assignments)) {
                 $this->modules[$id]['tpl_assignments'] = $_tpl_assignments;
             }
+        }
+    }
+
+    /**
+     * Loads event provider
+     *
+     * @param string $id Module ID
+     *
+     * @return void
+     */
+    public function loadEventProviders($id)
+    {
+        global $emitter;
+
+        $providerClassName = '\\' . $this->getNamespace($id) . '\\' . 'PluginEventProvider';
+        if (class_exists($providerClassName)
+            && method_exists($providerClassName, 'provideListeners')
+        ) {
+            $emitter->useListenerProvider(new $providerClassName());
         }
     }
 
@@ -793,5 +813,17 @@ class Plugins
         );
         $this->id = null;
         $this->mroot = null;
+    }
+
+    /**
+     * Get module namespace
+     *
+     * @param integer $id Module ID
+     *
+     * @return string
+     */
+    public function getNamespace($id)
+    {
+        return str_replace(' ', '', $this->modules[$id]['name']);
     }
 }

@@ -177,6 +177,8 @@ class Transaction
      */
     public function remove(History $hist, $transaction = true)
     {
+        global $emitter;
+
         try {
             if ($transaction) {
                 $this->zdb->connection->beginTransaction();
@@ -205,6 +207,7 @@ class Transaction
             if ($transaction) {
                 $this->zdb->connection->commit();
             }
+            $emitter->emit('transaction.remove', $this);
             return true;
         } catch (\Exception $e) {
             if ($transaction) {
@@ -370,6 +373,8 @@ class Transaction
      */
     public function store(History $hist)
     {
+        global $emitter;
+
         try {
             $this->zdb->connection->beginTransaction();
             $values = array();
@@ -402,6 +407,8 @@ class Transaction
                         Adherent::getSName($this->zdb, $this->_member)
                     );
                     $success = true;
+
+                    $emitter->emit('transaction.add', $this);
                 } else {
                     $hist->add(_T("Fail to add new transaction."));
                     throw new \Exception(
@@ -424,6 +431,8 @@ class Transaction
                     );
                 }
                 $success = true;
+
+                $emitter->emit('transaction.edit', $this);
             }
 
             //dynamic fields

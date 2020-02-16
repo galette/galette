@@ -1321,7 +1321,7 @@ class Adherent
      */
     public function store()
     {
-        global $hist;
+        global $hist, $emitter;
 
         try {
             $values = array();
@@ -1422,6 +1422,8 @@ class Adherent
                         );
                     }
                     $success = true;
+
+                    $emitter->emit('member.add', $this);
                 } else {
                     $hist->add(_T("Fail to add new member."));
                     throw new \Exception(
@@ -1460,6 +1462,8 @@ class Adherent
                     );
                 }
                 $success = true;
+
+                $emitter->emit('member.edit', $this);
             }
 
             //dynamic fields
