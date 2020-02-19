@@ -2,64 +2,69 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: 2020-02-20 00:35+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2020-02-21 00:33+0000\n"
+"Last-Translator: Tymofij Lytvynenko <till.svit@gmail.com>\n"
+"Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
+"galette/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 2.5.0\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 3.11.1\n"
 
 #: ../templates/default/gestion_adherents.tpl:13
 msgid "among:"
-msgstr ""
+msgstr "серед:"
 
 #: ../install/steps/db_checks.php:116
 msgid "SELECT operation allowed"
-msgstr ""
+msgstr "Оберіть оруду дозволено"
 
 #: ../templates/default/export.tpl:10
 msgid "The following files have been written on disk:"
-msgstr ""
+msgstr "На накопичувач записані такі файли:"
 
 #: ../includes/fields_defs/members_fields.php:156
 msgid "Phone:"
-msgstr ""
+msgstr "Телефон:"
 
 #: ../templates/default/editer_champ.tpl:18
 msgid "Permissions:"
-msgstr ""
+msgstr "Права"
 
 #: ../includes/routes/management.routes.php:1787
 msgid "Titles management"
-msgstr ""
+msgstr "Керування заголовками"
 
 #: ../templates/default/plugin_initdb.tpl:122
 msgid "Back to plugins managment page"
-msgstr ""
+msgstr "Повернутись до сторінки керування плагінами"
 
 #: ../templates/default/plugins.tpl:68
 msgid "A required file is missing"
-msgstr ""
+msgstr "Необхідний файл відсутній"
 
 #: ../templates/default/plugin_initdb.tpl:52
 msgid "You current %name version is..."
-msgstr ""
+msgstr "Ваша поточна версія %name..."
 
 #: ../lib/Galette/Entity/Contribution.php:148 ../templates/default/ajouter_contribution.tpl:136
 msgid "End date of membership:"
-msgstr ""
+msgstr "Дата завершення членства:"
 
 #: ../includes/routes/management.routes.php:1055
 msgid "Remove mailing #%1$s"
-msgstr ""
+msgstr "Видалити поштову розсилку #%1$s"
 
 #: ../lib/Galette/Core/Preferences.php:498
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
+"- Ви повинні вказати електронну адресу, яку Galette повинна використовувати "
+"для надсилання електронних листів!"
 
 #: ../includes/fields_defs/pdfmodels_fields.php:198 ../includes/dependencies.php:543
 msgid "Required membership:"
