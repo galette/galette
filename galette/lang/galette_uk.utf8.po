@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: 2020-02-20 00:35+0200\n"
-"PO-Revision-Date: 2020-02-21 00:33+0000\n"
+"PO-Revision-Date: 2020-02-27 08:33+0000\n"
 "Last-Translator: Tymofij Lytvynenko <till.svit@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
 "4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 3.11.1\n"
+"X-Generator: Weblate 4.0-dev\n"
 
 #: ../templates/default/gestion_adherents.tpl:13
 msgid "among:"
@@ -68,207 +68,219 @@ msgstr ""
 
 #: ../includes/fields_defs/pdfmodels_fields.php:198 ../includes/dependencies.php:543
 msgid "Required membership:"
-msgstr ""
+msgstr "Необхідне членство:"
 
 #: ../templates/default/preferences.tpl:98
 msgid "Not registered"
-msgstr ""
+msgstr "Не зареєстровано"
 
 #: ../includes/routes/members.routes.php:2593
 msgid "Sent reminders:"
-msgstr ""
+msgstr "Надіслані нагадування:"
 
 #: ../templates/default/plugin_initdb.tpl:87
 msgid "Your database is maybe not usable, try to restore the older version."
 msgstr ""
+"Можливо, база даних не придатна до використання, спробуйте відновити старішу "
+"версію."
 
 #: ../templates/default/preferences.tpl:67
 msgid "-- Choose a staff member --"
-msgstr ""
+msgstr "-- Виберіть співробітника --"
 
 #: ../includes/routes/management.routes.php:2749
 msgid "An error occurred trying to delete field :("
-msgstr ""
+msgstr "Під час видалення поля виникла помилка :("
 
 #: ../includes/fields_defs/pdfmodels_fields.php:185 ../includes/dependencies.php:530
 msgid "Complete the following form and send it with your funds, in order to complete your subscription."
 msgstr ""
+"Заповніть наступну форму та надішліть її своїми коштами, щоб завершити "
+"підписку."
 
 #: ../includes/routes/management.routes.php:2948 ../templates/default/page.tpl:190
 msgid "Generate fake data"
-msgstr ""
+msgstr "Створення підроблених даних"
 
 #: ../templates/default/ajouter_contribution.tpl:48
 msgid "Select contributor and donation type"
-msgstr ""
+msgstr "Виберіть вид учасника та пожертвування"
 
 #: ../templates/default/public_page.tpl:126
 msgid "Lost your password?"
-msgstr ""
+msgstr "Забули пароль?"
 
 #: ../templates/default/forms_types/password.tpl:10 ../templates/default/forms_types.tpl:85
 msgid "(at least %i characters)"
-msgstr ""
+msgstr "(принаймні %i знаків)"
 
 #: ../includes/fields_defs/pdfmodels_fields.php:266 ../includes/dependencies.php:611
 msgid "On .......... / .......... / .......... "
-msgstr ""
+msgstr "На .......... / .......... / .......... "
 
 #: ../lib/Galette/Core/Preferences.php:919
 msgid "Current cards configuration may exceed page width!"
-msgstr ""
+msgstr "Поточна конфігурація карток може перевищувати ширину сторінки!"
 
 #: ../lib/Galette/IO/FileTrait.php:476
 msgid "An error occurred."
-msgstr ""
+msgstr "Сталася помилка."
 
 #: ../templates/default/gestion_groupes.tpl:35
 msgid "All groups PDF"
-msgstr ""
+msgstr "Усі групи PDF"
 
 #: ../includes/main.inc.php:230
 msgid "Route '%name' is not registered in ACLs!"
-msgstr ""
+msgstr "Маршрут '%name' не зареєстровано в ACL!"
 
 #: ../lib/Galette/Core/Preferences.php:699
 msgid "%name\n%complement\n%address\n%zip %town - %country"
 msgstr ""
+"%name\n"
+"%complement\n"
+"%address\n"
+"%zip %town - %country"
 
 #: ../includes/i18n.inc.php:365
 msgid "Contact information:"
-msgstr ""
+msgstr "Контактні відомості:"
 
 #: ../lib/Galette/Entity/Reminder.php:307
 msgid "%name (#%id - %days days)"
-msgstr ""
+msgstr "%name (#%id - %days днів)"
 
 #: ../includes/i18n.inc.php:343
 msgid "Company cotisation"
-msgstr ""
+msgstr "Членський внесок компанії"
 
 #: ../templates/default/forms_types/company.tpl:6
 msgid "Is company?"
-msgstr ""
+msgstr "Це компанія?"
 
 #: ../lib/Galette/Entity/PaymentType.php:303
 msgid "Check"
-msgstr ""
+msgstr "Перевірити"
 
 #: ../templates/default/voir_adherent.tpl:28
 msgid "Generate Member Card"
-msgstr ""
+msgstr "Створення картки учасника"
 
 #: ../templates/default/gestion_adherents.tpl:28 ../templates/default/gestion_transactions.tpl:9
 #: ../templates/default/gestion_contributions.tpl:26 ../templates/default/gestion_mailings.tpl:22
 #: ../templates/default/history.tpl:35 ../templates/default/advanced_search.tpl:279
 msgid "Filter"
-msgstr ""
+msgstr "Фільтр"
 
 #: ../includes/routes/management.routes.php:3030 ../install/steps/check.php:111
 msgid "Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation."
 msgstr ""
+"Деякі модулі PHP відсутні. Установіть їх або зв’яжіться зі службою "
+"підтримки.<br/>Докладніше про необхідні модулі можна знайти в документації."
 
 #: ../install/steps/db_select_version.php:61 ../templates/default/gestion_adherents.tpl:539
 #: ../templates/default/confirm_removal.tpl:21 ../templates/default/mailing_adherents.tpl:325
 #: ../templates/default/edit_title.tpl:21 ../templates/default/mass_change_members.tpl:48
 #: ../templates/default/edit_paymenttype.tpl:17 ../templates/default/telemetry.tpl:43
 msgid "Cancel"
-msgstr ""
+msgstr "Скасувати"
 
 #: ../templates/default/gestion_textes.tpl:31
 msgid "Email Subject"
-msgstr ""
+msgstr "Тема листа"
 
 #: ../templates/default/page.tpl:152
 msgid "Manage mailings"
-msgstr ""
+msgstr "Керування розсиланням"
 
 #: ../templates/default/group.tpl:70
 msgid "Manage members"
-msgstr ""
+msgstr "Керування учасниками"
 
 #: ../templates/default/preferences.tpl:379 ../templates/default/preferences.tpl:502
 msgid "Horizontal spacing:"
-msgstr ""
+msgstr "Поземний інтервал:"
 
 #: ../includes/routes/management.routes.php:2322
 msgid "%type '%label' was successfully removed"
-msgstr ""
+msgstr "%type '%label' успішно вилучено"
 
 #: ../templates/default/saved_searches.tpl:28
 msgid "Show parameters"
-msgstr ""
+msgstr "Показати настройки"
 
 #: ../templates/default/gestion_pdf.tpl:41
 msgid "Your organisation logo"
-msgstr ""
+msgstr "Логотип Вашої організації"
 
 #: ../lib/Galette/Entity/Contribution.php:1047
 msgid "Membership"
-msgstr ""
+msgstr "Членство"
 
 #: ../includes/routes/management.routes.php:1849
 msgid "Remove title %1$s"
-msgstr ""
+msgstr "Вилучити заголовок %1$s"
 
 #: ../includes/routes/management.routes.php:2165
 msgid "Edit contribution type"
-msgstr ""
+msgstr "Редагувати вид внеску"
 
 #: ../templates/default/page.tpl:144
 msgid "List of contributions"
-msgstr ""
+msgstr "Список унесків"
 
 #: ../templates/default/forms_types/groups.tpl:6
 msgid "Manage user's groups"
-msgstr ""
+msgstr "Керування гуртами користувачів"
 
 #: ../includes/routes/groups.routes.php:87 ../templates/default/gestion_groupes.tpl:6
 #: ../templates/default/desktop.tpl:31
 msgid "Groups"
-msgstr ""
+msgstr "Гурти"
 
 #: ../templates/default/voir_adherent.tpl:68
 msgid "View member's contributions"
-msgstr ""
+msgstr "Переглянути внески учасника"
 
 #: ../includes/fields_defs/members_fields.php:308 ../templates/default/gestion_textes.tpl:8
 msgid "Language:"
-msgstr ""
+msgstr "Мова:"
 
 #: ../lib/Galette/Core/Install.php:1017
 msgid "Write configuration file"
-msgstr ""
+msgstr "Записати файл конфігурації"
 
 #: ../templates/default/desktop.tpl:40 ../templates/default/page.tpl:178
 msgid "Informations about available plugins"
-msgstr ""
+msgstr "Відомості про доступні втулки"
 
 #: ../templates/default/page.tpl:116 ../templates/default/404.tpl:11
 #: ../templates/default/public_page.tpl:68
 msgid "Please update your browser or use an alternative one, like Mozilla Firefox (http://mozilla.org)."
 msgstr ""
+"Оновіть переглядач або скористайтеся відповідником, як-от Mozilla Firefox "
+"(http://mozilla.org)."
 
 #: ../lib/Galette/Entity/PdfModel.php:570
 msgid "header and footer should not be empty!"
-msgstr ""
+msgstr "заголовок і колонтитул не повинні бути порожніми!"
 
 #: ../templates/default/gestion_textes.tpl:122
 msgid "Available only for reminders"
-msgstr ""
+msgstr "Доступно лише для нагадувань"
 
 #: ../templates/default/fake_data.tpl:33 ../templates/default/page.tpl:180
 msgid "Dynamic fields"
-msgstr ""
+msgstr "Динамічні поля"
 
 #: ../templates/default/gestion_contributions.tpl:140 ../templates/default/gestion_contributions.tpl:217
 #: ../templates/default/advanced_search.tpl:133
 msgid "Payment type"
-msgstr ""
+msgstr "Вид оплати"
 
 #: ../lib/Galette/Entity/SavedSearch.php:153
 msgid "Form is mandatory!"
-msgstr ""
+msgstr "Форма обов'язкова!"
 
 #: ../includes/routes/management.routes.php:2216
 msgid "%type #%id has not been updated"
