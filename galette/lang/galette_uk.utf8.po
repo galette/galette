@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: 2020-02-20 00:35+0200\n"
-"PO-Revision-Date: 2020-02-27 08:33+0000\n"
+"PO-Revision-Date: 2020-02-28 22:33+0000\n"
 "Last-Translator: Tymofij Lytvynenko <till.svit@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -284,342 +284,352 @@ msgstr "Форма обов'язкова!"
 
 #: ../includes/routes/management.routes.php:2216
 msgid "%type #%id has not been updated"
-msgstr ""
+msgstr "%type #%id не оновлювався"
 
 #: ../templates/default/import.tpl:21
 msgid "The following files seems ready to import on the disk:"
-msgstr ""
+msgstr "Наступні файли, здається, готові до імпортування на диск:"
 
 #: ../includes/routes/ajax.routes.php:238
 msgid "Thank you for registering!"
-msgstr ""
+msgstr "Дякуємо за реєстрацію!"
 
 #: ../templates/default/admintools.tpl:17
 msgid "This includes fields positions, order, visibility, access levels and mandatory marks."
 msgstr ""
+"Сюди входять позиції полів, порядок, видимість, рівні доступу та обов'язкові "
+"позначки."
 
 #: ../templates/default/plugins.tpl:11 ../templates/default/plugins.tpl:25
 msgid "Release date"
-msgstr ""
+msgstr "Дата виходу"
 
 #: ../install/steps/db_checks.php:95
 msgid "UPDATE operation not allowed"
-msgstr ""
+msgstr "Операція ОНОВЛЕННЯ не дозволена"
 
 #: ../webroot/installer.php:328
 msgid "Database access/permissions"
-msgstr ""
+msgstr "Доступ/дозволи до бази даних"
 
 #: ../templates/default/voir_adherent.tpl:49
 msgid "New password"
-msgstr ""
+msgstr "Новий пароль"
 
 #: ../lib/Galette/IO/CsvIn.php:275
 msgid "Fields count mismatch... There should be %should_count fields and there are %count (row %row)"
 msgstr ""
+"Невідповідність полів ... Поле має бути %should_count, а є %count (рядок "
+"%row)"
 
 #: ../templates/default/gestion_transactions.tpl:7 ../templates/default/gestion_contributions.tpl:18
 #: ../templates/default/gestion_mailings.tpl:8 ../templates/default/history.tpl:8
 msgid "until"
-msgstr ""
+msgstr "до"
 
 #: ../templates/default/gestion_contributions.tpl:306
 msgid "No contribution selected"
-msgstr ""
+msgstr "Жодного внеску не вибрано"
 
 #: ../templates/default/gestion_contributions.tpl:40
 msgid "Show all members contributions"
-msgstr ""
+msgstr "Показати внески всіх членів"
 
 #: ../templates/default/gestion_adherents.tpl:380
 msgid "User status/interactions"
-msgstr ""
+msgstr "Стан/взаємодія користувача"
 
 #: ../lib/Galette/IO/FileTrait.php:486
 msgid "File extension is not allowed, only %s files are."
-msgstr ""
+msgstr "Розширення файлів не дозволено, є лише %s файлів."
 
 #: ../templates/default/mailing_adherents.tpl:315
 msgid "Are you sure you want to remove this attachment?"
-msgstr ""
+msgstr "Ви впевнені, що хочете видалити цей додаток?"
 
 #: ../templates/default/plugin_initdb.tpl:95
 msgid "Plugin '%name' has been successfully installed!"
-msgstr ""
+msgstr "Втулок '%name' успішно встановлено!"
 
 #: ../includes/fields_defs/members_fields.php:188
 msgid "ICQ:"
-msgstr ""
+msgstr "ICQ:"
 
 #: ../templates/default/plugins.tpl:90
 msgid "No inactive plugin."
-msgstr ""
+msgstr "Немає незадіяних втулків."
 
 #: ../lib/Galette/Entity/Adherent.php:1549 ../templates/default/gestion_contributions.tpl:44
 #: ../templates/default/forms_types/account.tpl:6
 msgid "Inactive"
-msgstr ""
+msgstr "Незадіяний"
 
 #: ../templates/default/admintools.tpl:10
 msgid "Reset emails contents"
-msgstr ""
+msgstr "Скидання вмісту електронної пошти"
 
 #: ../includes/routes/management.routes.php:216
 msgid "An SQL error has occurred while storing preferences. Please try again, and contact the administrator if the problem persists."
 msgstr ""
+"Під час зберігання налаштувань сталася помилка SQL. Повторіть спробу і, якщо "
+"проблема не зникне, зв’яжіться з управником."
 
 #: ../templates/default/ajax_groups.tpl:47 ../templates/default/ajax_members.tpl:75
 msgid "Validate"
-msgstr ""
+msgstr "Підтвердити"
 
 #: ../templates/default/404.tpl:21
 msgid "Sorry, the page you are looking for could not be found."
-msgstr ""
+msgstr "Вибачте, сторінку, яку ви шукали, не вдалося знайти."
 
 #: ../templates/default/ajouter_contribution.tpl:56
 msgid "New attached fee"
-msgstr ""
+msgstr "Нова додана плата"
 
 #: ../lib/Galette/Entity/Transaction.php:401
 msgid "Transaction added"
-msgstr ""
+msgstr "Транзакцію додано"
 
 #: ../includes/routes/management.routes.php:1762
 msgid "Model has not been stored :("
-msgstr ""
+msgstr "Модель не збережено :("
 
 #: ../lib/Galette/Core/Install.php:140
 msgid "Tables Creation"
-msgstr ""
+msgstr "Створення таблиць"
 
 #: ../includes/routes/contributions.routes.php:1017
 msgid "An error occurred while storing the transaction."
-msgstr ""
+msgstr "Під час зберігання транзакції сталася помилка."
 
 #: ../templates/default/gestion_adherents.tpl:133 ../templates/default/gestion_adherents.tpl:223
 msgid "State of dues"
-msgstr ""
+msgstr "Стан зборів"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:697
 msgid "Unable to remove old dynamic translation for %field :("
-msgstr ""
+msgstr "Неможливо видалити старий динамічний переклад для поля %field :("
 
 #: ../lib/Galette/Util/FakeData.php:554
 msgid "%count transactions created"
-msgstr ""
+msgstr "%count транзакцій створено"
 
 #: ../templates/default/mailing_adherents.tpl:86
 msgid "Interpret HTML"
-msgstr ""
+msgstr "Інтерпретувати HTML"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:522 ../includes/routes/contributions.routes.php:1105
 #: ../includes/routes/contributions.routes.php:1149 ../templates/default/desktop.tpl:34
 #: ../templates/default/fake_data.tpl:45
 msgid "Transactions"
-msgstr ""
+msgstr "Транзакції"
 
 #: ../templates/default/preferences.tpl:86
 msgid "send"
-msgstr ""
+msgstr "надіслати"
 
 #: ../templates/default/desktop.tpl:6
 msgid "Help us know about you!"
-msgstr ""
+msgstr "Допоможіть нам дізнатися про Вас!"
 
 #: ../templates/default/mailing_adherents.tpl:122
 msgid "Modifiy mailing"
-msgstr ""
+msgstr "Модифікувати розсилку"
 
 #: ../templates/default/import.tpl:66
 msgid "No import file actually exists."
-msgstr ""
+msgstr "Файла імпорту насправді не існує."
 
 #: ../templates/default/desktop.tpl:16
 msgid "Register your organization as a Galette user"
-msgstr ""
+msgstr "Зареєструвати Вашу організацію в якості користувача Galette"
 
 #: ../templates/default/public_page.tpl:150
 msgid "Public page content"
-msgstr ""
+msgstr "Зміст загальнодоступної сторінки"
 
 #: ../includes/routes/members.routes.php:2038 ../includes/routes/members.routes.php:2042
 #: ../includes/routes/members.routes.php:2189 ../includes/routes/members.routes.php:2191
 msgid "Trying to load mailing while mail is disabled in preferences."
-msgstr ""
+msgstr "Спроба завантажити розсилку, коли пошту вимкнено в налаштуваннях."
 
 #: ../templates/default/import_model.tpl:84
 msgid "Go back to import page"
-msgstr ""
+msgstr "Поверніться на сторінку імпорту"
 
 #: ../templates/default/editer_champ.tpl:40
 msgid "Height:"
-msgstr ""
+msgstr "Висота:"
 
 #: ../templates/default/gestion_groupes.tpl:156
 msgid "Pleade provide a group name"
-msgstr ""
+msgstr "У плейаді вказати назву групи"
 
 #: ../includes/routes/main.routes.php:127 ../templates/default/footer.tpl:24
 msgid "System informations"
-msgstr ""
+msgstr "Системи відомостей"
 
 #: ../templates/default/preferences.tpl:243
 msgid "Sender Email:"
-msgstr ""
+msgstr "Е-пошта відправника:"
 
 #: ../includes/i18n.inc.php:340
 msgid "Legal entity"
-msgstr ""
+msgstr "Юридична особа"
 
 #: ../templates/default/configurer_fiche_content.tpl:54
 msgid "Move up '%s' field"
-msgstr ""
+msgstr "Перемістити '%s' вгору"
 
 #: ../templates/default/gestion_adherents.tpl:247
 msgid "%membername: remove from database"
-msgstr ""
+msgstr "%membername: видалити з бази даних"
 
 #: ../includes/i18n.inc.php:350
 msgid "annual fee"
-msgstr ""
+msgstr "річний внесок"
 
 #: ../templates/default/telemetry.tpl:39
 msgid "An error occurred sending telemetry informations :("
-msgstr ""
+msgstr "Під час надсилання відомостей про телеметрію сталася помилка :("
 
 #: ../templates/default/preferences.tpl:485
 msgid "Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 rows.<br/>Double check margins and spacings ;)"
 msgstr ""
+"Кожна картка має ширину 75 мм і висоту 40 мм. Кожна сторінка містить 2 "
+"стовпчики та 6 рядків.<br/>Подвійні контрольні поля та проміжки;)"
 
 #: ../templates/default/gestion_intitule_content.tpl:24
 msgid "New status"
-msgstr ""
+msgstr "Новий стан"
 
 #: ../lib/Galette/Entity/Adherent.php:1119
 msgid "- Birthdate must be set in the past!"
-msgstr ""
+msgstr "- Дата народження повинна бути встановлена раніше!"
 
 #: ../templates/default/mailing_recipients.tpl:18
 msgid "unreachable member:"
-msgstr ""
+msgstr "недоступний член:"
 
 #: ../templates/default/advanced_search.tpl:217 ../templates/default/advanced_search.tpl:244
 msgid "is not"
-msgstr ""
+msgstr "не"
 
 #: ../lib/Galette/IO/PdfContribution.php:148
 msgid "receipt"
-msgstr ""
+msgstr "квитанція"
 
 #: ../install/steps/db.php:64
 msgid "The needed permissions are CREATE, DROP, DELETE, UPDATE, SELECT and INSERT."
 msgstr ""
+"Необхідні дозволи: СТВОРЕННЯ, ПЕРЕНЕСЕННЯ, ВИДАЛЕННЯ, ОНОВЛЕННЯ, ВИБИРАННЯ "
+"та ВСТАВЛЕННЯ."
 
 #: ../webroot/installer.php:166
 msgid "No database name"
-msgstr ""
+msgstr "Немає назви бази даних"
 
 #: ../templates/default/mailing_adherents.tpl:66
 msgid "other"
-msgstr ""
+msgstr "інше"
 
 #: ../templates/default/gestion_textes.tpl:110
 msgid "Member's deadline"
-msgstr ""
+msgstr "Реченець члена"
 
 #: ../templates/default/preferences.tpl:457
 msgid "Allow members to print card ?"
-msgstr ""
+msgstr "Дозволити членам друкувати картку?"
 
 #: ../templates/default/charts.tpl:33
 msgid "Members by state of dues"
-msgstr ""
+msgstr "Члени за станом унесків"
 
 #: ../install/steps/check.php:146
 msgid "apache_user"
-msgstr ""
+msgstr "apache_user"
 
 #: ../includes/i18n.inc.php:330
 msgid "President"
-msgstr ""
+msgstr "Президент"
 
 #: ../templates/default/preferences.tpl:79
 msgid "Last telemetry sent date."
-msgstr ""
+msgstr "Остання дата надісланої телеметрії."
 
 #: ../lib/Galette/IO/Charts.php:178
 msgid "Due free"
-msgstr ""
+msgstr "Належне безплатно"
 
 #: ../includes/routes/management.routes.php:1105
 msgid "An error occurred trying to delete mailing :("
-msgstr ""
+msgstr "Під час видалення розсилки сталася помилка :("
 
 #: ../lib/Galette/Core/Preferences.php:547 ../webroot/installer.php:214
 msgid "Passwords mismatch"
-msgstr ""
+msgstr "Невідповідність паролів"
 
 #: ../templates/default/mailing_adherents.tpl:81 ../templates/default/mailing_adherents.tpl:112
 #: ../templates/default/500.tpl:21 ../templates/default/reminder.tpl:45
 msgid "Message:"
-msgstr ""
+msgstr "Повідомлення:"
 
 #: ../templates/default/config_fields.tpl:32
 msgid "Field '%field' cannot be set as required."
-msgstr ""
+msgstr "Поле \"%field\" неможливо встановити як потрібно."
 
 #: ../templates/default/ajouter_transaction.tpl:217 ../templates/default/ajouter_transaction.tpl:239
 msgid "An error occurred displaying contributions :("
-msgstr ""
+msgstr "Під час відображення внесків сталася помилка :("
 
 #: ../lib/Galette/Entity/Adherent.php:1280
 msgid "Status #%id does not exists in database."
-msgstr ""
+msgstr "Стан #%id не існує в базі даних."
 
 #: ../lib/Galette/Entity/Adherent.php:1230
 msgid "- This username is already in use, please choose another one!"
-msgstr ""
+msgstr "- Це ім'я користувача вже використовується, будь ласка, виберіть інше!"
 
 #: ../includes/routes/management.routes.php:349
 msgid "An email has been sent to %email"
-msgstr ""
+msgstr "Електронний лист надіслано на %email"
 
 #: ../includes/routes/contributions.routes.php:967
 msgid "Transaction ID cannot ben set while adding!"
-msgstr ""
+msgstr "ID транзакції неможливо встановити під час додавання!"
 
 #: ../templates/default/gestion_adherents.tpl:178 ../templates/default/gestion_adherents.tpl:390
 #: ../templates/default/gestion_adherents.tpl:391
 msgid "Is a man"
-msgstr ""
+msgstr "Це людина"
 
 #: ../templates/default/page.tpl:145
 msgid "List of transactions"
-msgstr ""
+msgstr "Список транзакцій"
 
 #: ../lib/Galette/Core/Preferences.php:454 ../includes/routes/authentication.routes.php:364
 msgid "- The password must be of at least 4 characters!"
-msgstr ""
+msgstr "- Пароль повинен містити не менше 4 знаків!"
 
 #: ../templates/default/export.tpl:103
 msgid "Additionnaly, which table(s) do you want to export?"
-msgstr ""
+msgstr "Крім того, яку таблицю ви бажаєте експортувати?"
 
 #: ../lib/Galette/Entity/Entitled.php:356
 msgid "Label does not exist"
-msgstr ""
+msgstr "Мітки не існує"
 
 #: ../templates/default/preferences.tpl:473
 msgid "ICQ"
-msgstr ""
+msgstr "ICQ"
 
 #: ../templates/default/gestion_pdf.tpl:47
 msgid "Member's name"
-msgstr ""
+msgstr "Ім'я учасника"
 
 #: ../templates/default/gestion_adherents.tpl:42 ../templates/default/advanced_search.tpl:43
 msgid "Without"
-msgstr ""
+msgstr "Без"
 
 #: ../lib/Galette/Entity/Adherent.php:734
 msgid "Late of %days days (since %date)"
