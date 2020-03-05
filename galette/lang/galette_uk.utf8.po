@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: 2020-02-20 00:35+0200\n"
-"PO-Revision-Date: 2020-02-28 22:33+0000\n"
+"PO-Revision-Date: 2020-03-05 11:33+0000\n"
 "Last-Translator: Tymofij Lytvynenko <till.svit@gmail.com>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -104,7 +104,7 @@ msgstr "Створення підроблених даних"
 
 #: ../templates/default/ajouter_contribution.tpl:48
 msgid "Select contributor and donation type"
-msgstr "Виберіть вид учасника та пожертвування"
+msgstr "Виберіть вид вкладника та пожертвування"
 
 #: ../templates/default/public_page.tpl:126
 msgid "Lost your password?"
@@ -164,7 +164,7 @@ msgstr "Перевірити"
 
 #: ../templates/default/voir_adherent.tpl:28
 msgid "Generate Member Card"
-msgstr "Створення картки учасника"
+msgstr "Створення членської картки"
 
 #: ../templates/default/gestion_adherents.tpl:28 ../templates/default/gestion_transactions.tpl:9
 #: ../templates/default/gestion_contributions.tpl:26 ../templates/default/gestion_mailings.tpl:22
@@ -195,7 +195,7 @@ msgstr "Керування розсиланням"
 
 #: ../templates/default/group.tpl:70
 msgid "Manage members"
-msgstr "Керування учасниками"
+msgstr "Керування членами"
 
 #: ../templates/default/preferences.tpl:379 ../templates/default/preferences.tpl:502
 msgid "Horizontal spacing:"
@@ -240,7 +240,7 @@ msgstr "Гурти"
 
 #: ../templates/default/voir_adherent.tpl:68
 msgid "View member's contributions"
-msgstr "Переглянути внески учасника"
+msgstr "Переглянути внески вкладника"
 
 #: ../includes/fields_defs/members_fields.php:308 ../templates/default/gestion_textes.tpl:8
 msgid "Language:"
@@ -625,7 +625,7 @@ msgstr "ICQ"
 
 #: ../templates/default/gestion_pdf.tpl:47
 msgid "Member's name"
-msgstr "Ім'я учасника"
+msgstr "Ім'я члена"
 
 #: ../templates/default/gestion_adherents.tpl:42 ../templates/default/advanced_search.tpl:43
 msgid "Without"
@@ -633,121 +633,125 @@ msgstr "Без"
 
 #: ../lib/Galette/Entity/Adherent.php:734
 msgid "Late of %days days (since %date)"
-msgstr ""
+msgstr "Кінець %days днів (починаючи з %date)"
 
 #: ../lib/Galette/IO/FileTrait.php:498
 msgid "Mime-Type not allowed"
-msgstr ""
+msgstr "Mime-Type не дозволено"
 
 #: ../templates/default/preferences.tpl:188
 msgid "(Months)"
-msgstr ""
+msgstr "(Місяців)"
 
 #: ../templates/default/preferences.tpl:464
 msgid "(Show or not title in front of name)"
-msgstr ""
+msgstr "(Показувати заголовок перед іменем чи ні)"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:628
 msgid "- Field name already used."
-msgstr ""
+msgstr "-Ім'я поля вже використовується."
 
 #: ../templates/default/footer.tpl:8
 msgid "Documentation"
-msgstr ""
+msgstr "Документація"
 
 #: ../templates/default/import.tpl:66
 msgid "Use upload form below to send a new file on server, or copy it directly in the imports directory."
 msgstr ""
+"Використовуйте форму для завантаження нижче, щоб надіслати новий файл на "
+"сервер або скопіювати його безпосередньо в теку імпорту."
 
 #: ../lib/Galette/Entity/Adherent.php:1190 ../lib/Galette/Entity/Adherent.php:1237
 msgid "An error has occurred while looking if login already exists."
-msgstr ""
+msgstr "Сталася помилка під час перегляду, якщо логін вже існує."
 
 #: ../includes/routes/members.routes.php:613 ../includes/routes/members.routes.php:696
 #: ../includes/routes/members.routes.php:803
 msgid "Member Profile"
-msgstr ""
+msgstr "Профіль члена"
 
 #: ../lib/Galette/Entity/Adherent.php:1405
 msgid "Member card added"
-msgstr ""
+msgstr "Картку члена додано"
 
 #: ../install/steps/db_checks.php:144
 msgid "DROP operation allowed"
-msgstr ""
+msgstr "Операцію \"DROP\" дозволено"
 
 #: ../templates/default/gestion_mailings.tpl:165
 msgid "No sent mailing has been stored in the database yet."
-msgstr ""
+msgstr "Жодна надіслана розсилка ще не зберігалася в базі даних."
 
 #: ../templates/default/preferences.tpl:433
 msgid "Active Member Color:"
-msgstr ""
+msgstr "Активний колір члена:"
 
 #: ../templates/default/preferences.tpl:304
 msgid "Using GMAIL as SMTP server (slower)"
-msgstr ""
+msgstr "Використання GMAIL як SMTP-сервера (повільніше)"
 
 #: ../lib/Galette/Entity/PdfModel.php:553 ../templates/default/gestion_pdf_content.tpl:6
 #: ../templates/default/attendance_sheet_details.tpl:16
 msgid "Title"
-msgstr ""
+msgstr "Заголовок"
 
 #: ../templates/default/member.tpl:48 ../templates/default/ajouter_transaction.tpl:17
 msgid "-- select a name --"
-msgstr ""
+msgstr "- виберіть ім'я -"
 
 #: ../lib/Galette/Core/Picture.php:849
 msgid "An SQL error has occurred."
-msgstr ""
+msgstr "Сталася помилка SQL."
 
 #: ../lib/Galette/Entity/PaymentType.php:150
 msgid "Unable to remove old translation for %type :("
-msgstr ""
+msgstr "Не вдається видалити старий переклад для %type :("
 
 #: ../lib/Galette/Core/Install.php:1045
 msgid "Config file already exists and is up to date"
-msgstr ""
+msgstr "Файл конфігурації вже існує та оновлений"
 
 #: ../templates/default/gestion_adherents.tpl:457 ../templates/default/page.tpl:230
 msgid "Existing mailing"
-msgstr ""
+msgstr "Наявна розсилка"
 
 #: ../templates/default/member.tpl:211
 msgid "An error occurred displaying groups interface :("
-msgstr ""
+msgstr "Під час відображення інтерфейсу груп сталася помилка :("
 
 #: ../templates/default/preferences.tpl:200
 msgid "Show public pages for"
-msgstr ""
+msgstr "Показати загальнодоступні сторінки для"
 
 #: ../templates/default/export.tpl:126
 msgid "Continue"
-msgstr ""
+msgstr "Продовжити"
 
 #: ../templates/default/gestion_adherents.tpl:502
 msgid "Search title"
-msgstr ""
+msgstr "Заголовок пошуку"
 
 #: ../includes/i18n.inc.php:360
 msgid "Mr."
-msgstr ""
+msgstr "пан"
 
 #: ../templates/default/page.tpl:109 ../templates/default/public_page.tpl:61
 msgid "Galette is configured to display errors. This must be avoided in production environments."
 msgstr ""
+"Galette налаштовано для відображення помилок. Цього слід уникати у "
+"виробничих умовах."
 
 #: ../includes/routes/management.routes.php:3059
 msgid "An error occurred reinitializing texts :("
-msgstr ""
+msgstr "Під час повторного започаткування текстів сталася помилка :("
 
 #: ../templates/default/page.tpl:158
 msgid "My transactions"
-msgstr ""
+msgstr "Мої транзакції"
 
 #: ../templates/default/forms_types/password.tpl:22
 msgid "(Confirmation)"
-msgstr ""
+msgstr "(Підтвердження)"
 
 #: ../includes/fields_defs/pdfmodels_fields.php:111 ../includes/fields_defs/pdfmodels_fields.php:156
 #: ../includes/fields_defs/pdfmodels_fields.php:262 ../includes/dependencies.php:456
@@ -757,11 +761,11 @@ msgstr ""
 #: ../templates/default/gestion_contributions.tpl:216 ../templates/default/ajouter_transaction.tpl:92
 #: ../templates/default/advanced_search.tpl:120
 msgid "Amount"
-msgstr ""
+msgstr "Сума"
 
 #: ../includes/routes/management.routes.php:1170
 msgid "Remove %1$s file %2$s"
-msgstr ""
+msgstr "Видалити %1$s файл %2$s"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:505 ../templates/default/gestion_adherents.tpl:212
 #: ../templates/default/gestion_adherents.tpl:402 ../templates/default/gestion_adherents.tpl:403
@@ -779,7 +783,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:342
 msgid "Reduced annual contribution"
-msgstr ""
+msgstr "Зниження щорічного внеску"
 
 #: ../lib/Galette/Entity/SavedSearch.php:360
 msgid "Name cannot be empty!"
