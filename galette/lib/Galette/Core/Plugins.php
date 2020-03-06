@@ -126,7 +126,7 @@ class Plugins
                         $this->mroot = null;
                         if ($this->autoload == true) {
                             //set autoloader to PluginName.
-                            if (file_exists($full_entry . '/lib')) {
+                            if (file_exists($full_entry . '/lib') && isset($this->modules[$entry])) {
                                 $varname = $entry . 'Loader';
                                 $$varname = new ClassLoader(
                                     str_replace(' ', '', $this->modules[$entry]['name']),
