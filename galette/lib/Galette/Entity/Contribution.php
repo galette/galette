@@ -974,6 +974,7 @@ class Contribution
         }
 
         $contrib = array(
+            'id'        => (int)$this->_id,
             'date'      => $this->_date,
             'type'      => $this->getRawType(),
             'amount'    => $this->amount,
@@ -988,6 +989,7 @@ class Contribution
         if ($this->_member !== null) {
             $m = new Adherent($this->zdb, (int)$this->_member);
             $member = array(
+                'id'            => (int)$this->_member,
                 'name'          => $m->sfullname,
                 'email'         => $m->email,
                 'organization'  => ($m->isCompany() ? 1 : 0),
