@@ -2,7 +2,7 @@ Dependencies
 ------------
 
 - Apache 2 Webserver,
-- PHP 7.1 minimum (also tested on php 7.2, and 7.3),
+- PHP 7.2 minimum (also tested on php 7.3, and 7.4),
 - Mariadb >= 5 or Postgresql >= 9.1,
   and its php driver,
 - php gd extension,
