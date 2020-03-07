@@ -38,8 +38,8 @@
 namespace Galette\Repository;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Predicate\PredicateSet;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Predicate\PredicateSet;
 use Galette\Entity\Group;
 use Galette\Entity\Adherent;
 use Galette\Core\Login;

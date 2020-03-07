@@ -41,9 +41,9 @@ use Galette\DynamicFields\DynamicField;
 use Galette\Entity\DynamicFieldsHandle;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Predicate\PredicateSet;
-use Zend\Db\Sql\Predicate\Operator;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Predicate\PredicateSet;
+use Laminas\Db\Sql\Predicate\Operator;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\Transaction;

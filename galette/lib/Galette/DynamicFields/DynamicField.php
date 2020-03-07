@@ -42,8 +42,8 @@ use Galette\Core\Db;
 use Galette\Entity\DynamicFieldsHandle;
 use Galette\Entity\TranslatableTrait;
 use Galette\Entity\I18nTrait;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 
 /**
  * Abstract dynamic field
@@ -751,14 +751,14 @@ abstract class DynamicField
                 $this->zdb->connection->beginTransaction();
                 $this->zdb->db->query(
                     'DROP TABLE IF EXISTS ' . $contents_table,
-                    \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+                    \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
                 );
                 $field_size = ((int)$this->size > 0) ? $this->size : 1;
                 $this->zdb->db->query(
                     'CREATE TABLE ' . $contents_table .
                     ' (id INTEGER NOT NULL,val varchar(' . $field_size .
                     ') NOT NULL)',
-                    \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+                    \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
                 );
                 $this->zdb->connection->commit();
             } catch (\Exception $e) {
@@ -823,7 +823,7 @@ abstract class DynamicField
         $select = $this->zdb->select(self::TABLE);
         $select->columns(
             array(
-                'idx' => new \Zend\Db\Sql\Expression('COUNT(*) + 1')
+                'idx' => new \Laminas\Db\Sql\Expression('COUNT(*) + 1')
             )
         );
         $select->where(['field_form' => $this->form]);
@@ -846,7 +846,7 @@ abstract class DynamicField
             $select = $this->zdb->select(self::TABLE);
             $select->columns(
                 array(
-                    'cnt' => new \Zend\Db\Sql\Expression('COUNT('. self::PK.')')
+                    'cnt' => new \Laminas\Db\Sql\Expression('COUNT('. self::PK.')')
                 )
             )->where(
                 array(
@@ -942,7 +942,7 @@ abstract class DynamicField
             $update = $this->zdb->update(self::TABLE);
             $update->set(
                 array(
-                    'field_index' => new \Zend\Db\Sql\Expression('field_index-1')
+                    'field_index' => new \Laminas\Db\Sql\Expression('field_index-1')
                 )
             )->where
                 ->greaterThan('field_index', $old_rank)
@@ -979,7 +979,7 @@ abstract class DynamicField
                 $contents_table = self::getFixedValuesTableName($this->id);
                 $this->zdb->db->query(
                     'DROP TABLE IF EXISTS ' . $contents_table,
-                    \Zend\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+                    \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
                 );
             }
             $this->deleteTranslation($this->name);

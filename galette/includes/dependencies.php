@@ -681,7 +681,7 @@ $container['cache'] = function ($c) {
     }
     if ($adapter !== null) {
         $uuid = $c->get('mode') !== 'INSTALL' ? $c->get('preferences')->pref_instance_uuid : '_install';
-        $cache = Zend\Cache\StorageFactory::factory([
+        $cache = Laminas\Cache\StorageFactory::factory([
             'adapter'   => $adapter,
             'options'   => [
                 'namespace' => str_replace(

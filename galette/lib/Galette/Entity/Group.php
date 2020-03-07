@@ -39,7 +39,7 @@ namespace Galette\Entity;
 
 use Galette\Core\Login;
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 
 /**
  * Group entity

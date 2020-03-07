@@ -39,7 +39,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Core\Preferences;
 use Slim\Router;
 

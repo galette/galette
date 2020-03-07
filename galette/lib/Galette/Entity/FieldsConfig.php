@@ -38,7 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\Adapter;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Authentication;

@@ -38,7 +38,7 @@
 namespace Galette\Repository;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Entity\PdfModel;
 use Galette\Entity\PdfMain;
 use Galette\Entity\PdfInvoice;

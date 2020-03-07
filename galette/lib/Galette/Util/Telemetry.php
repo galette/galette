@@ -228,7 +228,7 @@ class Telemetry
     {
         $select = $this->zdb->select($table);
         $select->columns([
-            'cnt' => new \Zend\Db\Sql\Expression(
+            'cnt' => new \Laminas\Db\Sql\Expression(
                 'COUNT(1)'
             )
         ]);

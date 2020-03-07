@@ -41,7 +41,7 @@
 namespace Galette\Core;
 
 use Analog\Analog;
-use Zend\Db\Adapter\Exception as AdapterException;
+use Laminas\Db\Adapter\Exception as AdapterException;
 use Galette\Entity\Adherent;
 
 /**

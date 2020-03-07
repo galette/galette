@@ -38,7 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\Adapter;
 
 /**
  * Import model entity

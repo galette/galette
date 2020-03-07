@@ -42,7 +42,7 @@ if (!defined('GALETTE_ROOT')) {
 }
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Core\L10n;
 
 $i18n->updateEnv();

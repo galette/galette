@@ -40,7 +40,7 @@ namespace Galette\Repository;
 use Galette\Entity\Reminder;
 use Galette\Filters\MembersList;
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 
 /**
  * Reminders

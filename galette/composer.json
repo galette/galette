@@ -3,7 +3,11 @@
     "description": "Galette - web membership management towards non profit organizations",
     "license": "GPLv3",
     "type": "project",
-    "keywords": ["membership", "web", "management"],
+    "keywords": [
+        "membership",
+        "web",
+        "management"
+    ],
     "homepage": "http://galette.eu/",
     "support": {
         "irc": "irc://irc.oftc.net/galette",
@@ -29,16 +33,17 @@
         "slim/flash": "^0.1.0",
         "monolog/monolog": "^1.13",
         "mathmarques/smarty-view": "^1.0",
-        "zendframework/zend-db": "2.9.2",
-        "zendframework/zend-stdlib": "^3",
+        "laminas/laminas-db": "2.9.2",
+        "laminas/laminas-stdlib": "^3",
         "analog/analog": "^1.0",
         "phpmailer/phpmailer": "^6",
         "tecnickcom/tcpdf": "^6.2",
         "akrabat/rka-slim-session-middleware": "dev-master@dev",
-        "fzaninotto/faker": "dev-master",
-        "zendframework/zend-i18n": "^2.9",
-        "zendframework/zend-cache": "^2.8",
-        "soundasleep/html2text": "^0.5.0"
+        "fzaninotto/faker": "dev-master#674d89ac0dd42a03cca42523a0f72bdea90b2725",
+        "laminas/laminas-i18n": "^2.9",
+        "laminas/laminas-cache": "^2.8",
+        "soundasleep/html2text": "^0.5.0",
+        "laminas/laminas-dependency-plugin": "^1.0"
     },
     "require-dev": {
         "atoum/atoum": "dev-master"

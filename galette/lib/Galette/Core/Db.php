@@ -37,8 +37,8 @@
 namespace Galette\Core;
 
 use Analog\Analog;
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\Sql\Sql;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Sql\Sql;
 
 /**
  * Zend Db wrapper
@@ -493,7 +493,7 @@ class Db
      */
     public function getTables($prefix = null)
     {
-        $metadata = new \Zend\Db\Metadata\Metadata($this->db);
+        $metadata = new \Laminas\Db\Metadata\Metadata($this->db);
         $tmp_tables_list = $metadata->getTableNames();
 
         if ($prefix === null) {
@@ -519,7 +519,7 @@ class Db
      */
     public function getColumns($table)
     {
-        $metadata = new \Zend\Db\Metadata\Metadata($this->db);
+        $metadata = new \Laminas\Db\Metadata\Metadata($this->db);
         $table = $metadata->getTable(PREFIX_DB . $table);
         return $table->getColumns();
     }
@@ -611,7 +611,7 @@ class Db
         }
 
         try {
-            $metadata = new \Zend\Db\Metadata\Metadata($this->db);
+            $metadata = new \Laminas\Db\Metadata\Metadata($this->db);
             $tbl = $metadata->getTable($table);
             $columns = $tbl->getColumns();
             $constraints = $tbl->getConstraints();

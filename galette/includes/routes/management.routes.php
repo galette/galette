@@ -60,7 +60,7 @@ use Galette\Repository\Titles;
 use Galette\Repository\PaymentTypes;
 use Galette\Entity\Texts;
 use Galette\Core\Install;
-use Zend\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\Adapter;
 use Galette\Core\PluginInstall;
 use Galette\Entity\Status;
 use Galette\Entity\PaymentType;
@@ -2385,7 +2385,7 @@ $app->get(
         try {
             $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
             $select->columns(
-                array('nb' => new Zend\Db\Sql\Expression('COUNT(text_orig)'))
+                array('nb' => new Laminas\Db\Sql\Expression('COUNT(text_orig)'))
             );
             $results = $this->zdb->execute($select);
             $result = $results->current();

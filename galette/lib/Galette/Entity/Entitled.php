@@ -38,8 +38,8 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Adapter\Adapter;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\Adapter\Adapter;
 use Galette\Core\Db;
 
 /**

@@ -38,8 +38,8 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Authentication;
