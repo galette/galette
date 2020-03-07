@@ -794,6 +794,10 @@ msgstr ""
 msgid "Show public pages for"
 msgstr "Afficher les pages publiques pour"
 
+#: ../templates/default/preferences.tpl:180
+msgid "Public contribution printing?"
+msgstr "Les membres peuvent-ils imprimer les contributions ?"
+
 #: ../templates/default/export.tpl:126
 msgid "Continue"
 msgstr "Continuer"

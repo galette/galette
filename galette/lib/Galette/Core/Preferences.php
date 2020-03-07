@@ -145,6 +145,7 @@ class Preferences
         'pref_card_hspace'    =>    10,
         'pref_card_self'    =>    1,
         'pref_theme'        =>    'default',
+        'pref_bool_printcontribution' => false,
         'pref_bool_publicpages' => true,
         'pref_publicpages_visibility' => self::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
         'pref_bool_selfsubscribe' => true,

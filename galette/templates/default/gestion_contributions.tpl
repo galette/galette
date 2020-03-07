@@ -150,7 +150,7 @@
                     <th class="left">
                         {_T string="Duration"}
                     </th>
-{if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
+{if ($login->isAdmin() or $login->isStaff() or $preferences->pref_bool_printcontribution) and $mode neq 'ajax'}
                     <th class="nowrap actions_row">{_T string="Actions"}</th>
 {/if}
                 </tr>
@@ -216,7 +216,7 @@
                     <td class="{$cclass} nowrap" data-title="{_T string="Amount"}">{$contribution->amount}</td>
                     <td class="{$cclass} nowrap" data-title="{_T string="Payment type"}">{$contribution->spayment_type}</td>
                     <td class="{$cclass} nowrap" data-title="{_T string="Duration"}">{$contribution->duration}</td>
-    {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
+    {if ($login->isAdmin() or $login->isStaff() or $preferences->pref_bool_printcontribution) and $mode neq 'ajax'}
                     <td class="{$cclass} center nowrap">
                         <a
                             href="{path_for name="printContribution" data=["id" => $contribution->id]}"
@@ -225,6 +225,7 @@
                             <i class="fas fa-file-pdf"></i>
                             <span class="sr-only">{_T string="Print an invoice or a receipt (depending on contribution type)"}</span>
                         </a>
+        {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
                         {if $contribution->isCotis()}
                             {assign var="ctype" value="fee"}
                         {else}
@@ -244,6 +245,7 @@
                             <i class="fas fa-trash"></i>
                             <span class="sr-only">{_T string="Delete the contribution"}</span>
                         </a>
+        {/if}
                     </td>
     {/if}
                 </tr>
