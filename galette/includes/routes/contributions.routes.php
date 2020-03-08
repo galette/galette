@@ -1209,11 +1209,31 @@ $app->get(
     '/contribution/print/{id:\d+}',
     function ($request, $response, $args) {
         $contribution = new Contribution($this->zdb, $this->login, (int)$args['id']);
-        $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
+        if ($contribution->id == '') {
+            //not possible to load contribution, exit
+            $this->flash->addMessage(
+                'error_detected',
+                str_replace(
+                    '%id',
+                    $args['id'],
+                    _T("Unable to load contribution #%id!")
+                )
+            );
+            return $response
+                ->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor(
+                    'contributions',
+                    ['type' => 'contributions']
+                ));
+        }
+        else {
+            $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
 
-        $response = $this->response->withHeader('Content-type', 'application/pdf')
-                ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
-        $response->write($pdf->download());
-        return $response;
+            $response = $this->response->withHeader('Content-type', 'application/pdf')
+                    ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
+            $response->write($pdf->download());
+        
+            return $response;
+        }
     }
 )->setName('printContribution')->add($authenticate);
