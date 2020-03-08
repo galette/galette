@@ -758,10 +758,6 @@ msgstr "An error occurred displaying groups interface :("
 msgid "Show public pages for"
 msgstr "Show public pages for"
 
-#: ../templates/default/preferences.tpl:180
-msgid "Public contribution printing?"
-msgstr "Public contribution printing?"
-
 #: ../templates/default/export.tpl:126
 msgid "Continue"
 msgstr "Continue"

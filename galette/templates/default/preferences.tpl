@@ -177,10 +177,6 @@
                     </select>
                 </p>
                 <p>
-                    <label for="pref_bool_printcontribution" class="bline">{_T string="Public contribution printing?"}</label>
-                    <input type="checkbox" name="pref_bool_printcontribution" id="pref_bool_printcontribution" value="1" {if $pref.pref_bool_printcontribution} checked="checked"{/if}{if isset($required.pref_bool_printcontribution) and $required.pref_bool_printcontribution eq 1} required="required"{/if}/>
-                </p>
-                <p>
                     <label for="pref_filter_account" class="bline">{_T string="Default account filter:"}</label>
                     <select name="pref_filter_account" id="pref_filter_account">
                         {html_options options=$accounts_options selected=$pref.pref_filter_account}
