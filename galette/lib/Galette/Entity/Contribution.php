@@ -379,7 +379,7 @@ class Contribution
                         break;
                     case Adherent::PK:
                         if ($value != '') {
-                            $this->_member = $value;
+                            $this->_member = (int)$value;
                         }
                         break;
                     case ContributionsTypes::PK:

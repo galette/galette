@@ -302,7 +302,7 @@ class Transaction
                             }
                             break;
                         case Adherent::PK:
-                            $this->_member = $value;
+                            $this->_member = (int)$value;
                             break;
                         case 'trans_amount':
                             $this->_amount = $value;
