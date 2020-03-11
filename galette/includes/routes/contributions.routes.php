@@ -46,7 +46,9 @@ use Galette\Entity\Adherent;
 use Galette\Entity\ContributionsTypes;
 use Galette\Core\GaletteMail;
 use Galette\Entity\Texts;
+use Galette\IO\PdfMembersCards;
 use Galette\Repository\PaymentTypes;
+use Galette\Core\Links;
 
 $app->get(
     '/{type:transactions|contributions}[/{option:page|order|member}/{value:\d+|all}]',
@@ -601,6 +603,33 @@ $app->post(
                                 $adh->getEmail() => $adh->sname
                             )
                         );
+
+                        $link_card = '';
+                        if (strpos($mtxt->tbody, '{LINK_MEMBERCARD}') !== false) {
+                            //member card link is present in mail model, let's add it
+                            $links = new Links($this->zdb);
+                            if ($hash = $links->generateNewLink(Links::TARGET_MEMBERCARD, $contrib->member)) {
+                                $link_card =  $this->preferences->getURL() .
+                                    $this->router->pathFor('directlink', ['hash' => $hash]);
+                            }
+                        }
+
+                        $link_pdf = '';
+                        if (strpos($mtxt->tbody, '{LINK_MEMBERCARD}') !== false) {
+                            //contribution receipt link is present in mail model, let's add it
+                            $links = new Links($this->zdb);
+                            $ltype = $contrib->type->isExtension() ? Links::TARGET_INVOICE : Links::TARGET_RECEIPT;
+                            if ($hash = $links->generateNewLink($ltype, $contrib->id)) {
+                                $link_pdf =  $this->preferences->getURL() .
+                                    $this->router->pathFor('directlink', ['hash' => $hash]);
+                            }
+                        }
+
+                        //set replacements, even if empty, to be sure.
+                        $texts->setReplaces([
+                            'link_membercard'   => $link_card,
+                            'link_contribpdf'   => $link_pdf
+                        ]);
 
                         $mail->setMessage($texts->getBody());
                         $sent = $mail->send();
@@ -1209,3 +1238,98 @@ $app->get(
     '/contribution/print/{id:\d+}',
     PdfController::class . ':contribution'
 )->setName('printContribution')->add($authenticate);
+
+$app->get(
+    '/document/{hash}',
+    function ($request, $response, $args) {
+        // display page
+        $this->view->render(
+            $response,
+            'directlink.tpl',
+            array(
+                'hash'          => $args['hash'],
+                'page_title'    => _T('Download document')
+            )
+        );
+        return $response;
+    }
+)->setName('directlink');
+
+$app->post(
+    '/document/{hash}',
+    function ($request, $response, $args) {
+        $hash = $args['hash'];
+        $post = $request->getParsedBody();
+        $email = $post['email'];
+
+        $links = new Links($this->zdb);
+        $valid = $links->isHashValid($hash, $email);
+
+        if ($valid === false) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Invalid link!")
+            );
+
+            return $response->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('directlink', ['hash' => $hash]));
+        }
+
+        $target = $valid[0];
+        $id = $valid[1];
+
+        if ($target === Links::TARGET_MEMBERCARD) {
+            $m = new Members();
+            $members = $m->getArrayList(
+                [$id],
+                array('nom_adh', 'prenom_adh'),
+                true
+            );
+
+            if (!is_array($members) || count($members) < 1) {
+                Analog::log(
+                    'An error has occurred, unable to get members list.',
+                    Analog::ERROR
+                );
+
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("Unable to get members list.")
+                );
+
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('directlink', ['hash' => $hash]));
+            }
+
+            $pdf = new PdfMembersCards($this->preferences);
+            $pdf->drawCards($members);
+        } else {
+            $contribution = new Contribution($this->zdb, $this->login, $id);
+            if ($contribution->id == '') {
+                //not possible to load contribution, exit
+                $this->flash->addMessage(
+                    'error_detected',
+                    str_replace(
+                        '%id',
+                        $args['id'],
+                        _T("Unable to load contribution #%id!")
+                    )
+                );
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor(
+                        'directlink',
+                        ['hash' => $hash]
+                    ));
+            } else {
+                $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
+            }
+        }
+
+        $response = $this->response->withHeader('Content-type', 'application/pdf')
+                ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
+        $response->write($pdf->download());
+        return $response;
+    }
+)->setName('get-directlink');

@@ -95,7 +95,9 @@ class Texts
             'contrib_amount'    => '/{CONTRIB_AMOUNT}/',
             'contrib_type'      => '/{CONTRIB_TYPE}/',
             'breakline'         => '/{BR}/',
-            'newline'           => '/{NEWLINE}/'
+            'newline'           => '/{NEWLINE}/',
+            'link_membercard'   => '/{LINK_MEMBERCARD}/',
+            'link_contribpdf'   => '/{LINK_CONTRIBPDF}/'
         );
 
         $login_uri = '';
@@ -122,7 +124,9 @@ class Texts
             'contrib_amount'    => null,
             'contrib_type'      => null,
             'breakline'         => "\r\n",
-            'newline'           => "\r\n\r\n"
+            'newline'           => "\r\n\r\n",
+            'link_membercard'   => null,
+            'link_contribpdf'   => null
         );
 
         if ($replaces != null && is_array($replaces)) {

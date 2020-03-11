@@ -124,6 +124,12 @@
                     <td>{_T string="Contribution type"}</td>
                 </tr>
                 <tr>
+                    <th><tt>{ldelim}LINK_MEMBERCARD{rdelim}</tt></th>
+                    <td class="back">{_T string="Direct link for member card download"}</td>
+                    <th><tt>{ldelim}LINK_CONTRIBPDF{rdelim}</tt></th>
+                    <td class="back">{_T string="Direct link for invoice/receipt download"}</td>
+                </tr>
+                <tr>
                     <th colspan="4">
                         {_T string="Available only for reminders"}
                     </th>
