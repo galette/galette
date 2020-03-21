@@ -6,11 +6,12 @@
 # Johan Cwiklinski <johan@x-tnd.be>, 2019. #zanata
 # Allan Nordhøy <epost@anotheragency.no>, 2019.
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2019, 2020.
+# Jeannette L <j.lavoie@net-c.ca>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
-"PO-Revision-Date: 2020-03-21 01:13+0000\n"
-"Last-Translator: Fredericos Tezorc <fredericos.tezorc@gmail.com>\n"
+"PO-Revision-Date: 2020-03-23 03:48+0000\n"
+"Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -67,7 +68,7 @@ msgstr "Mailing #%1$s entfernen"
 #: ../lib/Galette/Core/Preferences.php:498
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
-"- Sie müssen eine Email Adresse angeben an die Galette Emails senden soll!"
+"- Sie müssen eine E-Mail-Adresse angeben, an die Galette E-Mails senden soll!"
 
 #: ../includes/fields_defs/pdfmodels_fields.php:198
 #: ../includes/dependencies.php:543
@@ -139,7 +140,7 @@ msgstr "Ein Fehler ist aufgetreten."
 
 #: ../templates/default/gestion_groupes.tpl:35
 msgid "All groups PDF"
-msgstr "Alle Gruppen PDF"
+msgstr "Alle-Gruppen-PDF"
 
 #: ../includes/main.inc.php:230
 msgid "Route '%name' is not registered in ACLs!"
@@ -212,7 +213,7 @@ msgstr "Abbrechen"
 
 #: ../templates/default/gestion_textes.tpl:31
 msgid "Email Subject"
-msgstr "E-mail Betreff"
+msgstr "E-Mail-Betreff"
 
 #: ../templates/default/page.tpl:152
 msgid "Manage mailings"
@@ -233,7 +234,7 @@ msgstr "Der %ytpe '%label' wurde erfolgreich gelöscht"
 
 #: ../templates/default/saved_searches.tpl:28
 msgid "Show parameters"
-msgstr ""
+msgstr "Einstellungen anzeigen"
 
 #: ../templates/default/gestion_pdf.tpl:41
 msgid "Your organisation logo"
@@ -267,7 +268,7 @@ msgstr "Gruppen"
 
 #: ../templates/default/voir_adherent.tpl:68
 msgid "View member's contributions"
-msgstr ""
+msgstr "Beiträge des Mitgliedes ansehen"
 
 #: ../includes/fields_defs/members_fields.php:308
 #: ../templates/default/gestion_textes.tpl:8
@@ -311,7 +312,7 @@ msgstr "Zahlungsart"
 
 #: ../lib/Galette/Entity/SavedSearch.php:153
 msgid "Form is mandatory!"
-msgstr ""
+msgstr "Das Formular ist obligatorisch!"
 
 #: ../includes/routes/management.routes.php:2216
 msgid "%type #%id has not been updated"
@@ -366,7 +367,7 @@ msgstr "bis"
 
 #: ../templates/default/gestion_contributions.tpl:306
 msgid "No contribution selected"
-msgstr ""
+msgstr "Kein Beitrag ausgewählt"
 
 #: ../templates/default/gestion_contributions.tpl:40
 msgid "Show all members contributions"
@@ -374,7 +375,7 @@ msgstr "Zeige alle Beiträge des Mitglieds"
 
 #: ../templates/default/gestion_adherents.tpl:380
 msgid "User status/interactions"
-msgstr ""
+msgstr "Benutzerstatus/Interaktionen"
 
 #: ../lib/Galette/IO/FileTrait.php:486
 msgid "File extension is not allowed, only %s files are."
@@ -411,6 +412,9 @@ msgid ""
 "An SQL error has occurred while storing preferences. Please try again, and "
 "contact the administrator if the problem persists."
 msgstr ""
+"Beim Speichern von Einstellungen ist ein SQL-Fehler aufgetreten. Versuchen "
+"Sie es erneut, und wenden Sie sich an den Administrator, wenn das Problem "
+"weiterhin besteht."
 
 #: ../templates/default/ajax_groups.tpl:47
 #: ../templates/default/ajax_members.tpl:75
@@ -439,7 +443,7 @@ msgstr "Tabellenerstellung"
 
 #: ../includes/routes/contributions.routes.php:1017
 msgid "An error occurred while storing the transaction."
-msgstr ""
+msgstr "Beim Speichern der Transaktion ist ein Fehler aufgetreten."
 
 #: ../templates/default/gestion_adherents.tpl:133
 #: ../templates/default/gestion_adherents.tpl:223
@@ -515,9 +519,8 @@ msgid "System informations"
 msgstr "Systeminformationen"
 
 #: ../templates/default/preferences.tpl:243
-#, fuzzy
 msgid "Sender Email:"
-msgstr "E-mail Absender:"
+msgstr "E-Mail-Absender:"
 
 #: ../includes/i18n.inc.php:340
 msgid "Legal entity"
@@ -537,7 +540,7 @@ msgstr "Jährlicher Beitrag"
 
 #: ../templates/default/telemetry.tpl:39
 msgid "An error occurred sending telemetry informations :("
-msgstr ""
+msgstr "Beim Senden von Telemetrie-Informationen ist ein Fehler aufgetreten :("
 
 #: ../templates/default/preferences.tpl:485
 msgid ""
@@ -553,7 +556,7 @@ msgstr "Neuer Status"
 
 #: ../lib/Galette/Entity/Adherent.php:1119
 msgid "- Birthdate must be set in the past!"
-msgstr ""
+msgstr "- Geburtsdatum muss in der Vergangenheit festgelegt werden!"
 
 #: ../templates/default/mailing_recipients.tpl:18
 msgid "unreachable member:"
@@ -613,7 +616,7 @@ msgstr "Beitragsfrei"
 
 #: ../includes/routes/management.routes.php:1105
 msgid "An error occurred trying to delete mailing :("
-msgstr ""
+msgstr "Beim Versuch, das E-Mailing zu löschen, ist ein Fehler aufgetreten :("
 
 #: ../lib/Galette/Core/Preferences.php:547 ../webroot/installer.php:214
 msgid "Passwords mismatch"
@@ -632,7 +635,7 @@ msgstr "Das Feld '%field' kann nicht wie benötigt besetzt werden."
 #: ../templates/default/ajouter_transaction.tpl:217
 #: ../templates/default/ajouter_transaction.tpl:239
 msgid "An error occurred displaying contributions :("
-msgstr ""
+msgstr "Bei der Anzeige der Beiträge ist ein Fehler aufgetreten :("
 
 #: ../lib/Galette/Entity/Adherent.php:1280
 msgid "Status #%id does not exists in database."
@@ -644,7 +647,7 @@ msgstr "- Diesen Benutzernamen gibt es schon, bitte wählen Sie einen anderen!"
 
 #: ../includes/routes/management.routes.php:349
 msgid "An email has been sent to %email"
-msgstr "Eine Email wurde an %email geschickt"
+msgstr "Eine E-Mail wurde an %email geschickt"
 
 #: ../includes/routes/contributions.routes.php:967
 msgid "Transaction ID cannot ben set while adding!"
@@ -654,7 +657,7 @@ msgstr "Die Transaktions ID kann beim Hinzufügen nicht festgelegt werden!"
 #: ../templates/default/gestion_adherents.tpl:390
 #: ../templates/default/gestion_adherents.tpl:391
 msgid "Is a man"
-msgstr ""
+msgstr "Ist ein Mann"
 
 #: ../templates/default/page.tpl:145
 msgid "List of transactions"
@@ -722,6 +725,8 @@ msgstr ""
 #: ../lib/Galette/Entity/Adherent.php:1237
 msgid "An error has occurred while looking if login already exists."
 msgstr ""
+"Bei der Suche nach einer bereits vorhandenen Anmeldung ist ein Fehler "
+"aufgetreten."
 
 #: ../includes/routes/members.routes.php:613
 #: ../includes/routes/members.routes.php:696
@@ -762,11 +767,11 @@ msgstr "-- Wählen Sie einen Namen --"
 
 #: ../lib/Galette/Core/Picture.php:849
 msgid "An SQL error has occurred."
-msgstr ""
+msgstr "Ein SQL-Fehler ist aufgetreten."
 
 #: ../lib/Galette/Entity/PaymentType.php:150
 msgid "Unable to remove old translation for %type :("
-msgstr ""
+msgstr "Alte Übersetzung für %type kann nicht entfernt werden :("
 
 #: ../lib/Galette/Core/Install.php:1045
 msgid "Config file already exists and is up to date"
@@ -779,7 +784,7 @@ msgstr "Bestehende Mails"
 
 #: ../templates/default/member.tpl:211
 msgid "An error occurred displaying groups interface :("
-msgstr ""
+msgstr "Fehler beim Anzeigen der Gruppenschnittstelle :("
 
 #: ../templates/default/preferences.tpl:200
 msgid "Show public pages for"
@@ -860,7 +865,7 @@ msgstr "Ermäßigter Beitrag"
 
 #: ../lib/Galette/Entity/SavedSearch.php:360
 msgid "Name cannot be empty!"
-msgstr ""
+msgstr "Name kann nicht leer sein!"
 
 #: ../includes/routes/groups.routes.php:195
 msgid "Group"
@@ -893,7 +898,7 @@ msgstr "Nachname des Mitglieds"
 
 #: ../includes/routes/members.routes.php:1260
 msgid "Account modification mail sent to admin."
-msgstr ""
+msgstr "E-Mail zur Kontoänderung an den Administrator gesendet."
 
 #: ../includes/routes/contributions.routes.php:1109
 #: ../templates/default/gestion_transactions.tpl:32
@@ -906,7 +911,7 @@ msgstr "Die Datei wurde nicht gefunden!"
 
 #: ../templates/default/saved_searches.tpl:27
 msgid "Search parameters"
-msgstr ""
+msgstr "Suchparameter"
 
 #: ../lib/Galette/IO/PdfMembersLabels.php:86
 #: ../templates/default/preferences.tpl:10
@@ -928,7 +933,7 @@ msgstr "Gefundene Beiträge in Summe %f"
 
 #: ../templates/default/gestion_paymentstypes.tpl:43
 msgid "%s payment type"
-msgstr ""
+msgstr "%s Zahlungsart"
 
 #: ../templates/default/gestion_mailings.tpl:129
 #: ../templates/default/page.tpl:125
@@ -967,7 +972,7 @@ msgstr "Bitte geben Sie einen Betreff für die Nachricht ein."
 #: ../includes/routes/members.routes.php:3352
 #: ../includes/routes/members.routes.php:3575
 msgid "An SQL error has occurred while storing search."
-msgstr ""
+msgstr "Beim Speichern der Suche ist ein SQL-Fehler aufgetreten."
 
 #: ../templates/default/plugins.tpl:72
 msgid "Explicitely disabled"
@@ -983,7 +988,7 @@ msgstr ""
 
 #: ../includes/routes/contributions.routes.php:1152
 msgid "Remove %1$s"
-msgstr ""
+msgstr "%1$s entfernen"
 
 #: ../includes/routes/management.routes.php:3094
 msgid "Logins and passwords has been successfully filled (%i processed)."
@@ -991,7 +996,7 @@ msgstr "Anmeldename und Passwort wurden erfolgreich erstellt (%i bearbeitet)."
 
 #: ../includes/routes/authentication.routes.php:234
 msgid "An mail has been sent to the member."
-msgstr "Die Email an das Mitglied wurde versandt."
+msgstr "Die E-Mail an das Mitglied wurde gesendet."
 
 #: ../includes/routes/management.routes.php:2346
 msgid "Requested label does not exists!"
@@ -999,7 +1004,7 @@ msgstr "Das angeforderte Labe gibt es nicht!"
 
 #: ../includes/routes/contributions.routes.php:589
 msgid "An error occurred while storing the contribution."
-msgstr ""
+msgstr "Beim Speichern des Beitrags ist ein Fehler aufgetreten."
 
 #: ../includes/fields_defs/members_fields.php:220
 msgid "Other informations:"
@@ -1161,7 +1166,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:276
 msgid "Send email to administrators?"
-msgstr "Email an die Administratoren senden?"
+msgstr "E-Mail an die Administratoren senden?"
 
 #: ../templates/default/gestion_mailings.tpl:63
 #: ../templates/default/gestion_mailings.tpl:75
@@ -1194,12 +1199,12 @@ msgstr "Kein Mitglied hinzugefügt"
 
 #: ../webroot/installer.php:244
 msgid "Galette Installation"
-msgstr "Galette Installation"
+msgstr "Installation von Galette"
 
 #: ../includes/routes/members.routes.php:2084
 #: ../includes/routes/members.routes.php:2213
 msgid "No member selected for mailing!"
-msgstr "Kein Mitglied für den Mailempfang ausgewählt"
+msgstr "Kein Mitglied für den E-Mail-Empfang ausgewählt!"
 
 #: ../includes/routes/members.routes.php:144
 msgid "Subscription"
@@ -1215,7 +1220,7 @@ msgstr "Wiederholen:"
 
 #: ../templates/default/gestion_textes.tpl:71
 msgid "Available with reservations"
-msgstr ""
+msgstr "Verfügbar mit Reservierungen"
 
 #: ../templates/default/config_fields.tpl:163
 msgid "Some warnings has been thrown:"
@@ -1223,7 +1228,7 @@ msgstr "Es gab einige Warnungen:"
 
 #: ../templates/default/group.tpl:86
 msgid "Group PDF"
-msgstr ""
+msgstr "Gruppe-PDF"
 
 #: ../templates/default/config_fields.tpl:9
 msgid "Add a new category"
@@ -1237,7 +1242,7 @@ msgstr "(alle vorhandenen Werte werden gelöscht)"
 
 #: ../lib/Galette/Core/Preferences.php:493
 msgid "- You must indicate a sender name for emails!"
-msgstr "- Sie müssen einen Namen für den Absender der Email eingeben!"
+msgstr "- Sie müssen einen Namen für den Absender der E-Mail eingeben!"
 
 #: ../lib/Galette/Filters/MembersList.php:292
 msgid "Latecomers"
@@ -1253,7 +1258,7 @@ msgstr "Lösche Mitgliedskarten, Transaktionen und Forderungen"
 
 #: ../templates/default/preferences.tpl:222
 msgid "Galette base URL"
-msgstr "Galette base URL"
+msgstr "Galette-Basis-URL"
 
 #: ../templates/default/ajax_groups.tpl:44
 msgid "No groups has been selected yet."
@@ -1373,7 +1378,7 @@ msgstr "Prüfungen"
 
 #: ../includes/routes/management.routes.php:3259
 msgid "That payment type is still in use, you cannot delete it!"
-msgstr ""
+msgstr "Diese Zahlungsart wird noch verwendet, Sie können sie nicht löschen!"
 
 #: ../includes/routes/management.routes.php:3022
 msgid "Administration tools"
@@ -1397,7 +1402,7 @@ msgstr "Beitrag upgedated"
 
 #: ../templates/default/page.tpl:187
 msgid "Manage payment types"
-msgstr ""
+msgstr "Zahlungsarten verwalten"
 
 #: ../templates/default/export.tpl:66
 msgid "Parameted exports"
@@ -1425,7 +1430,7 @@ msgstr "Importmodell wurde erfolgreich gespeichert :)"
 
 #: ../templates/default/preferences.tpl:597
 msgid "Enter the email adress"
-msgstr "Gib die Email Adresse ein"
+msgstr "E-Mail-Adresse eingeben"
 
 #: ../includes/routes/members.routes.php:1264
 msgid "A problem happened while sending account mail to admin"
@@ -1465,7 +1470,7 @@ msgstr "Wähle einen Absender"
 
 #: ../templates/default/preferences.tpl:270
 msgid "Members administrator's Email:"
-msgstr "Email Adresse des Administrators:"
+msgstr "E-Mail-Adresse des Administrators:"
 
 #: ../includes/routes/management.routes.php:2215
 msgid "%type has not been added :("
@@ -1569,7 +1574,7 @@ msgstr "Beschreibung:"
 
 #: ../templates/default/mailing_preview.tpl:37
 msgid "Mail body"
-msgstr "Text der Email"
+msgstr "Text der E-Mail"
 
 #: ../lib/Galette/Entity/Group.php:439
 msgid "Group added"
@@ -1592,7 +1597,7 @@ msgstr "Beitragszahler und Art des Mitgliedsbeitrags auswählen"
 msgid ""
 "Member will receive his username and password by email, if he has an address."
 msgstr ""
-"Der Benutzername und das Passwort werden an die Email Adresse des Mitglieds "
+"Der Benutzername und das Passwort werden an die E-Mail-Adresse des Mitglieds "
 "geschickt."
 
 #: ../lib/Galette/Entity/PaymentType.php:300
@@ -1749,7 +1754,7 @@ msgstr "Leeres Beitrittsformular herunterladen"
 
 #: ../templates/default/preferences.tpl:256
 msgid "Reply-To Email:"
-msgstr "Email Adresse für Antwort:"
+msgstr "E-Mail-Adresse für Antwort:"
 
 #: ../install/steps/check.php:68
 msgid "Compilation"
@@ -1932,8 +1937,8 @@ msgid ""
 "A mail has been sent to your address.<br/>Please check your inbox and follow "
 "the instructions."
 msgstr ""
-"Eine Email wurde an Ihre Adresse geschickt.<br/>Bitte schauen Sie in ihr "
-"Postfach und folgen Sie den Anweisungen in der Mail."
+"Eine E-Mail wurde an Ihre Adresse geschickt.<br/>Bitte schauen Sie in ihr "
+"Postfach und folgen Sie den Anweisungen in der E-Mail."
 
 #: ../includes/routes/management.routes.php:2687
 msgid "Requested field does not exists!"
@@ -1980,8 +1985,8 @@ msgstr "Das Feld %field muss ausgefüllt sein, fehlt aber in der Zeile %row"
 #: ../templates/default/preferences.tpl:257
 msgid "Leave empty to use Sender Email as reply address"
 msgstr ""
-"Lassen Sie das Feld leer um die Email Adresse des Absenders für die Antwort "
-"zu nutzen"
+"Lassen Sie das Feld leer, um die E-Mail-Adresse des Absenders für die "
+"Antwort zu nutzen"
 
 #: ../lib/Galette/Util/FakeData.php:389
 msgid "No photo has been created"
@@ -2006,7 +2011,7 @@ msgstr "Nicht geliefert"
 #: ../includes/routes/management.routes.php:403
 #: ../templates/default/page.tpl:155
 msgid "Charts"
-msgstr "Charts"
+msgstr "Diagramme"
 
 #: ../includes/routes/management.routes.php:251
 #: ../includes/routes/management.routes.php:283
@@ -2087,7 +2092,7 @@ msgstr "Zeige verwandte Abfragen"
 
 #: ../templates/default/gestion_textes.tpl:35
 msgid "Email Body:"
-msgstr "Email Inhalt:"
+msgstr "Inhalt der E-Mail:"
 
 #: ../includes/routes/members.routes.php:3483
 msgid "You are about to remove %count searches."
@@ -2158,7 +2163,7 @@ msgstr "- Ungültiges Datum für den Beginn der Mitgliedschaft."
 
 #: ../templates/default/mailing_recipients.tpl:7
 msgid "You are about to send an e-mail to <strong>%s members</strong>"
-msgstr "Sie sind dabei eine Email an<strong>%s Mitglieder</strong> zu senden"
+msgstr "Sie sind dabei eine E-Mail an<strong>%s Mitglieder</strong> zu senden"
 
 #: ../templates/default/voir_adherent.tpl:45
 msgid ""
@@ -2332,11 +2337,11 @@ msgstr "Bitte wählen Sie mindestens eine Erinnerung."
 
 #: ../includes/routes/management.routes.php:358
 msgid "No email sent to %email"
-msgstr "An die Adresse %email wurde keine Mail geschickt"
+msgstr "An die Adresse %email wurde keine E-Mail geschickt"
 
 #: ../templates/default/preferences.tpl:634
 msgid "An error occurred sending test email :("
-msgstr ""
+msgstr "Beim Senden von der Test-E-Mail ist ein Fehler aufgetreten :("
 
 #: ../templates/default/advanced_search.tpl:246
 msgid "starts with"
@@ -2391,7 +2396,7 @@ msgstr "Mitgliedskarte upgedatet"
 #: ../includes/fields_defs/pdfmodels_fields.php:251
 #: ../includes/dependencies.php:596
 msgid "Email address"
-msgstr "Email Adresse"
+msgstr "E-Mail-Adresse"
 
 #: ../templates/default/page.tpl:146
 msgid "Add new member in database"
@@ -2399,7 +2404,7 @@ msgstr "Neues Mitglied hinzufügen"
 
 #: ../lib/Galette/Filters/MembersList.php:273
 msgid "Job"
-msgstr "Job"
+msgstr "Arbeitstellen"
 
 #: ../templates/default/editer_intitule.tpl:26
 #: ../templates/default/gestion_intitule_content.tpl:4
@@ -2433,7 +2438,7 @@ msgstr "Protokolle leeren"
 
 #: ../templates/default/preferences.tpl:472
 msgid "Web Site"
-msgstr "Webseite"
+msgstr "Website"
 
 #: ../templates/default/mailing_recipients.tpl:13
 msgid "No member selected (yet)."
@@ -2444,8 +2449,8 @@ msgid ""
 "Your subscription has been registered, you will receive a recapitulative "
 "email soon (remember to check your spam box ;) )."
 msgstr ""
-"Ihre Mitgliedschaft ist registriert, Sie werden in Kürze eine "
-"Bestätigungsmail erhalten (Bitte schauen Sie auch in den SPAM Ordner ;) )."
+"Ihre Mitgliedschaft ist registriert; Sie werden in Kürze eine Bestätigungs-E-"
+"Mail erhalten (Bitte schauen Sie auch in den Spam-Ordner ;) )."
 
 #: ../templates/default/history.tpl:27
 msgid "Select an action"
@@ -2618,7 +2623,7 @@ msgid ""
 "Some members you have selected have no e-mail address. However, you can "
 "generate envelope labels to contact them by snail mail."
 msgstr ""
-"Einige der gewählten Mitglieder haben keine Email Adresse. Sie können "
+"Einige der gewählten Mitglieder haben keine E-Mail-Adresse. Sie können "
 "Adressaufkleber für den Postversand generieren."
 
 #: ../templates/default/desktop.tpl:35 ../templates/default/page.tpl:152
@@ -2882,7 +2887,7 @@ msgstr "Transaktionen ansehen und filtern"
 
 #: ../templates/default/preferences.tpl:359
 msgid "Mail signature"
-msgstr "Email Signatur"
+msgstr "E-Mail-Signatur"
 
 #: ../templates/default/import_model.tpl:33
 msgid "Generate empty CSV file"
@@ -2929,7 +2934,7 @@ msgstr "Zeilen / Seite:"
 
 #: ../templates/default/editer_champ.tpl:49
 msgid "Maximum file size, in Ko."
-msgstr "Maximale Dateigröße (in KB)"
+msgstr "Maximale Dateigröße (in KB)."
 
 #: ../templates/default/member.tpl:28
 msgid "You'll be redirected to the login page in a few seconds"
@@ -3042,7 +3047,8 @@ msgstr "Registrieren"
 #: ../templates/default/ajouter_contribution.tpl:164
 msgid "Member will receive a notification by email, if he has an address."
 msgstr ""
-"Das Mitglied wird per Email benachrichtigt wenn eine Email Adresse vorliegt."
+"Das Mitglied wird per E-Mail benachrichtigt wenn eine E-Mail-Adresse "
+"vorliegt."
 
 #: ../templates/default/ajouter_transaction.tpl:8
 msgid "Transaction details"
@@ -3239,9 +3245,8 @@ msgid "SMTP (or GMail) user:"
 msgstr "SMTP (oder GMail) Benutzer:"
 
 #: ../templates/default/member.tpl:74 ../templates/default/preferences.tpl:158
-#, fuzzy
 msgid "create a new contribution (default action)"
-msgstr "Entferne den Beitrag von der Transaktion"
+msgstr "einen neuen Beitrag erstellen (Standardaktion)"
 
 #: ../lib/Galette/Filters/MembersList.php:305
 #: ../includes/routes/management.routes.php:196
@@ -3333,7 +3338,7 @@ msgstr "Sollen ihre Angaben in der öffentlichen Liste enthalten sein?"
 #: ../lib/Galette/Entity/Reminder.php:294
 msgid "Unable to send %membership reminder (no mail address)."
 msgstr ""
-"Die Erinnerung konnte nicht an %membership verschickt werden (keine Email "
+"Die Erinnerung konnte nicht an %membership verschickt werden (keine E-Mail-"
 "Adresse vorhanden)."
 
 #: ../templates/default/export.tpl:30 ../templates/default/export.tpl:46
@@ -3347,7 +3352,7 @@ msgstr ""
 
 #: ../templates/default/reminder.tpl:13 ../templates/default/reminder.tpl:20
 msgid "%s members with mail"
-msgstr "%s Mitglieder mit Email Adressen"
+msgstr "%s Mitglieder mit E-Mail-Adressen"
 
 #: ../includes/i18n.inc.php:357
 msgid "Identity"
@@ -3367,7 +3372,7 @@ msgstr "Beim Massenbearbeiten ist etwas fehlgeschlagen!"
 
 #: ../templates/default/mailing_recipients.tpl:11
 msgid "None of the selected members has an email address."
-msgstr "Keines der gewählten Mitglieder hat eine Email Adresse."
+msgstr "Keines der gewählten Mitglieder hat eine E-Mail-Adresse."
 
 #: ../templates/default/voir_adherent.tpl:196
 msgid "You can drop new image here to get photo changed"
@@ -3561,7 +3566,7 @@ msgstr "Erinnerungen an überfällige Mitglieder versenden"
 #: ../templates/default/mailing_adherents.tpl:178
 #: ../templates/default/gestion_mailings.tpl:219
 msgid "Mailing preview"
-msgstr "Email Vorschau"
+msgstr "E-Mail-Vorschau"
 
 #: ../includes/routes/members.routes.php:1551
 msgid "%count members have been successfully deleted."
@@ -3611,8 +3616,8 @@ msgid ""
 "You asked Galette to send a test email, but mail has been disabled in the "
 "preferences."
 msgstr ""
-"Galette kann keine Bestätigungsmail verschicken, da die Mailfunktionalität "
-"in den Einstellungen deaktiviert wurde."
+"Galette kann keine Bestätigungs-E-Mail verschicken, da die E-Mail-"
+"Funktionalität in den Einstellungen deaktiviert wurde."
 
 #: ../templates/default/forms_types/groups.tpl:12
 msgid "Manage user's managed groups"
@@ -3625,7 +3630,7 @@ msgstr "Adressaufkleber für überfällige Mitgliedsbeiträge erstellen"
 #: ../templates/default/member.tpl:95
 msgid "Member will be notified by mail his account has been modified."
 msgstr ""
-"Das Mitglied wird per Email über die Änderungen an seinem Konto informiert."
+"Das Mitglied wird per E-Mail über die Änderungen an seinem Konto informiert."
 
 #: ../includes/routes/authentication.routes.php:245
 msgid "A problem happened while sending password for account '%s'"
@@ -3931,7 +3936,7 @@ msgstr "Eine Spende hinzufügen"
 
 #: ../includes/routes/authentication.routes.php:271
 msgid "Your account (%s) do not contain any valid mail address"
-msgstr "Ihrem Konto (%s) ist keine gültige Email Adresse zugeordnet"
+msgstr "Ihrem Konto (%s) ist keine gültige E-Mail-Adresse zugeordnet"
 
 #: ../includes/routes/members.routes.php:3452
 msgid "Remove saved search"
@@ -4042,6 +4047,9 @@ msgid ""
 "you can use this password to login, and we recommend you to change it as "
 "soon as possible."
 msgstr ""
+"Wenn Sie eine E-Mail-Adresse angegeben haben, wird Ihnen ein Link "
+"zugeschickt. Andernfalls können Sie dieses Passwort zum Anmelden verwenden, "
+"und wir empfehlen Ihnen, es so bald wie möglich zu ändern."
 
 #: ../install/steps/db_checks.php:102
 msgid "UPDATE operation allowed"
@@ -4164,7 +4172,7 @@ msgstr "Gruppe wurde vom übergeordneten Element getrennt"
 
 #: ../templates/default/preferences.tpl:292
 msgid "Emailing method:"
-msgstr "Email Methode:"
+msgstr "E-Mail-Methode:"
 
 #: ../includes/routes/groups.routes.php:291
 msgid "Unable to get groups list."
@@ -4223,7 +4231,7 @@ msgstr "PDF Modelle"
 
 #: ../includes/routes/contributions.routes.php:642
 msgid "Mail sent to user %name (%email)"
-msgstr "Email an den Benutzer %name (%email) versandt"
+msgstr "E-Mail an den Benutzer %name (%email) versandt"
 
 #: ../templates/default/page.tpl:158
 msgid "View and filter all my transactions"
@@ -4234,7 +4242,7 @@ msgid ""
 "A problem happened while sending to admin notification for user %name "
 "(%email) contribution"
 msgstr ""
-"Beim Senden der Beitragsbestätigung für das Mitglied %name (%mail) an den "
+"Beim Senden der Beitragsbestätigung für das Mitglied %name (%email) an den "
 "Administrator ist ein Problem aufgetreten"
 
 #: ../templates/default/gestion_textes.tpl:84
@@ -4251,7 +4259,7 @@ msgstr "PDF Modelle"
 
 #: ../templates/default/editer_champ.tpl:66
 msgid "Choice list (one entry per line)."
-msgstr "Auswahllist (ein Eintrag pro Zeile)"
+msgstr "Auswahllist (ein Eintrag pro Zeile)."
 
 #: ../templates/default/advanced_search.tpl:243
 msgid "contains"
@@ -4377,7 +4385,7 @@ msgstr "INSERT Berechtigung vorhanden"
 
 #: ../includes/routes/management.routes.php:2088
 msgid "Email: '%s' has been successfully modified."
-msgstr "Email: '%s' wurde erfolgreich geändert."
+msgstr "E-Mail: „%s“ wurde erfolgreich geändert."
 
 #: ../lib/Galette/Core/Preferences.php:476
 msgid "- Invalid year for cards."
@@ -4479,7 +4487,7 @@ msgstr ""
 
 #: ../templates/default/lostpasswd.tpl:6
 msgid "Username or email:"
-msgstr "Benutzername oder Email:"
+msgstr "Benutzername oder E-Mail:"
 
 #: ../includes/i18n.inc.php:327
 msgid "Realization:"
@@ -4546,7 +4554,7 @@ msgstr "Aktionen"
 
 #: ../includes/routes/management.routes.php:2079
 msgid "Email: '%s' has not been modified!"
-msgstr "Email: '%s' wurde nicht geändert!"
+msgstr "E-Mail: „%s“ wurde nicht geändert!"
 
 #: ../templates/default/preferences.tpl:239
 msgid "Sender name:"
@@ -4637,7 +4645,7 @@ msgstr "Auswahl der Gruppenmitglieder"
 
 #: ../templates/default/gestion_adherents.tpl:36
 msgid "Members that have an email address:"
-msgstr "Mitglieder mit einer Email Adresse:"
+msgstr "Mitglieder mit einer E-Mail-Adresse:"
 
 #: ../templates/default/advanced_search.tpl:37
 msgid "With mail:"
@@ -4645,7 +4653,7 @@ msgstr "Mit Mail:"
 
 #: ../lib/Galette/IO/CsvIn.php:365
 msgid "Email address %address is already used! (%extra)"
-msgstr "Die Email Adresse %address wird schon genutzt! (%extra)"
+msgstr "Die E-Mail-Adresse %address wird schon genutzt! (%extra)"
 
 #: ../includes/routes/management.routes.php:1571
 msgid "CSV import model"
@@ -4719,7 +4727,7 @@ msgstr "Grund"
 
 #: ../templates/default/preferences.tpl:281
 msgid "Wrap text mails?"
-msgstr "Zeilenumbruch für Email Texte?"
+msgstr "Zeilenumbruch für Text-E-Mails?"
 
 #: ../lib/Galette/Entity/Adherent.php:1829
 msgid "Duplicated from %name (%id)"
@@ -4782,7 +4790,7 @@ msgstr "Auswahl umkehren"
 
 #: ../templates/default/preferences.tpl:234
 msgid "Mail settings"
-msgstr "Email Einstellungen"
+msgstr "E-Mail-Einstellungen"
 
 #: ../templates/default/admintools.tpl:16
 msgid "Reset fields configuration"
@@ -4805,8 +4813,8 @@ msgid ""
 msgstr ""
 "Die Seite zeigt nur Mitglieder die in den öffentlichen Listen sichtbar sein "
 "wollen und ihre Beiträge gezahlt haben. Wenn Sie in dieser Liste stehen "
-"wollen wählen Sie die Option 'In Mitgliedsliste angezeigt werden' in ihrem "
-"Profil."
+"wollen wählen Sie die Option „In Mitgliedsliste angezeigt werden“ in ihrem "
+"Profil"
 
 #: ../templates/default/page.tpl:214 ../templates/default/public_page.tpl:89
 msgid "Log off"
@@ -5033,7 +5041,7 @@ msgstr "Lade .."
 
 #: ../templates/default/preferences.tpl:9
 msgid "E-Mail"
-msgstr "Email"
+msgstr "E-Mail"
 
 #: ../templates/default/advanced_search.tpl:245
 msgid "do not contains"
@@ -5171,7 +5179,7 @@ msgstr "Informationen"
 #: ../templates/default/admintools.tpl:16
 #: ../templates/default/admintools.tpl:17
 msgid "Reset all emails contents to their default values"
-msgstr "Alle Email Inhalte auf die Standardeinstellungen zurücksetzen"
+msgstr "Alle E-Mail-Inhalte auf die Standardeinstellungen zurücksetzen"
 
 #: ../lib/Galette/IO/PdfAdhesionForm.php:131
 #: ../includes/routes/members.routes.php:297
@@ -5185,7 +5193,7 @@ msgstr "Mann"
 #: ../templates/default/preferences.tpl:320
 #: ../templates/default/preferences.tpl:597
 msgid "Test mail settings"
-msgstr "Email Einstellungen testen"
+msgstr "E-Mail-Einstellungen testen"
 
 #: ../templates/default/page.tpl:183
 msgid "Manage contributions types"
@@ -5311,7 +5319,7 @@ msgstr "Ihre Anmeldung wurde gespeichert."
 
 #: ../includes/fields_defs/members_fields.php:172
 msgid "E-Mail:"
-msgstr "Email:"
+msgstr "E-Mail:"
 
 #: ../includes/routes/members.routes.php:2552
 msgid "No reminder to send for now."
@@ -5393,7 +5401,7 @@ msgstr "Senden"
 msgid ""
 "Trying to send a mail to a member (%name) with an invalid address: %email"
 msgstr ""
-"Versuche eine Mail an das Mitglied (%name) mit einer ungültigen Email "
+"Versuche eine E-Mail an das Mitglied (%name) mit einer ungültigen E-Mail-"
 "Adresse zu schicken: %email"
 
 #: ../lib/Galette/Entity/Adherent.php:1546
@@ -5590,7 +5598,7 @@ msgstr "Aktuelle Mitglieder"
 
 #: ../includes/fields_defs/members_fields.php:212
 msgid "Other informations (admin):"
-msgstr "Andere Informationen (Administion)"
+msgstr "Andere Informationen (Administrator):"
 
 #: ../templates/default/gestion_adherents.tpl:34
 #: ../templates/default/gestion_adherents.tpl:56
@@ -5627,7 +5635,7 @@ msgstr "(Farbe passt sich der Status des Mitglieds an)"
 
 #: ../includes/routes/management.routes.php:3057
 msgid "Texts has been successfully reinitialized."
-msgstr "Die Texte wurde auf den Standard zurückgesetzt"
+msgstr "Die Texte wurden auf den Standard zurückgesetzt."
 
 #: ../templates/default/advanced_search.tpl:172
 msgid "Add new free search criteria"
@@ -5637,7 +5645,7 @@ msgstr "Neue Suchkriterien hinzufügen"
 #: ../templates/default/mailing_adherents.tpl:6
 msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgstr ""
-"Email ist in den Einstellungen deaktiviert. Kontaktieren Sie einen "
+"E-Mail ist in den Einstellungen deaktiviert. Kontaktieren Sie einen "
 "Adminstrator"
 
 #: ../lib/Galette/Core/I18n.php:208
@@ -5693,7 +5701,8 @@ msgstr ""
 #: ../includes/routes/members.routes.php:1036
 msgid "An email has been sent to you, check your inbox."
 msgstr ""
-"Eine Mail wurde an Deine Adresse geschickt, bitte schau in dein Mailfach."
+"Eine E-Mail wurde an Ihre Adresse geschickt, bitte schauen Sie in Ihr "
+"Postfach."
 
 #: ../templates/default/member.tpl:32
 #: ../templates/default/ajouter_contribution.tpl:42
@@ -5829,14 +5838,14 @@ msgstr "Änderungsdatum:"
 
 #: ../templates/default/preferences.tpl:295
 msgid "Emailing disabled"
-msgstr "Email deaktiviert"
+msgstr "E-Mail-Versand deaktiviert"
 
 #: ../templates/default/preferences.tpl:334
 msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
 "and password below. For GMail, authentication will always be on."
 msgstr ""
-"Benötigt Email SMTP Authentifizierung? Bitte geben Sie Benutzername und "
+"Benötigt E-Mail SMTP-Authentifizierung? Bitte geben Sie Benutzername und "
 "Passwort an. Für GMail wird Authentifizierung immer benötigt."
 
 #: ../includes/routes/management.routes.php:1944
@@ -5848,7 +5857,7 @@ msgstr "Titel editieren"
 #: ../templates/default/liste_membres.tpl:79
 #: ../templates/default/preferences.tpl:469
 msgid "Email"
-msgstr "Email"
+msgstr "E-Mail"
 
 #: ../includes/routes/members.routes.php:3426 ../templates/default/page.tpl:140
 msgid "Saved searches"
@@ -5892,7 +5901,7 @@ msgstr "Temporäres Bild"
 
 #: ../lib/Galette/Entity/Adherent.php:1166
 msgid "- Non-valid E-Mail address!"
-msgstr "- Ungültige Email Adresse!"
+msgstr "- Ungültige E-Mail-Adresse!"
 
 #: ../templates/default/gestion_adherents.tpl:26
 msgid "Apply filters"
@@ -6012,13 +6021,13 @@ msgstr "Unbekannten Fehler beim Hochladen"
 
 #: ../includes/routes/members.routes.php:1186
 msgid "New account mail sent to '%s'."
-msgstr "Email zur Neuanmeldung an '%s' geschickt."
+msgstr "E-Mail zur Neuanmeldung an „%s“ geschickt."
 
 #: ../templates/default/gestion_adherents.tpl:191
 #: ../templates/default/gestion_adherents.tpl:294
 #: ../templates/default/gestion_adherents.tpl:383
 msgid "Mail"
-msgstr "Email"
+msgstr "E-Mail"
 
 #: ../lib/Galette/Core/Middleware.php:190
 msgid "Your Galette database is not present, or not up to date."
@@ -6050,6 +6059,8 @@ msgid ""
 "Sends an email each time a new member registers online or edit his/her "
 "account"
 msgstr ""
+"Sendet jedes Mal eine E-Mail, wenn sich ein neues Mitglied online "
+"registriert oder sein Konto bearbeitet"
 
 #: ../templates/default/preferences.tpl:389
 msgid "Label width:"
@@ -6080,7 +6091,7 @@ msgstr "Passwörter stimmen nicht überein!"
 
 #: ../templates/default/page.tpl:184
 msgid "Emails content"
-msgstr "Inhalt der Email"
+msgstr "Inhalt der E-Mails"
 
 #: ../templates/default/history.tpl:123
 msgid "History entry %id"
@@ -6119,7 +6130,7 @@ msgstr "Es gibt keine Mitglieder zum Fortfahren."
 
 #: ../includes/routes/management.routes.php:365
 msgid "Invalid email adress!"
-msgstr "Ungültige Email Adresse!"
+msgstr "Ungültige E-Mail-Adresse!"
 
 #: ../templates/default/preferences.tpl:17
 msgid "General information"
@@ -6129,8 +6140,8 @@ msgstr "Allgemeine Informationen"
 msgid ""
 "- You can't send a confirmation by email if the member hasn't got an address!"
 msgstr ""
-"- Sie können keine Bestätigung per Email an Mitglieder schicken die keine "
-"Email Adresse angegeben haben!"
+"- Sie können keine Bestätigung per E-Mail an Mitglieder schicken die keine E"
+"-Mail-Adresse angegeben haben!"
 
 #: ../includes/routes/contributions.routes.php:830
 msgid "Transaction"
@@ -6551,10 +6562,8 @@ msgstr "Verschickte Mailings:"
 
 #: ../webroot/installer.php:276 ../templates/default/page.tpl:200
 #: ../templates/default/public_page.tpl:74
-#, fuzzy
-#| msgid "Default language:"
 msgid "Change language"
-msgstr "Standard Sprache:"
+msgstr "Sprache ändern"
 
 #: ../templates/default/gestion_adherents.tpl:279
 #: ../templates/default/gestion_contributions.tpl:262
@@ -6813,7 +6822,7 @@ msgstr "Keine GIF Datei "
 
 #: ../lib/Galette/Entity/Adherent.php:1183
 msgid "- This E-Mail address is already used by another member!"
-msgstr "- Diese Email Adresse wird schon von einem anderen Mitglied benutzt!"
+msgstr "- Diese E-Mail-Adresse wird schon von einem anderen Mitglied benutzt!"
 
 #: ../lib/Galette/Entity/Adherent.php:1757 ../templates/default/member.tpl:351
 msgid " (%age years old)"
@@ -7057,7 +7066,7 @@ msgstr "(Geben Sie das aktuelle Präfix der Galette Tabellen an)"
 
 #: ../includes/routes/contributions.routes.php:691
 msgid "Mail sent to admin for user %name (%email)"
-msgstr "Email an den Administrator für Benutzer %name (%email)"
+msgstr "E-Mail an den Administrator für Benutzer %name (%email)"
 
 #: ../templates/default/gestion_groupes.tpl:19
 msgid "New group"
@@ -7251,12 +7260,12 @@ msgstr "Suchen:"
 #: ../includes/routes/members.routes.php:1094
 msgid "A problem happened while sending email to admin for account '%s'."
 msgstr ""
-"Ein Fehler ist beim Senden einer Email an den Administrator vom Konto '%s' "
+"Ein Fehler ist beim Senden einer E-Mail an den Administrator vom Konto „%s“ "
 "aufgetreten."
 
 #: ../templates/default/gestion_adherents.tpl:384
 msgid "Send a mail"
-msgstr "Eine Email verschicken"
+msgstr "Eine E-Mail seden"
 
 #: ../includes/routes/authentication.routes.php:81
 msgid "You must provide both login and password."
@@ -7325,7 +7334,7 @@ msgstr "Manager:"
 
 #: ../templates/default/gestion_textes.tpl:78
 msgid "Member's email address"
-msgstr "Email Adresse des Mitglieds"
+msgstr "E-Mail-Adresse des Mitglieds"
 
 #: ../templates/default/gestion_adherents.tpl:418
 msgid ""
@@ -7486,7 +7495,7 @@ msgstr "Soll der HTML Editor aktiviert werden ?"
 
 #: ../includes/routes/main.routes.php:159
 msgid "Unable to impersonate as %id"
-msgstr "Anmelden als %id nicht möglich!"
+msgstr "Anmelden als %id nicht möglich"
 
 #: ../templates/default/page.tpl:141
 msgid "Manage groups"
@@ -7730,7 +7739,7 @@ msgstr ""
 
 #: ../includes/routes/members.routes.php:1195
 msgid "A problem happened while sending account mail to '%s'"
-msgstr "Beim Senden einer Email an das Konto '%s' ist ein Problem aufgetreten"
+msgstr "Beim Senden einer E-Mail an das Konto „%s“ ist ein Problem aufgetreten"
 
 #: ../templates/default/gestion_titres.tpl:10
 #: ../templates/default/gestion_titres.tpl:24
@@ -7753,7 +7762,7 @@ msgstr "Datei '%file' von der Platte löschen"
 
 #: ../lib/Galette/Core/Install.php:1138
 msgid "Mails texts"
-msgstr "Email Text"
+msgstr "Texte der E-Mails"
 
 #~ msgid "Attached member selection"
 #~ msgstr "Auswahl der zugehörigen Mitglieder"
