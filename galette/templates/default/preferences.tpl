@@ -26,6 +26,14 @@
                     <label for="pref_slogan" class="bline tooltip">{_T string="Association's short description:"}</label>
                     <span class="tip">{_T string="Enter here a short description for your association, it will be displayed on the index page and into pages' title."}</span>
                     <input{if isset($required.pref_slogan) and $required.pref_slogan eq 1} required="required"{/if} type="text" class="large" name="pref_slogan" id="pref_slogan" value="{$pref.pref_slogan}"/>
+                    <a
+                        href="{path_for name="dynamicTranslations" data=["text_orig" => {$pref.pref_slogan|escape}]}"
+                        class="tooltip"
+                    >
+                        <i class="fas fa-language"></i>
+                        <span class="sr-only">{_T string="Translate '%s'" pattern="/%s/" replace=$pref.pref_slogan}</span>
+                    </a>
+
                 </p>
                 <p>
                     <label for="pref_footer" class="bline tooltip">{_T string="Footer text:"}</label>
@@ -415,11 +423,26 @@
                 <p>
                     <label for="pref_card_abrev" class="bline">{_T string="Short Text (Card Center):"}</label>
                     <input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{$pref.pref_card_abrev}" size="10" maxlength="10"{if isset($required.pref_card_abrev) and $required.pref_card_abrev eq 1} required="required"{/if}/>
+
+                    <a
+                        href="{path_for name="dynamicTranslations" data=["text_orig" => {$pref.pref_card_abrev|escape}]}"
+                        class="tooltip"
+                    >
+                        <i class="fas fa-language"></i>
+                        <span class="sr-only">{_T string="Translate '%s'" pattern="/%s/" replace=$pref.pref_card_abrev}</span>
+                    </a>
                     <span class="exemple">{_T string="(10 characters max)"}</span>
                 </p>
                 <p>
                     <label for="pref_card_strip" class="bline">{_T string="Long Text (Bottom Line):"}</label>
                     <input type="text" name="pref_card_strip" id="pref_card_strip" value="{$pref.pref_card_strip}" size="40" maxlength="65"{if isset($required.pref_card_strip) and $required.pref_card_strip eq 1} required="required"{/if}/>
+                    <a
+                        href="{path_for name="dynamicTranslations" data=["text_orig" => {$pref.pref_card_strip|escape}]}"
+                        class="tooltip"
+                    >
+                        <i class="fas fa-language"></i>
+                        <span class="sr-only">{_T string="Translate '%s'" pattern="/%s/" replace=$pref.pref_card_strip}</span>
+                    </a>
                     <span class="exemple">{_T string="(65 characters max)"}</span>
                 </p>
                 <p>
