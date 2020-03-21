@@ -6,13 +6,14 @@
 # Johan Cwiklinski <johan@x-tnd.be>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2019. #zanata
 # Johan Cwiklinski <trasher@x-tnd.be>, 2019.
+# Jeannette L <j.lavoie@net-c.ca>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2019-11-10 20:41+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2020-03-23 03:48+0000\n"
+"Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -20,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.10-dev\n"
+"X-Generator: Weblate 4.0-dev\n"
 
 #: ../templates/default/gestion_adherents.tpl:13
 msgid "among:"
@@ -619,7 +620,7 @@ msgstr "Exempt de cotisation"
 
 #: ../includes/routes/management.routes.php:1105
 msgid "An error occurred trying to delete mailing :("
-msgstr "Une erreur est survenue lors de la suppression du mailing :("
+msgstr "Une erreur est survenue lors de la suppression du publipostage :("
 
 #: ../lib/Galette/Core/Preferences.php:547 ../webroot/installer.php:214
 msgid "Passwords mismatch"
@@ -869,7 +870,7 @@ msgstr "Cotisation annuelle réduite"
 
 #: ../lib/Galette/Entity/SavedSearch.php:360
 msgid "Name cannot be empty!"
-msgstr "Le nom ne peut être vide !"
+msgstr "Le nom ne peut pas être vide !"
 
 #: ../includes/routes/groups.routes.php:195
 msgid "Group"
@@ -1171,7 +1172,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:276
 msgid "Send email to administrators?"
-msgstr "Envoyer des mails aux administrateurs&nbsp;?"
+msgstr "Envoyer le courriel aux administrateurs&nbsp;?"
 
 #: ../templates/default/gestion_mailings.tpl:63
 #: ../templates/default/gestion_mailings.tpl:75
@@ -1441,7 +1442,7 @@ msgstr "Le modèle d’import a été enregistré avec succès :)"
 
 #: ../templates/default/preferences.tpl:597
 msgid "Enter the email adress"
-msgstr "Entrez l’adresse email"
+msgstr "Entrer l’adresse de courriel"
 
 #: ../includes/routes/members.routes.php:1264
 msgid "A problem happened while sending account mail to admin"
@@ -2399,7 +2400,7 @@ msgstr "Une erreur est survenue lors de la suppression du type « %name » :("
 # (ils sont supprimés)
 #: ../lib/Galette/IO/PdfMembersLabels.php:73
 msgid "labels_print_filename"
-msgstr "etiquettes"
+msgstr "labels_print_filename"
 
 #: ../templates/default/desktop.tpl:20
 msgid "Hide this panel"
@@ -3613,7 +3614,7 @@ msgstr "Envoyer un rappel aux adhérents retardataires"
 #: ../templates/default/mailing_adherents.tpl:178
 #: ../templates/default/gestion_mailings.tpl:219
 msgid "Mailing preview"
-msgstr "Prévisualisation de l’E-Mailing"
+msgstr "Prévisualisation du courriel"
 
 #: ../includes/routes/members.routes.php:1551
 msgid "%count members have been successfully deleted."
@@ -3665,7 +3666,7 @@ msgid ""
 "preferences."
 msgstr ""
 "Vous avez demandé à Galette d’envoyer un courriel de test, mais l’envoi de "
-"mail a été désactivé dans les préférences."
+"courriels a été désactivé dans les préférences."
 
 #: ../templates/default/forms_types/groups.tpl:12
 msgid "Manage user's managed groups"
@@ -3987,7 +3988,7 @@ msgstr "Ajouter un don"
 
 #: ../includes/routes/authentication.routes.php:271
 msgid "Your account (%s) do not contain any valid mail address"
-msgstr "Votre compte (%s) ne contient pas d’adresse email valide"
+msgstr "Votre compte (%s) ne contient pas d’adresse courriel valide"
 
 #: ../includes/routes/members.routes.php:3452
 msgid "Remove saved search"
@@ -4545,7 +4546,7 @@ msgstr "Gestion des types de paiement"
 
 #: ../templates/default/lostpasswd.tpl:6
 msgid "Username or email:"
-msgstr "Identifiant ou adresse e-mail&nbsp;:"
+msgstr "Identifiant ou adresse courriel&nbsp;:"
 
 #: ../includes/i18n.inc.php:327
 msgid "Realization:"
@@ -5706,7 +5707,7 @@ msgstr "(Couleur du bandeau dépendant du statut des membres)"
 
 #: ../includes/routes/management.routes.php:3057
 msgid "Texts has been successfully reinitialized."
-msgstr "Lest textes ont été réinitialisés avec succès."
+msgstr "Les textes ont été réinitialisés avec succès."
 
 #: ../templates/default/advanced_search.tpl:172
 msgid "Add new free search criteria"
@@ -5770,7 +5771,7 @@ msgstr "Veuillez choisir les paramètres du compte administrateur Galette"
 
 #: ../includes/routes/members.routes.php:1036
 msgid "An email has been sent to you, check your inbox."
-msgstr "Un courriel vous a été été envoyé, vérifier votre boite de réception."
+msgstr "Un courriel vous a été été envoyé, vérifiez votre boite de réception."
 
 #: ../templates/default/member.tpl:32
 #: ../templates/default/ajouter_contribution.tpl:42
@@ -5913,8 +5914,8 @@ msgid ""
 "Would emailing use any SMTP authentication? You'll have to provide username "
 "and password below. For GMail, authentication will always be on."
 msgstr ""
-"Est-ce que l’envoi de mails utilisera l’authentification SMTP&nbsp;? Vous "
-"devrez fournir un nom d’utilisateur et un mot de passe ci-dessous. Pour "
+"Est-ce que l’envoi de courriels utilisera l’authentification SMTP&nbsp;? "
+"Vous devrez fournir un nom d’utilisateur et un mot de passe ci-dessous. Pour "
 "GMail, l’authentification sera toujours activée."
 
 #: ../includes/routes/management.routes.php:1944
@@ -6098,7 +6099,7 @@ msgstr "Courriel de nouveau compte envoyé à « %s »."
 #: ../templates/default/gestion_adherents.tpl:294
 #: ../templates/default/gestion_adherents.tpl:383
 msgid "Mail"
-msgstr "Envoyer un courriel"
+msgstr "Courriel"
 
 #: ../lib/Galette/Core/Middleware.php:190
 msgid "Your Galette database is not present, or not up to date."
@@ -6200,7 +6201,7 @@ msgstr "Il n’y a aucun adhérent à traiter."
 
 #: ../includes/routes/management.routes.php:365
 msgid "Invalid email adress!"
-msgstr "Adresse courriel non valide&nbsp;!"
+msgstr "Adresse courriel invalide&nbsp;!"
 
 #: ../templates/default/preferences.tpl:17
 msgid "General information"
