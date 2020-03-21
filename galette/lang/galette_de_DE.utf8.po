@@ -5,11 +5,11 @@
 # Johan Cwiklinski <johan@x-tnd.be>, 2018. #zanata
 # Johan Cwiklinski <johan@x-tnd.be>, 2019. #zanata
 # Allan Nordhøy <epost@anotheragency.no>, 2019.
-# Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2019.
+# Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2019, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
-"PO-Revision-Date: 2019-11-26 21:44+0000\n"
+"PO-Revision-Date: 2020-03-21 01:13+0000\n"
 "Last-Translator: Fredericos Tezorc <fredericos.tezorc@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.10-dev\n"
+"X-Generator: Weblate 4.0-dev\n"
 
 #: ../templates/default/gestion_adherents.tpl:13
 msgid "among:"
@@ -135,11 +135,11 @@ msgstr ""
 
 #: ../lib/Galette/IO/FileTrait.php:476
 msgid "An error occurred."
-msgstr ""
+msgstr "Ein Fehler ist aufgetreten."
 
 #: ../templates/default/gestion_groupes.tpl:35
 msgid "All groups PDF"
-msgstr ""
+msgstr "Alle Gruppen PDF"
 
 #: ../includes/main.inc.php:230
 msgid "Route '%name' is not registered in ACLs!"
