@@ -181,7 +181,7 @@ if (defined('GALETTE_TESTS')) {
         || ( defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true )
     ) {
         //logs everything in PHP logs (per chance /var/log/http/error_log or /var/log/php-fpm/error.log)
-        $galette_run_log = \Analog\Handler\Stderr::init();
+        $galette_run_log = \Analog\Handler\Syslog::init('galette', 'user');
     } else {
         if (!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) {
             //logs everything in galette log file
