@@ -244,15 +244,11 @@ $app->group('/ajax', function () use ($authenticate) {
         function ($request, $response) {
             $post = $request->getParsedBody();
 
-            // contribution types
-            $ct = new ContributionsTypes($this->zdb);
-            $contributions_types = $ct->getList(true);
-
             $contrib = new Contribution(
                 $this->zdb,
                 $this->login,
                 [
-                    'type'  => array_keys($contributions_types)[$post['fee_id']],
+                    'type'  => (int)$post['fee_id'],
                     'adh'   => (int)$post['member_id']
                 ]
             );

@@ -318,13 +318,6 @@ $app->get(
                         ));
                 }
             } else {
-                $id_type_cotis = 0;
-                if (isset($get[ContributionsTypes::PK])
-                    && $get[ContributionsTypes::PK]
-                    && $action === 'add'
-                ) {
-                    $id_type_cotis = $get[ContributionsTypes::PK];
-                }
                 $cparams = ['type' => array_keys($contributions_types)[0]];
 
                 //member id
