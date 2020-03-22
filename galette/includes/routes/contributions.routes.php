@@ -544,10 +544,10 @@ $app->post(
                                             _T("A problem happened while sending to admin post contribution notification for user %name (%email) contribution")
                                         );
                                         $this->history->add($txt);
-                                        $error_detected[] = $txt;
+                                        $warning_detected[] = $txt;
                                         //Mails are disabled... We log (not safe, but)...
                                         Analog::log(
-                                            'Post contribution script has failed. Here was the data: ' .
+                                            'Email to admin has not been sent. Here was the data: ' .
                                             "\n" . print_r($res, true),
                                             Analog::ERROR
                                         );
@@ -677,7 +677,7 @@ $app->post(
                             _T("A problem happened while sending to admin notification for user %name (%email) contribution")
                         );
                         $this->history->add($txt);
-                        $error_detected[] = $txt;
+                        $warning_detected[] = $txt;
                     }
                 }
             }
