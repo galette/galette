@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
-"PO-Revision-Date: 2020-03-23 03:48+0000\n"
+"PO-Revision-Date: 2020-03-24 17:46+0000\n"
 "Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
@@ -217,7 +217,7 @@ msgstr "E-Mail-Betreff"
 
 #: ../templates/default/page.tpl:152
 msgid "Manage mailings"
-msgstr "Emails verwalten"
+msgstr "E-Mails verwalten"
 
 #: ../templates/default/group.tpl:70
 msgid "Manage members"
@@ -547,7 +547,7 @@ msgid ""
 "Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 "
 "rows.<br/>Double check margins and spacings ;)"
 msgstr ""
-"Die Karten sind 75mm breit und 40mm hoch. Jede Seite besteht aus 2 Spalten "
+"Die Karten sind 75 mm breit und 40 mm hoch. Jede Seite besteht aus 2 Spalten "
 "und 6 Zeilen.<br/>Bitte prüfe die Ränder und Abstände ;)"
 
 #: ../templates/default/gestion_intitule_content.tpl:24
@@ -795,8 +795,9 @@ msgid "Continue"
 msgstr "Weiter"
 
 #: ../templates/default/gestion_adherents.tpl:502
+#, fuzzy
 msgid "Search title"
-msgstr ""
+msgstr "Titel der Suche"
 
 #: ../includes/i18n.inc.php:360
 msgid "Mr."
