@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2020-03-23 16:58+0000\n"
-"Last-Translator: anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2020-03-24 17:46+0000\n"
+"Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -38,7 +38,7 @@ msgstr "Les fichiers suivants ont été écrits sur le disque :"
 
 #: ../includes/fields_defs/members_fields.php:156
 msgid "Phone:"
-msgstr "Téléphone :"
+msgstr "Téléphone :"
 
 #: ../templates/default/editer_champ.tpl:18
 msgid "Permissions:"
@@ -218,11 +218,11 @@ msgstr "Annuler"
 
 #: ../templates/default/gestion_textes.tpl:31
 msgid "Email Subject"
-msgstr "Sujet du courriel"
+msgstr "Objet du courriel"
 
 #: ../templates/default/page.tpl:152
 msgid "Manage mailings"
-msgstr "Gestion des E-Mailings"
+msgstr "Gestion des publipostages"
 
 #: ../templates/default/group.tpl:70
 msgid "Manage members"
@@ -2364,7 +2364,7 @@ msgstr "Assurez-vous de sélectionner au moins un rappel."
 
 #: ../includes/routes/management.routes.php:358
 msgid "No email sent to %email"
-msgstr "Aucun email envoyé à %email"
+msgstr "Aucun courriel envoyé à %email"
 
 #: ../templates/default/preferences.tpl:634
 msgid "An error occurred sending test email :("
