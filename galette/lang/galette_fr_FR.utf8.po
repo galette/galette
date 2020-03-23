@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2020-03-23 03:48+0000\n"
+"PO-Revision-Date: 2020-03-23 16:58+0000\n"
 "Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -37,7 +37,7 @@ msgstr "Les fichiers suivants ont été écrits sur le disque :"
 
 #: ../includes/fields_defs/members_fields.php:156
 msgid "Phone:"
-msgstr "Tél&nbsp;:"
+msgstr "Téléphone :"
 
 #: ../templates/default/editer_champ.tpl:18
 msgid "Permissions:"
@@ -552,8 +552,8 @@ msgid ""
 "Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 "
 "rows.<br/>Double check margins and spacings ;)"
 msgstr ""
-"Chaque carte mesure 75mm de largeur et 40mm de hauteur. Chaque page contient "
-"2 colonnes et 6 lignes.<br/>Vérifiez les marges et espacements ;)"
+"Chaque carte mesure 75 mm de largeur et 40 mm de hauteur. Chaque page "
+"contient 2 colonnes et 6 lignes.<br/>Vérifiez les marges et espacements ;)"
 
 #: ../templates/default/gestion_intitule_content.tpl:24
 msgid "New status"
