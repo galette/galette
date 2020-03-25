@@ -1,11 +1,11 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2019.
-# Allan Nordhøy <epost@anotheragency.no>, 2019.
+# Allan Nordhøy <epost@anotheragency.no>, 2019, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: 2019-10-18 07:12+0200\n"
-"PO-Revision-Date: 2019-11-02 10:03+0000\n"
+"PO-Revision-Date: 2020-03-26 15:46+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/galette/"
 "galette/nb_NO/>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.10-dev\n"
+"X-Generator: Weblate 4.0-dev\n"
 
 #: ../templates/default/gestion_adherents.tpl:13
 msgid "among:"
@@ -109,7 +109,7 @@ msgstr ""
 
 #: ../templates/default/public_page.tpl:126
 msgid "Lost your password?"
-msgstr ""
+msgstr "Glemt passordet?"
 
 #: ../templates/default/forms_types/password.tpl:10
 #: ../templates/default/forms_types.tpl:85
