@@ -1,12 +1,13 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020.
 # Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2019.
+# anonymous <noreply@weblate.org>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: 2019-10-17 08:02+0200\n"
-"PO-Revision-Date: 2020-03-28 11:20+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2020-03-28 17:26+0000\n"
+"Last-Translator: anonymous <noreply@weblate.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -2244,7 +2245,7 @@ msgstr ""
 
 #: ../includes/routes/management.routes.php:1786
 msgid "Titles management"
-msgstr ""
+msgstr "Gestión de títulos"
 
 #: ../includes/routes/management.routes.php:1812
 msgid "Title '%s' has not been added!"
@@ -6604,7 +6605,7 @@ msgstr ""
 #: ../templates/default/ajouter_contribution.tpl:48
 #: ../templates/default/dispatch_type.tpl:44
 msgid "Select contributor and donation type"
-msgstr ""
+msgstr "Seleccionar contribuidor y tipo de donación"
 
 #: ../templates/default/ajouter_contribution.tpl:56
 msgid "New attached fee"
