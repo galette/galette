@@ -1,5 +1,5 @@
 # Header entry was created by Lokalize.
-# 
+#
 # Translators:
 # Stefano Costa <steko@iosa.it>, 2013
 # Johan Cwiklinski <johan@x-tnd.be>, 2017. #zanata
@@ -15,9 +15,9 @@ msgstr ""
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.0-dev\n"
-"Content-Transfer-Encoding: 8bit\n"
 
 #: ../templates/default/gestion_adherents.tpl:13
 msgid "among:"
@@ -4121,8 +4121,8 @@ msgid ""
 "A problem happened while sending to admin notification for user %name "
 "(%email) contribution"
 msgstr ""
-"Si è verificato un problema durante l’invio della notifica all’"
-"amministratore per il contributo dell’utente %name (%email)"
+"Si è verificato un problema durante l’invio della notifica "
+"all’amministratore per il contributo dell’utente %name (%email)"
 
 #: ../templates/default/gestion_textes.tpl:84
 msgid "Member's first name"
@@ -5481,8 +5481,8 @@ msgstr ""
 #: ../templates/default/mailing_adherents.tpl:6
 msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgstr ""
-"Le e-mail iniviate sono disabilitate nelle preferenze. Chiedi all’"
-"amministratore Galette"
+"Le e-mail iniviate sono disabilitate nelle preferenze. Chiedi "
+"all’amministratore Galette"
 
 #: ../lib/Galette/Core/I18n.php:208
 msgid "Unknown lang (%lang)"
