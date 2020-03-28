@@ -1,12 +1,12 @@
-# Johan Cwiklinski <trasher@x-tnd.be>, 2019.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020.
 # Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: 2019-10-17 08:02+0200\n"
-"PO-Revision-Date: 2019-11-04 08:04+0000\n"
-"Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
+"PO-Revision-Date: 2020-03-28 11:20+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.10-dev\n"
+"X-Generator: Weblate 4.0-dev\n"
 
 #: ../templates/default/gestion_adherents.tpl:13
 msgid "among:"
@@ -127,10 +127,11 @@ msgid "On .......... / .......... / .......... "
 msgstr "El .......... / .......... / .......... "
 
 #: ../lib/Galette/Core/Preferences.php:919
+#, fuzzy
 msgid "Current cards configuration may exceed page width!"
 msgstr ""
-"La configuración actual de las tarjetas podría exceder la anchura de la "
-"página."
+"¡La configuración actual de las tarjetas podría exceder la anchura de la "
+"página!"
 
 #: ../lib/Galette/IO/FileTrait.php:476
 msgid "An error occurred."
