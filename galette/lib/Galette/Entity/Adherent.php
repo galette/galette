@@ -92,7 +92,7 @@ class Adherent
     private $_language;
     private $_active;
     private $_status;
-    //Contact informations
+    //Contact information
     private $_address;
     private $_address_continuation; /** TODO: remove */
     private $_zipcode;
@@ -107,7 +107,7 @@ class Adherent
     private $_jabber; /** TODO: remove */
     private $_gnupgid; /** TODO: remove */
     private $_fingerprint; /** TODO: remove */
-    //Galette relative informations
+    //Galette relative information
     private $_appears_in_list;
     private $_admin;
     private $_staff;
@@ -159,7 +159,7 @@ class Adherent
      *
      * @param Db      $zdb  Database instance
      * @param mixed   $args Either a ResultSet row, its id or its
-     *                      login or its mail for to load s specific
+     *                      login or its email for to load s specific
      *                      member, or null to just instanciate object
      * @param boolean $deps Dependencies configuration, see Adherent::$_deps
      */
@@ -316,7 +316,7 @@ class Adherent
         $this->_language = $r->pref_lang;
         $this->_active = ($r->activite_adh == 1) ? true : false;
         $this->_status = (int)$r->id_statut;
-        //Contact informations
+        //Contact information
         $this->_address = $r->adresse_adh;
         /** TODO: remove and merge with address */
         $this->_address_continuation = $r->adresse2_adh;
@@ -337,7 +337,7 @@ class Adherent
         $this->_gnupgid = $r->gpgid;
         /** TODO: remove */
         $this->_fingerprint = $r->fingerprint;
-        //Galette relative informations
+        //Galette relative information
         $this->_appears_in_list = ($r->bool_display_info == 1) ? true : false;
         $this->_admin = ($r->bool_admin_adh == 1) ? true : false;
         if (isset($r->priorite_statut)
@@ -1646,7 +1646,7 @@ class Adherent
     /**
      * Get member email
      * If member does not have an email address, but is attached to
-     * another member, we'll take informations from its parent.
+     * another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1663,7 +1663,7 @@ class Adherent
 
     /**
      * Get member address.
-     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1680,7 +1680,7 @@ class Adherent
 
     /**
      * Get member address continuation.
-     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1698,7 +1698,7 @@ class Adherent
 
     /**
      * Get member zipcode.
-     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1716,7 +1716,7 @@ class Adherent
 
     /**
      * Get member town.
-     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1734,7 +1734,7 @@ class Adherent
 
     /**
      * Get member country.
-     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1852,7 +1852,7 @@ class Adherent
         }
         //drop id_adh
         $this->_id = null;
-        //drop mail, must be unique
+        //drop email, must be unique
         $this->_email = null;
     }
 }

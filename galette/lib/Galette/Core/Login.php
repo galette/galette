@@ -222,7 +222,7 @@ class Login extends Authentication
     /**
      * Populate object after successfull login
      *
-     * @param \ArrayObject $row User informations
+     * @param \ArrayObject $row User information
      *
      * @return void
      */

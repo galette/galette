@@ -85,7 +85,7 @@ $app->group(
             $this->group(
                 '/' . $module['route'],
                 function () use ($module, $module_id, $authenticate) {
-                    //Plugin home: give informations
+                    //Plugin home: give information
                     $this->get(
                         '',
                         function ($request, $response) use ($module) {

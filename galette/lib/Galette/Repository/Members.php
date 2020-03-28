@@ -295,7 +295,7 @@ class Members
             try {
                 $zdb->connection->beginTransaction();
 
-                //Retrieve some informations
+                //Retrieve some information
                 $select = $zdb->select(self::TABLE);
                 $select->columns(
                     array(self::PK, 'nom_adh', 'prenom_adh', 'email_adh')
@@ -465,7 +465,7 @@ class Members
     }
 
     /**
-     * Get members list with public informations available
+     * Get members list with public information available
      *
      * @param boolean $with_photos get only members which have uploaded a
      *                             photo (for trombinoscope)
@@ -504,7 +504,7 @@ class Members
             return $members;
         } catch (\Exception $e) {
             Analog::log(
-                'Cannot list members with public informations (photos: '
+                'Cannot list members with public information (photos: '
                 . $with_photos . ') | ' . $e->getMessage(),
                 Analog::WARNING
             );

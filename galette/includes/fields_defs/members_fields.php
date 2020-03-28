@@ -209,7 +209,7 @@ $members_fields = array(
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
     'info_adh' => array(
-        'label'    => _T("Other informations (admin):"),
+        'label'    => _T("Other information (admin):"),
         'propname' => 'others_infos_admin',
         'required' => false,
         'visible'  => FieldsConfig::STAFF,
@@ -217,7 +217,7 @@ $members_fields = array(
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
     'info_public_adh' => array(
-        'label'    => _T("Other informations:"),
+        'label'    => _T("Other information:"),
         'propname' => 'others_infos',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,

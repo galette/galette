@@ -224,14 +224,14 @@ $app->map(
                             str_replace(
                                 '%s',
                                 $login_adh,
-                                _T("Mail sent to '%s' for password recovery.")
+                                _T("Email sent to '%s' for password recovery.")
                             )
                         );
                         if ($from_admin === false) {
-                            $message = _T("A mail has been sent to your address.<br/>Please check your inbox and follow the instructions.");
+                            $message = _T("An email has been sent to your address.<br/>Please check your inbox and follow the instructions.");
                             $done = true;
                         } else {
-                            $message = _T("An mail has been sent to the member.");
+                            $message = _T("An email has been sent to the member.");
                         }
 
                         $this->flash->addMessage(
@@ -268,7 +268,7 @@ $app->map(
                 $str = str_replace(
                     '%s',
                     $login_adh,
-                    _T("Your account (%s) do not contain any valid mail address")
+                    _T("Your account (%s) do not contain any valid email address")
                 );
                 $this->history->add($str);
                 $this->flash->addMessage(

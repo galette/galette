@@ -276,7 +276,7 @@ class Install
     }
 
     /**
-     * Set step to database informations
+     * Set step to database information
      *
      * @return void
      */
@@ -336,7 +336,7 @@ class Install
     }
 
     /**
-     * Set connection informations
+     * Set connection information
      *
      * @param string $host Database host
      * @param string $port Database port
@@ -793,7 +793,7 @@ class Install
     }
 
     /**
-     * Set step to super admin informations
+     * Set step to super admin information
      *
      * @return void
      */
@@ -803,7 +803,7 @@ class Install
     }
 
     /**
-     * Are we at super admin informations step?
+     * Are we at super admin information step?
      *
      * @return boolean
      */
@@ -813,7 +813,7 @@ class Install
     }
 
     /**
-     * Set super administrator informations
+     * Set super administrator information
      *
      * @param string $login Login
      * @param string $pass  Password

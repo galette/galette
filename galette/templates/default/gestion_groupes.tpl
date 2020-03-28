@@ -23,7 +23,7 @@
     </aside>
     <section id="group_infos">
         <header class="ui-state-default ui-state-active">
-            {_T string="Group informations"}
+            {_T string="Group information"}
         </header>
         <div id="group_infos_wrapper">
 {if $group->getId()}

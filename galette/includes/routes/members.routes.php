@@ -1037,7 +1037,7 @@ $app->post(
                                     str_replace(
                                         '%s',
                                         $member->sname . ' (' . $member->email . ')',
-                                        _T("New account mail sent to admin for '%s'.")
+                                        _T("New account email sent to admin for '%s'.")
                                     )
                                 );
                             } else {
@@ -1055,7 +1055,7 @@ $app->post(
                         $success_detected[] = _T("Member account has been modified.");
                     }
 
-                    // send mail to member
+                    // send email to member
                     if (isset($args['self']) || isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
                         if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
                             if ($member->getEmail() == '' && !isset($args['self'])) {
@@ -1104,7 +1104,7 @@ $app->post(
                                     }
                                 }
 
-                                //send mail to member
+                                //send email to member
                                 // Get email text in database
                                 $texts = new Texts(
                                     $this->texts_fields,
@@ -1136,8 +1136,8 @@ $app->post(
                                         '%s',
                                         $member->sname . ' (' . $member->getEmail() . ')',
                                         ($new) ?
-                                        _T("New account mail sent to '%s'.") :
-                                        _T("Account modification mail sent to '%s'.")
+                                        _T("New account email sent to '%s'.") :
+                                        _T("Account modification email sent to '%s'.")
                                     );
                                     $this->history->add($msg);
                                     $success_detected[] = $msg;
@@ -1145,21 +1145,21 @@ $app->post(
                                     $str = str_replace(
                                         '%s',
                                         $member->sname . ' (' . $member->getEmail() . ')',
-                                        _T("A problem happened while sending account mail to '%s'")
+                                        _T("A problem happened while sending account email to '%s'")
                                     );
                                     $this->history->add($str);
                                     $error_detected[] = $str;
                                 }
                             }
                         } elseif ($this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
-                            //if mail has been disabled in the preferences, we should not be here ;
+                            //if email has been disabled in the preferences, we should not be here ;
                             //we do not throw an error, just a simple warning that will be show later
-                            $msg = _T("You asked Galette to send a confirmation mail to the member, but mail has been disabled in the preferences.");
+                            $msg = _T("You asked Galette to send a confirmation email to the member, but email has been disabled in the preferences.");
                             $warning_detected[] = $msg;
                         }
                     }
 
-                    // send mail to admin
+                    // send email to admin
                     if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
                         && $this->preferences->pref_bool_mailadh
                         && !$new
@@ -1183,7 +1183,7 @@ $app->post(
                             )
                         ];
 
-                        //send mail to member
+                        //send email to member
                         // Get email text in database
                         $texts = new Texts(
                             $this->texts_fields,
@@ -1210,11 +1210,11 @@ $app->post(
                         $sent = $mail->send();
 
                         if ($sent == GaletteMail::MAIL_SENT) {
-                            $msg = _T("Account modification mail sent to admin.");
+                            $msg = _T("Account modification email sent to admin.");
                             $this->history->add($msg);
                             $success_detected[] = $msg;
                         } else {
-                            $str = _T("A problem happened while sending account mail to admin");
+                            $str = _T("A problem happened while sending account email to admin");
                             $this->history->add($str);
                             $error_detected[] = $str;
                         }
@@ -1988,11 +1988,11 @@ $app->get(
             && !GALETTE_MODE === 'DEMO'
         ) {
             $this->history->add(
-                _T("Trying to load mailing while mail is disabled in preferences.")
+                _T("Trying to load mailing while email is disabled in preferences.")
             );
             $this->flash->addMessage(
                 'error_detected',
-                _T("Trying to load mailing while mail is disabled in preferences.")
+                _T("Trying to load mailing while email is disabled in preferences.")
             );
             return $response
                 ->withStatus(301)
@@ -2139,9 +2139,9 @@ $app->post(
             && !GALETTE_MODE === 'DEMO'
         ) {
             $this->history->add(
-                _T("Trying to load mailing while mail is disabled in preferences.")
+                _T("Trying to load mailing while email is disabled in preferences.")
             );
-            $error_detected[] = _T("Trying to load mailing while mail is disabled in preferences.");
+            $error_detected[] = _T("Trying to load mailing while email is disabled in preferences.");
             $goto = $this->router->pathFor('slash');
         } else {
             if (isset($this->session->filter_members)) {
@@ -2506,7 +2506,7 @@ $app->post(
         } else {
             foreach ($list_reminders as $reminder) {
                 if ($labels === false) {
-                    //send reminders by mail
+                    //send reminders by email
                     $sent = $reminder->send($texts, $this->history, $this->zdb);
 
                     if ($sent === true) {
@@ -2515,7 +2515,7 @@ $app->post(
                         $error_detected[] = $reminder->getMessage();
                     }
                 } else {
-                    //generate labels for members without mail address
+                    //generate labels for members without email address
                     $labels_members[] = $reminder->member_id;
                 }
             }

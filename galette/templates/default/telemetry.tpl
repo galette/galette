@@ -8,7 +8,7 @@
 {/if}
 {if $part eq "jsdialog"}
                 $('#telemetry_panel').dialog({
-                    title: '{_T string="Send telemetry informations" escape="js"}',
+                    title: '{_T string="Send telemetry information" escape="js"}',
                     buttons: {
                         '{_T string="Send" escape="js"}': function() {
                             $.ajax({
@@ -36,7 +36,7 @@
                                     alert(data.message);
                                 },
                                 error: function() {
-                                    alert("{_T string="An error occurred sending telemetry informations :(" escape="js"}");
+                                    alert("{_T string="An error occurred sending telemetry information :(" escape="js"}");
                                 }
                             });
                         },

@@ -215,7 +215,7 @@ $app->group('/ajax', function () use ($authenticate) {
             );
             try {
                 $result = $telemetry->send();
-                $message = _T('Telemetry informations has been sent. Thank you!');
+                $message = _T('Telemetry information has been sent. Thank you!');
                 $result = [
                     'success'   => true,
                     'message'   => $message

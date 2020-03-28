@@ -21,7 +21,7 @@
             </nav>
             <a id="copyright" href="https://galette.eu/"><i class="fas fa-cookie-bite"></i> Galette {$GALETTE_VERSION}</a>
 {if $login->isLogged() &&  ($login->isAdmin() or $login->isStaff())}
-            <a id="sysinfos" href="{path_for name="sysinfos"}"><i class="fas fa-cogs"></i> {_T string="System informations"}</a>
+            <a id="sysinfos" href="{path_for name="sysinfos"}"><i class="fas fa-cogs"></i> {_T string="System information"}</a>
 {/if}
 
 {* Display footer line, if it does exists *}

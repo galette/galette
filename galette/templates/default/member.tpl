@@ -92,7 +92,7 @@
                         <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
                         <br/><span class="exemple">
         {if $member->id}
-                            {_T string="Member will be notified by mail his account has been modified."}
+                            {_T string="Member will be notified by email his account has been modified."}
         {else}
                             {_T string="Member will receive his username and password by email, if he has an address."}
         {/if}

@@ -324,7 +324,7 @@ $app->get(
         if (!$this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
             $this->flash->addMessage(
                 'error_detected',
-                _T("You asked Galette to send a test email, but mail has been disabled in the preferences.")
+                _T("You asked Galette to send a test email, but email has been disabled in the preferences.")
             );
         } else {
             $get = $request->getQueryParams();
@@ -2801,7 +2801,7 @@ $app->get(
             if ($df === false) {
                 $this->flash->addMessage(
                     'error_detected',
-                    _T("Unable to retrieve field informations.")
+                    _T("Unable to retrieve field information.")
                 );
                 return $response
                     ->withStatus(301)
@@ -3026,7 +3026,7 @@ $app->get(
         $modules_ok = $cm->isValid();
         if (!$modules_ok) {
             $this->flash->addMessage(
-                _T("Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation.")
+                _T("Some PHP modules are missing. Please install them or contact your support.<br/>More information on required modules may be found in the documentation.")
             );
         }
 
@@ -3049,7 +3049,7 @@ $app->post(
         $success_detected = [];
 
         if (isset($post['inittexts'])) {
-            //proceed mails texts reinitialization
+            //proceed emails texts reinitialization
             $texts = new Texts($this->texts_fields, $this->preferences);
             $res = $texts->installInit(false);
             if ($res === true) {
@@ -3071,7 +3071,7 @@ $app->post(
         }
 
         if (isset($post['initpdfmodels'])) {
-            //proceed mails texts reinitialization
+            //proceed emails texts reinitialization
             $models = new PdfModels($this->zdb, $this->preferences, $this->login);
             $res = $models->installInit($this->pdfmodels_fields, false);
             if ($res === true) {

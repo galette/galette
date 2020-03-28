@@ -509,7 +509,7 @@ $app->post(
                             $res = $contrib->executePostScript($es);
 
                             if ($res !== true) {
-                                //send admin a mail with all details
+                                //send admin an email with all details
                                 if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
                                     $mail = new GaletteMail($this->preferences);
                                     $mail->setSubject(
@@ -564,7 +564,7 @@ $app->post(
         }
 
         if (count($error_detected) == 0) {
-            // Get member informations
+            // Get member information
             $adh = new Adherent($this->zdb);
             $adh->load($contrib->member);
 
@@ -611,7 +611,7 @@ $app->post(
                                 preg_replace(
                                     array('/%name/', '/%email/'),
                                     array($adh->sname, $adh->getEmail()),
-                                    _T("Mail sent to user %name (%email)")
+                                    _T("Email sent to user %name (%email)")
                                 )
                             );
                         } else {
@@ -627,7 +627,7 @@ $app->post(
                         $txt = preg_replace(
                             array('/%name/', '/%email/'),
                             array($adh->sname, $adh->getEmail()),
-                            _T("Trying to send a mail to a member (%name) with an invalid address: %email")
+                            _T("Trying to send an email to a member (%name) with an invalid address: %email")
                         );
                         $this->history->add($txt);
                         $warning_detected[] = $txt;
@@ -660,7 +660,7 @@ $app->post(
                             preg_replace(
                                 array('/%name/', '/%email/'),
                                 array($adh->sname, $adh->getEmail()),
-                                _T("Mail sent to admin for user %name (%email)")
+                                _T("Email sent to admin for user %name (%email)")
                             )
                         );
                     } else {

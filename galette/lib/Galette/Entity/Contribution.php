@@ -947,7 +947,7 @@ class Contribution
      * Execute post contribution script
      *
      * @param ExternalScript $es     External script to execute
-     * @param array          $extra  Extra informations on contribution
+     * @param array          $extra  Extra information on contribution
      *                               Defaults to null
      * @param array          $pextra Extra information on payment
      *                               Defaults to null
@@ -1026,7 +1026,7 @@ class Contribution
                 "script:\n" . $es->getOutput(),
                 Analog::ERROR
             );
-            $res = _T("Contribution informations") . "\n";
+            $res = _T("Contribution information") . "\n";
             $res .= print_r($contrib, true);
             $res .= "\n\n" . _T("Script output") . "\n";
             $res .= $es->getOutput();

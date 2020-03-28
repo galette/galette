@@ -148,7 +148,7 @@ class I18n extends atoum
     }
 
     /**
-     * Test retrieving language informations
+     * Test retrieving language information
      *
      * @return void
      */

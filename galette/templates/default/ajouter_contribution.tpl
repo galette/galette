@@ -7,7 +7,7 @@
     {if $contribution->isTransactionPart()}
         {assign var="mid" value=$contribution->transaction->member}
             <table id="transaction_detail">
-                <caption>{_T string="Related transaction informations"}</caption>
+                <caption>{_T string="Related transaction information"}</caption>
                 <thead>
                     <tr>
                         <td colspan="5">
@@ -89,7 +89,7 @@
     {if $type eq "fee"}
                 <noscript>
                     <div class="button-container" id="reloadcont">
-                        <input type="submit" id="btnreload" name="btnreload" value="{_T string="Reload"}" title="{_T string="Reload date informations according to selected member and contribution type"}"/>
+                        <input type="submit" id="btnreload" name="btnreload" value="{_T string="Reload"}" title="{_T string="Reload date information according to selected member and contribution type"}"/>
                     </div>
                 </noscript>
     {/if}

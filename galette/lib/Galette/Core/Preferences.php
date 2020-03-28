@@ -101,7 +101,7 @@ class Preferences
         'pref_numrows'        =>    30,
         'pref_log'        =>    self::LOG_ENABLED,
         'pref_statut'        =>    Status::DEFAULT_STATUS,
-        /* Preferences for mails */
+        /* Preferences for emails */
         'pref_email_nom'    =>    'Galette',
         'pref_email'        =>    'mail@domain.com',
         'pref_email_newadh'    =>    'mail@domain.com',
@@ -841,7 +841,7 @@ class Preferences
             }
 
             //check emails validity
-            //may be a comma separated list of valid mails identifiers:
+            //may be a comma separated list of valid emails identifiers:
             //"The Name <mail@domain.com>,The Other <other@mail.com>" expect for reply_to.
             $addresses = [];
             if (trim($value) != '') {

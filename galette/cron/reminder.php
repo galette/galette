@@ -76,7 +76,7 @@ $reminders = new Reminders();
 $list_reminders = $reminders->getList($container->get('zdb'), false);
 if (count($list_reminders) > 0) {
     foreach ($list_reminders as $reminder) {
-        //send reminders by mail
+        //send reminders by email
         $sent = $reminder->send($texts, $container->get('history'), $container->get('zdb'));
 
         if ($sent === true) {
@@ -114,13 +114,13 @@ if (count($error_detected) > 0) {
         echo $e . "\n";
         $count++;
     }
-    //we can also print additionnal informations.
+    //we can also print additionnal information.
     if (count($success_detected) > 0) {
         echo "\n";
         echo str_replace(
             '%i',
             count($success_detected),
-            _T("%i mails have been sent successfully.")
+            _T("%i emails have been sent successfully.")
         );
     }
     exit(1);

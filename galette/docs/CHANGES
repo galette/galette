@@ -87,7 +87,7 @@ Bugfixes
 - Fix date range limitation on Birthdate components
 - Add birthdate checks on member storage
 - Fix date filtering in contributions lists
-- Use selected sender informations on mailing preview
+- Use selected sender information on mailing preview
 - Fix sender storage in mail history
 - Fix not translated mark on dynamic translations
 - Fix 'false' search on dynamic boolean fields
@@ -385,7 +385,7 @@ Under the hood
 - PostgreSQL >= 9.1
 - Remove UNSECURE_PASSWORD stuff
 - no longer show days remaining for disabled accounts
-- staff members cannot change thor own informations
+- staff members cannot change thor own information
 - no error was shown when removing a member failed
 - pdf memberd card was looking for loggged in user membership
 
@@ -503,12 +503,12 @@ Under the hood
 - order contributions and transactions list by date descending
 - charts generation
 - PDF list of members by groups
-- display informations on members state of dues
+- display information on members state of dues
 - do not remove non member status
 - end of membershop date was incorrect if all members contributions has been removed
 - unable to remove a member
 - improve contirubtions interface if non member exist
-- logged users informations are now available for plugins
+- logged users information are now available for plugins
 - dynamic fields values were not stored from self subscription
 - lost password mail could only use HTTP, not HTTPS
 - retrieve required fields configuration updating from 0.7.3
@@ -596,7 +596,7 @@ Changes and additions
 - redesign installation pages
 - check plugin compatibility
 - improve transaction display
-- add system informations page
+- add system information page
 - some fields were too short
 - filter on company name
 - limit staff statuses to only one member

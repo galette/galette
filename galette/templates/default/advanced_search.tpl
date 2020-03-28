@@ -34,7 +34,7 @@
 {/foreach}
                         </select>
                     <p>
-                        <span class="bline">{_T string="With mail:"}</span>
+                        <span class="bline">{_T string="With email:"}</span>
                         <input type="radio" name="email_filter" id="filter_dc_email" value="{Galette\Repository\Members::FILTER_DC_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_DC_EMAIL')} checked="checked"{/if}>
                         <label for="filter_dc_email" >{_T string="Don't care"}</label>
                         <input type="radio" name="email_filter" id="filter_with_email" value="{Galette\Repository\Members::FILTER_W_EMAIL}"{if $filters->email_filter eq constant('Galette\Repository\Members::FILTER_W_EMAIL')} checked="checked"{/if}>

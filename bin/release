@@ -395,7 +395,7 @@ def valid_commit(repo, c):
         repo_commit = repo.commit(c)
 
         commit = repo_commit.hexsha[:10]
-        print colored("""Commit informations:
+        print colored("""Commit information:
         Hash:          %s
         Author:        %s
         Authored date: %s
@@ -440,7 +440,7 @@ def main():
     parser.add_argument(
         '-e',
         '--extra',
-        help='Extra version informations (-c required)'
+        help='Extra version information (-c required)'
     )
     parser.add_argument(
         '-Y',

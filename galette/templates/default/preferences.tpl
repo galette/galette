@@ -91,7 +91,7 @@
                     <span class="tip">{_T string="Date on which you registered your Galette instance."}</span>
                     <span>
                         {if $pref.pref_registration_date}
-                            {assign var="regtxt" value={_T string="Update your informations"}}
+                            {assign var="regtxt" value={_T string="Update your information"}}
                             {$pref.pref_registration_date|date_format:"%a %d/%m/%Y - %R"}
                         {else}
                             {assign var="regtxt" value={_T string="Register"}}
@@ -269,8 +269,8 @@
                     <input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" value="1" {if $pref.pref_bool_mailadh eq 1}checked="checked"{/if}{if isset($required.pref_bool_mailadh) and $required.pref_bool_mailadh eq 1} required="required"{/if}/>
                 </p>
                 <p>
-                    <label for="pref_bool_wrap_mails" class="bline tooltip">{_T string="Wrap text mails?"}</label>
-                    <span class="tip">{_T string="Automatically wrap text mails before sending. Make sure to wrap yourself if you disable that. Please note that current editing mailing will not be affected by a change."}</span>
+                    <label for="pref_bool_wrap_mails" class="bline tooltip">{_T string="Wrap emails text?"}</label>
+                    <span class="tip">{_T string="Automatically wrap emails texts before sending. Make sure to wrap yourself if you disable that. Please note that current editing mailing will not be affected by a change."}</span>
                     <input type="checkbox" name="pref_bool_wrap_mails" id="pref_bool_wrap_mails" value="1" {if $pref.pref_bool_wrap_mails eq 1}checked="checked"{/if}{if isset($required.pref_bool_wrap_mails) and $required.pref_bool_wrap_mails eq 1} required="required"{/if}/>
                 </p>
 
@@ -308,7 +308,7 @@
                         class="button"
                     >
                         <i class="fas fa-rocket" aria-hidden="true"></i>
-                        {_T string="Test mail settings"}
+                        {_T string="Test email settings"}
                     </a>
                 </div>
                 <div id="smtp_parameters"{if $pref.pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_SMTP')} style="display: none;"{/if}>
@@ -585,7 +585,7 @@
                     e.preventDefault();
                     var _this = $(this);
                     var _value = $('#pref_email_newadh').val();
-                    $('body').append('<div id="testEmail" title="{_T string="Test mail settings" escape="js"}"><label for="email_adress">{_T string="Enter the email adress" escape="js"}</label><input type="text" name="email_adress" id="email_adress" value="' + _value + '"/></div>');
+                    $('body').append('<div id="testEmail" title="{_T string="Test email settings" escape="js"}"><label for="email_adress">{_T string="Enter the email adress" escape="js"}</label><input type="text" name="email_adress" id="email_adress" value="' + _value + '"/></div>');
                     $('#testEmail').dialog({
                         'modal': true,
                         'hide': 'fold',

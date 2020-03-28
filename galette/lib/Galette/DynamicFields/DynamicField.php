@@ -156,7 +156,7 @@ abstract class DynamicField
         } catch (\Exception $e) {
             Analog::log(
                 __METHOD__ . ' | Unable to retrieve field `' . $id .
-                '` informations | ' . $e->getMessage(),
+                '` information | ' . $e->getMessage(),
                 Analog::ERROR
             );
             return false;

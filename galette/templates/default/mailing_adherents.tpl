@@ -9,7 +9,7 @@
         <form action="{path_for name="doMailing"}" id="listform" method="post" enctype="multipart/form-data">
         <div class="mailing">
             <section class="mailing_infos">
-                <header class="ui-state-default ui-state-active">{_T string="Mailing informations"}</header>
+                <header class="ui-state-default ui-state-active">{_T string="Mailing information"}</header>
                     {include file="mailing_recipients.tpl"}
                 <div class="center">
     {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_SENT')}

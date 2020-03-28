@@ -109,7 +109,7 @@
                     <th><tt>{ldelim}DEADLINE{rdelim}</tt></th>
                     <td class="back">{_T string="Member's deadline"}</td>
                     <th><tt>{ldelim}CONTRIB_INFO{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution informations"}</td>
+                    <td class="back">{_T string="Contribution information"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}CONTRIB_AMOUNT{rdelim}</tt></th>

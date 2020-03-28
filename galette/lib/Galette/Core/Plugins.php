@@ -217,7 +217,7 @@ class Plugins
             //plugin compatibility missing!
             Analog::log(
                 'Plugin ' . $name . ' does not contains mandatory version ' .
-                'compatiblity informations. Please contact the author.',
+                'compatiblity information. Please contact the author.',
                 Analog::ERROR
             );
             $this->setDisabled(self::DISABLED_COMPAT);
@@ -459,7 +459,7 @@ class Plugins
      * @param string $id   Module ID
      * @param string $info Information to retrieve
      *
-     * @return module's informations
+     * @return module's information
      */
     public function moduleInfo($id, $info)
     {

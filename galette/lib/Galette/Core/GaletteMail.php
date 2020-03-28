@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Generic mail for Galette
+ * Generic email for Galette
  *
  * PHP version 5
  *
@@ -41,7 +41,7 @@ use Analog\Analog;
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
- * Generic mail for Galette
+ * Generic email for Galette
  *
  * @category  Core
  * @name      GaletteMail
@@ -113,7 +113,7 @@ class GaletteMail
         switch ($this->preferences->pref_mail_method) {
             case self::METHOD_SMTP:
             case self::METHOD_GMAIL:
-                //if we want to send mails using a smtp server
+                //if we want to send emails using a smtp server
                 $this->mail->IsSMTP();
                 // enables SMTP debug information (for testing)
                 /*$this->mail->SMTPDebug = 2;*/
@@ -225,7 +225,7 @@ class GaletteMail
     }
 
     /**
-     * Apply final header to mail and send it :-)
+     * Apply final header to email and send it :-)
      *
      * @return GaletteMail::MAIL_ERROR|GaletteMail::MAIL_SENT
      */
@@ -240,7 +240,7 @@ class GaletteMail
             $this->getSenderAddress(),
             $this->getSenderName()
         );
-        // Add a Reply-To field in the mail headers.
+        // Add a Reply-To field in the email headers.
         // Fix bug #6654.
         if ($this->preferences->pref_email_reply_to) {
             $this->mail->AddReplyTo($this->preferences->pref_email_reply_to);
@@ -250,11 +250,11 @@ class GaletteMail
 
 
         if ($this->html) {
-            //the mail is html :(
+            //the email is html :(
             $this->mail->AltBody = $this->cleanedHtml();
             $this->mail->IsHTML(true);
         } else {
-            //the mail is plaintext :)
+            //the email is plaintext :)
             $this->mail->AltBody = null;
             $this->mail->IsHTML(false);
         }
@@ -308,9 +308,9 @@ class GaletteMail
             if ($this->html) {
                 //we are sending html message
                 $tsign = "\r\n-- \r\n" . $sign;
-                //apply mail sign to text version
+                //apply email sign to text version
                 $this->mail->AltBody .= $tsign;
-                //then apply mail sign to html version
+                //then apply email sign to html version
                 $sign_style = 'color:grey;border-top:1px solid #ccc;margin-top:2em';
                 $hsign = '<div style="' . $sign_style. '">' .
                     nl2br($sign) . '</div>';
@@ -333,11 +333,11 @@ class GaletteMail
         try {
             //reinit errors array
             $this->errors = array();
-            //let's send the mail
+            //let's send the email
             if (!$this->mail->Send()) {
                 $this->errors[] = $this->mail->ErrorInfo;
                 Analog::log(
-                    'An error occurred sending mail to: ' .
+                    'An error occurred sending email to: ' .
                     implode(', ', array_keys($this->recipients)) .
                     "\n" . $this->mail->ErrorInfo,
                     Analog::INFO
@@ -350,7 +350,7 @@ class GaletteMail
                     $txt .= $v . ' (' . $k . '), ';
                 }
                 Analog::log(
-                    'A mail has been sent to: ' . $txt,
+                    'An email has been sent to: ' . $txt,
                     Analog::INFO
                 );
                 $this->mail = null;
@@ -368,9 +368,9 @@ class GaletteMail
     }
 
     /**
-     * Check if a mail address is valid
+     * Check if an email address is valid
      *
-     * @param string $address the mail address to check
+     * @param string $address the email address to check
      *
      * @return true if address is valid, false otherwise
      */
@@ -409,7 +409,7 @@ class GaletteMail
     }
 
     /**
-     * Clean a string embedding html, producing AltText for html mails
+     * Clean a string embedding html, producing AltText for html emails
      *
      * @return current message in plaintext format
      */
@@ -431,7 +431,7 @@ class GaletteMail
     }
 
     /**
-     * Is the mail HTML formatted?
+     * Is the email HTML formatted?
      *
      * @param boolean $set The value to set
      *

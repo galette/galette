@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * System informations
+ * System information
  *
  * PHP version 5
  *
@@ -38,7 +38,7 @@
 namespace Galette\Core;
 
 /**
- * Grab system informations
+ * Grab system information
  *
  * @category  Core
  * @name      SysInfos
@@ -55,7 +55,7 @@ class SysInfos
     private $galette_version = '';
 
     /**
-     * Grab various system informations
+     * Grab various system information
      *
      * @return void
      */

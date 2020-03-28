@@ -229,7 +229,7 @@
                             class="tooltip action"
                         >
                             <i class="fas fa-user-edit fa-fw" aria-hidden="true"></i>
-                            <span class="sr-only">{_T string="%membername: edit informations" pattern="/%membername/" replace=$member->sname}</span>
+                            <span class="sr-only">{_T string="%membername: edit information" pattern="/%membername/" replace=$member->sname}</span>
                         </a>
 {if $login->isAdmin() or $login->isStaff()}
                         <a
@@ -381,7 +381,7 @@
                     </tr>
                     <tr>
                         <th><img src="{base_url}/{$template_subdir}images/icon-mail.png" alt="{_T string="Mail"}" width="16" height="16"/></th>
-                        <td class="back">{_T string="Send a mail"}</td>
+                        <td class="back">{_T string="Send an email"}</td>
                         <th><img src="{base_url}/{$template_subdir}images/icon-website.png" alt="{_T string="Website"}" width="16" height="16"/></th>
                         <td class="back">{_T string="Visit website"}</td>
                     </tr>

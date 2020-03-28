@@ -68,7 +68,7 @@ class Db
     /**
      * Main constructor
      *
-     * @param array $dsn Connection informations
+     * @param array $dsn Connection information
      *                   If not set, database constants will be used.
      */
     public function __construct($dsn = null)
@@ -824,7 +824,7 @@ class Db
     }
 
     /**
-     * Get database informations
+     * Get database information
      *
      * @return array
      */

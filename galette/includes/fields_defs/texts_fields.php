@@ -41,7 +41,7 @@ $texts_fields = array(
         'tid'       => 1,
         'tref'      => 'sub',
         'tsubject'  => '[{ASSO_NAME}] Your identifiers',
-        'tbody'     => "Hello,\r\n\r\nYou've just been subscribed on the members management system of {ASSO_NAME}.\r\n\r\nIt is now possible to follow in real time the state of your subscription and to update your preferences from the web interface.\r\n\r\nPlease login at this address to set your new password :\r\n{CHG_PWD_URI}\r\n\r\nUsername: {LOGIN}\r\nThe above link will be valid until {LINK_VALIDITY}.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+        'tbody'     => "Hello,\r\n\r\nYou've just been subscribed on the members management system of {ASSO_NAME}.\r\n\r\nIt is now possible to follow in real time the state of your subscription and to update your preferences from the web interface.\r\n\r\nPlease login at this address to set your new password :\r\n{CHG_PWD_URI}\r\n\r\nUsername: {LOGIN}\r\nThe above link will be valid until {LINK_VALIDITY}.\r\n\r\nSee you soon!\r\n\r\n(this email was sent automatically)",
         'tlang'     => 'en_US',
         'tcomment'  => 'New user registration'
     ),
@@ -58,7 +58,7 @@ $texts_fields = array(
         'tid'       => 4,
         'tref'      => 'pwd',
         'tsubject'  => '[{ASSO_NAME}] Your identifiers',
-        'tbody'     => "Hello,\r\n\r\nSomeone (probably you) asked to recover your password.\r\n\r\nPlease login at this address to set your new password :\r\n{CHG_PWD_URI}\r\n\r\nUsername: {LOGIN}\r\nThe above link will be valid until {LINK_VALIDITY}.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+        'tbody'     => "Hello,\r\n\r\nSomeone (probably you) asked to recover your password.\r\n\r\nPlease login at this address to set your new password :\r\n{CHG_PWD_URI}\r\n\r\nUsername: {LOGIN}\r\nThe above link will be valid until {LINK_VALIDITY}.\r\n\r\nSee you soon!\r\n\r\n(this email was sent automatically)",
         'tlang'     => 'en_US',
         'tcomment'  => 'Lost password email'
     ),
@@ -75,7 +75,7 @@ $texts_fields = array(
         'tid'       => 7,
         'tref'      => 'contrib',
         'tsubject'  => '[{ASSO_NAME}] Your contribution',
-        'tbody'     => "Hello,\r\n\r\nYour contribution has successfully been taken into account by {ASSO_NAME}.\r\n\r\nIt is valid until {DEADLINE}.\r\n\r\nYou can now login and browse or modify your personnal data using your galette identifiers at this address:\r\n{LOGIN_URI}.\r\n\r\n{CONTRIB_INFO}\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+        'tbody'     => "Hello,\r\n\r\nYour contribution has successfully been taken into account by {ASSO_NAME}.\r\n\r\nIt is valid until {DEADLINE}.\r\n\r\nYou can now login and browse or modify your personnal data using your galette identifiers at this address:\r\n{LOGIN_URI}.\r\n\r\n{CONTRIB_INFO}\r\n\r\nSee you soon!\r\n\r\n(this email was sent automatically)",
         'tlang'     => 'en_US',
         'tcomment'  => 'Receipt send for new contribution'
     ),
@@ -92,7 +92,7 @@ $texts_fields = array(
         'tid'       => 10,
         'tref'      => 'newadh',
         'tsubject'  => '[{ASSO_NAME}] New registration from {NAME_ADH}',
-        'tbody'     => "Hello dear Administrator,\r\n\r\nA new member has been registered with the following informations:\r\n* Name: {NAME_ADH}\r\n* Login: {LOGIN}\r\n* E-mail: {MAIL_ADH}\r\n\r\nYours sincerly,\r\nGalette",
+        'tbody'     => "Hello dear Administrator,\r\n\r\nA new member has been registered with the following information:\r\n* Name: {NAME_ADH}\r\n* Login: {LOGIN}\r\n* E-mail: {MAIL_ADH}\r\n\r\nYours sincerly,\r\nGalette",
         'tlang'     => 'en_US',
         'tcomment'  => 'New user registration (sent to admin)'
     ),
@@ -126,7 +126,7 @@ $texts_fields = array(
         'tid'       => 16,
         'tref'      => 'newselfadh',
         'tsubject'  => '[{ASSO_NAME}] New self registration from {NAME_ADH}',
-        'tbody'     => "Hello dear Administrator,\r\n\r\nA new member has self registred on line with the following informations:\r\n* Name: {NAME_ADH}\r\n* Login: {LOGIN}\r\n* E-mail: {MAIL_ADH}\r\n\r\nYours sincerly,\r\nGalette",
+        'tbody'     => "Hello dear Administrator,\r\n\r\nA new member has self registred on line with the following information:\r\n* Name: {NAME_ADH}\r\n* Login: {LOGIN}\r\n* E-mail: {MAIL_ADH}\r\n\r\nYours sincerly,\r\nGalette",
         'tlang'     => 'en_US',
         'tcomment'  => 'New self registration (sent to admin)'
     ),
@@ -143,7 +143,7 @@ $texts_fields = array(
         'tid'       => 19,
         'tref'      => 'accountedited',
         'tsubject'  => '[{ASSO_NAME}] Your account has been modified',
-        'tbody'     => "Hello!\r\n\r\nYour account on {ASSO_NAME} (with the login '{LOGIN}') has been modified by an administrator or a staff member.\r\n\r\nYou can log into {LOGIN_URI} to review modifications and/or change it.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+        'tbody'     => "Hello!\r\n\r\nYour account on {ASSO_NAME} (with the login '{LOGIN}') has been modified by an administrator or a staff member.\r\n\r\nYou can log into {LOGIN_URI} to review modifications and/or change it.\r\n\r\nSee you soon!\r\n\r\n(this email was sent automatically)",
         'tlang'     => 'en_US',
         'tcomment'  => 'Informs user that his account has been modified'
     ),
@@ -160,7 +160,7 @@ $texts_fields = array(
         'tid'       => 22,
         'tref'      => 'impendingduedate',
         'tsubject'  => '[{ASSO_NAME}] Your membership is about to expire',
-        'tbody'     => "Hello,\r\n\r\nYour {ASSO_NAME} membership is about to expire in {DAYS_REMAINING} days.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+        'tbody'     => "Hello,\r\n\r\nYour {ASSO_NAME} membership is about to expire in {DAYS_REMAINING} days.\r\n\r\nSee you soon!\r\n\r\n(this email was sent automatically)",
         'tlang'     => 'en_US',
         'tcomment'  => 'Impending due date'
     ),
@@ -177,7 +177,7 @@ $texts_fields = array(
         'tid'       => 25,
         'tref'      => 'lateduedate',
         'tsubject'  => '[{ASSO_NAME}] Your membership has expired',
-        'tbody'     => "Hello,\r\n\r\nYour {ASSO_NAME} membership has expired for {DAYS_EXPIRED} days.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+        'tbody'     => "Hello,\r\n\r\nYour {ASSO_NAME} membership has expired for {DAYS_EXPIRED} days.\r\n\r\nSee you soon!\r\n\r\n(this email was sent automatically)",
         'tlang'     => 'en_US',
         'tcomment'  => 'Late due date'
     ),
@@ -194,7 +194,7 @@ $texts_fields = array(
         'tid'       => 28,
         'tref'      => 'donation',
         'tsubject'  => '[{ASSO_NAME}] Your donation',
-        'tbody'     => "Hello,\r\n\r\nYour donation to {ASSO_NAME} has successfully been stored.\r\n\r\n{CONTRIB_INFO}\r\n\r\nThank you!\r\n\r\n(this mail was sent automatically)",
+        'tbody'     => "Hello,\r\n\r\nYour donation to {ASSO_NAME} has successfully been stored.\r\n\r\n{CONTRIB_INFO}\r\n\r\nThank you!\r\n\r\n(this email was sent automatically)",
         'tlang'     => 'en_US',
         'tcomment'  => 'Receipt send for new donations'
     ),
@@ -228,9 +228,9 @@ $texts_fields = array(
         'tid'       => 33,
         'tref'      => 'admaccountedited',
         'tsubject'  => '[{ASSO_NAME}] Account {NAME_ADH} has been modified',
-        'tbody'     => "Hello!\r\n\r\n{NAME_ADH} has modified his/her account.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+        'tbody'     => "Hello!\r\n\r\n{NAME_ADH} has modified his/her account.\r\n\r\nSee you soon!\r\n\r\n(this email was sent automatically)",
         'tlang'     => 'en_US',
-        'tcomment'  => 'Informs admin a member edit his informations'
+        'tcomment'  => 'Informs admin a member edit his information'
     ),
     array(
         'tid'       => 34,

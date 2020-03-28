@@ -497,7 +497,7 @@ class FieldsConfig
                             $o->type = self::TYPE_STR;
                         }
 
-                        //retrieve field informations from DB
+                        //retrieve field information from DB
                         foreach ($columns as $column) {
                             if ($column->getName() === $o->field_id) {
                                 $o->max_length

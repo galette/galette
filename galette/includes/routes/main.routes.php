@@ -112,9 +112,19 @@ $app->get(
     }
 )->setName('photo');
 
-//system informations
+//system information - keep old route with typo for now (0.9.4)
 $app->get(
     '/system-informations',
+    function ($request, $response, $args) {
+        return $response
+            ->withStatus(302)
+            ->withHeader('Location', $this->router->pathFor('sysinfos'));
+    }
+);
+
+//system information
+$app->get(
+    '/system-information',
     function ($request, $response, $args = []) {
         $sysinfos = new SysInfos();
         $sysinfos->grab();
@@ -124,7 +134,7 @@ $app->get(
             $response,
             'sysinfos.tpl',
             array(
-                'page_title'    => _T("System informations"),
+                'page_title'    => _T("System information"),
                 'rawinfos'      => $sysinfos->getRawData($this->plugins)
             )
         );

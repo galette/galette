@@ -271,7 +271,7 @@ class Texts
             return true;
         } catch (\Exception $e) {
             Analog::log(
-                'An error has occurred while storing mail text. | ' .
+                'An error has occurred while storing email text. | ' .
                 $e->getMessage(),
                 Analog::ERROR
             );
