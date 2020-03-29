@@ -1416,7 +1416,7 @@ $app->get(
                 'require_dialog'    => true,
                 'existing'          => $existing,
                 'dryrun'            => $dryrun,
-                'import_file'       => $this->flash->getMessage('import_file')[0]
+                'import_file'       => $this->session->import_file
             )
         );
         return $response;
@@ -1459,11 +1459,10 @@ $app->post(
                 );
             }
 
-            $this->flash->addMessage(
-                'import_file',
-                $post['import_file']
-            );
+            //store selected file to dispaly again in UI
+            $this->session->import_file = $post['import_file'];
         } else {
+            unset($this->session->import_file);
             $this->flash->addMessage(
                 'success_detected',
                 str_replace(
