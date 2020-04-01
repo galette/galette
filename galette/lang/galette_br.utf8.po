@@ -2,24 +2,30 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: 2020-04-01 15:10+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2020-04-02 14:09+0000\n"
+"Last-Translator: rsichler <blagoslovichlibog@hotmail.fr>\n"
+"Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
+"br/>\n"
 "Language: br\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 2.5.0\n"
+"Plural-Forms: nplurals=5; plural=(n % 10 == 1 && n % 100 != 11 && n % 100 != "
+"71 && n % 100 != 91) ? 0 : ((n % 10 == 2 && n % 100 != 12 && n % 100 != 72 "
+"&& n % 100 != 92) ? 1 : ((((n % 10 == 3 || n % 10 == 4) || n % 10 == 9) && ("
+"n % 100 < 10 || n % 100 > 19) && (n % 100 < 70 || n % 100 > 79) && (n % 100 <"
+" 90 || n % 100 > 99)) ? 2 : ((n != 0 && n % 1000000 == 0) ? 3 : 4)));\n"
+"X-Generator: Weblate 4.0-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
-msgstr ""
+msgstr "Fazi Galette"
 
 #: ../lib/Galette/Handlers/NotFound.php:80 ../templates/default/404.tpl:19
 msgid "Page not found"
-msgstr ""
+msgstr "N'eo ket bet kavet ar bajenn"
 
 #: ../lib/Galette/Core/History.php:414 ../lib/Galette/IO/Csv.php:116
 #: ../includes/routes/members.routes.php:1092 ../includes/routes/authentication.routes.php:193
@@ -29,59 +35,59 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:324
 msgid "Checks"
-msgstr ""
+msgstr "Gwiriadennoù"
 
 #: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:325
 #: ../install/steps/type.php:40 ../templates/default/plugin_initdb.tpl:131
 msgid "Installation mode"
-msgstr ""
+msgstr "mod da staliañ"
 
 #: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:326
 #: ../install/steps/db.php:41 ../install/steps/db.php:67
 msgid "Database"
-msgstr ""
+msgstr "diaz roadennoù"
 
 #: ../lib/Galette/Core/Install.php:131
 msgid "Database access and permissions"
-msgstr ""
+msgstr "kevreadenn ha gwirioù an diaz roadennoù"
 
 #: ../lib/Galette/Core/Install.php:134 ../install/steps/db_select_version.php:46
 msgid "Previous version selection"
-msgstr ""
+msgstr "Choaz stummoù kozhoc'h"
 
 #: ../lib/Galette/Core/Install.php:137
 msgid "Datapase upgrade"
-msgstr ""
+msgstr "Hizivaat an diaz roadennoù"
 
 #: ../lib/Galette/Core/Install.php:140
 msgid "Tables Creation"
-msgstr ""
+msgstr "Krouiñ an taolennoù"
 
 #: ../lib/Galette/Core/Install.php:143 ../webroot/installer.php:342
 msgid "Admin parameters"
-msgstr ""
+msgstr "Arventennoù ar merer"
 
 #: ../lib/Galette/Core/Install.php:146
 msgid "Galette initialization"
-msgstr ""
+msgstr "Ho krouiñ Galette"
 
 #: ../lib/Galette/Core/Install.php:149 ../webroot/installer.php:347
 #: ../templates/default/plugin_initdb.tpl:138
 msgid "End!"
-msgstr ""
+msgstr "Echu !"
 
 #: ../lib/Galette/Core/Install.php:166 ../lib/Galette/Core/CheckModules.php:155
 #: ../templates/default/gestion_adherents.tpl:512 ../templates/default/voir_adherent.tpl:240
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #: ../lib/Galette/Core/Install.php:166 ../lib/Galette/Core/CheckModules.php:146
 msgid "Ko"
-msgstr ""
+msgstr "Ko"
 
 #: ../lib/Galette/Core/Install.php:324
 msgid "Database type unknown"
-msgstr ""
+msgstr "Stumm an diaz roadennoù disanavezet"
 
 #: ../lib/Galette/Core/Install.php:675
 msgid "%version script has been successfully executed :)"
