@@ -441,6 +441,7 @@ $app->post(
                 ->withHeader('Location', $redirect_url);
         }
 
+        $success_detected = [];
         $error_detected = [];
         $warning_detected = [];
         $redirect_url = null;
@@ -501,6 +502,7 @@ $app->post(
             if (count($error_detected) == 0) {
                 $store = $contrib->store();
                 if ($store === true) {
+                    $success_detected[] = _T('Contribution has been successfully stored');
                     //contribution has been stored :)
                     if ($new) {
                         //if an external script has been configured, we call it
@@ -674,6 +676,16 @@ $app->post(
                     }
                 }
             }
+
+            if (count($success_detected) > 0) {
+                foreach ($success_detected as $success) {
+                    $this->flash->addMessage(
+                        'success_detected',
+                        $success
+                    );
+                }
+            }
+
 
             if (count($warning_detected) > 0) {
                 foreach ($warning_detected as $warning) {
