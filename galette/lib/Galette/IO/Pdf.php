@@ -457,7 +457,7 @@ class Pdf extends \TCPDF
      */
     protected function stretchHead($str, $length)
     {
-        $this->SetFont(self::FONT, 'B', self::LIST_FONT);
+        $this->SetFont(self::FONT, 'B', self::FONT_SIZE);
         $stretch = 100;
         if ($this->GetStringWidth($str) > $length) {
             while ($this->GetStringWidth($str) > $length) {

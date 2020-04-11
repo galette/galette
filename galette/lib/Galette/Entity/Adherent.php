@@ -152,7 +152,7 @@ class Adherent
         'email_adh'
     ];
 
-    private $errors;
+    private $errors = [];
 
     /**
      * Default constructor
@@ -1854,5 +1854,15 @@ class Adherent
         $this->_id = null;
         //drop email, must be unique
         $this->_email = null;
+    }
+
+    /**
+     * Get current errors
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }

@@ -1218,14 +1218,13 @@ $app->get(
                     'contributions',
                     ['type' => 'contributions']
                 ));
-        }
-        else {
+        } else {
             $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
 
             $response = $this->response->withHeader('Content-type', 'application/pdf')
                     ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
             $response->write($pdf->download());
-        
+
             return $response;
         }
     }

@@ -51,7 +51,10 @@ $app->get(
 $app->get(
     '/logo',
     function ($request, $response, $args) {
-        $this->logo->display();
+        $response = $this->response
+            ->withHeader('Content-type', $this->logo->getMime());
+        $response->write($this->logo->getContents());
+        return $response;
     }
 )->setName('logo');
 
@@ -59,7 +62,10 @@ $app->get(
 $app->get(
     '/print-logo',
     function ($request, $response, $args) {
-        $this->print_logo->display();
+        $response = $this->response
+            ->withHeader('Content-type', $this->print_logo->getMime());
+        $response->write($this->print_logo->getContents());
+        return $response;
     }
 )->setName('printLogo');
 
@@ -108,7 +114,11 @@ $app->get(
         } else {
             $picture = new Picture();
         }
-        $picture->display();
+
+        $response = $this->response
+            ->withHeader('Content-type', $picture->getMime());
+        $response->write($picture->getContents());
+        return $response;
     }
 )->setName('photo');
 
