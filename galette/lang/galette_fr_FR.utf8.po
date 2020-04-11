@@ -1762,8 +1762,8 @@ msgid ""
 "You asked Galette to send a confirmation email to the member, but email has "
 "been disabled in the preferences."
 msgstr ""
-"Vous avez demandé à Galette d’envoyer une confirmation par mail à l’"
-"adhérent, mais l’envoi de mail a été désactivé dans les préférences."
+"Vous avez demandé à Galette d’envoyer une confirmation par mail à "
+"l’adhérent, mais l’envoi de mail a été désactivé dans les préférences."
 
 #: ../includes/routes/members.routes.php:1213
 msgid "Account modification email sent to admin."
