@@ -423,7 +423,7 @@ class Contribution extends atoum
             'url_adh' => 'http://bouchet.com/',
             'activite_adh' => true,
             'id_statut' => 9,
-            'pref_lang' => 'en_US',
+            'pref_lang' => 'de_DE',
             'fingerprint' => 'FAKER' . $this->seed,
             'societe_adh' => ''
         ];
