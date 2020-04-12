@@ -1429,6 +1429,10 @@ $app->post(
         $csv = new CsvIn($this->zdb);
         $post = $request->getParsedBody();
         $dryrun = isset($post['dryrun']);
+
+        //store selected file to dispaly again in UI
+        $this->session->import_file = $post['import_file'];
+
         $res = $csv->import(
             $this->zdb,
             $this->preferences,
@@ -1459,10 +1463,10 @@ $app->post(
                 );
             }
 
-            //store selected file to dispaly again in UI
-            $this->session->import_file = $post['import_file'];
         } else {
-            unset($this->session->import_file);
+            if ($this->session->import_file && !$dryrun) {
+                $this->session->import_file = null;
+            }
             $this->flash->addMessage(
                 'success_detected',
                 str_replace(

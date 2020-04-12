@@ -219,10 +219,8 @@ class CsvIn extends Csv implements FileInterface
      */
     private function check($filename)
     {
-        //deal with mac e-o-l encoding -- see if needed
-        //@ini_set('auto_detect_line_endings', true);
         $handle = fopen(self::DEFAULT_DIRECTORY . '/' . $filename, 'r');
-        if (! $handle) {
+        if (!$handle) {
             Analog::log(
                 'File ' . $filename . ' cannot be open!',
                 Analog::ERROR
@@ -237,181 +235,182 @@ class CsvIn extends Csv implements FileInterface
             return false;
         }
 
-        if ($handle !== false) {
-            $cnt_fields = count($this->_fields);
+        $cnt_fields = count($this->_fields);
 
-            //check required fields
-            $fc = new FieldsConfig(
-                $this->zdb,
-                Adherent::TABLE,
-                $this->_members_fields,
-                $this->_members_fields_cats
-            );
-            $config_required = $fc->getRequired();
-            $this->_required = array();
+        //check required fields
+        $fc = new FieldsConfig(
+            $this->zdb,
+            Adherent::TABLE,
+            $this->_members_fields,
+            $this->_members_fields_cats
+        );
+        $config_required = $fc->getRequired();
+        $this->_required = array();
 
-            foreach (array_keys($config_required) as $field) {
-                if (in_array($field, $this->_fields)) {
-                    $this->_required[$field] = $field;
-                }
+        foreach (array_keys($config_required) as $field) {
+            if (in_array($field, $this->_fields)) {
+                $this->_required[$field] = $field;
+            }
+        }
+
+        $member = new Adherent($this->zdb);
+        $member->setDependencies(
+            $this->preferences,
+            $this->_members_fields,
+            $this->history
+        );
+
+        $row = 0;
+        while (($data = fgetcsv(
+            $handle,
+            1000,
+            self::DEFAULT_SEPARATOR,
+            self::DEFAULT_QUOTE
+        )) !== false) {
+            //check fields count
+            $count = count($data);
+            if ($count != $cnt_fields) {
+                $this->addError(
+                    str_replace(
+                        array('%should_count', '%count', '%row'),
+                        array($cnt_fields, $count, $row),
+                        _T("Fields count mismatch... There should be %should_count fields and there are %count (row %row)")
+                    )
+                );
+                return false;
             }
 
-            $member = new Adherent($this->zdb);
+            if ($row > 0) {
+                //header line is the first one. Here comes data
+                $col = 0;
+                foreach ($data as $column) {
+                    //check required fields
+                    if (in_array($this->_fields[$col], $this->_required)
+                        && trim($column) == ''
+                    ) {
+                        $this->addError(
+                            str_replace(
+                                array('%field', '%row'),
+                                array($this->_fields[$col], $row),
+                                _T("Field %field is required, but missing in row %row")
+                            )
+                        );
+                        return false;
+                    }
 
-            $row = 0;
-            while (($data = fgetcsv(
-                $handle,
-                1000,
-                self::DEFAULT_SEPARATOR,
-                self::DEFAULT_QUOTE
-            )) !== false) {
-                //check fields count
-                $count = count($data);
-                if ($count != $cnt_fields) {
-                    $this->addError(
-                        str_replace(
-                            array('%should_count', '%count', '%row'),
-                            array($cnt_fields, $count, $row),
-                            _T("Fields count mismatch... There should be %should_count fields and there are %count (row %row)")
-                        )
-                    );
-                    return false;
-                }
+                    //check for statuses
+                    //if missing, set default one; if not check it does exists
+                    if ($this->_fields[$col] == Status::PK) {
+                        if (empty(trim($column))) {
+                            $column = Status::DEFAULT_STATUS;
+                        } else {
+                            if ($this->statuses === null) {
+                                //load existing status
+                                $status = new Status($this->zdb);
+                                $this->statuses = $status->getList();
+                            }
+                            if (!isset($this->statuses[$column])) {
+                                $this->addError(
+                                    str_replace(
+                                        '%status',
+                                        $column,
+                                        _T("Status %status does not exists!")
+                                    )
+                                );
+                                return false;
+                            }
+                        }
+                    }
 
-                if ($row > 0) {
-                    //header line is the first one. Here comes data
-                    $col = 0;
-                    foreach ($data as $column) {
-                        //check required fields
-                        if (in_array($this->_fields[$col], $this->_required)
-                            && trim($column) == ''
-                        ) {
+                    //check for title
+                    if ($this->_fields[$col] == 'titre_adh') {
+                        if ($this->titles === null) {
+                            //load existing titles
+                            $this->titles = Titles::getList($this->zdb);
+                        }
+                        if (!isset($this->titles[$column])) {
                             $this->addError(
                                 str_replace(
-                                    array('%field', '%row'),
-                                    array($this->_fields[$col], $row),
-                                    _T("Field %field is required, but missing in row %row")
+                                    '%title',
+                                    $column,
+                                    _T("Title %title does not exists!")
                                 )
                             );
                             return false;
                         }
+                    }
 
-                        $member->validate($this->_fields[$col], $column, $this->_fields);
-                        if (count($member->errors)) {
-                            foreach ($member->errors as $error) {
-                                $this->addError($error);
-                            }
+                    //check for email unicity
+                    if ($this->_fields[$col] == 'email_adh' && !empty($column)) {
+                        if ($this->emails === null) {
+                            //load existing emails
+                            $this->emails = Members::getEmails($this->zdb);
+                        }
+                        if (isset($this->emails[$column])) {
+                            $existing = $this->emails[$column];
+                            $extra = ($existing == -1 ?
+                                _T("from another member in import") :
+                                str_replace('%id_adh', $existing, _T("from member %id_adh"))
+                            );
+                            $this->addError(
+                                str_replace(
+                                    ['%address', '%extra'],
+                                    [$column, $extra],
+                                    _T("Email address %address is already used! (%extra)")
+                                )
+                            );
+                            return false;
+                        } else {
+                            //add email to list
+                            $this->emails[$column] = -1;
+                        }
+                    }
+
+                    //check for language
+                    if ($this->_fields[$col] == 'pref_lang') {
+                        if ($this->langs === null) {
+                            //load existing titles
+                            global $i18n;
+                            $this->langs = $i18n->getArrayList();
+                        }
+                        if (!isset($this->langs[$column])) {
+                            $this->addError(
+                                str_replace(
+                                    '%title',
+                                    $column,
+                                    _T("Lang %lang does not exists!")
+                                )
+                            );
                             return false;
                         }
-
-                        //check for statuses
-                        //if missing, set default one; if not check it does exists
-                        if ($this->_fields[$col] == Status::PK) {
-                            if (empty(trim($column))) {
-                                $column = Status::DEFAULT_STATUS;
-                            } else {
-                                if ($this->statuses === null) {
-                                    //load existing status
-                                    $status = new Status($this->zdb);
-                                    $this->statuses = $status->getList();
-                                }
-                                if (!isset($this->statuses[$column])) {
-                                    $this->addError(
-                                        str_replace(
-                                            '%status',
-                                            $column,
-                                            _T("Status %status does not exists!")
-                                        )
-                                    );
-                                    return false;
-                                }
-                            }
-                        }
-
-                        //check for title
-                        if ($this->_fields[$col] == 'titre_adh') {
-                            if ($this->titles === null) {
-                                //load existing titles
-                                $this->titles = Titles::getList($this->zdb);
-                            }
-                            if (!isset($this->titles[$column])) {
-                                $this->addError(
-                                    str_replace(
-                                        '%title',
-                                        $column,
-                                        _T("Title %title does not exists!")
-                                    )
-                                );
-                                return false;
-                            }
-                        }
-
-                        //check for email unicity
-                        if ($this->_fields[$col] == 'email_adh' && !empty($column)) {
-                            if ($this->emails === null) {
-                                //load existing emails
-                                $this->emails = Members::getEmails($this->zdb);
-                            }
-                            if (isset($this->emails[$column])) {
-                                $existing = $this->emails[$column];
-                                $extra = ($existing == -1 ?
-                                    _T("from another member in import") :
-                                    str_replace('%id_adh', $existing, _T("from member %id_adh"))
-                                );
-                                $this->addError(
-                                    str_replace(
-                                        ['%address', '%extra'],
-                                        [$column, $extra],
-                                        _T("Email address %address is already used! (%extra)")
-                                    )
-                                );
-                                return false;
-                            } else {
-                                //add email to list
-                                $this->emails[$column] = -1;
-                            }
-                        }
-
-                        //check for language
-                        if ($this->_fields[$col] == 'pref_lang') {
-                            if ($this->langs === null) {
-                                //load existing titles
-                                global $i18n;
-                                $this->langs = $i18n->getArrayList();
-                            }
-                            if (!isset($this->langs[$column])) {
-                                $this->addError(
-                                    str_replace(
-                                        '%title',
-                                        $column,
-                                        _T("Lang %lang does not exists!")
-                                    )
-                                );
-                                return false;
-                            }
-                        }
-
-
-                        $col++;
                     }
+
+                    $member->validate($this->_fields[$col], $column, $this->_fields);
+                    $errors = $member->getErrors();
+                    if (count($errors)) {
+                        foreach ($errors as $error) {
+                            $this->addError($error);
+                        }
+                        return false;
+                    }
+
+                    $col++;
                 }
-
-                $row++;
             }
-            fclose($handle);
 
-            if (!($row > 1)) {
-                //no data in file, just headers line
-                $this->addError(
-                    _T("File is empty!")
-                );
-                return false;
-            } else {
-                return true;
-            }
+            $row++;
         }
+        fclose($handle);
 
-        return false;
+        if (!($row > 1)) {
+            //no data in file, just headers line
+            $this->addError(
+                _T("File is empty!")
+            );
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -443,6 +442,20 @@ class CsvIn extends Csv implements FileInterface
                         if ($this->_fields[$col] === 'societe_adh') {
                             $values['is_company'] = true;
                         }
+                        //check for booleans
+                        if (($this->_fields[$col] == ['bool_admin_adh']
+                            || $this->_fields[$col] == 'bool_exempt_adh'
+                            || $this->_fields[$col] == 'bool_display_info'
+                            || $this->_fields[$col] == 'activite_adh')
+                            && ($column == null || trim($column) == '')
+                        ) {
+                            $values[$this->_fields[$col]] = 0;//defaults to 0 as in Adherent
+                        }
+
+                        if ($this->_fields[$col] == Status::PK && empty(trim($column))) {
+                            $values[Status::PK] = Status::DEFAULT_STATUS;
+                        }
+
                         $col++;
                     }
                     //import member itself
@@ -459,6 +472,7 @@ class CsvIn extends Csv implements FileInterface
                     if (isset($values['mdp_adh'])) {
                         $values['mdp_adh2'] = $values['mdp_adh'];
                     }
+
                     $valid = $member->check($values, $this->_required, null);
                     if ($valid === true) {
                         if ($this->_dryrun === false) {
