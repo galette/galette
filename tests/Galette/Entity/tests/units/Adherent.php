@@ -340,7 +340,7 @@ class Adherent extends atoum
             'url_adh' => 'http://bouchet.com/',
             'activite_adh' => true,
             'id_statut' => 9,
-            'pref_lang' => 'en_US',
+            'pref_lang' => 'de_DE',
             'fingerprint' => 'FAKER95842354',
             'societe_adh' => ''
         ];
