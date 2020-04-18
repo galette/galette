@@ -218,6 +218,22 @@ class Contribution
             while ($edate <= $bdate) {
                 $edate->modify('+1 year');
             }
+
+            if ($preferences->pref_membership_offermonths > 0) {
+                //count days until end of membership date
+                $diff1 = (int)$bdate->diff($edate)->format('%a');
+
+                //count days beetween end of membership date and offered months
+                $tdate = clone $edate;
+                $tdate->modify('-' . $preferences->pref_membership_offermonths . ' month');
+                $diff2 = (int)$edate->diff($tdate)->format('%a');
+
+                //when number of days until end of membership is less than for offered months, it's free :)
+                if ($diff1 <= $diff2) {
+                    $edate->modify('+1 year');
+                }
+            }
+
             $this->_end_date = $edate->format('Y-m-d');
         } elseif ($preferences->pref_membership_ext != '') {
             //case membership extension

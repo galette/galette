@@ -196,6 +196,11 @@
                     <span class="exemple">{_T string="(dd/mm)"}</span>
                 </p>
                 <p>
+                    <label for="pref_membership_offermonths" class="bline tooltip">{_T string="Number of months offered:"}</label>
+                    <span class="tip">{_T string="When using the beginning of membership option; you can offer the last months of the year."}<br/>{_T string="Let's say you offer last 2 months, and have a renewal on 31th of December. All created contributions in current year will be valid until this date, but as of October, they will be valid for the entire next year."}</span>
+                    <input type="number" name="pref_membership_offermonths" min="0" id="pref_membership_offermonths" value="{$pref.pref_membership_offermonths}" maxlength="5"{if isset($required.pref_membership_offermonths) and $required.pref_membership_offermonths eq 1} required="required"{/if}/>
+                </p>
+                <p>
                     <label for="pref_bool_publicpages" class="bline">{_T string="Public pages enabled?"}</label>
                     <input type="checkbox" name="pref_bool_publicpages" id="pref_bool_publicpages" value="1" {if $pref.pref_bool_publicpages} checked="checked"{/if}{if isset($required.pref_bool_publicpages) and $required.pref_bool_publicpages eq 1} required="required"{/if}/>
                 </p>

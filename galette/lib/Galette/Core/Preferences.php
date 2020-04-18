@@ -128,6 +128,7 @@ class Preferences
         'pref_mail_smtp_password'   => '',
         'pref_membership_ext'    =>    12,
         'pref_beg_membership'    =>    '',
+        'pref_membership_offermonths' => 0,
         'pref_email_reply_to'    =>    '',
         'pref_website'        =>    '',
         /* Preferences for labels */
@@ -490,6 +491,11 @@ class Preferences
                             }
                         }
                         break;
+                    case 'pref_membership_offermonths':
+                        if (!is_numeric($value) || $value < 0) {
+                            $this->errors[] = _T("- Invalid number of offered months.");
+                        }
+                        break;
                     case 'pref_card_year':
                         if (!preg_match('/^(?:\d{4}|\d{2})(\D?)(?:\d{4}|\d{2})$/', $value)) {
                             $this->errors[] = _T("- Invalid year for cards.");
@@ -547,6 +553,14 @@ class Preferences
             && $insert_values['pref_membership_ext'] != ''
         ) {
             $this->errors[] =_T("- Default membership extention and beginning of membership are mutually exclusive.");
+        }
+
+        if (isset($insert_values['pref_membership_offermonths'])
+            && (int)$insert_values['pref_membership_offermonths'] > 0
+            && isset($insert_values['pref_membership_ext'])
+            && $insert_values['pref_membership_ext'] != ''
+        ) {
+            $this->errors[] =_T("- Offering months is only compatible with beginning of membership.");
         }
 
         // missing required fields?

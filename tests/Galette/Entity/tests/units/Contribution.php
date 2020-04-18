@@ -570,6 +570,7 @@ class Contribution extends atoum
         global $preferences;
         $orig_pref_beg_membership = $this->preferences->pref_beg_membership;
         $orig_pref_membership_ext = $this->preferences->pref_membership_ext;
+        $orig_pref_membership_offermonths = $this->preferences->pref_membership_offermonths;
 
         $contrib = new \Galette\Entity\Contribution(
             $this->zdb,
@@ -577,6 +578,7 @@ class Contribution extends atoum
             ['type' => 1] //anual fee
         );
 
+        // First, check for 12 months renewal
         $expected = new \DateTime();
         $expected->add(new \DateInterval('P1Y'));
         $this->string($contrib->end_date)->isIdenticalTo($expected->format('Y-m-d'));
@@ -597,6 +599,7 @@ class Contribution extends atoum
             ->isInstanceOf('RuntimeException')
             ->hasMessage('Unable to define end date; none of pref_beg_membership nor pref_membership_ext are defined!');
 
+        // Second, test with beginning of membership date
         $preferences->pref_beg_membership = '29/05';
         $expected = new \DateTime();
         $expected->setDate(date('Y'), 5, 29);
@@ -611,9 +614,25 @@ class Contribution extends atoum
         );
         $this->string($contrib->end_date)->isIdenticalTo($expected->format('Y-m-d'));
 
+        // Third, test with beginning of membership date and i2 last months offered
+        $beginning = new \DateTime();
+        $beginning->add(new \DateInterval('P1M'));
+        $preferences->pref_beg_membership = $beginning->format('t/m'); // end of next month
+        $preferences->pref_membership_offermonths = 2;
+        $expected = clone $beginning;
+        $expected->add(new \DateInterval('P1Y'));
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1] // anual fee
+        );
+        $this->string($contrib->end_date)->isIdenticalTo($expected->format('Y-m-t'));
+
         //reset
         $preferences->pref_beg_membership = $orig_pref_beg_membership;
         $preferences->pref_membership_ext = $orig_pref_membership_ext;
+        $preferences->pref_membership_offermonths = $orig_pref_membership_offermonths;
     }
 
     /**
