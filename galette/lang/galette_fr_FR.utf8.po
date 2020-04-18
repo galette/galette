@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2020-03-28 11:30+0000\n"
+"PO-Revision-Date: 2020-04-18 04:33+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.0-dev\n"
+"X-Generator: Weblate 4.0.2-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -1722,8 +1722,8 @@ msgstr "Courriel de nouveau compte envoyé à l’administrateur pour « %s »."
 #: ../includes/routes/members.routes.php:1047
 msgid "A problem happened while sending email to admin for account '%s'."
 msgstr ""
-"Un problème est survenu dans l’envoi du mot de passe à l’administrateur pour "
-"le compte « %s »"
+"Un problème est survenu dans l’envoi du courriel à l’administrateur pour le "
+"compte « %s »"
 
 #: ../includes/routes/members.routes.php:1055
 msgid "Member account has been modified."
