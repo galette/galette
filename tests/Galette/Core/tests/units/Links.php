@@ -467,19 +467,12 @@ class Links extends atoum
             ]
         );
 
-        $expecteds = [
-            'code'      => $this->zdb->isPostgres() ? 23505 : 23000,
-            'message'   => $this->zdb->isPostgres() ?
-                'Unique violation: 7 ERROR:  duplicate key value violates unique constraint "galette_tmplinks_pkey"' :
-                "Integrity constraint violation: 1062 Duplicate entry '1-1' for key 'PRIMARY'"
-        ];
         $this->exception(
             function () use ($insert) {
                 $this->zdb->execute($insert);
             }
         )
-            //->hasCode($expecteds['code'])// => currently returns "failed: code is 23000 instead of 23000" :/
-            ->message->contains($expecteds['message']);
+            ->hasMessage('Duplicate entry');
     }
 
     /**

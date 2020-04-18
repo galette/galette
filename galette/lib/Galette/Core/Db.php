@@ -785,6 +785,9 @@ class Db
                 $msg . ' ' . $e->__toString(),
                 Analog::ERROR
             );
+            if ($this->isDuplicateException($e)) {
+                throw new \OverflowException('Duplicate entry', 0, $e);
+            }
             throw $e;
         }
     }
@@ -903,5 +906,22 @@ class Db
                 );
             }
         }
+    }
+
+    /**
+     * Check if current exception is on a duplicate key
+     *
+     * @param Exception $exception Exception to check
+     *
+     * @return boolean
+     */
+    public function isDuplicateException($exception)
+    {
+        return $exception instanceof \PDOException
+            && (
+                (!$this->isPostgres() && $exception->getCode() == 23000)
+                || ($this->isPostgres() && $exception->getCode() == 23505)
+            )
+        ;
     }
 }
