@@ -284,9 +284,11 @@ class CsvIn extends Csv implements FileInterface
                 //header line is the first one. Here comes data
                 $col = 0;
                 foreach ($data as $column) {
+                    $column = trim($column);
+
                     //check required fields
                     if (in_array($this->_fields[$col], $this->_required)
-                        && trim($column) == ''
+                        && empty($column)
                     ) {
                         $this->addError(
                             str_replace(
@@ -301,7 +303,7 @@ class CsvIn extends Csv implements FileInterface
                     //check for statuses
                     //if missing, set default one; if not check it does exists
                     if ($this->_fields[$col] == Status::PK) {
-                        if (empty(trim($column))) {
+                        if (empty($column)) {
                             $column = Status::DEFAULT_STATUS;
                         } else {
                             if ($this->statuses === null) {
@@ -323,7 +325,7 @@ class CsvIn extends Csv implements FileInterface
                     }
 
                     //check for title
-                    if ($this->_fields[$col] == 'titre_adh') {
+                    if ($this->_fields[$col] == 'titre_adh' && !empty($column)) {
                         if ($this->titles === null) {
                             //load existing titles
                             $this->titles = Titles::getList($this->zdb);
@@ -373,15 +375,19 @@ class CsvIn extends Csv implements FileInterface
                             global $i18n;
                             $this->langs = $i18n->getArrayList();
                         }
-                        if (!isset($this->langs[$column])) {
-                            $this->addError(
-                                str_replace(
-                                    '%title',
-                                    $column,
-                                    _T("Lang %lang does not exists!")
-                                )
-                            );
-                            return false;
+                        if (empty($column)) {
+                            $column = $this->preferences->pref_lang;
+                        } else {
+                            if (!isset($this->langs[$column])) {
+                                $this->addError(
+                                    str_replace(
+                                        '%title',
+                                        $column,
+                                        _T("Lang %lang does not exists!")
+                                    )
+                                );
+                                return false;
+                            }
                         }
                     }
 
@@ -443,7 +449,7 @@ class CsvIn extends Csv implements FileInterface
                             $values['is_company'] = true;
                         }
                         //check for booleans
-                        if (($this->_fields[$col] == ['bool_admin_adh']
+                        if (($this->_fields[$col] == 'bool_admin_adh'
                             || $this->_fields[$col] == 'bool_exempt_adh'
                             || $this->_fields[$col] == 'bool_display_info'
                             || $this->_fields[$col] == 'activite_adh')

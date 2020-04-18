@@ -1107,6 +1107,12 @@ class Adherent
 
         $prop = '_' . $this->fields[$field]['propname'];
 
+        if ($value === null || trim($value) == '') {
+            //empty values are OK
+            $this->$prop = $value;
+            return;
+        }
+
         switch ($field) {
             // dates
             case 'date_crea_adh':
