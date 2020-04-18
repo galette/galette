@@ -380,7 +380,7 @@ class Group
                 $this->parent_group = null;
                 $hist->add(
                     _T("Group has been detached from its parent"),
-                    strtoupper($this->group_name)
+                    $this->group_name
                 );
             }
 
@@ -460,7 +460,7 @@ class Group
                 if ($edit->count() > 0) {
                     $hist->add(
                         _T("Group updated"),
-                        strtoupper($this->group_name)
+                        $this->group_name
                     );
                 }
                 return true;

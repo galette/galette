@@ -1413,12 +1413,13 @@ class Adherent
                     if ($this->_self_adh) {
                         $hist->add(
                             _T("Self_subscription as a member: ") .
-                            $this->getNameWithCase($this->_name, $this->_surname)
+                            $this->getNameWithCase($this->_name, $this->_surname),
+                            $this->sname
                         );
                     } else {
                         $hist->add(
                             _T("Member card added"),
-                            strtoupper($this->_login)
+                            $this->sname
                         );
                     }
                     $success = true;
@@ -1458,7 +1459,7 @@ class Adherent
                     $this->updateModificationDate();
                     $hist->add(
                         _T("Member card updated"),
-                        strtoupper($this->_login)
+                        $this->sname
                     );
                 }
                 $success = true;
