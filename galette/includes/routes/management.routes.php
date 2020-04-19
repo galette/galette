@@ -1549,9 +1549,7 @@ $app->get(
 
         /** FIXME:
         * - set fields that should not be part of import
-        * - set fields that must be part of import, and visually disable them in the list
         */
-
         $fields = $model->getFields();
         $defaults = $csv->getDefaultFields();
         $defaults_loaded = false;

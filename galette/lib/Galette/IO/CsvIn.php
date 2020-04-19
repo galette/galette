@@ -391,6 +391,11 @@ class CsvIn extends Csv implements FileInterface
                         }
                     }
 
+                    //passwords
+                    if ($this->_fields[$col] == 'mdp_adh' && !empty($column)) {
+                        $this->_fields['mdp_adh2'] = $column;
+                    }
+
                     $member->validate($this->_fields[$col], $column, $this->_fields);
                     $errors = $member->getErrors();
                     if (count($errors)) {

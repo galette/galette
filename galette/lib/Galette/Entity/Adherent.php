@@ -1279,10 +1279,14 @@ class Adherent
                 ) {
                     $this->errors[] = _T("Password misrepeated: ");
                 } else {
-                    $this->$prop = password_hash(
-                        $value,
-                        PASSWORD_BCRYPT
-                    );
+                    $pinfos = password_get_info($value);
+                    //check if value is already a hash
+                    if ($pinfos['algo'] == 0) {
+                        $this->$prop = password_hash(
+                            $value,
+                            PASSWORD_BCRYPT
+                        );
+                    }
                 }
                 break;
             case 'id_statut':
