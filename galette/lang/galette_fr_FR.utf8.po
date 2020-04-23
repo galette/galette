@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2020-04-18 04:33+0000\n"
+"PO-Revision-Date: 2020-04-24 12:15+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -2212,7 +2212,7 @@ msgstr "Le mailing a été supprimé avec succès !"
 
 #: ../includes/routes/management.routes.php:1105
 msgid "An error occurred trying to delete mailing :("
-msgstr "Une erreur est survenue lors de la suppression du publipostage :("
+msgstr "Une erreur est survenue lors de la suppression du mailing :("
 
 #: ../includes/routes/management.routes.php:1141
 msgid "CVS database Export"
@@ -4233,7 +4233,7 @@ msgstr "Gestion des emailings envoyés"
 
 #: ../templates/default/page.tpl:152
 msgid "Manage mailings"
-msgstr "Gestion des publipostages"
+msgstr "Gestion des mailings"
 
 #: ../templates/default/page.tpl:153
 msgid "Export some data in various formats"
