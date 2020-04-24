@@ -8,18 +8,17 @@
         "web",
         "management"
     ],
-    "homepage": "http://galette.eu/",
+    "homepage": "https://galette.eu/",
     "support": {
         "irc": "irc://irc.oftc.net/galette",
-        "forum": "https://forums.galette.eu/",
         "issues": "https://bugs.galette.eu/projects/galette",
-        "docs": "http://galette.eu/documentation/"
+        "docs": "https://doc.galette.eu"
     },
     "authors": [
         {
             "name": "Johan Cwiklinski",
             "email": "trasher@x-tnd.be",
-            "homepage": "http://galette.eu"
+            "homepage": "https://galette.eu"
         }
     ],
     "autoload": {

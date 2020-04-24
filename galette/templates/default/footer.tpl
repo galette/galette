@@ -5,7 +5,7 @@
                         <a href="https://galette.eu"><i class="fas fa-globe-europe"></i> {_T string="Website"}</a>
                     </li>
                     <li>
-                        <a href="https://galette.eu/documentation/"><i class="fas fa-book"></i> {_T string="Documentation"}</a>
+                        <a href="https://doc.galette.eu"><i class="fas fa-book"></i> {_T string="Documentation"}</a>
                     </li>
                     <li>
                         <a href="https://twitter.com/galette_soft">
