@@ -100,8 +100,7 @@ class Pdf extends \TCPDF
             _T("Association %s")
         );
         $this->SetAuthor(
-            $name . ' (using Galette ' . GALETTE_VERSION .
-            'and TCPDF ' . TCPDF_VERSION . ')'
+            $name . ' (using Galette ' . GALETTE_VERSION . ')'
         );
 
         if ($model !== null) {
