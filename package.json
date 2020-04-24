@@ -20,25 +20,25 @@
   "author": "Johan Cwiklinski <johan AT x-tnd DOT be>",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
-    "clean-css": "^4.2.1",
-    "css-loader": "^3.2.0",
+    "clean-css": "^4.2.3",
+    "css-loader": "^3.5.3",
     "del": "^5.1.0",
-    "file-loader": "^4.2.0",
+    "file-loader": "^4.3.0",
     "gulp": "^4.0.2",
-    "gulp-clean-css": "^4.2.0",
+    "gulp-clean-css": "^4.3.0",
     "gulp-cli": "^2.2.0",
     "gulp-concat": "^2.6.1",
     "gulp-replace": "^1.0.0",
     "gulp-uglify": "^3.0.2",
     "merge-stream": "^2.0.0",
-    "uglify-js": "^3.6.7"
+    "uglify-js": "^3.9.1"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.11.2",
-    "jquery": "^3.4.1",
+    "@fortawesome/fontawesome-free": "^5.13.0",
+    "jquery": "^3.5.0",
     "jquery-ui-dist": "^1.12.1",
     "jquery.cookie": "^1.4.1",
-    "jstree": "^3.3.8",
+    "jstree": "^3.3.9",
     "markitup": "^3.0.0-0",
     "selectize": "^0.12.6"
   }
