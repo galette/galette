@@ -260,26 +260,27 @@ header('Content-Type: text/html; charset=UTF-8');
                 <h1 id="titre">
                     <?php echo _T("Galette installation") . ' - ' . $install->getStepTitle(); ?>
                 </h1>
-
-                <form action="">
-                    <select id="lang_selector" name="ui_pref_lang">
+                <nav id="plang_selector" class="onhover">
+                    <a href="#plang_selector" class="tooltip" aria-expanded="false" aria-controls="lang_selector" title="<?php echo _T("Change language"); ?>">
+                        <i class="fas fa-language"></i>
+                        <?php echo $i18n->getName(); ?>
+                    </a>
+                    <ul id="lang_selector">
 <?php
 foreach ($i18n->getList() as $langue) {
     ?>
-                        <option value="<?php echo $langue->getID(); ?>" lang="<?php echo $langue->getAbbrev(); ?>"<?php if ($i18n->getAbbrev() == $langue->getAbbrev()) { echo ' selected="selected"'; } ?>><?php echo $langue->getName(); ?></option>
+                        <li <?php if ($i18n->getAbbrev() == $langue->getAbbrev()) { echo ' selected="selected"'; } ?>>
+                            <a href="?ui_pref_lang=<?php echo $langue->getID(); ?>" lang="<?php echo $langue->getAbbrev(); ?>"><?php echo $langue->getName(); ?></a>
+                        </li>
     <?php
 }
 ?>
-                    </select>
-                    <noscript>
-                        <input type="submit" name="{_T string="Change language"}" />
-                    </noscript>
-                </form>
+                    </ul>
+                </nav>
             </header>
 <?php
 if (count($error_detected) > 0) {
     ?>
-
             <div id="errorbox">
                 <h1><?php echo _T("- ERROR -"); ?></h1>
                 <ul>
