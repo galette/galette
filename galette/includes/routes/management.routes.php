@@ -75,9 +75,7 @@ $app->get(
             'page_title'        => _T("Dashboard"),
             'contentcls'        => 'desktop',
             'news'              => $news->getPosts(),
-            'show_dashboard'    => $_COOKIE['show_galette_dashboard'],
-            'require_cookie'    => true,
-            'require_dialog'    => true,
+            'show_dashboard'    => $_COOKIE['show_galette_dashboard']
         ];
 
         $hide_telemetry = true;
@@ -187,9 +185,7 @@ $app->get(
                 'required'              => $required,
                 'themes'                => $themes,
                 'statuts'               => $s->getList(),
-                'require_tabs'          => true,
                 'color_picker'          => true,
-                'require_dialog'        => true,
                 'accounts_options'      => array(
                     Members::ALL_ACCOUNTS       => _T("All accounts"),
                     Members::ACTIVE_ACCOUNT     => _T("Active accounts"),
@@ -425,8 +421,7 @@ $app->get(
             array(
                 'page_title'            => _T("Plugins"),
                 'plugins_list'          => $plugins_list,
-                'plugins_disabled_list' => $disabled_plugins,
-                'require_dialog'        => true
+                'plugins_disabled_list' => $disabled_plugins
             )
         );
         return $response;
@@ -744,9 +739,7 @@ $app->get(
             array(
                 'page_title'        => _T("Logs"),
                 'logs'              => $logs,
-                'history'           => $this->history,
-                'require_calendar'  => true,
-                'require_dialog'    => true
+                'history'           => $this->history
             )
         );
         return $response;
@@ -956,10 +949,8 @@ $app->get(
             'gestion_mailings.tpl',
             array(
                 'page_title'        => _T("Mailings"),
-                'require_dialog'    => true,
                 'logs'              => $history_list,
-                'history'           => $mailhist,
-                'require_calendar'  => true,
+                'history'           => $mailhist
             )
         );
         return $response;
@@ -1142,8 +1133,7 @@ $app->get(
                 'tables_list'       => $tables_list,
                 'written'           => $this->flash->getMessage('written_exports'),
                 'existing'          => $existing,
-                'parameted'         => $parameted,
-                'require_dialog'    => true
+                'parameted'         => $parameted
             )
         );
         return $response;
@@ -1413,7 +1403,6 @@ $app->get(
             'import.tpl',
             array(
                 'page_title'        => _T("CSV members import"),
-                'require_dialog'    => true,
                 'existing'          => $existing,
                 'dryrun'            => $dryrun,
                 'import_file'       => $this->session->import_file
@@ -1569,13 +1558,11 @@ $app->get(
             'import_model.tpl',
             array(
                 'page_title'        => _T("CSV import model"),
-                'require_dialog'    => true,
                 'fields'            => $fields,
                 'model'             => $model,
                 'defaults'          => $defaults,
                 'members_fields'    => $import_fields,
-                'defaults_loaded'   => $defaults_loaded,
-                'require_tabs'      => true
+                'defaults_loaded'   => $defaults_loaded
             )
         );
         return $response;
@@ -1696,8 +1683,6 @@ $app->get(
             $params = [
                 'page_title'        => _T("PDF models"),
                 'models'            => $models,
-                'require_tabs'      => true,
-                'require_dialog'    => true,
                 'model'             => $model
             ];
         }
@@ -1785,8 +1770,7 @@ $app->get(
             'gestion_titres.tpl',
             [
                 'page_title'        => _T("Titles management"),
-                'titles_list'       => $titles,
-                'require_dialog'    => true
+                'titles_list'       => $titles
             ]
         );
         return $response;
@@ -2025,7 +2009,6 @@ $app->get(
                 'cur_lang'          => $args['lang'],
                 'cur_ref'           => $args['ref'],
                 'mtxt'              => $mtxt,
-                'require_dialog'    => true
             ]
         );
         return $response;
@@ -2102,11 +2085,7 @@ $app->get(
         $className = null;
         $class = null;
 
-        $params = [
-            'require_tabs'      => true,
-            'require_dialog'    => true
-        ];
-
+        $params = [];
         switch ($args['class']) {
             case 'status':
                 $className = 'Status';
@@ -2148,10 +2127,7 @@ $app->get(
         $className = null;
         $class = null;
 
-        $params = [
-            'require_tabs'  => true,
-        ];
-
+        $params = [];
         switch ($args['class']) {
             case 'status':
                 $className = 'Status';
@@ -2537,9 +2513,7 @@ $app->get(
             'time'                  => time(),
             'categories'            => FieldsCategories::getList($this->zdb),
             'categorized_fields'    => $fc->getCategorizedFields(),
-            'non_required'          => $fc->getNonRequired(),
-            'require_dialog'        => true,
-            'require_sorter'        => true
+            'non_required'          => $fc->getNonRequired()
         ];
 
         // display page
@@ -2620,8 +2594,6 @@ $app->get(
         $field_type_names = DynamicField::getFieldsTypesNames();
 
         $params = [
-            'require_tabs'      => true,
-            'require_dialog'    => true,
             'fields_list'       => $fields_list,
             'form_name'         => $form_name,
             'form_title'        => DynamicField::getFormTitle($form_name),
@@ -3019,8 +2991,7 @@ $app->get(
     '/admin-tools',
     function ($request, $response) {
         $params = [
-            'page_title'        => _T('Administration tools'),
-            'require_dialog'    => true
+            'page_title'        => _T('Administration tools')
         ];
 
         $cm = new Galette\Core\CheckModules();
@@ -3138,8 +3109,7 @@ $app->get(
             'gestion_paymentstypes.tpl',
             [
                 'page_title'        => _T("Payment types management"),
-                'list'              => $list,
-                'require_dialog'    => true
+                'list'              => $list
             ]
         );
         return $response;

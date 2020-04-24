@@ -122,7 +122,6 @@ $app->get(
                 'parent_tpl'        => 'public_page.tpl',
                 'member'            => $member,
                 'self_adh'          => true,
-                'require_calendar'  => true,
                 'autocomplete'      => true,
                 // pseudo random int
                 'time'              => time(),
@@ -401,8 +400,6 @@ $app->get(
             'gestion_adherents.tpl',
             array(
                 'page_title'            => _T("Members management"),
-                'require_dialog'        => true,
-                'require_calendar'      => true,
                 'require_mass'          => true,
                 'members'               => $members_list,
                 'filter_groups_options' => $groups_list,
@@ -587,7 +584,6 @@ $app->get(
             'voir_adherent.tpl',
             array(
                 'page_title'        => _T("Member Profile"),
-                'require_dialog'    => true,
                 'member'            => $member,
                 'pref_lang'         => $this->i18n->getNameFromId($member->language),
                 'pref_card_self'    => $this->preferences->pref_card_self,
@@ -670,7 +666,6 @@ $app->get(
             'voir_adherent.tpl',
             array(
                 'page_title'        => _T("Member Profile"),
-                'require_dialog'    => true,
                 'member'            => $member,
                 'pref_lang'         => $this->i18n->getNameFromId($member->language),
                 'pref_card_self'    => $this->preferences->pref_card_self,
@@ -819,12 +814,10 @@ $app->get(
                 $route_params,
                 array(
                     'parent_tpl'        => 'page.tpl',
-                    'require_dialog'    => true,
                     'autocomplete'      => true,
                     'page_title'        => $title,
                     'member'            => $member,
                     'self_adh'          => false,
-                    'require_calendar'  => true,
                     // pseudo random int
                     'time'              => time(),
                     'titles_list'       => Titles::getList($this->zdb),
@@ -1610,9 +1603,6 @@ $app->get(
             'advanced_search.tpl',
             array(
                 'page_title'            => _T("Advanced search"),
-                'require_dialog'        => true,
-                'require_calendar'      => true,
-                'require_sorter'        => true,
                 'filter_groups_options' => $groups_list,
                 'search_fields'         => $fields,
                 'adh_dynamics'          => $adh_dynamics->getFields(),
@@ -2090,8 +2080,7 @@ $app->get(
             'mailing_adherents.tpl',
             array_merge(
                 array(
-                    'page_title'            => _T("Mailing"),
-                    'require_dialog'        => true
+                    'page_title'            => _T("Mailing")
                 ),
                 $params
             )
@@ -2468,7 +2457,6 @@ $app->get(
             [
                 'page_title'                => _T("Reminders"),
                 'previews'                  => $previews,
-                'require_dialog'            => true,
                 'count_impending'           => $reminders['impending'],
                 'count_impending_nomail'    => $reminders['nomail']['impending'],
                 'count_late'                => $reminders['late'],
@@ -3365,7 +3353,6 @@ $app->get(
             'saved_searches.tpl',
             array(
                 'page_title'        => _T("Saved searches"),
-                'require_dialog'    => true,
                 'searches'          => $list,
                 'nb'                => $searches->getCount(),
                 'filters'           => $filters

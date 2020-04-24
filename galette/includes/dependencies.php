@@ -133,18 +133,13 @@ $container['view'] = function ($c) {
     );
     $smarty->assign('pref_mail_method', $c->preferences->pref_mail_method);
     $smarty->assign('existing_mailing', $c->get('session')->mailing !== null);
-    $smarty->assign('require_tabs', null);
     $smarty->assign('contentcls', null);
-    $smarty->assign('require_cookie', false);
     $smarty->assign('additionnal_html_class', null);
-    $smarty->assign('require_calendar', null);
     $smarty->assign('head_redirect', null);
     $smarty->assign('error_detected', null);
     $smarty->assign('warning_detected', null);
     $smarty->assign('success_detected', null);
     $smarty->assign('color_picker', null);
-    $smarty->assign('require_sorter', null);
-    $smarty->assign('require_dialog', null);
     $smarty->assign('require_tree', null);
     $smarty->assign('html_editor', null);
     $smarty->assign('require_charts', null);

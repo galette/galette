@@ -204,13 +204,11 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     {block name="javascripts"}{/block}
         <script type="text/javascript">
             $(function(){
-    {if $require_calendar}
                 $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
-        {if $galette_lang eq 'en'}
+    {if $galette_lang eq 'en'}
                 $.datepicker.setDefaults({
                     dateFormat: 'yy-mm-dd'
                 });
-        {/if}
     {/if}
     {if isset($renew_telemetry)}
         {include file="telemetry.tpl" part="jsdialog"}

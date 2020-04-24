@@ -145,8 +145,6 @@ $app->get(
             'page_title'        => $raw_type === 'contributions' ?
                                     _T("Contributions management") :
                                     _T("Transactions management"),
-            'require_dialog'    => true,
-            'require_calendar'  => true,
             'contribs'          => $contrib,
             'list'              => $contribs_list,
             'nb'                => $contrib->getCount(),
@@ -386,7 +384,6 @@ $app->get(
             'disabled'          => $disabled,
             'contribution'      => $contrib,
             'adh_selected'      => $id_adh,
-            'require_calendar'  => true,
             'type'              => $args['type']
         ];
 
@@ -822,9 +819,7 @@ $app->get(
             'page_title'        => $title,
             'required'          => $required,
             'data'              => $transaction, //TODO: remove
-            'transaction'       => $trans,
-            'require_calendar'  => true,
-            'require_dialog'    => true
+            'transaction'       => $trans
         ];
 
         if ($trans->id != '') {

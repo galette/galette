@@ -85,8 +85,6 @@ $app->get(
             'gestion_groupes.tpl',
             array(
                 'page_title'            => _T("Groups"),
-                'require_dialog'        => true,
-                'require_tabs'          => true,
                 'require_tree'          => true,
                 'groups_root'           => $groups_root,
                 'groups'                => $groups_list,
