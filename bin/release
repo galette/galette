@@ -311,11 +311,42 @@ def add_libs(rel_name, galette_archive):
     galette.extractall(path=src_dir)
     galette.close()
 
+    npm_dir = os.path.join(src_dir, rel_name)
+    npm_cmd = 'npm install --prefix %s' % npm_dir
+    print(npm_cmd)
+    p1 = subprocess.Popen(npm_cmd, shell=True, cwd=npm_dir)
+    p1.wait()
+
+    wp_cmd = 'npm run-script gulp build'
+    p1 = subprocess.Popen(wp_cmd, shell=True, cwd=npm_dir)
+    p1.wait()
+
+    shutil.rmtree(os.path.join(npm_dir, 'node_modules'))
+
     composer_cmd = 'composer install --no-dev'
     composer_dir = os.path.join(src_dir, rel_name, 'galette')
     print(composer_dir)
     p1 = subprocess.Popen(composer_cmd, shell=True, cwd=composer_dir)
     p1.wait()
+
+    #cleaunp files not required in releases
+    todrop = [
+        '.travis.yml',
+        'apigen.neon',
+        'gulpfile.js',
+        'package.json',
+        'package-lock.json',
+        'phpcs-rules.xml',
+        os.path.join('galette', 'composer.json'),
+        os.path.join('galette', 'composer.lock'),
+        os.path.join('galette', 'post_contribution_test.php')
+    ]
+    for td in todrop:
+        if os.path.exists(os.path.join(src_dir, rel_name, td)):
+            os.remove(os.path.join(src_dir, rel_name, td))
+
+    if os.path.exists(os.path.join(src_dir, rel_name, 'patches')):
+        shutil.rmtree(os.path.join(src_dir, rel_name, 'patches'))
 
     #cleanup vendors
     for root, dirnames, filenames in os.walk(os.path.join(composer_dir, 'vendor')):

@@ -2,3 +2,6 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../galette"
 cd $DIR
 composer install --optimize-autoloader
+cd ..
+npm install
+npm run-script gulp
