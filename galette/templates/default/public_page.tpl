@@ -2,48 +2,6 @@
 <html lang="{$galette_lang}" class="public_page{if $additionnal_html_class} {$additionnal_html_class}{/if}">
     <head>
         {include file='common_header.tpl'}
-{if $require_calendar}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
-    {if $galette_lang ne 'en'}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.min.js"></script>
-    {/if}
-{/if}
-{if $require_dialog}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.mouse.min.js"></script>
-        {* Drag component, only used for Dialog for the moment *}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.draggable.min.js"></script>
-        {* So the dialog could be aligned in the middle of the screen *}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.position.min.js"></script>
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.dialog.min.js"></script>
-{/if}
-{if $autocomplete}
-    <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.menu.min.js"></script>
-    <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.autocomplete.min.js"></script>
-    <script type="text/javascript">
-        $(function() {
-    {if $require_calendar}
-            $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
-        {if $galette_lang eq 'en'}
-                $.datepicker.setDefaults({
-                    dateFormat: 'yy-mm-dd'
-                });
-        {/if}
-    {/if}
-            $('#ville_adh, #lieu_naissance').autocomplete({
-                source: function (request, response) {
-                    $.post('{path_for name="suggestTown"}', request, response);
-                },
-                minLength: 2
-            });
-            $('#pays_adh').autocomplete({
-                source: function (request, response) {
-                    $.post('{path_for name="suggestCountry"}', request, response);
-                },
-                minLength: 2
-            });
-        });
-    </script>
-{/if}
 {* If some additionnals headers should be added from plugins, we load the relevant template file
 We have to use a template file, so Smarty will do its work (like replacing variables). *}
 {if $headers|@count != 0}
@@ -142,6 +100,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {include file="global_messages.tpl"}
         {block name="content"}{_T string="Public page content"}{/block}
         {include file="footer.tpl"}
+        {include file="common_scripts.tpl"}
         {block name="javascripts"}{/block}
     </body>
 </html>
