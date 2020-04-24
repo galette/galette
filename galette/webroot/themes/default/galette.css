@@ -104,8 +104,13 @@ input[readonly] {
     cursor: default;
 }
 
-input[type=file] {
+input[type=file], input[type=color] {
     border: none;
+}
+
+input[type=color] {
+    padding: 0;
+    cursor: pointer;
 }
 
 pre, code, kbd, samp {

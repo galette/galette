@@ -27,9 +27,6 @@
     {/if}
             });
         </script>
-    {if $color_picker}
-        <script type="text/javascript" src="{base_url}/assets/js/galette-farbtastic.bundle.min.js"></script>
-    {/if}
     {if $require_charts}
         <script type="text/javascript" src="{base_url}/assets/js/galette-jqplot.bundle.min.js"></script>
     {/if}

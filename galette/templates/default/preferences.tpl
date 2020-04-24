@@ -417,25 +417,23 @@
                 <p>
                     <label for="pref_card_tcol" class="bline tooltip">{_T string="Strip Text Color:"}</label>
                     <span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
-                    <input type="text" name="pref_card_tcol" id="pref_card_tcol" value="{$pref.pref_card_tcol}" size="7" maxlength="7" class="hex"{if isset($required.pref_card_tcol) and $required.pref_card_tcol eq 1} required="required"{/if}/>
+                    <input type="color" name="pref_card_tcol" id="pref_card_tcol" value="{$pref.pref_card_tcol}" size="7" maxlength="7"{if isset($required.pref_card_tcol) and $required.pref_card_tcol eq 1} required="required"{/if}/>
                 </p>
-                <div class="subtitle">{_T string="Strip Background colors:"} <span class="exemple">{_T string="(Strip color will change according to member's status)"}</span></div>
                 <p>
                     <label for="pref_card_scol" class="bline tooltip">{_T string="Active Member Color:"}</label>
                     <span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
-                    <input type="text" name="pref_card_scol" id="pref_card_scol" value="{$pref.pref_card_scol}" size="7" maxlength="7" class="hex"{if isset($required.pref_card_scol) and $required.pref_card_scol eq 1} required="required"{/if}/>
+                    <input type="color" name="pref_card_scol" id="pref_card_scol" value="{$pref.pref_card_scol}" size="7" maxlength="7"{if isset($required.pref_card_scol) and $required.pref_card_scol eq 1} required="required"{/if}/>
                 </p>
                 <p>
                     <label for="pref_card_bcol" class="bline tooltip">{_T string="Board Members Color:"}</label>
                     <span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
-                    <input type="text" name="pref_card_bcol" id="pref_card_bcol" value="{$pref.pref_card_bcol}" size="7" maxlength="7" class="hex"{if isset($required.pref_card_bcol) and $required.pref_card_bcol eq 1} required="required"{/if}/>
+                    <input type="color" name="pref_card_bcol" id="pref_card_bcol" value="{$pref.pref_card_bcol}" size="7" maxlength="7"{if isset($required.pref_card_bcol) and $required.pref_card_bcol eq 1} required="required"{/if}/>
                 </p>
                 <p>
                     <label for="pref_card_hcol" class="bline tooltip">{_T string="Honor Members Color:"}</label>
                     <span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
-                    <input type="text" name="pref_card_hcol" id="pref_card_hcol" value="{$pref.pref_card_hcol}" size="7" maxlength="7" class="hex"{if isset($required.pref_card_hcol) and $required.pref_card_hcol eq 1} required="required"{/if}/>
+                    <input type="color" name="pref_card_hcol" id="pref_card_hcol" value="{$pref.pref_card_hcol}" size="7" maxlength="7"{if isset($required.pref_card_hcol) and $required.pref_card_hcol eq 1} required="required"{/if}/>
                 </p>
-                <div class="subtitle">&nbsp;</div>
                 <p>
                     <label for="card_logo" class="bline"{if isset($required.card_logo) and $required.card_logo eq 1} required="required"{/if}>{_T string="Logo:"}</label>
 {if $print_logo->isCustom()}
@@ -473,7 +471,7 @@
                     <input type="text" name="pref_card_year" id="pref_card_year" value="{$pref.pref_card_year}" maxlength="9"{if isset($required.pref_card_year) and $required.pref_card_year eq 1} required="required"{/if}/>
                     <span class="exemple">{_T string="(Enter a year or two years with a separator)"}</span>
                 </p>
-                <div class="subtitle center">{_T string="Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 rows.<br/>Double check margins and spacings ;)"}</div>
+                <div class="center">{_T string="Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 rows.<br/>Double check margins and spacings ;)"}</div>
                 <p>
                     <label for="pref_card_marges_v" class="bline">{_T string="Vertical margins:"}</label>
                     <input type="text" name="pref_card_marges_v" id="pref_card_marges_v" value="{$pref.pref_card_marges_v}" maxlength="4"{if isset($required.pref_card_marges_v) and $required.pref_card_marges_v eq 1} required="required"{/if}/> mm
@@ -552,31 +550,6 @@
 
 
             $(function(){
-                //for color pickers
-                // hex inputs
-                $('input.hex')
-                    .validHex()
-                    .keyup(function() {
-                        $(this).validHex();
-                    })
-                    .click(function(){
-                        $(this).addClass('focus');
-                        $('#picker').remove();
-                        $('div.picker-on').removeClass('picker-on');
-                        $(this).after('<div id="picker"></div>').parent().addClass('picker-on');
-                        $('#picker').farbtastic(this);
-                        return false;
-                    })
-                    .wrap('<div class="hasPicker"></div>')
-                    .applyFarbtastic();
-
-                //general app click cleanup
-                $('body').click(function() {
-                    $('div.picker-on').removeClass('picker-on');
-                    $('#picker').remove();
-                    $('input.focus, select.focus').removeClass('focus');
-                });
-
                 $('#pref_bool_publicpages').change(function(){
                     $('#publicpages_visibility').toggleClass('hidden');
                 });
@@ -634,29 +607,5 @@
             {include file="telemetry.tpl" part="jsregister"}
 
             });
-
-            //color pickers setup (sets bg color of inputs)
-            $.fn.applyFarbtastic = function() {
-                return this.each(function() {
-                    $('<div/>').farbtastic(this).remove();
-                });
-            };
-
-            // validation for hex inputs
-            $.fn.validHex = function() {
-
-                return this.each(function() {
-
-                    var value = $(this).val();
-                    value = value.replace(/[^#a-fA-F0-9]/g, ''); // non [#a-f0-9]
-                    if(value.match(/#/g) && value.match(/#/g).length > 1) value = value.replace(/#/g, ''); // ##
-                    if(value.indexOf('#') == -1) value = '#'+value; // no #
-                    if(value.length > 7) value = value.substr(0,7); // too many chars
-
-                    $(this).val(value);
-
-                });
-
-            };
         </script>
 {/block}

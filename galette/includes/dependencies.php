@@ -139,7 +139,6 @@ $container['view'] = function ($c) {
     $smarty->assign('error_detected', null);
     $smarty->assign('warning_detected', null);
     $smarty->assign('success_detected', null);
-    $smarty->assign('color_picker', null);
     $smarty->assign('require_tree', null);
     $smarty->assign('html_editor', null);
     $smarty->assign('require_charts', null);

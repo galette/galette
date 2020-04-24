@@ -12,9 +12,6 @@ Just put a {include file='common_header.tpl'} into the head tag.
             <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}/galette_local.css" />
         {/if}
         <script type="text/javascript" src="{base_url}/assets/js/galette-main.bundle.min.js"></script>
-    {if $color_picker}
-        <link rel="stylesheet" type="text/css" href="{base_url}/assets/css/galette-farbtastic.bundle.min.css"/>
-    {/if}
     {if $require_charts}
         <link rel="stylesheet" type="text/css" href="{base_url}/assets/css//galette-jqplot.bundle.min.css" />
     {/if}

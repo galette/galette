@@ -185,7 +185,6 @@ $app->get(
                 'required'              => $required,
                 'themes'                => $themes,
                 'statuts'               => $s->getList(),
-                'color_picker'          => true,
                 'accounts_options'      => array(
                     Members::ALL_ACCOUNTS       => _T("All accounts"),
                     Members::ACTIVE_ACCOUNT     => _T("Active accounts"),
