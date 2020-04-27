@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2020-04-27 12:37+0000\n"
-"Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2020-04-27 13:02+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -190,7 +190,7 @@ msgstr "Connecté en tant que&nbsp;:<br/>%login"
 
 #: ../lib/Galette/Core/MailingHistory.php:575
 msgid "Delete mailing entries"
-msgstr "Supprimer les entrées d’E-Mailing"
+msgstr "Supprimer les entrées envoyées"
 
 #: ../lib/Galette/Core/Preferences.php:411
 msgid "- The username must be composed of at least 4 characters!"
@@ -435,8 +435,8 @@ msgstr "Suppression des fiches adhérent, transactions et cotisations"
 #: ../lib/Galette/Repository/Members.php:423
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr ""
-"Impossible de supprimer un adhérent qui a encore des dépendances "
-"(emailings, ...)"
+"Impossible de supprimer un adhérent qui a encore des dépendances (envois, "
+"...)"
 
 #: ../lib/Galette/Repository/SavedSearches.php:266
 msgid "Searches deleted (%list)"
@@ -447,44 +447,36 @@ msgid "Contributions deleted (%list)"
 msgstr "Contributions supprimées (%list)"
 
 #: ../lib/Galette/Util/Password.php:87
-#, fuzzy
-#| msgid "Password mismatch!"
 msgid "Password is blacklisted!"
-msgstr "Les mots de passe ne correspondent pas&nbsp;!"
+msgstr "Le mot de passe est sur liste noire&nbsp;!"
 
 #: ../lib/Galette/Util/Password.php:97
 msgid "Too short (%lenght characters minimum, %count found)"
-msgstr ""
+msgstr "Trop court (%lenght caractères minimum, %count trouvés)"
 
 #: ../lib/Galette/Util/Password.php:109
 msgid "Do not use any of your personal information as password!"
-msgstr ""
+msgstr "N'utilisez pas vos informations personnelles comme mot de passe !"
 
 #: ../lib/Galette/Util/Password.php:150
 msgid "Does not contains lowercase letters"
-msgstr ""
+msgstr "Ne contient pas de lettres minuscules"
 
 #: ../lib/Galette/Util/Password.php:154
 msgid "Does not contains uppercase letters"
-msgstr ""
+msgstr "Ne contient pas de lettres majuscules"
 
 #: ../lib/Galette/Util/Password.php:157
-#, fuzzy
-#| msgid "do not contains"
 msgid "Does not contains letters"
-msgstr "ne contient pas"
+msgstr "Ne contient pas de lettres"
 
 #: ../lib/Galette/Util/Password.php:163
-#, fuzzy
-#| msgid "do not contains"
 msgid "Does not contains numbers"
-msgstr "ne contient pas"
+msgstr "Ne contient pas de chiffres"
 
 #: ../lib/Galette/Util/Password.php:169
-#, fuzzy
-#| msgid "The username cannot contain the @ character"
 msgid "Does not contains special characters"
-msgstr "L’identifiant ne peut pas contenir le caractère @"
+msgstr "Ne contient pas de caractères spéciaux"
 
 #: ../lib/Galette/Util/FakeData.php:297
 msgid "%count groups created"
@@ -1908,17 +1900,17 @@ msgstr "Impossible d’obtenir la liste des membres."
 #: ../includes/routes/members.routes.php:2133
 msgid "Trying to load mailing while email is disabled in preferences."
 msgstr ""
-"Tentative de chargement du mailing alors que l’envoi de mails est désactivé "
+"Tentative de chargement de l'envoi alors que les courriels sont désactivés "
 "dans les préférences."
 
 #: ../includes/routes/members.routes.php:2027
 #: ../includes/routes/members.routes.php:2155
 msgid "No member selected for mailing!"
-msgstr "Aucun adhérent sélectionné pour l’emailing !"
+msgstr "Aucun adhérent sélectionné pour l’envoi !"
 
 #: ../includes/routes/members.routes.php:2083
 msgid "Mailing"
-msgstr "Mailing"
+msgstr "Envoi"
 
 #: ../includes/routes/members.routes.php:2173
 msgid "Please type an object for the message."
@@ -1930,17 +1922,17 @@ msgstr "Veuillez saisir un message."
 
 #: ../includes/routes/members.routes.php:2271
 msgid "Mailing has been successfully sent!"
-msgstr "Le mailing a été envoyé avec succès !"
+msgstr "L'envoi est parti avec succès !"
 
 #: ../includes/routes/members.routes.php:2293
 msgid "Mailing has been successfully saved."
-msgstr "L’E-Mailing a été enregistré avec succès."
+msgstr "L’envoi a été enregistré avec succès."
 
 #: ../includes/routes/members.routes.php:2370
 #: ../templates/default/gestion_mailings.tpl:219
 #: ../templates/default/mailing_adherents.tpl:178
 msgid "Mailing preview"
-msgstr "Prévisualisation du courriel"
+msgstr "Prévisualisation de l'envoi"
 
 #: ../includes/routes/members.routes.php:2458 ../templates/default/page.tpl:53
 #: ../templates/default/desktop.tpl:36
@@ -2069,7 +2061,7 @@ msgstr "Vous devez fournir un identifiant et un mot de passe."
 
 #: ../includes/routes/authentication.routes.php:111
 msgid "Your password is too weak! Please consider updating it."
-msgstr ""
+msgstr "Votre mot de passe est trop faible ! Envisagez de le modifier."
 
 #: ../includes/routes/authentication.routes.php:119
 msgid "Login failed."
@@ -2240,19 +2232,19 @@ msgstr "Une erreur est survenue lors du nettoyage de l'historique :("
 #: ../includes/routes/management.routes.php:950
 #: ../templates/default/desktop.tpl:35
 msgid "Mailings"
-msgstr "E-Mailings"
+msgstr "Envois"
 
 #: ../includes/routes/management.routes.php:1045
 msgid "Remove mailing #%1$s"
-msgstr "Supprimer le mailing %1$s"
+msgstr "Supprimer l'envoi %1$s"
 
 #: ../includes/routes/management.routes.php:1083
 msgid "Mailing has been successfully deleted!"
-msgstr "Le mailing a été supprimé avec succès !"
+msgstr "L'envoi a été supprimé avec succès !"
 
 #: ../includes/routes/management.routes.php:1095
 msgid "An error occurred trying to delete mailing :("
-msgstr "Une erreur est survenue lors de la suppression du mailing :("
+msgstr "Une erreur est survenue lors de la suppression de l'envoi :("
 
 #: ../includes/routes/management.routes.php:1131
 msgid "CVS database Export"
@@ -2734,10 +2726,8 @@ msgstr ""
 "L’identifiant de contribution ne doit pas être renseigné pour un ajout !"
 
 #: ../includes/routes/contributions.routes.php:502
-#, fuzzy
-#| msgid "Transaction has been successfully stored"
 msgid "Contribution has been successfully stored"
-msgstr "La transaction a été enregistrée avec succès"
+msgstr "La contribution a été enregistrée avec succès"
 
 #: ../includes/routes/contributions.routes.php:515
 msgid "Post contribution script failed"
@@ -4257,11 +4247,11 @@ msgstr "Voir les logs de l’application"
 
 #: ../templates/default/page.tpl:55 ../templates/default/desktop.tpl:35
 msgid "Manage mailings that has been sent"
-msgstr "Gestion des emailings envoyés"
+msgstr "Gestion des envois"
 
 #: ../templates/default/page.tpl:55
 msgid "Manage mailings"
-msgstr "Gestion des mailings"
+msgstr "Gestion des envois"
 
 #: ../templates/default/page.tpl:56
 msgid "Export some data in various formats"
@@ -4395,13 +4385,13 @@ msgid ""
 "A mailing exists in the current session. Click here if you want to resume or "
 "cancel it."
 msgstr ""
-"Un publipostage existe dans la session courante. Cliquez ici si vous "
-"souhaitez le reprendre ou l’annuler."
+"Un envoi existe dans la session courante. Cliquez ici si vous souhaitez le "
+"reprendre ou l’annuler."
 
 #: ../templates/default/page.tpl:133
 #: ../templates/default/gestion_adherents.tpl:457
 msgid "Existing mailing"
-msgstr "Publipostages existants"
+msgstr "Envois existants"
 
 #: ../templates/default/page.tpl:141
 msgid "Page content"
@@ -4427,7 +4417,7 @@ msgstr "Courriel"
 
 #: ../templates/default/preferences.tpl:13
 msgid "Security"
-msgstr ""
+msgstr "Sécurité"
 
 #: ../templates/default/preferences.tpl:16
 #: ../templates/default/gestion_adherents.tpl:207
@@ -5079,128 +5069,132 @@ msgstr ""
 "contient 2 colonnes et 6 lignes.<br/>Vérifiez les marges et espacements ;)"
 
 #: ../templates/default/preferences.tpl:502
-#, fuzzy
-#| msgid "Search parameters"
 msgid "Security parameters"
-msgstr "Paramètres de la recherche"
+msgstr "Paramètres de sécurité"
 
 #: ../templates/default/preferences.tpl:504
 #: ../templates/default/preferences.tpl:505
 msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr ""
+"Longueur minimale du mot de passe requis pour tous les comptes. La taille "
+"minimale est 6."
 
 #: ../templates/default/preferences.tpl:504
-#, fuzzy
-#| msgid "Password:"
 msgid "Password length:"
-msgstr "Mot de passe&nbsp;:"
+msgstr "Longueur du mot de passe&nbsp;:"
 
 #: ../templates/default/preferences.tpl:509
 msgid "Enable password blacklists"
-msgstr ""
+msgstr "Activer la liste noire des mots de passe"
 
 #: ../templates/default/preferences.tpl:509
 msgid "Enable blacklists:"
-msgstr ""
+msgstr "Activer la liste noire :"
 
 #: ../templates/default/preferences.tpl:510
 msgid ""
 "If you enable blacklists; it will not be possible to use any of blacklisted "
 "passwords. A list is provided along with Galette, but you can add you owns."
 msgstr ""
+"Si vous activez la liste noire ; il ne sera pas possible d'utiliser les mots "
+"de passe qu'elle contient. Une liste est fournie avec Galette, mais vous "
+"pouvez ajouter les vôtres."
 
 #: ../templates/default/preferences.tpl:514
 msgid "Enforce password strength"
-msgstr ""
+msgstr "Respect de la complexité du mot de passe"
 
 #: ../templates/default/preferences.tpl:514
-#, fuzzy
-#| msgid "Password misrepeated: "
 msgid "Password strength:"
-msgstr "Erreur en recopiant le mot de passe&nbsp;: "
+msgstr "Complexité du mot de passe :"
 
 #: ../templates/default/preferences.tpl:516
 msgid "Enforce minimal password strength for all password."
-msgstr ""
+msgstr "Respect de la longueur minimale du mot de passe pour tous les comptes."
 
 #: ../templates/default/preferences.tpl:517
 msgid "Levels are:"
-msgstr ""
+msgstr "Les niveaux sont :"
 
 #: ../templates/default/preferences.tpl:518
 msgid "for no strength enforcement"
-msgstr ""
+msgstr "pour désactiver la complexité"
 
 #: ../templates/default/preferences.tpl:519
 #: ../templates/default/preferences.tpl:528
 msgid "Weak"
-msgstr ""
+msgstr "Faible"
 
 #: ../templates/default/preferences.tpl:519
 msgid "require at least one matched rule"
-msgstr ""
+msgstr "requiert le respect d'au moins une règle"
 
 #: ../templates/default/preferences.tpl:520
 #: ../templates/default/preferences.tpl:529
 msgid "Medium"
-msgstr ""
+msgstr "Moyenne"
 
 #: ../templates/default/preferences.tpl:520
 msgid "require at least two matched rules"
-msgstr ""
+msgstr "requiert le respect d'au moins deux règles"
 
 #: ../templates/default/preferences.tpl:521
 #: ../templates/default/preferences.tpl:530
 msgid "Strong"
-msgstr ""
+msgstr "Fort"
 
 #: ../templates/default/preferences.tpl:521
 msgid "require at least three matched rules (recommended for most usages)"
 msgstr ""
+"requiert le respect d'au moins trois règles (recommandé pour la plupart des "
+"utilisations)"
 
 #: ../templates/default/preferences.tpl:522
 msgid "Very Strong"
-msgstr ""
+msgstr "Très fort"
 
 #: ../templates/default/preferences.tpl:522
 msgid "requires all rules."
-msgstr ""
+msgstr "requiert le respect de toutes les règles."
 
 #: ../templates/default/preferences.tpl:523
 msgid ""
 "Rules include lower case characters, upper case characters, numbers, and "
 "special characters."
 msgstr ""
+"Les règles comprennent les caractères minuscules, les caractères majuscules, "
+"les nombres et les caractères spéciaux."
 
 #: ../templates/default/preferences.tpl:524
 msgid ""
 "Note that with any enforcement level, user cannot use his personal "
 "information (name, login, ...) as password."
 msgstr ""
+"Notez qu'avec n'importe quel niveau de complexité, l'utilisateur ne pourra "
+"utiliser ses informations personnelles (nom, login, ...) comme mot de passe."
 
 #: ../templates/default/preferences.tpl:527
 msgid "None (default)"
-msgstr ""
+msgstr "Aucun (défaut)"
 
 #: ../templates/default/preferences.tpl:531
 msgid "Very strong"
-msgstr ""
+msgstr "Très fort"
 
 #: ../templates/default/preferences.tpl:535
 #: ../templates/default/preferences.tpl:536
 msgid "Test a password with current selected values."
-msgstr ""
+msgstr "Tester un mot de passe avec les valeurs actuellement sélectionnées."
 
 #: ../templates/default/preferences.tpl:535
-#, fuzzy
-#| msgid "New password:"
 msgid "Test a password:"
-msgstr "Nouveau mot de passe&nbsp;:"
+msgstr "Tester un mot de passe&nbsp;:"
 
 #: ../templates/default/preferences.tpl:536
 msgid ""
 "Do not forget to save your preferences if you're happy with the result ;)"
 msgstr ""
+"N'oubliez pas d'enregistrer les préférences si le résultat vous convient ;)"
 
 #: ../templates/default/preferences.tpl:544
 msgid "Admin account (independant of members)"
@@ -5619,22 +5613,16 @@ msgid "Access permissions to database"
 msgstr "Droits d’accès à la base"
 
 #: ../templates/default/js_pwdcheck.tpl:30
-#, fuzzy
-#| msgid "Password misrepeated: "
 msgid "Password is valid :)"
-msgstr "Erreur en recopiant le mot de passe&nbsp;: "
+msgstr "Mot de passe valide :)"
 
 #: ../templates/default/js_pwdcheck.tpl:33
-#, fuzzy
-#| msgid "Password mismatch!"
 msgid "Password is not valid!"
-msgstr "Les mots de passe ne correspondent pas&nbsp;!"
+msgstr "Mot de passe invalide !"
 
 #: ../templates/default/js_pwdcheck.tpl:60
-#, fuzzy
-#| msgid "An error occurred checking name uniqueness :("
 msgid "An error occured checking password :("
-msgstr "Une erreur est survenue lors de la vérification de l'unicité du nom :("
+msgstr "Une erreur est survenue lors de la vérification du mot de passe :("
 
 #: ../templates/default/desktop.tpl:6
 msgid "Help us know about you!"
@@ -5705,7 +5693,7 @@ msgstr "Sujet"
 
 #: ../templates/default/gestion_mailings.tpl:28
 msgid "Sent mailings:"
-msgstr "Mailings envoyés&nbsp;:"
+msgstr "Envois passés&nbsp;:"
 
 #: ../templates/default/gestion_mailings.tpl:30
 #: ../templates/default/gestion_adherents.tpl:38
@@ -5758,30 +5746,29 @@ msgstr "Envoyé"
 
 #: ../templates/default/gestion_mailings.tpl:125
 msgid "Mailing entry %id"
-msgstr "Entrée E-Mailing %id"
+msgstr "Entrée envoi %id"
 
 #: ../templates/default/gestion_mailings.tpl:146
 msgid "Display mailing '%subject' details in preview window"
 msgstr ""
-"Afficher les détails du mailing « %subject » dans la fenêtre de "
+"Afficher les détails de l'envoi « %subject » dans la fenêtre de "
 "prévisualisation"
 
 #: ../templates/default/gestion_mailings.tpl:153
 msgid "Use mailing '%subject' as a template for a new one"
-msgstr ""
-"Utiliser le mailing « %subject » comme template pour en créer un nouveau"
+msgstr "Utiliser l'envoi « %subject » comme gabarit pour en créer un nouveau"
 
 #: ../templates/default/gestion_mailings.tpl:160
 msgid "Delete mailing '%subject'"
-msgstr "Supprimer l’E-Mailing « %subject »"
+msgstr "Supprimer l'envoi « %subject »"
 
 #: ../templates/default/gestion_mailings.tpl:165
 msgid "No sent mailing has been stored in the database yet."
-msgstr "Aucun E-Mailing n’a encore été stocké."
+msgstr "Aucun envoi n’a encore été stocké."
 
 #: ../templates/default/gestion_mailings.tpl:179
 msgid "Create new mailing"
-msgstr "Créer un nouvel E-Mailing"
+msgstr "Créer un nouvel envoi"
 
 #: ../templates/default/gestion_mailings.tpl:212
 #: ../templates/default/mailing_adherents.tpl:171
@@ -6192,8 +6179,8 @@ msgid ""
 "A mailing already exists. Do you want to create a new one or resume the "
 "existing?"
 msgstr ""
-"Un E-Mailing est déjà en cours. Souhaitez-vous en créer un nouveau ou "
-"reprendre l\\’existant ?"
+"Un envoi est déjà en cours. Souhaitez-vous en créer un nouveau ou reprendre "
+"l'existant ?"
 
 #: ../templates/default/gestion_adherents.tpl:467
 msgid "Resume"
@@ -6719,7 +6706,7 @@ msgstr "Charger les adhérents précédents..."
 
 #: ../templates/default/mailing_adherents.tpl:12
 msgid "Mailing information"
-msgstr "Informations sur le mailing"
+msgstr "Informations sur l'envoi"
 
 #: ../templates/default/mailing_adherents.tpl:17
 msgid "Go back to members list"
@@ -6787,15 +6774,15 @@ msgstr "Prévisualisation"
 #: ../templates/default/mailing_adherents.tpl:101
 #: ../templates/default/mailing_adherents.tpl:124
 msgid "Cancel mailing"
-msgstr "Annuler le publipostage"
+msgstr "Annuler l'envoi"
 
 #: ../templates/default/mailing_adherents.tpl:108
 msgid "Preview your mailing"
-msgstr "Aperçu de votre publipostage"
+msgstr "Aperçu de votre envoi"
 
 #: ../templates/default/mailing_adherents.tpl:122
 msgid "Modifiy mailing"
-msgstr "Modifier le publipostage"
+msgstr "Modifier l'envoi"
 
 #: ../templates/default/mailing_adherents.tpl:211
 msgid "Members selection"
