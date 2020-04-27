@@ -359,7 +359,7 @@ class Adherent
         $this->_others_infos_admin = $r->info_adh;
 
         if ($r->parent_id !== null) {
-            $this->_parent = $r->parent_id;
+            $this->_parent = (int)$r->parent_id;
             if ($this->_deps['parent'] === true) {
                 $this->loadParent($r->parent_id);
             }
@@ -655,7 +655,7 @@ class Adherent
      */
     public function hasParent()
     {
-        return $this->_parent !== null;
+        return !empty($this->_parent);
     }
 
     /**
