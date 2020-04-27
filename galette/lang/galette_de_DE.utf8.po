@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
-"PO-Revision-Date: 2020-04-27 12:37+0000\n"
+"PO-Revision-Date: 2020-04-27 20:22+0000\n"
 "Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.0.2-dev\n"
+"X-Generator: Weblate 4.0.2\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -51,7 +51,7 @@ msgstr "Datenbank"
 
 #: ../lib/Galette/Core/Install.php:131
 msgid "Database access and permissions"
-msgstr "Datenbank Zugriff und Berechtigungen"
+msgstr "Datenbankzugriff und Berechtigungen"
 
 #: ../lib/Galette/Core/Install.php:134
 #: ../install/steps/db_select_version.php:46
@@ -149,7 +149,7 @@ msgstr "Einstellungen aktualisieren"
 
 #: ../lib/Galette/Core/Install.php:1156
 msgid "Update models"
-msgstr "Modelle updaten"
+msgstr "Modelle aktualisieren"
 
 #: ../lib/Galette/Core/Pagination.php:255
 msgid "First page"
@@ -1423,7 +1423,7 @@ msgstr "Kreditkarte"
 #: ../lib/Galette/Entity/PaymentType.php:285
 #: ../templates/default/dispatch_type.tpl:87
 msgid "Check"
-msgstr "Prüfen"
+msgstr "Scheck"
 
 #: ../lib/Galette/Entity/PaymentType.php:286
 #: ../templates/default/dispatch_type.tpl:88
@@ -1658,11 +1658,11 @@ msgstr "Datenbankupgrade"
 
 #: ../webroot/installer.php:327 ../templates/default/plugin_initdb.tpl:137
 msgid "Database installation"
-msgstr "Datenbank Installation"
+msgstr "Datenbankinstallation"
 
 #: ../webroot/installer.php:337
 msgid "Galette initialisation"
-msgstr "Galette Initialisierung"
+msgstr "Galette-Initialisierung"
 
 #: ../includes/main.inc.php:157
 msgid "Login required"
