@@ -435,8 +435,8 @@ msgstr "Suppression des fiches adhérent, transactions et cotisations"
 #: ../lib/Galette/Repository/Members.php:423
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr ""
-"Impossible de supprimer un adhérent qui a encore des dépendances (envois, "
-"...)"
+"Impossible de supprimer un adhérent qui a encore des dépendances "
+"(envois, ...)"
 
 #: ../lib/Galette/Repository/SavedSearches.php:266
 msgid "Searches deleted (%list)"
