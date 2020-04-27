@@ -1209,7 +1209,7 @@ $app->post(
                         } else {
                             $str = _T("A problem happened while sending account email to admin");
                             $this->history->add($str);
-                            $error_detected[] = $str;
+                            $warning_detected[] = $str;
                         }
                     }
 
