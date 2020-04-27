@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2020-04-24 12:15+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2020-04-27 12:37+0000\n"
+"Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -940,7 +940,7 @@ msgstr "contribution"
 
 #: ../lib/Galette/IO/PdfContribution.php:148
 msgid "receipt"
-msgstr "recu"
+msgstr "reçu"
 
 #: ../lib/Galette/IO/PdfContribution.php:150
 msgid "invoice"
@@ -4367,13 +4367,13 @@ msgid ""
 "A mailing exists in the current session. Click here if you want to resume or "
 "cancel it."
 msgstr ""
-"Un E-Mailing existe dans la session courante. Cliquez ici si vous souhaitez "
-"le reprendre ou l’annuler."
+"Un publipostage existe dans la session courante. Cliquez ici si vous "
+"souhaitez le reprendre ou l’annuler."
 
 #: ../templates/default/page.tpl:230
 #: ../templates/default/gestion_adherents.tpl:457
 msgid "Existing mailing"
-msgstr "E-Mailings existants"
+msgstr "Publipostages existants"
 
 #: ../templates/default/page.tpl:238
 msgid "Page content"
@@ -6605,15 +6605,15 @@ msgstr "Prévisualisation"
 #: ../templates/default/mailing_adherents.tpl:101
 #: ../templates/default/mailing_adherents.tpl:124
 msgid "Cancel mailing"
-msgstr "Annuler le mailing"
+msgstr "Annuler le publipostage"
 
 #: ../templates/default/mailing_adherents.tpl:108
 msgid "Preview your mailing"
-msgstr "Aperçu de votre E-Mailing"
+msgstr "Aperçu de votre publipostage"
 
 #: ../templates/default/mailing_adherents.tpl:122
 msgid "Modifiy mailing"
-msgstr "Modification E-Mailing"
+msgstr "Modifier le publipostage"
 
 #: ../templates/default/mailing_adherents.tpl:211
 msgid "Members selection"
