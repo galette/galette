@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
-"PO-Revision-Date: 2020-03-24 17:46+0000\n"
+"PO-Revision-Date: 2020-04-27 20:22+0000\n"
 "Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.0-dev\n"
+"X-Generator: Weblate 4.0.2\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -32,7 +32,7 @@ msgstr ""
 #: ../includes/routes/authentication.routes.php:202
 #: ../includes/routes/authentication.routes.php:214
 msgid "Y-m-d H:i:s"
-msgstr ""
+msgstr "d/m/Y H:i:s"
 
 #: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:315
 msgid "Checks"
@@ -41,16 +41,16 @@ msgstr ""
 #: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:316
 #: ../install/steps/type.php:40 ../templates/default/plugin_initdb.tpl:131
 msgid "Installation mode"
-msgstr ""
+msgstr "Modalità di installazione"
 
 #: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:317
 #: ../install/steps/db.php:41 ../install/steps/db.php:67
 msgid "Database"
-msgstr ""
+msgstr "Banca dati"
 
 #: ../lib/Galette/Core/Install.php:131
 msgid "Database access and permissions"
-msgstr ""
+msgstr "Accesso alla banca dati e permessi"
 
 #: ../lib/Galette/Core/Install.php:134
 #: ../install/steps/db_select_version.php:46
@@ -59,7 +59,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:137
 msgid "Datapase upgrade"
-msgstr ""
+msgstr "Aggiornamento della banca dati"
 
 #: ../lib/Galette/Core/Install.php:140
 msgid "Tables Creation"
@@ -82,7 +82,7 @@ msgstr ""
 #: ../templates/default/gestion_adherents.tpl:512
 #: ../templates/default/voir_adherent.tpl:240
 msgid "Ok"
-msgstr ""
+msgstr "OK"
 
 #: ../lib/Galette/Core/Install.php:166 ../lib/Galette/Core/CheckModules.php:146
 msgid "Ko"
@@ -90,7 +90,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:324
 msgid "Database type unknown"
-msgstr ""
+msgstr "Tipo di banca dati sconosciuto"
 
 #: ../lib/Galette/Core/Install.php:675
 msgid "%version script has been successfully executed :)"
@@ -114,7 +114,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1122
 msgid "Preferences"
-msgstr ""
+msgstr "Preferenze"
 
 #: ../lib/Galette/Core/Install.php:1126 ../templates/default/page.tpl:86
 msgid "Contributions types"
@@ -124,7 +124,7 @@ msgstr ""
 #: ../templates/default/gestion_adherents.tpl:120
 #: ../templates/default/gestion_adherents.tpl:221
 msgid "Status"
-msgstr ""
+msgstr "Stato"
 
 #: ../lib/Galette/Core/Install.php:1134
 msgid "Fields config and categories"
@@ -132,11 +132,11 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1138
 msgid "Mails texts"
-msgstr ""
+msgstr "Testi delle e-mail"
 
 #: ../lib/Galette/Core/Install.php:1142 ../templates/default/page.tpl:88
 msgid "Titles"
-msgstr ""
+msgstr "Titoli"
 
 #: ../lib/Galette/Core/Install.php:1146
 msgid "PDF Models"
@@ -144,7 +144,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1152
 msgid "Update preferences"
-msgstr ""
+msgstr "Preferenze di aggiornamento"
 
 #: ../lib/Galette/Core/Install.php:1156
 msgid "Update models"
@@ -164,11 +164,11 @@ msgstr ""
 
 #: ../lib/Galette/Core/Pagination.php:281
 msgid "Page %i"
-msgstr ""
+msgstr "Pagina %i"
 
 #: ../lib/Galette/Core/Pagination.php:289
 msgid "Next page (%i)"
-msgstr ""
+msgstr "Pagina successiva (%i)"
 
 #: ../lib/Galette/Core/Pagination.php:295
 msgid "Last page (%i)"
@@ -176,11 +176,11 @@ msgstr ""
 
 #: ../lib/Galette/Core/Pagination.php:307
 msgid "All"
-msgstr ""
+msgstr "Tutti"
 
 #: ../lib/Galette/Core/Authentication.php:274
 msgid "Logged in as:<br/>%login"
-msgstr ""
+msgstr "Accesso eseguito come: <br/>% login"
 
 #: ../lib/Galette/Core/MailingHistory.php:575
 msgid "Delete mailing entries"
@@ -188,16 +188,16 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:411
 msgid "- The username must be composed of at least 4 characters!"
-msgstr ""
+msgstr "- Il nome utente deve essere composto da almeno 4 caratteri!"
 
 #: ../lib/Galette/Core/Preferences.php:415
 msgid "- This username is already used by another member !"
-msgstr ""
+msgstr "- Questo nome utente è già utilizzato da un altro membro!"
 
 #: ../lib/Galette/Core/Preferences.php:422
 #: ../lib/Galette/Core/Preferences.php:443
 msgid "- The numbers and measures have to be integers!"
-msgstr ""
+msgstr "- I numeri e le misure devono essere interi!"
 
 #: ../lib/Galette/Core/Preferences.php:479
 msgid "- Invalid number of months of membership extension."
@@ -252,7 +252,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:566 ../webroot/installer.php:210
 msgid "Passwords mismatch"
-msgstr ""
+msgstr "Password non corrispondenti"
 
 #: ../lib/Galette/Core/Preferences.php:579
 msgid "You have to select a staff member"
@@ -272,7 +272,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:876
 msgid "Invalid E-Mail address: %s"
-msgstr ""
+msgstr "Indirizzo e-mail non valido: %s"
 
 #: ../lib/Galette/Core/Preferences.php:938
 msgid "Current cards configuration may exceed page width!"
@@ -379,7 +379,7 @@ msgstr ""
 #: ../templates/default/advanced_search.tpl:232
 #: ../templates/default/member.tpl:355
 msgid "Y-m-d"
-msgstr ""
+msgstr "d/m/Y"
 
 #: ../lib/Galette/Core/Plugins.php:287 ../lib/Galette/Core/Plugins.php:309
 msgid "No such module."
@@ -608,7 +608,7 @@ msgstr ""
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1011
 msgid "date"
-msgstr ""
+msgstr "data"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1012
 msgid "boolean"
@@ -616,7 +616,7 @@ msgstr ""
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1013
 msgid "file"
-msgstr ""
+msgstr "file"
 
 #: ../lib/Galette/IO/PdfGroups.php:86 ../lib/Galette/IO/PdfGroups.php:107
 msgid "Members by groups"
@@ -631,7 +631,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfGroups.php:169
 msgid "Managers:"
-msgstr ""
+msgstr "Gestori:"
 
 #: ../lib/Galette/IO/PdfGroups.php:179
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:185
@@ -666,11 +666,11 @@ msgstr "E-mail"
 
 #: ../lib/Galette/IO/PdfGroups.php:181
 msgid "Phone"
-msgstr ""
+msgstr "Telefono"
 
 #: ../lib/Galette/IO/PdfGroups.php:182
 msgid "GSM"
-msgstr ""
+msgstr "GSM"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:141
 #: ../includes/routes/members.routes.php:2680
@@ -681,13 +681,13 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:168
 msgid "%A, %B %#d%O %Y"
-msgstr ""
+msgstr "%A %#d %B %Y"
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:186
 #: ../includes/dependencies.php:602
 #: ../includes/fields_defs/pdfmodels_fields.php:266
 msgid "Signature"
-msgstr ""
+msgstr "Firma"
 
 #: ../lib/Galette/IO/Charts.php:142 ../lib/Galette/Filters/MembersList.php:294
 msgid "Staff members"
@@ -720,7 +720,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/Charts.php:304
 msgid "Companies"
-msgstr ""
+msgstr "Aziende"
 
 #: ../lib/Galette/IO/PdfMembersLabels.php:73
 msgid "labels_print_filename"
@@ -775,7 +775,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/CsvIn.php:419
 msgid "File is empty!"
-msgstr ""
+msgstr "Il file è vuoto!"
 
 #: ../lib/Galette/IO/CsvIn.php:496 ../lib/Galette/IO/CsvIn.php:507
 msgid "An error occurred storing member at row %row (%name):"
@@ -894,7 +894,7 @@ msgstr ""
 #: ../templates/default/advanced_search.tpl:307
 #: ../templates/default/forms_types/gender.tpl:19
 msgid "Man"
-msgstr ""
+msgstr "Uomo"
 
 #: ../lib/Galette/IO/PdfAdhesionForm.php:133
 #: ../includes/routes/members.routes.php:276
@@ -903,7 +903,7 @@ msgstr ""
 #: ../templates/default/advanced_search.tpl:307
 #: ../templates/default/forms_types/gender.tpl:21
 msgid "Woman"
-msgstr ""
+msgstr "Donna"
 
 #: ../lib/Galette/IO/PdfAdhesionForm.php:135
 #: ../includes/routes/members.routes.php:279
@@ -912,7 +912,7 @@ msgstr ""
 #: ../templates/default/advanced_search.tpl:307
 #: ../templates/default/forms_types/gender.tpl:17
 msgid "Unspecified"
-msgstr ""
+msgstr "Non specificato"
 
 #: ../lib/Galette/IO/PdfAdhesionForm.php:139
 #: ../lib/Galette/IO/PdfAdhesionForm.php:140
@@ -920,7 +920,7 @@ msgstr ""
 #: ../lib/Galette/IO/PdfContribution.php:112
 #: ../templates/default/preferences.tpl:518 ../templates/default/group.tpl:36
 msgid "None"
-msgstr ""
+msgstr "Nessuno"
 
 #: ../lib/Galette/IO/PdfAdhesionForm.php:265
 #: ../lib/Galette/IO/PdfAdhesionForm.php:266
@@ -1044,7 +1044,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1187
 msgid "- Non-valid E-Mail address!"
-msgstr ""
+msgstr "- Indirizzo e-mail non valido!"
 
 #: ../lib/Galette/Entity/Adherent.php:1204
 msgid "- This E-Mail address is already used by another member!"
@@ -1078,7 +1078,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1272
 msgid "Password misrepeated: "
-msgstr ""
+msgstr "Password ripetuta erroneamente: "
 
 #: ../lib/Galette/Entity/Adherent.php:1306
 msgid "Status #%id does not exists in database."
@@ -1126,7 +1126,7 @@ msgstr ""
 #: ../templates/default/gestion_intitule_content.tpl:78
 #: ../templates/default/global_messages.tpl:68
 msgid "Yes"
-msgstr ""
+msgstr "Sì"
 
 #: ../lib/Galette/Entity/Adherent.php:1578
 #: ../includes/routes/members.routes.php:287
@@ -1146,22 +1146,22 @@ msgstr ""
 #: ../templates/default/gestion_intitule_content.tpl:80
 #: ../templates/default/global_messages.tpl:69
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: ../lib/Galette/Entity/Adherent.php:1581
 #: ../templates/default/forms_types/account.tpl:5
 msgid "Active"
-msgstr ""
+msgstr "Attivo"
 
 #: ../lib/Galette/Entity/Adherent.php:1581
 #: ../templates/default/gestion_contributions.tpl:44
 #: ../templates/default/forms_types/account.tpl:6
 msgid "Inactive"
-msgstr ""
+msgstr "Inattivo"
 
 #: ../lib/Galette/Entity/Adherent.php:1792 ../templates/default/member.tpl:366
 msgid " (%age years old)"
-msgstr ""
+msgstr " (%age anni)"
 
 #: ../lib/Galette/Entity/Adherent.php:1864
 msgid "Duplicated from %name (%id)"
@@ -1171,7 +1171,7 @@ msgstr ""
 #: ../templates/default/ajouter_transaction.tpl:25
 #: ../templates/default/plugin_info.tpl:17
 msgid "Date:"
-msgstr ""
+msgstr "Data:"
 
 #: ../lib/Galette/Entity/Transaction.php:114
 #: ../lib/Galette/Entity/Contribution.php:127
@@ -1185,7 +1185,7 @@ msgstr ""
 #: ../templates/default/ajouter_transaction.tpl:10
 #: ../templates/default/plugin_info.tpl:13
 msgid "Description:"
-msgstr ""
+msgstr "Descrizione:"
 
 #: ../lib/Galette/Entity/Transaction.php:122
 #: ../templates/default/ajouter_transaction.tpl:14
@@ -1322,7 +1322,7 @@ msgstr ""
 #: ../templates/default/ajouter_transaction.tpl:37
 #: ../templates/default/ajouter_contribution.tpl:155
 msgid "Donation"
-msgstr ""
+msgstr "Donazione"
 
 #: ../lib/Galette/Entity/Entitled.php:331
 msgid "ID must be an integer!"
@@ -1384,17 +1384,17 @@ msgstr ""
 #: ../lib/Galette/Entity/PaymentType.php:283
 #: ../templates/default/dispatch_type.tpl:85
 msgid "Cash"
-msgstr ""
+msgstr "Contanti"
 
 #: ../lib/Galette/Entity/PaymentType.php:284
 #: ../templates/default/dispatch_type.tpl:86
 msgid "Credit card"
-msgstr ""
+msgstr "Carta di credito"
 
 #: ../lib/Galette/Entity/PaymentType.php:285
 #: ../templates/default/dispatch_type.tpl:87
 msgid "Check"
-msgstr ""
+msgstr "Assegno bancario"
 
 #: ../lib/Galette/Entity/PaymentType.php:286
 #: ../templates/default/dispatch_type.tpl:88
@@ -1468,7 +1468,7 @@ msgstr "Email,URL,IM"
 
 #: ../lib/Galette/Filters/MembersList.php:273
 msgid "Job"
-msgstr ""
+msgstr "Lavoro"
 
 #: ../lib/Galette/Filters/MembersList.php:274
 msgid "Infos"
@@ -1527,7 +1527,7 @@ msgstr ""
 #: ../lib/Galette/Filters/ContributionsList.php:211
 #: ../lib/Galette/Filters/ContributionsList.php:248
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: ../lib/Galette/Filters/TransactionsList.php:202
 #: ../lib/Galette/Filters/TransactionsList.php:224
@@ -1538,7 +1538,7 @@ msgstr ""
 #: ../lib/Galette/Filters/ContributionsList.php:227
 #: ../lib/Galette/Filters/ContributionsList.php:249
 msgid "Y-m"
-msgstr ""
+msgstr "m/Y"
 
 #: ../lib/Galette/Filters/TransactionsList.php:230
 #: ../lib/Galette/Filters/HistoryList.php:241
@@ -1577,16 +1577,16 @@ msgstr ""
 
 #: ../webroot/installer.php:156 ../webroot/installer.php:196
 msgid "No user name"
-msgstr ""
+msgstr "Nessun nome utente"
 
 #: ../webroot/installer.php:159 ../webroot/installer.php:202
 #: ../includes/routes/authentication.routes.php:367
 msgid "No password"
-msgstr ""
+msgstr "Nessuna password"
 
 #: ../webroot/installer.php:162
 msgid "No database name"
-msgstr ""
+msgstr "Nessun nome di banca dati"
 
 #: ../webroot/installer.php:199
 msgid "The username cannot contain the @ character"
@@ -1603,12 +1603,12 @@ msgstr ""
 #: ../webroot/installer.php:254 ../templates/default/page.tpl:103
 #: ../templates/default/public_page.tpl:25
 msgid "Change language"
-msgstr ""
+msgstr "Cambia lingua"
 
 #: ../webroot/installer.php:275 ../templates/default/mailing_adherents.tpl:5
 #: ../templates/default/global_messages.tpl:10
 msgid "- ERROR -"
-msgstr ""
+msgstr "- ERRORE -"
 
 #: ../webroot/installer.php:313 ../templates/default/plugin_initdb.tpl:129
 msgid "Steps:"
@@ -1616,7 +1616,7 @@ msgstr ""
 
 #: ../webroot/installer.php:318
 msgid "Database access/permissions"
-msgstr ""
+msgstr "Accesso e permessi della banca dati"
 
 #: ../webroot/installer.php:322 ../templates/default/plugin_initdb.tpl:134
 msgid "Version selection"
@@ -1624,11 +1624,11 @@ msgstr ""
 
 #: ../webroot/installer.php:323 ../templates/default/plugin_initdb.tpl:137
 msgid "Database upgrade"
-msgstr ""
+msgstr "Aggiornamento della banca dati"
 
 #: ../webroot/installer.php:327 ../templates/default/plugin_initdb.tpl:137
 msgid "Database installation"
-msgstr ""
+msgstr "Installazione della banca dati"
 
 #: ../webroot/installer.php:337
 msgid "Galette initialisation"
