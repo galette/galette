@@ -343,6 +343,9 @@ class DynamicFieldsHandle
                 Analog::ERROR
             );
             return false;
+        } finally {
+            unset($this->update_stmt);
+            unset($this->insert_stmt);
         }
     }
 
