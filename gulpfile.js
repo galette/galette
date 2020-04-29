@@ -24,6 +24,7 @@ var main_styles = [
 var main_scripts = [
     './node_modules/jquery/dist/jquery.js',
     './node_modules/jquery-ui-dist/jquery-ui.js',
+    './node_modules/jquery-ui/ui/i18n/*',
     './node_modules/jquery.cookie/jquery.cookie.js',
     './node_modules/microplugin/src/microplugin.js',
     './node_modules/sifter/sifter.js',
