@@ -1105,8 +1105,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
                 true
             );
             //$fc = new \Galette\Entity\FieldsCategories();
-            include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
-            $texts = new \Galette\Entity\Texts($texts_fields, $preferences);
+            $texts = new \Galette\Entity\Texts($preferences);
             $titles = new \Galette\Repository\Titles();
 
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, $login);
@@ -1154,6 +1153,11 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, new Login($zdb, $i18n, new \RKA\Session()));
             $res = $models->installInit(true);
             $this->proceedReport(_T("Update models"), true);
+
+            $texts = new \Galette\Entity\Texts($preferences);
+            $res = $texts->installInit(true);
+            $this->proceedReport(_T("Mails texts"), true);
+
             return true;
         }
     }

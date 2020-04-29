@@ -356,11 +356,6 @@ $container['acls'] = function ($c) {
     return $acls;
 };
 
-$container['texts_fields'] = function ($c) {
-    include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
-    return $texts_fields;
-};
-
 $container['members_fields'] = function ($c) {
     include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
     return $members_fields;

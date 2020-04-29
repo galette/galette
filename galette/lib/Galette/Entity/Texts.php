@@ -70,14 +70,12 @@ class Texts
     /**
      * Main constructor
      *
-     * @param array       $texts_fields Text fields definition
-     * @param Preferences $preferences  Galette's preferences
-     * @param Router      $router       Router instance
-     * @param array       $replaces     Data that will be used as replacments
+     * @param Preferences $preferences Galette's preferences
+     * @param Router      $router      Router instance
+     * @param array       $replaces    Data that will be used as replacments
      */
-    public function __construct($texts_fields, Preferences $preferences, Router $router = null, $replaces = null)
+    public function __construct(Preferences $preferences, Router $router = null, $replaces = null)
     {
-        $this->defaults = $texts_fields;
         $this->patterns = array(
             'asso_name'         => '/{ASSO_NAME}/',
             'asso_slogan'       => '/{ASSO_SLOGAN}/',
@@ -190,6 +188,7 @@ class Texts
                 //hum... no result... That means text do not exist in the
                 //database, let's add it
                 $default = null;
+                $this->defaults = $this->getAllDefaults(); //load defaults
                 foreach ($this->defaults as $d) {
                     if ($d['tref'] == $ref && $d['tlang'] == $lang) {
                         $default = $d;
@@ -198,7 +197,6 @@ class Texts
                 }
                 if ($default !== null) {
                     $values = array(
-                        'tid'       => $default['tid'],
                         'tref'      => $default['tref'],
                         'tsubject'  => $default['tsubject'],
                         'tbody'     => $default['tbody'],
@@ -207,9 +205,7 @@ class Texts
                     );
 
                     try {
-                        $insert = $zdb->insert(self::TABLE);
-                        $insert->values($values);
-                        $zdb->execute($insert);
+                        $this->insert($zdb, [$values]);
                         return $this->getTexts($ref, $lang);
                     } catch (\Exception $e) {
                         Analog::log(
@@ -345,6 +341,7 @@ class Texts
         try {
             //first of all, let's check if data seem to have already
             //been initialized
+            $this->defaults = $this->getAllDefaults(); //load defaults
             $proceed = false;
             if ($check_first === true) {
                 $select = $zdb->select(self::TABLE);
@@ -408,7 +405,12 @@ class Texts
 
         try {
             $select = $zdb->select(self::TABLE);
-            $list = $zdb->execute($select);
+            $dblist = $zdb->execute($select);
+
+            $list = [];
+            foreach ($dblist as $dbentry) {
+                $list[] = $dbentry;
+            }
 
             $missing = array();
             foreach ($this->defaults as $default) {
@@ -418,7 +420,7 @@ class Texts
                         && $text->tlang == $default['tlang']
                     ) {
                         $exists = true;
-                        break;
+                        continue;
                     }
                 }
 
@@ -442,7 +444,7 @@ class Texts
                 'An error occurred checking missing texts.' . $e->getMessage(),
                 Analog::WARNING
             );
-            return $e;
+            throw $e;
         }
     }
 
@@ -487,7 +489,6 @@ class Texts
         $insert = $zdb->insert(self::TABLE);
         $insert->values(
             array(
-                'tid'       => ':tid',
                 'tref'      => ':tref',
                 'tsubject'  => ':tsubject',
                 'tbody'     => ':tbody',
@@ -500,5 +501,52 @@ class Texts
         foreach ($values as $value) {
             $stmt->execute($value);
         }
+    }
+
+    /**
+     * Get default mail texts for all languages
+     *
+     * @return array
+     */
+    public function getAllDefaults()
+    {
+        global $i18n;
+
+        $all = [];
+        foreach (array_keys($i18n->getArrayList()) as $lang) {
+            $all = array_merge($all, $this->getDefaultTexts($lang));
+        }
+
+        return $all;
+    }
+
+    /**
+     * Get default texts for specified language
+     *
+     * @param string $lang Requested lang. Defaults to en_US
+     *
+     * @return array
+     */
+    public function getDefaultTexts($lang = 'en_US')
+    {
+        global $i18n;
+
+        $current_lang = $i18n->getID();
+
+        $i18n->changeLanguage($lang);
+
+        //do the magic!
+        include GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
+        $texts = [];
+
+        foreach ($texts_fields as $text_field) {
+            unset($text_field['tid']);
+            $text_field['tlang'] = $lang;
+            $texts[] = $text_field;
+        }
+
+        //reset to current lang
+        $i18n->changeLanguage($current_lang);
+        return $texts;
     }
 }

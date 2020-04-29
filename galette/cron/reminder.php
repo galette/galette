@@ -67,7 +67,6 @@ if (!$container->get('login')->isCron()) {
 }
 
 $texts = new Texts(
-    $container->get('texts_fields'),
     $container->get('preferences')
 );
 $reminders = new Reminders();

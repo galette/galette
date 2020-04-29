@@ -1990,7 +1990,6 @@ $app->get(
         }
 
         $texts = new Texts(
-            $this->texts_fields,
             $this->preferences,
             $this->router
         );
@@ -2037,7 +2036,7 @@ $app->post(
     '/texts',
     function ($request, $response) {
         $post = $request->getParsedBody();
-        $texts = new Texts($this->texts_fields, $this->preferences, $this->router);
+        $texts = new Texts($this->preferences, $this->router);
 
         //set the language
         $cur_lang = $post['cur_lang'];
@@ -3021,7 +3020,7 @@ $app->post(
 
         if (isset($post['inittexts'])) {
             //proceed emails texts reinitialization
-            $texts = new Texts($this->texts_fields, $this->preferences);
+            $texts = new Texts($this->preferences);
             $res = $texts->installInit(false);
             if ($res === true) {
                 $success_detected[] = _T("Texts has been successfully reinitialized.");

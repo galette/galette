@@ -351,6 +351,7 @@ CREATE TABLE galette_texts (
   tcomment character varying(64) NOT NULL,
   PRIMARY KEY (tid)
 );
+CREATE UNIQUE INDEX galette_texts_localizedtxt_idx ON galette_texts (tref, tlang);
 
 DROP TABLE IF EXISTS galette_fields_categories CASCADE;
 CREATE TABLE galette_fields_categories (
@@ -471,4 +472,4 @@ DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(0.931);
+INSERT INTO galette_database (version) VALUES(0.94);

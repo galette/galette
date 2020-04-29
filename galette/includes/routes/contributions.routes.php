@@ -569,7 +569,6 @@ $app->post(
 
             if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
                 $texts = new Texts(
-                    $this->texts_fields,
                     $this->preferences,
                     $this->router,
                     array(

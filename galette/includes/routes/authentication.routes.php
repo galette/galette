@@ -202,7 +202,6 @@ $app->map(
                     $df = _T("Y-m-d H:i:s");
 
                     $texts = new Texts(
-                        $this->texts_fields,
                         $this->preferences,
                         $this->router,
                         array(

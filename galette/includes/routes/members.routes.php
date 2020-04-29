@@ -789,7 +789,6 @@ $app->post(
                             && $this->preferences->pref_bool_mailadh
                         ) {
                             $texts = new Texts(
-                                $this->texts_fields,
                                 $this->preferences,
                                 $this->router,
                                 array(
@@ -900,7 +899,6 @@ $app->post(
                                 //send email to member
                                 // Get email text in database
                                 $texts = new Texts(
-                                    $this->texts_fields,
                                     $this->preferences,
                                     $this->router,
                                     $mreplaces
@@ -979,7 +977,6 @@ $app->post(
                         //send email to member
                         // Get email text in database
                         $texts = new Texts(
-                            $this->texts_fields,
                             $this->preferences,
                             $this->router,
                             $mreplaces
@@ -2196,7 +2193,7 @@ $app->post(
 $app->get(
     '/reminders',
     function ($request, $response) {
-        $texts = new Texts($this->texts_fields, $this->preferences, $this->router);
+        $texts = new Texts($this->preferences, $this->router);
 
         $previews = array(
             'impending' => $texts->getTexts('impendingduedate', $this->preferences->pref_lang),
@@ -2231,7 +2228,7 @@ $app->post(
         $success_detected = [];
 
         $post = $request->getParsedBody();
-        $texts = new Texts($this->texts_fields, $this->preferences, $this->router);
+        $texts = new Texts($this->preferences, $this->router);
         $selected = null;
         if (isset($post['reminders'])) {
             $selected = $post['reminders'];
