@@ -1666,7 +1666,7 @@ $app->get(
                 $id_adh,
                 $deps
             );
-            if (!$adh->canEdit($login)) {
+            if (!$adh->canEdit($this->login)) {
                 $this->flash->addMessage(
                     'error_detected',
                     _T("You do not have permission for requested URL.")
@@ -1828,7 +1828,7 @@ $app->get(
         $id_adh = (int)$args[Adherent::PK];
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
 
-        if (!$adh->canEdit($login)) {
+        if (!$adh->canEdit($this->login)) {
             $this->flash->addMessage(
                 'error_detected',
                 _T("You do not have permission for requested URL.")
@@ -3028,7 +3028,7 @@ $app->post(
                         $this->members_fields,
                         $this->history
                     );
-                    if (!$member->canEdit($login)) {
+                    if (!$member->canEdit($this->login)) {
                         continue;
                     }
 
