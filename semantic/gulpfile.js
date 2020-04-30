@@ -9,7 +9,8 @@ var _missing = [
     'src/definitions',
     'src/semantic.less',
     'src/theme.less',
-    'src/themes'
+    'src/themes',
+    'tasks'
 ];
 
 _missing.forEach(function (item){

@@ -1,4 +1,5 @@
 {
+  "autoInstall": true,
   "base": "semantic/",
   "paths": {
     "source": {
