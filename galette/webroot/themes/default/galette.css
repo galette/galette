@@ -1038,13 +1038,6 @@ legend .tab-button {
     font-size: 1em;
 }
 
-.texts_legend .back > span {
-    font-size: .9em;
-    text-align: right;
-    display: block;
-    color:#666;
-}
-
 .help {
     background:url(images/help.png) 100% 50% no-repeat;
     padding-right: 25px;

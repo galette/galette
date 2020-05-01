@@ -93,7 +93,9 @@ class Texts
             'days_remaining'    => '/{DAYS_REMAINING}/',
             'days_expired'      => '/{DAYS_EXPIRED}/',
             'contrib_amount'    => '/{CONTRIB_AMOUNT}/',
-            'contrib_type'      => '/{CONTRIB_TYPE}/'
+            'contrib_type'      => '/{CONTRIB_TYPE}/',
+            'breakline'         => '/{BR}/',
+            'newline'           => '/{NEWLINE}/'
         );
 
         $login_uri = '';
@@ -118,7 +120,9 @@ class Texts
             'days_remaining'    => null,
             'days_expired'      => null,
             'contrib_amount'    => null,
-            'contrib_type'      => null
+            'contrib_type'      => null,
+            'breakline'         => "\r\n",
+            'newline'           => "\r\n\r\n"
         );
 
         if ($replaces != null && is_array($replaces)) {
