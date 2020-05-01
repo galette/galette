@@ -35,6 +35,8 @@
  * @since     0.8.2dev 2014-11-11
  */
 
+use Galette\Controllers\AuthController;
+
 use Galette\Core\GaletteMail;
 use Galette\Core\Password;
 use Galette\Entity\Adherent;
@@ -42,99 +44,32 @@ use Galette\Entity\Texts;
 
 //login page
 $app->get(
-    '/login',
-    function ($request, $response, $args = []) use ($baseRedirect) {
-        //store redirect path if any
-        if (isset($args['r'])
-            && $args['r'] != '/logout'
-            && $args['r'] != '/login'
-        ) {
-            $this->session->urlRedirect = $args['r'];
-        }
-
-        if (!$this->login->isLogged()) {
-            // display page
-            $this->view->render(
-                $response,
-                'index.tpl',
-                array(
-                    'page_title'    => _T("Login"),
-                )
-            );
-            return $response;
-        } else {
-            return $baseRedirect($request, $response, $args);
-        }
-    }
+    '/login[/{r:.+}]',
+    AuthController::class . ':login'
 )->setName('login');
 
 //Authentication procedure
 $app->post(
     '/login',
-    function ($request, $response) use ($app, $baseRedirect) {
-        $nick = $request->getParsedBody()['login'];
-        $password = $request->getParsedBody()['password'];
-        $checkpass = new Galette\Util\Password($this->preferences);
-
-        if (trim($nick) == '' || trim($password) == '') {
-            $this->flash->addMessage(
-                'loginfault',
-                _T("You must provide both login and password.")
-            );
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('login'));
-        }
-
-        if ($nick === $this->preferences->pref_admin_login) {
-            $pw_superadmin = password_verify(
-                $password,
-                $this->preferences->pref_admin_pass
-            );
-            if (!$pw_superadmin) {
-                $pw_superadmin = (
-                    md5($password) === $this->preferences->pref_admin_pass
-                );
-            }
-            if ($pw_superadmin) {
-                $this->login->logAdmin($nick, $this->preferences);
-            }
-        } else {
-            $this->login->logIn($nick, $password);
-        }
-
-        if ($this->login->isLogged()) {
-            if (!$checkpass->isValid($password)) {
-                //password is no longer valid with current rules, must be changed
-                $this->flash->addMessage(
-                    'warning_detected',
-                    _T("Your password is too weak! Please consider updating it.") .
-                    '<br/> -' . implode('<br/>', $checkpass->getErrors())
-                );
-            }
-            $this->session->login = $this->login;
-            $this->history->add(_T("Login"));
-            return $baseRedirect($request, $response, []);
-        } else {
-            $this->flash->addMessage('error_detected', _T("Login failed."));
-            $this->history->add(_T("Authentication failed"), $nick);
-            return $response->withStatus(301)->withHeader('Location', $this->router->pathFor('login'));
-        }
-    }
+    AuthController::class . ':dologin'
 )->setName('dologin');
 
 //logout procedure
 $app->get(
     '/logout',
-    function ($request, $response) {
-        $this->login->logOut();
-        $this->history->add(_("Log off"));
-        \RKA\Session::destroy();
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('slash'));
-    }
+    AuthController::class . ':logout'
 )->setName('logout');
+
+//impersonating
+$app->get(
+    '/impersonate/{id:\d+}',
+    AuthController::class . ':impersonate'
+)->setName('impersonate')->add($authenticate);
+
+$app->get(
+    '/unimpersonate',
+    AuthController::class . ':unimpersonate'
+)->setName('unimpersonate')->add($authenticate);
 
 //password lost page
 $app->get(
