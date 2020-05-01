@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2020-04-27 13:02+0000\n"
+"PO-Revision-Date: 2020-05-01 15:15+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.0.2-dev\n"
+"X-Generator: Weblate 4.0.2\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -218,10 +218,8 @@ msgid "- Invalid date for beginning of membership."
 msgstr "- Mauvais format de date de début d’exercice."
 
 #: ../lib/Galette/Core/Preferences.php:496
-#, fuzzy
-#| msgid "- Invalid number of months of membership extension."
 msgid "- Invalid number of offered months."
-msgstr "- Durée d’extension d’adhésion invalide"
+msgstr "- Nombre de mois offerts invalide."
 
 #: ../lib/Galette/Core/Preferences.php:501
 msgid "- Invalid year for cards."
@@ -258,10 +256,10 @@ msgstr ""
 "début d’exercice (pas les deux)."
 
 #: ../lib/Galette/Core/Preferences.php:563
-#, fuzzy
-#| msgid "- Invalid format of beginning of membership."
 msgid "- Offering months is only compatible with beginning of membership."
-msgstr "- Mauvais format de date de début d’exercice"
+msgstr ""
+"- Offrir les derniers mois n'est compatible qu'avec une date de début "
+"d'exercice."
 
 #: ../lib/Galette/Core/Preferences.php:572
 #: ../lib/Galette/Entity/Adherent.php:1063
@@ -3406,10 +3404,8 @@ msgstr "Parent&nbsp;:"
 
 #: ../includes/fields_defs/texts_fields.php:41
 #: ../includes/fields_defs/texts_fields.php:49
-#, fuzzy
-#| msgid "Show identifiers"
 msgid "[{ASSO_NAME}] Your identifiers"
-msgstr "Afficher les identifiants"
+msgstr "[{ASSO_NAME}] Vos Identifiants"
 
 #: ../includes/fields_defs/texts_fields.php:42
 msgid ""
@@ -3421,12 +3417,17 @@ msgid ""
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Bonjour,{NEWLINE}Vous venez d'adhérer à {ASSO_NAME}.{NEWLINE}Vous pouvez "
+"désormais suivre en temps réel l'état de vos souscriptions et mettre à jour "
+"vos coordonnées depuis l'interface web.{NEWLINE}Connectez vous à cette "
+"adresse pour valider le nouveau mot de passe :{BR}{CHG_PWD_URI}{NEWLINE}"
+"Identifiant : {LOGIN}{BR}Le lien ci-dessus sera valide jusqu'au "
+"{LINK_VALIDITY}.{NEWLINE}A bientôt!{NEWLINE}(Ce courriel est un envoi "
+"automatique)"
 
 #: ../includes/fields_defs/texts_fields.php:44
-#, fuzzy
-#| msgid "New installation"
 msgid "New user registration"
-msgstr "Nouvelle installation"
+msgstr "Nouvelle adhésion"
 
 #: ../includes/fields_defs/texts_fields.php:50
 msgid ""
@@ -3436,18 +3437,19 @@ msgid ""
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Bonjour,{NEWLINE}Quelqu'un (probablement vous) a demandé la récupération de "
+"votre mot de passe.{NEWLINE}Connectez vous à cette adresse pour valider le "
+"nouveau mot de passe :{BR}{CHG_PWD_URI}{NEWLINE}Identifiant : {LOGIN}{BR}Le "
+"lien ci-dessus sera valide jusqu'au {LINK_VALIDITY}.{NEWLINE}A "
+"Bientôt!{NEWLINE}(Ce courriel est un envoi automatique)"
 
 #: ../includes/fields_defs/texts_fields.php:52
-#, fuzzy
-#| msgid "Lost your password?"
 msgid "Lost password email"
-msgstr "Mot de passe perdu&nbsp;?"
+msgstr "Récupération du mot de passe"
 
 #: ../includes/fields_defs/texts_fields.php:57
-#, fuzzy
-#| msgid "no contribution"
 msgid "[{ASSO_NAME}] Your contribution"
-msgstr "aucune contribution"
+msgstr "[{ASSO_NAME}] Votre cotisation"
 
 #: ../includes/fields_defs/texts_fields.php:58
 msgid ""
@@ -3457,16 +3459,20 @@ msgid ""
 "this address:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Bonjour,{NEWLINE}Votre cotisation a été enregistrée et validée par "
+"l'association {ASSO_NAME}.{NEWLINE}Elle est valable jusqu'au "
+"{DEADLINE}{NEWLINE}Vous pouvez désormais accéder à vos données personnelles "
+"à l'aide de vos identifiants galette à l'adresse suivante "
+":{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}A Bientôt!{NEWLINE}(Ce "
+"courriel est un envoi automatique)"
 
 #: ../includes/fields_defs/texts_fields.php:60
-#, fuzzy
-#| msgid "Available only for new contributions"
 msgid "Receipt send for new contribution"
-msgstr "Disponible uniquement lors de la création de contributions"
+msgstr "Accusé de réception de cotisation"
 
 #: ../includes/fields_defs/texts_fields.php:65
 msgid "[{ASSO_NAME}] New registration from {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Nouvelle inscription de {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:66
 msgid ""
@@ -3474,14 +3480,17 @@ msgid ""
 "following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-"
 "mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
+"Bonjour cher Administrateur,{NEWLINE}Un nouveau membre a été enregistré avec "
+"les informations suivantes :{BR}* Nom : {NAME_ADH}{BR}* Login : {LOGIN}{BR}* "
+"Courriel : {MAIL_ADH}{NEWLINE}Bien sincèrement,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:68
 msgid "New user registration (sent to admin)"
-msgstr ""
+msgstr "Nouvelle adhésion (envoyée a l'admin)"
 
 #: ../includes/fields_defs/texts_fields.php:73
 msgid "[{ASSO_NAME}] New contribution for {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Nouvelle contribution de {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:74
 msgid ""
@@ -3489,16 +3498,17 @@ msgid ""
 "registered (new deadline: {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}Yours "
 "sincerly,{BR}Galette"
 msgstr ""
+"Bonjour cher Administrateur,{NEWLINE}Une contribution de {NAME_ADH} a été "
+"enregistrée (nouvelle échéance : {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}Bien "
+"sincèrement,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:76
-#, fuzzy
-#| msgid "New contribution type"
 msgid "New contribution (sent to admin)"
-msgstr "Nouveau type de contribution"
+msgstr "Nouvelle contribution (envoyé a l'admin)"
 
 #: ../includes/fields_defs/texts_fields.php:81
 msgid "[{ASSO_NAME}] New self registration from {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Nouvelle auto inscription de {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:82
 msgid ""
@@ -3506,16 +3516,17 @@ msgid ""
 "with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}"
 "* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
+"Bonjour cher Administrateur,{NEWLINE}Un nouvel adhérent s'est auto inscrit "
+"en ligne avec les informations suivantes :{BR}* Nom : {NAME_ADH}{BR}* Login :"
+" {LOGIN}{BR}* Courriel : {MAIL_ADH}{NEWLINE}Bien sincèrement,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:84
 msgid "New self registration (sent to admin)"
-msgstr ""
+msgstr "Nouvelle auto-inscription (envoyé a l'admin)"
 
 #: ../includes/fields_defs/texts_fields.php:89
-#, fuzzy
-#| msgid "Member account has been modified."
 msgid "[{ASSO_NAME}] Your account has been modified"
-msgstr "Le compte de l’adhérent a été modifié avec succès."
+msgstr "[{ASSO_NAME}] Votre compte a été modifié"
 
 #: ../includes/fields_defs/texts_fields.php:90
 msgid ""
@@ -3524,16 +3535,19 @@ msgid ""
 "into {LOGIN_URI} to review modifications and/or change it.{NEWLINE}See you "
 "soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Bonjour !{NEWLINE}Votre compte chez {ASSO_NAME} (avec l'identifiant "
+"'{LOGIN}') a été modifié par un administrateur ou un membre du "
+"bureau.{NEWLINE}Vous pouvez vous connecter à l'adresse {LOGIN_URI} pour "
+"vérifier ces informations ou les modifier.{NEWLINE}À bientôt !{NEWLINE}(ce "
+"courriel est un envoi automatique)"
 
 #: ../includes/fields_defs/texts_fields.php:92
-#, fuzzy
-#| msgid "Notify member his account has been modified"
 msgid "Informs user that his account has been modified"
-msgstr "Informer l’adhérent que son compte a été modifié"
+msgstr "Informe l'utilisateur que son compte a été modifié"
 
 #: ../includes/fields_defs/texts_fields.php:97
 msgid "[{ASSO_NAME}] Your membership is about to expire"
-msgstr ""
+msgstr "[{ASSO_NAME}] Votre adhésion arrive à terme"
 
 #: ../includes/fields_defs/texts_fields.php:98
 msgid ""
@@ -3541,6 +3555,9 @@ msgid ""
 "{DAYS_REMAINING} days.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Bonjour,{NEWLINE}Votre adhésion à {ASSO_NAME} arrive à son terme dans "
+"{DAYS_REMAINING} jours.{NEWLINE}A bientôt!{NEWLINE}(ce courriel est un envoi "
+"automatique)"
 
 #: ../includes/fields_defs/texts_fields.php:100
 #: ../templates/default/reminder.tpl:11
@@ -3549,23 +3566,23 @@ msgstr "Échéances proches"
 
 #: ../includes/fields_defs/texts_fields.php:105
 msgid "[{ASSO_NAME}] Your membership has expired"
-msgstr ""
+msgstr "[{ASSO_NAME}] Votre adhésion a expiré"
 
 #: ../includes/fields_defs/texts_fields.php:106
 msgid ""
 "Hello,{NEWLINE}Your {ASSO_NAME} membership has expired for {DAYS_EXPIRED} "
 "days.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Bonjour,{NEWLINE}Votre adhésion à {ASSO_NAME} a expiré depuis {DAYS_EXPIRED} "
+"jours.{NEWLINE}A bientôt!{NEWLINE}(ce courriel est un envoi automatique)"
 
 #: ../includes/fields_defs/texts_fields.php:108
-#, fuzzy
-#| msgid "Due date"
 msgid "Late due date"
-msgstr "Date d’échéance"
+msgstr "Échéance dépassée"
 
 #: ../includes/fields_defs/texts_fields.php:113
 msgid "[{ASSO_NAME}] Your donation"
-msgstr ""
+msgstr "[{ASSO_NAME}] Votre don"
 
 #: ../includes/fields_defs/texts_fields.php:114
 msgid ""
@@ -3573,44 +3590,45 @@ msgid ""
 "{NEWLINE}{CONTRIB_INFO}{NEWLINE}Thank you!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Bonjour,{NEWLINE}Votre don à {ASSO_NAME} a été "
+"enregistré.{NEWLINE}{CONTRIB_INFO}{NEWLINE}Merci !{NEWLINE}(Ce courriel est "
+"un envoi automatique)"
 
 #: ../includes/fields_defs/texts_fields.php:116
 msgid "Receipt send for new donations"
-msgstr ""
+msgstr "Accusé de réception de don"
 
 #: ../includes/fields_defs/texts_fields.php:121
 msgid "[{ASSO_NAME}] New donation for {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Nouveau don de {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:122
 msgid ""
 "Hello dear Administrator,{NEWLINE}A donation from {NAME_ADH} has been "
 "registered{BR}{CONTRIB_INFO}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
+"Bonjour cher Administrateur,{NEWLINE}Un don de {NAME_ADH} a été "
+"enregistré{BR}{CONTRIB_INFO}{NEWLINE}Bien sincèrement,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:124
-#, fuzzy
-#| msgid "New account email sent to admin for '%s'."
 msgid "New donation (sent to admin)"
-msgstr "Courriel de nouveau compte envoyé à l’administrateur pour « %s »."
+msgstr "Nouveau don (envoyé a l'admin)"
 
 #: ../includes/fields_defs/texts_fields.php:129
-#, fuzzy
-#| msgid "Member account has been modified."
 msgid "[{ASSO_NAME}] Account {NAME_ADH} has been modified"
-msgstr "Le compte de l’adhérent a été modifié avec succès."
+msgstr "[{ASSO_NAME}] Fiche {NAME_ADH} modifiée"
 
 #: ../includes/fields_defs/texts_fields.php:130
 msgid ""
 "Hello!{NEWLINE}{NAME_ADH} has modified his/her account.{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Bonjour !{NEWLINE}{NAME_ADH} a modifié sa fiche.{NEWLINE}À bientôt "
+"!{NEWLINE}(ce courriel est un envoi automatique)"
 
 #: ../includes/fields_defs/texts_fields.php:132
-#, fuzzy
-#| msgid "%membername: edit information"
 msgid "Informs admin a member edit his information"
-msgstr "%membername&nbsp;: modifier les informations"
+msgstr "Informe l'administrateur qu'un adhérent a modifié sa fiche"
 
 #: ../install/scripts/upgrade-to-0.8.php:94
 msgid "Unable to create main datadir in %path!"
@@ -4859,16 +4877,16 @@ msgid "(dd/mm)"
 msgstr "(jj/mm)"
 
 #: ../templates/default/preferences.tpl:207
-#, fuzzy
-#| msgid "Number of members:"
 msgid "Number of months offered:"
-msgstr "Nombre d’adhérents&nbsp;:"
+msgstr "Nombre de mois offerts :"
 
 #: ../templates/default/preferences.tpl:208
 msgid ""
 "When using the beginning of membership option; you can offer the last months "
 "of the year."
 msgstr ""
+"Lorsque vous utilisez une date de début d'exercice ; vous pouvez offrir les "
+"derniers mois de l'année."
 
 #: ../templates/default/preferences.tpl:208
 msgid ""
@@ -4876,6 +4894,10 @@ msgid ""
 "All created contributions in current year will be valid until this date, but "
 "as of October, they will be valid for the entire next year."
 msgstr ""
+"Admettons que vous offrez les deux derniers mois, avec un renouvellement au "
+"31 décembre. Toutes les contributions créées durant l'année courante seront "
+"valides jusqu'à cette date, mais à partir d'octobre, elles seront valides "
+"pour toute l'année suivante."
 
 #: ../templates/default/preferences.tpl:212
 msgid "Public pages enabled?"
@@ -6041,11 +6063,11 @@ msgstr "L’URL de connexion de Galette"
 
 #: ../templates/default/gestion_textes.tpl:71
 msgid "Insert a carriage return"
-msgstr ""
+msgstr "Insérer un retour à la ligne"
 
 #: ../templates/default/gestion_textes.tpl:73
 msgid "Insert a new blank line"
-msgstr ""
+msgstr "Insérer une ligne vide"
 
 #: ../templates/default/gestion_textes.tpl:77
 msgid "Available with reservations"
