@@ -725,10 +725,12 @@ $app->get(
         }
 
         //handle requirements for parent fields
-        if ($member->hasParent()) {
-            $parent_fields = $member->getParentFields();
-            foreach ($parent_fields as $field) {
-                if ($fc->isRequired($field)) {
+        $parent_fields = $member->getParentFields();
+        $tpl_parent_fields = []; //for JS when detaching
+        foreach ($parent_fields as $field) {
+            if ($fc->isRequired($field)) {
+                $tpl_parent_fields[] = $field;
+                if ($member->hasParent()) {
                     $fc->setNotRequired($field);
                 }
             }
@@ -792,7 +794,8 @@ $app->get(
                 'statuts'           => $statuts->getList(),
                 'groups'            => $groups_list,
                 'fieldsets'         => $form_elements['fieldsets'],
-                'hidden_elements'   => $form_elements['hiddens']
+                'hidden_elements'   => $form_elements['hiddens'],
+                'parent_fields'     => $tpl_parent_fields
             )
         );
         return $response;
