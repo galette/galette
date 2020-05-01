@@ -1282,7 +1282,7 @@ msgid "Contribution updated"
 msgstr "Contribution updated"
 
 #: ../lib/Galette/Entity/Contribution.php:1045
-#: ../templates/default/gestion_textes.tpl:112
+#: ../templates/default/gestion_textes.tpl:118
 msgid "Contribution information"
 msgstr "Contribution information"
 
@@ -3295,41 +3295,21 @@ msgstr "[{ASSO_NAME}] Your identifiers"
 
 #: ../includes/fields_defs/texts_fields.php:42
 msgid ""
-"Hello,\r\n"
-"\r\n"
-"You've just been subscribed on the members management system of {ASSO_NAME}."
-"\r\n"
-"\r\n"
-"It is now possible to follow in real time the state of your subscription and "
-"to update your preferences from the web interface.\r\n"
-"\r\n"
-"Please login at this address to set your new password :\r\n"
-"{CHG_PWD_URI}\r\n"
-"\r\n"
-"Username: {LOGIN}\r\n"
-"The above link will be valid until {LINK_VALIDITY}.\r\n"
-"\r\n"
-"See you soon!\r\n"
-"\r\n"
-"(this email was sent automatically)"
+"Hello,{NEWLINE}You've just been subscribed on the members management system "
+"of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state "
+"of your subscription and to update your preferences from the web interface."
+"{NEWLINE}Please login at this address to set your new password :{BR}"
+"{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid "
+"until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
+"automatically)"
 msgstr ""
-"Hello,\r\n"
-"\r\n"
-"You've just been subscribed on the members management system of {ASSO_NAME}."
-"\r\n"
-"\r\n"
-"It is now possible to follow in real time the state of your subscription and "
-"to update your preferences from the web interface.\r\n"
-"\r\n"
-"Please login at this address to set your new password :\r\n"
-"{CHG_PWD_URI}\r\n"
-"\r\n"
-"Username: {LOGIN}\r\n"
-"The above link will be valid until {LINK_VALIDITY}.\r\n"
-"\r\n"
-"See you soon!\r\n"
-"\r\n"
-"(this email was sent automatically)"
+"Hello,{NEWLINE}You've just been subscribed on the members management system "
+"of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state "
+"of your subscription and to update your preferences from the web interface."
+"{NEWLINE}Please login at this address to set your new password :{BR}"
+"{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid "
+"until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
+"automatically)"
 
 #: ../includes/fields_defs/texts_fields.php:44
 msgid "New user registration"
@@ -3337,33 +3317,17 @@ msgstr "New user registration"
 
 #: ../includes/fields_defs/texts_fields.php:50
 msgid ""
-"Hello,\r\n"
-"\r\n"
-"Someone (probably you) asked to recover your password.\r\n"
-"\r\n"
-"Please login at this address to set your new password :\r\n"
-"{CHG_PWD_URI}\r\n"
-"\r\n"
-"Username: {LOGIN}\r\n"
-"The above link will be valid until {LINK_VALIDITY}.\r\n"
-"\r\n"
-"See you soon!\r\n"
-"\r\n"
-"(this email was sent automatically)"
+"Hello,{NEWLINE}Someone (probably you) asked to recover your password."
+"{NEWLINE}Please login at this address to set your new password :{BR}"
+"{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid "
+"until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
+"automatically)"
 msgstr ""
-"Hello,\r\n"
-"\r\n"
-"Someone (probably you) asked to recover your password.\r\n"
-"\r\n"
-"Please login at this address to set your new password :\r\n"
-"{CHG_PWD_URI}\r\n"
-"\r\n"
-"Username: {LOGIN}\r\n"
-"The above link will be valid until {LINK_VALIDITY}.\r\n"
-"\r\n"
-"See you soon!\r\n"
-"\r\n"
-"(this email was sent automatically)"
+"Hello,{NEWLINE}Someone (probably you) asked to recover your password."
+"{NEWLINE}Please login at this address to set your new password :{BR}"
+"{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid "
+"until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
+"automatically)"
 
 #: ../includes/fields_defs/texts_fields.php:52
 msgid "Lost password email"
@@ -3375,39 +3339,17 @@ msgstr "[{ASSO_NAME}] Your contribution"
 
 #: ../includes/fields_defs/texts_fields.php:58
 msgid ""
-"Hello,\r\n"
-"\r\n"
-"Your contribution has successfully been taken into account by {ASSO_NAME}."
-"\r\n"
-"\r\n"
-"It is valid until {DEADLINE}.\r\n"
-"\r\n"
-"You can now login and browse or modify your personnal data using your "
-"galette identifiers at this address:\r\n"
-"{LOGIN_URI}.\r\n"
-"\r\n"
-"{CONTRIB_INFO}\r\n"
-"\r\n"
-"See you soon!\r\n"
-"\r\n"
-"(this email was sent automatically)"
+"Hello,{NEWLINE}Your contribution has successfully been taken into account by "
+"{ASSO_NAME}.{NEWLINE}It is valid until {DEADLINE}.{NEWLINE}You can now login "
+"and browse or modify your personnal data using your galette identifiers at "
+"this address:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}See you soon!"
+"{NEWLINE}(this email was sent automatically)"
 msgstr ""
-"Hello,\r\n"
-"\r\n"
-"Your contribution has successfully been taken into account by {ASSO_NAME}."
-"\r\n"
-"\r\n"
-"It is valid until {DEADLINE}.\r\n"
-"\r\n"
-"You can now login and browse or modify your personnal data using your "
-"galette identifiers at this address:\r\n"
-"{LOGIN_URI}.\r\n"
-"\r\n"
-"{CONTRIB_INFO}\r\n"
-"\r\n"
-"See you soon!\r\n"
-"\r\n"
-"(this email was sent automatically)"
+"Hello,{NEWLINE}Your contribution has successfully been taken into account by "
+"{ASSO_NAME}.{NEWLINE}It is valid until {DEADLINE}.{NEWLINE}You can now login "
+"and browse or modify your personnal data using your galette identifiers at "
+"this address:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}See you soon!"
+"{NEWLINE}(this email was sent automatically)"
 
 #: ../includes/fields_defs/texts_fields.php:60
 msgid "Receipt send for new contribution"
@@ -3419,25 +3361,13 @@ msgstr "[{ASSO_NAME}] New registration from {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:66
 msgid ""
-"Hello dear Administrator,\r\n"
-"\r\n"
-"A new member has been registered with the following information:\r\n"
-"* Name: {NAME_ADH}\r\n"
-"* Login: {LOGIN}\r\n"
-"* E-mail: {MAIL_ADH}\r\n"
-"\r\n"
-"Yours sincerly,\r\n"
-"Galette"
+"Hello dear Administrator,{NEWLINE}A new member has been registered with the "
+"following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-"
+"mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
-"Hello dear Administrator,\r\n"
-"\r\n"
-"A new member has been registered with the following information:\r\n"
-"* Name: {NAME_ADH}\r\n"
-"* Login: {LOGIN}\r\n"
-"* E-mail: {MAIL_ADH}\r\n"
-"\r\n"
-"Yours sincerly,\r\n"
-"Galette"
+"Hello dear Administrator,{NEWLINE}A new member has been registered with the "
+"following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-"
+"mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:68
 msgid "New user registration (sent to admin)"
@@ -3449,23 +3379,13 @@ msgstr "[{ASSO_NAME}] New contribution for {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:74
 msgid ""
-"Hello dear Administrator,\r\n"
-"\r\n"
-"A contribution from {NAME_ADH} has been registered (new deadline: "
-"{DEADLINE})\r\n"
-"{CONTRIB_INFO}\r\n"
-"\r\n"
-"Yours sincerly,\r\n"
-"Galette"
+"Hello dear Administrator,{NEWLINE}A contribution from {NAME_ADH} has been "
+"registered (new deadline: {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}Yours "
+"sincerly,{BR}Galette"
 msgstr ""
-"Hello dear Administrator,\r\n"
-"\r\n"
-"A contribution from {NAME_ADH} has been registered (new deadline: "
-"{DEADLINE})\r\n"
-"{CONTRIB_INFO}\r\n"
-"\r\n"
-"Yours sincerly,\r\n"
-"Galette"
+"Hello dear Administrator,{NEWLINE}A contribution from {NAME_ADH} has been "
+"registered (new deadline: {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}Yours "
+"sincerly,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:76
 msgid "New contribution (sent to admin)"
@@ -3477,25 +3397,13 @@ msgstr "[{ASSO_NAME}] New self registration from {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:82
 msgid ""
-"Hello dear Administrator,\r\n"
-"\r\n"
-"A new member has self registred on line with the following information:\r\n"
-"* Name: {NAME_ADH}\r\n"
-"* Login: {LOGIN}\r\n"
-"* E-mail: {MAIL_ADH}\r\n"
-"\r\n"
-"Yours sincerly,\r\n"
-"Galette"
+"Hello dear Administrator,{NEWLINE}A new member has self registred on line "
+"with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}"
+"* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
-"Hello dear Administrator,\r\n"
-"\r\n"
-"A new member has self registred on line with the following information:\r\n"
-"* Name: {NAME_ADH}\r\n"
-"* Login: {LOGIN}\r\n"
-"* E-mail: {MAIL_ADH}\r\n"
-"\r\n"
-"Yours sincerly,\r\n"
-"Galette"
+"Hello dear Administrator,{NEWLINE}A new member has self registred on line "
+"with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}"
+"* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:84
 msgid "New self registration (sent to admin)"
@@ -3507,27 +3415,15 @@ msgstr "[{ASSO_NAME}] Your account has been modified"
 
 #: ../includes/fields_defs/texts_fields.php:90
 msgid ""
-"Hello!\r\n"
-"\r\n"
-"Your account on {ASSO_NAME} (with the login '{LOGIN}') has been modified by "
-"an administrator or a staff member.\r\n"
-"\r\n"
-"You can log into {LOGIN_URI} to review modifications and/or change it.\r\n"
-"\r\n"
-"See you soon!\r\n"
-"\r\n"
-"(this email was sent automatically)"
+"Hello!{NEWLINE}Your account on {ASSO_NAME} (with the login '{LOGIN}') has "
+"been modified by an administrator or a staff member.{NEWLINE}You can log "
+"into {LOGIN_URI} to review modifications and/or change it.{NEWLINE}See you "
+"soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
-"Hello!\r\n"
-"\r\n"
-"Your account on {ASSO_NAME} (with the login '{LOGIN}') has been modified by "
-"an administrator or a staff member.\r\n"
-"\r\n"
-"You can log into {LOGIN_URI} to review modifications and/or change it.\r\n"
-"\r\n"
-"See you soon!\r\n"
-"\r\n"
-"(this email was sent automatically)"
+"Hello!{NEWLINE}Your account on {ASSO_NAME} (with the login '{LOGIN}') has "
+"been modified by an administrator or a staff member.{NEWLINE}You can log "
+"into {LOGIN_URI} to review modifications and/or change it.{NEWLINE}See you "
+"soon!{NEWLINE}(this email was sent automatically)"
 
 #: ../includes/fields_defs/texts_fields.php:92
 msgid "Informs user that his account has been modified"
@@ -3539,21 +3435,13 @@ msgstr "[{ASSO_NAME}] Your membership is about to expire"
 
 #: ../includes/fields_defs/texts_fields.php:98
 msgid ""
-"Hello,\r\n"
-"\r\n"
-"Your {ASSO_NAME} membership is about to expire in {DAYS_REMAINING} days.\r\n"
-"\r\n"
-"See you soon!\r\n"
-"\r\n"
-"(this email was sent automatically)"
+"Hello,{NEWLINE}Your {ASSO_NAME} membership is about to expire in "
+"{DAYS_REMAINING} days.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
+"automatically)"
 msgstr ""
-"Hello,\r\n"
-"\r\n"
-"Your {ASSO_NAME} membership is about to expire in {DAYS_REMAINING} days.\r\n"
-"\r\n"
-"See you soon!\r\n"
-"\r\n"
-"(this email was sent automatically)"
+"Hello,{NEWLINE}Your {ASSO_NAME} membership is about to expire in "
+"{DAYS_REMAINING} days.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
+"automatically)"
 
 #: ../includes/fields_defs/texts_fields.php:100
 #: ../templates/default/reminder.tpl:11
@@ -3566,21 +3454,11 @@ msgstr "[{ASSO_NAME}] Your membership has expired"
 
 #: ../includes/fields_defs/texts_fields.php:106
 msgid ""
-"Hello,\r\n"
-"\r\n"
-"Your {ASSO_NAME} membership has expired for {DAYS_EXPIRED} days.\r\n"
-"\r\n"
-"See you soon!\r\n"
-"\r\n"
-"(this email was sent automatically)"
+"Hello,{NEWLINE}Your {ASSO_NAME} membership has expired for {DAYS_EXPIRED} "
+"days.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
-"Hello,\r\n"
-"\r\n"
-"Your {ASSO_NAME} membership has expired for {DAYS_EXPIRED} days.\r\n"
-"\r\n"
-"See you soon!\r\n"
-"\r\n"
-"(this email was sent automatically)"
+"Hello,{NEWLINE}Your {ASSO_NAME} membership has expired for {DAYS_EXPIRED} "
+"days.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"
 
 #: ../includes/fields_defs/texts_fields.php:108
 msgid "Late due date"
@@ -3592,25 +3470,13 @@ msgstr "[{ASSO_NAME}] Your donation"
 
 #: ../includes/fields_defs/texts_fields.php:114
 msgid ""
-"Hello,\r\n"
-"\r\n"
-"Your donation to {ASSO_NAME} has successfully been stored.\r\n"
-"\r\n"
-"{CONTRIB_INFO}\r\n"
-"\r\n"
-"Thank you!\r\n"
-"\r\n"
-"(this email was sent automatically)"
+"Hello,{NEWLINE}Your donation to {ASSO_NAME} has successfully been stored."
+"{NEWLINE}{CONTRIB_INFO}{NEWLINE}Thank you!{NEWLINE}(this email was sent "
+"automatically)"
 msgstr ""
-"Hello,\r\n"
-"\r\n"
-"Your donation to {ASSO_NAME} has successfully been stored.\r\n"
-"\r\n"
-"{CONTRIB_INFO}\r\n"
-"\r\n"
-"Thank you!\r\n"
-"\r\n"
-"(this email was sent automatically)"
+"Hello,{NEWLINE}Your donation to {ASSO_NAME} has successfully been stored."
+"{NEWLINE}{CONTRIB_INFO}{NEWLINE}Thank you!{NEWLINE}(this email was sent "
+"automatically)"
 
 #: ../includes/fields_defs/texts_fields.php:116
 msgid "Receipt send for new donations"
@@ -3622,21 +3488,11 @@ msgstr "[{ASSO_NAME}] New donation for {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:122
 msgid ""
-"Hello dear Administrator,\r\n"
-"\r\n"
-"A donation from {NAME_ADH} has been registered\r\n"
-"{CONTRIB_INFO}\r\n"
-"\r\n"
-"Yours sincerly,\r\n"
-"Galette"
+"Hello dear Administrator,{NEWLINE}A donation from {NAME_ADH} has been "
+"registered{BR}{CONTRIB_INFO}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
-"Hello dear Administrator,\r\n"
-"\r\n"
-"A donation from {NAME_ADH} has been registered\r\n"
-"{CONTRIB_INFO}\r\n"
-"\r\n"
-"Yours sincerly,\r\n"
-"Galette"
+"Hello dear Administrator,{NEWLINE}A donation from {NAME_ADH} has been "
+"registered{BR}{CONTRIB_INFO}{NEWLINE}Yours sincerly,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:124
 msgid "New donation (sent to admin)"
@@ -3648,21 +3504,11 @@ msgstr "[{ASSO_NAME}] Account {NAME_ADH} has been modified"
 
 #: ../includes/fields_defs/texts_fields.php:130
 msgid ""
-"Hello!\r\n"
-"\r\n"
-"{NAME_ADH} has modified his/her account.\r\n"
-"\r\n"
-"See you soon!\r\n"
-"\r\n"
-"(this email was sent automatically)"
+"Hello!{NEWLINE}{NAME_ADH} has modified his/her account.{NEWLINE}See you soon!"
+"{NEWLINE}(this email was sent automatically)"
 msgstr ""
-"Hello!\r\n"
-"\r\n"
-"{NAME_ADH} has modified his/her account.\r\n"
-"\r\n"
-"See you soon!\r\n"
-"\r\n"
-"(this email was sent automatically)"
+"Hello!{NEWLINE}{NAME_ADH} has modified his/her account.{NEWLINE}See you soon!"
+"{NEWLINE}(this email was sent automatically)"
 
 #: ../includes/fields_defs/texts_fields.php:132
 msgid "Informs admin a member edit his information"
@@ -4267,7 +4113,7 @@ msgid "Member's groups (as list)"
 msgstr "Member's groups (as list)"
 
 #: ../templates/default/gestion_pdf.tpl:67
-#: ../templates/default/gestion_textes.tpl:88
+#: ../templates/default/gestion_textes.tpl:94
 msgid "Member's ID"
 msgstr "Member's ID"
 
@@ -4280,7 +4126,7 @@ msgid "Contribution label"
 msgstr "Contribution label"
 
 #: ../templates/default/gestion_pdf.tpl:78
-#: ../templates/default/gestion_textes.tpl:116
+#: ../templates/default/gestion_textes.tpl:122
 msgid "Contribution amount"
 msgstr "Contribution amount"
 
@@ -4313,7 +4159,7 @@ msgid "Contribution payment type"
 msgstr "Contribution payment type"
 
 #: ../templates/default/gestion_pdf.tpl:110
-#: ../templates/default/gestion_textes.tpl:146
+#: ../templates/default/gestion_textes.tpl:152
 msgid "Show existing variables"
 msgstr "Show existing variables"
 
@@ -6062,62 +5908,70 @@ msgid "Galette's login URI"
 msgstr "Galette's login URI"
 
 #: ../templates/default/gestion_textes.tpl:71
+msgid "Insert a carriage return"
+msgstr "Insert a carriage return"
+
+#: ../templates/default/gestion_textes.tpl:73
+msgid "Insert a new blank line"
+msgstr "Insert a new blank line"
+
+#: ../templates/default/gestion_textes.tpl:77
 msgid "Available with reservations"
 msgstr "Available with reservations"
 
-#: ../templates/default/gestion_textes.tpl:76
+#: ../templates/default/gestion_textes.tpl:82
 msgid "Member's first and last name"
 msgstr "Member's first and last name"
 
-#: ../templates/default/gestion_textes.tpl:78
+#: ../templates/default/gestion_textes.tpl:84
 msgid "Member's email address"
 msgstr "Member's email address"
 
-#: ../templates/default/gestion_textes.tpl:82
+#: ../templates/default/gestion_textes.tpl:88
 msgid "Member's last name"
 msgstr "Member's last name"
 
-#: ../templates/default/gestion_textes.tpl:84
+#: ../templates/default/gestion_textes.tpl:90
 msgid "Member's first name"
 msgstr "Member's first name"
 
-#: ../templates/default/gestion_textes.tpl:90
+#: ../templates/default/gestion_textes.tpl:96
 msgid "Member's login"
 msgstr "Member's login"
 
-#: ../templates/default/gestion_textes.tpl:94
+#: ../templates/default/gestion_textes.tpl:100
 msgid "Available only for new password request"
 msgstr "Available only for new password request"
 
-#: ../templates/default/gestion_textes.tpl:99
+#: ../templates/default/gestion_textes.tpl:105
 msgid "Galette's change password URI"
 msgstr "Galette's change password URI"
 
-#: ../templates/default/gestion_textes.tpl:101
+#: ../templates/default/gestion_textes.tpl:107
 msgid "Link validity"
 msgstr "Link validity"
 
-#: ../templates/default/gestion_textes.tpl:105
+#: ../templates/default/gestion_textes.tpl:111
 msgid "Available only for new contributions"
 msgstr "Available only for new contributions"
 
-#: ../templates/default/gestion_textes.tpl:110
+#: ../templates/default/gestion_textes.tpl:116
 msgid "Member's deadline"
 msgstr "Member's deadline"
 
-#: ../templates/default/gestion_textes.tpl:118
+#: ../templates/default/gestion_textes.tpl:124
 msgid "Contribution type"
 msgstr "Contribution type"
 
-#: ../templates/default/gestion_textes.tpl:122
+#: ../templates/default/gestion_textes.tpl:128
 msgid "Available only for reminders"
 msgstr "Available only for reminders"
 
-#: ../templates/default/gestion_textes.tpl:127
+#: ../templates/default/gestion_textes.tpl:133
 msgid "Membership remaining days"
 msgstr "Membership remaining days"
 
-#: ../templates/default/gestion_textes.tpl:129
+#: ../templates/default/gestion_textes.tpl:135
 msgid "Membership expired since"
 msgstr "Membership expired since"
 
