@@ -368,8 +368,12 @@ $app->post(
             if (strcmp($post['mdp_adh'], $post['mdp_adh2'])) {
                 $error = _T("- The passwords don't match!");
             } else {
-                if (strlen($post['mdp_adh']) < 4) {
-                    $error = _T("- The password must be of at least 4 characters!");
+                $checkpass = new \Galette\Util\Password($this->preferences);
+
+                if (!$checkpass->isValid($post['mdp_adh'])) {
+                    //password is not valid with current rules
+                    $error = _T("Your password is too weak!") .
+                        '<br/> -' . implode('<br/>', $checkpass->getErrors());
                 } else {
                     $res = Galette\Entity\Adherent::updatePassword(
                         $this->zdb,
