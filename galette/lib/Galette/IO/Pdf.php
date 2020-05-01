@@ -93,6 +93,9 @@ class Pdf extends \TCPDF
         parent::__construct('P', 'mm', 'A4', true, 'UTF-8');
         //set some values
         $this->SetCreator(PDF_CREATOR);
+        //add helvetica, hard-called from lib
+        $this->SetFont('helvetica');
+        //and then, set real font
         $this->SetFont(self::FONT, '', self::FONT_SIZE);
         $name = preg_replace(
             '/%s/',
