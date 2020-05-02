@@ -79,6 +79,11 @@ abstract class AbstractController
     protected $view;
     /**
      * @Inject
+     * @var Galette\Core\Logo
+     */
+    protected $logo;
+    /**
+     * @Inject
      * @var Galette\Core\Plugins
      */
     protected $plugins;
@@ -131,6 +136,7 @@ abstract class AbstractController
         $this->login = $container->get('login');
         $this->preferences = $container->get('preferences');
         $this->view = $container->get('view');
+        $this->logo = $container->get('logo');
         $this->plugins = $container->get('plugins');
         $this->router = $container->get('router');
         $this->history = $container->get('history');
@@ -182,30 +188,22 @@ abstract class AbstractController
                     ) {
                         return $response
                             ->withStatus(301)
-                            //Do not use "$this->router->pathFor('dashboard'))" to prevent translation issues when login
-                            //FIXME: maybe no longer relevant
-                            ->withHeader('Location', $this->getGaletteBaseUrl($request) . '/dashboard');
+                            ->withHeader('Location', $this->router->pathFor('dashboard'));
                     } else {
                         return $response
                             ->withStatus(301)
-                            //Do not use "$this->router->pathFor('members'))" to prevent translation issues when login
-                            //FIXME: maybe no longer relevant
-                            ->withHeader('Location', $this->getGaletteBaseUrl($request) . '/members');
+                            ->withHeader('Location', $this->router->pathFor('members'));
                     }
                 } else {
                     return $response
                         ->withStatus(301)
-                        //Do not use "$this->router->pathFor('me'))" to prevent translation issues when login
-                        //FIXME: maybe no longer relevant
-                        ->withHeader('Location', $this->getGaletteBaseUrl($request) . '/dashboard');
+                        ->withHeader('Location', $this->router->pathFor('dashboard'));
                 }
             }
         } else {
             return $response
                 ->withStatus(301)
-                //Do not use "$this->router->pathFor('login'))" to prevent translation issues when login
-                //FIXME: maybe no longer relevant
-                ->withHeader('Location', $this->getGaletteBaseUrl($request) . '/login');
+                ->withHeader('Location', $this->router->pathFor('login'));
         }
     }
 

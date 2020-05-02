@@ -35,6 +35,9 @@
  * @since     0.8.2dev 2014-11-11
  */
 
+use Galette\Controllers\GaletteController;
+use Galette\Controllers\ImagesController;
+
 use Galette\Core\Picture;
 use Galette\Core\SysInfos;
 use Galette\Entity\Adherent;
@@ -42,67 +45,25 @@ use Galette\Entity\Adherent;
 //main route
 $app->get(
     '/',
-    function ($request, $response, $args) use ($baseRedirect) {
-        return $baseRedirect($request, $response, $args);
-    }
+    GaletteController::class . ':slash'
 )->setName('slash');
 
 //logo route
 $app->get(
     '/logo',
-    function ($request, $response, $args) {
-        $response = $this->response
-            ->withHeader('Content-type', $this->logo->getMime());
-        $response->write($this->logo->getContents());
-        return $response;
-    }
+    ImagesController::class . ':logo'
 )->setName('logo');
 
 //print logo route
 $app->get(
     '/print-logo',
-    function ($request, $response, $args) {
-        $response = $this->response
-            ->withHeader('Content-type', $this->print_logo->getMime());
-        $response->write($this->print_logo->getContents());
-        return $response;
-    }
+    ImagesController::class . ':logo'
 )->setName('printLogo');
 
 //photo route
 $app->get(
     '/photo/{id:\d+}',
-    function ($request, $response, $args) {
-        $id = $args['id'];
-
-        $deps = array(
-            'groups'    => false,
-            'dues'      => false
-        );
-
-        //if loggedin user is a group manager, we have to check
-        //he manages a group requested member belongs to.
-        if ($this->login->isGroupManager()) {
-            $deps['groups'] = true;
-        }
-
-        $adh = new Adherent($this->zdb, (int)$id, $deps);
-
-        $picture = null;
-        if ($adh->canEdit($this->login)
-            || $this->preferences->showPublicPages($this->login)
-            && $adh->appearsInMembersList()
-        ) {
-            $picture = $adh->picture;
-        } else {
-            $picture = new Picture();
-        }
-
-        $response = $this->response
-            ->withHeader('Content-type', $picture->getMime());
-        $response->write($picture->getContents());
-        return $response;
-    }
+    ImagesController::class . ':photo'
 )->setName('photo');
 
 //system information - keep old route with typo for now (0.9.4)
