@@ -2411,7 +2411,7 @@ $app->get(
 
         if (file_exists(GALETTE_FILES_PATH . $filename)) {
             $type = File::getMimeType(GALETTE_FILES_PATH . $filename);
-            $response = $this->response
+            $response = $response
                 ->withHeader('Content-Type', $type)
                 ->withHeader('Content-Disposition', 'attachment;filename="' . $args['name'] . '"')
                 ->withHeader('Pragma', 'no-cache');

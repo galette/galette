@@ -40,6 +40,7 @@ use Galette\Controllers\PluginsController;
 use Galette\Controllers\HistoryController;
 use Galette\Controllers\DynamicTranslationsController;
 use Galette\Controllers\Crud;
+use Galette\Controllers\CsvController;
 
 use Galette\Core\MailingHistory;
 use Galette\Filters\MailingsList;
@@ -51,8 +52,6 @@ use \Analog\Analog;
 use Galette\IO\Csv;
 use Galette\IO\CsvOut;
 use Galette\IO\CsvIn;
-use Galette\Entity\ImportModel;
-use Galette\Entity\PdfModel;
 use Galette\Repository\PdfModels;
 use Galette\Entity\Title;
 use Galette\Repository\Titles;
@@ -358,645 +357,69 @@ $app->post(
 //galette exports
 $app->get(
     '/export',
-    function ($request, $response) {
-        $csv = new CsvOut();
-
-        $tables_list = $this->zdb->getTables();
-        $parameted = $csv->getParametedExports();
-        $existing = $csv->getExisting();
-
-        // display page
-        $this->view->render(
-            $response,
-            'export.tpl',
-            array(
-                'page_title'        => _T("CVS database Export"),
-                'tables_list'       => $tables_list,
-                'written'           => $this->flash->getMessage('written_exports'),
-                'existing'          => $existing,
-                'parameted'         => $parameted
-            )
-        );
-        return $response;
-    }
+    CsvController::class . ':export'
 )->setName(
     'export'
 )->add($authenticate);
 
 $app->get(
     '/{type:export|import}/remove/{file}',
-    function ($request, $response, $args) {
-        $data = [
-            'id'            => $args['id'],
-            'redirect_uri'  => $this->router->pathFor($args['type'])
-        ];
-
-        // display page
-        $this->view->render(
-            $response,
-            'confirm_removal.tpl',
-            array(
-                'mode'          => $request->isXhr() ? 'ajax' : '',
-                'page_title'    => sprintf(
-                    _T('Remove %1$s file %2$s'),
-                    $args['type'],
-                    $args['file']
-                ),
-                'form_url'      => $this->router->pathFor(
-                    'doRemoveCsv',
-                    [
-                        'type' => $args['type'],
-                        'file' => $args['file']
-                    ]
-                ),
-                'cancel_uri'    => $data['redirect_uri'],
-                'data'          => $data
-            )
-        );
-        return $response;
-    }
+    CsvController::class . ':confirmRemoveFile'
 )->setName('removeCsv')->add($authenticate);
 
 $app->post(
     '/{type:export|import}/remove/{file}',
-    function ($request, $response, $args) {
-        $post = $request->getParsedBody();
-        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
-        $success = false;
-
-        $uri = isset($post['redirect_uri']) ?
-            $post['redirect_uri'] :
-            $this->router->pathFor('slash');
-
-        if (!isset($post['confirm'])) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Removal has not been confirmed!")
-            );
-        } else {
-            $csv = $args['type'] === 'export' ?
-                new CsvOut() :
-                new CsvIn($this->zdb);
-            $res = $csv->remove($args['file']);
-            if ($res === true) {
-                $success = true;
-                $this->flash->addMessage(
-                    'success_detected',
-                    str_replace(
-                        '%export',
-                        $args['file'],
-                        _T("'%export' file has been removed from disk.")
-                    )
-                );
-            } else {
-                $success = false;
-                $this->flash->addMessage(
-                    'error_detected',
-                    str_replace(
-                        '%export',
-                        $args['file'],
-                        _T("Cannot remove '%export' from disk :/")
-                    )
-                );
-            }
-        }
-
-        if (!$ajax) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $uri);
-        } else {
-            return $response->withJson(
-                [
-                    'success'   => $success
-                ]
-            );
-        }
-    }
+    CsvController::class . ':removeFile'
 )->setName('doRemoveCsv')->add($authenticate);
 
 $app->post(
     '/export',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-        $csv = new CsvOut();
-        $written = [];
-
-        if (isset($post['export_tables']) && $post['export_tables'] != '') {
-            foreach ($post['export_tables'] as $table) {
-                $select = $this->zdb->sql->select($table);
-                $results = $this->zdb->execute($select);
-
-                if ($results->count() > 0) {
-                    $filename = $table . '_full.csv';
-                    $filepath = CsvOut::DEFAULT_DIRECTORY . $filename;
-                    $fp = fopen($filepath, 'w');
-                    if ($fp) {
-                        $res = $csv->export(
-                            $results,
-                            Csv::DEFAULT_SEPARATOR,
-                            Csv::DEFAULT_QUOTE,
-                            true,
-                            $fp
-                        );
-                        fclose($fp);
-                        $written[] = [
-                            'name' => $table,
-                            'file' => $filename
-                        ];
-                    }
-                } else {
-                    $this->flash->addMessage(
-                        'warning_detected',
-                        str_replace(
-                            '%table',
-                            $table,
-                            _T("Table %table is empty, and has not been exported.")
-                        )
-                    );
-                }
-            }
-        }
-
-        if (isset($post['export_parameted']) && $post['export_parameted'] != '') {
-            foreach ($post['export_parameted'] as $p) {
-                $res = $csv->runParametedExport($p);
-                $pn = $csv->getParamedtedExportName($p);
-                switch ($res) {
-                    case Csv::FILE_NOT_WRITABLE:
-                        $this->flash->addMessage(
-                            'error_detected',
-                            str_replace(
-                                '%export',
-                                $pn,
-                                _T("Export file could not be write on disk for '%export'. Make sure web server can write in the exports directory.")
-                            )
-                        );
-                        break;
-                    case Csv::DB_ERROR:
-                        $this->flash->addMessage(
-                            'error_detected',
-                            str_replace(
-                                '%export',
-                                $pn,
-                                _T("An error occurred running parameted export '%export'.")
-                            )
-                        );
-                        break;
-                    case false:
-                        $this->flash->addMessage(
-                            'error_detected',
-                            str_replace(
-                                '%export',
-                                $pn,
-                                _T("An error occurred running parameted export '%export'. Please check the logs.")
-                            )
-                        );
-                        break;
-                    default:
-                        //no error, file has been writted to disk
-                        $written[] = [
-                            'name' => $pn,
-                            'file' => (string)$res
-                        ];
-                        break;
-                }
-            }
-        }
-
-        if (count($written)) {
-            foreach ($written as $ex) {
-                $path = $this->router->pathFor('getCsv', ['type' => 'export', 'file' => $ex['file']]);
-                $this->flash->addMessage(
-                    'written_exports',
-                    '<a href="' . $path . '">' . $ex['name'] . ' (' . $ex['file'] . ')</a>'
-                );
-            }
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('export'));
-    }
+    CsvController::class . ':doExport'
 )->setName('doExport')->add($authenticate);
 
 $app->get(
     '/{type:export|import}/get/{file}',
-    function ($request, $response, $args) {
-        $filename = $args['file'];
-
-        //Exports main contain user confidential data, they're accessible only for
-        //admins or staff members
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
-            $filepath = $args['type'] === 'export' ?
-                CsvOut::DEFAULT_DIRECTORY :
-                CsvIn::DEFAULT_DIRECTORY;
-            $filepath .= $filename;
-            if (file_exists($filepath)) {
-                $response = $this->response->withHeader('Content-Description', 'File Transfer')
-                    ->withHeader('Content-Type', 'text/csv')
-                    ->withHeader('Content-Disposition', 'attachment;filename="' . $filename . '"')
-                    ->withHeader('Pragma', 'no-cache')
-                    ->withHeader('Content-Transfer-Encoding', 'binary')
-                    ->withHeader('Expires', '0')
-                    ->withHeader('Cache-Control', 'must-revalidate')
-                    ->withHeader('Pragma', 'public');
-
-                $stream = fopen('php://memory', 'r+');
-                fwrite($stream, file_get_contents($filepath));
-                rewind($stream);
-
-                return $response->withBody(new \Slim\Http\Stream($stream));
-            } else {
-                Analog::log(
-                    'A request has been made to get an ' . $args['type'] . ' file named `' .
-                    $filename .'` that does not exists.',
-                    Analog::WARNING
-                );
-                $notFound = $this->notFoundHandler;
-                return $notFound($request, $response);
-            }
-        } else {
-            Analog::log(
-                'A non authorized person asked to retrieve ' . $args['type'] . ' file named `' .
-                $filename . '`. Access has not been granted.',
-                Analog::WARNING
-            );
-            $error = $this->errorHandler;
-            return $error(
-                $request,
-                $response->withStatus(403)
-            );
-        }
-    }
+    CsvController::class . ':getFile'
 )->setName('getCsv')->add($authenticate);
 
 $app->get(
     '/import',
-    function ($request, $response) {
-        $csv = new CsvIn($this->zdb);
-        $existing = $csv->getExisting();
-        $dryrun = true;
-
-        // display page
-        $this->view->render(
-            $response,
-            'import.tpl',
-            array(
-                'page_title'        => _T("CSV members import"),
-                'existing'          => $existing,
-                'dryrun'            => $dryrun,
-                'import_file'       => $this->session->import_file
-            )
-        );
-        return $response;
-    }
+    CsvController::class . ':import'
 )->setName('import')->add($authenticate);
 
 $app->post(
     '/import',
-    function ($request, $response) {
-        $csv = new CsvIn($this->zdb);
-        $post = $request->getParsedBody();
-        $dryrun = isset($post['dryrun']);
-
-        //store selected file to dispaly again in UI
-        $this->session->import_file = $post['import_file'];
-
-        $res = $csv->import(
-            $this->zdb,
-            $this->preferences,
-            $this->history,
-            $post['import_file'],
-            $this->members_fields,
-            $this->members_fields_cats,
-            $dryrun
-        );
-        if ($res !== true) {
-            if ($res < 0) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $csv->getErrorMessage($res)
-                );
-                if (count($csv->getErrors()) > 0) {
-                    foreach ($csv->getErrors() as $error) {
-                        $this->flash->addMessage(
-                            'error_detected',
-                            $error
-                        );
-                    }
-                }
-            } else {
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("An error occurred importing the file :(")
-                );
-            }
-
-        } else {
-            if ($this->session->import_file && !$dryrun) {
-                $this->session->import_file = null;
-            }
-            $this->flash->addMessage(
-                'success_detected',
-                str_replace(
-                    '%filename%',
-                    $post['import_file'],
-                    _T("File '%filename%' has been successfully imported :)")
-                )
-            );
-        }
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('import'));
-    }
+    CsvController::class . ':doImports'
 )->setName('doImport')->add($authenticate);
 
 $app->post(
     '/import/upload',
-    function ($request, $response) {
-        $csv = new CsvIn($this->zdb);
-        if (isset($_FILES['new_file'])) {
-            if ($_FILES['new_file']['error'] === UPLOAD_ERR_OK) {
-                if ($_FILES['new_file']['tmp_name'] !='') {
-                    if (is_uploaded_file($_FILES['new_file']['tmp_name'])) {
-                        $res = $csv->store($_FILES['new_file']);
-                        if ($res < 0) {
-                            $this->flash->addMessage(
-                                'error_detected',
-                                $csv->getErrorMessage($res)
-                            );
-                        } else {
-                            $this->flash->addMessage(
-                                'success_detected',
-                                _T("Your file has been successfully uploaded!")
-                            );
-                        }
-                    }
-                }
-            } elseif ($_FILES['new_file']['error'] !== UPLOAD_ERR_NO_FILE) {
-                Analog::log(
-                    $csv->getPhpErrorMessage($_FILES['new_file']['error']),
-                    Analog::WARNING
-                );
-                $this->flash->addMessage(
-                    'error_detected',
-                    $csv->getPhpErrorMessage(
-                        $_FILES['new_file']['error']
-                    )
-                );
-            } elseif (isset($_POST['upload'])) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("No files has been seleted for upload!")
-                );
-            }
-        } else {
-            $this->flash->addMessage(
-                'warning_detected',
-                _T("No files has been uploaded!")
-            );
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('import'));
-    }
+    CsvController::class . ':uploadImportFile'
 )->setname('uploadImportFile')->add($authenticate);
 
 $app->get(
     '/import/model',
-    function ($request, $response) {
-        $model = new ImportModel();
-        $model->load();
-
-        if (isset($request->getQueryParams()['remove'])) {
-            $model->remove($this->zdb);
-            $model->load();
-        }
-
-        $csv = new CsvIn($this->zdb);
-
-        /** FIXME:
-        * - set fields that should not be part of import
-        */
-        $fields = $model->getFields();
-        $defaults = $csv->getDefaultFields();
-        $defaults_loaded = false;
-
-        if ($fields === null) {
-            $fields = $defaults;
-            $defaults_loaded = true;
-        }
-
-        $import_fields = $this->members_fields;
-        //we do not want to import id_adh. Never.
-        unset($import_fields['id_adh']);
-
-        // display page
-        $this->view->render(
-            $response,
-            'import_model.tpl',
-            array(
-                'page_title'        => _T("CSV import model"),
-                'fields'            => $fields,
-                'model'             => $model,
-                'defaults'          => $defaults,
-                'members_fields'    => $import_fields,
-                'defaults_loaded'   => $defaults_loaded
-            )
-        );
-        return $response;
-    }
+    CsvController::class . ':importModel'
 )->setName('importModel')->add($authenticate);
 
 $app->get(
     '/import/model/get',
-    function ($request, $response) {
-        $model = new ImportModel();
-        $model->load();
-
-        $csv = new CsvIn($this->zdb);
-
-        /** FIXME:
-        * - set fields that should not be part of import
-        * - set fields that must be part of import, and visually disable them in the list
-        */
-
-        $fields = $model->getFields();
-        $defaults = $csv->getDefaultFields();
-        $defaults_loaded = false;
-
-        if ($fields === null) {
-            $fields = $defaults;
-            $defaults_loaded = true;
-        }
-
-        $ocsv = new CsvOut();
-        $res = $ocsv->export(
-            $fields,
-            Csv::DEFAULT_SEPARATOR,
-            Csv::DEFAULT_QUOTE,
-            $fields
-        );
-        $filename = _T("galette_import_model.csv");
-
-        $response = $this->response->withHeader('Content-Description', 'File Transfer')
-            ->withHeader('Content-Type', 'text/csv')
-            ->withHeader('Content-Disposition', 'attachment;filename="' . $filename . '"')
-            ->withHeader('Pragma', 'no-cache')
-            ->withHeader('Content-Transfer-Encoding', 'binary')
-            ->withHeader('Expires', '0')
-            ->withHeader('Cache-Control', 'must-revalidate')
-            ->withHeader('Pragma', 'public');
-
-        $stream = fopen('php://memory', 'r+');
-        fwrite($stream, $res);
-        rewind($stream);
-
-        return $response->withBody(new \Slim\Http\Stream($stream));
-    }
+    CsvController::class . ':getImportModel'
 )->setName('getImportModel')->add($authenticate);
 
 $app->post(
     '/import/model/store',
-    function ($request, $response) {
-        $model = new ImportModel();
-        $model->load();
-
-        $model->setFields($request->getParsedBody()['fields']);
-        $res = $model->store($this->zdb);
-        if ($res === true) {
-            $this->flash->addMessage(
-                'success_detected',
-                _T("Import model has been successfully stored :)")
-            );
-        } else {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Import model has not been stored :(")
-            );
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('importModel'));
-    }
+    CsvController::class . ':storeModel'
 )->setName('storeImportModel')->add($authenticate);
 
 $app->get(
     '/models/pdf',
-    function ($request, $response) {
-        $id = 1;
-        if (isset($_GET['id'])) {
-            $id = (int)$_GET['id'];
-        } elseif (isset($_POST[PdfModel::PK])) {
-            $id = (int)$_POST[PdfModel::PK];
-        }
-
-        $model = null;
-
-        $ms = new PdfModels($this->zdb, $this->preferences, $this->login);
-        $models = $ms->getList();
-
-        foreach ($models as $m) {
-            if ($m->id === $id) {
-                $model = $m;
-                break;
-            }
-        }
-
-        $ajax = false;
-        if ($request->isXhr()
-            || isset($request->getQueryParams()['ajax'])
-            && $request->getQueryParams()['ajax'] == 'true'
-        ) {
-            $ajax = true;
-        }
-
-        $tpl = null;
-        $params = [];
-        if ($ajax) {
-            $tpl = 'gestion_pdf_content.tpl';
-            $params['model'] = $model;
-        } else {
-            $tpl = 'gestion_pdf.tpl';
-            $params = [
-                'page_title'        => _T("PDF models"),
-                'models'            => $models,
-                'model'             => $model
-            ];
-        }
-
-        // display page
-        $this->view->render(
-            $response,
-            $tpl,
-            $params
-        );
-        return $response;
-    }
+    PdfController::class . ':models'
 )->setName('pdfModels')->add($authenticate);
 
 $app->post(
     '/models/pdf',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-        $type = null;
-        if (isset($post['model_type'])) {
-            $type = (int)$post['model_type'];
-        }
-
-        if ($type === null) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Missing PDF model type!")
-            );
-        } else {
-            $class = PdfModel::getTypeClass($type);
-            if (isset($post[PdfModel::PK])) {
-                $model = new $class($this->zdb, $this->preferences, (int)$_POST[PdfModel::PK]);
-            } else {
-                $model = new $class($this->zdb, $this->preferences);
-            }
-
-            try {
-                $model->header = $post['model_header'];
-                $model->footer = $post['model_footer'];
-                $model->type = $type;
-                if (isset($post['model_body'])) {
-                    $model->body = $post['model_body'];
-                }
-                if (isset($post['model_title'])) {
-                    $model->title = $post['model_title'];
-                }
-                if (isset($post['model_body'])) {
-                    $model->subtitle = $post['model_subtitle'];
-                }
-                if (isset($post['model_styles'])) {
-                    $model->styles = $post['model_styles'];
-                }
-                $res = $model->store();
-                if ($res === true) {
-                    $this->flash->addMessage(
-                        'success_detected',
-                        _T("Model has been successfully stored!")
-                    );
-                } else {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        _T("Model has not been stored :(")
-                    );
-                }
-            } catch (\Exception $e) {
-                $error_detected[] = $e->getMessage();
-            }
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('pdfModels'));
-    }
+    PdfController::class . ':storeModels'
 )->setName('pdfModels')->add($authenticate);
 
 $app->get(

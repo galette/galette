@@ -41,6 +41,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Analog\Analog;
 use Galette\Entity\Adherent;
+use Galette\Entity\PdfModel;
 use Galette\Filters\MembersList;
 use Galette\IO\Pdf;
 use Galette\IO\PdfGroups;
@@ -48,6 +49,7 @@ use Galette\IO\PdfMembersCards;
 use Galette\IO\PdfMembersLabels;
 use Galette\Repository\Members;
 use Galette\Repository\Groups;
+use Galette\Repository\PdfModels;
 
 /**
  * Galette PDF controller
@@ -449,5 +451,134 @@ class PdfController extends AbstractController
         $pdf->draw($groups_list, $this->login);
 
         return $this->sendResponse($response, $pdf);
+    }
+
+    /**
+     * PDF models list
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function models(Request $request, Response $response, array $args = []) :Response
+    {
+        $id = 1;
+        if (isset($_GET['id'])) {
+            $id = (int)$_GET['id'];
+        } elseif (isset($_POST[PdfModel::PK])) {
+            $id = (int)$_POST[PdfModel::PK];
+        }
+
+        $model = null;
+
+        $ms = new PdfModels($this->zdb, $this->preferences, $this->login);
+        $models = $ms->getList();
+
+        foreach ($models as $m) {
+            if ($m->id === $id) {
+                $model = $m;
+                break;
+            }
+        }
+
+        $ajax = false;
+        if ($request->isXhr()
+            || isset($request->getQueryParams()['ajax'])
+            && $request->getQueryParams()['ajax'] == 'true'
+        ) {
+            $ajax = true;
+        }
+
+        $tpl = null;
+        $params = [];
+        if ($ajax) {
+            $tpl = 'gestion_pdf_content.tpl';
+            $params['model'] = $model;
+        } else {
+            $tpl = 'gestion_pdf.tpl';
+            $params = [
+                'page_title'        => _T("PDF models"),
+                'models'            => $models,
+                'model'             => $model
+            ];
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            $tpl,
+            $params
+        );
+        return $response;
+    }
+
+    /**
+     * Store PDF models
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function storeModels(Request $request, Response $response, array $args = []) :Response
+    {
+        $post = $request->getParsedBody();
+        $type = null;
+        if (isset($post['model_type'])) {
+            $type = (int)$post['model_type'];
+        }
+
+        if ($type === null) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Missing PDF model type!")
+            );
+        } else {
+            $class = PdfModel::getTypeClass($type);
+            if (isset($post[PdfModel::PK])) {
+                $model = new $class($this->zdb, $this->preferences, (int)$_POST[PdfModel::PK]);
+            } else {
+                $model = new $class($this->zdb, $this->preferences);
+            }
+
+            try {
+                $model->header = $post['model_header'];
+                $model->footer = $post['model_footer'];
+                $model->type = $type;
+                if (isset($post['model_body'])) {
+                    $model->body = $post['model_body'];
+                }
+                if (isset($post['model_title'])) {
+                    $model->title = $post['model_title'];
+                }
+                if (isset($post['model_body'])) {
+                    $model->subtitle = $post['model_subtitle'];
+                }
+                if (isset($post['model_styles'])) {
+                    $model->styles = $post['model_styles'];
+                }
+                $res = $model->store();
+                if ($res === true) {
+                    $this->flash->addMessage(
+                        'success_detected',
+                        _T("Model has been successfully stored!")
+                    );
+                } else {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        _T("Model has not been stored :(")
+                    );
+                }
+            } catch (\Exception $e) {
+                $error_detected[] = $e->getMessage();
+            }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('pdfModels'));
     }
 }
