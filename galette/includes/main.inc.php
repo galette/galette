@@ -129,14 +129,6 @@ $session->start();
 // Set up dependencies
 require GALETTE_ROOT . '/includes/dependencies.php';
 
-/*$app->configureMode(
-    'MAINT',
-    function () use ($app, $i18n, $login) {
-        $app->add(new Galette\Core\Middleware($i18n, $login));
-    }
-);*/
-
-
 $smarty = $app->getContainer()->get('view')->getSmarty();
 require_once GALETTE_ROOT . 'includes/smarty.inc.php';
 
@@ -377,47 +369,6 @@ function getGaletteBaseUrl(\Slim\Http\Request $request)
 }
 
 /**
- * Get current URI
- *
- * @param app $app Slim application instance
- *
- * @return string
- */
-function getCurrentUri($app)
-{
-    $curUri = str_replace(
-        'index.php',
-        '',
-        $app->request()->getRootUri()
-    );
-
-    //add ending / if missing
-    if ($curUri === ''
-        || $curUri !== '/'
-        && substr($curUri, -1) !== '/'
-    ) {
-        $curUri .= '/';
-    }
-    return $curUri;
-};
-
-/**
- * Retrieve current route name
- *
- * @param app $app Slim application instance
- *
- * @return string
- */
-function getCurrentRoute($app)
-{
-    $cur_route = $app->router()->getMatchedRoutes(
-        'get',
-        $app->request()->getPathInfo()
-    )[0]->getName();
-    return $cur_route;
-}
-
-/**
  * Trailing slash middleware
  */
 $app->add(function ($request, $response, $next) {
@@ -529,6 +480,7 @@ $app->add(function ($request, $response, $next) {
 });
 
 /**
+ * Check routes ACLs
  * This is important this one to be the last, so it'll be executed first.
  */
 $app->add(function ($request, $response, $next) {
