@@ -464,4 +464,94 @@ class GaletteController extends AbstractController
         );
         return $response;
     }
+
+    /**
+     * Core fields configuration page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function configureCoreFields(Request $request, Response $response) :Response
+    {
+        $fc = $this->fields_config;
+
+        $params = [
+            'page_title'            => _T("Fields configuration"),
+            'time'                  => time(),
+            'categories'            => FieldsCategories::getList($this->zdb),
+            'categorized_fields'    => $fc->getCategorizedFields(),
+            'non_required'          => $fc->getNonRequired()
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'config_fields.tpl',
+            $params
+        );
+        return $response;
+    }
+
+    /**
+     * Process core fields configuration
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function storeCoreFieldsConfig(Request $request, Response $response) :Response
+    {
+        $post = $request->getParsedBody();
+        $fc = $this->fields_config;
+
+        $pos = 0;
+        $current_cat = 0;
+        $res = array();
+        foreach ($post['fields'] as $abs_pos => $field) {
+            if ($current_cat != $post[$field . '_category']) {
+                //reset position when category has changed
+                $pos = 0;
+                //set new current category
+                $current_cat = $post[$field . '_category'];
+            }
+
+            $required = null;
+            if (isset($post[$field . '_required'])) {
+                $required = $post[$field . '_required'];
+            } else {
+                $required = false;
+            }
+
+            $res[$current_cat][] = array(
+                'field_id'  =>  $field,
+                'label'     =>  $post[$field . '_label'],
+                'category'  =>  $post[$field . '_category'],
+                'visible'   =>  $post[$field . '_visible'],
+                'required'  =>  $required
+            );
+            $pos++;
+        }
+        //okay, we've got the new array, we send it to the
+        //Object that will store it in the database
+        $success = $fc->setFields($res);
+        FieldsCategories::setCategories($this->zdb, $post['categories']);
+        if ($success === true) {
+            $this->flash->addMessage(
+                'success_detected',
+                _T("Fields configuration has been successfully stored")
+            );
+        } else {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("An error occurred while storing fields configuration :(")
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('configureCoreFields'));
+    }
 }

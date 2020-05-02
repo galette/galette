@@ -37,9 +37,9 @@
 
 use Galette\Controllers\GaletteController;
 use Galette\Controllers\PluginsController;
+use Galette\Controllers\HistoryController;
+use Galette\Controllers\DynamicTranslationsController;
 
-use Galette\Core\History;
-use Galette\Filters\HistoryList;
 use Galette\Core\MailingHistory;
 use Galette\Filters\MailingsList;
 use Galette\Entity\FieldsCategories;
@@ -112,203 +112,24 @@ $app->map(
 //galette logs
 $app->get(
     '/logs[/{option:page|order}/{value}]',
-    function ($request, $response, $args = []) {
-        $option = null;
-        if (isset($args['option'])) {
-            $option = $args['option'];
-        }
-        $value = null;
-        if (isset($args['value'])) {
-            $value = $args['value'];
-        }
-
-        if (isset($this->session->filter_history)) {
-            $filters = $this->session->filter_history;
-        } else {
-            $filters = new HistoryList();
-        }
-
-        if (isset($request->getQueryParams()['nbshow'])) {
-            $filters->show = $request->getQueryParams()['nbshow'];
-        }
-
-        if ($option !== null) {
-            switch ($option) {
-                case 'page':
-                    $filters->current_page = (int)$value;
-                    break;
-                case 'order':
-                    $filters->orderby = $value;
-                    break;
-            }
-        }
-
-        $this->session->filter_history = $filters;
-
-        $this->history->setFilters($filters);
-        $logs = $this->history->getHistory();
-
-        //assign pagination variables to the template and add pagination links
-        $this->history->filters->setSmartyPagination($this->router, $this->view->getSmarty());
-
-        // display page
-        $this->view->render(
-            $response,
-            'history.tpl',
-            array(
-                'page_title'        => _T("Logs"),
-                'logs'              => $logs,
-                'history'           => $this->history
-            )
-        );
-        return $response;
-    }
-)->setName(
-    'history'
-)->add($authenticate);
+    HistoryController::class . ':history'
+)->setName('history')->add($authenticate);
 
 $app->post(
     '/logs/filter',
-    function ($request, $response, $args) {
-        $post = $request->getParsedBody();
-        $error_detected = [];
-
-        if ($this->session->filter_history !== null) {
-            $filters = $this->session->filter_history;
-        } else {
-            $filters = new HistoryList();
-        }
-
-        if (isset($post['clear_filter'])) {
-            $filters->reinit();
-        } else {
-            if ((isset($post['nbshow']) && is_numeric($post['nbshow']))
-            ) {
-                $filters->show = $post['nbshow'];
-            }
-
-            if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
-                try {
-                    if (isset($post['start_date_filter'])) {
-                        $field = _T("start date filter");
-                        $filters->start_date_filter = $post['start_date_filter'];
-                    }
-                    if (isset($post['end_date_filter'])) {
-                        $field = _T("end date filter");
-                        $filters->end_date_filter = $post['end_date_filter'];
-                    }
-                } catch (Exception $e) {
-                    $error_detected[] = $e->getMessage();
-                }
-            }
-
-            if (isset($post['user_filter'])) {
-                $filters->user_filter = $post['user_filter'];
-            }
-
-            if (isset($post['action_filter'])) {
-                $filters->action_filter = $post['action_filter'];
-            }
-        }
-
-        $this->session->filter_history = $filters;
-
-        if (count($error_detected) > 0) {
-            //report errors
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('history'));
-    }
+    HistoryController::class . ':historyFilter'
 )->setName(
     'history_filter'
 )->add($authenticate);
 
 $app->get(
     '/logs/flush',
-    function ($request, $response) {
-        $data = [
-            'redirect_uri'  => $this->router->pathFor('history')
-        ];
-
-        // display page
-        $this->view->render(
-            $response,
-            'confirm_removal.tpl',
-            array(
-                'mode'          => $request->isXhr() ? 'ajax' : '',
-                'page_title'    => _T('Flush the logs'),
-                'form_url'      => $this->router->pathFor('doFlushHistory'),
-                'cancel_uri'    => $data['redirect_uri'],
-                'data'          => $data
-            )
-        );
-        return $response;
-    }
+    HistoryController::class . ':confirmHistoryFlush'
 )->setName('flushHistory')->add($authenticate);
 
 $app->post(
     '/logs/flush',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
-        $success = false;
-
-        $uri = isset($post['redirect_uri']) ?
-            $post['redirect_uri'] :
-            $this->router->pathFor('slash');
-
-        if (!isset($post['confirm'])) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Removal has not been confirmed!")
-            );
-        } else {
-            try {
-                $this->history->clean();
-                //reinitialize object after flush
-                $this->history = new History($this->zdb, $this->login);
-                $filters = new HistoryList();
-                $this->session->filter_history = $filters;
-
-                $this->flash->addMessage(
-                    'success_detected',
-                    _T('Logs have been flushed!')
-                );
-                $success = true;
-            } catch (\Exception $e) {
-                $this->zdb->connection->rollBack();
-                Analog::log(
-                    'An error occurred flushing logs | ' . $e->getMessage(),
-                    Analog::ERROR
-                );
-
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T('An error occurred trying to flush logs :(')
-                );
-            }
-        }
-
-        if (!$ajax) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $uri);
-        } else {
-            return $response->withJson(
-                [
-                    'success'   => $success
-                ]
-            );
-        }
-    }
+    HistoryController::class . ':flushHistory'
 )->setName('doFlushHistory')->add($authenticate);
 
 //mailings management
@@ -1764,239 +1585,22 @@ $app->post(
 
 $app->get(
     '/dynamic-translations[/{text_orig}]',
-    function ($request, $response, $args) {
-        $text_orig = '';
-        if (isset($args['text_orig'])) {
-            $text_orig = $args['text_orig'];
-        } elseif (isset($_GET['text_orig'])) {
-            $text_orig = $_GET['text_orig'];
-        }
-
-        $params = [
-            'page_title'    => _T("Translate labels")
-        ];
-
-        $nb_fields = 0;
-        try {
-            $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
-            $select->columns(
-                array('nb' => new Laminas\Db\Sql\Expression('COUNT(text_orig)'))
-            );
-            $results = $this->zdb->execute($select);
-            $result = $results->current();
-            $nb_fields = $result->nb;
-        } catch (Exception $e) {
-            Analog::log(
-                'An error occurred counting l10n entries | ' .
-                $e->getMessage(),
-                Analog::WARNING
-            );
-        }
-
-        if (is_numeric($nb_fields) && $nb_fields > 0) {
-            try {
-                $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
-                $select->quantifier('DISTINCT')->columns(
-                    array('text_orig')
-                )->order('text_orig');
-
-                $all_texts = $this->zdb->execute($select);
-
-                $orig = array();
-                foreach ($all_texts as $idx => $row) {
-                    $orig[] = $row->text_orig;
-                }
-                $exists = true;
-                if ($text_orig == '') {
-                    $text_orig = $orig[0];
-                } elseif (!in_array($text_orig, $orig)) {
-                    $exists = false;
-                    $this->flash->addMessage(
-                        'error_detected',
-                        str_replace(
-                            '%s',
-                            $text_orig,
-                            _T("No translation for '%s'!<br/>Please fill and submit above form to create it.")
-                        )
-                    );
-                }
-
-                $trans = array();
-                /**
-                * FIXME : it would be faster to get all translations at once
-                * for a specific string
-                */
-                foreach ($this->i18n->getList() as $l) {
-                    $text_trans = getDynamicTranslation($text_orig, $l->getLongID());
-                    $lang_name = $l->getName();
-                    $trans[] = array(
-                        'key'  => $l->getLongID(),
-                        'name' => ucwords($lang_name),
-                        'text' => $text_trans
-                    );
-                }
-
-                $params['exists'] = $exists;
-                $params['orig'] = $orig;
-                $params['trans'] = $trans;
-            } catch (\Exception $e) {
-                Analog::log(
-                    'An error occurred retrieving l10n entries | ' .
-                    $e->getMessage(),
-                    Analog::WARNING
-                );
-            }
-        }
-
-        $params['text_orig'] = $text_orig;
-
-        // display page
-        $this->view->render(
-            $response,
-            'traduire_libelles.tpl',
-            $params
-        );
-        return $response;
-    }
+    DynamicTranslationsController::class . ':dynamicTranslations'
 )->setName('dynamicTranslations')->add($authenticate);
 
 $app->post(
     '/dynamic-translations',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-        $error_detected = false;
-
-        if (isset($post['trans']) && isset($post['text_orig'])) {
-            if (isset($_POST['new']) && $_POST['new'] == 'true') {
-                //create translation if it does not exists yet
-                $res = addDynamicTranslation(
-                    $post['text_orig']
-                );
-            }
-
-            // Validate form
-            foreach ($post as $key => $value) {
-                if (substr($key, 0, 11) == 'text_trans_') {
-                    $trans_lang = substr($key, 11);
-                    $trans_lang = str_replace('_utf8', '.utf8', $trans_lang);
-                    $res = updateDynamicTranslation(
-                        $post['text_orig'],
-                        $trans_lang,
-                        $value
-                    );
-                    if ($res !== true) {
-                        $error_detected = true;
-                        $this->flash->addMessage(
-                            'error_detected',
-                            preg_replace(
-                                array(
-                                    '/%label/',
-                                    '/%lang/'
-                                ),
-                                array(
-                                    $post['text_orig'],
-                                    $trans_lang
-                                ),
-                                _T("An error occurred saving label `%label` for language `%lang`")
-                            )
-                        );
-                    }
-                }
-            }
-
-            if ($error_detected === false) {
-                $this->flash->addMessage(
-                    'success_detected',
-                    _T("Labels has been sucessfully translated!")
-                );
-            }
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor(
-                'dynamicTranslations',
-                ['text_orig' => $post['text_orig']]
-            ));
-    }
+    DynamicTranslationsController::class . ':doDynamicTranslations'
 )->setName('editDynamicTranslation')->add($authenticate);
 
 $app->get(
     '/fields/core/configure',
-    function ($request, $response) {
-        $fc = $this->fields_config;
-
-        $params = [
-            'page_title'            => _T("Fields configuration"),
-            'time'                  => time(),
-            'categories'            => FieldsCategories::getList($this->zdb),
-            'categorized_fields'    => $fc->getCategorizedFields(),
-            'non_required'          => $fc->getNonRequired()
-        ];
-
-        // display page
-        $this->view->render(
-            $response,
-            'config_fields.tpl',
-            $params
-        );
-        return $response;
-    }
+    GaletteController::class . ':configureCoreFields'
 )->setName('configureCoreFields')->add($authenticate);
 
 $app->post(
     '/fields/core/configure',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-        $fc = $this->fields_config;
-
-        $pos = 0;
-        $current_cat = 0;
-        $res = array();
-        foreach ($post['fields'] as $abs_pos => $field) {
-            if ($current_cat != $post[$field . '_category']) {
-                //reset position when category has changed
-                $pos = 0;
-                //set new current category
-                $current_cat = $post[$field . '_category'];
-            }
-
-            $required = null;
-            if (isset($post[$field . '_required'])) {
-                $required = $post[$field . '_required'];
-            } else {
-                $required = false;
-            }
-
-            $res[$current_cat][] = array(
-                'field_id'  =>  $field,
-                'label'     =>  $post[$field . '_label'],
-                'category'  =>  $post[$field . '_category'],
-                'visible'   =>  $post[$field . '_visible'],
-                'required'  =>  $required
-            );
-            $pos++;
-        }
-        //okay, we've got the new array, we send it to the
-        //Object that will store it in the database
-        $success = $fc->setFields($res);
-        FieldsCategories::setCategories($this->zdb, $post['categories']);
-        if ($success === true) {
-            $this->flash->addMessage(
-                'success_detected',
-                _T("Fields configuration has been successfully stored")
-            );
-        } else {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("An error occurred while storing fields configuration :(")
-            );
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('configureCoreFields'));
-    }
+    GaletteController::class . ':storeCoreFieldsConfig'
 )->setName('storeCoreFieldsConfig')->add($authenticate);
 
 $app->get(
