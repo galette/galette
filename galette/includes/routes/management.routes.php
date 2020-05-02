@@ -36,11 +36,8 @@
  */
 
 use Galette\Controllers\GaletteController;
+use Galette\Controllers\PluginsController;
 
-use Galette\Core\PrintLogo;
-use Galette\Core\GaletteMail;
-use Galette\Core\Preferences;
-use Galette\Core\Logo;
 use Galette\Core\History;
 use Galette\Filters\HistoryList;
 use Galette\Core\MailingHistory;
@@ -49,7 +46,6 @@ use Galette\Entity\FieldsCategories;
 use Galette\DynamicFields\DynamicField;
 use Galette\Repository\Members;
 use Galette\IO\News;
-use Galette\IO\Charts;
 use \Analog\Analog;
 use Galette\IO\Csv;
 use Galette\IO\CsvOut;
@@ -63,7 +59,6 @@ use Galette\Repository\PaymentTypes;
 use Galette\Entity\Texts;
 use Galette\Core\Install;
 use Laminas\Db\Adapter\Adapter;
-use Galette\Core\PluginInstall;
 use Galette\Entity\Status;
 use Galette\Entity\PaymentType;
 
@@ -99,286 +94,19 @@ $app->get(
 //plugins
 $app->get(
     '/plugins',
-    function ($request, $response) {
-        $plugins = $this->get('plugins');
-
-        $plugins_list = $plugins->getModules();
-        $disabled_plugins = $plugins->getDisabledModules();
-
-        // display page
-        $this->view->render(
-            $response,
-            'plugins.tpl',
-            array(
-                'page_title'            => _T("Plugins"),
-                'plugins_list'          => $plugins_list,
-                'plugins_disabled_list' => $disabled_plugins
-            )
-        );
-        return $response;
-    }
+    PluginsController::class . ':showPlugins'
 )->setName('plugins')->add($authenticate);
 
 //plugins (de)activation
 $app->get(
     '/plugins/{action:activate|deactivate}/{module_id}',
-    function ($request, $response, $args) {
-        if (GALETTE_MODE !== 'DEMO') {
-            $plugins = $this->get('plugins');
-            $action = $args['action'];
-            $reload_plugins = false;
-            if ($action == 'activate') {
-                try {
-                    $plugins->activateModule($args['module_id']);
-                    $this->flash->addMessage(
-                        'success_detected',
-                        str_replace(
-                            '%name',
-                            $args['module_id'],
-                            _T("Plugin %name has been enabled")
-                        )
-                    );
-                    $reload_plugins = true;
-                } catch (\Exception $e) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $e->getMessage()
-                    );
-                }
-            } elseif ($args['action'] == 'deactivate') {
-                try {
-                    $plugins->deactivateModule($args['module_id']);
-                    $this->flash->addMessage(
-                        'success_detected',
-                        str_replace(
-                            '%name',
-                            $args['module_id'],
-                            _T("Plugin %name has been disabled")
-                        )
-                    );
-                    $reload_plugins = true;
-                } catch (\Exception $e) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $e->getMessage()
-                    );
-                }
-            }
-
-            //If some plugins have been (de)activated, we have to reload
-            if ($reload_plugins === true) {
-                $plugins->loadModules($this->preferences, GALETTE_PLUGINS_PATH, $this->i18n->getLongID());
-            }
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('plugins'));
-    }
+    PluginsController::class . ':togglePlugin'
 )->setName('pluginsActivation')->add($authenticate);
 
 $app->map(
     ['GET', 'POST'],
     '/plugins/initialize-database/{id}',
-    function ($request, $response, $args) {
-        if (GALETTE_MODE === 'DEMO') {
-            Analog::log(
-                'Trying to access plugin database initialization in DEMO mode.',
-                Analog::WARNING
-            );
-            return $response->withStatus(403);
-        }
-
-        $params = [];
-        $warning_detected = [];
-        $error_detected = [];
-
-        $plugid = $args['id'];
-        $plugin = $this->plugins->getModules($plugid);
-
-        if ($plugin === null) {
-            Analog::log(
-                'Unable to load plugin `' . $plugid . '`!',
-                Analog::URGENT
-            );
-            $notFound = $this->notFoundHandler;
-            return $notFound($request, $response);
-        }
-
-        $install = null;
-        $mdplugin = md5($plugin['root']);
-        if (isset($this->session->$mdplugin)
-            && !isset($_GET['raz'])
-        ) {
-            $install = $this->session->$mdplugin;
-        } else {
-            $install = new PluginInstall();
-        }
-
-        $post = $request->getParsedBody();
-
-        if (isset($post['stepback_btn'])) {
-            $install->atPreviousStep();
-        } elseif (isset($post['install_prefs_ok'])) {
-            $install->atEndStep();
-        } elseif (isset($_POST['previous_version'])) {
-            $install->setInstalledVersion($_POST['previous_version']);
-            $install->atDbUpgradeStep();
-        } elseif (isset($post['install_dbperms_ok'])) {
-            if ($install->isInstall()) {
-                $install->atDbInstallStep();
-            } elseif ($install->isUpgrade()) {
-                $install->atVersionSelection();
-            }
-        } elseif (isset($post['install_type'])) {
-            $install->setMode($post['install_type']);
-            $install->atDbStep();
-        }
-
-        $step = 1;
-        $istep = 1;
-
-        if (isset($post['install_type'])) {
-            $params['install_type'] = $post['install_type'];
-            $istep = 2;
-        }
-
-        if (isset($post['install_dbperms_ok'])) {
-            if ($post['install_type'] === PluginInstall::INSTALL) {
-                $istep = 4;
-            } else {
-                $istep = 3;
-            }
-        }
-
-        if (isset($post['previous_version'])) {
-            $istep = 4;
-        }
-
-        if (isset($post['install_dbwrite_ok'])) {
-            $istep = 5;
-        }
-
-        if ($post['install_type'] == PluginInstall::INSTALL) {
-            $step = 'i' . $istep;
-        } elseif ($istep > 1 && $post['install_type'] == PluginInstall::UPDATE) {
-            $step = 'u' . $istep;
-        }
-
-        switch ($step) {
-            case '1':
-                //let's look for updates scripts
-                $update_scripts = $install::getUpdateScripts($plugin['root'], TYPE_DB);
-                if (count($update_scripts) > 0) {
-                    $params['update_scripts'] = $update_scripts;
-                }
-                break;
-            case 'i2':
-            case 'u2':
-                if (!defined('GALETTE_THEME_DIR')) {
-                    define('GALETTE_THEME_DIR', './themes/default/');
-                }
-
-                $install_plugin = true;
-                //not used here, but from include
-                $zdb = $this->zdb;
-                ob_start();
-                include_once __DIR__ . '/../../install/steps/db_checks.php';
-                $params['results'] = ob_get_contents();
-                ob_end_clean();
-                break;
-            case 'u3':
-                $update_scripts = Install::getUpdateScripts($plugin['root'], TYPE_DB);
-                $params['update_scripts'] = $update_scripts;
-                break;
-            case 'i4':
-            case 'u4':
-                $messages = [];
-
-                // begin : copyright (2002) the phpbb group (support@phpbb.com)
-                // load in the sql parser
-                include GALETTE_ROOT . 'includes/sql_parse.php';
-                if ($step == 'u4') {
-                    $update_scripts = Install::getUpdateScripts(
-                        $plugin['root'],
-                        TYPE_DB,
-                        $_POST['previous_version']
-                    );
-                } else {
-                    $update_scripts['current'] = TYPE_DB . '.sql';
-                }
-
-                $sql_query = '';
-                foreach ($update_scripts as $key => $val) {
-                    $sql_query .= @fread(
-                        @fopen($plugin['root'] . '/scripts/' . $val, 'r'),
-                        @filesize($plugin['root'] . '/scripts/' . $val)
-                    );
-                    $sql_query .= "\n";
-                }
-
-                $sql_query = preg_replace('/galette_/', PREFIX_DB, $sql_query);
-                $sql_query = remove_remarks($sql_query);
-
-                $sql_query = split_sql_file($sql_query, ';');
-
-                for ($i = 0; $i < sizeof($sql_query); $i++) {
-                    $query = trim($sql_query[$i]);
-                    if ($query != '' && $query[0] != '-') {
-                        //some output infos
-                        @list($w1, $w2, $w3, $extra) = array_pad(explode(' ', $query, 4), 4, '');
-                        if ($extra != '') {
-                            $extra = '...';
-                        }
-                        try {
-                            $this->zdb->db->query(
-                                $query,
-                                Adapter::QUERY_MODE_EXECUTE
-                            );
-                            $messages['success'][] = $w1 . ' ' . $w2 . ' ' . $w3 .
-                                ' ' . $extra;
-                        } catch (Exception $e) {
-                            Analog::log(
-                                'Error executing query | ' . $e->getMessage() .
-                                ' | Query was: ' . $query,
-                                Analog::WARNING
-                            );
-                            if ((strcasecmp(trim($w1), 'drop') != 0)
-                                && (strcasecmp(trim($w1), 'rename') != 0)
-                            ) {
-                                $error_detected[] = $w1 . ' ' . $w2 . ' ' . $w3 . ' ' . $extra;
-                                $error_detected[] = $e->getMessage() . '<br/>(' . $query  . ')';
-                            } else {
-                                //if error are on drop, DROP, rename or RENAME we can continue
-                                $warning_detected[] = $w1 . ' ' . $w2 . ' ' . $w3 . ' ' . $extra;
-                                $warning_detected[] = $e->getMessage() . '<br/>(' . $query  . ')';
-                            }
-                        }
-                    }
-                }
-                break;
-        }
-
-        $this->session->$mdplugin = $install;
-
-        $params += [
-            'page_title'    => $install->getStepTitle(),
-            'step'          => $step,
-            'istep'         => $istep,
-            'plugid'        => $plugid,
-            'plugin'        => $plugin,
-            'mode'          => ($request->isXhr() ? 'ajax' : ''),
-            'error_detected' => $error_detected
-        ];
-
-        // display page
-        $this->view->render(
-            $response,
-            'plugin_initdb.tpl',
-            $params
-        );
-        return $response;
-    }
+    PluginsController::class . ':initPluginDb'
 )->setName('pluginInitDb')->add($authenticate);
 
 //galette logs

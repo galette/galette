@@ -38,10 +38,6 @@
 use Galette\Controllers\GaletteController;
 use Galette\Controllers\ImagesController;
 
-use Galette\Core\Picture;
-use Galette\Core\SysInfos;
-use Galette\Entity\Adherent;
-
 //main route
 $app->get(
     '/',
