@@ -137,6 +137,7 @@ abstract class AbstractController
         $this->preferences = $container->get('preferences');
         $this->view = $container->get('view');
         $this->logo = $container->get('logo');
+        $this->print_logo = $container->get('print_logo');
         $this->plugins = $container->get('plugins');
         $this->router = $container->get('router');
         $this->history = $container->get('history');

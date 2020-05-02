@@ -105,7 +105,7 @@ class ImagesController extends AbstractController
      */
     public function printLogo(Request $request, Response $response) :Response
     {
-        return $this->sendResponse($response, $this->container->print_logo);
+        return $this->sendResponse($response, $this->print_logo);
     }
 
     /**

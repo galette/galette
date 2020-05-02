@@ -66,7 +66,7 @@ $app->get(
     ImagesController::class . ':photo'
 )->setName('photo');
 
-//system information - keep old route with typo for now (0.9.4)
+//system information - keep old route with typo ('s' on 'information') for now (0.9.4)
 $app->get(
     '/system-informations',
     function ($request, $response, $args) {
@@ -79,19 +79,5 @@ $app->get(
 //system information
 $app->get(
     '/system-information',
-    function ($request, $response, $args = []) {
-        $sysinfos = new SysInfos();
-        $sysinfos->grab();
-
-        // display page
-        $this->view->render(
-            $response,
-            'sysinfos.tpl',
-            array(
-                'page_title'    => _T("System information"),
-                'rawinfos'      => $sysinfos->getRawData($this->plugins)
-            )
-        );
-        return $response;
-    }
+    GaletteController::class . ':systemInformation'
 )->setName('sysinfos')->add($authenticate);
