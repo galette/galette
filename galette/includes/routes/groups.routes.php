@@ -35,11 +35,12 @@
  * @since     0.8.2dev 2014-11-27
  */
 
+Use Galette\Controllers\PdfController;
+
 use Galette\Entity\Adherent;
 use Galette\Entity\Group;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
-use Galette\IO\PdfGroups;
 
 $app->get(
     '/groups[/{id:\d+}]',
@@ -268,38 +269,7 @@ $app->post(
 
 $app->get(
     '/pdf/groups[/{id:\d+}]',
-    function ($request, $response, $args) {
-        $groups = new Groups($this->zdb, $this->login);
-
-        $groups_list = null;
-        if (isset($args['id'])) {
-            $groups_list = $groups->getList(true, $args['id']);
-        } else {
-            $groups_list = $groups->getList();
-        }
-
-        if (!is_array($groups_list) || count($groups_list) < 1) {
-            Analog::log(
-                'An error has occurred, unable to get groups list.',
-                Analog::ERROR
-            );
-
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Unable to get groups list.")
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('groups'));
-        }
-
-        $pdf = new PdfGroups($this->preferences);
-        $pdf->draw($groups_list, $this->login);
-        $response = $this->response->withHeader('Content-type', 'application/pdf');
-        $response->write($pdf->Output(_T("groups_list") . '.pdf', 'D'));
-        return $response;
-    }
+    PdfController::class . ':group'
 )->setName('pdf_groups')->add($authenticate);
 
 $app->post(

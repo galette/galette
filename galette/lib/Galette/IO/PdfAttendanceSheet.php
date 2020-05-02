@@ -82,7 +82,7 @@ class PdfAttendanceSheet extends Pdf
             if ($this->sheet_title !== null) {
                 $head_title .= ' - ' . $this->sheet_title;
             }
-            /* Remove to prevent long lines */
+            /* Removed to prevent long lines */
             /*if ($this->sheet_sub_title !== null) {
                 $head_title .= ' - ' . $this->sheet_sub_title;
             }*/
@@ -102,6 +102,7 @@ class PdfAttendanceSheet extends Pdf
      */
     public function __construct(Db $zdb, Preferences $prefs, $data = [])
     {
+        $this->filename = _T('attendance_sheet') . '.pdf';
         $class = PdfModel::getTypeClass(__CLASS__);
         $model = new $class($zdb, $prefs, PdfModel::MAIN_MODEL);
 

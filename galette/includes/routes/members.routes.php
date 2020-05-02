@@ -35,6 +35,8 @@
  * @since     0.8.2dev 2014-11-27
  */
 
+use Galette\Controllers\PdfController;
+
 use Analog\Analog;
 use Galette\Entity\DynamicFieldsHandle;
 use Galette\Core\Password;
@@ -50,14 +52,11 @@ use Galette\Entity\Contribution;
 use Galette\Repository\Groups;
 use Galette\Repository\Reminders;
 use Galette\Entity\Adherent;
-use Galette\IO\PdfMembersCards;
-use Galette\IO\PdfMembersLabels;
 use Galette\IO\Csv;
 use Galette\IO\CsvOut;
 use Galette\Entity\Status;
 use Galette\Repository\Titles;
 use Galette\Entity\Texts;
-use Galette\IO\Pdf;
 use Galette\Core\MailingHistory;
 use Galette\Entity\Group;
 use Galette\IO\File;
@@ -1489,222 +1488,25 @@ $app->post(
 //PDF members cards
 $app->get(
     '/members/cards[/{' . Adherent::PK . ':\d+}]',
-    function ($request, $response, $args) {
-        if ($this->session->filter_members) {
-            $filters =  $this->session->filter_members;
-        } else {
-            $filters = new MembersList();
-        }
-
-        if (isset($args[Adherent::PK])
-            && $args[Adherent::PK] > 0
-        ) {
-            $id_adh = $args[Adherent::PK];
-            $deps = ['dynamics' => true];
-            if ($this->login->id == $id_adh) {
-                $deps['dues'] = true;
-            }
-            $adh = new Adherent(
-                $this->zdb,
-                $id_adh,
-                $deps
-            );
-            if (!$adh->canEdit($this->login)) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("You do not have permission for requested URL.")
-                );
-
-                return $response
-                    ->withStatus(403)
-                    ->withHeader(
-                        'Location',
-                        $this->router->pathFor('me')
-                    );
-            }
-
-            //check if member is up to date
-            if ($this->login->id == $id_adh) {
-                if (!$adh->isUp2Date()) {
-                    Analog::log(
-                        'Member ' . $id_adh . ' is not up to date; cannot get his PDF member card',
-                        Analog::WARNING
-                    );
-                    return $response
-                        ->withStatus(301)
-                        ->withHeader('Location', $this->router->pathFor('slash'));
-                }
-            }
-
-            // If we are called from a member's card, get unique id value
-            $unique = $id_adh;
-        } else {
-            if (count($filters->selected) == 0) {
-                Analog::log(
-                    'No member selected to generate members cards',
-                    Analog::INFO
-                );
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("No member was selected, please check at least one name.")
-                );
-
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('members'));
-            }
-        }
-
-        // Fill array $selected with selected ids
-        $selected = array();
-        if (isset($unique) && $unique) {
-            $selected[] = $unique;
-        } else {
-            $selected = $filters->selected;
-        }
-
-        $m = new Members();
-        $members = $m->getArrayList(
-            $selected,
-            array('nom_adh', 'prenom_adh'),
-            true
-        );
-
-        if (!is_array($members) || count($members) < 1) {
-            Analog::log(
-                'An error has occurred, unable to get members list.',
-                Analog::ERROR
-            );
-
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Unable to get members list.")
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
-        }
-
-        $pdf = new PdfMembersCards($this->preferences);
-        $pdf->drawCards($members);
-
-        $response = $this->response->withHeader('Content-type', 'application/pdf')
-                ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
-        $response->write($pdf->download());
-        return $response;
-    }
+    PdfController::class . ':membersCards'
 )->setName('pdf-members-cards')->add($authenticate);
 
 //PDF members labels
 $app->get(
     '/members/labels',
-    function ($request, $response) {
-        $get = $request->getQueryParams();
-
-        if ($this->session->filter_reminders_labels) {
-            $filters =  $this->session->filter_reminders_labels;
-            unset($this->session->filter_reminders_labels);
-        } elseif ($this->session->filter_members) {
-            $filters =  $this->session->filter_members;
-        } else {
-            $filters = new MembersList();
-        }
-
-        $members = null;
-        if (isset($get['from'])
-            && $get['from'] === 'mailing'
-        ) {
-            //if we're from mailing, we have to retrieve
-            //its unreachables members for labels
-            $mailing = $this->session->mailing;
-            $members = $mailing->unreachables;
-        } else {
-            if (count($filters->selected) == 0) {
-                Analog::log('No member selected to generate labels', Analog::INFO);
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("No member was selected, please check at least one name.")
-                );
-
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('members'));
-            }
-
-            $m = new Members();
-            $members = $m->getArrayList(
-                $filters->selected,
-                array('nom_adh', 'prenom_adh')
-            );
-        }
-
-        if (!is_array($members) || count($members) < 1) {
-            Analog::log(
-                'An error has occurred, unable to get members list.',
-                Analog::ERROR
-            );
-
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Unable to get members list.")
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
-        }
-
-        $pdf = new PdfMembersLabels($this->preferences);
-        $pdf->drawLabels($members);
-        $response = $this->response->withHeader('Content-type', 'application/pdf')
-                ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"');
-        $response->write($pdf->download());
-        return $response;
-    }
+    PdfController::class . ':membersLabels'
 )->setName('pdf-members-labels')->add($authenticate);
 
 //PDF adhesion form
 $app->get(
     '/members/adhesion-form/{' . Adherent::PK . ':\d+}',
-    function ($request, $response, $args) {
-        $id_adh = (int)$args[Adherent::PK];
-        $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
-
-        if (!$adh->canEdit($this->login)) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("You do not have permission for requested URL.")
-            );
-
-            return $response
-                ->withStatus(403)
-                ->withHeader(
-                    'Location',
-                    $this->router->pathFor('me')
-                );
-        }
-
-        $form = $this->preferences->pref_adhesion_form;
-        $pdf = new $form($adh, $this->zdb, $this->preferences);
-        $response = $this->response->withHeader('Content-type', 'application/pdf')
-            ->withHeader('Content-Disposition', 'attachment; filename="' . $pdf->getFileName() . '"');
-        $response->write($pdf->download());
-        return $response;
-    }
+    PdfController::class . ':adhesionForm'
 )->setName('adhesionForm')->add($authenticate);
 
 //Empty PDF adhesion form
 $app->get(
     '/members/empty-adhesion-form',
-    function ($request, $response) {
-        $form = $this->preferences->pref_adhesion_form;
-        $pdf = new $form(null, $this->zdb, $this->preferences);
-        $response = $this->response->withHeader('Content-type', 'application/pdf')
-            ->withHeader('Content-Disposition', 'attachment; filename="' . $pdf->getFileName() . '"');
-        $response->write($pdf->download());
-        return $response;
-    }
+    PdfController::class . ':adhesionForm'
 )->setName('emptyAdhesionForm');
 
 //mailing
@@ -2384,73 +2186,7 @@ $app->map(
 
 $app->post(
     '/attendance-sheet',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-
-        if ($this->session->filter_members !== null) {
-            $filters = $this->session->filter_members;
-        } else {
-            $filters = new MembersList();
-        }
-
-        //retrieve selected members
-        $selection = (isset($post['selection']) ) ? $post['selection'] : array();
-
-        $filters->selected = $selection;
-        $this->session->filter_members = $filters;
-
-        if (count($filters->selected) == 0) {
-            Analog::log('No member selected to generate attendance sheet', Analog::INFO);
-            $this->flash->addMessage(
-                'error_detected',
-                _T("No member selected to generate attendance sheet")
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
-        }
-
-        $m = new Members();
-        $members = $m->getArrayList(
-            $filters->selected,
-            array('nom_adh', 'prenom_adh'),
-            true
-        );
-
-        if (!is_array($members) || count($members) < 1) {
-            Analog::log('No member selected to generate attendance sheet', Analog::INFO);
-            $this->flash->addMessage(
-                'error_detected',
-                _T("No member selected to generate attendance sheet")
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
-        }
-
-        $doc_title = _T("Attendance sheet");
-        if (isset($post['sheet_type']) && trim($post['sheet_type']) != '') {
-            $doc_title = $post['sheet_type'];
-        }
-
-        $data = [
-            'doc_title' => $doc_title,
-            'title'     => $post['sheet_title'] ?? null,
-            'subtitle'  => $post['sheet_sub_title'] ?? null,
-            'sheet_date'=> $post['sheet_date'] ?? null
-        ];
-        $pdf = new Galette\IO\PdfAttendanceSheet($this->zdb, $this->preferences, $data);
-        //with or without images?
-        if (isset($post['sheet_photos']) && $post['sheet_photos'] === '1') {
-            $pdf->withImages();
-        }
-        $pdf->drawSheet($members);
-        $response = $this->response->withHeader('Content-type', 'application/pdf');
-        $response->write($pdf->Output(_T("attendance_sheet") . '.pdf', 'D'));
-        return $response;
-    }
+    PdfController::class . ':attendanceSheet'
 )->setName('attendance_sheet')->add($authenticate);
 
 $app->post(
