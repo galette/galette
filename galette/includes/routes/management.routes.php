@@ -39,6 +39,7 @@ use Galette\Controllers\GaletteController;
 use Galette\Controllers\PluginsController;
 use Galette\Controllers\HistoryController;
 use Galette\Controllers\DynamicTranslationsController;
+use Galette\Controllers\Crud;
 
 use Galette\Core\MailingHistory;
 use Galette\Filters\MailingsList;
@@ -1605,333 +1606,43 @@ $app->post(
 
 $app->get(
     '/fields/dynamic/configure[/{form:adh|contrib|trans}]',
-    function ($request, $response, $args) {
-        $form_name = (isset($args['form'])) ? $args['form'] : 'adh';
-        if (isset($_POST['form']) && trim($_POST['form']) != '') {
-            $form_name = $_POST['form'];
-        }
-        $fields = new \Galette\Repository\DynamicFieldsSet($this->zdb, $this->login);
-        $fields_list = $fields->getList($form_name, $this->login);
-
-        $field_type_names = DynamicField::getFieldsTypesNames();
-
-        $params = [
-            'fields_list'       => $fields_list,
-            'form_name'         => $form_name,
-            'form_title'        => DynamicField::getFormTitle($form_name),
-            'page_title'        => _T("Dynamic fields configuration")
-        ];
-
-        $tpl = 'configurer_fiches.tpl';
-        //Render directly template if we called from ajax,
-        //render in a full page otherwise
-        if ($request->isXhr()
-            || isset($request->getQueryParams()['ajax'])
-            && $request->getQueryParams()['ajax'] == 'true'
-        ) {
-            $tpl = 'configurer_fiche_content.tpl';
-        } else {
-            $all_forms = DynamicField::getFormsNames();
-            $params['all_forms'] = $all_forms;
-        }
-
-        // display page
-        $this->view->render(
-            $response,
-            $tpl,
-            $params
-        );
-        return $response;
-    }
+    Crud\DynamicFieldsController::class . ':list'
 )->setName('configureDynamicFields')->add($authenticate);
 
 $app->get(
     '/fields/dynamic/move/{form:adh|contrib|trans}' .
         '/{direction:up|down}/{id:\d+}',
-    function ($request, $response, $args) {
-        $field_id = (int)$args['id'];
-        $form_name = $args['form'];
-
-        $field = DynamicField::loadFieldType($this->zdb, $field_id);
-        if ($field->move($args['direction'])) {
-            $this->flash->addMessage(
-                'success_detected',
-                _T("Field has been successfully moved")
-            );
-        } else {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("An error occurred moving field :(")
-            );
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('configureDynamicFields', ['form' => $form_name]));
-    }
+    Crud\DynamicFieldsController::class . ':move'
 )->setName('moveDynamicField')->add($authenticate);
 
 $app->get(
     '/fields/dynamic/remove/{form:adh|contrib|trans}/{id:\d+}',
-    function ($request, $response, $args) {
-        $field = DynamicField::loadFieldType($this->zdb, (int)$args['id']);
-        if ($field === false) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Requested field does not exists!")
-            );
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('configureDynamicFields', ['form' => $args['form']]));
-        }
-        $data = [
-            'id'            => $args['id'],
-            'redirect_uri'  => $this->router->pathFor('configureDynamicFields', ['form' => $args['form']])
-        ];
-
-        // display page
-        $this->view->render(
-            $response,
-            'confirm_removal.tpl',
-            array(
-                'type'          => _T("Dynamic field"),
-                'mode'          => $request->isXhr() ? 'ajax' : '',
-                'page_title'    => sprintf(
-                    _T('Remove dynamic field %1$s'),
-                    $field->getName()
-                ),
-                'form_url'      => $this->router->pathFor(
-                    'doRemoveDynamicField',
-                    ['form' => $args['form'], 'id' => $args['id']]
-                ),
-                'cancel_uri'    => $this->router->pathFor('configureDynamicFields', ['form' => $args['form']]),
-                'data'          => $data
-            )
-        );
-        return $response;
-    }
+    Crud\DynamicFieldsController::class . ':confirmDelete'
 )->setName('removeDynamicField')->add($authenticate);
 
 $app->post(
     '/fields/dynamic/remove/{form:adh|contrib|trans}/{id:\d+}',
-    function ($request, $response, $args) {
-        $post = $request->getParsedBody();
-        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
-        $success = false;
-
-        $uri = isset($post['redirect_uri']) ?
-            $post['redirect_uri'] :
-            $this->router->pathFor('slash');
-
-        if (!isset($post['confirm'])) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Removal has not been confirmed!")
-            );
-        } else {
-            $field_id = (int)$args['id'];
-            $field = DynamicField::loadFieldType($this->zdb, $field_id);
-            if ($field->remove()) {
-                $this->flash->addMessage(
-                    'success_detected',
-                    _T('Field has been successfully deleted!')
-                );
-                $success = true;
-            } else {
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T('An error occurred trying to delete field :(')
-                );
-                $success = false;
-            }
-        }
-
-        if (!$ajax) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $uri);
-        } else {
-            return $response->withJson(['success'   => $success]);
-        }
-    }
+    Crud\DynamicFieldsController::class . ':delete'
 )->setName('doRemoveDynamicField')->add($authenticate);
 
 $app->get(
-    '/fields/dynamic/{action:edit|add}/{form:adh|contrib|trans}[/{id:\d+}]',
-    function ($request, $response, $args) {
-        $action = $args['action'];
+    '/fields/dynamic/add/{form:adh|contrib|trans}',
+    Crud\DynamicFieldsController::class . ':add'
+)->setName('addDynamicField')->add($authenticate);
 
-        $id_dynf = null;
-        if (isset($args['id'])) {
-            $id_dynf = $args['id'];
-        }
-
-        if ($action === 'edit' && $id_dynf === null) {
-            throw new \RuntimeException(
-                _T("Dynamic field ID cannot ben null calling edit route!")
-            );
-        } elseif ($action === 'add' && $id_dynf !== null) {
-             return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->router->pathFor(
-                        'editDynamicField',
-                        [
-                            'action'    => 'add',
-                            'form'      => $arg['form']
-                        ]
-                    )
-                );
-        }
-
-        $form_name = $args['form'];
-
-        $df = null;
-        if ($this->session->dynamicfieldtype) {
-            $df = $this->session->dynamicfieldtype;
-            $this->session->dynamicfieldtype = null;
-        } elseif ($action === 'edit') {
-            $df = DynamicField::loadFieldType($this->zdb, $id_dynf);
-            if ($df === false) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T("Unable to retrieve field information.")
-                );
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('configureDynamicFields'));
-            }
-        }
-
-        $params = [
-            'page_title'    => _T("Edit field"),
-            'action'        => $action,
-            'form_name'     => $form_name,
-            'perm_names'    => DynamicField::getPermsNames(),
-            'mode'          => ($request->isXhr() ? 'ajax' : '')
-        ];
-
-        if ($df !== null) {
-            $params['df'] = $df;
-        }
-        if ($action === 'add') {
-            $params['field_type_names'] = DynamicField::getFieldsTypesNames();
-        }
-
-        // display page
-        $this->view->render(
-            $response,
-            'editer_champ.tpl',
-            $params
-        );
-        return $response;
-    }
+$app->get(
+    '/fields/dynamic/edit/{form:adh|contrib|trans}/{id:\d+}',
+    Crud\DynamicFieldsController::class . ':edit'
 )->setName('editDynamicField')->add($authenticate);
 
 $app->post(
-    '/fields/dynamic/{action:edit|add}/{form:adh|contrib|trans}[/{id:\d+}]',
-    function ($request, $response, $args) {
-        $post = $request->getParsedBody();
+    '/fields/dynamic/add/{form:adh|contrib|trans}',
+    Crud\DynamicFieldsController::class . ':doAdd'
+)->setName('doAddDynamicField')->add($authenticate);
 
-        $error_detected = [];
-        $warning_detected = [];
-
-        if ($args['action'] === 'add') {
-            $df = DynamicField::getFieldType($this->zdb, $post['field_type']);
-        } else {
-            $field_id = (int)$args['id'];
-            $df = DynamicField::loadFieldType($this->zdb, $field_id);
-        }
-
-        try {
-            $df->store($post);
-            $error_detected = $df->getErrors();
-            $warning_detected = $df->getWarnings();
-        } catch (\Exception $e) {
-            if ($args['action'] === 'edit') {
-                $msg = 'An error occurred storing dynamic field ' . $df->getId() . '.';
-            } else {
-                $msg = 'An error occurred adding new dynamic field.';
-            }
-            Analog::log(
-                $msg . ' | ' .
-                $e->getMessage(),
-                Analog::ERROR
-            );
-            if (GALETTE_MODE == 'DEV') {
-                throw $e;
-            }
-            $error_detected[] = _T('An error occurred adding dynamic field :(');
-        }
-
-        //flash messages
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                _T('Dynamic field has been successfully stored!')
-            );
-        }
-
-        if (count($warning_detected) > 0) {
-            foreach ($warning_detected as $warning) {
-                $this->flash->addMessage(
-                    'warning_detected',
-                    $warning
-                );
-            }
-        }
-
-        //handle redirections
-        if (count($error_detected) > 0) {
-            //something went wrong :'(
-            $this->session->dynamicfieldtype = $df;
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->router->pathFor(
-                        'editDynamicField',
-                        $args
-                    )
-                );
-        } else {
-            if (!$df instanceof \Galette\DynamicFields\Separator
-                && $args['action'] == 'add'
-            ) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader(
-                        'Location',
-                        $this->router->pathFor(
-                            'editDynamicField',
-                            [
-                                'action'    => 'edit',
-                                'form'      => $args['form'],
-                                'id'        => $df->getId()
-                            ]
-                        )
-                    );
-            }
-
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->router->pathFor(
-                        'configureDynamicFields',
-                        ['form' => $args['form']]
-                    )
-                );
-        }
-    }
+$app->post(
+    '/fields/dynamic/edit/{form:adh|contrib|trans}/{id:\d+}',
+    Crud\DynamicFieldsController::class . ':doEdit'
 )->setName('doEditDynamicField')->add($authenticate);
 
 $app->get(

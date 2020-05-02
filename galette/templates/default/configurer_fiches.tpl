@@ -4,7 +4,7 @@
         <div id="configfiches_tabs">
             <a
                 id="addfield"
-                href="{path_for name="editDynamicField" data=["form" => $form_name, "action" => "add"]}"
+                href="{path_for name="addDynamicField" data=["form" => $form_name]}"
                 class="tab-button tooltip"
             >
                 <i class="fas fa-plus-square fa-2x"></i>
@@ -13,12 +13,12 @@
             <ul>
 {foreach from=$all_forms key=key item=form name=formseach}
     {if $form_name eq $key}
-        {assign var='activetab' value=$smarty.foreach.formseach.iteration}
+        {assign var='activetab' value=$smarty.foreach.formseach.iteration * 2}
     {/if}
                 <li{if $form_name eq $key} class="ui-tabs-selected"{/if}><a href="{path_for name="configureDynamicFields" data=["form" => $key]}">{$form}</a></li>
 {/foreach}
             </ul>
-            <div id="ui-tabs-{$activetab}">
+            <div id="ui-id-{$activetab}">
                 {include file="configurer_fiche_content.tpl"}
             </div>
         </div>
@@ -26,12 +26,18 @@
 {/block}
 
 {block name="javascripts"}
+{foreach from=$all_forms key=key item=form name=formseach}
+    {if $form_name eq $key}
+        {assign var='activetab' value=$smarty.foreach.formseach.iteration}
+    {/if}
+{/foreach}
+
         <script type="text/javascript">
             var _form_name;
             $('#addfield').click(function(e){
                 e.preventDefault();
                 var _this = $(this);
-                var _href = '{path_for name="editDynamicField" data=["form" => "FORM", "action" => "add"]}'.replace(/FORM/, _form_name)
+                var _href = '{path_for name="addDynamicField" data=["form" => "FORM"]}'.replace(/FORM/, _form_name)
 
                 $.ajax({
                     url: _href,
@@ -77,11 +83,11 @@
                     var _img = $('<figure id="loading"><p><img src="{base_url}/{$template_subdir}images/loading.png" alt="{_T string="Loading..."}"/><br/>{_T string="Currently loading..."}</p></figure>');
                     $('body').append(_img);
 
-                    ui.jqXHR.complete(function(){
+                    ui.jqXHR.always(function(){
                         $('#loading').remove();
                     });
 
-                    ui.jqXHR.error(function(){
+                    ui.jqXHR.fail(function(){
                         alert('{_T string="An error occurred :(" escape="js"}');
                     });
                 }
