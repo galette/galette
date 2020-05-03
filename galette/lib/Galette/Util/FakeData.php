@@ -596,6 +596,7 @@ class FakeData
 
                     if (count($this->transactions) > 0) {
                         if ($faker->boolean($chanceOfGettingTrue = 90)) {
+                            $transaction = $faker->randomElement($this->transactions);
                             $contrib::setTransactionPart(
                                 $this->zdb,
                                 $transaction->id,
