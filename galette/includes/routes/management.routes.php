@@ -55,12 +55,10 @@ use Galette\IO\CsvOut;
 use Galette\IO\CsvIn;
 use Galette\Entity\Title;
 use Galette\Repository\Titles;
-use Galette\Repository\PaymentTypes;
 use Galette\Entity\Texts;
 use Galette\Core\Install;
 use Laminas\Db\Adapter\Adapter;
 use Galette\Entity\Status;
-use Galette\Entity\PaymentType;
 
 //galette's dashboard
 $app->get(
@@ -1090,253 +1088,30 @@ $app->post(
 
 $app->get(
     '/payment-types',
-    function ($request, $response) {
-        $ptypes = new PaymentTypes(
-            $this->zdb,
-            $this->preferences,
-            $this->login
-        );
-        $list = $ptypes->getList();
-
-        // display page
-        $this->view->render(
-            $response,
-            'gestion_paymentstypes.tpl',
-            [
-                'page_title'        => _T("Payment types management"),
-                'list'              => $list
-            ]
-        );
-        return $response;
-    }
+    Crud\PaymentTypeController::class . ':list'
 )->setName('paymentTypes')->add($authenticate);
 
 $app->post(
     '/payment-types',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-        $ptype = new PaymentType($this->zdb);
-
-        $ptype->name = $post['name'];
-        $res = $ptype->store($post);
-
-        if (!$res) {
-            $this->flash->addMessage(
-                'error_detected',
-                preg_replace(
-                    '(%s)',
-                    $ptype->name,
-                    _T("Payment type '%s' has not been added!")
-                )
-            );
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                preg_replace(
-                    '(%s)',
-                    $ptype->name,
-                    _T("Payment type '%s' has been successfully added.")
-                )
-            );
-        }
-
-        $warning_detected = $ptype->getWarnings();
-        if (count($warning_detected)) {
-            foreach ($warning_detected as $warning) {
-                $this->flash->addMessage(
-                    'warning_detected',
-                    $warning
-                );
-            }
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('paymentTypes'));
-    }
+    Crud\PaymentTypeController::class . ':doAdd'
 )->setName('paymentTypes')->add($authenticate);
 
 $app->get(
     '/payment-type/remove/{id:\d+}',
-    function ($request, $response, $args) {
-        $data = [
-            'id'            => $args['id'],
-            'redirect_uri'  => $this->router->pathFor('paymentTypes')
-        ];
-        $ptype = new PaymentType($this->zdb, (int)$args['id']);
-
-        // display page
-        $this->view->render(
-            $response,
-            'confirm_removal.tpl',
-            array(
-                'mode'          => $request->isXhr() ? 'ajax' : '',
-                'page_title'    => sprintf(
-                    _T('Remove payment type %1$s'),
-                    $ptype->getName()
-                ),
-                'form_url'      => $this->router->pathFor(
-                    'doRemovePaymentType',
-                    ['id' => $args['id']]
-                ),
-                'cancel_uri'    => $data['redirect_uri'],
-                'data'          => $data
-            )
-        );
-        return $response;
-    }
+    Crud\PaymentTypeController::class . ':confirmDelete'
 )->setName('removePaymentType')->add($authenticate);
 
 $app->post(
     '/payment-type/remove/{id:\d+}',
-    function ($request, $response, $args) {
-        $post = $request->getParsedBody();
-        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
-        $success = false;
-
-        $uri = isset($post['redirect_uri']) ?
-            $post['redirect_uri'] :
-            $this->router->pathFor('slash');
-
-        if (!isset($post['confirm'])) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Removal has not been confirmed!")
-            );
-        } else {
-            $ptype = new PaymentType($this->zdb, (int)$args['id']);
-            try {
-                $res = $ptype->remove();
-                if ($res === true) {
-                    $this->flash->addMessage(
-                        'success_detected',
-                        str_replace(
-                            '%name',
-                            $ptype->name,
-                            _T("Payment type '%name' has been successfully deleted.")
-                        )
-                    );
-                    $success = true;
-                } else {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        str_replace(
-                            '%name',
-                            $ptype->getName(),
-                            _T("An error occurred removing payment type '%name' :(")
-                        )
-                    );
-                }
-            } catch (\Exception $e) {
-                if ($e->getCode() == 23000) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        _T("That payment type is still in use, you cannot delete it!")
-                    );
-                } else {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        $e->getMessage()
-                    );
-                }
-            } finally {
-                $warning_detected = $ptype->getWarnings();
-                if (count($warning_detected)) {
-                    foreach ($warning_detected as $warning) {
-                        $this->flash->addMessage(
-                            'warning_detected',
-                            $warning
-                        );
-                    }
-                }
-            }
-        }
-
-        if (!$ajax) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $uri);
-        } else {
-            return $response->withJson(
-                [
-                    'success'   => $success
-                ]
-            );
-        }
-    }
+    Crud\PaymentTypeController::class . ':delete'
 )->setName('doRemovePaymentType')->add($authenticate);
 
 $app->get(
     '/payment-type/edit/{id:\d+}',
-    function ($request, $response, $args) {
-        $id = $args['id'];
-        $ptype = new PaymentType($this->zdb, (int)$id);
-
-        // display page
-        $this->view->render(
-            $response,
-            'edit_paymenttype.tpl',
-            [
-                'page_title'    => _T("Edit payment type"),
-                'ptype'         => $ptype
-            ]
-        );
-        return $response;
-    }
+    Crud\PaymentTypeController::class . ':edit'
 )->setname('editPaymentType')->add($authenticate);
 
 $app->post(
     '/payment-type/edit/{id:\d+}',
-    function ($request, $response, $args) {
-        $id = $args['id'];
-        $post = $request->getParsedBody();
-
-        if (isset($post['cancel'])) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('paymentTypes'));
-        }
-
-        $ptype = new PaymentType($this->zdb, (int)$id);
-        $ptype->name = $post['name'];
-        $res = $ptype->store();
-
-        $warning_detected = $ptype->getWarnings();
-        if (count($warning_detected)) {
-            foreach ($warning_detected as $warning) {
-                $this->flash->addMessage(
-                    'warning_detected',
-                    $warning
-                );
-            }
-        }
-
-        if (!$res) {
-            $this->flash->addMessage(
-                'error_detected',
-                preg_replace(
-                    '(%s)',
-                    $ptype->name,
-                    _T("Title '%s' has not been modified!")
-                )
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('editPaymentType', ['id' => $id]));
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                preg_replace(
-                    '(%s)',
-                    $ptype->name,
-                    _T("Payment type '%s' has been successfully modified.")
-                )
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('paymentTypes'));
-        }
-    }
+    Crud\PaymentTypeController::class . ':doEdit'
 )->setname('editPaymentType')->add($authenticate);
