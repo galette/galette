@@ -41,6 +41,7 @@ use Galette\Controllers\HistoryController;
 use Galette\Controllers\DynamicTranslationsController;
 use Galette\Controllers\Crud;
 use Galette\Controllers\CsvController;
+use Galette\Controllers\AdminToolsController;
 
 use Galette\Core\MailingHistory;
 use Galette\Filters\MailingsList;
@@ -52,7 +53,6 @@ use \Analog\Analog;
 use Galette\IO\Csv;
 use Galette\IO\CsvOut;
 use Galette\IO\CsvIn;
-use Galette\Repository\PdfModels;
 use Galette\Entity\Title;
 use Galette\Repository\Titles;
 use Galette\Repository\PaymentTypes;
@@ -1080,108 +1080,12 @@ $app->post(
 
 $app->get(
     '/admin-tools',
-    function ($request, $response) {
-        $params = [
-            'page_title'        => _T('Administration tools')
-        ];
-
-        $cm = new Galette\Core\CheckModules();
-        $modules_ok = $cm->isValid();
-        if (!$modules_ok) {
-            $this->flash->addMessage(
-                _T("Some PHP modules are missing. Please install them or contact your support.<br/>More information on required modules may be found in the documentation.")
-            );
-        }
-
-        // display page
-        $this->view->render(
-            $response,
-            'admintools.tpl',
-            $params
-        );
-        return $response;
-    }
+    AdminToolsController::class . ':adminTools'
 )->setName('adminTools')->add($authenticate);
 
 $app->post(
     '/admin-tools',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-
-        $error_detected = [];
-        $success_detected = [];
-
-        if (isset($post['inittexts'])) {
-            //proceed emails texts reinitialization
-            $texts = new Texts($this->preferences);
-            $res = $texts->installInit(false);
-            if ($res === true) {
-                $success_detected[] = _T("Texts has been successfully reinitialized.");
-            } else {
-                $error_detected[] = _T("An error occurred reinitializing texts :(");
-            }
-        }
-
-        if (isset($post['initfields'])) {
-            //proceed fields configuration reinitialization
-            $fc = $this->fields_config;
-            $res = $fc->installInit();
-            if ($res === true) {
-                $success_detected[] = _T("Fields configuration has been successfully reinitialized.");
-            } else {
-                $error_detected[] = _T("An error occurred reinitializing fields configuration :(");
-            }
-        }
-
-        if (isset($post['initpdfmodels'])) {
-            //proceed emails texts reinitialization
-            $models = new PdfModels($this->zdb, $this->preferences, $this->login);
-            $res = $models->installInit($this->pdfmodels_fields, false);
-            if ($res === true) {
-                $success_detected[] = _T("PDF models has been successfully reinitialized.");
-            } else {
-                $error_detected[] = _T("An error occurred reinitializing PDF models :(");
-            }
-        }
-
-        if (isset($post['emptylogins'])) {
-            //proceed empty logins and passwords
-            //those ones cannot be null
-            $members = new Members();
-            $res = $members->emptylogins();
-            if ($res === true) {
-                $success_detected[] = str_replace(
-                    '%i',
-                    $members->getCount(),
-                    _T("Logins and passwords has been successfully filled (%i processed).")
-                );
-            } else {
-                $error_detected[] = _T("An error occurred filling empty logins and passwords :(");
-            }
-        }
-
-        //flash messages
-        if (count($error_detected) > 0) {
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        }
-        if (count($success_detected) > 0) {
-            foreach ($success_detected as $success) {
-                $this->flash->addMessage(
-                    'success_detected',
-                    $success
-                );
-            }
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('adminTools'));
-    }
+    AdminToolsController::class . ':process'
 )->setName('doAdminTools')->add($authenticate);
 
 $app->get(
