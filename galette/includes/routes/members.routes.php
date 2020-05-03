@@ -1458,7 +1458,7 @@ $app->post(
             if (isset($post['mailing'])) {
                 return $response
                     ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('mailing') . '?new=new');
+                    ->withHeader('Location', $this->router->pathFor('mailing') . '?mailing_new=new');
             }
 
             if (isset($post['attendance_sheet'])) {
