@@ -77,7 +77,7 @@ class PaymentTypeController extends CrudController
     }
 
     /**
-     * Add ation
+     * Add action
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response

@@ -43,8 +43,6 @@ use Galette\Controllers\Crud;
 use Galette\Controllers\CsvController;
 use Galette\Controllers\AdminToolsController;
 
-use Galette\Core\MailingHistory;
-use Galette\Filters\MailingsList;
 use Galette\Entity\FieldsCategories;
 use Galette\DynamicFields\DynamicField;
 use Galette\Repository\Members;
@@ -133,223 +131,22 @@ $app->post(
 //mailings management
 $app->get(
     '/mailings[/{option:page|order|reset}/{value}]',
-    function ($request, $response, $args = []) {
-        $option = null;
-        if (isset($args['option'])) {
-            $option = $args['option'];
-        }
-
-        $value = null;
-        if (isset($args['value'])) {
-            $value = $args['value'];
-        }
-
-        if (isset($this->session->filter_mailings)) {
-            $filters = $this->session->filter_mailings;
-        } else {
-            $filters = new MailingsList();
-        }
-
-        if (isset($request->getQueryParams()['nbshow'])) {
-            $filters->show = $request->getQueryParams()['nbshow'];
-        }
-
-        $mailhist = new MailingHistory($this->zdb, $this->login, $filters);
-
-        if ($option !== null) {
-            switch ($option) {
-                case 'page':
-                    $filters->current_page = (int)$value;
-                    break;
-                case 'order':
-                    $filters->orderby = $value;
-                    break;
-                case 'reset':
-                    $mailhist->clean();
-                    //reinitialize object after flush
-                    $filters = new MailingsList();
-                    $mailhist = new MailingHistory($this->zdb, $this->login, $filters);
-                    break;
-            }
-        }
-
-        $this->session->filter_mailings = $filters;
-
-        //assign pagination variables to the template and add pagination links
-        $mailhist->filters->setSmartyPagination($this->router, $this->view->getSmarty());
-        $history_list = $mailhist->getHistory();
-        //assign pagination variables to the template and add pagination links
-        $mailhist->filters->setSmartyPagination($this->router, $this->view->getSmarty());
-
-        // display page
-        $this->view->render(
-            $response,
-            'gestion_mailings.tpl',
-            array(
-                'page_title'        => _T("Mailings"),
-                'logs'              => $history_list,
-                'history'           => $mailhist
-            )
-        );
-        return $response;
-    }
-)->setName(
-    'mailings'
-)->add($authenticate);
+    Crud\MailingsController::class . ':list'
+)->setName('mailings')->add($authenticate);
 
 $app->post(
     '/mailings/filter',
-    function ($request, $response, $args) {
-        $post = $request->getParsedBody();
-        $error_detected = [];
-
-        if ($this->session->filter_mailings !== null) {
-            $filters = $this->session->filter_mailings;
-        } else {
-            $filters = new MailingsList();
-        }
-
-        if (isset($post['clear_filter'])) {
-            $filters->reinit();
-        } else {
-            if ((isset($post['nbshow']) && is_numeric($post['nbshow']))
-            ) {
-                $filters->show = $post['nbshow'];
-            }
-
-            if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
-                try {
-                    if (isset($post['start_date_filter'])) {
-                        $field = _T("start date filter");
-                        $filters->start_date_filter = $post['start_date_filter'];
-                    }
-                    if (isset($post['end_date_filter'])) {
-                        $field = _T("end date filter");
-                        $filters->end_date_filter = $post['end_date_filter'];
-                    }
-                } catch (Exception $e) {
-                    $error_detected[] = $e->getMessage();
-                }
-            }
-
-            if (isset($post['sender_filter'])) {
-                $filters->sender_filter = $post['sender_filter'];
-            }
-
-            if (isset($post['sent_filter'])) {
-                $filters->sent_filter = $post['sent_filter'];
-            }
-
-
-            if (isset($post['subject_filter'])) {
-                $filters->subject_filter = $post['subject_filter'];
-            }
-        }
-
-        $this->session->filter_mailings = $filters;
-
-        if (count($error_detected) > 0) {
-            //report errors
-            foreach ($error_detected as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('mailings'));
-    }
-)->setName(
-    'mailings_filter'
-)->add($authenticate);
+    Crud\MailingsController::class . ':filter'
+)->setName('mailings_filter')->add($authenticate);
 
 $app->get(
     '/mailings/remove' . '/{id:\d+}',
-    function ($request, $response, $args) {
-        $data = [
-            'id'            => $args['id'],
-            'redirect_uri'  => $this->router->pathFor('mailings')
-        ];
-
-        // display page
-        $this->view->render(
-            $response,
-            'confirm_removal.tpl',
-            array(
-                'mode'          => $request->isXhr() ? 'ajax' : '',
-                'page_title'    => sprintf(
-                    _T('Remove mailing #%1$s'),
-                    $args['id']
-                ),
-                'form_url'      => $this->router->pathFor(
-                    'doRemoveMailing',
-                    ['id' => $args['id']]
-                ),
-                'cancel_uri'    => $data['redirect_uri'],
-                'data'          => $data
-            )
-        );
-        return $response;
-    }
+    Crud\MailingsController::class . ':confirmDelete'
 )->setName('removeMailing')->add($authenticate);
 
 $app->post(
     '/mailings/remove/{id:\d+}',
-    function ($request, $response, $args) {
-        $post = $request->getParsedBody();
-        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
-        $success = false;
-
-        $uri = isset($post['redirect_uri']) ?
-            $post['redirect_uri'] :
-            $this->router->pathFor('slash');
-
-        if (!isset($post['confirm'])) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Removal has not been confirmed!")
-            );
-        } else {
-            try {
-                $mailhist = new MailingHistory($this->zdb, $this->login);
-                $mailhist->removeEntries($args['id'], $this->history);
-
-                $this->flash->addMessage(
-                    'success_detected',
-                    _T('Mailing has been successfully deleted!')
-                );
-                $success = true;
-            } catch (\Exception $e) {
-                $this->zdb->connection->rollBack();
-                Analog::log(
-                    'An error occurred deleting mailing | ' . $e->getMessage(),
-                    Analog::ERROR
-                );
-
-                $this->flash->addMessage(
-                    'error_detected',
-                    _T('An error occurred trying to delete mailing :(')
-                );
-
-                $success = false;
-            }
-        }
-
-        if (!$ajax) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $uri);
-        } else {
-            return $response->withJson(
-                [
-                    'success'   => $success
-                ]
-            );
-        }
-    }
+    Crud\MailingsController::class . ':delete'
 )->setName('doRemoveMailing')->add($authenticate);
 
 //galette exports
