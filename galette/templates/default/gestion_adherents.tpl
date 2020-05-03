@@ -435,7 +435,7 @@
         {* Use of Javascript to draw specific elements that are not relevant is JS is inactive *}
         $(function(){
 {if $nb_members != 0}
-            var _checklinks = '<div class="checkboxes"><span class="fleft"><a href="#" class="checkall tooltip"><i class="fas fa-check-square"></i> {_T string="(Un)Check all"}</a> | <a href="#" class="checkinvert tooltip"><i class="fas fa-exchange-alt"></i> {_T string="Invert selection"}</a></span><a href="#" class="show_legend fright">{_T string="Show legend"}</a></div>';
+            var _checklinks = '<div class="checkboxes"><span class="fleft"><a href="#" class="checkall tooltip"><i class="fas fa-check-square"></i> {_T string="(Un)Check all" escape="js"}</a> | <a href="#" class="checkinvert tooltip"><i class="fas fa-exchange-alt"></i> {_T string="Invert selection" escape="js"}</a></span><a href="#" class="show_legend fright">{_T string="Show legend" escape="js"}</a></div>';
             $('.listing').before(_checklinks);
             $('.listing').after(_checklinks);
             _bind_check();
@@ -454,7 +454,7 @@
                 } else {
     {if $existing_mailing eq true}
                     if (this.id == 'sendmail') {
-                        var _el = $('<div id="existing_mailing" title="{_T string="Existing mailing"}">{_T string="A mailing already exists. Do you want to create a new one or resume the existing?"}</div>');
+                        var _el = $('<div id="existing_mailing" title="{_T string="Existing mailing" escape="js"}">{_T string="A mailing already exists. Do you want to create a new one or resume the existing?" escape="js"}</div>');
                         _el.appendTo('body').dialog({
                             modal: true,
                             hide: 'fold',
@@ -509,7 +509,7 @@
                         _el.remove();
                     },
                     buttons: {
-                        '{_T string="Ok"}': function() {
+                        '{_T string="Ok" escape="js"}': function() {
                             var _form = $('#filtre');
                             var _data = _form.serialize();
                             _data = _data + "&search_title=" + $('#search_title').val();
@@ -536,7 +536,7 @@
 
                             $(this).dialog( "close" );
                         },
-                        '{_T string="Cancel"}': function() {
+                        '{_T string="Cancel" escape="js"}': function() {
                             $(this).dialog( "close" );
                         }
                     }
