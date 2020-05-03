@@ -543,7 +543,7 @@ class AdvancedMembersList extends MembersList
                     } else {
                         Analog::log(
                             '[AdvancedMembersList] Value for dynamic contribution fields filter should be an '
-                            .'array (' . gettype($v) . ' given',
+                            .'array (' . gettype($value) . ' given',
                             Analog::WARNING
                         );
                     }
