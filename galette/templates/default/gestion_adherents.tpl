@@ -520,17 +520,13 @@
                                 datatype: 'json',
                                 {include file="js_loader.tpl"},
                                 success: function(res) {
-                                    if (res.success) {
-                                        alert('All done');
-                                    } else {
-                                        $.ajax({
-                                            url: '{path_for name="ajaxMessages"}',
-                                            method: "GET",
-                                            success: function (message) {
-                                                $('#asso_name').after(message);
-                                            }
-                                        });
-                                    }
+                                    $.ajax({
+                                        url: '{path_for name="ajaxMessages"}',
+                                        method: "GET",
+                                        success: function (message) {
+                                            $('#asso_name').after(message);
+                                        }
+                                    });
                                 }
                             });
 
@@ -540,7 +536,7 @@
                             $(this).dialog( "close" );
                         }
                     }
-                }).append(res);
+                });
             });
 
         });
