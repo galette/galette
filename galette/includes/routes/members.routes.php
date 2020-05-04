@@ -301,9 +301,13 @@ $app->get(
 
         // members
         $m = new Members();
+        $id = null;
+        if ($member->hasParent()) {
+            $id = ($member->parent instanceof Adherent ? $member->parent->id : $member->parent);
+        }
         $members = $m->getSelectizedMembers(
             $this->zdb,
-            $member->hasParent() ? $member->parent->id : null
+            $id
         );
 
         $route_params['members'] = [
