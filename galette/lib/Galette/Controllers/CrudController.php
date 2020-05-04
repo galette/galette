@@ -144,7 +144,7 @@ abstract class CrudController extends AbstractController
     public function confirmDelete(Request $request, Response $response, array $args = []) :Response
     {
         $data = [
-            'id'            => $args['id'] ?? null,
+            'id'            => $this->getIdsToRemove($args),
             'redirect_uri'  => $this->redirectUri($args)
         ];
 
@@ -161,6 +161,21 @@ abstract class CrudController extends AbstractController
             )
         );
         return $response;
+    }
+
+    /**
+     * Get ID to remove
+     *
+     * In simple cases, we get the ID in the route arguments; but for
+     * batchs, it should be found elsewhere.
+     *
+     * @param array $args Request arguments
+     *
+     * @return integer|null|array
+     */
+    protected function getIdsToRemove($args)
+    {
+        return $args['id'] ?? null;
     }
 
     /**

@@ -36,10 +36,10 @@
  */
 
 use Galette\Controllers\PdfController;
+use Galette\Controllers\CsvController;
 use Galette\Controllers\Crud;
 
 use Analog\Analog;
-use Galette\Entity\DynamicFieldsHandle;
 use Galette\Core\Password;
 use Galette\Core\PasswordImage;
 use Galette\Core\Mailing;
@@ -61,10 +61,7 @@ use Galette\Entity\Texts;
 use Galette\Core\MailingHistory;
 use Galette\Entity\Group;
 use Galette\IO\File;
-use Galette\Core\Authentication;
-use Galette\Repository\PaymentTypes;
 use Galette\Repository\SavedSearches;
-use Galette\IO\MembersCsv;
 
 //self subscription
 $app->get(
@@ -141,273 +138,19 @@ $app->get(
 //members list CSV export
 $app->get(
     '/members/export/csv',
-    function ($request, $response) {
-        if (isset($this->session->filter_members)) {
-            //CAUTION: this one may be simple or advanced, display must change
-            $filters = $this->session->filter_members;
-        } else {
-            $filters = new MembersList();
-        }
-
-        $csv = new MembersCsv(
-            $this->zdb,
-            $this->login,
-            $this->members_fields,
-            $this->fields_config
-        );
-        $csv->exportMembers($filters);
-
-        $filepath = $csv->getPath();
-        $filename = $csv->getFileName();
-
-        if (file_exists($filepath)) {
-            $response = $response->withHeader('Content-Description', 'File Transfer')
-                ->withHeader('Content-Type', 'text/csv')
-                ->withHeader('Content-Disposition', 'attachment;filename="' . $filename . '"')
-                ->withHeader('Pragma', 'no-cache')
-                ->withHeader('Content-Transfer-Encoding', 'binary')
-                ->withHeader('Expires', '0')
-                ->withHeader('Cache-Control', 'must-revalidate')
-                ->withHeader('Pragma', 'public');
-
-            $stream = fopen('php://memory', 'r+');
-            fwrite($stream, file_get_contents($filepath));
-            rewind($stream);
-
-            return $response->withBody(new \Slim\Http\Stream($stream));
-        } else {
-            Analog::log(
-                'A request has been made to get an exported file named `' .
-                $filename .'` that does not exists.',
-                Analog::WARNING
-            );
-            $notFound = $this->notFoundHandler;
-            return $notFound($request, $response);
-        }
-
-        return $response;
-    }
+    CsvController::class . ':membersExport'
 )->setName('csv-memberslist')->add($authenticate);
 
 //members list
 $app->get(
     '/members[/{option:page|order}/{value:\d+}]',
-    function ($request, $response, $args = []) {
-        $option = null;
-        if (isset($args['option'])) {
-            $option = $args['option'];
-        }
-        $value = null;
-        if (isset($args['value'])) {
-            $value = $args['value'];
-        }
-
-        if (isset($this->session->filter_members)) {
-            $filters = $this->session->filter_members;
-        } else {
-            $filters = new MembersList();
-        }
-
-        if ($option !== null) {
-            switch ($option) {
-                case 'page':
-                    $filters->current_page = (int)$value;
-                    break;
-                case 'order':
-                    $filters->orderby = $value;
-                    break;
-            }
-        }
-
-        $members = new Members($filters);
-
-        $members_list = array();
-        if ($this->login->isAdmin() || $this->login->isStaff()) {
-            $members_list = $members->getMembersList(true);
-        } else {
-            $members_list = $members->getManagedMembersList(true);
-        }
-
-        $groups = new Groups($this->zdb, $this->login);
-        $groups_list = $groups->getList();
-
-        //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
-        $filters->setViewCommonsFilters($this->preferences, $this->view->getSmarty());
-
-        $this->session->filter_members = $filters;
-
-        // display page
-        $this->view->render(
-            $response,
-            'gestion_adherents.tpl',
-            array(
-                'page_title'            => _T("Members management"),
-                'require_mass'          => true,
-                'members'               => $members_list,
-                'filter_groups_options' => $groups_list,
-                'nb_members'            => $members->getCount(),
-                'filters'               => $filters,
-                'adv_filters'           => $filters instanceof AdvancedMembersList
-            )
-        );
-        return $response;
-    }
-)->setName(
-    'members'
-)->add($authenticate);
+    Crud\MembersController::class . ':list'
+)->setName('members')->add($authenticate);
 
 //members list filtering
 $app->post(
     '/members/filter',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-        if (isset($this->session->filter_members)) {
-            //CAUTION: this one may be simple or advanced, display must change
-            $filters = $this->session->filter_members;
-        } else {
-            $filters = new MembersList();
-        }
-
-        //reintialize filters
-        if (isset($post['clear_filter'])) {
-            $filters = new MembersList();
-        } elseif (isset($post['clear_adv_filter'])) {
-            $this->session->filter_members = null;
-            unset($this->session->filter_members);
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('advanced-search'));
-        } elseif (isset($post['adv_criteria'])) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('advanced-search'));
-        } else {
-            //string to filter
-            if (isset($post['filter_str'])) { //filter search string
-                $filters->filter_str = stripslashes(
-                    htmlspecialchars($post['filter_str'], ENT_QUOTES)
-                );
-            }
-            //field to filter
-            if (isset($post['field_filter'])) {
-                if (is_numeric($post['field_filter'])) {
-                    $filters->field_filter = $post['field_filter'];
-                }
-            }
-            //membership to filter
-            if (isset($post['membership_filter'])) {
-                if (is_numeric($post['membership_filter'])) {
-                    $filters->membership_filter
-                        = $post['membership_filter'];
-                }
-            }
-            //account status to filter
-            if (isset($post['filter_account'])) {
-                if (is_numeric($post['filter_account'])) {
-                    $filters->filter_account = $post['filter_account'];
-                }
-            }
-            //email filter
-            if (isset($post['email_filter'])) {
-                $filters->email_filter = (int)$post['email_filter'];
-            }
-            //group filter
-            if (isset($post['group_filter'])
-                && $post['group_filter'] > 0
-            ) {
-                $filters->group_filter = (int)$post['group_filter'];
-            }
-            //number of rows to show
-            if (isset($post['nbshow'])) {
-                $filters->show = $post['nbshow'];
-            }
-
-            if (isset($post['advanced_filtering'])) {
-                if (!$filters instanceof AdvancedMembersList) {
-                    $filters = new AdvancedMembersList($filters);
-                }
-                //Advanced filters
-                $filters->reinit();
-                unset($post['advanced_filtering']);
-                $freed = false;
-                foreach ($post as $k => $v) {
-                    if (strpos($k, 'free_', 0) === 0) {
-                        if (!$freed) {
-                            $i = 0;
-                            foreach ($post['free_field'] as $f) {
-                                if (trim($f) !== ''
-                                    && trim($post['free_text'][$i]) !== ''
-                                ) {
-                                    $fs_search = $post['free_text'][$i];
-                                    $log_op
-                                        = (int)$post['free_logical_operator'][$i];
-                                    $qry_op
-                                        = (int)$post['free_query_operator'][$i];
-                                    $type = (int)$post['free_type'][$i];
-                                    $fs = array(
-                                        'idx'       => $i,
-                                        'field'     => $f,
-                                        'type'      => $type,
-                                        'search'    => $fs_search,
-                                        'log_op'    => $log_op,
-                                        'qry_op'    => $qry_op
-                                    );
-                                    $filters->free_search = $fs;
-                                }
-                                $i++;
-                            }
-                            $freed = true;
-                        }
-                    } elseif ($k == 'groups_search') {
-                        $i = 0;
-                        $filters->groups_search_log_op = (int)$post['groups_logical_operator'];
-                        foreach ($post['groups_search'] as $g) {
-                            if (trim($g) !== '') {
-                                $gs = array(
-                                    'idx'       => $i,
-                                    'group'     => $g
-                                );
-                                $filters->groups_search = $gs;
-                            }
-                            $i++;
-                        }
-                    } else {
-                        switch ($k) {
-                            case 'contrib_min_amount':
-                            case 'contrib_max_amount':
-                                if (trim($v) !== '') {
-                                    $v = (float)$v;
-                                } else {
-                                    $v = null;
-                                }
-                                break;
-                        }
-                        $filters->$k = $v;
-                    }
-                }
-            }
-        }
-
-        if (isset($post['savesearch'])) {
-            return $response
-                ->withStatus(301)
-                ->withHeader(
-                    'Location',
-                    $this->router->pathFor(
-                        'saveSearch',
-                        $post
-                    )
-                );
-        }
-
-        $this->session->filter_members = $filters;
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('members'));
-    }
+    Crud\MembersController::class . ':filter'
 )->setName('filter-memberslist')->add($authenticate);
 
 //members self card
@@ -429,7 +172,6 @@ $app->get(
         );
 
         $member = new Adherent($this->zdb, $this->login->login, $deps);
-        $id = $member->id;
 
         $fc = $this->fields_config;
         $display_elements = $fc->getDisplayElements($this->login);
@@ -454,68 +196,7 @@ $app->get(
 //members card
 $app->get(
     '/member/{id:\d+}',
-    function ($request, $response, $args) {
-        $id = $args['id'];
-
-        $deps = array(
-            'picture'   => true,
-            'groups'    => true,
-            'dues'      => true,
-            'parent'    => true,
-            'children'  => true,
-            'dynamics'  => true
-        );
-        $member = new Adherent($this->zdb, (int)$id, $deps);
-
-        if (!$member->canEdit($this->login)) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("You do not have permission for requested URL.")
-            );
-
-            return $response
-                ->withStatus(403)
-                ->withHeader(
-                    'Location',
-                    $this->router->pathFor('me')
-                );
-        }
-
-        if ($member->id == null) {
-            //member does not exists!
-            $this->flash->addMessage(
-                'error_detected',
-                str_replace('%id', $args['id'], _T("No member #%id."))
-            );
-
-            return $response
-                ->withStatus(404)
-                ->withHeader(
-                    'Location',
-                    $this->router->pathFor('slash')
-                );
-        }
-
-        // flagging fields visibility
-        $fc = $this->fields_config;
-        $display_elements = $fc->getDisplayElements($this->login);
-
-        // display page
-        $this->view->render(
-            $response,
-            'voir_adherent.tpl',
-            array(
-                'page_title'        => _T("Member Profile"),
-                'member'            => $member,
-                'pref_lang'         => $this->i18n->getNameFromId($member->language),
-                'pref_card_self'    => $this->preferences->pref_card_self,
-                'groups'            => Groups::getSimpleList(),
-                'time'              => time(),
-                'display_elements'  => $display_elements
-            )
-        );
-        return $response;
-    }
+    Crud\MembersController::class . ':show'
 )->setName('member')->add($authenticate)->add($navMiddleware);
 
 $app->get(
@@ -1184,319 +865,29 @@ $app->post(
 
 $app->get(
     '/member/remove/{id:\d+}',
-    function ($request, $response, $args) {
-        $adh = new Adherent($this->zdb, (int)$args['id']);
-
-        $data = [
-            'id'            => $args['id'],
-            'redirect_uri'  => $this->router->pathFor('members')
-        ];
-
-        // display page
-        $this->view->render(
-            $response,
-            'confirm_removal.tpl',
-            array(
-                'type'          => _T("Member"),
-                'mode'          => $request->isXhr() ? 'ajax' : '',
-                'page_title'    => sprintf(
-                    _T('Remove member %1$s'),
-                    $adh->sfullname
-                ),
-                'form_url'      => $this->router->pathFor('doRemoveMember', ['id' => $adh->id]),
-                'cancel_uri'    => $this->router->pathFor('members'),
-                'data'          => $data
-            )
-        );
-        return $response;
-    }
+    Crud\MembersController::class . ':confirmDelete'
 )->setName('removeMember')->add($authenticate);
 
 $app->get(
     '/members/remove',
-    function ($request, $response) {
-        $filters =  $this->session->filter_members;
-
-        $data = [
-            'id'            => $filters->selected,
-            'redirect_uri'  => $this->router->pathFor('members')
-        ];
-
-        // display page
-        $this->view->render(
-            $response,
-            'confirm_removal.tpl',
-            array(
-                'type'          => _T("Member"),
-                'mode'          => $request->isXhr() ? 'ajax' : '',
-                'page_title'    => _T('Remove members'),
-                'message'       => str_replace(
-                    '%count',
-                    count($data['id']),
-                    _T('You are about to remove %count members.')
-                ),
-                'form_url'      => $this->router->pathFor('doRemoveMember'),
-                'cancel_uri'    => $this->router->pathFor('members'),
-                'data'          => $data
-            )
-        );
-        return $response;
-    }
+    Crud\MembersController::class . ':confirmDelete'
 )->setName('removeMembers')->add($authenticate);
 
 $app->post(
     '/member/remove' . '[/{id:\d+}]',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
-        $success = false;
-
-        $uri = isset($post['redirect_uri']) ?
-            $post['redirect_uri'] :
-            $this->router->pathFor('slash');
-
-        if (!isset($post['confirm'])) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Removal has not been confirmed!")
-            );
-        } else {
-            if (isset($this->session->filter_members)) {
-                $filters =  $this->session->filter_members;
-            } else {
-                $filters = new MembersList();
-            }
-            $members = new Members($filters);
-
-            if (!is_array($post['id'])) {
-                //delete member
-                $adh = new Adherent($this->zdb, (int)$post['id']);
-                $ids = (array)$post['id'];
-            } else {
-                $ids = $post['id'];
-            }
-
-            $del = $members->removeMembers($ids);
-
-            if ($del !== true) {
-                if (count($ids) === 1) {
-                    $error_detected = str_replace(
-                        '%name',
-                        $adh->sname,
-                        _T("An error occurred trying to remove member %name :/")
-                    );
-                } else {
-                    $error_detected = _T("An error occurred trying to remove members :/");
-                }
-
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error_detected
-                );
-            } else {
-                if (!is_array($post['id'])) {
-                    $success_detected = str_replace(
-                        '%name',
-                        $adh->sname,
-                        _T("Member %name has been successfully deleted.")
-                    );
-                } else {
-                    $success_detected = str_replace(
-                        '%count',
-                        count($ids),
-                        _T("%count members have been successfully deleted.")
-                    );
-                }
-
-                $this->flash->addMessage(
-                    'success_detected',
-                    $success_detected
-                );
-
-                $success = true;
-            }
-        }
-
-        if (!$ajax) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $uri);
-        } else {
-            return $response->withJson(
-                [
-                    'success'   => $success
-                ]
-            );
-        }
-    }
+    Crud\MembersController::class . ':delete'
 )->setName('doRemoveMember')->add($authenticate);
 
 //advanced search page
 $app->get(
     '/advanced-search',
-    function ($request, $response) {
-        if (isset($this->session->filter_members)) {
-            $filters = $this->session->filter_members;
-            if (!$filters instanceof AdvancedMembersList) {
-                $filters = new AdvancedMembersList($filters);
-            }
-        } else {
-            $filters = new AdvancedMembersList();
-        }
-
-        $groups = new Groups($this->zdb, $this->login);
-        $groups_list = $groups->getList();
-
-        //we want only visibles fields
-        $fields = $this->members_fields;
-        $fc = $this->fields_config;
-        $visibles = $fc->getVisibilities();
-        $access_level = $this->login->getAccessLevel();
-
-        //remove not searchable fields
-        unset($fields['mdp_adh']);
-
-        foreach ($fields as $k => $f) {
-            if ($visibles[$k] == FieldsConfig::NOBODY ||
-                ($visibles[$k] == FieldsConfig::ADMIN &&
-                    $access_level < Authentication::ACCESS_ADMIN) ||
-                ($visibles[$k] == FieldsConfig::STAFF &&
-                    $access_level < Authentication::ACCESS_STAFF) ||
-                ($visibles[$k] == FieldsConfig::MANAGER &&
-                    $access_level < Authentication::ACCESS_MANAGER)
-            ) {
-                unset($fields[$k]);
-            }
-        }
-
-        //add status label search
-        if ($pos = array_search(Status::PK, array_keys($fields))) {
-            $fields = array_slice($fields, 0, $pos, true) +
-                ['status_label'  => ['label' => _T('Status label')]] +
-                array_slice($fields, $pos, count($fields) -1, true);
-        }
-
-        //dynamic fields
-        $deps = array(
-            'picture'   => false,
-            'groups'    => false,
-            'dues'      => false,
-            'parent'    => false,
-            'children'  => false,
-            'dynamics'  => false
-        );
-        $member = new Adherent($this->zdb, $this->login->login, $deps);
-        $adh_dynamics = new DynamicFieldsHandle($this->zdb, $this->login, $member);
-
-        $contrib = new Contribution($this->zdb, $this->login);
-        $contrib_dynamics = new DynamicFieldsHandle($this->zdb, $this->login, $contrib);
-
-        //Status
-        $statuts = new Status($this->zdb);
-
-        //Contributions types
-        $ct = new Galette\Entity\ContributionsTypes($this->zdb);
-
-        //Payments types
-        $ptypes = new PaymentTypes(
-            $this->zdb,
-            $this->preferences,
-            $this->login
-        );
-        $ptlist = $ptypes->getList();
-
-        $filters->setViewCommonsFilters($this->preferences, $this->view->getSmarty());
-
-        // display page
-        $this->view->render(
-            $response,
-            'advanced_search.tpl',
-            array(
-                'page_title'            => _T("Advanced search"),
-                'filter_groups_options' => $groups_list,
-                'search_fields'         => $fields,
-                'adh_dynamics'          => $adh_dynamics->getFields(),
-                'contrib_dynamics'      => $contrib_dynamics->getFields(),
-                'statuts'               => $statuts->getList(),
-                'contributions_types'   => $ct->getList(),
-                'filters'               => $filters,
-                'payments_types'        => $ptlist
-            )
-        );
-        return $response;
-    }
+    Crud\MembersController::class . ':advancedSearch'
 )->setName('advanced-search')->add($authenticate);
 
 //Batch actions on members list
 $app->post(
     '/members/batch',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-
-        if (isset($post['member_sel'])) {
-            if (isset($this->session->filter_members)) {
-                $filters = $this->session->filter_members;
-            } else {
-                $filters = new MembersList();
-            }
-
-            $filters->selected = $post['member_sel'];
-            $this->session->filter_members = $filters;
-
-            if (isset($post['cards'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('pdf-members-cards'));
-            }
-
-            if (isset($post['labels'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('pdf-members-labels'));
-            }
-
-            if (isset($post['mailing'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('mailing') . '?mailing_new=new');
-            }
-
-            if (isset($post['attendance_sheet'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('attendance_sheet_details'));
-            }
-
-            if (isset($post['csv'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('csv-memberslist'));
-            }
-
-            if (isset($post['delete'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('removeMembers'));
-            }
-
-            if (isset($post['masschange'])) {
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $this->router->pathFor('masschangeMembers'));
-            }
-
-            throw new \RuntimeException('Does not know what to batch :(');
-        } else {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("No member was selected, please check at least one name.")
-            );
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
-        }
-    }
+    Crud\MembersController::class . ':handleBatch'
 )->setName('batch-memberslist')->add($authenticate);
 
 //PDF members cards
@@ -2224,18 +1615,7 @@ $app->post(
 //Duplicate member
 $app->get(
     '/members/duplicate/{' . Adherent::PK . ':\d+}',
-    function ($request, $response, $args) {
-        $id_adh = (int)$args[Adherent::PK];
-        $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
-        $adh->setDuplicate();
-
-        //store entity in session
-        $this->session->member = $adh;
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('editmember', ['action' => 'add']));
-    }
+    Crud\MembersController::class . ':duplicate'
 )->setName('duplicateMember')->add($authenticate);
 
 //saved searches

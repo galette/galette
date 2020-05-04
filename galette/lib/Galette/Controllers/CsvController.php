@@ -41,8 +41,9 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Entity\ImportModel;
 use Galette\IO\Csv;
-use Galette\IO\CsvOut;
 use Galette\IO\CsvIn;
+use Galette\IO\CsvOut;
+use Galette\IO\MembersCsv;
 use Analog\Analog;
 
 /**
@@ -60,6 +61,43 @@ use Analog\Analog;
 
 class CsvController extends AbstractController
 {
+    /**
+     * Send response
+     *
+     * @param Response $response PSR Response
+     * @param string   $filepath File path on disk
+     * @param string   $filename File name for output
+     *
+     * @return Response
+     */
+    protected function sendResponse(Response $response, $filepath, $filename) :Response
+    {
+        if (file_exists($filepath)) {
+            $response = $response->withHeader('Content-Description', 'File Transfer')
+                ->withHeader('Content-Type', 'text/csv')
+                ->withHeader('Content-Disposition', 'attachment;filename="' . $filename . '"')
+                ->withHeader('Pragma', 'no-cache')
+                ->withHeader('Content-Transfer-Encoding', 'binary')
+                ->withHeader('Expires', '0')
+                ->withHeader('Cache-Control', 'must-revalidate')
+                ->withHeader('Pragma', 'public');
+
+            $stream = fopen('php://memory', 'r+');
+            fwrite($stream, file_get_contents($filepath));
+            rewind($stream);
+
+            return $response->withBody(new \Slim\Http\Stream($stream));
+        } else {
+            Analog::log(
+                'A request has been made to get a CSV file named `' .
+                $filename .'` that does not exists (' . $filepath . ').',
+                Analog::WARNING
+            );
+            $notFound = $this->notFoundHandler;
+            return $notFound($request, $response);
+        }
+    }
+
     /**
      * Exports page
      *
@@ -372,30 +410,7 @@ class CsvController extends AbstractController
                 CsvOut::DEFAULT_DIRECTORY :
                 CsvIn::DEFAULT_DIRECTORY;
             $filepath .= $filename;
-            if (file_exists($filepath)) {
-                $response = $response->withHeader('Content-Description', 'File Transfer')
-                    ->withHeader('Content-Type', 'text/csv')
-                    ->withHeader('Content-Disposition', 'attachment;filename="' . $filename . '"')
-                    ->withHeader('Pragma', 'no-cache')
-                    ->withHeader('Content-Transfer-Encoding', 'binary')
-                    ->withHeader('Expires', '0')
-                    ->withHeader('Cache-Control', 'must-revalidate')
-                    ->withHeader('Pragma', 'public');
-
-                $stream = fopen('php://memory', 'r+');
-                fwrite($stream, file_get_contents($filepath));
-                rewind($stream);
-
-                return $response->withBody(new \Slim\Http\Stream($stream));
-            } else {
-                Analog::log(
-                    'A request has been made to get an ' . $args['type'] . ' file named `' .
-                    $filename .'` that does not exists.',
-                    Analog::WARNING
-                );
-                $notFound = $this->notFoundHandler;
-                return $notFound($request, $response);
-            }
+            return $this->sendResponse($response, $filepath, $filename);
         } else {
             Analog::log(
                 'A non authorized person asked to retrieve ' . $args['type'] . ' file named `' .
@@ -650,5 +665,36 @@ class CsvController extends AbstractController
         return $response
             ->withStatus(301)
             ->withHeader('Location', $this->router->pathFor('importModel'));
+    }
+
+    /**
+     * Members CSV exports
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function membersExport(Request $request, Response $response) :Response
+    {
+        if (isset($this->session->filter_members)) {
+            //CAUTION: this one may be simple or advanced, display must change
+            $filters = $this->session->filter_members;
+        } else {
+            $filters = new MembersList();
+        }
+
+        $csv = new MembersCsv(
+            $this->zdb,
+            $this->login,
+            $this->members_fields,
+            $this->fields_config
+        );
+        $csv->exportMembers($filters);
+
+        $filepath = $csv->getPath();
+        $filename = $csv->getFileName();
+
+        return $this->sendResponse($response, $filepath, $filename);
     }
 }
