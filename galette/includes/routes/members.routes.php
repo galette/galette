@@ -1626,282 +1626,30 @@ $app->get(
 $app->map(
     ['GET', 'POST'],
     '/save-search',
-    function ($request, $response) {
-        if ($request->isPost()) {
-            $post = $request->getParsedBody();
-        } else {
-            $post = $request->getQueryParams();
-        }
-
-        $name = null;
-        if (isset($post['search_title'])) {
-            $name = $post['search_title'];
-            unset($post['search_title']);
-        }
-
-        //when using advanced search, no parameters are sent
-        if (isset($post['advanced_search'])) {
-            $post = [];
-            $filters = $this->session->filter_members;
-            foreach ($filters->search_fields as $field) {
-                $post[$field] = $filters->$field;
-            }
-        }
-
-        //reformat, add required infos
-        $post = [
-            'parameters'    => $post,
-            'form'          => 'Adherent',
-            'name'          => $name
-        ];
-
-        $sco = new Galette\Entity\SavedSearch($this->zdb, $this->login);
-        if ($check = $sco->check($post)) {
-            if (!$res = $sco->store()) {
-                if ($res === false) {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        _T("An SQL error has occurred while storing search.")
-                    );
-                } else {
-                    $this->flash->addMessage(
-                        'warning_detected',
-                        _T("This search is already saved.")
-                    );
-                }
-            } else {
-                $this->flash->addMessage(
-                    'success_detected',
-                    _T("Search has been saved.")
-                );
-            }
-        } else {
-            //report errors
-            foreach ($sco->getErrors() as $error) {
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error
-                );
-            }
-        }
-
-        if ($request->isGet()) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('members'));
-        }
-    }
+    Crud\SavedSearchesController::class . ':doAdd'
 )->setName('saveSearch');
 
 $app->get(
     '/saved-searches[/{option:page|order}/{value:\d+}]',
-    function ($request, $response, $args = []) {
-        $option = null;
-        if (isset($args['option'])) {
-            $option = $args['option'];
-        }
-        $value = null;
-        if (isset($args['value'])) {
-            $value = $args['value'];
-        }
-
-        if (isset($this->session->filter_savedsearch)) {
-            $filters = $this->session->filter_savedsearch;
-        } else {
-            $filters = new SavedSearchesList();
-        }
-
-        if ($option !== null) {
-            switch ($option) {
-                case 'page':
-                    $filters->current_page = (int)$value;
-                    break;
-                case 'order':
-                    $filters->orderby = $value;
-                    break;
-            }
-        }
-
-        $searches = new SavedSearches($this->zdb, $this->login, $filters);
-        $list = $searches->getList(true);
-
-        //assign pagination variables to the template and add pagination links
-        $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
-
-        $this->session->filter_savedsearch = $filters;
-
-        // display page
-        $this->view->render(
-            $response,
-            'saved_searches.tpl',
-            array(
-                'page_title'        => _T("Saved searches"),
-                'searches'          => $list,
-                'nb'                => $searches->getCount(),
-                'filters'           => $filters
-            )
-        );
-        return $response;
-    }
+    Crud\SavedSearchesController::class . ':list'
 )->setName('searches')->add($authenticate);
 
 $app->get(
     '/search/remove/{id:\d+}',
-    function ($request, $response, $args) {
-        $data = [
-            'id'            => $args['id'],
-            'redirect_uri'  => $this->router->pathFor('searches')
-        ];
-
-        // display page
-        $this->view->render(
-            $response,
-            'confirm_removal.tpl',
-            array(
-                'type'          => _T("Saved search"),
-                'mode'          => $request->isXhr() ? 'ajax' : '',
-                'page_title'    => _T('Remove saved search'),
-                'form_url'      => $this->router->pathFor('doRemoveSearch', ['id' => $args['id']]),
-                'cancel_uri'    => $this->router->pathFor('searches'),
-                'data'          => $data
-            )
-        );
-        return $response;
-    }
+    Crud\SavedSearchesController::class . ':confirmDelete'
 )->setName('removeSearch')->add($authenticate);
 
 $app->get(
     '/searches/remove',
-    function ($request, $response) {
-        $filters =  $this->session->filter_savedsearch;
-
-        $data = [
-            'id'            => $filters->selected,
-            'redirect_uri'  => $this->router->pathFor('searches')
-        ];
-
-        // display page
-        $this->view->render(
-            $response,
-            'confirm_removal.tpl',
-            array(
-                'type'          => _T("Saved search"),
-                'mode'          => $request->isXhr() ? 'ajax' : '',
-                'page_title'    => _T('Remove saved searches'),
-                'message'       => str_replace(
-                    '%count',
-                    count($data['id']),
-                    _T('You are about to remove %count searches.')
-                ),
-                'form_url'      => $this->router->pathFor('doRemoveSearch'),
-                'cancel_uri'    => $this->router->pathFor('searches'),
-                'data'          => $data
-            )
-        );
-        return $response;
-    }
+    Crud\SavedSearchesController::class . ':confirmDelete'
 )->setName('removeSearches')->add($authenticate);
 
 $app->post(
     '/search/remove' . '[/{id:\d+}]',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-        $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
-        $success = false;
-
-        $uri = isset($post['redirect_uri']) ?
-            $post['redirect_uri'] :
-            $this->router->pathFor('slash');
-
-        if (!isset($post['confirm'])) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Removal has not been confirmed!")
-            );
-        } else {
-            if (isset($this->session->filter_savedsearch)) {
-                $filters =  $this->session->filter_savedsearch;
-            } else {
-                $filters = new SavedSearchesList();
-            }
-            $searches = new SavedSearches($this->zdb, $this->login, $filters);
-
-            if (!is_array($post['id'])) {
-                $ids = (array)$post['id'];
-            } else {
-                $ids = $post['id'];
-            }
-
-            $del = $searches->remove($ids, $this->history);
-
-            if ($del !== true) {
-                $error_detected = _T("An error occurred trying to remove searches :/");
-
-                $this->flash->addMessage(
-                    'error_detected',
-                    $error_detected
-                );
-            } else {
-                $success_detected = str_replace(
-                    '%count',
-                    count($ids),
-                    _T("%count searches have been successfully deleted.")
-                );
-
-                $this->flash->addMessage(
-                    'success_detected',
-                    $success_detected
-                );
-
-                $success = true;
-            }
-        }
-
-        if (!$ajax) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $uri);
-        } else {
-            return $response->withJson(
-                [
-                    'success'   => $success
-                ]
-            );
-        }
-    }
+    Crud\SavedSearchesController::class . ':delete'
 )->setName('doRemoveSearch')->add($authenticate);
 
 $app->get(
     '/save-search/{id}',
-    function ($request, $response, $args) {
-        try {
-            $sco = new Galette\Entity\SavedSearch($this->zdb, $this->login, (int)$args['id']);
-            $this->flash->addMessage(
-                'success_detected',
-                _T("Saved search loaded")
-            );
-        } catch (\Exception $e) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("An SQL error has occurred while storing search.")
-            );
-        }
-        $parameters = (array)$sco->parameters;
-
-        $filters = null;
-        if (isset($parameters['free_search'])) {
-            $filters = new AdvancedMembersList();
-        } else {
-            $filters = new MembersList();
-        }
-
-        foreach ($parameters as $key => $value) {
-            $filters->$key = $value;
-        }
-        $this->session->filter_members = $filters;
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('members'));
-    }
+    Crud\SavedSearchesController::class . ':load'
 )->setName('loadSearch');
