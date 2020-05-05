@@ -41,6 +41,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\SysInfos;
 use Galette\Core\GaletteMail;
+use Galette\Entity\FieldsCategories;
 use Galette\Entity\Status;
 use Galette\IO\News;
 use Galette\IO\Charts;

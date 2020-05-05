@@ -40,10 +40,10 @@ use Galette\Controllers\PluginsController;
 use Galette\Controllers\HistoryController;
 use Galette\Controllers\DynamicTranslationsController;
 use Galette\Controllers\Crud;
+use Galette\Controllers\PdfController;
 use Galette\Controllers\CsvController;
 use Galette\Controllers\AdminToolsController;
 
-use Galette\Entity\FieldsCategories;
 use Galette\DynamicFields\DynamicField;
 use Galette\Repository\Members;
 use Galette\IO\News;
