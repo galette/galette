@@ -336,7 +336,7 @@ $app->post(
     '/ajax/groups/reorder',
     function ($request, $response) {
         $post = $request->getParsedBody();
-        if (!isset($post['to']) || $post['to'] == '' || !isset($post['id_group']) || $post['id_group'] == '') {
+        if (!isset($post['to']) || !isset($post['id_group']) || $post['id_group'] == '') {
             Analog::log(
                 'Trying to reorder without required parameters!',
                 Analog::INFO
@@ -345,7 +345,11 @@ $app->post(
         } else {
             $id = $post['id_group'];
             $group = new Galette\Entity\Group((int)$id);
-            $group->setParentGroup((int)$_POST['to']);
+            if (!empty($post['to'])) {
+                $group->setParentGroup((int)$_POST['to']);
+            } else {
+                $group->detach();
+            }
             $result = $group->store();
         }
 
