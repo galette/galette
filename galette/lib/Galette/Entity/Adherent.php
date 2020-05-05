@@ -1107,7 +1107,7 @@ class Adherent
 
         $prop = '_' . $this->fields[$field]['propname'];
 
-        if ($value === null || trim($value) == '') {
+        if ($value === null || (is_string($value) && trim($value) == '')) {
             //empty values are OK
             $this->$prop = $value;
             return;
