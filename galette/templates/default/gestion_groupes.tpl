@@ -152,13 +152,12 @@
                                 },
                                 {include file="js_loader.tpl"},
                                 success: function(res){
-                                    var _res = jQuery.parseJSON(res);
-                                    if ( _res.success == false ) {
-                                        if (_res.message) {
-                                            alert(_res.message)
+                                    if ( res.success == false ) {
+                                        if (res.message) {
+                                            alert(res.message)
                                         } else {
                                             alert('{_T string="The group name you have requested already exits in the database."}');
-                                            }
+                                        }
                                     } else {
                                         $(location).attr('href', _href.replace('NAME', _name));
                                     }
