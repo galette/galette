@@ -467,14 +467,7 @@ class FakeData
     {
         $file = GALETTE_TEMPIMAGES_PATH . 'fakephoto.jpg';
         if (!defined('GALETTE_TESTS')) {
-            $faker = $this->getFaker();
-            $url = $faker->unique()->imageUrl(
-                $width = 800,
-                $height = 600,
-                'people',
-                true,
-                'Galette fake data'
-            );
+            $url = 'https://loremflickr.com/800/600/people';
         } else {
             $url = GALETTE_ROOT . '../tests/fake_image.jpg';
         }
