@@ -166,58 +166,7 @@ $app->add('\Galette\Middleware\Telemetry');
  * Check routes ACLs
  * This is important this one to be the last, so it'll be executed first.
  */
-$app->add(function ($request, $response, $next) {
-    $route = $request->getAttribute('route');
-    $route_info = $request->getAttribute('routeInfo');
-
-    if ($route != null) {
-        $this->view->getSmarty()->assign('cur_route', $route->getName());
-        if ($route_info != null && is_array($route_info[2])) {
-            $this->view->getSmarty()->assign('cur_subroute', array_shift($route_info[2]));
-        }
-    }
-
-    $acls = array_merge($this->get('acls'), $this->get('plugins')->getAcls());
-
-    if (GALETTE_MODE === 'DEV') {
-        //check for routes that are not in ACLs
-        $routes = $this->get('router')->getRoutes();
-
-        $missing_acls = [];
-        $excluded_names = [
-            'publicList',
-            'filterPublicList'
-        ];
-        foreach ($routes as $route) {
-            $name = $route->getName();
-            //check if route has $authenticate middleware
-            $middlewares = $route->getMiddleware();
-            if (count($middlewares) > 0) {
-                foreach ($middlewares as $middleware) {
-                    if (!in_array($name, array_keys($acls))
-                        && !in_array($name, $excluded_names)
-                        && !in_array($name, $missing_acls)
-                    ) {
-                        $missing_acls[] = $name;
-                    }
-                }
-            }
-        }
-        if (count($missing_acls) > 0) {
-            $msg = str_replace(
-                '%routes',
-                implode(', ', $missing_acls),
-                _T("Routes '%routes' are missing in ACLs!")
-            );
-            Analog::log($msg, Analog::ERROR);
-            //FIXME: with flash(), message is only shown on the seconde round,
-            //with flashNow(), thas just does not work :(
-            $this->flash->addMessage('error_detected', $msg);
-        }
-    }
-
-    return $next($request, $response);
-});
+$app->add('\Galette\Middleware\CheckAcls');
 
 require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
 require_once GALETTE_ROOT . 'includes/routes/authentication.routes.php';
