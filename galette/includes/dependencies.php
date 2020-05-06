@@ -74,27 +74,27 @@ $container['view'] = function ($c) {
     $basepath = str_replace(
         'index.php',
         '',
-        $c['request']->getUri()->getBasePath()
+        $c->get('request')->getUri()->getBasePath()
     );
-    $view->addSlimPlugins($c['router'], $basepath);
+    $view->addSlimPlugins($c->get('router'), $basepath);
 
     $smarty = $view->getSmarty();
     $smarty->inheritance_merge_compiled_includes = false;
 
     $smarty->assign('flash', $c->get('flash'));
 
-    $smarty->assign('login', $c->login);
-    $smarty->assign('logo', $c->logo);
+    $smarty->assign('login', $c->get('login'));
+    $smarty->assign('logo', $c->get('logo'));
     $smarty->assign('tpl', $smarty);
-    $smarty->assign('headers', $c->plugins->getTplHeaders());
-    $smarty->assign('plugin_actions', $c->plugins->getTplAdhActions());
+    $smarty->assign('headers', $c->get('plugins')->getTplHeaders());
+    $smarty->assign('plugin_actions', $c->get('plugins')->getTplAdhActions());
     $smarty->assign(
         'plugin_batch_actions',
-        $c->plugins->getTplAdhBatchActions()
+        $c->get('plugins')->getTplAdhBatchActions()
     );
     $smarty->assign(
         'plugin_detailled_actions',
-        $c->plugins->getTplAdhDetailledActions()
+        $c->get('plugins')->getTplAdhDetailledActions()
     );
     $smarty->assign('scripts_dir', 'js/');
     $smarty->assign('jquery_dir', 'js/jquery/');
@@ -111,23 +111,23 @@ $container['view'] = function ($c) {
     }*/
 
     $smarty->assign('template_subdir', GALETTE_THEME);
-    foreach ($c->plugins->getTplAssignments() as $k => $v) {
+    foreach ($c->get('plugins')->getTplAssignments() as $k => $v) {
         $smarty->assign($k, $v);
     }
     /** galette_lang should be removed and languages used instead */
-    $smarty->assign('galette_lang', $c->i18n->getAbbrev());
-    $smarty->assign('galette_lang_name', $c->i18n->getName());
-    $smarty->assign('languages', $c->i18n->getList());
-    $smarty->assign('plugins', $c->plugins);
-    $smarty->assign('preferences', $c->preferences);
-    $smarty->assign('pref_slogan', $c->preferences->pref_slogan);
-    $smarty->assign('pref_theme', $c->preferences->pref_theme);
-    $smarty->assign('pref_statut', $c->preferences->pref_statut);
+    $smarty->assign('galette_lang', $c->get('i18n')->getAbbrev());
+    $smarty->assign('galette_lang_name', $c->get('i18n')->getName());
+    $smarty->assign('languages', $c->get('i18n')->getList());
+    $smarty->assign('plugins', $c->get('plugins'));
+    $smarty->assign('preferences', $c->get('preferences'));
+    $smarty->assign('pref_slogan', $c->get('preferences')->pref_slogan);
+    $smarty->assign('pref_theme', $c->get('preferences')->pref_theme);
+    $smarty->assign('pref_statut', $c->get('preferences')->pref_statut);
     $smarty->assign(
         'pref_editor_enabled',
         $c->preferences->pref_editor_enabled
     );
-    $smarty->assign('pref_mail_method', $c->preferences->pref_mail_method);
+    $smarty->assign('pref_mail_method', $c->get('preferences')->pref_mail_method);
     $smarty->assign('existing_mailing', $c->get('session')->mailing !== null);
     $smarty->assign('contentcls', null);
     $smarty->assign('additionnal_html_class', null);
@@ -139,9 +139,9 @@ $container['view'] = function ($c) {
     $smarty->assign('html_editor', null);
     $smarty->assign('require_charts', null);
     $smarty->assign('require_mass', null);
-    if ($c->login->isAdmin() && $c->preferences->pref_telemetry_date) {
+    if ($c->get('login')->isAdmin() && $c->get('preferences')->pref_telemetry_date) {
         $now = new \DateTime();
-        $sent = new \DateTime($c->preferences->pref_telemetry_date);
+        $sent = new \DateTime($c->get('preferences')->pref_telemetry_date);
         $sent->add(new \DateInterval('P1Y'));// ask to resend telemetry after one year
         if ($now > $sent && !$_COOKIE['renew_telemetry']) {
             $smarty->assign('renew_telemetry', true);
@@ -165,7 +165,7 @@ $container['flash'] = function ($c) {
 $container['plugins'] = function ($c) use ($app) {
     $plugins = new Galette\Core\Plugins();
     $i18n = $c->get('i18n');
-    $plugins->loadModules($c->preferences, GALETTE_PLUGINS_PATH, $i18n->getLongID());
+    $plugins->loadModules($c->get('preferences'), GALETTE_PLUGINS_PATH, $i18n->getLongID());
     return $plugins;
 };
 
@@ -184,7 +184,7 @@ $container['zdb'] = function ($c) {
 };
 
 $container['preferences'] = function ($c) {
-    return new Galette\Core\Preferences($c->zdb);
+    return new Galette\Core\Preferences($c->get('zdb'));
 };
 
 $container['login'] = function ($c) {
@@ -346,7 +346,7 @@ $container['acls'] = function ($c) {
         'loadSearch'                => 'member'
     ];
 
-    foreach ($c['plugins']->getModules() as $plugin) {
+    foreach ($c->get('plugins')->getModules() as $plugin) {
         $acls[$plugin['route'] . 'Info'] = 'member';
     }
 
@@ -721,13 +721,13 @@ $container['event_manager'] = function ($c) {
 
 //For bad existing globals can be used...
 if (!isset($container['mode']) || $container['mode'] !== 'INSTALL' && $container['mode'] !== 'NEED_UPDATE') {
-    $zdb = $container['zdb'];
-    $preferences = $container['preferences'];
-    $login = $container['login'];
-    $hist = $container['history'];
+    $zdb = $container->get('zdb');
+    $preferences = $container->get('preferences');
+    $login = $container->get('login');
+    $hist = $container->get('history');
 }
-$i18n = $container['i18n'];
-$translator = $container['translator'];
-$emitter = $container['event_manager'];
+$i18n = $container->get('i18n');
+$translator = $container->get('translator');
+$emitter = $container->get('event_manager');
 
 require_once GALETTE_ROOT . 'includes/i18n.inc.php';
