@@ -153,9 +153,7 @@ $app->post(
 $app->get(
     '/export',
     CsvController::class . ':export'
-)->setName(
-    'export'
-)->add($authenticate);
+)->setName('export')->add($authenticate);
 
 $app->get(
     '/{type:export|import}/remove/{file}',

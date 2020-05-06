@@ -10,7 +10,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2015 The Galette Team
+ * Copyright © 2015-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -31,31 +31,34 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2015-2016 The Galette Team
+ * @copyright 2015-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2015-10-31
  */
 
-namespace Galette\Core;
+namespace Galette\Middleware;
 
 use Galette\Core\I18n;
 
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+
 /**
- * Galette's Slim middleware
+ * Galette's Slim middleware for Update and Maintenance
  *
  * Renders maintainance and needs update pages, as 503 (service not available)
  *
- * @category  Core
- * @name      Middleware
+ * @category  Middleware
+ * @name      UpdateAndMaintenance
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2015-2017 The Galette Team
+ * @copyright 2015-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2015-10-31
  */
-class Middleware
+class UpdateAndMaintenance
 {
     const MAINTENANCE = 0;
     const NEED_UPDATE = 1;
@@ -102,7 +105,7 @@ class Middleware
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke($request, $response, $next)
+    public function __invoke(Request $request, Response $response, $next) :Response
     {
         $response
             ->withStatus(503)
@@ -119,7 +122,7 @@ class Middleware
      *
      * @return string
      */
-    private function renderPage($request, $contents)
+    private function renderPage(Request $request, $contents)
     {
         $path = str_replace(
             'index.php',
@@ -161,7 +164,7 @@ class Middleware
      *
      * @return string
      */
-    private function maintenancePage($request)
+    private function maintenancePage(Request $request)
     {
         $contents = "<h1>" . _T("Galette is currently under maintenance!") . "</h1>
             <p>" . _T("The Galette instance you are requesting is currently under maintenance. Please come back later.") . "</p>";
@@ -175,7 +178,7 @@ class Middleware
      *
      * @return string
      */
-    private function needsUpdatePage($request)
+    private function needsUpdatePage(Request $request)
     {
         $contents = "<h1>" . _T("Galette needs update!") . "</h1>
             <p>" . _T("Your Galette database is not present, or not up to date.") . "</p>

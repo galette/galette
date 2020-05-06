@@ -73,9 +73,9 @@ if ($needs_update) {
     require_once GALETTE_ROOT . 'includes/dependencies.php';
 
     $app->add(
-        new Galette\Core\Middleware(
+        new \Galette\Middleware\UpdateAndMaintenance(
             $i18n,
-            Galette\Core\Middleware::NEED_UPDATE
+            \Galette\Middleware\UpdateAndMaintenance::NEED_UPDATE
         )
     );
 
@@ -277,9 +277,9 @@ $navMiddleware = function ($request, $response, $next) use ($container) {
 //Maintainance middleware
 if ('MAINT' === GALETTE_MODE && !$container->get('login')->isSuperAdmin()) {
     $app->add(
-        new Galette\Core\Middleware(
+        new \Galette\Middleware\UpdateAndMaintenance(
             $i18n,
-            Galette\Core\Middleware::MAINTENANCE
+            \Galette\Middleware\UpdateAndMaintenance::MAINTENANCE
         )
     );
 }
