@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2020-05-01 15:15+0000\n"
+"PO-Revision-Date: 2020-05-06 21:44+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.0.2\n"
+"X-Generator: Weblate 4.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -46,10 +46,8 @@ msgid "Payment type '%s' has not been added!"
 msgstr "Le type de paiement « %s » n'a pas été ajouté !"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:224
-#, fuzzy
-#| msgid "Payment type '%s' has not been added!"
 msgid "Payment type '%s' has not been modified!"
-msgstr "Le type de paiement « %s » n'a pas été ajouté !"
+msgstr "Le type de paiement « %s » n'a pas été modifié !"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:237
 msgid "Payment type '%s' has been successfully added."
@@ -161,10 +159,8 @@ msgid "Mailing preview"
 msgstr "Prévisualisation de l'envoi"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:84
-#, fuzzy
-#| msgid "Edit field"
 msgid "Add field"
-msgstr "Édition de champ"
+msgstr "Ajouter un champ"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:133
 msgid "An error occurred adding dynamic field :("
@@ -188,10 +184,8 @@ msgid "Edit field"
 msgstr "Édition de champ"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:351
-#, fuzzy
-#| msgid "An error occurred adding dynamic field :("
 msgid "An error occurred editing dynamic field :("
-msgstr "Une erreur est survenue lors de l'ajout du champ dynamique :("
+msgstr "Une erreur est survenue lors de la modification du champ dynamique :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:447
 msgid "Requested field does not exists!"
@@ -463,10 +457,8 @@ msgid "Saved search loaded"
 msgstr "Recherche executée"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:368
-#, fuzzy
-#| msgid "An SQL error has occurred while storing search."
 msgid "An SQL error has occurred while loading search."
-msgstr "Une erreur SQL est survenue lors de l'enregistrement de la recherche."
+msgstr "Une erreur SQL est survenue lors du chargement de la recherche."
 
 #: ../lib/Galette/Controllers/GaletteController.php:98
 #: ../templates/default/footer.tpl:24
@@ -576,16 +568,12 @@ msgid "Removal has not been confirmed!"
 msgstr "La suppression n’a pas été confirmée !"
 
 #: ../lib/Galette/Controllers/CrudController.php:249
-#, fuzzy
-#| msgid "Field has been successfully deleted!"
 msgid "Successfully deleted!"
-msgstr "Le champ a été supprimé avec succès !"
+msgstr "Supprimé avec succès !"
 
 #: ../lib/Galette/Controllers/CrudController.php:263
-#, fuzzy
-#| msgid "An error occurred trying to delete field :("
 msgid "An error occurred trying to delete :("
-msgstr "Une erreur est survenue lors de la suppression du champ :("
+msgstr "Une erreur est survenue lors de la suppression :("
 
 #: ../lib/Galette/Controllers/PdfController.php:185
 #: ../lib/Galette/Controllers/PdfController.php:256
@@ -735,10 +723,8 @@ msgid "- The passwords don't match!"
 msgstr "- Les mots de passe ne correspondent pas&nbsp;!"
 
 #: ../lib/Galette/Controllers/AuthController.php:506
-#, fuzzy
-#| msgid "Your password has been changed!"
 msgid "Your password is too weak!"
-msgstr "Votre mot de passe a été changé&nbsp;!"
+msgstr "Votre mot de passe est trop faible&nbsp;!"
 
 #: ../lib/Galette/Controllers/AuthController.php:515
 msgid "An error occurred while updating your password."
@@ -2350,12 +2336,8 @@ msgid "Group updated"
 msgstr "Groupe mis à jour"
 
 #: ../lib/Galette/Entity/Group.php:709
-#, fuzzy
-#| msgid "Group `%1$s` is a child of `%2$s`, cannot be set as parent!"
 msgid "Group `%1$s` cannot be set as parent!"
-msgstr ""
-"Le groupe `%1$s` est un enfant de `%2$s`, il ne peut être défini comme "
-"parent&nbsp;!"
+msgstr "Le groupe `%1$s` ne peut être défini comme parent&nbsp;!"
 
 #: ../lib/Galette/Middleware/CheckAcls.php:128
 msgid "Routes '%routes' are missing in ACLs!"
@@ -2825,13 +2807,11 @@ msgstr "Une erreur est survenue lors de la suppression des transactions :("
 
 #: ../includes/routes/contributions.routes.php:1251
 msgid "Download document"
-msgstr ""
+msgstr "Télécharger le document"
 
 #: ../includes/routes/contributions.routes.php:1271
-#, fuzzy
-#| msgid "Invalid extension!"
 msgid "Invalid link!"
-msgstr "Extension invalide !"
+msgstr "Lien invalide !"
 
 #: ../includes/routes/plugins.routes.php:73
 msgid "Invalid extension!"
@@ -6064,13 +6044,11 @@ msgstr "Type de contribution"
 
 #: ../templates/default/gestion_textes.tpl:128
 msgid "Direct link for member card download"
-msgstr ""
+msgstr "Lien direct pour télécharger la fiche de membre"
 
 #: ../templates/default/gestion_textes.tpl:130
-#, fuzzy
-#| msgid "Available for invoices and receipts only"
 msgid "Direct link for invoice/receipt download"
-msgstr "Disponible pour les factures et reçus uniquement"
+msgstr "Lien direct pour le téléchargement des factures/reçus"
 
 #: ../templates/default/gestion_textes.tpl:134
 msgid "Available only for reminders"
@@ -7458,32 +7436,24 @@ msgid "Statuts"
 msgstr "Statuts"
 
 #: ../templates/default/advanced_search.tpl:97
-#, fuzzy
-#| msgid "Advanced search"
 msgid "Advanced groups search"
-msgstr "Recherche avancée"
+msgstr "Recherche avancée des groupes"
 
 #: ../templates/default/advanced_search.tpl:97
 msgid "Experimental"
-msgstr ""
+msgstr "Expérimental"
 
 #: ../templates/default/advanced_search.tpl:104
-#, fuzzy
-#| msgid "Add new free search criteria"
 msgid "Add new group search criteria"
-msgstr "Ajouter un critère de recherche libre"
+msgstr "Ajouter un critère de recherche de groupe"
 
 #: ../templates/default/advanced_search.tpl:108
-#, fuzzy
-#| msgid "Selected groups"
 msgid "In all selected groups"
-msgstr "Groupes sélectionnés"
+msgstr "Dans tous les groupes sélectionnés"
 
 #: ../templates/default/advanced_search.tpl:109
-#, fuzzy
-#| msgid "Selected groups"
 msgid "In any of selected groups"
-msgstr "Groupes sélectionnés"
+msgstr "Dans n'importe lequel des groupes sélectionnés"
 
 #: ../templates/default/advanced_search.tpl:125
 #: ../templates/default/advanced_search.tpl:294
@@ -7579,14 +7549,12 @@ msgstr ""
 "automatiquement ajoutée."
 
 #: ../templates/default/directlink.tpl:6
-#, fuzzy
-#| msgid "Member's email address"
 msgid "Please confirm your email address:"
-msgstr "Adresse de courriel de l’adhérent"
+msgstr "Veuillez confirmer votre adresse de courriel :"
 
 #: ../templates/default/directlink.tpl:9
 msgid "Get my document"
-msgstr ""
+msgstr "Obtenir mon document"
 
 #: ../templates/default/config_fields.tpl:5
 #: ../templates/default/config_fields.tpl:86
