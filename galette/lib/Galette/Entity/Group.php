@@ -706,7 +706,7 @@ class Group
             //does not seem to work :/
             throw new \Exception(
                 sprintf(
-                    _T("Group `%1\$s` cannot be set as parent!"),
+                    _T('Group `%1$s` cannot be set as parent!'),
                     $group->getName()
                 )
             );
