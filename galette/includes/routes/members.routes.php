@@ -86,12 +86,12 @@ $app->get(
 $app->get(
     '/member/{id:\d+}',
     Crud\MembersController::class . ':show'
-)->setName('member')->add($authenticate)->add($navMiddleware);
+)->setName('member')->add($authenticate)->add('Galette\Middleware\MembersNavigate');
 
 $app->get(
     '/member/{action:edit|add}[/{id:\d+}]',
     Crud\MembersController::class . ':edit'
-)->setName('editmember')->add($authenticate)->add($navMiddleware);
+)->setName('editmember')->add($authenticate)->add('Galette\Middleware\MembersNavigate');
 
 $app->post(
     '/member/store[/{self:subscribe}]',

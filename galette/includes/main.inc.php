@@ -229,51 +229,6 @@ $authenticate = function ($request, $response, $next) use ($container) {
     return $next($request, $response);
 };
 
-/**
- * Cards navigation middleware
- */
-$navMiddleware = function ($request, $response, $next) use ($container) {
-    $navigate = array();
-    $route = $request->getAttribute('route');
-    //$uri = $request->getUri();
-    //$route_name = $route->getName();
-    $args = $route->getArguments();
-
-    if (isset($this->session->filter_members)) {
-        $filters =  $this->session->filter_members;
-    } else {
-        $filters = new Galette\Filters\MembersList();
-    }
-
-    if ($this->login->isAdmin()
-        || $this->login->isStaff()
-        || $this->login->isGroupManager()
-    ) {
-        $m = new Galette\Repository\Members($filters);
-        $ids = $m->getList(false, array(Galette\Entity\Adherent::PK, 'nom_adh', 'prenom_adh'));
-        $ids = $ids->toArray();
-        foreach ($ids as $k => $m) {
-            if ($m['id_adh'] == $args['id']) {
-                $navigate = array(
-                    'cur'  => $m['id_adh'],
-                    'count' => count($ids),
-                    'pos' => $k+1
-                );
-                if ($k > 0) {
-                    $navigate['prev'] = $ids[$k-1]['id_adh'];
-                }
-                if ($k < count($ids)-1) {
-                    $navigate['next'] = $ids[$k+1]['id_adh'];
-                }
-                break;
-            }
-        }
-    }
-    $this->view->getSmarty()->assign('navigate', $navigate);
-
-    return $next($request, $response);
-};
-
 //Maintainance middleware
 if ('MAINT' === GALETTE_MODE && !$container->get('login')->isSuperAdmin()) {
     $app->add(
