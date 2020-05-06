@@ -154,29 +154,10 @@ $app->add('\Galette\Middleware\TrailingSlash');
 
 /**
  * Change language middleware
+ *
+ * Require determineRouteBeforeAppMiddleware to be on.
  */
-$app->add(function ($request, $response, $next) use ($i18n) {
-    $get = $request->getQueryParams();
-
-    if (isset($get['ui_pref_lang'])) {
-        $route = $request->getAttribute('route');
-
-        $route_name = $route->getName();
-        $arguments = $route->getArguments();
-
-        $this->i18n->changeLanguage($get['ui_pref_lang']);
-        $this->session->i18n = $this->i18n;
-
-        return $response->withRedirect(
-            $this->router->pathFor(
-                $route_name,
-                $arguments
-            ),
-            301
-        );
-    }
-    return $next($request, $response);
-});
+$app->add('\Galette\Middleware\Language');
 
 //Telemetry update middleware
 $app->add(function ($request, $response, $next) {
