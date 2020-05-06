@@ -307,7 +307,7 @@ $app->group('/ajax', function () use ($authenticate) {
     )->setName('contributionMembers')->add($authenticate);
 
     $this->post(
-        __('/password', 'routes') . __('/strength', 'routes'),
+        '/password/strength',
         function ($request, $response) {
             //post params may be passed from security tab test password
             $post = $request->getParsedBody();
