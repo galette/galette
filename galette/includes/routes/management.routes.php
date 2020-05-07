@@ -206,7 +206,7 @@ $app->post(
 )->setName('storeImportModel')->add($authenticate);
 
 $app->get(
-    '/models/pdf',
+    '/models/pdf[/{id:\d+}]',
     PdfController::class . ':models'
 )->setName('pdfModels')->add($authenticate);
 

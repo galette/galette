@@ -468,17 +468,17 @@ class PdfController extends AbstractController
     public function models(Request $request, Response $response, array $args = []) :Response
     {
         $id = 1;
-        if (isset($_GET['id'])) {
-            $id = (int)$_GET['id'];
-        } elseif (isset($_POST[PdfModel::PK])) {
+        if (isset($_POST[PdfModel::PK])) {
             $id = (int)$_POST[PdfModel::PK];
+        } elseif ($args['id']) {
+            $id = (int)$args['id'];
         }
 
-        $model = null;
 
         $ms = new PdfModels($this->zdb, $this->preferences, $this->login);
         $models = $ms->getList();
 
+        $model = null;
         foreach ($models as $m) {
             if ($m->id === $id) {
                 $model = $m;
@@ -486,17 +486,15 @@ class PdfController extends AbstractController
             }
         }
 
-        $ajax = false;
+        $tpl = null;
+        $params = [];
+
+        //Render directly template if we called from ajax,
+        //render in a full page otherwise
         if ($request->isXhr()
             || isset($request->getQueryParams()['ajax'])
             && $request->getQueryParams()['ajax'] == 'true'
         ) {
-            $ajax = true;
-        }
-
-        $tpl = null;
-        $params = [];
-        if ($ajax) {
             $tpl = 'gestion_pdf_content.tpl';
             $params['model'] = $model;
         } else {
@@ -582,6 +580,6 @@ class PdfController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('pdfModels'));
+            ->withHeader('Location', $this->router->pathFor('pdfModels', ['id' => $model->id]));
     }
 }
