@@ -41,9 +41,12 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Analog\Analog;
 use Galette\Entity\Adherent;
+use Galette\Entity\Contribution;
 use Galette\Entity\PdfModel;
 use Galette\Filters\MembersList;
 use Galette\IO\Pdf;
+use Galette\IO\PdfAttendanceSheet;
+use Galette\IO\PdfContribution;
 use Galette\IO\PdfGroups;
 use Galette\IO\PdfMembersCards;
 use Galette\IO\PdfMembersLabels;
@@ -367,7 +370,7 @@ class PdfController extends AbstractController
             'subtitle'  => $post['sheet_sub_title'] ?? null,
             'sheet_date'=> $post['sheet_date'] ?? null
         ];
-        $pdf = new Galette\IO\PdfAttendanceSheet($this->zdb, $this->preferences, $data);
+        $pdf = new PdfAttendanceSheet($this->zdb, $this->preferences, $data);
         //with or without images?
         if (isset($post['sheet_photos']) && $post['sheet_photos'] === '1') {
             $pdf->withImages();
