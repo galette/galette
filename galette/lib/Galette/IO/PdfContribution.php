@@ -141,13 +141,13 @@ class PdfContribution
             )
         );
 
-        $this->filename = _T("contribution");
+        $this->filename = __("contribution");
         $this->filename .= '_' . $this->contrib->id . '_';
 
         if ($this->model->type === PdfModel::RECEIPT_MODEL) {
-            $this->filename .= _T("receipt");
+            $this->filename .= __("receipt");
         } else {
-            $this->filename .= _T("invoice");
+            $this->filename .= __("invoice");
         }
         $this->filename .= '.pdf';
 

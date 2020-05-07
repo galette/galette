@@ -102,7 +102,7 @@ class PdfAttendanceSheet extends Pdf
      */
     public function __construct(Db $zdb, Preferences $prefs, $data = [])
     {
-        $this->filename = _T('attendance_sheet') . '.pdf';
+        $this->filename = __('attendance_sheet') . '.pdf';
         $class = PdfModel::getTypeClass(__CLASS__);
         $model = new $class($zdb, $prefs, PdfModel::MAIN_MODEL);
 

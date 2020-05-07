@@ -86,8 +86,8 @@ class PdfAdhesionForm extends Pdf
         parent::__construct($prefs, $model);
 
         $this->filename = $adh ?
-            _T("adherent_form") . '.' . $adh->id . '.pdf' :
-            _T("adherent_form") . '.pdf';
+            __("adherent_form") . '.' . $adh->id . '.pdf' :
+            __("adherent_form") . '.pdf';
 
         $this->Open();
 

@@ -64,7 +64,7 @@ use Galette\Filters\MembersList;
 
 class MembersCsv extends CsvOut
 {
-    private $filename = 'filtered_memberslist';
+    private $filename;
     private $path;
     private $zdb;
     private $login;
@@ -82,6 +82,7 @@ class MembersCsv extends CsvOut
      */
     public function __construct(Db $zdb, Login $login, array $members_fields, FieldsConfig $fields_config)
     {
+        $this->filename = __('filtered_memberslist') . '.csv';
         $this->path = self::DEFAULT_DIRECTORY . $this->filename;
         $this->zdb = $zdb;
         $this->login = $login;
