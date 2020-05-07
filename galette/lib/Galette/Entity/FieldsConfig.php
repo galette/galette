@@ -450,6 +450,7 @@ class FieldsConfig
 
                 foreach ($elements as $elt) {
                     $o = (object)$elt;
+                    $o->readonly = false;
 
                     if ($o->field_id == 'id_adh') {
                         // ignore access control, as member ID is always needed

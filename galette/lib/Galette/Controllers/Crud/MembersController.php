@@ -1331,6 +1331,7 @@ class MembersController extends CrudController
         $real_requireds = array_diff(array_keys($required), array_keys($disabled));
 
         // Validation
+        $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
         if (isset($post[array_shift($real_requireds)])) {
             // regular fields
             $valid = $member->check($post, $required, $disabled);
@@ -1677,7 +1678,6 @@ class MembersController extends CrudController
             }
 
             if (count($error_detected) == 0) {
-                $redirect_url = null;
                 if (isset($args['self'])) {
                     $redirect_url = $this->router->pathFor('login');
                 } elseif (isset($post['redirect_on_create'])
@@ -1711,10 +1711,6 @@ class MembersController extends CrudController
                 } else {
                     $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
                 }
-
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $redirect_url);
             } else {
                 //store entity in session
                 $this->session->member = $member;
@@ -1735,12 +1731,13 @@ class MembersController extends CrudController
                         $rparams
                     );
                 }
-
-                return $response
-                    ->withStatus(301)
-                    ->withHeader('Location', $redirect_url);
             }
         }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $redirect_url);
+
     }
 
 

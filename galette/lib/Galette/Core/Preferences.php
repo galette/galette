@@ -574,7 +574,7 @@ class Preferences
             }
         }
 
-        if (GALETTE_MODE !== 'DEMO') {
+        if (GALETTE_MODE !== 'DEMO' && isset($values['pref_admin_pass_check'])) {
             // Check passwords. Hash will be done into the Preferences class
             if (strcmp($insert_values['pref_admin_pass'], $values['pref_admin_pass_check']) != 0) {
                 $this->errors[] = _T("Passwords mismatch");

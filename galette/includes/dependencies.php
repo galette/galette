@@ -139,6 +139,7 @@ $container['view'] = function ($c) {
     $smarty->assign('html_editor', null);
     $smarty->assign('require_charts', null);
     $smarty->assign('require_mass', null);
+    $smarty->assign('autocomplete', null);
     if ($c->get('login')->isAdmin() && $c->get('preferences')->pref_telemetry_date) {
         $now = new \DateTime();
         $sent = new \DateTime($c->get('preferences')->pref_telemetry_date);
@@ -171,7 +172,7 @@ $container['plugins'] = function ($c) use ($app) {
 
 $container['i18n'] = function ($c) {
     $i18n = $c->get('session')->i18n;
-    if (!$i18n || !$i18n->getId() || $_GET['ui_pref_lang']) {
+    if (!$i18n || !$i18n->getId() || isset($_GET['ui_pref_lang']) && $_GET['ui_pref_lang']) {
         $i18n = new Galette\Core\I18n($_GET['ui_pref_lang'] ?? false);
         $c->get('session')->i18n = $i18n;
     }

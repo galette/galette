@@ -184,15 +184,16 @@ class GaletteController extends AbstractController
             $required['pref_admin_login'] = 1;
         }
 
+        $prefs_fields = $this->preferences->getFieldsNames();
+        // collect data
+        foreach ($prefs_fields as $fieldname) {
+            $pref[$fieldname] = $this->preferences->$fieldname;
+        }
+
+        //on error, user values are stored into session
         if ($this->session->entered_preferences) {
-            $pref = $this->session->entered_preferences;
+            $pref = array_merge($pref, $this->session->entered_preferences);
             $this->session->entered_preferences = null;
-        } else {
-            $prefs_fields = $this->preferences->getFieldsNames();
-            // collect data
-            foreach ($prefs_fields as $fieldname) {
-                $pref[$fieldname] = $this->preferences->$fieldname;
-            }
         }
 
         //List available themes
