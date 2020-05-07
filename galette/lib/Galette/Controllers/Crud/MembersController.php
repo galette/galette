@@ -1737,7 +1737,6 @@ class MembersController extends CrudController
         return $response
             ->withStatus(301)
             ->withHeader('Location', $redirect_url);
-
     }
 
 
