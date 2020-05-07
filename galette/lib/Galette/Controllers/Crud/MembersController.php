@@ -51,6 +51,7 @@ use Galette\Entity\ContributionsTypes;
 use Galette\Entity\DynamicFieldsHandle;
 use Galette\Entity\Status;
 use Galette\Entity\FieldsConfig;
+use Galette\Entity\Texts;
 use Galette\Filters\AdvancedMembersList;
 use Galette\Filters\MembersList;
 use Galette\IO\File;
@@ -845,6 +846,7 @@ class MembersController extends CrudController
         }
 
         if ($id !== null) {
+            $member->load($id);
             if (!$member->canEdit($this->login)) {
                 $this->flash->addMessage(
                     'error_detected',
@@ -1257,17 +1259,19 @@ class MembersController extends CrudController
 
         // new or edit
         $adherent['id_adh'] = get_numeric_form_value('id_adh', '');
-        if ($adherent['id_adh']) {
-            $member->load((int)$adherent['id_adh']);
-            if (!$member->canEdit($this->login)) {
-                //redirection should have been done before. Just throw an Exception.
-                throw new \RuntimeException(
-                    str_replace(
-                        '%id',
-                        $member->id,
-                        'No right to store member #%id'
-                    )
-                );
+        if ($this->login->isAdmin() || $this->login->isStaff() || $this->login->isGroupManager()) {
+            if ($adherent['id_adh']) {
+                $member->load((int)$adherent['id_adh']);
+                if (!$member->canEdit($this->login)) {
+                    //redirection should have been done before. Just throw an Exception.
+                    throw new \RuntimeException(
+                        str_replace(
+                            '%id',
+                            $member->id,
+                            'No right to store member #%id'
+                        )
+                    );
+                }
             }
         } else {
             $member->load($this->login->id);
