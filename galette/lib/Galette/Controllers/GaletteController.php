@@ -39,8 +39,10 @@ namespace Galette\Controllers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Galette\Core\SysInfos;
+use Galette\Core\Logo;
+use Galette\Core\PrintLogo;
 use Galette\Core\GaletteMail;
+use Galette\Core\SysInfos;
 use Galette\Entity\FieldsCategories;
 use Galette\Entity\Status;
 use Galette\IO\News;
@@ -357,11 +359,11 @@ class GaletteController extends AbstractController
                     );
                 }
             }
-
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('preferences'));
         }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('preferences'));
     }
 
     /**
