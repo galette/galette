@@ -13,12 +13,12 @@
             <ul>
 {foreach from=$all_forms key=key item=form name=formseach}
     {if $form_name eq $key}
-        {assign var='activetab' value=$smarty.foreach.formseach.iteration * 2}
+        {assign var='activetab' value=$smarty.foreach.formseach.iteration - 1}
     {/if}
                 <li{if $form_name eq $key} class="ui-tabs-selected"{/if}><a href="{path_for name="configureDynamicFields" data=["form" => $key]}">{$form}</a></li>
 {/foreach}
             </ul>
-            <div id="ui-id-{$activetab}">
+            <div id="ui-tabs-{$form_name}">
                 {include file="configurer_fiche_content.tpl"}
             </div>
         </div>
@@ -76,7 +76,14 @@
                     _form_name = ui.ajaxSettings.url.split('/');
                     _form_name = _form_name[_form_name.length-1]
 
-                    if ( ui.ajaxSettings.url == '{path_for name="configureDynamicFields" data=["form" => $form_name]}' ) {
+                    console.log(ui.ajaxSettings.url)
+                    if ( ui.ajaxSettings.url == '{path_for name="configureDynamicFields" data=["form" => $form_name]}'
+                        ||  ui.ajaxSettings.url == '{path_for name="configureDynamicFields"}'
+                    ) {
+                        var _current = $('#ui-tabs-{$form_name}');
+                        if (_current) {
+                            $('#'+ui.panel[0].id).append(_current)
+                        }
                         return false; //avoid reloading first tab onload
                     }
 
