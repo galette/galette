@@ -20,6 +20,7 @@
  */
 
 declare(strict_types=1);
+use Galette\Controllers\OAuthController;
 
 use Galette\Controllers\AuthController;
 use Galette\Entity\Adherent;
@@ -83,3 +84,8 @@ $app->post(
     '/password-recovery',
     [AuthController::class, 'doRecoverPassword']
 )->setName('do-password-recovery');
+
+$app->post(
+    '/oauth/access_token',
+    OAuthController::class . ':getAccessToken'
+)->setName('OAuthAccesToken');

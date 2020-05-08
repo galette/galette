@@ -383,6 +383,11 @@ foreach ($deprecateds as $deprecated => $class) {
 }
 //END TODO
 
+//oauth
+$container['oauthserver'] = function ($c) {
+    return new Galette\OAuth\Server();
+};
+
 //For bad existing globals can be used...
 global $translator, $i18n;
 if (

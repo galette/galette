@@ -77,7 +77,10 @@
         "league/html-to-markdown": "^5.1",
         "php-di/php-di": "^7.1",
         "psr/http-server-handler": "^1.0",
-        "thecodingmachine/safe": "^3.3"
+        "thecodingmachine/safe": "^3.3",
+        "league/oauth2-server": "^9.3",
+        "paragonie/sodium_compat_ext_sodium": "^1.0",
+        "defuse/php-encryption": "^2.4"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^4.0",
@@ -92,7 +95,8 @@
         "shipmonk/composer-dependency-analyser": "^1.8",
         "thecodingmachine/phpstan-safe-rule": "^1.4",
         "galette/coding-standard": "^1.0",
-        "nikic/php-parser": "^5.7"
+        "nikic/php-parser": "^5.7",
+        "galette/oauth2-galette": "dev-develop"
     },
     "config": {
         "vendor-dir": "galette/vendor/",
