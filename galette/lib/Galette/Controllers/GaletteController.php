@@ -45,9 +45,12 @@ use Galette\Core\GaletteMail;
 use Galette\Core\SysInfos;
 use Galette\Entity\FieldsCategories;
 use Galette\Entity\Status;
+use Galette\Entity\Texts;
+use Galette\Filters\MembersList;
 use Galette\IO\News;
 use Galette\IO\Charts;
 use Galette\Repository\Members;
+use Galette\Repository\Reminders;
 use Analog\Analog;
 
 /**
@@ -643,5 +646,172 @@ class GaletteController extends AbstractController
         return $response
             ->withStatus(301)
             ->withHeader('Location', $this->router->pathFor('slash'));
+    }
+
+    /**
+     * Reminders page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function reminders(Request $request, Response $response) :Response
+    {
+        $texts = new Texts($this->preferences, $this->router);
+
+        $previews = array(
+            'impending' => $texts->getTexts('impendingduedate', $this->preferences->pref_lang),
+            'late'      => $texts->getTexts('lateduedate', $this->preferences->pref_lang)
+        );
+
+        $members = new Members();
+        $reminders = $members->getRemindersCount();
+
+        // display page
+        $this->view->render(
+            $response,
+            'reminder.tpl',
+            [
+                'page_title'                => _T("Reminders"),
+                'previews'                  => $previews,
+                'count_impending'           => $reminders['impending'],
+                'count_impending_nomail'    => $reminders['nomail']['impending'],
+                'count_late'                => $reminders['late'],
+                'count_late_nomail'         => $reminders['nomail']['late']
+            ]
+        );
+        return $response;
+    }
+
+    /**
+     * Main route
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     *
+     * @return Response
+     */
+    public function doReminders(Request $request, Response $response) :Response
+    {
+        $error_detected = [];
+        $warning_detected = [];
+        $success_detected = [];
+
+        $post = $request->getParsedBody();
+        $texts = new Texts($this->preferences, $this->router);
+        $selected = null;
+        if (isset($post['reminders'])) {
+            $selected = $post['reminders'];
+        }
+        $reminders = new Reminders($selected);
+
+        $labels = false;
+        $labels_members = array();
+        if (isset($post['reminder_wo_mail'])) {
+            $labels = true;
+        }
+
+        $list_reminders = $reminders->getList($this->zdb, $labels);
+        if (count($list_reminders) == 0) {
+            $warning_detected[] = _T("No reminder to send for now.");
+        } else {
+            foreach ($list_reminders as $reminder) {
+                if ($labels === false) {
+                    //send reminders by email
+                    $sent = $reminder->send($texts, $this->history, $this->zdb);
+
+                    if ($sent === true) {
+                        $success_detected[] = $reminder->getMessage();
+                    } else {
+                        $error_detected[] = $reminder->getMessage();
+                    }
+                } else {
+                    //generate labels for members without email address
+                    $labels_members[] = $reminder->member_id;
+                }
+            }
+
+            if ($labels === true) {
+                if (count($labels_members) > 0) {
+                    $labels_filters = new MembersList();
+                    $labels_filters->selected = $labels_members;
+                    $this->session->filters_reminders_labels = $labels_filters;
+                    return $response
+                        ->withStatus(301)
+                        ->withHeader('Location', $this->router->pathFor('pdf-member-labels'));
+                } else {
+                    $error_detected[] = _T("There are no member to proceed.");
+                }
+            }
+
+            if (count($error_detected) > 0) {
+                array_unshift(
+                    $error_detected,
+                    _T("Reminder has not been sent:")
+                );
+            }
+
+            if (count($success_detected) > 0) {
+                array_unshift(
+                    $success_detected,
+                    _T("Sent reminders:")
+                );
+            }
+        }
+
+        //flash messages if any
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage('error_detected', $error);
+            }
+        }
+        if (count($warning_detected) > 0) {
+            foreach ($warning_detected as $warning) {
+                $this->flash->addMessage('warning_detected', $warning);
+            }
+        }
+        if (count($success_detected) > 0) {
+            foreach ($success_detected as $success) {
+                $this->flash->addMessage('success_detected', $success);
+            }
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('reminders'));
+    }
+
+    /**
+     * Main route
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function filterReminders(Request $request, Response $response, array $args = []) :Response
+    {
+        //always reset filters
+        $filters = new MembersList();
+        $filters->filter_account = Members::ACTIVE_ACCOUNT;
+
+        $membership = ($args['membership'] === 'nearly' ?
+            Members::MEMBERSHIP_NEARLY :
+            Members::MEMBERSHIP_LATE);
+        $filters->membership_filter = $membership;
+
+        //TODO: filter on reminder may take care of parent email as well
+        $mail = ($args['mail'] === 'withmail' ?
+            Members::FILTER_W_EMAIL :
+            Members::FILTER_WO_EMAIL);
+        $filters->email_filter = $mail;
+
+        $this->session->filter_members = $filters;
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('members'));
     }
 }

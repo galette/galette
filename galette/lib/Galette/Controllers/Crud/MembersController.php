@@ -49,6 +49,7 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\ContributionsTypes;
 use Galette\Entity\DynamicFieldsHandle;
+use Galette\Entity\Group;
 use Galette\Entity\Status;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Texts;
@@ -719,6 +720,145 @@ class MembersController extends CrudController
                 'filters'               => $filters,
                 'payments_types'        => $ptlist
             )
+        );
+        return $response;
+    }
+
+    /**
+     * Members list for ajax
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function ajaxList(Request $request, Response $response, array $args = []) :Response
+    {
+        $post = $request->getParsedBody();
+
+        if (isset($this->session->ajax_members_filters)) {
+            $filters = $this->session->ajax_members_filters;
+        } else {
+            $filters = new MembersList();
+        }
+
+        if (isset($args['option']) && $args['option'] == 'page') {
+            $filters->current_page = (int)$args['value'];
+        }
+
+        //numbers of rows to display
+        if (isset($post['nbshow']) && is_numeric($post['nbshow'])) {
+            $filters->show = $post['nbshow'];
+        }
+
+        $members = new Members($filters);
+        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
+            if ($this->login->isGroupManager()) {
+                $members_list = $members->getManagedMembersList(true);
+            } else {
+                Analog::log(
+                    str_replace(
+                        ['%id', '%login'],
+                        [$this->login->id, $this->login->login],
+                        'Trying to list group members without access from #%id (%login)'
+                    ),
+                    Analog::ERROR
+                );
+                throw new \Exception('Access denied.');
+            }
+        } else {
+            $members_list = $members->getMembersList(true);
+        }
+
+        //assign pagination variables to the template and add pagination links
+        $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
+
+        $this->session->ajax_members_filters = $filters;
+
+        $selected_members = null;
+        $unreachables_members = null;
+        if (!isset($post['from'])) {
+            $mailing = $this->session->mailing;
+            if (!isset($post['members'])) {
+                $selected_members = $mailing->recipients;
+                $unreachables_members = $mailing->unreachables;
+            } else {
+                $m = new Members();
+                $selected_members = $m->getArrayList($post['members']);
+                if (isset($post['unreachables']) && is_array($post['unreachables'])) {
+                    $unreachables_members = $m->getArrayList($post['unreachables']);
+                }
+            }
+        } else {
+            switch ($post['from']) {
+                case 'groups':
+                    if (!isset($post['gid'])) {
+                        Analog::log(
+                            'Trying to list group members with no group id provided',
+                            Analog::ERROR
+                        );
+                        throw new \Exception('A group id is required.');
+                        exit(0);
+                    }
+                    if (!isset($post['members'])) {
+                        $group = new Group((int)$post['gid']);
+                        $selected_members = array();
+                        if (!isset($post['mode']) || $post['mode'] == 'members') {
+                            $selected_members = $group->getMembers();
+                        } elseif ($post['mode'] == 'managers') {
+                            $selected_members = $group->getManagers();
+                        } else {
+                            Analog::log(
+                                'Trying to list group members with unknown mode',
+                                Analog::ERROR
+                            );
+                            throw new \Exception('Unknown mode.');
+                            exit(0);
+                        }
+                    } else {
+                        $m = new Members();
+                        $selected_members = $m->getArrayList($post['members']);
+                        if (isset($post['unreachables']) && is_array($post['unreachables'])) {
+                            $unreachables_members = $m->getArrayList($post['unreachables']);
+                        }
+                    }
+                    break;
+                case 'attach':
+                    if (!isset($post['id_adh'])) {
+                        throw new \RuntimeException(
+                            'Current selected member must be excluded while attaching!'
+                        );
+                        exit(0);
+                    }
+                    break;
+            }
+        }
+
+        $params = [
+            'filters'               => $filters,
+            'members_list'          => $members_list,
+            'selected_members'      => $selected_members,
+            'unreachables_members'  => $unreachables_members
+        ];
+
+        if (isset($post['multiple'])) {
+            $params['multiple'] = true;
+        }
+
+        if (isset($post['gid'])) {
+            $params['the_id'] = $post['gid'];
+        }
+
+        if (isset($post['id_adh'])) {
+            $params['excluded'] = $post['id_adh'];
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            'ajax_members.tpl',
+            $params
         );
         return $response;
     }

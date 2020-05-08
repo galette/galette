@@ -305,6 +305,55 @@ class PdfController extends AbstractController
     }
 
     /**
+     * PDF attendance sheet configuration page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function attendanceSheetConfig(Request $request, Response $response, array $args = []) :Response
+    {
+        $post = $request->getParsedBody();
+
+        if ($this->session->filter_members !== null) {
+            $filters = $this->session->filter_members;
+        } else {
+            $filters = new MembersList();
+        }
+
+        // check for ajax mode
+        $ajax = false;
+        if ($request->isXhr()
+            || isset($post['ajax'])
+            && $post['ajax'] == 'true'
+        ) {
+            $ajax = true;
+
+            //retrieve selected members
+            $selection = (isset($post['selection']) ) ? $post['selection'] : array();
+
+            $filters->selected = $selection;
+            $this->session->filter_members = $filters;
+        } else {
+            $selection = $filters->selected;
+        }
+
+        // display page
+        $this->view->render(
+            $response,
+            'attendance_sheet_details.tpl',
+            [
+                'page_title'    => _T("Attendance sheet configuration"),
+                'ajax'          => $ajax,
+                'selection'     => $selection
+            ]
+        );
+        return $response;
+    }
+
+    /**
      * PDF attendance sheet
      *
      * @param Request  $request  PSR Request

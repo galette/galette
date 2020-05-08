@@ -254,6 +254,45 @@ class GroupsController extends CrudController
     }
 
     /**
+     * Groups list page for ajax calls
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function ajaxMembers(Request $request, Response $response, array $args = []) :Response
+    {
+        $post = $request->getParsedBody();
+
+        $ids = $post['persons'];
+        $mode = $post['person_mode'];
+
+        if (!$ids || !$mode) {
+            Analog::log(
+                'Missing persons and mode for ajaxGroupMembers',
+                Analog::INFO
+            );
+            die();
+        }
+
+        $m = new Members;
+        $persons = $m->getArrayList($ids);
+
+        // display page
+        $this->view->render(
+            $response,
+            'group_persons.tpl',
+            [
+                'persons'       => $persons,
+                'person_mode'   => $mode
+            ]
+        );
+        return $response;
+    }
+
+    /**
      * Filtering
      *
      * @param Request  $request  PSR Request
@@ -280,19 +319,7 @@ class GroupsController extends CrudController
      */
     public function edit(Request $request, Response $response, array $args = []) :Response
     {
-        /*$id = (int)$args['id'];
-        $ptype = new PaymentType($this->zdb, $id);
-
-        // display page
-        $this->view->render(
-            $response,
-            'edit_paymenttype.tpl',
-            [
-                'page_title'    => _T("Edit payment type"),
-                'ptype'         => $ptype
-            ]
-        );
-        return $response;*/
+        //no edit page (included on list), just to satisfy inheritance
     }
 
     /**
