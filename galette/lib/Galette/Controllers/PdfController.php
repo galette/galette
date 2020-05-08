@@ -40,6 +40,7 @@ namespace Galette\Controllers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Analog\Analog;
+use Galette\Core\Links;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\PdfModel;
@@ -630,5 +631,89 @@ class PdfController extends AbstractController
         return $response
             ->withStatus(301)
             ->withHeader('Location', $this->router->pathFor('pdfModels', ['id' => $model->id]));
+    }
+
+
+    /**
+     * Get direct document
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function directlinkDocument(Request $request, Response $response, array $args = []) :Response
+    {
+        $hash = $args['hash'];
+        $post = $request->getParsedBody();
+        $email = $post['email'];
+
+        $links = new Links($this->zdb);
+        $valid = $links->isHashValid($hash, $email);
+
+        if ($valid === false) {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("Invalid link!")
+            );
+
+            return $response->withStatus(301)
+                ->withHeader('Location', $this->router->pathFor('directlink', ['hash' => $hash]));
+        }
+
+        $target = $valid[0];
+        $id = $valid[1];
+
+        if ($target === Links::TARGET_MEMBERCARD) {
+            $m = new Members();
+            $members = $m->getArrayList(
+                [$id],
+                array('nom_adh', 'prenom_adh'),
+                true
+            );
+
+            if (!is_array($members) || count($members) < 1) {
+                Analog::log(
+                    'An error has occurred, unable to get members list.',
+                    Analog::ERROR
+                );
+
+                $this->flash->addMessage(
+                    'error_detected',
+                    _T("Unable to get members list.")
+                );
+
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor('directlink', ['hash' => $hash]));
+            }
+
+            $pdf = new PdfMembersCards($this->preferences);
+            $pdf->drawCards($members);
+        } else {
+            $contribution = new Contribution($this->zdb, $this->login, $id);
+            if ($contribution->id == '') {
+                //not possible to load contribution, exit
+                $this->flash->addMessage(
+                    'error_detected',
+                    str_replace(
+                        '%id',
+                        $args['id'],
+                        _T("Unable to load contribution #%id!")
+                    )
+                );
+                return $response
+                    ->withStatus(301)
+                    ->withHeader('Location', $this->router->pathFor(
+                        'directlink',
+                        ['hash' => $hash]
+                    ));
+            } else {
+                $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
+            }
+        }
+
+        return $this->sendResponse($response, $pdf);
     }
 }

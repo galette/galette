@@ -143,8 +143,9 @@ abstract class CrudController extends AbstractController
      */
     public function confirmDelete(Request $request, Response $response, array $args = []) :Response
     {
+        $post = $request->getParsedBody();
         $data = [
-            'id'            => $this->getIdsToRemove($args),
+            'id'            => $this->getIdsToRemove($args, $post),
             'redirect_uri'  => $this->redirectUri($args)
         ];
 
@@ -168,14 +169,51 @@ abstract class CrudController extends AbstractController
      *
      * In simple cases, we get the ID in the route arguments; but for
      * batchs, it should be found elsewhere.
+     * In post values, we look for id key, as well as all {sthing}_sel keys (like members_sel or contrib_sel)
      *
      * @param array $args Request arguments
+     * @param array $post POST values
      *
-     * @return integer|null|array
+     * @return null|integer|integer[]
      */
-    protected function getIdsToRemove($args)
+    protected function getIdsToRemove(&$args, $post)
     {
-        return $args['id'] ?? null;
+        $ids = null;
+        if (isset($post['id'])) {
+            $ids = $post['id'];
+        } elseif (isset($args['id'])) {
+            $ids = $args['id'];
+        }
+
+        //look for {sthing}_sel as multiple ids selection (members_sel, contrib_sel, and so on)
+        if (is_array($post) && count($post)) {
+            $selecteds = preg_grep('/.+_sel$/', array_keys($post));
+            if (count($selecteds) == 1 && !isset($args['id'])) {
+                $ids = $post[array_shift($selecteds)];
+            } elseif (count($selecteds) > 1) {
+                //maybe an error to have multiple {type}_sel in same post request.
+                Analog::log(
+                    'Several {sthing}_sel variables in same post request should be avoid.',
+                    ANalog::WARNING
+                );
+            }
+        }
+
+        //type
+        if (is_array($ids)) {
+            $ids = array_map('intval', $ids);
+        } elseif (is_string($ids)) {
+            $ids = (int)$ids;
+        }
+
+        //add to $args if needed
+        if (is_array($ids)) {
+            $args['ids'] = $ids;
+        } elseif (!isset($args['id'])) {
+            $args['id'] = $ids;
+        }
+
+        return $ids;
     }
 
     /**
@@ -242,6 +280,9 @@ abstract class CrudController extends AbstractController
         } else {
             try {
                 $this->zdb->connection->beginTransaction();
+
+                $ids = $this->getIdsToRemove($args, $post);
+
                 $res = $this->doDelete($args, $post);
                 if ($res === true) {
                     $this->flash->addMessage(

@@ -1914,17 +1914,20 @@ class MembersController extends CrudController
         );
     }
 
+
     /**
      * Get ID to remove
      *
      * In simple cases, we get the ID in the route arguments; but for
      * batchs, it should be found elsewhere.
+     * In post values, we look for id key, as well as all {sthing}_sel keys (like members_sel or contrib_sel)
      *
      * @param array $args Request arguments
+     * @param array $post POST values
      *
-     * @return integer|null|array
+     * @return null|integer|integer[]
      */
-    protected function getIdsToRemove($args)
+    protected function getIdsToRemove(&$args, $post)
     {
         if (isset($args['id'])) {
             return $args['id'];
@@ -1945,7 +1948,7 @@ class MembersController extends CrudController
     {
         if (isset($args['id_adh'])) {
             //one member removal
-            $adh = new Adherent($this->zdb, (int)$args['id']);
+            $adh = new Adherent($this->zdb, (int)$args['id_adh']);
             return sprintf(
                 _T('Remove member %1$s'),
                 $adh->sfullname

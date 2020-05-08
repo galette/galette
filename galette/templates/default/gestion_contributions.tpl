@@ -44,8 +44,8 @@
     {if not $member->isActive() } ({_T string="Inactive"}){/if}
     {if $login->isAdmin() or $login->isStaff()}
             (<a href="{path_for name="member" data=["id" => $member->id]}">{_T string="See member profile"}</a> -
-            <a href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a> -
-            <a href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?id_adh={$member->id}">{_T string="Add a donation"}</a>)
+            <a href="{path_for name="addContribution" data=["type" => "fee"]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a> -
+            <a href="{path_for name="addContribution" data=["type" => "donation"]}?id_adh={$member->id}">{_T string="Add a donation"}</a>)
     {/if}
             &nbsp;:
 {/if}
@@ -168,6 +168,12 @@
 {foreach from=$list item=contribution key=ordre}
     {assign var="mid" value=$contribution->member}
     {assign var="cclass" value=$contribution->getRowClass()}
+    {if $contribution->isCotis()}
+        {assign var="ctype" value="fee"}
+    {else}
+        {assign var="ctype" value="donation"}
+    {/if}
+
                 <tr{if $mode eq 'ajax'} class="contribution_row" id="row_{$contribution->id}"{/if}>
                     <td class="{$cclass} nowrap" data-scope="row">
                         {if $mode neq 'ajax'}
@@ -180,8 +186,9 @@
     {else}
                         {$ordre+1+($filters->current_page - 1)*$numrows}
     {/if}
+    {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
                         <span class="row-title">
-                            <a href="{path_for name="contribution" data=["type" => $ctype, "action" => "edit", "id" => $contribution->id]}">
+                            <a href="{path_for name="editContribution" data=["type" => $ctype, "id" => $contribution->id]}">
                                 {_T string="Contribution %id" pattern="/%id/" replace=$contribution->id}
                             </a>
                         </span>
@@ -193,7 +200,17 @@
                             <i class="fas fa-link"></i>
                             <span class="sr-only">{_T string="Transaction: %s" pattern="/%s/" replace=$contribution->transaction->description}</span>
                         </a>
-        {else}
+        {/if}
+    {else}
+                        <span class="row-title">
+                            {_T string="Contribution %id" pattern="/%id/" replace=$contribution->id}
+                        </span>
+        {if $contribution->isTransactionPart() }
+                        <i class="fas fa-link"></i>
+                        <span class="sr-only">{_T string="Transaction: %s" pattern="/%s/" replace=$contribution->transaction->description}</span>
+        {/if}
+    {/if}
+        {if !$contribution->isTransactionPart() }
                         <img src="{base_url}/{$template_subdir}images/icon-empty.png"
                             alt=""
                             width="16"
@@ -226,13 +243,8 @@
                             <span class="sr-only">{_T string="Print an invoice or a receipt (depending on contribution type)"}</span>
                         </a>
         {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
-                        {if $contribution->isCotis()}
-                            {assign var="ctype" value="fee"}
-                        {else}
-                            {assign var="ctype" value="donation"}
-                        {/if}
                         <a
-                            href="{path_for name="contribution" data=["type" => $ctype, "action" => "edit", "id" => $contribution->id]}"
+                            href="{path_for name="editContribution" data=["type" => $ctype, "id" => $contribution->id]}"
                             class="tooltip action"
                         >
                             <i class="fas fa-edit"></i>

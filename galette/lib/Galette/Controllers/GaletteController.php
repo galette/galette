@@ -43,12 +43,15 @@ use Galette\Core\Logo;
 use Galette\Core\PrintLogo;
 use Galette\Core\GaletteMail;
 use Galette\Core\SysInfos;
+use Galette\Entity\Contribution;
 use Galette\Entity\FieldsCategories;
 use Galette\Entity\Status;
 use Galette\Entity\Texts;
 use Galette\Filters\MembersList;
 use Galette\IO\News;
 use Galette\IO\Charts;
+use Galette\IO\PdfMembersCards;
+use Galette\IO\PdfContribution;
 use Galette\Repository\Members;
 use Galette\Repository\Reminders;
 use Analog\Analog;
@@ -813,5 +816,28 @@ class GaletteController extends AbstractController
         return $response
             ->withStatus(301)
             ->withHeader('Location', $this->router->pathFor('members'));
+    }
+
+    /**
+     * Direct document page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function documentLink(Request $request, Response $response, array $args = []) :Response
+    {
+        // display page
+        $this->view->render(
+            $response,
+            'directlink.tpl',
+            array(
+                'hash'          => $args['hash'],
+                'page_title'    => _T('Download document')
+            )
+        );
+        return $response;
     }
 }
