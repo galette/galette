@@ -56,12 +56,11 @@ use Analog\Analog;
  * @since     Available since 0.7.5dev - 2013-07-07
  */
 
-class PdfContribution
+class PdfContribution extends Pdf
 {
     private $contrib;
     private $pdf;
     private $model;
-    private $filename;
     private $path;
 
     /**
@@ -151,13 +150,13 @@ class PdfContribution
         }
         $this->filename .= '.pdf';
 
-        $this->pdf = new Pdf($prefs, $this->model);
+        parent::__construct($prefs, $this->model);
 
-        $this->pdf->Open();
+        $this->Open();
 
-        $this->pdf->AddPage();
-        $this->pdf->PageHeader();
-        $this->pdf->PageBody();
+        $this->AddPage();
+        $this->PageHeader();
+        $this->PageBody();
     }
 
     /**
@@ -167,7 +166,7 @@ class PdfContribution
      */
     public function download()
     {
-        $this->pdf->Output($this->filename, 'D');
+        $this->Output($this->filename, 'D');
     }
 
     /**
@@ -181,7 +180,7 @@ class PdfContribution
     {
         if (file_exists($path) && is_dir($path) && is_writeable($path)) {
             $this->path = $path . '/' . $this->filename;
-            $this->pdf->Output($this->path, 'F');
+            $this->Output($this->path, 'F');
             return true;
         } else {
             Analog::log(
