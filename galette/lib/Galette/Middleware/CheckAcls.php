@@ -54,10 +54,10 @@ use Analog\Analog;
  */
 class CheckAcls
 {
-    private $view;
-    private $router;
-    private $flash;
-    private $acls;
+    protected $view;
+    protected $router;
+    protected $flash;
+    protected $acls;
 
     /**
      * Constructor
@@ -69,11 +69,7 @@ class CheckAcls
         $this->view = $container->get('view');
         $this->router = $container->get('router');
         $this->flash = $container->get('flash');
-
-        $this->acls = array_merge(
-            $container->get('acls'),
-            $container->get('plugins')->getAcls()
-        );
+        $this->acls = $container->get('acls');
     }
 
     /**
@@ -112,28 +108,73 @@ class CheckAcls
                 $middlewares = $route->getMiddleware();
                 if (count($middlewares) > 0) {
                     foreach ($middlewares as $middleware) {
-                        if (!in_array($name, array_keys($this->acls))
-                            && !in_array($name, $excluded_names)
+                        if (!in_array($name, $excluded_names)
                             && !in_array($name, $missing_acls)
                         ) {
-                            $missing_acls[] = $name;
+                            try {
+                                $this->getAclFor($name);
+                            } catch (\RuntimeException $e) {
+                                $missing_acls[] = $name;
+                            }
                         }
                     }
                 }
             }
             if (count($missing_acls) > 0) {
-                $msg = str_replace(
-                    '%routes',
-                    implode(', ', $missing_acls),
-                    _T("Routes '%routes' are missing in ACLs!")
-                );
-                Analog::log($msg, Analog::ERROR);
-                //FIXME: with flash(), message is only shown on the seconde round,
-                //with flashNow(), thas just does not work :(
-                $this->flash->addMessage('error_detected', $msg);
+                if (count($missing_acls) == 1) {
+                    $msg = str_replace(
+                        '%name',
+                        $missing_acls[0],
+                        _T("Route '%name' is not registered in ACLs!")
+                    );
+                } else {
+                    $msg = str_replace(
+                        '%names',
+                        implode("', '", $missing_acls),
+                        _T("Routes '%names' are not registered in ACLs!")
+                    );
+                }
+                Analog::log($msg, Analog::WARNING);
+                $this->flash->addMessageNow('warning_detected', $msg);
             }
         }
 
         return $next($request, $response);
+    }
+
+    /**
+     * Get ACL for route name
+     *
+     * @param string $name Route name
+     *
+     * @return string
+     * @throw RuntimeException
+     */
+    public function getAclFor($name)
+    {
+        //first, check for exact match
+        if (isset($this->acls[$name])) {
+            return $this->acls[$name];
+        } else {
+            //handle routes regexps
+            foreach ($this->acls as $regex => $route_acl) {
+                if (preg_match('@/(.+)/[imsxADU]?@', $regex)) {
+                    //looks like a regular expression, go
+                    $matches = [];
+                    if (preg_match($regex, $name, $matches)) {
+                        return $route_acl;
+                        continue;
+                    }
+                }
+            }
+        }
+
+        throw new \RuntimeException(
+            str_replace(
+                '%name',
+                $name,
+                _T("Route '%name' is not registered in ACLs!")
+            )
+        );
     }
 }
