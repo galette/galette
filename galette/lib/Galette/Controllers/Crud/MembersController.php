@@ -307,6 +307,107 @@ class MembersController extends CrudController
     }
 
     /**
+     * Public pages (trombinoscope, public list)
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function publicList(Request $request, Response $response, array $args = []) :Response
+    {
+        $option = null;
+        $type = $args['type'];
+        if (isset($args['option'])) {
+            $option = $args['option'];
+        }
+        $value = null;
+        if (isset($args['value'])) {
+            $value = $args['value'];
+        }
+
+        $varname = 'public_filter_' . $type;
+        if (isset($this->session->$varname)) {
+            $filters = $this->session->$varname;
+        } else {
+            $filters = new MembersList();
+        }
+
+        if ($option !== null) {
+            switch ($option) {
+                case 'page':
+                    $filters->current_page = (int)$value;
+                    break;
+                case 'order':
+                    $filters->orderby = $value;
+                    break;
+            }
+        }
+
+        $m = new Members($filters);
+        $members = $m->getPublicList($type === 'trombi');
+
+        $this->session->$varname = $filters;
+
+        //assign pagination variables to the template and add pagination links
+        $filters->setSmartyPagination($this->router, $this->view->getSmarty(), false);
+
+        // display page
+        $this->view->render(
+            $response,
+            ($type === 'list' ? 'liste_membres' : 'trombinoscope') . '.tpl',
+            array(
+                'page_title'    => ($type === 'list' ? _T("Members list") : _T('Trombinoscope')),
+                'additionnal_html_class'    => ($type === 'list' ? '' : 'trombinoscope'),
+                'type'          => $type,
+                'members'       => $members,
+                'nb_members'    => $m->getCount(),
+                'filters'       => $filters
+            )
+        );
+        return $response;
+    }
+
+    /**
+     * Public pages (trombinoscope, public list)
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function filterPublicList(Request $request, Response $response, array $args = []) :Response
+    {
+        $type = $args['type'];
+        $post = $request->getParsedBody();
+
+        $varname = 'public_filter_' . $type;
+        if (isset($this->session->$varname)) {
+            $filters = $this->session->$varname;
+        } else {
+            $filters = new MembersList();
+        }
+
+        //reintialize filters
+        if (isset($post['clear_filter'])) {
+            $filters->reinit();
+        } else {
+            //number of rows to show
+            if (isset($post['nbshow'])) {
+                $filters->show = $post['nbshow'];
+            }
+        }
+
+        $this->session->$varname = $filters;
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('publicList', ['type' => $type]));
+    }
+
+    /**
      * Get a dynamic file
      *
      * @param Request  $request  PSR Request

@@ -136,7 +136,7 @@ abstract class AbstractController
     /**
      * Constructor
      *
-     * @param ContainerInterface $container COntainer instance
+     * @param ContainerInterface $container Container instance
      */
     public function __construct(ContainerInterface $container)
     {
