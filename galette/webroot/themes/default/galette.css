@@ -614,9 +614,9 @@ footer a:hover {
     position: absolute;
     width: 16em;
     top: 0;
-    left: 0;
+    left: 15em;
     margin:0;
-    border-radius: 0 0 6px 0;
+    border-radius: 0 0 6px 6px;
 }
 
 /* == Buttons */
