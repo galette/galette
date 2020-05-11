@@ -631,6 +631,11 @@ class Preferences
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
             foreach (self::$defaults as $k => $v) {
+                if (GALETTE_MODE == 'DEMO'
+                    && in_array($k, ['pref_admin_pass', 'pref_admin_login', 'pref_mail_method'])
+                ) {
+                    continue;
+                }
                 Analog::log('Storing ' . $k, Analog::DEBUG);
 
                 $value = $this->prefs[$k];
