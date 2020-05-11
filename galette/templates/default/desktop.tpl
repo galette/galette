@@ -1,6 +1,6 @@
 {extends file="page.tpl"}
 {block name="content"}
-    {if not $hide_telemetry}
+    {if not $hide_telemetry and not $GALETTE_MODE eq 'DEMO'}
         <section id="share">
             <header class="ui-state-default ui-state-active">
                 {_T string="Help us know about you!"}
