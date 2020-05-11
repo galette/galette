@@ -149,7 +149,6 @@ class PdfModels extends atoum
                 return $router;
             }
         };
-        define('_CURRENT_THEME_PATH', '');
         $_SERVER['HTTP_HOST'] = '';
 
         $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);

@@ -106,13 +106,6 @@ class Links extends atoum
         $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
         $this->history = new \Galette\Core\History($this->zdb, $this->login);
 
-        if (!defined('_CURRENT_THEME_PATH')) {
-            define(
-                '_CURRENT_THEME_PATH',
-                GALETTE_THEMES_PATH . $this->preferences->pref_theme . '/'
-            );
-        }
-
         global $zdb, $login, $hist, $i18n; // globals :(
         $zdb = $this->zdb;
         $login = $this->login;

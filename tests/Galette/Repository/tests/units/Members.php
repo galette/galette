@@ -134,11 +134,6 @@ class Members extends atoum
 
         $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
 
-        define(
-            '_CURRENT_THEME_PATH',
-            GALETTE_THEMES_PATH . $this->preferences->pref_theme . '/'
-        );
-
         $fakedata
             ->setSeed($this->seed)
             ->setNbMembers(10)

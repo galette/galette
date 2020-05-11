@@ -78,14 +78,6 @@ class Picture extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        if (!defined('_CURRENT_THEME_PATH')) {
-            $zdb = new \Galette\Core\Db();
-            $preferences = new \Galette\Core\Preferences($zdb);
-            define(
-                '_CURRENT_THEME_PATH',
-                GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
-            );
-        }
         $this->picture = new \Galette\Core\Picture();
     }
 

@@ -256,7 +256,6 @@ class Password extends atoum
         $history = new \Galette\Core\History($this->zdb, $login);
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         $members_fields = $members_fields;
-        define('_CURRENT_THEME_PATH', '');
 
         $adh = new \Galette\Entity\Adherent($this->zdb);
         $adh->setDependencies(
