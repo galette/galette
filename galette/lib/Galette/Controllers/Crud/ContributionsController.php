@@ -193,6 +193,8 @@ class ContributionsController extends CrudController
             $contrib = $this->session->contribution;
             $this->session->contribution = null;
         } else {
+            $get = $request->getQueryParams();
+
             $ct = new ContributionsTypes($this->zdb);
             $contributions_types = $ct->getList($args['type'] === 'fee');
 
@@ -214,6 +216,10 @@ class ContributionsController extends CrudController
                 $this->login,
                 (count($cparams) > 0 ? $cparams : null)
             );
+
+            if (isset($cparams['adh'])) {
+                $contrib->member = $cparams['adh'];
+            }
 
             if (isset($get['montant_cotis']) && $get['montant_cotis'] > 0) {
                 $contrib->amount = $get['montant_cotis'];
