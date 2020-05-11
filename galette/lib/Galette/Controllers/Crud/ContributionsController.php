@@ -590,7 +590,7 @@ class ContributionsController extends CrudController
                     if ($new) {
                         //if an external script has been configured, we call it
                         if ($this->preferences->pref_new_contrib_script) {
-                            $es = new Galette\IO\ExternalScript($this->preferences);
+                            $es = new \Galette\IO\ExternalScript($this->preferences);
                             $res = $contrib->executePostScript($es);
 
                             if ($res !== true) {

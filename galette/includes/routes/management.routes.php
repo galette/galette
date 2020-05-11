@@ -55,7 +55,6 @@ use Galette\Entity\Title;
 use Galette\Repository\Titles;
 use Galette\Entity\Texts;
 use Galette\Core\Install;
-use Laminas\Db\Adapter\Adapter;
 use Galette\Entity\Status;
 
 //galette's dashboard
