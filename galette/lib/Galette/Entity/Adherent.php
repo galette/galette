@@ -1804,7 +1804,7 @@ class Adherent
     }
 
     /**
-     * Handle files (phot and dynamics files
+     * Handle files (photo and dynamics files
      *
      * @param array $files Files sent
      *

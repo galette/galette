@@ -231,7 +231,7 @@ class FakeData
      *
      * @return \Faker\Factory
      */
-    private function getFaker()
+    public function getFaker()
     {
         if ($this->faker === null) {
             $this->faker = \Faker\Factory::create($this->i18n->getID());

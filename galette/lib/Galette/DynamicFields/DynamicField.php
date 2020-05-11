@@ -601,7 +601,7 @@ abstract class DynamicField
             $this->name = $values['field_name'];
         }
 
-        if (!isset($values['field_perm']) || $values['field_perm'] == '') {
+        if (!isset($values['field_perm']) || $values['field_perm'] === '') {
             $this->errors[] = _T('Missing required field permissions!');
         } else {
             if (in_array($values['field_perm'], array_keys(self::getPermsNames()))) {
@@ -625,46 +625,46 @@ abstract class DynamicField
 
         $this->required = $values['field_required'];
 
-        if (count($this->errors) === 0 && $this->isDuplicate($values['form'], $values['name'], $this->id)) {
+        if (count($this->errors) === 0 && $this->isDuplicate($values['form'], $this->name, $this->id)) {
             $this->errors[] = _T("- Field name already used.");
         }
 
-        if ($this->id !== null) {
-            if ($this->hasWidth() && trim($values['field_width']) != '') {
-                $this->width = $values['field_width'];
-            }
+        if ($this->hasWidth() && isset($values['field_width']) && trim($values['field_width']) != '') {
+            $this->width = $values['field_width'];
+        }
 
-            if ($this->hasHeight() && trim($values['field_height']) != '') {
-                $this->height = $values['field_height'];
-            }
+        if ($this->hasHeight() && isset($values['field_height']) &&  trim($values['field_height']) != '') {
+            $this->height = $values['field_height'];
+        }
 
-            if ($this->hasSize() && trim($values['field_size']) != '') {
-                $this->size = $values['field_size'];
-            }
+        if ($this->hasSize() && isset($values['field_size']) && trim($values['field_size']) != '') {
+            $this->size = $values['field_size'];
+        }
 
-            if (isset($values['field_repeat']) && trim($values['field_repeat']) != '') {
-                $this->repeat = $values['field_repeat'];
-            }
+        if (isset($values['field_repeat']) && trim($values['field_repeat']) != '') {
+            $this->repeat = $values['field_repeat'];
+        }
 
-            if ($this->hasFixedValues()) {
-                $fixed_values = [];
-                foreach (explode("\n", $values['fixed_values']) as $val) {
-                    $val = trim($val);
-                    $len = mb_strlen($val);
-                    if ($len > 0) {
-                        $fixed_values[] = $val;
-                        if ($len > $this->size) {
-                            if ($this->old_size === null) {
-                                $this->old_size = $this->size;
-                            }
-                            $this->size = $len;
+        if ($this->hasFixedValues() && isset($values['fixed_values'])) {
+            $fixed_values = [];
+            foreach (explode("\n", $values['fixed_values']) as $val) {
+                $val = trim($val);
+                $len = mb_strlen($val);
+                if ($len > 0) {
+                    $fixed_values[] = $val;
+                    if ($len > $this->size) {
+                        if ($this->old_size === null) {
+                            $this->old_size = $this->size;
                         }
+                        $this->size = $len;
                     }
                 }
-
-                $this->values = $fixed_values;
             }
-        } else {
+
+            $this->values = $fixed_values;
+        }
+
+        if ($this->id == null) {
             $this->index = $this->getNewIndex();
         }
 
@@ -689,6 +689,7 @@ abstract class DynamicField
             return false;
         }
 
+        $isnew = ($this->id === null);
         if ($this->old_name !== null) {
             $this->deleteTranslation($this->old_name);
             $this->addTranslation($this->name);
@@ -712,7 +713,7 @@ abstract class DynamicField
                 $values['field_required'] = $this->zdb->isPostgres() ? 'false' : 0;
             }
 
-            if ($this->id !== null) {
+            if (!$isnew) {
                 $update = $this->zdb->update(self::TABLE);
                 $update->set($values)->where(
                     self::PK . ' = ' . $this->id
@@ -771,7 +772,7 @@ abstract class DynamicField
                 $this->errors[] = _T("An error occurred creating field values table");
             }
 
-            if (count($this->errors) == 0) {
+            if (count($this->errors) == 0 && is_array($this->values)) {
                 $contents_table = self::getFixedValuesTableName($this->id);
                 try {
                     $this->zdb->connection->beginTransaction();

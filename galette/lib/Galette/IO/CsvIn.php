@@ -254,6 +254,7 @@ class CsvIn extends Csv implements FileInterface
         }
 
         $member = new Adherent($this->zdb);
+        $dfields = [];
         $member->setDependencies(
             $this->preferences,
             $this->_members_fields,
@@ -283,6 +284,7 @@ class CsvIn extends Csv implements FileInterface
             if ($row > 0) {
                 //header line is the first one. Here comes data
                 $col = 0;
+                $errors = [];
                 foreach ($data as $column) {
                     $column = trim($column);
 
@@ -396,7 +398,13 @@ class CsvIn extends Csv implements FileInterface
                         $this->_fields['mdp_adh2'] = $column;
                     }
 
-                    $member->validate($this->_fields[$col], $column, $this->_fields);
+                    if (substr($this->_fields[$col], 0, strlen('dynfield_')) === 'dynfield_') {
+                        //dynamic field, keep to check later
+                        $dfields[$this->_fields[$col] . '_1'] = $column;
+                    } else {
+                        //standard field
+                        $member->validate($this->_fields[$col], $column, $this->_fields);
+                    }
                     $errors = $member->getErrors();
                     if (count($errors)) {
                         foreach ($errors as $error) {
@@ -406,6 +414,18 @@ class CsvIn extends Csv implements FileInterface
                     }
 
                     $col++;
+                }
+
+                //check dynamic fields
+                $errcnt = count($errors);
+                $member->dynamicsValidate($dfields);
+                $errors = $member->getErrors();
+                if (count($errors) > $errcnt) {
+                    $lcnt = ($errcnt > 0 ? $errcnt -1 : 0);
+                    for ($i = $lcnt; $i < count($errors); ++$i) {
+                        $this->addError($errors[$i]);
+                    }
+                    return false;
                 }
             }
 
@@ -449,6 +469,13 @@ class CsvIn extends Csv implements FileInterface
                     $col = 0;
                     $values = array();
                     foreach ($data as $column) {
+                        if (substr($this->_fields[$col], 0, strlen('dynfield_')) === 'dynfield_') {
+                            //dynamic field, keep to check later
+                            $values[str_replace('dynfield_', 'info_field_', $this->_fields[$col] . '_1')] = $column;
+                            $col++;
+                            continue;
+                        }
+
                         $values[$this->_fields[$col]] = $column;
                         if ($this->_fields[$col] === 'societe_adh') {
                             $values['is_company'] = true;

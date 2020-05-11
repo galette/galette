@@ -199,9 +199,7 @@ class DynamicFieldsHandle
      */
     public function getValues($field)
     {
-        if (isset($this->current_values[$field])) {
-            return $this->current_values[$field];
-        } else {
+        if (!isset($this->current_values[$field])) {
             $this->current_values[$field][] = [
                 'item_id'       => '',
                 'field_form'    => $this->dynamic_fields[$field]->getForm(),
@@ -210,6 +208,7 @@ class DynamicFieldsHandle
                 'is_new'        => true
             ];
         }
+        return $this->current_values[$field];
     }
 
     /**

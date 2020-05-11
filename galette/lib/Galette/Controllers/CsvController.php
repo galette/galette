@@ -44,6 +44,7 @@ use Galette\IO\Csv;
 use Galette\IO\CsvIn;
 use Galette\IO\CsvOut;
 use Galette\IO\MembersCsv;
+use Galette\Repository\DynamicFieldsSet;
 use Analog\Analog;
 
 /**
@@ -565,8 +566,20 @@ class CsvController extends AbstractController
         }
 
         $import_fields = $this->members_fields;
+        //get dynamic fields
+        $dynamic_import_fields = [];
+        $fieldset = new DynamicFieldsSet($this->zdb, $this->login);
+        $dfields = $fieldset->getList('adh');
+        foreach ($dfields as $field) {
+            if ($field->hasData() && !$field instanceof \Galette\DynamicFields\File) {
+                $dynamic_import_fields['dynfield_' . $field->getId()] = [
+                    'label'     => __($field->getname())
+                ];
+            }
+        }
         //we do not want to import id_adh. Never.
         unset($import_fields['id_adh']);
+        $import_fields += $dynamic_import_fields;
 
         // display page
         $this->view->render(
