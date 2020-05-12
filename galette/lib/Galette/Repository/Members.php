@@ -656,7 +656,8 @@ class Members
                     if ($photos) {
                         $select->join(
                             array('p' => PREFIX_DB . Picture::TABLE),
-                            'a.' . self::PK . '= p.' . self::PK
+                            'a.' . self::PK . '= p.' . self::PK,
+                            array()
                         );
                     }
                     break;
