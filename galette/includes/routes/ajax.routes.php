@@ -291,23 +291,14 @@ $app->group('/ajax', function () use ($authenticate) {
             }
 
             $m = new Members($filters);
-            $required_fields = array(
-                'id_adh',
-                'nom_adh',
-                'prenom_adh'
-            );
-            $list_members = $m->getList(false, $required_fields, true);
+            $list_members = $m->getSelectizedMembers($this->zdb);
 
             $members = [];
             if (count($list_members) > 0) {
-                foreach ($list_members as $member) {
-                    $pk = Adherent::PK;
-                    $sname = mb_strtoupper($member->nom_adh, 'UTF-8') .
-                        ' ' . ucwords(mb_strtolower($member->prenom_adh, 'UTF-8')) .
-                        ' (' . $member->id_adh . ')';
+                foreach ($list_members as $pk => $member) {
                     $members[] = [
-                        'value' => $member->$pk,
-                        'text'  => $sname
+                        'value' => $pk,
+                        'text'  => $member
                     ];
                 }
             }

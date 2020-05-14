@@ -133,7 +133,7 @@ class SavedSearch
         $pk = self::PK;
         $this->id = $rs->$pk;
         $this->name = $rs->name;
-        $this->parameters = json_decode($rs->parameters);
+        $this->parameters = json_decode($rs->parameters, true);
         $this->author_id = $rs->id_adh;
         $this->creation_date = $rs->creation_date;
         $this->form = $rs->form;

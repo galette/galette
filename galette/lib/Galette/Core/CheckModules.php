@@ -65,7 +65,8 @@ class CheckModules
         'gettext'   => false,
         'mbstring'  => true,
         'openssl'   => false,
-        'intl'      => true
+        'intl'      => true,
+        'session'   => true
     ];
 
 

@@ -755,13 +755,14 @@ class Adherent
     /**
      * Retrieve Full name and surname for the specified member id
      *
-     * @param Db      $zdb Database instance
-     * @param integer $id  member id
-     * @param boolean $wid Add member id
+     * @param Db      $zdb   Database instance
+     * @param integer $id    Member id
+     * @param boolean $wid   Add member id
+     * @param boolean $wnick Add member nickname
      *
      * @return string formatted Name and Surname
      */
-    public static function getSName($zdb, $id, $wid = false)
+    public static function getSName($zdb, $id, $wid = false, $wnick = false)
     {
         try {
             $select = $zdb->select(self::TABLE);
@@ -773,7 +774,8 @@ class Adherent
                 $row->nom_adh,
                 $row->prenom_adh,
                 false,
-                ($wid === true ? $row->id_adh : false)
+                ($wid === true ? $row->id_adh : false),
+                ($wnick === true ? $row->pseudo_adh : false)
             );
         } catch (\Exception $e) {
             Analog::log(
@@ -792,10 +794,11 @@ class Adherent
      * @param string        $surname Mmeber surname
      * @param false|Title   $title   Member title to show or false
      * @param false|integer $id      Member id to display or false
+     * @param false|string  $nick    Member nickname to display or false
      *
      * @return string
      */
-    public static function getNameWithCase($name, $surname, $title = false, $id = false)
+    public static function getNameWithCase($name, $surname, $title = false, $id = false, $nick = false)
     {
         $str = '';
 
@@ -806,8 +809,20 @@ class Adherent
         $str .= mb_strtoupper($name, 'UTF-8') . ' ' .
             ucwords(mb_strtolower($surname, 'UTF-8'), " \t\r\n\f\v-_|");
 
+        if ($id !== false || $nick !== false) {
+            $str .= ' (';
+        }
+        if ($nick !== false) {
+            $str .= $nick;
+        }
         if ($id !== false) {
-            $str .= ' (' . $id . ')';
+            if ($nick !== false && !empty($nick)) {
+                $str .= ', ';
+            }
+            $str .= $id;
+        }
+        if ($id !== false || $nick !== false) {
+            $str .= ')';
         }
         return $str;
     }

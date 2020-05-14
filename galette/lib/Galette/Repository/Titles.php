@@ -139,6 +139,11 @@ class Titles
             );
             $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
 
+            $zdb->handleSequence(
+                self::TABLE,
+                count(self::$defaults)
+            );
+
             foreach (self::$defaults as $d) {
                 $short = _T($d['short_label']);
                 $long = null;

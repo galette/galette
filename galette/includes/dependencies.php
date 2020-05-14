@@ -119,6 +119,7 @@ $container['view'] = function ($c) {
     }
     /** galette_lang should be removed and languages used instead */
     $smarty->assign('galette_lang', $c->i18n->getAbbrev());
+    $smarty->assign('galette_lang_name', $c->i18n->getName());
     $smarty->assign('languages', $c->i18n->getList());
     $smarty->assign('plugins', $c->plugins);
     $smarty->assign('preferences', $c->preferences);
@@ -179,8 +180,8 @@ $container['plugins'] = function ($c) use ($app) {
 
 $container['i18n'] = function ($c) {
     $i18n = $c->get('session')->i18n;
-    if (!$i18n || !$i18n->getId()) {
-        $i18n = new Galette\Core\I18n();
+    if (!$i18n || !$i18n->getId() || $_GET['ui_pref_lang']) {
+        $i18n = new Galette\Core\I18n($_GET['ui_pref_lang'] ?? false);
         $c->get('session')->i18n = $i18n;
     }
     return $i18n;
@@ -726,9 +727,10 @@ $container['translator'] = function ($c) {
 
 //For bad existing globals can be used...
 if (!isset($container['mode']) || $container['mode'] !== 'INSTALL' && $container['mode'] !== 'NEED_UPDATE') {
-    $hist = $container['history'];
-    $login = $container['login'];
     $zdb = $container['zdb'];
+    $preferences = $container['preferences'];
+    $login = $container['login'];
+    $hist = $container['history'];
 }
 $i18n = $container['i18n'];
 $translator = $container['translator'];

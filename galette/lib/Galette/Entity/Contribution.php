@@ -792,6 +792,9 @@ class Contribution
      */
     public static function getDueDate(Db $zdb, $member_id)
     {
+        if (!$member_id) {
+            return '';
+        }
         try {
             $select = $zdb->select(self::TABLE, 'c');
             $select->columns(

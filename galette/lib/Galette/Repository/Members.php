@@ -441,11 +441,10 @@ class Members
      * @param array   $fields     field(s) name(s) to get. Should be a string or
      *                            an array. If null, all fields will be
      *                            returned
-     * @param boolean $full       Whether to return full list
      *
      * @return Adherent[]|ResultSet
      */
-    public function getList($as_members = false, $fields = null, $full = true)
+    public function getList($as_members = false, $fields = null)
     {
         return $this->getMembersList(
             $as_members,
@@ -1355,7 +1354,7 @@ class Members
                             $field = 'field_val';
                             $qry .= 'LOWER(' . $prefix . $field . ') ' .
                                 $qop  . ' ' ;
-                            $select->where($qry . '%' .strtolower($cd) . '%');
+                            $select->where($qry . $zdb->platform->quoteValue('%' .strtolower($cd) . '%'));
                         }
                     }
                 }
@@ -1715,5 +1714,49 @@ class Members
     public function getFilters()
     {
         return $this->filters;
+    }
+
+    /**
+     * Get members list to instanciate dropdowns
+     *
+     * @param Db      $zdb     Database instance
+     * @param integer $current Current member
+     *
+     * @return array
+     */
+    public function getSelectizedMembers(Db $zdb, $current = null)
+    {
+        $members = [];
+        $required_fields = array(
+            'id_adh',
+            'nom_adh',
+            'prenom_adh',
+            'pseudo_adh'
+        );
+        $list_members = $this->getList(false, $required_fields);
+
+        if (count($list_members) > 0) {
+            foreach ($list_members as $member) {
+                $pk = Adherent::PK;
+
+                $members[$member->$pk] = Adherent::getNameWithCase(
+                    $member->nom_adh,
+                    $member->prenom_adh,
+                    false,
+                    $member->id_adh,
+                    $member->pseudo_adh
+                );
+            }
+        }
+
+        //check if current attached member is part of the list
+        if ($current !== null && !isset($members[$current])) {
+            $members =
+                [$current => Adherent::getSName($zdb, $current, true, true)] +
+                $members
+            ;
+        }
+
+        return $members;
     }
 }

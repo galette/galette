@@ -74,6 +74,7 @@ class GaletteMail
     private $message;
     private $html;
     private $word_wrap = 70;
+    private $timeout = 300;
 
     private $errors = array();
     private $recipients = array();
@@ -107,6 +108,7 @@ class GaletteMail
         global $i18n;
 
         $this->mail = new PHPMailer();
+        $this->mail->Timeout = $this->timeout;
 
         switch ($this->preferences->pref_mail_method) {
             case self::METHOD_SMTP:
@@ -240,7 +242,11 @@ class GaletteMail
         );
         // Add a Reply-To field in the mail headers.
         // Fix bug #6654.
-        $this->mail->AddReplyTo($this->getSenderAddress());
+        if ($this->preferences->pref_email_reply_to) {
+            $this->mail->AddReplyTo($this->preferences->pref_email_reply_to);
+        } else {
+            $this->mail->AddReplyTo($this->getSenderAddress());
+        }
 
 
         if ($this->html) {
@@ -548,6 +554,19 @@ class GaletteMail
     {
         $this->sender_name = $name;
         $this->sender_address = $address;
+        return $this;
+    }
+
+    /**
+     * Set timeout on SMTP connexion
+     *
+     * @param integer $timeout SMTP timeout
+     *
+     * @return GaletteMail
+     */
+    public function setTimeout($timeout)
+    {
+        $this->timeout = $timeout;
         return $this;
     }
 }

@@ -56,6 +56,8 @@ use Zend\Db\Sql\Expression;
 
 trait I18nTrait
 {
+    protected $warnings = [];
+
     /**
      * Add a translation stored in the database
      *
@@ -97,7 +99,6 @@ trait I18nTrait
                         Analog::INFO
                     );
 
-                    $where = array();
                     $owhere = $select->where;
 
                     $update = $this->zdb->update(L10n::TABLE);
@@ -128,7 +129,14 @@ trait I18nTrait
                 $text_orig . '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            throw $e;
+
+            $this->warnings[] = str_replace(
+                '%field',
+                $text_orig,
+                _T('Unable to add dynamic translation for %field :(')
+            );
+
+            return false;
         }
     }
 
@@ -141,7 +149,7 @@ trait I18nTrait
      *
      * @return boolean
      */
-    protected function updateDynamicTranslation($text_orig, $text_locale, $text_trans)
+    protected function updateTranslation($text_orig, $text_locale, $text_trans)
     {
         try {
             //check if translation already exists
@@ -167,7 +175,6 @@ trait I18nTrait
             );
 
             if ($exists) {
-                $where = array();
                 $owhere = $select->where;
 
                 $update = $this->zdb->update(L10n::TABLE);
@@ -188,6 +195,13 @@ trait I18nTrait
                 $text_orig . '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
+
+            $this->warnings[] = str_replace(
+                '%field',
+                $text_orig,
+                _T('Unable to update dynamic translation for %field :(')
+            );
+
             return false;
         }
     }
@@ -201,34 +215,29 @@ trait I18nTrait
     */
     protected function deleteTranslation($text_orig)
     {
-        global $i18n;
-
         try {
             $delete = $this->zdb->delete(L10n::TABLE);
             $delete->where(
                 array(
-                    'text_orig'     => $text_orig,
-                    'text_locale'   => ':lang_id'
+                    'text_orig'     => $text_orig
                 )
             );
-            $stmt = $this->zdb->sql->prepareStatementForSqlObject($delete);
-
-            foreach ($i18n->getList() as $lang) {
-                $stmt->execute(
-                    array(
-                        'where2' => $lang->getLongID()
-                    )
-                );
-            }
+            $this->zdb->execute($delete);
             return true;
         } catch (Exception $e) {
             Analog::log(
                 'An error occurred deleting dynamic translation for `' .
-                $text_orig . '` (lang `' . $lang->getLongID() . '`) | ' .
-                $e->getMessage(),
+                $text_orig . ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
-            throw $e;
+
+            $this->warnings[] = str_replace(
+                '%field',
+                $text_orig,
+                _T('Unable to remove old dynamic translation for %field :(')
+            );
+
+            return false;
         }
     }
 

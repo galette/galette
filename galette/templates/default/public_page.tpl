@@ -44,6 +44,7 @@
         {include file='navigation_topbar.tpl'}
         <div class="pusher">
             <div id="main" class="ui column horizontally padded grid">
+
 {if $login->isLogged()}
                 {include file="navigation_aside.tpl"}
 {/if}

@@ -98,39 +98,16 @@ $app->get(
         $spam_img = $spam->getImage();
 
         // members
-        $members = [];
         $m = new Members();
-        $required_fields = array(
-            'id_adh',
-            'nom_adh',
-            'prenom_adh'
+        $members = $m->getSelectizedMembers(
+            $this->zdb,
+            $member->hasParent() ? $member->parent->id : null
         );
-        $list_members = $m->getList(false, $required_fields, true);
-
-        if (count($list_members) > 0) {
-            foreach ($list_members as $lmember) {
-                $pk = Adherent::PK;
-                $sname = mb_strtoupper($lmember->nom_adh, 'UTF-8') .
-                    ' ' . ucwords(mb_strtolower($lmember->prenom_adh, 'UTF-8')) .
-                    ' (' . $lmember->id_adh . ')';
-                $members[$lmember->$pk] = $sname;
-            }
-        }
 
         $params['members'] = [
             'filters'   => $m->getFilters(),
             'count'     => $m->getCount()
         ];
-
-        //check if current attached member is part of the list
-        if ($member->hasParent()) {
-            if (!isset($members[$member->parent->id])) {
-                $members =
-                    [$member->parent->id => $member->parent->getSName()] +
-                    $members
-                ;
-            }
-        }
 
         if (count($members)) {
             $params['members']['list'] = $members;
@@ -350,8 +327,7 @@ $app->get(
                 ->withHeader('Content-Transfer-Encoding', 'binary')
                 ->withHeader('Expires', '0')
                 ->withHeader('Cache-Control', 'must-revalidate')
-                ->withHeader('Pragma', 'public')
-                ->withHeader('Content-Length', filesize($filepath));
+                ->withHeader('Pragma', 'public');
 
             $stream = fopen('php://memory', 'r+');
             fwrite($stream, file_get_contents($filepath));
@@ -613,7 +589,7 @@ $app->get(
                 'page_title'        => _T("Member Profile"),
                 'require_dialog'    => true,
                 'member'            => $member,
-                'pref_lang'         => ucfirst($this->i18n->getNameFromId($member->language)),
+                'pref_lang'         => $this->i18n->getNameFromId($member->language),
                 'pref_card_self'    => $this->preferences->pref_card_self,
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
@@ -696,7 +672,7 @@ $app->get(
                 'page_title'        => _T("Member Profile"),
                 'require_dialog'    => true,
                 'member'            => $member,
-                'pref_lang'         => ucfirst($this->i18n->getNameFromId($member->language)),
+                'pref_lang'         => $this->i18n->getNameFromId($member->language),
                 'pref_card_self'    => $this->preferences->pref_card_self,
                 'groups'            => Groups::getSimpleList(),
                 'time'              => time(),
@@ -820,39 +796,16 @@ $app->get(
         );
 
         // members
-        $members = [];
         $m = new Members();
-        $required_fields = array(
-            'id_adh',
-            'nom_adh',
-            'prenom_adh'
+        $members = $m->getSelectizedMembers(
+            $this->zdb,
+            $member->hasParent() ? $member->parent->id : null
         );
-        $list_members = $m->getList(false, $required_fields, true);
-
-        if (count($list_members) > 0) {
-            foreach ($list_members as $lmember) {
-                $pk = Adherent::PK;
-                $sname = mb_strtoupper($lmember->nom_adh, 'UTF-8') .
-                    ' ' . ucwords(mb_strtolower($lmember->prenom_adh, 'UTF-8')) .
-                    ' (' . $lmember->id_adh . ')';
-                $members[$lmember->$pk] = $sname;
-            }
-        }
 
         $route_params['members'] = [
             'filters'   => $m->getFilters(),
             'count'     => $m->getCount()
         ];
-
-        //check if current attached member is part of the list
-        if ($member->hasParent()) {
-            if (!isset($members[$member->parent->id])) {
-                $members =
-                    [$member->parent->id => $member->parent->getSName()] +
-                    $members
-                ;
-            }
-        }
 
         if (count($members)) {
             $route_params['members']['list'] = $members;
@@ -1072,8 +1025,8 @@ $app->post(
                             $mail = new GaletteMail($this->preferences);
                             $mail->setSubject($texts->getSubject());
                             $recipients = [];
-                            foreach ($this->preferences->vpref_email as $pref_email) {
-                                $recipients[$pref_email] = $this->preferences->pref_email_nom;
+                            foreach ($this->preferences->vpref_email_newadh as $pref_email) {
+                                $recipients[$pref_email] = $pref_email;
                             }
                             $mail->setRecipients($recipients);
                             $mail->setMessage($texts->getBody());
@@ -1249,7 +1202,7 @@ $app->post(
                         $mail->setSubject($texts->getSubject());
                         $recipients = [];
                         foreach ($this->preferences->vpref_email_newadh as $pref_email) {
-                            $recipients[$pref_email] = $this->preferences->pref_email_nom;
+                            $recipients[$pref_email] = $pref_email;
                         }
                         $mail->setRecipients($recipients);
 
@@ -2741,30 +2694,18 @@ $app->post(
             $doc_title = $post['sheet_type'];
         }
 
-        $pdf = new Galette\IO\PdfAttendanceSheet($this->preferences);
-        $pdf->doc_title = $doc_title;
-        // Set document information
-        $pdf->SetTitle($doc_title);
-
-        if (isset($post['sheet_title']) && trim($post['sheet_title']) != '') {
-            $pdf->sheet_title = $post['sheet_title'];
-        }
-        if (isset($post['sheet_sub_title']) && trim($post['sheet_sub_title']) != '') {
-            $pdf->sheet_sub_title = $post['sheet_sub_title'];
-        }
-        if (isset($post['sheet_date']) && trim($post['sheet_date']) != '') {
-            $dformat = __("Y-m-d");
-            $date = DateTime::createFromFormat(
-                $dformat,
-                $post['sheet_date']
-            );
-            $pdf->sheet_date = $date;
-        }
+        $data = [
+            'doc_title' => $doc_title,
+            'title'     => $post['sheet_title'] ?? null,
+            'subtitle'  => $post['sheet_sub_title'] ?? null,
+            'sheet_date'=> $post['sheet_date'] ?? null
+        ];
+        $pdf = new Galette\IO\PdfAttendanceSheet($this->zdb, $this->preferences, $data);
         //with or without images?
         if (isset($post['sheet_photos']) && $post['sheet_photos'] === '1') {
             $pdf->withImages();
         }
-        $pdf->drawSheet($members, $doc_title);
+        $pdf->drawSheet($members);
         $response = $this->response->withHeader('Content-type', 'application/pdf');
         $response->write($pdf->Output(_T("attendance_sheet") . '.pdf', 'D'));
         return $response;

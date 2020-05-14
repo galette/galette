@@ -375,6 +375,11 @@ class Texts
                 $delete = $zdb->delete(self::TABLE);
                 $zdb->execute($delete);
 
+                $zdb->handleSequence(
+                    self::TABLE,
+                    count($this->defaults)
+                );
+
                 $this->insert($zdb, $this->defaults);
 
                 Analog::log(

@@ -28,6 +28,7 @@
         {include file="group.tpl" group=$group groups=$groups}
     </div>
 </div>{* /grid *}
+
 {/block}
 
 {block name="javascripts"}

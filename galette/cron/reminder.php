@@ -41,22 +41,43 @@ use Galette\Repository\Reminders;
 use Galette\Filters\MembersList;
 
 /** @ignore */
-require_once '../includes/galette.inc.php';
+require_once __DIR__ . '/../includes/galette.inc.php';
 
-if (!$login->isCron()) {
-    die();
+$app = new \Slim\App(
+    array(
+        'templates.path'    => GALETTE_ROOT . 'templates/default/',
+        'mode'              => 'CRON'
+    )
+);
+session_start();
+require_once __DIR__ . '/../includes/dependencies.php';
+
+if (isset($needs_update) && $needs_update === true) {
+    echo _T("Your Galette database is not present, or not up to date.");
+    die(1);
 }
 
-//FIXME: connect this script to the DI, or instanciate what is required.
-$texts = new Texts($texts_fields, $preferences);
+/** TODO: login is now handled in dependencies.php; the cron case should be aswell */
+if ($cron) {
+    $container->get('login')->logCron(basename($argv[0], '.php'));
+}
+
+if (!$container->get('login')->isCron()) {
+    die(1);
+}
+
+$texts = new Texts(
+    $container->get('texts_fields'),
+    $container->get('preferences')
+);
 $reminders = new Reminders();
 
 
-$list_reminders = $reminders->getList($zdb, false);
+$list_reminders = $reminders->getList($container->get('zdb'), false);
 if (count($list_reminders) > 0) {
     foreach ($list_reminders as $reminder) {
         //send reminders by mail
-        $sent = $reminder->send($texts, $hist, $zdb);
+        $sent = $reminder->send($texts, $container->get('history'), $container->get('zdb'));
 
         if ($sent === true) {
             $success_detected[] = $reminder->getMessage();

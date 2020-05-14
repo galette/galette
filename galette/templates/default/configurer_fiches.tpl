@@ -5,7 +5,7 @@
             <a
                 id="addfield"
                 href="{path_for name="editDynamicField" data=["form" => $form_name, "action" => "add"]}"
-                class="tab-button tooltip use"
+                class="tab-button tooltip"
             >
                 <i class="fas fa-plus-square fa-2x"></i>
                 <span class="sr-only">{_T string="Add"}</span>

@@ -201,7 +201,7 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
+                    </div>           
                 </div>
             </div>
             <div class="ui segment">
@@ -599,7 +599,7 @@
 
             var _selectize = function(selector) {
                 if ( !selector ) {
-                    selector = '.operator_selector,.field_selector,.free_operator';
+                    selector = '.operator_selector,.field_selector,.free_operator,.free_text';
                 }
 
                 $(selector).selectize({

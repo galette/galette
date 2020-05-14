@@ -79,7 +79,7 @@ class Pdf extends \TCPDF
     protected $preferences;
     private $model;
     private $paginated = false;
-    private $filename;
+    protected $filename;
 
     /**
      * Main constructor, set creator and author
@@ -253,7 +253,7 @@ class Pdf extends \TCPDF
             $hfooter .= $this->model->hfooter;
             $this->writeHtml($hfooter);
         } else {
-            $this->SetFont(self::FONT, '', self::FONT_SIZE);
+            $this->SetFont(self::FONT, '', self::FONT_SIZE - 2);
             $this->SetTextColor(0, 0, 0);
 
             $name = preg_replace(
@@ -262,34 +262,14 @@ class Pdf extends \TCPDF
                 _T("Association %s")
             );
 
-            /** FIXME: get configured postal address */
-            $coordonnees_line1 = $name . ' - ' . $this->preferences->pref_adresse;
-            /** FIXME: pref_adresse2 should be removed */
-            if (trim($this->preferences->pref_adresse2) != '') {
-                $coordonnees_line1 .= ', ' . $this->preferences->pref_adresse2;
-            }
-            $coordonnees_line2 = $this->preferences->pref_cp . ' ' .
-                $this->preferences->pref_ville;
+            $address = $this->preferences->getPostalAddress();
 
-            $this->Cell(
+            $this->MultiCell(
                 0,
                 4,
-                $coordonnees_line1,
+                $address,
                 0,
-                1,
-                'C',
-                0,
-                $this->preferences->pref_website
-            );
-            $this->Cell(
-                0,
-                4,
-                $coordonnees_line2,
-                0,
-                0,
-                'C',
-                0,
-                $this->preferences->pref_website
+                'C'
             );
 
             if ($this->paginated) {
@@ -324,6 +304,11 @@ class Pdf extends \TCPDF
             }
             $html .= $this->model->hheader;
             $this->writeHtml($html, true, false, true, false, '');
+
+            if ($title !== null) {
+                $this->writeHtml('<h2 style="text-align:center;">' . $title . '</h2>');
+            }
+
             if (trim($this->model->title) !== '') {
                 $htitle = '';
                 if (trim($this->model->hstyles) !== '') {
@@ -378,15 +363,12 @@ class Pdf extends \TCPDF
             $this->Ln(2);
             $ystart = $this->GetY();
 
-            $this->Cell(
-                0,
+            $this->MultiCell(
+                180 - $wlogo,
                 6,
                 $this->preferences->pref_nom,
                 0,
-                1,
-                'L',
-                0,
-                $this->preferences->pref_website
+                'L'
             );
             $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
 

@@ -14,7 +14,7 @@
                     <label for="id_adh" class="bline" >{_T string="Originator:"}</label>
                     <select name="id_adh" id="id_adh" class="nochosen"{if $required.id_adh eq 1} required="required"{/if}>
     {if !$transaction->member}
-                        <option>{_T string="-- select a name --"}</option>
+                        <option value="">{_T string="-- select a name --"}</option>
     {/if}
     {foreach $members.list as $k=>$v}
                             <option value="{$k}"{if $transaction->member == $k} selected="selected"{/if}>{$v}</option>

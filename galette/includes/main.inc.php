@@ -70,7 +70,7 @@ if ($needs_update) {
         'themes/default/'
     );
 
-    require_once '../includes/dependencies.php';
+    require_once GALETTE_ROOT . 'includes/dependencies.php';
 
     $app->add(
         new Galette\Core\Middleware(
@@ -87,6 +87,7 @@ if ($needs_update) {
             'settings' => [
                 'determineRouteBeforeAppMiddleware' => true,
                 'displayErrorDetails' => (GALETTE_MODE === 'DEV'),
+                'addContentLengthHeader' => false,
                 // monolog settings
                 'logger' => [
                     'name'  => 'galette',
