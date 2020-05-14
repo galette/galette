@@ -38,6 +38,8 @@
 use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
 use Analog\Analog;
+use Analog\Handler;
+use Analog\Handler\LevelName;
 
 //set a flag saying we work from installer
 //that way, in galette.inc.php, we'll only include relevant parts
@@ -112,21 +114,21 @@ if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     $now = new \DateTime();
     $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
         $now->format('Y-m-d')  . '.log';
-    $galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
+    $galette_debug_log = LevelName::init(Handler\File::init($dbg_log_path));
 
-    if (GALETTE_MODE === 'DEV') {
+    if (defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true) {
         //logs everything in PHP logs (per chance /var/log/http/error_log or /var/log/php-fpm/error.log)
-        $galette_run_log = \Analog\Handler\Stderr::init();
+        $galette_run_log = \Analog\Handler\Syslog::init('galette', 'user');
     } else {
         $logfile = 'galette_install';
         $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
-        $galette_run_log = \Analog\Handler\File::init($log_path);
+        $galette_run_log = LevelName::init(Handler\File::init($log_path));
     }
 
     Analog::handler(
-        \Analog\Handler\Multi::init(
+        Handler\Multi::init(
             array (
-                Analog::NOTICE  => \Analog\Handler\Threshold::init(
+                Analog::NOTICE  => Handler\Threshold::init(
                     $galette_run_log,
                     GALETTE_LOG_LVL
                 ),
