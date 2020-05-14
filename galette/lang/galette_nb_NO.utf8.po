@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: 2019-10-18 07:12+0200\n"
-"PO-Revision-Date: 2020-04-27 12:40+0000\n"
-"Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2020-05-14 21:26+0000\n"
+"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/galette/"
 "galette/nb_NO/>\n"
 "Language: nb_NO\n"
@@ -15,24 +15,24 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.0.2-dev\n"
+"X-Generator: Weblate 4.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
-msgstr ""
+msgstr "Galette-feil"
 
 #: ../lib/Galette/Handlers/NotFound.php:80 ../templates/default/404.tpl:19
 msgid "Page not found"
-msgstr ""
+msgstr "Fant ikke siden"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:120
 msgid "Payment types management"
-msgstr ""
+msgstr "Håndtering av betalingstyper"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:162
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:291
 msgid "Edit payment type"
-msgstr ""
+msgstr "Rediger betalingstype"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:215
 msgid "Payment type '%s' has not been added!"
@@ -56,13 +56,13 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:125
 msgid "Group name is missing!"
-msgstr ""
+msgstr "Gruppenavn mangler."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:188
 #: ../templates/default/desktop.tpl:31
 #: ../templates/default/gestion_groupes.tpl:6
 msgid "Groups"
-msgstr ""
+msgstr "Grupper"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:345
 msgid "Group `%groupname` has been successfully saved."
@@ -102,7 +102,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:306
 msgid "Please enter a message."
-msgstr ""
+msgstr "Skriv inn en melding."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:398
 msgid "Mailing has been successfully sent!"
@@ -149,7 +149,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:84
 msgid "Add field"
-msgstr ""
+msgstr "Legg til felt"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:133
 msgid "An error occurred adding dynamic field :("
@@ -170,7 +170,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:301
 msgid "Edit field"
-msgstr ""
+msgstr "Rediger felt"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:351
 msgid "An error occurred editing dynamic field :("
@@ -212,7 +212,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MembersController.php:274
 #: ../lib/Galette/Controllers/Crud/MembersController.php:894
 msgid "Member Profile"
-msgstr ""
+msgstr "Medlemsprofil"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:388
 msgid "The file does not exists or cannot be read :("
