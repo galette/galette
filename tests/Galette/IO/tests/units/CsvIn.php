@@ -136,6 +136,7 @@ class CsvIn extends atoum
         $container['history'] = $this->history;
         $container['i18n'] = null;
         $container['fields_config'] = null;
+        $container['lists_config'] = null;
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         $this->members_fields = $members_fields;
         $container['members_fields'] = $this->members_fields;

@@ -79,6 +79,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <ul>
             <li{if $cur_route eq "preferences"} class="selected"{/if}><a href="{path_for name="preferences"}" title="{_T string="Set applications preferences (address, website, member's cards configuration, ...)"}">{_T string="Settings"}</a></li>
             <li{if $cur_route eq "plugins"} class="selected"{/if}><a href="{path_for name="plugins"}" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a></li>
+            <li{if $cur_route eq "configureListFields"} class="selected"{/if}><a href="{path_for name="configureListFields" data=["table" => "adherents"]}" title="{_T string="Customize lists fields and order"}">{_T string="Core lists"}</a></li>
             <li{if $cur_route eq "configureCoreFields"} class="selected"{/if}><a href="{path_for name="configureCoreFields"}" title="{_T string="Customize fields order, set which are required, and for who they're visibles"}">{_T string="Core fields"}</a></li>
             <li{if $cur_route eq "configureDynamicFields" or $cur_route eq 'editDynamicField' or $cur_route eq 'addDynamicField'} class="selected"{/if}><a href="{path_for name="configureDynamicFields"}" title="{_T string="Manage additional fields for various forms"}">{_T string="Dynamic fields"}</a></li>
             <li{if $cur_route eq "dynamicTranslations"} class="selected"{/if}><a href="{path_for name="dynamicTranslations"}" title="{_T string="Translate additionnals fields labels"}">{_T string="Translate labels"}</a></li>

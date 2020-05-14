@@ -10,4 +10,8 @@ CREATE TABLE galette_tmplinks(
   PRIMARY KEY (target, id)
 );
 
+-- Add list config field
+ALTER TABLE galette_fields_config ADD COLUMN list_visible boolean NOT NULL DEFAULT false;
+ALTER TABLE galette_fields_config ADD COLUMN list_position integer NULL DEFAULT NULL;
+
 UPDATE galette_database SET version = 0.94;

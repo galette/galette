@@ -1358,7 +1358,7 @@ table.listing th, li.listing {
     font-weight: normal;
     font-weight: bold;
     margin-top: .3em;
-    padding: .1em .2em;
+    padding: .1em .5em;
     vertical-align: middle;
 }
 
@@ -1866,7 +1866,7 @@ fieldset.large{
     margin:0 1% 1em 1%;
     clear:right;
 }
-fieldset ul{
+fieldset ul, ul.notype{
     list-style-type:none;
     margin:0;
     padding:0;
@@ -2246,6 +2246,13 @@ label:hover > i, span.bline:hover > i {
 
 .fields_list .selectize-input {
     min-width: auto;
+}
+
+#listed_fields, #remaining_fields {
+    min-width: 39em;
+    width: 49%;
+    display: inline-block;
+    vertical-align: top;
 }
 
 #add_category{

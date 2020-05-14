@@ -200,8 +200,10 @@ abstract class Repository
      */
     protected function canOrderBy($field_name, $fields)
     {
-        if (!is_array($fields)) {
+        if ($fields === null) {
             return true;
+        } elseif (!is_array($fields)) {
+            return false;
         } elseif (in_array($field_name, $fields)) {
             return true;
         } else {
