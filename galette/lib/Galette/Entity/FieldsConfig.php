@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2014 The Galette Team
+ * Copyright © 2009-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -45,13 +45,14 @@ use Galette\Core\Authentication;
 
 /**
  * Fields config class for galette :
- * defines fields mandatory, order and visibility
+ * defines fields visibility for lists and forms
+ * defines fields order and requirement flag for forms
  *
  * @category  Entity
  * @name      FieldsConfig
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-26
@@ -79,10 +80,11 @@ class FieldsConfig
     const TYPE_SELECT = 11;
 
     private $zdb;
-    private $all_required;
-    private $all_visibles;
+    private $all_required = array();
+    private $all_visibles = array();
     //private $error = array();
     private $categorized_fields = array();
+    private $listed_fields = array();
     private $table;
     private $defaults = null;
     private $cats_defaults = null;
@@ -150,8 +152,6 @@ class FieldsConfig
         $this->table = $table;
         $this->defaults = $defaults;
         $this->cats_defaults = $cats_defaults;
-        $this->all_required = array();
-        $this->all_visibles = array();
         //prevent check at install time...
         if (!$install) {
             $this->load();
@@ -175,6 +175,7 @@ class FieldsConfig
             $results = $this->zdb->execute($select);
 
             $this->categorized_fields = null;
+            $this->listed_fields = null;
             foreach ($results as $k) {
                 if ($k->field_id === 'parent_id') {
                     $k->readonly = true;
@@ -190,6 +191,9 @@ class FieldsConfig
                     'disabled'  => false
                 );
                 $this->categorized_fields[$k->id_field_category][] = $f;
+                if ($k->list_visible) {
+                    $this->listed_fields[$k->list_position] = $f;
+                }
 
                 //array of all required fields
                 if ($k->required == 1) {
@@ -305,12 +309,14 @@ class FieldsConfig
                             $required = $this->zdb->isPostgres() ? 'false' : 0;
                         }
                         $params[] = array(
-                            'field_id'    => $k,
-                            'table_name'  => $this->table,
-                            'required'    => $required,
-                            'visible'     => $f['visible'],
-                            'position'    => $f['position'],
-                            'category'    => $f['category'],
+                            'field_id'      => $k,
+                            'table_name'    => $this->table,
+                            'required'      => $required,
+                            'visible'       => $f['visible'],
+                            'position'      => $f['position'],
+                            'category'      => $f['category'],
+                            'list_visible'  => $f['list_visible'] ?? false,
+                            'list_position' => $f['list_position'] ?? null
                         );
                     }
                 }
@@ -360,12 +366,14 @@ class FieldsConfig
                     $required = $this->zdb->isPostgres() ? 'false' : 0;
                 }
                 $params[] = array(
-                    'field_id'    => $f,
-                    'table_name'  => $this->table,
-                    'required'    => $required,
-                    'visible'     => $this->defaults[$f]['visible'],
-                    'position'    => $this->defaults[$f]['position'],
-                    'category'    => $this->defaults[$f]['category'],
+                    'field_id'      => $f,
+                    'table_name'    => $this->table,
+                    'required'      => $required,
+                    'visible'       => $this->defaults[$f]['visible'],
+                    'position'      => $this->defaults[$f]['position'],
+                    'category'      => $this->defaults[$f]['category'],
+                    'list_visible'  => $this->defaults[$f]['list_visible'] ?? false,
+                    'list_position' => $this->defaults[$f]['list_position'] ?? false
                 );
             }
             $this->insert($params);
@@ -694,7 +702,9 @@ class FieldsConfig
                     'required'              => ':required',
                     'visible'               => ':visible',
                     'position'              => ':position',
-                    FieldsCategories::PK    => ':category'
+                    FieldsCategories::PK    => ':category',
+                    'list_visible'          => ':list_visible',
+                    'list_position'         => ':list_position'
                 )
             )->where(
                 array(
@@ -714,11 +724,13 @@ class FieldsConfig
                         $field['visible'] = 0;
                     }
                     $params = array(
-                        'required'  => $field['required'],
-                        'visible'   => $field['visible'],
-                        'position'  => $pos,
-                        FieldsCategories::PK => $field['category'],
-                        'where1'    => $field['field_id']
+                        'required'              => $field['required'],
+                        'visible'               => $field['visible'],
+                        'position'              => $pos,
+                        FieldsCategories::PK    => $field['category'],
+                        'list_visible'          => $field['list_visible'],
+                        'list_position'         => $field['list_position'],
+                        'where1'                => $field['field_id']
                     );
                     $stmt->execute($params);
                 }
@@ -851,24 +863,28 @@ class FieldsConfig
         $insert = $this->zdb->insert(self::TABLE);
         $insert->values(
             array(
-                'field_id'      => ':field_id',
-                'table_name'    => ':table_name',
-                'required'      => ':required',
-                'visible'       => ':visible',
-                FieldsCategories::PK => ':category',
-                'position'      => ':position'
+                'field_id'              => ':field_id',
+                'table_name'            => ':table_name',
+                'required'              => ':required',
+                'visible'               => ':visible',
+                FieldsCategories::PK    => ':category',
+                'position'              => ':position',
+                'list_visible'          => ':list_visible',
+                'list_position'         => ':list_position'
             )
         );
         $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
         foreach ($values as $d) {
             $stmt->execute(
                 array(
-                    'field_id'      => $d['field_id'],
-                    'table_name'    => $d['table_name'],
-                    'required'      => $d['required'],
-                    'visible'       => $d['visible'],
-                    FieldsCategories::PK => $d['category'],
-                    'position'      => $d['position']
+                    'field_id'              => $d['field_id'],
+                    'table_name'            => $d['table_name'],
+                    'required'              => $d['required'],
+                    'visible'               => $d['visible'],
+                    FieldsCategories::PK    => $d['category'],
+                    'position'              => $d['position'],
+                    'list_visible'          => $d['list_visible'],
+                    'list_position'         => $d['list_position']
                 )
             );
         }

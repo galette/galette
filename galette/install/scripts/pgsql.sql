@@ -369,6 +369,8 @@ CREATE TABLE galette_fields_config (
   required boolean NOT NULL,
   visible integer NOT NULL,
   position integer NOT NULL,
+  list_visible boolean NOT NULL,
+  list_position integer NOT NULL,
   id_field_category integer REFERENCES galette_fields_categories ON DELETE RESTRICT ON UPDATE CASCADE,
   PRIMARY KEY (table_name, field_id)
 );
