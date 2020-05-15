@@ -618,6 +618,11 @@ $app->post(
 )->setName('editDynamicTranslation')->add($authenticate);
 
 $app->get(
+    '/lists/{table}/configure',
+    GaletteController::class . ':configureListFields'
+)->setName('configureListFields')->add($authenticate);
+
+$app->get(
     '/fields/core/configure',
     GaletteController::class . ':configureCoreFields'
 )->setName('configureCoreFields')->add($authenticate);

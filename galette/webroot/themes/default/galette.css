@@ -1866,7 +1866,7 @@ fieldset.large{
     margin:0 1% 1em 1%;
     clear:right;
 }
-fieldset ul{
+fieldset ul, ul.notype{
     list-style-type:none;
     margin:0;
     padding:0;

@@ -539,6 +539,16 @@ $container['fields_config'] = function ($c) {
     return $fc;
 };
 
+$container['lists_config'] = function ($c) {
+    $fc = new Galette\Entity\ListsConfig(
+        $c->get('zdb'),
+        Galette\Entity\Adherent::TABLE,
+        $c->get('members_fields'),
+        $c->get('members_fields_cats')
+    );
+    return $fc;
+};
+
 $container['cache'] = function ($c) {
     $adapter  = null;
     if (function_exists('wincache_ucache_add')) {

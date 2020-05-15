@@ -118,6 +118,11 @@ abstract class AbstractController
     protected $fields_config;
     /**
      * @Inject
+     * @var Galette\Entity\ListsConfig
+     */
+    protected $lists_config;
+    /**
+     * @Inject
      * @var array
      */
     protected $members_fields;
@@ -155,6 +160,7 @@ abstract class AbstractController
         $this->session = $container->get('session');
         $this->flash = $container->get('flash');
         $this->fields_config = $container->get('fields_config');
+        $this->lists_config = $container->get('lists_config');
         $this->notFoundHandler = $container->get('notFoundHandler');
         $this->members_fields = $container->get('members_fields');
         $this->members_fields_cats = $container->get('members_fields_cats');

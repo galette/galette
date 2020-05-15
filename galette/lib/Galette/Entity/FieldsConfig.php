@@ -37,6 +37,7 @@
 
 namespace Galette\Entity;
 
+use ArrayObject;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 use Galette\Core\Db;
@@ -79,15 +80,14 @@ class FieldsConfig
     const TYPE_RADIO = 10;
     const TYPE_SELECT = 11;
 
-    private $zdb;
-    private $all_required = array();
-    private $all_visibles = array();
-    //private $error = array();
-    private $categorized_fields = array();
-    private $listed_fields = array();
-    private $table;
-    private $defaults = null;
-    private $cats_defaults = null;
+    protected $zdb;
+    protected $core_db_fields;
+    protected $all_required = array();
+    protected $all_visibles = array();
+    protected $categorized_fields = array();
+    protected $table;
+    protected $defaults = null;
+    protected $cats_defaults = null;
 
     private $staff_fields = array(
         'activite_adh',
@@ -174,43 +174,58 @@ class FieldsConfig
 
             $results = $this->zdb->execute($select);
 
-            $this->categorized_fields = null;
-            $this->listed_fields = null;
             foreach ($results as $k) {
-                if ($k->field_id === 'parent_id') {
-                    $k->readonly = true;
-                    $k->required = false;
-                }
-                $f = array(
-                    'field_id'  => $k->field_id,
-                    'label'     => $this->defaults[$k->field_id]['label'],
-                    'category'  => (int)$k->id_field_category,
-                    'visible'   => (int)$k->visible,
-                    'required'  => (boolean)$k->required,
-                    'propname'  => $this->defaults[$k->field_id]['propname'],
-                    'disabled'  => false
-                );
-                $this->categorized_fields[$k->id_field_category][] = $f;
-                if ($k->list_visible) {
-                    $this->listed_fields[$k->list_position] = $f;
-                }
-
-                //array of all required fields
-                if ($k->required == 1) {
-                    $this->all_required[$k->field_id] = (boolean)$k->required;
-                }
-
-                //array of all fields visibility
-                $this->all_visibles[$k->field_id] = (int)$k->visible;
+                $this->buildLists($k);
             }
             return true;
         } catch (\Exception $e) {
+            throw $e;
             Analog::log(
                 'Fields configuration cannot be loaded!',
                 Analog::URGENT
             );
             return false;
         }
+    }
+
+    /**
+     * Create field array configuration,
+     * Several lists of fields are kept (visible, requireds, etc), build them.
+     *
+     * @param ResultSet $rset Field DB result
+     *
+     * @return array
+     */
+    protected function buildLists(ArrayObject $rset) :array
+    {
+        if ($rset->field_id === 'parent_id') {
+            $rset->readonly = true;
+            $rset->required = false;
+        }
+        $f = array(
+            'field_id'  => $rset->field_id,
+            'label'     => $this->defaults[$rset->field_id]['label'],
+            'category'  => (int)$rset->id_field_category,
+            'visible'   => (int)$rset->visible,
+            'required'  => (boolean)$rset->required,
+            'propname'  => $this->defaults[$rset->field_id]['propname'],
+            'disabled'  => false
+        );
+
+        if ($rset->position >= 0) {
+            $this->categorized_fields[$rset->id_field_category][] = $f;
+        }
+        $this->core_db_fields[$rset->field_id] = $f;
+
+        //array of all required fields
+        if ($rset->required == 1) {
+            $this->all_required[$rset->field_id] = (boolean)$rset->required;
+        }
+
+        //array of all fields visibility
+        $this->all_visibles[$rset->field_id] = (int)$rset->visible;
+
+        return $f;
     }
 
     /**
@@ -262,18 +277,11 @@ class FieldsConfig
 
         try {
             $_all_fields = array();
-            if (is_array($this->categorized_fields)) {
+            if (count($this->core_db_fields)) {
                 array_walk(
-                    $this->categorized_fields,
-                    function ($cat) use (&$_all_fields) {
-                        $field = null;
-                        array_walk(
-                            $cat,
-                            function ($f) use (&$field) {
-                                $field[$f['field_id']] = $f;
-                            }
-                        );
-                        $_all_fields = array_merge($_all_fields, $field);
+                    $this->core_db_fields,
+                    function ($field) use (&$_all_fields) {
+                        $_all_fields[$field['field_id']] = $field;
                     }
                 );
             } else {
@@ -884,7 +892,7 @@ class FieldsConfig
                     FieldsCategories::PK    => $d['category'],
                     'position'              => $d['position'],
                     'list_visible'          => $d['list_visible'],
-                    'list_position'         => $d['list_position']
+                    'list_position'         => $d['list_position'] ?? -1
                 )
             );
         }
