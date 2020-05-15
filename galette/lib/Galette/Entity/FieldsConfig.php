@@ -312,14 +312,10 @@ class FieldsConfig
                             'Missing field configuration for field `' . $k . '`',
                             Analog::INFO
                         );
-                        $required = $f['required'];
-                        if ($required === false) {
-                            $required = $this->zdb->isPostgres() ? 'false' : 0;
-                        }
                         $params[] = array(
                             'field_id'      => $k,
                             'table_name'    => $this->table,
-                            'required'      => $required,
+                            'required'      => $f['required'],
                             'visible'       => $f['visible'],
                             'position'      => $f['position'],
                             'category'      => $f['category'],
@@ -369,19 +365,15 @@ class FieldsConfig
             $fields = array_keys($this->defaults);
             foreach ($fields as $f) {
                 //build default config for each field
-                $required = $this->defaults[$f]['required'];
-                if ($required === false) {
-                    $required = $this->zdb->isPostgres() ? 'false' : 0;
-                }
                 $params[] = array(
                     'field_id'      => $f,
                     'table_name'    => $this->table,
-                    'required'      => $required,
+                    'required'      => $this->defaults[$f]['required'],
                     'visible'       => $this->defaults[$f]['visible'],
                     'position'      => $this->defaults[$f]['position'],
                     'category'      => $this->defaults[$f]['category'],
                     'list_visible'  => $this->defaults[$f]['list_visible'] ?? false,
-                    'list_position' => $this->defaults[$f]['list_position'] ?? false
+                    'list_position' => $this->defaults[$f]['list_position'] ?? -1
                 );
             }
             $this->insert($params);
@@ -728,18 +720,26 @@ class FieldsConfig
                     if (in_array($field['field_id'], $this->non_required)) {
                         $field['required'] = $this->zdb->isPostgres() ? 'false' : 0;
                     }
+
+                    $list_visible = $field['list_visible'] ?? false;
+                    if ($list_visible === false) {
+                        $list_visible = $this->zdb->isPostgres() ? 'false' : 0;
+                    }
+
                     if ($field['field_id'] === 'parent_id') {
                         $field['visible'] = 0;
                     }
+
                     $params = array(
                         'required'              => $field['required'],
                         'visible'               => $field['visible'],
                         'position'              => $pos,
                         FieldsCategories::PK    => $field['category'],
-                        'list_visible'          => $field['list_visible'],
-                        'list_position'         => $field['list_position'],
+                        'list_visible'          => $list_visible,
+                        'list_position'         => $field['list_position'] ?? -1,
                         'where1'                => $field['field_id']
                     );
+
                     $stmt->execute($params);
                 }
             }
@@ -883,15 +883,25 @@ class FieldsConfig
         );
         $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
         foreach ($values as $d) {
+            $required = $d['required'];
+            if ($required === false) {
+                $required = $this->zdb->isPostgres() ? 'false' : 0;
+            }
+
+            $list_visible = $f['list_visible'] ?? false;
+            if ($list_visible === false) {
+                $list_visible = $this->zdb->isPostgres() ? 'false' : 0;
+            }
+
             $stmt->execute(
                 array(
                     'field_id'              => $d['field_id'],
                     'table_name'            => $d['table_name'],
-                    'required'              => $d['required'],
+                    'required'              => $required,
                     'visible'               => $d['visible'],
                     FieldsCategories::PK    => $d['category'],
                     'position'              => $d['position'],
-                    'list_visible'          => $d['list_visible'],
+                    'list_visible'          => $list_visible,
                     'list_position'         => $d['list_position'] ?? -1
                 )
             );
