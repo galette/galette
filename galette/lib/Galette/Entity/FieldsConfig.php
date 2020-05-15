@@ -81,7 +81,7 @@ class FieldsConfig
     const TYPE_SELECT = 11;
 
     protected $zdb;
-    protected $core_db_fields;
+    protected $core_db_fields = array();
     protected $all_required = array();
     protected $all_visibles = array();
     protected $categorized_fields = array();

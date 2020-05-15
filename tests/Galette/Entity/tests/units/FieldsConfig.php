@@ -151,7 +151,8 @@ class FieldsConfig extends atoum
 
         $visibles = $fields_config->getVisibilities();
         $this->array($visibles)
-            ->hasSize(count($categorized[1]) + count($categorized[2]) + count($categorized[3]))
+            //+ 2 to take care of fields present in config but not in form
+            ->hasSize(count($categorized[1]) + count($categorized[2]) + count($categorized[3]) + 2)
             ->integer['id_adh']->isIdenticalTo(0)
             ->integer['nom_adh']->isIdenticalTo(1);
     }
