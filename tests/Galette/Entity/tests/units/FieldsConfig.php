@@ -306,7 +306,9 @@ class FieldsConfig extends atoum
         $fields_config->load();
 
         $categorized = $fields_config->getCategorizedFields();
-        $this->integer(count($categorized[1]))->isIdenticalTo(12);
+        $this->integer(
+            count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY])
+        )->isIdenticalTo(12);
 
         //new object instanciation should add missing field back
         $fields_config = new \Galette\Entity\FieldsConfig(

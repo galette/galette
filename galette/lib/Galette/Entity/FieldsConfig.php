@@ -172,6 +172,7 @@ class FieldsConfig
                 ->where(array('table_name' => $this->table))
                 ->order(array(FieldsCategories::PK, 'position ASC'));
 
+            $this->categorized_fields = [];
             $results = $this->zdb->execute($select);
 
             foreach ($results as $k) {
