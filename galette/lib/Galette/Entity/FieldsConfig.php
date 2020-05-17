@@ -172,12 +172,15 @@ class FieldsConfig
                 ->where(array('table_name' => $this->table))
                 ->order(array(FieldsCategories::PK, 'position ASC'));
 
-            $this->categorized_fields = [];
             $results = $this->zdb->execute($select);
+            $this->core_db_fields = [];
 
             foreach ($results as $k) {
-                $this->buildLists($k);
+                $field = $this->buildField($k);
+                $this->core_db_fields[$k->field_id] = $field;
             }
+
+            $this->buildLists();
             return true;
         } catch (\Exception $e) {
             throw $e;
@@ -190,19 +193,31 @@ class FieldsConfig
     }
 
     /**
-     * Create field array configuration,
-     * Several lists of fields are kept (visible, requireds, etc), build them.
+     * Prepare a field (required data, automation)
      *
-     * @param ResultSet $rset Field DB result
+     * @param ArrayObject $rset DB ResultSet row
      *
-     * @return array
+     * @return ArrayObject
      */
-    protected function buildLists(ArrayObject $rset) :array
+    protected function prepareField(ArrayObject $rset) :ArrayObject
     {
         if ($rset->field_id === 'parent_id') {
             $rset->readonly = true;
             $rset->required = false;
         }
+        return $rset;
+    }
+
+    /**
+     * Prepare a field (required data, automation)
+     *
+     * @param ArrayObject $rset DB ResultSet row
+     *
+     * @return array
+     */
+    protected function buildField(ArrayObject $rset) :array
+    {
+        $rset = $this->prepareField($rset);
         $f = array(
             'field_id'  => $rset->field_id,
             'label'     => $this->defaults[$rset->field_id]['label'],
@@ -210,23 +225,50 @@ class FieldsConfig
             'visible'   => (int)$rset->visible,
             'required'  => (boolean)$rset->required,
             'propname'  => $this->defaults[$rset->field_id]['propname'],
+            'position'  =>(int)$rset->position,
             'disabled'  => false
         );
+        return $f;
+    }
 
-        if ($rset->position >= 0) {
-            $this->categorized_fields[$rset->id_field_category][] = $f;
+    /**
+     * Create field array configuration,
+     * Several lists of fields are kept (visible, requireds, etc), build them.
+     *
+     * @return void
+     */
+    protected function buildLists()
+    {
+
+        $this->categorized_fields = [];
+        $this->all_required = [];
+        $this->all_visibles = [];
+
+        foreach ($this->core_db_fields as $field) {
+            $this->addToLists($field);
         }
-        $this->core_db_fields[$rset->field_id] = $f;
+    }
+
+    /**
+     * Adds a field to lists
+     *
+     * @param array $field Field values
+     *
+     * @return void
+     */
+    protected function addToLists(array $field)
+    {
+        if ($field['position'] >= 0) {
+            $this->categorized_fields[$field['category']][] = $field;
+        }
 
         //array of all required fields
-        if ($rset->required == 1) {
-            $this->all_required[$rset->field_id] = (boolean)$rset->required;
+        if ($field['required']) {
+            $this->all_required[$field['field_id']] = $field['required'];
         }
 
         //array of all fields visibility
-        $this->all_visibles[$rset->field_id] = (int)$rset->visible;
-
-        return $f;
+        $this->all_visibles[$field['field_id']] = $field['visible'];
     }
 
     /**
@@ -371,7 +413,7 @@ class FieldsConfig
                     'table_name'    => $this->table,
                     'required'      => $this->defaults[$f]['required'],
                     'visible'       => $this->defaults[$f]['visible'],
-                    'position'      => $this->defaults[$f]['position'],
+                    'position'      => (int)$this->defaults[$f]['position'],
                     'category'      => $this->defaults[$f]['category'],
                     'list_visible'  => $this->defaults[$f]['list_visible'] ?? false,
                     'list_position' => $this->defaults[$f]['list_position'] ?? -1
@@ -760,7 +802,7 @@ class FieldsConfig
             );
 
             $this->zdb->connection->commit();
-            return true;
+            return $this->load();
         } catch (\Exception $e) {
             $this->zdb->connection->rollBack();
             Analog::log(

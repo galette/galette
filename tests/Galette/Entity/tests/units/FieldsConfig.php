@@ -149,10 +149,23 @@ class FieldsConfig extends atoum
         $isrequired = $fields_config->isRequired('info_adh');
         $this->boolean($isrequired)->isFalse();
 
+        $lists_config = new \Galette\Entity\ListsConfig(
+            $this->zdb,
+            \Galette\Entity\Adherent::TABLE,
+            $this->members_fields,
+            $this->members_fields_cats,
+            true
+        );
+        $this->boolean($lists_config->load())->isTrue();
+
         $visibles = $fields_config->getVisibilities();
         $this->array($visibles)
-            //+ 2 to take care of fields present in config but not in form
-            ->hasSize(count($categorized[1]) + count($categorized[2]) + count($categorized[3]) + 2)
+             ->hasSize(
+                 count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY]) +
+                 count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE]) +
+                 count($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT]) +
+                 count($lists_config->getAclMapping())
+             )
             ->integer['id_adh']->isIdenticalTo(0)
             ->integer['nom_adh']->isIdenticalTo(1);
     }
@@ -168,11 +181,11 @@ class FieldsConfig extends atoum
     {
         $this->array($categorized)
             ->hasSize(3);
-        $this->array($categorized[1])
+        $this->array($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY])
             ->hasSize(12);
-        $this->array($categorized[2])
+        $this->array($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE])
             ->hasSize(11);
-        $this->array($categorized[3])
+        $this->array($categorized[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT])
             ->hasSize(15);
     }
 
@@ -189,7 +202,8 @@ class FieldsConfig extends atoum
         $required_mdp = $fields_config->getRequired()['mdp_adh'];
         $this->boolean($required_mdp)->isTrue();
 
-        $required_mdp = $fields_config->getCategorizedFields()[2][6]['required'];
+        $cat = \Galette\Entity\FieldsCategories::ADH_CATEGORY_GALETTE;
+        $required_mdp = $fields_config->getCategorizedFields()[$cat][6]['required'];
         $this->boolean($required_mdp)->isTrue();
 
         $fields_config->setNotRequired('mdp_adh');
@@ -197,7 +211,7 @@ class FieldsConfig extends atoum
         $required_mdp = $fields_config->getRequired();
         $this->array($required_mdp)->notHasKey('mdp_adh');
 
-        $required_mdp = $fields_config->getCategorizedFields()[2][6]['required'];
+        $required_mdp = $fields_config->getCategorizedFields()[$cat][6]['required'];
         $this->boolean($required_mdp)->isFalse();
     }
 
@@ -234,7 +248,7 @@ class FieldsConfig extends atoum
         $fields = $fields_config->getCategorizedFields();
 
         //town
-        $town = &$fields[3][3];
+        $town = &$fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][3];
         $this->boolean($town['required'])->isTrue();
         $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::USER_WRITE);
 
@@ -242,21 +256,22 @@ class FieldsConfig extends atoum
         $town['visible'] = \Galette\Entity\FieldsConfig::NOBODY;
 
         //jabber
-        $jabber = $fields[3][10];
+        $jabber = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][10];
+        $jabber['position'] = count($fields[1]);
         unset($fields[3][10]);
-        $jabber['category'] = 1;
-        $fields[1][] = $jabber;
+        $jabber['category'] = \Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY;
+        $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][] = $jabber;
 
         $this->boolean($fields_config->setFields($fields))->isTrue();
 
         $fields_config->load();
         $fields = $fields_config->getCategorizedFields();
 
-        $town = $fields[3][3];
+        $town = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][3];
         $this->boolean($town['required'])->isFalse();
         $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::NOBODY);
 
-        $jabber2 = $fields[1][12];
+        $jabber2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][12];
         $this->array($jabber2)->isIdenticalTo($jabber);
     }
 

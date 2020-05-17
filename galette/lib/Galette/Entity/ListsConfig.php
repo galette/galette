@@ -76,6 +76,16 @@ class ListsConfig extends FieldsConfig
     );
 
     /**
+     * ACL mapping for list elements not present in form configuration
+     *
+     * @var array
+     */
+    private $acl_mapping = array(
+        'list_adh_name'             => 'nom_adh',
+        'list_adh_contribstatus'    => 'id_statut'
+    );
+
+    /**
      * Virtual fields for lists
      *
      * @var array
@@ -89,20 +99,35 @@ class ListsConfig extends FieldsConfig
      * Create field array configuration,
      * Several lists of fields are kept (visible, requireds, etc), build them.
      *
-     * @param ResultSet $rset Field DB result
-     *
-     * @return array
+     * @return void
      */
-    protected function buildLists(ArrayObject $rset) :array
+    protected function buildLists()
     {
-        $f = parent::buildLists($rset);
-
-        if ((bool)$rset->list_visible) {
-            $this->listed_fields[(int)$rset->list_position] = $f;
-            ksort($this->listed_fields);
+        //Specific list fields does not have rights; fix this from mapping
+        //Cannot be done preparing fields, cannot be sure of the order it is processed
+        foreach ($this->acl_mapping as $list_key => $field_key) {
+            $this->core_db_fields[$list_key]['visible'] = $this->core_db_fields[$field_key]['visible'];
         }
 
-        return $f;
+        parent::buildLists();
+        //make sure array order is the same as in the database, since query is ordered differently
+        ksort($this->listed_fields);
+    }
+
+    /**
+     * Adds a field to lists
+     *
+     * @param array $field Field values
+     *
+     * @return void
+     */
+    protected function addToLists(array $field)
+    {
+        parent::addToLists($field);
+
+        if ($field['list_visible'] ?? false) {
+            $this->listed_fields[(int)$field['list_position']] = $field;
+        }
     }
 
     /**
@@ -205,7 +230,7 @@ class ListsConfig extends FieldsConfig
      */
     public function getRemainingFields() :array
     {
-        $db_fields = $this->defaults;
+        $db_fields = $this->core_db_fields;
 
         //remove non list
         foreach ($this->non_list_elements as $todrop) {
@@ -251,18 +276,18 @@ class ListsConfig extends FieldsConfig
      */
     private function store()
     {
-        /*$class = get_class($this);
+        $class = get_class($this);
 
         try {
+            if (!count($this->listed_fields)) {
+                throw new \RuntimeException('No fields for list, aborting.');
+            }
+
             $this->zdb->connection->beginTransaction();
 
             $update = $this->zdb->update(self::TABLE);
             $update->set(
                 array(
-                    'required'              => ':required',
-                    'visible'               => ':visible',
-                    'position'              => ':position',
-                    FieldsCategories::PK    => ':category',
                     'list_visible'          => ':list_visible',
                     'list_position'         => ':list_position'
                 )
@@ -275,36 +300,30 @@ class ListsConfig extends FieldsConfig
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
             $params = null;
-            foreach ($this->categorized_fields as $cat) {
-                foreach ($cat as $pos => $field) {
-                    if (in_array($field['field_id'], $this->non_required)) {
-                        $field['required'] = $this->zdb->isPostgres() ? 'false' : 0;
-                    }
-                    if ($field['field_id'] === 'parent_id') {
-                        $field['visible'] = 0;
-                    }
-                    $params = array(
-                        'required'              => $field['required'],
-                        'visible'               => $field['visible'],
-                        'position'              => $pos,
-                        FieldsCategories::PK    => $field['category'],
-                        'list_visible'          => $field['list_visible'],
-                        'list_position'         => $field['list_position'],
-                        'where1'                => $field['field_id']
-                    );
-                    $stmt->execute($params);
-                }
+
+            foreach ($this->listed_fields as $pos => $field) {
+                $params = array(
+                    'list_visible'          => $field['list_visible'],
+                    'list_position'         => $pos,
+                    'where1'                => $field['field_id']
+                );
+                $stmt->execute($params);
             }
 
-            Analog::log(
-                '[' . $class . '] Fields configuration stored successfully! ',
-                Analog::DEBUG
-            );
+            foreach (array_keys($this->getRemainingFields()) as $field) {
+                $params = array(
+                    'list_visible'          => $this->zdb->isPostgres() ? 'false' : 0,
+                    'list_position'         => -1,
+                    'where1'                => $field
+                );
+                $stmt->execute($params);
+            }
+
             Analog::log(
                 str_replace(
                     '%s',
                     $this->table,
-                    '[' . $class . '] Fields configuration for table %s stored ' .
+                    '[' . $class . '] List configuration for table %s stored ' .
                     'successfully.'
                 ),
                 Analog::INFO
@@ -315,7 +334,7 @@ class ListsConfig extends FieldsConfig
         } catch (\Exception $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                '[' . $class . '] An error occurred while storing fields ' .
+                '[' . $class . '] An error occurred while storing list ' .
                 'configuration for table `' . $this->table . '`.' .
                 $e->getMessage(),
                 Analog::ERROR
@@ -325,6 +344,16 @@ class ListsConfig extends FieldsConfig
                 Analog::ERROR
             );
             return false;
-        }*/
+        }
+    }
+
+    /**
+     * Get ACL mapping for list elements not present in form configuration
+     *
+     * @return array
+     */
+    public function getAclMapping() :array
+    {
+        return $this->acl_mapping;
     }
 }
