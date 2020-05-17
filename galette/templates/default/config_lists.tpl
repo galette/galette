@@ -1,6 +1,6 @@
 {extends file="page.tpl"}
 {block name="content"}
-    <form action="{path_for name="configureListFields" data=["table" => $table]}" method="post" id="config_fields_form">
+    <form action="{path_for name="storeListFields" data=["table" => $table]}" method="post" id="config_fields_form">
     <div id="members_tab" class="cssform">
         <ul id="listed_fields" class="fields_list notype connectedSortable">
             <li class="listing center">

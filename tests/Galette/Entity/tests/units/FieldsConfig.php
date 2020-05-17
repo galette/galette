@@ -258,7 +258,7 @@ class FieldsConfig extends atoum
         //jabber
         $jabber = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][10];
         $jabber['position'] = count($fields[1]);
-        unset($fields[3][10]);
+        unset($fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][10]);
         $jabber['category'] = \Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY;
         $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][] = $jabber;
 

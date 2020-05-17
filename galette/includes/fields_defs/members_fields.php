@@ -363,7 +363,7 @@ $members_fields = array(
         'list_position' => 1
     ),
     'list_adh_contribstatus' => array(
-        'label'    => _T("Status"),
+        'label'    => _T("State of dues"),
         'propname' => 'contribstatus',
         'required' => false,
         'visible'  => FieldsConfig::NOBODY,

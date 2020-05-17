@@ -154,78 +154,51 @@ class ListsConfig extends FieldsConfig
      */
     public function getDisplayElements(Login $login)
     {
-        /*global $preferences;
+        global $preferences;
 
         $display_elements = [];
         $access_level = $login->getAccessLevel();
-        $categories = FieldsCategories::getList($this->zdb);
         try {
-            foreach ($categories as $c) {
-                $cpk = FieldsCategories::PK;
-                $cat_label = null;
-                foreach ($this->cats_defaults as $conf_cat) {
-                    if ($conf_cat['id'] == $c->$cpk) {
-                        $cat_label = $conf_cat['category'];
-                        break;
+            $elements = $this->listed_fields;
+
+            foreach ($elements as $elt) {
+                $o = (object)$elt;
+
+                if ($o->field_id == 'id_adh') {
+                    // ignore access control, as member ID is always needed
+                    //if (!isset($preferences) || !$preferences->pref_show_id) {
+                        $o->type = self::TYPE_STR;
+                        $display_elements[] = $o;
+                    //}
+                } else {
+                    // skip fields blacklisted for display
+                    if (in_array($o->field_id, $this->non_list_elements)) {
+                        continue;
                     }
-                }
-                if ($cat_label === null) {
-                    $cat_label = $c->category;
-                }
-                $cat = (object) array(
-                    'id'        => (int)$c->$cpk,
-                    'label'     => $cat_label,
-                    'elements'  => array()
-                );
 
-                $elements = $this->categorized_fields[$c->$cpk];
-                $cat->elements = array();
-
-                foreach ($elements as $elt) {
-                    $o = (object)$elt;
-
-                    if ($o->field_id == 'id_adh') {
-                        // ignore access control, as member ID is always needed
-                        if (!isset($preferences) || !$preferences->pref_show_id) {
-                            $hidden_elements[] = $o;
-                        } else {
-                            $o->type = self::TYPE_STR;
-                            $cat->elements[$o->field_id] = $o;
-                        }
-                    } else {
-                        // skip fields blacklisted for display
-                        if (in_array($o->field_id, $this->non_display_elements)) {
-                            continue;
-                        }
-
-                        // skip fields according to access control
-                        if ($o->visible == self::NOBODY ||
-                            ($o->visible == self::ADMIN &&
-                                $access_level < Authentication::ACCESS_ADMIN) ||
-                            ($o->visible == self::STAFF &&
-                                $access_level < Authentication::ACCESS_STAFF) ||
-                            ($o->visible == self::MANAGER &&
-                                $access_level < Authentication::ACCESS_MANAGER)
-                        ) {
-                            continue;
-                        }
-
-                        $cat->elements[$o->field_id] = $o;
+                    // skip fields according to access control
+                    if ($o->visible == self::NOBODY ||
+                        ($o->visible == self::ADMIN &&
+                            $access_level < Authentication::ACCESS_ADMIN) ||
+                        ($o->visible == self::STAFF &&
+                            $access_level < Authentication::ACCESS_STAFF) ||
+                        ($o->visible == self::MANAGER &&
+                            $access_level < Authentication::ACCESS_MANAGER)
+                    ) {
+                        continue;
                     }
-                }
-
-                if (count($cat->elements) > 0) {
-                    $display_elements[] = $cat;
+                    $display_elements[] = $o;
                 }
             }
+
             return $display_elements;
         } catch (\Exception $e) {
             Analog::log(
-                'An error occurred getting display elements',
+                'An error occurred getting list elements to display',
                 Analog::ERROR
             );
             throw $e;
-        }*/
+        }
     }
 
     /**

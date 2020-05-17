@@ -622,6 +622,11 @@ $app->get(
     GaletteController::class . ':configureListFields'
 )->setName('configureListFields')->add($authenticate);
 
+$app->post(
+    '/lists/{table}/configure',
+    GaletteController::class . ':storeListFields'
+)->setName('storeListFields')->add($authenticate);
+
 $app->get(
     '/fields/core/configure',
     GaletteController::class . ':configureCoreFields'

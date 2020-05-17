@@ -57,6 +57,14 @@ class ListsConfig extends atoum
     private $zdb;
     private $members_fields;
     private $members_fields_cats;
+    private $default_lists = [
+        'id_adh',
+        'list_adh_name',
+        'pseudo_adh',
+        'id_statut',
+        'list_adh_contribstatus',
+        'date_modif_adh'
+    ];
 
     /**
      * Set up tests
@@ -81,6 +89,33 @@ class ListsConfig extends atoum
             $this->members_fields_cats,
             true
         );
+    }
+
+    /**
+     * Tear down tests
+     *
+     * @param string $testMethod Calling method
+     *
+     * @return void
+     */
+    public function afterTestMethod($testMethod)
+    {
+        $this->resetListsConfig();
+    }
+
+    /**
+     * Resets lists configuration to defaults
+     *
+     * @return void
+     */
+    private function resetListsConfig()
+    {
+        $new_list = [];
+        foreach ($this->default_lists as $key) {
+            $new_list[] = $this->lists_config->getField($key);
+        }
+
+        $this->boolean($this->lists_config->setListFields($new_list))->isTrue();
     }
 
     /**
@@ -123,14 +158,7 @@ class ListsConfig extends atoum
         $list = $lists_config->getListedFields();
         $this->array($list)->hasSize(6);
 
-        $expecteds = [
-            'id_adh',
-            'list_adh_name',
-            'pseudo_adh',
-            'id_statut',
-            'list_adh_contribstatus',
-            'date_modif_adh'
-        ];
+        $expecteds = $this->default_lists;
         foreach ($expecteds as $k => $expected) {
             $this->string($list[$k]['field_id'])->isIdenticalTo($expected);
             $this->integer($list[$k]['list_position'])->isIdenticalTo($k);
@@ -168,7 +196,7 @@ class ListsConfig extends atoum
         $this->integer($field['list_position'])->isIdenticalTo(-1);
         $this->boolean($field['list_visible'])->isFalse();
 
-        //copied from FieldsConfig::testSetFields to ensure it works as excpeted from here.
+        // copied from FieldsConfig::testSetFields to ensure it works as excpeted from here.
         //town
         $town = &$fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][3];
         $this->boolean($town['required'])->isTrue();
@@ -180,7 +208,7 @@ class ListsConfig extends atoum
         //jabber
         $jabber = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][10];
         $jabber['position'] = count($fields[1]);
-        unset($fields[3][10]);
+        unset($fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][10]);
         $jabber['category'] = \Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY;
         $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][] = $jabber;
 
@@ -195,6 +223,7 @@ class ListsConfig extends atoum
 
         $jabber2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][12];
         $this->array($jabber2)->isIdenticalTo($jabber);
+        // /copied from FieldsConfig::testSetFields to ensure it works as excpeted from here.
     }
 
     /**
@@ -204,14 +233,108 @@ class ListsConfig extends atoum
      */
     public function testGetDisplayElements()
     {
-    }
+        $lists_config = $this->lists_config;
+        $lists_config->load();
+        $session = new \RKA\Session();
 
-    /**
-     * Test get form elements
-     *
-     * @return void
-     */
-    public function testGetFormElements()
-    {
+        //admin
+        $superadmin_login = new \mock\Galette\Core\Login(
+            $this->zdb,
+            new \Galette\Core\I18n(),
+            $session
+        );
+        $this->calling($superadmin_login)->isSuperAdmin = true;
+
+        $expecteds = $this->default_lists;
+        $elements = $lists_config->getDisplayElements($superadmin_login);
+        $this->array($elements)
+            ->hasSize(count($this->default_lists));
+
+        //admin
+        $admin_login = new \mock\Galette\Core\Login(
+            $this->zdb,
+            new \Galette\Core\I18n(),
+            $session
+        );
+        $this->calling($admin_login)->isAdmin = true;
+
+        $expecteds = $this->default_lists;
+        $elements = $lists_config->getDisplayElements($admin_login);
+        $this->array($elements)
+            ->hasSize(count($this->default_lists));
+
+        //staff
+        $staff_login = new \mock\Galette\Core\Login(
+            $this->zdb,
+            new \Galette\Core\I18n(),
+            $session
+        );
+        $this->calling($staff_login)->isStaff = true;
+
+        $expecteds = $this->default_lists;
+        $elements = $lists_config->getDisplayElements($staff_login);
+        $this->array($elements)
+             ->hasSize(count($this->default_lists));
+
+        //following tests will have lower ACLS (cannot see status)
+        $expecteds = [
+            'id_adh',
+            'list_adh_name',
+            'pseudo_adh',
+            'date_modif_adh'
+        ];
+        $new_list = [];
+        foreach ($expecteds as $key) {
+            $new_list[] = $lists_config->getField($key);
+        }
+
+
+        //group manager
+        $manager_login = new \mock\Galette\Core\Login(
+            $this->zdb,
+            new \Galette\Core\I18n(),
+            $session
+        );
+        $this->calling($manager_login)->isGroupManager = true;
+
+        $elements = $lists_config->getDisplayElements($manager_login);
+        $this->array($elements)
+            ->hasSize(count($new_list));
+
+        //to keep last know rank. May switch from 2 to 6 because of bield visibility.
+        $last_ok = -1;
+        foreach ($expecteds as $k => $expected) {
+            $this->string($new_list[$k]['field_id'])->isIdenticalTo($expected);
+            if ($new_list[$k]['list_position'] != $k-1) {
+                $this->integer($new_list[$k]['list_position'])->isGreaterThan($last_ok);
+                $last_ok = $new_list[$k]['list_position'];
+            } else {
+                $this->integer($new_list[$k]['list_position'])->isIdenticalTo($k);
+            }
+        }
+
+        //simplemember
+        $user_login = new \mock\Galette\Core\Login(
+            $this->zdb,
+            new \Galette\Core\I18n(),
+            $session
+        );
+        $this->calling($user_login)->isUp2Date = true;
+
+        $elements = $lists_config->getDisplayElements($user_login);
+        $this->array($elements)
+            ->hasSize(count($new_list));
+
+        //to keep last know rank. May switch from 2 to 6 because of bield visibility.
+        $last_ok = -1;
+        foreach ($expecteds as $k => $expected) {
+            $this->string($new_list[$k]['field_id'])->isIdenticalTo($expected);
+            if ($new_list[$k]['list_position'] != $k-1) {
+                $this->integer($new_list[$k]['list_position'])->isGreaterThan($last_ok);
+                $last_ok = $new_list[$k]['list_position'];
+            } else {
+                $this->integer($new_list[$k]['list_position'])->isIdenticalTo($k);
+            }
+        }
     }
 }
