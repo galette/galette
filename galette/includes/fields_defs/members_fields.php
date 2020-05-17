@@ -370,6 +370,6 @@ $members_fields = array(
         'position' => -1, //not a db field
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE,
         'list_visible'  => true,
-        'list_position' => 2
+        'list_position' => 4
     )
 );

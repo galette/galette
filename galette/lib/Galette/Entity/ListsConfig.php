@@ -257,12 +257,6 @@ class ListsConfig extends FieldsConfig
             unset($db_fields[$listed['field_id']]);
         }
 
-        //then add virtuals
-        /*$keys = array_merge(
-            array_keys($db_fields),
-            $this->virtual_list_elements
-        );*/
-
         $remainings = [];
         foreach ($db_fields as $key => $db_field) {
             $remainings[$key] = $db_field;
@@ -345,7 +339,7 @@ class ListsConfig extends FieldsConfig
             );
 
             $this->zdb->connection->commit();
-            return true;
+            return $this->load();
         } catch (\Exception $e) {
             $this->zdb->connection->rollBack();
             Analog::log(

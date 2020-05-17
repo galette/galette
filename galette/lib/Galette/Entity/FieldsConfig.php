@@ -1025,4 +1025,19 @@ class FieldsConfig
         }
         return $form_elements;
     }
+
+    /**
+     * Get field configuration
+     *
+     * @param string $name Field name
+     *
+     * @return array
+     */
+    public function getField($name) :array
+    {
+        if (!isset($this->core_db_fields[$name])) {
+            throw new \UnexpectedValueException("$name fied does not exists");
+        }
+        return $this->core_db_fields[$name];
+    }
 }

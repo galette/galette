@@ -121,6 +121,52 @@ class ListsConfig extends atoum
         $fields = $lists_config->getCategorizedFields();
 
         $list = $lists_config->getListedFields();
+        $this->array($list)->hasSize(6);
+
+        $expecteds = [
+            'id_adh',
+            'list_adh_name',
+            'pseudo_adh',
+            'id_statut',
+            'list_adh_contribstatus',
+            'date_modif_adh'
+        ];
+        foreach ($expecteds as $k => $expected) {
+            $this->string($list[$k]['field_id'])->isIdenticalTo($expected);
+            $this->integer($list[$k]['list_position'])->isIdenticalTo($k);
+        }
+
+        $expecteds = [
+            'id_adh',
+            'list_adh_name',
+            'email_adh',
+            'tel_adh',
+            'id_statut',
+            'list_adh_contribstatus',
+            'ville_adh'
+        ];
+
+        $new_list = [];
+        foreach ($expecteds as $key) {
+            $new_list[] = $lists_config->getField($key);
+        }
+        $this->boolean($lists_config->setListFields($new_list))->isTrue();
+
+        $list = $lists_config->getListedFields();
+        $this->array($list)->hasSize(7);
+
+        foreach ($expecteds as $k => $expected) {
+            $this->string($list[$k]['field_id'])->isIdenticalTo($expected);
+            $this->integer($list[$k]['list_position'])->isIdenticalTo($k);
+        }
+
+        $field = $lists_config->getField('pseudo_adh');
+        $this->integer($field['list_position'])->isIdenticalTo(-1);
+        $this->boolean($field['list_visible'])->isFalse();
+
+        $field = $lists_config->getField('date_modif_adh');
+        $this->integer($field['list_position'])->isIdenticalTo(-1);
+        $this->boolean($field['list_visible'])->isFalse();
 
         //copied from FieldsConfig::testSetFields to ensure it works as excpeted from here.
         //town
