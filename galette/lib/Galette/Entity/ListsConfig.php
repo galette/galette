@@ -96,6 +96,21 @@ class ListsConfig extends FieldsConfig
     );
 
     /**
+     * Prepare a field (required data, automation)
+     *
+     * @param ArrayObject $rset DB ResultSet row
+     *
+     * @return array
+     */
+    protected function buildField(ArrayObject $rset) :array
+    {
+        $f = parent::buildField($rset);
+        $f['list_position'] = (integer)$rset->list_position;
+        $f['list_visible'] = ($f['list_position'] >= 0);
+        return $f;
+    }
+
+    /**
      * Create field array configuration,
      * Several lists of fields are kept (visible, requireds, etc), build them.
      *
@@ -263,18 +278,18 @@ class ListsConfig extends FieldsConfig
      *
      * @return boolean
      */
-    public function setFields($fields)
+    public function setListFields($fields)
     {
         $this->listed_fields = $fields;
-        return $this->store();
+        return $this->storeList();
     }
 
     /**
-     * Store config in database
+     * Store list config in database
      *
      * @return boolean
      */
-    private function store()
+    private function storeList()
     {
         $class = get_class($this);
 
