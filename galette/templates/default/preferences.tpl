@@ -648,7 +648,7 @@
                             $('#testEmail').remove();
                         },
                         buttons: {
-                            {_T string="Send"}: function() {
+                            "{_T string="Send" escape="js"}": function() {
                                 $.ajax({
                                     url: _this.attr('href'),
                                     type: 'GET',
