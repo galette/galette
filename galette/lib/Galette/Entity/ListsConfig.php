@@ -86,16 +86,6 @@ class ListsConfig extends FieldsConfig
     );
 
     /**
-     * Virtual fields for lists
-     *
-     * @var array
-     */
-    private $virtual_list_elements = array(
-        'main',
-        'contributions_state'
-    );
-
-    /**
      * Prepare a field (required data, automation)
      *
      * @param ArrayObject $rset DB ResultSet row

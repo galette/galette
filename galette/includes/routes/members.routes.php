@@ -67,7 +67,7 @@ $app->get(
 
 //members list
 $app->get(
-    '/members[/{option:page|order}/{value:\d+}]',
+    '/members[/{option:page|order}/{value:\d+|\w+}]',
     Crud\MembersController::class . ':list'
 )->setName('members')->add($authenticate);
 
