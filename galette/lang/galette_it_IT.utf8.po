@@ -6,18 +6,19 @@
 # DALBARD <Verturin@live.fr>, 2018. #zanata
 # Miguel Cordas <mc@mcsi.ch>, 2019. #zanata
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
-"PO-Revision-Date: 2020-04-27 20:22+0000\n"
-"Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2020-05-18 08:13+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.0.2\n"
+"X-Generator: Weblate 4.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -1055,7 +1056,7 @@ msgstr "Tutti"
 
 #: ../lib/Galette/Core/Authentication.php:274
 msgid "Logged in as:<br/>%login"
-msgstr "Accesso eseguito come: <br/>% login"
+msgstr "Accesso eseguito come: <br/>%login"
 
 #: ../lib/Galette/Core/MailingHistory.php:575
 msgid "Delete mailing entries"
