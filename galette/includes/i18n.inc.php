@@ -300,7 +300,7 @@ function _T($string, $domain = 'galette', $nt = true)
     if (!$trans) {
         $trans = $string;
 
-        if ($nt === true) {
+        if (GALETTE_MODE == 'DEV' && $nt === true) {
             $trans .= ' (not translated)';
         }
     }
