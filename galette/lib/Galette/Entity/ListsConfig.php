@@ -153,6 +153,7 @@ class ListsConfig extends FieldsConfig
 
             foreach ($elements as $elt) {
                 $o = (object)$elt;
+                $this->handleLabel($o);
 
                 if ($o->field_id == 'id_adh') {
                     // ignore access control, as member ID is always needed
@@ -189,6 +190,40 @@ class ListsConfig extends FieldsConfig
             );
             throw $e;
         }
+    }
+
+    /**
+     * Handle list labels
+     *
+     * @param stdClass $field Field data
+     *
+     * @return stdClass
+     */
+    private function handleLabel($field)
+    {
+        switch ($field->field_id) {
+            case 'bool_admin_adh':
+                $field->label = __('Is admin');
+                break;
+            case 'date_modif_adh':
+                $field->label = _T('Modified');
+                break;
+            case 'ddn_adh':
+                //TRANS: see https://www.urbandictionary.com/define.php?term=b-day
+                $field->label = _('b-day');
+                break;
+            case 'tel_adh':
+                $field->label = _T('Phone');
+                break;
+            case 'bool_display_info':
+                $field->label = _T('Public');
+                break;
+        }
+
+        $field->label = trim(str_replace('&nbsp;', ' ', $field->label));
+        $field->label = preg_replace('/\s?:$/', '', $field->label);
+
+        return $field;
     }
 
     /**

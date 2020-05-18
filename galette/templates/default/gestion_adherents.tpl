@@ -235,6 +235,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 {assign var=value value={statusLabel id=$member->$propname}}
             {elseif $column->field_id eq 'list_adh_contribstatus'}
                 {assign var=value value=$member->getDues()}
+            {elseif $column->field_id eq 'titre_adh'}
+                {assign var=value value=$member->title->long}
             {else}
                 {assign var="lrclass" value=$rclass}
                 {assign var=value value=$member->$propname}
@@ -246,10 +248,12 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     {/foreach}
                     {draw_actions class=$rclass member=$member login=$login plugin_actions=$plugin_actions}
                 </tr>
+{foreachelse}
+                <tr><td colspan="{$galette_list|count}" class="emptylist">{_T string="No member has been found"}</td></tr>
 {/foreach}
             </tbody>
         </table>
-
+{*
         <table class="listing">
             <thead>
                 <tr>
@@ -409,6 +413,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/foreach}
             </tbody>
         </table>
+        *}
 {if $nb_members != 0}
         <div class="center cright">
             {_T string="Pages:"}<br/>
