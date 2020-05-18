@@ -106,6 +106,7 @@ if (defined('GALETTE_XHPROF_PATH')
     $profiler->start();
 }
 
+define('GALETTE_NIGHTLY', false);
 define('GALETTE_VERSION', 'v0.9.4-dev');
 
 //Version to display

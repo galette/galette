@@ -60,15 +60,17 @@ class Galette
     public static function gitVersion($time = false)
     {
         $galette_version = GALETTE_VERSION;
+
+        //used for both gith and nightly installs
+        $version = str_replace('-dev', '-git', GALETTE_VERSION);
+        if (strstr($version, '-git') === false) {
+            $version .= '-git';
+        }
+
         if (is_dir(GALETTE_ROOT.'../.git')) {
             $commitHash = trim(exec('git log --pretty="%h" -n1 HEAD'));
 
             $commitDate = new \DateTime(trim(exec('git log -n1 --pretty=%ci HEAD')));
-
-            $version = str_replace('-dev', '-git', GALETTE_VERSION);
-            if (strstr($version, '-git') === false) {
-                $version .= '-git';
-            }
 
             $galette_version = sprintf(
                 '%s-%s (%s)',
@@ -76,6 +78,8 @@ class Galette
                 $commitHash,
                 $commitDate->format(($time ? 'Y-m-d H:i:s T' : 'Y-m-d'))
             );
+        } elseif (GALETTE_NIGHTLY !== false) {
+            $galette_version = $version . '-' . GALETTE_NIGHTLY;
         }
         return $galette_version;
     }
