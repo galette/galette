@@ -934,10 +934,14 @@ class Members
                 }
                 break;
             case 'list_adh_name':
+            case 'nom_adh':
+            case 'prenom_adh':
                 //defaults
                 break;
             default:
-                $order[] = $this->filters->orderby . ' ' . $this->filters->getDirection();
+                if ($this->canOrderBy($this->filters->orderby, $fields)) {
+                    $order[] = $this->filters->orderby . ' ' . $this->filters->getDirection();
+                }
                 break;
         }
 
