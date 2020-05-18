@@ -560,7 +560,8 @@ class MembersController extends CrudController
                 'filter_groups_options' => $groups_list,
                 'nb_members'            => $members->getCount(),
                 'filters'               => $filters,
-                'adv_filters'           => $filters instanceof AdvancedMembersList
+                'adv_filters'           => $filters instanceof AdvancedMembersList,
+                'galette_list'          => $this->lists_config->getDisplayElements($this->login)
             )
         );
         return $response;

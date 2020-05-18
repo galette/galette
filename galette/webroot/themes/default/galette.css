@@ -2248,6 +2248,13 @@ label:hover > i, span.bline:hover > i {
     min-width: auto;
 }
 
+#listed_fields, #remaining_fields {
+    min-width: 39em;
+    width: 49%;
+    display: inline-block;
+    vertical-align: top;
+}
+
 #add_category{
     float:right;
 }
