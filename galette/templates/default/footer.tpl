@@ -19,7 +19,7 @@
                     </li>
                 </ul>
             </nav>
-            <a id="copyright" href="https://galette.eu/"><i class="fas fa-cookie-bite"></i> Galette {$GALETTE_VERSION}</a>
+            <a id="copyright" href="https://galette.eu/"><i class="fas fa-cookie-bite"></i> Galette {$smarty.const.GALETTE_DISPLAY_VERSION}</a>
 {if $login->isLogged() &&  ($login->isAdmin() or $login->isStaff())}
             <a id="sysinfos" href="{path_for name="sysinfos"}"><i class="fas fa-cogs"></i> {_T string="System information"}</a>
 {/if}

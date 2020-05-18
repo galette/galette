@@ -96,7 +96,11 @@ class GaletteController extends AbstractController
     public function systemInformation(Request $request, Response $response) :Response
     {
         $sysinfos = new SysInfos();
-        $sysinfos->grab();
+        $raw_infos = $sysinfos->getRawData(
+            $this->zdb,
+            $this->preferences,
+            $this->plugins
+        );
 
         // display page
         $this->view->render(
@@ -104,7 +108,7 @@ class GaletteController extends AbstractController
             'sysinfos.tpl',
             array(
                 'page_title'    => _T("System information"),
-                'rawinfos'      => $sysinfos->getRawData($this->plugins)
+                'rawinfos'      => $raw_infos
             )
         );
         return $response;
