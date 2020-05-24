@@ -41,6 +41,8 @@ use Galette\Controllers\CrudController;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Galette\Entity\Adherent;
+use Galette\Entity\Contribution;
 use Galette\Entity\Transaction;
 use Galette\Repository\Contributions;
 use Galette\Repository\Members;

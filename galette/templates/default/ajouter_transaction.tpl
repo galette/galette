@@ -55,14 +55,14 @@
                 {_T string="Attached contributions"}
                 {if $transaction->getMissingAmount() > 0}
                     <a
-                        href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?trans_id={$transaction->id}"
+                        href="{path_for name="addContribution" data=["type" => "fee"]}?trans_id={$transaction->id}"
                         class="button fright tooltip"
                     >
                         <i class="fas fa-user-check"></i>
                         <span class="sr-only">{_T string="Create a new fee that will be attached to the current transaction"}</span>
                     </a>
                     <a
-                        href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?trans_id={$transaction->id}"
+                        href="{path_for name="addContribution" data=["type" => "donation"]}?trans_id={$transaction->id}"
                         class="button fright tooltip"
                     >
                         <i class="fas fa-gift"></i>
