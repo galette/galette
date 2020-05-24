@@ -128,12 +128,6 @@ class MembersList extends Pagination
      */
     public function __get($name)
     {
-
-        Analog::log(
-            '[MembersList] Getting property `' . $name . '`',
-            Analog::DEBUG
-        );
-
         if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
         } else {
