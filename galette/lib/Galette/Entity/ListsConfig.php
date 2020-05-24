@@ -70,9 +70,7 @@ class ListsConfig extends FieldsConfig
         'mdp_adh',
         'adresse2_adh',
         'info_adh',
-        'info_public_adh',
-        'icq_adh',
-        'msn_adh'
+        'info_public_adh'
     );
 
     /**

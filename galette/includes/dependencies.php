@@ -118,6 +118,7 @@ $container['view'] = function ($c) {
     $smarty->assign('galette_lang', $c->get('i18n')->getAbbrev());
     $smarty->assign('galette_lang_name', $c->get('i18n')->getName());
     $smarty->assign('languages', $c->get('i18n')->getList());
+    $smarty->assign('i18n', $c->get('i18n'));
     $smarty->assign('plugins', $c->get('plugins'));
     $smarty->assign('preferences', $c->get('preferences'));
     $smarty->assign('pref_slogan', $c->get('preferences')->pref_slogan);

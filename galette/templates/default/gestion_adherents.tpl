@@ -224,25 +224,57 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {else}
             {assign var="lrclass" value=$rclass}
             {assign var="propname" value=$column->propname}
-            {assign var=value value=$member->$propname|htmlspecialchars}
+            {assign var=value value=$member->$propname}
+
             {if $column->field_id eq 'pseudo_adh'}
                 {assign var="lrclass" value="$rclass nowrap"}
                 {assign var=value value=$member->$propname|htmlspecialchars}
-            {elseif $column->field_id eq 'tel_adh'}
-                {assign var="lrclass" value="{$rclass} nowrap"}
+            {elseif $column->field_id eq 'tel_adh' or $column->field_id eq 'gsm_adh'}
+                {assign var="lrclass" value="$rclass nowrap"}
             {elseif $column->field_id eq 'id_statut'}
-                {assign var="lrclass" value="{$rclass} nowrap"}
+                {assign var="lrclass" value="$rclass nowrap"}
                 {assign var=value value={statusLabel id=$member->$propname}}
             {elseif $column->field_id eq 'list_adh_contribstatus'}
                 {assign var=value value=$member->getDues()}
             {elseif $column->field_id eq 'titre_adh'}
-                {assign var=value value=$member->title->long}
-            {else}
-                {assign var="lrclass" value=$rclass}
-                {assign var=value value=$member->$propname}
+                {if is_object($member->title)}
+                    {assign var=value value=$member->title->long}
+                {/if}
+            {elseif $column->field_id eq 'pref_lang'}
+                {assign var="value" value=$i18n->getNameFromId($member->language)}
+            {elseif $column->field_id eq 'adresse_adh'}
+                {assign var="value" value=$member->saddress|escape|nl2br}
+            {elseif $column->field_id eq 'bool_display_info'}
+                {assign var="value" value=$member->sappears_in_list}
+            {elseif $column->field_id eq 'activite_adh'}
+                {assign var="value" value=$member->sactive}
+            {elseif $column->field_id eq 'id_statut'}
+                {assign var="value" value=$member->sstatus}
+            {elseif $column->field_id eq 'bool_admin_adh'}
+                {assign var="value" value=$member->sadmin}
+            {elseif $column->field_id eq 'bool_exempt_adh'}
+                {assign var="value" value=$member->sdue_free}
+            {elseif $column->field_id eq 'sexe_adh'}
+                {assign var="value" value=$member->sgender}
             {/if}
                     <td class="{$lrclass}" data-title="{$column->label}">
-                        {$value}
+            {* Display column.
+                A check is done here to adapt display, this is may not the best way to go
+                but for notw, that works as excpected.
+            *}
+            {if not empty($value)}
+                {if $column->field_id eq 'email_adh' or $column->field_id eq 'msn_adh'}
+                                <a href="mailto:{$value}">{$value}</a>
+                {elseif $column->field_id eq 'tel_adh' or $column->field_id eq 'gsm_adh'}
+                                <a href="tel:{$value}">{$value}</a>
+                {elseif $column->field_id eq 'url_adh'}
+                                <a href="{$value}">{$value}</a>
+                {elseif $column->field_id eq 'ddn_adh'}
+                                {$value} {$member->getAge()}
+                {else}
+                                {$value}
+                {/if}
+            {/if}
                     </td>
         {/if}
     {/foreach}
