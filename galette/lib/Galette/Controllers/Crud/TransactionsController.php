@@ -289,8 +289,7 @@ class TransactionsController extends ContributionsController
         if (count($error_detected) == 0) {
             if ($trans->getMissingAmount() > 0) {
                 $rparams = [
-                    'action'    => 'add',
-                    'type'      => $post['contrib_type']
+                    'type' => $post['contrib_type']
                 ];
 
                 if (isset($trans->member)) {
@@ -302,7 +301,7 @@ class TransactionsController extends ContributionsController
                     ->withHeader(
                         'Location',
                         $this->router->pathFor(
-                            'contribution',
+                            'addContribution',
                             $rparams
                         ) . '?' . Transaction::PK . '=' . $trans->id .
                             '&' . Adherent::PK . '=' . $trans->member
