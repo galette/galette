@@ -44,11 +44,9 @@
             <label for="attach"><i class="fas fa-link"></i> {_T string="Attach member"}<label>
             <span id="parent_id_elt" class="sr-only">
                 <select name="parent_id" id="parent_id" class="nochosen">
-                    {if $adh_selected eq 0}
                     <option value="">{_T string="-- select a name --"}</option>
-                    {/if}
                     {foreach $members.list as $k=>$v}
-                        <option value="{$k}"{if $contribution->member == $k} selected="selected"{/if}>{$v}</option>
+                        <option value="{$k}">{$v}</option>
                     {/foreach}
                 </select>
             </span>

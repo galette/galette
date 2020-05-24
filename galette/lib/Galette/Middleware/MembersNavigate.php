@@ -92,6 +92,11 @@ class MembersNavigate
         $route = $request->getAttribute('route');
         $args = $route->getArguments();
 
+        if (!isset($args['id'])) {
+            //not viewing an exiting member
+            return $next($request, $response);
+        }
+
         if (isset($this->session->filter_members)) {
             $filters =  $this->session->filter_members;
         } else {

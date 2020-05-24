@@ -89,7 +89,7 @@
             {if !is_array($values) || $values|@count === 0}
                 {$field_data = ['field_val' => '']}
                 {if (is_array($values))}
-                    {assign var="current_count" value=$values@count}
+                    {assign var="current_count" value=$values|@count}
                 {else}
                     {assign var="current_count" value=0}
                 {/if}
@@ -101,7 +101,7 @@
         <p class="exemple" id="repeat_msg">{_T string="Enter as many occurences you want."}</p>
                 {elseif !is_array($values) || $values|@count < $field->getRepeat() || $values|@count === 0}
                     {if (is_array($values))}
-                        {assign var="current_count" value=$values@count}
+                        {assign var="current_count" value=$values|@count}
                     {else}
                         {assign var="current_count" value=1}
                     {/if}

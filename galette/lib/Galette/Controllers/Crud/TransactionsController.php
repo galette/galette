@@ -89,6 +89,7 @@ class TransactionsController extends ContributionsController
      */
     public function doAdd(Request $request, Response $response, array $args = []) :Response
     {
+        return $this->doEdit($request, $response, $args);
     }
 
     // /CRUD - Create

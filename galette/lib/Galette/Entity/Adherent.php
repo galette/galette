@@ -1540,10 +1540,6 @@ class Adherent
         );
 
         if (in_array($name, $forbidden)) {
-            Analog::log(
-                "Call to __get for '$name' is forbidden!",
-                Analog::WARNING
-            );
             switch ($name) {
                 case 'admin':
                     return $this->isAdmin();

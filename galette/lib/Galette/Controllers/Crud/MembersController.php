@@ -1191,7 +1191,7 @@ class MembersController extends CrudController
                 'fieldsets'         => $form_elements['fieldsets'],
                 'hidden_elements'   => $form_elements['hiddens'],
                 'parent_fields'     => $tpl_parent_fields
-            )
+            ) + $route_params
         );
         return $response;
     }
@@ -1947,11 +1947,8 @@ class MembersController extends CrudController
                     }
                 } elseif (!isset($post['id_adh']) && !$member->isDueFree()) {
                     $redirect_url = $this->router->pathFor(
-                        'contribution',
-                        [
-                            'type'      => 'fee',
-                            'action'    => 'add',
-                        ]
+                        'addContribution',
+                        ['type' => 'fee']
                     ) . '?id_adh=' . $member->id;
                 } else {
                     $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
