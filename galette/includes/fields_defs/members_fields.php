@@ -45,7 +45,9 @@ $members_fields = array(
         'required' => false,
         'visible'  => FieldsConfig::NOBODY,
         'position' => 0,
-        'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
+        'category' => FieldsCategories::ADH_CATEGORY_IDENTITY,
+        'list_visible'  => true,
+        'list_position' => 0
     ),
     'id_statut' => array(
         'label'    => _T("Status:"),
@@ -53,7 +55,9 @@ $members_fields = array(
         'required' => false,
         'visible'  => FieldsConfig::STAFF,
         'position' => 27,
-        'category' => FieldsCategories::ADH_CATEGORY_GALETTE
+        'category' => FieldsCategories::ADH_CATEGORY_GALETTE,
+        'list_visible'  => true,
+        'list_position' => 3
     ),
     'nom_adh' => array(
         'label'    => _T("Name:"),
@@ -85,7 +89,9 @@ $members_fields = array(
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 6,
-        'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
+        'category' => FieldsCategories::ADH_CATEGORY_IDENTITY,
+        'list_visible'  => true,
+        'list_position' => 2
     ),
     'titre_adh' => array(
         'label'    => _T("Title:"),
@@ -262,7 +268,9 @@ $members_fields = array(
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 35,
-        'category' => FieldsCategories::ADH_CATEGORY_GALETTE
+        'category' => FieldsCategories::ADH_CATEGORY_GALETTE,
+        'list_visible'  => true,
+        'list_position' => 5
     ),
     'activite_adh' => array(
         'label'    => _T("Account:"),
@@ -343,5 +351,25 @@ $members_fields = array(
         'visible'  => FieldsConfig::NOBODY,
         'position' => 25,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
+    ),
+    'list_adh_name' => array(
+        'label'    => _T("Name"),
+        'propname' => 'sname',
+        'required' => false,
+        'visible'  => FieldsConfig::NOBODY,
+        'position' => -1, //not a db field
+        'category' => FieldsCategories::ADH_CATEGORY_GALETTE,
+        'list_visible'  => true,
+        'list_position' => 1
+    ),
+    'list_adh_contribstatus' => array(
+        'label'    => _T("State of dues"),
+        'propname' => 'contribstatus',
+        'required' => false,
+        'visible'  => FieldsConfig::NOBODY,
+        'position' => -1, //not a db field
+        'category' => FieldsCategories::ADH_CATEGORY_GALETTE,
+        'list_visible'  => true,
+        'list_position' => 4
     )
 );

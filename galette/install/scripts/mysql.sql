@@ -215,6 +215,8 @@ CREATE TABLE galette_fields_config (
   visible tinyint(1) NOT NULL,
   position int(2) NOT NULL,
   id_field_category int(2) NOT NULL,
+  list_visible tinyint(1) NOT NULL,
+  list_position int(2) NOT NULL,
   PRIMARY KEY (table_name, field_id),
   FOREIGN KEY (id_field_category) REFERENCES galette_fields_categories (id_field_category) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

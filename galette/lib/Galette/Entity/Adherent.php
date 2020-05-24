@@ -1536,7 +1536,7 @@ class Adherent
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
             'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass', 'saddress',
-            'rbirthdate'
+            'rbirthdate', 'sgender'
         );
 
         if (in_array($name, $forbidden)) {
@@ -1606,6 +1606,16 @@ class Adherent
                         break;
                     case 'rbirthdate':
                         return $this->_birthdate;
+                        break;
+                    case 'sgender':
+                        switch ($this->gender) {
+                            case self::MAN:
+                                return _T('Man');
+                            case self::WOMAN:
+                                return _T('Woman');
+                            default:
+                                return __('Unspecified');
+                        }
                         break;
                 }
             } else {

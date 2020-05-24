@@ -118,6 +118,7 @@ $container['view'] = function ($c) {
     $smarty->assign('galette_lang', $c->get('i18n')->getAbbrev());
     $smarty->assign('galette_lang_name', $c->get('i18n')->getName());
     $smarty->assign('languages', $c->get('i18n')->getList());
+    $smarty->assign('i18n', $c->get('i18n'));
     $smarty->assign('plugins', $c->get('plugins'));
     $smarty->assign('preferences', $c->get('preferences'));
     $smarty->assign('pref_slogan', $c->get('preferences')->pref_slogan);
@@ -531,6 +532,16 @@ $container['logger'] = function ($c) {
 
 $container['fields_config'] = function ($c) {
     $fc = new Galette\Entity\FieldsConfig(
+        $c->get('zdb'),
+        Galette\Entity\Adherent::TABLE,
+        $c->get('members_fields'),
+        $c->get('members_fields_cats')
+    );
+    return $fc;
+};
+
+$container['lists_config'] = function ($c) {
+    $fc = new Galette\Entity\ListsConfig(
         $c->get('zdb'),
         Galette\Entity\Adherent::TABLE,
         $c->get('members_fields'),

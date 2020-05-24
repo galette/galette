@@ -43,6 +43,7 @@ use Galette\Entity\DynamicFieldsHandle;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Predicate\PredicateSet;
 use Laminas\Db\Sql\Predicate\Operator;
 use Galette\Entity\Adherent;
@@ -270,6 +271,7 @@ class Members
                 'Cannot list members | ' . $e->getMessage(),
                 Analog::WARNING
             );
+            throw $e;
         }
     }
 
@@ -484,12 +486,6 @@ class Members
                 $with_photos
             );
 
-            if ($this->filters) {
-                $select->order($this->buildOrderClause(null));
-            }
-
-            $this->proceedCount($select);
-
             $this->filters->setLimits($select);
 
             $results = $zdb->execute($select);
@@ -602,7 +598,7 @@ class Members
      *
      * @return Select SELECT statement
      */
-    private function buildSelect($mode, $fields, $photos, $count = false)
+    private function buildSelect($mode, $fields, $photos, $count = false) :Select
     {
         global $zdb, $login;
 
@@ -778,7 +774,6 @@ class Members
                 if ($this->filters !== false) {
                     $this->buildWhereClause($select);
                 }
-                $select->order($this->buildOrderClause($fields));
             } elseif ($mode == self::SHOW_PUBLIC_LIST) {
                 $select->where(
                     array(
@@ -827,13 +822,15 @@ class Members
                 $this->proceedCount($select);
             }
 
+            $this->buildOrderClause($select/*, $fields*/);
+
             return $select;
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot build SELECT clause for members | ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -844,7 +841,7 @@ class Members
      *
      * @return void
      */
-    private function proceedCount($select)
+    private function proceedCount(Select $select)
     {
         global $zdb;
 
@@ -895,12 +892,13 @@ class Members
     /**
      * Builds the order clause
      *
-     * @param array $fields Fields list to ensure ORDER clause
-     *                      references selected fields. Optionnal.
+     * @param Select $select Original select
+     * @param array  $fields Fields list to ensure ORDER clause
+     *                       references selected fields. Optionnal.
      *
-     * @return string SQL ORDER clause
+     * @return Select
      */
-    private function buildOrderClause($fields = null)
+    private function buildOrderClause(Select $select, $fields = null) :Select
     {
         $order = array();
 
@@ -920,6 +918,7 @@ class Members
                     $order[] = 'date_modif_adh ' . $this->filters->getDirection();
                 }
                 break;
+            case 'list_adh_contribstatus':
             case self::ORDERBY_FEE_STATUS:
                 if ($this->canOrderBy('bool_exempt_adh', $fields)) {
                     $order[] = 'bool_exempt_adh ' . $this->filters->getDirection();
@@ -934,6 +933,16 @@ class Members
                     $order[] = 'id_adh ' . $this->filters->getDirection();
                 }
                 break;
+            case 'list_adh_name':
+            case 'nom_adh':
+            case 'prenom_adh':
+                //defaults
+                break;
+            default:
+                if ($this->canOrderBy($this->filters->orderby, $fields)) {
+                    $order[] = $this->filters->orderby . ' ' . $this->filters->getDirection();
+                }
+                break;
         }
 
         //anyways, we want to order by firstname, lastname
@@ -943,7 +952,9 @@ class Members
         if ($this->canOrderBy('prenom_adh', $fields)) {
             $order[] = 'prenom_adh ' . $this->filters->getDirection();
         }
-        return $order;
+
+        $select->order($order);
+        return $select;
     }
 
     /**
@@ -958,7 +969,7 @@ class Members
     private function canOrderBy($field_name, $fields)
     {
         if (!is_array($fields)) {
-            return true;
+            return false;
         } elseif (in_array($field_name, $fields)) {
             return true;
         } else {
@@ -976,9 +987,9 @@ class Members
      *
      * @param Select $select Original select
      *
-     * @return string SQL WHERE clause
+     * @return void
      */
-    private function buildWhereClause($select)
+    private function buildWhereClause(Select $select)
     {
         global $zdb, $login;
 
@@ -1576,11 +1587,14 @@ class Members
                     }
                 }
             }
+
+            return $select;
         } catch (\Exception $e) {
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
             );
+            throw $e;
         }
     }
 

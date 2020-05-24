@@ -570,6 +570,76 @@ class GaletteController extends AbstractController
     }
 
     /**
+     * Core lists configuration page
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function configureListFields(Request $request, Response $response, array $args = []) :Response
+    {
+        $table = $args['table'];
+        //TODO: check if type table exists
+
+        $lc = $this->lists_config;
+
+        $params = [
+            'page_title'    => _T("Lists configuration"),
+            'table'         => $table,
+            'time'          => time(),
+            'listed_fields' => $lc->getListedFields(),
+            'remaining_fields'  => $lc->getRemainingFields()
+        ];
+
+        // display page
+        $this->view->render(
+            $response,
+            'config_lists.tpl',
+            $params
+        );
+        return $response;
+    }
+
+    /**
+     * Process list fields configuration
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments
+     *
+     * @return Response
+     */
+    public function storeListFields(Request $request, Response $response, array $args = []) :Response
+    {
+        $post = $request->getParsedBody();
+
+        $lc = $this->lists_config;
+        $fields = [];
+        foreach ($post['fields'] as $field) {
+            $fields[] = $lc->getField($field);
+        }
+        $success = $lc->setListFields($fields);
+
+        if ($success === true) {
+            $this->flash->addMessage(
+                'success_detected',
+                _T("List configuration has been successfully stored")
+            );
+        } else {
+            $this->flash->addMessage(
+                'error_detected',
+                _T("An error occurred while storing list configuration :(")
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('configureListFields', $args));
+    }
+
+    /**
      * Fake data page
      *
      * @param Request  $request  PSR Request
