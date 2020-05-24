@@ -8,7 +8,7 @@
                 <label for="sel_lang">{_T string="Language:"}</label>
                 <select name="sel_lang" id="sel_lang" class="lang">
                     {foreach item=langue from=$langlist}
-                        <option value="{$langue->getID()}" {if $cur_lang eq $langue->getID()}selected="selected"{/if} style="background-image: url({base_url|cat:'/'|cat:$langue->getFlag()});">{$langue->getName()}</option>
+                        <option value="{$langue->getID()}" {if $cur_lang eq $langue->getID()}selected="selected"{/if}>{$langue->getName()}</option>
                     {/foreach}
                 </select>
 
@@ -56,15 +56,21 @@
                 </tr>
                 <tr>
                     <th><tt>{ldelim}ASSO_NAME{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation name"}</td>
-                    <th class="back"><tt>{ldelim}ASSO_SLOGAN{rdelim}</tt></th>
-                    <td class="back">{_T string="Your organisation slogan"}</td>
+                    <td>{_T string="Your organisation name"}</td>
+                    <th><tt>{ldelim}ASSO_SLOGAN{rdelim}</tt></th>
+                    <td>{_T string="Your organisation slogan"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}LOGIN_URI{rdelim}</tt></th>
-                    <td class="back">{_T string="Galette's login URI"}</td>
+                    <td>{_T string="Galette's login URI"}</td>
                     <th></th>
                     <td></td>
+                </tr>
+                <tr>
+                    <th><tt>{ldelim}BR{rdelim}</tt></th>
+                    <td>{_T string="Insert a carriage return"}</td>
+                    <th><tt>{ldelim}NEWLINE{rdelim}</tt></th>
+                    <td>{_T string="Insert a new blank line"}</td>
                 </tr>
                 <tr>
                     <th colspan="4">
@@ -73,21 +79,21 @@
                 </tr>
                 <tr>
                     <th><tt>{ldelim}NAME_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's first and last name"}</td>
-                    <th class="back"><tt>{ldelim}MAIL_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's email address"}</td>
+                    <td>{_T string="Member's first and last name"}</td>
+                    <th><tt>{ldelim}MAIL_ADH{rdelim}</tt></th>
+                    <td>{_T string="Member's email address"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}LASTNAME_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's last name"}</td>
+                    <td>{_T string="Member's last name"}</td>
                     <th><tt>{ldelim}FIRSTNAME_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's first name"}</td>
+                    <td>{_T string="Member's first name"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}ID_ADH{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's ID"}</td>
+                    <td>{_T string="Member's ID"}</td>
                     <th><tt>{ldelim}LOGIN{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's login"}></td>
+                    <td>{_T string="Member's login"}></td>
                 </tr>
                 <tr>
                     <th colspan="4">
@@ -96,9 +102,9 @@
                 </tr>
                 <tr>
                     <th><tt>{ldelim}CHG_PWD_URI{rdelim}</tt></th>
-                    <td class="back">{_T string="Galette's change password URI"}</td>
+                    <td>{_T string="Galette's change password URI"}</td>
                     <th><tt>{ldelim}LINK_VALIDITY{rdelim}</tt></th>
-                    <td class="back">{_T string="Link validity"}</td>
+                    <td>{_T string="Link validity"}</td>
                 </tr>
                 <tr>
                     <th colspan="4">
@@ -107,15 +113,21 @@
                 </tr>
                 <tr>
                     <th><tt>{ldelim}DEADLINE{rdelim}</tt></th>
-                    <td class="back">{_T string="Member's deadline"}</td>
+                    <td>{_T string="Member's deadline"}</td>
                     <th><tt>{ldelim}CONTRIB_INFO{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution informations"}</td>
+                    <td>{_T string="Contribution information"}</td>
                 </tr>
                 <tr>
                     <th><tt>{ldelim}CONTRIB_AMOUNT{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution amount"}</td>
+                    <td>{_T string="Contribution amount"}</td>
                     <th><tt>{ldelim}CONTRIB_TYPE{rdelim}</tt></th>
-                    <td class="back">{_T string="Contribution type"}</td>
+                    <td>{_T string="Contribution type"}</td>
+                </tr>
+                <tr>
+                    <th><tt>{ldelim}LINK_MEMBERCARD{rdelim}</tt></th>
+                    <td class="back">{_T string="Direct link for member card download"}</td>
+                    <th><tt>{ldelim}LINK_CONTRIBPDF{rdelim}</tt></th>
+                    <td class="back">{_T string="Direct link for invoice/receipt download"}</td>
                 </tr>
                 <tr>
                     <th colspan="4">
@@ -124,9 +136,9 @@
                 </tr>
                 <tr>
                     <th><tt>{ldelim}DAYS_REMAINING{rdelim}</tt></th>
-                    <td class="back">{_T string="Membership remaining days"}</td>
+                    <td>{_T string="Membership remaining days"}</td>
                     <th><tt>{ldelim}DAYS_EXPIRED{rdelim}</tt></th>
-                    <td class="back">{_T string="Membership expired since"}</td>
+                    <td>{_T string="Membership expired since"}</td>
                 </tr>
             </table>
         </div>

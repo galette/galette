@@ -97,6 +97,7 @@ class Members extends atoum
      */
     public function afterTestMethod($testMethod)
     {
+        $this->deleteGroups();
         $this->deleteMembers();
     }
 
@@ -132,11 +133,6 @@ class Members extends atoum
         }
 
         $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
-
-        define(
-            '_CURRENT_THEME_PATH',
-            GALETTE_THEMES_PATH . $this->preferences->pref_theme . '/'
-        );
 
         $fakedata
             ->setSeed($this->seed)
@@ -194,6 +190,25 @@ class Members extends atoum
     }
 
     /**
+     * Delete groups
+     *
+     * @return void
+     */
+    private function deleteGroups()
+    {
+        //clean groups
+        $delete = $this->zdb->delete(\Galette\Entity\Group::GROUPSUSERS_TABLE);
+        $this->zdb->execute($delete);
+
+        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
+        $delete->where->isNotNull('parent_group');
+        $this->zdb->execute($delete);
+
+        $delete = $this->zdb->delete(\Galette\Entity\Group::TABLE);
+        $this->zdb->execute($delete);
+    }
+
+    /**
      * Test getList
      *
      * @return void
@@ -215,7 +230,7 @@ class Members extends atoum
 
         //Filter on active accounts
         $filters = new \Galette\Filters\MembersList;
-        $filters->account_status_filter = \Galette\Repository\Members::ACTIVE_ACCOUNT;
+        $filters->filter_account = \Galette\Repository\Members::ACTIVE_ACCOUNT;
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
@@ -223,7 +238,7 @@ class Members extends atoum
 
         //Filter on inactive accounts
         $filters = new \Galette\Filters\MembersList;
-        $filters->account_status_filter = \Galette\Repository\Members::INACTIVE_ACCOUNT;
+        $filters->filter_account = \Galette\Repository\Members::INACTIVE_ACCOUNT;
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
@@ -262,7 +277,7 @@ class Members extends atoum
         //Get staff
         $members = new \Galette\Repository\Members();
         $list = $members->getStaffMembersList();
-        $this->integer($list->count())->isIdenticalTo(2);
+        $this->integer($list->count())->isIdenticalTo(1);
 
         //Remove 2 members
         $torm = [];
@@ -306,5 +321,135 @@ class Members extends atoum
         $this->boolean($adh->appearsInMembersList())->isTrue();
 
         $this->boolean($adh->hasPicture())->isTrue();
+    }
+
+    /**
+     * Test search on groups
+     *
+     * @return void
+     */
+    public function testGroupsSearch()
+    {
+        $members = new \Galette\Repository\Members();
+        $list = $members->getList(true);
+        $this->integer(count($list))->isIdenticalTo(10);
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('World');
+        $this->boolean($group->store())->isTrue();
+        $world = $group->getId();
+        $this->integer($world)->isGreaterThan(0);
+
+        //cannot be parent of itself
+        $this
+            ->exception(
+                function () use ($group) {
+                    $group->setParentGroup($group->getId());
+                }
+            )->hasMessage('Group `World` cannot be set as parent!');
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('Europe')->setParentGroup($world);
+        $this->boolean($group->store())->isTrue();
+        $europe = $group->getId();
+        $this->integer($europe)->isGreaterThan(0);
+        $this->boolean($group->setMembers([$list[0], $list[1]]))->isTrue();
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('Asia')->setParentGroup($world);
+        $this->boolean($group->store())->isTrue();
+        $asia = $group->getId();
+        $this->integer($asia)->isGreaterThan(0);
+        $this->boolean($group->setMembers([$list[2], $list[3]]))->isTrue();
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('Africa')->setParentGroup($world);
+        $this->boolean($group->store())->isTrue();
+        $africa = $group->getId();
+        $this->integer($africa)->isGreaterThan(0);
+        $this->boolean($group->setMembers([$list[4], $list[5]]))->isTrue();
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('America')->setParentGroup($world);
+        $this->boolean($group->store())->isTrue();
+        $america = $group->getId();
+        $this->integer($america)->isGreaterThan(0);
+        $this->boolean($group->setMembers([$list[6], $list[7]]))->isTrue();
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('Antarctica')->setParentGroup($world);
+        $this->boolean($group->store())->isTrue();
+        $antarctica = $group->getId();
+        $this->integer($america)->isGreaterThan(0);
+        $this->boolean($group->setMembers([$list[8], $list[9]]))->isTrue();
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('Activities');
+        $this->boolean($group->store())->isTrue();
+        $activities = $group->getId();
+        $this->integer($activities)->isGreaterThan(0);
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('Pony')->setParentGroup($activities);
+        $this->boolean($group->store())->isTrue();
+        $pony = $group->getId();
+        $this->integer($pony)->isGreaterThan(0);
+        //assign Members to group
+        $members = [];
+        for ($i = 0; $i < 5; ++$i) {
+            $members[] = $list[$i];
+        }
+        $this->boolean($group->setMembers($members))->isTrue();
+        $this->integer(count($group->getMembers()))->isIdenticalTo(5);
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('Swimming pool')->setParentGroup($activities);
+        $this->boolean($group->store())->isTrue();
+        $pool = $group->getId();
+        $this->integer($pool)->isGreaterThan(0);
+        //assign Members to group
+        $members = [$list[0]];
+        for ($i = 5; $i < 10; ++$i) {
+            $members[] = $list[$i];
+        }
+        $this->boolean($group->setMembers($members))->isTrue();
+        $this->integer(count($group->getMembers()))->isIdenticalTo(6);
+
+        //all groups/members are setup. try to find them now.
+        $filters = new \Galette\Filters\AdvancedMembersList;
+        $filters->groups_search_log_op = \Galette\Filters\AdvancedMembersList::OP_OR;
+        $filters->groups_search = ['idx' => 1, 'group' => $europe];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(2);
+
+        $filters->groups_search = ['idx' => 2, 'group' => $pony];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(5);
+
+        $filters->groups_search_log_op = \Galette\Filters\AdvancedMembersList::OP_AND;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(2);
+
+        //another try
+        $filters = new \Galette\Filters\AdvancedMembersList;
+        $filters->groups_search_log_op = \Galette\Filters\AdvancedMembersList::OP_OR;
+        $filters->groups_search = ['idx' => 1, 'group' => $africa];
+        $filters->groups_search = ['idx' => 2, 'group' => $pony];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(6);
+
+        $filters->groups_search_log_op = \Galette\Filters\AdvancedMembersList::OP_AND;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(1);
     }
 }

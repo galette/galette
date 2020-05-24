@@ -1,19 +1,5 @@
-Dependencies
+Installation
 ------------
 
-- Apache 2 Webserver,
-- PHP 7.1 minimum (also tested on php 7.2, and 7.3),
-- Mariadb >= 5 or Postgresql >= 9.1,
-  and its php driver,
-- php gd extension,
-- php curl extension,
-- SSL supported enabled,
-- php tidy extension (optionnal, but recommended),
-- php gettext extension (optionnal).
-
-Installation :
-_____________
-
 See online manual:
-http://galette.tuxfamily.org/documentation/fr/installation/
-
+https://doc.galette.eu/en/master/installation/

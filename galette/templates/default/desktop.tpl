@@ -1,13 +1,13 @@
 {extends file="page.tpl"}
 {block name="content"}
-    {if not $hide_telemetry}
+    {if not $hide_telemetry and not $GALETTE_MODE eq 'DEMO'}
         <section id="share">
             <header class="ui-state-default ui-state-active">
                 {_T string="Help us know about you!"}
             </header>
             <div>
                 <p>
-                    {_T string="Take a moment to share some informations with us so we can know better Galette's uses."}<br/>
+                    {_T string="Take a moment to share some information with us so we can know better Galette's uses."}<br/>
                 </p>
         {if not $telemetry_sent}
                     <a id="telemetry" href="#" title="{_T string="Send anonymous and imprecise data about your Galette instance"}">{_T string="Telemetry"}</a>

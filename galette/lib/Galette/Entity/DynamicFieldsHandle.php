@@ -38,8 +38,8 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Authentication;
@@ -199,9 +199,7 @@ class DynamicFieldsHandle
      */
     public function getValues($field)
     {
-        if (isset($this->current_values[$field])) {
-            return $this->current_values[$field];
-        } else {
+        if (!isset($this->current_values[$field])) {
             $this->current_values[$field][] = [
                 'item_id'       => '',
                 'field_form'    => $this->dynamic_fields[$field]->getForm(),
@@ -210,6 +208,7 @@ class DynamicFieldsHandle
                 'is_new'        => true
             ];
         }
+        return $this->current_values[$field];
     }
 
     /**
@@ -343,6 +342,9 @@ class DynamicFieldsHandle
                 Analog::ERROR
             );
             return false;
+        } finally {
+            unset($this->update_stmt);
+            unset($this->insert_stmt);
         }
     }
 

@@ -40,7 +40,7 @@ namespace Galette\Repository;
 use Galette\Entity\Reminder;
 use Galette\Filters\MembersList;
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 
 /**
  * Reminders
@@ -70,7 +70,7 @@ class Reminders
      *
      * @param array $selected Selected types for sending
      */
-    public function __construct($selected)
+    public function __construct($selected = null)
     {
         if (isset($selected) && is_array($selected)) {
             $this->selected = array_map('intval', $selected);
@@ -126,7 +126,7 @@ class Reminders
             );
         }
 
-        $select->group('a.id_adh')->group('r.reminder_type');
+        $select->group('a.id_adh')->group('r.reminder_type')->group('p.email_adh');
 
         $results = $zdb->execute($select);
 

@@ -58,7 +58,6 @@ class I18n
     private $longid;
     private $name;
     private $abbrev;
-    private $flag;
 
     const DEFAULT_LANG = 'fr_FR';
 
@@ -154,7 +153,6 @@ class I18n
         $this->longid   = $lang['long'];
         $this->name     = $lang['longname'];
         $this->abbrev   = $lang['shortname'];
-        $this->flag     = $lang['flag'];
     }
 
     /**
@@ -187,7 +185,7 @@ class I18n
             //$firstChar = mb_substr($string, 0, 1, $encoding);
             //$then = mb_substr($string, 1, $strlen - 1, $encoding);
             //return mb_strtoupper($firstChar, $encoding) . $then;
-            $al[$l->getID()] = ucfirst($l->getName());
+            $al[$l->getID()] = $l->getName();
         }
         return $al;
     }
@@ -210,35 +208,6 @@ class I18n
                 _T('Unknown lang (%lang)')
             );
         }
-    }
-
-    /**
-     * Gets the language flag from its ID
-     *
-     * @param string $id the language identifier
-     *
-     * @return string path to flag for specified language identifier
-     */
-    public function getFlagFromId($id)
-    {
-        $path = null;
-        if (!isset($this->langs[$id])) {
-            Analog::log(
-                str_replace(
-                    '%lang',
-                    $id,
-                    _T('Unknown lang (%lang)')
-                ),
-                Analog::INFO
-            );
-        } else {
-            if (defined('GALETTE_THEME_DIR')) {
-                $path = GALETTE_THEME_DIR . 'images/flags/' . $this->langs['id']['flag'];
-            } else {
-                $path = GALETTE_THEME . 'images/flags/' . $this->langs[$id]['flag'];
-            }
-        }
-        return $path;
     }
 
     /**
@@ -282,20 +251,6 @@ class I18n
     }
 
     /**
-     * Get current flag
-     *
-     * @return string path to the current language flag image
-     */
-    public function getFlag()
-    {
-        if (defined('GALETTE_THEME_DIR')) {
-            return GALETTE_THEME_DIR . 'images/flags/' . $this->flag;
-        } else {
-            return GALETTE_THEME . 'images/flags/' . $this->flag;
-        }
-    }
-
-    /**
      * Is a string seem to be UTF-8 one ?
      *
      * @param string $str string to analyze
@@ -318,25 +273,22 @@ class I18n
     public function guessLangs()
     {
         $dir = new \DirectoryIterator($this->path);
-        $flags_dir = GALETTE_ROOT . 'webroot/themes/default/images/flags/';
         $langs = [];
         foreach ($dir as $fileinfo) {
             if ($fileinfo->isDir() && !$fileinfo->isDot()) {
                 $lang = $fileinfo->getFilename();
                 $real_lang = str_replace('.utf8', '', $lang);
                 $parsed_lang = \Locale::parseLocale($lang);
-                $flag = (file_exists($flags_dir . $real_lang . '.svg') ?
-                    $real_lang . '.svg' :
-                    'default.svg');
 
                 $langs[$real_lang] = [
                     'long'      => $lang,
                     'shortname' => $parsed_lang['language'],
-                    'longname'  => \Locale::getDisplayLanguage(
-                        $lang,
-                        $lang
-                    ),
-                    'flag'      => $flag
+                    'longname'  => ucfirst(
+                        \Locale::getDisplayLanguage(
+                            $lang,
+                            $real_lang
+                        )
+                    )
                 ];
             }
         }

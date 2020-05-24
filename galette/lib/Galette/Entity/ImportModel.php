@@ -38,7 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\Adapter;
 
 /**
  * Import model entity
@@ -126,9 +126,10 @@ class ImportModel
                 $this->id = null;
                 $this->fields = null;
                 $this->creation_date = null;
+                return true;
             }
 
-            return $result;
+            return false;
         } catch (\Exception $e) {
             Analog::log(
                 'Unable to remove import model ' . $e->getMessage(),
@@ -225,5 +226,6 @@ class ImportModel
     public function setFields($fields)
     {
         $this->fields = $fields;
+        return $this;
     }
 }

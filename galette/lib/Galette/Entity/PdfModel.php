@@ -41,7 +41,7 @@ use Galette\Core;
 use Galette\Core\Db;
 use Galette\Repository\PdfModels;
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 
 /**
  * PDF Model

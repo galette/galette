@@ -37,7 +37,7 @@
 namespace Galette\Core;
 
 use Analog\Analog;
-use Zend\I18n\Translator\Translator as ZTranslator;
+use Laminas\I18n\Translator\Translator as ZTranslator;
 
 /**
  * Zend translator override

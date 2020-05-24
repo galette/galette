@@ -38,7 +38,7 @@
 namespace Galette\Core;
 
 use \Analog\Analog;
-use Zend\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\Adapter;
 
 /**
  * Galette installation
@@ -276,7 +276,7 @@ class Install
     }
 
     /**
-     * Set step to database informations
+     * Set step to database information
      *
      * @return void
      */
@@ -336,7 +336,7 @@ class Install
     }
 
     /**
-     * Set connection informations
+     * Set connection information
      *
      * @param string $host Database host
      * @param string $port Database port
@@ -598,7 +598,7 @@ class Install
                     "/upgrade-to-(.*)-" . $db_type . ".sql/",
                     $file,
                     $ver
-                ) ) {
+                )) {
                     if ($version === null) {
                         $sql_update_scripts[$ver[1]] = $ver[1];
                     } else {
@@ -793,7 +793,7 @@ class Install
     }
 
     /**
-     * Set step to super admin informations
+     * Set step to super admin information
      *
      * @return void
      */
@@ -803,7 +803,7 @@ class Install
     }
 
     /**
-     * Are we at super admin informations step?
+     * Are we at super admin information step?
      *
      * @return boolean
      */
@@ -813,7 +813,7 @@ class Install
     }
 
     /**
-     * Set super administrator informations
+     * Set super administrator information
      *
      * @param string $login Login
      * @param string $pass  Password
@@ -1105,8 +1105,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
                 true
             );
             //$fc = new \Galette\Entity\FieldsCategories();
-            include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
-            $texts = new \Galette\Entity\Texts($texts_fields, $preferences);
+            $texts = new \Galette\Entity\Texts($preferences);
             $titles = new \Galette\Repository\Titles();
 
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, $login);
@@ -1154,6 +1153,11 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, new Login($zdb, $i18n, new \RKA\Session()));
             $res = $models->installInit(true);
             $this->proceedReport(_T("Update models"), true);
+
+            $texts = new \Galette\Entity\Texts($preferences);
+            $res = $texts->installInit(true);
+            $this->proceedReport(_T("Mails texts"), true);
+
             return true;
         }
     }

@@ -120,14 +120,6 @@ CREATE SEQUENCE galette_import_model_id_seq
     MINVALUE 1
     CACHE 1;
 
--- Table for payment types
-DROP TABLE IF EXISTS galette_paymenttypes;
-CREATE TABLE galette_paymenttypes (
-  type_id integer DEFAULT nextval('galette_paymenttypes_id_seq'::text) NOT NULL,
-  type_name character varying(50) NOT NULL,
-  PRIMARY KEY (type_id)
-);
-
 -- sequence for payment types
 DROP SEQUENCE IF EXISTS galette_paymenttypes_id_seq;
 CREATE SEQUENCE galette_paymenttypes_id_seq
@@ -137,9 +129,42 @@ CREATE SEQUENCE galette_paymenttypes_id_seq
     MINVALUE 1
     CACHE 1;
 
+-- sequence for searches
+DROP SEQUENCE IF EXISTS galette_searches_id_seq;
+CREATE SEQUENCE galette_searches_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
+-- sequence for texts
+DROP SEQUENCE IF EXISTS galette_texts_id_seq;
+CREATE SEQUENCE galette_texts_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
+
+-- sequence for fields categories
+DROP SEQUENCE IF EXISTS galette_fields_categories_id_seq;
+CREATE SEQUENCE galette_fields_categories_id_seq
+    START 1
+    INCREMENT 1
+    MAXVALUE 2147483647
+    MINVALUE 1
+    CACHE 1;
 
 -- Schema
 -- REMINDER: Create order IS important, dependencies first !!
+DROP TABLE IF EXISTS galette_paymenttypes;
+CREATE TABLE galette_paymenttypes (
+  type_id integer DEFAULT nextval('galette_paymenttypes_id_seq'::text) NOT NULL,
+  type_name character varying(50) NOT NULL,
+  PRIMARY KEY (type_id)
+);
+
 DROP TABLE IF EXISTS galette_statuts CASCADE;
 CREATE TABLE galette_statuts (
   id_statut integer DEFAULT nextval('galette_statuts_id_seq'::text) NOT NULL,
@@ -326,6 +351,7 @@ CREATE TABLE galette_texts (
   tcomment character varying(64) NOT NULL,
   PRIMARY KEY (tid)
 );
+CREATE UNIQUE INDEX galette_texts_localizedtxt_idx ON galette_texts (tref, tlang);
 
 DROP TABLE IF EXISTS galette_fields_categories CASCADE;
 CREATE TABLE galette_fields_categories (
@@ -425,9 +451,34 @@ CREATE TABLE galette_import_model (
   PRIMARY KEY (model_id)
 );
 
+-- Table for saved searches
+DROP TABLE IF EXISTS galette_searches;
+CREATE TABLE galette_searches (
+  search_id integer DEFAULT nextval('galette_searches_id_seq'::text) NOT NULL,
+  name character varying(100) DEFAULT NULL,
+  form character varying(50) NOT NULL,
+  parameters jsonb NOT NULL,
+  parameters_sum bytea NOT NULL,
+  id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE,
+  creation_date timestamp NOT NULL,
+  PRIMARY KEY (search_id)
+);
+-- add index on table to look for existing searches
+CREATE INDEX galette_searches_idx ON galette_searches (form, parameters_sum, id_adh);
+
+-- new table for temporary links
+DROP TABLE IF EXISTS galette_tmplinks;
+CREATE TABLE galette_tmplinks (
+  hash character varying(60) NOT NULL,
+  target smallint NOT NULL,
+  id integer NOT NULL,
+  creation_date timestamp NOT NULL,
+  PRIMARY KEY (target, id)
+);
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(0.92);
+INSERT INTO galette_database (version) VALUES(0.94);

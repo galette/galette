@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use Zend\Db\Adapter\Exception as AdapterException;
+use Laminas\Db\Adapter\Exception as AdapterException;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
 use Galette\Entity\Adherent;
@@ -123,7 +123,7 @@ class Login extends Authentication
                     self::PK => $user,
                     'email_adh' => $user
                 ],
-                \Zend\Db\Sql\Predicate\PredicateSet::OP_OR
+                \Laminas\Db\Sql\Predicate\PredicateSet::OP_OR
             );
 
             $results = $this->zdb->execute($select);
@@ -193,7 +193,7 @@ class Login extends Authentication
     /**
      * Get select query without where clause
      *
-     * @return \Zend\Db\Sql\Select
+     * @return \Laminas\Db\Sql\Select
      */
     private function select()
     {
@@ -222,7 +222,7 @@ class Login extends Authentication
     /**
      * Populate object after successfull login
      *
-     * @param \ArrayObject $row User informations
+     * @param \ArrayObject $row User information
      *
      * @return void
      */

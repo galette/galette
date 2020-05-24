@@ -42,7 +42,7 @@ use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Entity\Adherent;
 use Galette\Filters\MailingsList;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 
 /**
  * Mailing features

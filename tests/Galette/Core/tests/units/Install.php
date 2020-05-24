@@ -110,20 +110,23 @@ class Install extends atoum
         );
 
         $knowns = array(
-            '0.60' => 'upgrade-to-0.60-pgsql.sql',
-            '0.61' => 'upgrade-to-0.61-pgsql.sql',
-            '0.62' => 'upgrade-to-0.62-pgsql.sql',
-            '0.63' => 'upgrade-to-0.63-pgsql.sql',
-            '0.70' => 'upgrade-to-0.70.php',
-            '0.71' => 'upgrade-to-0.71-pgsql.sql',
-            '0.74' => 'upgrade-to-0.74-pgsql.sql',
-            '0.75' => 'upgrade-to-0.75-pgsql.sql',
-            '0.76' => 'upgrade-to-0.76-pgsql.sql',
-            '0.8'  => 'upgrade-to-0.8.php',
-            '0.81' => 'upgrade-to-0.81-pgsql.sql',
-            '0.82' => 'upgrade-to-0.82-pgsql.sql',
-            '0.91' => 'upgrade-to-0.91-pgsql.sql',
-            '0.92' => 'upgrade-to-0.92-pgsql.sql'
+            '0.60'  => 'upgrade-to-0.60-pgsql.sql',
+            '0.61'  => 'upgrade-to-0.61-pgsql.sql',
+            '0.62'  => 'upgrade-to-0.62-pgsql.sql',
+            '0.63'  => 'upgrade-to-0.63-pgsql.sql',
+            '0.70'  => 'upgrade-to-0.70.php',
+            '0.71'  => 'upgrade-to-0.71-pgsql.sql',
+            '0.74'  => 'upgrade-to-0.74-pgsql.sql',
+            '0.75'  => 'upgrade-to-0.75-pgsql.sql',
+            '0.76'  => 'upgrade-to-0.76-pgsql.sql',
+            '0.8'   => 'upgrade-to-0.8.php',
+            '0.81'  => 'upgrade-to-0.81-pgsql.sql',
+            '0.82'  => 'upgrade-to-0.82-pgsql.sql',
+            '0.91'  => 'upgrade-to-0.91-pgsql.sql',
+            '0.92'  => 'upgrade-to-0.92-pgsql.sql',
+            '0.93'  => 'upgrade-to-0.93-pgsql.sql',
+            '0.931' => 'upgrade-to-0.931-pgsql.sql',
+            '0.94'  => 'upgrade-to-0.94-pgsql.sql'
         );
 
         $this->array($update_scripts)

@@ -60,7 +60,7 @@
     {/if}
 
     {* Renew telemetry *}
-    {if $renew_telemetry}
+    {if isset($renew_telemetry) && $renew_telemetry}
         {include file="telemetry.tpl" part="dialog"}
         <div id="renewbox">
             {_T string="Your telemetry data are more than one year old."}<br/>

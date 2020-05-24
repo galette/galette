@@ -61,11 +61,11 @@ use Analog\Analog;
  * @since     Available since 0.7.5dev - 2013-07-07
  */
 
-class PdfAdhesionForm
+class PdfAdhesionForm extends Pdf
 {
+    protected $zdb;
     protected $adh;
     protected $prefs;
-    protected $pdf;
     protected $filename;
     private $path;
 
@@ -78,15 +78,36 @@ class PdfAdhesionForm
      */
     public function __construct(Adherent $adh = null, Db $zdb, Preferences $prefs)
     {
-        global $login;
-
+        $this->zdb = $zdb;
         $this->adh = $adh;
         $this->prefs = $prefs;
 
-        $model = new PdfAdhesionFormModel($zdb, $prefs, PdfModel::ADHESION_FORM_MODEL);
-        Analog::log("model id: " . $model->id, Analog::DEBUG);
-        Analog::log("model title: " . $model->title, Analog::DEBUG);
+        $model = $this->getModel();
+        parent::__construct($prefs, $model);
 
+        $this->filename = $adh ?
+            __("adherent_form") . '.' . $adh->id . '.pdf' :
+            __("adherent_form") . '.pdf';
+
+        $this->Open();
+
+        $this->AddPage();
+        if ($model !== null) {
+            $this->PageHeader();
+            $this->PageBody();
+        }
+    }
+
+    /**
+     * Get model
+     *
+     * @return PdfModel
+     */
+    protected function getModel()
+    {
+        global $login;
+
+        $model = new PdfAdhesionFormModel($this->zdb, $this->prefs, PdfModel::ADHESION_FORM_MODEL);
         $dynamic_patterns = $model->extractDynamicPatterns();
 
         $model->setPatterns(
@@ -121,24 +142,24 @@ class PdfAdhesionForm
             Analog::log("adding dynamic pattern $key => {" . $pattern . "}", Analog::DEBUG);
         }
 
-        if ($adh !== null) {
-            $address = $adh->address;
-            if ($adh->address_continuation != '') {
-                $address .= '<br/>' . $adh->adress_continuation;
+        if ($this->adh !== null) {
+            $address = $this->adh->address;
+            if ($this->adh->address_continuation != '') {
+                $address .= '<br/>' . $this->adh->address_continuation;
             }
 
-            if ($adh->isMan()) {
+            if ($this->adh->isMan()) {
                 $gender = _T("Man");
-            } elseif ($adh->isWoman()) {
+            } elseif ($this->adh->isWoman()) {
                 $gender = _T("Woman");
             } else {
                 $gender = _T("Unspecified");
             }
 
-            $member_groups = $adh->groups;
+            $member_groups = $this->adh->groups;
             $main_group = _T("None");
             $group_list = _T("None");
-            if (count($member_groups) > 0) {
+            if (is_array($member_groups) && count($member_groups) > 0) {
                 $main_group = $member_groups[0]->getName();
                 $group_list = '<ul>';
                 foreach ($member_groups as $group) {
@@ -149,25 +170,25 @@ class PdfAdhesionForm
 
             $model->setReplacements(
                 array(
-                    'adh_title'         => $adh->stitle,
-                    'adh_id'            => $adh->id,
-                    'adh_name'          => $adh->sfullname,
-                    'adh_last_name'     => $adh->surname,
-                    'adh_first_name'    => $adh->name,
-                    'adh_nickname'      => $adh->nickname,
+                    'adh_title'         => $this->adh->stitle,
+                    'adh_id'            => $this->adh->id,
+                    'adh_name'          => $this->adh->sfullname,
+                    'adh_last_name'     => $this->adh->surname,
+                    'adh_first_name'    => $this->adh->name,
+                    'adh_nickname'      => $this->adh->nickname,
                     'adh_gender'        => $gender,
-                    'adh_birth_date'    => $adh->birthdate,
-                    'adh_birth_place'   => $adh->birth_place,
-                    'adh_profession'    => $adh->job,
-                    'adh_company'       => $adh->company_name,
+                    'adh_birth_date'    => $this->adh->birthdate,
+                    'adh_birth_place'   => $this->adh->birth_place,
+                    'adh_profession'    => $this->adh->job,
+                    'adh_company'       => $this->adh->company_name,
                     'adh_address'       => $address,
-                    'adh_zip'           => $adh->zipcode,
-                    'adh_town'          => $adh->town,
-                    'adh_country'       => $adh->country,
-                    'adh_phone'         => $adh->phone,
-                    'adh_mobile'        => $adh->gsm,
-                    'adh_email'         => $adh->email,
-                    'adh_login'         => $adh->login,
+                    'adh_zip'           => $this->adh->zipcode,
+                    'adh_town'          => $this->adh->town,
+                    'adh_country'       => $this->adh->country,
+                    'adh_phone'         => $this->adh->phone,
+                    'adh_mobile'        => $this->adh->gsm,
+                    'adh_email'         => $this->adh->email,
+                    'adh_login'         => $this->adh->login,
                     'adh_main_group'    => $main_group,
                     'adh_groups'        => $group_list
                 )
@@ -176,7 +197,7 @@ class PdfAdhesionForm
 
         /** the list of all dynamic fields */
         $fields =
-            new \Galette\Repository\DynamicFieldsSet($zdb, $login);
+            new \Galette\Repository\DynamicFieldsSet($this->zdb, $login);
         $dynamic_fields = $fields->getList('adh');
 
         foreach ($dynamic_patterns as $pattern) {
@@ -185,8 +206,8 @@ class PdfAdhesionForm
             if (preg_match('/^DYNFIELD_([0-9]+)_ADH$/', $pattern, $match)) {
                 /** dynamic field first value */
                 $field_id = $match[1];
-                if ($adh !== null) {
-                    $values = $adh->getDynamicFields()->getValues($field_id);
+                if ($this->adh !== null) {
+                    $values = $this->adh->getDynamicFields()->getValues($field_id);
                     $value  = $values[1];
                 }
             }
@@ -201,8 +222,8 @@ class PdfAdhesionForm
                 $field_name  = $dynamic_fields[$field_id]->getName();
                 $field_type  = $dynamic_fields[$field_id]->getType();
                 $field_value = ['field_val' => ''];
-                if ($adh !== null) {
-                    $field_values = $adh->getDynamicFields()->getValues($field_id);
+                if ($this->adh !== null) {
+                    $field_values = $this->adh->getDynamicFields()->getValues($field_id);
                     $field_value  = $field_values[0];
                 }
                 switch ($field_type) {
@@ -261,37 +282,7 @@ class PdfAdhesionForm
             Analog::log("adding dynamic replacement $key => $value", Analog::DEBUG);
         }
 
-        $this->filename = $adh ?
-            _T("adherent_form") . '.' . $adh->id . '.pdf' :
-            _T("adherent_form") . '.pdf';
-
-        $this->pdf = new Pdf($prefs, $model);
-
-        $this->pdf->Open();
-
-        $this->pdf->AddPage();
-        $this->pdf->PageHeader();
-        $this->pdf->PageBody();
-    }
-
-    /**
-     * Download PDF from browser
-     *
-     * @return void
-     */
-    public function download()
-    {
-        $this->pdf->Output($this->filename, 'D');
-    }
-
-    /**
-     * Get filename
-     *
-     * @return string
-     */
-    public function getFilename()
-    {
-        return $this->filename;
+        return $model;
     }
 
     /**
@@ -305,7 +296,7 @@ class PdfAdhesionForm
     {
         if (file_exists($path) && is_dir($path) && is_writeable($path)) {
             $this->path = $path . '/' . $this->filename;
-            $this->pdf->Output($this->path, 'F');
+            $this->Output($this->path, 'F');
             return true;
         } else {
             Analog::log(

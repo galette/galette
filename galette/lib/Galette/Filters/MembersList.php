@@ -61,7 +61,7 @@ class MembersList extends Pagination
     private $_filter_str;
     private $_field_filter;
     private $_membership_filter;
-    private $_account_status_filter;
+    private $_filter_account;
     private $_email_filter;
     private $_group_filter;
 
@@ -74,7 +74,7 @@ class MembersList extends Pagination
         'filter_str',
         'field_filter',
         'membership_filter',
-        'account_status_filter',
+        'filter_account',
         'email_filter',
         'group_filter',
         'selected',
@@ -113,7 +113,7 @@ class MembersList extends Pagination
         $this->_filter_str = null;
         $this->_field_filter = null;
         $this->_membership_filter = null;
-        $this->_account_status_filter = $preferences->pref_filter_account;
+        $this->_filter_account = $preferences->pref_filter_account;
         $this->_email_filter = Members::FILTER_DC_EMAIL;
         $this->_group_filter = null;
         $this->_selected = array();
@@ -128,12 +128,6 @@ class MembersList extends Pagination
      */
     public function __get($name)
     {
-
-        Analog::log(
-            '[MembersList] Getting property `' . $name . '`',
-            Analog::DEBUG
-        );
-
         if (in_array($name, $this->pagination_fields)) {
             return parent::__get($name);
         } else {
@@ -191,7 +185,7 @@ class MembersList extends Pagination
                     break;
                 case 'field_filter':
                 case 'membership_filter':
-                case 'account_status_filter':
+                case 'filter_account':
                     if (is_numeric($value)) {
                         $name = '_' . $name;
                         $this->$name = $value;
@@ -279,12 +273,12 @@ class MembersList extends Pagination
         }
 
         $view->assign(
-            'filter_field_options',
+            'field_filter_options',
             $filter_options
         );
 
         $view->assign(
-            'filter_membership_options',
+            'membership_filter_options',
             array(
                 Members::MEMBERSHIP_ALL     => _T("All members"),
                 Members::MEMBERSHIP_UP2DATE => _T("Up to date members"),

@@ -23,7 +23,7 @@
                     </td>
                     <td class="center actions_row">
                         <a
-                            href="{path_for name="editDynamicField" data=["action" => "edit", "form" => $form_name, "id" => $field->getId()]}"
+                            href="{path_for name="editDynamicField" data=["form" => $form_name, "id" => $field->getId()]}"
                             class="tooltip action"
                         >
                             <i class="fas fa-user-edit fa-fw" aria-hidden="true"></i>

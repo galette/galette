@@ -75,9 +75,17 @@ require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
 //require_once GALETTE_BASE_PATH . 'includes/i18n.inc.php';
 
 //Globals... :(
-global $preferences;
+global $preferences, $emitter;
 $zdb = new \Galette\Core\Db();
 $preferences = new \Galette\Core\Preferences($zdb);
+$emitter = new \Slim\Event\SlimEventManager();
+
+if (!defined('_CURRENT_THEME_PATH')) {
+    define(
+        '_CURRENT_THEME_PATH',
+        GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
+    );
+}
 
 /**
  * Maps _T Galette's function

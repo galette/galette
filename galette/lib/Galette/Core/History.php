@@ -39,8 +39,8 @@ namespace Galette\Core;
 
 use Analog\Analog;
 use Galette\Filters\HistoryList;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Adapter\Adapter;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\Adapter\Adapter;
 use Galette\Core\Preferences;
 
 /**

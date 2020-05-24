@@ -1,4 +1,7 @@
 sudo: false
+services:
+  - postgresql
+  - mysql
 before_script:
   - ./bin/install_deps
   - sh -c "if [ '$DB' = 'pgsql' ]; then psql -c 'DROP DATABASE IF EXISTS galette_tests;' -U postgres; fi"
@@ -6,18 +9,19 @@ before_script:
   - sh -c "if [ '$DB' = 'pgsql' ]; then psql -d galette_tests -a -f galette/install/scripts/pgsql.sql -U postgres; fi"
   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS galette_tests;'; fi"
   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'use galette_tests; source galette/install/scripts/mysql.sql;'; fi"
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" && $DB == "mysql" ]]; then cd galette && composer require squizlabs/php_codesniffer && cd ..; fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.3" && $DB == "mysql" ]]; then cd galette && composer require squizlabs/php_codesniffer && cd ..; fi
 
 script:
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.1" && $DB == "mysql" ]]; then galette/vendor/bin/phpcs -n -p --ignore=galette_tcpdf_config.php --standard=phpcs-rules.xml galette/lib/ tests/ galette/webroot/index.php galette/includes/fields_defs/ galette/includes/smarty_plugins/ galette/includes/functions.inc.php galette/includes/galette.inc.php galette/includes/dependencies.php galette/includes/main.inc.php; fi
-  - php galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php -c tests/telemetry.php -d tests/Galette/
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.3" && $DB == "mysql" ]]; then galette/vendor/bin/phpcs -n -p --ignore=galette_tcpdf_config.php --standard=phpcs-rules.xml galette/lib/ tests/ galette/webroot/index.php galette/includes/fields_defs/ galette/includes/smarty_plugins/ galette/includes/functions.inc.php galette/includes/galette.inc.php galette/includes/dependencies.php galette/includes/main.inc.php; fi
+  - php galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php -d tests/Galette/
+  - php galette/cron/reminder.php
 
 language: php
 
 php:
-  - 7.1
   - 7.2
   - 7.3
+  - 7.4
   - nightly
 
 matrix:
@@ -27,13 +31,3 @@ matrix:
 env:
   - DB=pgsql
   - DB=mysql
-
-notifications:
-  irc:
-    channels:
-      - "irc.oftc.net#galette"
-    template:
-      - "%{build_number} by %{author} on %{branch}: %{message} "
-      - "Build details: %{build_url}"
-    use_notice: true
-    skip_join: true

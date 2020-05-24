@@ -37,6 +37,7 @@
 namespace Galette\Repository;
 
 use Analog\Analog;
+use Laminas\Db\Sql\Expression;
 use Galette\Entity\PaymentType;
 
 /**
@@ -135,6 +136,11 @@ class PaymentTypes extends Repository
                 //first, we drop all values
                 $delete = $this->zdb->delete($ent::TABLE);
                 $this->zdb->execute($delete);
+
+                $this->zdb->handleSequence(
+                    $ent::TABLE,
+                    count($this->defaults)
+                );
                 $this->insert($ent::TABLE, $this->defaults);
 
                 $this->zdb->connection->commit();
@@ -144,7 +150,7 @@ class PaymentTypes extends Repository
             if ($this->zdb->connection->inTransaction()) {
                 $this->zdb->connection->rollBack();
             }
-            return $e;
+            throw $e;
         }
     }
 
@@ -232,7 +238,7 @@ class PaymentTypes extends Repository
     {
         if (!count($this->defaults)) {
             $paytype = new PaymentType($this->zdb);
-            $this->defaults = $paytype->getSystemTypes();
+            $this->defaults = $paytype->getSystemTypes(false);
         }
         return parent::loadDefaults();
     }

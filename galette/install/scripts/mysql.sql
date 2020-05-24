@@ -194,7 +194,8 @@ CREATE TABLE galette_texts (
   tbody text NOT NULL,
   tlang varchar(16) NOT NULL,
   tcomment varchar(64) NOT NULL,
-  PRIMARY KEY (tid)
+  PRIMARY KEY (tid),
+  UNIQUE KEY `localizedtxt` (tref, tlang)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_fields_categories;
@@ -313,11 +314,36 @@ CREATE TABLE galette_paymenttypes (
   PRIMARY KEY (type_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- table for saved searches
+DROP TABLE IF EXISTS galette_searches;
+CREATE TABLE galette_searches (
+  search_id int(10) unsigned NOT NULL auto_increment,
+  name varchar(100) DEFAULT NULL,
+  form varchar(50) NOT NULL,
+  parameters text NOT NULL,
+  parameters_sum binary(20),
+  id_adh int(10) unsigned,
+  creation_date datetime NOT NULL,
+  PRIMARY KEY (search_id),
+  KEY (form, parameters_sum, id_adh),
+  FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- new table for temporary links
+DROP TABLE IF EXISTS galette_tmplinks;
+CREATE TABLE galette_tmplinks (
+  hash varchar(60) NOT NULL,
+  target smallint(1) NOT NULL,
+  id int(10) unsigned,
+  creation_date datetime NOT NULL,
+  PRIMARY KEY (target, id)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-INSERT INTO galette_database(version) VALUES(0.92);
+INSERT INTO galette_database(version) VALUES(0.94);
 
 SET FOREIGN_KEY_CHECKS=1;

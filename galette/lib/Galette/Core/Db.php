@@ -37,8 +37,8 @@
 namespace Galette\Core;
 
 use Analog\Analog;
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\Sql\Sql;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Sql\Sql;
 
 /**
  * Zend Db wrapper
@@ -68,7 +68,7 @@ class Db
     /**
      * Main constructor
      *
-     * @param array $dsn Connection informations
+     * @param array $dsn Connection information
      *                   If not set, database constants will be used.
      */
     public function __construct($dsn = null)
@@ -493,7 +493,7 @@ class Db
      */
     public function getTables($prefix = null)
     {
-        $metadata = new \Zend\Db\Metadata\Metadata($this->db);
+        $metadata = new \Laminas\Db\Metadata\Metadata($this->db);
         $tmp_tables_list = $metadata->getTableNames();
 
         if ($prefix === null) {
@@ -519,7 +519,7 @@ class Db
      */
     public function getColumns($table)
     {
-        $metadata = new \Zend\Db\Metadata\Metadata($this->db);
+        $metadata = new \Laminas\Db\Metadata\Metadata($this->db);
         $table = $metadata->getTable(PREFIX_DB . $table);
         return $table->getColumns();
     }
@@ -611,7 +611,7 @@ class Db
         }
 
         try {
-            $metadata = new \Zend\Db\Metadata\Metadata($this->db);
+            $metadata = new \Laminas\Db\Metadata\Metadata($this->db);
             $tbl = $metadata->getTable($table);
             $columns = $tbl->getColumns();
             $constraints = $tbl->getConstraints();
@@ -785,6 +785,9 @@ class Db
                 $msg . ' ' . $e->__toString(),
                 Analog::ERROR
             );
+            if ($this->isDuplicateException($e)) {
+                throw new \OverflowException('Duplicate entry', 0, $e);
+            }
             throw $e;
         }
     }
@@ -824,7 +827,7 @@ class Db
     }
 
     /**
-     * Get database informations
+     * Get database information
      *
      * @return array
      */
@@ -835,7 +838,7 @@ class Db
             'version'   => null,
             'size'      => null,
             'log_size'  => null,
-            'sql_mode'  => null
+            'sql_mode'  => ''
         ];
 
         if ($this->isPostgres()) {
@@ -845,13 +848,10 @@ class Db
                 ->current();
             $infos['version'] = $result['server_version'];
 
-            $total_size = 0;
-            $db_size    = 0;
-
             $sql = 'SELECT pg_database_size(\'' . NAME_DB . '\')';
             $result = $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE)
                 ->current();
-            $infos['size']          = round($result['pg_database_size'] / 1024 / 1024, 1);
+            $infos['size']          = (string)round($result['pg_database_size'] / 1024 / 1024);
         } else {
             $sql = 'SELECT @@sql_mode as mode, @@version AS version, @@version_comment AS version_comment';
             $result = $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE)
@@ -870,5 +870,58 @@ class Db
         }
 
         return $infos;
+    }
+
+    /**
+     * Handle sequence on PostgreSQL
+     *
+     * When inserting a value on a field with a sequence,
+     * this one is not incremented.
+     * This happens when installing system values (for status, titles, ...)
+     *
+     * @see https://bugs.galette.eu/issues/1158
+     * @see https://bugs.galette.eu/issues/1374
+     *
+     * @param sting  $table    Table name
+     * @param intger $expected Expected value
+     *
+     * @return void
+     */
+    public function handleSequence($table, $expected)
+    {
+        if ($this->isPostgres()) {
+            //check for Postgres sequence
+            //see https://bugs.galette.eu/issues/1158
+            //see https://bugs.galette.eu/issues/1374
+            $seq = $table . '_id_seq';
+
+            $select = $this->select($seq);
+            $select->columns(['last_value']);
+            $results = $this->execute($select);
+            $result = $results->current();
+            if ($result->last_value < $expected) {
+                $this->db->query(
+                    'SELECT setval(\'' . PREFIX_DB . $seq . '\', ' . $expected . ')',
+                    Adapter::QUERY_MODE_EXECUTE
+                );
+            }
+        }
+    }
+
+    /**
+     * Check if current exception is on a duplicate key
+     *
+     * @param Exception $exception Exception to check
+     *
+     * @return boolean
+     */
+    public function isDuplicateException($exception)
+    {
+        return $exception instanceof \PDOException
+            && (
+                (!$this->isPostgres() && $exception->getCode() == 23000)
+                || ($this->isPostgres() && $exception->getCode() == 23505)
+            )
+        ;
     }
 }

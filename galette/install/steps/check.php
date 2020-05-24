@@ -108,7 +108,7 @@ if ( !$date_ok ) {
                 <h3><?php echo _T("PHP Modules"); ?></h3>
 <?php
 if ( !$modules_ok ) {
-    echo '<p class="error">' . _T("Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation.")  . '</p>';
+    echo '<p class="error">' . _T("Some PHP modules are missing. Please install them or contact your support.<br/>More information on required modules may be found in the documentation.")  . '</p>';
 }
 ?>
                 <ul class="leaders">

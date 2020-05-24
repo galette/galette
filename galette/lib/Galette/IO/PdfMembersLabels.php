@@ -70,9 +70,10 @@ class PdfMembersLabels extends Pdf
     public function __construct(Preferences $prefs)
     {
         parent::__construct($prefs);
-        $this->filename = _T('labels_print_filename');
+        $this->filename = __('labels_print_filename') . '.pdf';
         $this->init();
     }
+
     /**
      * Initialize PDF
      *

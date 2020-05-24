@@ -243,3 +243,7 @@ ul.leaders span + span {
     float: left;
     background-position: .4em 50%, 50% 50% !important
 }
+
+#plang_selector {
+    width: 15em;
+}

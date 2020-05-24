@@ -38,7 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\Adapter;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Authentication;
@@ -450,6 +450,7 @@ class FieldsConfig
 
                 foreach ($elements as $elt) {
                     $o = (object)$elt;
+                    $o->readonly = false;
 
                     if ($o->field_id == 'id_adh') {
                         // ignore access control, as member ID is always needed
@@ -497,7 +498,7 @@ class FieldsConfig
                             $o->type = self::TYPE_STR;
                         }
 
-                        //retrieve field informations from DB
+                        //retrieve field information from DB
                         foreach ($columns as $column) {
                             if ($column->getName() === $o->field_id) {
                                 $o->max_length

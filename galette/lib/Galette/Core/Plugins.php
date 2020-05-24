@@ -126,10 +126,10 @@ class Plugins
                         $this->mroot = null;
                         if ($this->autoload == true) {
                             //set autoloader to PluginName.
-                            if (file_exists($full_entry . '/lib')) {
+                            if (file_exists($full_entry . '/lib') && isset($this->modules[$entry])) {
                                 $varname = $entry . 'Loader';
                                 $$varname = new ClassLoader(
-                                    str_replace(' ', '', $this->modules[$entry]['name']),
+                                    $this->getNamespace($entry),
                                     $full_entry . '/lib'
                                 );
                                 $$varname->register();
@@ -174,6 +174,7 @@ class Plugins
         foreach ($this->modules as $id => $m) {
             $this->loadModuleL10N($id, $lang);
             $this->loadSmarties($id);
+            $this->loadEventProviders($id);
             $this->overridePrefs($id);
         }
     }
@@ -216,7 +217,7 @@ class Plugins
             //plugin compatibility missing!
             Analog::log(
                 'Plugin ' . $name . ' does not contains mandatory version ' .
-                'compatiblity informations. Please contact the author.',
+                'compatiblity information. Please contact the author.',
                 Analog::ERROR
             );
             $this->setDisabled(self::DISABLED_COMPAT);
@@ -376,6 +377,25 @@ class Plugins
     }
 
     /**
+     * Loads event provider
+     *
+     * @param string $id Module ID
+     *
+     * @return void
+     */
+    public function loadEventProviders($id)
+    {
+        global $emitter;
+
+        $providerClassName = '\\' . $this->getNamespace($id) . '\\' . 'PluginEventProvider';
+        if (class_exists($providerClassName)
+            && method_exists($providerClassName, 'provideListeners')
+        ) {
+            $emitter->useListenerProvider(new $providerClassName());
+        }
+    }
+
+    /**
      * Returns all modules associative array or only one module if <var>$id</var>
      * is present.
      *
@@ -439,7 +459,7 @@ class Plugins
      * @param string $id   Module ID
      * @param string $info Information to retrieve
      *
-     * @return module's informations
+     * @return module's information
      */
     public function moduleInfo($id, $info)
     {
@@ -793,5 +813,17 @@ class Plugins
         );
         $this->id = null;
         $this->mroot = null;
+    }
+
+    /**
+     * Get module namespace
+     *
+     * @param integer $id Module ID
+     *
+     * @return string
+     */
+    public function getNamespace($id)
+    {
+        return str_replace(' ', '', $this->modules[$id]['name']);
     }
 }

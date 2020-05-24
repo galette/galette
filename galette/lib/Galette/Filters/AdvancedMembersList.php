@@ -116,7 +116,9 @@ class AdvancedMembersList extends MembersList
         'contrib_min_amount',
         'contrib_max_amount',
         'contrib_dynamic',
-        'free_search'
+        'free_search',
+        'groups_search',
+        'groups_search_log_op'
     );
 
     protected $virtuals_advancedmemberslist_fields = array(
@@ -133,7 +135,8 @@ class AdvancedMembersList extends MembersList
         'rcontrib_begin_date_begin',
         'rcontrib_begin_date_end',
         'rcontrib_end_date_begin',
-        'rcontrib_end_date_end'
+        'rcontrib_end_date_end',
+        'search_fields'
     );
 
     //an empty free search criteria to begin
@@ -146,15 +149,19 @@ class AdvancedMembersList extends MembersList
         )
     );
 
-    //an empty contributions dynamic field criteria to begin
-    private $_contrib_dynamic = array(
+    //an empty group search criteria to begin
+    private $_groups_search = array(
         'empty' => array(
-            'field'     => '',
-            'search'    => '',
-            'log_op'    => self::OP_AND,
-            'qry_op'    => self::OP_EQUALS
+            'group'    => '',
         )
     );
+
+    //defaults to 'OR' for group search
+    private $_groups_search_log_op = self::OP_OR;
+
+
+    //an empty contributions dynamic field criteria to begin
+    private $_contrib_dynamic = array();
 
     /**
      * Default constructor
@@ -237,14 +244,15 @@ class AdvancedMembersList extends MembersList
             )
         );
 
-        $this->_contrib_dynamic = array(
+        $this->_contrib_dynamic = array();
+
+        $this->_groups_search = array(
             'empty' => array(
-                'field'     => '',
-                'search'    => '',
-                'log_op'    => self::OP_AND,
-                'qry_op'    => self::OP_EQUALS
+                'group'     => '',
             )
         );
+
+        $this->_groups_search_log_op = self::OP_OR;
     }
 
     /**
@@ -318,6 +326,15 @@ class AdvancedMembersList extends MembersList
                         //same as above, but raw format
                         $rname = '_' . substr($name, 1);
                         return $this->$rname;
+                    case 'search_fields':
+                        $search_fields = array_merge($this->memberslist_fields, $this->advancedmemberslist_fields);
+                        $key = array_search('selected', $search_fields);
+                        unset($search_fields[$key]);
+                        $key = array_search('unreachable', $search_fields);
+                        unset($search_fields[$key]);
+                        $key = array_search('query', $search_fields);
+                        unset($search_fields[$key]);
+                        return $search_fields;
                 }
                 return $this->$rname;
             } else {
@@ -499,16 +516,17 @@ class AdvancedMembersList extends MembersList
                     if (isset($this->_free_search['empty'])) {
                         unset($this->_free_search['empty']);
                     }
-                    if (is_array($value)) {
-                        if (isset($value['field'])
-                            && isset($value['search'])
-                            && isset($value['log_op'])
-                            && isset($value['qry_op'])
-                            && isset($value['idx'])
-                            && isset($value['type'])
-                        ) {
+
+                    if ($this->isValidFreeSearch($value)) {
+                        //should this happen?
+                        $values = [$value];
+                    } else {
+                        $values = $value;
+                    }
+
+                    foreach ($values as $value) {
+                        if ($this->isValidFreeSearch($value)) {
                             $id = $value['idx'];
-                            unset($value['idx']);
 
                             //handle value according to type
                             switch ($value['type']) {
@@ -538,10 +556,51 @@ class AdvancedMembersList extends MembersList
                                 Analog::WARNING
                             );
                         }
+                    }
+                    break;
+                case 'contrib_dynamic':
+                    if (is_array($value)) {
+                        $this->_contrib_dynamic = $value;
                     } else {
                         Analog::log(
-                            '[AdvancedMembersList] Value for free filter should be an '
+                            '[AdvancedMembersList] Value for dynamic contribution fields filter should be an '
                             .'array (' . gettype($value) . ' given',
+                            Analog::WARNING
+                        );
+                    }
+                    break;
+                case 'groups_search':
+                    if (isset($this->_groups_search['empty'])) {
+                        unset($this->_groups_search['empty']);
+                    }
+                    if (is_array($value)) {
+                        if (isset($value['group'])
+                           && isset($value['idx'])
+                        ) {
+                            $id = $value['idx'];
+                            unset($value['idx']);
+                            $this->_groups_search[$id] = $value;
+                        } else {
+                            Analog::log(
+                                '[AdvancedMembersList] bad construct for group filter',
+                                Analog::WARNING
+                            );
+                        }
+                    } else {
+                        Analog::log(
+                            '[AdvancedMembersList] Value for group filter should be an '
+                            .'array (' . gettype($value) . ' given',
+                            Analog::WARNING
+                        );
+                    }
+                    break;
+                case 'groups_search_log_op':
+                    if ($value == self::OP_AND || $value == self::OP_OR) {
+                        $this->_groups_search_log_op = $value;
+                    } else {
+                        Analog::log(
+                            '[AdvancedMembersList] Value for group filter logical operator should be '
+                            .' in [0,1] (' . gettype($value) . '-> '.$value.' given )',
                             Analog::WARNING
                         );
                     }
@@ -551,10 +610,6 @@ class AdvancedMembersList extends MembersList
                         || substr($name, 0, 5) === 'cdsc_'
                     ) {
                         if (is_array($value) || trim($value) !== '') {
-                            if (isset($this->_contrib_dynamic['empty'])) {
-                                unset($this->_contrib_dynamic['empty']);
-                            }
-
                             $id = null;
                             if (substr($name, 0, 5) === 'cdsc_') {
                                 $id = substr($name, 5, strlen($name));
@@ -573,5 +628,30 @@ class AdvancedMembersList extends MembersList
                     break;
             }
         }
+    }
+
+    /**
+     * Validate free search internal array
+     *
+     * @param array $data Array to validate
+     *
+     * @return boolean
+     */
+    public static function isValidFreeSearch($data)
+    {
+        if (!is_array($data)) {
+            Analog::log(
+                '[AdvancedMembersList] Value for free filter should be an '
+                .'array (' . gettype($data) . ' given',
+                Analog::WARNING
+            );
+            return false;
+        }
+        return isset($data['field'])
+            && isset($data['search'])
+            && isset($data['log_op'])
+            && isset($data['qry_op'])
+            && isset($data['idx'])
+            && isset($data['type']);
     }
 }

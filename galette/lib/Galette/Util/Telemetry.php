@@ -78,7 +78,7 @@ class Telemetry
     }
 
    /**
-    * Grab telemetry informations
+    * Grab telemetry information
     *
     * @return array
     */
@@ -97,7 +97,7 @@ class Telemetry
     }
 
    /**
-    * Grab Galette part informations
+    * Grab Galette part information
     *
     * @return array
     */
@@ -127,7 +127,7 @@ class Telemetry
     }
 
     /**
-     * Grab DB part informations
+     * Grab DB part information
      *
      * @return array
      */
@@ -138,7 +138,7 @@ class Telemetry
     }
 
     /**
-     * Grab web server part informations
+     * Grab web server part information
      *
      * @return array
      */
@@ -178,7 +178,7 @@ class Telemetry
     }
 
     /**
-     * Grab PHP part informations
+     * Grab PHP part information
      *
      * @return array
      */
@@ -201,7 +201,7 @@ class Telemetry
     }
 
     /**
-     * Grab OS part informations
+     * Grab OS part information
      *
      * @return array
      */
@@ -228,7 +228,7 @@ class Telemetry
     {
         $select = $this->zdb->select($table);
         $select->columns([
-            'cnt' => new \Zend\Db\Sql\Expression(
+            'cnt' => new \Laminas\Db\Sql\Expression(
                 'COUNT(1)'
             )
         ]);
@@ -264,7 +264,7 @@ class Telemetry
     }
 
    /**
-     * Send telemetry informations
+     * Send telemetry information
      *
      * @return boolean
      */
@@ -309,7 +309,7 @@ class Telemetry
             //all is OK!
             return true;
         } else {
-            $message = 'Something went wrong sending telemetry informations';
+            $message = 'Something went wrong sending telemetry information';
             if ($errstr != '') {
                 $message .= ": $errstr";
             }

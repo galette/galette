@@ -26,7 +26,6 @@
  *
  * @category  Core
  * @package   Galette
- *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
@@ -81,6 +80,17 @@ class Preferences
     const LOG_DISABLED = 0;
     const LOG_ENABLED = 1;
 
+    /** No password strength */
+    const PWD_NONE = 0;
+    /** Weak password strength */
+    const PWD_WEAK = 1;
+    /** Medium password strength */
+    const PWD_MEDIUM = 2;
+    /** Strong password strength */
+    const PWD_STRONG = 3;
+    /** Very strong password strength */
+    const PWD_VERY_STRONG = 4;
+
     private static $fields = array(
         'nom_pref',
         'val_pref'
@@ -102,7 +112,7 @@ class Preferences
         'pref_numrows'        =>    30,
         'pref_log'        =>    self::LOG_ENABLED,
         'pref_statut'        =>    Status::DEFAULT_STATUS,
-        /* Preferences for mails */
+        /* Preferences for emails */
         'pref_email_nom'    =>    'Galette',
         'pref_email'        =>    'mail@domain.com',
         'pref_email_newadh'    =>    'mail@domain.com',
@@ -118,6 +128,7 @@ class Preferences
         'pref_mail_smtp_password'   => '',
         'pref_membership_ext'    =>    12,
         'pref_beg_membership'    =>    '',
+        'pref_membership_offermonths' => 0,
         'pref_email_reply_to'    =>    '',
         'pref_website'        =>    '',
         /* Preferences for labels */
@@ -168,7 +179,12 @@ class Preferences
         'pref_registration_date' => '',
         'pref_footer' => '',
         'pref_filter_account' => Members::ALL_ACCOUNTS,
-        'pref_galette_url' => ''
+        'pref_galette_url' => '',
+        'pref_redirect_on_create' => Adherent::AFTER_ADD_DEFAULT,
+        /* Security related */
+        'pref_password_length' => 6,
+        'pref_password_blacklist' => false,
+        'pref_password_strength' => self::PWD_NONE
     );
 
     // flagging required fields
@@ -449,8 +465,13 @@ class Preferences
                                 Analog::WARNING
                             );
                         } else {
-                            if (strlen($value) < 4) {
-                                $this->errors[] = _T("- The password must be of at least 4 characters!");
+                            $pwcheck = new \Galette\Util\Password($this);
+                            $pwcheck->addPersonalInformation(['pref_admin_login' => $this->pref_admin_login]);
+                            if (!$pwcheck->isValid($value)) {
+                                $this->errors = array_merge(
+                                    $this->errors,
+                                    $pwcheck->getErrors()
+                                );
                             }
                         }
                         break;
@@ -468,6 +489,11 @@ class Preferences
                             if (!checkdate($beg_membership[1], $beg_membership[0], $now['year'])) {
                                 $this->errors[] = _T("- Invalid date for beginning of membership.");
                             }
+                        }
+                        break;
+                    case 'pref_membership_offermonths':
+                        if (!is_numeric($value) || $value < 0) {
+                            $this->errors[] = _T("- Invalid number of offered months.");
                         }
                         break;
                     case 'pref_card_year':
@@ -529,6 +555,14 @@ class Preferences
             $this->errors[] =_T("- Default membership extention and beginning of membership are mutually exclusive.");
         }
 
+        if (isset($insert_values['pref_membership_offermonths'])
+            && (int)$insert_values['pref_membership_offermonths'] > 0
+            && isset($insert_values['pref_membership_ext'])
+            && $insert_values['pref_membership_ext'] != ''
+        ) {
+            $this->errors[] =_T("- Offering months is only compatible with beginning of membership.");
+        }
+
         // missing required fields?
         foreach ($this->required as $val) {
             if (!isset($values[$val]) || isset($values[$val]) && trim($values[$val]) == '') {
@@ -540,7 +574,7 @@ class Preferences
             }
         }
 
-        if (GALETTE_MODE !== 'DEMO') {
+        if (GALETTE_MODE !== 'DEMO' && isset($values['pref_admin_pass_check'])) {
             // Check passwords. Hash will be done into the Preferences class
             if (strcmp($insert_values['pref_admin_pass'], $values['pref_admin_pass_check']) != 0) {
                 $this->errors[] = _T("Passwords mismatch");
@@ -597,6 +631,11 @@ class Preferences
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
             foreach (self::$defaults as $k => $v) {
+                if (GALETTE_MODE == 'DEMO'
+                    && in_array($k, ['pref_admin_pass', 'pref_admin_login', 'pref_mail_method'])
+                ) {
+                    continue;
+                }
                 Analog::log('Storing ' . $k, Analog::DEBUG);
 
                 $value = $this->prefs[$k];
@@ -662,8 +701,8 @@ class Preferences
                 $_address .= "\n" . $this->prefs['pref_adresse2'];
             }
             $replacements = array(
-                '',
-                '',
+                $this->prefs['pref_nom'],
+                "\n",
                 $_address,
                 $this->prefs['pref_cp'],
                 $this->prefs['pref_ville'],
@@ -761,7 +800,7 @@ class Preferences
     public function __get($name)
     {
         $forbidden = array('logged', 'admin', 'active', 'defaults');
-        $virtuals = array('vpref_email', 'vpref_email_newadh');
+        $virtuals = array('vpref_email_newadh');
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
             if (GALETTE_MODE === 'DEMO'
@@ -779,7 +818,7 @@ class Preferences
                     }
                 }
 
-                if (in_array($name, ['pref_email', 'pref_email_newadh'])) {
+                if (in_array($name, ['pref_email_newadh'])) {
                     $values = explode(',', $value);
                     $value = $values[0]; //take first as default
                 }
@@ -788,7 +827,7 @@ class Preferences
             }
         } elseif (in_array($name, $virtuals)) {
             $virtual = str_replace('vpref_', 'pref_', $name);
-            return explode(',', $this->$virtual);
+            return explode(',', $this->prefs[$virtual]);
         } else {
             Analog::log(
                 'Preference `' . $name . '` is not set or is forbidden',
@@ -841,14 +880,14 @@ class Preferences
             }
 
             //check emails validity
-            //may be a comma separated list of valid mails identifiers:
+            //may be a comma separated list of valid emails identifiers:
             //"The Name <mail@domain.com>,The Other <other@mail.com>" expect for reply_to.
             $addresses = [];
             if (trim($value) != '') {
-                if ($name == 'pref_email_reply_to') {
-                    $addresses = [$value];
-                } else {
+                if ($name == 'pref_email_newadh') {
                     $addresses = explode(',', $value);
+                } else {
+                    $addresses = [$value];
                 }
             }
             foreach ($addresses as $address) {

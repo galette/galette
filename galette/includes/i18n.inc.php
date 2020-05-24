@@ -42,7 +42,7 @@ if (!defined('GALETTE_ROOT')) {
 }
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Core\L10n;
 
 $i18n->updateEnv();
@@ -300,7 +300,7 @@ function _T($string, $domain = 'galette', $nt = true)
     if (!$trans) {
         $trans = $string;
 
-        if ($nt === true) {
+        if (GALETTE_MODE == 'DEV' && $nt === true) {
             $trans .= ' (not translated)';
         }
     }
@@ -360,3 +360,7 @@ $foo = _T("Contact information");
 $foo = _T("Mr.");
 $foo = _T("Mrs.");
 $foo = _T("Miss");
+$foo = _T("Identity:");
+$foo = _T("Galette-related data:");
+$foo = _T("Contact information:");
+$foo = _T("Society");

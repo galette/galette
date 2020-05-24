@@ -90,14 +90,27 @@ input:required:valid {
     border-color:green;
 }
 
+#galette_body .selectize-input.required {
+    border-color:green;
+}
+
+#galette_body .selectize-input.required.invalid {
+    border:1px red solid;
+}
+
 input[readonly] {
     color: #555;
     background-color: #e6e6e6;
     cursor: default;
 }
 
-input[type=file] {
+input[type=file], input[type=color] {
     border: none;
+}
+
+input[type=color] {
+    padding: 0;
+    cursor: pointer;
 }
 
 pre, code, kbd, samp {
@@ -225,7 +238,7 @@ nav a{
     border-bottom:none;
 }
 
-#menu li a{
+#menu li a, #plang_selector a {
     padding: .1em .3em;
     display:block;
     color: #212121;
@@ -236,22 +249,6 @@ nav a{
 }
 #menu li.selected a{
     background-color: #DDDDFF;
-}
-
-#langs{
-    list-style-type:none;
-    margin:1em 1em 0;
-    padding:0;
-    display:inline-block;
-}
-#langs li{
-    padding:0;
-    margin:0;
-    display:inline;
-    background-color:transparent;
-}
-#langs li a{
-    display:inline;
 }
 /* =/ Main menu */
 
@@ -508,19 +505,20 @@ footer a:hover {
     min-width: 25em;
 }
 
-#galette_body .selectize-input {
+#galette_body .selectize-input, .public_page .selectize-input {
     padding: .1em 20px .1em 8px;
     overflow: unset;
 }
 
-#galette_body .selectize-dropdown .option {
+#galette_body .selectize-dropdown .option, .public_page .selectize-dropdown .option {
     cursor: pointer;
 }
 
-#galette_body .selectize-dropdown .active {
+#galette_body .selectize-dropdown .active, .public_page .selectize-dropdown .active  {
     background-color: #DDDDFF;
 }
-#galette_body .selectize-dropdown .option, #galette_body .selectize-dropdown .optgroup-header {
+#galette_body .selectize-dropdown .option, #galette_body .selectize-dropdown .optgroup-header,
+.public_page .selectize-dropdown .option, .public_page .selectize-dropdown .optgroup-header {
     padding: .2em .5em;
 }
 
@@ -616,9 +614,9 @@ footer a:hover {
     position: absolute;
     width: 16em;
     top: 0;
-    left: 0;
+    left: 15em;
     margin:0;
-    border-radius: 0 0 6px 0;
+    border-radius: 0 0 6px 6px;
 }
 
 /* == Buttons */
@@ -700,16 +698,9 @@ a:hover i {
     background-repeat: repeat!important;
 }
 
-/*#sendmail{
-    background-image:url(images/icon-mail.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#sendmail.ui-state-hover {
-    background-image:url(images/icon-mail.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}*/
-
 #recup_mailing {
-    position: absolute;
-    right: .5em;
+    float: right;
+    margin-right: .5em;
 }
 
 h1 #sendmail {
@@ -730,6 +721,9 @@ h1 #sendmail .ui-button-text {
 
 #backhome {
     background:url(images/home.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
+    background-repeat: no-repeat, repeat!important;
+    background-position: 5% 50%, 50% 50%!important;
+    padding-left: 2em!important;
 }
 #backhome.ui-state-hover {
     background-image:url(images/home.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
@@ -971,7 +965,7 @@ legend .tab-button {
 }
 
 #group_infos{
-    min-width: 85%;
+    width: 100%;
     margin-left: 1em;
     vertical-align: top;
 }
@@ -1044,13 +1038,6 @@ legend .tab-button {
     font-size: 1em;
 }
 
-.texts_legend .back > span {
-    font-size: .9em;
-    text-align: right;
-    display: block;
-    color:#666;
-}
-
 .help {
     background:url(images/help.png) 100% 50% no-repeat;
     padding-right: 25px;
@@ -1080,10 +1067,6 @@ legend .tab-button {
 .public_page p {
     margin: 1em auto .5em;
 }
-.public_page #langs {
-    display: block;
-    margin:.2em 0;
-}
 
 .public_page section {
     text-align: center;
@@ -1103,14 +1086,9 @@ legend .tab-button {
 
 .public_page #user {
     position: absolute;
-    top:0;
-    right:0;
+    top:.4em;
+    right:.4em;
     display:inline-block;
-    border-bottom:1px solid #DDDDFF;
-    border-left:1px solid #DDDDFF;
-    -moz-border-bottom-left-radius: 10px;
-    -webkit-border-bottom-left-radius: 10px;
-    border-bottom-left-radius: 10px;
 
 }
 .public_page #userlink {
@@ -1125,7 +1103,54 @@ legend .tab-button {
 }
 
 .public_page #logout_10 {
-    margin: 0 .5em .2em;
+    margin: 0 0 .2em;
+}
+
+nav#plang_selector {
+    background: #fff;
+    text-align: left;
+    z-index: 100;
+}
+
+nav#plang_selector > ul {
+    margin: 0;
+    padding: 0;
+    background: white;
+}
+
+#plang_selector li {
+    margin:0.5em 0;
+    list-style-type:none;
+}
+
+#plang_selector li a:hover{
+    background-color: #DDDDFF;
+    text-decoration:underline;
+}
+
+nav#plang_selector a {
+    color: #666666;
+    display: block!important;
+}
+nav#plang_selector > a {
+    padding: .1em .3em;
+}
+#menu nav#plang_selector > a {
+    border-bottom:1px #DDDDFF solid;
+}
+
+nav#plang_selector.onhover > ul {
+    display: none;
+}
+
+nav#plang_selector.onhover:hover > ul {
+    display: block;
+}
+
+.public_page #plang_selector {
+    position: absolute;
+    left: .4em;
+    top: .4em;
 }
 
 /* =/ Public pages */
@@ -1492,8 +1517,8 @@ a.listing:hover {
 
 #content {
     margin-left:17em;
-    margin-top: 10px;
-    padding: 0.5em;
+    margin-top: .4em;
+    padding: 0 .5em .5em;
     position: relative;
     min-height: 100vh;
 }
@@ -1785,16 +1810,6 @@ td img, a img {
     text-align: center;
 }
 
-#langs li a.flag:hover {
-    text-decoration: none;
-}
-
-.flag img, img.flag
-{
-    width: 22px;
-    height: 16px;
-}
-
 .bigtable
 {
     text-align: center;
@@ -1980,13 +1995,6 @@ label.simplelabel {
     padding: .1em 1em;
 }
 
-.galette_form #pref_lang option {
-    background-size: 16px;
-    background-repeat: no-repeat;
-    padding-left: 20px;
-    background-position: 0 50%;
-}
-
 .galette_form img.mdp_img {
     vertical-align: top;
 }
@@ -2140,7 +2148,7 @@ td.photo img{
     width:20em;
 }
 
-label > i, span.bline > i {
+.galette_form label > i, label.bline > i, span.bline > i {
     float: right;
     font-size: 1.1em;
     color: rgba(0, 0, 255, .5);
@@ -2234,6 +2242,10 @@ label:hover > i, span.bline:hover > i {
     width:33%;
     display:inline-block;
     text-align:center;
+}
+
+.fields_list .selectize-input {
+    min-width: auto;
 }
 
 #add_category{
@@ -2336,6 +2348,43 @@ label:hover > i, span.bline:hover > i {
     vertical-align: top!important;
 }
 
+meter {
+    /* Reset the default appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    /*margin: 0 auto 1em;
+    width: 100%;
+    height: 0.5em;*/
+
+    /* Applicable only to Firefox */
+    background: none;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+meter::-webkit-meter-bar {
+    background: none;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Webkit based browsers */
+meter[value="1"]::-webkit-meter-optimum-value { background: red; }
+meter[value="2"]::-webkit-meter-optimum-value { background: orange; }
+meter[value="3"]::-webkit-meter-optimum-value { background: yellow; }
+meter[value="4"]::-webkit-meter-optimum-value { background: green; }
+
+/* Gecko based browsers */
+meter[value="1"]::-moz-meter-bar { background: red; }
+meter[value="2"]::-moz-meter-bar { background: orange; }
+meter[value="3"]::-moz-meter-bar { background: yellow}
+meter[value="4"]::-moz-meter-bar { background: green ; }
+
+.password-strength-text {
+    vertical-align: middle;
+    padding-left: .2em;
+}
+
 .selectize-control.single .selectize-input::after {
     right: 10px!important;
 }
@@ -2343,20 +2392,11 @@ label:hover > i, span.bline:hover > i {
 /** Mobile devices */
 @media (max-width: 767px) {
 
-    body:before {
-        content: "- Galette Version mobile -";
-        display: block;
-        color: #777;
-        text-align: center;
-        font-style: italic;
-        padding-top: .2em;
-    }
-
     /* passer tous les éléments de largeur fixe en largeur automatique */
     body {
         width: auto !important;
         margin: auto !important;
-        padding: auto !important;
+        padding: .4em 0 0;
     }
 
     #details_menu, #member_stateofdue, .details {
@@ -2403,6 +2443,7 @@ label:hover > i, span.bline:hover > i {
         transform: translateX(0) translateZ(0);
         transition: transform .2s;
         will-change: transform;
+        min-height: 100vh;
     }
 
     /* Button deco */

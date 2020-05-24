@@ -14,7 +14,7 @@
                     <label for="id_adh" class="bline" >{_T string="Originator:"}</label>
                     <select name="id_adh" id="id_adh" class="nochosen"{if $required.id_adh eq 1} required="required"{/if}>
     {if !$transaction->member}
-                        <option>{_T string="-- select a name --"}</option>
+                        <option value="">{_T string="-- select a name --"}</option>
     {/if}
     {foreach $members.list as $k=>$v}
                             <option value="{$k}"{if $transaction->member == $k} selected="selected"{/if}>{$v}</option>
@@ -29,7 +29,7 @@
                     <label for="trans_amount" class="bline">{_T string="Amount:"}</label>
                     <input type="text" name="trans_amount" id="trans_amount" value="{$transaction->amount}" maxlength="10"{if $required.trans_amount eq 1} required="required"{/if}/>
                 </p>
-    {if $transaction->id eq null}
+    {if $transaction->id eq null or $transaction->getMissingAmount() > 0}
                 <p>
                     <span class="bline tooltip" title="{_T string="Select a contribution type to create for dispatch transaction"}">{_T string="Dispatch type:"}</span>
                     <span class="tip">{_T string="Select a contribution type to create for dispatch transaction"}</span>

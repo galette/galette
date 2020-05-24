@@ -38,7 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
 use Galette\Core\Picture;
 use Galette\Core\GaletteMail;
@@ -92,7 +92,7 @@ class Adherent
     private $_language;
     private $_active;
     private $_status;
-    //Contact informations
+    //Contact information
     private $_address;
     private $_address_continuation; /** TODO: remove */
     private $_zipcode;
@@ -107,7 +107,7 @@ class Adherent
     private $_jabber; /** TODO: remove */
     private $_gnupgid; /** TODO: remove */
     private $_fingerprint; /** TODO: remove */
-    //Galette relative informations
+    //Galette relative information
     private $_appears_in_list;
     private $_admin;
     private $_staff;
@@ -152,14 +152,14 @@ class Adherent
         'email_adh'
     ];
 
-    private $errors;
+    private $errors = [];
 
     /**
      * Default constructor
      *
      * @param Db      $zdb  Database instance
      * @param mixed   $args Either a ResultSet row, its id or its
-     *                      login or its mail for to load s specific
+     *                      login or its email for to load s specific
      *                      member, or null to just instanciate object
      * @param boolean $deps Dependencies configuration, see Adherent::$_deps
      */
@@ -316,7 +316,7 @@ class Adherent
         $this->_language = $r->pref_lang;
         $this->_active = ($r->activite_adh == 1) ? true : false;
         $this->_status = (int)$r->id_statut;
-        //Contact informations
+        //Contact information
         $this->_address = $r->adresse_adh;
         /** TODO: remove and merge with address */
         $this->_address_continuation = $r->adresse2_adh;
@@ -337,7 +337,7 @@ class Adherent
         $this->_gnupgid = $r->gpgid;
         /** TODO: remove */
         $this->_fingerprint = $r->fingerprint;
-        //Galette relative informations
+        //Galette relative information
         $this->_appears_in_list = ($r->bool_display_info == 1) ? true : false;
         $this->_admin = ($r->bool_admin_adh == 1) ? true : false;
         if (isset($r->priorite_statut)
@@ -359,7 +359,7 @@ class Adherent
         $this->_others_infos_admin = $r->info_adh;
 
         if ($r->parent_id !== null) {
-            $this->_parent = $r->parent_id;
+            $this->_parent = (int)$r->parent_id;
             if ($this->_deps['parent'] === true) {
                 $this->loadParent($r->parent_id);
             }
@@ -655,7 +655,7 @@ class Adherent
      */
     public function hasParent()
     {
-        return $this->_parent !== null;
+        return !empty($this->_parent);
     }
 
     /**
@@ -755,13 +755,14 @@ class Adherent
     /**
      * Retrieve Full name and surname for the specified member id
      *
-     * @param Db      $zdb Database instance
-     * @param integer $id  member id
-     * @param boolean $wid Add member id
+     * @param Db      $zdb   Database instance
+     * @param integer $id    Member id
+     * @param boolean $wid   Add member id
+     * @param boolean $wnick Add member nickname
      *
      * @return string formatted Name and Surname
      */
-    public static function getSName($zdb, $id, $wid = false)
+    public static function getSName($zdb, $id, $wid = false, $wnick = false)
     {
         try {
             $select = $zdb->select(self::TABLE);
@@ -773,7 +774,8 @@ class Adherent
                 $row->nom_adh,
                 $row->prenom_adh,
                 false,
-                ($wid === true ? $row->id_adh : false)
+                ($wid === true ? $row->id_adh : false),
+                ($wnick === true ? $row->pseudo_adh : false)
             );
         } catch (\Exception $e) {
             Analog::log(
@@ -792,10 +794,11 @@ class Adherent
      * @param string        $surname Mmeber surname
      * @param false|Title   $title   Member title to show or false
      * @param false|integer $id      Member id to display or false
+     * @param false|string  $nick    Member nickname to display or false
      *
      * @return string
      */
-    public static function getNameWithCase($name, $surname, $title = false, $id = false)
+    public static function getNameWithCase($name, $surname, $title = false, $id = false, $nick = false)
     {
         $str = '';
 
@@ -806,8 +809,20 @@ class Adherent
         $str .= mb_strtoupper($name, 'UTF-8') . ' ' .
             ucwords(mb_strtolower($surname, 'UTF-8'), " \t\r\n\f\v-_|");
 
+        if ($id !== false || $nick !== false) {
+            $str .= ' (';
+        }
+        if ($nick !== false) {
+            $str .= $nick;
+        }
         if ($id !== false) {
-            $str .= ' (' . $id . ')';
+            if ($nick !== false && !empty($nick)) {
+                $str .= ', ';
+            }
+            $str .= $id;
+        }
+        if ($id !== false || $nick !== false) {
+            $str .= ')';
         }
         return $str;
     }
@@ -958,6 +973,14 @@ class Adherent
             $values['societe_adh'] = '';
         }
 
+        //no parent if checkbox was unchecked
+        if (!isset($values['attach'])
+            && empty($this->_id)
+            && isset($values['parent_id'])
+        ) {
+            unset($values['parent_id']);
+        }
+
         foreach ($fields as $key) {
             //first of all, let's sanitize values
             $key = strtolower($key);
@@ -1083,6 +1106,12 @@ class Adherent
         global $preferences;
 
         $prop = '_' . $this->fields[$field]['propname'];
+
+        if ($value === null || (is_string($value) && trim($value) == '')) {
+            //empty values are OK
+            $this->$prop = $value;
+            return;
+        }
 
         switch ($field) {
             // dates
@@ -1232,15 +1261,7 @@ class Adherent
                 }
                 break;
             case 'mdp_adh':
-                /** TODO: check password complexity, set by a preference */
-                /** TODO: add a preference for password lenght */
-                if (strlen($value) < 6) {
-                    $this->errors[] = str_replace(
-                        '%i',
-                        6,
-                        _T("- The password must be of at least %i characters!")
-                    );
-                } elseif ($this->_self_adh !== true
+                if ($this->_self_adh !== true
                     && (!isset($values['mdp_adh2'])
                     || $values['mdp_adh2'] != $value)
                 ) {
@@ -1250,10 +1271,23 @@ class Adherent
                 ) {
                     $this->errors[] = _T("Password misrepeated: ");
                 } else {
-                    $this->$prop = password_hash(
-                        $value,
-                        PASSWORD_BCRYPT
-                    );
+                    $pinfos = password_get_info($value);
+                    //check if value is already a hash
+                    if ($pinfos['algo'] == 0) {
+                        $this->$prop = password_hash(
+                            $value,
+                            PASSWORD_BCRYPT
+                        );
+
+                        $pwcheck = new \Galette\Util\Password($preferences);
+                        $pwcheck->setAdherent($this);
+                        if (!$pwcheck->isValid($value)) {
+                            $this->errors = array_merge(
+                                $this->errors,
+                                $pwcheck->getErrors()
+                            );
+                        }
+                    }
                 }
                 break;
             case 'id_statut':
@@ -1298,7 +1332,7 @@ class Adherent
      */
     public function store()
     {
-        global $hist;
+        global $hist, $emitter;
 
         try {
             $values = array();
@@ -1390,15 +1424,18 @@ class Adherent
                     if ($this->_self_adh) {
                         $hist->add(
                             _T("Self_subscription as a member: ") .
-                            $this->getNameWithCase($this->_name, $this->_surname)
+                            $this->getNameWithCase($this->_name, $this->_surname),
+                            $this->sname
                         );
                     } else {
                         $hist->add(
                             _T("Member card added"),
-                            strtoupper($this->_login)
+                            $this->sname
                         );
                     }
                     $success = true;
+
+                    $emitter->emit('member.add', $this);
                 } else {
                     $hist->add(_T("Fail to add new member."));
                     throw new \Exception(
@@ -1433,10 +1470,12 @@ class Adherent
                     $this->updateModificationDate();
                     $hist->add(
                         _T("Member card updated"),
-                        strtoupper($this->_login)
+                        $this->sname
                     );
                 }
                 $success = true;
+
+                $emitter->emit('member.edit', $this);
             }
 
             //dynamic fields
@@ -1496,14 +1535,11 @@ class Adherent
 
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
-            'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass', 'saddress'
+            'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass', 'saddress',
+            'rbirthdate'
         );
 
         if (in_array($name, $forbidden)) {
-            Analog::log(
-                "Call to __get for '$name' is forbidden!",
-                Analog::WARNING
-            );
             switch ($name) {
                 case 'admin':
                     return $this->isAdmin();
@@ -1568,6 +1604,9 @@ class Adherent
                     case 'sname':
                         return $this->getNameWithCase($this->_name, $this->_surname);
                         break;
+                    case 'rbirthdate':
+                        return $this->_birthdate;
+                        break;
                 }
             } else {
                 if (substr($name, 0, 1) !== '_') {
@@ -1619,7 +1658,7 @@ class Adherent
     /**
      * Get member email
      * If member does not have an email address, but is attached to
-     * another member, we'll take informations from its parent.
+     * another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1636,7 +1675,7 @@ class Adherent
 
     /**
      * Get member address.
-     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1653,7 +1692,7 @@ class Adherent
 
     /**
      * Get member address continuation.
-     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1671,7 +1710,7 @@ class Adherent
 
     /**
      * Get member zipcode.
-     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1689,7 +1728,7 @@ class Adherent
 
     /**
      * Get member town.
-     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1707,7 +1746,7 @@ class Adherent
 
     /**
      * Get member country.
-     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1761,7 +1800,7 @@ class Adherent
     }
 
     /**
-     * Handle files (phot and dynamics files
+     * Handle files (photo and dynamics files
      *
      * @param array $files Files sent
      *
@@ -1825,7 +1864,62 @@ class Adherent
         }
         //drop id_adh
         $this->_id = null;
-        //drop mail, must be unique
+        //drop email, must be unique
         $this->_email = null;
+    }
+
+    /**
+     * Get current errors
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     * Get user groups
+     *
+     * @return array
+     */
+    public function getGroups()
+    {
+        return $this->_groups;
+    }
+
+    /**
+     * Get user managed groups
+     *
+     * @return array
+     */
+    public function getManagedGroups()
+    {
+        return $this->_managed_groups;
+    }
+
+    /**
+     * Can current logged in user edit member
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canEdit($login)
+    {
+        if ($this->id && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        //check if requested member is part of managed groups
+        if ($login->isGroupManager()) {
+            foreach ($this->getGroups() as $g) {
+                if ($login->isGroupManager($g->getId())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

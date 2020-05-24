@@ -9,7 +9,7 @@
         <form action="{path_for name="doMailing"}" id="listform" method="post" enctype="multipart/form-data">
         <div class="mailing">
             <section class="mailing_infos">
-                <header class="ui-state-default ui-state-active">{_T string="Mailing informations"}</header>
+                <header class="ui-state-default ui-state-active">{_T string="Mailing information"}</header>
                     {include file="mailing_recipients.tpl"}
                 <div class="center">
     {if $mailing->current_step eq constant('Galette\Core\Mailing::STEP_SENT')}
@@ -341,12 +341,12 @@
             var _val = _this.val();
             switch (_val) {
                 case '{Galette\Core\GaletteMail::SENDER_PREFS}':
-                    _sender_name.val('{$preferences->pref_email_nom}');
-                    _sender_address.val('{$preferences->pref_email|escape:"js"}');
+                    _sender_name.val('{$preferences->pref_email_nom|escape:"javascript"}');
+                    _sender_address.val('{$preferences->pref_email|escape:"javascript"}');
                     break;
                 case '{Galette\Core\GaletteMail::SENDER_CURRENT}':
-                    _sender_name.val('{$sender_current['name']}');
-                    _sender_address.val('{$sender_current['email']|escape:"js"}');
+                    _sender_name.val('{$sender_current['name']|escape:"javascript"}');
+                    _sender_address.val('{$sender_current['email']|escape:"javascript"}');
                     break;
                 case '{Galette\Core\GaletteMail::SENDER_OTHER}':
                     _sender_name.val('');

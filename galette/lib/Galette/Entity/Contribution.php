@@ -38,7 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\IO\ExternalScript;
@@ -218,6 +218,22 @@ class Contribution
             while ($edate <= $bdate) {
                 $edate->modify('+1 year');
             }
+
+            if ($preferences->pref_membership_offermonths > 0) {
+                //count days until end of membership date
+                $diff1 = (int)$bdate->diff($edate)->format('%a');
+
+                //count days beetween end of membership date and offered months
+                $tdate = clone $edate;
+                $tdate->modify('-' . $preferences->pref_membership_offermonths . ' month');
+                $diff2 = (int)$edate->diff($tdate)->format('%a');
+
+                //when number of days until end of membership is less than for offered months, it's free :)
+                if ($diff1 <= $diff2) {
+                    $edate->modify('+1 year');
+                }
+            }
+
             $this->_end_date = $edate->format('Y-m-d');
         } elseif ($preferences->pref_membership_ext != '') {
             //case membership extension
@@ -379,7 +395,7 @@ class Contribution
                         break;
                     case Adherent::PK:
                         if ($value != '') {
-                            $this->_member = $value;
+                            $this->_member = (int)$value;
                         }
                         break;
                     case ContributionsTypes::PK:
@@ -540,7 +556,7 @@ class Contribution
      */
     public function store()
     {
-        global $hist;
+        global $hist, $emitter;
 
         if (count($this->errors) > 0) {
             throw new \RuntimeException(
@@ -598,6 +614,8 @@ class Contribution
                         Adherent::getSName($this->zdb, $this->_member)
                     );
                     $success = true;
+
+                    $emitter->emit('contribution.add', $this);
                 } else {
                     $hist->add(_T("Fail to add new contribution."));
                     throw new \Exception(
@@ -627,6 +645,8 @@ class Contribution
                     );
                 }
                 $success = true;
+
+                $emitter->emit('contribution.edit', $this);
             }
             //update deadline
             if ($this->isCotis()) {
@@ -700,6 +720,8 @@ class Contribution
      */
     public function remove($transaction = true)
     {
+        global $emitter;
+
         try {
             if ($transaction) {
                 $this->zdb->connection->beginTransaction();
@@ -719,6 +741,7 @@ class Contribution
             if ($transaction) {
                 $this->zdb->connection->commit();
             }
+            $emitter->emit('contribution.remove', $this);
             return true;
         } catch (\Exception $e) {
             if ($transaction) {
@@ -792,6 +815,9 @@ class Contribution
      */
     public static function getDueDate(Db $zdb, $member_id)
     {
+        if (!$member_id) {
+            return '';
+        }
         try {
             $select = $zdb->select(self::TABLE, 'c');
             $select->columns(
@@ -937,7 +963,7 @@ class Contribution
      * Execute post contribution script
      *
      * @param ExternalScript $es     External script to execute
-     * @param array          $extra  Extra informations on contribution
+     * @param array          $extra  Extra information on contribution
      *                               Defaults to null
      * @param array          $pextra Extra information on payment
      *                               Defaults to null
@@ -971,6 +997,7 @@ class Contribution
         }
 
         $contrib = array(
+            'id'        => (int)$this->_id,
             'date'      => $this->_date,
             'type'      => $this->getRawType(),
             'amount'    => $this->amount,
@@ -985,6 +1012,7 @@ class Contribution
         if ($this->_member !== null) {
             $m = new Adherent($this->zdb, (int)$this->_member);
             $member = array(
+                'id'            => (int)$this->_member,
                 'name'          => $m->sfullname,
                 'email'         => $m->email,
                 'organization'  => ($m->isCompany() ? 1 : 0),
@@ -1014,7 +1042,7 @@ class Contribution
                 "script:\n" . $es->getOutput(),
                 Analog::ERROR
             );
-            $res = _T("Contribution informations") . "\n";
+            $res = _T("Contribution information") . "\n";
             $res .= print_r($contrib, true);
             $res .= "\n\n" . _T("Script output") . "\n";
             $res .= $es->getOutput();

@@ -2,12 +2,12 @@
 
 {block name="content"}
 {if isset($members.list)}
-        <form action="{if $contribution->id}{path_for name="contribution" data=["type" => $type, "action" => "edit", "id" => $contribution->id]}{else}{path_for name="contribution" data=["type" => $type, "action" => "add"]}{/if}" method="post">
+        <form action="{if $contribution->id}{path_for name="doEditContribution" data=["type" => $type, "id" => $contribution->id]}{else}{path_for name="doAddContribution" data=["type" => $type]}{/if}" method="post">
         <div class="bigtable">
     {if $contribution->isTransactionPart()}
         {assign var="mid" value=$contribution->transaction->member}
             <table id="transaction_detail">
-                <caption>{_T string="Related transaction informations"}</caption>
+                <caption>{_T string="Related transaction information"}</caption>
                 <thead>
                     <tr>
                         <td colspan="5">
@@ -42,13 +42,26 @@
             <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
             <fieldset class="cssform">
                 <legend class="ui-state-active ui-corner-top">
-    {if $type eq {_T string="fee" domain="routes"}}
+    {if $type eq "fee"}
                     {_T string="Select contributor and membership fee type"}
-                    <a href="{path_for name="contribution" data=["type" => {_T string="fee" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?trans_id={$transaction->id}" class="button notext fright" id="btnadd" title="{_T string="Create a new fee that will be attached to the current transaction"}">{_T string="New attached fee"}</a>
     {else}
-        {_T string="Select contributor and donation type"}
-
-                    <a href="{path_for name="contribution" data=["type" => {_T string="donation" domain="routes"}, "action" => {_T string="add" domain="routes"}]}?trans_id={$transaction->id}" class="button notext fright" id="btnadddon" title="{_T string="Create a new donation that will be attached to the current transaction"}">{_T string="New attached donation"}</a>
+                    {_T string="Select contributor and donation type"}
+    {/if}
+    {if $contribution->isTransactionPart() && $contribution->transaction->getMissingAmount() > 0}
+                    <a
+                        href="{path_for name="addContribution" data=["type" => "fee"]}?trans_id={$contribution->transaction->id}"
+                        class="button fright tooltip"
+                        title="{_T string="Create a new fee that will be attached to the current transaction"}">
+                        <i class="fas fa-user-check"></i>
+                        <span class="sr-only">{_T string="New attached fee"}</span>
+                    </a>
+                    <a
+                        href="{path_for name="addContribution" data=["type" => "donation"]}?trans_id={$contribution->transaction->id}"
+                        class="button fright tooltip"
+                        title="{_T string="Create a new donation that will be attached to the current transaction"}">
+                        <i class="fas fa-gift"></i>
+                        <span class="sr-only">{_T string="New attached donation"}</span>
+                    </a>
     {/if}
 </legend>
                 <p>
@@ -76,7 +89,7 @@
     {if $type eq "fee"}
                 <noscript>
                     <div class="button-container" id="reloadcont">
-                        <input type="submit" id="btnreload" name="btnreload" value="{_T string="Reload"}" title="{_T string="Reload date informations according to selected member and contribution type"}"/>
+                        <input type="submit" id="btnreload" name="btnreload" value="{_T string="Reload"}" title="{_T string="Reload date information according to selected member and contribution type"}"/>
                     </div>
                 </noscript>
     {/if}
@@ -89,7 +102,11 @@
                     <input type="text" name="montant_cotis" id="montant_cotis" value="{$contribution->amount}" maxlength="10"{if $required.montant_cotis eq 1} required="required"{/if}/>
                 </p>
                 {* payment type *}
-                {include file="forms_types/payment_types.tpl" current=$contribution->payment_type varname="type_paiement_cotis"}
+                {assign var="ptype" value=$contribution->payment_type}
+                {if $ptype == null}
+                    {assign var="ptype" value=constant('Galette\Entity\PaymentType::CHECK')}
+                {/if}
+                {include file="forms_types/payment_types.tpl" current=$ptype varname="type_paiement_cotis"}
                 <p>
                     <label class="bline" for="date_enreg">
                         {_T string="Record date:"}

@@ -89,7 +89,7 @@ class FakeData
     protected $groups       = [];
     protected $mids         = [];
     protected $transactions = [];
-    protected $titles;
+    protected $titles       = [];
     protected $status;
     protected $contrib_types;
 
@@ -231,7 +231,7 @@ class FakeData
      *
      * @return \Faker\Factory
      */
-    private function getFaker()
+    public function getFaker()
     {
         if ($this->faker === null) {
             $this->faker = \Faker\Factory::create($this->i18n->getID());
@@ -406,10 +406,6 @@ class FakeData
         $creation_date = $faker->dateTimeBetween($startDate = '-3 years', $endDate = 'now');
         $mdp_adh = $faker->password();
 
-        if ($this->titles === null) {
-            $this->titles = Titles::getArrayList($this->zdb);
-        }
-
         if ($this->status === null) {
             $status = new Status($this->zdb);
             $this->status = array_keys($status->getList());
@@ -471,14 +467,7 @@ class FakeData
     {
         $file = GALETTE_TEMPIMAGES_PATH . 'fakephoto.jpg';
         if (!defined('GALETTE_TESTS')) {
-            $faker = $this->getFaker();
-            $url = $faker->unique()->imageUrl(
-                $width = 800,
-                $height = 600,
-                'people',
-                true,
-                'Galette fake data'
-            );
+            $url = 'https://loremflickr.com/800/600/people';
         } else {
             $url = GALETTE_ROOT . '../tests/fake_image.jpg';
         }
@@ -600,6 +589,7 @@ class FakeData
 
                     if (count($this->transactions) > 0) {
                         if ($faker->boolean($chanceOfGettingTrue = 90)) {
+                            $transaction = $faker->randomElement($this->transactions);
                             $contrib::setTransactionPart(
                                 $this->zdb,
                                 $transaction->id,

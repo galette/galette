@@ -114,7 +114,7 @@ trait DynamicsTrait
                             if ($fields[$field_id]->isRequired() && (trim($value) === '' || $value == null)) {
                                 $this->errors[] = str_replace(
                                     '%field',
-                                    $field->getName(),
+                                    $fields[$field_id]->getName(),
                                     _T('Missing required field %field')
                                 );
                             } else {
@@ -324,5 +324,23 @@ trait DynamicsTrait
     public function getErrors()
     {
         return $this->errors;
+    }
+
+    /**
+     * Validate data for dynamic fields
+     * Set valid data in current object, also resets errors list
+     *
+     * @param array  $values Dynamic fields values
+     * @param string $prefix Prefix to replace, default to 'dynfield_'
+     *
+     * @return void
+     */
+    public function dynamicsValidate($values, $prefix = 'dynfield_')
+    {
+        $dfields = [];
+        foreach ($values as $key => $value) {
+            $dfields[str_replace($prefix, 'info_field_', $key)] = $value;
+        }
+        return $this->dynamicsCheck($dfields);
     }
 }

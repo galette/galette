@@ -38,7 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Core\GaletteMail;
 use Galette\Entity\Texts;
 use Galette\Core\Db;
@@ -206,7 +206,7 @@ class Reminder
     }
 
     /**
-     * Did member had a mail when reminder was sent?
+     * Did member had an email when reminder was sent?
      *
      * @return boolean
      */
@@ -269,18 +269,18 @@ class Reminder
                 $this->success = true;
                 $msg = '';
                 if ($type_name == 'late') {
-                    $msg = _T("Sent reminder mail for late membership");
+                    $msg = _T("Sent reminder email for late membership");
                 } else {
-                    $msg = _T("Sent reminder mail for impending membership");
+                    $msg = _T("Sent reminder email for impending membership");
                 }
                 $this->msg = $details;
                 $hist->add($msg, $details);
             } else {
                 $this->success = false;
                 if ($type_name == 'late') {
-                    $msg = _T("A problem happened while sending late membership mail");
+                    $msg = _T("A problem happened while sending late membership email");
                 } else {
-                    $msg = _T("A problem happened while sending impending membership mail");
+                    $msg = _T("A problem happened while sending impending membership email");
                 }
                 $this->msg = $details;
                 $hist->add($str, $details);
@@ -291,7 +291,7 @@ class Reminder
             $str = str_replace(
                 '%membership',
                 $type_name,
-                _T("Unable to send %membership reminder (no mail address).")
+                _T("Unable to send %membership reminder (no email address).")
             );
             $details = str_replace(
                 array(

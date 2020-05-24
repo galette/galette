@@ -38,6 +38,8 @@
 use Galette\Core\Install as GaletteInstall;
 use Galette\Core\Db as GaletteDb;
 use Analog\Analog;
+use Analog\Handler;
+use Analog\Handler\LevelName;
 
 //set a flag saying we work from installer
 //that way, in galette.inc.php, we'll only include relevant parts
@@ -71,10 +73,6 @@ $app = new \Slim\App(
     )
 );
 require_once '../includes/dependencies.php';
-
-if (isset($_GET['pref_lang'])) {
-    $i18n->changeLanguage($_GET['pref_lang']);
-}
 
 if (isset($_POST['abort_btn'])) {
     if (isset($session[md5(GALETTE_ROOT)])) {
@@ -116,21 +114,21 @@ if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     $now = new \DateTime();
     $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
         $now->format('Y-m-d')  . '.log';
-    $galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
+    $galette_debug_log = LevelName::init(Handler\File::init($dbg_log_path));
 
-    if (GALETTE_MODE === 'DEV') {
+    if (defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true) {
         //logs everything in PHP logs (per chance /var/log/http/error_log or /var/log/php-fpm/error.log)
-        $galette_run_log = \Analog\Handler\Stderr::init();
+        $galette_run_log = \Analog\Handler\Syslog::init('galette', 'user');
     } else {
         $logfile = 'galette_install';
         $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
-        $galette_run_log = \Analog\Handler\File::init($log_path);
+        $galette_run_log = LevelName::init(Handler\File::init($log_path));
     }
 
     Analog::handler(
-        \Analog\Handler\Multi::init(
+        Handler\Multi::init(
             array (
-                Analog::NOTICE  => \Analog\Handler\Threshold::init(
+                Analog::NOTICE  => Handler\Threshold::init(
                     $galette_run_log,
                     GALETTE_LOG_LVL
                 ),
@@ -243,20 +241,10 @@ header('Content-Type: text/html; charset=UTF-8');
     <head>
         <title><?php echo _T("Galette Installation") . ' - ' . $install->getStepTitle(); ?></title>
         <meta charset="UTF-8"/>
-        <link rel="stylesheet" type="text/css" href="./themes/default/galette.css"/>
+        <link rel="stylesheet" type="text/css" href="./assets/css/galette-main.bundle.min.css" />
         <link rel="stylesheet" type="text/css" href="./themes/default/install.css"/>
-        <link rel="stylesheet" type="text/css" href="./themes/default/jquery-ui/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>.custom.css"/>
-        <script type="text/javascript" src="./js/jquery/jquery-<?php echo JQUERY_VERSION; ?>.min.js"></script>
-        <script type="text/javascript" src="./js/jquery/jquery-migrate-<?php echo JQUERY_MIGRATE_VERSION; ?>.min.js"></script>
-        <script type="text/javascript" src="./js/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.widget.min.js"></script>
-        <script type="text/javascript" src="./js//jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.button.min.js"></script>
-        <script type="text/javascript" src="./js/jquery/jquery-ui-<?php echo JQUERY_UI_VERSION; ?>/jquery.ui.tooltip.min.js"></script>
-        <script type="text/javascript" src="./js/jquery/jquery.bgFade.js"></script>
-        <script type="text/javascript" src="./js/common.js"></script>
+        <script type="text/javascript" src="./assets/js/galette-main.bundle.min.js"></script>
         <link rel="shortcut icon" href="./themes/default/images/favicon.png" />
-        <!--[if lt IE9]>
-            <script type="text/javascript" src="./js/html5-ie.js"></script>
-        <!endif]-->
     </head>
     <body>
         <section>
@@ -264,20 +252,27 @@ header('Content-Type: text/html; charset=UTF-8');
                 <h1 id="titre">
                     <?php echo _T("Galette installation") . ' - ' . $install->getStepTitle(); ?>
                 </h1>
-                <ul id="langs">
+                <nav id="plang_selector" class="onhover">
+                    <a href="#plang_selector" class="tooltip" aria-expanded="false" aria-controls="lang_selector" title="<?php echo _T("Change language"); ?>">
+                        <i class="fas fa-language"></i>
+                        <?php echo $i18n->getName(); ?>
+                    </a>
+                    <ul id="lang_selector">
 <?php
 foreach ($i18n->getList() as $langue) {
     ?>
-                    <li><a href="?pref_lang=<?php echo $langue->getID(); ?>"><img src="<?php echo $langue->getFlag(); ?>" alt="<?php echo $langue->getName(); ?>" lang="<?php echo $langue->getAbbrev(); ?>" class="flag"/></a></li>
+                        <li <?php if ($i18n->getAbbrev() == $langue->getAbbrev()) { echo ' selected="selected"'; } ?>>
+                            <a href="?ui_pref_lang=<?php echo $langue->getID(); ?>" lang="<?php echo $langue->getAbbrev(); ?>"><?php echo $langue->getName(); ?></a>
+                        </li>
     <?php
 }
 ?>
-                </ul>
+                    </ul>
+                </nav>
             </header>
 <?php
 if (count($error_detected) > 0) {
     ?>
-
             <div id="errorbox">
                 <h1><?php echo _T("- ERROR -"); ?></h1>
                 <ul>

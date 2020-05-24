@@ -48,7 +48,7 @@ if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
     echo 'Galette is NOT compliant with your current PHP version. ' .
         'Galette requires PHP ' . GALETTE_PHP_MIN  .
         ' minimum and current version is ' . phpversion();
-    die();
+    die(1);
 }
 
 $time_start = microtime(true);
@@ -83,6 +83,8 @@ if (isset($installer) && $installer !== true) {
 }
 
 use Analog\Analog;
+use Analog\Handler;
+use Analog\Handler\LevelName;
 use Galette\Core;
 
 /*
@@ -104,9 +106,16 @@ if (defined('GALETTE_XHPROF_PATH')
     $profiler->start();
 }
 
-define('GALETTE_VERSION', 'v0.9.3-dev');
+define('GALETTE_NIGHTLY', false);
+define('GALETTE_VERSION', 'v0.9.4-dev');
+
+//Version to display
+if (!defined('GALETTE_HIDE_VERSION')) {
+    define('GALETTE_DISPLAY_VERSION', \Galette\Core\Galette::gitVersion(false));
+}
+
 define('GALETTE_COMPAT_VERSION', '0.9.2');
-define('GALETTE_DB_VERSION', '0.920');
+define('GALETTE_DB_VERSION', '0.940');
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD, MAINT or DEMO
 }
@@ -138,50 +147,41 @@ set_include_path(
 /*------------------------------------------------------------------------------
 Logger stuff
 ------------------------------------------------------------------------------*/
-if (!$cron && !defined('GALETTE_TESTS')) {
-    //set custom error handler
-    set_error_handler(
-        array(
-            "Galette\Core\Error",
-            "errorHandler"
-        )
-    );
-}
 
+//change default format so the 3rd param is a string for level name
+Analog::$format = "%s - %s - %s - %s\n";
 $galette_run_log = null;
-$galette_debug_log = \Analog\Handler\Ignore::init();
+$galette_debug_log = Handler\Ignore::init();
 
 if (!defined('GALETTE_LOG_LVL')) {
     if (GALETTE_MODE === 'DEV') {
-        define('GALETTE_LOG_LVL', \Analog\Analog::DEBUG);
+        define('GALETTE_LOG_LVL', Analog::DEBUG);
     } elseif (defined('GALETTE_TESTS')) {
-        define('GALETTE_LOG_LVL', \Analog\Analog::ERROR);
+        define('GALETTE_LOG_LVL', Analog::NOTICE);
     } else {
-        define('GALETTE_LOG_LVL', \Analog\Analog::WARNING);
+        define('GALETTE_LOG_LVL', Analog::WARNING);
     }
 }
 
 if (defined('GALETTE_TESTS')) {
     $log_path = GALETTE_LOGS_PATH . 'tests.log';
-    $galette_run_log = \Analog\Handler\File::init($log_path);
+    $galette_run_log = LevelName::init(Handler\File::init($log_path));
 } else {
     if ((!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) && !$cron) {
-        if (GALETTE_LOG_LVL >= \Analog\Analog::INFO) {
+        if (GALETTE_LOG_LVL >= Analog::INFO) {
             $now = new \DateTime();
             $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
                 $now->format('Y-m-d')  . '.log';
-            $galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
+            $galette_debug_log = LevelName::init(Handler\File::init($dbg_log_path));
         } else {
-            $galette_debug_log = \Analog\Handler\Ignore::init();
+            $galette_debug_log = Handler\Ignore::init();
         }
     }
     $galette_log_var = null;
 
-    if (GALETTE_MODE === 'DEV' || $cron
-        || ( defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true )
-    ) {
+    if (defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true) {
         //logs everything in PHP logs (per chance /var/log/http/error_log or /var/log/php-fpm/error.log)
-        $galette_run_log = \Analog\Handler\Stderr::init();
+        $galette_run_log = Handler\Syslog::init('galette', 'user');
     } else {
         if (!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) {
             //logs everything in galette log file
@@ -190,9 +190,9 @@ if (defined('GALETTE_TESTS')) {
                 $logfile = 'galette_run';
             }
             $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
-            $galette_run_log = \Analog\Handler\File::init($log_path);
+            $galette_run_log = LevelName::init(Handler\File::init($log_path));
         } else {
-            $galette_run_log = \Analog\Handler\Variable::init($galette_log_var);
+            $galette_run_log = LevelName::init(Handler\Variable::init($galette_log_var));
         }
     }
     if (!$installer) {
@@ -201,9 +201,9 @@ if (defined('GALETTE_TESTS')) {
 }
 
 Analog::handler(
-    \Analog\Handler\Multi::init(
+    Handler\Multi::init(
         array (
-            Analog::NOTICE  => \Analog\Handler\Threshold::init(
+            Analog::NOTICE  => Handler\Threshold::init(
                 $galette_run_log,
                 GALETTE_LOG_LVL
             ),
@@ -250,11 +250,6 @@ if (!$installer and !defined('GALETTE_TESTS')) {
                 'GALETTE_THEME',
                 'themes/' . $preferences->pref_theme . '/'
             );
-        }
-
-        /** TODO: login is now handled in dependencies.php; the cron case should be aswell */
-        if ($cron) {
-            $login->logCron(basename($argv[0], '.php'));
         }
     } else {
         $needs_update = true;

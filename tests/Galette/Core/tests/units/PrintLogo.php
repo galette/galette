@@ -67,13 +67,6 @@ class PrintLogo extends atoum
         global $zdb;
         $this->zdb = new \Galette\Core\Db();
         $zdb = $this->zdb;
-        if (!defined('_CURRENT_THEME_PATH')) {
-            $preferences = new \Galette\Core\Preferences($this->zdb);
-            define(
-                '_CURRENT_THEME_PATH',
-                GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
-            );
-        }
     }
 
     /**

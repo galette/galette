@@ -9,6 +9,9 @@
                 <li><a href="#mail">{_T string="E-Mail"}</a></li>
                 <li><a href="#labels">{_T string="Labels"}</a></li>
                 <li><a href="#cards">{_T string="Cards"}</a></li>
+{if $login->isAdmin()}
+                <li><a href="#security">{_T string="Security"}</a></li>
+{/if}
 {if $login->isSuperAdmin()}
                 <li><a href="#admin">{_T string="Admin"}</a></li>
 {/if}
@@ -23,6 +26,14 @@
                     <label for="pref_slogan" class="bline tooltip">{_T string="Association's short description:"}</label>
                     <span class="tip">{_T string="Enter here a short description for your association, it will be displayed on the index page and into pages' title."}</span>
                     <input{if isset($required.pref_slogan) and $required.pref_slogan eq 1} required="required"{/if} type="text" class="large" name="pref_slogan" id="pref_slogan" value="{$pref.pref_slogan}"/>
+                    <a
+                        href="{path_for name="dynamicTranslations" data=["text_orig" => {$pref.pref_slogan|escape}]}"
+                        class="tooltip"
+                    >
+                        <i class="fas fa-language"></i>
+                        <span class="sr-only">{_T string="Translate '%s'" pattern="/%s/" replace=$pref.pref_slogan}</span>
+                    </a>
+
                 </p>
                 <p>
                     <label for="pref_footer" class="bline tooltip">{_T string="Footer text:"}</label>
@@ -91,7 +102,7 @@
                     <span class="tip">{_T string="Date on which you registered your Galette instance."}</span>
                     <span>
                         {if $pref.pref_registration_date}
-                            {assign var="regtxt" value={_T string="Update your informations"}}
+                            {assign var="regtxt" value={_T string="Update your information"}}
                             {$pref.pref_registration_date|date_format:"%a %d/%m/%Y - %R"}
                         {else}
                             {assign var="regtxt" value={_T string="Register"}}
@@ -131,15 +142,15 @@
                 <legend>{_T string="Galette's parameters"}</legend>
                 <p>
                     <label for="pref_lang" class="bline">{_T string="Default language:"}</label>
-                    <select name="pref_lang" id="pref_lang" class="lang nochosen">
+                    <select name="pref_lang" id="pref_lang" class="lang">
 {foreach item=langue from=$languages}
-                        <option value="{$langue->getID()}" {if $pref.pref_lang eq $langue->getID()}selected="selected"{/if} style="background-image: url({base_url}/{$langue->getFlag()});">{$langue->getName()|ucfirst}</option>
+                        <option value="{$langue->getID()}" {if $pref.pref_lang eq $langue->getID()}selected="selected"{/if}>{$langue->getName()}</option>
 {/foreach}
                     </select>
                 </p>
                 {*<p>
                     <label for="pref_theme" class="bline">{_T string="Default theme:"}</label>
-                    <select name="pref_theme" id="pref_theme" class="nochosen">
+                    <select name="pref_theme" id="pref_theme">
 {foreach item=theme from=$themes}
                         <option value="{$theme}" {if $pref.pref_theme eq $theme}selected="selected"{/if}>{$theme|ucfirst}</option>
 {/foreach}
@@ -147,26 +158,38 @@
                 </p>*}
                 <p>
                     <label for="pref_numrows" class="bline">{_T string="Lines / Page:"}</label>
-                    <select name="pref_numrows" id="pref_numrows" class="nochosen">
+                    <select name="pref_numrows" id="pref_numrows">
                         {html_options options=$pref_numrows_options selected=$pref.pref_numrows}
                     </select>
                 </p>
                 <p>
+
+                    <label for="pref_redirect_on_create" class="bline">{_T string="After member creation:"}</label>
+                    <select name="pref_redirect_on_create" id="pref_redirect_on_create">
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_DEFAULT')} selected="selected"{/if}>{_T string="create a new contribution (default action)"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_TRANS')} selected="selected"{/if}>{_T string="create a new transaction"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_NEW')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_NEW')} selected="selected"{/if}>{_T string="create another new member"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_SHOW')} selected="selected"{/if}>{_T string="show member"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_LIST')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_LIST')} selected="selected"{/if}>{_T string="go to members list"}</option>
+                        <option value="{constant('Galette\Entity\Adherent::AFTER_ADD_HOME')}"{if $pref.pref_redirect_on_create  == constant('Galette\Entity\Adherent::AFTER_ADD_HOME')} selected="selected"{/if}>{_T string="go to main page"}</option>
+                    </select>
+                </p>
+                <p>
                     <label for="pref_log" class="bline">{_T string="Logging level:"}</label>
-                    <select name="pref_log" id="pref_log" class="nochosen">
+                    <select name="pref_log" id="pref_log">
                         <option value="{Galette\Core\Preferences::LOG_DISABLED}" {if $pref.pref_log eq constant('Galette\Core\Preferences::LOG_DISABLED')}selected="selected"{/if}>{_T string="Disabled"}</option>
                         <option value="{Galette\Core\Preferences::LOG_ENABLED}" {if $pref.pref_log eq constant('Galette\Core\Preferences::LOG_ENABLED')}selected="selected"{/if}>{_T string="Enabled"}</option>
                     </select>
                 </p>
                 <p>
                     <label for="pref_statut" class="bline">{_T string="Default membership status:"}</label>
-                    <select name="pref_statut" id="pref_statut" class="nochosen">
+                    <select name="pref_statut" id="pref_statut">
                         {html_options options=$statuts selected=$pref.pref_statut}
                     </select>
                 </p>
                 <p>
                     <label for="pref_filter_account" class="bline">{_T string="Default account filter:"}</label>
-                    <select name="pref_filter_account" id="pref_filter_account" class="nochosen">
+                    <select name="pref_filter_account" id="pref_filter_account">
                         {html_options options=$accounts_options selected=$pref.pref_filter_account}
                     </select>
                 </p>
@@ -181,12 +204,17 @@
                     <span class="exemple">{_T string="(dd/mm)"}</span>
                 </p>
                 <p>
+                    <label for="pref_membership_offermonths" class="bline tooltip">{_T string="Number of months offered:"}</label>
+                    <span class="tip">{_T string="When using the beginning of membership option; you can offer the last months of the year."}<br/>{_T string="Let's say you offer last 2 months, and have a renewal on 31th of December. All created contributions in current year will be valid until this date, but as of October, they will be valid for the entire next year."}</span>
+                    <input type="number" name="pref_membership_offermonths" min="0" id="pref_membership_offermonths" value="{$pref.pref_membership_offermonths}" maxlength="5"{if isset($required.pref_membership_offermonths) and $required.pref_membership_offermonths eq 1} required="required"{/if}/>
+                </p>
+                <p>
                     <label for="pref_bool_publicpages" class="bline">{_T string="Public pages enabled?"}</label>
                     <input type="checkbox" name="pref_bool_publicpages" id="pref_bool_publicpages" value="1" {if $pref.pref_bool_publicpages} checked="checked"{/if}{if isset($required.pref_bool_publicpages) and $required.pref_bool_publicpages eq 1} required="required"{/if}/>
                 </p>
                 <p id="publicpages_visibility"{if !$pref.pref_bool_publicpages} class="hidden"{/if}>
                     <label for="pref_publicpages_visibility" class="bline">{_T string="Show public pages for"}</label>
-                    <select name="pref_publicpages_visibility" id="pref_publicpages_visibility" class="nochosen">
+                    <select name="pref_publicpages_visibility" id="pref_publicpages_visibility">
                         <option value="{Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC}"{if $pref.pref_publicpages_visibility eq constant('Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC')} selected="selected"{/if}>{_T string="Everyone"}</option>
                         <option value="{Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED}"{if $pref.pref_publicpages_visibility eq constant('Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED')} selected="selected"{/if}>{_T string="Up to date members"}</option>
                         <option value="{Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE}"{if $pref.pref_publicpages_visibility eq constant('Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PRIVATE')} selected="selected"{/if}>{_T string="Admin and staff only"}</option>
@@ -230,7 +258,6 @@
                 <p>
                     <label for="pref_email" class="bline">{_T string="Sender Email:"}</label>
                     <input type="text" name="pref_email" id="pref_email" value="{$pref.pref_email}" maxlength="100" size="30"{if isset($required.pref_email) and $required.pref_email eq 1} required="required"{/if}/>
-                    <span class="exemple">{_T string="(You can enter several emails separated with a comma. First address will be the default one.)"}</span>
                 </p>
                 <p>
                     <label for="pref_email_reply_to" class="bline tooltip">{_T string="Reply-To Email:"}</label>
@@ -238,9 +265,18 @@
                     <input type="text" name="pref_email_reply_to" id="pref_email_reply_to" value="{$pref.pref_email_reply_to}" maxlength="100" size="30"{if isset($required.pref_email_reply_to) and $required.pref_email_reply_to eq 1} required="required"{/if}/>
                 </p>
                 <p>
+        {assign var="pref_email_newadh" value=""}
+        {foreach from=$preferences->vpref_email_newadh item=vmail_newadh}
+            {if $vmail_newadh@first }
+                {assign var="pref_email_newadh" value=$vmail_newadh}
+            {else}
+                {assign var="pref_email_newadh" value=$pref_email_newadh|cat:",{$vmail_newadh}"}
+            {/if}
+        {/foreach}
+
                     <label for="pref_email_newadh" class="bline tooltip">{_T string="Members administrator's Email:"}</label>
                     <span class="tip">{_T string="Recipient of new online registation and edition emails"}</span>
-                    <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{$pref.pref_email_newadh}" maxlength="100" size="30"{if isset($required.pref_email_newadh) and $required.pref_email_newadh eq 1} required="required"{/if}/>
+                    <input type="text" name="pref_email_newadh" id="pref_email_newadh" value="{$pref_email_newadh}" maxlength="100" size="30"{if isset($required.pref_email_newadh) and $required.pref_email_newadh eq 1} required="required"{/if}/>
                     <span class="exemple">{_T string="(You can enter several emails separated with a comma. First address will be the default one.)"}</span>
                 </p>
                 <p>
@@ -249,8 +285,8 @@
                     <input type="checkbox" name="pref_bool_mailadh" id="pref_bool_mailadh" value="1" {if $pref.pref_bool_mailadh eq 1}checked="checked"{/if}{if isset($required.pref_bool_mailadh) and $required.pref_bool_mailadh eq 1} required="required"{/if}/>
                 </p>
                 <p>
-                    <label for="pref_bool_wrap_mails" class="bline tooltip">{_T string="Wrap text mails?"}</label>
-                    <span class="tip">{_T string="Automatically wrap text mails before sending. Make sure to wrap yourself if you disable that. Please note that current editing mailing will not be affected by a change."}</span>
+                    <label for="pref_bool_wrap_mails" class="bline tooltip">{_T string="Wrap emails text?"}</label>
+                    <span class="tip">{_T string="Automatically wrap emails texts before sending. Make sure to wrap yourself if you disable that. Please note that current editing mailing will not be affected by a change."}</span>
                     <input type="checkbox" name="pref_bool_wrap_mails" id="pref_bool_wrap_mails" value="1" {if $pref.pref_bool_wrap_mails eq 1}checked="checked"{/if}{if isset($required.pref_bool_wrap_mails) and $required.pref_bool_wrap_mails eq 1} required="required"{/if}/>
                 </p>
 
@@ -288,7 +324,7 @@
                         class="button"
                     >
                         <i class="fas fa-rocket" aria-hidden="true"></i>
-                        {_T string="Test mail settings"}
+                        {_T string="Test email settings"}
                     </a>
                 </div>
                 <div id="smtp_parameters"{if $pref.pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_SMTP')} style="display: none;"{/if}>
@@ -387,35 +423,48 @@
                 <p>
                     <label for="pref_card_abrev" class="bline">{_T string="Short Text (Card Center):"}</label>
                     <input type="text" name="pref_card_abrev" id="pref_card_abrev" value="{$pref.pref_card_abrev}" size="10" maxlength="10"{if isset($required.pref_card_abrev) and $required.pref_card_abrev eq 1} required="required"{/if}/>
+
+                    <a
+                        href="{path_for name="dynamicTranslations" data=["text_orig" => {$pref.pref_card_abrev|escape}]}"
+                        class="tooltip"
+                    >
+                        <i class="fas fa-language"></i>
+                        <span class="sr-only">{_T string="Translate '%s'" pattern="/%s/" replace=$pref.pref_card_abrev}</span>
+                    </a>
                     <span class="exemple">{_T string="(10 characters max)"}</span>
                 </p>
                 <p>
                     <label for="pref_card_strip" class="bline">{_T string="Long Text (Bottom Line):"}</label>
                     <input type="text" name="pref_card_strip" id="pref_card_strip" value="{$pref.pref_card_strip}" size="40" maxlength="65"{if isset($required.pref_card_strip) and $required.pref_card_strip eq 1} required="required"{/if}/>
+                    <a
+                        href="{path_for name="dynamicTranslations" data=["text_orig" => {$pref.pref_card_strip|escape}]}"
+                        class="tooltip"
+                    >
+                        <i class="fas fa-language"></i>
+                        <span class="sr-only">{_T string="Translate '%s'" pattern="/%s/" replace=$pref.pref_card_strip}</span>
+                    </a>
                     <span class="exemple">{_T string="(65 characters max)"}</span>
                 </p>
                 <p>
                     <label for="pref_card_tcol" class="bline tooltip">{_T string="Strip Text Color:"}</label>
                     <span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
-                    <input type="text" name="pref_card_tcol" id="pref_card_tcol" value="{$pref.pref_card_tcol}" size="7" maxlength="7" class="hex"{if isset($required.pref_card_tcol) and $required.pref_card_tcol eq 1} required="required"{/if}/>
+                    <input type="color" name="pref_card_tcol" id="pref_card_tcol" value="{$pref.pref_card_tcol}" size="7" maxlength="7"{if isset($required.pref_card_tcol) and $required.pref_card_tcol eq 1} required="required"{/if}/>
                 </p>
-                <div class="subtitle">{_T string="Strip Background colors:"} <span class="exemple">{_T string="(Strip color will change according to member's status)"}</span></div>
                 <p>
                     <label for="pref_card_scol" class="bline tooltip">{_T string="Active Member Color:"}</label>
                     <span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
-                    <input type="text" name="pref_card_scol" id="pref_card_scol" value="{$pref.pref_card_scol}" size="7" maxlength="7" class="hex"{if isset($required.pref_card_scol) and $required.pref_card_scol eq 1} required="required"{/if}/>
+                    <input type="color" name="pref_card_scol" id="pref_card_scol" value="{$pref.pref_card_scol}" size="7" maxlength="7"{if isset($required.pref_card_scol) and $required.pref_card_scol eq 1} required="required"{/if}/>
                 </p>
                 <p>
                     <label for="pref_card_bcol" class="bline tooltip">{_T string="Board Members Color:"}</label>
                     <span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
-                    <input type="text" name="pref_card_bcol" id="pref_card_bcol" value="{$pref.pref_card_bcol}" size="7" maxlength="7" class="hex"{if isset($required.pref_card_bcol) and $required.pref_card_bcol eq 1} required="required"{/if}/>
+                    <input type="color" name="pref_card_bcol" id="pref_card_bcol" value="{$pref.pref_card_bcol}" size="7" maxlength="7"{if isset($required.pref_card_bcol) and $required.pref_card_bcol eq 1} required="required"{/if}/>
                 </p>
                 <p>
                     <label for="pref_card_hcol" class="bline tooltip">{_T string="Honor Members Color:"}</label>
                     <span class="tip">{_T string="Hexadecimal color notation: #RRGGBB"}</span>
-                    <input type="text" name="pref_card_hcol" id="pref_card_hcol" value="{$pref.pref_card_hcol}" size="7" maxlength="7" class="hex"{if isset($required.pref_card_hcol) and $required.pref_card_hcol eq 1} required="required"{/if}/>
+                    <input type="color" name="pref_card_hcol" id="pref_card_hcol" value="{$pref.pref_card_hcol}" size="7" maxlength="7"{if isset($required.pref_card_hcol) and $required.pref_card_hcol eq 1} required="required"{/if}/>
                 </p>
-                <div class="subtitle">&nbsp;</div>
                 <p>
                     <label for="card_logo" class="bline"{if isset($required.card_logo) and $required.card_logo eq 1} required="required"{/if}>{_T string="Logo:"}</label>
 {if $print_logo->isCustom()}
@@ -436,7 +485,7 @@
                 </p>
                 <p>
                     <label for="pref_card_address" class="bline">{_T string="Address type:"}</label>
-                    <select name="pref_card_address" id="pref_card_address" class="nochosen">
+                    <select name="pref_card_address" id="pref_card_address">
                         <option value="0" {if $pref.pref_card_address eq 0}selected="selected"{/if}>{_T string="Email"}</option>
                         <option value="1" {if $pref.pref_card_address eq 1}selected="selected"{/if}>{_T string="MSN"}</option>
                         <option value="2" {if $pref.pref_card_address eq 2}selected="selected"{/if}>{_T string="Jabber"}</option>
@@ -453,7 +502,7 @@
                     <input type="text" name="pref_card_year" id="pref_card_year" value="{$pref.pref_card_year}" maxlength="9"{if isset($required.pref_card_year) and $required.pref_card_year eq 1} required="required"{/if}/>
                     <span class="exemple">{_T string="(Enter a year or two years with a separator)"}</span>
                 </p>
-                <div class="subtitle center">{_T string="Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 rows.<br/>Double check margins and spacings ;)"}</div>
+                <div class="center">{_T string="Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 rows.<br/>Double check margins and spacings ;)"}</div>
                 <p>
                     <label for="pref_card_marges_v" class="bline">{_T string="Vertical margins:"}</label>
                     <input type="text" name="pref_card_marges_v" id="pref_card_marges_v" value="{$pref.pref_card_marges_v}" maxlength="4"{if isset($required.pref_card_marges_v) and $required.pref_card_marges_v eq 1} required="required"{/if}/> mm
@@ -475,6 +524,48 @@
                     <span class="exemple">{_T string="(Integer)"}</span>
                 </p>
             </fieldset>
+
+{if $login->isAdmin()}
+            <fieldset class="cssform" id="security">
+                <legend>{_T string="Security parameters"}</legend>
+                <p>
+                    <label for="pref_password_length" class="bline tooltip" title="{_T string="Minimum password length required for all accounts. Minimal size is 6."}">{_T string="Password length:"}</label>
+                    <span class="tip">{_T string="Minimum password length required for all accounts. Minimal size is 6."}</span>
+                    <input type="number" name="pref_password_length" id="pref_password_length" value="{$pref.pref_password_length}" min="6" size="7" required="required"/>
+                </p>
+                <p>
+                    <label for="pref_password_blacklist" class="bline tooltip" title="{_T string="Enable password blacklists"}">{_T string="Enable blacklists:"}</label>
+                    <span class="tip">{_T string="If you enable blacklists; it will not be possible to use any of blacklisted passwords. A list is provided along with Galette, but you can add you owns."}</span>
+                    <input type="checkbox" name="pref_password_blacklist" id="pref_password_blacklist" value="1"{if $pref.pref_password_blacklist eq 1} checked="checked"{/if}/>
+                </p>
+                <p>
+                    <label for="pref_password_strength" class="bline tooltip" title="{_T string="Enforce password strength"}">{_T string="Password strength:"}</label>
+                    <span class="tip">
+                        {_T string="Enforce minimal password strength for all password."}<br/><br/>
+                        {_T string="Levels are:"}<br/>
+                        <em>* {_T string="None"}</em> {_T string="for no strength enforcement"}<br/>
+                        <em>* {_T string="Weak"}</em> {_T string="require at least one matched rule"}<br/>
+                        <em>* {_T string="Medium"}</em> {_T string="require at least two matched rules"}<br/>
+                        <em>* {_T string="Strong"}</em> {_T string="require at least three matched rules (recommended for most usages)"}</br/>
+                        <em>* {_T string="Very Strong"}</em> {_T string="requires all rules."}<br/><br/>
+                        {_T string="Rules include lower case characters, upper case characters, numbers, and special characters."}<br/><br/>
+                        {_T string="Note that with any enforcement level, user cannot use his personal information (name, login, ...) as password."}
+                    </span>
+                    <select name="pref_password_strength" id="pref_password_strength">
+                        <option value="{Galette\Core\Preferences::PWD_NONE}"{if $pref.pref_password_strength eq constant('Galette\Core\Preferences::PWD_NONE')} selected="selected"{/if}>{_T string="None (default)"}</option>
+                        <option value="{Galette\Core\Preferences::PWD_WEAK}"{if $pref.pref_password_strength eq constant('Galette\Core\Preferences::PWD_WEAK')} selected="selected"{/if}>{_T string="Weak"}</option>
+                        <option value="{Galette\Core\Preferences::PWD_MEDIUM}"{if $pref.pref_password_strength eq constant('Galette\Core\Preferences::PWD_MEDIUM')} selected="selected"{/if}>{_T string="Medium"}</option>
+                        <option value="{Galette\Core\Preferences::PWD_STRONG}"{if $pref.pref_password_strength eq constant('Galette\Core\Preferences::PWD_STRONG')} selected="selected"{/if}>{_T string="Strong"}</option>
+                        <option value="{Galette\Core\Preferences::PWD_VERY_STRONG}"{if $pref.pref_password_strength eq constant('Galette\Core\Preferences::PWD_VERY_STRONG')} selected="selected"{/if}>{_T string="Very strong"}</option>
+                    </select>
+                </p>
+                <p>
+                    <label for="test_password_strength" class="bline tooltip" title="{_T string="Test a password with current selected values."}">{_T string="Test a password:"}</label>
+                    <span class="tip">{_T string="Test a password with current selected values."}<br/>{_T string="Do not forget to save your preferences if you're happy with the result ;)"}</span>
+                    <input type="text" id="test_password_strength"/>
+                </p>
+            </fieldset>
+{/if}
 
 {if $login->isSuperAdmin()}
             <fieldset class="cssform" id="admin">
@@ -517,13 +608,7 @@
 
 {block name="javascripts"}
         <script type="text/javascript">
-            $('#prefs_tabs').tabs({
-                activate: function(event, ui) {
-                    $(ui.newPanel.selector + ' select').chosen({
-                        disable_search: true
-                    });
-                }
-            });
+            $('#prefs_tabs').tabs();
 
             $('#no,#php,#qmail').click(function(){
                 $('#smtp_parameters,#smtp_auth').hide();
@@ -538,31 +623,6 @@
 
 
             $(function(){
-                //for color pickers
-                // hex inputs
-                $('input.hex')
-                    .validHex()
-                    .keyup(function() {
-                        $(this).validHex();
-                    })
-                    .click(function(){
-                        $(this).addClass('focus');
-                        $('#picker').remove();
-                        $('div.picker-on').removeClass('picker-on');
-                        $(this).after('<div id="picker"></div>').parent().addClass('picker-on');
-                        $('#picker').farbtastic(this);
-                        return false;
-                    })
-                    .wrap('<div class="hasPicker"></div>')
-                    .applyFarbtastic();
-
-                //general app click cleanup
-                $('body').click(function() {
-                    $('div.picker-on').removeClass('picker-on');
-                    $('#picker').remove();
-                    $('input.focus, select.focus').removeClass('focus');
-                });
-
                 $('#pref_bool_publicpages').change(function(){
                     $('#publicpages_visibility').toggleClass('hidden');
                 });
@@ -571,7 +631,7 @@
                     e.preventDefault();
                     var _this = $(this);
                     var _value = $('#pref_email_newadh').val();
-                    $('body').append('<div id="testEmail" title="{_T string="Test mail settings" escape="js"}"><label for="email_adress">{_T string="Enter the email adress" escape="js"}</label><input type="text" name="email_adress" id="email_adress" value="' + _value + '"/></div>');
+                    $('body').append('<div id="testEmail" title="{_T string="Test email settings" escape="js"}"><label for="email_adress">{_T string="Enter the email adress" escape="js"}</label><input type="text" name="email_adress" id="email_adress" value="' + _value + '"/></div>');
                     $('#testEmail').dialog({
                         'modal': true,
                         'hide': 'fold',
@@ -588,7 +648,7 @@
                             $('#testEmail').remove();
                         },
                         buttons: {
-                            {_T string="Send"}: function() {
+                            "{_T string="Send" escape="js"}": function() {
                                 $.ajax({
                                     url: _this.attr('href'),
                                     type: 'GET',
@@ -616,33 +676,12 @@
                     });
                 });
 
-            {include file="telemetry.tpl" part="jsdialog"}
-            {include file="telemetry.tpl" part="jsregister"}
+                {include file="js_pwdcheck.tpl" selector="#pref_admin_pass"}
+                {include file="js_pwdcheck.tpl" selector="#test_password_strength" extra_data="pref_password_length: \$('#pref_password_length').val(),pref_password_blacklist: \$('#pref_password_blacklist').is(':checked'),pref_password_strength: \$('#pref_password_strength').val(),"}
+
+                {include file="telemetry.tpl" part="jsdialog"}
+                {include file="telemetry.tpl" part="jsregister"}
 
             });
-
-            //color pickers setup (sets bg color of inputs)
-            $.fn.applyFarbtastic = function() {
-                return this.each(function() {
-                    $('<div/>').farbtastic(this).remove();
-                });
-            };
-
-            // validation for hex inputs
-            $.fn.validHex = function() {
-
-                return this.each(function() {
-
-                    var value = $(this).val();
-                    value = value.replace(/[^#a-fA-F0-9]/g, ''); // non [#a-f0-9]
-                    if(value.match(/#/g) && value.match(/#/g).length > 1) value = value.replace(/#/g, ''); // ##
-                    if(value.indexOf('#') == -1) value = '#'+value; // no #
-                    if(value.length > 7) value = value.substr(0,7); // too many chars
-
-                    $(this).val(value);
-
-                });
-
-            };
         </script>
 {/block}

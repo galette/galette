@@ -41,9 +41,10 @@ use Galette\DynamicFields\DynamicField;
 use Galette\Entity\DynamicFieldsHandle;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Predicate\PredicateSet;
-use Zend\Db\Sql\Predicate\Operator;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Predicate\PredicateSet;
+use Laminas\Db\Sql\Predicate\Operator;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\Transaction;
@@ -281,7 +282,7 @@ class Members
      */
     public function removeMembers($ids)
     {
-        global $zdb, $hist;
+        global $zdb, $hist, $emitter;
 
         $list = array();
         if (is_numeric($ids)) {
@@ -295,10 +296,10 @@ class Members
             try {
                 $zdb->connection->beginTransaction();
 
-                //Retrieve some informations
+                //Retrieve some information
                 $select = $zdb->select(self::TABLE);
                 $select->columns(
-                    array(self::PK, 'nom_adh', 'prenom_adh')
+                    array(self::PK, 'nom_adh', 'prenom_adh', 'email_adh')
                 )->where->in(self::PK, $list);
 
                 $results = $zdb->execute($select);
@@ -327,6 +328,13 @@ class Members
                             );
                         }
                     }
+
+                    $emitter->emit('member.remove', [
+                        'id_adh' => $member->id_adh,
+                        'nom_adh' => $member->nom_adh,
+                        'prenom_adh' => $member->prenom_adh,
+                        'email_adh' => $member->email_adh
+                    ]);
                 }
 
                 //delete contributions
@@ -441,11 +449,10 @@ class Members
      * @param array   $fields     field(s) name(s) to get. Should be a string or
      *                            an array. If null, all fields will be
      *                            returned
-     * @param boolean $full       Whether to return full list
      *
      * @return Adherent[]|ResultSet
      */
-    public function getList($as_members = false, $fields = null, $full = true)
+    public function getList($as_members = false, $fields = null)
     {
         return $this->getMembersList(
             $as_members,
@@ -459,7 +466,7 @@ class Members
     }
 
     /**
-     * Get members list with public informations available
+     * Get members list with public information available
      *
      * @param boolean $with_photos get only members which have uploaded a
      *                             photo (for trombinoscope)
@@ -498,7 +505,7 @@ class Members
             return $members;
         } catch (\Exception $e) {
             Analog::log(
-                'Cannot list members with public informations (photos: '
+                'Cannot list members with public information (photos: '
                 . $with_photos . ') | ' . $e->getMessage(),
                 Analog::WARNING
             );
@@ -649,7 +656,8 @@ class Members
                     if ($photos) {
                         $select->join(
                             array('p' => PREFIX_DB . Picture::TABLE),
-                            'a.' . self::PK . '= p.' . self::PK
+                            'a.' . self::PK . '= p.' . self::PK,
+                            array()
                         );
                     }
                     break;
@@ -845,6 +853,17 @@ class Members
             $countSelect->reset($countSelect::COLUMNS);
             $countSelect->reset($countSelect::ORDER);
             $countSelect->reset($countSelect::HAVING);
+            $joins = $countSelect->joins;
+            $countSelect->reset($countSelect::JOINS);
+            foreach ($joins as $join) {
+                $countSelect->join(
+                    $join['name'],
+                    $join['on'],
+                    [],
+                    $join['type']
+                );
+                unset($join['columns']);
+            }
             $countSelect->columns(
                 array(
                     'count' => new Expression('count(DISTINCT a.' . self::PK . ')')
@@ -1064,14 +1083,13 @@ class Members
                         $now = new \DateTime();
                         $duedate = new \DateTime();
                         $duedate->modify('+1 month');
-                        $select->where
-                            ->greaterThanOrEqualTo(
-                                'date_echeance',
-                                $now->format('Y-m-d')
-                            )->lessThan(
-                                'date_echeance',
-                                $duedate->format('Y-m-d')
-                            );
+                        $select->where->greaterThanOrEqualTo(
+                            'date_echeance',
+                            $now->format('Y-m-d')
+                        )->lessThan(
+                            'date_echeance',
+                            $duedate->format('Y-m-d')
+                        );
                         break;
                     case self::MEMBERSHIP_LATE:
                         $select->where
@@ -1105,8 +1123,8 @@ class Members
                 }
             }
 
-            if ($this->filters->account_status_filter) {
-                switch ($this->filters->account_status_filter) {
+            if ($this->filters->filter_account) {
+                switch ($this->filters->filter_account) {
                     case self::ACTIVE_ACCOUNT:
                         $select->where('activite_adh=true');
                         break;
@@ -1135,6 +1153,85 @@ class Members
             }
 
             if ($this->filters instanceof AdvancedMembersList) {
+                // Search members who belong to any (OR) or all (AND) listed groups.
+                // Idea is to build an array of members ID that fits groups selection
+                // we will use in the final query.
+                // The OR case is quite simple, AND is a bit more complex; since we must
+                // check each member do belongs to all listed groups.
+                if (count($this->filters->groups_search) > 0
+                    && !isset($this->filters->groups_search['empty'])
+                ) {
+                    $groups_adh = [];
+                    $wheregroups = [];
+
+                    foreach ($this->filters->groups_search as $gs) { // then add a row for each group
+                        $wheregroups[] = $gs['group'];
+                    }
+
+                    $gselect = $zdb->select(Group::GROUPSUSERS_TABLE, 'gu');
+                    $gselect->columns(
+                        array('id_adh')
+                    )->join(
+                        array('g' => PREFIX_DB . Group::TABLE),
+                        'gu.id_group=g.' . Group::PK,
+                        array(),
+                        $select::JOIN_LEFT
+                    )->where(
+                        array(
+                            'g.id_group'        => ':group',
+                            'g.parent_group'    => ':pgroup'
+                        ),
+                        PredicateSet::OP_OR
+                    );
+                    $gselect->group(['gu.id_adh']);
+
+                    $stmt = $zdb->sql->prepareStatementForSqlObject($gselect);
+
+                    $mids = [];
+                    $ids = [];
+                    foreach ($this->filters->groups_search as $gs) { // then add a row for each ig/searched group pair
+                        /** Why where parameter is named where1 ?? */
+                        $gresults = $stmt->execute(
+                            array(
+                                'where1'    => $gs['group'],
+                                'where2'    => $gs['group']
+                            )
+                        );
+
+                        switch ($this->filters->groups_search_log_op) {
+                            case AdvancedMembersList::OP_AND:
+                                foreach ($gresults as $gresult) {
+                                    if (!isset($ids[$gresult['id_adh']])) {
+                                        $ids[$gresult['id_adh']] = 0;
+                                    }
+                                    $ids[$gresult['id_adh']] += 1;
+                                }
+                                break;
+                            case AdvancedMembersList::OP_OR:
+                                foreach ($gresults as $gresult) {
+                                    $mids[$gresult['id_adh']] = $gresult['id_adh'];
+                                }
+                                break;
+                        }
+                    }
+
+                    if (count($ids)) {
+                        foreach ($ids as $id_adh => $count) {
+                            if ($count == count($wheregroups)) {
+                                $mids[$id_adh] = $id_adh;
+                            }
+                        }
+                    }
+
+                    if (count($mids)) {
+                        //limit on found members
+                        $select->where->in('a.id_adh', $mids);
+                    } else {
+                        //no match in groups, end of game.
+                        $select->where('false = true');
+                    }
+                }
+
                 if ($this->filters->rbirth_date_begin
                     || $this->filters->rbirth_date_end
                 ) {
@@ -1356,7 +1453,7 @@ class Members
                             $field = 'field_val';
                             $qry .= 'LOWER(' . $prefix . $field . ') ' .
                                 $qop  . ' ' ;
-                            $select->where($qry . '%' .strtolower($cd) . '%');
+                            $select->where($qry . $zdb->platform->quoteValue('%' .strtolower($cd) . '%'));
                         }
                     }
                 }
@@ -1468,9 +1565,7 @@ class Members
                             );
                         } else {
                             $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' .
-                                $qop  . ' ' . $zdb->platform->quoteValue(
-                                    $fs['search']
-                                );
+                                $qop  . ' ' . $zdb->platform->quoteValue($fs['search']);
                         }
 
                         if ($fs['log_op'] === AdvancedMembersList::OP_AND) {
@@ -1718,5 +1813,49 @@ class Members
     public function getFilters()
     {
         return $this->filters;
+    }
+
+    /**
+     * Get members list to instanciate dropdowns
+     *
+     * @param Db      $zdb     Database instance
+     * @param integer $current Current member
+     *
+     * @return array
+     */
+    public function getSelectizedMembers(Db $zdb, $current = null)
+    {
+        $members = [];
+        $required_fields = array(
+            'id_adh',
+            'nom_adh',
+            'prenom_adh',
+            'pseudo_adh'
+        );
+        $list_members = $this->getList(false, $required_fields);
+
+        if (count($list_members) > 0) {
+            foreach ($list_members as $member) {
+                $pk = Adherent::PK;
+
+                $members[$member->$pk] = Adherent::getNameWithCase(
+                    $member->nom_adh,
+                    $member->prenom_adh,
+                    false,
+                    $member->id_adh,
+                    $member->pseudo_adh
+                );
+            }
+        }
+
+        //check if current attached member is part of the list
+        if ($current !== null && !isset($members[$current])) {
+            $members =
+                [$current => Adherent::getSName($zdb, $current, true, true)] +
+                $members
+            ;
+        }
+
+        return $members;
     }
 }

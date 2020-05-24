@@ -1,0 +1,46 @@
+{
+  "name": "Galette",
+  "version": "0.9.3",
+  "description": "[Galette](https://galette.eu) is a Free/Libre Open Source membership management web application dedicated towards non profit organizations.",
+  "main": "galette-main.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "webpack",
+    "build-dist": "webpack --mode=production",
+    "watch": "webpack --watch",
+    "clean": "rm -rf ./webroot/js/libs/",
+    "gulp": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git.tuxfamily.org/gitroot/galette/galette.git"
+  },
+  "author": "Johan Cwiklinski <johan AT x-tnd DOT be>",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "clean-css": "^4.2.3",
+    "css-loader": "^3.5.3",
+    "del": "^5.1.0",
+    "file-loader": "^4.3.0",
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-cli": "^2.2.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-replace": "^1.0.0",
+    "gulp-uglify": "^3.0.2",
+    "merge-stream": "^2.0.0",
+    "uglify-js": "^3.9.1"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
+    "jquery": "^3.5.0",
+    "jquery-ui": "^1.12.1",
+    "jquery-ui-dist": "^1.12.1",
+    "jquery.cookie": "^1.4.1",
+    "jstree": "^3.3.9",
+    "markitup": "^3.0.0-0",
+    "selectize": "^0.12.6"
+  }
+}

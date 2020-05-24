@@ -547,12 +547,14 @@ class Db extends atoum
             'galette_mailing_history',
             'galette_pdfmodels',
             'galette_preferences',
+            'galette_searches',
+            'galette_tmplinks'
         );
 
         $tables = $this->db->getTables();
 
-        //tables created in grantCheck il sometimes
-        //presnet here... :(
+        //tables created in grantCheck are sometimes
+        //present here... :(
         if (in_array('galette_test', $tables)) {
             unset($tables[array_search('galette_test', $tables)]);
         }
@@ -561,7 +563,7 @@ class Db extends atoum
         sort($expected);
 
         $this->array($tables)
-            ->hasSize(25)
+            ->hasSize(count($expected))
             ->isIdenticalTo($expected);
     }
 

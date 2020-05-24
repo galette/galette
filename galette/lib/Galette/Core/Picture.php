@@ -290,6 +290,16 @@ class Picture implements FileInterface
     }
 
     /**
+     * Get image file contents
+     *
+     * @return mixed
+     */
+    public function getContents()
+    {
+        readfile($this->file_path);
+    }
+
+    /**
      * Set header and displays the picture.
      *
      * @return object the binary file
@@ -297,10 +307,9 @@ class Picture implements FileInterface
     public function display()
     {
         header('Content-type: '.$this->mime);
-        header('Content-Length: ' . filesize($this->file_path));
         ob_clean();
         flush();
-        readfile($this->file_path);
+        $this->getContents();
     }
 
     /**
