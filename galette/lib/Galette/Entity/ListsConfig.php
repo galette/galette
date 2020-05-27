@@ -371,4 +371,19 @@ class ListsConfig extends FieldsConfig
     {
         return $this->acl_mapping;
     }
+
+    /**
+     * Get visibility for specified field
+     *
+     * @param string $field The requested field
+     *
+     * @return boolean
+     */
+    public function getVisibility($field)
+    {
+        if (in_array($field, $this->non_list_elements)) {
+            return self::NOBODY;
+        }
+        return $this->all_visibles[$field];
+    }
 }

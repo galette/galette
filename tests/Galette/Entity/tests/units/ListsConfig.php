@@ -128,7 +128,7 @@ class ListsConfig extends atoum
         $this->lists_config->load();
 
         $visible = $this->lists_config->getVisibility('nom_adh');
-        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::USER_WRITE);
+        $this->integer($visible)->isIdenticalTo(\Galette\Entity\FieldsConfig::NOBODY);
 
         //must be the same than nom_adh
         $visible = $this->lists_config->getVisibility('list_adh_name');
