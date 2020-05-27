@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2020-05-06 21:44+0000\n"
+"PO-Revision-Date: 2020-05-27 21:17+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -570,10 +570,8 @@ msgstr ""
 "contribution de l’adhérent %name (%email)"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:928
-#, fuzzy
-#| msgid "Remove %1$s #%2$s"
 msgid "Remove %1$s %2$s"
-msgstr "Supprimer %1$s #%2$s"
+msgstr "Supprimer %1$s %2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:930
 #: ../templates/default/gestion_contributions.tpl:52
@@ -728,24 +726,18 @@ msgstr ""
 "champs :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:589
-#, fuzzy
-#| msgid "Fields configuration"
 msgid "Lists configuration"
-msgstr "Configuration des champs"
+msgstr "Configuration des listes"
 
 #: ../lib/Galette/Controllers/GaletteController.php:628
-#, fuzzy
-#| msgid "Fields configuration has been successfully stored"
 msgid "List configuration has been successfully stored"
-msgstr "La configuration par défaut des champs a été sauvegardée avec succès"
+msgstr "La configuration des listes a été sauvegardée avec succès"
 
 #: ../lib/Galette/Controllers/GaletteController.php:633
-#, fuzzy
-#| msgid "An error occurred while storing fields configuration :("
 msgid "An error occurred while storing list configuration :("
 msgstr ""
 "Une erreur est survenue lors de l'enregistrement de la configuration des "
-"champs :("
+"listes :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:653
 #: ../templates/default/page.tpl:95
@@ -1790,10 +1782,8 @@ msgid "GSM"
 msgstr "GSM"
 
 #: ../lib/Galette/IO/MembersCsv.php:85
-#, fuzzy
-#| msgid "go to members list"
 msgid "filtered_memberslist"
-msgstr "aller à la liste des adhérents"
+msgstr "liste_adherents_filtree"
 
 #: ../lib/Galette/IO/MembersCsv.php:223
 #: ../lib/Galette/IO/PdfAdhesionForm.php:152
@@ -2002,10 +1992,8 @@ msgid "Unable to convert GIF file "
 msgstr "Impossible de convertir le fichier GIF "
 
 #: ../lib/Galette/IO/PdfMembersCards.php:93
-#, fuzzy
-#| msgid "Cards"
 msgid "cards"
-msgstr "Cartes"
+msgstr "cartes"
 
 #: ../lib/Galette/IO/PdfMembersCards.php:104
 msgid "Member's Cards"
@@ -2109,10 +2097,8 @@ msgid "invoice"
 msgstr "facture"
 
 #: ../lib/Galette/Entity/ListsConfig.php:214
-#, fuzzy
-#| msgid "Is a man"
 msgid "Is admin"
-msgstr "Est un homme"
+msgstr "Est admin"
 
 #: ../lib/Galette/Entity/ListsConfig.php:217
 #: ../templates/default/gestion_adherents.tpl:363
@@ -2121,10 +2107,8 @@ msgid "Modified"
 msgstr "Modifié"
 
 #: ../lib/Galette/Entity/ListsConfig.php:227
-#, fuzzy
-#| msgid "Public pages"
 msgid "Public"
-msgstr "Pages publiques"
+msgstr "Public"
 
 #: ../lib/Galette/Entity/Reminder.php:265
 msgid "%name <%mail> (%days days)"
@@ -2586,10 +2570,8 @@ msgid "Route '%name' is not registered in ACLs!"
 msgstr "La route %name n’est pas enregistrée dans les ACL !"
 
 #: ../lib/Galette/Middleware/CheckAcls.php:134
-#, fuzzy
-#| msgid "Route '%name' is not registered in ACLs!"
 msgid "Routes '%names' are not registered in ACLs!"
-msgstr "La route %name n’est pas enregistrée dans les ACL !"
+msgstr "Les routes %names ne sont pas enregistrées dans les ACL !"
 
 #: ../lib/Galette/Middleware/Authenticate.php:101
 msgid "Login required"
@@ -4489,13 +4471,11 @@ msgstr "Informations sur les plugins disponibles"
 
 #: ../templates/default/page.tpl:82
 msgid "Customize lists fields and order"
-msgstr ""
+msgstr "Personnaliser la liste des champs et l'ordre"
 
 #: ../templates/default/page.tpl:82
-#, fuzzy
-#| msgid "Core fields"
 msgid "Core lists"
-msgstr "Champs du coeur"
+msgstr "Listes du cœur"
 
 #: ../templates/default/page.tpl:83
 msgid ""
@@ -6513,10 +6493,8 @@ msgid "Trace"
 msgstr "Trace"
 
 #: ../templates/default/config_lists.tpl:7
-#, fuzzy
-#| msgid "Reading the list"
 msgid "Fields in list"
-msgstr "Lire la liste"
+msgstr "Champs dans la liste"
 
 #: ../templates/default/config_lists.tpl:8
 #: ../templates/default/config_lists.tpl:14
@@ -6563,10 +6541,8 @@ msgid "Read/Write"
 msgstr "Lecture/écriture"
 
 #: ../templates/default/config_lists.tpl:31
-#, fuzzy
-#| msgid "Available only for reminders"
 msgid "Available fields"
-msgstr "Disponible uniquement pour les rappels"
+msgstr "Champs disponibles"
 
 #: ../templates/default/export.tpl:5
 msgid ""
