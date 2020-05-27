@@ -70,7 +70,9 @@ class ListsConfig extends FieldsConfig
         'mdp_adh',
         'adresse2_adh',
         'info_adh',
-        'info_public_adh'
+        'info_public_adh',
+        'nom_adh',
+        'prenom_adh'
     );
 
     /**
@@ -131,6 +133,9 @@ class ListsConfig extends FieldsConfig
      */
     protected function addToLists(array $field)
     {
+        if (in_array($field['field_id'], $this->non_list_elements)) {
+            return;
+        }
         parent::addToLists($field);
 
         if ($field['list_visible'] ?? false) {
