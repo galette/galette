@@ -244,6 +244,17 @@ $container['members_fields'] = function ($c) {
     return $members_fields;
 };
 
+$container['members_form_fields'] = function ($c) {
+    $fields = $c->get('members_fields');
+    foreach ($fields as $k => $field) {
+        if ($field['position'] == -1) {
+            unset($fields[$k]);
+        }
+    }
+    return $fields;
+};
+
+
 $container['members_fields_cats'] = function ($c) {
     include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
     return $members_fields_cats;

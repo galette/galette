@@ -130,6 +130,11 @@ abstract class AbstractController
      * @Inject
      * @var array
      */
+    protected $members_form_fields;
+    /**
+     * @Inject
+     * @var array
+     */
     protected $members_fields_cats;
 
     /**
@@ -163,6 +168,7 @@ abstract class AbstractController
         $this->lists_config = $container->get('lists_config');
         $this->notFoundHandler = $container->get('notFoundHandler');
         $this->members_fields = $container->get('members_fields');
+        $this->members_form_fields = $container->get('members_form_fields');
         $this->members_fields_cats = $container->get('members_fields_cats');
     }
 

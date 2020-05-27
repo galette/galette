@@ -565,7 +565,7 @@ class CsvController extends AbstractController
             $defaults_loaded = true;
         }
 
-        $import_fields = $this->members_fields;
+        $import_fields = $this->members_form_fields;
         //get dynamic fields
         $dynamic_import_fields = [];
         $fieldset = new DynamicFieldsSet($this->zdb, $this->login);
