@@ -10,7 +10,7 @@
             </li>
     {foreach key=col item=field from=$listed_fields name=fields_list}
             {assign var='fid' value=$field.field_id}
-            <li class="tbl_line_{if $smarty.foreach.fields_list.iteration % 2 eq 0}even{else}odd{/if}">
+            <li class="tbl_line_{if $smarty.foreach.fields_list.iteration % 2 eq 0}even{else}odd{/if}{if $fid eq 'id_adh' or $fid eq 'list_adh_name'} nosort ui-state-disabled{/if}">
                 <span class="label" data-title="{_T string="Field name"}">
                     <input type="hidden" name="fields[]" value="{$fid}"/>
                     {$field.label}
@@ -64,7 +64,7 @@
     <script type="text/javascript">
         var _initSortable = function(){
             $('.fields_list').sortable({
-                items: 'li:not(.listing)',
+                items: 'li:not(.listing,.nosort)',
                 connectWith: '.connectedSortable',
                 update: function(event, ui) {
                     // When sort is updated, we must check for the newer category item belongs to

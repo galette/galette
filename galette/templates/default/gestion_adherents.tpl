@@ -163,11 +163,13 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                 <tr>
     {foreach item=column from=$galette_list}
         {if $column->field_id eq 'id_adh'}
+                    <td class="{$rclass} right" data-scope="id">
             {if $preferences->pref_show_id}
-                    <td class="{$rclass} right" data-scope="id">{$member->id}</td>
+                        {$member->id}
             {else}
-                    <td class="{$rclass} right" data-scope="id">{$ordre+1+($filters->current_page - 1)*$numrows}</td>
+                        {$ordre+1+($filters->current_page - 1)*$numrows}
             {/if}
+                    </td>
         {elseif $column->field_id eq 'list_adh_name'}
                     <td class="{$rclass} nowrap username_row" data-scope="row">
                         <input type="checkbox" name="member_sel[]" value="{$member->id}"/>
