@@ -198,7 +198,8 @@ class ListsConfig extends atoum
 
         // copied from FieldsConfig::testSetFields to ensure it works as excpeted from here.
         //town
-        $town = &$fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][3];
+        $town = &$fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][2]; //3 in FieldsConfig but 2 here.
+        $this->string($town['field_id'])->isIdenticalTo('ville_adh');
         $this->boolean($town['required'])->isTrue();
         $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::USER_WRITE);
 
@@ -217,11 +218,11 @@ class ListsConfig extends atoum
         $lists_config->load();
         $fields = $lists_config->getCategorizedFields();
 
-        $town = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][3];
+        $town = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_CONTACT][2]; //3 in FieldsConfig but 2 here.
         $this->boolean($town['required'])->isFalse();
         $this->integer($town['visible'])->isIdenticalTo(\Galette\Entity\FieldsConfig::NOBODY);
 
-        $jabber2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][12];
+        $jabber2 = $fields[\Galette\Entity\FieldsCategories::ADH_CATEGORY_IDENTITY][10]; //12 in FieldsConfig but 10 here
         $this->array($jabber2)->isIdenticalTo($jabber);
         // /copied from FieldsConfig::testSetFields to ensure it works as excpeted from here.
     }
