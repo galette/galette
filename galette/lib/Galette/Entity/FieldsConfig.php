@@ -745,9 +745,7 @@ class FieldsConfig
                     'required'              => ':required',
                     'visible'               => ':visible',
                     'position'              => ':position',
-                    FieldsCategories::PK    => ':category',
-                    'list_visible'          => ':list_visible',
-                    'list_position'         => ':list_position'
+                    FieldsCategories::PK    => ':category'
                 )
             )->where(
                 array(
@@ -764,11 +762,6 @@ class FieldsConfig
                         $field['required'] = $this->zdb->isPostgres() ? 'false' : 0;
                     }
 
-                    $list_visible = $field['list_visible'] ?? false;
-                    if ($list_visible === false) {
-                        $list_visible = $this->zdb->isPostgres() ? 'false' : 0;
-                    }
-
                     if ($field['field_id'] === 'parent_id') {
                         $field['visible'] = 0;
                     }
@@ -778,8 +771,6 @@ class FieldsConfig
                         'visible'               => $field['visible'],
                         'position'              => $pos,
                         FieldsCategories::PK    => $field['category'],
-                        'list_visible'          => $list_visible,
-                        'list_position'         => $field['list_position'] ?? -1,
                         'where1'                => $field['field_id']
                     );
 
