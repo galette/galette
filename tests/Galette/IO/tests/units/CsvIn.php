@@ -64,6 +64,7 @@ class CsvIn extends atoum
     private $view;
     private $history;
     private $members_fields;
+    private $members_form_fields;
     private $members_fields_cats;
     private $flash;
     private $flash_data;
@@ -140,6 +141,14 @@ class CsvIn extends atoum
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         $this->members_fields = $members_fields;
         $container['members_fields'] = $this->members_fields;
+        $members_form_fields = $members_fields;
+        foreach ($members_form_fields as $k => $field) {
+            if ($field['position'] == -1) {
+                unset($members_form_fields[$k]);
+            }
+        }
+        $this->members_form_fields = $members_form_fields;
+        $container['members_form_fields'] = $this->members_form_fields;
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
         $this->members_fields_cats = $members_fields_cats;
         $container['members_fields_cats'] = $this->members_fields_cats;
