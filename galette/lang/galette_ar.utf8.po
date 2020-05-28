@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
-"PO-Revision-Date: 2020-01-03 16:21+0000\n"
+"PO-Revision-Date: 2020-05-29 07:09+0000\n"
 "Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 3.10\n"
+"X-Generator: Weblate 4.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -284,7 +284,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:557
 msgid "Members management"
-msgstr ""
+msgstr "إدارة الأعضاء"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:775
 msgid "Status label"
@@ -614,7 +614,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/GaletteController.php:234
 #: ../templates/default/page.tpl:80 ../templates/default/desktop.tpl:39
 msgid "Settings"
-msgstr ""
+msgstr "الإعدادات"
 
 #: ../lib/Galette/Controllers/GaletteController.php:249
 #: ../lib/Galette/Filters/MembersList.php:297
@@ -804,7 +804,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/AuthController.php:150
 #: ../templates/default/index.tpl:18
 msgid "Login"
-msgstr ""
+msgstr "الولوج"
 
 #: ../lib/Galette/Controllers/AuthController.php:116
 msgid "You must provide both login and password."
@@ -977,7 +977,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/PluginsController.php:81
 #: ../templates/default/page.tpl:81 ../templates/default/desktop.tpl:40
 msgid "Plugins"
-msgstr ""
+msgstr "الإضافات"
 
 #: ../lib/Galette/Controllers/PluginsController.php:112
 msgid "Plugin %name has been enabled"
@@ -1574,7 +1574,7 @@ msgstr ""
 #: ../templates/default/desktop.tpl:30 ../templates/default/group.tpl:6
 #: ../templates/default/group.tpl:61 ../templates/default/fake_data.tpl:37
 msgid "Members"
-msgstr ""
+msgstr "الأعضاء"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:522
 #: ../templates/default/desktop.tpl:33 ../templates/default/desktop.tpl:47
@@ -3178,7 +3178,7 @@ msgstr "اسم المستخدم:"
 #: ../install/steps/db.php:89 ../templates/default/preferences.tpl:581
 #: ../templates/default/index.tpl:14
 msgid "Password:"
-msgstr ""
+msgstr "الكلمة السرية:"
 
 #: ../includes/fields_defs/members_fields.php:258
 #: ../templates/default/group.tpl:13
@@ -3474,7 +3474,7 @@ msgstr ""
 
 #: ../install/steps/admin.php:54 ../templates/default/preferences.tpl:585
 msgid "Retype password:"
-msgstr ""
+msgstr "تأكيد الكلمة السرية:"
 
 #: ../install/steps/admin.php:59 ../install/steps/db_install.php:83
 #: ../install/steps/db_select_version.php:135
@@ -6028,7 +6028,7 @@ msgstr ""
 #: ../templates/default/liste_membres.tpl:8
 #: ../templates/default/trombinoscope.tpl:8
 msgid "members"
-msgstr ""
+msgstr "أعضاء"
 
 #: ../templates/default/gestion_adherents.tpl:109
 #: ../templates/default/liste_membres.tpl:8
