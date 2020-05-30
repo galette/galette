@@ -666,10 +666,12 @@ class Adherent
     public function hasChildren()
     {
         if ($this->_children === null) {
-            Analog::log(
-                'Children has not been loaded!',
-                Analog::WARNING
-            );
+            if ($this->id) {
+                Analog::log(
+                    'Children has not been loaded!',
+                    Analog::WARNING
+                );
+            }
             return false;
         } else {
             return count($this->_children) > 0;
@@ -1536,7 +1538,7 @@ class Adherent
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
             'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass', 'saddress',
-            'rbirthdate', 'sgender'
+            'rbirthdate', 'sgender', 'contribstatus'
         );
 
         if (in_array($name, $forbidden)) {
@@ -1616,6 +1618,9 @@ class Adherent
                             default:
                                 return __('Unspecified');
                         }
+                        break;
+                    case 'contribstatus':
+                        return $this->getDues();
                         break;
                 }
             } else {

@@ -222,7 +222,7 @@
                     <td class="{$cclass} nowrap" data-title="{_T string="End"}">{$contribution->end_date}</td>
     {if ($login->isAdmin() or $login->isStaff()) && !isset($member)}
                     <td class="{$cclass}" data-title="{_T string="Member"}">
-        {if $contribution->filtre_cotis_adh eq ""}
+        {if $filters->filtre_cotis_adh eq ""}
                         <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $mid]}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
         {else}
                         <a href="{path_for name="member" data=["id" => $mid]}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>

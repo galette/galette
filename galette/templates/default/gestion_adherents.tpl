@@ -236,8 +236,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {elseif $column->field_id eq 'id_statut'}
                 {assign var="lrclass" value="$rclass nowrap"}
                 {assign var=value value={statusLabel id=$member->$propname}}
-            {elseif $column->field_id eq 'list_adh_contribstatus'}
-                {assign var=value value=$member->getDues()}
             {elseif $column->field_id eq 'titre_adh'}
                 {if is_object($member->title)}
                     {assign var=value value=$member->title->long}

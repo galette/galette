@@ -145,7 +145,7 @@ class GaletteController extends AbstractController
             $params['registered'] = $telemetry->isRegistered();
 
             $hide_telemetry = $telemetry->isSent() && $telemetry->isRegistered()
-                || $_COOKIE['hide_galette_telemetry'];
+                || isset($_COOKIE['hide_galette_telemetry']) && $_COOKIE['hide_galette_telemetry'];
         }
         $params['hide_telemetry'] = $hide_telemetry;
 

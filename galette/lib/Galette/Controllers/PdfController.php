@@ -282,7 +282,7 @@ class PdfController extends AbstractController
      */
     public function adhesionForm(Request $request, Response $response, array $args = []) :Response
     {
-        $id_adh = (int)$args[Adherent::PK] ?? null;
+        $id_adh = isset($args[Adherent::PK]) ? (int)$args[Adherent::PK] : null;
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
 
         if ($id_adh !== null && !$adh->canEdit($this->login)) {
@@ -520,7 +520,7 @@ class PdfController extends AbstractController
         $id = 1;
         if (isset($_POST[PdfModel::PK])) {
             $id = (int)$_POST[PdfModel::PK];
-        } elseif ($args['id']) {
+        } elseif (isset($args['id'])) {
             $id = (int)$args['id'];
         }
 
