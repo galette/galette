@@ -247,6 +247,10 @@ nav a{
     background-color: #DDDDFF;
     text-decoration:underline;
 }
+.selected {
+    opacity: .35;
+    background-image: none;
+}
 #menu li.selected a{
     background-color: #DDDDFF;
 }

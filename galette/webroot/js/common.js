@@ -222,7 +222,6 @@ $(function() {
             }
         }
     });
-    $('.selected').addClass('ui-state-disabled');
 
     if ( $('#back2top').length > 0 ) {
         if (!$('#wrapper').scrollTop() && !$('html').scrollTop() ) {
