@@ -136,6 +136,10 @@ class Db
         $this->db->getDriver()->getConnection()->connect();
         $this->sql = new Sql($this->db);
 
+        if (!$this->isPostgres()) {
+            $this->db->query("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
+        }
+
         Analog::log(
             '[Db] Database connection was successfull!',
             Analog::DEBUG
