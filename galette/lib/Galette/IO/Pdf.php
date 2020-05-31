@@ -51,11 +51,6 @@ use Analog\Analog;
 require_once GALETTE_CONFIG_PATH . 'galette_tcpdf_config.php';
 
 /**
- *  Require TCPDF class
- */
-require_once GALETTE_TCPDF_PATH . '/tcpdf.php';
-
-/**
  * PDF class for galette
  *
  * @category  IO
@@ -77,6 +72,7 @@ class Pdf extends \TCPDF
     const FONT_SIZE = 10;
 
     protected $preferences;
+    protected $i18n;
     private $model;
     private $paginated = false;
     protected $filename;
@@ -89,7 +85,10 @@ class Pdf extends \TCPDF
      */
     public function __construct(Preferences $prefs, $model = null)
     {
+        global $i18n;
+
         $this->preferences = $prefs;
+        $this->i18n = $i18n;
         parent::__construct('P', 'mm', 'A4', true, 'UTF-8');
         //set some values
         $this->SetCreator(PDF_CREATOR);
@@ -105,6 +104,10 @@ class Pdf extends \TCPDF
         $this->SetAuthor(
             $name . ' (using Galette ' . GALETTE_VERSION . ')'
         );
+
+        if ($this->i18n->isRTL()) {
+            $this->setRTL(true);
+        }
 
         if ($model !== null) {
             if ($model instanceof PdfModel) {
@@ -284,7 +287,7 @@ class Pdf extends \TCPDF
                     '/' . $this->getAliasNbPages(),
                     0,
                     1,
-                    'R'
+                    ($this->i18n->isRTL() ? 'L' : 'R')
                 );
             }
         }
@@ -304,7 +307,7 @@ class Pdf extends \TCPDF
             if (trim($this->model->hstyles) !== '') {
                 $html .= "<style>\n" . $this->model->hstyles . "\n</style>\n\n";
             }
-            $html .= $this->model->hheader;
+            $html .= "<div dir=\"".($this->i18n->isRTL() ? 'rtl' : 'ltr')."\">" . $this->model->hheader . "</div>";
             $this->writeHtml($html, true, false, true, false, '');
 
             if ($title !== null) {
@@ -370,17 +373,21 @@ class Pdf extends \TCPDF
                 6,
                 $this->preferences->pref_nom,
                 0,
-                'L'
+                ($this->i18n->isRTL() ? 'R' : 'L')
             );
             $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
 
             if ($title !== null) {
-                $this->Cell(0, 6, $title, 0, 1, 'L', 0);
+                $this->Cell(0, 6, $title, 0, 1, ($this->i18n->isRTL() ? 'R' : 'L'), 0);
             }
             $yend = $this->getY();//store position at the end of the text
 
             $this->SetY($ystart);
-            $x = 190 - $wlogo; //right align
+            if ($this->i18n->isRTL()) {
+                $x = $this->getX();
+            } else {
+                $x = 190 - $wlogo; //right align
+            }
             $this->Image($logofile, $x, $this->GetY(), $wlogo, $hlogo);
             $this->y += $hlogo + 3;
             //if position after logo is < than position after text,

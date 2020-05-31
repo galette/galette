@@ -191,7 +191,7 @@ class PdfAttendanceSheet extends Pdf
         $mcount = 0;
         foreach ($members as $m) {
             $mcount++;
-            $this->Cell(10, 16, $mcount, 'LTB', 0, 'R');
+            $this->Cell(10, 16, $mcount, ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', 0, 'R');
 
             if ($m->hasPicture() && $this->wimages) {
                 $p = $m->picture->getPath();
@@ -216,16 +216,20 @@ class PdfAttendanceSheet extends Pdf
 
                 $y = $this->getY() + 1;
                 $x = $this->getX() + 1;
-                $this->Cell($wlogo+2, 16, '', 'LTB', 0);
-                $this->Image($p, $x, $y, $wlogo, $hlogo);
+                $ximg = $x;
+                if ($this->i18n->isRTL()) {
+                    $ximg = $this->getPageWidth() - $x - $wlogo;
+                }
+                $this->Cell($wlogo+2, 16, '', ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', 0);
+                $this->Image($p, $ximg, $y, $wlogo, $hlogo);
             } else {
                 $x = $this->getX() + 1;
-                $this->Cell(1, 16, '', 'LTB', 0);
+                $this->Cell(1, 16, '', ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', 0);
             }
 
             $xs = $this->getX() - $x + 1;
-            $this->Cell(100 - $xs, 16, $m->sname, 'RTB', 0, 'L');
-            $this->Cell(80, 16, '', 1, 1, 'L');
+            $this->Cell(100 - $xs, 16, $m->sname, ($this->i18n->isRTL() ? 'L' : 'R') . 'TB', 0, ($this->i18n->isRTL() ? 'R' : 'L'));
+            $this->Cell(80, 16, '', 1, 1, ($this->i18n->isRTL() ? 'R' : 'L'));
         }
         $this->Cell(190, 0, '', 'T');
     }

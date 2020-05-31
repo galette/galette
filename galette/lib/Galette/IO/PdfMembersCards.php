@@ -90,6 +90,7 @@ class PdfMembersCards extends Pdf
     public function __construct(Preferences $prefs)
     {
         parent::__construct($prefs);
+        $this->setRTL(false);
         $this->filename = __('cards') . '.pdf';
         $this->init();
     }

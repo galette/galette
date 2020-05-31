@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2018 The Galette Team
+ * @copyright 2007-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -46,7 +46,7 @@ use Analog\Analog;
  * @name      i18n
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-06
@@ -63,6 +63,14 @@ class I18n
 
     private $dir = 'lang/';
     private $path;
+
+    private $rtl_langs = [
+        'ar',
+        'az',
+        'fa',
+        'he',
+        'ur'
+    ];
 
     /**
      * Default constructor.
@@ -295,5 +303,18 @@ class I18n
         ksort($langs);
         $this->langs = $langs;
         return $this->langs;
+    }
+
+    /**
+     * Is current language RTL?
+     *
+     * @return boolean
+     */
+    public function isRTL()
+    {
+        return in_array(
+            $this->getAbbrev(),
+            $this->rtl_langs
+        );
     }
 }

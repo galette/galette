@@ -170,7 +170,7 @@ class PdfGroups extends Pdf
                     _T("Managers:") . ' ' . implode(', ', $managers),
                     0,
                     1,
-                    'R'
+                    ($this->i18n->isRTL() ? 'L' : 'R')
                 );
             }
             $this->ln(3);
@@ -187,10 +187,11 @@ class PdfGroups extends Pdf
             $members = $group->getMembers();
 
             foreach ($members as $m) {
-                $this->Cell(80, 7, $m->sname, 1, 0, 'L');
-                $this->Cell(50, 7, $m->email, 1, 0, 'L');
-                $this->Cell(30, 7, $m->phone, 1, 0, 'L');
-                $this->Cell(30, 7, $m->gsm, 1, 1, 'L');
+                $align = ($this->i18n->isRTL() ? 'R' : 'L');
+                $this->Cell(80, 7, $m->sname, 1, 0, $align);
+                $this->Cell(50, 7, $m->email, 1, 0, $align);
+                $this->Cell(30, 7, $m->phone, 1, 0, $align);
+                $this->Cell(30, 7, $m->gsm, 1, 1, $align);
             }
             $this->Cell(190, 0, '', 'T');
             $first = false;
