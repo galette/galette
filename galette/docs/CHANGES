@@ -1,11 +1,36 @@
 Changes
 -------
 
+0.9.3.1 -> 0.9.4
+
+- Configurable password security enforcement (on strength, blacklist, ...)
+- Import dynamic fields from CSV
+- Handle already encrypted passwords on imports
+- Manage members list displayed fields
+- Emit events when members, contributions or transactions are added, edited or removed (thanks to Nicolas B.)
+- Add direct download links to member card, invoice/receipt in sent emails
+- Advanced search on groups with AND/OR (experimental)
+- Handle RTL on PDF
+- Administrative emails can now be translated in all available languages (and are present on translation platform)
+- Offer last months when using beginning of membership date (thanks to Manuel H.)
+- Members can print their own invoices/receipts (thanks to Nicolas B.)
+- Improve routes ACLs to support regular expressions
+- Rely on GulpJS and NPMJS to handle Javascript dependencies
+- Send member and contribution IDs to post script
+- Switch to Laminas
+- Rework routes using controllers
+- Fix member card with PHP 7.4
+- Fix contribution PDF on some cases (thanks to Manuel H.)
+- Fix date calculation issue with new contributions types
+- Fix wrong value in history creating new member
+- Several fixes on CSV imports
+- Fix some issues using MySQL
+
 0.9.3 -> 0.9.3.1
 
 - Use new icons in titles management
 - Ensure PHP 7.4 is supported
-- Handle proprely and test sequences in PostgreSQL for titles, payment types, PDF models, texts and fields categories
+- Handle properly and test sequences in PostgreSQL for titles, payment types, PDF models, texts and fields categories
 - Fix Telemetry from PostgreSQL instances
 - Fix dynamic translations removal
 - Check for session extension presence
