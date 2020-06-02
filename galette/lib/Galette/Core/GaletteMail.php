@@ -115,8 +115,16 @@ class GaletteMail
             case self::METHOD_GMAIL:
                 //if we want to send emails using a smtp server
                 $this->mail->IsSMTP();
-                // enables SMTP debug information (for testing)
-                /*$this->mail->SMTPDebug = 2;*/
+                // enables SMTP debug information
+                if (GALETTE_MODE == 'DEV') {
+                    $this->mail->SMTPDebug = 2;
+                    $this->mail->Debugoutput = function ($message, $level) {
+                        Analog::log(
+                            $level . ' - ' . $message,
+                            Analog::DEBUG
+                        );
+                    };
+                }
 
                 if ($this->preferences->pref_mail_method == self::METHOD_GMAIL) {
                     // sets GMAIL as the SMTP server
