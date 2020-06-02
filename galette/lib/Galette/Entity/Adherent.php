@@ -1633,7 +1633,11 @@ class Adherent
                 switch ($name) {
                     case 'id':
                     case 'id_statut':
-                        return (int)$this->$rname;
+                        if ($this->$rname !== null) {
+                            return (int)$this->$rname;
+                        } else {
+                            return null;
+                        }
                         break;
                     case 'birthdate':
                     case 'creation_date':
@@ -1881,6 +1885,12 @@ class Adherent
         $this->_id = null;
         //drop email, must be unique
         $this->_email = null;
+        //drop creation date
+        $this->creation_date = null;
+        //drop login
+        $this->_login = null;
+        //reset picture
+        $this->_picture = new Picture();
     }
 
     /**

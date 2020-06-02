@@ -198,7 +198,7 @@ class MembersController extends CrudController
     public function duplicate(Request $request, Response $response, array $args = []) :Response
     {
         $id_adh = (int)$args[Adherent::PK];
-        $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
+        $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true, 'parent' => true]);
         $adh->setDuplicate();
 
         //store entity in session

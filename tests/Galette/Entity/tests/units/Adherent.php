@@ -578,9 +578,12 @@ class Adherent extends atoum
                 $this->history,
                 $this->login
             );
-        $fakedata->addPhoto($this->adh);
+        $this->boolean($fakedata->addPhoto($this->adh))->isTrue();
 
         $this->boolean($this->adh->hasPicture())->isTrue();
+
+        //remove photo
+        $this->boolean($this->adh->picture->delete())->isTrue();
     }
 
     /**
@@ -620,5 +623,36 @@ class Adherent extends atoum
 
         $this->calling($login)->isGroupManager = true;
         $this->boolean($adh->canEdit($login))->isTrue();
+    }
+
+    /**
+     * Test member duplication
+     *
+     * @return void
+     */
+    public function testDuplicate()
+    {
+        $adh = new \Galette\Entity\Adherent($this->zdb);
+
+        $rs = $this->adhExists();
+        if ($rs === false) {
+            $this->createAdherent();
+        } else {
+            $this->loadAdherent($rs->current()->id_adh);
+        }
+
+        $this->checkMemberExpected();
+
+        //load member from db
+        $adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
+        $this->checkMemberExpected($adh);
+
+        $adh->setDuplicate();
+
+        $this->string($adh->others_infos_admin)->contains('Duplicated from');
+        $this->variable($adh->email)->isNull();
+        $this->variable($adh->id)->isNull();
+        $this->variable($adh->creation_date)->isNull();
+        $this->variable($adh->login)->isNull();
     }
 }

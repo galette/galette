@@ -25,6 +25,7 @@ Changes
 - Fix wrong value in history creating new member
 - Several fixes on CSV imports
 - Fix some issues using MySQL
+- Fix inconsistent data duplicating member
 
 0.9.3 -> 0.9.3.1
 
