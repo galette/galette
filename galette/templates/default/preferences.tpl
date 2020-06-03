@@ -498,9 +498,9 @@
                     <span class="exemple">{_T string="(Choose address printed below name)"}</span>
                 </p>
                 <p>
-                    <label for="pref_card_year" class="bline">{_T string="Year:"}</label>
+                    <label for="pref_card_year" class="bline tooltip">{_T string="Year:"}</label>
+                    <span class="tip">{_T string="You can enter either:<br/>- a year,<br/>- two years with a slash as separator,<br/>- the string 'DEADLINE' to use member deadline"}</span>
                     <input type="text" name="pref_card_year" id="pref_card_year" value="{$pref.pref_card_year}" maxlength="9"{if isset($required.pref_card_year) and $required.pref_card_year eq 1} required="required"{/if}/>
-                    <span class="exemple">{_T string="(Enter a year or two years with a separator)"}</span>
                 </p>
                 <p class="center">{_T string="Each card is 75mm width and 40mm height. Each page contains 2 columns and 6 rows.<br/>Double check margins and spacings ;)"}</p>
                 <p>
