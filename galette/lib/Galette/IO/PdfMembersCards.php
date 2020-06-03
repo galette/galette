@@ -266,14 +266,21 @@ class PdfMembersCards extends Pdf
             // Color=#8C8C8C: Shadow of the year
             $this->SetTextColor(140);
             $this->SetFontSize($this->year_font_size);
+
+            $an_cot = $this->an_cot;
+            if ($an_cot === 'DEADLINE') {
+                //get current member deadline
+                $an_cot = $member->due_date;
+            }
+
             $xan_cot = $x0 + $this->wi - $this->GetStringWidth(
-                $this->an_cot,
+                $an_cot,
                 self::FONT,
                 'B',
                 $this->year_font_size
             ) - 0.2;
             $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);
-            $this->writeHTML('<strong>' . $this->an_cot . '</strong>', false, 0);
+            $this->writeHTML('<strong>' . $an_cot . '</strong>', false, 0);
 
             // Colored Text (Big label, id, year)
             $this->SetTextColor($fcol['R'], $fcol['G'], $fcol['B']);
@@ -286,7 +293,7 @@ class PdfMembersCards extends Pdf
             $this->SetFontSize($this->year_font_size);
             $xan_cot = $xan_cot - 0.3;
             $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);
-            $this->writeHTML('<strong>' . $this->an_cot . '</strong>', false, 0);
+            $this->writeHTML('<strong>' . $an_cot . '</strong>', false, 0);
 
             // Abbrev: Adapt font size to text length
             $this->fixSize(

@@ -497,7 +497,7 @@ class Preferences
                         }
                         break;
                     case 'pref_card_year':
-                        if (!preg_match('/^(?:\d{4}|\d{2})(\D?)(?:\d{4}|\d{2})$/', $value)) {
+                        if ($value !== 'DEADLINE' && !preg_match('/^(?:\d{4}|\d{2})(\D?)(?:\d{4}|\d{2})$/', $value)) {
                             $this->errors[] = _T("- Invalid year for cards.");
                         }
                         break;
