@@ -126,6 +126,7 @@ class Adherent
     private $_managed_groups;
     private $_parent;
     private $_children;
+    private $_duplicate = false;
     //
     private $_row_classes;
     //fields list and their translation
@@ -983,6 +984,11 @@ class Adherent
             unset($values['parent_id']);
         }
 
+        if (isset($values['duplicate'])) {
+            //if we're duplicating, keep a trace (if an error occurs)
+            $this->_duplicate = true;
+        }
+
         foreach ($fields as $key) {
             //first of all, let's sanitize values
             $key = strtolower($key);
@@ -1323,6 +1329,10 @@ class Adherent
                 } else {
                     $this->errors[] = _T("Gender %gender does not exists!");
                 }
+                break;
+            case 'parent_id':
+                $this->$prop = (int)$value;
+                $this->loadParent();
                 break;
         }
     }
@@ -1872,6 +1882,7 @@ class Adherent
     public function setDuplicate()
     {
         //mark as duplicated
+        $this->_duplicate = true;
         $infos = $this->_others_infos_admin;
         $this->_others_infos_admin = str_replace(
             ['%name', '%id'],
@@ -1886,11 +1897,19 @@ class Adherent
         //drop email, must be unique
         $this->_email = null;
         //drop creation date
-        $this->creation_date = null;
+        $this->_creation_date = date("Y-m-d");
         //drop login
         $this->_login = null;
         //reset picture
         $this->_picture = new Picture();
+        //remove birthdate
+        $this->_birthdate = null;
+        //remove surname
+        $this->_surname = null;
+        //not admin
+        $this->_admin = false;
+        //not due free
+        $this->_due_free = false;
     }
 
     /**
@@ -1946,5 +1965,15 @@ class Adherent
         }
 
         return false;
+    }
+
+    /**
+     * Are we currently duplicated a member?
+     *
+     * @return boolean
+     */
+    public function isDuplicate()
+    {
+        return $this->_duplicate;
     }
 }

@@ -32,7 +32,7 @@
             <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
     {if !$self_adh}
             <div>
-        {if $member->hasParent()}
+        {if $member->hasParent() && !$member->isDuplicate()}
                 <strong>{_T string="Attached to:"}
                 <a href="{path_for name="member" data=["id" => $member->parent->id]}">{$member->parent->sfullname}</a></strong><br/>
             {if $login->isAdmin() or $login->isStaff() or $login->id eq $member->parent->id}
@@ -40,16 +40,19 @@
                 <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
             {/if}
         {else if ($login->isAdmin() or $login->isStaff()) and !$member->hasChildren()}
-            <input type="checkbox" name="attach" id="attach" value="1"/>
-            <label for="attach"><i class="fas fa-link"></i> {_T string="Attach member"}<label>
+            <input type="checkbox" name="attach" id="attach" value="1"{if $member->isDuplicate()} checked="checked"{/if}/>
+            <label for="attach"><i class="fas fa-link"></i> {_T string="Attach member"}</label>
             <span id="parent_id_elt" class="sr-only">
                 <select name="parent_id" id="parent_id" class="nochosen">
                     <option value="">{_T string="-- select a name --"}</option>
                     {foreach $members.list as $k=>$v}
-                        <option value="{$k}">{$v}</option>
+                        <option value="{$k}"{if $member->isDuplicate() && $member->parent->id eq $k} selected="selected"{/if}>{$v}</option>
                     {/foreach}
                 </select>
             </span>
+            {if $member->isDuplicate()}
+                <input type="hidden" name="duplicate" value="1" />
+            {/if}
         {else if $member->hasChildren()}
             <strong>{_T string="Parent of:"}</strong>
             {foreach from=$member->children item=child}
@@ -304,7 +307,10 @@
 
     {if !$self_adh and !$member->hasChildren()}
                 {* Parent selection *}
-                $('#parent_id_elt').hide().removeClass('sr-only');
+                $('#parent_id_elt').removeClass('sr-only');
+        {if !$member->isDuplicate()}
+                $('#parent_id_elt').hide();
+        {/if}
                 $('#attach').on('click', function() {
                     var _checked = $(this).is(':checked');
                     $('#parent_id_elt').toggle();
