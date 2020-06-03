@@ -26,6 +26,7 @@ Changes
 - Several fixes on CSV imports
 - Fix some issues using MySQL
 - Fix inconsistent data duplicating member
+- Can use members deadline on PDF card instead of year
 
 0.9.3 -> 0.9.3.1
 
