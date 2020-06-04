@@ -652,7 +652,8 @@ class Adherent extends atoum
         $this->string($adh->others_infos_admin)->contains('Duplicated from');
         $this->variable($adh->email)->isNull();
         $this->variable($adh->id)->isNull();
-        $this->variable($adh->creation_date)->isNull();
         $this->variable($adh->login)->isNull();
+        $this->variable($adh->birthdate)->isNull();
+        $this->variable($adh->surname)->isNull();
     }
 }
