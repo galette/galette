@@ -39,6 +39,7 @@ namespace Galette\Controllers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Galette\Core\Install;
 use Galette\Core\PluginInstall;
 use Laminas\Db\Adapter\Adapter;
 use Analog\Analog;
