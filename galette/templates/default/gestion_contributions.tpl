@@ -47,7 +47,7 @@
             <a href="{path_for name="addContribution" data=["type" => "fee"]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a> -
             <a href="{path_for name="addContribution" data=["type" => "donation"]}?id_adh={$member->id}">{_T string="Add a donation"}</a>)
     {/if}
-            &nbsp;:
+            -
 {/if}
             {$nb} {if $nb != 1}{_T string="contributions"}{else}{_T string="contribution"}{/if}
             <div class="fright">
