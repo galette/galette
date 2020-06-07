@@ -60,7 +60,8 @@ $app->get(
 )->setName('subscribe');
 
 //members list CSV export
-$app->get(
+$app->map(
+    ['GET', 'POST'],
     '/members/export/csv',
     CsvController::class . ':membersExport'
 )->setName('csv-memberslist')->add($authenticate);
@@ -133,7 +134,8 @@ $app->get(
 )->setName('pdf-members-cards')->add($authenticate);
 
 //PDF members labels
-$app->get(
+$app->map(
+    ['GET', 'POST'],
     '/members/labels',
     PdfController::class . ':membersLabels'
 )->setName('pdf-members-labels')->add($authenticate);

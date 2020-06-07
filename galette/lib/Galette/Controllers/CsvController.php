@@ -685,14 +685,19 @@ class CsvController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
+     * @param array    $args     Request arguments
      *
      * @return Response
      */
-    public function membersExport(Request $request, Response $response) :Response
+    public function membersExport(Request $request, Response $response, array $args = []) :Response
     {
-        if (isset($this->session->filter_members)) {
-            //CAUTION: this one may be simple or advanced, display must change
-            $filters = $this->session->filter_members;
+        $post = $request->getParsedBody();
+        $get = $request->getQueryParams();
+
+        $session_var = $post['session_var'] ?? $get['session_var'] ?? 'filter_members';
+
+        if (isset($this->session->$session_var)) {
+            $filters = $this->session->$session_var;
         } else {
             $filters = new MembersList();
         }

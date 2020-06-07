@@ -811,12 +811,16 @@ class GaletteController extends AbstractController
 
             if ($labels === true) {
                 if (count($labels_members) > 0) {
+                    $session_var = 'filters_reminders_labels';
                     $labels_filters = new MembersList();
                     $labels_filters->selected = $labels_members;
-                    $this->session->filters_reminders_labels = $labels_filters;
+                    $this->session->$session_var = $labels_filters;
                     return $response
-                        ->withStatus(301)
-                        ->withHeader('Location', $this->router->pathFor('pdf-member-labels'));
+                        ->withStatus(307)
+                        ->withHeader(
+                            'Location',
+                            $this->router->pathFor('pdf-member-labels') . '?session_var=' . $session_var
+                        );
                 } else {
                     $error_detected[] = _T("There are no member to proceed.");
                 }

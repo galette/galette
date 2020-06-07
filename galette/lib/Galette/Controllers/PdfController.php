@@ -210,13 +210,13 @@ class PdfController extends AbstractController
      */
     public function membersLabels(Request $request, Response $response) :Response
     {
+        $post = $request->getParsedBody();
         $get = $request->getQueryParams();
 
-        if ($this->session->filter_reminders_labels) {
-            $filters =  $this->session->filter_reminders_labels;
-            unset($this->session->filter_reminders_labels);
-        } elseif ($this->session->filter_members) {
-            $filters =  $this->session->filter_members;
+        $session_var = $post['session_var'] ?? $get['session_var'] ?? 'filter_members';
+
+        if (isset($this->session->$session_var)) {
+            $filters = $this->session->$session_var;
         } else {
             $filters = new MembersList();
         }
