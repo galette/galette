@@ -650,4 +650,14 @@ abstract class Entitled
             return false;
         }
     }
+
+    /**
+     * Get errors
+     *
+     * @return array
+     */
+    public function getErrors() :array
+    {
+        return $this->errors;
+    }
 }
