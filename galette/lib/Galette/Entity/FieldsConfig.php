@@ -757,7 +757,7 @@ class FieldsConfig
                     'required'              => ':required',
                     'visible'               => ':visible',
                     'position'              => ':position',
-                    FieldsCategories::PK    => ':category'
+                    FieldsCategories::PK    => ':' . FieldsCategories::PK
                 )
             )->where(
                 array(
@@ -783,7 +783,7 @@ class FieldsConfig
                         'visible'               => $field['visible'],
                         'position'              => $pos,
                         FieldsCategories::PK    => $field['category'],
-                        'where1'                => $field['field_id']
+                        'field_id'              => $field['field_id']
                     );
 
                     $stmt->execute($params);
@@ -818,6 +818,7 @@ class FieldsConfig
                 $e->getTraceAsString(),
                 Analog::ERROR
             );
+            throw $e;
             return false;
         }
     }
@@ -865,12 +866,11 @@ class FieldsConfig
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
             foreach ($old_required as $or) {
-                /** Why where parameter is named where1 ?? */
                 $stmt->execute(
                     array(
                         'required'  => ($or->required === false) ?
                             ($this->zdb->isPostgres() ? 'false' : 0) : true,
-                        'where1'    => $or->field_id
+                        'field_id'  => $or->field_id
                     )
                 );
             }
@@ -944,7 +944,7 @@ class FieldsConfig
                     'table_name'            => $d['table_name'],
                     'required'              => $required,
                     'visible'               => $d['visible'],
-                    FieldsCategories::PK    => $d['category'],
+                    'category'              => $d['category'],
                     'position'              => $d['position'],
                     'list_visible'          => $list_visible,
                     'list_position'         => $d['list_position'] ?? -1

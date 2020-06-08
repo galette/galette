@@ -291,10 +291,10 @@ class DynamicFieldsHandle
                         $params = [
                             'field_val' => $value['field_val'],
                             'val_index' => $value['val_index'],
-                            'where1'    => $value['item_id'],
-                            'where2'    => $value['field_id'],
-                            'where3'    => $value['field_form'], //:val_index
-                            'where4'    => $value['old_val_index'] ?? $value['val_index'] //:old_val_index
+                            'item_id'   => $value['item_id'],
+                            'field_id'  => $value['field_id'],
+                            'field_form' => $value['field_form'], //:val_index
+                            'val_index' => $value['old_val_index'] ?? $value['val_index'] //:old_val_index
                         ];
                         $this->getUpdateStatement()->execute($params);
                         $this->has_changed = true;
@@ -384,10 +384,10 @@ class DynamicFieldsHandle
         if ($results->count() > 0) {
             foreach ($results as $result) {
                 $fromdb[$result->field_id . '_' . $result->val_index] = [
-                    'where1'    => $this->item_id,
-                    'where2'    => $this->form_name,
-                    'where3'    => $result->field_id,
-                    'where4'    => $result->val_index
+                    'item_id'       => $this->item_id,
+                    'field_form'    => $this->form_name,
+                    'field_id'      => $result->field_id,
+                    'val_index'     => $result->val_index
                 ];
             }
         }
@@ -420,12 +420,12 @@ class DynamicFieldsHandle
                 }
                 $this->delete_stmt->execute($entry);
                 //update val index
-                $field_id = $entry['where3'];
+                $field_id = $entry['field_id'];
                 if (
                     isset($this->current_values[$field_id])
                     && count($this->current_values[$field_id])
                 ) {
-                    $val_index = (int)$entry['where4'];
+                    $val_index = (int)$entry['val_index'];
                     foreach ($this->current_values[$field_id] as &$current) {
                         if ((int)$current['val_index'] === $val_index + 1) {
                             $current['val_index'] = $val_index;

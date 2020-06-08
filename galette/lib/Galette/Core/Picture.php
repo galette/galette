@@ -532,7 +532,7 @@ class Picture implements FileInterface
                 $insert = $zdb->insert($this->tbl_prefix . $class::TABLE);
                 $insert->values(
                     array(
-                        $class::PK  => ':id',
+                        $class::PK  => ':' . $class::PK,
                         'picture'   => ':picture',
                         'format'    => ':format'
                     )
@@ -540,17 +540,9 @@ class Picture implements FileInterface
                 $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
                 $container = $stmt->getParameterContainer();
                 $container->offsetSet(
-                    $class::PK,
-                    ':id'
-                );
-                $container->offsetSet(
-                    'picture',
+                    'picture', //'picture',
                     ':picture',
                     $container::TYPE_LOB
-                );
-                $container->offsetSet(
-                    'format',
-                    ':format'
                 );
                 $stmt->setParameterContainer($container);
                 $this->insert_stmt = $stmt;

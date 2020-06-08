@@ -187,7 +187,7 @@ abstract class Entitled
                 count(static::$defaults)
             );
 
-            $fnames = array_keys($values);
+            $fnames = array_values($values);
             foreach ($class::$defaults as $d) {
                 $val = null;
                 if (isset($d['priority'])) {

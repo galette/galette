@@ -115,6 +115,9 @@ class Links extends atoum
         $status = new \Galette\Entity\Status($this->zdb);
         if (count($status->getList()) === 0) {
             $res = $status->installInit();
+            if ($res instanceof \Exception) {
+                throw $res;
+            }
             $this->boolean($res)->isTrue();
         }
 

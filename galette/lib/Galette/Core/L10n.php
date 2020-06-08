@@ -171,7 +171,7 @@ class L10n
             foreach ($this->i18n->getList() as $lang) {
                 $stmt->execute(
                     array(
-                        'where2' => $lang->getLongID()
+                        'text_locale' => $lang->getLongID()
                     )
                 );
             }

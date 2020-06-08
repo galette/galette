@@ -1223,11 +1223,10 @@ class Members
             $mids = [];
             $ids = [];
             foreach ($this->filters->groups_search as $gs) { // then add a row for each ig/searched group pair
-                /** Why where parameter is named where1 ?? */
                 $gresults = $stmt->execute(
                     array(
-                        'where1'    => $gs['group'],
-                        'where2'    => $gs['group']
+                        'group'    => $gs['group'],
+                        'pgroup'   => $gs['group']
                     )
                 );
 
@@ -1570,12 +1569,11 @@ class Members
                     }
 
                     if ($dirty === true) {
-                        /** Why where parameter is named where1 ?? */
                         $stmt->execute(
                             array(
-                                'login_adh' => $m->login_adh,
-                                'mdp_adh'   => $m->mdp_adh,
-                                'where1'    => $m->id_adh
+                                'login' => $m->login_adh,
+                                'pass'  => $m->mdp_adh,
+                                'id'    => $m->id_adh
                             )
                         );
                         $processed++;

@@ -152,9 +152,9 @@ class Titles
                 }
                 $stmt->execute(
                     array(
-                        'id_title'      => $d['id_title'],
-                        'short_label'   => $short,
-                        'long_label'    => $long
+                        'id'    => $d['id_title'],
+                        'short' => $short,
+                        'long'  => $long
                     )
                 );
             }

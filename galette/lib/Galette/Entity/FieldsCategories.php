@@ -135,7 +135,7 @@ class FieldsCategories
             foreach ($categories as $k => $v) {
                 $params = array(
                     'position'  => $k,
-                    'where1'    => $v
+                    'pk'        => $v
                 );
                 $stmt->execute($params);
             }
@@ -162,7 +162,7 @@ class FieldsCategories
             $insert = $this->zdb->insert(self::TABLE);
             $insert->values(
                 array(
-                    self::PK        => ':id',
+                    self::PK        => ':' . self::PK,
                     'table_name'    => ':table_name',
                     'category'      => ':category',
                     'position'      => ':position'

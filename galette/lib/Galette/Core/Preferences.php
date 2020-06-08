@@ -780,7 +780,7 @@ class Preferences
                 $stmt->execute(
                     array(
                         'val_pref'  => $value,
-                        'where1'    => $k
+                        'nom_pref'  => $k
                     )
                 );
             }
