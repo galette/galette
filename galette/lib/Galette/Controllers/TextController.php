@@ -1,0 +1,178 @@
+<?php
+
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
+/**
+ * Galette texts controller
+ *
+ * PHP version 5
+ *
+ * Copyright © 2020 The Galette Team
+ *
+ * This file is part of Galette (http://galette.tuxfamily.org).
+ *
+ * Galette is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Galette is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Galette. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @category  Controllers
+ * @package   Galette
+ *
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2020 The Galette Team
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @version   SVN: $Id$
+ * @link      http://galette.tuxfamily.org
+ * @since     Available since 0.9.4dev - 2020-06-08
+ */
+
+namespace Galette\Controllers;
+
+use Slim\Http\Request;
+use Slim\Http\Response;
+use Galette\Entity\Texts;
+use Analog\Analog;
+
+/**
+ * Galette texts controller
+ *
+ * @category  Controllers
+ * @name      TextController
+ * @package   Galette
+ * @author    Johan Cwiklinski <johan@x-tnd.be>
+ * @copyright 2020 The Galette Team
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @link      http://galette.tuxfamily.org
+ * @since     Available since 0.9.4dev - 2020-06-08
+ */
+
+class TextController extends AbstractController
+{
+    /**
+     * List texts
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments ['r']
+     *
+     * @return void
+     */
+    public function list(Request $request, Response $response, array $args = [])
+    {
+        if (!isset($args['lang'])) {
+            $args['lang'] = $this->preferences->pref_lang;
+        }
+        if (!isset($args['ref'])) {
+            $args['ref'] = Texts::DEFAULT_REF;
+        }
+
+        $texts = new Texts(
+            $this->preferences,
+            $this->router
+        );
+
+        $mtxt = $texts->getTexts($args['ref'], $args['lang']);
+
+        // display page
+        $this->view->render(
+            $response,
+            'gestion_textes.tpl',
+            [
+                'page_title'        => _T("Automatic emails texts edition"),
+                'reflist'           => $texts->getRefs($args['lang']),
+                'langlist'          => $this->i18n->getList(),
+                'cur_lang'          => $args['lang'],
+                'cur_ref'           => $args['ref'],
+                'mtxt'              => $mtxt,
+            ]
+        );
+        return $response;
+    }
+
+    /**
+     * Change texts
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments ['r']
+     *
+     * @return void
+     */
+    public function change(Request $request, Response $response, array $args = [])
+    {
+        $post = $request->getParsedBody();
+        return $response
+            ->withStatus(301)
+            ->withHeader(
+                'Location',
+                $this->router->pathFor(
+                    'texts',
+                    [
+                        'lang'  => $post['sel_lang'],
+                        'ref'   => $post['sel_ref']
+                    ]
+                )
+            );
+    }
+
+    /**
+     * Edit text
+     *
+     * @param Request  $request  PSR Request
+     * @param Response $response PSR Response
+     * @param array    $args     Request arguments ['r']
+     *
+     * @return void
+     */
+    public function edit(Request $request, Response $response, array $args = [])
+    {
+        $post = $request->getParsedBody();
+        $texts = new Texts($this->preferences, $this->router);
+
+        //set the language
+        $cur_lang = $post['cur_lang'];
+        //set the text entry
+        $cur_ref = $post['cur_ref'];
+
+        $mtxt = $texts->getTexts($cur_ref, $cur_lang, $this->router);
+        $res = $texts->setTexts(
+            $cur_ref,
+            $cur_lang,
+            $post['text_subject'],
+            $post['text_body']
+        );
+
+        if (!$res) {
+            $this->flash->addMessage(
+                'error_detected',
+                preg_replace(
+                    '(%s)',
+                    $mtxt->tcomment,
+                    _T("Email: '%s' has not been modified!")
+                )
+            );
+        } else {
+            $this->flash->addMessage(
+                'success_detected',
+                preg_replace(
+                    '(%s)',
+                    $mtxt->tcomment,
+                    _T("Email: '%s' has been successfully modified.")
+                )
+            );
+        }
+
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->router->pathFor('texts'));
+    }
+}

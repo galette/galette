@@ -42,6 +42,7 @@ use Galette\Controllers\Crud;
 use Galette\Controllers\PdfController;
 use Galette\Controllers\CsvController;
 use Galette\Controllers\AdminToolsController;
+use Galette\Controllers\TextController;
 
 use Galette\DynamicFields\DynamicField;
 use Galette\Repository\Members;
@@ -245,100 +246,17 @@ $app->post(
 
 $app->get(
     '/texts[/{lang}/{ref}]',
-    function ($request, $response, $args) {
-        if (!isset($args['lang'])) {
-            $args['lang'] = $this->preferences->pref_lang;
-        }
-        if (!isset($args['ref'])) {
-            $args['ref'] = Texts::DEFAULT_REF;
-        }
-
-        $texts = new Texts(
-            $this->preferences,
-            $this->router
-        );
-
-        $mtxt = $texts->getTexts($args['ref'], $args['lang']);
-
-        // display page
-        $this->view->render(
-            $response,
-            'gestion_textes.tpl',
-            [
-                'page_title'        => _T("Automatic emails texts edition"),
-                'reflist'           => $texts->getRefs($args['lang']),
-                'langlist'          => $this->i18n->getList(),
-                'cur_lang'          => $args['lang'],
-                'cur_ref'           => $args['ref'],
-                'mtxt'              => $mtxt,
-            ]
-        );
-        return $response;
-    }
+    TextController::class . ':list'
 )->setName('texts')->add($authenticate);
 
 $app->post(
     '/texts/change',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-        return $response
-            ->withStatus(301)
-            ->withHeader(
-                'Location',
-                $this->router->pathFor(
-                    'texts',
-                    [
-                        'lang'  => $post['sel_lang'],
-                        'ref'   => $post['sel_ref']
-                    ]
-                )
-            );
-    }
+    TextController::class . ':change'
 )->setName('changeText')->add($authenticate);
 
 $app->post(
     '/texts',
-    function ($request, $response) {
-        $post = $request->getParsedBody();
-        $texts = new Texts($this->preferences, $this->router);
-
-        //set the language
-        $cur_lang = $post['cur_lang'];
-        //set the text entry
-        $cur_ref = $post['cur_ref'];
-
-        $mtxt = $texts->getTexts($cur_ref, $cur_lang, $this->router);
-        $res = $texts->setTexts(
-            $cur_ref,
-            $cur_lang,
-            $post['text_subject'],
-            $post['text_body']
-        );
-
-        if (!$res) {
-            $this->flash->addMessage(
-                'error_detected',
-                preg_replace(
-                    '(%s)',
-                    $mtxt->tcomment,
-                    _T("Email: '%s' has not been modified!")
-                )
-            );
-        } else {
-            $this->flash->addMessage(
-                'success_detected',
-                preg_replace(
-                    '(%s)',
-                    $mtxt->tcomment,
-                    _T("Email: '%s' has been successfully modified.")
-                )
-            );
-        }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('texts'));
-    }
+    TextController::class . ':edit'
 )->setName('texts')->add($authenticate);
 
 $app->get(
