@@ -169,7 +169,7 @@ class Titles
                 'Unable to initialize default titles. ' . $e->getMessage(),
                 Analog::WARNING
             );
-            return $e;
+            throw $e;
         }
     }
 
