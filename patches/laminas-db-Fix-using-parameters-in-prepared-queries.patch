@@ -1,0 +1,73 @@
+From 3e2c78f92a3fff6ceb503944067021cd5839ea89 Mon Sep 17 00:00:00 2001
+From: Johan Cwiklinski <johan@x-tnd.be>
+Date: Sat, 7 Nov 2020 12:23:31 +0100
+Subject: [PATCH 1/2] Fix using parameters in prepared queries
+
+See https://bugs.galette.eu/issues/1299
+---
+ src/Sql/AbstractSql.php | 7 ++++++-
+ src/Sql/Insert.php      | 8 +++++++-
+ src/Sql/Update.php      | 8 +++++++-
+ 3 files changed, 20 insertions(+), 3 deletions(-)
+
+diff --git a/src/Sql/AbstractSql.php b/src/Sql/AbstractSql.php
+index f1f88268..9c2f6f41 100644
+--- a/src/Sql/AbstractSql.php
++++ b/src/Sql/AbstractSql.php
+@@ -184,7 +184,12 @@ abstract class AbstractSql implements SqlInterface
+                     // if prepareType is set, it means that this particular value must be
+                     // passed back to the statement in a way it can be used as a placeholder value
+                     if ($parameterContainer) {
+-                        $name = $namedParameterPrefix . $expressionParamIndex++;
++                        $matches = [];
++                        if (preg_match('/:([0-9a-zA-Z_]+)/', $value, $matches)) {
++                            $name = $matches[1];
++                        } else {
++                            $name = $namedParameterPrefix . $expressionParamIndex++;
++                        };
+                         $parameterContainer->offsetSet($name, $value);
+                         $values[$vIndex] = $driver->formatParameterName($name);
+                         continue;
+diff --git a/src/Sql/Insert.php b/src/Sql/Insert.php
+index 22820c05..b36ff6d6 100644
+--- a/src/Sql/Insert.php
++++ b/src/Sql/Insert.php
+@@ -187,8 +187,14 @@ class Insert extends AbstractPreparableSql
+             if (is_scalar($value) && $parameterContainer) {
+                 // use incremental value instead of column name for PDO
+                 // @see https://github.com/zendframework/zend-db/issues/35
++                // Galette: only rename when needed.
+                 if ($driver instanceof Pdo) {
+-                    $column = 'c_' . $i++;
++                    $matches = [];
++                    if (preg_match('/:([0-9a-zA-Z_]+)/', $value, $matches)) {
++                        $column = $matches[1];
++                    } else {
++                        $column = 'c_' . ++$i;
++                    };
+                 }
+                 $values[] = $driver->formatParameterName($column);
+                 $parameterContainer->offsetSet($column, $value);
+diff --git a/src/Sql/Update.php b/src/Sql/Update.php
+index 7f5d7c3c..a6206089 100644
+--- a/src/Sql/Update.php
++++ b/src/Sql/Update.php
+@@ -203,8 +203,14 @@ class Update extends AbstractPreparableSql
+             if (is_scalar($value) && $parameterContainer) {
+                 // use incremental value instead of column name for PDO
+                 // @see https://github.com/zendframework/zend-db/issues/35
++                // Galette: only rename when needed.
+                 if ($driver instanceof Pdo) {
+-                    $column = 'c_' . $i++;
++                    $matches = [];
++                    if (preg_match('/:([0-9a-zA-Z_]+)/', $value, $matches)) {
++                        $column = $matches[1];
++                    } else {
++                        $column = 'c_' . ++$i;
++                    };
+                 }
+                 $setSql[] = $prefix . $driver->formatParameterName($column);
+                 $parameterContainer->offsetSet($column, $value);
+-- 
+2.26.2
+
