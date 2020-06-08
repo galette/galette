@@ -125,6 +125,8 @@ class I18n
      */
     public function updateEnv()
     {
+        global $translator;
+
         setlocale(LC_ALL, $this->getLongID());
 
         if (
@@ -139,6 +141,9 @@ class I18n
             //set default translation domain and encoding
             textdomain($domain);
             bind_textdomain_codeset($domain, 'UTF-8');
+        }
+        if ($translator) {
+            $translator->setLocale($this->getLongID());
         }
     }
 

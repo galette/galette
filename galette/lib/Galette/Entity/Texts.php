@@ -316,24 +316,6 @@ class Texts
     }
 
     /**
-     * Retrieve fields from database
-     *
-     * @deprecated Do not seem to be used as of 2013-07-16
-     *
-     * @return array
-     */
-    public static function getDbFields()
-    {
-        global $zdb;
-        $columns = $zdb->getColumns(self::TABLE);
-        $fields = array();
-        foreach ($columns as $col) {
-            $fields[] = $col->getName();
-        }
-        return $fields;
-    }
-
-    /**
      * Initialize texts at install time
      *
      * @param boolean $check_first Check first if it seem initialized
