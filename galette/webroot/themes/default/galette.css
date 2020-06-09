@@ -2459,21 +2459,7 @@ meter[value="4"]::-moz-meter-bar { background: green ; }
     /* Button deco */
     [class^="nav-button"] {
         display: block;
-        z-index: 1;
-        height: 1.5rem;
-        width: 1.5rem;
-        background-color: transparent;
-        background-image: linear-gradient(to right, #333, #333),
-        linear-gradient(to right, #333, #333),
-        linear-gradient(to right, #333, #333);
-        background-position: center top, center, center bottom;
-        background-repeat: no-repeat;
-        background-size: 1.5rem .3rem;
-        padding: 0;
-        outline: 0;
-        border: 0;
         cursor: pointer;
-        -webkit-tap-highlight-color:rgba(0,0,0,0);
         float:left;
         margin-top: .2em;
         margin-left: .3em;
