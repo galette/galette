@@ -224,7 +224,7 @@ abstract class DynamicField
             if ($result) {
                 $this->loadFromRs($result);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             Analog::log(
                 'Unable to retrieve field type for field ' . $id . ' | ' .
                 $e->getMessage(),
@@ -737,7 +737,7 @@ abstract class DynamicField
                     $this->addTranslation($this->name);
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             Analog::log(
                 'An error occurred storing field | ' . $e->getMessage(),
                 Analog::ERROR

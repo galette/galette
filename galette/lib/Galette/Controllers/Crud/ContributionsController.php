@@ -421,7 +421,7 @@ class ContributionsController extends CrudController
                         $field = _T("end date filter");
                         $filters->end_date_filter = $post['end_date_filter'];
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $error_detected[] = $e->getMessage();
                 }
             }
@@ -622,12 +622,8 @@ class ContributionsController extends CrudController
                                     $sent = $mail->send();
 
                                     if (!$sent) {
-                                        $txt = preg_replace(
-                                            array('/%name/', '/%email/'),
-                                            array($adh->sname, $adh->getEmail()),
-                                            _T("A problem happened while sending to admin post contribution notification for user %name (%email) contribution")
-                                        );
-                                        $this->history->add($txt);
+                                        $txt = _T('Post contribution script has failed.');
+                                        $this->history->add($txt, $message);
                                         $warning_detected[] = $txt;
                                         //Mails are disabled... We log (not safe, but)...
                                         Analog::log(
@@ -830,20 +826,6 @@ class ContributionsController extends CrudController
                         ]
                     ) . '?' . Adherent::PK . '=' . $contrib->member;
                 }
-            }
-        }
-
-        /* TODO: remove */
-        if (!isset($contribution['duree_mois_cotis'])
-            || $contribution['duree_mois_cotis'] == ''
-        ) {
-            // On error restore entered value or default to display the form again
-            if (isset($_POST['duree_mois_cotis'])
-                && $_POST['duree_mois_cotis'] != ''
-            ) {
-                $contribution['duree_mois_cotis'] = $_POST['duree_mois_cotis'];
-            } else {
-                $contribution['duree_mois_cotis'] = $this->preferences->pref_membership_ext;
             }
         }
 

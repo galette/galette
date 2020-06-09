@@ -189,7 +189,7 @@ trait I18nTrait
                 $this->zdb->execute($insert);
             }
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             Analog::log(
                 'An error occurred updating dynamic translation for `' .
                 $text_orig . '` | ' . $e->getMessage(),
@@ -224,7 +224,7 @@ trait I18nTrait
             );
             $this->zdb->execute($delete);
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             Analog::log(
                 'An error occurred deleting dynamic translation for `' .
                 $text_orig . ' | ' . $e->getMessage(),

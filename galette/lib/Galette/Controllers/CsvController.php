@@ -40,6 +40,7 @@ namespace Galette\Controllers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Entity\ImportModel;
+use Galette\Filters\MembersList;
 use Galette\IO\Csv;
 use Galette\IO\CsvIn;
 use Galette\IO\CsvOut;

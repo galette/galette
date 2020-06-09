@@ -208,7 +208,7 @@ class Members
      * @param boolean $limit      true if we want records pagination
      * @param boolean $export     true if we are exporting
      *
-     * @return Adherent[]|ResultSet
+     * @return Adherent[]|Laminas\Db\ResultSet
      */
     public function getMembersList(
         $as_members = false,

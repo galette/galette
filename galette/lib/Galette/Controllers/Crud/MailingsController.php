@@ -551,7 +551,7 @@ class MailingsController extends CrudController
                         $field = _T("end date filter");
                         $filters->end_date_filter = $post['end_date_filter'];
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $error_detected[] = $e->getMessage();
                 }
             }

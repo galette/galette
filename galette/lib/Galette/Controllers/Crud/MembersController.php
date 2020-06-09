@@ -43,6 +43,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\Authentication;
 use Galette\Core\GaletteMail;
+use Galette\Core\Password;
 use Galette\Core\PasswordImage;
 use Galette\Core\Picture;
 use Galette\Entity\Adherent;
@@ -1696,8 +1697,8 @@ class MembersController extends CrudController
                                     $password = new Password($this->zdb);
                                     $res = $password->generateNewPassword($member->id);
                                     if ($res == true) {
-                                        $link_validity = new DateTime();
-                                        $link_validity->add(new DateInterval('PT24H'));
+                                        $link_validity = new \DateTime();
+                                        $link_validity->add(new \DateInterval('PT24H'));
                                         $mreplaces['change_pass_uri'] = $this->preferences->getURL() .
                                             $this->router->pathFor(
                                                 'password-recovery',
@@ -1707,7 +1708,7 @@ class MembersController extends CrudController
                                     } else {
                                         $str = str_replace(
                                             '%s',
-                                            $login_adh,
+                                            $member->sfullname,
                                             _T("An error occurred storing temporary password for %s. Please inform an admin.")
                                         );
                                         $this->history->add($str);

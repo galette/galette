@@ -203,7 +203,7 @@ class AuthController extends AbstractController
         } else {
             $msg = str_replace(
                 '%id',
-                $id,
+                $args['id'],
                 _T("Unable to impersonate as %id")
             );
             $this->flash->addMessage(

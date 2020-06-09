@@ -440,7 +440,7 @@ class Telemetry
     *
     * @param integer $length of the random string
     *
-    * @return random string
+    * @return string
     *
     * @see https://stackoverflow.com/questions/4356289/php-random-string-generator/31107425#31107425
     */

@@ -88,7 +88,7 @@ class DynamicTranslationsController extends AbstractController
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $nb_fields = $result->nb;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             Analog::log(
                 'An error occurred counting l10n entries | ' .
                 $e->getMessage(),
