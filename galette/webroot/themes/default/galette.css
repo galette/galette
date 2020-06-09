@@ -2399,6 +2399,10 @@ meter[value="4"]::-moz-meter-bar { background: green ; }
     right: 10px!important;
 }
 
+[class^="nav-button"] {
+    display: none;
+}
+
 /** Mobile devices */
 @media (max-width: 767px) {
 
