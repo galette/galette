@@ -118,7 +118,7 @@ class GaletteMail
                 // enables SMTP debug information
                 if (GALETTE_MODE == 'DEV') {
                     $this->mail->SMTPDebug = 2;
-                    $this->mail->Debugoutput = function($message, $level) {
+                    $this->mail->Debugoutput = function ($message, $level) {
                         Analog::log(
                             $level . ' - ' . $message,
                             Analog::DEBUG
