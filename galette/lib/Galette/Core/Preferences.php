@@ -395,7 +395,7 @@ class Preferences
             if (isset($values[$fieldname])) {
                 $value = trim($values[$fieldname]);
             } else {
-                $value="";
+                $value = "";
             }
 
             // now, check validity
@@ -437,7 +437,7 @@ class Preferences
                     case 'pref_card_hspace':
                     case 'pref_card_vspace':
                         // prevent division by zero
-                        if ($fieldname=='pref_numrows' && $value=='0') {
+                        if ($fieldname == 'pref_numrows' && $value == '0') {
                             $value = '10';
                         }
                         if (!is_numeric($value) || $value < 0) {
@@ -446,7 +446,7 @@ class Preferences
                         break;
                     case 'pref_card_tcol':
                         // Set strip text color to white
-                        if (! preg_match("/#([0-9A-F]{6})/i", $value)) {
+                        if (!preg_match("/#([0-9A-F]{6})/i", $value)) {
                             $value = '#FFFFFF';
                         }
                         break;
@@ -552,7 +552,7 @@ class Preferences
             && isset($insert_values['pref_membership_ext'])
             && $insert_values['pref_membership_ext'] != ''
         ) {
-            $this->errors[] =_T("- Default membership extention and beginning of membership are mutually exclusive.");
+            $this->errors[] = _T("- Default membership extention and beginning of membership are mutually exclusive.");
         }
 
         if (isset($insert_values['pref_membership_offermonths'])
@@ -560,7 +560,7 @@ class Preferences
             && isset($insert_values['pref_membership_ext'])
             && $insert_values['pref_membership_ext'] != ''
         ) {
-            $this->errors[] =_T("- Offering months is only compatible with beginning of membership.");
+            $this->errors[] = _T("- Offering months is only compatible with beginning of membership.");
         }
 
         // missing required fields?
@@ -601,7 +601,7 @@ class Preferences
                 || (!$login->isSuperAdmin()
                 && ($champ != 'pref_admin_pass' && $champ != 'pref_admin_login'))
             ) {
-                if (($champ == "pref_admin_pass" && $_POST['pref_admin_pass'] !=  '')
+                if (($champ == "pref_admin_pass" && $_POST['pref_admin_pass'] != '')
                     || ($champ != "pref_admin_pass")
                 ) {
                     $this->$champ = $valeur;
@@ -685,12 +685,12 @@ class Preferences
     public function getPostalAddress()
     {
         $regs = array(
-          '/%name/',
-          '/%complement/',
-          '/%address/',
-          '/%zip/',
-          '/%town/',
-          '/%country/',
+            '/%name/',
+            '/%complement/',
+            '/%address/',
+            '/%zip/',
+            '/%town/',
+            '/%country/',
         );
 
         $replacements = null;
@@ -892,7 +892,7 @@ class Preferences
             }
             foreach ($addresses as $address) {
                 if (!GaletteMail::isValidEmail($address)) {
-                    $msg =  str_replace('%s', $address, _T("Invalid E-Mail address: %s"));
+                    $msg = str_replace('%s', $address, _T("Invalid E-Mail address: %s"));
                     Analog::log($msg, Analog::WARNING);
                     $this->errors[] = $msg;
                 }
@@ -948,22 +948,22 @@ class Preferences
         //check page width
         $max = 210;
         //margins
-        $size = $this->pref_card_marges_h * 2;
+        $size = $this->pref_card_marges_h*2;
         //cards
-        $size += PdfMembersCards::getWidth() * PdfMembersCards::getCols();
+        $size += PdfMembersCards::getWidth()*PdfMembersCards::getCols();
         //spacing
-        $size += $this->pref_card_hspace * (PdfMembersCards::getCols() - 1);
+        $size += $this->pref_card_hspace*(PdfMembersCards::getCols() - 1);
         if ($size > $max) {
             $warning_detected[] = _T('Current cards configuration may exceed page width!');
         }
 
         $max = 297;
         //margins
-        $size = $this->pref_card_marges_v * 2;
+        $size = $this->pref_card_marges_v*2;
         //cards
-        $size += PdfMembersCards::getHeight() * PdfMembersCards::getRows();
+        $size += PdfMembersCards::getHeight()*PdfMembersCards::getRows();
         //spacing
-        $size += $this->pref_card_vspace * (PdfMembersCards::getRows() - 1);
+        $size += $this->pref_card_vspace*(PdfMembersCards::getRows() - 1);
         if ($size > $max) {
             $warning_detected[] = _T('Current cards configuration may exceed page height!');
         }

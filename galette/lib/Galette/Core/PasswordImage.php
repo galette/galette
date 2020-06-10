@@ -75,7 +75,7 @@ class PasswordImage extends AbstractPassword
     protected function cleanExpired()
     {
         $dh = @opendir(GALETTE_TEMPIMAGES_PATH);
-        while ($file=readdir($dh)) {
+        while ($file = readdir($dh)) {
             if (substr($file, 0, 3) == 'pw_'
                 && time() - filemtime(GALETTE_TEMPIMAGES_PATH . '/' . $file) > 60
             ) {
@@ -153,7 +153,7 @@ class PasswordImage extends AbstractPassword
         $this->generateNewPassword();
         $pass = $this->getNewPassword();
 
-        $png = imagecreate(10 + 7.5 * strlen($pass), 18);
+        $png = imagecreate(10 + 7.5*strlen($pass), 18);
         $bg = imagecolorallocate($png, 160, 160, 160);
         imagestring($png, 3, 5, 2, $pass, imagecolorallocate($png, 0, 0, 0));
         $file = GALETTE_TEMPIMAGES_PATH . '/' . $this->getImageName();

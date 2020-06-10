@@ -42,10 +42,10 @@ unset($session[md5(GALETTE_ROOT)]);
 ?>
                 <h2><?php echo $install->getStepTitle(); ?></h2>
                 <p><?php
-if ( $install->isInstall() ) {
+if ($install->isInstall()) {
     echo _T("Galette has been successfully installed!");
 }
-if ( $install->isUpgrade() ) {
+if ($install->isUpgrade()) {
     echo _T("Galette has been successfully updated!");
 }
 ?></p>

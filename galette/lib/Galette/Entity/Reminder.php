@@ -144,7 +144,7 @@ class Reminder
             $this->comment = $rs->reminder_comment;
         } catch (\Exception $e) {
             Analog::log(
-                __METHOD__ . ': incorrect ResultSet. Error: ' .$e->getMessage(),
+                __METHOD__ . ': incorrect ResultSet. Error: ' . $e->getMessage(),
                 Analog::ERROR
             );
             Analog::log(
@@ -379,7 +379,7 @@ class Reminder
                         $this->nomail = false;
                     }
                     if ($this->type === self::LATE) {
-                        $this->replaces['days_expired'] = $value->days_remaining *-1;
+                        $this->replaces['days_expired'] = $value->days_remaining*-1;
                     }
                     if ($this->type === self::IMPENDING) {
                         $this->replaces['days_remaining'] = $value->days_remaining;
@@ -398,7 +398,7 @@ class Reminder
                 break;
             default:
                 Analog::log(
-                    'Unable to set property ' .$name,
+                    'Unable to set property ' . $name,
                     Analog::WARNING
                 );
                 break;

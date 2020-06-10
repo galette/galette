@@ -285,7 +285,7 @@ class Title
                 break;
             default:
                 Analog::log(
-                    'Unable to set property ' .$name,
+                    'Unable to set property ' . $name,
                     Analog::WARNING
                 );
                 break;

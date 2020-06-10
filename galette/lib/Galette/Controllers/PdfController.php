@@ -99,7 +99,7 @@ class PdfController extends AbstractController
     public function membersCards(Request $request, Response $response, array $args = []) :Response
     {
         if ($this->session->filter_members) {
-            $filters =  $this->session->filter_members;
+            $filters = $this->session->filter_members;
         } else {
             $filters = new MembersList();
         }
@@ -333,7 +333,7 @@ class PdfController extends AbstractController
             $ajax = true;
 
             //retrieve selected members
-            $selection = (isset($post['selection']) ) ? $post['selection'] : array();
+            $selection = (isset($post['selection'])) ? $post['selection'] : array();
 
             $filters->selected = $selection;
             $this->session->filter_members = $filters;
@@ -373,7 +373,7 @@ class PdfController extends AbstractController
         }
 
         //retrieve selected members
-        $selection = (isset($post['selection']) ) ? $post['selection'] : array();
+        $selection = (isset($post['selection'])) ? $post['selection'] : array();
 
         $filters->selected = $selection;
         $this->session->filter_members = $filters;

@@ -332,7 +332,7 @@ class Transaction
                 if (!isset($disabled[$key]) && !isset($this->$prop)) {
                     $this->errors[] = str_replace(
                         '%field',
-                        '<a href="#' . $key . '">' . $this->getFieldLabel($key) .'</a>',
+                        '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
                         _T("- Mandatory field %field empty.")
                     );
                 }
@@ -533,9 +533,8 @@ class Transaction
      */
     public function getRowClass()
     {
-        return ( $this->getMissingAmount() == 0 ) ?
-            'transaction-normal' :
-            'transaction-uncomplete';
+        return ($this->getMissingAmount() == 0) ?
+            'transaction-normal' : 'transaction-uncomplete';
     }
 
     /**

@@ -419,7 +419,7 @@ class Adherent
 
             $results = $this->zdb->execute($select);
 
-            if ($results->count() >  0) {
+            if ($results->count() > 0) {
                 foreach ($results as $row) {
                     $deps = $this->_deps;
                     $deps['children'] = false;
@@ -491,8 +491,8 @@ class Adherent
             } else {
                 $date_end = new \DateTime($this->_due_date);
                 $date_diff = $date_now->diff($date_end);
-                $this->_days_remaining = ( $date_diff->invert == 1 )
-                    ? $date_diff->days * -1
+                $this->_days_remaining = ($date_diff->invert == 1)
+                    ? $date_diff->days*-1
                     : $date_diff->days;
 
                 if ($this->_days_remaining == 0) {
@@ -727,7 +727,7 @@ class Adherent
             $patterns = array('/%days/', '/%date/');
             $ddate = new \DateTime($this->_due_date);
             $replace = array(
-                $this->_days_remaining *-1,
+                $this->_days_remaining*-1,
                 $ddate->format(__("Y-m-d"))
             );
             if ($this->_active) {
@@ -1067,7 +1067,7 @@ class Adherent
                 if ($mandatory_missing === true) {
                     $this->errors[] = str_replace(
                         '%field',
-                        '<a href="#' . $key . '">' . $this->getFieldLabel($key) .'</a>',
+                        '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
                         _T("- Mandatory field %field empty.")
                     );
                 }
@@ -1145,14 +1145,14 @@ class Adherent
                         $diff = $now->diff($d);
                         $days = (integer)$diff->format('%R%a');
                         if ($days >= 0) {
-                            $this->errors[] =_T('- Birthdate must be set in the past!');
+                            $this->errors[] = _T('- Birthdate must be set in the past!');
                         }
 
                         $years = (integer)$diff->format('%R%Y');
                         if ($years <= -200) {
                             $this->errors[] = str_replace(
                                 '%years',
-                                $years * -1,
+                                $years*-1,
                                 _T('- Members must be less than 200 years old (currently %years)!')
                             );
                         }
@@ -1208,7 +1208,7 @@ class Adherent
                         }
 
                         $results = $this->zdb->execute($select);
-                        if ($results->count() !==  0) {
+                        if ($results->count() !== 0) {
                             $this->errors[] = _T("- This E-Mail address is already used by another member!");
                         }
                     } catch (\Exception $e) {
@@ -1253,7 +1253,7 @@ class Adherent
                             }
 
                             $results = $this->zdb->execute($select);
-                            if ($results->count() !==  0
+                            if ($results->count() !== 0
                                 || $value == $preferences->pref_admin_login
                             ) {
                                 $this->errors[] = _T("- This username is already in use, please choose another one!");
@@ -1275,7 +1275,7 @@ class Adherent
                 ) {
                     $this->errors[] = _T("- The passwords don't match!");
                 } elseif ($this->_self_adh === true
-                    && !crypt($value, $values['mdp_crypt'])==$values['mdp_crypt']
+                    && !crypt($value, $values['mdp_crypt']) == $values['mdp_crypt']
                 ) {
                     $this->errors[] = _T("Password misrepeated: ");
                 } else {
@@ -1841,7 +1841,7 @@ class Adherent
         // picture upload
         if (isset($files['photo'])) {
             if ($files['photo']['error'] === UPLOAD_ERR_OK) {
-                if ($files['photo']['tmp_name'] !='') {
+                if ($files['photo']['tmp_name'] != '') {
                     if (is_uploaded_file($files['photo']['tmp_name'])) {
                         $res = $this->picture->store($files['photo']);
                         if ($res < 0) {

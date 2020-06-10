@@ -323,7 +323,7 @@ class FieldsConfig
             if (count($this->core_db_fields)) {
                 array_walk(
                     $this->core_db_fields,
-                    function ($field) use (&$_all_fields) {
+                    function($field) use (&$_all_fields) {
                         $_all_fields[$field['field_id']] = $field;
                     }
                 );
@@ -490,7 +490,7 @@ class FieldsConfig
                 if ($cat_label === null) {
                     $cat_label = $c->category;
                 }
-                $cat = (object) array(
+                $cat = (object)array(
                     'id'        => (int)$c->$cpk,
                     'label'     => $cat_label,
                     'elements'  => array()
@@ -616,7 +616,7 @@ class FieldsConfig
                 if ($cat_label === null) {
                     $cat_label = $c->category;
                 }
-                $cat = (object) array(
+                $cat = (object)array(
                     'id'        => (int)$c->$cpk,
                     'label'     => $cat_label,
                     'elements'  => array()
@@ -857,8 +857,7 @@ class FieldsConfig
                 $stmt->execute(
                     array(
                         'required'  => ($or->required === false) ?
-                            ($this->zdb->isPostgres() ? 'false' : 0) :
-                            true,
+                            ($this->zdb->isPostgres() ? 'false' : 0) : true,
                         'where1'    => $or->field_id
                     )
                 );

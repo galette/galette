@@ -183,7 +183,7 @@ class PaymentTypes extends Repository
                 }
             }
 
-            if (count($missing) >0) {
+            if (count($missing) > 0) {
                 $this->zdb->connection->beginTransaction();
                 $this->insert($ent::TABLE, $missing);
                 Analog::log(

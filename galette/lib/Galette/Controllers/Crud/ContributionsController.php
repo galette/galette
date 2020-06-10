@@ -343,8 +343,7 @@ class ContributionsController extends CrudController
 
         $tpl_vars = [
             'page_title'        => $raw_type === 'contributions' ?
-                                    _T("Contributions management") :
-                                    _T("Transactions management"),
+                                    _T("Contributions management") : _T("Transactions management"),
             'contribs'          => $contrib,
             'list'              => $contribs_list,
             'nb'                => $contrib->getCount(),
@@ -694,7 +693,7 @@ class ContributionsController extends CrudController
                             //member card link is present in mail model, let's add it
                             $links = new Links($this->zdb);
                             if ($hash = $links->generateNewLink(Links::TARGET_MEMBERCARD, $contrib->member)) {
-                                $link_card =  $this->preferences->getURL() .
+                                $link_card = $this->preferences->getURL() .
                                     $this->router->pathFor('directlink', ['hash' => $hash]);
                             }
                         }
@@ -705,7 +704,7 @@ class ContributionsController extends CrudController
                             $links = new Links($this->zdb);
                             $ltype = $contrib->type->isExtension() ? Links::TARGET_INVOICE : Links::TARGET_RECEIPT;
                             if ($hash = $links->generateNewLink($ltype, $contrib->id)) {
-                                $link_pdf =  $this->preferences->getURL() .
+                                $link_pdf = $this->preferences->getURL() .
                                     $this->router->pathFor('directlink', ['hash' => $hash]);
                             }
                         }

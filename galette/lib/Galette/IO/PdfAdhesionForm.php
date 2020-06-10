@@ -86,8 +86,7 @@ class PdfAdhesionForm extends Pdf
         parent::__construct($prefs, $model);
 
         $this->filename = $adh ?
-            __("adherent_form") . '.' . $adh->id . '.pdf' :
-            __("adherent_form") . '.pdf';
+            __("adherent_form") . '.' . $adh->id . '.pdf' : __("adherent_form") . '.pdf';
 
         $this->Open();
 
@@ -163,7 +162,7 @@ class PdfAdhesionForm extends Pdf
                 $main_group = $member_groups[0]->getName();
                 $group_list = '<ul>';
                 foreach ($member_groups as $group) {
-                    $group_list .= '<li>' . $group->getName()  . '</li>';
+                    $group_list .= '<li>' . $group->getName() . '</li>';
                 }
                 $group_list .= '</ul>';
             }
@@ -229,15 +228,15 @@ class PdfAdhesionForm extends Pdf
                 switch ($field_type) {
                     case DynamicField::TEXT:
                         $value .= '<textarea' .
-                            ' id="'    . $field_name  . '"' .
-                            ' name="'  . $field_name  . '"' .
+                            ' id="' . $field_name . '"' .
+                            ' name="' . $field_name . '"' .
                             ' value="' . $field_value['field_val'] . '"' .
                             '/>';
                         break;
                     case DynamicField::LINE:
                         $value .= '<input type="text"' .
-                            ' id="'    . $field_name  . '"' .
-                            ' name="'  . $field_name  . '"' .
+                            ' id="' . $field_name . '"' .
+                            ' name="' . $field_name . '"' .
                             ' value="' . $field_value['field_val'] . '"' .
                             ' size="20" maxlength="30"/>';
                         break;
@@ -245,8 +244,8 @@ class PdfAdhesionForm extends Pdf
                         $choice_values = $dynamic_fields[$field_id]->getValues();
                         foreach ($choice_values as $choice_idx => $choice_value) {
                             $value .= '<input type="radio"' .
-                                ' id="'    . $field_name . '"' .
-                                ' name="'  . $field_name . '"' .
+                                ' id="' . $field_name . '"' .
+                                ' name="' . $field_name . '"' .
                                 ' value="' . $choice_value . '"';
                             if ($choice_idx == $field_values[0]['field_val']) {
                                 $value .= ' checked="checked"';
@@ -258,12 +257,12 @@ class PdfAdhesionForm extends Pdf
                         break;
                     case DynamicField::DATE:
                         $value .= '<input type="text" name="' .
-                            $field_name  . '" value="' .
+                            $field_name . '" value="' .
                             $field_value . '" />';
                         break;
                     case DynamicField::BOOLEAN:
                         $value .= '<input type="checkbox"' .
-                            ' name="' .  $field_name . '"' .
+                            ' name="' . $field_name . '"' .
                             ' value="1"';
                         if ($field_value['field_val'] == 1) {
                             $value .= ' checked="checked"';
@@ -272,7 +271,7 @@ class PdfAdhesionForm extends Pdf
                         break;
                     case DynamicField::FILE:
                         $value .= '<input type="text" name="' .
-                            $field_name  . '" value="' .
+                            $field_name . '" value="' .
                             $field_value['field_val'] . '" />';
                         break;
                 }

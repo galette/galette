@@ -82,13 +82,13 @@ class Login extends Authentication
     }
 
     /**
-    * Login for the superuser
-    *
-    * @param string      $login       name
-    * @param Preferences $preferences Preferences instance
-    *
-    * @return void
-    */
+     * Login for the superuser
+     *
+     * @param string      $login       name
+     * @param Preferences $preferences Preferences instance
+     *
+     * @return void
+     */
     public function logAdmin($login, Preferences $preferences)
     {
         parent::logAdmin($login, $preferences);
@@ -96,10 +96,10 @@ class Login extends Authentication
     }
 
     /**
-    * Log out user and unset variables
-    *
-    * @return void
-    */
+     * Log out user and unset variables
+     *
+     * @return void
+     */
     public function logOut()
     {
         parent::logOut();

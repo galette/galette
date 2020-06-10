@@ -79,12 +79,12 @@ class SysInfos
             $php_conf .= str_pad("\n  $key:", 25, '.') . ' ' . $value;
         }
 
-        $str =  str_pad('Galette version:', 20, '.') . ' ' . \Galette\Core\Galette::gitVersion(true) . "\n";
-        $str .= str_pad('PHP version:', 20, '.') . ' ' . PHP_VERSION . " " . php_sapi_name()  . "\n";
-        $str .= 'PHP config:' . $php_conf  . "\n";
-        $str .= str_pad('Database:', 20, '.') . ' '  . $db_version . "\n";
-        $str .= str_pad('OS:', 20, '.') . ' '  . php_uname() . "\n";
-        $str .= str_pad('Browser:', 20, '.') . ' '  . $_SERVER['HTTP_USER_AGENT'] . "\n\n";
+        $str = str_pad('Galette version:', 20, '.') . ' ' . \Galette\Core\Galette::gitVersion(true) . "\n";
+        $str .= str_pad('PHP version:', 20, '.') . ' ' . PHP_VERSION . " " . php_sapi_name() . "\n";
+        $str .= 'PHP config:' . $php_conf . "\n";
+        $str .= str_pad('Database:', 20, '.') . ' ' . $db_version . "\n";
+        $str .= str_pad('OS:', 20, '.') . ' ' . php_uname() . "\n";
+        $str .= str_pad('Browser:', 20, '.') . ' ' . $_SERVER['HTTP_USER_AGENT'] . "\n\n";
 
         $str .= 'Modules:' . "\n";
         $mods = new CheckModules();
@@ -106,14 +106,14 @@ class SysInfos
 
         $str .= "\n" . 'Plugins:' . "\n";
         foreach ($plugins->getModules() as $p) {
-            $str .= '  ' . $p['name'] .  ' ' . $p['version'] .
+            $str .= '  ' . $p['name'] . ' ' . $p['version'] .
                 ' (' . $p['author'] . ")\n";
         }
 
         $str .= "\n" . 'PHP loaded modules:';
         $i = 0;
         foreach (get_loaded_extensions() as $e) {
-            if ($i % 10 === 0) {
+            if ($i%10 === 0) {
                 $str .= "\n  ";
             }
             $str .= $e . ", ";

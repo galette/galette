@@ -122,7 +122,7 @@ class PdfMembersLabels extends Pdf
         // Label heigth
         $this->lh = round($this->preferences->pref_etiq_vsize);
         // Line heigth
-        $this->line_h=round($this->lh/5);
+        $this->line_h = round($this->lh/5);
     }
 
     /**
@@ -134,20 +134,20 @@ class PdfMembersLabels extends Pdf
      */
     public function drawLabels($members)
     {
-        $nb_etiq=0;
+        $nb_etiq = 0;
         foreach ($members as $member) {
             // Detect page breaks
             $colsrows = $this->preferences->pref_etiq_cols
                 * $this->preferences->pref_etiq_rows;
-            if ($nb_etiq % $colsrows == 0) {
+            if ($nb_etiq%$colsrows == 0) {
                 $this->AddPage();
             }
             // Set font
             $this->SetFont(self::FONT, 'B', $this->preferences->pref_etiq_corps);
 
             // Compute label position
-            $col = $nb_etiq % $this->preferences->pref_etiq_cols;
-            $row = ($nb_etiq / $this->preferences->pref_etiq_cols)
+            $col = $nb_etiq%$this->preferences->pref_etiq_cols;
+            $row = ($nb_etiq/$this->preferences->pref_etiq_cols)
                 % $this->preferences->pref_etiq_rows;
             // Set label origin
             $x = $this->xorigin + $col*(
@@ -170,8 +170,7 @@ class PdfMembersLabels extends Pdf
             //calculte font size to display address and address continuation
             $max_text_size = $this->preferences->pref_etiq_hsize;
             $text = mb_strlen($member->address) > mb_strlen($member->address_continuation) ?
-                $member->address :
-                $member->address_continuation;
+                $member->address : $member->address_continuation;
             $this->fixSize(
                 $text,
                 $max_text_size,

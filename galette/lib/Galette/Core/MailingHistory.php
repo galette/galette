@@ -78,7 +78,7 @@ class MailingHistory extends History
 
     private $senders;
 
-   /**
+    /**
      * Default constructor
      *
      * @param Db          $zdb     Database
@@ -436,14 +436,11 @@ class MailingHistory extends History
             }
 
             $sender = ($this->sender === 0) ?
-                new Expression('NULL') :
-                $this->sender;
+                new Expression('NULL') : $this->sender;
             $sender_name = ($this->sender_name === null) ?
-                new Expression('NULL') :
-                $this->sender_name;
+                new Expression('NULL') : $this->sender_name;
             $sender_address = ($this->sender_address === null) ?
-                new Expression('NULL') :
-                $this->sender_address;
+                new Expression('NULL') : $this->sender_address;
 
             $values = array(
                 'mailing_sender'            => $sender,
@@ -494,11 +491,9 @@ class MailingHistory extends History
                 $sender = $this->sender;
             }
             $sender_name = ($this->sender_name === null) ?
-                new Expression('NULL') :
-                $this->sender_name;
+                new Expression('NULL') : $this->sender_name;
             $sender_address = ($this->sender_address === null) ?
-                new Expression('NULL') :
-                $this->sender_address;
+                new Expression('NULL') : $this->sender_address;
 
             $values = array(
                 'mailing_sender'            => $sender,

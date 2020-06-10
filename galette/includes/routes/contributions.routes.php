@@ -104,7 +104,7 @@ $app->post(
 )->setName('doEditTransaction')->add($authenticate);
 
 $app->get(
-    '/{type:contributions|transactions}/remove' .'/{id:\d+}',
+    '/{type:contributions|transactions}/remove' . '/{id:\d+}',
     Crud\ContributionsController::class . ':confirmDelete'
 )->setName('removeContribution')->add($authenticate);
 

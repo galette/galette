@@ -113,7 +113,7 @@ if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
 
     $now = new \DateTime();
     $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
-        $now->format('Y-m-d')  . '.log';
+        $now->format('Y-m-d') . '.log';
     $galette_debug_log = LevelName::init(Handler\File::init($dbg_log_path));
 
     if (defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true) {
@@ -127,7 +127,7 @@ if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
 
     Analog::handler(
         Handler\Multi::init(
-            array (
+            array(
                 Analog::NOTICE  => Handler\Threshold::init(
                     $galette_run_log,
                     GALETTE_LOG_LVL
@@ -203,7 +203,7 @@ if (isset($_POST['stepback_btn'])) {
     if ($_POST['install_adminpass'] == '') {
         $error_detected[] = _T("No password");
     }
-    if (! isset($_POST['install_passwdverified'])
+    if (!isset($_POST['install_passwdverified'])
         && strcmp(
             $_POST['install_adminpass'],
             $_POST['install_adminpass_verif']
@@ -319,7 +319,7 @@ if ($install->isCheckStep()) {
                     <li<?php if ($install->isDbStep()) echo ' class="current"'; ?>><?php echo _T("Database"); ?> - </li>
                     <li<?php if ($install->isDbCheckStep()) echo ' class="current"'; ?>><?php echo _T("Database access/permissions"); ?> - </li>
 <?php
-if ( $install->isUpgrade() ) {
+if ($install->isUpgrade()) {
     ?>
                     <li<?php if ($install->isVersionSelectionStep()) echo ' class="current"'; ?>><?php echo _T("Version selection"); ?> - </li>
                     <li<?php if ($install->isDbUpgradeStep()) echo ' class="current"'; ?>><?php echo _T("Database upgrade"); ?> - </li>
@@ -330,7 +330,7 @@ if ( $install->isUpgrade() ) {
     <?php
 }
 
-if ( !$install->isUpgrade() ) {
+if (!$install->isUpgrade()) {
     ?>
                     <li<?php if ($install->isAdminStep()) echo ' class="current"'; ?>><?php echo _T("Admin parameters"); ?> - </li>
     <?php

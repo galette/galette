@@ -41,15 +41,15 @@ $container = $app->getContainer();
 // Error handling
 // -----------------------------------------------------------------------------
 
-$container['errorHandler'] = function ($c) {
+$container['errorHandler'] = function($c) {
     return new Galette\Handlers\Error($c['view'], true);
 };
 
-$container['phpErrorHandler'] = function ($c) {
+$container['phpErrorHandler'] = function($c) {
     return new Galette\Handlers\PhpError($c['view'], true);
 };
 
-$container['notFoundHandler'] = function ($c) {
+$container['notFoundHandler'] = function($c) {
     return new Galette\Handlers\NotFound($c['view']);
 };
 
@@ -58,7 +58,7 @@ $container['notFoundHandler'] = function ($c) {
 // -----------------------------------------------------------------------------
 
 // Register Smarty View helper
-$container['view'] = function ($c) {
+$container['view'] = function($c) {
     $view = new \Slim\Views\Smarty(
         rtrim(GALETTE_ROOT . GALETTE_TPL_SUBDIR, DIRECTORY_SEPARATOR),
         [
@@ -144,7 +144,7 @@ $container['view'] = function ($c) {
     if ($c->get('login')->isAdmin() && $c->get('preferences')->pref_telemetry_date) {
         $now = new \DateTime();
         $sent = new \DateTime($c->get('preferences')->pref_telemetry_date);
-        $sent->add(new \DateInterval('P1Y'));// ask to resend telemetry after one year
+        $sent->add(new \DateInterval('P1Y')); // ask to resend telemetry after one year
         if ($now > $sent && !$_COOKIE['renew_telemetry']) {
             $smarty->assign('renew_telemetry', true);
         }
@@ -160,18 +160,18 @@ $container['view'] = function ($c) {
 };
 
 // Flash messages
-$container['flash'] = function ($c) {
+$container['flash'] = function($c) {
     return new \Slim\Flash\Messages;
 };
 
-$container['plugins'] = function ($c) use ($app) {
+$container['plugins'] = function($c) use ($app) {
     $plugins = new Galette\Core\Plugins();
     $i18n = $c->get('i18n');
     $plugins->loadModules($c->get('preferences'), GALETTE_PLUGINS_PATH, $i18n->getLongID());
     return $plugins;
 };
 
-$container['i18n'] = function ($c) {
+$container['i18n'] = function($c) {
     $i18n = $c->get('session')->i18n;
     if (!$i18n || !$i18n->getId() || isset($_GET['ui_pref_lang']) && $_GET['ui_pref_lang']) {
         $i18n = new Galette\Core\I18n($_GET['ui_pref_lang'] ?? false);
@@ -180,16 +180,16 @@ $container['i18n'] = function ($c) {
     return $i18n;
 };
 
-$container['zdb'] = function ($c) {
+$container['zdb'] = function($c) {
     $zdb = new Galette\Core\Db();
     return $zdb;
 };
 
-$container['preferences'] = function ($c) {
+$container['preferences'] = function($c) {
     return new Galette\Core\Preferences($c->get('zdb'));
 };
 
-$container['login'] = function ($c) {
+$container['login'] = function($c) {
     $login = $c->get('session')->login;
     if (!$login) {
         $login = new Galette\Core\Login(
@@ -201,25 +201,25 @@ $container['login'] = function ($c) {
     return $login;
 };
 
-$container['session'] = function ($c) {
+$container['session'] = function($c) {
     $session = new \RKA\Session();
     return $session;
 };
 
-$container['logo'] = function ($c) {
+$container['logo'] = function($c) {
     return new Galette\Core\Logo();
 };
 
-$container['print_logo'] = function ($c) {
+$container['print_logo'] = function($c) {
     return new Galette\Core\PrintLogo();
 };
 
 
-$container['history'] = function ($c) {
+$container['history'] = function($c) {
     return new Galette\Core\History($c->get('zdb'), $c->get('login'));
 };
 
-$container['acls'] = function ($c) {
+$container['acls'] = function($c) {
     include_once GALETTE_ROOT . 'includes/core_acls.php';
     $acls = $core_acls;
 
@@ -231,7 +231,7 @@ $container['acls'] = function ($c) {
     $acls = $acls + $c->get('plugins')->getAcls();
 
     //load user defined ACLs
-    if (file_exists(GALETTE_CONFIG_PATH  . 'local_acls.inc.php')) {
+    if (file_exists(GALETTE_CONFIG_PATH . 'local_acls.inc.php')) {
         //use array_merge here, we want $local_acls to override core ones.
         $acls = array_merge($acls, $local_acls);
     }
@@ -239,12 +239,12 @@ $container['acls'] = function ($c) {
     return $acls;
 };
 
-$container['members_fields'] = function ($c) {
+$container['members_fields'] = function($c) {
     include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
     return $members_fields;
 };
 
-$container['members_form_fields'] = function ($c) {
+$container['members_form_fields'] = function($c) {
     $fields = $c->get('members_fields');
     foreach ($fields as $k => $field) {
         if ($field['position'] == -1) {
@@ -255,12 +255,12 @@ $container['members_form_fields'] = function ($c) {
 };
 
 
-$container['members_fields_cats'] = function ($c) {
+$container['members_fields_cats'] = function($c) {
     include_once GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
     return $members_fields_cats;
 };
 
-$container['pdfmodels_fields'] = function ($c) {
+$container['pdfmodels_fields'] = function($c) {
     //include_once GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
     $pdfmodels_fields = array(
         array(
@@ -533,7 +533,7 @@ $container['pdfmodels_fields'] = function ($c) {
 // -----------------------------------------------------------------------------
 
 // monolog
-$container['logger'] = function ($c) {
+$container['logger'] = function($c) {
     $settings = $c->get('settings');
     $logger = new \Monolog\Logger($settings['logger']['name']);
     $logger->pushProcessor(new \Monolog\Processor\UidProcessor());
@@ -541,7 +541,7 @@ $container['logger'] = function ($c) {
     return $logger;
 };
 
-$container['fields_config'] = function ($c) {
+$container['fields_config'] = function($c) {
     $fc = new Galette\Entity\FieldsConfig(
         $c->get('zdb'),
         Galette\Entity\Adherent::TABLE,
@@ -551,7 +551,7 @@ $container['fields_config'] = function ($c) {
     return $fc;
 };
 
-$container['lists_config'] = function ($c) {
+$container['lists_config'] = function($c) {
     $fc = new Galette\Entity\ListsConfig(
         $c->get('zdb'),
         Galette\Entity\Adherent::TABLE,
@@ -561,8 +561,8 @@ $container['lists_config'] = function ($c) {
     return $fc;
 };
 
-$container['cache'] = function ($c) {
-    $adapter  = null;
+$container['cache'] = function($c) {
+    $adapter = null;
     if (function_exists('wincache_ucache_add')) {
         //since APCu is not known to work on windows
         $adapter = 'wincache';
@@ -586,7 +586,7 @@ $container['cache'] = function ($c) {
     return null;
 };
 
-$container['translator'] = function ($c) {
+$container['translator'] = function($c) {
     $translator = new Galette\Core\Translator();
 
     $domains = ['galette'];
@@ -616,7 +616,7 @@ $container['translator'] = function ($c) {
 };
 
 // Add Event manager to dependency.
-$container['event_manager'] = function ($c) {
+$container['event_manager'] = function($c) {
     $emitter = new SlimEventManager();
     return $emitter;
 };

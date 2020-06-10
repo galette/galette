@@ -118,11 +118,11 @@ abstract class Csv
             $raw_size = filesize($file);
             $size = 0;
             if ($raw_size >= 1024*1024*1024) { // Go
-                $size = round(($raw_size / 1024)/1024/1024, 2) . ' Go';
+                $size = round(($raw_size/1024)/1024/1024, 2) . ' Go';
             } elseif ($raw_size >= 1024*1024) { // Mo
-                $size = round(($raw_size / 1024)/1024, 2) . ' Mo';
+                $size = round(($raw_size/1024)/1024, 2) . ' Mo';
             } elseif ($raw_size >= 1024) { // ko
-                $size = round(($raw_size / 1024), 2) . ' Ko';
+                $size = round(($raw_size/1024), 2) . ' Ko';
             } else { // octets
                 $size = $raw_size . ' octets';
             }
@@ -147,7 +147,7 @@ abstract class Csv
     {
         //let's ensure we do not have a path here
         $name = basename($name);
-        $filename=$this->default_directory . $name;
+        $filename = $this->default_directory . $name;
 
         if (file_exists($filename)) {
             $removed = unlink($filename);
@@ -193,7 +193,7 @@ abstract class Csv
     {
         $class = get_class($this);
         Analog::log(
-            '[' . $class  . '] ' . $msg,
+            '[' . $class . '] ' . $msg,
             Analog::ERROR
         );
         $this->errors[] = $msg;

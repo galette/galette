@@ -330,11 +330,11 @@ class PluginsController extends AbstractController
                                 && (strcasecmp(trim($w1), 'rename') != 0)
                             ) {
                                 $error_detected[] = $w1 . ' ' . $w2 . ' ' . $w3 . ' ' . $extra;
-                                $error_detected[] = $e->getMessage() . '<br/>(' . $query  . ')';
+                                $error_detected[] = $e->getMessage() . '<br/>(' . $query . ')';
                             } else {
                                 //if error are on drop, DROP, rename or RENAME we can continue
                                 $warning_detected[] = $w1 . ' ' . $w2 . ' ' . $w3 . ' ' . $extra;
-                                $warning_detected[] = $e->getMessage() . '<br/>(' . $query  . ')';
+                                $warning_detected[] = $e->getMessage() . '<br/>(' . $query . ')';
                             }
                         }
                     }

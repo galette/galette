@@ -276,15 +276,15 @@ class Picture implements FileInterface
 
         if ($this->height > $this->width) {
             if ($this->height > $this->max_height) {
-                $ratio = $this->max_height / $this->height;
+                $ratio = $this->max_height/$this->height;
                 $this->optimal_height = $this->max_height;
-                $this->optimal_width = $this->width * $ratio;
+                $this->optimal_width = $this->width*$ratio;
             }
         } else {
             if ($this->width > $this->max_width) {
-                $ratio = $this->max_width / $this->width;
+                $ratio = $this->max_width/$this->width;
                 $this->optimal_width = $this->max_width;
-                $this->optimal_height = $this->height * $ratio;
+                $this->optimal_height = $this->height*$ratio;
             }
         }
     }
@@ -306,7 +306,7 @@ class Picture implements FileInterface
      */
     public function display()
     {
-        header('Content-type: '.$this->mime);
+        header('Content-type: ' . $this->mime);
         ob_clean();
         flush();
         $this->getContents();
@@ -440,7 +440,7 @@ class Picture implements FileInterface
                 $err_msg .= 'Invalid extension for file ' . $name . '.';
                 $ret = self::INVALID_EXTENSION;
             } else {
-                $err_msg = 'Invalid filename `' . $name  . '` (Tip: ';
+                $err_msg = 'Invalid filename `' . $name . '` (Tip: ';
                 $err_msg .= preg_replace(
                     '|%s|',
                     htmlentities($this->getBadChars()),
@@ -457,10 +457,10 @@ class Picture implements FileInterface
         }
 
         //Second, let's check file size
-        if ($file['size'] > ( $this->maxlenght * 1024 )) {
+        if ($file['size'] > ($this->maxlenght*1024)) {
             Analog::log(
-                '[' . $class . '] File is too big (' . ( $file['size'] * 1024 ) .
-                'Ko for maximum authorized ' . ( $this->maxlenght * 1024 ) .
+                '[' . $class . '] File is too big (' . ($file['size']*1024) .
+                'Ko for maximum authorized ' . ($this->maxlenght*1024) .
                 'Ko',
                 Analog::ERROR
             );
@@ -518,7 +518,7 @@ class Picture implements FileInterface
     {
         $f = fopen($file, 'r');
         $picture = '';
-        while ($r=fread($f, 8192)) {
+        while ($r = fread($f, 8192)) {
             $picture .= $r;
         }
         fclose($f);
@@ -720,10 +720,10 @@ class Picture implements FileInterface
             list($cur_width, $cur_height, $cur_type, $curattr)
                 = getimagesize($source);
 
-            $ratio = $cur_width / $cur_height;
+            $ratio = $cur_width/$cur_height;
 
             // calculate image size according to ratio
-            if ($cur_width>$cur_height) {
+            if ($cur_width > $cur_height) {
                 $h = $w/$ratio;
             } else {
                 $w = $h*$ratio;

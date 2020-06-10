@@ -92,7 +92,7 @@ class CsvController extends AbstractController
         } else {
             Analog::log(
                 'A request has been made to get a CSV file named `' .
-                $filename .'` that does not exists (' . $filepath . ').',
+                $filename . '` that does not exists (' . $filepath . ').',
                 Analog::WARNING
             );
             $notFound = $this->notFoundHandler;
@@ -347,7 +347,7 @@ class CsvController extends AbstractController
         $csv = new CsvIn($this->zdb);
         if (isset($_FILES['new_file'])) {
             if ($_FILES['new_file']['error'] === UPLOAD_ERR_OK) {
-                if ($_FILES['new_file']['tmp_name'] !='') {
+                if ($_FILES['new_file']['tmp_name'] != '') {
                     if (is_uploaded_file($_FILES['new_file']['tmp_name'])) {
                         $res = $csv->store($_FILES['new_file']);
                         if ($res < 0) {
@@ -409,8 +409,7 @@ class CsvController extends AbstractController
         //admins or staff members
         if ($this->login->isAdmin() || $this->login->isStaff()) {
             $filepath = $args['type'] === 'export' ?
-                CsvOut::DEFAULT_DIRECTORY :
-                CsvIn::DEFAULT_DIRECTORY;
+                CsvOut::DEFAULT_DIRECTORY : CsvIn::DEFAULT_DIRECTORY;
             $filepath .= $filename;
             return $this->sendResponse($response, $filepath, $filename);
         } else {
@@ -484,8 +483,7 @@ class CsvController extends AbstractController
         $success = false;
 
         $uri = isset($post['redirect_uri']) ?
-            $post['redirect_uri'] :
-            $this->router->pathFor('slash');
+            $post['redirect_uri'] : $this->router->pathFor('slash');
 
         if (!isset($post['confirm'])) {
             $this->flash->addMessage(
@@ -494,8 +492,7 @@ class CsvController extends AbstractController
             );
         } else {
             $csv = $args['type'] === 'export' ?
-                new CsvOut() :
-                new CsvIn($this->zdb);
+                new CsvOut() : new CsvIn($this->zdb);
             $res = $csv->remove($args['file']);
             if ($res === true) {
                 $success = true;

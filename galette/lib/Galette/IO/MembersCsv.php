@@ -101,8 +101,8 @@ class MembersCsv extends CsvOut
     public function exportMembers(MembersList $filters)
     {
         $export_fields = null;
-        if (file_exists(GALETTE_CONFIG_PATH  . 'local_export_fields.inc.php')) {
-            include_once GALETTE_CONFIG_PATH  . 'local_export_fields.inc.php';
+        if (file_exists(GALETTE_CONFIG_PATH . 'local_export_fields.inc.php')) {
+            include_once GALETTE_CONFIG_PATH . 'local_export_fields.inc.php';
             $export_fields = $fields;
         }
 

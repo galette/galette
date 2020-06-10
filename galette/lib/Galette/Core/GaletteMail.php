@@ -118,7 +118,7 @@ class GaletteMail
                 // enables SMTP debug information
                 if (GALETTE_MODE == 'DEV') {
                     $this->mail->SMTPDebug = 2;
-                    $this->mail->Debugoutput = function ($message, $level) {
+                    $this->mail->Debugoutput = function($message, $level) {
                         Analog::log(
                             $level . ' - ' . $message,
                             Analog::DEBUG
@@ -320,7 +320,7 @@ class GaletteMail
                 $this->mail->AltBody .= $tsign;
                 //then apply email sign to html version
                 $sign_style = 'color:grey;border-top:1px solid #ccc;margin-top:2em';
-                $hsign = '<div style="' . $sign_style. '">' .
+                $hsign = '<div style="' . $sign_style . '">' .
                     nl2br($sign) . '</div>';
                 $this->mail->Body .= $hsign;
             } else {

@@ -113,7 +113,7 @@ class PdfContribution extends Pdf
             $main_group = $member_groups[0]->getName();
             $group_list = '<ul>';
             foreach ($member_groups as $group) {
-                $group_list .= '<li>' . $group->getName()  . '</li>';
+                $group_list .= '<li>' . $group->getName() . '</li>';
             }
             $group_list .= '</ul>';
         }

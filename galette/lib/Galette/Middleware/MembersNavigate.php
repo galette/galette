@@ -98,7 +98,7 @@ class MembersNavigate
         }
 
         if (isset($this->session->filter_members)) {
-            $filters =  $this->session->filter_members;
+            $filters = $this->session->filter_members;
         } else {
             $filters = new MembersList();
         }
@@ -115,13 +115,13 @@ class MembersNavigate
                     $navigate = array(
                         'cur'  => $m['id_adh'],
                         'count' => count($ids),
-                        'pos' => $k+1
+                        'pos' => $k + 1
                     );
                     if ($k > 0) {
-                        $navigate['prev'] = $ids[$k-1]['id_adh'];
+                        $navigate['prev'] = $ids[$k - 1]['id_adh'];
                     }
-                    if ($k < count($ids)-1) {
-                        $navigate['next'] = $ids[$k+1]['id_adh'];
+                    if ($k < count($ids) - 1) {
+                        $navigate['next'] = $ids[$k + 1]['id_adh'];
                     }
                     break;
                 }

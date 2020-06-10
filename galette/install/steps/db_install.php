@@ -43,15 +43,15 @@ $db_installed = $install->executeScripts($zdb);
 ?>
                 <h2><?php echo $install->getStepTitle(); ?></h2>
 <?php
-if ( $db_installed === false ) {
+if ($db_installed === false) {
     $msg = _T("Database has not been installed!");
-    if ( $install->isUpgrade() ) {
+    if ($install->isUpgrade()) {
         $msg = _T("Database has not been upgraded!");
     }
     echo '<p id="errorbox">' . $msg . '</p>';
 } else {
     $msg = _T("Database has been installed :)");
-    if ( $install->isUpgrade() ) {
+    if ($install->isUpgrade()) {
         $msg = _T("Database has been upgraded :)");
     }
     echo '<p id="infobox">' . $msg . '</p>';
@@ -59,7 +59,7 @@ if ( $db_installed === false ) {
 ?>
                 <ul class="leaders">
 <?php
-foreach ( $install->getDbInstallReport() as $r  ) {
+foreach ($install->getDbInstallReport() as $r) {
     ?>
                     <li>
                         <span><?php echo $r['message']; ?></span>
@@ -73,22 +73,22 @@ foreach ( $install->getDbInstallReport() as $r  ) {
                 <form action="installer.php" method="POST">
                     <p id="btn_box">
 <?php
-if ( !$db_installed ) {
+if (!$db_installed) {
     ?>
                         <input type="submit" id="retry_btn" value="<?php echo _T("Retry"); ?>"/>
     <?php
 }
 ?>
 
-                        <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"<?php if ( !$db_installed ) { echo ' disabled="disabled"'; } ?>/>
+                        <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"<?php if (!$db_installed) { echo ' disabled="disabled"'; } ?>/>
 <?php
-if ( $db_installed ) {
+if ($db_installed) {
     ?>
                         <input type="hidden" name="install_dbwrite_ok" value="1"/>
     <?php
 }
 
-if ( !$db_installed ) {
+if (!$db_installed) {
     //once DB is installed, that does not make sense to go back
     ?>
                         <input type="submit" id="btnback" name="stepback_btn" value="<?php echo _T("Back"); ?>"/>

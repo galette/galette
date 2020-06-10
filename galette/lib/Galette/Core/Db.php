@@ -402,7 +402,7 @@ class Db
                 }
             } catch (\Exception $e) {
                 Analog::log(
-                    'Cannot INSERT records | ' .$e->getMessage(),
+                    'Cannot INSERT records | ' . $e->getMessage(),
                     Analog::WARNING
                 );
                 //if we cannot insert records, some others tests cannot be done
@@ -429,7 +429,7 @@ class Db
                     }
                 } catch (\Exception $e) {
                     Analog::log(
-                        'Cannot UPDATE records | ' .$e->getMessage(),
+                        'Cannot UPDATE records | ' . $e->getMessage(),
                         Analog::WARNING
                     );
                     $results['update'] = $e;
@@ -464,7 +464,7 @@ class Db
                     $results['delete'] = true;
                 } catch (\Exception $e) {
                     Analog::log(
-                        'Cannot DELETE records | ' .$e->getMessage(),
+                        'Cannot DELETE records | ' . $e->getMessage(),
                         Analog::WARNING
                     );
                     $results['delete'] = $e;
@@ -568,7 +568,7 @@ class Db
                     );
 
                     Analog::log(
-                        'Charset successfully changed for table `' . $table .'`',
+                        'Charset successfully changed for table `' . $table . '`',
                         Analog::DEBUG
                     );
                 }
@@ -663,7 +663,7 @@ class Db
 
                 //build where
                 foreach ($pkeys as $k) {
-                    $where[] = $k . ' = "' . $row->$k .'"';
+                    $where[] = $k . ' = "' . $row->$k . '"';
                 }
 
                 //build data
@@ -855,7 +855,7 @@ class Db
             $sql = 'SELECT pg_database_size(\'' . NAME_DB . '\')';
             $result = $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE)
                 ->current();
-            $infos['size']          = (string)round($result['pg_database_size'] / 1024 / 1024);
+            $infos['size'] = (string)round($result['pg_database_size']/1024/1024);
         } else {
             $sql = 'SELECT @@sql_mode as mode, @@version AS version, @@version_comment AS version_comment';
             $result = $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE)
@@ -866,11 +866,11 @@ class Db
             $infos['sql_mode']  = $result['mode'];
 
             $size_sql = 'SELECT ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) AS dbsize' .
-                ' FROM information_schema.tables WHERE table_schema="' . NAME_DB .'"';
+                ' FROM information_schema.tables WHERE table_schema="' . NAME_DB . '"';
             $result = $this->db->query($size_sql, Adapter::QUERY_MODE_EXECUTE)
                 ->current();
 
-            $infos['size']      = $result['dbsize'];
+            $infos['size'] = $result['dbsize'];
         }
 
         return $infos;

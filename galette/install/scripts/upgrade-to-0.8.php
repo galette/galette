@@ -84,9 +84,9 @@ class UpgradeTo08 extends AbstractUpdater
             'files'
         );
 
-        if ( !file_exists(GALETTE_ROOT . 'data') ) {
+        if (!file_exists(GALETTE_ROOT . 'data')) {
             $created = @mkdir(GALETTE_ROOT . 'data');
-            if ( !$created ) {
+            if (!$created) {
                 $this->addError(
                     str_replace(
                         '%path',
@@ -98,11 +98,11 @@ class UpgradeTo08 extends AbstractUpdater
             }
         }
 
-        foreach ( $dirs as $dir ) {
+        foreach ($dirs as $dir) {
             $path = GALETTE_ROOT . 'data/' . $dir;
-            if ( !file_exists($path) ) {
+            if (!file_exists($path)) {
                 $created = @mkdir($path);
-                if ( !$created ) {
+                if (!$created) {
                     $this->addError(
                         str_replace(
                             '%dir',
@@ -141,38 +141,38 @@ class UpgradeTo08 extends AbstractUpdater
             $go = false;
             //move directory contents
             switch ( $dirname ) {
-            case 'logs':
-                if ( GALETTE_LOGS_PATH === $destdir && file_exists($origdir) ) {
-                    $go = true;
-                }
-                break;
-            case 'exports':
-                if ( GALETTE_EXPORTS_PATH === $destdir && file_exists($origdir) ) {
-                    $go = true;
-                }
-                break;
-            case 'imports':
-                if ( GALETTE_IMPORTS_PATH === $destdir && file_exists($origdir) ) {
-                    $go = true;
-                }
-                break;
-            case 'photos':
-                if ( GALETTE_PHOTOS_PATH === $destdir && file_exists($origdir) ) {
-                    $go = true;
-                }
-                break;
-            case 'attachments':
-                if ( GALETTE_ATTACHMENTS_PATH === $destdir
-                    && file_exists($origdir)
-                ) {
-                    $go = true;
-                }
-                break;
-            case 'files':
-                if ( GALETTE_FILES_PATH === $destdir && file_exists($origdir) ) {
-                    $go = true;
-                }
-                break;
+                case 'logs':
+                    if ( GALETTE_LOGS_PATH === $destdir && file_exists($origdir) ) {
+                        $go = true;
+                    }
+                    break;
+                case 'exports':
+                    if ( GALETTE_EXPORTS_PATH === $destdir && file_exists($origdir) ) {
+                        $go = true;
+                    }
+                    break;
+                case 'imports':
+                    if ( GALETTE_IMPORTS_PATH === $destdir && file_exists($origdir) ) {
+                        $go = true;
+                    }
+                    break;
+                case 'photos':
+                    if ( GALETTE_PHOTOS_PATH === $destdir && file_exists($origdir) ) {
+                        $go = true;
+                    }
+                    break;
+                case 'attachments':
+                    if ( GALETTE_ATTACHMENTS_PATH === $destdir
+                        && file_exists($origdir)
+                    ) {
+                        $go = true;
+                    }
+                    break;
+                case 'files':
+                    if ( GALETTE_FILES_PATH === $destdir && file_exists($origdir) ) {
+                        $go = true;
+                    }
+                    break;
             }
 
             if ( $go ) {
@@ -195,7 +195,7 @@ class UpgradeTo08 extends AbstractUpdater
                 }
                 $d->close();
 
-                if ( $moved ) {
+                if ($moved) {
                     $this->addReportEntry(
                         str_replace(
                             '%dir',

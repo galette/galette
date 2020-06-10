@@ -339,7 +339,7 @@ class AdvancedMembersList extends MembersList
                 return $this->$rname;
             } else {
                 Analog::log(
-                    '[AdvancedMembersList] Unable to get proprety `' .$name . '`',
+                    '[AdvancedMembersList] Unable to get proprety `' . $name . '`',
                     Analog::WARNING
                 );
             }
@@ -408,7 +408,7 @@ class AdvancedMembersList extends MembersList
                     } else {
                         if ($value !== null) {
                             Analog::log(
-                                'Incorrect amount for ' . $name  . '! ' .
+                                'Incorrect amount for ' . $name . '! ' .
                                 'Should be a float (' . gettype($value) . ' given)',
                                 Analog::WARNING
                             );
@@ -600,7 +600,7 @@ class AdvancedMembersList extends MembersList
                     } else {
                         Analog::log(
                             '[AdvancedMembersList] Value for group filter logical operator should be '
-                            .' in [0,1] (' . gettype($value) . '-> '.$value.' given )',
+                            .' in [0,1] (' . gettype($value) . '-> ' . $value . ' given )',
                             Analog::WARNING
                         );
                     }

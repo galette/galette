@@ -39,14 +39,14 @@
 $args = array();
 $internal = false;
 
-if (defined('STDIN') ) {
+if (defined('STDIN')) {
     //we're called from command line
     $args = stream_get_contents(STDIN);
-} else if ( count($_POST) > 0 ) {
+} else if (count($_POST) > 0) {
     //we're called from HTTP POST
     $args = $_POST;
     //check if we're called from galette internal
-    if ( isset($_POST['galette_internal']) ) {
+    if (isset($_POST['galette_internal'])) {
         $internal = true;
         include_once 'includes/galette.inc.php';
         unset($_POST['galette_internal']);
@@ -57,25 +57,25 @@ if (defined('STDIN') ) {
     } else {
         echo 'Requested as HTTP POST with parameters:<br/>';
     }
-} else if ( count($_GET) > 0 ) {
+} else if (count($_GET) > 0) {
     //we're called from HTTP GET
     echo 'Requested as HTTP GET with parameters:<br/>';
     $args = $_GET;
 }
 
-if ( count($args) == 0 ) {
+if (count($args) == 0) {
     //we're called without arguments => exit.
     die('No arguments.');
 }
 
-if (defined('STDIN') ) {
+if (defined('STDIN')) {
     //a successfull script returns 0, we do not output anything
     $fp = fopen(__DIR__ . '/cache/galette_post_contrib_file.txt', 'w');
     fwrite($fp, $args);
     fclose($fp);
 } else {
     $json_args = json_decode($args);
-    foreach ( $json_args as $k=>$v ) {
+    foreach ($json_args as $k=>$v) {
         echo 'key: ' . $k . ' | value: ' . $v;
     }
 }

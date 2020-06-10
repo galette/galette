@@ -274,7 +274,7 @@ class Contribution
                 return true;
             } else {
                 throw new \Exception(
-                    'No contribution #' . $id . ' (user ' .$this->login->id . ')'
+                    'No contribution #' . $id . ' (user ' . $this->login->id . ')'
                 );
             }
         } catch (\Exception $e) {
@@ -455,7 +455,7 @@ class Contribution
                 ) {
                     $this->errors[] = str_replace(
                         '%field',
-                        '<a href="#' . $key . '">' . $this->getFieldLabel($key) .'</a>',
+                        '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
                         _T("- Mandatory field %field empty.")
                     );
                 }
@@ -800,9 +800,8 @@ class Contribution
      */
     public function getRowClass()
     {
-        return ( $this->_end_date != $this->_begin_date && $this->_is_cotis) ?
-            'cotis-normal' :
-            'cotis-give';
+        return ($this->_end_date != $this->_begin_date && $this->_is_cotis) ?
+            'cotis-normal' : 'cotis-give';
     }
 
     /**
@@ -1169,7 +1168,7 @@ class Contribution
                         $date_end = new \DateTime($this->_end_date);
                         $date_start = new \DateTime($this->_begin_date);
                         $diff = $date_end->diff($date_start);
-                        return $diff->format('%y') * 12 + $diff->format('%m');
+                        return $diff->format('%y')*12 + $diff->format('%m');
                     } else {
                         return '';
                     }
@@ -1188,8 +1187,7 @@ class Contribution
                         return null;
                     }
                     return ($this->isCotis()) ?
-                        PdfModel::INVOICE_MODEL :
-                        PdfModel::RECEIPT_MODEL;
+                        PdfModel::INVOICE_MODEL : PdfModel::RECEIPT_MODEL;
                     break;
                 default:
                     return $this->$rname;

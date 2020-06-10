@@ -99,7 +99,7 @@ class DynamicFieldsSet
                 if (($perm == DynamicField::PERM_MANAGER &&
                         $access_level < Authentication::ACCESS_MANAGER) ||
                     ($perm == DynamicField::PERM_STAFF &&
-                         $access_level < Authentication::ACCESS_STAFF)   ||
+                         $access_level < Authentication::ACCESS_STAFF) ||
                     ($perm == DynamicField::PERM_ADMIN &&
                         $access_level < Authentication::ACCESS_ADMIN)
                 ) {

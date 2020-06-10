@@ -73,33 +73,33 @@ abstract class Authentication
     private $cron = false;
 
     /**
-    * Logs in user.
-    *
-    * @param string $user  user's login
-    * @param string $passe user's password
-    *
-    * @return boolean
-    */
+     * Logs in user.
+     *
+     * @param string $user  user's login
+     * @param string $passe user's password
+     *
+     * @return boolean
+     */
     abstract public function logIn($user, $passe);
 
     /**
-    * Does this login already exists ?
-    * These function should be used for setting admin login into Preferences
-    *
-    * @param string $user the username
-    *
-    * @return true if the username already exists, false otherwise
-    */
+     * Does this login already exists ?
+     * These function should be used for setting admin login into Preferences
+     *
+     * @param string $user the username
+     *
+     * @return true if the username already exists, false otherwise
+     */
     abstract public function loginExists($user);
 
     /**
-    * Login for the superuser
-    *
-    * @param string      $login       name
-    * @param Preferences $preferences Preferences instance
-    *
-    * @return void
-    */
+     * Login for the superuser
+     *
+     * @param string      $login       name
+     * @param Preferences $preferences Preferences instance
+     *
+     * @return void
+     */
     public function logAdmin($login, Preferences $preferences)
     {
         $this->logged = true;
@@ -137,10 +137,10 @@ abstract class Authentication
     }
 
     /**
-    * Log out user and unset variables
-    *
-    * @return void
-    */
+     * Log out user and unset variables
+     *
+     * @return void
+     */
     public function logOut()
     {
         $this->id = null;
@@ -155,40 +155,40 @@ abstract class Authentication
     }
 
     /**
-    * Is user logged-in?
-    *
-    * @return bool
-    */
+     * Is user logged-in?
+     *
+     * @return bool
+     */
     public function isLogged()
     {
         return $this->logged;
     }
 
     /**
-    * Is user admin?
-    *
-    * @return bool
-    */
+     * Is user admin?
+     *
+     * @return bool
+     */
     public function isAdmin()
     {
         return $this->admin;
     }
 
     /**
-    * Is user super admin?
-    *
-    * @return bool
-    */
+     * Is user super admin?
+     *
+     * @return bool
+     */
     public function isSuperAdmin()
     {
         return $this->superadmin;
     }
 
     /**
-    * Is user active?
-    *
-    * @return bool
-    */
+     * Is user active?
+     *
+     * @return bool
+     */
     public function isActive()
     {
         return $this->active;
@@ -279,12 +279,12 @@ abstract class Authentication
     }
 
     /**
-    * Global getter method
-    *
-    * @param string $name name of the property we want to retrieve
-    *
-    * @return false|object the called property
-    */
+     * Global getter method
+     *
+     * @param string $name name of the property we want to retrieve
+     *
+     * @return false|object the called property
+     */
     public function __get($name)
     {
         $forbidden = array('logged', 'admin', 'active');
@@ -296,13 +296,13 @@ abstract class Authentication
     }
 
     /**
-    * Global setter method
-    *
-    * @param string $name  name of the property we want to assign a value to
-    * @param object $value a relevant value for the property
-    *
-    * @return void
-    */
+     * Global setter method
+     *
+     * @param string $name  name of the property we want to assign a value to
+     * @param object $value a relevant value for the property
+     *
+     * @return void
+     */
     public function __set($name, $value)
     {
         $this->$name = $value;
