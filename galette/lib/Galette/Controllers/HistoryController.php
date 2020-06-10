@@ -203,8 +203,7 @@ class HistoryController extends AbstractController
         $success = false;
 
         $uri = isset($post['redirect_uri']) ?
-            $post['redirect_uri'] :
-            $this->router->pathFor('slash');
+            $post['redirect_uri'] : $this->router->pathFor('slash');
 
         if (!isset($post['confirm'])) {
             $this->flash->addMessage(

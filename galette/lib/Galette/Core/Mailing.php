@@ -340,7 +340,7 @@ class Mailing extends GaletteMail
         ) {
             foreach ($this->attachments as &$attachment) {
                 $old_path = $attachment->getDestDir() . $attachment->getFileName();
-                $new_path = GALETTE_ATTACHMENTS_PATH . $this->id .'/' .
+                $new_path = GALETTE_ATTACHMENTS_PATH . $this->id . '/' .
                     $attachment->getFileName();
                 if (!file_exists(GALETTE_ATTACHMENTS_PATH . $this->id)) {
                     mkdir(GALETTE_ATTACHMENTS_PATH . $this->id);
@@ -579,10 +579,10 @@ class Mailing extends GaletteMail
                 break;
             case 'current_step':
                 if (is_int($value)
-                    && (   $value == self::STEP_START
+                    && ($value == self::STEP_START
                     || $value == self::STEP_PREVIEW
                     || $value == self::STEP_SEND
-                    || $value == self::STEP_SENT )
+                    || $value == self::STEP_SENT)
                 ) {
                     $this->current_step = (int)$value;
                 } else {

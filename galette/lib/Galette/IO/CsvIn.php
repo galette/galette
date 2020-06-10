@@ -353,8 +353,7 @@ class CsvIn extends Csv implements FileInterface
                         if (isset($this->emails[$column])) {
                             $existing = $this->emails[$column];
                             $extra = ($existing == -1 ?
-                                _T("from another member in import") :
-                                str_replace('%id_adh', $existing, _T("from member %id_adh"))
+                                _T("from another member in import") : str_replace('%id_adh', $existing, _T("from member %id_adh"))
                             );
                             $this->addError(
                                 str_replace(
@@ -421,7 +420,7 @@ class CsvIn extends Csv implements FileInterface
                 $member->dynamicsValidate($dfields);
                 $errors = $member->getErrors();
                 if (count($errors) > $errcnt) {
-                    $lcnt = ($errcnt > 0 ? $errcnt -1 : 0);
+                    $lcnt = ($errcnt > 0 ? $errcnt - 1 : 0);
                     for ($i = $lcnt; $i < count($errors); ++$i) {
                         $this->addError($errors[$i]);
                     }
@@ -487,7 +486,7 @@ class CsvIn extends Csv implements FileInterface
                             || $this->_fields[$col] == 'activite_adh')
                             && ($column == null || trim($column) == '')
                         ) {
-                            $values[$this->_fields[$col]] = 0;//defaults to 0 as in Adherent
+                            $values[$this->_fields[$col]] = 0; //defaults to 0 as in Adherent
                         }
 
                         if ($this->_fields[$col] == Status::PK && empty(trim($column))) {

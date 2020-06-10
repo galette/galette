@@ -438,7 +438,7 @@ class Texts
                 }
             }
 
-            if (count($missing) >0) {
+            if (count($missing) > 0) {
                 $this->insert($zdb, $missing);
 
                 Analog::log(

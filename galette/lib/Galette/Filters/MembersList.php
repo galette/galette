@@ -140,7 +140,7 @@ class MembersList extends Pagination
                 }
             } else {
                 Analog::log(
-                    '[MembersList] Unable to get proprety `' .$name . '`',
+                    '[MembersList] Unable to get proprety `' . $name . '`',
                     Analog::WARNING
                 );
             }

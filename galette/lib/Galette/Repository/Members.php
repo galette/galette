@@ -310,7 +310,7 @@ class Members
                 foreach ($results as $member) {
                     $str_adh = $member->id_adh . ' (' . $member->nom_adh . ' ' .
                         $member->prenom_adh . ')';
-                    $infos .=  $str_adh . "\n";
+                    $infos .= $str_adh . "\n";
 
                     $p = new Picture($member->id_adh);
                     if ($p->hasPicture()) {
@@ -606,8 +606,8 @@ class Members
             if ($fields != null && is_array($fields) && !in_array('id_adh', $fields)) {
                 $fields[] = 'id_adh';
             }
-            $fieldsList = ( $fields != null )
-                            ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
+            $fieldsList = ($fields != null)
+                            ? ((!is_array($fields) || count($fields) < 1) ? (array)'*'
                             : $fields) : (array)'*';
 
             $select = $zdb->select(self::TABLE, 'a');
@@ -976,7 +976,7 @@ class Members
             return true;
         } else {
             Analog::log(
-                'Trying to order by ' . $field_name  . ' while it is not in ' .
+                'Trying to order by ' . $field_name . ' while it is not in ' .
                 'selected fields.',
                 Analog::WARNING
             );
@@ -1016,19 +1016,19 @@ class Members
                         } else {
                             $sep = ', " ", ';
                             $pre = 'CONCAT(';
-                            $post=')';
+                            $post = ')';
                         }
                         //$sep = ( TYPE_DB === 'pgsql' ) ? " || ' ' || " : ', " ", ';
                         $select->where(
                             '(' .
                             $pre . 'LOWER(nom_adh)' . $sep .
                             'LOWER(prenom_adh)' . $sep .
-                            'LOWER(pseudo_adh)' . $post  . ' LIKE ' .
+                            'LOWER(pseudo_adh)' . $post . ' LIKE ' .
                             $token
                             . ' OR ' .
                             $pre . 'LOWER(prenom_adh)' . $sep .
                             'LOWER(nom_adh)' . $sep .
-                            'LOWER(pseudo_adh)' . $post  . ' LIKE ' .
+                            'LOWER(pseudo_adh)' . $post . ' LIKE ' .
                             $token
                             . ')'
                         );
@@ -1465,8 +1465,8 @@ class Members
                                 'dfc.field_id = ' . $k . ' AND ';
                             $field = 'field_val';
                             $qry .= 'LOWER(' . $prefix . $field . ') ' .
-                                $qop  . ' ' ;
-                            $select->where($qry . $zdb->platform->quoteValue('%' .strtolower($cd) . '%'));
+                                $qop . ' ';
+                            $select->where($qry . $zdb->platform->quoteValue('%' . strtolower($cd) . '%'));
                         }
                     }
                 }
@@ -1529,20 +1529,20 @@ class Members
 
                         if ($dyn_field && $dyn_field instanceof \Galette\DynamicFields\Boolean) {
                             if ($fs['search'] != 0) {
-                                $qry .= $prefix . $fs['field'] . $qop  . ' ' .
-                                    $fs['search'] ;
+                                $qry .= $prefix . $fs['field'] . $qop . ' ' .
+                                    $fs['search'];
                             } else {
                                 $qry .= $prefix . $fs['field'] . ' IS NULL';
                             }
                         } elseif (!strncmp($fs['field'], 'bool_', strlen('bool_'))) {
-                            $qry .= $prefix . $fs['field'] . $qop  . ' ' .
-                                $fs['search'] ;
+                            $qry .= $prefix . $fs['field'] . $qop . ' ' .
+                                $fs['search'];
                         } elseif ($fs['qry_op'] === AdvancedMembersList::OP_BEFORE
                             || $fs['qry_op'] === AdvancedMembersList::OP_AFTER
                         ) {
                             if ($prefix === 'a.') {
                                 //dates are OK in the main fields. no cast, just query!
-                                $qry .= $prefix . $fs['field'] . $qop  . ' ' .
+                                $qry .= $prefix . $fs['field'] . $qop . ' ' .
                                     $zdb->platform->quoteValue($fs['search']);
                             } else {
                                 //dynamic dates are stored in their localized format :/
@@ -1557,7 +1557,7 @@ class Members
                                     $qry .= 'STR_TO_DATE(' . $prefix . $fs['field'] . ', \'' . $store_fmt . '\') ';
                                 }
 
-                                $qry .= $qop  . ' ' .  $fs['search'] ;
+                                $qry .= $qop . ' ' . $fs['search'];
                             }
                         } elseif ($fs['field'] == 'status_label') {
                             $qry_pattern = '%p%field %op %value';
@@ -1578,7 +1578,7 @@ class Members
                             );
                         } else {
                             $qry .= 'LOWER(' . $prefix . $fs['field'] . ') ' .
-                                $qop  . ' ' . $zdb->platform->quoteValue($fs['search']);
+                                $qop . ' ' . $zdb->platform->quoteValue($fs['search']);
                         }
 
                         if ($fs['log_op'] === AdvancedMembersList::OP_AND) {

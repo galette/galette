@@ -123,7 +123,7 @@ class CsvOut extends Csv
                 ) . $this->quote;
             }
             $this->result .= implode($this->separator, $fields) . self::NEWLINE;
-        } elseif ($titles && is_array($titles) && count($titles)>1) {
+        } elseif ($titles && is_array($titles) && count($titles) > 1) {
             foreach ($titles as $field) {
                 $field = str_replace(
                     array(':', '&nbsp;'),
@@ -175,7 +175,7 @@ class CsvOut extends Csv
     {
         if ($last && $this->file
             || !$last && $this->file
-            && ($this->current_line % self::BUFLINES) == 0
+            && ($this->current_line%self::BUFLINES) == 0
         ) {
             if ($this->file === true) {
                 echo $this->result;
@@ -249,14 +249,14 @@ class CsvOut extends Csv
                 Adapter::QUERY_MODE_EXECUTE
             );
 
-            $filename=self::DEFAULT_DIRECTORY . $export['filename'];
+            $filename = self::DEFAULT_DIRECTORY . $export['filename'];
 
             $fp = fopen($filename, 'w');
             if ($fp) {
-                $separator = ( $export->separator )
+                $separator = ($export->separator)
                     ? $export->separator
                     : self::DEFAULT_SEPARATOR;
-                $quote = ( $export->quote ) ? $export->quote : self::DEFAULT_QUOTE;
+                $quote = ($export->quote) ? $export->quote : self::DEFAULT_QUOTE;
                 if ($export->headers->none) {
                     //No title
                     $title = false;

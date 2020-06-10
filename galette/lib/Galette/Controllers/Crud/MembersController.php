@@ -483,7 +483,7 @@ class MembersController extends CrudController
         } else {
             Analog::log(
                 'A request has been made to get an exported file named `' .
-                $filename .'` that does not exists.',
+                $filename . '` that does not exists.',
                 Analog::WARNING
             );
 
@@ -774,7 +774,7 @@ class MembersController extends CrudController
         if ($pos = array_search(Status::PK, array_keys($fields))) {
             $fields = array_slice($fields, 0, $pos, true) +
                 ['status_label'  => ['label' => _T('Status label')]] +
-                array_slice($fields, $pos, count($fields) -1, true);
+                array_slice($fields, $pos, count($fields) - 1, true);
         }
 
         //dynamic fields
@@ -1223,7 +1223,7 @@ class MembersController extends CrudController
      */
     public function massChange(Request $request, Response $response, array $args = []) :Response
     {
-        $filters =  $this->session->filter_members;
+        $filters = $this->session->filter_members;
 
         $data = [
             'id'            => $filters->selected,
@@ -1307,7 +1307,7 @@ class MembersController extends CrudController
             }
         }
 
-        $filters =  $this->session->filter_members;
+        $filters = $this->session->filter_members;
         $data = [
             'id'            => $filters->selected,
             'redirect_uri'  => $this->router->pathFor('members')
@@ -1750,8 +1750,7 @@ class MembersController extends CrudController
                                         '%s',
                                         $member->sname . ' (' . $member->getEmail() . ')',
                                         ($new) ?
-                                        _T("New account email sent to '%s'.") :
-                                        _T("Account modification email sent to '%s'.")
+                                        _T("New account email sent to '%s'.") : _T("Account modification email sent to '%s'.")
                                     );
                                     $this->history->add($msg);
                                     $success_detected[] = $msg;
@@ -1880,7 +1879,7 @@ class MembersController extends CrudController
                 if (isset($post['del_photo'])) {
                     if (!$member->picture->delete($member->id)) {
                         $error_detected[] = _T("Delete failed");
-                        $str_adh = $member->id . ' (' . $member->sname  . ' ' . ')';
+                        $str_adh = $member->id . ' (' . $member->sname . ' ' . ')';
                         Analog::log(
                             'Unable to delete picture for member ' . $str_adh,
                             Analog::ERROR
@@ -2032,7 +2031,7 @@ class MembersController extends CrudController
         if (isset($args['id'])) {
             return $args['id'];
         } else {
-            $filters =  $this->session->filter_members;
+            $filters = $this->session->filter_members;
             return $filters->selected;
         }
     }
@@ -2055,7 +2054,7 @@ class MembersController extends CrudController
             );
         } else {
             //batch members removal
-            $filters =  $this->session->filter_members;
+            $filters = $this->session->filter_members;
             return str_replace(
                 '%count',
                 count($filters->selected),
@@ -2075,7 +2074,7 @@ class MembersController extends CrudController
     protected function doDelete(array $args, array $post)
     {
         if (isset($this->session->filter_members)) {
-            $filters =  $this->session->filter_members;
+            $filters = $this->session->filter_members;
         } else {
             $filters = new MembersList();
         }

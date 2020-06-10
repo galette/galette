@@ -79,7 +79,7 @@ class ClassLoader
     public function __construct($ns = null, $includePath = null)
     {
         if (!file_exists($includePath)) {
-            throw new \RuntimeException('Include path "'.$includePath.'" doesn\'t exists');
+            throw new \RuntimeException('Include path "' . $includePath . '" doesn\'t exists');
         }
 
         $this->namespace = $ns;
@@ -181,7 +181,7 @@ class ClassLoader
      */
     public function loadClass($className)
     {
-        if ($this->namespace !== null && strpos($className, $this->namespace.$this->namespaceSeparator) !== 0) {
+        if ($this->namespace !== null && strpos($className, $this->namespace . $this->namespaceSeparator) !== 0) {
             return false;
         }
 
@@ -214,7 +214,7 @@ class ClassLoader
      */
     public function canLoadClass($className)
     {
-        if ($this->namespace !== null && strpos($className, $this->namespace.$this->namespaceSeparator) !== 0) {
+        if ($this->namespace !== null && strpos($className, $this->namespace . $this->namespaceSeparator) !== 0) {
             return false;
         }
 

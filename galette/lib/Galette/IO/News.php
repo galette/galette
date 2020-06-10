@@ -174,7 +174,7 @@ class News
      */
     private function getCacheFilename()
     {
-        return GALETTE_CACHE_DIR .str_replace(
+        return GALETTE_CACHE_DIR . str_replace(
             '%feed',
             md5($this->feed_url),
             $this->cache_filename
@@ -240,7 +240,7 @@ class News
             $this->posts = $posts;
         } catch (\Exception $e) {
             Analog::log(
-                'Unable to load feed from "' . $this->feed_url  .
+                'Unable to load feed from "' . $this->feed_url .
                 '" :( | ' . $e->getMessage(),
                 Analog::ERROR
             );

@@ -67,7 +67,7 @@ class Galette
             $version .= '-git';
         }
 
-        if (is_dir(GALETTE_ROOT.'../.git')) {
+        if (is_dir(GALETTE_ROOT . '../.git')) {
             $commitHash = trim(exec('git log --pretty="%h" -n1 HEAD'));
 
             $commitDate = new \DateTime(trim(exec('git log -n1 --pretty=%ci HEAD')));

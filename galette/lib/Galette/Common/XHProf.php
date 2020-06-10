@@ -135,15 +135,15 @@ class XHProf
             $data = xhprof_disable();
 
             $incl = (defined('XHPROF_PATH') ? XHPROF_PATH : self::XHPROF_PATH);
-            include_once $incl.'/utils/xhprof_lib.php';
-            include_once $incl.'/utils/xhprof_runs.php';
+            include_once $incl . '/utils/xhprof_lib.php';
+            include_once $incl . '/utils/xhprof_runs.php';
 
             $runs = new \XHProfRuns_Default();
             $id   = $runs->save_run($data, 'galette-' . GALETTE_VERSION);
 
             $url  = (defined('XHPROF_URL') ? XHPROF_URL : self::XHPROF_URL);
             $host = (defined('XHPROF_HOST') ? XHPROF_HOST : $_SERVER['HTTP_HOST']);
-            $link = 'http://' . $host .$url . '/index.php?run=' .
+            $link = 'http://' . $host . $url . '/index.php?run=' .
                 $id . '&source=galette-' . GALETTE_VERSION;
             Analog::log(
                 'Stop profiling with XHProf, result URL: ' . $link,

@@ -145,8 +145,8 @@ class CheckModules
         if (count($this->missing) > 0) {
             $ko = ($translated ? _T('Ko') : 'Ko');
             foreach ($this->missing as $m) {
-                $html .= '<li><span>' . $m  . '</span><span><img src="' .
-                    $img_dir  . 'icon-invalid.png" alt="' .
+                $html .= '<li><span>' . $m . '</span><span><img src="' .
+                    $img_dir . 'icon-invalid.png" alt="' .
                     $ko . '"/></span></li>';
             }
         }
@@ -154,16 +154,16 @@ class CheckModules
         if (count($this->good) > 0) {
             $ok = ($translated ? _T('Ok') : 'Ok');
             foreach ($this->good as $m) {
-                $html .= '<li><span>' . $m  . '</span><span><img src="' .
-                    $img_dir  . 'icon-valid.png" alt="' .
+                $html .= '<li><span>' . $m . '</span><span><img src="' .
+                    $img_dir . 'icon-valid.png" alt="' .
                     $ok . '"/></span></li>';
             }
         }
 
         if (count($this->should) > 0) {
             foreach ($this->should as $m) {
-                $html .= '<li><span>' . $m  . '</span><span><img src="' .
-                    $img_dir  . 'icon-warning.png" alt=""' .
+                $html .= '<li><span>' . $m . '</span><span><img src="' .
+                    $img_dir . 'icon-warning.png" alt=""' .
                     '/></span></li>';
             }
         }

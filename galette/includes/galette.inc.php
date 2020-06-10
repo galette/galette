@@ -46,7 +46,7 @@ require_once GALETTE_ROOT . 'config/paths.inc.php';
 // check required PHP version...
 if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
     echo 'Galette is NOT compliant with your current PHP version. ' .
-        'Galette requires PHP ' . GALETTE_PHP_MIN  .
+        'Galette requires PHP ' . GALETTE_PHP_MIN .
         ' minimum and current version is ' . phpversion();
     die(1);
 }
@@ -124,7 +124,7 @@ if (!isset($_COOKIE['show_galette_dashboard'])) {
     setcookie(
         'show_galette_dashboard',
         true,
-        time()+31536000 //valid for a year
+        time() + 31536000 //valid for a year
     );
 }
 
@@ -171,7 +171,7 @@ if (defined('GALETTE_TESTS')) {
         if (GALETTE_LOG_LVL >= Analog::INFO) {
             $now = new \DateTime();
             $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
-                $now->format('Y-m-d')  . '.log';
+                $now->format('Y-m-d') . '.log';
             $galette_debug_log = LevelName::init(Handler\File::init($dbg_log_path));
         } else {
             $galette_debug_log = Handler\Ignore::init();
@@ -202,7 +202,7 @@ if (defined('GALETTE_TESTS')) {
 
 Analog::handler(
     Handler\Multi::init(
-        array (
+        array(
             Analog::NOTICE  => Handler\Threshold::init(
                 $galette_run_log,
                 GALETTE_LOG_LVL

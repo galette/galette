@@ -307,7 +307,7 @@ class SavedSearchesController extends CrudController
             return _T('Remove saved search');
         } else {
             //batch saved search removal
-            $filters =  $this->session->filter_savedsearch;
+            $filters = $this->session->filter_savedsearch;
             return str_replace(
                 '%count',
                 count($filters->selected),
@@ -327,7 +327,7 @@ class SavedSearchesController extends CrudController
     protected function doDelete(array $args, array $post)
     {
         if (isset($this->session->filter_savedsearch)) {
-            $filters =  $this->session->filter_savedsearch;
+            $filters = $this->session->filter_savedsearch;
         } else {
             $filters = new SavedSearchesList();
         }

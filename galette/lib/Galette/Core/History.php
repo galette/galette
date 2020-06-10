@@ -428,7 +428,7 @@ class History
             }
         } else {
             Analog::log(
-                '[History] Unable to get proprety `' .$name . '`',
+                '[History] Unable to get proprety `' . $name . '`',
                 Analog::WARNING
             );
         }
@@ -458,7 +458,7 @@ class History
             }
         } else {
             Analog::log(
-                '[History] Unable to set proprety `' .$name . '`',
+                '[History] Unable to set proprety `' . $name . '`',
                 Analog::WARNING
             );
         }

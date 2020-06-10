@@ -123,7 +123,7 @@ abstract class Pagination
      */
     public function invertorder()
     {
-        $actual=$this->ordered;
+        $actual = $this->ordered;
         if ($actual == self::ORDER_ASC) {
                 $this->ordered = self::ORDER_DESC;
         }
@@ -175,7 +175,7 @@ abstract class Pagination
         if ($this->show !== 0) {
             $select->limit($this->show);
             $select->offset(
-                ($this->current_page - 1) * $this->show
+                ($this->current_page - 1)*$this->show
             );
         }
     }
@@ -201,10 +201,10 @@ abstract class Pagination
     protected function countPages()
     {
         if ($this->show !== 0) {
-            if ($this->counter % $this->show == 0) {
-                $this->pages = intval($this->counter / $this->show);
+            if ($this->counter%$this->show == 0) {
+                $this->pages = intval($this->counter/$this->show);
             } else {
-                $this->pages = intval($this->counter / $this->show) + 1;
+                $this->pages = intval($this->counter/$this->show) + 1;
             }
         } else {
             $this->pages = 0;
@@ -235,7 +235,7 @@ abstract class Pagination
 
         //Create pagination links
         if ($this->current_page < 11) {
-            $idepart=1;
+            $idepart = 1;
         } else {
             $idepart = $this->current_page - 10;
         }
@@ -386,7 +386,7 @@ abstract class Pagination
         } else {
             Analog::log(
                 '[' . get_class($this) .
-                '|Pagination] Unable to get proprety `' .$name . '`',
+                '|Pagination] Unable to get proprety `' . $name . '`',
                 Analog::WARNING
             );
         }

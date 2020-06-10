@@ -144,7 +144,7 @@ $container['view'] = function ($c) {
     if ($c->get('login')->isAdmin() && $c->get('preferences')->pref_telemetry_date) {
         $now = new \DateTime();
         $sent = new \DateTime($c->get('preferences')->pref_telemetry_date);
-        $sent->add(new \DateInterval('P1Y'));// ask to resend telemetry after one year
+        $sent->add(new \DateInterval('P1Y')); // ask to resend telemetry after one year
         if ($now > $sent && !$_COOKIE['renew_telemetry']) {
             $smarty->assign('renew_telemetry', true);
         }
@@ -231,7 +231,7 @@ $container['acls'] = function ($c) {
     $acls = $acls + $c->get('plugins')->getAcls();
 
     //load user defined ACLs
-    if (file_exists(GALETTE_CONFIG_PATH  . 'local_acls.inc.php')) {
+    if (file_exists(GALETTE_CONFIG_PATH . 'local_acls.inc.php')) {
         //use array_merge here, we want $local_acls to override core ones.
         $acls = array_merge($acls, $local_acls);
     }
@@ -562,7 +562,7 @@ $container['lists_config'] = function ($c) {
 };
 
 $container['cache'] = function ($c) {
-    $adapter  = null;
+    $adapter = null;
     if (function_exists('wincache_ucache_add')) {
         //since APCu is not known to work on windows
         $adapter = 'wincache';

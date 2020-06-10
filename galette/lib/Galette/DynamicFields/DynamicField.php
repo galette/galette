@@ -633,7 +633,7 @@ abstract class DynamicField
             $this->width = $values['field_width'];
         }
 
-        if ($this->hasHeight() && isset($values['field_height']) &&  trim($values['field_height']) != '') {
+        if ($this->hasHeight() && isset($values['field_height']) && trim($values['field_height']) != '') {
             $this->height = $values['field_height'];
         }
 
@@ -847,7 +847,7 @@ abstract class DynamicField
             $select = $this->zdb->select(self::TABLE);
             $select->columns(
                 array(
-                    'cnt' => new \Laminas\Db\Sql\Expression('COUNT('. self::PK.')')
+                    'cnt' => new \Laminas\Db\Sql\Expression('COUNT(' . self::PK . ')')
                 )
             )->where(
                 array(
@@ -893,7 +893,7 @@ abstract class DynamicField
 
             $old_rank = $this->index;
 
-            $direction = $action == 'up' ? -1: 1;
+            $direction = $action == 'up' ? -1 : 1;
             $new_rank = $old_rank + $direction;
             $update = $this->zdb->update(self::TABLE);
             $update->set([

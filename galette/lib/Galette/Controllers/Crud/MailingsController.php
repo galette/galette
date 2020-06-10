@@ -111,7 +111,7 @@ class MailingsController extends CrudController
             if (isset($this->session->filter_mailing)) {
                 $filters = $this->session->filter_mailing;
             } elseif (isset($this->session->filter_members)) {
-                $filters =  $this->session->filter_members;
+                $filters = $this->session->filter_members;
             } else {
                 $filters = new MembersList();
             }
@@ -152,8 +152,7 @@ class MailingsController extends CrudController
                     }
 
                     $redirect_url = ($this->session->redirect_mailing !== null) ?
-                        $this->session->redirect_mailing :
-                        $this->router->pathFor('members');
+                        $this->session->redirect_mailing : $this->router->pathFor('members');
 
                     return $response
                         ->withStatus(301)
@@ -225,8 +224,7 @@ class MailingsController extends CrudController
 
         $goto = $this->router->pathFor('mailings');
         $redirect_url = ($this->session->redirect_mailing !== null) ?
-            $this->session->redirect_mailing :
-            $this->router->pathFor('members');
+            $this->session->redirect_mailing : $this->router->pathFor('members');
 
         //We're done :-)
         if (isset($post['mailing_done'])
@@ -261,7 +259,7 @@ class MailingsController extends CrudController
             $goto = $this->router->pathFor('slash');
         } else {
             if (isset($this->session->filter_members)) {
-                $filters =  $this->session->filter_members;
+                $filters = $this->session->filter_members;
             } else {
                 $filters = new MembersList();
             }
@@ -765,7 +763,7 @@ class MailingsController extends CrudController
         MailingHistory::loadFrom($this->zdb, (int)$args['id'], $mailing, false);
         $attachments = $mailing->attachments;
         $attachment = $attachments[$args['pos']];
-        $filepath = $attachment->getDestDir() .  $attachment->getFileName();
+        $filepath = $attachment->getDestDir() . $attachment->getFileName();
 
         $ext = pathinfo($attachment->getFileName())['extension'];
         $response = $response->withHeader('Content-type', $attachment->getMimeType($filepath));

@@ -210,8 +210,7 @@ class Groups
         global $zdb;
         try {
             $join_table = ($managed) ?
-                Group::GROUPSMANAGERS_TABLE :
-                Group::GROUPSUSERS_TABLE;
+                Group::GROUPSMANAGERS_TABLE : Group::GROUPSUSERS_TABLE;
 
             $select = $zdb->select(Group::TABLE, 'a');
             $select->join(

@@ -164,7 +164,7 @@ class HistoryList extends Pagination
                 }
             } else {
                 Analog::log(
-                    '[HistoryList] Unable to get proprety `' .$name . '`',
+                    '[HistoryList] Unable to get proprety `' . $name . '`',
                     Analog::WARNING
                 );
             }
@@ -211,7 +211,7 @@ class HistoryList extends Pagination
                             }
 
                             $ym = \DateTime::createFromFormat(__("Y-m"), $value);
-                            if ($y === false && $ym  !== false) {
+                            if ($y === false && $ym !== false) {
                                 $day = 1;
                                 if ($name === 'end_date_filter') {
                                     $day = $ym->format('t');
@@ -225,7 +225,7 @@ class HistoryList extends Pagination
                             }
 
                             $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
-                            if ($y === false && $ym  === false && $d !== false) {
+                            if ($y === false && $ym === false && $d !== false) {
                                 $this->$name = $d->format('Y-m-d');
                             }
 

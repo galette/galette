@@ -135,8 +135,8 @@ class Transactions
     private function buildSelect($fields, $count = false)
     {
         try {
-            $fieldsList = ( $fields != null )
-                            ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
+            $fieldsList = ($fields != null)
+                            ? ((!is_array($fields) || count($fields) < 1) ? (array)'*'
                             : implode(', ', $fields)) : (array)'*';
 
             $select = $this->zdb->select(self::TABLE, 't');

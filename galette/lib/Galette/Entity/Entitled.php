@@ -134,7 +134,7 @@ abstract class Entitled
             }
         } catch (\Exception $e) {
             Analog::log(
-                'Cannot load ' . $this->getType()  . ' from id `' . $id . '` | ' .
+                'Cannot load ' . $this->getType() . ' from id `' . $id . '` | ' .
                 $e->getMessage(),
                 Analog::WARNING
             );
@@ -206,14 +206,14 @@ abstract class Entitled
             }
 
             Analog::log(
-                'Defaults (' . $this->getType()  .
+                'Defaults (' . $this->getType() .
                 ') were successfully stored into database.',
                 Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
             Analog::log(
-                'Unable to initialize defaults (' . $this->getType()  . ').' .
+                'Unable to initialize defaults (' . $this->getType() . ').' .
                 $e->getMessage(),
                 Analog::WARNING
             );
@@ -292,7 +292,7 @@ abstract class Entitled
 
             if ($results->count() == 0) {
                 Analog::log(
-                    'No entries (' . $this->getType()  . ') defined in database.',
+                    'No entries (' . $this->getType() . ') defined in database.',
                     Analog::INFO
                 );
             } else {
@@ -398,7 +398,7 @@ abstract class Entitled
             }
         } catch (\Exception $e) {
             Analog::log(
-                'Unable to retrieve ' . $this->getType()  . ' from label `' .
+                'Unable to retrieve ' . $this->getType() . ' from label `' .
                 $label . '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -440,9 +440,9 @@ abstract class Entitled
 
             $ret = $this->zdb->execute($insert);
 
-            if ($ret->count() >  0) {
+            if ($ret->count() > 0) {
                 Analog::log(
-                    'New ' . $this->getType() .' `' . $label .
+                    'New ' . $this->getType() . ' `' . $label .
                     '` added successfully.',
                     Analog::INFO
                 );
@@ -457,7 +457,7 @@ abstract class Entitled
 
                 $this->addTranslation($label);
             } else {
-                throw new \Exception('New ' . $this->getType() .' not added.');
+                throw new \Exception('New ' . $this->getType() . ' not added.');
             }
             $this->zdb->connection->commit();
             return true;
@@ -520,7 +520,7 @@ abstract class Entitled
         } catch (\Exception $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to update ' . $this->getType() . ' #' . $id  . ' | ' .
+                'Unable to update ' . $this->getType() . ' #' . $id . ' | ' .
                 $e->getMessage(),
                 Analog::ERROR
             );
@@ -566,7 +566,7 @@ abstract class Entitled
         } catch (\Exception $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to delete ' . $this->getType()  . ' ' . $id .
+                'Unable to delete ' . $this->getType() . ' ' . $id .
                 ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -597,7 +597,7 @@ abstract class Entitled
             }
         } catch (\Exception $e) {
             Analog::log(
-                'Unable to check if ' . $this->getType  . ' `' . $id .
+                'Unable to check if ' . $this->getType . ' `' . $id .
                 '` is used. | ' . $e->getMessage(),
                 Analog::ERROR
             );

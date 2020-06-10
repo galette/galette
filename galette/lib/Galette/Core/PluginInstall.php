@@ -85,7 +85,7 @@ class PluginInstall extends Install
     public function atPreviousStep()
     {
         if ($this->_step > 0) {
-            if ($this->_step -1 !== self::STEP_DB_INSTALL
+            if ($this->_step - 1 !== self::STEP_DB_INSTALL
                 && $this->_step !== self::STEP_END
             ) {
                 if ($this->_step === self::STEP_DB_INSTALL) {
@@ -94,7 +94,7 @@ class PluginInstall extends Install
                     if ($this->_step === self::STEP_DB_UPGRADE) {
                         $this->setInstalledVersion(null);
                     }
-                    $this->_step = $this->_step -1;
+                    $this->_step = $this->_step - 1;
                 }
             } else {
                 $msg = null;

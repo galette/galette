@@ -164,7 +164,7 @@ class Install
         $img_name = ($arg === true) ? 'valid' : 'invalid';
         $src = GALETTE_THEME_DIR . 'images/icon-' . $img_name . '.png';
         $alt = ($arg === true) ? _T("Ok") : _T("Ko");
-        $img = '<img src="' . $src  . '" alt="' . $alt  . '"/>';
+        $img = '<img src="' . $src . '" alt="' . $alt . '"/>';
         return $img;
     }
 
@@ -222,7 +222,7 @@ class Install
     public function atPreviousStep()
     {
         if ($this->_step > 0) {
-            if ($this->_step -1 !== self::STEP_DB_INSTALL
+            if ($this->_step - 1 !== self::STEP_DB_INSTALL
                 && $this->_step !== self::STEP_END
             ) {
                 if ($this->_step === self::STEP_DB_INSTALL) {
@@ -231,7 +231,7 @@ class Install
                     if ($this->_step === self::STEP_DB_UPGRADE) {
                         $this->setInstalledVersion(null);
                     }
-                    $this->_step = $this->_step -1;
+                    $this->_step = $this->_step - 1;
                 }
             } else {
                 $msg = null;
@@ -1030,11 +1030,11 @@ class Install
             && isset($existing['db_user'])
             && $existing['db_user'] == $this->_db_user
             && isset($existing['pwd_db'])
-            && $existing['pwd_db']  == $this->_db_pass
+            && $existing['pwd_db'] == $this->_db_pass
             && isset($existing['db_name'])
             && $existing['db_name'] == $this->_db_name
             && isset($existing['prefix'])
-            && $existing['prefix']  == $this->_db_prefix
+            && $existing['prefix'] == $this->_db_prefix
         ) {
             Analog::log(
                 'Config file is already up-to-date, nothing to do.',

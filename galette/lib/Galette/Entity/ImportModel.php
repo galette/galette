@@ -86,7 +86,7 @@ class ImportModel
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot load import model | ' . $e->getMessage() .
-                "\n" .  $e->__toString(),
+                "\n" . $e->__toString(),
                 Analog::ERROR
             );
             return false;

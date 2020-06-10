@@ -153,7 +153,7 @@ class TransactionsList extends Pagination
                 }
             } else {
                 Analog::log(
-                    '[TransactionsList] Unable to get proprety `' .$name . '`',
+                    '[TransactionsList] Unable to get proprety `' . $name . '`',
                     Analog::WARNING
                 );
             }
@@ -200,7 +200,7 @@ class TransactionsList extends Pagination
                             }
 
                             $ym = \DateTime::createFromFormat(__("Y-m"), $value);
-                            if ($y === false && $ym  !== false) {
+                            if ($y === false && $ym !== false) {
                                 $day = 1;
                                 if ($name === 'end_date_filter') {
                                     $day = $ym->format('t');
@@ -214,7 +214,7 @@ class TransactionsList extends Pagination
                             }
 
                             $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
-                            if ($y === false && $ym  === false && $d !== false) {
+                            if ($y === false && $ym === false && $d !== false) {
                                 $this->$name = $d->format('Y-m-d');
                             }
 

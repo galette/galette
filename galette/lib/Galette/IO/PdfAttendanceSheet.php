@@ -59,7 +59,7 @@ use Analog\Analog;
 
 class PdfAttendanceSheet extends Pdf
 {
-    const SHEET_FONT = self::FONT_SIZE-2;
+    const SHEET_FONT = self::FONT_SIZE - 2;
 
     public $doc_title = null;
     public $sheet_title = null;
@@ -147,7 +147,7 @@ class PdfAttendanceSheet extends Pdf
         // Set colors
         $this->SetDrawColor(160, 160, 160);
         $this->SetTextColor(0);
-        $this->SetFont(Pdf::FONT, '', Pdf::FONT_SIZE-2);
+        $this->SetFont(Pdf::FONT, '', Pdf::FONT_SIZE - 2);
     }
 
     /**
@@ -220,7 +220,7 @@ class PdfAttendanceSheet extends Pdf
                 if ($this->i18n->isRTL()) {
                     $ximg = $this->getPageWidth() - $x - $wlogo;
                 }
-                $this->Cell($wlogo+2, 16, '', ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', 0);
+                $this->Cell($wlogo + 2, 16, '', ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', 0);
                 $this->Image($p, $ximg, $y, $wlogo, $hlogo);
             } else {
                 $x = $this->getX() + 1;

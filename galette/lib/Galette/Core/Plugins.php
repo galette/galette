@@ -120,7 +120,7 @@ class Plugins
                             Analog::WARNING
                         );
                         $this->setDisabled(self::DISABLED_MISS);
-                    } elseif (!file_exists($full_entry.'/_disabled')) {
+                    } elseif (!file_exists($full_entry . '/_disabled')) {
                         include $full_entry . '/_define.php';
                         $this->id = null;
                         $this->mroot = null;
@@ -255,8 +255,7 @@ class Plugins
                     'acls'          => $acls,
                     'date'          => $release_date,
                     'priority'      => $priority === null ?
-                                         1000 :
-                                         (integer) $priority,
+                                         1000 : (integer)$priority,
                     'root_writable' => is_writable($this->mroot),
                     'route'         => $route
                 );
@@ -313,7 +312,7 @@ class Plugins
             throw new \Exception(_T("Cannot activate plugin."));
         }
 
-        if (@unlink($this->disabled[$id]['root'].'/_disabled') === false) {
+        if (@unlink($this->disabled[$id]['root'] . '/_disabled') === false) {
             throw new \Exception(_T("Cannot activate plugin."));
         }
     }

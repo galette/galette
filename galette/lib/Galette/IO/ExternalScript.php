@@ -238,7 +238,7 @@ class ExternalScript
                 //get stderr, if any
                 $errors = stream_get_contents($pipes[2]);
                 if (trim($errors) !== '') {
-                    $this->output .="\n\nStdErr:\n" . $errors;
+                    $this->output .= "\n\nStdErr:\n" . $errors;
                 }
 
                 //closes pipes and process

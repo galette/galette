@@ -191,19 +191,19 @@ class PdfMembersCards extends Pdf
      */
     public function drawCards($members)
     {
-        $nb_card=0;
+        $nb_card = 0;
         foreach ($members as $member) {
             // Detect page breaks
-            if ($nb_card % ($this->nbcol * $this->nbrow)==0) {
+            if ($nb_card%($this->nbcol*$this->nbrow) == 0) {
                 $this->AddPage();
             }
 
             // Compute card position on page
-            $col = $nb_card % $this->nbcol;
-            $row = ($nb_card/$this->nbcol) % $this->nbrow;
+            $col = $nb_card%$this->nbcol;
+            $row = ($nb_card/$this->nbcol)%$this->nbrow;
             // Set origin
-            $x0 = $this->xorigin + $col*(round($this->wi)+round($this->hspacing));
-            $y0 = $this->yorigin + $row*(round($this->he)+round($this->vspacing));
+            $x0 = $this->xorigin + $col*(round($this->wi) + round($this->hspacing));
+            $y0 = $this->yorigin + $row*(round($this->he) + round($this->vspacing));
             // Logo X position
             $xl = round($x0 + $this->wi - $this->wlogo);
             // Get data
@@ -289,7 +289,7 @@ class PdfMembersCards extends Pdf
 
             $xid = $x0 + $this->wi - $this->GetStringWidth($member->id, self::FONT, 'B', 8) - 0.2;
             $this->SetXY($xid, $y0 + 28);
-            $this->writeHTML('<strong>' . $member->id  . '</strong>', false, 0);
+            $this->writeHTML('<strong>' . $member->id . '</strong>', false, 0);
             $this->SetFontSize($this->year_font_size);
             $xan_cot = $xan_cot - 0.3;
             $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);

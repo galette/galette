@@ -160,7 +160,7 @@ class Pdf extends \TCPDF
         global $container;
 
         Analog::log(
-            'PDF error: ' .$msg,
+            'PDF error: ' . $msg,
             Analog::ERROR
         );
 
@@ -170,8 +170,7 @@ class Pdf extends \TCPDF
         );
 
         $redirect = (isset($_SERVER['HTTP_REFERER']) ?
-            $_SERVER['HTTP_REFERER'] :
-            $container->get('router')->pathFor('slash'));
+            $_SERVER['HTTP_REFERER'] : $container->get('router')->pathFor('slash'));
         header('Location: ' . $redirect);
         die();
     }
@@ -206,11 +205,11 @@ class Pdf extends \TCPDF
      */
     protected function parsegif($file)
     {
-        $a=GetImageSize($file);
+        $a = GetImageSize($file);
         if (empty($a)) {
             $this->Error(_T("Missing or incorrect image file ") . $file);
         }
-        if ($a[2]!=1) {
+        if ($a[2] != 1) {
             $this->Error(_T("Not a GIF file ") . $file);
         }
 
@@ -220,15 +219,15 @@ class Pdf extends \TCPDF
 
             // Test d'échec & Affichage d'un message d'erreur
             if (!$data) {
-                    $this->Error(_T("Error loading ").$file);
+                    $this->Error(_T("Error loading ") . $file);
             }
             if (imagepng($data, GALETTE_ROOT . 'tempimages/gif2png.png')) {
                 return $this->_parsepng(GALETTE_ROOT . 'tempimages/gif2png.png');
             } else {
-                $this->Error(_T("Error creating temporary png file from ").$file);
+                $this->Error(_T("Error creating temporary png file from ") . $file);
             }
         } else {
-            $this->Error(_T("Unable to convert GIF file ").$file);
+            $this->Error(_T("Unable to convert GIF file ") . $file);
         }
     }
 
@@ -307,7 +306,7 @@ class Pdf extends \TCPDF
             if (trim($this->model->hstyles) !== '') {
                 $html .= "<style>\n" . $this->model->hstyles . "\n</style>\n\n";
             }
-            $html .= "<div dir=\"".($this->i18n->isRTL() ? 'rtl' : 'ltr')."\">" . $this->model->hheader . "</div>";
+            $html .= "<div dir=\"" . ($this->i18n->isRTL() ? 'rtl' : 'ltr') . "\">" . $this->model->hheader . "</div>";
             $this->writeHtml($html, true, false, true, false, '');
 
             if ($title !== null) {
@@ -380,7 +379,7 @@ class Pdf extends \TCPDF
             if ($title !== null) {
                 $this->Cell(0, 6, $title, 0, 1, ($this->i18n->isRTL() ? 'R' : 'L'), 0);
             }
-            $yend = $this->getY();//store position at the end of the text
+            $yend = $this->getY(); //store position at the end of the text
 
             $this->SetY($ystart);
             if ($this->i18n->isRTL()) {
@@ -446,7 +445,7 @@ class Pdf extends \TCPDF
      */
     protected function cut($str, $length)
     {
-        $length = $length -2; //keep a margin
+        $length = $length - 2; //keep a margin
         if ($this->GetStringWidth($str) > $length) {
             while ($this->GetStringWidth($str . '...') > $length) {
                 $str = mb_substr($str, 0, -1, 'UTF-8');

@@ -260,13 +260,11 @@ class EntitledsController extends CrudController
         if ($ret !== true) {
             $msg_type = 'error_detected';
             $msg = $args['action'] === 'add' ?
-                _T("%type has not been added :(") :
-                _T("%type #%id has not been updated");
+                _T("%type has not been added :(") : _T("%type #%id has not been updated");
         } else {
             $msg_type = 'success_detected';
             $msg = $args['action'] === 'add' ?
-                _T("%type has been successfully added!") :
-                _T("%type #%id has been successfully updated!");
+                _T("%type has been successfully added!") : _T("%type #%id has been successfully updated!");
         }
 
         $this->flash->addMessage(

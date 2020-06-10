@@ -99,7 +99,7 @@ class Links
             $del = $this->zdb->execute($delete);
             if ($del) {
                 Analog::log(
-                    'Temporary link for `' . $target .'-' . $id  . '` has been removed.',
+                    'Temporary link for `' . $target . '-' . $id . '` has been removed.',
                     Analog::DEBUG
                 );
             }

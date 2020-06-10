@@ -317,8 +317,7 @@ class DynamicFieldsHandle
                             'where2'    => $value['field_id'],
                             'where3'    => $value['field_form'],
                             'where4'    => isset($value['old_val_index']) ?
-                                $value['old_val_index'] :
-                                $value['val_index']
+                                $value['old_val_index'] : $value['val_index']
                         ];
                         $this->update_stmt->execute($params);
                         $this->has_changed = true;
@@ -502,7 +501,7 @@ class DynamicFieldsHandle
             if (($perm == DynamicField::PERM_MANAGER &&
                     $access_level < Authentication::ACCESS_MANAGER) ||
                 ($perm == DynamicField::PERM_STAFF &&
-                        $access_level < Authentication::ACCESS_STAFF)   ||
+                        $access_level < Authentication::ACCESS_STAFF) ||
                 ($perm == DynamicField::PERM_ADMIN &&
                     $access_level < Authentication::ACCESS_ADMIN)
             ) {
