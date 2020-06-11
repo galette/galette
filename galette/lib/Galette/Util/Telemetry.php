@@ -333,7 +333,7 @@ class Telemetry
         $param = 'pref_' . $type . '_uuid';
         $uuid = $this->prefs->$param;
         if (empty($uuid)) {
-            $uuid = self::generateUuid($type);
+            $uuid = $this->generateUuid($type);
         }
         return $uuid;
     }
@@ -382,7 +382,7 @@ class Telemetry
      */
     final public function generateInstanceUuid()
     {
-        return self::generateUuid('instance');
+        return $this->generateUuid('instance');
     }
 
     /**
@@ -392,7 +392,7 @@ class Telemetry
      */
     final public function generateRegistrationUuid()
     {
-        return self::generateUuid('registration');
+        return $this->generateUuid('registration');
     }
 
     /**
