@@ -144,7 +144,7 @@ class DynamicFieldsHandle
                         }
                         $this->current_values[$f->{DynamicField::PK}][] = array_filter(
                             (array)$f,
-                            function ($k) {
+                            function($k) {
                                 return $k != DynamicField::PK;
                             },
                             ARRAY_FILTER_USE_KEY
