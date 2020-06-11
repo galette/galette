@@ -168,7 +168,7 @@ $container['flash'] = function ($c) {
     return new \Slim\Flash\Messages();
 };
 
-$container['plugins'] = function ($c) use ($app) {
+$container['plugins'] = function ($c) {
     $plugins = new Galette\Core\Plugins();
     $i18n = $c->get('i18n');
     $plugins->loadModules($c->get('preferences'), GALETTE_PLUGINS_PATH, $i18n->getLongID());
@@ -541,7 +541,7 @@ $container['logger'] = function ($c) {
     $settings = $c->get('settings');
     $logger = new \Monolog\Logger($settings['logger']['name']);
     $logger->pushProcessor(new \Monolog\Processor\UidProcessor());
-    $logger->pushHandler(new \Monolog\Handler\StreamHandler($settings['logger']['path'], $setting['logger']['level']));
+    $logger->pushHandler(new \Monolog\Handler\StreamHandler($settings['logger']['path'], $settings['logger']['level']));
     return $logger;
 };
 

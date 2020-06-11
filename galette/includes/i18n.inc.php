@@ -89,7 +89,6 @@ function addDynamicTranslation($text_orig)
                     Analog::INFO
                 );
 
-                $where = array();
                 $owhere = $select->where;
 
                 $update = $zdb->update(L10n::TABLE);
@@ -201,7 +200,6 @@ function updateDynamicTranslation($text_orig, $text_locale, $text_trans)
         );
 
         if ($exists) {
-            $where = array();
             $owhere = $select->where;
 
             $update = $zdb->update(L10n::TABLE);
@@ -232,7 +230,7 @@ function updateDynamicTranslation($text_orig, $text_locale, $text_trans)
  * @param string $text_orig   Text to translate
  * @param string $text_locale The locale
  *
- * @return translated string
+ * @return string
  */
 function getDynamicTranslation($text_orig, $text_locale)
 {
@@ -265,13 +263,13 @@ function getDynamicTranslation($text_orig, $text_locale)
 }
 
 /**
- * Translate a string
+ * Translate a string, or return original one
  *
  * @param string  $string The string to translate
  * @param string  $domain Translation domain. Default to false (will take default domain)
  * @param boolean $nt     Indicate not translated strings; defaults to true
  *
- * @return Translated string (if available) ; $chaine otherwise
+ * @return string
  */
 function _T($string, $domain = 'galette', $nt = true)
 {
@@ -313,7 +311,7 @@ function _T($string, $domain = 'galette', $nt = true)
  * @param string $string The string to translate
  * @param string $domain Translation domain. Default to false (will take default domain)
  *
- * @return Translated string (if available), verbatim string otherwise
+ * @return string
  */
 function __($string, $domain = 'galette')
 {
