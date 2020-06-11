@@ -178,8 +178,8 @@ class Adherent
                 );
             } elseif ($deps === false) {
                 //no dependencies
-                $this->deps = array_fill_keys(
-                    array_keys($this->deps),
+                $this->_deps = array_fill_keys(
+                    array_keys($this->_deps),
                     false
                 );
             } else {
