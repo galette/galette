@@ -239,7 +239,7 @@ if (!isset($install_plugin)) {
 ?>
             <form action="installer.php" method="POST">
                 <p id="btn_box">
-                    <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"<?php if (!$conndb_ok || !$permsdb_ok) { echo ' disabled="disabled"';  } ?>/>
+                    <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"<?php if (!$conndb_ok || !$permsdb_ok) { echo ' disabled="disabled"'; } ?>/>
 <?php
 if ($conndb_ok && $permsdb_ok) {
     ?>

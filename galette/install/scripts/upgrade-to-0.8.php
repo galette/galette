@@ -134,54 +134,54 @@ class UpgradeTo08 extends AbstractUpdater
             'tempimages'
         );
 
-        if ( !in_array($dirname, $nomove) ) {
+        if (!in_array($dirname, $nomove)) {
             $origdir = GALETTE_ROOT . $dirname . '/';
             $destdir = GALETTE_DATA_PATH . $dirname . '/';
 
             $go = false;
             //move directory contents
-            switch ( $dirname ) {
+            switch ($dirname) {
                 case 'logs':
-                    if ( GALETTE_LOGS_PATH === $destdir && file_exists($origdir) ) {
+                    if (GALETTE_LOGS_PATH === $destdir && file_exists($origdir)) {
                         $go = true;
                     }
                     break;
                 case 'exports':
-                    if ( GALETTE_EXPORTS_PATH === $destdir && file_exists($origdir) ) {
+                    if (GALETTE_EXPORTS_PATH === $destdir && file_exists($origdir)) {
                         $go = true;
                     }
                     break;
                 case 'imports':
-                    if ( GALETTE_IMPORTS_PATH === $destdir && file_exists($origdir) ) {
+                    if (GALETTE_IMPORTS_PATH === $destdir && file_exists($origdir)) {
                         $go = true;
                     }
                     break;
                 case 'photos':
-                    if ( GALETTE_PHOTOS_PATH === $destdir && file_exists($origdir) ) {
+                    if (GALETTE_PHOTOS_PATH === $destdir && file_exists($origdir)) {
                         $go = true;
                     }
                     break;
                 case 'attachments':
-                    if ( GALETTE_ATTACHMENTS_PATH === $destdir
+                    if (GALETTE_ATTACHMENTS_PATH === $destdir
                         && file_exists($origdir)
                     ) {
                         $go = true;
                     }
                     break;
                 case 'files':
-                    if ( GALETTE_FILES_PATH === $destdir && file_exists($origdir) ) {
+                    if (GALETTE_FILES_PATH === $destdir && file_exists($origdir)) {
                         $go = true;
                     }
                     break;
             }
 
-            if ( $go ) {
+            if ($go) {
                 $moved = true;
                 $d = dir($origdir);
                 while (($entry = $d->read()) !== false) {
-                    if ( $entry != '.' && $entry != '..' ) {
+                    if ($entry != '.' && $entry != '..') {
                         $moved = @rename($origdir . $entry, $destdir . $entry);
-                        if ( !$moved ) {
+                        if (!$moved) {
                             $moved = false;
                             $this->addError(
                                 str_replace(

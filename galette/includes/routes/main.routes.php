@@ -65,7 +65,7 @@ $app->get(
 //system information - keep old route with typo ('s' on 'information') for now (0.9.4)
 $app->get(
     '/system-informations',
-    function($request, $response, $args) {
+    function ($request, $response, $args) {
         return $response
             ->withStatus(302)
             ->withHeader('Location', $this->router->pathFor('sysinfos'));
