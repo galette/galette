@@ -158,11 +158,11 @@ class Adherent
     /**
      * Default constructor
      *
-     * @param Db    $zdb  Database instance
-     * @param mixed $args Either a ResultSet row, its id or its
-     *                    login or its email for to load s specific
-     *                    member, or null to just instanciate object
-     * @param array $deps Dependencies configuration, see Adherent::$_deps
+     * @param Db          $zdb  Database instance
+     * @param mixed       $args Either a ResultSet row, its id or its
+     *                          login or its email for to load s specific
+     *                          member, or null to just instanciate object
+     * @param false|array $deps Dependencies configuration, see Adherent::$_deps
      */
     public function __construct(Db $zdb, $args = null, $deps = null)
     {
