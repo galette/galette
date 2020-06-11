@@ -117,12 +117,12 @@ abstract class Csv
 
             $raw_size = filesize($file);
             $size = 0;
-            if ($raw_size >= 1024*1024*1024) { // Go
-                $size = round(($raw_size/1024)/1024/1024, 2) . ' Go';
-            } elseif ($raw_size >= 1024*1024) { // Mo
-                $size = round(($raw_size/1024)/1024, 2) . ' Mo';
+            if ($raw_size >= 1024 * 1024 * 1024) { // Go
+                $size = round(($raw_size / 1024) / 1024 / 1024, 2) . ' Go';
+            } elseif ($raw_size >= 1024 * 1024) { // Mo
+                $size = round(($raw_size / 1024) / 1024, 2) . ' Mo';
             } elseif ($raw_size >= 1024) { // ko
-                $size = round(($raw_size/1024), 2) . ' Ko';
+                $size = round(($raw_size / 1024), 2) . ' Ko';
             } else { // octets
                 $size = $raw_size . ' octets';
             }

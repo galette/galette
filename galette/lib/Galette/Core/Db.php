@@ -1,4 +1,5 @@
 <?php
+
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
@@ -275,7 +276,7 @@ class Db
             } elseif ($type === self::PGSQL) {
                 $_type = 'Pdo_Pgsql';
             } else {
-                throw new \Exception;
+                throw new \Exception();
             }
 
             $_options = array(
@@ -855,7 +856,7 @@ class Db
             $sql = 'SELECT pg_database_size(\'' . NAME_DB . '\')';
             $result = $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE)
                 ->current();
-            $infos['size'] = (string)round($result['pg_database_size']/1024/1024);
+            $infos['size'] = (string)round($result['pg_database_size'] / 1024 / 1024);
         } else {
             $sql = 'SELECT @@sql_mode as mode, @@version AS version, @@version_comment AS version_comment';
             $result = $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE)

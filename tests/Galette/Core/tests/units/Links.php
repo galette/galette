@@ -36,7 +36,7 @@
 
 namespace Galette\Core\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * Password tests class

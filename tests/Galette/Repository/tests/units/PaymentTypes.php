@@ -37,7 +37,7 @@
 
 namespace Galette\Repository\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * Payment types repository tests

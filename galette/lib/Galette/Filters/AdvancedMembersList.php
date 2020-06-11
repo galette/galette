@@ -188,7 +188,8 @@ class AdvancedMembersList extends MembersList
      */
     public function withinContributions()
     {
-        if ($this->_contrib_creation_date_begin != null
+        if (
+            $this->_contrib_creation_date_begin != null
             || $this->_contrib_creation_date_end != null
             || $this->_contrib_begin_date_begin != null
             || $this->_contrib_begin_date_end != null
@@ -270,12 +271,14 @@ class AdvancedMembersList extends MembersList
             Analog::DEBUG
         );
 
-        if (in_array($name, $this->pagination_fields)
+        if (
+            in_array($name, $this->pagination_fields)
             || in_array($name, $this->memberslist_fields)
         ) {
             return parent::__get($name);
         } else {
-            if (in_array($name, $this->advancedmemberslist_fields)
+            if (
+                in_array($name, $this->advancedmemberslist_fields)
                 || in_array($name, $this->virtuals_advancedmemberslist_fields)
             ) {
                 $rname = '_' . $name;
@@ -358,7 +361,8 @@ class AdvancedMembersList extends MembersList
     {
         global $zdb, $preferences, $login;
 
-        if (in_array($name, $this->pagination_fields)
+        if (
+            in_array($name, $this->pagination_fields)
             || in_array($name, $this->memberslist_fields)
         ) {
             parent::__set($name, $value);
@@ -447,7 +451,7 @@ class AdvancedMembersList extends MembersList
                         } else {
                             Analog::log(
                                 '[AdvancedMembersList] Value for status filter should be an '
-                                .'integer (' . gettype($v) . ' given',
+                                . 'integer (' . gettype($v) . ' given',
                                 Analog::WARNING
                             );
                         }
@@ -506,7 +510,7 @@ class AdvancedMembersList extends MembersList
                         } else {
                             Analog::log(
                                 '[AdvancedMembersList] Value for payment type filter should be an '
-                                .'integer (' . gettype($v) . ' given',
+                                . 'integer (' . gettype($v) . ' given',
                                 Analog::WARNING
                             );
                         }
@@ -564,7 +568,7 @@ class AdvancedMembersList extends MembersList
                     } else {
                         Analog::log(
                             '[AdvancedMembersList] Value for dynamic contribution fields filter should be an '
-                            .'array (' . gettype($value) . ' given',
+                            . 'array (' . gettype($value) . ' given',
                             Analog::WARNING
                         );
                     }
@@ -574,8 +578,9 @@ class AdvancedMembersList extends MembersList
                         unset($this->_groups_search['empty']);
                     }
                     if (is_array($value)) {
-                        if (isset($value['group'])
-                           && isset($value['idx'])
+                        if (
+                            isset($value['group'])
+                            && isset($value['idx'])
                         ) {
                             $id = $value['idx'];
                             unset($value['idx']);
@@ -589,7 +594,7 @@ class AdvancedMembersList extends MembersList
                     } else {
                         Analog::log(
                             '[AdvancedMembersList] Value for group filter should be an '
-                            .'array (' . gettype($value) . ' given',
+                            . 'array (' . gettype($value) . ' given',
                             Analog::WARNING
                         );
                     }
@@ -600,13 +605,14 @@ class AdvancedMembersList extends MembersList
                     } else {
                         Analog::log(
                             '[AdvancedMembersList] Value for group filter logical operator should be '
-                            .' in [0,1] (' . gettype($value) . '-> ' . $value . ' given )',
+                            . ' in [0,1] (' . gettype($value) . '-> ' . $value . ' given )',
                             Analog::WARNING
                         );
                     }
                     break;
                 default:
-                    if (substr($name, 0, 4) === 'cds_'
+                    if (
+                        substr($name, 0, 4) === 'cds_'
                         || substr($name, 0, 5) === 'cdsc_'
                     ) {
                         if (is_array($value) || trim($value) !== '') {
@@ -642,7 +648,7 @@ class AdvancedMembersList extends MembersList
         if (!is_array($data)) {
             Analog::log(
                 '[AdvancedMembersList] Value for free filter should be an '
-                .'array (' . gettype($data) . ' given',
+                . 'array (' . gettype($data) . ' given',
                 Analog::WARNING
             );
             return false;

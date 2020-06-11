@@ -199,7 +199,7 @@ class FieldsConfig
      *
      * @return ArrayObject
      */
-    protected function prepareField(ArrayObject $rset) :ArrayObject
+    protected function prepareField(ArrayObject $rset): ArrayObject
     {
         if ($rset->field_id === 'parent_id') {
             $rset->readonly = true;
@@ -215,7 +215,7 @@ class FieldsConfig
      *
      * @return array
      */
-    protected function buildField(ArrayObject $rset) :array
+    protected function buildField(ArrayObject $rset): array
     {
         $rset = $this->prepareField($rset);
         $f = array(
@@ -223,9 +223,9 @@ class FieldsConfig
             'label'     => $this->defaults[$rset->field_id]['label'],
             'category'  => (int)$rset->id_field_category,
             'visible'   => (int)$rset->visible,
-            'required'  => (boolean)$rset->required,
+            'required'  => (bool)$rset->required,
             'propname'  => $this->defaults[$rset->field_id]['propname'],
-            'position'  =>(int)$rset->position,
+            'position'  => (int)$rset->position,
             'disabled'  => false
         );
         return $f;
@@ -516,14 +516,16 @@ class FieldsConfig
                         $hidden_elements[] = $o;
                     } else {
                         // skip fields blacklisted for edition
-                        if (in_array($o->field_id, $this->non_form_elements)
+                        if (
+                            in_array($o->field_id, $this->non_form_elements)
                             || $selfs && $this->isSelfExcluded($o->field_id)
                         ) {
                             continue;
                         }
 
                         // skip fields according to access control
-                        if ($o->visible == self::NOBODY ||
+                        if (
+                            $o->visible == self::NOBODY ||
                             ($o->visible == self::ADMIN &&
                                 $access_level < Authentication::ACCESS_ADMIN) ||
                             ($o->visible == self::STAFF &&
@@ -538,7 +540,8 @@ class FieldsConfig
                             $o->type = self::TYPE_DATE;
                         } elseif (preg_match('/bool/', $o->field_id)) {
                             $o->type = self::TYPE_BOOL;
-                        } elseif ($o->field_id == 'titre_adh'
+                        } elseif (
+                            $o->field_id == 'titre_adh'
                             || $o->field_id == 'pref_lang'
                             || $o->field_id == 'id_statut'
                         ) {
@@ -561,8 +564,10 @@ class FieldsConfig
                         }
 
                         // disabled field according to access control
-                        if ($o->visible == self::USER_READ &&
-                                $access_level == Authentication::ACCESS_USER) {
+                        if (
+                            $o->visible == self::USER_READ &&
+                                $access_level == Authentication::ACCESS_USER
+                        ) {
                             $o->disabled = true;
                         } else {
                             $o->disabled = false;
@@ -643,7 +648,8 @@ class FieldsConfig
                         }
 
                         // skip fields according to access control
-                        if ($o->visible == self::NOBODY ||
+                        if (
+                            $o->visible == self::NOBODY ||
                             ($o->visible == self::ADMIN &&
                                 $access_level < Authentication::ACCESS_ADMIN) ||
                             ($o->visible == self::STAFF &&
@@ -977,7 +983,8 @@ class FieldsConfig
         unset($fields['mdp_adh']);
 
         foreach ($fields as $k => $f) {
-            if ($visibles[$k] == FieldsConfig::NOBODY ||
+            if (
+                $visibles[$k] == FieldsConfig::NOBODY ||
                 ($visibles[$k] == FieldsConfig::ADMIN &&
                     $access_level < Authentication::ACCESS_ADMIN) ||
                 ($visibles[$k] == FieldsConfig::STAFF &&
@@ -1023,7 +1030,7 @@ class FieldsConfig
      *
      * @return array
      */
-    public function getField($name) :array
+    public function getField($name): array
     {
         if (!isset($this->core_db_fields[$name])) {
             throw new \UnexpectedValueException("$name fied does not exists");

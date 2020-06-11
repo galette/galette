@@ -38,7 +38,6 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\DynamicFields\DynamicField;
@@ -70,7 +69,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []) :Response
+    public function add(Request $request, Response $response, array $args = []): Response
     {
         $form_name = $args['form'];
 
@@ -107,7 +106,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []) :Response
+    public function doAdd(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
 
@@ -210,7 +209,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []) :Response
+    public function list(Request $request, Response $response, array $args = []): Response
     {
         $form_name = $args['form'] ?? 'adh';
         if (isset($_POST['form']) && trim($_POST['form']) != '') {
@@ -231,7 +230,8 @@ class DynamicFieldsController extends CrudController
         $tpl = 'configurer_fiches.tpl';
         //Render directly template if we called from ajax,
         //render in a full page otherwise
-        if ($request->isXhr()
+        if (
+            $request->isXhr()
             || isset($request->getQueryParams()['ajax'])
             && $request->getQueryParams()['ajax'] == 'true'
         ) {
@@ -258,7 +258,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
-    public function filter(Request $request, Response $response) :Response
+    public function filter(Request $request, Response $response): Response
     {
         //no filtering
     }
@@ -275,7 +275,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []) :Response
+    public function edit(Request $request, Response $response, array $args = []): Response
     {
         $id_dynf = (int)$args['id'];
         $form_name = $args['form'];
@@ -324,7 +324,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []) :Response
+    public function doEdit(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
 
@@ -484,7 +484,7 @@ class DynamicFieldsController extends CrudController
      *
      * @return Response
      */
-    public function move(Request $request, Response $response, array $args = []) :Response
+    public function move(Request $request, Response $response, array $args = []): Response
     {
         $field_id = (int)$args['id'];
         $form_name = $args['form'];

@@ -164,21 +164,21 @@ class PdfMembersCards extends Pdf
         $this->logofile = $print_logo->getPath();
 
         // Set logo size to max width 30 mm or max height 25 mm
-        $ratio = $print_logo->getWidth()/$print_logo->getHeight();
+        $ratio = $print_logo->getWidth() / $print_logo->getHeight();
         if ($ratio < 1) {
             if ($print_logo->getHeight() > 16) {
                 $this->hlogo = 20;
             } else {
                 $this->hlogo = $print_logo->getHeight();
             }
-            $this->wlogo = round($this->hlogo*$ratio);
+            $this->wlogo = round($this->hlogo * $ratio);
         } else {
             if ($print_logo->getWidth() > 16) {
                 $this->wlogo = 30;
             } else {
                 $this->wlogo = $print_logo->getWidth();
             }
-            $this->hlogo = round($this->wlogo/$ratio);
+            $this->hlogo = round($this->wlogo / $ratio);
         }
     }
 
@@ -194,16 +194,16 @@ class PdfMembersCards extends Pdf
         $nb_card = 0;
         foreach ($members as $member) {
             // Detect page breaks
-            if ($nb_card%($this->nbcol*$this->nbrow) == 0) {
+            if ($nb_card % ($this->nbcol * $this->nbrow) == 0) {
                 $this->AddPage();
             }
 
             // Compute card position on page
-            $col = $nb_card%$this->nbcol;
-            $row = ($nb_card/$this->nbcol)%$this->nbrow;
+            $col = $nb_card % $this->nbcol;
+            $row = ($nb_card / $this->nbcol) % $this->nbrow;
             // Set origin
-            $x0 = $this->xorigin + $col*(round($this->wi) + round($this->hspacing));
-            $y0 = $this->yorigin + $row*(round($this->he) + round($this->vspacing));
+            $x0 = $this->xorigin + $col * (round($this->wi) + round($this->hspacing));
+            $y0 = $this->yorigin + $row * (round($this->he) + round($this->vspacing));
             // Logo X position
             $xl = round($x0 + $this->wi - $this->wlogo);
             // Get data

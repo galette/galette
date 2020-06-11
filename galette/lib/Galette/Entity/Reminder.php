@@ -358,7 +358,8 @@ class Reminder
     {
         switch ($name) {
             case 'type':
-                if ($value === self::IMPENDING
+                if (
+                    $value === self::IMPENDING
                     || $value === self::LATE
                 ) {
                     $this->type = $value;
@@ -379,7 +380,7 @@ class Reminder
                         $this->nomail = false;
                     }
                     if ($this->type === self::LATE) {
-                        $this->replaces['days_expired'] = $value->days_remaining*-1;
+                        $this->replaces['days_expired'] = $value->days_remaining * -1;
                     }
                     if ($this->type === self::IMPENDING) {
                         $this->replaces['days_remaining'] = $value->days_remaining;

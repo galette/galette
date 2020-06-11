@@ -37,7 +37,7 @@
 
 namespace Galette\Core\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * Install tests class

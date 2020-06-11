@@ -67,7 +67,7 @@ class ImagesController extends AbstractController
      *
      * @return Response
      */
-    protected function sendResponse(Response $response, Picture $picture) :Response
+    protected function sendResponse(Response $response, Picture $picture): Response
     {
         $response = $response->withHeader('Content-Type', $picture->getMime())
             ->withHeader('Content-Transfer-Encoding', 'binary')
@@ -90,7 +90,7 @@ class ImagesController extends AbstractController
      *
      * @return Response
      */
-    public function logo(Request $request, Response $response) :Response
+    public function logo(Request $request, Response $response): Response
     {
         return $this->sendResponse($response, $this->logo);
     }
@@ -103,7 +103,7 @@ class ImagesController extends AbstractController
      *
      * @return Response
      */
-    public function printLogo(Request $request, Response $response) :Response
+    public function printLogo(Request $request, Response $response): Response
     {
         return $this->sendResponse($response, $this->print_logo);
     }
@@ -117,7 +117,7 @@ class ImagesController extends AbstractController
      *
      * @return Response
      */
-    public function photo(Request $request, Response $response, array $args) :Response
+    public function photo(Request $request, Response $response, array $args): Response
     {
         $id = (int)$args['id'];
 
@@ -135,7 +135,8 @@ class ImagesController extends AbstractController
         $adh = new Adherent($this->zdb, (int)$id, $deps);
 
         $picture = null;
-        if ($adh->canEdit($this->login)
+        if (
+            $adh->canEdit($this->login)
             || $this->preferences->showPublicPages($this->login)
             && $adh->appearsInMembersList()
         ) {

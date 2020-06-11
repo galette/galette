@@ -81,7 +81,7 @@ class CheckAcls
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $next) :Response
+    public function __invoke(Request $request, Response $response, $next): Response
     {
         $route = $request->getAttribute('route');
         $route_info = $request->getAttribute('routeInfo');
@@ -108,7 +108,8 @@ class CheckAcls
                 $middlewares = $route->getMiddleware();
                 if (count($middlewares) > 0) {
                     foreach ($middlewares as $middleware) {
-                        if (!in_array($name, $excluded_names)
+                        if (
+                            !in_array($name, $excluded_names)
                             && !in_array($name, $missing_acls)
                         ) {
                             try {

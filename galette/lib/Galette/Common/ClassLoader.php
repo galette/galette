@@ -1,4 +1,5 @@
 <?php
+
 /**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -289,7 +290,8 @@ class ClassLoader
     public static function getClassLoader($className)
     {
         foreach (spl_autoload_functions() as $loader) {
-            if (is_array($loader)
+            if (
+                is_array($loader)
                 && $loader[0] instanceof ClassLoader
                 && $loader[0]->canLoadClass($className)
             ) {

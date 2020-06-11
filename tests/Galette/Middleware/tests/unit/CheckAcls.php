@@ -37,7 +37,7 @@
 
 namespace Galette\Middleware\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * CheckAcls tests class

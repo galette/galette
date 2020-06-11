@@ -37,7 +37,7 @@
 
 namespace Galette\Updater;
 
-use \Analog\Analog;
+use Analog\Analog;
 use Galette\Core\Db;
 
 /**
@@ -207,7 +207,8 @@ abstract class AbstractUpdater
     protected function setSqlScripts($version)
     {
         $scripts = $this->getSqlScripts($version);
-        if (is_array($scripts)
+        if (
+            is_array($scripts)
             && count($scripts) === count($this->engines)
             && count(array_diff(array_keys($scripts), $this->engines)) == 0
         ) {

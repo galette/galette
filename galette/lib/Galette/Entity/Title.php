@@ -226,7 +226,8 @@ class Title
                 break;
             case 'short':
             case 'long':
-                if ($name === 'long'
+                if (
+                    $name === 'long'
                     && ($this->long == null || trim($this->long) === '')
                 ) {
                     $name = 'short';

@@ -39,7 +39,6 @@ namespace Galette\Repository;
 
 use Galette\DynamicFields\DynamicField;
 use Galette\Entity\DynamicFieldsHandle;
-
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Sql\Expression;
@@ -413,7 +412,8 @@ class Members
                 return true;
             } catch (\Exception $e) {
                 $zdb->connection->rollBack();
-                if ($e instanceof \Zend_Db_Statement_Exception
+                if (
+                    $e instanceof \Zend_Db_Statement_Exception
                     && $e->getCode() == 23000
                 ) {
                     Analog::log(
@@ -598,7 +598,7 @@ class Members
      *
      * @return Select SELECT statement
      */
-    private function buildSelect($mode, $fields, $photos, $count = false) :Select
+    private function buildSelect($mode, $fields, $photos, $count = false): Select
     {
         global $zdb, $login;
 
@@ -660,7 +660,8 @@ class Members
             }
 
             //check for contributions filtering
-            if ($this->filters instanceof AdvancedMembersList
+            if (
+                $this->filters instanceof AdvancedMembersList
                 && $this->filters->withinContributions()
             ) {
                 $select->join(
@@ -675,7 +676,8 @@ class Members
             $hasDf = false;
             $dfs = array();
 
-            if ($this->filters instanceof AdvancedMembersList
+            if (
+                $this->filters instanceof AdvancedMembersList
                 && $this->filters->free_search
                 && count($this->filters->free_search) > 0
                 && !isset($this->filters->free_search['empty'])
@@ -695,10 +697,12 @@ class Members
             $hasCdfc = false;
             $cdfcs = array();
 
-            if ($this->filters instanceof AdvancedMembersList
+            if (
+                $this->filters instanceof AdvancedMembersList
                 && $this->filters->withinContributions()
             ) {
-                if ($this->filters->contrib_dynamic
+                if (
+                    $this->filters->contrib_dynamic
                     && count($this->filters->contrib_dynamic) > 0
                     && !isset($this->filters->contrib_dynamic['empty'])
                 ) {
@@ -898,7 +902,7 @@ class Members
      *
      * @return Select
      */
-    private function buildOrderClause(Select $select, $fields = null) :Select
+    private function buildOrderClause(Select $select, $fields = null): Select
     {
         $order = array();
 
@@ -1171,7 +1175,8 @@ class Members
                 // we will use in the final query.
                 // The OR case is quite simple, AND is a bit more complex; since we must
                 // check each member do belongs to all listed groups.
-                if (count($this->filters->groups_search) > 0
+                if (
+                    count($this->filters->groups_search) > 0
                     && !isset($this->filters->groups_search['empty'])
                 ) {
                     $groups_adh = [];
@@ -1245,7 +1250,8 @@ class Members
                     }
                 }
 
-                if ($this->filters->rbirth_date_begin
+                if (
+                    $this->filters->rbirth_date_begin
                     || $this->filters->rbirth_date_end
                 ) {
                     if ($this->filters->rbirth_date_begin) {
@@ -1264,7 +1270,8 @@ class Members
                     }
                 }
 
-                if ($this->filters->rcreation_date_begin
+                if (
+                    $this->filters->rcreation_date_begin
                     || $this->filters->rcreation_date_end
                 ) {
                     if ($this->filters->rcreation_date_begin) {
@@ -1283,7 +1290,8 @@ class Members
                     }
                 }
 
-                if ($this->filters->rmodif_date_begin
+                if (
+                    $this->filters->rmodif_date_begin
                     || $this->filters->rmodif_date_end
                 ) {
                     if ($this->filters->rmodif_date_begin) {
@@ -1302,7 +1310,8 @@ class Members
                     }
                 }
 
-                if ($this->filters->rdue_date_begin
+                if (
+                    $this->filters->rdue_date_begin
                     || $this->filters->rdue_date_end
                 ) {
                     if ($this->filters->rdue_date_begin) {
@@ -1342,7 +1351,8 @@ class Members
                     );
                 }
 
-                if ($this->filters->rcontrib_creation_date_begin
+                if (
+                    $this->filters->rcontrib_creation_date_begin
                     || $this->filters->rcontrib_creation_date_end
                 ) {
                     if ($this->filters->rcontrib_creation_date_begin) {
@@ -1365,7 +1375,8 @@ class Members
                     }
                 }
 
-                if ($this->filters->rcontrib_begin_date_begin
+                if (
+                    $this->filters->rcontrib_begin_date_begin
                     || $this->filters->rcontrib_begin_date_end
                 ) {
                     if ($this->filters->rcontrib_begin_date_begin) {
@@ -1388,7 +1399,8 @@ class Members
                     }
                 }
 
-                if ($this->filters->rcontrib_end_date_begin
+                if (
+                    $this->filters->rcontrib_end_date_begin
                     || $this->filters->rcontrib_end_date_end
                 ) {
                     if ($this->filters->rcontrib_end_date_begin) {
@@ -1411,7 +1423,8 @@ class Members
                     }
                 }
 
-                if ($this->filters->contrib_min_amount
+                if (
+                    $this->filters->contrib_min_amount
                     || $this->filters->contrib_max_amount
                 ) {
                     if ($this->filters->contrib_min_amount) {
@@ -1442,7 +1455,8 @@ class Members
                     );
                 }
 
-                if (count($this->filters->contrib_dynamic) > 0
+                if (
+                    count($this->filters->contrib_dynamic) > 0
                     && !isset($this->filters->contrib_dynamic['empty'])
                 ) {
                     foreach ($this->filters->contrib_dynamic as $k => $cd) {
@@ -1471,7 +1485,8 @@ class Members
                     }
                 }
 
-                if (count($this->filters->free_search) > 0
+                if (
+                    count($this->filters->free_search) > 0
                     && !isset($this->filters->free_search['empty'])
                 ) {
                     foreach ($this->filters->free_search as $fs) {
@@ -1537,7 +1552,8 @@ class Members
                         } elseif (!strncmp($fs['field'], 'bool_', strlen('bool_'))) {
                             $qry .= $prefix . $fs['field'] . $qop . ' ' .
                                 $fs['search'];
-                        } elseif ($fs['qry_op'] === AdvancedMembersList::OP_BEFORE
+                        } elseif (
+                            $fs['qry_op'] === AdvancedMembersList::OP_BEFORE
                             || $fs['qry_op'] === AdvancedMembersList::OP_AFTER
                         ) {
                             if ($prefix === 'a.') {
@@ -1645,7 +1661,8 @@ class Members
 
                 foreach ($results as $m) {
                     $dirty = false;
-                    if ($m->login_adh == ''
+                    if (
+                        $m->login_adh == ''
                         || !isset($m->login_adh)
                         || $m->login_adh == 'NULL'
                     ) {
@@ -1653,7 +1670,8 @@ class Members
                         $dirty = true;
                     }
 
-                    if ($m->mdp_adh == ''
+                    if (
+                        $m->mdp_adh == ''
                         || !isset($m->mdp_adh)
                         || $m->mdp_adh == 'NULL'
                     ) {

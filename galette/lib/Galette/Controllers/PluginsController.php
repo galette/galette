@@ -67,7 +67,7 @@ class PluginsController extends AbstractController
      *
      * @return Response
      */
-    public function showPlugins(Request $request, Response $response) :Response
+    public function showPlugins(Request $request, Response $response): Response
     {
         $plugins = $this->plugins;
 
@@ -96,7 +96,7 @@ class PluginsController extends AbstractController
      *
      * @return Response
      */
-    public function togglePlugin(Request $request, Response $response, array $args = []) :Response
+    public function togglePlugin(Request $request, Response $response, array $args = []): Response
     {
         if (GALETTE_MODE !== 'DEMO') {
             $plugins = $this->plugins;
@@ -160,7 +160,7 @@ class PluginsController extends AbstractController
      *
      * @return Response
      */
-    public function initPluginDb(Request $request, Response $response, array $args = []) :Response
+    public function initPluginDb(Request $request, Response $response, array $args = []): Response
     {
         if (GALETTE_MODE === 'DEMO') {
             Analog::log(
@@ -188,7 +188,8 @@ class PluginsController extends AbstractController
 
         $install = null;
         $mdplugin = md5($plugin['root']);
-        if (isset($this->session->$mdplugin)
+        if (
+            isset($this->session->$mdplugin)
             && !isset($_GET['raz'])
         ) {
             $install = $this->session->$mdplugin;
@@ -326,7 +327,8 @@ class PluginsController extends AbstractController
                                 ' | Query was: ' . $query,
                                 Analog::WARNING
                             );
-                            if ((strcasecmp(trim($w1), 'drop') != 0)
+                            if (
+                                (strcasecmp(trim($w1), 'drop') != 0)
                                 && (strcasecmp(trim($w1), 'rename') != 0)
                             ) {
                                 $error_detected[] = $w1 . ' ' . $w2 . ' ' . $w3 . ' ' . $extra;

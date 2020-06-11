@@ -97,7 +97,7 @@ abstract class Repository
                 $entity = $ent;
             } else {
                 throw new \RuntimeException(
-                    'Unable to find entity name from repository one. Please '.
+                    'Unable to find entity name from repository one. Please ' .
                     'provide entity name in repository constructor'
                 );
             }

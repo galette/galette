@@ -38,7 +38,6 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Entity\SavedSearch;
@@ -74,7 +73,7 @@ class SavedSearchesController extends CrudController
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []) :Response
+    public function add(Request $request, Response $response, array $args = []): Response
     {
         //no new page (included on list), just to satisfy inheritance
     }
@@ -88,7 +87,7 @@ class SavedSearchesController extends CrudController
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []) :Response
+    public function doAdd(Request $request, Response $response, array $args = []): Response
     {
         if ($request->isPost()) {
             $post = $request->getParsedBody();
@@ -170,7 +169,7 @@ class SavedSearchesController extends CrudController
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []) :Response
+    public function list(Request $request, Response $response, array $args = []): Response
     {
         $option = null;
         if (isset($args['option'])) {
@@ -228,7 +227,7 @@ class SavedSearchesController extends CrudController
      *
      * @return Response
      */
-    public function filter(Request $request, Response $response) :Response
+    public function filter(Request $request, Response $response): Response
     {
         //no filters
     }
@@ -245,7 +244,7 @@ class SavedSearchesController extends CrudController
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []) :Response
+    public function edit(Request $request, Response $response, array $args = []): Response
     {
         //no edition
     }
@@ -259,7 +258,7 @@ class SavedSearchesController extends CrudController
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []) :Response
+    public function doEdit(Request $request, Response $response, array $args = []): Response
     {
         //no edition
     }
@@ -354,7 +353,7 @@ class SavedSearchesController extends CrudController
      *
      * @return Response
      */
-    public function load(Request $request, Response $response, array $args = []) :Response
+    public function load(Request $request, Response $response, array $args = []): Response
     {
         try {
             $sco = new SavedSearch($this->zdb, $this->login, (int)$args['id']);

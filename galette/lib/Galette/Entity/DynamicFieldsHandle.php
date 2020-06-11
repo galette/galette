@@ -400,7 +400,8 @@ class DynamicFieldsHandle
                 $this->delete_stmt->execute($entry);
                 //update val index
                 $field_id = $entry['where3'];
-                if (isset($this->current_values[$field_id])
+                if (
+                    isset($this->current_values[$field_id])
                     && count($this->current_values[$field_id])
                 ) {
                     $val_index = (int)$entry['where4'];
@@ -498,7 +499,8 @@ class DynamicFieldsHandle
 
         foreach ($this->dynamic_fields as $field) {
             $perm = $field->getPerm();
-            if (($perm == DynamicField::PERM_MANAGER &&
+            if (
+                ($perm == DynamicField::PERM_MANAGER &&
                     $access_level < Authentication::ACCESS_MANAGER) ||
                 ($perm == DynamicField::PERM_STAFF &&
                         $access_level < Authentication::ACCESS_STAFF) ||

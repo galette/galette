@@ -108,7 +108,8 @@ trait DynamicsTrait
                 if (!isset($disabled[$key])) {
                     if (substr($key, 0, 11) == 'info_field_') {
                         list($field_id, $val_index) = explode('_', substr($key, 11));
-                        if (is_numeric($field_id)
+                        if (
+                            is_numeric($field_id)
                             && is_numeric($val_index)
                         ) {
                             if ($fields[$field_id]->isRequired() && (trim($value) === '' || $value == null)) {
@@ -235,9 +236,11 @@ trait DynamicsTrait
                 continue;
             }
 
-            if ($file['error'] == UPLOAD_ERR_NO_FILE
+            if (
+                $file['error'] == UPLOAD_ERR_NO_FILE
                 && $file['name'] == ''
-                && $file['tmp_name'] == '') {
+                && $file['tmp_name'] == ''
+            ) {
                 //not upload atempt.
                 continue;
             } elseif ($file['error'] !== UPLOAD_ERR_OK) {
@@ -258,7 +261,7 @@ trait DynamicsTrait
 
             $max_size =
                 $fields[$field_id]->getSize() ?
-                $fields[$field_id]->getSize()*1024 : File::DEFAULT_MAX_FILE_SIZE*1024;
+                $fields[$field_id]->getSize() * 1024 : File::DEFAULT_MAX_FILE_SIZE * 1024;
             if ($file['size'] > $max_size) {
                 Analog::log(
                     "file too large: " . $file['size'] . " Ko, vs $max_size Ko allowed",

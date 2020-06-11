@@ -92,22 +92,22 @@ trait FileTrait
         'xslt'      => 'application/xslt+xml',
         'xsl'       => 'application/xml',
         'dtd'       => 'application/xml-dtd',
-        'atom'      =>'application/atom+xml',
-        'mathml'    =>'application/mathml+xml',
-        'rdf'       =>'application/rdf+xml',
-        'smi'       =>'application/smil',
-        'smil'      =>'application/smil',
-        'vxml'      =>'application/voicexml+xml',
-        'latex'     =>'application/x-latex',
-        'tcl'       =>'application/x-tcl',
-        'tex'       =>'application/x-tex',
-        'texinfo'   =>'application/x-texinfo',
-        'wrl'       =>'model/vrml',
-        'wrml'      =>'model/vrml',
-        'ics'       =>'text/calendar',
-        'ifb'       =>'text/calendar',
-        'sgml'      =>'text/sgml',
-        'htc'       =>'text/x-component',
+        'atom'      => 'application/atom+xml',
+        'mathml'    => 'application/mathml+xml',
+        'rdf'       => 'application/rdf+xml',
+        'smi'       => 'application/smil',
+        'smil'      => 'application/smil',
+        'vxml'      => 'application/voicexml+xml',
+        'latex'     => 'application/x-latex',
+        'tcl'       => 'application/x-tcl',
+        'tex'       => 'application/x-tex',
+        'texinfo'   => 'application/x-texinfo',
+        'wrl'       => 'model/vrml',
+        'wrml'      => 'model/vrml',
+        'ics'       => 'text/calendar',
+        'ifb'       => 'text/calendar',
+        'sgml'      => 'text/sgml',
+        'htc'       => 'text/x-component',
         'pgp'       => 'application/pgp-signature',
         'rtf'       => 'application/rtf',
         // images
@@ -288,10 +288,10 @@ trait FileTrait
         }
 
         //Second, let's check file size
-        if ($file['size'] > ($this->maxlenght*1024)) {
+        if ($file['size'] > ($this->maxlenght * 1024)) {
             Analog::log(
-                '[' . $class . '] File is too big (' . ($file['size']*1024) .
-                'Ko for maximum authorized ' . ($this->maxlenght*1024) .
+                '[' . $class . '] File is too big (' . ($file['size'] * 1024) .
+                'Ko for maximum authorized ' . ($this->maxlenght * 1024) .
                 'Ko',
                 Analog::ERROR
             );
@@ -302,7 +302,8 @@ trait FileTrait
 
         $mime = $this->getMimeType($tmpfile);
 
-        if (count($this->allowed_mimes) > 0
+        if (
+            count($this->allowed_mimes) > 0
             && !in_array($mime, $this->allowed_mimes)
         ) {
             Analog::log(

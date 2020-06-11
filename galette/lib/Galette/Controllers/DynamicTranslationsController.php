@@ -66,7 +66,7 @@ class DynamicTranslationsController extends AbstractController
      *
      * @return Response
      */
-    public function dynamicTranslations(Request $request, Response $response, array $args = []) :Response
+    public function dynamicTranslations(Request $request, Response $response, array $args = []): Response
     {
         $text_orig = '';
         if (isset($args['text_orig'])) {
@@ -170,7 +170,7 @@ class DynamicTranslationsController extends AbstractController
      *
      * @return Response
      */
-    public function doDynamicTranslations(Request $request, Response $response) :Response
+    public function doDynamicTranslations(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $error_detected = false;

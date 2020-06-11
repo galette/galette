@@ -341,7 +341,8 @@ class Adherent
         //Galette relative information
         $this->_appears_in_list = ($r->bool_display_info == 1) ? true : false;
         $this->_admin = ($r->bool_admin_adh == 1) ? true : false;
-        if (isset($r->priorite_statut)
+        if (
+            isset($r->priorite_statut)
             && $r->priorite_statut < Members::NON_STAFF_MEMBERS
         ) {
             $this->_staff = true;
@@ -492,7 +493,7 @@ class Adherent
                 $date_end = new \DateTime($this->_due_date);
                 $date_diff = $date_now->diff($date_end);
                 $this->_days_remaining = ($date_diff->invert == 1)
-                    ? $date_diff->days*-1
+                    ? $date_diff->days * -1
                     : $date_diff->days;
 
                 if ($this->_days_remaining == 0) {
@@ -727,7 +728,7 @@ class Adherent
             $patterns = array('/%days/', '/%date/');
             $ddate = new \DateTime($this->_due_date);
             $replace = array(
-                $this->_days_remaining*-1,
+                $this->_days_remaining * -1,
                 $ddate->format(__("Y-m-d"))
             );
             if ($this->_active) {
@@ -977,7 +978,8 @@ class Adherent
         }
 
         //no parent if checkbox was unchecked
-        if (!isset($values['attach'])
+        if (
+            !isset($values['attach'])
             && empty($this->_id)
             && isset($values['parent_id'])
         ) {
@@ -1042,7 +1044,8 @@ class Adherent
                 // now, check validity
                 if ($value !== null && $value != '') {
                     $this->validate($key, $value, $values);
-                } elseif (($key == 'login_adh' && !isset($required['login_adh']))
+                } elseif (
+                    ($key == 'login_adh' && !isset($required['login_adh']))
                     || ($key == 'mdp_adh' && !isset($required['mdp_adh']))
                     && !isset($this->_id)
                 ) {
@@ -1143,16 +1146,16 @@ class Adherent
                         $d->setTime(0, 0, 0);
 
                         $diff = $now->diff($d);
-                        $days = (integer)$diff->format('%R%a');
+                        $days = (int)$diff->format('%R%a');
                         if ($days >= 0) {
                             $this->errors[] = _T('- Birthdate must be set in the past!');
                         }
 
-                        $years = (integer)$diff->format('%R%Y');
+                        $years = (int)$diff->format('%R%Y');
                         if ($years <= -200) {
                             $this->errors[] = str_replace(
                                 '%years',
-                                $years*-1,
+                                $years * -1,
                                 _T('- Members must be less than 200 years old (currently %years)!')
                             );
                         }
@@ -1253,7 +1256,8 @@ class Adherent
                             }
 
                             $results = $this->zdb->execute($select);
-                            if ($results->count() !== 0
+                            if (
+                                $results->count() !== 0
                                 || $value == $preferences->pref_admin_login
                             ) {
                                 $this->errors[] = _T("- This username is already in use, please choose another one!");
@@ -1269,12 +1273,14 @@ class Adherent
                 }
                 break;
             case 'mdp_adh':
-                if ($this->_self_adh !== true
+                if (
+                    $this->_self_adh !== true
                     && (!isset($values['mdp_adh2'])
                     || $values['mdp_adh2'] != $value)
                 ) {
                     $this->errors[] = _T("- The passwords don't match!");
-                } elseif ($this->_self_adh === true
+                } elseif (
+                    $this->_self_adh === true
                     && !crypt($value, $values['mdp_crypt']) == $values['mdp_crypt']
                 ) {
                     $this->errors[] = _T("Password misrepeated: ");
@@ -1351,12 +1357,14 @@ class Adherent
             $fields = self::getDbFields($this->zdb);
 
             foreach ($fields as $field) {
-                if ($field !== 'date_modif_adh'
+                if (
+                    $field !== 'date_modif_adh'
                     || !isset($this->_id)
                     || $this->_id == ''
                 ) {
                     $prop = '_' . $this->fields[$field]['propname'];
-                    if (($field === 'bool_admin_adh'
+                    if (
+                        ($field === 'bool_admin_adh'
                         || $field === 'bool_exempt_adh'
                         || $field === 'bool_display_info'
                         || $field === 'activite_adh')

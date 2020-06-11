@@ -141,7 +141,8 @@ class Mailing extends GaletteMail
     private function loadAttachments()
     {
         $dir = '';
-        if (isset($this->tmp_path)
+        if (
+            isset($this->tmp_path)
             && trim($this->tmp_path) !== ''
         ) {
             $dir = $this->tmp_path;
@@ -334,7 +335,8 @@ class Mailing extends GaletteMail
      */
     public function moveAttachments($id)
     {
-        if (isset($this->tmp_path)
+        if (
+            isset($this->tmp_path)
             && trim($this->tmp_path) !== ''
             && count($this->attachments) > 0
         ) {
@@ -365,7 +367,8 @@ class Mailing extends GaletteMail
     public function removeAttachment($name)
     {
         $to_remove = null;
-        if (isset($this->tmp_path)
+        if (
+            isset($this->tmp_path)
             && trim($this->tmp_path) !== ''
             && file_exists($this->tmp_path)
         ) {
@@ -419,7 +422,8 @@ class Mailing extends GaletteMail
     public function removeAttachments($temp = false)
     {
         $to_remove = null;
-        if (isset($this->tmp_path)
+        if (
+            isset($this->tmp_path)
             && trim($this->tmp_path) !== ''
             && file_exists($this->tmp_path)
         ) {
@@ -578,7 +582,8 @@ class Mailing extends GaletteMail
                 }
                 break;
             case 'current_step':
-                if (is_int($value)
+                if (
+                    is_int($value)
                     && ($value == self::STEP_START
                     || $value == self::STEP_PREVIEW
                     || $value == self::STEP_SEND

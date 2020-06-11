@@ -35,10 +35,10 @@
  * @since     0.8.2dev 2014-11-10
  */
 
-use \Slim\Slim;
-use \Slim\Route;
+use Slim\Slim;
+use Slim\Route;
 use Galette\Core\Login;
-use \Analog\Analog;
+use Analog\Analog;
 
 $time_start = microtime(true);
 

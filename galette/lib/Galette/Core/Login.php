@@ -148,7 +148,7 @@ class Login extends Authentication
                 $active = $row->activite_adh;
                 if (!$row->activite_adh == true) {
                     Analog::log(
-                        'Member `' . $user .' is inactive!`' . $log_suffix,
+                        'Member `' . $user . ' is inactive!`' . $log_suffix,
                         Analog::WARNING
                     );
                     return false;
@@ -259,7 +259,8 @@ class Login extends Authentication
         }
         //staff members and admins are de facto groups managers. For all
         //others, get managed groups
-        if (!$this->isSuperAdmin()
+        if (
+            !$this->isSuperAdmin()
             && !$this->isAdmin()
             && !$this->isStaff()
         ) {

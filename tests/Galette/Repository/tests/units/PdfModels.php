@@ -37,7 +37,7 @@
 
 namespace Galette\Repository\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * PDF models repository tests
@@ -123,7 +123,7 @@ class PdfModels extends atoum
     {
         global $container, $zdb;
         $zdb = $this->zdb; //globals '(
-        $container = new class{
+        $container = new class {
             /**
              * Get (only router)
              *
@@ -133,7 +133,7 @@ class PdfModels extends atoum
              */
             public function get($name)
             {
-                $router = new class{
+                $router = new class {
                     /**
                      * Get path ('')
                      *

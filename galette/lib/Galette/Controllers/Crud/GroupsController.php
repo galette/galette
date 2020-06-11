@@ -38,7 +38,6 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Entity\Adherent;
@@ -73,7 +72,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []) :Response
+    public function add(Request $request, Response $response, array $args = []): Response
     {
         //no new page (included on list), just to satisfy inheritance
     }
@@ -87,7 +86,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []) :Response
+    public function doAdd(Request $request, Response $response, array $args = []): Response
     {
         $group = new Group();
         $group->setLogin($this->login);
@@ -113,7 +112,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
-    public function checkUniqueness(Request $request, Response $response, array $args = []) :Response
+    public function checkUniqueness(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
         if (!isset($post['gname']) || $post['gname'] == '') {
@@ -143,7 +142,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []) :Response
+    public function list(Request $request, Response $response, array $args = []): Response
     {
         $groups = new Groups($this->zdb, $this->login);
         $group = new Group();
@@ -204,7 +203,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
-    public function getGroup(Request $request, Response $response, array $args = []) :Response
+    public function getGroup(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
         $id = $post['id_group'];
@@ -234,7 +233,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
-    public function simpleList(Request $request, Response $response, array $args = []) :Response
+    public function simpleList(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
 
@@ -262,7 +261,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
-    public function ajaxMembers(Request $request, Response $response, array $args = []) :Response
+    public function ajaxMembers(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
 
@@ -277,7 +276,7 @@ class GroupsController extends CrudController
             die();
         }
 
-        $m = new Members;
+        $m = new Members();
         $persons = $m->getArrayList($ids);
 
         // display page
@@ -300,7 +299,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
-    public function filter(Request $request, Response $response) :Response
+    public function filter(Request $request, Response $response): Response
     {
         //no filters
     }
@@ -317,7 +316,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []) :Response
+    public function edit(Request $request, Response $response, array $args = []): Response
     {
         //no edit page (included on list), just to satisfy inheritance
     }
@@ -331,7 +330,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []) :Response
+    public function doEdit(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
         $group = new Group((int)$args['id']);
@@ -400,7 +399,7 @@ class GroupsController extends CrudController
      *
      * @return Response
      */
-    public function reorder(Request $request, Response $response, array $args = []) :Response
+    public function reorder(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
         if (!isset($post['to']) || !isset($post['id_group']) || $post['id_group'] == '') {

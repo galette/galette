@@ -38,7 +38,6 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\Authentication;
@@ -90,7 +89,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []) :Response
+    public function add(Request $request, Response $response, array $args = []): Response
     {
         return $this->edit($request, $response, $args);
     }
@@ -104,7 +103,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function selfSubscribe(Request $request, Response $response, array $args = []) :Response
+    public function selfSubscribe(Request $request, Response $response, array $args = []): Response
     {
         if (!$this->preferences->pref_bool_selfsubscribe || $this->login->isLogged()) {
             return $response
@@ -182,7 +181,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []) :Response
+    public function doAdd(Request $request, Response $response, array $args = []): Response
     {
         return $this->store($request, $response, $args);
     }
@@ -196,7 +195,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function duplicate(Request $request, Response $response, array $args = []) :Response
+    public function duplicate(Request $request, Response $response, array $args = []): Response
     {
         $id_adh = (int)$args[Adherent::PK];
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true, 'parent' => true]);
@@ -222,7 +221,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function show(Request $request, Response $response, array $args) :Response
+    public function show(Request $request, Response $response, array $args): Response
     {
         $id = (int)$args['id'];
 
@@ -295,7 +294,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function showMe(Request $request, Response $response, array $args = []) :Response
+    public function showMe(Request $request, Response $response, array $args = []): Response
     {
         if ($this->login->isSuperAdmin()) {
             return $response
@@ -316,7 +315,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function publicList(Request $request, Response $response, array $args = []) :Response
+    public function publicList(Request $request, Response $response, array $args = []): Response
     {
         $option = null;
         $type = $args['type'];
@@ -379,7 +378,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function filterPublicList(Request $request, Response $response, array $args = []) :Response
+    public function filterPublicList(Request $request, Response $response, array $args = []): Response
     {
         $type = $args['type'];
         $post = $request->getParsedBody();
@@ -417,7 +416,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function getDynamicFile(Request $request, Response $response, array $args) :Response
+    public function getDynamicFile(Request $request, Response $response, array $args): Response
     {
         $id = (int)$args['id'];
         $deps = array(
@@ -510,7 +509,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []) :Response
+    public function list(Request $request, Response $response, array $args = []): Response
     {
         $option = $args['option'] ?? null;
         $value = $args['value'] ?? null;
@@ -576,7 +575,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function filter(Request $request, Response $response) :Response
+    public function filter(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         if (isset($this->session->filter_members)) {
@@ -631,7 +630,8 @@ class MembersController extends CrudController
                 $filters->email_filter = (int)$post['email_filter'];
             }
             //group filter
-            if (isset($post['group_filter'])
+            if (
+                isset($post['group_filter'])
                 && $post['group_filter'] > 0
             ) {
                 $filters->group_filter = (int)$post['group_filter'];
@@ -654,7 +654,8 @@ class MembersController extends CrudController
                         if (!$freed) {
                             $i = 0;
                             foreach ($post['free_field'] as $f) {
-                                if (trim($f) !== ''
+                                if (
+                                    trim($f) !== ''
                                     && trim($post['free_text'][$i]) !== ''
                                 ) {
                                     $fs_search = $post['free_text'][$i];
@@ -734,7 +735,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function advancedSearch(Request $request, Response $response) :Response
+    public function advancedSearch(Request $request, Response $response): Response
     {
         if (isset($this->session->filter_members)) {
             $filters = $this->session->filter_members;
@@ -758,7 +759,8 @@ class MembersController extends CrudController
         unset($fields['mdp_adh']);
 
         foreach ($fields as $k => $f) {
-            if ($visibles[$k] == FieldsConfig::NOBODY ||
+            if (
+                $visibles[$k] == FieldsConfig::NOBODY ||
                 ($visibles[$k] == FieldsConfig::ADMIN &&
                     $access_level < Authentication::ACCESS_ADMIN) ||
                 ($visibles[$k] == FieldsConfig::STAFF &&
@@ -836,7 +838,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function ajaxList(Request $request, Response $response, array $args = []) :Response
+    public function ajaxList(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
 
@@ -974,7 +976,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function handleBatch(Request $request, Response $response) :Response
+    public function handleBatch(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
 
@@ -1055,7 +1057,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []) :Response
+    public function edit(Request $request, Response $response, array $args = []): Response
     {
         $action = $args['action'];
         $id = null;
@@ -1207,7 +1209,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []) :Response
+    public function doEdit(Request $request, Response $response, array $args = []): Response
     {
         return $this->store($request, $response, $args);
     }
@@ -1221,7 +1223,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function massChange(Request $request, Response $response, array $args = []) :Response
+    public function massChange(Request $request, Response $response, array $args = []): Response
     {
         $filters = $this->session->filter_members;
 
@@ -1280,7 +1282,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function validateMassChange(Request $request, Response $response, array $args = []) :Response
+    public function validateMassChange(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
 
@@ -1347,7 +1349,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function doMassChange(Request $request, Response $response, array $args = []) :Response
+    public function doMassChange(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
         $redirect_url = $post['redirect_uri'];
@@ -1468,7 +1470,7 @@ class MembersController extends CrudController
      *
      * @return Response
      */
-    public function store(Request $request, Response $response, array $args = []) :Response
+    public function store(Request $request, Response $response, array $args = []): Response
     {
         if (!$this->preferences->pref_bool_selfsubscribe && !$this->login->isLogged()) {
             return $response
@@ -1529,7 +1531,8 @@ class MembersController extends CrudController
             $fc->setNotRequired('mdp_adh');
         }
 
-        if ($member->hasParent() && !isset($post['detach_parent'])
+        if (
+            $member->hasParent() && !isset($post['detach_parent'])
             || isset($post['parent_id']) && !empty($post['parent_id'])
         ) {
             $parent_fields = $member->getParentFields();
@@ -1599,7 +1602,8 @@ class MembersController extends CrudController
                     if ($new) {
                         if (isset($args['self'])) {
                             $success_detected[] = _T("Your account has been created!");
-                            if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+                            if (
+                                $this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
                                 && $member->getEmail() != ''
                             ) {
                                 $success_detected[] = _T("An email has been sent to you, check your inbox.");
@@ -1608,7 +1612,8 @@ class MembersController extends CrudController
                             $success_detected[] = _T("New member has been successfully added.");
                         }
                         //Send email to admin if preference checked
-                        if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+                        if (
+                            $this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
                             && $this->preferences->pref_bool_mailadh
                         ) {
                             $texts = new Texts(
@@ -1773,7 +1778,8 @@ class MembersController extends CrudController
                     }
 
                     // send email to admin
-                    if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+                    if (
+                        $this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
                         && $this->preferences->pref_bool_mailadh
                         && !$new
                         && $member->id == $this->login->id
@@ -1926,7 +1932,8 @@ class MembersController extends CrudController
             if (count($error_detected) == 0) {
                 if (isset($args['self'])) {
                     $redirect_url = $this->router->pathFor('login');
-                } elseif (isset($post['redirect_on_create'])
+                } elseif (
+                    isset($post['redirect_on_create'])
                     && $post['redirect_on_create'] > Adherent::AFTER_ADD_DEFAULT
                 ) {
                     switch ($post['redirect_on_create']) {

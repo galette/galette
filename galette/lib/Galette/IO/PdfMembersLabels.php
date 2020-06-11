@@ -122,7 +122,7 @@ class PdfMembersLabels extends Pdf
         // Label heigth
         $this->lh = round($this->preferences->pref_etiq_vsize);
         // Line heigth
-        $this->line_h = round($this->lh/5);
+        $this->line_h = round($this->lh / 5);
     }
 
     /**
@@ -139,22 +139,22 @@ class PdfMembersLabels extends Pdf
             // Detect page breaks
             $colsrows = $this->preferences->pref_etiq_cols
                 * $this->preferences->pref_etiq_rows;
-            if ($nb_etiq%$colsrows == 0) {
+            if ($nb_etiq % $colsrows == 0) {
                 $this->AddPage();
             }
             // Set font
             $this->SetFont(self::FONT, 'B', $this->preferences->pref_etiq_corps);
 
             // Compute label position
-            $col = $nb_etiq%$this->preferences->pref_etiq_cols;
-            $row = ($nb_etiq/$this->preferences->pref_etiq_cols)
+            $col = $nb_etiq % $this->preferences->pref_etiq_cols;
+            $row = ($nb_etiq / $this->preferences->pref_etiq_cols)
                 % $this->preferences->pref_etiq_rows;
             // Set label origin
-            $x = $this->xorigin + $col*(
+            $x = $this->xorigin + $col * (
                 round($this->preferences->pref_etiq_hsize) +
                 round($this->preferences->pref_etiq_hspace)
             );
-            $y = $this->yorigin + $row*(
+            $y = $this->yorigin + $row * (
                 round($this->preferences->pref_etiq_vsize) +
                 round($this->preferences->pref_etiq_vspace)
             );
@@ -179,7 +179,7 @@ class PdfMembersLabels extends Pdf
 
             $this->Cell($this->lw, $this->line_h, $member->address, 0, 0, 'L', 0);
             // Print second line of address
-            $this->SetXY($x, $y + $this->line_h*2);
+            $this->SetXY($x, $y + $this->line_h * 2);
             $this->Cell(
                 $this->lw,
                 $this->line_h,
@@ -199,7 +199,7 @@ class PdfMembersLabels extends Pdf
                 'B'
             );
 
-            $this->SetXY($x, $y + $this->line_h*3);
+            $this->SetXY($x, $y + $this->line_h * 3);
             $this->Cell(
                 $this->lw,
                 $this->line_h,
@@ -211,7 +211,7 @@ class PdfMembersLabels extends Pdf
             );
             // Print country
             $this->SetFont(self::FONT, 'I', $this->preferences->pref_etiq_corps);
-            $this->SetXY($x, $y + $this->line_h*4);
+            $this->SetXY($x, $y + $this->line_h * 4);
             $this->Cell($this->lw, $this->line_h, $member->country, 0, 0, 'R', 0);
             $nb_etiq++;
         }

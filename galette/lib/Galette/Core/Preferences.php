@@ -508,37 +508,44 @@ class Preferences
         }
 
         // missing relations
-        if (GALETTE_MODE !== 'DEMO'
+        if (
+            GALETTE_MODE !== 'DEMO'
             && isset($insert_values['pref_mail_method'])
         ) {
             if ($insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED) {
-                if (!isset($insert_values['pref_email_nom'])
+                if (
+                    !isset($insert_values['pref_email_nom'])
                     || $insert_values['pref_email_nom'] == ''
                 ) {
                     $this->errors[] = _T("- You must indicate a sender name for emails!");
                 }
-                if (!isset($insert_values['pref_email'])
+                if (
+                    !isset($insert_values['pref_email'])
                     || $insert_values['pref_email'] == ''
                 ) {
                     $this->errors[] = _T("- You must indicate an email address Galette should use to send emails!");
                 }
                 if ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP) {
-                    if (!isset($insert_values['pref_mail_smtp_host'])
+                    if (
+                        !isset($insert_values['pref_mail_smtp_host'])
                         || $insert_values['pref_mail_smtp_host'] == ''
                     ) {
                         $this->errors[] = _T("- You must indicate the SMTP server you want to use!");
                     }
                 }
-                if ($insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
+                if (
+                    $insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
                     || ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP
                     && $insert_values['pref_mail_smtp_auth'])
                 ) {
-                    if (!isset($insert_values['pref_mail_smtp_user'])
+                    if (
+                        !isset($insert_values['pref_mail_smtp_user'])
                         || trim($insert_values['pref_mail_smtp_user']) == ''
                     ) {
                         $this->errors[] = _T("- You must provide a login for SMTP authentication.");
                     }
-                    if (!isset($insert_values['pref_mail_smtp_password'])
+                    if (
+                        !isset($insert_values['pref_mail_smtp_password'])
                         || ($insert_values['pref_mail_smtp_password']) == ''
                     ) {
                         $this->errors[] = _T("- You must provide a password for SMTP authentication.");
@@ -547,7 +554,8 @@ class Preferences
             }
         }
 
-        if (isset($insert_values['pref_beg_membership'])
+        if (
+            isset($insert_values['pref_beg_membership'])
             && $insert_values['pref_beg_membership'] != ''
             && isset($insert_values['pref_membership_ext'])
             && $insert_values['pref_membership_ext'] != ''
@@ -555,7 +563,8 @@ class Preferences
             $this->errors[] = _T("- Default membership extention and beginning of membership are mutually exclusive.");
         }
 
-        if (isset($insert_values['pref_membership_offermonths'])
+        if (
+            isset($insert_values['pref_membership_offermonths'])
             && (int)$insert_values['pref_membership_offermonths'] > 0
             && isset($insert_values['pref_membership_ext'])
             && $insert_values['pref_membership_ext'] != ''
@@ -597,11 +606,13 @@ class Preferences
 
         // update preferences
         foreach ($insert_values as $champ => $valeur) {
-            if ($login->isSuperAdmin()
+            if (
+                $login->isSuperAdmin()
                 || (!$login->isSuperAdmin()
                 && ($champ != 'pref_admin_pass' && $champ != 'pref_admin_login'))
             ) {
-                if (($champ == "pref_admin_pass" && $_POST['pref_admin_pass'] != '')
+                if (
+                    ($champ == "pref_admin_pass" && $_POST['pref_admin_pass'] != '')
                     || ($champ != "pref_admin_pass")
                 ) {
                     $this->$champ = $valeur;
@@ -631,7 +642,8 @@ class Preferences
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
             foreach (self::$defaults as $k => $v) {
-                if (GALETTE_MODE == 'DEMO'
+                if (
+                    GALETTE_MODE == 'DEMO'
                     && in_array($k, ['pref_admin_pass', 'pref_admin_login', 'pref_mail_method'])
                 ) {
                     continue;
@@ -763,7 +775,8 @@ class Preferences
                     break;
                 case self::PUBLIC_PAGES_VISIBILITY_RESTRICTED:
                     //pages should be displayed only for up to date members
-                    if ($login->isUp2Date()
+                    if (
+                        $login->isUp2Date()
                         || $login->isAdmin()
                         || $login->isStaff()
                     ) {
@@ -803,7 +816,8 @@ class Preferences
         $virtuals = array('vpref_email_newadh');
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
-            if (GALETTE_MODE === 'DEMO'
+            if (
+                GALETTE_MODE === 'DEMO'
                 && $name == 'pref_mail_method'
             ) {
                 return GaletteMail::METHOD_DISABLED;
@@ -867,7 +881,8 @@ class Preferences
             return false;
         }
 
-        if ($name == 'pref_email'
+        if (
+            $name == 'pref_email'
             || $name == 'pref_email_newadh'
             || $name == 'pref_email_reply_to'
         ) {
@@ -948,22 +963,22 @@ class Preferences
         //check page width
         $max = 210;
         //margins
-        $size = $this->pref_card_marges_h*2;
+        $size = $this->pref_card_marges_h * 2;
         //cards
-        $size += PdfMembersCards::getWidth()*PdfMembersCards::getCols();
+        $size += PdfMembersCards::getWidth() * PdfMembersCards::getCols();
         //spacing
-        $size += $this->pref_card_hspace*(PdfMembersCards::getCols() - 1);
+        $size += $this->pref_card_hspace * (PdfMembersCards::getCols() - 1);
         if ($size > $max) {
             $warning_detected[] = _T('Current cards configuration may exceed page width!');
         }
 
         $max = 297;
         //margins
-        $size = $this->pref_card_marges_v*2;
+        $size = $this->pref_card_marges_v * 2;
         //cards
-        $size += PdfMembersCards::getHeight()*PdfMembersCards::getRows();
+        $size += PdfMembersCards::getHeight() * PdfMembersCards::getRows();
         //spacing
-        $size += $this->pref_card_vspace*(PdfMembersCards::getRows() - 1);
+        $size += $this->pref_card_vspace * (PdfMembersCards::getRows() - 1);
         if ($size > $max) {
             $warning_detected[] = _T('Current cards configuration may exceed page height!');
         }

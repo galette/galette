@@ -38,7 +38,6 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Repository\PaymentTypes;
@@ -71,7 +70,7 @@ class PaymentTypeController extends CrudController
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []) :Response
+    public function add(Request $request, Response $response, array $args = []): Response
     {
         //no new page (included on list), just to satisfy inheritance
     }
@@ -85,7 +84,7 @@ class PaymentTypeController extends CrudController
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []) :Response
+    public function doAdd(Request $request, Response $response, array $args = []): Response
     {
         $args['id'] = null;
         return $this->store($request, $response, $args);
@@ -103,7 +102,7 @@ class PaymentTypeController extends CrudController
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []) :Response
+    public function list(Request $request, Response $response, array $args = []): Response
     {
         $ptypes = new PaymentTypes(
             $this->zdb,
@@ -132,7 +131,7 @@ class PaymentTypeController extends CrudController
      *
      * @return Response
      */
-    public function filter(Request $request, Response $response) :Response
+    public function filter(Request $request, Response $response): Response
     {
         //no filters
     }
@@ -149,7 +148,7 @@ class PaymentTypeController extends CrudController
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []) :Response
+    public function edit(Request $request, Response $response, array $args = []): Response
     {
         $id = (int)$args['id'];
         $ptype = new PaymentType($this->zdb, $id);
@@ -175,7 +174,7 @@ class PaymentTypeController extends CrudController
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []) :Response
+    public function doEdit(Request $request, Response $response, array $args = []): Response
     {
         return $this->store($request, $response, $args);
     }
@@ -189,7 +188,7 @@ class PaymentTypeController extends CrudController
      *
      * @return Response
      */
-    public function store(Request $request, Response $response, array $args = []) :Response
+    public function store(Request $request, Response $response, array $args = []): Response
     {
         $id = (isset($args['id']) ? (int)$args['id'] : null);
         $post = $request->getParsedBody();

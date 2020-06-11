@@ -102,7 +102,8 @@ class History
      */
     public static function findUserIPAddress()
     {
-        if (defined('GALETTE_X_FORWARDED_FOR_INDEX')
+        if (
+            defined('GALETTE_X_FORWARDED_FOR_INDEX')
             && isset($_SERVER['HTTP_X_FORWARDED_FOR'])
         ) {
             $split_xff = preg_split('/,\s*/', $_SERVER['HTTP_X_FORWARDED_FOR']);

@@ -309,7 +309,8 @@ class Contribution
         //do not work with knows bad dates...
         //the one with BC comes from 0.63/pgsl demo... Why the hell a so
         //strange date? dont know :(
-        if ($enddate !== '0000-00-00'
+        if (
+            $enddate !== '0000-00-00'
             && $enddate !== '1901-01-01'
             && $enddate !== '0001-01-01 BC'
         ) {
@@ -448,7 +449,8 @@ class Contribution
         foreach ($required as $key => $val) {
             if ($val === 1) {
                 $prop = '_' . $this->_fields[$key]['propname'];
-                if (!isset($disabled[$key])
+                if (
+                    !isset($disabled[$key])
                     && (!isset($this->$prop)
                     || (!is_object($this->$prop) && trim($this->$prop) == '')
                     || (is_object($this->$prop) && trim($this->$prop->id) == ''))
@@ -1122,7 +1124,8 @@ class Contribution
                 default:
                     throw new \RuntimeException("Call to __get for '$name' is forbidden!");
             }
-        } elseif (property_exists($this, $rname)
+        } elseif (
+            property_exists($this, $rname)
             || in_array($name, $virtuals)
         ) {
             switch ($name) {
@@ -1168,7 +1171,7 @@ class Contribution
                         $date_end = new \DateTime($this->_end_date);
                         $date_start = new \DateTime($this->_begin_date);
                         $diff = $date_end->diff($date_start);
-                        return $diff->format('%y')*12 + $diff->format('%m');
+                        return $diff->format('%y') * 12 + $diff->format('%m');
                     } else {
                         return '';
                     }

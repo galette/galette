@@ -38,7 +38,6 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\GaletteMail;
@@ -76,12 +75,13 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []) :Response
+    public function add(Request $request, Response $response, array $args = []): Response
     {
         $get = $request->getQueryParams();
 
         //We're done :-)
-        if (isset($get['mailing_new'])
+        if (
+            isset($get['mailing_new'])
             || isset($get['reminder'])
         ) {
             if ($this->session->mailing !== null) {
@@ -94,7 +94,8 @@ class MailingsController extends CrudController
 
         $params = array();
 
-        if ($this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
+        if (
+            $this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
             && !GALETTE_MODE === 'DEMO'
         ) {
             $this->history->add(
@@ -116,7 +117,8 @@ class MailingsController extends CrudController
                 $filters = new MembersList();
             }
 
-            if ($this->session->mailing !== null
+            if (
+                $this->session->mailing !== null
                 && !isset($get['from'])
                 && !isset($get['reset'])
             ) {
@@ -133,7 +135,8 @@ class MailingsController extends CrudController
                 $members = $m->getList(true);
                 $mailing = new Mailing($this->preferences, ($members !== false) ? $members : null);
             } else {
-                if (count($filters->selected) == 0
+                if (
+                    count($filters->selected) == 0
                     && !isset($get['mailing_new'])
                     && !isset($get['reminder'])
                 ) {
@@ -188,7 +191,7 @@ class MailingsController extends CrudController
                     'mailing'           => $mailing,
                     'attachments'       => $mailing->attachments,
                     'html_editor'       => true,
-                    'html_editor_active'=> $this->preferences->pref_editor_enabled
+                    'html_editor_active' => $this->preferences->pref_editor_enabled
                 )
             );
         }
@@ -216,7 +219,7 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []) :Response
+    public function doAdd(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
         $error_detected = [];
@@ -227,7 +230,8 @@ class MailingsController extends CrudController
             $this->session->redirect_mailing : $this->router->pathFor('members');
 
         //We're done :-)
-        if (isset($post['mailing_done'])
+        if (
+            isset($post['mailing_done'])
             || isset($post['mailing_cancel'])
         ) {
             if ($this->session->mailing !== null) {
@@ -249,7 +253,8 @@ class MailingsController extends CrudController
 
         $params = array();
 
-        if ($this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
+        if (
+            $this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
             && !GALETTE_MODE === 'DEMO'
         ) {
             $this->history->add(
@@ -264,7 +269,8 @@ class MailingsController extends CrudController
                 $filters = new MembersList();
             }
 
-            if ($this->session->mailing !== null
+            if (
+                $this->session->mailing !== null
                 && !isset($post['mailing_cancel'])
             ) {
                 $mailing = $this->session->mailing;
@@ -289,7 +295,8 @@ class MailingsController extends CrudController
                 $mailing = new Mailing($this->preferences, ($members !== false) ? $members : null);
             }
 
-            if (isset($post['mailing_go'])
+            if (
+                isset($post['mailing_go'])
                 || isset($post['mailing_reset'])
                 || isset($post['mailing_confirm'])
                 || isset($post['mailing_save'])
@@ -357,7 +364,8 @@ class MailingsController extends CrudController
                     }
                 }
 
-                if (count($error_detected) == 0
+                if (
+                    count($error_detected) == 0
                     && !isset($post['mailing_reset'])
                     && !isset($post['mailing_save'])
                 ) {
@@ -405,7 +413,8 @@ class MailingsController extends CrudController
             /** TODO: replace that... */
             $this->session->labels = $mailing->unreachables;
 
-            if (!isset($post['html_editor_active'])
+            if (
+                !isset($post['html_editor_active'])
                 || trim($post['html_editor_active']) == ''
             ) {
                 $post['html_editor_active'] = $this->preferences->pref_editor_enabled;
@@ -450,7 +459,7 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []) :Response
+    public function list(Request $request, Response $response, array $args = []): Response
     {
         $option = null;
         if (isset($args['option'])) {
@@ -520,7 +529,7 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
-    public function filter(Request $request, Response $response) :Response
+    public function filter(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $error_detected = [];
@@ -534,7 +543,8 @@ class MailingsController extends CrudController
         if (isset($post['clear_filter'])) {
             $filters->reinit();
         } else {
-            if ((isset($post['nbshow']) && is_numeric($post['nbshow']))
+            if (
+                (isset($post['nbshow']) && is_numeric($post['nbshow']))
             ) {
                 $filters->show = $post['nbshow'];
             }
@@ -594,7 +604,7 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []) :Response
+    public function edit(Request $request, Response $response, array $args = []): Response
     {
         //TODO
     }
@@ -608,7 +618,7 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []) :Response
+    public function doEdit(Request $request, Response $response, array $args = []): Response
     {
         //TODO
     }
@@ -683,12 +693,13 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
-    public function preview(Request $request, Response $response, array $args = []) :Response
+    public function preview(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
         // check for ajax mode
         $ajax = false;
-        if ($request->isXhr()
+        if (
+            $request->isXhr()
             || isset($post['ajax'])
             && $post['ajax'] == 'true'
         ) {
@@ -757,7 +768,7 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
-    public function previewAttachment(Request $request, Response $response, array $args = []) :Response
+    public function previewAttachment(Request $request, Response $response, array $args = []): Response
     {
         $mailing = new Mailing($this->preferences, null);
         MailingHistory::loadFrom($this->zdb, (int)$args['id'], $mailing, false);
@@ -782,7 +793,7 @@ class MailingsController extends CrudController
      *
      * @return Response
      */
-    public function setRecipients(Request $request, Response $response, array $args = []) :Response
+    public function setRecipients(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
         $mailing = $this->session->mailing;

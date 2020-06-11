@@ -103,7 +103,8 @@ class CheckModules
                 if ($translated) {
                     $mstring = _T("either 'mysql' or 'pgsql' PDO driver");
                 }
-                if (!extension_loaded('pdo_mysql')
+                if (
+                    !extension_loaded('pdo_mysql')
                     && !extension_loaded('pdo_pgsql')
                 ) {
                     $this->missing[] = $mstring;

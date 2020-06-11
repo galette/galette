@@ -173,9 +173,10 @@ class CsvOut extends Csv
      */
     private function write($last = false)
     {
-        if ($last && $this->file
+        if (
+            $last && $this->file
             || !$last && $this->file
-            && ($this->current_line%self::BUFLINES) == 0
+            && ($this->current_line % self::BUFLINES) == 0
         ) {
             if ($this->file === true) {
                 echo $this->result;

@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use \Analog\Analog;
+use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 
 /**
@@ -222,7 +222,8 @@ class Install
     public function atPreviousStep()
     {
         if ($this->_step > 0) {
-            if ($this->_step - 1 !== self::STEP_DB_INSTALL
+            if (
+                $this->_step - 1 !== self::STEP_DB_INSTALL
                 && $this->_step !== self::STEP_END
             ) {
                 if ($this->_step === self::STEP_DB_INSTALL) {
@@ -594,11 +595,13 @@ class Install
                         }
                     }
                 }
-                if (preg_match(
-                    "/upgrade-to-(.*)-" . $db_type . ".sql/",
-                    $file,
-                    $ver
-                )) {
+                if (
+                    preg_match(
+                        "/upgrade-to-(.*)-" . $db_type . ".sql/",
+                        $file,
+                        $ver
+                    )
+                ) {
                     if ($version === null) {
                         $sql_update_scripts[$ver[1]] = $ver[1];
                     } else {
@@ -741,7 +744,8 @@ class Install
                     $log_lvl = Analog::WARNING;
                     //if error are on drop, DROP, rename or RENAME we can continue
                     $parts = explode(' ', $query, 1);
-                    if ((strcasecmp(trim($parts[0]), 'drop') != 0)
+                    if (
+                        (strcasecmp(trim($parts[0]), 'drop') != 0)
                         && (strcasecmp(trim($parts[0]), 'rename') != 0)
                     ) {
                         $log_lvl = Analog::ERROR;
@@ -883,7 +887,8 @@ class Install
                 $this->setDbType($existing['db_type'], $error_detected);
             }
 
-            if ($existing['db_host'] !== null
+            if (
+                $existing['db_host'] !== null
                 || $existing['db_user'] !== null
                 || $existing['db_name'] !== null
             ) {
@@ -1021,7 +1026,8 @@ class Install
         //if config file is already up-to-date, nothing to write
         $existing = $this->loadExistingConfigFile(array(), true);
 
-        if (isset($existing['db_type'])
+        if (
+            isset($existing['db_type'])
             && $existing['db_type'] == $this->_db_type
             && isset($existing['db_host'])
             && $existing['db_host'] == $this->_db_host
@@ -1049,7 +1055,8 @@ class Install
         }
 
         $conffile = GALETTE_CONFIG_PATH . 'config.inc.php';
-        if (is_writable(GALETTE_CONFIG_PATH)
+        if (
+            is_writable(GALETTE_CONFIG_PATH)
             && (!file_exists($conffile) || file_exists($conffile) && is_writable($conffile))
             && $fd = @fopen($conffile, 'w')
         ) {

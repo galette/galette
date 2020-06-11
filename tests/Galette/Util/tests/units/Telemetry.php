@@ -37,7 +37,7 @@
 
 namespace Galette\Util\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * Telemetry tests class

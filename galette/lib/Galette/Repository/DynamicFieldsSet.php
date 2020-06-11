@@ -96,7 +96,8 @@ class DynamicFieldsSet
         if ($results) {
             foreach ($results as $r) {
                 $perm = $r['field_perm'];
-                if (($perm == DynamicField::PERM_MANAGER &&
+                if (
+                    ($perm == DynamicField::PERM_MANAGER &&
                         $access_level < Authentication::ACCESS_MANAGER) ||
                     ($perm == DynamicField::PERM_STAFF &&
                          $access_level < Authentication::ACCESS_STAFF) ||

@@ -178,7 +178,8 @@ class CsvIn extends Csv implements FileInterface
         array $members_fields_cats,
         $dryrun
     ) {
-        if (!file_exists(self::DEFAULT_DIRECTORY . '/' . $filename)
+        if (
+            !file_exists(self::DEFAULT_DIRECTORY . '/' . $filename)
             || !is_readable(self::DEFAULT_DIRECTORY . '/' . $filename)
         ) {
             Analog::log(
@@ -262,12 +263,14 @@ class CsvIn extends Csv implements FileInterface
         );
 
         $row = 0;
-        while (($data = fgetcsv(
-            $handle,
-            1000,
-            self::DEFAULT_SEPARATOR,
-            self::DEFAULT_QUOTE
-        )) !== false) {
+        while (
+            ($data = fgetcsv(
+                $handle,
+                1000,
+                self::DEFAULT_SEPARATOR,
+                self::DEFAULT_QUOTE
+            )) !== false
+        ) {
             //check fields count
             $count = count($data);
             if ($count != $cnt_fields) {
@@ -289,7 +292,8 @@ class CsvIn extends Csv implements FileInterface
                     $column = trim($column);
 
                     //check required fields
-                    if (in_array($this->_fields[$col], $this->_required)
+                    if (
+                        in_array($this->_fields[$col], $this->_required)
                         && empty($column)
                     ) {
                         $this->addError(
@@ -458,12 +462,14 @@ class CsvIn extends Csv implements FileInterface
 
         try {
             $this->zdb->connection->beginTransaction();
-            while (($data = fgetcsv(
-                $handle,
-                1000,
-                self::DEFAULT_SEPARATOR,
-                self::DEFAULT_QUOTE
-            )) !== false) {
+            while (
+                ($data = fgetcsv(
+                    $handle,
+                    1000,
+                    self::DEFAULT_SEPARATOR,
+                    self::DEFAULT_QUOTE
+                )) !== false
+            ) {
                 if ($row > 0) {
                     $col = 0;
                     $values = array();
@@ -480,7 +486,8 @@ class CsvIn extends Csv implements FileInterface
                             $values['is_company'] = true;
                         }
                         //check for booleans
-                        if (($this->_fields[$col] == 'bool_admin_adh'
+                        if (
+                            ($this->_fields[$col] == 'bool_admin_adh'
                             || $this->_fields[$col] == 'bool_exempt_adh'
                             || $this->_fields[$col] == 'bool_display_info'
                             || $this->_fields[$col] == 'activite_adh')

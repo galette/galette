@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Dependency injection configuration
  *
@@ -161,7 +162,7 @@ $container['view'] = function ($c) {
 
 // Flash messages
 $container['flash'] = function ($c) {
-    return new \Slim\Flash\Messages;
+    return new \Slim\Flash\Messages();
 };
 
 $container['plugins'] = function ($c) use ($app) {
