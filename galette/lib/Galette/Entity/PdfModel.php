@@ -58,13 +58,13 @@ use Laminas\Db\Sql\Expression;
 
 abstract class PdfModel
 {
-    const TABLE = 'pdfmodels';
-    const PK = 'model_id';
+    public const TABLE = 'pdfmodels';
+    public const PK = 'model_id';
 
-    const MAIN_MODEL = 1;
-    const INVOICE_MODEL = 2;
-    const RECEIPT_MODEL = 3;
-    const ADHESION_FORM_MODEL = 4;
+    public const MAIN_MODEL = 1;
+    public const INVOICE_MODEL = 2;
+    public const RECEIPT_MODEL = 3;
+    public const ADHESION_FORM_MODEL = 4;
 
     private $zdb;
 
@@ -358,7 +358,7 @@ abstract class PdfModel
         }
     }
 
-     /**
+    /**
      * Extract patterns
      *
      * @return array
