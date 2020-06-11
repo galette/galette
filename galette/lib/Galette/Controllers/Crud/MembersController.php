@@ -140,7 +140,7 @@ class MembersController extends CrudController
             $member->hasParent() ? $member->parent->id : null
         );
 
-        $param = [
+        $params = [
             'members' => [
                 'filters'   => $m->getFilters(),
                 'count'     => $m->getCount()
