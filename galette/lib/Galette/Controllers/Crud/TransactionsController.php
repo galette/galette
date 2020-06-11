@@ -132,7 +132,7 @@ class TransactionsController extends ContributionsController
                 _T("Transaction ID cannot ben null calling edit route!")
             );
         } elseif ($action === 'add' && $trans_id !== null) {
-             return $response
+            return $response
                 ->withStatus(301)
                 ->withHeader('Location', $this->router->pathFor('transaction', ['action' => 'add']));
         }
