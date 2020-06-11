@@ -35,6 +35,7 @@
 
 use Galette\Entity\PdfModel;
 use Slim\Event\SlimEventManager;
+use Slim\Views\SmartyPlugins;
 
 $container = $app->getContainer();
 
@@ -77,7 +78,9 @@ $container['view'] = function ($c) {
         '',
         $c->get('request')->getUri()->getBasePath()
     );
-    $view->addSlimPlugins($c->get('router'), $basepath);
+    $smartyPlugins = new SmartyPlugins($c['router'], $basepath);
+    $view->registerPlugin('function', 'path_for', [$smartyPlugins, 'pathFor']);
+    $view->registerPlugin('function', 'base_url', [$smartyPlugins, 'baseUrl']);
 
     $smarty = $view->getSmarty();
     $smarty->inheritance_merge_compiled_includes = false;
