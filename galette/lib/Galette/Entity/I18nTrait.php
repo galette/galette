@@ -207,12 +207,12 @@ trait I18nTrait
     }
 
     /**
-    * Delete a translation stored in the database
-    *
-    * @param string $text_orig Text to translate
-    *
-    * @return boolean
-    */
+     * Delete a translation stored in the database
+     *
+     * @param string $text_orig Text to translate
+     *
+     * @return boolean
+     */
     protected function deleteTranslation($text_orig)
     {
         try {

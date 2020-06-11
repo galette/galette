@@ -126,9 +126,9 @@ class DynamicTranslationsController extends AbstractController
 
                 $trans = array();
                 /**
-                * FIXME : it would be faster to get all translations at once
-                * for a specific string
-                */
+                 * FIXME : it would be faster to get all translations at once
+                 * for a specific string
+                 */
                 foreach ($this->i18n->getList() as $l) {
                     $text_trans = \getDynamicTranslation($text_orig, $l->getLongID());
                     $lang_name = $l->getName();

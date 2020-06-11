@@ -77,11 +77,11 @@ class Telemetry
         $this->plugins = $plugins;
     }
 
-   /**
-    * Grab telemetry information
-    *
-    * @return array
-    */
+    /**
+     * Grab telemetry information
+     *
+     * @return array
+     */
     public function getTelemetryInfos()
     {
         $data = [
@@ -96,11 +96,11 @@ class Telemetry
         return $data;
     }
 
-   /**
-    * Grab Galette part information
-    *
-    * @return array
-    */
+    /**
+     * Grab Galette part information
+     *
+     * @return array
+     */
     public function grabGaletteInfos()
     {
         $galette = [
@@ -263,7 +263,7 @@ class Telemetry
         return '5000+';
     }
 
-   /**
+    /**
      * Send telemetry information
      *
      * @return boolean
@@ -348,7 +348,7 @@ class Telemetry
         return $this->getUuid('instance');
     }
 
-   /**
+    /**
      * Get registration UUID
      *
      * @return string
@@ -435,15 +435,15 @@ class Telemetry
         return $this->getRegistrationDate() != false;
     }
 
-   /**
-    * Get a random string
-    *
-    * @param integer $length of the random string
-    *
-    * @return string
-    *
-    * @see https://stackoverflow.com/questions/4356289/php-random-string-generator/31107425#31107425
-    */
+    /**
+     * Get a random string
+     *
+     * @param integer $length of the random string
+     *
+     * @return string
+     *
+     * @see https://stackoverflow.com/questions/4356289/php-random-string-generator/31107425#31107425
+     */
     private function getRandomString($length)
     {
         $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

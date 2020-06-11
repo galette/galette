@@ -67,7 +67,7 @@ class Translator extends ZTranslator
     {
         $locale = ($locale ?: $this->getLocale());
 
-        if (! isset($this->messages[$textDomain][$locale])) {
+        if (!isset($this->messages[$textDomain][$locale])) {
             $this->loadMessages($textDomain, $locale);
         }
 

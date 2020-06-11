@@ -64,7 +64,7 @@ class SavedSearches
 
     private $count = null;
 
-   /**
+    /**
      * Default constructor
      *
      * @param Db                $zdb     Database

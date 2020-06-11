@@ -246,7 +246,7 @@ $app->post(
 
 $app->get(
     '/texts[/{lang}/{ref}]',
-    function($request, $response, $args) {
+    function ($request, $response, $args) {
         if (!isset($args['lang'])) {
             $args['lang'] = $this->preferences->pref_lang;
         }
@@ -280,7 +280,7 @@ $app->get(
 
 $app->post(
     '/texts/change',
-    function($request, $response) {
+    function ($request, $response) {
         $post = $request->getParsedBody();
         return $response
             ->withStatus(301)
@@ -299,7 +299,7 @@ $app->post(
 
 $app->post(
     '/texts',
-    function($request, $response) {
+    function ($request, $response) {
         $post = $request->getParsedBody();
         $texts = new Texts($this->preferences, $this->router);
 
