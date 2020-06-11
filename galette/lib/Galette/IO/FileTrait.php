@@ -446,7 +446,8 @@ trait FileTrait
                 '[' . $class . '] Search from extension ',
                 Analog::DEBUG
             );
-            $ext = strtolower(array_pop(explode('.', $file)));
+            $exploded = explode('.', $file);
+            $ext = strtolower(array_pop($exploded));
             Analog::log(
                 '[' . $class . '] Extension : ' . $ext,
                 Analog::DEBUG
