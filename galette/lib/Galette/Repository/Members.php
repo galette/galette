@@ -412,10 +412,7 @@ class Members
                 return true;
             } catch (\Exception $e) {
                 $zdb->connection->rollBack();
-                if (
-                    $e instanceof \Zend_Db_Statement_Exception
-                    && $e->getCode() == 23000
-                ) {
+                if ($e->getCode() == 23000) {
                     Analog::log(
                         'Member still have existing dependencies in the ' .
                         'database, maybe a mailing or some content from a ' .
