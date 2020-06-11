@@ -79,7 +79,7 @@ class Telemetry
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $next) :Response
+    public function __invoke(Request $request, Response $response, $next): Response
     {
         $telemetry = new \Galette\Util\Telemetry(
             $this->zdb,

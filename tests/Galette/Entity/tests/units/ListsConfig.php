@@ -37,7 +37,7 @@
 
 namespace Galette\Entity\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * ListsConfig tests class
@@ -306,7 +306,7 @@ class ListsConfig extends atoum
         $last_ok = -1;
         foreach ($expecteds as $k => $expected) {
             $this->string($new_list[$k]['field_id'])->isIdenticalTo($expected);
-            if ($new_list[$k]['list_position'] != $k-1) {
+            if ($new_list[$k]['list_position'] != $k - 1) {
                 $this->integer($new_list[$k]['list_position'])->isGreaterThan($last_ok);
                 $last_ok = $new_list[$k]['list_position'];
             } else {
@@ -330,7 +330,7 @@ class ListsConfig extends atoum
         $last_ok = -1;
         foreach ($expecteds as $k => $expected) {
             $this->string($new_list[$k]['field_id'])->isIdenticalTo($expected);
-            if ($new_list[$k]['list_position'] != $k-1) {
+            if ($new_list[$k]['list_position'] != $k - 1) {
                 $this->integer($new_list[$k]['list_position'])->isGreaterThan($last_ok);
                 $last_ok = $new_list[$k]['list_position'];
             } else {

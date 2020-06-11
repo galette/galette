@@ -67,7 +67,7 @@ abstract class CrudController extends AbstractController
      *
      * @return Response
      */
-    abstract public function add(Request $request, Response $response, array $args = []) :Response;
+    abstract public function add(Request $request, Response $response, array $args = []): Response;
 
     /**
      * Add action
@@ -78,7 +78,7 @@ abstract class CrudController extends AbstractController
      *
      * @return Response
      */
-    abstract public function doAdd(Request $request, Response $response, array $args = []) :Response;
+    abstract public function doAdd(Request $request, Response $response, array $args = []): Response;
 
     // /CRUD - Create
     // CRUD - Read
@@ -92,7 +92,7 @@ abstract class CrudController extends AbstractController
      *
      * @return Response
      */
-    abstract public function list(Request $request, Response $response, array $args = []) :Response;
+    abstract public function list(Request $request, Response $response, array $args = []): Response;
 
     /**
      * List filtering
@@ -102,7 +102,7 @@ abstract class CrudController extends AbstractController
      *
      * @return Response
      */
-    abstract public function filter(Request $request, Response $response) :Response;
+    abstract public function filter(Request $request, Response $response): Response;
 
     // /CRUD - Read
     // CRUD - Update
@@ -116,7 +116,7 @@ abstract class CrudController extends AbstractController
      *
      * @return Response
      */
-    abstract public function edit(Request $request, Response $response, array $args = []) :Response;
+    abstract public function edit(Request $request, Response $response, array $args = []): Response;
 
     /**
      * Edit action
@@ -127,7 +127,7 @@ abstract class CrudController extends AbstractController
      *
      * @return Response
      */
-    abstract public function doEdit(Request $request, Response $response, array $args = []) :Response;
+    abstract public function doEdit(Request $request, Response $response, array $args = []): Response;
 
     // /CRUD - Update
     // CRUD - Delete
@@ -141,7 +141,7 @@ abstract class CrudController extends AbstractController
      *
      * @return Response
      */
-    public function confirmDelete(Request $request, Response $response, array $args = []) :Response
+    public function confirmDelete(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
         $data = [
@@ -264,7 +264,7 @@ abstract class CrudController extends AbstractController
      *
      * @return Response
      */
-    public function delete(Request $request, Response $response, array $args = []) :Response
+    public function delete(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';

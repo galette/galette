@@ -110,7 +110,8 @@ class Plugins
                 if ($entry != '.' && $entry != '..' && is_dir($full_entry)) {
                     $this->id = $entry;
                     $this->mroot = $full_entry;
-                    if (!file_exists($full_entry . '/_define.php')
+                    if (
+                        !file_exists($full_entry . '/_define.php')
                         || !file_exists($full_entry . '/_routes.php')
                     ) {
                         //plugin is not compatible with that version of galette.
@@ -255,7 +256,7 @@ class Plugins
                     'acls'          => $acls,
                     'date'          => $release_date,
                     'priority'      => $priority === null ?
-                                         1000 : (integer)$priority,
+                                         1000 : (int)$priority,
                     'root_writable' => is_writable($this->mroot),
                     'route'         => $route
                 );
@@ -387,7 +388,8 @@ class Plugins
         global $emitter;
 
         $providerClassName = '\\' . $this->getNamespace($id) . '\\' . 'PluginEventProvider';
-        if (class_exists($providerClassName)
+        if (
+            class_exists($providerClassName)
             && method_exists($providerClassName, 'provideListeners')
         ) {
             $emitter->useListenerProvider(new $providerClassName());

@@ -38,7 +38,6 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Entity\Adherent;
@@ -75,7 +74,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []) :Response
+    public function add(Request $request, Response $response, array $args = []): Response
     {
         return $this->edit($request, $response, $args);
     }
@@ -89,7 +88,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []) :Response
+    public function doAdd(Request $request, Response $response, array $args = []): Response
     {
         return $this->doEdit($request, $response, $args);
     }
@@ -111,7 +110,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []) :Response
+    public function edit(Request $request, Response $response, array $args = []): Response
     {
         $trans = null;
 
@@ -217,7 +216,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []) :Response
+    public function doEdit(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
         $trans = new Transaction($this->zdb, $this->login);
@@ -356,7 +355,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function attach(Request $request, Response $response, array $args = []) :Response
+    public function attach(Request $request, Response $response, array $args = []): Response
     {
         if (!Contribution::setTransactionPart($this->zdb, $args['id'], $args['cid'])) {
             $this->flash->addMessage(
@@ -387,7 +386,7 @@ class TransactionsController extends ContributionsController
      *
      * @return Response
      */
-    public function detach(Request $request, Response $response, array $args = []) :Response
+    public function detach(Request $request, Response $response, array $args = []): Response
     {
         if (!Contribution::unsetTransactionPart($this->zdb, $this->login, $args['id'], $args['cid'])) {
             $this->flash->addMessage(

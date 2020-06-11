@@ -80,7 +80,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function slash(Request $request, Response $response, array $args = []) :Response
+    public function slash(Request $request, Response $response, array $args = []): Response
     {
         return $this->galetteRedirect($request, $response, $args);
     }
@@ -93,7 +93,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function systemInformation(Request $request, Response $response) :Response
+    public function systemInformation(Request $request, Response $response): Response
     {
         $sysinfos = new SysInfos();
         $raw_infos = $sysinfos->getRawData(
@@ -122,7 +122,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function dashboard(Request $request, Response $response) :Response
+    public function dashboard(Request $request, Response $response): Response
     {
         $news = new News($this->preferences->pref_rss_url);
 
@@ -166,7 +166,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function preferences(Request $request, Response $response) :Response
+    public function preferences(Request $request, Response $response): Response
     {
         // flagging required fields
         $required = array(
@@ -213,10 +213,11 @@ class GaletteController extends AbstractController
         $d = dir(GALETTE_THEMES_PATH);
         while (($entry = $d->read()) !== false) {
             $full_entry = GALETTE_THEMES_PATH . $entry;
-            if ($entry != '.'
+            if (
+                $entry != '.'
                 && $entry != '..'
                 && is_dir($full_entry)
-                && file_exists($full_entry.'/page.tpl')
+                && file_exists($full_entry . '/page.tpl')
             ) {
                 $themes[] = $entry;
             }
@@ -263,7 +264,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function storePreferences(Request $request, Response $response) :Response
+    public function storePreferences(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $error_detected = [];
@@ -285,7 +286,7 @@ class GaletteController extends AbstractController
                 // picture upload
                 if (GALETTE_MODE !== 'DEMO' &&  isset($_FILES['logo'])) {
                     if ($_FILES['logo']['error'] === UPLOAD_ERR_OK) {
-                        if ($_FILES['logo']['tmp_name'] !='') {
+                        if ($_FILES['logo']['tmp_name'] != '') {
                             if (is_uploaded_file($_FILES['logo']['tmp_name'])) {
                                 $res = $this->logo->store($_FILES['logo']);
                                 if ($res < 0) {
@@ -317,7 +318,7 @@ class GaletteController extends AbstractController
                 // Card logo upload
                 if (GALETTE_MODE !== 'DEMO' && isset($_FILES['card_logo'])) {
                     if ($_FILES['card_logo']['error'] === UPLOAD_ERR_OK) {
-                        if ($_FILES['card_logo']['tmp_name'] !='') {
+                        if ($_FILES['card_logo']['tmp_name'] != '') {
                             if (is_uploaded_file($_FILES['card_logo']['tmp_name'])) {
                                 $res = $this->print_logo->store($_FILES['card_logo']);
                                 if ($res < 0) {
@@ -384,7 +385,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function testEmail(Request $request, Response $response) :Response
+    public function testEmail(Request $request, Response $response): Response
     {
         $sent = false;
         if (!$this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
@@ -454,7 +455,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function charts(Request $request, Response $response) :Response
+    public function charts(Request $request, Response $response): Response
     {
         $charts = new Charts(
             array(
@@ -487,7 +488,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function configureCoreFields(Request $request, Response $response) :Response
+    public function configureCoreFields(Request $request, Response $response): Response
     {
         $fc = $this->fields_config;
 
@@ -516,7 +517,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function storeCoreFieldsConfig(Request $request, Response $response) :Response
+    public function storeCoreFieldsConfig(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $fc = $this->fields_config;
@@ -578,7 +579,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function configureListFields(Request $request, Response $response, array $args = []) :Response
+    public function configureListFields(Request $request, Response $response, array $args = []): Response
     {
         $table = $args['table'];
         //TODO: check if type table exists
@@ -611,7 +612,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function storeListFields(Request $request, Response $response, array $args = []) :Response
+    public function storeListFields(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
 
@@ -647,7 +648,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function fakeData(Request $request, Response $response) :Response
+    public function fakeData(Request $request, Response $response): Response
     {
         $params = [
             'page_title'            => _T('Generate fake data'),
@@ -675,7 +676,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function doFakeData(Request $request, Response $response) :Response
+    public function doFakeData(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
 
@@ -733,7 +734,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function reminders(Request $request, Response $response) :Response
+    public function reminders(Request $request, Response $response): Response
     {
         $texts = new Texts($this->preferences, $this->router);
 
@@ -769,7 +770,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function doReminders(Request $request, Response $response) :Response
+    public function doReminders(Request $request, Response $response): Response
     {
         $error_detected = [];
         $warning_detected = [];
@@ -872,7 +873,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function filterReminders(Request $request, Response $response, array $args = []) :Response
+    public function filterReminders(Request $request, Response $response, array $args = []): Response
     {
         //always reset filters
         $filters = new MembersList();
@@ -905,7 +906,7 @@ class GaletteController extends AbstractController
      *
      * @return Response
      */
-    public function documentLink(Request $request, Response $response, array $args = []) :Response
+    public function documentLink(Request $request, Response $response, array $args = []): Response
     {
         // display page
         $this->view->render(

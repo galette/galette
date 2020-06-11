@@ -37,7 +37,7 @@
 
 namespace Galette\Core;
 
-use \Analog\Analog;
+use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 
 /**
@@ -85,7 +85,8 @@ class PluginInstall extends Install
     public function atPreviousStep()
     {
         if ($this->_step > 0) {
-            if ($this->_step - 1 !== self::STEP_DB_INSTALL
+            if (
+                $this->_step - 1 !== self::STEP_DB_INSTALL
                 && $this->_step !== self::STEP_END
             ) {
                 if ($this->_step === self::STEP_DB_INSTALL) {

@@ -92,10 +92,10 @@ class ListsConfig extends FieldsConfig
      *
      * @return array
      */
-    protected function buildField(ArrayObject $rset) :array
+    protected function buildField(ArrayObject $rset): array
     {
         $f = parent::buildField($rset);
-        $f['list_position'] = (integer)$rset->list_position;
+        $f['list_position'] = (int)$rset->list_position;
         $f['list_visible'] = ($f['list_position'] >= 0);
         return $f;
     }
@@ -176,7 +176,8 @@ class ListsConfig extends FieldsConfig
                     }
 
                     // skip fields according to access control
-                    if ($o->visible == self::NOBODY ||
+                    if (
+                        $o->visible == self::NOBODY ||
                         ($o->visible == self::ADMIN &&
                             $access_level < Authentication::ACCESS_ADMIN) ||
                         ($o->visible == self::STAFF &&
@@ -239,7 +240,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return array
      */
-    public function getListedFields() :array
+    public function getListedFields(): array
     {
         return $this->listed_fields;
     }
@@ -249,7 +250,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return array
      */
-    public function getRemainingFields() :array
+    public function getRemainingFields(): array
     {
         $db_fields = $this->core_db_fields;
 
@@ -367,7 +368,7 @@ class ListsConfig extends FieldsConfig
      *
      * @return array
      */
-    public function getAclMapping() :array
+    public function getAclMapping(): array
     {
         return $this->acl_mapping;
     }

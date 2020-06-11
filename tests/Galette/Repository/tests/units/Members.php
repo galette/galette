@@ -37,7 +37,7 @@
 
 namespace Galette\Repository\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * Members repository tests
@@ -229,7 +229,7 @@ class Members extends atoum
 
 
         //Filter on active accounts
-        $filters = new \Galette\Filters\MembersList;
+        $filters = new \Galette\Filters\MembersList();
         $filters->filter_account = \Galette\Repository\Members::ACTIVE_ACCOUNT;
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
@@ -237,7 +237,7 @@ class Members extends atoum
         $this->integer($list->count())->isIdenticalTo(9);
 
         //Filter on inactive accounts
-        $filters = new \Galette\Filters\MembersList;
+        $filters = new \Galette\Filters\MembersList();
         $filters->filter_account = \Galette\Repository\Members::INACTIVE_ACCOUNT;
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
@@ -245,7 +245,7 @@ class Members extends atoum
         $this->integer($list->count())->isIdenticalTo(1);
 
         //Search on address
-        $filters = new \Galette\Filters\MembersList;
+        $filters = new \Galette\Filters\MembersList();
         $filters->filter_str = 'avenue';
         $filters->field_filter = \Galette\Repository\Members::FILTER_ADDRESS;
         $members = new \Galette\Repository\Members($filters);
@@ -416,7 +416,7 @@ class Members extends atoum
         $this->integer(count($group->getMembers()))->isIdenticalTo(6);
 
         //all groups/members are setup. try to find them now.
-        $filters = new \Galette\Filters\AdvancedMembersList;
+        $filters = new \Galette\Filters\AdvancedMembersList();
         $filters->groups_search_log_op = \Galette\Filters\AdvancedMembersList::OP_OR;
         $filters->groups_search = ['idx' => 1, 'group' => $europe];
         $members = new \Galette\Repository\Members($filters);
@@ -437,7 +437,7 @@ class Members extends atoum
         $this->integer($list->count())->isIdenticalTo(2);
 
         //another try
-        $filters = new \Galette\Filters\AdvancedMembersList;
+        $filters = new \Galette\Filters\AdvancedMembersList();
         $filters->groups_search_log_op = \Galette\Filters\AdvancedMembersList::OP_OR;
         $filters->groups_search = ['idx' => 1, 'group' => $africa];
         $filters->groups_search = ['idx' => 2, 'group' => $pony];

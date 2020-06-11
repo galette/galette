@@ -1,4 +1,5 @@
 <?php
+
 /**
  * XHProf Profiling for Galette
  *
@@ -108,7 +109,8 @@ class XHProf
      */
     public function start($msg = '')
     {
-        if (!self::$run
+        if (
+            !self::$run
             && function_exists('xhprof_enable')
         ) {
             xhprof_enable(

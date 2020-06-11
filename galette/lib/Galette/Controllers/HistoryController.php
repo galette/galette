@@ -67,7 +67,7 @@ class HistoryController extends AbstractController
      *
      * @return Response
      */
-    public function history(Request $request, Response $response, array $args = []) :Response
+    public function history(Request $request, Response $response, array $args = []): Response
     {
         $option = null;
         if (isset($args['option'])) {
@@ -128,7 +128,7 @@ class HistoryController extends AbstractController
      *
      * @return Response
      */
-    public function historyFilter(Request $request, Response $response) :Response
+    public function historyFilter(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $error_detected = [];
@@ -142,7 +142,8 @@ class HistoryController extends AbstractController
         if (isset($post['clear_filter'])) {
             $filters->reinit();
         } else {
-            if ((isset($post['nbshow']) && is_numeric($post['nbshow']))
+            if (
+                (isset($post['nbshow']) && is_numeric($post['nbshow']))
             ) {
                 $filters->show = $post['nbshow'];
             }
@@ -196,7 +197,7 @@ class HistoryController extends AbstractController
      *
      * @return Response
      */
-    public function flushHistory(Request $request, Response $response) :Response
+    public function flushHistory(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
@@ -258,7 +259,7 @@ class HistoryController extends AbstractController
      *
      * @return Response
      */
-    public function confirmHistoryFlush(Request $request, Response $response) :Response
+    public function confirmHistoryFlush(Request $request, Response $response): Response
     {
         $data = [
             'redirect_uri'  => $this->router->pathFor('history')

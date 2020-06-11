@@ -77,7 +77,8 @@ abstract class AbstractPassword
      */
     public function makeRandomPassword($size = null)
     {
-        if ($size === null
+        if (
+            $size === null
             || trim($size) == ''
             || !is_int($size)
         ) {
@@ -86,7 +87,7 @@ abstract class AbstractPassword
         $pass = '';
         $i = 0;
         while ($i <= $size - 1) {
-            $num = mt_rand(0, 32)%33;
+            $num = mt_rand(0, 32) % 33;
             $pass .= substr($this->chars, $num, 1);
             $i++;
         }

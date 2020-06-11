@@ -38,7 +38,6 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Repository\Titles;
@@ -71,7 +70,7 @@ class TitlesController extends CrudController
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []) :Response
+    public function add(Request $request, Response $response, array $args = []): Response
     {
         //no new page (included on list), just to satisfy inheritance
     }
@@ -85,7 +84,7 @@ class TitlesController extends CrudController
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []) :Response
+    public function doAdd(Request $request, Response $response, array $args = []): Response
     {
         $args['id'] = null;
         return $this->store($request, $response, $args);
@@ -103,7 +102,7 @@ class TitlesController extends CrudController
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []) :Response
+    public function list(Request $request, Response $response, array $args = []): Response
     {
         $titles = Titles::getList($this->zdb);
 
@@ -127,7 +126,7 @@ class TitlesController extends CrudController
      *
      * @return Response
      */
-    public function filter(Request $request, Response $response) :Response
+    public function filter(Request $request, Response $response): Response
     {
         //no filtering
     }
@@ -144,7 +143,7 @@ class TitlesController extends CrudController
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []) :Response
+    public function edit(Request $request, Response $response, array $args = []): Response
     {
         $id = (int)$args['id'];
         $title = new Title($id);
@@ -170,7 +169,7 @@ class TitlesController extends CrudController
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []) :Response
+    public function doEdit(Request $request, Response $response, array $args = []): Response
     {
         return $this->store($request, $response, $args);
     }
@@ -184,7 +183,7 @@ class TitlesController extends CrudController
      *
      * @return Response
      */
-    public function store(Request $request, Response $response, array $args = []) :Response
+    public function store(Request $request, Response $response, array $args = []): Response
     {
         $id = $args['id'] ?? null;
         $post = $request->getParsedBody();

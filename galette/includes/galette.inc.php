@@ -71,7 +71,8 @@ if (!$installed && !$installer) {
     die();
 }
 
-if (file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php')
+if (
+    file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php')
     && !defined('GALETTE_TESTS') && !$cron
 ) {
     include_once GALETTE_CONFIG_PATH . 'behavior.inc.php';
@@ -98,7 +99,8 @@ if (PHP_SAPI === 'cli-server' && $_SERVER['SCRIPT_FILENAME'] !== __FILE__) {
 require GALETTE_ROOT . '/vendor/autoload.php';
 
 //start profiling
-if (defined('GALETTE_XHPROF_PATH')
+if (
+    defined('GALETTE_XHPROF_PATH')
     && function_exists('xhprof_enable')
 ) {
     include_once __DIR__ . '/../lib/Galette/Common/XHProf.php';

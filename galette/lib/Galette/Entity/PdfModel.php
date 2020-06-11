@@ -442,7 +442,8 @@ abstract class PdfModel
                 $value = null;
 
                 //get header and footer from parent if not defined in current model
-                if ($this->id > self::MAIN_MODEL
+                if (
+                    $this->id > self::MAIN_MODEL
                     && $this->parent !== null
                 ) {
                     $value = $this->parent->styles;
@@ -460,7 +461,8 @@ abstract class PdfModel
                 $prop_value = $this->$pname;
 
                 //get header and footer from parent if not defined in current model
-                if ($this->id > self::MAIN_MODEL
+                if (
+                    $this->id > self::MAIN_MODEL
                     && trim($prop_value) === ''
                     && $this->parent !== null
                     && ($pname === 'footer'
@@ -523,7 +525,8 @@ abstract class PdfModel
     {
         switch ($name) {
             case 'type':
-                if ($value === self::MAIN_MODEL
+                if (
+                    $value === self::MAIN_MODEL
                     || $value === self::INVOICE_MODEL
                     || $value === self::RECEIPT_MODEL
                     || $value === self::ADHESION_FORM_MODEL
@@ -599,7 +602,7 @@ abstract class PdfModel
                 break;
             default:
                 Analog::log(
-                    'Unable to set PdfModel property ' .$name,
+                    'Unable to set PdfModel property ' . $name,
                     Analog::WARNING
                 );
                 break;

@@ -37,7 +37,7 @@
 
 namespace Galette\IO;
 
-use \DateTime;
+use DateTime;
 use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Core\Login;
@@ -121,7 +121,8 @@ class MembersCsv extends CsvOut
         $labels = array();
         foreach ($this->members_fields as $k => $f) {
             // skip fields blacklisted for export
-            if ($k === 'mdp_adh' ||
+            if (
+                $k === 'mdp_adh' ||
                 ($export_fields !== null &&
                     (is_array($export_fields) && !in_array($k, $export_fields)))
             ) {
@@ -129,7 +130,8 @@ class MembersCsv extends CsvOut
             }
 
             // skip fields according to access control
-            if ($visibles[$k] == FieldsConfig::NOBODY ||
+            if (
+                $visibles[$k] == FieldsConfig::NOBODY ||
                 ($visibles[$k] == FieldsConfig::ADMIN &&
                     $access_level < Authentication::ACCESS_ADMIN) ||
                 ($visibles[$k] == FieldsConfig::STAFF &&
@@ -173,7 +175,8 @@ class MembersCsv extends CsvOut
 
             //handle dates
             if (isset($member->date_crea_adh)) {
-                if ($member->date_crea_adh != ''
+                if (
+                    $member->date_crea_adh != ''
                     && $member->date_crea_adh != '1901-01-01'
                 ) {
                     $dcrea = new DateTime($member->date_crea_adh);
@@ -184,7 +187,8 @@ class MembersCsv extends CsvOut
             }
 
             if (isset($member->date_modif_adh)) {
-                if ($member->date_modif_adh != ''
+                if (
+                    $member->date_modif_adh != ''
                     && $member->date_modif_adh != '1901-01-01'
                 ) {
                     $dmodif = new DateTime($member->date_modif_adh);
@@ -195,7 +199,8 @@ class MembersCsv extends CsvOut
             }
 
             if (isset($member->date_echeance)) {
-                if ($member->date_echeance != ''
+                if (
+                    $member->date_echeance != ''
                     && $member->date_echeance != '1901-01-01'
                 ) {
                     $dech = new DateTime($member->date_echeance);
@@ -206,7 +211,8 @@ class MembersCsv extends CsvOut
             }
 
             if (isset($member->ddn_adh)) {
-                if ($member->ddn_adh != ''
+                if (
+                    $member->ddn_adh != ''
                     && $member->ddn_adh != '1901-01-01'
                 ) {
                     $ddn = new DateTime($member->ddn_adh);

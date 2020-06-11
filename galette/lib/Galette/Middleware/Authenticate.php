@@ -88,7 +88,7 @@ class Authenticate extends CheckAcls
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $next) :Response
+    public function __invoke(Request $request, Response $response, $next): Response
     {
         if (!$this->login || !$this->login->isLogged()) {
             if ($request->isGet()) {
@@ -114,14 +114,16 @@ class Authenticate extends CheckAcls
                     }
                     break;
                 case 'admin':
-                    if ($this->login->isSuperAdmin()
+                    if (
+                        $this->login->isSuperAdmin()
                         || $this->login->isAdmin()
                     ) {
                         $go = true;
                     }
                     break;
                 case 'staff':
-                    if ($this->login->isSuperAdmin()
+                    if (
+                        $this->login->isSuperAdmin()
                         || $this->login->isAdmin()
                         || $this->login->isStaff()
                     ) {
@@ -129,7 +131,8 @@ class Authenticate extends CheckAcls
                     }
                     break;
                 case 'groupmanager':
-                    if ($this->login->isSuperAdmin()
+                    if (
+                        $this->login->isSuperAdmin()
                         || $this->login->isAdmin()
                         || $this->login->isStaff()
                         || $this->login->isGroupManager()

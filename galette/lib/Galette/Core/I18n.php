@@ -128,7 +128,8 @@ class I18n
     {
         setlocale(LC_ALL, $this->getLongID());
 
-        if (putenv("LANG=" . $this->getLongID())
+        if (
+            putenv("LANG=" . $this->getLongID())
             or putenv("LANGUAGE=" . $this->getLongID())
             or putenv("LC_ALL=" . $this->getLongID())
         ) {

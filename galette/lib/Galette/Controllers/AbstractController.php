@@ -204,11 +204,13 @@ abstract class AbstractController
                     ->withStatus(301)
                     ->withHeader('Location', $urlRedirect);
             } else {
-                if ($this->login->isSuperAdmin()
+                if (
+                    $this->login->isSuperAdmin()
                     || $this->login->isAdmin()
                     || $this->login->isStaff()
                 ) {
-                    if (!isset($_COOKIE['show_galette_dashboard'])
+                    if (
+                        !isset($_COOKIE['show_galette_dashboard'])
                         || $_COOKIE['show_galette_dashboard'] == 1
                     ) {
                         return $response

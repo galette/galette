@@ -37,10 +37,9 @@
 
 namespace Galette\IO\test\units;
 
-use \atoum;
-
-use \Galette\Entity\Adherent;
-use \Galette\DynamicFields\DynamicField;
+use atoum;
+use Galette\Entity\Adherent;
+use Galette\DynamicFields\DynamicField;
 
 /**
  * CsvIn tests class
@@ -221,7 +220,7 @@ class CsvIn extends atoum
 
         $csvfile_model = $response->getBody()->__toString();
         $this->string($csvfile_model)
-             ->isIdenticalTo("\"".implode("\";\"", $fields)."\"\r\n");
+             ->isIdenticalTo("\"" . implode("\";\"", $fields) . "\"\r\n");
 
         $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
         $contents = $csvfile_model;
@@ -230,7 +229,7 @@ class CsvIn extends atoum
             foreach ($fields as $field) {
                 $amember[$field] = $member[$field];
             }
-            $contents .= "\"".implode("\";\"", $amember)."\"\r\n";
+            $contents .= "\"" . implode("\";\"", $amember) . "\"\r\n";
         }
 
         $path = GALETTE_CACHE_DIR . $file_name;
@@ -336,7 +335,7 @@ class CsvIn extends atoum
         for ($i = 0; $i < 10; ++$i) {
             $data = $fakedata->fakeMember();
             //two lines without name.
-            $data['nom_adh'] = (($i == 2 || $i ==5) ? '' : str_replace('"', '""', $data['nom_adh']));
+            $data['nom_adh'] = (($i == 2 || $i == 5) ? '' : str_replace('"', '""', $data['nom_adh']));
             $data['ville_adh'] = str_replace('"', '""', $data['ville_adh']);
             $data['fingerprint'] = 'FAKER_' . $i;
             $members_list[$data['fingerprint']] = $data;
@@ -354,7 +353,7 @@ class CsvIn extends atoum
      *
      * @return \Galette\Entity\ImportModel
      */
-    protected function getModel($fields) :\Galette\Entity\ImportModel
+    protected function getModel($fields): \Galette\Entity\ImportModel
     {
         $model = new \Galette\Entity\ImportModel();
         $this->boolean($model->remove($this->zdb))->isTrue();
@@ -434,7 +433,7 @@ class CsvIn extends atoum
         for ($i = 0; $i < 10; ++$i) {
             $data = $fakedata->fakeMember();
             //two lines without name.
-            $data['nom_adh'] = (($i == 2 || $i ==5) ? '' : str_replace('"', '""', $data['nom_adh']));
+            $data['nom_adh'] = (($i == 2 || $i == 5) ? '' : str_replace('"', '""', $data['nom_adh']));
             $data['ville_adh'] = str_replace('"', '""', $data['ville_adh']);
             $data['fingerprint'] = 'FAKER_' . $i;
             $data['dynfield_' . $df->getId()] = 'Dynamic field value for ' . $data['fingerprint'];
@@ -461,7 +460,7 @@ class CsvIn extends atoum
             $data['ville_adh'] = str_replace('"', '""', $data['ville_adh']);
             $data['fingerprint'] = 'FAKER_' . $i;
             //two lines without required dynamic field.
-            $data['dynfield_' . $df->getId()] = (($i == 2 || $i ==5) ? '' :
+            $data['dynfield_' . $df->getId()] = (($i == 2 || $i == 5) ? '' :
                 'Dynamic field value for ' . $data['fingerprint']);
             $members_list[$data['fingerprint']] = $data;
         }
@@ -611,7 +610,7 @@ class CsvIn extends atoum
             $data['nom_adh'] = str_replace('"', '""', $data['nom_adh']);
             $data['ville_adh'] = str_replace('"', '""', $data['ville_adh']);
             $data['fingerprint'] = 'FAKER_' . $i;
-            $data['dynfield_' . $cdf->getId()] =(($i == 2 || $i ==5) ? '20200513' : $data['date_crea_adh']);
+            $data['dynfield_' . $cdf->getId()] = (($i == 2 || $i == 5) ? '20200513' : $data['date_crea_adh']);
             $members_list[$data['fingerprint']] = $data;
         }
         $count_before = 10;

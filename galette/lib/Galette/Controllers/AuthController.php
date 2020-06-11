@@ -74,7 +74,8 @@ class AuthController extends AbstractController
     public function login(Request $request, Response $response, array $args = [])
     {
         //store redirect path if any
-        if (isset($args['r'])
+        if (
+            isset($args['r'])
             && $args['r'] != '/logout'
             && $args['r'] != '/login'
         ) {
@@ -250,7 +251,7 @@ class AuthController extends AbstractController
      *
      * @return Response
      */
-    public function lostPassword(Request $request, Response $response) :Response
+    public function lostPassword(Request $request, Response $response): Response
     {
         if ($this->preferences->pref_mail_method === GaletteMail::METHOD_DISABLED) {
             throw new \RuntimeException('Mailing disabled.');
@@ -275,7 +276,7 @@ class AuthController extends AbstractController
      *
      * @return Response
      */
-    public function retrievePassword(Request $request, Response $response, array $args) :Response
+    public function retrievePassword(Request $request, Response $response, array $args): Response
     {
         $from_admin = false;
         $redirect_url = $this->router->pathFor('slash');
@@ -284,7 +285,8 @@ class AuthController extends AbstractController
             $redirect_url = $this->router->pathFor('member', ['id' => $args[Adherent::PK]]);
         }
 
-        if (($this->login->isLogged()
+        if (
+            ($this->login->isLogged()
             || $this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED)
             && !$from_admin
         ) {
@@ -441,7 +443,7 @@ class AuthController extends AbstractController
      *
      * @return Response
      */
-    public function recoverPassword(Request $request, Response $response, array $args) :Response
+    public function recoverPassword(Request $request, Response $response, array $args): Response
     {
         $password = new Password($this->zdb);
         if (!$id_adh = $password->isHashValid(base64_decode($args['hash']))) {
@@ -477,7 +479,7 @@ class AuthController extends AbstractController
      *
      * @return Response
      */
-    public function doRecoverPassword(Request $request, Response $response) :Response
+    public function doRecoverPassword(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $password = new Password($this->zdb);

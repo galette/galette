@@ -72,7 +72,7 @@ class CsvController extends AbstractController
      *
      * @return Response
      */
-    protected function sendResponse(Response $response, $filepath, $filename) :Response
+    protected function sendResponse(Response $response, $filepath, $filename): Response
     {
         if (file_exists($filepath)) {
             $response = $response->withHeader('Content-Description', 'File Transfer')
@@ -108,7 +108,7 @@ class CsvController extends AbstractController
      *
      * @return Response
      */
-    public function export(Request $request, Response $response) :Response
+    public function export(Request $request, Response $response): Response
     {
         $csv = new CsvOut();
 
@@ -139,7 +139,7 @@ class CsvController extends AbstractController
      *
      * @return Response
      */
-    public function doExport(Request $request, Response $response) :Response
+    public function doExport(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $csv = new CsvOut();
@@ -250,7 +250,7 @@ class CsvController extends AbstractController
      *
      * @return Response
      */
-    public function import(Request $request, Response $response) :Response
+    public function import(Request $request, Response $response): Response
     {
         $csv = new CsvIn($this->zdb);
         $existing = $csv->getExisting();
@@ -278,7 +278,7 @@ class CsvController extends AbstractController
      *
      * @return Response
      */
-    public function doImports(Request $request, Response $response) :Response
+    public function doImports(Request $request, Response $response): Response
     {
         $csv = new CsvIn($this->zdb);
         $post = $request->getParsedBody();
@@ -342,7 +342,7 @@ class CsvController extends AbstractController
      *
      * @return Response
      */
-    public function uploadImportFile(Request $request, Response $response) :Response
+    public function uploadImportFile(Request $request, Response $response): Response
     {
         $csv = new CsvIn($this->zdb);
         if (isset($_FILES['new_file'])) {
@@ -401,7 +401,7 @@ class CsvController extends AbstractController
      *
      * @return Response
      */
-    public function getFile(Request $request, Response $response, array $args = []) :Response
+    public function getFile(Request $request, Response $response, array $args = []): Response
     {
         $filename = $args['file'];
 
@@ -435,7 +435,7 @@ class CsvController extends AbstractController
      *
      * @return Response
      */
-    public function confirmRemoveFile(Request $request, Response $response, array $args = []) :Response
+    public function confirmRemoveFile(Request $request, Response $response, array $args = []): Response
     {
         $data = [
             'id'            => $args['id'],
@@ -476,7 +476,7 @@ class CsvController extends AbstractController
      *
      * @return Response
      */
-    public function removeFile(Request $request, Response $response, array $args = []) :Response
+    public function removeFile(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
         $ajax = isset($post['ajax']) && $post['ajax'] === 'true';
@@ -539,7 +539,7 @@ class CsvController extends AbstractController
      *
      * @return Response
      */
-    public function importModel(Request $request, Response $response, array $args = []) :Response
+    public function importModel(Request $request, Response $response, array $args = []): Response
     {
         $model = new ImportModel();
         $model->load();
@@ -604,7 +604,7 @@ class CsvController extends AbstractController
      *
      * @return Response
      */
-    public function getImportModel(Request $request, Response $response, array $args = []) :Response
+    public function getImportModel(Request $request, Response $response, array $args = []): Response
     {
         $model = new ImportModel();
         $model->load();
@@ -654,7 +654,7 @@ class CsvController extends AbstractController
      *
      * @return Response
      */
-    public function storeModel(Request $request, Response $response, array $args = []) :Response
+    public function storeModel(Request $request, Response $response, array $args = []): Response
     {
         $model = new ImportModel();
         $model->load();
@@ -687,7 +687,7 @@ class CsvController extends AbstractController
      *
      * @return Response
      */
-    public function membersExport(Request $request, Response $response, array $args = []) :Response
+    public function membersExport(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
         $get = $request->getQueryParams();

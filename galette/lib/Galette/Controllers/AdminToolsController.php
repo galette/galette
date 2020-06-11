@@ -68,7 +68,7 @@ class AdminToolsController extends AbstractController
      *
      * @return Response
      */
-    public function adminTools(Request $request, Response $response) :Response
+    public function adminTools(Request $request, Response $response): Response
     {
         $params = [
             'page_title'        => _T('Administration tools')
@@ -99,7 +99,7 @@ class AdminToolsController extends AbstractController
      *
      * @return Response
      */
-    public function process(Request $request, Response $response) :Response
+    public function process(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
 

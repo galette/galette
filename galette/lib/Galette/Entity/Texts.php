@@ -424,7 +424,8 @@ class Texts
             foreach ($this->defaults as $default) {
                 $exists = false;
                 foreach ($list as $text) {
-                    if ($text->tref == $default['tref']
+                    if (
+                        $text->tref == $default['tref']
                         && $text->tlang == $default['tlang']
                     ) {
                         $exists = true;

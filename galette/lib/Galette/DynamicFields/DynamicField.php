@@ -590,7 +590,8 @@ abstract class DynamicField
         $this->errors = [];
         $this->warnings = [];
 
-        if ((!isset($values['field_name']) || $values['field_name'] == '')
+        if (
+            (!isset($values['field_name']) || $values['field_name'] == '')
             && get_class($this) != '\Galette\DynamicField\Separator'
         ) {
             $this->errors[] = _T('Missing required field name!');

@@ -36,7 +36,7 @@
 
 namespace Galette\Util\test\units;
 
-use \atoum;
+use atoum;
 use Galette\Core\Preferences;
 
 /**
@@ -160,7 +160,7 @@ class Password extends atoum
         }
 
         if ($level < Preferences::PWD_VERY_STRONG) {
-            $this->preferences->pref_password_strength = $level +1;
+            $this->preferences->pref_password_strength = $level + 1;
             $password = new \Galette\Util\Password($this->preferences);
             $this->boolean($password->isValid($pass))->isFalse();
             $this->array($password->getErrors())->isEqualTo($errors);

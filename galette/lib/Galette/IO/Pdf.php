@@ -332,7 +332,8 @@ class Pdf extends \TCPDF
                     '</div>';
                 $this->writeHtml($hsubtitle);
             }
-            if (trim($this->model->title) !== ''
+            if (
+                trim($this->model->title) !== ''
                 || trim($this->model->subtitle) !== ''
             ) {
                 $this->Ln(5);
@@ -343,21 +344,21 @@ class Pdf extends \TCPDF
             $logofile = $print_logo->getPath();
 
             // Set logo size to max width 30 mm or max height 25 mm
-            $ratio = $print_logo->getWidth()/$print_logo->getHeight();
+            $ratio = $print_logo->getWidth() / $print_logo->getHeight();
             if ($ratio < 1) {
                 if ($print_logo->getHeight() > 16) {
                     $hlogo = 25;
                 } else {
                     $hlogo = $print_logo->getHeight();
                 }
-                $wlogo = round($hlogo*$ratio);
+                $wlogo = round($hlogo * $ratio);
             } else {
                 if ($print_logo->getWidth() > 16) {
                     $wlogo = 30;
                 } else {
                     $wlogo = $print_logo->getWidth();
                 }
-                $hlogo = round($wlogo/$ratio);
+                $hlogo = round($wlogo / $ratio);
             }
 
             $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 4);

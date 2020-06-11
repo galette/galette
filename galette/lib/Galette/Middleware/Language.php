@@ -79,7 +79,7 @@ class Language
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $next) :Response
+    public function __invoke(Request $request, Response $response, $next): Response
     {
         $get = $request->getQueryParams();
 

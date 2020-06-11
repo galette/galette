@@ -253,7 +253,7 @@ class SavedSearches
                     $s = new SavedSearch($this->zdb, $this->login, $search);
                     $res = $s->remove(false);
                     if ($res === false) {
-                        throw new \Exception;
+                        throw new \Exception();
                     }
                 }
                 if ($transaction) {

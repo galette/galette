@@ -37,7 +37,7 @@
 
 namespace Galette\Entity\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * Contribution tests class

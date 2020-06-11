@@ -38,15 +38,11 @@
 namespace Galette\Controllers\Crud;
 
 use Galette\Controllers\CrudController;
-
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\Transaction;
-
-
-
 use Galette\Repository\Contributions;
 use Galette\Repository\Transactions;
 use Galette\Repository\Members;
@@ -56,9 +52,6 @@ use Galette\Entity\Texts;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\PaymentTypes;
 use Galette\Core\Links;
-
-
-
 use Analog\Analog;
 
 /**
@@ -96,7 +89,7 @@ class ContributionsController extends CrudController
         Response $response,
         array $args,
         Contribution $contrib
-    ) :Response {
+    ): Response {
         $get = $request->getQueryParams();
 
         // contribution types
@@ -187,7 +180,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
-    public function add(Request $request, Response $response, array $args = []) :Response
+    public function add(Request $request, Response $response, array $args = []): Response
     {
         if ($this->session->contribution !== null) {
             $contrib = $this->session->contribution;
@@ -238,7 +231,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
-    public function doAdd(Request $request, Response $response, array $args = []) :Response
+    public function doAdd(Request $request, Response $response, array $args = []): Response
     {
         $args['action'] = 'add';
         return $this->store($request, $response, $args);
@@ -256,10 +249,11 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
-    public function list(Request $request, Response $response, array $args = []) :Response
+    public function list(Request $request, Response $response, array $args = []): Response
     {
         $ajax = false;
-        if ($request->isXhr()
+        if (
+            $request->isXhr()
             || isset($request->getQueryParams()['ajax'])
             && $request->getQueryParams()['ajax'] == 'true'
         ) {
@@ -312,7 +306,8 @@ class ContributionsController extends CrudController
                     $filters->orderby = $value;
                     break;
                 case 'member':
-                    if (($this->login->isAdmin()
+                    if (
+                        ($this->login->isAdmin()
                         || $this->login->isStaff())
                     ) {
                         if ($value == 'all') {
@@ -375,7 +370,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
-    public function filter(Request $request, Response $response, array $args = []) :Response
+    public function filter(Request $request, Response $response, array $args = []): Response
     {
         $raw_type = null;
         switch ($args['type']) {
@@ -405,7 +400,8 @@ class ContributionsController extends CrudController
                 $filters->max_amount = null;
             }
 
-            if ((isset($post['nbshow']) && is_numeric($post['nbshow']))
+            if (
+                (isset($post['nbshow']) && is_numeric($post['nbshow']))
             ) {
                 $filters->show = $post['nbshow'];
             }
@@ -472,7 +468,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
-    public function edit(Request $request, Response $response, array $args = []) :Response
+    public function edit(Request $request, Response $response, array $args = []): Response
     {
         if ($this->session->contribution !== null) {
             $contrib = $this->session->contribution;
@@ -510,7 +506,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
-    public function doEdit(Request $request, Response $response, array $args = []) :Response
+    public function doEdit(Request $request, Response $response, array $args = []): Response
     {
         $args['action'] = 'edit';
         return $this->store($request, $response, $args);
@@ -525,7 +521,7 @@ class ContributionsController extends CrudController
      *
      * @return Response
      */
-    public function store(Request $request, Response $response, array $args = []) :Response
+    public function store(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
         $action = $args['action'];
@@ -670,7 +666,8 @@ class ContributionsController extends CrudController
                         'contrib_type'      => custom_html_entity_decode($contrib->type->libelle)
                     )
                 );
-                if ($new && isset($_POST['mail_confirm'])
+                if (
+                    $new && isset($_POST['mail_confirm'])
                     && $_POST['mail_confirm'] == '1'
                 ) {
                     if (GaletteMail::isValidEmail($adh->getEmail())) {

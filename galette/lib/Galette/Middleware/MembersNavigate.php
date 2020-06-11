@@ -86,7 +86,7 @@ class MembersNavigate
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $next) :Response
+    public function __invoke(Request $request, Response $response, $next): Response
     {
         $navigate = array();
         $route = $request->getAttribute('route');
@@ -103,7 +103,8 @@ class MembersNavigate
             $filters = new MembersList();
         }
 
-        if ($this->login->isAdmin()
+        if (
+            $this->login->isAdmin()
             || $this->login->isStaff()
             || $this->login->isGroupManager()
         ) {

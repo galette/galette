@@ -319,7 +319,7 @@ class Transactions
                     $c = new Transaction($this->zdb, $this->login, $transaction);
                     $res = $c->remove($hist, false);
                     if ($res === false) {
-                        throw new \Exception;
+                        throw new \Exception();
                     }
                 }
                 $this->zdb->connection->commit();

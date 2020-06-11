@@ -113,7 +113,7 @@ class SysInfos
         $str .= "\n" . 'PHP loaded modules:';
         $i = 0;
         foreach (get_loaded_extensions() as $e) {
-            if ($i%10 === 0) {
+            if ($i % 10 === 0) {
                 $str .= "\n  ";
             }
             $str .= $e . ", ";

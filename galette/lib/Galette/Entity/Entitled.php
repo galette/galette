@@ -236,7 +236,8 @@ abstract class Entitled
         try {
             $select = $this->zdb->select($this->table);
             $fields = array($this->fpk, $this->flabel);
-            if ($this->order_field !== false
+            if (
+                $this->order_field !== false
                 && $this->order_field !== $this->fpk
                 && $this->order_field !== $this->flabel
             ) {
@@ -631,7 +632,8 @@ abstract class Entitled
     {
         $forbidden = array();
         $virtuals = array('extension', 'libelle');
-        if (in_array($name, $virtuals)
+        if (
+            in_array($name, $virtuals)
             || !in_array($name, $forbidden)
             && isset($this->$name)
         ) {
@@ -656,7 +658,7 @@ abstract class Entitled
      *
      * @return array
      */
-    public function getErrors() :array
+    public function getErrors(): array
     {
         return $this->errors;
     }

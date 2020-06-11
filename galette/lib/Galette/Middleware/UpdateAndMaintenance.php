@@ -40,7 +40,6 @@
 namespace Galette\Middleware;
 
 use Galette\Core\I18n;
-
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
@@ -105,7 +104,7 @@ class UpdateAndMaintenance
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, $next) :Response
+    public function __invoke(Request $request, Response $response, $next): Response
     {
         $response
             ->withStatus(503)
@@ -131,7 +130,8 @@ class UpdateAndMaintenance
         );
 
         //add ending / if missing
-        if ($path === ''
+        if (
+            $path === ''
             || $path !== '/'
             && substr($path, -1) !== '/'
         ) {

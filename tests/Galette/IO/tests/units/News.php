@@ -37,7 +37,7 @@
 
 namespace Galette\IO\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * News tests class

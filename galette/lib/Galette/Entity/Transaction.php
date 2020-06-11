@@ -155,7 +155,7 @@ class Transaction
                 $this->loadFromRS($result);
                 return true;
             } else {
-                throw new \Exception;
+                throw new \Exception();
             }
         } catch (\Exception $e) {
             Analog::log(

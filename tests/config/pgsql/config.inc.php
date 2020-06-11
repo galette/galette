@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PostgreSQL configuration file for tests
  *
@@ -14,6 +15,7 @@
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.3dev 2012-12-12
  */
+
 define("TYPE_DB", "pgsql");
 
 if (file_exists(__DIR__ . '/local_config.inc.php')) {

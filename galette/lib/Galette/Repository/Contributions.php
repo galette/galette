@@ -435,7 +435,7 @@ class Contributions
                     $c = new Contribution($this->zdb, $this->login, $contribution);
                     $res = $c->remove(false);
                     if ($res === false) {
-                        throw new \Exception;
+                        throw new \Exception();
                     }
                 }
                 if ($transaction) {

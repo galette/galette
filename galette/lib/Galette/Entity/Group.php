@@ -518,7 +518,7 @@ class Group
     public function getLevel()
     {
         if ($this->parent_group) {
-            return $this->parent_group->getLevel()+1;
+            return $this->parent_group->getLevel() + 1;
         }
         return 0;
     }
@@ -531,7 +531,7 @@ class Group
     public function getFullName()
     {
         if ($this->parent_group) {
-            return $this->parent_group->getFullName().' / '.$this->group_name;
+            return $this->parent_group->getFullName() . ' / ' . $this->group_name;
         }
         return $this->group_name;
     }
@@ -544,7 +544,7 @@ class Group
     public function getIndentName()
     {
         if (($level = $this->getLevel())) {
-            return str_repeat("&nbsp;", 3*$level).'&raquo; '.$this->group_name;
+            return str_repeat("&nbsp;", 3 * $level) . '&raquo; ' . $this->group_name;
         }
         return $this->group_name;
     }

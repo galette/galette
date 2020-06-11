@@ -152,7 +152,8 @@ class GaletteMail
                         );
                     }
 
-                    if ($this->preferences->pref_mail_smtp_port
+                    if (
+                        $this->preferences->pref_mail_smtp_port
                         && $this->preferences->pref_mail_smtp_port != ''
                     ) {
                         // set the SMTP port for the SMTP server

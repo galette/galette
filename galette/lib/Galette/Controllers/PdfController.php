@@ -78,7 +78,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    protected function sendResponse(Response $response, Pdf $pdf) :Response
+    protected function sendResponse(Response $response, Pdf $pdf): Response
     {
         return $response
             ->withHeader('Content-type', 'application/pdf')
@@ -96,7 +96,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function membersCards(Request $request, Response $response, array $args = []) :Response
+    public function membersCards(Request $request, Response $response, array $args = []): Response
     {
         if ($this->session->filter_members) {
             $filters = $this->session->filter_members;
@@ -104,7 +104,8 @@ class PdfController extends AbstractController
             $filters = new MembersList();
         }
 
-        if (isset($args[Adherent::PK])
+        if (
+            isset($args[Adherent::PK])
             && $args[Adherent::PK] > 0
         ) {
             $id_adh = $args[Adherent::PK];
@@ -208,7 +209,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function membersLabels(Request $request, Response $response) :Response
+    public function membersLabels(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
         $get = $request->getQueryParams();
@@ -222,7 +223,8 @@ class PdfController extends AbstractController
         }
 
         $members = null;
-        if (isset($get['from'])
+        if (
+            isset($get['from'])
             && $get['from'] === 'mailing'
         ) {
             //if we're from mailing, we have to retrieve
@@ -280,7 +282,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function adhesionForm(Request $request, Response $response, array $args = []) :Response
+    public function adhesionForm(Request $request, Response $response, array $args = []): Response
     {
         $id_adh = isset($args[Adherent::PK]) ? (int)$args[Adherent::PK] : null;
         $adh = new Adherent($this->zdb, $id_adh, ['dynamics' => true]);
@@ -314,7 +316,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function attendanceSheetConfig(Request $request, Response $response, array $args = []) :Response
+    public function attendanceSheetConfig(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
 
@@ -326,7 +328,8 @@ class PdfController extends AbstractController
 
         // check for ajax mode
         $ajax = false;
-        if ($request->isXhr()
+        if (
+            $request->isXhr()
             || isset($post['ajax'])
             && $post['ajax'] == 'true'
         ) {
@@ -362,7 +365,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function attendanceSheet(Request $request, Response $response) :Response
+    public function attendanceSheet(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
 
@@ -418,7 +421,7 @@ class PdfController extends AbstractController
             'doc_title' => $doc_title,
             'title'     => $post['sheet_title'] ?? null,
             'subtitle'  => $post['sheet_sub_title'] ?? null,
-            'sheet_date'=> $post['sheet_date'] ?? null
+            'sheet_date' => $post['sheet_date'] ?? null
         ];
         $pdf = new PdfAttendanceSheet($this->zdb, $this->preferences, $data);
         //with or without images?
@@ -439,7 +442,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function contribution(Request $request, Response $response, array $args = []) :Response
+    public function contribution(Request $request, Response $response, array $args = []): Response
     {
         $contribution = new Contribution($this->zdb, $this->login, (int)$args['id']);
         if ($contribution->id == '') {
@@ -473,7 +476,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function group(Request $request, Response $response, array $args = []) :Response
+    public function group(Request $request, Response $response, array $args = []): Response
     {
         $groups = new Groups($this->zdb, $this->login);
 
@@ -515,7 +518,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function models(Request $request, Response $response, array $args = []) :Response
+    public function models(Request $request, Response $response, array $args = []): Response
     {
         $id = 1;
         if (isset($_POST[PdfModel::PK])) {
@@ -541,7 +544,8 @@ class PdfController extends AbstractController
 
         //Render directly template if we called from ajax,
         //render in a full page otherwise
-        if ($request->isXhr()
+        if (
+            $request->isXhr()
             || isset($request->getQueryParams()['ajax'])
             && $request->getQueryParams()['ajax'] == 'true'
         ) {
@@ -574,7 +578,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function storeModels(Request $request, Response $response, array $args = []) :Response
+    public function storeModels(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
         $type = null;
@@ -643,7 +647,7 @@ class PdfController extends AbstractController
      *
      * @return Response
      */
-    public function directlinkDocument(Request $request, Response $response, array $args = []) :Response
+    public function directlinkDocument(Request $request, Response $response, array $args = []): Response
     {
         $hash = $args['hash'];
         $post = $request->getParsedBody();

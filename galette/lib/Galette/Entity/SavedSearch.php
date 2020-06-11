@@ -279,7 +279,8 @@ class SavedSearch
     {
         $forbidden = [];
         $virtuals = ['sparameters'];
-        if (in_array($name, $virtuals)
+        if (
+            in_array($name, $virtuals)
             || !in_array($name, $forbidden)
             && isset($this->$name)
         ) {
