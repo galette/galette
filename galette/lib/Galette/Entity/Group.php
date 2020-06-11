@@ -337,7 +337,7 @@ class Group
             } else {
                 Analog::log(
                     'Unable to delete group ' . $this->group_name .
-                    ' (' . $this->id  . ') |' . $e->getMessage(),
+                    ' (' . $this->id . ') |' . $e->getMessage(),
                     Analog::ERROR
                 );
             }
@@ -772,7 +772,7 @@ class Group
                         Analog::log(
                             'An error occurred trying to attach member `' .
                             $m->sname . '` to group `' . $this->group_name .
-                            '` ('  . $this->id . ').',
+                            '` (' . $this->id . ').',
                             Analog::ERROR
                         );
                         throw new \Exception(
@@ -862,7 +862,7 @@ class Group
                         Analog::log(
                             'An error occurred trying to attach manager `' .
                             $m->sname . '` to group `' . $this->group_name .
-                            '` ('  . $this->id . ').',
+                            '` (' . $this->id . ').',
                             Analog::ERROR
                         );
                         throw new \Exception(

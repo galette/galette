@@ -131,8 +131,8 @@ abstract class PdfModel
 
         $logo = new Core\Logo();
         $logo_elt = '<img' .
-            ' src="'    . $preferences->getURL() . $router->pathFor('logo')  . '"' .
-            ' width="'  . $logo->getOptimalWidth()  . '"' .
+            ' src="' . $preferences->getURL() . $router->pathFor('logo') . '"' .
+            ' width="' . $logo->getOptimalWidth() . '"' .
             ' height="' . $logo->getOptimalHeight() . '"' .
             '/>';
 

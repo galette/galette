@@ -69,7 +69,7 @@ class Contributions
 
     private $sum;
 
-   /**
+    /**
      * Default constructor
      *
      * @param Db                $zdb     Database

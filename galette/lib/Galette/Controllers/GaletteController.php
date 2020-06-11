@@ -284,7 +284,7 @@ class GaletteController extends AbstractController
                 $warning_detected = array_merge($warning_detected, $this->preferences->checkCardsSizes());
 
                 // picture upload
-                if (GALETTE_MODE !== 'DEMO' &&  isset($_FILES['logo'])) {
+                if (GALETTE_MODE !== 'DEMO' && isset($_FILES['logo'])) {
                     if ($_FILES['logo']['error'] === UPLOAD_ERR_OK) {
                         if ($_FILES['logo']['tmp_name'] != '') {
                             if (is_uploaded_file($_FILES['logo']['tmp_name'])) {
@@ -880,14 +880,12 @@ class GaletteController extends AbstractController
         $filters->filter_account = Members::ACTIVE_ACCOUNT;
 
         $membership = ($args['membership'] === 'nearly' ?
-            Members::MEMBERSHIP_NEARLY :
-            Members::MEMBERSHIP_LATE);
+            Members::MEMBERSHIP_NEARLY : Members::MEMBERSHIP_LATE);
         $filters->membership_filter = $membership;
 
         //TODO: filter on reminder may take care of parent email as well
         $mail = ($args['mail'] === 'withmail' ?
-            Members::FILTER_W_EMAIL :
-            Members::FILTER_WO_EMAIL);
+            Members::FILTER_W_EMAIL : Members::FILTER_WO_EMAIL);
         $filters->email_filter = $mail;
 
         $this->session->filter_members = $filters;

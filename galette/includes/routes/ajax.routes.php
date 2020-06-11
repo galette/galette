@@ -41,10 +41,10 @@ use Galette\Entity\ContributionsTypes;
 use Galette\Repository\Members;
 use Galette\Filters\MembersList;
 
-$app->group('/ajax', function() use ($authenticate) {
+$app->group('/ajax', function () use ($authenticate) {
     $this->get(
         '/messages',
-        function($request, $response) {
+        function ($request, $response) {
             $this->view->render(
                 $response,
                 'ajax_messages.tpl'
@@ -55,7 +55,7 @@ $app->group('/ajax', function() use ($authenticate) {
 
     $this->post(
         'photo',
-        function($request, $response) {
+        function ($request, $response) {
             $post = $request->getParsedBody();
             $ret = ['result' => false];
 
@@ -116,7 +116,7 @@ $app->group('/ajax', function() use ($authenticate) {
 
     $this->post(
         '/suggest/towns',
-        function($request, $response) {
+        function ($request, $response) {
             $post = $request->getParsedBody();
 
             $ret = [];
@@ -159,7 +159,7 @@ $app->group('/ajax', function() use ($authenticate) {
 
     $this->post(
         '/suggest/countries',
-        function($request, $response) {
+        function ($request, $response) {
             $post = $request->getParsedBody();
 
             $ret = [];
@@ -193,7 +193,7 @@ $app->group('/ajax', function() use ($authenticate) {
 
     $this->get(
         '/telemetry/infos',
-        function($request, $response) {
+        function ($request, $response) {
             $telemetry = new \Galette\Util\Telemetry(
                 $this->zdb,
                 $this->preferences,
@@ -207,7 +207,7 @@ $app->group('/ajax', function() use ($authenticate) {
 
     $this->post(
         '/telemetry/send',
-        function($request, $response) {
+        function ($request, $response) {
             $telemetry = new \Galette\Util\Telemetry(
                 $this->zdb,
                 $this->preferences,
@@ -232,7 +232,7 @@ $app->group('/ajax', function() use ($authenticate) {
 
     $this->get(
         '/telemetry/registered',
-        function($request, $response) {
+        function ($request, $response) {
             $this->preferences->pref_registration_date = date('Y-m-d H:i:s');
             $this->preferences->store();
             return $response->withJson(['message' => _T('Thank you for registering!')]);
@@ -241,7 +241,7 @@ $app->group('/ajax', function() use ($authenticate) {
 
     $this->post(
         '/contribution/dates',
-        function($request, $response) {
+        function ($request, $response) {
             $post = $request->getParsedBody();
 
             $contrib = new Contribution(
@@ -263,7 +263,7 @@ $app->group('/ajax', function() use ($authenticate) {
 
     $this->post(
         '/contribution/members[/{page:\d+}[/{search}]]',
-        function($request, $response, $args) {
+        function ($request, $response, $args) {
             $post = $request->getParsedBody();
             $filters = new MembersList();
             if (isset($post['page'])) {
@@ -308,7 +308,7 @@ $app->group('/ajax', function() use ($authenticate) {
 
     $this->post(
         '/password/strength',
-        function($request, $response) {
+        function ($request, $response) {
             //post params may be passed from security tab test password
             $post = $request->getParsedBody();
 

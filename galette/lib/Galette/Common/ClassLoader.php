@@ -195,8 +195,8 @@ class ClassLoader
         }
 
         $path = ($this->includePath !== null ? $this->includePath . DIRECTORY_SEPARATOR : '')
-               . $className
-               . $this->fileExtension;
+                . $className
+                . $this->fileExtension;
 
         if (file_exists($path)) {
             require $path;

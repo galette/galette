@@ -208,7 +208,7 @@ abstract class Repository
             return true;
         } else {
             Analog::log(
-                'Trying to order by ' . $field_name  . ' while it is not in ' .
+                'Trying to order by ' . $field_name . ' while it is not in ' .
                 'selected fields.',
                 Analog::WARNING
             );

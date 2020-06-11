@@ -552,8 +552,8 @@ class CsvController extends AbstractController
         $csv = new CsvIn($this->zdb);
 
         /** FIXME:
-        * - set fields that should not be part of import
-        */
+         * - set fields that should not be part of import
+         */
         $fields = $model->getFields();
         $defaults = $csv->getDefaultFields();
         $defaults_loaded = false;

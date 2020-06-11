@@ -40,7 +40,7 @@ use Galette\Controllers\Crud;
 use Galette\Repository\Members;
 use Galette\Filters\MembersList;
 
-$showPublicPages = function($request, $response, $next) use ($container) {
+$showPublicPages = function ($request, $response, $next) use ($container) {
     $login = $container->login;
     $preferences = $container->preferences;
 
@@ -58,7 +58,7 @@ $showPublicPages = function($request, $response, $next) use ($container) {
     return $next($request, $response);
 };
 
-$app->group('/public', function() {
+$app->group('/public', function () {
     //public members list
     $this->get(
         '/{type:list|trombi}[/{option:page|order}/{value:\d+}]',
@@ -73,7 +73,7 @@ $app->group('/public', function() {
 
     $this->get(
         '/members[/{option:page|order}/{value:\d+}]',
-        function($request, $response, $args = []) {
+        function ($request, $response, $args = []) {
             $args['type'] = 'list';
             return $response
                 ->withStatus(301)
@@ -83,7 +83,7 @@ $app->group('/public', function() {
 
     $this->get(
         '/trombinoscope',
-        function($request, $response, $args = []) {
+        function ($request, $response, $args = []) {
             $args['type'] = 'trombi';
             return $response
                 ->withStatus(301)
