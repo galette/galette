@@ -59,12 +59,13 @@ class Db
     private $type_db;
     private $sql;
     private $options;
+    private $last_query;
 
-    const MYSQL = 'mysql';
-    const PGSQL = 'pgsql';
+    public const MYSQL = 'mysql';
+    public const PGSQL = 'pgsql';
 
-    const MYSQL_DEFAULT_PORT = 3306;
-    const PGSQL_DEFAULT_PORT = 5432;
+    public const MYSQL_DEFAULT_PORT = 3306;
+    public const PGSQL_DEFAULT_PORT = 5432;
 
     /**
      * Main constructor
@@ -328,7 +329,7 @@ class Db
     /**
      * Checks GRANT access for install time
      *
-     * @param char $mode are we at install time (i) or update time (u) ?
+     * @param string $mode are we at install time (i) or update time (u) ?
      *
      * @return array containing each test. Each array entry could
      *           be either true or contains an exception of false if test did not
@@ -772,7 +773,7 @@ class Db
     {
         try {
             $query_string = $this->sql->getSqlStringForSqlObject($sql);
-            $this->_last_query = $query_string;
+            $this->last_query = $query_string;
             Analog::log(
                 'Executing query: ' . $query_string,
                 Analog::DEBUG
@@ -823,7 +824,7 @@ class Db
                 return $this->db->getPlatform();
                 break;
             case 'query_string':
-                return $this->_last_query;
+                return $this->last_query;
                 break;
             case 'type_db':
                 return $this->type_db;
@@ -887,8 +888,8 @@ class Db
      * @see https://bugs.galette.eu/issues/1158
      * @see https://bugs.galette.eu/issues/1374
      *
-     * @param sting  $table    Table name
-     * @param intger $expected Expected value
+     * @param string  $table    Table name
+     * @param integer $expected Expected value
      *
      * @return void
      */
@@ -916,7 +917,7 @@ class Db
     /**
      * Check if current exception is on a duplicate key
      *
-     * @param Exception $exception Exception to check
+     * @param \Exception $exception Exception to check
      *
      * @return boolean
      */
