@@ -56,9 +56,9 @@ use Galette\Core\Pagination;
 class TransactionsList extends Pagination
 {
 
-    const ORDERBY_DATE = 0;
-    const ORDERBY_MEMBER = 3;
-    const ORDERBY_AMOUNT = 5;
+    public const ORDERBY_DATE = 0;
+    public const ORDERBY_MEMBER = 3;
+    public const ORDERBY_AMOUNT = 5;
 
     //filters
     private $start_date_filter;
@@ -164,7 +164,7 @@ class TransactionsList extends Pagination
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
+     * @param mixed  $value a relevant value for the property
      *
      * @return void
      */
@@ -249,7 +249,7 @@ class TransactionsList extends Pagination
                         }
                     } catch (\Exception $e) {
                         Analog::log(
-                            'Wrong date format. field: ' . $key .
+                            'Wrong date format. field: ' . $name .
                             ', value: ' . $value . ', expected fmt: ' .
                             __("Y-m-d") . ' | ' . $e->getMessage(),
                             Analog::INFO
