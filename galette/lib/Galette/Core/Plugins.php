@@ -402,7 +402,7 @@ class Plugins
      *
      * @param string $id Optionnal module ID
      *
-     * @return <b>array</b>
+     * @return array
      */
     public function getModules($id = null)
     {
@@ -417,7 +417,7 @@ class Plugins
      *
      * @param string $id Module ID
      *
-     * @return <b>boolean</b>
+     * @return boolean
      */
     public function moduleExists($id)
     {
@@ -427,7 +427,7 @@ class Plugins
     /**
      * Returns all disabled modules in an array
      *
-     * @return <b>array</b>
+     * @return array
      */
     public function getDisabledModules()
     {
@@ -439,7 +439,7 @@ class Plugins
      *
      * @param string $id Module ID
      *
-     * @return <b>string</b>
+     * @return string
      */
     public function moduleRoot($id)
     {
@@ -572,7 +572,7 @@ class Plugins
      * @param array $a A module
      * @param array $b Another module
      *
-     * @return 1 if a has the highest priority, -1 otherwise
+     * @return 1|-1 1 if a has the highest priority, -1 otherwise
      */
     private function sortModules($a, $b)
     {
@@ -588,7 +588,7 @@ class Plugins
      *
      * @param string $id Module's ID
      *
-     * @return Concatenated templates path for requested module
+     * @return string  Concatenated templates path for requested module
      */
     public function getTemplatesPath($id)
     {
@@ -600,7 +600,7 @@ class Plugins
      *
      * @param string $name Module's name
      *
-     * @return Concatenated templates path for requested module
+     * @return string Concatenated templates path for requested module
      */
     public function getTemplatesPathFromName($name)
     {
