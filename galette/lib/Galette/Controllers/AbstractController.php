@@ -59,47 +59,52 @@ abstract class AbstractController
     private $container;
     /**
      * @Inject
-     * @var Galette\Core\Db
+     * @var \Galette\Core\Db
      */
     protected $zdb;
     /**
      * @Inject
-     * @var Galette\Core\Login
+     * @var \Galette\Core\Login
      */
     protected $login;
     /**
      * @Inject
-     * @var Galette\Core\Preferences
+     * @var \Galette\Core\Preferences
      */
     protected $preferences;
     /**
      * @Inject
-     * @var Slim\Views\Smarty
+     * @var \Slim\Views\Smarty
      */
     protected $view;
     /**
      * @Inject
-     * @var Galette\Core\Logo
+     * @var \Galette\Core\Logo
      */
     protected $logo;
     /**
      * @Inject
-     * @var Galette\Core\Plugins
+     * @var \Galette\Core\PrintLogo
+     */
+    protected $print_logo;
+    /**
+     * @Inject
+     * @var \Galette\Core\Plugins
      */
     protected $plugins;
     /**
      * @Inject
-     * @var Slim\Router
+     * @var \Slim\Router
      */
     protected $router;
     /**
      * @Inject
-     * @var Galette\Core\History
+     * @var \Galette\Core\History
      */
     protected $history;
     /**
      * @Inject
-     * @var Galette\Core\I18n
+     * @var \Galette\Core\I18n
      */
     protected $i18n;
     /**
@@ -108,17 +113,17 @@ abstract class AbstractController
     protected $session;
     /**
      * @Inject
-     * @var Slim\Flash\Messages
+     * @var \Slim\Flash\Messages
      */
     protected $flash;
     /**
      * @Inject
-     * @var Galette\Entity\FieldsConfig
+     * @var \Galette\Entity\FieldsConfig
      */
     protected $fields_config;
     /**
      * @Inject
-     * @var Galette\Entity\ListsConfig
+     * @var \Galette\Entity\ListsConfig
      */
     protected $lists_config;
     /**
@@ -139,7 +144,7 @@ abstract class AbstractController
 
     /**
      * @Inject
-     * @var Galette\Handlers\NotFound
+     * @var \Galette\Handlers\NotFound
      */
     protected $notFoundHandler;
 

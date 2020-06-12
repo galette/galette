@@ -313,11 +313,11 @@ class Preferences
     /**
      * Set default preferences at install time
      *
-     * @param staing $lang      language selected at install screen
+     * @param string $lang      language selected at install screen
      * @param string $adm_login admin login entered at install time
      * @param string $adm_pass  admin password entered at install time
      *
-     * @return boolean|Exception
+     * @return boolean|\Exception
      */
     public function installInit($lang, $adm_login, $adm_pass)
     {

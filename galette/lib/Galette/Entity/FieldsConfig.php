@@ -183,12 +183,11 @@ class FieldsConfig
             $this->buildLists();
             return true;
         } catch (\Exception $e) {
-            throw $e;
             Analog::log(
                 'Fields configuration cannot be loaded!',
                 Analog::URGENT
             );
-            return false;
+            throw $e;
         }
     }
 
@@ -388,7 +387,7 @@ class FieldsConfig
      * Set default fields configuration at install time. All previous
      * existing values will be dropped first, including fields categories.
      *
-     * @return boolean|Exception
+     * @return boolean|\Exception
      */
     public function installInit()
     {

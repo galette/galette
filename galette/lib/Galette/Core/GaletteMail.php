@@ -236,7 +236,7 @@ class GaletteMail
     /**
      * Apply final header to email and send it :-)
      *
-     * @return GaletteMail::MAIL_ERROR|GaletteMail::MAIL_SENT
+     * @return integer Either GaletteMail::MAIL_ERROR|GaletteMail::MAIL_SENT
      */
     public function send()
     {
