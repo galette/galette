@@ -499,7 +499,7 @@ class Db
      */
     public function getTables($prefix = null)
     {
-        $metadata = new \Laminas\Db\Metadata\Metadata($this->db);
+        $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->db);
         $tmp_tables_list = $metadata->getTableNames();
 
         if ($prefix === null) {
@@ -525,7 +525,7 @@ class Db
      */
     public function getColumns($table)
     {
-        $metadata = new \Laminas\Db\Metadata\Metadata($this->db);
+        $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->db);
         $table = $metadata->getTable(PREFIX_DB . $table);
         return $table->getColumns();
     }
@@ -617,7 +617,7 @@ class Db
         }
 
         try {
-            $metadata = new \Laminas\Db\Metadata\Metadata($this->db);
+            $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->db);
             $tbl = $metadata->getTable($table);
             $columns = $tbl->getColumns();
             $constraints = $tbl->getConstraints();
