@@ -1504,6 +1504,17 @@ class MembersController extends CrudController
         $warning_detected = [];
         $error_detected = [];
 
+        //check captcha
+        if (isset($args['self'])) {
+            if (
+                !$post['mdp_crypt']
+                || !$post['mdp_adh']
+                || !crypt($post['mdp_adh'], $post['mdp_crypt']) == $post['mdp_crypt']
+            ) {
+                $error_detected[] = __('Please repeat in the field the password shown in the image.');
+            }
+        }
+
         // new or edit
         $adherent['id_adh'] = get_numeric_form_value('id_adh', '');
         if ($this->login->isAdmin() || $this->login->isStaff() || $this->login->isGroupManager()) {
