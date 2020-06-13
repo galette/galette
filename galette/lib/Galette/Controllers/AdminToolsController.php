@@ -78,6 +78,7 @@ class AdminToolsController extends AbstractController
         $modules_ok = $cm->isValid();
         if (!$modules_ok) {
             $this->flash->addMessage(
+                'error_detected',
                 _T("Some PHP modules are missing. Please install them or contact your support.<br/>More information on required modules may be found in the documentation.")
             );
         }
