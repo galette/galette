@@ -34,7 +34,6 @@
  * @package  XHProf
  * @author   Johan Cwiklinski <johan@x-tnd.be>
  * @license  MIT http://en.wikipedia.org/wiki/MIT_License
- * @version  $SVN:Id: xhprof.class.php 18564 2012-05-29 15:21:28Z moyo $
  * @link     http://codefury.net - http://galette.tuxfamily.org
  * @since    0.7.2dev 2012-1008
  */

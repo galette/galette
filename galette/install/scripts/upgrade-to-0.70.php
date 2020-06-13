@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.eu
  * @since     Available since 0.8 - 2014-01-05
  */
