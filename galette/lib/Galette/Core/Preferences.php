@@ -53,6 +53,9 @@ use Galette\Repository\Members;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-14
+ *
+ * @property string      $pref_theme         Prefered theme
+ * @property-read string $vpref_email_newadh Comma separated list of mail senders
  */
 class Preferences
 {
@@ -60,35 +63,35 @@ class Preferences
     private $prefs;
     private $errors = [];
 
-    const TABLE = 'preferences';
-    const PK = 'nom_pref';
+    public const TABLE = 'preferences';
+    public const PK = 'nom_pref';
 
     /** Postal address will be the one given in the preferences */
-    const POSTAL_ADDRESS_FROM_PREFS = 0;
+    public const POSTAL_ADDRESS_FROM_PREFS = 0;
     /** Postal address will be the one of the selected staff member */
-    const POSTAL_ADDRESS_FROM_STAFF = 1;
+    public const POSTAL_ADDRESS_FROM_STAFF = 1;
 
     /** Public pages stuff */
     /** Public pages are publically visibles */
-    const PUBLIC_PAGES_VISIBILITY_PUBLIC = 0;
+    public const PUBLIC_PAGES_VISIBILITY_PUBLIC = 0;
     /** Public pages are visibles for up to date members only */
-    const PUBLIC_PAGES_VISIBILITY_RESTRICTED = 1;
+    public const PUBLIC_PAGES_VISIBILITY_RESTRICTED = 1;
     /** Public pages are visibles for admin and staff members only */
-    const PUBLIC_PAGES_VISIBILITY_PRIVATE = 2;
+    public const PUBLIC_PAGES_VISIBILITY_PRIVATE = 2;
 
-    const LOG_DISABLED = 0;
-    const LOG_ENABLED = 1;
+    public const LOG_DISABLED = 0;
+    public const LOG_ENABLED = 1;
 
     /** No password strength */
-    const PWD_NONE = 0;
+    public const PWD_NONE = 0;
     /** Weak password strength */
-    const PWD_WEAK = 1;
+    public const PWD_WEAK = 1;
     /** Medium password strength */
-    const PWD_MEDIUM = 2;
+    public const PWD_MEDIUM = 2;
     /** Strong password strength */
-    const PWD_STRONG = 3;
+    public const PWD_STRONG = 3;
     /** Very strong password strength */
-    const PWD_VERY_STRONG = 4;
+    public const PWD_VERY_STRONG = 4;
 
     private static $fields = array(
         'nom_pref',
@@ -811,7 +814,7 @@ class Preferences
      */
     public function __get($name)
     {
-        $forbidden = array('logged', 'admin', 'active', 'defaults');
+        $forbidden = array('defaults');
         $virtuals = array('vpref_email_newadh');
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
