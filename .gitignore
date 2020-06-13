@@ -80,6 +80,7 @@ galette/webroot/assets/*
 
 # API documentation
 apidocs/
+build/
 
 #Backup files
 *~
