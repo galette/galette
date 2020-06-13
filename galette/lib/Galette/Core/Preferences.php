@@ -54,7 +54,89 @@ use Galette\Repository\Members;
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-14
  *
- * @property string      $pref_theme         Prefered theme
+ * @property string $pref_admin_login Super admin login
+ * @property string $pref_admin_pass Super admin password
+ * @property string $pref_nom Association name
+ * @property string $pref_slogan Association slogan
+ * @property string $pref_adresse Address
+ * @property string $pref_adresse2 Address continuation
+ * @property string $pref_cp Association zipcode
+ * @property string $pref_ville Association town
+ * @property string $pref_pays Country
+ * @property integer $pref_postal_adress Postal adress to use, one of self::POSTAL_ADDRESS*
+ * @property integer $pref_postal_staff_member Staff member ID from which retrieve postal address
+ * @property string $pref_lang Default instance language
+ * @property integer $pref_numrows Default number of rows in lists
+ * @property integer $pref_log History, one of self::LOG_*
+ * @property interger $pref_statut Default status for new members
+ * @property string $pref_email_nom
+ * @property string $pref_email
+ * @property string $pref_email_newadh
+ * @property boolean $pref_bool_mailadh
+ * @property boolean $pref_editor_enabled
+ * @property integer $pref_mail_method Mail method, see GaletteMail::METHOD_*
+ * @property string $pref_mail_smtp
+ * @property string $pref_mail_smtp_host
+ * @property boolean $pref_mail_smtp_auth
+ * @property boolean $pref_mail_smtp_secure
+ * @property integer $pref_mail_smtp_port
+ * @property string $pref_mail_smtp_user
+ * @property string $pref_mail_smtp_password
+ * @property integer $pref_membership_ext
+ * @property string $pref_beg_membership
+ * @property integer $pref_membership_offermonths
+ * @property string $pref_email_reply_to
+ * @property string $pref_website
+ * @property integer $pref_etiq_marges_v
+ * @property string $pref_etiq_marges_h
+ * @property string $pref_etiq_hspace
+ * @property string $pref_etiq_vspace
+ * @property string $pref_etiq_hsize
+ * @property string $pref_etiq_vsize
+ * @property string $pref_etiq_cols
+ * @property string $pref_etiq_rows
+ * @property string $pref_etiq_corps
+ * @property string $pref_card_abrev
+ * @property string $pref_card_strip
+ * @property string $pref_card_tcol
+ * @property string $pref_card_scol
+ * @property string $pref_card_bcol
+ * @property string $pref_card_hcol
+ * @property string $pref_bool_display_title
+ * @property integer $pref_card_address
+ * @property string $pref_card_year
+ * @property integer $pref_card_marges_v
+ * @property integer $pref_card_marges_h
+ * @property integer $pref_card_vspace
+ * @property integer $pref_card_hspace
+ * @property string $pref_card_self
+ * @property string $pref_theme Prefered theme
+ * @property boolean $pref_bool_publicpages
+ * @property integer $pref_publicpages_visibility
+ * @property boolean $pref_bool_selfsubscribe
+ * @property string $pref_googleplus
+ * @property string $pref_facebook
+ * @property string $pref_twitter
+ * @property string $pref_viadeo
+ * @property string $pref_linkedin
+ * @property string $pref_mail_sign
+ * @property string $pref_new_contrib_script
+ * @property boolean $pref_bool_wrap_mails
+ * @property string $pref_rss_url
+ * @property boolean $pref_show_id
+ * @property string $pref_adhesion_form
+ * @property boolean $pref_mail_allow_unsecure
+ * @property string $pref_instance_uuid
+ * @property string $pref_registration_uuid
+ * @property string $pref_telemetry_date
+ * @property string $pref_registration_date
+ * @property string $pref_footer
+ * @property integer $pref_filter_account
+ * @property string $pref_galette_url
+ * @property integer $pref_redirect_on_create
+ * @property integer $pref_password_length
+ * @property boolean $pref_password_blacklist
+ * @property integer $pref_password_strength
  * @property-read string $vpref_email_newadh Comma separated list of mail senders
  */
 class Preferences

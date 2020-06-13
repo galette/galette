@@ -52,6 +52,16 @@ use Galette\Repository\Members;
  * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
+ *
+ * @property string $filter_str
+ * @property string $field_filter
+ * @property string $membership_filter
+ * @property integer $filter_account
+ * @property string $email_filter
+ * @property group_filter $group_filter
+ * @property array $selected
+ * @property array $unreachable
+ * @property string $query
  */
 
 class MembersList extends Pagination

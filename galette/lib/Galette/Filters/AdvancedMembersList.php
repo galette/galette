@@ -55,22 +55,63 @@ use Galette\Repository\PaymentTypes;
  * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
+ *
+ * @property string $creation_date_begin
+ * @property string $creation_date_end
+ * @property string $modif_date_begin
+ * @property string $modif_date_end
+ * @property string $due_date_begin
+ * @property string $due_date_end
+ * @property string $birth_date_begin
+ * @property string $birth_date_end
+ * @property boolean $show_public_infos
+ * @property array|integer $status
+ * @property string $contrib_creation_date_begin
+ * @property string $contrib_creation_date_end
+ * @property string $contrib_begin_date_begin
+ * @property string $contrib_begin_date_end
+ * @property string $contrib_end_date_begin
+ * @property string $contrib_end_date_end
+ * @property array $contributions_types
+ * @property array $payments_types
+ * @property integer $contrib_min_amount
+ * @property integer $contrib_max_amount
+ * @property string $contrib_dynamic
+ * @property array $free_search
+ * @property array $groups_search
+ * @property integer $groups_search_log_op
+ *
+ * @property-read string $rcreation_date_begin
+ * @property-read string $rcreation_date_end
+ * @property-read string $rmodif_date_begin
+ * @property-read string $rmodif_date_end
+ * @property-read string $rdue_date_begin
+ * @property-read string $rdue_date_end
+ * @property-read string $rbirth_date_begin
+ * @property-read string $rbirth_date_end
+ * @property-read string $rcontrib_creation_date_begin
+ * @property-read string $rcontrib_creation_date_end
+ * @property-read string $rcontrib_begin_date_begin
+ * @property-read string $rcontrib_begin_date_end
+ * @property-read string $rcontrib_end_date_begin
+ * @property-read string $rcontrib_end_date_end
+ * @property-read array $search_fields
  */
 
 class AdvancedMembersList extends MembersList
 {
 
-    const OP_AND = 0;
-    const OP_OR = 1;
+    public const OP_AND = 0;
+    public const OP_OR = 1;
 
-    const OP_EQUALS = 0;
-    const OP_CONTAINS = 1;
-    const OP_NOT_EQUALS = 2;
-    const OP_NOT_CONTAINS = 3;
-    const OP_STARTS_WITH = 4;
-    const OP_ENDS_WITH = 5;
-    const OP_BEFORE = 6;
-    const OP_AFTER = 7;
+    public const OP_EQUALS = 0;
+    public const OP_CONTAINS = 1;
+    public const OP_NOT_EQUALS = 2;
+    public const OP_NOT_CONTAINS = 3;
+    public const OP_STARTS_WITH = 4;
+    public const OP_ENDS_WITH = 5;
+    public const OP_BEFORE = 6;
+    public const OP_AFTER = 7;
 
     private $_creation_date_begin;
     private $_creation_date_end;
