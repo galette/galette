@@ -28,7 +28,7 @@
  * @category  Core
  * @package   Galette
  *
- * @author    Frédéric Jaqcuot <unknown@unknow.com>
+ * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2003-2014 The Galette Team
@@ -48,7 +48,7 @@ use Galette\Entity\Adherent;
  * @category  Core
  * @name      Password
  * @package   Galette
- * @author    Frédéric Jaqcuot <unknown@unknow.com>
+ * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2009-2014 The Galette Team

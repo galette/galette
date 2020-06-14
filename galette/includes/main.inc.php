@@ -102,7 +102,7 @@ if ($needs_update) {
 
 //Session duration
 if (!defined('GALETTE_TIMEOUT')) {
-    //See php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime
+    //See https://php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime
     define('GALETTE_TIMEOUT', 0);
 }
 
