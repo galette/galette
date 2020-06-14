@@ -251,8 +251,7 @@ $(function() {
         event.preventDefault();
         var _this = $(this);
         var _open = _this.attr('aria-expanded');
-        _this.attr('aria-expanded', !open);
-        console.log(_open);
+        _this.attr('aria-expanded', !_open);
         _langs.toggle();
     });
 });
