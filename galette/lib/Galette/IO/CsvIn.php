@@ -424,7 +424,8 @@ class CsvIn extends Csv implements FileInterface
                 $errors = $member->getErrors();
                 if (count($errors) > $errcnt) {
                     $lcnt = ($errcnt > 0 ? $errcnt - 1 : 0);
-                    for ($i = $lcnt; $i < count($errors); ++$i) {
+                    $cnt_err = count($errors);
+                    for ($i = $lcnt; $i < $cnt_err; ++$i) {
                         $this->addError($errors[$i]);
                     }
                     return false;

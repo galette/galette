@@ -305,7 +305,8 @@ class PluginsController extends AbstractController
 
                 $sql_query = split_sql_file($sql_query, ';');
 
-                for ($i = 0; $i < sizeof($sql_query); $i++) {
+                $sql_size = sizeof($sql_query);
+                for ($i = 0; $i < $sql_size; $i++) {
                     $query = trim($sql_query[$i]);
                     if ($query != '' && $query[0] != '-') {
                         //some output infos

@@ -786,7 +786,8 @@ abstract class DynamicField
                     );
                     $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
-                    for ($i = 0; $i < count($this->values); $i++) {
+                    $cnt_values = count($this->values);
+                    for ($i = 0; $i < $cnt_values; $i++) {
                         $stmt->execute(
                             array(
                                 'id'    => $i,

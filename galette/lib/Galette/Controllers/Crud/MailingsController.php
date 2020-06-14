@@ -336,7 +336,8 @@ class MailingsController extends CrudController
 
                 //handle attachments
                 if (isset($_FILES['files'])) {
-                    for ($i = 0; $i < count($_FILES['files']['name']); $i++) {
+                    $cnt_files = count($_FILES['files']['name']);
+                    for ($i = 0; $i < $cnt_files; $i++) {
                         if ($_FILES['files']['error'][$i] === UPLOAD_ERR_OK) {
                             if ($_FILES['files']['tmp_name'][$i] != '') {
                                 if (is_uploaded_file($_FILES['files']['tmp_name'][$i])) {
