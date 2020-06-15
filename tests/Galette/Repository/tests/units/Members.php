@@ -318,6 +318,41 @@ class Members extends atoum
 
         $this->integer($list->count())->isIdenticalTo(2);
 
+        //search on email
+        $filters = new \Galette\Filters\MembersList();
+        $filters->filter_str = '.fr';
+        $filters->field_filter = \Galette\Repository\Members::FILTER_MAIL;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(6);
+
+        //search on name
+        $filters = new \Galette\Filters\MembersList();
+        $filters->filter_str = 'marc';
+        $filters->field_filter = \Galette\Repository\Members::FILTER_NAME;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(4);
+
+        //serch on contribution date
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $contribdate = new \DateTime();
+        $contribdate->modify('+2 days');
+        $filters->contrib_begin_date_begin = $contribdate->format('Y-m-d');
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(0);
+
+        $contribdate->modify('-5 days');
+        $filters->contrib_begin_date_begin = $contribdate->format('Y-m-d');
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+        $this->integer($list->count())->isIdenticalTo(1);
+
+        //not filtered list
         $members = new \Galette\Repository\Members();
         $list = $members->getList(true);
 
@@ -325,6 +360,7 @@ class Members extends atoum
             ->hasSize(10)
             ->object[0]->isInstanceOf('\Galette\Entity\Adherent');
 
+        //get list with specified fields
         $members = new \Galette\Repository\Members();
         $list = $members->getList(false, ['nom_adh', 'ville_adh']);
         $this->integer($list->count())->isIdenticalTo(10);
