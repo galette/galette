@@ -294,7 +294,7 @@ class DynamicFieldsHandle
                             'where3'    => $value['field_form'],
                             'where4'    => $value['old_val_index'] ?? $value['val_index']
                         ];
-                        $this->getUpdateStatement()->execute($value);
+                        $this->getUpdateStatement()->execute($params);
                         $this->has_changed = true;
                     }
                 }
