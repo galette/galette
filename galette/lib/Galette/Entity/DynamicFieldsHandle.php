@@ -37,6 +37,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
+use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 use Galette\Core\Db;
@@ -67,7 +68,7 @@ use Galette\Repository\DynamicFieldsSet;
 
 class DynamicFieldsHandle
 {
-    const TABLE = 'dynamic_fields';
+    public const TABLE = 'dynamic_fields';
 
     private $dynamic_fields = [];
     private $current_values = [];
@@ -281,44 +282,19 @@ class DynamicFieldsHandle
                     }
 
                     if (isset($value['is_new'])) {
-                        if ($this->insert_stmt === null) {
-                            $insert = $this->zdb->insert(self::TABLE);
-                            $insert->values([
-                                'item_id'       => ':item_id',
-                                'field_id'      => ':field_id',
-                                'field_form'    => ':field_form',
-                                'val_index'     => ':val_index',
-                                'field_val'     => ':field_val'
-                            ]);
-                            $this->insert_stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
-                        }
                         unset($value['is_new']);
-                        $this->insert_stmt->execute($value);
+                        $this->getInsertStatement()->execute($value);
                         $this->has_changed = true;
                     } else {
-                        if ($this->update_stmt === null) {
-                            $update = $this->zdb->update(self::TABLE);
-                            $update->set([
-                                'field_val'     => ':field_val',
-                                'val_index'     => ':val_index'
-                            ])->where([
-                                'item_id'       => ':item_id',
-                                'field_id'      => ':field_id',
-                                'field_form'    => ':field_form',
-                                'val_index'     => ':val_index'
-                            ]);
-                            $this->update_stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
-                        }
                         $params = [
                             'field_val' => $value['field_val'],
                             'val_index' => $value['val_index'],
                             'where1'    => $value['item_id'],
                             'where2'    => $value['field_id'],
                             'where3'    => $value['field_form'],
-                            'where4'    => isset($value['old_val_index']) ?
-                                $value['old_val_index'] : $value['val_index']
+                            'where4'    => $value['old_val_index'] ?? $value['val_index']
                         ];
-                        $this->update_stmt->execute($params);
+                        $this->getUpdateStatement()->execute($value);
                         $this->has_changed = true;
                     }
                 }
@@ -344,6 +320,50 @@ class DynamicFieldsHandle
             unset($this->update_stmt);
             unset($this->insert_stmt);
         }
+    }
+
+    /**
+     * Get (and prepare if not done yet) insert statement
+     *
+     * @return StatementInterface
+     */
+    private function getInsertStatement(): StatementInterface
+    {
+        if ($this->insert_stmt === null) {
+            $insert = $this->zdb->insert(self::TABLE);
+            $insert->values([
+                'item_id'       => ':item_id',
+                'field_id'      => ':field_id',
+                'field_form'    => ':field_form',
+                'val_index'     => ':val_index',
+                'field_val'     => ':field_val'
+            ]);
+            $this->insert_stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
+        }
+        return $this->insert_stmt;
+    }
+
+    /**
+     * Get (and prepare if not done yet) update statement
+     *
+     * @return StatementInterface
+     */
+    private function getUpdateStatement(): StatementInterface
+    {
+        if ($this->update_stmt === null) {
+            $update = $this->zdb->update(self::TABLE);
+            $update->set([
+                'field_val'     => ':field_val',
+                'val_index'     => ':val_index'
+            ])->where([
+                'item_id'       => ':item_id',
+                'field_id'      => ':field_id',
+                'field_form'    => ':field_form',
+                'val_index'     => ':val_index'
+            ]);
+            $this->update_stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
+        }
+        return $this->update_stmt;
     }
 
     /**
