@@ -459,7 +459,7 @@ class FieldsConfig
      *
      * @param Login   $login Login instance
      * @param boolean $new   True when adding a new member
-     * @param boolean $selfs True if we're called from self subscirption page
+     * @param boolean $selfs True if we're called from self subscription page
      *
      * @return array
      */

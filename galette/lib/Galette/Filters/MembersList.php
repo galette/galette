@@ -58,7 +58,7 @@ use Galette\Repository\Members;
  * @property string $membership_filter
  * @property integer $filter_account
  * @property string $email_filter
- * @property group_filter $group_filter
+ * @property integer $group_filter
  * @property array $selected
  * @property array $unreachable
  * @property string $query
