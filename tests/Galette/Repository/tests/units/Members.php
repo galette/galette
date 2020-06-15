@@ -146,6 +146,9 @@ class Members extends atoum
                 $this->history
             );
 
+            if (isset($test_member['societe_adh'])) {
+                $test_member['is_company'] = true;
+            }
             $this->boolean($member->check($test_member, [], []))->isTrue();
             $this->boolean($member->store())->isTrue();
             $mids[] = $member->id;
@@ -197,31 +200,6 @@ class Members extends atoum
         }
 
         $this->mids = $mids;
-
-        /*$fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
-        $fakedata
-            ->setSeed($this->seed)
-            ->setNbMembers(10)
-            ->setWithPhotos(true)
-            ->setNbGroups(0)
-            ->setNbTransactions(0)
-            ->setMaxContribs(0)
-            ->setDependencies(
-                $this->preferences,
-                $this->members_fields,
-                $this->history,
-                $this->login
-            );
-
-        $fakedata->generate();
-
-        $report = $fakedata->getReport();
-
-        $this->array($report['success'])->hasSize(2);
-        $this->array($report['errors'])->hasSize(0);
-        $this->array($report['warnings'])->hasSize(0);
-
-        $this->mids = $fakedata->getMembersIds();*/
     }
 
     /**
@@ -309,6 +287,30 @@ class Members extends atoum
 
         $this->integer($list->count())->isIdenticalTo(1);
 
+        //Filter with email
+        $filters = new \Galette\Filters\MembersList();
+        $filters->email_filter = \Galette\Repository\Members::FILTER_W_EMAIL;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(10);
+
+        //Filter without email
+        $filters = new \Galette\Filters\MembersList();
+        $filters->email_filter = \Galette\Repository\Members::FILTER_WO_EMAIL;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(0);
+
+        //Search on job
+        $filters = new \Galette\Filters\MembersList();
+        $filters->filter_str = 'eur';
+        $filters->field_filter = \Galette\Repository\Members::FILTER_JOB;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(3);
         //Search on address
         $filters = new \Galette\Filters\MembersList();
         $filters->filter_str = 'avenue';
@@ -334,7 +336,93 @@ class Members extends atoum
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
 
-        $this->integer($list->count())->isIdenticalTo(4);
+        //search on company
+        $filters = new \Galette\Filters\MembersList();
+        $filters->filter_str = 'Galette';
+        $filters->field_filter = \Galette\Repository\Members::FILTER_COMPANY_NAME;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(2);
+
+        //search on infos
+        $filters = new \Galette\Filters\MembersList();
+        $filters->filter_str = 'any';
+        $filters->field_filter = \Galette\Repository\Members::FILTER_INFOS;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(0);
+
+        //search on member number
+        $filters = new \Galette\Filters\MembersList();
+        $filters->filter_str = $this->mids[2];
+        $filters->field_filter = \Galette\Repository\Members::FILTER_NUMBER;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(1);
+
+        //search on membership
+        $filters = new \Galette\Filters\MembersList();
+        $filters->membership_filter = \Galette\Repository\Members::MEMBERSHIP_UP2DATE;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(2);
+
+        //membership staff
+        $filters->membership_filter = \Galette\Repository\Members::MEMBERSHIP_STAFF;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(1);
+
+        //membership admin
+        $filters->membership_filter = \Galette\Repository\Members::MEMBERSHIP_ADMIN;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(1);
+
+        //membership never
+        $filters->membership_filter = \Galette\Repository\Members::MEMBERSHIP_NEVER;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(8);
+
+        //membership never
+        $filters->membership_filter = \Galette\Repository\Members::MEMBERSHIP_NONE;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(5);
+
+        //membership late
+        $filters->membership_filter = \Galette\Repository\Members::MEMBERSHIP_LATE;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(0);
+
+        //membership never
+        $filters->membership_filter = \Galette\Repository\Members::MEMBERSHIP_NEARLY;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(0);
+
+        //Search on groups
+        //group is ignored if it does not exists
+        /*$filters = new \Galette\Filters\MembersList();
+        $filters->group_filter = 3;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(0);*/
+
+        // ADVANCED SEARCH
 
         //serch on contribution date
         $filters = new \Galette\Filters\AdvancedMembersList();
