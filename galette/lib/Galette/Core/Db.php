@@ -38,6 +38,9 @@ namespace Galette\Core;
 
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\Driver\DriverInterface;
+use Laminas\Db\Adapter\Driver\ConnectionInterface;
+use Laminas\Db\Adapter\Platform\PlatformInterface;
 use Laminas\Db\Sql\Sql;
 
 /**
@@ -51,13 +54,26 @@ use Laminas\Db\Sql\Sql;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://framework.zend.com/apidoc/2.2/namespaces/Zend.Db.html
  * @since     Available since 0.7dev - 2011-07-27
+ *
+ * @property Adapter $db
+ * @property Sql $sql
+ * @property DriverInterface $driver
+ * @property ConnectionInterface $connection
+ * @property PlatformInterface $platform
+ * @property string $query_string
+ * @property string $type_db
  */
 class Db
 {
+    /** @var Adapter */
     private $db;
+    /** @var string */
     private $type_db;
+    /** @var Sql */
     private $sql;
+    /** @var array */
     private $options;
+    /** @var string */
     private $last_query;
 
     public const MYSQL = 'mysql';
