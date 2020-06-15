@@ -787,7 +787,7 @@ class Db
     public function execute($sql)
     {
         try {
-            $query_string = $this->sql->getSqlStringForSqlObject($sql);
+            $query_string = $this->sql->buildSqlString($sql);
             $this->last_query = $query_string;
             Analog::log(
                 'Executing query: ' . $query_string,
