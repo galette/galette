@@ -301,99 +301,123 @@ class Pdf extends \TCPDF
     public function PageHeader($title = null) // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         if (isset($this->model)) {
-            $html = null;
-            if (trim($this->model->hstyles) !== '') {
-                $html .= "<style>\n" . $this->model->hstyles . "\n</style>\n\n";
-            }
-            $html .= "<div dir=\"" . ($this->i18n->isRTL() ? 'rtl' : 'ltr') . "\">" . $this->model->hheader . "</div>";
-            $this->writeHtml($html, true, false, true, false, '');
-
-            if ($title !== null) {
-                $this->writeHtml('<h2 style="text-align:center;">' . $title . '</h2>');
-            }
-
-            if (trim($this->model->title) !== '') {
-                $htitle = '';
-                if (trim($this->model->hstyles) !== '') {
-                    $htitle .= "<style>\n" . $this->model->hstyles .
-                        "\n</style>\n\n";
-                }
-                $htitle .= '<div id="pdf_title">' . $this->model->htitle . '</div>';
-                $this->writeHtml($htitle);
-            }
-            if (trim($this->model->subtitle) !== '') {
-                $hsubtitle = '';
-                if (trim($this->model->hstyles) !== '') {
-                    $hsubtitle .= "<style>\n" . $this->model->hstyles .
-                        "\n</style>\n\n";
-                }
-                $hsubtitle .= '<div id="pdf_subtitle">' . $this->model->hsubtitle .
-                    '</div>';
-                $this->writeHtml($hsubtitle);
-            }
-            if (
-                trim($this->model->title) !== ''
-                || trim($this->model->subtitle) !== ''
-            ) {
-                $this->Ln(5);
-            }
+            $this->modelPageHeader($title);
         } else {
-            //default header
-            $print_logo = new \Galette\Core\PrintLogo();
-            $logofile = $print_logo->getPath();
+            $this->standardPageHeader($title);
+        }
+    }
 
-            // Set logo size to max width 30 mm or max height 25 mm
-            $ratio = $print_logo->getWidth() / $print_logo->getHeight();
-            if ($ratio < 1) {
-                if ($print_logo->getHeight() > 16) {
-                    $hlogo = 25;
-                } else {
-                    $hlogo = $print_logo->getHeight();
-                }
-                $wlogo = round($hlogo * $ratio);
+    /**
+     * Draws models PDF page header
+     *
+     * @param string $title Additionnal title to display just after logo
+     *
+     * @return void
+     */
+    protected function modelPageHeader($title = null)
+    {
+        $html = null;
+        if (trim($this->model->hstyles) !== '') {
+            $html .= "<style>\n" . $this->model->hstyles . "\n</style>\n\n";
+        }
+        $html .= "<div dir=\"" . ($this->i18n->isRTL() ? 'rtl' : 'ltr') . "\">" . $this->model->hheader . "</div>";
+        $this->writeHtml($html, true, false, true, false, '');
+
+        if ($title !== null) {
+            $this->writeHtml('<h2 style="text-align:center;">' . $title . '</h2>');
+        }
+
+        if (trim($this->model->title) !== '') {
+            $htitle = '';
+            if (trim($this->model->hstyles) !== '') {
+                $htitle .= "<style>\n" . $this->model->hstyles .
+                    "\n</style>\n\n";
+            }
+            $htitle .= '<div id="pdf_title">' . $this->model->htitle . '</div>';
+            $this->writeHtml($htitle);
+        }
+        if (trim($this->model->subtitle) !== '') {
+            $hsubtitle = '';
+            if (trim($this->model->hstyles) !== '') {
+                $hsubtitle .= "<style>\n" . $this->model->hstyles .
+                    "\n</style>\n\n";
+            }
+            $hsubtitle .= '<div id="pdf_subtitle">' . $this->model->hsubtitle .
+                '</div>';
+            $this->writeHtml($hsubtitle);
+        }
+        if (
+            trim($this->model->title) !== ''
+            || trim($this->model->subtitle) !== ''
+        ) {
+            $this->Ln(5);
+        }
+    }
+
+    /**
+     * Draws standard PDF page header
+     *
+     * @param string $title Additionnal title to display just after logo
+     *
+     * @return void
+     */
+    protected function standardPageHeader($title = null)
+    {
+        //default header
+        $print_logo = new \Galette\Core\PrintLogo();
+        $logofile = $print_logo->getPath();
+
+        // Set logo size to max width 30 mm or max height 25 mm
+        $ratio = $print_logo->getWidth() / $print_logo->getHeight();
+        if ($ratio < 1) {
+            if ($print_logo->getHeight() > 16) {
+                $hlogo = 25;
             } else {
-                if ($print_logo->getWidth() > 16) {
-                    $wlogo = 30;
-                } else {
-                    $wlogo = $print_logo->getWidth();
-                }
-                $hlogo = round($wlogo / $ratio);
+                $hlogo = $print_logo->getHeight();
             }
-
-            $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 4);
-            $this->SetTextColor(0, 0, 0);
-
-            $y = $this->GetY();
-            $this->Ln(2);
-            $ystart = $this->GetY();
-
-            $this->MultiCell(
-                180 - $wlogo,
-                6,
-                $this->preferences->pref_nom,
-                0,
-                ($this->i18n->isRTL() ? 'R' : 'L')
-            );
-            $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
-
-            if ($title !== null) {
-                $this->Cell(0, 6, $title, 0, 1, ($this->i18n->isRTL() ? 'R' : 'L'), 0);
-            }
-            $yend = $this->getY(); //store position at the end of the text
-
-            $this->SetY($ystart);
-            if ($this->i18n->isRTL()) {
-                $x = $this->getX();
+            $wlogo = round($hlogo * $ratio);
+        } else {
+            if ($print_logo->getWidth() > 16) {
+                $wlogo = 30;
             } else {
-                $x = 190 - $wlogo; //right align
+                $wlogo = $print_logo->getWidth();
             }
-            $this->Image($logofile, $x, $this->GetY(), $wlogo, $hlogo);
-            $this->y += $hlogo + 3;
-            //if position after logo is < than position after text,
-            //we have to change y
-            if ($this->getY() < $yend) {
-                $this->setY($yend);
-            }
+            $hlogo = round($wlogo / $ratio);
+        }
+
+        $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 4);
+        $this->SetTextColor(0, 0, 0);
+
+        $y = $this->GetY();
+        $this->Ln(2);
+        $ystart = $this->GetY();
+
+        $this->MultiCell(
+            180 - $wlogo,
+            6,
+            $this->preferences->pref_nom,
+            0,
+            ($this->i18n->isRTL() ? 'R' : 'L')
+        );
+        $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
+
+        if ($title !== null) {
+            $this->Cell(0, 6, $title, 0, 1, ($this->i18n->isRTL() ? 'R' : 'L'), 0);
+        }
+        $yend = $this->getY(); //store position at the end of the text
+
+        $this->SetY($ystart);
+        if ($this->i18n->isRTL()) {
+            $x = $this->getX();
+        } else {
+            $x = 190 - $wlogo; //right align
+        }
+        $this->Image($logofile, $x, $this->GetY(), $wlogo, $hlogo);
+        $this->y += $hlogo + 3;
+        //if position after logo is < than position after text,
+        //we have to change y
+        if ($this->getY() < $yend) {
+            $this->setY($yend);
         }
     }
 
