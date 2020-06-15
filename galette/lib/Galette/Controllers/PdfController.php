@@ -585,11 +585,9 @@ class PdfController extends AbstractController
             $type = (int)$post['model_type'];
         }
 
+        $error_detected = [];
         if ($type === null) {
-            $this->flash->addMessage(
-                'error_detected',
-                _T("Missing PDF model type!")
-            );
+            $error_detected[] = _T("Missing PDF model type!");
         } else {
             $class = PdfModel::getTypeClass($type);
             if (isset($post[PdfModel::PK])) {
@@ -621,13 +619,19 @@ class PdfController extends AbstractController
                         _T("Model has been successfully stored!")
                     );
                 } else {
-                    $this->flash->addMessage(
-                        'error_detected',
-                        _T("Model has not been stored :(")
-                    );
+                    $error_detected[] = _T("Model has not been stored :(");
                 }
             } catch (\Exception $e) {
                 $error_detected[] = $e->getMessage();
+            }
+        }
+
+        if (count($error_detected) > 0) {
+            foreach ($error_detected as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
             }
         }
 
