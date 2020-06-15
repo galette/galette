@@ -132,8 +132,73 @@ class Members extends atoum
             $this->boolean($res)->isTrue();
         }
 
-        $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
 
+        $tests_members = json_decode(file_get_contents(GALETTE_TESTS_PATH . '/fixtures/tests_members.json'));
+
+        $mids = [];
+        $first = true;
+        foreach ($tests_members as $test_member) {
+            $test_member = (array)$test_member;
+            $member = new \Galette\Entity\Adherent($this->zdb);
+            $member->setDependencies(
+                $this->preferences,
+                $this->members_fields,
+                $this->history
+            );
+
+            $this->boolean($member->check($test_member, [], []))->isTrue();
+            $this->boolean($member->store())->isTrue();
+            $mids[] = $member->id;
+
+            //set first member displayed publically an active and up to date member
+            if ($member->appearsInMembersList() && !$member->isDueFree() && $first === true) {
+                $first = false;
+                $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+
+
+                $now = new \DateTime();
+                $bdate = clone $now;
+                $bdate->modify('-1 day');
+                $edate = clone $bdate;
+                $edate->modify('+1 year');
+
+                $cdata = [
+                    \Galette\Entity\Adherent::PK    => $member->id,
+                    'type_paiement_cotis'           => \Galette\Entity\PaymentType::CASH,
+                    'montant_cotis'                 => 20,
+                    'date_enreg'                    => $bdate->format('Y-m-d'),
+                    'date_debut_cotis'              => $bdate->format('Y-m-d'),
+                    'date_fin_cotis'                => $edate->format('Y-m-d'),
+                    \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+                ];
+                $check = $contrib->check($cdata, [], []);
+                $this->boolean($contrib->check($cdata, [], []))->isTrue();
+                $this->boolean($contrib->store())->isTrue();
+            }
+
+            //only one member is due free. add him a photo.
+            if ($member->isDueFree()) {
+                $file = GALETTE_TEMPIMAGES_PATH . 'fakephoto.jpg';
+                $url = GALETTE_ROOT . '../tests/fake_image.jpg';
+
+                $copied = copy($url, $file);
+                $this->boolean($copied)->isTrue();
+                $_FILES = array(
+                    'photo' => array(
+                        'name'      => 'fakephoto.jpg',
+                        'type'      => 'image/jpeg',
+                        'size'      => filesize($file),
+                        'tmp_name'  => $file,
+                        'error'     => 0
+                    )
+                );
+                $this->integer((int)$member->picture->store($_FILES['photo'], true))->isGreaterThan(0);
+            }
+        }
+
+        $this->mids = $mids;
+
+        /*$fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
         $fakedata
             ->setSeed($this->seed)
             ->setNbMembers(10)
@@ -156,7 +221,7 @@ class Members extends atoum
         $this->array($report['errors'])->hasSize(0);
         $this->array($report['warnings'])->hasSize(0);
 
-        $this->mids = $fakedata->getMembersIds();
+        $this->mids = $fakedata->getMembersIds();*/
     }
 
     /**
@@ -304,7 +369,7 @@ class Members extends atoum
         $members = new \Galette\Repository\Members();
 
         $list = $members->getPublicList(false);
-        $this->array($list)->hasSize(1);
+        $this->array($list)->hasSize(2);
 
         $adh = $list[0];
 
