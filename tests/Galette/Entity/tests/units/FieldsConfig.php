@@ -493,6 +493,48 @@ class FieldsConfig extends atoum
         $this->integer($elements['fieldsets'][1]->id)->isIdenticalTo(3);
         $this->array($elements['fieldsets'][1]->elements)->hasSize(11);
 
+        $mail = $elements['fieldsets'][1]->elements['email_adh'];
+        $this->boolean($mail->required)->isFalse(); //email is not required per default
+
+        $this->object($elements['fieldsets'][2])->isInstanceOf('\stdClass');
+        $this->integer($elements['fieldsets'][2]->id)->isIdenticalTo(2);
+        $this->array($elements['fieldsets'][2]->elements)
+            ->hasSize(4)
+            ->notHasKey('info_adh');
+
+        $login = $elements['fieldsets'][2]->elements['login_adh'];
+        $this->boolean($login->required)->isTrue();
+        $pass  = $elements['fieldsets'][2]->elements['mdp_adh'];
+        $this->boolean($pass->required)->isTrue();
+
+        $this->array($elements['hiddens'])
+            ->hasSize(2);
+
+        //form elements for self subscription
+        $no_login = new \mock\Galette\Core\Login(
+            $this->zdb,
+            new \Galette\Core\I18n(),
+            $session
+        );
+        $elements = $fields_config->getFormElements($no_login, false, true);
+        $this->array($elements)
+            ->hasSize(2)
+            ->hasKeys(['fieldsets', 'hiddens']);
+
+        $this->array($elements['fieldsets'])
+            ->hasSize(3);
+
+        $this->object($elements['fieldsets'][0])->isInstanceOf('\stdClass');
+        $this->integer($elements['fieldsets'][0]->id)->isIdenticalTo(1);
+        $this->array($elements['fieldsets'][0]->elements)->hasSize(10);
+
+        $this->object($elements['fieldsets'][1])->isInstanceOf('\stdClass');
+        $this->integer($elements['fieldsets'][1]->id)->isIdenticalTo(3);
+        $this->array($elements['fieldsets'][1]->elements)->hasSize(11);
+
+        $mail = $elements['fieldsets'][1]->elements['email_adh'];
+        $this->boolean($mail->required)->isTrue(); //email is required for self subscription
+
         $this->object($elements['fieldsets'][2])->isInstanceOf('\stdClass');
         $this->integer($elements['fieldsets'][2]->id)->isIdenticalTo(2);
         $this->array($elements['fieldsets'][2]->elements)
@@ -500,6 +542,6 @@ class FieldsConfig extends atoum
             ->notHasKey('info_adh');
 
         $this->array($elements['hiddens'])
-            ->hasSize(2);
+             ->hasSize(2);
     }
 }

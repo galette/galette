@@ -571,6 +571,13 @@ class FieldsConfig
                             $o->disabled = false;
                         }
 
+                        if ($selfs === true) {
+                            //email, login and password are always required for self subscription
+                            $srequireds = ['email_adh', 'mdp_adh', 'login_adh'];
+                            if (in_array($o->field_id, $srequireds)) {
+                                $o->required = true;
+                            }
+                        }
                         $cat->elements[$o->field_id] = $o;
                     }
                 }
