@@ -158,7 +158,6 @@ class Members extends atoum
                 $first = false;
                 $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
 
-
                 $now = new \DateTime();
                 $bdate = clone $now;
                 $bdate->modify('-1 day');
@@ -174,7 +173,6 @@ class Members extends atoum
                     'date_fin_cotis'                => $edate->format('Y-m-d'),
                     \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
                 ];
-                $check = $contrib->check($cdata, [], []);
                 $this->boolean($contrib->check($cdata, [], []))->isTrue();
                 $this->boolean($contrib->store())->isTrue();
             }
@@ -275,6 +273,8 @@ class Members extends atoum
         $filters = new \Galette\Filters\MembersList();
         $filters->filter_account = \Galette\Repository\Members::ACTIVE_ACCOUNT;
         $members = new \Galette\Repository\Members($filters);
+        $this->object($members->getFilters())->isIdenticalTo($filters);
+        $this->array($members->getErrors())->isEmpty();
         $list = $members->getList();
 
         $this->integer($list->count())->isIdenticalTo(9);
@@ -414,7 +414,7 @@ class Members extends atoum
         $this->integer($list->count())->isIdenticalTo(0);
 
         //Search on groups
-        //group is ignored if it does not exists
+        //group is ignored if it does not exists... TODO: create a group
         /*$filters = new \Galette\Filters\MembersList();
         $filters->group_filter = 3;
         $members = new \Galette\Repository\Members($filters);
@@ -424,7 +424,7 @@ class Members extends atoum
 
         // ADVANCED SEARCH
 
-        //serch on contribution date
+        //search on contribution begin date
         $filters = new \Galette\Filters\AdvancedMembersList();
         $contribdate = new \DateTime();
         $contribdate->modify('+2 days');
@@ -439,6 +439,125 @@ class Members extends atoum
         $members = new \Galette\Repository\Members($filters);
         $list = $members->getList();
         $this->integer($list->count())->isIdenticalTo(1);
+
+        //search on contribution end date
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        //$contribdate = new \DateTime();
+        //$contribdate->modify('+2 years');
+        $filters->contrib_begin_date_end = $contribdate->format('Y-m-d');
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(0);
+
+        $contribdate->modify('+5 days');
+        $filters->contrib_begin_date_end = $contribdate->format('Y-m-d');
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+        $this->integer($list->count())->isIdenticalTo(1);
+
+        //search on public info visibility
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->show_public_infos = \Galette\Repository\Members::FILTER_W_PUBINFOS;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(6);
+
+        $filters->show_public_infos = \Galette\Repository\Members::FILTER_WO_PUBINFOS;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(4);
+
+        $filters->show_public_infos = \Galette\Repository\Members::FILTER_DC_PUBINFOS;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(10);
+
+        //search on status
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->status = \Galette\Entity\Status::DEFAULT_STATUS;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(5);
+
+        //search on contribution amount
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->contrib_min_amount = 30.0;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(0);
+
+        $filters->contrib_min_amount = 20.0;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(1);
+
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->contrib_max_amount = 5.0;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(0);
+
+        $filters->contrib_max_amount = 20.0;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(1);
+
+        //search on contribution type
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->contributions_types = \Galette\Entity\ContributionsTypes::DEFAULT_TYPE;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(1);
+
+        $filters->contributions_types = [
+            \Galette\Entity\ContributionsTypes::DEFAULT_TYPE,
+            \Galette\Entity\ContributionsTypes::DEFAULT_TYPE + 1
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(1);
+
+        $filters->contributions_types = \Galette\Entity\ContributionsTypes::DEFAULT_TYPE + 1;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(0);
+
+        //search on payment type
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->payments_types = \Galette\Entity\PaymentType::CASH;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(1);
+
+        $filters->payments_types = [
+            \Galette\Entity\PaymentType::CASH,
+            \Galette\Entity\PaymentType::CHECK
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(1);
+
+        $filters->payments_types = [
+            \Galette\Entity\PaymentType::CHECK
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(0);
 
         //not filtered list
         $members = new \Galette\Repository\Members();
@@ -481,6 +600,19 @@ class Members extends atoum
 
         $list = $members->getList();
         $this->integer($list->count())->isIdenticalTo(8);
+
+        //search on infos - as admin
+        global $login;
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->calling($login)->isAdmin = true;
+
+        $filters = new \Galette\Filters\MembersList();
+        $filters->filter_str = 'any';
+        $filters->field_filter = \Galette\Repository\Members::FILTER_INFOS;
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getList();
+
+        $this->integer($list->count())->isIdenticalTo(0);
     }
 
     /**
@@ -522,6 +654,7 @@ class Members extends atoum
         $members = new \Galette\Repository\Members();
         $list = $members->getList(true);
         $this->integer(count($list))->isIdenticalTo(10);
+        $this->integer($members->getCount())->isIdenticalTo(10);
 
         $group = new \Galette\Entity\Group();
         $group->setName('World');
@@ -640,5 +773,83 @@ class Members extends atoum
         $list = $members->getList();
 
         $this->integer($list->count())->isIdenticalTo(1);
+    }
+
+    /**
+     * Test reminders count
+     *
+     * @return void
+     */
+    public function testGetRemindersCount()
+    {
+        $members = new \Galette\Repository\Members();
+        $counts = $members->getRemindersCount();
+        $this->array($counts)->hasSize(3)
+            ->hasKeys(['impending', 'nomail', 'late']);
+        $this->integer((int)$counts['impending'])->isIdenticalTo(0);
+        $this->integer((int)$counts['late'])->isIdenticalTo(0);
+        $this->integer((int)$counts['nomail']['impending'])->isIdenticalTo(0);
+        $this->integer((int)$counts['nomail']['late'])->isIdenticalTo(0);
+
+        //create an expired contribution
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $now = new \DateTime();
+        $edate = clone $now;
+        $edate->modify('+6 days');
+        $bdate = clone $edate;
+        $bdate->modify('-1 year');
+
+        $cdata = [
+            \Galette\Entity\Adherent::PK    => $this->mids[9],
+            'type_paiement_cotis'           => \Galette\Entity\PaymentType::CASH,
+            'montant_cotis'                 => 20,
+            'date_enreg'                    => $bdate->format('Y-m-d'),
+            'date_debut_cotis'              => $bdate->format('Y-m-d'),
+            'date_fin_cotis'                => $edate->format('Y-m-d'),
+            \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+        ];
+        $this->boolean($contrib->check($cdata, [], []))->isTrue();
+        $this->boolean($contrib->store())->isTrue();
+
+        $counts = $members->getRemindersCount();
+        $this->array($counts)->hasSize(3)
+            ->hasKeys(['impending', 'nomail', 'late']);
+        $this->integer((int)$counts['impending'])->isIdenticalTo(1);
+        $this->integer((int)$counts['late'])->isIdenticalTo(0);
+        $this->integer((int)$counts['nomail']['impending'])->isIdenticalTo(0);
+        $this->integer((int)$counts['nomail']['late'])->isIdenticalTo(0);
+    }
+
+    /**
+     * Test selectized members
+     *
+     * @return void
+     */
+    public function testGetSelectizedMembers()
+    {
+        $members = new \Galette\Repository\Members();
+        $selectized = $members->getSelectizedMembers($this->zdb);
+        $this->array($selectized)->hasSize(10);
+    }
+
+    /**
+     * Test getArrayList
+     *
+     * @return void
+     */
+    public function testGetArrayList()
+    {
+        $members = new \Galette\Repository\Members();
+
+        $this->boolean($members->getArrayList($this->mids[0]))->isFalse();
+
+        $selected = [
+            $this->mids[0],
+            $this->mids[3],
+            $this->mids[6],
+            $this->mids[9]
+        ];
+        $list = $members->getArrayList($selected, ['nom_adh', 'prenom_adh']);
+        $this->array($list)->hasSize(4);
     }
 }
