@@ -41,6 +41,8 @@ use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\Driver\DriverInterface;
 use Laminas\Db\Adapter\Driver\ConnectionInterface;
 use Laminas\Db\Adapter\Platform\PlatformInterface;
+use Laminas\Db\Sql\Insert;
+use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Sql;
 
 /**
@@ -806,7 +808,7 @@ class Db
                 $msg . ' ' . $e->__toString(),
                 Analog::ERROR
             );
-            if ($this->isDuplicateException($e)) {
+            if ($sql instanceof Insert && $this->isDuplicateException($e)) {
                 throw new \OverflowException('Duplicate entry', 0, $e);
             }
             throw $e;
