@@ -548,13 +548,9 @@ class Members
                 false
             );
             $select->where->in('a.' . self::PK, $ids);
-            if ($orderby != null && count($orderby) > 0) {
-                if (is_array($orderby)) {
-                    foreach ($orderby as $o) {
-                        $select->order($o);
-                    }
-                } else {
-                    $select->order($orderby);
+            if (is_array($orderby) && count($orderby) > 0) {
+                foreach ($orderby as $o) {
+                    $select->order($o);
                 }
             }
 
