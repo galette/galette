@@ -1,5 +1,5 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020.
-# Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2019.
+# Adolfo Jayme Barrientos <fitojb@ubuntu.com>, 2019, 2020.
 # anonymous <noreply@weblate.org>, 2020.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 msgid ""
@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: 2019-10-17 08:02+0200\n"
-"PO-Revision-Date: 2020-04-27 12:37+0000\n"
-"Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2020-06-16 15:28+0000\n"
+"Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -16,15 +16,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.0.2-dev\n"
+"X-Generator: Weblate 4.1.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
-msgstr ""
+msgstr "Error de Galette"
 
 #: ../lib/Galette/Handlers/NotFound.php:80 ../templates/default/404.tpl:19
 msgid "Page not found"
-msgstr ""
+msgstr "No se encontró la página"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:133
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:233
@@ -33,7 +33,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:166
 msgid "Transaction"
-msgstr ""
+msgstr "Transacción"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:168
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1140
@@ -45,7 +45,7 @@ msgstr "modificación"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1142
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:124
 msgid "creation"
-msgstr ""
+msgstr "creación"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:237
 msgid "Transaction ID cannot ben set while adding!"
@@ -53,61 +53,60 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:287
 msgid "An error occurred while storing the transaction."
-msgstr ""
+msgstr "Se ha producido un error al almacenar la transacción."
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:315
 msgid "Transaction has been successfully stored"
-msgstr ""
+msgstr "Se ha almacenado la transacción correctamente"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:364
 msgid "Unable to attach contribution to transaction"
-msgstr ""
+msgstr "No se ha podido adjuntar la contribución a la transacción"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:369
 msgid "Contribution has been successfully attached to current transaction"
-msgstr ""
+msgstr "Se ha adjuntado la contribución a la transacción actual correctamente"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:395
 msgid "Unable to detach contribution from transaction"
-msgstr ""
+msgstr "No se ha podido desadjuntar la contribución de la transacción"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:400
 msgid "Contribution has been successfully detached from current transaction"
 msgstr ""
+"Se ha desadjuntado la contribución de la transacción actual correctamente"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:120
 msgid "Payment types management"
-msgstr ""
+msgstr "Gestión de tipos de pago"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:162
 msgid "Edit payment type"
-msgstr ""
+msgstr "Editar tipo de pago"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:215
 msgid "Payment type '%s' has not been added!"
-msgstr ""
+msgstr "No se ha añadido el tipo de pago «%s»."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:224
-#, fuzzy
-#| msgid "%type #%id has not been updated"
 msgid "Payment type '%s' has not been modified!"
-msgstr "%type n.º %id no se ha actualizado"
+msgstr "No se ha modificado el tipo de pago «%s»."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:237
 msgid "Payment type '%s' has been successfully added."
-msgstr ""
+msgstr "Se ha añadido el tipo de pago «%s» correctamente."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:246
 msgid "Payment type '%s' has been successfully modified."
-msgstr ""
+msgstr "Se ha modificado el tipo de pago «%s» correctamente."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:309
 msgid "Remove payment type %1$s"
-msgstr ""
+msgstr "Quitar tipo de pago %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:125
 msgid "Group name is missing!"
-msgstr ""
+msgstr "Falta el nombre del grupo."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:188
 #: ../templates/default/desktop.tpl:31
@@ -121,11 +120,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:379
 msgid "An error occurred while storing the group."
-msgstr ""
+msgstr "Se ha producido un error al almacenar el grupo."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:471
 msgid "Remove group %1$s"
-msgstr ""
+msgstr "Quitar grupo %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:494
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
@@ -145,7 +144,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:203
 msgid "Mailing"
-msgstr ""
+msgstr "Correspondencia"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:300
 msgid "Please type an object for the message."
@@ -153,7 +152,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:306
 msgid "Please enter a message."
-msgstr ""
+msgstr "Escriba un mensaje."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:398
 msgid "Mailing has been successfully sent!"
@@ -166,7 +165,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:509
 #: ../templates/default/desktop.tpl:35
 msgid "Mailings"
-msgstr ""
+msgstr "Correspondencias"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:547
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:417
@@ -176,7 +175,7 @@ msgstr ""
 #: ../lib/Galette/Filters/MailingsList.php:235
 #: ../lib/Galette/Filters/ContributionsList.php:255
 msgid "start date filter"
-msgstr ""
+msgstr "filtro de fecha de inicio"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:551
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:421
@@ -186,7 +185,7 @@ msgstr ""
 #: ../lib/Galette/Filters/MailingsList.php:238
 #: ../lib/Galette/Filters/ContributionsList.php:258
 msgid "end date filter"
-msgstr ""
+msgstr "filtro de fecha de finalización"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:658
 msgid "Remove mailing #%1$s"
@@ -196,15 +195,15 @@ msgstr "Eliminar correspondencia n.º %1$s"
 #: ../templates/default/gestion_mailings.tpl:219
 #: ../templates/default/mailing_adherents.tpl:178
 msgid "Mailing preview"
-msgstr ""
+msgstr "Previsualización de correspondencia"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:84
 msgid "Add field"
-msgstr ""
+msgstr "Añadir campo"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:133
 msgid "An error occurred adding dynamic field :("
-msgstr ""
+msgstr "Se ha producido un error al añadir el campo dinámico :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:147
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:365
@@ -224,10 +223,8 @@ msgid "Edit field"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:351
-#, fuzzy
-#| msgid "An error occurred trying to delete field :("
 msgid "An error occurred editing dynamic field :("
-msgstr "Se produjo un error al intentar eliminar el campo :("
+msgstr "Se produjo un error al editar el campo dinámico :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:447
 msgid "Requested field does not exists!"
@@ -349,10 +346,8 @@ msgid "New member has been successfully added."
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1654
-#, fuzzy
-#| msgid "Account modification mail sent to admin."
 msgid "New account email sent to admin for '%s'."
-msgstr "Se envió un mensaje para modificar la cuenta al administrador."
+msgstr "Se envió un mensaje de cuenta nueva al administrador de «%s»."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1661
 msgid "A problem happened while sending email to admin for account '%s'."
@@ -385,10 +380,8 @@ msgid "New account email sent to '%s'."
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1753
-#, fuzzy
-#| msgid "Account modification mail sent to admin."
 msgid "Account modification email sent to '%s'."
-msgstr "Se envió un mensaje para modificar la cuenta al administrador."
+msgstr "Se envió un mensaje de modificación de cuenta a «%s»."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1761
 msgid "A problem happened while sending account email to '%s'"
@@ -399,6 +392,8 @@ msgid ""
 "You asked Galette to send a confirmation email to the member, but email has "
 "been disabled in the preferences."
 msgstr ""
+"Ha solicitado que Galette envíe una confirmación al miembro, pero se ha "
+"desactivado el correo electrónico en las preferencias."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1825
 #, fuzzy
@@ -422,7 +417,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/GaletteController.php:311
 #: ../lib/Galette/Controllers/GaletteController.php:343
 msgid "Delete failed"
-msgstr ""
+msgstr "Falló la eliminación"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:2052
 msgid "Remove member %1$s"
@@ -438,23 +433,23 @@ msgstr "Gestión de títulos"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:157
 msgid "Edit title"
-msgstr ""
+msgstr "Editar título"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:211
 msgid "Title '%s' has not been added!"
-msgstr ""
+msgstr "No se ha añadido el título «%s»."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:220
 msgid "Title '%s' has not been modified!"
-msgstr ""
+msgstr "No se ha modificado el título «%s»."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:233
 msgid "Title '%s' has been successfully added."
-msgstr ""
+msgstr "Se ha añadido el título «%s» correctamente."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:242
 msgid "Title '%s' has been successfully modified."
-msgstr ""
+msgstr "Se ha modificado el título «%s» correctamente."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:293
 msgid "Remove title %1$s"
@@ -464,7 +459,7 @@ msgstr ""
 #: ../templates/default/ajouter_transaction.tpl:36
 #: ../templates/default/ajouter_contribution.tpl:154
 msgid "Membership fee"
-msgstr ""
+msgstr "Cuota de afiliación"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:118
 #: ../lib/Galette/Entity/Contribution.php:1077 ../includes/dependencies.php:427
@@ -472,31 +467,29 @@ msgstr ""
 #: ../templates/default/ajouter_transaction.tpl:37
 #: ../templates/default/ajouter_contribution.tpl:155
 msgid "Donation"
-msgstr ""
+msgstr "Donación"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:346
 msgid "Contributions management"
-msgstr ""
+msgstr "Gestión de contribuciones"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:347
 msgid "Transactions management"
-msgstr ""
+msgstr "Gestión de transacciones"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:442
 msgid "- Unknown payment type!"
-msgstr ""
+msgstr "- Tipo de pago desconocido"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:490
 #: ../lib/Galette/Controllers/PdfController.php:452
 #: ../lib/Galette/Controllers/PdfController.php:703
 msgid "Unable to load contribution #%id!"
-msgstr ""
+msgstr "No se ha podido cargar la contribución n.º %id."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:594
-#, fuzzy
-#| msgid "Dynamic field has been successfully stored!"
 msgid "Contribution has been successfully stored"
-msgstr "Se almacenó el campo dinámico correctamente."
+msgstr "Se almacenó la contribución correctamente"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:607
 msgid "Post contribution script failed"
@@ -740,7 +733,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:828
 msgid "Reminder has not been sent:"
-msgstr ""
+msgstr "No se ha establecido el recordatorio:"
 
 #: ../lib/Galette/Controllers/GaletteController.php:835
 msgid "Sent reminders:"
@@ -748,7 +741,7 @@ msgstr "Recordatorios enviados:"
 
 #: ../lib/Galette/Controllers/GaletteController.php:912
 msgid "Download document"
-msgstr ""
+msgstr "Descargar documento"
 
 #: ../lib/Galette/Controllers/CrudController.php:278
 #: ../lib/Galette/Controllers/HistoryController.php:212
@@ -759,7 +752,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/CrudController.php:290
 msgid "Successfully deleted!"
-msgstr ""
+msgstr "Se ha eliminado correctamente."
 
 #: ../lib/Galette/Controllers/CrudController.php:304
 #, fuzzy
@@ -796,7 +789,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/PdfController.php:553
 #: ../templates/default/page.tpl:90
 msgid "PDF models"
-msgstr ""
+msgstr "Modelos PDF"
 
 #: ../lib/Galette/Controllers/PdfController.php:588
 msgid "Missing PDF model type!"
@@ -808,11 +801,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/PdfController.php:623
 msgid "Model has not been stored :("
-msgstr ""
+msgstr "No se ha almacenado el modelo :("
 
 #: ../lib/Galette/Controllers/PdfController.php:658
 msgid "Invalid link!"
-msgstr ""
+msgstr "El enlace no es válido."
 
 #: ../lib/Galette/Controllers/AuthController.php:90
 #: ../lib/Galette/Controllers/AuthController.php:150
@@ -911,7 +904,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:506
 msgid "Your password is too weak!"
-msgstr ""
+msgstr "Su contraseña es demasiado débil."
 
 #: ../lib/Galette/Controllers/AuthController.php:515
 msgid "An error occurred while updating your password."
@@ -1129,7 +1122,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:140
 msgid "Tables Creation"
-msgstr ""
+msgstr "Creación de tablas"
 
 #: ../lib/Galette/Core/Install.php:143 ../webroot/installer.php:335
 msgid "Admin parameters"
@@ -1967,7 +1960,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/FileTrait.php:486
 msgid "File extension is not allowed, only %s files are."
-msgstr ""
+msgstr "No se permite la extensión de archivo, pero sí los archivos %s."
 
 #: ../lib/Galette/IO/FileTrait.php:493
 #: ../lib/Galette/Entity/DynamicsTrait.php:271
@@ -2269,7 +2262,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Transaction.php:406
 msgid "Transaction added"
-msgstr ""
+msgstr "Se ha añadido la transacción"
 
 #: ../lib/Galette/Entity/Transaction.php:413
 msgid "Fail to add new transaction."
@@ -2491,15 +2484,15 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Group.php:439
 msgid "Group added"
-msgstr ""
+msgstr "Se ha añadido el grupo"
 
 #: ../lib/Galette/Entity/Group.php:444
 msgid "Fail to add new group."
-msgstr ""
+msgstr "Falló la adición del grupo nuevo."
 
 #: ../lib/Galette/Entity/Group.php:462
 msgid "Group updated"
-msgstr ""
+msgstr "Se ha actualizado el grupo"
 
 #: ../lib/Galette/Entity/Group.php:709
 msgid "Group `%1$s` cannot be set as parent!"
@@ -5807,15 +5800,15 @@ msgstr "Asunto del mensaje de correo"
 
 #: ../templates/default/gestion_textes.tpl:32
 msgid "(Max 255 characters)"
-msgstr ""
+msgstr "(255 caracteres máx.)"
 
 #: ../templates/default/gestion_textes.tpl:35
 msgid "Email Body:"
-msgstr ""
+msgstr "Cuerpo del mensaje:"
 
 #: ../templates/default/gestion_textes.tpl:65
 msgid "Galette's login URI"
-msgstr ""
+msgstr "URI de acceso de Galette"
 
 #: ../templates/default/gestion_textes.tpl:71
 msgid "Insert a carriage return"
@@ -5827,31 +5820,31 @@ msgstr ""
 
 #: ../templates/default/gestion_textes.tpl:77
 msgid "Available with reservations"
-msgstr ""
+msgstr "Disponible con reservaciones"
 
 #: ../templates/default/gestion_textes.tpl:82
 msgid "Member's first and last name"
-msgstr ""
+msgstr "Nombre y apellidos del miembro"
 
 #: ../templates/default/gestion_textes.tpl:84
 msgid "Member's email address"
-msgstr ""
+msgstr "Dirección de correo del miembro"
 
 #: ../templates/default/gestion_textes.tpl:88
 msgid "Member's last name"
-msgstr "Apellidos de miembro"
+msgstr "Apellidos del miembro"
 
 #: ../templates/default/gestion_textes.tpl:90
 msgid "Member's first name"
-msgstr ""
+msgstr "Nombre del miembro"
 
 #: ../templates/default/gestion_textes.tpl:96
 msgid "Member's login"
-msgstr ""
+msgstr "Nombre de usuario del miembro"
 
 #: ../templates/default/gestion_textes.tpl:100
 msgid "Available only for new password request"
-msgstr ""
+msgstr "Disponible solo para solicitud de contraseña nueva"
 
 #: ../templates/default/gestion_textes.tpl:105
 msgid "Galette's change password URI"
@@ -5859,11 +5852,11 @@ msgstr ""
 
 #: ../templates/default/gestion_textes.tpl:107
 msgid "Link validity"
-msgstr ""
+msgstr "Validez del enlace"
 
 #: ../templates/default/gestion_textes.tpl:111
 msgid "Available only for new contributions"
-msgstr ""
+msgstr "Disponible solo para contribuidores nuevos"
 
 #: ../templates/default/gestion_textes.tpl:116
 msgid "Member's deadline"
@@ -5875,19 +5868,19 @@ msgstr "Tipo de contribución"
 
 #: ../templates/default/gestion_textes.tpl:128
 msgid "Direct link for member card download"
-msgstr ""
+msgstr "Enlace directo para descargar tarjeta de miembro"
 
 #: ../templates/default/gestion_textes.tpl:130
 msgid "Direct link for invoice/receipt download"
-msgstr ""
+msgstr "Enlace directo para descargar factura/recibo"
 
 #: ../templates/default/gestion_textes.tpl:134
 msgid "Available only for reminders"
-msgstr "Disponible únicamente para los recordatorios"
+msgstr "Disponible solo para los recordatorios"
 
 #: ../templates/default/gestion_textes.tpl:139
 msgid "Membership remaining days"
-msgstr ""
+msgstr "Días restantes de la membresía"
 
 #: ../templates/default/gestion_textes.tpl:141
 msgid "Membership expired since"
@@ -5895,7 +5888,7 @@ msgstr ""
 
 #: ../templates/default/import_model.tpl:6
 msgid "Current model"
-msgstr ""
+msgstr "Modelo actual"
 
 #: ../templates/default/import_model.tpl:7
 msgid "Change model"
@@ -5903,7 +5896,7 @@ msgstr "Cambiar modelo"
 
 #: ../templates/default/import_model.tpl:13
 msgid "Default fields"
-msgstr ""
+msgstr "Campos predeterminados"
 
 #: ../templates/default/import_model.tpl:15
 msgid "Model parameted on %date"
@@ -5912,45 +5905,47 @@ msgstr ""
 #: ../templates/default/import_model.tpl:20
 #: ../templates/default/import_model.tpl:54
 msgid "Field"
-msgstr ""
+msgstr "Campo"
 
 #: ../templates/default/import_model.tpl:33
 msgid "Generate empty CSV file"
-msgstr ""
+msgstr "Generar archivo CSV vacío"
 
 #: ../templates/default/import_model.tpl:40
 msgid "Remove model and back to defaults"
-msgstr ""
+msgstr "Quitar modelo y volver a valores predeterminados"
 
 #: ../templates/default/import_model.tpl:43
 msgid "Remove model"
-msgstr ""
+msgstr "Quitar modelo"
 
 #: ../templates/default/import_model.tpl:72
 msgid "Store new model"
-msgstr ""
+msgstr "Almacenar modelo nuevo"
 
 #: ../templates/default/import_model.tpl:84
 msgid "Go back to import page"
-msgstr ""
+msgstr "Volver a la página de importaciones"
 
 #: ../templates/default/import_model.tpl:97
 msgid "No field selected"
-msgstr ""
+msgstr "No se ha seleccionado ningún campo"
 
 #: ../templates/default/import_model.tpl:97
 msgid ""
 "Please make sure to select at least one field from the list to perform this "
 "action."
 msgstr ""
+"Asegúrese de seleccionar al menos un campo de la lista para efectuar esta "
+"acción."
 
 #: ../templates/default/edit_dynamic_fields.tpl:34
 msgid "Select an option"
-msgstr ""
+msgstr "Seleccione una opción"
 
 #: ../templates/default/edit_dynamic_fields.tpl:53
 msgid "new"
-msgstr ""
+msgstr "nuevo"
 
 #: ../templates/default/edit_dynamic_fields.tpl:57
 msgid "current"
@@ -5958,11 +5953,11 @@ msgstr "actual"
 
 #: ../templates/default/edit_dynamic_fields.tpl:60
 msgid "delete"
-msgstr ""
+msgstr "eliminar"
 
 #: ../templates/default/edit_dynamic_fields.tpl:101
 msgid "Enter as many occurences you want."
-msgstr ""
+msgstr "Proporcione tantas ocurrencias como desee."
 
 #: ../templates/default/edit_dynamic_fields.tpl:109
 #: ../templates/default/edit_dynamic_fields.tpl:148
@@ -5971,7 +5966,7 @@ msgstr ""
 
 #: ../templates/default/edit_dynamic_fields.tpl:118
 msgid "New occurence"
-msgstr ""
+msgstr "Ocurrencia nueva"
 
 #: ../templates/default/mass_change_members.tpl:12
 msgid "Only checked fields will be updated."
@@ -5987,24 +5982,23 @@ msgstr "Editar"
 
 #: ../templates/default/mass_change_members.tpl:47
 msgid "OK"
-msgstr ""
+msgstr "Aceptar"
 
 #: ../templates/default/gestion_adherents.tpl:11
-#, fuzzy
 msgid "%membername: edit information"
-msgstr "Información de contacto"
+msgstr "%membername: editar información"
 
 #: ../templates/default/gestion_adherents.tpl:19
 msgid "%membername: contributions"
-msgstr ""
+msgstr "%membername: contribuciones"
 
 #: ../templates/default/gestion_adherents.tpl:26
 msgid "%membername: remove from database"
-msgstr ""
+msgstr "%membername: quitar de base de datos"
 
 #: ../templates/default/gestion_adherents.tpl:35
 msgid "Log in in as %membername"
-msgstr ""
+msgstr "Acceder como %membername"
 
 #: ../templates/default/gestion_adherents.tpl:52
 #: ../templates/default/advanced_search.tpl:9
@@ -6029,28 +6023,27 @@ msgstr "entre:"
 #: ../templates/default/advanced_search.tpl:31
 #: ../templates/default/advanced_search.tpl:115
 msgid "Select a group"
-msgstr ""
+msgstr "Seleccione un grupo"
 
 #: ../templates/default/gestion_adherents.tpl:71
 msgid "Apply filters"
-msgstr ""
+msgstr "Aplicar filtros"
 
 #: ../templates/default/gestion_adherents.tpl:75
 msgid "Save selected criteria"
-msgstr ""
+msgstr "Guardar criterios seleccionados"
 
 #: ../templates/default/gestion_adherents.tpl:79
 #: ../templates/default/gestion_adherents.tpl:101
 msgid "Reset all filters to defaults"
-msgstr ""
+msgstr "Restablecer todos los filtros a valores predeterminados"
 
 #: ../templates/default/gestion_adherents.tpl:81
 msgid "Members that have an email address:"
-msgstr ""
+msgstr "Miembros que tienen dirección de correo:"
 
 #: ../templates/default/gestion_adherents.tpl:85
 #: ../templates/default/advanced_search.tpl:42
-#, fuzzy
 msgid "With"
 msgstr "Con"
 
@@ -6061,7 +6054,7 @@ msgstr "Sin"
 
 #: ../templates/default/gestion_adherents.tpl:91
 msgid "Advanced search mode"
-msgstr ""
+msgstr "Modo de búsqueda avanzada"
 
 #: ../templates/default/gestion_adherents.tpl:92
 msgid "Change search criteria"
@@ -6069,11 +6062,11 @@ msgstr "Cambiar criterios de búsqueda"
 
 #: ../templates/default/gestion_adherents.tpl:94
 msgid "Change criteria"
-msgstr ""
+msgstr "Cambiar criterios"
 
 #: ../templates/default/gestion_adherents.tpl:96
 msgid "Save current advanced search criteria"
-msgstr ""
+msgstr "Guardar criterios de búsqueda avanzados actuales"
 
 #: ../templates/default/gestion_adherents.tpl:103
 msgid "Show/hide query"
@@ -6083,13 +6076,13 @@ msgstr "Mostrar/ocultar consulta"
 #: ../templates/default/liste_membres.tpl:8
 #: ../templates/default/trombinoscope.tpl:8
 msgid "members"
-msgstr ""
+msgstr "miembros"
 
 #: ../templates/default/gestion_adherents.tpl:109
 #: ../templates/default/liste_membres.tpl:8
 #: ../templates/default/trombinoscope.tpl:8
 msgid "member"
-msgstr ""
+msgstr "miembro"
 
 #: ../templates/default/gestion_adherents.tpl:129
 #: ../templates/default/gestion_adherents.tpl:297
@@ -6120,7 +6113,7 @@ msgstr ""
 #: ../templates/default/gestion_adherents.tpl:472
 #: ../templates/default/gestion_adherents.tpl:561
 msgid "Mail"
-msgstr ""
+msgstr "Correo"
 
 #: ../templates/default/gestion_adherents.tpl:205
 #: ../templates/default/gestion_adherents.tpl:415
@@ -6141,11 +6134,11 @@ msgstr "Cambio masivo"
 #: ../templates/default/gestion_adherents.tpl:484
 #: ../templates/default/mailing_recipients.tpl:20
 msgid "Generate labels"
-msgstr ""
+msgstr "Generar etiquetas"
 
 #: ../templates/default/gestion_adherents.tpl:489
 msgid "Generate Member Cards"
-msgstr ""
+msgstr "Generar tarjetas de miembro"
 
 #: ../templates/default/gestion_adherents.tpl:495
 msgid "Export as CSV"
@@ -6157,7 +6150,7 @@ msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:518
 msgid "Active account"
-msgstr ""
+msgstr "Cuenta activa"
 
 #: ../templates/default/gestion_adherents.tpl:520
 msgid "Inactive account"
@@ -7289,7 +7282,7 @@ msgstr "Búsqueda avanzada"
 
 #: ../templates/default/advanced_search.tpl:97
 msgid "Experimental"
-msgstr ""
+msgstr "Experimental"
 
 #: ../templates/default/advanced_search.tpl:104
 #, fuzzy
@@ -7404,7 +7397,7 @@ msgstr ""
 
 #: ../templates/default/directlink.tpl:6
 msgid "Please confirm your email address:"
-msgstr ""
+msgstr "Confirme su dirección de correo electrónico:"
 
 #: ../templates/default/directlink.tpl:9
 msgid "Get my document"
