@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2020-06-18 20:02+0000\n"
+"PO-Revision-Date: 2020-06-19 16:19+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.1.1-dev\n"
+"X-Generator: Weblate 4.1.1\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -352,7 +352,7 @@ msgstr "Votre compte a été créé&nbsp;!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1604
 msgid "An email has been sent to you, check your inbox."
-msgstr "Un courriel vous a été été envoyé, vérifiez votre boite de réception."
+msgstr "Un courriel vous a été envoyé, vérifiez votre boite de réception."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1607
 msgid "New member has been successfully added."
@@ -649,7 +649,7 @@ msgstr "Préférences"
 #: ../lib/Galette/Controllers/GaletteController.php:249
 #: ../lib/Galette/Filters/MembersList.php:297
 msgid "All accounts"
-msgstr "Tous  les comptes"
+msgstr "Tous les comptes"
 
 #: ../lib/Galette/Controllers/GaletteController.php:250
 #: ../lib/Galette/Filters/MembersList.php:298
@@ -951,7 +951,7 @@ msgstr "Votre mot de passe a été changé&nbsp;!"
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:74
 msgid "Administration tools"
-msgstr "Outils d’administration"
+msgstr "Outils d'administration"
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:81
 #: ../install/steps/check.php:111
@@ -1902,7 +1902,7 @@ msgstr "Entreprises"
 # (ils sont supprimés)
 #: ../lib/Galette/IO/PdfMembersLabels.php:74
 msgid "labels_print_filename"
-msgstr "labels_print_filename"
+msgstr "etiquettes"
 
 #: ../lib/Galette/IO/PdfMembersLabels.php:86
 msgid "Member's Labels"
@@ -2324,7 +2324,7 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:470
 msgid "- Sum of all contributions exceed corresponding transaction amount."
 msgstr ""
-"-  La somme de toutes les contributions dépasse le montant de la transaction "
+"- La somme de toutes les contributions dépasse le montant de la transaction "
 "correspondante."
 
 #: ../lib/Galette/Entity/Transaction.php:406
@@ -2369,7 +2369,7 @@ msgstr "Type de paiement&nbsp;:"
 #: ../templates/default/ajouter_contribution.tpl:143
 #: ../templates/default/dispatch_type.tpl:126
 msgid "Comments:"
-msgstr "Commentaire&nbsp;:"
+msgstr "Commentaires :"
 
 #: ../lib/Galette/Entity/Contribution.php:143
 #: ../templates/default/ajouter_contribution.tpl:123
@@ -3584,7 +3584,7 @@ msgstr "Le répertoire %dir n’a pas été déplacé :("
 #: ../install/scripts/upgrade-to-0.8.php:224
 msgid "Directory %dir is not in its original path and will not be moved."
 msgstr ""
-"Le répertoire %dir n’est pas à son  emplacement par défaut et ne sera pas "
+"Le répertoire %dir n’est pas à son emplacement par défaut et ne sera pas "
 "déplacé."
 
 #: ../install/steps/end.php:46
@@ -7136,7 +7136,7 @@ msgstr "De&nbsp;:"
 
 #: ../templates/default/mailing_preview.tpl:13
 msgid "To:"
-msgstr "À&nbsp:"
+msgstr "À :"
 
 #: ../templates/default/mailing_preview.tpl:24
 #: ../templates/default/reminder.tpl:41
