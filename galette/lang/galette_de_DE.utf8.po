@@ -7,18 +7,19 @@
 # Allan Nordhøy <epost@anotheragency.no>, 2019.
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2019, 2020.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
-"PO-Revision-Date: 2020-04-27 20:22+0000\n"
-"Last-Translator: Jeannette L <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2020-06-20 09:16+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.0.2\n"
+"X-Generator: Weblate 4.1.1\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -2568,7 +2569,7 @@ msgstr "Gruppe hinzugefügt"
 
 #: ../lib/Galette/Entity/Group.php:444
 msgid "Fail to add new group."
-msgstr "Konnte die neue  Gruppe nicht hinzufügen."
+msgstr "Konnte die neue Gruppe nicht hinzufügen."
 
 #: ../lib/Galette/Entity/Group.php:462
 msgid "Group updated"
