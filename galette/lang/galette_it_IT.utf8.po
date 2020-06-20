@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
-"PO-Revision-Date: 2020-05-18 08:13+0000\n"
+"PO-Revision-Date: 2020-06-20 09:16+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.1-dev\n"
+"X-Generator: Weblate 4.1.1\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -1761,10 +1761,8 @@ msgid "GSM"
 msgstr "GSM"
 
 #: ../lib/Galette/IO/MembersCsv.php:85
-#, fuzzy
-#| msgid "Required membership:"
 msgid "filtered_memberslist"
-msgstr "Iscrizione obbligatoria:"
+msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:223
 #: ../lib/Galette/IO/PdfAdhesionForm.php:152
