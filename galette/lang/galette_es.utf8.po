@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
 "POT-Creation-Date: 2019-10-17 08:02+0200\n"
-"PO-Revision-Date: 2020-06-16 15:28+0000\n"
-"Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
+"PO-Revision-Date: 2020-06-20 09:16+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.1.1-dev\n"
+"X-Generator: Weblate 4.1.1\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -148,7 +148,7 @@ msgstr "Correspondencia"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:300
 msgid "Please type an object for the message."
-msgstr ""
+msgstr "Por favor, escriba un objeto para el mensaje."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:306
 msgid "Please enter a message."
@@ -605,10 +605,8 @@ msgstr "Se produjo un error al almacenar al miembro."
 
 #: ../lib/Galette/Controllers/GaletteController.php:110
 #: ../templates/default/footer.tpl:24
-#, fuzzy
-#| msgid "Other informations:"
 msgid "System information"
-msgstr "Otra información:"
+msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:130
 #: ../templates/default/page.tpl:39
@@ -1342,7 +1340,6 @@ msgid "Invalid E-Mail address: %s"
 msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:957
-#, fuzzy
 msgid "Current cards configuration may exceed page width!"
 msgstr ""
 "¡La configuración actual de las tarjetas podría exceder la anchura de la "
@@ -1663,7 +1660,6 @@ msgid "boolean"
 msgstr "booleano"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1014
-#, fuzzy
 msgid "file"
 msgstr "archivo"
 
@@ -1818,7 +1814,6 @@ msgid "Staff members"
 msgstr "Miembros del personal"
 
 #: ../lib/Galette/IO/Charts.php:178
-#, fuzzy
 msgid "Due free"
 msgstr "Cotización gratis"
 
@@ -2199,7 +2194,6 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1589
 #: ../templates/default/forms_types/account.tpl:5
-#, fuzzy
 msgid "Active"
 msgstr "Activo"
 
@@ -2402,7 +2396,6 @@ msgstr ""
 #: ../lib/Galette/Entity/PdfModel.php:553
 #: ../templates/default/attendance_sheet_details.tpl:16
 #: ../templates/default/gestion_pdf_content.tpl:6
-#, fuzzy
 msgid "Title"
 msgstr "Título"
 
@@ -2507,7 +2500,7 @@ msgstr "La ruta «%name» no está registrada con los ACL."
 #, fuzzy
 #| msgid "Route '%name' is not registered in ACLs!"
 msgid "Routes '%names' are not registered in ACLs!"
-msgstr "La ruta «%name» no está registrada con los ACL."
+msgstr "¡Las rutas «%names» no estan registrada con los ACL!"
 
 #: ../lib/Galette/Middleware/Authenticate.php:101
 msgid "Login required"
@@ -2657,7 +2650,6 @@ msgstr ""
 
 #: ../webroot/installer.php:277 ../templates/default/mailing_adherents.tpl:5
 #: ../templates/default/global_messages.tpl:10
-#, fuzzy
 msgid "- ERROR -"
 msgstr "- ERROR -"
 
@@ -2792,7 +2784,6 @@ msgid "Vice-president"
 msgstr "Vicepresidente"
 
 #: ../includes/i18n.inc.php:332
-#, fuzzy
 msgid "Treasurer"
 msgstr "Tesorero"
 
@@ -2903,7 +2894,6 @@ msgid "Galette-related data"
 msgstr ""
 
 #: ../includes/i18n.inc.php:359
-#, fuzzy
 msgid "Contact information"
 msgstr "Información de contacto"
 
@@ -3036,7 +3026,6 @@ msgstr ""
 
 #: ../includes/dependencies.php:446
 #: ../includes/fields_defs/pdfmodels_fields.php:231
-#, fuzzy
 msgid "First name"
 msgstr "Nombre"
 
@@ -3143,13 +3132,11 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:138
 #: ../templates/default/preferences.tpl:58
-#, fuzzy
 msgid "Zip Code:"
 msgstr "Código postal:"
 
 #: ../includes/fields_defs/members_fields.php:146
 #: ../templates/default/preferences.tpl:62
-#, fuzzy
 msgid "City:"
 msgstr "Ciudad:"
 
@@ -3172,7 +3159,6 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:186
 #: ../templates/default/preferences.tpl:85
-#, fuzzy
 msgid "Website:"
 msgstr "Sitio web:"
 
@@ -4166,7 +4152,6 @@ msgstr ""
 
 #: ../templates/default/page.tpl:28
 #: ../templates/default/gestion_mailings.tpl:129
-#, fuzzy
 msgid "Superadmin"
 msgstr "Superadmin"
 
@@ -4564,7 +4549,6 @@ msgid "Not registered"
 msgstr "No registrado"
 
 #: ../templates/default/preferences.tpl:120
-#, fuzzy
 msgid "Google+"
 msgstr "Google+"
 
@@ -5034,7 +5018,6 @@ msgid "MSN"
 msgstr "MSN"
 
 #: ../templates/default/preferences.tpl:491
-#, fuzzy
 msgid "Jabber"
 msgstr "Jabber"
 
@@ -5284,7 +5267,6 @@ msgstr "desde"
 #: ../templates/default/gestion_mailings.tpl:8
 #: ../templates/default/history.tpl:8
 #: ../templates/default/gestion_transactions.tpl:7
-#, fuzzy
 msgid "until"
 msgstr "hasta"
 
@@ -6254,7 +6236,6 @@ msgid "Application error"
 msgstr "Error en la aplicación"
 
 #: ../templates/default/500.tpl:11
-#, fuzzy
 msgid "Details"
 msgstr "Detalles"
 
@@ -6296,7 +6277,6 @@ msgstr ""
 #: ../templates/default/editer_champ.tpl:86
 #: ../templates/default/config_fields.tpl:17
 #: ../templates/default/config_fields.tpl:26
-#, fuzzy
 msgid "Field name"
 msgstr "Nombre del campo"
 
@@ -6380,7 +6360,6 @@ msgstr ""
 #: ../templates/default/plugins.tpl:8 ../templates/default/plugins.tpl:22
 #: ../templates/default/gestion_transactions.tpl:59
 #: ../templates/default/gestion_transactions.tpl:107
-#, fuzzy
 msgid "Description"
 msgstr "Descripción"
 
@@ -6442,7 +6421,6 @@ msgid "IP"
 msgstr ""
 
 #: ../templates/default/history.tpl:87 ../templates/default/history.tpl:128
-#, fuzzy
 msgid "User"
 msgstr "Usuario"
 
@@ -6636,7 +6614,6 @@ msgid "Dry run"
 msgstr ""
 
 #: ../templates/default/import.tpl:62
-#, fuzzy
 msgid "Import"
 msgstr "Importación"
 
@@ -6912,7 +6889,6 @@ msgid "From:"
 msgstr ""
 
 #: ../templates/default/mailing_preview.tpl:13
-#, fuzzy
 msgid "To:"
 msgstr "A:"
 
@@ -7120,7 +7096,6 @@ msgid "New password:"
 msgstr "Contraseña nueva:"
 
 #: ../templates/default/change_passwd.tpl:13
-#, fuzzy
 msgid "Confirmation:"
 msgstr "Confirmación:"
 
@@ -7312,7 +7287,6 @@ msgid "Within contributions"
 msgstr ""
 
 #: ../templates/default/advanced_search.tpl:143
-#, fuzzy
 msgid "Begin date"
 msgstr "Fecha de inicio"
 
@@ -7373,7 +7347,6 @@ msgid "ends with"
 msgstr ""
 
 #: ../templates/default/advanced_search.tpl:303
-#, fuzzy
 msgid "Expert search"
 msgstr "Buscador avanzado"
 
@@ -7405,7 +7378,6 @@ msgstr ""
 
 #: ../templates/default/config_fields.tpl:5
 #: ../templates/default/config_fields.tpl:86
-#, fuzzy
 msgid "Collapse all"
 msgstr "Contraer todo"
 
@@ -7587,7 +7559,6 @@ msgstr ""
 
 #: ../templates/default/group_persons.tpl:27
 #: ../templates/default/ajax_members.tpl:38
-#, fuzzy
 msgid "[admin]"
 msgstr "[admin]"
 
@@ -7757,7 +7728,6 @@ msgid "Password image"
 msgstr ""
 
 #: ../templates/default/forms_types/picture.tpl:2
-#, fuzzy
 msgid "Picture:"
 msgstr "Foto:"
 
