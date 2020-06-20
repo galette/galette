@@ -3,11 +3,12 @@
 # imed omri <omriimed@ymail.com>, 2014
 # Johan Cwiklinski <johan@x-tnd.be>, 2017. #zanata
 # ButterflyOfFire <ButterflyOfFire@protonmail.com>, 2019, 2020.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
-"PO-Revision-Date: 2020-05-29 07:09+0000\n"
-"Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
+"PO-Revision-Date: 2020-06-20 09:16+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -15,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.1-dev\n"
+"X-Generator: Weblate 4.1.1\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -3615,7 +3616,7 @@ msgstr ""
 
 #: ../install/steps/db_checks.php:116
 msgid "SELECT operation allowed"
-msgstr " يسمح بعملية اختيار"
+msgstr "يسمح بعملية اختيار"
 
 #: ../install/steps/db_checks.php:123
 msgid "DELETE operation not allowed"
