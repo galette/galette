@@ -1336,7 +1336,7 @@ class Adherent
                 }
                 break;
             case 'parent_id':
-                $this->$prop = (int)$value;
+                $this->$prop = ($value instanceof Adherent) ? (int)$value->id : (int)$value;
                 $this->loadParent();
                 break;
         }
