@@ -164,11 +164,11 @@ class Adherent extends atoum
     }
 
     /**
-     * Create test user in database
+     * Get Faker data for one member
      *
-     * @return void
+     * @return array
      */
-    private function createAdherent()
+    private function dataAdherent(): array
     {
         $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
         $fakedata
@@ -181,7 +181,17 @@ class Adherent extends atoum
             );
 
         $data = $fakedata->fakeMember();
-        $this->createMember($data);
+        return $data;
+    }
+
+    /**
+     * Create test user in database
+     *
+     * @return void
+     */
+    private function createAdherent()
+    {
+        $this->createMember($this->dataAdherent());
     }
 
     /**
@@ -194,6 +204,11 @@ class Adherent extends atoum
     private function loadAdherent($id)
     {
         $this->adh = new \Galette\Entity\Adherent($this->zdb, (int)$id);
+        $this->adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
     }
 
     /**
@@ -262,6 +277,7 @@ class Adherent extends atoum
         $this->boolean($store)->isTrue();
 
         $this->ids[] = $adh->id;
+        return $adh;
     }
 
     /**
@@ -655,5 +671,44 @@ class Adherent extends atoum
         $this->variable($adh->login)->isNull();
         $this->variable($adh->birthdate)->isNull();
         $this->variable($adh->surname)->isNull();
+    }
+
+    /**
+     * Test parents
+     *
+     * @return void
+     */
+    public function testParents()
+    {
+        $rs = $this->adhExists();
+        if ($rs === false) {
+            $this->createAdherent();
+        } else {
+            $this->loadAdherent($rs->current()->id_adh);
+        }
+        $this->checkMemberExpected();
+
+        //load member from db
+        $parent = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
+        $this->checkMemberExpected($parent);
+
+        $child_data = $this->dataAdherent() + [
+            'nom_adh'       => 'Doe',
+            'prenom_adh'    => 'Johny',
+            'parent_id'     => $parent->id,
+        ];
+        $child = $this->createMember($child_data);
+
+        $this->string($child->name)->isIdenticalTo($child_data['nom_adh']);
+        $this->object($child->parent)->isInstanceOf('\Galette\Entity\Adherent');
+        $this->integer($child->parent->id)->isIdenticalTo($parent->id);
+
+        $check = $child->check(['detach_parent' => true], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->boolean($check)->isTrue();
+        $this->boolean($child->store())->isTrue();
+        $this->variable($child->parent)->isNull();
     }
 }
