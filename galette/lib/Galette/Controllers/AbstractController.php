@@ -160,7 +160,7 @@ abstract class AbstractController
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        //set variosu services we need
+        //set various services we need
         $this->zdb = $container->get('zdb');
         $this->login = $container->get('login');
         $this->preferences = $container->get('preferences');

@@ -45,6 +45,7 @@ use Laminas\Db\Sql\Expression;
 use Galette\Core\L10n;
 
 $i18n->updateEnv();
+global $language;
 $language = $i18n->getLongID();
 
 /**
@@ -59,6 +60,14 @@ $language = $i18n->getLongID();
 function _T($string, $domain = 'galette', $nt = true)
 {
     global $language, $installer, $translator, $l10n;
+
+    if (empty($string)) {
+        Analog::log(
+            'Cannot translate empty strings..',
+            Analog::INFO
+        );
+        return $string;
+    }
 
     if (strpos($domain, 'route') !== false) {
         Analog::log(

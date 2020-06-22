@@ -634,12 +634,13 @@ $container['event_manager'] = function ($c) {
 };
 
 //For bad existing globals can be used...
-if (!isset($container['mode']) || $container['mode'] !== 'INSTALL' && $container['mode'] !== 'NEED_UPDATE') {
+if (!isset($container['mode']) || ($container['mode'] !== 'INSTALL' && $container['mode'] !== 'NEED_UPDATE')) {
     $zdb = $container->get('zdb');
     $preferences = $container->get('preferences');
     $login = $container->get('login');
     $hist = $container->get('history');
 }
+global $translator, $i18n, $l10n;
 $i18n = $container->get('i18n');
 $l10n = $container->get('l10n');
 $translator = $container->get('translator');

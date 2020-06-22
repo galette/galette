@@ -111,8 +111,9 @@ class SavedSearch extends atoum
      */
     public function testSave()
     {
-        global $i18n; // globals :(
+        global $i18n, $translator; // globals :(
         $i18n = $this->i18n;
+        $i18n->changeLanguage('en_US');
 
         $saved = new \Galette\Entity\SavedSearch($this->zdb, $this->login);
 

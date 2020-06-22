@@ -93,7 +93,6 @@ class CsvIn extends atoum
             $this->zdb
         );
         $this->session = new \RKA\Session();
-        session_start();
         $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
         $this->history = new \Galette\Core\History($this->zdb, $this->login);
         $flash_data = [];
@@ -137,6 +136,7 @@ class CsvIn extends atoum
         $container['i18n'] = null;
         $container['fields_config'] = null;
         $container['lists_config'] = null;
+        $container['l10n'] = null;
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         $this->members_fields = $members_fields;
         $container['members_fields'] = $this->members_fields;

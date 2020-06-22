@@ -259,7 +259,7 @@ class HistoryList extends Pagination
                         }
                     } catch (\Exception $e) {
                         Analog::log(
-                            'Wrong date format. field: ' . $key .
+                            'Wrong date format. field: ' . $name .
                             ', value: ' . $value . ', expected fmt: ' .
                             __("Y-m-d") . ' | ' . $e->getMessage(),
                             Analog::INFO

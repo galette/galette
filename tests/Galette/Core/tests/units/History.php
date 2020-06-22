@@ -93,6 +93,7 @@ class History extends atoum
      */
     public function testHistoryFlow()
     {
+        $this->i18n->changeLanguage('en_US');
         //nothing in the logs at the begining
         $list = $this->history->getHistory();
         $this->array($list)->hasSize(0);
