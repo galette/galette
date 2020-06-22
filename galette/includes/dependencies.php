@@ -184,6 +184,14 @@ $container['i18n'] = function ($c) {
     return $i18n;
 };
 
+$container['l10n'] = function ($c) {
+    $l10n = new Galette\Core\L10n(
+        $c->get('zdb'),
+        $c->get('i18n')
+    );
+    return $l10n;
+};
+
 $container['zdb'] = function ($c) {
     $zdb = new Galette\Core\Db();
     return $zdb;
@@ -633,6 +641,7 @@ if (!isset($container['mode']) || $container['mode'] !== 'INSTALL' && $container
     $hist = $container->get('history');
 }
 $i18n = $container->get('i18n');
+$l10n = $container->get('l10n');
 $translator = $container->get('translator');
 $emitter = $container->get('event_manager');
 

@@ -129,7 +129,7 @@ class DynamicTranslationsController extends AbstractController
                  * for a specific string
                  */
                 foreach ($this->i18n->getList() as $l) {
-                    $text_trans = \getDynamicTranslation($text_orig, $l->getLongID());
+                    $text_trans = $this->l10n->getDynamicTranslation($text_orig, $l->getLongID());
                     $lang_name = $l->getName();
                     $trans[] = array(
                         'key'  => $l->getLongID(),
@@ -177,7 +177,7 @@ class DynamicTranslationsController extends AbstractController
         if (isset($post['trans']) && isset($post['text_orig'])) {
             if (isset($_POST['new']) && $_POST['new'] == 'true') {
                 //create translation if it does not exists yet
-                $res = \addDynamicTranslation(
+                $res = $this->l10n->addDynamicTranslation(
                     $post['text_orig']
                 );
             }
@@ -187,7 +187,7 @@ class DynamicTranslationsController extends AbstractController
                 if (substr($key, 0, 11) == 'text_trans_') {
                     $trans_lang = substr($key, 11);
                     $trans_lang = str_replace('_utf8', '.utf8', $trans_lang);
-                    $res = \updateDynamicTranslation(
+                    $res = $this->l10n->updateDynamicTranslation(
                         $post['text_orig'],
                         $trans_lang,
                         $value

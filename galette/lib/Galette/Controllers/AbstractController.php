@@ -107,6 +107,11 @@ abstract class AbstractController
      */
     protected $i18n;
     /**
+     * @Inject
+     * @var \Galette\Core\L10n
+     */
+    protected $l10n;
+    /**
      * @Inject("session")
      */
     protected $session;
@@ -166,6 +171,7 @@ abstract class AbstractController
         $this->router = $container->get('router');
         $this->history = $container->get('history');
         $this->i18n = $container->get('i18n');
+        $this->l10n = $container->get('l10n');
         $this->session = $container->get('session');
         $this->flash = $container->get('flash');
         $this->fields_config = $container->get('fields_config');
