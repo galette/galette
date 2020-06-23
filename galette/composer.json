@@ -46,7 +46,8 @@
         "slim/flash": "^0.4.0"
     },
     "require-dev": {
-        "atoum/atoum": "dev-master"
+        "atoum/atoum": "dev-master",
+        "galette/smarty-xgettext": "^1.1"
     },
     "config": {
         "optimize-autoloader": true

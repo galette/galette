@@ -42,9 +42,12 @@ mo :
 	  done \
 	done
 
-extract : ${PHP_SOURCES} Makefile xgettext.py
-	./xgettext.py ${PHP_SOURCES}
-	@echo "Generating en_US:"
+extract : ${PHP_SOURCES} Makefile
+	xgettext ${PHP_SOURCES} --keyword=_T --keyword=__ --keyword=_Tn:1,2 --keyword=_Tx:1c,2 --keyword=_Tnx:1c,2,3  -L PHP --from-code=UTF-8 --add-comments=TRANS --force-po -o galette_php.pot;
+	../vendor/bin/smarty-xgettext -o galette_tpl.pot ../templates/default/; \
+	msgcat -o galette.pot --use-first galette_php.pot galette_tpl.pot; \
+	rm galette_php.pot galette_tpl.pot; \
+	echo "Generating en_US:"
 	@for d in ${DOMAINS}; do \
 	  LANG=C msgen $$d.pot -o $${d}_en_US.po; \
 	done
