@@ -218,7 +218,7 @@ class ListsConfig extends FieldsConfig
                 break;
             case 'ddn_adh':
                 //TRANS: see https://www.urbandictionary.com/define.php?term=b-day
-                $field->label = _('b-day');
+                $field->label = _T('b-day');
                 break;
             case 'tel_adh':
                 $field->label = _T('Phone');
