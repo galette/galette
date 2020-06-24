@@ -6292,23 +6292,19 @@ msgstr ""
 msgid "No member to show"
 msgstr ""
 
-#: ../templates/default/change_passwd.tpl:5
-msgid "Your password has been changed. Please click on the 'home' button to go to the login page."
-msgstr ""
-
-#: ../templates/default/change_passwd.tpl:9
+#: ../templates/default/change_passwd.tpl:6
 msgid "New password:"
 msgstr ""
 
-#: ../templates/default/change_passwd.tpl:13
+#: ../templates/default/change_passwd.tpl:10
 msgid "Confirmation:"
 msgstr ""
 
-#: ../templates/default/change_passwd.tpl:17
+#: ../templates/default/change_passwd.tpl:14
 msgid "(at least 4 characters)"
 msgstr ""
 
-#: ../templates/default/change_passwd.tpl:20
+#: ../templates/default/change_passwd.tpl:17
 msgid "Change my password"
 msgstr ""
 
@@ -6538,10 +6534,6 @@ msgstr ""
 
 #: ../templates/default/config_fields.tpl:5 ../templates/default/config_fields.tpl:85
 msgid "Collapse all"
-msgstr ""
-
-#: ../templates/default/config_fields.tpl:13
-msgid "$catname"
 msgstr ""
 
 #: ../templates/default/config_fields.tpl:31
