@@ -297,20 +297,6 @@
 {/foreach}
                 </ul>
             </fieldset>
-{* This one will be available later
-{if $login->isAdmin()}
-            <fieldset class="cssform large">
-                <legend class="ui-state-active ui-corner-top">{_T string="Expert search"}</legend>
-                <div>
-                    <p id="warningbox"><strong>{_T string="Be extremely careful when using this one!"}</strong><br/>{_T string="If the following is not empty, all others filters will be ignored."}</p>
-                    <p>
-                        <label class="bline" for="sql_where">{_T string="SQL query"}</label>
-                        <textarea name="sql" id="sql"></textarea><br/>
-                        <span class="exemple">{_T string="If your query does not begin with a 'SELECT' statement, it will automatically be added."}</span>
-                    </p>
-                </div>
-            </fieldset>
-{/if}*}
             <div class="center">
                 <input type="hidden" name="advanced_filtering" value="true" />
                 <input type="submit" class="inline" value="{_T string="Filter"}"/>
