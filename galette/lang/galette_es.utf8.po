@@ -1611,21 +1611,21 @@ msgstr ""
 #: ../templates/default/gestion_adherents.tpl:581
 #: ../templates/default/config_lists.tpl:21
 #: ../templates/default/config_lists.tpl:45
-#: ../templates/default/config_fields.tpl:42
+#: ../templates/default/config_fields.tpl:41
 msgid "Staff member"
 msgstr "Miembro del personal"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:506
 #: ../templates/default/config_lists.tpl:20
 #: ../templates/default/config_lists.tpl:44
-#: ../templates/default/config_fields.tpl:41
+#: ../templates/default/config_fields.tpl:40
 msgid "Administrator"
 msgstr ""
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:507
 #: ../templates/default/config_lists.tpl:22
 #: ../templates/default/config_lists.tpl:46
-#: ../templates/default/config_fields.tpl:43
+#: ../templates/default/config_fields.tpl:42
 msgid "Group manager"
 msgstr ""
 
@@ -1786,7 +1786,7 @@ msgstr "Membresía requerida:"
 #: ../lib/Galette/Entity/Adherent.php:1632
 #: ../templates/default/mass_change_members.tpl:32
 #: ../templates/default/advanced_search.tpl:230
-#: ../templates/default/advanced_search.tpl:344
+#: ../templates/default/advanced_search.tpl:330
 #: ../templates/default/forms_types/gender.tpl:19
 msgid "Man"
 msgstr ""
@@ -1796,7 +1796,7 @@ msgstr ""
 #: ../lib/Galette/Entity/Adherent.php:1634
 #: ../templates/default/mass_change_members.tpl:29
 #: ../templates/default/advanced_search.tpl:230
-#: ../templates/default/advanced_search.tpl:344
+#: ../templates/default/advanced_search.tpl:330
 #: ../templates/default/forms_types/gender.tpl:21
 msgid "Woman"
 msgstr "Mujer"
@@ -1806,7 +1806,7 @@ msgstr "Mujer"
 #: ../lib/Galette/Entity/Adherent.php:1636
 #: ../templates/default/mass_change_members.tpl:26
 #: ../templates/default/advanced_search.tpl:230
-#: ../templates/default/advanced_search.tpl:344
+#: ../templates/default/advanced_search.tpl:330
 #: ../templates/default/forms_types/gender.tpl:17
 msgid "Unspecified"
 msgstr ""
@@ -1821,8 +1821,8 @@ msgstr ""
 #: ../templates/default/configurer_fiche_content.tpl:21
 #: ../templates/default/advanced_search.tpl:84
 #: ../templates/default/advanced_search.tpl:275
-#: ../templates/default/advanced_search.tpl:435
-#: ../templates/default/config_fields.tpl:33
+#: ../templates/default/advanced_search.tpl:421
+#: ../templates/default/config_fields.tpl:32
 #: ../templates/default/gestion_intitule_content.tpl:37
 #: ../templates/default/gestion_intitule_content.tpl:78
 #: ../templates/default/global_messages.tpl:68
@@ -1839,8 +1839,8 @@ msgstr ""
 #: ../templates/default/configurer_fiche_content.tpl:21
 #: ../templates/default/advanced_search.tpl:86
 #: ../templates/default/advanced_search.tpl:276
-#: ../templates/default/advanced_search.tpl:435
-#: ../templates/default/config_fields.tpl:35
+#: ../templates/default/advanced_search.tpl:421
+#: ../templates/default/config_fields.tpl:34
 #: ../templates/default/gestion_intitule_content.tpl:36
 #: ../templates/default/gestion_intitule_content.tpl:80
 #: ../templates/default/global_messages.tpl:69
@@ -4107,7 +4107,7 @@ msgstr ""
 #: ../templates/default/edit_title.tpl:19
 #: ../templates/default/gestion_pdf_content.tpl:51
 #: ../templates/default/ajouter_contribution.tpl:170
-#: ../templates/default/config_fields.tpl:57
+#: ../templates/default/config_fields.tpl:56
 #: ../templates/default/traduire_libelles.tpl:38
 #: ../templates/default/dispatch_type.tpl:140
 #: ../templates/default/member.tpl:106
@@ -5275,7 +5275,7 @@ msgstr "Seleccionar"
 #: ../templates/default/gestion_mailings.tpl:22
 #: ../templates/default/gestion_adherents.tpl:73
 #: ../templates/default/history.tpl:35
-#: ../templates/default/advanced_search.tpl:316
+#: ../templates/default/advanced_search.tpl:302
 #: ../templates/default/gestion_transactions.tpl:9
 msgid "Filter"
 msgstr "Filtrar"
@@ -5285,7 +5285,7 @@ msgstr "Filtrar"
 #: ../templates/default/gestion_adherents.tpl:79
 #: ../templates/default/gestion_adherents.tpl:101
 #: ../templates/default/history.tpl:36
-#: ../templates/default/advanced_search.tpl:317
+#: ../templates/default/advanced_search.tpl:303
 #: ../templates/default/gestion_transactions.tpl:10
 msgid "Clear filter"
 msgstr ""
@@ -5496,9 +5496,9 @@ msgstr ""
 #: ../templates/default/history.tpl:170
 #: ../templates/default/ajouter_transaction.tpl:257
 #: ../templates/default/ajouter_contribution.tpl:198
-#: ../templates/default/advanced_search.tpl:396
-#: ../templates/default/advanced_search.tpl:403
-#: ../templates/default/advanced_search.tpl:524
+#: ../templates/default/advanced_search.tpl:382
+#: ../templates/default/advanced_search.tpl:389
+#: ../templates/default/advanced_search.tpl:510
 #: ../templates/default/gestion_transactions.tpl:186
 #: ../templates/default/dispatch_type.tpl:172
 #: ../templates/default/member.tpl:171 ../templates/default/member.tpl:179
@@ -5524,7 +5524,7 @@ msgstr ""
 #: ../templates/default/ajouter_contribution.tpl:127
 #: ../templates/default/ajouter_contribution.tpl:138
 #: ../templates/default/advanced_search.tpl:270
-#: ../templates/default/advanced_search.tpl:454
+#: ../templates/default/advanced_search.tpl:440
 #: ../templates/default/forms_types/date.tpl:5
 #: ../templates/default/forms_types/date.tpl:7
 #: ../templates/default/dispatch_type.tpl:98
@@ -6270,8 +6270,8 @@ msgstr ""
 #: ../templates/default/config_lists.tpl:32
 #: ../templates/default/config_lists.tpl:38
 #: ../templates/default/editer_champ.tpl:86
-#: ../templates/default/config_fields.tpl:17
-#: ../templates/default/config_fields.tpl:26
+#: ../templates/default/config_fields.tpl:16
+#: ../templates/default/config_fields.tpl:25
 msgid "Field name"
 msgstr "Nombre del campo"
 
@@ -6280,32 +6280,32 @@ msgstr "Nombre del campo"
 #: ../templates/default/config_lists.tpl:33
 #: ../templates/default/config_lists.tpl:42
 #: ../templates/default/configurer_fiche_content.tpl:6
-#: ../templates/default/config_fields.tpl:19
-#: ../templates/default/config_fields.tpl:38
+#: ../templates/default/config_fields.tpl:18
+#: ../templates/default/config_fields.tpl:37
 msgid "Permissions"
 msgstr ""
 
 #: ../templates/default/config_lists.tpl:18
 #: ../templates/default/config_lists.tpl:42
-#: ../templates/default/config_fields.tpl:38
+#: ../templates/default/config_fields.tpl:37
 msgid "Change '%field' permissions"
 msgstr ""
 
 #: ../templates/default/config_lists.tpl:19
 #: ../templates/default/config_lists.tpl:43
-#: ../templates/default/config_fields.tpl:40
+#: ../templates/default/config_fields.tpl:39
 msgid "Inaccessible"
 msgstr ""
 
 #: ../templates/default/config_lists.tpl:23
 #: ../templates/default/config_lists.tpl:47
-#: ../templates/default/config_fields.tpl:44
+#: ../templates/default/config_fields.tpl:43
 msgid "Read only"
 msgstr "Solo lectura"
 
 #: ../templates/default/config_lists.tpl:24
 #: ../templates/default/config_lists.tpl:48
-#: ../templates/default/config_fields.tpl:45
+#: ../templates/default/config_fields.tpl:44
 msgid "Read/Write"
 msgstr "Lectura/escritura"
 
@@ -6709,8 +6709,8 @@ msgstr ""
 
 #: ../templates/default/editer_champ.tpl:110
 #: ../templates/default/configurer_fiche_content.tpl:8
-#: ../templates/default/config_fields.tpl:18
-#: ../templates/default/config_fields.tpl:32
+#: ../templates/default/config_fields.tpl:17
+#: ../templates/default/config_fields.tpl:31
 msgid "Required"
 msgstr ""
 
@@ -7341,28 +7341,6 @@ msgstr ""
 msgid "ends with"
 msgstr ""
 
-#: ../templates/default/advanced_search.tpl:303
-msgid "Expert search"
-msgstr "Buscador avanzado"
-
-#: ../templates/default/advanced_search.tpl:305
-msgid "Be extremely careful when using this one!"
-msgstr ""
-
-#: ../templates/default/advanced_search.tpl:305
-msgid "If the following is not empty, all others filters will be ignored."
-msgstr ""
-
-#: ../templates/default/advanced_search.tpl:307
-msgid "SQL query"
-msgstr "Consulta de SQL"
-
-#: ../templates/default/advanced_search.tpl:309
-msgid ""
-"If your query does not begin with a 'SELECT' statement, it will "
-"automatically be added."
-msgstr ""
-
 #: ../templates/default/directlink.tpl:6
 msgid "Please confirm your email address:"
 msgstr "Confirme su dirección de correo electrónico:"
@@ -7372,43 +7350,35 @@ msgid "Get my document"
 msgstr ""
 
 #: ../templates/default/config_fields.tpl:5
-#: ../templates/default/config_fields.tpl:86
+#: ../templates/default/config_fields.tpl:85
 msgid "Collapse all"
 msgstr "Contraer todo"
 
-#: ../templates/default/config_fields.tpl:9
-msgid "Add a new category"
-msgstr ""
-
-#: ../templates/default/config_fields.tpl:9
-msgid "Add new category"
-msgstr ""
-
-#: ../templates/default/config_fields.tpl:14
+#: ../templates/default/config_fields.tpl:13
 msgid "$catname"
 msgstr ""
 
-#: ../templates/default/config_fields.tpl:32
+#: ../templates/default/config_fields.tpl:31
 msgid "Field '%field' cannot be set as required."
 msgstr ""
 
-#: ../templates/default/config_fields.tpl:32
+#: ../templates/default/config_fields.tpl:31
 msgid "Mark '%field' as (not) required"
 msgstr ""
 
-#: ../templates/default/config_fields.tpl:85
+#: ../templates/default/config_fields.tpl:84
 msgid "Expand all"
 msgstr ""
 
-#: ../templates/default/config_fields.tpl:163
+#: ../templates/default/config_fields.tpl:162
 msgid "Warning"
 msgstr ""
 
-#: ../templates/default/config_fields.tpl:163
+#: ../templates/default/config_fields.tpl:162
 msgid "Some warnings has been thrown:"
 msgstr ""
 
-#: ../templates/default/config_fields.tpl:163
+#: ../templates/default/config_fields.tpl:162
 msgid "Please correct above warnings to continue."
 msgstr ""
 
@@ -8052,6 +8022,12 @@ msgstr ""
 #: ../templates/default/gestion_titres.tpl:69
 msgid "Delete '%s' title"
 msgstr ""
+
+#~ msgid "Expert search"
+#~ msgstr "Buscador avanzado"
+
+#~ msgid "SQL query"
+#~ msgstr "Consulta de SQL"
 
 #~ msgid "%type '%label' was successfully removed"
 #~ msgstr "%type «%label» se eliminó correctamente"
