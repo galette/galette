@@ -10,8 +10,8 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
-"PO-Revision-Date: 2020-06-20 09:16+0000\n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"PO-Revision-Date: 2020-06-28 06:21+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.1.1\n"
+"X-Generator: Weblate 4.2-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -565,10 +565,8 @@ msgstr ""
 "angezeigt."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:619
-#, fuzzy
-#| msgid "Post contribution script failed"
 msgid "Post contribution script has failed."
-msgstr "Das auszuführende Skript ist fehlgeschlagen"
+msgstr "Das auszuführende Skript ist fehlgeschlagen."
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:642
 msgid "An error occurred while storing the contribution."
