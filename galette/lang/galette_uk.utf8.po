@@ -1,11 +1,12 @@
 # Tymofij Lytvynenko <till.svit@gmail.com>, 2020.
+# Johan Cwiklinski <trasher@x-tnd.be>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-02-20 00:35+0200\n"
-"PO-Revision-Date: 2020-03-05 11:33+0000\n"
-"Last-Translator: Tymofij Lytvynenko <till.svit@gmail.com>\n"
+"PO-Revision-Date: 2020-06-29 06:40+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
 "Language: uk\n"
@@ -14,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.0-dev\n"
+"X-Generator: Weblate 4.2-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -86,10 +87,8 @@ msgid "Payment type '%s' has not been added!"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:222
-#, fuzzy
-#| msgid "%type #%id has not been updated"
 msgid "Payment type '%s' has not been modified!"
-msgstr "%type #%id не оновлювався"
+msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:235
 msgid "Payment type '%s' has been successfully added."
@@ -528,10 +527,8 @@ msgid "Unable to load contribution #%id!"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:588
-#, fuzzy
-#| msgid "Plugin '%name' has been successfully installed!"
 msgid "Contribution has been successfully stored"
-msgstr "Втулок '%name' успішно встановлено!"
+msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:601
 msgid "Post contribution script failed"
@@ -546,10 +543,8 @@ msgid "You can find contribution information and script output below."
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:619
-#, fuzzy
-#| msgid "No contribution selected"
 msgid "Post contribution script has failed."
-msgstr "Жодного внеску не вибрано"
+msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:642
 msgid "An error occurred while storing the contribution."
@@ -743,16 +738,12 @@ msgid "Lists configuration"
 msgstr "Записати файл конфігурації"
 
 #: ../lib/Galette/Controllers/GaletteController.php:628
-#, fuzzy
-#| msgid "Plugin '%name' has been successfully installed!"
 msgid "List configuration has been successfully stored"
-msgstr "Втулок '%name' успішно встановлено!"
+msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:633
-#, fuzzy
-#| msgid "An error occurred while storing the transaction."
 msgid "An error occurred while storing list configuration :("
-msgstr "Під час зберігання транзакції сталася помилка."
+msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:653
 #: ../templates/default/page.tpl:95
@@ -908,10 +899,8 @@ msgid ""
 msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:363
-#, fuzzy
-#| msgid "An email has been sent to %email"
 msgid "An email has been sent to the member."
-msgstr "Електронний лист надіслано на %email"
+msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:374
 msgid "A problem happened while sending password for account '%s'"
@@ -945,10 +934,8 @@ msgid "- The passwords don't match!"
 msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:507
-#, fuzzy
-#| msgid "Passwords mismatch"
 msgid "Your password is too weak!"
-msgstr "Невідповідність паролів"
+msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:516
 msgid "An error occurred while updating your password."
@@ -1527,10 +1514,8 @@ msgid "Contributions deleted (%list)"
 msgstr ""
 
 #: ../lib/Galette/Util/Password.php:87
-#, fuzzy
-#| msgid "Passwords mismatch"
 msgid "Password is blacklisted!"
-msgstr "Невідповідність паролів"
+msgstr ""
 
 #: ../lib/Galette/Util/Password.php:97
 msgid "Too short (%lenght characters minimum, %count found)"
@@ -1785,10 +1770,8 @@ msgid "GSM"
 msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:84
-#, fuzzy
-#| msgid "Required membership:"
 msgid "filtered_memberslist"
-msgstr "Необхідне членство:"
+msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:228
 #: ../lib/Galette/IO/PdfAdhesionForm.php:150
@@ -2418,10 +2401,8 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:1045
 #: ../templates/default/gestion_textes.tpl:118
-#, fuzzy
-#| msgid "Contact information:"
 msgid "Contribution information"
-msgstr "Контактні відомості:"
+msgstr ""
 
 #: ../lib/Galette/Entity/Contribution.php:1047
 msgid "Script output"
@@ -3179,16 +3160,12 @@ msgid "Jabber:"
 msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:217
-#, fuzzy
-#| msgid "System informations"
 msgid "Other information (admin):"
-msgstr "Системи відомостей"
+msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:225
-#, fuzzy
-#| msgid "System informations"
 msgid "Other information:"
-msgstr "Системи відомостей"
+msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:233
 msgid "Profession:"
@@ -3291,10 +3268,8 @@ msgid ""
 msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:51
-#, fuzzy
-#| msgid "Lost your password?"
 msgid "Lost password email"
-msgstr "Забули пароль?"
+msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:56
 msgid "[{ASSO_NAME}] Your contribution"
@@ -5086,10 +5061,8 @@ msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr ""
 
 #: ../templates/default/preferences.tpl:532
-#, fuzzy
-#| msgid "Passwords mismatch"
 msgid "Password length:"
-msgstr "Невідповідність паролів"
+msgstr ""
 
 #: ../templates/default/preferences.tpl:537
 msgid "Enable password blacklists"
@@ -5110,10 +5083,8 @@ msgid "Enforce password strength"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:542
-#, fuzzy
-#| msgid "Passwords mismatch"
 msgid "Password strength:"
-msgstr "Невідповідність паролів"
+msgstr ""
 
 #: ../templates/default/preferences.tpl:544
 msgid "Enforce minimal password strength for all password."
@@ -5188,10 +5159,8 @@ msgid "Test a password with current selected values."
 msgstr ""
 
 #: ../templates/default/preferences.tpl:563
-#, fuzzy
-#| msgid "New password"
 msgid "Test a password:"
-msgstr "Новий пароль"
+msgstr ""
 
 #: ../templates/default/preferences.tpl:564
 msgid ""
@@ -5623,10 +5592,8 @@ msgid "Password is valid :)"
 msgstr "Невідповідність паролів"
 
 #: ../templates/default/js_pwdcheck.tpl:33
-#, fuzzy
-#| msgid "Passwords mismatch"
 msgid "Password is not valid!"
-msgstr "Невідповідність паролів"
+msgstr ""
 
 #: ../templates/default/js_pwdcheck.tpl:60
 #, fuzzy
@@ -6164,10 +6131,8 @@ msgid "User status/interactions"
 msgstr "Стан/взаємодія користувача"
 
 #: ../templates/default/gestion_adherents.tpl:562
-#, fuzzy
-#| msgid "Sender Email:"
 msgid "Send an email"
-msgstr "Е-пошта відправника:"
+msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:564
 msgid "Visit website"
@@ -6670,8 +6635,9 @@ msgid "Edit field %field"
 msgstr ""
 
 #: ../templates/default/editer_champ.tpl:18
+#, fuzzy
 msgid "Permissions:"
-msgstr "Права"
+msgstr "Права:"
 
 #: ../templates/default/editer_champ.tpl:25
 msgid "Required:"
@@ -6751,10 +6717,8 @@ msgid "Load previous members..."
 msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:12
-#, fuzzy
-#| msgid "Contact information:"
 msgid "Mailing information"
-msgstr "Контактні відомості:"
+msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:17
 msgid "Go back to members list"
@@ -6987,10 +6951,8 @@ msgid "Remove"
 msgstr ""
 
 #: ../templates/default/ajouter_contribution.tpl:10
-#, fuzzy
-#| msgid "Contact information:"
 msgid "Related transaction information"
-msgstr "Контактні відомості:"
+msgstr ""
 
 #: ../templates/default/ajouter_contribution.tpl:15
 #: ../templates/default/dispatch_type.tpl:15
@@ -7452,10 +7414,8 @@ msgid "New group"
 msgstr ""
 
 #: ../templates/default/gestion_groupes.tpl:26
-#, fuzzy
-#| msgid "Contact information:"
 msgid "Group information"
-msgstr "Контактні відомості:"
+msgstr ""
 
 #: ../templates/default/gestion_groupes.tpl:32
 #: ../templates/default/ajax_groups.tpl:31
@@ -7791,10 +7751,8 @@ msgid "No ACLs!"
 msgstr ""
 
 #: ../templates/default/plugin_info.tpl:44
-#, fuzzy
-#| msgid "Contact information:"
 msgid "Raw information"
-msgstr "Контактні відомості:"
+msgstr ""
 
 #: ../templates/default/public_page.tpl:39
 msgid "View your member card"
