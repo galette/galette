@@ -9,8 +9,8 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
-"PO-Revision-Date: 2020-06-20 09:16+0000\n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"PO-Revision-Date: 2020-06-29 06:40+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.1.1\n"
+"X-Generator: Weblate 4.2-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -391,22 +391,16 @@ msgid ""
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1770
-#, fuzzy
-#| msgid "No email sent to %email"
 msgid "New account email sent to '%s'."
-msgstr "Nessun’e-mail inviata a %email"
+msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1770
 msgid "Account modification email sent to '%s'."
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1778
-#, fuzzy
-#| msgid "A problem happened while sending email to admin for account '%s'."
 msgid "A problem happened while sending account email to '%s'"
 msgstr ""
-"Un problema si è verificato durante l’invio dell’e-mail all’amministratore "
-"per l’account «%s»."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1787
 #, fuzzy
@@ -551,10 +545,8 @@ msgid "Unable to load contribution #%id!"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:588
-#, fuzzy
-#| msgid "Plugin '%name' has been successfully updated!"
 msgid "Contribution has been successfully stored"
-msgstr "Il plugin '%name' è stato aggiornato correttamente!"
+msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:601
 msgid "Post contribution script failed"
@@ -672,10 +664,8 @@ msgid "Saved search loaded"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:366
-#, fuzzy
-#| msgid "An error occurred sending test email :("
 msgid "An SQL error has occurred while loading search."
-msgstr "Si è verificato un errore durante l’invio dell’e-mail di prova :("
+msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:109
 #: ../templates/default/footer.tpl:24
@@ -777,10 +767,8 @@ msgid "Lists configuration"
 msgstr "Elenco dei contributi"
 
 #: ../lib/Galette/Controllers/GaletteController.php:628
-#, fuzzy
-#| msgid "Plugin '%name' has been successfully updated!"
 msgid "List configuration has been successfully stored"
-msgstr "Il plugin '%name' è stato aggiornato correttamente!"
+msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:633
 #, fuzzy
@@ -947,10 +935,8 @@ msgstr ""
 "Ti è stata inviata un’e-mail, controlla la tua casella di posta elettronica."
 
 #: ../lib/Galette/Controllers/AuthController.php:363
-#, fuzzy
-#| msgid "An email has been sent to %email"
 msgid "An email has been sent to the member."
-msgstr "Un’e-mail è stata inviata a %email"
+msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:374
 msgid "A problem happened while sending password for account '%s'"
@@ -3311,10 +3297,8 @@ msgid ""
 msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:51
-#, fuzzy
-#| msgid "Lost your password?"
 msgid "Lost password email"
-msgstr "Hai perso la password?"
+msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:56
 msgid "[{ASSO_NAME}] Your contribution"
@@ -3393,10 +3377,8 @@ msgid ""
 msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:91
-#, fuzzy
-#| msgid "Member will receive a notification by email, if he has an address."
 msgid "Informs user that his account has been modified"
-msgstr "Il membro riceverà una notifica via e-mail, se ha un indirizzo."
+msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:96
 msgid "[{ASSO_NAME}] Your membership is about to expire"
@@ -5195,10 +5177,8 @@ msgid "Test a password with current selected values."
 msgstr ""
 
 #: ../templates/default/preferences.tpl:563
-#, fuzzy
-#| msgid "Lost your password?"
 msgid "Test a password:"
-msgstr "Hai perso la password?"
+msgstr ""
 
 #: ../templates/default/preferences.tpl:564
 msgid ""
@@ -5622,10 +5602,8 @@ msgid "Access permissions to database"
 msgstr ""
 
 #: ../templates/default/js_pwdcheck.tpl:30
-#, fuzzy
-#| msgid "Password:"
 msgid "Password is valid :)"
-msgstr "Password:"
+msgstr ""
 
 #: ../templates/default/js_pwdcheck.tpl:33
 msgid "Password is not valid!"
@@ -6165,10 +6143,8 @@ msgid "User status/interactions"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:562
-#, fuzzy
-#| msgid "Sender Email:"
 msgid "Send an email"
-msgstr "E-mail del mittente:"
+msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:564
 msgid "Visit website"
@@ -7335,10 +7311,8 @@ msgid "ends with"
 msgstr ""
 
 #: ../templates/default/directlink.tpl:6
-#, fuzzy
-#| msgid "Member's email address"
 msgid "Please confirm your email address:"
-msgstr "Indirizzo e-mail del membro"
+msgstr ""
 
 #: ../templates/default/directlink.tpl:9
 msgid "Get my document"
@@ -7885,10 +7859,8 @@ msgid "preview"
 msgstr ""
 
 #: ../templates/default/reminder.tpl:13 ../templates/default/reminder.tpl:20
-#, fuzzy
-#| msgid "Members that have an email address:"
 msgid "%s members with an email address"
-msgstr "Membri che hanno un indirizzo e-mail:"
+msgstr ""
 
 #: ../templates/default/reminder.tpl:14 ../templates/default/reminder.tpl:21
 #, fuzzy
@@ -7897,10 +7869,8 @@ msgid "%s members without email address"
 msgstr "Indirizzo e-mail del membro"
 
 #: ../templates/default/reminder.tpl:25
-#, fuzzy
-#| msgid "None of the selected members has an email address."
 msgid "Generate labels for late members without email address"
-msgstr "Nessuno dei membri selezionati ha un indirizzo e-mail."
+msgstr ""
 
 #: ../templates/default/reminder.tpl:68
 msgid "No reminder selected"
