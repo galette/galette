@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"PO-Revision-Date: 2020-06-28 06:21+0000\n"
+"PO-Revision-Date: 2020-06-29 06:40+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
@@ -775,10 +775,8 @@ msgid "List configuration has been successfully stored"
 msgstr "Feldeinstellungen wurden erfolgreich gespeichert"
 
 #: ../lib/Galette/Controllers/GaletteController.php:633
-#, fuzzy
-#| msgid "An error occurred while storing the contribution."
 msgid "An error occurred while storing list configuration :("
-msgstr "Beim Speichern des Beitrags ist ein Fehler aufgetreten."
+msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:653
 #: ../templates/default/page.tpl:95
@@ -3378,10 +3376,8 @@ msgid ""
 msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:51
-#, fuzzy
-#| msgid "Lost your password?"
 msgid "Lost password email"
-msgstr "Passwort vergessen?"
+msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:56
 #, fuzzy
@@ -3452,10 +3448,8 @@ msgid "New self registration (sent to admin)"
 msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:88
-#, fuzzy
-#| msgid "Member account has been modified."
 msgid "[{ASSO_NAME}] Your account has been modified"
-msgstr "Mitgliedskonto wurde geändert."
+msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:89
 msgid ""
@@ -3529,16 +3523,12 @@ msgid ""
 msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:123
-#, fuzzy
-#| msgid "New account email sent to admin for '%s'."
 msgid "New donation (sent to admin)"
-msgstr "Benachrichtigung über neues Konto „%s“ an Administrator versandt."
+msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:128
-#, fuzzy
-#| msgid "Member account has been modified."
 msgid "[{ASSO_NAME}] Account {NAME_ADH} has been modified"
-msgstr "Mitgliedskonto wurde geändert."
+msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:129
 msgid ""
@@ -5292,10 +5282,8 @@ msgid "Enforce password strength"
 msgstr ""
 
 #: ../templates/default/preferences.tpl:542
-#, fuzzy
-#| msgid "Password misrepeated: "
 msgid "Password strength:"
-msgstr "Passwort falsch wiederholt: "
+msgstr ""
 
 #: ../templates/default/preferences.tpl:544
 msgid "Enforce minimal password strength for all password."
@@ -5806,10 +5794,8 @@ msgid "Access permissions to database"
 msgstr "Zugriffsrechte auf die Datenbank"
 
 #: ../templates/default/js_pwdcheck.tpl:30
-#, fuzzy
-#| msgid "Password misrepeated: "
 msgid "Password is valid :)"
-msgstr "Passwort falsch wiederholt: "
+msgstr ""
 
 #: ../templates/default/js_pwdcheck.tpl:33
 #, fuzzy
@@ -6526,10 +6512,8 @@ msgid "Read/Write"
 msgstr "Lesen/Schreiben"
 
 #: ../templates/default/config_lists.tpl:31
-#, fuzzy
-#| msgid "Additionnal fields:"
 msgid "Available fields"
-msgstr "Zusätzliche Felder:"
+msgstr ""
 
 #: ../templates/default/export.tpl:5
 msgid ""
@@ -7572,10 +7556,8 @@ msgid "ends with"
 msgstr "endet mit"
 
 #: ../templates/default/directlink.tpl:6
-#, fuzzy
-#| msgid "Member's email address"
 msgid "Please confirm your email address:"
-msgstr "E-Mail-Adresse des Mitglieds"
+msgstr ""
 
 #: ../templates/default/directlink.tpl:9
 msgid "Get my document"
