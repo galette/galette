@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2019-10-17 08:02+0200\n"
-"PO-Revision-Date: 2020-06-20 09:16+0000\n"
+"PO-Revision-Date: 2020-06-29 06:40+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.1.1\n"
+"X-Generator: Weblate 4.2-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -85,12 +85,14 @@ msgid "Edit payment type"
 msgstr "Editar tipo de pago"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:213
+#, fuzzy
 msgid "Payment type '%s' has not been added!"
-msgstr "No se ha añadido el tipo de pago «%s»."
+msgstr "¡No se ha añadido el tipo de pago «%s»!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:222
+#, fuzzy
 msgid "Payment type '%s' has not been modified!"
-msgstr "No se ha modificado el tipo de pago «%s»."
+msgstr "¡No se ha modificado el tipo de pago «%s»!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:235
 msgid "Payment type '%s' has been successfully added."
@@ -139,8 +141,9 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:149
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:285
+#, fuzzy
 msgid "No member selected for mailing!"
-msgstr ""
+msgstr "¡Ningún miembro seleccionado para enviar por correo!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:204
 msgid "Mailing"
@@ -545,10 +548,8 @@ msgid "You can find contribution information and script output below."
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:619
-#, fuzzy
-#| msgid "No contribution selected"
 msgid "Post contribution script has failed."
-msgstr "No se seleccionó ninguna contribución"
+msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:642
 msgid "An error occurred while storing the contribution."
@@ -741,10 +742,8 @@ msgid "Lists configuration"
 msgstr "Configuración de campos"
 
 #: ../lib/Galette/Controllers/GaletteController.php:628
-#, fuzzy
-#| msgid "Dynamic field has been successfully stored!"
 msgid "List configuration has been successfully stored"
-msgstr "Se almacenó el campo dinámico correctamente."
+msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:633
 #, fuzzy
@@ -1776,10 +1775,8 @@ msgid "GSM"
 msgstr "GSM"
 
 #: ../lib/Galette/IO/MembersCsv.php:84
-#, fuzzy
-#| msgid "Required membership:"
 msgid "filtered_memberslist"
-msgstr "Membresía requerida:"
+msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:228
 #: ../lib/Galette/IO/PdfAdhesionForm.php:150
@@ -3282,10 +3279,8 @@ msgid ""
 msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:51
-#, fuzzy
-#| msgid "Lost your password?"
 msgid "Lost password email"
-msgstr "¿Olvidó la contraseña?"
+msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:56
 msgid "[{ASSO_NAME}] Your contribution"
@@ -3425,10 +3420,8 @@ msgid ""
 msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:123
-#, fuzzy
-#| msgid "Account modification mail sent to admin."
 msgid "New donation (sent to admin)"
-msgstr "Se envió un mensaje para modificar la cuenta al administrador."
+msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:128
 msgid "[{ASSO_NAME}] Account {NAME_ADH} has been modified"
@@ -5608,7 +5601,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Password:"
 msgid "Password is valid :)"
-msgstr "Contraseña:"
+msgstr "Contraseña es válido :)"
 
 #: ../templates/default/js_pwdcheck.tpl:33
 msgid "Password is not valid!"
@@ -7704,10 +7697,8 @@ msgid ""
 msgstr ""
 
 #: ../templates/default/telemetry.tpl:11
-#, fuzzy
-#| msgid "Other informations:"
 msgid "Send telemetry information"
-msgstr "Otra información:"
+msgstr ""
 
 #: ../templates/default/telemetry.tpl:39
 #, fuzzy
