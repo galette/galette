@@ -158,7 +158,7 @@ class PaymentType extends atoum
             )
         );
         $results = $this->zdb->execute($select);
-        $this->integer(count($results))->isIdenticalTo(10);
+        $this->integer(count($results))->isIdenticalTo(count($this->i18n->getArrayList()));
 
         $type = new \Galette\Entity\PaymentType($this->zdb, \Galette\Entity\PaymentType::CASH);
         $this->exception(
