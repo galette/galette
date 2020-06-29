@@ -8,13 +8,14 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2019, 2020.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # anonymous <noreply@weblate.org>, 2020.
+# Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2020-06-24 19:00+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2020-06-29 15:15+0000\n"
+"Last-Translator: Fredericos Tezorc <fredericos.tezorc@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -2322,7 +2323,7 @@ msgstr "Actif"
 #: ../templates/default/gestion_contributions.tpl:44
 #: ../templates/default/forms_types/account.tpl:6
 msgid "Inactive"
-msgstr "Inactive"
+msgstr "Inactif"
 
 #: ../lib/Galette/Entity/Adherent.php:1824 ../templates/default/member.tpl:370
 msgid " (%age years old)"
