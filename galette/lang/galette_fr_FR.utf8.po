@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2020-06-29 15:15+0000\n"
-"Last-Translator: Fredericos Tezorc <fredericos.tezorc@gmail.com>\n"
+"PO-Revision-Date: 2020-06-29 19:42+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -7257,7 +7257,7 @@ msgstr "Chercher un nom ou un identifiant et sélectionner l'adhérent"
 #: ../templates/default/ajouter_contribution.tpl:92
 #: ../templates/default/dispatch_type.tpl:70
 msgid "Reload"
-msgstr "Rechercher"
+msgstr "Recharger"
 
 #: ../templates/default/ajouter_contribution.tpl:92
 msgid ""
