@@ -6,9 +6,9 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: trasher@x-tnd.be\n"
-"PO-Revision-Date: 2020-06-20 09:16+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"PO-Revision-Date: 2020-07-02 11:33+0000\n"
+"Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.1.1\n"
+"X-Generator: Weblate 4.2-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -511,7 +511,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:340
 msgid "Contributions management"
-msgstr ""
+msgstr "إدارة الإشتراكات"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:340
 msgid "Transactions management"
@@ -586,7 +586,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:907
 #: ../templates/default/gestion_contributions.tpl:52
 msgid "contributions"
-msgstr "مساهمات"
+msgstr "اشتراكات"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:907
 #: ../templates/default/gestion_transactions.tpl:32
@@ -1217,7 +1217,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1132 ../templates/default/page.tpl:87
 msgid "Contributions types"
-msgstr ""
+msgstr "نوع الإشتراك"
 
 #: ../lib/Galette/Core/Install.php:1136
 #: ../templates/default/gestion_adherents.tpl:336
@@ -1634,7 +1634,7 @@ msgstr "الأعضاء"
 #: ../templates/default/gestion_adherents.tpl:547
 #: ../templates/default/fake_data.tpl:41
 msgid "Contributions"
-msgstr ""
+msgstr "الإشتراكات"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:522
 #: ../templates/default/desktop.tpl:34 ../templates/default/fake_data.tpl:45
@@ -3977,7 +3977,7 @@ msgstr "اسم العضو"
 
 #: ../templates/default/gestion_pdf.tpl:49
 msgid "Member's address"
-msgstr ""
+msgstr "عنوان العضو"
 
 #: ../templates/default/gestion_pdf.tpl:53
 msgid "Member's zipcode"
@@ -4184,7 +4184,7 @@ msgstr ""
 
 #: ../templates/default/page.tpl:49
 msgid "Add a member"
-msgstr ""
+msgstr "إضافة عضو"
 
 #: ../templates/default/page.tpl:50
 msgid "Add new membership fee in database"
@@ -4194,7 +4194,7 @@ msgstr ""
 #: ../templates/default/gestion_contributions.tpl:47
 #: ../templates/default/voir_adherent.tpl:81
 msgid "Add a membership fee"
-msgstr ""
+msgstr "إضافة مستحقات العضوية"
 
 #: ../templates/default/page.tpl:51
 msgid "Add new donation in database"
@@ -4249,7 +4249,7 @@ msgstr "عرض وتصفية جميع المساهمات بلدي"
 
 #: ../templates/default/page.tpl:60 ../templates/default/desktop.tpl:47
 msgid "My contributions"
-msgstr ""
+msgstr "اشتراكاتي"
 
 #: ../templates/default/page.tpl:61
 msgid "View and filter all my transactions"
@@ -4316,7 +4316,7 @@ msgstr ""
 
 #: ../templates/default/page.tpl:87
 msgid "Manage contributions types"
-msgstr ""
+msgstr "إدارة أنواع الإشتراكات"
 
 #: ../templates/default/page.tpl:88
 msgid "Manage emails texts and subjects"
@@ -5205,7 +5205,7 @@ msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:10
 msgid "Show contributions by"
-msgstr ""
+msgstr "عرض الإشتراكات حسب"
 
 #: ../templates/default/gestion_contributions.tpl:12
 #: ../templates/default/gestion_contributions.tpl:83
@@ -5778,7 +5778,7 @@ msgstr ""
 
 #: ../templates/default/gestion_textes.tpl:84
 msgid "Member's email address"
-msgstr ""
+msgstr "البريد الإلكتروني للعضو"
 
 #: ../templates/default/gestion_textes.tpl:88
 msgid "Member's last name"
@@ -7099,7 +7099,7 @@ msgstr "اظهر تبرّعات العضو"
 
 #: ../templates/default/voir_adherent.tpl:72
 msgid "View contributions"
-msgstr ""
+msgstr "عرض الإشتراكات"
 
 #: ../templates/default/voir_adherent.tpl:96
 msgid "Create a new member with %name information."
