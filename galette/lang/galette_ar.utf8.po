@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"PO-Revision-Date: 2020-07-02 11:33+0000\n"
+"PO-Revision-Date: 2020-07-02 20:25+0000\n"
 "Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
@@ -197,10 +197,8 @@ msgid "Mailing preview"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:82
-#, fuzzy
-#| msgid "Edit field"
 msgid "Add field"
-msgstr "حقل التحرير"
+msgstr "إضافة حقل"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:131
 msgid "An error occurred adding dynamic field :("
@@ -224,10 +222,8 @@ msgid "Edit field"
 msgstr "حقل التحرير"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:350
-#, fuzzy
-#| msgid "An error occurred."
 msgid "An error occurred editing dynamic field :("
-msgstr "وقع هناك خطأ."
+msgstr "وقع هناك خطأ أثناء تعديل الحقل الديناميكي :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:446
 msgid "Requested field does not exists!"
@@ -247,7 +243,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:158
 msgid "Subscription"
-msgstr ""
+msgstr "التسجيل"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:242
 #: ../lib/Galette/Controllers/Crud/MembersController.php:447
@@ -643,8 +639,6 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:109
 #: ../templates/default/footer.tpl:24
-#, fuzzy
-#| msgid "System informations"
 msgid "System information"
 msgstr "معلومات عن النظام"
 
@@ -2864,7 +2858,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:354
 msgid "Identity"
-msgstr ""
+msgstr "الهوية"
 
 #: ../includes/i18n.inc.php:355
 msgid "Galette-related data"
@@ -2888,7 +2882,7 @@ msgstr ""
 
 #: ../includes/i18n.inc.php:360
 msgid "Identity:"
-msgstr ""
+msgstr "الهوية:"
 
 #: ../includes/i18n.inc.php:361
 msgid "Galette-related data:"
@@ -3081,7 +3075,7 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:86
 msgid "Nickname:"
-msgstr ""
+msgstr "الاسم المستعار:"
 
 #: ../includes/fields_defs/members_fields.php:96
 msgid "Title:"
@@ -3089,17 +3083,17 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:104
 msgid "Birth date:"
-msgstr ""
+msgstr "تاريخ الميلاد:"
 
 #: ../includes/fields_defs/members_fields.php:112
 msgid "Gender:"
-msgstr ""
+msgstr "الحالة الجنسية:"
 
 #: ../includes/fields_defs/members_fields.php:120
 #: ../templates/default/preferences.tpl:52
 #: ../templates/default/preferences.tpl:54
 msgid "Address:"
-msgstr ""
+msgstr "العنوان:"
 
 #: ../includes/fields_defs/members_fields.php:129
 msgid "Address (continuation)"
@@ -3108,25 +3102,25 @@ msgstr ""
 #: ../includes/fields_defs/members_fields.php:137
 #: ../templates/default/preferences.tpl:58
 msgid "Zip Code:"
-msgstr ""
+msgstr "الرمز البريدي:"
 
 #: ../includes/fields_defs/members_fields.php:145
 #: ../templates/default/preferences.tpl:62
 msgid "City:"
-msgstr ""
+msgstr "المدينة:"
 
 #: ../includes/fields_defs/members_fields.php:153
 #: ../templates/default/preferences.tpl:66
 msgid "Country:"
-msgstr ""
+msgstr "البلد:"
 
 #: ../includes/fields_defs/members_fields.php:161
 msgid "Phone:"
-msgstr "هاتف"
+msgstr "الهاتف:"
 
 #: ../includes/fields_defs/members_fields.php:169
 msgid "Mobile phone:"
-msgstr ""
+msgstr "الهاتف المحمول:"
 
 #: ../includes/fields_defs/members_fields.php:177
 msgid "E-Mail:"
@@ -3135,7 +3129,7 @@ msgstr ""
 #: ../includes/fields_defs/members_fields.php:185
 #: ../templates/default/preferences.tpl:85
 msgid "Website:"
-msgstr ""
+msgstr "موقع الويب:"
 
 #: ../includes/fields_defs/members_fields.php:193
 msgid "ICQ:"
@@ -3156,14 +3150,12 @@ msgid "Other information (admin):"
 msgstr "معلومات عن النظام"
 
 #: ../includes/fields_defs/members_fields.php:225
-#, fuzzy
-#| msgid "System informations"
 msgid "Other information:"
-msgstr "معلومات عن النظام"
+msgstr "معلومات أخرى:"
 
 #: ../includes/fields_defs/members_fields.php:233
 msgid "Profession:"
-msgstr ""
+msgstr "المهنة:"
 
 #: ../includes/fields_defs/members_fields.php:241 ../install/steps/admin.php:45
 #: ../templates/default/preferences.tpl:577 ../templates/default/index.tpl:10
@@ -3212,7 +3204,7 @@ msgstr "اللغة:"
 
 #: ../includes/fields_defs/members_fields.php:323
 msgid "Birthplace:"
-msgstr ""
+msgstr "مكان الميلاد:"
 
 #: ../includes/fields_defs/members_fields.php:331
 msgid "Id GNUpg (GPG):"
@@ -4088,7 +4080,7 @@ msgstr ""
 #: ../templates/default/dispatch_type.tpl:140
 #: ../templates/default/member.tpl:106
 msgid "Save"
-msgstr ""
+msgstr "حفظ"
 
 #: ../templates/default/editer_intitule.tpl:19
 msgid "Priority:"
@@ -4459,7 +4451,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:70
 msgid "Postal address:"
-msgstr ""
+msgstr "العنوان البريدي:"
 
 #: ../templates/default/preferences.tpl:71
 msgid ""
@@ -5013,7 +5005,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:496
 msgid "Profession"
-msgstr ""
+msgstr "المهنة"
 
 #: ../templates/default/preferences.tpl:498
 msgid "(Choose address printed below name)"
@@ -7144,7 +7136,7 @@ msgstr ""
 #: ../templates/default/voir_adherent.tpl:228
 #: ../templates/default/member.tpl:135
 msgid "Back to top"
-msgstr ""
+msgstr "عودة إلى الأعلى"
 
 #: ../templates/default/voir_adherent.tpl:238
 msgid "Not managed group"
@@ -7176,7 +7168,7 @@ msgstr ""
 
 #: ../templates/default/advanced_search.tpl:52
 msgid "Birth date"
-msgstr ""
+msgstr "تاريخ الميلاد"
 
 #: ../templates/default/advanced_search.tpl:53
 #: ../templates/default/advanced_search.tpl:60
