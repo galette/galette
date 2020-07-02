@@ -93,7 +93,7 @@
                     <th><tt>{ldelim}ID_ADH{rdelim}</tt></th>
                     <td>{_T string="Member's ID"}</td>
                     <th><tt>{ldelim}LOGIN{rdelim}</tt></th>
-                    <td>{_T string="Member's login"}></td>
+                    <td>{_T string="Member's login"}</td>
                 </tr>
                 <tr>
                     <th colspan="4">
