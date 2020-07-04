@@ -8,7 +8,7 @@
     {if $m->id eq $model->id}
         {assign var='activetab' value=$smarty.foreach.formodels.iteration}
     {/if}
-                <li{if $m->id eq $model->id} class="ui-tabs-selected"{/if}><a href="?id={$m->id}">{$m->name}</a></li>
+                <li{if $m->id eq $model->id} class="ui-tabs-selected"{/if}><a href="{path_for name="pdfModels" data=["id" => $m->id]}">{$m->name}</a></li>
 {/foreach}
             </ul>
             <div id="ui-tabs-{$activetab}">
@@ -122,29 +122,36 @@
                         return false;
                 });
 
-                $('#tabs > ul > li > a').each(function(){
-                    $(this).attr('href', $(this).attr('href')  + '&ajax=true');
-                });
-
                 $('#tabs').tabs({
+                    active: {$activetab-1},
                     load: function(event, ui) {
                         $('#tabs input:submit, #tabs .button, #tabs input:reset' ).button();
                     },
-                    ajaxOptions: {
-                        {* Cannot include js_loader.tpl here because we need to use beforeSend specificaly... *}
-                        beforeSend: function(xhr, settings) {
-                            if ( settings.url.match(/\?id={$model->id}.*/) ) {
-                                return false; //avoid reloading first tab onload
+                    {* Cannot include js_loader.tpl here because we need to use beforeSend specificaly... *}
+                    beforeLoad: function(event, ui) {
+                        _tab_name = ui.ajaxSettings.url.split('/');
+                        _tab_name = _tab_name[_tab_name.length-1];
+
+                        if ( ui.ajaxSettings.url == '{path_for name="pdfModels" data=["id" => $model->id]}'
+                             ||  ui.ajaxSettings.url == '{path_for name="pdfModels"}'
+                        ) {
+                            var _current = $('#ui-tabs-{$activetab}');
+                            if (_current) {
+                                $('#'+ui.panel[0].id).append(_current)
                             }
-                            var _img = $('<figure id="loading"><p><img src="{base_url}/{$template_subdir}images/loading.png" alt="{_T string="Loading..."}"/><br/>{_T string="Currently loading..."}</p></figure>');
-                            $('body').append(_img);
-                        },
-                        complete: function() {
-                            $('#loading').remove();
-                        },
-                        error: function( xhr, status, index, anchor ) {
-                            alert('{_T string="An error occurred :(" escape="js"}');
+                            return false; //avoid reloading first tab onload
                         }
+
+                        var _img = $('<figure id="loading"><p><img src="{base_url}/{$template_subdir}images/loading.png" alt="{_T string="Loading..."}"/><br/>{_T string="Currently loading..."}</p></figure>');
+                        $('body').append(_img);
+
+                        ui.jqXHR.always(function(){
+                            $('#loading').remove();
+                        });
+
+                        ui.jqXHR.fail(function(){
+                            alert('{_T string="An error occurred :(" escape="js"}');
+                        });
                     }
                 });
             });

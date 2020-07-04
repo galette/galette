@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2010-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-03
  */
@@ -123,7 +122,7 @@ abstract class Pagination
      */
     public function invertorder()
     {
-        $actual=$this->ordered;
+        $actual = $this->ordered;
         if ($actual == self::ORDER_ASC) {
                 $this->ordered = self::ORDER_DESC;
         }
@@ -235,7 +234,7 @@ abstract class Pagination
 
         //Create pagination links
         if ($this->current_page < 11) {
-            $idepart=1;
+            $idepart = 1;
         } else {
             $idepart = $this->current_page - 10;
         }
@@ -386,7 +385,7 @@ abstract class Pagination
         } else {
             Analog::log(
                 '[' . get_class($this) .
-                '|Pagination] Unable to get proprety `' .$name . '`',
+                '|Pagination] Unable to get proprety `' . $name . '`',
                 Analog::WARNING
             );
         }
@@ -447,7 +446,8 @@ abstract class Pagination
                 }
                 break;
             case 'show':
-                if ($value == 'all'
+                if (
+                    $value == 'all'
                     || preg_match('/[[:digit:]]/', $value)
                     && $value >= 0
                 ) {

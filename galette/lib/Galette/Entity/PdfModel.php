@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-19
  */
@@ -41,7 +40,7 @@ use Galette\Core;
 use Galette\Core\Db;
 use Galette\Repository\PdfModels;
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 
 /**
  * PDF Model
@@ -58,13 +57,13 @@ use Zend\Db\Sql\Expression;
 
 abstract class PdfModel
 {
-    const TABLE = 'pdfmodels';
-    const PK = 'model_id';
+    public const TABLE = 'pdfmodels';
+    public const PK = 'model_id';
 
-    const MAIN_MODEL = 1;
-    const INVOICE_MODEL = 2;
-    const RECEIPT_MODEL = 3;
-    const ADHESION_FORM_MODEL = 4;
+    public const MAIN_MODEL = 1;
+    public const INVOICE_MODEL = 2;
+    public const RECEIPT_MODEL = 3;
+    public const ADHESION_FORM_MODEL = 4;
 
     private $zdb;
 
@@ -131,8 +130,8 @@ abstract class PdfModel
 
         $logo = new Core\Logo();
         $logo_elt = '<img' .
-            ' src="'    . $preferences->getURL() . $router->pathFor('logo')  . '"' .
-            ' width="'  . $logo->getOptimalWidth()  . '"' .
+            ' src="' . $preferences->getURL() . $router->pathFor('logo') . '"' .
+            ' width="' . $logo->getOptimalWidth() . '"' .
             ' height="' . $logo->getOptimalHeight() . '"' .
             '/>';
 
@@ -358,7 +357,7 @@ abstract class PdfModel
         }
     }
 
-     /**
+    /**
      * Extract patterns
      *
      * @return array
@@ -442,7 +441,8 @@ abstract class PdfModel
                 $value = null;
 
                 //get header and footer from parent if not defined in current model
-                if ($this->id > self::MAIN_MODEL
+                if (
+                    $this->id > self::MAIN_MODEL
                     && $this->parent !== null
                 ) {
                     $value = $this->parent->styles;
@@ -460,7 +460,8 @@ abstract class PdfModel
                 $prop_value = $this->$pname;
 
                 //get header and footer from parent if not defined in current model
-                if ($this->id > self::MAIN_MODEL
+                if (
+                    $this->id > self::MAIN_MODEL
                     && trim($prop_value) === ''
                     && $this->parent !== null
                     && ($pname === 'footer'
@@ -523,7 +524,8 @@ abstract class PdfModel
     {
         switch ($name) {
             case 'type':
-                if ($value === self::MAIN_MODEL
+                if (
+                    $value === self::MAIN_MODEL
                     || $value === self::INVOICE_MODEL
                     || $value === self::RECEIPT_MODEL
                     || $value === self::ADHESION_FORM_MODEL
@@ -599,7 +601,7 @@ abstract class PdfModel
                 break;
             default:
                 Analog::log(
-                    'Unable to set PdfModel property ' .$name,
+                    'Unable to set PdfModel property ' . $name,
                     Analog::WARNING
                 );
                 break;

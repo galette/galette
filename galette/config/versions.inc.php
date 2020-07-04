@@ -31,21 +31,8 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-13
  */
-define('GALETTE_PHP_MIN', '7.1');
-define('SMARTY_VERSION', '3.1.21');
-define('ZEND_VERSION', '2.3.7');
-define('ANALOG_VERSION', '1.0.7');
-define('TCPDF_VERSION', '6.2.6');
-define('JQUERY_VERSION', '1.10.2');
-define('JQUERY_MIGRATE_VERSION', '1.2.1');
-define('JQUERY_UI_VERSION', '1.10.3');
+define('GALETTE_PHP_MIN', '7.2');
 define('JQUERY_MARKITUP_VERSION', '1.1.14');
-define('JQUERY_JQPLOT_VERSION', '1.0.8r1250');
-define('PHP_MAILER_VERSION', '5.2.9');
-define('PASSWORD_COMPAT_VERSION', '1.0.4');
-define('SLIM_VERSION', '2.4.3');
-define('SLIM__VIEWS_VERSION', '0.1.2');

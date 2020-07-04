@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,216 +28,106 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     0.7.4dev - 2013-02-08
  */
 
-
 $texts_fields = array(
     array(
-        'tid'       => 1,
         'tref'      => 'sub',
-        'tsubject'  => '[{ASSO_NAME}] Your identifiers',
-        'tbody'     => "Hello,\r\n\r\nYou've just been subscribed on the members management system of {ASSO_NAME}.\r\n\r\nIt is now possible to follow in real time the state of your subscription and to update your preferences from the web interface.\r\n\r\nPlease login at this address to set your new password :\r\n{CHG_PWD_URI}\r\n\r\nUsername: {LOGIN}\r\nThe above link will be valid until {LINK_VALIDITY}.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+        'tsubject'  => _T('[{ASSO_NAME}] Your identifiers'),
+        'tbody'     => _T("Hello,{NEWLINE}You've just been subscribed on the members management system of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state of your subscription and to update your preferences from the web interface.{NEWLINE}Please login at this address to set your new password :{BR}{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"),
         'tlang'     => 'en_US',
-        'tcomment'  => 'New user registration'
-    ),
-    array(
-        'tid'       => 2,
-        'tref'      => 'sub',
-        'tsubject'  => '[{ASSO_NAME}] Votre adhésion',
-        'tbody'     => "Bonjour,\r\n\r\nVous venez d'adhérer à {ASSO_NAME}.\r\n\r\nVous pouvez désormais suivre en temps réel l'état de vos souscriptions et mettre à jour vos coordonnées depuis l'interface web.\r\n\r\nConnectez vous à cette adresse pour valider le nouveau mot de passe :\r\n{CHG_PWD_URI}\r\n\r\nIdentifiant : {LOGIN}\r\nLe lien ci-dessus sera valide jusqu'au {LINK_VALIDITY}.\r\n\r\nA bientôt!\r\n\r\n(Ce courriel est un envoi automatique)",
-        'tlang'     => 'fr_FR',
-        'tcomment'  => 'Nouvelle adhésion'
+        'tcomment'  => _T('New user registration')
     ),
 
     array(
-        'tid'       => 4,
         'tref'      => 'pwd',
-        'tsubject'  => '[{ASSO_NAME}] Your identifiers',
-        'tbody'     => "Hello,\r\n\r\nSomeone (probably you) asked to recover your password.\r\n\r\nPlease login at this address to set your new password :\r\n{CHG_PWD_URI}\r\n\r\nUsername: {LOGIN}\r\nThe above link will be valid until {LINK_VALIDITY}.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+        'tsubject'  => _T('[{ASSO_NAME}] Your identifiers'),
+        'tbody'     => _T("Hello,{NEWLINE}Someone (probably you) asked to recover your password.{NEWLINE}Please login at this address to set your new password :{BR}{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"),
         'tlang'     => 'en_US',
-        'tcomment'  => 'Lost password email'
-    ),
-    array(
-        'tid'       => 5,
-        'tref'      => 'pwd',
-        'tsubject'  => '[{ASSO_NAME}] Vos Identifiants',
-        'tbody'     => "Bonjour,\r\n\r\nQuelqu'un (probablement vous) a demandé la récupération de votre mot de passe.\r\n\r\nConnectez vous à cette adresse pour valider le nouveau mot de passe :\r\n{CHG_PWD_URI}\r\n\r\nIdentifiant : {LOGIN}\r\nLe lien ci-dessus sera valide jusqu'au {LINK_VALIDITY}.\r\n\r\nA Bientôt!\r\n\r\n(Ce courriel est un envoi automatique)",
-        'tlang'     => 'fr_FR',
-        'tcomment'  => 'Récupération du mot de passe'
+        'tcomment'  => _T('Lost password email')
     ),
 
     array(
-        'tid'       => 7,
         'tref'      => 'contrib',
-        'tsubject'  => '[{ASSO_NAME}] Your contribution',
-        'tbody'     => "Hello,\r\n\r\nYour contribution has successfully been taken into account by {ASSO_NAME}.\r\n\r\nIt is valid until {DEADLINE}.\r\n\r\nYou can now login and browse or modify your personnal data using your galette identifiers at this address:\r\n{LOGIN_URI}.\r\n\r\n{CONTRIB_INFO}\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+        'tsubject'  => _T('[{ASSO_NAME}] Your contribution'),
+        'tbody'     => _T("Hello,{NEWLINE}Your contribution has successfully been taken into account by {ASSO_NAME}.{NEWLINE}It is valid until {DEADLINE}.{NEWLINE}You can now login and browse or modify your personnal data using your galette identifiers at this address:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"),
         'tlang'     => 'en_US',
-        'tcomment'  => 'Receipt send for new contribution'
-    ),
-    array(
-        'tid'       => 8,
-        'tref'      => 'contrib',
-        'tsubject'  => '[{ASSO_NAME}] Votre cotisation',
-        'tbody'     => "Bonjour,\r\n\r\nVotre cotisation a été enregistrée et validée par l'association {ASSO_NAME}.\r\n\r\nElle est valable jusqu'au {DEADLINE}\r\n\r\nVous pouvez désormais accéder à vos données personnelles à l'aide de vos identifiants galette à l'adresse suivante :\r\n{LOGIN_URI}.\r\n\r\n{CONTRIB_INFO}\r\n\r\nA Bientôt!\r\n\r\n(Ce courriel est un envoi automatique)",
-        'tlang'     => 'fr_FR',
-        'tcomment'  => 'Accusé de réception de cotisation'
+        'tcomment'  => _T('Receipt send for new contribution')
     ),
 
     array(
-        'tid'       => 10,
         'tref'      => 'newadh',
-        'tsubject'  => '[{ASSO_NAME}] New registration from {NAME_ADH}',
-        'tbody'     => "Hello dear Administrator,\r\n\r\nA new member has been registered with the following informations:\r\n* Name: {NAME_ADH}\r\n* Login: {LOGIN}\r\n* E-mail: {MAIL_ADH}\r\n\r\nYours sincerly,\r\nGalette",
+        'tsubject'  => _T('[{ASSO_NAME}] New registration from {NAME_ADH}'),
+        'tbody'     => _T("Hello dear Administrator,{NEWLINE}A new member has been registered with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"),
         'tlang'     => 'en_US',
-        'tcomment'  => 'New user registration (sent to admin)'
-    ),
-    array(
-        'tid'       => 11,
-        'tref'      => 'newadh',
-        'tsubject'  => '[{ASSO_NAME}] Nouvelle inscription de {NAME_ADH}',
-        'tbody'     => "Bonjour cher Administrateur,\r\n\r\nUn nouveau membre a été enregistré avec les informations suivantes :\r\n* Nom : {NAME_ADH}\r\n* Login : {LOGIN}\r\n* Courriel : {MAIL_ADH}\r\n\r\nBien sincèrement,\r\nGalette",
-        'tlang'     => 'fr_FR',
-        'tcomment'  => 'Nouvelle adhésion (envoyée a l\'admin)'
+        'tcomment'  => _T('New user registration (sent to admin)')
     ),
 
     array(
-        'tid'       => 13,
         'tref'      => 'newcont',
-        'tsubject'  => '[{ASSO_NAME}] New contribution for {NAME_ADH}',
-        'tbody'     => "Hello dear Administrator,\r\n\r\nA contribution from {NAME_ADH} has been registered (new deadline: {DEADLINE})\r\n{CONTRIB_INFO}\r\n\r\nYours sincerly,\r\nGalette",
+        'tsubject'  => _T('[{ASSO_NAME}] New contribution for {NAME_ADH}'),
+        'tbody'     => _T("Hello dear Administrator,{NEWLINE}A contribution from {NAME_ADH} has been registered (new deadline: {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}Yours sincerly,{BR}Galette"),
         'tlang'     => 'en_US',
-        'tcomment'  => 'New contribution (sent to admin)'
-    ),
-    array(
-        'tid'       => 14,
-        'tref'      => 'newcont',
-        'tsubject'  => '[{ASSO_NAME}] Nouvelle contribution de {NAME_ADH}',
-        'tbody'     => "Bonjour cher Administrateur,\r\n\r\nUne contribution de {NAME_ADH} a été enregistrée (nouvelle échéance: {DEADLINE})\r\n{CONTRIB_INFO}\r\n\r\nBien sincèrement,\r\nGalette",
-        'tlang'     => 'fr_FR',
-        'tcomment'  => 'Nouvelle contribution (envoyée a l\'admin)'
+        'tcomment'  => _T('New contribution (sent to admin)')
     ),
 
     array(
-        'tid'       => 16,
         'tref'      => 'newselfadh',
-        'tsubject'  => '[{ASSO_NAME}] New self registration from {NAME_ADH}',
-        'tbody'     => "Hello dear Administrator,\r\n\r\nA new member has self registred on line with the following informations:\r\n* Name: {NAME_ADH}\r\n* Login: {LOGIN}\r\n* E-mail: {MAIL_ADH}\r\n\r\nYours sincerly,\r\nGalette",
+        'tsubject'  => _T('[{ASSO_NAME}] New self registration from {NAME_ADH}'),
+        'tbody'     => _T("Hello dear Administrator,{NEWLINE}A new member has self registred on line with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"),
         'tlang'     => 'en_US',
-        'tcomment'  => 'New self registration (sent to admin)'
-    ),
-    array(
-        'tid'       => 17,
-        'tref'      => 'newselfadh',
-        'tsubject'  => '[{ASSO_NAME}] Nouvelle auto inscription de {NAME_ADH}',
-        'tbody'     => "Bonjour cher Administrateur,\r\n\r\nUn nouvel adhérent s'est auto inscrit en ligne avec les informations suivantes :\r\n* Nom : {NAME_ADH}\r\n* Login : {LOGIN}\r\n* Courriel : {MAIL_ADH}\r\n\r\nBien sincèrement,\r\nGalette",
-        'tlang'     => 'fr_FR',
-        'tcomment'  => 'Nouvelle auto-inscription (envoyée a l\'admin)'
+        'tcomment'  => _T('New self registration (sent to admin)')
     ),
 
     array(
-        'tid'       => 19,
         'tref'      => 'accountedited',
-        'tsubject'  => '[{ASSO_NAME}] Your account has been modified',
-        'tbody'     => "Hello!\r\n\r\nYour account on {ASSO_NAME} (with the login '{LOGIN}') has been modified by an administrator or a staff member.\r\n\r\nYou can log into {LOGIN_URI} to review modifications and/or change it.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+        'tsubject'  => _T('[{ASSO_NAME}] Your account has been modified'),
+        'tbody'     => _T("Hello!{NEWLINE}Your account on {ASSO_NAME} (with the login '{LOGIN}') has been modified by an administrator or a staff member.{NEWLINE}You can log into {LOGIN_URI} to review modifications and/or change it.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"),
         'tlang'     => 'en_US',
-        'tcomment'  => 'Informs user that his account has been modified'
-    ),
-    array(
-        'tid'       => 20,
-        'tref'      => 'accountedited',
-        'tsubject'  => '[{ASSO_NAME}] Votre compte a été modifié',
-        'tbody'     => "Bonjour !\r\n\r\nVotre compte chez {ASSO_NAME} (avec l'identifiant '{LOGIN}') a été modifié par un administrateur ou un membre du bureau.\r\n\r\nVous pouvez vous connecter à l'adresse {LOGIN_URI} pour vérifier ces informations ou les modifier.\r\n\r\nÀ bientôt !\r\n\r\n(ce courriel est un envoi automatique)",
-        'tlang'     => 'fr_FR',
-        'tcomment'  => 'Informe l\'utilisateur que son compte a été modifié'
+        'tcomment'  => _T('Informs user that his account has been modified')
     ),
 
     array(
-        'tid'       => 22,
         'tref'      => 'impendingduedate',
-        'tsubject'  => '[{ASSO_NAME}] Your membership is about to expire',
-        'tbody'     => "Hello,\r\n\r\nYour {ASSO_NAME} membership is about to expire in {DAYS_REMAINING} days.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+        'tsubject'  => _T('[{ASSO_NAME}] Your membership is about to expire'),
+        'tbody'     => _T("Hello,{NEWLINE}Your {ASSO_NAME} membership is about to expire in {DAYS_REMAINING} days.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"),
         'tlang'     => 'en_US',
-        'tcomment'  => 'Impending due date'
-    ),
-    array(
-        'tid'       => 23,
-        'tref'      => 'impendingduedate',
-        'tsubject'  => '[{ASSO_NAME}] Votre adhésion arrive à terme',
-        'tbody'     => "Bonjour,\r\n\r\nVotre adhésion à {ASSO_NAME} arrive à son terme dans {DAYS_REMAINING} jours.\r\n\r\nA bientôt!\r\n\r\n(ce courriel est un envoi automatique)",
-        'tlang'     => 'fr_FR',
-        'tcomment'  => 'Échéance proche'
+        'tcomment'  => _T('Impending due date')
     ),
 
     array(
-        'tid'       => 25,
         'tref'      => 'lateduedate',
-        'tsubject'  => '[{ASSO_NAME}] Your membership has expired',
-        'tbody'     => "Hello,\r\n\r\nYour {ASSO_NAME} membership has expired for {DAYS_EXPIRED} days.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+        'tsubject'  => _T('[{ASSO_NAME}] Your membership has expired'),
+        'tbody'     => _T("Hello,{NEWLINE}Your {ASSO_NAME} membership has expired for {DAYS_EXPIRED} days.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"),
         'tlang'     => 'en_US',
-        'tcomment'  => 'Late due date'
-    ),
-    array(
-        'tid'       => 26,
-        'tref'      => 'lateduedate',
-        'tsubject'  => '[{ASSO_NAME}] Votre adhésion a expiré',
-        'tbody'     => "Bonjour,\r\n\r\nVotre adhésion à {ASSO_NAME} a expiré depuis {DAYS_EXPIRED} jours.\r\n\r\nA bientôt!\r\n\r\n(ce courriel est un envoi automatique)",
-        'tlang'     => 'fr_FR',
-        'tcomment'  => 'Échéance dépassée'
+        'tcomment'  => _T('Late due date')
     ),
 
     array(
-        'tid'       => 28,
         'tref'      => 'donation',
-        'tsubject'  => '[{ASSO_NAME}] Your donation',
-        'tbody'     => "Hello,\r\n\r\nYour donation to {ASSO_NAME} has successfully been stored.\r\n\r\n{CONTRIB_INFO}\r\n\r\nThank you!\r\n\r\n(this mail was sent automatically)",
+        'tsubject'  => _T('[{ASSO_NAME}] Your donation'),
+        'tbody'     => _T("Hello,{NEWLINE}Your donation to {ASSO_NAME} has successfully been stored.{NEWLINE}{CONTRIB_INFO}{NEWLINE}Thank you!{NEWLINE}(this email was sent automatically)"),
         'tlang'     => 'en_US',
-        'tcomment'  => 'Receipt send for new donations'
-    ),
-    array(
-        'tid'       => 29,
-        'tref'      => 'donation',
-        'tsubject'  => '[{ASSO_NAME}] Votre don',
-        'tbody'     => "Bonjour,\r\n\r\nVotre don à {ASSO_NAME} a été enregistré.\r\n\r\n{CONTRIB_INFO}\r\n\r\nMerci !\r\n\r\n(Ce courriel est un envoi automatique)",
-        'tlang'     => 'fr_FR',
-        'tcomment'  => 'Accusé de réception de don'
+        'tcomment'  => _T('Receipt send for new donations')
     ),
 
     array(
-        'tid'       => 31,
         'tref'      => 'newdonation',
-        'tsubject'  => '[{ASSO_NAME}] New donation for {NAME_ADH}',
-        'tbody'     => "Hello dear Administrator,\r\n\r\nA donation from {NAME_ADH} has been registered\r\n{CONTRIB_INFO}\r\n\r\nYours sincerly,\r\nGalette",
+        'tsubject'  => _T('[{ASSO_NAME}] New donation for {NAME_ADH}'),
+        'tbody'     => _T("Hello dear Administrator,{NEWLINE}A donation from {NAME_ADH} has been registered{BR}{CONTRIB_INFO}{NEWLINE}Yours sincerly,{BR}Galette"),
         'tlang'     => 'en_US',
-        'tcomment'  => 'New donation (sent to admin)'
-    ),
-    array(
-        'tid'       => 32,
-        'tref'      => 'newdonation',
-        'tsubject'  => '[{ASSO_NAME}] Nouveau don de {NAME_ADH}',
-        'tbody'     => "Bonjour cher Administrateur,\r\n\r\nUn don de {NAME_ADH} a été enregistré\r\n{CONTRIB_INFO}\r\n\r\nBien sincèrement,\r\nGalette",
-        'tlang'     => 'fr_FR',
-        'tcomment'  => 'Nouveau don (envoyé a l\'admin)'
+        'tcomment'  => _T('New donation (sent to admin)')
     ),
 
     array(
-        'tid'       => 33,
         'tref'      => 'admaccountedited',
-        'tsubject'  => '[{ASSO_NAME}] Account {NAME_ADH} has been modified',
-        'tbody'     => "Hello!\r\n\r\n{NAME_ADH} has modified his/her account.\r\n\r\nSee you soon!\r\n\r\n(this mail was sent automatically)",
+        'tsubject'  => _T('[{ASSO_NAME}] Account {NAME_ADH} has been modified'),
+        'tbody'     => _T("Hello!{NEWLINE}{NAME_ADH} has modified his/her account.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"),
         'tlang'     => 'en_US',
-        'tcomment'  => 'Informs admin a member edit his informations'
+        'tcomment'  => _T('Informs admin a member edit his information')
     ),
-    array(
-        'tid'       => 34,
-        'tref'      => 'admaccountedited',
-        'tsubject'  => '[{ASSO_NAME}] Fiche {NAME_ADH} modifiée',
-        'tbody'     => "Bonjour !\r\n\r\n{NAME_ADH} a modifié sa fiche.\r\n\r\nÀ bientôt !\r\n\r\n(ce courriel est un envoi automatique)",
-        'tlang'     => 'fr_FR',
-        'tcomment'  => 'Informe l\'administrateur qu\'un adhérent a modifié sa fiche'
-    )
 );

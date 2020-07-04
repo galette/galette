@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2016 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9.0dev - 2016-02-21
  */
@@ -59,7 +58,7 @@ use Analog\Analog;
 
 class PdfAttendanceSheet extends Pdf
 {
-    const SHEET_FONT = self::FONT_SIZE-2;
+    const SHEET_FONT = self::FONT_SIZE - 2;
 
     public $doc_title = null;
     public $sheet_title = null;
@@ -82,7 +81,7 @@ class PdfAttendanceSheet extends Pdf
             if ($this->sheet_title !== null) {
                 $head_title .= ' - ' . $this->sheet_title;
             }
-            /* Remove to rpevent long lines */
+            /* Removed to prevent long lines */
             /*if ($this->sheet_sub_title !== null) {
                 $head_title .= ' - ' . $this->sheet_sub_title;
             }*/
@@ -102,6 +101,7 @@ class PdfAttendanceSheet extends Pdf
      */
     public function __construct(Db $zdb, Preferences $prefs, $data = [])
     {
+        $this->filename = __('attendance_sheet') . '.pdf';
         $class = PdfModel::getTypeClass(__CLASS__);
         $model = new $class($zdb, $prefs, PdfModel::MAIN_MODEL);
 
@@ -146,7 +146,7 @@ class PdfAttendanceSheet extends Pdf
         // Set colors
         $this->SetDrawColor(160, 160, 160);
         $this->SetTextColor(0);
-        $this->SetFont(Pdf::FONT, '', Pdf::FONT_SIZE-2);
+        $this->SetFont(Pdf::FONT, '', Pdf::FONT_SIZE - 2);
     }
 
     /**
@@ -190,41 +190,45 @@ class PdfAttendanceSheet extends Pdf
         $mcount = 0;
         foreach ($members as $m) {
             $mcount++;
-            $this->Cell(10, 16, $mcount, 'LTB', 0, 'R');
+            $this->Cell(10, 16, $mcount, ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', 0, 'R');
 
             if ($m->hasPicture() && $this->wimages) {
                 $p = $m->picture->getPath();
 
                 // Set logo size to max width 30 mm or max height 25 mm
-                $ratio = $m->picture->getWidth()/$m->picture->getHeight();
+                $ratio = $m->picture->getWidth() / $m->picture->getHeight();
                 if ($ratio < 1) {
                     if ($m->picture->getHeight() > 14) {
                         $hlogo = 14;
                     } else {
                         $hlogo = $m->picture->getHeight();
                     }
-                    $wlogo = round($hlogo*$ratio);
+                    $wlogo = round($hlogo * $ratio);
                 } else {
                     if ($m->picture->getWidth() > 14) {
                         $wlogo = 14;
                     } else {
                         $wlogo = $m->picture->getWidth();
                     }
-                    $hlogo = round($wlogo/$ratio);
+                    $hlogo = round($wlogo / $ratio);
                 }
 
                 $y = $this->getY() + 1;
                 $x = $this->getX() + 1;
-                $this->Cell($wlogo+2, 16, '', 'LTB', 0);
-                $this->Image($p, $x, $y, $wlogo, $hlogo);
+                $ximg = $x;
+                if ($this->i18n->isRTL()) {
+                    $ximg = $this->getPageWidth() - $x - $wlogo;
+                }
+                $this->Cell($wlogo + 2, 16, '', ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', 0);
+                $this->Image($p, $ximg, $y, $wlogo, $hlogo);
             } else {
                 $x = $this->getX() + 1;
-                $this->Cell(1, 16, '', 'LTB', 0);
+                $this->Cell(1, 16, '', ($this->i18n->isRTL() ? 'R' : 'L') . 'TB', 0);
             }
 
             $xs = $this->getX() - $x + 1;
-            $this->Cell(100 - $xs, 16, $m->sname, 'RTB', 0, 'L');
-            $this->Cell(80, 16, '', 1, 1, 'L');
+            $this->Cell(100 - $xs, 16, $m->sname, ($this->i18n->isRTL() ? 'L' : 'R') . 'TB', 0, ($this->i18n->isRTL() ? 'R' : 'L'));
+            $this->Cell(80, 16, '', 1, 1, ($this->i18n->isRTL() ? 'R' : 'L'));
         }
         $this->Cell(190, 0, '', 'T');
     }

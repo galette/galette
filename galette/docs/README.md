@@ -1,9 +1,9 @@
-Galette API documentation can be generated using apigen (http://www.apigen.org/).
+Galette API documentation can be generated using doxygen apigen (https://www.doxygen.nl/).
 
-A file named apigen.neaon is provided in the sources to automate the process.
-To generate the documentation, just run from galette main directory:
+A file named Doxyfile is provided in the sources to automate the process.
+To generate the documentation, just run from galette doc (current) directory:
 
-$ apigen generate
+$ doxygen
 
 HTML files will be generated into 'apidocs' directory.
 

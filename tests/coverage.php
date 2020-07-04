@@ -1,6 +1,5 @@
 <?php
 
-
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
@@ -39,7 +38,7 @@
  * @since     2013-01-13
  */
 
-use \mageekguy\atoum;
+use mageekguy\atoum;
 
 $coverageField = new atoum\report\fields\runner\coverage\html(
     'Galette',

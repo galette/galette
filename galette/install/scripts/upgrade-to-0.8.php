@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.eu
  * @since     Available since 0.8 - 2014-01-04
  */
@@ -84,9 +83,9 @@ class UpgradeTo08 extends AbstractUpdater
             'files'
         );
 
-        if ( !file_exists(GALETTE_ROOT . 'data') ) {
+        if (!file_exists(GALETTE_ROOT . 'data')) {
             $created = @mkdir(GALETTE_ROOT . 'data');
-            if ( !$created ) {
+            if (!$created) {
                 $this->addError(
                     str_replace(
                         '%path',
@@ -98,11 +97,11 @@ class UpgradeTo08 extends AbstractUpdater
             }
         }
 
-        foreach ( $dirs as $dir ) {
+        foreach ($dirs as $dir) {
             $path = GALETTE_ROOT . 'data/' . $dir;
-            if ( !file_exists($path) ) {
+            if (!file_exists($path)) {
                 $created = @mkdir($path);
-                if ( !$created ) {
+                if (!$created) {
                     $this->addError(
                         str_replace(
                             '%dir',
@@ -134,54 +133,54 @@ class UpgradeTo08 extends AbstractUpdater
             'tempimages'
         );
 
-        if ( !in_array($dirname, $nomove) ) {
+        if (!in_array($dirname, $nomove)) {
             $origdir = GALETTE_ROOT . $dirname . '/';
             $destdir = GALETTE_DATA_PATH . $dirname . '/';
 
             $go = false;
             //move directory contents
-            switch ( $dirname ) {
-            case 'logs':
-                if ( GALETTE_LOGS_PATH === $destdir && file_exists($origdir) ) {
-                    $go = true;
-                }
-                break;
-            case 'exports':
-                if ( GALETTE_EXPORTS_PATH === $destdir && file_exists($origdir) ) {
-                    $go = true;
-                }
-                break;
-            case 'imports':
-                if ( GALETTE_IMPORTS_PATH === $destdir && file_exists($origdir) ) {
-                    $go = true;
-                }
-                break;
-            case 'photos':
-                if ( GALETTE_PHOTOS_PATH === $destdir && file_exists($origdir) ) {
-                    $go = true;
-                }
-                break;
-            case 'attachments':
-                if ( GALETTE_ATTACHMENTS_PATH === $destdir
-                    && file_exists($origdir)
-                ) {
-                    $go = true;
-                }
-                break;
-            case 'files':
-                if ( GALETTE_FILES_PATH === $destdir && file_exists($origdir) ) {
-                    $go = true;
-                }
-                break;
+            switch ($dirname) {
+                case 'logs':
+                    if (GALETTE_LOGS_PATH === $destdir && file_exists($origdir)) {
+                        $go = true;
+                    }
+                    break;
+                case 'exports':
+                    if (GALETTE_EXPORTS_PATH === $destdir && file_exists($origdir)) {
+                        $go = true;
+                    }
+                    break;
+                case 'imports':
+                    if (GALETTE_IMPORTS_PATH === $destdir && file_exists($origdir)) {
+                        $go = true;
+                    }
+                    break;
+                case 'photos':
+                    if (GALETTE_PHOTOS_PATH === $destdir && file_exists($origdir)) {
+                        $go = true;
+                    }
+                    break;
+                case 'attachments':
+                    if (GALETTE_ATTACHMENTS_PATH === $destdir
+                        && file_exists($origdir)
+                    ) {
+                        $go = true;
+                    }
+                    break;
+                case 'files':
+                    if (GALETTE_FILES_PATH === $destdir && file_exists($origdir)) {
+                        $go = true;
+                    }
+                    break;
             }
 
-            if ( $go ) {
+            if ($go) {
                 $moved = true;
                 $d = dir($origdir);
                 while (($entry = $d->read()) !== false) {
-                    if ( $entry != '.' && $entry != '..' ) {
+                    if ($entry != '.' && $entry != '..') {
                         $moved = @rename($origdir . $entry, $destdir . $entry);
-                        if ( !$moved ) {
+                        if (!$moved) {
                             $moved = false;
                             $this->addError(
                                 str_replace(
@@ -195,7 +194,7 @@ class UpgradeTo08 extends AbstractUpdater
                 }
                 $d->close();
 
-                if ( $moved ) {
+                if ($moved) {
                     $this->addReportEntry(
                         str_replace(
                             '%dir',

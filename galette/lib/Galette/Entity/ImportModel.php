@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.6dev - 2013-09-26
  */
@@ -38,7 +37,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\Adapter;
 
 /**
  * Import model entity
@@ -86,7 +85,7 @@ class ImportModel
         } catch (\Exception $e) {
             Analog::log(
                 'Cannot load import model | ' . $e->getMessage() .
-                "\n" .  $e->__toString(),
+                "\n" . $e->__toString(),
                 Analog::ERROR
             );
             return false;
@@ -126,9 +125,10 @@ class ImportModel
                 $this->id = null;
                 $this->fields = null;
                 $this->creation_date = null;
+                return true;
             }
 
-            return $result;
+            return false;
         } catch (\Exception $e) {
             Analog::log(
                 'Unable to remove import model ' . $e->getMessage(),
@@ -225,5 +225,6 @@ class ImportModel
     public function setFields($fields)
     {
         $this->fields = $fields;
+        return $this;
     }
 }

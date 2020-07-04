@@ -27,22 +27,21 @@
  * @category  Main
  * @package   Galette
  *
- * @author    Frédéric Jaqcuot <unknown@unknow.com>
+ * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Georges Khaznadar (i18n using gettext) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2003-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.62
  */
 
 if (!defined('GALETTE_ROOT')) {
-       die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Core\L10n;
 
 $i18n->updateEnv();
@@ -89,7 +88,6 @@ function addDynamicTranslation($text_orig)
                     Analog::INFO
                 );
 
-                $where = array();
                 $owhere = $select->where;
 
                 $update = $zdb->update(L10n::TABLE);
@@ -201,7 +199,6 @@ function updateDynamicTranslation($text_orig, $text_locale, $text_trans)
         );
 
         if ($exists) {
-            $where = array();
             $owhere = $select->where;
 
             $update = $zdb->update(L10n::TABLE);
@@ -232,7 +229,7 @@ function updateDynamicTranslation($text_orig, $text_locale, $text_trans)
  * @param string $text_orig   Text to translate
  * @param string $text_locale The locale
  *
- * @return translated string
+ * @return string
  */
 function getDynamicTranslation($text_orig, $text_locale)
 {
@@ -265,13 +262,13 @@ function getDynamicTranslation($text_orig, $text_locale)
 }
 
 /**
- * Translate a string
+ * Translate a string, or return original one
  *
  * @param string  $string The string to translate
  * @param string  $domain Translation domain. Default to false (will take default domain)
  * @param boolean $nt     Indicate not translated strings; defaults to true
  *
- * @return Translated string (if available) ; $chaine otherwise
+ * @return string
  */
 function _T($string, $domain = 'galette', $nt = true)
 {
@@ -300,7 +297,7 @@ function _T($string, $domain = 'galette', $nt = true)
     if (!$trans) {
         $trans = $string;
 
-        if ($nt === true) {
+        if (GALETTE_MODE == 'DEV' && $nt === true) {
             $trans .= ' (not translated)';
         }
     }
@@ -313,7 +310,7 @@ function _T($string, $domain = 'galette', $nt = true)
  * @param string $string The string to translate
  * @param string $domain Translation domain. Default to false (will take default domain)
  *
- * @return Translated string (if available), verbatim string otherwise
+ * @return string
  */
 function __($string, $domain = 'galette')
 {

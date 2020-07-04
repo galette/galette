@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8 - 2013-01-09
  */
@@ -42,10 +41,10 @@ unset($session[md5(GALETTE_ROOT)]);
 ?>
                 <h2><?php echo $install->getStepTitle(); ?></h2>
                 <p><?php
-if ( $install->isInstall() ) {
+if ($install->isInstall()) {
     echo _T("Galette has been successfully installed!");
 }
-if ( $install->isUpgrade() ) {
+if ($install->isUpgrade()) {
     echo _T("Galette has been successfully updated!");
 }
 ?></p>

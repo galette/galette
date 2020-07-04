@@ -31,7 +31,6 @@
  * @author    Johan Cwiklinski <joahn@x-tnd.be>
  * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Avaialble since 0.7dev - 2007-07-16
  */
@@ -39,7 +38,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Core\Preferences;
 use Slim\Router;
 
@@ -70,14 +69,12 @@ class Texts
     /**
      * Main constructor
      *
-     * @param array       $texts_fields Text fields definition
-     * @param Preferences $preferences  Galette's preferences
-     * @param Router      $router       Router instance
-     * @param array       $replaces     Data that will be used as replacments
+     * @param Preferences $preferences Galette's preferences
+     * @param Router      $router      Router instance
+     * @param array       $replaces    Data that will be used as replacments
      */
-    public function __construct($texts_fields, Preferences $preferences, Router $router = null, $replaces = null)
+    public function __construct(Preferences $preferences, Router $router = null, $replaces = null)
     {
-        $this->defaults = $texts_fields;
         $this->patterns = array(
             'asso_name'         => '/{ASSO_NAME}/',
             'asso_slogan'       => '/{ASSO_SLOGAN}/',
@@ -95,7 +92,11 @@ class Texts
             'days_remaining'    => '/{DAYS_REMAINING}/',
             'days_expired'      => '/{DAYS_EXPIRED}/',
             'contrib_amount'    => '/{CONTRIB_AMOUNT}/',
-            'contrib_type'      => '/{CONTRIB_TYPE}/'
+            'contrib_type'      => '/{CONTRIB_TYPE}/',
+            'breakline'         => '/{BR}/',
+            'newline'           => '/{NEWLINE}/',
+            'link_membercard'   => '/{LINK_MEMBERCARD}/',
+            'link_contribpdf'   => '/{LINK_CONTRIBPDF}/'
         );
 
         $login_uri = '';
@@ -120,7 +121,11 @@ class Texts
             'days_remaining'    => null,
             'days_expired'      => null,
             'contrib_amount'    => null,
-            'contrib_type'      => null
+            'contrib_type'      => null,
+            'breakline'         => "\r\n",
+            'newline'           => "\r\n\r\n",
+            'link_membercard'   => null,
+            'link_contribpdf'   => null
         );
 
         if ($replaces != null && is_array($replaces)) {
@@ -190,6 +195,7 @@ class Texts
                 //hum... no result... That means text do not exist in the
                 //database, let's add it
                 $default = null;
+                $this->defaults = $this->getAllDefaults(); //load defaults
                 foreach ($this->defaults as $d) {
                     if ($d['tref'] == $ref && $d['tlang'] == $lang) {
                         $default = $d;
@@ -198,7 +204,6 @@ class Texts
                 }
                 if ($default !== null) {
                     $values = array(
-                        'tid'       => $default['tid'],
                         'tref'      => $default['tref'],
                         'tsubject'  => $default['tsubject'],
                         'tbody'     => $default['tbody'],
@@ -207,9 +212,7 @@ class Texts
                     );
 
                     try {
-                        $insert = $zdb->insert(self::TABLE);
-                        $insert->values($values);
-                        $zdb->execute($insert);
+                        $this->insert($zdb, [$values]);
                         return $this->getTexts($ref, $lang);
                     } catch (\Exception $e) {
                         Analog::log(
@@ -271,7 +274,7 @@ class Texts
             return true;
         } catch (\Exception $e) {
             Analog::log(
-                'An error has occurred while storing mail text. | ' .
+                'An error has occurred while storing email text. | ' .
                 $e->getMessage(),
                 Analog::ERROR
             );
@@ -313,24 +316,6 @@ class Texts
     }
 
     /**
-     * Retrieve fields from database
-     *
-     * @deprecated Do not seem to be used as of 2013-07-16
-     *
-     * @return array
-     */
-    public static function getDbFields()
-    {
-        global $zdb;
-        $columns = $zdb->getColumns(self::TABLE);
-        $fields = array();
-        foreach ($columns as $col) {
-            $fields[] = $col->getName();
-        }
-        return $fields;
-    }
-
-    /**
      * Initialize texts at install time
      *
      * @param boolean $check_first Check first if it seem initialized
@@ -345,6 +330,7 @@ class Texts
         try {
             //first of all, let's check if data seem to have already
             //been initialized
+            $this->defaults = $this->getAllDefaults(); //load defaults
             $proceed = false;
             if ($check_first === true) {
                 $select = $zdb->select(self::TABLE);
@@ -408,17 +394,23 @@ class Texts
 
         try {
             $select = $zdb->select(self::TABLE);
-            $list = $zdb->execute($select);
+            $dblist = $zdb->execute($select);
+
+            $list = [];
+            foreach ($dblist as $dbentry) {
+                $list[] = $dbentry;
+            }
 
             $missing = array();
             foreach ($this->defaults as $default) {
                 $exists = false;
                 foreach ($list as $text) {
-                    if ($text->tref == $default['tref']
+                    if (
+                        $text->tref == $default['tref']
                         && $text->tlang == $default['tlang']
                     ) {
                         $exists = true;
-                        break;
+                        continue;
                     }
                 }
 
@@ -428,7 +420,7 @@ class Texts
                 }
             }
 
-            if (count($missing) >0) {
+            if (count($missing) > 0) {
                 $this->insert($zdb, $missing);
 
                 Analog::log(
@@ -442,7 +434,7 @@ class Texts
                 'An error occurred checking missing texts.' . $e->getMessage(),
                 Analog::WARNING
             );
-            return $e;
+            throw $e;
         }
     }
 
@@ -487,7 +479,6 @@ class Texts
         $insert = $zdb->insert(self::TABLE);
         $insert->values(
             array(
-                'tid'       => ':tid',
                 'tref'      => ':tref',
                 'tsubject'  => ':tsubject',
                 'tbody'     => ':tbody',
@@ -500,5 +491,52 @@ class Texts
         foreach ($values as $value) {
             $stmt->execute($value);
         }
+    }
+
+    /**
+     * Get default mail texts for all languages
+     *
+     * @return array
+     */
+    public function getAllDefaults()
+    {
+        global $i18n;
+
+        $all = [];
+        foreach (array_keys($i18n->getArrayList()) as $lang) {
+            $all = array_merge($all, $this->getDefaultTexts($lang));
+        }
+
+        return $all;
+    }
+
+    /**
+     * Get default texts for specified language
+     *
+     * @param string $lang Requested lang. Defaults to en_US
+     *
+     * @return array
+     */
+    public function getDefaultTexts($lang = 'en_US')
+    {
+        global $i18n;
+
+        $current_lang = $i18n->getID();
+
+        $i18n->changeLanguage($lang);
+
+        //do the magic!
+        include GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
+        $texts = [];
+
+        foreach ($texts_fields as $text_field) {
+            unset($text_field['tid']);
+            $text_field['tlang'] = $lang;
+            $texts[] = $text_field;
+        }
+
+        //reset to current lang
+        $i18n->changeLanguage($current_lang);
+        return $texts;
     }
 }

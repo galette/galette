@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * System informations
+ * System information
  *
  * PHP version 5
  *
@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.1dev - 2012-06-26
  */
@@ -38,7 +37,7 @@
 namespace Galette\Core;
 
 /**
- * Grab system informations
+ * Grab system information
  *
  * @category  Core
  * @name      SysInfos
@@ -51,41 +50,40 @@ namespace Galette\Core;
  */
 class SysInfos
 {
-    private $php_version = '';
-    private $galette_version = '';
-
-    /**
-     * Grab various system informations
-     *
-     * @return void
-     */
-    public function grab()
-    {
-        //PHP version
-        $this->php_version = PHP_VERSION;
-
-        //Galette version
-        $this->galette_version = GALETTE_VERSION;
-
-        //Database type
-        $this->database = TYPE_DB;
-    }
-
     /**
      * Get data as RAW (to send by mail)
      *
-     * @param Plugins $plugins Plugins
+     * @param Db          $zdb     Database instance
+     * @param Preferences $prefs   Preferences instance
+     * @param Plugins     $plugins Plugins
      *
      * @return string
      */
-    public function getRawData(Plugins $plugins)
+    public function getRawData(Db $zdb, Preferences $prefs, Plugins $plugins)
     {
-        $str =  'Galette version: ' . $this->galette_version . "\n";
-        $str .= 'PHP version:     ' . $this->php_version . "\n";
-        $str .= 'PHP/Web:         ' . php_sapi_name() . "\n";
-        $str .= 'Database:        ' . $this->database . "\n";
-        $str .= 'OS:              ' . php_uname() . "\n";
-        $str .= 'Browser:         ' . $_SERVER['HTTP_USER_AGENT'] . "\n\n";
+        $telemetry = new \Galette\Util\Telemetry($zdb, $prefs, $plugins);
+        $infos = $telemetry->getTelemetryInfos();
+
+        $db_infos = $infos['system']['db'];
+        $db_version = TYPE_DB;
+        $db_version .= sprintf(
+            ' (%1$s / %2$s)',
+            $db_infos['engine'] ?? 'not found',
+            $db_infos['version'] ?? 'not found'
+        );
+
+        $php_infos = $telemetry->grabPhpInfos();
+        $php_conf = '';
+        foreach ($php_infos['setup'] as $key => $value) {
+            $php_conf .= str_pad("\n  $key:", 25, '.') . ' ' . $value;
+        }
+
+        $str = str_pad('Galette version:', 20, '.') . ' ' . \Galette\Core\Galette::gitVersion(true) . "\n";
+        $str .= str_pad('PHP version:', 20, '.') . ' ' . PHP_VERSION . " " . php_sapi_name() . "\n";
+        $str .= 'PHP config:' . $php_conf . "\n";
+        $str .= str_pad('Database:', 20, '.') . ' ' . $db_version . "\n";
+        $str .= str_pad('OS:', 20, '.') . ' ' . php_uname() . "\n";
+        $str .= str_pad('Browser:', 20, '.') . ' ' . $_SERVER['HTTP_USER_AGENT'] . "\n\n";
 
         $str .= 'Modules:' . "\n";
         $mods = new CheckModules();
@@ -107,13 +105,18 @@ class SysInfos
 
         $str .= "\n" . 'Plugins:' . "\n";
         foreach ($plugins->getModules() as $p) {
-            $str .= '  ' . $p['name'] .  ' ' . $p['version'] .
+            $str .= '  ' . $p['name'] . ' ' . $p['version'] .
                 ' (' . $p['author'] . ")\n";
         }
 
-        $str .= "\n" . 'PHP loaded modules:' . "\n";
+        $str .= "\n" . 'PHP loaded modules:';
+        $i = 0;
         foreach (get_loaded_extensions() as $e) {
-            $str .= '  ' . $e . "\n";
+            if ($i % 10 === 0) {
+                $str .= "\n  ";
+            }
+            $str .= $e . ", ";
+            ++$i;
         }
 
         return $str;

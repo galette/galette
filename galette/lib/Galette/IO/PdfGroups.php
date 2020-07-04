@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2016 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2016-09-11
  */
@@ -58,7 +57,7 @@ use Galette\Core\Login;
 
 class PdfGroups extends Pdf
 {
-    const SHEET_FONT = self::FONT_SIZE-2;
+    const SHEET_FONT = self::FONT_SIZE - 2;
 
     private $doc_title;
 
@@ -70,6 +69,7 @@ class PdfGroups extends Pdf
     public function __construct(Preferences $prefs)
     {
         parent::__construct($prefs);
+        $this->filename = __('groups_list') . '.pdf';
         $this->init();
     }
 
@@ -169,7 +169,7 @@ class PdfGroups extends Pdf
                     _T("Managers:") . ' ' . implode(', ', $managers),
                     0,
                     1,
-                    'R'
+                    ($this->i18n->isRTL() ? 'L' : 'R')
                 );
             }
             $this->ln(3);
@@ -186,10 +186,11 @@ class PdfGroups extends Pdf
             $members = $group->getMembers();
 
             foreach ($members as $m) {
-                $this->Cell(80, 7, $m->sname, 1, 0, 'L');
-                $this->Cell(50, 7, $m->email, 1, 0, 'L');
-                $this->Cell(30, 7, $m->phone, 1, 0, 'L');
-                $this->Cell(30, 7, $m->gsm, 1, 1, 'L');
+                $align = ($this->i18n->isRTL() ? 'R' : 'L');
+                $this->Cell(80, 7, $m->sname, 1, 0, $align);
+                $this->Cell(50, 7, $m->email, 1, 0, $align);
+                $this->Cell(30, 7, $m->phone, 1, 0, $align);
+                $this->Cell(30, 7, $m->gsm, 1, 1, $align);
             }
             $this->Cell(190, 0, '', 'T');
             $first = false;

@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.4dev - 2013-01-27
  */
@@ -226,7 +225,8 @@ class Title
                 break;
             case 'short':
             case 'long':
-                if ($name === 'long'
+                if (
+                    $name === 'long'
                     && ($this->long == null || trim($this->long) === '')
                 ) {
                     $name = 'short';
@@ -285,7 +285,7 @@ class Title
                 break;
             default:
                 Analog::log(
-                    'Unable to set property ' .$name,
+                    'Unable to set property ' . $name,
                     Analog::WARNING
                 );
                 break;

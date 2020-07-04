@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-26
  */
@@ -97,7 +96,7 @@ abstract class Repository
                 $entity = $ent;
             } else {
                 throw new \RuntimeException(
-                    'Unable to find entity name from repository one. Please '.
+                    'Unable to find entity name from repository one. Please ' .
                     'provide entity name in repository constructor'
                 );
             }
@@ -200,13 +199,15 @@ abstract class Repository
      */
     protected function canOrderBy($field_name, $fields)
     {
-        if (!is_array($fields)) {
+        if ($fields === null) {
             return true;
+        } elseif (!is_array($fields)) {
+            return false;
         } elseif (in_array($field_name, $fields)) {
             return true;
         } else {
             Analog::log(
-                'Trying to order by ' . $field_name  . ' while it is not in ' .
+                'Trying to order by ' . $field_name . ' while it is not in ' .
                 'selected fields.',
                 Analog::WARNING
             );

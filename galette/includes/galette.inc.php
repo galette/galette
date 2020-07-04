@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2007-2018 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7-dev - 2007-10-07
  */
@@ -46,7 +45,7 @@ require_once GALETTE_ROOT . 'config/paths.inc.php';
 // check required PHP version...
 if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
     echo 'Galette is NOT compliant with your current PHP version. ' .
-        'Galette requires PHP ' . GALETTE_PHP_MIN  .
+        'Galette requires PHP ' . GALETTE_PHP_MIN .
         ' minimum and current version is ' . phpversion();
     die(1);
 }
@@ -71,7 +70,8 @@ if (!$installed && !$installer) {
     die();
 }
 
-if (file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php')
+if (
+    file_exists(GALETTE_CONFIG_PATH . 'behavior.inc.php')
     && !defined('GALETTE_TESTS') && !$cron
 ) {
     include_once GALETTE_CONFIG_PATH . 'behavior.inc.php';
@@ -83,6 +83,8 @@ if (isset($installer) && $installer !== true) {
 }
 
 use Analog\Analog;
+use Analog\Handler;
+use Analog\Handler\LevelName;
 use Galette\Core;
 
 /*
@@ -96,7 +98,8 @@ if (PHP_SAPI === 'cli-server' && $_SERVER['SCRIPT_FILENAME'] !== __FILE__) {
 require GALETTE_ROOT . '/vendor/autoload.php';
 
 //start profiling
-if (defined('GALETTE_XHPROF_PATH')
+if (
+    defined('GALETTE_XHPROF_PATH')
     && function_exists('xhprof_enable')
 ) {
     include_once __DIR__ . '/../lib/Galette/Common/XHProf.php';
@@ -104,9 +107,16 @@ if (defined('GALETTE_XHPROF_PATH')
     $profiler->start();
 }
 
-define('GALETTE_VERSION', 'v0.9.3.1');
+define('GALETTE_NIGHTLY', false);
+define('GALETTE_VERSION', 'v0.9.4');
+
+//Version to display
+if (!defined('GALETTE_HIDE_VERSION')) {
+    define('GALETTE_DISPLAY_VERSION', \Galette\Core\Galette::gitVersion(false));
+}
+
 define('GALETTE_COMPAT_VERSION', '0.9.2');
-define('GALETTE_DB_VERSION', '0.931');
+define('GALETTE_DB_VERSION', '0.940');
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD, MAINT or DEMO
 }
@@ -115,7 +125,7 @@ if (!isset($_COOKIE['show_galette_dashboard'])) {
     setcookie(
         'show_galette_dashboard',
         true,
-        time()+31536000 //valid for a year
+        time() + 31536000 //valid for a year
     );
 }
 
@@ -138,50 +148,41 @@ set_include_path(
 /*------------------------------------------------------------------------------
 Logger stuff
 ------------------------------------------------------------------------------*/
-if (!$cron && !defined('GALETTE_TESTS')) {
-    //set custom error handler
-    set_error_handler(
-        array(
-            "Galette\Core\Error",
-            "errorHandler"
-        )
-    );
-}
 
+//change default format so the 3rd param is a string for level name
+Analog::$format = "%s - %s - %s - %s\n";
 $galette_run_log = null;
-$galette_debug_log = \Analog\Handler\Ignore::init();
+$galette_debug_log = Handler\Ignore::init();
 
 if (!defined('GALETTE_LOG_LVL')) {
     if (GALETTE_MODE === 'DEV') {
-        define('GALETTE_LOG_LVL', \Analog\Analog::DEBUG);
+        define('GALETTE_LOG_LVL', Analog::DEBUG);
     } elseif (defined('GALETTE_TESTS')) {
-        define('GALETTE_LOG_LVL', \Analog\Analog::ERROR);
+        define('GALETTE_LOG_LVL', Analog::NOTICE);
     } else {
-        define('GALETTE_LOG_LVL', \Analog\Analog::WARNING);
+        define('GALETTE_LOG_LVL', Analog::WARNING);
     }
 }
 
 if (defined('GALETTE_TESTS')) {
     $log_path = GALETTE_LOGS_PATH . 'tests.log';
-    $galette_run_log = \Analog\Handler\File::init($log_path);
+    $galette_run_log = LevelName::init(Handler\File::init($log_path));
 } else {
     if ((!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) && !$cron) {
-        if (GALETTE_LOG_LVL >= \Analog\Analog::INFO) {
+        if (GALETTE_LOG_LVL >= Analog::INFO) {
             $now = new \DateTime();
             $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
-                $now->format('Y-m-d')  . '.log';
-            $galette_debug_log = \Analog\Handler\File::init($dbg_log_path);
+                $now->format('Y-m-d') . '.log';
+            $galette_debug_log = LevelName::init(Handler\File::init($dbg_log_path));
         } else {
-            $galette_debug_log = \Analog\Handler\Ignore::init();
+            $galette_debug_log = Handler\Ignore::init();
         }
     }
     $galette_log_var = null;
 
-    if (GALETTE_MODE === 'DEV' || $cron
-        || ( defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true )
-    ) {
+    if (defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true) {
         //logs everything in PHP logs (per chance /var/log/http/error_log or /var/log/php-fpm/error.log)
-        $galette_run_log = \Analog\Handler\Stderr::init();
+        $galette_run_log = Handler\Syslog::init('galette', 'user');
     } else {
         if (!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) {
             //logs everything in galette log file
@@ -190,9 +191,9 @@ if (defined('GALETTE_TESTS')) {
                 $logfile = 'galette_run';
             }
             $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
-            $galette_run_log = \Analog\Handler\File::init($log_path);
+            $galette_run_log = LevelName::init(Handler\File::init($log_path));
         } else {
-            $galette_run_log = \Analog\Handler\Variable::init($galette_log_var);
+            $galette_run_log = LevelName::init(Handler\Variable::init($galette_log_var));
         }
     }
     if (!$installer) {
@@ -201,9 +202,9 @@ if (defined('GALETTE_TESTS')) {
 }
 
 Analog::handler(
-    \Analog\Handler\Multi::init(
-        array (
-            Analog::NOTICE  => \Analog\Handler\Threshold::init(
+    Handler\Multi::init(
+        array(
+            Analog::NOTICE  => Handler\Threshold::init(
                 $galette_run_log,
                 GALETTE_LOG_LVL
             ),

@@ -44,10 +44,10 @@
     {if not $member->isActive() } ({_T string="Inactive"}){/if}
     {if $login->isAdmin() or $login->isStaff()}
             (<a href="{path_for name="member" data=["id" => $member->id]}">{_T string="See member profile"}</a> -
-            <a href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a> -
-            <a href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?id_adh={$member->id}">{_T string="Add a donation"}</a>)
+            <a href="{path_for name="addContribution" data=["type" => "fee"]}?id_adh={$member->id}">{_T string="Add a membership fee"}</a> -
+            <a href="{path_for name="addContribution" data=["type" => "donation"]}?id_adh={$member->id}">{_T string="Add a donation"}</a>)
     {/if}
-            &nbsp;:
+            -
 {/if}
             {$nb} {if $nb != 1}{_T string="contributions"}{else}{_T string="contribution"}{/if}
             <div class="fright">
@@ -150,7 +150,7 @@
                     <th class="left">
                         {_T string="Duration"}
                     </th>
-{if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
+{if $mode neq 'ajax'}
                     <th class="nowrap actions_row">{_T string="Actions"}</th>
 {/if}
                 </tr>
@@ -168,6 +168,12 @@
 {foreach from=$list item=contribution key=ordre}
     {assign var="mid" value=$contribution->member}
     {assign var="cclass" value=$contribution->getRowClass()}
+    {if $contribution->isCotis()}
+        {assign var="ctype" value="fee"}
+    {else}
+        {assign var="ctype" value="donation"}
+    {/if}
+
                 <tr{if $mode eq 'ajax'} class="contribution_row" id="row_{$contribution->id}"{/if}>
                     <td class="{$cclass} nowrap" data-scope="row">
                         {if $mode neq 'ajax'}
@@ -180,8 +186,9 @@
     {else}
                         {$ordre+1+($filters->current_page - 1)*$numrows}
     {/if}
+    {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
                         <span class="row-title">
-                            <a href="{path_for name="contribution" data=["type" => $ctype, "action" => "edit", "id" => $contribution->id]}">
+                            <a href="{path_for name="editContribution" data=["type" => $ctype, "id" => $contribution->id]}">
                                 {_T string="Contribution %id" pattern="/%id/" replace=$contribution->id}
                             </a>
                         </span>
@@ -193,7 +200,17 @@
                             <i class="fas fa-link"></i>
                             <span class="sr-only">{_T string="Transaction: %s" pattern="/%s/" replace=$contribution->transaction->description}</span>
                         </a>
-        {else}
+        {/if}
+    {else}
+                        <span class="row-title">
+                            {_T string="Contribution %id" pattern="/%id/" replace=$contribution->id}
+                        </span>
+        {if $contribution->isTransactionPart() }
+                        <i class="fas fa-link"></i>
+                        <span class="sr-only">{_T string="Transaction: %s" pattern="/%s/" replace=$contribution->transaction->description}</span>
+        {/if}
+    {/if}
+        {if !$contribution->isTransactionPart() }
                         <img src="{base_url}/{$template_subdir}images/icon-empty.png"
                             alt=""
                             width="16"
@@ -205,7 +222,7 @@
                     <td class="{$cclass} nowrap" data-title="{_T string="End"}">{$contribution->end_date}</td>
     {if ($login->isAdmin() or $login->isStaff()) && !isset($member)}
                     <td class="{$cclass}" data-title="{_T string="Member"}">
-        {if $contribution->filtre_cotis_adh eq ""}
+        {if $filters->filtre_cotis_adh eq ""}
                         <a href="{path_for name="contributions" data=["type" => "contributions", "option" => "member", "value" => $mid]}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
         {else}
                         <a href="{path_for name="member" data=["id" => $mid]}">{if isset($member)}{$member->sname}{else}{memberName id="$mid"}{/if}</a>
@@ -216,7 +233,7 @@
                     <td class="{$cclass} nowrap" data-title="{_T string="Amount"}">{$contribution->amount}</td>
                     <td class="{$cclass} nowrap" data-title="{_T string="Payment type"}">{$contribution->spayment_type}</td>
                     <td class="{$cclass} nowrap" data-title="{_T string="Duration"}">{$contribution->duration}</td>
-    {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
+    {if $mode neq 'ajax'}
                     <td class="{$cclass} center nowrap">
                         <a
                             href="{path_for name="printContribution" data=["id" => $contribution->id]}"
@@ -225,13 +242,9 @@
                             <i class="fas fa-file-pdf"></i>
                             <span class="sr-only">{_T string="Print an invoice or a receipt (depending on contribution type)"}</span>
                         </a>
-                        {if $contribution->isCotis()}
-                            {assign var="ctype" value="fee"}
-                        {else}
-                            {assign var="ctype" value="donation"}
-                        {/if}
+        {if ($login->isAdmin() or $login->isStaff()) and $mode neq 'ajax'}
                         <a
-                            href="{path_for name="contribution" data=["type" => $ctype, "action" => "edit", "id" => $contribution->id]}"
+                            href="{path_for name="editContribution" data=["type" => $ctype, "id" => $contribution->id]}"
                             class="tooltip action"
                         >
                             <i class="fas fa-edit"></i>
@@ -244,6 +257,7 @@
                             <i class="fas fa-trash"></i>
                             <span class="sr-only">{_T string="Delete the contribution"}</span>
                         </a>
+        {/if}
                     </td>
     {/if}
                 </tr>

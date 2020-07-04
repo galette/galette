@@ -28,12 +28,11 @@
  * @category  Core
  * @package   Galette
  *
- * @author    Frédéric Jaqcuot <unknown@unknow.com>
+ * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2003-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-28
  */
@@ -49,7 +48,7 @@ use Galette\Entity\Adherent;
  * @category  Core
  * @name      Password
  * @package   Galette
- * @author    Frédéric Jaqcuot <unknown@unknow.com>
+ * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2009-2014 The Galette Team

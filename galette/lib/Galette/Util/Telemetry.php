@@ -77,11 +77,11 @@ class Telemetry
         $this->plugins = $plugins;
     }
 
-   /**
-    * Grab telemetry informations
-    *
-    * @return array
-    */
+    /**
+     * Grab telemetry information
+     *
+     * @return array
+     */
     public function getTelemetryInfos()
     {
         $data = [
@@ -96,11 +96,11 @@ class Telemetry
         return $data;
     }
 
-   /**
-    * Grab Galette part informations
-    *
-    * @return array
-    */
+    /**
+     * Grab Galette part information
+     *
+     * @return array
+     */
     public function grabGaletteInfos()
     {
         $galette = [
@@ -127,7 +127,7 @@ class Telemetry
     }
 
     /**
-     * Grab DB part informations
+     * Grab DB part information
      *
      * @return array
      */
@@ -138,7 +138,7 @@ class Telemetry
     }
 
     /**
-     * Grab web server part informations
+     * Grab web server part information
      *
      * @return array
      */
@@ -178,7 +178,7 @@ class Telemetry
     }
 
     /**
-     * Grab PHP part informations
+     * Grab PHP part information
      *
      * @return array
      */
@@ -201,7 +201,7 @@ class Telemetry
     }
 
     /**
-     * Grab OS part informations
+     * Grab OS part information
      *
      * @return array
      */
@@ -228,7 +228,7 @@ class Telemetry
     {
         $select = $this->zdb->select($table);
         $select->columns([
-            'cnt' => new \Zend\Db\Sql\Expression(
+            'cnt' => new \Laminas\Db\Sql\Expression(
                 'COUNT(1)'
             )
         ]);
@@ -263,8 +263,8 @@ class Telemetry
         return '5000+';
     }
 
-   /**
-     * Send telemetry informations
+    /**
+     * Send telemetry information
      *
      * @return boolean
      */
@@ -309,7 +309,7 @@ class Telemetry
             //all is OK!
             return true;
         } else {
-            $message = 'Something went wrong sending telemetry informations';
+            $message = 'Something went wrong sending telemetry information';
             if ($errstr != '') {
                 $message .= ": $errstr";
             }
@@ -333,7 +333,7 @@ class Telemetry
         $param = 'pref_' . $type . '_uuid';
         $uuid = $this->prefs->$param;
         if (empty($uuid)) {
-            $uuid = self::generateUuid($type);
+            $uuid = $this->generateUuid($type);
         }
         return $uuid;
     }
@@ -348,7 +348,7 @@ class Telemetry
         return $this->getUuid('instance');
     }
 
-   /**
+    /**
      * Get registration UUID
      *
      * @return string
@@ -382,7 +382,7 @@ class Telemetry
      */
     final public function generateInstanceUuid()
     {
-        return self::generateUuid('instance');
+        return $this->generateUuid('instance');
     }
 
     /**
@@ -392,7 +392,7 @@ class Telemetry
      */
     final public function generateRegistrationUuid()
     {
-        return self::generateUuid('registration');
+        return $this->generateUuid('registration');
     }
 
     /**
@@ -435,15 +435,15 @@ class Telemetry
         return $this->getRegistrationDate() != false;
     }
 
-   /**
-    * Get a random string
-    *
-    * @param integer $length of the random string
-    *
-    * @return random string
-    *
-    * @see https://stackoverflow.com/questions/4356289/php-random-string-generator/31107425#31107425
-    */
+    /**
+     * Get a random string
+     *
+     * @param integer $length of the random string
+     *
+     * @return string
+     *
+     * @see https://stackoverflow.com/questions/4356289/php-random-string-generator/31107425#31107425
+     */
     private function getRandomString($length)
     {
         $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

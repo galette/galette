@@ -29,7 +29,7 @@
                     <label for="trans_amount" class="bline">{_T string="Amount:"}</label>
                     <input type="text" name="trans_amount" id="trans_amount" value="{$transaction->amount}" maxlength="10"{if $required.trans_amount eq 1} required="required"{/if}/>
                 </p>
-    {if $transaction->id eq null}
+    {if $transaction->id eq null or $transaction->getMissingAmount() > 0}
                 <p>
                     <span class="bline tooltip" title="{_T string="Select a contribution type to create for dispatch transaction"}">{_T string="Dispatch type:"}</span>
                     <span class="tip">{_T string="Select a contribution type to create for dispatch transaction"}</span>
@@ -55,14 +55,14 @@
                 {_T string="Attached contributions"}
                 {if $transaction->getMissingAmount() > 0}
                     <a
-                        href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?trans_id={$transaction->id}"
+                        href="{path_for name="addContribution" data=["type" => "fee"]}?trans_id={$transaction->id}"
                         class="button fright tooltip"
                     >
                         <i class="fas fa-user-check"></i>
                         <span class="sr-only">{_T string="Create a new fee that will be attached to the current transaction"}</span>
                     </a>
                     <a
-                        href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?trans_id={$transaction->id}"
+                        href="{path_for name="addContribution" data=["type" => "donation"]}?trans_id={$transaction->id}"
                         class="button fright tooltip"
                     >
                         <i class="fas fa-gift"></i>

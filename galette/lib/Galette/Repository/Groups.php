@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2011-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-10-25
  */
@@ -38,8 +37,8 @@
 namespace Galette\Repository;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Predicate\PredicateSet;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Predicate\PredicateSet;
 use Galette\Entity\Group;
 use Galette\Entity\Adherent;
 use Galette\Core\Login;
@@ -210,8 +209,7 @@ class Groups
         global $zdb;
         try {
             $join_table = ($managed) ?
-                Group::GROUPSMANAGERS_TABLE :
-                Group::GROUPSUSERS_TABLE;
+                Group::GROUPSMANAGERS_TABLE : Group::GROUPSUSERS_TABLE;
 
             $select = $zdb->select(Group::TABLE, 'a');
             $select->join(

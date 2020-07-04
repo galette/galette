@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-06-02
  */
@@ -38,7 +37,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
 use Galette\Core\Picture;
 use Galette\Core\GaletteMail;
@@ -92,7 +91,7 @@ class Adherent
     private $_language;
     private $_active;
     private $_status;
-    //Contact informations
+    //Contact information
     private $_address;
     private $_address_continuation; /** TODO: remove */
     private $_zipcode;
@@ -107,7 +106,7 @@ class Adherent
     private $_jabber; /** TODO: remove */
     private $_gnupgid; /** TODO: remove */
     private $_fingerprint; /** TODO: remove */
-    //Galette relative informations
+    //Galette relative information
     private $_appears_in_list;
     private $_admin;
     private $_staff;
@@ -126,6 +125,7 @@ class Adherent
     private $_managed_groups;
     private $_parent;
     private $_children;
+    private $_duplicate = false;
     //
     private $_row_classes;
     //fields list and their translation
@@ -152,16 +152,16 @@ class Adherent
         'email_adh'
     ];
 
-    private $errors;
+    private $errors = [];
 
     /**
      * Default constructor
      *
-     * @param Db      $zdb  Database instance
-     * @param mixed   $args Either a ResultSet row, its id or its
-     *                      login or its mail for to load s specific
-     *                      member, or null to just instanciate object
-     * @param boolean $deps Dependencies configuration, see Adherent::$_deps
+     * @param Db          $zdb  Database instance
+     * @param mixed       $args Either a ResultSet row, its id or its
+     *                          login or its email for to load s specific
+     *                          member, or null to just instanciate object
+     * @param false|array $deps Dependencies configuration, see Adherent::$_deps
      */
     public function __construct(Db $zdb, $args = null, $deps = null)
     {
@@ -177,8 +177,8 @@ class Adherent
                 );
             } elseif ($deps === false) {
                 //no dependencies
-                $this->deps = array_fill_keys(
-                    array_keys($this->deps),
+                $this->_deps = array_fill_keys(
+                    array_keys($this->_deps),
                     false
                 );
             } else {
@@ -316,7 +316,7 @@ class Adherent
         $this->_language = $r->pref_lang;
         $this->_active = ($r->activite_adh == 1) ? true : false;
         $this->_status = (int)$r->id_statut;
-        //Contact informations
+        //Contact information
         $this->_address = $r->adresse_adh;
         /** TODO: remove and merge with address */
         $this->_address_continuation = $r->adresse2_adh;
@@ -337,10 +337,11 @@ class Adherent
         $this->_gnupgid = $r->gpgid;
         /** TODO: remove */
         $this->_fingerprint = $r->fingerprint;
-        //Galette relative informations
+        //Galette relative information
         $this->_appears_in_list = ($r->bool_display_info == 1) ? true : false;
         $this->_admin = ($r->bool_admin_adh == 1) ? true : false;
-        if (isset($r->priorite_statut)
+        if (
+            isset($r->priorite_statut)
             && $r->priorite_statut < Members::NON_STAFF_MEMBERS
         ) {
             $this->_staff = true;
@@ -359,7 +360,7 @@ class Adherent
         $this->_others_infos_admin = $r->info_adh;
 
         if ($r->parent_id !== null) {
-            $this->_parent = $r->parent_id;
+            $this->_parent = (int)$r->parent_id;
             if ($this->_deps['parent'] === true) {
                 $this->loadParent($r->parent_id);
             }
@@ -418,7 +419,7 @@ class Adherent
 
             $results = $this->zdb->execute($select);
 
-            if ($results->count() >  0) {
+            if ($results->count() > 0) {
                 foreach ($results as $row) {
                     $deps = $this->_deps;
                     $deps['children'] = false;
@@ -490,7 +491,7 @@ class Adherent
             } else {
                 $date_end = new \DateTime($this->_due_date);
                 $date_diff = $date_now->diff($date_end);
-                $this->_days_remaining = ( $date_diff->invert == 1 )
+                $this->_days_remaining = ($date_diff->invert == 1)
                     ? $date_diff->days * -1
                     : $date_diff->days;
 
@@ -655,7 +656,7 @@ class Adherent
      */
     public function hasParent()
     {
-        return $this->_parent !== null;
+        return !empty($this->_parent);
     }
 
     /**
@@ -666,10 +667,12 @@ class Adherent
     public function hasChildren()
     {
         if ($this->_children === null) {
-            Analog::log(
-                'Children has not been loaded!',
-                Analog::WARNING
-            );
+            if ($this->id) {
+                Analog::log(
+                    'Children has not been loaded!',
+                    Analog::WARNING
+                );
+            }
             return false;
         } else {
             return count($this->_children) > 0;
@@ -724,7 +727,7 @@ class Adherent
             $patterns = array('/%days/', '/%date/');
             $ddate = new \DateTime($this->_due_date);
             $replace = array(
-                $this->_days_remaining *-1,
+                $this->_days_remaining * -1,
                 $ddate->format(__("Y-m-d"))
             );
             if ($this->_active) {
@@ -974,11 +977,17 @@ class Adherent
         }
 
         //no parent if checkbox was unchecked
-        if (!isset($values['attach'])
+        if (
+            !isset($values['attach'])
             && empty($this->_id)
             && isset($values['parent_id'])
         ) {
             unset($values['parent_id']);
+        }
+
+        if (isset($values['duplicate'])) {
+            //if we're duplicating, keep a trace (if an error occurs)
+            $this->_duplicate = true;
         }
 
         foreach ($fields as $key) {
@@ -1034,7 +1043,8 @@ class Adherent
                 // now, check validity
                 if ($value !== null && $value != '') {
                     $this->validate($key, $value, $values);
-                } elseif (($key == 'login_adh' && !isset($required['login_adh']))
+                } elseif (
+                    ($key == 'login_adh' && !isset($required['login_adh']))
                     || ($key == 'mdp_adh' && !isset($required['mdp_adh']))
                     && !isset($this->_id)
                 ) {
@@ -1059,7 +1069,7 @@ class Adherent
                 if ($mandatory_missing === true) {
                     $this->errors[] = str_replace(
                         '%field',
-                        '<a href="#' . $key . '">' . $this->getFieldLabel($key) .'</a>',
+                        '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
                         _T("- Mandatory field %field empty.")
                     );
                 }
@@ -1107,6 +1117,12 @@ class Adherent
 
         $prop = '_' . $this->fields[$field]['propname'];
 
+        if ($value === null || (is_string($value) && trim($value) == '')) {
+            //empty values are OK
+            $this->$prop = $value;
+            return;
+        }
+
         switch ($field) {
             // dates
             case 'date_crea_adh':
@@ -1129,12 +1145,12 @@ class Adherent
                         $d->setTime(0, 0, 0);
 
                         $diff = $now->diff($d);
-                        $days = (integer)$diff->format('%R%a');
+                        $days = (int)$diff->format('%R%a');
                         if ($days >= 0) {
-                            $this->errors[] =_T('- Birthdate must be set in the past!');
+                            $this->errors[] = _T('- Birthdate must be set in the past!');
                         }
 
-                        $years = (integer)$diff->format('%R%Y');
+                        $years = (int)$diff->format('%R%Y');
                         if ($years <= -200) {
                             $this->errors[] = str_replace(
                                 '%years',
@@ -1194,7 +1210,7 @@ class Adherent
                         }
 
                         $results = $this->zdb->execute($select);
-                        if ($results->count() !==  0) {
+                        if ($results->count() !== 0) {
                             $this->errors[] = _T("- This E-Mail address is already used by another member!");
                         }
                     } catch (\Exception $e) {
@@ -1239,7 +1255,8 @@ class Adherent
                             }
 
                             $results = $this->zdb->execute($select);
-                            if ($results->count() !==  0
+                            if (
+                                $results->count() !== 0
                                 || $value == $preferences->pref_admin_login
                             ) {
                                 $this->errors[] = _T("- This username is already in use, please choose another one!");
@@ -1255,28 +1272,35 @@ class Adherent
                 }
                 break;
             case 'mdp_adh':
-                /** TODO: check password complexity, set by a preference */
-                /** TODO: add a preference for password lenght */
-                if (strlen($value) < 6) {
-                    $this->errors[] = str_replace(
-                        '%i',
-                        6,
-                        _T("- The password must be of at least %i characters!")
-                    );
-                } elseif ($this->_self_adh !== true
+                if (
+                    $this->_self_adh !== true
                     && (!isset($values['mdp_adh2'])
                     || $values['mdp_adh2'] != $value)
                 ) {
                     $this->errors[] = _T("- The passwords don't match!");
-                } elseif ($this->_self_adh === true
-                    && !crypt($value, $values['mdp_crypt'])==$values['mdp_crypt']
+                } elseif (
+                    $this->_self_adh === true
+                    && !crypt($value, $values['mdp_crypt']) == $values['mdp_crypt']
                 ) {
                     $this->errors[] = _T("Password misrepeated: ");
                 } else {
-                    $this->$prop = password_hash(
-                        $value,
-                        PASSWORD_BCRYPT
-                    );
+                    $pinfos = password_get_info($value);
+                    //check if value is already a hash
+                    if ($pinfos['algo'] == 0) {
+                        $this->$prop = password_hash(
+                            $value,
+                            PASSWORD_BCRYPT
+                        );
+
+                        $pwcheck = new \Galette\Util\Password($preferences);
+                        $pwcheck->setAdherent($this);
+                        if (!$pwcheck->isValid($value)) {
+                            $this->errors = array_merge(
+                                $this->errors,
+                                $pwcheck->getErrors()
+                            );
+                        }
+                    }
                 }
                 break;
             case 'id_statut':
@@ -1311,6 +1335,10 @@ class Adherent
                     $this->errors[] = _T("Gender %gender does not exists!");
                 }
                 break;
+            case 'parent_id':
+                $this->$prop = ($value instanceof Adherent) ? (int)$value->id : (int)$value;
+                $this->loadParent();
+                break;
         }
     }
 
@@ -1321,19 +1349,21 @@ class Adherent
      */
     public function store()
     {
-        global $hist;
+        global $hist, $emitter;
 
         try {
             $values = array();
             $fields = self::getDbFields($this->zdb);
 
             foreach ($fields as $field) {
-                if ($field !== 'date_modif_adh'
+                if (
+                    $field !== 'date_modif_adh'
                     || !isset($this->_id)
                     || $this->_id == ''
                 ) {
                     $prop = '_' . $this->fields[$field]['propname'];
-                    if (($field === 'bool_admin_adh'
+                    if (
+                        ($field === 'bool_admin_adh'
                         || $field === 'bool_exempt_adh'
                         || $field === 'bool_display_info'
                         || $field === 'activite_adh')
@@ -1413,15 +1443,18 @@ class Adherent
                     if ($this->_self_adh) {
                         $hist->add(
                             _T("Self_subscription as a member: ") .
-                            $this->getNameWithCase($this->_name, $this->_surname)
+                            $this->getNameWithCase($this->_name, $this->_surname),
+                            $this->sname
                         );
                     } else {
                         $hist->add(
                             _T("Member card added"),
-                            strtoupper($this->_login)
+                            $this->sname
                         );
                     }
                     $success = true;
+
+                    $emitter->emit('member.add', $this);
                 } else {
                     $hist->add(_T("Fail to add new member."));
                     throw new \Exception(
@@ -1456,10 +1489,12 @@ class Adherent
                     $this->updateModificationDate();
                     $hist->add(
                         _T("Member card updated"),
-                        strtoupper($this->_login)
+                        $this->sname
                     );
                 }
                 $success = true;
+
+                $emitter->emit('member.edit', $this);
             }
 
             //dynamic fields
@@ -1519,14 +1554,11 @@ class Adherent
 
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
-            'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass', 'saddress'
+            'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass', 'saddress',
+            'rbirthdate', 'sgender', 'contribstatus'
         );
 
         if (in_array($name, $forbidden)) {
-            Analog::log(
-                "Call to __get for '$name' is forbidden!",
-                Analog::WARNING
-            );
             switch ($name) {
                 case 'admin':
                     return $this->isAdmin();
@@ -1591,6 +1623,22 @@ class Adherent
                     case 'sname':
                         return $this->getNameWithCase($this->_name, $this->_surname);
                         break;
+                    case 'rbirthdate':
+                        return $this->_birthdate;
+                        break;
+                    case 'sgender':
+                        switch ($this->gender) {
+                            case self::MAN:
+                                return _T('Man');
+                            case self::WOMAN:
+                                return _T('Woman');
+                            default:
+                                return __('Unspecified');
+                        }
+                        break;
+                    case 'contribstatus':
+                        return $this->getDues();
+                        break;
                 }
             } else {
                 if (substr($name, 0, 1) !== '_') {
@@ -1602,7 +1650,11 @@ class Adherent
                 switch ($name) {
                     case 'id':
                     case 'id_statut':
-                        return (int)$this->$rname;
+                        if ($this->$rname !== null) {
+                            return (int)$this->$rname;
+                        } else {
+                            return null;
+                        }
                         break;
                     case 'birthdate':
                     case 'creation_date':
@@ -1642,7 +1694,7 @@ class Adherent
     /**
      * Get member email
      * If member does not have an email address, but is attached to
-     * another member, we'll take informations from its parent.
+     * another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1659,7 +1711,7 @@ class Adherent
 
     /**
      * Get member address.
-     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1676,7 +1728,7 @@ class Adherent
 
     /**
      * Get member address continuation.
-     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1694,7 +1746,7 @@ class Adherent
 
     /**
      * Get member zipcode.
-     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1712,7 +1764,7 @@ class Adherent
 
     /**
      * Get member town.
-     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1730,7 +1782,7 @@ class Adherent
 
     /**
      * Get member country.
-     * If member does not have an address, but is attached to another member, we'll take informations from its parent.
+     * If member does not have an address, but is attached to another member, we'll take information from its parent.
      *
      * @return string
      */
@@ -1784,7 +1836,7 @@ class Adherent
     }
 
     /**
-     * Handle files (phot and dynamics files
+     * Handle files (photo and dynamics files
      *
      * @param array $files Files sent
      *
@@ -1796,7 +1848,7 @@ class Adherent
         // picture upload
         if (isset($files['photo'])) {
             if ($files['photo']['error'] === UPLOAD_ERR_OK) {
-                if ($files['photo']['tmp_name'] !='') {
+                if ($files['photo']['tmp_name'] != '') {
                     if (is_uploaded_file($files['photo']['tmp_name'])) {
                         $res = $this->picture->store($files['photo']);
                         if ($res < 0) {
@@ -1837,6 +1889,7 @@ class Adherent
     public function setDuplicate()
     {
         //mark as duplicated
+        $this->_duplicate = true;
         $infos = $this->_others_infos_admin;
         $this->_others_infos_admin = str_replace(
             ['%name', '%id'],
@@ -1848,7 +1901,86 @@ class Adherent
         }
         //drop id_adh
         $this->_id = null;
-        //drop mail, must be unique
+        //drop email, must be unique
         $this->_email = null;
+        //drop creation date
+        $this->_creation_date = date("Y-m-d");
+        //drop login
+        $this->_login = null;
+        //reset picture
+        $this->_picture = new Picture();
+        //remove birthdate
+        $this->_birthdate = null;
+        //remove surname
+        $this->_surname = null;
+        //not admin
+        $this->_admin = false;
+        //not due free
+        $this->_due_free = false;
+    }
+
+    /**
+     * Get current errors
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     * Get user groups
+     *
+     * @return array
+     */
+    public function getGroups()
+    {
+        return $this->_groups;
+    }
+
+    /**
+     * Get user managed groups
+     *
+     * @return array
+     */
+    public function getManagedGroups()
+    {
+        return $this->_managed_groups;
+    }
+
+    /**
+     * Can current logged in user edit member
+     *
+     * @param Login $login Login instance
+     *
+     * @return boolean
+     */
+    public function canEdit($login)
+    {
+        if ($this->id && $login->id == $this->id || $login->isAdmin() || $login->isStaff()) {
+            return true;
+        }
+
+        //check if requested member is part of managed groups
+        if ($login->isGroupManager()) {
+            foreach ($this->getGroups() as $g) {
+                if ($login->isGroupManager($g->getId())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Are we currently duplicated a member?
+     *
+     * @return boolean
+     */
+    public function isDuplicate()
+    {
+        return $this->_duplicate;
     }
 }

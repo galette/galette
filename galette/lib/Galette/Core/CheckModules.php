@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.1dev - 2012-03-12
  */
@@ -103,7 +102,8 @@ class CheckModules
                 if ($translated) {
                     $mstring = _T("either 'mysql' or 'pgsql' PDO driver");
                 }
-                if (!extension_loaded('pdo_mysql')
+                if (
+                    !extension_loaded('pdo_mysql')
                     && !extension_loaded('pdo_pgsql')
                 ) {
                     $this->missing[] = $mstring;
@@ -145,8 +145,8 @@ class CheckModules
         if (count($this->missing) > 0) {
             $ko = ($translated ? _T('Ko') : 'Ko');
             foreach ($this->missing as $m) {
-                $html .= '<li><span>' . $m  . '</span><span><img src="' .
-                    $img_dir  . 'icon-invalid.png" alt="' .
+                $html .= '<li><span>' . $m . '</span><span><img src="' .
+                    $img_dir . 'icon-invalid.png" alt="' .
                     $ko . '"/></span></li>';
             }
         }
@@ -154,16 +154,16 @@ class CheckModules
         if (count($this->good) > 0) {
             $ok = ($translated ? _T('Ok') : 'Ok');
             foreach ($this->good as $m) {
-                $html .= '<li><span>' . $m  . '</span><span><img src="' .
-                    $img_dir  . 'icon-valid.png" alt="' .
+                $html .= '<li><span>' . $m . '</span><span><img src="' .
+                    $img_dir . 'icon-valid.png" alt="' .
                     $ok . '"/></span></li>';
             }
         }
 
         if (count($this->should) > 0) {
             foreach ($this->should as $m) {
-                $html .= '<li><span>' . $m  . '</span><span><img src="' .
-                    $img_dir  . 'icon-warning.png" alt=""' .
+                $html .= '<li><span>' . $m . '</span><span><img src="' .
+                    $img_dir . 'icon-warning.png" alt=""' .
                     '/></span></li>';
             }
         }

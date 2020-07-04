@@ -65,7 +65,7 @@ trait GaletteError
     public function __construct(Smarty $view, $displayErrorDetails = false)
     {
         $this->view = $view;
-        $this->displayErrorDetails = (bool) $displayErrorDetails;
+        $this->displayErrorDetails = (bool)$displayErrorDetails;
     }
 
 

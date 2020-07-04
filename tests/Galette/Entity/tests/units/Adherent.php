@@ -37,7 +37,7 @@
 
 namespace Galette\Entity\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * Adherent tests class
@@ -122,13 +122,6 @@ class Adherent extends atoum
         $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
         $this->history = new \Galette\Core\History($this->zdb, $this->login);
 
-        if (!defined('_CURRENT_THEME_PATH')) {
-            define(
-                '_CURRENT_THEME_PATH',
-                GALETTE_THEMES_PATH . $this->preferences->pref_theme . '/'
-            );
-        }
-
         $this->default_deps = [
             'picture'   => true,
             'groups'    => true,
@@ -171,11 +164,11 @@ class Adherent extends atoum
     }
 
     /**
-     * Create test user in database
+     * Get Faker data for one member
      *
-     * @return void
+     * @return array
      */
-    private function createAdherent()
+    private function dataAdherent(): array
     {
         $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
         $fakedata
@@ -188,7 +181,17 @@ class Adherent extends atoum
             );
 
         $data = $fakedata->fakeMember();
-        $this->createMember($data);
+        return $data;
+    }
+
+    /**
+     * Create test user in database
+     *
+     * @return void
+     */
+    private function createAdherent()
+    {
+        $this->createMember($this->dataAdherent());
     }
 
     /**
@@ -201,6 +204,11 @@ class Adherent extends atoum
     private function loadAdherent($id)
     {
         $this->adh = new \Galette\Entity\Adherent($this->zdb, (int)$id);
+        $this->adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
     }
 
     /**
@@ -269,6 +277,7 @@ class Adherent extends atoum
         $this->boolean($store)->isTrue();
 
         $this->ids[] = $adh->id;
+        return $adh;
     }
 
     /**
@@ -536,9 +545,10 @@ class Adherent extends atoum
 
         $data = [
             'login_adh' => '',
-            'mdp_adh'   => 'short'
+            'mdp_adh'   => 'short',
+            'mdp_adh2'  => 'short'
         ];
-        $expected = ['- The password must be of at least 6 characters!'];
+        $expected = ['Too short (6 characters minimum, 5 found)'];
         $check = $adh->check($data, [], []);
         $this->array($check)->isIdenticalTo($expected);
 
@@ -584,8 +594,121 @@ class Adherent extends atoum
                 $this->history,
                 $this->login
             );
-        $fakedata->addPhoto($this->adh);
+        $this->boolean($fakedata->addPhoto($this->adh))->isTrue();
 
         $this->boolean($this->adh->hasPicture())->isTrue();
+
+        //remove photo
+        $this->boolean($this->adh->picture->delete())->isTrue();
+    }
+
+    /**
+     * Test canEdit
+     *
+     * @return void
+     */
+    public function testCanEdit()
+    {
+        $adh = new \Galette\Entity\Adherent($this->zdb);
+
+        //non authorized
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->boolean($adh->canEdit($login))->isFalse();
+
+        //admin => authorized
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->calling($login)->isAdmin = true;
+        $this->boolean($adh->canEdit($login))->isTrue();
+
+        //staff => authorized
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->calling($login)->isStaff = true;
+        $this->boolean($adh->canEdit($login))->isTrue();
+
+        //group managers
+        $adh = new \mock\Galette\Entity\Adherent($this->zdb);
+
+        $g1 = new \mock\Galette\Entity\Group();
+        $this->calling($g1)->getId = 1;
+        $g2 = new \mock\Galette\Entity\Group();
+        $this->calling($g1)->getId = 2;
+
+        $this->calling($adh)->getGroups = [$g1, $g2];
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->boolean($adh->canEdit($login))->isFalse();
+
+        $this->calling($login)->isGroupManager = true;
+        $this->boolean($adh->canEdit($login))->isTrue();
+    }
+
+    /**
+     * Test member duplication
+     *
+     * @return void
+     */
+    public function testDuplicate()
+    {
+        $adh = new \Galette\Entity\Adherent($this->zdb);
+
+        $rs = $this->adhExists();
+        if ($rs === false) {
+            $this->createAdherent();
+        } else {
+            $this->loadAdherent($rs->current()->id_adh);
+        }
+
+        $this->checkMemberExpected();
+
+        //load member from db
+        $adh = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
+        $this->checkMemberExpected($adh);
+
+        $adh->setDuplicate();
+
+        $this->string($adh->others_infos_admin)->contains('Duplicated from');
+        $this->variable($adh->email)->isNull();
+        $this->variable($adh->id)->isNull();
+        $this->variable($adh->login)->isNull();
+        $this->variable($adh->birthdate)->isNull();
+        $this->variable($adh->surname)->isNull();
+    }
+
+    /**
+     * Test parents
+     *
+     * @return void
+     */
+    public function testParents()
+    {
+        $rs = $this->adhExists();
+        if ($rs === false) {
+            $this->createAdherent();
+        } else {
+            $this->loadAdherent($rs->current()->id_adh);
+        }
+        $this->checkMemberExpected();
+
+        //load member from db
+        $parent = new \Galette\Entity\Adherent($this->zdb, $this->adh->id);
+        $this->checkMemberExpected($parent);
+
+        $child_data = $this->dataAdherent() + [
+            'nom_adh'       => 'Doe',
+            'prenom_adh'    => 'Johny',
+            'parent_id'     => $parent->id,
+        ];
+        $child = $this->createMember($child_data);
+
+        $this->string($child->name)->isIdenticalTo($child_data['nom_adh']);
+        $this->object($child->parent)->isInstanceOf('\Galette\Entity\Adherent');
+        $this->integer($child->parent->id)->isIdenticalTo($parent->id);
+
+        $check = $child->check(['detach_parent' => true], [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->boolean($check)->isTrue();
+        $this->boolean($child->store())->isTrue();
+        $this->variable($child->parent)->isNull();
     }
 }

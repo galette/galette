@@ -108,13 +108,14 @@ trait DynamicsTrait
                 if (!isset($disabled[$key])) {
                     if (substr($key, 0, 11) == 'info_field_') {
                         list($field_id, $val_index) = explode('_', substr($key, 11));
-                        if (is_numeric($field_id)
+                        if (
+                            is_numeric($field_id)
                             && is_numeric($val_index)
                         ) {
                             if ($fields[$field_id]->isRequired() && (trim($value) === '' || $value == null)) {
                                 $this->errors[] = str_replace(
                                     '%field',
-                                    $field->getName(),
+                                    $fields[$field_id]->getName(),
                                     _T('Missing required field %field')
                                 );
                             } else {
@@ -231,13 +232,15 @@ trait DynamicsTrait
             }
 
             list($field_id, $val_index) = explode('_', substr($key, 11));
-            if (! is_numeric($field_id) || ! is_numeric($val_index)) {
+            if (!is_numeric($field_id) || !is_numeric($val_index)) {
                 continue;
             }
 
-            if ($file['error'] == UPLOAD_ERR_NO_FILE
+            if (
+                $file['error'] == UPLOAD_ERR_NO_FILE
                 && $file['name'] == ''
-                && $file['tmp_name'] == '') {
+                && $file['tmp_name'] == ''
+            ) {
                 //not upload atempt.
                 continue;
             } elseif ($file['error'] !== UPLOAD_ERR_OK) {
@@ -258,8 +261,7 @@ trait DynamicsTrait
 
             $max_size =
                 $fields[$field_id]->getSize() ?
-                $fields[$field_id]->getSize() * 1024 :
-                File::DEFAULT_MAX_FILE_SIZE * 1024;
+                $fields[$field_id]->getSize() * 1024 : File::DEFAULT_MAX_FILE_SIZE * 1024;
             if ($file['size'] > $max_size) {
                 Analog::log(
                     "file too large: " . $file['size'] . " Ko, vs $max_size Ko allowed",
@@ -324,5 +326,23 @@ trait DynamicsTrait
     public function getErrors()
     {
         return $this->errors;
+    }
+
+    /**
+     * Validate data for dynamic fields
+     * Set valid data in current object, also resets errors list
+     *
+     * @param array  $values Dynamic fields values
+     * @param string $prefix Prefix to replace, default to 'dynfield_'
+     *
+     * @return void
+     */
+    public function dynamicsValidate($values, $prefix = 'dynfield_')
+    {
+        $dfields = [];
+        foreach ($values as $key => $value) {
+            $dfields[str_replace($prefix, 'info_field_', $key)] = $value;
+        }
+        return $this->dynamicsCheck($dfields);
     }
 }

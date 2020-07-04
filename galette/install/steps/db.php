@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8 - 2013-01-09
  */
@@ -68,18 +67,18 @@ if (!isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql') {
                     <p>
                         <label class="bline" for="install_dbtype"><?php echo _T("Database type:"); ?></label>
                         <select name="install_dbtype" id="install_dbtype">
-                            <option value="mysql"<?php if ( $install->getDbType() === GaletteDb::MYSQL ) {echo ' selected="selected"';} ?>>Mysql</option>
-                            <option value="pgsql"<?php if ( $install->getDbType() === GaletteDb::PGSQL ) {echo ' selected="selected"';} ?>>Postgresql</option>
+                            <option value="mysql"<?php if ($install->getDbType() === GaletteDb::MYSQL) {echo ' selected="selected"'; } ?>>Mysql</option>
+                            <option value="pgsql"<?php if ($install->getDbType() === GaletteDb::PGSQL) {echo ' selected="selected"'; } ?>>Postgresql</option>
                         </select>
                     </p>
                     <div id="install_dbconfig">
                         <p>
                             <label class="bline" for="install_dbhost"><?php echo _T("Host:"); ?></label>
-                            <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo ($install->getDbHost() !== null)?$install->getDbHost():'localhost'; ?>" required/>
+                            <input type="text" name="install_dbhost" id="install_dbhost" value="<?php echo ($install->getDbHost() !== null) ? $install->getDbHost() : 'localhost'; ?>" required/>
                         </p>
                         <p>
                             <label class="bline" for="install_dbport"><?php echo _T("Port:"); ?></label>
-                            <input type="text" name="install_dbport" id="install_dbport" value="<?php echo ($install->getDbPort() !== null)?$install->getDbPort():$default_dbport; ?>" required/>
+                            <input type="text" name="install_dbport" id="install_dbport" value="<?php echo ($install->getDbPort() !== null) ? $install->getDbPort() : $default_dbport; ?>" required/>
                         </p>
                         <p>
                             <label class="bline" for="install_dbuser"><?php echo _T("User:"); ?></label>
@@ -95,7 +94,7 @@ if (!isset($_POST['install_dbtype']) || $_POST['install_dbtype'] == 'mysql') {
                         </p>
                         <p>
                             <label class="bline" for="install_dbprefix"><?php echo _T("Table prefix:"); ?></label>
-                            <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo ($install->getTablesPrefix() !== null)?$install->getTablesPrefix():'galette_'; ?>" required/>
+                            <input type="text" name="install_dbprefix" id="install_dbprefix" value="<?php echo ($install->getTablesPrefix() !== null) ? $install->getTablesPrefix() : 'galette_'; ?>" required/>
                         </p>
 <?php
 if ($install->isUpgrade()) {

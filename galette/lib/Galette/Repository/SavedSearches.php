@@ -37,7 +37,7 @@
 namespace Galette\Repository;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\History;
@@ -64,7 +64,7 @@ class SavedSearches
 
     private $count = null;
 
-   /**
+    /**
      * Default constructor
      *
      * @param Db                $zdb     Database
@@ -132,8 +132,8 @@ class SavedSearches
     private function buildSelect($fields, $count = false)
     {
         try {
-            $fieldsList = ( $fields != null )
-                            ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
+            $fieldsList = ($fields != null)
+                            ? ((!is_array($fields) || count($fields) < 1) ? (array)'*'
                             : implode(', ', $fields)) : (array)'*';
 
             $select = $this->zdb->select(self::TABLE, 's');
@@ -253,7 +253,7 @@ class SavedSearches
                     $s = new SavedSearch($this->zdb, $this->login, $search);
                     $res = $s->remove(false);
                     if ($res === false) {
-                        throw new \Exception;
+                        throw new \Exception();
                     }
                 }
                 if ($transaction) {

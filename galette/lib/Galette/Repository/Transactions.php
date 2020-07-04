@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2011-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-07-31
  */
@@ -38,7 +37,7 @@
 namespace Galette\Repository;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Entity\Transaction;
 use Galette\Entity\Adherent;
 use Galette\Core\Db;
@@ -135,8 +134,8 @@ class Transactions
     private function buildSelect($fields, $count = false)
     {
         try {
-            $fieldsList = ( $fields != null )
-                            ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
+            $fieldsList = ($fields != null)
+                            ? ((!is_array($fields) || count($fields) < 1) ? (array)'*'
                             : implode(', ', $fields)) : (array)'*';
 
             $select = $this->zdb->select(self::TABLE, 't');
@@ -319,7 +318,7 @@ class Transactions
                     $c = new Transaction($this->zdb, $this->login, $transaction);
                     $res = $c->remove($hist, false);
                     if ($res === false) {
-                        throw new \Exception;
+                        throw new \Exception();
                     }
                 }
                 $this->zdb->connection->commit();

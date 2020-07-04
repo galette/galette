@@ -41,7 +41,7 @@
         </dd>
     </dl>
 
-    <h3>{_T string="Raw informations"}</h3>
+    <h3>{_T string="Raw information"}</h3>
     <pre>{$module|print_r}</pre>
     {/if}
 {/block}

@@ -43,4 +43,4 @@ Pour utiliser Galette, vous pouvez, au choix :
 
 * télécharger la dernière version stable depuis le [site web de Galette](https://galette.eu)
 * utiliser [l'archive quotidienne (nightly build)](http://download.tuxfamily.org/galette/galette-dev.tar.bz2) pour tester les nouvelles fonctionnalités
-* utiliser [le code source de Galette depuis le dépôt](http://doc.galette.eu/en/develop/development/git.html) (assurez-vous d'installer les biliothèques tierces), cette solution requiuert quelques compétences techniques
+* utiliser [le code source de Galette depuis le dépôt](http://doc.galette.eu/en/develop/development/git.html) (assurez-vous d'installer les biliothèques tierces), cette solution requiert quelques compétences techniques

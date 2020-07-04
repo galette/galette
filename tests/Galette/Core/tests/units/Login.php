@@ -37,7 +37,7 @@
 
 namespace Galette\Core\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * Login tests class
@@ -99,13 +99,6 @@ class Login extends atoum
 
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         $this->members_fields = $members_fields;
-
-        if (!defined('_CURRENT_THEME_PATH')) {
-            define(
-                '_CURRENT_THEME_PATH',
-                GALETTE_THEMES_PATH . $this->preferences->pref_theme . '/'
-            );
-        }
     }
 
     /**

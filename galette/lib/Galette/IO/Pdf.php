@@ -34,7 +34,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-21
  */
@@ -49,11 +48,6 @@ use Analog\Analog;
  * TCPDF configuration file for Galette
  */
 require_once GALETTE_CONFIG_PATH . 'galette_tcpdf_config.php';
-
-/**
- *  Require TCPDF class
- */
-require_once GALETTE_TCPDF_PATH . '/tcpdf.php';
 
 /**
  * PDF class for galette
@@ -77,6 +71,7 @@ class Pdf extends \TCPDF
     const FONT_SIZE = 10;
 
     protected $preferences;
+    protected $i18n;
     private $model;
     private $paginated = false;
     protected $filename;
@@ -89,10 +84,16 @@ class Pdf extends \TCPDF
      */
     public function __construct(Preferences $prefs, $model = null)
     {
+        global $i18n;
+
         $this->preferences = $prefs;
+        $this->i18n = $i18n;
         parent::__construct('P', 'mm', 'A4', true, 'UTF-8');
         //set some values
         $this->SetCreator(PDF_CREATOR);
+        //add helvetica, hard-called from lib
+        $this->SetFont('helvetica');
+        //and then, set real font
         $this->SetFont(self::FONT, '', self::FONT_SIZE);
         $name = preg_replace(
             '/%s/',
@@ -100,9 +101,12 @@ class Pdf extends \TCPDF
             _T("Association %s")
         );
         $this->SetAuthor(
-            $name . ' (using Galette ' . GALETTE_VERSION .
-            'and TCPDF ' . TCPDF_VERSION . ')'
+            $name . ' (using Galette ' . GALETTE_VERSION . ')'
         );
+
+        if ($this->i18n->isRTL()) {
+            $this->setRTL(true);
+        }
 
         if ($model !== null) {
             if ($model instanceof PdfModel) {
@@ -155,7 +159,7 @@ class Pdf extends \TCPDF
         global $container;
 
         Analog::log(
-            'PDF error: ' .$msg,
+            'PDF error: ' . $msg,
             Analog::ERROR
         );
 
@@ -165,8 +169,7 @@ class Pdf extends \TCPDF
         );
 
         $redirect = (isset($_SERVER['HTTP_REFERER']) ?
-            $_SERVER['HTTP_REFERER'] :
-            $container->get('router')->pathFor('slash'));
+            $_SERVER['HTTP_REFERER'] : $container->get('router')->pathFor('slash'));
         header('Location: ' . $redirect);
         die();
     }
@@ -201,11 +204,11 @@ class Pdf extends \TCPDF
      */
     protected function parsegif($file)
     {
-        $a=GetImageSize($file);
+        $a = GetImageSize($file);
         if (empty($a)) {
             $this->Error(_T("Missing or incorrect image file ") . $file);
         }
-        if ($a[2]!=1) {
+        if ($a[2] != 1) {
             $this->Error(_T("Not a GIF file ") . $file);
         }
 
@@ -215,15 +218,15 @@ class Pdf extends \TCPDF
 
             // Test d'échec & Affichage d'un message d'erreur
             if (!$data) {
-                    $this->Error(_T("Error loading ").$file);
+                    $this->Error(_T("Error loading ") . $file);
             }
             if (imagepng($data, GALETTE_ROOT . 'tempimages/gif2png.png')) {
                 return $this->_parsepng(GALETTE_ROOT . 'tempimages/gif2png.png');
             } else {
-                $this->Error(_T("Error creating temporary png file from ").$file);
+                $this->Error(_T("Error creating temporary png file from ") . $file);
             }
         } else {
-            $this->Error(_T("Unable to convert GIF file ").$file);
+            $this->Error(_T("Unable to convert GIF file ") . $file);
         }
     }
 
@@ -282,7 +285,7 @@ class Pdf extends \TCPDF
                     '/' . $this->getAliasNbPages(),
                     0,
                     1,
-                    'R'
+                    ($this->i18n->isRTL() ? 'L' : 'R')
                 );
             }
         }
@@ -298,94 +301,123 @@ class Pdf extends \TCPDF
     public function PageHeader($title = null) // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     {
         if (isset($this->model)) {
-            $html = null;
-            if (trim($this->model->hstyles) !== '') {
-                $html .= "<style>\n" . $this->model->hstyles . "\n</style>\n\n";
-            }
-            $html .= $this->model->hheader;
-            $this->writeHtml($html, true, false, true, false, '');
-
-            if ($title !== null) {
-                $this->writeHtml('<h2 style="text-align:center;">' . $title . '</h2>');
-            }
-
-            if (trim($this->model->title) !== '') {
-                $htitle = '';
-                if (trim($this->model->hstyles) !== '') {
-                    $htitle .= "<style>\n" . $this->model->hstyles .
-                        "\n</style>\n\n";
-                }
-                $htitle .= '<div id="pdf_title">' . $this->model->htitle . '</div>';
-                $this->writeHtml($htitle);
-            }
-            if (trim($this->model->subtitle) !== '') {
-                $hsubtitle = '';
-                if (trim($this->model->hstyles) !== '') {
-                    $hsubtitle .= "<style>\n" . $this->model->hstyles .
-                        "\n</style>\n\n";
-                }
-                $hsubtitle .= '<div id="pdf_subtitle">' . $this->model->hsubtitle .
-                    '</div>';
-                $this->writeHtml($hsubtitle);
-            }
-            if (trim($this->model->title) !== ''
-                || trim($this->model->subtitle) !== ''
-            ) {
-                $this->Ln(5);
-            }
+            $this->modelPageHeader($title);
         } else {
-            //default header
-            $print_logo = new \Galette\Core\PrintLogo();
-            $logofile = $print_logo->getPath();
+            $this->standardPageHeader($title);
+        }
+    }
 
-            // Set logo size to max width 30 mm or max height 25 mm
-            $ratio = $print_logo->getWidth()/$print_logo->getHeight();
-            if ($ratio < 1) {
-                if ($print_logo->getHeight() > 16) {
-                    $hlogo = 25;
-                } else {
-                    $hlogo = $print_logo->getHeight();
-                }
-                $wlogo = round($hlogo*$ratio);
+    /**
+     * Draws models PDF page header
+     *
+     * @param string $title Additionnal title to display just after logo
+     *
+     * @return void
+     */
+    protected function modelPageHeader($title = null)
+    {
+        $html = null;
+        if (trim($this->model->hstyles) !== '') {
+            $html .= "<style>\n" . $this->model->hstyles . "\n</style>\n\n";
+        }
+        $html .= "<div dir=\"" . ($this->i18n->isRTL() ? 'rtl' : 'ltr') . "\">" . $this->model->hheader . "</div>";
+        $this->writeHtml($html, true, false, true, false, '');
+
+        if ($title !== null) {
+            $this->writeHtml('<h2 style="text-align:center;">' . $title . '</h2>');
+        }
+
+        if (trim($this->model->title) !== '') {
+            $htitle = '';
+            if (trim($this->model->hstyles) !== '') {
+                $htitle .= "<style>\n" . $this->model->hstyles .
+                    "\n</style>\n\n";
+            }
+            $htitle .= '<div id="pdf_title">' . $this->model->htitle . '</div>';
+            $this->writeHtml($htitle);
+        }
+        if (trim($this->model->subtitle) !== '') {
+            $hsubtitle = '';
+            if (trim($this->model->hstyles) !== '') {
+                $hsubtitle .= "<style>\n" . $this->model->hstyles .
+                    "\n</style>\n\n";
+            }
+            $hsubtitle .= '<div id="pdf_subtitle">' . $this->model->hsubtitle .
+                '</div>';
+            $this->writeHtml($hsubtitle);
+        }
+        if (
+            trim($this->model->title) !== ''
+            || trim($this->model->subtitle) !== ''
+        ) {
+            $this->Ln(5);
+        }
+    }
+
+    /**
+     * Draws standard PDF page header
+     *
+     * @param string $title Additionnal title to display just after logo
+     *
+     * @return void
+     */
+    protected function standardPageHeader($title = null)
+    {
+        //default header
+        $print_logo = new \Galette\Core\PrintLogo();
+        $logofile = $print_logo->getPath();
+
+        // Set logo size to max width 30 mm or max height 25 mm
+        $ratio = $print_logo->getWidth() / $print_logo->getHeight();
+        if ($ratio < 1) {
+            if ($print_logo->getHeight() > 16) {
+                $hlogo = 25;
             } else {
-                if ($print_logo->getWidth() > 16) {
-                    $wlogo = 30;
-                } else {
-                    $wlogo = $print_logo->getWidth();
-                }
-                $hlogo = round($wlogo/$ratio);
+                $hlogo = $print_logo->getHeight();
             }
-
-            $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 4);
-            $this->SetTextColor(0, 0, 0);
-
-            $y = $this->GetY();
-            $this->Ln(2);
-            $ystart = $this->GetY();
-
-            $this->MultiCell(
-                180 - $wlogo,
-                6,
-                $this->preferences->pref_nom,
-                0,
-                'L'
-            );
-            $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
-
-            if ($title !== null) {
-                $this->Cell(0, 6, $title, 0, 1, 'L', 0);
+            $wlogo = round($hlogo * $ratio);
+        } else {
+            if ($print_logo->getWidth() > 16) {
+                $wlogo = 30;
+            } else {
+                $wlogo = $print_logo->getWidth();
             }
-            $yend = $this->getY();//store position at the end of the text
+            $hlogo = round($wlogo / $ratio);
+        }
 
-            $this->SetY($ystart);
+        $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 4);
+        $this->SetTextColor(0, 0, 0);
+
+        $y = $this->GetY();
+        $this->Ln(2);
+        $ystart = $this->GetY();
+
+        $this->MultiCell(
+            180 - $wlogo,
+            6,
+            $this->preferences->pref_nom,
+            0,
+            ($this->i18n->isRTL() ? 'R' : 'L')
+        );
+        $this->SetFont(self::FONT, 'B', self::FONT_SIZE + 2);
+
+        if ($title !== null) {
+            $this->Cell(0, 6, $title, 0, 1, ($this->i18n->isRTL() ? 'R' : 'L'), 0);
+        }
+        $yend = $this->getY(); //store position at the end of the text
+
+        $this->SetY($ystart);
+        if ($this->i18n->isRTL()) {
+            $x = $this->getX();
+        } else {
             $x = 190 - $wlogo; //right align
-            $this->Image($logofile, $x, $this->GetY(), $wlogo, $hlogo);
-            $this->y += $hlogo + 3;
-            //if position after logo is < than position after text,
-            //we have to change y
-            if ($this->getY() < $yend) {
-                $this->setY($yend);
-            }
+        }
+        $this->Image($logofile, $x, $this->GetY(), $wlogo, $hlogo);
+        $this->y += $hlogo + 3;
+        //if position after logo is < than position after text,
+        //we have to change y
+        if ($this->getY() < $yend) {
+            $this->setY($yend);
         }
     }
 
@@ -437,7 +469,7 @@ class Pdf extends \TCPDF
      */
     protected function cut($str, $length)
     {
-        $length = $length -2; //keep a margin
+        $length = $length - 2; //keep a margin
         if ($this->GetStringWidth($str) > $length) {
             while ($this->GetStringWidth($str . '...') > $length) {
                 $str = mb_substr($str, 0, -1, 'UTF-8');
@@ -457,7 +489,7 @@ class Pdf extends \TCPDF
      */
     protected function stretchHead($str, $length)
     {
-        $this->SetFont(self::FONT, 'B', self::LIST_FONT);
+        $this->SetFont(self::FONT, 'B', self::FONT_SIZE);
         $stretch = 100;
         if ($this->GetStringWidth($str) > $length) {
             while ($this->GetStringWidth($str) > $length) {

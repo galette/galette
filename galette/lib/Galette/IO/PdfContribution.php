@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-07-07
  */
@@ -56,12 +55,11 @@ use Analog\Analog;
  * @since     Available since 0.7.5dev - 2013-07-07
  */
 
-class PdfContribution
+class PdfContribution extends Pdf
 {
     private $contrib;
     private $pdf;
     private $model;
-    private $filename;
     private $path;
 
     /**
@@ -114,7 +112,7 @@ class PdfContribution
             $main_group = $member_groups[0]->getName();
             $group_list = '<ul>';
             foreach ($member_groups as $group) {
-                $group_list .= '<li>' . $group->getName()  . '</li>';
+                $group_list .= '<li>' . $group->getName() . '</li>';
             }
             $group_list .= '</ul>';
         }
@@ -141,23 +139,23 @@ class PdfContribution
             )
         );
 
-        $this->filename = _T("contribution");
+        $this->filename = __("contribution");
         $this->filename .= '_' . $this->contrib->id . '_';
 
         if ($this->model->type === PdfModel::RECEIPT_MODEL) {
-            $this->filename .= _T("receipt");
+            $this->filename .= __("receipt");
         } else {
-            $this->filename .= _T("invoice");
+            $this->filename .= __("invoice");
         }
         $this->filename .= '.pdf';
 
-        $this->pdf = new Pdf($prefs, $this->model);
+        parent::__construct($prefs, $this->model);
 
-        $this->pdf->Open();
+        $this->Open();
 
-        $this->pdf->AddPage();
-        $this->pdf->PageHeader();
-        $this->pdf->PageBody();
+        $this->AddPage();
+        $this->PageHeader();
+        $this->PageBody();
     }
 
     /**
@@ -167,7 +165,7 @@ class PdfContribution
      */
     public function download()
     {
-        $this->pdf->Output($this->filename, 'D');
+        $this->Output($this->filename, 'D');
     }
 
     /**
@@ -181,7 +179,7 @@ class PdfContribution
     {
         if (file_exists($path) && is_dir($path) && is_writeable($path)) {
             $this->path = $path . '/' . $this->filename;
-            $this->pdf->Output($this->path, 'F');
+            $this->Output($this->path, 'F');
             return true;
         } else {
             Analog::log(

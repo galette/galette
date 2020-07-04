@@ -104,8 +104,13 @@ input[readonly] {
     cursor: default;
 }
 
-input[type=file] {
+input[type=file], input[type=color] {
     border: none;
+}
+
+input[type=color] {
+    padding: 0;
+    cursor: pointer;
 }
 
 pre, code, kbd, samp {
@@ -241,6 +246,10 @@ nav a{
 #menu li a:hover{
     background-color: #DDDDFF;
     text-decoration:underline;
+}
+.selected {
+    opacity: .35;
+    background-image: none;
 }
 #menu li.selected a{
     background-color: #DDDDFF;
@@ -609,9 +618,9 @@ footer a:hover {
     position: absolute;
     width: 16em;
     top: 0;
-    left: 0;
+    left: 15em;
     margin:0;
-    border-radius: 0 0 6px 0;
+    border-radius: 0 0 6px 6px;
 }
 
 /* == Buttons */
@@ -1033,13 +1042,6 @@ legend .tab-button {
     font-size: 1em;
 }
 
-.texts_legend .back > span {
-    font-size: .9em;
-    text-align: right;
-    display: block;
-    color:#666;
-}
-
 .help {
     background:url(images/help.png) 100% 50% no-repeat;
     padding-right: 25px;
@@ -1360,7 +1362,7 @@ table.listing th, li.listing {
     font-weight: normal;
     font-weight: bold;
     margin-top: .3em;
-    padding: .1em .2em;
+    padding: .1em .5em;
     vertical-align: middle;
 }
 
@@ -1868,7 +1870,7 @@ fieldset.large{
     margin:0 1% 1em 1%;
     clear:right;
 }
-fieldset ul{
+fieldset ul, ul.notype{
     list-style-type:none;
     margin:0;
     padding:0;
@@ -2089,7 +2091,6 @@ td.photo img{
     justify-content: space-around;
 }
 #details_menu li {
-    width: 10em;
     margin-bottom:.5em;
 }
 
@@ -2250,6 +2251,13 @@ label:hover > i, span.bline:hover > i {
     min-width: auto;
 }
 
+#listed_fields, #remaining_fields {
+    min-width: 39em;
+    width: 49%;
+    display: inline-block;
+    vertical-align: top;
+}
+
 #add_category{
     float:right;
 }
@@ -2350,8 +2358,49 @@ label:hover > i, span.bline:hover > i {
     vertical-align: top!important;
 }
 
+meter {
+    /* Reset the default appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    /*margin: 0 auto 1em;
+    width: 100%;
+    height: 0.5em;*/
+
+    /* Applicable only to Firefox */
+    background: none;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+meter::-webkit-meter-bar {
+    background: none;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Webkit based browsers */
+meter[value="1"]::-webkit-meter-optimum-value { background: red; }
+meter[value="2"]::-webkit-meter-optimum-value { background: orange; }
+meter[value="3"]::-webkit-meter-optimum-value { background: yellow; }
+meter[value="4"]::-webkit-meter-optimum-value { background: green; }
+
+/* Gecko based browsers */
+meter[value="1"]::-moz-meter-bar { background: red; }
+meter[value="2"]::-moz-meter-bar { background: orange; }
+meter[value="3"]::-moz-meter-bar { background: yellow}
+meter[value="4"]::-moz-meter-bar { background: green ; }
+
+.password-strength-text {
+    vertical-align: middle;
+    padding-left: .2em;
+}
+
 .selectize-control.single .selectize-input::after {
     right: 10px!important;
+}
+
+[class^="nav-button"] {
+    display: none;
 }
 
 /** Mobile devices */
@@ -2414,21 +2463,7 @@ label:hover > i, span.bline:hover > i {
     /* Button deco */
     [class^="nav-button"] {
         display: block;
-        z-index: 1;
-        height: 1.5rem;
-        width: 1.5rem;
-        background-color: transparent;
-        background-image: linear-gradient(to right, #333, #333),
-        linear-gradient(to right, #333, #333),
-        linear-gradient(to right, #333, #333);
-        background-position: center top, center, center bottom;
-        background-repeat: no-repeat;
-        background-size: 1.5rem .3rem;
-        padding: 0;
-        outline: 0;
-        border: 0;
         cursor: pointer;
-        -webkit-tap-highlight-color:rgba(0,0,0,0);
         float:left;
         margin-top: .2em;
         margin-left: .3em;

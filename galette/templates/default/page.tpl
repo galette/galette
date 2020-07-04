@@ -2,96 +2,6 @@
 <html lang="{$galette_lang}">
     <head>
         {include file='common_header.tpl'}
-{if $color_picker}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}farbtastic.js"></script>
-        <link rel="stylesheet" type="text/css" href="{base_url}/{$template_subdir}farbtastic.css"/>
-{/if}
-{* JQuery UI related *}
-{if $require_sorter or $require_dialog}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.mouse.min.js"></script>
-{/if}
-{if $require_sorter}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.sortable.min.js"></script>
-{/if}
-{if $require_calendar}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.datepicker.min.js"></script>
-    {if $galette_lang ne 'en'}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/i18n/jquery.ui.datepicker-{$galette_lang}.min.js"></script>
-    {/if}
-{/if}
-{if $require_tabs}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.tabs.min.js"></script>
-{/if}
-{if $require_dialog}
-        {* Drag component, only used for Dialog for the moment *}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.draggable.min.js"></script>
-        {* So the dialog could be aligned in the middle of the screen *}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.position.min.js"></script>
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.dialog.min.js"></script>
-{/if}
-{* /JQuery UI related *}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery.cookie.js"></script>
-{if $require_charts}
-        <link rel="stylesheet" type="text/css" href="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.css" />
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/jquery.jqplot.min.js"></script>
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.pieRenderer.min.js"></script>
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.barRenderer.min.js"></script>
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.pointLabels.min.js"></script>
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}jqplot-{$jquery_jqplot_version}/plugins/jqplot.categoryAxisRenderer.min.js"></script>
-{/if}
-{if $html_editor}
-    {if !isset($plugged_html_editor)}
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}markitup-{$jquery_markitup_version}/jquery.markitup.js"></script>
-        <script type="text/javascript" src="{base_url}/{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/set-{$galette_lang}.js"></script>
-        <link rel="stylesheet" type="text/css" href="{base_url}/{$jquery_dir}markitup-{$jquery_markitup_version}/skins/galette/style.css" />
-        <link rel="stylesheet" type="text/css" href="{base_url}/{$jquery_dir}markitup-{$jquery_markitup_version}/sets/html/style.css" />
-        <script language="javascript">
-            function toggleMailingEditor(id) {
-                if(!$('#mailing_html').attr('checked')){
-                    $('#mailing_html').attr('checked', true);
-                }
-
-                $('input#html_editor_active').attr('value', '1');
-                {* While it is not possible to deactivate markItUp, we remove completly the functionnality *}
-                $('#toggle_editor').remove();
-                $('#mailing_corps').markItUp(galetteSettings);
-            }
-        {if $html_editor_active eq 1}
-            $(document).ready(function(){
-                {* While it is not possible to deactivate markItUp, we remove completly the functionnality *}
-                $('#toggle_editor').remove();
-                $('#mailing_corps').markItUp(galetteSettings);
-            });
-        {/if}
-        </script>
-    {/if}
-{/if}
-{if $require_tree}
-    <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery.jstree.js"></script>
-{/if}
-{if $autocomplete}
-    <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.menu.min.js"></script>
-    <script type="text/javascript" src="{base_url}/{$jquery_dir}jquery-ui-{$jquery_ui_version}/jquery.ui.autocomplete.min.js"></script>
-    <script type="text/javascript">
-        $(function() {
-            $('#ville_adh, #lieu_naissance').autocomplete({
-                source: function (request, response) {
-                    $.post('{path_for name="suggestTown"}', request, response);
-                },
-                minLength: 2
-            });
-            $('#pays_adh').autocomplete({
-                source: function (request, response) {
-                    $.post('{path_for name="suggestCountry"}', request, response);
-                },
-                minLength: 2
-            });
-        });
-    </script>
-{/if}
-{if $require_mass}
-    <script type="text/javascript" src="{base_url}/{$scripts_dir}mass_changes.js"></script>
-{/if}
 {* If some additionnals headers should be added from plugins, we load the relevant template file
 We have to use a template file, so Smarty will do its work (like replacing variables). *}
 {if $headers|@count != 0}
@@ -109,13 +19,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <p>{_T string="Galette is configured to display errors. This must be avoided in production environments."}</p>
         </div>
 {/if}
-        {* IE8 and above are no longer supported *}
-        <!--[if lte IE 8]>
-        <div id="oldie">
-            <p>{_T string="Your browser version is way too old and no longer supported in Galette for a while."}</p>
-            <p>{_T string="Please update your browser or use an alternative one, like Mozilla Firefox (http://mozilla.org)."}</p>
-        </div>
-        <![endif]-->
     <div id="menu">
         <div id="logo">
             <img src="{path_for name="logo"}" width="{$logo->getOptimalWidth()}" height="{$logo->getOptimalHeight()}" alt="[ Galette ]" />
@@ -144,8 +47,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             <li{if $cur_route eq "contributions" and $cur_subroute eq "contributions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => "contributions"]}" title="{_T string="View and filter contributions"}">{_T string="List of contributions"}</a></li>
             <li{if $cur_route eq "contributions" and $cur_subroute eq "transactions"} class="selected"{/if}><a href="{path_for name="contributions" data=["type" => "transactions"]}" title="{_T string="View and filter transactions"}">{_T string="List of transactions"}</a></li>
             <li{if $cur_route eq "editmember"} class="selected"{/if}><a href="{path_for name="editmember" data=["action" => "add"]}" title="{_T string="Add new member in database"}">{_T string="Add a member"}</a></li>
-            <li{if $cur_route eq "contribution" and $cur_subroute eq "fee"} class="selected"{/if}><a href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}" title="{_T string="Add new membership fee in database"}">{_T string="Add a membership fee"}</a></li>
-            <li{if $cur_route eq "contribution" and $cur_subroute eq "donation"} class="selected"{/if}><a href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}" title="{_T string="Add new donation in database"}">{_T string="Add a donation"}</a></li>
+            <li{if $cur_route eq "addContribution" and $cur_subroute eq "fee"} class="selected"{/if}><a href="{path_for name="addContribution" data=["type" => "fee"]}" title="{_T string="Add new membership fee in database"}">{_T string="Add a membership fee"}</a></li>
+            <li{if $cur_route eq "addContribution" and $cur_subroute eq "donation"} class="selected"{/if}><a href="{path_for name="addContribution" data=["type" => "donation"]}" title="{_T string="Add new donation in database"}">{_T string="Add a donation"}</a></li>
             <li{if $cur_route eq "transaction"} class="selected"{/if}><a href="{path_for name="transaction" data=["action" => "add"]}" title="{_T string="Add new transaction in database"}">{_T string="Add a transaction"}</a></li>
             <li{if $cur_route eq "reminders"} class="selected"{/if}><a href="{path_for name="reminders"}" title="{_T string="Send reminders to late members"}">{_T string="Reminders"}</a></li>
             <li{if $cur_route eq "history"} class="selected"{/if}><a href="{path_for name="history"}" title="{_T string="View application's logs"}">{_T string="Logs"}</a></li>
@@ -176,18 +79,21 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         <ul>
             <li{if $cur_route eq "preferences"} class="selected"{/if}><a href="{path_for name="preferences"}" title="{_T string="Set applications preferences (address, website, member's cards configuration, ...)"}">{_T string="Settings"}</a></li>
             <li{if $cur_route eq "plugins"} class="selected"{/if}><a href="{path_for name="plugins"}" title="{_T string="Informations about available plugins"}">{_T string="Plugins"}</a></li>
+            <li{if $cur_route eq "configureListFields"} class="selected"{/if}><a href="{path_for name="configureListFields" data=["table" => "adherents"]}" title="{_T string="Customize lists fields and order"}">{_T string="Core lists"}</a></li>
             <li{if $cur_route eq "configureCoreFields"} class="selected"{/if}><a href="{path_for name="configureCoreFields"}" title="{_T string="Customize fields order, set which are required, and for who they're visibles"}">{_T string="Core fields"}</a></li>
-            <li{if $cur_route eq "configureDynamicFields" or $cur_route eq 'editDynamicField'} class="selected"{/if}><a href="{path_for name="configureDynamicFields"}" title="{_T string="Manage additional fields for various forms"}">{_T string="Dynamic fields"}</a></li>
+            <li{if $cur_route eq "configureDynamicFields" or $cur_route eq 'editDynamicField' or $cur_route eq 'addDynamicField'} class="selected"{/if}><a href="{path_for name="configureDynamicFields"}" title="{_T string="Manage additional fields for various forms"}">{_T string="Dynamic fields"}</a></li>
             <li{if $cur_route eq "dynamicTranslations"} class="selected"{/if}><a href="{path_for name="dynamicTranslations"}" title="{_T string="Translate additionnals fields labels"}">{_T string="Translate labels"}</a></li>
             <li{if $cur_route eq "entitleds" and $cur_subroute eq "status"} class="selected"{/if}><a href="{path_for name="entitleds" data=["class" => "status"]}" title="{_T string="Manage statuses"}">{_T string="Manage statuses"}</a></li>
-            <li{if $cur_route eq "entitleds" and $cur_subroute eq "contributions-types"} class="selected"{/if}><a href="{path_for name="entitleds" data=["class" => "contributions-types"]}" title="{_T string="Manage contributions types"}">{_T string="Contributions types"}</a></li>
+            <li{if ($cur_route eq "entitleds" or $cur_route eq "editEntitled") and $cur_subroute eq "contributions-types"} class="selected"{/if}><a href="{path_for name="entitleds" data=["class" => "contributions-types"]}" title="{_T string="Manage contributions types"}">{_T string="Contributions types"}</a></li>
             <li{if $cur_route eq "texts"} class="selected"{/if}><a href="{path_for name="texts"}" title="{_T string="Manage emails texts and subjects"}">{_T string="Emails content"}</a></li>
             <li{if $cur_route eq "titles"} class="selected"{/if}><a href="{path_for name="titles"}" title="{_T string="Manage titles"}">{_T string="Titles"}</a></li>
             <li{if $cur_route eq "pdfModels"} class="selected"{/if}><a href="{path_for name="pdfModels"}" title="{_T string="Manage PDF models"}">{_T string="PDF models"}</a></li>
             <li{if $cur_route eq "paymentTypes"} class="selected"{/if}><a href="{path_for name="paymentTypes"}" title="{_T string="Manage payment types"}">{_T string="Payment types"}</a></li>
             <li><a href="{path_for name="emptyAdhesionForm"}" title="{_T string="Download empty adhesion form"}">{_T string="Empty adhesion form"}</a></li>
     {if $login->isSuperAdmin()}
+        {if $GALETTE_MODE neq 'DEMO'}
             <li{if $cur_route eq "fakeData"} class="selected"{/if}><a href="{path_for name="fakeData"}">{_T string="Generate fake data"}</a></li>
+        {/if}
             <li{if $cur_route eq "adminTools"} class="selected"{/if}><a href="{path_for name="adminTools"}" title="{_T string="Various administrative tools"}">{_T string="Admin tools"}</a></li>
     {/if}
         </ul>
@@ -216,8 +122,20 @@ We have to use a template file, so Smarty will do its work (like replacing varia
     </div>
     <div id="content"{if $contentcls} class="{$contentcls}"{/if}>
         <h1 id="titre">
-            <a href="#galette_body" class="nav-button-open" aria-label="open navigation"></a>
-            <a href="#" class="nav-button-close" aria-label="close navigation"></a>
+            <a href="#galette_body" class="nav-button-open" aria-label="open navigation">
+                <span class="menu-icon" aria-hidden="true">
+                    <svg viewBox="0 0 18 15" width="18px" height="15px">
+                        <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+                    </svg>
+                </span>
+            </a>
+            <a href="#" class="nav-button-close" aria-label="close navigation">
+                <span class="menu-icon" aria-hidden="true">
+                    <svg viewBox="0 0 18 15" width="18px" height="15px">
+                        <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+                    </svg>
+                </span>
+            </a>
             {$page_title}
             {if $cur_route neq 'mailing' and $existing_mailing eq true}
                 <a
@@ -238,21 +156,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {block name="content"}{_T string="Page content"}{/block}
     </div>
     {include file="footer.tpl"}
+    {include file="common_scripts.tpl"}
     {block name="javascripts"}{/block}
-        <script type="text/javascript">
-            $(function(){
-    {if $require_calendar}
-                $.datepicker.setDefaults($.datepicker.regional['{$galette_lang}']);
-        {if $galette_lang eq 'en'}
-                $.datepicker.setDefaults({
-                    dateFormat: 'yy-mm-dd'
-                });
-        {/if}
-    {/if}
-    {if isset($renew_telemetry)}
-        {include file="telemetry.tpl" part="jsdialog"}
-    {/if}
-            });
-        </script>
 </body>
 </html>

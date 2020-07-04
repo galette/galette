@@ -168,7 +168,7 @@ class SavedSearch
             $this->errors = array_merge($this->errors, $mandatory);
         }
 
-        if ($this->id === null &&! $this->login->isSuperAdmin()) {
+        if ($this->id === null && !$this->login->isSuperAdmin()) {
             //set author for new searches
             $this->author_id = $this->login->id;
         }
@@ -208,7 +208,7 @@ class SavedSearch
                 ->limit(1);
 
             $results = $this->zdb->execute($select);
-            if ($results->count() !==  0) {
+            if ($results->count() !== 0) {
                 $result = $results->current();
                 //search already exists
                 Analog::log(
@@ -279,7 +279,8 @@ class SavedSearch
     {
         $forbidden = [];
         $virtuals = ['sparameters'];
-        if (in_array($name, $virtuals)
+        if (
+            in_array($name, $virtuals)
             || !in_array($name, $forbidden)
             && isset($this->$name)
         ) {

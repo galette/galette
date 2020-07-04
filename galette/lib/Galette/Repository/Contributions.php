@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2010-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2010-03-11
  */
@@ -38,7 +37,7 @@
 namespace Galette\Repository;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\History;
@@ -69,7 +68,7 @@ class Contributions
 
     private $sum;
 
-   /**
+    /**
      * Default constructor
      *
      * @param Db                $zdb     Database
@@ -151,8 +150,8 @@ class Contributions
     private function buildSelect($fields, $count = false)
     {
         try {
-            $fieldsList = ( $fields != null )
-                            ? (( !is_array($fields) || count($fields) < 1 ) ? (array)'*'
+            $fieldsList = ($fields != null)
+                            ? ((!is_array($fields) || count($fields) < 1) ? (array)'*'
                             : implode(', ', $fields)) : (array)'*';
 
             $select = $this->zdb->select(self::TABLE, 'a');
@@ -435,7 +434,7 @@ class Contributions
                     $c = new Contribution($this->zdb, $this->login, $contribution);
                     $res = $c->remove(false);
                     if ($res === false) {
-                        throw new \Exception;
+                        throw new \Exception();
                     }
                 }
                 if ($transaction) {

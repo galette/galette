@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-27
  */
@@ -38,8 +37,8 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Adapter\Adapter;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\Adapter\Adapter;
 use Galette\Core\Db;
 
 /**
@@ -134,7 +133,7 @@ abstract class Entitled
             }
         } catch (\Exception $e) {
             Analog::log(
-                'Cannot load ' . $this->getType()  . ' from id `' . $id . '` | ' .
+                'Cannot load ' . $this->getType() . ' from id `' . $id . '` | ' .
                 $e->getMessage(),
                 Analog::WARNING
             );
@@ -206,14 +205,14 @@ abstract class Entitled
             }
 
             Analog::log(
-                'Defaults (' . $this->getType()  .
+                'Defaults (' . $this->getType() .
                 ') were successfully stored into database.',
                 Analog::INFO
             );
             return true;
         } catch (\Exception $e) {
             Analog::log(
-                'Unable to initialize defaults (' . $this->getType()  . ').' .
+                'Unable to initialize defaults (' . $this->getType() . ').' .
                 $e->getMessage(),
                 Analog::WARNING
             );
@@ -236,7 +235,8 @@ abstract class Entitled
         try {
             $select = $this->zdb->select($this->table);
             $fields = array($this->fpk, $this->flabel);
-            if ($this->order_field !== false
+            if (
+                $this->order_field !== false
                 && $this->order_field !== $this->fpk
                 && $this->order_field !== $this->flabel
             ) {
@@ -292,7 +292,7 @@ abstract class Entitled
 
             if ($results->count() == 0) {
                 Analog::log(
-                    'No entries (' . $this->getType()  . ') defined in database.',
+                    'No entries (' . $this->getType() . ') defined in database.',
                     Analog::INFO
                 );
             } else {
@@ -398,7 +398,7 @@ abstract class Entitled
             }
         } catch (\Exception $e) {
             Analog::log(
-                'Unable to retrieve ' . $this->getType()  . ' from label `' .
+                'Unable to retrieve ' . $this->getType() . ' from label `' .
                 $label . '` | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -440,9 +440,9 @@ abstract class Entitled
 
             $ret = $this->zdb->execute($insert);
 
-            if ($ret->count() >  0) {
+            if ($ret->count() > 0) {
                 Analog::log(
-                    'New ' . $this->getType() .' `' . $label .
+                    'New ' . $this->getType() . ' `' . $label .
                     '` added successfully.',
                     Analog::INFO
                 );
@@ -457,7 +457,7 @@ abstract class Entitled
 
                 $this->addTranslation($label);
             } else {
-                throw new \Exception('New ' . $this->getType() .' not added.');
+                throw new \Exception('New ' . $this->getType() . ' not added.');
             }
             $this->zdb->connection->commit();
             return true;
@@ -520,7 +520,7 @@ abstract class Entitled
         } catch (\Exception $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to update ' . $this->getType() . ' #' . $id  . ' | ' .
+                'Unable to update ' . $this->getType() . ' #' . $id . ' | ' .
                 $e->getMessage(),
                 Analog::ERROR
             );
@@ -566,7 +566,7 @@ abstract class Entitled
         } catch (\Exception $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
-                'Unable to delete ' . $this->getType()  . ' ' . $id .
+                'Unable to delete ' . $this->getType() . ' ' . $id .
                 ' | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -597,7 +597,7 @@ abstract class Entitled
             }
         } catch (\Exception $e) {
             Analog::log(
-                'Unable to check if ' . $this->getType  . ' `' . $id .
+                'Unable to check if ' . $this->getType . ' `' . $id .
                 '` is used. | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -631,7 +631,8 @@ abstract class Entitled
     {
         $forbidden = array();
         $virtuals = array('extension', 'libelle');
-        if (in_array($name, $virtuals)
+        if (
+            in_array($name, $virtuals)
             || !in_array($name, $forbidden)
             && isset($this->$name)
         ) {
@@ -649,5 +650,15 @@ abstract class Entitled
         } else {
             return false;
         }
+    }
+
+    /**
+     * Get errors
+     *
+     * @return array
+     */
+    public function getErrors(): array
+    {
+        return $this->errors;
     }
 }

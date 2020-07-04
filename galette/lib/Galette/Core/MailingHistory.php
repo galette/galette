@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2011-2018 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-08-27
  */
@@ -42,7 +41,7 @@ use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Entity\Adherent;
 use Galette\Filters\MailingsList;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 
 /**
  * Mailing features
@@ -78,7 +77,7 @@ class MailingHistory extends History
 
     private $senders;
 
-   /**
+    /**
      * Default constructor
      *
      * @param Db          $zdb     Database
@@ -436,14 +435,11 @@ class MailingHistory extends History
             }
 
             $sender = ($this->sender === 0) ?
-                new Expression('NULL') :
-                $this->sender;
+                new Expression('NULL') : $this->sender;
             $sender_name = ($this->sender_name === null) ?
-                new Expression('NULL') :
-                $this->sender_name;
+                new Expression('NULL') : $this->sender_name;
             $sender_address = ($this->sender_address === null) ?
-                new Expression('NULL') :
-                $this->sender_address;
+                new Expression('NULL') : $this->sender_address;
 
             $values = array(
                 'mailing_sender'            => $sender,
@@ -494,11 +490,9 @@ class MailingHistory extends History
                 $sender = $this->sender;
             }
             $sender_name = ($this->sender_name === null) ?
-                new Expression('NULL') :
-                $this->sender_name;
+                new Expression('NULL') : $this->sender_name;
             $sender_address = ($this->sender_address === null) ?
-                new Expression('NULL') :
-                $this->sender_address;
+                new Expression('NULL') : $this->sender_address;
 
             $values = array(
                 'mailing_sender'            => $sender,

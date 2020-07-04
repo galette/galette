@@ -1,9 +1,6 @@
 {extends file="public_page.tpl"}
 {block name="content"}
         <form action="{path_for name="do-password-recovery"}" method="post" enctype="multipart/form-data">
-{*if $password_updated}
-                <div id="infobox">{_T string="Your password has been changed. Please click on the 'home' button to go to the login page."}</div>
-{/if*}
                 <table>
                     <tr>
                         <th><label for="mdp_adh">{_T string="New password:"}</label></th>

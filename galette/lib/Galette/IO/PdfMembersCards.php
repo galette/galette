@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8.2dev - 2014-11-30
  */
@@ -90,7 +89,8 @@ class PdfMembersCards extends Pdf
     public function __construct(Preferences $prefs)
     {
         parent::__construct($prefs);
-        $this->filename = __('Cards') . '.pdf';
+        $this->setRTL(false);
+        $this->filename = __('cards') . '.pdf';
         $this->init();
     }
     /**
@@ -163,21 +163,21 @@ class PdfMembersCards extends Pdf
         $this->logofile = $print_logo->getPath();
 
         // Set logo size to max width 30 mm or max height 25 mm
-        $ratio = $print_logo->getWidth()/$print_logo->getHeight();
+        $ratio = $print_logo->getWidth() / $print_logo->getHeight();
         if ($ratio < 1) {
             if ($print_logo->getHeight() > 16) {
                 $this->hlogo = 20;
             } else {
                 $this->hlogo = $print_logo->getHeight();
             }
-            $this->wlogo = round($this->hlogo*$ratio);
+            $this->wlogo = round($this->hlogo * $ratio);
         } else {
             if ($print_logo->getWidth() > 16) {
                 $this->wlogo = 30;
             } else {
                 $this->wlogo = $print_logo->getWidth();
             }
-            $this->hlogo = round($this->wlogo/$ratio);
+            $this->hlogo = round($this->wlogo / $ratio);
         }
     }
 
@@ -190,19 +190,19 @@ class PdfMembersCards extends Pdf
      */
     public function drawCards($members)
     {
-        $nb_card=0;
+        $nb_card = 0;
         foreach ($members as $member) {
             // Detect page breaks
-            if ($nb_card % ($this->nbcol * $this->nbrow)==0) {
+            if ($nb_card % ($this->nbcol * $this->nbrow) == 0) {
                 $this->AddPage();
             }
 
             // Compute card position on page
             $col = $nb_card % $this->nbcol;
-            $row = ($nb_card/$this->nbcol) % $this->nbrow;
+            $row = ($nb_card / $this->nbcol) % $this->nbrow;
             // Set origin
-            $x0 = $this->xorigin + $col*(round($this->wi)+round($this->hspacing));
-            $y0 = $this->yorigin + $row*(round($this->he)+round($this->vspacing));
+            $x0 = $this->xorigin + $col * (round($this->wi) + round($this->hspacing));
+            $y0 = $this->yorigin + $row * (round($this->he) + round($this->vspacing));
             // Logo X position
             $xl = round($x0 + $this->wi - $this->wlogo);
             // Get data
@@ -265,14 +265,21 @@ class PdfMembersCards extends Pdf
             // Color=#8C8C8C: Shadow of the year
             $this->SetTextColor(140);
             $this->SetFontSize($this->year_font_size);
+
+            $an_cot = $this->an_cot;
+            if ($an_cot === 'DEADLINE') {
+                //get current member deadline
+                $an_cot = $member->due_date;
+            }
+
             $xan_cot = $x0 + $this->wi - $this->GetStringWidth(
-                $this->an_cot,
+                $an_cot,
                 self::FONT,
                 'B',
                 $this->year_font_size
             ) - 0.2;
             $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);
-            $this->writeHTML('<strong>' . $this->an_cot . '</strong>', false, 0);
+            $this->writeHTML('<strong>' . $an_cot . '</strong>', false, 0);
 
             // Colored Text (Big label, id, year)
             $this->SetTextColor($fcol['R'], $fcol['G'], $fcol['B']);
@@ -281,11 +288,11 @@ class PdfMembersCards extends Pdf
 
             $xid = $x0 + $this->wi - $this->GetStringWidth($member->id, self::FONT, 'B', 8) - 0.2;
             $this->SetXY($xid, $y0 + 28);
-            $this->writeHTML('<strong>' . $member->id  . '</strong>', false, 0);
+            $this->writeHTML('<strong>' . $member->id . '</strong>', false, 0);
             $this->SetFontSize($this->year_font_size);
             $xan_cot = $xan_cot - 0.3;
             $this->SetXY($xan_cot, $y0 + $this->hlogo - 0.3);
-            $this->writeHTML('<strong>' . $this->an_cot . '</strong>', false, 0);
+            $this->writeHTML('<strong>' . $an_cot . '</strong>', false, 0);
 
             // Abbrev: Adapt font size to text length
             $this->fixSize(

@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     0.8.2dev 2014-11-11
  */
@@ -200,7 +199,7 @@ $app->group('/ajax', function () use ($authenticate) {
                 $this->plugins
             );
             $body = $response->getBody();
-            $body->write('<pre>' . json_encode($telemetry->getTelemetryInfos(), JSON_PRETTY_PRINT)  . '</pre>');
+            $body->write('<pre>' . json_encode($telemetry->getTelemetryInfos(), JSON_PRETTY_PRINT) . '</pre>');
             return $response;
         }
     )->setName('telemetryInfos')->add($authenticate);
@@ -215,7 +214,7 @@ $app->group('/ajax', function () use ($authenticate) {
             );
             try {
                 $result = $telemetry->send();
-                $message = _T('Telemetry informations has been sent. Thank you!');
+                $message = _T('Telemetry information has been sent. Thank you!');
                 $result = [
                     'success'   => true,
                     'message'   => $message
@@ -244,15 +243,11 @@ $app->group('/ajax', function () use ($authenticate) {
         function ($request, $response) {
             $post = $request->getParsedBody();
 
-            // contribution types
-            $ct = new ContributionsTypes($this->zdb);
-            $contributions_types = $ct->getList(true);
-
             $contrib = new Contribution(
                 $this->zdb,
                 $this->login,
                 [
-                    'type'  => array_keys($contributions_types)[$post['fee_id']],
+                    'type'  => (int)$post['fee_id'],
                     'adh'   => (int)$post['member_id']
                 ]
             );
@@ -309,4 +304,36 @@ $app->group('/ajax', function () use ($authenticate) {
             ]);
         }
     )->setName('contributionMembers')->add($authenticate);
+
+    $this->post(
+        '/password/strength',
+        function ($request, $response) {
+            //post params may be passed from security tab test password
+            $post = $request->getParsedBody();
+
+            if (isset($post['pref_password_length'])) {
+                $this->preferences->pref_password_length = $post['pref_password_length'];
+            }
+
+            if (isset($post['pref_password_strength'])) {
+                $this->preferences->pref_password_strength = $post['pref_password_strength'];
+            }
+
+            if (isset($post['pref_password_blacklist'])) {
+                $this->preferences->pref_password_blacklist = $post['pref_password_blacklist'];
+            }
+
+            $pass = new \Galette\Util\Password($this->preferences);
+            $valid = $pass->isValid($post['value']);
+
+            return $response->withJson(
+                [
+                    'valid'     => $valid,
+                    'score'     => $pass->getStrenght(),
+                    'errors'    => $pass->getErrors(),
+                    'warnings'  => ($valid ? $pass->getStrenghtErrors() : null)
+                ]
+            );
+        }
+    )->setName('checkPassword');
 });

@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8.2dev - 2014-12-01
  */
@@ -70,9 +69,11 @@ class PdfMembersLabels extends Pdf
     public function __construct(Preferences $prefs)
     {
         parent::__construct($prefs);
-        $this->filename = _T('labels_print_filename') . '.pdf';
+        $this->setRTL(false);
+        $this->filename = __('labels_print_filename') . '.pdf';
         $this->init();
     }
+
     /**
      * Initialize PDF
      *
@@ -120,7 +121,7 @@ class PdfMembersLabels extends Pdf
         // Label heigth
         $this->lh = round($this->preferences->pref_etiq_vsize);
         // Line heigth
-        $this->line_h=round($this->lh/5);
+        $this->line_h = round($this->lh / 5);
     }
 
     /**
@@ -132,7 +133,7 @@ class PdfMembersLabels extends Pdf
      */
     public function drawLabels($members)
     {
-        $nb_etiq=0;
+        $nb_etiq = 0;
         foreach ($members as $member) {
             // Detect page breaks
             $colsrows = $this->preferences->pref_etiq_cols
@@ -148,11 +149,11 @@ class PdfMembersLabels extends Pdf
             $row = ($nb_etiq / $this->preferences->pref_etiq_cols)
                 % $this->preferences->pref_etiq_rows;
             // Set label origin
-            $x = $this->xorigin + $col*(
+            $x = $this->xorigin + $col * (
                 round($this->preferences->pref_etiq_hsize) +
                 round($this->preferences->pref_etiq_hspace)
             );
-            $y = $this->yorigin + $row*(
+            $y = $this->yorigin + $row * (
                 round($this->preferences->pref_etiq_vsize) +
                 round($this->preferences->pref_etiq_vspace)
             );
@@ -168,8 +169,7 @@ class PdfMembersLabels extends Pdf
             //calculte font size to display address and address continuation
             $max_text_size = $this->preferences->pref_etiq_hsize;
             $text = mb_strlen($member->address) > mb_strlen($member->address_continuation) ?
-                $member->address :
-                $member->address_continuation;
+                $member->address : $member->address_continuation;
             $this->fixSize(
                 $text,
                 $max_text_size,
@@ -178,7 +178,7 @@ class PdfMembersLabels extends Pdf
 
             $this->Cell($this->lw, $this->line_h, $member->address, 0, 0, 'L', 0);
             // Print second line of address
-            $this->SetXY($x, $y + $this->line_h*2);
+            $this->SetXY($x, $y + $this->line_h * 2);
             $this->Cell(
                 $this->lw,
                 $this->line_h,
@@ -198,7 +198,7 @@ class PdfMembersLabels extends Pdf
                 'B'
             );
 
-            $this->SetXY($x, $y + $this->line_h*3);
+            $this->SetXY($x, $y + $this->line_h * 3);
             $this->Cell(
                 $this->lw,
                 $this->line_h,
@@ -210,7 +210,7 @@ class PdfMembersLabels extends Pdf
             );
             // Print country
             $this->SetFont(self::FONT, 'I', $this->preferences->pref_etiq_corps);
-            $this->SetXY($x, $y + $this->line_h*4);
+            $this->SetXY($x, $y + $this->line_h * 4);
             $this->Cell($this->lw, $this->line_h, $member->country, 0, 0, 'R', 0);
             $nb_etiq++;
         }

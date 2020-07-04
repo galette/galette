@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-07
  */
@@ -141,7 +140,8 @@ class Mailing extends GaletteMail
     private function loadAttachments()
     {
         $dir = '';
-        if (isset($this->tmp_path)
+        if (
+            isset($this->tmp_path)
             && trim($this->tmp_path) !== ''
         ) {
             $dir = $this->tmp_path;
@@ -244,7 +244,7 @@ class Mailing extends GaletteMail
     }
 
     /**
-     * Apply final header to mail and send it :-)
+     * Apply final header to email and send it :-)
      *
      * @return GaletteMail::MAIL_ERROR|GaletteMail::MAIL_SENT
      */
@@ -334,13 +334,14 @@ class Mailing extends GaletteMail
      */
     public function moveAttachments($id)
     {
-        if (isset($this->tmp_path)
+        if (
+            isset($this->tmp_path)
             && trim($this->tmp_path) !== ''
             && count($this->attachments) > 0
         ) {
             foreach ($this->attachments as &$attachment) {
                 $old_path = $attachment->getDestDir() . $attachment->getFileName();
-                $new_path = GALETTE_ATTACHMENTS_PATH . $this->id .'/' .
+                $new_path = GALETTE_ATTACHMENTS_PATH . $this->id . '/' .
                     $attachment->getFileName();
                 if (!file_exists(GALETTE_ATTACHMENTS_PATH . $this->id)) {
                     mkdir(GALETTE_ATTACHMENTS_PATH . $this->id);
@@ -365,7 +366,8 @@ class Mailing extends GaletteMail
     public function removeAttachment($name)
     {
         $to_remove = null;
-        if (isset($this->tmp_path)
+        if (
+            isset($this->tmp_path)
             && trim($this->tmp_path) !== ''
             && file_exists($this->tmp_path)
         ) {
@@ -419,7 +421,8 @@ class Mailing extends GaletteMail
     public function removeAttachments($temp = false)
     {
         $to_remove = null;
-        if (isset($this->tmp_path)
+        if (
+            isset($this->tmp_path)
             && trim($this->tmp_path) !== ''
             && file_exists($this->tmp_path)
         ) {
@@ -578,11 +581,12 @@ class Mailing extends GaletteMail
                 }
                 break;
             case 'current_step':
-                if (is_int($value)
-                    && (   $value == self::STEP_START
+                if (
+                    is_int($value)
+                    && ($value == self::STEP_START
                     || $value == self::STEP_PREVIEW
                     || $value == self::STEP_SEND
-                    || $value == self::STEP_SENT )
+                    || $value == self::STEP_SENT)
                 ) {
                     $this->current_step = (int)$value;
                 } else {

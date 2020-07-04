@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     0.7.2.8 - 2012-12-18
  */
@@ -45,7 +44,9 @@ $members_fields = array(
         'required' => false,
         'visible'  => FieldsConfig::NOBODY,
         'position' => 0,
-        'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
+        'category' => FieldsCategories::ADH_CATEGORY_IDENTITY,
+        'list_visible'  => true,
+        'list_position' => 0
     ),
     'id_statut' => array(
         'label'    => _T("Status:"),
@@ -53,12 +54,14 @@ $members_fields = array(
         'required' => false,
         'visible'  => FieldsConfig::STAFF,
         'position' => 27,
-        'category' => FieldsCategories::ADH_CATEGORY_GALETTE
+        'category' => FieldsCategories::ADH_CATEGORY_GALETTE,
+        'list_visible'  => true,
+        'list_position' => 3
     ),
     'nom_adh' => array(
         'label'    => _T("Name:"),
         'propname' => 'name',
-        'required' => true ,
+        'required' => true,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 3,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
@@ -74,7 +77,7 @@ $members_fields = array(
     'societe_adh' => array(
         'label'    => _T("Company:"),
         'propname' => 'company_name',
-        'required' => false ,
+        'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 5,
         'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
@@ -85,7 +88,9 @@ $members_fields = array(
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 6,
-        'category' => FieldsCategories::ADH_CATEGORY_IDENTITY
+        'category' => FieldsCategories::ADH_CATEGORY_IDENTITY,
+        'list_visible'  => true,
+        'list_position' => 2
     ),
     'titre_adh' => array(
         'label'    => _T("Title:"),
@@ -209,7 +214,7 @@ $members_fields = array(
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
     ),
     'info_adh' => array(
-        'label'    => _T("Other informations (admin):"),
+        'label'    => _T("Other information (admin):"),
         'propname' => 'others_infos_admin',
         'required' => false,
         'visible'  => FieldsConfig::STAFF,
@@ -217,7 +222,7 @@ $members_fields = array(
         'category' => FieldsCategories::ADH_CATEGORY_GALETTE
     ),
     'info_public_adh' => array(
-        'label'    => _T("Other informations:"),
+        'label'    => _T("Other information:"),
         'propname' => 'others_infos',
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
@@ -262,7 +267,9 @@ $members_fields = array(
         'required' => false,
         'visible'  => FieldsConfig::USER_WRITE,
         'position' => 35,
-        'category' => FieldsCategories::ADH_CATEGORY_GALETTE
+        'category' => FieldsCategories::ADH_CATEGORY_GALETTE,
+        'list_visible'  => true,
+        'list_position' => 5
     ),
     'activite_adh' => array(
         'label'    => _T("Account:"),
@@ -343,5 +350,25 @@ $members_fields = array(
         'visible'  => FieldsConfig::NOBODY,
         'position' => 25,
         'category' => FieldsCategories::ADH_CATEGORY_CONTACT
+    ),
+    'list_adh_name' => array(
+        'label'    => _T("Name"),
+        'propname' => 'sname',
+        'required' => false,
+        'visible'  => FieldsConfig::NOBODY,
+        'position' => -1, //not a db field
+        'category' => FieldsCategories::ADH_CATEGORY_GALETTE,
+        'list_visible'  => true,
+        'list_position' => 1
+    ),
+    'list_adh_contribstatus' => array(
+        'label'    => _T("State of dues"),
+        'propname' => 'contribstatus',
+        'required' => false,
+        'visible'  => FieldsConfig::NOBODY,
+        'position' => -1, //not a db field
+        'category' => FieldsCategories::ADH_CATEGORY_GALETTE,
+        'list_visible'  => true,
+        'list_position' => 4
     )
 );

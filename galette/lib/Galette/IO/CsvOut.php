@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Disponible depuis la Release 0.7alpha - 2009-02-09
  */
@@ -38,7 +37,7 @@
 namespace Galette\IO;
 
 use Analog\Analog;
-use Zend\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\Adapter;
 
 /**
  * CSV exports
@@ -123,7 +122,7 @@ class CsvOut extends Csv
                 ) . $this->quote;
             }
             $this->result .= implode($this->separator, $fields) . self::NEWLINE;
-        } elseif ($titles && is_array($titles) && count($titles)>1) {
+        } elseif ($titles && is_array($titles) && count($titles) > 1) {
             foreach ($titles as $field) {
                 $field = str_replace(
                     array(':', '&nbsp;'),
@@ -173,7 +172,8 @@ class CsvOut extends Csv
      */
     private function write($last = false)
     {
-        if ($last && $this->file
+        if (
+            $last && $this->file
             || !$last && $this->file
             && ($this->current_line % self::BUFLINES) == 0
         ) {
@@ -249,14 +249,14 @@ class CsvOut extends Csv
                 Adapter::QUERY_MODE_EXECUTE
             );
 
-            $filename=self::DEFAULT_DIRECTORY . $export['filename'];
+            $filename = self::DEFAULT_DIRECTORY . $export['filename'];
 
             $fp = fopen($filename, 'w');
             if ($fp) {
-                $separator = ( $export->separator )
+                $separator = ($export->separator)
                     ? $export->separator
                     : self::DEFAULT_SEPARATOR;
-                $quote = ( $export->quote ) ? $export->quote : self::DEFAULT_QUOTE;
+                $quote = ($export->quote) ? $export->quote : self::DEFAULT_QUOTE;
                 if ($export->headers->none) {
                     //No title
                     $title = false;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * XHProf Profiling for Galette
  *
@@ -33,7 +34,6 @@
  * @package  XHProf
  * @author   Johan Cwiklinski <johan@x-tnd.be>
  * @license  MIT http://en.wikipedia.org/wiki/MIT_License
- * @version  $SVN:Id: xhprof.class.php 18564 2012-05-29 15:21:28Z moyo $
  * @link     http://codefury.net - http://galette.tuxfamily.org
  * @since    0.7.2dev 2012-1008
  */
@@ -108,7 +108,8 @@ class XHProf
      */
     public function start($msg = '')
     {
-        if (!self::$run
+        if (
+            !self::$run
             && function_exists('xhprof_enable')
         ) {
             xhprof_enable(
@@ -135,15 +136,15 @@ class XHProf
             $data = xhprof_disable();
 
             $incl = (defined('XHPROF_PATH') ? XHPROF_PATH : self::XHPROF_PATH);
-            include_once $incl.'/utils/xhprof_lib.php';
-            include_once $incl.'/utils/xhprof_runs.php';
+            include_once $incl . '/utils/xhprof_lib.php';
+            include_once $incl . '/utils/xhprof_runs.php';
 
             $runs = new \XHProfRuns_Default();
             $id   = $runs->save_run($data, 'galette-' . GALETTE_VERSION);
 
             $url  = (defined('XHPROF_URL') ? XHPROF_URL : self::XHPROF_URL);
             $host = (defined('XHPROF_HOST') ? XHPROF_HOST : $_SERVER['HTTP_HOST']);
-            $link = 'http://' . $host .$url . '/index.php?run=' .
+            $link = 'http://' . $host . $url . '/index.php?run=' .
                 $id . '&source=galette-' . GALETTE_VERSION;
             Analog::log(
                 'Stop profiling with XHProf, result URL: ' . $link,

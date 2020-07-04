@@ -37,7 +37,7 @@
 
 namespace Galette\Repository\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * PDF models repository tests
@@ -123,7 +123,7 @@ class PdfModels extends atoum
     {
         global $container, $zdb;
         $zdb = $this->zdb; //globals '(
-        $container = new class{
+        $container = new class {
             /**
              * Get (only router)
              *
@@ -133,7 +133,7 @@ class PdfModels extends atoum
              */
             public function get($name)
             {
-                $router = new class{
+                $router = new class {
                     /**
                      * Get path ('')
                      *
@@ -149,7 +149,6 @@ class PdfModels extends atoum
                 return $router;
             }
         };
-        define('_CURRENT_THEME_PATH', '');
         $_SERVER['HTTP_HOST'] = '';
 
         $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);

@@ -37,7 +37,7 @@
 
 namespace Galette\Core\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * I18n tests class
@@ -148,7 +148,7 @@ class I18n extends atoum
     }
 
     /**
-     * Test retrieving language informations
+     * Test retrieving language information
      *
      * @return void
      */

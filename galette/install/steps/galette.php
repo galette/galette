@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8 - 2013-01-12
  */
@@ -50,7 +49,7 @@ $objects_ok = $install->initObjects($i18n, $zdb, new Login($zdb, $i18n, new RKA\
                 <h2><?php echo $install->getStepTitle(); ?></h2>
 <?php
 
-if ( $config_file_ok === true && $objects_ok === true ) {
+if ($config_file_ok === true && $objects_ok === true) {
     echo '<p id="infobox">' . _T("Configuration file created!") .
         '<br/>' . _T("Data initialized.") . '</p>';
 } else {
@@ -59,7 +58,7 @@ if ( $config_file_ok === true && $objects_ok === true ) {
 ?>
                 <ul class="leaders">
 <?php
-foreach ( $install->getInitializationReport() as $r ) {
+foreach ($install->getInitializationReport() as $r) {
     ?>
                     <li>
                         <span><?php echo $r['message']; ?></span>
@@ -72,22 +71,22 @@ foreach ( $install->getInitializationReport() as $r ) {
                 <form action="installer.php" method="POST">
                     <p id="btn_box">
 <?php
-if ( !$config_file_ok || !$objects_ok ) {
+if (!$config_file_ok || !$objects_ok) {
     ?>
                         <input type="submit" id="retry_btn" value="<?php echo _T("Retry"); ?>"/>
     <?php
 }
 ?>
 
-                        <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"<?php if ( !$config_file_ok || !$objects_ok ) { echo ' disabled="disabled"'; } ?>/>
+                        <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"<?php if (!$config_file_ok || !$objects_ok) { echo ' disabled="disabled"'; } ?>/>
 <?php
-if ( $config_file_ok && $objects_ok ) {
+if ($config_file_ok && $objects_ok) {
     ?>
                         <input type="hidden" name="install_prefs_ok" value="1"/>
     <?php
 }
 
-if ( !$config_file_ok || !$objects_ok ) {
+if (!$config_file_ok || !$objects_ok) {
     //once DB is installed, that does not make sense to go back
     ?>
                         <input type="submit" id="btnback" name="stepback_btn" value="<?php echo _T("Back"); ?>"/>

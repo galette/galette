@@ -30,15 +30,14 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2017 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2017-01-08
  */
 
 namespace Galette\Core;
 
-use \Analog\Analog;
-use Zend\Db\Adapter\Adapter;
+use Analog\Analog;
+use Laminas\Db\Adapter\Adapter;
 
 /**
  * Galette plugin installation
@@ -85,7 +84,8 @@ class PluginInstall extends Install
     public function atPreviousStep()
     {
         if ($this->_step > 0) {
-            if ($this->_step -1 !== self::STEP_DB_INSTALL
+            if (
+                $this->_step - 1 !== self::STEP_DB_INSTALL
                 && $this->_step !== self::STEP_END
             ) {
                 if ($this->_step === self::STEP_DB_INSTALL) {
@@ -94,7 +94,7 @@ class PluginInstall extends Install
                     if ($this->_step === self::STEP_DB_UPGRADE) {
                         $this->setInstalledVersion(null);
                     }
-                    $this->_step = $this->_step -1;
+                    $this->_step = $this->_step - 1;
                 }
             } else {
                 $msg = null;

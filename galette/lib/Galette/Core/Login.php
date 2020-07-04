@@ -30,14 +30,13 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-07-06
  */
 
 namespace Galette\Core;
 
-use Zend\Db\Adapter\Exception as AdapterException;
+use Laminas\Db\Adapter\Exception as AdapterException;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
 use Galette\Entity\Adherent;
@@ -82,13 +81,13 @@ class Login extends Authentication
     }
 
     /**
-    * Login for the superuser
-    *
-    * @param string      $login       name
-    * @param Preferences $preferences Preferences instance
-    *
-    * @return void
-    */
+     * Login for the superuser
+     *
+     * @param string      $login       name
+     * @param Preferences $preferences Preferences instance
+     *
+     * @return void
+     */
     public function logAdmin($login, Preferences $preferences)
     {
         parent::logAdmin($login, $preferences);
@@ -96,10 +95,10 @@ class Login extends Authentication
     }
 
     /**
-    * Log out user and unset variables
-    *
-    * @return void
-    */
+     * Log out user and unset variables
+     *
+     * @return void
+     */
     public function logOut()
     {
         parent::logOut();
@@ -123,7 +122,7 @@ class Login extends Authentication
                     self::PK => $user,
                     'email_adh' => $user
                 ],
-                \Zend\Db\Sql\Predicate\PredicateSet::OP_OR
+                \Laminas\Db\Sql\Predicate\PredicateSet::OP_OR
             );
 
             $results = $this->zdb->execute($select);
@@ -148,7 +147,7 @@ class Login extends Authentication
                 $active = $row->activite_adh;
                 if (!$row->activite_adh == true) {
                     Analog::log(
-                        'Member `' . $user .' is inactive!`' . $log_suffix,
+                        'Member `' . $user . ' is inactive!`' . $log_suffix,
                         Analog::WARNING
                     );
                     return false;
@@ -193,7 +192,7 @@ class Login extends Authentication
     /**
      * Get select query without where clause
      *
-     * @return \Zend\Db\Sql\Select
+     * @return \Laminas\Db\Sql\Select
      */
     private function select()
     {
@@ -222,7 +221,7 @@ class Login extends Authentication
     /**
      * Populate object after successfull login
      *
-     * @param \ArrayObject $row User informations
+     * @param \ArrayObject $row User information
      *
      * @return void
      */
@@ -259,7 +258,8 @@ class Login extends Authentication
         }
         //staff members and admins are de facto groups managers. For all
         //others, get managed groups
-        if (!$this->isSuperAdmin()
+        if (
+            !$this->isSuperAdmin()
             && !$this->isAdmin()
             && !$this->isStaff()
         ) {

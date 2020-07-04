@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-06-11
  */
@@ -238,7 +237,7 @@ class ExternalScript
                 //get stderr, if any
                 $errors = stream_get_contents($pipes[2]);
                 if (trim($errors) !== '') {
-                    $this->output .="\n\nStdErr:\n" . $errors;
+                    $this->output .= "\n\nStdErr:\n" . $errors;
                 }
 
                 //closes pipes and process

@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2011-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-06-20
  */
@@ -38,8 +37,9 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Predicate\Expression as PredicateExpression;
+use Laminas\Db\Adapter\Driver\StatementInterface;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Authentication;
@@ -68,7 +68,7 @@ use Galette\Repository\DynamicFieldsSet;
 
 class DynamicFieldsHandle
 {
-    const TABLE = 'dynamic_fields';
+    public const TABLE = 'dynamic_fields';
 
     private $dynamic_fields = [];
     private $current_values = [];
@@ -199,9 +199,7 @@ class DynamicFieldsHandle
      */
     public function getValues($field)
     {
-        if (isset($this->current_values[$field])) {
-            return $this->current_values[$field];
-        } else {
+        if (!isset($this->current_values[$field])) {
             $this->current_values[$field][] = [
                 'item_id'       => '',
                 'field_form'    => $this->dynamic_fields[$field]->getForm(),
@@ -210,6 +208,7 @@ class DynamicFieldsHandle
                 'is_new'        => true
             ];
         }
+        return $this->current_values[$field];
     }
 
     /**
@@ -283,45 +282,19 @@ class DynamicFieldsHandle
                     }
 
                     if (isset($value['is_new'])) {
-                        if ($this->insert_stmt === null) {
-                            $insert = $this->zdb->insert(self::TABLE);
-                            $insert->values([
-                                'item_id'       => ':item_id',
-                                'field_id'      => ':field_id',
-                                'field_form'    => ':field_form',
-                                'val_index'     => ':val_index',
-                                'field_val'     => ':field_val'
-                            ]);
-                            $this->insert_stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
-                        }
                         unset($value['is_new']);
-                        $this->insert_stmt->execute($value);
+                        $this->getInsertStatement()->execute($value);
                         $this->has_changed = true;
                     } else {
-                        if ($this->update_stmt === null) {
-                            $update = $this->zdb->update(self::TABLE);
-                            $update->set([
-                                'field_val'     => ':field_val',
-                                'val_index'     => ':val_index'
-                            ])->where([
-                                'item_id'       => ':item_id',
-                                'field_id'      => ':field_id',
-                                'field_form'    => ':field_form',
-                                'val_index'     => ':val_index'
-                            ]);
-                            $this->update_stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
-                        }
                         $params = [
                             'field_val' => $value['field_val'],
                             'val_index' => $value['val_index'],
                             'where1'    => $value['item_id'],
                             'where2'    => $value['field_id'],
                             'where3'    => $value['field_form'],
-                            'where4'    => isset($value['old_val_index']) ?
-                                $value['old_val_index'] :
-                                $value['val_index']
+                            'where4'    => $value['old_val_index'] ?? $value['val_index']
                         ];
-                        $this->update_stmt->execute($params);
+                        $this->getUpdateStatement()->execute($params);
                         $this->has_changed = true;
                     }
                 }
@@ -343,7 +316,54 @@ class DynamicFieldsHandle
                 Analog::ERROR
             );
             return false;
+        } finally {
+            unset($this->update_stmt);
+            unset($this->insert_stmt);
         }
+    }
+
+    /**
+     * Get (and prepare if not done yet) insert statement
+     *
+     * @return StatementInterface
+     */
+    private function getInsertStatement(): StatementInterface
+    {
+        if ($this->insert_stmt === null) {
+            $insert = $this->zdb->insert(self::TABLE);
+            $insert->values([
+                'item_id'       => ':item_id',
+                'field_id'      => ':field_id',
+                'field_form'    => ':field_form',
+                'val_index'     => ':val_index',
+                'field_val'     => ':field_val'
+            ]);
+            $this->insert_stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
+        }
+        return $this->insert_stmt;
+    }
+
+    /**
+     * Get (and prepare if not done yet) update statement
+     *
+     * @return StatementInterface
+     */
+    private function getUpdateStatement(): StatementInterface
+    {
+        if ($this->update_stmt === null) {
+            $update = $this->zdb->update(self::TABLE);
+            $update->set([
+                'field_val'     => ':field_val',
+                'val_index'     => ':val_index'
+            ])->where([
+                'item_id'       => ':item_id',
+                'field_id'      => ':field_id',
+                'field_form'    => ':field_form',
+                'val_index'     => ':val_index'
+            ]);
+            $this->update_stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
+        }
+        return $this->update_stmt;
     }
 
     /**
@@ -399,7 +419,8 @@ class DynamicFieldsHandle
                 $this->delete_stmt->execute($entry);
                 //update val index
                 $field_id = $entry['where3'];
-                if (isset($this->current_values[$field_id])
+                if (
+                    isset($this->current_values[$field_id])
                     && count($this->current_values[$field_id])
                 ) {
                     $val_index = (int)$entry['where4'];
@@ -497,10 +518,11 @@ class DynamicFieldsHandle
 
         foreach ($this->dynamic_fields as $field) {
             $perm = $field->getPerm();
-            if (($perm == DynamicField::PERM_MANAGER &&
+            if (
+                ($perm == DynamicField::PERM_MANAGER &&
                     $access_level < Authentication::ACCESS_MANAGER) ||
                 ($perm == DynamicField::PERM_STAFF &&
-                        $access_level < Authentication::ACCESS_STAFF)   ||
+                        $access_level < Authentication::ACCESS_STAFF) ||
                 ($perm == DynamicField::PERM_ADMIN &&
                     $access_level < Authentication::ACCESS_ADMIN)
             ) {

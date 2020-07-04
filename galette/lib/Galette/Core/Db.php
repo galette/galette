@@ -1,4 +1,5 @@
 <?php
+
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
@@ -29,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2011-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-07-27
  */
@@ -37,8 +37,13 @@
 namespace Galette\Core;
 
 use Analog\Analog;
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\Sql\Sql;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\Driver\DriverInterface;
+use Laminas\Db\Adapter\Driver\ConnectionInterface;
+use Laminas\Db\Adapter\Platform\PlatformInterface;
+use Laminas\Db\Sql\Insert;
+use Laminas\Db\Sql\Select;
+use Laminas\Db\Sql\Sql;
 
 /**
  * Zend Db wrapper
@@ -51,24 +56,38 @@ use Zend\Db\Sql\Sql;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://framework.zend.com/apidoc/2.2/namespaces/Zend.Db.html
  * @since     Available since 0.7dev - 2011-07-27
+ *
+ * @property Adapter $db
+ * @property Sql $sql
+ * @property DriverInterface $driver
+ * @property ConnectionInterface $connection
+ * @property PlatformInterface $platform
+ * @property string $query_string
+ * @property string $type_db
  */
 class Db
 {
+    /** @var Adapter */
     private $db;
+    /** @var string */
     private $type_db;
+    /** @var Sql */
     private $sql;
+    /** @var array */
     private $options;
+    /** @var string */
+    private $last_query;
 
-    const MYSQL = 'mysql';
-    const PGSQL = 'pgsql';
+    public const MYSQL = 'mysql';
+    public const PGSQL = 'pgsql';
 
-    const MYSQL_DEFAULT_PORT = 3306;
-    const PGSQL_DEFAULT_PORT = 5432;
+    public const MYSQL_DEFAULT_PORT = 3306;
+    public const PGSQL_DEFAULT_PORT = 5432;
 
     /**
      * Main constructor
      *
-     * @param array $dsn Connection informations
+     * @param array $dsn Connection information
      *                   If not set, database constants will be used.
      */
     public function __construct($dsn = null)
@@ -135,6 +154,10 @@ class Db
         $this->db = new Adapter($this->options);
         $this->db->getDriver()->getConnection()->connect();
         $this->sql = new Sql($this->db);
+
+        if (!$this->isPostgres()) {
+            $this->db->query("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
+        }
 
         Analog::log(
             '[Db] Database connection was successfull!',
@@ -271,7 +294,7 @@ class Db
             } elseif ($type === self::PGSQL) {
                 $_type = 'Pdo_Pgsql';
             } else {
-                throw new \Exception;
+                throw new \Exception();
             }
 
             $_options = array(
@@ -323,7 +346,7 @@ class Db
     /**
      * Checks GRANT access for install time
      *
-     * @param char $mode are we at install time (i) or update time (u) ?
+     * @param string $mode are we at install time (i) or update time (u) ?
      *
      * @return array containing each test. Each array entry could
      *           be either true or contains an exception of false if test did not
@@ -398,7 +421,7 @@ class Db
                 }
             } catch (\Exception $e) {
                 Analog::log(
-                    'Cannot INSERT records | ' .$e->getMessage(),
+                    'Cannot INSERT records | ' . $e->getMessage(),
                     Analog::WARNING
                 );
                 //if we cannot insert records, some others tests cannot be done
@@ -425,7 +448,7 @@ class Db
                     }
                 } catch (\Exception $e) {
                     Analog::log(
-                        'Cannot UPDATE records | ' .$e->getMessage(),
+                        'Cannot UPDATE records | ' . $e->getMessage(),
                         Analog::WARNING
                     );
                     $results['update'] = $e;
@@ -460,7 +483,7 @@ class Db
                     $results['delete'] = true;
                 } catch (\Exception $e) {
                     Analog::log(
-                        'Cannot DELETE records | ' .$e->getMessage(),
+                        'Cannot DELETE records | ' . $e->getMessage(),
                         Analog::WARNING
                     );
                     $results['delete'] = $e;
@@ -493,7 +516,7 @@ class Db
      */
     public function getTables($prefix = null)
     {
-        $metadata = new \Zend\Db\Metadata\Metadata($this->db);
+        $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->db);
         $tmp_tables_list = $metadata->getTableNames();
 
         if ($prefix === null) {
@@ -519,7 +542,7 @@ class Db
      */
     public function getColumns($table)
     {
-        $metadata = new \Zend\Db\Metadata\Metadata($this->db);
+        $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->db);
         $table = $metadata->getTable(PREFIX_DB . $table);
         return $table->getColumns();
     }
@@ -564,7 +587,7 @@ class Db
                     );
 
                     Analog::log(
-                        'Charset successfully changed for table `' . $table .'`',
+                        'Charset successfully changed for table `' . $table . '`',
                         Analog::DEBUG
                     );
                 }
@@ -611,7 +634,7 @@ class Db
         }
 
         try {
-            $metadata = new \Zend\Db\Metadata\Metadata($this->db);
+            $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->db);
             $tbl = $metadata->getTable($table);
             $columns = $tbl->getColumns();
             $constraints = $tbl->getConstraints();
@@ -659,7 +682,7 @@ class Db
 
                 //build where
                 foreach ($pkeys as $k) {
-                    $where[] = $k . ' = "' . $row->$k .'"';
+                    $where[] = $k . ' = "' . $row->$k . '"';
                 }
 
                 //build data
@@ -766,8 +789,8 @@ class Db
     public function execute($sql)
     {
         try {
-            $query_string = $this->sql->getSqlStringForSqlObject($sql);
-            $this->_last_query = $query_string;
+            $query_string = $this->sql->buildSqlString($sql);
+            $this->last_query = $query_string;
             Analog::log(
                 'Executing query: ' . $query_string,
                 Analog::DEBUG
@@ -785,6 +808,9 @@ class Db
                 $msg . ' ' . $e->__toString(),
                 Analog::ERROR
             );
+            if ($sql instanceof Insert && $this->isDuplicateException($e)) {
+                throw new \OverflowException('Duplicate entry', 0, $e);
+            }
             throw $e;
         }
     }
@@ -815,7 +841,7 @@ class Db
                 return $this->db->getPlatform();
                 break;
             case 'query_string':
-                return $this->_last_query;
+                return $this->last_query;
                 break;
             case 'type_db':
                 return $this->type_db;
@@ -824,7 +850,7 @@ class Db
     }
 
     /**
-     * Get database informations
+     * Get database information
      *
      * @return array
      */
@@ -848,7 +874,7 @@ class Db
             $sql = 'SELECT pg_database_size(\'' . NAME_DB . '\')';
             $result = $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE)
                 ->current();
-            $infos['size']          = (string)round($result['pg_database_size'] / 1024 / 1024);
+            $infos['size'] = (string)round($result['pg_database_size'] / 1024 / 1024);
         } else {
             $sql = 'SELECT @@sql_mode as mode, @@version AS version, @@version_comment AS version_comment';
             $result = $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE)
@@ -859,11 +885,11 @@ class Db
             $infos['sql_mode']  = $result['mode'];
 
             $size_sql = 'SELECT ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) AS dbsize' .
-                ' FROM information_schema.tables WHERE table_schema="' . NAME_DB .'"';
+                ' FROM information_schema.tables WHERE table_schema="' . NAME_DB . '"';
             $result = $this->db->query($size_sql, Adapter::QUERY_MODE_EXECUTE)
                 ->current();
 
-            $infos['size']      = $result['dbsize'];
+            $infos['size'] = $result['dbsize'];
         }
 
         return $infos;
@@ -879,8 +905,8 @@ class Db
      * @see https://bugs.galette.eu/issues/1158
      * @see https://bugs.galette.eu/issues/1374
      *
-     * @param sting  $table    Table name
-     * @param intger $expected Expected value
+     * @param string  $table    Table name
+     * @param integer $expected Expected value
      *
      * @return void
      */
@@ -903,5 +929,22 @@ class Db
                 );
             }
         }
+    }
+
+    /**
+     * Check if current exception is on a duplicate key
+     *
+     * @param \Exception $exception Exception to check
+     *
+     * @return boolean
+     */
+    public function isDuplicateException($exception)
+    {
+        return $exception instanceof \PDOException
+            && (
+                (!$this->isPostgres() && $exception->getCode() == 23000)
+                || ($this->isPostgres() && $exception->getCode() == 23505)
+            )
+        ;
     }
 }

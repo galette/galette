@@ -37,7 +37,7 @@
 
 namespace Galette\Core\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * Install tests class
@@ -125,7 +125,8 @@ class Install extends atoum
             '0.91'  => 'upgrade-to-0.91-pgsql.sql',
             '0.92'  => 'upgrade-to-0.92-pgsql.sql',
             '0.93'  => 'upgrade-to-0.93-pgsql.sql',
-            '0.931' => 'upgrade-to-0.931-pgsql.sql'
+            '0.931' => 'upgrade-to-0.931-pgsql.sql',
+            '0.94'  => 'upgrade-to-0.94-pgsql.sql'
         );
 
         $this->array($update_scripts)

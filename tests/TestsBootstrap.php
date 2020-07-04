@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Test bootstrap
  *
@@ -32,11 +33,12 @@ if ($db === false || $db !== 'pgsql') {
 define('GALETTE_CONFIG_PATH', __DIR__ . '/config/' . $db . '/');
 define('GALETTE_BASE_PATH', $basepath);
 define('GALETTE_TESTS', true);
+define('GALETTE_TESTS_PATH', __DIR__);
 define('GALETTE_MODE', 'PROD');
-define('GALETTE_PLUGINS_PATH', __DIR__ . '/plugins/');
+define('GALETTE_PLUGINS_PATH', GALETTE_TESTS_PATH . '/plugins/');
 define('GALETTE_TPL_SUBDIR', 'templates/default/');
 define('GALETTE_THEME', 'themes/default/');
-define('GALETTE_DATA_PATH', __DIR__ . '/tests-data/');
+define('GALETTE_DATA_PATH', GALETTE_TESTS_PATH . '/tests-data/');
 if (is_dir(GALETTE_DATA_PATH)) {
     $files = new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator(
@@ -75,9 +77,17 @@ require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
 //require_once GALETTE_BASE_PATH . 'includes/i18n.inc.php';
 
 //Globals... :(
-global $preferences;
+global $preferences, $emitter;
 $zdb = new \Galette\Core\Db();
 $preferences = new \Galette\Core\Preferences($zdb);
+$emitter = new \Slim\Event\SlimEventManager();
+
+if (!defined('_CURRENT_THEME_PATH')) {
+    define(
+        '_CURRENT_THEME_PATH',
+        GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
+    );
+}
 
 /**
  * Maps _T Galette's function

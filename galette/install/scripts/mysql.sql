@@ -194,7 +194,8 @@ CREATE TABLE galette_texts (
   tbody text NOT NULL,
   tlang varchar(16) NOT NULL,
   tcomment varchar(64) NOT NULL,
-  PRIMARY KEY (tid)
+  PRIMARY KEY (tid),
+  UNIQUE KEY `localizedtxt` (tref, tlang)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 DROP TABLE IF EXISTS galette_fields_categories;
@@ -214,6 +215,8 @@ CREATE TABLE galette_fields_config (
   visible tinyint(1) NOT NULL,
   position int(2) NOT NULL,
   id_field_category int(2) NOT NULL,
+  list_visible tinyint(1) NOT NULL,
+  list_position int(2) NOT NULL,
   PRIMARY KEY (table_name, field_id),
   FOREIGN KEY (id_field_category) REFERENCES galette_fields_categories (id_field_category) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -328,11 +331,21 @@ CREATE TABLE galette_searches (
   FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- new table for temporary links
+DROP TABLE IF EXISTS galette_tmplinks;
+CREATE TABLE galette_tmplinks (
+  hash varchar(60) NOT NULL,
+  target smallint(1) NOT NULL,
+  id int(10) unsigned,
+  creation_date datetime NOT NULL,
+  PRIMARY KEY (target, id)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version DECIMAL(4,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-INSERT INTO galette_database(version) VALUES(0.931);
+INSERT INTO galette_database(version) VALUES(0.94);
 
 SET FOREIGN_KEY_CHECKS=1;

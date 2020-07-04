@@ -231,7 +231,7 @@ class FakeData
      *
      * @return \Faker\Factory
      */
-    private function getFaker()
+    public function getFaker()
     {
         if ($this->faker === null) {
             $this->faker = \Faker\Factory::create($this->i18n->getID());
@@ -291,7 +291,7 @@ class FakeData
             }
         }
 
-        if ($count !=0 && $done != 0) {
+        if ($count != 0 && $done != 0) {
             if ($done === $count) {
                 $this->addSuccess(
                     str_replace('%count', $count, _T("%count groups created"))
@@ -364,7 +364,7 @@ class FakeData
             }
         }
 
-        if ($count !=0 && $done != 0) {
+        if ($count != 0 && $done != 0) {
             if ($done === $count) {
                 $this->addSuccess(
                     str_replace('%count', $count, _T("%count members created"))
@@ -411,7 +411,7 @@ class FakeData
             $this->status = array_keys($status->getList());
         }
 
-        $data= [
+        $data = [
             'nom_adh'           => $faker->lastName(),
             'prenom_adh'        => $faker->firstName(),
             'ville_adh'         => $faker->city(),
@@ -467,14 +467,7 @@ class FakeData
     {
         $file = GALETTE_TEMPIMAGES_PATH . 'fakephoto.jpg';
         if (!defined('GALETTE_TESTS')) {
-            $faker = $this->getFaker();
-            $url = $faker->unique()->imageUrl(
-                $width = 800,
-                $height = 600,
-                'people',
-                true,
-                'Galette fake data'
-            );
+            $url = 'https://loremflickr.com/800/600/people';
         } else {
             $url = GALETTE_ROOT . '../tests/fake_image.jpg';
         }
@@ -528,7 +521,7 @@ class FakeData
         }
 
         for ($i = 0; $i < $count; $i++) {
-            $data= [
+            $data = [
                 'trans_date'    => $faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now')->format(_T("Y-m-d")),
                 Adherent::PK    => $faker->randomElement($mids),
                 'trans_amount'  => $faker->numberBetween($min = 50, $max = 2000),
@@ -544,7 +537,7 @@ class FakeData
             }
         }
 
-        if ($count !=0 && $done != 0) {
+        if ($count != 0 && $done != 0) {
             if ($done === $count) {
                 $this->addSuccess(
                     str_replace('%count', $count, _T("%count transactions created"))
@@ -596,6 +589,7 @@ class FakeData
 
                     if (count($this->transactions) > 0) {
                         if ($faker->boolean($chanceOfGettingTrue = 90)) {
+                            $transaction = $faker->randomElement($this->transactions);
                             $contrib::setTransactionPart(
                                 $this->zdb,
                                 $transaction->id,
@@ -660,8 +654,7 @@ class FakeData
                 ]
             ),
             'info_cotis'            => ($this->seed !== null ?
-                                        'FAKER' . $this->seed :
-                                        $faker->optional($weight = 0.1)->realText($maxNbChars = 500)),
+                                        'FAKER' . $this->seed : $faker->optional($weight = 0.1)->realText($maxNbChars = 500)),
             'date_enreg'            => $faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now')->format(_T("Y-m-d")),
             'date_debut_cotis'      => $begin_date->format(_T("Y-m-d")),
             'date_fin_cotis'        => $end_date->format(_T("Y-m-d"))

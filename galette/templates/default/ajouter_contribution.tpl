@@ -2,12 +2,12 @@
 
 {block name="content"}
 {if isset($members.list)}
-        <form action="{if $contribution->id}{path_for name="contribution" data=["type" => $type, "action" => "edit", "id" => $contribution->id]}{else}{path_for name="contribution" data=["type" => $type, "action" => "add"]}{/if}" method="post">
+        <form action="{if $contribution->id}{path_for name="doEditContribution" data=["type" => $type, "id" => $contribution->id]}{else}{path_for name="doAddContribution" data=["type" => $type]}{/if}" method="post">
         <div class="bigtable">
     {if $contribution->isTransactionPart()}
         {assign var="mid" value=$contribution->transaction->member}
             <table id="transaction_detail">
-                <caption>{_T string="Related transaction informations"}</caption>
+                <caption>{_T string="Related transaction information"}</caption>
                 <thead>
                     <tr>
                         <td colspan="5">
@@ -49,14 +49,14 @@
     {/if}
     {if $contribution->isTransactionPart() && $contribution->transaction->getMissingAmount() > 0}
                     <a
-                        href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?trans_id={$contribution->transaction->id}"
+                        href="{path_for name="addContribution" data=["type" => "fee"]}?trans_id={$contribution->transaction->id}"
                         class="button fright tooltip"
                         title="{_T string="Create a new fee that will be attached to the current transaction"}">
                         <i class="fas fa-user-check"></i>
                         <span class="sr-only">{_T string="New attached fee"}</span>
                     </a>
                     <a
-                        href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?trans_id={$contribution->transaction->id}"
+                        href="{path_for name="addContribution" data=["type" => "donation"]}?trans_id={$contribution->transaction->id}"
                         class="button fright tooltip"
                         title="{_T string="Create a new donation that will be attached to the current transaction"}">
                         <i class="fas fa-gift"></i>
@@ -89,7 +89,7 @@
     {if $type eq "fee"}
                 <noscript>
                     <div class="button-container" id="reloadcont">
-                        <input type="submit" id="btnreload" name="btnreload" value="{_T string="Reload"}" title="{_T string="Reload date informations according to selected member and contribution type"}"/>
+                        <input type="submit" id="btnreload" name="btnreload" value="{_T string="Reload"}" title="{_T string="Reload date information according to selected member and contribution type"}"/>
                     </div>
                 </noscript>
     {/if}

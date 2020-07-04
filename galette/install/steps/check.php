@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8 - 2013-01-09
  */
@@ -43,17 +42,17 @@ $php_modules_class = '';
 $files_perms_class = '';
 
 // check required PHP version...
-if ( version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<') ) {
+if (version_compare(PHP_VERSION, GALETTE_PHP_MIN, '<')) {
     $php_ok = false;
 }
 
 // check date settings
 $date_ok = false;
-if ( !version_compare(PHP_VERSION, '5.2.0', '<') ) {
+if (!version_compare(PHP_VERSION, '5.2.0', '<')) {
     try {
         $test_date = new DateTime();
         $date_ok = true;
-    } catch ( Exception $e ) {
+    } catch (Exception $e) {
         //do nothing
     }
 }
@@ -64,7 +63,7 @@ $modules_ok = $cm->isValid();
 
 // check file permissions
 $perms_ok = true;
-$files_need_rw = array (
+$files_need_rw = array(
     _T("Compilation")       => GALETTE_COMPILE_DIR,
     _T("Photos")            => GALETTE_PHOTOS_PATH,
     _T("Cache")             => GALETTE_CACHE_DIR,
@@ -81,16 +80,16 @@ $files_perms_class = $class . 'ok';
 
 foreach ($files_need_rw as $label=>$file) {
     $writable = is_writable($file);
-    if ( !$writable ) {
+    if (!$writable) {
         $perms_ok = false;
     }
 }
 
-if ( $perms_ok && $modules_ok && $php_ok && $date_ok ) {
+if ($perms_ok && $modules_ok && $php_ok && $date_ok) {
     echo '<p id="infobox">' . _T("Galette requirements are met :)") . '</p>';
 }
 
-if ( !$date_ok ) {
+if (!$date_ok) {
     echo '<p class="error">' . _T("Your PHP date settings are not correct. Maybe you've missed the timezone settings that is mandatory since PHP 5.3?") . '</p>';
 }
 ?>
@@ -107,8 +106,8 @@ if ( !$date_ok ) {
 
                 <h3><?php echo _T("PHP Modules"); ?></h3>
 <?php
-if ( !$modules_ok ) {
-    echo '<p class="error">' . _T("Some PHP modules are missing. Please install them or contact your support.<br/>More informations on required modules may be found in the documentation.")  . '</p>';
+if (!$modules_ok) {
+    echo '<p class="error">' . _T("Some PHP modules are missing. Please install them or contact your support.<br/>More information on required modules may be found in the documentation.") . '</p>';
 }
 ?>
                 <ul class="leaders">
@@ -130,15 +129,15 @@ foreach ($files_need_rw as $label=>$file) {
 ?>
                 </ul>
 <?php
-if ( !$perms_ok ) {
+if (!$perms_ok) {
     ?>
         <article id="files_perms" class="<?php echo $files_perms_class; ?>">
             <div>
         <h4 class="error"><?php echo _T("Files permissions are not OK!"); ?></h4>
         <p><?php
-    if ( $install->isInstall() ) {
+    if ($install->isInstall()) {
         echo _T("To work as excpected, Galette needs write permission on files listed above.");
-    } else if ( $install->isUpgrade() ) {
+    } else if ($install->isUpgrade()) {
         echo _T("In order to be updated, Galette needs write permission on files listed above.");
     }
         ?></p>
@@ -151,7 +150,7 @@ if ( !$perms_ok ) {
     <?php
 }
 
-if ( !$perms_ok || !$modules_ok || !$php_ok || !$date_ok ) {
+if (!$perms_ok || !$modules_ok || !$php_ok || !$date_ok) {
     ?>
                 <form action="installer.php" method="post">
                     <p id="btn_box">

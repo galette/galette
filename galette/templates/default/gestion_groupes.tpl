@@ -23,7 +23,7 @@
     </aside>
     <section id="group_infos">
         <header class="ui-state-default ui-state-active">
-            {_T string="Group informations"}
+            {_T string="Group information"}
         </header>
         <div id="group_infos_wrapper">
 {if $group->getId()}
@@ -49,12 +49,10 @@
         $('#groups_tree').jstree({
 {if $groups|@count > 0}
             'core': {
-                'initially_open': [{foreach item=g from=$groups}'group_{$g->getId()}',{/foreach}]
+                'initially_open': [{foreach item=g from=$groups}'group_{$g->getId()}',{/foreach}],
+                'check_callback': true
             },
 {/if}
-            'themes': {
-                'url': '{base_url}/{$template_subdir}/jstree/style.css'
-            },
             'unique' : {
                 'error_callback': function (n, p, f) {
                     alert("Duplicate node `" + n + "` with function `" + f + "`!");
@@ -64,10 +62,10 @@
                 'select_limit': 1,
                 'initially_select': 'group_{$group->getId()}'
             },
-            'plugins': [ 'themes', 'html_data', 'dnd', 'ui' ]
+            'plugins': [ 'dnd', 'ui' ]
         }).bind("move_node.jstree", function (e, data) {
-            var _gid = data.rslt.o.attr('id').substring(6);
-            var _to = data.rslt.np.attr('id').substring(6);
+            var _gid = data.node.id.substring(6);
+            var _to = data.parent.substring(6);
             $.ajax({
                 url: '{path_for name="ajax_groups_reorder"}',
                 type: "POST",
@@ -79,10 +77,13 @@
                 datatype: 'json',
                 {include file="js_loader.tpl"},
                 success: function(res){
-                    if (res.success == false) {
-                        alert("{_T string="Missing destination group" escape="js"}");
-                        {* TODO: revert preceding move so the tree is ok with database *}
-                    }
+                    $.ajax({
+                        url: '{path_for name="ajaxMessages"}',
+                        method: "GET",
+                        success: function (message) {
+                            $('#asso_name').after(message);
+                        }
+                    });
                 },
                 error: function() {
                     {* TODO: revert preceding move so the tree is ok with database *}
@@ -111,6 +112,16 @@
                             $('#group_infos_wrapper').empty().append(res);
                             $('#group_infos_wrapper input:submit, #group_infos_wrapper .button').button();
                             _btnuser_mapping();
+
+                            $('#parent_group').each(function(){ //redo selectize on parent dropdown
+                                var _this = $(this);
+                                if (_this[0].selectize) { // requires [0] to select the proper object
+                                    var value = _this.val(); // store the current value of the select/input
+                                    _this[0].selectize.destroy(); // destroys selectize()
+                                    _this.val(value);  // set back the value of the select/input
+                                }
+                                _this.selectize();
+                            });
                         },
                         error: function() {
                             alert("{_T string="An error occurred loading selected group :(" escape="js"}");
@@ -141,13 +152,12 @@
                                 },
                                 {include file="js_loader.tpl"},
                                 success: function(res){
-                                    var _res = jQuery.parseJSON(res);
-                                    if ( _res.success == false ) {
-                                        if (_res.message) {
-                                            alert(_res.message)
+                                    if ( res.success == false ) {
+                                        if (res.message) {
+                                            alert(res.message)
                                         } else {
                                             alert('{_T string="The group name you have requested already exits in the database."}');
-                                            }
+                                        }
                                     } else {
                                         $(location).attr('href', _href.replace('NAME', _name));
                                     }

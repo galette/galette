@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     0.7.5 - 2013-06-02
  */
@@ -81,6 +80,16 @@ strong#asso_name {
 td#pdf_logo {
     text-align: right;
     width: 25%;
+}
+
+div[dir=\'rtl\'] td#pdf_logo {
+    text-align: left;
+    width: 0%;
+}
+
+div[dir=rtl] td#pdf_assoname {
+    width: 100%;
+    margin-left: 25%;
 }',
         'model_parent'  => null
     ),

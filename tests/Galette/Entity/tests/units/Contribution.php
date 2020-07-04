@@ -37,7 +37,7 @@
 
 namespace Galette\Entity\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * Contribution tests class
@@ -121,13 +121,6 @@ class Contribution extends atoum
         $this->session = new \RKA\Session();
         $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
         $this->history = new \Galette\Core\History($this->zdb, $this->login);
-
-        if (!defined('_CURRENT_THEME_PATH')) {
-            define(
-                '_CURRENT_THEME_PATH',
-                GALETTE_THEMES_PATH . $this->preferences->pref_theme . '/'
-            );
-        }
 
         global $zdb, $login, $hist, $i18n; // globals :(
         $zdb = $this->zdb;
@@ -502,33 +495,9 @@ class Contribution extends atoum
             $contrib = $this->contrib;
         }
 
-        $date_enr = new \DateTime();
-        $date_enr->setTime(0, 0, 0);
-        $date_enr->sub(new \DateInterval('P236D'));
-
-        //Q&D fix for dates problem with Faker :(
-        $fix_interval = new \DateInterval('P1D');
-        $qd_fixed = false;
-        if ($contrib->raw_date->diff($date_enr)->days == 1) {
-            $date_enr->add($fix_interval);
-            $qd_fixed = true;
-        }
-
-        $date_begin = clone $date_enr;
-        $date_begin->add(new \DateInterval('P86D'));
-
-        if (!$qd_fixed && $contrib->raw_begin_date->diff($date_begin)->days == 1) {
-            $date_begin->add($fix_interval);
-            $qd_fixed = true;
-        }
-
+        $date_begin = $contrib->raw_begin_date;
         $date_end = clone $date_begin;
         $date_end->add(new \DateInterval('P1Y'));
-
-        if (!$qd_fixed && $contrib->raw_end_date->diff($date_end)->days == 1) {
-            $date_end->add($fix_interval);
-            $qd_fixed = true;
-        }
 
         $this->object($contrib->raw_date)->isInstanceOf('DateTime');
         $this->object($contrib->raw_begin_date)->isInstanceOf('DateTime');
@@ -540,14 +509,10 @@ class Contribution extends atoum
             'montant_cotis' => '92',
             'type_paiement_cotis' => '3',
             'info_cotis' => 'FAKER' . $this->seed,
-            'date_enreg' => $date_enr->format('Y-m-d'),
-            'date_debut_cotis' => $date_begin->format('Y-m-d'),
             'date_fin_cotis' => $date_end->format('Y-m-d'),
         ];
         $expecteds = array_merge($expecteds, $new_expecteds);
 
-        $this->string($contrib->raw_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_enreg']);
-        $this->string($contrib->raw_begin_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_debut_cotis']);
         $this->string($contrib->raw_end_date->format('Y-m-d'))->isIdenticalTo($expecteds['date_fin_cotis']);
 
         foreach ($expecteds as $key => $value) {
@@ -598,6 +563,7 @@ class Contribution extends atoum
         global $preferences;
         $orig_pref_beg_membership = $this->preferences->pref_beg_membership;
         $orig_pref_membership_ext = $this->preferences->pref_membership_ext;
+        $orig_pref_membership_offermonths = $this->preferences->pref_membership_offermonths;
 
         $contrib = new \Galette\Entity\Contribution(
             $this->zdb,
@@ -605,6 +571,7 @@ class Contribution extends atoum
             ['type' => 1] //anual fee
         );
 
+        // First, check for 12 months renewal
         $expected = new \DateTime();
         $expected->add(new \DateInterval('P1Y'));
         $this->string($contrib->end_date)->isIdenticalTo($expected->format('Y-m-d'));
@@ -625,6 +592,7 @@ class Contribution extends atoum
             ->isInstanceOf('RuntimeException')
             ->hasMessage('Unable to define end date; none of pref_beg_membership nor pref_membership_ext are defined!');
 
+        // Second, test with beginning of membership date
         $preferences->pref_beg_membership = '29/05';
         $expected = new \DateTime();
         $expected->setDate(date('Y'), 5, 29);
@@ -639,9 +607,25 @@ class Contribution extends atoum
         );
         $this->string($contrib->end_date)->isIdenticalTo($expected->format('Y-m-d'));
 
+        // Third, test with beginning of membership date and i2 last months offered
+        $beginning = new \DateTime();
+        $beginning->add(new \DateInterval('P1M'));
+        $preferences->pref_beg_membership = $beginning->format('t/m'); // end of next month
+        $preferences->pref_membership_offermonths = 2;
+        $expected = clone $beginning;
+        $expected->add(new \DateInterval('P1Y'));
+
+        $contrib = new \Galette\Entity\Contribution(
+            $this->zdb,
+            $this->login,
+            ['type' => 1] // anual fee
+        );
+        $this->string($contrib->end_date)->isIdenticalTo($expected->format('Y-m-t'));
+
         //reset
         $preferences->pref_beg_membership = $orig_pref_beg_membership;
         $preferences->pref_membership_ext = $orig_pref_membership_ext;
+        $preferences->pref_membership_offermonths = $orig_pref_membership_offermonths;
     }
 
     /**

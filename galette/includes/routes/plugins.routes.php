@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2015 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     0.9dev 2015-10-28
  */
@@ -85,7 +84,7 @@ $app->group(
             $this->group(
                 '/' . $module['route'],
                 function () use ($module, $module_id, $authenticate) {
-                    //Plugin home: give informations
+                    //Plugin home: give information
                     $this->get(
                         '',
                         function ($request, $response) use ($module) {

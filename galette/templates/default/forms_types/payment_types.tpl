@@ -4,7 +4,7 @@
 {if !isset($show_inline)}
 <p>
 {/if}
-    <label class="{$classname}" for="{$varname}">{_T string="Payment type:"}</label>
+    <label class="{$classname}" for="{$varname}">{if isset($label)}{$label}{else}{_T string="Payment type:"}{/if}</label>
     <select name="{$varname}" id="{$varname}">
 {if isset($empty)}
         <option value="{$empty.value}">{$empty.label}</option>

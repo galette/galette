@@ -1,4 +1,5 @@
 <?php
+
 /**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -79,7 +80,7 @@ class ClassLoader
     public function __construct($ns = null, $includePath = null)
     {
         if (!file_exists($includePath)) {
-            throw new \RuntimeException('Include path "'.$includePath.'" doesn\'t exists');
+            throw new \RuntimeException('Include path "' . $includePath . '" doesn\'t exists');
         }
 
         $this->namespace = $ns;
@@ -181,7 +182,7 @@ class ClassLoader
      */
     public function loadClass($className)
     {
-        if ($this->namespace !== null && strpos($className, $this->namespace.$this->namespaceSeparator) !== 0) {
+        if ($this->namespace !== null && strpos($className, $this->namespace . $this->namespaceSeparator) !== 0) {
             return false;
         }
 
@@ -194,8 +195,8 @@ class ClassLoader
         }
 
         $path = ($this->includePath !== null ? $this->includePath . DIRECTORY_SEPARATOR : '')
-               . $className
-               . $this->fileExtension;
+                . $className
+                . $this->fileExtension;
 
         if (file_exists($path)) {
             require $path;
@@ -214,7 +215,7 @@ class ClassLoader
      */
     public function canLoadClass($className)
     {
-        if ($this->namespace !== null && strpos($className, $this->namespace.$this->namespaceSeparator) !== 0) {
+        if ($this->namespace !== null && strpos($className, $this->namespace . $this->namespaceSeparator) !== 0) {
             return false;
         }
 
@@ -289,7 +290,8 @@ class ClassLoader
     public static function getClassLoader($className)
     {
         foreach (spl_autoload_functions() as $loader) {
-            if (is_array($loader)
+            if (
+                is_array($loader)
                 && $loader[0] instanceof ClassLoader
                 && $loader[0]->canLoadClass($className)
             ) {

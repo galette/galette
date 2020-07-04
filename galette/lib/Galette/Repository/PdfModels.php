@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2011-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-25
  */
@@ -38,7 +37,7 @@
 namespace Galette\Repository;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Entity\PdfModel;
 use Galette\Entity\PdfMain;
 use Galette\Entity\PdfInvoice;
@@ -176,7 +175,7 @@ class PdfModels extends Repository
                 }
             }
 
-            if (count($missing) >0) {
+            if (count($missing) > 0) {
                 $this->zdb->connection->beginTransaction();
                 $this->insert($ent::TABLE, $missing);
                 Analog::log(

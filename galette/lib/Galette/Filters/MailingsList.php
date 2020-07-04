@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2016 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     2016-11-26
  */
@@ -158,7 +157,7 @@ class MailingsList extends Pagination
                 }
             } else {
                 Analog::log(
-                    '[MailingsList] Unable to get proprety `' .$name . '`',
+                    '[MailingsList] Unable to get proprety `' . $name . '`',
                     Analog::WARNING
                 );
             }
@@ -205,7 +204,7 @@ class MailingsList extends Pagination
                             }
 
                             $ym = \DateTime::createFromFormat(__("Y-m"), $value);
-                            if ($y === false && $ym  !== false) {
+                            if ($y === false && $ym !== false) {
                                 $day = 1;
                                 if ($name === 'end_date_filter') {
                                     $day = $ym->format('t');
@@ -219,7 +218,7 @@ class MailingsList extends Pagination
                             }
 
                             $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
-                            if ($y === false && $ym  === false && $d !== false) {
+                            if ($y === false && $ym === false && $d !== false) {
                                 $this->$name = $d->format('Y-m-d');
                             }
 

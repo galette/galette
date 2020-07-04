@@ -30,14 +30,13 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.6dev - 2013-07-21
  */
 
 namespace Galette\Updater;
 
-use \Analog\Analog;
+use Analog\Analog;
 use Galette\Core\Db;
 
 /**
@@ -207,7 +206,8 @@ abstract class AbstractUpdater
     protected function setSqlScripts($version)
     {
         $scripts = $this->getSqlScripts($version);
-        if (is_array($scripts)
+        if (
+            is_array($scripts)
             && count($scripts) === count($this->engines)
             && count(array_diff(array_keys($scripts), $this->engines)) == 0
         ) {

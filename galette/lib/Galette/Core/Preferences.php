@@ -29,7 +29,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-14
  */
@@ -54,6 +53,91 @@ use Galette\Repository\Members;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-14
+ *
+ * @property string $pref_admin_login Super admin login
+ * @property string $pref_admin_pass Super admin password
+ * @property string $pref_nom Association name
+ * @property string $pref_slogan Association slogan
+ * @property string $pref_adresse Address
+ * @property string $pref_adresse2 Address continuation
+ * @property string $pref_cp Association zipcode
+ * @property string $pref_ville Association town
+ * @property string $pref_pays Country
+ * @property integer $pref_postal_adress Postal adress to use, one of self::POSTAL_ADDRESS*
+ * @property integer $pref_postal_staff_member Staff member ID from which retrieve postal address
+ * @property string $pref_lang Default instance language
+ * @property integer $pref_numrows Default number of rows in lists
+ * @property integer $pref_log History, one of self::LOG_*
+ * @property interger $pref_statut Default status for new members
+ * @property string $pref_email_nom
+ * @property string $pref_email
+ * @property string $pref_email_newadh
+ * @property boolean $pref_bool_mailadh
+ * @property boolean $pref_editor_enabled
+ * @property integer $pref_mail_method Mail method, see GaletteMail::METHOD_*
+ * @property string $pref_mail_smtp
+ * @property string $pref_mail_smtp_host
+ * @property boolean $pref_mail_smtp_auth
+ * @property boolean $pref_mail_smtp_secure
+ * @property integer $pref_mail_smtp_port
+ * @property string $pref_mail_smtp_user
+ * @property string $pref_mail_smtp_password
+ * @property integer $pref_membership_ext
+ * @property string $pref_beg_membership
+ * @property integer $pref_membership_offermonths
+ * @property string $pref_email_reply_to
+ * @property string $pref_website
+ * @property integer $pref_etiq_marges_v
+ * @property string $pref_etiq_marges_h
+ * @property string $pref_etiq_hspace
+ * @property string $pref_etiq_vspace
+ * @property string $pref_etiq_hsize
+ * @property string $pref_etiq_vsize
+ * @property string $pref_etiq_cols
+ * @property string $pref_etiq_rows
+ * @property string $pref_etiq_corps
+ * @property string $pref_card_abrev
+ * @property string $pref_card_strip
+ * @property string $pref_card_tcol
+ * @property string $pref_card_scol
+ * @property string $pref_card_bcol
+ * @property string $pref_card_hcol
+ * @property string $pref_bool_display_title
+ * @property integer $pref_card_address
+ * @property string $pref_card_year
+ * @property integer $pref_card_marges_v
+ * @property integer $pref_card_marges_h
+ * @property integer $pref_card_vspace
+ * @property integer $pref_card_hspace
+ * @property string $pref_card_self
+ * @property string $pref_theme Prefered theme
+ * @property boolean $pref_bool_publicpages
+ * @property integer $pref_publicpages_visibility
+ * @property boolean $pref_bool_selfsubscribe
+ * @property string $pref_googleplus
+ * @property string $pref_facebook
+ * @property string $pref_twitter
+ * @property string $pref_viadeo
+ * @property string $pref_linkedin
+ * @property string $pref_mail_sign
+ * @property string $pref_new_contrib_script
+ * @property boolean $pref_bool_wrap_mails
+ * @property string $pref_rss_url
+ * @property boolean $pref_show_id
+ * @property string $pref_adhesion_form
+ * @property boolean $pref_mail_allow_unsecure
+ * @property string $pref_instance_uuid
+ * @property string $pref_registration_uuid
+ * @property string $pref_telemetry_date
+ * @property string $pref_registration_date
+ * @property string $pref_footer
+ * @property integer $pref_filter_account
+ * @property string $pref_galette_url
+ * @property integer $pref_redirect_on_create
+ * @property integer $pref_password_length
+ * @property boolean $pref_password_blacklist
+ * @property integer $pref_password_strength
+ * @property-read string $vpref_email_newadh Comma separated list of mail senders
  */
 class Preferences
 {
@@ -61,24 +145,35 @@ class Preferences
     private $prefs;
     private $errors = [];
 
-    const TABLE = 'preferences';
-    const PK = 'nom_pref';
+    public const TABLE = 'preferences';
+    public const PK = 'nom_pref';
 
     /** Postal address will be the one given in the preferences */
-    const POSTAL_ADDRESS_FROM_PREFS = 0;
+    public const POSTAL_ADDRESS_FROM_PREFS = 0;
     /** Postal address will be the one of the selected staff member */
-    const POSTAL_ADDRESS_FROM_STAFF = 1;
+    public const POSTAL_ADDRESS_FROM_STAFF = 1;
 
     /** Public pages stuff */
     /** Public pages are publically visibles */
-    const PUBLIC_PAGES_VISIBILITY_PUBLIC = 0;
+    public const PUBLIC_PAGES_VISIBILITY_PUBLIC = 0;
     /** Public pages are visibles for up to date members only */
-    const PUBLIC_PAGES_VISIBILITY_RESTRICTED = 1;
+    public const PUBLIC_PAGES_VISIBILITY_RESTRICTED = 1;
     /** Public pages are visibles for admin and staff members only */
-    const PUBLIC_PAGES_VISIBILITY_PRIVATE = 2;
+    public const PUBLIC_PAGES_VISIBILITY_PRIVATE = 2;
 
-    const LOG_DISABLED = 0;
-    const LOG_ENABLED = 1;
+    public const LOG_DISABLED = 0;
+    public const LOG_ENABLED = 1;
+
+    /** No password strength */
+    public const PWD_NONE = 0;
+    /** Weak password strength */
+    public const PWD_WEAK = 1;
+    /** Medium password strength */
+    public const PWD_MEDIUM = 2;
+    /** Strong password strength */
+    public const PWD_STRONG = 3;
+    /** Very strong password strength */
+    public const PWD_VERY_STRONG = 4;
 
     private static $fields = array(
         'nom_pref',
@@ -101,7 +196,7 @@ class Preferences
         'pref_numrows'        =>    30,
         'pref_log'        =>    self::LOG_ENABLED,
         'pref_statut'        =>    Status::DEFAULT_STATUS,
-        /* Preferences for mails */
+        /* Preferences for emails */
         'pref_email_nom'    =>    'Galette',
         'pref_email'        =>    'mail@domain.com',
         'pref_email_newadh'    =>    'mail@domain.com',
@@ -117,6 +212,7 @@ class Preferences
         'pref_mail_smtp_password'   => '',
         'pref_membership_ext'    =>    12,
         'pref_beg_membership'    =>    '',
+        'pref_membership_offermonths' => 0,
         'pref_email_reply_to'    =>    '',
         'pref_website'        =>    '',
         /* Preferences for labels */
@@ -168,7 +264,11 @@ class Preferences
         'pref_footer' => '',
         'pref_filter_account' => Members::ALL_ACCOUNTS,
         'pref_galette_url' => '',
-        'pref_redirect_on_create' => Adherent::AFTER_ADD_DEFAULT
+        'pref_redirect_on_create' => Adherent::AFTER_ADD_DEFAULT,
+        /* Security related */
+        'pref_password_length' => 6,
+        'pref_password_blacklist' => false,
+        'pref_password_strength' => self::PWD_NONE
     );
 
     // flagging required fields
@@ -297,11 +397,11 @@ class Preferences
     /**
      * Set default preferences at install time
      *
-     * @param staing $lang      language selected at install screen
+     * @param string $lang      language selected at install screen
      * @param string $adm_login admin login entered at install time
      * @param string $adm_pass  admin password entered at install time
      *
-     * @return boolean|Exception
+     * @return boolean|\Exception
      */
     public function installInit($lang, $adm_login, $adm_pass)
     {
@@ -379,7 +479,7 @@ class Preferences
             if (isset($values[$fieldname])) {
                 $value = trim($values[$fieldname]);
             } else {
-                $value="";
+                $value = "";
             }
 
             // now, check validity
@@ -421,7 +521,7 @@ class Preferences
                     case 'pref_card_hspace':
                     case 'pref_card_vspace':
                         // prevent division by zero
-                        if ($fieldname=='pref_numrows' && $value=='0') {
+                        if ($fieldname == 'pref_numrows' && $value == '0') {
                             $value = '10';
                         }
                         if (!is_numeric($value) || $value < 0) {
@@ -430,7 +530,7 @@ class Preferences
                         break;
                     case 'pref_card_tcol':
                         // Set strip text color to white
-                        if (! preg_match("/#([0-9A-F]{6})/i", $value)) {
+                        if (!preg_match("/#([0-9A-F]{6})/i", $value)) {
                             $value = '#FFFFFF';
                         }
                         break;
@@ -449,8 +549,13 @@ class Preferences
                                 Analog::WARNING
                             );
                         } else {
-                            if (strlen($value) < 4) {
-                                $this->errors[] = _T("- The password must be of at least 4 characters!");
+                            $pwcheck = new \Galette\Util\Password($this);
+                            $pwcheck->addPersonalInformation(['pref_admin_login' => $this->pref_admin_login]);
+                            if (!$pwcheck->isValid($value)) {
+                                $this->errors = array_merge(
+                                    $this->errors,
+                                    $pwcheck->getErrors()
+                                );
                             }
                         }
                         break;
@@ -470,8 +575,13 @@ class Preferences
                             }
                         }
                         break;
+                    case 'pref_membership_offermonths':
+                        if (!is_numeric($value) || $value < 0) {
+                            $this->errors[] = _T("- Invalid number of offered months.");
+                        }
+                        break;
                     case 'pref_card_year':
-                        if (!preg_match('/^(?:\d{4}|\d{2})(\D?)(?:\d{4}|\d{2})$/', $value)) {
+                        if ($value !== 'DEADLINE' && !preg_match('/^(?:\d{4}|\d{2})(\D?)(?:\d{4}|\d{2})$/', $value)) {
                             $this->errors[] = _T("- Invalid year for cards.");
                         }
                         break;
@@ -482,37 +592,44 @@ class Preferences
         }
 
         // missing relations
-        if (GALETTE_MODE !== 'DEMO'
+        if (
+            GALETTE_MODE !== 'DEMO'
             && isset($insert_values['pref_mail_method'])
         ) {
             if ($insert_values['pref_mail_method'] > GaletteMail::METHOD_DISABLED) {
-                if (!isset($insert_values['pref_email_nom'])
+                if (
+                    !isset($insert_values['pref_email_nom'])
                     || $insert_values['pref_email_nom'] == ''
                 ) {
                     $this->errors[] = _T("- You must indicate a sender name for emails!");
                 }
-                if (!isset($insert_values['pref_email'])
+                if (
+                    !isset($insert_values['pref_email'])
                     || $insert_values['pref_email'] == ''
                 ) {
                     $this->errors[] = _T("- You must indicate an email address Galette should use to send emails!");
                 }
                 if ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP) {
-                    if (!isset($insert_values['pref_mail_smtp_host'])
+                    if (
+                        !isset($insert_values['pref_mail_smtp_host'])
                         || $insert_values['pref_mail_smtp_host'] == ''
                     ) {
                         $this->errors[] = _T("- You must indicate the SMTP server you want to use!");
                     }
                 }
-                if ($insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
+                if (
+                    $insert_values['pref_mail_method'] == GaletteMail::METHOD_GMAIL
                     || ($insert_values['pref_mail_method'] == GaletteMail::METHOD_SMTP
                     && $insert_values['pref_mail_smtp_auth'])
                 ) {
-                    if (!isset($insert_values['pref_mail_smtp_user'])
+                    if (
+                        !isset($insert_values['pref_mail_smtp_user'])
                         || trim($insert_values['pref_mail_smtp_user']) == ''
                     ) {
                         $this->errors[] = _T("- You must provide a login for SMTP authentication.");
                     }
-                    if (!isset($insert_values['pref_mail_smtp_password'])
+                    if (
+                        !isset($insert_values['pref_mail_smtp_password'])
                         || ($insert_values['pref_mail_smtp_password']) == ''
                     ) {
                         $this->errors[] = _T("- You must provide a password for SMTP authentication.");
@@ -521,12 +638,22 @@ class Preferences
             }
         }
 
-        if (isset($insert_values['pref_beg_membership'])
+        if (
+            isset($insert_values['pref_beg_membership'])
             && $insert_values['pref_beg_membership'] != ''
             && isset($insert_values['pref_membership_ext'])
             && $insert_values['pref_membership_ext'] != ''
         ) {
-            $this->errors[] =_T("- Default membership extention and beginning of membership are mutually exclusive.");
+            $this->errors[] = _T("- Default membership extention and beginning of membership are mutually exclusive.");
+        }
+
+        if (
+            isset($insert_values['pref_membership_offermonths'])
+            && (int)$insert_values['pref_membership_offermonths'] > 0
+            && isset($insert_values['pref_membership_ext'])
+            && $insert_values['pref_membership_ext'] != ''
+        ) {
+            $this->errors[] = _T("- Offering months is only compatible with beginning of membership.");
         }
 
         // missing required fields?
@@ -540,7 +667,7 @@ class Preferences
             }
         }
 
-        if (GALETTE_MODE !== 'DEMO') {
+        if (GALETTE_MODE !== 'DEMO' && isset($values['pref_admin_pass_check'])) {
             // Check passwords. Hash will be done into the Preferences class
             if (strcmp($insert_values['pref_admin_pass'], $values['pref_admin_pass_check']) != 0) {
                 $this->errors[] = _T("Passwords mismatch");
@@ -563,11 +690,13 @@ class Preferences
 
         // update preferences
         foreach ($insert_values as $champ => $valeur) {
-            if ($login->isSuperAdmin()
+            if (
+                $login->isSuperAdmin()
                 || (!$login->isSuperAdmin()
                 && ($champ != 'pref_admin_pass' && $champ != 'pref_admin_login'))
             ) {
-                if (($champ == "pref_admin_pass" && $_POST['pref_admin_pass'] !=  '')
+                if (
+                    ($champ == "pref_admin_pass" && $_POST['pref_admin_pass'] != '')
                     || ($champ != "pref_admin_pass")
                 ) {
                     $this->$champ = $valeur;
@@ -597,6 +726,12 @@ class Preferences
             $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
 
             foreach (self::$defaults as $k => $v) {
+                if (
+                    GALETTE_MODE == 'DEMO'
+                    && in_array($k, ['pref_admin_pass', 'pref_admin_login', 'pref_mail_method'])
+                ) {
+                    continue;
+                }
                 Analog::log('Storing ' . $k, Analog::DEBUG);
 
                 $value = $this->prefs[$k];
@@ -646,12 +781,12 @@ class Preferences
     public function getPostalAddress()
     {
         $regs = array(
-          '/%name/',
-          '/%complement/',
-          '/%address/',
-          '/%zip/',
-          '/%town/',
-          '/%country/',
+            '/%name/',
+            '/%complement/',
+            '/%address/',
+            '/%zip/',
+            '/%town/',
+            '/%country/',
         );
 
         $replacements = null;
@@ -724,7 +859,8 @@ class Preferences
                     break;
                 case self::PUBLIC_PAGES_VISIBILITY_RESTRICTED:
                     //pages should be displayed only for up to date members
-                    if ($login->isUp2Date()
+                    if (
+                        $login->isUp2Date()
                         || $login->isAdmin()
                         || $login->isStaff()
                     ) {
@@ -760,11 +896,12 @@ class Preferences
      */
     public function __get($name)
     {
-        $forbidden = array('logged', 'admin', 'active', 'defaults');
+        $forbidden = array('defaults');
         $virtuals = array('vpref_email_newadh');
 
         if (!in_array($name, $forbidden) && isset($this->prefs[$name])) {
-            if (GALETTE_MODE === 'DEMO'
+            if (
+                GALETTE_MODE === 'DEMO'
                 && $name == 'pref_mail_method'
             ) {
                 return GaletteMail::METHOD_DISABLED;
@@ -828,7 +965,8 @@ class Preferences
             return false;
         }
 
-        if ($name == 'pref_email'
+        if (
+            $name == 'pref_email'
             || $name == 'pref_email_newadh'
             || $name == 'pref_email_reply_to'
         ) {
@@ -841,7 +979,7 @@ class Preferences
             }
 
             //check emails validity
-            //may be a comma separated list of valid mails identifiers:
+            //may be a comma separated list of valid emails identifiers:
             //"The Name <mail@domain.com>,The Other <other@mail.com>" expect for reply_to.
             $addresses = [];
             if (trim($value) != '') {
@@ -853,7 +991,7 @@ class Preferences
             }
             foreach ($addresses as $address) {
                 if (!GaletteMail::isValidEmail($address)) {
-                    $msg =  str_replace('%s', $address, _T("Invalid E-Mail address: %s"));
+                    $msg = str_replace('%s', $address, _T("Invalid E-Mail address: %s"));
                     Analog::log($msg, Analog::WARNING);
                     $this->errors[] = $msg;
                 }

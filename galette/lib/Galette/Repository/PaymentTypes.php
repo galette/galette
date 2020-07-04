@@ -37,7 +37,7 @@
 namespace Galette\Repository;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Entity\PaymentType;
 
 /**
@@ -118,7 +118,7 @@ class PaymentTypes extends Repository
                 $result = $results->current();
                 $count = $result->counter;
                 if ($count == 0) {
-                    //if we got no values in texts table, let's proceed
+                    //if we got no values in table, let's proceed
                     $proceed = true;
                 } else {
                     if ($count < count($this->defaults)) {
@@ -183,11 +183,11 @@ class PaymentTypes extends Repository
                 }
             }
 
-            if (count($missing) >0) {
+            if (count($missing) > 0) {
                 $this->zdb->connection->beginTransaction();
                 $this->insert($ent::TABLE, $missing);
                 Analog::log(
-                    'Missing texts were successfully stored into database.',
+                    'Missing payment types were successfully stored into database.',
                     Analog::INFO
                 );
                 $this->zdb->connection->commit();

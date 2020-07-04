@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2017 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2017-05-20
  */
@@ -96,10 +95,11 @@ class DynamicFieldsSet
         if ($results) {
             foreach ($results as $r) {
                 $perm = $r['field_perm'];
-                if (($perm == DynamicField::PERM_MANAGER &&
+                if (
+                    ($perm == DynamicField::PERM_MANAGER &&
                         $access_level < Authentication::ACCESS_MANAGER) ||
                     ($perm == DynamicField::PERM_STAFF &&
-                         $access_level < Authentication::ACCESS_STAFF)   ||
+                         $access_level < Authentication::ACCESS_STAFF) ||
                     ($perm == DynamicField::PERM_ADMIN &&
                         $access_level < Authentication::ACCESS_ADMIN)
                 ) {

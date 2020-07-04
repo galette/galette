@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2019 The Galette Team
+ * Copyright © 2019-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   GaletteTests
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2019 The Galette Team
+ * @copyright 2019-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
@@ -37,7 +37,7 @@
 
 namespace Galette\Entity\test\units;
 
-use \atoum;
+use atoum;
 use Zend\Db\Adapter\Adapter;
 
 /**
@@ -57,7 +57,6 @@ class Texts extends atoum
     private $zdb;
     private $remove = [];
     private $i18n;
-    private $texts_fields;
     private $preferences;
 
     /**
@@ -76,8 +75,10 @@ class Texts extends atoum
         $this->preferences = new \Galette\Core\Preferences(
             $this->zdb
         );
-        include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
-        $this->texts_fields = $texts_fields;
+
+        global $zdb, $i18n; // globals :(
+        $zdb = $this->zdb;
+        $i18n = $this->i18n;
     }
 
     /**
@@ -87,17 +88,18 @@ class Texts extends atoum
      */
     public function testGetList()
     {
-        global $zdb;
-        $zdb = $this->zdb;
-
         $texts = new \Galette\Entity\Texts(
-            $this->texts_fields,
             $this->preferences
         );
         $texts->installInit();
 
         $list = $texts->getRefs(\Galette\Core\I18n::DEFAULT_LANG);
         $this->array($list)->hasSize(12);
+
+        foreach (array_keys($this->i18n->getArrayList()) as $lang) {
+            $list = $texts->getRefs($lang);
+            $this->array($list)->hasSize(12);
+        }
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select($texts::TABLE . '_id_seq');
@@ -116,7 +118,7 @@ class Texts extends atoum
         //reinstall texts
         $texts->installInit(false);
 
-        $list = $texts->getRefs('en_US');
+        $list = $texts->getRefs(\Galette\Core\I18n::DEFAULT_LANG);
         $this->array($list)->hasSize(12);
 
         if ($this->zdb->isPostgres()) {

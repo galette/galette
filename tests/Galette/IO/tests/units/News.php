@@ -37,7 +37,7 @@
 
 namespace Galette\IO\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * News tests class
@@ -53,6 +53,22 @@ use \atoum;
  */
 class News extends atoum
 {
+    private $i18n;
+
+    /**
+     * Set up tests
+     *
+     * @param string $testMethod Method name
+     *
+     * @return void
+     */
+    public function beforeTestMethod($testMethod)
+    {
+        $this->i18n = new \Galette\Core\I18n();
+        global $i18n;
+        $i18n = $this->i18n;
+    }
+
     /**
      * Test news loading
      *
@@ -63,7 +79,7 @@ class News extends atoum
         //ensure allow_url_fopen is on
         ini_set('allow_url_fopen', true);
         //load news without caching
-        $news = new \Galette\IO\News('http://galette.eu/dc/index.php/feed/atom', true);
+        $news = new \Galette\IO\News('https://galette.eu/site/feed.xml', true);
         $posts = $news->getPosts();
         $this->array($posts)
             ->size->isGreaterThan(0);
@@ -76,13 +92,14 @@ class News extends atoum
      */
     public function testCacheNews()
     {
-        $file = GALETTE_CACHE_DIR . md5('http://galette.eu/dc/index.php/feed/atom') . '.cache';
+        //will use default lang to build RSS URL
+        $file = GALETTE_CACHE_DIR . md5('https://galette.eu/site/fr/feed.xml') . '.cache';
 
         //ensure file does not exists
         $this->boolean(file_exists($file))->isFalse;
 
         //load news with caching
-        $news = new \Galette\IO\News('http://galette.eu/dc/index.php/feed/atom');
+        $news = new \Galette\IO\News('https://galette.eu/site/feed.xml');
 
         $posts = $news->getPosts();
         $this->array($posts)
@@ -106,7 +123,7 @@ class News extends atoum
         $touched = touch($file, $expired->getTimestamp());
         $this->boolean($touched)->isTrue;
 
-        $news = new \Galette\IO\News('http://galette.eu/dc/index.php/feed/atom');
+        $news = new \Galette\IO\News('https://galette.eu/site/feed.xml');
         $mnewdate = \DateTime::createFromFormat(
             $dformat,
             date(
@@ -131,7 +148,7 @@ class News extends atoum
     {
         $this->assert('News cannot be loaded')
             ->if($this->function->ini_get = 0)
-            ->given($news = new \Galette\IO\News('http://galette.eu/dc/index.php/feed/atom', true))
+            ->given($news = new \Galette\IO\News('https://galette.eu/site/feed.xml', true))
             ->then
                 ->array($news->getPosts())
                 ->hasSize(0);

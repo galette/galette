@@ -28,12 +28,11 @@
  * @category  Core
  * @package   Galette
  *
- * @author    Frédéric Jaqcuot <unknown@unknow.com>
+ * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2003-2016 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.9dev - 2016-11-08
  */
@@ -41,7 +40,7 @@
 namespace Galette\Core;
 
 use Analog\Analog;
-use Zend\Db\Adapter\Exception as AdapterException;
+use Laminas\Db\Adapter\Exception as AdapterException;
 use Galette\Entity\Adherent;
 
 /**
@@ -50,7 +49,7 @@ use Galette\Entity\Adherent;
  * @category  Core
  * @name      AbstractPassword
  * @package   Galette
- * @author    Frédéric Jaqcuot <unknown@unknow.com>
+ * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2009-2016 The Galette Team
@@ -77,7 +76,8 @@ abstract class AbstractPassword
      */
     public function makeRandomPassword($size = null)
     {
-        if ($size === null
+        if (
+            $size === null
             || trim($size) == ''
             || !is_int($size)
         ) {
@@ -85,7 +85,7 @@ abstract class AbstractPassword
         }
         $pass = '';
         $i = 0;
-        while ($i <= $size-1) {
+        while ($i <= $size - 1) {
             $num = mt_rand(0, 32) % 33;
             $pass .= substr($this->chars, $num, 1);
             $i++;

@@ -30,14 +30,13 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2018 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  */
 
 namespace Galette\Core;
 
 use Analog\Analog;
-use Zend\I18n\Translator\Translator as ZTranslator;
+use Laminas\I18n\Translator\Translator as ZTranslator;
 
 /**
  * Zend translator override
@@ -67,7 +66,7 @@ class Translator extends ZTranslator
     {
         $locale = ($locale ?: $this->getLocale());
 
-        if (! isset($this->messages[$textDomain][$locale])) {
+        if (!isset($this->messages[$textDomain][$locale])) {
             $this->loadMessages($textDomain, $locale);
         }
 

@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     0.73dev 2012-10-16
  */
@@ -56,22 +55,63 @@ use Galette\Repository\PaymentTypes;
  * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
+ *
+ * @property string $creation_date_begin
+ * @property string $creation_date_end
+ * @property string $modif_date_begin
+ * @property string $modif_date_end
+ * @property string $due_date_begin
+ * @property string $due_date_end
+ * @property string $birth_date_begin
+ * @property string $birth_date_end
+ * @property boolean $show_public_infos
+ * @property array|integer $status
+ * @property string $contrib_creation_date_begin
+ * @property string $contrib_creation_date_end
+ * @property string $contrib_begin_date_begin
+ * @property string $contrib_begin_date_end
+ * @property string $contrib_end_date_begin
+ * @property string $contrib_end_date_end
+ * @property array $contributions_types
+ * @property array $payments_types
+ * @property integer $contrib_min_amount
+ * @property integer $contrib_max_amount
+ * @property string $contrib_dynamic
+ * @property array $free_search
+ * @property array $groups_search
+ * @property integer $groups_search_log_op
+ *
+ * @property-read string $rcreation_date_begin
+ * @property-read string $rcreation_date_end
+ * @property-read string $rmodif_date_begin
+ * @property-read string $rmodif_date_end
+ * @property-read string $rdue_date_begin
+ * @property-read string $rdue_date_end
+ * @property-read string $rbirth_date_begin
+ * @property-read string $rbirth_date_end
+ * @property-read string $rcontrib_creation_date_begin
+ * @property-read string $rcontrib_creation_date_end
+ * @property-read string $rcontrib_begin_date_begin
+ * @property-read string $rcontrib_begin_date_end
+ * @property-read string $rcontrib_end_date_begin
+ * @property-read string $rcontrib_end_date_end
+ * @property-read array $search_fields
  */
 
 class AdvancedMembersList extends MembersList
 {
 
-    const OP_AND = 0;
-    const OP_OR = 1;
+    public const OP_AND = 0;
+    public const OP_OR = 1;
 
-    const OP_EQUALS = 0;
-    const OP_CONTAINS = 1;
-    const OP_NOT_EQUALS = 2;
-    const OP_NOT_CONTAINS = 3;
-    const OP_STARTS_WITH = 4;
-    const OP_ENDS_WITH = 5;
-    const OP_BEFORE = 6;
-    const OP_AFTER = 7;
+    public const OP_EQUALS = 0;
+    public const OP_CONTAINS = 1;
+    public const OP_NOT_EQUALS = 2;
+    public const OP_NOT_CONTAINS = 3;
+    public const OP_STARTS_WITH = 4;
+    public const OP_ENDS_WITH = 5;
+    public const OP_BEFORE = 6;
+    public const OP_AFTER = 7;
 
     private $_creation_date_begin;
     private $_creation_date_end;
@@ -116,7 +156,9 @@ class AdvancedMembersList extends MembersList
         'contrib_min_amount',
         'contrib_max_amount',
         'contrib_dynamic',
-        'free_search'
+        'free_search',
+        'groups_search',
+        'groups_search_log_op'
     );
 
     protected $virtuals_advancedmemberslist_fields = array(
@@ -147,6 +189,17 @@ class AdvancedMembersList extends MembersList
         )
     );
 
+    //an empty group search criteria to begin
+    private $_groups_search = array(
+        'empty' => array(
+            'group'    => '',
+        )
+    );
+
+    //defaults to 'OR' for group search
+    private $_groups_search_log_op = self::OP_OR;
+
+
     //an empty contributions dynamic field criteria to begin
     private $_contrib_dynamic = array();
 
@@ -175,7 +228,8 @@ class AdvancedMembersList extends MembersList
      */
     public function withinContributions()
     {
-        if ($this->_contrib_creation_date_begin != null
+        if (
+            $this->_contrib_creation_date_begin != null
             || $this->_contrib_creation_date_end != null
             || $this->_contrib_begin_date_begin != null
             || $this->_contrib_begin_date_end != null
@@ -232,6 +286,14 @@ class AdvancedMembersList extends MembersList
         );
 
         $this->_contrib_dynamic = array();
+
+        $this->_groups_search = array(
+            'empty' => array(
+                'group'     => '',
+            )
+        );
+
+        $this->_groups_search_log_op = self::OP_OR;
     }
 
     /**
@@ -249,12 +311,14 @@ class AdvancedMembersList extends MembersList
             Analog::DEBUG
         );
 
-        if (in_array($name, $this->pagination_fields)
+        if (
+            in_array($name, $this->pagination_fields)
             || in_array($name, $this->memberslist_fields)
         ) {
             return parent::__get($name);
         } else {
-            if (in_array($name, $this->advancedmemberslist_fields)
+            if (
+                in_array($name, $this->advancedmemberslist_fields)
                 || in_array($name, $this->virtuals_advancedmemberslist_fields)
             ) {
                 $rname = '_' . $name;
@@ -318,7 +382,7 @@ class AdvancedMembersList extends MembersList
                 return $this->$rname;
             } else {
                 Analog::log(
-                    '[AdvancedMembersList] Unable to get proprety `' .$name . '`',
+                    '[AdvancedMembersList] Unable to get proprety `' . $name . '`',
                     Analog::WARNING
                 );
             }
@@ -337,7 +401,8 @@ class AdvancedMembersList extends MembersList
     {
         global $zdb, $preferences, $login;
 
-        if (in_array($name, $this->pagination_fields)
+        if (
+            in_array($name, $this->pagination_fields)
             || in_array($name, $this->memberslist_fields)
         ) {
             parent::__set($name, $value);
@@ -387,7 +452,7 @@ class AdvancedMembersList extends MembersList
                     } else {
                         if ($value !== null) {
                             Analog::log(
-                                'Incorrect amount for ' . $name  . '! ' .
+                                'Incorrect amount for ' . $name . '! ' .
                                 'Should be a float (' . gettype($value) . ' given)',
                                 Analog::WARNING
                             );
@@ -426,7 +491,7 @@ class AdvancedMembersList extends MembersList
                         } else {
                             Analog::log(
                                 '[AdvancedMembersList] Value for status filter should be an '
-                                .'integer (' . gettype($v) . ' given',
+                                . 'integer (' . gettype($v) . ' given',
                                 Analog::WARNING
                             );
                         }
@@ -485,7 +550,7 @@ class AdvancedMembersList extends MembersList
                         } else {
                             Analog::log(
                                 '[AdvancedMembersList] Value for payment type filter should be an '
-                                .'integer (' . gettype($v) . ' given',
+                                . 'integer (' . gettype($v) . ' given',
                                 Analog::WARNING
                             );
                         }
@@ -543,13 +608,51 @@ class AdvancedMembersList extends MembersList
                     } else {
                         Analog::log(
                             '[AdvancedMembersList] Value for dynamic contribution fields filter should be an '
-                            .'array (' . gettype($v) . ' given',
+                            . 'array (' . gettype($value) . ' given',
+                            Analog::WARNING
+                        );
+                    }
+                    break;
+                case 'groups_search':
+                    if (isset($this->_groups_search['empty'])) {
+                        unset($this->_groups_search['empty']);
+                    }
+                    if (is_array($value)) {
+                        if (
+                            isset($value['group'])
+                            && isset($value['idx'])
+                        ) {
+                            $id = $value['idx'];
+                            unset($value['idx']);
+                            $this->_groups_search[$id] = $value;
+                        } else {
+                            Analog::log(
+                                '[AdvancedMembersList] bad construct for group filter',
+                                Analog::WARNING
+                            );
+                        }
+                    } else {
+                        Analog::log(
+                            '[AdvancedMembersList] Value for group filter should be an '
+                            . 'array (' . gettype($value) . ' given',
+                            Analog::WARNING
+                        );
+                    }
+                    break;
+                case 'groups_search_log_op':
+                    if ($value == self::OP_AND || $value == self::OP_OR) {
+                        $this->_groups_search_log_op = $value;
+                    } else {
+                        Analog::log(
+                            '[AdvancedMembersList] Value for group filter logical operator should be '
+                            . ' in [0,1] (' . gettype($value) . '-> ' . $value . ' given )',
                             Analog::WARNING
                         );
                     }
                     break;
                 default:
-                    if (substr($name, 0, 4) === 'cds_'
+                    if (
+                        substr($name, 0, 4) === 'cds_'
                         || substr($name, 0, 5) === 'cdsc_'
                     ) {
                         if (is_array($value) || trim($value) !== '') {
@@ -585,7 +688,7 @@ class AdvancedMembersList extends MembersList
         if (!is_array($data)) {
             Analog::log(
                 '[AdvancedMembersList] Value for free filter should be an '
-                .'array (' . gettype($data) . ' given',
+                . 'array (' . gettype($data) . ' given',
                 Analog::WARNING
             );
             return false;

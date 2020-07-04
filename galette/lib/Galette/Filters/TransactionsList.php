@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2016 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     june, 12th 2016
  */
@@ -56,9 +55,9 @@ use Galette\Core\Pagination;
 class TransactionsList extends Pagination
 {
 
-    const ORDERBY_DATE = 0;
-    const ORDERBY_MEMBER = 3;
-    const ORDERBY_AMOUNT = 5;
+    public const ORDERBY_DATE = 0;
+    public const ORDERBY_MEMBER = 3;
+    public const ORDERBY_AMOUNT = 5;
 
     //filters
     private $start_date_filter;
@@ -153,7 +152,7 @@ class TransactionsList extends Pagination
                 }
             } else {
                 Analog::log(
-                    '[TransactionsList] Unable to get proprety `' .$name . '`',
+                    '[TransactionsList] Unable to get proprety `' . $name . '`',
                     Analog::WARNING
                 );
             }
@@ -164,7 +163,7 @@ class TransactionsList extends Pagination
      * Global setter method
      *
      * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
+     * @param mixed  $value a relevant value for the property
      *
      * @return void
      */
@@ -200,7 +199,7 @@ class TransactionsList extends Pagination
                             }
 
                             $ym = \DateTime::createFromFormat(__("Y-m"), $value);
-                            if ($y === false && $ym  !== false) {
+                            if ($y === false && $ym !== false) {
                                 $day = 1;
                                 if ($name === 'end_date_filter') {
                                     $day = $ym->format('t');
@@ -214,7 +213,7 @@ class TransactionsList extends Pagination
                             }
 
                             $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
-                            if ($y === false && $ym  === false && $d !== false) {
+                            if ($y === false && $ym === false && $d !== false) {
                                 $this->$name = $d->format('Y-m-d');
                             }
 
@@ -249,7 +248,7 @@ class TransactionsList extends Pagination
                         }
                     } catch (\Exception $e) {
                         Analog::log(
-                            'Wrong date format. field: ' . $key .
+                            'Wrong date format. field: ' . $name .
                             ', value: ' . $value . ', expected fmt: ' .
                             __("Y-m-d") . ' | ' . $e->getMessage(),
                             Analog::INFO

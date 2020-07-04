@@ -30,15 +30,14 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8 - 2013-01-09
  */
 
 namespace Galette\Core;
 
-use \Analog\Analog;
-use Zend\Db\Adapter\Adapter;
+use Analog\Analog;
+use Laminas\Db\Adapter\Adapter;
 
 /**
  * Galette installation
@@ -164,7 +163,7 @@ class Install
         $img_name = ($arg === true) ? 'valid' : 'invalid';
         $src = GALETTE_THEME_DIR . 'images/icon-' . $img_name . '.png';
         $alt = ($arg === true) ? _T("Ok") : _T("Ko");
-        $img = '<img src="' . $src  . '" alt="' . $alt  . '"/>';
+        $img = '<img src="' . $src . '" alt="' . $alt . '"/>';
         return $img;
     }
 
@@ -222,7 +221,8 @@ class Install
     public function atPreviousStep()
     {
         if ($this->_step > 0) {
-            if ($this->_step -1 !== self::STEP_DB_INSTALL
+            if (
+                $this->_step - 1 !== self::STEP_DB_INSTALL
                 && $this->_step !== self::STEP_END
             ) {
                 if ($this->_step === self::STEP_DB_INSTALL) {
@@ -231,7 +231,7 @@ class Install
                     if ($this->_step === self::STEP_DB_UPGRADE) {
                         $this->setInstalledVersion(null);
                     }
-                    $this->_step = $this->_step -1;
+                    $this->_step = $this->_step - 1;
                 }
             } else {
                 $msg = null;
@@ -276,7 +276,7 @@ class Install
     }
 
     /**
-     * Set step to database informations
+     * Set step to database information
      *
      * @return void
      */
@@ -336,7 +336,7 @@ class Install
     }
 
     /**
-     * Set connection informations
+     * Set connection information
      *
      * @param string $host Database host
      * @param string $port Database port
@@ -594,11 +594,13 @@ class Install
                         }
                     }
                 }
-                if (preg_match(
-                    "/upgrade-to-(.*)-" . $db_type . ".sql/",
-                    $file,
-                    $ver
-                )) {
+                if (
+                    preg_match(
+                        "/upgrade-to-(.*)-" . $db_type . ".sql/",
+                        $file,
+                        $ver
+                    )
+                ) {
                     if ($version === null) {
                         $sql_update_scripts[$ver[1]] = $ver[1];
                     } else {
@@ -722,7 +724,8 @@ class Install
 
         $zdb->connection->beginTransaction();
 
-        for ($i = 0; $i < sizeof($sql_query); $i++) {
+        $sql_size = sizeof($sql_query);
+        for ($i = 0; $i < $sql_size; $i++) {
             $query = trim($sql_query[$i]);
             if ($query != '' && $query[0] != '-') {
                 //some output infos
@@ -741,7 +744,8 @@ class Install
                     $log_lvl = Analog::WARNING;
                     //if error are on drop, DROP, rename or RENAME we can continue
                     $parts = explode(' ', $query, 1);
-                    if ((strcasecmp(trim($parts[0]), 'drop') != 0)
+                    if (
+                        (strcasecmp(trim($parts[0]), 'drop') != 0)
                         && (strcasecmp(trim($parts[0]), 'rename') != 0)
                     ) {
                         $log_lvl = Analog::ERROR;
@@ -793,7 +797,7 @@ class Install
     }
 
     /**
-     * Set step to super admin informations
+     * Set step to super admin information
      *
      * @return void
      */
@@ -803,7 +807,7 @@ class Install
     }
 
     /**
-     * Are we at super admin informations step?
+     * Are we at super admin information step?
      *
      * @return boolean
      */
@@ -813,7 +817,7 @@ class Install
     }
 
     /**
-     * Set super administrator informations
+     * Set super administrator information
      *
      * @param string $login Login
      * @param string $pass  Password
@@ -883,7 +887,8 @@ class Install
                 $this->setDbType($existing['db_type'], $error_detected);
             }
 
-            if ($existing['db_host'] !== null
+            if (
+                $existing['db_host'] !== null
                 || $existing['db_user'] !== null
                 || $existing['db_name'] !== null
             ) {
@@ -1021,7 +1026,8 @@ class Install
         //if config file is already up-to-date, nothing to write
         $existing = $this->loadExistingConfigFile(array(), true);
 
-        if (isset($existing['db_type'])
+        if (
+            isset($existing['db_type'])
             && $existing['db_type'] == $this->_db_type
             && isset($existing['db_host'])
             && $existing['db_host'] == $this->_db_host
@@ -1030,11 +1036,11 @@ class Install
             && isset($existing['db_user'])
             && $existing['db_user'] == $this->_db_user
             && isset($existing['pwd_db'])
-            && $existing['pwd_db']  == $this->_db_pass
+            && $existing['pwd_db'] == $this->_db_pass
             && isset($existing['db_name'])
             && $existing['db_name'] == $this->_db_name
             && isset($existing['prefix'])
-            && $existing['prefix']  == $this->_db_prefix
+            && $existing['prefix'] == $this->_db_prefix
         ) {
             Analog::log(
                 'Config file is already up-to-date, nothing to do.',
@@ -1049,7 +1055,8 @@ class Install
         }
 
         $conffile = GALETTE_CONFIG_PATH . 'config.inc.php';
-        if (is_writable(GALETTE_CONFIG_PATH)
+        if (
+            is_writable(GALETTE_CONFIG_PATH)
             && (!file_exists($conffile) || file_exists($conffile) && is_writable($conffile))
             && $fd = @fopen($conffile, 'w')
         ) {
@@ -1105,8 +1112,7 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
                 true
             );
             //$fc = new \Galette\Entity\FieldsCategories();
-            include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
-            $texts = new \Galette\Entity\Texts($texts_fields, $preferences);
+            $texts = new \Galette\Entity\Texts($preferences);
             $titles = new \Galette\Repository\Titles();
 
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, $login);
@@ -1154,6 +1160,11 @@ define('PREFIX_DB', '" . $this->_db_prefix . "');
             $models = new \Galette\Repository\PdfModels($zdb, $preferences, new Login($zdb, $i18n, new \RKA\Session()));
             $res = $models->installInit(true);
             $this->proceedReport(_T("Update models"), true);
+
+            $texts = new \Galette\Entity\Texts($preferences);
+            $res = $texts->installInit(true);
+            $this->proceedReport(_T("Mails texts"), true);
+
             return true;
         }
     }

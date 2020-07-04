@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-11-11
  */
@@ -59,6 +58,11 @@ class News
     private $cache_timeout = 24;
     private $feed_url = null;
     private $posts = [];
+    private $stream_opts = [
+        'http' => [
+            'timeout' => 5
+        ]
+    ];
 
     /**
      * Default constructor
@@ -68,7 +72,7 @@ class News
      */
     public function __construct($url, $nocache = false)
     {
-        $this->feed_url = $url;
+        $this->feed_url = $this->getFeedURL($url);
 
         //only if cache should be used
         if ($nocache === false && GALETTE_MODE !== 'DEV') {
@@ -169,7 +173,7 @@ class News
      */
     private function getCacheFilename()
     {
-        return GALETTE_CACHE_DIR .str_replace(
+        return GALETTE_CACHE_DIR . str_replace(
             '%feed',
             md5($this->feed_url),
             $this->cache_filename
@@ -190,12 +194,7 @@ class News
                 );
             }
 
-            $opts = [
-                'http' => [
-                    'timeout' => 5
-                ]
-            ];
-            $context = stream_context_create($opts);
+            $context = stream_context_create($this->stream_opts);
             $data = file_get_contents($this->feed_url, false, $context);
             if (!$data) {
                 throw new \Exception();
@@ -240,7 +239,7 @@ class News
             $this->posts = $posts;
         } catch (\Exception $e) {
             Analog::log(
-                'Unable to load feed from "' . $this->feed_url  .
+                'Unable to load feed from "' . $this->feed_url .
                 '" :( | ' . $e->getMessage(),
                 Analog::ERROR
             );
@@ -256,5 +255,36 @@ class News
     public function getPosts()
     {
         return $this->posts;
+    }
+
+    /**
+     * Get feed url, handle Galette website to check available langs
+     *
+     * @param string $url Requested URL
+     *
+     * @return string
+     */
+    public function getFeedURL($url)
+    {
+        global $i18n;
+
+        if (strpos($url, 'galette.eu') !== false || trim($url) == '') {
+            $url = 'https://galette.eu/site';
+        } elseif (strpos($url, 'localhost:4000') !== false) {
+            $url = 'http://localhost:4000/site';
+        } else {
+            return $url;
+        }
+
+        $galette_website_langs = $url . '/langs.json';
+        $context = stream_context_create($this->stream_opts);
+        $langs = json_decode(file_get_contents($galette_website_langs, false, $context));
+
+        if ($i18n->getAbbrev() != 'en' && in_array($i18n->getAbbrev(), $langs)) {
+            $url .= '/' . $i18n->getAbbrev();
+        }
+        $url .= '/feed.xml';
+
+        return $url;
     }
 }

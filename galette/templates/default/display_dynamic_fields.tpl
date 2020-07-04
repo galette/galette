@@ -13,7 +13,11 @@
             {foreach from=$object->getDynamicFields()->getValues($field->getId()) item=field_data}
                 {assign var=value value=$field_data.field_val}
                 {if $field|is_a:'Galette\DynamicFields\Choice'}
-                    {assign var=value value=$field_data.text_val}
+                    {if isset($field_data.text_val)}
+                        {assign var=value value=$field_data.text_val}
+                    {else}
+                        {assign var=value value=""}
+                    {/if}
                 {/if}
                 {if not $field_data@first}<br />{/if}
                 {if GaletteMail::isValidEmail($value)}

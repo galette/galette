@@ -22,7 +22,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2007-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2007-10-06
  */
@@ -207,11 +206,11 @@ $(function() {
         $(this).html('<a href="#">' + $(this).text() + '</a>');
     });
 
-    if( $('#menu').size() > 0 ) {
+    if( $('#menu').length > 0 ) {
         $('#menu').accordion({
             header: 'h1:not(#logo)',
             heightStyle: 'content',
-            active: $('#menu ul li[class*="selected"]').parent('ul').prevAll('ul').size()
+            active: $('#menu ul li[class*="selected"]').parent('ul').prevAll('ul').length
         });
     }
 
@@ -222,7 +221,6 @@ $(function() {
             }
         }
     });
-    $('.selected').addClass('ui-state-disabled');
 
     if ( $('#back2top').length > 0 ) {
         if (!$('#wrapper').scrollTop() && !$('html').scrollTop() ) {
@@ -253,8 +251,7 @@ $(function() {
         event.preventDefault();
         var _this = $(this);
         var _open = _this.attr('aria-expanded');
-        _this.attr('aria-expanded', !open);
-        console.log(_open);
+        _this.attr('aria-expanded', !_open);
         _langs.toggle();
     });
 });

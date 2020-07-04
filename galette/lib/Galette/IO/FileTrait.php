@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8.1 - 2014-09-18
  */
@@ -92,22 +91,22 @@ trait FileTrait
         'xslt'      => 'application/xslt+xml',
         'xsl'       => 'application/xml',
         'dtd'       => 'application/xml-dtd',
-        'atom'      =>'application/atom+xml',
-        'mathml'    =>'application/mathml+xml',
-        'rdf'       =>'application/rdf+xml',
-        'smi'       =>'application/smil',
-        'smil'      =>'application/smil',
-        'vxml'      =>'application/voicexml+xml',
-        'latex'     =>'application/x-latex',
-        'tcl'       =>'application/x-tcl',
-        'tex'       =>'application/x-tex',
-        'texinfo'   =>'application/x-texinfo',
-        'wrl'       =>'model/vrml',
-        'wrml'      =>'model/vrml',
-        'ics'       =>'text/calendar',
-        'ifb'       =>'text/calendar',
-        'sgml'      =>'text/sgml',
-        'htc'       =>'text/x-component',
+        'atom'      => 'application/atom+xml',
+        'mathml'    => 'application/mathml+xml',
+        'rdf'       => 'application/rdf+xml',
+        'smi'       => 'application/smil',
+        'smil'      => 'application/smil',
+        'vxml'      => 'application/voicexml+xml',
+        'latex'     => 'application/x-latex',
+        'tcl'       => 'application/x-tcl',
+        'tex'       => 'application/x-tex',
+        'texinfo'   => 'application/x-texinfo',
+        'wrl'       => 'model/vrml',
+        'wrml'      => 'model/vrml',
+        'ics'       => 'text/calendar',
+        'ifb'       => 'text/calendar',
+        'sgml'      => 'text/sgml',
+        'htc'       => 'text/x-component',
         'pgp'       => 'application/pgp-signature',
         'rtf'       => 'application/rtf',
         // images
@@ -271,7 +270,7 @@ trait FileTrait
                 $err_msg .= 'Invalid extension for file ' . $this->name . '.';
                 $ret = self::INVALID_EXTENSION;
             } else {
-                $err_msg = 'Invalid filename `' . $this->name  . '` (Tip: ';
+                $err_msg = 'Invalid filename `' . $this->name . '` (Tip: ';
                 $err_msg .= preg_replace(
                     '|%s|',
                     htmlentities($this->getBadChars()),
@@ -290,8 +289,8 @@ trait FileTrait
         //Second, let's check file size
         if ($file['size'] > ($this->maxlenght * 1024)) {
             Analog::log(
-                '[' . $class . '] File is too big (' . ( $file['size'] * 1024 ) .
-                'Ko for maximum authorized ' . ( $this->maxlenght * 1024 ) .
+                '[' . $class . '] File is too big (' . ($file['size'] * 1024) .
+                'Ko for maximum authorized ' . ($this->maxlenght * 1024) .
                 'Ko',
                 Analog::ERROR
             );
@@ -302,7 +301,8 @@ trait FileTrait
 
         $mime = $this->getMimeType($tmpfile);
 
-        if (count($this->allowed_mimes) > 0
+        if (
+            count($this->allowed_mimes) > 0
             && !in_array($mime, $this->allowed_mimes)
         ) {
             Analog::log(
@@ -445,7 +445,8 @@ trait FileTrait
                 '[' . $class . '] Search from extension ',
                 Analog::DEBUG
             );
-            $ext = strtolower(array_pop(explode('.', $file)));
+            $exploded = explode('.', $file);
+            $ext = strtolower(array_pop($exploded));
             Analog::log(
                 '[' . $class . '] Extension : ' . $ext,
                 Analog::DEBUG
@@ -458,7 +459,7 @@ trait FileTrait
         }
 
         Analog::log(
-            '[' . $class . '] Found mimetype : ' . $mime . ' for file ' .  $file,
+            '[' . $class . '] Found mimetype : ' . $mime . ' for file ' . $file,
             Analog::INFO
         );
         return $mime;

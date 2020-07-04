@@ -40,7 +40,7 @@ use Galette\Core;
 use Galette\Core\Db;
 use Galette\Repository\PaymentTypes;
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 
 /**
  * Payment type
@@ -261,7 +261,7 @@ class PaymentType
                 break;
             default:
                 Analog::log(
-                    'Unable to set property ' .$name,
+                    'Unable to set property ' . $name,
                     Analog::WARNING
                 );
                 break;

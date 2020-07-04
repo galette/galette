@@ -351,6 +351,7 @@ CREATE TABLE galette_texts (
   tcomment character varying(64) NOT NULL,
   PRIMARY KEY (tid)
 );
+CREATE UNIQUE INDEX galette_texts_localizedtxt_idx ON galette_texts (tref, tlang);
 
 DROP TABLE IF EXISTS galette_fields_categories CASCADE;
 CREATE TABLE galette_fields_categories (
@@ -368,6 +369,8 @@ CREATE TABLE galette_fields_config (
   required boolean NOT NULL,
   visible integer NOT NULL,
   position integer NOT NULL,
+  list_visible boolean NOT NULL,
+  list_position integer NOT NULL,
   id_field_category integer REFERENCES galette_fields_categories ON DELETE RESTRICT ON UPDATE CASCADE,
   PRIMARY KEY (table_name, field_id)
 );
@@ -465,10 +468,19 @@ CREATE TABLE galette_searches (
 -- add index on table to look for existing searches
 CREATE INDEX galette_searches_idx ON galette_searches (form, parameters_sum, id_adh);
 
+-- new table for temporary links
+DROP TABLE IF EXISTS galette_tmplinks;
+CREATE TABLE galette_tmplinks (
+  hash character varying(60) NOT NULL,
+  target smallint NOT NULL,
+  id integer NOT NULL,
+  creation_date timestamp NOT NULL,
+  PRIMARY KEY (target, id)
+);
 
 -- table for database version
 DROP TABLE IF EXISTS galette_database;
 CREATE TABLE galette_database (
   version decimal NOT NULL
 );
-INSERT INTO galette_database (version) VALUES(0.931);
+INSERT INTO galette_database (version) VALUES(0.94);

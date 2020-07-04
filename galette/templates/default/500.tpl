@@ -5,7 +5,7 @@
     <div id="errorbox">
         <h2>{_T string="Application error"}</h2>
     </div>
-    {if $login->isLogged() and $login->isAdmin() and $GALETTE_DISPLAY_ERRORS eq 1 or $GALETTE_MODE eq 'DEV'}
+    {if $login->isLogged() and $login->isAdmin() and ($GALETTE_DISPLAY_ERRORS eq 1 or $GALETTE_MODE eq 'DEV')}
         {function name=render_ex}
     <div>
         <h3>{_T string="Details"}</h3>

@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-11
  */
@@ -38,7 +37,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Core\GaletteMail;
 use Galette\Entity\Texts;
 use Galette\Core\Db;
@@ -144,7 +143,7 @@ class Reminder
             $this->comment = $rs->reminder_comment;
         } catch (\Exception $e) {
             Analog::log(
-                __METHOD__ . ': incorrect ResultSet. Error: ' .$e->getMessage(),
+                __METHOD__ . ': incorrect ResultSet. Error: ' . $e->getMessage(),
                 Analog::ERROR
             );
             Analog::log(
@@ -206,7 +205,7 @@ class Reminder
     }
 
     /**
-     * Did member had a mail when reminder was sent?
+     * Did member had an email when reminder was sent?
      *
      * @return boolean
      */
@@ -269,18 +268,18 @@ class Reminder
                 $this->success = true;
                 $msg = '';
                 if ($type_name == 'late') {
-                    $msg = _T("Sent reminder mail for late membership");
+                    $msg = _T("Sent reminder email for late membership");
                 } else {
-                    $msg = _T("Sent reminder mail for impending membership");
+                    $msg = _T("Sent reminder email for impending membership");
                 }
                 $this->msg = $details;
                 $hist->add($msg, $details);
             } else {
                 $this->success = false;
                 if ($type_name == 'late') {
-                    $msg = _T("A problem happened while sending late membership mail");
+                    $msg = _T("A problem happened while sending late membership email");
                 } else {
-                    $msg = _T("A problem happened while sending impending membership mail");
+                    $msg = _T("A problem happened while sending impending membership email");
                 }
                 $this->msg = $details;
                 $hist->add($str, $details);
@@ -291,7 +290,7 @@ class Reminder
             $str = str_replace(
                 '%membership',
                 $type_name,
-                _T("Unable to send %membership reminder (no mail address).")
+                _T("Unable to send %membership reminder (no email address).")
             );
             $details = str_replace(
                 array(
@@ -358,7 +357,8 @@ class Reminder
     {
         switch ($name) {
             case 'type':
-                if ($value === self::IMPENDING
+                if (
+                    $value === self::IMPENDING
                     || $value === self::LATE
                 ) {
                     $this->type = $value;
@@ -379,7 +379,7 @@ class Reminder
                         $this->nomail = false;
                     }
                     if ($this->type === self::LATE) {
-                        $this->replaces['days_expired'] = $value->days_remaining *-1;
+                        $this->replaces['days_expired'] = $value->days_remaining * -1;
                     }
                     if ($this->type === self::IMPENDING) {
                         $this->replaces['days_remaining'] = $value->days_remaining;
@@ -398,7 +398,7 @@ class Reminder
                 break;
             default:
                 Analog::log(
-                    'Unable to set property ' .$name,
+                    'Unable to set property ' . $name,
                     Analog::WARNING
                 );
                 break;

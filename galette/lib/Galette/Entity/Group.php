@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2012-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2012-01-17
  */
@@ -39,7 +38,7 @@ namespace Galette\Entity;
 
 use Galette\Core\Login;
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 
 /**
  * Group entity
@@ -337,7 +336,7 @@ class Group
             } else {
                 Analog::log(
                     'Unable to delete group ' . $this->group_name .
-                    ' (' . $this->id  . ') |' . $e->getMessage(),
+                    ' (' . $this->id . ') |' . $e->getMessage(),
                     Analog::ERROR
                 );
             }
@@ -380,7 +379,7 @@ class Group
                 $this->parent_group = null;
                 $hist->add(
                     _T("Group has been detached from its parent"),
-                    strtoupper($this->group_name)
+                    $this->group_name
                 );
             }
 
@@ -427,11 +426,11 @@ class Group
                 $add = $zdb->execute($insert);
                 if ($add->count() > 0) {
                     if ($zdb->isPostgres()) {
-                        $this->id = $zdb->driver->getLastGeneratedValue(
+                        $this->id = (int)$zdb->driver->getLastGeneratedValue(
                             PREFIX_DB . 'groups_id_seq'
                         );
                     } else {
-                        $this->id = $zdb->driver->getLastGeneratedValue();
+                        $this->id = (int)$zdb->driver->getLastGeneratedValue();
                     }
 
                     // logging
@@ -460,7 +459,7 @@ class Group
                 if ($edit->count() > 0) {
                     $hist->add(
                         _T("Group updated"),
-                        strtoupper($this->group_name)
+                        $this->group_name
                     );
                 }
                 return true;
@@ -518,7 +517,7 @@ class Group
     public function getLevel()
     {
         if ($this->parent_group) {
-            return $this->parent_group->getLevel()+1;
+            return $this->parent_group->getLevel() + 1;
         }
         return 0;
     }
@@ -531,7 +530,7 @@ class Group
     public function getFullName()
     {
         if ($this->parent_group) {
-            return $this->parent_group->getFullName().' / '.$this->group_name;
+            return $this->parent_group->getFullName() . ' / ' . $this->group_name;
         }
         return $this->group_name;
     }
@@ -544,7 +543,7 @@ class Group
     public function getIndentName()
     {
         if (($level = $this->getLevel())) {
-            return str_repeat("&nbsp;", 3*$level).'&raquo; '.$this->group_name;
+            return str_repeat("&nbsp;", 3 * $level) . '&raquo; ' . $this->group_name;
         }
         return $this->group_name;
     }
@@ -652,11 +651,12 @@ class Group
      *
      * @param string $name Group name
      *
-     * @return void
+     * @return Group
      */
     public function setName($name)
     {
         $this->group_name = $name;
+        return $this;
     }
 
     /**
@@ -664,11 +664,12 @@ class Group
      *
      * @param array $groups Groups id
      *
-     * @return void
+     * @return Group
      */
     public function setSubgroups($groups)
     {
         $this->groups = $groups;
+        return $this;
     }
 
     /**
@@ -694,24 +695,24 @@ class Group
      *
      * @param int $id Parent group identifier
      *
-     * @return void
+     * @return Group
      */
     public function setParentGroup($id)
     {
         $group = new Group((int)$id);
-        $tmpname = $group->getName();
 
         if (!$this->canSetParentGroup($group)) {
+            //does not seem to work :/
             throw new \Exception(
                 sprintf(
-                    _T("Group `%1$s` is a child of `%2$s`, cannot be set as parent!"),
-                    $tmpname,
-                    $this->getName()
+                    _T('Group `%1$s` cannot be set as parent!'),
+                    $group->getName()
                 )
             );
         }
 
         $this->parent_group = $group;
+        return $this;
     }
 
     /**
@@ -770,7 +771,7 @@ class Group
                         Analog::log(
                             'An error occurred trying to attach member `' .
                             $m->sname . '` to group `' . $this->group_name .
-                            '` ('  . $this->id . ').',
+                            '` (' . $this->id . ').',
                             Analog::ERROR
                         );
                         throw new \Exception(
@@ -860,7 +861,7 @@ class Group
                         Analog::log(
                             'An error occurred trying to attach manager `' .
                             $m->sname . '` to group `' . $this->group_name .
-                            '` ('  . $this->id . ').',
+                            '` (' . $this->id . ').',
                             Analog::ERROR
                         );
                         throw new \Exception(

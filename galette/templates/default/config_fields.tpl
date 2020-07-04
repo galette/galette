@@ -6,12 +6,11 @@
     </p>
     <form action="{path_for name="configureCoreFields"}" method="post" id="config_fields_form">
     <div id="members_tab">
-        {*<a href="#" title="{_T string="Add a new category"}" id="add_category">{_T string="Add new category"}</a>*}
 {foreach item=category from=$categories name=categories_list}
         <fieldset class="cssform large" id="cat_{$smarty.foreach.categories_list.iteration}">
     {assign var='catname' value=$category->category}
             <input type="hidden" name="categories[]" id="category{$smarty.foreach.categories_list.iteration}" value="{$category->id_field_category}"/>
-            <legend class="ui-state-active ui-corner-top">{_T string="$catname"}</legend>
+            <legend class="ui-state-active ui-corner-top">{_T string=$catname}</legend>
             <ul id="sortable_{$smarty.foreach.categories_list.iteration}" class="fields_list connectedSortable">
                 <li class="listing ">
                     <span class="label">{_T string="Field name"}</span>

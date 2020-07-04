@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2011-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-07-31
  */
@@ -38,7 +37,7 @@
 namespace Galette\Entity;
 
 use Analog\Analog;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 use Galette\Repository\Contributions;
 use Galette\Core\Db;
 use Galette\Core\History;
@@ -155,7 +154,7 @@ class Transaction
                 $this->loadFromRS($result);
                 return true;
             } else {
-                throw new \Exception;
+                throw new \Exception();
             }
         } catch (\Exception $e) {
             Analog::log(
@@ -177,6 +176,8 @@ class Transaction
      */
     public function remove(History $hist, $transaction = true)
     {
+        global $emitter;
+
         try {
             if ($transaction) {
                 $this->zdb->connection->beginTransaction();
@@ -205,6 +206,7 @@ class Transaction
             if ($transaction) {
                 $this->zdb->connection->commit();
             }
+            $emitter->emit('transaction.remove', $this);
             return true;
         } catch (\Exception $e) {
             if ($transaction) {
@@ -299,7 +301,7 @@ class Transaction
                             }
                             break;
                         case Adherent::PK:
-                            $this->_member = $value;
+                            $this->_member = (int)$value;
                             break;
                         case 'trans_amount':
                             $this->_amount = $value;
@@ -329,7 +331,7 @@ class Transaction
                 if (!isset($disabled[$key]) && !isset($this->$prop)) {
                     $this->errors[] = str_replace(
                         '%field',
-                        '<a href="#' . $key . '">' . $this->getFieldLabel($key) .'</a>',
+                        '<a href="#' . $key . '">' . $this->getFieldLabel($key) . '</a>',
                         _T("- Mandatory field %field empty.")
                     );
                 }
@@ -370,6 +372,8 @@ class Transaction
      */
     public function store(History $hist)
     {
+        global $emitter;
+
         try {
             $this->zdb->connection->beginTransaction();
             $values = array();
@@ -402,6 +406,8 @@ class Transaction
                         Adherent::getSName($this->zdb, $this->_member)
                     );
                     $success = true;
+
+                    $emitter->emit('transaction.add', $this);
                 } else {
                     $hist->add(_T("Fail to add new transaction."));
                     throw new \Exception(
@@ -424,6 +430,8 @@ class Transaction
                     );
                 }
                 $success = true;
+
+                $emitter->emit('transaction.edit', $this);
             }
 
             //dynamic fields
@@ -524,9 +532,8 @@ class Transaction
      */
     public function getRowClass()
     {
-        return ( $this->getMissingAmount() == 0 ) ?
-            'transaction-normal' :
-            'transaction-uncomplete';
+        return ($this->getMissingAmount() == 0) ?
+            'transaction-normal' : 'transaction-uncomplete';
     }
 
     /**

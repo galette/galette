@@ -27,11 +27,10 @@
  * @category  Core
  * @package   Galette
  *
- * @author    Frédéric Jaqcuot <unknown@unknow.com>
+ * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2006-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  */
 
@@ -49,7 +48,7 @@ use Galette\IO\FileTrait;
  * @name Picture
  * @category  Core
  * @package   Galette
- * @author    Frédéric Jaqcuot <unknown@unknow.com>
+ * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2006-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
@@ -290,16 +289,26 @@ class Picture implements FileInterface
     }
 
     /**
+     * Get image file contents
+     *
+     * @return mixed
+     */
+    public function getContents()
+    {
+        readfile($this->file_path);
+    }
+
+    /**
      * Set header and displays the picture.
      *
      * @return object the binary file
      */
     public function display()
     {
-        header('Content-type: '.$this->mime);
+        header('Content-type: ' . $this->mime);
         ob_clean();
         flush();
-        readfile($this->file_path);
+        $this->getContents();
     }
 
     /**
@@ -430,7 +439,7 @@ class Picture implements FileInterface
                 $err_msg .= 'Invalid extension for file ' . $name . '.';
                 $ret = self::INVALID_EXTENSION;
             } else {
-                $err_msg = 'Invalid filename `' . $name  . '` (Tip: ';
+                $err_msg = 'Invalid filename `' . $name . '` (Tip: ';
                 $err_msg .= preg_replace(
                     '|%s|',
                     htmlentities($this->getBadChars()),
@@ -447,10 +456,10 @@ class Picture implements FileInterface
         }
 
         //Second, let's check file size
-        if ($file['size'] > ( $this->maxlenght * 1024 )) {
+        if ($file['size'] > ($this->maxlenght * 1024)) {
             Analog::log(
-                '[' . $class . '] File is too big (' . ( $file['size'] * 1024 ) .
-                'Ko for maximum authorized ' . ( $this->maxlenght * 1024 ) .
+                '[' . $class . '] File is too big (' . ($file['size'] * 1024) .
+                'Ko for maximum authorized ' . ($this->maxlenght * 1024) .
                 'Ko',
                 Analog::ERROR
             );
@@ -508,7 +517,7 @@ class Picture implements FileInterface
     {
         $f = fopen($file, 'r');
         $picture = '';
-        while ($r=fread($f, 8192)) {
+        while ($r = fread($f, 8192)) {
             $picture .= $r;
         }
         fclose($f);
@@ -713,10 +722,10 @@ class Picture implements FileInterface
             $ratio = $cur_width / $cur_height;
 
             // calculate image size according to ratio
-            if ($cur_width>$cur_height) {
-                $h = $w/$ratio;
+            if ($cur_width > $cur_height) {
+                $h = $w / $ratio;
             } else {
-                $w = $h*$ratio;
+                $w = $h * $ratio;
             }
 
             $thumb = imagecreatetruecolor($w, $h);

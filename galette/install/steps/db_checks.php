@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8 - 2013-01-11
  */
@@ -239,7 +238,7 @@ if (!isset($install_plugin)) {
 ?>
             <form action="installer.php" method="POST">
                 <p id="btn_box">
-                    <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"<?php if (!$conndb_ok || !$permsdb_ok) { echo ' disabled="disabled"';  } ?>/>
+                    <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"<?php if (!$conndb_ok || !$permsdb_ok) { echo ' disabled="disabled"'; } ?>/>
 <?php
 if ($conndb_ok && $permsdb_ok) {
     ?>

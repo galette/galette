@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2009-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7 - 2009-03-09
  */
@@ -110,7 +109,8 @@ class Plugins
                 if ($entry != '.' && $entry != '..' && is_dir($full_entry)) {
                     $this->id = $entry;
                     $this->mroot = $full_entry;
-                    if (!file_exists($full_entry . '/_define.php')
+                    if (
+                        !file_exists($full_entry . '/_define.php')
                         || !file_exists($full_entry . '/_routes.php')
                     ) {
                         //plugin is not compatible with that version of galette.
@@ -120,16 +120,16 @@ class Plugins
                             Analog::WARNING
                         );
                         $this->setDisabled(self::DISABLED_MISS);
-                    } elseif (!file_exists($full_entry.'/_disabled')) {
+                    } elseif (!file_exists($full_entry . '/_disabled')) {
                         include $full_entry . '/_define.php';
                         $this->id = null;
                         $this->mroot = null;
                         if ($this->autoload == true) {
                             //set autoloader to PluginName.
-                            if (file_exists($full_entry . '/lib')) {
+                            if (file_exists($full_entry . '/lib') && isset($this->modules[$entry])) {
                                 $varname = $entry . 'Loader';
                                 $$varname = new ClassLoader(
-                                    str_replace(' ', '', $this->modules[$entry]['name']),
+                                    $this->getNamespace($entry),
                                     $full_entry . '/lib'
                                 );
                                 $$varname->register();
@@ -174,6 +174,7 @@ class Plugins
         foreach ($this->modules as $id => $m) {
             $this->loadModuleL10N($id, $lang);
             $this->loadSmarties($id);
+            $this->loadEventProviders($id);
             $this->overridePrefs($id);
         }
     }
@@ -216,7 +217,7 @@ class Plugins
             //plugin compatibility missing!
             Analog::log(
                 'Plugin ' . $name . ' does not contains mandatory version ' .
-                'compatiblity informations. Please contact the author.',
+                'compatiblity information. Please contact the author.',
                 Analog::ERROR
             );
             $this->setDisabled(self::DISABLED_COMPAT);
@@ -254,8 +255,7 @@ class Plugins
                     'acls'          => $acls,
                     'date'          => $release_date,
                     'priority'      => $priority === null ?
-                                         1000 :
-                                         (integer) $priority,
+                                         1000 : (int)$priority,
                     'root_writable' => is_writable($this->mroot),
                     'route'         => $route
                 );
@@ -312,7 +312,7 @@ class Plugins
             throw new \Exception(_T("Cannot activate plugin."));
         }
 
-        if (@unlink($this->disabled[$id]['root'].'/_disabled') === false) {
+        if (@unlink($this->disabled[$id]['root'] . '/_disabled') === false) {
             throw new \Exception(_T("Cannot activate plugin."));
         }
     }
@@ -376,12 +376,32 @@ class Plugins
     }
 
     /**
+     * Loads event provider
+     *
+     * @param string $id Module ID
+     *
+     * @return void
+     */
+    public function loadEventProviders($id)
+    {
+        global $emitter;
+
+        $providerClassName = '\\' . $this->getNamespace($id) . '\\' . 'PluginEventProvider';
+        if (
+            class_exists($providerClassName)
+            && method_exists($providerClassName, 'provideListeners')
+        ) {
+            $emitter->useListenerProvider(new $providerClassName());
+        }
+    }
+
+    /**
      * Returns all modules associative array or only one module if <var>$id</var>
      * is present.
      *
      * @param string $id Optionnal module ID
      *
-     * @return <b>array</b>
+     * @return array
      */
     public function getModules($id = null)
     {
@@ -396,7 +416,7 @@ class Plugins
      *
      * @param string $id Module ID
      *
-     * @return <b>boolean</b>
+     * @return boolean
      */
     public function moduleExists($id)
     {
@@ -406,7 +426,7 @@ class Plugins
     /**
      * Returns all disabled modules in an array
      *
-     * @return <b>array</b>
+     * @return array
      */
     public function getDisabledModules()
     {
@@ -418,7 +438,7 @@ class Plugins
      *
      * @param string $id Module ID
      *
-     * @return <b>string</b>
+     * @return string
      */
     public function moduleRoot($id)
     {
@@ -439,7 +459,7 @@ class Plugins
      * @param string $id   Module ID
      * @param string $info Information to retrieve
      *
-     * @return module's informations
+     * @return module's information
      */
     public function moduleInfo($id, $info)
     {
@@ -551,7 +571,7 @@ class Plugins
      * @param array $a A module
      * @param array $b Another module
      *
-     * @return 1 if a has the highest priority, -1 otherwise
+     * @return 1|-1 1 if a has the highest priority, -1 otherwise
      */
     private function sortModules($a, $b)
     {
@@ -567,7 +587,7 @@ class Plugins
      *
      * @param string $id Module's ID
      *
-     * @return Concatenated templates path for requested module
+     * @return string  Concatenated templates path for requested module
      */
     public function getTemplatesPath($id)
     {
@@ -579,7 +599,7 @@ class Plugins
      *
      * @param string $name Module's name
      *
-     * @return Concatenated templates path for requested module
+     * @return string Concatenated templates path for requested module
      */
     public function getTemplatesPathFromName($name)
     {
@@ -793,5 +813,17 @@ class Plugins
         );
         $this->id = null;
         $this->mroot = null;
+    }
+
+    /**
+     * Get module namespace
+     *
+     * @param integer $id Module ID
+     *
+     * @return string
+     */
+    public function getNamespace($id)
+    {
+        return str_replace(' ', '', $this->modules[$id]['name']);
     }
 }

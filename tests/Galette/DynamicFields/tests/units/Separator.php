@@ -37,7 +37,7 @@
 
 namespace Galette\DynamicFields\test\units;
 
-use \atoum;
+use atoum;
 
 /**
  * Dynamic separator test

@@ -74,7 +74,7 @@
             </li>
             <li>
                 <a
-                    href="{path_for name="contribution" data=["type" => "fee", "action" => "add"]}?id_adh={$member->id}"
+                    href="{path_for name="addContribution" data=["type" => "fee"]}?id_adh={$member->id}"
                     class="button bigbutton tooltip"
                 >
                     <i class="fas fa-user-check fa-fw fa-2x"></i>
@@ -83,7 +83,7 @@
             </li>
             <li>
                 <a
-                    href="{path_for name="contribution" data=["type" => "donation", "action" => "add"]}?id_adh={$member->id}"
+                    href="{path_for name="addContribution" data=["type" => "donation"]}?id_adh={$member->id}"
                     class="button bigbutton tooltip"
                 >
                     <i class="fas fa-gift fa-fw fa-2x"></i>
@@ -177,6 +177,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {/if}
         {if $element->field_id eq 'email_adh' or $element->field_id eq 'msn_adh'}
                         <a href="mailto:{$value}">{$value}</a>
+        {elseif $element->field_id eq 'tel_adh' or $element->field_id eq 'gsm_adh'}
+                        <a href="tel:{$value}">{$value}</a>
         {elseif $element->field_id eq 'url_adh'}
                         <a href="{$value}">{$value}</a>
         {elseif $element->field_id eq 'ddn_adh'}

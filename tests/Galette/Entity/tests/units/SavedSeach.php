@@ -37,7 +37,7 @@
 
 namespace Galette\Entity\test\units;
 
-use \atoum;
+use atoum;
 use Zend\Db\Adapter\Adapter;
 
 /**

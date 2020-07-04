@@ -30,7 +30,6 @@
  * @author    Johan Cwiklinski <johan@x-tnd.be>
  * @copyright 2013-2014 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
- * @version   SVN: $Id$
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-08
  */
@@ -67,7 +66,6 @@ if (!$container->get('login')->isCron()) {
 }
 
 $texts = new Texts(
-    $container->get('texts_fields'),
     $container->get('preferences')
 );
 $reminders = new Reminders();
@@ -76,7 +74,7 @@ $reminders = new Reminders();
 $list_reminders = $reminders->getList($container->get('zdb'), false);
 if (count($list_reminders) > 0) {
     foreach ($list_reminders as $reminder) {
-        //send reminders by mail
+        //send reminders by email
         $sent = $reminder->send($texts, $container->get('history'), $container->get('zdb'));
 
         if ($sent === true) {
@@ -114,13 +112,13 @@ if (count($error_detected) > 0) {
         echo $e . "\n";
         $count++;
     }
-    //we can also print additionnal informations.
+    //we can also print additionnal information.
     if (count($success_detected) > 0) {
         echo "\n";
         echo str_replace(
             '%i',
             count($success_detected),
-            _T("%i mails have been sent successfully.")
+            _T("%i emails have been sent successfully.")
         );
     }
     exit(1);
