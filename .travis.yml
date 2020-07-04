@@ -36,3 +36,11 @@ matrix:
 env:
   - DB=pgsql
   - DB=mysql
+
+notifications:
+  webhooks:
+    urls:
+      - "https://scalar.vector.im/api/neb/services/hooks/dHJhdmlzLWNpLyU0MGpvaGFuLmN3aSUzQW1hdHJpeC5vcmcvJTIxUklBdnZwRFBnQkl1ZlBva0JDJTNBbWF0cml4Lm9yZw"
+    on_success: change  # always|never|change
+    on_failure: always
+    on_start: never
