@@ -171,6 +171,16 @@ class CsvIn extends atoum
         $this->zdb->execute($delete);
         $delete = $this->zdb->delete(DynamicField::TABLE);
         $this->zdb->execute($delete);
+        //cleanup dynamic translations
+        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
+        $delete->where([
+            'text_orig' => [
+                'Dynamic choice field',
+                'Dynamic date field',
+                'Dynamic text field'
+            ]
+        ]);
+        $this->zdb->execute($delete);
     }
 
     /**
@@ -204,7 +214,10 @@ class CsvIn extends atoum
 
         $members = new \Galette\Repository\Members();
         $list = $members->getList();
-        $this->integer($list->count())->isIdenticalTo($count_before, print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), true));
+        $this->integer($list->count())->isIdenticalTo(
+            $count_before,
+            print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), true)
+        );
 
         $model = $this->getModel($fields);
 
@@ -365,12 +378,43 @@ class CsvIn extends atoum
     }
 
     /**
+     * Test dynamic translation has been added properly
+     *
+     * @param string $text_orig Original text
+     * @param string $lang      Lang text has been added in
+     *
+     * @return void
+     */
+    protected function checkDynamicTranslation($text_orig, $lang = 'fr_FR.utf8')
+    {
+        $langs = array_keys($this->i18n->langs);
+        $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
+        $select->columns([
+            'text_locale',
+            'text_nref',
+            'text_trans'
+        ]);
+        $select->where(['text_orig' => $text_orig]);
+        $results = $this->zdb->execute($select);
+        $this->integer($results->count())->isIdenticalTo(count($langs));
+
+        foreach ($results as $result) {
+            $this->boolean(in_array(str_replace('.utf8', '', $result['text_locale']), $langs))->isTrue();
+            $this->integer((int)$result['text_nref'])->isIdenticalTo(1);
+            $this->string($result['text_trans'])->isIdenticalTo(
+                ($result['text_locale'] == 'fr_FR.utf8' ? $text_orig : '')
+            );
+        }
+    }
+
+    /**
      * Test import with dynamic fields
      *
      * @return void
      */
     public function testImportDynamics()
     {
+
         $field_data = [
             'form'              => 'adh',
             'field_name'        => 'Dynamic text field',
@@ -393,6 +437,8 @@ class CsvIn extends atoum
         );
         $this->array($error_detected)->isEmpty(implode(' ', $df->getErrors()));
         $this->array($warning_detected)->isEmpty(implode(' ', $df->getWarnings()));
+        //check if dynamic translation has been added
+        $this->checkDynamicTranslation($field_data['field_name']);
 
         $select = $this->zdb->select(DynamicField::TABLE);
         $select->columns(array('num' => new \Laminas\Db\Sql\Expression('COUNT(1)')));
@@ -504,6 +550,8 @@ class CsvIn extends atoum
         );
         $this->array($error_detected)->isEmpty(implode(' ', $cdf->getErrors()));
         $this->array($warning_detected)->isEmpty(implode(' ', $cdf->getWarnings()));
+        //check if dynamic translation has been added
+        $this->checkDynamicTranslation($cfield_data['field_name']);
 
         $select = $this->zdb->select(DynamicField::TABLE);
         $select->columns(array('num' => new \Laminas\Db\Sql\Expression('COUNT(1)')));
@@ -569,6 +617,8 @@ class CsvIn extends atoum
         );
         $this->array($error_detected)->isEmpty(implode(' ', $cdf->getErrors()));
         $this->array($warning_detected)->isEmpty(implode(' ', $cdf->getWarnings()));
+        //check if dynamic translation has been added
+        $this->checkDynamicTranslation($cfield_data['field_name']);
 
         $select = $this->zdb->select(DynamicField::TABLE);
         $select->columns(array('num' => new \Laminas\Db\Sql\Expression('COUNT(1)')));
