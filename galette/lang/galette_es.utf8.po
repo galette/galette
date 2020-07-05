@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2019-10-17 08:02+0200\n"
-"PO-Revision-Date: 2020-06-29 06:40+0000\n"
+"PO-Revision-Date: 2020-07-05 20:10+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
@@ -2508,16 +2508,18 @@ msgid "You cannot delete default status!"
 msgstr ""
 
 #: ../lib/Galette/Entity/SavedSearch.php:153
+#, fuzzy
 msgid "Form is mandatory!"
-msgstr "El formulario es obligatorio."
+msgstr "¡El formulario es obligatorio!"
 
 #: ../lib/Galette/Entity/SavedSearch.php:346
 msgid "Unknown form %form!"
 msgstr ""
 
 #: ../lib/Galette/Entity/SavedSearch.php:361
+#, fuzzy
 msgid "Name cannot be empty!"
-msgstr "El nombre no puede quedar vacío."
+msgstr "¡El nombre no puede quedar vacío!"
 
 #: ../lib/Galette/Entity/Group.php:381
 msgid "Group has been detached from its parent"
@@ -2546,7 +2548,7 @@ msgstr ""
 #: ../lib/Galette/Middleware/CheckAcls.php:129
 #: ../lib/Galette/Middleware/CheckAcls.php:177
 msgid "Route '%name' is not registered in ACLs!"
-msgstr "La ruta «%name» no está registrada con los ACL."
+msgstr "¡La ruta «%name» no está registrada con los ACL!"
 
 #: ../lib/Galette/Middleware/CheckAcls.php:135
 #, fuzzy
@@ -2568,8 +2570,9 @@ msgid "Galette needs update!"
 msgstr ""
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:169
+#, fuzzy
 msgid "Galette is currently under maintenance!"
-msgstr "Galette está en mantenimiento en este momento."
+msgstr "¡Galette está en mantenimiento en este momento!"
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:170
 msgid ""
