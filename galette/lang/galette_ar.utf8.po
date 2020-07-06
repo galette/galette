@@ -4,11 +4,12 @@
 # Johan Cwiklinski <johan@x-tnd.be>, 2017. #zanata
 # ButterflyOfFire <ButterflyOfFire@protonmail.com>, 2019, 2020.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020.
+# Antonios Hazim <antonios.hazim@zoho.eu>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"PO-Revision-Date: 2020-07-02 20:25+0000\n"
-"Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
+"PO-Revision-Date: 2020-07-07 06:00+0000\n"
+"Last-Translator: Antonios Hazim <antonios.hazim@zoho.eu>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -24,7 +25,7 @@ msgstr ""
 
 #: ../lib/Galette/Handlers/NotFound.php:80 ../templates/default/404.tpl:19
 msgid "Page not found"
-msgstr ""
+msgstr "الصفحة غير موجودة"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:131
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:231
@@ -33,31 +34,31 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:164
 msgid "Transaction"
-msgstr ""
+msgstr "عملية التحويل"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:166
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1144
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:114
 msgid "modification"
-msgstr ""
+msgstr "تعديل"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:168
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1146
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:116
 msgid "creation"
-msgstr ""
+msgstr "إنشاء"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:235
 msgid "Transaction ID cannot ben set while adding!"
-msgstr ""
+msgstr "رقم التحويل لا يمكن تعيينه أثناء الإضافة!"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:285
 msgid "An error occurred while storing the transaction."
-msgstr ""
+msgstr "حدث خطأ أثناء حفظ عملية التحويل."
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:313
 msgid "Transaction has been successfully stored"
-msgstr ""
+msgstr "تم حفظ التحويل بنجاح"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:362
 msgid "Unable to attach contribution to transaction"
@@ -65,23 +66,23 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:367
 msgid "Contribution has been successfully attached to current transaction"
-msgstr ""
+msgstr "تم إرفاق المساهمة بنجاح بعملية التحويل الحالية"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:393
 msgid "Unable to detach contribution from transaction"
-msgstr ""
+msgstr "غير قادر على فصل المساهمة من عملية التحويل"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:398
 msgid "Contribution has been successfully detached from current transaction"
-msgstr ""
+msgstr "تم فصل المساهمة بنجاح عن عملية التحويل الحالية"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:118
 msgid "Payment types management"
-msgstr ""
+msgstr "إدارة أنواع الدفع"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:160
 msgid "Edit payment type"
-msgstr ""
+msgstr "تعديل نوع الدفع"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:213
 msgid "Payment type '%s' has not been added!"
