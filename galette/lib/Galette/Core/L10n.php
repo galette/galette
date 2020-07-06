@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Core\I18n;
 use Laminas\Db\Sql\Expression;
@@ -75,12 +76,12 @@ class L10n
     }
 
     /**
-    * Add a translation stored in the database
-    *
-    * @param string $text_orig Text to translate
-    *
-    * @return boolean
-    */
+     * Add a translation stored in the database
+     *
+     * @param string $text_orig Text to translate
+     *
+     * @return boolean
+     */
     public function addDynamicTranslation($text_orig)
     {
         try {

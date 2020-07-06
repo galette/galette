@@ -89,8 +89,6 @@ class ContributionsController extends CrudController
         array $args,
         Contribution $contrib
     ): Response {
-        $get = $request->getQueryParams();
-
         // contribution types
         $ct = new ContributionsTypes($this->zdb);
         $contributions_types = $ct->getList($args['type'] === 'fee');
@@ -198,7 +196,6 @@ class ContributionsController extends CrudController
             }
 
             //transaction id
-            $trans_id = null;
             if (isset($get[Transaction::PK]) && $get[Transaction::PK] > 0) {
                 $cparams['trans'] = $get[Transaction::PK];
             }
@@ -287,13 +284,10 @@ class ContributionsController extends CrudController
             $filters->filtre_cotis_adh = (int)$get[Adherent::PK];
         }
 
-        $max_amount = null;
+        $filters->filtre_transactions = false;
         if (isset($request->getQueryParams()['max_amount'])) {
             $filters->filtre_transactions = true;
             $filters->max_amount = (int)$request->getQueryParams()['max_amount'];
-        } else {
-            $filters->filtre_transactions = false;
-            $filters->max_amount = null;
         }
 
         if ($option !== null) {
@@ -408,11 +402,9 @@ class ContributionsController extends CrudController
             if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
                 try {
                     if (isset($post['start_date_filter'])) {
-                        $field = _T("start date filter");
                         $filters->start_date_filter = $post['start_date_filter'];
                     }
                     if (isset($post['end_date_filter'])) {
-                        $field = _T("end date filter");
                         $filters->end_date_filter = $post['end_date_filter'];
                     }
                 } catch (\Exception $e) {
@@ -544,8 +536,6 @@ class ContributionsController extends CrudController
         if (isset($args['id'])) {
             $id_cotis = $args['id'];
         }
-
-        $id_adh = $post['id_adh'];
 
         if ($this->session->contribution !== null) {
             $contrib = $this->session->contribution;
@@ -749,7 +739,7 @@ class ContributionsController extends CrudController
                     if (!$contrib->isCotis()) {
                         $text = 'newdonation';
                     }
-                    $mtxt = $texts->getTexts($text, $this->preferences->pref_lang);
+                    $texts->getTexts($text, $this->preferences->pref_lang);
 
                     $mail = new GaletteMail($this->preferences);
                     $mail->setSubject($texts->getSubject());

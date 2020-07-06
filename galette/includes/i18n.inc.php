@@ -235,9 +235,8 @@ function _Tnx($context, $singular, $plural, $count, $domain = 'galette', $nt = t
             $trans .= ' (not translated)';
         }
     }
-    return $trans;
 
-    return $ret;
+    return $trans;
 }
 
 /**
