@@ -351,6 +351,7 @@ def add_libs(rel_name, galette_archive):
         'package.json',
         'package-lock.json',
         'phpcs-rules.xml',
+        'composer.lock',
         os.path.join('galette', 'composer.json'),
         os.path.join('galette', 'composer.lock'),
         os.path.join('galette', 'post_contribution_test.php')
