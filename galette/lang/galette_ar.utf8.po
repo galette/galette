@@ -7,10 +7,10 @@
 # Antonios Hazim <antonios.hazim@zoho.eu>, 2020.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-07 23:57+0200\n"
-"PO-Revision-Date: 2020-07-07 06:00+0000\n"
-"Last-Translator: Antonios Hazim <antonios.hazim@zoho.eu>\n"
+"PO-Revision-Date: 2020-07-10 09:41+0000\n"
+"Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -451,7 +451,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:115
 msgid "User statuses"
-msgstr ""
+msgstr "حالات المستخدمين"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:121
 msgid "Contribution types"
@@ -459,7 +459,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:180
 msgid "Edit status"
-msgstr ""
+msgstr "تعديل الحالة"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:186
 msgid "Edit contribution type"
@@ -789,7 +789,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/PdfController.php:414
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:141
 msgid "Attendance sheet"
-msgstr ""
+msgstr "قائمة الحاضرين"
 
 #: ../lib/Galette/Controllers/PdfController.php:497
 msgid "Unable to get groups list."
@@ -1774,7 +1774,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:186
 msgid "Signature"
-msgstr ""
+msgstr "التوقيع"
 
 #: ../lib/Galette/IO/Charts.php:141 ../lib/Galette/Filters/MembersList.php:297
 msgid "Staff members"
@@ -4619,7 +4619,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:366
 msgid "Mail signature"
-msgstr ""
+msgstr "توقيع البريد الإلكتروني"
 
 #: ../templates/default/preferences.tpl:367
 msgid ""
@@ -5264,7 +5264,7 @@ msgstr ""
 
 #: ../templates/default/attendance_sheet_details.tpl:10
 msgid "Some details about your attendance sheet..."
-msgstr ""
+msgstr "بعض التفاصيل عن قائمتك الخاصة بالحاضرين…"
 
 #: ../templates/default/attendance_sheet_details.tpl:10
 #, php-format
@@ -5949,7 +5949,7 @@ msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:853
 msgid "Attendance sheet details"
-msgstr ""
+msgstr "تفاصيل قائمة الحاضرين"
 
 #: ../templates/default/gestion_adherents.tpl:881
 msgid "An error occurred displaying attendance sheet details interface :("
