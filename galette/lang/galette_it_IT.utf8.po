@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-07 23:57+0200\n"
+"POT-Creation-Date: 2020-07-11 07:15+0200\n"
 "PO-Revision-Date: 2020-06-29 06:40+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
@@ -5076,6 +5076,14 @@ msgstr ""
 msgid "See member profile"
 msgstr ""
 
+#: ../templates/default/gestion_contributions.tpl:52
+#, fuzzy, php-format
+#| msgid "List of contributions"
+msgid "%count contribution"
+msgid_plural "%count contributions"
+msgstr[0] "Elenco dei contributi"
+msgstr[1] "Elenco dei contributi"
+
 #: ../templates/default/gestion_contributions.tpl:58
 #: ../templates/default/gestion_mailings.tpl:43
 #: ../templates/default/gestion_adherents.tpl:111
@@ -5480,13 +5488,11 @@ msgstr ""
 
 #: ../templates/default/gestion_mailings.tpl:40
 #: ../templates/default/history.tpl:46
-msgid "entries"
-msgstr ""
-
-#: ../templates/default/gestion_mailings.tpl:40
-#: ../templates/default/history.tpl:46
-msgid "entry"
-msgstr ""
+#, php-format
+msgid "%count entry"
+msgid_plural "%count entries"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../templates/default/gestion_mailings.tpl:63
 #: ../templates/default/gestion_mailings.tpl:75
@@ -5841,14 +5847,11 @@ msgstr ""
 #: ../templates/default/gestion_adherents.tpl:109
 #: ../templates/default/liste_membres.tpl:8
 #: ../templates/default/trombinoscope.tpl:8
-msgid "members"
-msgstr ""
-
-#: ../templates/default/gestion_adherents.tpl:109
-#: ../templates/default/liste_membres.tpl:8
-#: ../templates/default/trombinoscope.tpl:8
-msgid "member"
-msgstr ""
+#, php-format
+msgid "%count member"
+msgid_plural "%count members"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../templates/default/gestion_adherents.tpl:129
 msgid "Mbr num"
@@ -7389,6 +7392,14 @@ msgstr ""
 #: ../templates/default/gestion_transactions.tpl:22
 msgid "Show all members transactions"
 msgstr ""
+
+#: ../templates/default/gestion_transactions.tpl:32
+#, fuzzy, php-format
+#| msgid "List of transactions"
+msgid "%count transaction"
+msgid_plural "%count transactions"
+msgstr[0] "Elenco delle transazioni"
+msgstr[1] "Elenco delle transazioni"
 
 #: ../templates/default/gestion_transactions.tpl:62
 #: ../templates/default/gestion_transactions.tpl:109

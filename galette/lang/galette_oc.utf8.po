@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-07 23:57+0200\n"
+"POT-Creation-Date: 2020-07-11 07:15+0200\n"
 "PO-Revision-Date: 2020-06-30 21:03+0000\n"
 "Last-Translator: Quentin PAGÈS <quentinantonin@free.fr>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
@@ -4997,6 +4997,14 @@ msgstr ""
 msgid "See member profile"
 msgstr ""
 
+#: ../templates/default/gestion_contributions.tpl:52
+#, fuzzy, php-format
+#| msgid "Contributions"
+msgid "%count contribution"
+msgid_plural "%count contributions"
+msgstr[0] "Contribucions"
+msgstr[1] "Contribucions"
+
 #: ../templates/default/gestion_contributions.tpl:58
 #: ../templates/default/gestion_mailings.tpl:43
 #: ../templates/default/gestion_adherents.tpl:111
@@ -5399,13 +5407,12 @@ msgstr ""
 
 #: ../templates/default/gestion_mailings.tpl:40
 #: ../templates/default/history.tpl:46
-msgid "entries"
-msgstr ""
-
-#: ../templates/default/gestion_mailings.tpl:40
-#: ../templates/default/history.tpl:46
-msgid "entry"
-msgstr "zòna de picada"
+#, fuzzy, php-format
+#| msgid "Country"
+msgid "%count entry"
+msgid_plural "%count entries"
+msgstr[0] "País"
+msgstr[1] "País"
 
 #: ../templates/default/gestion_mailings.tpl:63
 #: ../templates/default/gestion_mailings.tpl:75
@@ -5760,14 +5767,12 @@ msgstr ""
 #: ../templates/default/gestion_adherents.tpl:109
 #: ../templates/default/liste_membres.tpl:8
 #: ../templates/default/trombinoscope.tpl:8
-msgid "members"
-msgstr "membres"
-
-#: ../templates/default/gestion_adherents.tpl:109
-#: ../templates/default/liste_membres.tpl:8
-#: ../templates/default/trombinoscope.tpl:8
-msgid "member"
-msgstr ""
+#, fuzzy, php-format
+#| msgid "members"
+msgid "%count member"
+msgid_plural "%count members"
+msgstr[0] "membres"
+msgstr[1] "membres"
 
 #: ../templates/default/gestion_adherents.tpl:129
 msgid "Mbr num"
@@ -7307,6 +7312,14 @@ msgstr ""
 msgid "Show all members transactions"
 msgstr ""
 
+#: ../templates/default/gestion_transactions.tpl:32
+#, fuzzy, php-format
+#| msgid "Transaction"
+msgid "%count transaction"
+msgid_plural "%count transactions"
+msgstr[0] "Transaccion"
+msgstr[1] "Transaccion"
+
 #: ../templates/default/gestion_transactions.tpl:62
 #: ../templates/default/gestion_transactions.tpl:109
 msgid "Originator"
@@ -7728,3 +7741,6 @@ msgstr ""
 #, php-format
 msgid "Delete '%s' title"
 msgstr ""
+
+#~ msgid "entry"
+#~ msgstr "zòna de picada"

@@ -7,8 +7,8 @@
 # Antonios Hazim <antonios.hazim@zoho.eu>, 2020.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2020-07-07 23:57+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-11 07:15+0200\n"
 "PO-Revision-Date: 2020-07-10 09:41+0000\n"
 "Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -5044,6 +5044,18 @@ msgstr "اظهار كافة تبرعات الأعضاء"
 msgid "See member profile"
 msgstr ""
 
+#: ../templates/default/gestion_contributions.tpl:52
+#, fuzzy, php-format
+#| msgid "contributions"
+msgid "%count contribution"
+msgid_plural "%count contributions"
+msgstr[0] "اشتراكات"
+msgstr[1] "اشتراكات"
+msgstr[2] "اشتراكات"
+msgstr[3] "اشتراكات"
+msgstr[4] "اشتراكات"
+msgstr[5] "اشتراكات"
+
 #: ../templates/default/gestion_contributions.tpl:58
 #: ../templates/default/gestion_mailings.tpl:43
 #: ../templates/default/gestion_adherents.tpl:111
@@ -5452,13 +5464,16 @@ msgstr ""
 
 #: ../templates/default/gestion_mailings.tpl:40
 #: ../templates/default/history.tpl:46
-msgid "entries"
-msgstr ""
-
-#: ../templates/default/gestion_mailings.tpl:40
-#: ../templates/default/history.tpl:46
-msgid "entry"
-msgstr ""
+#, fuzzy, php-format
+#| msgid "Country:"
+msgid "%count entry"
+msgid_plural "%count entries"
+msgstr[0] "البلد:"
+msgstr[1] "البلد:"
+msgstr[2] "البلد:"
+msgstr[3] "البلد:"
+msgstr[4] "البلد:"
+msgstr[5] "البلد:"
 
 #: ../templates/default/gestion_mailings.tpl:63
 #: ../templates/default/gestion_mailings.tpl:75
@@ -5816,14 +5831,16 @@ msgstr ""
 #: ../templates/default/gestion_adherents.tpl:109
 #: ../templates/default/liste_membres.tpl:8
 #: ../templates/default/trombinoscope.tpl:8
-msgid "members"
-msgstr "أعضاء"
-
-#: ../templates/default/gestion_adherents.tpl:109
-#: ../templates/default/liste_membres.tpl:8
-#: ../templates/default/trombinoscope.tpl:8
-msgid "member"
-msgstr ""
+#, fuzzy, php-format
+#| msgid "members"
+msgid "%count member"
+msgid_plural "%count members"
+msgstr[0] "أعضاء"
+msgstr[1] "أعضاء"
+msgstr[2] "أعضاء"
+msgstr[3] "أعضاء"
+msgstr[4] "أعضاء"
+msgstr[5] "أعضاء"
 
 #: ../templates/default/gestion_adherents.tpl:129
 msgid "Mbr num"
@@ -7370,6 +7387,18 @@ msgstr ""
 #: ../templates/default/gestion_transactions.tpl:22
 msgid "Show all members transactions"
 msgstr ""
+
+#: ../templates/default/gestion_transactions.tpl:32
+#, fuzzy, php-format
+#| msgid "Transaction"
+msgid "%count transaction"
+msgid_plural "%count transactions"
+msgstr[0] "عملية التحويل"
+msgstr[1] "عملية التحويل"
+msgstr[2] "عملية التحويل"
+msgstr[3] "عملية التحويل"
+msgstr[4] "عملية التحويل"
+msgstr[5] "عملية التحويل"
 
 #: ../templates/default/gestion_transactions.tpl:62
 #: ../templates/default/gestion_transactions.tpl:109

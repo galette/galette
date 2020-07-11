@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-07 23:57+0200\n"
+"POT-Creation-Date: 2020-07-11 07:15+0200\n"
 "PO-Revision-Date: 2020-07-05 20:10+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
@@ -5070,6 +5070,14 @@ msgstr "Mostrar contribuciones de todos los miembros"
 msgid "See member profile"
 msgstr ""
 
+#: ../templates/default/gestion_contributions.tpl:52
+#, fuzzy, php-format
+#| msgid "List of contributions"
+msgid "%count contribution"
+msgid_plural "%count contributions"
+msgstr[0] "Lista de contribuciones"
+msgstr[1] "Lista de contribuciones"
+
 #: ../templates/default/gestion_contributions.tpl:58
 #: ../templates/default/gestion_mailings.tpl:43
 #: ../templates/default/gestion_adherents.tpl:111
@@ -5478,13 +5486,11 @@ msgstr "No importa"
 
 #: ../templates/default/gestion_mailings.tpl:40
 #: ../templates/default/history.tpl:46
-msgid "entries"
-msgstr "entradas"
-
-#: ../templates/default/gestion_mailings.tpl:40
-#: ../templates/default/history.tpl:46
-msgid "entry"
-msgstr ""
+#, php-format
+msgid "%count entry"
+msgid_plural "%count entries"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../templates/default/gestion_mailings.tpl:63
 #: ../templates/default/gestion_mailings.tpl:75
@@ -5841,14 +5847,12 @@ msgstr "Mostrar/ocultar consulta"
 #: ../templates/default/gestion_adherents.tpl:109
 #: ../templates/default/liste_membres.tpl:8
 #: ../templates/default/trombinoscope.tpl:8
-msgid "members"
-msgstr "miembros"
-
-#: ../templates/default/gestion_adherents.tpl:109
-#: ../templates/default/liste_membres.tpl:8
-#: ../templates/default/trombinoscope.tpl:8
-msgid "member"
-msgstr "miembro"
+#, fuzzy, php-format
+#| msgid "%membercount members"
+msgid "%count member"
+msgid_plural "%count members"
+msgstr[0] "%membercount miembros"
+msgstr[1] "%membercount miembros"
 
 #: ../templates/default/gestion_adherents.tpl:129
 msgid "Mbr num"
@@ -7408,6 +7412,14 @@ msgstr ""
 msgid "Show all members transactions"
 msgstr "Mostrar transacciones de todos los miembros"
 
+#: ../templates/default/gestion_transactions.tpl:32
+#, fuzzy, php-format
+#| msgid "transaction"
+msgid "%count transaction"
+msgid_plural "%count transactions"
+msgstr[0] "transacción"
+msgstr[1] "transacción"
+
 #: ../templates/default/gestion_transactions.tpl:62
 #: ../templates/default/gestion_transactions.tpl:109
 msgid "Originator"
@@ -7834,6 +7846,15 @@ msgstr ""
 #, php-format
 msgid "Delete '%s' title"
 msgstr ""
+
+#~ msgid "entries"
+#~ msgstr "entradas"
+
+#~ msgid "members"
+#~ msgstr "miembros"
+
+#~ msgid "member"
+#~ msgstr "miembro"
 
 #~ msgid "Default theme:"
 #~ msgstr "Tema predeterminado:"
