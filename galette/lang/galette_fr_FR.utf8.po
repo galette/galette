@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-11 07:15+0200\n"
+"POT-Creation-Date: 2020-07-11 07:59+0200\n"
 "PO-Revision-Date: 2020-07-11 04:49+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
@@ -33,54 +33,43 @@ msgstr "Erreur de Galette"
 msgid "Page not found"
 msgstr "Page non trouvée"
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:131
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:231
-msgid "Transaction ID cannot ben null calling edit route!"
-msgstr ""
-"L’identifiant de la transaction ne peut être vide lors de l’appel à la route "
-"de modification !"
-
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:164
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:155
 msgid "Transaction"
 msgstr "Transaction"
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:166
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1144
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:157
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1136
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:112
 msgid "modification"
 msgstr "modification"
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:168
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1146
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:159
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1138
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:114
 msgid "creation"
 msgstr "création"
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:235
-msgid "Transaction ID cannot ben set while adding!"
-msgstr "L’identifiant de la transaction ne peut être défini lors d’un ajout !"
-
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:285
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:267
 msgid "An error occurred while storing the transaction."
 msgstr "Une erreur est survenue lors de l'enregistrement de la transaction."
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:313
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:295
 msgid "Transaction has been successfully stored"
 msgstr "La transaction a été enregistrée avec succès"
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:362
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:350
 msgid "Unable to attach contribution to transaction"
 msgstr "Impossible d’attacher la contribution à la transaction"
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:367
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:355
 msgid "Contribution has been successfully attached to current transaction"
 msgstr "La contribution a été attachée à la transaction courante"
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:393
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:381
 msgid "Unable to detach contribution from transaction"
 msgstr "Impossible de détacher la contribution de la transaction"
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:398
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:386
 msgid "Contribution has been successfully detached from current transaction"
 msgstr "La contribution a été détachée de la transaction courante"
 
@@ -237,130 +226,124 @@ msgstr "Le champ a été déplacé avec succès"
 msgid "An error occurred moving field :("
 msgstr "Une erreur est survenue lors du déplacement du champ :("
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:158
+#: ../lib/Galette/Controllers/Crud/MembersController.php:159
 msgid "Subscription"
 msgstr "Inscription"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:242
-#: ../lib/Galette/Controllers/Crud/MembersController.php:447
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1099
+#: ../lib/Galette/Controllers/Crud/MembersController.php:243
+#: ../lib/Galette/Controllers/Crud/MembersController.php:448
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1091
 #: ../lib/Galette/Controllers/PdfController.php:123
 #: ../lib/Galette/Controllers/PdfController.php:292
 #: ../lib/Galette/Middleware/Authenticate.php:165
 msgid "You do not have permission for requested URL."
 msgstr "Vous n’avez pas la permission d’accéder à l’URL demandée."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:257
+#: ../lib/Galette/Controllers/Crud/MembersController.php:258
 msgid "No member #%id."
 msgstr "Pas d’adhérent #%id."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:277
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1142
+#: ../lib/Galette/Controllers/Crud/MembersController.php:278
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1134
 msgid "Member Profile"
 msgstr "Fiche adhérent"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:362
+#: ../lib/Galette/Controllers/Crud/MembersController.php:363
 msgid "Members list"
 msgstr "Liste des membres"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:362
+#: ../lib/Galette/Controllers/Crud/MembersController.php:363
 msgid "Trombinoscope"
 msgstr "Trombinoscope"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:492
+#: ../lib/Galette/Controllers/Crud/MembersController.php:493
 msgid "The file does not exists or cannot be read :("
 msgstr "Le fichier n’existe pas ou ne peut être lu :("
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:558
+#: ../lib/Galette/Controllers/Crud/MembersController.php:559
 msgid "Members management"
 msgstr "Gestion des membres"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:779
+#: ../lib/Galette/Controllers/Crud/MembersController.php:780
 msgid "Status label"
 msgstr "Étiquette du statut"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:819
+#: ../lib/Galette/Controllers/Crud/MembersController.php:820
 msgid "Advanced search"
 msgstr "Recherche avancée"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1040
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1041
 #: ../lib/Galette/Controllers/PdfController.php:157
 #: ../lib/Galette/Controllers/PdfController.php:238
 msgid "No member was selected, please check at least one name."
 msgstr "Veuillez sélectionner au moins un adhérent."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1071
-msgid "Member ID cannot ben null calling edit route!"
-msgstr ""
-"L’identifiant de l’adhérent ne peut être vide lors de l’appel à la route de "
-"modification !"
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1262
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1254
 #, php-format
 msgid "Mass change %count members"
 msgstr "Modification en masse de %count adhérents"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1293
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1362
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1285
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1354
 msgid "Mass changes has not been confirmed!"
 msgstr "Les modifications n’ont pas été confirmées !"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1331
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1323
 #, php-format
 msgid "Review mass change %count members"
 msgstr "Revue des modifications pour %count adhérents"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1391
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1383
 msgid "Nothing to do!"
 msgstr "Rien à faire !"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1419
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1887
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1411
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1879
 msgid "An error occurred while storing the member."
 msgstr "Une erreur est survenue lors de l'enregistrement de l'adhérent."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1431
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1423
 msgid "Something went wront during mass edition!"
 msgstr "Quelque chose s’est mal passé lors de la modification en masse !"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1438
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1430
 #, php-format
 msgid "%count members has been changed successfully!"
 msgstr "%count adhérents ont été modifiés avec succès !"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1513
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1505
 msgid "Please repeat in the field the password shown in the image."
 msgstr "Recopiez dans le cadre le mot de passe présenté dans l’image."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1616
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1608
 msgid "Your account has been created!"
 msgstr "Votre compte a été créé&nbsp;!"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1621
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1613
 msgid "An email has been sent to you, check your inbox."
 msgstr "Un courriel vous a été envoyé, vérifiez votre boite de réception."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1624
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1616
 msgid "New member has been successfully added."
 msgstr "Le nouvel adhérent a été ajouté avec succès."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1672
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1664
 #, php-format
 msgid "New account email sent to admin for '%s'."
 msgstr "Courriel de nouveau compte envoyé à l’administrateur pour « %s »."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1679
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1671
 #, php-format
 msgid "A problem happened while sending email to admin for account '%s'."
 msgstr ""
 "Un problème est survenu dans l’envoi du courriel à l’administrateur pour le "
 "compte « %s »"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1687
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1679
 msgid "Member account has been modified."
 msgstr "Le compte de l’adhérent a été modifié avec succès."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1694
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1686
 msgid ""
 "- You can't send a confirmation by email if the member hasn't got an address!"
 msgstr ""
@@ -368,13 +351,13 @@ msgstr ""
 "pas d’adresse&nbsp;!"
 
 # http://fr2.php.net/manual/fr/function.date.php
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1724
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1716
 #: ../lib/Galette/Controllers/AuthController.php:332
 #: ../lib/Galette/Core/History.php:414 ../lib/Galette/IO/Csv.php:115
 msgid "Y-m-d H:i:s"
 msgstr "d/m/Y H:i:s"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1729
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1721
 #: ../lib/Galette/Controllers/AuthController.php:385
 #, php-format
 msgid ""
@@ -383,23 +366,23 @@ msgstr ""
 "Une erreur est survenue durant l'enregistrement du mot de passe temporaire "
 "pour %s. Veuillez en informer un administrateur."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1770
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1762
 #, php-format
 msgid "New account email sent to '%s'."
 msgstr "Courriel de nouveau compte envoyé à « %s »."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1770
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1762
 #, php-format
 msgid "Account modification email sent to '%s'."
 msgstr "Courriel de modification de compte envoyé à « %s »."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1778
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1770
 #, php-format
 msgid "A problem happened while sending account email to '%s'"
 msgstr ""
 "Un problème est survenu lors de l’envoi du courriel pour le compte « %s »"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1787
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1779
 msgid ""
 "You asked Galette to send a confirmation email to the member, but email has "
 "been disabled in the preferences."
@@ -407,37 +390,37 @@ msgstr ""
 "Vous avez demandé à Galette d’envoyer une confirmation par mail à "
 "l’adhérent, mais l’envoi de mail a été désactivé dans les préférences."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1843
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1835
 msgid "Account modification email sent to admin."
 msgstr "Courriel de modification de compte envoyé à l'administrateur."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1847
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1839
 msgid "A problem happened while sending account email to admin"
 msgstr ""
 "Un problème est survenu lors de l’envoi du courriel pour le compte à "
 "l'administrateur"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1868
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1860
 msgid "An error occurred adding member to its groups."
 msgstr "Une erreur est survenue lors de l'ajout des groupes du membre."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1883
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1875
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
 "Une erreur est survenue lors de l'ajout des groupes gérés par l'adhérent."
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1899
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1891
 #: ../lib/Galette/Controllers/GaletteController.php:311
 #: ../lib/Galette/Controllers/GaletteController.php:343
 msgid "Delete failed"
 msgstr "La suppression a échoué"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:2071
+#: ../lib/Galette/Controllers/Crud/MembersController.php:2059
 #, php-format
 msgid "Remove member %1$s"
 msgstr "Supprimer l’adhérent %1$s"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:2080
+#: ../lib/Galette/Controllers/Crud/MembersController.php:2068
 #, php-format
 msgid "You are about to remove %count members."
 msgstr "Vous êtes sur le point de supprimer %count adhérents."
@@ -8123,6 +8106,20 @@ msgstr "Modifier le titre « %s »"
 #, php-format
 msgid "Delete '%s' title"
 msgstr "Supprimer le titre « %s »"
+
+#~ msgid "Transaction ID cannot ben null calling edit route!"
+#~ msgstr ""
+#~ "L’identifiant de la transaction ne peut être vide lors de l’appel à la "
+#~ "route de modification !"
+
+#~ msgid "Transaction ID cannot ben set while adding!"
+#~ msgstr ""
+#~ "L’identifiant de la transaction ne peut être défini lors d’un ajout !"
+
+#~ msgid "Member ID cannot ben null calling edit route!"
+#~ msgstr ""
+#~ "L’identifiant de l’adhérent ne peut être vide lors de l’appel à la route "
+#~ "de modification !"
 
 #~ msgid "entries"
 #~ msgstr "entrées"
