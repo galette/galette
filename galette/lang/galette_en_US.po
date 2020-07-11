@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-07 23:57+0200\n"
+"POT-Creation-Date: 2020-07-11 07:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5162,6 +5162,13 @@ msgstr "Show all members contributions"
 msgid "See member profile"
 msgstr "See member profile"
 
+#: ../templates/default/gestion_contributions.tpl:52
+#, php-format
+msgid "%count contribution"
+msgid_plural "%count contributions"
+msgstr[0] "%count contribution"
+msgstr[1] "%count contributions"
+
 #: ../templates/default/gestion_contributions.tpl:58
 #: ../templates/default/gestion_mailings.tpl:43
 #: ../templates/default/gestion_adherents.tpl:111
@@ -5574,13 +5581,11 @@ msgstr "Don't care"
 
 #: ../templates/default/gestion_mailings.tpl:40
 #: ../templates/default/history.tpl:46
-msgid "entries"
-msgstr "entries"
-
-#: ../templates/default/gestion_mailings.tpl:40
-#: ../templates/default/history.tpl:46
-msgid "entry"
-msgstr "entry"
+#, php-format
+msgid "%count entry"
+msgid_plural "%count entries"
+msgstr[0] "%count entry"
+msgstr[1] "%count entries"
 
 #: ../templates/default/gestion_mailings.tpl:63
 #: ../templates/default/gestion_mailings.tpl:75
@@ -5937,14 +5942,11 @@ msgstr "Show/hide query"
 #: ../templates/default/gestion_adherents.tpl:109
 #: ../templates/default/liste_membres.tpl:8
 #: ../templates/default/trombinoscope.tpl:8
-msgid "members"
-msgstr "members"
-
-#: ../templates/default/gestion_adherents.tpl:109
-#: ../templates/default/liste_membres.tpl:8
-#: ../templates/default/trombinoscope.tpl:8
-msgid "member"
-msgstr "member"
+#, php-format
+msgid "%count member"
+msgid_plural "%count members"
+msgstr[0] "%count member"
+msgstr[1] "%count members"
 
 #: ../templates/default/gestion_adherents.tpl:129
 msgid "Mbr num"
@@ -7509,6 +7511,13 @@ msgstr "Show transactions since"
 #: ../templates/default/gestion_transactions.tpl:22
 msgid "Show all members transactions"
 msgstr "Show all members transactions"
+
+#: ../templates/default/gestion_transactions.tpl:32
+#, php-format
+msgid "%count transaction"
+msgid_plural "%count transactions"
+msgstr[0] "%count transaction"
+msgstr[1] "%count transactions"
 
 #: ../templates/default/gestion_transactions.tpl:62
 #: ../templates/default/gestion_transactions.tpl:109

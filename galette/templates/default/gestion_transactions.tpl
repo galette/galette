@@ -29,7 +29,7 @@
     {/if}
                     &nbsp;:
 {/if}
-                    {$nb} {if $nb > 1}{_T string="transactions"}{else}{_T string="transaction"}{/if}
+                    {_T string="%count transaction" plural="%count transactions" count=$nb pattern="/%count/" replace=$nb}
                 </td>
                 <td class="right">
                     <label for="nbshow">{_T string="Records per page:"}</label>

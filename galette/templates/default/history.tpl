@@ -43,7 +43,7 @@
                 <i class="fas fa-trash"></i>
                 {_T string="Flush the logs"}
             </a>
-            {$history->getCount()} {if $history->getCount() != 1}{_T string="entries"}{else}{_T string="entry"}{/if}
+            {_T string="%count entry" plural="%count entries" count=$history->getCount() pattern="/%count/" replace=$history->getCount()}
             <div class="fright">
                 <label for="nbshow">{_T string="Records per page:"}</label>
                 <select name="nbshow" id="nbshow">

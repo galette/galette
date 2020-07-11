@@ -106,7 +106,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/if}
         </div>
         <div class="infoline">
-            {$nb_members} {if $nb_members != 1}{_T string="members"}{else}{_T string="member"}{/if}
+            {_T string="%count member" plural="%count members" count=$nb_members pattern="/%count/" replace=$nb_members}
             <div class="fright">
                 <label for="nbshow">{_T string="Records per page:"}</label>
                 <select name="nbshow" id="nbshow">
