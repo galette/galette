@@ -194,7 +194,7 @@
                         </span>
         {if $contribution->isTransactionPart() }
                         <a
-                            href="{path_for name="transaction" data=["action" => "edit", "id" => $contribution->transaction->id]}"
+                            href="{path_for name="editTransaction" data=["id" => $contribution->transaction->id]}"
                             class="tooltip"
                         >
                             <i class="fas fa-link"></i>

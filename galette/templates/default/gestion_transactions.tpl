@@ -25,7 +25,7 @@
                     <strong>{$member->sname}</strong>
     {if $login->isAdmin() or $login->isStaff()}
                     (<a href="{path_for name="member" data=["id" => $member->id]}">{_T string="See member profile"}</a> -
-                    <a href="{path_for name="transaction" data=["action" => "add"]}?id_adh={$member->id}">{_T string="Add a transaction"}</a>)
+                    <a href="{path_for name="addTransaction"}?id_adh={$member->id}">{_T string="Add a transaction"}</a>)
     {/if}
                     &nbsp;:
 {/if}
@@ -98,7 +98,7 @@
                         {$ordre+1+($filters->current_page - 1)*$numrows}
     {/if}
                         <span class="row-title">
-                            <a href="{path_for name="transaction" data=["action" => "edit", "id" => $transaction->id]}">
+                            <a href="{path_for name="editTransaction" data=["id" => $transaction->id]}">
                                 {_T string="Transaction %id" pattern="/%id/" replace=$transaction->id}
                             </a>
                         </span>
@@ -122,7 +122,7 @@
 {if $login->isAdmin() or $login->isStaff()}
                     <td class="{$cclass} center nowrap">
                         <a
-                            href="{path_for name="transaction" data=["action" => "edit", "id" => $transaction->id]}"
+                            href="{path_for name="editTransaction" data=["id" => $transaction->id]}"
                             class="tooltip action"
                         >
                             <i class="fas fa-edit"></i>

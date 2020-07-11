@@ -78,9 +78,14 @@ $app->post(
 )->setName('doEditContribution')->add($authenticate);
 
 $app->get(
-    '/transaction/{action:add|edit}[/{id:\d+}]',
+    '/transaction/add',
+    Crud\TransactionsController::class . ':add'
+)->setName('addTransaction')->add($authenticate);
+
+$app->get(
+    '/transaction/edit/{id:\d+}',
     Crud\TransactionsController::class . ':edit'
-)->setName('transaction')->add($authenticate);
+)->setName('editTransaction')->add($authenticate);
 
 $app->get(
     '/transaction/{id}/attach/{cid}',

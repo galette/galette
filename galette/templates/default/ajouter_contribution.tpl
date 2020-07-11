@@ -12,7 +12,7 @@
                     <tr>
                         <td colspan="5">
                             {$contribution->transaction->description}
-                            <a href="{path_for name="transaction" data=["action" => "edit", "id" => $contribution->transaction->id]}" title="{_T string="View transaction"}">
+                            <a href="{path_for name="editTransaction" data=["id" => $contribution->transaction->id]}" title="{_T string="View transaction"}">
                                 <img src="{base_url}/{$template_subdir}images/icon-money.png"
                                     alt="{_T string="[view]"}"
                                     width="16"
@@ -180,7 +180,7 @@
         <p>
             {_T string="Unfortunately, there is no member in your database yet,"}
             <br/>
-            <a href="{path_for name="editmember" data=["action" => "add"]}">{_T string="please create a member"}</a>
+            <a href="{path_for name="addMember"}">{_T string="please create a member"}</a>
         </p>
     </div>
 {/if}

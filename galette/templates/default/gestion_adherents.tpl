@@ -4,7 +4,7 @@
 {function name=draw_actions}
                     <td class="{$rclass} center nowrap actions_row">
                         <a
-                            href="{path_for name="editmember" data=["action" => "edit", "id" => $member->id]}"
+                            href="{path_for name="editMember" data=["id" => $member->id]}"
                             class="tooltip action"
                         >
                             <i class="fas fa-user-edit fa-fw" aria-hidden="true"></i>

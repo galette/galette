@@ -75,6 +75,7 @@ class TransactionsController extends ContributionsController
      */
     public function add(Request $request, Response $response, array $args = []): Response
     {
+        $args['action'] = 'add';
         return $this->edit($request, $response, $args);
     }
 
@@ -120,7 +121,7 @@ class TransactionsController extends ContributionsController
             $trans = new Transaction($this->zdb, $this->login);
         }
 
-        $action = $args['action'];
+        $action = $args['action'] ?? 'edit';
         $trans_id = null;
         if (isset($args['id'])) {
             $trans_id = $args['id'];
@@ -220,9 +221,10 @@ class TransactionsController extends ContributionsController
         $post = $request->getParsedBody();
         $trans = new Transaction($this->zdb, $this->login);
 
-        $action = $args['action'];
+        $action = 'add';
         $trans_id = null;
         if (isset($args['id'])) {
+            $action = 'edit';
             $trans_id = $args['id'];
         }
 
@@ -337,7 +339,13 @@ class TransactionsController extends ContributionsController
             //redirect to calling action
             return $response
                 ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('transaction', $args));
+                ->withHeader(
+                    'Location',
+                    $this->router->pathFor(
+                        ($action == 'add' ? 'addTransaction' : 'editTransaction'),
+                        $args
+                    )
+                );
         }
 
         return $response
@@ -371,8 +379,8 @@ class TransactionsController extends ContributionsController
         return $response
             ->withStatus(301)
             ->withHeader('Location', $this->router->pathFor(
-                'transaction',
-                ['action' => 'edit', 'id' => $args['id']]
+                'editTransaction',
+                ['id' => $args['id']]
             ));
     }
 
@@ -402,8 +410,8 @@ class TransactionsController extends ContributionsController
         return $response
             ->withStatus(301)
             ->withHeader('Location', $this->router->pathFor(
-                'transaction',
-                ['action' => 'edit', 'id' => $args['id']]
+                'editTransaction',
+                ['id' => $args['id']]
             ));
     }
 

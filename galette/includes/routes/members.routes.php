@@ -90,9 +90,14 @@ $app->get(
 )->setName('member')->add($authenticate)->add('Galette\Middleware\MembersNavigate');
 
 $app->get(
-    '/member/{action:edit|add}[/{id:\d+}]',
+    '/member/edit/{id:\d+}',
     Crud\MembersController::class . ':edit'
-)->setName('editmember')->add($authenticate)->add('Galette\Middleware\MembersNavigate');
+)->setName('editMember')->add($authenticate)->add('Galette\Middleware\MembersNavigate');
+
+$app->get(
+    '/member/add',
+    Crud\MembersController::class . ':add'
+)->setName('addMember')->add($authenticate)->add('Galette\Middleware\MembersNavigate');
 
 $app->post(
     '/member/store[/{self:subscribe}]',

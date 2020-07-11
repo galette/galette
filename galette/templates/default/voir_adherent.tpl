@@ -53,7 +53,7 @@
 {/if}
             <li>
                 <a
-                    href="{path_for name="editmember" data=["action" => "edit", "id" => $member->id]}"
+                    href="{path_for name="editMember" data=["id" => $member->id]}"
                     class="button bigbutton tooltip"
                     title="{_T string="Edit member"}"
                 >

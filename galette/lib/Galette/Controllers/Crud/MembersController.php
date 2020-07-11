@@ -90,6 +90,7 @@ class MembersController extends CrudController
      */
     public function add(Request $request, Response $response, array $args = []): Response
     {
+        $args['action'] = 'add';
         return $this->edit($request, $response, $args);
     }
 
@@ -207,7 +208,7 @@ class MembersController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('editmember', ['action' => 'add']));
+            ->withHeader('Location', $this->router->pathFor('addMember'));
     }
 
     // /CRUD - Create
@@ -1060,7 +1061,7 @@ class MembersController extends CrudController
      */
     public function edit(Request $request, Response $response, array $args = []): Response
     {
-        $action = $args['action'];
+        $action = $args['action'] ?? 'edit';
         $id = null;
         if (isset($args['id'])) {
             $id = (int)$args['id'];
@@ -1950,10 +1951,10 @@ class MembersController extends CrudController
                 ) {
                     switch ($post['redirect_on_create']) {
                         case Adherent::AFTER_ADD_TRANS:
-                            $redirect_url = $this->router->pathFor('transaction', ['action' => 'add']);
+                            $redirect_url = $this->router->pathFor('addTransaction');
                             break;
                         case Adherent::AFTER_ADD_NEW:
-                            $redirect_url = $this->router->pathFor('editmember', ['action' => 'add']);
+                            $redirect_url = $this->router->pathFor('addMember');
                             break;
                         case Adherent::AFTER_ADD_SHOW:
                             $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
@@ -1981,17 +1982,13 @@ class MembersController extends CrudController
                     $redirect_url = $this->router->pathFor('subscribe');
                 } else {
                     if ($member->id) {
-                        $rparams = [
-                            'id'    => $member->id,
-                            'action'    => 'edit'
-                        ];
+                        $redirect_url = $this->router->pathFor(
+                            'editMember',
+                            ['id'    => $member->id]
+                        );
                     } else {
-                        $rparams = ['action' => 'add'];
+                        $redirect_url = $this->router->pathFor('addMember');
                     }
-                    $redirect_url = $this->router->pathFor(
-                        'editmember',
-                        $rparams
-                    );
                 }
             }
         }
