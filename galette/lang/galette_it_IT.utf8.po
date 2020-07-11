@@ -9,9 +9,9 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-11 07:59+0200\n"
-"PO-Revision-Date: 2020-06-29 06:40+0000\n"
+"PO-Revision-Date: 2020-07-11 17:50+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
@@ -1152,9 +1152,9 @@ msgid "Email: '%s' has not been modified!"
 msgstr "E-mail: «%s» è stato modificato!"
 
 #: ../lib/Galette/Controllers/TextController.php:169
-#, php-format
+#, fuzzy, php-format
 msgid "Email: '%s' has been successfully modified."
-msgstr "E-mail: «% s» è stato modificato con successo."
+msgstr "E-mail: « %s » è stato modificato con successo."
 
 #: ../lib/Galette/Core/Install.php:121 ../webroot/installer.php:316
 msgid "Checks"
@@ -5068,8 +5068,8 @@ msgstr ""
 #| msgid "List of contributions"
 msgid "%count contribution"
 msgid_plural "%count contributions"
-msgstr[0] "Elenco dei contributi"
-msgstr[1] "Elenco dei contributi"
+msgstr[0] "%count contributo"
+msgstr[1] "%count contributi"
 
 #: ../templates/default/gestion_contributions.tpl:58
 #: ../templates/default/gestion_mailings.tpl:43
@@ -7385,8 +7385,8 @@ msgstr ""
 #| msgid "List of transactions"
 msgid "%count transaction"
 msgid_plural "%count transactions"
-msgstr[0] "Elenco delle transazioni"
-msgstr[1] "Elenco delle transazioni"
+msgstr[0] "%count transaziono"
+msgstr[1] "%count transazioni"
 
 #: ../templates/default/gestion_transactions.tpl:62
 #: ../templates/default/gestion_transactions.tpl:109
