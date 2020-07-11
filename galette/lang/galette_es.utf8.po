@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-11 07:59+0200\n"
-"PO-Revision-Date: 2020-07-05 20:10+0000\n"
+"PO-Revision-Date: 2020-07-11 17:50+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
@@ -555,7 +555,7 @@ msgstr ""
 #, fuzzy, php-format
 #| msgid "Remove mailing #%1$s"
 msgid "Remove %1$s %2$s"
-msgstr "Eliminar correspondencia n.º %1$s"
+msgstr "Eliminar %1$s %2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:897
 msgid "contributions"
@@ -5062,8 +5062,8 @@ msgstr ""
 #| msgid "List of contributions"
 msgid "%count contribution"
 msgid_plural "%count contributions"
-msgstr[0] "Lista de contribuciones"
-msgstr[1] "Lista de contribuciones"
+msgstr[0] "%count contribucion"
+msgstr[1] "%count contribuciones"
 
 #: ../templates/default/gestion_contributions.tpl:58
 #: ../templates/default/gestion_mailings.tpl:43
@@ -5838,8 +5838,8 @@ msgstr "Mostrar/ocultar consulta"
 #| msgid "%membercount members"
 msgid "%count member"
 msgid_plural "%count members"
-msgstr[0] "%membercount miembros"
-msgstr[1] "%membercount miembros"
+msgstr[0] "%count miembro"
+msgstr[1] "%count miembros"
 
 #: ../templates/default/gestion_adherents.tpl:129
 msgid "Mbr num"
@@ -7404,8 +7404,8 @@ msgstr "Mostrar transacciones de todos los miembros"
 #| msgid "transaction"
 msgid "%count transaction"
 msgid_plural "%count transactions"
-msgstr[0] "transacción"
-msgstr[1] "transacción"
+msgstr[0] "%count transacción"
+msgstr[1] "%count transacciones"
 
 #: ../templates/default/gestion_transactions.tpl:62
 #: ../templates/default/gestion_transactions.tpl:109
