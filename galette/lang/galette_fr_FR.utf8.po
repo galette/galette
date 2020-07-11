@@ -12,9 +12,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-07 23:57+0200\n"
-"PO-Revision-Date: 2020-06-29 19:42+0000\n"
+"PO-Revision-Date: 2020-07-11 04:49+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -4256,7 +4256,7 @@ msgstr ""
 
 #: ../templates/default/page.tpl:83
 msgid "Core fields"
-msgstr "Champs du coeur"
+msgstr "Champs du cœur"
 
 #: ../templates/default/page.tpl:84
 msgid "Manage additional fields for various forms"
