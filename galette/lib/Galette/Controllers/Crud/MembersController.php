@@ -1067,15 +1067,6 @@ class MembersController extends CrudController
             $id = (int)$args['id'];
         }
 
-        if ($action === 'edit' && $id === null) {
-            throw new \RuntimeException(
-                _T("Member ID cannot ben null calling edit route!")
-            );
-        } elseif ($action === 'add' && $id !== null) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('editmember', ['action' => 'add']));
-        }
         $deps = array(
             'picture'   => true,
             'groups'    => true,

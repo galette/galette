@@ -127,16 +127,6 @@ class TransactionsController extends ContributionsController
             $trans_id = $args['id'];
         }
 
-        if ($action === 'edit' && $trans_id === null) {
-            throw new \RuntimeException(
-                _T("Transaction ID cannot ben null calling edit route!")
-            );
-        } elseif ($action === 'add' && $trans_id !== null) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('transaction', ['action' => 'add']));
-        }
-
         $transaction['trans_id'] = $trans_id;
         $transaction['trans_amount'] = get_numeric_form_value("trans_amount", '');
         $transaction['trans_date'] = get_form_value("trans_date", '');
@@ -226,16 +216,6 @@ class TransactionsController extends ContributionsController
         if (isset($args['id'])) {
             $action = 'edit';
             $trans_id = $args['id'];
-        }
-
-        if ($action === 'edit' && $trans_id === null) {
-            throw new \RuntimeException(
-                _T("Transaction ID cannot ben null calling edit route!")
-            );
-        } elseif ($action === 'add' && $trans_id !== null) {
-            throw new \RuntimeException(
-                _T("Transaction ID cannot ben set while adding!")
-            );
         }
 
         $transaction['trans_id'] = $trans_id;
