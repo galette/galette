@@ -626,6 +626,7 @@ class Members extends atoum
 
         $list = $members->getPublicList(false);
         $this->array($list)->hasSize(2);
+        $this->integer($members->getCount())->isIdenticalTo(2);
 
         $adh = $list[0];
 
@@ -635,6 +636,7 @@ class Members extends atoum
 
         $list = $members->getPublicList(true);
         $this->array($list)->hasSize(1);
+        $this->integer($members->getCount())->isIdenticalTo(1);
 
         $adh = $list[0];
 

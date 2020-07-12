@@ -479,7 +479,8 @@ class Members
             $select = $this->buildSelect(
                 self::SHOW_PUBLIC_LIST,
                 null,
-                $with_photos
+                $with_photos,
+                true
             );
 
             $this->filters->setLimits($select);
