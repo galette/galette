@@ -858,7 +858,7 @@ class Members extends atoum
 
         //create an expired contribution
         $cdata = [
-            \Galette\Entity\Adherent::PK    => $this->mids[8],
+            \Galette\Entity\Adherent::PK    => $nomail_id,
             'type_paiement_cotis'           => \Galette\Entity\PaymentType::CHECK,
             'montant_cotis'                 => 20,
             'date_enreg'                    => $bdate->format('Y-m-d'),
@@ -875,7 +875,45 @@ class Members extends atoum
         $this->integer((int)$counts['impending'])->isIdenticalTo(1);
         $this->integer((int)$counts['late'])->isIdenticalTo(1);
         $this->integer((int)$counts['nomail']['impending'])->isIdenticalTo(0);
+        $this->integer((int)$counts['nomail']['late'])->isIdenticalTo(1);
+
+        //cleanup contribution
+        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
+        $delete->where(\Galette\Entity\Adherent::PK, $nomail_id);
+        $this->zdb->execute($delete);
+
+        //create a close to be expired contribution
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
+        $now = new \DateTime();
+        $edate = clone $now;
+        $edate->modify('+6 days');
+        $bdate = clone $edate;
+        $bdate->modify('-1 year');
+
+        $cdata = [
+            \Galette\Entity\Adherent::PK    => $nomail_id,
+            'type_paiement_cotis'           => \Galette\Entity\PaymentType::CASH,
+            'montant_cotis'                 => 20,
+            'date_enreg'                    => $bdate->format('Y-m-d'),
+            'date_debut_cotis'              => $bdate->format('Y-m-d'),
+            'date_fin_cotis'                => $edate->format('Y-m-d'),
+            \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+        ];
+        $this->boolean($contrib->check($cdata, [], []))->isTrue();
+        $this->boolean($contrib->store())->isTrue();
+
+        $counts = $members->getRemindersCount();
+        $this->array($counts)->hasSize(3)
+            ->hasKeys(['impending', 'nomail', 'late']);
+        $this->integer((int)$counts['impending'])->isIdenticalTo(1);
+        $this->integer((int)$counts['late'])->isIdenticalTo(1);
+        $this->integer((int)$counts['nomail']['impending'])->isIdenticalTo(1);
         $this->integer((int)$counts['nomail']['late'])->isIdenticalTo(0);
+
+        //cleanup contribution
+        $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
+        $delete->where(\Galette\Entity\Adherent::PK, $nomail_id);
+        $this->zdb->execute($delete);
 
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['id_adh' => $nomail_id]);
