@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-11 07:59+0200\n"
-"PO-Revision-Date: 2020-07-11 17:50+0000\n"
+"PO-Revision-Date: 2020-07-12 09:08+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
@@ -101,8 +101,9 @@ msgid "Remove payment type %1$s"
 msgstr "Quitar tipo de pago %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:123
+#, fuzzy
 msgid "Group name is missing!"
-msgstr "Falta el nombre del grupo."
+msgstr "¡Falta el nombre del grupo!"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:186
 msgid "Groups"
@@ -182,7 +183,7 @@ msgstr "Se ha producido un error al añadir el campo dinámico :("
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:145
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:364
 msgid "Dynamic field has been successfully stored!"
-msgstr "Se almacenó el campo dinámico correctamente."
+msgstr "¡Se almacenó el campo dinámico correctamente!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:226
 msgid "Dynamic fields configuration"
@@ -286,7 +287,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1383
 msgid "Nothing to do!"
-msgstr "No queda nada que hacer."
+msgstr "¡No queda nada que hacer!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1411
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1879
@@ -418,12 +419,12 @@ msgstr "Editar título"
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:209
 #, php-format
 msgid "Title '%s' has not been added!"
-msgstr "No se ha añadido el título «%s»."
+msgstr "¡No se ha añadido el título «%s»!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:218
 #, php-format
 msgid "Title '%s' has not been modified!"
-msgstr "No se ha modificado el título «%s»."
+msgstr "¡No se ha modificado el título «%s»!"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:231
 #, php-format
@@ -501,7 +502,7 @@ msgstr "- Tipo de pago desconocido"
 #: ../lib/Galette/Controllers/PdfController.php:454
 #: ../lib/Galette/Controllers/PdfController.php:710
 msgid "Unable to load contribution #%id!"
-msgstr "No se ha podido cargar la contribución n.º %id."
+msgstr "¡No se ha podido cargar la contribución #%id!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:578
 msgid "Contribution has been successfully stored"
@@ -754,13 +755,13 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/CrudController.php:289
 msgid "Successfully deleted!"
-msgstr "Se ha eliminado correctamente."
+msgstr "¡Se ha eliminado correctamente!"
 
 #: ../lib/Galette/Controllers/CrudController.php:303
 #, fuzzy
 #| msgid "An error occurred trying to delete field :("
 msgid "An error occurred trying to delete :("
-msgstr "Se produjo un error al intentar eliminar el campo :("
+msgstr "Se produjo un error al intentar eliminar :("
 
 #: ../lib/Galette/Controllers/PdfController.php:189
 #: ../lib/Galette/Controllers/PdfController.php:261
@@ -1076,7 +1077,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/CsvController.php:360
 msgid "Your file has been successfully uploaded!"
-msgstr "Se cargó el archivo correctamente."
+msgstr "¡Se cargó el archivo correctamente!"
 
 #: ../lib/Galette/Controllers/CsvController.php:379
 msgid "No files has been seleted for upload!"
@@ -1323,8 +1324,8 @@ msgstr ""
 #: ../lib/Galette/Core/Preferences.php:610
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
-"- Debe indicar la dirección de correo que Galette debe utilizar para enviar "
-"mensajes."
+"- ¡Debe indicar la dirección de correo que Galette debe utilizar para enviar "
+"mensajes!"
 
 #: ../lib/Galette/Core/Preferences.php:617
 msgid "- You must indicate the SMTP server you want to use!"
@@ -1474,7 +1475,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Plugins.php:793
 msgid "File not found!"
-msgstr "No se encontró el archivo."
+msgstr "¡No se encontró el archivo!"
 
 #: ../lib/Galette/Core/Picture.php:857
 msgid "An SQL error has occurred."
@@ -1564,7 +1565,7 @@ msgstr ""
 
 #: ../lib/Galette/Util/FakeData.php:488
 msgid "Photo has not been stored!"
-msgstr "No se almacenó la fotografía."
+msgstr "¡No se almacenó la fotografía!"
 
 #: ../lib/Galette/Util/FakeData.php:495
 msgid "Photo has not been copied!"
@@ -1835,7 +1836,7 @@ msgstr ""
 #: ../lib/Galette/IO/CsvIn.php:324
 #, php-format
 msgid "Status %status does not exists!"
-msgstr "El estado %status no existe."
+msgstr "¡El estado %status no existe!"
 
 #: ../lib/Galette/IO/CsvIn.php:343
 msgid "Title %title does not exists!"
@@ -1859,7 +1860,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/CsvIn.php:442
 msgid "File is empty!"
-msgstr "El archivo está vacío."
+msgstr "¡El archivo está vacío!"
 
 #: ../lib/Galette/IO/CsvIn.php:529 ../lib/Galette/IO/CsvIn.php:540
 msgid "An error occurred storing member at row %row (%name):"
@@ -2121,7 +2122,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1238
 msgid "- The username must be composed of at least %i characters!"
-msgstr "- El nombre de usuario debe tener por lo menos %i caracteres."
+msgstr "- ¡El nombre de usuario debe tener por lo menos %i caracteres!"
 
 #: ../lib/Galette/Entity/Adherent.php:1243
 msgid "- The username cannot contain the @ character"
@@ -2129,7 +2130,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/Adherent.php:1262
 msgid "- This username is already in use, please choose another one!"
-msgstr "- Este nombre de usuario ya se utiliza; elija otro."
+msgstr "- ¡Este nombre de usuario ya se utiliza; elija otro!"
 
 #: ../lib/Galette/Entity/Adherent.php:1285
 msgid "Password misrepeated: "
@@ -2199,7 +2200,7 @@ msgstr ""
 #: ../lib/Galette/Entity/Transaction.php:310
 #: ../lib/Galette/Entity/Contribution.php:410
 msgid "- The amount must be an integer!"
-msgstr "- El monto debe ser un número entero."
+msgstr "- ¡El monto debe ser un número entero!"
 
 #: ../lib/Galette/Entity/Transaction.php:317
 msgid "- Empty transaction description!"
@@ -2349,7 +2350,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:572
 msgid "header and footer should not be empty!"
-msgstr "la cabecera y el pie de página no pueden quedar vacíos."
+msgstr "¡la cabecera y el pie de página no pueden quedar vacíos!"
 
 #: ../lib/Galette/Entity/PdfModel.php:576
 msgid "body should not be empty!"
@@ -5365,7 +5366,7 @@ msgstr ""
 
 #: ../templates/default/plugin_initdb.tpl:95
 msgid "Plugin '%name' has been successfully installed!"
-msgstr "Se instaló el complemento «%name» correctamente."
+msgstr "¡Se instaló el complemento «%name» correctamente!"
 
 #: ../templates/default/plugin_initdb.tpl:97
 msgid "Plugin '%name' has been successfully updated!"
