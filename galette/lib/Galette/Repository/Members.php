@@ -1636,8 +1636,12 @@ class Members
 
         $select_wo_mail = clone $select;
 
-        $select->where('(a.email_adh != \'\' OR p.email_adh != \'\')');
-        $select_wo_mail->where('a.email_adh = \'\' AND p.email_adh = \'\'');
+        $select->where(
+            '(a.email_adh != \'\' OR a.email_adh IS NOT NULL OR p.email_adh != \'\' OR p.email_adh IS NOT NULL)'
+        );
+        $select_wo_mail->where(
+            '(a.email_adh = \'\' OR a.email_adh IS NULL) AND (p.email_adh = \'\' OR p.email_adh IS NULL)'
+        );
 
         $results = $zdb->execute($select);
         $res = $results->current();

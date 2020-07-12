@@ -793,7 +793,7 @@ class Members extends atoum
         $this->integer((int)$counts['nomail']['impending'])->isIdenticalTo(0);
         $this->integer((int)$counts['nomail']['late'])->isIdenticalTo(0);
 
-        //create an expired contribution
+        //create a close to be expired contribution
         $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login);
         $now = new \DateTime();
         $edate = clone $now;
@@ -813,13 +813,73 @@ class Members extends atoum
         $this->boolean($contrib->check($cdata, [], []))->isTrue();
         $this->boolean($contrib->store())->isTrue();
 
+        //create an expired contribution
+        $edate = clone $now;
+        $edate->modify('-6 days');
+        $bdate = clone $edate;
+        $bdate->modify('-1 year');
+
+        $cdata = [
+            \Galette\Entity\Adherent::PK    => $this->mids[8],
+            'type_paiement_cotis'           => \Galette\Entity\PaymentType::CHECK,
+            'montant_cotis'                 => 20,
+            'date_enreg'                    => $bdate->format('Y-m-d'),
+            'date_debut_cotis'              => $bdate->format('Y-m-d'),
+            'date_fin_cotis'                => $edate->format('Y-m-d'),
+            \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+        ];
+        $this->boolean($contrib->check($cdata, [], []))->isTrue();
+        $this->boolean($contrib->store())->isTrue();
+
         $counts = $members->getRemindersCount();
         $this->array($counts)->hasSize(3)
             ->hasKeys(['impending', 'nomail', 'late']);
         $this->integer((int)$counts['impending'])->isIdenticalTo(1);
-        $this->integer((int)$counts['late'])->isIdenticalTo(0);
+        $this->integer((int)$counts['late'])->isIdenticalTo(1);
         $this->integer((int)$counts['nomail']['impending'])->isIdenticalTo(0);
         $this->integer((int)$counts['nomail']['late'])->isIdenticalTo(0);
+
+        //member without email
+        $nomail = new \Galette\Entity\Adherent($this->zdb);
+        $nomail->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+        $this->boolean($nomail->load($this->mids[9]));
+        $nomail->setDuplicate();
+        $this->boolean($nomail->check(['login' => 'nomail_login'], [], []))->isTrue();
+        $stored = $nomail->store();
+        if (!$stored) {
+            var_dump($nomail->getErrors());
+        }
+        $this->boolean($nomail->store())->isTrue();
+        $nomail_id = $nomail->id;
+
+        //create an expired contribution
+        $cdata = [
+            \Galette\Entity\Adherent::PK    => $this->mids[8],
+            'type_paiement_cotis'           => \Galette\Entity\PaymentType::CHECK,
+            'montant_cotis'                 => 20,
+            'date_enreg'                    => $bdate->format('Y-m-d'),
+            'date_debut_cotis'              => $bdate->format('Y-m-d'),
+            'date_fin_cotis'                => $edate->format('Y-m-d'),
+            \Galette\Entity\ContributionsTypes::PK  => \Galette\Entity\ContributionsTypes::DEFAULT_TYPE
+        ];
+        $this->boolean($contrib->check($cdata, [], []))->isTrue();
+        $this->boolean($contrib->store())->isTrue();
+
+        $counts = $members->getRemindersCount();
+        $this->array($counts)->hasSize(3)
+            ->hasKeys(['impending', 'nomail', 'late']);
+        $this->integer((int)$counts['impending'])->isIdenticalTo(1);
+        $this->integer((int)$counts['late'])->isIdenticalTo(1);
+        $this->integer((int)$counts['nomail']['impending'])->isIdenticalTo(0);
+        $this->integer((int)$counts['nomail']['late'])->isIdenticalTo(0);
+
+        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
+        $delete->where(['id_adh' => $nomail_id]);
+        $this->zdb->execute($delete);
     }
 
     /**
