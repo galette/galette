@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-11 07:59+0200\n"
-"PO-Revision-Date: 2020-06-29 06:40+0000\n"
+"PO-Revision-Date: 2020-07-12 09:08+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/galette/"
 "galette/nb_NO/>\n"
@@ -100,7 +100,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:123
 msgid "Group name is missing!"
-msgstr "Gruppenavn mangler."
+msgstr "Gruppenavn mangler!"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:186
 msgid "Groups"
