@@ -164,7 +164,7 @@ class DynamicFieldsController extends CrudController
                 ->withHeader(
                     'Location',
                     $this->router->pathFor(
-                        'editDynamicField',
+                        'addDynamicField',
                         $args
                     )
                 );
