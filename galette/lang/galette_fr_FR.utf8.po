@@ -9,13 +9,14 @@
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # anonymous <noreply@weblate.org>, 2020.
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2020.
+# J. Lavoie <j.lavoie@net-c.ca>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-11 07:59+0200\n"
-"PO-Revision-Date: 2020-07-12 09:08+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2020-07-13 07:41+0000\n"
+"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -387,8 +388,8 @@ msgid ""
 "You asked Galette to send a confirmation email to the member, but email has "
 "been disabled in the preferences."
 msgstr ""
-"Vous avez demandé à Galette d’envoyer une confirmation par mail à "
-"l’adhérent, mais l’envoi de mail a été désactivé dans les préférences."
+"Vous avez demandé à Galette d’envoyer une confirmation par courriel à l’"
+"adhérent, mais l’envoi de courriels a été désactivé dans les préférences."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1835
 msgid "Account modification email sent to admin."
