@@ -879,7 +879,7 @@ class Members extends atoum
 
         //cleanup contribution
         $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(\Galette\Entity\Adherent::PK, $nomail_id);
+        $delete->where([\Galette\Entity\Adherent::PK => $nomail_id]);
         $this->zdb->execute($delete);
 
         //create a close to be expired contribution
@@ -912,7 +912,7 @@ class Members extends atoum
 
         //cleanup contribution
         $delete = $this->zdb->delete(\Galette\Entity\Contribution::TABLE);
-        $delete->where(\Galette\Entity\Adherent::PK, $nomail_id);
+        $delete->where([\Galette\Entity\Adherent::PK => $nomail_id]);
         $this->zdb->execute($delete);
 
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
