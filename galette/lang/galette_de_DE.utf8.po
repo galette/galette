@@ -8,12 +8,13 @@
 # Fredericos Tezorc <fredericos.tezorc@gmail.com>, 2019, 2020.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020.
+# J. Lavoie <j.lavoie@net-c.ca>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-11 07:59+0200\n"
-"PO-Revision-Date: 2020-07-11 17:50+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2020-07-13 07:41+0000\n"
+"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -24,7 +25,7 @@ msgstr ""
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
-msgstr "Galette Fehler"
+msgstr "Galette-Fehler"
 
 #: ../lib/Galette/Handlers/NotFound.php:80
 msgid "Page not found"
@@ -38,13 +39,13 @@ msgstr "Transaktion"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1136
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:112
 msgid "modification"
-msgstr "ändern"
+msgstr "Änderung"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:159
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1138
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:114
 msgid "creation"
-msgstr "Erstellen"
+msgstr "Erstellung"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:267
 msgid "An error occurred while storing the transaction."
@@ -72,37 +73,36 @@ msgstr "Beitrag wurde erfolgreich aus der aktuellen Transaktion entfernt"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:118
 msgid "Payment types management"
-msgstr ""
+msgstr "Verwaltung von Zahlungsarten"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:160
 msgid "Edit payment type"
-msgstr ""
+msgstr "Zahlungsart bearbeiten"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:213
 #, php-format
 msgid "Payment type '%s' has not been added!"
-msgstr ""
+msgstr "Zahlungsart „%s“ wurde nicht hinzugefügt!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:222
-#, fuzzy, php-format
-#| msgid "Title '%s' has not been modified!"
+#, php-format
 msgid "Payment type '%s' has not been modified!"
-msgstr "Die Anrede „%s“ wurde nicht geändert!"
+msgstr "Zahlungsart „%s“ wurde nicht geändert!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:235
 #, php-format
 msgid "Payment type '%s' has been successfully added."
-msgstr ""
+msgstr "Zahlungsart „%s“ wurde erfolgreich hinzugefügt."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:244
 #, php-format
 msgid "Payment type '%s' has been successfully modified."
-msgstr ""
+msgstr "Zahlungsart „%s“ wurde erfolgreich geändert."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:307
 #, php-format
 msgid "Remove payment type %1$s"
-msgstr ""
+msgstr "Zahlungsart %1$s entfernen"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:123
 msgid "Group name is missing!"
@@ -114,11 +114,11 @@ msgstr "Gruppen"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:370
 msgid "Group `%groupname` has been successfully saved."
-msgstr "Die Gruppe '%groupname' ist erfolgreich gespeichert worden."
+msgstr "Die Gruppe „%groupname“ ist erfolgreich gespeichert worden."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:377
 msgid "An error occurred while storing the group."
-msgstr ""
+msgstr "Beim Speichern der Gruppe ist ein Fehler aufgetreten."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:469
 #, php-format
@@ -145,7 +145,7 @@ msgstr "Kein Mitglied für den E-Mail-Empfang ausgewählt!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:204
 msgid "Mailing"
-msgstr "Mailkampagne"
+msgstr "E-Mail-Kampagne"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:304
 msgid "Please type an object for the message."
@@ -157,34 +157,32 @@ msgstr "Bitte geben Sie eine Nachricht ein."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:404
 msgid "Mailing has been successfully sent!"
-msgstr "Mailing wurde erfolgreich verschickt!"
+msgstr "E-Mail-Kampagne wurde erfolgreich verschickt!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:427
 msgid "Mailing has been successfully saved."
-msgstr "Mailkampagne erfolgreich gespeichert."
+msgstr "E-Mail-Kampagne erfolgreich gespeichert."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:516
 msgid "Mailings"
-msgstr "Mailkampagnen"
+msgstr "E-Mail-Kampagnen"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:664
 #, php-format
 msgid "Remove mailing #%1$s"
-msgstr "Mailing #%1$s entfernen"
+msgstr "E-Mail-Kampagne Nr. %1$s entfernen"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:746
 msgid "Mailing preview"
 msgstr "E-Mail-Vorschau"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:82
-#, fuzzy
-#| msgid "Edit field"
 msgid "Add field"
-msgstr "Feld editieren"
+msgstr "Feld hinzufügen"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:131
 msgid "An error occurred adding dynamic field :("
-msgstr ""
+msgstr "Beim Hinzufügen des dynamischen Feldes ist ein Fehler aufgetreten :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:145
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:364
@@ -196,20 +194,16 @@ msgid "Dynamic fields configuration"
 msgstr "Konfiguration für dynamische Felder"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:291
-#, fuzzy
-#| msgid "Unable to retrieve field informations."
 msgid "Unable to retrieve field information."
 msgstr "Die Feldinformationen können nicht abgerufen werden."
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:300
 msgid "Edit field"
-msgstr "Feld editieren"
+msgstr "Feld bearbeiten"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:350
-#, fuzzy
-#| msgid "An error occurred trying to delete field :("
 msgid "An error occurred editing dynamic field :("
-msgstr "Beim Löschen des Felds ist ein Fehler aufgetreten :("
+msgstr "Beim Bearbeiten des dynamischen Felds ist ein Fehler aufgetreten :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:446
 msgid "Requested field does not exists!"
@@ -226,7 +220,7 @@ msgstr "Das Feld wurde erfolgreich verschoben"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:500
 msgid "An error occurred moving field :("
-msgstr ""
+msgstr "Beim Verschieben des Feldes ist ein Fehler aufgetreten :("
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:159
 msgid "Subscription"
@@ -302,7 +296,7 @@ msgstr "Nichts zu tun!"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1411
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1879
 msgid "An error occurred while storing the member."
-msgstr ""
+msgstr "Beim Speichern des Mitglieds ist ein Fehler aufgetreten."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1423
 msgid "Something went wront during mass edition!"
@@ -366,6 +360,8 @@ msgstr "d.m.Y H:i:s"
 msgid ""
 "An error occurred storing temporary password for %s. Please inform an admin."
 msgstr ""
+"Beim Speichern des temporären Passworts für %s ist ein Fehler aufgetreten. "
+"Bitte informieren Sie einen Administrator."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1762
 #, php-format
@@ -401,10 +397,13 @@ msgstr "Beim Senden einer E-Mail an das Konto „%s“ ist ein Problem aufgetret
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1860
 msgid "An error occurred adding member to its groups."
 msgstr ""
+"Beim Hinzufügen eines Mitglieds zu seinen Gruppen ist ein Fehler aufgetreten."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1875
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
+"Beim Hinzufügen eines Mitglieds zu seinen Gruppen als Verwalter ist ein "
+"Fehler aufgetreten."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1891
 #: ../lib/Galette/Controllers/GaletteController.php:311
@@ -519,10 +518,8 @@ msgid "Unable to load contribution #%id!"
 msgstr "Der Beitrag #%id konnte nicht geladen werden!"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:578
-#, fuzzy
-#| msgid "Transaction has been successfully stored"
 msgid "Contribution has been successfully stored"
-msgstr "Die Transkation wurde erfolgreich gespeichert"
+msgstr "Der Beitrag wurde erfolgreich gespeichert"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:591
 msgid "Post contribution script failed"
@@ -577,10 +574,9 @@ msgstr ""
 "Administrator ist ein Problem aufgetreten"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:895
-#, fuzzy, php-format
-#| msgid "Remove %1$s #%2$s"
+#, php-format
 msgid "Remove %1$s %2$s"
-msgstr "Entferne %1$s #%2$s"
+msgstr "%1$s·%2$s entfernen"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:897
 msgid "contributions"
@@ -610,19 +606,19 @@ msgstr "Beim Speichern der Suche ist ein SQL-Fehler aufgetreten."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:130
 msgid "This search is already saved."
-msgstr ""
+msgstr "Diese Suche ist bereits gespeichert."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:136
 msgid "Search has been saved."
-msgstr ""
+msgstr "Die Suche wurde gespeichert."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:212
 msgid "Saved searches"
-msgstr ""
+msgstr "Gespeicherte Suchen"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:305
 msgid "Remove saved search"
-msgstr ""
+msgstr "Gespeicherte Suche entfernen"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:312
 #, php-format
@@ -631,17 +627,13 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:361
 msgid "Saved search loaded"
-msgstr ""
+msgstr "Gespeicherte Suche geladen"
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:366
-#, fuzzy
-#| msgid "An SQL error has occurred while storing search."
 msgid "An SQL error has occurred while loading search."
-msgstr "Beim Speichern der Suche ist ein SQL-Fehler aufgetreten."
+msgstr "Beim Laden der Suche ist ein SQL-Fehler aufgetreten."
 
 #: ../lib/Galette/Controllers/GaletteController.php:109
-#, fuzzy
-#| msgid "System informations"
 msgid "System information"
 msgstr "Systeminformationen"
 
@@ -729,23 +721,19 @@ msgstr "Feldeinstellungen wurden erfolgreich gespeichert"
 
 #: ../lib/Galette/Controllers/GaletteController.php:563
 msgid "An error occurred while storing fields configuration :("
-msgstr ""
+msgstr "Beim Speichern der Feldkonfiguration ist ein Fehler aufgetreten:("
 
 #: ../lib/Galette/Controllers/GaletteController.php:589
-#, fuzzy
-#| msgid "Fields configuration"
 msgid "Lists configuration"
-msgstr "Konfigurationsfelder"
+msgstr "Listenkonfiguration"
 
 #: ../lib/Galette/Controllers/GaletteController.php:628
-#, fuzzy
-#| msgid "Fields configuration has been successfully stored"
 msgid "List configuration has been successfully stored"
-msgstr "Feldeinstellungen wurden erfolgreich gespeichert"
+msgstr "Listenkonfiguration wurde erfolgreich gespeichert"
 
 #: ../lib/Galette/Controllers/GaletteController.php:633
 msgid "An error occurred while storing list configuration :("
-msgstr ""
+msgstr "Beim Speichern der Listenkonfiguration ist ein Fehler aufgetreten :("
 
 #: ../lib/Galette/Controllers/GaletteController.php:653
 msgid "Generate fake data"
@@ -773,7 +761,7 @@ msgstr "Erinnerungen senden:"
 
 #: ../lib/Galette/Controllers/GaletteController.php:914
 msgid "Download document"
-msgstr ""
+msgstr "Dokument herunterladen"
 
 #: ../lib/Galette/Controllers/CrudController.php:277
 #: ../lib/Galette/Controllers/HistoryController.php:211
@@ -782,16 +770,12 @@ msgid "Removal has not been confirmed!"
 msgstr "Das Entfernen wurde (noch) nicht bestätigt!"
 
 #: ../lib/Galette/Controllers/CrudController.php:289
-#, fuzzy
-#| msgid "Field has been successfully deleted!"
 msgid "Successfully deleted!"
-msgstr "Das Feld wurde gelöscht!"
+msgstr "Erfolgreich gelöscht!"
 
 #: ../lib/Galette/Controllers/CrudController.php:303
-#, fuzzy
-#| msgid "An error occurred trying to delete field :("
 msgid "An error occurred trying to delete :("
-msgstr "Beim Löschen des Felds ist ein Fehler aufgetreten :("
+msgstr "Beim Löschen ist ein Fehler aufgetreten :("
 
 #: ../lib/Galette/Controllers/PdfController.php:189
 #: ../lib/Galette/Controllers/PdfController.php:261
@@ -834,10 +818,8 @@ msgid "Model has not been stored :("
 msgstr "Modell wurde nicht gespeichert :("
 
 #: ../lib/Galette/Controllers/PdfController.php:665
-#, fuzzy
-#| msgid "Invalid extension!"
 msgid "Invalid link!"
-msgstr "Ungültige Dateiendung!"
+msgstr "Ungültiger Link!"
 
 #: ../lib/Galette/Controllers/AuthController.php:90
 #: ../lib/Galette/Controllers/AuthController.php:150
@@ -850,7 +832,7 @@ msgstr "Du must sowohl einen Benutzernamen als auch ein Passwort eingeben."
 
 #: ../lib/Galette/Controllers/AuthController.php:145
 msgid "Your password is too weak! Please consider updating it."
-msgstr ""
+msgstr "Ihr Passwort ist zu schwach! Bitte erwägen Sie, es zu ändern."
 
 #: ../lib/Galette/Controllers/AuthController.php:153
 msgid "Login failed."
@@ -944,14 +926,12 @@ msgid "- The passwords don't match!"
 msgstr "- Die Passwörter stimmen nicht überein!"
 
 #: ../lib/Galette/Controllers/AuthController.php:503
-#, fuzzy
-#| msgid "Your password has been changed!"
 msgid "Your password is too weak!"
-msgstr "Dein Passwort wurde geändert!"
+msgstr "Dein Passwort ist zu schwach!"
 
 #: ../lib/Galette/Controllers/AuthController.php:512
 msgid "An error occurred while updating your password."
-msgstr ""
+msgstr "Beim Ändern des Passworts ist ein Fehler aufgetreten."
 
 #: ../lib/Galette/Controllers/AuthController.php:518
 #, php-format
@@ -968,11 +948,6 @@ msgstr "Administrationswerkzeuge"
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:81
 #: ../install/steps/check.php:110
-#, fuzzy
-#| msgid ""
-#| "Some PHP modules are missing. Please install them or contact your support."
-#| "<br/>More informations on required modules may be found in the "
-#| "documentation."
 msgid ""
 "Some PHP modules are missing. Please install them or contact your support."
 "<br/>More information on required modules may be found in the documentation."
@@ -1012,6 +987,8 @@ msgstr "Anmeldename und Passwort wurden erfolgreich erstellt (%i bearbeitet)."
 #: ../lib/Galette/Controllers/AdminToolsController.php:154
 msgid "An error occurred filling empty logins and passwords :("
 msgstr ""
+"Beim Füllen leerer Anmeldungsinfos und Passwörter ist ein Fehler aufgetreten "
+":("
 
 #: ../lib/Galette/Controllers/HistoryController.php:114
 #: ../install/steps/check.php:74
@@ -1134,7 +1111,7 @@ msgstr "Keine Datei(en) wurde(n) hochgeladen!"
 #: ../lib/Galette/Controllers/CsvController.php:451
 #, php-format
 msgid "Remove %1$s file %2$s"
-msgstr "%1s Datei %2s entfernen"
+msgstr "%1$s Datei %2$s entfernen"
 
 #: ../lib/Galette/Controllers/CsvController.php:503
 #, php-format
@@ -1564,33 +1541,27 @@ msgstr ""
 
 #: ../lib/Galette/Util/Password.php:109
 msgid "Do not use any of your personal information as password!"
-msgstr ""
+msgstr "Verwenden Sie keine Ihrer persönlichen Daten als Passwort!"
 
 #: ../lib/Galette/Util/Password.php:150
 msgid "Does not contains lowercase letters"
-msgstr ""
+msgstr "Enthält keine Kleinbuchstaben"
 
 #: ../lib/Galette/Util/Password.php:154
 msgid "Does not contains uppercase letters"
-msgstr ""
+msgstr "Enthält keine Großbuchstaben"
 
 #: ../lib/Galette/Util/Password.php:157
-#, fuzzy
-#| msgid "do not contains"
 msgid "Does not contains letters"
-msgstr "beinhaltet nicht"
+msgstr "Enthält keine Buchstaben"
 
 #: ../lib/Galette/Util/Password.php:163
-#, fuzzy
-#| msgid "do not contains"
 msgid "Does not contains numbers"
-msgstr "beinhaltet nicht"
+msgstr "Enthält keine Zahlen"
 
 #: ../lib/Galette/Util/Password.php:169
-#, fuzzy
-#| msgid "The username cannot contain the @ character"
 msgid "Does not contains special characters"
-msgstr "Der Benutzername darf kein @ beinhalten"
+msgstr "Enthält keine Sonderzeichen"
 
 #: ../lib/Galette/Util/FakeData.php:297
 #, php-format
@@ -2507,10 +2478,9 @@ msgid "Group updated"
 msgstr "Gruppe upgedated"
 
 #: ../lib/Galette/Entity/Group.php:708
-#, fuzzy, php-format
-#| msgid "Group `%1$s` is a child of `%2$s`, cannot be set as parent!"
+#, php-format
 msgid "Group `%1$s` cannot be set as parent!"
-msgstr "Die Gruppe „%1“ ist der Gruppe „%2“ untergeordnet!"
+msgstr "Die Gruppe „%1$s“ kann nicht untergeordnet sein!"
 
 #: ../lib/Galette/Middleware/CheckAcls.php:129
 #: ../lib/Galette/Middleware/CheckAcls.php:177
@@ -5240,12 +5210,11 @@ msgid "See member profile"
 msgstr "Mitgliedsprofil ansehen"
 
 #: ../templates/default/gestion_contributions.tpl:52
-#, fuzzy, php-format
-#| msgid "no contribution"
+#, php-format
 msgid "%count contribution"
 msgid_plural "%count contributions"
-msgstr[0] "keine Beiträge"
-msgstr[1] "keine Beiträge"
+msgstr[0] "%count Beitrag"
+msgstr[1] "%count Beiträge"
 
 #: ../templates/default/gestion_contributions.tpl:58
 #: ../templates/default/gestion_mailings.tpl:43
@@ -6123,16 +6092,16 @@ msgstr "Benutzerstatus/Interaktionen"
 
 #: ../templates/default/gestion_adherents.tpl:562
 msgid "Send an email"
-msgstr "Eine E-Mail senden"
+msgstr "E-Mail senden"
 
 #: ../templates/default/gestion_adherents.tpl:564
 msgid "Visit website"
-msgstr ""
+msgstr "Website ansehen"
 
 #: ../templates/default/gestion_adherents.tpl:570
 #: ../templates/default/gestion_adherents.tpl:571
 msgid "Is a woman"
-msgstr ""
+msgstr "Ist eine Frau"
 
 #: ../templates/default/gestion_adherents.tpl:596
 msgid "No member selected"
@@ -6149,7 +6118,7 @@ msgid ""
 "A mailing already exists. Do you want to create a new one or resume the "
 "existing?"
 msgstr ""
-"Es existiert schon eine Mailkampagne. Wollen Sie eine neue erstellen oder "
+"Es existiert schon eine E-Mail-Kampagne. Wollen Sie eine neue erstellen oder "
 "die vorhandene fortführen?"
 
 #: ../templates/default/gestion_adherents.tpl:645
@@ -6191,15 +6160,15 @@ msgstr "Einstellungen anzeigen"
 
 #: ../templates/default/saved_searches.tpl:43
 msgid "Load saved search"
-msgstr ""
+msgstr "Gespeicherte Suche laden"
 
 #: ../templates/default/saved_searches.tpl:51
 msgid "Delete saved search"
-msgstr ""
+msgstr "Gespeicherte Suche löschen"
 
 #: ../templates/default/saved_searches.tpl:56
 msgid "no search"
-msgstr ""
+msgstr "keine Suche"
 
 #: ../templates/default/500.tpl:6
 msgid "Application error"
@@ -6238,7 +6207,7 @@ msgstr "Verfolgen"
 
 #: ../templates/default/config_lists.tpl:7
 msgid "Fields in list"
-msgstr ""
+msgstr "Felder in der Liste"
 
 #: ../templates/default/config_lists.tpl:14
 #: ../templates/default/config_lists.tpl:38
@@ -6261,13 +6230,14 @@ msgstr "Berechtigungen"
 #: ../templates/default/config_fields.tpl:37
 #, php-format
 msgid "Change '%field' permissions"
-msgstr "Berechtigungen für '%field' ändern"
+msgstr "Berechtigungen für „%field“ ändern"
 
 #: ../templates/default/config_lists.tpl:19
 #: ../templates/default/config_lists.tpl:43
 #: ../templates/default/config_fields.tpl:39
+#, fuzzy
 msgid "Inaccessible"
-msgstr ""
+msgstr "Unzugänglich"
 
 #: ../templates/default/config_lists.tpl:23
 #: ../templates/default/config_lists.tpl:47
@@ -6283,7 +6253,7 @@ msgstr "Lesen/Schreiben"
 
 #: ../templates/default/config_lists.tpl:31
 msgid "Available fields"
-msgstr ""
+msgstr "Verfügbare Felder"
 
 #: ../templates/default/export.tpl:5
 msgid ""
@@ -6313,7 +6283,7 @@ msgstr "Größe"
 #: ../templates/default/export.tpl:55 ../templates/default/import.tpl:50
 #, php-format
 msgid "Remove '%file' from disk"
-msgstr "Datei '%file' von der Platte löschen"
+msgstr "Datei „%file“ von der Platte löschen"
 
 #: ../templates/default/export.tpl:66
 msgid "Parameted exports"
@@ -6905,10 +6875,9 @@ msgid "Move up '%s' field"
 msgstr "Feld '%s' nach oben verschieben"
 
 #: ../templates/default/configurer_fiche_content.tpl:65
-#, fuzzy, php-format
-#| msgid "Move down '%s' field"
+#, php-format
 msgid "Move down '%s' field"
-msgstr "Das Feld '%id' nach unten schieben"
+msgstr "Das Feld „%s“ nach unten schieben"
 
 #: ../templates/default/configurer_fiche_content.tpl:73
 #, php-format
@@ -7847,7 +7816,7 @@ msgstr "Mitgliedskarte anzeigen"
 
 #: ../templates/default/public_page.tpl:67
 msgid "Subscribe"
-msgstr "Abbonieren"
+msgstr "Abonnieren"
 
 #: ../templates/default/public_page.tpl:77
 msgid "Lost your password?"
@@ -7929,7 +7898,7 @@ msgstr "Die Nutzungsdaten sind über ein Jahr alt."
 
 #: ../templates/default/global_messages.tpl:67
 msgid "Do you want to send it again?"
-msgstr "Willst Du es nochmal senden?"
+msgstr "Willst du es nochmal senden?"
 
 #: ../templates/default/global_messages.tpl:70
 msgid "Later"
@@ -8074,7 +8043,7 @@ msgstr "Kurzform"
 #: ../templates/default/gestion_titres.tpl:24
 #: ../templates/default/gestion_titres.tpl:52
 msgid "Long form"
-msgstr "Erweitertes Formular"
+msgstr "Erweiterte Form"
 
 #: ../templates/default/gestion_titres.tpl:18
 msgid "Add title"
@@ -8088,12 +8057,12 @@ msgstr "%s Titel"
 #: ../templates/default/gestion_titres.tpl:59
 #, php-format
 msgid "Edit '%s' title"
-msgstr "Anrede '%s' bearbeiten"
+msgstr "Anrede „%s“ bearbeiten"
 
 #: ../templates/default/gestion_titres.tpl:69
 #, php-format
 msgid "Delete '%s' title"
-msgstr "Titel '%s' löschen"
+msgstr "Titel „%s“ löschen"
 
 #~ msgid "Transaction ID cannot ben null calling edit route!"
 #~ msgstr "Die Transaktions ID darf nicht null sein!"
