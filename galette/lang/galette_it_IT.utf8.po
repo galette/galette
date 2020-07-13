@@ -7,12 +7,13 @@
 # Miguel Cordas <mc@mcsi.ch>, 2019. #zanata
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020.
+# J. Lavoie <j.lavoie@net-c.ca>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-11 07:59+0200\n"
-"PO-Revision-Date: 2020-07-11 17:50+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2020-07-13 07:41+0000\n"
+"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -7592,7 +7593,7 @@ msgstr ""
 
 #: ../templates/default/public_page.tpl:67
 msgid "Subscribe"
-msgstr "Iscriversi"
+msgstr "Iscriviti"
 
 #: ../templates/default/public_page.tpl:77
 msgid "Lost your password?"
@@ -7614,7 +7615,7 @@ msgstr ""
 
 #: ../templates/default/mailing_recipients.tpl:11
 msgid "None of the selected members has an email address."
-msgstr "Nessuno dei membri selezionati ha un indirizzo e-mail."
+msgstr "Nessuno dei membri selezionati ha un indirizzo di posta elettronica."
 
 #: ../templates/default/mailing_recipients.tpl:13
 msgid "No member selected (yet)."
@@ -7644,7 +7645,7 @@ msgstr ""
 
 #: ../templates/default/ajax_groups.tpl:36
 msgid "Selected groups"
-msgstr ""
+msgstr "Gruppi selezionati"
 
 #: ../templates/default/ajax_groups.tpl:44
 msgid "No groups has been selected yet."
@@ -7652,7 +7653,7 @@ msgstr ""
 
 #: ../templates/default/global_messages.tpl:28
 msgid "- WARNING -"
-msgstr ""
+msgstr "- ATTENZIONE -"
 
 #: ../templates/default/global_messages.tpl:40
 msgid ""
@@ -7670,11 +7671,11 @@ msgstr ""
 
 #: ../templates/default/global_messages.tpl:67
 msgid "Do you want to send it again?"
-msgstr ""
+msgstr "Vuoi inviarlo di nuovo?"
 
 #: ../templates/default/global_messages.tpl:70
 msgid "Later"
-msgstr ""
+msgstr "Più tardi"
 
 #: ../templates/default/reminder.tpl:6
 msgid "Choose wich reminder(s) you want to send:"
@@ -7690,10 +7691,9 @@ msgid "%s members with an email address"
 msgstr ""
 
 #: ../templates/default/reminder.tpl:14 ../templates/default/reminder.tpl:21
-#, fuzzy, php-format
-#| msgid "Member's email address"
+#, php-format
 msgid "%s members without email address"
-msgstr "Indirizzo e-mail del membro"
+msgstr "%s membri senza indirizzo e-mail"
 
 #: ../templates/default/reminder.tpl:25
 msgid "Generate labels for late members without email address"
