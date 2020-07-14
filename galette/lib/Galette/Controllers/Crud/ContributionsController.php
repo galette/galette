@@ -685,7 +685,7 @@ class ContributionsController extends CrudController
                         }
 
                         $link_pdf = '';
-                        if (strpos($mtxt->tbody, '{LINK_MEMBERCARD}') !== false) {
+                        if (strpos($mtxt->tbody, '{LINK_CONTRIBPDF}') !== false) {
                             //contribution receipt link is present in mail model, let's add it
                             $links = new Links($this->zdb);
                             $ltype = $contrib->type->isExtension() ? Links::TARGET_INVOICE : Links::TARGET_RECEIPT;
