@@ -1,11 +1,12 @@
 # rsichler <blagoslovichlibog@hotmail.fr>, 2020.
+# ThonyVezbe <a.guechoum@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-11 07:59+0200\n"
-"PO-Revision-Date: 2020-04-02 14:09+0000\n"
-"Last-Translator: rsichler <blagoslovichlibog@hotmail.fr>\n"
+"PO-Revision-Date: 2020-07-16 15:41+0000\n"
+"Last-Translator: ThonyVezbe <a.guechoum@gmail.com>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
 "br/>\n"
 "Language: br\n"
@@ -14,10 +15,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=5; plural=(n % 10 == 1 && n % 100 != 11 && n % 100 != "
 "71 && n % 100 != 91) ? 0 : ((n % 10 == 2 && n % 100 != 12 && n % 100 != 72 "
-"&& n % 100 != 92) ? 1 : ((((n % 10 == 3 || n % 10 == 4) || n % 10 == 9) && "
-"(n % 100 < 10 || n % 100 > 19) && (n % 100 < 70 || n % 100 > 79) && (n % 100 "
+"&& n % 100 != 92) ? 1 : ((((n % 10 == 3 || n % 10 == 4) || n % 10 == 9) && ("
+"n % 100 < 10 || n % 100 > 19) && (n % 100 < 70 || n % 100 > 79) && (n % 100 "
 "< 90 || n % 100 > 99)) ? 2 : ((n != 0 && n % 1000000 == 0) ? 3 : 4)));\n"
-"X-Generator: Weblate 4.0-dev\n"
+"X-Generator: Weblate 4.2-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -35,13 +36,13 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1136
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:112
 msgid "modification"
-msgstr ""
+msgstr "daskemmadur"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:159
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1138
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:114
 msgid "creation"
-msgstr ""
+msgstr "krouadur"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:267
 msgid "An error occurred while storing the transaction."
@@ -7726,7 +7727,7 @@ msgstr ""
 
 #: ../templates/default/gestion_titres.tpl:18
 msgid "Add title"
-msgstr ""
+msgstr "Ouzhpenniñ un titl"
 
 #: ../templates/default/gestion_titres.tpl:47
 #, php-format
