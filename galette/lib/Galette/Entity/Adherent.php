@@ -126,9 +126,9 @@ class Adherent
     private $_parent;
     private $_children;
     private $_duplicate = false;
-    //
+
     private $_row_classes;
-    //fields list and their translation
+
     private $_self_adh = false;
     private $_deps = array(
         'picture'   => true,
@@ -153,6 +153,8 @@ class Adherent
     ];
 
     private $errors = [];
+
+    private $sendmail = false;
 
     /**
      * Default constructor
@@ -1983,5 +1985,28 @@ class Adherent
     public function isDuplicate()
     {
         return $this->_duplicate;
+    }
+
+    /**
+     * Flag creation mail sending
+     *
+     * @param boolean $send True (default) to send creation email
+     *
+     * @return Adherent
+     */
+    public function setSendmail($send = true)
+    {
+        $this->sendmail = $send;
+        return $this;
+    }
+
+    /**
+     * Shoudl we send administrative emails to member?
+     *
+     * @return boolean
+     */
+    public function sendEMail()
+    {
+        return $this->sendmail;
     }
 }

@@ -630,6 +630,18 @@ $container['translator'] = function ($c) {
 // Add Event manager to dependency.
 $container['event_manager'] = function ($c) {
     $emitter = new SlimEventManager();
+
+    $emitter->useListenerProvider(
+        new Galette\Events\MemberListener(
+            $c->get('preferences'),
+            $c->get('router'),
+            $c->get('history'),
+            $c->get('flash'),
+            $c->get('login'),
+            $c->get('zdb')
+        )
+    );
+
     return $emitter;
 };
 
