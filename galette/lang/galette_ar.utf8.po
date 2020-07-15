@@ -7,9 +7,9 @@
 # Antonios Hazim <antonios.hazim@zoho.eu>, 2020.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-11 07:59+0200\n"
-"PO-Revision-Date: 2020-07-10 09:41+0000\n"
+"PO-Revision-Date: 2020-07-16 15:41+0000\n"
 "Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
@@ -697,10 +697,8 @@ msgid "An error occurred while storing fields configuration :("
 msgstr ""
 
 #: ../lib/Galette/Controllers/GaletteController.php:589
-#, fuzzy
-#| msgid "List of contributions"
 msgid "Lists configuration"
-msgstr "قائمة المتبرّعين"
+msgstr "إعدادت القوائم"
 
 #: ../lib/Galette/Controllers/GaletteController.php:628
 #, fuzzy
