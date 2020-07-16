@@ -197,7 +197,9 @@ abstract class AbstractController
         //reinject flash messages so they're not lost
         $flashes = $this->flash->getMessages();
         foreach ($flashes as $type => $messages) {
-            $this->container->get('flash')->addMessage($type, $message);
+            foreach ($messages as $message) {
+                $this->container->get('flash')->addMessage($type, $message);
+            }
         }
 
         if ($this->login->isLogged()) {
