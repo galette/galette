@@ -107,7 +107,7 @@ class PdfController extends AbstractController
             isset($args[Adherent::PK])
             && $args[Adherent::PK] > 0
         ) {
-            $id_adh = $args[Adherent::PK];
+            $id_adh = (int)$args[Adherent::PK];
             $deps = ['dynamics' => true];
             if ($this->login->id == $id_adh) {
                 $deps['dues'] = true;
