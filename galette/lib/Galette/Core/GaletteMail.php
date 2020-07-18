@@ -117,12 +117,7 @@ class GaletteMail
                 // enables SMTP debug information
                 if (GALETTE_MODE == 'DEV') {
                     $this->mail->SMTPDebug = 2;
-                    $this->mail->Debugoutput = function ($message, $level) {
-                        Analog::log(
-                            $level . ' - ' . $message,
-                            Analog::DEBUG
-                        );
-                    };
+                    $this->mail->Debugoutput = $this->Debugoutput($message, $level);
                 }
 
                 if ($this->preferences->pref_mail_method == self::METHOD_GMAIL) {
@@ -576,5 +571,21 @@ class GaletteMail
     {
         $this->timeout = $timeout;
         return $this;
+    }
+
+    /**
+     * Debug SMTP output
+     *
+     * @param string  $message Debug message,
+     * @param integer $level   Debug level
+     *
+     * @return void
+     */
+    private function debugOutput($message, $level)
+    {
+        Analog::log(
+            $level . ' - ' . $message,
+            Analog::DEBUG
+        );
     }
 }
