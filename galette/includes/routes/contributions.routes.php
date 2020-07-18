@@ -34,9 +34,9 @@
  * @since     0.8.2dev 2014-11-27
  */
 
+use Galette\Controllers\GaletteController;
 use Galette\Controllers\Crud;
 use Galette\Controllers\PdfController;
-
 use Galette\Repository\Contributions;
 use Galette\Entity\Transaction;
 use Galette\Repository\Transactions;
