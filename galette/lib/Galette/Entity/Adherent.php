@@ -498,7 +498,8 @@ class Adherent
                 if ($this->_days_remaining == 0) {
                     $this->_row_classes .= ' cotis-lastday';
                 } elseif ($this->_days_remaining < 0) {
-                    $this->_row_classes .= ' cotis-late';
+                    //check if member is still active
+                    $this->_row_classes .= $this->isActive() ? ' cotis-late' : ' cotis-old';
                 } elseif ($this->_days_remaining < 30) {
                     $this->_row_classes .= ' cotis-soon';
                 } else {
@@ -737,7 +738,7 @@ class Adherent
                     _T("Late of %days days (since %date)")
                 );
             } else {
-                $ret = _T("Late");
+                $ret = _T("No longer member");
             }
         } else {
             $patterns = array('/%days/', '/%date/');
