@@ -100,6 +100,13 @@ if ($needs_update) {
     );
 }
 
+//handle notices
+set_error_handler(function ($severity, $message, $file, $line) {
+    if (GALETTE_MODE === 'DEV') {
+        throw new \ErrorException($message, 0, $severity, $file, $line);
+    }
+});
+
 //Session duration
 if (!defined('GALETTE_TIMEOUT')) {
     //See https://php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime
