@@ -286,6 +286,7 @@ class Charts
         $results = $zdb->execute($select1);
 
         $result = $results->current();
+        $results->next();
         $next = $results->current();
 
         $individuals = $result->cnt;
