@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-11 07:59+0200\n"
+"POT-Creation-Date: 2020-07-18 08:29+0200\n"
 "PO-Revision-Date: 2020-06-29 06:40+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -881,7 +881,7 @@ msgid "No password"
 msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:497
-#: ../lib/Galette/Entity/Adherent.php:1280
+#: ../lib/Galette/Entity/Adherent.php:1281
 msgid "- The passwords don't match!"
 msgstr ""
 
@@ -1320,7 +1320,7 @@ msgid "- Offering months is only compatible with beginning of membership."
 msgstr ""
 
 #: ../lib/Galette/Core/Preferences.php:665
-#: ../lib/Galette/Entity/Adherent.php:1073
+#: ../lib/Galette/Entity/Adherent.php:1074
 #: ../lib/Galette/Entity/Transaction.php:335
 #: ../lib/Galette/Entity/Contribution.php:460
 #, php-format
@@ -1366,8 +1366,8 @@ msgid "either 'mysql' or 'pgsql' PDO driver"
 msgstr ""
 
 #: ../lib/Galette/Core/Plugins.php:240
-#: ../lib/Galette/Repository/Members.php:1462
-#: ../lib/Galette/Repository/Members.php:1466
+#: ../lib/Galette/Repository/Members.php:1463
+#: ../lib/Galette/Repository/Members.php:1467
 #: ../lib/Galette/Util/Password.php:267 ../lib/Galette/Util/FakeData.php:434
 #: ../lib/Galette/Util/FakeData.php:446 ../lib/Galette/Util/FakeData.php:525
 #: ../lib/Galette/Util/FakeData.php:658 ../lib/Galette/Util/FakeData.php:659
@@ -1377,13 +1377,13 @@ msgstr ""
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:89
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:121
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:176
-#: ../lib/Galette/Entity/Adherent.php:713
-#: ../lib/Galette/Entity/Adherent.php:731
-#: ../lib/Galette/Entity/Adherent.php:747
-#: ../lib/Galette/Entity/Adherent.php:1133
-#: ../lib/Galette/Entity/Adherent.php:1167
-#: ../lib/Galette/Entity/Adherent.php:1176
-#: ../lib/Galette/Entity/Adherent.php:1666
+#: ../lib/Galette/Entity/Adherent.php:714
+#: ../lib/Galette/Entity/Adherent.php:732
+#: ../lib/Galette/Entity/Adherent.php:748
+#: ../lib/Galette/Entity/Adherent.php:1134
+#: ../lib/Galette/Entity/Adherent.php:1168
+#: ../lib/Galette/Entity/Adherent.php:1177
+#: ../lib/Galette/Entity/Adherent.php:1667
 #: ../lib/Galette/Entity/Transaction.php:278
 #: ../lib/Galette/Entity/Transaction.php:287
 #: ../lib/Galette/Entity/Transaction.php:296
@@ -1700,31 +1700,31 @@ msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:228
 #: ../lib/Galette/IO/PdfAdhesionForm.php:150
-#: ../lib/Galette/Entity/Adherent.php:1632
+#: ../lib/Galette/Entity/Adherent.php:1633
 msgid "Man"
 msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:231
 #: ../lib/Galette/IO/PdfAdhesionForm.php:152
-#: ../lib/Galette/Entity/Adherent.php:1634
+#: ../lib/Galette/Entity/Adherent.php:1635
 msgid "Woman"
 msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:234
 #: ../lib/Galette/IO/PdfAdhesionForm.php:154
-#: ../lib/Galette/Entity/Adherent.php:1636
+#: ../lib/Galette/Entity/Adherent.php:1637
 msgid "Unspecified"
 msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:242 ../lib/Galette/IO/MembersCsv.php:246
 #: ../lib/Galette/IO/MembersCsv.php:250 ../lib/Galette/IO/MembersCsv.php:254
-#: ../lib/Galette/Entity/Adherent.php:1593
+#: ../lib/Galette/Entity/Adherent.php:1594
 msgid "Yes"
 msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:242 ../lib/Galette/IO/MembersCsv.php:246
 #: ../lib/Galette/IO/MembersCsv.php:250 ../lib/Galette/IO/MembersCsv.php:254
-#: ../lib/Galette/Entity/Adherent.php:1593
+#: ../lib/Galette/Entity/Adherent.php:1594
 msgid "No"
 msgstr ""
 
@@ -1760,15 +1760,15 @@ msgstr ""
 msgid "Up to date"
 msgstr ""
 
-#: ../lib/Galette/IO/Charts.php:244 ../lib/Galette/Entity/Adherent.php:740
+#: ../lib/Galette/IO/Charts.php:244
 msgid "Late"
 msgstr ""
 
-#: ../lib/Galette/IO/Charts.php:299
+#: ../lib/Galette/IO/Charts.php:300
 msgid "Individuals"
 msgstr ""
 
-#: ../lib/Galette/IO/Charts.php:303
+#: ../lib/Galette/IO/Charts.php:304
 msgid "Companies"
 msgstr ""
 
@@ -2024,43 +2024,47 @@ msgstr ""
 msgid "Unable to remove old dynamic translation for %field :("
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:707
+#: ../lib/Galette/Entity/Adherent.php:708
 msgid "Freed of dues"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:719
+#: ../lib/Galette/Entity/Adherent.php:720
 #, php-format
 msgid "Never contributed: Registered %days days ago (since %date)"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:722
+#: ../lib/Galette/Entity/Adherent.php:723
 #: ../lib/Galette/Filters/MembersList.php:296
 msgid "Never contributed"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:725
+#: ../lib/Galette/Entity/Adherent.php:726
 msgid "Last day!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:737
+#: ../lib/Galette/Entity/Adherent.php:738
 #, php-format
 msgid "Late of %days days (since %date)"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:752
+#: ../lib/Galette/Entity/Adherent.php:741
+msgid "No longer member"
+msgstr ""
+
+#: ../lib/Galette/Entity/Adherent.php:753
 #, php-format
 msgid "%days days remaining (ending on %date)"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1150
+#: ../lib/Galette/Entity/Adherent.php:1151
 msgid "- Birthdate must be set in the past!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1158
+#: ../lib/Galette/Entity/Adherent.php:1159
 msgid "- Members must be less than 200 years old (currently %years)!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1179
+#: ../lib/Galette/Entity/Adherent.php:1180
 #: ../lib/Galette/Entity/Transaction.php:299
 #: ../lib/Galette/Entity/DynamicsTrait.php:161
 #: ../lib/Galette/Entity/Contribution.php:391
@@ -2069,80 +2073,80 @@ msgstr ""
 msgid "- Wrong date format (%date_format) for %field!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1197
+#: ../lib/Galette/Entity/Adherent.php:1198
 msgid "- Non-valid E-Mail address!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1214
+#: ../lib/Galette/Entity/Adherent.php:1215
 msgid "- This E-Mail address is already used by another member!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1221
-#: ../lib/Galette/Entity/Adherent.php:1269
+#: ../lib/Galette/Entity/Adherent.php:1222
+#: ../lib/Galette/Entity/Adherent.php:1270
 msgid "An error has occurred while looking if login already exists."
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1229
+#: ../lib/Galette/Entity/Adherent.php:1230
 msgid "- Non-valid Website address! Maybe you've skipped the http://?"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1238
+#: ../lib/Galette/Entity/Adherent.php:1239
 msgid "- The username must be composed of at least %i characters!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1243
+#: ../lib/Galette/Entity/Adherent.php:1244
 msgid "- The username cannot contain the @ character"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1262
+#: ../lib/Galette/Entity/Adherent.php:1263
 msgid "- This username is already in use, please choose another one!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1285
+#: ../lib/Galette/Entity/Adherent.php:1286
 msgid "Password misrepeated: "
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1319
+#: ../lib/Galette/Entity/Adherent.php:1320
 msgid "Status #%id does not exists in database."
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1328
+#: ../lib/Galette/Entity/Adherent.php:1329
 msgid "An error has occurred while looking if status does exists."
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1335
+#: ../lib/Galette/Entity/Adherent.php:1336
 msgid "Gender %gender does not exists!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1445
+#: ../lib/Galette/Entity/Adherent.php:1446
 msgid "Self_subscription as a member: "
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1451
+#: ../lib/Galette/Entity/Adherent.php:1452
 msgid "Member card added"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1459
+#: ../lib/Galette/Entity/Adherent.php:1460
 msgid "Fail to add new member."
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1491
+#: ../lib/Galette/Entity/Adherent.php:1492
 msgid "Member card updated"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1596
+#: ../lib/Galette/Entity/Adherent.php:1597
 msgid "Active"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1596
+#: ../lib/Galette/Entity/Adherent.php:1597
 msgid "Inactive"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1824
+#: ../lib/Galette/Entity/Adherent.php:1825
 msgid " (%age years old)"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1897
+#: ../lib/Galette/Entity/Adherent.php:1898
 msgid "Duplicated from %name (%id)"
 msgstr ""
 
@@ -4095,7 +4099,7 @@ msgid ""
 msgstr ""
 
 #: ../templates/default/page.tpl:148
-#: ../templates/default/gestion_adherents.tpl:635
+#: ../templates/default/gestion_adherents.tpl:474
 msgid "Existing mailing"
 msgstr ""
 
@@ -4127,8 +4131,8 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:16
 #: ../templates/default/gestion_adherents.tpl:213
-#: ../templates/default/gestion_adherents.tpl:578
-#: ../templates/default/gestion_adherents.tpl:579
+#: ../templates/default/gestion_adherents.tpl:417
+#: ../templates/default/gestion_adherents.tpl:418
 msgid "Admin"
 msgstr ""
 
@@ -5079,7 +5083,7 @@ msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:154
 #: ../templates/default/gestion_adherents.tpl:157
-#: ../templates/default/gestion_adherents.tpl:537
+#: ../templates/default/gestion_adherents.tpl:376
 #: ../templates/default/saved_searches.tpl:12
 #: ../templates/default/configurer_fiche_content.tpl:9
 #: ../templates/default/gestion_intitule_content.tpl:16
@@ -5124,7 +5128,7 @@ msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:271
 #: ../templates/default/gestion_mailings.tpl:170
-#: ../templates/default/gestion_adherents.tpl:453
+#: ../templates/default/gestion_adherents.tpl:292
 #: ../templates/default/history.tpl:145
 #: ../templates/default/liste_membres.tpl:87
 #: ../templates/default/ajax_members.tpl:16
@@ -5134,33 +5138,33 @@ msgid "Pages:"
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:276
-#: ../templates/default/gestion_adherents.tpl:457
+#: ../templates/default/gestion_adherents.tpl:296
 msgid "For the selection:"
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:279
-#: ../templates/default/gestion_adherents.tpl:461
+#: ../templates/default/gestion_adherents.tpl:300
 #: ../templates/default/group.tpl:81
 msgid "Delete"
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:286
 #: ../templates/default/gestion_contributions.tpl:287
-#: ../templates/default/gestion_adherents.tpl:509
-#: ../templates/default/gestion_adherents.tpl:510
+#: ../templates/default/gestion_adherents.tpl:348
+#: ../templates/default/gestion_adherents.tpl:349
 #: ../templates/default/gestion_transactions.tpl:152
 #: ../templates/default/gestion_transactions.tpl:153
 msgid "Legend"
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:294
-#: ../templates/default/gestion_adherents.tpl:543
+#: ../templates/default/gestion_adherents.tpl:382
 #: ../templates/default/voir_adherent.tpl:61
 msgid "Modification"
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:300
-#: ../templates/default/gestion_adherents.tpl:553
+#: ../templates/default/gestion_adherents.tpl:392
 msgid "Deletion"
 msgstr ""
 
@@ -5183,17 +5187,17 @@ msgid ""
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:342
-#: ../templates/default/gestion_adherents.tpl:616
+#: ../templates/default/gestion_adherents.tpl:455
 msgid "(Un)Check all"
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:342
-#: ../templates/default/gestion_adherents.tpl:616
+#: ../templates/default/gestion_adherents.tpl:455
 msgid "Invert selection"
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:342
-#: ../templates/default/gestion_adherents.tpl:616
+#: ../templates/default/gestion_adherents.tpl:455
 #: ../templates/default/gestion_transactions.tpl:174
 #: ../templates/default/gestion_transactions.tpl:178
 msgid "Show legend"
@@ -5202,7 +5206,7 @@ msgstr ""
 #: ../templates/default/gestion_contributions.tpl:352
 #: ../templates/default/gestion_mailings.tpl:196
 #: ../templates/default/edit_dynamic_fields.tpl:185
-#: ../templates/default/gestion_adherents.tpl:877
+#: ../templates/default/gestion_adherents.tpl:716
 #: ../templates/default/history.tpl:170
 #: ../templates/default/ajouter_transaction.tpl:257
 #: ../templates/default/ajouter_contribution.tpl:198
@@ -5769,14 +5773,14 @@ msgid "Mbr num"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:179
-#: ../templates/default/gestion_adherents.tpl:574
-#: ../templates/default/gestion_adherents.tpl:575
+#: ../templates/default/gestion_adherents.tpl:413
+#: ../templates/default/gestion_adherents.tpl:414
 msgid "Is a company"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:184
-#: ../templates/default/gestion_adherents.tpl:568
-#: ../templates/default/gestion_adherents.tpl:569
+#: ../templates/default/gestion_adherents.tpl:407
+#: ../templates/default/gestion_adherents.tpl:408
 msgid "Is a man"
 msgstr ""
 
@@ -5785,13 +5789,13 @@ msgid "Is a women"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:197
-#: ../templates/default/gestion_adherents.tpl:472
-#: ../templates/default/gestion_adherents.tpl:561
+#: ../templates/default/gestion_adherents.tpl:311
+#: ../templates/default/gestion_adherents.tpl:400
 msgid "Mail"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:205
-#: ../templates/default/gestion_adherents.tpl:563
+#: ../templates/default/gestion_adherents.tpl:402
 #: ../templates/default/footer.tpl:5
 msgid "Website"
 msgstr ""
@@ -5800,97 +5804,97 @@ msgstr ""
 msgid "No member has been found"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:466
+#: ../templates/default/gestion_adherents.tpl:305
 msgid "Mass change"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:484
+#: ../templates/default/gestion_adherents.tpl:323
 #: ../templates/default/mailing_recipients.tpl:20
 msgid "Generate labels"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:489
+#: ../templates/default/gestion_adherents.tpl:328
 msgid "Generate Member Cards"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:495
+#: ../templates/default/gestion_adherents.tpl:334
 msgid "Export as CSV"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:514
+#: ../templates/default/gestion_adherents.tpl:353
 msgid "Reading the list"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:518
+#: ../templates/default/gestion_adherents.tpl:357
 msgid "Active account"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:520
+#: ../templates/default/gestion_adherents.tpl:359
 msgid "Inactive account"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:524
+#: ../templates/default/gestion_adherents.tpl:363
 msgid "Membership in order"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:526
+#: ../templates/default/gestion_adherents.tpl:365
 msgid "Membership will expire soon (&lt;30d)"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:532
+#: ../templates/default/gestion_adherents.tpl:371
 msgid "Lateness in fee"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:558
+#: ../templates/default/gestion_adherents.tpl:397
 msgid "User status/interactions"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:562
+#: ../templates/default/gestion_adherents.tpl:401
 msgid "Send an email"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:564
+#: ../templates/default/gestion_adherents.tpl:403
 msgid "Visit website"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:570
-#: ../templates/default/gestion_adherents.tpl:571
+#: ../templates/default/gestion_adherents.tpl:409
+#: ../templates/default/gestion_adherents.tpl:410
 msgid "Is a woman"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:596
+#: ../templates/default/gestion_adherents.tpl:435
 msgid "No member selected"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:596
+#: ../templates/default/gestion_adherents.tpl:435
 msgid ""
 "Please make sure to select at least one member from the list to perform this "
 "action."
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:635
+#: ../templates/default/gestion_adherents.tpl:474
 msgid ""
 "A mailing already exists. Do you want to create a new one or resume the "
 "existing?"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:645
+#: ../templates/default/gestion_adherents.tpl:484
 msgid "Resume"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:649
+#: ../templates/default/gestion_adherents.tpl:488
 msgid "New"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:680
+#: ../templates/default/gestion_adherents.tpl:519
 msgid "Search title"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:853
+#: ../templates/default/gestion_adherents.tpl:692
 msgid "Attendance sheet details"
 msgstr ""
 
-#: ../templates/default/gestion_adherents.tpl:881
+#: ../templates/default/gestion_adherents.tpl:720
 msgid "An error occurred displaying attendance sheet details interface :("
 msgstr ""
 
