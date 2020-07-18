@@ -122,7 +122,7 @@
                         {$smarty.foreach.eachlog.iteration}
     {/if}
                         <span class="row-title">
-                            {_T string="Mailing entry %id" pattern="/%id/" replace=$log.mailing.mailing_id}
+                            {_T string="Mailing entry %id" pattern="/%id/" replace=$log.mailing_id}
                         </span>
                     </td>
                     <td class="nowrap" data-title="{_T string="Date"}">{$log.mailing_date|date_format:"%a %d/%m/%Y - %R"}</td>

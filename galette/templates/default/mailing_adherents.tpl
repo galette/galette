@@ -344,10 +344,13 @@
                     _sender_name.val('{$preferences->pref_email_nom|escape:"javascript"}');
                     _sender_address.val('{$preferences->pref_email|escape:"javascript"}');
                     break;
+
+        {if (!$login->isSuperAdmin())}
                 case '{Galette\Core\GaletteMail::SENDER_CURRENT}':
                     _sender_name.val('{$sender_current['name']|escape:"javascript"}');
                     _sender_address.val('{$sender_current['email']|escape:"javascript"}');
                     break;
+        {/if}
                 case '{Galette\Core\GaletteMail::SENDER_OTHER}':
                     _sender_name.val('');
                     _sender_address.val('');
