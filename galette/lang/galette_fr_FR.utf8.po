@@ -13,10 +13,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-07-13 07:41+0000\n"
-"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2020-07-19 06:38+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -2141,10 +2141,8 @@ msgid "Late of %days days (since %date)"
 msgstr "En retard de %days jours (depuis le %date)"
 
 #: ../lib/Galette/Entity/Adherent.php:741
-#, fuzzy
-#| msgid "Non members"
 msgid "No longer member"
-msgstr "Non membres"
+msgstr "N'est plus adéhrent"
 
 #: ../lib/Galette/Entity/Adherent.php:753
 #, php-format
