@@ -157,7 +157,7 @@
             </fieldset>
     {/if}
         {include file="edit_dynamic_fields.tpl" object=$contribution}
-    {if $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
+    {if not $contribution->id and $pref_mail_method neq constant('Galette\Core\GaletteMail::METHOD_DISABLED')}
             <p>
                 <label for="mail_confirm">{_T string="Notify member"}</label>
                 <input type="checkbox" name="mail_confirm" id="mail_confirm" value="1" {if isset($smarty.post.mail_confirm) and $smarty.post.mail_confirm != ""}checked="checked"{/if}/>
