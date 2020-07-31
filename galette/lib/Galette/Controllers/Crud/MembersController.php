@@ -1292,10 +1292,13 @@ class MembersController extends CrudController
             $changes = [];
             foreach ($form_elements['fieldsets'] as $form_element) {
                 foreach ($form_element->elements as $field) {
-                    if (isset($post[$field->field_id]) && isset($post['mass_' . $field->field_id])) {
+                    if (
+                        isset($post['mass_' . $field->field_id])
+                        && (isset($post[$field->field_id]) || $field->type === FieldsConfig::TYPE_BOOL)
+                    ) {
                         $changes[$field->field_id] = [
                             'label' => $field->label,
-                            'value' => $post[$field->field_id]
+                            'value' => $post[$field->field_id] ?? 0
                         ];
                     }
                 }
