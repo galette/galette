@@ -59,12 +59,12 @@ class Picture implements FileInterface
     use FileTrait;
 
     //constants that will not be overrided
-    const SQL_ERROR = -10;
-    const SQL_BLOB_ERROR = -11;
+    public const SQL_ERROR = -10;
+    public const SQL_BLOB_ERROR = -11;
     //constants that can be overrided
     //(do not use self::CONSTANT, but get_class[$this]::CONSTANT)
-    const TABLE = 'pictures';
-    const PK = Adherent::PK;
+    public const TABLE = 'pictures';
+    public const PK = Adherent::PK;
 
     protected $tbl_prefix = '';
 

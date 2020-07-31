@@ -59,8 +59,8 @@ use Galette\Filters\TransactionsList;
  */
 class Transactions
 {
-    const TABLE = Transaction::TABLE;
-    const PK = Transaction::PK;
+    public const TABLE = Transaction::TABLE;
+    public const PK = Transaction::PK;
 
     private $count = null;
     private $zdb;

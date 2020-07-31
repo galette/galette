@@ -54,7 +54,7 @@ use Laminas\Db\Adapter\Adapter;
 
 class CsvOut extends Csv
 {
-    const DEFAULT_DIRECTORY = GALETTE_EXPORTS_PATH;
+    public const DEFAULT_DIRECTORY = GALETTE_EXPORTS_PATH;
 
     private $rs;
     private $parameted_path;

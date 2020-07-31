@@ -61,8 +61,8 @@ use Galette\Filters\ContributionsList;
  */
 class Contributions
 {
-    const TABLE = Contribution::TABLE;
-    const PK = Contribution::PK;
+    public const TABLE = Contribution::TABLE;
+    public const PK = Contribution::PK;
 
     private $count = null;
 

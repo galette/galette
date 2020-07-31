@@ -57,8 +57,8 @@ use Galette\Core\Preferences;
 
 class History
 {
-    const TABLE = 'logs';
-    const PK = 'id_log';
+    public const TABLE = 'logs';
+    public const PK = 'id_log';
 
     protected $count;
     protected $zdb;

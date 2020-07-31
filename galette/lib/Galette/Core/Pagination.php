@@ -63,8 +63,8 @@ abstract class Pagination
     protected $view;
     protected $router;
 
-    const ORDER_ASC = 'ASC';
-    const ORDER_DESC = 'DESC';
+    public const ORDER_ASC = 'ASC';
+    public const ORDER_DESC = 'DESC';
 
     protected $pagination_fields = array(
         'current_page',

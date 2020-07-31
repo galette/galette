@@ -55,10 +55,10 @@ use Galette\Core\MailingHistory;
 
 class MailingsList extends Pagination
 {
-    const ORDERBY_DATE = 0;
-    const ORDERBY_SENDER = 1;
-    const ORDERBY_SUBJECT = 2;
-    const ORDERBY_SENT = 3;
+    public const ORDERBY_DATE = 0;
+    public const ORDERBY_SENDER = 1;
+    public const ORDERBY_SUBJECT = 2;
+    public const ORDERBY_SENT = 3;
 
     //filters
     private $start_date_filter = null;

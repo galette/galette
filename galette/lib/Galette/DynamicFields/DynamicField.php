@@ -62,32 +62,32 @@ abstract class DynamicField
     use TranslatableTrait;
     use I18nTrait;
 
-    const TABLE = 'field_types';
-    const PK = 'field_id';
+    public const TABLE = 'field_types';
+    public const PK = 'field_id';
 
     /** Separator field */
-    const SEPARATOR = 0;
+    public const SEPARATOR = 0;
     /** Simple text field */
-    const TEXT = 1;
+    public const TEXT = 1;
     /** Line field */
-    const LINE = 2;
+    public const LINE = 2;
     /** Choice field (listbox) */
-    const CHOICE = 3;
+    public const CHOICE = 3;
     /** Date field */
-    const DATE = 4;
+    public const DATE = 4;
     /** Boolean field (checkbox) */
-    const BOOLEAN = 5;
+    public const BOOLEAN = 5;
     /** File field (upload) */
-    const FILE = 6;
+    public const FILE = 6;
 
-    const PERM_USER_WRITE = 0;
-    const PERM_ADMIN = 1;
-    const PERM_STAFF = 2;
-    const PERM_MANAGER = 3;
-    const PERM_USER_READ = 4;
+    public const PERM_USER_WRITE = 0;
+    public const PERM_ADMIN = 1;
+    public const PERM_STAFF = 2;
+    public const PERM_MANAGER = 3;
+    public const PERM_USER_READ = 4;
 
-    const DEFAULT_MAX_FILE_SIZE = 1024;
-    const VALUES_FIELD_LENGTH = 100;
+    public const DEFAULT_MAX_FILE_SIZE = 1024;
+    public const VALUES_FIELD_LENGTH = 100;
 
     protected $has_data = false;
     protected $has_width = false;

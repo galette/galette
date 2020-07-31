@@ -59,8 +59,8 @@ class Transaction
 {
     use DynamicsTrait;
 
-    const TABLE = 'transactions';
-    const PK = 'trans_id';
+    public const TABLE = 'transactions';
+    public const PK = 'trans_id';
 
     private $_id;
     private $_date;

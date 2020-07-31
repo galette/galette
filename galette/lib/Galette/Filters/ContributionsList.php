@@ -55,18 +55,18 @@ use Galette\Core\Pagination;
 class ContributionsList extends Pagination
 {
 
-    const ORDERBY_DATE = 0;
-    const ORDERBY_BEGIN_DATE = 1;
-    const ORDERBY_END_DATE = 2;
-    const ORDERBY_MEMBER = 3;
-    const ORDERBY_TYPE = 4;
-    const ORDERBY_AMOUNT = 5;
-    const ORDERBY_DURATION = 6;
-    const ORDERBY_PAYMENT_TYPE = 7;
+    public const ORDERBY_DATE = 0;
+    public const ORDERBY_BEGIN_DATE = 1;
+    public const ORDERBY_END_DATE = 2;
+    public const ORDERBY_MEMBER = 3;
+    public const ORDERBY_TYPE = 4;
+    public const ORDERBY_AMOUNT = 5;
+    public const ORDERBY_DURATION = 6;
+    public const ORDERBY_PAYMENT_TYPE = 7;
 
-    const DATE_BEGIN = 0;
-    const DATE_END = 1;
-    const DATE_RECORD = 2;
+    public const DATE_BEGIN = 0;
+    public const DATE_END = 1;
+    public const DATE_RECORD = 2;
 
     //filters
     private $date_field = null;

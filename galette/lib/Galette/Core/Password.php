@@ -59,8 +59,8 @@ use Galette\Entity\Adherent;
 
 class Password extends AbstractPassword
 {
-    const TABLE = 'tmppasswds';
-    const PK = Adherent::PK;
+    public const TABLE = 'tmppasswds';
+    public const PK = Adherent::PK;
 
     private $zdb;
 

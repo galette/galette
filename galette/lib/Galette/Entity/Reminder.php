@@ -58,8 +58,8 @@ use Galette\Core\History;
 
 class Reminder
 {
-    const TABLE = 'reminders';
-    const PK = 'reminder_id';
+    public const TABLE = 'reminders';
+    public const PK = 'reminder_id';
 
     private $id;
     private $type;
@@ -71,8 +71,8 @@ class Reminder
     private $replaces;
     private $msg;
 
-    const IMPENDING = 1;
-    const LATE = 2;
+    public const IMPENDING = 1;
+    public const LATE = 2;
 
     /**
      * Main constructor

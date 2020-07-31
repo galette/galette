@@ -58,9 +58,9 @@ use Slim\Router;
 class Texts
 {
     private $all_texts;
-    const TABLE = "texts";
-    const PK = 'tid';
-    const DEFAULT_REF = 'sub';
+    public const TABLE = "texts";
+    public const PK = 'tid';
+    public const DEFAULT_REF = 'sub';
 
     private $patterns;
     private $replaces;

@@ -61,7 +61,7 @@ abstract class Entitled
 {
     use I18nTrait;
 
-    const ID_NOT_EXITS = -1;
+    public const ID_NOT_EXITS = -1;
 
     private $zdb;
     private $table;

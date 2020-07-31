@@ -60,8 +60,8 @@ class Contribution
 {
     use DynamicsTrait;
 
-    const TABLE = 'cotisations';
-    const PK = 'id_cotis';
+    public const TABLE = 'cotisations';
+    public const PK = 'id_cotis';
 
     private $_id;
     private $_date;

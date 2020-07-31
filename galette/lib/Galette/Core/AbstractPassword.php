@@ -61,7 +61,7 @@ use Galette\Entity\Adherent;
 abstract class AbstractPassword
 {
     /** Default password size */
-    const DEFAULT_SIZE = 8;
+    public const DEFAULT_SIZE = 8;
 
     protected $chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
     protected $hash = null;

@@ -54,10 +54,10 @@ use Galette\Core\Pagination;
 
 class HistoryList extends Pagination
 {
-    const ORDERBY_DATE = 0;
-    const ORDERBY_IP = 1;
-    const ORDERBY_USER = 2;
-    const ORDERBY_ACTION = 3;
+    public const ORDERBY_DATE = 0;
+    public const ORDERBY_IP = 1;
+    public const ORDERBY_USER = 2;
+    public const ORDERBY_ACTION = 3;
 
     //filters
     private $start_date_filter = null;

@@ -53,14 +53,14 @@ use Analog\Analog;
 
 abstract class Csv
 {
-    const NEWLINE = "\r\n";
-    const BUFLINES = 100;
+    public const NEWLINE = "\r\n";
+    public const BUFLINES = 100;
 
-    const DEFAULT_SEPARATOR = ';';
-    const DEFAULT_QUOTE = '"';
+    public const DEFAULT_SEPARATOR = ';';
+    public const DEFAULT_QUOTE = '"';
 
-    const FILE_NOT_WRITABLE = -1;
-    const DB_ERROR = -2;
+    public const FILE_NOT_WRITABLE = -1;
+    public const DB_ERROR = -2;
 
     protected $separator;
     protected $quote;

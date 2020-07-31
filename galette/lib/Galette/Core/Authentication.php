@@ -51,11 +51,11 @@ namespace Galette\Core;
 
 abstract class Authentication
 {
-    const ACCESS_USER = 0;
-    const ACCESS_MANAGER = 1;
-    const ACCESS_STAFF = 2;
-    const ACCESS_ADMIN = 3;
-    const ACCESS_SUPERADMIN = 4;
+    public const ACCESS_USER = 0;
+    public const ACCESS_MANAGER = 1;
+    public const ACCESS_STAFF = 2;
+    public const ACCESS_ADMIN = 3;
+    public const ACCESS_SUPERADMIN = 4;
 
     private $login;
     private $name;

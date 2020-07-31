@@ -54,12 +54,12 @@ use Analog\Analog;
 
 class Titles
 {
-    const TABLE = 'titles';
-    const PK = 'id_title';
+    public const TABLE = 'titles';
+    public const PK = 'id_title';
 
-    const MR = 1;
-    const MRS = 2;
-    const MISS = 3;
+    public const MR = 1;
+    public const MRS = 2;
+    public const MISS = 3;
 
     private static $defaults = array(
         array(

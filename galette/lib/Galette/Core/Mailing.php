@@ -54,14 +54,14 @@ use Galette\IO\File;
  */
 class Mailing extends GaletteMail
 {
-    const STEP_START = 0;
-    const STEP_PREVIEW = 1;
-    const STEP_SEND = 2;
-    const STEP_SENT = 3;
+    public const STEP_START = 0;
+    public const STEP_PREVIEW = 1;
+    public const STEP_SEND = 2;
+    public const STEP_SENT = 3;
 
-    const MIME_HTML = 'text/html';
-    const MIME_TEXT = 'text/plain';
-    const MIME_DEFAULT = self::MIME_TEXT;
+    public const MIME_HTML = 'text/html';
+    public const MIME_TEXT = 'text/plain';
+    public const MIME_DEFAULT = self::MIME_TEXT;
 
     private $id;
 

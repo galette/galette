@@ -58,8 +58,8 @@ use RKA\Session;
  */
 class Login extends Authentication
 {
-    const TABLE = Adherent::TABLE;
-    const PK = 'login_adh';
+    public const TABLE = Adherent::TABLE;
+    public const PK = 'login_adh';
 
     private $zdb;
     private $i18n;

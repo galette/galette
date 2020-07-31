@@ -63,19 +63,19 @@ class Adherent
 {
     use DynamicsTrait;
 
-    const TABLE = 'adherents';
-    const PK = 'id_adh';
+    public const TABLE = 'adherents';
+    public const PK = 'id_adh';
 
-    const NC = 0;
-    const MAN = 1;
-    const WOMAN = 2;
+    public const NC = 0;
+    public const MAN = 1;
+    public const WOMAN = 2;
 
-    const AFTER_ADD_DEFAULT = 0;
-    const AFTER_ADD_TRANS = 1;
-    const AFTER_ADD_NEW = 2;
-    const AFTER_ADD_SHOW = 3;
-    const AFTER_ADD_LIST = 4;
-    const AFTER_ADD_HOME = 5;
+    public const AFTER_ADD_DEFAULT = 0;
+    public const AFTER_ADD_TRANS = 1;
+    public const AFTER_ADD_NEW = 2;
+    public const AFTER_ADD_SHOW = 3;
+    public const AFTER_ADD_LIST = 4;
+    public const AFTER_ADD_HOME = 5;
 
     private $_id;
     //Identity

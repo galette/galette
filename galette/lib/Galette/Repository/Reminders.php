@@ -56,8 +56,8 @@ use Laminas\Db\Sql\Expression;
 
 class Reminders
 {
-    const TABLE = 'reminders';
-    const PK = 'reminder_id';
+    public const TABLE = 'reminders';
+    public const PK = 'reminder_id';
 
     private $selected;
     private $types;

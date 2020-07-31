@@ -56,8 +56,8 @@ use Analog\Analog;
 
 class SavedSearch
 {
-    const TABLE = 'searches';
-    const PK = 'search_id';
+    public const TABLE = 'searches';
+    public const PK = 'search_id';
 
     private $zdb;
     private $id;

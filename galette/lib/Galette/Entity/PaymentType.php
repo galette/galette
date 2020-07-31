@@ -60,18 +60,18 @@ class PaymentType
     use TranslatableTrait;
     use I18nTrait;
 
-    const TABLE = 'paymenttypes';
-    const PK = 'type_id';
+    public const TABLE = 'paymenttypes';
+    public const PK = 'type_id';
 
     private $zdb;
     private $id;
 
-    const OTHER = 6;
-    const CASH = 1;
-    const CREDITCARD = 2;
-    const CHECK = 3;
-    const TRANSFER = 4;
-    const PAYPAL = 5;
+    public const OTHER = 6;
+    public const CASH = 1;
+    public const CREDITCARD = 2;
+    public const CHECK = 3;
+    public const TRANSFER = 4;
+    public const PAYPAL = 5;
 
     /**
      * Main constructor

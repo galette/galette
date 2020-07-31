@@ -53,19 +53,19 @@ use Laminas\Db\Adapter\Adapter;
  */
 class Install
 {
-    const STEP_CHECK = 0;
-    const STEP_TYPE = 1;
-    const STEP_DB = 2;
-    const STEP_DB_CHECKS = 3;
-    const STEP_VERSION = 4; //only for update
-    const STEP_DB_UPGRADE = 5;
-    const STEP_DB_INSTALL = 6;
-    const STEP_ADMIN = 7;
-    const STEP_GALETTE_INIT = 8;
-    const STEP_END = 9;
+    public const STEP_CHECK = 0;
+    public const STEP_TYPE = 1;
+    public const STEP_DB = 2;
+    public const STEP_DB_CHECKS = 3;
+    public const STEP_VERSION = 4; //only for update
+    public const STEP_DB_UPGRADE = 5;
+    public const STEP_DB_INSTALL = 6;
+    public const STEP_ADMIN = 7;
+    public const STEP_GALETTE_INIT = 8;
+    public const STEP_END = 9;
 
-    const INSTALL = 'i';
-    const UPDATE = 'u';
+    public const INSTALL = 'i';
+    public const UPDATE = 'u';
 
     //db version/galette version mapper
     private $versions_mapper = array(

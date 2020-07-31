@@ -58,7 +58,7 @@ use Analog\Analog;
 
 class PdfAttendanceSheet extends Pdf
 {
-    const SHEET_FONT = self::FONT_SIZE - 2;
+    public const SHEET_FONT = self::FONT_SIZE - 2;
 
     public $doc_title = null;
     public $sheet_title = null;

@@ -57,7 +57,7 @@ use Galette\Core\Login;
 
 class PdfGroups extends Pdf
 {
-    const SHEET_FONT = self::FONT_SIZE - 2;
+    public const SHEET_FONT = self::FONT_SIZE - 2;
 
     private $doc_title;
 

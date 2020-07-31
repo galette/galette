@@ -66,8 +66,8 @@ class CsvIn extends Csv implements FileInterface
 {
     use FileTrait;
 
-    const DEFAULT_DIRECTORY = GALETTE_IMPORTS_PATH;
-    const DATA_IMPORT_ERROR = -10;
+    public const DEFAULT_DIRECTORY = GALETTE_IMPORTS_PATH;
+    public const DATA_IMPORT_ERROR = -10;
 
     protected $extensions = array('csv', 'txt');
 

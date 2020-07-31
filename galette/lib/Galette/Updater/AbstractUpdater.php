@@ -53,9 +53,9 @@ use Galette\Core\Db;
  */
 abstract class AbstractUpdater
 {
-    const REPORT_SUCCESS = 0;
-    const REPORT_ERROR = 1;
-    const REPORT_WARNING = 2;
+    public const REPORT_SUCCESS = 0;
+    public const REPORT_ERROR = 1;
+    public const REPORT_WARNING = 2;
 
     protected $sql_scripts = null;
     protected $db_version = null;
