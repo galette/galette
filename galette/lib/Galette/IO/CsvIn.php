@@ -517,7 +517,7 @@ class CsvIn extends Csv implements FileInterface
                         $values['mdp_adh2'] = $values['mdp_adh'];
                     }
 
-                    $valid = $member->check($values, $this->_required, null);
+                    $valid = $member->check($values, $this->_required, []);
                     if ($valid === true) {
                         if ($this->_dryrun === false) {
                             $store = $member->store();
