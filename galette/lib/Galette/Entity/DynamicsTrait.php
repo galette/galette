@@ -39,6 +39,7 @@ namespace Galette\Entity;
 use Analog\Analog;
 use Galette\DynamicFields\File;
 use Galette\DynamicFields\Date;
+use Galette\DynamicFields\Boolean;
 
 /**
  * Dynamics fields trait
@@ -109,8 +110,10 @@ trait DynamicsTrait
             $valid = true;
             $fields = $this->dynamics->getFields();
 
+            $dynamic_fields = [];
+            //posted fields
             foreach ($post as $key => $value) {
-                // if the field is enabled, and matche patterns check it
+                // if the field is enabled, and match patterns check it
                 if (isset($disabled[$key]) || substr($key, 0, 11) != $this->name_pattern) {
                     continue;
                 }
@@ -119,6 +122,30 @@ trait DynamicsTrait
                 if (!is_numeric($field_id) || !is_numeric($val_index)) {
                     continue;
                 }
+
+                $dynamic_fields[$key] = [
+                    'value'     => $value,
+                    'field_id'  => $field_id,
+                    'val_index' => $val_index
+                ];
+            }
+
+            //some fields may be mising in posted values (checkboxes)
+            foreach ($fields as $field) {
+                $pattern = '/' . $this->name_pattern . $field->getId() . '_(\d)/';
+                if ($field instanceof Boolean && !preg_grep($pattern, array_keys($dynamic_fields))) {
+                    $dynamic_fields[$this->name_pattern . $field->getId() . '_1'] = [
+                        'value'     => '',
+                        'field_id'  => $field->getId(),
+                        'val_index' => 1
+                    ];
+                }
+            }
+
+            foreach ($dynamic_fields as $key => $dfield_values) {
+                $field_id = $dfield_values['field_id'];
+                $value = $dfield_values['value'];
+                $val_index = $dfield_values['val_index'];
 
                 if ($fields[$field_id]->isRequired() && (trim($value) === '' || $value == null)) {
                     $this->errors[] = str_replace(
