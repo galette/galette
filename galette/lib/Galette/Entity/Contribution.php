@@ -484,7 +484,7 @@ class Contribution
             }
         }
 
-        $this->dynamicsCheck($values);
+        $this->dynamicsCheck($values, $required, $disabled);
 
         if (count($this->errors) > 0) {
             Analog::log(
