@@ -153,10 +153,15 @@ class ContributionsList extends Pagination
                     case 'start_date_filter':
                     case 'end_date_filter':
                         try {
-                            if ($this->$name !== null) {
-                                $d = new \DateTime($this->$name);
-                                return $d->format(__("Y-m-d"));
+                            $d = \DateTime::createFromFormat(__("Y-m-d"), $this->$name);
+                            if ($d === false) {
+                                //try with non localized date
+                                $d = \DateTime::createFromFormat("Y-m-d", $this->$name);
+                                if ($d === false) {
+                                    throw new \Exception('Incorrect format');
+                                }
                             }
+                            return $d->format(__("Y-m-d"));
                         } catch (\Exception $e) {
                             //oops, we've got a bad date :/
                             Analog::log(

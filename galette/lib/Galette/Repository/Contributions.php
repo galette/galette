@@ -323,7 +323,7 @@ class Contributions
 
         try {
             if ($this->filters->start_date_filter != null) {
-                $d = new \DateTime($this->filters->start_date_filter);
+                $d = new \DateTime($this->filters->rstart_date_filter);
                 $select->where->greaterThanOrEqualTo(
                     $field,
                     $d->format('Y-m-d')
@@ -331,7 +331,7 @@ class Contributions
             }
 
             if ($this->filters->end_date_filter != null) {
-                $d = new \DateTime($this->filters->end_date_filter);
+                $d = new \DateTime($this->filters->rend_date_filter);
                 $select->where->lessThanOrEqualTo(
                     $field,
                     $d->format('Y-m-d')
