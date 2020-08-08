@@ -8,12 +8,13 @@
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020.
 # J. Lavoie <j.lavoie@net-c.ca>, 2020.
+# Lorenzo Maria Fasoli <lorenzo.fasoli.94@gmail.com>, 2020.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-07-13 07:41+0000\n"
-"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2020-08-09 17:32+0000\n"
+"Last-Translator: Lorenzo Maria Fasoli <lorenzo.fasoli.94@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -24,89 +25,88 @@ msgstr ""
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
-msgstr ""
+msgstr "Errore di Galette"
 
 #: ../lib/Galette/Handlers/NotFound.php:80
 msgid "Page not found"
-msgstr ""
+msgstr "Pagina non trovata"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:155
 msgid "Transaction"
-msgstr ""
+msgstr "Transazione"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:157
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1136
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:112
 msgid "modification"
-msgstr ""
+msgstr "modifica"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:159
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1138
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:114
 msgid "creation"
-msgstr ""
+msgstr "creazione"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:267
 msgid "An error occurred while storing the transaction."
-msgstr ""
+msgstr "Si è verificato un errore durante la registrazione della transazione."
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:295
 msgid "Transaction has been successfully stored"
-msgstr ""
+msgstr "La transazione è stata registrata correttamente"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:350
 msgid "Unable to attach contribution to transaction"
-msgstr ""
+msgstr "Impossibile allegare il contributo alla transazione"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:355
 msgid "Contribution has been successfully attached to current transaction"
-msgstr ""
+msgstr "Il contributo è stato allegato correttamente alla transazione corrente"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:381
 msgid "Unable to detach contribution from transaction"
-msgstr ""
+msgstr "Impossibile rimuovere il contributo dalla transazione"
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:386
 msgid "Contribution has been successfully detached from current transaction"
-msgstr ""
+msgstr "Il contributo è stato rimosso correttamente dalla transazione corrente"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:118
 msgid "Payment types management"
-msgstr ""
+msgstr "Gestione delle tipologie di pagamento"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:160
 msgid "Edit payment type"
-msgstr ""
+msgstr "Modifica tipologia di pagamento"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:213
 #, php-format
 msgid "Payment type '%s' has not been added!"
-msgstr ""
+msgstr "La tipologia di pagamento \"%s\" non è stata aggiunta!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:222
-#, fuzzy, php-format
-#| msgid "Email: '%s' has not been modified!"
+#, php-format
 msgid "Payment type '%s' has not been modified!"
-msgstr "E-mail: «%s» è stato modificato!"
+msgstr "La tipologia di pagamento \"%s\" è stata modificata!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:235
 #, php-format
 msgid "Payment type '%s' has been successfully added."
-msgstr ""
+msgstr "La tipologia di pagamento \"%s\" è stata aggiunta correttamente."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:244
 #, php-format
 msgid "Payment type '%s' has been successfully modified."
-msgstr ""
+msgstr "La tipologia di pagamento \"%s\" è stata modificata correttamente."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:307
 #, php-format
 msgid "Remove payment type %1$s"
-msgstr ""
+msgstr "Rimuovi la tipologia di pagamento %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:123
 msgid "Group name is missing!"
-msgstr ""
+msgstr "Nome del gruppo mancante!"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:186
 msgid "Groups"
@@ -114,20 +114,22 @@ msgstr "Gruppi"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:370
 msgid "Group `%groupname` has been successfully saved."
-msgstr ""
+msgstr "Il gruppo `%groupname`è stato salvato correttamente."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:377
 msgid "An error occurred while storing the group."
-msgstr ""
+msgstr "Si è verificato un errore durante la registrazione del gruppo."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:469
 #, php-format
 msgid "Remove group %1$s"
-msgstr ""
+msgstr "Rimuovi gruppo %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:492
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
 msgstr ""
+"Il gruppo non è vuoto e non può essere cancellato. Usa al suo posto la "
+"cancellazione a cascata."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:101
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:105
