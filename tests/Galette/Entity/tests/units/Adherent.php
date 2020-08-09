@@ -55,6 +55,19 @@ class Adherent extends GaletteTestCase
         $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
         $delete->where(['fingerprint' => 'FAKER' . $this->seed]);
         $this->zdb->execute($delete);
+
+        $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
+        $this->zdb->execute($delete);
+        $delete = $this->zdb->delete(\Galette\DynamicFields\DynamicField::TABLE);
+        $this->zdb->execute($delete);
+        //cleanup dynamic translations
+        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
+        $delete->where([
+            'text_orig' => [
+                'Dynamic boolean field'
+            ]
+        ]);
+        $this->zdb->execute($delete);
     }
 
     /**
@@ -180,15 +193,15 @@ class Adherent extends GaletteTestCase
         $this->assertSame($expected, $adh->deps);
 
         $expected = [
-            'picture'   => true,
-            'groups'    => true,
+            'picture'   => false,
+            'groups'    => false,
             'dues'      => true,
-            'parent'    => true,
+            'parent'    => false,
             'children'  => true,
             'dynamics'  => true,
-            'socials'   => true
+            'socials'   => false
         ];
-        $adh->enableAllDeps('children');
+        $adh->enableDep('children');
         $this->assertSame($expected, $adh->deps);
     }
 
@@ -968,5 +981,179 @@ class Adherent extends GaletteTestCase
 
         $this->assertTrue($this->adh->load($this->adh->id));
         $this->assertTrue($this->adh->isSponsor());
+    }
+
+    /**
+     * Test dynamic boolean field uncheck
+     * @see https://bugs.galette.eu/issues/1472
+     *
+     * @return void
+     */
+    public function testDynamicBooleanUncheck(): void
+    {
+        $this->logSuperAdmin();
+        $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
+        $this->zdb->execute($delete);
+
+        //new dynamic field, of type boolean.
+        $cfield_data = [
+            'form_name'         => 'adh',
+            'field_name'        => 'Dynamic boolean field',
+            'field_perm'        => \Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type'        => \Galette\DynamicFields\DynamicField::BOOLEAN,
+            'field_required'    => 0,
+            'field_repeat'      => 1
+        ];
+
+        $cdf = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $cfield_data['field_type']);
+
+        $stored = $cdf->store($cfield_data);
+        $error_detected = $cdf->getErrors();
+        $warning_detected = $cdf->getWarnings();
+        $this->assertTrue(
+            $stored,
+            implode(
+                ' ',
+                $cdf->getErrors() + $cdf->getWarnings()
+            )
+        );
+        $this->assertEmpty($error_detected, implode(' ', $cdf->getErrors()));
+        $this->assertEmpty($warning_detected, implode(' ', $cdf->getWarnings()));
+
+        //create/load member
+        $this->getMemberOne();
+
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            $this->adh->id,
+            ['dynamics' => true] + $this->adh->deps
+        );
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $dynamics = $adh->getDynamicFields();
+        $dfields = $dynamics->getFields();
+        $this->assertCount(1, $dfields);
+        $dboolean = array_pop($dfields);
+        $this->assertSame(
+            [
+                0 => [
+                    'item_id'       => $adh->id,
+                    'field_form'    => 'adh',
+                    'val_index'     => 1,
+                    'field_val'     => '',
+                    'is_new'        => true,
+                ]
+            ],
+            $dynamics->getValues($dboolean->getId())
+        );
+
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            $this->adh->id,
+            ['dynamics' => true] + $this->adh->deps
+        );
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $data = $this->dataAdherentOne() + [
+            'info_field_' . $dboolean->getId() . '_1'   => '1'
+        ];
+
+        $check = $adh->check($data, [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+
+        $store = $adh->store();
+        $this->assertTrue($store);
+
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            $this->adh->id,
+            ['dynamics' => true] + $this->adh->deps
+        );
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $dynamics = $adh->getDynamicFields();
+        $dfields = $dynamics->getFields();
+        $this->assertCount(1, $dfields);
+        $this->assertArrayHasKey($dboolean->getId(), $dfields);
+        $dboolean = $dfields[$dboolean->getId()];
+        $this->assertSame(
+            [
+                0 => [
+                    'item_id'       => "$adh->id",
+                    'field_form'    => 'adh',
+                    'val_index'     => "1",
+                    'field_val'     => "1",
+                ]
+            ],
+            $dynamics->getValues($dboolean->getId())
+        );
+
+        //remove boolean value
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            $this->adh->id,
+            ['dynamics' => true] + $this->adh->deps
+        );
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        //no dynamic boolean means boolean false.
+        $data = $this->dataAdherentOne();
+
+        $check = $adh->check($data, [], []);
+        if (is_array($check)) {
+            var_dump($check);
+        }
+        $this->assertTrue($check);
+
+        $store = $adh->store();
+        $this->assertTrue($store);
+
+        $adh = new \Galette\Entity\Adherent(
+            $this->zdb,
+            $this->adh->id,
+            ['dynamics' => true] + $this->adh->deps
+        );
+        $adh->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+
+        $dynamics = $adh->getDynamicFields();
+        $dfields = $dynamics->getFields();
+        $this->assertCount(1, $dfields);
+        $this->assertArrayHasKey($dboolean->getId(), $dfields);
+        $dboolean = $dfields[$dboolean->getId()];
+        $this->assertSame(
+            [
+                0 => [
+                    'item_id'       => $adh->id,
+                    'field_form'    => 'adh',
+                    'val_index'     => 1,
+                    'field_val'     => '',
+                    'is_new'        => true
+                ]
+            ],
+            $dynamics->getValues($dboolean->getId())
+        );
     }
 }
