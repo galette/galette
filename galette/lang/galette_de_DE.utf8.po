@@ -9,12 +9,13 @@
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020.
 # J. Lavoie <j.lavoie@net-c.ca>, 2020.
+# aschlager <andreas.schlager@be-x.at>, 2020.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-07-13 07:41+0000\n"
-"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2020-08-12 14:51+0000\n"
+"Last-Translator: aschlager <andreas.schlager@be-x.at>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -623,7 +624,7 @@ msgstr "Gespeicherte Suche entfernen"
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:312
 #, php-format
 msgid "You are about to remove %count searches."
-msgstr ""
+msgstr "Hiermit werden %count Suchen entfernt."
 
 #: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:361
 msgid "Saved search loaded"
@@ -962,7 +963,7 @@ msgstr "Die Texte wurden auf den Standard zurückgesetzt."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:116
 msgid "An error occurred reinitializing texts :("
-msgstr ""
+msgstr "Fehler beim Re-Initialisieren der Texte aufgetreten :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:125
 msgid "Fields configuration has been successfully reinitialized."
@@ -970,7 +971,7 @@ msgstr "Die Feldkonfiguration wurde erfolgreich neu initialisiert."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:127
 msgid "An error occurred reinitializing fields configuration :("
-msgstr ""
+msgstr "Fehler beim Re-Initialisieren der Feld-Konfiguration aufgetreten :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:136
 msgid "PDF models has been successfully reinitialized."
@@ -978,7 +979,7 @@ msgstr "PDF Modelle wurde erfolgreich re-initialisiert."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:138
 msgid "An error occurred reinitializing PDF models :("
-msgstr ""
+msgstr "Fehler bei der Re-Initialisierung der PDF Modelle aufgetreten :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:151
 msgid "Logins and passwords has been successfully filled (%i processed)."
@@ -1017,7 +1018,7 @@ msgstr "Protokolle wurde geleert!"
 
 #: ../lib/Galette/Controllers/HistoryController.php:235
 msgid "An error occurred trying to flush logs :("
-msgstr ""
+msgstr "Fehler beim Löschen der Logs aufgetreten :("
 
 #: ../lib/Galette/Controllers/HistoryController.php:273
 msgid "Flush the logs"
@@ -1051,6 +1052,8 @@ msgstr ""
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:218
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr ""
+"Beim Speichern der Bezeichnung `%label` für die Sprache `%lang` ist ein "
+"Fehler aufgetreten"
 
 #: ../lib/Galette/Controllers/DynamicTranslationsController.php:234
 msgid "Labels has been sucessfully translated!"
@@ -1077,12 +1080,15 @@ msgstr ""
 #, php-format
 msgid "An error occurred running parameted export '%export'."
 msgstr ""
+"Beim Lauf des parametrierten Exports '%export' ist ein Fehler aufgetreten."
 
 #: ../lib/Galette/Controllers/CsvController.php:214
 #, php-format
 msgid ""
 "An error occurred running parameted export '%export'. Please check the logs."
 msgstr ""
+"Beim Lauf des parametrierten Exports '%export' ist ein Fehler aufgetreten. "
+"Bitte die Logs prüfen."
 
 #: ../lib/Galette/Controllers/CsvController.php:263
 msgid "CSV members import"
@@ -1090,7 +1096,7 @@ msgstr "Import von Mitgliedern aus CSV Datei"
 
 #: ../lib/Galette/Controllers/CsvController.php:315
 msgid "An error occurred importing the file :("
-msgstr ""
+msgstr "Fehler beim Import der Datei aufgetreten :("
 
 #: ../lib/Galette/Controllers/CsvController.php:327
 msgid "File '%filename%' has been successfully imported :)"
@@ -1331,10 +1337,8 @@ msgid "- Invalid date for beginning of membership."
 msgstr "- Ungültiges Datum für den Beginn der Mitgliedschaft."
 
 #: ../lib/Galette/Core/Preferences.php:580
-#, fuzzy
-#| msgid "- Invalid number of months of membership extension."
 msgid "- Invalid number of offered months."
-msgstr "- Ungültige Anzahl an Monaten für Verlängerung der Mitgliedschaft."
+msgstr "- Ungültige Anzahl der angebotenen Monate."
 
 #: ../lib/Galette/Core/Preferences.php:585
 msgid "- Invalid year for cards."
@@ -1370,10 +1374,8 @@ msgstr ""
 "schließen sich gegenseitig aus."
 
 #: ../lib/Galette/Core/Preferences.php:656
-#, fuzzy
-#| msgid "- Invalid format of beginning of membership."
 msgid "- Offering months is only compatible with beginning of membership."
-msgstr "- Ungültiges Format für den Beginn der Mitgliedschaft."
+msgstr "- Angebotsmonate sind nur beim Beginn der Mitgliedschaft möglich."
 
 #: ../lib/Galette/Core/Preferences.php:665
 #: ../lib/Galette/Entity/Adherent.php:1074
@@ -5649,8 +5651,8 @@ msgstr "Egal"
 #, php-format
 msgid "%count entry"
 msgid_plural "%count entries"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%count Eintrag"
+msgstr[1] "%count Einträge"
 
 #: ../templates/default/gestion_mailings.tpl:63
 #: ../templates/default/gestion_mailings.tpl:75
@@ -6008,12 +6010,11 @@ msgstr "Abfrage anzeigen /verbergen"
 #: ../templates/default/gestion_adherents.tpl:109
 #: ../templates/default/liste_membres.tpl:8
 #: ../templates/default/trombinoscope.tpl:8
-#, fuzzy, php-format
-#| msgid "%membercount members"
+#, php-format
 msgid "%count member"
 msgid_plural "%count members"
 msgstr[0] "%count Mitglieder"
-msgstr[1] "%count Mitglieders"
+msgstr[1] "%count Mitglieder"
 
 #: ../templates/default/gestion_adherents.tpl:129
 msgid "Mbr num"
@@ -7598,12 +7599,11 @@ msgid "Show all members transactions"
 msgstr "Alle Transaktionen des Mitglieds zeigen"
 
 #: ../templates/default/gestion_transactions.tpl:32
-#, fuzzy, php-format
-#| msgid "no transaction"
+#, php-format
 msgid "%count transaction"
 msgid_plural "%count transactions"
 msgstr[0] "%count Transation"
-msgstr[1] "%count Transations"
+msgstr[1] "%count Transaktionen"
 
 #: ../templates/default/gestion_transactions.tpl:62
 #: ../templates/default/gestion_transactions.tpl:109
