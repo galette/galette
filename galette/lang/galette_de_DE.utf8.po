@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-08-12 14:51+0000\n"
+"PO-Revision-Date: 2020-08-13 15:32+0000\n"
 "Last-Translator: aschlager <andreas.schlager@be-x.at>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
@@ -1531,15 +1531,13 @@ msgid "Contributions deleted (%list)"
 msgstr "Beiträge gelöscht (%list)"
 
 #: ../lib/Galette/Util/Password.php:87
-#, fuzzy
-#| msgid "Password mismatch!"
 msgid "Password is blacklisted!"
-msgstr "Passwörter stimmen nicht überein!"
+msgstr "Das Passwort steht auf der Sperrliste (Blacklist)!"
 
 #: ../lib/Galette/Util/Password.php:97
 #, php-format
 msgid "Too short (%lenght characters minimum, %count found)"
-msgstr ""
+msgstr "Zu kurz (mindestens %lenght Zeichen notwendig, nur %count gefunden)"
 
 #: ../lib/Galette/Util/Password.php:109
 msgid "Do not use any of your personal information as password!"
@@ -1687,7 +1685,7 @@ msgstr "Beim Erstellen der Feldwerttabelle ist ein Fehler aufgetreten"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:806
 msgid "An error occurred storing dynamic field values :("
-msgstr ""
+msgstr "Fehler beim Speichern der dynamischen Feldwerte aufgetreten :("
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:1009
 msgid "separator"
@@ -1758,10 +1756,8 @@ msgid "GSM"
 msgstr "GSM"
 
 #: ../lib/Galette/IO/MembersCsv.php:84
-#, fuzzy
-#| msgid "Members list"
 msgid "filtered_memberslist"
-msgstr "Mitgliedsliste"
+msgstr "gefilterte_Mitgliedsliste"
 
 #: ../lib/Galette/IO/MembersCsv.php:228
 #: ../lib/Galette/IO/PdfAdhesionForm.php:150
@@ -1873,7 +1869,7 @@ msgstr "Der Status %status existiert nicht!"
 
 #: ../lib/Galette/IO/CsvIn.php:343
 msgid "Title %title does not exists!"
-msgstr ""
+msgstr "Titel %title existiert nicht!"
 
 #: ../lib/Galette/IO/CsvIn.php:359
 msgid "from another member in import"
@@ -1889,7 +1885,7 @@ msgstr "Die E-Mail-Adresse %address wird schon genutzt! (%extra)"
 
 #: ../lib/Galette/IO/CsvIn.php:390
 msgid "Lang %lang does not exists!"
-msgstr ""
+msgstr "Sprache %lang existiert nicht!"
 
 #: ../lib/Galette/IO/CsvIn.php:442
 msgid "File is empty!"
@@ -1897,11 +1893,11 @@ msgstr "Datei ist leer!"
 
 #: ../lib/Galette/IO/CsvIn.php:529 ../lib/Galette/IO/CsvIn.php:540
 msgid "An error occurred storing member at row %row (%name):"
-msgstr ""
+msgstr "Fehler beim Speichern eines Eintrages in Zeile %row (%name):"
 
 #: ../lib/Galette/IO/CsvIn.php:575
 msgid "An error occurred while importing members"
-msgstr ""
+msgstr "Fehler beim Import der Einträge"
 
 #: ../lib/Galette/IO/Pdf.php:101 ../lib/Galette/IO/Pdf.php:265
 #, php-format
@@ -2038,10 +2034,8 @@ msgid "invoice"
 msgstr "Rechnung"
 
 #: ../lib/Galette/Entity/ListsConfig.php:214
-#, fuzzy
-#| msgid "Is a man"
 msgid "Is admin"
-msgstr "Ist ein Mann"
+msgstr "Ist Administrator"
 
 #: ../lib/Galette/Entity/ListsConfig.php:217
 msgid "Modified"
@@ -2050,13 +2044,11 @@ msgstr "Geändert"
 #. TRANS: see https://www.urbandictionary.com/define.php?term=b-day
 #: ../lib/Galette/Entity/ListsConfig.php:221
 msgid "b-day"
-msgstr ""
+msgstr "Geburtstag"
 
 #: ../lib/Galette/Entity/ListsConfig.php:227
-#, fuzzy
-#| msgid "Public pages"
 msgid "Public"
-msgstr "Öffentliche Seiten"
+msgstr "Öffentlich"
 
 #: ../lib/Galette/Entity/Reminder.php:264
 msgid "%name <%mail> (%days days)"
@@ -2095,11 +2087,10 @@ msgstr ""
 "Die dynamische Übersetzung für %field konnte nicht hinzugefügt werden :("
 
 #: ../lib/Galette/Entity/I18nTrait.php:201
-#, fuzzy, php-format
-#| msgid "Unable to add dynamic translation for %field :("
+#, php-format
 msgid "Unable to update dynamic translation for %field :("
 msgstr ""
-"Die dynamische Übersetzung für %field konnte nicht hinzugefügt werden :("
+"Die dynamische Übersetzung für %field konnte nicht aktualisiert werden :("
 
 #: ../lib/Galette/Entity/I18nTrait.php:236
 #, php-format
@@ -2132,10 +2123,8 @@ msgid "Late of %days days (since %date)"
 msgstr "Verspätet um %days Tage (seit %date)"
 
 #: ../lib/Galette/Entity/Adherent.php:741
-#, fuzzy
-#| msgid "Non members"
 msgid "No longer member"
-msgstr "Nicht Mitglieder"
+msgstr "Kein Mitglied mehr"
 
 #: ../lib/Galette/Entity/Adherent.php:753
 #, php-format
