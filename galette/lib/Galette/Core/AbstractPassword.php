@@ -81,12 +81,12 @@ abstract class AbstractPassword
             || trim($size) == ''
             || !is_int($size)
         ) {
-            $size = self::DEFAULT_SIZE;
+            $size = static::DEFAULT_SIZE;
         }
         $pass = '';
         $i = 0;
         while ($i <= $size - 1) {
-            $num = mt_rand(0, 32) % 33;
+            $num = mt_rand(0, strlen($this->chars) - 1)  % strlen($this->chars);
             $pass .= substr($this->chars, $num, 1);
             $i++;
         }

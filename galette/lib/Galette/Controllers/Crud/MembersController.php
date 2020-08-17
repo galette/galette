@@ -1883,7 +1883,7 @@ class MembersController extends CrudController
                 }
             }
 
-            if (count($error_detected) == 0) {
+            if (count($error_detected) === 0) {
                 $files_res = $member->handleFiles($_FILES);
                 if (is_array($files_res)) {
                     $error_detected = array_merge($error_detected, $files_res);
@@ -1936,7 +1936,7 @@ class MembersController extends CrudController
                 }
             }
 
-            if (count($error_detected) == 0) {
+            if (count($error_detected) === 0) {
                 if (isset($args['self'])) {
                     $redirect_url = $this->router->pathFor('login');
                 } elseif (
