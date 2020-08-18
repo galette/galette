@@ -9,12 +9,13 @@
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020.
 # J. Lavoie <j.lavoie@net-c.ca>, 2020.
 # Lorenzo Maria Fasoli <lorenzo.fasoli.94@gmail.com>, 2020.
+# Giacomo Alessandroni <g.alessandroni@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-08-09 17:32+0000\n"
-"Last-Translator: Lorenzo Maria Fasoli <lorenzo.fasoli.94@gmail.com>\n"
+"PO-Revision-Date: 2020-08-19 14:32+0000\n"
+"Last-Translator: Giacomo Alessandroni <g.alessandroni@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -87,7 +88,7 @@ msgstr "La tipologia di pagamento \"%s\" non è stata aggiunta!"
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:222
 #, php-format
 msgid "Payment type '%s' has not been modified!"
-msgstr "La tipologia di pagamento \"%s\" è stata modificata!"
+msgstr "La tipologia di pagamento \"%s\" non è stata modificata!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:235
 #, php-format
@@ -114,7 +115,7 @@ msgstr "Gruppi"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:370
 msgid "Group `%groupname` has been successfully saved."
-msgstr "Il gruppo `%groupname`è stato salvato correttamente."
+msgstr "Il gruppo \"%groupname\" è stato salvato correttamente."
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:377
 msgid "An error occurred while storing the group."
@@ -123,7 +124,7 @@ msgstr "Si è verificato un errore durante la registrazione del gruppo."
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:469
 #, php-format
 msgid "Remove group %1$s"
-msgstr "Rimuovi gruppo %1$s"
+msgstr "Rimuovi il gruppo %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:492
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
@@ -149,11 +150,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:304
 msgid "Please type an object for the message."
-msgstr ""
+msgstr "Per favore, inserisci un oggetto per il messaggio."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:310
 msgid "Please enter a message."
-msgstr ""
+msgstr "Per favore, inserisci il messaggio."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:404
 msgid "Mailing has been successfully sent!"
@@ -1224,7 +1225,7 @@ msgstr ""
 
 #: ../lib/Galette/Core/Install.php:1022
 msgid "Write configuration file"
-msgstr ""
+msgstr "Scrivi il file di configurazione"
 
 #: ../lib/Galette/Core/Install.php:1051
 msgid "Config file already exists and is up to date"
@@ -2389,7 +2390,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:572
 msgid "header and footer should not be empty!"
-msgstr ""
+msgstr "intestazione e piè di pagina non dovrebbero essere vuoti!"
 
 #: ../lib/Galette/Entity/PdfModel.php:576
 msgid "body should not be empty!"
@@ -2421,7 +2422,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/PaymentType.php:287
 msgid "Paypal"
-msgstr ""
+msgstr "Paypal"
 
 #: ../lib/Galette/Entity/Status.php:119
 msgid "status"
@@ -2433,7 +2434,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/SavedSearch.php:153
 msgid "Form is mandatory!"
-msgstr ""
+msgstr "Campo obbligatorio!"
 
 #: ../lib/Galette/Entity/SavedSearch.php:346
 #, php-format
@@ -2669,7 +2670,7 @@ msgstr ""
 
 #: ../includes/routes/ajax.routes.php:237
 msgid "Thank you for registering!"
-msgstr ""
+msgstr "Grazie per esserti registrato!"
 
 #: ../includes/i18n.inc.php:272
 msgid "Realization:"
@@ -3052,7 +3053,7 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:315
 msgid "Language:"
-msgstr ""
+msgstr "Lingua:"
 
 #: ../includes/fields_defs/members_fields.php:323
 msgid "Birthplace:"
@@ -3777,7 +3778,7 @@ msgstr ""
 
 #: ../templates/default/gestion_pdf.tpl:41
 msgid "Your organisation logo"
-msgstr ""
+msgstr "Logo della tua organizzazione"
 
 #: ../templates/default/gestion_pdf.tpl:43
 msgid "Current date (Y-m-d)"
@@ -4086,7 +4087,7 @@ msgstr ""
 
 #: ../templates/default/page.tpl:81 ../templates/default/desktop.tpl:40
 msgid "Informations about available plugins"
-msgstr ""
+msgstr "Informazioni sui plugin disponibili"
 
 #: ../templates/default/page.tpl:82
 msgid "Customize lists fields and order"
@@ -4111,7 +4112,7 @@ msgstr ""
 
 #: ../templates/default/page.tpl:84 ../templates/default/fake_data.tpl:33
 msgid "Dynamic fields"
-msgstr ""
+msgstr "Campi dinamici"
 
 #: ../templates/default/page.tpl:85
 msgid "Translate additionnals fields labels"
@@ -4692,7 +4693,7 @@ msgstr ""
 #: ../templates/default/preferences.tpl:386
 #: ../templates/default/preferences.tpl:522
 msgid "Horizontal spacing:"
-msgstr ""
+msgstr "Spaziatura orizzontale:"
 
 #: ../templates/default/preferences.tpl:391
 #: ../templates/default/preferences.tpl:517
@@ -5051,7 +5052,7 @@ msgstr ""
 #: ../templates/default/advanced_search.tpl:302
 #: ../templates/default/gestion_transactions.tpl:9
 msgid "Filter"
-msgstr ""
+msgstr "Filtra"
 
 #: ../templates/default/gestion_contributions.tpl:27
 #: ../templates/default/gestion_mailings.tpl:23
@@ -5152,7 +5153,7 @@ msgstr ""
 #: ../templates/default/gestion_contributions.tpl:234
 #: ../templates/default/advanced_search.tpl:170
 msgid "Payment type"
-msgstr ""
+msgstr "Tipo di pagamento"
 
 #: ../templates/default/gestion_contributions.tpl:151
 #: ../templates/default/gestion_contributions.tpl:235
@@ -5564,7 +5565,7 @@ msgstr ""
 
 #: ../templates/default/gestion_textes.tpl:31
 msgid "Email Subject"
-msgstr "Oggetto dell'e-mail"
+msgstr "Oggetto dell'email"
 
 #: ../templates/default/gestion_textes.tpl:32
 msgid "(Max 255 characters)"
@@ -5993,7 +5994,7 @@ msgstr ""
 
 #: ../templates/default/saved_searches.tpl:28
 msgid "Show parameters"
-msgstr ""
+msgstr "Mostra parametri"
 
 #: ../templates/default/saved_searches.tpl:43
 msgid "Load saved search"
@@ -6347,6 +6348,8 @@ msgid ""
 "Please update your browser or use an alternative one, like Mozilla Firefox "
 "(http://mozilla.org)."
 msgstr ""
+"Per favore, aggiorna il tuo browser o usane un altro come Mozilla Firefox "
+"(http://mozilla.org)."
 
 #: ../templates/default/404.tpl:21
 msgid "Sorry, the page you are looking for could not be found."
@@ -6914,7 +6917,7 @@ msgstr ""
 
 #: ../templates/default/voir_adherent.tpl:68
 msgid "View member's contributions"
-msgstr ""
+msgstr "Visualizza i contributi degli utenti"
 
 #: ../templates/default/voir_adherent.tpl:72
 msgid "View contributions"
@@ -7176,7 +7179,7 @@ msgstr ""
 
 #: ../templates/default/plugins.tpl:11 ../templates/default/plugins.tpl:25
 msgid "Release date"
-msgstr ""
+msgstr "Data di rilascio"
 
 #: ../templates/default/plugins.tpl:32
 msgid "Click here to deactivate plugin '%name'"
