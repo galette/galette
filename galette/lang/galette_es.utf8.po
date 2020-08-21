@@ -3,13 +3,14 @@
 # anonymous <noreply@weblate.org>, 2020.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # Noe Reyes Guerra <noe.r.guerra@outlook.com>, 2020.
+# Natalia Barranco <natalia.barranco95@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-08-13 15:32+0000\n"
-"Last-Translator: Noe Reyes Guerra <noe.r.guerra@outlook.com>\n"
+"PO-Revision-Date: 2020-08-22 07:38+0000\n"
+"Last-Translator: Natalia Barranco <natalia.barranco95@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.2-dev\n"
+"X-Generator: Weblate 4.2.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -102,7 +103,6 @@ msgid "Remove payment type %1$s"
 msgstr "Quitar tipo de pago %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:123
-#, fuzzy
 msgid "Group name is missing!"
 msgstr "¡Falta el nombre del grupo!"
 
@@ -124,8 +124,9 @@ msgid "Remove group %1$s"
 msgstr "Quitar grupo %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:492
+#, fuzzy
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
-msgstr ""
+msgstr "El grupo no está vacío, no puede ser borrado. Use borrado en cascada."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:101
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:105
@@ -154,7 +155,7 @@ msgstr "Escriba un mensaje."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:404
 msgid "Mailing has been successfully sent!"
-msgstr ""
+msgstr "¡El envío fue exitoso!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:427
 msgid "Mailing has been successfully saved."
