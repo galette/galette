@@ -1506,6 +1506,9 @@ class MembersController extends CrudController
                 || !crypt($post['mdp_adh'], $post['mdp_crypt']) == $post['mdp_crypt']
             ) {
                 $error_detected[] = __('Please repeat in the field the password shown in the image.');
+            } else {
+                unset($post['mdp_adh']);
+                unset($post['mdp_crypt']);
             }
         }
 
@@ -1533,8 +1536,8 @@ class MembersController extends CrudController
         // flagging required fields
         $fc = $this->fields_config;
 
-        // password required if we create a new member
-        if ($member->id != '') {
+        // password required if we create a new member but not from self subscription
+        if ($member->id != '' || isset($args['self'])) {
             $fc->setNotRequired('mdp_adh');
         }
 
