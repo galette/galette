@@ -130,7 +130,7 @@
                     <td data-title="{_T string="Recipients"}">{$log.mailing_recipients|unserialize|@count}</td>
                     <td data-title="{_T string="Subject"}">{$log.mailing_subject}</td>
                     <td class="center" data-title="{_T string="Attachments"}">{$log.attachments}</td>
-                    <td class="center {if $log.mailing_sent == 1}use{else}delete{/if}" data-title="{_T string="Sent"}">
+                    <td class="center{if $log.mailing_sent == 1} use{/if}" data-title="{_T string="Sent"}">
                         {if $log.mailing_sent == 1}
                             <i class="fas fa-thumbs-up"></i>
                         {else}
