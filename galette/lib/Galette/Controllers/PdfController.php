@@ -670,7 +670,22 @@ class PdfController extends AbstractController
         }
 
         $target = $valid[0];
-        $id = $valid[1];
+        $id = (int)$valid[1];
+
+        //get user information (like id...) from DB since its missing
+        $select = $this->zdb->select(Adherent::TABLE, 'a');
+        $select->where(['email_adh' => $post['email']]);
+        $results = $this->zdb->execute($select);
+        $row = $results->current();
+
+        //create a new login instance, to not break current session if any
+        //this will be passed directly to Contribution constructor
+        $login = new \Galette\Core\Login(
+            $this->zdb,
+            $this->i18n,
+            $this->session
+        );
+        $login->id = (int)$row['id_adh'];
 
         if ($target === Links::TARGET_MEMBERCARD) {
             $m = new Members();
@@ -699,7 +714,7 @@ class PdfController extends AbstractController
             $pdf = new PdfMembersCards($this->preferences);
             $pdf->drawCards($members);
         } else {
-            $contribution = new Contribution($this->zdb, $this->login, $id);
+            $contribution = new Contribution($this->zdb, $login, $id);
             if ($contribution->id == '') {
                 //not possible to load contribution, exit
                 $this->flash->addMessage(
