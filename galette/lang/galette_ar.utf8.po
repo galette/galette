@@ -7,9 +7,9 @@
 # Antonios Hazim <antonios.hazim@zoho.eu>, 2020.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-07-16 15:41+0000\n"
+"PO-Revision-Date: 2020-08-30 18:47+0000\n"
 "Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.2-dev\n"
+"X-Generator: Weblate 4.2.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -261,7 +261,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:820
 msgid "Advanced search"
-msgstr ""
+msgstr "البحث المتقدم"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1041
 #: ../lib/Galette/Controllers/PdfController.php:157
@@ -617,7 +617,7 @@ msgstr "معلومات عن النظام"
 
 #: ../lib/Galette/Controllers/GaletteController.php:129
 msgid "Dashboard"
-msgstr ""
+msgstr "لوح المراقبة"
 
 #: ../lib/Galette/Controllers/GaletteController.php:234
 msgid "Settings"
@@ -718,7 +718,7 @@ msgstr "توليد بيانات وهمية"
 
 #: ../lib/Galette/Controllers/GaletteController.php:753
 msgid "Reminders"
-msgstr ""
+msgstr "تذكير"
 
 #: ../lib/Galette/Controllers/GaletteController.php:794
 msgid "No reminder to send for now."
@@ -963,7 +963,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/HistoryController.php:114
 #: ../install/steps/check.php:74
 msgid "Logs"
-msgstr ""
+msgstr "السجلات"
 
 #: ../lib/Galette/Controllers/HistoryController.php:153
 #: ../lib/Galette/Filters/TransactionsList.php:229
@@ -3497,11 +3497,11 @@ msgstr ""
 
 #: ../install/steps/check.php:72
 msgid "Exports"
-msgstr ""
+msgstr "التصديرات"
 
 #: ../install/steps/check.php:73
 msgid "Imports"
-msgstr ""
+msgstr "الاستيرادات"
 
 #: ../install/steps/check.php:75
 msgid "Attachments"
@@ -3906,7 +3906,7 @@ msgstr ""
 
 #: ../templates/default/page.tpl:39
 msgid "Go to Galette's dashboard"
-msgstr "انتقل إلى لوحة أجهزة القياس"
+msgstr "انتقل إلى لوح قيادة Galette"
 
 #: ../templates/default/page.tpl:41 ../templates/default/desktop.tpl:30
 #: ../templates/default/desktop.tpl:46
@@ -3915,7 +3915,7 @@ msgstr "عرض والبحث وتحديد في قائمة الأعضاء"
 
 #: ../templates/default/page.tpl:41
 msgid "List of members"
-msgstr ""
+msgstr "قائمة الأعضاء"
 
 #: ../templates/default/page.tpl:42
 msgid "Perform advanced search into members list"
@@ -3943,7 +3943,7 @@ msgstr ""
 
 #: ../templates/default/page.tpl:48
 msgid "List of transactions"
-msgstr ""
+msgstr "قائمة المعاملات"
 
 #: ../templates/default/page.tpl:49
 msgid "Add new member in database"
@@ -3971,7 +3971,7 @@ msgstr ""
 #: ../templates/default/gestion_contributions.tpl:48
 #: ../templates/default/voir_adherent.tpl:90
 msgid "Add a donation"
-msgstr ""
+msgstr "إضافة تبرع"
 
 #: ../templates/default/page.tpl:52
 msgid "Add new transaction in database"
@@ -3980,7 +3980,7 @@ msgstr ""
 #: ../templates/default/page.tpl:52
 #: ../templates/default/gestion_transactions.tpl:28
 msgid "Add a transaction"
-msgstr ""
+msgstr "إضافة معاملة"
 
 #: ../templates/default/page.tpl:53 ../templates/default/desktop.tpl:36
 msgid "Send reminders to late members"
@@ -5423,7 +5423,7 @@ msgstr ""
 
 #: ../templates/default/desktop.tpl:69
 msgid "Show dashboard on login"
-msgstr ""
+msgstr "عرض لوح القيادة عند تسجيل الدخول"
 
 #: ../templates/default/gestion_mailings.tpl:13
 #: ../templates/default/gestion_mailings.tpl:72
