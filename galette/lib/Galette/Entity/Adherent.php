@@ -2001,7 +2001,7 @@ class Adherent
     }
 
     /**
-     * Shoudl we send administrative emails to member?
+     * Should we send administrative emails to member?
      *
      * @return boolean
      */

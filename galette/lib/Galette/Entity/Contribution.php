@@ -85,6 +85,8 @@ class Contribution
 
     private $errors;
 
+    private $sendmail = false;
+
     /**
      * Default constructor
      *
@@ -1317,5 +1319,28 @@ class Contribution
                     break;
             }
         }
+    }
+
+    /**
+     * Flag creation mail sending
+     *
+     * @param boolean $send True (default) to send creation email
+     *
+     * @return Contribution
+     */
+    public function setSendmail($send = true)
+    {
+        $this->sendmail = $send;
+        return $this;
+    }
+
+    /**
+     * Should we send administrative emails to member?
+     *
+     * @return boolean
+     */
+    public function sendEMail()
+    {
+        return $this->sendmail;
     }
 }

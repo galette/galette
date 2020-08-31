@@ -642,6 +642,18 @@ $container['event_manager'] = function ($c) {
         )
     );
 
+    $emitter->useListenerProvider(
+        new Galette\Events\ContribListener(
+            $c->get('preferences'),
+            $c->get('router'),
+            $c->get('history'),
+            $c->get('flash'),
+            $c->get('login'),
+            $c->get('zdb')
+        )
+    );
+
+
     return $emitter;
 };
 
