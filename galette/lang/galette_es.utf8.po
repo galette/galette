@@ -5,13 +5,14 @@
 # Noe Reyes Guerra <noe.r.guerra@outlook.com>, 2020.
 # Natalia Barranco <natalia.barranco95@gmail.com>, 2020.
 # J.MarSar <marsarjorge@gmail.com>, 2020.
+# Emerson Castaneda <emecas@hotmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
 "PO-Revision-Date: 2020-09-05 11:36+0000\n"
-"Last-Translator: J.MarSar <marsarjorge@gmail.com>\n"
+"Last-Translator: Emerson Castaneda <emecas@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -79,12 +80,12 @@ msgid "Edit payment type"
 msgstr "Editar tipo de pago"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:213
-#, fuzzy, php-format
+#, php-format
 msgid "Payment type '%s' has not been added!"
 msgstr "¡No se ha añadido el tipo de pago «%s»!"
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:222
-#, fuzzy, php-format
+#, php-format
 msgid "Payment type '%s' has not been modified!"
 msgstr "¡No se ha modificado el tipo de pago «%s»!"
 
@@ -125,7 +126,6 @@ msgid "Remove group %1$s"
 msgstr "Quitar grupo %1$s"
 
 #: ../lib/Galette/Controllers/Crud/GroupsController.php:492
-#, fuzzy
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
 msgstr "El grupo no está vacío, no puede ser borrado. Use borrado en cascada."
 
