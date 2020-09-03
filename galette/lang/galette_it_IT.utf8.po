@@ -10,19 +10,20 @@
 # J. Lavoie <j.lavoie@net-c.ca>, 2020.
 # Lorenzo Maria Fasoli <lorenzo.fasoli.94@gmail.com>, 2020.
 # Giacomo Alessandroni <g.alessandroni@gmail.com>, 2020.
+# Daeniem Loidlan <daeniem@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-08-19 14:32+0000\n"
-"Last-Translator: Giacomo Alessandroni <g.alessandroni@gmail.com>\n"
+"PO-Revision-Date: 2020-09-05 11:36+0000\n"
+"Last-Translator: Daeniem Loidlan <daeniem@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.2-dev\n"
+"X-Generator: Weblate 4.3-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -142,11 +143,11 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:149
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:285
 msgid "No member selected for mailing!"
-msgstr ""
+msgstr "Nessun membro selezionato per l'invio mail!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:204
 msgid "Mailing"
-msgstr ""
+msgstr "Invio Mail"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:304
 msgid "Please type an object for the message."
@@ -158,15 +159,15 @@ msgstr "Per favore, inserisci il messaggio."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:404
 msgid "Mailing has been successfully sent!"
-msgstr ""
+msgstr "L' email è stata inviata con successo!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:427
 msgid "Mailing has been successfully saved."
-msgstr ""
+msgstr "L'email è stata salvata con successo."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:516
 msgid "Mailings"
-msgstr ""
+msgstr "L'invio di email"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:664
 #, php-format
@@ -210,16 +211,16 @@ msgstr "Si è verificato un errore durante l’invio dell’e-mail di prova :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:446
 msgid "Requested field does not exists!"
-msgstr ""
+msgstr "Il file richiesto non esiste!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:454
 #, php-format
 msgid "Remove dynamic field %1$s"
-msgstr ""
+msgstr "Rimuovi campo dinamico %1$s"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:495
 msgid "Field has been successfully moved"
-msgstr ""
+msgstr "Il campo è stato spostato con successo"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:500
 msgid "An error occurred moving field :("
