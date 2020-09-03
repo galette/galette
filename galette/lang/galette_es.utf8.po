@@ -4,13 +4,14 @@
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
 # Noe Reyes Guerra <noe.r.guerra@outlook.com>, 2020.
 # Natalia Barranco <natalia.barranco95@gmail.com>, 2020.
+# J.MarSar <marsarjorge@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-08-22 07:38+0000\n"
-"Last-Translator: Natalia Barranco <natalia.barranco95@gmail.com>\n"
+"PO-Revision-Date: 2020-09-05 11:36+0000\n"
+"Last-Translator: J.MarSar <marsarjorge@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -18,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.2.1-dev\n"
+"X-Generator: Weblate 4.3-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -134,6 +135,8 @@ msgstr "El grupo no está vacío, no puede ser borrado. Use borrado en cascada."
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:262
 msgid "Trying to load mailing while email is disabled in preferences."
 msgstr ""
+"Intentando cargar correspondencia mientras el correo está deshabilitado en "
+"preferencias."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:149
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:285
@@ -159,7 +162,7 @@ msgstr "¡El envío fue exitoso!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:427
 msgid "Mailing has been successfully saved."
-msgstr ""
+msgstr "La correspondencia ha sido guardada satisfactoriamente."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:516
 msgid "Mailings"
@@ -236,7 +239,7 @@ msgstr "No tienes permiso para la URL solicitada."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:258
 msgid "No member #%id."
-msgstr ""
+msgstr "Sin miembro n.º%id."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:278
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1134
@@ -249,7 +252,7 @@ msgstr "Lista de miembros"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:363
 msgid "Trombinoscope"
-msgstr ""
+msgstr "Trombinoscopio"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:493
 msgid "The file does not exists or cannot be read :("
@@ -283,7 +286,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1285
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1354
 msgid "Mass changes has not been confirmed!"
-msgstr ""
+msgstr "¡No se han confirmado los cambios masivos!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1323
 #, php-format
