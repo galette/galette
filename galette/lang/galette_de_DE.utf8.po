@@ -11,19 +11,20 @@
 # J. Lavoie <j.lavoie@net-c.ca>, 2020.
 # aschlager <andreas.schlager@be-x.at>, 2020.
 # Marcin Kowalski <yoshi314@gmail.com>, 2020.
+# elea11 <p.manuel.warnecke@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-08-13 15:32+0000\n"
-"Last-Translator: Marcin Kowalski <yoshi314@gmail.com>\n"
+"PO-Revision-Date: 2020-09-05 11:36+0000\n"
+"Last-Translator: elea11 <p.manuel.warnecke@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.2-dev\n"
+"X-Generator: Weblate 4.3-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -2138,7 +2139,7 @@ msgstr "- Geburtsdatum muss in der Vergangenheit festgelegt werden!"
 
 #: ../lib/Galette/Entity/Adherent.php:1159
 msgid "- Members must be less than 200 years old (currently %years)!"
-msgstr ""
+msgstr "- Mitglieder müssen jünger als 200 Jahre sein (derzeit %years)!"
 
 #: ../lib/Galette/Entity/Adherent.php:1180
 #: ../lib/Galette/Entity/Transaction.php:299
@@ -2191,10 +2192,11 @@ msgstr "Status #%id existiert in der Datenbank nicht."
 #: ../lib/Galette/Entity/Adherent.php:1329
 msgid "An error has occurred while looking if status does exists."
 msgstr ""
+"Ein Fehler bei der Überprüfung, ob der Status existiert, ist aufgetreten."
 
 #: ../lib/Galette/Entity/Adherent.php:1336
 msgid "Gender %gender does not exists!"
-msgstr ""
+msgstr "Geschlecht %gender existiert nicht!"
 
 #: ../lib/Galette/Entity/Adherent.php:1446
 msgid "Self_subscription as a member: "
@@ -2226,7 +2228,7 @@ msgstr " (%age Jahre alt)"
 
 #: ../lib/Galette/Entity/Adherent.php:1898
 msgid "Duplicated from %name (%id)"
-msgstr ""
+msgstr "Duplikat von %name (%id)"
 
 #: ../lib/Galette/Entity/Transaction.php:109
 msgid "Date:"
@@ -2328,7 +2330,7 @@ msgstr "- Die Dauer muss eine positive Zahl sein!"
 
 #: ../lib/Galette/Entity/Contribution.php:479
 msgid "An error occurred checking overlaping fees :("
-msgstr ""
+msgstr "Ein Fehler bei der Prüfung überlagernder Beiträge ist aufgetreten :("
 
 #: ../lib/Galette/Entity/Contribution.php:540
 msgid "- Membership period overlaps period starting at "
@@ -2400,7 +2402,7 @@ msgstr "Untertitel"
 
 #: ../lib/Galette/Entity/PdfModel.php:572
 msgid "header and footer should not be empty!"
-msgstr "Kofpzeile und Fusszeile sollten nicht leer sein!"
+msgstr "Kopfzeile und Fusszeile sollten nicht leer sein!"
 
 #: ../lib/Galette/Entity/PdfModel.php:576
 msgid "body should not be empty!"
@@ -2408,7 +2410,7 @@ msgstr "Inhalt sollte nicht leer sein!"
 
 #: ../lib/Galette/Entity/PaymentType.php:190
 msgid "You cannot delete system payment types!"
-msgstr ""
+msgstr "System-Zahlungsarten können nicht gelöscht werden!"
 
 #: ../lib/Galette/Entity/PaymentType.php:282
 msgid "Other"
@@ -2449,7 +2451,7 @@ msgstr "Das Formular ist obligatorisch!"
 #: ../lib/Galette/Entity/SavedSearch.php:346
 #, php-format
 msgid "Unknown form %form!"
-msgstr ""
+msgstr "Unbekanntes Formular!"
 
 #: ../lib/Galette/Entity/SavedSearch.php:361
 msgid "Name cannot be empty!"
