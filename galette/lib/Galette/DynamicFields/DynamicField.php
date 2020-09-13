@@ -749,11 +749,8 @@ abstract class DynamicField
             $contents_table = self::getFixedValuesTableName($this->id, true);
 
             try {
+                $this->zdb->drop($contents_table, true);
                 $this->zdb->connection->beginTransaction();
-                $this->zdb->db->query(
-                    'DROP TABLE IF EXISTS ' . $contents_table,
-                    \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-                );
                 $field_size = ((int)$this->size > 0) ? $this->size : 1;
                 $this->zdb->db->query(
                     'CREATE TABLE ' . $contents_table .
@@ -763,7 +760,10 @@ abstract class DynamicField
                 );
                 $this->zdb->connection->commit();
             } catch (\Exception $e) {
-                $this->zdb->connection->rollBack();
+                if ($this->zdb->connection->inTransaction()) {
+                    //because of DROP autocommit on mysql...
+                    $this->zdb->connection->rollBack();
+                }
                 Analog::log(
                     'Unable to manage fields values table ' .
                     $contents_table . ' | ' . $e->getMessage(),
@@ -938,6 +938,11 @@ abstract class DynamicField
     public function remove()
     {
         try {
+            if ($this->hasFixedValues()) {
+                $contents_table = self::getFixedValuesTableName($this->id);
+                $this->zdb->drop($contents_table);
+            }
+
             $this->zdb->connection->beginTransaction();
             $old_rank = $this->index;
 
@@ -977,19 +982,16 @@ abstract class DynamicField
                 throw new \RuntimeException('Unable to remove field ' . $this->id . '!');
             }
 
-            if ($this->hasFixedValues()) {
-                $contents_table = self::getFixedValuesTableName($this->id);
-                $this->zdb->db->query(
-                    'DROP TABLE IF EXISTS ' . $contents_table,
-                    \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
-                );
-            }
             $this->deleteTranslation($this->name);
 
             $this->zdb->connection->commit();
+
             return true;
         } catch (\Exception $e) {
-            $this->zdb->connection->rollBack();
+            if ($this->zdb->connection->inTransaction()) {
+                //because of DROP autocommit on mysql...
+                $this->zdb->connection->rollBack();
+            }
             Analog::log(
                 'An error occurred deleting field | ' . $e->getMessage(),
                 Analog::ERROR

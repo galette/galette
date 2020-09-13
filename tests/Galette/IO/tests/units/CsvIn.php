@@ -71,6 +71,7 @@ class CsvIn extends atoum
     private $request;
     private $response;
     private $mocked_router;
+    private $contents_table = null;
 
     /**
      * Set up tests
@@ -81,6 +82,7 @@ class CsvIn extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
+        $this->contents_table = null;
         $this->mocked_router = new \mock\Slim\Router();
         $this->calling($this->mocked_router)->pathFor = function ($name, $params) {
             return $name;
@@ -181,6 +183,10 @@ class CsvIn extends atoum
             ]
         ]);
         $this->zdb->execute($delete);
+
+        if ($this->contents_table !== null) {
+            $this->zdb->drop($this->contents_table);
+        }
     }
 
     /**
@@ -593,6 +599,8 @@ class CsvIn extends atoum
         $this->zdb->execute($delete);
         $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
         $this->zdb->execute($delete);
+        //cleanup dynamic choices table
+        $this->contents_table = $cdf->getFixedValuesTableName($cdf->getId());
 
         //new dynamic field, of type date.
         $cfield_data = [
