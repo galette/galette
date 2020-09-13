@@ -278,7 +278,6 @@ abstract class CrudController extends AbstractController
             );
         } else {
             try {
-
                 $ids = $this->getIdsToRemove($args, $post);
 
                 $res = $this->doDelete($args, $post);
