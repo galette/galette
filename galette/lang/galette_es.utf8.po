@@ -6,13 +6,14 @@
 # Natalia Barranco <natalia.barranco95@gmail.com>, 2020.
 # J.MarSar <marsarjorge@gmail.com>, 2020.
 # Emerson Castaneda <emecas@hotmail.com>, 2020.
+# Andrea Capuselli <andrea@proz.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-09-05 11:36+0000\n"
-"Last-Translator: Emerson Castaneda <emecas@hotmail.com>\n"
+"PO-Revision-Date: 2020-09-14 14:08+0000\n"
+"Last-Translator: Andrea Capuselli <andrea@proz.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -303,8 +304,9 @@ msgid "An error occurred while storing the member."
 msgstr "Se produjo un error al almacenar al miembro."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1423
+#, fuzzy
 msgid "Something went wront during mass edition!"
-msgstr ""
+msgstr "Ocurrió un error durante la edición masiva."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1430
 #, php-format
@@ -317,11 +319,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1608
 msgid "Your account has been created!"
-msgstr ""
+msgstr "¡Tu cuenta ha sido creada!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1613
 msgid "An email has been sent to you, check your inbox."
-msgstr ""
+msgstr "Se te envió un correo electrónico, revisa tu bandeja de entrada."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1616
 msgid "New member has been successfully added."
@@ -345,12 +347,15 @@ msgstr ""
 msgid ""
 "- You can't send a confirmation by email if the member hasn't got an address!"
 msgstr ""
+"- ¡No puedes enviar un correo de confirmación si el miembro no tiene una "
+"dirección de correo!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1716
 #: ../lib/Galette/Controllers/AuthController.php:332
 #: ../lib/Galette/Core/History.php:414 ../lib/Galette/IO/Csv.php:115
+#, fuzzy
 msgid "Y-m-d H:i:s"
-msgstr ""
+msgstr "Y-m-d H:i:s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1721
 #: ../lib/Galette/Controllers/AuthController.php:385
@@ -394,11 +399,12 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1860
 msgid "An error occurred adding member to its groups."
-msgstr ""
+msgstr "Se produjo un problema al agregar el miembro a sus grupos."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1875
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
+"Se produjo un error al agregar el miembro a sus grupos como administrador."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1891
 #: ../lib/Galette/Controllers/GaletteController.php:311
