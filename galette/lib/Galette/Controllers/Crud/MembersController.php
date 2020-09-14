@@ -475,15 +475,24 @@ class MembersController extends CrudController
 
         if (file_exists(GALETTE_FILES_PATH . $filename)) {
             $type = File::getMimeType(GALETTE_FILES_PATH . $filename);
-            $response = $response
+
+            $response = $response->withHeader('Content-Description', 'File Transfer')
                 ->withHeader('Content-Type', $type)
                 ->withHeader('Content-Disposition', 'attachment;filename="' . $args['name'] . '"')
-                ->withHeader('Pragma', 'no-cache');
-            $response->write(readfile(GALETTE_FILES_PATH . $filename));
-            return $response;
+                ->withHeader('Pragma', 'no-cache')
+                ->withHeader('Content-Transfer-Encoding', 'binary')
+                ->withHeader('Expires', '0')
+                ->withHeader('Cache-Control', 'must-revalidate')
+                ->withHeader('Pragma', 'public');
+
+            $stream = fopen('php://memory', 'r+');
+            fwrite($stream, file_get_contents(GALETTE_FILES_PATH . $filename));
+            rewind($stream);
+
+            return $response->withBody(new \Slim\Http\Stream($stream));
         } else {
             Analog::log(
-                'A request has been made to get an exported file named `' .
+                'A request has been made to get a dynamic file named `' .
                 $filename . '` that does not exists.',
                 Analog::WARNING
             );
