@@ -65,7 +65,9 @@ class Reminder
     private $type;
     private $dest;
     private $date;
-    private $success;
+    /** @var boolean */
+    private $success = false;
+    /** @var boolean */
     private $nomail;
     private $comment;
     private $replaces;
@@ -227,6 +229,8 @@ class Reminder
     {
         global $preferences;
 
+        $this->success = false;
+
         $type_name = 'late';
         if ($this->type === self::IMPENDING) {
             $type_name = 'impending';
@@ -275,7 +279,6 @@ class Reminder
                 $this->msg = $details;
                 $hist->add($msg, $details);
             } else {
-                $this->success = false;
                 if ($type_name == 'late') {
                     $msg = _T("A problem happened while sending late membership email");
                 } else {
@@ -285,7 +288,6 @@ class Reminder
                 $hist->add($str, $details);
             }
         } else {
-            $this->success = false;
             $this->nomail = true;
             $str = str_replace(
                 '%membership',
@@ -335,7 +337,9 @@ class Reminder
         switch ($name) {
             case 'member_id':
                 return $this->dest->id;
-                break;
+            case 'type':
+            case 'date':
+                return $this->$name;
             default:
                 Analog::log(
                     'Unable to get Reminder property ' . $name,
