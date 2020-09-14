@@ -651,10 +651,11 @@ if (!isset($container['mode']) || ($container['mode'] !== 'INSTALL' && $containe
     $preferences = $container->get('preferences');
     $login = $container->get('login');
     $hist = $container->get('history');
+    global $l10n;
+    $l10n = $container->get('l10n');
 }
-global $translator, $i18n, $l10n;
+global $translator, $i18n;
 $i18n = $container->get('i18n');
-$l10n = $container->get('l10n');
 $translator = $container->get('translator');
 $emitter = $container->get('event_manager');
 
