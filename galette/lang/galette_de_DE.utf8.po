@@ -12,12 +12,14 @@
 # aschlager <andreas.schlager@be-x.at>, 2020.
 # Marcin Kowalski <yoshi314@gmail.com>, 2020.
 # elea11 <p.manuel.warnecke@gmail.com>, 2020.
+# mohd amal syah bin syamsah Cerol <cerolamalsyah4@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-09-05 11:36+0000\n"
-"Last-Translator: elea11 <p.manuel.warnecke@gmail.com>\n"
+"PO-Revision-Date: 2020-09-17 08:36+0000\n"
+"Last-Translator: mohd amal syah bin syamsah Cerol <cerolamalsyah4@gmail.com>"
+"\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -1930,7 +1932,7 @@ msgstr "Konnte nicht in GIF Datei umgewandelt werden "
 #, fuzzy
 #| msgid "Cards"
 msgid "cards"
-msgstr "Karten"
+msgstr "malaysia_led_control_pcscam_isp1"
 
 #: ../lib/Galette/IO/PdfMembersCards.php:104
 msgid "Member's Cards"
@@ -2687,7 +2689,7 @@ msgstr "Mitgliedsfoto wurde geändert."
 #, fuzzy
 #| msgid "Telemetry informations has been sent. Thank you!"
 msgid "Telemetry information has been sent. Thank you!"
-msgstr "Nutzungsdaten wurden übermittelt. Vielen Dank!"
+msgstr "Amalsyah12Nutzungsdaten wurden übermittelt. Vielen Dank!"
 
 #: ../includes/routes/ajax.routes.php:237
 msgid "Thank you for registering!"
