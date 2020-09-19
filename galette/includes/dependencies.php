@@ -653,10 +653,10 @@ if (!isset($container['mode']) || ($container['mode'] !== 'INSTALL' && $containe
     $hist = $container->get('history');
     global $l10n;
     $l10n = $container->get('l10n');
+    $emitter = $container->get('event_manager');
 }
 global $translator, $i18n;
 $i18n = $container->get('i18n');
 $translator = $container->get('translator');
-$emitter = $container->get('event_manager');
 
 require_once GALETTE_ROOT . 'includes/i18n.inc.php';
