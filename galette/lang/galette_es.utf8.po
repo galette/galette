@@ -7,13 +7,14 @@
 # J.MarSar <marsarjorge@gmail.com>, 2020.
 # Emerson Castaneda <emecas@hotmail.com>, 2020.
 # Andrea Capuselli <andrea@proz.com>, 2020.
+# Clara Rodriguez Aliberas <clara@channable.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-09-14 14:08+0000\n"
-"Last-Translator: Andrea Capuselli <andrea@proz.com>\n"
+"PO-Revision-Date: 2020-09-22 14:06+0000\n"
+"Last-Translator: Clara Rodriguez Aliberas <clara@channable.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -141,9 +142,8 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:149
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:285
-#, fuzzy
 msgid "No member selected for mailing!"
-msgstr "¡Ningún miembro seleccionado para enviar por correo!"
+msgstr "¡Ningún miembro seleccionado para contactar por correo!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:204
 msgid "Mailing"
@@ -275,14 +275,14 @@ msgstr "Búsqueda avanzada"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1041
 #: ../lib/Galette/Controllers/PdfController.php:157
 #: ../lib/Galette/Controllers/PdfController.php:238
-#, fuzzy
 msgid "No member was selected, please check at least one name."
-msgstr "Ningún miembro fue seleccionado, por favor marque al menos un nombre."
+msgstr ""
+"No se ha seleccionado ningún miembro, por favor marque al menos un nombre."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1254
 #, php-format
 msgid "Mass change %count members"
-msgstr ""
+msgstr "Cambio masivo %recuento de miembros"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1285
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1354
@@ -292,7 +292,7 @@ msgstr "¡No se han confirmado los cambios masivos!"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1323
 #, php-format
 msgid "Review mass change %count members"
-msgstr ""
+msgstr "Revisar cambio masivo %recuento de miembros"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1383
 msgid "Nothing to do!"
@@ -304,18 +304,18 @@ msgid "An error occurred while storing the member."
 msgstr "Se produjo un error al almacenar al miembro."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1423
-#, fuzzy
 msgid "Something went wront during mass edition!"
-msgstr "Ocurrió un error durante la edición masiva."
+msgstr "Ocurrió un error durante la edición masiva!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1430
 #, php-format
 msgid "%count members has been changed successfully!"
-msgstr ""
+msgstr "%recuento de miembros se ha modificado correctamente!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1505
 msgid "Please repeat in the field the password shown in the image."
 msgstr ""
+"Por favor, repite en el campo la contraseña que se muestra en la imagen."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1608
 msgid "Your account has been created!"
@@ -327,7 +327,7 @@ msgstr "Se te envió un correo electrónico, revisa tu bandeja de entrada."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1616
 msgid "New member has been successfully added."
-msgstr ""
+msgstr "Has añadido un nuevo miembro correctamente."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1664
 #, php-format
@@ -338,10 +338,12 @@ msgstr "Se envió un mensaje de cuenta nueva al administrador de «%s»."
 #, php-format
 msgid "A problem happened while sending email to admin for account '%s'."
 msgstr ""
+"Ha ocurrido un problema al intentar enviar un correo al administrador de la "
+"cuenta '%s'."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1679
 msgid "Member account has been modified."
-msgstr ""
+msgstr "Se ha modificado el miembro de la cuenta."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1686
 msgid ""
@@ -353,9 +355,8 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1716
 #: ../lib/Galette/Controllers/AuthController.php:332
 #: ../lib/Galette/Core/History.php:414 ../lib/Galette/IO/Csv.php:115
-#, fuzzy
 msgid "Y-m-d H:i:s"
-msgstr "Y-m-d H:i:s"
+msgstr "A-m-d H:i:s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1721
 #: ../lib/Galette/Controllers/AuthController.php:385
