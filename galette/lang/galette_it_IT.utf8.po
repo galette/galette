@@ -11,12 +11,13 @@
 # Lorenzo Maria Fasoli <lorenzo.fasoli.94@gmail.com>, 2020.
 # Giacomo Alessandroni <g.alessandroni@gmail.com>, 2020.
 # Daeniem Loidlan <daeniem@gmail.com>, 2020.
+# Sylphystia <yuidirnt@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-09-05 11:36+0000\n"
-"Last-Translator: Daeniem Loidlan <daeniem@gmail.com>\n"
+"PO-Revision-Date: 2020-09-29 11:41+0000\n"
+"Last-Translator: Sylphystia <yuidirnt@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -396,12 +397,9 @@ msgid "Account modification email sent to admin."
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1839
-#, fuzzy
-#| msgid "A problem happened while sending email to admin for account '%s'."
 msgid "A problem happened while sending account email to admin"
 msgstr ""
-"Un problema si è verificato durante l’invio dell’e-mail all’amministratore "
-"per l’account «%s»."
+"Un problema si è verificato durante l’invio dell’e-mail all'amministratore"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1860
 msgid "An error occurred adding member to its groups."
@@ -1157,9 +1155,9 @@ msgid "Email: '%s' has not been modified!"
 msgstr "E-mail: «%s» è stato modificato!"
 
 #: ../lib/Galette/Controllers/TextController.php:169
-#, fuzzy, php-format
+#, php-format
 msgid "Email: '%s' has been successfully modified."
-msgstr "E-mail: « %s » è stato modificato con successo."
+msgstr "Email: « %s » è stato modificato con successo."
 
 #: ../lib/Galette/Core/Install.php:121 ../webroot/installer.php:316
 msgid "Checks"
