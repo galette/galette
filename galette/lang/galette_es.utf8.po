@@ -9,13 +9,14 @@
 # Andrea Capuselli <andrea@proz.com>, 2020.
 # Clara Rodriguez Aliberas <clara@channable.com>, 2020.
 # Luz Maria Cerqueda <lux8324@gmail.com>, 2020.
+# Saul Henriquez <saul_henriquez@hotmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
 "PO-Revision-Date: 2020-10-01 09:01+0000\n"
-"Last-Translator: Luz Maria Cerqueda <lux8324@gmail.com>\n"
+"Last-Translator: Saul Henriquez <saul_henriquez@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -367,7 +368,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1762
 #, php-format
 msgid "New account email sent to '%s'."
-msgstr ""
+msgstr "Nueva cuenta de correo enviada a '%s'."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1762
 #, php-format
@@ -377,7 +378,7 @@ msgstr "Se envió un mensaje de modificación de cuenta a «%s»."
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1770
 #, php-format
 msgid "A problem happened while sending account email to '%s'"
-msgstr ""
+msgstr "Ocurrió un problema al enviar la cuenta de correo a '%s'"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1779
 msgid ""
@@ -415,7 +416,7 @@ msgstr "Falló la eliminación"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:2059
 #, php-format
 msgid "Remove member %1$s"
-msgstr ""
+msgstr "Remover miembro %1$s"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:2068
 #, php-format
@@ -453,7 +454,7 @@ msgstr "Se ha modificado el título «%s» correctamente."
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:291
 #, php-format
 msgid "Remove title %1$s"
-msgstr ""
+msgstr "Remover título %1$s"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:115
 msgid "User statuses"
@@ -461,11 +462,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:121
 msgid "Contribution types"
-msgstr ""
+msgstr "Tipos de contribución"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:180
 msgid "Edit status"
-msgstr ""
+msgstr "Editar estatus"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:186
 msgid "Edit contribution type"
