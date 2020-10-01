@@ -17,9 +17,8 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-09-17 08:36+0000\n"
-"Last-Translator: mohd amal syah bin syamsah Cerol <cerolamalsyah4@gmail.com>"
-"\n"
+"PO-Revision-Date: 2020-10-01 09:01+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -1929,10 +1928,8 @@ msgid "Unable to convert GIF file "
 msgstr "Konnte nicht in GIF Datei umgewandelt werden "
 
 #: ../lib/Galette/IO/PdfMembersCards.php:93
-#, fuzzy
-#| msgid "Cards"
 msgid "cards"
-msgstr "malaysia_led_control_pcscam_isp1"
+msgstr ""
 
 #: ../lib/Galette/IO/PdfMembersCards.php:104
 msgid "Member's Cards"
@@ -2686,10 +2683,8 @@ msgid "Member photo has been changed."
 msgstr "Mitgliedsfoto wurde geändert."
 
 #: ../includes/routes/ajax.routes.php:217
-#, fuzzy
-#| msgid "Telemetry informations has been sent. Thank you!"
 msgid "Telemetry information has been sent. Thank you!"
-msgstr "Amalsyah12Nutzungsdaten wurden übermittelt. Vielen Dank!"
+msgstr "Nutzungsdaten wurden übermittelt. Vielen Dank!"
 
 #: ../includes/routes/ajax.routes.php:237
 msgid "Thank you for registering!"
