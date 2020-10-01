@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-07-12 09:08+0000\n"
+"PO-Revision-Date: 2020-10-02 12:41+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/galette/"
 "galette/nb_NO/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.2-dev\n"
+"X-Generator: Weblate 4.3-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -545,9 +545,9 @@ msgid ""
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:895
-#, fuzzy, php-format
+#, php-format
 msgid "Remove %1$s %2$s"
-msgstr "Fjern tittel %1$s"
+msgstr "Fjern tittel %1$s %2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:897
 msgid "contributions"
