@@ -8,13 +8,14 @@
 # Emerson Castaneda <emecas@hotmail.com>, 2020.
 # Andrea Capuselli <andrea@proz.com>, 2020.
 # Clara Rodriguez Aliberas <clara@channable.com>, 2020.
+# Luz Maria Cerqueda <lux8324@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-09-22 14:06+0000\n"
-"Last-Translator: Clara Rodriguez Aliberas <clara@channable.com>\n"
+"PO-Revision-Date: 2020-10-01 09:01+0000\n"
+"Last-Translator: Luz Maria Cerqueda <lux8324@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -196,7 +197,6 @@ msgid "Dynamic fields configuration"
 msgstr "Configuración de campos dinámicos"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:291
-#, fuzzy
 msgid "Unable to retrieve field information."
 msgstr "No se ha podido recuperar la información del campo."
 
@@ -260,7 +260,6 @@ msgid "The file does not exists or cannot be read :("
 msgstr "El archivo no existe o no puede ser leído :("
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:559
-#, fuzzy
 msgid "Members management"
 msgstr "Gestión de miembros"
 
