@@ -357,11 +357,12 @@ class Reminders extends atoum
         $this->array($lreminders->getList($this->zdb))->hasSize(0);
         $this->array($ireminders->getList($this->zdb))->hasSize(0);
 
-        //create contribution, late by 30 days
+        //create contribution, late by 1 month minus 1 day
         $now = new \DateTime();
         $date_begin = clone $now;
         $date_begin->sub(new \DateInterval('P1Y'));
-        $date_begin->sub(new \DateInterval('P30D'));
+        $date_begin->sub(new \DateInterval('P1M'));
+        $date_begin->add(new \DateInterval('P1D'));
         $date_end = clone $date_begin;
         $date_end->add(new \DateInterval('P1Y'));
 
