@@ -39,6 +39,7 @@ namespace Galette\Events;
 use Galette\Core\Db;
 use Galette\Core\GaletteMail;
 use Galette\Core\History;
+use Galette\Core\Links;
 use Galette\Core\Login;
 use Galette\Core\Password;
 use Galette\Core\Preferences;

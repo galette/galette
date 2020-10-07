@@ -50,7 +50,6 @@ use Galette\Core\GaletteMail;
 use Galette\Entity\Texts;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\PaymentTypes;
-use Galette\Core\Links;
 use Analog\Analog;
 
 /**
