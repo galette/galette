@@ -192,12 +192,12 @@ class ContribListener implements ListenerProviderInterface
     /**
      * Send account email to member
      *
-     * @param Adherent $member Member
-     * @param boolean  $new    New member or editing existing one
+     * @param Contribution $contrib Contribution
+     * @param boolean      $new     New contribution or editing existing one
      *
      * @return void
      */
-    private function sendContribEmail(Adherent $member, $new)
+    private function sendContribEmail(Contribution $contrib, $new)
     {
         if ($this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
             //if email has been disabled in the preferences, we should not be here ;

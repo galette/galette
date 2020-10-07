@@ -571,6 +571,11 @@ class ContributionsController extends CrudController
             }
 
             if (count($error_detected) == 0) {
+                // send email to member
+                if (isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
+                    $contrib->setSendmail(); //flag to send creation email
+                }
+
                 $store = $contrib->store();
                 if ($store === true) {
                     $this->flash->addMessage(
@@ -585,11 +590,6 @@ class ContributionsController extends CrudController
         }
 
         if (count($error_detected) == 0) {
-            // send email to member
-            if (isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
-                $contrib->setSendmail(); //flag to send creation email
-            }
-
             $this->session->contribution = null;
             if ($contrib->isTransactionPart() && $contrib->transaction->getMissingAmount() > 0) {
                 //new contribution
