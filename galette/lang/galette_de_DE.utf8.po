@@ -13,12 +13,13 @@
 # Marcin Kowalski <yoshi314@gmail.com>, 2020.
 # elea11 <p.manuel.warnecke@gmail.com>, 2020.
 # mohd amal syah bin syamsah Cerol <cerolamalsyah4@gmail.com>, 2020.
+# Code2Joke <codejoke@web.de>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-10-01 09:01+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2020-10-08 21:26+0000\n"
+"Last-Translator: Code2Joke <codejoke@web.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -1929,7 +1930,7 @@ msgstr "Konnte nicht in GIF Datei umgewandelt werden "
 
 #: ../lib/Galette/IO/PdfMembersCards.php:93
 msgid "cards"
-msgstr ""
+msgstr "Karten"
 
 #: ../lib/Galette/IO/PdfMembersCards.php:104
 msgid "Member's Cards"
@@ -2487,10 +2488,8 @@ msgid "Route '%name' is not registered in ACLs!"
 msgstr "Die Route '%name' ist in den ACLs nicht registriert!"
 
 #: ../lib/Galette/Middleware/CheckAcls.php:135
-#, fuzzy
-#| msgid "Route '%name' is not registered in ACLs!"
 msgid "Routes '%names' are not registered in ACLs!"
-msgstr "Die Route '%name' ist in den ACLs nicht registriert!"
+msgstr "Die Routen '%name' sind in den ACLs nicht registriert!"
 
 #: ../lib/Galette/Middleware/Authenticate.php:101
 msgid "Login required"
@@ -2848,7 +2847,7 @@ msgstr "Kontakinformation:"
 
 #: ../includes/i18n.inc.php:311
 msgid "Society"
-msgstr ""
+msgstr "Gesellschaft"
 
 #: ../includes/i18n.inc.php:312
 msgid "Politeness"
@@ -3105,7 +3104,7 @@ msgstr "Zustand der Gebühren"
 #: ../includes/fields_defs/texts_fields.php:40
 #: ../includes/fields_defs/texts_fields.php:48
 msgid "[{ASSO_NAME}] Your identifiers"
-msgstr ""
+msgstr "[{ASSO_NAME}] Ihre Kennzeichnung"
 
 #: ../includes/fields_defs/texts_fields.php:41
 msgid ""
