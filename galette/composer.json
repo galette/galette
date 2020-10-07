@@ -47,7 +47,7 @@
     },
     "require-dev": {
         "atoum/atoum": "dev-master",
-        "galette/smarty-xgettext": "^1.1"
+        "galette/smarty-xgettext": "dev-feature/updatelibs"
     },
     "config": {
         "optimize-autoloader": true
