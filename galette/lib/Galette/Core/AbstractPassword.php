@@ -40,7 +40,6 @@
 namespace Galette\Core;
 
 use Analog\Analog;
-use Laminas\Db\Adapter\Exception as AdapterException;
 use Galette\Entity\Adherent;
 
 /**
