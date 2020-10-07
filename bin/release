@@ -445,7 +445,7 @@ def valid_commit(repo, c):
 
         nightly_version = '%s (%s)' % (
             commit,
-            time.strftime('%Y-%m-%d %H:%M:%S GMT%z', time.localtime(repo_commit.authored_date)),
+            time.strftime('%Y-%m-%d %H:%M:%S GMT%z', time.localtime(repo_commit.committed_date)),
         )
 
         print(colored("""Commit information:
