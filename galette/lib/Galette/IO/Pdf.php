@@ -204,7 +204,7 @@ class Pdf extends \TCPDF
      */
     protected function parsegif($file)
     {
-        $a = GetImageSize($file);
+        $a = getimagesize($file);
         if (empty($a)) {
             $this->Error(_T("Missing or incorrect image file ") . $file);
         }

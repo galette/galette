@@ -43,7 +43,11 @@
         "soundasleep/html2text": "^0.5.0",
         "laminas/laminas-dependency-plugin": "^1.0",
         "aneek/slim-event-dispatcher": "^1.0",
-        "slim/flash": "^0.4.0"
+        "slim/flash": "^0.4.0",
+        "league/event": "^2.1",
+        "smarty/smarty": "~3.1",
+        "psr/http-message": "^1.0",
+        "psr/container": "^1.0"
     },
     "require-dev": {
         "atoum/atoum": "dev-master",
