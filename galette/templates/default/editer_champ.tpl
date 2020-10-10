@@ -7,7 +7,7 @@
 
 {block name="content"}
 {if $action == "edit"}
-    <form action="{path_for name="doEditDynamicField" data=["form" => $form_name, "id" => $df->getId()]}" method="post">
+    <form action="{path_for name="doEditDynamicField" data=["form_name" => $form_name, "id" => $df->getId()]}" method="post">
         <fieldset class="cssform">
             <legend class="ui-state-active ui-corner-top">{_T string="Edit field %field" pattern="/%field/" replace=$df->getName()}</legend>
             <p>
@@ -75,7 +75,7 @@
 
      </form>
 {elseif $action == "add"}
-    <form action="{path_for name="doAddDynamicField" data=["form" => $form_name]}" method="post" enctype="multipart/form-data" title="{_T string="New dynamic field"}">
+    <form action="{path_for name="doAddDynamicField" data=["form_name" => $form_name]}" method="post" enctype="multipart/form-data" title="{_T string="New dynamic field"}">
     {if $mode neq 'ajax'}
         <fieldset class="cssform">
             <legend class="ui-state-active ui-corner-top">{_T string="New dynamic field"}</legend>
@@ -118,7 +118,7 @@
                     <i class="fas fa-plus"></i>
                     {_T string="Add"}
                 </button>
-                <input type="hidden" name="form" id="formname" value="{$form_name}"/>
+                <input type="hidden" name="form_name" id="form_name" value="{$form_name}"/>
             </div>
     {if $mode neq 'ajax'}
         </fieldset>

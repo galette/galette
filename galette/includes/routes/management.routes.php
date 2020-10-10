@@ -335,43 +335,43 @@ $app->post(
 )->setName('storeCoreFieldsConfig')->add($authenticate);
 
 $app->get(
-    '/fields/dynamic/configure[/{form:adh|contrib|trans}]',
+    '/fields/dynamic/configure[/{form_name:adh|contrib|trans}]',
     Crud\DynamicFieldsController::class . ':list'
 )->setName('configureDynamicFields')->add($authenticate);
 
 $app->get(
-    '/fields/dynamic/move/{form:adh|contrib|trans}' .
+    '/fields/dynamic/move/{form_name:adh|contrib|trans}' .
         '/{direction:up|down}/{id:\d+}',
     Crud\DynamicFieldsController::class . ':move'
 )->setName('moveDynamicField')->add($authenticate);
 
 $app->get(
-    '/fields/dynamic/remove/{form:adh|contrib|trans}/{id:\d+}',
+    '/fields/dynamic/remove/{form_name:adh|contrib|trans}/{id:\d+}',
     Crud\DynamicFieldsController::class . ':confirmDelete'
 )->setName('removeDynamicField')->add($authenticate);
 
 $app->post(
-    '/fields/dynamic/remove/{form:adh|contrib|trans}/{id:\d+}',
+    '/fields/dynamic/remove/{form_name:adh|contrib|trans}/{id:\d+}',
     Crud\DynamicFieldsController::class . ':delete'
 )->setName('doRemoveDynamicField')->add($authenticate);
 
 $app->get(
-    '/fields/dynamic/add/{form:adh|contrib|trans}',
+    '/fields/dynamic/add/{form_name:adh|contrib|trans}',
     Crud\DynamicFieldsController::class . ':add'
 )->setName('addDynamicField')->add($authenticate);
 
 $app->get(
-    '/fields/dynamic/edit/{form:adh|contrib|trans}/{id:\d+}',
+    '/fields/dynamic/edit/{form_name:adh|contrib|trans}/{id:\d+}',
     Crud\DynamicFieldsController::class . ':edit'
 )->setName('editDynamicField')->add($authenticate);
 
 $app->post(
-    '/fields/dynamic/add/{form:adh|contrib|trans}',
+    '/fields/dynamic/add/{form_name:adh|contrib|trans}',
     Crud\DynamicFieldsController::class . ':doAdd'
 )->setName('doAddDynamicField')->add($authenticate);
 
 $app->post(
-    '/fields/dynamic/edit/{form:adh|contrib|trans}/{id:\d+}',
+    '/fields/dynamic/edit/{form_name:adh|contrib|trans}/{id:\d+}',
     Crud\DynamicFieldsController::class . ':doEdit'
 )->setName('doEditDynamicField')->add($authenticate);
 

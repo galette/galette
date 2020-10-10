@@ -404,7 +404,7 @@ class CsvIn extends atoum
     {
 
         $field_data = [
-            'form'              => 'adh',
+            'form_name'         => 'adh',
             'field_name'        => 'Dynamic text field',
             'field_perm'        => DynamicField::PERM_USER_WRITE,
             'field_type'        => DynamicField::TEXT,
@@ -502,7 +502,7 @@ class CsvIn extends atoum
             'Third value'
         ];
         $cfield_data = [
-            'form'              => 'adh',
+            'form_name'         => 'adh',
             'field_name'        => 'Dynamic choice field',
             'field_perm'        => DynamicField::PERM_USER_WRITE,
             'field_type'        => DynamicField::CHOICE,
@@ -568,7 +568,7 @@ class CsvIn extends atoum
 
         //new dynamic field, of type date.
         $cfield_data = [
-            'form'              => 'adh',
+            'form_name'         => 'adh',
             'field_name'        => 'Dynamic date field',
             'field_perm'        => DynamicField::PERM_USER_WRITE,
             'field_type'        => DynamicField::DATE,

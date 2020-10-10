@@ -4,7 +4,7 @@
         <div id="configfiches_tabs">
             <a
                 id="addfield"
-                href="{path_for name="addDynamicField" data=["form" => $form_name]}"
+                href="{path_for name="addDynamicField" data=["form_name" => $form_name]}"
                 class="tab-button tooltip"
             >
                 <i class="fas fa-plus-square fa-2x"></i>
@@ -15,7 +15,7 @@
     {if $form_name eq $key}
         {assign var='activetab' value=$smarty.foreach.formseach.iteration - 1}
     {/if}
-                <li{if $form_name eq $key} class="ui-tabs-selected"{/if}><a href="{path_for name="configureDynamicFields" data=["form" => $key]}">{$form}</a></li>
+                <li{if $form_name eq $key} class="ui-tabs-selected"{/if}><a href="{path_for name="configureDynamicFields" data=["form_name" => $key]}">{$form}</a></li>
 {/foreach}
             </ul>
             <div id="ui-tabs-{$form_name}">
@@ -37,7 +37,7 @@
             $('#addfield').click(function(e){
                 e.preventDefault();
                 var _this = $(this);
-                var _href = '{path_for name="addDynamicField" data=["form" => "FORM"]}'.replace(/FORM/, _form_name)
+                var _href = '{path_for name="addDynamicField" data=["form_name" => "FORM"]}'.replace(/FORM/, _form_name)
 
                 $.ajax({
                     url: _href,
@@ -77,7 +77,7 @@
                     _form_name = _form_name[_form_name.length-1]
 
                     console.log(ui.ajaxSettings.url)
-                    if ( ui.ajaxSettings.url == '{path_for name="configureDynamicFields" data=["form" => $form_name]}'
+                    if ( ui.ajaxSettings.url == '{path_for name="configureDynamicFields" data=["form_name" => $form_name]}'
                         ||  ui.ajaxSettings.url == '{path_for name="configureDynamicFields"}'
                     ) {
                         var _current = $('#ui-tabs-{$form_name}');

@@ -613,11 +613,11 @@ abstract class DynamicField
         }
 
         if ($this->id === null) {
-            if (!isset($values['form']) || $values['form'] == '') {
+            if (!isset($values['form_name']) || $values['form_name'] == '') {
                 $this->errors[] = _T('Missing required form!');
             } else {
-                if (in_array($values['form'], array_keys(self::getFormsNames()))) {
-                    $this->form = $values['form'];
+                if (in_array($values['form_name'], array_keys(self::getFormsNames()))) {
+                    $this->form = $values['form_name'];
                 } else {
                     $this->errors[] = _T('Unknown form!');
                 }
@@ -626,7 +626,7 @@ abstract class DynamicField
 
         $this->required = $values['field_required'];
 
-        if (count($this->errors) === 0 && $this->isDuplicate($values['form'], $this->name, $this->id)) {
+        if (count($this->errors) === 0 && $this->isDuplicate($values['form_name'], $this->name, $this->id)) {
             $this->errors[] = _T("- Field name already used.");
         }
 
@@ -884,7 +884,7 @@ abstract class DynamicField
     /**
      * Move a dynamic field
      *
-     * @param string $action What to do (either 'up' or 'down' localized)
+     * @param string $action What to do (either 'up' or 'down')
      *
      * @return boolean
      */
