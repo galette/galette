@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-10-08 21:26+0000\n"
-"Last-Translator: Code2Joke <codejoke@web.de>\n"
+"PO-Revision-Date: 2020-10-11 06:25+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -2489,7 +2489,7 @@ msgstr "Die Route '%name' ist in den ACLs nicht registriert!"
 
 #: ../lib/Galette/Middleware/CheckAcls.php:135
 msgid "Routes '%names' are not registered in ACLs!"
-msgstr "Die Routen '%name' sind in den ACLs nicht registriert!"
+msgstr "Die Routen '%names' sind in den ACLs nicht registriert!"
 
 #: ../lib/Galette/Middleware/Authenticate.php:101
 msgid "Login required"
