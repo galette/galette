@@ -1,6 +1,33 @@
 Changes
 -------
 
+0.9.4 -> 0.9.4.1
+
+- Many improvements on string translations (add support for plurals, contexts and comments
+- Use events to send administrative emails (account creation, edition, contribution added)
+- Many locales updates thantks to Weblate translators!
+- Fix displayed version number
+- Missing “Next” button in members dynamic dropdown
+- Error creating dynamic field with empty name
+- Pagination was missing on public pages
+- Fix reminders wrong count
+- Members cannot print their own cards
+- Fix direct links to download documents
+- Fix compagnies/natural persons graph
+- Do not notify member on contribution change
+- Cannot print labels or change members in mailings
+- Fix search on dates in contributions list
+- Unable to unset booleans on mass change
+- Unable to unset booleans on dynamic fields
+- Captcha issue on self subscritpion page
+- Wrong JS action in mailings
+- SQL error on invoices/receipt direct download
+- Issues with images in dynamic files
+- Fix several issues sending reminders
+- Change log in URL
+- Do not display inactive members as late
+- Fix several issues in distribued archive (remove symlinks, fix tar format, …)
+
 0.9.3.1 -> 0.9.4
 
 - Configurable password security enforcement (on strength, blacklist, ...)
