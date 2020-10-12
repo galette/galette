@@ -27,7 +27,7 @@ subprocess.call('doxygen', shell=True)
 master_doc = 'index'
 
 # The full version, including alpha/beta/rc tags
-release = '0.9.4'
+release = '0.9.4.1'
 
 
 # -- General configuration ---------------------------------------------------
