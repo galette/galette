@@ -79,7 +79,7 @@ if (!$db_installed) {
 }
 ?>
 
-                        <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"<?php if (!$db_installed) { echo ' disabled="disabled"'; } ?>/>
+                        <button id="next_btn" type="submit"<?php if (!$db_installed) { echo ' disabled="disabled"'; } ?>><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
 <?php
 if ($db_installed) {
     ?>
@@ -90,7 +90,7 @@ if ($db_installed) {
 if (!$db_installed) {
     //once DB is installed, that does not make sense to go back
     ?>
-                        <input type="submit" id="btnback" name="stepback_btn" value="<?php echo _T("Back"); ?>"/>
+                        <button type="submit" id="btnback" name="stepback_btn" formnovalidate><i class="fas fa-backward"></i> <?php echo _T("Back"); ?></button>
     <?php
 }
 ?>

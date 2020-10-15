@@ -78,7 +78,7 @@ if (!$config_file_ok || !$objects_ok) {
 }
 ?>
 
-                        <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"<?php if (!$config_file_ok || !$objects_ok) { echo ' disabled="disabled"'; } ?>/>
+                        <button id="next_btn" type="submit"<?php if (!$config_file_ok || !$objects_ok) { echo ' disabled="disabled"'; } ?>><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
 <?php
 if ($config_file_ok && $objects_ok) {
     ?>
@@ -89,7 +89,7 @@ if ($config_file_ok && $objects_ok) {
 if (!$config_file_ok || !$objects_ok) {
     //once DB is installed, that does not make sense to go back
     ?>
-                        <input type="submit" id="btnback" name="stepback_btn" value="<?php echo _T("Back"); ?>"/>
+                        <button type="submit" id="btnback" name="stepback_btn" formnovalidate><i class="fas fa-backward"></i> <?php echo _T("Back"); ?></button>
     <?php
 }
 ?>

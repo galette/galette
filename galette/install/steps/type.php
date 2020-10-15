@@ -62,7 +62,7 @@ use Galette\Core\Install as GaletteInstall;
                     </div>
 
                     <p id="btn_box">
-                        <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
-                        <input type="submit" id="btnback" name="stepback_btn" value="<?php echo _T("Back"); ?>"/>
+                        <button id="next_btn" type="submit"><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
+                        <button type="submit" id="btnback" name="stepback_btn" formnovalidate><i class="fas fa-backward"></i> <?php echo _T("Back"); ?></button>
                     </p>
                 </form>

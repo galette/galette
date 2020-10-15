@@ -225,8 +225,7 @@ class MailingsController extends CrudController
         $success_detected = [];
 
         $goto = $this->router->pathFor('mailings');
-        $redirect_url = ($this->session->redirect_mailing !== null) ?
-            $this->session->redirect_mailing : $this->router->pathFor('members');
+        $redirect_url = $this->session->redirect_mailing ?? $this->router->pathFor('members');
 
         //We're done :-)
         if (
@@ -373,6 +372,8 @@ class MailingsController extends CrudController
                 } else {
                     $mailing->current_step = Mailing::STEP_START;
                 }
+                //until mail is sent (above), we redirect to mailing page
+                $goto = $this->router->pathFor('mailing');
             }
 
             if (isset($post['mailing_confirm']) && count($error_detected) == 0) {

@@ -214,7 +214,7 @@ $(function() {
         });
     }
 
-    $('input:submit, .button, input:reset, button:submit' ).button({
+    $('input:submit, .button, input:reset, button[type=submit]' ).button({
         create: function(event, ui) {
             if ( $(event.target).hasClass('disabled') ) {
                 $(event.target).button('disable');

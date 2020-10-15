@@ -624,14 +624,14 @@ footer a:hover {
 }
 
 /* == Buttons */
-#btnvalid, #btnadd, #btncancel, #btnsend, #btnback {
+#btnvalid, #btnadd {
     padding-left: 1.4em!important;
     background-position: 10px 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
 }
 
 
-input#btnvalid, input#btnadd, input#btncancel, input#btnsend, input#btnback {
+input#btnvalid, input#btnadd {
     padding-left:2.4em!important;
 }
 
@@ -781,32 +781,11 @@ legend .tab-button {
     right: 2.5em;
 }
 
-#btncancel {
-    background-image:url(images/icon-cancel.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btncancel.ui-state-hover {
-    background-image:url(images/icon-cancel.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
 #btnvalid {
     background-image:url(images/icon-valid.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
 }
 #btnvalid.ui-state-hover {
     background-image:url(images/icon-valid.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#btnback {
-    background-image:url(images/prev.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btnback.ui-state-hover {
-    background-image:url(images/prev.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#btnsend {
-    background-image:url(images/icon-mail-send.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btnsend.ui-state-hover {
-    background-image:url(images/icon-mail-send.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 #btnattach {
