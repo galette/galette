@@ -123,7 +123,7 @@ class MailingsController extends CrudController
             ) {
                 $mailing = $this->session->mailing;
             } elseif (isset($get['from']) && is_numeric($get['from'])) {
-                $mailing = new Mailing($this->preferences, null, $get['from']);
+                $mailing = new Mailing($this->preferences, [], (int)$get['from']);
                 MailingHistory::loadFrom($this->zdb, (int)$get['from'], $mailing);
             } elseif (isset($get['reminder'])) {
                 //FIXME: use a constant!
@@ -132,7 +132,7 @@ class MailingsController extends CrudController
                 $filters->filter_account = Members::ACTIVE_ACCOUNT;
                 $m = new Members($filters);
                 $members = $m->getList(true);
-                $mailing = new Mailing($this->preferences, ($members !== false) ? $members : null);
+                $mailing = new Mailing($this->preferences, ($members !== false) ? $members : []);
             } else {
                 if (
                     count($filters->selected) == 0
@@ -162,7 +162,7 @@ class MailingsController extends CrudController
                 }
                 $m = new Members();
                 $members = $m->getArrayList($filters->selected);
-                $mailing = new Mailing($this->preferences, ($members !== false) ? $members : null);
+                $mailing = new Mailing($this->preferences, ($members !== false) ? $members : []);
             }
 
             if (isset($get['remove_attachment'])) {
@@ -707,7 +707,7 @@ class MailingsController extends CrudController
 
         $mailing = null;
         if (isset($args['id'])) {
-            $mailing = new Mailing($this->preferences, null);
+            $mailing = new Mailing($this->preferences);
             MailingHistory::loadFrom($this->zdb, (int)$args['id'], $mailing, false);
             $attachments = $mailing->attachments;
         } else {
@@ -769,7 +769,7 @@ class MailingsController extends CrudController
      */
     public function previewAttachment(Request $request, Response $response, array $args = []): Response
     {
-        $mailing = new Mailing($this->preferences, null);
+        $mailing = new Mailing($this->preferences);
         MailingHistory::loadFrom($this->zdb, (int)$args['id'], $mailing, false);
         $attachments = $mailing->attachments;
         $attachment = $attachments[$args['pos']];

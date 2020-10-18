@@ -214,7 +214,7 @@ class HistoryController extends AbstractController
             try {
                 $this->history->clean();
                 //reinitialize object after flush
-                $this->history = new History($this->zdb, $this->login);
+                $this->history = new History($this->zdb, $this->login, $this->preferences);
                 $filters = new HistoryList();
                 $this->session->filter_history = $filters;
 
@@ -251,7 +251,7 @@ class HistoryController extends AbstractController
     }
 
     /**
-     * History flush rconfirmation
+     * History flush confirmation
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response

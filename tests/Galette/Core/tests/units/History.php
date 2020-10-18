@@ -58,6 +58,7 @@ class History extends atoum
     private $zdb;
     private $i18n;
     private $session;
+    private $preferences;
 
     /**
      * Set up tests
@@ -72,7 +73,10 @@ class History extends atoum
         $this->i18n = new \Galette\Core\I18n();
         $this->session = new \RKA\Session();
         $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
-        $this->history = new \Galette\Core\History($this->zdb, $this->login);
+        $this->preferences = new \Galette\Core\Preferences(
+            $this->zdb
+        );
+        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
     }
 
     /**
@@ -163,7 +167,7 @@ class History extends atoum
             throw new \LogicException('Error executing query!', 123);
         };
 
-        $this->history = new \Galette\Core\History($this->zdb, $this->login);
+        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
         $add = $this->history->add('Test');
         $this->boolean($add)->isFalse();
     }
@@ -180,7 +184,7 @@ class History extends atoum
             throw new \LogicException('Error executing query!', 123);
         };
 
-        $this->history = new \Galette\Core\History($this->zdb, $this->login);
+        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
         $list = $this->history->getHistory();
         $this->boolean($list)->isFalse();
     }

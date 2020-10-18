@@ -63,6 +63,7 @@ class History
     protected $count;
     protected $zdb;
     protected $login;
+    protected $preferences;
     protected $filters;
 
     protected $users;
@@ -73,14 +74,16 @@ class History
     /**
      * Default constructor
      *
-     * @param Db          $zdb     Database
-     * @param Login       $login   Login
-     * @param HistoryList $filters Filtering
+     * @param Db          $zdb         Database
+     * @param Login       $login       Login
+     * @param Preferences $preferences Preferences
+     * @param HistoryList $filters     Filtering
      */
-    public function __construct(Db $zdb, Login $login, $filters = null)
+    public function __construct(Db $zdb, Login $login, Preferences $preferences, $filters = null)
     {
         $this->zdb = $zdb;
         $this->login = $login;
+        $this->preferences = $preferences;
 
         if ($filters === null) {
             $this->filters = new HistoryList();
@@ -122,9 +125,7 @@ class History
      */
     public function add($action, $argument = '', $query = '')
     {
-        global $preferences;
-
-        if ($preferences->pref_log == Preferences::LOG_DISABLED) {
+        if ($this->preferences->pref_log == Preferences::LOG_DISABLED) {
             //logs are disabled
             return true;
         }

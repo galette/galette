@@ -95,7 +95,7 @@ class Login extends atoum
         $this->preferences = new \Galette\Core\Preferences(
             $this->zdb
         );
-        $this->history = new \Galette\Core\History($this->zdb, $this->login);
+        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
 
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         $this->members_fields = $members_fields;

@@ -80,24 +80,16 @@ class MailingHistory extends History
     /**
      * Default constructor
      *
-     * @param Db          $zdb     Database
-     * @param Login       $login   Login
-     * @param HistoryList $filters Filtering
-     * @param Mailing     $mailing Mailing
+     * @param Db                $zdb         Database
+     * @param Login             $login       Login
+     * @param Preferences       $preferences Preferences
+     * @param MailingsList|null $filters     Filtering
+     * @param Mailing|null      $mailing     Mailing
      */
-    public function __construct(Db $zdb, Login $login, $filters = null, $mailing = null)
+    public function __construct(Db $zdb, Login $login, Preferences $preferences, MailingsList $filters = null, Mailing $mailing = null)
     {
-        parent::__construct($zdb, $login, $filters);
-
-        if ($mailing instanceof Mailing) {
-            $this->mailing = $mailing;
-        } elseif ($mailing !== null) {
-            Analog::log(
-                '[' . __METHOD__ .
-                '] Mailing should be either null or an instance of Mailing',
-                Analog::ERROR
-            );
-        }
+        parent::__construct($zdb, $login, $preferences, $filters);
+        $this->mailing = $mailing;
     }
 
     /**
@@ -550,7 +542,7 @@ class MailingHistory extends History
         if (is_array($list)) {
             try {
                 foreach ($list as $id) {
-                    $mailing = new Mailing($preferences, null, $id);
+                    $mailing = new Mailing($preferences, [], $id);
                     $mailing->removeAttachments();
                 }
 

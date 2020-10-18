@@ -81,19 +81,16 @@ class Mailing extends GaletteMail
      * @param array       $members     An array of members
      * @param int         $id          Identifier, defaults to null
      */
-    public function __construct(Preferences $preferences, $members, $id = null)
+    public function __construct(Preferences $preferences, array $members = [], int $id = null)
     {
         parent::__construct($preferences);
-        if ($id !== null) {
-            $this->id = $id;
-        } else {
-            $this->generateNewId();
-        }
+        $this->id = $id ?? $this->generateNewId();
+
         $this->current_step = self::STEP_START;
         $this->mime_type = self::MIME_DEFAULT;
         /** TODO: add a preference that propose default mime-type to use,
             then init it here */
-        if ($members !== null) {
+        if (count($members)) {
             //Check which members have a valid email address and which have not
             $this->setRecipients($members);
         }
@@ -103,15 +100,16 @@ class Mailing extends GaletteMail
     /**
      * Generate new mailing id and temporary path
      *
-     * @return void
+     * @return integer
      */
-    private function generateNewId()
+    private function generateNewId(): int
     {
         global $zdb;
 
         $pass = new Password($zdb);
         $this->id = $pass->makeRandomPassword(30);
         $this->generateTmpPath($this->id);
+        return $this->id;
     }
 
     /**

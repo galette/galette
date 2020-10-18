@@ -228,7 +228,7 @@ $container['print_logo'] = function ($c) {
 
 
 $container['history'] = function ($c) {
-    return new Galette\Core\History($c->get('zdb'), $c->get('login'));
+    return new Galette\Core\History($c->get('zdb'), $c->get('login'), $c->get('preferences'));
 };
 
 $container['acls'] = function ($c) {

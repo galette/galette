@@ -102,7 +102,7 @@ class Reminders extends atoum
         );
         $this->session = new \RKA\Session();
         $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
-        $this->history = new \Galette\Core\History($this->zdb, $this->login);
+        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
 
         global $zdb, $login, $hist, $i18n; // globals :(
         $zdb = $this->zdb;
