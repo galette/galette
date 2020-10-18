@@ -100,14 +100,14 @@ if (
 }
 
 define('GALETTE_NIGHTLY', false);
-define('GALETTE_VERSION', 'v0.9.4.2');
+define('GALETTE_VERSION', 'v0.9.5');
 
 //Version to display
 if (!defined('GALETTE_HIDE_VERSION')) {
     define('GALETTE_DISPLAY_VERSION', \Galette\Core\Galette::gitVersion(false));
 }
 
-define('GALETTE_COMPAT_VERSION', '0.9.2');
+define('GALETTE_COMPAT_VERSION', '0.9.5');
 define('GALETTE_DB_VERSION', '0.940');
 if (!defined('GALETTE_MODE')) {
     define('GALETTE_MODE', 'PROD'); //DEV, PROD, MAINT or DEMO
