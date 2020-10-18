@@ -391,7 +391,7 @@ class MailingsController extends CrudController
                         $error_detected[] = $e;
                     }
                 } else {
-                    $mlh = new MailingHistory($this->zdb, $this->login, null, $mailing);
+                    $mlh = new MailingHistory($this->zdb, $this->login, $this->preferences, null, $mailing);
                     $mlh->storeMailing(true);
                     Analog::log(
                         '[Mailings] Message has been sent.',
@@ -423,7 +423,7 @@ class MailingsController extends CrudController
 
             if (isset($post['mailing_save'])) {
                 //user requested to save the mailing
-                $histo = new MailingHistory($this->zdb, $this->login, null, $mailing);
+                $histo = new MailingHistory($this->zdb, $this->login, $this->preferences, null, $mailing);
                 if ($histo->storeMailing() !== false) {
                     $success_detected[] = _T("Mailing has been successfully saved.");
                     $this->session->mailing = null;
@@ -482,7 +482,7 @@ class MailingsController extends CrudController
             $filters->show = $request->getQueryParams()['nbshow'];
         }
 
-        $mailhist = new MailingHistory($this->zdb, $this->login, $filters);
+        $mailhist = new MailingHistory($this->zdb, $this->login, $this->preferences, $filters);
 
         if ($option !== null) {
             switch ($option) {
@@ -496,7 +496,7 @@ class MailingsController extends CrudController
                     $mailhist->clean();
                     //reinitialize object after flush
                     $filters = new MailingsList();
-                    $mailhist = new MailingHistory($this->zdb, $this->login, $filters);
+                    $mailhist = new MailingHistory($this->zdb, $this->login, $this->preferences, $filters);
                     break;
             }
         }
@@ -677,7 +677,7 @@ class MailingsController extends CrudController
      */
     protected function doDelete(array $args, array $post)
     {
-        $mailhist = new MailingHistory($this->zdb, $this->login);
+        $mailhist = new MailingHistory($this->zdb, $this->login, $this->preferences);
         return $mailhist->removeEntries($args['id'], $this->history);
     }
     // /CRUD - Delete
