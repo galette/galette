@@ -55,9 +55,9 @@ use Galette\Core\Preferences;
 
 class Plugins
 {
-    const DISABLED_COMPAT   = 0;
-    const DISABLED_MISS     = 1;
-    const DISABLED_EXPLICIT = 2;
+    public const DISABLED_COMPAT   = 0;
+    public const DISABLED_MISS     = 1;
+    public const DISABLED_EXPLICIT = 2;
 
     protected $path;
     protected $modules = array();

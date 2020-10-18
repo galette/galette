@@ -947,4 +947,25 @@ class Db
             )
         ;
     }
+
+    /**
+     * Drops a table
+     *
+     * @param string  $table   Table name, without prefix
+     * @param boolean $maymiss Whether the table can be missing, defaults to false
+     *
+     * @return void
+     */
+    public function drop($table, $maymiss = false)
+    {
+        $sql = 'DROP TABLE ';
+        if ($maymiss === true) {
+            $sql .= 'IF EXISTS ';
+        }
+        $sql .= PREFIX_DB . $table;
+        $this->db->query(
+            $sql,
+            \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+        );
+    }
 }

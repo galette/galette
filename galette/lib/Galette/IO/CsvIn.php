@@ -66,8 +66,8 @@ class CsvIn extends Csv implements FileInterface
 {
     use FileTrait;
 
-    const DEFAULT_DIRECTORY = GALETTE_IMPORTS_PATH;
-    const DATA_IMPORT_ERROR = -10;
+    public const DEFAULT_DIRECTORY = GALETTE_IMPORTS_PATH;
+    public const DATA_IMPORT_ERROR = -10;
 
     protected $extensions = array('csv', 'txt');
 
@@ -517,7 +517,7 @@ class CsvIn extends Csv implements FileInterface
                         $values['mdp_adh2'] = $values['mdp_adh'];
                     }
 
-                    $valid = $member->check($values, $this->_required, null);
+                    $valid = $member->check($values, $this->_required, []);
                     if ($valid === true) {
                         if ($this->_dryrun === false) {
                             $store = $member->store();

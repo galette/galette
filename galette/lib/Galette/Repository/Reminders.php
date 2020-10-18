@@ -56,8 +56,8 @@ use Laminas\Db\Sql\Expression;
 
 class Reminders
 {
-    const TABLE = 'reminders';
-    const PK = 'reminder_id';
+    public const TABLE = 'reminders';
+    public const PK = 'reminder_id';
 
     private $selected;
     private $types;
@@ -90,18 +90,19 @@ class Reminders
     {
         $this->toremind = array();
         $select = $zdb->select(Members::TABLE, 'a');
+        $select->columns([Members::PK, 'date_echeance']);
         $select->join(
             array('r' => PREFIX_DB . self::TABLE),
             'a.' . Members::PK . '=r.reminder_dest',
             array(
                 'last_reminder' => new Expression('MAX(reminder_date)'),
-                'reminder_type'
+                'reminder_type' => new Expression('MAX(reminder_type)')
             ),
             $select::JOIN_LEFT
         )->join(
             array('p' => PREFIX_DB . Members::TABLE),
             'a.parent_id=p.' . Members::PK,
-            array('email_adh'),
+            array(),
             $select::JOIN_LEFT
         )->where('(a.email_adh != \'\' OR p.email_adh != \'\')')
             ->where('a.activite_adh=true')
@@ -125,11 +126,17 @@ class Reminders
             );
         }
 
-        $select->group('a.id_adh')->group('r.reminder_type')->group('p.email_adh');
+        $select->group('a.id_adh');
 
         $results = $zdb->execute($select);
 
         foreach ($results as $r) {
+            if ($r->reminder_type < $type) {
+                //sent impending, but is now late. reset last remind.
+                $r->reminder_type = $type;
+                $r->last_reminder = '';
+            }
+
             if ($r->reminder_type === null || (int)$r->reminder_type === $type) {
                 $date_checked = false;
 
@@ -160,8 +167,8 @@ class Reminders
                         $second = clone $due_date;
                         $first->modify('1 month');
                         $second->modify('2 month');
-                        if ($r->last_reminder == null || $now >= $second || $now >= $first) {
-                            if ($r->last_reminder == '') {
+                        if ($now >= $second || $now >= $first) {
+                            if ($r->last_reminder === null || $r->last_reminder == '') {
                                 $date_checked = true;
                             } else {
                                 $last_reminder = new \DateTime($r->last_reminder);

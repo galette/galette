@@ -53,16 +53,16 @@ use Analog\Analog;
 
 class Title
 {
-    const TABLE = 'titles';
-    const PK = 'id_title';
+    public const TABLE = 'titles';
+    public const PK = 'id_title';
 
     private $id;
     private $short;
     private $long;
 
-    const MR = 1;
-    const MRS = 2;
-    const MISS = 3;
+    public const MR = 1;
+    public const MRS = 2;
+    public const MISS = 3;
 
     /**
      * Main constructor

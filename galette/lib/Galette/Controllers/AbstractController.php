@@ -107,6 +107,11 @@ abstract class AbstractController
      */
     protected $i18n;
     /**
+     * @Inject
+     * @var \Galette\Core\L10n
+     */
+    protected $l10n;
+    /**
      * @Inject("session")
      */
     protected $session;
@@ -155,7 +160,7 @@ abstract class AbstractController
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        //set variosu services we need
+        //set various services we need
         $this->zdb = $container->get('zdb');
         $this->login = $container->get('login');
         $this->preferences = $container->get('preferences');
@@ -166,6 +171,7 @@ abstract class AbstractController
         $this->router = $container->get('router');
         $this->history = $container->get('history');
         $this->i18n = $container->get('i18n');
+        $this->l10n = $container->get('l10n');
         $this->session = $container->get('session');
         $this->flash = $container->get('flash');
         $this->fields_config = $container->get('fields_config');
@@ -191,7 +197,9 @@ abstract class AbstractController
         //reinject flash messages so they're not lost
         $flashes = $this->flash->getMessages();
         foreach ($flashes as $type => $messages) {
-            $this->container->get('flash')->addMessage($type, $message);
+            foreach ($messages as $message) {
+                $this->container->get('flash')->addMessage($type, $message);
+            }
         }
 
         if ($this->login->isLogged()) {

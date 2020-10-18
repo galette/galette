@@ -63,19 +63,19 @@ class Adherent
 {
     use DynamicsTrait;
 
-    const TABLE = 'adherents';
-    const PK = 'id_adh';
+    public const TABLE = 'adherents';
+    public const PK = 'id_adh';
 
-    const NC = 0;
-    const MAN = 1;
-    const WOMAN = 2;
+    public const NC = 0;
+    public const MAN = 1;
+    public const WOMAN = 2;
 
-    const AFTER_ADD_DEFAULT = 0;
-    const AFTER_ADD_TRANS = 1;
-    const AFTER_ADD_NEW = 2;
-    const AFTER_ADD_SHOW = 3;
-    const AFTER_ADD_LIST = 4;
-    const AFTER_ADD_HOME = 5;
+    public const AFTER_ADD_DEFAULT = 0;
+    public const AFTER_ADD_TRANS = 1;
+    public const AFTER_ADD_NEW = 2;
+    public const AFTER_ADD_SHOW = 3;
+    public const AFTER_ADD_LIST = 4;
+    public const AFTER_ADD_HOME = 5;
 
     private $_id;
     //Identity
@@ -126,9 +126,9 @@ class Adherent
     private $_parent;
     private $_children;
     private $_duplicate = false;
-    //
+
     private $_row_classes;
-    //fields list and their translation
+
     private $_self_adh = false;
     private $_deps = array(
         'picture'   => true,
@@ -153,6 +153,8 @@ class Adherent
     ];
 
     private $errors = [];
+
+    private $sendmail = false;
 
     /**
      * Default constructor
@@ -498,7 +500,8 @@ class Adherent
                 if ($this->_days_remaining == 0) {
                     $this->_row_classes .= ' cotis-lastday';
                 } elseif ($this->_days_remaining < 0) {
-                    $this->_row_classes .= ' cotis-late';
+                    //check if member is still active
+                    $this->_row_classes .= $this->isActive() ? ' cotis-late' : ' cotis-old';
                 } elseif ($this->_days_remaining < 30) {
                     $this->_row_classes .= ' cotis-soon';
                 } else {
@@ -737,7 +740,7 @@ class Adherent
                     _T("Late of %days days (since %date)")
                 );
             } else {
-                $ret = _T("Late");
+                $ret = _T("No longer member");
             }
         } else {
             $patterns = array('/%days/', '/%date/');
@@ -1081,7 +1084,7 @@ class Adherent
             $this->_parent = null;
         }
 
-        $this->dynamicsCheck($values);
+        $this->dynamicsCheck($values, $required, $disabled);
 
         if (count($this->errors) > 0) {
             Analog::log(
@@ -1982,5 +1985,28 @@ class Adherent
     public function isDuplicate()
     {
         return $this->_duplicate;
+    }
+
+    /**
+     * Flag creation mail sending
+     *
+     * @param boolean $send True (default) to send creation email
+     *
+     * @return Adherent
+     */
+    public function setSendmail($send = true)
+    {
+        $this->sendmail = $send;
+        return $this;
+    }
+
+    /**
+     * Should we send administrative emails to member?
+     *
+     * @return boolean
+     */
+    public function sendEMail()
+    {
+        return $this->sendmail;
     }
 }

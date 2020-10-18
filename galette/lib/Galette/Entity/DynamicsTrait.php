@@ -39,6 +39,7 @@ namespace Galette\Entity;
 use Analog\Analog;
 use Galette\DynamicFields\File;
 use Galette\DynamicFields\Date;
+use Galette\DynamicFields\Boolean;
 
 /**
  * Dynamics fields trait
@@ -55,6 +56,10 @@ use Galette\DynamicFields\Date;
 
 trait DynamicsTrait
 {
+    /** @var string */
+    protected $name_pattern = 'info_field_';
+
+    /** @var DynamicFieldsHandle */
     protected $dynamics;
 
     /**
@@ -85,11 +90,13 @@ trait DynamicsTrait
     /**
      * Extract posted values for dynamic fields
      *
-     * @param array $post Posted values
+     * @param array $post     Posted values
+     * @param array $required Array of required fields
+     * @param array $disabled Array of disabled fields
      *
      * @return boolean
      */
-    protected function dynamicsCheck($post)
+    protected function dynamicsCheck(array $post, array $required, array $disabled)
     {
         if ($this->dynamics === null) {
             Analog::log(
@@ -103,73 +110,98 @@ trait DynamicsTrait
             $valid = true;
             $fields = $this->dynamics->getFields();
 
+            $dynamic_fields = [];
+            //posted fields
             foreach ($post as $key => $value) {
-                // if the field is enabled, check it
-                if (!isset($disabled[$key])) {
-                    if (substr($key, 0, 11) == 'info_field_') {
-                        list($field_id, $val_index) = explode('_', substr($key, 11));
-                        if (
-                            is_numeric($field_id)
-                            && is_numeric($val_index)
-                        ) {
-                            if ($fields[$field_id]->isRequired() && (trim($value) === '' || $value == null)) {
-                                $this->errors[] = str_replace(
-                                    '%field',
-                                    $fields[$field_id]->getName(),
-                                    _T('Missing required field %field')
-                                );
-                            } else {
-                                if ($fields[$field_id] instanceof File) {
-                                    //delete checkbox
-                                    $filename = sprintf(
-                                        'member_%d_field_%d_value_%d',
-                                        $this->id,
-                                        $field_id,
-                                        $val_index
-                                    );
-                                    unlink(GALETTE_FILES_PATH . $filename);
-                                    $this->dynamics->setValue($this->id, $field_id, $val_index, '');
-                                } else {
-                                    if ($fields[$field_id] instanceof Date && !empty(trim($value))) {
-                                        //check date format
-                                        try {
-                                            $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
-                                            if ($d === false) {
-                                                //try with non localized date
-                                                $d = \DateTime::createFromFormat("Y-m-d", $value);
-                                                if ($d === false) {
-                                                    throw new \Exception('Incorrect format');
-                                                }
-                                            }
-                                        } catch (\Exception $e) {
-                                            $valid = false;
-                                            Analog::log(
-                                                'Wrong date format. field: ' . $field_id .
-                                                ', value: ' . $value . ', expected fmt: ' .
-                                                __("Y-m-d") . ' | ' . $e->getMessage(),
-                                                Analog::INFO
-                                            );
-                                            $this->errors[] = str_replace(
-                                                array(
-                                                    '%date_format',
-                                                    '%field'
-                                                ),
-                                                array(
-                                                    __("Y-m-d"),
-                                                    $fields[$field_id]->getName()
-                                                ),
-                                                _T("- Wrong date format (%date_format) for %field!")
-                                            );
-                                        }
-                                    }
-                                    //actual field value
-                                    if ($value !== null && trim($value) !== '') {
-                                        $this->dynamics->setValue($this->id, $field_id, $val_index, $value);
-                                    } else {
-                                        $this->dynamics->unsetValue($this->id, $field_id, $val_index);
+                // if the field is enabled, and match patterns check it
+                if (isset($disabled[$key]) || substr($key, 0, 11) != $this->name_pattern) {
+                    continue;
+                }
+
+                list($field_id, $val_index) = explode('_', str_replace($this->name_pattern, '', $key));
+                if (!is_numeric($field_id) || !is_numeric($val_index)) {
+                    continue;
+                }
+
+                $dynamic_fields[$key] = [
+                    'value'     => $value,
+                    'field_id'  => $field_id,
+                    'val_index' => $val_index
+                ];
+            }
+
+            //some fields may be mising in posted values (checkboxes)
+            foreach ($fields as $field) {
+                $pattern = '/' . $this->name_pattern . $field->getId() . '_(\d)/';
+                if ($field instanceof Boolean && !preg_grep($pattern, array_keys($dynamic_fields))) {
+                    $dynamic_fields[$this->name_pattern . $field->getId() . '_1'] = [
+                        'value'     => '',
+                        'field_id'  => $field->getId(),
+                        'val_index' => 1
+                    ];
+                }
+            }
+
+            foreach ($dynamic_fields as $key => $dfield_values) {
+                $field_id = $dfield_values['field_id'];
+                $value = $dfield_values['value'];
+                $val_index = $dfield_values['val_index'];
+
+                if ($fields[$field_id]->isRequired() && (trim($value) === '' || $value == null)) {
+                    $this->errors[] = str_replace(
+                        '%field',
+                        $fields[$field_id]->getName(),
+                        _T('Missing required field %field')
+                    );
+                } else {
+                    if ($fields[$field_id] instanceof File) {
+                        //delete checkbox
+                        $filename = sprintf(
+                            'member_%d_field_%d_value_%d',
+                            $this->id,
+                            $field_id,
+                            $val_index
+                        );
+                        unlink(GALETTE_FILES_PATH . $filename);
+                        $this->dynamics->setValue($this->id, $field_id, $val_index, '');
+                    } else {
+                        if ($fields[$field_id] instanceof Date && !empty(trim($value))) {
+                            //check date format
+                            try {
+                                $d = \DateTime::createFromFormat(__("Y-m-d"), $value);
+                                if ($d === false) {
+                                    //try with non localized date
+                                    $d = \DateTime::createFromFormat("Y-m-d", $value);
+                                    if ($d === false) {
+                                        throw new \Exception('Incorrect format');
                                     }
                                 }
+                            } catch (\Exception $e) {
+                                $valid = false;
+                                Analog::log(
+                                    'Wrong date format. field: ' . $field_id .
+                                    ', value: ' . $value . ', expected fmt: ' .
+                                    __("Y-m-d") . ' | ' . $e->getMessage(),
+                                    Analog::INFO
+                                );
+                                $this->errors[] = str_replace(
+                                    array(
+                                        '%date_format',
+                                        '%field'
+                                    ),
+                                    array(
+                                        __("Y-m-d"),
+                                        $fields[$field_id]->getName()
+                                    ),
+                                    _T("- Wrong date format (%date_format) for %field!")
+                                );
                             }
+                        }
+                        //actual field value
+                        if ($value !== null && trim($value) !== '') {
+                            $this->dynamics->setValue($this->id, $field_id, $val_index, $value);
+                        } else {
+                            $this->dynamics->unsetValue($this->id, $field_id, $val_index);
                         }
                     }
                 }
@@ -227,11 +259,11 @@ trait DynamicsTrait
                 continue;
             }
 
-            if (substr($key, 0, 11) != 'info_field_') {
+            if (substr($key, 0, 11) != $this->name_pattern) {
                 continue;
             }
 
-            list($field_id, $val_index) = explode('_', substr($key, 11));
+            list($field_id, $val_index) = explode('_', str_replace($this->name_pattern, '', $key));
             if (!is_numeric($field_id) || !is_numeric($val_index)) {
                 continue;
             }
@@ -341,8 +373,8 @@ trait DynamicsTrait
     {
         $dfields = [];
         foreach ($values as $key => $value) {
-            $dfields[str_replace($prefix, 'info_field_', $key)] = $value;
+            $dfields[str_replace($prefix, $this->name_pattern, $key)] = $value;
         }
-        return $this->dynamicsCheck($dfields);
+        return $this->dynamicsCheck($dfields, [], []);
     }
 }

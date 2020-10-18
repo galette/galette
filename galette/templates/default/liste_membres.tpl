@@ -5,7 +5,7 @@
         <form action="{path_for name="filterPublicList" data=["type" => "list"]}" method="POST" id="filtre">
         <table class="infoline">
             <tr>
-                <td class="left">{$nb_members} {if $nb_members != 1}{_T string="members"}{else}{_T string="member"}{/if}</td>
+                <td class="left">{_T string="%count member" plural="%count members" count=$nb_members pattern="/%count/" replace=$nb_members}</td>
                 <td class="right">
                     <label for="nbshow">{_T string="Records per page:"}</label>
                     <select name="nbshow" id="nbshow">

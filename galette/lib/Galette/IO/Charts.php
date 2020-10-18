@@ -59,12 +59,12 @@ use Galette\Repository\Members;
  */
 class Charts
 {
-    const DEFAULT_CHART = 'MembersStatusPie';
-    const MEMBERS_STATUS_PIE = 'MembersStatusPie';
-    const MEMBERS_STATEDUE_PIE = 'MembersStateDuePie';
-    const CONTRIBS_TYPES_PIE = 'ContribsTypesPie';
-    const COMPANIES_OR_NOT = 'CompaniesOrNot';
-    const CONTRIBS_ALLTIME = 'ContribsAllTime';
+    public const DEFAULT_CHART = 'MembersStatusPie';
+    public const MEMBERS_STATUS_PIE = 'MembersStatusPie';
+    public const MEMBERS_STATEDUE_PIE = 'MembersStateDuePie';
+    public const CONTRIBS_TYPES_PIE = 'ContribsTypesPie';
+    public const COMPANIES_OR_NOT = 'CompaniesOrNot';
+    public const CONTRIBS_ALLTIME = 'ContribsAllTime';
 
     private $types;
     private $charts;
@@ -286,6 +286,7 @@ class Charts
         $results = $zdb->execute($select1);
 
         $result = $results->current();
+        $results->next();
         $next = $results->current();
 
         $individuals = $result->cnt;

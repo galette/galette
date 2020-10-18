@@ -107,23 +107,43 @@ $app->map(
 //galette logs
 $app->get(
     '/logs[/{option:page|order}/{value}]',
+    function ($request, $response, $args) {
+        return $response
+            ->withStatus(302)
+            ->withHeader(
+                'Location',
+                $this->router->pathFor('history', $args)
+            );
+    }
+);
+$app->get(
+    '/history[/{option:page|order}/{value}]',
     HistoryController::class . ':history'
 )->setName('history')->add($authenticate);
 
 $app->post(
-    '/logs/filter',
+    '/history/filter',
     HistoryController::class . ':historyFilter'
-)->setName(
-    'history_filter'
-)->add($authenticate);
+)->setName('history_filter')->add($authenticate);
 
 $app->get(
     '/logs/flush',
+    function ($request, $response, $args) {
+        return $response
+            ->withStatus(302)
+            ->withHeader(
+                'Location',
+                $this->router->pathFor('flushHistory')
+            );
+    }
+);
+$app->get(
+    '/history/flush',
     HistoryController::class . ':confirmHistoryFlush'
 )->setName('flushHistory')->add($authenticate);
 
 $app->post(
-    '/logs/flush',
+    '/history/flush',
     HistoryController::class . ':flushHistory'
 )->setName('doFlushHistory')->add($authenticate);
 

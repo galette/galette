@@ -71,7 +71,6 @@ function remove_remarks($sql)
 	$lines = explode("\n", $sql);
 	
 	// try to keep mem. use down
-	$sql = "";
 	
 	$linecount = count($lines);
 	$output = "";
@@ -108,7 +107,6 @@ function split_sql_file($sql, $delimiter)
 	$tokens = explode($delimiter, $sql);
 
 	// try to save mem.
-	$sql = "";
 	$output = array();
 	
 	// we don't actually care about the matches preg gives us.

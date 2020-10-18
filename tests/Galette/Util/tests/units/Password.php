@@ -253,7 +253,7 @@ class Password extends atoum
             \Galette\Core\I18n::DEFAULT_LANG
         );
         $login = new \Galette\Core\Login($this->zdb, $i18n, $session);
-        $history = new \Galette\Core\History($this->zdb, $login);
+        $history = new \Galette\Core\History($this->zdb, $login, $this->preferences);
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         $members_fields = $members_fields;
 

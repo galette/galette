@@ -53,19 +53,19 @@ use PHPMailer\PHPMailer\PHPMailer;
  */
 class GaletteMail
 {
-    const MAIL_ERROR = 0;
-    const MAIL_SENT = 1;
+    public const MAIL_ERROR = 0;
+    public const MAIL_SENT = 1;
 
-    const METHOD_DISABLED = 0;
-    const METHOD_PHPMAIL = 1;
-    const METHOD_SMTP = 2;
-    const METHOD_QMAIL = 3;
-    const METHOD_GMAIL = 4;
-    const METHOD_SENDMAIL = 5;
+    public const METHOD_DISABLED = 0;
+    public const METHOD_PHPMAIL = 1;
+    public const METHOD_SMTP = 2;
+    public const METHOD_QMAIL = 3;
+    public const METHOD_GMAIL = 4;
+    public const METHOD_SENDMAIL = 5;
 
-    const SENDER_PREFS = 0;
-    const SENDER_CURRENT = 1;
-    const SENDER_OTHER = 2;
+    public const SENDER_PREFS = 0;
+    public const SENDER_CURRENT = 1;
+    public const SENDER_OTHER = 2;
 
     private $sender_name;
     private $sender_address;
@@ -117,12 +117,7 @@ class GaletteMail
                 // enables SMTP debug information
                 if (GALETTE_MODE == 'DEV') {
                     $this->mail->SMTPDebug = 2;
-                    $this->mail->Debugoutput = function ($message, $level) {
-                        Analog::log(
-                            $level . ' - ' . $message,
-                            Analog::DEBUG
-                        );
-                    };
+                    $this->mail->Debugoutput = $this->Debugoutput($message, $level);
                 }
 
                 if ($this->preferences->pref_mail_method == self::METHOD_GMAIL) {
@@ -576,5 +571,21 @@ class GaletteMail
     {
         $this->timeout = $timeout;
         return $this;
+    }
+
+    /**
+     * Debug SMTP output
+     *
+     * @param string  $message Debug message,
+     * @param integer $level   Debug level
+     *
+     * @return void
+     */
+    private function debugOutput($message, $level)
+    {
+        Analog::log(
+            $level . ' - ' . $message,
+            Analog::DEBUG
+        );
     }
 }

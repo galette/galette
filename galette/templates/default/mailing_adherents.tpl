@@ -119,9 +119,19 @@
                 </div>
                 <div>
                     <p>
-                        <input type="submit" name="mailing_reset" class="button" id="btnback" value="{_T string="Modifiy mailing"}"/>
-                        <input type="submit" name="mailing_confirm" id="btnsend" value="{_T string="Send"}"{if $GALETTE_MODE eq 'DEMO'} class="disabled" disabled="disabled"{/if}/>
-                        <input type="submit" id="btncancel" name="mailing_cancel" value="{_T string="Cancel mailing"}"/>
+                        <button type="submit" name="mailing_reset">
+                            <i class="fas fa-backward"></i>
+                            {_T string="Modifiy mailing"}
+                        </button>
+                        <button type="submit" name="mailing_confirm"{if $GALETTE_MODE eq 'DEMO'} class="disabled" disabled="disabled"{/if}>
+                            <i class="fas fa-rocket" aria-hidden="true"></i>
+                            {_T string="Send"}
+                        </button>
+                        <button type="submit" name="mailing_cancel" formnovalidate>
+                            <i class="fas fa-trash" aria-hidden="true"></i>
+                            {_T string="Cancel mailing"}
+                        </button>
+
                         <input type="hidden" name="mailing_objet" value="{$mailing->subject}"/>
                         <input type="hidden" name="mailing_corps" value="{$mailing->message|escape}"/>
                     </p>
@@ -344,10 +354,13 @@
                     _sender_name.val('{$preferences->pref_email_nom|escape:"javascript"}');
                     _sender_address.val('{$preferences->pref_email|escape:"javascript"}');
                     break;
+
+        {if (!$login->isSuperAdmin())}
                 case '{Galette\Core\GaletteMail::SENDER_CURRENT}':
                     _sender_name.val('{$sender_current['name']|escape:"javascript"}');
                     _sender_address.val('{$sender_current['email']|escape:"javascript"}');
                     break;
+        {/if}
                 case '{Galette\Core\GaletteMail::SENDER_OTHER}':
                     _sender_name.val('');
                     _sender_address.val('');

@@ -74,41 +74,25 @@ foreach ($directories as $directory) {
 $logfile = 'galette_tests';
 
 require_once GALETTE_BASE_PATH . 'includes/galette.inc.php';
-//require_once GALETTE_BASE_PATH . 'includes/i18n.inc.php';
+$app = new \Slim\App(
+    array(
+        'templates.path'    => GALETTE_ROOT . 'templates/default/',
+        'mode'              => 'CRON'
+    )
+);
+session_start();
 
+require_once GALETTE_BASE_PATH . '/includes/dependencies.php';
 //Globals... :(
-global $preferences, $emitter;
-$zdb = new \Galette\Core\Db();
-$preferences = new \Galette\Core\Preferences($zdb);
-$emitter = new \Slim\Event\SlimEventManager();
+global $preferences, $emitter, $zdb;
+$zdb = $container->get('zdb');
+$preferences = $container->get('preferences');
+$emitter = $container->get('event_manager');
+$i18n->changeLanguage('en_US');
 
 if (!defined('_CURRENT_THEME_PATH')) {
     define(
         '_CURRENT_THEME_PATH',
         GALETTE_THEMES_PATH . $preferences->pref_theme . '/'
     );
-}
-
-/**
- * Maps _T Galette's function
- *
- * @param string $string String to translate
- *
- * @return string
- */
-function _T($string)
-{
-    return $string;
-}
-
-/**
- * Maps __ Galette's function
- *
- * @param string $string String to translate
- *
- * @return string
- */
-function __($string)
-{
-    return $string;
 }

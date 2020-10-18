@@ -71,6 +71,7 @@ class CsvIn extends atoum
     private $request;
     private $response;
     private $mocked_router;
+    private $contents_table = null;
 
     /**
      * Set up tests
@@ -81,6 +82,7 @@ class CsvIn extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
+        $this->contents_table = null;
         $this->mocked_router = new \mock\Slim\Router();
         $this->calling($this->mocked_router)->pathFor = function ($name, $params) {
             return $name;
@@ -93,9 +95,8 @@ class CsvIn extends atoum
             $this->zdb
         );
         $this->session = new \RKA\Session();
-        session_start();
         $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
-        $this->history = new \Galette\Core\History($this->zdb, $this->login);
+        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
         $flash_data = [];
         $this->flash_data = &$flash_data;
         $this->flash = new \Slim\Flash\Messages($flash_data);
@@ -137,6 +138,7 @@ class CsvIn extends atoum
         $container['i18n'] = null;
         $container['fields_config'] = null;
         $container['lists_config'] = null;
+        $container['l10n'] = null;
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         $this->members_fields = $members_fields;
         $container['members_fields'] = $this->members_fields;
@@ -171,6 +173,20 @@ class CsvIn extends atoum
         $this->zdb->execute($delete);
         $delete = $this->zdb->delete(DynamicField::TABLE);
         $this->zdb->execute($delete);
+        //cleanup dynamic translations
+        $delete = $this->zdb->delete(\Galette\Core\L10n::TABLE);
+        $delete->where([
+            'text_orig' => [
+                'Dynamic choice field',
+                'Dynamic date field',
+                'Dynamic text field'
+            ]
+        ]);
+        $this->zdb->execute($delete);
+
+        if ($this->contents_table !== null) {
+            $this->zdb->drop($this->contents_table);
+        }
     }
 
     /**
@@ -204,7 +220,10 @@ class CsvIn extends atoum
 
         $members = new \Galette\Repository\Members();
         $list = $members->getList();
-        $this->integer($list->count())->isIdenticalTo($count_before, print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), true));
+        $this->integer($list->count())->isIdenticalTo(
+            $count_before,
+            print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), true)
+        );
 
         $model = $this->getModel($fields);
 
@@ -365,12 +384,43 @@ class CsvIn extends atoum
     }
 
     /**
+     * Test dynamic translation has been added properly
+     *
+     * @param string $text_orig Original text
+     * @param string $lang      Lang text has been added in
+     *
+     * @return void
+     */
+    protected function checkDynamicTranslation($text_orig, $lang = 'fr_FR.utf8')
+    {
+        $langs = array_keys($this->i18n->langs);
+        $select = $this->zdb->select(\Galette\Core\L10n::TABLE);
+        $select->columns([
+            'text_locale',
+            'text_nref',
+            'text_trans'
+        ]);
+        $select->where(['text_orig' => $text_orig]);
+        $results = $this->zdb->execute($select);
+        $this->integer($results->count())->isIdenticalTo(count($langs));
+
+        foreach ($results as $result) {
+            $this->boolean(in_array(str_replace('.utf8', '', $result['text_locale']), $langs))->isTrue();
+            $this->integer((int)$result['text_nref'])->isIdenticalTo(1);
+            $this->string($result['text_trans'])->isIdenticalTo(
+                ($result['text_locale'] == 'fr_FR.utf8' ? $text_orig : '')
+            );
+        }
+    }
+
+    /**
      * Test import with dynamic fields
      *
      * @return void
      */
     public function testImportDynamics()
     {
+
         $field_data = [
             'form'              => 'adh',
             'field_name'        => 'Dynamic text field',
@@ -393,6 +443,8 @@ class CsvIn extends atoum
         );
         $this->array($error_detected)->isEmpty(implode(' ', $df->getErrors()));
         $this->array($warning_detected)->isEmpty(implode(' ', $df->getWarnings()));
+        //check if dynamic translation has been added
+        $this->checkDynamicTranslation($field_data['field_name']);
 
         $select = $this->zdb->select(DynamicField::TABLE);
         $select->columns(array('num' => new \Laminas\Db\Sql\Expression('COUNT(1)')));
@@ -504,6 +556,8 @@ class CsvIn extends atoum
         );
         $this->array($error_detected)->isEmpty(implode(' ', $cdf->getErrors()));
         $this->array($warning_detected)->isEmpty(implode(' ', $cdf->getWarnings()));
+        //check if dynamic translation has been added
+        $this->checkDynamicTranslation($cfield_data['field_name']);
 
         $select = $this->zdb->select(DynamicField::TABLE);
         $select->columns(array('num' => new \Laminas\Db\Sql\Expression('COUNT(1)')));
@@ -545,6 +599,8 @@ class CsvIn extends atoum
         $this->zdb->execute($delete);
         $delete = $this->zdb->delete(\Galette\Entity\DynamicFieldsHandle::TABLE);
         $this->zdb->execute($delete);
+        //cleanup dynamic choices table
+        $this->contents_table = $cdf->getFixedValuesTableName($cdf->getId());
 
         //new dynamic field, of type date.
         $cfield_data = [
@@ -569,6 +625,8 @@ class CsvIn extends atoum
         );
         $this->array($error_detected)->isEmpty(implode(' ', $cdf->getErrors()));
         $this->array($warning_detected)->isEmpty(implode(' ', $cdf->getWarnings()));
+        //check if dynamic translation has been added
+        $this->checkDynamicTranslation($cfield_data['field_name']);
 
         $select = $this->zdb->select(DynamicField::TABLE);
         $select->columns(array('num' => new \Laminas\Db\Sql\Expression('COUNT(1)')));

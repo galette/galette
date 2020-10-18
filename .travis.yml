@@ -9,10 +9,11 @@ before_script:
   - sh -c "if [ '$DB' = 'pgsql' ]; then psql -d galette_tests -a -f galette/install/scripts/pgsql.sql -U postgres; fi"
   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS galette_tests;'; fi"
   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'use galette_tests; source galette/install/scripts/mysql.sql;'; fi"
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.4" && $DB == "mysql" ]]; then cd galette && composer require squizlabs/php_codesniffer && cd ..; fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.4" && $DB == "mysql" ]]; then cd galette && composer require squizlabs/php_codesniffer && composer require maglnet/composer-require-checker && cd ..; fi
 
 script:
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.4" && $DB == "mysql" ]]; then galette/vendor/bin/phpcs -n -p --ignore=galette_tcpdf_config.php --standard=phpcs-rules.xml galette/lib/ tests/ galette/webroot/index.php galette/includes/fields_defs/ galette/includes/smarty_plugins/ galette/includes/functions.inc.php galette/includes/galette.inc.php galette/includes/dependencies.php galette/includes/main.inc.php; fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.4" && $DB == "mysql" ]]; then galette/vendor/bin/phpcs -n -p --ignore=galette_tcpdf_config.php --standard=phpcs-rules.xml galette/lib/ tests/TestsBootstrap.php tests/Galette tests/plugins galette/webroot/index.php galette/includes/fields_defs/ galette/includes/smarty_plugins/ galette/includes/functions.inc.php galette/includes/galette.inc.php galette/includes/dependencies.php galette/includes/main.inc.php; fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.4" && $DB == "mysql" ]]; then cd galette && vendor/bin/composer-require-checker check --config-file=../.composer-require-checker.config.json && cd ..; fi
   - php galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php -c tests/clover.php -d tests/Galette/
   - php galette/cron/reminder.php
 
@@ -24,10 +25,10 @@ after_script:
 language: php
 
 php:
-  - 7.2
-  - 7.3
   - 7.4
-  - nightly
+#  - 7.3
+  - 7.2
+#  - nightly
 
 matrix:
   allow_failures:

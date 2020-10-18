@@ -40,7 +40,6 @@
 namespace Galette\Core;
 
 use Analog\Analog;
-use Laminas\Db\Adapter\Exception as AdapterException;
 use Galette\Entity\Adherent;
 
 /**
@@ -61,7 +60,7 @@ use Galette\Entity\Adherent;
 abstract class AbstractPassword
 {
     /** Default password size */
-    const DEFAULT_SIZE = 8;
+    public const DEFAULT_SIZE = 8;
 
     protected $chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
     protected $hash = null;
@@ -81,12 +80,12 @@ abstract class AbstractPassword
             || trim($size) == ''
             || !is_int($size)
         ) {
-            $size = self::DEFAULT_SIZE;
+            $size = static::DEFAULT_SIZE;
         }
         $pass = '';
         $i = 0;
         while ($i <= $size - 1) {
-            $num = mt_rand(0, 32) % 33;
+            $num = mt_rand(0, strlen($this->chars) - 1)  % strlen($this->chars);
             $pass .= substr($this->chars, $num, 1);
             $i++;
         }

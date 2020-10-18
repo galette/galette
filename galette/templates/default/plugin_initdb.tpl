@@ -113,13 +113,13 @@
     {if $error_detected|@count > 0}
             <input type="submit" value="{_T string="Retry"}"/>
     {else}
-            <input id="next" type="submit" value="{_T string="Next step"}"/>
+            <button id="next" type="submit">{_T string="Next step"} <i class="fas fa-forward"></i></button>
     {/if}
 {else}
     {if $mode eq 'ajax'}
             <a href="#" class="button" id="btnback">{_T string="Close"}</a>
     {else}
-            <a href="{path_for name="plugins"}" class="button" id="btnback">{_T string="Back to plugins managment page"}</a>
+            <a href="{path_for name="plugins"}" class="button" id="btnback"><i class="fas fa-backward"></i> {_T string="Back to plugins managment page"}</a>
     {/if}
 {/if}
         </p>

@@ -36,7 +36,7 @@
 
 $app->group(
     '/plugins',
-    function () use ($authenticate, $app) {
+    function () use ($authenticate) {
         $container = $this->getContainer();
         $modules = $container->plugins->getModules();
 
@@ -77,12 +77,13 @@ $app->group(
 
         //Declare configured routes for each plugin
         foreach ($modules as $module_id => $module) {
-            $container['Plugin ' . $module['name']] = function ($c) use ($module_id) {
+            $container['Plugin ' . $module['name']] = function () use ($module_id) {
                 return $module_id;
             };
 
             $this->group(
                 '/' . $module['route'],
+                //$module_id may be used in included _routes.php from plugin.
                 function () use ($module, $module_id, $authenticate) {
                     //Plugin home: give information
                     $this->get(

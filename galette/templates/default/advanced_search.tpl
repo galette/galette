@@ -246,6 +246,9 @@
                             <option value="dyn_{$field->getId()}"{if $fs.field eq $rid} selected="selected"{/if}>{$field->getName()}</option>
     {/foreach}
                         </select>
+    {* may not be defined *}
+    {if !isset($cur_field)}{assign var=cur_field value=null}{/if}
+    {if !isset($type)}{assign var=type value=null}{/if}
                         <span class="data">
                             <input type="hidden" name="free_type[]" value="{if isset($cur_field)}{$cur_field->getType()}{/if}"/>
     {if $cur_field|is_a:'Galette\DynamicFields\Choice' || $type eq constant('Galette\DynamicFields\DynamicField::CHOICE')}

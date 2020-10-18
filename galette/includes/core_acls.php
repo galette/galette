@@ -68,7 +68,7 @@ $core_acls = [
     'me'                                => 'member',
     'member'                            => 'member',
     'pdf-members-cards'                 => 'member',
-    'editmember'                        => 'member',
+    'editMember'                        => 'member',
     //most of members routes are accessible to groups manager, including mass changes pages
     '/(.+)?member(.+)?/i'               => 'groupmanager',
     'ajaxGroupMembers'                  => 'staff',

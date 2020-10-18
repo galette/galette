@@ -59,12 +59,12 @@ class Picture implements FileInterface
     use FileTrait;
 
     //constants that will not be overrided
-    const SQL_ERROR = -10;
-    const SQL_BLOB_ERROR = -11;
+    public const SQL_ERROR = -10;
+    public const SQL_BLOB_ERROR = -11;
     //constants that can be overrided
     //(do not use self::CONSTANT, but get_class[$this]::CONSTANT)
-    const TABLE = 'pictures';
-    const PK = Adherent::PK;
+    public const TABLE = 'pictures';
+    public const PK = Adherent::PK;
 
     protected $tbl_prefix = '';
 
@@ -731,12 +731,12 @@ class Picture implements FileInterface
             $thumb = imagecreatetruecolor($w, $h);
             switch ($ext) {
                 case 'jpg':
-                    $image = ImageCreateFromJpeg($source);
+                    $image = imagecreatefromjpeg($source);
                     imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
                     imagejpeg($thumb, $dest);
                     break;
                 case 'png':
-                    $image = ImageCreateFromPng($source);
+                    $image = imagecreatefrompng($source);
                     // Turn off alpha blending and set alpha flag. That prevent alpha
                     // transparency to be saved as an arbitrary color (black in my tests)
                     imagealphablending($thumb, false);
@@ -747,7 +747,7 @@ class Picture implements FileInterface
                     imagepng($thumb, $dest);
                     break;
                 case 'gif':
-                    $image = ImageCreateFromGif($source);
+                    $image = imagecreatefromgif($source);
                     imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $cur_width, $cur_height);
                     imagegif($thumb, $dest);
                     break;

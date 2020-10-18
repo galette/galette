@@ -58,7 +58,8 @@ $app->group('/ajax', function () use ($authenticate) {
             $post = $request->getParsedBody();
             $ret = ['result' => false];
 
-            if (!isset($post['member_id'])
+            if (
+                !isset($post['member_id'])
                 || !isset($post['file'])
                 || !isset($post['filename'])
                 || !isset($post['filesize'])
@@ -76,7 +77,6 @@ $app->group('/ajax', function () use ($authenticate) {
             $tmpname = GALETTE_TEMPIMAGES_PATH . 'ajax_upload_' . $fname;
 
             $temp = explode('base64,', $post['file']);
-            $mime = str_replace('data:', '', trim($temp[0], ';'));
             $raw_file = base64_decode($temp[1]);
 
             //write temporary file
@@ -213,7 +213,7 @@ $app->group('/ajax', function () use ($authenticate) {
                 $this->plugins
             );
             try {
-                $result = $telemetry->send();
+                $telemetry->send();
                 $message = _T('Telemetry information has been sent. Thank you!');
                 $result = [
                     'success'   => true,

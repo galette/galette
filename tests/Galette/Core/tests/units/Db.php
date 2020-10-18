@@ -563,7 +563,7 @@ class Db extends atoum
         sort($expected);
 
         $this->array($tables)
-            ->hasSize(count($expected))
+            ->hasSize(count($expected), print_r($tables, true) . ' ' . print_r($expected, true))
             ->isIdenticalTo($expected);
     }
 

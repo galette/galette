@@ -278,8 +278,6 @@ abstract class CrudController extends AbstractController
             );
         } else {
             try {
-                $this->zdb->connection->beginTransaction();
-
                 $ids = $this->getIdsToRemove($args, $post);
 
                 $res = $this->doDelete($args, $post);
@@ -290,9 +288,7 @@ abstract class CrudController extends AbstractController
                     );
                     $success = true;
                 }
-                $this->zdb->connection->commit();
             } catch (\Exception $e) {
-                $this->zdb->connection->rollBack();
                 Analog::log(
                     'An error occurred on delete | ' . $e->getMessage(),
                     Analog::ERROR

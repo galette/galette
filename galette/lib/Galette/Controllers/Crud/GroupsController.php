@@ -90,10 +90,10 @@ class GroupsController extends CrudController
         $group = new Group();
         $group->setLogin($this->login);
         $group->setName($args['name']);
+        $group->store();
         if (!$this->login->isSuperAdmin()) {
             $group->setManagers(new Adherent($this->zdb, $this->login->id));
         }
-        $group->store();
         $id = $group->getId();
 
         return $response

@@ -56,12 +56,12 @@ use Galette\Entity\Contribution;
 
 class Links
 {
-    const TABLE = 'tmplinks';
-    const PK = 'hash';
+    public const TABLE = 'tmplinks';
+    public const PK = 'hash';
 
-    const TARGET_MEMBERCARD = 1;
-    const TARGET_INVOICE    = 2;
-    const TARGET_RECEIPT    = 3;
+    public const TARGET_MEMBERCARD = 1;
+    public const TARGET_INVOICE    = 2;
+    public const TARGET_RECEIPT    = 3;
 
     private $zdb;
 

@@ -66,11 +66,11 @@ use Galette\Entity\PaymentType;
  */
 class FakeData
 {
-    const DEFAULT_NB_MEMBERS       = 20;
-    const DEFAULT_NB_CONTRIB       = 5;
-    const DEFAULT_NB_GROUPS        = 5;
-    const DEFAULT_NB_TRANSACTIONS  = 2;
-    const DEFAULT_PHOTOS           = false;
+    public const DEFAULT_NB_MEMBERS       = 20;
+    public const DEFAULT_NB_CONTRIB       = 5;
+    public const DEFAULT_NB_GROUPS        = 5;
+    public const DEFAULT_NB_TRANSACTIONS  = 2;
+    public const DEFAULT_PHOTOS           = false;
 
     protected $preferences;
     protected $member_fields;

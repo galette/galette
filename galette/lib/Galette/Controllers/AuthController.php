@@ -320,8 +320,6 @@ class AuthController extends AbstractController
                     $link_validity = new \DateTime();
                     $link_validity->add(new \DateInterval('PT24H'));
 
-                    $df = _T("Y-m-d H:i:s");
-
                     $texts = new Texts(
                         $this->preferences,
                         $this->router,
@@ -358,7 +356,6 @@ class AuthController extends AbstractController
                         );
                         if ($from_admin === false) {
                             $message = _T("An email has been sent to your address.<br/>Please check your inbox and follow the instructions.");
-                            $done = true;
                         } else {
                             $message = _T("An email has been sent to the member.");
                         }
@@ -445,7 +442,7 @@ class AuthController extends AbstractController
     public function recoverPassword(Request $request, Response $response, array $args): Response
     {
         $password = new Password($this->zdb);
-        if (!$id_adh = $password->isHashValid(base64_decode($args['hash']))) {
+        if (!$password->isHashValid(base64_decode($args['hash']))) {
             $this->flash->addMessage(
                 'warning_detected',
                 _T("This link is no longer valid. You should ask to retrieve your password again.")
@@ -482,7 +479,6 @@ class AuthController extends AbstractController
     {
         $post = $request->getParsedBody();
         $password = new Password($this->zdb);
-        $hash_ok = true;
 
         if (!$id_adh = $password->isHashValid(base64_decode($post['hash']))) {
             return $response
@@ -525,7 +521,6 @@ class AuthController extends AbstractController
                         //once password has been changed, we can remove the
                         //temporary password entry
                         $password->removeHash(base64_decode($post['hash']));
-                        $password_updated = true;
                         $this->flash->addMessage(
                             'success_detected',
                             _T("Your password has been changed!")

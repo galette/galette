@@ -37,7 +37,7 @@
         <table class="infoline">
             <tr>
                 <td class="left nowrap">
-                    {$history->getCount()} {if $history->getCount() != 1}{_T string="entries"}{else}{_T string="entry"}{/if}
+                    {_T string="%count entry" plural="%count entries" count=$history->getCount() pattern="/%count/" replace=$history->getCount()}
                 </td>
                 <td class="right">
                     <label for="nbshow">{_T string="Records per page:"}</label>
@@ -122,7 +122,7 @@
                         {$smarty.foreach.eachlog.iteration}
     {/if}
                         <span class="row-title">
-                            {_T string="Mailing entry %id" pattern="/%id/" replace=$log.mailing.mailing_id}
+                            {_T string="Mailing entry %id" pattern="/%id/" replace=$log.mailing_id}
                         </span>
                     </td>
                     <td class="nowrap" data-title="{_T string="Date"}">{$log.mailing_date|date_format:"%a %d/%m/%Y - %R"}</td>
@@ -130,7 +130,7 @@
                     <td data-title="{_T string="Recipients"}">{$log.mailing_recipients|unserialize|@count}</td>
                     <td data-title="{_T string="Subject"}">{$log.mailing_subject}</td>
                     <td class="center" data-title="{_T string="Attachments"}">{$log.attachments}</td>
-                    <td class="center {if $log.mailing_sent == 1}use{else}delete{/if}" data-title="{_T string="Sent"}">
+                    <td class="center{if $log.mailing_sent == 1} use{/if}" data-title="{_T string="Sent"}">
                         {if $log.mailing_sent == 1}
                             <i class="fas fa-thumbs-up"></i>
                         {else}

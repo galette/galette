@@ -4,7 +4,7 @@
 {function name=draw_actions}
                     <td class="{$rclass} center nowrap actions_row">
                         <a
-                            href="{path_for name="editmember" data=["action" => "edit", "id" => $member->id]}"
+                            href="{path_for name="editMember" data=["id" => $member->id]}"
                             class="tooltip action"
                         >
                             <i class="fas fa-user-edit fa-fw" aria-hidden="true"></i>
@@ -106,7 +106,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/if}
         </div>
         <div class="infoline">
-            {$nb_members} {if $nb_members != 1}{_T string="members"}{else}{_T string="member"}{/if}
+            {_T string="%count member" plural="%count members" count=$nb_members pattern="/%count/" replace=$nb_members}
             <div class="fright">
                 <label for="nbshow">{_T string="Records per page:"}</label>
                 <select name="nbshow" id="nbshow">
@@ -287,167 +287,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
 {/foreach}
             </tbody>
         </table>
-{*
-        <table class="listing">
-            <thead>
-                <tr>
-{if $preferences->pref_show_id}
-                    <th class="id_row">
-                        <a href="{path_for name="members" data=["option" => "order", "value" => "Galette\Repository\Members::ORDERBY_ID"|constant]}">
-                            {_T string="Mbr num"}
-                            {if $filters->orderby eq constant('galette\Repository\Members::ORDERBY_ID')}
-                                {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
-                            <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-                                {else}
-                            <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-                                {/if}
-                            {/if}
-                        </a>
-                    </th>
-{else}
-                    <th class="id_row">#</th>
-{/if}
-                    <th class="left">
-                        <a href="{path_for name="members" data=["option" => "order", "value" => "Galette\Repository\Members::ORDERBY_NAME"|constant]}">
-                            {_T string="Name"}
-                            {if $filters->orderby eq constant('galette\Repository\Members::ORDERBY_NAME')}
-                                {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
-                                    <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-                                {else}
-                                    <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-                                {/if}
-                            {/if}
-                        </a>
-                    </th>
-                    <th class="left">
-                        <a href="{path_for name="members" data=["option" => "order", "value" => "Galette\Repository\Members::ORDERBY_NICKNAME"|constant]}">
-                            {_T string="Nickname"}
-                            {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_NICKNAME')}
-                                {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
-                                    <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-                                {else}
-                                    <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-                                {/if}
-                            {/if}
-                        </a>
-                    </th>
-                    <th class="left">
-                        <a href="{path_for name="members" data=["option" => "order", "value" => "Galette\Repository\Members::ORDERBY_STATUS"|constant]}">
-                            {_T string="Status"}
-                            {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_STATUS')}
-                                {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
-                                    <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-                                {else}
-                                    <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-                                {/if}
-                            {/if}
-                        </a>
-                    </th>
-{if $login->isAdmin() or $login->isStaff()}
-                    <th class="left">
-                        <a href="{path_for name="members" data=["option" => "order", "value" => "Galette\Repository\Members::ORDERBY_FEE_STATUS"|constant]}">
-                            {_T string="State of dues"}
-                            {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_FEE_STATUS')}
-                                {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
-                                    <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-                                {else}
-                                    <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-                                {/if}
-                            {/if}
-                        </a>
-                    </th>
-                    <th class="left">
-                        <a href="{path_for name="members" data=["option" => "order", "value" => "Galette\Repository\Members::ORDERBY_MODIFDATE"|constant]}">
-                            {_T string="Modified"}
-                            {if $filters->orderby eq constant('Galette\Repository\Members::ORDERBY_MODIFDATE')}
-                                {if $filters->ordered eq constant('Galette\Filters\MembersList::ORDER_ASC')}
-                                    <img src="{base_url}/{$template_subdir}images/down.png" width="10" height="6" alt=""/>
-                                {else}
-                                    <img src="{base_url}/{$template_subdir}images/up.png" width="10" height="6" alt=""/>
-                                {/if}
-                            {/if}
-                        </a>
-                    </th>
-{/if}
-                    <th class="actions_row">{_T string="Actions"}</th>
-                </tr>
-            </thead>
-            <tbody>
-{foreach from=$members item=member key=ordre}
-    {assign var=rclass value=$member->getRowClass() }
-                <tr>
-{if $preferences->pref_show_id}
-                    <td class="{$rclass} right" data-scope="id">{$member->id}</td>
-{else}
-                    <td class="{$rclass} right" data-scope="id">{$ordre+1+($filters->current_page - 1)*$numrows}</td>
-{/if}
-                    <td class="{$rclass} nowrap username_row" data-scope="row">
-                        <input type="checkbox" name="member_sel[]" value="{$member->id}"/>
-                    {if $member->isCompany()}
-                        <span class="tooltip">
-                            <img src="{base_url}/{$template_subdir}images/icon-company.png" alt="" width="16" height="16"/>
-                            <span class="sr-only">{_T string="Is a company"}</span>
-                        </span>
-                    {elseif $member->isMan()}
-                        <span class="tooltip">
-                            <img src="{base_url}/{$template_subdir}images/icon-male.png" alt="" width="16" height="16"/>
-                            <span class="sr-only">{_T string="Is a man"}</span>
-                        </span>
-                    {elseif $member->isWoman()}
-                        <span class="tooltip">
-                            <img src="{base_url}/{$template_subdir}images/icon-female.png" alt="" width="16" height="16"/>
-                            <span class="sr-only">{_T string="Is a women"}</span>
-                        </span>
-                    {else}
-                        <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
-                    {/if}
-                    {if $member->email != ''}
-                        <a href="mailto:{$member->email}" class="tooltip">
-                            <img src="{base_url}/{$template_subdir}images/icon-mail.png" alt="" width="16" height="16"/>
-                            <span class="sr-only">{_T string="Mail"}</span>
-                        </a>
-                    {else}
-                        <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
-                    {/if}
-                    {if $member->website != ''}
-                        <a href="{$member->website}" class="tooltip">
-                            <img src="{base_url}/{$template_subdir}images/icon-website.png" alt="" width="16" height="16"/>
-                            <span class="sr-only">{_T string="Website"}<span>
-                        </a>
-                    {else}
-                        <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
-                    {/if}
-                    {if $member->isAdmin()}
-                        <span class="tooltip">
-                            <img src="{base_url}/{$template_subdir}images/icon-star.png" alt="" width="16" height="16"/>
-                            <span class="sr-only">{_T string="Admin"}</span>
-                        </span>
-                    {elseif $member->isStaff()}
-                        <span class="tooltip">
-                            <img src="{base_url}/{$template_subdir}images/icon-staff.png" alt="" width="16" height="16"/>
-                            <span class="sr-only">{_T string="Staff member"}</span>
-                        </span>
-                    {else}
-                        <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>
-                    {/if}
-                        {assign var="mid" value=$member->id}
-                        <a href="{path_for name="member" data=["id" => $member->id]}">{$member->sname}{if $member->company_name} ({$member->company_name}){/if}</a>
-                    </td>
-                    <td class="{$rclass} nowrap" data-title="{_T string="Nickname"}">{$member->nickname|htmlspecialchars}</td>
-                    <td class="{$rclass} nowrap" data-title="{_T string="Status"}">{statusLabel id=$member->status}</td>
-{if $login->isAdmin() or $login->isStaff()}
-                    <td class="{$rclass}" data-title="{_T string="State of dues"}">{$member->getDues()}</td>
-                    <td class="{$rclass}" data-title="{_T string="Modified"}">{$member->modification_date}</td>
-{/if}
-
-                    {draw_actions class=$rclass member=$member login=$login plugin_actions=$plugin_actions}
-                </tr>
-{foreachelse}
-                <tr><td colspan="7" class="emptylist">{_T string="No member has been found"}</td></tr>
-{/foreach}
-            </tbody>
-        </table>
-        *}
 {if $nb_members != 0}
         <div class="center cright">
             {_T string="Pages:"}<br/>

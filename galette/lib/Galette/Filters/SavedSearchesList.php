@@ -56,7 +56,7 @@ use Galette\Repository\Members;
 
 class SavedSearchesList extends Pagination
 {
-    const ORDERBY_DATE = 0;
+    public const ORDERBY_DATE = 0;
 
     /**
      * Returns the field we want to default set order to

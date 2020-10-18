@@ -1,0 +1,94 @@
+{
+  "php-core-extensions": [
+    "core", "standard",
+
+    "ctype", "date", "fileinfo", "filter", "iconv", "json", "pcre", "reflection", "session", "simplexml", "spl", "xml",
+
+    "curl", "gd", "intl", "mbstring", "mysqli", "zlib", "pdo", "pgsql", "gettext", "tidy",
+
+    "exif", "pcntl"
+  ],
+  "symbol-whitelist": [
+    "// PHP symbols",
+    "null",
+    "false", "true",
+    "static", "self", "parent",
+    "array", "bool", "callable", "float", "int", "iterable", "object", "string", "void",
+
+    "// Galette constants (not detected as they are dynamically declared)",
+    "GALETTE_ATTACHMENTS_PATH",
+    "GALETTE_BASE_PATH",
+    "GALETTE_CACHE_DIR",
+    "GALETTE_CARD_COLS",
+    "GALETTE_CARD_HEIGHT",
+    "GALETTE_CARD_ROWS",
+    "GALETTE_CARD_WIDTH",
+    "GALETTE_COMPAT_VERSION",
+    "GALETTE_CONFIG_PATH",
+    "GALETTE_DATA_PATH",
+    "GALETTE_DB_VERSION",
+    "GALETTE_EXPORTS_PATH",
+    "GALETTE_FILES_PATH",
+    "GALETTE_IMPORTS_PATH",
+    "GALETTE_LOGS_PATH",
+    "GALETTE_MODE",
+    "GALETTE_NIGHTLY",
+    "GALETTE_PHOTOS_PATH",
+    "GALETTE_PLUGINS_PATH",
+    "GALETTE_ROOT",
+    "GALETTE_TELEMETRY_URI",
+    "GALETTE_TEMPIMAGES_PATH",
+    "GALETTE_THEME",
+    "GALETTE_THEMES_PATH",
+    "GALETTE_THEME_DIR",
+    "GALETTE_TPL_SUBDIR",
+    "GALETTE_VERSION",
+    "GALETTE_X_FORWARDED_FOR_INDEX",
+    "_CURRENT_THEME_PATH",
+
+    "// Galette db constants (not detected as they are dynamically declared)",
+    "HOST_DB",
+    "NAME_DB",
+    "PORT_DB",
+    "PREFIX_DB",
+    "PWD_DB",
+    "TYPE_DB",
+    "USER_DB",
+
+    "//XHProf constants",
+
+    "//know but not detected Galette function,",
+    "remove_remarks",
+    "custom_html_entity_decode",
+    "get_form_value",
+    "get_numeric_form_value",
+    "isValidWebUrl",
+    "remove_remarks",
+    "split_sql_file",
+    "_T",
+    "__",
+
+
+    "// XHProf PECL extension",
+    "XHProfRuns_Default",
+    "xhprof_disable",
+    "xhprof_enable",
+    "XHPROF_PATH",
+    "XHPROF_URL",
+    "XHPROF_FLAGS_CPU",
+    "XHPROF_FLAGS_MEMORY",
+    "XHPROF_FLAGS_NO_BUILTINS",
+    "XHPROF_HOST"
+  ],
+  "scan-files": [
+    "galette/*.php",
+    "galette/lib/**/.php",
+    "galette/includes/**/*.php",
+    "galette/includes/*.php",
+    "galette/install/*.php",
+    "galette/install/**/*.php",
+    "galette/webroot/*.php",
+    "tests/**/*.php",
+    "tests/*.php"
+  ]
+}

@@ -59,25 +59,25 @@ use Galette\Core\Authentication;
  */
 class FieldsConfig
 {
-    const NOBODY = 0;
-    const USER_WRITE = 1;
-    const ADMIN = 2;
-    const STAFF = 3;
-    const MANAGER = 4;
-    const USER_READ = 5;
+    public const NOBODY = 0;
+    public const USER_WRITE = 1;
+    public const ADMIN = 2;
+    public const STAFF = 3;
+    public const MANAGER = 4;
+    public const USER_READ = 5;
 
-    const TYPE_STR = 0;
-    const TYPE_HIDDEN = 1;
-    const TYPE_BOOL = 2;
-    const TYPE_INT = 3;
-    const TYPE_DEC = 4;
-    const TYPE_DATE = 5;
-    const TYPE_TXT = 6;
-    const TYPE_PASS = 7;
-    const TYPE_EMAIL = 8;
-    const TYPE_URL = 9;
-    const TYPE_RADIO = 10;
-    const TYPE_SELECT = 11;
+    public const TYPE_STR = 0;
+    public const TYPE_HIDDEN = 1;
+    public const TYPE_BOOL = 2;
+    public const TYPE_INT = 3;
+    public const TYPE_DEC = 4;
+    public const TYPE_DATE = 5;
+    public const TYPE_TXT = 6;
+    public const TYPE_PASS = 7;
+    public const TYPE_EMAIL = 8;
+    public const TYPE_URL = 9;
+    public const TYPE_RADIO = 10;
+    public const TYPE_SELECT = 11;
 
     protected $zdb;
     protected $core_db_fields = array();
@@ -99,7 +99,7 @@ class FieldsConfig
         'bool_admin_adh'
     );
 
-    const TABLE = 'fields_config';
+    public const TABLE = 'fields_config';
 
     /*
      * Fields that are not visible in the
@@ -573,7 +573,7 @@ class FieldsConfig
 
                         if ($selfs === true) {
                             //email, login and password are always required for self subscription
-                            $srequireds = ['email_adh', 'mdp_adh', 'login_adh'];
+                            $srequireds = ['email_adh', 'login_adh'];
                             if (in_array($o->field_id, $srequireds)) {
                                 $o->required = true;
                             }

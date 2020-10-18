@@ -479,7 +479,8 @@ class Members
             $select = $this->buildSelect(
                 self::SHOW_PUBLIC_LIST,
                 null,
-                $with_photos
+                $with_photos,
+                true
             );
 
             $this->filters->setLimits($select);
@@ -1266,7 +1267,7 @@ class Members
             }
         }
 
-        //shoudl be retrieved from members_fields
+        //FIXME: should be retrieved from members_fields
         $dates = [
             'ddn_adh'               => 'birth_date',
             'date_crea_adh'         => 'creation_date',
@@ -1635,8 +1636,12 @@ class Members
 
         $select_wo_mail = clone $select;
 
-        $select->where('(a.email_adh != \'\' OR p.email_adh != \'\')');
-        $select_wo_mail->where('a.email_adh = \'\' AND p.email_adh = \'\'');
+        $select->where(
+            '(a.email_adh != \'\' OR a.parent_id IS NOT NULL AND p.email_adh != \'\')'
+        );
+        $select_wo_mail->where(
+            '(a.email_adh = \'\' OR a.email_adh IS NULL) AND (p.email_adh = \'\' OR p.email_adh IS NULL)'
+        );
 
         $results = $zdb->execute($select);
         $res = $results->current();
@@ -1668,8 +1673,13 @@ class Members
 
         $select_wo_mail = clone $select;
 
-        $select->where('(a.email_adh != \'\' OR p.email_adh != \'\')');
-        $select_wo_mail->where('a.email_adh = \'\' AND p.email_adh = \'\'');
+        $select->where(
+            '(a.email_adh != \'\' OR a.parent_id IS NOT NULL AND p.email_adh != \'\')'
+        );
+
+        $select_wo_mail->where(
+            '(a.email_adh = \'\' OR a.email_adh IS NULL) AND (p.email_adh = \'\' OR p.email_adh IS NULL)'
+        );
 
         $results = $zdb->execute($select);
         $res = $results->current();

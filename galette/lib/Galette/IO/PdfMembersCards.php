@@ -56,10 +56,10 @@ use Analog\Analog;
 
 class PdfMembersCards extends Pdf
 {
-    const WIDTH = 75;
-    const HEIGHT = 40;
-    const COLS = 2;
-    const ROWS = 6;
+    public const WIDTH = 75;
+    public const HEIGHT = 40;
+    public const COLS = 2;
+    public const ROWS = 6;
 
     private $tcol;
     private $scol;

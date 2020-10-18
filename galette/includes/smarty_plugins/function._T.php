@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2008-2014 The Galette Team
+ * Copyright © 2008-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2008-2014 The Galette Team
+ * @copyright 2008-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7-dev - 2008-07-17
@@ -44,6 +44,13 @@
  *                       pattern: A pattern (optional - required if replace present)
  *                       replace: Replacement for pattern (optional - required
  *                       if pattern present)
+ *                       escaping: removes non breakable spaces and escape html
+ *                       - 'html' for HTML escaping
+ *                       - 'js' for javascript escaping
+ *                       - 'url' for url escaping
+ *                       plural: plural form of the string to translate
+ *                       count: count for plural mode
+ *                       context: gettext context
  * @param Smarty $smarty Smarty
  *
  * @return translated string
@@ -60,16 +67,36 @@ function smarty_function__T($params, &$smarty)
         $notrans = true;
     }
 
-    if (isset($pattern) && isset($replace)) {
-        $ret = preg_replace($pattern, $replace, _T($string, $domain, $notrans));
+    // use plural if required parameters are set
+    if (isset($count) && isset($plural)) {
+        // a context ha been specified
+        if (isset($context)) {
+            $ret = _Tnx($context, $string, $plural, $count, $domain, $notrans);
+        } else {
+            $ret = _Tn($string, $plural, $count, $domain, $notrans);
+        }
     } else {
-        $ret = _T($string, $domain, $notrans);
+        // a context ha been specified
+        if (isset($context)) {
+            $ret = _Tx($context, $string, $domain, $notrans);
+        } else {
+            //$text = gettext($text);
+            $ret = _T($string, $domain, $notrans);
+        }
     }
+
+    //handle replacements. Cannot be done on template side before they're
+    //processed before string has been translated :/
+    if (isset($pattern) && isset($replace)) {
+        $ret = preg_replace($pattern, $replace, $ret);
+    }
+
     if (isset($escape)) {
         //replace insecable spaces
         $ret = str_replace('&nbsp;', ' ', $ret);
         //for the moment, only 'js' type is know
         $ret = htmlspecialchars($ret, ENT_QUOTES, 'UTF-8');
     }
+
     return $ret;
 }

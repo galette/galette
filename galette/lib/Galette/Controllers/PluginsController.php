@@ -321,7 +321,7 @@ class PluginsController extends AbstractController
                             );
                             $messages['success'][] = $w1 . ' ' . $w2 . ' ' . $w3 .
                                 ' ' . $extra;
-                        } catch (Exception $e) {
+                        } catch (\Exception $e) {
                             Analog::log(
                                 'Error executing query | ' . $e->getMessage() .
                                 ' | Query was: ' . $query,

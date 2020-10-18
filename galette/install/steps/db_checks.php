@@ -238,7 +238,7 @@ if (!isset($install_plugin)) {
 ?>
             <form action="installer.php" method="POST">
                 <p id="btn_box">
-                    <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"<?php if (!$conndb_ok || !$permsdb_ok) { echo ' disabled="disabled"'; } ?>/>
+                    <button id="next_btn" type="submit"<?php if (!$conndb_ok || !$permsdb_ok) { echo ' disabled="disabled"'; } ?>><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
 <?php
 if ($conndb_ok && $permsdb_ok) {
     ?>
@@ -247,7 +247,7 @@ if ($conndb_ok && $permsdb_ok) {
     <?php
 }
 ?>
-                    <input type="submit" id="btnback" name="stepback_btn" value="<?php echo _T("Back"); ?>"/>
+                    <button type="submit" id="btnback" name="stepback_btn" formnovalidate><i class="fas fa-backward"></i> <?php echo _T("Back"); ?></button>
                 </p>
             </form>
 <?php

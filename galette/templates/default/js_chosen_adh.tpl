@@ -19,7 +19,7 @@
     }
 
     var _chosenPages = function(element) {
-    {if isset($members.filters->current_page) && $members.filters->pages > $members.filters->current_page}
+    {if isset($members.filters) && $members.filters->pages > $members.filters->current_page}
         if (typeof _next !== 'undefined') {
             if (_current_page >= {$members.filters->pages}) {
                 _next.hide();

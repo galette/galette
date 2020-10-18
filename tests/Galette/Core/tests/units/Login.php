@@ -95,7 +95,7 @@ class Login extends atoum
         $this->preferences = new \Galette\Core\Preferences(
             $this->zdb
         );
-        $this->history = new \Galette\Core\History($this->zdb, $this->login);
+        $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
 
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
         $this->members_fields = $members_fields;
@@ -373,9 +373,25 @@ class Login extends atoum
      */
     public function testLoggedInAs()
     {
+        global $translator;
+
         $this->createUser();
         $this->boolean($this->login->login($this->login_adh, $this->mdp_adh))->isTrue();
-        $this->string($this->login->loggedInAs())->isIdenticalTo('Logged in as:<br/>Barre Olivier (dumas.roger)');
+
+        /** Should get message in the right locale but doesn't... */
+        $this->i18n->changeLanguage('en_US');
+        $tstring = $translator->translate(
+            "Logged in as:<br/>%login",
+            'galette',
+            $this->login->lang
+        );
+        $this->string($this->login->loggedInAs())->isIdenticalTo(
+            str_replace(
+                '%login',
+                'Barre Olivier (dumas.roger)',
+                $tstring
+            )
+        );
         $this->string($this->login->loggedInAs(true))->isIdenticalTo('Barre Olivier (dumas.roger)');
     }
 

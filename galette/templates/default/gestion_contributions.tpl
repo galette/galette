@@ -49,7 +49,7 @@
     {/if}
             -
 {/if}
-            {$nb} {if $nb != 1}{_T string="contributions"}{else}{_T string="contribution"}{/if}
+            {_T string="%count contribution" plural="%count contributions" count=$nb pattern="/%count/" replace=$nb}
             <div class="fright">
 {if $mode eq 'ajax'}
                 <input type="hidden" name="ajax" value="true"/>
@@ -194,7 +194,7 @@
                         </span>
         {if $contribution->isTransactionPart() }
                         <a
-                            href="{path_for name="transaction" data=["action" => "edit", "id" => $contribution->transaction->id]}"
+                            href="{path_for name="editTransaction" data=["id" => $contribution->transaction->id]}"
                             class="tooltip"
                         >
                             <i class="fas fa-link"></i>

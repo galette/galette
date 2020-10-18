@@ -140,7 +140,7 @@ class DynamicFieldsHandle
                         $field = $this->dynamic_fields[$f->{DynamicField::PK}];
                         if ($field->hasFixedValues()) {
                             $choices = $field->getValues();
-                            $f['text_val'] = $choices[$f->field_val];
+                            $f->text_val = $choices[$f->field_val];
                         }
                         $this->current_values[$f->{DynamicField::PK}][] = array_filter(
                             (array)$f,
@@ -201,9 +201,9 @@ class DynamicFieldsHandle
     {
         if (!isset($this->current_values[$field])) {
             $this->current_values[$field][] = [
-                'item_id'       => '',
+                'item_id'       => $this->item_id,
                 'field_form'    => $this->dynamic_fields[$field]->getForm(),
-                'val_index'     => '',
+                'val_index'     => 1,
                 'field_val'     => '',
                 'is_new'        => true
             ];
@@ -224,17 +224,18 @@ class DynamicFieldsHandle
     public function setValue($item, $field, $index, $value)
     {
         $idx = $index - 1;
-        if (isset($this->current_values[$field][$idx])) {
-            $this->current_values[$field][$idx]['field_val'] = $value;
-        } else {
-            $this->current_values[$field][$idx] = [
-                'item_id'       => $item,
-                'field_form'    => $this->dynamic_fields[$field]->getForm(),
-                'val_index'     => $index,
-                'field_val'     => $value,
-                'is_new'        => true
-            ];
+        $input = [
+            'item_id'       => $item,
+            'field_form'    => $this->dynamic_fields[$field]->getForm(),
+            'val_index'     => $index,
+            'field_val'     => $value,
+        ];
+
+        if (!isset($this->current_values[$field][$idx])) {
+            $input['is_new'] = true;
         }
+
+        $this->current_values[$field][$idx] = $input;
     }
 
     /**
@@ -291,8 +292,8 @@ class DynamicFieldsHandle
                             'val_index' => $value['val_index'],
                             'where1'    => $value['item_id'],
                             'where2'    => $value['field_id'],
-                            'where3'    => $value['field_form'],
-                            'where4'    => $value['old_val_index'] ?? $value['val_index']
+                            'where3'    => $value['field_form'], //:val_index
+                            'where4'    => $value['old_val_index'] ?? $value['val_index'] //:old_val_index
                         ];
                         $this->getUpdateStatement()->execute($params);
                         $this->has_changed = true;
@@ -359,7 +360,7 @@ class DynamicFieldsHandle
                 'item_id'       => ':item_id',
                 'field_id'      => ':field_id',
                 'field_form'    => ':field_form',
-                'val_index'     => ':val_index'
+                'val_index'     => ':old_val_index'
             ]);
             $this->update_stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
         }

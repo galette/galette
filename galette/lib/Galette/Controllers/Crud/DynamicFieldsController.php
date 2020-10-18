@@ -108,6 +108,7 @@ class DynamicFieldsController extends CrudController
     public function doAdd(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
+        $post['form'] = $args['form'];
 
         $error_detected = [];
         $warning_detected = [];
@@ -164,7 +165,7 @@ class DynamicFieldsController extends CrudController
                 ->withHeader(
                     'Location',
                     $this->router->pathFor(
-                        'editDynamicField',
+                        'addDynamicField',
                         $args
                     )
                 );
@@ -326,6 +327,7 @@ class DynamicFieldsController extends CrudController
     public function doEdit(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
+        $post['form'] = $args['form'];
 
         $error_detected = [];
         $warning_detected = [];

@@ -67,8 +67,8 @@ require_once GALETTE_CONFIG_PATH . 'galette_tcpdf_config.php';
 class Pdf extends \TCPDF
 {
 
-    const FONT = 'DejaVuSans';
-    const FONT_SIZE = 10;
+    public const FONT = 'DejaVuSans';
+    public const FONT_SIZE = 10;
 
     protected $preferences;
     protected $i18n;
@@ -204,7 +204,7 @@ class Pdf extends \TCPDF
      */
     protected function parsegif($file)
     {
-        $a = GetImageSize($file);
+        $a = getimagesize($file);
         if (empty($a)) {
             $this->Error(_T("Missing or incorrect image file ") . $file);
         }

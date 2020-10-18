@@ -51,12 +51,12 @@ namespace Galette\IO;
 
 interface FileInterface
 {
-    const INVALID_FILENAME = -1;
-    const INVALID_EXTENSION = -2;
-    const FILE_TOO_BIG = -3;
-    const MIME_NOT_ALLOWED = -4;
-    const NEW_FILE_EXISTS = -5;
-    const INVALID_FILE = -6;
-    const CANT_WRITE = -7;
-    const MAX_FILE_SIZE = 1024;
+    public const INVALID_FILENAME = -1;
+    public const INVALID_EXTENSION = -2;
+    public const FILE_TOO_BIG = -3;
+    public const MIME_NOT_ALLOWED = -4;
+    public const NEW_FILE_EXISTS = -5;
+    public const INVALID_FILE = -6;
+    public const CANT_WRITE = -7;
+    public const MAX_FILE_SIZE = 1024;
 }

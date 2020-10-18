@@ -306,7 +306,7 @@ def add_libs(rel_name, galette_archive):
     Add external libraries to the archive
     Also write version for GALETTE_NIGHTLY value
     """
-    galette = tarfile.open(galette_archive, 'r|bz2')
+    galette = tarfile.open(galette_archive, 'r|bz2', format=tarfile.GNU_FORMAT)
     src_dir = os.path.join(local_dl_repo, 'src')
     if not os.path.exists(src_dir):
         os.makedirs(src_dir)
@@ -315,10 +315,11 @@ def add_libs(rel_name, galette_archive):
 
     #set galette nightly version
     includes_dir = os.path.join(src_dir, rel_name, 'galette', 'includes')
-    sed_cmd = 'sed -e "s/GALETTE_NIGHTLY\', false/GALETTE_NIGHTLY\', \'%s\'/" -i galette.inc.php' % nightly_version
-    print(sed_cmd)
-    p1 = subprocess.Popen(sed_cmd, shell=True, cwd=includes_dir)
-    p1.wait()
+    if nightly_version != None:
+        sed_cmd = 'sed -e "s/GALETTE_NIGHTLY\', false/GALETTE_NIGHTLY\', \'%s\'/" -i galette.inc.php' % nightly_version
+        print(sed_cmd)
+        p1 = subprocess.Popen(sed_cmd, shell=True, cwd=includes_dir)
+        p1.wait()
 
     #install npm modules
     npm_dir = os.path.join(src_dir, rel_name)
@@ -350,6 +351,7 @@ def add_libs(rel_name, galette_archive):
         'package.json',
         'package-lock.json',
         'phpcs-rules.xml',
+        'composer.lock',
         os.path.join('galette', 'composer.json'),
         os.path.join('galette', 'composer.lock'),
         os.path.join('galette', 'post_contribution_test.php')
@@ -417,7 +419,7 @@ def add_libs(rel_name, galette_archive):
                 ]:
                     os.remove(os.path.join(root, filename))
 
-    galette = tarfile.open(galette_archive, 'w|bz2')
+    galette = tarfile.open(galette_archive, 'w|bz2', format=tarfile.GNU_FORMAT)
 
     for i in os.listdir(src_dir):
         galette.add(
@@ -443,7 +445,7 @@ def valid_commit(repo, c):
 
         nightly_version = '%s (%s)' % (
             commit,
-            time.strftime('%Y-%m-%d %H:%M:%S GMT%z', time.localtime(repo_commit.authored_date)),
+            time.strftime('%Y-%m-%d %H:%M:%S GMT%z', time.localtime(repo_commit.committed_date)),
         )
 
         print(colored("""Commit information:

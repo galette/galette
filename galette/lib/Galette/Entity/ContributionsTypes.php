@@ -53,13 +53,13 @@ use Galette\Core\Db;
 
 class ContributionsTypes extends Entitled
 {
-    const DEFAULT_TYPE = 1;
-    const TABLE = 'types_cotisation';
-    const PK = 'id_type_cotis';
-    const LABEL_FIELD = 'libelle_type_cotis';
-    const EXT_FIELD = 'cotis_extension';
+    public const DEFAULT_TYPE = 1;
+    public const TABLE = 'types_cotisation';
+    public const PK = 'id_type_cotis';
+    public const LABEL_FIELD = 'libelle_type_cotis';
+    public const EXT_FIELD = 'cotis_extension';
 
-    const ID_NOT_EXITS = -1;
+    public const ID_NOT_EXITS = -1;
 
     public static $fields = array(
         'id'        => 'id_type_cotis',

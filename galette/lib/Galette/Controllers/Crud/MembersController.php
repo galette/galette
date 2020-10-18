@@ -90,6 +90,7 @@ class MembersController extends CrudController
      */
     public function add(Request $request, Response $response, array $args = []): Response
     {
+        $args['action'] = 'add';
         return $this->edit($request, $response, $args);
     }
 
@@ -207,7 +208,7 @@ class MembersController extends CrudController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('editmember', ['action' => 'add']));
+            ->withHeader('Location', $this->router->pathFor('addMember'));
     }
 
     // /CRUD - Create
@@ -474,15 +475,24 @@ class MembersController extends CrudController
 
         if (file_exists(GALETTE_FILES_PATH . $filename)) {
             $type = File::getMimeType(GALETTE_FILES_PATH . $filename);
-            $response = $response
+
+            $response = $response->withHeader('Content-Description', 'File Transfer')
                 ->withHeader('Content-Type', $type)
                 ->withHeader('Content-Disposition', 'attachment;filename="' . $args['name'] . '"')
-                ->withHeader('Pragma', 'no-cache');
-            $response->write(readfile(GALETTE_FILES_PATH . $filename));
-            return $response;
+                ->withHeader('Pragma', 'no-cache')
+                ->withHeader('Content-Transfer-Encoding', 'binary')
+                ->withHeader('Expires', '0')
+                ->withHeader('Cache-Control', 'must-revalidate')
+                ->withHeader('Pragma', 'public');
+
+            $stream = fopen('php://memory', 'r+');
+            fwrite($stream, file_get_contents(GALETTE_FILES_PATH . $filename));
+            rewind($stream);
+
+            return $response->withBody(new \Slim\Http\Stream($stream));
         } else {
             Analog::log(
-                'A request has been made to get an exported file named `' .
+                'A request has been made to get a dynamic file named `' .
                 $filename . '` that does not exists.',
                 Analog::WARNING
             );
@@ -1060,21 +1070,12 @@ class MembersController extends CrudController
      */
     public function edit(Request $request, Response $response, array $args = []): Response
     {
-        $action = $args['action'];
+        $action = $args['action'] ?? 'edit';
         $id = null;
         if (isset($args['id'])) {
             $id = (int)$args['id'];
         }
 
-        if ($action === 'edit' && $id === null) {
-            throw new \RuntimeException(
-                _T("Member ID cannot ben null calling edit route!")
-            );
-        } elseif ($action === 'add' && $id !== null) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->router->pathFor('editmember', ['action' => 'add']));
-        }
         $deps = array(
             'picture'   => true,
             'groups'    => true,
@@ -1300,10 +1301,13 @@ class MembersController extends CrudController
             $changes = [];
             foreach ($form_elements['fieldsets'] as $form_element) {
                 foreach ($form_element->elements as $field) {
-                    if (isset($post[$field->field_id]) && isset($post['mass_' . $field->field_id])) {
+                    if (
+                        isset($post['mass_' . $field->field_id])
+                        && (isset($post[$field->field_id]) || $field->type === FieldsConfig::TYPE_BOOL)
+                    ) {
                         $changes[$field->field_id] = [
                             'label' => $field->label,
-                            'value' => $post[$field->field_id]
+                            'value' => $post[$field->field_id] ?? 0
                         ];
                     }
                 }
@@ -1511,6 +1515,9 @@ class MembersController extends CrudController
                 || !crypt($post['mdp_adh'], $post['mdp_crypt']) == $post['mdp_crypt']
             ) {
                 $error_detected[] = __('Please repeat in the field the password shown in the image.');
+            } else {
+                unset($post['mdp_adh']);
+                unset($post['mdp_crypt']);
             }
         }
 
@@ -1538,8 +1545,8 @@ class MembersController extends CrudController
         // flagging required fields
         $fc = $this->fields_config;
 
-        // password required if we create a new member
-        if ($member->id != '') {
+        // password required if we create a new member but not from self subscription
+        if ($member->id != '' || isset($args['self'])) {
             $fc->setNotRequired('mdp_adh');
         }
 
@@ -1608,6 +1615,12 @@ class MembersController extends CrudController
                 if ($member->id == '') {
                     $new = true;
                 }
+
+                // send email to member
+                if (isset($args['self']) || isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
+                    $member->setSendmail(); //flag to send creation email
+                }
+
                 $store = $member->store();
                 if ($store === true) {
                     //member has been stored :)
@@ -1623,231 +1636,8 @@ class MembersController extends CrudController
                         } else {
                             $success_detected[] = _T("New member has been successfully added.");
                         }
-                        //Send email to admin if preference checked
-                        if (
-                            $this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
-                            && $this->preferences->pref_bool_mailadh
-                        ) {
-                            $texts = new Texts(
-                                $this->preferences,
-                                $this->router,
-                                array(
-                                    'name_adh'      => custom_html_entity_decode(
-                                        $member->sname
-                                    ),
-                                    'firstname_adh' => custom_html_entity_decode(
-                                        $member->surname
-                                    ),
-                                    'lastname_adh'  => custom_html_entity_decode(
-                                        $member->name
-                                    ),
-                                    'mail_adh'      => custom_html_entity_decode(
-                                        $member->email
-                                    ),
-                                    'login_adh'     => custom_html_entity_decode(
-                                        $member->login
-                                    )
-                                )
-                            );
-                            $mtxt = $texts->getTexts(
-                                (isset($args['self']) ? 'newselfadh' : 'newadh'),
-                                $this->preferences->pref_lang
-                            );
-
-                            $mail = new GaletteMail($this->preferences);
-                            $mail->setSubject($texts->getSubject());
-                            $recipients = [];
-                            foreach ($this->preferences->vpref_email_newadh as $pref_email) {
-                                $recipients[$pref_email] = $pref_email;
-                            }
-                            $mail->setRecipients($recipients);
-                            $mail->setMessage($texts->getBody());
-                            $sent = $mail->send();
-
-                            if ($sent == GaletteMail::MAIL_SENT) {
-                                $this->history->add(
-                                    str_replace(
-                                        '%s',
-                                        $member->sname . ' (' . $member->email . ')',
-                                        _T("New account email sent to admin for '%s'.")
-                                    )
-                                );
-                            } else {
-                                $str = str_replace(
-                                    '%s',
-                                    $member->sname . ' (' . $member->email . ')',
-                                    _T("A problem happened while sending email to admin for account '%s'.")
-                                );
-                                $this->history->add($str);
-                                $warning_detected[] = $str;
-                            }
-                            unset($texts);
-                        }
                     } else {
                         $success_detected[] = _T("Member account has been modified.");
-                    }
-
-                    // send email to member
-                    if (isset($args['self']) || isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
-                        if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
-                            if ($member->getEmail() == '' && !isset($args['self'])) {
-                                $error_detected[] = _T("- You can't send a confirmation by email if the member hasn't got an address!");
-                            } else {
-                                $mreplaces = [
-                                    'name_adh'      => custom_html_entity_decode(
-                                        $member->sname
-                                    ),
-                                    'firstname_adh' => custom_html_entity_decode(
-                                        $member->surname
-                                    ),
-                                    'lastname_adh'  => custom_html_entity_decode(
-                                        $member->name
-                                    ),
-                                    'mail_adh'      => custom_html_entity_decode(
-                                        $member->getEmail()
-                                    ),
-                                    'login_adh'     => custom_html_entity_decode(
-                                        $member->login
-                                    )
-                                ];
-                                if ($new) {
-                                    $password = new Password($this->zdb);
-                                    $res = $password->generateNewPassword($member->id);
-                                    if ($res == true) {
-                                        $link_validity = new \DateTime();
-                                        $link_validity->add(new \DateInterval('PT24H'));
-                                        $mreplaces['change_pass_uri'] = $this->preferences->getURL() .
-                                            $this->router->pathFor(
-                                                'password-recovery',
-                                                ['hash' => base64_encode($password->getHash())]
-                                            );
-                                        $mreplaces['link_validity'] = $link_validity->format(_T("Y-m-d H:i:s"));
-                                    } else {
-                                        $str = str_replace(
-                                            '%s',
-                                            $member->sfullname,
-                                            _T("An error occurred storing temporary password for %s. Please inform an admin.")
-                                        );
-                                        $this->history->add($str);
-                                        $this->flash->addMessage(
-                                            'error_detected',
-                                            $str
-                                        );
-                                    }
-                                }
-
-                                //send email to member
-                                // Get email text in database
-                                $texts = new Texts(
-                                    $this->preferences,
-                                    $this->router,
-                                    $mreplaces
-                                );
-                                $mlang = $this->preferences->pref_lang;
-                                if (isset($post['pref_lang'])) {
-                                    $mlang = $post['pref_lang'];
-                                }
-                                $mtxt = $texts->getTexts(
-                                    (($new) ? 'sub' : 'accountedited'),
-                                    $mlang
-                                );
-
-                                $mail = new GaletteMail($this->preferences);
-                                $mail->setSubject($texts->getSubject());
-                                $mail->setRecipients(
-                                    array(
-                                        $member->getEmail() => $member->sname
-                                    )
-                                );
-                                $mail->setMessage($texts->getBody());
-                                $sent = $mail->send();
-
-                                if ($sent == GaletteMail::MAIL_SENT) {
-                                    $msg = str_replace(
-                                        '%s',
-                                        $member->sname . ' (' . $member->getEmail() . ')',
-                                        ($new) ?
-                                        _T("New account email sent to '%s'.") : _T("Account modification email sent to '%s'.")
-                                    );
-                                    $this->history->add($msg);
-                                    $success_detected[] = $msg;
-                                } else {
-                                    $str = str_replace(
-                                        '%s',
-                                        $member->sname . ' (' . $member->getEmail() . ')',
-                                        _T("A problem happened while sending account email to '%s'")
-                                    );
-                                    $this->history->add($str);
-                                    $error_detected[] = $str;
-                                }
-                            }
-                        } elseif ($this->preferences->pref_mail_method == GaletteMail::METHOD_DISABLED) {
-                            //if email has been disabled in the preferences, we should not be here ;
-                            //we do not throw an error, just a simple warning that will be show later
-                            $msg = _T("You asked Galette to send a confirmation email to the member, but email has been disabled in the preferences.");
-                            $warning_detected[] = $msg;
-                        }
-                    }
-
-                    // send email to admin
-                    if (
-                        $this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
-                        && $this->preferences->pref_bool_mailadh
-                        && !$new
-                        && $member->id == $this->login->id
-                    ) {
-                        $mreplaces = [
-                            'name_adh'      => custom_html_entity_decode(
-                                $member->sname
-                            ),
-                            'firstname_adh' => custom_html_entity_decode(
-                                $member->surname
-                            ),
-                            'lastname_adh'  => custom_html_entity_decode(
-                                $member->name
-                            ),
-                            'mail_adh'      => custom_html_entity_decode(
-                                $member->getEmail()
-                            ),
-                            'login_adh'     => custom_html_entity_decode(
-                                $member->login
-                            )
-                        ];
-
-                        //send email to member
-                        // Get email text in database
-                        $texts = new Texts(
-                            $this->preferences,
-                            $this->router,
-                            $mreplaces
-                        );
-                        $mlang = $this->preferences->pref_lang;
-
-                        $mtxt = $texts->getTexts(
-                            'admaccountedited',
-                            $mlang
-                        );
-
-                        $mail = new GaletteMail($this->preferences);
-                        $mail->setSubject($texts->getSubject());
-                        $recipients = [];
-                        foreach ($this->preferences->vpref_email_newadh as $pref_email) {
-                            $recipients[$pref_email] = $pref_email;
-                        }
-                        $mail->setRecipients($recipients);
-
-                        $mail->setMessage($texts->getBody());
-                        $sent = $mail->send();
-
-                        if ($sent == GaletteMail::MAIL_SENT) {
-                            $msg = _T("Account modification email sent to admin.");
-                            $this->history->add($msg);
-                            $success_detected[] = $msg;
-                        } else {
-                            $str = _T("A problem happened while sending account email to admin");
-                            $this->history->add($str);
-                            $warning_detected[] = $str;
-                        }
                     }
 
                     //store requested groups
@@ -1888,7 +1678,7 @@ class MembersController extends CrudController
                 }
             }
 
-            if (count($error_detected) == 0) {
+            if (count($error_detected) === 0) {
                 $files_res = $member->handleFiles($_FILES);
                 if (is_array($files_res)) {
                     $error_detected = array_merge($error_detected, $files_res);
@@ -1941,7 +1731,7 @@ class MembersController extends CrudController
                 }
             }
 
-            if (count($error_detected) == 0) {
+            if (count($error_detected) === 0) {
                 if (isset($args['self'])) {
                     $redirect_url = $this->router->pathFor('login');
                 } elseif (
@@ -1950,10 +1740,10 @@ class MembersController extends CrudController
                 ) {
                     switch ($post['redirect_on_create']) {
                         case Adherent::AFTER_ADD_TRANS:
-                            $redirect_url = $this->router->pathFor('transaction', ['action' => 'add']);
+                            $redirect_url = $this->router->pathFor('addTransaction');
                             break;
                         case Adherent::AFTER_ADD_NEW:
-                            $redirect_url = $this->router->pathFor('editmember', ['action' => 'add']);
+                            $redirect_url = $this->router->pathFor('addMember');
                             break;
                         case Adherent::AFTER_ADD_SHOW:
                             $redirect_url = $this->router->pathFor('member', ['id' => $member->id]);
@@ -1981,17 +1771,13 @@ class MembersController extends CrudController
                     $redirect_url = $this->router->pathFor('subscribe');
                 } else {
                     if ($member->id) {
-                        $rparams = [
-                            'id'    => $member->id,
-                            'action'    => 'edit'
-                        ];
+                        $redirect_url = $this->router->pathFor(
+                            'editMember',
+                            ['id'    => $member->id]
+                        );
                     } else {
-                        $rparams = ['action' => 'add'];
+                        $redirect_url = $this->router->pathFor('addMember');
                     }
-                    $redirect_url = $this->router->pathFor(
-                        'editmember',
-                        $rparams
-                    );
                 }
             }
         }

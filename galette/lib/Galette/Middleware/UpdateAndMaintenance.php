@@ -59,8 +59,8 @@ use Psr\Http\Message\ResponseInterface as Response;
  */
 class UpdateAndMaintenance
 {
-    const MAINTENANCE = 0;
-    const NEED_UPDATE = 1;
+    public const MAINTENANCE = 0;
+    public const NEED_UPDATE = 1;
 
     /**
      * @var callable

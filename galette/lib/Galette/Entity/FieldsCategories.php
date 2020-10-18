@@ -54,16 +54,16 @@ use Galette\Core\Db;
 
 class FieldsCategories
 {
-    const TABLE = 'fields_categories';
-    const PK = 'id_field_category';
+    public const TABLE = 'fields_categories';
+    public const PK = 'id_field_category';
 
     private $defaults;
 
     private $zdb;
 
-    const ADH_CATEGORY_IDENTITY = 1;
-    const ADH_CATEGORY_GALETTE = 2;
-    const ADH_CATEGORY_CONTACT = 3;
+    public const ADH_CATEGORY_IDENTITY = 1;
+    public const ADH_CATEGORY_GALETTE = 2;
+    public const ADH_CATEGORY_CONTACT = 3;
 
     /**
      * Default constructor

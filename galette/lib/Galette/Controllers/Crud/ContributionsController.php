@@ -50,7 +50,6 @@ use Galette\Core\GaletteMail;
 use Galette\Entity\Texts;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\PaymentTypes;
-use Galette\Core\Links;
 use Analog\Analog;
 
 /**
@@ -89,8 +88,6 @@ class ContributionsController extends CrudController
         array $args,
         Contribution $contrib
     ): Response {
-        $get = $request->getQueryParams();
-
         // contribution types
         $ct = new ContributionsTypes($this->zdb);
         $contributions_types = $ct->getList($args['type'] === 'fee');
@@ -198,7 +195,6 @@ class ContributionsController extends CrudController
             }
 
             //transaction id
-            $trans_id = null;
             if (isset($get[Transaction::PK]) && $get[Transaction::PK] > 0) {
                 $cparams['trans'] = $get[Transaction::PK];
             }
@@ -287,13 +283,10 @@ class ContributionsController extends CrudController
             $filters->filtre_cotis_adh = (int)$get[Adherent::PK];
         }
 
-        $max_amount = null;
+        $filters->filtre_transactions = false;
         if (isset($request->getQueryParams()['max_amount'])) {
             $filters->filtre_transactions = true;
             $filters->max_amount = (int)$request->getQueryParams()['max_amount'];
-        } else {
-            $filters->filtre_transactions = false;
-            $filters->max_amount = null;
         }
 
         if ($option !== null) {
@@ -408,11 +401,9 @@ class ContributionsController extends CrudController
             if (isset($post['end_date_filter']) || isset($post['start_date_filter'])) {
                 try {
                     if (isset($post['start_date_filter'])) {
-                        $field = _T("start date filter");
                         $filters->start_date_filter = $post['start_date_filter'];
                     }
                     if (isset($post['end_date_filter'])) {
-                        $field = _T("end date filter");
                         $filters->end_date_filter = $post['end_date_filter'];
                     }
                 } catch (\Exception $e) {
@@ -535,17 +526,13 @@ class ContributionsController extends CrudController
                 ->withHeader('Location', $redirect_url);
         }
 
-        $success_detected = [];
         $error_detected = [];
-        $warning_detected = [];
         $redirect_url = null;
 
         $id_cotis = null;
         if (isset($args['id'])) {
             $id_cotis = $args['id'];
         }
-
-        $id_adh = $post['id_adh'];
 
         if ($this->session->contribution !== null) {
             $contrib = $this->session->contribution;
@@ -583,60 +570,17 @@ class ContributionsController extends CrudController
             }
 
             if (count($error_detected) == 0) {
+                // send email to member
+                if (isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
+                    $contrib->setSendmail(); //flag to send creation email
+                }
+
                 $store = $contrib->store();
                 if ($store === true) {
-                    $success_detected[] = _T('Contribution has been successfully stored');
-                    //contribution has been stored :)
-                    if ($new) {
-                        //if an external script has been configured, we call it
-                        if ($this->preferences->pref_new_contrib_script) {
-                            $es = new \Galette\IO\ExternalScript($this->preferences);
-                            $res = $contrib->executePostScript($es);
-
-                            if ($res !== true) {
-                                //send admin an email with all details
-                                if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
-                                    $mail = new GaletteMail($this->preferences);
-                                    $mail->setSubject(
-                                        _T("Post contribution script failed")
-                                    );
-
-                                    $recipients = [];
-                                    foreach ($this->preferences->vpref_email_newadh as $pref_email) {
-                                        $recipients[$pref_email] = $pref_email;
-                                    }
-                                    $mail->setRecipients($recipients);
-
-                                    $message = _T("The configured post contribution script has failed.");
-                                    $message .= "\n" . _T("You can find contribution information and script output below.");
-                                    $message .= "\n\n";
-                                    $message .= $res;
-
-                                    $mail->setMessage($message);
-                                    $sent = $mail->send();
-
-                                    if (!$sent) {
-                                        $txt = _T('Post contribution script has failed.');
-                                        $this->history->add($txt, $message);
-                                        $warning_detected[] = $txt;
-                                        //Mails are disabled... We log (not safe, but)...
-                                        Analog::log(
-                                            'Email to admin has not been sent. Here was the data: ' .
-                                            "\n" . print_r($res, true),
-                                            Analog::ERROR
-                                        );
-                                    }
-                                } else {
-                                    //Mails are disabled... We log (not safe, but)...
-                                    Analog::log(
-                                        'Post contribution script has failed. Here was the data: ' .
-                                        "\n" . print_r($res, true),
-                                        Analog::ERROR
-                                    );
-                                }
-                            }
-                        }
-                    }
+                    $this->flash->addMessage(
+                        'success_detected',
+                        _T('Contribution has been successfully stored')
+                    );
                 } else {
                     //something went wrong :'(
                     $error_detected[] = _T("An error occurred while storing the contribution.");
@@ -645,186 +589,26 @@ class ContributionsController extends CrudController
         }
 
         if (count($error_detected) == 0) {
-            // Get member information
-            $adh = new Adherent($this->zdb);
-            $adh->load($contrib->member);
-
-            if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
-                $texts = new Texts(
-                    $this->preferences,
-                    $this->router,
-                    array(
-                        'name_adh'          => custom_html_entity_decode($adh->sname),
-                        'firstname_adh'     => custom_html_entity_decode($adh->surname),
-                        'lastname_adh'      => custom_html_entity_decode($adh->name),
-                        'mail_adh'          => custom_html_entity_decode($adh->getEmail()),
-                        'login_adh'         => custom_html_entity_decode($adh->login),
-                        'deadline'          => custom_html_entity_decode($contrib->end_date),
-                        'contrib_info'      => custom_html_entity_decode($contrib->info),
-                        'contrib_amount'    => custom_html_entity_decode($contrib->amount),
-                        'contrib_type'      => custom_html_entity_decode($contrib->type->libelle)
-                    )
-                );
-                if (
-                    $new && isset($_POST['mail_confirm'])
-                    && $_POST['mail_confirm'] == '1'
-                ) {
-                    if (GaletteMail::isValidEmail($adh->getEmail())) {
-                        $text = 'contrib';
-                        if (!$contrib->isCotis()) {
-                            $text = 'donation';
-                        }
-                        $mtxt = $texts->getTexts($text, $adh->language);
-
-                        $mail = new GaletteMail($this->preferences);
-                        $mail->setSubject($texts->getSubject());
-                        $mail->setRecipients(
-                            array(
-                                $adh->getEmail() => $adh->sname
-                            )
-                        );
-
-                        $link_card = '';
-                        if (strpos($mtxt->tbody, '{LINK_MEMBERCARD}') !== false) {
-                            //member card link is present in mail model, let's add it
-                            $links = new Links($this->zdb);
-                            if ($hash = $links->generateNewLink(Links::TARGET_MEMBERCARD, $contrib->member)) {
-                                $link_card = $this->preferences->getURL() .
-                                    $this->router->pathFor('directlink', ['hash' => $hash]);
-                            }
-                        }
-
-                        $link_pdf = '';
-                        if (strpos($mtxt->tbody, '{LINK_MEMBERCARD}') !== false) {
-                            //contribution receipt link is present in mail model, let's add it
-                            $links = new Links($this->zdb);
-                            $ltype = $contrib->type->isExtension() ? Links::TARGET_INVOICE : Links::TARGET_RECEIPT;
-                            if ($hash = $links->generateNewLink($ltype, $contrib->id)) {
-                                $link_pdf = $this->preferences->getURL() .
-                                    $this->router->pathFor('directlink', ['hash' => $hash]);
-                            }
-                        }
-
-                        //set replacements, even if empty, to be sure.
-                        $texts->setReplaces([
-                            'link_membercard'   => $link_card,
-                            'link_contribpdf'   => $link_pdf
-                        ]);
-
-                        $mail->setMessage($texts->getBody());
-                        $sent = $mail->send();
-
-                        if ($sent) {
-                            $this->history->add(
-                                preg_replace(
-                                    array('/%name/', '/%email/'),
-                                    array($adh->sname, $adh->getEmail()),
-                                    _T("Email sent to user %name (%email)")
-                                )
-                            );
-                        } else {
-                            $txt = preg_replace(
-                                array('/%name/', '/%email/'),
-                                array($adh->sname, $adh->getEmail()),
-                                _T("A problem happened while sending contribution receipt to user %name (%email)")
-                            );
-                            $this->history->add($txt);
-                            $error_detected[] = $txt;
-                        }
-                    } else {
-                        $txt = preg_replace(
-                            array('/%name/', '/%email/'),
-                            array($adh->sname, $adh->getEmail()),
-                            _T("Trying to send an email to a member (%name) with an invalid address: %email")
-                        );
-                        $this->history->add($txt);
-                        $warning_detected[] = $txt;
-                    }
-                }
-
-                // Sent email to admin if pref checked
-                if ($new && $this->preferences->pref_bool_mailadh) {
-                    // Get email text in database
-                    $text = 'newcont';
-                    if (!$contrib->isCotis()) {
-                        $text = 'newdonation';
-                    }
-                    $mtxt = $texts->getTexts($text, $this->preferences->pref_lang);
-
-                    $mail = new GaletteMail($this->preferences);
-                    $mail->setSubject($texts->getSubject());
-
-                    $recipients = [];
-                    foreach ($this->preferences->vpref_email_newadh as $pref_email) {
-                        $recipients[$pref_email] = $pref_email;
-                    }
-                    $mail->setRecipients($recipients);
-
-                    $mail->setMessage($texts->getBody());
-                    $sent = $mail->send();
-
-                    if ($sent) {
-                        $this->history->add(
-                            preg_replace(
-                                array('/%name/', '/%email/'),
-                                array($adh->sname, $adh->getEmail()),
-                                _T("Email sent to admin for user %name (%email)")
-                            )
-                        );
-                    } else {
-                        $txt = preg_replace(
-                            array('/%name/', '/%email/'),
-                            array($adh->sname, $adh->getEmail()),
-                            _T("A problem happened while sending to admin notification for user %name (%email) contribution")
-                        );
-                        $this->history->add($txt);
-                        $warning_detected[] = $txt;
-                    }
-                }
+            $this->session->contribution = null;
+            if ($contrib->isTransactionPart() && $contrib->transaction->getMissingAmount() > 0) {
+                //new contribution
+                $redirect_url = $this->router->pathFor(
+                    'addContribution',
+                    [
+                        'type'      => $post['contrib_type']
+                    ]
+                ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
+                '&' . Adherent::PK . '=' . $contrib->member;
+            } else {
+                //contributions list for member
+                $redirect_url = $this->router->pathFor(
+                    'contributions',
+                    [
+                        'type'      => 'contributions'
+                    ]
+                ) . '?' . Adherent::PK . '=' . $contrib->member;
             }
-
-            if (count($success_detected) > 0) {
-                foreach ($success_detected as $success) {
-                    $this->flash->addMessage(
-                        'success_detected',
-                        $success
-                    );
-                }
-            }
-
-
-            if (count($warning_detected) > 0) {
-                foreach ($warning_detected as $warning) {
-                    $this->flash->addMessage(
-                        'warning_detected',
-                        $warning
-                    );
-                }
-            }
-
-            if (count($error_detected) == 0) {
-                if ($contrib->isTransactionPart() && $contrib->transaction->getMissingAmount() > 0) {
-                    //new contribution
-                    $redirect_url = $this->router->pathFor(
-                        'addContribution',
-                        [
-                            'type'      => $post['contrib_type']
-                        ]
-                    ) . '?' . Transaction::PK . '=' . $contrib->transaction->id .
-                    '&' . Adherent::PK . '=' . $contrib->member;
-                } else {
-                    //contributions list for member
-                    $redirect_url = $this->router->pathFor(
-                        'contributions',
-                        [
-                            'type'      => 'contributions'
-                        ]
-                    ) . '?' . Adherent::PK . '=' . $contrib->member;
-                }
-            }
-        }
-
-        if (count($error_detected) > 0) {
+        } else {
             //something went wrong.
             //store entity in session
             $this->session->contribution = $contrib;
@@ -836,11 +620,6 @@ class ContributionsController extends CrudController
                     'error_detected',
                     $error
                 );
-            }
-        } else {
-            $this->session->contribution = null;
-            if ($redirect_url === null) {
-                $redirect_url = $this->router->pathFor('contributions', ['type' => $args['type']]);
             }
         }
 

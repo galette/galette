@@ -52,13 +52,13 @@ use Galette\Core\Db;
  */
 class Status extends Entitled
 {
-    const DEFAULT_STATUS = 9;
-    const TABLE = 'statuts';
-    const PK = 'id_statut';
-    const LABEL_FIELD = 'libelle_statut';
-    const ORDER_FIELD = 'priorite_statut';
+    public const DEFAULT_STATUS = 9;
+    public const TABLE = 'statuts';
+    public const PK = 'id_statut';
+    public const LABEL_FIELD = 'libelle_statut';
+    public const ORDER_FIELD = 'priorite_statut';
 
-    const ID_NOT_EXITS = -1;
+    public const ID_NOT_EXITS = -1;
 
     public static $fields = array(
         'id'        => 'id_statut',

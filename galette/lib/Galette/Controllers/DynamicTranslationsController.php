@@ -129,7 +129,7 @@ class DynamicTranslationsController extends AbstractController
                  * for a specific string
                  */
                 foreach ($this->i18n->getList() as $l) {
-                    $text_trans = \getDynamicTranslation($text_orig, $l->getLongID());
+                    $text_trans = $this->l10n->getDynamicTranslation($text_orig, $l->getLongID());
                     $lang_name = $l->getName();
                     $trans[] = array(
                         'key'  => $l->getLongID(),
@@ -172,14 +172,27 @@ class DynamicTranslationsController extends AbstractController
     public function doDynamicTranslations(Request $request, Response $response): Response
     {
         $post = $request->getParsedBody();
-        $error_detected = false;
+        $error_detected = [];
 
         if (isset($post['trans']) && isset($post['text_orig'])) {
-            if (isset($_POST['new']) && $_POST['new'] == 'true') {
+            if (isset($post['new']) && $post['new'] == 'true') {
                 //create translation if it does not exists yet
-                $res = \addDynamicTranslation(
+                $res = $this->l10n->addDynamicTranslation(
                     $post['text_orig']
                 );
+                if (!$res) {
+                    $error_detected[] = preg_replace(
+                        array(
+                            '/%label/',
+                            '/%lang/'
+                        ),
+                        array(
+                            $post['text_orig'],
+                            $this->i18n->getLongID()
+                        ),
+                        _T("An error occurred saving label `%label` for language `%lang`")
+                    );
+                }
             }
 
             // Validate form
@@ -187,32 +200,35 @@ class DynamicTranslationsController extends AbstractController
                 if (substr($key, 0, 11) == 'text_trans_') {
                     $trans_lang = substr($key, 11);
                     $trans_lang = str_replace('_utf8', '.utf8', $trans_lang);
-                    $res = \updateDynamicTranslation(
+                    $res = $this->l10n->updateDynamicTranslation(
                         $post['text_orig'],
                         $trans_lang,
                         $value
                     );
-                    if ($res !== true) {
-                        $error_detected = true;
-                        $this->flash->addMessage(
-                            'error_detected',
-                            preg_replace(
-                                array(
-                                    '/%label/',
-                                    '/%lang/'
-                                ),
-                                array(
-                                    $post['text_orig'],
-                                    $trans_lang
-                                ),
-                                _T("An error occurred saving label `%label` for language `%lang`")
-                            )
+                    if (!$res) {
+                        $error_detected[] = preg_replace(
+                            array(
+                                '/%label/',
+                                '/%lang/'
+                            ),
+                            array(
+                                $post['text_orig'],
+                                $trans_lang
+                            ),
+                            _T("An error occurred saving label `%label` for language `%lang`")
                         );
                     }
                 }
             }
 
-            if ($error_detected === false) {
+            if (count($error_detected)) {
+                foreach ($error_detected as $err) {
+                    $this->flash->addMessage(
+                        'error_detected',
+                        $err
+                    );
+                }
+            } else {
                 $this->flash->addMessage(
                     'success_detected',
                     _T("Labels has been sucessfully translated!")

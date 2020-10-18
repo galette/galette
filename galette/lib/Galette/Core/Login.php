@@ -36,7 +36,6 @@
 
 namespace Galette\Core;
 
-use Laminas\Db\Adapter\Exception as AdapterException;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
 use Galette\Entity\Adherent;
@@ -58,8 +57,8 @@ use RKA\Session;
  */
 class Login extends Authentication
 {
-    const TABLE = Adherent::TABLE;
-    const PK = 'login_adh';
+    public const TABLE = Adherent::TABLE;
+    public const PK = 'login_adh';
 
     private $zdb;
     private $i18n;
@@ -172,13 +171,6 @@ class Login extends Authentication
                 $this->logUser($row);
                 return true;
             }
-        } catch (AdapterException $e) {
-            Analog::log(
-                'An error occurred: ' . $e->getChainedException()->getMessage(),
-                Analog::WARNING
-            );
-            Analog::log($e->getTrace(), Analog::ERROR);
-            return false;
         } catch (\Exception $e) {
             Analog::log(
                 'An error occurred: ' . $e->getMessage(),
@@ -304,13 +296,6 @@ class Login extends Authentication
                 $this->logUser($row);
                 return true;
             }
-        } catch (AdapterException $e) {
-            Analog::log(
-                'An error occurred: ' . $e->getChainedException()->getMessage(),
-                Analog::WARNING
-            );
-            Analog::log($e->getTrace(), Analog::ERROR);
-            return false;
         } catch (\Exception $e) {
             Analog::log(
                 'An error occurred: ' . $e->getMessage(),

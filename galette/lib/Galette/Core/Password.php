@@ -59,8 +59,13 @@ use Galette\Entity\Adherent;
 
 class Password extends AbstractPassword
 {
-    const TABLE = 'tmppasswds';
-    const PK = Adherent::PK;
+    public const TABLE = 'tmppasswds';
+    public const PK = Adherent::PK;
+
+    /** @var integer Overrides default password size */
+    public const DEFAULT_SIZE = 50;
+    /** @var string Overrides default character set */
+    protected $chars = 'abcdefghjkmnpqrstuvwxyz0123456789&@{[]}%#+*:ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     private $zdb;
 
