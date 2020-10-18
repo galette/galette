@@ -131,7 +131,7 @@ class AdminToolsController extends AbstractController
         if (isset($post['initpdfmodels'])) {
             //proceed emails texts reinitialization
             $models = new PdfModels($this->zdb, $this->preferences, $this->login);
-            $res = $models->installInit($this->pdfmodels_fields, false);
+            $res = $models->installInit(false);
             if ($res === true) {
                 $success_detected[] = _T("PDF models has been successfully reinitialized.");
             } else {
