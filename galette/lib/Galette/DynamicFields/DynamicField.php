@@ -749,7 +749,7 @@ abstract class DynamicField
             $contents_table = self::getFixedValuesTableName($this->id, true);
 
             try {
-                $this->zdb->drop($contents_table, true);
+                $this->zdb->drop(str_replace(PREFIX_DB, '', $contents_table), true);
                 $this->zdb->connection->beginTransaction();
                 $field_size = ((int)$this->size > 0) ? $this->size : 1;
                 $this->zdb->db->query(
