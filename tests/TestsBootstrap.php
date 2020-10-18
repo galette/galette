@@ -82,13 +82,12 @@ $app = new \Slim\App(
 );
 session_start();
 
-//Globals... :(
-global $preferences, $emitter;
-$zdb = new \Galette\Core\Db();
-$preferences = new \Galette\Core\Preferences($zdb);
-$emitter = new \Slim\Event\SlimEventManager();
-
 require_once GALETTE_BASE_PATH . '/includes/dependencies.php';
+//Globals... :(
+global $preferences, $emitter, $zdb;
+$zdb = $container->get('zdb');
+$preferences = $container->get('preferences');
+$emitter = $container->get('event_manager');
 $i18n->changeLanguage('en_US');
 
 if (!defined('_CURRENT_THEME_PATH')) {

@@ -390,16 +390,16 @@ $container['event_manager'] = function ($c) {
 };
 
 //For bad existing globals can be used...
+global $translator, $i18n;
 if (!isset($container['mode']) || ($container['mode'] !== 'INSTALL' && $container['mode'] !== 'NEED_UPDATE')) {
+    global $zdb, $preferences, $login, $hist, $l10n, $emitter;
     $zdb = $container->get('zdb');
     $preferences = $container->get('preferences');
     $login = $container->get('login');
     $hist = $container->get('history');
-    global $l10n;
     $l10n = $container->get('l10n');
     $emitter = $container->get('event_manager');
 }
-global $translator, $i18n;
 $i18n = $container->get('i18n');
 $translator = $container->get('translator');
 
