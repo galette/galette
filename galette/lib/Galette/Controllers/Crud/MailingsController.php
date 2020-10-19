@@ -745,7 +745,7 @@ class MailingsController extends CrudController
             'mailing_preview.tpl',
             [
                 'page_title'    => _T("Mailing preview"),
-                'mailing_id'    => $args['id'],
+                'mailing_id'    => $args['id'] ?? null,
                 'mode'          => ($ajax ? 'ajax' : ''),
                 'mailing'       => $mailing,
                 'recipients'    => $mailing->recipients,
