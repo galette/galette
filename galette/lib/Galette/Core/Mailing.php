@@ -100,9 +100,9 @@ class Mailing extends GaletteMail
     /**
      * Generate new mailing id and temporary path
      *
-     * @return integer
+     * @return string
      */
-    private function generateNewId(): int
+    private function generateNewId(): string
     {
         global $zdb;
 
