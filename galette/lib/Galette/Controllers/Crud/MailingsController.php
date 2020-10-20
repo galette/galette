@@ -89,6 +89,7 @@ class MailingsController extends CrudController
                 $m->removeAttachments(true);
             }
             $this->session->mailing = null;
+            $this->session->redirect_mailing = null;
         }
 
         $params = array();
@@ -238,6 +239,7 @@ class MailingsController extends CrudController
                 $m->removeAttachments(true);
             }
             $this->session->mailing = null;
+            $this->session->redirect_mailing = null;
             if (isset($this->session->filter_mailing)) {
                 $filters = $this->session->filter_mailing;
                 $filters->selected = [];
@@ -311,7 +313,7 @@ class MailingsController extends CrudController
                     $mailing->message = $post['mailing_corps'];
                 }
 
-                switch ($post['sender']) {
+                switch ($post['sender'] ?? false) {
                     case GaletteMail::SENDER_CURRENT:
                         $member = new Adherent($this->zdb, (int)$this->login->id, false);
                         $mailing->setSender(
@@ -402,6 +404,7 @@ class MailingsController extends CrudController
                     $filters->selected = null;
                     $this->session->filter_members = $filters;
                     $this->session->mailing = null;
+                    $this->session->redirect_mailing = null;
                     $success_detected[] = _T("Mailing has been successfully sent!");
                     $goto = $redirect_url;
                 }
@@ -427,6 +430,8 @@ class MailingsController extends CrudController
                 if ($histo->storeMailing() !== false) {
                     $success_detected[] = _T("Mailing has been successfully saved.");
                     $this->session->mailing = null;
+                    $this->session->redirect_mailing = null;
+                    $goto = $this->router->pathFor('mailings');
                 }
             }
         }
@@ -736,7 +741,7 @@ class MailingsController extends CrudController
             $mailing->subject = $post['subject'];
             $mailing->message = $post['body'];
             $mailing->html = ($post['html'] === 'true');
-            $attachments = (isset($post['attachments']) ? $post['attachments'] : []);
+            $attachments = $mailing->attachments;
         }
 
         // display page

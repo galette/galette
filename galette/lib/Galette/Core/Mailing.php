@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2014 The Galette Team
+ * Copyright © 2009-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-07
@@ -104,10 +104,17 @@ class Mailing extends GaletteMail
      */
     private function generateNewId(): string
     {
-        global $zdb;
+        $id = '';
+        $chars = 'abcdefghjkmnpqrstuvwxyz0123456789';
+        $i = 0;
+        $size = 30;
+        while ($i <= $size - 1) {
+            $num = mt_rand(0, strlen($chars) - 1)  % strlen($chars);
+            $id .= substr($chars, $num, 1);
+            $i++;
+        }
 
-        $pass = new Password($zdb);
-        $this->id = $pass->makeRandomPassword(30);
+        $this->id = $id;
         $this->generateTmpPath($this->id);
         return $this->id;
     }
@@ -122,10 +129,7 @@ class Mailing extends GaletteMail
     private function generateTmpPath($id = null)
     {
         if ($id === null) {
-            global $zdb;
-
-            $pass = new Password($zdb);
-            $id = $pass->makeRandomPassword(30);
+            $id = $this->generateNewId();
         }
         $this->tmp_path = GALETTE_ATTACHMENTS_PATH . '/' . $id;
     }
@@ -339,10 +343,10 @@ class Mailing extends GaletteMail
         ) {
             foreach ($this->attachments as &$attachment) {
                 $old_path = $attachment->getDestDir() . $attachment->getFileName();
-                $new_path = GALETTE_ATTACHMENTS_PATH . $this->id . '/' .
+                $new_path = GALETTE_ATTACHMENTS_PATH . $id . '/' .
                     $attachment->getFileName();
-                if (!file_exists(GALETTE_ATTACHMENTS_PATH . $this->id)) {
-                    mkdir(GALETTE_ATTACHMENTS_PATH . $this->id);
+                if (!file_exists(GALETTE_ATTACHMENTS_PATH . $id)) {
+                    mkdir(GALETTE_ATTACHMENTS_PATH . $id);
                 }
                 $moved = rename($old_path, $new_path);
                 if ($moved) {
