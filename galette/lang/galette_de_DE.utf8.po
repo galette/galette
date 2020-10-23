@@ -14,19 +14,20 @@
 # elea11 <p.manuel.warnecke@gmail.com>, 2020.
 # mohd amal syah bin syamsah Cerol <cerolamalsyah4@gmail.com>, 2020.
 # Code2Joke <codejoke@web.de>, 2020.
+# Stefanie Schreiner <stefanie-schreiner@hotmail.de>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-10-11 06:25+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2020-10-24 14:26+0000\n"
+"Last-Translator: Stefanie Schreiner <stefanie-schreiner@hotmail.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.3-dev\n"
+"X-Generator: Weblate 4.3.2-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -2349,8 +2350,6 @@ msgid "Contribution updated"
 msgstr "Beitrag upgedated"
 
 #: ../lib/Galette/Entity/Contribution.php:1045
-#, fuzzy
-#| msgid "Contribution informations"
 msgid "Contribution information"
 msgstr "Beitragsinformationen"
 
@@ -2451,7 +2450,7 @@ msgstr "Das Formular ist obligatorisch!"
 #: ../lib/Galette/Entity/SavedSearch.php:346
 #, php-format
 msgid "Unknown form %form!"
-msgstr "Unbekanntes Formular!"
+msgstr "Unbekanntes Formular %form!"
 
 #: ../lib/Galette/Entity/SavedSearch.php:361
 msgid "Name cannot be empty!"
@@ -3025,14 +3024,10 @@ msgid "Jabber:"
 msgstr "Jabber:"
 
 #: ../includes/fields_defs/members_fields.php:217
-#, fuzzy
-#| msgid "Other informations (admin):"
 msgid "Other information (admin):"
 msgstr "Andere Informationen (Administrator):"
 
 #: ../includes/fields_defs/members_fields.php:225
-#, fuzzy
-#| msgid "Other informations:"
 msgid "Other information:"
 msgstr "Andere Informationen:"
 
@@ -3116,12 +3111,18 @@ msgid ""
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Hallo,{NEWLINE}Sie haben sich soeben in dem Mitgliederverwaltungssystem von "
+"{ASSO_NAME} eingeschrieben.{NEWLINE}Es ist jetzt möglich, den Stand Ihres "
+"Abonnements in Echtzeit zu verfolgen und Ihre Präferenzen über die "
+"Webschnittstelle zu aktualisieren.{NEWLINE}Bitte loggen Sie sich unter "
+"folgender Adresse ein, um ein Passwort zu "
+"vergeben:{BR}{CHG_PWD_URI}{NEWLINE}Benutzername: {LOGIN}{BR}Der obige Link "
+"ist gültig bis {LINK_VALIDITY}.{NEWLINE}Bis bald!{NEWLINE}(Diese E-Mail "
+"wurde automatisch versendet)"
 
 #: ../includes/fields_defs/texts_fields.php:43
-#, fuzzy
-#| msgid "New installation"
 msgid "New user registration"
-msgstr "Neue Installation"
+msgstr "Registrierung neuer Benutzer"
 
 #: ../includes/fields_defs/texts_fields.php:49
 msgid ""
@@ -3131,16 +3132,19 @@ msgid ""
 "until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Hallo,{NEWLINE}Jemand (wahrscheinlich Sie) will Ihr Passwort "
+"wiederherstellen. {NEWLINE}Bitte loggen Sie sich unter folgender Adresse ein "
+"und setzen Sie Ihr neues Passwort:{BR}{CHG_PWD_URI}{NEWLINE}Benutzername: "
+"{LOGIN}{BR}Der obige Link ist gültig bis {LINK_VALIDITY}.{NEWLINE}Bis "
+"bald!{NEWLINE}(Diese E-Mail wurde automatisch versendet)"
 
 #: ../includes/fields_defs/texts_fields.php:51
 msgid "Lost password email"
-msgstr ""
+msgstr "E-Mail bei vergessenem Passwort"
 
 #: ../includes/fields_defs/texts_fields.php:56
-#, fuzzy
-#| msgid "no contribution"
 msgid "[{ASSO_NAME}] Your contribution"
-msgstr "keine Beiträge"
+msgstr "Ihre Beiträge"
 
 #: ../includes/fields_defs/texts_fields.php:57
 msgid ""
@@ -3150,16 +3154,20 @@ msgid ""
 "this address:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Hallo,{NEWLINE}Ihr Beitrag wurde von {ASSO_NAME} erfolgreich "
+"berücksichtigt.{NEWLINE}Es ist gütig bis {DEADLINE}.{NEWLINE}Sie können sich "
+"jetzt einloggen und Ihre persönlichen Daten ansehen oder ändern, indem Sie "
+"Ihr galette Kennung unter folgender Adresse verwenden: "
+"{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}Bis bald!{NEWLINE}(Diese E-"
+"Mail wurde automatisch versendet)"
 
 #: ../includes/fields_defs/texts_fields.php:59
-#, fuzzy
-#| msgid "Delete the contribution"
 msgid "Receipt send for new contribution"
-msgstr "Beitrag löschen"
+msgstr "Quittung für neuen Beitrag senden"
 
 #: ../includes/fields_defs/texts_fields.php:64
 msgid "[{ASSO_NAME}] New registration from {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Neue Registrierung von {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:65
 msgid ""
@@ -3167,14 +3175,18 @@ msgid ""
 "following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-"
 "mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
+"Hallo liebe/r Administrator/in,{NEWLINE}Ein neues Mitglied hat sich "
+"registriert mit den folgenden Informationen:{BR}* Name: {NAME_ADH}{BR}* "
+"Login: {LOGIN}{BR}* E-Mail: {MAIL_ADH}{NEWLINE}Mit freundlichen "
+"Grüßen,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:67
 msgid "New user registration (sent to admin)"
-msgstr ""
+msgstr "Registrierung neuer Benutzer (wird an den Administrator gesendet)"
 
 #: ../includes/fields_defs/texts_fields.php:72
 msgid "[{ASSO_NAME}] New contribution for {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Neuer Beitrag für {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:73
 msgid ""
@@ -3182,16 +3194,17 @@ msgid ""
 "registered (new deadline: {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}Yours "
 "sincerly,{BR}Galette"
 msgstr ""
+"Hallo liebe/r Administrator/in,{NEWLINE}Ein Beitrag von {NAME_ADH} wurde "
+"erfolgreich registriert (neue Frist: {DEADLINE}){BR}{CONTRIB_INFO}{NEWLINE}"
+"Mit freundlichen Grüßen,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:75
-#, fuzzy
-#| msgid "New contribution type"
 msgid "New contribution (sent to admin)"
-msgstr "Neuer Beitragstyp"
+msgstr "Neuer Beitrag (wird Administrator gesendet)"
 
 #: ../includes/fields_defs/texts_fields.php:80
 msgid "[{ASSO_NAME}] New self registration from {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Neue Selbstregistrierung von {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:81
 msgid ""
@@ -3199,14 +3212,18 @@ msgid ""
 "with the following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}"
 "* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
+"Hallo liebe/r Administrator/in,{NEWLINE}Ein neues Mitglied hat sich selbst "
+"online mit den folgenden Informationen registriert:{BR}* Name: "
+"{NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-Mail: {MAIL_ADH}{NEWLINE}Mit "
+"freundlichen Grüßen,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:83
 msgid "New self registration (sent to admin)"
-msgstr ""
+msgstr "Neue Selbstregistrierung (wird Administrator gesendet)"
 
 #: ../includes/fields_defs/texts_fields.php:88
 msgid "[{ASSO_NAME}] Your account has been modified"
-msgstr ""
+msgstr "[{ASSO_NAME}] Ihr Konto wurde geändert"
 
 #: ../includes/fields_defs/texts_fields.php:89
 msgid ""
@@ -3215,16 +3232,18 @@ msgid ""
 "into {LOGIN_URI} to review modifications and/or change it.{NEWLINE}See you "
 "soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Hallo!{NEWLINE}Ihr Konto bei {ASSO_NAME} (mit der Anmeldung'{LOGIN}') wurde "
+"von einem Administrator oder einem Mitarbeiter geändert.{NEWLINE}Sie können "
+"sich anmelden unter {LOGIN_URI} um die Änderungen zu überprüfen und/oder zu "
+"ändern.{NEWLINE}Bis bald!{NEWLINE}(Diese E-Mail wurde automatisch versendet)"
 
 #: ../includes/fields_defs/texts_fields.php:91
-#, fuzzy
-#| msgid "Notify member his account has been modified"
 msgid "Informs user that his account has been modified"
 msgstr "Das Mitglied über die Kontenänderung informieren"
 
 #: ../includes/fields_defs/texts_fields.php:96
 msgid "[{ASSO_NAME}] Your membership is about to expire"
-msgstr ""
+msgstr "[{ASSO_NAME}] Ihre Mitgliedschaft läuft demnächst aus"
 
 #: ../includes/fields_defs/texts_fields.php:97
 msgid ""
@@ -3232,6 +3251,9 @@ msgid ""
 "{DAYS_REMAINING} days.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Hallo,{NEWLINE}Ihre Mitgliedschaft bei {ASSO_NAME} läuft in {DAYS_REMAINING} "
+"Tagen aus.{NEWLINE}Bis bald!{NEWLINE}(Diese E-Mail wurde automatisch "
+"gesendet)"
 
 #: ../includes/fields_defs/texts_fields.php:99
 msgid "Impending due date"
@@ -3239,23 +3261,24 @@ msgstr "Bevorstehendes Fälligkeitsdatum"
 
 #: ../includes/fields_defs/texts_fields.php:104
 msgid "[{ASSO_NAME}] Your membership has expired"
-msgstr ""
+msgstr "[{ASSO_NAME}] Ihre Mitgliedschaft ist abgelaufen"
 
 #: ../includes/fields_defs/texts_fields.php:105
 msgid ""
 "Hello,{NEWLINE}Your {ASSO_NAME} membership has expired for {DAYS_EXPIRED} "
 "days.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Hallo,{NEWLINE}Ihre Mitgliedschaft bei {ASSO_NAME} ist vor {DAYS_EXPIRED} "
+"abgelaufen.{NEWLINE}Bis bald!{NEWLINE}(Diese E-Mail wurde automatisch "
+"versendet)"
 
 #: ../includes/fields_defs/texts_fields.php:107
-#, fuzzy
-#| msgid "Due date"
 msgid "Late due date"
 msgstr "Fälligkeitsdatum"
 
 #: ../includes/fields_defs/texts_fields.php:112
 msgid "[{ASSO_NAME}] Your donation"
-msgstr ""
+msgstr "[{ASSO_NAME}] Ihre Spende"
 
 #: ../includes/fields_defs/texts_fields.php:113
 msgid ""
@@ -3263,40 +3286,47 @@ msgid ""
 "{NEWLINE}{CONTRIB_INFO}{NEWLINE}Thank you!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
+"Hallo,{NEWLINE}Ihre Spende an {ASSO_NAME} wurde erfolgreich "
+"gespeichert.{NEWLINE}{CONTRIB_INFO}{NEWLINE}Vielen Dank!{NEWLINE}(Diese E-"
+"Mail wurde automatisch versendet)"
 
 #: ../includes/fields_defs/texts_fields.php:115
 msgid "Receipt send for new donations"
-msgstr ""
+msgstr "Quittung für neue Spenden senden"
 
 #: ../includes/fields_defs/texts_fields.php:120
 msgid "[{ASSO_NAME}] New donation for {NAME_ADH}"
-msgstr ""
+msgstr "[{ASSO_NAME}] Neue Spende für {NAME_ADH}"
 
 #: ../includes/fields_defs/texts_fields.php:121
 msgid ""
 "Hello dear Administrator,{NEWLINE}A donation from {NAME_ADH} has been "
 "registered{BR}{CONTRIB_INFO}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
+"Hallo liebe/r Administrator/in,{NEWLINE}Eine Spende von {NAME_ADH} wurde "
+"registiert{BR}{CONTRIB_INFO}{NEWLINE}Mit freundlichen Grüßen,{BR}Galette"
 
 #: ../includes/fields_defs/texts_fields.php:123
 msgid "New donation (sent to admin)"
-msgstr ""
+msgstr "Neue Spende (wird Administrator gesendet)"
 
 #: ../includes/fields_defs/texts_fields.php:128
 msgid "[{ASSO_NAME}] Account {NAME_ADH} has been modified"
-msgstr ""
+msgstr "[{ASSO_NAME}] Konto {NAME_ADH} wurde geändert"
 
 #: ../includes/fields_defs/texts_fields.php:129
 msgid ""
 "Hello!{NEWLINE}{NAME_ADH} has modified his/her account.{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
+"Hallo!{NEWLINE}{NAME_ADH} hat ihr/sein Konto geändert.{NEWLINE}Bis "
+"bald!{NEWLINE}(Diese E-Mail wurde automatisch versendet)"
 
 #: ../includes/fields_defs/texts_fields.php:131
-#, fuzzy
-#| msgid "%membername: edit informations"
 msgid "Informs admin a member edit his information"
-msgstr "%membername: Informationen bearbeiten"
+msgstr ""
+"Informiert Administrator, dass ein Mitglied seine/ihre Informationen "
+"bearbeitet"
 
 #: ../install/scripts/upgrade-to-0.8.php:93
 msgid "Unable to create main datadir in %path!"
@@ -3563,7 +3593,7 @@ msgstr "Daten initialisiert."
 
 #: ../install/steps/galette.php:56
 msgid "An error occurred :("
-msgstr ""
+msgstr "Ein Fehler ist aufgetreten :("
 
 #: ../install/steps/check.php:37
 msgid "Welcome to the Galette Install!"
@@ -3830,7 +3860,7 @@ msgstr "Vorhandene Variablen"
 #: ../templates/default/gestion_pdf.tpl:24
 #: ../templates/default/gestion_textes.tpl:54
 msgid "Globally available"
-msgstr ""
+msgstr "Global verfügbar"
 
 #: ../templates/default/gestion_pdf.tpl:29
 #: ../templates/default/gestion_textes.tpl:59
@@ -3856,7 +3886,7 @@ msgstr "Logo ihrer Organisation"
 
 #: ../templates/default/gestion_pdf.tpl:43
 msgid "Current date (Y-m-d)"
-msgstr ""
+msgstr "Aktuelles Datum (Y-m-d)"
 
 #: ../templates/default/gestion_pdf.tpl:47
 msgid "Member's name"
@@ -3885,11 +3915,11 @@ msgstr "Gruppen des Mitglieds (als Liste)"
 #: ../templates/default/gestion_pdf.tpl:67
 #: ../templates/default/gestion_textes.tpl:94
 msgid "Member's ID"
-msgstr ""
+msgstr "Mitgliedskennung"
 
 #: ../templates/default/gestion_pdf.tpl:71
 msgid "Available for invoices and receipts only"
-msgstr ""
+msgstr "Nur verfügbar für Rechnungen und Einnahmen"
 
 #: ../templates/default/gestion_pdf.tpl:76
 msgid "Contribution label"
@@ -3955,7 +3985,7 @@ msgstr "Passwort wiederherstellen"
 
 #: ../templates/default/edit_paymenttype.tpl:9
 msgid "Original string for name, that will be used for translations."
-msgstr ""
+msgstr "Originalzeichenkette für Namen, die für die Übersetzung verwendet wird."
 
 #: ../templates/default/edit_paymenttype.tpl:15
 #: ../templates/default/editer_intitule.tpl:40
@@ -4175,13 +4205,11 @@ msgstr "Informationen über verfügbar Plugins"
 
 #: ../templates/default/page.tpl:82
 msgid "Customize lists fields and order"
-msgstr ""
+msgstr "Listenfelder und -reihenfolge anpassen"
 
 #: ../templates/default/page.tpl:82
-#, fuzzy
-#| msgid "Core fields"
 msgid "Core lists"
-msgstr "Standardfelder"
+msgstr "Hauptlisten"
 
 #: ../templates/default/page.tpl:83
 msgid ""
@@ -4236,7 +4264,7 @@ msgstr "Zahlungsarten verwalten"
 
 #: ../templates/default/page.tpl:91
 msgid "Payment types"
-msgstr ""
+msgstr "Zahlungsarten"
 
 #: ../templates/default/page.tpl:92
 msgid "Download empty adhesion form"
@@ -4291,7 +4319,7 @@ msgstr "E-Mail"
 
 #: ../templates/default/preferences.tpl:13
 msgid "Security"
-msgstr ""
+msgstr "Sicherheit"
 
 #: ../templates/default/preferences.tpl:16
 #: ../templates/default/gestion_adherents.tpl:213
@@ -4326,7 +4354,7 @@ msgstr ""
 #: ../templates/default/gestion_paymentstypes.tpl:61
 #, php-format
 msgid "Translate '%s'"
-msgstr ""
+msgstr "Übersetze '%s'"
 
 #: ../templates/default/preferences.tpl:39
 msgid "Footer text:"
@@ -4409,10 +4437,8 @@ msgid "Date on which you registered your Galette instance."
 msgstr "Datum an dem Galette registriert wurde."
 
 #: ../templates/default/preferences.tpl:105
-#, fuzzy
-#| msgid "Update your informations"
 msgid "Update your information"
-msgstr "Informationen bearbeiten"
+msgstr "Ihre Informationen aktualisieren"
 
 #: ../templates/default/preferences.tpl:108 ../templates/default/desktop.tpl:16
 msgid "Register"
@@ -4456,7 +4482,7 @@ msgstr "Zeilen / Seite:"
 
 #: ../templates/default/preferences.tpl:167 ../templates/default/member.tpl:73
 msgid "After member creation:"
-msgstr ""
+msgstr "Nach Mitgliedserstellung:"
 
 #: ../templates/default/preferences.tpl:169 ../templates/default/member.tpl:75
 msgid "create a new contribution (default action)"
@@ -4464,23 +4490,23 @@ msgstr "einen neuen Beitrag erstellen (Standardaktion)"
 
 #: ../templates/default/preferences.tpl:170 ../templates/default/member.tpl:76
 msgid "create a new transaction"
-msgstr ""
+msgstr "Neue Transaktion erstellen"
 
 #: ../templates/default/preferences.tpl:171 ../templates/default/member.tpl:77
 msgid "create another new member"
-msgstr ""
+msgstr "ein weiteres neues Mitglied erstellen"
 
 #: ../templates/default/preferences.tpl:172 ../templates/default/member.tpl:78
 msgid "show member"
-msgstr ""
+msgstr "Mitglieder anzeigen"
 
 #: ../templates/default/preferences.tpl:173 ../templates/default/member.tpl:79
 msgid "go to members list"
-msgstr ""
+msgstr "zur Mitgliedsliste"
 
 #: ../templates/default/preferences.tpl:174 ../templates/default/member.tpl:80
 msgid "go to main page"
-msgstr ""
+msgstr "zur Hauptseite"
 
 #: ../templates/default/preferences.tpl:178
 msgid "Logging level:"
@@ -4500,7 +4526,7 @@ msgstr "Default Mitgliedsstatus:"
 
 #: ../templates/default/preferences.tpl:191
 msgid "Default account filter:"
-msgstr ""
+msgstr "Standard Kontofilter:"
 
 #: ../templates/default/preferences.tpl:197
 msgid "Default membership extension:"
@@ -4519,16 +4545,16 @@ msgid "(dd/mm)"
 msgstr "(TT/MM)"
 
 #: ../templates/default/preferences.tpl:207
-#, fuzzy
-#| msgid "Number of members:"
 msgid "Number of months offered:"
-msgstr "Anzahl Mitglieder:"
+msgstr "Anzahl der angebotenen Monate:"
 
 #: ../templates/default/preferences.tpl:208
 msgid ""
 "When using the beginning of membership option; you can offer the last months "
 "of the year."
 msgstr ""
+"Wenn Sie die Option \"Beginn der Mitgliedschaft\" nutzen; können Sie die "
+"letzten Monate des Jahres anbieten."
 
 #: ../templates/default/preferences.tpl:208
 msgid ""
@@ -4536,6 +4562,10 @@ msgid ""
 "All created contributions in current year will be valid until this date, but "
 "as of October, they will be valid for the entire next year."
 msgstr ""
+"Nehmen wir an, Ihr Angebot gilt für die letzten 2 Monate und wird am 31. "
+"Dezember verlängert. Alle im laufenden Jahr erstellten Beiträge sind bis zu "
+"diesem Datum gültig, aber ab Oktober sind sie für das gesamte nächste Jahr "
+"gültig."
 
 #: ../templates/default/preferences.tpl:212
 msgid "Public pages enabled?"
@@ -4601,11 +4631,11 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:243
 msgid "Show identifiers"
-msgstr ""
+msgstr "Kennungen anzeigen"
 
 #: ../templates/default/preferences.tpl:244
 msgid "Display database identifiers in related windows"
-msgstr ""
+msgstr "Datenbankkennungen in zugehörigen Fenstern anzeigen"
 
 #: ../templates/default/preferences.tpl:250
 msgid "Mail settings"
@@ -4644,7 +4674,7 @@ msgstr "E-Mail-Adresse des Administrators:"
 
 #: ../templates/default/preferences.tpl:278
 msgid "Recipient of new online registation and edition emails"
-msgstr ""
+msgstr "Empfänger von E-Mails bei Online-Registierung und Bearbeitung"
 
 #: ../templates/default/preferences.tpl:280
 msgid ""
@@ -4941,7 +4971,7 @@ msgstr "Postleitzahl - Stadt"
 #: ../templates/default/liste_membres.tpl:77
 #: ../templates/default/group_persons.tpl:8
 msgid "Nickname"
-msgstr "Rufname"
+msgstr "Spitzname"
 
 #: ../templates/default/preferences.tpl:496
 msgid "Profession"
@@ -4960,6 +4990,9 @@ msgid ""
 "You can enter either:<br/>- a year,<br/>- two years with a slash as "
 "separator,<br/>- the string 'DEADLINE' to use member deadline"
 msgstr ""
+"Sie können wählen zwischen:<br/>- einem Jahr,<br/>- zwei Jahre mit einem "
+"Schrägstrich als Trennzeichen,<br/>- die Zeichenkette 'Frist' zur Verwendung "
+"der Mitgliederfrist"
 
 #: ../templates/default/preferences.tpl:505
 msgid ""
@@ -4970,126 +5003,133 @@ msgstr ""
 "und 6 Zeilen.<br/>Bitte prüfe die Ränder und Abstände ;)"
 
 #: ../templates/default/preferences.tpl:530
-#, fuzzy
-#| msgid "Search parameters"
 msgid "Security parameters"
-msgstr "Suchparameter"
+msgstr "Sicherheitsparameter"
 
 #: ../templates/default/preferences.tpl:532
 #: ../templates/default/preferences.tpl:533
 msgid "Minimum password length required for all accounts. Minimal size is 6."
 msgstr ""
+"Minimale Passwortlänge, die für alle Konten erforderlich ist. Mindestlänge "
+"beträgt 6 Zeichen."
 
 #: ../templates/default/preferences.tpl:532
-#, fuzzy
-#| msgid "Password:"
 msgid "Password length:"
-msgstr "Passwort:"
+msgstr "Passwortlänge:"
 
 #: ../templates/default/preferences.tpl:537
 msgid "Enable password blacklists"
-msgstr ""
+msgstr "Aktiviere Passwort-Sperrliste"
 
 #: ../templates/default/preferences.tpl:537
 msgid "Enable blacklists:"
-msgstr ""
+msgstr "Aktiviere Sperrlisten:"
 
 #: ../templates/default/preferences.tpl:538
 msgid ""
 "If you enable blacklists; it will not be possible to use any of blacklisted "
 "passwords. A list is provided along with Galette, but you can add you owns."
 msgstr ""
+"Wenn Sie Sperrlisten aktivieren; wird es nicht möglich sein, Passwörter auf "
+"der Sperrliste zu verwenden. Eine List wird von Galette zur Verfügung "
+"gestellt, aber Sie können Ihre eigene Sperrliste hinzufügen."
 
 #: ../templates/default/preferences.tpl:542
 msgid "Enforce password strength"
-msgstr ""
+msgstr "Erzwinge Passwortlänge"
 
 #: ../templates/default/preferences.tpl:542
 msgid "Password strength:"
-msgstr ""
+msgstr "Passwortstärke:"
 
 #: ../templates/default/preferences.tpl:544
 msgid "Enforce minimal password strength for all password."
-msgstr ""
+msgstr "Erzwinge minimal Passwortstärke für alle Passwörter."
 
 #: ../templates/default/preferences.tpl:545
 msgid "Levels are:"
-msgstr ""
+msgstr "Stufen sind:"
 
 #: ../templates/default/preferences.tpl:546
 msgid "for no strength enforcement"
-msgstr ""
+msgstr "kein erzwingen von Passwortstärke"
 
 #: ../templates/default/preferences.tpl:547
 #: ../templates/default/preferences.tpl:556
 msgid "Weak"
-msgstr ""
+msgstr "Schwach"
 
 #: ../templates/default/preferences.tpl:547
 msgid "require at least one matched rule"
-msgstr ""
+msgstr "Mindestens eine übereinstimmende Regel erfordern"
 
 #: ../templates/default/preferences.tpl:548
 #: ../templates/default/preferences.tpl:557
 msgid "Medium"
-msgstr ""
+msgstr "Mittel"
 
 #: ../templates/default/preferences.tpl:548
 msgid "require at least two matched rules"
-msgstr ""
+msgstr "mindestens zwei übereinstimmende Regel erfordern"
 
 #: ../templates/default/preferences.tpl:549
 #: ../templates/default/preferences.tpl:558
 msgid "Strong"
-msgstr ""
+msgstr "Stark"
 
 #: ../templates/default/preferences.tpl:549
 msgid "require at least three matched rules (recommended for most usages)"
 msgstr ""
+"mindestens drei übereinstimmende Regeln erfordern (für die meisten "
+"Verwendenung empfohlen)"
 
 #: ../templates/default/preferences.tpl:550
 msgid "Very Strong"
-msgstr ""
+msgstr "Sehr stark"
 
 #: ../templates/default/preferences.tpl:550
 msgid "requires all rules."
-msgstr ""
+msgstr "Erzwingt alle Regeln."
 
 #: ../templates/default/preferences.tpl:551
 msgid ""
 "Rules include lower case characters, upper case characters, numbers, and "
 "special characters."
 msgstr ""
+"Regeln beinhalten Kleinbuchstaben, Großbuchstaben, Nummern und Sonderzeichen."
 
 #: ../templates/default/preferences.tpl:552
 msgid ""
 "Note that with any enforcement level, user cannot use his personal "
 "information (name, login, ...) as password."
 msgstr ""
+"Beachten Sie, dass mit jedem Level der Passwortstärke, ein Benutzer nicht "
+"seine/ihre persönlichen Informationen (Name, Login, ...) als Passwort "
+"verwenden kann."
 
 #: ../templates/default/preferences.tpl:555
 msgid "None (default)"
-msgstr ""
+msgstr "Kein Level (Standard)"
 
 #: ../templates/default/preferences.tpl:559
 msgid "Very strong"
-msgstr ""
+msgstr "Sehr stark"
 
 #: ../templates/default/preferences.tpl:563
 #: ../templates/default/preferences.tpl:564
 msgid "Test a password with current selected values."
-msgstr ""
+msgstr "Testen Sie ein Passwort mit aktuell ausgewählten Werten."
 
 #: ../templates/default/preferences.tpl:563
-#, fuzzy
-#| msgid "New password:"
 msgid "Test a password:"
-msgstr "Neues Passwort:"
+msgstr "Passwort testen:"
 
 #: ../templates/default/preferences.tpl:564
 msgid ""
 "Do not forget to save your preferences if you're happy with the result ;)"
 msgstr ""
+"Vergessen Sie nicht ihre Einstellungen zu sichern, wenn sie glücklich mit "
+"ihrem Ergebnis sind ;)"
 
 #: ../templates/default/preferences.tpl:572
 msgid "Admin account (independant of members)"
@@ -5396,6 +5436,8 @@ msgid ""
 "Please make sure to select at least one contribution from the list to "
 "perform this action."
 msgstr ""
+"Bitte wählen Sie mindestens einen Beitrag aus der Liste aus, um diese Aktion "
+"auszuführen."
 
 #: ../templates/default/gestion_contributions.tpl:342
 #: ../templates/default/gestion_adherents.tpl:455
@@ -5539,35 +5581,27 @@ msgstr "Zugriffsrechte auf die Datenbank"
 
 #: ../templates/default/js_pwdcheck.tpl:30
 msgid "Password is valid :)"
-msgstr ""
+msgstr "Passwort ist gültig :)"
 
 #: ../templates/default/js_pwdcheck.tpl:33
-#, fuzzy
-#| msgid "Password mismatch!"
 msgid "Password is not valid!"
-msgstr "Passwörter stimmen nicht überein!"
+msgstr "Passwort ist ungültig!"
 
 #: ../templates/default/js_pwdcheck.tpl:60
-#, fuzzy
-#| msgid "An error occurred sending test email :("
 msgid "An error occured checking password :("
-msgstr "Beim Senden von der Test-E-Mail ist ein Fehler aufgetreten :("
+msgstr "Beim Überprüfen des Passworts ist ein Fehler aufgetreten :("
 
 #: ../templates/default/desktop.tpl:6
 msgid "Help us know about you!"
 msgstr "Hilf uns mehr über Dich zu erfahren!"
 
 #: ../templates/default/desktop.tpl:10
-#, fuzzy
-#| msgid ""
-#| "Take a moment to share some informations with us so we can know better "
-#| "Galette's uses."
 msgid ""
 "Take a moment to share some information with us so we can know better "
 "Galette's uses."
 msgstr ""
-"Bitte nimm Dir einen Moment Zeit damit wir mehr über die Nutzung von Galette "
-"verstehen."
+"Bitte nimm Dir einen Moment Zeit, damit wir mehr über die Nutzung von "
+"Galette verstehen."
 
 #: ../templates/default/desktop.tpl:13
 msgid "Send anonymous and imprecise data about your Galette instance"
@@ -5704,7 +5738,7 @@ msgstr "Neue Mailkampagne erstellen"
 #: ../templates/default/gestion_mailings.tpl:212
 #: ../templates/default/mailing_adherents.tpl:171
 msgid "An error occurred displaying preview :("
-msgstr ""
+msgstr "Beim Anzeigen der Vorschau ist ein Fehler aufgetreten :("
 
 #: ../templates/default/gestion_textes.tpl:7
 msgid "Choose an entry"
@@ -5732,11 +5766,11 @@ msgstr "Anmelde URI"
 
 #: ../templates/default/gestion_textes.tpl:71
 msgid "Insert a carriage return"
-msgstr ""
+msgstr "Einen Zeilenumbruch einfügen"
 
 #: ../templates/default/gestion_textes.tpl:73
 msgid "Insert a new blank line"
-msgstr ""
+msgstr "Eine Leerzeile einfügen"
 
 #: ../templates/default/gestion_textes.tpl:77
 msgid "Available with reservations"
@@ -5764,7 +5798,7 @@ msgstr "Login für Mitglieder"
 
 #: ../templates/default/gestion_textes.tpl:100
 msgid "Available only for new password request"
-msgstr ""
+msgstr "Nur für neue Passwortanfrage verfügbar"
 
 #: ../templates/default/gestion_textes.tpl:105
 msgid "Galette's change password URI"
@@ -5776,7 +5810,7 @@ msgstr "Link validiert"
 
 #: ../templates/default/gestion_textes.tpl:111
 msgid "Available only for new contributions"
-msgstr ""
+msgstr "Nur für neue Beträge verfügbar"
 
 #: ../templates/default/gestion_textes.tpl:116
 msgid "Member's deadline"
@@ -5788,15 +5822,15 @@ msgstr "Beitragstyp"
 
 #: ../templates/default/gestion_textes.tpl:128
 msgid "Direct link for member card download"
-msgstr ""
+msgstr "Direkter Link zum Download der Mitgliedskarte"
 
 #: ../templates/default/gestion_textes.tpl:130
 msgid "Direct link for invoice/receipt download"
-msgstr ""
+msgstr "Direkter Link zum Download der Rechnung/Quittung"
 
 #: ../templates/default/gestion_textes.tpl:134
 msgid "Available only for reminders"
-msgstr ""
+msgstr "Nur verfügbar für Erinnerungen"
 
 #: ../templates/default/gestion_textes.tpl:139
 msgid "Membership remaining days"
@@ -5838,7 +5872,7 @@ msgstr "Modell löschen und Standard wiederherstellen"
 
 #: ../templates/default/import_model.tpl:43
 msgid "Remove model"
-msgstr ""
+msgstr "Modell löschen"
 
 #: ../templates/default/import_model.tpl:72
 msgid "Store new model"
@@ -5906,8 +5940,6 @@ msgid "OK"
 msgstr "OK"
 
 #: ../templates/default/gestion_adherents.tpl:11
-#, fuzzy
-#| msgid "%membername: edit informations"
 msgid "%membername: edit information"
 msgstr "%membername: Informationen bearbeiten"
 
@@ -5950,16 +5982,16 @@ msgstr "Bitte wählen Sie ein Gruppe"
 
 #: ../templates/default/gestion_adherents.tpl:71
 msgid "Apply filters"
-msgstr ""
+msgstr "Filter anwenden"
 
 #: ../templates/default/gestion_adherents.tpl:75
 msgid "Save selected criteria"
-msgstr ""
+msgstr "Ausgewählte Kriterien speichern"
 
 #: ../templates/default/gestion_adherents.tpl:79
 #: ../templates/default/gestion_adherents.tpl:101
 msgid "Reset all filters to defaults"
-msgstr ""
+msgstr "All Filter auf ihren Standard zurücksetzen"
 
 #: ../templates/default/gestion_adherents.tpl:81
 msgid "Members that have an email address:"
@@ -5981,15 +6013,15 @@ msgstr "Erweiterter Suchmodus"
 
 #: ../templates/default/gestion_adherents.tpl:92
 msgid "Change search criteria"
-msgstr ""
+msgstr "Suchkriterien ändern"
 
 #: ../templates/default/gestion_adherents.tpl:94
 msgid "Change criteria"
-msgstr ""
+msgstr "Kriterien ändern"
 
 #: ../templates/default/gestion_adherents.tpl:96
 msgid "Save current advanced search criteria"
-msgstr ""
+msgstr "Aktuelle erweiterte Suchkriterien speichern"
 
 #: ../templates/default/gestion_adherents.tpl:103
 msgid "Show/hide query"
@@ -6001,7 +6033,7 @@ msgstr "Abfrage anzeigen /verbergen"
 #, php-format
 msgid "%count member"
 msgid_plural "%count members"
-msgstr[0] "%count Mitglieder"
+msgstr[0] "%count Mitglied"
 msgstr[1] "%count Mitglieder"
 
 #: ../templates/default/gestion_adherents.tpl:129
@@ -6012,7 +6044,7 @@ msgstr "Mitgliedsnummer"
 #: ../templates/default/gestion_adherents.tpl:413
 #: ../templates/default/gestion_adherents.tpl:414
 msgid "Is a company"
-msgstr ""
+msgstr "Ist eine Firma"
 
 #: ../templates/default/gestion_adherents.tpl:184
 #: ../templates/default/gestion_adherents.tpl:407
@@ -6022,7 +6054,7 @@ msgstr "Ist ein Mann"
 
 #: ../templates/default/gestion_adherents.tpl:189
 msgid "Is a women"
-msgstr ""
+msgstr "Ist eine Frau"
 
 #: ../templates/default/gestion_adherents.tpl:197
 #: ../templates/default/gestion_adherents.tpl:311
@@ -6059,7 +6091,7 @@ msgstr "Als CSV exportieren"
 
 #: ../templates/default/gestion_adherents.tpl:353
 msgid "Reading the list"
-msgstr ""
+msgstr "Lesen der Liste"
 
 #: ../templates/default/gestion_adherents.tpl:357
 msgid "Active account"
@@ -6136,6 +6168,8 @@ msgstr "Teilnehmer Details"
 #: ../templates/default/gestion_adherents.tpl:720
 msgid "An error occurred displaying attendance sheet details interface :("
 msgstr ""
+"Bei der Anzeige von den Details des Anwesenheitsblattes ist ein Fehler "
+"aufgetreten :("
 
 #: ../templates/default/saved_searches.tpl:9
 #: ../templates/default/saved_searches.tpl:25
@@ -6230,7 +6264,6 @@ msgstr "Berechtigungen für „%field“ ändern"
 #: ../templates/default/config_lists.tpl:19
 #: ../templates/default/config_lists.tpl:43
 #: ../templates/default/config_fields.tpl:39
-#, fuzzy
 msgid "Inaccessible"
 msgstr "Unzugänglich"
 
@@ -6456,6 +6489,7 @@ msgstr "Bitte erstellen Sie ein Mitglied"
 #: ../templates/default/gestion_groupes.tpl:316
 msgid "An error occurred displaying members interface :("
 msgstr ""
+"Bei der Anzeige der Mitglieder-Schnittstelle ist ein fehler aufgetreten :("
 
 #: ../templates/default/ajouter_transaction.tpl:182
 msgid "Contributions selection"
@@ -6495,7 +6529,7 @@ msgstr "Manager verwalten"
 
 #: ../templates/default/group.tpl:84
 msgid "Current group (and attached people) as PDF"
-msgstr ""
+msgstr "Aktuelle Gruppe (und dazugehörige Personen) als PDF"
 
 #: ../templates/default/group.tpl:86
 msgid "Group PDF"
@@ -6666,20 +6700,18 @@ msgstr "Hinzufügen"
 
 #: ../templates/default/js_chosen_adh.tpl:37
 msgid "Load following members..."
-msgstr ""
+msgstr "Lade folgende Mitglieder..."
 
 #: ../templates/default/js_chosen_adh.tpl:55
 #: ../templates/default/js_chosen_adh.tpl:95
 msgid "An error occurred retrieving members :("
-msgstr ""
+msgstr "Bei Abrufen der Mitglieder ist ein Fehler aufgetreten :("
 
 #: ../templates/default/js_chosen_adh.tpl:77
 msgid "Load previous members..."
-msgstr ""
+msgstr "Lade vorherige Mitglieder..."
 
 #: ../templates/default/mailing_adherents.tpl:12
-#, fuzzy
-#| msgid "Mailing informations"
 msgid "Mailing information"
 msgstr "Informationen zur Mailkampagne"
 
@@ -6932,8 +6964,6 @@ msgid "Remove"
 msgstr "Entfernen"
 
 #: ../templates/default/ajouter_contribution.tpl:10
-#, fuzzy
-#| msgid "Related transaction informations"
 msgid "Related transaction information"
 msgstr "Informationen zu verknüpften Transaktionen"
 
@@ -6972,7 +7002,7 @@ msgstr "Neue Spende verbunden"
 
 #: ../templates/default/ajouter_contribution.tpl:71
 msgid "Search for name or ID and pick member"
-msgstr ""
+msgstr "Suche nach Namen oder Kennung und wähle ein Mitglied aus"
 
 #: ../templates/default/ajouter_contribution.tpl:92
 #: ../templates/default/dispatch_type.tpl:70
@@ -6980,10 +7010,6 @@ msgid "Reload"
 msgstr "Neu laden"
 
 #: ../templates/default/ajouter_contribution.tpl:92
-#, fuzzy
-#| msgid ""
-#| "Reload date informations according to selected member and contribution "
-#| "type"
 msgid ""
 "Reload date information according to selected member and contribution type"
 msgstr ""
@@ -7028,7 +7054,7 @@ msgstr ""
 
 #: ../templates/default/ajouter_contribution.tpl:221
 msgid "An error occurred retrieving dates :("
-msgstr ""
+msgstr "Beim Abrufen der Daten ist ein Fehler aufgetreten :("
 
 #: ../templates/default/ajouter_contribution.tpl:236
 msgid "Contribution amount should be greater than %max"
@@ -7077,7 +7103,7 @@ msgstr "Nächste(r)"
 
 #: ../templates/default/voir_adherent.tpl:24
 msgid "Generate members's card"
-msgstr ""
+msgstr "Erstelle Mitgliedskarte"
 
 #: ../templates/default/voir_adherent.tpl:28
 msgid "Generate Member Card"
@@ -7099,7 +7125,7 @@ msgstr "Neues Passwort"
 
 #: ../templates/default/voir_adherent.tpl:58
 msgid "Edit member"
-msgstr ""
+msgstr "Bearbeite Mitglied"
 
 #: ../templates/default/voir_adherent.tpl:68
 msgid "View member's contributions"
@@ -7111,11 +7137,11 @@ msgstr "Beiträge anzeigen"
 
 #: ../templates/default/voir_adherent.tpl:96
 msgid "Create a new member with %name information."
-msgstr ""
+msgstr "Erstelle ein neues Mitglied mit %name Informationen."
 
 #: ../templates/default/voir_adherent.tpl:100
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplizieren"
 
 #: ../templates/default/voir_adherent.tpl:115
 msgid "Family"
@@ -7214,32 +7240,24 @@ msgid "Statuts"
 msgstr "Status"
 
 #: ../templates/default/advanced_search.tpl:97
-#, fuzzy
-#| msgid "Advanced search"
 msgid "Advanced groups search"
-msgstr "Erweiterte Suche"
+msgstr "Erweiterte Gruppensuche"
 
 #: ../templates/default/advanced_search.tpl:97
 msgid "Experimental"
-msgstr ""
+msgstr "Experimentell"
 
 #: ../templates/default/advanced_search.tpl:104
-#, fuzzy
-#| msgid "Add new free search criteria"
 msgid "Add new group search criteria"
-msgstr "Neue Suchkriterien hinzufügen"
+msgstr "Neue Gruppensuchkriterien hinzufügen"
 
 #: ../templates/default/advanced_search.tpl:108
-#, fuzzy
-#| msgid "Selected groups"
 msgid "In all selected groups"
-msgstr "Gewählte Gruppen"
+msgstr "In allen ausgewählten Gruppen"
 
 #: ../templates/default/advanced_search.tpl:109
-#, fuzzy
-#| msgid "Selected groups"
 msgid "In any of selected groups"
-msgstr "Gewählte Gruppen"
+msgstr "In einer der ausgewählten Gruppen"
 
 #: ../templates/default/advanced_search.tpl:125
 #: ../templates/default/advanced_search.tpl:294
@@ -7320,11 +7338,11 @@ msgstr "endet mit"
 
 #: ../templates/default/directlink.tpl:6
 msgid "Please confirm your email address:"
-msgstr ""
+msgstr "Bitte bestätigen Sie Ihre E-Mail Adresse:"
 
 #: ../templates/default/directlink.tpl:9
 msgid "Get my document"
-msgstr ""
+msgstr "Mein Dokument erhalten"
 
 #: ../templates/default/config_fields.tpl:5
 #: ../templates/default/config_fields.tpl:85
@@ -7411,7 +7429,7 @@ msgstr "Unbekannt"
 
 #: ../templates/default/plugins.tpl:83
 msgid "Activate plugin '%name'"
-msgstr ""
+msgstr "Aktiviere '%name' Plugin"
 
 #: ../templates/default/plugins.tpl:90
 msgid "No inactive plugin."
@@ -7425,14 +7443,14 @@ msgstr "Plugindatenbank initialisiert: %name"
 msgid ""
 "An error occurred displaying plugin database initialization interface :("
 msgstr ""
+"Bei der Anzeige der Plugin-Datenbankinitialisierungsschnittstelle ist ein "
+"Fehler aufgetreten :("
 
 #: ../templates/default/gestion_groupes.tpl:19
 msgid "New group"
 msgstr "Neue Gruppe"
 
 #: ../templates/default/gestion_groupes.tpl:26
-#, fuzzy
-#| msgid "Group informations"
 msgid "Group information"
 msgstr "Gruppeninformationen"
 
@@ -7451,11 +7469,11 @@ msgstr "Alle-Gruppen-PDF"
 
 #: ../templates/default/gestion_groupes.tpl:90
 msgid "An error occurred reordering groups :("
-msgstr ""
+msgstr "Beim Neuordnen der Gruppen ist ein Fehler aufgetreten :("
 
 #: ../templates/default/gestion_groupes.tpl:127
 msgid "An error occurred loading selected group :("
-msgstr ""
+msgstr "Beim Laden der ausgewählten Gruppe ist ein Fehler aufgetreten :("
 
 #: ../templates/default/gestion_groupes.tpl:137
 msgid "Add a new group"
@@ -7472,6 +7490,7 @@ msgstr "Der Gruppenname existiert schon."
 #: ../templates/default/gestion_groupes.tpl:166
 msgid "An error occurred checking name uniqueness :("
 msgstr ""
+"Beim Überprüfen der Einzigartigkeit des Namens ist ein Fehler aufgetreten :("
 
 #: ../templates/default/gestion_groupes.tpl:170
 msgid "Pleade provide a group name"
@@ -7557,7 +7576,7 @@ msgstr "Validieren"
 
 #: ../templates/default/photo_dnd.tpl:60
 msgid "An error occurred sending photo :("
-msgstr ""
+msgstr "Beim Senden des Fotos ist ein Fehler aufgetreten :("
 
 #: ../templates/default/gestion_intitule_content.tpl:14
 #: ../templates/default/gestion_intitule_content.tpl:33
@@ -7604,11 +7623,11 @@ msgstr "Transaktion %id"
 
 #: ../templates/default/gestion_transactions.tpl:129
 msgid "Edit transaction #%id"
-msgstr ""
+msgstr "Bearbeite Transaktion #%id"
 
 #: ../templates/default/gestion_transactions.tpl:136
 msgid "Remove transaction #%id"
-msgstr ""
+msgstr "Entferne Transaktion #%id"
 
 #: ../templates/default/gestion_transactions.tpl:142
 msgid "no transaction"
@@ -7711,20 +7730,16 @@ msgstr ""
 "gesendet."
 
 #: ../templates/default/telemetry.tpl:11
-#, fuzzy
-#| msgid "Send telemetry informations"
 msgid "Send telemetry information"
 msgstr "Nutzungsdaten übermitteln"
 
 #: ../templates/default/telemetry.tpl:39
-#, fuzzy
-#| msgid "An error occurred sending telemetry informations :("
 msgid "An error occurred sending telemetry information :("
 msgstr "Beim Senden von Telemetrie-Informationen ist ein Fehler aufgetreten :("
 
 #: ../templates/default/gestion_paymentstypes.tpl:17
 msgid "Add payment type"
-msgstr ""
+msgstr "Zahlungsart hinzufügen"
 
 #: ../templates/default/gestion_paymentstypes.tpl:20
 msgid "Label"
@@ -7738,12 +7753,12 @@ msgstr "%s Zahlungsart"
 #: ../templates/default/gestion_paymentstypes.tpl:54
 #, php-format
 msgid "Edit '%s' payment type"
-msgstr ""
+msgstr "Bearbeite die Zahlungsart '%s'"
 
 #: ../templates/default/gestion_paymentstypes.tpl:72
 #, php-format
 msgid "Delete '%s' payment type"
-msgstr ""
+msgstr "Lösche die Zahlungsart '%s'"
 
 #: ../templates/default/dispatch_type.tpl:10
 msgid "Related transaction informations"
@@ -7757,10 +7772,8 @@ msgstr ""
 "Beitragsarten neu laden"
 
 #: ../templates/default/dispatch_type.tpl:195
-#, fuzzy
-#| msgid "An error occurred sending test email :("
 msgid "An error occured retrieving dates :("
-msgstr "Beim Senden von der Test-E-Mail ist ein Fehler aufgetreten :("
+msgstr "Beim Abrufen der Daten ist ein Fehler aufgetreten :("
 
 #: ../templates/default/plugin_info.tpl:6
 msgid "By %name"
@@ -7799,8 +7812,6 @@ msgid "No ACLs!"
 msgstr "Keine ACL!"
 
 #: ../templates/default/plugin_info.tpl:44
-#, fuzzy
-#| msgid "Raw informations"
 msgid "Raw information"
 msgstr "Unbearbeitete Informationen"
 
@@ -8002,14 +8013,6 @@ msgid "Do member want to appear publically?"
 msgstr "Sollen ihre Angaben in der öffentlichen Liste enthalten sein?"
 
 #: ../templates/default/forms_types.tpl:81
-#, fuzzy
-#| msgid ""
-#| "If you check this box (and if you are up to date with your "
-#| "contributions), your full name, website address ad other informations "
-#| "will be publically visible on the members list.<br/>If you've uploaded a "
-#| "photo, it will be displayed on the trombinoscope page.<br/>Note that "
-#| "administrators can disabled public pages, this setting will have no "
-#| "effect in that case."
 msgid ""
 "If you check this box (and if you are up to date with your contributions), "
 "your full name, website address ad other information will be publically "
