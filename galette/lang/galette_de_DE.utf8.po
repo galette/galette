@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-10-24 14:26+0000\n"
+"PO-Revision-Date: 2020-10-25 21:59+0000\n"
 "Last-Translator: Stefanie Schreiner <stefanie-schreiner@hotmail.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
@@ -6157,9 +6157,8 @@ msgid "New"
 msgstr "Neu"
 
 #: ../templates/default/gestion_adherents.tpl:519
-#, fuzzy
 msgid "Search title"
-msgstr "Titel der Suche"
+msgstr "Suchtitel"
 
 #: ../templates/default/gestion_adherents.tpl:692
 msgid "Attendance sheet details"
