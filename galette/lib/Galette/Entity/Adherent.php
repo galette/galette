@@ -1353,6 +1353,7 @@ class Adherent
     public function store()
     {
         global $hist, $emitter;
+        $event = null;
 
         try {
             $values = array();
@@ -1457,7 +1458,7 @@ class Adherent
                     }
                     $success = true;
 
-                    $emitter->emit('member.add', $this);
+                    $event = 'member.add';
                 } else {
                     $hist->add(_T("Fail to add new member."));
                     throw new \Exception(
@@ -1497,7 +1498,7 @@ class Adherent
                 }
                 $success = true;
 
-                $emitter->emit('member.edit', $this);
+                $event = 'member.edit';
             }
 
             //dynamic fields
@@ -1505,6 +1506,10 @@ class Adherent
                 $success = $this->dynamicsStore();
             }
 
+            //send event at the end of process, once all has been stored
+            if ($event !== null) {
+                $emitter->emit($event, $this);
+            }
             return $success;
         } catch (\Exception $e) {
             Analog::log(
