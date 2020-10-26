@@ -395,6 +395,9 @@ def add_libs(rel_name, galette_archive):
             if root.endswith('tcpdf/fonts'):
                 if dirname != 'dejavu-fonts-ttf-2.34':
                     shutil.rmtree(os.path.join(root, dirname))
+            if root.endswith('vendor'):
+                if dirname == 'bin':
+                    shutil.rmtree(os.path.join(root, dirname))
 
         for filename in filenames:
             if os.path.islink(os.path.join(root, filename)):
