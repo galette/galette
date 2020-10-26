@@ -19,15 +19,17 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-10-25 21:59+0000\n"
-"Last-Translator: Stefanie Schreiner <stefanie-schreiner@hotmail.de>\n"
-"Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
-"de/>\n"
+"PO-Revision-Date: 2020-10-26 08:09+0100\n"
+"Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/galette/galette/de/"
+">\n"
 "Language: de_DE\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.3.2-dev\n"
+"X-Generator: Poedit 2.4.1\n"
+"Project-Id-Version: \n"
+"MIME-Version: 1.0\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -394,7 +396,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1835
 msgid "Account modification email sent to admin."
-msgstr "E-Mail zur Kontoänderung an den Administrator gesendet."
+msgstr "E-Mail zur Kontoänderung an den Admin gesendet."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1839
 msgid "A problem happened while sending account email to admin"
@@ -557,8 +559,7 @@ msgstr "E-Mail an den Benutzer %name (%email) gesendet"
 msgid ""
 "A problem happened while sending contribution receipt to user %name (%email)"
 msgstr ""
-"Beim Senden der Beitragsquittung an %name (%email) ist ein Problem "
-"aufgetreten"
+"Beim Senden der Beitragsquittung an %name (%email) ist ein Problem aufgetreten"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:728
 msgid ""
@@ -955,8 +956,8 @@ msgstr "Administrationswerkzeuge"
 #: ../lib/Galette/Controllers/AdminToolsController.php:81
 #: ../install/steps/check.php:110
 msgid ""
-"Some PHP modules are missing. Please install them or contact your support."
-"<br/>More information on required modules may be found in the documentation."
+"Some PHP modules are missing. Please install them or contact your support.<br/"
+">More information on required modules may be found in the documentation."
 msgstr ""
 "Einige php Module fehlen. Bitte installieren Sie diese oder kontaktieren Sie "
 "den Support.<br/>Weitere Informationen über die benötigten Module können Sie "
@@ -993,8 +994,8 @@ msgstr "Anmeldename und Passwort wurden erfolgreich erstellt (%i bearbeitet)."
 #: ../lib/Galette/Controllers/AdminToolsController.php:154
 msgid "An error occurred filling empty logins and passwords :("
 msgstr ""
-"Beim Füllen leerer Anmeldungsinfos und Passwörter ist ein Fehler "
-"aufgetreten :("
+"Beim Füllen leerer Anmeldungsinfos und Passwörter ist ein Fehler aufgetreten :"
+"("
 
 #: ../lib/Galette/Controllers/HistoryController.php:114
 #: ../install/steps/check.php:74
@@ -1182,8 +1183,7 @@ msgstr "Datenbank"
 msgid "Database access and permissions"
 msgstr "Datenbankzugriff und Berechtigungen"
 
-#: ../lib/Galette/Core/Install.php:133
-#: ../install/steps/db_select_version.php:45
+#: ../lib/Galette/Core/Install.php:133 ../install/steps/db_select_version.php:45
 msgid "Previous version selection"
 msgstr "Vorherige Version ausgewählt"
 
@@ -1441,8 +1441,7 @@ msgstr "entweder 'mysql' oder 'pqsql' PDO Treiber"
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:89
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:121
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:176
-#: ../lib/Galette/Entity/Adherent.php:714
-#: ../lib/Galette/Entity/Adherent.php:732
+#: ../lib/Galette/Entity/Adherent.php:714 ../lib/Galette/Entity/Adherent.php:732
 #: ../lib/Galette/Entity/Adherent.php:748
 #: ../lib/Galette/Entity/Adherent.php:1134
 #: ../lib/Galette/Entity/Adherent.php:1168
@@ -1465,8 +1464,7 @@ msgstr "entweder 'mysql' oder 'pqsql' PDO Treiber"
 #: ../lib/Galette/Entity/Contribution.php:1271
 #: ../lib/Galette/Entity/ImportModel.php:212
 #: ../lib/Galette/Entity/PdfModel.php:145
-#: ../lib/Galette/Entity/SavedSearch.php:292
-#: ../lib/Galette/Entity/Group.php:621
+#: ../lib/Galette/Entity/SavedSearch.php:292 ../lib/Galette/Entity/Group.php:621
 #: ../lib/Galette/Filters/TransactionsList.php:133
 #: ../lib/Galette/Filters/TransactionsList.php:215
 #: ../lib/Galette/Filters/TransactionsList.php:224
@@ -1751,8 +1749,7 @@ msgstr "Name"
 msgid "Email"
 msgstr "E-Mail"
 
-#: ../lib/Galette/IO/PdfGroups.php:181
-#: ../lib/Galette/Entity/ListsConfig.php:224
+#: ../lib/Galette/IO/PdfGroups.php:181 ../lib/Galette/Entity/ListsConfig.php:224
 msgid "Phone"
 msgstr "Telefon"
 
@@ -2512,8 +2509,8 @@ msgid ""
 "The Galette instance you are requesting is currently under maintenance. "
 "Please come back later."
 msgstr ""
-"Das Galette System ist vorübergehend im Wartungsmodus. BItte versuchen Sie "
-"es später nochmal."
+"Das Galette System ist vorübergehend im Wartungsmodus. BItte versuchen Sie es "
+"später nochmal."
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:184
 msgid "Your Galette database is not present, or not up to date."
@@ -2904,8 +2901,8 @@ msgstr "Vorname"
 #: ../includes/i18n.inc.php:326
 msgid ""
 "The minimum contribution for each type of membership are defined on the "
-"website of the association. The amount of donations are free to be decided "
-"by the generous donor."
+"website of the association. The amount of donations are free to be decided by "
+"the generous donor."
 msgstr ""
 "Die Mindestbeiträge für jede Beitragsart sind auf der Webseite des Vereins "
 "definiert. Spendenbeiträge können von den großzügigen Spendern selber "
@@ -2917,8 +2914,8 @@ msgstr "Benötigte Mitgliedschaft:"
 
 #: ../includes/i18n.inc.php:328
 msgid ""
-"Complete the following form and send it with your funds, in order to "
-"complete your subscription."
+"Complete the following form and send it with your funds, in order to complete "
+"your subscription."
 msgstr ""
 "Füllen Sie das Formular aus und schicken Sie es zusammen mit ihrem Beitrag "
 "zurück um die Mitgliedschaft abzuschließen."
@@ -3107,18 +3104,17 @@ msgid ""
 "of {ASSO_NAME}.{NEWLINE}It is now possible to follow in real time the state "
 "of your subscription and to update your preferences from the web interface."
 "{NEWLINE}Please login at this address to set your new password :{BR}"
-"{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid "
-"until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
+"{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid until "
+"{LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
 "Hallo,{NEWLINE}Sie haben sich soeben in dem Mitgliederverwaltungssystem von "
 "{ASSO_NAME} eingeschrieben.{NEWLINE}Es ist jetzt möglich, den Stand Ihres "
 "Abonnements in Echtzeit zu verfolgen und Ihre Präferenzen über die "
 "Webschnittstelle zu aktualisieren.{NEWLINE}Bitte loggen Sie sich unter "
-"folgender Adresse ein, um ein Passwort zu "
-"vergeben:{BR}{CHG_PWD_URI}{NEWLINE}Benutzername: {LOGIN}{BR}Der obige Link "
-"ist gültig bis {LINK_VALIDITY}.{NEWLINE}Bis bald!{NEWLINE}(Diese E-Mail "
-"wurde automatisch versendet)"
+"folgender Adresse ein, um ein Passwort zu vergeben:{BR}{CHG_PWD_URI}{NEWLINE}"
+"Benutzername: {LOGIN}{BR}Der obige Link ist gültig bis {LINK_VALIDITY}."
+"{NEWLINE}Bis bald!{NEWLINE}(Diese E-Mail wurde automatisch versendet)"
 
 #: ../includes/fields_defs/texts_fields.php:43
 msgid "New user registration"
@@ -3126,17 +3122,17 @@ msgstr "Registrierung neuer Benutzer"
 
 #: ../includes/fields_defs/texts_fields.php:49
 msgid ""
-"Hello,{NEWLINE}Someone (probably you) asked to recover your password."
-"{NEWLINE}Please login at this address to set your new password :{BR}"
-"{CHG_PWD_URI}{NEWLINE}Username: {LOGIN}{BR}The above link will be valid "
-"until {LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
+"Hello,{NEWLINE}Someone (probably you) asked to recover your password.{NEWLINE}"
+"Please login at this address to set your new password :{BR}{CHG_PWD_URI}"
+"{NEWLINE}Username: {LOGIN}{BR}The above link will be valid until "
+"{LINK_VALIDITY}.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
 "Hallo,{NEWLINE}Jemand (wahrscheinlich Sie) will Ihr Passwort "
 "wiederherstellen. {NEWLINE}Bitte loggen Sie sich unter folgender Adresse ein "
 "und setzen Sie Ihr neues Passwort:{BR}{CHG_PWD_URI}{NEWLINE}Benutzername: "
-"{LOGIN}{BR}Der obige Link ist gültig bis {LINK_VALIDITY}.{NEWLINE}Bis "
-"bald!{NEWLINE}(Diese E-Mail wurde automatisch versendet)"
+"{LOGIN}{BR}Der obige Link ist gültig bis {LINK_VALIDITY}.{NEWLINE}Bis bald!"
+"{NEWLINE}(Diese E-Mail wurde automatisch versendet)"
 
 #: ../includes/fields_defs/texts_fields.php:51
 msgid "Lost password email"
@@ -3154,12 +3150,12 @@ msgid ""
 "this address:{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
-"Hallo,{NEWLINE}Ihr Beitrag wurde von {ASSO_NAME} erfolgreich "
-"berücksichtigt.{NEWLINE}Es ist gütig bis {DEADLINE}.{NEWLINE}Sie können sich "
-"jetzt einloggen und Ihre persönlichen Daten ansehen oder ändern, indem Sie "
-"Ihr galette Kennung unter folgender Adresse verwenden: "
-"{BR}{LOGIN_URI}.{NEWLINE}{CONTRIB_INFO}{NEWLINE}Bis bald!{NEWLINE}(Diese E-"
-"Mail wurde automatisch versendet)"
+"Hallo,{NEWLINE}Ihr Beitrag wurde von {ASSO_NAME} erfolgreich berücksichtigt."
+"{NEWLINE}Es ist gütig bis {DEADLINE}.{NEWLINE}Sie können sich jetzt einloggen "
+"und Ihre persönlichen Daten ansehen oder ändern, indem Sie Ihr galette "
+"Kennung unter folgender Adresse verwenden: {BR}{LOGIN_URI}.{NEWLINE}"
+"{CONTRIB_INFO}{NEWLINE}Bis bald!{NEWLINE}(Diese E-Mail wurde automatisch "
+"versendet)"
 
 #: ../includes/fields_defs/texts_fields.php:59
 msgid "Receipt send for new contribution"
@@ -3172,17 +3168,17 @@ msgstr "[{ASSO_NAME}] Neue Registrierung von {NAME_ADH}"
 #: ../includes/fields_defs/texts_fields.php:65
 msgid ""
 "Hello dear Administrator,{NEWLINE}A new member has been registered with the "
-"following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-"
-"mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
+"following information:{BR}* Name: {NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-mail: "
+"{MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
 "Hallo liebe/r Administrator/in,{NEWLINE}Ein neues Mitglied hat sich "
 "registriert mit den folgenden Informationen:{BR}* Name: {NAME_ADH}{BR}* "
-"Login: {LOGIN}{BR}* E-Mail: {MAIL_ADH}{NEWLINE}Mit freundlichen "
-"Grüßen,{BR}Galette"
+"Login: {LOGIN}{BR}* E-Mail: {MAIL_ADH}{NEWLINE}Mit freundlichen Grüßen,{BR}"
+"Galette"
 
 #: ../includes/fields_defs/texts_fields.php:67
 msgid "New user registration (sent to admin)"
-msgstr "Registrierung neuer Benutzer (wird an den Administrator gesendet)"
+msgstr "Registrierung neuer Benutzer (wird an den Admin gesendet)"
 
 #: ../includes/fields_defs/texts_fields.php:72
 msgid "[{ASSO_NAME}] New contribution for {NAME_ADH}"
@@ -3213,9 +3209,9 @@ msgid ""
 "* E-mail: {MAIL_ADH}{NEWLINE}Yours sincerly,{BR}Galette"
 msgstr ""
 "Hallo liebe/r Administrator/in,{NEWLINE}Ein neues Mitglied hat sich selbst "
-"online mit den folgenden Informationen registriert:{BR}* Name: "
-"{NAME_ADH}{BR}* Login: {LOGIN}{BR}* E-Mail: {MAIL_ADH}{NEWLINE}Mit "
-"freundlichen Grüßen,{BR}Galette"
+"online mit den folgenden Informationen registriert:{BR}* Name: {NAME_ADH}{BR}"
+"* Login: {LOGIN}{BR}* E-Mail: {MAIL_ADH}{NEWLINE}Mit freundlichen Grüßen,{BR}"
+"Galette"
 
 #: ../includes/fields_defs/texts_fields.php:83
 msgid "New self registration (sent to admin)"
@@ -3228,9 +3224,9 @@ msgstr "[{ASSO_NAME}] Ihr Konto wurde geändert"
 #: ../includes/fields_defs/texts_fields.php:89
 msgid ""
 "Hello!{NEWLINE}Your account on {ASSO_NAME} (with the login '{LOGIN}') has "
-"been modified by an administrator or a staff member.{NEWLINE}You can log "
-"into {LOGIN_URI} to review modifications and/or change it.{NEWLINE}See you "
-"soon!{NEWLINE}(this email was sent automatically)"
+"been modified by an administrator or a staff member.{NEWLINE}You can log into "
+"{LOGIN_URI} to review modifications and/or change it.{NEWLINE}See you soon!"
+"{NEWLINE}(this email was sent automatically)"
 msgstr ""
 "Hallo!{NEWLINE}Ihr Konto bei {ASSO_NAME} (mit der Anmeldung'{LOGIN}') wurde "
 "von einem Administrator oder einem Mitarbeiter geändert.{NEWLINE}Sie können "
@@ -3252,8 +3248,7 @@ msgid ""
 "automatically)"
 msgstr ""
 "Hallo,{NEWLINE}Ihre Mitgliedschaft bei {ASSO_NAME} läuft in {DAYS_REMAINING} "
-"Tagen aus.{NEWLINE}Bis bald!{NEWLINE}(Diese E-Mail wurde automatisch "
-"gesendet)"
+"Tagen aus.{NEWLINE}Bis bald!{NEWLINE}(Diese E-Mail wurde automatisch gesendet)"
 
 #: ../includes/fields_defs/texts_fields.php:99
 msgid "Impending due date"
@@ -3286,9 +3281,9 @@ msgid ""
 "{NEWLINE}{CONTRIB_INFO}{NEWLINE}Thank you!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
-"Hallo,{NEWLINE}Ihre Spende an {ASSO_NAME} wurde erfolgreich "
-"gespeichert.{NEWLINE}{CONTRIB_INFO}{NEWLINE}Vielen Dank!{NEWLINE}(Diese E-"
-"Mail wurde automatisch versendet)"
+"Hallo,{NEWLINE}Ihre Spende an {ASSO_NAME} wurde erfolgreich gespeichert."
+"{NEWLINE}{CONTRIB_INFO}{NEWLINE}Vielen Dank!{NEWLINE}(Diese E-Mail wurde "
+"automatisch versendet)"
 
 #: ../includes/fields_defs/texts_fields.php:115
 msgid "Receipt send for new donations"
@@ -3319,14 +3314,12 @@ msgid ""
 "Hello!{NEWLINE}{NAME_ADH} has modified his/her account.{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
-"Hallo!{NEWLINE}{NAME_ADH} hat ihr/sein Konto geändert.{NEWLINE}Bis "
-"bald!{NEWLINE}(Diese E-Mail wurde automatisch versendet)"
+"Hallo!{NEWLINE}{NAME_ADH} hat ihr/sein Konto geändert.{NEWLINE}Bis bald!"
+"{NEWLINE}(Diese E-Mail wurde automatisch versendet)"
 
 #: ../includes/fields_defs/texts_fields.php:131
 msgid "Informs admin a member edit his information"
-msgstr ""
-"Informiert Administrator, dass ein Mitglied seine/ihre Informationen "
-"bearbeitet"
+msgstr "Informiert Admin ein Mitglied seine Informationen bearbeitet"
 
 #: ../install/scripts/upgrade-to-0.8.php:93
 msgid "Unable to create main datadir in %path!"
@@ -3356,8 +3349,8 @@ msgstr "Verzeichnis %dir konnte nicht entfernt werden :("
 #, php-format
 msgid "Directory %dir is not in its original path and will not be moved."
 msgstr ""
-"Das Verzeichnis %dir ist nicht mehr im Pfad vorhanden und kann nicht "
-"entfernt werden."
+"Das Verzeichnis %dir ist nicht mehr im Pfad vorhanden und kann nicht entfernt "
+"werden."
 
 #: ../install/steps/end.php:45
 msgid "Galette has been successfully installed!"
@@ -3385,10 +3378,9 @@ msgid "Retype password:"
 msgstr "Passwort erneut eingeben:"
 
 #: ../install/steps/admin.php:58 ../install/steps/db_install.php:82
-#: ../install/steps/db_select_version.php:134
-#: ../install/steps/db_checks.php:241 ../install/steps/galette.php:81
-#: ../install/steps/check.php:165 ../install/steps/db.php:110
-#: ../install/steps/type.php:65
+#: ../install/steps/db_select_version.php:134 ../install/steps/db_checks.php:241
+#: ../install/steps/galette.php:81 ../install/steps/check.php:165
+#: ../install/steps/db.php:110 ../install/steps/type.php:65
 msgid "Next step"
 msgstr "Nächster Schritt"
 
@@ -3418,9 +3410,9 @@ msgid "Retry"
 msgstr "Nochmal versuchen"
 
 #: ../install/steps/db_install.php:93 ../install/steps/db_select_version.php:61
-#: ../install/steps/db_select_version.php:135
-#: ../install/steps/db_checks.php:250 ../install/steps/galette.php:92
-#: ../install/steps/db.php:111 ../install/steps/type.php:66
+#: ../install/steps/db_select_version.php:135 ../install/steps/db_checks.php:250
+#: ../install/steps/galette.php:92 ../install/steps/db.php:111
+#: ../install/steps/type.php:66
 msgid "Back"
 msgstr "Zurück"
 
@@ -3460,8 +3452,8 @@ msgstr ""
 
 #: ../install/steps/db_select_version.php:80
 msgid ""
-"It seems you already use latest Galette version!<br/>Are you sure you want "
-"to upgrade?"
+"It seems you already use latest Galette version!<br/>Are you sure you want to "
+"upgrade?"
 msgstr ""
 "Sie benutzen schon die aktuelle Version von Galette!<br/>Wollen Sie trotzdem "
 "upgraden?"
@@ -3681,8 +3673,8 @@ msgstr ""
 #: ../install/steps/check.php:144
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr ""
-"Auf einem UNIX/Linus System können Sie die Berechtigungen mit diesen "
-"Befehlen vergeben"
+"Auf einem UNIX/Linus System können Sie die Berechtigungen mit diesen Befehlen "
+"vergeben"
 
 #: ../install/steps/check.php:145
 msgid "apache_user"
@@ -3799,10 +3791,8 @@ msgstr ""
 msgid "Select actions(s)"
 msgstr "Wähle Aktionen"
 
-#: ../templates/default/admintools.tpl:10
-#: ../templates/default/admintools.tpl:11
-#: ../templates/default/admintools.tpl:16
-#: ../templates/default/admintools.tpl:17
+#: ../templates/default/admintools.tpl:10 ../templates/default/admintools.tpl:11
+#: ../templates/default/admintools.tpl:16 ../templates/default/admintools.tpl:17
 msgid "Reset all emails contents to their default values"
 msgstr "Alle E-Mail-Inhalte auf die Standardeinstellungen zurücksetzen"
 
@@ -3810,8 +3800,7 @@ msgstr "Alle E-Mail-Inhalte auf die Standardeinstellungen zurücksetzen"
 msgid "Reset emails contents"
 msgstr "E-Mail-Inhalt zurücksetzen"
 
-#: ../templates/default/admintools.tpl:13
-#: ../templates/default/admintools.tpl:19
+#: ../templates/default/admintools.tpl:13 ../templates/default/admintools.tpl:19
 #: ../templates/default/admintools.tpl:25
 msgid "(all existing values will be removed)"
 msgstr "(alle vorhandenen Werte werden gelöscht)"
@@ -3825,11 +3814,10 @@ msgid ""
 "This includes fields positions, order, visibility, access levels and "
 "mandatory marks."
 msgstr ""
-"Dies beinhaltet Position, Reihenfolge, Sichtbarkeit, Zugriffsberechtigung "
-"und Erforderlichkeit von Feldern."
+"Dies beinhaltet Position, Reihenfolge, Sichtbarkeit, Zugriffsberechtigung und "
+"Erforderlichkeit von Feldern."
 
-#: ../templates/default/admintools.tpl:22
-#: ../templates/default/admintools.tpl:23
+#: ../templates/default/admintools.tpl:22 ../templates/default/admintools.tpl:23
 msgid "Reset all PDF models to their default values"
 msgstr "Alle PDF Modelle auf die Standardeinstellungen zurücksetzen"
 
@@ -3837,8 +3825,7 @@ msgstr "Alle PDF Modelle auf die Standardeinstellungen zurücksetzen"
 msgid "Reinitialize PDF models"
 msgstr "PDF Model neu aufbauen"
 
-#: ../templates/default/admintools.tpl:28
-#: ../templates/default/admintools.tpl:29
+#: ../templates/default/admintools.tpl:28 ../templates/default/admintools.tpl:29
 msgid "Fill all empty login and passwords"
 msgstr "Alle leeren Benutzernamen und Passwörter füllen"
 
@@ -4362,8 +4349,7 @@ msgstr "Text für die Fußzeile:"
 
 #: ../templates/default/preferences.tpl:40
 msgid ""
-"Enter a text (HTML allowed) that will be displayed in the footer of every "
-"page"
+"Enter a text (HTML allowed) that will be displayed in the footer of every page"
 msgstr ""
 "Geben Sie einen Text (HTML ist erlaubt) ein, der in der Fußzeile jeder Seite "
 "dargestellt wird"
@@ -4393,8 +4379,8 @@ msgstr "Postanschrift:"
 
 #: ../templates/default/preferences.tpl:71
 msgid ""
-"Use either the address setted below or select a staff member to retrieve "
-"he's address."
+"Use either the address setted below or select a staff member to retrieve he's "
+"address."
 msgstr ""
 "Geben Sie unten eine Adresse ein oder wählen Sie einen Mitarbeiter um dessen "
 "Adresse zu nutzen."
@@ -4626,8 +4612,8 @@ msgid ""
 "Enter the base URL to your Galette instance. You should only change this "
 "parameter if the current page URL is not:<br/>%galette_url"
 msgstr ""
-"Gib die URL zur galette Installation ein. Du solltest diesen Wert nur "
-"ändern, wenn der Wert nicht diesem entspricht:<br/>%galette_url"
+"Gib die URL zur galette Installation ein. Du solltest diesen Wert nur ändern, "
+"wenn der Wert nicht diesem entspricht:<br/>%galette_url"
 
 #: ../templates/default/preferences.tpl:243
 msgid "Show identifiers"
@@ -4642,8 +4628,7 @@ msgid "Mail settings"
 msgstr "E-Mail-Einstellungen"
 
 #: ../templates/default/preferences.tpl:252
-#: ../templates/default/preferences.tpl:574
-#: ../templates/default/plugins.tpl:102
+#: ../templates/default/preferences.tpl:574 ../templates/default/plugins.tpl:102
 msgid ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
 msgstr ""
@@ -4665,8 +4650,8 @@ msgstr "E-Mail-Adresse für Antwort:"
 #: ../templates/default/preferences.tpl:264
 msgid "Leave empty to use Sender Email as reply address"
 msgstr ""
-"Lassen Sie das Feld leer, um die E-Mail-Adresse des Absenders für die "
-"Antwort zu nutzen"
+"Lassen Sie das Feld leer, um die E-Mail-Adresse des Absenders für die Antwort "
+"zu nutzen"
 
 #: ../templates/default/preferences.tpl:277
 msgid "Members administrator's Email:"
@@ -4690,11 +4675,10 @@ msgstr "E-Mail an die Administratoren senden?"
 
 #: ../templates/default/preferences.tpl:284
 msgid ""
-"Sends an email each time a new member registers online or edit his/her "
-"account"
+"Sends an email each time a new member registers online or edit his/her account"
 msgstr ""
-"Sendet jedes Mal eine E-Mail, wenn sich ein neues Mitglied online "
-"registriert oder sein Konto bearbeitet"
+"Sendet jedes Mal eine E-Mail, wenn sich ein neues Mitglied online registriert "
+"oder sein Konto bearbeitet"
 
 #: ../templates/default/preferences.tpl:288
 msgid "Wrap emails text?"
@@ -4702,13 +4686,13 @@ msgstr "Zeilenumbruch für Text-E-Mails?"
 
 #: ../templates/default/preferences.tpl:289
 msgid ""
-"Automatically wrap emails texts before sending. Make sure to wrap yourself "
-"if you disable that. Please note that current editing mailing will not be "
+"Automatically wrap emails texts before sending. Make sure to wrap yourself if "
+"you disable that. Please note that current editing mailing will not be "
 "affected by a change."
 msgstr ""
 "Automatischer Zeilenumbruch vor dem Versenden. Wenn diese Option "
-"ausgeschaltet ist, müssen Sie den Umbruch selber erstellen. Die aktuelle "
-"Mail wird durch das Ändern nicht beeinflußt."
+"ausgeschaltet ist, müssen Sie den Umbruch selber erstellen. Die aktuelle Mail "
+"wird durch das Ändern nicht beeinflußt."
 
 #: ../templates/default/preferences.tpl:294
 msgid "Activate HTML editor?"
@@ -4777,11 +4761,11 @@ msgstr "TLS für SMTP nutzen?"
 
 #: ../templates/default/preferences.tpl:346
 msgid ""
-"Do you want to use server's TLS capabilities?<br/>For GMail, this will "
-"always be on."
+"Do you want to use server's TLS capabilities?<br/>For GMail, this will always "
+"be on."
 msgstr ""
-"Wollen Sie die TLS Funktion des Servers nutzen?<br/>Für GMail muss dies "
-"immer gewählt werden."
+"Wollen Sie die TLS Funktion des Servers nutzen?<br/>Für GMail muss dies immer "
+"gewählt werden."
 
 #: ../templates/default/preferences.tpl:350
 msgid "Allow unsecure TLS?"
@@ -4792,9 +4776,9 @@ msgid ""
 "Do you want to allow 'unsecure' connections? This may be usefull if you "
 "server uses a self-signed certificate, and on some other cases."
 msgstr ""
-"Möchtest Du 'unsichere' Verbindungen zulassen? Diese Option kann zum "
-"Beispiel nützlich sein, wenn Dein Server selbsterstellte Zertifikate "
-"benutzt, und in einigen anderen Fällen."
+"Möchtest Du 'unsichere' Verbindungen zulassen? Diese Option kann zum Beispiel "
+"nützlich sein, wenn Dein Server selbsterstellte Zertifikate benutzt, und in "
+"einigen anderen Fällen."
 
 #: ../templates/default/preferences.tpl:357
 msgid "SMTP (or GMail) user:"
@@ -4815,9 +4799,9 @@ msgid ""
 "automatically.<br/>Refer to the doc to know what variables ara available. "
 msgstr ""
 "Dieser Text wird automatisch als Signatur an alle ausgehenden E-Mails "
-"angehängt.<br/>Variablen sind durch Klammern gekennzeichnet, bestehen nur "
-"aus Großbuchstaben und werden automatisch ersetzt.<br/>Die verfügbaren "
-"Variablen sind in der Dokumentation beschrieben. "
+"angehängt.<br/>Variablen sind durch Klammern gekennzeichnet, bestehen nur aus "
+"Großbuchstaben und werden automatisch ersetzt.<br/>Die verfügbaren Variablen "
+"sind in der Dokumentation beschrieben. "
 
 #: ../templates/default/preferences.tpl:374
 msgid "Label generation parameters"
@@ -4987,8 +4971,8 @@ msgstr "Jahr:"
 
 #: ../templates/default/preferences.tpl:502
 msgid ""
-"You can enter either:<br/>- a year,<br/>- two years with a slash as "
-"separator,<br/>- the string 'DEADLINE' to use member deadline"
+"You can enter either:<br/>- a year,<br/>- two years with a slash as separator,"
+"<br/>- the string 'DEADLINE' to use member deadline"
 msgstr ""
 "Sie können wählen zwischen:<br/>- einem Jahr,<br/>- zwei Jahre mit einem "
 "Schrägstrich als Trennzeichen,<br/>- die Zeichenkette 'Frist' zur Verwendung "
@@ -5255,8 +5239,7 @@ msgstr[1] "%count Beiträge"
 #: ../templates/default/gestion_contributions.tpl:58
 #: ../templates/default/gestion_mailings.tpl:43
 #: ../templates/default/gestion_adherents.tpl:111
-#: ../templates/default/history.tpl:48
-#: ../templates/default/liste_membres.tpl:10
+#: ../templates/default/history.tpl:48 ../templates/default/liste_membres.tpl:10
 #: ../templates/default/trombinoscope.tpl:10
 #: ../templates/default/gestion_transactions.tpl:35
 msgid "Records per page:"
@@ -5266,8 +5249,7 @@ msgstr "Sätze pro Seite:"
 #: ../templates/default/gestion_mailings.tpl:47
 #: ../templates/default/gestion_textes.tpl:21
 #: ../templates/default/gestion_adherents.tpl:115
-#: ../templates/default/history.tpl:52
-#: ../templates/default/liste_membres.tpl:14
+#: ../templates/default/history.tpl:52 ../templates/default/liste_membres.tpl:14
 #: ../templates/default/traduire_libelles.tpl:13
 #: ../templates/default/trombinoscope.tpl:14
 #: ../templates/default/gestion_transactions.tpl:39
@@ -5433,8 +5415,8 @@ msgstr "Kein Beitrag ausgewählt"
 
 #: ../templates/default/gestion_contributions.tpl:320
 msgid ""
-"Please make sure to select at least one contribution from the list to "
-"perform this action."
+"Please make sure to select at least one contribution from the list to perform "
+"this action."
 msgstr ""
 "Bitte wählen Sie mindestens einen Beitrag aus der Liste aus, um diese Aktion "
 "auszuführen."
@@ -5519,8 +5501,7 @@ msgid "you're installing %name for the first time"
 msgstr "Sie installieren %name zum ersten Mal"
 
 #: ../templates/default/plugin_initdb.tpl:30
-msgid ""
-"you wish to erase an older version of of %name without keeping your data"
+msgid "you wish to erase an older version of of %name without keeping your data"
 msgstr ""
 "sie wollen eine alte Version von %name löschen ohne ihre Daten zu behalten"
 
@@ -5600,8 +5581,8 @@ msgid ""
 "Take a moment to share some information with us so we can know better "
 "Galette's uses."
 msgstr ""
-"Bitte nimm Dir einen Moment Zeit, damit wir mehr über die Nutzung von "
-"Galette verstehen."
+"Bitte nimm Dir einen Moment Zeit, damit wir mehr über die Nutzung von Galette "
+"verstehen."
 
 #: ../templates/default/desktop.tpl:13
 msgid "Send anonymous and imprecise data about your Galette instance"
@@ -5620,8 +5601,8 @@ msgid ""
 "The panel will be automatically hidden once you have registered and send "
 "telemetry data. Check the box if you want to hide it anyways."
 msgstr ""
-"Dieser Bereich wird automatisch ausgeblendet wenn Du dich registriert und "
-"die Nutzungsdaten gesendet hast. Setze einen Haken in der Box um ihn immer "
+"Dieser Bereich wird automatisch ausgeblendet wenn Du dich registriert und die "
+"Nutzungsdaten gesendet hast. Setze einen Haken in der Box um ihn immer "
 "auszublenden."
 
 #: ../templates/default/desktop.tpl:20
@@ -6214,8 +6195,7 @@ msgstr "Typ:"
 msgid "Code:"
 msgstr "Code:"
 
-#: ../templates/default/500.tpl:21
-#: ../templates/default/mailing_adherents.tpl:81
+#: ../templates/default/500.tpl:21 ../templates/default/mailing_adherents.tpl:81
 #: ../templates/default/mailing_adherents.tpl:112
 #: ../templates/default/reminder.tpl:45
 msgid "Message:"
@@ -6444,8 +6424,8 @@ msgstr ""
 
 #: ../templates/default/ajouter_transaction.tpl:77
 msgid ""
-"Select an existing contribution in the database, and attach it to the "
-"current transaction"
+"Select an existing contribution in the database, and attach it to the current "
+"transaction"
 msgstr ""
 "Wählen Sie eine bestehende Beitrag und fügen Sie ihn der Transaktion hinzu"
 
@@ -6593,8 +6573,8 @@ msgid ""
 "Use upload form below to send a new file on server, or copy it directly in "
 "the imports directory."
 msgstr ""
-"Nutzen Sie das Formular unten um eine neue Datei auf den Server zu laden "
-"oder kopieren Sie sie direkt in das Importverzeichnis."
+"Nutzen Sie das Formular unten um eine neue Datei auf den Server zu laden oder "
+"kopieren Sie sie direkt in das Importverzeichnis."
 
 #: ../templates/default/import.tpl:73
 msgid "Upload new file"
@@ -7012,8 +6992,8 @@ msgstr "Neu laden"
 msgid ""
 "Reload date information according to selected member and contribution type"
 msgstr ""
-"Datumsinformationen basierend auf den gewählten Mitgliedern und "
-"Beitragsarten neu laden"
+"Datumsinformationen basierend auf den gewählten Mitgliedern und Beitragsarten "
+"neu laden"
 
 #: ../templates/default/ajouter_contribution.tpl:99
 #: ../templates/default/dispatch_type.tpl:77
@@ -7048,8 +7028,7 @@ msgstr "Mitglied benachrichtigen"
 #: ../templates/default/dispatch_type.tpl:135
 msgid "Member will receive a notification by email, if he has an address."
 msgstr ""
-"Das Mitglied wird per E-Mail benachrichtigt wenn eine E-Mail-Adresse "
-"vorliegt."
+"Das Mitglied wird per E-Mail benachrichtigt wenn eine E-Mail-Adresse vorliegt."
 
 #: ../templates/default/ajouter_contribution.tpl:221
 msgid "An error occurred retrieving dates :("
@@ -7062,9 +7041,9 @@ msgstr "Der Betrag sollte größer als %max sein"
 #: ../templates/default/liste_membres.tpl:4
 msgid ""
 "This page shows only members who have choosen to be visible on the public "
-"lists and are up-to-date within their contributions. If you want your "
-"account to be visible here, edit your profile and check 'Be visible in the "
-"members list'"
+"lists and are up-to-date within their contributions. If you want your account "
+"to be visible here, edit your profile and check 'Be visible in the members "
+"list'"
 msgstr ""
 "Die Seite zeigt nur Mitglieder die in den öffentlichen Listen sichtbar sein "
 "wollen und ihre Beiträge gezahlt haben. Wenn Sie in dieser Liste stehen "
@@ -7146,13 +7125,11 @@ msgstr "Duplizieren"
 msgid "Family"
 msgstr "Familie"
 
-#: ../templates/default/voir_adherent.tpl:118
-#: ../templates/default/member.tpl:36
+#: ../templates/default/voir_adherent.tpl:118 ../templates/default/member.tpl:36
 msgid "Attached to:"
 msgstr "Verbunden mit:"
 
-#: ../templates/default/voir_adherent.tpl:124
-#: ../templates/default/member.tpl:57
+#: ../templates/default/voir_adherent.tpl:124 ../templates/default/member.tpl:57
 msgid "Parent of:"
 msgstr "Übergeordnetes Element von:"
 
@@ -7439,8 +7416,7 @@ msgid "Plugin database initialization: %name"
 msgstr "Plugindatenbank initialisiert: %name"
 
 #: ../templates/default/plugins.tpl:154 ../templates/default/plugins.tpl:172
-msgid ""
-"An error occurred displaying plugin database initialization interface :("
+msgid "An error occurred displaying plugin database initialization interface :("
 msgstr ""
 "Bei der Anzeige der Plugin-Datenbankinitialisierungsschnittstelle ist ein "
 "Fehler aufgetreten :("
@@ -7685,8 +7661,8 @@ msgstr "Manager für:"
 #: ../templates/default/forms_types/captcha.tpl:7
 msgid ""
 "A link will be sent to you if you have provided an email address. Otherwise, "
-"you can use this password to login, and we recommend you to change it as "
-"soon as possible."
+"you can use this password to login, and we recommend you to change it as soon "
+"as possible."
 msgstr ""
 "Wenn Sie eine E-Mail-Adresse angegeben haben, wird Ihnen ein Link "
 "zugeschickt. Andernfalls können Sie dieses Passwort zum Anmelden verwenden, "
@@ -7705,8 +7681,8 @@ msgid ""
 "Telemetry data are <strong>anonymous</strong>; nothing about your "
 "organization or its members will be sent."
 msgstr ""
-"Nutzungsdaten sind <strong>anonym</strong>; es werden keine Einzelheiten "
-"über ihre Organisation oder die Mitglieder verschickt."
+"Nutzungsdaten sind <strong>anonym</strong>; es werden keine Einzelheiten über "
+"ihre Organisation oder die Mitglieder verschickt."
 
 #: ../templates/default/telemetry.tpl:4
 msgid ""
@@ -7767,8 +7743,8 @@ msgstr "Informationen zu verknüpften Transaktionen"
 msgid ""
 "Reload date informations according to selected member and contribution type"
 msgstr ""
-"Datumsinformationen basierend auf den gewählten Mitgliedern und "
-"Beitragsarten neu laden"
+"Datumsinformationen basierend auf den gewählten Mitgliedern und Beitragsarten "
+"neu laden"
 
 #: ../templates/default/dispatch_type.tpl:195
 msgid "An error occured retrieving dates :("
@@ -8096,8 +8072,8 @@ msgstr "Titel „%s“ löschen"
 #~ msgstr "Standard Theme:"
 
 #~ msgid ""
-#~ "Your password has been changed. Please click on the 'home' button to go "
-#~ "to the login page."
+#~ "Your password has been changed. Please click on the 'home' button to go to "
+#~ "the login page."
 #~ msgstr ""
 #~ "Ihr Passwort wurde geändert. Bitte klicken Sie auf den 'home' Button um "
 #~ "zur Login-Seite zu kommen."
@@ -8113,8 +8089,7 @@ msgstr "Titel „%s“ löschen"
 
 #~ msgid "If the following is not empty, all others filters will be ignored."
 #~ msgstr ""
-#~ "Wenn das folgende Feld nicht leer ist werden alle anderen Filter "
-#~ "ignoriert."
+#~ "Wenn das folgende Feld nicht leer ist werden alle anderen Filter ignoriert."
 
 #~ msgid "SQL query"
 #~ msgstr "SQL Abfrage"
@@ -8123,8 +8098,8 @@ msgstr "Titel „%s“ löschen"
 #~ "If your query does not begin with a 'SELECT' statement, it will "
 #~ "automatically be added."
 #~ msgstr ""
-#~ "Wenn Ihre Anfrage nicht mit einem 'SELECT' beginnt wird dieses "
-#~ "automatisch hinzugefügt."
+#~ "Wenn Ihre Anfrage nicht mit einem 'SELECT' beginnt wird dieses automatisch "
+#~ "hinzugefügt."
 
 #~ msgid "Add a new category"
 #~ msgstr "Eine neue Kategorie hinzufügen"
@@ -8199,8 +8174,7 @@ msgstr "Titel „%s“ löschen"
 #~ msgstr "Die ID des dynamischen Feldes darf nicht null sein!"
 
 #~ msgid "That payment type is still in use, you cannot delete it!"
-#~ msgstr ""
-#~ "Diese Zahlungsart wird noch verwendet, Sie können sie nicht löschen!"
+#~ msgstr "Diese Zahlungsart wird noch verwendet, Sie können sie nicht löschen!"
 
 #~ msgid "Group"
 #~ msgstr "Gruppe"
