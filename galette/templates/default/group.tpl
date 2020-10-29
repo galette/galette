@@ -72,7 +72,7 @@
 {/if}
       </div>
         <div class="button-container">
-            <button type="submit" name="valid" class="action">
+            <button type="submit" name="valid" class="button action">
                 <i class="fas fa-save fa-fw"></i> {_T string="Save"}
             </button>
 {if $login->isAdmin() or $login->isStaff()}
