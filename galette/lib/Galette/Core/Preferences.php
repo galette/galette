@@ -228,10 +228,10 @@ class Preferences
         /* Preferences for members cards */
         'pref_card_abrev'    =>    'GALETTE',
         'pref_card_strip'    =>    'Gestion d\'Adherents en Ligne Extrêmement Tarabiscotée',
-        'pref_card_tcol'    =>    'FFFFFF',
-        'pref_card_scol'    =>    '8C2453',
-        'pref_card_bcol'    =>    '53248C',
-        'pref_card_hcol'    =>    '248C53',
+        'pref_card_tcol'    =>    '#FFFFFF',
+        'pref_card_scol'    =>    '#8C2453',
+        'pref_card_bcol'    =>    '#53248C',
+        'pref_card_hcol'    =>    '#248C53',
         'pref_bool_display_title'    =>    false,
         'pref_card_address'    =>    1,
         'pref_card_year'    =>    '',
@@ -482,112 +482,6 @@ class Preferences
                 $value = "";
             }
 
-            // now, check validity
-            if ($value != '') {
-                switch ($fieldname) {
-                    case 'pref_admin_login':
-                        if (GALETTE_MODE === 'DEMO') {
-                            Analog::log(
-                                'Trying to set superadmin login while in DEMO.',
-                                Analog::WARNING
-                            );
-                        } else {
-                            if (strlen($value) < 4) {
-                                $this->errors[] = _T("- The username must be composed of at least 4 characters!");
-                            } else {
-                                //check if login is already taken
-                                if ($login->loginExists($value)) {
-                                    $this->errors[] = _T("- This username is already used by another member !");
-                                }
-                            }
-                        }
-                        break;
-                    case 'pref_numrows':
-                        if (!is_numeric($value) || $value < 0) {
-                            $this->errors[] = _T("- The numbers and measures have to be integers!");
-                        }
-                        break;
-                    case 'pref_etiq_marges_h':
-                    case 'pref_etiq_marges_v':
-                    case 'pref_etiq_hspace':
-                    case 'pref_etiq_vspace':
-                    case 'pref_etiq_hsize':
-                    case 'pref_etiq_vsize':
-                    case 'pref_etiq_cols':
-                    case 'pref_etiq_rows':
-                    case 'pref_etiq_corps':
-                    case 'pref_card_marges_v':
-                    case 'pref_card_marges_h':
-                    case 'pref_card_hspace':
-                    case 'pref_card_vspace':
-                        // prevent division by zero
-                        if ($fieldname == 'pref_numrows' && $value == '0') {
-                            $value = '10';
-                        }
-                        if (!is_numeric($value) || $value < 0) {
-                            $this->errors[] = _T("- The numbers and measures have to be integers!");
-                        }
-                        break;
-                    case 'pref_card_tcol':
-                        // Set strip text color to white
-                        if (!preg_match("/#([0-9A-F]{6})/i", $value)) {
-                            $value = '#FFFFFF';
-                        }
-                        break;
-                    case 'pref_card_scol':
-                    case 'pref_card_bcol':
-                    case 'pref_card_hcol':
-                        // Set strip background colors to black
-                        if (!preg_match("/#([0-9A-F]{6})/i", $value)) {
-                            $value = '#000000';
-                        }
-                        break;
-                    case 'pref_admin_pass':
-                        if (GALETTE_MODE == 'DEMO') {
-                            Analog::log(
-                                'Trying to set superadmin pass while in DEMO.',
-                                Analog::WARNING
-                            );
-                        } else {
-                            $pwcheck = new \Galette\Util\Password($this);
-                            $pwcheck->addPersonalInformation(['pref_admin_login' => $this->pref_admin_login]);
-                            if (!$pwcheck->isValid($value)) {
-                                $this->errors = array_merge(
-                                    $this->errors,
-                                    $pwcheck->getErrors()
-                                );
-                            }
-                        }
-                        break;
-                    case 'pref_membership_ext':
-                        if (!is_numeric($value) || $value < 0) {
-                            $this->errors[] = _T("- Invalid number of months of membership extension.");
-                        }
-                        break;
-                    case 'pref_beg_membership':
-                        $beg_membership = explode("/", $value);
-                        if (count($beg_membership) != 2) {
-                            $this->errors[] = _T("- Invalid format of beginning of membership.");
-                        } else {
-                            $now = getdate();
-                            if (!checkdate($beg_membership[1], $beg_membership[0], $now['year'])) {
-                                $this->errors[] = _T("- Invalid date for beginning of membership.");
-                            }
-                        }
-                        break;
-                    case 'pref_membership_offermonths':
-                        if (!is_numeric($value) || $value < 0) {
-                            $this->errors[] = _T("- Invalid number of offered months.");
-                        }
-                        break;
-                    case 'pref_card_year':
-                        if ($value !== 'DEADLINE' && !preg_match('/^(?:\d{4}|\d{2})(\D?)(?:\d{4}|\d{2})$/', $value)) {
-                            $this->errors[] = _T("- Invalid year for cards.");
-                        }
-                        break;
-                }
-            }
-
             $insert_values[$fieldname] = $value;
         }
 
@@ -705,6 +599,143 @@ class Preferences
         }
 
         return 0 === count($this->errors);
+    }
+
+    /**
+     * Validate value of a field
+     *
+     * @param string $fieldname Field name
+     * @param mixed  $value     Value to be set
+     *
+     * @return mixed
+     */
+    public function validateValue($fieldname, $value)
+    {
+        switch ($fieldname) {
+            case 'pref_email':
+            case 'pref_email_newadh':
+            case 'pref_email_reply_to':
+                //check emails validity
+                //may be a comma separated list of valid emails identifiers:
+                //"The Name <mail@domain.com>,The Other <other@mail.com>" expect for reply_to.
+                $addresses = [];
+                if (trim($value) != '') {
+                    if ($name == 'pref_email_newadh') {
+                        $addresses = explode(',', $value);
+                    } else {
+                        $addresses = [$value];
+                    }
+                }
+                foreach ($addresses as $address) {
+                    if (!GaletteMail::isValidEmail($address)) {
+                        $msg = str_replace('%s', $address, _T("Invalid E-Mail address: %s"));
+                        Analog::log($msg, Analog::WARNING);
+                        $this->errors[] = $msg;
+                    }
+                }
+                $value = $addresses;
+                break;
+            case 'pref_admin_login':
+                if (GALETTE_MODE === 'DEMO') {
+                    Analog::log(
+                        'Trying to set superadmin login while in DEMO.',
+                        Analog::WARNING
+                    );
+                } else {
+                    if (strlen($value) < 4) {
+                        $this->errors[] = _T("- The username must be composed of at least 4 characters!");
+                    } else {
+                        //check if login is already taken
+                        if ($login->loginExists($value)) {
+                            $this->errors[] = _T("- This username is already used by another member !");
+                        }
+                    }
+                }
+                break;
+            case 'pref_numrows':
+                if (!is_numeric($value) || $value < 0) {
+                    $this->errors[] = _T("- The numbers and measures have to be integers!");
+                }
+                break;
+            case 'pref_etiq_marges_h':
+            case 'pref_etiq_marges_v':
+            case 'pref_etiq_hspace':
+            case 'pref_etiq_vspace':
+            case 'pref_etiq_hsize':
+            case 'pref_etiq_vsize':
+            case 'pref_etiq_cols':
+            case 'pref_etiq_rows':
+            case 'pref_etiq_corps':
+            case 'pref_card_marges_v':
+            case 'pref_card_marges_h':
+            case 'pref_card_hspace':
+            case 'pref_card_vspace':
+                // prevent division by zero
+                if ($fieldname == 'pref_numrows' && $value == '0') {
+                    $value = '10';
+                }
+                if (!is_numeric($value) || $value < 0) {
+                    $this->errors[] = _T("- The numbers and measures have to be integers!");
+                }
+                break;
+            case 'pref_card_tcol':
+            case 'pref_card_scol':
+            case 'pref_card_bcol':
+            case 'pref_card_hcol':
+                $matches = [];
+                if (!preg_match("/^(#)?([0-9A-F]{6})$/i", $value, $matches)) {
+                    // Set strip background colors to black or white (for tcol)
+                    $value = ($fieldname == 'pref_card_tcol' ? '#FFFFFF' : '#000000');
+                } else {
+                    $value = '#' . $matches[2];
+                }
+                break;
+            case 'pref_admin_pass':
+                if (GALETTE_MODE == 'DEMO') {
+                    Analog::log(
+                        'Trying to set superadmin pass while in DEMO.',
+                        Analog::WARNING
+                    );
+                } else {
+                    $pwcheck = new \Galette\Util\Password($this);
+                    $pwcheck->addPersonalInformation(['pref_admin_login' => $this->pref_admin_login]);
+                    if (!$pwcheck->isValid($value)) {
+                        $this->errors = array_merge(
+                            $this->errors,
+                            $pwcheck->getErrors()
+                        );
+                    }
+                }
+                break;
+            case 'pref_membership_ext':
+                if (!is_numeric($value) || $value < 0) {
+                    $this->errors[] = _T("- Invalid number of months of membership extension.");
+                }
+                break;
+            case 'pref_beg_membership':
+                $beg_membership = explode("/", $value);
+                if (count($beg_membership) != 2) {
+                    $this->errors[] = _T("- Invalid format of beginning of membership.");
+                } else {
+                    $now = getdate();
+                    if (!checkdate($beg_membership[1], $beg_membership[0], $now['year'])) {
+                        $this->errors[] = _T("- Invalid date for beginning of membership.");
+                    }
+                }
+                break;
+            case 'pref_membership_offermonths':
+                if (!is_numeric($value) || $value < 0) {
+                    $this->errors[] = _T("- Invalid number of offered months.");
+                }
+                break;
+            case 'pref_card_year':
+                if ($value !== 'DEADLINE' && !preg_match('/^(?:\d{4}|\d{2})(\D?)(?:\d{4}|\d{2})$/', $value)) {
+                    $this->errors[] = _T("- Invalid year for cards.");
+                }
+                break;
+        }
+
+        return $value;
     }
 
     /**
@@ -977,25 +1008,11 @@ class Preferences
                 );
                 return;
             }
+        }
 
-            //check emails validity
-            //may be a comma separated list of valid emails identifiers:
-            //"The Name <mail@domain.com>,The Other <other@mail.com>" expect for reply_to.
-            $addresses = [];
-            if (trim($value) != '') {
-                if ($name == 'pref_email_newadh') {
-                    $addresses = explode(',', $value);
-                } else {
-                    $addresses = [$value];
-                }
-            }
-            foreach ($addresses as $address) {
-                if (!GaletteMail::isValidEmail($address)) {
-                    $msg = str_replace('%s', $address, _T("Invalid E-Mail address: %s"));
-                    Analog::log($msg, Analog::WARNING);
-                    $this->errors[] = $msg;
-                }
-            }
+        // now, check validity
+        if ($value != '') {
+            $value = $this->validateValue($name, $value);
         }
 
         //some values need to be changed (eg. passwords)
