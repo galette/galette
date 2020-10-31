@@ -611,6 +611,8 @@ class Preferences
      */
     public function validateValue($fieldname, $value)
     {
+        global $login;
+
         switch ($fieldname) {
             case 'pref_email':
             case 'pref_email_newadh':
@@ -620,7 +622,7 @@ class Preferences
                 //"The Name <mail@domain.com>,The Other <other@mail.com>" expect for reply_to.
                 $addresses = [];
                 if (trim($value) != '') {
-                    if ($name == 'pref_email_newadh') {
+                    if ($fieldname == 'pref_email_newadh') {
                         $addresses = explode(',', $value);
                     } else {
                         $addresses = [$value];
@@ -633,7 +635,6 @@ class Preferences
                         $this->errors[] = $msg;
                     }
                 }
-                $value = $addresses;
                 break;
             case 'pref_admin_login':
                 if (GALETTE_MODE === 'DEMO') {
