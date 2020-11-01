@@ -286,160 +286,150 @@ class Members
 
         $processed = array();
         $list = array();
-        if (is_numeric($ids)) {
-            //we've got only one identifier
-            $list[] = $ids;
-        } else {
+        if (is_array($ids)) {
             $list = $ids;
+        } else {
+            $list = [(int)$ids];
         }
 
-        if (is_array($list)) {
-            try {
-                $zdb->connection->beginTransaction();
+        try {
+            $zdb->connection->beginTransaction();
 
-                //Retrieve some information
-                $select = $zdb->select(self::TABLE);
-                $select->columns(
-                    array(self::PK, 'nom_adh', 'prenom_adh', 'email_adh')
-                )->where->in(self::PK, $list);
+            //Retrieve some information
+            $select = $zdb->select(self::TABLE);
+            $select->columns(
+                array(self::PK, 'nom_adh', 'prenom_adh', 'email_adh')
+            )->where->in(self::PK, $list);
 
-                $results = $zdb->execute($select);
+            $results = $zdb->execute($select);
 
-                $infos = null;
-                foreach ($results as $member) {
-                    $str_adh = $member->id_adh . ' (' . $member->nom_adh . ' ' .
-                        $member->prenom_adh . ')';
-                    $infos .= $str_adh . "\n";
+            $infos = null;
+            foreach ($results as $member) {
+                $str_adh = $member->id_adh . ' (' . $member->nom_adh . ' ' .
+                    $member->prenom_adh . ')';
+                $infos .= $str_adh . "\n";
 
-                    $p = new Picture($member->id_adh);
-                    if ($p->hasPicture()) {
-                        if (!$p->delete(false)) {
-                            Analog::log(
-                                'Unable to delete picture for member ' . $str_adh,
-                                Analog::ERROR
-                            );
-                            throw new \Exception(
-                                'Unable to delete picture for member ' .
-                                $str_adh
-                            );
-                        } else {
-                            $hist->add(
-                                _T("Member Picture deleted"),
-                                $str_adh
-                            );
-                        }
+                $p = new Picture($member->id_adh);
+                if ($p->hasPicture()) {
+                    if (!$p->delete(false)) {
+                        Analog::log(
+                            'Unable to delete picture for member ' . $str_adh,
+                            Analog::ERROR
+                        );
+                        throw new \Exception(
+                            'Unable to delete picture for member ' .
+                            $str_adh
+                        );
+                    } else {
+                        $hist->add(
+                            _T("Member Picture deleted"),
+                            $str_adh
+                        );
                     }
-
-                    $processed[] = [
-                        'id_adh' => $member->id_adh,
-                        'nom_adh' => $member->nom_adh,
-                        'prenom_adh' => $member->prenom_adh,
-                        'email_adh' => $member->email_adh
-                    ];
                 }
 
-                //delete contributions
-                $del_qry = $zdb->delete(Contribution::TABLE);
-                $del_qry->where->in(
-                    self::PK,
-                    $list
-                );
-                $zdb->execute($del_qry);
-
-                //get transactions
-                $select = $zdb->select(Transaction::TABLE);
-                $select->where->in(self::PK, $list);
-                $results = $zdb->execute($select);
-
-                //if members has transactions;
-                //reset link with other contributions
-                //and remove them
-                if ($results->count() > 0) {
-                    $transactions = [];
-                    foreach ($results as $transaction) {
-                        $transactions[] = $transaction[Transaction::PK];
-                    }
-
-                    $update = $zdb->update(Contribution::TABLE);
-                    $update->set([
-                        Transaction::PK => new Expression('NULL')
-                    ])->where->in(
-                        Transaction::PK,
-                        $transactions
-                    );
-                    $zdb->execute($update);
-                }
-
-                //delete transactions
-                $del_qry = $zdb->delete(Transaction::TABLE);
-                $del_qry->where->in(self::PK, $list);
-                $zdb->execute($del_qry);
-
-                //delete groups membership/mamagmentship
-                Groups::removeMembersFromGroups($list);
-
-                //delete reminders
-                $del_qry = $zdb->delete(Reminder::TABLE);
-                $del_qry->where->in(
-                    'reminder_dest',
-                    $list
-                );
-                $zdb->execute($del_qry);
-
-                //delete dynamic fields values
-                $del_qry = $zdb->delete(DynamicFieldsHandle::TABLE);
-                $del_qry->where(['field_form' => 'adh']);
-                $del_qry->where->in('item_id', $list);
-                $zdb->execute($del_qry);
-
-                //delete members
-                $del_qry = $zdb->delete(self::TABLE);
-                $del_qry->where->in(
-                    self::PK,
-                    $list
-                );
-                $zdb->execute($del_qry);
-
-                //commit all changes
-                $zdb->connection->commit();
-
-                foreach ($processed as $p) {
-                    $emitter->emit('member.remove', $p);
-                }
-
-                //add an history entry
-                $hist->add(
-                    _T("Delete members cards, transactions and dues"),
-                    $infos
-                );
-
-                return true;
-            } catch (\Exception $e) {
-                $zdb->connection->rollBack();
-                if ($e->getCode() == 23000) {
-                    Analog::log(
-                        'Member still have existing dependencies in the ' .
-                        'database, maybe a mailing or some content from a ' .
-                        'plugin. Please remove dependencies before trying ' .
-                        'to remove him.',
-                        Analog::ERROR
-                    );
-                    $this->errors[] = _T("Cannot remove a member who still have dependencies (mailings, ...)");
-                } else {
-                    Analog::log(
-                        'Unable to delete selected member(s) |' .
-                        $e->getMessage(),
-                        Analog::ERROR
-                    );
-                }
-                return false;
+                $processed[] = [
+                    'id_adh' => $member->id_adh,
+                    'nom_adh' => $member->nom_adh,
+                    'prenom_adh' => $member->prenom_adh,
+                    'email_adh' => $member->email_adh
+                ];
             }
-        } else {
-            //not numeric and not an array: incorrect.
-            Analog::log(
-                'Asking to remove members, but without providing an array or a single numeric value.',
-                Analog::ERROR
+
+            //delete contributions
+            $del_qry = $zdb->delete(Contribution::TABLE);
+            $del_qry->where->in(
+                self::PK,
+                $list
             );
+            $zdb->execute($del_qry);
+
+            //get transactions
+            $select = $zdb->select(Transaction::TABLE);
+            $select->where->in(self::PK, $list);
+            $results = $zdb->execute($select);
+
+            //if members has transactions;
+            //reset link with other contributions
+            //and remove them
+            if ($results->count() > 0) {
+                $transactions = [];
+                foreach ($results as $transaction) {
+                    $transactions[] = $transaction[Transaction::PK];
+                }
+
+                $update = $zdb->update(Contribution::TABLE);
+                $update->set([
+                    Transaction::PK => new Expression('NULL')
+                ])->where->in(
+                    Transaction::PK,
+                    $transactions
+                );
+                $zdb->execute($update);
+            }
+
+            //delete transactions
+            $del_qry = $zdb->delete(Transaction::TABLE);
+            $del_qry->where->in(self::PK, $list);
+            $zdb->execute($del_qry);
+
+            //delete groups membership/mamagmentship
+            Groups::removeMembersFromGroups($list);
+
+            //delete reminders
+            $del_qry = $zdb->delete(Reminder::TABLE);
+            $del_qry->where->in(
+                'reminder_dest',
+                $list
+            );
+            $zdb->execute($del_qry);
+
+            //delete dynamic fields values
+            $del_qry = $zdb->delete(DynamicFieldsHandle::TABLE);
+            $del_qry->where(['field_form' => 'adh']);
+            $del_qry->where->in('item_id', $list);
+            $zdb->execute($del_qry);
+
+            //delete members
+            $del_qry = $zdb->delete(self::TABLE);
+            $del_qry->where->in(
+                self::PK,
+                $list
+            );
+            $zdb->execute($del_qry);
+
+            //commit all changes
+            $zdb->connection->commit();
+
+            foreach ($processed as $p) {
+                $emitter->emit('member.remove', $p);
+            }
+
+            //add an history entry
+            $hist->add(
+                _T("Delete members cards, transactions and dues"),
+                $infos
+            );
+
+            return true;
+        } catch (\Exception $e) {
+            $zdb->connection->rollBack();
+            if ($e->getCode() == 23000) {
+                Analog::log(
+                    'Member still have existing dependencies in the ' .
+                    'database, maybe a mailing or some content from a ' .
+                    'plugin. Please remove dependencies before trying ' .
+                    'to remove him.',
+                    Analog::ERROR
+                );
+                $this->errors[] = _T("Cannot remove a member who still have dependencies (mailings, ...)");
+            } else {
+                Analog::log(
+                    'Unable to delete selected member(s) |' .
+                    $e->getMessage(),
+                    Analog::ERROR
+                );
+            }
             return false;
         }
     }
