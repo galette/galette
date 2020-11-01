@@ -1,6 +1,15 @@
 Changes
 -------
 
+0.9.4.1 -> 0.9.4.2
+- Issues on mailing instantiation, in core and plugins
+- Fix issues on mailings attachmments
+- Post contribution script was called too early
+- Fix cards colors on new installations
+- First and last name were inverted in core PDF member card
+- Print logo was the one used, but not the one displayed in preferences
+
+
 0.9.4 -> 0.9.4.1
 
 - Many improvements on string translations (add support for plurals, contexts and comments

@@ -12,19 +12,20 @@
 # Giacomo Alessandroni <g.alessandroni@gmail.com>, 2020.
 # Daeniem Loidlan <daeniem@gmail.com>, 2020.
 # Sylphystia <yuidirnt@gmail.com>, 2020.
+# lesion <lesion@autistici.org>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-09-29 11:41+0000\n"
-"Last-Translator: Sylphystia <yuidirnt@gmail.com>\n"
+"PO-Revision-Date: 2020-10-20 13:26+0000\n"
+"Last-Translator: lesion <lesion@autistici.org>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.3-dev\n"
+"X-Generator: Weblate 4.3.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -181,20 +182,20 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:82
 msgid "Add field"
-msgstr ""
+msgstr "Aggiungi campo"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:131
 msgid "An error occurred adding dynamic field :("
-msgstr ""
+msgstr "Errore durante l'aggiunta del campo dinamico :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:145
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:364
 msgid "Dynamic field has been successfully stored!"
-msgstr ""
+msgstr "Campo dinamico salvato!"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:226
 msgid "Dynamic fields configuration"
-msgstr ""
+msgstr "Configurazione del campo dinamico"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:291
 msgid "Unable to retrieve field information."
@@ -202,13 +203,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:300
 msgid "Edit field"
-msgstr ""
+msgstr "Modifica campo"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:350
-#, fuzzy
-#| msgid "An error occurred sending test email :("
 msgid "An error occurred editing dynamic field :("
-msgstr "Si è verificato un errore durante l’invio dell’e-mail di prova :("
+msgstr "Si è verificato un errore modificando il campo dinamico :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:446
 msgid "Requested field does not exists!"

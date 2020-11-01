@@ -178,6 +178,8 @@ class Transaction
     {
         global $emitter;
 
+        $event = null;
+
         try {
             if ($transaction) {
                 $this->zdb->connection->beginTransaction();
@@ -206,6 +208,7 @@ class Transaction
             if ($transaction) {
                 $this->zdb->connection->commit();
             }
+
             $emitter->emit('transaction.remove', $this);
             return true;
         } catch (\Exception $e) {
@@ -406,8 +409,7 @@ class Transaction
                         Adherent::getSName($this->zdb, $this->_member)
                     );
                     $success = true;
-
-                    $emitter->emit('transaction.add', $this);
+                    $event = 'transaction.add';
                 } else {
                     $hist->add(_T("Fail to add new transaction."));
                     throw new \Exception(
@@ -430,8 +432,7 @@ class Transaction
                     );
                 }
                 $success = true;
-
-                $emitter->emit('transaction.edit', $this);
+                $event = 'transaction.edit';
             }
 
             //dynamic fields
@@ -440,6 +441,12 @@ class Transaction
             }
 
             $this->zdb->connection->commit();
+
+            //send event at the end of process, once all has been stored
+            if ($event !== null) {
+                $emitter->emit($event, $this);
+            }
+
             return true;
         } catch (\Exception $e) {
             $this->zdb->connection->rollBack();

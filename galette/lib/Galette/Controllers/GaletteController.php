@@ -819,7 +819,7 @@ class GaletteController extends AbstractController
                         ->withStatus(307)
                         ->withHeader(
                             'Location',
-                            $this->router->pathFor('pdf-member-labels') . '?session_var=' . $session_var
+                            $this->router->pathFor('pdf-members-labels') . '?session_var=' . $session_var
                         );
                 } else {
                     $error_detected[] = _T("There are no member to proceed.");

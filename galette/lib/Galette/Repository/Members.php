@@ -284,6 +284,7 @@ class Members
     {
         global $zdb, $hist, $emitter;
 
+        $processed = array();
         $list = array();
         if (is_numeric($ids)) {
             //we've got only one identifier
@@ -329,12 +330,12 @@ class Members
                         }
                     }
 
-                    $emitter->emit('member.remove', [
+                    $processed[] = [
                         'id_adh' => $member->id_adh,
                         'nom_adh' => $member->nom_adh,
                         'prenom_adh' => $member->prenom_adh,
                         'email_adh' => $member->email_adh
-                    ]);
+                    ];
                 }
 
                 //delete contributions
@@ -401,6 +402,10 @@ class Members
 
                 //commit all changes
                 $zdb->connection->commit();
+
+                foreach ($processed as $p) {
+                    $emitter->emit('member.remove', $p);
+                }
 
                 //add an history entry
                 $hist->add(

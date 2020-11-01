@@ -352,4 +352,51 @@ class Preferences extends atoum
         $this->preferences->pref_card_hspace = $hs;
         $this->array($this->preferences->checkCardsSizes())->hasSize($count);
     }
+
+    /**
+     * Data provider for colors
+     *
+     * @return array
+     */
+    protected function colorsProvider(): array
+    {
+        return [
+            [
+                'prop' => 'tcol',
+                'color' => '#f0f0f0',
+                'expected' => '#f0f0f0'
+            ], [
+                'prop' => 'tcol',
+                'color' => '#f0f0f0f0',
+                'expected' => '#FFFFFF'
+            ], [
+                'prop' => 'tcol',
+                'color' => 'f0f0f0',
+                'expected' => '#f0f0f0'
+            ], [
+                'prop' => 'tcol',
+                'color' => 'azerty',
+                'expected' => '#FFFFFF'
+
+            ]
+        ];
+    }
+
+    /**
+     * Test colors
+     *
+     * @dataProvider colorsProvider
+     *
+     * @param string $prop     Property to be set
+     * @param string $color    Color to set
+     * @param string $expected Expected color
+     *
+     * @return void
+     */
+    public function testColors($prop, $color, $expected)
+    {
+        $prop = 'pref_card_' . $prop;
+        $this->preferences->$prop = $color;
+        $this->string($this->preferences->$prop)->isIdenticalTo($expected);
+    }
 }

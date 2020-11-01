@@ -52,7 +52,7 @@ $app->get(
 //print logo route
 $app->get(
     '/print-logo',
-    ImagesController::class . ':logo'
+    ImagesController::class . ':printLogo'
 )->setName('printLogo');
 
 //photo route

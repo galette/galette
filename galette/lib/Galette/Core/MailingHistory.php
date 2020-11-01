@@ -396,7 +396,7 @@ class MailingHistory extends History
             } else {
                 if ($this->mailing->tmp_path !== false) {
                     //attachments are still in a temporary path, move them
-                    $this->mailing->moveAttachments($this->id);
+                    $this->mailing->moveAttachments($this->id ?? $this->mailing->history_id);
                 }
                 //existing stored mailing. Just update row.
                 $this->update();

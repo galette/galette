@@ -561,6 +561,8 @@ class Contribution
     {
         global $hist, $emitter;
 
+        $event = null;
+
         if (count($this->errors) > 0) {
             throw new \RuntimeException(
                 'Existing errors prevents storing contribution: ' .
@@ -617,8 +619,7 @@ class Contribution
                         Adherent::getSName($this->zdb, $this->_member)
                     );
                     $success = true;
-
-                    $emitter->emit('contribution.add', $this);
+                    $event = 'contribution.add';
                 } else {
                     $hist->add(_T("Fail to add new contribution."));
                     throw new \Exception(
@@ -648,8 +649,7 @@ class Contribution
                     );
                 }
                 $success = true;
-
-                $emitter->emit('contribution.edit', $this);
+                $event = 'contribution.edit';
             }
             //update deadline
             if ($this->isCotis()) {
@@ -667,6 +667,12 @@ class Contribution
 
             $this->zdb->connection->commit();
             $this->_orig_amount = $this->_amount;
+
+            //send event at the end of process, once all has been stored
+            if ($event !== null) {
+                $emitter->emit($event, $this);
+            }
+
             return true;
         } catch (\Exception $e) {
             $this->zdb->connection->rollBack();
