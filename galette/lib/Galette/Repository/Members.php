@@ -288,8 +288,10 @@ class Members
         $list = array();
         if (is_array($ids)) {
             $list = $ids;
-        } else {
+        } elseif (is_numeric($ids)) {
             $list = [(int)$ids];
+        } else {
+            return false;
         }
 
         try {
