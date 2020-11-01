@@ -666,7 +666,7 @@ class Members
 
             if (
                 $this->filters instanceof AdvancedMembersList
-                && $this->filters->free_search
+                && isset($this->filters->free_search)
                 && count($this->filters->free_search) > 0
                 && !isset($this->filters->free_search['empty'])
             ) {
@@ -1359,8 +1359,9 @@ class Members
                     //dynamic choice spotted!
                     $prefix = 'cdfc' . $k . '.';
                     $qry = 'dfc.field_form = \'contrib\' AND ' .
-                        'dfc.field_id = ' . $k . ' AND ';
+                        'dfc.field_id = ' . $k;
                     $field = 'id';
+                    $select->where($qry);
                     $select->where->in($prefix . $field, $cd);
                 } else {
                     //dynamic field spotted!
