@@ -327,10 +327,6 @@ class TransactionsController extends ContributionsController
                     )
                 );
         }
-
-        return $response
-            ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('contributions', ['type' => 'transactions']));
     }
 
     /**

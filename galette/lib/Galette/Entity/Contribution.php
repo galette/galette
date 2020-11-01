@@ -568,7 +568,6 @@ class Contribution
                 'Existing errors prevents storing contribution: ' .
                 print_r($this->errors, true)
             );
-            return false;
         }
 
         try {

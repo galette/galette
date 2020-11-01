@@ -164,7 +164,6 @@ class CheckAcls
                     $matches = [];
                     if (preg_match($regex, $name, $matches)) {
                         return $route_acl;
-                        continue;
                     }
                 }
             }

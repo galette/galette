@@ -915,7 +915,6 @@ class MembersController extends CrudController
                             Analog::ERROR
                         );
                         throw new \Exception('A group id is required.');
-                        exit(0);
                     }
                     if (!isset($post['members'])) {
                         $group = new Group((int)$post['gid']);

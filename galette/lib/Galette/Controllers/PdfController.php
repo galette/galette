@@ -83,7 +83,6 @@ class PdfController extends AbstractController
             ->withHeader('Content-type', 'application/pdf')
             ->withHeader('Content-Disposition', 'attachment;filename="' . $pdf->getFileName() . '"')
             ->write($pdf->download());
-        return $response;
     }
 
     /**
