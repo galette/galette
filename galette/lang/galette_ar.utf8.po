@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-07-18 08:29+0200\n"
-"PO-Revision-Date: 2020-08-30 18:47+0000\n"
+"PO-Revision-Date: 2020-11-03 06:26+0000\n"
 "Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.2.1-dev\n"
+"X-Generator: Weblate 4.3.2-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
 msgid "Galette error"
@@ -446,7 +446,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:180
 msgid "Edit status"
-msgstr "تعديل الحالة"
+msgstr "تعديل الصفة"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:186
 msgid "Edit contribution type"
@@ -626,7 +626,7 @@ msgstr "الإعدادات"
 #: ../lib/Galette/Controllers/GaletteController.php:249
 #: ../lib/Galette/Filters/MembersList.php:306
 msgid "All accounts"
-msgstr ""
+msgstr "جميع الحسابات"
 
 #: ../lib/Galette/Controllers/GaletteController.php:250
 #: ../lib/Galette/Filters/MembersList.php:307
@@ -718,7 +718,7 @@ msgstr "توليد بيانات وهمية"
 
 #: ../lib/Galette/Controllers/GaletteController.php:753
 msgid "Reminders"
-msgstr "تذكير"
+msgstr "المفكرات"
 
 #: ../lib/Galette/Controllers/GaletteController.php:794
 msgid "No reminder to send for now."
@@ -1204,7 +1204,7 @@ msgstr "نوع الإشتراك"
 
 #: ../lib/Galette/Core/Install.php:1136
 msgid "Status"
-msgstr "الحالة"
+msgstr "الصفة"
 
 #: ../lib/Galette/Core/Install.php:1140
 msgid "Fields config and categories"
@@ -1989,7 +1989,7 @@ msgstr ""
 
 #: ../lib/Galette/Entity/ListsConfig.php:217
 msgid "Modified"
-msgstr ""
+msgstr "تم تغييره"
 
 #. TRANS: see https://www.urbandictionary.com/define.php?term=b-day
 #: ../lib/Galette/Entity/ListsConfig.php:221
@@ -2463,7 +2463,7 @@ msgstr ""
 
 #: ../lib/Galette/Filters/MembersList.php:273
 msgid "Company name"
-msgstr ""
+msgstr "اسم الشركة"
 
 #: ../lib/Galette/Filters/MembersList.php:274
 msgid "Address"
@@ -2487,7 +2487,7 @@ msgstr ""
 
 #: ../lib/Galette/Filters/MembersList.php:292
 msgid "All members"
-msgstr ""
+msgstr "كافة الأعضاء"
 
 #: ../lib/Galette/Filters/MembersList.php:293
 msgid "Up to date members"
@@ -2887,7 +2887,7 @@ msgstr ""
 
 #: ../includes/fields_defs/members_fields.php:78
 msgid "Company:"
-msgstr ""
+msgstr "الشخص المعنوي:"
 
 #: ../includes/fields_defs/members_fields.php:86
 msgid "Nickname:"
@@ -2935,7 +2935,7 @@ msgstr "الهاتف المحمول:"
 
 #: ../includes/fields_defs/members_fields.php:177
 msgid "E-Mail:"
-msgstr ""
+msgstr "البريد الالكتروني:"
 
 #: ../includes/fields_defs/members_fields.php:185
 msgid "Website:"
@@ -2978,7 +2978,7 @@ msgstr "الكلمة السرية:"
 
 #: ../includes/fields_defs/members_fields.php:257
 msgid "Creation date:"
-msgstr ""
+msgstr "تاريخ الإنشاء:"
 
 #: ../includes/fields_defs/members_fields.php:265
 msgid "Modification date:"
@@ -3262,7 +3262,7 @@ msgstr ""
 
 #: ../install/steps/end.php:54
 msgid "Homepage"
-msgstr ""
+msgstr "الصفحة الرئيسية"
 
 #: ../install/steps/admin.php:43
 msgid "Please chose the parameters of the admin account on Galette"
@@ -3733,7 +3733,7 @@ msgstr ""
 
 #: ../templates/default/gestion_pdf.tpl:37
 msgid "Your organisation website"
-msgstr ""
+msgstr "موقع ويب جمعيتكم"
 
 #: ../templates/default/gestion_pdf.tpl:41
 msgid "Your organisation logo"
@@ -5415,11 +5415,11 @@ msgstr ""
 
 #: ../templates/default/desktop.tpl:26
 msgid "Activities"
-msgstr ""
+msgstr "النشاطات"
 
 #: ../templates/default/desktop.tpl:56
 msgid "News"
-msgstr ""
+msgstr "المستجدات"
 
 #: ../templates/default/desktop.tpl:69
 msgid "Show dashboard on login"
@@ -5770,7 +5770,7 @@ msgstr "بين:"
 #: ../templates/default/advanced_search.tpl:31
 #: ../templates/default/advanced_search.tpl:115
 msgid "Select a group"
-msgstr ""
+msgstr "اختر فريقا"
 
 #: ../templates/default/gestion_adherents.tpl:71
 msgid "Apply filters"
@@ -5801,7 +5801,7 @@ msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:91
 msgid "Advanced search mode"
-msgstr ""
+msgstr "وضع البحث المتقدم"
 
 #: ../templates/default/gestion_adherents.tpl:92
 msgid "Change search criteria"
@@ -5841,7 +5841,7 @@ msgstr ""
 #: ../templates/default/gestion_adherents.tpl:413
 #: ../templates/default/gestion_adherents.tpl:414
 msgid "Is a company"
-msgstr ""
+msgstr "هل هو شخص معنوي ؟"
 
 #: ../templates/default/gestion_adherents.tpl:184
 #: ../templates/default/gestion_adherents.tpl:407
@@ -5863,7 +5863,7 @@ msgstr ""
 #: ../templates/default/gestion_adherents.tpl:402
 #: ../templates/default/footer.tpl:5
 msgid "Website"
-msgstr ""
+msgstr "موقع الويب"
 
 #: ../templates/default/gestion_adherents.tpl:286
 msgid "No member has been found"
@@ -5920,7 +5920,7 @@ msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:403
 msgid "Visit website"
-msgstr ""
+msgstr "زر موقع الويب"
 
 #: ../templates/default/gestion_adherents.tpl:409
 #: ../templates/default/gestion_adherents.tpl:410
@@ -5969,7 +5969,7 @@ msgstr ""
 #: ../templates/default/advanced_search.tpl:59
 #: ../templates/default/advanced_search.tpl:136
 msgid "Creation date"
-msgstr ""
+msgstr "تاريخ الإنشاء"
 
 #: ../templates/default/saved_searches.tpl:27
 msgid "Search parameters"
@@ -6340,7 +6340,7 @@ msgstr ""
 
 #: ../templates/default/404.tpl:25 ../templates/default/public_page.tpl:57
 msgid "Home"
-msgstr ""
+msgstr "الرئيسية"
 
 #: ../templates/default/import.tpl:10
 msgid "Configure import model"
@@ -7311,7 +7311,7 @@ msgstr ""
 
 #: ../templates/default/footer.tpl:8
 msgid "Documentation"
-msgstr ""
+msgstr "الدليل"
 
 #: ../templates/default/traduire_libelles.tpl:9
 msgid "Choose label to translate"
