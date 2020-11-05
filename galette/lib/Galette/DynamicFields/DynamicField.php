@@ -36,6 +36,7 @@
 
 namespace Galette\DynamicFields;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Entity\DynamicFieldsHandle;
@@ -152,7 +153,7 @@ abstract class DynamicField
                 $field_type->loadFromRs($result);
                 return $field_type;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ' | Unable to retrieve field `' . $id .
                 '` information | ' . $e->getMessage(),
@@ -223,7 +224,7 @@ abstract class DynamicField
             if ($result) {
                 $this->loadFromRs($result);
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to retrieve field type for field ' . $id . ' | ' .
                 $e->getMessage(),
@@ -299,7 +300,7 @@ abstract class DynamicField
                     $this->values[] = $val->val;
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
@@ -737,7 +738,7 @@ abstract class DynamicField
                     $this->addTranslation($this->name);
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred storing field | ' . $e->getMessage(),
                 Analog::ERROR
@@ -759,7 +760,7 @@ abstract class DynamicField
                     \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
                 );
                 $this->zdb->connection->commit();
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 if ($this->zdb->connection->inTransaction()) {
                     //because of DROP autocommit on mysql...
                     $this->zdb->connection->rollBack();
@@ -796,7 +797,7 @@ abstract class DynamicField
                         );
                     }
                     $this->zdb->connection->commit();
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     $this->zdb->connection->rollBack();
                     Analog::log(
                         'Unable to store field ' . $this->id . ' values (' .
@@ -872,7 +873,7 @@ abstract class DynamicField
             if (!$dup > 0) {
                 $duplicated = false;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred checking field duplicity' . $e->getMessage(),
                 Analog::ERROR
@@ -919,7 +920,7 @@ abstract class DynamicField
             $this->zdb->connection->commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
                 'Unable to change field ' . $this->id . ' rank | ' .
@@ -987,7 +988,7 @@ abstract class DynamicField
             $this->zdb->connection->commit();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             if ($this->zdb->connection->inTransaction()) {
                 //because of DROP autocommit on mysql...
                 $this->zdb->connection->rollBack();

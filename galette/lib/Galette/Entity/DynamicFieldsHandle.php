@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\Sql\Expression;
@@ -161,7 +162,7 @@ class DynamicFieldsHandle
             } else {
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
@@ -305,7 +306,7 @@ class DynamicFieldsHandle
                 $this->zdb->connection->commit();
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             if (!$transaction) {
                 $this->zdb->connection->rollBack();
             } else {
@@ -479,7 +480,7 @@ class DynamicFieldsHandle
                 $this->zdb->connection->commit();
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             if (!$transaction) {
                 $this->zdb->connection->rollBack();
             } else {

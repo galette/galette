@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
@@ -129,7 +130,7 @@ class Contributions
                 $contributions = $results;
             }
             return $contributions;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot list contributions | ' . $e->getMessage(),
                 Analog::WARNING
@@ -172,7 +173,7 @@ class Contributions
             }
 
             return $select;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot build SELECT clause for contributions | ' . $e->getMessage(),
                 Analog::WARNING
@@ -210,7 +211,7 @@ class Contributions
             if ($this->count > 0) {
                 $this->filters->setCounter($this->count);
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot count contributions | ' . $e->getMessage(),
                 Analog::WARNING
@@ -243,7 +244,7 @@ class Contributions
             $result = $results->current();
 
             $this->sum = round($result->contribsum, 2);
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot calculate contributions sum | ' . $e->getMessage(),
                 Analog::WARNING
@@ -374,7 +375,7 @@ class Contributions
             if ($this->filters->filtre_transactions === true) {
                 $select->where('a.trans_id IS NULL');
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
@@ -448,7 +449,7 @@ class Contributions
                     )
                 );
                 return true;
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 if ($transaction) {
                     $this->zdb->connection->rollBack();
                 }

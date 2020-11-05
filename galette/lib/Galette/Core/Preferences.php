@@ -35,6 +35,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Entity\Status;
@@ -354,7 +355,7 @@ class Preferences
                         )
                     );
                 }
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'Unable to add missing preferences.' . $e->getMessage(),
                     Analog::WARNING
@@ -384,7 +385,7 @@ class Preferences
                 $this->prefs[$pref->nom_pref] = $pref->val_pref;
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Preferences cannot be loaded. Galette should not work without ' .
                 'preferences. Exiting.',
@@ -440,7 +441,7 @@ class Preferences
                 Analog::INFO
             );
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to initialize default preferences.' . $e->getMessage(),
                 Analog::WARNING
@@ -789,7 +790,7 @@ class Preferences
                 Analog::INFO
             );
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
 
             $messages = array();

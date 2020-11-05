@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
@@ -247,7 +248,7 @@ class Adherent
 
             $this->loadFromRS($results->current());
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot load member form id `' . $id . '` | ' . $e->getMessage(),
                 Analog::WARNING
@@ -280,7 +281,7 @@ class Adherent
             if ($result) {
                 $this->loadFromRS($result);
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot load member form login `' . $login . '` | ' .
                 $e->getMessage(),
@@ -429,7 +430,7 @@ class Adherent
                     $this->_children[] = new Adherent($this->zdb, (int)$row->$id, $deps);
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot load children for member #' . $this->_id . ' | ' .
                 $e->getMessage(),
@@ -783,7 +784,7 @@ class Adherent
                 ($wid === true ? $row->id_adh : false),
                 ($wnick === true ? $row->pseudo_adh : false)
             );
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot get formatted name for member form id `' . $id . '` | ' .
                 $e->getMessage(),
@@ -857,7 +858,7 @@ class Adherent
                 Analog::DEBUG
             );
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred while updating password for `' . $id_adh .
                 '` | ' . $e->getMessage(),
@@ -1163,7 +1164,7 @@ class Adherent
                         }
                     }
                     $this->$prop = $d->format('Y-m-d');
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     Analog::log(
                         'Wrong date format. field: ' . $field .
                         ', value: ' . $value . ', expected fmt: ' .
@@ -1216,7 +1217,7 @@ class Adherent
                         if ($results->count() !== 0) {
                             $this->errors[] = _T("- This E-Mail address is already used by another member!");
                         }
-                    } catch (\Exception $e) {
+                    } catch (Throwable $e) {
                         Analog::log(
                             'An error occurred checking member email unicity.',
                             Analog::ERROR
@@ -1264,7 +1265,7 @@ class Adherent
                             ) {
                                 $this->errors[] = _T("- This username is already in use, please choose another one!");
                             }
-                        } catch (\Exception $e) {
+                        } catch (Throwable $e) {
                             Analog::log(
                                 'An error occurred checking member login unicity.',
                                 Analog::ERROR
@@ -1323,7 +1324,7 @@ class Adherent
                         );
                         break;
                     }
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     Analog::log(
                         'An error occurred checking status existance: ' . $e->getMessage(),
                         Analog::ERROR
@@ -1511,7 +1512,7 @@ class Adherent
                 $emitter->emit($event, $this);
             }
             return $success;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
@@ -1537,7 +1538,7 @@ class Adherent
 
             $edit = $this->zdb->execute($update);
             $this->_modification_date = $modif_date;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Something went wrong updating modif date :\'( | ' .
                 $e->getMessage() . "\n" . $e->getTraceAsString(),
@@ -1672,7 +1673,7 @@ class Adherent
                             try {
                                 $d = new \DateTime($this->$rname);
                                 return $d->format(__("Y-m-d"));
-                            } catch (\Exception $e) {
+                            } catch (Throwable $e) {
                                 //oops, we've got a bad date :/
                                 Analog::log(
                                     'Bad date (' . $this->$rname . ') | ' .

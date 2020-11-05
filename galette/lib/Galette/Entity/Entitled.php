@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Adapter\Adapter;
@@ -131,7 +132,7 @@ abstract class Entitled
                     'Unknown ID ' . $id . '!'
                 );
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot load ' . $this->getType() . ' from id `' . $id . '` | ' .
                 $e->getMessage(),
@@ -210,7 +211,7 @@ abstract class Entitled
                 Analog::INFO
             );
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to initialize defaults (' . $this->getType() . ').' .
                 $e->getMessage(),
@@ -264,7 +265,7 @@ abstract class Entitled
                 $list[$r->$fpk] = _T($r->$flabel);
             }
             return $list;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::ERROR
@@ -308,7 +309,7 @@ abstract class Entitled
                 }
             }
             return $list;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot list entries (' . $this->getType() .
                 ') | ' . $e->getMessage(),
@@ -345,7 +346,7 @@ abstract class Entitled
             }
 
             return $result;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
@@ -396,7 +397,7 @@ abstract class Entitled
             } else {
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to retrieve ' . $this->getType() . ' from label `' .
                 $label . '` | ' . $e->getMessage(),
@@ -461,7 +462,7 @@ abstract class Entitled
             }
             $this->zdb->connection->commit();
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
                 'Unable to add new entry `' . $label . '` | ' .
@@ -517,7 +518,7 @@ abstract class Entitled
             );
             $this->zdb->connection->commit();
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
                 'Unable to update ' . $this->getType() . ' #' . $id . ' | ' .
@@ -563,7 +564,7 @@ abstract class Entitled
 
             $this->zdb->connection->commit();
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
                 'Unable to delete ' . $this->getType() . ' ' . $id .
@@ -595,7 +596,7 @@ abstract class Entitled
             } else {
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to check if ' . $this->getType . ' `' . $id .
                 '` is used. | ' . $e->getMessage(),

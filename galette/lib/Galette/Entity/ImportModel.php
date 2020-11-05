@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 
@@ -82,7 +83,7 @@ class ImportModel
             } else {
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot load import model | ' . $e->getMessage() .
                 "\n" . $e->__toString(),
@@ -129,7 +130,7 @@ class ImportModel
             }
 
             return false;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to remove import model ' . $e->getMessage(),
                 Analog::ERROR
@@ -178,7 +179,7 @@ class ImportModel
                 $zdb->execute($update);
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Something went wrong storing import model :\'( | ' .
                 $e->getMessage() . "\n" . $e->getTraceAsString(),

@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers\Crud;
 
+use Throwable;
 use Galette\Controllers\CrudController;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -360,7 +361,7 @@ class SavedSearchesController extends CrudController
                 'success_detected',
                 _T("Saved search loaded")
             );
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->flash->addMessage(
                 'error_detected',
                 _T("An SQL error has occurred while loading search.")

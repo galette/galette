@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\Driver\DriverInterface;
@@ -133,7 +134,7 @@ class Db
             }
 
             $this->doConnection();
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             // perhaps factory() failed to load the specified Adapter class
             Analog::log(
                 '[Db] Error (' . $e->getCode() . '|' .
@@ -220,7 +221,7 @@ class Db
             } else {
                 return 0.63;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot check database version: ' . $e->getMessage(),
                 Analog::ERROR
@@ -314,7 +315,7 @@ class Db
                 Analog::DEBUG
             );
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             // perhaps failed to load the specified Adapter class
             Analog::log(
                 '[' . __METHOD__ . '] Connection error (' . $e->getCode() . '|' .
@@ -335,7 +336,7 @@ class Db
         try {
             $this->db->query('DROP TABLE IF EXISTS galette_test');
             Analog::log('Test table successfully dropped.', Analog::DEBUG);
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot drop test table! ' . $e->getMessage(),
                 Analog::WARNING
@@ -379,7 +380,7 @@ class Db
             )';
             $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE);
             $results['create'] = true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log('Cannot CREATE TABLE', Analog::WARNING);
             //if we cannot create tables, we cannot check other permissions
             $stop = true;
@@ -394,7 +395,7 @@ class Db
                     $sql = 'ALTER TABLE galette_test ALTER test_text SET DEFAULT \'nothing\'';
                     $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE);
                     $results['alter'] = true;
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     Analog::log(
                         'Cannot ALTER TABLE | ' . $e->getMessage(),
                         Analog::WARNING
@@ -419,7 +420,7 @@ class Db
                 } else {
                     throw new \Exception('No row inserted!');
                 }
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'Cannot INSERT records | ' . $e->getMessage(),
                     Analog::WARNING
@@ -446,7 +447,7 @@ class Db
                     } else {
                         throw new \Exception('No row updated!');
                     }
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     Analog::log(
                         'Cannot UPDATE records | ' . $e->getMessage(),
                         Analog::WARNING
@@ -467,7 +468,7 @@ class Db
                     } else {
                         throw new \Exception('Select is empty!');
                     }
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     Analog::log(
                         'Cannot SELECT records | ' . $e->getMessage(),
                         Analog::WARNING
@@ -481,7 +482,7 @@ class Db
                     $delete->where(array('test_id' => 1));
                     $this->execute($delete);
                     $results['delete'] = true;
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     Analog::log(
                         'Cannot DELETE records | ' . $e->getMessage(),
                         Analog::WARNING
@@ -495,7 +496,7 @@ class Db
                 $sql = 'DROP TABLE galette_test';
                 $this->db->query($sql, Adapter::QUERY_MODE_EXECUTE);
                 $results['drop'] = true;
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'Cannot DROP TABLE | ' . $e->getMessage(),
                     Analog::WARNING
@@ -598,7 +599,7 @@ class Db
                 }
             }
             $this->connection->commit();
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->connection->rollBack();
             Analog::log(
                 'An error occurred while converting to utf table ' .
@@ -625,7 +626,7 @@ class Db
                 $query,
                 Adapter::QUERY_MODE_EXECUTE
             );
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot SET NAMES on table `' . $table . '`. ' .
                 $e->getMessage(),
@@ -695,7 +696,7 @@ class Db
                 $update->set($data)->where($where);
                 $this->execute($update);
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred while converting contents to UTF-8 for table ' .
                 $table . ' (' . $e->getMessage() . ')',
@@ -799,7 +800,7 @@ class Db
                 $query_string,
                 Adapter::QUERY_MODE_EXECUTE
             );
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $msg = 'Query error: ';
             if (isset($query_string)) {
                 $msg .= $query_string;
@@ -934,7 +935,7 @@ class Db
     /**
      * Check if current exception is on a duplicate key
      *
-     * @param \Exception $exception Exception to check
+     * @param Throwable $exception Exception to check
      *
      * @return boolean
      */

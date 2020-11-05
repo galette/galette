@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Filters\HistoryList;
 use Laminas\Db\Sql\Expression;
@@ -150,7 +151,7 @@ class History
             $insert = $this->zdb->insert($this->getTableName());
             $insert->values($values);
             $this->zdb->execute($insert);
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 "An error occurred trying to add log entry. " . $e->getMessage(),
                 Analog::ERROR
@@ -185,7 +186,7 @@ class History
             $this->add('Logs flushed');
             $this->filters = new HistoryList();
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to flush logs. | ' . $e->getMessage(),
                 Analog::WARNING
@@ -219,7 +220,7 @@ class History
             }
 
             return $entries;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to get history. | ' . $e->getMessage(),
                 Analog::WARNING
@@ -250,7 +251,7 @@ class History
             foreach ($results as $result) {
                 $this->users[] = $result->adh_log;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot list members from history! | ' . $e->getMessage(),
                 Analog::WARNING
@@ -270,7 +271,7 @@ class History
             foreach ($results as $result) {
                 $this->actions[] = $result->action_log;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot list actions from history! | ' . $e->getMessage(),
                 Analog::WARNING
@@ -346,7 +347,7 @@ class History
                     $this->filters->action_filter
                 );
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
@@ -382,7 +383,7 @@ class History
             if ($this->count > 0) {
                 $this->filters->setCounter($this->count);
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot count history | ' . $e->getMessage(),
                 Analog::WARNING
@@ -413,7 +414,7 @@ class History
                     try {
                         $d = new \DateTime($this->$name);
                         return $d->format(__("Y-m-d H:i:s"));
-                    } catch (\Exception $e) {
+                    } catch (Throwable $e) {
                         //oops, we've got a bad date :/
                         Analog::log(
                             'Bad date (' . $this->$name . ') | ' .

@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\GaletteMail;
@@ -114,7 +115,7 @@ class Reminder
 
             $results = $zdb->execute($select);
             $this->loadFromRs($results->current());
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred loading reminder #' . $id . "Message:\n" .
                 $e->getMessage(),
@@ -143,7 +144,7 @@ class Reminder
             $this->success = $rs->reminder_success;
             $this->nomail = $rs->reminder_nomail;
             $this->comment = $rs->reminder_comment;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ': incorrect ResultSet. Error: ' . $e->getMessage(),
                 Analog::ERROR
@@ -186,7 +187,7 @@ class Reminder
                 return false;
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred storing reminder: ' . $e->getMessage() .
                 "\n" . print_r($data, true),

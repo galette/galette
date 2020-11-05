@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\Db;
@@ -278,7 +279,7 @@ class Contribution
                     'No contribution #' . $id . ' (user ' . $this->login->id . ')'
                 );
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred attempting to load contribution #' . $id .
                 $e->getMessage(),
@@ -374,7 +375,7 @@ class Contribution
                                     throw new \Exception('Incorrect format');
                                 }
                                 $this->$prop = $d->format('Y-m-d');
-                            } catch (\Exception $e) {
+                            } catch (Throwable $e) {
                                 Analog::log(
                                     'Wrong date format. field: ' . $key .
                                     ', value: ' . $value . ', expected fmt: ' .
@@ -543,7 +544,7 @@ class Contribution
                     $d->format(__("Y-m-d"));
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred checking overlaping fee. ' . $e->getMessage(),
                 Analog::ERROR
@@ -673,7 +674,7 @@ class Contribution
             }
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
@@ -708,7 +709,7 @@ class Contribution
             );
             $this->zdb->execute($update);
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred updating member ' . $this->_member .
                 '\'s deadline |' .
@@ -751,7 +752,7 @@ class Contribution
             }
             $emitter->emit('contribution.remove', $this);
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             if ($transaction) {
                 $this->zdb->connection->rollBack();
             }
@@ -850,7 +851,7 @@ class Contribution
                 $due_date = '';
             }
             return $due_date;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred trying to retrieve member\'s due date',
                 Analog::ERROR
@@ -891,7 +892,7 @@ class Contribution
                 );
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to detach contribution #' . $contrib_id .
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
@@ -920,7 +921,7 @@ class Contribution
 
             $zdb->execute($update);
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to attach contribution #' . $contrib_id .
                 ' to transaction #' . $trans_id . ' | ' . $e->getMessage(),
@@ -1143,7 +1144,7 @@ class Contribution
                         try {
                             $d = new \DateTime($this->$rname);
                             return $d;
-                        } catch (\Exception $e) {
+                        } catch (Throwable $e) {
                             //oops, we've got a bad date :/
                             Analog::log(
                                 'Bad date (' . $this->$rname . ') | ' .
@@ -1161,7 +1162,7 @@ class Contribution
                         try {
                             $d = new \DateTime($this->$rname);
                             return $d->format(__("Y-m-d"));
-                        } catch (\Exception $e) {
+                        } catch (Throwable $e) {
                             //oops, we've got a bad date :/
                             Analog::log(
                                 'Bad date (' . $this->$rname . ') | ' .
@@ -1262,7 +1263,7 @@ class Contribution
                             throw new \Exception('Incorrect format');
                         }
                         $this->_begin_date = $d->format('Y-m-d');
-                    } catch (\Exception $e) {
+                    } catch (Throwable $e) {
                         Analog::log(
                             'Wrong date format. field: ' . $name .
                             ', value: ' . $value . ', expected fmt: ' .

@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Common\ClassLoader;
 use Galette\Core\Preferences;
@@ -238,7 +239,7 @@ class Plugins
                     try {
                         $release_date = new \DateTime($date);
                         $release_date = $release_date->format(__("Y-m-d"));
-                    } catch (\Exception $e) {
+                    } catch (Throwable $e) {
                         Analog::log(
                             'Unable to localize release date for plugin ' . $name,
                             Analog::WARNING

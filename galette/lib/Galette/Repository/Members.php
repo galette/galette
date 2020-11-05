@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use Throwable;
 use Galette\DynamicFields\DynamicField;
 use Galette\Entity\DynamicFieldsHandle;
 use Analog\Analog;
@@ -264,7 +265,7 @@ class Members
                 $members = $rows;
             }
             return $members;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot list members | ' . $e->getMessage(),
                 Analog::WARNING
@@ -414,7 +415,7 @@ class Members
             );
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $zdb->connection->rollBack();
             if ($e->getCode() == 23000) {
                 Analog::log(
@@ -493,7 +494,7 @@ class Members
                 $members[] = new Adherent($zdb, $row, $deps);
             }
             return $members;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot list members with public information (photos: '
                 . $with_photos . ') | ' . $e->getMessage(),
@@ -569,7 +570,7 @@ class Members
                 }
             }
             return $members;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot load members form ids array | ' . $e->getMessage(),
                 Analog::WARNING
@@ -819,7 +820,7 @@ class Members
             $this->buildOrderClause($select, $fields);
 
             return $select;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot build SELECT clause for members | ' . $e->getMessage(),
                 Analog::WARNING
@@ -874,7 +875,7 @@ class Members
             if (isset($this->filters) && $this->count > 0) {
                 $this->filters->setCounter($this->count);
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot count members | ' . $e->getMessage(),
                 Analog::WARNING
@@ -1164,7 +1165,7 @@ class Members
             }
 
             return $select;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
@@ -1584,7 +1585,7 @@ class Members
             $zdb->connection->commit();
             $this->count = $processed;
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $zdb->connection->rollBack();
             Analog::log(
                 'An error occurred trying to retrieve members with ' .

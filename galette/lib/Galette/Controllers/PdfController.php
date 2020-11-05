@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers;
 
+use Throwable;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Analog\Analog;
@@ -620,7 +621,7 @@ class PdfController extends AbstractController
                 } else {
                     $error_detected[] = _T("Model has not been stored :(");
                 }
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 $error_detected[] = $e->getMessage();
             }
         }

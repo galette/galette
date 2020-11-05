@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers;
 
+use Throwable;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\Install;
@@ -113,7 +114,7 @@ class PluginsController extends AbstractController
                         )
                     );
                     $reload_plugins = true;
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     $this->flash->addMessage(
                         'error_detected',
                         $e->getMessage()
@@ -131,7 +132,7 @@ class PluginsController extends AbstractController
                         )
                     );
                     $reload_plugins = true;
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     $this->flash->addMessage(
                         'error_detected',
                         $e->getMessage()
@@ -321,7 +322,7 @@ class PluginsController extends AbstractController
                             );
                             $messages['success'][] = $w1 . ' ' . $w2 . ' ' . $w3 .
                                 ' ' . $extra;
-                        } catch (\Exception $e) {
+                        } catch (Throwable $e) {
                             Analog::log(
                                 'Error executing query | ' . $e->getMessage() .
                                 ' | Query was: ' . $query,

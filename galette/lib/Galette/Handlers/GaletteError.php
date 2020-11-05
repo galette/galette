@@ -36,6 +36,7 @@
 
 namespace Galette\Handlers;
 
+use Throwable;
 use Analog\Analog;
 use Slim\Views\Smarty;
 use Psr\Http\Message\ServerRequestInterface;
@@ -72,12 +73,12 @@ trait GaletteError
     /**
      * Write to the error log whether displayErrorDetails is false or not
      *
-     * @param \Exception|\Throwable $throwable Error
+     * @param Throwable $throwable Error
      * @overrides \Slim\Handlers\AbstractError::writeToErrorLog()
      *
      * @return void
      */
-    protected function writeToErrorLog($throwable)
+    protected function writeToErrorLog(Throwable $throwable)
     {
         $message = 'Galette error:' . PHP_EOL;
         $message .= $this->renderThrowableAsText($throwable);

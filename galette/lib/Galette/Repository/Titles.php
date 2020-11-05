@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use Throwable;
 use Galette\Entity\Title;
 use Analog\Analog;
 
@@ -163,7 +164,7 @@ class Titles
                 Analog::INFO
             );
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to initialize default titles. ' . $e->getMessage(),
                 Analog::WARNING

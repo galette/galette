@@ -36,6 +36,7 @@
 
 namespace Galette\IO;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 
@@ -283,7 +284,7 @@ class CsvOut extends Csv
                 return self::FILE_NOT_WRITABLE;
             }
             return $export['filename'];
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred while exporting | ' . $e->getMessage(),
                 Analog::ERROR

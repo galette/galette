@@ -36,6 +36,7 @@
 
 namespace Galette\IO;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Core\Preferences;
@@ -552,7 +553,7 @@ class CsvIn extends Csv implements FileInterface
             }
             $this->zdb->connection->commit();
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             $this->addError($e->getMessage());
         }

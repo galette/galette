@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Entity\Transaction;
@@ -113,7 +114,7 @@ class Transactions
                 $transactions = $results;
             }
             return $transactions;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot list transactions | ' . $e->getMessage(),
                 Analog::WARNING
@@ -161,7 +162,7 @@ class Transactions
             }
 
             return $select;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot build SELECT clause for transactions | ' . $e->getMessage(),
                 Analog::WARNING
@@ -198,7 +199,7 @@ class Transactions
             if ($this->count > 0) {
                 $this->filters->setCounter($this->count);
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot count transactions | ' . $e->getMessage(),
                 Analog::WARNING
@@ -269,7 +270,7 @@ class Transactions
                     't.' . Adherent::PK . ' = ' . $this->filters->filtre_cotis_adh
                 );
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
@@ -326,7 +327,7 @@ class Transactions
                     "Transactions deleted (" . print_r($list, true) . ')'
                 );
                 return true;
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 $this->zdb->connection->rollBack();
                 Analog::log(
                     'An error occurred trying to remove transactions | ' .

@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
 use Galette\Entity\Adherent;
@@ -171,7 +172,7 @@ class Login extends Authentication
                 $this->logUser($row);
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred: ' . $e->getMessage(),
                 Analog::WARNING
@@ -296,7 +297,7 @@ class Login extends Authentication
                 $this->logUser($row);
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred: ' . $e->getMessage(),
                 Analog::WARNING
@@ -328,7 +329,7 @@ class Login extends Authentication
                 /* No results, user does not exists yet :) */
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot check if login exists | ' . $e->getMessage(),
                 Analog::WARNING

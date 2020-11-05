@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers\Crud;
 
+use Throwable;
 use Galette\Controllers\CrudController;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -406,7 +407,7 @@ class ContributionsController extends CrudController
                     if (isset($post['end_date_filter'])) {
                         $filters->end_date_filter = $post['end_date_filter'];
                     }
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     $error_detected[] = $e->getMessage();
                 }
             }

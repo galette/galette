@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Core\L10n;
 use Laminas\Db\Sql\Expression;
@@ -122,7 +123,7 @@ trait I18nTrait
                 }
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred adding dynamic translation for `' .
                 $text_orig . '` | ' . $e->getMessage(),
@@ -188,7 +189,7 @@ trait I18nTrait
                 $this->zdb->execute($insert);
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred updating dynamic translation for `' .
                 $text_orig . '` | ' . $e->getMessage(),
@@ -223,7 +224,7 @@ trait I18nTrait
             );
             $this->zdb->execute($delete);
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred deleting dynamic translation for `' .
                 $text_orig . ' | ' . $e->getMessage(),

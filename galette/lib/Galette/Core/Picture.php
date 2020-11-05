@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Repository\Members;
@@ -221,7 +222,7 @@ class Picture implements FileInterface
                 $this->file_path = realpath($file_wo_ext . '.' . $this->format);
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             return false;
         }
     }
@@ -384,7 +385,7 @@ class Picture implements FileInterface
                 $this->has_picture = false;
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             if ($transaction === true) {
                 $zdb->connection->rollBack();
             }
@@ -564,7 +565,7 @@ class Picture implements FileInterface
             );
             $zdb->connection->commit();
             $this->has_picture = true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $zdb->connection->rollBack();
             Analog::log(
                 'An error occurred storing picture in database: ' .

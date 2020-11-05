@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Repository\Contributions;
@@ -156,7 +157,7 @@ class Transaction
             } else {
                 throw new \Exception();
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot load transaction form id `' . $id . '` | ' .
                 $e->getMessage(),
@@ -211,7 +212,7 @@ class Transaction
 
             $emitter->emit('transaction.remove', $this);
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             if ($transaction) {
                 $this->zdb->connection->rollBack();
             }
@@ -283,7 +284,7 @@ class Transaction
                                     throw new \Exception('Incorrect format');
                                 }
                                 $this->$prop = $d->format('Y-m-d');
-                            } catch (\Exception $e) {
+                            } catch (Throwable $e) {
                                 Analog::log(
                                     'Wrong date format. field: ' . $key .
                                     ', value: ' . $value . ', expected fmt: ' .
@@ -448,7 +449,7 @@ class Transaction
             }
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
@@ -478,7 +479,7 @@ class Transaction
             $result = $results->current();
             $dispatched_amount = $result->sum;
             return (double)$dispatched_amount;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred retrieving dispatched amounts | ' .
                 $e->getMessage(),
@@ -506,7 +507,7 @@ class Transaction
             $result = $results->current();
             $dispatched_amount = $result->sum;
             return (double)$this->_amount - (double)$dispatched_amount;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred retrieving missing amounts | ' .
                 $e->getMessage(),
@@ -562,7 +563,7 @@ class Transaction
                         try {
                             $d = new \DateTime($this->$rname);
                             return $d->format(__("Y-m-d"));
-                        } catch (\Exception $e) {
+                        } catch (Throwable $e) {
                             //oops, we've got a bad date :/
                             Analog::log(
                                 'Bad date (' . $this->$rname . ') | ' .

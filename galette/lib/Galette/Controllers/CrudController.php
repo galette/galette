@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers;
 
+use Throwable;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Analog\Analog;
@@ -288,7 +289,7 @@ abstract class CrudController extends AbstractController
                     );
                     $success = true;
                 }
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'An error occurred on delete | ' . $e->getMessage(),
                     Analog::ERROR

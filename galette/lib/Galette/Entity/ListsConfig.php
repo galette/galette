@@ -37,6 +37,7 @@
 namespace Galette\Entity;
 
 use ArrayObject;
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 use Galette\Core\Db;
@@ -191,7 +192,7 @@ class ListsConfig extends FieldsConfig
             }
 
             return $display_elements;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred getting list elements to display',
                 Analog::ERROR
@@ -346,7 +347,7 @@ class ListsConfig extends FieldsConfig
 
             $this->zdb->connection->commit();
             return $this->load();
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
                 '[' . $class . '] An error occurred while storing list ' .

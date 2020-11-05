@@ -37,6 +37,7 @@
 namespace Galette\Entity;
 
 use ArrayObject;
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 use Galette\Core\Db;
@@ -181,7 +182,7 @@ class FieldsConfig
 
             $this->buildLists();
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Fields configuration cannot be loaded!',
                 Analog::URGENT
@@ -371,7 +372,7 @@ class FieldsConfig
                     $this->load();
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 '[' . $class . '] An error occurred while checking update for ' .
                 'fields configuration for table `' . $this->table . '`. ' .
@@ -424,7 +425,7 @@ class FieldsConfig
                 Analog::INFO
             );
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to initialize default fields configuration.' . $e->getMessage(),
                 Analog::ERROR
@@ -590,7 +591,7 @@ class FieldsConfig
                 'fieldsets' => $form_elements,
                 'hiddens'   => $hidden_elements
             );
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred getting form elements',
                 Analog::ERROR
@@ -674,7 +675,7 @@ class FieldsConfig
                 }
             }
             return $display_elements;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred getting display elements',
                 Analog::ERROR
@@ -805,7 +806,7 @@ class FieldsConfig
 
             $this->zdb->connection->commit();
             return $this->load();
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
                 '[' . $class . '] An error occurred while storing fields ' .
@@ -892,7 +893,7 @@ class FieldsConfig
 
             $this->zdb->connection->commit();
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->zdb->connection->rollBack();
             Analog::log(
                 'An error occurred migrating old required fields. | ' .

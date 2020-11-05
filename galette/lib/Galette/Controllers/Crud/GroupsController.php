@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers\Crud;
 
+use Throwable;
 use Galette\Controllers\CrudController;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -377,7 +378,7 @@ class GroupsController extends CrudController
                     _T("An error occurred while storing the group.")
                 );
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->flash->addMessage(
                 'error_detected',
                 $e->getMessage()

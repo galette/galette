@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers\Crud;
 
+use Throwable;
 use Galette\Controllers\CrudController;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -119,7 +120,7 @@ class DynamicFieldsController extends CrudController
             $df->store($post);
             $error_detected = $df->getErrors();
             $warning_detected = $df->getWarnings();
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $msg = 'An error occurred adding new dynamic field.';
             Analog::log(
                 $msg . ' | ' .
@@ -339,7 +340,7 @@ class DynamicFieldsController extends CrudController
             $df->store($post);
             $error_detected = $df->getErrors();
             $warning_detected = $df->getWarnings();
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $msg = 'An error occurred storing dynamic field ' . $df->getId() . '.';
             Analog::log(
                 $msg . ' | ' .

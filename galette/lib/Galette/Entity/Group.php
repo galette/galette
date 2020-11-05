@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Galette\Core\Login;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -114,7 +115,7 @@ class Group
             } else {
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot load group form id `' . $id . '` | ' . $e->getMessage(),
                 Analog::WARNING
@@ -204,7 +205,7 @@ class Group
                 } else {
                     $this->managers = $members;
                 }
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'Cannot get group persons | ' . $e->getMessage(),
                     Analog::WARNING
@@ -245,7 +246,7 @@ class Group
                 $groups[] = $group;
             }
             $this->groups = $groups;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot get subgroup for group ' . $this->group_name .
                 ' (' . $this->id . ')| ' . $e->getMessage(),
@@ -319,7 +320,7 @@ class Group
             }
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             if ($transaction) {
                 $zdb->connection->rollBack();
             }
@@ -384,7 +385,7 @@ class Group
             }
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Something went wrong detaching group `' . $this->group_name .
                 '` (' . $this->id . ') from its parent:\'( | ' .
@@ -465,7 +466,7 @@ class Group
                 return true;
             }
             /** FIXME: also store members and managers? */
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Something went wrong :\'( | ' . $e->getMessage() . "\n" .
                 $e->getTraceAsString(),
@@ -790,7 +791,7 @@ class Group
             );
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $zdb->connection->rollBack();
             $messages = array();
             do {
@@ -880,7 +881,7 @@ class Group
             );
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $zdb->connection->rollBack();
             $messages = array();
             do {

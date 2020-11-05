@@ -36,6 +36,7 @@
 
 namespace Galette\Middleware;
 
+use Throwable;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Analog\Analog;
@@ -129,7 +130,7 @@ class Telemetry
                         //send telemetry data
                         try {
                             $result = $telemetry->send();
-                        } catch (\Exception $e) {
+                        } catch (Throwable $e) {
                             Analog::log(
                                 $e->getMessage(),
                                 Analog::INFO
@@ -137,7 +138,7 @@ class Telemetry
                         }
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 //empty catch
             }
         }

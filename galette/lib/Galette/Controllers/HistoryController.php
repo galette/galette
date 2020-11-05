@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers;
 
+use Throwable;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\History;
@@ -157,7 +158,7 @@ class HistoryController extends AbstractController
                         $field = _T("end date filter");
                         $filters->end_date_filter = $post['end_date_filter'];
                     }
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     $error_detected[] = $e->getMessage();
                 }
             }
@@ -223,7 +224,7 @@ class HistoryController extends AbstractController
                     _T('Logs have been flushed!')
                 );
                 $success = true;
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 $this->zdb->connection->rollBack();
                 Analog::log(
                     'An error occurred flushing logs | ' . $e->getMessage(),

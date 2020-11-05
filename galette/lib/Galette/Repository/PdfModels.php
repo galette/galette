@@ -36,6 +36,7 @@
 
 namespace Galette\Repository;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Entity\PdfModel;
@@ -75,7 +76,7 @@ class PdfModels extends Repository
                 $models[] = new $class($this->zdb, $this->preferences, $row);
             }
             return $models;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot list pdf models | ' . $e->getMessage(),
                 Analog::WARNING
@@ -138,7 +139,7 @@ class PdfModels extends Repository
                 $this->zdb->connection->commit();
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             if ($this->zdb->connection->inTransaction()) {
                 $this->zdb->connection->rollBack();
             }
@@ -185,7 +186,7 @@ class PdfModels extends Repository
                 $this->zdb->connection->commit();
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             if ($this->zdb->connection->inTransaction()) {
                 $this->zdb->connection->rollBack();
             }

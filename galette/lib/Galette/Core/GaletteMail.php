@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -359,7 +360,7 @@ class GaletteMail
                 $this->mail = null;
                 return self::MAIL_SENT;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Error sending message: ' . $e->getMessage(),
                 Analog::ERROR

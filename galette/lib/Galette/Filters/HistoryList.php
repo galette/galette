@@ -36,6 +36,7 @@
 
 namespace Galette\Filters;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Core\Pagination;
 
@@ -148,7 +149,7 @@ class HistoryList extends Pagination
                                 $d = new \DateTime($this->$name);
                                 return $d->format(__("Y-m-d"));
                             }
-                        } catch (\Exception $e) {
+                        } catch (Throwable $e) {
                             //oops, we've got a bad date :/
                             Analog::log(
                                 'Bad date (' . $this->$name . ') | ' .
@@ -257,7 +258,7 @@ class HistoryList extends Pagination
                         } else {
                             $this->$name = null;
                         }
-                    } catch (\Exception $e) {
+                    } catch (Throwable $e) {
                         Analog::log(
                             'Wrong date format. field: ' . $name .
                             ', value: ' . $value . ', expected fmt: ' .

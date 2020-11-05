@@ -33,6 +33,7 @@
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.8 - 2013-01-09
  */
+
 ?>
                 <h2><?php echo _T("Welcome to the Galette Install!"); ?></h2>
 <?php
@@ -52,7 +53,7 @@ if (!version_compare(PHP_VERSION, '5.2.0', '<')) {
     try {
         $test_date = new DateTime();
         $date_ok = true;
-    } catch (Exception $e) {
+    } catch (Throwable $e) {
         //do nothing
     }
 }
@@ -78,7 +79,7 @@ $files_need_rw = array(
 
 $files_perms_class = $class . 'ok';
 
-foreach ($files_need_rw as $label=>$file) {
+foreach ($files_need_rw as $label => $file) {
     $writable = is_writable($file);
     if (!$writable) {
         $perms_ok = false;
@@ -117,7 +118,7 @@ if (!$modules_ok) {
                 <h3><?php echo _T("Files permissions"); ?></h3>
                 <ul class="leaders">
 <?php
-foreach ($files_need_rw as $label=>$file) {
+foreach ($files_need_rw as $label => $file) {
     $writable = is_writable($file);
     ?>
                     <li>

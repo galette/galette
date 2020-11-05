@@ -37,6 +37,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
 use Galette\Core\Preferences;
@@ -214,7 +215,7 @@ class Texts
                     try {
                         $this->insert($zdb, [$values]);
                         return $this->getTexts($ref, $lang);
-                    } catch (\Exception $e) {
+                    } catch (Throwable $e) {
                         Analog::log(
                             'Unable to add missing requested text "' . $ref .
                             ' (' . $lang . ') | ' . $e->getMessage(),
@@ -230,7 +231,7 @@ class Texts
                 }
             }
             return $this->all_texts;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot get text `' . $ref . '` for lang `' . $lang . '` | ' .
                 $e->getMessage(),
@@ -272,7 +273,7 @@ class Texts
             $zdb->execute($update);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error has occurred while storing email text. | ' .
                 $e->getMessage(),
@@ -305,7 +306,7 @@ class Texts
                 $refs[] = $result;
             }
             return $refs;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot get refs for lang `' . $lang . '` | ' .
                 $e->getMessage(),
@@ -374,7 +375,7 @@ class Texts
                 );
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to initialize default texts.' . $e->getMessage(),
                 Analog::WARNING
@@ -429,7 +430,7 @@ class Texts
                 );
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred checking missing texts.' . $e->getMessage(),
                 Analog::WARNING

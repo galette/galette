@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Analog\Analog;
 use Galette\DynamicFields\File;
 use Galette\DynamicFields\Date;
@@ -176,7 +177,7 @@ trait DynamicsTrait
                                         throw new \Exception('Incorrect format');
                                     }
                                 }
-                            } catch (\Exception $e) {
+                            } catch (Throwable $e) {
                                 $valid = false;
                                 Analog::log(
                                     'Wrong date format. field: ' . $field_id .

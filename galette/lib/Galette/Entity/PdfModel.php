@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Galette\Core;
 use Galette\Core\Db;
 use Galette\Repository\PdfModels;
@@ -176,7 +177,7 @@ abstract class PdfModel
             } else {
                 $this->loadFromRs($results->current(), $preferences);
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred loading model #' . $id . "Message:\n" .
                 $e->getMessage(),
@@ -284,7 +285,7 @@ abstract class PdfModel
                 }
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred storing model: ' . $e->getMessage() .
                 "\n" . print_r($data, true),
@@ -545,7 +546,7 @@ abstract class PdfModel
                 try {
                     $this->checkChars($value, 50, _T("Name"));
                     $this->$name = $value;
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     throw $e;
                 }
                 break;
@@ -559,7 +560,7 @@ abstract class PdfModel
                 try {
                     $this->checkChars($value, 100, $field, true);
                     $this->$name = $value;
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     throw $e;
                 }
                 break;

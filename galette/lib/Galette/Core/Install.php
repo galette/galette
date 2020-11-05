@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use Laminas\Db\Adapter\Adapter;
 
@@ -740,7 +741,7 @@ class Install
                         Adapter::QUERY_MODE_EXECUTE
                     );
                     $ret['res'] = true;
-                } catch (\Exception $e) {
+                } catch (Throwable $e) {
                     $log_lvl = Analog::WARNING;
                     //if error are on drop, DROP, rename or RENAME we can continue
                     $parts = explode(' ', $query, 1);

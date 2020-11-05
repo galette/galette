@@ -36,6 +36,7 @@
 
 namespace Galette\Controllers;
 
+use Throwable;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\L10n;
@@ -87,7 +88,7 @@ class DynamicTranslationsController extends AbstractController
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $nb_fields = $result->nb;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred counting l10n entries | ' .
                 $e->getMessage(),
@@ -141,7 +142,7 @@ class DynamicTranslationsController extends AbstractController
                 $params['exists'] = $exists;
                 $params['orig'] = $orig;
                 $params['trans'] = $trans;
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'An error occurred retrieving l10n entries | ' .
                     $e->getMessage(),

@@ -34,6 +34,7 @@
  * @since     0.8.2dev 2014-11-11
  */
 
+use Throwable;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\ContributionsTypes;
@@ -144,7 +145,7 @@ $app->group('/ajax', function () use ($authenticate) {
                         'label' => $town->ville_adh
                     ];
                 }
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'Something went wrong is towns suggestion: ' . $e->getMessage(),
                     Analog::WARNING
@@ -178,7 +179,7 @@ $app->group('/ajax', function () use ($authenticate) {
                         'label' => $town->pays_adh
                     ];
                 }
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 Analog::log(
                     'Something went wrong is countries suggestion: ' . $e->getMessage(),
                     Analog::WARNING
@@ -219,7 +220,7 @@ $app->group('/ajax', function () use ($authenticate) {
                     'success'   => true,
                     'message'   => $message
                 ];
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 $result = [
                     'success'   => false,
                     'message'   => $e->getMessage()

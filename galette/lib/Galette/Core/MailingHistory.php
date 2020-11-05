@@ -36,6 +36,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Core\Db;
 use Galette\Core\Login;
@@ -161,7 +162,7 @@ class MailingHistory extends History
                 $ret[] = $r;
             }
             return $ret;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to get history. | ' . $e->getMessage(),
                 Analog::WARNING
@@ -197,7 +198,7 @@ class MailingHistory extends History
                     $this->senders[-1] = _('Superadmin');
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot list senders from mailing history! | ' . $e->getMessage(),
                 Analog::WARNING
@@ -293,7 +294,7 @@ class MailingHistory extends History
                     $token
                 );
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 __METHOD__ . ' | ' . $e->getMessage(),
                 Analog::WARNING
@@ -329,7 +330,7 @@ class MailingHistory extends History
             if ($this->count > 0) {
                 $this->filters->setCounter($this->count);
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Cannot count history | ' . $e->getMessage(),
                 Analog::WARNING
@@ -359,7 +360,7 @@ class MailingHistory extends History
             $result = $results->current();
 
             return $mailing->loadFromHistory($result, $new);
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to load mailing model #' . $id . ' | ' .
                 $e->getMessage(),
@@ -451,7 +452,7 @@ class MailingHistory extends History
             $update->where(self::PK . ' = ' . $this->mailing->history_id);
             $this->zdb->execute($update);
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurend updating Mailing | ' . $e->getMessage(),
                 Analog::ERROR
@@ -511,7 +512,7 @@ class MailingHistory extends History
                 $this->id = $this->zdb->driver->getLastGeneratedValue();
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurend storing Mailing | ' . $e->getMessage(),
                 Analog::ERROR
@@ -562,7 +563,7 @@ class MailingHistory extends History
                 );
 
                 return true;
-            } catch (\Exception $e) {
+            } catch (Throwable $e) {
                 $this->zdb->connection->rollBack();
                 Analog::log(
                     'Unable to delete selected mailing history entries |' .

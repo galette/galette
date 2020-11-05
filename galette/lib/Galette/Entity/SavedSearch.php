@@ -36,6 +36,7 @@
 
 namespace Galette\Entity;
 
+use Throwable;
 use Galette\Core;
 use Galette\Core\Db;
 use Galette\Core\Login;
@@ -112,7 +113,7 @@ class SavedSearch
             $res = $results->current();
 
             $this->loadFromRs($res);
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred loading saved search #' . $id . "Message:\n" .
                 $e->getMessage(),
@@ -226,7 +227,7 @@ class SavedSearch
                 }
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred storing saved search: ' . $e->getMessage() .
                 "\n" . print_r($data, true),
@@ -258,7 +259,7 @@ class SavedSearch
             return true;
         } catch (\RuntimeException $re) {
             throw $re;
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'Unable to delete saved search ' . $id . ' | ' . $e->getMessage(),
                 Analog::ERROR
@@ -289,7 +290,7 @@ class SavedSearch
                         try {
                             $d = new \DateTime($this->$name);
                             return $d->format(__("Y-m-d"));
-                        } catch (\Exception $e) {
+                        } catch (Throwable $e) {
                             //oops, we've got a bad date :/
                             Analog::log(
                                 'Bad date (' . $this->$name . ') | ' .

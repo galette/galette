@@ -39,6 +39,7 @@
 
 namespace Galette\Core;
 
+use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 
@@ -103,7 +104,7 @@ class Password extends AbstractPassword
                     Analog::DEBUG
                 );
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error has occurred removing old tmppasswords ' .
                 $e->getMessage(),
@@ -151,7 +152,7 @@ class Password extends AbstractPassword
             } else {
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 "An error occurred trying to add temporary password entry. " .
                 $e->getMessage(),
@@ -184,7 +185,7 @@ class Password extends AbstractPassword
                     Analog::DEBUG
                 );
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred deleting expired temporary passwords. ' .
                 $e->getMessage(),
@@ -218,7 +219,7 @@ class Password extends AbstractPassword
             } else {
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error occurred getting requested hash. ' . $e->getMessage(),
                 Analog::WARNING
@@ -250,7 +251,7 @@ class Password extends AbstractPassword
                 );
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Analog::log(
                 'An error ocured attempting to delete used hash' .
                 $e->getMessage(),
