@@ -134,6 +134,13 @@ ini_set('display_errors', 0);
 Logger stuff
 ------------------------------------------------------------------------------*/
 
+error_reporting(E_ALL);
+set_error_handler(function ($severity, $message, $file, $line) {
+    if (error_reporting() & $severity) {
+        throw new \ErrorException($message, 0, $severity, $file, $line);
+    }
+});
+
 //change default format so the 3rd param is a string for level name
 Analog::$format = "%s - %s - %s - %s\n";
 $galette_run_log = null;
