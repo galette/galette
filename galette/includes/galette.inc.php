@@ -87,14 +87,6 @@ use Analog\Handler;
 use Analog\Handler\LevelName;
 use Galette\Core;
 
-/*
-BREAKS as of Galette 0.9-dev
-// To help the built-in PHP dev server, check if the request was actually for
-// something which should probably be served as a static file
-if (PHP_SAPI === 'cli-server' && $_SERVER['SCRIPT_FILENAME'] !== __FILE__) {
-    return false;
-}*/
-
 require GALETTE_ROOT . '/vendor/autoload.php';
 
 //start profiling
@@ -137,13 +129,6 @@ if (!defined('GALETTE_DISPLAY_ERRORS')) {
     }
 }
 ini_set('display_errors', 0);
-
-set_include_path(
-    GALETTE_ZEND_PATH . PATH_SEPARATOR .
-    GALETTE_PHP_MAILER_PATH . PATH_SEPARATOR .
-    GALETTE_SMARTY_PATH . PATH_SEPARATOR .
-    get_include_path()
-);
 
 /*------------------------------------------------------------------------------
 Logger stuff
