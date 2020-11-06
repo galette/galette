@@ -73,12 +73,12 @@ trait GaletteError
     /**
      * Write to the error log whether displayErrorDetails is false or not
      *
-     * @param Throwable $throwable Error
+     * @param Exception|Throwable $throwable Error
      * @overrides \Slim\Handlers\AbstractError::writeToErrorLog()
      *
      * @return void
      */
-    protected function writeToErrorLog(Throwable $throwable)
+    protected function writeToErrorLog($throwable)
     {
         $message = 'Galette error:' . PHP_EOL;
         $message .= $this->renderThrowableAsText($throwable);

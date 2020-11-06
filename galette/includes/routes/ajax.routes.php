@@ -34,7 +34,6 @@
  * @since     0.8.2dev 2014-11-11
  */
 
-use Throwable;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\ContributionsTypes;
