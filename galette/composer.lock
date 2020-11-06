@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6776616afcbf424b565dfc0cf9539b68",
+    "content-hash": "8658ccfa33ef5ec58d263f02cdc60255",
     "packages": [
         {
             "name": "akrabat/rka-slim-session-middleware",
@@ -233,6 +233,7 @@
                 "faker",
                 "fixtures"
             ],
+            "abandoned": true,
             "time": "2019-10-17T13:03:13+00:00"
         },
         {
@@ -383,58 +384,6 @@
                 "laminas"
             ],
             "time": "2019-12-31T20:00:43+00:00"
-        },
-        {
-            "name": "laminas/laminas-dependency-plugin",
-            "version": "1.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laminas/laminas-dependency-plugin.git",
-                "reference": "38bf91861f5b4d49f9a1c530327c997f7a7fb2db"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-dependency-plugin/zipball/38bf91861f5b4d49f9a1c530327c997f7a7fb2db",
-                "reference": "38bf91861f5b4d49f9a1c530327c997f7a7fb2db",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.1",
-                "php": "^5.6 || ^7.0"
-            },
-            "require-dev": {
-                "composer/composer": "^1.9",
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
-                "phpcompatibility/php-compatibility": "^9.3",
-                "phpunit/phpunit": "^8.4",
-                "roave/security-advisories": "dev-master",
-                "webimpress/coding-standard": "^1.0"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev",
-                    "dev-develop": "1.1.x-dev"
-                },
-                "class": "Laminas\\DependencyPlugin\\DependencyRewriterPlugin"
-            },
-            "autoload": {
-                "psr-4": {
-                    "Laminas\\DependencyPlugin\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Replace zendframework and zfcampus packages with their Laminas Project equivalents.",
-            "funding": [
-                {
-                    "url": "https://funding.communitybridge.org/projects/laminas-project",
-                    "type": "community_bridge"
-                }
-            ],
-            "time": "2020-05-20T13:45:39+00:00"
         },
         {
             "name": "laminas/laminas-eventmanager",
@@ -1640,12 +1589,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/atoum/atoum.git",
-                "reference": "7a5c8154fd816985c3ceb69741211e46ec52a0fc"
+                "reference": "ac55bd16ff5e702895d48d565c0a2ff7e6889661"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atoum/atoum/zipball/7a5c8154fd816985c3ceb69741211e46ec52a0fc",
-                "reference": "7a5c8154fd816985c3ceb69741211e46ec52a0fc",
+                "url": "https://api.github.com/repos/atoum/atoum/zipball/ac55bd16ff5e702895d48d565c0a2ff7e6889661",
+                "reference": "ac55bd16ff5e702895d48d565c0a2ff7e6889661",
                 "shasum": ""
             },
             "require": {
@@ -1715,7 +1664,7 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2020-09-29T08:34:12+00:00"
+            "time": "2020-10-15T08:43:32+00:00"
         },
         {
             "name": "galette/smarty-xgettext",
@@ -1820,12 +1769,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "04c3a31fe8ea94b42c9e2d1acc93d19782133b00"
+                "reference": "ae789a8a2ad189ce7e8216942cdb9b77319f5eb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/04c3a31fe8ea94b42c9e2d1acc93d19782133b00",
-                "reference": "04c3a31fe8ea94b42c9e2d1acc93d19782133b00",
+                "url": "https://api.github.com/repos/symfony/console/zipball/ae789a8a2ad189ce7e8216942cdb9b77319f5eb8",
+                "reference": "ae789a8a2ad189ce7e8216942cdb9b77319f5eb8",
                 "shasum": ""
             },
             "require": {
@@ -1905,7 +1854,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-18T14:27:32+00:00"
+            "time": "2020-10-07T15:23:00+00:00"
         },
         {
             "name": "symfony/finder",

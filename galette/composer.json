@@ -41,7 +41,6 @@
         "laminas/laminas-i18n": "^2.9",
         "laminas/laminas-cache": "^2.8",
         "soundasleep/html2text": "^0.5.0",
-        "laminas/laminas-dependency-plugin": "^1.0",
         "aneek/slim-event-dispatcher": "^1.0",
         "slim/flash": "^0.4.0",
         "league/event": "^2.1",
