@@ -110,31 +110,10 @@ function initDbConstants($install)
 if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     define('GALETTE_LOGGER_CHECKED', true);
 
-    $now = new \DateTime();
-    $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
-        $now->format('Y-m-d') . '.log';
-    $galette_debug_log = LevelName::init(Handler\File::init($dbg_log_path));
-
-    if (defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true) {
-        //logs everything in PHP logs (per chance /var/log/http/error_log or /var/log/php-fpm/error.log)
-        $galette_run_log = \Analog\Handler\Syslog::init('galette', 'user');
-    } else {
-        $logfile = 'galette_install';
-        $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
-        $galette_run_log = LevelName::init(Handler\File::init($log_path));
-    }
-
-    Analog::handler(
-        Handler\Multi::init(
-            array(
-                Analog::NOTICE  => Handler\Threshold::init(
-                    $galette_run_log,
-                    GALETTE_LOG_LVL
-                ),
-                Analog::DEBUG   => $galette_debug_log
-            )
-        )
-    );
+    $logfile = 'galette_install';
+    $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
+    $galette_run_log = LevelName::init(Handler\File::init($log_path));
+    Analog::handler($galette_run_log);
 }
 
 if (isset($_POST['stepback_btn'])) {

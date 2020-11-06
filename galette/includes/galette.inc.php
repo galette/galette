@@ -152,7 +152,6 @@ Logger stuff
 //change default format so the 3rd param is a string for level name
 Analog::$format = "%s - %s - %s - %s\n";
 $galette_run_log = null;
-$galette_debug_log = Handler\Ignore::init();
 
 if (!defined('GALETTE_LOG_LVL')) {
     if (GALETTE_MODE === 'DEV') {
@@ -168,50 +167,25 @@ if (defined('GALETTE_TESTS')) {
     $log_path = GALETTE_LOGS_PATH . 'tests.log';
     $galette_run_log = LevelName::init(Handler\File::init($log_path));
 } else {
-    if ((!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) && !$cron) {
-        if (GALETTE_LOG_LVL >= Analog::INFO) {
-            $now = new \DateTime();
-            $dbg_log_path = GALETTE_LOGS_PATH . 'galette_debug_' .
-                $now->format('Y-m-d') . '.log';
-            $galette_debug_log = LevelName::init(Handler\File::init($dbg_log_path));
-        } else {
-            $galette_debug_log = Handler\Ignore::init();
-        }
-    }
     $galette_log_var = null;
 
-    if (defined('GALETTE_SYS_LOG') && GALETTE_SYS_LOG === true) {
-        //logs everything in PHP logs (per chance /var/log/http/error_log or /var/log/php-fpm/error.log)
-        $galette_run_log = Handler\Syslog::init('galette', 'user');
-    } else {
-        if (!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) {
-            //logs everything in galette log file
-            if (!isset($logfile)) {
-                //if no filename has been setted (ie. from install), set default one
-                $logfile = 'galette_run';
-            }
-            $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
-            $galette_run_log = LevelName::init(Handler\File::init($log_path));
-        } else {
-            $galette_run_log = LevelName::init(Handler\Variable::init($galette_log_var));
+    if (!$installer || ($installer && defined('GALETTE_LOGGER_CHECKED'))) {
+        //logs everything in galette log file
+        if (!isset($logfile)) {
+            //if no filename has been setted (ie. from install), set default one
+            $logfile = 'galette_run';
         }
+        $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
+        $galette_run_log = LevelName::init(Handler\File::init($log_path));
+    } else {
+        $galette_run_log = LevelName::init(Handler\Variable::init($galette_log_var));
     }
     if (!$installer) {
         Core\Logs::cleanup();
     }
 }
 
-Analog::handler(
-    Handler\Multi::init(
-        array(
-            Analog::NOTICE  => Handler\Threshold::init(
-                $galette_run_log,
-                GALETTE_LOG_LVL
-            ),
-            Analog::DEBUG   => $galette_debug_log
-        )
-    )
-);
+Analog::handler($galette_run_log);
 
 require_once GALETTE_ROOT . 'includes/functions.inc.php';
 
