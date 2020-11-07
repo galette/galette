@@ -62,7 +62,7 @@ class Logs
     {
         $interval = strtotime('-1 month');
         $match = glob(
-            realpath(GALETTE_LOGS_PATH) . '/*{run,debug}*.log',
+            realpath(GALETTE_LOGS_PATH) . '/*.log',
             GLOB_BRACE
         );
 

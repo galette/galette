@@ -165,7 +165,7 @@ if (defined('GALETTE_TESTS')) {
         //logs everything in galette log file
         if (!isset($logfile)) {
             //if no filename has been setted (ie. from install), set default one
-            $logfile = 'galette_run';
+            $logfile = 'galette';
         }
         $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
         $galette_run_log = LevelName::init(Handler\File::init($log_path));

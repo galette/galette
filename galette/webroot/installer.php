@@ -110,7 +110,6 @@ function initDbConstants($install)
 if ($install->isStepPassed(GaletteInstall::STEP_TYPE)) {
     define('GALETTE_LOGGER_CHECKED', true);
 
-    $logfile = 'galette_install';
     $log_path = GALETTE_LOGS_PATH . $logfile . '.log';
     $galette_run_log = LevelName::init(Handler\File::init($log_path));
     Analog::handler($galette_run_log);
