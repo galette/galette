@@ -311,17 +311,34 @@ class Login extends atoum
                 $this->boolean($res)->isTrue();
             }
 
-            $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
-            $fakedata
-                ->setSeed($this->seed)
-                ->setDependencies(
-                    $this->preferences,
-                    $this->members_fields,
-                    $this->history,
-                    $this->login
-                );
-
-            $data = $fakedata->fakeMember();
+            $data = [
+                'nom_adh' => 'Barre',
+                'prenom_adh' => 'Olivier',
+                'ville_adh' => 'Le GoffVille',
+                'cp_adh' => '05 029',
+                'adresse_adh' => '9, impasse Frédérique Boulanger',
+                'email_adh' => 'bernadette37@hernandez.fr',
+                'login_adh' => 'dumas.roger',
+                'mdp_adh' => 'sd8)AvtE|*',
+                'mdp_adh2' => 'sd8)AvtE|*',
+                'bool_admin_adh' => false,
+                'bool_exempt_adh' => false,
+                'bool_display_info' => true,
+                'sexe_adh' => 1,
+                'prof_adh' => 'Pédologue',
+                'titre_adh' => null,
+                'ddn_adh' => '23/10/1948',
+                'lieu_naissance' => 'Lagarde',
+                'pseudo_adh' => 'elisabeth50',
+                'pays_adh' => 'Géorgie',
+                'tel_adh' => '05 05 20 88 04',
+                'url_adh' => 'http://www.gay.com/tempora-nemo-quidem-laudantium-dolores',
+                'activite_adh' => true,
+                'id_statut' => 6,
+                'date_crea_adh' => '02/09/2019',
+                'pref_lang' => 'nb_NO',
+                'fingerprint' => 'FAKER' . $this->seed,
+            ];
 
             $this->adh = new \Galette\Entity\Adherent($this->zdb);
             $this->adh->setDependencies(

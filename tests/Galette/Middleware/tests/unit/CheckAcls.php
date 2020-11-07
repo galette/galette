@@ -199,8 +199,6 @@ class CheckAcls extends atoum
             ['ajaxMembers', 'groupmanager'],
             ['ajaxGroupMembers', 'staff'],
             ['getDynamicFile', 'member'],
-            ['fakeData', 'superadmin'],
-            ['doFakeData', 'superadmin'],
             ['adminTools', 'superadmin'],
             ['doAdminTools', 'superadmin'],
             ['telemetryInfos', 'admin'],

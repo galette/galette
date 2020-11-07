@@ -170,17 +170,34 @@ class Adherent extends atoum
      */
     private function dataAdherent(): array
     {
-        $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
-        $fakedata
-            ->setSeed($this->seed)
-            ->setDependencies(
-                $this->preferences,
-                $this->members_fields,
-                $this->history,
-                $this->login
-            );
-
-        $data = $fakedata->fakeMember();
+        $data = [
+            'nom_adh' => 'Durand',
+            'prenom_adh' => 'René',
+            'ville_adh' => 'Martel',
+            'cp_adh' => '39 069',
+            'adresse_adh' => '66, boulevard De Oliveira',
+            'email_adh' => 'meunier.josephine@ledoux.com',
+            'login_adh' => 'arthur.hamon',
+            'mdp_adh' => 'J^B-()f',
+            'mdp_adh2' => 'J^B-()f',
+            'bool_admin_adh' => false,
+            'bool_exempt_adh' => false,
+            'bool_display_info' => true,
+            'sexe_adh' => 0,
+            'prof_adh' => 'Chef de fabrication',
+            'titre_adh' => null,
+            'ddn_adh' => '1937-12-26',
+            'lieu_naissance' => 'Gonzalez-sur-Meunier',
+            'pseudo_adh' => 'ubertrand',
+            'pays_adh' => 'Antarctique',
+            'tel_adh' => '0439153432',
+            'url_adh' => 'http://bouchet.com/',
+            'activite_adh' => true,
+            'id_statut' => 9,
+            'date_crea_adh' => '2020-06-10',
+            'pref_lang' => 'en_US',
+            'fingerprint' => 'FAKER' . $this->seed,
+        ];
         return $data;
     }
 
@@ -586,14 +603,6 @@ class Adherent extends atoum
         }
 
         $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
-        $fakedata
-            ->setSeed($this->seed)
-            ->setDependencies(
-                $this->preferences,
-                $this->members_fields,
-                $this->history,
-                $this->login
-            );
         $this->boolean($fakedata->addPhoto($this->adh))->isTrue();
 
         $this->boolean($this->adh->hasPicture())->isTrue();

@@ -147,17 +147,34 @@ class Contribution extends atoum
      */
     private function createAdherent()
     {
-        $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
-        $fakedata
-            ->setSeed($this->seed)
-            ->setDependencies(
-                $this->preferences,
-                $this->members_fields,
-                $this->history,
-                $this->login
-            );
-
-        $data = $fakedata->fakeMember();
+        $data = [
+            'nom_adh' => 'Durand',
+            'prenom_adh' => 'René',
+            'ville_adh' => 'Martel',
+            'cp_adh' => '39 069',
+            'adresse_adh' => '66, boulevard De Oliveira',
+            'email_adh' => 'meunier.josephine@ledoux.com',
+            'login_adh' => 'arthur.hamon',
+            'mdp_adh' => 'J^B-()f',
+            'mdp_adh2' => 'J^B-()f',
+            'bool_admin_adh' => false,
+            'bool_exempt_adh' => false,
+            'bool_display_info' => true,
+            'sexe_adh' => 0,
+            'prof_adh' => 'Chef de fabrication',
+            'titre_adh' => null,
+            'ddn_adh' => '1937-12-26',
+            'lieu_naissance' => 'Gonzalez-sur-Meunier',
+            'pseudo_adh' => 'ubertrand',
+            'pays_adh' => 'Antarctique',
+            'tel_adh' => '0439153432',
+            'url_adh' => 'http://bouchet.com/',
+            'activite_adh' => true,
+            'id_statut' => 9,
+            'date_crea_adh' => '2020-06-10',
+            'pref_lang' => 'en_US',
+            'fingerprint' => 'FAKER' . $this->seed,
+        ];
         $this->createMember($data);
         $this->checkMemberExpected();
     }
@@ -169,17 +186,23 @@ class Contribution extends atoum
      */
     private function createContribution()
     {
-        $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
-        $fakedata
-            ->setSeed($this->seed)
-            ->setDependencies(
-                $this->preferences,
-                $this->members_fields,
-                $this->history,
-                $this->login
-            );
+        $bdate = new \DateTime(); // 2020-11-07
+        $bdate->sub(new \DateInterval('P5M')); // 2020-06-07
+        $bdate->add(new \DateInterval('P3D')); // 2020-06-10
 
-        $data = $fakedata->fakeContrib($this->adh->id);
+        $edate = clone $bdate;
+        $edate->add(new \DateInterval('P1Y'));
+
+        $data = [
+            'id_adh' => $this->adh->id,
+            'id_type_cotis' => 1,
+            'montant_cotis' => 92,
+            'type_paiement_cotis' => 3,
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => $bdate->format('Y-m-d'),
+            'date_debut_cotis' => $bdate->format('Y-m-d'),
+            'date_fin_cotis' => $edate->format('Y-m-d'),
+        ];
         $this->createContrib($data);
         $this->checkContribExpected();
     }

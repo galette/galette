@@ -37,7 +37,6 @@
         "phpmailer/phpmailer": "^6",
         "tecnickcom/tcpdf": "^6.2",
         "akrabat/rka-slim-session-middleware": "dev-master@dev",
-        "fzaninotto/faker": "dev-master#674d89ac0dd42a03cca42523a0f72bdea90b2725",
         "laminas/laminas-i18n": "^2.9",
         "laminas/laminas-cache": "^2.8",
         "soundasleep/html2text": "^0.5.0",
@@ -54,10 +53,5 @@
     },
     "config": {
         "optimize-autoloader": true
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "patch -d vendor/fzaninotto/faker/ -p1 < ../patches/0001-Fix-PHP-7.4-array-syntax.patch"
-        ]
     }
 }

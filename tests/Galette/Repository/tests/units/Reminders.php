@@ -505,17 +505,36 @@ class Reminders extends atoum
      */
     private function createAdherent()
     {
-        $fakedata = new \Galette\Util\FakeData($this->zdb, $this->i18n);
-        $fakedata
-            ->setSeed($this->seed)
-            ->setDependencies(
-                $this->preferences,
-                $this->members_fields,
-                $this->history,
-                $this->login
-            );
-
-        $data = $fakedata->fakeMember();
+        $data = [
+            'nom_adh' => 'Hoarau',
+            'prenom_adh' => 'Lucas',
+            'ville_adh' => 'Reynaudnec',
+            'cp_adh' => '63077',
+            'adresse_adh' => '2, boulevard Legros',
+            'email_adh' => 'phoarau@tele2.fr',
+            'login_adh' => 'nathalie51',
+            'mdp_adh' => 'T.u!IbKOi|06',
+            'mdp_adh2' => 'T.u!IbKOi|06',
+            'bool_admin_adh' => false,
+            'bool_exempt_adh' => false,
+            'bool_display_info' => false,
+            'sexe_adh' => 1,
+            'prof_adh' => 'Extraction',
+            'titre_adh' => null,
+            'ddn_adh' => '1992-09-13',
+            'lieu_naissance' => 'Fischer',
+            'pseudo_adh' => 'vallet.camille',
+            'pays_adh' => null,
+            'tel_adh' => '05 59 53 59 43',
+            'url_adh' => 'http://bodin.net/omnis-ratione-sint-dolorem-architecto',
+            'activite_adh' => true,
+            'id_statut' => 9,
+            'date_crea_adh' => '2019-05-20',
+            'pref_lang' => 'ca',
+            'fingerprint' => 'FAKER' . $this->seed,
+            'societe_adh' => 'Philippe',
+            'is_company' => true,
+        ];
         $this->createMember($data);
         $this->checkMemberExpected();
     }

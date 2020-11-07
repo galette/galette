@@ -375,18 +375,6 @@ $app->post(
     Crud\DynamicFieldsController::class . ':doEdit'
 )->setName('doEditDynamicField')->add($authenticate);
 
-if (GALETTE_MODE != 'DEMO') {
-    $app->get(
-        '/generate-data',
-        GaletteController::class . ':fakeData'
-    )->setName('fakeData')->add($authenticate);
-
-    $app->post(
-        '/generate-data',
-        GaletteController::class . ':doFakeData'
-    )->setName('doFakeData')->add($authenticate);
-}
-
 $app->get(
     '/admin-tools',
     AdminToolsController::class . ':adminTools'
