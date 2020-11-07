@@ -159,11 +159,6 @@ class Db
         if (!$this->isPostgres()) {
             $this->db->query("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
         }
-
-        Analog::log(
-            '[Db] Database connection was successfull!',
-            Analog::DEBUG
-        );
     }
 
     /**
@@ -310,10 +305,6 @@ class Db
             $_db = new Adapter($_options);
             $_db->getDriver()->getConnection()->connect();
 
-            Analog::log(
-                '[' . __METHOD__ . '] Database connection was successfull!',
-                Analog::DEBUG
-            );
             return true;
         } catch (Throwable $e) {
             // perhaps failed to load the specified Adapter class
@@ -792,10 +783,7 @@ class Db
         try {
             $query_string = $this->sql->buildSqlString($sql);
             $this->last_query = $query_string;
-            Analog::log(
-                'Executing query: ' . $query_string,
-                Analog::DEBUG
-            );
+            $this->log($query_string);
             return $this->db->query(
                 $query_string,
                 Adapter::QUERY_MODE_EXECUTE
@@ -968,5 +956,20 @@ class Db
             $sql,
             \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
         );
+    }
+
+    /**
+     * Log queries in specific file
+     *
+     * @param string $query Query to add in logs
+     *
+     * @return void
+     */
+    protected function log($query)
+    {
+        if (GALETTE_MODE == 'DEV' || defined('GALETTE_SQL_DEBUG')) {
+            $logfile = GALETTE_LOGS_PATH . 'galette_sql.log';
+            file_put_contents($logfile, $query . "\n", FILE_APPEND);
+        }
     }
 }
