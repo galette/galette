@@ -3,6 +3,7 @@ services:
   - postgresql
   - mysql
 before_script:
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" && $DB == "mysql" ]]; then echo 'nothing to do'; else phpenv config-rm xdebug.ini; fi
   - ./bin/install_deps
   - sh -c "if [ '$DB' = 'pgsql' ]; then psql -c 'DROP DATABASE IF EXISTS galette_tests;' -U postgres; fi"
   - sh -c "if [ '$DB' = 'pgsql' ]; then psql -c 'create database galette_tests;' -U postgres; fi"
@@ -14,13 +15,14 @@ before_script:
 script:
   - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.4" && $DB == "mysql" ]]; then galette/vendor/bin/phpcs -n -p --ignore=galette_tcpdf_config.php --standard=phpcs-rules.xml galette/lib/ tests/TestsBootstrap.php tests/Galette tests/plugins galette/webroot/index.php galette/includes/fields_defs/ galette/includes/smarty_plugins/ galette/includes/functions.inc.php galette/includes/galette.inc.php galette/includes/dependencies.php galette/includes/main.inc.php; fi
   - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.4" && $DB == "mysql" ]]; then cd galette && vendor/bin/composer-require-checker check --config-file=../.composer-require-checker.config.json && cd ..; fi
-  - php galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php -c tests/clover.php -d tests/Galette/
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" && $DB == "mysql" ]]; then php galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php -c tests/clover.php -d tests/Galette/; fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" && $DB == "mysql" ]]; then echo 'nothing to do'; else php galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php --no-cc -d tests/Galette/; fi
   - php galette/cron/reminder.php
 
 after_script:
   ## Scrutinizer
   - wget https://scrutinizer-ci.com/ocular.phar
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.4" && $DB == "pgsql" ]]; then php ocular.phar code-coverage:upload --format=php-clover tests/clover.xml; fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" && $DB == "mysql" ]]; then php ocular.phar code-coverage:upload --format=php-clover tests/clover.xml; fi
 
 language: php
 
@@ -37,6 +39,11 @@ matrix:
 env:
   - DB=pgsql
   - DB=mysql
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+    - $HOME/.npm/_cacache
 
 notifications:
   webhooks:
