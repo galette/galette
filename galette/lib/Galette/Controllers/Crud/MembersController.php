@@ -41,8 +41,8 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Galette\Core\Authentication;
 use Galette\Core\GaletteMail;
+use Galette\Core\Gaptcha;
 use Galette\Core\Password;
-use Galette\Core\PasswordImage;
 use Galette\Core\Picture;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
@@ -128,11 +128,6 @@ class MembersController extends CrudController
         $fc = $this->fields_config;
         $form_elements = $fc->getFormElements($this->login, true, true);
 
-        //image to defeat mass filling forms
-        $spam = new PasswordImage();
-        $spam_pass = $spam->newImage();
-        $spam_img = $spam->getImage();
-
         // members
         $m = new Members();
         $members = $m->getSelectizedMembers(
@@ -151,6 +146,8 @@ class MembersController extends CrudController
             $params['members']['list'] = $members;
         }
 
+        $gaptcha = new Gaptcha($this->i18n);
+        $this->session->gaptcha = $gaptcha;
         // display page
         $this->view->render(
             $response,
@@ -164,11 +161,10 @@ class MembersController extends CrudController
                 // pseudo random int
                 'time'              => time(),
                 'titles_list'       => Titles::getList($this->zdb),
-                //self_adh specific
-                'spam_pass'         => $spam_pass,
-                'spam_img'          => $spam_img,
                 'fieldsets'         => $form_elements['fieldsets'],
-                'hidden_elements'   => $form_elements['hiddens']
+                'hidden_elements'   => $form_elements['hiddens'],
+                //self_adh specific
+                'gaptcha'           => $gaptcha
             ) + $params
         );
         return $response;
@@ -1497,26 +1493,19 @@ class MembersController extends CrudController
             $this->members_fields,
             $this->history
         );
-        if (isset($args['self'])) {
-            //mark as self membership
-            $member->setSelfMembership();
-        }
 
         $success_detected = [];
         $warning_detected = [];
         $error_detected = [];
 
-        //check captcha
         if (isset($args['self'])) {
-            if (
-                !$post['mdp_crypt']
-                || !$post['mdp_adh']
-                || !crypt($post['mdp_adh'], $post['mdp_crypt']) == $post['mdp_crypt']
-            ) {
-                $error_detected[] = __('Please repeat in the field the password shown in the image.');
-            } else {
-                unset($post['mdp_adh']);
-                unset($post['mdp_crypt']);
+            //mark as self membership
+            $member->setSelfMembership();
+
+            //check captcha
+            $gaptcha = $this->session->gaptcha;
+            if (!$gaptcha->check($post['gaptcha'])) {
+                $error_detected[] = _T('Invalid captcha');
             }
         }
 

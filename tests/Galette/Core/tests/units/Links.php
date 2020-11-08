@@ -320,7 +320,7 @@ class Links extends atoum
     }
 
     /**
-     * Test new PasswordImage generation
+     * Test new Link generation
      *
      * @return void
      */

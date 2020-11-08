@@ -142,7 +142,7 @@ class Password extends atoum
     }
 
     /**
-     * Test new PasswordImage generation
+     * Test new Password generation
      *
      * @return void
      */

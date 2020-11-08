@@ -54,7 +54,7 @@ use atoum;
 class CheckModules extends atoum
 {
     /**
-     * Test new PasswordImage generation
+     * Test modules, all should be ok
      *
      * @return void
      */

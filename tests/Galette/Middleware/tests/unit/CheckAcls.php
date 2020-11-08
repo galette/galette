@@ -221,7 +221,7 @@ class CheckAcls extends atoum
     }
 
     /**
-     * Test new PasswordImage generation
+     * Test new ACLs per member category
      *
      * @dataProvider aclsProvider
      *
