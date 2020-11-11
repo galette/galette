@@ -14,10 +14,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-11-11 10:00+0100\n"
-"PO-Revision-Date: 2020-09-17 08:36+0000\n"
-"Last-Translator: Nathan <bonnemainsnathan@gmail.com>\n"
+"PO-Revision-Date: 2020-11-11 09:21+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.3-dev\n"
+"X-Generator: Weblate 4.4-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -315,7 +315,7 @@ msgstr "%count adhérents ont été modifiés avec succès !"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1508
 msgid "Invalid captcha"
-msgstr ""
+msgstr "Captcha invalide"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1617
 msgid "Your account has been created!"
@@ -1182,12 +1182,12 @@ msgstr "Mise à jour des modèles"
 #: ../lib/Galette/Core/Gaptcha.php:103
 #, php-format
 msgid "How much is %1$s plus %2$s?"
-msgstr ""
+msgstr "Combien font %1$s plus %2$s ?"
 
 #: ../lib/Galette/Core/Gaptcha.php:104
 #, php-format
 msgid "How much is %1$s added to %2$s?"
-msgstr ""
+msgstr "Combien font %1$s ajoutés à %2$s ?"
 
 #: ../lib/Galette/Core/Gaptcha.php:105
 #, php-format
@@ -1195,26 +1195,28 @@ msgid ""
 "I have %1$s Galettes, a friend give me %2$s more. How many Galettes do I "
 "have?"
 msgstr ""
+"J'ai %1$s Galette, un ami m'en donne %2$s de plus. Combien de Galettes ais-"
+"je ?"
 
 #: ../lib/Galette/Core/Gaptcha.php:108
 #, php-format
 msgid "How much is %1$s minus %2$s?"
-msgstr ""
+msgstr "Combien font %1$s moins %2$s ?"
 
 #: ../lib/Galette/Core/Gaptcha.php:109
 #, php-format
 msgid "How much is %1$s on which we retire %2$s?"
-msgstr ""
+msgstr "Combien font %1$s à qui l'on retranche %2$s ?"
 
 #: ../lib/Galette/Core/Gaptcha.php:110
 #, php-format
 msgid "How much is %2$s retired to %1$s?"
-msgstr ""
+msgstr "Combien font %2$s retranchés de %1$s ?"
 
 #: ../lib/Galette/Core/Gaptcha.php:111
 #, php-format
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
-msgstr ""
+msgstr "J'ai %1$s Galettes, j'en donne %2$s. Combien de Galettes ais-je ?"
 
 #: ../lib/Galette/Core/Pagination.php:254
 msgid "First page"
@@ -7652,13 +7654,15 @@ msgstr "Responsable pour :"
 
 #: ../templates/default/forms_types/captcha.tpl:9
 msgid "(numbers only)"
-msgstr ""
+msgstr "(chiffres uniquement)"
 
 #: ../templates/default/forms_types/captcha.tpl:10
 msgid ""
 "This field is required trying to avoid registration spam. We are sorry for "
 "the inconvennience."
 msgstr ""
+"Ce champ est requis pour prévenir les spams. Nous sommes désolés poru le "
+"désagrément."
 
 #: ../templates/default/forms_types/picture.tpl:2
 msgid "Picture:"
