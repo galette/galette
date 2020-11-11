@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-18 08:29+0200\n"
+"POT-Creation-Date: 2020-11-11 10:00+0100\n"
 "PO-Revision-Date: 2020-06-29 06:40+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
@@ -17,7 +17,7 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 4.2-dev\n"
 
-#: ../lib/Galette/Handlers/PhpError.php:83 ../lib/Galette/Handlers/Error.php:83
+#: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
 msgstr ""
 
@@ -30,13 +30,13 @@ msgid "Transaction"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:157
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1136
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1140
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:112
 msgid "modification"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/TransactionsController.php:159
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1138
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1142
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:114
 msgid "creation"
 msgstr ""
@@ -49,19 +49,19 @@ msgstr "Під час зберігання транзакції сталася �
 msgid "Transaction has been successfully stored"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:350
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:346
 msgid "Unable to attach contribution to transaction"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:355
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:351
 msgid "Contribution has been successfully attached to current transaction"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:381
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:377
 msgid "Unable to detach contribution from transaction"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/TransactionsController.php:386
+#: ../lib/Galette/Controllers/Crud/TransactionsController.php:382
 msgid "Contribution has been successfully detached from current transaction"
 msgstr ""
 
@@ -98,308 +98,251 @@ msgstr ""
 msgid "Remove payment type %1$s"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:123
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:124
 msgid "Group name is missing!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:186
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:187
 msgid "Groups"
 msgstr "Гурти"
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:370
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:371
 msgid "Group `%groupname` has been successfully saved."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:377
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:378
 msgid "An error occurred while storing the group."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:469
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:470
 #, php-format
 msgid "Remove group %1$s"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/GroupsController.php:492
+#: ../lib/Galette/Controllers/Crud/GroupsController.php:493
 msgid "Group is not empty, it cannot be deleted. Use cascade delete instead."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:101
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:105
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:260
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:103
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:107
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:262
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:264
 #, fuzzy
 #| msgid "Trying to load mailing while mail is disabled in preferences."
 msgid "Trying to load mailing while email is disabled in preferences."
 msgstr "Спроба завантажити розсилку, коли пошту вимкнено в налаштуваннях."
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:149
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:285
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:151
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:287
 msgid "No member selected for mailing!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:204
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:206
 msgid "Mailing"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:304
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:306
 msgid "Please type an object for the message."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:310
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:312
 msgid "Please enter a message."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:404
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:409
 msgid "Mailing has been successfully sent!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:427
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:432
 msgid "Mailing has been successfully saved."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:516
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:523
 msgid "Mailings"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:664
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:671
 #, php-format
 msgid "Remove mailing #%1$s"
 msgstr "Видалити поштову розсилку #%1$s"
 
-#: ../lib/Galette/Controllers/Crud/MailingsController.php:746
+#: ../lib/Galette/Controllers/Crud/MailingsController.php:753
 msgid "Mailing preview"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:82
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:83
 msgid "Add field"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:131
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:133
 msgid "An error occurred adding dynamic field :("
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:145
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:364
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:147
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:367
 msgid "Dynamic field has been successfully stored!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:226
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:228
 msgid "Dynamic fields configuration"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:291
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:293
 msgid "Unable to retrieve field information."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:300
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:302
 msgid "Edit field"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:350
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:353
 #, fuzzy
 #| msgid "An error occurred trying to delete field :("
 msgid "An error occurred editing dynamic field :("
 msgstr "Під час видалення поля виникла помилка :("
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:446
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:449
 msgid "Requested field does not exists!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:454
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:457
 #, php-format
 msgid "Remove dynamic field %1$s"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:495
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:498
 msgid "Field has been successfully moved"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:500
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:503
 msgid "An error occurred moving field :("
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:159
+#: ../lib/Galette/Controllers/Crud/MembersController.php:156
 msgid "Subscription"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:243
-#: ../lib/Galette/Controllers/Crud/MembersController.php:448
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1091
+#: ../lib/Galette/Controllers/Crud/MembersController.php:239
+#: ../lib/Galette/Controllers/Crud/MembersController.php:444
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1095
 #: ../lib/Galette/Controllers/PdfController.php:123
 #: ../lib/Galette/Controllers/PdfController.php:292
 #: ../lib/Galette/Middleware/Authenticate.php:165
 msgid "You do not have permission for requested URL."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:258
+#: ../lib/Galette/Controllers/Crud/MembersController.php:254
 msgid "No member #%id."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:278
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1134
+#: ../lib/Galette/Controllers/Crud/MembersController.php:274
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1138
 msgid "Member Profile"
 msgstr "Профіль члена"
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:363
+#: ../lib/Galette/Controllers/Crud/MembersController.php:359
 msgid "Members list"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:363
+#: ../lib/Galette/Controllers/Crud/MembersController.php:359
 msgid "Trombinoscope"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:493
+#: ../lib/Galette/Controllers/Crud/MembersController.php:498
 msgid "The file does not exists or cannot be read :("
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:559
+#: ../lib/Galette/Controllers/Crud/MembersController.php:564
 msgid "Members management"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:780
+#: ../lib/Galette/Controllers/Crud/MembersController.php:785
 msgid "Status label"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:820
+#: ../lib/Galette/Controllers/Crud/MembersController.php:825
 msgid "Advanced search"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1041
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1045
 #: ../lib/Galette/Controllers/PdfController.php:157
 #: ../lib/Galette/Controllers/PdfController.php:238
 msgid "No member was selected, please check at least one name."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1254
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1258
 #, php-format
 msgid "Mass change %count members"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1285
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1354
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1289
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1361
 msgid "Mass changes has not been confirmed!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1323
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1330
 #, php-format
 msgid "Review mass change %count members"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1383
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1390
 msgid "Nothing to do!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1411
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1879
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1418
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1665
 msgid "An error occurred while storing the member."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1423
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1430
 msgid "Something went wront during mass edition!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1430
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1437
 #, php-format
 msgid "%count members has been changed successfully!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1505
-msgid "Please repeat in the field the password shown in the image."
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1508
+msgid "Invalid captcha"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1608
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1617
 msgid "Your account has been created!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1613
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1622
 msgid "An email has been sent to you, check your inbox."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1616
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1625
 msgid "New member has been successfully added."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1664
-#, php-format
-msgid "New account email sent to admin for '%s'."
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1671
-#, php-format
-msgid "A problem happened while sending email to admin for account '%s'."
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1679
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1628
 msgid "Member account has been modified."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1686
-msgid ""
-"- You can't send a confirmation by email if the member hasn't got an address!"
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1716
-#: ../lib/Galette/Controllers/AuthController.php:332
-#: ../lib/Galette/Core/History.php:414 ../lib/Galette/IO/Csv.php:115
-msgid "Y-m-d H:i:s"
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1721
-#: ../lib/Galette/Controllers/AuthController.php:385
-#, php-format
-msgid ""
-"An error occurred storing temporary password for %s. Please inform an admin."
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1762
-#, php-format
-msgid "New account email sent to '%s'."
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1762
-#, php-format
-msgid "Account modification email sent to '%s'."
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1770
-#, php-format
-msgid "A problem happened while sending account email to '%s'"
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1779
-msgid ""
-"You asked Galette to send a confirmation email to the member, but email has "
-"been disabled in the preferences."
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1835
-msgid "Account modification email sent to admin."
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1839
-msgid "A problem happened while sending account email to admin"
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1860
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1646
 msgid "An error occurred adding member to its groups."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1875
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1661
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:1891
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1677
 #: ../lib/Galette/Controllers/GaletteController.php:311
 #: ../lib/Galette/Controllers/GaletteController.php:343
 msgid "Delete failed"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:2059
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1845
 #, php-format
 msgid "Remove member %1$s"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/MembersController.php:2068
+#: ../lib/Galette/Controllers/Crud/MembersController.php:1854
 #, php-format
 msgid "You are about to remove %count members."
 msgstr ""
@@ -478,7 +421,7 @@ msgid "Membership fee"
 msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:108
-#: ../lib/Galette/Entity/Contribution.php:1077
+#: ../lib/Galette/Entity/Contribution.php:1085
 msgid "Donation"
 msgstr ""
 
@@ -496,116 +439,76 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:476
 #: ../lib/Galette/Controllers/PdfController.php:454
-#: ../lib/Galette/Controllers/PdfController.php:710
+#: ../lib/Galette/Controllers/PdfController.php:725
 msgid "Unable to load contribution #%id!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:578
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:583
 msgid "Contribution has been successfully stored"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:591
-msgid "Post contribution script failed"
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:600
-msgid "The configured post contribution script has failed."
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:601
-msgid "You can find contribution information and script output below."
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:609
-msgid "Post contribution script has failed."
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:632
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:587
 msgid "An error occurred while storing the contribution."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:712
-msgid "Email sent to user %name (%email)"
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:719
-msgid ""
-"A problem happened while sending contribution receipt to user %name (%email)"
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:728
-msgid ""
-"Trying to send an email to a member (%name) with an invalid address: %email"
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:761
-msgid "Email sent to admin for user %name (%email)"
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:768
-msgid ""
-"A problem happened while sending to admin notification for user %name "
-"(%email) contribution"
-msgstr ""
-
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:895
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:685
 #, fuzzy, php-format
 #| msgid "Remove %1$s file %2$s"
 msgid "Remove %1$s %2$s"
 msgstr "Видалити %1$s файл %2$s"
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:897
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:687
 msgid "contributions"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:897
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:687
 msgid "transactions"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:901
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:691
 #, php-format
 msgid "Remove %1$s #%2$s"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:902
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:692
 #: ../lib/Galette/IO/PdfContribution.php:142
 msgid "contribution"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/ContributionsController.php:902
+#: ../lib/Galette/Controllers/Crud/ContributionsController.php:692
 msgid "transaction"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:125
+#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:126
 msgid "An SQL error has occurred while storing search."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:130
+#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:131
 msgid "This search is already saved."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:136
+#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:137
 msgid "Search has been saved."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:212
+#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:213
 msgid "Saved searches"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:305
+#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:306
 msgid "Remove saved search"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:312
+#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:313
 #, php-format
 msgid "You are about to remove %count searches."
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:361
+#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:362
 msgid "Saved search loaded"
 msgstr ""
 
-#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:366
+#: ../lib/Galette/Controllers/Crud/SavedSearchesController.php:367
 #, fuzzy
 #| msgid "An SQL error has occurred."
 msgid "An SQL error has occurred while loading search."
@@ -714,45 +617,41 @@ msgstr ""
 msgid "An error occurred while storing list configuration :("
 msgstr ""
 
-#: ../lib/Galette/Controllers/GaletteController.php:653
-msgid "Generate fake data"
-msgstr "Створення підроблених даних"
-
-#: ../lib/Galette/Controllers/GaletteController.php:753
+#: ../lib/Galette/Controllers/GaletteController.php:667
 msgid "Reminders"
 msgstr ""
 
-#: ../lib/Galette/Controllers/GaletteController.php:794
+#: ../lib/Galette/Controllers/GaletteController.php:708
 msgid "No reminder to send for now."
 msgstr ""
 
-#: ../lib/Galette/Controllers/GaletteController.php:825
+#: ../lib/Galette/Controllers/GaletteController.php:739
 msgid "There are no member to proceed."
 msgstr ""
 
-#: ../lib/Galette/Controllers/GaletteController.php:832
+#: ../lib/Galette/Controllers/GaletteController.php:746
 msgid "Reminder has not been sent:"
 msgstr ""
 
-#: ../lib/Galette/Controllers/GaletteController.php:839
+#: ../lib/Galette/Controllers/GaletteController.php:753
 msgid "Sent reminders:"
 msgstr "Надіслані нагадування:"
 
-#: ../lib/Galette/Controllers/GaletteController.php:914
+#: ../lib/Galette/Controllers/GaletteController.php:828
 msgid "Download document"
 msgstr ""
 
-#: ../lib/Galette/Controllers/CrudController.php:277
-#: ../lib/Galette/Controllers/HistoryController.php:211
+#: ../lib/Galette/Controllers/CrudController.php:278
+#: ../lib/Galette/Controllers/HistoryController.php:212
 #: ../lib/Galette/Controllers/CsvController.php:490
 msgid "Removal has not been confirmed!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/CrudController.php:289
+#: ../lib/Galette/Controllers/CrudController.php:288
 msgid "Successfully deleted!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/CrudController.php:303
+#: ../lib/Galette/Controllers/CrudController.php:300
 #, fuzzy
 #| msgid "An error occurred trying to delete field :("
 msgid "An error occurred trying to delete :("
@@ -760,7 +659,7 @@ msgstr "Під час видалення поля виникла помилка 
 
 #: ../lib/Galette/Controllers/PdfController.php:189
 #: ../lib/Galette/Controllers/PdfController.php:261
-#: ../lib/Galette/Controllers/PdfController.php:691
+#: ../lib/Galette/Controllers/PdfController.php:706
 msgid "Unable to get members list."
 msgstr ""
 
@@ -850,6 +749,12 @@ msgstr ""
 msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgstr ""
 
+#: ../lib/Galette/Controllers/AuthController.php:332
+#: ../lib/Galette/Core/History.php:416 ../lib/Galette/IO/Csv.php:115
+#: ../lib/Galette/Events/MemberListener.php:245
+msgid "Y-m-d H:i:s"
+msgstr ""
+
 #: ../lib/Galette/Controllers/AuthController.php:354
 #, php-format
 msgid "Email sent to '%s' for password recovery."
@@ -868,6 +773,13 @@ msgstr ""
 #: ../lib/Galette/Controllers/AuthController.php:371
 #, php-format
 msgid "A problem happened while sending password for account '%s'"
+msgstr ""
+
+#: ../lib/Galette/Controllers/AuthController.php:385
+#: ../lib/Galette/Events/MemberListener.php:250
+#, php-format
+msgid ""
+"An error occurred storing temporary password for %s. Please inform an admin."
 msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:397
@@ -891,12 +803,12 @@ msgid ""
 msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:494
-#: ../webroot/installer.php:160 ../webroot/installer.php:203
+#: ../webroot/installer.php:138 ../webroot/installer.php:181
 msgid "No password"
 msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:497
-#: ../lib/Galette/Entity/Adherent.php:1281
+#: ../lib/Galette/Entity/Adherent.php:1284
 msgid "- The passwords don't match!"
 msgstr ""
 
@@ -922,7 +834,7 @@ msgid "Administration tools"
 msgstr ""
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:81
-#: ../install/steps/check.php:110
+#: ../install/steps/check.php:111
 #, fuzzy
 #| msgid ""
 #| "Some PHP modules are missing. Please install them or contact your support."
@@ -967,67 +879,67 @@ msgstr ""
 msgid "An error occurred filling empty logins and passwords :("
 msgstr ""
 
-#: ../lib/Galette/Controllers/HistoryController.php:114
-#: ../install/steps/check.php:74
+#: ../lib/Galette/Controllers/HistoryController.php:115
+#: ../install/steps/check.php:75
 msgid "Logs"
 msgstr ""
 
-#: ../lib/Galette/Controllers/HistoryController.php:153
-#: ../lib/Galette/Filters/TransactionsList.php:229
-#: ../lib/Galette/Filters/HistoryList.php:240
-#: ../lib/Galette/Filters/MailingsList.php:234
-#: ../lib/Galette/Filters/ContributionsList.php:254
+#: ../lib/Galette/Controllers/HistoryController.php:154
+#: ../lib/Galette/Filters/TransactionsList.php:230
+#: ../lib/Galette/Filters/HistoryList.php:241
+#: ../lib/Galette/Filters/MailingsList.php:235
+#: ../lib/Galette/Filters/ContributionsList.php:260
 msgid "start date filter"
 msgstr ""
 
-#: ../lib/Galette/Controllers/HistoryController.php:157
-#: ../lib/Galette/Filters/TransactionsList.php:232
-#: ../lib/Galette/Filters/HistoryList.php:243
-#: ../lib/Galette/Filters/MailingsList.php:237
-#: ../lib/Galette/Filters/ContributionsList.php:257
+#: ../lib/Galette/Controllers/HistoryController.php:158
+#: ../lib/Galette/Filters/TransactionsList.php:233
+#: ../lib/Galette/Filters/HistoryList.php:244
+#: ../lib/Galette/Filters/MailingsList.php:238
+#: ../lib/Galette/Filters/ContributionsList.php:263
 msgid "end date filter"
 msgstr ""
 
-#: ../lib/Galette/Controllers/HistoryController.php:223
+#: ../lib/Galette/Controllers/HistoryController.php:224
 msgid "Logs have been flushed!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/HistoryController.php:235
+#: ../lib/Galette/Controllers/HistoryController.php:236
 msgid "An error occurred trying to flush logs :("
 msgstr ""
 
-#: ../lib/Galette/Controllers/HistoryController.php:273
+#: ../lib/Galette/Controllers/HistoryController.php:274
 msgid "Flush the logs"
 msgstr ""
 
-#: ../lib/Galette/Controllers/PluginsController.php:81
+#: ../lib/Galette/Controllers/PluginsController.php:82
 msgid "Plugins"
 msgstr ""
 
-#: ../lib/Galette/Controllers/PluginsController.php:112
+#: ../lib/Galette/Controllers/PluginsController.php:113
 msgid "Plugin %name has been enabled"
 msgstr ""
 
-#: ../lib/Galette/Controllers/PluginsController.php:130
+#: ../lib/Galette/Controllers/PluginsController.php:131
 msgid "Plugin %name has been disabled"
 msgstr ""
 
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:78
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:79
 msgid "Translate labels"
 msgstr ""
 
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:121
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:122
 #, php-format
 msgid ""
 "No translation for '%s'!<br/>Please fill and submit above form to create it."
 msgstr ""
 
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:193
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:218
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:194
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:219
 msgid "An error occurred saving label `%label` for language `%lang`"
 msgstr ""
 
-#: ../lib/Galette/Controllers/DynamicTranslationsController.php:234
+#: ../lib/Galette/Controllers/DynamicTranslationsController.php:235
 msgid "Labels has been sucessfully translated!"
 msgstr ""
 
@@ -1126,115 +1038,152 @@ msgstr ""
 msgid "Email: '%s' has been successfully modified."
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:121 ../webroot/installer.php:316
+#: ../lib/Galette/Core/Install.php:122 ../webroot/installer.php:294
 msgid "Checks"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:124 ../webroot/installer.php:317
+#: ../lib/Galette/Core/Install.php:125 ../webroot/installer.php:295
 #: ../install/steps/type.php:39
 msgid "Installation mode"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:127 ../webroot/installer.php:318
+#: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:296
 #: ../install/steps/db.php:40 ../install/steps/db.php:66
 msgid "Database"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:130
+#: ../lib/Galette/Core/Install.php:131
 msgid "Database access and permissions"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:133
+#: ../lib/Galette/Core/Install.php:134
 #: ../install/steps/db_select_version.php:45
 msgid "Previous version selection"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:136
+#: ../lib/Galette/Core/Install.php:137
 msgid "Datapase upgrade"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:139
+#: ../lib/Galette/Core/Install.php:140
 msgid "Tables Creation"
 msgstr "Створення таблиць"
 
-#: ../lib/Galette/Core/Install.php:142 ../webroot/installer.php:334
+#: ../lib/Galette/Core/Install.php:143 ../webroot/installer.php:312
 msgid "Admin parameters"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:145
+#: ../lib/Galette/Core/Install.php:146
 msgid "Galette initialization"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:148 ../webroot/installer.php:339
+#: ../lib/Galette/Core/Install.php:149 ../webroot/installer.php:317
 msgid "End!"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:165 ../lib/Galette/Core/CheckModules.php:155
+#: ../lib/Galette/Core/Install.php:166 ../lib/Galette/Core/CheckModules.php:155
 msgid "Ok"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:165 ../lib/Galette/Core/CheckModules.php:146
+#: ../lib/Galette/Core/Install.php:166 ../lib/Galette/Core/CheckModules.php:146
 msgid "Ko"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:324
+#: ../lib/Galette/Core/Install.php:325
 msgid "Database type unknown"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:677
+#: ../lib/Galette/Core/Install.php:678
 msgid "%version script has been successfully executed :)"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:689
+#: ../lib/Galette/Core/Install.php:690
 msgid "Unable to run %version update script :("
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1022
+#: ../lib/Galette/Core/Install.php:1023
 msgid "Write configuration file"
 msgstr "Записати файл конфігурації"
 
-#: ../lib/Galette/Core/Install.php:1051
+#: ../lib/Galette/Core/Install.php:1052
 msgid "Config file already exists and is up to date"
 msgstr "Файл конфігурації вже існує та оновлений"
 
-#: ../lib/Galette/Core/Install.php:1080
+#: ../lib/Galette/Core/Install.php:1081
 msgid "Unable to create configuration file (%path)"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1128
+#: ../lib/Galette/Core/Install.php:1129
 msgid "Preferences"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1132
+#: ../lib/Galette/Core/Install.php:1133
 msgid "Contributions types"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1136
+#: ../lib/Galette/Core/Install.php:1137
 msgid "Status"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1140
+#: ../lib/Galette/Core/Install.php:1141
 msgid "Fields config and categories"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1144 ../lib/Galette/Core/Install.php:1166
+#: ../lib/Galette/Core/Install.php:1145 ../lib/Galette/Core/Install.php:1167
 msgid "Mails texts"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1148
+#: ../lib/Galette/Core/Install.php:1149
 msgid "Titles"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1152
+#: ../lib/Galette/Core/Install.php:1153
 msgid "PDF Models"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1158
+#: ../lib/Galette/Core/Install.php:1159
 msgid "Update preferences"
 msgstr ""
 
-#: ../lib/Galette/Core/Install.php:1162
+#: ../lib/Galette/Core/Install.php:1163
 msgid "Update models"
+msgstr ""
+
+#: ../lib/Galette/Core/Gaptcha.php:103
+#, php-format
+msgid "How much is %1$s plus %2$s?"
+msgstr ""
+
+#: ../lib/Galette/Core/Gaptcha.php:104
+#, php-format
+msgid "How much is %1$s added to %2$s?"
+msgstr ""
+
+#: ../lib/Galette/Core/Gaptcha.php:105
+#, php-format
+msgid ""
+"I have %1$s Galettes, a friend give me %2$s more. How many Galettes do I "
+"have?"
+msgstr ""
+
+#: ../lib/Galette/Core/Gaptcha.php:108
+#, php-format
+msgid "How much is %1$s minus %2$s?"
+msgstr ""
+
+#: ../lib/Galette/Core/Gaptcha.php:109
+#, php-format
+msgid "How much is %1$s on which we retire %2$s?"
+msgstr ""
+
+#: ../lib/Galette/Core/Gaptcha.php:110
+#, php-format
+msgid "How much is %2$s retired to %1$s?"
+msgstr ""
+
+#: ../lib/Galette/Core/Gaptcha.php:111
+#, php-format
+msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
 msgstr ""
 
 #: ../lib/Galette/Core/Pagination.php:254
@@ -1270,109 +1219,109 @@ msgstr ""
 msgid "Logged in as:<br/>%login"
 msgstr ""
 
-#: ../lib/Galette/Core/MailingHistory.php:205
+#: ../lib/Galette/Core/MailingHistory.php:198
 msgid "Superadmin"
 msgstr ""
 
-#: ../lib/Galette/Core/MailingHistory.php:569
+#: ../lib/Galette/Core/MailingHistory.php:562
 msgid "Delete mailing entries"
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:496
-msgid "- The username must be composed of at least 4 characters!"
-msgstr ""
-
-#: ../lib/Galette/Core/Preferences.php:500
-msgid "- This username is already used by another member !"
-msgstr ""
-
-#: ../lib/Galette/Core/Preferences.php:507
-#: ../lib/Galette/Core/Preferences.php:528
-msgid "- The numbers and measures have to be integers!"
-msgstr ""
-
-#: ../lib/Galette/Core/Preferences.php:564
-msgid "- Invalid number of months of membership extension."
-msgstr ""
-
-#: ../lib/Galette/Core/Preferences.php:570
-msgid "- Invalid format of beginning of membership."
-msgstr ""
-
-#: ../lib/Galette/Core/Preferences.php:574
-msgid "- Invalid date for beginning of membership."
-msgstr ""
-
-#: ../lib/Galette/Core/Preferences.php:580
-msgid "- Invalid number of offered months."
-msgstr ""
-
-#: ../lib/Galette/Core/Preferences.php:585
-msgid "- Invalid year for cards."
-msgstr ""
-
-#: ../lib/Galette/Core/Preferences.php:604
+#: ../lib/Galette/Core/Preferences.php:499
 msgid "- You must indicate a sender name for emails!"
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:610
+#: ../lib/Galette/Core/Preferences.php:505
 msgid "- You must indicate an email address Galette should use to send emails!"
 msgstr ""
 "- Ви повинні вказати електронну адресу, яку Galette повинна використовувати "
 "для надсилання електронних листів!"
 
-#: ../lib/Galette/Core/Preferences.php:617
+#: ../lib/Galette/Core/Preferences.php:512
 msgid "- You must indicate the SMTP server you want to use!"
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:629
+#: ../lib/Galette/Core/Preferences.php:524
 msgid "- You must provide a login for SMTP authentication."
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:635
+#: ../lib/Galette/Core/Preferences.php:530
 msgid "- You must provide a password for SMTP authentication."
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:647
+#: ../lib/Galette/Core/Preferences.php:542
 msgid ""
 "- Default membership extention and beginning of membership are mutually "
 "exclusive."
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:656
+#: ../lib/Galette/Core/Preferences.php:551
 msgid "- Offering months is only compatible with beginning of membership."
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:665
-#: ../lib/Galette/Entity/Adherent.php:1074
-#: ../lib/Galette/Entity/Transaction.php:335
-#: ../lib/Galette/Entity/Contribution.php:460
+#: ../lib/Galette/Core/Preferences.php:560
+#: ../lib/Galette/Entity/Adherent.php:1077
+#: ../lib/Galette/Entity/Transaction.php:339
+#: ../lib/Galette/Entity/Contribution.php:463
 #, php-format
 msgid "- Mandatory field %field empty."
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:673 ../webroot/installer.php:211
+#: ../lib/Galette/Core/Preferences.php:568 ../webroot/installer.php:189
 msgid "Passwords mismatch"
 msgstr "Невідповідність паролів"
 
-#: ../lib/Galette/Core/Preferences.php:686
+#: ../lib/Galette/Core/Preferences.php:581
 msgid "You have to select a staff member"
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:813
-msgid "%name association's %status"
-msgstr ""
-
-#: ../lib/Galette/Core/Preferences.php:994
+#: ../lib/Galette/Core/Preferences.php:634
 #, php-format
 msgid "Invalid E-Mail address: %s"
 msgstr ""
 
-#: ../lib/Galette/Core/Preferences.php:1056
+#: ../lib/Galette/Core/Preferences.php:648
+msgid "- The username must be composed of at least 4 characters!"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:652
+msgid "- This username is already used by another member !"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:659
+#: ../lib/Galette/Core/Preferences.php:680
+msgid "- The numbers and measures have to be integers!"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:714
+msgid "- Invalid number of months of membership extension."
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:720
+msgid "- Invalid format of beginning of membership."
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:724
+msgid "- Invalid date for beginning of membership."
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:730
+msgid "- Invalid number of offered months."
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:735
+msgid "- Invalid year for cards."
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:846
+msgid "%name association's %status"
+msgstr ""
+
+#: ../lib/Galette/Core/Preferences.php:1075
 msgid "Current cards configuration may exceed page width!"
 msgstr "Поточна конфігурація карток може перевищувати ширину сторінки!"
 
-#: ../lib/Galette/Core/Preferences.php:1067
+#: ../lib/Galette/Core/Preferences.php:1086
 msgid "Current cards configuration may exceed page height!"
 msgstr ""
 
@@ -1389,107 +1338,105 @@ msgstr ""
 msgid "either 'mysql' or 'pgsql' PDO driver"
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:240
-#: ../lib/Galette/Repository/Members.php:1463
-#: ../lib/Galette/Repository/Members.php:1467
-#: ../lib/Galette/Util/Password.php:267 ../lib/Galette/Util/FakeData.php:434
-#: ../lib/Galette/Util/FakeData.php:446 ../lib/Galette/Util/FakeData.php:525
-#: ../lib/Galette/Util/FakeData.php:658 ../lib/Galette/Util/FakeData.php:659
-#: ../lib/Galette/Util/FakeData.php:660 ../lib/Galette/IO/MembersCsv.php:182
+#: ../lib/Galette/Core/Plugins.php:241
+#: ../lib/Galette/Repository/Members.php:1462
+#: ../lib/Galette/Repository/Members.php:1466
+#: ../lib/Galette/Util/Password.php:267 ../lib/Galette/IO/MembersCsv.php:182
 #: ../lib/Galette/IO/MembersCsv.php:194 ../lib/Galette/IO/MembersCsv.php:206
 #: ../lib/Galette/IO/MembersCsv.php:218
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:89
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:121
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:176
-#: ../lib/Galette/Entity/Adherent.php:714
-#: ../lib/Galette/Entity/Adherent.php:732
-#: ../lib/Galette/Entity/Adherent.php:748
-#: ../lib/Galette/Entity/Adherent.php:1134
-#: ../lib/Galette/Entity/Adherent.php:1168
-#: ../lib/Galette/Entity/Adherent.php:1177
-#: ../lib/Galette/Entity/Adherent.php:1667
-#: ../lib/Galette/Entity/Transaction.php:278
-#: ../lib/Galette/Entity/Transaction.php:287
-#: ../lib/Galette/Entity/Transaction.php:296
-#: ../lib/Galette/Entity/Transaction.php:557
-#: ../lib/Galette/Entity/DynamicsTrait.php:136
-#: ../lib/Galette/Entity/DynamicsTrait.php:149
-#: ../lib/Galette/Entity/DynamicsTrait.php:158
-#: ../lib/Galette/Entity/Contribution.php:370
-#: ../lib/Galette/Entity/Contribution.php:379
-#: ../lib/Galette/Entity/Contribution.php:388
-#: ../lib/Galette/Entity/Contribution.php:541
-#: ../lib/Galette/Entity/Contribution.php:1156
-#: ../lib/Galette/Entity/Contribution.php:1253
-#: ../lib/Galette/Entity/Contribution.php:1262
-#: ../lib/Galette/Entity/Contribution.php:1271
-#: ../lib/Galette/Entity/ImportModel.php:212
-#: ../lib/Galette/Entity/PdfModel.php:145
+#: ../lib/Galette/Entity/Adherent.php:717
+#: ../lib/Galette/Entity/Adherent.php:735
+#: ../lib/Galette/Entity/Adherent.php:751
+#: ../lib/Galette/Entity/Adherent.php:1137
+#: ../lib/Galette/Entity/Adherent.php:1171
+#: ../lib/Galette/Entity/Adherent.php:1180
+#: ../lib/Galette/Entity/Adherent.php:1675
+#: ../lib/Galette/Entity/Transaction.php:282
+#: ../lib/Galette/Entity/Transaction.php:291
+#: ../lib/Galette/Entity/Transaction.php:300
+#: ../lib/Galette/Entity/Transaction.php:565
+#: ../lib/Galette/Entity/DynamicsTrait.php:172
+#: ../lib/Galette/Entity/DynamicsTrait.php:185
+#: ../lib/Galette/Entity/DynamicsTrait.php:194
+#: ../lib/Galette/Entity/Contribution.php:373
+#: ../lib/Galette/Entity/Contribution.php:382
+#: ../lib/Galette/Entity/Contribution.php:391
+#: ../lib/Galette/Entity/Contribution.php:544
+#: ../lib/Galette/Entity/Contribution.php:1164
+#: ../lib/Galette/Entity/Contribution.php:1261
+#: ../lib/Galette/Entity/Contribution.php:1270
+#: ../lib/Galette/Entity/Contribution.php:1279
+#: ../lib/Galette/Entity/ImportModel.php:213
+#: ../lib/Galette/Entity/PdfModel.php:146
 #: ../lib/Galette/Entity/SavedSearch.php:292
-#: ../lib/Galette/Entity/Group.php:621
-#: ../lib/Galette/Filters/TransactionsList.php:133
-#: ../lib/Galette/Filters/TransactionsList.php:215
-#: ../lib/Galette/Filters/TransactionsList.php:224
-#: ../lib/Galette/Filters/TransactionsList.php:253
-#: ../lib/Galette/Filters/HistoryList.php:149
-#: ../lib/Galette/Filters/HistoryList.php:226
-#: ../lib/Galette/Filters/HistoryList.php:235
-#: ../lib/Galette/Filters/HistoryList.php:264
-#: ../lib/Galette/Filters/MailingsList.php:143
-#: ../lib/Galette/Filters/MailingsList.php:220
-#: ../lib/Galette/Filters/MailingsList.php:229
-#: ../lib/Galette/Filters/MailingsList.php:258
-#: ../lib/Galette/Filters/ContributionsList.php:158
-#: ../lib/Galette/Filters/ContributionsList.php:240
-#: ../lib/Galette/Filters/ContributionsList.php:249
-#: ../lib/Galette/Filters/ContributionsList.php:278
-#: ../lib/Galette/Filters/AdvancedMembersList.php:343
-#: ../lib/Galette/Filters/AdvancedMembersList.php:434
-#: ../lib/Galette/Filters/AdvancedMembersList.php:580
+#: ../lib/Galette/Entity/Group.php:622
+#: ../lib/Galette/Filters/TransactionsList.php:134
+#: ../lib/Galette/Filters/TransactionsList.php:216
+#: ../lib/Galette/Filters/TransactionsList.php:225
+#: ../lib/Galette/Filters/TransactionsList.php:254
+#: ../lib/Galette/Filters/HistoryList.php:150
+#: ../lib/Galette/Filters/HistoryList.php:227
+#: ../lib/Galette/Filters/HistoryList.php:236
+#: ../lib/Galette/Filters/HistoryList.php:265
+#: ../lib/Galette/Filters/MailingsList.php:144
+#: ../lib/Galette/Filters/MailingsList.php:221
+#: ../lib/Galette/Filters/MailingsList.php:230
+#: ../lib/Galette/Filters/MailingsList.php:259
+#: ../lib/Galette/Filters/ContributionsList.php:157
+#: ../lib/Galette/Filters/ContributionsList.php:165
+#: ../lib/Galette/Filters/ContributionsList.php:246
+#: ../lib/Galette/Filters/ContributionsList.php:255
+#: ../lib/Galette/Filters/ContributionsList.php:284
+#: ../lib/Galette/Filters/AdvancedMembersList.php:344
+#: ../lib/Galette/Filters/AdvancedMembersList.php:435
+#: ../lib/Galette/Filters/AdvancedMembersList.php:581
 msgid "Y-m-d"
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:286 ../lib/Galette/Core/Plugins.php:308
+#: ../lib/Galette/Core/Plugins.php:287 ../lib/Galette/Core/Plugins.php:309
 msgid "No such module."
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:290 ../lib/Galette/Core/Plugins.php:294
+#: ../lib/Galette/Core/Plugins.php:291 ../lib/Galette/Core/Plugins.php:295
 msgid "Cannot deactivate plugin."
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:312 ../lib/Galette/Core/Plugins.php:316
+#: ../lib/Galette/Core/Plugins.php:313 ../lib/Galette/Core/Plugins.php:317
 msgid "Cannot activate plugin."
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:736 ../lib/Galette/Core/Plugins.php:796
+#: ../lib/Galette/Core/Plugins.php:737 ../lib/Galette/Core/Plugins.php:797
 msgid "Module does not exists!"
 msgstr ""
 
-#: ../lib/Galette/Core/Plugins.php:793
+#: ../lib/Galette/Core/Plugins.php:794
 msgid "File not found!"
 msgstr ""
 
-#: ../lib/Galette/Core/Picture.php:857
+#: ../lib/Galette/Core/Picture.php:858
 msgid "An SQL error has occurred."
 msgstr "Сталася помилка SQL."
 
-#: ../lib/Galette/Repository/Members.php:326
+#: ../lib/Galette/Repository/Members.php:328
 msgid "Member Picture deleted"
 msgstr ""
 
-#: ../lib/Galette/Repository/Members.php:407
+#: ../lib/Galette/Repository/Members.php:413
 msgid "Delete members cards, transactions and dues"
 msgstr ""
 
-#: ../lib/Galette/Repository/Members.php:422
+#: ../lib/Galette/Repository/Members.php:428
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr ""
 
-#: ../lib/Galette/Repository/SavedSearches.php:266
+#: ../lib/Galette/Repository/SavedSearches.php:267
 msgid "Searches deleted (%list)"
 msgstr ""
 
-#: ../lib/Galette/Repository/Contributions.php:447
+#: ../lib/Galette/Repository/Contributions.php:448
 msgid "Contributions deleted (%list)"
 msgstr ""
 
@@ -1526,155 +1473,107 @@ msgstr ""
 msgid "Does not contains special characters"
 msgstr ""
 
-#: ../lib/Galette/Util/FakeData.php:297
-#, php-format
-msgid "%count groups created"
-msgstr ""
-
-#: ../lib/Galette/Util/FakeData.php:304
-#, php-format
-msgid "%count groups requested, and %done created"
-msgstr ""
-
-#: ../lib/Galette/Util/FakeData.php:370
-#, php-format
-msgid "%count members created"
-msgstr ""
-
-#: ../lib/Galette/Util/FakeData.php:377
-#, php-format
-msgid "%count members requested, and %done created"
-msgstr ""
-
-#: ../lib/Galette/Util/FakeData.php:385
-#, php-format
-msgid "%count photos created"
-msgstr ""
-
-#: ../lib/Galette/Util/FakeData.php:389
-msgid "No photo has been created"
-msgstr ""
-
-#: ../lib/Galette/Util/FakeData.php:488
+#: ../lib/Galette/Util/FakeData.php:104
 msgid "Photo has not been stored!"
 msgstr ""
 
-#: ../lib/Galette/Util/FakeData.php:495
+#: ../lib/Galette/Util/FakeData.php:111
 msgid "Photo has not been copied!"
 msgstr ""
 
-#: ../lib/Galette/Util/FakeData.php:543
-#, php-format
-msgid "%count transactions created"
-msgstr "%count транзакцій створено"
-
-#: ../lib/Galette/Util/FakeData.php:550
-#, php-format
-msgid "%count transactions requested, and %done created"
-msgstr ""
-
-#: ../lib/Galette/Util/FakeData.php:606
-#, php-format
-msgid "%count contributions created"
-msgstr ""
-
-#: ../lib/Galette/Util/FakeData.php:610
-msgid "No contribution created!"
-msgstr ""
-
-#: ../lib/Galette/DynamicFields/DynamicField.php:504
+#: ../lib/Galette/DynamicFields/DynamicField.php:505
 msgid "User, read/write"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:505
+#: ../lib/Galette/DynamicFields/DynamicField.php:506
 msgid "Staff member"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:506
+#: ../lib/Galette/DynamicFields/DynamicField.php:507
 msgid "Administrator"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:507
+#: ../lib/Galette/DynamicFields/DynamicField.php:508
 msgid "Group manager"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:508
+#: ../lib/Galette/DynamicFields/DynamicField.php:509
 msgid "User, read only"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:520
+#: ../lib/Galette/DynamicFields/DynamicField.php:521
 msgid "Members"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:521
+#: ../lib/Galette/DynamicFields/DynamicField.php:522
 msgid "Contributions"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:522
+#: ../lib/Galette/DynamicFields/DynamicField.php:523
 msgid "Transactions"
 msgstr "Транзакції"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:596
+#: ../lib/Galette/DynamicFields/DynamicField.php:597
 msgid "Missing required field name!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:605
+#: ../lib/Galette/DynamicFields/DynamicField.php:606
 msgid "Missing required field permissions!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:610
+#: ../lib/Galette/DynamicFields/DynamicField.php:611
 msgid "Unknown permission!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:616
+#: ../lib/Galette/DynamicFields/DynamicField.php:617
 msgid "Missing required form!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:621
+#: ../lib/Galette/DynamicFields/DynamicField.php:622
 msgid "Unknown form!"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:629
+#: ../lib/Galette/DynamicFields/DynamicField.php:630
 msgid "- Field name already used."
 msgstr "-Ім'я поля вже використовується."
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:745
+#: ../lib/Galette/DynamicFields/DynamicField.php:746
 msgid "An error occurred storing the field."
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:772
+#: ../lib/Galette/DynamicFields/DynamicField.php:773
 msgid "An error occurred creating field values table"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:806
+#: ../lib/Galette/DynamicFields/DynamicField.php:807
 msgid "An error occurred storing dynamic field values :("
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1009
+#: ../lib/Galette/DynamicFields/DynamicField.php:1012
 msgid "separator"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1010
+#: ../lib/Galette/DynamicFields/DynamicField.php:1013
 msgid "free text"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1011
+#: ../lib/Galette/DynamicFields/DynamicField.php:1014
 msgid "single line"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1012
+#: ../lib/Galette/DynamicFields/DynamicField.php:1015
 msgid "choice"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1013
+#: ../lib/Galette/DynamicFields/DynamicField.php:1016
 msgid "date"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1014
+#: ../lib/Galette/DynamicFields/DynamicField.php:1017
 msgid "boolean"
 msgstr ""
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1015
+#: ../lib/Galette/DynamicFields/DynamicField.php:1018
 msgid "file"
 msgstr ""
 
@@ -1699,7 +1598,7 @@ msgstr ""
 
 #: ../lib/Galette/IO/PdfGroups.php:179
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:185
-#: ../lib/Galette/Entity/PdfModel.php:546
+#: ../lib/Galette/Entity/PdfModel.php:547
 #: ../lib/Galette/Filters/MembersList.php:272
 #: ../includes/fields_defs/members_fields.php:355
 msgid "Name"
@@ -1710,7 +1609,7 @@ msgid "Email"
 msgstr ""
 
 #: ../lib/Galette/IO/PdfGroups.php:181
-#: ../lib/Galette/Entity/ListsConfig.php:224
+#: ../lib/Galette/Entity/ListsConfig.php:225
 msgid "Phone"
 msgstr ""
 
@@ -1724,31 +1623,31 @@ msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:228
 #: ../lib/Galette/IO/PdfAdhesionForm.php:150
-#: ../lib/Galette/Entity/Adherent.php:1633
+#: ../lib/Galette/Entity/Adherent.php:1641
 msgid "Man"
 msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:231
 #: ../lib/Galette/IO/PdfAdhesionForm.php:152
-#: ../lib/Galette/Entity/Adherent.php:1635
+#: ../lib/Galette/Entity/Adherent.php:1643
 msgid "Woman"
 msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:234
 #: ../lib/Galette/IO/PdfAdhesionForm.php:154
-#: ../lib/Galette/Entity/Adherent.php:1637
+#: ../lib/Galette/Entity/Adherent.php:1645
 msgid "Unspecified"
 msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:242 ../lib/Galette/IO/MembersCsv.php:246
 #: ../lib/Galette/IO/MembersCsv.php:250 ../lib/Galette/IO/MembersCsv.php:254
-#: ../lib/Galette/Entity/Adherent.php:1594
+#: ../lib/Galette/Entity/Adherent.php:1602
 msgid "Yes"
 msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:242 ../lib/Galette/IO/MembersCsv.php:246
 #: ../lib/Galette/IO/MembersCsv.php:250 ../lib/Galette/IO/MembersCsv.php:254
-#: ../lib/Galette/Entity/Adherent.php:1594
+#: ../lib/Galette/Entity/Adherent.php:1602
 msgid "No"
 msgstr ""
 
@@ -1808,12 +1707,12 @@ msgstr ""
 msgid "Labels"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:232
+#: ../lib/Galette/IO/CsvIn.php:233
 #, php-format
 msgid "File %filename cannot be open!"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:280
+#: ../lib/Galette/IO/CsvIn.php:281
 msgid ""
 "Fields count mismatch... There should be %should_count fields and there are "
 "%count (row %row)"
@@ -1821,44 +1720,44 @@ msgstr ""
 "Невідповідність полів ... Поле має бути %should_count, а є %count (рядок "
 "%row)"
 
-#: ../lib/Galette/IO/CsvIn.php:302
+#: ../lib/Galette/IO/CsvIn.php:303
 msgid "Field %field is required, but missing in row %row"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:324
+#: ../lib/Galette/IO/CsvIn.php:325
 #, php-format
 msgid "Status %status does not exists!"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:343
+#: ../lib/Galette/IO/CsvIn.php:344
 msgid "Title %title does not exists!"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:359
+#: ../lib/Galette/IO/CsvIn.php:360
 msgid "from another member in import"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:359
+#: ../lib/Galette/IO/CsvIn.php:360
 msgid "from member %id_adh"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:365
+#: ../lib/Galette/IO/CsvIn.php:366
 msgid "Email address %address is already used! (%extra)"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:390
+#: ../lib/Galette/IO/CsvIn.php:391
 msgid "Lang %lang does not exists!"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:442
+#: ../lib/Galette/IO/CsvIn.php:443
 msgid "File is empty!"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:529 ../lib/Galette/IO/CsvIn.php:540
+#: ../lib/Galette/IO/CsvIn.php:530 ../lib/Galette/IO/CsvIn.php:541
 msgid "An error occurred storing member at row %row (%name):"
 msgstr ""
 
-#: ../lib/Galette/IO/CsvIn.php:575
+#: ../lib/Galette/IO/CsvIn.php:576
 msgid "An error occurred while importing members"
 msgstr ""
 
@@ -1914,7 +1813,7 @@ msgid "File extension is not allowed, only %s files are."
 msgstr "Розширення файлів не дозволено, є лише %s файлів."
 
 #: ../lib/Galette/IO/FileTrait.php:494
-#: ../lib/Galette/Entity/DynamicsTrait.php:273
+#: ../lib/Galette/Entity/DynamicsTrait.php:306
 #, php-format
 msgid "File is too big. Maximum allowed size is %dKo"
 msgstr ""
@@ -1988,241 +1887,241 @@ msgstr "квитанція"
 msgid "invoice"
 msgstr ""
 
-#: ../lib/Galette/Entity/ListsConfig.php:214
+#: ../lib/Galette/Entity/ListsConfig.php:215
 #, fuzzy
 #| msgid "Is a man"
 msgid "Is admin"
 msgstr "Це людина"
 
-#: ../lib/Galette/Entity/ListsConfig.php:217
+#: ../lib/Galette/Entity/ListsConfig.php:218
 msgid "Modified"
 msgstr ""
 
 #. TRANS: see https://www.urbandictionary.com/define.php?term=b-day
-#: ../lib/Galette/Entity/ListsConfig.php:221
+#: ../lib/Galette/Entity/ListsConfig.php:222
 msgid "b-day"
 msgstr ""
 
-#: ../lib/Galette/Entity/ListsConfig.php:227
+#: ../lib/Galette/Entity/ListsConfig.php:228
 msgid "Public"
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:264
+#: ../lib/Galette/Entity/Reminder.php:269
 msgid "%name <%mail> (%days days)"
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:271
+#: ../lib/Galette/Entity/Reminder.php:276
 msgid "Sent reminder email for late membership"
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:273
+#: ../lib/Galette/Entity/Reminder.php:278
 msgid "Sent reminder email for impending membership"
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:280
+#: ../lib/Galette/Entity/Reminder.php:284
 msgid "A problem happened while sending late membership email"
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:282
+#: ../lib/Galette/Entity/Reminder.php:286
 msgid "A problem happened while sending impending membership email"
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:293
+#: ../lib/Galette/Entity/Reminder.php:296
 msgid "Unable to send %membership reminder (no email address)."
 msgstr ""
 
-#: ../lib/Galette/Entity/Reminder.php:306
+#: ../lib/Galette/Entity/Reminder.php:309
 msgid "%name (#%id - %days days)"
 msgstr "%name (#%id - %days днів)"
 
-#: ../lib/Galette/Entity/I18nTrait.php:135
+#: ../lib/Galette/Entity/I18nTrait.php:136
 #, php-format
 msgid "Unable to add dynamic translation for %field :("
 msgstr ""
 
-#: ../lib/Galette/Entity/I18nTrait.php:201
+#: ../lib/Galette/Entity/I18nTrait.php:202
 #, fuzzy, php-format
 #| msgid "Unable to remove old dynamic translation for %field :("
 msgid "Unable to update dynamic translation for %field :("
 msgstr "Неможливо видалити старий динамічний переклад для поля %field :("
 
-#: ../lib/Galette/Entity/I18nTrait.php:236
+#: ../lib/Galette/Entity/I18nTrait.php:237
 #, php-format
 msgid "Unable to remove old dynamic translation for %field :("
 msgstr "Неможливо видалити старий динамічний переклад для поля %field :("
 
-#: ../lib/Galette/Entity/Adherent.php:708
+#: ../lib/Galette/Entity/Adherent.php:711
 msgid "Freed of dues"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:720
+#: ../lib/Galette/Entity/Adherent.php:723
 #, php-format
 msgid "Never contributed: Registered %days days ago (since %date)"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:723
+#: ../lib/Galette/Entity/Adherent.php:726
 #: ../lib/Galette/Filters/MembersList.php:296
 msgid "Never contributed"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:726
+#: ../lib/Galette/Entity/Adherent.php:729
 msgid "Last day!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:738
+#: ../lib/Galette/Entity/Adherent.php:741
 #, php-format
 msgid "Late of %days days (since %date)"
 msgstr "Кінець %days днів (починаючи з %date)"
 
-#: ../lib/Galette/Entity/Adherent.php:741
+#: ../lib/Galette/Entity/Adherent.php:744
 #, fuzzy
 #| msgid "Manage members"
 msgid "No longer member"
 msgstr "Керування членами"
 
-#: ../lib/Galette/Entity/Adherent.php:753
+#: ../lib/Galette/Entity/Adherent.php:756
 #, php-format
 msgid "%days days remaining (ending on %date)"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1151
+#: ../lib/Galette/Entity/Adherent.php:1154
 msgid "- Birthdate must be set in the past!"
 msgstr "- Дата народження повинна бути встановлена раніше!"
 
-#: ../lib/Galette/Entity/Adherent.php:1159
+#: ../lib/Galette/Entity/Adherent.php:1162
 msgid "- Members must be less than 200 years old (currently %years)!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1180
-#: ../lib/Galette/Entity/Transaction.php:299
-#: ../lib/Galette/Entity/DynamicsTrait.php:161
-#: ../lib/Galette/Entity/Contribution.php:391
-#: ../lib/Galette/Entity/Contribution.php:1274
+#: ../lib/Galette/Entity/Adherent.php:1183
+#: ../lib/Galette/Entity/Transaction.php:303
+#: ../lib/Galette/Entity/DynamicsTrait.php:197
+#: ../lib/Galette/Entity/Contribution.php:394
+#: ../lib/Galette/Entity/Contribution.php:1282
 #, php-format
 msgid "- Wrong date format (%date_format) for %field!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1198
+#: ../lib/Galette/Entity/Adherent.php:1201
 msgid "- Non-valid E-Mail address!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1215
+#: ../lib/Galette/Entity/Adherent.php:1218
 msgid "- This E-Mail address is already used by another member!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1222
-#: ../lib/Galette/Entity/Adherent.php:1270
+#: ../lib/Galette/Entity/Adherent.php:1225
+#: ../lib/Galette/Entity/Adherent.php:1273
 msgid "An error has occurred while looking if login already exists."
 msgstr "Сталася помилка під час перегляду, якщо логін вже існує."
 
-#: ../lib/Galette/Entity/Adherent.php:1230
+#: ../lib/Galette/Entity/Adherent.php:1233
 msgid "- Non-valid Website address! Maybe you've skipped the http://?"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1239
+#: ../lib/Galette/Entity/Adherent.php:1242
 msgid "- The username must be composed of at least %i characters!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1244
+#: ../lib/Galette/Entity/Adherent.php:1247
 msgid "- The username cannot contain the @ character"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1263
+#: ../lib/Galette/Entity/Adherent.php:1266
 msgid "- This username is already in use, please choose another one!"
 msgstr "- Це ім'я користувача вже використовується, будь ласка, виберіть інше!"
 
-#: ../lib/Galette/Entity/Adherent.php:1286
+#: ../lib/Galette/Entity/Adherent.php:1289
 msgid "Password misrepeated: "
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1320
+#: ../lib/Galette/Entity/Adherent.php:1323
 msgid "Status #%id does not exists in database."
 msgstr "Стан #%id не існує в базі даних."
 
-#: ../lib/Galette/Entity/Adherent.php:1329
+#: ../lib/Galette/Entity/Adherent.php:1332
 msgid "An error has occurred while looking if status does exists."
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1336
+#: ../lib/Galette/Entity/Adherent.php:1339
 msgid "Gender %gender does not exists!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1446
+#: ../lib/Galette/Entity/Adherent.php:1450
 msgid "Self_subscription as a member: "
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1452
+#: ../lib/Galette/Entity/Adherent.php:1456
 msgid "Member card added"
 msgstr "Картку члена додано"
 
-#: ../lib/Galette/Entity/Adherent.php:1460
+#: ../lib/Galette/Entity/Adherent.php:1464
 msgid "Fail to add new member."
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1492
+#: ../lib/Galette/Entity/Adherent.php:1496
 msgid "Member card updated"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1597
+#: ../lib/Galette/Entity/Adherent.php:1605
 msgid "Active"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1597
+#: ../lib/Galette/Entity/Adherent.php:1605
 msgid "Inactive"
 msgstr "Незадіяний"
 
-#: ../lib/Galette/Entity/Adherent.php:1825
+#: ../lib/Galette/Entity/Adherent.php:1833
 msgid " (%age years old)"
 msgstr ""
 
-#: ../lib/Galette/Entity/Adherent.php:1898
+#: ../lib/Galette/Entity/Adherent.php:1906
 msgid "Duplicated from %name (%id)"
 msgstr ""
 
-#: ../lib/Galette/Entity/Transaction.php:109
+#: ../lib/Galette/Entity/Transaction.php:110
 msgid "Date:"
 msgstr ""
 
-#: ../lib/Galette/Entity/Transaction.php:113
-#: ../lib/Galette/Entity/Contribution.php:126
+#: ../lib/Galette/Entity/Transaction.php:114
+#: ../lib/Galette/Entity/Contribution.php:129
 msgid "Amount:"
 msgstr ""
 
-#: ../lib/Galette/Entity/Transaction.php:117
+#: ../lib/Galette/Entity/Transaction.php:118
 msgid "Description:"
 msgstr ""
 
-#: ../lib/Galette/Entity/Transaction.php:121
+#: ../lib/Galette/Entity/Transaction.php:122
 msgid "Originator:"
 msgstr ""
 
-#: ../lib/Galette/Entity/Transaction.php:310
-#: ../lib/Galette/Entity/Contribution.php:410
+#: ../lib/Galette/Entity/Transaction.php:314
+#: ../lib/Galette/Entity/Contribution.php:413
 msgid "- The amount must be an integer!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Transaction.php:317
+#: ../lib/Galette/Entity/Transaction.php:321
 msgid "- Empty transaction description!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Transaction.php:319
+#: ../lib/Galette/Entity/Transaction.php:323
 msgid "- Transaction description must be 150 characters long maximum."
 msgstr ""
 
-#: ../lib/Galette/Entity/Transaction.php:344
-#: ../lib/Galette/Entity/Contribution.php:471
+#: ../lib/Galette/Entity/Transaction.php:348
+#: ../lib/Galette/Entity/Contribution.php:474
 msgid "- Sum of all contributions exceed corresponding transaction amount."
 msgstr ""
 
-#: ../lib/Galette/Entity/Transaction.php:405
+#: ../lib/Galette/Entity/Transaction.php:409
 msgid "Transaction added"
 msgstr "Транзакцію додано"
 
-#: ../lib/Galette/Entity/Transaction.php:412
+#: ../lib/Galette/Entity/Transaction.php:415
 msgid "Fail to add new transaction."
 msgstr ""
 
-#: ../lib/Galette/Entity/Transaction.php:428
+#: ../lib/Galette/Entity/Transaction.php:431
 msgid "Transaction updated"
 msgstr ""
 
@@ -2230,154 +2129,154 @@ msgstr ""
 msgid "contribution type"
 msgstr ""
 
-#: ../lib/Galette/Entity/DynamicsTrait.php:119
+#: ../lib/Galette/Entity/DynamicsTrait.php:155
 #, php-format
 msgid "Missing required field %field"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:118
+#: ../lib/Galette/Entity/Contribution.php:121
 msgid "Contributor:"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:122
+#: ../lib/Galette/Entity/Contribution.php:125
 msgid "Contribution type:"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:130
+#: ../lib/Galette/Entity/Contribution.php:133
 msgid "Payment type:"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:134
+#: ../lib/Galette/Entity/Contribution.php:137
 msgid "Comments:"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:142
+#: ../lib/Galette/Entity/Contribution.php:145
 msgid "Date of contribution:"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:143
+#: ../lib/Galette/Entity/Contribution.php:146
 msgid "Start date of membership:"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:147
+#: ../lib/Galette/Entity/Contribution.php:150
 msgid "End date of membership:"
 msgstr "Дата завершення членства:"
 
-#: ../lib/Galette/Entity/Contribution.php:157
+#: ../lib/Galette/Entity/Contribution.php:160
 msgid "Membership extension:"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:423
+#: ../lib/Galette/Entity/Contribution.php:426
 msgid "- Unknown payment type"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:437
+#: ../lib/Galette/Entity/Contribution.php:440
 msgid "- The duration must be a positive integer!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:479
+#: ../lib/Galette/Entity/Contribution.php:482
 msgid "An error occurred checking overlaping fees :("
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:540
+#: ../lib/Galette/Entity/Contribution.php:543
 msgid "- Membership period overlaps period starting at "
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:614
+#: ../lib/Galette/Entity/Contribution.php:618
 msgid "Contribution added"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:621
+#: ../lib/Galette/Entity/Contribution.php:624
 msgid "Fail to add new contribution."
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:638
+#: ../lib/Galette/Entity/Contribution.php:641
 msgid "Contribution updated"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:1045
+#: ../lib/Galette/Entity/Contribution.php:1053
 msgid "Contribution information"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:1047
+#: ../lib/Galette/Entity/Contribution.php:1055
 msgid "Script output"
 msgstr ""
 
-#: ../lib/Galette/Entity/Contribution.php:1075
+#: ../lib/Galette/Entity/Contribution.php:1083
 msgid "Membership"
 msgstr "Членство"
 
-#: ../lib/Galette/Entity/Entitled.php:331
+#: ../lib/Galette/Entity/Entitled.php:332
 msgid "ID must be an integer!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Entitled.php:343
+#: ../lib/Galette/Entity/Entitled.php:344
 msgid "Label does not exist"
 msgstr "Мітки не існує"
 
-#: ../lib/Galette/Entity/Entitled.php:547
+#: ../lib/Galette/Entity/Entitled.php:548
 msgid "Cannot delete this label: it's still used"
 msgstr ""
 
-#: ../lib/Galette/Entity/Title.php:185
+#: ../lib/Galette/Entity/Title.php:186
 msgid "You cannot delete Mr. or Mrs. titles!"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:343
+#: ../lib/Galette/Entity/PdfModel.php:344
 #, php-format
 msgid "%field should be less than %chars characters long."
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:353
+#: ../lib/Galette/Entity/PdfModel.php:354
 #, php-format
 msgid "%field should not be empty!"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:539
+#: ../lib/Galette/Entity/PdfModel.php:540
 msgid "Unknown type %type!"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:555
+#: ../lib/Galette/Entity/PdfModel.php:556
 msgid "Title"
 msgstr "Заголовок"
 
-#: ../lib/Galette/Entity/PdfModel.php:557
+#: ../lib/Galette/Entity/PdfModel.php:558
 msgid "Subtitle"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:572
+#: ../lib/Galette/Entity/PdfModel.php:573
 msgid "header and footer should not be empty!"
 msgstr "заголовок і колонтитул не повинні бути порожніми!"
 
-#: ../lib/Galette/Entity/PdfModel.php:576
+#: ../lib/Galette/Entity/PdfModel.php:577
 msgid "body should not be empty!"
 msgstr ""
 
-#: ../lib/Galette/Entity/PaymentType.php:190
+#: ../lib/Galette/Entity/PaymentType.php:191
 msgid "You cannot delete system payment types!"
 msgstr ""
 
-#: ../lib/Galette/Entity/PaymentType.php:282
+#: ../lib/Galette/Entity/PaymentType.php:283
 msgid "Other"
 msgstr ""
 
-#: ../lib/Galette/Entity/PaymentType.php:283
+#: ../lib/Galette/Entity/PaymentType.php:284
 msgid "Cash"
 msgstr ""
 
-#: ../lib/Galette/Entity/PaymentType.php:284
+#: ../lib/Galette/Entity/PaymentType.php:285
 msgid "Credit card"
 msgstr ""
 
-#: ../lib/Galette/Entity/PaymentType.php:285
+#: ../lib/Galette/Entity/PaymentType.php:286
 msgid "Check"
 msgstr "Перевірити"
 
-#: ../lib/Galette/Entity/PaymentType.php:286
+#: ../lib/Galette/Entity/PaymentType.php:287
 msgid "Transfer"
 msgstr ""
 
-#: ../lib/Galette/Entity/PaymentType.php:287
+#: ../lib/Galette/Entity/PaymentType.php:288
 msgid "Paypal"
 msgstr ""
 
@@ -2389,7 +2288,7 @@ msgstr ""
 msgid "You cannot delete default status!"
 msgstr ""
 
-#: ../lib/Galette/Entity/SavedSearch.php:153
+#: ../lib/Galette/Entity/SavedSearch.php:154
 msgid "Form is mandatory!"
 msgstr "Форма обов'язкова!"
 
@@ -2402,33 +2301,33 @@ msgstr ""
 msgid "Name cannot be empty!"
 msgstr ""
 
-#: ../lib/Galette/Entity/Group.php:381
+#: ../lib/Galette/Entity/Group.php:382
 msgid "Group has been detached from its parent"
 msgstr ""
 
-#: ../lib/Galette/Entity/Group.php:395
+#: ../lib/Galette/Entity/Group.php:396
 msgid "Unable to detach group :("
 msgstr ""
 
-#: ../lib/Galette/Entity/Group.php:438
+#: ../lib/Galette/Entity/Group.php:439
 msgid "Group added"
 msgstr ""
 
-#: ../lib/Galette/Entity/Group.php:443
+#: ../lib/Galette/Entity/Group.php:444
 msgid "Fail to add new group."
 msgstr ""
 
-#: ../lib/Galette/Entity/Group.php:461
+#: ../lib/Galette/Entity/Group.php:462
 msgid "Group updated"
 msgstr ""
 
-#: ../lib/Galette/Entity/Group.php:708
+#: ../lib/Galette/Entity/Group.php:709
 #, php-format
 msgid "Group `%1$s` cannot be set as parent!"
 msgstr ""
 
 #: ../lib/Galette/Middleware/CheckAcls.php:129
-#: ../lib/Galette/Middleware/CheckAcls.php:177
+#: ../lib/Galette/Middleware/CheckAcls.php:176
 msgid "Route '%name' is not registered in ACLs!"
 msgstr "Маршрут '%name' не зареєстровано в ACL!"
 
@@ -2467,6 +2366,87 @@ msgstr ""
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:185
 msgid "Please run install or upgrade procedure (check the documentation)"
+msgstr ""
+
+#: ../lib/Galette/Events/ContribListener.php:206
+#: ../lib/Galette/Events/MemberListener.php:217
+msgid ""
+"You asked Galette to send a confirmation email to the member, but email has "
+"been disabled in the preferences."
+msgstr ""
+
+#: ../lib/Galette/Events/ContribListener.php:221
+#: ../lib/Galette/Events/MemberListener.php:228
+msgid ""
+"- You can't send a confirmation by email if the member hasn't got an address!"
+msgstr ""
+
+#: ../lib/Galette/Events/ContribListener.php:281
+msgid "Email sent to user %name (%email)"
+msgstr ""
+
+#: ../lib/Galette/Events/ContribListener.php:288
+msgid ""
+"A problem happened while sending contribution receipt to user %name (%email)"
+msgstr ""
+
+#: ../lib/Galette/Events/ContribListener.php:351
+msgid "Email sent to admin for user %name (%email)"
+msgstr ""
+
+#: ../lib/Galette/Events/ContribListener.php:358
+msgid ""
+"A problem happened while sending to admin notification for user %name "
+"(%email) contribution"
+msgstr ""
+
+#: ../lib/Galette/Events/ContribListener.php:387
+msgid "Post contribution script failed"
+msgstr ""
+
+#: ../lib/Galette/Events/ContribListener.php:396
+msgid "The configured post contribution script has failed."
+msgstr ""
+
+#: ../lib/Galette/Events/ContribListener.php:397
+msgid "You can find contribution information and script output below."
+msgstr ""
+
+#: ../lib/Galette/Events/ContribListener.php:405
+msgid "Post contribution script has failed."
+msgstr ""
+
+#: ../lib/Galette/Events/MemberListener.php:288
+#, php-format
+msgid "New account email sent to '%s'."
+msgstr ""
+
+#: ../lib/Galette/Events/MemberListener.php:288
+#, php-format
+msgid "Account modification email sent to '%s'."
+msgstr ""
+
+#: ../lib/Galette/Events/MemberListener.php:296
+#, php-format
+msgid "A problem happened while sending account email to '%s'"
+msgstr ""
+
+#: ../lib/Galette/Events/MemberListener.php:357
+#, php-format
+msgid "New account email sent to admin for '%s'."
+msgstr ""
+
+#: ../lib/Galette/Events/MemberListener.php:358
+msgid "Account modification email sent to admin."
+msgstr ""
+
+#: ../lib/Galette/Events/MemberListener.php:370
+#, php-format
+msgid "A problem happened while sending email to admin for account '%s'."
+msgstr ""
+
+#: ../lib/Galette/Events/MemberListener.php:371
+msgid "A problem happened while sending account email to admin"
 msgstr ""
 
 #: ../lib/Galette/Filters/MembersList.php:273
@@ -2517,93 +2497,93 @@ msgstr ""
 msgid "Non members"
 msgstr ""
 
-#: ../lib/Galette/Filters/TransactionsList.php:185
-#: ../lib/Galette/Filters/TransactionsList.php:222
-#: ../lib/Galette/Filters/HistoryList.php:196
-#: ../lib/Galette/Filters/HistoryList.php:233
-#: ../lib/Galette/Filters/MailingsList.php:190
-#: ../lib/Galette/Filters/MailingsList.php:227
-#: ../lib/Galette/Filters/ContributionsList.php:210
-#: ../lib/Galette/Filters/ContributionsList.php:247
+#: ../lib/Galette/Filters/TransactionsList.php:186
+#: ../lib/Galette/Filters/TransactionsList.php:223
+#: ../lib/Galette/Filters/HistoryList.php:197
+#: ../lib/Galette/Filters/HistoryList.php:234
+#: ../lib/Galette/Filters/MailingsList.php:191
+#: ../lib/Galette/Filters/MailingsList.php:228
+#: ../lib/Galette/Filters/ContributionsList.php:216
+#: ../lib/Galette/Filters/ContributionsList.php:253
 msgid "Y"
 msgstr ""
 
-#: ../lib/Galette/Filters/TransactionsList.php:201
-#: ../lib/Galette/Filters/TransactionsList.php:223
-#: ../lib/Galette/Filters/HistoryList.php:212
-#: ../lib/Galette/Filters/HistoryList.php:234
-#: ../lib/Galette/Filters/MailingsList.php:206
-#: ../lib/Galette/Filters/MailingsList.php:228
-#: ../lib/Galette/Filters/ContributionsList.php:226
-#: ../lib/Galette/Filters/ContributionsList.php:248
+#: ../lib/Galette/Filters/TransactionsList.php:202
+#: ../lib/Galette/Filters/TransactionsList.php:224
+#: ../lib/Galette/Filters/HistoryList.php:213
+#: ../lib/Galette/Filters/HistoryList.php:235
+#: ../lib/Galette/Filters/MailingsList.php:207
+#: ../lib/Galette/Filters/MailingsList.php:229
+#: ../lib/Galette/Filters/ContributionsList.php:232
+#: ../lib/Galette/Filters/ContributionsList.php:254
 msgid "Y-m"
 msgstr ""
 
-#: ../lib/Galette/Filters/TransactionsList.php:242
-#: ../lib/Galette/Filters/HistoryList.php:253
-#: ../lib/Galette/Filters/MailingsList.php:247
-#: ../lib/Galette/Filters/ContributionsList.php:267
+#: ../lib/Galette/Filters/TransactionsList.php:243
+#: ../lib/Galette/Filters/HistoryList.php:254
+#: ../lib/Galette/Filters/MailingsList.php:248
+#: ../lib/Galette/Filters/ContributionsList.php:273
 #, php-format
 msgid "Unknown date format for %field.<br/>Know formats are: %formats"
 msgstr ""
 
-#: ../webroot/installer.php:151
+#: ../webroot/installer.php:129
 msgid "No host"
 msgstr ""
 
-#: ../webroot/installer.php:154
+#: ../webroot/installer.php:132
 msgid "No port"
 msgstr ""
 
-#: ../webroot/installer.php:157 ../webroot/installer.php:197
+#: ../webroot/installer.php:135 ../webroot/installer.php:175
 msgid "No user name"
 msgstr ""
 
-#: ../webroot/installer.php:163
+#: ../webroot/installer.php:141
 msgid "No database name"
 msgstr "Немає назви бази даних"
 
-#: ../webroot/installer.php:200
+#: ../webroot/installer.php:178
 msgid "The username cannot contain the @ character"
 msgstr ""
 
-#: ../webroot/installer.php:241
+#: ../webroot/installer.php:219
 msgid "Galette Installation"
 msgstr ""
 
-#: ../webroot/installer.php:252
+#: ../webroot/installer.php:230
 msgid "Galette installation"
 msgstr ""
 
-#: ../webroot/installer.php:255
+#: ../webroot/installer.php:233
 msgid "Change language"
 msgstr ""
 
-#: ../webroot/installer.php:276
+#: ../webroot/installer.php:254
 msgid "- ERROR -"
 msgstr ""
 
-#: ../webroot/installer.php:314
+#: ../webroot/installer.php:292
 msgid "Steps:"
 msgstr ""
 
-#: ../webroot/installer.php:319
+#: ../webroot/installer.php:297
 msgid "Database access/permissions"
 msgstr "Доступ/дозволи до бази даних"
 
-#: ../webroot/installer.php:323
+#: ../webroot/installer.php:301
 msgid "Version selection"
 msgstr ""
 
-#: ../webroot/installer.php:324
+#: ../webroot/installer.php:302
 msgid "Database upgrade"
 msgstr ""
 
-#: ../webroot/installer.php:328
+#: ../webroot/installer.php:306
 msgid "Database installation"
 msgstr ""
 
-#: ../webroot/installer.php:338
+#: ../webroot/installer.php:316
 msgid "Galette initialisation"
 msgstr ""
 
@@ -3281,7 +3261,7 @@ msgstr ""
 #: ../install/steps/admin.php:58 ../install/steps/db_install.php:82
 #: ../install/steps/db_select_version.php:134
 #: ../install/steps/db_checks.php:241 ../install/steps/galette.php:81
-#: ../install/steps/check.php:165 ../install/steps/db.php:110
+#: ../install/steps/check.php:166 ../install/steps/db.php:110
 #: ../install/steps/type.php:65
 msgid "Next step"
 msgstr ""
@@ -3307,7 +3287,7 @@ msgid "Database has been upgraded :)"
 msgstr ""
 
 #: ../install/steps/db_install.php:77 ../install/steps/galette.php:76
-#: ../install/steps/check.php:157
+#: ../install/steps/check.php:158
 msgid "Retry"
 msgstr ""
 
@@ -3477,103 +3457,103 @@ msgstr ""
 msgid "An error occurred :("
 msgstr ""
 
-#: ../install/steps/check.php:37
+#: ../install/steps/check.php:38
 msgid "Welcome to the Galette Install!"
 msgstr ""
 
-#: ../install/steps/check.php:67
+#: ../install/steps/check.php:68
 msgid "Compilation"
 msgstr ""
 
-#: ../install/steps/check.php:68
+#: ../install/steps/check.php:69
 msgid "Photos"
 msgstr ""
 
-#: ../install/steps/check.php:69
+#: ../install/steps/check.php:70
 msgid "Cache"
 msgstr ""
 
-#: ../install/steps/check.php:70
+#: ../install/steps/check.php:71
 msgid "Temporary images"
 msgstr ""
 
-#: ../install/steps/check.php:71
+#: ../install/steps/check.php:72
 msgid "Configuration"
 msgstr ""
 
-#: ../install/steps/check.php:72
+#: ../install/steps/check.php:73
 msgid "Exports"
 msgstr ""
 
-#: ../install/steps/check.php:73
+#: ../install/steps/check.php:74
 msgid "Imports"
 msgstr ""
 
-#: ../install/steps/check.php:75
+#: ../install/steps/check.php:76
 msgid "Attachments"
 msgstr ""
 
-#: ../install/steps/check.php:76
+#: ../install/steps/check.php:77
 msgid "Files"
 msgstr ""
 
-#: ../install/steps/check.php:89
+#: ../install/steps/check.php:90
 msgid "Galette requirements are met :)"
 msgstr ""
 
-#: ../install/steps/check.php:93
+#: ../install/steps/check.php:94
 msgid ""
 "Your PHP date settings are not correct. Maybe you've missed the timezone "
 "settings that is mandatory since PHP 5.3?"
 msgstr ""
 
-#: ../install/steps/check.php:98
+#: ../install/steps/check.php:99
 msgid "PHP version"
 msgstr ""
 
-#: ../install/steps/check.php:102
+#: ../install/steps/check.php:103
 msgid "Date settings"
 msgstr ""
 
-#: ../install/steps/check.php:107
+#: ../install/steps/check.php:108
 msgid "PHP Modules"
 msgstr ""
 
-#: ../install/steps/check.php:117
+#: ../install/steps/check.php:118
 msgid "Files permissions"
 msgstr ""
 
-#: ../install/steps/check.php:136
+#: ../install/steps/check.php:137
 msgid "Files permissions are not OK!"
 msgstr ""
 
-#: ../install/steps/check.php:139
+#: ../install/steps/check.php:140
 msgid ""
 "To work as excpected, Galette needs write permission on files listed above."
 msgstr ""
 
-#: ../install/steps/check.php:141
+#: ../install/steps/check.php:142
 msgid ""
 "In order to be updated, Galette needs write permission on files listed above."
 msgstr ""
 
-#: ../install/steps/check.php:144
+#: ../install/steps/check.php:145
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr ""
 
-#: ../install/steps/check.php:145
+#: ../install/steps/check.php:146
 msgid "apache_user"
 msgstr "apache_user"
 
-#: ../install/steps/check.php:145
+#: ../install/steps/check.php:146
 msgid "file_name"
 msgstr ""
 
-#: ../install/steps/check.php:145
+#: ../install/steps/check.php:146
 msgid "directory_name"
 msgstr ""
 
-#: ../install/steps/check.php:147
+#: ../install/steps/check.php:148
 msgid ""
 "Under Windows, check these directories are not in Read-Only mode in their "
 "property panel."
@@ -4081,7 +4061,7 @@ msgstr ""
 msgid "Manage additional fields for various forms"
 msgstr ""
 
-#: ../templates/default/page.tpl:84 ../templates/default/fake_data.tpl:33
+#: ../templates/default/page.tpl:84
 msgid "Dynamic fields"
 msgstr "Динамічні поля"
 
@@ -4129,26 +4109,26 @@ msgstr ""
 msgid "Empty adhesion form"
 msgstr ""
 
-#: ../templates/default/page.tpl:97
+#: ../templates/default/page.tpl:94
 msgid "Various administrative tools"
 msgstr ""
 
-#: ../templates/default/page.tpl:97
+#: ../templates/default/page.tpl:94
 msgid "Admin tools"
 msgstr ""
 
-#: ../templates/default/page.tpl:145
+#: ../templates/default/page.tpl:142
 msgid ""
 "A mailing exists in the current session. Click here if you want to resume or "
 "cancel it."
 msgstr ""
 
-#: ../templates/default/page.tpl:148
+#: ../templates/default/page.tpl:145
 #: ../templates/default/gestion_adherents.tpl:474
 msgid "Existing mailing"
 msgstr "Наявна розсилка"
 
-#: ../templates/default/page.tpl:156
+#: ../templates/default/page.tpl:153
 msgid "Page content"
 msgstr ""
 
@@ -4957,7 +4937,7 @@ msgstr ""
 
 #: ../templates/default/preferences.tpl:651
 #: ../templates/default/mailing_adherents.tpl:97
-#: ../templates/default/mailing_adherents.tpl:123
+#: ../templates/default/mailing_adherents.tpl:128
 #: ../templates/default/telemetry.tpl:13 ../templates/default/reminder.tpl:33
 msgid "Send"
 msgstr ""
@@ -5021,7 +5001,7 @@ msgstr ""
 #: ../templates/default/gestion_mailings.tpl:22
 #: ../templates/default/gestion_adherents.tpl:73
 #: ../templates/default/history.tpl:35
-#: ../templates/default/advanced_search.tpl:302
+#: ../templates/default/advanced_search.tpl:305
 #: ../templates/default/gestion_transactions.tpl:9
 msgid "Filter"
 msgstr "Фільтр"
@@ -5031,7 +5011,7 @@ msgstr "Фільтр"
 #: ../templates/default/gestion_adherents.tpl:79
 #: ../templates/default/gestion_adherents.tpl:101
 #: ../templates/default/history.tpl:36
-#: ../templates/default/advanced_search.tpl:303
+#: ../templates/default/advanced_search.tpl:306
 #: ../templates/default/gestion_transactions.tpl:10
 msgid "Clear filter"
 msgstr ""
@@ -5263,9 +5243,9 @@ msgstr ""
 #: ../templates/default/history.tpl:170
 #: ../templates/default/ajouter_transaction.tpl:257
 #: ../templates/default/ajouter_contribution.tpl:198
-#: ../templates/default/advanced_search.tpl:382
-#: ../templates/default/advanced_search.tpl:389
-#: ../templates/default/advanced_search.tpl:510
+#: ../templates/default/advanced_search.tpl:385
+#: ../templates/default/advanced_search.tpl:392
+#: ../templates/default/advanced_search.tpl:513
 #: ../templates/default/gestion_transactions.tpl:186
 #: ../templates/default/dispatch_type.tpl:172
 #: ../templates/default/member.tpl:171 ../templates/default/member.tpl:179
@@ -5291,8 +5271,8 @@ msgstr ""
 #: ../templates/default/ajouter_contribution.tpl:115
 #: ../templates/default/ajouter_contribution.tpl:127
 #: ../templates/default/ajouter_contribution.tpl:138
-#: ../templates/default/advanced_search.tpl:270
-#: ../templates/default/advanced_search.tpl:440
+#: ../templates/default/advanced_search.tpl:273
+#: ../templates/default/advanced_search.tpl:443
 #: ../templates/default/forms_types/date.tpl:5
 #: ../templates/default/forms_types/date.tpl:7
 #: ../templates/default/dispatch_type.tpl:98
@@ -5306,7 +5286,6 @@ msgid "With photos?"
 msgstr ""
 
 #: ../templates/default/attendance_sheet_details.tpl:40
-#: ../templates/default/fake_data.tpl:54
 msgid "Generate"
 msgstr ""
 
@@ -5529,7 +5508,7 @@ msgid "Create new mailing"
 msgstr ""
 
 #: ../templates/default/gestion_mailings.tpl:212
-#: ../templates/default/mailing_adherents.tpl:171
+#: ../templates/default/mailing_adherents.tpl:181
 msgid "An error occurred displaying preview :("
 msgstr ""
 
@@ -6268,9 +6247,9 @@ msgid "please create a member"
 msgstr ""
 
 #: ../templates/default/ajouter_transaction.tpl:175
-#: ../templates/default/mailing_adherents.tpl:204
-#: ../templates/default/mailing_adherents.tpl:250
-#: ../templates/default/mailing_adherents.tpl:306
+#: ../templates/default/mailing_adherents.tpl:214
+#: ../templates/default/mailing_adherents.tpl:260
+#: ../templates/default/mailing_adherents.tpl:316
 #: ../templates/default/gestion_groupes.tpl:203
 #: ../templates/default/gestion_groupes.tpl:263
 #: ../templates/default/gestion_groupes.tpl:316
@@ -6514,7 +6493,7 @@ msgid "Existing attachments:"
 msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:43
-#: ../templates/default/mailing_adherents.tpl:315
+#: ../templates/default/mailing_adherents.tpl:325
 msgid "Remove attachment"
 msgstr ""
 
@@ -6562,7 +6541,7 @@ msgid "Preview"
 msgstr ""
 
 #: ../templates/default/mailing_adherents.tpl:101
-#: ../templates/default/mailing_adherents.tpl:124
+#: ../templates/default/mailing_adherents.tpl:132
 msgid "Cancel mailing"
 msgstr ""
 
@@ -6570,19 +6549,19 @@ msgstr ""
 msgid "Preview your mailing"
 msgstr ""
 
-#: ../templates/default/mailing_adherents.tpl:122
+#: ../templates/default/mailing_adherents.tpl:124
 msgid "Modifiy mailing"
 msgstr "Модифікувати розсилку"
 
-#: ../templates/default/mailing_adherents.tpl:211
+#: ../templates/default/mailing_adherents.tpl:221
 msgid "Members selection"
 msgstr ""
 
-#: ../templates/default/mailing_adherents.tpl:315
+#: ../templates/default/mailing_adherents.tpl:325
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Ви впевнені, що хочете видалити цей додаток?"
 
-#: ../templates/default/mailing_adherents.tpl:315
+#: ../templates/default/mailing_adherents.tpl:325
 msgid "This will immediately remove attachment from disk and cannot be undo."
 msgstr ""
 
@@ -6592,48 +6571,6 @@ msgstr ""
 
 #: ../templates/default/edit_title.tpl:12
 msgid "Long form:"
-msgstr ""
-
-#: ../templates/default/fake_data.tpl:6
-msgid "Core data"
-msgstr ""
-
-#: ../templates/default/fake_data.tpl:9
-msgid "Number of members:"
-msgstr ""
-
-#: ../templates/default/fake_data.tpl:13 ../templates/default/fake_data.tpl:14
-msgid "Add photos for members."
-msgstr ""
-
-#: ../templates/default/fake_data.tpl:13 ../templates/default/fake_data.tpl:14
-msgid ""
-"Each photos mays take a long time to be retrieved. Use this only with a few "
-"members!"
-msgstr ""
-
-#: ../templates/default/fake_data.tpl:13
-msgid "Add members photos"
-msgstr ""
-
-#: ../templates/default/fake_data.tpl:18
-msgid "Number of groups:"
-msgstr ""
-
-#: ../templates/default/fake_data.tpl:22 ../templates/default/fake_data.tpl:23
-msgid "Maximum number of contributions to generate for reach member"
-msgstr ""
-
-#: ../templates/default/fake_data.tpl:22
-msgid "Number of contributions:"
-msgstr ""
-
-#: ../templates/default/fake_data.tpl:27
-msgid "Number of transactions:"
-msgstr ""
-
-#: ../templates/default/fake_data.tpl:35
-msgid "Generate some predefined dynamic fields"
 msgstr ""
 
 #: ../templates/default/mailing_preview.tpl:9
@@ -7034,7 +6971,7 @@ msgid "In any of selected groups"
 msgstr ""
 
 #: ../templates/default/advanced_search.tpl:125
-#: ../templates/default/advanced_search.tpl:294
+#: ../templates/default/advanced_search.tpl:297
 msgid "Remove criteria"
 msgstr ""
 
@@ -7066,47 +7003,47 @@ msgstr ""
 msgid "Select a field"
 msgstr ""
 
-#: ../templates/default/advanced_search.tpl:253
-#: ../templates/default/advanced_search.tpl:265
-#: ../templates/default/advanced_search.tpl:273
-#: ../templates/default/advanced_search.tpl:279
-#: ../templates/default/advanced_search.tpl:311
+#: ../templates/default/advanced_search.tpl:256
+#: ../templates/default/advanced_search.tpl:268
+#: ../templates/default/advanced_search.tpl:276
+#: ../templates/default/advanced_search.tpl:282
+#: ../templates/default/advanced_search.tpl:314
 msgid "is"
 msgstr ""
 
-#: ../templates/default/advanced_search.tpl:254
-#: ../templates/default/advanced_search.tpl:281
-#: ../templates/default/advanced_search.tpl:313
+#: ../templates/default/advanced_search.tpl:257
+#: ../templates/default/advanced_search.tpl:284
+#: ../templates/default/advanced_search.tpl:316
 msgid "is not"
 msgstr "не"
 
-#: ../templates/default/advanced_search.tpl:266
-#: ../templates/default/advanced_search.tpl:317
+#: ../templates/default/advanced_search.tpl:269
+#: ../templates/default/advanced_search.tpl:320
 msgid "before"
 msgstr ""
 
-#: ../templates/default/advanced_search.tpl:267
-#: ../templates/default/advanced_search.tpl:318
+#: ../templates/default/advanced_search.tpl:270
+#: ../templates/default/advanced_search.tpl:321
 msgid "after"
-msgstr ""
-
-#: ../templates/default/advanced_search.tpl:280
-#: ../templates/default/advanced_search.tpl:312
-msgid "contains"
-msgstr ""
-
-#: ../templates/default/advanced_search.tpl:282
-#: ../templates/default/advanced_search.tpl:314
-msgid "do not contains"
 msgstr ""
 
 #: ../templates/default/advanced_search.tpl:283
 #: ../templates/default/advanced_search.tpl:315
+msgid "contains"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:285
+#: ../templates/default/advanced_search.tpl:317
+msgid "do not contains"
+msgstr ""
+
+#: ../templates/default/advanced_search.tpl:286
+#: ../templates/default/advanced_search.tpl:318
 msgid "starts with"
 msgstr ""
 
-#: ../templates/default/advanced_search.tpl:284
-#: ../templates/default/advanced_search.tpl:316
+#: ../templates/default/advanced_search.tpl:287
+#: ../templates/default/advanced_search.tpl:319
 msgid "ends with"
 msgstr ""
 
@@ -7454,15 +7391,14 @@ msgstr ""
 msgid "Manager for:"
 msgstr ""
 
-#: ../templates/default/forms_types/captcha.tpl:7
-msgid ""
-"A link will be sent to you if you have provided an email address. Otherwise, "
-"you can use this password to login, and we recommend you to change it as "
-"soon as possible."
+#: ../templates/default/forms_types/captcha.tpl:9
+msgid "(numbers only)"
 msgstr ""
 
-#: ../templates/default/forms_types/captcha.tpl:14
-msgid "Password image"
+#: ../templates/default/forms_types/captcha.tpl:10
+msgid ""
+"This field is required trying to avoid registration spam. We are sorry for "
+"the inconvennience."
 msgstr ""
 
 #: ../templates/default/forms_types/picture.tpl:2
@@ -7812,6 +7748,12 @@ msgstr ""
 #, php-format
 msgid "Delete '%s' title"
 msgstr ""
+
+#~ msgid "Generate fake data"
+#~ msgstr "Створення підроблених даних"
+
+#~ msgid "%count transactions created"
+#~ msgstr "%count транзакцій створено"
 
 #~ msgid "Transaction ID cannot ben set while adding!"
 #~ msgstr "ID транзакції неможливо встановити під час додавання!"
