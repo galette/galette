@@ -15,17 +15,17 @@
 # lesion <lesion@autistici.org>, 2020.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-11-11 10:00+0100\n"
-"PO-Revision-Date: 2020-10-20 13:26+0000\n"
-"Last-Translator: lesion <lesion@autistici.org>\n"
+"PO-Revision-Date: 2020-11-12 15:28+0000\n"
+"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.3.1-dev\n"
+"X-Generator: Weblate 4.4-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -145,11 +145,11 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:151
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:287
 msgid "No member selected for mailing!"
-msgstr "Nessun membro selezionato per l'invio mail!"
+msgstr "Nessun membro selezionato per l'invio e-mail!"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:206
 msgid "Mailing"
-msgstr "Invio Mail"
+msgstr "Invio e-mail"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:306
 msgid "Please type an object for the message."
@@ -169,7 +169,7 @@ msgstr "L'email è stata salvata con successo."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:523
 msgid "Mailings"
-msgstr "L'invio di email"
+msgstr "L'invio di e-mail"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:671
 #, php-format
