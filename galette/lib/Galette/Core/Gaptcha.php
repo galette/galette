@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Galette Arithemtic captcha
+ * Galette Arithmetic captcha
  *
  * Copyright © 2020 The Galette Team
  *
