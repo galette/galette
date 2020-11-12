@@ -34,5 +34,6 @@
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-13
  */
-define('GALETTE_PHP_MIN', '7.2');
+
+define('GALETTE_PHP_MIN', '7.3');
 define('JQUERY_MARKITUP_VERSION', '1.1.14');

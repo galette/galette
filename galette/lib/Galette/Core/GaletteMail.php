@@ -420,7 +420,7 @@ class GaletteMail
     protected function cleanedHtml()
     {
         $html = $this->message;
-        $txt = \Html2Text\Html2Text::convert($html);
+        $txt = \Soundasleep\Html2Text::convert($html);
         return $txt;
     }
 
