@@ -47,7 +47,7 @@ use Laminas\Db\Sql\Update;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Delete;
 use Laminas\Db\Sql\Sql;
-use Laminas\Db\Sql\Sql\SqlInterface;
+use Laminas\Db\Sql\SqlInterface;
 
 /**
  * Zend Db wrapper
