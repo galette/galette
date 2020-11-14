@@ -819,7 +819,6 @@ class FieldsConfig
                 Analog::ERROR
             );
             throw $e;
-            return false;
         }
     }
 

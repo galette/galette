@@ -43,8 +43,11 @@ use Laminas\Db\Adapter\Driver\DriverInterface;
 use Laminas\Db\Adapter\Driver\ConnectionInterface;
 use Laminas\Db\Adapter\Platform\PlatformInterface;
 use Laminas\Db\Sql\Insert;
+use Laminas\Db\Sql\Update;
 use Laminas\Db\Sql\Select;
+use Laminas\Db\Sql\Delete;
 use Laminas\Db\Sql\Sql;
+use Laminas\Db\Sql\Sql\SqlInterface;
 
 /**
  * Zend Db wrapper
@@ -448,7 +451,6 @@ class Db
 
                 //can Galette SELECT records ?
                 try {
-                    $pass = false;
                     $select = $this->sql->select('galette_test');
                     $select->where('test_id = 1');
                     $res = $this->execute($select);
@@ -628,7 +630,6 @@ class Db
         try {
             $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->db);
             $tbl = $metadata->getTable($table);
-            $columns = $tbl->getColumns();
             $constraints = $tbl->getConstraints();
             $pkeys = array();
 
@@ -816,25 +817,18 @@ class Db
         switch ($name) {
             case 'db':
                 return $this->db;
-                break;
             case 'sql':
                 return $this->sql;
-                break;
             case 'driver':
                 return $this->db->getDriver();
-                break;
             case 'connection':
                 return $this->db->getDriver()->getConnection();
-                break;
             case 'platform':
                 return $this->db->getPlatform();
-                break;
             case 'query_string':
                 return $this->last_query;
-                break;
             case 'type_db':
                 return $this->type_db;
-                break;
         }
     }
 
