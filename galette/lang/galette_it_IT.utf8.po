@@ -13,12 +13,14 @@
 # Daeniem Loidlan <daeniem@gmail.com>, 2020.
 # Sylphystia <yuidirnt@gmail.com>, 2020.
 # lesion <lesion@autistici.org>, 2020.
+# Sstirban <razvansebastian.stirban001@studenti.uniparthenope.it>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-11-11 10:00+0100\n"
-"PO-Revision-Date: 2020-11-12 15:28+0000\n"
-"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2020-11-16 19:29+0000\n"
+"Last-Translator: Sstirban <razvansebastian.stirban001@studenti.uniparthenope."
+"it>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -199,7 +201,7 @@ msgstr "Configurazione del campo dinamico"
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:293
 msgid "Unable to retrieve field information."
-msgstr ""
+msgstr "Impossibile recuperare le informazioni."
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:302
 msgid "Edit field"
@@ -228,7 +230,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:156
 msgid "Subscription"
-msgstr ""
+msgstr "Abbonamento"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:239
 #: ../lib/Galette/Controllers/Crud/MembersController.php:444
@@ -258,11 +260,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:498
 msgid "The file does not exists or cannot be read :("
-msgstr ""
+msgstr "Il file non esiste o non può essere letto :("
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:564
 msgid "Members management"
-msgstr ""
+msgstr "Gestione membri"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:785
 msgid "Status label"
@@ -276,7 +278,7 @@ msgstr "Ricerca Avanzata"
 #: ../lib/Galette/Controllers/PdfController.php:157
 #: ../lib/Galette/Controllers/PdfController.php:238
 msgid "No member was selected, please check at least one name."
-msgstr ""
+msgstr "Nessun membro selezionato, per favore selezionare almeno un nome."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1258
 #, php-format
@@ -295,7 +297,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1390
 msgid "Nothing to do!"
-msgstr ""
+msgstr "Niente da fare!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1418
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1665
@@ -313,11 +315,11 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1508
 msgid "Invalid captcha"
-msgstr ""
+msgstr "Captcha invalido"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1617
 msgid "Your account has been created!"
-msgstr ""
+msgstr "Il tuo account è stato creato!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1622
 msgid "An email has been sent to you, check your inbox."
@@ -326,7 +328,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1625
 msgid "New member has been successfully added."
-msgstr ""
+msgstr "Un nuovo membro è stato aggiunto con successo."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1628
 msgid "Member account has been modified."
