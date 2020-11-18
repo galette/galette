@@ -14,13 +14,13 @@
 # Sylphystia <yuidirnt@gmail.com>, 2020.
 # lesion <lesion@autistici.org>, 2020.
 # Sstirban <razvansebastian.stirban001@studenti.uniparthenope.it>, 2020.
+# x <hardwired1.0@protonmail.com>, 2020.
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-11-11 10:00+0100\n"
-"PO-Revision-Date: 2020-11-16 19:29+0000\n"
-"Last-Translator: Sstirban <razvansebastian.stirban001@studenti.uniparthenope."
-"it>\n"
+"PO-Revision-Date: 2020-11-19 14:28+0000\n"
+"Last-Translator: x <hardwired1.0@protonmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -248,7 +248,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MembersController.php:274
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1138
 msgid "Member Profile"
-msgstr ""
+msgstr "Profilo del membro"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:359
 msgid "Members list"
@@ -5049,8 +5049,7 @@ msgid "See member profile"
 msgstr ""
 
 #: ../templates/default/gestion_contributions.tpl:52
-#, fuzzy, php-format
-#| msgid "List of contributions"
+#, php-format
 msgid "%count contribution"
 msgid_plural "%count contributions"
 msgstr[0] "%count contributo"
@@ -7325,11 +7324,10 @@ msgid "Show all members transactions"
 msgstr ""
 
 #: ../templates/default/gestion_transactions.tpl:32
-#, fuzzy, php-format
-#| msgid "List of transactions"
+#, php-format
 msgid "%count transaction"
 msgid_plural "%count transactions"
-msgstr[0] "%count transaziono"
+msgstr[0] "%count transazione"
 msgstr[1] "%count transazioni"
 
 #: ../templates/default/gestion_transactions.tpl:62
