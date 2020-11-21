@@ -39,6 +39,8 @@ namespace Galette\Entity;
 use Throwable;
 use Galette\Core;
 use Galette\Core\Db;
+use Galette\Core\Preferences;
+use Galette\DynamicFields\DynamicField;
 use Galette\Repository\PdfModels;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -66,7 +68,7 @@ abstract class PdfModel
     public const RECEIPT_MODEL = 3;
     public const ADHESION_FORM_MODEL = 4;
 
-    private $zdb;
+    protected $zdb;
 
     private $id;
     private $name;
@@ -79,8 +81,9 @@ abstract class PdfModel
     private $styles;
     private $parent;
 
-    private $patterns;
-    private $replaces;
+    private $patterns = [];
+    private $replaces = [];
+    private $dynamic_patterns = [];
 
     /**
      * Main constructor
@@ -90,17 +93,10 @@ abstract class PdfModel
      * @param int         $type        Model type
      * @param mixed       $args        Arguments
      */
-    public function __construct(Db $zdb, $preferences, $type, $args = null)
+    public function __construct(Db $zdb, Preferences $preferences, $type, $args = null)
     {
         global $container;
         $router = $container->get('router');
-
-        if (!$zdb) {
-            throw new \RuntimeException(
-                get_class($this) . ' Database instance required!'
-            );
-        }
-
         $this->zdb = $zdb;
         $this->type = $type;
 
@@ -108,17 +104,11 @@ abstract class PdfModel
             $this->load($args, $preferences);
         } elseif ($args !== null && is_object($args)) {
             $this->loadFromRs($args, $preferences);
+        } else {
+            $this->load($type, $preferences);
         }
 
-        $this->patterns = array(
-            'asso_name'          => '/{ASSO_NAME}/',
-            'asso_slogan'        => '/{ASSO_SLOGAN}/',
-            'asso_address'       => '/{ASSO_ADDRESS}/',
-            'asso_address_multi' => '/{ASSO_ADDRESS_MULTI}/',
-            'asso_website'       => '/{ASSO_WEBSITE}/',
-            'asso_logo'          => '/{ASSO_LOGO}/',
-            'date_now'           => '/{DATE_NOW}/'
-        );
+        $this->setPatterns($this->getMainPatterns());
 
         $address = $preferences->getPostalAddress();
         $address_multi = preg_replace("/\n/", "<br>", $address);
@@ -158,6 +148,8 @@ abstract class PdfModel
      */
     protected function load($id, $preferences, $init = true)
     {
+        global $login;
+
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->limit(1)
@@ -168,7 +160,7 @@ abstract class PdfModel
             $count = $results->count();
             if ($count === 0) {
                 if ($init === true) {
-                    $models = new PdfModels($this->zdb, $preferences, $this->login);
+                    $models = new PdfModels($this->zdb, $preferences, $login);
                     $models->installInit();
                     $this->load($id, $preferences, false);
                 } else {
@@ -183,6 +175,7 @@ abstract class PdfModel
                 $e->getMessage(),
                 Analog::ERROR
             );
+            throw $e;
         }
     }
 
@@ -359,13 +352,30 @@ abstract class PdfModel
     }
 
     /**
-     * Extract patterns
+     * Get dynamic patterns, extract them if needed
+     *
+     * @param string $form_name Dynamic form name
      *
      * @return array
      */
-    public function extractDynamicPatterns()
+    public function getDynamicPatterns($form_name): array
     {
+        if (!isset($this->dynamic_patterns[$form_name])) {
+            $this->dynamic_patterns[$form_name] = $this->extractDynamicPatterns($form_name);
+        }
+        return $this->dynamic_patterns[$form_name];
+    }
 
+    /**
+     * Extract patterns
+     *
+     * @param string $form_name Dynamic form name
+     *
+     * @return array
+     */
+    public function extractDynamicPatterns($form_name)
+    {
+        $form_name = strtoupper($form_name);
         $patterns = array();
         $parts    = array('header', 'footer', 'title', 'subtitle', 'body');
         foreach ($parts as $part) {
@@ -373,13 +383,18 @@ abstract class PdfModel
 
             $matches = array();
             preg_match_all(
-                '/{((LABEL|INPUT)?_DYNFIELD_[0-9]+_ADH)}/',
+                '/{((LABEL|INPUT)?_DYNFIELD_[0-9]+_' . $form_name . ')}/',
                 $content,
                 $matches
             );
-            $patterns = array_merge($patterns, $matches[1]);
 
-            Analog::log("dynamic patterns found in $part: " . join(",", $matches[1]), Analog::DEBUG);
+            foreach ($matches[1] as $pattern) {
+                $patterns[$pattern] = [
+                    'pattern'   => sprintf('/{%s}/', $pattern)
+                ];
+            }
+
+            Analog::log("dynamic patterns found for $form_name in $part: " . join(",", $matches[1]), Analog::DEBUG);
         }
 
         return $patterns;
@@ -392,12 +407,23 @@ abstract class PdfModel
      *
      * @return void
      */
-    public function setPatterns($patterns)
+    protected function setPatterns($patterns): PdfModel
     {
+        $toset = [];
+        foreach ($patterns as $key => $info) {
+            if (is_array($info)) {
+                $toset[$key] = $info['pattern'];
+            } else {
+                $toset[$key] = $info;
+            }
+        }
+
         $this->patterns = array_merge(
             $this->patterns,
-            $patterns
+            $toset
         );
+
+        return $this;
     }
 
     /**
@@ -436,6 +462,8 @@ abstract class PdfModel
             case 'subtitle':
             case 'type':
             case 'styles':
+            case 'patterns':
+            case 'replaces':
                 return $this->$name;
                 break;
             case 'hstyles':
@@ -463,16 +491,16 @@ abstract class PdfModel
                 //get header and footer from parent if not defined in current model
                 if (
                     $this->id > self::MAIN_MODEL
-                    && trim($prop_value) === ''
                     && $this->parent !== null
                     && ($pname === 'footer'
                     || $pname === 'header')
+                    && trim($prop_value) === ''
                 ) {
                     $prop_value = $this->parent->$pname;
                 }
 
                 //handle translations
-                $callback = function ($matches) {
+                $callback = static function ($matches) {
                     return _T($matches[1]);
                 };
                 $value = preg_replace_callback(
@@ -567,12 +595,12 @@ abstract class PdfModel
             case 'header':
             case 'footer':
             case 'body':
-                if ($value == null || trim($value) == '') {
-                    if (get_class($this) === 'PdfMain' && $name !== 'body') {
+                if ($value === null || trim($value) === '') {
+                    if ($name !== 'body' && get_class($this) === 'PdfMain') {
                         throw new \UnexpectedValueException(
                             _T("header and footer should not be empty!")
                         );
-                    } elseif (get_class($this) !== 'PdfMain' && $name === 'body') {
+                    } elseif ($name === 'body' && get_class($this) !== 'PdfMain') {
                         throw new \UnexpectedValueException(
                             _T("body should not be empty!")
                         );
@@ -607,5 +635,310 @@ abstract class PdfModel
                 );
                 break;
         }
+    }
+
+    /**
+     * Get main patterns
+     *
+     * @return array
+     */
+    protected function getMainPatterns(): array
+    {
+        return [
+            'asso_name'             => [
+                'title' => _T('Your organisation name'),
+                'pattern'   => '/{ASSO_NAME}/'
+            ],
+            'asso_slogan'           => [
+                'title'     => _T('Your organisation slogan'),
+                'pattern'   => '/{ASSO_SLOGAN}/'
+            ],
+            'asso_address'          => [
+                'title'     => _T('Your organisation address'),
+                'pattern'   => '/{ASSO_ADDRESS}/',
+            ],
+            'asso_address_multi'    => [
+                'title'     => sprintf('%s (%s)', _T('Your organisation address'), _T('with break lines')),
+                'pattern'   => '/{ASSO_ADDRESS_MULTI}/',
+            ],
+            'asso_website'          => [
+                'title'     => _T('Your organisation website'),
+                'pattern'   => '/{ASSO_WEBSITE}/',
+            ],
+            'asso_logo'             => [
+                'title'     => _T('Your organisation logo'),
+                'pattern'          => '/{ASSO_LOGO}/',
+            ],
+            'date_now'              => [
+                'title'     => _T('Current date (Y-m-d)'),
+                'pattern'   => '/{DATE_NOW}/'
+            ]
+        ];
+    }
+
+    /**
+     * Get patterns for a member
+     *
+     * @return array
+     */
+    protected function getMemberPatterns(): array
+    {
+        $dynamic_patterns = $this->getDynamicPatterns('adh');
+        return [
+            'adh_title'         => [
+                'title'     => '',
+                'pattern'   => '/{TITLE_ADH}/',
+            ],
+            'adh_id'            =>  [
+                'title'     => _T("Member's ID"),
+                'pattern'   => '/{ID_ADH}/',
+            ],
+            'adh_name'          =>  [
+                'title'     => _T("Member's name"),
+                'pattern'    => '/{NAME_ADH}/',
+            ],
+            'adh_last_name'     =>  [
+                'title'     => '',
+                'pattern'   => '/{LAST_NAME_ADH}/',
+            ],
+            'adh_first_name'    =>  [
+                'title'     => '',
+                'pattern'   => '/{FIRST_NAME_ADH}/',
+            ],
+            'adh_nickname'      =>  [
+                'title'     => '',
+                'pattern'   => '/{NICKNAME_ADH}/',
+            ],
+            'adh_gender'        =>  [
+                'title'     => '',
+                'pattern'   => '/{GENDER_ADH}/',
+            ],
+            'adh_birth_date'    =>  [
+                'title'     => '',
+                'pattern'   => '/{ADH_BIRTH_DATE}/',
+            ],
+            'adh_birth_place'   =>  [
+                'title'     => '',
+                'pattern'   => '/{ADH_BIRTH_PLACE}/',
+            ],
+            'adh_profession'    =>  [
+                'title'     => '',
+                'pattern'   => '/{PROFESSION_ADH}/',
+            ],
+            'adh_company'       => [
+                'title'     => _T("Company name"),
+                'pattern'   => '/{COMPANY_ADH}/',
+            ],
+            'adh_address'       =>  [
+                'title'     => _T("Member's address"),
+                'pattern'   => '/{ADDRESS_ADH}/',
+            ],
+            'adh_zip'           =>  [
+                'title'     => _T("Member's zipcode"),
+                'pattern'   => '/{ZIP_ADH}/',
+            ],
+            'adh_town'          =>  [
+                'title'     => _T("Member's town"),
+                'pattern'   => '/{TOWN_ADH}/',
+            ],
+            'adh_country'       =>  [
+                'title'     => '',
+                'pattern'   => '/{COUNTRY_ADH}/',
+            ],
+            'adh_phone'         =>  [
+                'title'     => '',
+                'pattern'   => '/{PHONE_ADH}/',
+            ],
+            'adh_mobile'        =>  [
+                'title'     => '',
+                'pattern'   => '/{MOBILE_ADH}/',
+            ],
+            'adh_email'         =>  [
+                'title'     => '',
+                'pattern'   => '/{EMAIL_ADH}/',
+            ],
+            'adh_login'         =>  [
+                'title'     => '',
+                'pattern'   => '/{LOGIN_ADH}/',
+            ],
+            'adh_main_group'    =>  [
+                'title'     => _T("Member's main group"),
+                'pattern'   => '/{GROUP_ADH}/',
+            ],
+            'adh_groups'        =>  [
+                'title'     => _T("Member's groups (as list)"),
+                'pattern'   => '/{GROUPS_ADH}/'
+            ],
+        ] + $dynamic_patterns;
+    }
+
+    /**
+     * Set member and proceed related replacements
+     *
+     * @param Adherent $member Member
+     *
+     * @return PdfModel
+     */
+    public function setMember(Adherent $member): PdfModel
+    {
+        global $login;
+
+        $address = $member->address;
+        if ($member->address_continuation != '') {
+            $address .= '<br/>' . $member->address_continuation;
+        }
+
+        if ($member->isMan()) {
+            $gender = _T("Man");
+        } elseif ($member->isWoman()) {
+            $gender = _T("Woman");
+        } else {
+            $gender = _T("Unspecified");
+        }
+
+        $member_groups = $member->groups;
+        $main_group = _T("None");
+        $group_list = _T("None");
+        if (is_array($member_groups) && count($member_groups) > 0) {
+            $main_group = $member_groups[0]->getName();
+            $group_list = '<ul>';
+            foreach ($member_groups as $group) {
+                $group_list .= '<li>' . $group->getName() . '</li>';
+            }
+            $group_list .= '</ul>';
+        }
+
+        $this->setReplacements(
+            array(
+                'adh_title'         => $member->stitle,
+                'adh_id'            => $member->id,
+                'adh_name'          => $member->sfullname,
+                'adh_last_name'     => $member->name,
+                'adh_first_name'    => $member->surname,
+                'adh_nickname'      => $member->nickname,
+                'adh_gender'        => $gender,
+                'adh_birth_date'    => $member->birthdate,
+                'adh_birth_place'   => $member->birth_place,
+                'adh_profession'    => $member->job,
+                'adh_company'       => $member->company_name,
+                'adh_address'       => $address,
+                'adh_zip'           => $member->zipcode,
+                'adh_town'          => $member->town,
+                'adh_country'       => $member->country,
+                'adh_phone'         => $member->phone,
+                'adh_mobile'        => $member->gsm,
+                'adh_email'         => $member->email,
+                'adh_login'         => $member->login,
+                'adh_main_group'    => $main_group,
+                'adh_groups'        => $group_list
+            )
+        );
+
+        /** the list of all dynamic fields */
+        $fields = new \Galette\Repository\DynamicFieldsSet($this->zdb, $login);
+        $dynamic_fields = $fields->getList('adh');
+        $this->setDynamicFields('adh', $dynamic_fields, $member);
+
+        return $this;
+    }
+
+    /**
+     * Set dynamic fields and proceed related replacements
+     *
+     * @param string $form_name      Form name
+     * @param array  $dynamic_fields Dynamic fields
+     * @param mixed  $object         Related object (Adherent, Contribution, ...)
+     *
+     * @return PdfModel
+     */
+    public function setDynamicFields($form_name, $dynamic_fields, $object): PdfModel
+    {
+        $uform_name = strtoupper($form_name);
+        $dynamic_patterns = $this->getDynamicPatterns($form_name);
+        foreach ($dynamic_patterns as $dynamic_pattern) {
+            $pattern = trim($dynamic_pattern['pattern'], '/');
+            $key   = strtolower(rtrim(ltrim($pattern, '{'), '}'));
+            $value = '';
+            if (preg_match("/^{DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
+                /** dynamic field first value */
+                $field_id = $match[1];
+                if ($object !== null) {
+                    $values = $object->getDynamicFields()->getValues($field_id);
+                    $value  = $values[1];
+                }
+            }
+            if (preg_match("/^{LABEL_DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
+                /** dynamic field label */
+                $field_id = $match[1];
+                $value    = $dynamic_fields[$field_id]->getName();
+            }
+            if (preg_match("/^{INPUT_DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
+                /** dynamic field input form element */
+                $field_id    = $match[1];
+                $field_name  = $dynamic_fields[$field_id]->getName();
+                $field_type  = $dynamic_fields[$field_id]->getType();
+                $field_value = ['field_val' => ''];
+                if ($object !== null) {
+                    $field_values = $object->getDynamicFields()->getValues($field_id);
+                    $field_value  = $field_values[0];
+                }
+                switch ($field_type) {
+                    case DynamicField::TEXT:
+                        $value .= '<textarea' .
+                            ' id="' . $field_name . '"' .
+                            ' name="' . $field_name . '"' .
+                            ' value="' . $field_value['field_val'] . '"' .
+                            '/>';
+                        break;
+                    case DynamicField::LINE:
+                        $value .= '<input type="text"' .
+                            ' id="' . $field_name . '"' .
+                            ' name="' . $field_name . '"' .
+                            ' value="' . $field_value['field_val'] . '"' .
+                            ' size="20" maxlength="30"/>';
+                        break;
+                    case DynamicField::CHOICE:
+                        $choice_values = $dynamic_fields[$field_id]->getValues();
+                        foreach ($choice_values as $choice_idx => $choice_value) {
+                            $value .= '<input type="radio"' .
+                                ' id="' . $field_name . '"' .
+                                ' name="' . $field_name . '"' .
+                                ' value="' . $choice_value . '"';
+                            if ($choice_idx == $field_values[0]['field_val']) {
+                                $value .= ' checked="checked"';
+                            }
+                            $value .= '/>';
+                            $value .= $choice_value;
+                            $value .= '&nbsp;';
+                        }
+                        break;
+                    case DynamicField::DATE:
+                        $value .= '<input type="text" name="' .
+                            $field_name . '" value="' .
+                            $field_value['field_val'] .
+                            '" size="10" />';
+                        break;
+                    case DynamicField::BOOLEAN:
+                        $value .= '<input type="checkbox"' .
+                            ' name="' . $field_name . '"' .
+                            ' value="1"';
+                        if ($field_value['field_val'] == 1) {
+                            $value .= ' checked="checked"';
+                        }
+                        $value .= '/>';
+                        break;
+                    case DynamicField::FILE:
+                        $value .= '<input type="text" name="' .
+                            $field_name . '" value="' .
+                            $field_value['field_val'] . '" />';
+                        break;
+                }
+            }
+
+            $this->setReplacements(array($key => $value));
+            Analog::log("adding dynamic replacement $key => $value", Analog::DEBUG);
+        }
+
+        return $this;
     }
 }

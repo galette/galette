@@ -77,8 +77,8 @@ class PdfModels extends atoum
         $this->session = new \RKA\Session();
         $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
 
-        $types = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
-        $res = $types->installInit(false);
+        $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
+        $res = $models->installInit(false);
         $this->boolean($res)->isTrue();
     }
 

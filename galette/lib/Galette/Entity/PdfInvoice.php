@@ -51,7 +51,7 @@ use Analog\Analog;
  * @since     Available since 0.7.5dev - 2013-02-25
  */
 
-class PdfInvoice extends PdfModel
+class PdfInvoice extends PdfContribution
 {
     /**
      * Main constructor

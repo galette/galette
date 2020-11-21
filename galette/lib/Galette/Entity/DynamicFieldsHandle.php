@@ -79,6 +79,7 @@ class DynamicFieldsHandle
     private $errors = array();
 
     private $zdb;
+    private $login;
 
     private $insert_stmt;
     private $update_stmt;
@@ -134,8 +135,6 @@ class DynamicFieldsHandle
             $results = $this->getCurrentFields();
 
             if ($results->count() > 0) {
-                $dfields = array();
-
                 foreach ($results as $f) {
                     if (isset($this->dynamic_fields[$f->{DynamicField::PK}])) {
                         $field = $this->dynamic_fields[$f->{DynamicField::PK}];
@@ -145,7 +144,7 @@ class DynamicFieldsHandle
                         }
                         $this->current_values[$f->{DynamicField::PK}][] = array_filter(
                             (array)$f,
-                            function ($k) {
+                            static function ($k) {
                                 return $k != DynamicField::PK;
                             },
                             ARRAY_FILTER_USE_KEY
@@ -176,7 +175,7 @@ class DynamicFieldsHandle
      *
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -186,7 +185,7 @@ class DynamicFieldsHandle
      *
      * @return array
      */
-    public function getFields()
+    public function getFields(): array
     {
         return $this->dynamic_fields;
     }
@@ -198,7 +197,7 @@ class DynamicFieldsHandle
      *
      * @return array
      */
-    public function getValues($field)
+    public function getValues($field): array
     {
         if (!isset($this->current_values[$field])) {
             $this->current_values[$field][] = [
@@ -319,8 +318,10 @@ class DynamicFieldsHandle
             );
             return false;
         } finally {
-            unset($this->update_stmt);
-            unset($this->insert_stmt);
+            unset(
+                $this->update_stmt,
+                $this->insert_stmt
+            );
         }
     }
 

@@ -539,7 +539,7 @@ class PdfController extends AbstractController
         }
 
         $tpl = null;
-        $params = [];
+        $params = ['model' => $model];
 
         //Render directly template if we called from ajax,
         //render in a full page otherwise
@@ -549,13 +549,11 @@ class PdfController extends AbstractController
             && $request->getQueryParams()['ajax'] == 'true'
         ) {
             $tpl = 'gestion_pdf_content.tpl';
-            $params['model'] = $model;
         } else {
             $tpl = 'gestion_pdf.tpl';
-            $params = [
+            $params += [
                 'page_title'        => _T("PDF models"),
-                'models'            => $models,
-                'model'             => $model
+                'models'            => $models
             ];
         }
 
