@@ -5,12 +5,13 @@
 # ButterflyOfFire <ButterflyOfFire@protonmail.com>, 2019, 2020.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2020.
 # Antonios Hazim <antonios.hazim@zoho.eu>, 2020.
+# Woodyx <shiposhouyou@gmail.com>, 2020.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-11-11 10:00+0100\n"
-"PO-Revision-Date: 2020-11-03 06:26+0000\n"
-"Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
+"PO-Revision-Date: 2020-11-27 13:29+0000\n"
+"Last-Translator: Woodyx <shiposhouyou@gmail.com>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -18,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 4.3.2-dev\n"
+"X-Generator: Weblate 4.4-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -6643,7 +6644,7 @@ msgstr ""
 
 #: ../templates/default/gestion_pdf_content.tpl:24
 msgid "Body"
-msgstr ""
+msgstr "هيكل"
 
 #: ../templates/default/gestion_pdf_content.tpl:29
 msgid "CSS styles"
