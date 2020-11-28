@@ -1,0 +1,130 @@
+name: Linux
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - 'feature/*'
+      - 'hotfix/*'
+      - 'release/*'
+  pull_request:
+
+jobs:
+  ubuntu-latest:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-versions: [ '7.3', '7.4', '8.0', '8.1' ]
+        db-engines: ['mysql', 'pgsql']
+        coverage: [none]
+      fail-fast: false
+
+    env:
+      DB: ${{ matrix.db-engines }}
+
+    services:
+      # Label used to access the service container
+      pgsql:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: galette_tests
+          POSTGRES_PASSWORD: g@l3tte
+          POSTGRES_DB: galette_tests
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      mysql:
+        image: mariadb
+        env:
+          MYSQL_USER: galette_tests
+          MYSQL_PASSWORD: g@l3tte
+          MYSQL_ROOT_PASSWORD: g@l3tte
+          MYSQL_DATABASE: galette_tests
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    name: PHP ${{ matrix.php-versions }} ${{ matrix.db-engines }}
+
+    steps:
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: composer, pecl
+          coverage: ${{ matrix.coverage }}
+          extensions: apcu
+          ini-values: apc.enable_cli=1
+
+      - name: "Show versions"
+        if: env.skip != 'true'
+        run: |
+          php --version
+          composer --version
+          echo "node $(node --version)"
+          echo "npm $(npm --version)"
+          mysql --version
+          psql --version
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: bin/install_deps
+
+      - name: CS
+        run: |
+          galette/vendor/bin/phpcs -n -p --ignore=galette_tcpdf_config.php --standard=phpcs-rules.xml galette/lib/ tests/TestsBootstrap.php tests/Galette tests/plugins galette/webroot/index.php galette/includes/fields_defs/ galette/includes/smarty_plugins/ galette/includes/functions.inc.php galette/includes/galette.inc.php galette/includes/dependencies.php galette/includes/main.inc.php
+
+      - name: Install checker
+        working-directory: galette
+        run: composer require maglnet/composer-require-checker
+        if: ${{ matrix.php-versions == '7.4' }}
+
+      - name: Check missing symbols
+        run: |
+          galette/vendor/bin/composer-require-checker check --config-file=.composer-require-checker.config.json galette/composer.json
+        if: ${{ matrix.php-versions == '7.4' }}
+
+      - name: Init for PostgreSQL
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+        run: |
+          PGPASSWORD=g@l3tte psql -d galette_tests -a -f galette/install/scripts/pgsql.sql -U galette_tests -h localhost
+        if: ${{ matrix.db-engines == 'pgsql' }}
+
+      - name: Init for MariaDB
+        run: |
+          mysql -e 'create database IF NOT EXISTS galette_tests;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
+          mysql -e 'use galette_tests; source galette/install/scripts/mysql.sql;' -u galette_tests --password=g@l3tte -h 127.0.0.1 -P 3306
+        if: ${{ matrix.db-engines == 'mysql' }}
+
+      - name: Unit tests
+        run: galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php --no-cc -d tests/Galette/

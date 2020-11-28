@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a29f10f6934b7e0821c011d8c6d57cef",
+    "content-hash": "fb2eaf3d5edc6ea1267b6bb0b62ee18c",
     "packages": [
         {
             "name": "akrabat/rka-slim-session-middleware",
@@ -2688,27 +2688,27 @@
         },
         {
             "name": "galette/smarty-xgettext",
-            "version": "dev-feature/updatelibs",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/galette/smarty-xgettext.git",
-                "reference": "7d1ceedde2ee7c0e2b453f97587a1911c22f936e"
+                "reference": "7e0fdc09b00c51a0c3e3c53aad23401ee57d4ee7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/galette/smarty-xgettext/zipball/7d1ceedde2ee7c0e2b453f97587a1911c22f936e",
-                "reference": "7d1ceedde2ee7c0e2b453f97587a1911c22f936e",
+                "url": "https://api.github.com/repos/galette/smarty-xgettext/zipball/7e0fdc09b00c51a0c3e3c53aad23401ee57d4ee7",
+                "reference": "7e0fdc09b00c51a0c3e3c53aad23401ee57d4ee7",
                 "shasum": ""
             },
             "require": {
-                "geekwright/po": "^1.0",
-                "php": "^7.2 || ^7.4",
-                "smarty/smarty": "^3",
+                "geekwright/po": "^2.0",
+                "php": "^7.3 || ^8",
+                "smarty/smarty": "^3.1",
                 "symfony/console": "^5.1",
-                "symfony/finder": "^2.8|^3.0"
+                "symfony/finder": "^5.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8",
+                "phpunit/phpunit": "^8 || ^9",
                 "squizlabs/php_codesniffer": "^3.5",
                 "symfony/var-dumper": "^3.3"
             },
@@ -2738,26 +2738,36 @@
             "description": "Smarty xgettext features",
             "homepage": "https://github.com/galette/smarty-xgettext",
             "support": {
-                "source": "https://github.com/galette/smarty-xgettext/tree/feature/updatelibs"
+                "source": "https://github.com/galette/smarty-xgettext/tree/1.2.0"
             },
-            "time": "2020-10-05T05:53:07+00:00"
+            "funding": [
+                {
+                    "url": "https://paypal.me/pools/c/8u4dEPpM0q",
+                    "type": "custom"
+                }
+            ],
+            "time": "2020-11-28T15:56:01+00:00"
         },
         {
             "name": "geekwright/po",
-            "version": "v1.0.4",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/geekwright/Po.git",
-                "reference": "31cfb43d44f2084f1d79bb7581c63412f41d592b"
+                "reference": "34aa112e1ece8f0e5bd74dbbf13fd85ae4a4d01e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/geekwright/Po/zipball/31cfb43d44f2084f1d79bb7581c63412f41d592b",
-                "reference": "31cfb43d44f2084f1d79bb7581c63412f41d592b",
+                "url": "https://api.github.com/repos/geekwright/Po/zipball/34aa112e1ece8f0e5bd74dbbf13fd85ae4a4d01e",
+                "reference": "34aa112e1ece8f0e5bd74dbbf13fd85ae4a4d01e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5|^7.0",
+                "smarty/smarty": "^3.1"
             },
             "type": "library",
             "autoload": {
@@ -2767,7 +2777,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -2788,7 +2798,63 @@
                 "issues": "https://github.com/geekwright/Po/issues",
                 "source": "https://github.com/geekwright/Po/tree/master"
             },
-            "time": "2016-08-24T22:08:24+00:00"
+            "time": "2018-02-03T23:53:09+00:00"
+        },
+        {
+            "name": "squizlabs/php_codesniffer",
+            "version": "3.5.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
+                "reference": "9d583721a7157ee997f235f327de038e7ea6dac4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/9d583721a7157ee997f235f327de038e7ea6dac4",
+                "reference": "9d583721a7157ee997f235f327de038e7ea6dac4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-simplexml": "*",
+                "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
+            },
+            "bin": [
+                "bin/phpcs",
+                "bin/phpcbf"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Greg Sherwood",
+                    "role": "lead"
+                }
+            ],
+            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+            "homepage": "https://github.com/squizlabs/PHP_CodeSniffer",
+            "keywords": [
+                "phpcs",
+                "standards"
+            ],
+            "support": {
+                "issues": "https://github.com/squizlabs/PHP_CodeSniffer/issues",
+                "source": "https://github.com/squizlabs/PHP_CodeSniffer",
+                "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
+            },
+            "time": "2020-10-23T02:01:07+00:00"
         },
         {
             "name": "symfony/console",
@@ -2883,20 +2949,20 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v3.4.46",
+            "version": "v5.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "4e1da3c110c52d868f8a9153b7de3ebc381fba78"
+                "reference": "e70eb5a69c2ff61ea135a13d2266e8914a67b3a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/4e1da3c110c52d868f8a9153b7de3ebc381fba78",
-                "reference": "4e1da3c110c52d868f8a9153b7de3ebc381fba78",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/e70eb5a69c2ff61ea135a13d2266e8914a67b3a0",
+                "reference": "e70eb5a69c2ff61ea135a13d2266e8914a67b3a0",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5.9|>=7.0.8"
+                "php": ">=7.2.5"
             },
             "type": "library",
             "autoload": {
@@ -2924,7 +2990,7 @@
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/finder/tree/v3.4.46"
+                "source": "https://github.com/symfony/finder/tree/v5.1.8"
             },
             "funding": [
                 {
@@ -2940,7 +3006,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-24T10:57:07+00:00"
+            "time": "2020-10-24T12:01:57+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -3594,8 +3660,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "atoum/atoum": 20,
-        "galette/smarty-xgettext": 20
+        "atoum/atoum": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
