@@ -75,7 +75,6 @@ class SavedSearch extends atoum
         $this->login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
         $this->calling($this->login)->isLogged = true;
         $this->calling($this->login)->isSuperAdmin = true;
-        parent::beforeTestMethod($testMethod);
     }
 
     /**
@@ -88,7 +87,6 @@ class SavedSearch extends atoum
     public function afterTestMethod($testMethod)
     {
         $this->deleteCreated();
-        parent::afterTestMethod($testMethod);
     }
 
     /**

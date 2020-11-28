@@ -69,7 +69,6 @@ class Telemetry extends atoum
         $this->preferences->pref_instance_uuid = '';
         $this->preferences->pref_registration_uuid = '';
         $this->preferences->store();
-        return parent::afterTestMethod($method);
     }
 
     /**

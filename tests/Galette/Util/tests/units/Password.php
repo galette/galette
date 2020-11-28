@@ -69,7 +69,6 @@ class Password extends atoum
         $this->preferences->pref_password_length = 6;
         $this->preferences->pref_password_blacklist = false;
         $this->preferences->store();
-        return parent::afterTestMethod($method);
     }
 
     /**
