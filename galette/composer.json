@@ -57,7 +57,8 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "patch -d vendor/laminas/laminas-db/ -p1 < ../patches/laminas-db-Fix-using-parameters-in-prepared-queries.patch"
+            "patch -d vendor/laminas/laminas-db/ -p1 < ../patches/laminas-db-Fix-using-parameters-in-prepared-queries.patch",
+            "patch -d vendor/tecnickcom/tcpdf/ -p1 < ../patches/tcpdf-php8-compat.patch"
         ]
     }
 }
