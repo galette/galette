@@ -1,0 +1,31 @@
+From 7afda56a09f1274b690e60352023478f267b2575 Mon Sep 17 00:00:00 2001
+From: Johan Cwiklinski <johan@x-tnd.be>
+Date: Sun, 29 Nov 2020 11:10:21 +0100
+Subject: [PATCH] Fix php8
+
+---
+ src/Sql/AbstractSql.php | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/src/Sql/AbstractSql.php b/src/Sql/AbstractSql.php
+index 9c2f6f41..cc218d86 100644
+--- a/src/Sql/AbstractSql.php
++++ b/src/Sql/AbstractSql.php
+@@ -245,11 +245,10 @@ abstract class AbstractSql implements SqlInterface
+             if (isset($paramSpecs[$position]['combinedby'])) {
+                 $multiParamValues = [];
+                 foreach ($paramsForPosition as $multiParamsForPosition) {
+-                    if (is_array($multiParamsForPosition)) {
+-                        $ppCount = count($multiParamsForPosition);
+-                    } else {
+-                        $ppCount = 1;
++                    if (!is_array($multiParamsForPosition)) {
++                        $multiParamsForPosition = [$multiParamsForPosition];
+                     }
++                    $ppCount = count($multiParamsForPosition);
+ 
+                     if (! isset($paramSpecs[$position][$ppCount])) {
+                         throw new Exception\RuntimeException(sprintf(
+-- 
+2.26.2
+
