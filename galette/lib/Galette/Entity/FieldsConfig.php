@@ -431,17 +431,7 @@ class FieldsConfig
                 Analog::ERROR
             );
 
-            /*$messages = array();
-            do {
-                $messages[] = $e->getMessage();
-            } while ($e = $e->getPrevious());
-
-            Analog::log(
-                'Unable to initialize default fields configuration.' .
-                implode("\n", $messages),
-                Analog::ERROR
-            );*/
-            return $e;
+            throw $e;
         }
     }
 

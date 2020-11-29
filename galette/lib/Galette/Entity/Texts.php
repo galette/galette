@@ -380,7 +380,7 @@ class Texts
                 'Unable to initialize default texts.' . $e->getMessage(),
                 Analog::WARNING
             );
-            return $e;
+            throw $e;
         }
     }
 

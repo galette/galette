@@ -275,8 +275,7 @@ class Db
      * @param string $port which tcp port we want to connect to
      * @param string $db   database name
      *
-     * @return true|array true if connection was successfull,
-     *                    an array with some infos otherwise
+     * @return true
      */
     public static function testConnectivity(
         $type,
@@ -316,7 +315,7 @@ class Db
                 $e->getMessage() . ')',
                 Analog::ALERT
             );
-            return $e;
+            throw $e;
         }
     }
 

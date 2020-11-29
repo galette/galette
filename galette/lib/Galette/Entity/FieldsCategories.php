@@ -192,7 +192,7 @@ class FieldsCategories
                 $e->getMessage(),
                 Analog::WARNING
             );
-            return $e;
+            throw $e;
         }
     }
 }

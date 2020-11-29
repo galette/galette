@@ -217,7 +217,7 @@ abstract class Entitled
                 $e->getMessage(),
                 Analog::WARNING
             );
-            return $e;
+            throw $e;
         }
     }
 

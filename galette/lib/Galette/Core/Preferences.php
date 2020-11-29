@@ -446,7 +446,7 @@ class Preferences
                 'Unable to initialize default preferences.' . $e->getMessage(),
                 Analog::WARNING
             );
-            return $e;
+            throw $e;
         }
     }
 

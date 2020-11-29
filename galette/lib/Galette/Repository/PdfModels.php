@@ -143,7 +143,7 @@ class PdfModels extends Repository
             if ($this->zdb->connection->inTransaction()) {
                 $this->zdb->connection->rollBack();
             }
-            return $e;
+            throw $e;
         }
     }
 
