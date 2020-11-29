@@ -126,6 +126,10 @@ class PdfModels extends Repository
                 $this->zdb->connection->beginTransaction();
 
                 //first, we drop all values
+                $update = $this->zdb->update($ent::TABLE);
+                $update->set(['model_parent' => null]);
+                $this->zdb->execute($update);
+
                 $delete = $this->zdb->delete($ent::TABLE);
                 $this->zdb->execute($delete);
 
