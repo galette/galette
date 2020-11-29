@@ -16,9 +16,15 @@ jobs:
 
     strategy:
       matrix:
-        php-versions: [ '7.3', '7.4', '8.0', '8.1' ]
-        db-engines: ['mysql', 'pgsql']
+        php-versions: [ '7.3', '8.0', '8.1' ]
         coverage: [none]
+        include:
+          - php-versions: '7.4'
+            db-engines: pgsql
+          - php-versions: '7.4'
+            coverage: xdebug
+            db-engines: mysql
+        db-engines: ['mysql', 'pgsql']
       fail-fast: false
 
     env:
@@ -128,3 +134,20 @@ jobs:
 
       - name: Unit tests
         run: galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php --no-cc -d tests/Galette/
+        if: ${{ matrix.coverage != 'xdebug' }}
+
+      - name: Unit tests (with coverage)
+        run: galette/vendor/bin/atoum -mcn 1 -bf tests/TestsBootstrap.php -c tests/clover.php -d tests/Galette/
+        if: ${{ matrix.coverage == 'xdebug' }}
+
+      - name: Upload code coverage (scrutinizer)
+        run: |
+          wget https://scrutinizer-ci.com/ocular.phar
+          php ocular.phar code-coverage:upload --format=php-clover tests/clover.xml
+        if: ${{ matrix.coverage == 'xdebug' }}
+
+      - name: Upload code coverage (codecov)
+        uses: codecov/codecov-action@v1
+        with:
+          file: tests/clover.xml
+        if: ${{ matrix.coverage == 'xdebug' }}
