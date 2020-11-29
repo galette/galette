@@ -562,8 +562,6 @@ class Db
         }
 
         try {
-            $this->connection->beginTransaction();
-
             $tables = $this->getTables($prefix);
 
             foreach ($tables as $table) {
@@ -590,14 +588,13 @@ class Db
                     $this->convertContentToUTF($prefix, $table);
                 }
             }
-            $this->connection->commit();
         } catch (Throwable $e) {
-            $this->connection->rollBack();
             Analog::log(
                 'An error occurred while converting to utf table ' .
                 $table . ' (' . $e->getMessage() . ')',
                 Analog::ERROR
             );
+            throw $e;
         }
     }
 

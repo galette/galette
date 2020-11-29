@@ -751,7 +751,6 @@ abstract class DynamicField
 
             try {
                 $this->zdb->drop(str_replace(PREFIX_DB, '', $contents_table), true);
-                $this->zdb->connection->beginTransaction();
                 $field_size = ((int)$this->size > 0) ? $this->size : 1;
                 $this->zdb->db->query(
                     'CREATE TABLE ' . $contents_table .
@@ -759,12 +758,7 @@ abstract class DynamicField
                     ') NOT NULL)',
                     \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
                 );
-                $this->zdb->connection->commit();
             } catch (Throwable $e) {
-                if ($this->zdb->connection->inTransaction()) {
-                    //because of DROP autocommit on mysql...
-                    $this->zdb->connection->rollBack();
-                }
                 Analog::log(
                     'Unable to manage fields values table ' .
                     $contents_table . ' | ' . $e->getMessage(),
