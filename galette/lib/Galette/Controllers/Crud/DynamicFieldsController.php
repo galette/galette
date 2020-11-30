@@ -212,7 +212,7 @@ class DynamicFieldsController extends CrudController
      */
     public function list(Request $request, Response $response, array $args = []): Response
     {
-        $form_name = $args['form'] ?? 'adh';
+        $form_name = $args['form_name'] ?? 'adh';
         if (isset($_POST['form_name']) && trim($_POST['form_name']) != '') {
             $form_name = $_POST['form_name'];
         }
