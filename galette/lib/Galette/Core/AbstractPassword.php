@@ -85,7 +85,7 @@ abstract class AbstractPassword
         $pass = '';
         $i = 0;
         while ($i <= $size - 1) {
-            $num = mt_rand(0, strlen($this->chars) - 1)  % strlen($this->chars);
+            $num = mt_rand(0, strlen($this->chars) - 1) % strlen($this->chars);
             $pass .= substr($this->chars, $num, 1);
             $i++;
         }
