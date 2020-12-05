@@ -109,7 +109,7 @@ class Mailing extends GaletteMail
         $i = 0;
         $size = 30;
         while ($i <= $size - 1) {
-            $num = mt_rand(0, strlen($chars) - 1)  % strlen($chars);
+            $num = mt_rand(0, strlen($chars) - 1) % strlen($chars);
             $id .= substr($chars, $num, 1);
             $i++;
         }
