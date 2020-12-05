@@ -41,6 +41,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Analog\Analog;
 use Galette\Core\Links;
+use Galette\Core\Login;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Entity\PdfModel;
@@ -109,7 +110,7 @@ class PdfController extends AbstractController
         ) {
             $id_adh = (int)$args[Adherent::PK];
             $deps = ['dynamics' => true];
-            if ($this->login->id == $id_adh) {
+            if ($this->login->id === $id_adh) {
                 $deps['dues'] = true;
             }
             $adh = new Adherent(
@@ -329,13 +330,13 @@ class PdfController extends AbstractController
         $ajax = false;
         if (
             $request->isXhr()
-            || isset($post['ajax'])
-            && $post['ajax'] == 'true'
+            || (isset($post['ajax'])
+            && $post['ajax'] == 'true')
         ) {
             $ajax = true;
 
             //retrieve selected members
-            $selection = (isset($post['selection'])) ? $post['selection'] : array();
+            $selection = $post['selection'] ?? array();
 
             $filters->selected = $selection;
             $this->session->filter_members = $filters;
@@ -460,10 +461,10 @@ class PdfController extends AbstractController
                     'contributions',
                     ['type' => 'contributions']
                 ));
-        } else {
-            $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
-            return $this->sendResponse($response, $pdf);
         }
+
+        $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
+        return $this->sendResponse($response, $pdf);
     }
 
     /**
@@ -545,8 +546,8 @@ class PdfController extends AbstractController
         //render in a full page otherwise
         if (
             $request->isXhr()
-            || isset($request->getQueryParams()['ajax'])
-            && $request->getQueryParams()['ajax'] == 'true'
+            || (isset($request->getQueryParams()['ajax'])
+            && $request->getQueryParams()['ajax'] == 'true')
         ) {
             $tpl = 'gestion_pdf_content.tpl';
         } else {
@@ -578,15 +579,12 @@ class PdfController extends AbstractController
     public function storeModels(Request $request, Response $response, array $args = []): Response
     {
         $post = $request->getParsedBody();
-        $type = null;
-        if (isset($post['model_type'])) {
-            $type = (int)$post['model_type'];
-        }
-
         $error_detected = [];
-        if ($type === null) {
+
+        if (!isset($post['model_type'])) {
             $error_detected[] = _T("Missing PDF model type!");
         } else {
+            $type = (int)$post['model_type'];
             $class = PdfModel::getTypeClass($type);
             if (isset($post[PdfModel::PK])) {
                 $model = new $class($this->zdb, $this->preferences, (int)$_POST[PdfModel::PK]);
@@ -595,21 +593,22 @@ class PdfController extends AbstractController
             }
 
             try {
-                $model->header = $post['model_header'];
-                $model->footer = $post['model_footer'];
+                $fields = [
+                    'model_header'      => 'header',
+                    'model_footer'      => 'footer',
+                    'model_body'        => 'body',
+                    'model_title'       => 'title',
+                    'model_subtitle'    => 'subtitle',
+                    'model_styles'      => 'styles'
+                ];
+
                 $model->type = $type;
-                if (isset($post['model_body'])) {
-                    $model->body = $post['model_body'];
+                foreach ($fields as $pvar => $prop) {
+                    if (isset($post[$pvar])) {
+                        $model->$prop = $pvar;
+                    }
                 }
-                if (isset($post['model_title'])) {
-                    $model->title = $post['model_title'];
-                }
-                if (isset($post['model_body'])) {
-                    $model->subtitle = $post['model_subtitle'];
-                }
-                if (isset($post['model_styles'])) {
-                    $model->styles = $post['model_styles'];
-                }
+
                 $res = $model->store();
                 if ($res === true) {
                     $this->flash->addMessage(
@@ -678,7 +677,7 @@ class PdfController extends AbstractController
 
         //create a new login instance, to not break current session if any
         //this will be passed directly to Contribution constructor
-        $login = new \Galette\Core\Login(
+        $login = new Login(
             $this->zdb,
             $this->i18n,
             $this->session
@@ -729,9 +728,8 @@ class PdfController extends AbstractController
                         'directlink',
                         ['hash' => $hash]
                     ));
-            } else {
-                $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
             }
+            $pdf = new PdfContribution($contribution, $this->zdb, $this->preferences);
         }
 
         return $this->sendResponse($response, $pdf);

@@ -42,10 +42,12 @@ use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\Driver\DriverInterface;
 use Laminas\Db\Adapter\Driver\ConnectionInterface;
 use Laminas\Db\Adapter\Platform\PlatformInterface;
+use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\Sql\Insert;
 use Laminas\Db\Sql\Update;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Delete;
+use Laminas\Db\ResultSet;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\SqlInterface;
 
@@ -773,7 +775,7 @@ class Db
      *
      * @param SqlInterface $sql SQL object
      *
-     * @return Stmt
+     * @return StatementInterface|ResultSet\ResultSet
      */
     public function execute($sql)
     {

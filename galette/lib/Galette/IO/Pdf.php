@@ -512,7 +512,7 @@ class Pdf extends \TCPDF
     /**
      * Download PDF from browser
      *
-     * @return void
+     * @return string
      */
     public function download()
     {
