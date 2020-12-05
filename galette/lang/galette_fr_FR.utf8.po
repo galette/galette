@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-05 19:43+0100\n"
-"PO-Revision-Date: 2020-12-05 18:54+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2020-12-05 19:56+0100\n"
+"Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.4-dev\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2285,16 +2285,14 @@ msgid "%field should not be empty!"
 msgstr "Le champ %field ne doit pas être vide !"
 
 #: ../lib/Galette/Entity/PdfModel.php:363
-#, fuzzy, php-format
-#| msgid "Remove dynamic field %1$s"
+#, php-format
 msgid "Label for dynamic field \"%s\""
-msgstr "Suppression du champ dynamique %1$s"
+msgstr "Étiquette du champ dynamique « %s »"
 
 #: ../lib/Galette/Entity/PdfModel.php:364
-#, fuzzy, php-format
-#| msgid "Remove dynamic field %1$s"
+#, php-format
 msgid "Input for dynamic field \"%s\""
-msgstr "Suppression du champ dynamique %1$s"
+msgstr "Valeur du champ dynamique « %s »"
 
 #: ../lib/Galette/Entity/PdfModel.php:545
 msgid "Unknown type %type!"
@@ -2332,7 +2330,7 @@ msgstr "Adresse de votre association"
 
 #: ../lib/Galette/Entity/PdfModel.php:622
 msgid "with break lines"
-msgstr ""
+msgstr "avec retours à la ligne"
 
 #: ../lib/Galette/Entity/PdfModel.php:626
 msgid "Your organisation website"
@@ -2351,8 +2349,6 @@ msgid "Member's ID"
 msgstr "ID de l'adhérent"
 
 #: ../lib/Galette/Entity/PdfModel.php:662
-#, fuzzy
-#| msgid "First name"
 msgid "Last name"
 msgstr "Prénom"
 
@@ -2392,11 +2388,11 @@ msgstr "Adresse"
 
 #: ../lib/Galette/Entity/PdfModel.php:698
 msgid "Zipcode"
-msgstr ""
+msgstr "Code postal"
 
 #: ../lib/Galette/Entity/PdfModel.php:702
 msgid "Town"
-msgstr ""
+msgstr "Ville"
 
 #: ../lib/Galette/Entity/PdfModel.php:706 ../includes/i18n.inc.php:322
 msgid "Country"
@@ -2416,16 +2412,12 @@ msgid "None"
 msgstr "Aucun"
 
 #: ../lib/Galette/Entity/PdfModel.php:912
-#, fuzzy
-#| msgid "Mailing information"
 msgid "Main information"
-msgstr "Informations sur l'envoi"
+msgstr "Informations globales"
 
 #: ../lib/Galette/Entity/PdfModel.php:917
-#, fuzzy
-#| msgid "My information"
 msgid "Member information"
-msgstr "Mes informations"
+msgstr "Informations adhérent"
 
 #: ../lib/Galette/Entity/PaymentType.php:191
 msgid "You cannot delete system payment types!"
@@ -2510,26 +2502,20 @@ msgid "Amount"
 msgstr "Montant"
 
 #: ../lib/Galette/Entity/PdfContribution.php:98
-#, fuzzy
-#| msgid "Does not contains letters"
 msgid "Amount (in letters)"
-msgstr "Ne contient pas de lettres"
+msgstr "Montant (en lettres)"
 
 #: ../lib/Galette/Entity/PdfContribution.php:102
-#, fuzzy
-#| msgid "Due date"
 msgid "Full date"
-msgstr "Date d’échéance"
+msgstr "Date complète"
 
 #: ../lib/Galette/Entity/PdfContribution.php:106
 msgid "Contribution year"
 msgstr "Année de la contribution"
 
 #: ../lib/Galette/Entity/PdfContribution.php:110
-#, fuzzy
-#| msgid "Comments:"
 msgid "Comment"
-msgstr "Commentaires :"
+msgstr "Commentaire"
 
 #: ../lib/Galette/Entity/PdfContribution.php:114
 msgid "Begin date"
