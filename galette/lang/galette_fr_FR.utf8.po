@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-11 10:00+0100\n"
+"POT-Creation-Date: 2020-12-05 19:43+0100\n"
 "PO-Revision-Date: 2020-11-11 09:21+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
@@ -191,40 +191,40 @@ msgid "An error occurred adding dynamic field :("
 msgstr "Une erreur est survenue lors de l'ajout du champ dynamique :("
 
 #: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:147
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:367
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:365
 msgid "Dynamic field has been successfully stored!"
 msgstr "Le champ dynamique a été enregistré avec succès !"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:228
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:226
 msgid "Dynamic fields configuration"
 msgstr "Configuration des champs dynamiques"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:293
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:291
 msgid "Unable to retrieve field information."
 msgstr "Impossible de récupérer les informations du champ."
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:302
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:300
 msgid "Edit field"
 msgstr "Édition de champ"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:353
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:351
 msgid "An error occurred editing dynamic field :("
 msgstr "Une erreur est survenue lors de la modification du champ dynamique :("
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:449
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:447
 msgid "Requested field does not exists!"
 msgstr "Le champ demandé n’existe pas !"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:457
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:455
 #, php-format
 msgid "Remove dynamic field %1$s"
 msgstr "Suppression du champ dynamique %1$s"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:498
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:496
 msgid "Field has been successfully moved"
 msgstr "Le champ a été déplacé avec succès"
 
-#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:503
+#: ../lib/Galette/Controllers/Crud/DynamicFieldsController.php:501
 msgid "An error occurred moving field :("
 msgstr "Une erreur est survenue lors du déplacement du champ :("
 
@@ -235,8 +235,8 @@ msgstr "Inscription"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:239
 #: ../lib/Galette/Controllers/Crud/MembersController.php:444
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1095
-#: ../lib/Galette/Controllers/PdfController.php:123
-#: ../lib/Galette/Controllers/PdfController.php:292
+#: ../lib/Galette/Controllers/PdfController.php:124
+#: ../lib/Galette/Controllers/PdfController.php:293
 #: ../lib/Galette/Middleware/Authenticate.php:165
 msgid "You do not have permission for requested URL."
 msgstr "Vous n’avez pas la permission d’accéder à l’URL demandée."
@@ -275,8 +275,8 @@ msgid "Advanced search"
 msgstr "Recherche avancée"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1045
-#: ../lib/Galette/Controllers/PdfController.php:157
-#: ../lib/Galette/Controllers/PdfController.php:238
+#: ../lib/Galette/Controllers/PdfController.php:158
+#: ../lib/Galette/Controllers/PdfController.php:239
 msgid "No member was selected, please check at least one name."
 msgstr "Veuillez sélectionner au moins un adhérent."
 
@@ -449,8 +449,8 @@ msgid "- Unknown payment type!"
 msgstr "- Type de paiement inconnu !"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:476
-#: ../lib/Galette/Controllers/PdfController.php:454
-#: ../lib/Galette/Controllers/PdfController.php:725
+#: ../lib/Galette/Controllers/PdfController.php:455
+#: ../lib/Galette/Controllers/PdfController.php:722
 msgid "Unable to load contribution #%id!"
 msgstr "Impossible de charger la contribution #%id !"
 
@@ -481,7 +481,7 @@ msgid "Remove %1$s #%2$s"
 msgstr "Supprimer %1$s #%2$s"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsController.php:692
-#: ../lib/Galette/IO/PdfContribution.php:142
+#: ../lib/Galette/IO/PdfContribution.php:84
 msgid "contribution"
 msgstr "contribution"
 
@@ -666,27 +666,27 @@ msgstr "Supprimé avec succès !"
 msgid "An error occurred trying to delete :("
 msgstr "Une erreur est survenue lors de la suppression :("
 
-#: ../lib/Galette/Controllers/PdfController.php:189
-#: ../lib/Galette/Controllers/PdfController.php:261
-#: ../lib/Galette/Controllers/PdfController.php:706
+#: ../lib/Galette/Controllers/PdfController.php:190
+#: ../lib/Galette/Controllers/PdfController.php:262
+#: ../lib/Galette/Controllers/PdfController.php:703
 msgid "Unable to get members list."
 msgstr "Impossible d’obtenir la liste des membres."
 
-#: ../lib/Galette/Controllers/PdfController.php:351
+#: ../lib/Galette/Controllers/PdfController.php:352
 msgid "Attendance sheet configuration"
 msgstr "Configuration de la liste d’émargement"
 
-#: ../lib/Galette/Controllers/PdfController.php:387
-#: ../lib/Galette/Controllers/PdfController.php:406
+#: ../lib/Galette/Controllers/PdfController.php:388
+#: ../lib/Galette/Controllers/PdfController.php:407
 msgid "No member selected to generate attendance sheet"
 msgstr "Aucun adhérent sélectionné pour générer la liste d’émargement"
 
-#: ../lib/Galette/Controllers/PdfController.php:414
+#: ../lib/Galette/Controllers/PdfController.php:415
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:141
 msgid "Attendance sheet"
 msgstr "Liste d’émargement"
 
-#: ../lib/Galette/Controllers/PdfController.php:497
+#: ../lib/Galette/Controllers/PdfController.php:498
 msgid "Unable to get groups list."
 msgstr "Impossible d’obtenir la liste des groupes."
 
@@ -694,24 +694,25 @@ msgstr "Impossible d’obtenir la liste des groupes."
 msgid "PDF models"
 msgstr "Modèles PDF"
 
-#: ../lib/Galette/Controllers/PdfController.php:590
+#: ../lib/Galette/Controllers/PdfController.php:585
 msgid "Missing PDF model type!"
 msgstr "Type de modèle PDF manquant !"
 
-#: ../lib/Galette/Controllers/PdfController.php:619
+#: ../lib/Galette/Controllers/PdfController.php:616
 msgid "Model has been successfully stored!"
 msgstr "Le modèle a été enregistré avec succès !"
 
-#: ../lib/Galette/Controllers/PdfController.php:622
+#: ../lib/Galette/Controllers/PdfController.php:619
 msgid "Model has not been stored :("
 msgstr "Le modèle n’a pas été enregistré :("
 
-#: ../lib/Galette/Controllers/PdfController.php:665
+#: ../lib/Galette/Controllers/PdfController.php:662
 msgid "Invalid link!"
 msgstr "Lien invalide !"
 
 #: ../lib/Galette/Controllers/AuthController.php:90
 #: ../lib/Galette/Controllers/AuthController.php:150
+#: ../lib/Galette/Entity/PdfModel.php:722
 msgid "Login"
 msgstr "Identification"
 
@@ -827,7 +828,7 @@ msgid "No password"
 msgstr "Mot de passe vide"
 
 #: ../lib/Galette/Controllers/AuthController.php:497
-#: ../lib/Galette/Entity/Adherent.php:1284
+#: ../lib/Galette/Entity/Adherent.php:1342
 msgid "- The passwords don't match!"
 msgstr "- Les mots de passe ne correspondent pas !"
 
@@ -1296,7 +1297,7 @@ msgstr ""
 "d'exercice."
 
 #: ../lib/Galette/Core/Preferences.php:560
-#: ../lib/Galette/Entity/Adherent.php:1077
+#: ../lib/Galette/Entity/Adherent.php:1135
 #: ../lib/Galette/Entity/Transaction.php:339
 #: ../lib/Galette/Entity/Contribution.php:463
 #, php-format
@@ -1378,21 +1379,21 @@ msgstr "l’un des pilotes PDO « mysql » ou « pgsql »"
 
 # http://fr2.php.net/manual/fr/function.date.php
 #: ../lib/Galette/Core/Plugins.php:241
-#: ../lib/Galette/Repository/Members.php:1462
-#: ../lib/Galette/Repository/Members.php:1466
+#: ../lib/Galette/Repository/Members.php:1461
+#: ../lib/Galette/Repository/Members.php:1465
 #: ../lib/Galette/Util/Password.php:267 ../lib/Galette/IO/MembersCsv.php:182
 #: ../lib/Galette/IO/MembersCsv.php:194 ../lib/Galette/IO/MembersCsv.php:206
 #: ../lib/Galette/IO/MembersCsv.php:218
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:89
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:121
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:176
-#: ../lib/Galette/Entity/Adherent.php:717
-#: ../lib/Galette/Entity/Adherent.php:735
-#: ../lib/Galette/Entity/Adherent.php:751
-#: ../lib/Galette/Entity/Adherent.php:1137
-#: ../lib/Galette/Entity/Adherent.php:1171
-#: ../lib/Galette/Entity/Adherent.php:1180
-#: ../lib/Galette/Entity/Adherent.php:1675
+#: ../lib/Galette/Entity/Adherent.php:775
+#: ../lib/Galette/Entity/Adherent.php:793
+#: ../lib/Galette/Entity/Adherent.php:809
+#: ../lib/Galette/Entity/Adherent.php:1195
+#: ../lib/Galette/Entity/Adherent.php:1229
+#: ../lib/Galette/Entity/Adherent.php:1238
+#: ../lib/Galette/Entity/Adherent.php:1733
 #: ../lib/Galette/Entity/Transaction.php:282
 #: ../lib/Galette/Entity/Transaction.php:291
 #: ../lib/Galette/Entity/Transaction.php:300
@@ -1409,7 +1410,7 @@ msgstr "l’un des pilotes PDO « mysql » ou « pgsql »"
 #: ../lib/Galette/Entity/Contribution.php:1270
 #: ../lib/Galette/Entity/Contribution.php:1279
 #: ../lib/Galette/Entity/ImportModel.php:213
-#: ../lib/Galette/Entity/PdfModel.php:146
+#: ../lib/Galette/Entity/PdfModel.php:136
 #: ../lib/Galette/Entity/SavedSearch.php:292
 #: ../lib/Galette/Entity/Group.php:622
 #: ../lib/Galette/Filters/TransactionsList.php:134
@@ -1455,7 +1456,7 @@ msgstr "Le module n’existe pas !"
 msgid "File not found!"
 msgstr "Fichier non trouvé !"
 
-#: ../lib/Galette/Core/Picture.php:858
+#: ../lib/Galette/Core/Picture.php:850
 msgid "An SQL error has occurred."
 msgstr "Une erreur SQL est survenue."
 
@@ -1582,43 +1583,43 @@ msgstr "- Un champ de ce nom existe déjà."
 msgid "An error occurred storing the field."
 msgstr "Une erreur est survenue lors de l'enregistrement du champ."
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:773
+#: ../lib/Galette/DynamicFields/DynamicField.php:767
 msgid "An error occurred creating field values table"
 msgstr ""
 "Une erreur est survenue lors du traitement de la table de stockage des "
 "valeurs des champs"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:807
+#: ../lib/Galette/DynamicFields/DynamicField.php:801
 msgid "An error occurred storing dynamic field values :("
 msgstr ""
 "Une erreur est survenue lors de l'enregistrement de valeurs du champ "
 "dynamique :("
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1012
+#: ../lib/Galette/DynamicFields/DynamicField.php:1006
 msgid "separator"
 msgstr "séparateur"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1013
+#: ../lib/Galette/DynamicFields/DynamicField.php:1007
 msgid "free text"
 msgstr "texte libre"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1014
+#: ../lib/Galette/DynamicFields/DynamicField.php:1008
 msgid "single line"
 msgstr "ligne simple"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1015
+#: ../lib/Galette/DynamicFields/DynamicField.php:1009
 msgid "choice"
 msgstr "choix"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1016
+#: ../lib/Galette/DynamicFields/DynamicField.php:1010
 msgid "date"
 msgstr "date"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1017
+#: ../lib/Galette/DynamicFields/DynamicField.php:1011
 msgid "boolean"
 msgstr "booléen"
 
-#: ../lib/Galette/DynamicFields/DynamicField.php:1018
+#: ../lib/Galette/DynamicFields/DynamicField.php:1012
 msgid "file"
 msgstr "fichier"
 
@@ -1643,22 +1644,24 @@ msgstr "Responsables :"
 
 #: ../lib/Galette/IO/PdfGroups.php:179
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:185
-#: ../lib/Galette/Entity/PdfModel.php:547
+#: ../lib/Galette/Entity/PdfModel.php:552
+#: ../lib/Galette/Entity/PdfModel.php:658
 #: ../lib/Galette/Filters/MembersList.php:272
 #: ../includes/fields_defs/members_fields.php:355
 msgid "Name"
 msgstr "Nom"
 
-#: ../lib/Galette/IO/PdfGroups.php:180
+#: ../lib/Galette/IO/PdfGroups.php:180 ../lib/Galette/Entity/PdfModel.php:718
 msgid "Email"
 msgstr "Courriel"
 
 #: ../lib/Galette/IO/PdfGroups.php:181
 #: ../lib/Galette/Entity/ListsConfig.php:225
+#: ../lib/Galette/Entity/PdfModel.php:710
 msgid "Phone"
 msgstr "Téléphone"
 
-#: ../lib/Galette/IO/PdfGroups.php:182
+#: ../lib/Galette/IO/PdfGroups.php:182 ../lib/Galette/Entity/PdfModel.php:714
 msgid "GSM"
 msgstr "GSM"
 
@@ -1666,33 +1669,30 @@ msgstr "GSM"
 msgid "filtered_memberslist"
 msgstr "liste_adherents_filtree"
 
-#: ../lib/Galette/IO/MembersCsv.php:228
-#: ../lib/Galette/IO/PdfAdhesionForm.php:150
-#: ../lib/Galette/Entity/Adherent.php:1641
+#: ../lib/Galette/IO/MembersCsv.php:228 ../lib/Galette/Entity/Adherent.php:1699
+#: ../lib/Galette/Entity/PdfModel.php:753
 msgid "Man"
 msgstr "Homme"
 
-#: ../lib/Galette/IO/MembersCsv.php:231
-#: ../lib/Galette/IO/PdfAdhesionForm.php:152
-#: ../lib/Galette/Entity/Adherent.php:1643
+#: ../lib/Galette/IO/MembersCsv.php:231 ../lib/Galette/Entity/Adherent.php:1701
+#: ../lib/Galette/Entity/PdfModel.php:755
 msgid "Woman"
 msgstr "Femme"
 
-#: ../lib/Galette/IO/MembersCsv.php:234
-#: ../lib/Galette/IO/PdfAdhesionForm.php:154
-#: ../lib/Galette/Entity/Adherent.php:1645
+#: ../lib/Galette/IO/MembersCsv.php:234 ../lib/Galette/Entity/Adherent.php:1703
+#: ../lib/Galette/Entity/PdfModel.php:757
 msgid "Unspecified"
 msgstr "Non spécifié"
 
 #: ../lib/Galette/IO/MembersCsv.php:242 ../lib/Galette/IO/MembersCsv.php:246
 #: ../lib/Galette/IO/MembersCsv.php:250 ../lib/Galette/IO/MembersCsv.php:254
-#: ../lib/Galette/Entity/Adherent.php:1602
+#: ../lib/Galette/Entity/Adherent.php:1660
 msgid "Yes"
 msgstr "Oui"
 
 #: ../lib/Galette/IO/MembersCsv.php:242 ../lib/Galette/IO/MembersCsv.php:246
 #: ../lib/Galette/IO/MembersCsv.php:250 ../lib/Galette/IO/MembersCsv.php:254
-#: ../lib/Galette/Entity/Adherent.php:1602
+#: ../lib/Galette/Entity/Adherent.php:1660
 msgid "No"
 msgstr "Non"
 
@@ -1920,22 +1920,15 @@ msgstr "L’envoi du fichier a été stoppé"
 msgid "Unknown upload error"
 msgstr "Erreur d’envoi inconnue"
 
-#: ../lib/Galette/IO/PdfAdhesionForm.php:88
+#: ../lib/Galette/IO/PdfAdhesionForm.php:86
 msgid "adherent_form"
 msgstr "formulaire_adhesion"
 
-#: ../lib/Galette/IO/PdfAdhesionForm.php:158
-#: ../lib/Galette/IO/PdfAdhesionForm.php:159
-#: ../lib/Galette/IO/PdfContribution.php:109
-#: ../lib/Galette/IO/PdfContribution.php:110
-msgid "None"
-msgstr "Aucun"
-
-#: ../lib/Galette/IO/PdfContribution.php:146
+#: ../lib/Galette/IO/PdfContribution.php:88
 msgid "receipt"
 msgstr "reçu"
 
-#: ../lib/Galette/IO/PdfContribution.php:148
+#: ../lib/Galette/IO/PdfContribution.php:90
 msgid "invoice"
 msgstr "facture"
 
@@ -2002,48 +1995,48 @@ msgstr "Impossible de mettre à jour la traduction dynamique pour %field :("
 msgid "Unable to remove old dynamic translation for %field :("
 msgstr "Impossible de supprimer l’ancienne traduction dynamique pour %field :("
 
-#: ../lib/Galette/Entity/Adherent.php:711
+#: ../lib/Galette/Entity/Adherent.php:769
 msgid "Freed of dues"
 msgstr "Exempt de cotisation"
 
-#: ../lib/Galette/Entity/Adherent.php:723
+#: ../lib/Galette/Entity/Adherent.php:781
 #, php-format
 msgid "Never contributed: Registered %days days ago (since %date)"
 msgstr "N’a jamais cotisé : Inscrit depuis %days jours (depuis le %date)"
 
-#: ../lib/Galette/Entity/Adherent.php:726
+#: ../lib/Galette/Entity/Adherent.php:784
 #: ../lib/Galette/Filters/MembersList.php:296
 msgid "Never contributed"
 msgstr "N’a jamais cotisé"
 
-#: ../lib/Galette/Entity/Adherent.php:729
+#: ../lib/Galette/Entity/Adherent.php:787
 msgid "Last day!"
 msgstr "Dernier jour !"
 
-#: ../lib/Galette/Entity/Adherent.php:741
+#: ../lib/Galette/Entity/Adherent.php:799
 #, php-format
 msgid "Late of %days days (since %date)"
 msgstr "En retard de %days jours (depuis le %date)"
 
-#: ../lib/Galette/Entity/Adherent.php:744
+#: ../lib/Galette/Entity/Adherent.php:802
 msgid "No longer member"
 msgstr "N'est plus adéhrent"
 
-#: ../lib/Galette/Entity/Adherent.php:756
+#: ../lib/Galette/Entity/Adherent.php:814
 #, php-format
 msgid "%days days remaining (ending on %date)"
 msgstr "%days jours restants (fin le %date)"
 
-#: ../lib/Galette/Entity/Adherent.php:1154
+#: ../lib/Galette/Entity/Adherent.php:1212
 msgid "- Birthdate must be set in the past!"
 msgstr "- La date de naissance doit être définie dans le passé !"
 
-#: ../lib/Galette/Entity/Adherent.php:1162
+#: ../lib/Galette/Entity/Adherent.php:1220
 msgid "- Members must be less than 200 years old (currently %years)!"
 msgstr ""
 "- Les adhérents doivent être âgés de 200 ans au plus (actuellement %years) !"
 
-#: ../lib/Galette/Entity/Adherent.php:1183
+#: ../lib/Galette/Entity/Adherent.php:1241
 #: ../lib/Galette/Entity/Transaction.php:303
 #: ../lib/Galette/Entity/DynamicsTrait.php:197
 #: ../lib/Galette/Entity/Contribution.php:394
@@ -2052,82 +2045,82 @@ msgstr ""
 msgid "- Wrong date format (%date_format) for %field!"
 msgstr "- Format de date incorrect (%date_format) pour %field !"
 
-#: ../lib/Galette/Entity/Adherent.php:1201
+#: ../lib/Galette/Entity/Adherent.php:1259
 msgid "- Non-valid E-Mail address!"
 msgstr "- Adresse courriel non valide !"
 
-#: ../lib/Galette/Entity/Adherent.php:1218
+#: ../lib/Galette/Entity/Adherent.php:1276
 msgid "- This E-Mail address is already used by another member!"
 msgstr "- Cette adresse de courriel est déjà utilisée par un autre adhérent !"
 
-#: ../lib/Galette/Entity/Adherent.php:1225
-#: ../lib/Galette/Entity/Adherent.php:1273
+#: ../lib/Galette/Entity/Adherent.php:1283
+#: ../lib/Galette/Entity/Adherent.php:1331
 msgid "An error has occurred while looking if login already exists."
 msgstr ""
 "Une erreur est survenue lors de la vérification d'unicité de l'identifiant."
 
-#: ../lib/Galette/Entity/Adherent.php:1233
+#: ../lib/Galette/Entity/Adherent.php:1291
 msgid "- Non-valid Website address! Maybe you've skipped the http://?"
 msgstr "- Adresse web non valide ! Peut-être avez vous oublié le http:// ?"
 
-#: ../lib/Galette/Entity/Adherent.php:1242
+#: ../lib/Galette/Entity/Adherent.php:1300
 msgid "- The username must be composed of at least %i characters!"
 msgstr "- L’identifiant doit être composé d’au moins %i caractères !"
 
-#: ../lib/Galette/Entity/Adherent.php:1247
+#: ../lib/Galette/Entity/Adherent.php:1305
 msgid "- The username cannot contain the @ character"
 msgstr "- L’identifiant ne peut pas contenir le caractère @"
 
-#: ../lib/Galette/Entity/Adherent.php:1266
+#: ../lib/Galette/Entity/Adherent.php:1324
 msgid "- This username is already in use, please choose another one!"
 msgstr "- Cet identifiant est déjà utilisé, veuillez en choisir un autre !"
 
-#: ../lib/Galette/Entity/Adherent.php:1289
+#: ../lib/Galette/Entity/Adherent.php:1347
 msgid "Password misrepeated: "
 msgstr "Erreur en recopiant le mot de passe : "
 
-#: ../lib/Galette/Entity/Adherent.php:1323
+#: ../lib/Galette/Entity/Adherent.php:1381
 msgid "Status #%id does not exists in database."
 msgstr "Le statut #%id n’existe pas dans la base de données."
 
-#: ../lib/Galette/Entity/Adherent.php:1332
+#: ../lib/Galette/Entity/Adherent.php:1390
 msgid "An error has occurred while looking if status does exists."
 msgstr ""
 "Une erreur est survenue lors de la vérification de l'existance du statut."
 
-#: ../lib/Galette/Entity/Adherent.php:1339
+#: ../lib/Galette/Entity/Adherent.php:1397
 msgid "Gender %gender does not exists!"
 msgstr "Le genre %gender n'existe pas !"
 
-#: ../lib/Galette/Entity/Adherent.php:1450
+#: ../lib/Galette/Entity/Adherent.php:1508
 msgid "Self_subscription as a member: "
 msgstr "Enregistrement en ligne :"
 
-#: ../lib/Galette/Entity/Adherent.php:1456
+#: ../lib/Galette/Entity/Adherent.php:1514
 msgid "Member card added"
 msgstr "Fiche adhérent ajoutée"
 
-#: ../lib/Galette/Entity/Adherent.php:1464
+#: ../lib/Galette/Entity/Adherent.php:1522
 msgid "Fail to add new member."
 msgstr "Échec de l’ajout d’un nouvel adhérent."
 
-#: ../lib/Galette/Entity/Adherent.php:1496
+#: ../lib/Galette/Entity/Adherent.php:1554
 msgid "Member card updated"
 msgstr "Fiche adhérent mise à jour"
 
-#: ../lib/Galette/Entity/Adherent.php:1605
+#: ../lib/Galette/Entity/Adherent.php:1663
 msgid "Active"
 msgstr "Actif"
 
-#: ../lib/Galette/Entity/Adherent.php:1605
+#: ../lib/Galette/Entity/Adherent.php:1663
 msgid "Inactive"
 msgstr "Inactif"
 
-#: ../lib/Galette/Entity/Adherent.php:1833
+#: ../lib/Galette/Entity/Adherent.php:1891
 msgid " (%age years old)"
 msgstr " (%age ans)"
 
-#: ../lib/Galette/Entity/Adherent.php:1906
+#: ../lib/Galette/Entity/Adherent.php:1964
 msgid "Duplicated from %name (%id)"
 msgstr "Dupliqué depuis %name (%id)"
 
@@ -2253,6 +2246,7 @@ msgid "Contribution updated"
 msgstr "Contribution mise à jour"
 
 #: ../lib/Galette/Entity/Contribution.php:1053
+#: ../lib/Galette/Entity/PdfContribution.php:198
 msgid "Contribution information"
 msgstr "Informations sur la contribution"
 
@@ -2280,35 +2274,162 @@ msgstr "Impossible de supprimer cet intitulé : il est toujours utilisé"
 msgid "You cannot delete Mr. or Mrs. titles!"
 msgstr "Vous ne pouvez pas supprimer les titres M. ou Mme. !"
 
-#: ../lib/Galette/Entity/PdfModel.php:344
+#: ../lib/Galette/Entity/PdfModel.php:322
 #, php-format
 msgid "%field should be less than %chars characters long."
 msgstr "Le champ %field doit compter moins de %chars caractères."
 
-#: ../lib/Galette/Entity/PdfModel.php:354
+#: ../lib/Galette/Entity/PdfModel.php:332
 #, php-format
 msgid "%field should not be empty!"
 msgstr "Le champ %field ne doit pas être vide !"
 
-#: ../lib/Galette/Entity/PdfModel.php:540
+#: ../lib/Galette/Entity/PdfModel.php:363
+#, fuzzy, php-format
+#| msgid "Remove dynamic field %1$s"
+msgid "Label for dynamic field \"%s\""
+msgstr "Suppression du champ dynamique %1$s"
+
+#: ../lib/Galette/Entity/PdfModel.php:364
+#, fuzzy, php-format
+#| msgid "Remove dynamic field %1$s"
+msgid "Input for dynamic field \"%s\""
+msgstr "Suppression du champ dynamique %1$s"
+
+#: ../lib/Galette/Entity/PdfModel.php:545
 msgid "Unknown type %type!"
 msgstr "Type %type inconnu !"
 
-#: ../lib/Galette/Entity/PdfModel.php:556
+#: ../lib/Galette/Entity/PdfModel.php:561
+#: ../lib/Galette/Entity/PdfModel.php:650
 msgid "Title"
 msgstr "Titre"
 
-#: ../lib/Galette/Entity/PdfModel.php:558
+#: ../lib/Galette/Entity/PdfModel.php:563
 msgid "Subtitle"
 msgstr "Sous-titre"
 
-#: ../lib/Galette/Entity/PdfModel.php:573
+#: ../lib/Galette/Entity/PdfModel.php:578
 msgid "header and footer should not be empty!"
 msgstr "l’en-tête et le pied de page ne peuvent être vides !"
 
-#: ../lib/Galette/Entity/PdfModel.php:577
+#: ../lib/Galette/Entity/PdfModel.php:582
 msgid "body should not be empty!"
 msgstr "le corps ne peut être vide !"
+
+#: ../lib/Galette/Entity/PdfModel.php:610
+msgid "Your organisation name"
+msgstr "Nom de votre association"
+
+#: ../lib/Galette/Entity/PdfModel.php:614
+msgid "Your organisation slogan"
+msgstr "Le slogan de votre association"
+
+#: ../lib/Galette/Entity/PdfModel.php:618
+#: ../lib/Galette/Entity/PdfModel.php:622
+msgid "Your organisation address"
+msgstr "Adresse de votre association"
+
+#: ../lib/Galette/Entity/PdfModel.php:622
+msgid "with break lines"
+msgstr ""
+
+#: ../lib/Galette/Entity/PdfModel.php:626
+msgid "Your organisation website"
+msgstr "Site web de votre association"
+
+#: ../lib/Galette/Entity/PdfModel.php:630
+msgid "Your organisation logo"
+msgstr "Le logo de votre association"
+
+#: ../lib/Galette/Entity/PdfModel.php:634
+msgid "Current date (Y-m-d)"
+msgstr "Date courante (d/m/Y)"
+
+#: ../lib/Galette/Entity/PdfModel.php:654
+msgid "Member's ID"
+msgstr "ID de l'adhérent"
+
+#: ../lib/Galette/Entity/PdfModel.php:662
+#, fuzzy
+#| msgid "First name"
+msgid "Last name"
+msgstr "Prénom"
+
+#: ../lib/Galette/Entity/PdfModel.php:666 ../includes/i18n.inc.php:325
+msgid "First name"
+msgstr "Prénom"
+
+#: ../lib/Galette/Entity/PdfModel.php:670
+msgid "Nickname"
+msgstr "Pseudo"
+
+#: ../lib/Galette/Entity/PdfModel.php:674
+#, fuzzy
+#| msgid "Gender:"
+msgid "Gender"
+msgstr "Genre :"
+
+#: ../lib/Galette/Entity/PdfModel.php:678
+msgid "Birth date"
+msgstr "Date de naissance"
+
+#: ../lib/Galette/Entity/PdfModel.php:682
+#, fuzzy
+#| msgid "Birthplace:"
+msgid "Birth place"
+msgstr "Lieu de naissance :"
+
+#: ../lib/Galette/Entity/PdfModel.php:686
+msgid "Profession"
+msgstr "Profession"
+
+#: ../lib/Galette/Entity/PdfModel.php:690
+#: ../lib/Galette/Filters/MembersList.php:273
+msgid "Company name"
+msgstr "Raison sociale"
+
+#: ../lib/Galette/Entity/PdfModel.php:694
+#: ../lib/Galette/Filters/MembersList.php:274
+msgid "Address"
+msgstr "Adresse"
+
+#: ../lib/Galette/Entity/PdfModel.php:698
+msgid "Zipcode"
+msgstr ""
+
+#: ../lib/Galette/Entity/PdfModel.php:702
+msgid "Town"
+msgstr ""
+
+#: ../lib/Galette/Entity/PdfModel.php:706 ../includes/i18n.inc.php:322
+msgid "Country"
+msgstr "Pays"
+
+#: ../lib/Galette/Entity/PdfModel.php:726
+msgid "Member's main group"
+msgstr "Groupe principal de l’adhérent"
+
+#: ../lib/Galette/Entity/PdfModel.php:730
+msgid "Member's groups (as list)"
+msgstr "Groupes de l’adhérent (liste)"
+
+#: ../lib/Galette/Entity/PdfModel.php:761
+#: ../lib/Galette/Entity/PdfModel.php:762
+msgid "None"
+msgstr "Aucun"
+
+#: ../lib/Galette/Entity/PdfModel.php:912
+#, fuzzy
+#| msgid "Mailing information"
+msgid "Main information"
+msgstr "Informations sur l'envoi"
+
+#: ../lib/Galette/Entity/PdfModel.php:917
+#, fuzzy
+#| msgid "My information"
+msgid "Member information"
+msgstr "Mes informations"
 
 #: ../lib/Galette/Entity/PaymentType.php:191
 msgid "You cannot delete system payment types!"
@@ -2383,6 +2504,52 @@ msgstr "Groupe mis à jour"
 #, php-format
 msgid "Group `%1$s` cannot be set as parent!"
 msgstr "Le groupe `%1$s` ne peut être défini comme parent !"
+
+#: ../lib/Galette/Entity/PdfContribution.php:90
+msgid "Contribution label"
+msgstr "Libellé de la contribution"
+
+#: ../lib/Galette/Entity/PdfContribution.php:94
+msgid "Amount"
+msgstr "Montant"
+
+#: ../lib/Galette/Entity/PdfContribution.php:98
+#, fuzzy
+#| msgid "Does not contains letters"
+msgid "Amount (in letters)"
+msgstr "Ne contient pas de lettres"
+
+#: ../lib/Galette/Entity/PdfContribution.php:102
+#, fuzzy
+#| msgid "Due date"
+msgid "Full date"
+msgstr "Date d’échéance"
+
+#: ../lib/Galette/Entity/PdfContribution.php:106
+msgid "Contribution year"
+msgstr "Année de la contribution"
+
+#: ../lib/Galette/Entity/PdfContribution.php:110
+#, fuzzy
+#| msgid "Comments:"
+msgid "Comment"
+msgstr "Commentaires :"
+
+#: ../lib/Galette/Entity/PdfContribution.php:114
+msgid "Begin date"
+msgstr "Date de début"
+
+#: ../lib/Galette/Entity/PdfContribution.php:118
+msgid "End date"
+msgstr "Date de fin"
+
+#: ../lib/Galette/Entity/PdfContribution.php:122
+msgid "Contribution id"
+msgstr "Contribution id"
+
+#: ../lib/Galette/Entity/PdfContribution.php:126
+msgid "Payment type"
+msgstr "Type de paiement"
 
 #: ../lib/Galette/Middleware/CheckAcls.php:129
 #: ../lib/Galette/Middleware/CheckAcls.php:176
@@ -2523,14 +2690,6 @@ msgid "A problem happened while sending account email to admin"
 msgstr ""
 "Un problème est survenu lors de l’envoi du courriel pour le compte à "
 "l'administrateur"
-
-#: ../lib/Galette/Filters/MembersList.php:273
-msgid "Company name"
-msgstr "Raison sociale"
-
-#: ../lib/Galette/Filters/MembersList.php:274
-msgid "Address"
-msgstr "Adresse"
 
 #: ../lib/Galette/Filters/MembersList.php:275
 msgid "Email,URL,IM"
@@ -2887,10 +3046,6 @@ msgstr "Identifiant"
 msgid "Email address"
 msgstr "Adresse courriel"
 
-#: ../includes/i18n.inc.php:322
-msgid "Country"
-msgstr "Pays"
-
 #: ../includes/i18n.inc.php:323
 msgid "City"
 msgstr "Ville"
@@ -2898,10 +3053,6 @@ msgstr "Ville"
 #: ../includes/i18n.inc.php:324
 msgid "Zip Code"
 msgstr "Code Postal"
-
-#: ../includes/i18n.inc.php:325
-msgid "First name"
-msgstr "Prénom"
 
 #: ../includes/i18n.inc.php:326
 msgid ""
@@ -3850,126 +4001,18 @@ msgstr "Générer les login et mots de passe vides"
 msgid "Go"
 msgstr "Aller"
 
-#: ../templates/default/gestion_pdf.tpl:19
-#: ../templates/default/gestion_pdf.tpl:20
-#: ../templates/default/gestion_textes.tpl:49
-#: ../templates/default/gestion_textes.tpl:50
-msgid "Existing variables"
-msgstr "Variables existantes"
-
-#: ../templates/default/gestion_pdf.tpl:24
-#: ../templates/default/gestion_textes.tpl:54
-msgid "Globally available"
-msgstr "Disponible globalement"
-
-#: ../templates/default/gestion_pdf.tpl:29
-#: ../templates/default/gestion_textes.tpl:59
-msgid "Your organisation name"
-msgstr "Nom de votre association"
-
-#: ../templates/default/gestion_pdf.tpl:31
-#: ../templates/default/gestion_textes.tpl:61
-msgid "Your organisation slogan"
-msgstr "Le slogan de votre association"
-
-#: ../templates/default/gestion_pdf.tpl:35
-msgid "Your organisation address"
-msgstr "Adresse de votre association"
-
-#: ../templates/default/gestion_pdf.tpl:37
-msgid "Your organisation website"
-msgstr "Site web de votre association"
-
-#: ../templates/default/gestion_pdf.tpl:41
-msgid "Your organisation logo"
-msgstr "Le logo de votre association"
-
-#: ../templates/default/gestion_pdf.tpl:43
-msgid "Current date (Y-m-d)"
-msgstr "Date courante (d/m/Y)"
-
-#: ../templates/default/gestion_pdf.tpl:47
-msgid "Member's name"
-msgstr "Nom de l’adhérent"
-
-#: ../templates/default/gestion_pdf.tpl:49
-msgid "Member's address"
-msgstr "Adresse de l’adhérent"
-
-#: ../templates/default/gestion_pdf.tpl:53
-msgid "Member's zipcode"
-msgstr "Code postal de l’adhérent"
-
-#: ../templates/default/gestion_pdf.tpl:55
-msgid "Member's town"
-msgstr "Ville de l’adhérent"
-
-#: ../templates/default/gestion_pdf.tpl:59
-msgid "Member's main group"
-msgstr "Groupe principal de l’adhérent"
-
-#: ../templates/default/gestion_pdf.tpl:61
-msgid "Member's groups (as list)"
-msgstr "Groupes de l’adhérent (liste)"
-
-#: ../templates/default/gestion_pdf.tpl:67
-#: ../templates/default/gestion_textes.tpl:94
-msgid "Member's ID"
-msgstr "ID de l'adhérent"
-
-#: ../templates/default/gestion_pdf.tpl:71
-msgid "Available for invoices and receipts only"
-msgstr "Disponible pour les factures et reçus uniquement"
-
-#: ../templates/default/gestion_pdf.tpl:76
-msgid "Contribution label"
-msgstr "Libellé de la contribution"
-
-#: ../templates/default/gestion_pdf.tpl:78
-#: ../templates/default/gestion_textes.tpl:122
-msgid "Contribution amount"
-msgstr "Montant de la contribution"
-
-#: ../templates/default/gestion_pdf.tpl:82
-msgid "Contribution full date"
-msgstr "Date complète de la contribution"
-
-#: ../templates/default/gestion_pdf.tpl:84
-msgid "Contribution year"
-msgstr "Année de la contribution"
-
-#: ../templates/default/gestion_pdf.tpl:88
-msgid "Contribution comment"
-msgstr "Commentaire de la contribution"
-
-#: ../templates/default/gestion_pdf.tpl:90
-msgid "Contribution begin date"
-msgstr "Date de début de contribution"
-
-#: ../templates/default/gestion_pdf.tpl:94
-msgid "Contribution end date"
-msgstr "Date de fin de contribution"
-
-#: ../templates/default/gestion_pdf.tpl:96
-msgid "Contribution id"
-msgstr "Contribution id"
-
-#: ../templates/default/gestion_pdf.tpl:100
-msgid "Contribution payment type"
-msgstr "Type de paiement de contribution"
-
-#: ../templates/default/gestion_pdf.tpl:110
+#: ../templates/default/gestion_pdf.tpl:23
 #: ../templates/default/gestion_textes.tpl:158
 msgid "Show existing variables"
 msgstr "Afficher les variables existantes"
 
-#: ../templates/default/gestion_pdf.tpl:145
+#: ../templates/default/gestion_pdf.tpl:64
 #: ../templates/default/configurer_fiches.tpl:90
 #: ../templates/default/js_loader.tpl:2
 msgid "Loading..."
 msgstr "Chargement..."
 
-#: ../templates/default/gestion_pdf.tpl:145
+#: ../templates/default/gestion_pdf.tpl:64
 #: ../templates/default/configurer_fiches.tpl:90
 #: ../templates/default/js_loader.tpl:2
 msgid "Currently loading..."
@@ -4966,17 +5009,6 @@ msgstr "ICQ"
 msgid "Zip - Town"
 msgstr "Code postal - Ville"
 
-#: ../templates/default/preferences.tpl:495
-#: ../templates/default/liste_membres.tpl:37
-#: ../templates/default/liste_membres.tpl:77
-#: ../templates/default/group_persons.tpl:8
-msgid "Nickname"
-msgstr "Pseudo"
-
-#: ../templates/default/preferences.tpl:496
-msgid "Profession"
-msgstr "Profession"
-
 #: ../templates/default/preferences.tpl:498
 msgid "(Choose address printed below name)"
 msgstr "(Choix de l’adresse imprimée sous le nom)"
@@ -5307,23 +5339,6 @@ msgstr "Adhérent"
 #: ../templates/default/advanced_search.tpl:164
 msgid "Type"
 msgstr "Type"
-
-#: ../templates/default/gestion_contributions.tpl:129
-#: ../templates/default/gestion_contributions.tpl:233
-#: ../templates/default/ajouter_transaction.tpl:92
-#: ../templates/default/ajouter_contribution.tpl:29
-#: ../templates/default/advanced_search.tpl:157
-#: ../templates/default/gestion_transactions.tpl:74
-#: ../templates/default/gestion_transactions.tpl:121
-#: ../templates/default/dispatch_type.tpl:29
-msgid "Amount"
-msgstr "Montant"
-
-#: ../templates/default/gestion_contributions.tpl:140
-#: ../templates/default/gestion_contributions.tpl:234
-#: ../templates/default/advanced_search.tpl:170
-msgid "Payment type"
-msgstr "Type de paiement"
 
 #: ../templates/default/gestion_contributions.tpl:151
 #: ../templates/default/gestion_contributions.tpl:235
@@ -5762,6 +5777,17 @@ msgstr "(maximum 255 caractères)"
 msgid "Email Body:"
 msgstr "Corps du message :"
 
+#: ../templates/default/gestion_textes.tpl:49
+#: ../templates/default/gestion_textes.tpl:50
+#: ../templates/default/gestion_pdf_content.tpl:55
+#: ../templates/default/gestion_pdf_content.tpl:56
+msgid "Existing variables"
+msgstr "Variables existantes"
+
+#: ../templates/default/gestion_textes.tpl:54
+msgid "Globally available"
+msgstr "Disponible globalement"
+
 #: ../templates/default/gestion_textes.tpl:65
 msgid "Galette's login URI"
 msgstr "L’URL de connexion de Galette"
@@ -5817,6 +5843,10 @@ msgstr "Disponible uniquement lors de la création de contributions"
 #: ../templates/default/gestion_textes.tpl:116
 msgid "Member's deadline"
 msgstr "Date de fin d’adhésion"
+
+#: ../templates/default/gestion_textes.tpl:122
+msgid "Contribution amount"
+msgstr "Montant de la contribution"
 
 #: ../templates/default/gestion_textes.tpl:124
 msgid "Contribution type"
@@ -7178,10 +7208,6 @@ msgstr "Membre du groupe"
 msgid "With email:"
 msgstr "Avec courriel :"
 
-#: ../templates/default/advanced_search.tpl:52
-msgid "Birth date"
-msgstr "Date de naissance"
-
 #: ../templates/default/advanced_search.tpl:53
 #: ../templates/default/advanced_search.tpl:60
 #: ../templates/default/advanced_search.tpl:67
@@ -7237,14 +7263,6 @@ msgstr "Supprimer le critère"
 #: ../templates/default/advanced_search.tpl:133
 msgid "Within contributions"
 msgstr "Dans les contributions"
-
-#: ../templates/default/advanced_search.tpl:143
-msgid "Begin date"
-msgstr "Date de début"
-
-#: ../templates/default/advanced_search.tpl:150
-msgid "End date"
-msgstr "Date de fin"
 
 #: ../templates/default/advanced_search.tpl:202
 msgid "Free search"
@@ -8037,6 +8055,36 @@ msgstr "Modifier le titre « %s »"
 #, php-format
 msgid "Delete '%s' title"
 msgstr "Supprimer le titre « %s »"
+
+#~ msgid "Member's name"
+#~ msgstr "Nom de l’adhérent"
+
+#~ msgid "Member's address"
+#~ msgstr "Adresse de l’adhérent"
+
+#~ msgid "Member's zipcode"
+#~ msgstr "Code postal de l’adhérent"
+
+#~ msgid "Member's town"
+#~ msgstr "Ville de l’adhérent"
+
+#~ msgid "Available for invoices and receipts only"
+#~ msgstr "Disponible pour les factures et reçus uniquement"
+
+#~ msgid "Contribution full date"
+#~ msgstr "Date complète de la contribution"
+
+#~ msgid "Contribution comment"
+#~ msgstr "Commentaire de la contribution"
+
+#~ msgid "Contribution begin date"
+#~ msgstr "Date de début de contribution"
+
+#~ msgid "Contribution end date"
+#~ msgstr "Date de fin de contribution"
+
+#~ msgid "Contribution payment type"
+#~ msgstr "Type de paiement de contribution"
 
 #~ msgid "Please repeat in the field the password shown in the image."
 #~ msgstr "Recopiez dans le cadre le mot de passe présenté dans l’image."
