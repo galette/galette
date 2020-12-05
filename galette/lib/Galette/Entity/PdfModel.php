@@ -877,11 +877,9 @@ abstract class PdfModel
                 $field_id    = $match[1];
                 $field_name  = $dynamic_fields[$field_id]->getName();
                 $field_type  = $dynamic_fields[$field_id]->getType();
-                $field_value = ['field_val' => ''];
-                if ($object !== null) {
-                    $field_values = $object->getDynamicFields()->getValues($field_id);
-                    $field_value  = $field_values[0];
-                }
+                $field_values = $object->getDynamicFields()->getValues($field_id);
+                $field_value  = $field_values[0];
+
                 switch ($field_type) {
                     case DynamicField::TEXT:
                         $value .= '<textarea' .
