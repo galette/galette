@@ -219,8 +219,6 @@ class DynamicFieldsController extends CrudController
         $fields = new \Galette\Repository\DynamicFieldsSet($this->zdb, $this->login);
         $fields_list = $fields->getList($form_name, $this->login);
 
-        $field_type_names = DynamicField::getFieldsTypesNames();
-
         $params = [
             'fields_list'       => $fields_list,
             'form_name'         => $form_name,

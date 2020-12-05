@@ -77,9 +77,11 @@ abstract class PdfContribution extends PdfModel
     /**
      * Get patterns for a contribution
      *
+     * @param boolean $legacy Whether to load legacy patterns
+     *
      * @return array
      */
-    protected function getContributionPatterns(): array
+    protected function getContributionPatterns($legacy = true): array
     {
         $dynamic_patterns = $this->getDynamicPatterns('contrib');
 
@@ -89,15 +91,15 @@ abstract class PdfContribution extends PdfModel
                 'pattern'   => '/{CONTRIB_LABEL}/',
             ],
             'contrib_amount'    => [
-                'title'     => _T('Contribution amount'),
+                'title'     => _T('Amount'),
                 'pattern'   => '/{CONTRIB_AMOUNT}/',
             ],
             'contrib_amount_letters' => [
-                'title'     => _T('Contribution amount (in letters)'),
+                'title'     => _T('Amount (in letters)'),
                 'pattern'   => '/{CONTRIB_AMOUNT_LETTERS}/',
             ],
             'contrib_date'      => [
-                'title'     => _T('Contribution full date'),
+                'title'     => _T('Full date'),
                 'pattern'   => '/{CONTRIB_DATE}/',
             ],
             'contrib_year'      => [
@@ -105,15 +107,15 @@ abstract class PdfContribution extends PdfModel
                 'pattern'   => '/{CONTRIB_YEAR}/',
             ],
             'contrib_comment'   => [
-                'title'     => _T('Contribution comment'),
+                'title'     => _T('Comment'),
                 'pattern'   => '/{CONTRIB_COMMENT}/',
             ],
             'contrib_bdate'     => [
-                'title'     => _T('Contribution begin date'),
+                'title'     => _T('Begin date'),
                 'pattern'   => '/{CONTRIB_BEGIN_DATE}/',
             ],
             'contrib_edate'     => [
-                'title'     => _T('Contribution end date'),
+                'title'     => _T('End date'),
                 'pattern'   => '/{CONTRIB_END_DATE}/',
             ],
             'contrib_id'        => [
@@ -121,19 +123,21 @@ abstract class PdfContribution extends PdfModel
                 'pattern'   => '/{CONTRIB_ID}/',
             ],
             'contrib_payment'   => [
-                'title'     => _T('Contribution payment type'),
+                'title'     => _T('Payment type'),
                 'pattern'   => '/{CONTRIB_PAYMENT_TYPE}/'
             ]
         ];
 
-        foreach ($c_patterns as $key => $pattern) {
-            $nkey = '_' . $key;
-            $pattern['pattern'] = str_replace(
-                'CONTRIB_',
-                'CONTRIBUTION_',
-                $pattern['pattern']
-            );
-            $c_patterns[$nkey] = $pattern;
+        if ($legacy === true) {
+            foreach ($c_patterns as $key => $pattern) {
+                $nkey = '_' . $key;
+                $pattern['pattern'] = str_replace(
+                    'CONTRIB_',
+                    'CONTRIBUTION_',
+                    $pattern['pattern']
+                );
+                $c_patterns[$nkey] = $pattern;
+            }
         }
 
         return $c_patterns + $dynamic_patterns;
@@ -177,5 +181,24 @@ abstract class PdfContribution extends PdfModel
         $this->setDynamicFields('contrib', $dynamic_fields, $contrib);
 
         return $this;
+    }
+
+    /**
+     * Build legend array
+     *
+     * @return array
+     */
+    public function getLegend(): array
+    {
+        $legend = parent::getLegend();
+
+        $patterns = $this->getContributionPatterns(false);
+
+        $legend['contribution'] = [
+            'title'     => _T('Contribution information'),
+            'patterns'  => $patterns
+        ];
+
+        return $legend;
     }
 }

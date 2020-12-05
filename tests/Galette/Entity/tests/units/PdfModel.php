@@ -422,6 +422,19 @@ Au milieu
             '- enddate: ' . $this->contrib->end_date . ' amount: 92 (ninety-two) dynlabel: Dynamic date field ' .
             'dynvalue: <input type="text" name="Dynamic date field" value="2020-12-03" size="10" />'
         );
+
+        $legend = $model->getLegend();
+        $this->array($legend)
+            ->hasSize(3)
+            ->hasKeys(['main', 'member', 'contribution']);
+
+        $this->array($legend['main']['patterns'])->hasSize(7);
+        $this->array($legend['member']['patterns'])
+            ->hasSize(23)
+            ->hasKeys(['LABEL_DYNFIELD_' . $adf->getId() . '_ADH', 'INPUT_DYNFIELD_' . $adf->getId() . '_ADH']);
+        $this->array($legend['contribution']['patterns'])
+            ->hasSize(12)
+            ->hasKeys(['LABEL_DYNFIELD_' . $cdf->getId() . '_CONTRIB', 'INPUT_DYNFIELD_' . $cdf->getId() . '_CONTRIB']);
     }
 
     /**

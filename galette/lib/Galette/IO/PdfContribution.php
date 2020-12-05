@@ -76,7 +76,7 @@ class PdfContribution extends Pdf
         $class = PdfModel::getTypeClass($this->contrib->model);
         $this->model = new $class($zdb, $prefs);
 
-        $member = new Adherent($zdb, $this->contrib->member);
+        $member = new Adherent($zdb, $this->contrib->member, ['dynamics' => true]);
 
         $this->model->setMember($member);
         $this->model->setContribution($this->contrib);

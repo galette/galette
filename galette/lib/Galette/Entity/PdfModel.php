@@ -216,21 +216,6 @@ abstract class PdfModel
                 (int)$rs->model_parent
             );
         }
-
-        //let's check if some values should be retrieved from parent model
-        /*if ( $this->id > self::MAIN_MODEL ) {
-            //some infos are missing, load parent
-            if ( trim($this->header) === ''
-                || trim($this->footer) === ''
-            ) {
-                if ( trim($this->header) === '' ) {
-                    $this->header = $parent->header;
-                }
-                if ( trim($this->header) === '' ) {
-                    $this->footer = $parent->footer;
-                }
-            }
-        }*/
     }
 
     /**
@@ -352,7 +337,7 @@ abstract class PdfModel
     }
 
     /**
-     * Get dynamic patterns, extract them if needed
+     * Get dynamic patterns
      *
      * @param string $form_name Dynamic form name
      *
@@ -360,44 +345,36 @@ abstract class PdfModel
      */
     public function getDynamicPatterns($form_name): array
     {
-        if (!isset($this->dynamic_patterns[$form_name])) {
-            $this->dynamic_patterns[$form_name] = $this->extractDynamicPatterns($form_name);
+        global $login;
+
+        if (isset($this->dynamic_patterns[$form_name])) {
+            return $this->dynamic_patterns[$form_name];
         }
-        return $this->dynamic_patterns[$form_name];
-    }
 
-    /**
-     * Extract patterns
-     *
-     * @param string $form_name Dynamic form name
-     *
-     * @return array
-     */
-    public function extractDynamicPatterns($form_name)
-    {
-        $form_name = strtoupper($form_name);
-        $patterns = array();
-        $parts    = array('header', 'footer', 'title', 'subtitle', 'body');
-        foreach ($parts as $part) {
-            $content = $this->$part;
+        $fields = new \Galette\Repository\DynamicFieldsSet($this->zdb, $login);
+        $dynamic_fields = $fields->getList($form_name);
 
-            $matches = array();
-            preg_match_all(
-                '/{((LABEL|INPUT)?_DYNFIELD_[0-9]+_' . $form_name . ')}/',
-                $content,
-                $matches
-            );
-
-            foreach ($matches[1] as $pattern) {
-                $patterns[$pattern] = [
-                    'pattern'   => sprintf('/{%s}/', $pattern)
+        $dynamic_patterns = [];
+        foreach ($dynamic_fields as $dynamic_field) {
+            $key = strtoupper('_DYNFIELD_' . $dynamic_field->getId() . '_' . $form_name);
+            foreach (['LABEL', 'INPUT'] as $capability) {
+                $dynamic_patterns[$capability . $key] = [
+                    'title' => sprintf(
+                        ($capability == 'LABEL' ? _T('Label for dynamic field "%s"')
+                        : _T('Input for dynamic field "%s"')),
+                        $dynamic_field->getName()
+                    ),
+                    'pattern'   => sprintf(
+                        '/{%s%s}/',
+                        $capability,
+                        $key
+                    )
                 ];
             }
-
-            Analog::log("dynamic patterns found for $form_name in $part: " . join(",", $matches[1]), Analog::DEBUG);
         }
 
-        return $patterns;
+        $this->dynamic_patterns[$form_name] = $dynamic_patterns;
+        return $this->dynamic_patterns[$form_name];
     }
 
     /**
@@ -607,23 +584,7 @@ abstract class PdfModel
                     }
                 }
 
-                if (function_exists('tidy_parse_string')) {
-                    //if tidy extension is present, we use it to clean a bit
-                    /*$tidy_config = array(
-                        'clean'             => true,
-                        'show-body-only'    => true,
-                        'join-styles'       => false,
-                        'join-classes'      => false,
-                        'wrap' => 0,
-                    );
-                    $tidy = tidy_parse_string($value, $tidy_config, 'UTF8');
-                    $tidy->cleanRepair();
-                    $this->$name = tidy_get_output($tidy);*/
-                    $this->$name = $value;
-                } else {
-                    //if it is not... Well, let's serve the text as it.
-                    $this->$name = $value;
-                }
+                $this->$name = $value;
                 break;
             case 'styles':
                 $this->styles = $value;
@@ -686,7 +647,7 @@ abstract class PdfModel
         $dynamic_patterns = $this->getDynamicPatterns('adh');
         return [
             'adh_title'         => [
-                'title'     => '',
+                'title'     => _('Title'),
                 'pattern'   => '/{TITLE_ADH}/',
             ],
             'adh_id'            =>  [
@@ -694,35 +655,35 @@ abstract class PdfModel
                 'pattern'   => '/{ID_ADH}/',
             ],
             'adh_name'          =>  [
-                'title'     => _T("Member's name"),
+                'title'     => _T("Name"),
                 'pattern'    => '/{NAME_ADH}/',
             ],
             'adh_last_name'     =>  [
-                'title'     => '',
+                'title'     => _T('Last name'),
                 'pattern'   => '/{LAST_NAME_ADH}/',
             ],
             'adh_first_name'    =>  [
-                'title'     => '',
+                'title'     => _T('First name'),
                 'pattern'   => '/{FIRST_NAME_ADH}/',
             ],
             'adh_nickname'      =>  [
-                'title'     => '',
+                'title'     => _T('Nickname'),
                 'pattern'   => '/{NICKNAME_ADH}/',
             ],
             'adh_gender'        =>  [
-                'title'     => '',
+                'title'     => _T('Gender'),
                 'pattern'   => '/{GENDER_ADH}/',
             ],
             'adh_birth_date'    =>  [
-                'title'     => '',
+                'title'     => _T('Birth date'),
                 'pattern'   => '/{ADH_BIRTH_DATE}/',
             ],
             'adh_birth_place'   =>  [
-                'title'     => '',
+                'title'     => _T('Birth place'),
                 'pattern'   => '/{ADH_BIRTH_PLACE}/',
             ],
             'adh_profession'    =>  [
-                'title'     => '',
+                'title'     => _T('Profession'),
                 'pattern'   => '/{PROFESSION_ADH}/',
             ],
             'adh_company'       => [
@@ -730,35 +691,35 @@ abstract class PdfModel
                 'pattern'   => '/{COMPANY_ADH}/',
             ],
             'adh_address'       =>  [
-                'title'     => _T("Member's address"),
+                'title'     => _T("Address"),
                 'pattern'   => '/{ADDRESS_ADH}/',
             ],
             'adh_zip'           =>  [
-                'title'     => _T("Member's zipcode"),
+                'title'     => _T("Zipcode"),
                 'pattern'   => '/{ZIP_ADH}/',
             ],
             'adh_town'          =>  [
-                'title'     => _T("Member's town"),
+                'title'     => _T("Town"),
                 'pattern'   => '/{TOWN_ADH}/',
             ],
             'adh_country'       =>  [
-                'title'     => '',
+                'title'     => _T('Country'),
                 'pattern'   => '/{COUNTRY_ADH}/',
             ],
             'adh_phone'         =>  [
-                'title'     => '',
+                'title'     => _T('Phone'),
                 'pattern'   => '/{PHONE_ADH}/',
             ],
             'adh_mobile'        =>  [
-                'title'     => '',
+                'title'     => _T('GSM'),
                 'pattern'   => '/{MOBILE_ADH}/',
             ],
             'adh_email'         =>  [
-                'title'     => '',
+                'title'     => _T('Email'),
                 'pattern'   => '/{EMAIL_ADH}/',
             ],
             'adh_login'         =>  [
-                'title'     => '',
+                'title'     => _T('Login'),
                 'pattern'   => '/{LOGIN_ADH}/',
             ],
             'adh_main_group'    =>  [
@@ -862,10 +823,8 @@ abstract class PdfModel
             if (preg_match("/^{DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
                 /** dynamic field first value */
                 $field_id = $match[1];
-                if ($object !== null) {
-                    $values = $object->getDynamicFields()->getValues($field_id);
-                    $value  = $values[1];
-                }
+                $values = $object->getDynamicFields()->getValues($field_id);
+                $value  = $values[1];
             }
             if (preg_match("/^{LABEL_DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
                 /** dynamic field label */
@@ -938,5 +897,27 @@ abstract class PdfModel
         }
 
         return $this;
+    }
+
+    /**
+     * Build legend array
+     *
+     * @return array
+     */
+    public function getLegend(): array
+    {
+        $legend = [];
+
+        $legend['main'] = [
+            'title'     => _T('Main information'),
+            'patterns'  => $this->getMainPatterns()
+        ];
+
+        $legend['member'] = [
+            'title'     => _T('Member information'),
+            'patterns'  => $this->getMemberPatterns()
+        ];
+
+        return $legend;
     }
 }
