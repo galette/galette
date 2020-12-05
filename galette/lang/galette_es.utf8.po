@@ -13,9 +13,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-05 19:43+0100\n"
-"PO-Revision-Date: 2020-10-02 12:41+0000\n"
+"PO-Revision-Date: 2020-12-05 18:54+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.3-dev\n"
+"X-Generator: Weblate 4.4-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -662,8 +662,6 @@ msgid "Successfully deleted!"
 msgstr "¡Se ha eliminado correctamente!"
 
 #: ../lib/Galette/Controllers/CrudController.php:300
-#, fuzzy
-#| msgid "An error occurred trying to delete field :("
 msgid "An error occurred trying to delete :("
 msgstr "Se produjo un error al intentar eliminar :("
 
