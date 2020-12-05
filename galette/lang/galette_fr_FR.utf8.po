@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-05 19:43+0100\n"
-"PO-Revision-Date: 2020-11-11 09:21+0000\n"
+"PO-Revision-Date: 2020-12-05 18:54+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -2365,20 +2365,16 @@ msgid "Nickname"
 msgstr "Pseudo"
 
 #: ../lib/Galette/Entity/PdfModel.php:674
-#, fuzzy
-#| msgid "Gender:"
 msgid "Gender"
-msgstr "Genre :"
+msgstr "Genre"
 
 #: ../lib/Galette/Entity/PdfModel.php:678
 msgid "Birth date"
 msgstr "Date de naissance"
 
 #: ../lib/Galette/Entity/PdfModel.php:682
-#, fuzzy
-#| msgid "Birthplace:"
 msgid "Birth place"
-msgstr "Lieu de naissance :"
+msgstr "Lieu de naissance"
 
 #: ../lib/Galette/Entity/PdfModel.php:686
 msgid "Profession"
