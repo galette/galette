@@ -59,6 +59,64 @@ use Galette\Repository\Members;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 02-06-2009
+ *
+ * @property integer $id
+ * @property integer|Title $title Either a title id or an instance of Title
+ * @property string $stitle Title label
+ * @property string company_name
+ * @property string $name
+ * @property string $surname
+ * @property string $nickname
+ * @property string $birthdate Localized birth date
+ * @property string $rbirthdate Raw birth date
+ * @property string $birth_place
+ * @property integer $gender
+ * @property string $sgender Gender label
+ * @property string $job
+ * @property string $language
+ * @property integer $status
+ * @property string $sstatus Status label
+ * @property string $address
+ * @property string $address_continuation
+ * @property string $zipcode
+ * @property string $town
+ * @property string $country
+ * @property string $phone
+ * @property string $gsm
+ * @property string $email
+ * @property string $website
+ * @property string $msn
+ * @property string $icq
+ * @property string $jabber
+ * @property string $gnupgid
+ * @property string $fingerprint
+ * @property string $login
+ * @property string $creation_date Localized creation date
+ * @property string $modification_date Localized modification date
+ * @property string $due_date Localized due date
+ * @property string $others_infos
+ * @property string $others_infos_admin
+ * @property Picture $picture
+ * @property array $groups
+ * @property array $managed_groups
+ * @property integer|Adherent $parent Parent id if parent dep is not loaded, Adherent instance otherwise
+ * @property array $children
+ * @property boolean $admin better to rely on isAdmin()
+ * @property boolean $staff better to rely on isStaff()
+ * @property boolean $due_free better to rely on isDueFree()
+ * @property boolean $appears_in_list better to rely on appearsInMembersList()
+ * @property boolean $active better to rely on isActive()
+ * @property boolean $duplicate better to rely on isDuplicate()
+ * @property string $sadmin yes/no
+ * @property string $sstaff yes/no
+ * @property string $sdue_free yes/no
+ * @property string $sappears_in_list yes/no
+ * @property string $sactive yes/no
+ * @property string $sfullname
+ * @property string $sname
+ * @property string $saddress Concatened address and continuation
+ * @property string $contribstatus State of member contributions
+ * @property string $days_remaining
  */
 class Adherent
 {
@@ -1558,12 +1616,15 @@ class Adherent
     {
         $forbidden = array(
             'admin', 'staff', 'due_free', 'appears_in_list', 'active',
-            'row_classes'
+            'row_classes', 'oldness', 'duplicate'
         );
+        if (!defined('GALETTE_TESTS')) {
+            $forbidden[] = 'password'; //keep that for tests only
+        }
 
         $virtuals = array(
             'sadmin', 'sstaff', 'sdue_free', 'sappears_in_list', 'sactive',
-            'stitle', 'sstatus', 'sfullname', 'sname', 'rowclass', 'saddress',
+            'stitle', 'sstatus', 'sfullname', 'sname', 'saddress',
             'rbirthdate', 'sgender', 'contribstatus'
         );
 
@@ -1571,19 +1632,16 @@ class Adherent
             switch ($name) {
                 case 'admin':
                     return $this->isAdmin();
-                    break;
                 case 'staff':
                     return $this->isStaff();
-                    break;
                 case 'due_free':
                     return $this->isDueFree();
-                    break;
                 case 'appears_in_list':
                     return $this->appearsInMembersList();
-                    break;
                 case 'active':
                     return $this->isActive();
-                    break;
+                case 'duplicate':
+                    return $this->isDuplicate();
                 default:
                     throw new \RuntimeException("Call to __get for '$name' is forbidden!");
             }
@@ -1642,7 +1700,7 @@ class Adherent
                             case self::WOMAN:
                                 return _T('Woman');
                             default:
-                                return __('Unspecified');
+                                return _T('Unspecified');
                         }
                         break;
                     case 'contribstatus':
