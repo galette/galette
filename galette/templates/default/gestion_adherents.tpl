@@ -186,7 +186,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             {elseif $member->isWoman()}
                         <span class="tooltip">
                             <img src="{base_url}/{$template_subdir}images/icon-female.png" alt="" width="16" height="16"/>
-                            <span class="sr-only">{_T string="Is a women"}</span>
+                            <span class="sr-only">{_T string="Is a woman"}</span>
                         </span>
             {else}
                         <img src="{base_url}/{$template_subdir}images/icon-empty.png" alt="" width="16" height="16"/>

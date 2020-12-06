@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-05 19:43+0100\n"
+"POT-Creation-Date: 2020-12-06 08:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5949,8 +5949,10 @@ msgid "Is a man"
 msgstr "Is a man"
 
 #: ../templates/default/gestion_adherents.tpl:189
-msgid "Is a women"
-msgstr "Is a women"
+#: ../templates/default/gestion_adherents.tpl:409
+#: ../templates/default/gestion_adherents.tpl:410
+msgid "Is a woman"
+msgstr "Is a woman"
 
 #: ../templates/default/gestion_adherents.tpl:197
 #: ../templates/default/gestion_adherents.tpl:311
@@ -6020,11 +6022,6 @@ msgstr "Send an email"
 #: ../templates/default/gestion_adherents.tpl:403
 msgid "Visit website"
 msgstr "Visit website"
-
-#: ../templates/default/gestion_adherents.tpl:409
-#: ../templates/default/gestion_adherents.tpl:410
-msgid "Is a woman"
-msgstr "Is a woman"
 
 #: ../templates/default/gestion_adherents.tpl:435
 msgid "No member selected"
