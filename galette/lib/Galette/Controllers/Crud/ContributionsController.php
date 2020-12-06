@@ -565,11 +565,6 @@ class ContributionsController extends CrudController
 
         if (count($error_detected) == 0) {
             //all goes well, we can proceed
-            $new = false;
-            if ($contrib->id == '') {
-                $new = true;
-            }
-
             if (count($error_detected) == 0) {
                 // send email to member
                 if (isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {

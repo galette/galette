@@ -130,7 +130,12 @@ class EntitledsController extends CrudController
         $params['entries'] = $list;
 
         if (count($class->errors) > 0) {
-            $error_detected = array_merge($error_detected, $class->errors);
+            foreach ($class->errors as $error) {
+                $this->flash->addMessage(
+                    'error_detected',
+                    $error
+                );
+            }
         }
 
         // display page

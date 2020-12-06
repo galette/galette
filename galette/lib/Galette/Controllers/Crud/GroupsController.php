@@ -334,7 +334,6 @@ class GroupsController extends CrudController
     {
         $post = $request->getParsedBody();
         $group = new Group((int)$args['id']);
-        $error = false;
 
         $group->setName($post['group_name']);
         try {

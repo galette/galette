@@ -524,14 +524,13 @@ class MailingHistory extends History
     /**
      * Remove specified entries
      *
-     * @param integer|array $ids Mailing history entries identifiers
+     * @param integer|array $ids  Mailing history entries identifiers
+     * @param History       $hist History instance
      *
      * @return boolean
      */
-    public function removeEntries($ids)
+    public function removeEntries($ids, History $hist)
     {
-        global $hist, $preferences;
-
         $list = array();
         if (is_numeric($ids)) {
             //we've got only one identifier
@@ -543,7 +542,7 @@ class MailingHistory extends History
         if (is_array($list)) {
             try {
                 foreach ($list as $id) {
-                    $mailing = new Mailing($preferences, [], $id);
+                    $mailing = new Mailing($this->preferences, [], $id);
                     $mailing->removeAttachments();
                 }
 

@@ -252,8 +252,6 @@ class MailingsController extends CrudController
                 ->withHeader('Location', $redirect_url);
         }
 
-        $params = array();
-
         if (
             $this->preferences->pref_mail_method == Mailing::METHOD_DISABLED
             && !GALETTE_MODE === 'DEMO'
@@ -781,7 +779,6 @@ class MailingsController extends CrudController
         $attachment = $attachments[$args['pos']];
         $filepath = $attachment->getDestDir() . $attachment->getFileName();
 
-        $ext = pathinfo($attachment->getFileName())['extension'];
         $response = $response->withHeader('Content-type', $attachment->getMimeType($filepath));
 
         $body = $response->getBody();

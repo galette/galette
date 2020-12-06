@@ -925,7 +925,6 @@ class MembersController extends CrudController
                                 Analog::ERROR
                             );
                             throw new \Exception('Unknown mode.');
-                            exit(0);
                         }
                     } else {
                         $m = new Members();
@@ -940,7 +939,6 @@ class MembersController extends CrudController
                         throw new \RuntimeException(
                             'Current selected member must be excluded while attaching!'
                         );
-                        exit(0);
                     }
                     break;
             }
@@ -1629,14 +1627,10 @@ class MembersController extends CrudController
                     }
 
                     //store requested groups
-                    $add_groups = null;
-                    $groups_adh = null;
-                    $managed_groups_adh = null;
+                    $groups_adh = $post['groups_adh'] ?? null;
+                    $managed_groups_adh = $post['groups_managed_adh'] ?? null;
 
                     //add/remove user from groups
-                    if (isset($post['groups_adh'])) {
-                        $groups_adh = $post['groups_adh'];
-                    }
                     $add_groups = Groups::addMemberToGroups(
                         $member,
                         $groups_adh
@@ -1647,9 +1641,6 @@ class MembersController extends CrudController
                     }
 
                     //add/remove manager from groups
-                    if (isset($post['groups_managed_adh'])) {
-                        $managed_groups_adh = $post['groups_managed_adh'];
-                    }
                     $add_groups = Groups::addMemberToGroups(
                         $member,
                         $managed_groups_adh,

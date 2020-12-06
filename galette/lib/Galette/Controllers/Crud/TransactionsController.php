@@ -140,7 +140,6 @@ class TransactionsController extends ContributionsController
             'trans_desc'    =>  1,
             'id_adh'        =>  1
         );
-        $disabled = array();
 
         if ($action === 'edit') {
             // initialize transactions structure with database values

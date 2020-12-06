@@ -128,7 +128,7 @@ $app->post(
 
 $app->get(
     '/logs/flush',
-    function ($request, $response, $args) {
+    function ($request, $response) {
         return $response
             ->withStatus(302)
             ->withHeader(
