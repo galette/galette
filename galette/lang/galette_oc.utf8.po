@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-05 19:43+0100\n"
+"POT-Creation-Date: 2020-12-06 08:39+0100\n"
 "PO-Revision-Date: 2020-07-11 17:50+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Occitan <https://hosted.weblate.org/projects/galette/galette/"
@@ -5785,7 +5785,9 @@ msgid "Is a man"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:189
-msgid "Is a women"
+#: ../templates/default/gestion_adherents.tpl:409
+#: ../templates/default/gestion_adherents.tpl:410
+msgid "Is a woman"
 msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:197
@@ -5856,11 +5858,6 @@ msgstr ""
 #: ../templates/default/gestion_adherents.tpl:403
 msgid "Visit website"
 msgstr "Visitar lo site Web"
-
-#: ../templates/default/gestion_adherents.tpl:409
-#: ../templates/default/gestion_adherents.tpl:410
-msgid "Is a woman"
-msgstr ""
 
 #: ../templates/default/gestion_adherents.tpl:435
 msgid "No member selected"

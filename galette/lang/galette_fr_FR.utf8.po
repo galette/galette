@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-05 19:43+0100\n"
+"POT-Creation-Date: 2020-12-06 08:39+0100\n"
 "PO-Revision-Date: 2020-12-05 19:56+0100\n"
 "Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
@@ -6070,7 +6070,9 @@ msgid "Is a man"
 msgstr "Est un homme"
 
 #: ../templates/default/gestion_adherents.tpl:189
-msgid "Is a women"
+#: ../templates/default/gestion_adherents.tpl:409
+#: ../templates/default/gestion_adherents.tpl:410
+msgid "Is a woman"
 msgstr "Est une femme"
 
 #: ../templates/default/gestion_adherents.tpl:197
@@ -6141,11 +6143,6 @@ msgstr "Envoyer un courriel"
 #: ../templates/default/gestion_adherents.tpl:403
 msgid "Visit website"
 msgstr "Visiter le site web"
-
-#: ../templates/default/gestion_adherents.tpl:409
-#: ../templates/default/gestion_adherents.tpl:410
-msgid "Is a woman"
-msgstr "Est une femme"
 
 #: ../templates/default/gestion_adherents.tpl:435
 msgid "No member selected"
@@ -8037,6 +8034,9 @@ msgstr "Modifier le titre « %s »"
 #, php-format
 msgid "Delete '%s' title"
 msgstr "Supprimer le titre « %s »"
+
+#~ msgid "Is a women"
+#~ msgstr "Est une femme"
 
 #~ msgid "Member's name"
 #~ msgstr "Nom de l’adhérent"
