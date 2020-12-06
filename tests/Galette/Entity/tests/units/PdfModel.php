@@ -128,6 +128,10 @@ class PdfModel extends atoum
             $this->members_fields,
             $this->history
         );
+
+        global $container, $zdb;
+        $zdb = $this->zdb; //globals '(
+        $container = $this->container; //globals '(
     }
 
     /**
@@ -171,9 +175,6 @@ class PdfModel extends atoum
      */
     public function testExpectedPatterns()
     {
-        global $container, $zdb;
-        $zdb = $this->zdb; //globals '(
-        $container = $this->container; //globals '(
         $model = new class ($this->zdb, $this->preferences, 1) extends \Galette\Entity\PdfModel {
         };
 
@@ -294,10 +295,6 @@ class PdfModel extends atoum
      */
     public function testReplacements()
     {
-        global $container, $zdb;
-        $zdb = $this->zdb; //globals '(
-        $container = $this->container; //globals '(
-
         //create dynamic fields
         $field_data = [
             'form_name'        => 'adh',

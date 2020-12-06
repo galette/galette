@@ -605,7 +605,7 @@ class PdfController extends AbstractController
                 $model->type = $type;
                 foreach ($fields as $pvar => $prop) {
                     if (isset($post[$pvar])) {
-                        $model->$prop = $pvar;
+                        $model->$prop = $post[$pvar];
                     }
                 }
 
