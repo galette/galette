@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2009-2014 The Galette Team
+ * Copyright © 2009-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-28
@@ -47,6 +47,13 @@ namespace Galette\Core;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-02-28
+ *
+ * @param string $login
+ * @param string $name
+ * @param string $surname
+ * @param integer $id
+ * @param string $lang
+ * @param array $managed_groups
  */
 
 abstract class Authentication
@@ -57,19 +64,19 @@ abstract class Authentication
     public const ACCESS_ADMIN = 3;
     public const ACCESS_SUPERADMIN = 4;
 
-    private $login;
-    private $name;
-    private $surname;
-    private $admin = false;
-    private $id;
-    private $lang;
-    private $logged = false;
-    private $active = false;
-    private $superadmin = false;
-    private $staff = false;
-    private $uptodate = false;
-    private $managed_groups = [];
-    private $cron = false;
+    protected $login;
+    protected $name;
+    protected $surname;
+    protected $admin = false;
+    protected $id;
+    protected $lang;
+    protected $logged = false;
+    protected $active = false;
+    protected $superadmin = false;
+    protected $staff = false;
+    protected $uptodate = false;
+    protected $managed_groups = [];
+    protected $cron = false;
 
     /**
      * Logs in user.
@@ -286,25 +293,12 @@ abstract class Authentication
      */
     public function __get($name)
     {
-        $forbidden = array('logged', 'admin', 'active');
-        if (!in_array($name, $forbidden) && isset($this->$name)) {
+        $forbidden = array('logged', 'admin', 'active', 'superadmin', 'staff', 'cron', 'uptodate');
+        if (isset($this->$name) && !in_array($name, $forbidden)) {
             return $this->$name;
         } else {
             return false;
         }
-    }
-
-    /**
-     * Global setter method
-     *
-     * @param string $name  name of the property we want to assign a value to
-     * @param object $value a relevant value for the property
-     *
-     * @return void
-     */
-    public function __set($name, $value)
-    {
-        $this->$name = $value;
     }
 
     /**

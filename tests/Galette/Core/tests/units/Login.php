@@ -55,7 +55,6 @@ class Login extends atoum
 {
     private $zdb;
     private $i18n;
-    private $session;
     private $login;
     private $preferences;
     private $seed = 320112365;
@@ -90,8 +89,7 @@ class Login extends atoum
     {
         $this->zdb = new \Galette\Core\Db();
         $this->i18n = new \Galette\Core\I18n();
-        $this->session = new \RKA\Session();
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n);
         $this->preferences = new \Galette\Core\Preferences(
             $this->zdb
         );
@@ -119,29 +117,13 @@ class Login extends atoum
     }
 
     /**
-     * Test (un)serialize
-     *
-     * @return void
-     */
-    public function testSerialize()
-    {
-        $this->login->name = 'Serialization test';
-        $serialized = serialize($this->login);
-        $this->string($serialized)->isNotEmpty();
-
-        $login = unserialize($serialized);
-        $this->object($login)->isInstanceOf('\Galette\Core\Login');
-        $this->string($login->name)->isIdenticalTo('Serialization test');
-    }
-
-    /**
      * Test not logged in users Impersonating
      *
      * @return void
      */
     public function testNotLoggedCantImpersonate()
     {
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
 
         $this->calling($login)->isLogged = false;
         $this
@@ -159,7 +141,7 @@ class Login extends atoum
      */
     public function testStaffCantImpersonate()
     {
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
 
         $this->calling($login)->isLogged = true;
         $this->calling($login)->isStaff = true;
@@ -180,7 +162,7 @@ class Login extends atoum
      */
     public function testAdminCantImpersonate()
     {
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
         $this->calling($login)->isLogged = true;
         $this->calling($login)->isStaff = true;
         $this->calling($login)->isAdmin = true;
@@ -207,7 +189,7 @@ class Login extends atoum
             }
         };
 
-        $login = new \mock\Galette\Core\Login($zdb, $this->i18n, $this->session);
+        $login = new \mock\Galette\Core\Login($zdb, $this->i18n);
         $this->calling($login)->isSuperAdmin = true;
         $this->boolean($login->impersonate(1))->isFalse();
     }
@@ -219,7 +201,7 @@ class Login extends atoum
      */
     public function testSuperadminCanImpersonate()
     {
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
         $this->calling($login)->isSuperAdmin = true;
 
         ///We're faking, Impersonating won't work but will not throw any exception
@@ -261,7 +243,7 @@ class Login extends atoum
             }
         };
 
-        $login = new \Galette\Core\Login($zdb, $this->i18n, $this->session);
+        $login = new \Galette\Core\Login($zdb, $this->i18n);
         $this->boolean($login->loginExists('doesnotexists'))->isTrue();
     }
 

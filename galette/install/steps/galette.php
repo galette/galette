@@ -44,7 +44,7 @@ $errs = array();
 $install->reinitReport();
 
 $config_file_ok = $install->writeConfFile();
-$objects_ok = $install->initObjects($i18n, $zdb, new Login($zdb, $i18n, new RKA\Session()));
+$objects_ok = $install->initObjects($i18n, $zdb, new Login($zdb, $i18n));
 ?>
                 <h2><?php echo $install->getStepTitle(); ?></h2>
 <?php

@@ -679,8 +679,7 @@ class PdfController extends AbstractController
         //this will be passed directly to Contribution constructor
         $login = new Login(
             $this->zdb,
-            $this->i18n,
-            $this->session
+            $this->i18n
         );
         $login->id = (int)$row['id_adh'];
 

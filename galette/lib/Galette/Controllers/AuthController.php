@@ -228,7 +228,7 @@ class AuthController extends AbstractController
      */
     public function unimpersonate(Request $request, Response $response)
     {
-        $login = new Login($this->zdb, $this->i18n, $this->session);
+        $login = new Login($this->zdb, $this->i18n);
         $login->logAdmin($this->preferences->pref_admin_login, $this->preferences);
         $this->history->add(_T("Impersonating ended"));
         $this->session->login = $login;

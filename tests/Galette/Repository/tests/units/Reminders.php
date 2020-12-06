@@ -56,7 +56,6 @@ class Reminders extends atoum
     private $zdb;
     private $seed = 95842355;
     private $preferences;
-    private $session;
     private $login;
     private $history;
     //private $remove = [];
@@ -100,8 +99,7 @@ class Reminders extends atoum
         $this->preferences = new \Galette\Core\Preferences(
             $this->zdb
         );
-        $this->session = new \RKA\Session();
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n);
         $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
 
         global $zdb, $login, $hist, $i18n; // globals :(

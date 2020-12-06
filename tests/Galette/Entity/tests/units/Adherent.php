@@ -58,7 +58,6 @@ class Adherent extends atoum
     private $members_fields_cats;
     private $i18n;
     private $preferences;
-    private $session;
     private $login;
     private $history;
     private $seed = 95842354;
@@ -118,8 +117,7 @@ class Adherent extends atoum
         $this->preferences = new \Galette\Core\Preferences(
             $this->zdb
         );
-        $this->session = new \RKA\Session();
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n);
         $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
 
         $this->default_deps = [
@@ -621,16 +619,16 @@ class Adherent extends atoum
         $adh = new \Galette\Entity\Adherent($this->zdb);
 
         //non authorized
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
         $this->boolean($adh->canEdit($login))->isFalse();
 
         //admin => authorized
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
         $this->calling($login)->isAdmin = true;
         $this->boolean($adh->canEdit($login))->isTrue();
 
         //staff => authorized
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
         $this->calling($login)->isStaff = true;
         $this->boolean($adh->canEdit($login))->isTrue();
 
@@ -643,7 +641,7 @@ class Adherent extends atoum
         $this->calling($g1)->getId = 2;
 
         $this->calling($adh)->getGroups = [$g1, $g2];
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
         $this->boolean($adh->canEdit($login))->isFalse();
 
         $this->calling($login)->isGroupManager = true;

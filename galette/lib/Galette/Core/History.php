@@ -42,6 +42,7 @@ use Galette\Filters\HistoryList;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Adapter\Adapter;
 use Galette\Core\Preferences;
+use Laminas\Db\Sql\Select;
 
 /**
  * History management
@@ -236,7 +237,7 @@ class History
      *
      * @return void
      */
-    private function buildLists($select)
+    private function buildLists(Select $select)
     {
         try {
             $usersSelect = clone $select;
@@ -313,7 +314,7 @@ class History
      *
      * @return string SQL WHERE clause
      */
-    private function buildWhereClause($select)
+    private function buildWhereClause(Select $select)
     {
         try {
             if ($this->filters->start_date_filter != null) {
@@ -362,7 +363,7 @@ class History
      *
      * @return void
      */
-    private function proceedCount($select)
+    private function proceedCount(Select $select)
     {
         try {
             $countSelect = clone $select;

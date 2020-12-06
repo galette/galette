@@ -47,6 +47,7 @@ use Galette\Entity\Adherent;
 use Galette\Entity\Transaction;
 use Galette\Entity\ContributionsTypes;
 use Galette\Filters\ContributionsList;
+use Laminas\Db\Sql\Select;
 
 /**
  * Contributions class for galette
@@ -189,7 +190,7 @@ class Contributions
      *
      * @return void
      */
-    private function proceedCount($select)
+    private function proceedCount(Select $select)
     {
         try {
             $countSelect = clone $select;
@@ -227,7 +228,7 @@ class Contributions
      *
      * @return void
      */
-    private function calculateSum($select)
+    private function calculateSum(Select $select)
     {
         try {
             $sumSelect = clone $select;
@@ -305,7 +306,7 @@ class Contributions
      *
      * @return string SQL WHERE clause
      */
-    private function buildWhereClause($select)
+    private function buildWhereClause(Select $select)
     {
         $field = 'date_debut_cotis';
 

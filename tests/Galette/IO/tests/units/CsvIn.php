@@ -95,7 +95,7 @@ class CsvIn extends atoum
             $this->zdb
         );
         $this->session = new \RKA\Session();
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n);
         $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
         $flash_data = [];
         $this->flash_data = &$flash_data;

@@ -56,7 +56,6 @@ class Members extends atoum
     private $zdb;
     private $i18n;
     private $preferences;
-    private $session;
     private $login;
     private $history;
     private $members_fields;
@@ -79,8 +78,7 @@ class Members extends atoum
         $this->preferences = new \Galette\Core\Preferences(
             $this->zdb
         );
-        $this->session = new \RKA\Session();
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n);
         $this->history = new \Galette\Core\History($this->zdb, $this->login, $this->preferences);
 
         include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
@@ -603,7 +601,7 @@ class Members extends atoum
 
         //search on infos - as admin
         global $login;
-        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
         $this->calling($login)->isAdmin = true;
 
         $filters = new \Galette\Filters\MembersList();

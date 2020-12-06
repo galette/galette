@@ -222,7 +222,6 @@ class Preferences extends atoum
     public function testPublicPagesVisibility()
     {
         $this->preferences->load();
-        $session = new \RKA\Session();
 
         $visibility = $this->preferences->pref_publicpages_visibility;
         $this->variable($visibility)->isEqualTo(
@@ -231,21 +230,18 @@ class Preferences extends atoum
 
         $anon_login = new \Galette\Core\Login(
             $this->zdb,
-            new \Galette\Core\I18n(),
-            $session
+            new \Galette\Core\I18n()
         );
 
         $admin_login = new \mock\Galette\Core\Login(
             $this->zdb,
-            new \Galette\Core\I18n(),
-            $session
+            new \Galette\Core\I18n()
         );
         $this->calling($admin_login)->isAdmin = true;
 
         $user_login = new \mock\Galette\Core\Login(
             $this->zdb,
-            new \Galette\Core\I18n(),
-            $session
+            new \Galette\Core\I18n()
         );
         $this->calling($user_login)->isUp2Date = true;
 

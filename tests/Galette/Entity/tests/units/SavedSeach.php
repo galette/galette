@@ -56,7 +56,6 @@ class SavedSearch extends atoum
 {
     private $zdb;
     private $i18n;
-    private $session;
     private $login;
 
     /**
@@ -70,9 +69,8 @@ class SavedSearch extends atoum
     {
         $this->zdb = new \Galette\Core\Db();
         $this->i18n = new \Galette\Core\I18n();
-        $this->session = new \RKA\Session();
 
-        $this->login = new \mock\Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->login = new \mock\Galette\Core\Login($this->zdb, $this->i18n);
         $this->calling($this->login)->isLogged = true;
         $this->calling($this->login)->isSuperAdmin = true;
     }

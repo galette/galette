@@ -38,6 +38,7 @@ namespace Galette\Core;
 
 use Slim\Slim;
 use Analog\Analog;
+use Laminas\Db\Sql\Select;
 
 /**
  * Pagination and ordering facilities
@@ -169,7 +170,7 @@ abstract class Pagination
      *
      * @return void
      */
-    public function setLimits($select)
+    public function setLimits(Select $select)
     {
         if ($this->show !== 0) {
             $select->limit($this->show);

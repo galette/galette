@@ -109,7 +109,7 @@ class MailingHistory extends History
                 $select::JOIN_LEFT
             );
             $this->buildWhereClause($select);
-            $select->order(self::buildOrderClause());
+            $select->order($this->buildOrderClause());
             $this->buildLists($select);
             $this->proceedCount($select);
             //add limits to retrieve only relavant rows
@@ -174,7 +174,7 @@ class MailingHistory extends History
     /**
      * Builds users and actions lists
      *
-     * @param Select $select Original select
+     * @param \Laminas\Db\Sql\Select $select Original select
      *
      * @return void
      */

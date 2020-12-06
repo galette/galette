@@ -55,7 +55,6 @@ class PdfModels extends atoum
 {
     private $zdb;
     private $preferences;
-    private $session;
     private $login;
     private $remove = [];
     private $i18n;
@@ -74,8 +73,7 @@ class PdfModels extends atoum
         $this->i18n = new \Galette\Core\I18n(
             \Galette\Core\I18n::DEFAULT_LANG
         );
-        $this->session = new \RKA\Session();
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n);
 
         $models = new \Galette\Repository\PdfModels($this->zdb, $this->preferences, $this->login);
         $res = $models->installInit(false);

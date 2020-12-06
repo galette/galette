@@ -206,8 +206,7 @@ $container['login'] = function ($c) {
     if (!$login) {
         $login = new Galette\Core\Login(
             $c->get('zdb'),
-            $c->get('i18n'),
-            $c->get('session')
+            $c->get('i18n')
         );
     }
     return $login;

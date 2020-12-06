@@ -57,7 +57,6 @@ class History extends atoum
     private $login;
     private $zdb;
     private $i18n;
-    private $session;
     private $preferences;
 
     /**
@@ -71,8 +70,7 @@ class History extends atoum
     {
         $this->zdb = new \Galette\Core\Db();
         $this->i18n = new \Galette\Core\I18n();
-        $this->session = new \RKA\Session();
-        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n, $this->session);
+        $this->login = new \Galette\Core\Login($this->zdb, $this->i18n);
         $this->preferences = new \Galette\Core\Preferences(
             $this->zdb
         );
