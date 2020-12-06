@@ -504,4 +504,23 @@ Au milieu
         $store = $contrib->store();
         $this->boolean($store)->isTrue();
     }
+
+    /**
+     * Test model storage in db
+     *
+     * @return void
+     */
+    public function testStorage()
+    {
+        $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
+
+        $orig_title = $model->title;
+        $this->string($orig_title)->isIdenticalTo('_T("Invoice") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}');
+
+        $model->title = 'Another test';
+        $this->boolean($model->store())->isTrue();
+
+        $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
+        $this->string($model->title)->isIdenticalTo('Another test');
+    }
 }

@@ -634,7 +634,7 @@ class PdfController extends AbstractController
 
         return $response
             ->withStatus(301)
-            ->withHeader('Location', $this->router->pathFor('pdfModels', ['id' => $model->id]));
+            ->withHeader('Location', $this->router->pathFor('pdfModels', ['id' => $model->id ?? null]));
     }
 
 
