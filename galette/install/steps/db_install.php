@@ -79,7 +79,7 @@ if (!$db_installed) {
 }
 ?>
 
-                        <button id="next_btn" type="submit"<?php if (!$db_installed) { echo ' disabled="disabled"'; } ?>><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
+                        <button type="submit"<?php if (!$db_installed) { echo ' disabled="disabled"'; } ?>><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
 <?php
 if ($db_installed) {
     ?>

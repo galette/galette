@@ -158,9 +158,9 @@
 {if $nb != 0}
             <tfoot>
                 <tr>
-                    <td class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !isset($member)}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}">
+                    <th class="right" colspan="{if ($login->isAdmin() or $login->isStaff()) && !isset($member)}10{elseif $login->isAdmin() or $login->isStaff()}9{else}8{/if}">
                         {_T string="Found contributions total %f" pattern="/%f/" replace=$contribs->getSum()}
-                    </td>
+                    </th>
                 </tr>
             </tfoot>
 {/if}
@@ -339,7 +339,9 @@
                         this.form.submit();
                     });
 
-                    var _checklinks = '<div class="checkboxes"><span class="fleft"><a href="#" class="checkall">{_T string="(Un)Check all"}</a> | <a href="#" class="checkinvert">{_T string="Invert selection"}</a></span><a href="#" class="show_legend fright">{_T string="Show legend"}</a></div>';
+
+                    var _checklinks = '<div class="checkboxes"><span class="fleft"><a href="#" class="checkall tooltip"><i class="fas fa-check-square"></i> {_T string="(Un)Check all" escape="js"}</a> | <a href="#" class="checkinvert tooltip"><i class="fas fa-exchange-alt"></i> {_T string="Invert selection" escape="js"}</a></span><a href="#" class="show_legend fright">{_T string="Show legend" escape="js"}</a></div>';
+
                     $('.listing').before(_checklinks);
                     $('.listing').after(_checklinks);
                     _bind_check('contrib_sel');

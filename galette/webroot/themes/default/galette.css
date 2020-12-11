@@ -723,16 +723,6 @@ h1 #sendmail .ui-button-text {
     display: none;
 }
 
-#backhome {
-    background:url(images/home.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-    background-repeat: no-repeat, repeat!important;
-    background-position: 5% 50%, 50% 50%!important;
-    padding-left: 2em!important;
-}
-#backhome.ui-state-hover {
-    background-image:url(images/home.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
 #logout_10 i {
     color: rgba(255, 0, 0, 0.6);
 }
@@ -797,17 +787,6 @@ legend .tab-button {
 }
 #preferences.ui-state-hover {
     background-image:url(images/icon-prefs.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#installpage input[type="submit"] {
-    background-image:url(images/next.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-    padding-left: 0.4em!important;
-    padding-right: 2em!important;
-    background-position: 95% 50%, 50% 50%!important;
-    background-repeat: no-repeat, repeat!important;
-}
-#installpage input[type="submit"]:hover {
-    background-image:url(images/next.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
 .bigbutton, #btn_membercard, #btn_contrib {

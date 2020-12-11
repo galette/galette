@@ -73,12 +73,12 @@ foreach ($install->getInitializationReport() as $r) {
 <?php
 if (!$config_file_ok || !$objects_ok) {
     ?>
-                        <input type="submit" id="retry_btn" value="<?php echo _T("Retry"); ?>"/>
+                        <button type="submit"><?php echo _T("Retry"); ?> <i class="fas fa-sync-alt"></i></button>
     <?php
 }
 ?>
 
-                        <button id="next_btn" type="submit"<?php if (!$config_file_ok || !$objects_ok) { echo ' disabled="disabled"'; } ?>><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
+                        <button type="submit"<?php if (!$config_file_ok || !$objects_ok) { echo ' disabled="disabled"'; } ?>><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
 <?php
 if ($config_file_ok && $objects_ok) {
     ?>

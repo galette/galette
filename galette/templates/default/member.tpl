@@ -16,7 +16,7 @@
 {/if}
         <form action="{if $self_adh}{path_for name="storemembers" data=["self" => "subscribe"]}{else}{path_for name="storemembers"}{/if}" method="post" enctype="multipart/form-data" id="form">
         <div class="bigtable">
-{if $self_adh and $head_redirect}
+{if $self_adh}
             <div id="infobox">
                 <h1>{_T string="Account registered!"}</h1>
                 <p>
@@ -179,7 +179,7 @@
                     buttonText: '<i class="far fa-calendar-alt"></i> <span class="sr-only">{_T string="Select a date" escape="js"}</span>'
                 });
 
-{if !$self_adh and !$head_redirect}
+{if !$self_adh}
                 {* Groups popup *}
                 $('#btngroups, #btnmanagedgroups').click(function(){
                     var _managed = false;

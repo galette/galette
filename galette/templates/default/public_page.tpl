@@ -9,9 +9,6 @@ We have to use a template file, so Smarty will do its work (like replacing varia
         {include file=$header module_id=$mid}
     {/foreach}
 {/if}
-{if $head_redirect}
-    <meta http-equiv="refresh" content="{$head_redirect.timeout};url={$head_redirect.url}" />
-{/if}
     </head>
     <body>
 {if isset($GALETTE_DISPLAY_ERRORS) && $GALETTE_DISPLAY_ERRORS && $GALETTE_MODE != 'DEV'}

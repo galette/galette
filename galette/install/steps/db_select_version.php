@@ -57,7 +57,7 @@ if (count($versions) == 0) {
     }
 ?>
                 <p id="btn_box">
-                    <input id="logout" type="submit" name="abort_btn" value="<?php echo _T("Cancel"); ?>"/>
+                    <input type="submit" name="abort_btn" value="<?php echo _T("Cancel"); ?>"/>
                     <button type="submit" id="btnback" name="stepback_btn" formnovalidate><i class="fas fa-backward"></i> <?php echo _T("Back"); ?></button>
                 </p>
 
@@ -131,7 +131,7 @@ if (count($versions) == 0) {
                     </ul>
                 </fieldset>
                 <p id="btn_box">
-                    <button id="next_btn" type="submit"><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
+                    <button type="submit"><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
                     <button type="submit" id="btnback" name="stepback_btn" formnovalidate><i class="fas fa-backward"></i> <?php echo _T("Back"); ?></button>
                 </p>
     <?php

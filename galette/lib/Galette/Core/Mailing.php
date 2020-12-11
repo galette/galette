@@ -51,6 +51,23 @@ use Galette\IO\File;
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2009-03-07
+ *
+ * @property string $subject
+ * @property string $message
+ * @property boolean $html
+ * @property integer $current_step
+ * @property-read  integer $step
+ * @property integer $id
+ * @property-read string $alt_message
+ * @property-read string $wrapped_message
+ * @property-read PHPMailer\PHPMailer\PHPMailer $mail
+ * @property-read PHPMailer\PHPMailer\PHPMailer $_mail
+ * @property-read array $errors
+ * @property-read array $recipients
+ * @property-read string|false $tmp_path
+ * @property-read array $attachments
+ * @property-read string $sender_name
+ * @property-read string $sender_address
  */
 class Mailing extends GaletteMail
 {

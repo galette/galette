@@ -155,7 +155,7 @@ if (!$perms_ok || !$modules_ok || !$php_ok || !$date_ok) {
     ?>
                 <form action="installer.php" method="post">
                     <p id="btn_box">
-                        <input type="submit" id="retry_btn" value="<?php echo _T("Retry"); ?>"/>
+                        <button type="submit"><?php echo _T("Retry"); ?> <i class="fas fa-sync-alt"></i></button>
                     </p>
                 </form>
     <?php
@@ -163,7 +163,7 @@ if (!$perms_ok || !$modules_ok || !$php_ok || !$date_ok) {
     ?>
         <form action="installer.php" method="POST">
             <p id="btn_box">
-                <input id="next_btn" type="submit" value="<?php echo _T("Next step"); ?>"/>
+                <button type="submit"><?php echo _T("Next step"); ?> <i class="fas fa-forward"></i></button>
                 <input type="hidden" name="install_permsok" value="1"/>
             </p>
         </form>

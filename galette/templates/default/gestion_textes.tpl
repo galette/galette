@@ -3,7 +3,6 @@
 {block name="content"}
         <div id="listfilter">
         <form action="{path_for name="changeText"}" method="post" enctype="multipart/form-data">
-            <p>
                 <strong>{_T string="Choose an entry"}</strong><br/>
                 <label for="sel_lang">{_T string="Language:"}</label>
                 <select name="sel_lang" id="sel_lang" class="lang">
@@ -19,7 +18,6 @@
                     {/foreach}
                 </select>
                 <noscript> <span><input type="submit" value="{_T string="Change"}" /></span></noscript>
-            </p>
         </form>
         </div>
 

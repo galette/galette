@@ -51,6 +51,6 @@ if ($install->isUpgrade()) {
                 <div id="errorbox"><?php echo _T("To secure the system, please delete the install directory"); ?></div>
                 <form action="<?php echo GALETTE_BASE_PATH; ?>" method="get">
                     <p id="btn_box">
-                        <input type="submit" id="backhome" class="button" value="<?php echo _T("Homepage"); ?>"/>
+                        <button type="submit"><?php echo _T("Homepage"); ?> <i class="fas fa-home"></i></button>
                     </p>
                 </form>

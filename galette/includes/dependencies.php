@@ -142,7 +142,6 @@ $container->set('Slim\Views\Smarty', function (ContainerInterface $c) {
     $smarty->assign('existing_mailing', $c->get('session')->mailing !== null);
     $smarty->assign('contentcls', null);
     $smarty->assign('additionnal_html_class', null);
-    $smarty->assign('head_redirect', null);
     $smarty->assign('error_detected', null);
     $smarty->assign('warning_detected', null);
     $smarty->assign('success_detected', null);

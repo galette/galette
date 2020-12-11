@@ -55,17 +55,6 @@ section ul {
     background-position: 96% 50%, 50% 50%;
     background-repeat: no-repeat, repeat-x;
 }
-#next_btn {
-    padding-right: 1.8em;;
-    background-image: url(images/next.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
-    background-position: 96% 50%, 50% 50%;
-    background-repeat: no-repeat, repeat-x;
-}
-
-#next_btn:hover {
-    background-image: url(images/next.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
-}
-
 #retry_btn {
     padding-left: 1.8em;;
     background-image: url(images/icon-refresh.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
