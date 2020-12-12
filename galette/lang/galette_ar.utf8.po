@@ -8,10 +8,10 @@
 # Woodyx <shiposhouyou@gmail.com>, 2020.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-06 08:39+0100\n"
-"PO-Revision-Date: 2020-11-27 13:29+0000\n"
-"Last-Translator: Woodyx <shiposhouyou@gmail.com>\n"
+"PO-Revision-Date: 2020-12-12 18:26+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
 "ar/>\n"
 "Language: ar\n"
@@ -2298,20 +2298,16 @@ msgid "Nickname"
 msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:674
-#, fuzzy
-#| msgid "Gender:"
 msgid "Gender"
-msgstr "الحالة الجنسية:"
+msgstr "الحالة الجنسية"
 
 #: ../lib/Galette/Entity/PdfModel.php:678
 msgid "Birth date"
 msgstr "تاريخ الميلاد"
 
 #: ../lib/Galette/Entity/PdfModel.php:682
-#, fuzzy
-#| msgid "Birthplace:"
 msgid "Birth place"
-msgstr "مكان الميلاد:"
+msgstr "مكان الميلاد"
 
 #: ../lib/Galette/Entity/PdfModel.php:686
 msgid "Profession"
