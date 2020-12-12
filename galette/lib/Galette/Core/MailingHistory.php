@@ -504,13 +504,7 @@ class MailingHistory extends History
             $insert->values($values);
             $this->zdb->execute($insert);
 
-            if ($this->zdb->isPostgres()) {
-                $this->id = $this->zdb->driver->getLastGeneratedValue(
-                    PREFIX_DB . 'mailing_history_id_seq'
-                );
-            } else {
-                $this->id = $this->zdb->driver->getLastGeneratedValue();
-            }
+            $this->id = $this->zdb->getLastGeneratedValue($this);
             return true;
         } catch (Throwable $e) {
             Analog::log(

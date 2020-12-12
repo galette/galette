@@ -726,13 +726,7 @@ abstract class DynamicField
                 $insert->values($values);
                 $this->zdb->execute($insert);
 
-                if ($this->zdb->isPostgres()) {
-                    $this->id = $this->zdb->driver->getLastGeneratedValue(
-                        PREFIX_DB . 'field_types_id_seq'
-                    );
-                } else {
-                    $this->id = $this->zdb->driver->getLastGeneratedValue();
-                }
+                $this->id = $this->zdb->getLastGeneratedValue($this);
 
                 if ($this->name != '') {
                     $this->addTranslation($this->name);

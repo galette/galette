@@ -448,13 +448,7 @@ abstract class Entitled
                     Analog::INFO
                 );
 
-                if ($this->zdb->isPostgres()) {
-                    $this->id = $this->zdb->driver->getLastGeneratedValue(
-                        PREFIX_DB . $this->table . '_id_seq'
-                    );
-                } else {
-                    $this->id = $this->zdb->driver->getLastGeneratedValue();
-                }
+                $this->id = $this->zdb->getLastGeneratedValue($this);
 
                 $this->addTranslation($label);
             } else {

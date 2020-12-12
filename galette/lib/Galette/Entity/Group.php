@@ -426,13 +426,7 @@ class Group
                 $insert->values($values);
                 $add = $zdb->execute($insert);
                 if ($add->count() > 0) {
-                    if ($zdb->isPostgres()) {
-                        $this->id = (int)$zdb->driver->getLastGeneratedValue(
-                            PREFIX_DB . 'groups_id_seq'
-                        );
-                    } else {
-                        $this->id = (int)$zdb->driver->getLastGeneratedValue();
-                    }
+                    $this->id = $zdb->getLastGeneratedValue($this);
 
                     // logging
                     $hist->add(

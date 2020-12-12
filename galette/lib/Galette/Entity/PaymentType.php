@@ -162,9 +162,7 @@ class PaymentType
                     return false;
                 }
 
-                $this->id = (int)$this->zdb->driver->getLastGeneratedValue(
-                    PREFIX_DB . self::TABLE . '_id_seq'
-                );
+                $this->id = $this->zdb->getLastGeneratedValue($this);
 
                 $this->addTranslation($this->name);
             }

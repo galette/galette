@@ -396,13 +396,7 @@ class Transaction
                 $insert->values($values);
                 $add = $this->zdb->execute($insert);
                 if ($add->count() > 0) {
-                    if ($this->zdb->isPostgres()) {
-                        $this->_id = $this->zdb->driver->getLastGeneratedValue(
-                            PREFIX_DB . 'transactions_id_seq'
-                        );
-                    } else {
-                        $this->_id = $this->zdb->driver->getLastGeneratedValue();
-                    }
+                    $this->_id = $this->zdb->getLastGeneratedValue($this);
 
                     // logging
                     $hist->add(
@@ -413,7 +407,7 @@ class Transaction
                     $event = 'transaction.add';
                 } else {
                     $hist->add(_T("Fail to add new transaction."));
-                    throw new \Exception(
+                    throw new \RuntimeException(
                         'An error occurred inserting new transaction!'
                     );
                 }

@@ -964,4 +964,20 @@ class Db
             file_put_contents($logfile, $query . "\n", FILE_APPEND);
         }
     }
+
+    /**
+     * Get last generated value
+     *
+     * @param object $entity Entity instance
+     *
+     * @return integer
+     */
+    public function getLastGeneratedValue($entity): int
+    {
+        return (int)$this->driver->getLastGeneratedValue(
+            $this->isPostgres() ?
+                PREFIX_DB . $entity::TABLE . '_id_seq'
+                : null
+        );
+    }
 }

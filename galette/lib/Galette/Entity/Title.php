@@ -157,9 +157,7 @@ class Title
                     return false;
                 }
 
-                $this->id = (int)$zdb->driver->getLastGeneratedValue(
-                    PREFIX_DB . self::TABLE . '_id_seq'
-                );
+                $this->id = $zdb->getLastGeneratedValue($this);
             }
             return true;
         } catch (Throwable $e) {
