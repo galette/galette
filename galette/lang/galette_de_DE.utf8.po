@@ -18,10 +18,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-06 08:39+0100\n"
-"PO-Revision-Date: 2020-10-26 08:09+0100\n"
-"Last-Translator: Johan Cwiklinski <johan@x-tnd.be>\n"
+"PO-Revision-Date: 2020-12-12 18:26+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Weblate 4.4-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2272,13 +2272,13 @@ msgstr "%file darf nicht leer sein!"
 #, fuzzy, php-format
 #| msgid "Remove dynamic field %1$s"
 msgid "Label for dynamic field \"%s\""
-msgstr "Dynamisches Feld %1$s entfernen"
+msgstr "Bezeichnung für dynamisches Feld \"%s\""
 
 #: ../lib/Galette/Entity/PdfModel.php:364
 #, fuzzy, php-format
 #| msgid "Remove dynamic field %1$s"
 msgid "Input for dynamic field \"%s\""
-msgstr "Dynamisches Feld %1$s entfernen"
+msgstr "Eingabe für dynamisches Feld \"%s\""
 
 #: ../lib/Galette/Entity/PdfModel.php:545
 msgid "Unknown type %type!"
@@ -2349,20 +2349,16 @@ msgid "Nickname"
 msgstr "Spitzname"
 
 #: ../lib/Galette/Entity/PdfModel.php:674
-#, fuzzy
-#| msgid "Gender:"
 msgid "Gender"
-msgstr "Geschlecht:"
+msgstr "Geschlecht"
 
 #: ../lib/Galette/Entity/PdfModel.php:678
 msgid "Birth date"
 msgstr "Geburtsdatum"
 
 #: ../lib/Galette/Entity/PdfModel.php:682
-#, fuzzy
-#| msgid "Birthplace:"
 msgid "Birth place"
-msgstr "Geburtsort:"
+msgstr "Geburtsort"
 
 #: ../lib/Galette/Entity/PdfModel.php:686
 msgid "Profession"
