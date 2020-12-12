@@ -17,11 +17,10 @@
 # x <hardwired1.0@protonmail.com>, 2020.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-06 08:39+0100\n"
-"PO-Revision-Date: 2020-11-19 14:28+0000\n"
-"Last-Translator: Sstirban <razvansebastian.stirban001@studenti.uniparthenope."
-"it>\n"
+"PO-Revision-Date: 2020-12-12 18:26+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/galette/galette/"
 "it/>\n"
 "Language: it_IT\n"
@@ -2250,13 +2249,13 @@ msgstr ""
 #, fuzzy, php-format
 #| msgid "Remove dynamic field %1$s"
 msgid "Label for dynamic field \"%s\""
-msgstr "Rimuovi campo dinamico %1$s"
+msgstr "Etichetta per il campo dinamico \"%s\""
 
 #: ../lib/Galette/Entity/PdfModel.php:364
 #, fuzzy, php-format
 #| msgid "Remove dynamic field %1$s"
 msgid "Input for dynamic field \"%s\""
-msgstr "Rimuovi campo dinamico %1$s"
+msgstr "Input per il campo dinamico \"%s\""
 
 #: ../lib/Galette/Entity/PdfModel.php:545
 msgid "Unknown type %type!"
