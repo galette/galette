@@ -3,9 +3,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-06 08:39+0100\n"
-"PO-Revision-Date: 2020-06-29 06:40+0000\n"
+"PO-Revision-Date: 2020-12-12 18:26+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.2-dev\n"
+"X-Generator: Weblate 4.4-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2230,13 +2230,13 @@ msgstr ""
 #, fuzzy, php-format
 #| msgid "Dynamic fields"
 msgid "Label for dynamic field \"%s\""
-msgstr "Динамічні поля"
+msgstr "Мітка для динамічного поля \"%s\""
 
 #: ../lib/Galette/Entity/PdfModel.php:364
 #, fuzzy, php-format
 #| msgid "Dynamic fields"
 msgid "Input for dynamic field \"%s\""
-msgstr "Динамічні поля"
+msgstr "Вхід для динамічного поля \"%s\""
 
 #: ../lib/Galette/Entity/PdfModel.php:545
 msgid "Unknown type %type!"
