@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-06 08:39+0100\n"
-"PO-Revision-Date: 2020-10-02 12:41+0000\n"
+"PO-Revision-Date: 2020-12-12 18:26+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/galette/"
 "galette/nb_NO/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.3-dev\n"
+"X-Generator: Weblate 4.4-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -2207,13 +2207,13 @@ msgstr ""
 #, fuzzy, php-format
 #| msgid "Dynamic fields"
 msgid "Label for dynamic field \"%s\""
-msgstr "Dynamiske felter"
+msgstr "Etikett for dynamisk felt \"%s\""
 
 #: ../lib/Galette/Entity/PdfModel.php:364
 #, fuzzy, php-format
 #| msgid "Dynamic fields"
 msgid "Input for dynamic field \"%s\""
-msgstr "Dynamiske felter"
+msgstr "Inndata for dynamisk felt \"%s\""
 
 #: ../lib/Galette/Entity/PdfModel.php:545
 msgid "Unknown type %type!"
