@@ -335,11 +335,6 @@
         }
             $(function(){
                 var _init_contribs_page = function(res){
-                    $('#nbshow').change(function() {
-                        this.form.submit();
-                    });
-
-
                     var _checklinks = '<div class="checkboxes"><span class="fleft"><a href="#" class="checkall tooltip"><i class="fas fa-check-square"></i> {_T string="(Un)Check all" escape="js"}</a> | <a href="#" class="checkinvert tooltip"><i class="fas fa-exchange-alt"></i> {_T string="Invert selection" escape="js"}</a></span><a href="#" class="show_legend fright">{_T string="Show legend" escape="js"}</a></div>';
 
                     $('.listing').before(_checklinks);

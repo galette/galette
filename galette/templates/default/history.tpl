@@ -150,10 +150,6 @@
 
 {block name="javascripts"}
         <script type="text/javascript">
-            $('#nbshow').change(function() {
-                this.form.submit();
-            });
-
             $(function() {
                 {include file="js_removal.tpl"}
                 var _elt = $('<img src="{base_url}/{$template_subdir}images/info.png" class="qryhide" alt="" title="{_T string="Show associated query"}"/>');

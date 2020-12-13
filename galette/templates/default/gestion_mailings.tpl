@@ -183,10 +183,6 @@
 
 {block name="javascripts"}
         <script type="text/javascript">
-            $('#nbshow').change(function() {
-                this.form.submit();
-            });
-
             {include file="js_removal.tpl"}
 
             $('#start_date_filter, #end_date_filter').datepicker({

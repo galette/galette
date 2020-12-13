@@ -185,6 +185,18 @@ var _initTooltips = function(selector) {
     });
 }
 
+var _bindNbshow = function(selector) {
+    if (typeof(selector) == 'undefined') {
+        selector = '';
+    } else {
+        selector = selector + ' ';
+    }
+
+    $(selector + '#nbshow').change(function() {
+        $(this.form).trigger('submit');
+    });
+}
+
 $(function() {
     _messagesEffects();
     $('.debuginfos span').hide();
@@ -201,6 +213,7 @@ $(function() {
         maxItems: 1
     });
 
+    _bindNbshow();
     $('.nojs').removeClass('nojs');
     $('#menu h1').each(function(){
         $(this).html('<a href="#">' + $(this).text() + '</a>');

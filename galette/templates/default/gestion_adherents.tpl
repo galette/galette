@@ -457,9 +457,7 @@ We have to use a template file, so Smarty will do its work (like replacing varia
             $('.listing').after(_checklinks);
             _bind_check();
             _bind_legend();
-            $('#nbshow').change(function() {
-                this.form.submit();
-            });
+
             $('.selection_menu *[type="submit"], .selection_menu *[type="button"]').click(function(){
                 if ( this.id == 'delete' ) {
                     //mass removal is handled from 2 steps removal

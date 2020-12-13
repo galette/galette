@@ -167,10 +167,6 @@
 {block name="javascripts"}
         <script type="text/javascript">
             $(function(){
-                $('#nbshow').change(function() {
-                    this.form.submit();
-                });
-
                 var _checklinks = '<div class="checkboxes"><a href="#" class="show_legend fright">{_T string="Show legend"}</a></div>';
                 $('.listing').before(_checklinks);
                 $('.listing').after(_checklinks);
