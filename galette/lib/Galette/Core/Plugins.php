@@ -232,36 +232,20 @@ class Plugins
                 Analog::WARNING
             );
             $this->setDisabled(self::DISABLED_COMPAT);
-        } else {
-            if ($this->id) {
-                $release_date = $date;
-                if ($date !== null) {
-                    //try to localize release date
-                    try {
-                        $release_date = new \DateTime($date);
-                        $release_date = $release_date->format(__("Y-m-d"));
-                    } catch (Throwable $e) {
-                        Analog::log(
-                            'Unable to localize release date for plugin ' . $name,
-                            Analog::WARNING
-                        );
-                    }
-                }
-
-                $this->modules[$this->id] = array(
-                    'root'          => $this->mroot,
-                    'name'          => $name,
-                    'desc'          => $desc,
-                    'author'        => $author,
-                    'version'       => $version,
-                    'acls'          => $acls,
-                    'date'          => $release_date,
-                    'priority'      => $priority === null ?
-                                         1000 : (int)$priority,
-                    'root_writable' => is_writable($this->mroot),
-                    'route'         => $route
-                );
-            }
+        } else if ($this->id) {
+            $this->modules[$this->id] = array(
+                'root'          => $this->mroot,
+                'name'          => $name,
+                'desc'          => $desc,
+                'author'        => $author,
+                'version'       => $version,
+                'acls'          => $acls,
+                'date'          => $date,
+                'priority'      => $priority === null ?
+                                     1000 : (int)$priority,
+                'root_writable' => is_writable($this->mroot),
+                'route'         => $route
+            );
         }
     }
 
