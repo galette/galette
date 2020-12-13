@@ -24,7 +24,8 @@
     "autoload": {
         "psr-4": {
             "Galette\\": "lib/Galette"
-        }
+        },
+        "files": ["includes/i18n.inc.php"]
     },
     "require": {
         "php": ">=7.3",

@@ -65,8 +65,6 @@
     "isValidWebUrl",
     "remove_remarks",
     "split_sql_file",
-    "_T",
-    "__",
 
 
     "// XHProf PECL extension",
