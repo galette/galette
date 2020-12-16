@@ -16,19 +16,6 @@
 {/if}
         <form action="{if $self_adh}{path_for name="storemembers" data=["self" => "subscribe"]}{else}{path_for name="storemembers"}{/if}" method="post" enctype="multipart/form-data" id="form">
         <div class="bigtable">
-{if $self_adh}
-            <div id="infobox">
-                <h1>{_T string="Account registered!"}</h1>
-                <p>
-    {if $pref_mail_method == constant('Galette\Core\GaletteMail::METHOD_DISABLED') or $member->email eq ""}
-                    {_T string="Your subscription has been registered."}
-    {else}
-                    {_T string="Your subscription has been registered, you will receive a recapitulative email soon (remember to check your spam box ;) )."}
-    {/if}
-                    <br/>{_T string="You'll be redirected to the login page in a few seconds"}
-                </p>
-            </div>
-{else}
             <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
     {if !$self_adh}
             <div>
@@ -135,7 +122,6 @@
             <a href="#" id="back2top">{_T string="Back to top"}</a>
         </div>
         </form>
-{/if}
 {/block}
 
 {block name="javascripts"}
