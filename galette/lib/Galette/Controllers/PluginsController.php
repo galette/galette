@@ -156,11 +156,11 @@ class PluginsController extends AbstractController
      *
      * @param Request  $request  PSR Request
      * @param Response $response PSR Response
-     * @param integer  $id       Plugin id
+     * @param string   $id       Plugin id
      *
      * @return Response
      */
-    public function initPluginDb(Request $request, Response $response, int $id): Response
+    public function initPluginDb(Request $request, Response $response, string $id): Response
     {
         if (GALETTE_MODE === 'DEMO') {
             Analog::log(
@@ -267,7 +267,7 @@ class PluginsController extends AbstractController
                 //not used here, but from include
                 $zdb = $this->zdb;
                 ob_start();
-                include_once __DIR__ . '/../../install/steps/db_checks.php';
+                include_once GALETTE_ROOT . '/install/steps/db_checks.php';
                 $params['results'] = ob_get_contents();
                 ob_end_clean();
                 break;
