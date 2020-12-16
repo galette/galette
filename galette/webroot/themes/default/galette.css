@@ -624,14 +624,14 @@ footer a:hover {
 }
 
 /* == Buttons */
-#btnvalid, #btnadd {
+#btnvalid {
     padding-left: 1.4em!important;
     background-position: 10px 50%, 50% 50%!important;
     background-repeat: no-repeat, repeat!important;
 }
 
 
-input#btnvalid, input#btnadd {
+input#btnvalid {
     padding-left:2.4em!important;
 }
 
@@ -696,12 +696,6 @@ a:hover i {
     display: none;
 }
 
-.group-btn {
-    padding: 0!important;
-    background-position: 50% 50%!important;
-    background-repeat: repeat!important;
-}
-
 #recup_mailing {
     float: right;
     margin-right: .5em;
@@ -727,38 +721,7 @@ h1 #sendmail .ui-button-text {
     color: rgba(255, 0, 0, 0.6);
 }
 
-#logout {
-    background-image:url(images/icon-quit.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#logout.ui-state-hover {
-    background-image:url(images/icon-quit.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#btnadd, #btnadd_small, .btnadd_small {
-    background-image:url(images/icon-add.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png")!important;
-}
-#btnadd.ui-state-hover, #btnadd_small.ui-state-hover, .btnadd_small.ui-state-hover {
-   background-image:url(images/icon-add.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png")!important;
-}
-.btnremove_small {
-    background-image:url(images/delete.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png")!important;
-    padding-left: 2em!important;
-}
-input.button.btnremove_small, input.button.btnadd_small {
-    padding-left: 2em!important;
-}
-.btnremove_small.ui-state-hover{
-   background-image:url(images/delete.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png")!important;
-}
-
-#btninfo_small {
-    background-image:url(images/icon-info.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btninfo_small.ui-state-hover{
-   background-image:url(images/icon-info.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-.tab-button, #btnadd_small, #btninfo_small {
+.tab-button {
     position: absolute!important; /* used along with .button */
     right: .5em;
 }
@@ -778,18 +741,7 @@ legend .tab-button {
     background-image:url(images/icon-valid.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
 }
 
-#btnattach {
-    margin-bottom: .5em;
-}
-
-#preferences {
-    background-image:url(images/icon-prefs.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#preferences.ui-state-hover {
-    background-image:url(images/icon-prefs.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-.bigbutton, #btn_membercard, #btn_contrib {
+.bigbutton {
     padding-top:30px!important;
     padding-left: 0!important;
     display: block;
@@ -801,40 +753,6 @@ legend .tab-button {
     position:absolute;
     top: .2em;
     left: 0;
-}
-#btn_membercard {
-    background-image:url(images/member_card.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btn_membercard.ui-state-hover {
-    background-image: url(images/member_card.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#btn_contrib {
-    background-image:url(images/contribution.png), url("jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png");
-}
-#btn_contrib.ui-state-hover {
-    background-image: url(images/contribution.png), url("jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png");
-}
-
-#btntools {
-    background-image: url(images/icon-tool.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
-}
-#btntools.ui-state-hover {
-    background-image: url(images/icon-tool.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
-}
-
-#btnregister {
-    background-image: url(images/icon-identity.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
-}
-#btnregister.ui-state-hover {
-    background-image: url(images/icon-identity.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
-}
-
-#btntelemetry {
-    background-image: url(images/icon-telemetry.png), url(jquery-ui/images/ui-bg_glass_75_e6e6e6_1x400.png);
-}
-#btntelemetry.ui-state-hover {
-    background-image: url(images/icon-telemetry.png), url(jquery-ui/images/ui-bg_glass_75_ffb619_1x400.png);
 }
 
 .left {
@@ -1000,13 +918,6 @@ legend .tab-button {
     font-size: 1em;
 }
 
-.help {
-    background:url(images/help.png) 100% 50% no-repeat;
-    padding-right: 25px;
-    min-height: 25px;
-    display: inline-block;
-}
-
 /*
  * == Public pages
  */
@@ -1055,7 +966,6 @@ legend .tab-button {
 }
 .public_page #userlink {
     color: #666666;
-    background: url(images/icon-user.png) 7px 50% no-repeat;
     padding: .2em .2em .2em 25px;
     display: inline-block;
 }
@@ -1529,7 +1439,6 @@ table.listing.single {
     width: 60%;
     margin:0 auto;
     min-width: 60em;
-    background-image: url(images/mailing_bg.jpg);
     background-repeat: no-repeat;
     background-position: center 1.5em;
     padding-bottom: .3em;
@@ -1600,7 +1509,7 @@ table.listing.single {
 #mailing_header dt,
 #mailing_header dd {
     display: inline-block;
-    padding:0;
+    padding:.2em .5em;
     margin:0;
 }
 #mailing_header dt {
@@ -1609,18 +1518,6 @@ table.listing.single {
 }
 #mailing_header dd {
     width: 80%;
-}
-
-.attached {
-    background: url(images/attached.png) 0 50% no-repeat;
-    padding: .2em 0 .2em 16px;
-    display: inline-block;
-}
-
-.membercount {
-    cursor: pointer;
-    background: url(images/icon-user.png) 99% 50% no-repeat;
-    padding-right: 20px;
 }
 
 #errorbox, .errorbox {

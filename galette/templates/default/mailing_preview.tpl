@@ -26,7 +26,7 @@
                 <dt>{_T string="Attachments:"}</dt>
                 <dd>
     {foreach from=$attachments item=attachment}
-                    <span class="attached"><a target="_blank" href="{path_for name="previewAttachment" data=["id" => $mailing_id, "pos" => $attachment@index]}">{$attachment->getFileName()}</a></span>
+                    <span class="attached"><a target="_blank" href="{path_for name="previewAttachment" data=["id" => $mailing_id, "pos" => $attachment@index]}"><i class="fas fa-link"></i>{$attachment->getFileName()}</a></span>
     {foreachelse}
                     -
     {/foreach}
