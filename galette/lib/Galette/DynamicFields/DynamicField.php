@@ -461,7 +461,7 @@ abstract class DynamicField
      */
     public function isRepeatable()
     {
-        return $this->repeat != null && trim($this->repeat) != '' && (int)$this->repeat > 1;
+        return $this->repeat != null && trim($this->repeat) != '' && (int)$this->repeat >= 0;
     }
 
     /**

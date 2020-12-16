@@ -140,7 +140,7 @@
             _parent.append('<br/>');
             _parent.append(_new);
             _new.focus();
-            if( _total === '0' || _current < _total ) {
+            if( _total == '0' || _current < _total ) {
                 var _b = _addLnk();
                 _lnkEvent(_b, _new, _parent);
                 _parent.append(_b);
@@ -171,7 +171,7 @@
                 var _total = $(_input[0]).data('maxrepeat'); //max number of occurences
                 var _current = _vals[_vals.length-1]; //current occurrence
 
-                if ( _total === '0' || _current < _total ) {
+                if ( _total == '0' || _current < _total ) {
                     var _a = _addLnk();
                     $(this).append(_a);
                     _lnkEvent(_a, _input, _parent);
