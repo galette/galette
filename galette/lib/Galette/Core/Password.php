@@ -181,7 +181,7 @@ class Password extends AbstractPassword
             $del = $this->zdb->execute($delete);
             if ($del) {
                 Analog::log(
-                    'Old Temporary passwords has been deleted.',
+                    'Old Temporary passwords have been deleted.',
                     Analog::DEBUG
                 );
             }

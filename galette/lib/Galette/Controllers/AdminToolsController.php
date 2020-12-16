@@ -148,7 +148,7 @@ class AdminToolsController extends AbstractController
                 $success_detected[] = str_replace(
                     '%i',
                     $members->getCount(),
-                    _T("Logins and passwords has been successfully filled (%i processed).")
+                    _T("Logins and passwords have been successfully filled (%i processed).")
                 );
             } else {
                 $error_detected[] = _T("An error occurred filling empty logins and passwords :(");
