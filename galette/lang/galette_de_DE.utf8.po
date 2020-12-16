@@ -18,9 +18,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-06 08:39+0100\n"
-"PO-Revision-Date: 2020-12-12 18:26+0000\n"
+"PO-Revision-Date: 2020-12-16 19:32+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
@@ -316,8 +316,9 @@ msgid "%count members has been changed successfully!"
 msgstr "%count Mitglieder wurden erfolgreich geändert!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1508
+#, fuzzy
 msgid "Invalid captcha"
-msgstr ""
+msgstr "Ungültiger Captcha"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1617
 msgid "Your account has been created!"
@@ -888,8 +889,6 @@ msgid "An error occurred reinitializing PDF models :("
 msgstr "Fehler bei der Re-Initialisierung der PDF Modelle aufgetreten :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:151
-#, fuzzy
-#| msgid "Logins and passwords have been successfully filled (%i processed)."
 msgid "Logins and passwords has been successfully filled (%i processed)."
 msgstr "Anmeldename und Passwort wurden erfolgreich erstellt (%i bearbeitet)."
 
@@ -1179,41 +1178,44 @@ msgid "Update models"
 msgstr "Modelle aktualisieren"
 
 #: ../lib/Galette/Core/Gaptcha.php:103
-#, php-format
+#, fuzzy, php-format
 msgid "How much is %1$s plus %2$s?"
-msgstr ""
+msgstr "Wie viel ist %1$s plus %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:104
-#, php-format
+#, fuzzy, php-format
 msgid "How much is %1$s added to %2$s?"
-msgstr ""
+msgstr "Wie viel wird %1$s zu %2$s hinzugefügt?"
 
 #: ../lib/Galette/Core/Gaptcha.php:105
-#, php-format
+#, fuzzy, php-format
 msgid ""
 "I have %1$s Galettes, a friend give me %2$s more. How many Galettes do I "
 "have?"
 msgstr ""
+"Ich habe %1$s Galettes, ein Freund gibt mir %2$s mehr. Wie viele Galettes "
+"habe ich?"
 
 #: ../lib/Galette/Core/Gaptcha.php:108
-#, php-format
+#, fuzzy, php-format
 msgid "How much is %1$s minus %2$s?"
-msgstr ""
+msgstr "Wie viel ist %1$s minus %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:109
-#, php-format
+#, fuzzy, php-format
 msgid "How much is %1$s on which we retire %2$s?"
-msgstr ""
+msgstr "Wie viel ist %1$s, auf dem wir in Rente gehen %2$s?"
 
 #: ../lib/Galette/Core/Gaptcha.php:110
-#, php-format
+#, fuzzy, php-format
 msgid "How much is %2$s retired to %1$s?"
-msgstr ""
+msgstr "Wie viel ist %2$s auf %1$s zurückgegacht?"
 
 #: ../lib/Galette/Core/Gaptcha.php:111
-#, php-format
+#, fuzzy, php-format
 msgid "I have %1$s Galettes, I give %2$s of them. How many Galettes do I have?"
 msgstr ""
+"Ich habe %1$s Galettes, ich gebe %2$s von ihnen. Wie viele Galettes habe ich?"
 
 #: ../lib/Galette/Core/Pagination.php:254
 msgid "First page"
@@ -2271,8 +2273,7 @@ msgid "%field should not be empty!"
 msgstr "%file darf nicht leer sein!"
 
 #: ../lib/Galette/Entity/PdfModel.php:363
-#, fuzzy, php-format
-#| msgid "Remove dynamic field %1$s"
+#, php-format
 msgid "Label for dynamic field \"%s\""
 msgstr "Bezeichnung für dynamisches Feld \"%s\""
 
