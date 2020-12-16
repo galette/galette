@@ -18,7 +18,7 @@
 # Luca De Filippo <luca.defilippo@translationcommons.org>, 2020.
 msgid ""
 msgstr ""
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-06 08:39+0100\n"
 "PO-Revision-Date: 2020-12-15 15:29+0000\n"
 "Last-Translator: Luca De Filippo <luca.defilippo@translationcommons.org>\n"
@@ -143,7 +143,8 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:262
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:264
 msgid "Trying to load mailing while email is disabled in preferences."
-msgstr "Provando a caricare le email mentre sono disabilitate delle preferenze."
+msgstr ""
+"Provando a caricare le email mentre sono disabilitate delle preferenze."
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:151
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:287
@@ -724,7 +725,8 @@ msgstr "Devi inserire sia il login che la password."
 
 #: ../lib/Galette/Controllers/AuthController.php:145
 msgid "Your password is too weak! Please consider updating it."
-msgstr "La password è troppo debole! Prova ad aggiornarla con una più efficace."
+msgstr ""
+"La password è troppo debole! Prova ad aggiornarla con una più efficace."
 
 #: ../lib/Galette/Controllers/AuthController.php:153
 msgid "Login failed."
