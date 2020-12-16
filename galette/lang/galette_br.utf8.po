@@ -854,7 +854,7 @@ msgid "An error occurred reinitializing PDF models :("
 msgstr ""
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:151
-msgid "Logins and passwords have been successfully filled (%i processed)."
+msgid "Logins and passwords has been successfully filled (%i processed)."
 msgstr ""
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:154

@@ -882,8 +882,10 @@ msgid "An error occurred reinitializing PDF models :("
 msgstr ""
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:151
-msgid "Logins and passwords have been successfully filled (%i processed)."
-msgstr ""
+#, fuzzy
+#| msgid "Plugin '%name' has been successfully installed!"
+msgid "Logins and passwords has been successfully filled (%i processed)."
+msgstr "¡Se instaló el complemento «%name» correctamente!"
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:154
 msgid "An error occurred filling empty logins and passwords :("
