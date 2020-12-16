@@ -13,9 +13,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-06 08:39+0100\n"
-"PO-Revision-Date: 2020-12-12 18:26+0000\n"
+"PO-Revision-Date: 2020-12-16 19:32+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
@@ -282,7 +282,7 @@ msgstr ""
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1258
 #, php-format
 msgid "Mass change %count members"
-msgstr "Cambio masivo %recuento de miembros"
+msgstr "Cambio masivo %count de miembros"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1289
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1361
@@ -292,7 +292,7 @@ msgstr "¡No se han confirmado los cambios masivos!"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1330
 #, php-format
 msgid "Review mass change %count members"
-msgstr "Revisar cambio masivo %recuento de miembros"
+msgstr "Revisar cambio masivo %count de miembros"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1390
 msgid "Nothing to do!"
@@ -310,7 +310,7 @@ msgstr "Ocurrió un error durante la edición masiva!"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1437
 #, php-format
 msgid "%count members has been changed successfully!"
-msgstr "%recuento de miembros se ha modificado correctamente!"
+msgstr "%count de miembros se ha modificado correctamente!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1508
 msgid "Invalid captcha"
@@ -882,10 +882,8 @@ msgid "An error occurred reinitializing PDF models :("
 msgstr ""
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:151
-#, fuzzy
-#| msgid "Plugin '%name' has been successfully installed!"
 msgid "Logins and passwords has been successfully filled (%i processed)."
-msgstr "¡Se instaló el complemento «%name» correctamente!"
+msgstr ""
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:154
 msgid "An error occurred filling empty logins and passwords :("
@@ -2382,7 +2380,7 @@ msgstr "Información de contacto"
 #, fuzzy
 #| msgid "Other informations:"
 msgid "Member information"
-msgstr "Otra información:"
+msgstr "Información del miembro :"
 
 #: ../lib/Galette/Entity/PaymentType.php:191
 msgid "You cannot delete system payment types!"
@@ -2421,7 +2419,6 @@ msgid "You cannot delete default status!"
 msgstr ""
 
 #: ../lib/Galette/Entity/SavedSearch.php:154
-#, fuzzy
 msgid "Form is mandatory!"
 msgstr "¡El formulario es obligatorio!"
 
@@ -2431,7 +2428,6 @@ msgid "Unknown form %form!"
 msgstr ""
 
 #: ../lib/Galette/Entity/SavedSearch.php:361
-#, fuzzy
 msgid "Name cannot be empty!"
 msgstr "¡El nombre no puede quedar vacío!"
 
@@ -2525,7 +2521,6 @@ msgid "Galette needs update!"
 msgstr ""
 
 #: ../lib/Galette/Middleware/UpdateAndMaintenance.php:169
-#, fuzzy
 msgid "Galette is currently under maintenance!"
 msgstr "¡Galette está en mantenimiento en este momento!"
 
