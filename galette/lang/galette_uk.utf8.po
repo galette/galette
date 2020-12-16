@@ -3,9 +3,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-06 08:39+0100\n"
-"PO-Revision-Date: 2020-12-12 18:26+0000\n"
+"PO-Revision-Date: 2020-12-16 19:32+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/galette/"
 "galette/uk/>\n"
@@ -873,10 +873,8 @@ msgid "An error occurred reinitializing PDF models :("
 msgstr ""
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:151
-#, fuzzy
-#| msgid "Plugin '%name' has been successfully installed!"
 msgid "Logins and passwords has been successfully filled (%i processed)."
-msgstr "Втулок '%name' успішно встановлено!"
+msgstr ""
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:154
 msgid "An error occurred filling empty logins and passwords :("
