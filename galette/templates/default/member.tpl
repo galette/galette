@@ -26,7 +26,7 @@
                 <label for="detach_parent">{_T string="Detach?"}</label>
                 <input type="checkbox" name="detach_parent" id="detach_parent" value="1"/>
             {/if}
-        {else if ($login->isAdmin() or $login->isStaff()) and !$member->hasChildren()}
+        {else if ($login->isAdmin() or $login->isStaff()) and !$member->hasChildren() and isset($members.list)}
             <input type="checkbox" name="attach" id="attach" value="1"{if $member->isDuplicate()} checked="checked"{/if}/>
             <label for="attach"><i class="fas fa-link"></i> {_T string="Attach member"}</label>
             <span id="parent_id_elt" class="sr-only">
