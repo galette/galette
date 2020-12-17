@@ -10,13 +10,14 @@
 # Clara Rodriguez Aliberas <clara@channable.com>, 2020.
 # Luz Maria Cerqueda <lux8324@gmail.com>, 2020.
 # Saul Henriquez <saul_henriquez@hotmail.com>, 2020.
+# iDu^32*M!hvC&8 <tinakus.nav@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-06 08:39+0100\n"
-"PO-Revision-Date: 2020-12-16 19:32+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2020-12-17 07:31+0000\n"
+"Last-Translator: iDu^32*M!hvC&8 <tinakus.nav@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/galette/galette/"
 "es/>\n"
 "Language: es\n"
@@ -314,7 +315,7 @@ msgstr "%count de miembros se ha modificado correctamente!"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1508
 msgid "Invalid captcha"
-msgstr ""
+msgstr "Captcha inválido"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1617
 msgid "Your account has been created!"
@@ -355,7 +356,7 @@ msgstr "Remover miembro %1$s"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1854
 #, php-format
 msgid "You are about to remove %count members."
-msgstr ""
+msgstr "Está por remover %count miembros."
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:113
 msgid "Titles management"
@@ -416,7 +417,7 @@ msgstr "%type n.º %id no se ha actualizado"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:263
 msgid "%type has been successfully added!"
-msgstr ""
+msgstr "¡%type fue añadido exitosamente!"
 
 #: ../lib/Galette/Controllers/Crud/EntitledsController.php:263
 msgid "%type #%id has been successfully updated!"
