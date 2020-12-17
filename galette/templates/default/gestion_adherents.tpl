@@ -283,7 +283,8 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     {draw_actions class=$rclass member=$member login=$login plugin_actions=$plugin_actions}
                 </tr>
 {foreachelse}
-                <tr><td colspan="{$galette_list|count}" class="emptylist">{_T string="No member has been found"}</td></tr>
+                {* colspan +1 for actions column *}
+                <tr><td colspan="{$galette_list|count + 1}" class="emptylist">{_T string="No member has been found"}</td></tr>
 {/foreach}
             </tbody>
         </table>

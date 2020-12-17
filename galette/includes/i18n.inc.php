@@ -122,14 +122,19 @@ function _Tn($singular, $plural, $count, $domain = 'galette', $nt = true)
         return ($count > 1 ? $plural : $singular);
     }
 
-    $ret = $translator->translatePlural(
-        $singular,
-        $plural,
-        $count,
-        $domain
-    );
+    if (
+        $translator->translationExists($singular, $domain)
+        && $translator->translationExists($plural, $domain)
+    ) {
+        $ret = $translator->translatePlural(
+            $singular,
+            $plural,
+            $count,
+            $domain
+        );
+        return $ret;
+    }
 
-    $trans = false;
     if (!isset($installer) || $installer !== true) {
         $trans = $l10n->getDynamicTranslation(
             ($count > 1 ? $plural : $singular),
@@ -138,7 +143,7 @@ function _Tn($singular, $plural, $count, $domain = 'galette', $nt = true)
     }
 
     if (!$trans) {
-        $trans = $ret;
+        $trans = ($count > 1 ? $plural : $singular);
 
         if (GALETTE_MODE == 'DEV' && $nt === true) {
             $trans .= ' (not translated)';
