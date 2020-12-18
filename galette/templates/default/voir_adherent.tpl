@@ -209,10 +209,10 @@ We have to use a template file, so Smarty will do its work (like replacing varia
                     <a href="{if $login->isGroupManager($kgroup)}{path_for name="groups" data=["id" => $kgroup]}{else}#{/if}" class="button {if not $login->isGroupManager($kgroup)} notmanaged{/if}">
                         {$group}
             {if $member->isGroupMember($group)}
-                        <i class="fas fa-user fa-w" title="{_T string="Member of group"|escape}"></i>
+                        <i class="fas fa-user fa-w" title="{_T string="Member of group"}"></i>
             {/if}
             {if $member->isGroupManager($group)}
-                        <i class="fas fa-user-tie fa-w" title="{_T string="Group manager"|escape}"></i>
+                        <i class="fas fa-user-tie fa-w" title="{_T string="Group manager"}"></i>
             {/if}
                     </a>
         {/if}

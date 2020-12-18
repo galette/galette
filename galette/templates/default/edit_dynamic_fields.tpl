@@ -115,7 +115,7 @@
 </fieldset>
 <script type="text/javascript">
     var _addLnk = function(){
-        return $('<a class="button" href="#"><i class="fas fa-plus" title="{_T string="New occurence"|escape}"></i> <span class="sr-only">{_T string="New occurence"}"</span></a>');
+        return $('<a class="button" href="#"><i class="fas fa-plus" title="{_T string="New occurence"}"></i> <span class="sr-only">{_T string="New occurence"}"</span></a>');
     };
 
     var _lnkEvent = function(_a, _input, _parent) {
