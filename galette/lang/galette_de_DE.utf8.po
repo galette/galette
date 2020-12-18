@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-17 08:41+0100\n"
+"POT-Creation-Date: 2020-12-18 05:02+0100\n"
 "PO-Revision-Date: 2020-12-16 19:32+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
@@ -2344,7 +2344,7 @@ msgstr "Mitgliedskennung"
 msgid "Last name"
 msgstr "Vorname"
 
-#: ../lib/Galette/Entity/PdfModel.php:666 ../includes/i18n.inc.php:325
+#: ../lib/Galette/Entity/PdfModel.php:666 ../includes/i18n.inc.php:330
 msgid "First name"
 msgstr "Vorname"
 
@@ -2386,7 +2386,7 @@ msgstr ""
 msgid "Town"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:706 ../includes/i18n.inc.php:322
+#: ../lib/Galette/Entity/PdfModel.php:706 ../includes/i18n.inc.php:327
 msgid "Country"
 msgstr "Land"
 
@@ -2827,212 +2827,212 @@ msgstr "Nutzungsdaten wurden übermittelt. Vielen Dank!"
 msgid "Thank you for registering!"
 msgstr "Vielen Dank für ihre Anmeldung!"
 
-#: ../includes/i18n.inc.php:272
+#: ../includes/i18n.inc.php:277
 msgid "Realization:"
 msgstr "Realisierung:"
 
-#: ../includes/i18n.inc.php:273
+#: ../includes/i18n.inc.php:278
 msgid "Graphics:"
 msgstr "Graphen:"
 
-#: ../includes/i18n.inc.php:274
+#: ../includes/i18n.inc.php:279
 msgid "Publisher:"
 msgstr "Herausgeber:"
 
-#: ../includes/i18n.inc.php:275
+#: ../includes/i18n.inc.php:280
 msgid "President"
 msgstr "Vorsitzender"
 
-#: ../includes/i18n.inc.php:276
+#: ../includes/i18n.inc.php:281
 msgid "Vice-president"
 msgstr "Zweiter Vorsitzender"
 
-#: ../includes/i18n.inc.php:277
+#: ../includes/i18n.inc.php:282
 msgid "Treasurer"
 msgstr "Kassenwart"
 
-#: ../includes/i18n.inc.php:278
+#: ../includes/i18n.inc.php:283
 msgid "Vice-treasurer"
 msgstr "Zweiter Kassenwart"
 
-#: ../includes/i18n.inc.php:279
+#: ../includes/i18n.inc.php:284
 msgid "Secretary"
 msgstr "Schriftführer"
 
-#: ../includes/i18n.inc.php:280
+#: ../includes/i18n.inc.php:285
 msgid "Vice-secretary"
 msgstr "Zweiter Sektretär"
 
-#: ../includes/i18n.inc.php:281
+#: ../includes/i18n.inc.php:286
 msgid "Active member"
 msgstr "Aktives Mitglied"
 
-#: ../includes/i18n.inc.php:282
+#: ../includes/i18n.inc.php:287
 msgid "Benefactor member"
 msgstr "Wohltäter"
 
-#: ../includes/i18n.inc.php:283
+#: ../includes/i18n.inc.php:288
 msgid "Founder member"
 msgstr "Gründungsmitglied"
 
-#: ../includes/i18n.inc.php:284
+#: ../includes/i18n.inc.php:289
 msgid "Old-timer"
 msgstr "Ehrenmitglied"
 
-#: ../includes/i18n.inc.php:285
+#: ../includes/i18n.inc.php:290
 msgid "Legal entity"
 msgstr "Gesellschaft"
 
-#: ../includes/i18n.inc.php:286
+#: ../includes/i18n.inc.php:291
 msgid "Non-member"
 msgstr "Nicht Mitglied"
 
-#: ../includes/i18n.inc.php:287
+#: ../includes/i18n.inc.php:292
 msgid "Reduced annual contribution"
 msgstr "Ermäßigter Beitrag"
 
-#: ../includes/i18n.inc.php:288
+#: ../includes/i18n.inc.php:293
 msgid "Company cotisation"
 msgstr "Mitgliedsbeitrag Firma"
 
-#: ../includes/i18n.inc.php:289
+#: ../includes/i18n.inc.php:294
 msgid "Donation in kind"
 msgstr "Geschenk"
 
-#: ../includes/i18n.inc.php:290
+#: ../includes/i18n.inc.php:295
 msgid "Donation in money"
 msgstr "Geldspende"
 
-#: ../includes/i18n.inc.php:291
+#: ../includes/i18n.inc.php:296
 msgid "Partnership"
 msgstr "Partnerschaft"
 
-#: ../includes/i18n.inc.php:292
+#: ../includes/i18n.inc.php:297
 msgid "french"
 msgstr "Französisch"
 
-#: ../includes/i18n.inc.php:293
+#: ../includes/i18n.inc.php:298
 msgid "english"
 msgstr "Englisch"
 
-#: ../includes/i18n.inc.php:294
+#: ../includes/i18n.inc.php:299
 msgid "spanish"
 msgstr "Spanisch"
 
-#: ../includes/i18n.inc.php:295
+#: ../includes/i18n.inc.php:300
 msgid "annual fee"
 msgstr "Jährlicher Beitrag"
 
-#: ../includes/i18n.inc.php:296
+#: ../includes/i18n.inc.php:301
 msgid "annual fee (to be paid)"
 msgstr "Jahresbeitrag"
 
-#: ../includes/i18n.inc.php:297
+#: ../includes/i18n.inc.php:302
 msgid "company fee"
 msgstr "Firmenbeitrag"
 
-#: ../includes/i18n.inc.php:298
+#: ../includes/i18n.inc.php:303
 msgid "donation in kind"
 msgstr "Sachspende"
 
-#: ../includes/i18n.inc.php:299
+#: ../includes/i18n.inc.php:304
 msgid "donation in money"
 msgstr "Geldspende"
 
-#: ../includes/i18n.inc.php:300
+#: ../includes/i18n.inc.php:305
 msgid "partnership"
 msgstr "Partnerschaft"
 
-#: ../includes/i18n.inc.php:301
+#: ../includes/i18n.inc.php:306
 msgid "reduced annual fee"
 msgstr "ermäßigter Beitrag"
 
-#: ../includes/i18n.inc.php:302
+#: ../includes/i18n.inc.php:307
 msgid "Identity"
 msgstr "Identität"
 
-#: ../includes/i18n.inc.php:303
+#: ../includes/i18n.inc.php:308
 msgid "Galette-related data"
 msgstr "Galette-bezogene Daten"
 
-#: ../includes/i18n.inc.php:304
+#: ../includes/i18n.inc.php:309
 msgid "Contact information"
 msgstr "Kontaktinformationen"
 
-#: ../includes/i18n.inc.php:305
+#: ../includes/i18n.inc.php:310
 msgid "Mr."
 msgstr "Herr"
 
-#: ../includes/i18n.inc.php:306
+#: ../includes/i18n.inc.php:311
 msgid "Mrs."
 msgstr "Frau"
 
-#: ../includes/i18n.inc.php:307
+#: ../includes/i18n.inc.php:312
 msgid "Miss"
 msgstr "Fräulein"
 
-#: ../includes/i18n.inc.php:308
+#: ../includes/i18n.inc.php:313
 msgid "Identity:"
 msgstr "Identität:"
 
-#: ../includes/i18n.inc.php:309
+#: ../includes/i18n.inc.php:314
 msgid "Galette-related data:"
 msgstr "Galette-bezogene Daten:"
 
-#: ../includes/i18n.inc.php:310
+#: ../includes/i18n.inc.php:315
 msgid "Contact information:"
 msgstr "Kontakinformation:"
 
-#: ../includes/i18n.inc.php:311
+#: ../includes/i18n.inc.php:316
 msgid "Society"
 msgstr "Gesellschaft"
 
-#: ../includes/i18n.inc.php:312
+#: ../includes/i18n.inc.php:317
 msgid "Politeness"
 msgstr "Höflichkeit"
 
-#: ../includes/i18n.inc.php:314
+#: ../includes/i18n.inc.php:319
 msgid "Main"
 msgstr "Haupt"
 
-#: ../includes/i18n.inc.php:315
+#: ../includes/i18n.inc.php:320
 msgid "** Galette identifier, if applicable"
 msgstr "** Galette Merkmal, wenn zutreffen"
 
-#: ../includes/i18n.inc.php:316
+#: ../includes/i18n.inc.php:321
 msgid "* Only for compagnies"
 msgstr "* Nur für Firmen"
 
-#: ../includes/i18n.inc.php:317
+#: ../includes/i18n.inc.php:322
 #, php-format
 msgid "Hereby, I agree to comply to %s association statutes and its rules."
 msgstr "Hiermit stimme ich den Bestimmungen und Regeln von %s zu."
 
-#: ../includes/i18n.inc.php:318
+#: ../includes/i18n.inc.php:323
 msgid "At ................................................"
 msgstr "Bei ................................................"
 
-#: ../includes/i18n.inc.php:319
+#: ../includes/i18n.inc.php:324
 msgid "On .......... / .......... / .......... "
 msgstr "Am .......... / .......... / .......... "
 
-#: ../includes/i18n.inc.php:320
+#: ../includes/i18n.inc.php:325
 msgid "Username"
 msgstr "Benutzername"
 
-#: ../includes/i18n.inc.php:321
+#: ../includes/i18n.inc.php:326
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
-#: ../includes/i18n.inc.php:323
+#: ../includes/i18n.inc.php:328
 msgid "City"
 msgstr "Stadt"
 
-#: ../includes/i18n.inc.php:324
+#: ../includes/i18n.inc.php:329
 msgid "Zip Code"
 msgstr "Postleitzahl"
 
-#: ../includes/i18n.inc.php:326
+#: ../includes/i18n.inc.php:331
 msgid ""
 "The minimum contribution for each type of membership are defined on the "
 "website of the association. The amount of donations are free to be decided "
@@ -3042,11 +3042,11 @@ msgstr ""
 "definiert. Spendenbeiträge können von den großzügigen Spendern selber "
 "eingegeben werden."
 
-#: ../includes/i18n.inc.php:327
+#: ../includes/i18n.inc.php:332
 msgid "Required membership:"
 msgstr "Benötigte Mitgliedschaft:"
 
-#: ../includes/i18n.inc.php:328
+#: ../includes/i18n.inc.php:333
 msgid ""
 "Complete the following form and send it with your funds, in order to "
 "complete your subscription."
@@ -3054,19 +3054,19 @@ msgstr ""
 "Füllen Sie das Formular aus und schicken Sie es zusammen mit ihrem Beitrag "
 "zurück um die Mitgliedschaft abzuschließen."
 
-#: ../includes/i18n.inc.php:329
+#: ../includes/i18n.inc.php:334
 msgid "on"
 msgstr "an"
 
-#: ../includes/i18n.inc.php:330
+#: ../includes/i18n.inc.php:335
 msgid "from"
 msgstr "von"
 
-#: ../includes/i18n.inc.php:331
+#: ../includes/i18n.inc.php:336
 msgid "to"
 msgstr "an"
 
-#: ../includes/i18n.inc.php:332
+#: ../includes/i18n.inc.php:337
 msgid "Association"
 msgstr "Verein"
 
@@ -4311,7 +4311,7 @@ msgstr ""
 "fortzusetzen oder abzubrechen."
 
 #: ../templates/default/page.tpl:142
-#: ../templates/default/gestion_adherents.tpl:472
+#: ../templates/default/gestion_adherents.tpl:473
 msgid "Existing mailing"
 msgstr "Bestehende Mails"
 
@@ -4343,8 +4343,8 @@ msgstr "Sicherheit"
 
 #: ../templates/default/preferences.tpl:16
 #: ../templates/default/gestion_adherents.tpl:213
-#: ../templates/default/gestion_adherents.tpl:417
 #: ../templates/default/gestion_adherents.tpl:418
+#: ../templates/default/gestion_adherents.tpl:419
 msgid "Admin"
 msgstr "Administrator"
 
@@ -5324,7 +5324,7 @@ msgstr "Dauer"
 
 #: ../templates/default/gestion_contributions.tpl:154
 #: ../templates/default/gestion_adherents.tpl:157
-#: ../templates/default/gestion_adherents.tpl:376
+#: ../templates/default/gestion_adherents.tpl:377
 #: ../templates/default/saved_searches.tpl:12
 #: ../templates/default/configurer_fiche_content.tpl:9
 #: ../templates/default/gestion_intitule_content.tpl:16
@@ -5369,7 +5369,7 @@ msgstr "keine Beiträge"
 
 #: ../templates/default/gestion_contributions.tpl:271
 #: ../templates/default/gestion_mailings.tpl:170
-#: ../templates/default/gestion_adherents.tpl:292
+#: ../templates/default/gestion_adherents.tpl:293
 #: ../templates/default/history.tpl:145
 #: ../templates/default/liste_membres.tpl:87
 #: ../templates/default/ajax_members.tpl:16
@@ -5379,33 +5379,33 @@ msgid "Pages:"
 msgstr "Seiten:"
 
 #: ../templates/default/gestion_contributions.tpl:276
-#: ../templates/default/gestion_adherents.tpl:296
+#: ../templates/default/gestion_adherents.tpl:297
 msgid "For the selection:"
 msgstr "Für die Auswahl:"
 
 #: ../templates/default/gestion_contributions.tpl:279
-#: ../templates/default/gestion_adherents.tpl:300
+#: ../templates/default/gestion_adherents.tpl:301
 #: ../templates/default/group.tpl:81
 msgid "Delete"
 msgstr "Löschen"
 
 #: ../templates/default/gestion_contributions.tpl:286
 #: ../templates/default/gestion_contributions.tpl:287
-#: ../templates/default/gestion_adherents.tpl:348
 #: ../templates/default/gestion_adherents.tpl:349
+#: ../templates/default/gestion_adherents.tpl:350
 #: ../templates/default/gestion_transactions.tpl:152
 #: ../templates/default/gestion_transactions.tpl:153
 msgid "Legend"
 msgstr "Beschreibung"
 
 #: ../templates/default/gestion_contributions.tpl:294
-#: ../templates/default/gestion_adherents.tpl:382
+#: ../templates/default/gestion_adherents.tpl:383
 #: ../templates/default/voir_adherent.tpl:61
 msgid "Modification"
 msgstr "Ändern"
 
 #: ../templates/default/gestion_contributions.tpl:300
-#: ../templates/default/gestion_adherents.tpl:392
+#: ../templates/default/gestion_adherents.tpl:393
 msgid "Deletion"
 msgstr "Löschen"
 
@@ -5430,17 +5430,17 @@ msgstr ""
 "auszuführen."
 
 #: ../templates/default/gestion_contributions.tpl:338
-#: ../templates/default/gestion_adherents.tpl:455
+#: ../templates/default/gestion_adherents.tpl:456
 msgid "(Un)Check all"
 msgstr "Alle aus-/abwählen"
 
 #: ../templates/default/gestion_contributions.tpl:338
-#: ../templates/default/gestion_adherents.tpl:455
+#: ../templates/default/gestion_adherents.tpl:456
 msgid "Invert selection"
 msgstr "Auswahl umkehren"
 
 #: ../templates/default/gestion_contributions.tpl:338
-#: ../templates/default/gestion_adherents.tpl:455
+#: ../templates/default/gestion_adherents.tpl:456
 #: ../templates/default/gestion_transactions.tpl:170
 #: ../templates/default/gestion_transactions.tpl:174
 msgid "Show legend"
@@ -5449,7 +5449,7 @@ msgstr "Legende anzeigen"
 #: ../templates/default/gestion_contributions.tpl:349
 #: ../templates/default/gestion_mailings.tpl:192
 #: ../templates/default/edit_dynamic_fields.tpl:185
-#: ../templates/default/gestion_adherents.tpl:714
+#: ../templates/default/gestion_adherents.tpl:715
 #: ../templates/default/history.tpl:166
 #: ../templates/default/ajouter_transaction.tpl:253
 #: ../templates/default/ajouter_contribution.tpl:198
@@ -5919,10 +5919,6 @@ msgid "Enter up to %count more occurences."
 msgstr "Gib bis zu %count Wiederholungen ein."
 
 #: ../templates/default/edit_dynamic_fields.tpl:118
-msgid "htmlspecialchars(\"New occurence\", ENT_QUOTES, 'UTF-8', true)"
-msgstr ""
-
-#: ../templates/default/edit_dynamic_fields.tpl:118
 msgid "New occurence"
 msgstr "Neue Instanz"
 
@@ -6045,103 +6041,103 @@ msgid "Mbr num"
 msgstr "Mitgliedsnummer"
 
 #: ../templates/default/gestion_adherents.tpl:179
-#: ../templates/default/gestion_adherents.tpl:413
 #: ../templates/default/gestion_adherents.tpl:414
+#: ../templates/default/gestion_adherents.tpl:415
 msgid "Is a company"
 msgstr "Ist eine Firma"
 
 #: ../templates/default/gestion_adherents.tpl:184
-#: ../templates/default/gestion_adherents.tpl:407
 #: ../templates/default/gestion_adherents.tpl:408
+#: ../templates/default/gestion_adherents.tpl:409
 msgid "Is a man"
 msgstr "Ist ein Mann"
 
 #: ../templates/default/gestion_adherents.tpl:189
-#: ../templates/default/gestion_adherents.tpl:409
 #: ../templates/default/gestion_adherents.tpl:410
+#: ../templates/default/gestion_adherents.tpl:411
 msgid "Is a woman"
 msgstr "Ist eine Frau"
 
 #: ../templates/default/gestion_adherents.tpl:197
-#: ../templates/default/gestion_adherents.tpl:311
-#: ../templates/default/gestion_adherents.tpl:400
+#: ../templates/default/gestion_adherents.tpl:312
+#: ../templates/default/gestion_adherents.tpl:401
 msgid "Mail"
 msgstr "E-Mail"
 
 #: ../templates/default/gestion_adherents.tpl:205
-#: ../templates/default/gestion_adherents.tpl:402
+#: ../templates/default/gestion_adherents.tpl:403
 #: ../templates/default/footer.tpl:5
 msgid "Website"
 msgstr "Webseite"
 
-#: ../templates/default/gestion_adherents.tpl:286
+#: ../templates/default/gestion_adherents.tpl:287
 msgid "No member has been found"
 msgstr "Kein Mitglied gefunden"
 
-#: ../templates/default/gestion_adherents.tpl:305
+#: ../templates/default/gestion_adherents.tpl:306
 msgid "Mass change"
 msgstr "Massenänderung"
 
-#: ../templates/default/gestion_adherents.tpl:323
+#: ../templates/default/gestion_adherents.tpl:324
 #: ../templates/default/mailing_recipients.tpl:20
 msgid "Generate labels"
 msgstr "Erstelle Beschreibungen"
 
-#: ../templates/default/gestion_adherents.tpl:328
+#: ../templates/default/gestion_adherents.tpl:329
 msgid "Generate Member Cards"
 msgstr "Mitgliedsausweis erstellen"
 
-#: ../templates/default/gestion_adherents.tpl:334
+#: ../templates/default/gestion_adherents.tpl:335
 msgid "Export as CSV"
 msgstr "Als CSV exportieren"
 
-#: ../templates/default/gestion_adherents.tpl:353
+#: ../templates/default/gestion_adherents.tpl:354
 msgid "Reading the list"
 msgstr "Lesen der Liste"
 
-#: ../templates/default/gestion_adherents.tpl:357
+#: ../templates/default/gestion_adherents.tpl:358
 msgid "Active account"
 msgstr "Aktives Konto"
 
-#: ../templates/default/gestion_adherents.tpl:359
+#: ../templates/default/gestion_adherents.tpl:360
 msgid "Inactive account"
 msgstr "Inaktives Konto"
 
-#: ../templates/default/gestion_adherents.tpl:363
+#: ../templates/default/gestion_adherents.tpl:364
 msgid "Membership in order"
 msgstr "Mitgliedschaft in Ordnung"
 
-#: ../templates/default/gestion_adherents.tpl:365
+#: ../templates/default/gestion_adherents.tpl:366
 msgid "Membership will expire soon (&lt;30d)"
 msgstr "Mitgliedschaft läuft bald ab (&lt;30d)"
 
-#: ../templates/default/gestion_adherents.tpl:371
+#: ../templates/default/gestion_adherents.tpl:372
 msgid "Lateness in fee"
 msgstr "Verspätungsgebühr"
 
-#: ../templates/default/gestion_adherents.tpl:397
+#: ../templates/default/gestion_adherents.tpl:398
 msgid "User status/interactions"
 msgstr "Benutzerstatus/Interaktionen"
 
-#: ../templates/default/gestion_adherents.tpl:401
+#: ../templates/default/gestion_adherents.tpl:402
 msgid "Send an email"
 msgstr "E-Mail senden"
 
-#: ../templates/default/gestion_adherents.tpl:403
+#: ../templates/default/gestion_adherents.tpl:404
 msgid "Visit website"
 msgstr "Website ansehen"
 
-#: ../templates/default/gestion_adherents.tpl:435
+#: ../templates/default/gestion_adherents.tpl:436
 msgid "No member selected"
 msgstr "Kein Mitglied ausgewählt"
 
-#: ../templates/default/gestion_adherents.tpl:435
+#: ../templates/default/gestion_adherents.tpl:436
 msgid ""
 "Please make sure to select at least one member from the list to perform this "
 "action."
 msgstr "Bitte wählen Sie für diese Aktion mindestens ein Mitglied aus."
 
-#: ../templates/default/gestion_adherents.tpl:472
+#: ../templates/default/gestion_adherents.tpl:473
 msgid ""
 "A mailing already exists. Do you want to create a new one or resume the "
 "existing?"
@@ -6149,23 +6145,23 @@ msgstr ""
 "Es existiert schon eine E-Mail-Kampagne. Wollen Sie eine neue erstellen oder "
 "die vorhandene fortführen?"
 
-#: ../templates/default/gestion_adherents.tpl:482
+#: ../templates/default/gestion_adherents.tpl:483
 msgid "Resume"
 msgstr "Fortsetzen"
 
-#: ../templates/default/gestion_adherents.tpl:486
+#: ../templates/default/gestion_adherents.tpl:487
 msgid "New"
 msgstr "Neu"
 
-#: ../templates/default/gestion_adherents.tpl:517
+#: ../templates/default/gestion_adherents.tpl:518
 msgid "Search title"
 msgstr "Suchtitel"
 
-#: ../templates/default/gestion_adherents.tpl:690
+#: ../templates/default/gestion_adherents.tpl:691
 msgid "Attendance sheet details"
 msgstr "Teilnehmer Details"
 
-#: ../templates/default/gestion_adherents.tpl:718
+#: ../templates/default/gestion_adherents.tpl:719
 msgid "An error occurred displaying attendance sheet details interface :("
 msgstr ""
 "Bei der Anzeige von den Details des Anwesenheitsblattes ist ein Fehler "
@@ -7113,12 +7109,9 @@ msgid "Groups:"
 msgstr "Gruppen:"
 
 #: ../templates/default/voir_adherent.tpl:212
-msgid "htmlspecialchars(\"Member of group\", ENT_QUOTES, 'UTF-8', true)"
-msgstr ""
-
-#: ../templates/default/voir_adherent.tpl:215
-msgid "htmlspecialchars(\"Group manager\", ENT_QUOTES, 'UTF-8', true)"
-msgstr ""
+#: ../templates/default/advanced_search.tpl:29
+msgid "Member of group"
+msgstr "Mitglied der Gruppe"
 
 #: ../templates/default/voir_adherent.tpl:228
 #: ../templates/default/member.tpl:122
@@ -7144,10 +7137,6 @@ msgstr "Status der Mitgliedschaft"
 #: ../templates/default/advanced_search.tpl:23
 msgid "Account activity"
 msgstr "Kontenaktivität"
-
-#: ../templates/default/advanced_search.tpl:29
-msgid "Member of group"
-msgstr "Mitglied der Gruppe"
 
 #: ../templates/default/advanced_search.tpl:38
 msgid "With email:"
