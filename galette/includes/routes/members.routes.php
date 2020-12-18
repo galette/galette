@@ -2,6 +2,8 @@
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
+use Galette\Middleware\MembersNavigate;
+
 /**
  * Members related routes
  *
@@ -86,22 +88,32 @@ $app->get(
 $app->get(
     '/member/{id:\d+}',
     [Crud\MembersController::class, 'show']
-)->setName('member')->add($authenticate)->add('Galette\Middleware\MembersNavigate');
+)->setName('member')->add($authenticate)->add(MembersNavigate::class);
 
 $app->get(
     '/member/edit/{id:\d+}',
     [Crud\MembersController::class, 'edit']
-)->setName('editMember')->add($authenticate)->add('Galette\Middleware\MembersNavigate');
+)->setName('editMember')->add($authenticate)->add(MembersNavigate::class);
 
 $app->get(
     '/member/add',
     [Crud\MembersController::class, 'add']
-)->setName('addMember')->add($authenticate)->add('Galette\Middleware\MembersNavigate');
+)->setName('addMember')->add($authenticate)->add(MembersNavigate::class);
 
 $app->post(
-    '/member/store[/{self:subscribe}]',
+    '/subscribe/store',
     [Crud\MembersController::class, 'doSelfSubscribe']
-)->setName('storemembers');
+)->setName('storeselfmembers');
+
+$app->post(
+    '/member/store',
+    [Crud\MembersController::class, 'doAdd']
+)->setName('doAddMember');
+
+$app->post(
+    '/member/store/{id:\d+}',
+    [Crud\MembersController::class, 'doEdit']
+)->setName('doEditMember');
 
 $app->get(
     '/member/remove/{id:\d+}',

@@ -14,7 +14,7 @@
         </a>
     </nav>
 {/if}
-        <form action="{if $self_adh}{path_for name="storemembers" data=["self" => "subscribe"]}{else}{path_for name="storemembers"}{/if}" method="post" enctype="multipart/form-data" id="form">
+        <form action="{if $self_adh}{path_for name="storeselfmembers"}{elseif !$member->id}{path_for name="doAddMember"}{else}{path_for name="doEditMember" data=["id" => $member->id]}{/if}" method="post" enctype="multipart/form-data" id="form">
         <div class="bigtable">
             <p>{_T string="NB : The mandatory fields are in"} <span class="required">{_T string="red"}</span></p>
     {if !$self_adh}

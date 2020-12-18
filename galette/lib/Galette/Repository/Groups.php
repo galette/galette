@@ -305,8 +305,8 @@ class Groups
 
                     $result = $stmt->execute(
                         array(
-                            Group::PK => $gid,
-                            Adherent::PK   => $adh->id
+                            'group' => $gid,
+                            'adh'   => $adh->id
                         )
                     );
 
