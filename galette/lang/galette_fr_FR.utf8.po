@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-17 08:41+0100\n"
-"PO-Revision-Date: 2020-12-16 19:33+0000\n"
+"PO-Revision-Date: 2020-12-18 04:05+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -891,8 +891,6 @@ msgid "An error occurred reinitializing PDF models :("
 msgstr "Une erreur est survenue lors de la réinitialisation des modèles PDF :("
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:151
-#, fuzzy
-#| msgid "Logins and passwords has been successfully filled (%i processed)."
 msgid "Logins and passwords have been successfully filled (%i processed)."
 msgstr ""
 "Les identifiants et mots de passe ont été remplis avec succès (%i traités)."
