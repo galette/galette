@@ -8,7 +8,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2003-2014 The Galette Team
+ * Copyright © 2003-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -44,7 +44,7 @@ use Analog\Analog;
 use Galette\Entity\Adherent;
 
 /**
- * Temporary password managment
+ * Temporary password management
  *
  * @category  Core
  * @name      Password
@@ -52,7 +52,7 @@ use Galette\Entity\Adherent;
  * @author    Frédéric Jacquot <unknown@unknow.com>
  * @author    Georges Khaznadar (password encryption, images) <unknown@unknow.com>
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7dev - 2011-06-16
@@ -76,7 +76,7 @@ class Password extends AbstractPassword
      * @param Db      $zdb   Database instance:
      * @param boolean $clean Whether we should clean expired passwords in database
      */
-    public function __construct(Db $zdb, $clean = true)
+    public function __construct(Db $zdb, bool $clean = true)
     {
         $this->zdb = $zdb;
         if ($clean === true) {
@@ -91,7 +91,7 @@ class Password extends AbstractPassword
      *
      * @return boolean
      */
-    private function removeOldEntries($id_adh)
+    private function removeOldEntries(int $id_adh): bool
     {
         try {
             $delete = $this->zdb->delete(self::TABLE);
@@ -104,6 +104,7 @@ class Password extends AbstractPassword
                     Analog::DEBUG
                 );
             }
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'An error has occurred removing old tmppasswords ' .
@@ -121,7 +122,7 @@ class Password extends AbstractPassword
      *
      * @return boolean
      */
-    public function generateNewPassword($id_adh)
+    public function generateNewPassword($id_adh): bool
     {
         //first of all, we'll remove all existant entries for specified id
         $this->removeOldEntries($id_adh);
@@ -167,7 +168,7 @@ class Password extends AbstractPassword
      *
      * @return boolean
      */
-    protected function cleanExpired()
+    protected function cleanExpired(): bool
     {
         $date = new \DateTime();
         $date->sub(new \DateInterval('PT24H'));
@@ -185,6 +186,7 @@ class Password extends AbstractPassword
                     Analog::DEBUG
                 );
             }
+            return true;
         } catch (Throwable $e) {
             Analog::log(
                 'An error occurred deleting expired temporary passwords. ' .
@@ -200,9 +202,9 @@ class Password extends AbstractPassword
      *
      * @param string $hash the hash
      *
-     * @return false if hash is not valid, member id otherwise
+     * @return false|int false if hash is not valid, member id otherwise
      */
-    public function isHashValid($hash)
+    public function isHashValid(string $hash)
     {
         try {
             $select = $this->zdb->select(self::TABLE);
@@ -235,7 +237,7 @@ class Password extends AbstractPassword
      *
      * @return boolean
      */
-    public function removeHash($hash)
+    public function removeHash(string $hash): bool
     {
         try {
             $delete = $this->zdb->delete(self::TABLE);

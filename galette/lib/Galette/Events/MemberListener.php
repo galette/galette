@@ -265,7 +265,7 @@ class MemberListener implements ListenerProviderInterface
         );
 
         $mlang = $member->language;
-        $mtxt = $texts->getTexts(
+        $texts->getTexts(
             (($new) ? 'sub' : 'accountedited'),
             $mlang
         );
