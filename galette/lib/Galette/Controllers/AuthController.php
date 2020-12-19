@@ -333,6 +333,7 @@ class AuthController extends AbstractController
                             'login_adh'         => custom_html_entity_decode($adh->login, ENT_QUOTES)
                         )
                     );
+                    $texts->getTexts($text_id, $adh->language);
 
                     $mail = new GaletteMail($this->preferences);
                     $mail->setSubject($texts->getSubject());
