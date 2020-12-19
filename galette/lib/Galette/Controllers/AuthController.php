@@ -314,24 +314,38 @@ class AuthController extends AbstractController
         if ($adh->id != '') {
             //account has been found, proceed
             if (GaletteMail::isValidEmail($adh->email)) {
-                $password = new Password($this->zdb);
-                $res = $password->generateNewPassword($adh->id);
-                if ($res == true) {
+                $tparams = [
+                    'login_adh' => custom_html_entity_decode(
+                        $adh->login,
+                        ENT_QUOTES
+                    )
+                ];
+
+                //check if account is active
+                if (!$adh->isActive()) { //https://bugs.galette.eu/issues/1529
+                    $res = true;
+                    $text_id = 'pwddisabled';
+                } else {
+                    $password = new Password($this->zdb);
+                    $res = $password->generateNewPassword($adh->id);
+                    $text_id = 'pwd';
                     $link_validity = new \DateTime();
                     $link_validity->add(new \DateInterval('PT24H'));
+                    $tparams += [
+                        'change_pass_uri'   => $this->preferences->getURL() .
+                            $this->router->pathFor(
+                                'password-recovery',
+                                ['hash' => base64_encode($password->getHash())]
+                            ),
+                        'link_validity'     => $link_validity->format(_T("Y-m-d H:i:s")),
+                    ];
+                }
 
+                if ($res === true) {
                     $texts = new Texts(
                         $this->preferences,
                         $this->router,
-                        array(
-                            'change_pass_uri'   => $this->preferences->getURL() .
-                                                    $this->router->pathFor(
-                                                        'password-recovery',
-                                                        ['hash' => base64_encode($password->getHash())]
-                                                    ),
-                            'link_validity'     => $link_validity->format(_T("Y-m-d H:i:s")),
-                            'login_adh'         => custom_html_entity_decode($adh->login, ENT_QUOTES)
-                        )
+                        $tparams
                     );
                     $texts->getTexts($text_id, $adh->language);
 

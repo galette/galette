@@ -130,4 +130,12 @@ $texts_fields = array(
         'tlang'     => 'en_US',
         'tcomment'  => _T('Informs admin a member edit his information')
     ),
+
+    array(
+        'tref'      => 'pwddisabled',
+        'tsubject'  => _T('[{ASSO_NAME}] Account {NAME_ADH} is inactive'),
+        'tbody'     => _T("Hello!{NEWLINE}A password recovery request has been made on your account on {ASSO_NAME}, but it is currently inactive and therefore cannot be processed.{NEWLINE}Please contact an administrator or a staff member if you think this is a mistake.{NEWLINE}See you soon!{NEWLINE}(this email was sent automatically)"),
+        'tlang'     => 'en_US',
+        'tcomment'  => _T('Lost password email (disabled)')
+    ),
 );
