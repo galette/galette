@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-11
@@ -36,11 +36,10 @@
 
 namespace Galette\Entity;
 
+use Galette\Features\Replacements;
 use Throwable;
 use Analog\Analog;
-use Laminas\Db\Sql\Expression;
 use Galette\Core\GaletteMail;
-use Galette\Entity\Texts;
 use Galette\Core\Db;
 use Galette\Core\History;
 
@@ -51,7 +50,7 @@ use Galette\Core\History;
  * @name      Reminder
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2009-2014 The Galette Team
+ * @copyright 2009-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-11
@@ -59,6 +58,8 @@ use Galette\Core\History;
 
 class Reminder
 {
+    use Replacements;
+
     public const TABLE = 'reminders';
     public const PK = 'reminder_id';
 
@@ -71,7 +72,6 @@ class Reminder
     /** @var boolean */
     private $nomail;
     private $comment;
-    private $replaces;
     private $msg;
 
     public const IMPENDING = 1;
@@ -182,7 +182,7 @@ class Reminder
             $insert->values($data);
 
             $add = $zdb->execute($insert);
-            if (!$add->count() > 0) {
+            if (!($add->count() > 0)) {
                 Analog::log('Reminder not stored!', Analog::ERROR);
                 return false;
             }
@@ -238,7 +238,7 @@ class Reminder
         }
 
         if ($this->hasMail()) {
-            $texts->setReplaces($this->replaces);
+            $texts->setMember($this->dest);
 
             $texts->getTexts(
                 $type_name . 'duedate',
@@ -286,7 +286,7 @@ class Reminder
                     $msg = _T("A problem happened while sending impending membership email");
                 }
                 $this->msg = $details;
-                $hist->add($str, $details);
+                $hist->add($msg, $details);
             }
         } else {
             $this->nomail = true;
@@ -376,18 +376,9 @@ class Reminder
             case 'dest':
                 if ($this->type !== null && $value instanceof Adherent) {
                     $this->dest = $value;
-                    $this->replaces['login_adh'] = $value->login;
-                    $this->replaces['name_adh'] = custom_html_entity_decode($value->sname);
-                    $this->replaces['firstname_adh'] = custom_html_entity_decode($value->surname);
-                    $this->replaces['lastname_adh'] = custom_html_entity_decode($value->name);
+
                     if ($value->getEmail() != '') {
                         $this->nomail = false;
-                    }
-                    if ($this->type === self::LATE) {
-                        $this->replaces['days_expired'] = $value->days_remaining * -1;
-                    }
-                    if ($this->type === self::IMPENDING) {
-                        $this->replaces['days_remaining'] = $value->days_remaining;
                     }
                 } else {
                     if (!$value instanceof Adherent) {

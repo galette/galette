@@ -159,6 +159,10 @@ class Links extends atoum
      */
     private function createAdherent()
     {
+        $bdate = new \DateTime(date('Y') . '-09-13');
+        //member is expected to be 28 years old
+        $bdate->sub(new \DateInterval('P28Y'));
+
         $data = [
             'nom_adh' => 'Hoarau',
             'prenom_adh' => 'Lucas',
@@ -175,7 +179,7 @@ class Links extends atoum
             'sexe_adh' => 1,
             'prof_adh' => 'Extraction',
             'titre_adh' => null,
-            'ddn_adh' => '1992-09-13',
+            'ddn_adh' => $bdate->format('Y-m-d'),
             'lieu_naissance' => 'Fischer',
             'pseudo_adh' => 'vallet.camille',
             'pays_adh' => null,
@@ -244,7 +248,7 @@ class Links extends atoum
             'sexe_adh' => 1,
             'prof_adh' => 'Extraction',
             'titre_adh' => null,
-            'ddn_adh' => '1992-02-22',
+            'ddn_adh' => 'NOT USED',
             'lieu_naissance' => 'Fischer',
             'pseudo_adh' => 'vallet.camille',
             'pays_adh' => '',

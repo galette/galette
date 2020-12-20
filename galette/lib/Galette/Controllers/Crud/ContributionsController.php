@@ -48,7 +48,6 @@ use Galette\Repository\Transactions;
 use Galette\Repository\Members;
 use Galette\Entity\ContributionsTypes;
 use Galette\Core\GaletteMail;
-use Galette\Entity\Texts;
 use Galette\IO\PdfMembersCards;
 use Galette\Repository\PaymentTypes;
 use Analog\Analog;

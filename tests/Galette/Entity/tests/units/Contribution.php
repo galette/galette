@@ -145,6 +145,10 @@ class Contribution extends atoum
      */
     private function createAdherent()
     {
+        $bdate = new \DateTime(date('Y') . '-12-26');
+        //member is expected to be 82 years old
+        $bdate->sub(new \DateInterval('P82Y'));
+
         $data = [
             'nom_adh' => 'Durand',
             'prenom_adh' => 'René',
@@ -161,7 +165,7 @@ class Contribution extends atoum
             'sexe_adh' => 0,
             'prof_adh' => 'Chef de fabrication',
             'titre_adh' => null,
-            'ddn_adh' => '1937-12-26',
+            'ddn_adh' => $bdate->format('Y-m-d'),
             'lieu_naissance' => 'Gonzalez-sur-Meunier',
             'pseudo_adh' => 'ubertrand',
             'pays_adh' => 'Antarctique',
@@ -428,7 +432,7 @@ class Contribution extends atoum
             'sexe_adh' => 0,
             'prof_adh' => 'Chef de fabrication',
             'titre_adh' => null,
-            'ddn_adh' => '1934-06-08',
+            'ddn_adh' => 'NOT USED',
             'lieu_naissance' => 'Gonzalez-sur-Meunier',
             'pseudo_adh' => 'ubertrand',
             'cp_adh' => '39 069',

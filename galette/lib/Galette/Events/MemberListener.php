@@ -173,35 +173,6 @@ class MemberListener implements ListenerProviderInterface
     }
 
     /**
-     * Get texts replacements array for member
-     *
-     * @param Adherent $member Member instance
-     *
-     * @return array
-     */
-    private function getReplacements(Adherent $member): array
-    {
-        $mreplaces = [
-            'name_adh'      => custom_html_entity_decode(
-                $member->sname
-            ),
-            'firstname_adh' => custom_html_entity_decode(
-                $member->surname
-            ),
-            'lastname_adh'  => custom_html_entity_decode(
-                $member->name
-            ),
-            'mail_adh'      => custom_html_entity_decode(
-                $member->getEmail()
-            ),
-            'login_adh'     => custom_html_entity_decode(
-                $member->login
-            )
-        ];
-        return $mreplaces;
-    }
-
-    /**
      * Send account email to member
      *
      * @param Adherent $member Member
@@ -230,19 +201,21 @@ class MemberListener implements ListenerProviderInterface
             return;
         }
 
-        $mreplaces = $this->getReplacements($member);
+        // Get email text in database
+        $texts = new Texts(
+            $this->preferences,
+            $this->router
+        );
+
+        $texts->setMember($member);
+
         if ($new) {
             $password = new Password($this->zdb);
             $res = $password->generateNewPassword($member->id);
             if ($res == true) {
-                $link_validity = new \DateTime();
-                $link_validity->add(new \DateInterval('PT24H'));
-                $mreplaces['change_pass_uri'] = $this->preferences->getURL() .
-                    $this->router->pathFor(
-                        'password-recovery',
-                        ['hash' => base64_encode($password->getHash())]
-                    );
-                $mreplaces['link_validity'] = $link_validity->format(_T("Y-m-d H:i:s"));
+                $texts
+                    ->setLinkValidity()
+                    ->setChangePasswordURI($password);
             } else {
                 $str = str_replace(
                     '%s',
@@ -256,13 +229,6 @@ class MemberListener implements ListenerProviderInterface
                 );
             }
         }
-
-        // Get email text in database
-        $texts = new Texts(
-            $this->preferences,
-            $this->router,
-            $mreplaces
-        );
 
         $mlang = $member->language;
         $texts->getTexts(
@@ -319,12 +285,11 @@ class MemberListener implements ListenerProviderInterface
         }
 
 
-        $mreplaces = $this->getReplacements($member);
         $texts = new Texts(
             $this->preferences,
-            $this->router,
-            $mreplaces
+            $this->router
         );
+        $texts->setMember($member);
 
         $txt_id = null;
         if ($new) {

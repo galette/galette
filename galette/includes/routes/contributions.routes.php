@@ -44,7 +44,6 @@ use Galette\Repository\Members;
 use Galette\Entity\Adherent;
 use Galette\Entity\ContributionsTypes;
 use Galette\Core\GaletteMail;
-use Galette\Entity\Texts;
 use Galette\Repository\PaymentTypes;
 
 $app->get(

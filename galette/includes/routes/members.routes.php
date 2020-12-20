@@ -2,8 +2,6 @@
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
-use Galette\Middleware\MembersNavigate;
-
 /**
  * Members related routes
  *
@@ -49,9 +47,9 @@ use Galette\Repository\Reminders;
 use Galette\Entity\Adherent;
 use Galette\Entity\Status;
 use Galette\Repository\Titles;
-use Galette\Entity\Texts;
 use Galette\Entity\Group;
 use Galette\IO\File;
+use Galette\Middleware\MembersNavigate;
 
 //self subscription
 $app->get(

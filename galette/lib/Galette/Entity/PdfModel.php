@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2014 The Galette Team
+ * Copyright © 2013-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-19
@@ -37,10 +37,9 @@
 namespace Galette\Entity;
 
 use Throwable;
-use Galette\Core;
 use Galette\Core\Db;
 use Galette\Core\Preferences;
-use Galette\DynamicFields\DynamicField;
+use Galette\Features\Replacements;
 use Galette\Repository\PdfModels;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
@@ -52,7 +51,7 @@ use Laminas\Db\Sql\Expression;
  * @name      PdfModel
  * @package   Galette
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-19
@@ -60,6 +59,8 @@ use Laminas\Db\Sql\Expression;
 
 abstract class PdfModel
 {
+    use Replacements;
+
     public const TABLE = 'pdfmodels';
     public const PK = 'model_id';
 
@@ -67,8 +68,6 @@ abstract class PdfModel
     public const INVOICE_MODEL = 2;
     public const RECEIPT_MODEL = 3;
     public const ADHESION_FORM_MODEL = 4;
-
-    protected $zdb;
 
     private $id;
     private $name;
@@ -81,10 +80,6 @@ abstract class PdfModel
     private $styles;
     private $parent;
 
-    private $patterns = [];
-    private $replaces = [];
-    private $dynamic_patterns = [];
-
     /**
      * Main constructor
      *
@@ -95,58 +90,35 @@ abstract class PdfModel
      */
     public function __construct(Db $zdb, Preferences $preferences, $type, $args = null)
     {
-        global $container;
-        $router = $container->get('router');
-        $this->zdb = $zdb;
+        global $container, $login;
+        $this->router = $container->get('router');
+        $this->preferences = $preferences;
+        $this
+            ->setDb($zdb)
+            ->setLogin($login);
         $this->type = $type;
 
         if (is_int($args)) {
-            $this->load($args, $preferences);
+            $this->load($args);
         } elseif ($args !== null && is_object($args)) {
-            $this->loadFromRs($args, $preferences);
+            $this->loadFromRs($args);
         } else {
-            $this->load($type, $preferences);
+            $this->load($type);
         }
 
         $this->setPatterns($this->getMainPatterns());
-
-        $address = $preferences->getPostalAddress();
-        $address_multi = preg_replace("/\n/", "<br>", $address);
-
-        $website = '';
-        if ($preferences->pref_website != '') {
-            $website = '<a href="' . $preferences->pref_website . '">' .
-                $preferences->pref_website . '</a>';
-        }
-
-        $logo = new Core\Logo();
-        $logo_elt = '<img' .
-            ' src="' . $preferences->getURL() . $router->pathFor('logo') . '"' .
-            ' width="' . $logo->getOptimalWidth() . '"' .
-            ' height="' . $logo->getOptimalHeight() . '"' .
-            '/>';
-
-        $this->replaces = array(
-            'asso_name'          => $preferences->pref_nom,
-            'asso_slogan'        => $preferences->pref_slogan,
-            'asso_address'       => $address,
-            'asso_address_multi' => $address_multi,
-            'asso_website'       => $website,
-            'asso_logo'          => $logo_elt,
-            'date_now'           => date(_T('Y-m-d'))
-        );
+        $this->setMain();
     }
 
     /**
      * Load a Model from its identifier
      *
-     * @param int         $id          Identifier
-     * @param Preferences $preferences Galette preferences
-     * @param boolean     $init        Init data if required model is missing
+     * @param int     $id   Identifier
+     * @param boolean $init Init data if required model is missing
      *
      * @return void
      */
-    protected function load($id, $preferences, $init = true)
+    protected function load($id, $init = true)
     {
         global $login;
 
@@ -160,14 +132,14 @@ abstract class PdfModel
             $count = $results->count();
             if ($count === 0) {
                 if ($init === true) {
-                    $models = new PdfModels($this->zdb, $preferences, $login);
+                    $models = new PdfModels($this->zdb, $this->preferences, $login);
                     $models->installInit();
-                    $this->load($id, $preferences, false);
+                    $this->load($id, false);
                 } else {
                     throw new \RuntimeException('Model not found!');
                 }
             } else {
-                $this->loadFromRs($results->current(), $preferences);
+                $this->loadFromRs($results->current());
             }
         } catch (Throwable $e) {
             Analog::log(
@@ -182,12 +154,11 @@ abstract class PdfModel
     /**
      * Load model from a db ResultSet
      *
-     * @param ResultSet   $rs          ResultSet
-     * @param Preferences $preferences Galette preferences
+     * @param ResultSet $rs ResultSet
      *
      * @return void
      */
-    protected function loadFromRs($rs, $preferences)
+    protected function loadFromRs($rs)
     {
         $pk = self::PK;
         $this->id = (int)$rs->$pk;
@@ -212,7 +183,7 @@ abstract class PdfModel
             //FIXME: for now, parent will always be a PdfMain
             $this->parent = new PdfMain(
                 $this->zdb,
-                $preferences,
+                $this->preferences,
                 (int)$rs->model_parent
             );
         }
@@ -226,12 +197,12 @@ abstract class PdfModel
     public function store()
     {
         $title = $this->title;
-        if (trim($title === '')) {
+        if (trim($title) === '') {
             $title = new Expression('NULL');
         }
 
         $subtitle = $this->subtitle;
-        if (trim($subtitle === '')) {
+        if (trim($subtitle) === '') {
             $subtitle = new Expression('NULL');
         }
 
@@ -257,7 +228,7 @@ abstract class PdfModel
                 $insert = $this->zdb->insert(self::TABLE);
                 $insert->values($data);
                 $add = $this->zdb->execute($insert);
-                if (!$add->count() > 0) {
+                if (!($add->count() > 0)) {
                     Analog::log('Not stored!', Analog::ERROR);
                     return false;
                 }
@@ -278,9 +249,9 @@ abstract class PdfModel
      *
      * @param int $type Type
      *
-     * @return Class
+     * @return string
      */
-    public static function getTypeClass($type)
+    public static function getTypeClass(int $type)
     {
         $class = null;
         switch ($type) {
@@ -302,10 +273,10 @@ abstract class PdfModel
     }
 
     /**
-     * Check lenght
+     * Check length
      *
      * @param string  $value The value
-     * @param int     $chars Lenght
+     * @param int     $chars Length
      * @param string  $field Field name
      * @param boolean $empty Can value be empty
      *
@@ -334,88 +305,6 @@ abstract class PdfModel
                 );
             }
         }
-    }
-
-    /**
-     * Get dynamic patterns
-     *
-     * @param string $form_name Dynamic form name
-     *
-     * @return array
-     */
-    public function getDynamicPatterns($form_name): array
-    {
-        global $login;
-
-        if (isset($this->dynamic_patterns[$form_name])) {
-            return $this->dynamic_patterns[$form_name];
-        }
-
-        $fields = new \Galette\Repository\DynamicFieldsSet($this->zdb, $login);
-        $dynamic_fields = $fields->getList($form_name);
-
-        $dynamic_patterns = [];
-        foreach ($dynamic_fields as $dynamic_field) {
-            $key = strtoupper('_DYNFIELD_' . $dynamic_field->getId() . '_' . $form_name);
-            foreach (['LABEL', 'INPUT'] as $capability) {
-                $dynamic_patterns[$capability . $key] = [
-                    'title' => sprintf(
-                        ($capability == 'LABEL' ? _T('Label for dynamic field "%s"')
-                        : _T('Input for dynamic field "%s"')),
-                        $dynamic_field->getName()
-                    ),
-                    'pattern'   => sprintf(
-                        '/{%s%s}/',
-                        $capability,
-                        $key
-                    )
-                ];
-            }
-        }
-
-        $this->dynamic_patterns[$form_name] = $dynamic_patterns;
-        return $this->dynamic_patterns[$form_name];
-    }
-
-    /**
-     * Set patterns
-     *
-     * @param array $patterns Patterns to add
-     *
-     * @return void
-     */
-    protected function setPatterns($patterns): PdfModel
-    {
-        $toset = [];
-        foreach ($patterns as $key => $info) {
-            if (is_array($info)) {
-                $toset[$key] = $info['pattern'];
-            } else {
-                $toset[$key] = $info;
-            }
-        }
-
-        $this->patterns = array_merge(
-            $this->patterns,
-            $toset
-        );
-
-        return $this;
-    }
-
-    /**
-     * Set replacements
-     *
-     * @param array $replaces Replacements to add
-     *
-     * @return void
-     */
-    public function setReplacements($replaces)
-    {
-        $this->replaces = array_merge(
-            $this->replaces,
-            $replaces
-        );
     }
 
     /**
@@ -476,37 +365,7 @@ abstract class PdfModel
                     $prop_value = $this->parent->$pname;
                 }
 
-                //handle translations
-                $callback = static function ($matches) {
-                    return _T($matches[1]);
-                };
-                $value = preg_replace_callback(
-                    '/_T\("([^\"]+)"\)/',
-                    $callback,
-                    $prop_value
-                );
-
-                //handle replacements
-                $value = preg_replace(
-                    $this->patterns,
-                    $this->replaces,
-                    $value
-                );
-
-                //handle translations with replacements
-                $repl_callback = function ($matches) {
-                    return str_replace(
-                        $matches[1],
-                        $matches[2],
-                        $matches[3]
-                    );
-                };
-                $value = preg_replace_callback(
-                    '/str_replace\(\'([^,]+)\', ?\'([^,]+)\', ?\'(.*)\'\)/',
-                    $repl_callback,
-                    $value
-                );
-
+                $value = $this->proceedReplacements($prop_value);
                 return $value;
                 break;
             default:
@@ -596,341 +455,5 @@ abstract class PdfModel
                 );
                 break;
         }
-    }
-
-    /**
-     * Get main patterns
-     *
-     * @return array
-     */
-    protected function getMainPatterns(): array
-    {
-        return [
-            'asso_name'             => [
-                'title' => _T('Your organisation name'),
-                'pattern'   => '/{ASSO_NAME}/'
-            ],
-            'asso_slogan'           => [
-                'title'     => _T('Your organisation slogan'),
-                'pattern'   => '/{ASSO_SLOGAN}/'
-            ],
-            'asso_address'          => [
-                'title'     => _T('Your organisation address'),
-                'pattern'   => '/{ASSO_ADDRESS}/',
-            ],
-            'asso_address_multi'    => [
-                'title'     => sprintf('%s (%s)', _T('Your organisation address'), _T('with break lines')),
-                'pattern'   => '/{ASSO_ADDRESS_MULTI}/',
-            ],
-            'asso_website'          => [
-                'title'     => _T('Your organisation website'),
-                'pattern'   => '/{ASSO_WEBSITE}/',
-            ],
-            'asso_logo'             => [
-                'title'     => _T('Your organisation logo'),
-                'pattern'          => '/{ASSO_LOGO}/',
-            ],
-            'date_now'              => [
-                'title'     => _T('Current date (Y-m-d)'),
-                'pattern'   => '/{DATE_NOW}/'
-            ]
-        ];
-    }
-
-    /**
-     * Get patterns for a member
-     *
-     * @param boolean $legacy Whether to load legacy patterns
-     *
-     * @return array
-     */
-    protected function getMemberPatterns(bool $legacy = true): array
-    {
-        $dynamic_patterns = $this->getDynamicPatterns('adh');
-        $m_patterns = [
-            'adh_title'         => [
-                'title'     => _('Title'),
-                'pattern'   => '/{TITLE_ADH}/',
-            ],
-            'adh_id'            =>  [
-                'title'     => _T("Member's ID"),
-                'pattern'   => '/{ID_ADH}/',
-            ],
-            'adh_name'          =>  [
-                'title'     => _T("Name"),
-                'pattern'    => '/{NAME_ADH}/',
-            ],
-            'adh_last_name'     =>  [
-                'title'     => _T('Last name'),
-                'pattern'   => '/{LAST_NAME_ADH}/',
-            ],
-            'adh_first_name'    =>  [
-                'title'     => _T('First name'),
-                'pattern'   => '/{FIRST_NAME_ADH}/',
-            ],
-            'adh_nickname'      =>  [
-                'title'     => _T('Nickname'),
-                'pattern'   => '/{NICKNAME_ADH}/',
-            ],
-            'adh_gender'        =>  [
-                'title'     => _T('Gender'),
-                'pattern'   => '/{GENDER_ADH}/',
-            ],
-            'adh_birth_date'    =>  [
-                'title'     => _T('Birth date'),
-                'pattern'   => '/{ADH_BIRTH_DATE}/',
-            ],
-            'adh_birth_place'   =>  [
-                'title'     => _T('Birth place'),
-                'pattern'   => '/{ADH_BIRTH_PLACE}/',
-            ],
-            'adh_profession'    =>  [
-                'title'     => _T('Profession'),
-                'pattern'   => '/{PROFESSION_ADH}/',
-            ],
-            'adh_company'       => [
-                'title'     => _T("Company name"),
-                'pattern'   => '/{COMPANY_ADH}/',
-            ],
-            'adh_address'       =>  [
-                'title'     => _T("Address"),
-                'pattern'   => '/{ADDRESS_ADH}/',
-            ],
-            'adh_zip'           =>  [
-                'title'     => _T("Zipcode"),
-                'pattern'   => '/{ZIP_ADH}/',
-            ],
-            'adh_town'          =>  [
-                'title'     => _T("Town"),
-                'pattern'   => '/{TOWN_ADH}/',
-            ],
-            'adh_country'       =>  [
-                'title'     => _T('Country'),
-                'pattern'   => '/{COUNTRY_ADH}/',
-            ],
-            'adh_phone'         =>  [
-                'title'     => _T('Phone'),
-                'pattern'   => '/{PHONE_ADH}/',
-            ],
-            'adh_mobile'        =>  [
-                'title'     => _T('GSM'),
-                'pattern'   => '/{MOBILE_ADH}/',
-            ],
-            'adh_email'         =>  [
-                'title'     => _T('Email'),
-                'pattern'   => '/{EMAIL_ADH}/',
-            ],
-            'adh_login'         =>  [
-                'title'     => _T('Login'),
-                'pattern'   => '/{LOGIN_ADH}/',
-            ],
-            'adh_main_group'    =>  [
-                'title'     => _T("Member's main group"),
-                'pattern'   => '/{GROUP_ADH}/',
-            ],
-            'adh_groups'        =>  [
-                'title'     => _T("Member's groups (as list)"),
-                'pattern'   => '/{GROUPS_ADH}/'
-            ],
-        ];
-
-        if ($legacy === true) {
-            $m_patterns['_adh_company'] = [
-                'title'     => _T("Company name"),
-                'pattern'   => '/{COMPANY_NAME_ADH}/',
-            ];
-        }
-
-        return $m_patterns + $dynamic_patterns;
-    }
-
-    /**
-     * Set member and proceed related replacements
-     *
-     * @param Adherent $member Member
-     *
-     * @return PdfModel
-     */
-    public function setMember(Adherent $member): PdfModel
-    {
-        global $login;
-
-        $address = $member->address;
-        if ($member->address_continuation != '') {
-            $address .= '<br/>' . $member->address_continuation;
-        }
-
-        if ($member->isMan()) {
-            $gender = _T("Man");
-        } elseif ($member->isWoman()) {
-            $gender = _T("Woman");
-        } else {
-            $gender = _T("Unspecified");
-        }
-
-        $member_groups = $member->groups;
-        $main_group = _T("None");
-        $group_list = _T("None");
-        if (is_array($member_groups) && count($member_groups) > 0) {
-            $main_group = $member_groups[0]->getName();
-            $group_list = '<ul>';
-            foreach ($member_groups as $group) {
-                $group_list .= '<li>' . $group->getName() . '</li>';
-            }
-            $group_list .= '</ul>';
-        }
-
-        $this->setReplacements(
-            array(
-                'adh_title'         => $member->stitle,
-                'adh_id'            => $member->id,
-                'adh_name'          => $member->sfullname,
-                'adh_last_name'     => $member->name,
-                'adh_first_name'    => $member->surname,
-                'adh_nickname'      => $member->nickname,
-                'adh_gender'        => $gender,
-                'adh_birth_date'    => $member->birthdate,
-                'adh_birth_place'   => $member->birth_place,
-                'adh_profession'    => $member->job,
-                'adh_company'       => $member->company_name,
-                'adh_address'       => $address,
-                'adh_zip'           => $member->zipcode,
-                'adh_town'          => $member->town,
-                'adh_country'       => $member->country,
-                'adh_phone'         => $member->phone,
-                'adh_mobile'        => $member->gsm,
-                'adh_email'         => $member->email,
-                'adh_login'         => $member->login,
-                'adh_main_group'    => $main_group,
-                'adh_groups'        => $group_list,
-                //Handle COMPANY_NAME_ADH... https://bugs.galette.eu/issues/1530
-                '_adh_company'      => $member->company_name
-            )
-        );
-
-        /** the list of all dynamic fields */
-        $fields = new \Galette\Repository\DynamicFieldsSet($this->zdb, $login);
-        $dynamic_fields = $fields->getList('adh');
-        $this->setDynamicFields('adh', $dynamic_fields, $member);
-
-        return $this;
-    }
-
-    /**
-     * Set dynamic fields and proceed related replacements
-     *
-     * @param string $form_name      Form name
-     * @param array  $dynamic_fields Dynamic fields
-     * @param mixed  $object         Related object (Adherent, Contribution, ...)
-     *
-     * @return PdfModel
-     */
-    public function setDynamicFields($form_name, $dynamic_fields, $object): PdfModel
-    {
-        $uform_name = strtoupper($form_name);
-        $dynamic_patterns = $this->getDynamicPatterns($form_name);
-        foreach ($dynamic_patterns as $dynamic_pattern) {
-            $pattern = trim($dynamic_pattern['pattern'], '/');
-            $key   = strtolower(rtrim(ltrim($pattern, '{'), '}'));
-            $value = '';
-            if (preg_match("/^{DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
-                /** dynamic field first value */
-                $field_id = $match[1];
-                $values = $object->getDynamicFields()->getValues($field_id);
-                $value  = $values[1];
-            }
-            if (preg_match("/^{LABEL_DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
-                /** dynamic field label */
-                $field_id = $match[1];
-                $value    = $dynamic_fields[$field_id]->getName();
-            }
-            if (preg_match("/^{INPUT_DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
-                /** dynamic field input form element */
-                $field_id    = $match[1];
-                $field_name  = $dynamic_fields[$field_id]->getName();
-                $field_type  = $dynamic_fields[$field_id]->getType();
-                $field_values = $object->getDynamicFields()->getValues($field_id);
-                $field_value  = $field_values[0];
-
-                switch ($field_type) {
-                    case DynamicField::TEXT:
-                        $value .= '<textarea' .
-                            ' id="' . $field_name . '"' .
-                            ' name="' . $field_name . '"' .
-                            ' value="' . $field_value['field_val'] . '"' .
-                            '/>';
-                        break;
-                    case DynamicField::LINE:
-                        $value .= '<input type="text"' .
-                            ' id="' . $field_name . '"' .
-                            ' name="' . $field_name . '"' .
-                            ' value="' . $field_value['field_val'] . '"' .
-                            ' size="20" maxlength="30"/>';
-                        break;
-                    case DynamicField::CHOICE:
-                        $choice_values = $dynamic_fields[$field_id]->getValues();
-                        foreach ($choice_values as $choice_idx => $choice_value) {
-                            $value .= '<input type="radio"' .
-                                ' id="' . $field_name . '"' .
-                                ' name="' . $field_name . '"' .
-                                ' value="' . $choice_value . '"';
-                            if ($choice_idx == $field_values[0]['field_val']) {
-                                $value .= ' checked="checked"';
-                            }
-                            $value .= '/>';
-                            $value .= $choice_value;
-                            $value .= '&nbsp;';
-                        }
-                        break;
-                    case DynamicField::DATE:
-                        $value .= '<input type="text" name="' .
-                            $field_name . '" value="' .
-                            $field_value['field_val'] .
-                            '" size="10" />';
-                        break;
-                    case DynamicField::BOOLEAN:
-                        $value .= '<input type="checkbox"' .
-                            ' name="' . $field_name . '"' .
-                            ' value="1"';
-                        if ($field_value['field_val'] == 1) {
-                            $value .= ' checked="checked"';
-                        }
-                        $value .= '/>';
-                        break;
-                    case DynamicField::FILE:
-                        $value .= '<input type="text" name="' .
-                            $field_name . '" value="' .
-                            $field_value['field_val'] . '" />';
-                        break;
-                }
-            }
-
-            $this->setReplacements(array($key => $value));
-            Analog::log("adding dynamic replacement $key => $value", Analog::DEBUG);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Build legend array
-     *
-     * @return array
-     */
-    public function getLegend(): array
-    {
-        $legend = [];
-
-        $legend['main'] = [
-            'title'     => _T('Main information'),
-            'patterns'  => $this->getMainPatterns()
-        ];
-
-        $legend['member'] = [
-            'title'     => _T('Member information'),
-            'patterns'  => $this->getMemberPatterns(false)
-        ];
-
-        return $legend;
     }
 }

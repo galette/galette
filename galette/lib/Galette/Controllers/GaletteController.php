@@ -706,6 +706,12 @@ class GaletteController extends AbstractController
         } else {
             foreach ($list_reminders as $reminder) {
                 if ($labels === false) {
+                    $reminder
+                        ->setDb($this->zdb)
+                        ->setLogin($this->login)
+                        ->setPreferences($this->preferences)
+                        ->setRouter($this->router)
+                    ;
                     //send reminders by email
                     $sent = $reminder->send($texts, $this->history, $this->zdb);
 

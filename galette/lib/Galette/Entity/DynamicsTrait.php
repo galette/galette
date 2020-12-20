@@ -85,6 +85,9 @@ trait DynamicsTrait
      */
     public function getDynamicFields()
     {
+        if (null === $this->dynamics) {
+            $this->loadDynamicFields();
+        }
         return $this->dynamics;
     }
 

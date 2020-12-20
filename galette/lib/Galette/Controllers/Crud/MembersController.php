@@ -51,7 +51,6 @@ use Galette\Entity\DynamicFieldsHandle;
 use Galette\Entity\Group;
 use Galette\Entity\Status;
 use Galette\Entity\FieldsConfig;
-use Galette\Entity\Texts;
 use Galette\Filters\AdvancedMembersList;
 use Galette\Filters\MembersList;
 use Galette\IO\File;

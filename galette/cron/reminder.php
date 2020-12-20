@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2013-2016 The Galette Team
+ * Copyright © 2013-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -28,7 +28,7 @@
  * @package   Galette
  *
  * @author    Johan Cwiklinski <johan@x-tnd.be>
- * @copyright 2013-2014 The Galette Team
+ * @copyright 2013-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Available since 0.7.5dev - 2013-02-08
@@ -42,6 +42,7 @@ use Galette\Filters\MembersList;
 /** @ignore */
 require_once __DIR__ . '/../includes/galette.inc.php';
 
+//TODO: should be replaced with a DI\App (see LightSlimApp)
 $app = new \Slim\App(
     array(
         'templates.path'    => GALETTE_ROOT . 'templates/default/',
@@ -69,7 +70,6 @@ $texts = new Texts(
     $container->get('preferences')
 );
 $reminders = new Reminders();
-
 
 $list_reminders = $reminders->getList($container->get('zdb'), false);
 if (count($list_reminders) > 0) {

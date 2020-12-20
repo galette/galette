@@ -58,6 +58,7 @@ class Texts extends atoum
     private $remove = [];
     private $i18n;
     private $preferences;
+    private $container;
 
     /**
      * Set up tests
@@ -76,9 +77,39 @@ class Texts extends atoum
             $this->zdb
         );
 
-        global $zdb, $i18n; // globals :(
+        $container = new class {
+            /**
+             * Get (only router)
+             *
+             * @param string $name Param name
+             *
+             * @return mixed
+             */
+            public function get($name)
+            {
+                $router = new class {
+                    /**
+                     * Get path ('')
+                     *
+                     * @param string $name Route name
+                     *
+                     * @return string
+                     */
+                    public function pathFor($name)
+                    {
+                        return '';
+                    }
+                };
+                return $router;
+            }
+        };
+        $_SERVER['HTTP_HOST'] = '';
+        $this->container = $container;
+
+        global $zdb, $i18n, $container; // globals :(
         $zdb = $this->zdb;
         $i18n = $this->i18n;
+        $container = $this->container;
     }
 
     /**

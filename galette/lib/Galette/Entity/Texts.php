@@ -7,7 +7,7 @@
  *
  * PHP version 5
  *
- * Copyright © 2007-2014 The Galette Team
+ * Copyright © 2007-2020 The Galette Team
  *
  * This file is part of Galette (http://galette.tuxfamily.org).
  *
@@ -29,7 +29,7 @@
  *
  * @author    John Perr <johnperr@abul.org>
  * @author    Johan Cwiklinski <joahn@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Avaialble since 0.7dev - 2007-07-16
@@ -37,9 +37,11 @@
 
 namespace Galette\Entity;
 
+use Galette\Features\Replacements;
 use Throwable;
 use Analog\Analog;
 use Laminas\Db\Sql\Expression;
+use Galette\Core\Password;
 use Galette\Core\Preferences;
 use Slim\Router;
 
@@ -51,102 +53,166 @@ use Slim\Router;
  * @package   Galette
  * @author    John Perr <johnperr@abul.org>
  * @author    Johan Cwiklinski <joahn@x-tnd.be>
- * @copyright 2007-2014 The Galette Team
+ * @copyright 2007-2020 The Galette Team
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
  * @link      http://galette.tuxfamily.org
  * @since     Avaialble since 0.7dev - 2007-07-16
  */
 class Texts
 {
+    use Replacements;
+
     private $all_texts;
     public const TABLE = "texts";
     public const PK = 'tid';
     public const DEFAULT_REF = 'sub';
 
-    private $patterns;
-    private $replaces;
     private $defaults;
 
     /**
      * Main constructor
      *
      * @param Preferences $preferences Galette's preferences
-     * @param Router      $router      Router instance
-     * @param array       $replaces    Data that will be used as replacments
+     * @param Router|null $router      Router instance
      */
-    public function __construct(Preferences $preferences, Router $router = null, $replaces = null)
+    public function __construct(Preferences $preferences, Router $router = null)
     {
-        $this->patterns = array(
-            'asso_name'         => '/{ASSO_NAME}/',
-            'asso_slogan'       => '/{ASSO_SLOGAN}/',
-            'id_adh'            => '/{ID_ADH}/',
-            'name_adh'          => '/{NAME_ADH}/',
-            'lastname_adh'      => '/{LASTNAME_ADH}/',
-            'firstname_adh'     => '/{FIRSTNAME_ADH}/',
-            'login_adh'         => '/{LOGIN}/',
-            'mail_adh'          => '/{MAIL_ADH}/',
-            'login_uri'         => '/{LOGIN_URI}/',
-            'change_pass_uri'   => '/{CHG_PWD_URI}/',
-            'link_validity'     => '/{LINK_VALIDITY}/',
-            'deadline'          => '/{DEADLINE}/',
-            'contrib_info'      => '/{CONTRIB_INFO}/',
-            'days_remaining'    => '/{DAYS_REMAINING}/',
-            'days_expired'      => '/{DAYS_EXPIRED}/',
-            'contrib_amount'    => '/{CONTRIB_AMOUNT}/',
-            'contrib_type'      => '/{CONTRIB_TYPE}/',
-            'breakline'         => '/{BR}/',
-            'newline'           => '/{NEWLINE}/',
-            'link_membercard'   => '/{LINK_MEMBERCARD}/',
-            'link_contribpdf'   => '/{LINK_CONTRIBPDF}/'
+        global $zdb, $login;
+        $this->preferences = $preferences;
+        if ($router === null) {
+            global $container;
+            $router = $container->get('router');
+        }
+        $this->router = $router;
+        $this
+            ->setDb($zdb)
+            ->setLogin($login);
+
+        $this->setPatterns(
+            $this->getMainPatterns()
+            + $this->getMailPatterns()
+            + $this->getMemberPatterns()
+            + $this->getContributionPatterns()
         );
 
-        $login_uri = '';
-        if ($router !== null) {
-            $login_uri = $preferences->getURL() . $router->pathFor('login');
-        }
-
-        $this->replaces = array(
-            'asso_name'         => $preferences->pref_nom,
-            'asso_slogan'       => $preferences->pref_slogan,
-            'id_adh'            => null,
-            'name_adh'          => null,
-            'lastname_adh'      => null,
-            'firstname_adh'     => null,
-            'login_adh'         => null,
-            'mail_adh'          => null,
-            'login_uri'         => $login_uri,
-            'change_pass_uri'   => null,
-            'link_validity'     => null,
-            'deadline'          => null,
-            'contrib_info'      => null,
-            'days_remaining'    => null,
-            'days_expired'      => null,
-            'contrib_amount'    => null,
-            'contrib_type'      => null,
-            'breakline'         => "\r\n",
-            'newline'           => "\r\n\r\n",
-            'link_membercard'   => null,
-            'link_contribpdf'   => null
-        );
-
-        if ($replaces != null && is_array($replaces)) {
-            $this->setReplaces($replaces);
-        }
+        $this
+            ->setMain()
+            ->setMail();
     }
 
     /**
-     * Set replacements values
+     * Get patterns for a contribution
      *
-     * @param array $replaces Replacements values
+     * @param boolean $legacy Whether to load legacy patterns
      *
-     * @return void
+     * @return array
      */
-    public function setReplaces($replaces)
+    protected function getMailPatterns($legacy = true): array
     {
-        //let's populate replacement array with values provided
-        foreach ($replaces as $k => $v) {
-            $this->replaces[$k] = $v;
-        }
+        $m_patterns = [
+            'breakline'     => [
+                'title'     => _T('Insert a carriage return'),
+                'pattern'   => '/{BR}/',
+            ],
+            'newline'    => [
+                'title'     => _T('Insert a new blank line'),
+                'pattern'   => '/{NEWLINE}/',
+            ],
+            'link_validity'     => [
+                'title'     => _T('Link validity'),
+                'pattern'   => '/{LINK_VALIDITY}/'
+            ],
+            'link_membercard'   => [
+                'title'     => _T('Direct link for member card download'),
+                'pattern'   => '/{LINK_MEMBERCARD}/',
+            ],
+            'link_contribpdf'   => [
+                'title'     => _T('Direct link for invoice/receipt download'),
+                'pattern'   => '/{LINK_CONTRIBPDF}/'
+            ],
+            'change_pass_uri'       => [
+                'title'     => _T("Galette's change password URI"),
+                'pattern'   => '/{CHG_PWD_URI}/'
+            ],
+        ];
+
+        return $m_patterns;
+    }
+
+    /**
+     * Set emails replacements
+     *
+     * @return $this
+     */
+    public function setMail(): self
+    {
+        $this->setReplacements([
+            'link_validity'     => null,
+            'breakline'         => "\r\n",
+            'newline'           => "\r\n\r\n",
+            'link_membercard'   => null,
+            'link_contribpdf'   => null,
+            'change_pass_uri'   => null
+        ]);
+        return $this;
+    }
+
+    /**
+     * Set change password URL
+     *
+     * @param Password $password Password instance
+     *
+     * @return Texts
+     */
+    public function setChangePasswordURI(Password $password): Texts
+    {
+        $this->setReplacements([
+            'change_pass_uri'   => $this->preferences->getURL() .
+                $this->router->pathFor(
+                    'password-recovery',
+                    ['hash' => base64_encode($password->getHash())]
+                )
+        ]);
+        return $this;
+    }
+
+    /**
+     * Set validity link
+     *
+     * @return Texts
+     */
+    public function setLinkValidity(): Texts
+    {
+        $link_validity = new \DateTime();
+        $link_validity->add(new \DateInterval('PT24H'));
+        $this->setReplacements(['link_validity' => $link_validity->format(_T("Y-m-d H:i:s"))]);
+        return $this;
+    }
+
+    /**
+     * Set member card PDF link
+     *
+     * @param string $link Link
+     *
+     * @return Texts
+     */
+    public function setMemberCardLink(string $link): Texts
+    {
+        $this->setReplacements(['link_membercard' => $link]);
+        return $this;
+    }
+
+    /**
+     * Set contribution PDF link
+     *
+     * @param string $link Link
+     *
+     * @return Texts
+     */
+    public function setContribLink(string $link): Texts
+    {
+        $this->setReplacements(['link_contribpdf' => $link]);
+        return $this;
     }
 
     /**
@@ -159,7 +225,7 @@ class Texts
      */
     public function getTexts($ref, $lang)
     {
-        global $zdb, $i18n;
+        global $i18n;
 
         //check if language is set and exists
         $langs = $i18n->getList();
@@ -181,14 +247,14 @@ class Texts
         }
 
         try {
-            $select = $zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE);
             $select->where(
                 array(
                     'tref' => $ref,
                     'tlang' => $lang
                 )
             );
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             $result = $results->current();
             if ($result) {
                 $this->all_texts = $result;
@@ -213,7 +279,7 @@ class Texts
                     );
 
                     try {
-                        $this->insert($zdb, [$values]);
+                        $this->insert($this->zdb, [$values]);
                         return $this->getTexts($ref, $lang);
                     } catch (Throwable $e) {
                         Analog::log(
@@ -254,23 +320,20 @@ class Texts
      */
     public function setTexts($ref, $lang, $subject, $body)
     {
-        global $zdb;
-        //set texts
-
         try {
             $values = array(
                 'tsubject' => $subject,
                 'tbody'    => $body,
             );
 
-            $update = $zdb->update(self::TABLE);
+            $update = $this->zdb->update(self::TABLE);
             $update->set($values)->where(
                 array(
                     'tref'  => $ref,
                     'tlang' => $lang
                 )
             );
-            $zdb->execute($update);
+            $this->zdb->execute($update);
 
             return true;
         } catch (Throwable $e) {
@@ -292,16 +355,14 @@ class Texts
      */
     public function getRefs($lang)
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select(self::TABLE);
+            $select = $this->zdb->select(self::TABLE);
             $select->columns(
                 array('tref', 'tcomment')
             )->where(array('tlang' => $lang));
 
             $refs = [];
-            $results = $zdb->execute($select);
+            $results = $this->zdb->execute($select);
             foreach ($results as $result) {
                 $refs[] = $result;
             }
@@ -326,22 +387,20 @@ class Texts
      */
     public function installInit($check_first = true)
     {
-        global $zdb;
-
         try {
             //first of all, let's check if data seem to have already
             //been initialized
             $this->defaults = $this->getAllDefaults(); //load defaults
             $proceed = false;
             if ($check_first === true) {
-                $select = $zdb->select(self::TABLE);
+                $select = $this->zdb->select(self::TABLE);
                 $select->columns(
                     array(
                         'counter' => new Expression('COUNT(' . self::PK . ')')
                     )
                 );
 
-                $results = $zdb->execute($select);
+                $results = $this->zdb->execute($select);
                 $result = $results->current();
                 $count = $result->counter;
                 if ($count == 0) {
@@ -359,15 +418,15 @@ class Texts
 
             if ($proceed === true) {
                 //first, we drop all values
-                $delete = $zdb->delete(self::TABLE);
-                $zdb->execute($delete);
+                $delete = $this->zdb->delete(self::TABLE);
+                $this->zdb->execute($delete);
 
-                $zdb->handleSequence(
+                $this->zdb->handleSequence(
                     self::TABLE,
                     count($this->defaults)
                 );
 
-                $this->insert($zdb, $this->defaults);
+                $this->insert($this->defaults);
 
                 Analog::log(
                     'Default texts were successfully stored into database.',
@@ -391,11 +450,9 @@ class Texts
      */
     private function checkUpdate()
     {
-        global $zdb;
-
         try {
-            $select = $zdb->select(self::TABLE);
-            $dblist = $zdb->execute($select);
+            $select = $this->zdb->select(self::TABLE);
+            $dblist = $this->zdb->execute($select);
 
             $list = [];
             foreach ($dblist as $dbentry) {
@@ -422,7 +479,7 @@ class Texts
             }
 
             if (count($missing) > 0) {
-                $this->insert($zdb, $missing);
+                $this->insert($missing);
 
                 Analog::log(
                     'Missing texts were successfully stored into database.',
@@ -446,11 +503,7 @@ class Texts
      */
     public function getSubject()
     {
-        return preg_replace(
-            $this->patterns,
-            $this->replaces,
-            $this->all_texts->tsubject
-        );
+        return $this->proceedReplacements($this->all_texts->tsubject);
     }
 
     /**
@@ -460,24 +513,19 @@ class Texts
      */
     public function getBody()
     {
-        return preg_replace(
-            $this->patterns,
-            $this->replaces,
-            $this->all_texts->tbody
-        );
+        return $this->proceedReplacements($this->all_texts->tbody);
     }
 
     /**
      * Insert values in database
      *
-     * @param Db    $zdb    Database instance
      * @param array $values Values to insert
      *
      * @return void
      */
-    private function insert($zdb, $values)
+    private function insert($values)
     {
-        $insert = $zdb->insert(self::TABLE);
+        $insert = $this->zdb->insert(self::TABLE);
         $insert->values(
             array(
                 'tref'      => ':tref',
@@ -487,7 +535,7 @@ class Texts
                 'tcomment'  => ':tcomment'
             )
         );
-        $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
+        $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
 
         foreach ($values as $value) {
             $stmt->execute($value);

@@ -185,7 +185,8 @@ class PdfModel extends atoum
             'asso_address_multi' => '/{ASSO_ADDRESS_MULTI}/',
             'asso_website'       => '/{ASSO_WEBSITE}/',
             'asso_logo'          => '/{ASSO_LOGO}/',
-            'date_now'           => '/{DATE_NOW}/'
+            'date_now'           => '/{DATE_NOW}/',
+            'login_uri'          => '/{LOGIN_URI}/'
         ];
         $this->array($model->patterns)->isIdenticalTo($main_expected);
 
@@ -214,12 +215,19 @@ class PdfModel extends atoum
             'adh_login'         => '/{LOGIN_ADH}/',
             'adh_main_group'    => '/{GROUP_ADH}/',
             'adh_groups'        => '/{GROUPS_ADH}/',
+            'adh_dues'          => '/{ADH_DUES}/',
+            'days_remaining'    => '/{DAYS_REMAINING}/',
+            'days_expired'      => '/{DAYS_EXPIRED}/',
             '_adh_company'      => '/{COMPANY_NAME_ADH}/',
+            '_adh_last_name'    => '/{LASTNAME_ADH}/',
+            '_adh_first_name'   => '/{FIRSTNAME_ADH}/',
+            '_adh_login'        => '/{LOGIN}/',
+            '_adh_email'        => '/{MAIL_ADH}/',
         ];
         $model = new \Galette\Entity\PdfAdhesionFormModel($this->zdb, $this->preferences);
         $this->array($model->patterns)->isIdenticalTo($expected);
 
-        $expected = $expected + [
+        $expected += [
             'contrib_label'     => '/{CONTRIB_LABEL}/',
             'contrib_amount'    => '/{CONTRIB_AMOUNT}/',
             'contrib_amount_letters' => '/{CONTRIB_AMOUNT_LETTERS}/',
@@ -230,7 +238,8 @@ class PdfModel extends atoum
             'contrib_edate'     => '/{CONTRIB_END_DATE}/',
             'contrib_id'        => '/{CONTRIB_ID}/',
             'contrib_payment'   => '/{CONTRIB_PAYMENT_TYPE}/',
-            '_contrib_label'     => '/{CONTRIBUTION_LABEL}/',
+            'contrib_info'       => '/{CONTRIB_INFO}/',
+            '_contrib_label'     => '/{CONTRIB_TYPE}/',
             '_contrib_amount'    => '/{CONTRIBUTION_AMOUNT}/',
             '_contrib_amount_letters' => '/{CONTRIBUTION_AMOUNT_LETTERS}/',
             '_contrib_date'      => '/{CONTRIBUTION_DATE}/',
@@ -239,7 +248,8 @@ class PdfModel extends atoum
             '_contrib_bdate'     => '/{CONTRIBUTION_BEGIN_DATE}/',
             '_contrib_edate'     => '/{CONTRIBUTION_END_DATE}/',
             '_contrib_id'        => '/{CONTRIBUTION_ID}/',
-            '_contrib_payment'   => '/{CONTRIBUTION_PAYMENT_TYPE}/'
+            '_contrib_payment'   => '/{CONTRIBUTION_PAYMENT_TYPE}/',
+            '_contrib_info'       => '/{CONTRIBUTION_INFO}/',
         ];
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences);
         $this->array($model->patterns)->isIdenticalTo($expected);
@@ -362,21 +372,6 @@ class PdfModel extends atoum
 
         $model = new \Galette\Entity\PdfInvoice($this->zdb, $this->preferences, $rs);
 
-        $this->string($model->hheader)->isIdenticalTo("<table>
-    <tr>
-        <td id=\"pdf_assoname\"><strong id=\"asso_name\">Galette</strong><br/></td>
-        <td id=\"pdf_logo\"><img src=\"http://\" width=\"129\" height=\"60\"/></td>
-    </tr>
-</table>");
-
-        $this->string($model->hfooter)->isIdenticalTo('<div id="pdf_footer">
-    Association Galette - Galette
-Palais des Papes
-Au milieu
-84000 Avignon - France<br/>
-    
-</div>');
-
         $data = [
             'nom_adh' => 'Durand',
             'prenom_adh' => 'René',
@@ -412,6 +407,21 @@ Au milieu
         $this->createContribution($cdf);
         $model->setContribution($this->contrib);
 
+        $this->string($model->hheader)->isIdenticalTo("<table>
+    <tr>
+        <td id=\"pdf_assoname\"><strong id=\"asso_name\">Galette</strong><br/></td>
+        <td id=\"pdf_logo\"><img src=\"http://\" width=\"129\" height=\"60\"/></td>
+    </tr>
+</table>");
+
+        $this->string($model->hfooter)->isIdenticalTo('<div id="pdf_footer">
+    Association Galette - Galette
+Palais des Papes
+Au milieu
+84000 Avignon - France<br/>
+    
+</div>');
+
         $this->string($model->hbody)->isEqualTo(
             'name: DURAND René login: arthur.hamon birthdate: 1937-12-26 dynlabel: Dynamic text field dynvalue: ' .
             '<textarea id="Dynamic text field" name="Dynamic text field" value="My value (:"/> ' .
@@ -424,13 +434,13 @@ Au milieu
             ->hasSize(3)
             ->hasKeys(['main', 'member', 'contribution']);
 
-        $this->array($legend['main']['patterns'])->hasSize(7);
+        $this->array($legend['main']['patterns'])->hasSize(8);
         $this->array($legend['member']['patterns'])
-            ->hasSize(23)
-            ->hasKeys(['LABEL_DYNFIELD_' . $adf->getId() . '_ADH', 'INPUT_DYNFIELD_' . $adf->getId() . '_ADH']);
+            ->hasSize(26)
+            ->hasKeys(['label_dynfield_' . $adf->getId() . '_adh', 'input_dynfield_' . $adf->getId() . '_adh']);
         $this->array($legend['contribution']['patterns'])
-            ->hasSize(12)
-            ->hasKeys(['LABEL_DYNFIELD_' . $cdf->getId() . '_CONTRIB', 'INPUT_DYNFIELD_' . $cdf->getId() . '_CONTRIB']);
+            ->hasSize(13)
+            ->hasKeys(['label_dynfield_' . $cdf->getId() . '_contrib', 'input_dynfield_' . $cdf->getId() . '_contrib']);
     }
 
     /**
@@ -438,7 +448,7 @@ Au milieu
      *
      * @param array $data Data to use to create member
      *
-     * @return \Galette\Entity\Adherent
+     * @return Adherent
      */
     public function createMember(array $data)
     {
@@ -451,6 +461,7 @@ Au milieu
 
         $store = $adh->store();
         $this->boolean($store)->isTrue();
+        return $adh;
     }
 
     /**

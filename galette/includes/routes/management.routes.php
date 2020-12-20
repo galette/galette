@@ -52,7 +52,6 @@ use Galette\IO\CsvOut;
 use Galette\IO\CsvIn;
 use Galette\Entity\Title;
 use Galette\Repository\Titles;
-use Galette\Entity\Texts;
 use Galette\Core\Install;
 use Galette\Entity\Status;
 

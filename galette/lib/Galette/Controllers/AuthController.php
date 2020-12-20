@@ -38,13 +38,11 @@ namespace Galette\Controllers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Galette\Core\SysInfos;
 use Galette\Core\Login;
 use Galette\Core\Password;
 use Galette\Core\GaletteMail;
 use Galette\Entity\Adherent;
 use Galette\Entity\Texts;
-use Analog\Analog;
 
 /**
  * Galette authentication controller
@@ -275,7 +273,7 @@ class AuthController extends AbstractController
      *
      * @return Response
      */
-    public function retrievePassword(Request $request, Response $response, $id_adh = null): Response
+    public function retrievePassword(Request $request, Response $response, int $id_adh = null): Response
     {
         $from_admin = false;
         $redirect_url = $this->router->pathFor('slash');
@@ -314,12 +312,10 @@ class AuthController extends AbstractController
         if ($adh->id != '') {
             //account has been found, proceed
             if (GaletteMail::isValidEmail($adh->email)) {
-                $tparams = [
-                    'login_adh' => custom_html_entity_decode(
-                        $adh->login,
-                        ENT_QUOTES
-                    )
-                ];
+                $texts = new Texts($this->preferences, $this->router);
+                $texts
+                    ->setMember($adh)
+                    ->setNoContribution();
 
                 //check if account is active
                 if (!$adh->isActive()) { //https://bugs.galette.eu/issues/1529
@@ -329,24 +325,12 @@ class AuthController extends AbstractController
                     $password = new Password($this->zdb);
                     $res = $password->generateNewPassword($adh->id);
                     $text_id = 'pwd';
-                    $link_validity = new \DateTime();
-                    $link_validity->add(new \DateInterval('PT24H'));
-                    $tparams += [
-                        'change_pass_uri'   => $this->preferences->getURL() .
-                            $this->router->pathFor(
-                                'password-recovery',
-                                ['hash' => base64_encode($password->getHash())]
-                            ),
-                        'link_validity'     => $link_validity->format(_T("Y-m-d H:i:s")),
-                    ];
+                    $texts
+                        ->setLinkValidity()
+                        ->setChangePasswordURI($password);
                 }
 
                 if ($res === true) {
-                    $texts = new Texts(
-                        $this->preferences,
-                        $this->router,
-                        $tparams
-                    );
                     $texts->getTexts($text_id, $adh->language);
 
                     $mail = new GaletteMail($this->preferences);
