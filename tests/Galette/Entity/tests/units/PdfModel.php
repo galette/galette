@@ -213,7 +213,8 @@ class PdfModel extends atoum
             'adh_email'         => '/{EMAIL_ADH}/',
             'adh_login'         => '/{LOGIN_ADH}/',
             'adh_main_group'    => '/{GROUP_ADH}/',
-            'adh_groups'        => '/{GROUPS_ADH}/'
+            'adh_groups'        => '/{GROUPS_ADH}/',
+            '_adh_company'      => '/{COMPANY_NAME_ADH}/',
         ];
         $model = new \Galette\Entity\PdfAdhesionFormModel($this->zdb, $this->preferences);
         $this->array($model->patterns)->isIdenticalTo($expected);
