@@ -640,12 +640,14 @@ abstract class PdfModel
     /**
      * Get patterns for a member
      *
+     * @param boolean $legacy Whether to load legacy patterns
+     *
      * @return array
      */
-    protected function getMemberPatterns(): array
+    protected function getMemberPatterns(bool $legacy = true): array
     {
         $dynamic_patterns = $this->getDynamicPatterns('adh');
-        return [
+        $m_patterns = [
             'adh_title'         => [
                 'title'     => _('Title'),
                 'pattern'   => '/{TITLE_ADH}/',
@@ -730,7 +732,16 @@ abstract class PdfModel
                 'title'     => _T("Member's groups (as list)"),
                 'pattern'   => '/{GROUPS_ADH}/'
             ],
-        ] + $dynamic_patterns;
+        ];
+
+        if ($legacy === true) {
+            $m_patterns['_adh_company'] = [
+                'title'     => _T("Company name"),
+                'pattern'   => '/{COMPANY_NAME_ADH}/',
+            ];
+        }
+
+        return $m_patterns + $dynamic_patterns;
     }
 
     /**
@@ -791,7 +802,9 @@ abstract class PdfModel
                 'adh_email'         => $member->email,
                 'adh_login'         => $member->login,
                 'adh_main_group'    => $main_group,
-                'adh_groups'        => $group_list
+                'adh_groups'        => $group_list,
+                //Handle COMPANY_NAME_ADH... https://bugs.galette.eu/issues/1530
+                '_adh_company'      => $member->company_name
             )
         );
 
@@ -915,7 +928,7 @@ abstract class PdfModel
 
         $legend['member'] = [
             'title'     => _T('Member information'),
-            'patterns'  => $this->getMemberPatterns()
+            'patterns'  => $this->getMemberPatterns(false)
         ];
 
         return $legend;
