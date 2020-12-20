@@ -88,18 +88,17 @@ class Texts extends atoum
      */
     public function testGetList()
     {
-        $count_texts = 13;
         $texts = new \Galette\Entity\Texts(
             $this->preferences
         );
         $texts->installInit();
 
         $list = $texts->getRefs(\Galette\Core\I18n::DEFAULT_LANG);
-        $this->array($list)->hasSize($count_texts);
+        $this->array($list)->hasSize(12);
 
         foreach (array_keys($this->i18n->getArrayList()) as $lang) {
             $list = $texts->getRefs($lang);
-            $this->array($list)->hasSize($count_texts);
+            $this->array($list)->hasSize(12);
         }
 
         if ($this->zdb->isPostgres()) {
@@ -108,7 +107,7 @@ class Texts extends atoum
             $results = $this->zdb->execute($select);
             $result = $results->current();
             $this->integer($result->last_value)
-                 ->isGreaterThanOrEqualTo($count_texts, 'Incorrect texts sequence ' . $result->last_value);
+                 ->isGreaterThanOrEqualTo(12, 'Incorrect texts sequence ' . $result->last_value);
 
             $this->zdb->db->query(
                 'SELECT setval(\'' . PREFIX_DB . $texts::TABLE . '_id_seq\', 1)',
@@ -120,7 +119,7 @@ class Texts extends atoum
         $texts->installInit(false);
 
         $list = $texts->getRefs(\Galette\Core\I18n::DEFAULT_LANG);
-        $this->array($list)->hasSize($count_texts);
+        $this->array($list)->hasSize(12);
 
         if ($this->zdb->isPostgres()) {
             $select = $this->zdb->select($texts::TABLE . '_id_seq');
