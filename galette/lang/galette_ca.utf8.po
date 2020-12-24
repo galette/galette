@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: translations@galette.eu\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-18 05:02+0100\n"
 "PO-Revision-Date: 2020-12-24 06:25+0000\n"
 "Last-Translator: Joan Montané <joan@montane.cat>\n"
@@ -651,7 +651,8 @@ msgstr "Missatge de prova."
 #: ../lib/Galette/Controllers/GaletteController.php:414
 #, fuzzy, php-format
 msgid "An email has been sent to %email"
-msgstr "S'ha enviat un correu electrònic a l'adreça de correu electrònic del 5%"
+msgstr ""
+"S'ha enviat un correu electrònic a l'adreça de correu electrònic del 5%"
 
 #: ../lib/Galette/Controllers/GaletteController.php:423
 #, fuzzy, php-format
@@ -1007,8 +1008,8 @@ msgstr "S'ha produït un error en tornar a inicialitzar els models PDF ("
 #, fuzzy
 msgid "Logins and passwords have been successfully filled (%i processed)."
 msgstr ""
-"Els inicis de sessió i les contrasenyes s'han omplert correctament "
-"(&lt;unk&gt;i processat)."
+"Els inicis de sessió i les contrasenyes s'han omplert correctament (&lt;"
+"unk&gt;i processat)."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:154
 #, fuzzy
@@ -1113,16 +1114,16 @@ msgid ""
 "Export file could not be write on disk for '%export'. Make sure web server "
 "can write in the exports directory."
 msgstr ""
-"El fitxer d'exportació no s'ha pogut escriure al disc per a "
-"«&lt;unk&gt;export». Assegureu-vos que el servidor web pot escriure al "
-"directori d'exportacions."
+"El fitxer d'exportació no s'ha pogut escriure al disc per a «&lt;unk&gt;"
+"export». Assegureu-vos que el servidor web pot escriure al directori "
+"d'exportacions."
 
 #: ../lib/Galette/Controllers/CsvController.php:204
 #, fuzzy, php-format
 msgid "An error occurred running parameted export '%export'."
 msgstr ""
-"S'ha produït un error en executar l'exportació parametada "
-"'&lt;unk&gt;export'."
+"S'ha produït un error en executar l'exportació parametada '&lt;unk&gt;"
+"export'."
 
 #: ../lib/Galette/Controllers/CsvController.php:214
 #, fuzzy, php-format
@@ -1145,7 +1146,8 @@ msgstr "S'ha produït un error en importar el fitxer ("
 #: ../lib/Galette/Controllers/CsvController.php:327
 #, fuzzy
 msgid "File '%filename%' has been successfully imported :)"
-msgstr "El fitxer '&lt;unk&gt;filename&lt;unk&gt;' s'ha importat correctament )"
+msgstr ""
+"El fitxer '&lt;unk&gt;filename&lt;unk&gt;' s'ha importat correctament )"
 
 #: ../lib/Galette/Controllers/CsvController.php:360
 #, fuzzy
@@ -1475,7 +1477,8 @@ msgstr ""
 #: ../lib/Galette/Core/Preferences.php:551
 #, fuzzy
 msgid "- Offering months is only compatible with beginning of membership."
-msgstr "- Oferir mesos només és compatible amb el començament de la pertinença."
+msgstr ""
+"- Oferir mesos només és compatible amb el començament de la pertinença."
 
 #: ../lib/Galette/Core/Preferences.php:560
 #: ../lib/Galette/Entity/Adherent.php:1135
@@ -2071,8 +2074,8 @@ msgstr "El fitxer és buit!"
 #, fuzzy
 msgid "An error occurred storing member at row %row (%name):"
 msgstr ""
-"S'ha produït un error en emmagatzemar el membre a la fila per cent "
-"(&lt;unk&gt;name)"
+"S'ha produït un error en emmagatzemar el membre a la fila per cent (&lt;"
+"unk&gt;name)"
 
 #: ../lib/Galette/IO/CsvIn.php:576
 #, fuzzy
@@ -2293,7 +2296,8 @@ msgstr "nom del 5% (#&lt;unk&gt;id - dia-dilluns)"
 #: ../lib/Galette/Entity/I18nTrait.php:136
 #, fuzzy, php-format
 msgid "Unable to add dynamic translation for %field :("
-msgstr "No s'ha pogut afegir una traducció dinàmica per a l'ordre del 5%field ("
+msgstr ""
+"No s'ha pogut afegir una traducció dinàmica per a l'ordre del 5%field ("
 
 #: ../lib/Galette/Entity/I18nTrait.php:202
 #, fuzzy, php-format
@@ -2362,7 +2366,8 @@ msgstr ""
 #: ../lib/Galette/Entity/Contribution.php:1276
 #, fuzzy, php-format
 msgid "- Wrong date format (%date_format) for %field!"
-msgstr "- Format de data incorrecte (&lt;unk&gt;dateformat) per a percentfield!"
+msgstr ""
+"- Format de data incorrecte (&lt;unk&gt;dateformat) per a percentfield!"
 
 #: ../lib/Galette/Entity/Adherent.php:1259
 #, fuzzy
@@ -2497,7 +2502,8 @@ msgstr "- Descripció de transacció buida!"
 #: ../lib/Galette/Entity/Transaction.php:321
 #, fuzzy
 msgid "- Transaction description must be 150 characters long maximum."
-msgstr "- La descripció de la transacció ha de tenir 150 caràcters com a màxim."
+msgstr ""
+"- La descripció de la transacció ha de tenir 150 caràcters com a màxim."
 
 #: ../lib/Galette/Entity/Transaction.php:346
 #: ../lib/Galette/Entity/Contribution.php:474
@@ -3046,8 +3052,8 @@ msgstr ""
 #, fuzzy
 msgid "Email sent to admin for user %name (%email)"
 msgstr ""
-"Correu electrònic enviat a l'administrador pel nom d'usuari "
-"(&lt;unk&gt;email)"
+"Correu electrònic enviat a l'administrador pel nom d'usuari (&lt;unk&gt;"
+"email)"
 
 #: ../lib/Galette/Events/ContribListener.php:358
 #, fuzzy
@@ -3093,8 +3099,8 @@ msgstr "Correu electrònic de modificació del compte enviat a '&lt;unk&gt;s'."
 #, fuzzy, php-format
 msgid "A problem happened while sending account email to '%s'"
 msgstr ""
-"S'ha produït un problema en enviar el correu electrònic del compte a "
-"'&lt;unk&gt;s'"
+"S'ha produït un problema en enviar el correu electrònic del compte a '&lt;"
+"unk&gt;s'"
 
 #: ../lib/Galette/Events/MemberListener.php:357
 #, fuzzy, php-format
@@ -3829,8 +3835,8 @@ msgstr ""
 "vostra subscripció i actualitzar les vostres preferències des de la "
 "interfície web.{NEWLINE} Inicieu sessió en aquesta adreça per establir la "
 "vostra nova contrasenya {BR}{CHGPWDURI}{NEWLINE}Nom d'usuari {LOGIN}{BR}"
-"L'enllaç anterior serà vàlid fins {LINKVALIDITY}.{NEWLINE}Vegeu-vos "
-"aviat!{NEWLINE}(aquest correu electrònic s'ha enviat automàticament)"
+"L'enllaç anterior serà vàlid fins {LINKVALIDITY}.{NEWLINE}Vegeu-vos aviat!"
+"{NEWLINE}(aquest correu electrònic s'ha enviat automàticament)"
 
 #: ../includes/fields_defs/texts_fields.php:43
 #, fuzzy
@@ -3849,8 +3855,8 @@ msgstr ""
 "Hello{NEWLINE}Someone (probablement vós) us ha demanat recuperar la vostra "
 "contrasenya.{NEWLINE}Accediu a aquesta adreça per establir la vostra nova "
 "contrasenya {BR}{CHGPWDURI}{NEWLINE}Nom d'usuari {LOGIN}{BR}L'enllaç "
-"anterior serà vàlid fins {LINKVALIDITY}.{NEWLINE}Vegeu-vos aviat!{NEWLINE}("
-"aquest correu electrònic s'ha enviat automàticament)"
+"anterior serà vàlid fins {LINKVALIDITY}.{NEWLINE}Vegeu-vos aviat!{NEWLINE}"
+"(aquest correu electrònic s'ha enviat automàticament)"
 
 #: ../includes/fields_defs/texts_fields.php:51
 #, fuzzy
@@ -3874,9 +3880,9 @@ msgstr ""
 "Hello{NEWLINE}La vostra contribució ha estat tinguda en compte amb èxit per "
 "{ASSONAME}.{NEWLINE}És vàlida fins {DEADLINE}.{NEWLINE}Ara podeu iniciar la "
 "sessió i navegar o modificar les vostres dades personals utilitzant els "
-"identificadors de galette en aquesta adreça "
-"{BR}{LOGINURI}.{NEWLINE}{CONTRIBINFO}{NEWLINE}Vegeu-vos aviat!{NEWLINE}("
-"aquest correu electrònic s'ha enviat automàticament)"
+"identificadors de galette en aquesta adreça {BR}{LOGINURI}.{NEWLINE}"
+"{CONTRIBINFO}{NEWLINE}Vegeu-vos aviat!{NEWLINE}(aquest correu electrònic "
+"s'ha enviat automàticament)"
 
 #: ../includes/fields_defs/texts_fields.php:59
 #, fuzzy
@@ -3917,8 +3923,8 @@ msgid ""
 "sincerly,{BR}Galette"
 msgstr ""
 "Hola estimada administrador{NEWLINE}S'ha registrat una contribució de "
-"{NAMEADH} (nova data límit {DEADLINE}){BR}{CONTRIBINFO}{NEWLINE}Pàgina "
-"{BR}Galette"
+"{NAMEADH} (nova data límit {DEADLINE}){BR}{CONTRIBINFO}{NEWLINE}Pàgina {BR}"
+"Galette"
 
 #: ../includes/fields_defs/texts_fields.php:75
 #, fuzzy
@@ -3959,10 +3965,10 @@ msgid ""
 "into {LOGIN_URI} to review modifications and/or change it.{NEWLINE}See you "
 "soon!{NEWLINE}(this email was sent automatically)"
 msgstr ""
-"Hola!{NEWLINE}El vostre compte a {ASSONAME} (amb l'inici de sessió '{LOGIN}')"
-" ha estat modificat per un administrador o un membre del personal.{NEWLINE}"
-"Podeu iniciar sessió a {LOGINURI} per revisar les modificacions i/o canviar-"
-"les.{NEWLINE}Vegeu-ho aviat!{NEWLINE}(aquest correu s'ha enviat "
+"Hola!{NEWLINE}El vostre compte a {ASSONAME} (amb l'inici de sessió "
+"'{LOGIN}') ha estat modificat per un administrador o un membre del personal."
+"{NEWLINE}Podeu iniciar sessió a {LOGINURI} per revisar les modificacions i/o "
+"canviar-les.{NEWLINE}Vegeu-ho aviat!{NEWLINE}(aquest correu s'ha enviat "
 "automàticament)"
 
 #: ../includes/fields_defs/texts_fields.php:91
@@ -4062,8 +4068,8 @@ msgid ""
 "Hello!{NEWLINE}{NAME_ADH} has modified his/her account.{NEWLINE}See you soon!"
 "{NEWLINE}(this email was sent automatically)"
 msgstr ""
-"Hola!{NEWLINE}{NAMEADH} ha modificat el seu compte.{NEWLINE}Vegeu-vos "
-"aviat!{NEWLINE}(aquest correu electrònic s'ha enviat automàticament)"
+"Hola!{NEWLINE}{NAMEADH} ha modificat el seu compte.{NEWLINE}Vegeu-vos aviat!"
+"{NEWLINE}(aquest correu electrònic s'ha enviat automàticament)"
 
 #: ../includes/fields_defs/texts_fields.php:131
 #, fuzzy
@@ -4113,7 +4119,8 @@ msgstr "La Galette s'ha actualitzat correctament!"
 #: ../install/steps/end.php:51
 #, fuzzy
 msgid "To secure the system, please delete the install directory"
-msgstr "Per assegurar el sistema si us plau esborra el directori d'instal·lació"
+msgstr ""
+"Per assegurar el sistema si us plau esborra el directori d'instal·lació"
 
 #: ../install/steps/end.php:54
 #, fuzzy
@@ -4593,7 +4600,8 @@ msgstr "Actualitza"
 msgid ""
 "you already have installed Galette, and you want to upgrade to the latest "
 "version"
-msgstr "ja teniu instal·lada el Galette i voleu actualitzar a la darrera versió"
+msgstr ""
+"ja teniu instal·lada el Galette i voleu actualitzar a la darrera versió"
 
 #: ../install/steps/type.php:60
 #, fuzzy
@@ -5448,9 +5456,9 @@ msgid ""
 "those cases)."
 msgstr ""
 "Introduïu un URI de script que es cridarà després d'afegir una nova "
-"contribució. L'URI de l'script<br>ha de ser prefixat per un de «<em> galette/"
-"/</em>' per a la crida interna de Galette». «<em> file//</em>' per a una "
-"crida directa<em>get//</em>' o<em>post//</em>' per a trucades HTTP (el "
+"contribució. L'URI de l'script<br>ha de ser prefixat per un de «<em> "
+"galette//</em>' per a la crida interna de Galette». «<em> file//</em>' per a "
+"una crida directa<em>get//</em>' o<em>post//</em>' per a trucades HTTP (el "
 "prefix serà reemplaçat per http// en aquests casos)."
 
 #: ../templates/default/preferences.tpl:233
@@ -6067,8 +6075,8 @@ msgstr "Prova una contrasenya"
 msgid ""
 "Do not forget to save your preferences if you're happy with the result ;)"
 msgstr ""
-"No oblideu desar les vostres preferències si esteu satisfet amb el resultat "
-";)"
+"No oblideu desar les vostres preferències si esteu satisfet amb el "
+"resultat ;)"
 
 #: ../templates/default/preferences.tpl:572
 #, fuzzy
@@ -6514,7 +6522,8 @@ msgstr ""
 #: ../templates/default/plugin_initdb.tpl:83
 #, fuzzy
 msgid "The tables are not totally created, it may be a permission problem."
-msgstr "Les taules no estan completament creades pot ser un problema de permís."
+msgstr ""
+"Les taules no estan completament creades pot ser un problema de permís."
 
 #: ../templates/default/plugin_initdb.tpl:85
 #, fuzzy
@@ -8112,7 +8121,8 @@ msgstr "Mou avall el camp '&lt;unk&gt;s'"
 #: ../templates/default/configurer_fiche_content.tpl:73
 #, fuzzy, php-format
 msgid "There is not yet any dynamic field configured for '%formname'"
-msgstr "Encara no hi ha cap camp dinàmic configurat per a '&lt;unk&gt;formname'"
+msgstr ""
+"Encara no hi ha cap camp dinàmic configurat per a '&lt;unk&gt;formname'"
 
 #: ../templates/default/ajax.tpl:1
 #, fuzzy
