@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2020-12-18 04:05+0000\n"
+"PO-Revision-Date: 2020-12-24 06:37+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.4-dev\n"
+"X-Generator: Weblate 4.4.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -3465,12 +3465,6 @@ msgid "[{ASSO_NAME}] Account {NAME_ADH} is inactive"
 msgstr "[{ASSO_NAME}] Fiche {NAME_ADH} modifiée"
 
 #: ../includes/fields_defs/texts_fields.php:137
-#, fuzzy
-#| msgid ""
-#| "Hello!{NEWLINE}Your account on {ASSO_NAME} (with the login '{LOGIN}') has "
-#| "been modified by an administrator or a staff member.{NEWLINE}You can log "
-#| "into {LOGIN_URI} to review modifications and/or change it.{NEWLINE}See "
-#| "you soon!{NEWLINE}(this email was sent automatically)"
 msgid ""
 "Hello!{NEWLINE}A password recovery request has been made on your account on "
 "{ASSO_NAME}, but it is currently inactive and therefore cannot be processed."
@@ -3478,17 +3472,16 @@ msgid ""
 "is a mistake.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
 "automatically)"
 msgstr ""
-"Bonjour !{NEWLINE}Votre compte chez {ASSO_NAME} (avec l'identifiant "
-"'{LOGIN}') a été modifié par un administrateur ou un membre du bureau."
-"{NEWLINE}Vous pouvez vous connecter à l'adresse {LOGIN_URI} pour vérifier "
-"ces informations ou les modifier.{NEWLINE}À bientôt !{NEWLINE}(ce courriel "
-"est un envoi automatique)"
+"Bonjour !{NEWLINE}Une demande dé récupération de mot de passe a été demandée "
+"pour votre compte sur {ASSO_NAME}, mais il est actuellement inactif la "
+"demande ne peut donc être traitée.{NEWLINE}Veuillez contacter un "
+"administrateur ou un membre du bureau si vous pensez qu'il s'agit d'une "
+"erreur.{NEWLINE}À bientôt !{NEWLINE}(ce courriel a été envoyé "
+"automatiquement)"
 
 #: ../includes/fields_defs/texts_fields.php:139
-#, fuzzy
-#| msgid "Lost password email"
 msgid "Lost password email (disabled)"
-msgstr "Récupération du mot de passe"
+msgstr "Récupération du mot de passe (inactif)"
 
 #: ../install/scripts/upgrade-to-0.8.php:93
 msgid "Unable to create main datadir in %path!"
