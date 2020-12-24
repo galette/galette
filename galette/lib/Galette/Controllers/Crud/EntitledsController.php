@@ -259,7 +259,7 @@ class EntitledsController extends CrudController
         }
 
         $label = trim($post[$entitled::$fields['libelle']]);
-        $field = trim($post[$entitled::$fields['third']]);
+        $field = trim($post[$entitled::$fields['third']] ?? 0);
 
         $ret = ($action === 'add' ? $entitled->add($label, $field) : $entitled->update($id, $label, $field));
 
