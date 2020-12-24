@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-18 05:02+0100\n"
+"POT-Creation-Date: 2020-12-24 07:29+0100\n"
 "PO-Revision-Date: 2020-12-24 06:25+0000\n"
 "Last-Translator: Joan Montané <joan@montane.cat>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -802,7 +802,7 @@ msgstr "Enllaç invàlid!"
 
 #: ../lib/Galette/Controllers/AuthController.php:90
 #: ../lib/Galette/Controllers/AuthController.php:150
-#: ../lib/Galette/Entity/PdfModel.php:722
+#: ../lib/Galette/Entity/PdfModel.php:724
 #, fuzzy
 msgid "Login"
 msgstr "Inici de sessió"
@@ -849,7 +849,7 @@ msgid "Impersonating ended"
 msgstr "S'ha acabat la suplantació"
 
 #: ../lib/Galette/Controllers/AuthController.php:263
-#: ../lib/Galette/Controllers/AuthController.php:463
+#: ../lib/Galette/Controllers/AuthController.php:478
 #, fuzzy
 msgid "Password recovery"
 msgstr "Recuperació de contrasenya"
@@ -861,21 +861,21 @@ msgstr ""
 "El correu enviat està desactivat a les preferències. Pregunta-ho a "
 "l'administrador de galette"
 
-#: ../lib/Galette/Controllers/AuthController.php:332
+#: ../lib/Galette/Controllers/AuthController.php:340
 #: ../lib/Galette/Core/History.php:417 ../lib/Galette/IO/Csv.php:115
 #: ../lib/Galette/Events/MemberListener.php:245
 #, fuzzy
 msgid "Y-m-d H:i:s"
 msgstr "Y-m-d His"
 
-#: ../lib/Galette/Controllers/AuthController.php:353
+#: ../lib/Galette/Controllers/AuthController.php:368
 #, fuzzy, php-format
 msgid "Email sent to '%s' for password recovery."
 msgstr ""
 "S'ha enviat un correu electrònic a '&lt;unk&gt;s' per a la recuperació de la "
 "contrasenya."
 
-#: ../lib/Galette/Controllers/AuthController.php:357
+#: ../lib/Galette/Controllers/AuthController.php:372
 #, fuzzy
 msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
@@ -884,18 +884,18 @@ msgstr ""
 "S'ha enviat un correu electrònic a la vostra adreça.<br>Comproveu la vostra "
 "bústia d'entrada i seguiu les instruccions."
 
-#: ../lib/Galette/Controllers/AuthController.php:359
+#: ../lib/Galette/Controllers/AuthController.php:374
 #, fuzzy
 msgid "An email has been sent to the member."
 msgstr "S'ha enviat un correu electrònic al membre."
 
-#: ../lib/Galette/Controllers/AuthController.php:370
+#: ../lib/Galette/Controllers/AuthController.php:385
 #, fuzzy, php-format
 msgid "A problem happened while sending password for account '%s'"
 msgstr ""
 "S'ha produït un problema en enviar la contrasenya pel compte «&lt;unk&gt;s»"
 
-#: ../lib/Galette/Controllers/AuthController.php:384
+#: ../lib/Galette/Controllers/AuthController.php:399
 #: ../lib/Galette/Events/MemberListener.php:250
 #, fuzzy, php-format
 msgid ""
@@ -904,22 +904,22 @@ msgstr ""
 "S'ha produït un error en emmagatzemar la contrasenya temporal per a un 1%. "
 "Si us plau informeu un administrador."
 
-#: ../lib/Galette/Controllers/AuthController.php:396
+#: ../lib/Galette/Controllers/AuthController.php:411
 #, fuzzy, php-format
 msgid "Your account (%s) do not contain any valid email address"
 msgstr "El vostre compte (&lt;unk&gt;s) no conté cap adreça electrònica vàlida"
 
-#: ../lib/Galette/Controllers/AuthController.php:410
+#: ../lib/Galette/Controllers/AuthController.php:425
 #, fuzzy, php-format
 msgid "Mails address %s does not exist"
 msgstr "L'adreçament dels correus no existeix"
 
-#: ../lib/Galette/Controllers/AuthController.php:416
+#: ../lib/Galette/Controllers/AuthController.php:431
 #, fuzzy, php-format
 msgid "Login %s does not exist"
 msgstr "L'inici de sessió no existeix"
 
-#: ../lib/Galette/Controllers/AuthController.php:447
+#: ../lib/Galette/Controllers/AuthController.php:462
 #, fuzzy
 msgid ""
 "This link is no longer valid. You should ask to retrieve your password again."
@@ -927,34 +927,34 @@ msgstr ""
 "Aquest enllaç ja no és vàlid. Hauríeu de demanar que recupereu la "
 "contrasenya de nou."
 
-#: ../lib/Galette/Controllers/AuthController.php:493
+#: ../lib/Galette/Controllers/AuthController.php:508
 #: ../webroot/installer.php:134 ../webroot/installer.php:177
 #, fuzzy
 msgid "No password"
 msgstr "Sense contrasenya"
 
-#: ../lib/Galette/Controllers/AuthController.php:496
+#: ../lib/Galette/Controllers/AuthController.php:511
 #: ../lib/Galette/Entity/Adherent.php:1342
 #, fuzzy
 msgid "- The passwords don't match!"
 msgstr "- Les contrasenyes no coincideixen!"
 
-#: ../lib/Galette/Controllers/AuthController.php:502
+#: ../lib/Galette/Controllers/AuthController.php:517
 #, fuzzy
 msgid "Your password is too weak!"
 msgstr "La contrasenya és massa feble!"
 
-#: ../lib/Galette/Controllers/AuthController.php:511
+#: ../lib/Galette/Controllers/AuthController.php:526
 #, fuzzy
 msgid "An error occurred while updating your password."
 msgstr "S'ha produït un error en actualitzar la contrasenya."
 
-#: ../lib/Galette/Controllers/AuthController.php:517
+#: ../lib/Galette/Controllers/AuthController.php:532
 #, fuzzy, php-format
 msgid "Password changed for member '%s'."
 msgstr "S'ha canviat la contrasenya pel membre '&lt;unk&gt;s'."
 
-#: ../lib/Galette/Controllers/AuthController.php:525
+#: ../lib/Galette/Controllers/AuthController.php:540
 #, fuzzy
 msgid "Your password has been changed!"
 msgstr "La contrasenya ha canviat!"
@@ -1886,25 +1886,25 @@ msgstr "Gestors"
 #: ../lib/Galette/IO/PdfGroups.php:179
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:185
 #: ../lib/Galette/Entity/PdfModel.php:552
-#: ../lib/Galette/Entity/PdfModel.php:658
+#: ../lib/Galette/Entity/PdfModel.php:660
 #: ../lib/Galette/Filters/MembersList.php:272
 #: ../includes/fields_defs/members_fields.php:355
 #, fuzzy
 msgid "Name"
 msgstr "Nom"
 
-#: ../lib/Galette/IO/PdfGroups.php:180 ../lib/Galette/Entity/PdfModel.php:718
+#: ../lib/Galette/IO/PdfGroups.php:180 ../lib/Galette/Entity/PdfModel.php:720
 msgid "Email"
 msgstr "Correu-e"
 
 #: ../lib/Galette/IO/PdfGroups.php:181
 #: ../lib/Galette/Entity/ListsConfig.php:225
-#: ../lib/Galette/Entity/PdfModel.php:710
+#: ../lib/Galette/Entity/PdfModel.php:712
 #, fuzzy
 msgid "Phone"
 msgstr "Telèfon"
 
-#: ../lib/Galette/IO/PdfGroups.php:182 ../lib/Galette/Entity/PdfModel.php:714
+#: ../lib/Galette/IO/PdfGroups.php:182 ../lib/Galette/Entity/PdfModel.php:716
 #, fuzzy
 msgid "GSM"
 msgstr "GSM"
@@ -1915,19 +1915,19 @@ msgid "filtered_memberslist"
 msgstr "llista de membres filtrats"
 
 #: ../lib/Galette/IO/MembersCsv.php:228 ../lib/Galette/Entity/Adherent.php:1693
-#: ../lib/Galette/Entity/PdfModel.php:753
+#: ../lib/Galette/Entity/PdfModel.php:764
 #, fuzzy
 msgid "Man"
 msgstr "Man"
 
 #: ../lib/Galette/IO/MembersCsv.php:231 ../lib/Galette/Entity/Adherent.php:1695
-#: ../lib/Galette/Entity/PdfModel.php:755
+#: ../lib/Galette/Entity/PdfModel.php:766
 #, fuzzy
 msgid "Woman"
 msgstr "Dona"
 
 #: ../lib/Galette/IO/MembersCsv.php:234 ../lib/Galette/Entity/Adherent.php:1697
-#: ../lib/Galette/Entity/PdfModel.php:757
+#: ../lib/Galette/Entity/PdfModel.php:768
 #, fuzzy
 msgid "Unspecified"
 msgstr "Sense especificar"
@@ -2675,7 +2675,7 @@ msgid "Unknown type %type!"
 msgstr "Tipus desconegut!"
 
 #: ../lib/Galette/Entity/PdfModel.php:561
-#: ../lib/Galette/Entity/PdfModel.php:650
+#: ../lib/Galette/Entity/PdfModel.php:652
 #, fuzzy
 msgid "Title"
 msgstr "Títol"
@@ -2731,95 +2731,96 @@ msgstr "Logotip de la vostra organització"
 msgid "Current date (Y-m-d)"
 msgstr "Data actual (Y-m-d)"
 
-#: ../lib/Galette/Entity/PdfModel.php:654
+#: ../lib/Galette/Entity/PdfModel.php:656
 #, fuzzy
 msgid "Member's ID"
 msgstr "ID del membre"
 
-#: ../lib/Galette/Entity/PdfModel.php:662
+#: ../lib/Galette/Entity/PdfModel.php:664
 #, fuzzy
 msgid "Last name"
 msgstr "Darrer nom"
 
-#: ../lib/Galette/Entity/PdfModel.php:666 ../includes/i18n.inc.php:330
+#: ../lib/Galette/Entity/PdfModel.php:668 ../includes/i18n.inc.php:330
 #, fuzzy
 msgid "First name"
 msgstr "Nom"
 
-#: ../lib/Galette/Entity/PdfModel.php:670
+#: ../lib/Galette/Entity/PdfModel.php:672
 #, fuzzy
 msgid "Nickname"
 msgstr "Sobrenom"
 
-#: ../lib/Galette/Entity/PdfModel.php:674
+#: ../lib/Galette/Entity/PdfModel.php:676
 #, fuzzy
 msgid "Gender"
 msgstr "Gènere"
 
-#: ../lib/Galette/Entity/PdfModel.php:678
+#: ../lib/Galette/Entity/PdfModel.php:680
 #, fuzzy
 msgid "Birth date"
 msgstr "Data de naixement"
 
-#: ../lib/Galette/Entity/PdfModel.php:682
+#: ../lib/Galette/Entity/PdfModel.php:684
 #, fuzzy
 msgid "Birth place"
 msgstr "Lloc de naixement"
 
-#: ../lib/Galette/Entity/PdfModel.php:686
+#: ../lib/Galette/Entity/PdfModel.php:688
 #, fuzzy
 msgid "Profession"
 msgstr "Professió"
 
-#: ../lib/Galette/Entity/PdfModel.php:690
+#: ../lib/Galette/Entity/PdfModel.php:692
+#: ../lib/Galette/Entity/PdfModel.php:739
 #: ../lib/Galette/Filters/MembersList.php:273
 #, fuzzy
 msgid "Company name"
 msgstr "Nom de l'empresa"
 
-#: ../lib/Galette/Entity/PdfModel.php:694
+#: ../lib/Galette/Entity/PdfModel.php:696
 #: ../lib/Galette/Filters/MembersList.php:274
 #, fuzzy
 msgid "Address"
 msgstr "Adreça"
 
-#: ../lib/Galette/Entity/PdfModel.php:698
+#: ../lib/Galette/Entity/PdfModel.php:700
 #, fuzzy
 msgid "Zipcode"
 msgstr "Zipcode"
 
-#: ../lib/Galette/Entity/PdfModel.php:702
+#: ../lib/Galette/Entity/PdfModel.php:704
 #, fuzzy
 msgid "Town"
 msgstr "Ciutat"
 
-#: ../lib/Galette/Entity/PdfModel.php:706 ../includes/i18n.inc.php:327
+#: ../lib/Galette/Entity/PdfModel.php:708 ../includes/i18n.inc.php:327
 #, fuzzy
 msgid "Country"
 msgstr "País"
 
-#: ../lib/Galette/Entity/PdfModel.php:726
+#: ../lib/Galette/Entity/PdfModel.php:728
 #, fuzzy
 msgid "Member's main group"
 msgstr "Grup principal del membre"
 
-#: ../lib/Galette/Entity/PdfModel.php:730
+#: ../lib/Galette/Entity/PdfModel.php:732
 #, fuzzy
 msgid "Member's groups (as list)"
 msgstr "Grups de membres (com a llista)"
 
-#: ../lib/Galette/Entity/PdfModel.php:761
-#: ../lib/Galette/Entity/PdfModel.php:762
+#: ../lib/Galette/Entity/PdfModel.php:772
+#: ../lib/Galette/Entity/PdfModel.php:773
 #, fuzzy
 msgid "None"
 msgstr "Cap"
 
-#: ../lib/Galette/Entity/PdfModel.php:912
+#: ../lib/Galette/Entity/PdfModel.php:925
 #, fuzzy
 msgid "Main information"
 msgstr "Informació principal"
 
-#: ../lib/Galette/Entity/PdfModel.php:917
+#: ../lib/Galette/Entity/PdfModel.php:930
 #, fuzzy
 msgid "Member information"
 msgstr "Informació del membre"
@@ -4075,6 +4076,31 @@ msgstr ""
 #, fuzzy
 msgid "Informs admin a member edit his information"
 msgstr "Informa l'administrador d'un membre que editi la seva informació"
+
+#: ../includes/fields_defs/texts_fields.php:136
+#, fuzzy
+msgid "[{ASSO_NAME}] Account {NAME_ADH} is inactive"
+msgstr "[{ASSONAME}] S'ha modificat el compte {NAMEADH}"
+
+#: ../includes/fields_defs/texts_fields.php:137
+#, fuzzy
+msgid ""
+"Hello!{NEWLINE}A password recovery request has been made on your account on "
+"{ASSO_NAME}, but it is currently inactive and therefore cannot be processed."
+"{NEWLINE}Please contact an administrator or a staff member if you think this "
+"is a mistake.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
+"automatically)"
+msgstr ""
+"Hola!{NEWLINE}El vostre compte a {ASSONAME} (amb l'inici de sessió "
+"'{LOGIN}') ha estat modificat per un administrador o un membre del personal."
+"{NEWLINE}Podeu iniciar sessió a {LOGINURI} per revisar les modificacions i/o "
+"canviar-les.{NEWLINE}Vegeu-ho aviat!{NEWLINE}(aquest correu s'ha enviat "
+"automàticament)"
+
+#: ../includes/fields_defs/texts_fields.php:139
+#, fuzzy
+msgid "Lost password email (disabled)"
+msgstr "S'ha perdut el correu electrònic de contrasenya"
 
 #: ../install/scripts/upgrade-to-0.8.php:93
 #, fuzzy

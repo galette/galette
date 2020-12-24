@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-18 05:02+0100\n"
+"POT-Creation-Date: 2020-12-24 07:29+0100\n"
 "PO-Revision-Date: 2020-07-16 15:41+0000\n"
 "Last-Translator: ThonyVezbe <a.guechoum@gmail.com>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/galette/galette/"
@@ -691,7 +691,7 @@ msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:90
 #: ../lib/Galette/Controllers/AuthController.php:150
-#: ../lib/Galette/Entity/PdfModel.php:722
+#: ../lib/Galette/Entity/PdfModel.php:724
 msgid "Login"
 msgstr ""
 
@@ -730,7 +730,7 @@ msgid "Impersonating ended"
 msgstr ""
 
 #: ../lib/Galette/Controllers/AuthController.php:263
-#: ../lib/Galette/Controllers/AuthController.php:463
+#: ../lib/Galette/Controllers/AuthController.php:478
 msgid "Password recovery"
 msgstr ""
 
@@ -738,83 +738,83 @@ msgstr ""
 msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:332
+#: ../lib/Galette/Controllers/AuthController.php:340
 #: ../lib/Galette/Core/History.php:417 ../lib/Galette/IO/Csv.php:115
 #: ../lib/Galette/Events/MemberListener.php:245
 msgid "Y-m-d H:i:s"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:353
+#: ../lib/Galette/Controllers/AuthController.php:368
 #, php-format
 msgid "Email sent to '%s' for password recovery."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:357
+#: ../lib/Galette/Controllers/AuthController.php:372
 msgid ""
 "An email has been sent to your address.<br/>Please check your inbox and "
 "follow the instructions."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:359
+#: ../lib/Galette/Controllers/AuthController.php:374
 msgid "An email has been sent to the member."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:370
+#: ../lib/Galette/Controllers/AuthController.php:385
 #, php-format
 msgid "A problem happened while sending password for account '%s'"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:384
+#: ../lib/Galette/Controllers/AuthController.php:399
 #: ../lib/Galette/Events/MemberListener.php:250
 #, php-format
 msgid ""
 "An error occurred storing temporary password for %s. Please inform an admin."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:396
+#: ../lib/Galette/Controllers/AuthController.php:411
 #, php-format
 msgid "Your account (%s) do not contain any valid email address"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:410
+#: ../lib/Galette/Controllers/AuthController.php:425
 #, php-format
 msgid "Mails address %s does not exist"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:416
+#: ../lib/Galette/Controllers/AuthController.php:431
 #, php-format
 msgid "Login %s does not exist"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:447
+#: ../lib/Galette/Controllers/AuthController.php:462
 msgid ""
 "This link is no longer valid. You should ask to retrieve your password again."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:493
+#: ../lib/Galette/Controllers/AuthController.php:508
 #: ../webroot/installer.php:134 ../webroot/installer.php:177
 msgid "No password"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:496
+#: ../lib/Galette/Controllers/AuthController.php:511
 #: ../lib/Galette/Entity/Adherent.php:1342
 msgid "- The passwords don't match!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:502
+#: ../lib/Galette/Controllers/AuthController.php:517
 msgid "Your password is too weak!"
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:511
+#: ../lib/Galette/Controllers/AuthController.php:526
 msgid "An error occurred while updating your password."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:517
+#: ../lib/Galette/Controllers/AuthController.php:532
 #, php-format
 msgid "Password changed for member '%s'."
 msgstr ""
 
-#: ../lib/Galette/Controllers/AuthController.php:525
+#: ../lib/Galette/Controllers/AuthController.php:540
 msgid "Your password has been changed!"
 msgstr ""
 
@@ -1578,23 +1578,23 @@ msgstr ""
 #: ../lib/Galette/IO/PdfGroups.php:179
 #: ../lib/Galette/IO/PdfAttendanceSheet.php:185
 #: ../lib/Galette/Entity/PdfModel.php:552
-#: ../lib/Galette/Entity/PdfModel.php:658
+#: ../lib/Galette/Entity/PdfModel.php:660
 #: ../lib/Galette/Filters/MembersList.php:272
 #: ../includes/fields_defs/members_fields.php:355
 msgid "Name"
 msgstr ""
 
-#: ../lib/Galette/IO/PdfGroups.php:180 ../lib/Galette/Entity/PdfModel.php:718
+#: ../lib/Galette/IO/PdfGroups.php:180 ../lib/Galette/Entity/PdfModel.php:720
 msgid "Email"
 msgstr ""
 
 #: ../lib/Galette/IO/PdfGroups.php:181
 #: ../lib/Galette/Entity/ListsConfig.php:225
-#: ../lib/Galette/Entity/PdfModel.php:710
+#: ../lib/Galette/Entity/PdfModel.php:712
 msgid "Phone"
 msgstr ""
 
-#: ../lib/Galette/IO/PdfGroups.php:182 ../lib/Galette/Entity/PdfModel.php:714
+#: ../lib/Galette/IO/PdfGroups.php:182 ../lib/Galette/Entity/PdfModel.php:716
 msgid "GSM"
 msgstr ""
 
@@ -1603,17 +1603,17 @@ msgid "filtered_memberslist"
 msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:228 ../lib/Galette/Entity/Adherent.php:1693
-#: ../lib/Galette/Entity/PdfModel.php:753
+#: ../lib/Galette/Entity/PdfModel.php:764
 msgid "Man"
 msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:231 ../lib/Galette/Entity/Adherent.php:1695
-#: ../lib/Galette/Entity/PdfModel.php:755
+#: ../lib/Galette/Entity/PdfModel.php:766
 msgid "Woman"
 msgstr ""
 
 #: ../lib/Galette/IO/MembersCsv.php:234 ../lib/Galette/Entity/Adherent.php:1697
-#: ../lib/Galette/Entity/PdfModel.php:757
+#: ../lib/Galette/Entity/PdfModel.php:768
 msgid "Unspecified"
 msgstr ""
 
@@ -2212,7 +2212,7 @@ msgid "Unknown type %type!"
 msgstr ""
 
 #: ../lib/Galette/Entity/PdfModel.php:561
-#: ../lib/Galette/Entity/PdfModel.php:650
+#: ../lib/Galette/Entity/PdfModel.php:652
 msgid "Title"
 msgstr ""
 
@@ -2257,78 +2257,79 @@ msgstr ""
 msgid "Current date (Y-m-d)"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:654
+#: ../lib/Galette/Entity/PdfModel.php:656
 msgid "Member's ID"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:662
+#: ../lib/Galette/Entity/PdfModel.php:664
 msgid "Last name"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:666 ../includes/i18n.inc.php:330
+#: ../lib/Galette/Entity/PdfModel.php:668 ../includes/i18n.inc.php:330
 msgid "First name"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:670
+#: ../lib/Galette/Entity/PdfModel.php:672
 msgid "Nickname"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:674
+#: ../lib/Galette/Entity/PdfModel.php:676
 msgid "Gender"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:678
+#: ../lib/Galette/Entity/PdfModel.php:680
 msgid "Birth date"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:682
+#: ../lib/Galette/Entity/PdfModel.php:684
 msgid "Birth place"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:686
+#: ../lib/Galette/Entity/PdfModel.php:688
 msgid "Profession"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:690
+#: ../lib/Galette/Entity/PdfModel.php:692
+#: ../lib/Galette/Entity/PdfModel.php:739
 #: ../lib/Galette/Filters/MembersList.php:273
 msgid "Company name"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:694
+#: ../lib/Galette/Entity/PdfModel.php:696
 #: ../lib/Galette/Filters/MembersList.php:274
 msgid "Address"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:698
+#: ../lib/Galette/Entity/PdfModel.php:700
 msgid "Zipcode"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:702
+#: ../lib/Galette/Entity/PdfModel.php:704
 msgid "Town"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:706 ../includes/i18n.inc.php:327
+#: ../lib/Galette/Entity/PdfModel.php:708 ../includes/i18n.inc.php:327
 msgid "Country"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:726
+#: ../lib/Galette/Entity/PdfModel.php:728
 msgid "Member's main group"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:730
+#: ../lib/Galette/Entity/PdfModel.php:732
 msgid "Member's groups (as list)"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:761
-#: ../lib/Galette/Entity/PdfModel.php:762
+#: ../lib/Galette/Entity/PdfModel.php:772
+#: ../lib/Galette/Entity/PdfModel.php:773
 msgid "None"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:912
+#: ../lib/Galette/Entity/PdfModel.php:925
 msgid "Main information"
 msgstr ""
 
-#: ../lib/Galette/Entity/PdfModel.php:917
+#: ../lib/Galette/Entity/PdfModel.php:930
 msgid "Member information"
 msgstr ""
 
@@ -3297,6 +3298,23 @@ msgstr ""
 
 #: ../includes/fields_defs/texts_fields.php:131
 msgid "Informs admin a member edit his information"
+msgstr ""
+
+#: ../includes/fields_defs/texts_fields.php:136
+msgid "[{ASSO_NAME}] Account {NAME_ADH} is inactive"
+msgstr ""
+
+#: ../includes/fields_defs/texts_fields.php:137
+msgid ""
+"Hello!{NEWLINE}A password recovery request has been made on your account on "
+"{ASSO_NAME}, but it is currently inactive and therefore cannot be processed."
+"{NEWLINE}Please contact an administrator or a staff member if you think this "
+"is a mistake.{NEWLINE}See you soon!{NEWLINE}(this email was sent "
+"automatically)"
+msgstr ""
+
+#: ../includes/fields_defs/texts_fields.php:139
+msgid "Lost password email (disabled)"
 msgstr ""
 
 #: ../install/scripts/upgrade-to-0.8.php:93
