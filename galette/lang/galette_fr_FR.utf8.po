@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2020-12-24 06:37+0000\n"
+"PO-Revision-Date: 2020-12-26 12:16+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
@@ -3459,10 +3459,8 @@ msgid "Informs admin a member edit his information"
 msgstr "Informe l'administrateur qu'un adhérent a modifié sa fiche"
 
 #: ../includes/fields_defs/texts_fields.php:136
-#, fuzzy
-#| msgid "[{ASSO_NAME}] Account {NAME_ADH} has been modified"
 msgid "[{ASSO_NAME}] Account {NAME_ADH} is inactive"
-msgstr "[{ASSO_NAME}] Fiche {NAME_ADH} modifiée"
+msgstr "[{ASSO_NAME}] Compte {NAME_ADH} inactif"
 
 #: ../includes/fields_defs/texts_fields.php:137
 msgid ""
