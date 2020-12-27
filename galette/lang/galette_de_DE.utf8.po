@@ -15,13 +15,14 @@
 # mohd amal syah bin syamsah Cerol <cerolamalsyah4@gmail.com>, 2020.
 # Code2Joke <codejoke@web.de>, 2020.
 # Stefanie Schreiner <stefanie-schreiner@hotmail.de>, 2020.
+# Patrick Ehlers <speddye@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2020-12-24 07:29+0100\n"
-"PO-Revision-Date: 2020-12-16 19:32+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2020-12-28 14:29+0000\n"
+"Last-Translator: Patrick Ehlers <speddye@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/galette/galette/"
 "de/>\n"
 "Language: de_DE\n"
@@ -29,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.4-dev\n"
+"X-Generator: Weblate 4.4.1-dev\n"
 
 #: ../lib/Galette/Handlers/PhpError.php:84 ../lib/Galette/Handlers/Error.php:84
 msgid "Galette error"
@@ -318,7 +319,7 @@ msgstr "%count Mitglieder wurden erfolgreich geändert!"
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1512
 #, fuzzy
 msgid "Invalid captcha"
-msgstr "Ungültiger Captcha"
+msgstr "ungültiges Captcha"
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1619
 msgid "Your account has been created!"
@@ -892,7 +893,8 @@ msgstr "Fehler bei der Re-Initialisierung der PDF Modelle aufgetreten :("
 #, fuzzy
 #| msgid "Logins and passwords has been successfully filled (%i processed)."
 msgid "Logins and passwords have been successfully filled (%i processed)."
-msgstr "Anmeldename und Passwort wurden erfolgreich erstellt (%i bearbeitet)."
+msgstr ""
+"Anmeldungen und Passwörter wurden erfolgreich ausgefüllt (%i verarbeitet)."
 
 #: ../lib/Galette/Controllers/AdminToolsController.php:154
 msgid "An error occurred filling empty logins and passwords :("
